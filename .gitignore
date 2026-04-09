@@ -1,0 +1,21 @@
+# macOS
+.DS_Store
+
+# 個人証券データ（SBI CSV）
+SBI_CSV/
+
+# ログ
+logs/
+
+# バックアップ（自動生成）
+data/correlation_backup.json
+
+# Claude Code設定（ローカルのみ）
+.claude/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/

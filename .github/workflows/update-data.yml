@@ -1,0 +1,37 @@
+name: Update Market Data
+
+on:
+  schedule:
+    # 毎平日 8:30 JST (= 23:30 UTC 前日) に実行
+    - cron: '30 23 * * 0-4'
+  workflow_dispatch:  # 手動実行も可能
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install yfinance pandas numpy
+
+      - name: Update correlation.json
+        run: python3 data/update_correlation.py
+
+      - name: Update market.json
+        run: python3 data/update_market.py
+
+      - name: Commit and push updated data
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/correlation.json data/market.json
+          git diff --staged --quiet || git commit -m "chore: auto-update market data $(date +'%Y-%m-%d')"
+          git push
