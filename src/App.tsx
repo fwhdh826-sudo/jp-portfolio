@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { useAppStore } from './store/useAppStore'
 import { StatusBar } from './components/StatusBar'
 import { TabNav } from './components/TabNav'
@@ -9,39 +9,73 @@ import { T4_Correlation } from './components/tabs/T4_Correlation'
 import { T5_Backtest } from './components/tabs/T5_Backtest'
 import { T6_History } from './components/tabs/T6_History'
 import { T7_Trust } from './components/tabs/T7_Trust'
+import './styles/v5.css'
 
-const STYLE = `
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html, body, #root { height: 100%; background: #080c14; color: #dce6f0;
-    font-family: 'Helvetica Neue', sans-serif; font-size: 14px; line-height: 1.6; }
-  ::-webkit-scrollbar { width: 5px; height: 5px; }
-  ::-webkit-scrollbar-track { background: #0c1220; }
-  ::-webkit-scrollbar-thumb { background: #22304a; border-radius: 3px; }
-  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
-`
+const TABS = ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'] as const
 
 export function App() {
-  const initialize = useAppStore(s => s.initialize)
-  const activeTab  = useAppStore(s => s.activeTab)
+  const initialize  = useAppStore(s => s.initialize)
+  const activeTab   = useAppStore(s => s.activeTab)
+  const setTab      = useAppStore(s => s.setTab)
+  const scrollRef   = useRef<HTMLDivElement>(null)
 
   useEffect(() => { initialize() }, [initialize])
 
+  // ── スワイプでタブ切替 ──────────────────────────────────────
+  useEffect(() => {
+    const el = scrollRef.current
+    if (!el) return
+    let startX = 0
+    let startY = 0
+
+    const onStart = (e: TouchEvent) => {
+      startX = e.touches[0].clientX
+      startY = e.touches[0].clientY
+    }
+    const onEnd = (e: TouchEvent) => {
+      const dX = e.changedTouches[0].clientX - startX
+      const dY = e.changedTouches[0].clientY - startY
+      if (Math.abs(dX) > 60 && Math.abs(dY) < 50) {
+        const cur = TABS.indexOf(activeTab)
+        if (dX < 0 && cur < TABS.length - 1) setTab(TABS[cur + 1])
+        if (dX > 0 && cur > 0) setTab(TABS[cur - 1])
+      }
+    }
+    el.addEventListener('touchstart', onStart, { passive: true })
+    el.addEventListener('touchend', onEnd, { passive: true })
+    return () => {
+      el.removeEventListener('touchstart', onStart)
+      el.removeEventListener('touchend', onEnd)
+    }
+  }, [activeTab, setTab])
+
   return (
     <>
-      <style>{STYLE}</style>
-      <div style={{display:'flex', flexDirection:'column', height:'100vh', minHeight:0}}>
-        <StatusBar />
-        <TabNav />
-        <div style={{flex:1, overflowY:'auto', minHeight:0}}>
-          {activeTab === 'T1' && <T1_Decision />}
-          {activeTab === 'T2' && <T2_Holdings />}
-          {activeTab === 'T3' && <T3_Regime />}
-          {activeTab === 'T4' && <T4_Correlation />}
-          {activeTab === 'T5' && <T5_Backtest />}
-          {activeTab === 'T6' && <T6_History />}
-          {activeTab === 'T7' && <T7_Trust />}
-        </div>
+      <StatusBar />
+
+      {/* スワイプ位置インジケーター */}
+      <div className="swipe-indicator">
+        {TABS.map(t => (
+          <div
+            key={t}
+            className={`swipe-ind-dot${t === activeTab ? ' active' : ''}`}
+          />
+        ))}
       </div>
+
+      {/* メインスクロールエリア */}
+      <div className="app-scroll-area" ref={scrollRef}>
+        {activeTab === 'T1' && <T1_Decision />}
+        {activeTab === 'T2' && <T2_Holdings />}
+        {activeTab === 'T3' && <T3_Regime />}
+        {activeTab === 'T4' && <T4_Correlation />}
+        {activeTab === 'T5' && <T5_Backtest />}
+        {activeTab === 'T6' && <T6_History />}
+        {activeTab === 'T7' && <T7_Trust />}
+      </div>
+
+      {/* ボトムナビ（fixed） */}
+      <TabNav />
     </>
   )
 }
