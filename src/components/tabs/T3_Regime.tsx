@@ -4,6 +4,8 @@ export function T3_Regime() {
   const market   = useAppStore(s => s.market)
   const metrics  = useAppStore(s => s.metrics)
   const analysis = useAppStore(s => s.analysis)
+  const holdings = useAppStore(s => s.holdings)
+  const news     = useAppStore(s => s.news)
 
   const regimeColor = market.regime === 'bull' ? 'var(--g)' : market.regime === 'bear' ? 'var(--r)' : 'var(--c)'
   const regimeBg    = market.regime === 'bull' ? 'rgba(45,212,160,.06)' : market.regime === 'bear' ? 'rgba(232,64,90,.06)' : 'rgba(104,150,200,.06)'
@@ -17,10 +19,114 @@ export function T3_Regime() {
   })
   const total = analysis.length || 1
 
+  // Best AI debate holding
+  const bestDebate = analysis.length > 0
+    ? analysis.reduce((best, a) => a.debate.debateScore > best.debate.debateScore ? a : best, analysis[0])
+    : null
+  const bestHolding = bestDebate ? holdings.find(h => h.code === bestDebate.code) : null
+
   return (
     <div className="tab-panel">
 
-      {/* レジームカード */}
+      {/* ── テクニカル分析テーブル ── */}
+      <div className="card" style={{ marginBottom: 10 }}>
+        <div className="card-title">テクニカル分析 <span className="badge ai">銘柄別</span></div>
+        <div className="tw">
+          <table className="dt">
+            <thead>
+              <tr>
+                <th>銘柄</th>
+                <th>MA</th>
+                <th>RSI</th>
+                <th>MACD</th>
+                <th>出来高</th>
+                <th>3M%</th>
+                <th>シグナル</th>
+              </tr>
+            </thead>
+            <tbody>
+              {holdings.map(h => {
+                const techScore = (h.ma ? 4 : 0) + (h.macd ? 4 : 0) + (h.rsi < 30 ? 4 : h.rsi > 70 ? -2 : 2) + (h.vol ? 2 : 0) + (h.mom3m > 0 ? 4 : 0)
+                const sig = techScore >= 12 ? 'bull' : techScore >= 6 ? 'neu' : 'bear'
+                return (
+                  <tr key={h.code}>
+                    <td>
+                      {h.code}<br />
+                      <span style={{ fontSize: 9, color: 'var(--d)' }}>{h.name.slice(0, 6)}</span>
+                    </td>
+                    <td><span className={`signal ${h.ma ? 'bull' : 'bear'}`}>{h.ma ? '◎' : '✗'}</span></td>
+                    <td style={{ color: h.rsi > 70 ? 'var(--r)' : h.rsi < 30 ? 'var(--g)' : 'var(--w)' }}>{h.rsi}</td>
+                    <td><span className={`signal ${h.macd ? 'bull' : 'bear'}`}>{h.macd ? 'GC' : 'DC'}</span></td>
+                    <td><span className={`signal ${h.vol ? 'bull' : 'neu'}`}>{h.vol ? '↑' : '─'}</span></td>
+                    <td className={h.mom3m >= 0 ? 'p' : 'n'}>{h.mom3m >= 0 ? '+' : ''}{h.mom3m}%</td>
+                    <td>
+                      <span className={`signal ${sig}`}>
+                        {sig === 'bull' ? 'BUY' : sig === 'bear' ? 'SELL' : 'HOLD'}
+                      </span>
+                    </td>
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
+        </div>
+        <div className="tw-hint">← 横スクロール可 →</div>
+      </div>
+
+      {/* ── ファンダメンタル分析テーブル ── */}
+      <div className="card" style={{ marginBottom: 10 }}>
+        <div className="card-title">ファンダメンタル分析 <span className="badge live">銘柄別</span></div>
+        <div className="tw">
+          <table className="dt">
+            <thead>
+              <tr>
+                <th>銘柄</th>
+                <th>ROE</th>
+                <th>PER</th>
+                <th>PBR</th>
+                <th>EPS成長</th>
+                <th>CF</th>
+                <th>D/E</th>
+                <th>配当G</th>
+              </tr>
+            </thead>
+            <tbody>
+              {holdings.map(h => (
+                <tr key={h.code}>
+                  <td>
+                    {h.code}<br />
+                    <span style={{ fontSize: 9, color: 'var(--d)' }}>{h.name.slice(0, 6)}</span>
+                  </td>
+                  <td style={{ color: h.roe >= 12 ? 'var(--g)' : h.roe >= 8 ? 'var(--a)' : 'var(--r)' }}>
+                    {h.roe.toFixed(1)}%
+                  </td>
+                  <td style={{ color: h.per > 30 ? 'var(--r)' : h.per > 20 ? 'var(--a)' : 'var(--g)' }}>
+                    {h.per.toFixed(1)}x
+                  </td>
+                  <td style={{ color: h.pbr > 3 ? 'var(--a)' : 'var(--w)' }}>
+                    {h.pbr.toFixed(2)}x
+                  </td>
+                  <td className={h.epsG >= 10 ? 'p' : h.epsG >= 0 ? '' : 'n'}>
+                    {h.epsG >= 0 ? '+' : ''}{h.epsG.toFixed(1)}%
+                  </td>
+                  <td>
+                    <span style={{ color: h.cfOk ? 'var(--g)' : 'var(--r)' }}>{h.cfOk ? '◎' : '✗'}</span>
+                  </td>
+                  <td style={{ color: h.de > 5 ? 'var(--r)' : h.de > 2 ? 'var(--a)' : 'var(--g)' }}>
+                    {h.de.toFixed(1)}
+                  </td>
+                  <td className={h.divG >= 5 ? 'p' : 'wh'}>
+                    {h.divG >= 0 ? '+' : ''}{h.divG.toFixed(1)}%
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <div className="tw-hint">← 横スクロール可 →</div>
+      </div>
+
+      {/* ── レジームカード ── */}
       <div style={{
         background: regimeBg,
         border: `1px solid ${regimeColor}44`,
@@ -63,7 +169,7 @@ export function T3_Regime() {
         </div>
       </div>
 
-      {/* 移動平均 */}
+      {/* ── 移動平均 ── */}
       <div className="card">
         <div className="card-title">移動平均 水準</div>
         {[
@@ -95,7 +201,7 @@ export function T3_Regime() {
         })}
       </div>
 
-      {/* BOJ */}
+      {/* ── BOJ ── */}
       <div className="card">
         <div className="card-title">BOJ 金利</div>
         <div style={{ display: 'flex', gap: 20, flexWrap: 'wrap' }}>
@@ -110,7 +216,7 @@ export function T3_Regime() {
         </div>
       </div>
 
-      {/* スコア分布 */}
+      {/* ── スコア分布 ── */}
       <div className="card">
         <div className="card-title">判定分布 <span className="badge ai">AI討論</span></div>
         <div className="grid3r" style={{ marginBottom: 10 }}>
@@ -143,6 +249,64 @@ export function T3_Regime() {
           </div>
         )}
       </div>
+
+      {/* ── 5AI 討論結果 ── */}
+      {bestDebate && bestHolding && (
+        <div className="card">
+          <div className="card-title">
+            5AI 討論結果 <span className="badge ai">最高スコア銘柄</span>
+          </div>
+          <div style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--c)', marginBottom: 8 }}>
+            {bestHolding.code} {bestHolding.name} — 討論スコア: {bestDebate.debate.debateScore}/100
+          </div>
+          {bestDebate.debate.agents.map((agent, i) => (
+            <div key={i} style={{
+              background: 'var(--bg3)', border: '1px solid var(--b1)',
+              borderRadius: 8, padding: '8px 12px', marginBottom: 6,
+            }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
+                <span style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--w)' }}>
+                  {agent.agent}
+                </span>
+                <span style={{ fontFamily: 'var(--mono)', fontSize: 10, color: 'var(--d)' }}>
+                  {agent.style} — {agent.score}/100
+                </span>
+              </div>
+              {agent.bullPoints.slice(0, 1).map((p, j) => (
+                <div key={j} style={{ fontSize: 10, color: 'var(--g)', marginBottom: 2 }}>▲ {p}</div>
+              ))}
+              {agent.bearPoints.slice(0, 1).map((p, j) => (
+                <div key={j} style={{ fontSize: 10, color: 'var(--r)' }}>▼ {p}</div>
+              ))}
+            </div>
+          ))}
+          {/* 7軸 */}
+          <div style={{ marginTop: 8, display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+            {Object.entries(bestDebate.debate.sevenAxis).map(([k, v]) => (
+              <div key={k} style={{ flex: '1 1 70px' }}>
+                <div style={{ fontSize: 8, color: 'var(--d)', marginBottom: 2 }}>{k}</div>
+                <div className="sb">
+                  <div className="sb-fill" style={{
+                    width: `${v}%`,
+                    background: v >= 65 ? 'var(--g)' : v >= 40 ? 'var(--a)' : 'var(--r)',
+                  }} />
+                </div>
+              </div>
+            ))}
+          </div>
+          {/* ニュース関連銘柄 */}
+          {news && news.stockNews.filter(n => n.tickers.includes(bestHolding.code)).length > 0 && (
+            <div style={{ marginTop: 10, borderTop: '1px solid var(--b1)', paddingTop: 8 }}>
+              <div style={{ fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--d)', marginBottom: 4 }}>関連ニュース</div>
+              {news.stockNews.filter(n => n.tickers.includes(bestHolding.code)).slice(0, 2).map(n => (
+                <div key={n.id} style={{ fontSize: 10, color: n.sentimentScore > 0.3 ? 'var(--g)' : n.sentimentScore < -0.3 ? 'var(--r)' : 'var(--d)', marginBottom: 3 }}>
+                  {n.title.slice(0, 50)}…
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   )
 }

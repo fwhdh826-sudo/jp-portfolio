@@ -1,5 +1,6 @@
+import { useState, useEffect } from 'react'
 import { useAppStore } from '../../store/useAppStore'
-import { selectBuyList, selectSellList, selectHoldList } from '../../store/selectors'
+import { selectBuyList, selectSellList, selectHoldList, selectTotalEval } from '../../store/selectors'
 import type { HoldingAnalysis } from '../../types'
 
 // ── Portfolio Health Score 計算 ──────────────────────────────
@@ -116,6 +117,24 @@ function DecisionCard({ code, totalScore, ev, decision, confidence, debate }: Ho
   )
 }
 
+// ── Action interfaces ─────────────────────────────────────────
+interface ActionItem {
+  id: string
+  text: string
+  detail: string
+  tag: 'urgent' | 'normal'
+}
+
+function loadActions(): Record<string, boolean> {
+  try {
+    return JSON.parse(localStorage.getItem('v83_actions') || '{}') as Record<string, boolean>
+  } catch { return {} }
+}
+
+function saveActions(state: Record<string, boolean>) {
+  localStorage.setItem('v83_actions', JSON.stringify(state))
+}
+
 // ── T1_Decision ───────────────────────────────────────────────
 export function T1_Decision() {
   const buyList   = useAppStore(selectBuyList)
@@ -123,11 +142,57 @@ export function T1_Decision() {
   const holdList  = useAppStore(selectHoldList)
   const analysis  = useAppStore(s => s.analysis)
   const metrics   = useAppStore(s => s.metrics)
+  const holdings  = useAppStore(s => s.holdings)
   const importCsv = useAppStore(s => s.importCsv)
   const system    = useAppStore(s => s.system)
+  const totalEval = useAppStore(selectTotalEval)
 
   const health = calcHealth(analysis)
   const hs     = healthStatus(health.score)
+
+  // ── Today's Actions state ─────────────────────────────────
+  const [actionDone, setActionDone] = useState<Record<string, boolean>>(loadActions)
+
+  useEffect(() => {
+    saveActions(actionDone)
+  }, [actionDone])
+
+  const toggleAction = (id: string) => {
+    setActionDone(prev => ({ ...prev, [id]: !prev[id] }))
+  }
+
+  // Build action list: top 3 sell + 2 generic
+  const actions: ActionItem[] = [
+    ...sellList.slice(0, 3).map(a => ({
+      id: `sell_${a.code}`,
+      text: `${a.code} を売却`,
+      detail: `スコア${a.totalScore}/100 — EV: ${(a.ev * 100).toFixed(1)}% — 即実行推奨`,
+      tag: 'urgent' as const,
+    })),
+    {
+      id: 'rescore',
+      text: '全銘柄スコア再計算 → レジーム反映',
+      detail: 'CSVを最新に更新してから実行',
+      tag: 'normal' as const,
+    },
+    {
+      id: 'deploy_check',
+      text: `¥300万 デプロイ条件チェック`,
+      detail: '下記デプロイ条件を全て確認',
+      tag: 'normal' as const,
+    },
+  ]
+
+  // ── Deploy conditions ─────────────────────────────────────
+  const mitsuW = holdings.filter(h => h.mitsu).reduce((s, h) => s + h.eval, 0) / Math.max(totalEval, 1) * 100
+
+  const cond = [
+    { label: 'SELL銘柄ゼロ',    met: sellList.length === 0 },
+    { label: 'Sharpe ≥1.0',     met: (metrics?.sharpe ?? 0) >= 1.0 },
+    { label: '三菱集中 ≤35%',    met: mitsuW <= 35 },
+    { label: 'σ ≤25%',          met: (metrics?.sigma ?? 1) <= 0.25 },
+  ]
+  const allMet = cond.every(c => c.met)
 
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault()
@@ -142,6 +207,95 @@ export function T1_Decision() {
 
   return (
     <div className="tab-panel">
+      {/* ── TODAY'S ACTIONS ── */}
+      <div className="card" style={{ marginBottom: 10 }}>
+        <div className="card-title" style={{ marginBottom: 8 }}>
+          TODAY'S ACTIONS <span className="badge ai">動的生成</span>
+        </div>
+        {actions.map(action => {
+          const done = !!actionDone[action.id]
+          return (
+            <div
+              key={action.id}
+              className={`action-check-row${done ? ' done' : ''}`}
+              onClick={() => toggleAction(action.id)}
+              style={{
+                display: 'flex', alignItems: 'center', gap: 10,
+                padding: '8px 6px', borderRadius: 6, cursor: 'pointer',
+                opacity: done ? 0.5 : 1,
+                borderBottom: '1px solid var(--b1)',
+                WebkitTapHighlightColor: 'transparent',
+              }}
+            >
+              <div style={{
+                width: 22, height: 22, borderRadius: '50%', flexShrink: 0,
+                border: `2px solid ${done ? 'var(--g)' : 'var(--b1)'}`,
+                background: done ? 'var(--g3)' : 'transparent',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                fontFamily: 'var(--mono)', fontSize: 12, color: 'var(--g)',
+              }}>
+                {done ? '✓' : '○'}
+              </div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{
+                  fontFamily: 'var(--mono)', fontSize: 12, color: done ? 'var(--d)' : 'var(--w)',
+                  textDecoration: done ? 'line-through' : 'none',
+                }}>
+                  {action.text}
+                </div>
+                <div style={{ fontSize: 10, color: 'var(--d)', marginTop: 2 }}>{action.detail}</div>
+              </div>
+              <div style={{
+                flexShrink: 0,
+                fontFamily: 'var(--mono)', fontSize: 9,
+                padding: '2px 7px', borderRadius: 10,
+                background: action.tag === 'urgent' ? 'rgba(232,64,90,.18)' : 'rgba(104,150,200,.15)',
+                color: action.tag === 'urgent' ? 'var(--r)' : 'var(--c)',
+                border: `1px solid ${action.tag === 'urgent' ? 'var(--r2)' : 'var(--b1)'}`,
+              }}>
+                {action.tag === 'urgent' ? '即実行' : 'normal'}
+              </div>
+            </div>
+          )
+        })}
+      </div>
+
+      {/* ── デプロイ条件チェッカー ── */}
+      <div className="card" style={{ marginBottom: 10 }}>
+        <div className="card-title" style={{ marginBottom: 8 }}>
+          デプロイ条件チェッカー{' '}
+          <span style={{
+            fontFamily: 'var(--mono)', fontSize: 10,
+            color: allMet ? 'var(--g)' : 'var(--r)',
+            background: allMet ? 'rgba(45,212,160,.15)' : 'rgba(232,64,90,.15)',
+            border: `1px solid ${allMet ? 'var(--g2)' : 'var(--r2)'}`,
+            borderRadius: 10, padding: '2px 8px', marginLeft: 6,
+          }}>
+            {allMet ? '✓ 全条件クリア' : `${cond.filter(c => !c.met).length}件 未達`}
+          </span>
+        </div>
+        <div className="dc-card" style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+          {cond.map(c => (
+            <div key={c.label} className={`dc-row`} style={{
+              display: 'flex', alignItems: 'center', gap: 8,
+              flex: '1 1 45%', padding: '7px 10px', borderRadius: 8,
+              background: c.met ? 'rgba(45,212,160,.06)' : 'rgba(232,64,90,.06)',
+              border: `1px solid ${c.met ? 'var(--g3)' : 'rgba(232,64,90,.3)'}`,
+            }}>
+              <span className={`dc-pill ${c.met ? 'dc-met' : 'dc-unmet'}`} style={{
+                fontFamily: 'var(--mono)', fontSize: 11,
+                color: c.met ? 'var(--g)' : 'var(--r)',
+              }}>
+                {c.met ? '✓' : '✗'}
+              </span>
+              <span style={{ fontFamily: 'var(--mono)', fontSize: 10, color: c.met ? 'var(--w)' : 'var(--d)' }}>
+                {c.label}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+
       {/* ── Portfolio Health Score ── */}
       <div style={{
         background: 'linear-gradient(135deg,#0a1a10,#060e08)',

@@ -12,6 +12,43 @@ const POLICY_COLOR: Record<string, string> = {
   GOLD:              'var(--gold)',
 }
 
+interface DowSignal {
+  name: string
+  rule: 'BUY' | 'SELL' | 'HOLD' | 'WATCH' | 'WAIT'
+  tactic: string
+  icon: string
+}
+
+const DOW_SIGNALS: Record<number, DowSignal> = {
+  1: { name: '月曜', rule: 'WATCH', tactic: '週初め様子見、寄付き後の方向感確認してから判断',          icon: '👀' },
+  2: { name: '火曜', rule: 'BUY',   tactic: '月曜下落後の反発買い。日経先物+0.3%以上で打診',         icon: '📈' },
+  3: { name: '水曜', rule: 'HOLD',  tactic: '週中最安定。保有維持、新規なし',                       icon: '⚖️' },
+  4: { name: '木曜', rule: 'SELL',  tactic: '週末前の利確売り。含み益銘柄を一部利確',                icon: '💰' },
+  5: { name: '金曜', rule: 'WAIT',  tactic: '週末リスク回避。新規買い不可、既存ポジ維持',             icon: '⏸️' },
+}
+
+function ruleColor(rule: string): string {
+  switch (rule) {
+    case 'BUY':   return 'var(--g)'
+    case 'SELL':  return 'var(--r)'
+    case 'HOLD':  return 'var(--c)'
+    case 'WATCH': return 'var(--a)'
+    case 'WAIT':  return 'var(--d)'
+    default:      return 'var(--d)'
+  }
+}
+
+function ruleBg(rule: string): string {
+  switch (rule) {
+    case 'BUY':   return 'rgba(45,212,160,.08)'
+    case 'SELL':  return 'rgba(232,64,90,.08)'
+    case 'HOLD':  return 'rgba(104,150,200,.08)'
+    case 'WATCH': return 'rgba(212,160,23,.08)'
+    case 'WAIT':  return 'rgba(74,96,112,.12)'
+    default:      return 'rgba(74,96,112,.12)'
+  }
+}
+
 export function T7_Trust() {
   const trust     = useAppStore(s => s.trust)
   const importCsv = useAppStore(s => s.importCsv)
@@ -35,9 +72,60 @@ export function T7_Trust() {
     if (file) void importCsv(file)
   }
 
+  // ── 曜日別シグナル ────────────────────────────────────────────
+  const today = new Date().getDay()
+  const sig = DOW_SIGNALS[today] ?? DOW_SIGNALS[3]
+  const sigColor = ruleColor(sig.rule)
+  const sigBg    = ruleBg(sig.rule)
+
   return (
     <div className="tab-panel">
-      {/* ヘッダー統計 */}
+
+      {/* ── 曜日別DOWシグナル ── */}
+      <div style={{
+        background: sigBg,
+        border: `1px solid ${sigColor}44`,
+        borderLeft: `4px solid ${sigColor}`,
+        borderRadius: 10,
+        padding: '14px 16px',
+        marginBottom: 10,
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
+          <div>
+            <div style={{ fontFamily: 'var(--head)', fontSize: 9, color: 'var(--d)', letterSpacing: '.15em', marginBottom: 4 }}>
+              DOW 曜日シグナル
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+              <span style={{ fontSize: 28 }}>{sig.icon}</span>
+              <div>
+                <div style={{ fontFamily: 'var(--mono)', fontSize: 22, fontWeight: 700, color: sigColor }}>
+                  {sig.name} — {sig.rule}
+                </div>
+                <div style={{ fontFamily: 'var(--mono)', fontSize: 10, color: 'var(--d)', marginTop: 4, lineHeight: 1.5 }}>
+                  {sig.tactic}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style={{ marginLeft: 'auto' }}>
+            <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', justifyContent: 'flex-end' }}>
+              {Object.entries(DOW_SIGNALS).map(([d, s]) => (
+                <div key={d} style={{
+                  fontFamily: 'var(--mono)', fontSize: 9, padding: '2px 7px',
+                  borderRadius: 8,
+                  background: Number(d) === today ? `${ruleColor(s.rule)}22` : 'transparent',
+                  border: `1px solid ${Number(d) === today ? ruleColor(s.rule) : 'var(--b1)'}`,
+                  color: Number(d) === today ? ruleColor(s.rule) : 'var(--d)',
+                }}>
+                  {s.name}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ── ヘッダー統計 ── */}
       <div className="kpi-row">
         <div className="kpi">
           <div className="l">総評価額</div>
@@ -57,7 +145,7 @@ export function T7_Trust() {
         </div>
       </div>
 
-      {/* CSV D&D */}
+      {/* ── CSV D&D ── */}
       <div
         className="csv-drop"
         onDrop={handleCsvDrop}
@@ -70,7 +158,7 @@ export function T7_Trust() {
         </div>
       </div>
 
-      {/* ポリシー別表示 */}
+      {/* ── ポリシー別表示 ── */}
       {groups.map(policy => {
         const funds    = trust.filter(f => f.policy === policy)
         if (funds.length === 0) return null
