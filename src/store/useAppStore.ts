@@ -73,7 +73,7 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
   analysis: [],
   activeTab: 'T1',
   system: {
-    version: '8.1',
+    version: '8.3',
     status: 'idle',
     lastUpdated: null,
     csvLastImportedAt: null,

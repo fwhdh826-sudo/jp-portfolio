@@ -36,7 +36,6 @@ export function T2_Holdings() {
   }, {})
 
   const sectorEntries = Object.entries(sectorGroups).sort((a, b) => b[1] - a[1])
-  const sectorMax = sectorEntries[0]?.[1] ?? 1
 
   // ── 機関投資家スコア計算 ────────────────────────────────────
   const calcInstScore = (code: string) => {
@@ -75,25 +74,34 @@ export function T2_Holdings() {
       {/* ── セクター集中度バー ── */}
       <div className="card" style={{ marginBottom: 10 }}>
         <div className="card-title">セクター集中度</div>
+        {/* 積み上げ横バー */}
         <div className="conc">
           {sectorEntries.map(([sector, evalSum]) => {
             const pct = totalEval > 0 ? (evalSum / totalEval * 100) : 0
             const col = getSectorColor(sector)
             return (
-              <div key={sector} className="cs" style={{ marginBottom: 5 }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontFamily: 'var(--mono)', fontSize: 10, marginBottom: 3 }}>
-                  <span style={{ color: col }}>{sector}</span>
-                  <span style={{ color: 'var(--w)' }}>{pct.toFixed(1)}%</span>
-                </div>
-                <div className="sb">
-                  <div
-                    className="sb-fill"
-                    style={{
-                      width: `${(evalSum / sectorMax) * 100}%`,
-                      background: col,
-                    }}
-                  />
-                </div>
+              <div
+                key={sector}
+                className="cs"
+                style={{ width: `${pct}%`, background: col, minWidth: pct > 3 ? undefined : 0 }}
+                title={`${sector}: ${pct.toFixed(1)}%`}
+              >
+                {pct >= 8 ? `${pct.toFixed(0)}%` : ''}
+              </div>
+            )
+          })}
+        </div>
+        {/* 凡例 */}
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px 10px', marginTop: 8 }}>
+          {sectorEntries.map(([sector, evalSum]) => {
+            const pct = totalEval > 0 ? (evalSum / totalEval * 100) : 0
+            const col = getSectorColor(sector)
+            return (
+              <div key={sector} style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                <div style={{ width: 8, height: 8, borderRadius: 2, background: col, flexShrink: 0 }} />
+                <span style={{ fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--d)' }}>
+                  {sector} {pct.toFixed(1)}%
+                </span>
               </div>
             )
           })}

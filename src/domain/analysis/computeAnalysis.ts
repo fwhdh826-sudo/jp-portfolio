@@ -114,12 +114,14 @@ function calcRiskPenalty(h: Holding, mitsuW: number, market: Market): number {
 }
 
 // ── EV算出 ───────────────────────────────────────────────────────
+// Sharpe調整EV: 期待超過リターン - σ調整ペナルティ
+// 係数0.3はリスク許容度パラメータ（yfinance実測σ対応で0.7→0.3に調整済み）
 function calcEV(h: Holding, market: Market): number {
-  const regimeMult = market.regime === 'bull' ? 1.0 : market.regime === 'bear' ? 1.3 : 1.1
-  // mu: 期待リターン（年率）をupside、sigma×downside係数をdownsideとして使用
-  const expectedUpside = h.mu
-  const expectedDownside = h.sigma * 0.7 * regimeMult
-  return +(expectedUpside - expectedDownside).toFixed(4)
+  const regimeMult = market.regime === 'bull' ? 0.9 : market.regime === 'bear' ? 1.2 : 1.0
+  const rf = 0.005  // 無リスク金利 ~0.5%
+  const excessReturn = h.mu - rf
+  const riskPenalty  = h.sigma * 0.3 * regimeMult
+  return +(excessReturn - riskPenalty).toFixed(4)
 }
 
 // ── AI討論（5エージェント固定）────────────────────────────────

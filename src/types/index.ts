@@ -172,7 +172,7 @@ export interface AgentDebate {
 export type SystemStatus = 'idle' | 'loading' | 'success' | 'error'
 
 export interface SystemState {
-  version: '8.1'
+  version: '8.1' | '8.3'
   status: SystemStatus
   lastUpdated: string | null
   csvLastImportedAt: string | null
