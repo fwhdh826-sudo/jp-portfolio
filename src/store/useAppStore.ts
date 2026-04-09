@@ -1,0 +1,228 @@
+import { create } from 'zustand'
+import type { AppState, Holding, Trust, TabId } from '../types'
+import { INITIAL_HOLDINGS } from '../constants/holdings'
+import { INITIAL_TRUST } from '../constants/trust'
+import { STATIC_MARKET } from '../constants/market'
+import { refreshAllData } from '../services/loadStaticData'
+import { computeAnalysis, calcPortfolioMetrics } from '../domain/analysis/computeAnalysis'
+import { importPortfolioCsv } from '../domain/csv/importPortfolioCsv'
+import { persistPortfolio, restorePortfolio, persistTrust, restoreTrust } from './persist'
+
+// ── アクション型 ─────────────────────────────────────────────
+interface AppActions {
+  // 起動時初期化
+  initialize: () => Promise<void>
+  // 全データ再取得 → 全再計算 → Store一括更新
+  refreshAllData: () => Promise<void>
+  // CSV取込 → 即時再分析
+  importCsv: (file: File) => Promise<void>
+  // タブ切替
+  setTab: (tab: TabId) => void
+  // holding手動更新（score等）
+  updateHolding: (code: string, patch: Partial<Holding>) => void
+  // trust手動更新
+  updateTrust: (id: string, patch: Partial<Trust>) => void
+}
+
+// ── runFullAnalysis（内部ヘルパー）───────────────────────────
+function runFullAnalysis(state: AppState): Pick<AppState, 'analysis' | 'metrics' | 'holdings' | 'trust'> {
+  const analysis = computeAnalysis(state.holdings, state.market, state.correlation, state.news)
+  const metrics = calcPortfolioMetrics(state.holdings, state.correlation)
+
+  // holdingsにスコア・判定を書き戻す
+  const holdings = state.holdings.map(h => {
+    const a = analysis.find(x => x.code === h.code)
+    if (!a) return h
+    return { ...h, score: a.totalScore, decision: a.decision, ev: a.ev }
+  })
+
+  // trustスコア計算
+  const totalTrust = state.trust.reduce((s, f) => s + f.eval, 0)
+  const trust = state.trust.map(f => {
+    const te = f.cost / 100
+    const flowF = f.pnlPct > 20 ? 1.1 : f.pnlPct > 0 ? 1.0 : 0.9
+    const sharpe = (f.mu - 0.005) / Math.max(f.sigma, 0.01)
+    const sharpeF = sharpe > 1.2 ? 1.2 : sharpe > 0.8 ? 1.0 : 0.8
+    const dd = Math.max(0, -f.pnlPct / 100) * 0.5
+    const ev_fund = (f.mu - f.cost / 100 - te) * flowF * sharpeF - dd
+    const divF = f.policy === 'GOLD' ? 1.15 : f.id.includes('fang') ? 0.85 : f.policy === 'OVERSEAS_LONGTERM' ? 1.05 : 0.90
+    const corrF = f.policy === 'GOLD' ? 1.1 : f.id.includes('fang') ? 0.9 : 1.0
+    const ev = +(ev_fund * divF * corrF).toFixed(4)
+    const w = f.eval / Math.max(totalTrust, 1)
+    let score = 40 + sharpe * 25 + ev * 200 + (f.pnlPct > 50 ? 10 : f.pnlPct > 0 ? 5 : -5) +
+      (f.cost > 1.0 ? -15 : f.cost > 0.5 ? -8 : 0) + (f.policy === 'JAPAN_SHORTTERM' ? -5 : 0)
+    score += w > 0.35 ? -4 : w > 0.25 ? -2 : w < 0.05 ? 2 : 0
+    score = Math.max(0, Math.min(100, score))
+    const decision: Trust['decision'] = f.pnlPct < -15 && f.policy === 'JAPAN_SHORTTERM' ? 'SELL' :
+      score >= 75 ? 'BUY' : score >= 60 ? 'HOLD' : score >= 40 ? 'WAIT' : 'SELL'
+    return { ...f, ev, score: Math.round(score), decision }
+  })
+
+  return { analysis, metrics, holdings, trust }
+}
+
+// ── Store ─────────────────────────────────────────────────────
+export const useAppStore = create<AppState & AppActions>((set, get) => ({
+  // 初期値
+  holdings: INITIAL_HOLDINGS,
+  trust: INITIAL_TRUST,
+  market: STATIC_MARKET,
+  correlation: null,
+  news: null,
+  metrics: null,
+  analysis: [],
+  activeTab: 'T1',
+  system: {
+    version: '8.1',
+    status: 'idle',
+    lastUpdated: null,
+    csvLastImportedAt: null,
+    analysisLastRunAt: null,
+    error: null,
+    dataSourceStatus: { market: 'static', correlation: 'static', news: 'none', trust: 'static' },
+  },
+
+  // ── 起動時初期化 ──────────────────────────────────────────
+  initialize: async () => {
+    set(s => ({ system: { ...s.system, status: 'loading' } }))
+    try {
+      // localStorage復元（TTL付き）
+      const savedPortfolio = restorePortfolio()
+      const savedTrust = restoreTrust()
+      if (savedPortfolio) set({ holdings: savedPortfolio })
+      if (savedTrust) set({ trust: savedTrust })
+
+      // データ取得
+      const result = await refreshAllData()
+      const { market, correlation, news, trust } = result
+
+      set(s => {
+        const nextTrust = trust.data
+          ? s.trust.map(f => { const d = trust.data!.find(x => x.id === f.id); return d ? { ...f, ...d } : f })
+          : s.trust
+        const nextCorr = correlation.data
+          ? { ...s.holdings.map(h => ({ ...h, sigma: correlation.data!.volatilities[h.code + '.T'] ?? h.sigma, sigmaSource: correlation.data!.volatilities[h.code + '.T'] ? 'yfinance' as const : h.sigmaSource })) }
+          : {}
+        // volatilities反映
+        const holdingsWithVol = correlation.data
+          ? s.holdings.map(h => {
+              const v = correlation.data!.volatilities[h.code + '.T']
+              return v ? { ...h, sigma: +v.toFixed(3), sigmaSource: 'yfinance' as const } : h
+            })
+          : s.holdings
+        void nextCorr
+        return {
+          market: market.data,
+          correlation: correlation.data,
+          news: news.data,
+          trust: nextTrust,
+          holdings: holdingsWithVol,
+          system: {
+            ...s.system,
+            dataSourceStatus: {
+              market: market.source,
+              correlation: correlation.source,
+              news: news.source,
+              trust: trust.source,
+            },
+          },
+        }
+      })
+
+      // 全再計算
+      const computed = runFullAnalysis(get())
+      const now = new Date().toISOString()
+      set(s => ({
+        ...computed,
+        system: { ...s.system, status: 'success', lastUpdated: now, analysisLastRunAt: now, error: null },
+      }))
+
+      // 永続化
+      persistPortfolio(get().holdings)
+      persistTrust(get().trust)
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err)
+      set(s => ({ system: { ...s.system, status: 'error', error: msg } }))
+    }
+  },
+
+  // ── 全データ再取得 ────────────────────────────────────────
+  refreshAllData: async () => {
+    set(s => ({ system: { ...s.system, status: 'loading', error: null } }))
+    try {
+      const result = await refreshAllData()
+      const { market, correlation, news, trust } = result
+
+      set(s => {
+        const nextTrust = trust.data
+          ? s.trust.map(f => { const d = trust.data!.find(x => x.id === f.id); return d ? { ...f, ...d } : f })
+          : s.trust
+        const holdingsWithVol = correlation.data
+          ? s.holdings.map(h => {
+              const v = correlation.data!.volatilities[h.code + '.T']
+              return v ? { ...h, sigma: +v.toFixed(3), sigmaSource: 'yfinance' as const } : h
+            })
+          : s.holdings
+        return {
+          market: market.data, correlation: correlation.data, news: news.data,
+          trust: nextTrust, holdings: holdingsWithVol,
+          system: {
+            ...s.system,
+            dataSourceStatus: {
+              market: market.source, correlation: correlation.source,
+              news: news.source, trust: trust.source,
+            },
+          },
+        }
+      })
+
+      const computed = runFullAnalysis(get())
+      const now = new Date().toISOString()
+      set(s => ({
+        ...computed,
+        system: { ...s.system, status: 'success', lastUpdated: now, analysisLastRunAt: now, error: null },
+      }))
+
+      persistPortfolio(get().holdings)
+      persistTrust(get().trust)
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err)
+      set(s => ({ system: { ...s.system, status: 'error', error: msg } }))
+    }
+  },
+
+  // ── CSV取込 ───────────────────────────────────────────────
+  importCsv: async (file: File) => {
+    set(s => ({ system: { ...s.system, status: 'loading', error: null } }))
+    try {
+      const updated = await importPortfolioCsv(file, get().holdings)
+      const now = new Date().toISOString()
+      set({ holdings: updated })
+      const computed = runFullAnalysis(get())
+      set(s => ({
+        ...computed,
+        system: { ...s.system, status: 'success', csvLastImportedAt: now, analysisLastRunAt: now, error: null },
+      }))
+      persistPortfolio(get().holdings)
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err)
+      set(s => ({ system: { ...s.system, status: 'error', error: msg } }))
+    }
+  },
+
+  setTab: (tab) => set({ activeTab: tab }),
+
+  updateHolding: (code, patch) => {
+    set(s => ({ holdings: s.holdings.map(h => h.code === code ? { ...h, ...patch } : h) }))
+    const computed = runFullAnalysis(get())
+    set(computed)
+    persistPortfolio(get().holdings)
+  },
+
+  updateTrust: (id, patch) => {
+    set(s => ({ trust: s.trust.map(f => f.id === id ? { ...f, ...patch } : f) }))
+    const computed = runFullAnalysis(get())
+    set(computed)
+    persistTrust(get().trust)
+  },
+}))
