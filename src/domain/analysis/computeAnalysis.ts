@@ -116,7 +116,8 @@ function calcRiskPenalty(h: Holding, mitsuW: number, market: Market): number {
 // ── EV算出 ───────────────────────────────────────────────────────
 function calcEV(h: Holding, market: Market): number {
   const regimeMult = market.regime === 'bull' ? 1.0 : market.regime === 'bear' ? 1.3 : 1.1
-  const expectedUpside = h.target > 0 ? (h.target / Math.max(h.pnlPct + 100, 50) - 1) * 0.7 : h.mu
+  // mu: 期待リターン（年率）をupside、sigma×downside係数をdownsideとして使用
+  const expectedUpside = h.mu
   const expectedDownside = h.sigma * 0.7 * regimeMult
   return +(expectedUpside - expectedDownside).toFixed(4)
 }
@@ -194,14 +195,21 @@ export function computeAnalysis(
     const qualityScore     = calcQualityScore(h)
     const riskPenalty      = calcRiskPenalty(h, mitsuW, market)
 
-    // handover.md のスコアリング仕様通り
+    // 各スコアを0-100に正規化してから重み付け（handover.md スコアリング仕様）
+    const fN = fundamentalScore / 30 * 100
+    const tN = technicalScore   / 20 * 100
+    const mN = marketScore      / 20 * 100
+    const nN = newsScore        / 15 * 100
+    const qN = qualityScore     / 10 * 100
+    const rN = riskPenalty      / 15 * 100
+
     const totalScore = Math.round(
-      fundamentalScore * 0.30 +
-      marketScore      * 0.20 +
-      technicalScore   * 0.20 +
-      newsScore        * 0.15 +
-      qualityScore     * 0.10 -
-      riskPenalty      * 0.15
+      fN * 0.30 +
+      mN * 0.20 +
+      tN * 0.20 +
+      nN * 0.15 +
+      qN * 0.10 -
+      rN * 0.15
     )
 
     const ev = calcEV(h, market)
