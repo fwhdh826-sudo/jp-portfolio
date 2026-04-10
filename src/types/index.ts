@@ -171,8 +171,13 @@ export interface AgentDebate {
 // ── System ────────────────────────────────────────────────────
 export type SystemStatus = 'idle' | 'loading' | 'success' | 'error'
 
+export interface DataSourceInfo {
+  status: 'loaded' | 'static' | 'none' | 'error'
+  lastUpdatedAt: string | null   // v9.0: 各ソースの最終更新日時
+}
+
 export interface SystemState {
-  version: '8.1' | '8.3'
+  version: '8.1' | '8.3' | '9.0'
   status: SystemStatus
   lastUpdated: string | null
   csvLastImportedAt: string | null
@@ -183,10 +188,35 @@ export interface SystemState {
     correlation: 'loaded' | 'static' | 'error'
     news: 'loaded' | 'none' | 'error'
     trust: 'loaded' | 'static'
+    // v9.0 追加
+    macro?: 'loaded' | 'static' | 'none' | 'error'
+    nikkeiVI?: 'loaded' | 'static' | 'none' | 'error'
+    sq?: 'loaded' | 'static' | 'none' | 'error'
+  }
+  // v9.0: 各データソースの最終更新日時
+  dataTimestamps?: {
+    market: string | null
+    correlation: string | null
+    news: string | null
+    trust: string | null
+    macro: string | null
+    nikkeiVI: string | null
+    sq: string | null
   }
 }
 
 // ── App Store ─────────────────────────────────────────────────
+import type { MacroSnapshot, SQCalendar, MarginData, FlowData } from './macro'
+import type { AssetUniverse } from './universe'
+export type { MacroSnapshot, SQCalendar, MarginData, FlowData } from './macro'
+export type {
+  AssetClass,
+  Horizon,
+  AssetCategorySummary,
+  AssetUniverse,
+  ScoringWeights,
+} from './universe'
+
 export interface AppState {
   holdings: Holding[]
   trust: Trust[]
@@ -197,6 +227,16 @@ export interface AppState {
   analysis: HoldingAnalysis[]
   system: SystemState
   activeTab: TabId
+  // v9.0 追加
+  macro: MacroSnapshot | null
+  sqCalendar: SQCalendar | null
+  margin: MarginData | null
+  flows: FlowData | null
+  universe: AssetUniverse | null
+  // 現金・待機資金・追加枠（運用方針に基づく）
+  cash: number
+  cashReserve: number
+  addRoom: number
 }
 
 export type TabId = 'T1' | 'T2' | 'T3' | 'T4' | 'T5' | 'T6' | 'T7'

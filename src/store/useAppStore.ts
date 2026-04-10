@@ -2,7 +2,12 @@ import { create } from 'zustand'
 import type { AppState, Holding, Trust, TabId } from '../types'
 import { INITIAL_HOLDINGS } from '../constants/holdings'
 import { INITIAL_TRUST } from '../constants/trust'
-import { STATIC_MARKET } from '../constants/market'
+import {
+  STATIC_MARKET,
+  INITIAL_CASH,
+  INITIAL_CASH_RESERVE,
+  INITIAL_ADD_ROOM,
+} from '../constants/market'
 import { refreshAllData } from '../services/loadStaticData'
 import { computeAnalysis, calcPortfolioMetrics } from '../domain/analysis/computeAnalysis'
 import { importPortfolioCsv } from '../domain/csv/importPortfolioCsv'
@@ -72,14 +77,40 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
   metrics: null,
   analysis: [],
   activeTab: 'T1',
+  // v9.0 — 全資産統合
+  macro: null,
+  sqCalendar: null,
+  margin: null,
+  flows: null,
+  universe: null,
+  cash: INITIAL_CASH,
+  cashReserve: INITIAL_CASH_RESERVE,
+  addRoom: INITIAL_ADD_ROOM,
   system: {
-    version: '8.3',
+    version: '9.0',
     status: 'idle',
     lastUpdated: null,
     csvLastImportedAt: null,
     analysisLastRunAt: null,
     error: null,
-    dataSourceStatus: { market: 'static', correlation: 'static', news: 'none', trust: 'static' },
+    dataSourceStatus: {
+      market: 'static',
+      correlation: 'static',
+      news: 'none',
+      trust: 'static',
+      macro: 'none',
+      nikkeiVI: 'none',
+      sq: 'none',
+    },
+    dataTimestamps: {
+      market: null,
+      correlation: null,
+      news: null,
+      trust: null,
+      macro: null,
+      nikkeiVI: null,
+      sq: null,
+    },
   },
 
   // ── 起動時初期化 ──────────────────────────────────────────
@@ -92,17 +123,14 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
       if (savedPortfolio) set({ holdings: savedPortfolio })
       if (savedTrust) set({ trust: savedTrust })
 
-      // データ取得
+      // データ取得（macro / nikkei VI / SQ 含む）
       const result = await refreshAllData()
-      const { market, correlation, news, trust } = result
+      const { market, correlation, news, trust, macro, nikkeiVI, sq, margin, flows } = result
 
       set(s => {
         const nextTrust = trust.data
           ? s.trust.map(f => { const d = trust.data!.find(x => x.id === f.id); return d ? { ...f, ...d } : f })
           : s.trust
-        const nextCorr = correlation.data
-          ? { ...s.holdings.map(h => ({ ...h, sigma: correlation.data!.volatilities[h.code + '.T'] ?? h.sigma, sigmaSource: correlation.data!.volatilities[h.code + '.T'] ? 'yfinance' as const : h.sigmaSource })) }
-          : {}
         // volatilities反映
         const holdingsWithVol = correlation.data
           ? s.holdings.map(h => {
@@ -110,13 +138,16 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
               return v ? { ...h, sigma: +v.toFixed(3), sigmaSource: 'yfinance' as const } : h
             })
           : s.holdings
-        void nextCorr
         return {
           market: market.data,
           correlation: correlation.data,
           news: news.data,
           trust: nextTrust,
           holdings: holdingsWithVol,
+          macro: macro.data,
+          sqCalendar: sq.data,
+          margin: margin.data,
+          flows: flows.data,
           system: {
             ...s.system,
             dataSourceStatus: {
@@ -124,10 +155,27 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
               correlation: correlation.source,
               news: news.source,
               trust: trust.source,
+              macro: macro.source,
+              nikkeiVI: nikkeiVI.source,
+              sq: sq.source,
+            },
+            dataTimestamps: {
+              market: market.data?.last_updated ?? null,
+              correlation: correlation.data?.last_updated ?? null,
+              news: news.data?.updatedAt ?? null,
+              trust: null,
+              macro: macro.data?.last_updated ?? null,
+              nikkeiVI: nikkeiVI.data?.last_updated ?? null,
+              sq: sq.data?.last_updated ?? null,
             },
           },
         }
       })
+
+      // NikkeiVI を market に合流（v9.0 では market型にまだフィールドないので macro経由で表示）
+      if (nikkeiVI.data && get().macro) {
+        set(s => ({ macro: s.macro ? { ...s.macro, nikkeiVI: nikkeiVI.data!.vi, nikkeiVIChg: nikkeiVI.data!.viChg } : s.macro }))
+      }
 
       // 全再計算
       const computed = runFullAnalysis(get())
@@ -151,7 +199,7 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
     set(s => ({ system: { ...s.system, status: 'loading', error: null } }))
     try {
       const result = await refreshAllData()
-      const { market, correlation, news, trust } = result
+      const { market, correlation, news, trust, macro, nikkeiVI, sq, margin, flows } = result
 
       set(s => {
         const nextTrust = trust.data
@@ -166,15 +214,30 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
         return {
           market: market.data, correlation: correlation.data, news: news.data,
           trust: nextTrust, holdings: holdingsWithVol,
+          macro: macro.data, sqCalendar: sq.data, margin: margin.data, flows: flows.data,
           system: {
             ...s.system,
             dataSourceStatus: {
               market: market.source, correlation: correlation.source,
               news: news.source, trust: trust.source,
+              macro: macro.source, nikkeiVI: nikkeiVI.source, sq: sq.source,
+            },
+            dataTimestamps: {
+              market: market.data?.last_updated ?? null,
+              correlation: correlation.data?.last_updated ?? null,
+              news: news.data?.updatedAt ?? null,
+              trust: null,
+              macro: macro.data?.last_updated ?? null,
+              nikkeiVI: nikkeiVI.data?.last_updated ?? null,
+              sq: sq.data?.last_updated ?? null,
             },
           },
         }
       })
+
+      if (nikkeiVI.data && get().macro) {
+        set(s => ({ macro: s.macro ? { ...s.macro, nikkeiVI: nikkeiVI.data!.vi, nikkeiVIChg: nikkeiVI.data!.viChg } : s.macro }))
+      }
 
       const computed = runFullAnalysis(get())
       const now = new Date().toISOString()
