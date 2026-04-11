@@ -8,7 +8,7 @@ import {
   INITIAL_CASH_RESERVE,
   INITIAL_ADD_ROOM,
 } from '../constants/market'
-import { refreshAllData } from '../services/loadStaticData'
+import { refreshAllData as loadPublishedData } from '../services/loadStaticData'
 import { computeAnalysis, calcPortfolioMetrics } from '../domain/analysis/computeAnalysis'
 import { importPortfolioCsv } from '../domain/csv/importPortfolioCsv'
 import {
@@ -149,6 +149,7 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
 
   // ── 起動時初期化 ──────────────────────────────────────────
   initialize: async () => {
+    if (get().system.status === 'loading') return
     set(s => ({ system: { ...s.system, status: 'loading' } }))
     try {
       // localStorage復元（TTL付き）
@@ -160,7 +161,7 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
       if (savedLearning) set({ learning: savedLearning })
 
       // データ取得（macro / nikkei VI / SQ 含む）
-      const result = await refreshAllData()
+      const result = await loadPublishedData({ bustCache: true })
       const { market, correlation, news, trust, macro, nikkeiVI, sq, margin, flows } = result
 
       set(s => {
@@ -238,9 +239,10 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
 
   // ── 全データ再取得 ────────────────────────────────────────
   refreshAllData: async () => {
+    if (get().system.status === 'loading') return
     set(s => ({ system: { ...s.system, status: 'loading', error: null } }))
     try {
-      const result = await refreshAllData()
+      const result = await loadPublishedData({ bustCache: true })
       const { market, correlation, news, trust, macro, nikkeiVI, sq, margin, flows } = result
 
       set(s => {
@@ -303,6 +305,7 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
 
   // ── CSV取込（個別株 + 投信 両対応）──────────────────────────
   importCsv: async (file: File) => {
+    if (get().system.status === 'loading') return
     set(s => ({ system: { ...s.system, status: 'loading', error: null } }))
     try {
       const { holdings: updatedH, trust: updatedT } = await importPortfolioCsv(

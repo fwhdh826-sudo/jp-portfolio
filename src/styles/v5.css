@@ -136,6 +136,7 @@ button {
 }
 
 .sidebar-brand__eyebrow,
+.status-shell__eyebrow,
 .section-kicker,
 .card-title,
 .sec {
@@ -163,13 +164,17 @@ button {
 
 .shell-main {
   min-width: 0;
+  min-height: 0;
   display: flex;
   flex-direction: column;
   gap: 14px;
+  overflow: hidden;
 }
 
 .app-scroll-area {
+  flex: 1 1 auto;
   min-height: 0;
+  height: 100%;
   overflow: auto;
   padding-right: 4px;
   padding-bottom: 16px;

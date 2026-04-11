@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { useAppStore } from './store/useAppStore'
 import { StatusBar } from './components/StatusBar'
 import { TabNav } from './components/TabNav'
@@ -25,10 +25,16 @@ function ActiveTabPanel() {
 
 export function App() {
   const initialize = useAppStore(s => s.initialize)
+  const activeTab = useAppStore(s => s.activeTab)
+  const scrollRef = useRef<HTMLElement | null>(null)
 
   useEffect(() => {
     void initialize()
   }, [initialize])
+
+  useEffect(() => {
+    scrollRef.current?.scrollTo({ top: 0, behavior: 'auto' })
+  }, [activeTab])
 
   return (
     <div className="app-shell">
@@ -45,7 +51,12 @@ export function App() {
 
       <div className="shell-main">
         <StatusBar />
-        <main className="app-scroll-area">
+        <main
+          ref={node => {
+            scrollRef.current = node
+          }}
+          className="app-scroll-area"
+        >
           <div className="workspace-content">
             <ActiveTabPanel />
           </div>

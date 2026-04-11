@@ -20,8 +20,10 @@ export function StatusBar() {
   const system = useAppStore(s => s.system)
   const market = useAppStore(s => s.market)
   const macro = useAppStore(s => s.macro)
+  const news = useAppStore(s => s.news)
   const metrics = useAppStore(s => s.metrics)
   const holdings = useAppStore(s => s.holdings)
+  const trust = useAppStore(s => s.trust)
   const sqCalendar = useAppStore(s => s.sqCalendar)
   const refresh = useAppStore(s => s.refreshAllData)
   const totalEval = useAppStore(selectTotalEval)
@@ -34,6 +36,11 @@ export function StatusBar() {
   const regime = getRegimeLabel(market.regime)
   const mitsuEval = holdings.filter(h => h.mitsu).reduce((sum, holding) => sum + holding.eval, 0)
   const mitsuRatio = totalEval > 0 ? (mitsuEval / totalEval) * 100 : 0
+  const totalTrustEval = trust.reduce((sum, item) => sum + item.eval, 0)
+  const overseasTrustEval = trust
+    .filter(item => item.policy === 'OVERSEAS_LONGTERM')
+    .reduce((sum, item) => sum + item.eval, 0)
+  const overseasTrustRatio = totalTrustEval > 0 ? (overseasTrustEval / totalTrustEval) * 100 : 0
   const primaryMessage = system.error
     ? 'データ更新が失敗しています。再読込してから判断してください。'
     : sellList.length > 0
@@ -41,6 +48,78 @@ export function StatusBar() {
     : buyList.length > 0
     ? `${buyList.length}銘柄に追加候補があります。執行順を確認してください。`
     : '大きな売買シグナルはありません。現状維持を基準に確認してください。'
+  const workspaceHero = {
+    T1: {
+      eyebrow: 'Execution Workspace',
+      label: 'Execution focus',
+      copy: primaryMessage,
+      notes: [
+        `BUY ${buyList.length}`,
+        `SELL ${sellList.length}`,
+        `三菱比率 ${mitsuRatio.toFixed(1)}%`,
+      ],
+    },
+    T2: {
+      eyebrow: 'Holdings Workspace',
+      label: 'Holdings focus',
+      copy: `${holdings.length}銘柄を保有中です。ロック銘柄と集中比率を優先確認してください。`,
+      notes: [
+        `保有 ${holdings.length}`,
+        `三菱比率 ${mitsuRatio.toFixed(1)}%`,
+        `総評価額 ${formatJPYAuto(totalEval)}`,
+      ],
+    },
+    T3: {
+      eyebrow: 'Analysis Workspace',
+      label: 'Analysis focus',
+      copy: `${regime.label}レジームです。テクニカルとファンダの上位差分を先に確認してください。`,
+      notes: [
+        `Sharpe ${metrics ? metrics.sharpe.toFixed(2) : '—'}`,
+        `ニュース ${news?.meta.totalCount ?? 0}`,
+        `VIX ${market.vix.toFixed(1)}`,
+      ],
+    },
+    T4: {
+      eyebrow: 'Risk Workspace',
+      label: 'Risk focus',
+      copy: `CVaRと最大DDを基準に、相関の高い組み合わせから先に監視します。`,
+      notes: [
+        `CVaR ${metrics ? `${(metrics.cvar * 100).toFixed(1)}%` : '—'}`,
+        `MDD ${metrics ? `${(metrics.mdd * 100).toFixed(1)}%` : '—'}`,
+        `SQ ${sqCalendar?.nextSQ ? `残り${sqCalendar.nextSQ.dayUntil}日` : '未取得'}`,
+      ],
+    },
+    T5: {
+      eyebrow: 'Planning Workspace',
+      label: 'Planning focus',
+      copy: `売買計画は BUY候補 ${buyList.length} / SELL候補 ${sellList.length} を基準に組み立てます。`,
+      notes: [
+        `BUY ${buyList.length}`,
+        `SELL ${sellList.length}`,
+        `分析 ${system.analysisLastRunAt ? '済み' : '未実行'}`,
+      ],
+    },
+    T6: {
+      eyebrow: 'News Workspace',
+      label: 'Coverage focus',
+      copy: `${news?.meta.totalCount ?? 0}件のニュースを集約中です。重要度の高い材料から順に判断へ反映します。`,
+      notes: [
+        `市場 ${news?.meta.marketCount ?? 0}`,
+        `個別 ${news?.meta.stockCount ?? 0}`,
+        `重複除去 ${news?.meta.duplicateRemoved ?? 0}`,
+      ],
+    },
+    T7: {
+      eyebrow: 'Trust Workspace',
+      label: 'Trust focus',
+      copy: `${trust.length}本の投信を監視中です。役割別の配分差分と曜日シグナルを確認してください。`,
+      notes: [
+        `投信 ${trust.length}`,
+        `海外比率 ${trust.length > 0 ? `${overseasTrustRatio.toFixed(1)}%` : '—'}`,
+        `更新 ${system.lastUpdated ? formatDateTime(system.lastUpdated) : '未取得'}`,
+      ],
+    },
+  }[activeTab]
 
   const summaryItems = [
     { label: '総評価額', value: formatJPYAuto(totalEval), tone: 'neutral' },
@@ -66,7 +145,7 @@ export function StatusBar() {
     <header className="status-shell">
       <div className="status-shell__top">
         <div className="status-shell__context">
-          <div className="status-shell__eyebrow">Workspace</div>
+          <div className="status-shell__eyebrow">{workspaceHero.eyebrow}</div>
           <h1 className="status-shell__title">{activeMeta.title}</h1>
           <p className="status-shell__description">{activeMeta.description}</p>
         </div>
@@ -81,7 +160,9 @@ export function StatusBar() {
           </div>
           <button
             className={`status-shell__refresh${isLoading ? ' is-loading' : ''}`}
-            onClick={refresh}
+            onClick={() => {
+              void refresh()
+            }}
             disabled={isLoading}
             type="button"
           >
@@ -92,12 +173,17 @@ export function StatusBar() {
 
       <div className="status-shell__hero">
         <div className="status-shell__hero-main">
-          <div className="status-shell__hero-label">Current priority</div>
-          <div className="status-shell__hero-copy">{primaryMessage}</div>
+          <div className="status-shell__hero-label">{workspaceHero.label}</div>
+          <div className="status-shell__hero-copy">{workspaceHero.copy}</div>
           <div className="status-shell__hero-notes">
-            <span className="note-pill">BUY {buyList.length}</span>
-            <span className="note-pill">SELL {sellList.length}</span>
-            <span className={`note-pill${mitsuRatio > 35 ? ' is-warning' : ''}`}>三菱比率 {mitsuRatio.toFixed(1)}%</span>
+            {workspaceHero.notes.map(note => (
+              <span
+                key={note}
+                className={`note-pill${note.includes('三菱比率') && mitsuRatio > 35 ? ' is-warning' : ''}`}
+              >
+                {note}
+              </span>
+            ))}
           </div>
         </div>
 
