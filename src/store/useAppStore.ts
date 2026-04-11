@@ -12,6 +12,7 @@ import { refreshAllData } from '../services/loadStaticData'
 import { computeAnalysis, calcPortfolioMetrics } from '../domain/analysis/computeAnalysis'
 import { importPortfolioCsv } from '../domain/csv/importPortfolioCsv'
 import { persistPortfolio, restorePortfolio, persistTrust, restoreTrust } from './persist'
+import { buildAssetUniverse } from '../domain/optimization/idealAllocation'
 
 // ── アクション型 ─────────────────────────────────────────────
 interface AppActions {
@@ -30,7 +31,7 @@ interface AppActions {
 }
 
 // ── runFullAnalysis（内部ヘルパー）───────────────────────────
-function runFullAnalysis(state: AppState): Pick<AppState, 'analysis' | 'metrics' | 'holdings' | 'trust'> {
+function runFullAnalysis(state: AppState): Pick<AppState, 'analysis' | 'metrics' | 'holdings' | 'trust' | 'universe'> {
   const analysis = computeAnalysis(state.holdings, state.market, state.correlation, state.news)
   const metrics = calcPortfolioMetrics(state.holdings, state.correlation)
 
@@ -63,7 +64,11 @@ function runFullAnalysis(state: AppState): Pick<AppState, 'analysis' | 'metrics'
     return { ...f, ev, score: Math.round(score), decision }
   })
 
-  return { analysis, metrics, holdings, trust }
+  // ゼロベース理想PF構築（metrics計算後に呼ぶ）
+  const stateWithComputed: AppState = { ...state, holdings, trust, metrics }
+  const universe = buildAssetUniverse(stateWithComputed)
+
+  return { analysis, metrics, holdings, trust, universe }
 }
 
 // ── Store ─────────────────────────────────────────────────────

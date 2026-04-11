@@ -3,6 +3,8 @@ import { useAppStore } from '../../store/useAppStore'
 import { selectBuyList, selectSellList, selectHoldList, selectTotalEval } from '../../store/selectors'
 import { formatJPYAuto } from '../../utils/format'
 import type { HoldingAnalysis } from '../../types'
+import { checkNoTrade } from '../../domain/optimization/idealAllocation'
+import type { AssetCategorySummary } from '../../types/universe'
 
 // ── Portfolio Health Score ───────────────────────────────────
 function calcHealth(analysis: HoldingAnalysis[]) {
@@ -210,6 +212,163 @@ function saveActions(s: Record<string, boolean>) {
   localStorage.setItem('v90_actions', JSON.stringify(s))
 }
 
+// ── MarketModePanel（市場モード + ノートレード判定）────────────
+function MarketModePanel() {
+  const market = useAppStore(s => s.market)
+  const macro  = useAppStore(s => s.macro)
+  const sqCal  = useAppStore(s => s.sqCalendar)
+  const state  = useAppStore(s => s)
+  const noTrade = checkNoTrade(state)
+
+  const regimeColor = market.regime === 'bull' ? 'var(--g)'
+                    : market.regime === 'bear' ? 'var(--r)' : 'var(--a)'
+  const regimeLabel = market.regime === 'bull' ? '強気（ブル）' : market.regime === 'bear' ? '弱気（ベア）' : '中立'
+  const modeColor   = noTrade.mode === 'emergency' ? 'var(--r)'
+                    : noTrade.mode === 'caution'   ? 'var(--a)' : 'var(--g)'
+  const modeLabel   = noTrade.mode === 'emergency' ? '🚨 緊急停止' : noTrade.mode === 'caution' ? '⚠ 注意モード' : '✓ 通常モード'
+
+  return (
+    <div style={{
+      background: noTrade.mode === 'emergency' ? 'rgba(232,64,90,.06)' : noTrade.mode === 'caution' ? 'rgba(212,160,23,.04)' : 'rgba(45,212,160,.04)',
+      border: `1px solid ${modeColor}44`,
+      borderLeft: `4px solid ${modeColor}`,
+      borderRadius: 10, padding: '12px 14px', marginBottom: 10,
+    }}>
+      {/* ── 市場レジーム行 ── */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap', marginBottom: 8 }}>
+        <div style={{ fontFamily: 'var(--head)', fontSize: 8, color: 'var(--d)', letterSpacing: '.15em' }}>
+          市場モード
+        </div>
+        <span style={{
+          fontFamily: 'var(--mono)', fontSize: 13, fontWeight: 700, color: regimeColor,
+          background: `${regimeColor}18`, border: `1px solid ${regimeColor}44`,
+          borderRadius: 8, padding: '2px 10px',
+        }}>
+          {regimeLabel}
+        </span>
+        <span style={{
+          fontFamily: 'var(--mono)', fontSize: 11, color: modeColor,
+          background: `${modeColor}18`, border: `1px solid ${modeColor}44`,
+          borderRadius: 8, padding: '2px 10px',
+        }}>
+          {modeLabel}
+        </span>
+        <span style={{ marginLeft: 'auto', fontFamily: 'var(--mono)', fontSize: 10, color: 'var(--d)' }}>
+          VIX {market.vix.toFixed(1)}{macro ? `　日経VI ${macro.nikkeiVI.toFixed(1)}` : ''}
+        </span>
+      </div>
+
+      {/* ── SQ情報 ── */}
+      {sqCal?.nextSQ && (
+        <div style={{ fontFamily: 'var(--mono)', fontSize: 10, color: 'var(--d)', marginBottom: noTrade.reasons.length > 0 ? 8 : 0 }}>
+          次回SQ: {sqCal.nextSQ.date}
+          <span style={{
+            marginLeft: 8,
+            color: sqCal.nextSQ.dayUntil <= 3 ? 'var(--r)' : sqCal.nextSQ.dayUntil <= 7 ? 'var(--a)' : 'var(--d)',
+          }}>
+            {sqCal.nextSQ.dayUntil <= 3 ? `⚠ 残${sqCal.nextSQ.dayUntil}営業日` : `あと${sqCal.nextSQ.dayUntil}営業日`}
+          </span>
+          {sqCal.nextSQ.type === 'quarterly' && <span style={{ marginLeft: 6, color: 'var(--a)' }}>⚡ 先物SQ</span>}
+        </div>
+      )}
+
+      {/* ── 警告理由リスト ── */}
+      {noTrade.reasons.length > 0 && (
+        <div style={{ marginTop: 4 }}>
+          {noTrade.reasons.map((r, i) => (
+            <div key={i} style={{
+              fontSize: 11, color: noTrade.mode === 'emergency' ? 'var(--r)' : 'var(--a)',
+              display: 'flex', gap: 6, alignItems: 'flex-start', marginBottom: 2,
+            }}>
+              <span style={{ flexShrink: 0 }}>{noTrade.mode === 'emergency' ? '🚨' : '⚠'}</span>
+              <span>{r}</span>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
+// ── IdealPfPanel（理想PF差分テーブル）────────────────────────
+function IdealPfPanel() {
+  const universe = useAppStore(s => s.universe)
+  const market   = useAppStore(s => s.market)
+  if (!universe) return null
+
+  const regimeLabel = market.regime === 'bull' ? '強気' : market.regime === 'bear' ? '弱気' : '中立'
+
+  const diffColor = (diff: number) =>
+    Math.abs(diff) < 0.02 ? 'var(--g)'
+    : Math.abs(diff) < 0.05 ? 'var(--a)' : 'var(--r)'
+
+  const actionLabel = (diff: number): string => {
+    if (Math.abs(diff) < 500_000) return '—'
+    return diff > 0 ? `▲ 買い増し ${formatJPYAuto(diff)}` : `▼ 削減 ${formatJPYAuto(-diff)}`
+  }
+
+  return (
+    <div className="card" style={{ marginBottom: 10 }}>
+      <div className="card-title" style={{ marginBottom: 8 }}>
+        📊 理想PF差分
+        <span style={{ fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--d)', marginLeft: 8 }}>
+          {regimeLabel}レジーム基準 / 総資産 {formatJPYAuto(universe.totalValue)}
+        </span>
+      </div>
+
+      {/* テーブルヘッダー */}
+      <div style={{
+        display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 2fr',
+        gap: 4, marginBottom: 6,
+        fontFamily: 'var(--mono)', fontSize: 8, color: 'var(--d)',
+        borderBottom: '1px solid var(--b1)', paddingBottom: 4,
+      }}>
+        <div>資産クラス</div>
+        <div style={{ textAlign: 'right' }}>現在</div>
+        <div style={{ textAlign: 'right' }}>目標</div>
+        <div style={{ textAlign: 'right' }}>アクション</div>
+      </div>
+
+      {/* テーブル行 */}
+      {universe.categories.map((cat: AssetCategorySummary) => {
+        const diffR = cat.diffRatio
+        const col = diffColor(diffR)
+        return (
+          <div key={cat.class} style={{
+            display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 2fr',
+            gap: 4, padding: '5px 0',
+            borderBottom: '1px solid var(--b2)',
+            alignItems: 'center',
+          }}>
+            <div>
+              <div style={{ fontFamily: 'var(--mono)', fontSize: 10, color: 'var(--w)' }}>{cat.label}</div>
+              <div style={{ fontFamily: 'var(--mono)', fontSize: 8, color: 'var(--d)' }}>{cat.role}</div>
+            </div>
+            <div style={{ textAlign: 'right', fontFamily: 'var(--mono)', fontSize: 10 }}>
+              <div style={{ color: 'var(--w)' }}>{(cat.currentRatio * 100).toFixed(1)}%</div>
+              <div style={{ color: 'var(--d)', fontSize: 8 }}>{formatJPYAuto(cat.currentValue)}</div>
+            </div>
+            <div style={{ textAlign: 'right', fontFamily: 'var(--mono)', fontSize: 10 }}>
+              <div style={{ color: col }}>{(cat.targetRatio * 100).toFixed(1)}%</div>
+              <div style={{ color: 'var(--d)', fontSize: 8 }}>{formatJPYAuto(cat.targetValue)}</div>
+            </div>
+            <div style={{ textAlign: 'right', fontFamily: 'var(--mono)', fontSize: 9, color: col }}>
+              {actionLabel(cat.diffValue)}
+            </div>
+          </div>
+        )
+      })}
+
+      {/* 追加投資枠 表示 */}
+      {universe.addRoom > 0 && (
+        <div style={{ marginTop: 8, fontFamily: 'var(--mono)', fontSize: 10, color: 'var(--c)' }}>
+          追加投資枠: {formatJPYAuto(universe.addRoom)} 利用可能
+        </div>
+      )}
+    </div>
+  )
+}
+
 // ── T1_Decision ───────────────────────────────────────────────
 export function T1_Decision() {
   const buyList   = useAppStore(selectBuyList)
@@ -288,6 +447,12 @@ export function T1_Decision() {
 
   return (
     <div className="tab-panel">
+
+      {/* ── 市場モード + ノートレード判定 ── */}
+      <MarketModePanel />
+
+      {/* ── 理想PF差分 ── */}
+      <IdealPfPanel />
 
       {/* ── Portfolio Health Score ── */}
       <div style={{
