@@ -63,13 +63,13 @@ export async function loadNews(options: LoadOptions = {}): Promise<{ data: NewsD
   }
 }
 
-export async function loadTrustMaster(options: LoadOptions = {}): Promise<{ data: Trust[] | null; source: 'loaded' | 'static' }> {
+export async function loadTrustMaster(options: LoadOptions = {}): Promise<{ data: Trust[] | null; source: 'loaded' | 'static'; lastUpdated: string | null }> {
   try {
-    const raw = await fetchJson<{ funds: Partial<Trust>[] }>('data/trust_master.json', options)
+    const raw = await fetchJson<{ funds: Partial<Trust>[]; last_updated?: string }>('data/trust_master.json', options)
     if (!raw.funds) throw new Error('funds missing')
-    return { data: raw.funds as Trust[], source: 'loaded' }
+    return { data: raw.funds as Trust[], source: 'loaded', lastUpdated: raw.last_updated ?? null }
   } catch {
-    return { data: null, source: 'static' }
+    return { data: null, source: 'static', lastUpdated: null }
   }
 }
 

@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 import { useAppStore } from '../../store/useAppStore'
-import { formatJPYAuto } from '../../utils/format'
+import { selectIsLoading } from '../../store/selectors'
+import { formatDateTime, formatJPYAuto } from '../../utils/format'
 import type { Trust } from '../../types'
 
 const POLICY_LABEL: Record<string, string> = {
@@ -32,7 +33,9 @@ interface TrustTargetRow {
   diffValue: number
 }
 
-function signalTone(rule: string) {
+type ActionTone = 'positive' | 'caution' | 'negative' | 'neutral'
+
+function signalTone(rule: string): ActionTone {
   if (rule === 'BUY') return 'positive'
   if (rule === 'SELL') return 'negative'
   if (rule === 'WAIT' || rule === 'WATCH') return 'caution'
@@ -40,7 +43,7 @@ function signalTone(rule: string) {
 }
 
 function normalizeTarget(input: Record<Trust['policy'], number>) {
-  const sum = Object.values(input).reduce((acc, v) => acc + v, 0)
+  const sum = Object.values(input).reduce((acc, value) => acc + value, 0)
   if (sum <= 0) return input
   return {
     JAPAN_SHORTTERM: input.JAPAN_SHORTTERM / sum,
@@ -131,93 +134,21 @@ function buildTrustTargets(
   }
 }
 
-function TrustOverview({ trusts, targets, dowRule }: { trusts: Trust[]; targets: TrustTargetRow[]; dowRule: string }) {
-  const macro = useAppStore(s => s.macro)
-  const market = useAppStore(s => s.market)
-
-  const totalEval = trusts.reduce((sum, item) => sum + item.eval, 0)
-  const weightedCost = trusts.reduce((sum, item) => sum + item.cost * item.eval, 0) / Math.max(totalEval, 1)
-  const annualCost = totalEval * weightedCost / 100
-  const shortTermRatio = targets.find(item => item.policy === 'JAPAN_SHORTTERM')?.currentRatio ?? 0
-
-  return (
-    <div className="stack-layout">
-      <article className="card">
-        <div className="section-kicker">Trust-only optimizer</div>
-        <h3 className="section-heading">投信 最適ポートフォリオ</h3>
-        <p className="section-copy">
-          この最適化は投信のみを対象に計算しています。個別株は含めません。
-        </p>
-
-        <div className="summary-grid" style={{ marginTop: 16 }}>
-          <div className={`summary-tile summary-tile--${shortTermRatio >= 0.28 ? 'positive' : 'neutral'}`}>
-            <div className="summary-tile__label">国内株投信比率</div>
-            <div className="summary-tile__value">{(shortTermRatio * 100).toFixed(1)}%</div>
-          </div>
-          <div className={`summary-tile summary-tile--${weightedCost > 0.8 ? 'negative' : weightedCost > 0.5 ? 'caution' : 'positive'}`}>
-            <div className="summary-tile__label">加重コスト</div>
-            <div className="summary-tile__value">{weightedCost.toFixed(2)}%</div>
-          </div>
-          <div className="summary-tile summary-tile--neutral">
-            <div className="summary-tile__label">年間コスト</div>
-            <div className="summary-tile__value">{formatJPYAuto(annualCost)}</div>
-          </div>
-          <div className={`summary-tile summary-tile--${signalTone(dowRule)}`}>
-            <div className="summary-tile__label">短期戦術シグナル</div>
-            <div className="summary-tile__value">{dowRule}</div>
-          </div>
-        </div>
-
-        <div className="tw" style={{ marginTop: 12 }}>
-          <table className="dt">
-            <thead>
-              <tr>
-                <th>区分</th>
-                <th>現在比率</th>
-                <th>目標比率</th>
-                <th>差額</th>
-                <th>方針</th>
-              </tr>
-            </thead>
-            <tbody>
-              {targets.map(row => {
-                const action = row.diffValue > 80_000 ? '買い増し' : row.diffValue < -80_000 ? '縮小' : '維持'
-                return (
-                  <tr key={row.policy}>
-                    <td>{POLICY_LABEL[row.policy]}</td>
-                    <td>{(row.currentRatio * 100).toFixed(1)}%</td>
-                    <td>{(row.targetRatio * 100).toFixed(1)}%</td>
-                    <td className={row.diffValue >= 0 ? 'p' : 'n'}>
-                      {row.diffValue >= 0 ? '+' : ''}{formatJPYAuto(row.diffValue)}
-                    </td>
-                    <td>{action}</td>
-                  </tr>
-                )
-              })}
-            </tbody>
-          </table>
-        </div>
-      </article>
-
-      <article className="card">
-        <div className="section-kicker">Ultra-short playbook</div>
-        <h3 className="section-heading">国内株投信（超短期）運用ルール</h3>
-        <div className="detail-list">
-          <span>エントリー: 火曜 `BUY` シグナル時に分割で新規（最大でも投信全体の40%まで）。</span>
-          <span>利確: +3.0% で半分、+5.0% で残りを利確。</span>
-          <span>損切: -2.0% で機械的に縮小、-3.0% で全撤退。</span>
-          <span>地合い調整: VIX {market.vix.toFixed(1)} / ドル円 {macro ? macro.usdjpy.toFixed(2) : '—'} を基準にサイズを上下。</span>
-        </div>
-      </article>
-    </div>
-  )
+function getTrustAction(diffValue: number) {
+  if (diffValue > 180_000) return { label: '買い増し', tone: 'positive' as ActionTone, detail: '3分割で段階的に積み上げ' }
+  if (diffValue < -180_000) return { label: '縮小', tone: 'negative' as ActionTone, detail: '利益確定を先行して比率調整' }
+  if (Math.abs(diffValue) > 80_000) return { label: '微調整', tone: 'caution' as ActionTone, detail: '次の押し目/戻りで微修正' }
+  return { label: '維持', tone: 'neutral' as ActionTone, detail: '現状比率で運用を継続' }
 }
 
 export function T7_Trust() {
-  const trust = useAppStore(s => s.trust)
-  const market = useAppStore(s => s.market)
-  const macro = useAppStore(s => s.macro)
-  const importCsv = useAppStore(s => s.importCsv)
+  const trust = useAppStore(state => state.trust)
+  const market = useAppStore(state => state.market)
+  const macro = useAppStore(state => state.macro)
+  const system = useAppStore(state => state.system)
+  const importCsv = useAppStore(state => state.importCsv)
+  const refreshAllData = useAppStore(state => state.refreshAllData)
+  const isLoading = useAppStore(selectIsLoading)
 
   const totalEval = trust.reduce((sum, item) => sum + item.eval, 0)
   const totalPnl = trust.reduce((sum, item) => sum + (item.eval - item.eval / (1 + item.pnlPct / 100)), 0)
@@ -238,7 +169,9 @@ export function T7_Trust() {
   const policyGroups = useMemo(
     () => (['JAPAN_SHORTTERM', 'OVERSEAS_LONGTERM', 'GOLD'] as const).map(policy => ({
       policy,
-      items: trust.filter(item => item.policy === policy),
+      items: trust
+        .filter(item => item.policy === policy)
+        .sort((left, right) => right.score - left.score),
       total: trust.filter(item => item.policy === policy).reduce((sum, item) => sum + item.eval, 0),
     })),
     [trust],
@@ -256,12 +189,56 @@ export function T7_Trust() {
     [dowSignal.rule, macro?.usdjpy, market.regime, market.vix, trust],
   )
 
+  const weightedCost = trust.reduce((sum, item) => sum + item.cost * item.eval, 0) / Math.max(totalEval, 1)
+  const weightedDayPct = totalEval > 0 ? trust.reduce((sum, item) => sum + item.dayPct * (item.eval / totalEval), 0) : 0
+  const weightedSigma = totalEval > 0 ? trust.reduce((sum, item) => sum + item.sigma * (item.eval / totalEval), 0) : 0
+  const maxSingleRatio = totalEval > 0 ? Math.max(...trust.map(item => item.eval / totalEval), 0) * 100 : 0
+  const annualCost = totalEval * weightedCost / 100
+  const shortTermRow = trustTargets.rows.find(item => item.policy === 'JAPAN_SHORTTERM')
+  const shortTermRatio = shortTermRow?.currentRatio ?? 0
+  const shortTermTargetRatio = shortTermRow?.targetRatio ?? 0
+
+  const freshnessRows = [
+    { label: '投信マスター', raw: system.dataTimestamps?.trust ?? null, status: system.dataSourceStatus.trust },
+    { label: 'ニュース', raw: system.dataTimestamps?.news ?? null, status: system.dataSourceStatus.news },
+    { label: 'マクロ', raw: system.dataTimestamps?.macro ?? null, status: system.dataSourceStatus.macro ?? 'none' },
+    { label: '市場', raw: system.dataTimestamps?.market ?? null, status: system.dataSourceStatus.market },
+  ]
+
+  const tacticalQueue = trustTargets.rows.map(row => {
+    const action = getTrustAction(row.diffValue)
+    return {
+      row,
+      action,
+    }
+  })
+
+  const shortTermRules = [
+    'エントリー: 火曜 BUY シグナル時に最大3分割で新規。',
+    '利確: +3.0%で半分、+5.0%で残りを利確。',
+    '損切: -2.0%で縮小、-3.0%で全撤退。',
+    `地合い調整: VIX ${market.vix.toFixed(1)} / ドル円 ${macro ? macro.usdjpy.toFixed(2) : '—'} でサイズ変更。`,
+  ]
+
   return (
     <div className="tab-panel">
       <section className="decision-grid">
         <article className={`card focus-card focus-card--${signalTone(dowSignal.rule)}`}>
-          <div className="section-kicker">Weekly playbook</div>
-          <h2 className="section-heading">曜日シグナル</h2>
+          <div className="section-heading-row">
+            <div>
+              <div className="section-kicker">Weekly playbook</div>
+              <h2 className="section-heading">投信戦術シグナル</h2>
+            </div>
+            <button
+              className={`status-shell__refresh${isLoading ? ' is-loading' : ''}`}
+              onClick={() => { void refreshAllData() }}
+              disabled={isLoading}
+              type="button"
+            >
+              {isLoading ? '更新中...' : 'データ更新'}
+            </button>
+          </div>
+
           <p className="focus-card__summary">
             {dowSignal.name} / {dowSignal.rule} / {dowSignal.tactic}
           </p>
@@ -274,11 +251,33 @@ export function T7_Trust() {
                 {signal.name}
               </span>
             ))}
+            <span className="tone-chip tone-chip--neutral">
+              最終更新 {system.lastUpdated ? formatDateTime(system.lastUpdated) : '未更新'}
+            </span>
+          </div>
+
+          <div className="trust-kpi-grid">
+            <div className={`summary-tile summary-tile--${shortTermRatio > shortTermTargetRatio + 0.06 ? 'caution' : 'positive'}`}>
+              <div className="summary-tile__label">国内株投信比率</div>
+              <div className="summary-tile__value">{(shortTermRatio * 100).toFixed(1)}%</div>
+            </div>
+            <div className="summary-tile summary-tile--neutral">
+              <div className="summary-tile__label">国内株目標比率</div>
+              <div className="summary-tile__value">{(shortTermTargetRatio * 100).toFixed(1)}%</div>
+            </div>
+            <div className={`summary-tile summary-tile--${weightedDayPct >= 0 ? 'positive' : 'negative'}`}>
+              <div className="summary-tile__label">本日寄与</div>
+              <div className="summary-tile__value">{weightedDayPct >= 0 ? '+' : ''}{weightedDayPct.toFixed(2)}%</div>
+            </div>
+            <div className={`summary-tile summary-tile--${weightedCost > 0.8 ? 'negative' : weightedCost > 0.5 ? 'caution' : 'positive'}`}>
+              <div className="summary-tile__label">加重コスト</div>
+              <div className="summary-tile__value">{weightedCost.toFixed(2)}%</div>
+            </div>
           </div>
         </article>
 
         <article className="card">
-          <div className="section-kicker">Trust summary</div>
+          <div className="section-kicker">Trust dashboard</div>
           <h2 className="section-heading">投信の全体像</h2>
           <div className="summary-grid" style={{ marginTop: 16 }}>
             <div className="summary-tile summary-tile--neutral">
@@ -287,24 +286,112 @@ export function T7_Trust() {
             </div>
             <div className={`summary-tile ${totalPnl >= 0 ? 'summary-tile--positive' : 'summary-tile--negative'}`}>
               <div className="summary-tile__label">含み損益</div>
-              <div className="summary-tile__value">{totalPnl >= 0 ? '+' : ''}{formatJPYAuto(Math.abs(totalPnl))}</div>
+              <div className="summary-tile__value">{totalPnl >= 0 ? '+' : ''}{formatJPYAuto(totalPnl)}</div>
             </div>
             <div className="summary-tile summary-tile--neutral">
-              <div className="summary-tile__label">本数</div>
-              <div className="summary-tile__value">{trust.length}</div>
+              <div className="summary-tile__label">想定年間コスト</div>
+              <div className="summary-tile__value">{formatJPYAuto(annualCost)}</div>
             </div>
-            <div className={`summary-tile summary-tile--${signalTone(dowSignal.rule)}`}>
-              <div className="summary-tile__label">本日の姿勢</div>
-              <div className="summary-tile__value">{dowSignal.rule}</div>
+            <div className={`summary-tile summary-tile--${maxSingleRatio >= 45 ? 'negative' : maxSingleRatio >= 35 ? 'caution' : 'positive'}`}>
+              <div className="summary-tile__label">最大集中比率</div>
+              <div className="summary-tile__value">{maxSingleRatio.toFixed(1)}%</div>
             </div>
+          </div>
+
+          <div className="metrics-inline">
+            <span>レジーム {market.regime}</span>
+            <span>VIX {market.vix.toFixed(1)}</span>
+            <span>ドル円 {macro ? macro.usdjpy.toFixed(2) : '—'}</span>
+            <span>投信加重σ {(weightedSigma * 100).toFixed(1)}%</span>
+          </div>
+
+          <div className="freshness-board" style={{ marginTop: 14 }}>
+            {freshnessRows.map(item => (
+              <div key={item.label} className="freshness-board__item freshness-board__item--neutral">
+                <div>
+                  <strong>{item.label}</strong>
+                  <span>{item.raw ? formatDateTime(item.raw) : '更新日時なし'}</span>
+                </div>
+                <div className="freshness-board__chips">
+                  <span className="tone-chip tone-chip--neutral">{item.status}</span>
+                </div>
+              </div>
+            ))}
           </div>
         </article>
       </section>
 
       <section className="content-grid">
-        <TrustOverview trusts={trust} targets={trustTargets.rows} dowRule={dowSignal.rule} />
+        <div className="stack-layout">
+          <article className="card">
+            <div className="section-kicker">Trust-only optimizer</div>
+            <h3 className="section-heading">投信 最適ポートフォリオ</h3>
+            <p className="section-copy">
+              この最適化は投信のみを対象に計算しています。個別株は含めません。
+            </p>
+
+            <div className="trust-target-board">
+              {trustTargets.rows.map(row => {
+                const action = getTrustAction(row.diffValue)
+                return (
+                  <div key={row.policy} className={`trust-target-card trust-target-card--${action.tone}`}>
+                    <div className="trust-target-card__top">
+                      <strong>{POLICY_LABEL[row.policy]}</strong>
+                      <span className={`tone-chip tone-chip--${action.tone}`}>{action.label}</span>
+                    </div>
+                    <div className="trust-target-card__grid">
+                      <span>現在 {(row.currentRatio * 100).toFixed(1)}%</span>
+                      <span>目標 {(row.targetRatio * 100).toFixed(1)}%</span>
+                      <span>現評価額 {formatJPYAuto(row.currentValue)}</span>
+                      <span>目標評価額 {formatJPYAuto(row.targetValue)}</span>
+                    </div>
+                    <div className={`trust-target-card__diff ${row.diffValue >= 0 ? 'p' : 'n'}`}>
+                      {row.diffValue >= 0 ? '+' : ''}{formatJPYAuto(row.diffValue)}
+                    </div>
+                    <div className="trust-target-card__hint">{action.detail}</div>
+                  </div>
+                )
+              })}
+            </div>
+          </article>
+
+          <article className="card">
+            <div className="section-kicker">Ultra-short playbook</div>
+            <h3 className="section-heading">国内株投信（超短期）運用ルール</h3>
+            <div className="trust-rule-list">
+              {shortTermRules.map(rule => (
+                <div key={rule} className="trust-rule-list__item">
+                  {rule}
+                </div>
+              ))}
+            </div>
+          </article>
+        </div>
 
         <div className="stack-layout">
+          <article className="card">
+            <div className="section-kicker">Execution queue</div>
+            <h3 className="section-heading">本日の投信アクション</h3>
+            <div className="trust-lane">
+              {tacticalQueue.map(item => (
+                <div key={item.row.policy} className={`trust-lane__item trust-lane__item--${item.action.tone}`}>
+                  <div className="trust-lane__head">
+                    <strong>{POLICY_LABEL[item.row.policy]}</strong>
+                    <span className={`vd ${item.action.tone === 'positive' ? 'buy' : item.action.tone === 'negative' ? 'sell' : item.action.tone === 'caution' ? 'wait' : 'hold'}`}>
+                      {item.action.label}
+                    </span>
+                  </div>
+                  <p>{item.action.detail}</p>
+                  <div className="trust-lane__meta">
+                    <span>差額 {item.row.diffValue >= 0 ? '+' : ''}{formatJPYAuto(item.row.diffValue)}</span>
+                    <span>現在比率 {(item.row.currentRatio * 100).toFixed(1)}%</span>
+                    <span>目標比率 {(item.row.targetRatio * 100).toFixed(1)}%</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </article>
+
           <article className="card">
             <div className="section-kicker">Import</div>
             <h3 className="section-heading">投信CSVを更新</h3>
@@ -316,7 +403,7 @@ export function T7_Trust() {
             >
               <input type="file" accept=".csv" onChange={handleFileChange} />
               <div>投信CSVをドロップまたは選択</div>
-              <small>評価額と損益率を最新化します。</small>
+              <small>評価額・損益率・日次騰落を最新化します。</small>
             </div>
           </article>
         </div>

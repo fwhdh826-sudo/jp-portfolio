@@ -1750,6 +1750,85 @@ button {
   border-color: rgba(104, 215, 196, 0.32);
 }
 
+.trust-kpi-grid {
+  margin-top: 14px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.trust-target-board,
+.trust-rule-list,
+.trust-lane {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.trust-target-card,
+.trust-rule-list__item,
+.trust-lane__item {
+  padding: 12px;
+  border-radius: 14px;
+  border: 1px solid var(--b2);
+  background: rgba(255, 255, 255, 0.65);
+}
+
+.trust-target-card--positive,
+.trust-lane__item--positive {
+  border-color: rgba(104, 215, 196, 0.34);
+}
+
+.trust-target-card--negative,
+.trust-lane__item--negative {
+  border-color: rgba(239, 139, 114, 0.36);
+}
+
+.trust-target-card--caution,
+.trust-lane__item--caution {
+  border-color: rgba(215, 179, 106, 0.34);
+}
+
+.trust-target-card__top,
+.trust-lane__head {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.trust-target-card__top strong,
+.trust-lane__head strong {
+  font-size: 14px;
+}
+
+.trust-target-card__grid,
+.trust-lane__meta {
+  margin-top: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--d);
+}
+
+.trust-target-card__diff {
+  margin-top: 8px;
+  font-family: var(--head);
+  font-size: 24px;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.trust-target-card__hint,
+.trust-lane__item p {
+  margin-top: 8px;
+  color: var(--d);
+  line-height: 1.6;
+}
+
 .heatmap-table {
   overflow: auto;
 }
@@ -2707,6 +2786,7 @@ button {
   .goal-grid,
   .fund-grid,
   .ai-score-grid,
+  .trust-kpi-grid,
   .risk-guardrails,
   .plan-stats,
   .news-command__alerts,
@@ -2740,6 +2820,7 @@ button {
   .status-shell__meta,
   .metrics-inline,
   .focus-card__columns,
+  .trust-kpi-grid,
   .plan-stats,
   .risk-guardrails,
   .news-command__alerts,
@@ -2854,6 +2935,8 @@ button {
   .risk-register__title,
   .risk-concentration__header,
   .allocation-pool__head,
+  .trust-target-card__top,
+  .trust-lane__head,
   .freshness-board__item,
   .news-urgent__item {
     flex-direction: column;
@@ -2903,6 +2986,7 @@ button {
   .health-card__grid,
   .goal-grid,
   .kpi-row,
+  .trust-kpi-grid,
   .risk-guardrails,
   .plan-stats,
   .news-command__alerts,
