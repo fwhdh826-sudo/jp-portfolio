@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useAppStore } from '../../store/useAppStore'
 import { selectBuyList, selectSellList } from '../../store/selectors'
+import { formatJPYAuto } from '../../utils/format'
 
 interface WatchItem {
   code: string
@@ -127,7 +128,7 @@ export function T5_Backtest() {
                 </div>
                 {h && (
                   <div style={{ fontFamily: 'var(--mono)', fontSize: 11, display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-                    <span className="wh">¥{(h.eval / 1000).toFixed(0)}K</span>
+                    <span className="wh">{formatJPYAuto(h.eval)}</span>
                     <span className={h.pnlPct >= 0 ? 'p' : 'n'}>
                       {h.pnlPct >= 0 ? '+' : ''}{h.pnlPct.toFixed(2)}%
                     </span>
@@ -178,7 +179,7 @@ export function T5_Backtest() {
                   {(halfK * 100).toFixed(1)}% Kelly
                 </span>
                 <span style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--g)' }}>
-                  ¥{(investAmt / 1000).toFixed(0)}K
+                  {formatJPYAuto(investAmt)}
                 </span>
               </div>
             )
@@ -268,7 +269,7 @@ export function T5_Backtest() {
             style={{ flex: 1 }}
           />
           <span style={{ fontFamily: 'var(--mono)', fontSize: 12, color: 'var(--w)', minWidth: 60 }}>
-            ¥{(budget / 1e6).toFixed(1)}M
+            {formatJPYAuto(budget)}
           </span>
         </div>
         {kellyItems.length === 0 ? (
@@ -284,7 +285,7 @@ export function T5_Backtest() {
                   <span style={{ color: 'var(--c)' }}>{k.code}</span>
                   <span style={{ color: 'var(--d)' }}>{k.name?.slice(0, 8)}</span>
                   <span style={{ color: 'var(--g)' }}>
-                    {(k.halfKelly * 100).toFixed(1)}% = ¥{(amt / 1000).toFixed(0)}K
+                    {(k.halfKelly * 100).toFixed(1)}% = {formatJPYAuto(amt)}
                   </span>
                 </div>
                 <div className="sb">

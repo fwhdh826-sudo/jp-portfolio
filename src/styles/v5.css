@@ -678,18 +678,31 @@ body::after {
   .rg-grid { grid-template-columns: 1fr 1fr; }
   .tech-grid { grid-template-columns: 1fr; }
   .grid3r { grid-template-columns: 1fr 1fr; }
+  /* macro strip スマホ最適化 */
+  .macro-strip { padding: 4px 10px; gap: 4px; }
+  .macro-cell { padding: 3px 8px 3px 0; }
+  .macro-val { font-size: 12px; }
+  .macro-chg { font-size: 9px; padding: 1px 5px; }
+  /* tab-panel パディング縮小 */
+  .tab-panel { padding: 10px 10px 14px; }
 }
 @media (max-width: 420px) {
   .tw-hint { display: block; }
   .dt th, .dt td { padding: 5px 5px; font-size: 9px; }
+  /* macro strip をさらに縮小 */
+  .macro-label { font-size: 8px; }
+  .macro-val { font-size: 11px; }
 }
 @media (max-width: 380px) {
   .logo { font-size: 9px; }
   .grid3r { grid-template-columns: 1fr 1fr; }
   .rg-grid { grid-template-columns: 1fr 1fr; }
+  /* 小画面ではmacroストリップのchgを短縮表示のみ */
+  .macro-val { font-size: 11px; }
 }
 @media (max-width: 360px) {
   .ver-badge { display: none; }
+  .macro-label { display: none; }  /* 極小画面は値とchgだけ */
 }
 
 /* safe area */

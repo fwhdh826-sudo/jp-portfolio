@@ -1,4 +1,5 @@
 import { useAppStore } from '../../store/useAppStore'
+import { formatJPYAuto } from '../../utils/format'
 
 const POLICY_LABEL: Record<string, string> = {
   JAPAN_SHORTTERM:   '🇯🇵 日本株（短期）',
@@ -129,14 +130,12 @@ export function T7_Trust() {
       <div className="kpi-row">
         <div className="kpi">
           <div className="l">総評価額</div>
-          <div className="v wh">
-            {totalEval >= 1e6 ? `¥${(totalEval / 1e6).toFixed(2)}M` : `¥${(totalEval / 1000).toFixed(0)}K`}
-          </div>
+          <div className="v wh">{formatJPYAuto(totalEval)}</div>
         </div>
         <div className="kpi">
           <div className="l">含み損益</div>
           <div className="v" style={{ color: totalPnl >= 0 ? 'var(--g)' : 'var(--r)' }}>
-            {totalPnl >= 0 ? '+' : ''}{(totalPnl / 1e6).toFixed(2)}M
+            {totalPnl >= 0 ? '+' : ''}{formatJPYAuto(Math.abs(totalPnl))}
           </div>
         </div>
         <div className="kpi">
@@ -175,8 +174,7 @@ export function T7_Trust() {
             }}>
               <span>{POLICY_LABEL[policy]}</span>
               <span style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--d)' }}>
-                {subTotal >= 1e6 ? `¥${(subTotal / 1e6).toFixed(2)}M` : `¥${(subTotal / 1000).toFixed(0)}K`}
-                &nbsp;({(subTotal / Math.max(totalEval, 1) * 100).toFixed(1)}%)
+                {formatJPYAuto(subTotal)}&nbsp;({(subTotal / Math.max(totalEval, 1) * 100).toFixed(1)}%)
               </span>
               <div style={{ flex: 1, height: 1, background: 'var(--b1)' }} />
             </div>
@@ -212,9 +210,7 @@ export function T7_Trust() {
 
                   {/* KPI行 */}
                   <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', fontFamily: 'var(--mono)', fontSize: 11 }}>
-                    <span className="wh">
-                      {f.eval >= 1e6 ? `¥${(f.eval / 1e6).toFixed(2)}M` : `¥${(f.eval / 1000).toFixed(0)}K`}
-                    </span>
+                    <span className="wh">{formatJPYAuto(f.eval)}</span>
                     <span className={f.pnlPct >= 0 ? 'p' : 'n'}>
                       {f.pnlPct >= 0 ? '+' : ''}{f.pnlPct.toFixed(2)}%
                     </span>

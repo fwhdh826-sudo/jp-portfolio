@@ -254,19 +254,30 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
     }
   },
 
-  // ── CSV取込 ───────────────────────────────────────────────
+  // ── CSV取込（個別株 + 投信 両対応）──────────────────────────
   importCsv: async (file: File) => {
     set(s => ({ system: { ...s.system, status: 'loading', error: null } }))
     try {
-      const updated = await importPortfolioCsv(file, get().holdings)
+      const { holdings: updatedH, trust: updatedT } = await importPortfolioCsv(
+        file,
+        get().holdings,
+        get().trust,
+      )
       const now = new Date().toISOString()
-      set({ holdings: updated })
+      set({ holdings: updatedH, trust: updatedT })
       const computed = runFullAnalysis(get())
       set(s => ({
         ...computed,
-        system: { ...s.system, status: 'success', csvLastImportedAt: now, analysisLastRunAt: now, error: null },
+        system: {
+          ...s.system,
+          status: 'success',
+          csvLastImportedAt: now,
+          analysisLastRunAt: now,
+          error: null,
+        },
       }))
       persistPortfolio(get().holdings)
+      persistTrust(get().trust)
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err)
       set(s => ({ system: { ...s.system, status: 'error', error: msg } }))
