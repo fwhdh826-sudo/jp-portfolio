@@ -12,6 +12,7 @@ export interface Holding {
   target: number      // 目標株価
   alert: number       // アラート株価
   lock: boolean       // ロック中（売却不可期間）
+  acquiredAt?: string // 取得日（YYYY-MM-DD）: 3ヶ月売却制約の判定に使用
   mitsu: boolean      // 三菱グループフラグ
   // テクニカル
   ma: boolean         // MA上位

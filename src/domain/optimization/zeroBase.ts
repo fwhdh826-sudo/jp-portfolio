@@ -10,6 +10,7 @@ import type {
 } from '../../types'
 import type { AssetCategorySummary } from '../../types/universe'
 import { SELLABLE_CODES } from '../../constants/market'
+import { isSellLocked } from '../constraints/stockLock'
 
 export type MarketMode = 'normal' | 'caution' | 'emergency'
 
@@ -110,12 +111,9 @@ function deriveMarketMode(
   return { mode, reasons }
 }
 
-function fallbackUniverse(input: ZeroBaseInput): AssetCategorySummary[] {
+function fallbackStockUniverse(input: ZeroBaseInput): AssetCategorySummary[] {
   const jpStockValue = input.holdings.reduce((s, h) => s + h.eval, 0)
-  const jpTrustValue = input.trust.filter(f => f.policy === 'JAPAN_SHORTTERM').reduce((s, f) => s + f.eval, 0)
-  const ovTrustValue = input.trust.filter(f => f.policy === 'OVERSEAS_LONGTERM').reduce((s, f) => s + f.eval, 0)
-  const goldValue = input.trust.filter(f => f.policy === 'GOLD').reduce((s, f) => s + f.eval, 0)
-  const total = jpStockValue + jpTrustValue + ovTrustValue + goldValue + input.cash + input.cashReserve + input.addRoom
+  const total = jpStockValue + input.cash + input.cashReserve + input.addRoom
 
   const pack = (
     cls: AssetCategorySummary['class'],
@@ -143,12 +141,10 @@ function fallbackUniverse(input: ZeroBaseInput): AssetCategorySummary[] {
   }
 
   return [
-    pack('JP_STOCK', '国内個別株', '成長の取り込み', jpStockValue, 0.15),
-    pack('JP_TRUST', '国内株投信', '短期需給対応', jpTrustValue, 0.05),
-    pack('OVERSEAS_TRUST', '海外株投信', '中長期の主軸', ovTrustValue, 0.55),
-    pack('GOLD', 'ゴールド', '有事ヘッジ', goldValue, 0.05),
-    pack('CASH', '現金', '機動資金', input.cash, 0.08),
-    pack('CASH_RESERVE', '暴落待機資金', '暴落時の買い余力', input.cashReserve, 0.12),
+    pack('JP_STOCK', '国内個別株', '中長期成長の中核ポートフォリオ', jpStockValue, 0.72),
+    pack('CASH', '現金', '通常運用の機動資金', input.cash, 0.08),
+    pack('CASH_RESERVE', '暴落待機資金', '3ヶ月ロック中の防御余力', input.cashReserve, 0.14),
+    pack('ADD_ROOM', '追加投資枠', '高確信シグナル時の増額余地', input.addRoom, 0.06),
   ]
 }
 
@@ -263,7 +259,7 @@ function buildSellProposals(
     .sort((a, b) => a.analysis.totalScore - b.analysis.totalScore)
 
   for (const { h, analysis } of sorted) {
-    const sellable = !h.lock && SELLABLE_CODES.has(h.code)
+    const sellable = !isSellLocked(h) && SELLABLE_CODES.has(h.code)
 
     if (!sellable) {
       results.push({
@@ -380,7 +376,11 @@ export function buildZeroBasePlan(input: ZeroBaseInput): ZeroBasePlan {
   const { mode, reasons } = deriveMarketMode(input.market, input.macro, input.sqCalendar)
 
   const analysisByCode = new Map(input.analysis.map(a => [a.code, a]))
-  const categoryDiffs = input.universe?.categories ?? fallbackUniverse(input)
+  const stockOnlyClasses = new Set(['JP_STOCK', 'CASH', 'CASH_RESERVE', 'ADD_ROOM'])
+  const stockOnlyDiffs = input.universe?.categories.filter(item => stockOnlyClasses.has(item.class))
+  const categoryDiffs = stockOnlyDiffs && stockOnlyDiffs.length > 0
+    ? stockOnlyDiffs
+    : fallbackStockUniverse(input)
 
   const sellProposals = buildSellProposals(input.holdings, analysisByCode, mode)
   const soldAmount = sellProposals

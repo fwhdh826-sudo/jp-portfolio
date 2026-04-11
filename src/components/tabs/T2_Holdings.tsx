@@ -3,6 +3,7 @@ import { useAppStore } from '../../store/useAppStore'
 import { selectTotalEval } from '../../store/selectors'
 import { formatJPYAuto } from '../../utils/format'
 import { JP_STOCK_MAX_VALUE, SELLABLE_CODES } from '../../constants/market'
+import { getSellLockRemainingDays, isSellLocked } from '../../domain/constraints/stockLock'
 
 const sectorColors: Record<string, string> = {
   金融: '#7f99ff',
@@ -25,6 +26,18 @@ function decisionTone(decision: string, locked: boolean) {
   if (decision === 'BUY') return 'positive'
   if (decision === 'SELL') return 'negative'
   return 'neutral'
+}
+
+interface StockOptimalRow {
+  code: string
+  name: string
+  currentValue: number
+  currentWeight: number
+  targetValue: number
+  targetWeight: number
+  diffValue: number
+  decision: 'BUY' | 'HOLD' | 'SELL'
+  locked: boolean
 }
 
 export function T2_Holdings() {
@@ -56,8 +69,8 @@ export function T2_Holdings() {
       }))
   }, [holdings, totalEval])
 
-  const lockedCount = holdings.filter(holding => holding.lock).length
-  const sellableCount = holdings.filter(holding => !holding.lock && SELLABLE_CODES.has(holding.code)).length
+  const lockedCount = holdings.filter(holding => isSellLocked(holding)).length
+  const sellableCount = holdings.filter(holding => !isSellLocked(holding) && SELLABLE_CODES.has(holding.code)).length
   const mitsuRatio = totalEval > 0
     ? (holdings.filter(holding => holding.mitsu).reduce((sum, holding) => sum + holding.eval, 0) / totalEval) * 100
     : 0
@@ -75,7 +88,50 @@ export function T2_Holdings() {
       })
   }, [analysisByCode, holdings])
 
-  const allocationDiffs = universe?.categories ?? []
+  const allocationDiffs = (universe?.categories ?? [])
+    .filter(item => item.class === 'JP_STOCK' || item.class === 'CASH' || item.class === 'CASH_RESERVE' || item.class === 'ADD_ROOM')
+
+  const stockOptimalRows = useMemo<StockOptimalRow[]>(() => {
+    const raw = holdings.map(holding => {
+      const item = analysisByCode.get(holding.code)
+      const locked = isSellLocked(holding)
+      const decision = item?.decision ?? 'HOLD'
+      const scoreBase = item?.totalScore ?? 50
+      const bonus = decision === 'BUY' ? 12 : decision === 'SELL' ? -18 : 0
+      const lockPenalty = locked ? -14 : 0
+      const concentrationPenalty = holding.mitsu ? -4 : 0
+      const volatilityPenalty = Math.round(holding.sigma * 24)
+      const weightSeed = Math.max(8, scoreBase + bonus + lockPenalty + concentrationPenalty - volatilityPenalty)
+      return {
+        holding,
+        locked,
+        decision,
+        weightSeed,
+      }
+    })
+
+    const totalSeed = raw.reduce((sum, row) => sum + row.weightSeed, 0)
+    if (totalSeed <= 0 || totalEval <= 0) return []
+
+    return raw
+      .map(row => {
+        const targetWeight = row.weightSeed / totalSeed
+        const targetValue = totalEval * targetWeight
+        const currentWeight = row.holding.eval / totalEval
+        return {
+          code: row.holding.code,
+          name: row.holding.name,
+          currentValue: row.holding.eval,
+          currentWeight,
+          targetValue,
+          targetWeight,
+          diffValue: targetValue - row.holding.eval,
+          decision: row.decision,
+          locked: row.locked,
+        }
+      })
+      .sort((a, b) => Math.abs(b.diffValue) - Math.abs(a.diffValue))
+  }, [analysisByCode, holdings, totalEval])
 
   const calcInstitutionalScore = (code: string) => {
     const holding = holdings.find(item => item.code === code)
@@ -172,33 +228,95 @@ export function T2_Holdings() {
       </section>
 
       <section className="content-grid">
-        <article className="card">
-          <div className="section-heading-row">
-            <div>
-              <div className="section-kicker">Allocation drift</div>
-              <h3 className="section-heading">理想配分との差分</h3>
-            </div>
-            <div className="section-caption">
-              上限 {formatJPYAuto(JP_STOCK_MAX_VALUE)}
-            </div>
-          </div>
-
-          <div className="allocation-list">
-            {allocationDiffs.map(item => (
-              <div key={item.class} className="allocation-list__item">
-                <div className="allocation-list__header">
-                  <strong>{item.label}</strong>
-                  <span>{item.role}</span>
-                </div>
-                <div className="allocation-list__meta">
-                  <span>現在 {(item.currentRatio * 100).toFixed(1)}%</span>
-                  <span>目標 {(item.targetRatio * 100).toFixed(1)}%</span>
-                  <span>{item.diffValue >= 0 ? '積増' : '削減'} {formatJPYAuto(Math.abs(item.diffValue))}</span>
-                </div>
+        <div className="stack-layout">
+          <article className="card">
+            <div className="section-heading-row">
+              <div>
+                <div className="section-kicker">Stock-only optimizer</div>
+                <h3 className="section-heading">個別株 最適ポートフォリオ提案</h3>
               </div>
-            ))}
-          </div>
-        </article>
+              <div className="section-caption">投信は含めない</div>
+            </div>
+            <p className="section-copy">
+              提案は個別株のみを対象に算出しています。`SELL` 判定でも 3ヶ月ロック中は即売却せず、ロック解除後の候補として扱います。
+            </p>
+
+            <div className="tw" style={{ marginTop: 12 }}>
+              <table className="dt">
+                <thead>
+                  <tr>
+                    <th>銘柄</th>
+                    <th>現在</th>
+                    <th>目標</th>
+                    <th>差額</th>
+                    <th>アクション</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {stockOptimalRows.slice(0, 10).map(row => {
+                    const action =
+                      row.diffValue > 60_000
+                        ? '買い増し候補'
+                        : row.diffValue < -60_000
+                        ? row.locked
+                          ? 'ロック解除後に縮小'
+                          : '縮小候補'
+                        : '維持'
+                    return (
+                      <tr key={row.code}>
+                        <td>{row.code} {row.name}</td>
+                        <td>
+                          {formatJPYAuto(row.currentValue)}
+                          <div className="d">{(row.currentWeight * 100).toFixed(1)}%</div>
+                        </td>
+                        <td>
+                          {formatJPYAuto(row.targetValue)}
+                          <div className="d">{(row.targetWeight * 100).toFixed(1)}%</div>
+                        </td>
+                        <td className={row.diffValue >= 0 ? 'p' : 'n'}>
+                          {row.diffValue >= 0 ? '+' : ''}{formatJPYAuto(row.diffValue)}
+                        </td>
+                        <td>
+                          <span className={`vd ${row.locked ? 'lock' : row.decision === 'BUY' ? 'buy' : row.decision === 'SELL' ? 'sell' : 'hold'}`}>
+                            {action}
+                          </span>
+                        </td>
+                      </tr>
+                    )
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </article>
+
+          <article className="card">
+            <div className="section-heading-row">
+              <div>
+                <div className="section-kicker">Allocation drift</div>
+                <h3 className="section-heading">個別株運用差分</h3>
+              </div>
+              <div className="section-caption">
+                上限 {formatJPYAuto(JP_STOCK_MAX_VALUE)}
+              </div>
+            </div>
+
+            <div className="allocation-list">
+              {allocationDiffs.map(item => (
+                <div key={item.class} className="allocation-list__item">
+                  <div className="allocation-list__header">
+                    <strong>{item.label}</strong>
+                    <span>{item.role}</span>
+                  </div>
+                  <div className="allocation-list__meta">
+                    <span>現在 {(item.currentRatio * 100).toFixed(1)}%</span>
+                    <span>目標 {(item.targetRatio * 100).toFixed(1)}%</span>
+                    <span>{item.diffValue >= 0 ? '積増' : '削減'} {formatJPYAuto(Math.abs(item.diffValue))}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </article>
+        </div>
 
         <article className="card">
           <div className="section-heading-row">
@@ -212,7 +330,7 @@ export function T2_Holdings() {
             <div className="constraint-list__item">
               <strong>売却ロック銘柄</strong>
               <span>{lockedCount}件</span>
-              <p>ロック中は即時の調整対象から外します。</p>
+              <p>購入から3ヶ月以内は売却せず、解除日まで監視を継続します。</p>
             </div>
             <div className="constraint-list__item">
               <strong>国内株上限</strong>
@@ -242,7 +360,9 @@ export function T2_Holdings() {
             const item = analysisByCode.get(holding.code)
             const decision = item?.decision ?? 'HOLD'
             const isExpanded = expandedCode === holding.code
-            const tone = decisionTone(decision, holding.lock)
+            const locked = isSellLocked(holding)
+            const lockRemain = getSellLockRemainingDays(holding)
+            const tone = decisionTone(decision, locked)
             const weight = totalEval > 0 ? (holding.eval / totalEval) * 100 : 0
             const institutional = calcInstitutionalScore(holding.code)
             const institutionalRows = [
@@ -264,8 +384,8 @@ export function T2_Holdings() {
                     <strong>{holding.name}</strong>
                   </div>
                   <div className="position-card__badges">
-                    <span className={`vd ${holding.lock ? 'lock' : decision === 'BUY' ? 'buy' : decision === 'SELL' ? 'sell' : 'hold'}`}>
-                      {holding.lock ? 'LOCK' : decision}
+                    <span className={`vd ${locked ? 'lock' : decision === 'BUY' ? 'buy' : decision === 'SELL' ? 'sell' : 'hold'}`}>
+                      {locked ? `LOCK ${lockRemain}d` : decision}
                     </span>
                     <span className="position-card__score">{item?.totalScore ?? '—'}</span>
                   </div>
@@ -292,6 +412,7 @@ export function T2_Holdings() {
 
                 <div className="position-card__footer">
                   <span>{holding.sector}</span>
+                  {locked && <span>売却制約 残り{lockRemain}日</span>}
                   <span>ROE {holding.roe.toFixed(1)}%</span>
                   <span>EPS {holding.epsG >= 0 ? '+' : ''}{holding.epsG.toFixed(1)}%</span>
                   <span>RSI {holding.rsi.toFixed(0)}</span>

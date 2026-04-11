@@ -422,10 +422,11 @@ export function T1_Decision() {
             <div className="section-heading-row">
               <div>
                 <div className="section-kicker">Allocation drift</div>
-                <h3 className="section-heading">配分のズレ</h3>
+                <h3 className="section-heading">個別株運用の配分差分</h3>
               </div>
               <div className="section-caption">{allocationDiffs.length}分類</div>
             </div>
+            <p className="section-copy">この提案は個別株ポートフォリオのみを対象にしています。投信の最適化は投信タブで別管理します。</p>
 
             <div className="allocation-list">
               {allocationDiffs.map(item => (

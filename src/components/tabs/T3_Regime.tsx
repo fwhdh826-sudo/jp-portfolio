@@ -1,376 +1,364 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useAppStore } from '../../store/useAppStore'
-import { formatDateTime } from '../../utils/format'
+import { formatDateTime, formatJPYAuto } from '../../utils/format'
+import type { Holding, HoldingAnalysis } from '../../types'
 
-function getTone(value: number, positiveThreshold: number, cautionThreshold: number) {
-  if (value >= positiveThreshold) return 'positive'
-  if (value >= cautionThreshold) return 'caution'
-  return 'negative'
+interface AxisDetail {
+  key: string
+  label: string
+  value: number
+  tone: 'positive' | 'negative' | 'caution'
+  reason: string
+}
+
+function clamp(value: number, min: number, max: number) {
+  return Math.min(max, Math.max(min, value))
+}
+
+function toneByScore(score: number): AxisDetail['tone'] {
+  if (score >= 65) return 'positive'
+  if (score <= 44) return 'negative'
+  return 'caution'
+}
+
+function toDisplay(value: number) {
+  return Math.round(clamp(value, 0, 100))
+}
+
+function scoreValuation(holding: Holding, analysis: HoldingAnalysis) {
+  const perScore = holding.per > 0 ? 100 - clamp((holding.per - 8) * 2.2, 0, 70) : 40
+  const pbrScore = 100 - clamp((holding.pbr - 0.8) * 22, 0, 45)
+  const debateScore = analysis.debate.sevenAxis.valuation
+  return toDisplay((perScore * 0.35) + (pbrScore * 0.2) + (debateScore * 0.45))
+}
+
+function scoreEarningPower(holding: Holding) {
+  const roe = clamp(holding.roe * 4.3, 0, 100)
+  const cf = holding.cfOk ? 74 : 46
+  return toDisplay((roe * 0.7) + (cf * 0.3))
+}
+
+function scoreGrowth(holding: Holding, analysis: HoldingAnalysis) {
+  const eps = clamp(holding.epsG * 3.2 + 45, 20, 100)
+  return toDisplay((eps * 0.45) + (analysis.debate.sevenAxis.growth * 0.55))
+}
+
+function scoreSafety(holding: Holding, analysis: HoldingAnalysis) {
+  const leveragePenalty = clamp((holding.de - 0.3) * 11, 0, 55)
+  const volatilityPenalty = clamp((holding.sigma - 0.12) * 120, 0, 45)
+  const base = 100 - leveragePenalty - volatilityPenalty
+  return toDisplay((base * 0.55) + (analysis.debate.sevenAxis.risk * 0.45))
+}
+
+function scoreTrend(holding: Holding, analysis: HoldingAnalysis) {
+  const momentum = clamp(holding.mom3m * 4 + 50, 20, 100)
+  const rsi = holding.rsi >= 42 && holding.rsi <= 68 ? 70 : holding.rsi > 70 ? 42 : 50
+  return toDisplay((analysis.debate.sevenAxis.momentum * 0.55) + (momentum * 0.35) + (rsi * 0.1))
+}
+
+function scoreSupplyDemand(holding: Holding, marketVix: number) {
+  const volume = holding.vol ? 72 : 50
+  const regimePenalty = marketVix >= 25 ? 18 : marketVix >= 20 ? 10 : 0
+  return toDisplay(volume + clamp(holding.mom3m * 1.8, -18, 20) - regimePenalty)
+}
+
+function scoreShareholderReturn(holding: Holding) {
+  const div = clamp(holding.divG * 11 + 30, 20, 100)
+  const cash = holding.cfOk ? 68 : 45
+  return toDisplay((div * 0.7) + (cash * 0.3))
+}
+
+function scoreBusinessMoat(holding: Holding, analysis: HoldingAnalysis) {
+  const quality = analysis.qualityScore * 10
+  const profitability = clamp(holding.roe * 3.6, 25, 100)
+  return toDisplay((quality * 0.55) + (profitability * 0.45))
+}
+
+function buildAxisDetails(
+  holding: Holding,
+  analysis: HoldingAnalysis,
+  marketVix: number,
+): AxisDetail[] {
+  const valuation = scoreValuation(holding, analysis)
+  const earningPower = scoreEarningPower(holding)
+  const growth = scoreGrowth(holding, analysis)
+  const safety = scoreSafety(holding, analysis)
+  const trend = scoreTrend(holding, analysis)
+  const supplyDemand = scoreSupplyDemand(holding, marketVix)
+  const shareholder = scoreShareholderReturn(holding)
+  const moat = scoreBusinessMoat(holding, analysis)
+
+  return [
+    {
+      key: 'valuation',
+      label: '割安度',
+      value: valuation,
+      tone: toneByScore(valuation),
+      reason: `PER ${holding.per.toFixed(1)}x / PBR ${holding.pbr.toFixed(1)}x を反映。`,
+    },
+    {
+      key: 'earningPower',
+      label: '稼ぐ力',
+      value: earningPower,
+      tone: toneByScore(earningPower),
+      reason: `ROE ${holding.roe.toFixed(1)}% とCF健全性を統合評価。`,
+    },
+    {
+      key: 'growth',
+      label: '成長性',
+      value: growth,
+      tone: toneByScore(growth),
+      reason: `EPS成長率 ${holding.epsG.toFixed(1)}% とAI成長軸を反映。`,
+    },
+    {
+      key: 'safety',
+      label: '安全性',
+      value: safety,
+      tone: toneByScore(safety),
+      reason: `D/E ${holding.de.toFixed(1)} とボラティリティ ${(holding.sigma * 100).toFixed(1)}% を反映。`,
+    },
+    {
+      key: 'trend',
+      label: 'トレンド',
+      value: trend,
+      tone: toneByScore(trend),
+      reason: `3ヶ月モメンタム ${holding.mom3m.toFixed(1)}% / RSI ${holding.rsi.toFixed(0)} を反映。`,
+    },
+    {
+      key: 'supplyDemand',
+      label: '需給',
+      value: supplyDemand,
+      tone: toneByScore(supplyDemand),
+      reason: `出来高シグナル ${holding.vol ? 'あり' : 'なし'} と地合い(VIX)を評価。`,
+    },
+    {
+      key: 'shareholder',
+      label: '還元力',
+      value: shareholder,
+      tone: toneByScore(shareholder),
+      reason: `配当成長率 ${holding.divG.toFixed(1)}% とCF余力を評価。`,
+    },
+    {
+      key: 'moat',
+      label: '事業独占力',
+      value: moat,
+      tone: toneByScore(moat),
+      reason: `品質スコア ${analysis.qualityScore}/10 と収益性を統合評価。`,
+    },
+  ]
+}
+
+function buildSummaryComment(holding: Holding, analysis: HoldingAnalysis, axes: AxisDetail[]) {
+  const sorted = [...axes].sort((a, b) => b.value - a.value)
+  const best = sorted[0]
+  const weak = sorted[sorted.length - 1]
+  const stance =
+    analysis.decision === 'BUY'
+      ? '分割での買い増し候補'
+      : analysis.decision === 'SELL'
+      ? '縮小優先候補'
+      : '維持監視候補'
+
+  return `${holding.name}は総合スコア${analysis.totalScore}点で、現時点の判断は「${stance}」です。` +
+    `強みは${best.label}${best.value}点、弱みは${weak.label}${weak.value}点です。` +
+    `主な強気材料は「${analysis.debate.bullReasons[0] ?? '業績と需給の改善'}」、` +
+    `注意点は「${analysis.debate.bearReasons[0] ?? '短期のボラティリティ'}」です。`
+}
+
+function buildRadarPoints(values: number[], center: number, radius: number) {
+  const count = values.length
+  return values.map((value, index) => {
+    const ratio = clamp(value, 0, 100) / 100
+    const angle = ((Math.PI * 2) / count) * index - Math.PI / 2
+    const x = center + Math.cos(angle) * radius * ratio
+    const y = center + Math.sin(angle) * radius * ratio
+    return { x, y }
+  })
+}
+
+function RadarChart({ axes }: { axes: AxisDetail[] }) {
+  const center = 140
+  const radius = 92
+  const count = axes.length
+  const values = axes.map(axis => axis.value)
+  const mainPoints = buildRadarPoints(values, center, radius)
+  const basePoints = buildRadarPoints(Array.from({ length: count }, () => 50), center, radius)
+  const mainPath = mainPoints.map(point => `${point.x},${point.y}`).join(' ')
+  const basePath = basePoints.map(point => `${point.x},${point.y}`).join(' ')
+
+  return (
+    <svg className="ai-radar" viewBox="0 0 280 280" role="img" aria-label="8軸スコアレーダー">
+      {[20, 40, 60, 80, 100].map(level => {
+        const ring = buildRadarPoints(Array.from({ length: count }, () => level), center, radius)
+        return (
+          <polygon
+            key={level}
+            points={ring.map(point => `${point.x},${point.y}`).join(' ')}
+            className="ai-radar__ring"
+          />
+        )
+      })}
+
+      {axes.map((axis, index) => {
+        const angle = ((Math.PI * 2) / count) * index - Math.PI / 2
+        const x = center + Math.cos(angle) * radius
+        const y = center + Math.sin(angle) * radius
+        const labelX = center + Math.cos(angle) * (radius + 22)
+        const labelY = center + Math.sin(angle) * (radius + 22)
+        return (
+          <g key={axis.key}>
+            <line x1={center} y1={center} x2={x} y2={y} className="ai-radar__axis" />
+            <text x={labelX} y={labelY} className="ai-radar__label" textAnchor="middle">
+              {axis.label}
+            </text>
+          </g>
+        )
+      })}
+
+      <polygon points={basePath} className="ai-radar__base" />
+      <polygon points={mainPath} className="ai-radar__main" />
+      {mainPoints.map((point, index) => (
+        <circle key={axes[index].key} cx={point.x} cy={point.y} r={4} className="ai-radar__dot" />
+      ))}
+    </svg>
+  )
 }
 
 export function T3_Regime() {
-  const market = useAppStore(s => s.market)
-  const macro = useAppStore(s => s.macro)
-  const metrics = useAppStore(s => s.metrics)
-  const analysis = useAppStore(s => s.analysis)
   const holdings = useAppStore(s => s.holdings)
-  const news = useAppStore(s => s.news)
-  const learning = useAppStore(s => s.learning)
-  const margin = useAppStore(s => s.margin)
-  const flows = useAppStore(s => s.flows)
+  const analysis = useAppStore(s => s.analysis)
+  const market = useAppStore(s => s.market)
+  const system = useAppStore(s => s.system)
 
-  const overviewItems = [
-    {
-      label: '市場レジーム',
-      value: market.regime === 'bull' ? '強気' : market.regime === 'bear' ? '弱気' : '中立',
-      tone: market.regime === 'bull' ? 'positive' : market.regime === 'bear' ? 'negative' : 'caution',
-    },
-    {
-      label: 'RSI (14)',
-      value: market.rsi14.toFixed(0),
-      tone: market.rsi14 > 70 ? 'negative' : market.rsi14 < 35 ? 'positive' : 'caution',
-    },
-    {
-      label: 'MACD',
-      value: market.macd === 'golden' ? 'GC' : 'DC',
-      tone: market.macd === 'golden' ? 'positive' : 'negative',
-    },
-    {
-      label: 'Sharpe',
-      value: metrics ? metrics.sharpe.toFixed(2) : '—',
-      tone: metrics ? getTone(metrics.sharpe, 1, 0.5) : 'neutral',
-    },
-  ] as const
+  const [selectedCode, setSelectedCode] = useState('')
 
-  const scoredHoldings = useMemo(
+  const analyzedHoldings = useMemo(
     () =>
       holdings
         .map(holding => {
           const item = analysis.find(entry => entry.code === holding.code)
           return item ? { holding, analysis: item } : null
         })
-        .filter((item): item is { holding: typeof holdings[number]; analysis: typeof analysis[number] } => !!item),
+        .filter((item): item is { holding: Holding; analysis: HoldingAnalysis } => Boolean(item))
+        .sort((a, b) => b.analysis.totalScore - a.analysis.totalScore),
     [analysis, holdings],
   )
 
-  const technicalLeaders = [...scoredHoldings]
-    .sort((left, right) => right.analysis.technicalScore - left.analysis.technicalScore)
-    .slice(0, 6)
+  useEffect(() => {
+    if (analyzedHoldings.length === 0) return
+    if (!selectedCode || !analyzedHoldings.some(item => item.holding.code === selectedCode)) {
+      setSelectedCode(analyzedHoldings[0].holding.code)
+    }
+  }, [analyzedHoldings, selectedCode])
 
-  const fundamentalLeaders = [...scoredHoldings]
-    .sort((left, right) => right.analysis.fundamentalScore - left.analysis.fundamentalScore)
-    .slice(0, 6)
+  const current = analyzedHoldings.find(item => item.holding.code === selectedCode) ?? analyzedHoldings[0]
 
-  const bestDebate = analysis.length > 0
-    ? analysis.reduce((best, current) =>
-        current.debate.debateScore > best.debate.debateScore ? current : best,
-      analysis[0])
-    : null
+  if (!current) {
+    return (
+      <div className="tab-panel">
+        <article className="card">
+          <h2 className="section-heading">AI分析データがありません</h2>
+          <p className="section-copy">CSV取込またはデータ更新後に、AI分析レポートを表示します。</p>
+        </article>
+      </div>
+    )
+  }
 
-  const bestHolding = bestDebate
-    ? holdings.find(holding => holding.code === bestDebate.code)
-    : null
-
-  const relatedNews = bestHolding && news
-    ? news.stockNews.filter(item => item.tickers.includes(bestHolding.code)).slice(0, 4)
-    : []
-
-  const learningReady = (learning?.summary.total ?? 0) >= 20
+  const axes = buildAxisDetails(current.holding, current.analysis, market.vix)
+  const comment = buildSummaryComment(current.holding, current.analysis, axes)
+  const analyzedAt = system.analysisLastRunAt ? formatDateTime(system.analysisLastRunAt) : formatDateTime(new Date().toISOString())
 
   return (
-    <div className="tab-panel">
-      <section className="decision-grid">
-        <article className="card">
-          <div className="section-kicker">Regime view</div>
-          <h2 className="section-heading">市場判断の前提</h2>
-          <div className="summary-grid" style={{ marginTop: 18 }}>
-            {overviewItems.map(item => (
-              <div key={item.label} className={`summary-tile summary-tile--${item.tone}`}>
-                <div className="summary-tile__label">{item.label}</div>
-                <div className="summary-tile__value">{item.value}</div>
-              </div>
+    <div className="tab-panel ai-report-tab">
+      <article className="card ai-report">
+        <div className="ai-report__head">
+          <div>
+            <div className="position-card__code">| {current.holding.code} |</div>
+            <h2 className="ai-report__name">{current.holding.name}</h2>
+          </div>
+          <div className="ai-report__meta">
+            <div>
+              <span>分析日</span>
+              <strong>{analyzedAt}</strong>
+            </div>
+            <div>
+              <span>保有評価額</span>
+              <strong>{formatJPYAuto(current.holding.eval)}</strong>
+            </div>
+            <div>
+              <span>AI総合</span>
+              <strong>{current.analysis.totalScore}</strong>
+            </div>
+          </div>
+        </div>
+
+        <div className="ai-report__selector">
+          <label htmlFor="ai-stock-select">銘柄選択</label>
+          <select
+            id="ai-stock-select"
+            value={current.holding.code}
+            onChange={event => setSelectedCode(event.target.value)}
+          >
+            {analyzedHoldings.map(item => (
+              <option key={item.holding.code} value={item.holding.code}>
+                {item.holding.code} {item.holding.name}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="ai-report__top">
+          <section className="ai-report__panel">
+            <h3>8軸スコア レーダーチャート</h3>
+            <RadarChart axes={axes} />
+            <div className="ai-report__legend">
+              <span><i className="dot dot-main" /> {current.holding.name}</span>
+              <span><i className="dot dot-base" /> 基準値(50)</span>
+            </div>
+          </section>
+
+          <section className="ai-report__panel">
+            <h3>総合評価コメント</h3>
+            <p>{comment}</p>
+            <div className="ai-report__chips">
+              <span className={`vd ${current.analysis.decision === 'BUY' ? 'buy' : current.analysis.decision === 'SELL' ? 'sell' : 'hold'}`}>
+                {current.analysis.decision}
+              </span>
+              <span className="tone-chip tone-chip--neutral">確信度 {(current.analysis.confidence * 100).toFixed(0)}%</span>
+              <span className="tone-chip tone-chip--neutral">戦略ランク {current.analysis.strategyRank}</span>
+            </div>
+          </section>
+        </div>
+
+        <section className="ai-report__section">
+          <h3>8軸スコア一覧</h3>
+          <div className="ai-score-grid">
+            {axes.map(axis => (
+              <article key={axis.key} className={`ai-score-card ai-score-card--${axis.tone}`}>
+                <div className="ai-score-card__label">{axis.label}</div>
+                <div className="ai-score-card__value">{axis.value}</div>
+                <div className="ai-score-card__bar"><span style={{ width: `${axis.value}%` }} /></div>
+              </article>
             ))}
           </div>
+        </section>
 
-          <div className="metrics-inline">
-            <span>日経 {market.nikkei.toLocaleString('ja-JP')}</span>
-            <span>VIX {market.vix.toFixed(1)}</span>
-            <span>MA5 {market.ma5.toLocaleString('ja-JP')}</span>
-            <span>MA25 {market.ma25.toLocaleString('ja-JP')}</span>
-            <span>MA75 {market.ma75.toLocaleString('ja-JP')}</span>
+        <section className="ai-report__section">
+          <h3>各軸の詳細スコアと根拠</h3>
+          <div className="ai-detail-grid">
+            {axes.map(axis => (
+              <article key={axis.key} className={`ai-detail-card ai-detail-card--${axis.tone}`}>
+                <div className="ai-detail-card__top">
+                  <strong>{axis.label}</strong>
+                  <span>{axis.value}</span>
+                </div>
+                <div className="ai-score-card__bar"><span style={{ width: `${axis.value}%` }} /></div>
+                <p>{axis.reason}</p>
+              </article>
+            ))}
           </div>
-
-          {macro && (
-            <div className="detail-grid" style={{ marginTop: 18 }}>
-              <div className="detail-panel">
-                <div className="section-subtitle">マクロ指標</div>
-                <div className="detail-list">
-                  <span>S&P500 {macro.sp500.toLocaleString('en-US')} / {macro.sp500ChgPct >= 0 ? '+' : ''}{macro.sp500ChgPct.toFixed(2)}%</span>
-                  <span>NASDAQ {macro.nasdaq.toLocaleString('en-US')} / {macro.nasdaqChgPct >= 0 ? '+' : ''}{macro.nasdaqChgPct.toFixed(2)}%</span>
-                  <span>ドル円 {macro.usdjpy.toFixed(2)} / {macro.usdjpyChgPct >= 0 ? '+' : ''}{macro.usdjpyChgPct.toFixed(2)}%</span>
-                  <span>日経VI {macro.nikkeiVI.toFixed(1)} / {macro.nikkeiVIChg >= 0 ? '+' : ''}{macro.nikkeiVIChg.toFixed(2)}</span>
-                </div>
-              </div>
-
-              <div className="detail-panel">
-                <div className="section-subtitle">需給メモ</div>
-                <div className="detail-list">
-                  <span>BOJ {market.boj}</span>
-                  <span>次回観測 {market.bojNext}</span>
-                  <span>米10年 {macro.ust10y.toFixed(2)}%</span>
-                  <span>日10年 {macro.jgb10y.toFixed(2)}%</span>
-                </div>
-              </div>
-            </div>
-          )}
-        </article>
-
-        <article className="card">
-          <div className="section-kicker">Learning engine</div>
-          <h2 className="section-heading">自己学習の状態</h2>
-
-          {learning ? (
-            <>
-              <div className="summary-grid" style={{ marginTop: 18 }}>
-                <div className={`summary-tile summary-tile--${learningReady ? 'positive' : 'caution'}`}>
-                  <div className="summary-tile__label">総判定数</div>
-                  <div className="summary-tile__value">{learning.summary.total}</div>
-                </div>
-                <div className={`summary-tile summary-tile--${getTone(learning.summary.accuracy, 55, 45)}`}>
-                  <div className="summary-tile__label">勝率</div>
-                  <div className="summary-tile__value">{learning.summary.accuracy.toFixed(1)}%</div>
-                </div>
-                <div className={`summary-tile summary-tile--${learning.summary.avgReward >= 0 ? 'positive' : 'negative'}`}>
-                  <div className="summary-tile__label">平均報酬</div>
-                  <div className="summary-tile__value">{learning.summary.avgReward >= 0 ? '+' : ''}{learning.summary.avgReward.toFixed(3)}</div>
-                </div>
-                <div className="summary-tile summary-tile--neutral">
-                  <div className="summary-tile__label">最終更新</div>
-                  <div className="summary-tile__value" style={{ fontSize: 18 }}>
-                    {formatDateTime(learning.lastUpdated)}
-                  </div>
-                </div>
-              </div>
-
-              <div className="detail-grid" style={{ marginTop: 18 }}>
-                {(['BUY', 'HOLD', 'SELL'] as const).map(key => {
-                  const summary = learning.summary.byDecision[key]
-                  return (
-                    <div key={key} className="detail-panel">
-                      <div className="section-subtitle">{key} 精度</div>
-                      <div className="detail-list">
-                        <span>精度 {summary.accuracy.toFixed(1)}%</span>
-                        <span>{summary.wins}勝 / {summary.losses}敗 / {summary.flats}保留</span>
-                        <span>平均報酬 {summary.avgReward >= 0 ? '+' : ''}{summary.avgReward.toFixed(3)}</span>
-                      </div>
-                    </div>
-                  )
-                })}
-              </div>
-
-              <div style={{ marginTop: 18 }}>
-                <div className="section-subtitle">次サイクル重み</div>
-                <div className="metrics-inline">
-                  {Object.entries(learning.suggestedWeights).map(([key, value]) => (
-                    <span key={key}>{key} {(value * 100).toFixed(1)}%</span>
-                  ))}
-                </div>
-                <p className="section-copy" style={{ marginTop: 12 }}>
-                  {learningReady
-                    ? '現在の推奨重みは分析ロジックへ適用済みです。'
-                    : `適用前です。あと ${Math.max(0, 20 - learning.summary.total)} 件の実績が必要です。`}
-                </p>
-              </div>
-
-              {learning.summary.driftSignals.length > 0 && (
-                <div style={{ marginTop: 18 }}>
-                  <div className="section-subtitle">ドリフト検知</div>
-                  <ul className="simple-list simple-list--alert">
-                    {learning.summary.driftSignals.map(signal => <li key={signal}>{signal}</li>)}
-                  </ul>
-                </div>
-              )}
-            </>
-          ) : (
-            <div className="empty-state" style={{ marginTop: 18 }}>
-              学習ログがまだありません。分析を複数回まわすと自動で蓄積されます。
-            </div>
-          )}
-        </article>
-      </section>
-
-      <section className="content-grid">
-        <div className="stack-layout">
-          <article className="card">
-            <div className="section-heading-row">
-              <div>
-                <div className="section-kicker">Technical ranking</div>
-                <h3 className="section-heading">テクニカル上位</h3>
-              </div>
-            </div>
-            <div className="score-list">
-              {technicalLeaders.map(item => (
-                <div key={item.holding.code} className="score-list__item">
-                  <div>
-                    <strong>{item.holding.code} {item.holding.name}</strong>
-                    <span>
-                      RSI {item.holding.rsi.toFixed(0)} / 3M {item.holding.mom3m >= 0 ? '+' : ''}{item.holding.mom3m.toFixed(1)}%
-                    </span>
-                  </div>
-                  <span>{item.analysis.technicalScore}/20</span>
-                </div>
-              ))}
-            </div>
-          </article>
-
-          <article className="card">
-            <div className="section-heading-row">
-              <div>
-                <div className="section-kicker">Fundamental ranking</div>
-                <h3 className="section-heading">ファンダ上位</h3>
-              </div>
-            </div>
-            <div className="score-list">
-              {fundamentalLeaders.map(item => (
-                <div key={item.holding.code} className="score-list__item">
-                  <div>
-                    <strong>{item.holding.code} {item.holding.name}</strong>
-                    <span>
-                      ROE {item.holding.roe.toFixed(1)}% / EPS {item.holding.epsG >= 0 ? '+' : ''}{item.holding.epsG.toFixed(1)}% / PER {item.holding.per.toFixed(1)}x
-                    </span>
-                  </div>
-                  <span>{item.analysis.fundamentalScore}/30</span>
-                </div>
-              ))}
-            </div>
-          </article>
-
-          {bestDebate && bestHolding && (
-            <article className="card">
-              <div className="section-heading-row">
-                <div>
-                  <div className="section-kicker">Consensus</div>
-                  <h3 className="section-heading">AIコンセンサス</h3>
-                </div>
-                <div className="section-caption">{bestHolding.code}</div>
-              </div>
-
-              <div className="recommendation-card recommendation-card--neutral" style={{ marginTop: 16 }}>
-                <div className="recommendation-card__top">
-                  <div>
-                    <div className="recommendation-card__code">{bestHolding.code}</div>
-                    <div className="recommendation-card__name">{bestHolding.name}</div>
-                  </div>
-                  <div className="recommendation-card__meta">
-                    <span className={`vd ${bestDebate.decision === 'BUY' ? 'buy' : bestDebate.decision === 'SELL' ? 'sell' : 'hold'}`}>
-                      {bestDebate.decision}
-                    </span>
-                    <span className="recommendation-card__score">{bestDebate.debate.debateScore}</span>
-                  </div>
-                </div>
-
-                <div className="metrics-inline">
-                  {Object.entries(bestDebate.debate.sevenAxis).map(([key, value]) => (
-                    <span key={key}>{key} {value}</span>
-                  ))}
-                </div>
-
-                <div className="detail-grid" style={{ marginTop: 18 }}>
-                  <div className="detail-panel">
-                    <div className="section-subtitle">強気材料</div>
-                    <ul className="simple-list">
-                      {(bestDebate.debate.bullReasons.length > 0 ? bestDebate.debate.bullReasons : ['強気理由の集約中です。'])
-                        .slice(0, 4)
-                        .map(reason => <li key={reason}>{reason}</li>)}
-                    </ul>
-                  </div>
-
-                  <div className="detail-panel">
-                    <div className="section-subtitle">弱気材料</div>
-                    <ul className="simple-list simple-list--alert">
-                      {(bestDebate.debate.bearReasons.length > 0 ? bestDebate.debate.bearReasons : ['弱気理由の集約中です。'])
-                        .slice(0, 4)
-                        .map(reason => <li key={reason}>{reason}</li>)}
-                    </ul>
-                  </div>
-                </div>
-
-                {relatedNews.length > 0 && (
-                  <div style={{ marginTop: 18 }}>
-                    <div className="section-subtitle">関連ニュース</div>
-                    <div className="score-list">
-                      {relatedNews.map(item => (
-                        <div key={item.id} className="score-list__item">
-                          <div>
-                            <strong>{item.title}</strong>
-                            <span>{item.source} / {formatDateTime(item.publishedAt)}</span>
-                          </div>
-                          <span>{(item.importance * 100).toFixed(0)}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-            </article>
-          )}
-        </div>
-
-        <div className="stack-layout">
-          <article className="card">
-            <div className="section-heading-row">
-              <div>
-                <div className="section-kicker">Flow and margin</div>
-                <h3 className="section-heading">需給と資金フロー</h3>
-              </div>
-            </div>
-
-            <div className="detail-grid" style={{ marginTop: 16 }}>
-              <div className="detail-panel">
-                <div className="section-subtitle">外国人・個人・機関</div>
-                <div className="detail-list">
-                  <span>外国人 {flows ? `${flows.foreignNet >= 0 ? '+' : ''}${flows.foreignNet.toLocaleString('ja-JP')}億円` : '—'}</span>
-                  <span>個人 {flows ? `${flows.individualNet >= 0 ? '+' : ''}${flows.individualNet.toLocaleString('ja-JP')}億円` : '—'}</span>
-                  <span>機関 {flows ? `${flows.institutionalNet >= 0 ? '+' : ''}${flows.institutionalNet.toLocaleString('ja-JP')}億円` : '—'}</span>
-                  <span>信託5週 {flows ? `${flows.trust5w >= 0 ? '+' : ''}${flows.trust5w.toLocaleString('ja-JP')}億円` : '—'}</span>
-                </div>
-              </div>
-
-              <div className="detail-panel">
-                <div className="section-subtitle">信用需給</div>
-                <div className="detail-list">
-                  <span>買残 {margin ? `${margin.buyingMargin.toLocaleString('ja-JP')}億円` : '—'}</span>
-                  <span>売残 {margin ? `${margin.sellingMargin.toLocaleString('ja-JP')}億円` : '—'}</span>
-                  <span>貸借倍率 {margin ? margin.ratio.toFixed(2) : '—'}</span>
-                  <span>週次 {margin?.weekOf ?? '—'}</span>
-                </div>
-              </div>
-            </div>
-          </article>
-
-          <article className="card">
-            <div className="section-heading-row">
-              <div>
-                <div className="section-kicker">Decision distribution</div>
-                <h3 className="section-heading">判定分布</h3>
-              </div>
-            </div>
-            <div className="summary-grid" style={{ marginTop: 16 }}>
-              {[
-                { label: 'BUY', value: analysis.filter(item => item.decision === 'BUY').length, tone: 'positive' },
-                { label: 'HOLD', value: analysis.filter(item => item.decision === 'HOLD').length, tone: 'neutral' },
-                { label: 'SELL', value: analysis.filter(item => item.decision === 'SELL').length, tone: 'negative' },
-                { label: '対象数', value: analysis.length, tone: 'neutral' },
-              ].map(item => (
-                <div key={item.label} className={`summary-tile summary-tile--${item.tone}`}>
-                  <div className="summary-tile__label">{item.label}</div>
-                  <div className="summary-tile__value">{item.value}</div>
-                </div>
-              ))}
-            </div>
-          </article>
-        </div>
-      </section>
+        </section>
+      </article>
     </div>
   )
 }

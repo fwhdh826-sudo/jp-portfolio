@@ -34,6 +34,7 @@ export function App() {
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: 0, behavior: 'auto' })
+    window.scrollTo({ top: 0, behavior: 'auto' })
   }, [activeTab])
 
   return (
