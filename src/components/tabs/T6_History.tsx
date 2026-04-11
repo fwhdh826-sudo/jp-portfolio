@@ -1,10 +1,12 @@
 import { useMemo, useState } from 'react'
 import { useAppStore } from '../../store/useAppStore'
-import { selectBuyList, selectTotalEval } from '../../store/selectors'
+import { selectBuyList, selectIsLoading, selectTotalEval } from '../../store/selectors'
 import { formatDateTime, formatJPYAuto, formatRelativeTime } from '../../utils/format'
 import type { NewsItem } from '../../types'
 
 type NewsTab = 'market' | 'holding' | 'candidate' | 'trust' | 'history'
+
+type Tone = 'positive' | 'caution' | 'negative' | 'neutral'
 
 function getImpact(item: NewsItem) {
   const impact = item.impact ?? (item.sentimentScore > 0.2 ? 'positive' : item.sentimentScore < -0.2 ? 'negative' : 'neutral')
@@ -17,6 +19,38 @@ function getImportance(item: NewsItem) {
   if (item.importance >= 0.75) return { label: '高', tone: 'negative' as const }
   if (item.importance >= 0.45) return { label: '中', tone: 'caution' as const }
   return { label: '低', tone: 'neutral' as const }
+}
+
+function parseTimestamp(raw: string | null | undefined): Date | null {
+  if (!raw) return null
+  const normalized = raw.includes('T') ? raw : raw.replace(' ', 'T')
+  const parsed = new Date(normalized)
+  return Number.isNaN(parsed.getTime()) ? null : parsed
+}
+
+function getFreshness(raw: string | null | undefined) {
+  const parsed = parseTimestamp(raw)
+  if (!parsed) return { label: '未取得', tone: 'neutral' as Tone, minutes: null as number | null }
+  const minutes = Math.max(0, Math.round((Date.now() - parsed.getTime()) / 60000))
+  if (minutes <= 90) return { label: `${minutes}分前`, tone: 'positive' as Tone, minutes }
+  if (minutes <= 360) return { label: `${minutes}分前`, tone: 'caution' as Tone, minutes }
+  if (minutes <= 1440) return { label: `${Math.round(minutes / 60)}時間前`, tone: 'caution' as Tone, minutes }
+  return { label: `${Math.round(minutes / 1440)}日前`, tone: 'negative' as Tone, minutes }
+}
+
+function sourceLabel(source: string) {
+  const labels: Record<string, string> = {
+    market: 'Market',
+    correlation: 'Correlation',
+    news: 'News',
+    trust: 'Trust',
+    macro: 'Macro',
+    nikkeiVI: 'NikkeiVI',
+    sq: 'SQ',
+    margin: 'Margin',
+    flows: 'Flows',
+  }
+  return labels[source] ?? source
 }
 
 function NewsEntry({ item, label }: { item: NewsItem; label: string }) {
@@ -82,8 +116,10 @@ export function T6_History() {
   const holdings = useAppStore(s => s.holdings)
   const trust = useAppStore(s => s.trust)
   const importCsv = useAppStore(s => s.importCsv)
+  const refreshAllData = useAppStore(s => s.refreshAllData)
   const buyList = useAppStore(selectBuyList)
   const totalEval = useAppStore(selectTotalEval)
+  const isLoading = useAppStore(selectIsLoading)
 
   const handleDrop = (event: React.DragEvent) => {
     event.preventDefault()
@@ -125,7 +161,7 @@ export function T6_History() {
           if (item.tickers.some(code => candidateCodes.has(code))) return true
           return [...candidateCodes].some(code => item.title.includes(code) || item.summary.includes(code))
         })
-        .slice(0, 30),
+        .slice(0, 40),
     [candidateCodes, marketNews, stockNews],
   )
 
@@ -133,7 +169,7 @@ export function T6_History() {
     () =>
       [...marketNews, ...stockNews]
         .filter(item => trustKeywords.some(keyword => keyword && (item.title.includes(keyword) || item.summary.includes(keyword))))
-        .slice(0, 30),
+        .slice(0, 40),
     [marketNews, stockNews, trustKeywords],
   )
 
@@ -142,7 +178,7 @@ export function T6_History() {
     { id: 'holding' as const, label: '保有銘柄', count: holdingNews.length },
     { id: 'candidate' as const, label: '候補銘柄', count: candidateNews.length },
     { id: 'trust' as const, label: '投信関連', count: trustNews.length },
-    { id: 'history' as const, label: '更新履歴', count: 0 },
+    { id: 'history' as const, label: '更新履歴', count: Object.keys(system.dataSourceStatus).length },
   ]
 
   const activeItems =
@@ -166,13 +202,68 @@ export function T6_History() {
     { label: 'BUY候補監視', current: buyList.length, target: 3, invert: false, unit: '件' },
   ]
 
+  const sourceRows = useMemo(() => {
+    const timestamps = system.dataTimestamps
+    return Object.entries(system.dataSourceStatus).map(([source, status]) => {
+      const raw = timestamps?.[source as keyof typeof timestamps] ?? null
+      const freshness = getFreshness(raw)
+      const tone: Tone =
+        status === 'error' || status === 'none'
+          ? 'negative'
+          : freshness.tone === 'negative'
+            ? 'negative'
+            : freshness.tone === 'caution'
+              ? 'caution'
+              : status === 'loaded'
+                ? 'positive'
+                : 'neutral'
+      return {
+        source,
+        label: sourceLabel(source),
+        status,
+        raw,
+        freshness,
+        tone,
+      }
+    })
+  }, [system.dataSourceStatus, system.dataTimestamps])
+
+  const staleRows = sourceRows.filter(row => row.tone === 'negative')
+  const digestItems = useMemo(() => {
+    const merged = [...holdingNews, ...candidateNews, ...trustNews, ...marketNews]
+      .sort((left, right) => right.importance - left.importance)
+    const unique: NewsItem[] = []
+    const seen = new Set<string>()
+    merged.forEach(item => {
+      if (seen.has(item.id)) return
+      seen.add(item.id)
+      unique.push(item)
+    })
+    return unique
+      .filter(item => item.importance >= 0.68 || (item.impact ?? 'neutral') === 'negative')
+      .slice(0, 6)
+  }, [candidateNews, holdingNews, marketNews, trustNews])
+
   return (
     <div className="tab-panel">
       <section className="decision-grid">
-        <article className="card">
-          <div className="section-kicker">News command</div>
-          <h2 className="section-heading">情報更新の全体像</h2>
-          <div className="summary-grid" style={{ marginTop: 18 }}>
+        <article className="card news-command">
+          <div className="section-heading-row">
+            <div>
+              <div className="section-kicker">News command</div>
+              <h2 className="section-heading">情報更新の全体像</h2>
+            </div>
+            <button
+              className={`status-shell__refresh${isLoading ? ' is-loading' : ''}`}
+              onClick={() => { void refreshAllData() }}
+              disabled={isLoading}
+              type="button"
+            >
+              {isLoading ? '更新中...' : 'データ更新'}
+            </button>
+          </div>
+
+          <div className="summary-grid" style={{ marginTop: 16 }}>
             <div className="summary-tile summary-tile--neutral">
               <div className="summary-tile__label">市場ニュース</div>
               <div className="summary-tile__value">{marketNews.length}</div>
@@ -198,32 +289,37 @@ export function T6_History() {
             <span>BUY候補 {buyList.length}</span>
             <span>ニュース総数 {news?.meta.totalCount ?? 0}</span>
             <span>重複除去 {news?.meta.duplicateRemoved ?? 0}</span>
+            <span>データ異常 {staleRows.length}件</span>
           </div>
+
+          {staleRows.length > 0 && (
+            <div className="news-command__alerts">
+              {staleRows.map(row => (
+                <div key={row.source} className="news-command__alert">
+                  <strong>{row.label}</strong>
+                  <span>{row.status} / {row.freshness.label}</span>
+                </div>
+              ))}
+            </div>
+          )}
         </article>
 
         <article className="card">
-          <div className="section-kicker">Macro memo</div>
-          <h2 className="section-heading">今朝の確認ポイント</h2>
-          <div className="detail-grid" style={{ marginTop: 18 }}>
-            <div className="detail-panel">
-              <div className="section-subtitle">マクロ</div>
-              <div className="detail-list">
-                <span>S&P500 {macro ? `${macro.sp500.toLocaleString('en-US')} / ${macro.sp500ChgPct >= 0 ? '+' : ''}${macro.sp500ChgPct.toFixed(2)}%` : '—'}</span>
-                <span>VIX {macro ? `${macro.vix.toFixed(2)} / ${macro.vixChg >= 0 ? '+' : ''}${macro.vixChg.toFixed(2)}` : '—'}</span>
-                <span>ドル円 {macro ? `${macro.usdjpy.toFixed(2)} / ${macro.usdjpyChgPct >= 0 ? '+' : ''}${macro.usdjpyChgPct.toFixed(2)}%` : '—'}</span>
-                <span>日経VI {macro ? `${macro.nikkeiVI.toFixed(1)} / ${macro.nikkeiVIChg >= 0 ? '+' : ''}${macro.nikkeiVIChg.toFixed(2)}` : '—'}</span>
+          <div className="section-kicker">Data freshness</div>
+          <h2 className="section-heading">ソース鮮度ボード</h2>
+          <div className="freshness-board" style={{ marginTop: 16 }}>
+            {sourceRows.map(row => (
+              <div key={row.source} className={`freshness-board__item freshness-board__item--${row.tone}`}>
+                <div>
+                  <strong>{row.label}</strong>
+                  <span>{row.raw ? formatDateTime(row.raw) : '更新日時なし'}</span>
+                </div>
+                <div className="freshness-board__chips">
+                  <span className={`tone-chip tone-chip--${row.tone}`}>{row.freshness.label}</span>
+                  <span className="tone-chip tone-chip--neutral">{row.status}</span>
+                </div>
               </div>
-            </div>
-
-            <div className="detail-panel">
-              <div className="section-subtitle">イベント</div>
-              <div className="detail-list">
-                <span>次回SQ {sqCalendar?.nextSQ ? `${sqCalendar.nextSQ.date} / 残り${sqCalendar.nextSQ.dayUntil}営業日` : '—'}</span>
-                <span>CSV取込 {system.csvLastImportedAt ? formatDateTime(system.csvLastImportedAt) : '未実施'}</span>
-                <span>分析更新 {system.analysisLastRunAt ? formatDateTime(system.analysisLastRunAt) : '未実行'}</span>
-                <span>全体更新 {system.lastUpdated ? formatDateTime(system.lastUpdated) : '未更新'}</span>
-              </div>
-            </div>
+            ))}
           </div>
         </article>
       </section>
@@ -265,6 +361,36 @@ export function T6_History() {
       <article className="card" style={{ marginTop: 18 }}>
         <div className="section-heading-row">
           <div>
+            <div className="section-kicker">Urgent digest</div>
+            <h3 className="section-heading">優先確認ヘッドライン</h3>
+          </div>
+        </div>
+
+        {digestItems.length > 0 ? (
+          <div className="news-urgent" style={{ marginTop: 14 }}>
+            {digestItems.map(item => {
+              const impact = getImpact(item)
+              return (
+                <div key={item.id} className={`news-urgent__item news-urgent__item--${impact.tone}`}>
+                  <div>
+                    <strong>{item.title}</strong>
+                    <span>{item.source} / {formatRelativeTime(item.publishedAt)} / 重要度 {(item.importance * 100).toFixed(0)}</span>
+                  </div>
+                  <span className={`tone-chip tone-chip--${impact.tone}`}>{impact.label}</span>
+                </div>
+              )
+            })}
+          </div>
+        ) : (
+          <div className="empty-state" style={{ marginTop: 14 }}>
+            優先ヘッドラインはまだありません。
+          </div>
+        )}
+      </article>
+
+      <article className="card" style={{ marginTop: 18 }}>
+        <div className="section-heading-row">
+          <div>
             <div className="section-kicker">Feed view</div>
             <h3 className="section-heading">ニュース一覧</h3>
           </div>
@@ -279,7 +405,7 @@ export function T6_History() {
               type="button"
             >
               <span>{item.label}</span>
-              {item.id !== 'history' && <strong>{item.count}</strong>}
+              <strong>{item.count}</strong>
             </button>
           ))}
         </div>
@@ -296,17 +422,46 @@ export function T6_History() {
               <small>{system.csvLastImportedAt ? `最終取込 ${formatDateTime(system.csvLastImportedAt)}` : 'まだ取り込みはありません。'}</small>
             </div>
 
-            <div className="score-list">
-              {Object.entries(system.dataSourceStatus).map(([source, status]) => (
-                <div key={source} className="score-list__item">
+            <div className="freshness-board">
+              {sourceRows.map(row => (
+                <div key={`history-${row.source}`} className={`freshness-board__item freshness-board__item--${row.tone}`}>
                   <div>
-                    <strong>{source}</strong>
-                    <span>{system.dataTimestamps?.[source as keyof typeof system.dataTimestamps] ? formatDateTime(system.dataTimestamps[source as keyof typeof system.dataTimestamps]!) : '更新日時なし'}</span>
+                    <strong>{row.label}</strong>
+                    <span>{row.raw ? formatDateTime(row.raw) : '更新日時なし'}</span>
                   </div>
-                  <span>{status}</span>
+                  <div className="freshness-board__chips">
+                    <span className={`tone-chip tone-chip--${row.tone}`}>{row.freshness.label}</span>
+                    <span className="tone-chip tone-chip--neutral">{row.status}</span>
+                  </div>
                 </div>
               ))}
             </div>
+
+            <article className="card">
+              <div className="section-kicker">Macro memo</div>
+              <h3 className="section-heading">今朝の確認ポイント</h3>
+              <div className="detail-grid" style={{ marginTop: 14 }}>
+                <div className="detail-panel">
+                  <div className="section-subtitle">マクロ</div>
+                  <div className="detail-list">
+                    <span>S&P500 {macro ? `${macro.sp500.toLocaleString('en-US')} / ${macro.sp500ChgPct >= 0 ? '+' : ''}${macro.sp500ChgPct.toFixed(2)}%` : '—'}</span>
+                    <span>VIX {macro ? `${macro.vix.toFixed(2)} / ${macro.vixChg >= 0 ? '+' : ''}${macro.vixChg.toFixed(2)}` : '—'}</span>
+                    <span>ドル円 {macro ? `${macro.usdjpy.toFixed(2)} / ${macro.usdjpyChgPct >= 0 ? '+' : ''}${macro.usdjpyChgPct.toFixed(2)}%` : '—'}</span>
+                    <span>日経VI {macro ? `${macro.nikkeiVI.toFixed(1)} / ${macro.nikkeiVIChg >= 0 ? '+' : ''}${macro.nikkeiVIChg.toFixed(2)}` : '—'}</span>
+                  </div>
+                </div>
+
+                <div className="detail-panel">
+                  <div className="section-subtitle">イベント</div>
+                  <div className="detail-list">
+                    <span>次回SQ {sqCalendar?.nextSQ ? `${sqCalendar.nextSQ.date} / 残り${sqCalendar.nextSQ.dayUntil}営業日` : '—'}</span>
+                    <span>CSV取込 {system.csvLastImportedAt ? formatDateTime(system.csvLastImportedAt) : '未実施'}</span>
+                    <span>分析更新 {system.analysisLastRunAt ? formatDateTime(system.analysisLastRunAt) : '未実行'}</span>
+                    <span>全体更新 {system.lastUpdated ? formatDateTime(system.lastUpdated) : '未更新'}</span>
+                  </div>
+                </div>
+              </div>
+            </article>
           </div>
         ) : activeItems.length > 0 ? (
           <div className="news-feed" style={{ marginTop: 18 }}>

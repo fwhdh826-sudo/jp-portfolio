@@ -16,6 +16,8 @@ interface DecisionLog {
   detail: string
 }
 
+type LogFilter = 'ALL' | DecisionLog['action']
+
 function loadWatchlist() {
   try {
     return JSON.parse(localStorage.getItem('v83_watchlist') || '[]') as WatchItem[]
@@ -90,6 +92,7 @@ export function T5_Backtest() {
   const [watchName, setWatchName] = useState('')
   const [watchReason, setWatchReason] = useState('')
   const [budget, setBudget] = useState(1_000_000)
+  const [logFilter, setLogFilter] = useState<LogFilter>('ALL')
 
   useEffect(() => {
     saveWatchlist(watchlist)
@@ -101,10 +104,14 @@ export function T5_Backtest() {
 
   const addWatch = () => {
     if (!watchCode.trim()) return
+
+    const nextCode = watchCode.trim().toUpperCase()
+    if (watchlist.some(item => item.code.toUpperCase() === nextCode)) return
+
     setWatchlist(current => [
       ...current,
       {
-        code: watchCode.trim(),
+        code: nextCode,
         name: watchName.trim(),
         reason: watchReason.trim(),
       },
@@ -122,7 +129,15 @@ export function T5_Backtest() {
     setDecisionLog(current => [
       { ts: new Date().toISOString(), action, code, detail },
       ...current,
-    ].slice(0, 50))
+    ].slice(0, 80))
+  }
+
+  const removeDecision = (ts: string, code: string) => {
+    setDecisionLog(current => current.filter(item => !(item.ts === ts && item.code === code)))
+  }
+
+  const clearDecisionLog = () => {
+    setDecisionLog([])
   }
 
   const kellyItems = holdings
@@ -144,6 +159,43 @@ export function T5_Backtest() {
       ]
     : []
 
+  const proposalStats = {
+    buy: zeroPlan.proposals.filter(item => item.action === 'BUY').length,
+    sell: zeroPlan.proposals.filter(item => item.action === 'SELL').length,
+    wait: zeroPlan.proposals.filter(item => item.action === 'WAIT').length,
+    expectedFlow: zeroPlan.proposals.reduce(
+      (sum, item) => sum + (item.action === 'BUY' ? item.amount : item.action === 'SELL' ? -item.amount : 0),
+      0,
+    ),
+  }
+
+  const executionChecklist = [
+    {
+      label: '市場モード',
+      detail: `${zeroPlan.board.modeLabel} / 本日の発注上限を確認`,
+      done: zeroPlan.board.marketMode === 'normal',
+    },
+    {
+      label: 'SELL順序の確定',
+      detail: `SELL候補 ${proposalStats.sell}件 の撤退優先度を決定`,
+      done: proposalStats.sell === 0,
+    },
+    {
+      label: 'BUY分割執行',
+      detail: `BUY候補 ${proposalStats.buy}件 を3分割で執行`,
+      done: proposalStats.buy <= 2,
+    },
+    {
+      label: '意思決定ログ',
+      detail: '執行理由と条件をログ化',
+      done: decisionLog.length >= 1,
+    },
+  ]
+
+  const filteredLog = decisionLog.filter(item => logFilter === 'ALL' || item.action === logFilter)
+  const topSizing = kellyItems.slice(0, 8)
+  const lockedCount = holdings.filter(item => item.lock).length
+
   return (
     <div className="tab-panel">
       <section className="decision-grid">
@@ -158,13 +210,35 @@ export function T5_Backtest() {
             <span className="tone-chip tone-chip--neutral">
               分析 {system.analysisLastRunAt ? formatDateTime(system.analysisLastRunAt) : '未実行'}
             </span>
+            <span className="tone-chip tone-chip--caution">
+              売却ロック {lockedCount}銘柄
+            </span>
+          </div>
+
+          <div className="plan-stats">
+            <div className="plan-stat">
+              <span>BUY候補</span>
+              <strong>{proposalStats.buy}</strong>
+            </div>
+            <div className="plan-stat">
+              <span>SELL候補</span>
+              <strong>{proposalStats.sell}</strong>
+            </div>
+            <div className="plan-stat">
+              <span>WAIT候補</span>
+              <strong>{proposalStats.wait}</strong>
+            </div>
+            <div className="plan-stat">
+              <span>想定資金フロー</span>
+              <strong>{`${proposalStats.expectedFlow >= 0 ? '+' : ''}${formatJPYAuto(proposalStats.expectedFlow)}`}</strong>
+            </div>
           </div>
 
           <div className="focus-card__columns">
             <div>
               <div className="section-subtitle">優先タスク</div>
               <ul className="simple-list">
-                {zeroPlan.board.todo.slice(0, 4).map(item => <li key={item}>{item}</li>)}
+                {zeroPlan.board.todo.slice(0, 5).map(item => <li key={item}>{item}</li>)}
               </ul>
             </div>
             <div>
@@ -182,11 +256,24 @@ export function T5_Backtest() {
               )}
             </div>
           </div>
+
+          <div className="section-subtitle" style={{ marginTop: 12 }}>執行チェックリスト</div>
+          <div className="checklist">
+            {executionChecklist.map(item => (
+              <div key={item.label} className={`checklist__item ${item.done ? 'is-done checklist__item--positive' : 'checklist__item--caution'}`}>
+                <div className="checklist__marker">{item.done ? 'DONE' : 'TODO'}</div>
+                <div className="checklist__body">
+                  <strong>{item.label}</strong>
+                  <span>{item.detail}</span>
+                </div>
+              </div>
+            ))}
+          </div>
         </article>
 
         <article className="card">
-          <div className="section-kicker">Sizing</div>
-          <h2 className="section-heading">資金配分の目安</h2>
+          <div className="section-kicker">Capital cockpit</div>
+          <h2 className="section-heading">資金配分と執行サイズ</h2>
           <div className="summary-grid" style={{ marginTop: 18 }}>
             <div className="summary-tile summary-tile--neutral">
               <div className="summary-tile__label">現金</div>
@@ -201,8 +288,8 @@ export function T5_Backtest() {
               <div className="summary-tile__value">{formatJPYAuto(addRoom)}</div>
             </div>
             <div className="summary-tile summary-tile--neutral">
-              <div className="summary-tile__label">提案数</div>
-              <div className="summary-tile__value">{zeroPlan.proposals.length}</div>
+              <div className="summary-tile__label">保有銘柄数</div>
+              <div className="summary-tile__value">{holdings.length}</div>
             </div>
           </div>
 
@@ -221,17 +308,30 @@ export function T5_Backtest() {
             />
           </div>
 
-          <div className="score-list" style={{ marginTop: 18 }}>
-            {kellyItems.slice(0, 6).map(item => (
-              <div key={item.holding.code} className="score-list__item">
-                <div>
-                  <strong>{item.holding.code} {item.holding.name}</strong>
-                  <span>Half-Kelly {(item.halfKelly * 100).toFixed(1)}%</span>
+          {topSizing.length > 0 ? (
+            <div className="allocation-pool" style={{ marginTop: 16 }}>
+              {topSizing.map(item => (
+                <div key={item.holding.code} className="allocation-pool__row">
+                  <div className="allocation-pool__head">
+                    <strong>{item.holding.code} {item.holding.name}</strong>
+                    <span>{formatJPYAuto(budget * item.halfKelly)}</span>
+                  </div>
+                  <div className="allocation-pool__meta">
+                    <span>Half-Kelly {(item.halfKelly * 100).toFixed(1)}%</span>
+                    <span>σ {(item.holding.sigma * 100).toFixed(1)}%</span>
+                    <span>目標株価 {item.holding.target.toLocaleString('ja-JP')}円</span>
+                  </div>
+                  <div className="allocation-pool__bar">
+                    <span style={{ width: `${Math.min(100, item.halfKelly * 360)}%` }} />
+                  </div>
                 </div>
-                <span>{formatJPYAuto(budget * item.halfKelly)}</span>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          ) : (
+            <div className="empty-state" style={{ marginTop: 18 }}>
+              サイズ提案に使える候補がまだありません。
+            </div>
+          )}
         </article>
       </section>
 
@@ -247,7 +347,7 @@ export function T5_Backtest() {
 
             <div className="proposal-list" style={{ marginTop: 16 }}>
               {zeroPlan.proposals.length > 0 ? (
-                zeroPlan.proposals.slice(0, 10).map(proposal => (
+                zeroPlan.proposals.slice(0, 12).map(proposal => (
                   <div key={proposal.id} className={`proposal-list__item proposal-list__item--${proposal.action === 'BUY' ? 'positive' : proposal.action === 'SELL' ? 'negative' : 'caution'}`}>
                     <div className="proposal-list__header">
                       <div>
@@ -274,7 +374,7 @@ export function T5_Backtest() {
                       onClick={() => pushDecisionLog(proposal.action === 'WAIT' ? 'HOLD' : proposal.action, proposal.code, `${proposal.reason} / ${proposal.rule.takeProfit}`)}
                       type="button"
                     >
-                      実行ログへ追加
+                      実行ログへ記録
                     </button>
                   </div>
                 ))
@@ -292,6 +392,7 @@ export function T5_Backtest() {
                 <div className="section-kicker">Score balance</div>
                 <h3 className="section-heading">平均スコア構成</h3>
               </div>
+              <div className="section-caption">分析銘柄 {analysis.length}</div>
             </div>
 
             {scoreAverages.length > 0 ? (
@@ -326,6 +427,7 @@ export function T5_Backtest() {
                 <div className="section-kicker">Watchlist</div>
                 <h3 className="section-heading">監視銘柄</h3>
               </div>
+              <div className="section-caption">{watchlist.length}件</div>
             </div>
 
             <div className="field-grid" style={{ marginTop: 16 }}>
@@ -352,7 +454,7 @@ export function T5_Backtest() {
               </button>
             </div>
 
-            <div className="score-list" style={{ marginTop: 16 }}>
+            <div className="score-list" style={{ marginTop: 14 }}>
               {watchlist.length > 0 ? (
                 watchlist.map((item, index) => (
                   <div key={`${item.code}-${index}`} className="score-list__item">
@@ -377,12 +479,29 @@ export function T5_Backtest() {
                 <div className="section-kicker">Decision log</div>
                 <h3 className="section-heading">意思決定ログ</h3>
               </div>
+              <div className="timeline-actions">
+                <div className="log-filter">
+                  {(['ALL', 'BUY', 'SELL', 'HOLD', 'BIAS'] as LogFilter[]).map(item => (
+                    <button
+                      key={item}
+                      className={`log-filter__button${logFilter === item ? ' active' : ''}`}
+                      onClick={() => setLogFilter(item)}
+                      type="button"
+                    >
+                      {item}
+                    </button>
+                  ))}
+                </div>
+                <button className="text-button" onClick={clearDecisionLog} type="button">
+                  全削除
+                </button>
+              </div>
             </div>
 
             <div className="timeline-list" style={{ marginTop: 16 }}>
-              {decisionLog.length > 0 ? (
-                decisionLog.slice(0, 20).map((item, index) => (
-                  <div key={`${item.ts}-${index}`} className="timeline-list__item">
+              {filteredLog.length > 0 ? (
+                filteredLog.slice(0, 30).map(item => (
+                  <div key={`${item.ts}-${item.code}`} className="timeline-list__item">
                     <div className="timeline-list__stamp">{formatDateTime(item.ts)}</div>
                     <div className="timeline-list__content">
                       <div className="timeline-list__top">
@@ -390,11 +509,16 @@ export function T5_Backtest() {
                         <strong>{item.code}</strong>
                       </div>
                       <p>{item.detail}</p>
+                      <button className="text-button" onClick={() => removeDecision(item.ts, item.code)} type="button">
+                        ログ削除
+                      </button>
                     </div>
                   </div>
                 ))
               ) : (
-                <div className="empty-state">まだログはありません。</div>
+                <div className="empty-state">
+                  {decisionLog.length === 0 ? 'まだログはありません。' : 'このフィルタ条件のログはありません。'}
+                </div>
               )}
             </div>
           </article>

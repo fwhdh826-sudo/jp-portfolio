@@ -1348,6 +1348,408 @@ button {
   background: linear-gradient(90deg, var(--c), var(--g));
 }
 
+.risk-lab {
+  position: relative;
+}
+
+.risk-lab--positive {
+  background:
+    linear-gradient(135deg, rgba(104, 215, 196, 0.12), transparent 38%),
+    var(--panel);
+}
+
+.risk-lab--caution {
+  background:
+    linear-gradient(135deg, rgba(215, 179, 106, 0.14), transparent 38%),
+    var(--panel);
+}
+
+.risk-lab--negative {
+  background:
+    linear-gradient(135deg, rgba(239, 139, 114, 0.14), transparent 38%),
+    var(--panel);
+}
+
+.risk-score-pill {
+  min-width: 122px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px solid var(--b1);
+  background: rgba(255, 255, 255, 0.7);
+  text-align: right;
+}
+
+.risk-score-pill__label {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--d);
+}
+
+.risk-score-pill__value {
+  margin-top: 4px;
+  font-family: var(--head);
+  font-size: 38px;
+  line-height: 0.95;
+  letter-spacing: -0.05em;
+}
+
+.risk-score-pill__state {
+  margin-top: 6px;
+  font-family: var(--mono);
+  font-size: 10px;
+}
+
+.risk-score-pill--positive {
+  border-color: rgba(104, 215, 196, 0.36);
+}
+
+.risk-score-pill--positive .risk-score-pill__value,
+.risk-score-pill--positive .risk-score-pill__state {
+  color: var(--g);
+}
+
+.risk-score-pill--caution {
+  border-color: rgba(215, 179, 106, 0.36);
+}
+
+.risk-score-pill--caution .risk-score-pill__value,
+.risk-score-pill--caution .risk-score-pill__state {
+  color: var(--a);
+}
+
+.risk-score-pill--negative {
+  border-color: rgba(239, 139, 114, 0.36);
+}
+
+.risk-score-pill--negative .risk-score-pill__value,
+.risk-score-pill--negative .risk-score-pill__state {
+  color: var(--r);
+}
+
+.risk-guardrails {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.risk-guardrails__item {
+  padding: 10px;
+  border-radius: 12px;
+  border: 1px solid var(--b2);
+  background: rgba(255, 255, 255, 0.65);
+}
+
+.risk-guardrails__item--positive {
+  border-color: rgba(104, 215, 196, 0.28);
+}
+
+.risk-guardrails__item--caution {
+  border-color: rgba(215, 179, 106, 0.3);
+}
+
+.risk-guardrails__item--negative {
+  border-color: rgba(239, 139, 114, 0.32);
+}
+
+.risk-guardrails__label {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--d);
+}
+
+.risk-guardrails__value {
+  margin-top: 4px;
+  font-family: var(--head);
+  font-size: 22px;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.risk-register,
+.risk-concentration,
+.allocation-pool,
+.freshness-board,
+.news-urgent {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.risk-register__item,
+.allocation-pool__row,
+.news-command__alert,
+.freshness-board__item,
+.news-urgent__item {
+  padding: 12px;
+  border-radius: 14px;
+  border: 1px solid var(--b2);
+  background: rgba(255, 255, 255, 0.65);
+}
+
+.risk-register__item--high {
+  border-color: rgba(239, 139, 114, 0.32);
+}
+
+.risk-register__item--medium {
+  border-color: rgba(215, 179, 106, 0.28);
+}
+
+.risk-register__title,
+.risk-register__action,
+.risk-concentration__header,
+.allocation-pool__head {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.risk-register__title strong,
+.risk-concentration__header strong,
+.allocation-pool__head strong {
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.risk-register__meta,
+.risk-register__action,
+.risk-concentration__meta,
+.allocation-pool__meta {
+  margin-top: 6px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 10px;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--d);
+}
+
+.risk-concentration__bar,
+.allocation-pool__bar {
+  height: 6px;
+  margin-top: 8px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: rgba(26, 47, 77, 0.12);
+}
+
+.risk-concentration__bar span,
+.allocation-pool__bar span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--c), var(--g));
+}
+
+.risk-pair-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.risk-pair-list__item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 14px;
+  border: 1px solid var(--b2);
+  background: rgba(255, 255, 255, 0.65);
+}
+
+.risk-pair-list__item > div:first-child {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.risk-pair-list__item strong {
+  font-size: 14px;
+}
+
+.risk-pair-list__item span {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--d);
+}
+
+.risk-pair-list__score {
+  min-width: 56px;
+  min-height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 10px;
+  border-radius: 10px;
+  font-family: var(--head);
+  font-size: 20px;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  border: 1px solid var(--b2);
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.risk-pair-list__score.is-danger {
+  color: var(--r);
+}
+
+.risk-pair-list__score.is-caution {
+  color: var(--a);
+}
+
+.risk-pair-list__score.is-neutral {
+  color: var(--d);
+}
+
+.risk-pair-list__score.is-positive {
+  color: var(--g);
+}
+
+.risk-matrix-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  margin-top: 8px;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--d);
+}
+
+.plan-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.plan-stat {
+  padding: 10px;
+  border-radius: 12px;
+  border: 1px solid var(--b2);
+  background: rgba(255, 255, 255, 0.65);
+}
+
+.plan-stat span {
+  display: block;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--d);
+}
+
+.plan-stat strong {
+  display: block;
+  margin-top: 4px;
+  font-family: var(--head);
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.timeline-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-end;
+}
+
+.log-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: flex-end;
+}
+
+.log-filter__button {
+  min-height: 30px;
+  padding: 0 10px;
+  border-radius: 999px;
+  border: 1px solid var(--b1);
+  background: rgba(255, 255, 255, 0.68);
+  color: var(--d);
+  font-family: var(--mono);
+  font-size: 10px;
+}
+
+.log-filter__button.active {
+  background: rgba(104, 215, 196, 0.15);
+  border-color: rgba(104, 215, 196, 0.3);
+  color: var(--w);
+}
+
+.timeline-actions .text-button,
+.timeline-list .text-button {
+  margin-top: 0;
+}
+
+.news-command__alerts {
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.news-command__alert strong,
+.freshness-board__item strong,
+.news-urgent__item strong {
+  display: block;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.news-command__alert span,
+.freshness-board__item span,
+.news-urgent__item span {
+  display: block;
+  margin-top: 4px;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--d);
+}
+
+.freshness-board__item {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.freshness-board__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: flex-end;
+}
+
+.freshness-board__item--positive {
+  border-color: rgba(104, 215, 196, 0.32);
+}
+
+.freshness-board__item--caution {
+  border-color: rgba(215, 179, 106, 0.32);
+}
+
+.freshness-board__item--negative {
+  border-color: rgba(239, 139, 114, 0.34);
+}
+
+.news-urgent__item {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.news-urgent__item--negative {
+  border-color: rgba(239, 139, 114, 0.34);
+}
+
+.news-urgent__item--positive {
+  border-color: rgba(104, 215, 196, 0.32);
+}
+
 .heatmap-table {
   overflow: auto;
 }
@@ -2305,6 +2707,9 @@ button {
   .goal-grid,
   .fund-grid,
   .ai-score-grid,
+  .risk-guardrails,
+  .plan-stats,
+  .news-command__alerts,
   .grid3r,
   .rg-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -2335,6 +2740,9 @@ button {
   .status-shell__meta,
   .metrics-inline,
   .focus-card__columns,
+  .plan-stats,
+  .risk-guardrails,
+  .news-command__alerts,
   .detail-grid,
   .grid2r,
   .grid3r,
@@ -2438,6 +2846,30 @@ button {
     min-height: 44px;
   }
 
+  .risk-score-pill {
+    width: 100%;
+    text-align: left;
+  }
+
+  .risk-register__title,
+  .risk-concentration__header,
+  .allocation-pool__head,
+  .freshness-board__item,
+  .news-urgent__item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .freshness-board__chips,
+  .log-filter {
+    justify-content: flex-start;
+  }
+
+  .timeline-actions {
+    width: 100%;
+    align-items: flex-start;
+  }
+
   .field-button,
   .proposal-list__item .text-button {
     width: 100%;
@@ -2471,6 +2903,9 @@ button {
   .health-card__grid,
   .goal-grid,
   .kpi-row,
+  .risk-guardrails,
+  .plan-stats,
+  .news-command__alerts,
   .status-shell__sources,
   .ai-score-grid,
   .ai-detail-grid {
