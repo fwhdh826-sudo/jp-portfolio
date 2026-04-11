@@ -45,18 +45,23 @@ OUT_FILES = [DATA_DIR / "news.json", PUBLIC_DIR / "news.json"]
 # ═══════════════════════════════════════════════════════════
 RSS_SOURCES = [
     {
-        "name": "Yahoo!ファイナンス マーケット",
-        "url": "https://finance.yahoo.co.jp/rss/news/market.xml",
-        "category": "market",
-    },
-    {
-        "name": "Yahoo!ファイナンス 海外",
+        "name": "Yahoo!ニュース ビジネス",
         "url": "https://news.yahoo.co.jp/rss/topics/business.xml",
         "category": "market",
     },
     {
-        "name": "日経 マーケット",
-        "url": "https://www.nikkei.com/news/feed/",
+        "name": "Yahoo!ニュース 経済",
+        "url": "https://news.yahoo.co.jp/rss/topics/economy.xml",
+        "category": "market",
+    },
+    {
+        "name": "NHK 経済",
+        "url": "https://www.nhk.or.jp/rss/news/cat4.xml",
+        "category": "market",
+    },
+    {
+        "name": "みんかぶ 株式ニュース",
+        "url": "https://minkabu.jp/news.rss",
         "category": "market",
     },
 ]
