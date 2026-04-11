@@ -1,76 +1,68 @@
-# next_tasks.md — V8.3 実装完了後の残タスク
+# next_tasks.md — v9.1 実装後の残タスク
 
 ## 優先度 HIGH（次セッション最初に確認）
 
-1. **✅ GitHub Actions デプロイ確認** ← v8.3 commit 9c05a15 push済み
-   - commit: 8d200e0 + 9c05a15 
-   - 本番: https://fwhdh826-sudo.github.io/jp-portfolio/ 確認可能
+1. **本番URL v9.1 反映確認（必須）**
+   - https://fwhdh826-sudo.github.io/jp-portfolio/
+   - 確認ポイント:
+     - T1: Final Conclusion / ToDo / リスク警告
+     - T2: ゼロベース理想PF比較
+     - T5: 売買提案の利確/損切/前提崩れ表示
+     - T6: 4分類ニュース（市場/保有/候補/投信）
+     - T3: 自己強化アルゴリズムカード
 
-2. **本番URL ビジュアル確認** ← 要Chrome/Safari確認（前セッション拡張未接続）
-   - https://fwhdh826-sudo.github.io/jp-portfolio/ を開く
-   - v8.3 ロゴ表示確認
-   - T1タブ: BUY 4件 / SELL 3件表示確認
-   - セクター集中度バー：新レイアウト確認
+2. **trust_master.json 最新化（手動）**
+   - SBI証券の最新 eval / pnlPct / dayPct を反映
+   - `public/data/trust_master.json` を更新してpush
 
-3. **ニュースパイプライン実動作** ← データなし状態で動作確認済み
-   - `pip install feedparser` が必要
-   - `python3 data/update_news.py` を実行
-   - `public/data/news.json` が生成されるか確認
-   - ※ 現在: T6タブで「ニュースデータなし」表示
+3. **ニュース実収集テスト**
+   - `python3 data/update_news.py`
+   - `data/news.json` と `public/data/news.json` の生成確認
+   - T6で `impact/importance/recommendation` 表示確認
 
 ---
 
 ## 優先度 MEDIUM
 
-4. **trust_master.json 最新化** ← 手動作業
-   - SBI証券から現在の eval/pnlPct/dayPct を確認
-   - `public/data/trust_master.json` を手動更新してpush
-   - 前回更新: 2026-04-10 確認ずみ
+4. **学習重みの本適用**
+   - 現状: `performanceTracker.ts` で提案重みを算出して表示
+   - 次: `computeAnalysis.ts` で実際に重みを可変適用
 
-5. **✅ σ実測値確認** ← v8.3で確認済み
-   - T2タブで σ が yfinance実測値に更新されている（sigmaSource: 'yfinance'）
-   - 例: リクルートHD 0.18→0.462, カプコン 0.16→0.379
+5. **決算カレンダーUI接続**
+   - `data/earnings_calendar.json` を T3/T6 に表示
+   - 決算前警戒表示（前日/当日）を追加
 
-6. **CSV取込テスト** ← 仕様確認ずみ（未実施）
-   - SBI証券からCSVをDL
-   - T5 or T6タブのD&Dゾーンにドロップ
-   - 保有額 eval/pnlPct が更新されるか確認
-   - 再分析が自動実行されるか確認
+6. **売買提案履歴の強化**
+   - 日次スナップショット保存
+   - 提案と実績の比較表示
 
 ---
 
-## 優先度 LOW（将来実装）
+## 優先度 LOW
 
-7. **バックテスト履歴蓄積**
-   - CSV取込ごとにスナップショットを localStorage に保存
-   - T5タブで時系列表示
+7. **ニュースソース拡張**
+   - Yahoo!/NHK/みんかぶ 以外のソース追加
 
-8. **ニュースソース追加**
-   - 現状: Yahoo!ファイナンスRSSのみ
-   - 追加候補: MINKABU RSS（URLを調査）
+8. **目標株価自動更新**
+   - 外部データ連携で `target` 更新
 
-9. **信頼度改善**
-   - AI討論の7軸スコアを実ファンダメンタルデータで補正
-   - 決算発表日カレンダー連携
+9. **戦術モジュール精緻化**
+   - Nikkei VI / SQ / 短期指標の統合判定を微調整
 
 ---
 
-## 完了判定基準
+## 完了判定基準（v9.1）
 
-### v8.1 実装済み
-- [x] Zustand Single Store
-- [x] refreshAllData 全再計算
-- [x] CSV取込 → persist → 即時再分析
-- [x] news.json スキーマ + バリデーション
-- [x] GitHub Pages Actions デプロイ設定
+- [x] ゼロベース売買提案エンジン
+- [x] T1 最終結論カード
+- [x] T2 理想PF比較ビュー
+- [x] T5 売買提案詳細（利確/損切/前提崩れ）
+- [x] T6 ニュース4分類 + 意思決定支援表示
+- [x] 学習モジュール（prediction vs actual）
+- [x] `update_flows.py` / `update_earnings.py` 追加
+- [x] `npm run build` 成功
 
-### v8.3 実装済み
-- [x] セクター集中度バー （積み上げ横バー）
-- [x] EV算出式改善 （σ係数 0.7→0.3）
-- [x] BUY候補4件確保 （スコア≥75 && EV>0）
-- [x] 全7タブ動作確認（モバイル375×812）
-
-### 保留中（次セッション）
-- [ ] 本番URL Chrome/Safari ビジュアル確認
-- [ ] ニュース実収集テスト（feedparser導入・update_news.py実行）
-- [ ] trust_master.json 最新化（SBI手動確認）
+### 保留中
+- [ ] 本番URLでの最終UI確認
+- [ ] trust_master.json 手動最新化
+- [ ] 学習重みの実スコア適用

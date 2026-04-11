@@ -1,4 +1,14 @@
-import type { Holding, Market, CorrelationData, NewsData, HoldingAnalysis, PortfolioMetrics, AgentDebate } from '../../types'
+import type {
+  Holding,
+  Market,
+  CorrelationData,
+  NewsData,
+  HoldingAnalysis,
+  PortfolioMetrics,
+  AgentDebate,
+  StrategyRank,
+  AdaptiveWeights,
+} from '../../types'
 import { RF, INST_WEIGHTS, SECTOR_GROUPS } from '../../constants/market'
 
 // ── 相関係数取得 ────────────────────────────────────────────────
@@ -124,47 +134,209 @@ function calcEV(h: Holding, market: Market): number {
   return +(excessReturn - riskPenalty).toFixed(4)
 }
 
-// ── AI討論（5エージェント固定）────────────────────────────────
-function runAIDebate(h: Holding, fundamentalScore: number, technicalScore: number, marketScore: number, newsScore: number, qualityScore: number, riskPenalty: number): AgentDebate {
+// ── v9.1: 7エージェントAI投資委員会 ─────────────────────────
+function runAIDebate(
+  h: Holding,
+  fundamentalScore: number,
+  technicalScore: number,
+  marketScore: number,
+  newsScore: number,
+  qualityScore: number,
+  riskPenalty: number,
+  news: NewsData | null,
+  market: Market,
+): AgentDebate {
   const weights = INST_WEIGHTS.JAPAN_STOCK
-  const totalW = Object.values(weights).reduce((s, v) => s + v, 0)
 
-  // ルネッサンス補正係数
+  // ルネッサンス補正係数（モメンタム × ボラ）
   const momentumF = h.mom3m > 0 ? Math.min(1.2, 1 + h.mom3m / 100) : Math.max(0.8, 1 + h.mom3m / 100)
   const volF = h.sigma <= 0.15 ? 1.1 : h.sigma >= 0.35 ? 0.9 : 1.0
   const rnFactor = momentumF * volF
 
-  const agentRaw = [
-    { agent:'Fundamental Bull', style:'GS Fundamental', score: fundamentalScore / 30 * 100 },
-    { agent:'Technical/Flow',   style:'MS Technical',   score: technicalScore / 20 * 100 },
-    { agent:'Macro',            style:'Two Sigma Macro', score: marketScore / 20 * 100 },
-    { agent:'Risk Manager',     style:'Bridgewater',    score: Math.max(0, 100 - riskPenalty * 4) },
-    { agent:'Fundamental Bear', style:'Citadel',        score: qualityScore / 10 * 100 },
-  ]
-
-  const agents = agentRaw.map(a => {
-    const s = Math.max(0, Math.min(100, a.score * rnFactor))
+  // ── 各エージェントのスコア & 根拠生成 ────────────────────
+  function makeAgent(
+    agent: string,
+    style: string,
+    rawScore: number,
+    genBull: () => string[],
+    genBear: () => string[],
+  ) {
+    const s = Math.max(0, Math.min(100, rawScore * rnFactor))
+    const score = Math.round(s)
     return {
-      agent: a.agent,
-      style: a.style,
-      score: Math.round(s),
-      bullPoints: s >= 65 ? [`${a.style}: スコア${s.toFixed(0)}点`] : [],
-      bearPoints: s < 50  ? [`${a.style}: スコア${s.toFixed(0)}点 — 改善余地あり`] : [],
+      agent, style, score,
+      bullPoints: score >= 60 ? genBull() : [],
+      bearPoints: score < 50  ? genBear() : [],
     }
-  })
+  }
 
+  // 1. ファンダ代理（Goldman Sachs型）
+  const fAgent = makeAgent(
+    'ファンダ代理', 'GS Fundamental',
+    fundamentalScore / 30 * 100,
+    () => {
+      const pts: string[] = []
+      if (h.roe >= 15)    pts.push(`ROE ${h.roe}% — 高収益`)
+      if (h.epsG >= 10)   pts.push(`EPS成長 ${h.epsG}% — 増益継続`)
+      if (h.cfOk)         pts.push('CF良好 — キャッシュ創出力あり')
+      if (h.per <= 15 && h.per > 0) pts.push(`PER ${h.per.toFixed(1)}倍 — バリュー水準`)
+      if (h.de <= 0.5)    pts.push(`D/E ${h.de.toFixed(1)} — 無借金経営`)
+      return pts.length ? pts : [`ファンダ総合 ${fundamentalScore}/30点`]
+    },
+    () => {
+      const pts: string[] = []
+      if (h.epsG < 0)     pts.push(`EPS成長 ${h.epsG}% — 減益`)
+      if (h.per > 40 && h.per > 0) pts.push(`PER ${h.per.toFixed(1)}倍 — 割高`)
+      if (h.de > 3)       pts.push(`D/E ${h.de.toFixed(1)} — 高レバ`)
+      if (h.roe < 8)      pts.push(`ROE ${h.roe}% — 低収益`)
+      return pts.length ? pts : [`ファンダ スコア不足 (${fundamentalScore}/30)`]
+    },
+  )
+
+  // 2. テクニカル代理（Morgan Stanley型）
+  const tAgent = makeAgent(
+    'テクニカル代理', 'MS Technical',
+    technicalScore / 20 * 100,
+    () => {
+      const pts: string[] = []
+      if (h.ma && h.macd)  pts.push('MA上位 + MACD陽転 — テクニカル良好')
+      else if (h.ma)       pts.push('MA上位 — トレンド順行')
+      if (h.rsi >= 40 && h.rsi <= 65) pts.push(`RSI ${h.rsi.toFixed(0)} — 適正圏`)
+      if (h.mom3m > 8)     pts.push(`3Mモメンタム +${h.mom3m.toFixed(1)}% — 強い上昇`)
+      if (h.vol)           pts.push('出来高増加 — 需給改善')
+      return pts.length ? pts : [`テクニカル ${technicalScore}/20点`]
+    },
+    () => {
+      const pts: string[] = []
+      if (!h.ma && !h.macd) pts.push('MA下位 + MACD陰転 — テクニカル悪化')
+      if (h.rsi > 75)      pts.push(`RSI ${h.rsi.toFixed(0)} — 買われすぎ`)
+      if (h.mom3m < -5)    pts.push(`3Mモメンタム ${h.mom3m.toFixed(1)}% — 下降トレンド`)
+      return pts.length ? pts : [`テクニカル スコア不足 (${technicalScore}/20)`]
+    },
+  )
+
+  // 3. ニュース代理（Fundamental News型）
+  const relatedNews = news?.stockNews.filter(n => n.tickers.includes(h.code)) ?? []
+  const avgSent = relatedNews.length
+    ? relatedNews.reduce((s, n) => s + n.sentimentScore, 0) / relatedNews.length
+    : 0
+  const nAgent = makeAgent(
+    'ニュース代理', 'News Analyst',
+    newsScore / 15 * 100,
+    () => {
+      const pts: string[] = []
+      if (relatedNews.length > 0 && avgSent > 0.2)
+        pts.push(`関連ニュース ${relatedNews.length}件 — センチメント強気(${avgSent.toFixed(2)})`)
+      else if (relatedNews.length === 0)
+        pts.push('ネガティブニュースなし — 問題なし')
+      return pts.length ? pts : [`ニュース スコア ${newsScore}/15点`]
+    },
+    () => {
+      const pts: string[] = []
+      if (relatedNews.length > 0 && avgSent < -0.2)
+        pts.push(`関連ニュース弱気 (センチメント ${avgSent.toFixed(2)}) — 注意`)
+      return pts.length ? pts : [`ニュース弱気シグナル`]
+    },
+  )
+
+  // 4. センチメント代理（Market Sentiment型）
+  const sectScore = Math.round(marketScore / 20 * 100 * 0.8 + fundamentalScore / 30 * 100 * 0.2)
+  const sentAgent = makeAgent(
+    'センチメント代理', 'Sentiment/Flow',
+    sectScore,
+    () => {
+      const pts: string[] = []
+      if (h.pnlPct > 15)   pts.push(`含み益 ${h.pnlPct.toFixed(1)}% — 市場評価高い`)
+      if (market.regime === 'bull') pts.push('強気レジーム — セクター全般追い風')
+      return pts.length ? pts : ['センチメント良好']
+    },
+    () => {
+      const pts: string[] = []
+      if (h.pnlPct < -15)  pts.push(`含み損 ${h.pnlPct.toFixed(1)}% — 市場評価低下`)
+      if (market.regime === 'bear') pts.push('弱気レジーム — 慎重姿勢必要')
+      return pts.length ? pts : ['センチメント弱め']
+    },
+  )
+
+  // 5. マクロ/レジーム代理（Two Sigma型）
+  const mAgent = makeAgent(
+    'マクロ/レジーム代理', 'Two Sigma Macro',
+    marketScore / 20 * 100,
+    () => {
+      const pts: string[] = []
+      if (h.beta < 0.8)    pts.push(`β ${h.beta.toFixed(2)} — 低リスク・安定株`)
+      if (market.vix < 20) pts.push(`VIX ${market.vix.toFixed(1)} — 低ボラ環境良好`)
+      if (market.regime === 'bull' && h.beta > 1.0)
+        pts.push('強気相場 + 高ベータ — 上昇に乗りやすい')
+      return pts.length ? pts : [`マクロ ${marketScore}/20点`]
+    },
+    () => {
+      const pts: string[] = []
+      if (market.vix >= 25) pts.push(`VIX ${market.vix.toFixed(1)} — 市場不安定`)
+      if (market.regime === 'bear') pts.push('弱気レジーム — 全体売り圧力')
+      return pts.length ? pts : [`マクロ環境 弱 (${marketScore}/20)`]
+    },
+  )
+
+  // 6. リスク代理（Bridgewater型）
+  const rAgent = makeAgent(
+    'リスク代理', 'Bridgewater Risk',
+    Math.max(0, 100 - riskPenalty * 5),
+    () => {
+      const pts: string[] = []
+      if (h.sigma <= 0.20) pts.push(`σ ${(h.sigma * 100).toFixed(1)}% — 低ボラ安定`)
+      if (!h.mitsu)        pts.push('三菱集中なし — 分散貢献')
+      if (h.pnlPct >= 0)   pts.push('含み益 — 損切リスク低い')
+      return pts.length ? pts : [`リスク管理 良 (ペナルティ${riskPenalty}/15)`]
+    },
+    () => {
+      const pts: string[] = []
+      if (h.sigma > 0.30)  pts.push(`σ ${(h.sigma * 100).toFixed(1)}% — 高ボラ警戒`)
+      if (h.mitsu)         pts.push('三菱集中リスク — 集中度要確認')
+      if (h.pnlPct < -20)  pts.push(`含み損 ${h.pnlPct.toFixed(1)}% — 損切検討`)
+      return pts.length ? pts : [`リスクペナルティ高 (${riskPenalty}/15)`]
+    },
+  )
+
+  // 7. ポートフォリオ統合代理（Citadel/Renaissance型）
+  const pfScore = Math.round((qualityScore / 10 * 100 * 0.6) + (fundamentalScore / 30 * 100 * 0.4))
+  const pfAgent = makeAgent(
+    'PF統合代理', 'Portfolio Integrator',
+    pfScore,
+    () => {
+      const pts: string[] = []
+      if (h.cfOk && h.de <= 1.0) pts.push('CF + 財務健全 — 長期保有適性あり')
+      if (h.divG >= 3) pts.push(`配当成長 ${h.divG}% — インカム貢献`)
+      return pts.length ? pts : [`PF貢献度 良 (品質${qualityScore}/10)`]
+    },
+    () => {
+      const pts: string[] = []
+      if (!h.cfOk) pts.push('CF懸念 — ビジネスモデル要確認')
+      if (h.de > 5) pts.push(`高D/E ${h.de.toFixed(1)} — 財務リスク`)
+      return pts.length ? pts : [`PF貢献度 低 (品質${qualityScore}/10)`]
+    },
+  )
+
+  const agents = [fAgent, tAgent, nAgent, sentAgent, mAgent, rAgent, pfAgent]
+
+  // 加重平均スコア（7エージェント）
+  const w7 = [
+    weights.gs_funda, weights.ms_tech,
+    0.10, 0.07,  // news, sentiment
+    weights.twosigma, weights.bridgewater, weights.citadel,
+  ]
+  const sumW7 = w7.reduce((s, v) => s + v, 0)
   const debateScore = Math.min(100, Math.max(0,
-    agents[0].score * weights.gs_funda / totalW +
-    agents[1].score * weights.ms_tech / totalW +
-    agents[2].score * weights.twosigma / totalW +
-    agents[3].score * weights.bridgewater / totalW +
-    agents[4].score * weights.citadel / totalW
+    agents.reduce((s, a, i) => s + a.score * w7[i] / sumW7, 0)
   ))
 
   const variance = agents.reduce((s, a) => s + (a.score - debateScore) ** 2, 0) / agents.length
   const confidence = Math.max(0.3, Math.min(1.0, 1 - Math.sqrt(variance) / 100))
+  const finalView: 'BUY' | 'HOLD' | 'SELL' = debateScore >= 72 ? 'BUY' : debateScore >= 48 ? 'HOLD' : 'SELL'
 
-  const finalView: 'BUY' | 'HOLD' | 'SELL' = debateScore >= 75 ? 'BUY' : debateScore >= 50 ? 'HOLD' : 'SELL'
+  // 統合強気・弱気理由（全エージェントから上位を集約）
+  const bullReasons = agents.flatMap(a => a.bullPoints).slice(0, 4)
+  const bearReasons = agents.flatMap(a => a.bearPoints).slice(0, 3)
 
   const sevenAxis = {
     growth:    Math.round(h.epsG >= 15 ? 85 : h.epsG >= 5 ? 65 : 35),
@@ -176,7 +348,60 @@ function runAIDebate(h: Holding, fundamentalScore: number, technicalScore: numbe
     news:      Math.round(newsScore / 15 * 100),
   }
 
-  return { agents, debateScore: Math.round(debateScore), confidence: +confidence.toFixed(2), finalView, sevenAxis }
+  return {
+    agents,
+    debateScore: Math.round(debateScore),
+    confidence: +confidence.toFixed(2),
+    finalView,
+    bullReasons,
+    bearReasons,
+    sevenAxis,
+  }
+}
+
+// ── 戦略ランク算出 ────────────────────────────────────────────
+function calcStrategyRank(totalScore: number, ev: number, confidence: number): StrategyRank {
+  if (totalScore >= 80 && ev > 0.05 && confidence >= 0.75) return 'S'
+  if (totalScore >= 70 && ev > 0.02 && confidence >= 0.65) return 'A'
+  if (totalScore >= 60 && ev > 0)                          return 'B'
+  if (totalScore >= 50)                                    return 'C'
+  if (totalScore >= 35)                                    return 'D'
+  return 'E'
+}
+
+const DEFAULT_WEIGHTS: AdaptiveWeights = {
+  fundamental: 0.30,
+  market: 0.20,
+  technical: 0.20,
+  news: 0.15,
+  quality: 0.10,
+  risk: 0.15,
+}
+
+function resolveWeights(adaptive: AdaptiveWeights | null): AdaptiveWeights {
+  if (!adaptive) return DEFAULT_WEIGHTS
+
+  const raw = {
+    fundamental: Math.max(0, adaptive.fundamental),
+    market: Math.max(0, adaptive.market),
+    technical: Math.max(0, adaptive.technical),
+    news: Math.max(0, adaptive.news),
+    quality: Math.max(0, adaptive.quality),
+    risk: Math.max(0, adaptive.risk),
+  }
+  const sum = raw.fundamental + raw.market + raw.technical + raw.news + raw.quality + raw.risk
+  if (sum <= 0.0001) return DEFAULT_WEIGHTS
+
+  // スコア式の既存スケール（0.95 - 0.15 = v8.x互換）を維持するため1.10へ再スケール
+  const scale = 1.10 / sum
+  return {
+    fundamental: raw.fundamental * scale,
+    market: raw.market * scale,
+    technical: raw.technical * scale,
+    news: raw.news * scale,
+    quality: raw.quality * scale,
+    risk: raw.risk * scale,
+  }
 }
 
 // ── 全銘柄分析（main export）────────────────────────────────────
@@ -185,9 +410,11 @@ export function computeAnalysis(
   market: Market,
   _corr: CorrelationData | null,
   news: NewsData | null,
+  adaptiveWeights: AdaptiveWeights | null = null,
 ): HoldingAnalysis[] {
   const totalEval = holdings.reduce((s, h) => s + h.eval, 0)
   const mitsuW = holdings.filter(h => h.mitsu).reduce((s, h) => s + h.eval / Math.max(totalEval, 1), 0)
+  const w = resolveWeights(adaptiveWeights)
 
   return holdings.map(h => {
     const fundamentalScore = calcFundamentalScore(h)
@@ -197,7 +424,6 @@ export function computeAnalysis(
     const qualityScore     = calcQualityScore(h)
     const riskPenalty      = calcRiskPenalty(h, mitsuW, market)
 
-    // 各スコアを0-100に正規化してから重み付け（handover.md スコアリング仕様）
     const fN = fundamentalScore / 30 * 100
     const tN = technicalScore   / 20 * 100
     const mN = marketScore      / 20 * 100
@@ -206,12 +432,12 @@ export function computeAnalysis(
     const rN = riskPenalty      / 15 * 100
 
     const totalScore = Math.round(
-      fN * 0.30 +
-      mN * 0.20 +
-      tN * 0.20 +
-      nN * 0.15 +
-      qN * 0.10 -
-      rN * 0.15
+      fN * w.fundamental +
+      mN * w.market +
+      tN * w.technical +
+      nN * w.news +
+      qN * w.quality -
+      rN * w.risk
     )
 
     const ev = calcEV(h, market)
@@ -219,7 +445,13 @@ export function computeAnalysis(
       totalScore >= 75 && ev > 0 ? 'BUY' :
       totalScore >= 50 ? 'HOLD' : 'SELL'
 
-    const debate = runAIDebate(h, fundamentalScore, technicalScore, marketScore, newsScore, qualityScore, riskPenalty)
+    const debate = runAIDebate(
+      h, fundamentalScore, technicalScore, marketScore,
+      newsScore, qualityScore, riskPenalty, news, market,
+    )
+
+    const capped = Math.max(0, Math.min(100, totalScore))
+    const strategyRank = calcStrategyRank(capped, ev, debate.confidence)
 
     return {
       code: h.code,
@@ -229,10 +461,11 @@ export function computeAnalysis(
       newsScore,
       qualityScore,
       riskPenalty,
-      totalScore: Math.max(0, Math.min(100, totalScore)),
+      totalScore: capped,
       ev,
       decision,
       confidence: debate.confidence,
+      strategyRank,
       debate,
     }
   })

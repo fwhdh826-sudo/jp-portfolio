@@ -7,7 +7,7 @@ const TABS: { id: TabId; icon: string; label: string }[] = [
   { id: 'T3', icon: '🔬', label: '分析' },
   { id: 'T4', icon: '🛡', label: 'リスク' },
   { id: 'T5', icon: '💹', label: '売買' },
-  { id: 'T6', icon: '📂', label: '更新' },
+  { id: 'T6', icon: '📰', label: 'ニュース' },
   { id: 'T7', icon: '💼', label: '投信' },
 ]
 

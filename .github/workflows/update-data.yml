@@ -33,12 +33,18 @@ jobs:
       - name: Update sq_calendar.json (SQ日程)
         run: python3 data/update_sq.py || true
 
+      - name: Update margin / flows
+        run: python3 data/update_flows.py || true
+
+      - name: Update earnings calendar
+        run: python3 data/update_earnings.py || true
+
       - name: Collect news (複数RSS + 保有銘柄フィルタ)
         run: python3 data/update_news.py || true
 
       - name: Copy JSON to public/data
         run: |
-          for f in correlation market macro sq_calendar news; do
+          for f in correlation market macro sq_calendar margin flows earnings_calendar news; do
             if [ -f "data/${f}.json" ]; then
               cp "data/${f}.json" "public/data/${f}.json"
             fi

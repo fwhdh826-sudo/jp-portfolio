@@ -70,7 +70,7 @@ export function StatusBar() {
     <header className="v5-hdr">
       {/* ── Row1: ロゴ + バッジ + 日時 + レジーム + 更新ボタン ── */}
       <div className="hdr1">
-        <div className="logo">JP株OS <em>v9.0</em></div>
+        <div className="logo">JP株OS <em>v9.1</em></div>
         <div className="ver-badge">PORTFOLIO ENGINE</div>
         <div className="uptime">{uptimeStr}</div>
         <div className={`market-pill ${regimePill.cls}`}>{regimePill.lbl}</div>

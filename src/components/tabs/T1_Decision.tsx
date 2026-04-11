@@ -1,9 +1,11 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useAppStore } from '../../store/useAppStore'
 import { selectBuyList, selectSellList, selectHoldList, selectTotalEval } from '../../store/selectors'
 import { formatJPYAuto } from '../../utils/format'
 import type { HoldingAnalysis } from '../../types'
 import { checkNoTrade } from '../../domain/optimization/idealAllocation'
+import { buildZeroBasePlan } from '../../domain/optimization/zeroBase'
+import type { ConclusionBoard } from '../../domain/optimization/zeroBase'
 import type { AssetCategorySummary } from '../../types/universe'
 
 // ── Portfolio Health Score ───────────────────────────────────
@@ -155,9 +157,9 @@ function DecisionCard({ code, totalScore, ev, decision, confidence, debate, fund
             ))}
           </div>
 
-          {/* 5AI討論：全エージェント */}
+          {/* 7AI討論：全エージェント */}
           <div style={{ fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--d)', marginBottom: 6 }}>
-            5AI討論（debate score: {debate.debateScore}/100）
+            7AI討論（debate score: {debate.debateScore}/100）
           </div>
           {debate.agents.map((agent, i) => (
             <div key={i} style={{
@@ -210,6 +212,91 @@ function loadActions(): Record<string, boolean> {
 }
 function saveActions(s: Record<string, boolean>) {
   localStorage.setItem('v90_actions', JSON.stringify(s))
+}
+
+// ── Final Conclusion（v9.1 最上部）────────────────────────────
+function FinalConclusionPanel({ board }: { board: ConclusionBoard }) {
+  const modeColor =
+    board.marketMode === 'emergency'
+      ? 'var(--r)'
+      : board.marketMode === 'caution'
+      ? 'var(--a)'
+      : 'var(--g)'
+
+  return (
+    <div
+      style={{
+        background:
+          board.marketMode === 'emergency'
+            ? 'rgba(232,64,90,.08)'
+            : board.marketMode === 'caution'
+            ? 'rgba(212,160,23,.07)'
+            : 'rgba(45,212,160,.07)',
+        border: `1px solid ${modeColor}55`,
+        borderLeft: `4px solid ${modeColor}`,
+        borderRadius: 10,
+        padding: '12px 14px',
+        marginBottom: 10,
+      }}
+    >
+      <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap', marginBottom: 8 }}>
+        <span style={{ fontFamily: 'var(--head)', fontSize: 9, color: 'var(--d)', letterSpacing: '.12em' }}>
+          FINAL CONCLUSION
+        </span>
+        <span
+          style={{
+            fontFamily: 'var(--mono)',
+            fontSize: 10,
+            color: modeColor,
+            background: `${modeColor}22`,
+            border: `1px solid ${modeColor}55`,
+            borderRadius: 8,
+            padding: '2px 8px',
+          }}
+        >
+          {board.modeLabel}
+        </span>
+      </div>
+
+      <div style={{ fontSize: 12, color: 'var(--w)', lineHeight: 1.7, marginBottom: 8 }}>{board.conclusion}</div>
+
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+        <div>
+          <div style={{ fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--d)', marginBottom: 4 }}>
+            今日のToDo
+          </div>
+          {board.todo.slice(0, 4).map((item, i) => (
+            <div key={i} style={{ fontSize: 11, color: 'var(--w)', marginBottom: 3, lineHeight: 1.45 }}>
+              • {item}
+            </div>
+          ))}
+        </div>
+        <div>
+          <div style={{ fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--d)', marginBottom: 4 }}>
+            リスク警告
+          </div>
+          {board.riskAlerts.slice(0, 4).map((item, i) => (
+            <div key={i} style={{ fontSize: 11, color: modeColor, marginBottom: 3, lineHeight: 1.45 }}>
+              {board.marketMode === 'emergency' ? '🚨' : '⚠'} {item}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {board.highConviction.length > 0 && (
+        <div style={{ marginTop: 8, borderTop: '1px solid var(--b1)', paddingTop: 8 }}>
+          <div style={{ fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--d)', marginBottom: 4 }}>
+            高確信候補
+          </div>
+          {board.highConviction.map(p => (
+            <div key={p.id} style={{ fontSize: 11, color: 'var(--g)', marginBottom: 2, lineHeight: 1.45 }}>
+              • {p.name} ({p.code}) {formatJPYAuto(p.amount)} / 確信度 {(p.confidence * 100).toFixed(0)}%
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  )
 }
 
 // ── MarketModePanel（市場モード + ノートレード判定）────────────
@@ -377,10 +464,47 @@ export function T1_Decision() {
   const analysis  = useAppStore(s => s.analysis)
   const metrics   = useAppStore(s => s.metrics)
   const holdings  = useAppStore(s => s.holdings)
+  const trust     = useAppStore(s => s.trust)
+  const macro     = useAppStore(s => s.macro)
+  const sqCalendar = useAppStore(s => s.sqCalendar)
+  const universe  = useAppStore(s => s.universe)
+  const cash      = useAppStore(s => s.cash)
+  const cashReserve = useAppStore(s => s.cashReserve)
+  const addRoom   = useAppStore(s => s.addRoom)
   const importCsv = useAppStore(s => s.importCsv)
   const system    = useAppStore(s => s.system)
   const market    = useAppStore(s => s.market)
   const totalEval = useAppStore(selectTotalEval)
+
+  const zeroPlan = useMemo(
+    () =>
+      buildZeroBasePlan({
+        holdings,
+        trust,
+        analysis,
+        market,
+        macro,
+        sqCalendar,
+        metrics,
+        universe,
+        cash,
+        cashReserve,
+        addRoom,
+      }),
+    [
+      holdings,
+      trust,
+      analysis,
+      market,
+      macro,
+      sqCalendar,
+      metrics,
+      universe,
+      cash,
+      cashReserve,
+      addRoom,
+    ],
+  )
 
   const health = calcHealth(analysis)
   const hs     = healthStatus(health.score)
@@ -447,6 +571,9 @@ export function T1_Decision() {
 
   return (
     <div className="tab-panel">
+
+      {/* ── 結論 / ToDo / リスク ── */}
+      <FinalConclusionPanel board={zeroPlan.board} />
 
       {/* ── 市場モード + ノートレード判定 ── */}
       <MarketModePanel />
