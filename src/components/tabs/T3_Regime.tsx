@@ -6,6 +6,7 @@ export function T3_Regime() {
   const analysis = useAppStore(s => s.analysis)
   const holdings = useAppStore(s => s.holdings)
   const news     = useAppStore(s => s.news)
+  const learning = useAppStore(s => s.learning)
 
   const regimeColor = market.regime === 'bull' ? 'var(--g)' : market.regime === 'bear' ? 'var(--r)' : 'var(--c)'
   const regimeBg    = market.regime === 'bull' ? 'rgba(45,212,160,.06)' : market.regime === 'bear' ? 'rgba(232,64,90,.06)' : 'rgba(104,150,200,.06)'
@@ -250,11 +251,11 @@ export function T3_Regime() {
         )}
       </div>
 
-      {/* ── 5AI 討論結果 ── */}
+      {/* ── 7AI 討論結果 ── */}
       {bestDebate && bestHolding && (
         <div className="card">
           <div className="card-title">
-            5AI 討論結果 <span className="badge ai">最高スコア銘柄</span>
+            7AI 討論結果 <span className="badge ai">最高スコア銘柄</span>
           </div>
           <div style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--c)', marginBottom: 8 }}>
             {bestHolding.code} {bestHolding.name} — 討論スコア: {bestDebate.debate.debateScore}/100
@@ -301,6 +302,90 @@ export function T3_Regime() {
               {news.stockNews.filter(n => n.tickers.includes(bestHolding.code)).slice(0, 2).map(n => (
                 <div key={n.id} style={{ fontSize: 10, color: n.sentimentScore > 0.3 ? 'var(--g)' : n.sentimentScore < -0.3 ? 'var(--r)' : 'var(--d)', marginBottom: 3 }}>
                   {n.title.slice(0, 50)}…
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* ── 自己強化アルゴリズム ── */}
+      {learning && (
+        <div className="card">
+          <div className="card-title">
+            自己強化アルゴリズム <span className="badge live">prediction vs actual</span>
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 8, marginBottom: 10 }}>
+            <div className="kpi">
+              <div className="l">総判定数</div>
+              <div className="v wh">{learning.summary.total}</div>
+            </div>
+            <div className="kpi">
+              <div className="l">勝率</div>
+              <div className="v" style={{ color: learning.summary.accuracy >= 55 ? 'var(--g)' : learning.summary.accuracy >= 45 ? 'var(--a)' : 'var(--r)' }}>
+                {learning.summary.accuracy.toFixed(1)}%
+              </div>
+            </div>
+            <div className="kpi">
+              <div className="l">平均報酬</div>
+              <div className="v" style={{ color: learning.summary.avgReward >= 0 ? 'var(--g)' : 'var(--r)' }}>
+                {learning.summary.avgReward >= 0 ? '+' : ''}{learning.summary.avgReward.toFixed(3)}
+              </div>
+            </div>
+            <div className="kpi">
+              <div className="l">最終更新</div>
+              <div className="v wh" style={{ fontSize: 11 }}>
+                {learning.lastUpdated.slice(5, 16).replace('T', ' ')}
+              </div>
+            </div>
+          </div>
+
+          <div style={{ marginBottom: 8, fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--d)' }}>
+            判定別精度
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8, marginBottom: 10 }}>
+            {(['BUY', 'HOLD', 'SELL'] as const).map(key => {
+              const s = learning.summary.byDecision[key]
+              return (
+                <div key={key} style={{ background: 'rgba(0,0,0,.2)', border: '1px solid var(--b1)', borderRadius: 8, padding: '8px 10px' }}>
+                  <div style={{ fontFamily: 'var(--mono)', fontSize: 10, color: key === 'BUY' ? 'var(--g)' : key === 'SELL' ? 'var(--r)' : 'var(--c)', marginBottom: 2 }}>
+                    {key}
+                  </div>
+                  <div style={{ fontFamily: 'var(--mono)', fontSize: 13, color: 'var(--w)' }}>
+                    {s.accuracy.toFixed(1)}%
+                  </div>
+                  <div style={{ fontSize: 9, color: 'var(--d)' }}>
+                    {s.wins}勝 / {s.losses}敗 / {s.flats}保留
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+
+          <div style={{ marginBottom: 8, fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--d)' }}>
+            推奨重み（次サイクル）
+          </div>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 8 }}>
+            {Object.entries(learning.suggestedWeights).map(([k, v]) => (
+              <span key={k} style={{
+                fontFamily: 'var(--mono)',
+                fontSize: 9,
+                color: 'var(--c)',
+                background: 'rgba(104,150,200,.12)',
+                border: '1px solid var(--c2)',
+                borderRadius: 8,
+                padding: '2px 8px',
+              }}>
+                {k}:{' '}{(v * 100).toFixed(1)}%
+              </span>
+            ))}
+          </div>
+
+          {learning.summary.driftSignals.length > 0 && (
+            <div style={{ borderTop: '1px solid var(--b1)', paddingTop: 8 }}>
+              {learning.summary.driftSignals.map((sig, i) => (
+                <div key={i} style={{ fontSize: 10, color: 'var(--a)', marginBottom: 3 }}>
+                  • {sig}
                 </div>
               ))}
             </div>

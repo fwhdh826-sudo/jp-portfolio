@@ -174,6 +174,34 @@ def compute_importance(title: str, summary: str) -> float:
     return min(1.0, 0.3 + hits * 0.2)
 
 
+def classify_impact(score: float) -> str:
+    if score > 0.2:
+        return "positive"
+    if score < -0.2:
+        return "negative"
+    return "neutral"
+
+
+def build_why_important(importance: float, tickers: list) -> str:
+    if tickers and importance >= 0.75:
+        return "保有・候補銘柄に直接関連し、売買判断へ直結するため。"
+    if tickers:
+        return "関連銘柄の前提確認に必要なため。"
+    if importance >= 0.75:
+        return "市場全体のセンチメントとボラティリティに影響しやすいため。"
+    return "短期の地合い把握に有用なため。"
+
+
+def build_recommendation(score: float, importance: float, tickers: list) -> str:
+    if score < -0.25 and tickers:
+        return "関連銘柄の損切条件・前提崩れ条件を再確認する。"
+    if score > 0.25 and tickers:
+        return "分割エントリー可能か、理想PF差分と合わせて確認する。"
+    if importance >= 0.75:
+        return "次の寄り付き前に市場モード判定を更新する。"
+    return "監視継続。次回更新時に再評価する。"
+
+
 def map_tickers(title: str, summary: str) -> list:
     text = (title or "") + " " + (summary or "")
     hits = []
@@ -209,6 +237,7 @@ def fetch_feed(src: dict) -> list:
             sentiment, score = compute_sentiment(title, summary)
             importance = compute_importance(title, summary)
             tickers = map_tickers(title, summary)
+            impact = classify_impact(score)
 
             uid = hashlib.md5(url.encode("utf-8")).hexdigest()[:12]
 
@@ -224,6 +253,9 @@ def fetch_feed(src: dict) -> list:
                 "importance": importance,
                 "tags": [src["category"]],
                 "tickers": tickers,
+                "impact": impact,
+                "whyImportant": build_why_important(importance, tickers),
+                "recommendation": build_recommendation(score, importance, tickers),
             })
         log(f"    got {len(items)} items")
         return items

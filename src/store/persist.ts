@@ -1,8 +1,11 @@
-import type { Holding, Trust } from '../types'
+import type { Holding, Trust, LearningState } from '../types'
+import { sanitizeLearningState } from '../domain/learning/performanceTracker'
 
 const PORTFOLIO_KEY = 'v81_portfolio'
 const TRUST_KEY = 'v81_trust'
+const LEARNING_KEY = 'v91_learning'
 const TTL_MS = 7 * 24 * 60 * 60 * 1000  // 7日
+const LEARNING_TTL_MS = 30 * 24 * 60 * 60 * 1000
 
 interface Snapshot<T> {
   data: T
@@ -42,5 +45,23 @@ export function restoreTrust(): Trust[] | null {
       return null
     }
     return snap.data
+  } catch { return null }
+}
+
+export function persistLearning(learning: LearningState): void {
+  const snap: Snapshot<LearningState> = { data: learning, savedAt: Date.now() }
+  try { localStorage.setItem(LEARNING_KEY, JSON.stringify(snap)) } catch { /* quota */ }
+}
+
+export function restoreLearning(): LearningState | null {
+  try {
+    const raw = localStorage.getItem(LEARNING_KEY)
+    if (!raw) return null
+    const snap = JSON.parse(raw) as Snapshot<unknown>
+    if (Date.now() - snap.savedAt > LEARNING_TTL_MS) {
+      localStorage.removeItem(LEARNING_KEY)
+      return null
+    }
+    return sanitizeLearningState(snap.data)
   } catch { return null }
 }

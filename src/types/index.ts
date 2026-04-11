@@ -100,6 +100,10 @@ export interface NewsItem {
   importance: number       // 0 ~ 1
   tags: string[]
   tickers: string[]        // 関連銘柄コード
+  // v9.1 追加: 意思決定支援フィールド
+  impact?: 'positive' | 'negative' | 'neutral'
+  whyImportant?: string    // なぜ重要か
+  recommendation?: string  // 推奨アクション
 }
 
 export interface NewsData {
@@ -127,6 +131,8 @@ export interface PortfolioMetrics {
   totalEval: number
 }
 
+export type StrategyRank = 'S' | 'A' | 'B' | 'C' | 'D' | 'E'
+
 export interface HoldingAnalysis {
   code: string
   fundamentalScore: number   // 0-30
@@ -139,6 +145,7 @@ export interface HoldingAnalysis {
   ev: number
   decision: 'BUY' | 'HOLD' | 'SELL'
   confidence: number         // 0-1
+  strategyRank: StrategyRank // S/A/B/C/D/E 総合ランク
   // AI討論
   debate: AgentDebate
 }
@@ -157,6 +164,9 @@ export interface AgentDebate {
   debateScore: number
   confidence: number
   finalView: 'BUY' | 'HOLD' | 'SELL'
+  // v9.1: 統合強気・弱気理由（全エージェントから集約）
+  bullReasons: string[]
+  bearReasons: string[]
   sevenAxis: {
     growth: number
     valuation: number
@@ -168,6 +178,72 @@ export interface AgentDebate {
   }
 }
 
+// ── Learning (自己強化) ───────────────────────────────────────
+export interface LearningOutcome {
+  code: string
+  predictedAt: string
+  evaluatedAt: string
+  decision: 'BUY' | 'HOLD' | 'SELL'
+  score: number
+  confidence: number
+  prevPnlPct: number
+  currPnlPct: number
+  deltaPnlPct: number
+  reward: number
+  result: 'win' | 'loss' | 'flat'
+}
+
+export interface LearningBaseline {
+  code: string
+  predictedAt: string
+  decision: 'BUY' | 'HOLD' | 'SELL'
+  score: number
+  confidence: number
+  pnlPct: number
+}
+
+export interface DecisionSummary {
+  count: number
+  wins: number
+  losses: number
+  flats: number
+  accuracy: number
+  avgReward: number
+}
+
+export interface AdaptiveWeights {
+  fundamental: number
+  market: number
+  technical: number
+  news: number
+  quality: number
+  risk: number
+}
+
+export interface LearningSummary {
+  total: number
+  wins: number
+  losses: number
+  flats: number
+  accuracy: number
+  avgReward: number
+  byDecision: {
+    BUY: DecisionSummary
+    HOLD: DecisionSummary
+    SELL: DecisionSummary
+  }
+  driftSignals: string[]
+}
+
+export interface LearningState {
+  lastUpdated: string
+  baselineCount: number
+  baseline: LearningBaseline[]
+  outcomes: LearningOutcome[]
+  summary: LearningSummary
+  suggestedWeights: AdaptiveWeights
+}
+
 // ── System ────────────────────────────────────────────────────
 export type SystemStatus = 'idle' | 'loading' | 'success' | 'error'
 
@@ -177,7 +253,7 @@ export interface DataSourceInfo {
 }
 
 export interface SystemState {
-  version: '8.1' | '8.3' | '9.0'
+  version: '8.1' | '8.3' | '9.0' | '9.1'
   status: SystemStatus
   lastUpdated: string | null
   csvLastImportedAt: string | null
@@ -192,6 +268,8 @@ export interface SystemState {
     macro?: 'loaded' | 'static' | 'none' | 'error'
     nikkeiVI?: 'loaded' | 'static' | 'none' | 'error'
     sq?: 'loaded' | 'static' | 'none' | 'error'
+    margin?: 'loaded' | 'none' | 'error'
+    flows?: 'loaded' | 'none' | 'error'
   }
   // v9.0: 各データソースの最終更新日時
   dataTimestamps?: {
@@ -202,6 +280,8 @@ export interface SystemState {
     macro: string | null
     nikkeiVI: string | null
     sq: string | null
+    margin: string | null
+    flows: string | null
   }
 }
 
@@ -233,6 +313,7 @@ export interface AppState {
   margin: MarginData | null
   flows: FlowData | null
   universe: AssetUniverse | null
+  learning: LearningState | null
   // 現金・待機資金・追加枠（運用方針に基づく）
   cash: number
   cashReserve: number

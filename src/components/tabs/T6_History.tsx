@@ -1,30 +1,54 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { useAppStore } from '../../store/useAppStore'
-import { selectSellList, selectTotalEval } from '../../store/selectors'
+import { selectBuyList, selectSellList, selectTotalEval } from '../../store/selectors'
 import { formatRelativeTime, formatJPYAuto } from '../../utils/format'
 import type { NewsItem } from '../../types'
 
-// ── ニュースカード（朝メモ形式）────────────────────────────────
-function NewsCard({ item }: { item: NewsItem }) {
+function getImpact(item: NewsItem): { label: string; color: string } {
+  const impact = item.impact ?? (item.sentimentScore > 0.2 ? 'positive' : item.sentimentScore < -0.2 ? 'negative' : 'neutral')
+  if (impact === 'positive') return { label: 'プラス', color: 'var(--g)' }
+  if (impact === 'negative') return { label: 'マイナス', color: 'var(--r)' }
+  return { label: '中立', color: 'var(--d)' }
+}
+
+function getImportance(item: NewsItem): { label: string; color: string } {
+  if (item.importance >= 0.75) return { label: '高', color: 'var(--r)' }
+  if (item.importance >= 0.45) return { label: '中', color: 'var(--a)' }
+  return { label: '低', color: 'var(--d)' }
+}
+
+// ── ニュースカード（意思決定支援形式）──────────────────────────
+function NewsCard({ item, category }: { item: NewsItem; category: string }) {
   const holdings = useAppStore(s => s.holdings)
-  const sent = item.sentimentScore
-  const sentColor = sent > 0.25 ? 'var(--g)' : sent < -0.25 ? 'var(--r)' : 'var(--d)'
-  const sentLabel = sent > 0.25 ? '▲ 強気' : sent < -0.25 ? '▼ 弱気' : '─ 中立'
+  const impact = getImpact(item)
+  const importance = getImportance(item)
   const relatedNames = item.tickers.map(code =>
     holdings.find(h => h.code === code)?.name ?? code
+  )
+  const whyImportant = item.whyImportant ?? (
+    item.importance >= 0.75
+      ? '市場ボラティリティと売買判断に直結するニュースです。'
+      : '保有・候補銘柄の前提を確認する補助情報です。'
+  )
+  const recommendation = item.recommendation ?? (
+    item.sentimentScore < -0.25
+      ? '関連銘柄の損切条件と前提崩れ条件を再確認する。'
+      : item.sentimentScore > 0.25
+      ? '分割エントリー余地があるか、理想PF差分と合わせて確認する。'
+      : 'まずは様子見で、次の決算・マクロデータ更新を待つ。'
   )
 
   return (
     <div style={{
-      padding: '10px 0',
+      padding: '11px 0',
       borderBottom: '1px solid var(--b1)',
     }}>
       <div style={{ display: 'flex', gap: 8, alignItems: 'flex-start' }}>
-        {/* センチメント縦バー */}
+        {/* 影響方向バー */}
         <div style={{
           width: 3, flexShrink: 0, borderRadius: 2, alignSelf: 'stretch',
-          background: sent > 0.25 ? 'var(--g2)' : sent < -0.25 ? 'var(--r2)' : 'var(--b1)',
-          minHeight: 40,
+          background: impact.color,
+          minHeight: 64,
         }} />
         <div style={{ flex: 1, minWidth: 0 }}>
           {/* タイトル */}
@@ -42,14 +66,20 @@ function NewsCard({ item }: { item: NewsItem }) {
           </div>
           {/* メタ行 */}
           <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
-            <span style={{ fontFamily: 'var(--mono)', fontSize: 9, color: sentColor }}>
-              {sentLabel}
+            <span style={{ fontFamily: 'var(--mono)', fontSize: 9, color: impact.color }}>
+              影響: {impact.label}
+            </span>
+            <span style={{ fontFamily: 'var(--mono)', fontSize: 9, color: importance.color }}>
+              重要度: {importance.label}
             </span>
             <span style={{ fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--d)' }}>
               {item.source}
             </span>
             <span style={{ fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--d)' }}>
               {formatRelativeTime(item.publishedAt)}
+            </span>
+            <span style={{ fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--d)' }}>
+              {category}
             </span>
             {/* 関連保有銘柄 */}
             {relatedNames.map((name, i) => (
@@ -62,6 +92,17 @@ function NewsCard({ item }: { item: NewsItem }) {
               </span>
             ))}
           </div>
+          {item.summary && (
+            <div style={{ marginTop: 5, fontSize: 11, color: 'var(--d)', lineHeight: 1.55 }}>
+              要約: {item.summary}
+            </div>
+          )}
+          <div style={{ marginTop: 4, fontSize: 10, color: 'var(--a)', lineHeight: 1.55 }}>
+            なぜ重要か: {whyImportant}
+          </div>
+          <div style={{ marginTop: 2, fontSize: 10, color: 'var(--c)', lineHeight: 1.55 }}>
+            推奨アクション: {recommendation}
+          </div>
         </div>
       </div>
     </div>
@@ -70,13 +111,15 @@ function NewsCard({ item }: { item: NewsItem }) {
 
 // ── T6_News ───────────────────────────────────────────────────
 export function T6_History() {
-  const [tab, setTab] = useState<'market' | 'stock' | 'history'>('market')
+  const [tab, setTab] = useState<'market' | 'holding' | 'candidate' | 'trust' | 'history'>('market')
   const system    = useAppStore(s => s.system)
   const news      = useAppStore(s => s.news)
   const macro     = useAppStore(s => s.macro)
   const sqCalendar = useAppStore(s => s.sqCalendar)
   const metrics   = useAppStore(s => s.metrics)
   const holdings  = useAppStore(s => s.holdings)
+  const trust     = useAppStore(s => s.trust)
+  const buyList   = useAppStore(selectBuyList)
   const sellList  = useAppStore(selectSellList)
   const totalEval = useAppStore(selectTotalEval)
   const importCsv = useAppStore(s => s.importCsv)
@@ -84,14 +127,52 @@ export function T6_History() {
   const handleDrop       = (e: React.DragEvent)        => { e.preventDefault(); const f = e.dataTransfer.files[0]; if (f) void importCsv(f) }
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => { const f = e.target.files?.[0]; if (f) void importCsv(f) }
 
-  // ニュース件数
-  const marketCount = news?.marketNews?.length ?? 0
-  const stockCount  = news?.stockNews?.length  ?? 0
+  const holdingCodes = useMemo(() => new Set(holdings.map(h => h.code)), [holdings])
+  const candidateCodes = useMemo(() => new Set(buyList.map(b => b.code)), [buyList])
+  const trustKeywords = useMemo(
+    () => trust.map(f => f.abbr).concat(['S&P500', 'FANG', 'NASDAQ', 'オルカン', 'ゴールド', 'REIT', '日経225']),
+    [trust],
+  )
 
-  // 保有銘柄ニュースを重要度降順
-  const stockNews = (news?.stockNews ?? []).sort((a, b) => b.importance - a.importance)
-  // マーケットニュースを重要度降順
-  const marketNews = (news?.marketNews ?? []).sort((a, b) => b.importance - a.importance)
+  const marketNews = useMemo(
+    () => [...(news?.marketNews ?? [])].sort((a, b) => b.importance - a.importance),
+    [news],
+  )
+  const stockNews = useMemo(
+    () => [...(news?.stockNews ?? [])].sort((a, b) => b.importance - a.importance),
+    [news],
+  )
+
+  const holdingNews = useMemo(
+    () => stockNews.filter(n => n.tickers.some(code => holdingCodes.has(code))),
+    [stockNews, holdingCodes],
+  )
+
+  const candidateNews = useMemo(
+    () =>
+      [...stockNews, ...marketNews]
+        .filter(n => {
+          if (n.tickers.some(code => candidateCodes.has(code))) return true
+          if (candidateCodes.size === 0) return false
+          return [...candidateCodes].some(code => n.title.includes(code) || n.summary.includes(code))
+        })
+        .slice(0, 30),
+    [stockNews, marketNews, candidateCodes],
+  )
+
+  const trustNews = useMemo(
+    () =>
+      [...marketNews, ...stockNews]
+        .filter(n => trustKeywords.some(k => k && (n.title.includes(k) || n.summary.includes(k))))
+        .slice(0, 30),
+    [marketNews, stockNews, trustKeywords],
+  )
+
+  // ニュース件数
+  const marketCount = marketNews.length
+  const holdingCount = holdingNews.length
+  const candidateCount = candidateNews.length
+  const trustCount = trustNews.length
 
   // 年間目標
   const pnlPct = totalEval > 0
@@ -276,7 +357,9 @@ export function T6_History() {
         <div style={{ display: 'flex', borderBottom: '1px solid var(--b1)' }}>
           {([
             { id: 'market',  label: `📈 マーケット (${marketCount})` },
-            { id: 'stock',   label: `⭐ 保有銘柄 (${stockCount})` },
+            { id: 'holding', label: `⭐ 保有銘柄 (${holdingCount})` },
+            { id: 'candidate', label: `🎯 候補銘柄 (${candidateCount})` },
+            { id: 'trust', label: `💼 投信関連 (${trustCount})` },
             { id: 'history', label: '📂 履歴' },
           ] as { id: typeof tab; label: string }[]).map(t => (
             <button
@@ -311,15 +394,15 @@ export function T6_History() {
                   マーケットニュースなし
                 </div>
               ) : (
-                marketNews.map(n => <NewsCard key={n.id} item={n} />)
+                marketNews.map(n => <NewsCard key={n.id} item={n} category="市場全体" />)
               )}
             </>
           )}
 
           {/* 保有銘柄ニュース */}
-          {tab === 'stock' && (
+          {tab === 'holding' && (
             <>
-              {stockNews.length === 0 ? (
+              {holdingNews.length === 0 ? (
                 <div style={{ padding: '16px 0', textAlign: 'center' }}>
                   <div style={{ fontSize: 24, marginBottom: 8 }}>⭐</div>
                   <div style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--d)' }}>
@@ -328,7 +411,41 @@ export function T6_History() {
                   </div>
                 </div>
               ) : (
-                stockNews.map(n => <NewsCard key={n.id} item={n} />)
+                holdingNews.map(n => <NewsCard key={n.id} item={n} category="保有銘柄" />)
+              )}
+            </>
+          )}
+
+          {/* 候補銘柄ニュース */}
+          {tab === 'candidate' && (
+            <>
+              {candidateNews.length === 0 ? (
+                <div style={{ padding: '16px 0', textAlign: 'center' }}>
+                  <div style={{ fontSize: 24, marginBottom: 8 }}>🎯</div>
+                  <div style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--d)' }}>
+                    候補銘柄ニュースなし<br />
+                    <span style={{ fontSize: 10 }}>BUY候補がある時に優先表示されます</span>
+                  </div>
+                </div>
+              ) : (
+                candidateNews.map(n => <NewsCard key={n.id} item={n} category="候補銘柄" />)
+              )}
+            </>
+          )}
+
+          {/* 投信関連ニュース */}
+          {tab === 'trust' && (
+            <>
+              {trustNews.length === 0 ? (
+                <div style={{ padding: '16px 0', textAlign: 'center' }}>
+                  <div style={{ fontSize: 24, marginBottom: 8 }}>💼</div>
+                  <div style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--d)' }}>
+                    投信関連ニュースなし<br />
+                    <span style={{ fontSize: 10 }}>為替・米株・金利・指数関連を自動抽出します</span>
+                  </div>
+                </div>
+              ) : (
+                trustNews.map(n => <NewsCard key={n.id} item={n} category="投信関連" />)
               )}
             </>
           )}

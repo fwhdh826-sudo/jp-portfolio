@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useAppStore } from '../../store/useAppStore'
 import { selectTotalEval } from '../../store/selectors'
 import { formatJPYAuto } from '../../utils/format'
+import { JP_STOCK_MAX_VALUE, SELLABLE_CODES } from '../../constants/market'
 
 const sectorColors: Record<string, string> = {
   '金融':    '#6896c8',
@@ -23,6 +24,7 @@ export function T2_Holdings() {
   const holdings  = useAppStore(s => s.holdings)
   const analysis  = useAppStore(s => s.analysis)
   const metrics   = useAppStore(s => s.metrics)
+  const universe  = useAppStore(s => s.universe)
   const totalEval = useAppStore(selectTotalEval)
 
   const [expandedCode, setExpandedCode] = useState<string | null>(null)
@@ -37,6 +39,9 @@ export function T2_Holdings() {
   }, {})
 
   const sectorEntries = Object.entries(sectorGroups).sort((a, b) => b[1] - a[1])
+  const lockedCount = holdings.filter(h => h.lock).length
+  const sellableCount = holdings.filter(h => !h.lock && SELLABLE_CODES.has(h.code)).length
+  const jpStockRatio = universe?.categories.find(c => c.class === 'JP_STOCK')
 
   // ── 機関投資家スコア計算 ────────────────────────────────────
   const calcInstScore = (code: string) => {
@@ -71,6 +76,64 @@ export function T2_Holdings() {
 
   return (
     <div className="tab-panel">
+
+      {/* ── ゼロベース理想PF比較 ── */}
+      {universe && (
+        <div className="card" style={{ marginBottom: 10 }}>
+          <div className="card-title" style={{ marginBottom: 8 }}>
+            ゼロベース理想PF比較
+          </div>
+          <div style={{ fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--d)', marginBottom: 8 }}>
+            総資産 {formatJPYAuto(universe.totalValue)} / 国内個別株上限 {formatJPYAuto(JP_STOCK_MAX_VALUE)}
+          </div>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: '2fr 1fr 1fr 2fr',
+            gap: 4,
+            paddingBottom: 4,
+            marginBottom: 6,
+            borderBottom: '1px solid var(--b1)',
+            fontFamily: 'var(--mono)',
+            fontSize: 8,
+            color: 'var(--d)',
+          }}>
+            <div>資産クラス</div>
+            <div style={{ textAlign: 'right' }}>現在比率</div>
+            <div style={{ textAlign: 'right' }}>目標比率</div>
+            <div style={{ textAlign: 'right' }}>差分アクション</div>
+          </div>
+          {universe.categories.map(cat => {
+            const color = Math.abs(cat.diffRatio) < 0.02 ? 'var(--g)' : Math.abs(cat.diffRatio) < 0.05 ? 'var(--a)' : 'var(--r)'
+            const action = Math.abs(cat.diffValue) < 500_000 ? 'ほぼ適正' : cat.diffValue > 0 ? `▲ +${formatJPYAuto(cat.diffValue)}` : `▼ ${formatJPYAuto(-cat.diffValue)}`
+            return (
+              <div key={cat.class} style={{
+                display: 'grid',
+                gridTemplateColumns: '2fr 1fr 1fr 2fr',
+                gap: 4,
+                alignItems: 'center',
+                padding: '5px 0',
+                borderBottom: '1px solid var(--b2)',
+                fontFamily: 'var(--mono)',
+                fontSize: 10,
+              }}>
+                <div>
+                  <div style={{ color: 'var(--w)' }}>{cat.label}</div>
+                  <div style={{ fontSize: 8, color: 'var(--d)' }}>{cat.role}</div>
+                </div>
+                <div style={{ textAlign: 'right', color: 'var(--w)' }}>{(cat.currentRatio * 100).toFixed(1)}%</div>
+                <div style={{ textAlign: 'right', color }}>{(cat.targetRatio * 100).toFixed(1)}%</div>
+                <div style={{ textAlign: 'right', color }}>{action}</div>
+              </div>
+            )
+          })}
+          {jpStockRatio && (
+            <div style={{ marginTop: 8, fontSize: 10, color: jpStockRatio.currentValue > JP_STOCK_MAX_VALUE ? 'var(--r)' : 'var(--d)' }}>
+              国内個別株: {formatJPYAuto(jpStockRatio.currentValue)}
+              {jpStockRatio.currentValue > JP_STOCK_MAX_VALUE ? '（上限制約超過）' : '（上限制約内）'}
+            </div>
+          )}
+        </div>
+      )}
 
       {/* ── セクター集中度バー ── */}
       <div className="card" style={{ marginBottom: 10 }}>
@@ -264,33 +327,36 @@ export function T2_Holdings() {
         <div className="tw-hint">← 横スクロール可 →</div>
       </div>
 
-      {/* ── 含み損益ランキング（バーなし・数値のみ）── */}
+      {/* ── 制約影響 ── */}
       <div className="card">
-        <div className="card-title">含み損益ランキング</div>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6 }}>
-          {[...holdings]
-            .sort((a, b) => b.pnlPct - a.pnlPct)
-            .map(h => (
-              <div key={h.code} style={{
-                display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                padding: '6px 10px', borderRadius: 6,
-                background: h.pnlPct >= 0 ? 'rgba(45,212,160,.05)' : 'rgba(232,64,90,.05)',
-                border: `1px solid ${h.pnlPct >= 0 ? 'var(--g3)' : 'rgba(232,64,90,.2)'}`,
-              }}>
-                <div>
-                  <div style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--w)' }}>{h.name}</div>
-                  <div style={{ fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--d)' }}>{h.code}</div>
-                </div>
-                <div style={{ textAlign: 'right' }}>
-                  <div style={{ fontFamily: 'var(--mono)', fontSize: 13, fontWeight: 700, color: h.pnlPct >= 0 ? 'var(--g)' : 'var(--r)' }}>
-                    {h.pnlPct >= 0 ? '+' : ''}{h.pnlPct.toFixed(1)}%
-                  </div>
-                  <div style={{ fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--d)' }}>
-                    {formatJPYAuto(h.eval)}
-                  </div>
-                </div>
-              </div>
-            ))}
+        <div className="card-title">制約の影響</div>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
+          <div style={{ background: 'rgba(0,0,0,.2)', border: '1px solid var(--b1)', borderRadius: 8, padding: '8px 10px' }}>
+            <div style={{ fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--d)', marginBottom: 2 }}>売却可能銘柄</div>
+            <div style={{ fontFamily: 'var(--mono)', fontSize: 16, color: 'var(--g)' }}>{sellableCount}銘柄</div>
+            <div style={{ fontSize: 10, color: 'var(--d)' }}>3ヶ月ルールと売却許可コードを満たす銘柄のみ</div>
+          </div>
+          <div style={{ background: 'rgba(0,0,0,.2)', border: '1px solid var(--b1)', borderRadius: 8, padding: '8px 10px' }}>
+            <div style={{ fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--d)', marginBottom: 2 }}>売却ロック銘柄</div>
+            <div style={{ fontFamily: 'var(--mono)', fontSize: 16, color: lockedCount > 0 ? 'var(--a)' : 'var(--g)' }}>{lockedCount}銘柄</div>
+            <div style={{ fontSize: 10, color: 'var(--d)' }}>ロック銘柄はWAIT管理（即売却不可）</div>
+          </div>
+          <div style={{ background: 'rgba(0,0,0,.2)', border: '1px solid var(--b1)', borderRadius: 8, padding: '8px 10px' }}>
+            <div style={{ fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--d)', marginBottom: 2 }}>国内個別株 上限</div>
+            <div style={{ fontFamily: 'var(--mono)', fontSize: 16, color: totalEval > JP_STOCK_MAX_VALUE ? 'var(--r)' : 'var(--g)' }}>
+              {formatJPYAuto(totalEval)}
+            </div>
+            <div style={{ fontSize: 10, color: 'var(--d)' }}>
+              上限 {formatJPYAuto(JP_STOCK_MAX_VALUE)}
+            </div>
+          </div>
+          <div style={{ background: 'rgba(0,0,0,.2)', border: '1px solid var(--b1)', borderRadius: 8, padding: '8px 10px' }}>
+            <div style={{ fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--d)', marginBottom: 2 }}>三菱グループ比率</div>
+            <div style={{ fontFamily: 'var(--mono)', fontSize: 16, color: 'var(--a)' }}>
+              {((holdings.filter(h => h.mitsu).reduce((s, h) => s + h.eval, 0) / Math.max(totalEval, 1)) * 100).toFixed(1)}%
+            </div>
+            <div style={{ fontSize: 10, color: 'var(--d)' }}>目安35%以内を維持</div>
+          </div>
         </div>
       </div>
     </div>

@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useAppStore } from '../../store/useAppStore'
-import { selectBuyList, selectSellList } from '../../store/selectors'
 import { formatJPYAuto } from '../../utils/format'
+import { buildZeroBasePlan } from '../../domain/optimization/zeroBase'
 
 interface WatchItem {
   code: string
@@ -37,9 +37,46 @@ function saveDecisionLog(log: DecisionLog[]) {
 export function T5_Backtest() {
   const analysis  = useAppStore(s => s.analysis)
   const holdings  = useAppStore(s => s.holdings)
+  const trust     = useAppStore(s => s.trust)
+  const market    = useAppStore(s => s.market)
+  const macro     = useAppStore(s => s.macro)
+  const sqCalendar = useAppStore(s => s.sqCalendar)
+  const metrics   = useAppStore(s => s.metrics)
+  const universe  = useAppStore(s => s.universe)
+  const cash      = useAppStore(s => s.cash)
+  const cashReserve = useAppStore(s => s.cashReserve)
+  const addRoom   = useAppStore(s => s.addRoom)
   const system    = useAppStore(s => s.system)
-  const sellList  = useAppStore(selectSellList)
-  const buyList   = useAppStore(selectBuyList)
+
+  const zeroPlan = useMemo(
+    () =>
+      buildZeroBasePlan({
+        holdings,
+        trust,
+        analysis,
+        market,
+        macro,
+        sqCalendar,
+        metrics,
+        universe,
+        cash,
+        cashReserve,
+        addRoom,
+      }),
+    [
+      holdings,
+      trust,
+      analysis,
+      market,
+      macro,
+      sqCalendar,
+      metrics,
+      universe,
+      cash,
+      cashReserve,
+      addRoom,
+    ],
+  )
 
   // ── Watchlist ────────────────────────────────────────────────
   const [watchlist, setWatchlist] = useState<WatchItem[]>(loadWatchlist)
@@ -91,99 +128,72 @@ export function T5_Backtest() {
         最終分析: {system.analysisLastRunAt?.slice(0, 19).replace('T', ' ') ?? '─'}
       </div>
 
-      {/* ── 執行オーダー（SELL） ── */}
+      {/* ── ゼロベース売買提案（理由/利確/損切/前提崩れ） ── */}
       <div className="card" style={{ marginBottom: 10 }}>
         <div className="card-title">
-          執行オーダー{' '}
-          <span style={{
-            fontFamily: 'var(--mono)', fontSize: 10,
-            color: sellList.length > 0 ? 'var(--r)' : 'var(--g)',
-            background: sellList.length > 0 ? 'rgba(232,64,90,.15)' : 'rgba(45,212,160,.15)',
-            borderRadius: 10, padding: '2px 8px', marginLeft: 6,
-          }}>
-            SELL {sellList.length}件
-          </span>
+          売買提案（ゼロベース）
+          <span className="badge live" style={{ marginLeft: 8 }}>{zeroPlan.board.modeLabel}</span>
         </div>
-        {sellList.length === 0 ? (
-          <div style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--g)', padding: '8px 0' }}>
-            ✓ 売却推奨銘柄なし
-          </div>
-        ) : (
-          sellList.slice(0, 3).map((a, i) => {
-            const h = holdings.find(x => x.code === a.code)
-            return (
-              <div key={a.code} className="action-card" style={{
-                background: 'rgba(232,64,90,.05)', border: '1px solid rgba(232,64,90,.25)',
-                borderLeft: '3px solid var(--r)', borderRadius: 8,
-                padding: '10px 14px', marginBottom: 6,
-              }}>
-                <div style={{ fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--r)', marginBottom: 4 }}>
-                  ORDER #{i + 1} — 売却推奨
-                </div>
-                <div style={{ fontFamily: 'var(--mono)', fontSize: 14, color: 'var(--w)', fontWeight: 700, marginBottom: 2 }}>
-                  {h?.name ?? a.code}
-                </div>
-                <div style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--d)', marginBottom: 6 }}>
-                  {a.code} → スコア {a.totalScore}/100 / EV {(a.ev * 100).toFixed(1)}%
-                </div>
-                {h && (
-                  <div style={{ fontFamily: 'var(--mono)', fontSize: 11, display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-                    <span className="wh">{formatJPYAuto(h.eval)}</span>
-                    <span className={h.pnlPct >= 0 ? 'p' : 'n'}>
-                      {h.pnlPct >= 0 ? '+' : ''}{h.pnlPct.toFixed(2)}%
-                    </span>
-                  </div>
-                )}
-                <button
-                  onClick={() => logAction('SELL', a.code, `スコア${a.totalScore} EV${(a.ev*100).toFixed(1)}%`)}
-                  style={{
-                    marginTop: 8, background: 'rgba(232,64,90,.2)', border: '1px solid var(--r2)',
-                    borderRadius: 6, padding: '4px 12px', cursor: 'pointer',
-                    fontFamily: 'var(--mono)', fontSize: 10, color: 'var(--r)',
-                  }}
-                >
-                  SELL実行 → ログ記録
-                </button>
-              </div>
-            )
-          })
-        )}
-      </div>
-
-      {/* ── 再投資候補（BUY） ── */}
-      <div className="card" style={{ marginBottom: 10 }}>
-        <div className="card-title">
-          再投資候補 <span className="badge live">BUY {buyList.length}件</span>
-        </div>
-        {buyList.length === 0 ? (
+        {zeroPlan.proposals.length === 0 ? (
           <div style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--d)', padding: '8px 0' }}>
-            BUY候補なし
+            売買提案なし
           </div>
         ) : (
-          buyList.slice(0, 5).map(a => {
-            const h = holdings.find(x => x.code === a.code)
-            const halfK = h ? Math.min(0.30, Math.max(0, ((h.mu - 0.005) / (h.sigma * h.sigma)) * 0.5)) : 0
-            const investAmt = Math.round(budget * halfK / 1000) * 1000
-            return (
-              <div key={a.code} style={{
-                display: 'flex', alignItems: 'center', gap: 10,
-                padding: '7px 0', borderBottom: '1px solid var(--b1)',
-              }}>
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <span style={{ fontFamily: 'var(--mono)', fontSize: 12, color: 'var(--g)', fontWeight: 700 }}>{a.code}</span>
-                  <span style={{ fontFamily: 'var(--mono)', fontSize: 10, color: 'var(--d)', marginLeft: 6 }}>
-                    {h?.name?.slice(0, 8)}
-                  </span>
-                </div>
-                <span style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--w)' }}>
-                  {(halfK * 100).toFixed(1)}% Kelly
+          zeroPlan.proposals.slice(0, 6).map((p, i) => (
+            <div key={p.id} style={{
+              background: p.action === 'SELL' ? 'rgba(232,64,90,.06)' : p.action === 'BUY' ? 'rgba(45,212,160,.06)' : 'rgba(212,160,23,.06)',
+              border: `1px solid ${p.action === 'SELL' ? 'rgba(232,64,90,.3)' : p.action === 'BUY' ? 'var(--g3)' : 'rgba(212,160,23,.25)'}`,
+              borderLeft: `3px solid ${p.action === 'SELL' ? 'var(--r)' : p.action === 'BUY' ? 'var(--g)' : 'var(--a)'}`,
+              borderRadius: 8,
+              padding: '10px 12px',
+              marginBottom: 8,
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6, flexWrap: 'wrap' }}>
+                <span style={{ fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--d)' }}>#{i + 1}</span>
+                <span className={`vd ${p.action === 'SELL' ? 'sell' : p.action === 'BUY' ? 'buy' : 'wait'}`}>{p.action}</span>
+                <span style={{ fontFamily: 'var(--mono)', fontSize: 12, color: 'var(--w)', fontWeight: 700 }}>
+                  {p.name} ({p.code})
                 </span>
-                <span style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--g)' }}>
-                  {formatJPYAuto(investAmt)}
+                <span style={{ marginLeft: 'auto', fontFamily: 'var(--mono)', fontSize: 11, color: p.action === 'SELL' ? 'var(--r)' : p.action === 'BUY' ? 'var(--g)' : 'var(--a)' }}>
+                  {p.amount > 0 ? formatJPYAuto(p.amount) : '金額なし'}
                 </span>
               </div>
-            )
-          })
+
+              <div style={{ fontSize: 11, color: 'var(--d)', marginBottom: 6, lineHeight: 1.6 }}>
+                {p.reason}
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6, fontSize: 10, lineHeight: 1.55 }}>
+                <div style={{ color: 'var(--c)' }}>根拠: {p.rule.entryRationale}</div>
+                <div style={{ color: 'var(--d)' }}>保有前提: {p.rule.holdingPremise}</div>
+                <div style={{ color: 'var(--g)' }}>利確条件: {p.rule.takeProfit}</div>
+                <div style={{ color: 'var(--r)' }}>損切条件: {p.rule.stopLoss}</div>
+                <div style={{ color: 'var(--a)' }}>前提崩れ: {p.rule.invalidation}</div>
+                <div style={{ color: 'var(--d)' }}>分割執行: {p.rule.splitExecution}</div>
+              </div>
+
+              <div style={{ marginTop: 6, fontSize: 10, color: 'var(--d)' }}>
+                逆ポジ判定: {p.rule.reverseSignal}
+              </div>
+
+              <button
+                onClick={() => logAction(p.action === 'WAIT' ? 'HOLD' : p.action, p.code, `${p.reason} / ${p.rule.takeProfit}`)}
+                style={{
+                  marginTop: 8,
+                  background: 'rgba(104,150,200,.15)',
+                  border: '1px solid var(--b1)',
+                  borderRadius: 6,
+                  padding: '4px 10px',
+                  cursor: 'pointer',
+                  fontFamily: 'var(--mono)',
+                  fontSize: 10,
+                  color: 'var(--c)',
+                }}
+              >
+                実行ログに記録
+              </button>
+            </div>
+          ))
         )}
       </div>
 

@@ -11,8 +11,16 @@ import {
 import { refreshAllData } from '../services/loadStaticData'
 import { computeAnalysis, calcPortfolioMetrics } from '../domain/analysis/computeAnalysis'
 import { importPortfolioCsv } from '../domain/csv/importPortfolioCsv'
-import { persistPortfolio, restorePortfolio, persistTrust, restoreTrust } from './persist'
+import {
+  persistPortfolio,
+  restorePortfolio,
+  persistTrust,
+  restoreTrust,
+  persistLearning,
+  restoreLearning,
+} from './persist'
 import { buildAssetUniverse } from '../domain/optimization/idealAllocation'
+import { updatePerformanceTracker } from '../domain/learning/performanceTracker'
 
 // ── アクション型 ─────────────────────────────────────────────
 interface AppActions {
@@ -31,7 +39,7 @@ interface AppActions {
 }
 
 // ── runFullAnalysis（内部ヘルパー）───────────────────────────
-function runFullAnalysis(state: AppState): Pick<AppState, 'analysis' | 'metrics' | 'holdings' | 'trust' | 'universe'> {
+function runFullAnalysis(state: AppState): Pick<AppState, 'analysis' | 'metrics' | 'holdings' | 'trust' | 'universe' | 'learning'> {
   const analysis = computeAnalysis(state.holdings, state.market, state.correlation, state.news)
   const metrics = calcPortfolioMetrics(state.holdings, state.correlation)
 
@@ -65,10 +73,16 @@ function runFullAnalysis(state: AppState): Pick<AppState, 'analysis' | 'metrics'
   })
 
   // ゼロベース理想PF構築（metrics計算後に呼ぶ）
-  const stateWithComputed: AppState = { ...state, holdings, trust, metrics }
+  const stateWithComputed: AppState = { ...state, holdings, trust, metrics, analysis }
   const universe = buildAssetUniverse(stateWithComputed)
+  const learning = updatePerformanceTracker(
+    state.learning,
+    holdings,
+    analysis,
+    new Date().toISOString(),
+  )
 
-  return { analysis, metrics, holdings, trust, universe }
+  return { analysis, metrics, holdings, trust, universe, learning }
 }
 
 // ── Store ─────────────────────────────────────────────────────
@@ -88,11 +102,12 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
   margin: null,
   flows: null,
   universe: null,
+  learning: null,
   cash: INITIAL_CASH,
   cashReserve: INITIAL_CASH_RESERVE,
   addRoom: INITIAL_ADD_ROOM,
   system: {
-    version: '9.0',
+    version: '9.1',
     status: 'idle',
     lastUpdated: null,
     csvLastImportedAt: null,
@@ -106,6 +121,8 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
       macro: 'none',
       nikkeiVI: 'none',
       sq: 'none',
+      margin: 'none',
+      flows: 'none',
     },
     dataTimestamps: {
       market: null,
@@ -115,6 +132,8 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
       macro: null,
       nikkeiVI: null,
       sq: null,
+      margin: null,
+      flows: null,
     },
   },
 
@@ -125,8 +144,10 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
       // localStorage復元（TTL付き）
       const savedPortfolio = restorePortfolio()
       const savedTrust = restoreTrust()
+      const savedLearning = restoreLearning()
       if (savedPortfolio) set({ holdings: savedPortfolio })
       if (savedTrust) set({ trust: savedTrust })
+      if (savedLearning) set({ learning: savedLearning })
 
       // データ取得（macro / nikkei VI / SQ 含む）
       const result = await refreshAllData()
@@ -163,6 +184,8 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
               macro: macro.source,
               nikkeiVI: nikkeiVI.source,
               sq: sq.source,
+              margin: margin.source,
+              flows: flows.source,
             },
             dataTimestamps: {
               market: market.data?.last_updated ?? null,
@@ -172,6 +195,8 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
               macro: macro.data?.last_updated ?? null,
               nikkeiVI: nikkeiVI.data?.last_updated ?? null,
               sq: sq.data?.last_updated ?? null,
+              margin: margin.data?.last_updated ?? null,
+              flows: flows.data?.last_updated ?? null,
             },
           },
         }
@@ -193,6 +218,8 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
       // 永続化
       persistPortfolio(get().holdings)
       persistTrust(get().trust)
+      const learning = get().learning
+      if (learning) persistLearning(learning)
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err)
       set(s => ({ system: { ...s.system, status: 'error', error: msg } }))
@@ -226,6 +253,7 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
               market: market.source, correlation: correlation.source,
               news: news.source, trust: trust.source,
               macro: macro.source, nikkeiVI: nikkeiVI.source, sq: sq.source,
+              margin: margin.source, flows: flows.source,
             },
             dataTimestamps: {
               market: market.data?.last_updated ?? null,
@@ -235,6 +263,8 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
               macro: macro.data?.last_updated ?? null,
               nikkeiVI: nikkeiVI.data?.last_updated ?? null,
               sq: sq.data?.last_updated ?? null,
+              margin: margin.data?.last_updated ?? null,
+              flows: flows.data?.last_updated ?? null,
             },
           },
         }
@@ -253,6 +283,8 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
 
       persistPortfolio(get().holdings)
       persistTrust(get().trust)
+      const learning = get().learning
+      if (learning) persistLearning(learning)
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err)
       set(s => ({ system: { ...s.system, status: 'error', error: msg } }))
@@ -283,6 +315,8 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
       }))
       persistPortfolio(get().holdings)
       persistTrust(get().trust)
+      const learning = get().learning
+      if (learning) persistLearning(learning)
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err)
       set(s => ({ system: { ...s.system, status: 'error', error: msg } }))
@@ -296,6 +330,8 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
     const computed = runFullAnalysis(get())
     set(computed)
     persistPortfolio(get().holdings)
+    const learning = get().learning
+    if (learning) persistLearning(learning)
   },
 
   updateTrust: (id, patch) => {
@@ -303,5 +339,7 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
     const computed = runFullAnalysis(get())
     set(computed)
     persistTrust(get().trust)
+    const learning = get().learning
+    if (learning) persistLearning(learning)
   },
 }))
