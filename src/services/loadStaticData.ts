@@ -1,4 +1,13 @@
-import type { Market, CorrelationData, NewsData, Trust } from '../types'
+import type {
+  Market,
+  CorrelationData,
+  NewsData,
+  Trust,
+  MacroSnapshot,
+  SQCalendar,
+  MarginData,
+  FlowData,
+} from '../types'
 import { STATIC_MARKET } from '../constants/market'
 
 const BASE = (import.meta as { env?: { BASE_URL?: string } }).env?.BASE_URL ?? '/'
@@ -47,13 +56,67 @@ export async function loadTrustMaster(): Promise<{ data: Trust[] | null; source:
   }
 }
 
+// ═══════════════════════════════════════════════════════════
+// v9.0 追加: Macro / Nikkei VI / SQ / Margin / Flows
+// ═══════════════════════════════════════════════════════════
+
+export async function loadMacro(): Promise<{ data: MacroSnapshot | null; source: 'loaded' | 'none' | 'error' }> {
+  try {
+    const data = await fetchJson<MacroSnapshot>('data/macro.json')
+    return { data, source: 'loaded' }
+  } catch {
+    return { data: null, source: 'none' }
+  }
+}
+
+export async function loadNikkeiVI(): Promise<{ data: { vi: number; viChg: number; last_updated: string } | null; source: 'loaded' | 'none' | 'error' }> {
+  try {
+    const data = await fetchJson<{ vi: number; viChg: number; last_updated: string }>('data/nikkei_vi.json')
+    return { data, source: 'loaded' }
+  } catch {
+    return { data: null, source: 'none' }
+  }
+}
+
+export async function loadSQCalendar(): Promise<{ data: SQCalendar | null; source: 'loaded' | 'none' | 'error' }> {
+  try {
+    const data = await fetchJson<SQCalendar>('data/sq_calendar.json')
+    return { data, source: 'loaded' }
+  } catch {
+    return { data: null, source: 'none' }
+  }
+}
+
+export async function loadMargin(): Promise<{ data: MarginData | null; source: 'loaded' | 'none' | 'error' }> {
+  try {
+    const data = await fetchJson<MarginData>('data/margin.json')
+    return { data, source: 'loaded' }
+  } catch {
+    return { data: null, source: 'none' }
+  }
+}
+
+export async function loadFlows(): Promise<{ data: FlowData | null; source: 'loaded' | 'none' | 'error' }> {
+  try {
+    const data = await fetchJson<FlowData>('data/flows.json')
+    return { data, source: 'loaded' }
+  } catch {
+    return { data: null, source: 'none' }
+  }
+}
+
 export async function refreshAllData() {
   // 並列fetch（partial updateしない — 全部揃ってからStore更新）
-  const [market, correlation, news, trust] = await Promise.all([
+  const [market, correlation, news, trust, macro, nikkeiVI, sq, margin, flows] = await Promise.all([
     loadMarket(),
     loadCorrelation(),
     loadNews(),
     loadTrustMaster(),
+    loadMacro(),
+    loadNikkeiVI(),
+    loadSQCalendar(),
+    loadMargin(),
+    loadFlows(),
   ])
-  return { market, correlation, news, trust }
+  return { market, correlation, news, trust, macro, nikkeiVI, sq, margin, flows }
 }

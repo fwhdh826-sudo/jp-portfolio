@@ -19,19 +19,30 @@ jobs:
       - name: Install Python deps
         run: pip install yfinance pandas numpy feedparser
 
+      # ── v8.3 既存 ─────────────────────────────────
       - name: Update correlation.json
-        run: python3 data/update_correlation.py
+        run: python3 data/update_correlation.py || true
 
       - name: Update market.json
-        run: python3 data/update_market.py
+        run: python3 data/update_market.py || true
 
-      - name: Collect news
-        run: python3 data/update_news.py || true   # ニュース失敗はスキップ
+      # ── v9.0 新規 ─────────────────────────────────
+      - name: Update macro.json (金利/為替/VIX/指数/原油/金)
+        run: python3 data/update_macro.py || true
+
+      - name: Update sq_calendar.json (SQ日程)
+        run: python3 data/update_sq.py || true
+
+      - name: Collect news (複数RSS + 保有銘柄フィルタ)
+        run: python3 data/update_news.py || true
 
       - name: Copy JSON to public/data
         run: |
-          cp data/correlation.json public/data/correlation.json
-          cp data/market.json      public/data/market.json
+          for f in correlation market macro sq_calendar news; do
+            if [ -f "data/${f}.json" ]; then
+              cp "data/${f}.json" "public/data/${f}.json"
+            fi
+          done
 
       - name: Commit and push
         run: |

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useAppStore } from '../../store/useAppStore'
 import { selectTotalEval } from '../../store/selectors'
+import { formatJPYAuto } from '../../utils/format'
 
 const sectorColors: Record<string, string> = {
   '金融':    '#6896c8',
@@ -157,11 +158,7 @@ export function T2_Holdings() {
           </div>
           <div className="kpi">
             <div className="l">総評価額</div>
-            <div className="v wh">
-              {metrics.totalEval >= 1e6
-                ? `¥${(metrics.totalEval / 1e6).toFixed(2)}M`
-                : `¥${(metrics.totalEval / 1000).toFixed(0)}K`}
-            </div>
+            <div className="v wh">{formatJPYAuto(metrics.totalEval)}</div>
           </div>
         </div>
       )}
@@ -196,7 +193,7 @@ export function T2_Holdings() {
                         <div style={{ color: 'var(--w)', fontWeight: 600, fontSize: 12 }}>{h.code}</div>
                         <div style={{ fontSize: 9, color: 'var(--d)', marginTop: 1 }}>{h.name}</div>
                       </td>
-                      <td className="wh">¥{(h.eval / 1000).toFixed(0)}K</td>
+                      <td className="wh">{formatJPYAuto(h.eval)}</td>
                       <td className={h.pnlPct >= 0 ? 'p' : 'n'}>
                         {h.pnlPct >= 0 ? '+' : ''}{h.pnlPct.toFixed(2)}%
                       </td>
@@ -267,32 +264,34 @@ export function T2_Holdings() {
         <div className="tw-hint">← 横スクロール可 →</div>
       </div>
 
-      {/* ── PnL バーチャート ── */}
+      {/* ── 含み損益ランキング（バーなし・数値のみ）── */}
       <div className="card">
-        <div className="card-title">含み損益 分布</div>
-        {[...holdings]
-          .sort((a, b) => b.pnlPct - a.pnlPct)
-          .map(h => {
-            const absMax = Math.max(...holdings.map(x => Math.abs(x.pnlPct)), 1)
-            const barW   = Math.abs(h.pnlPct) / absMax * 100
-            return (
-              <div key={h.code} className="pnl-bar-item">
-                <span className="pnl-bar-name">{h.code}</span>
-                <div className="pnl-bar-track">
-                  <div
-                    className="pnl-bar-fill"
-                    style={{
-                      width: `${barW}%`,
-                      background: h.pnlPct >= 0 ? 'var(--g2)' : 'var(--r2)',
-                    }}
-                  />
+        <div className="card-title">含み損益ランキング</div>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6 }}>
+          {[...holdings]
+            .sort((a, b) => b.pnlPct - a.pnlPct)
+            .map(h => (
+              <div key={h.code} style={{
+                display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                padding: '6px 10px', borderRadius: 6,
+                background: h.pnlPct >= 0 ? 'rgba(45,212,160,.05)' : 'rgba(232,64,90,.05)',
+                border: `1px solid ${h.pnlPct >= 0 ? 'var(--g3)' : 'rgba(232,64,90,.2)'}`,
+              }}>
+                <div>
+                  <div style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--w)' }}>{h.name}</div>
+                  <div style={{ fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--d)' }}>{h.code}</div>
                 </div>
-                <span className={`pnl-bar-val ${h.pnlPct >= 0 ? 'p' : 'n'}`}>
-                  {h.pnlPct >= 0 ? '+' : ''}{h.pnlPct.toFixed(1)}%
-                </span>
+                <div style={{ textAlign: 'right' }}>
+                  <div style={{ fontFamily: 'var(--mono)', fontSize: 13, fontWeight: 700, color: h.pnlPct >= 0 ? 'var(--g)' : 'var(--r)' }}>
+                    {h.pnlPct >= 0 ? '+' : ''}{h.pnlPct.toFixed(1)}%
+                  </div>
+                  <div style={{ fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--d)' }}>
+                    {formatJPYAuto(h.eval)}
+                  </div>
+                </div>
               </div>
-            )
-          })}
+            ))}
+        </div>
       </div>
     </div>
   )

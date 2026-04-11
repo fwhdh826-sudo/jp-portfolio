@@ -191,6 +191,52 @@ body::after {
 .tgt-fill  { height: 100%; border-radius: 2px; transition: width .4s; }
 .tgt-val   { font-family: var(--mono); font-size: 9px; white-space: nowrap; }
 
+/* ── macro strip（朝メモ形式 4指標）──────────────────────── */
+.macro-strip {
+  display: flex;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding: 5px 12px 5px;
+  gap: 6px;
+  background: linear-gradient(90deg, rgba(13,24,40,.8), rgba(16,28,50,.8));
+  border-bottom: 1px solid var(--b2);
+}
+.macro-strip::-webkit-scrollbar { display: none; }
+
+.macro-cell {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  padding: 4px 10px 4px 0;
+  border-right: 1px solid var(--b2);
+}
+.macro-cell:last-child { border-right: none; }
+
+.macro-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--d);
+  white-space: nowrap;
+}
+
+.macro-val {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--w);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.macro-chg {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
 /* stat strip */
 .stat-strip {
   display: flex;
@@ -632,18 +678,31 @@ body::after {
   .rg-grid { grid-template-columns: 1fr 1fr; }
   .tech-grid { grid-template-columns: 1fr; }
   .grid3r { grid-template-columns: 1fr 1fr; }
+  /* macro strip スマホ最適化 */
+  .macro-strip { padding: 4px 10px; gap: 4px; }
+  .macro-cell { padding: 3px 8px 3px 0; }
+  .macro-val { font-size: 12px; }
+  .macro-chg { font-size: 9px; padding: 1px 5px; }
+  /* tab-panel パディング縮小 */
+  .tab-panel { padding: 10px 10px 14px; }
 }
 @media (max-width: 420px) {
   .tw-hint { display: block; }
   .dt th, .dt td { padding: 5px 5px; font-size: 9px; }
+  /* macro strip をさらに縮小 */
+  .macro-label { font-size: 8px; }
+  .macro-val { font-size: 11px; }
 }
 @media (max-width: 380px) {
   .logo { font-size: 9px; }
   .grid3r { grid-template-columns: 1fr 1fr; }
   .rg-grid { grid-template-columns: 1fr 1fr; }
+  /* 小画面ではmacroストリップのchgを短縮表示のみ */
+  .macro-val { font-size: 11px; }
 }
 @media (max-width: 360px) {
   .ver-badge { display: none; }
+  .macro-label { display: none; }  /* 極小画面は値とchgだけ */
 }
 
 /* safe area */

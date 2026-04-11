@@ -1,4 +1,6 @@
 import { useAppStore } from '../../store/useAppStore'
+import { formatJPYAuto } from '../../utils/format'
+import type { Trust } from '../../types'
 
 const POLICY_LABEL: Record<string, string> = {
   JAPAN_SHORTTERM:   '🇯🇵 日本株（短期）',
@@ -47,6 +49,131 @@ function ruleBg(rule: string): string {
     case 'WAIT':  return 'rgba(74,96,112,.12)'
     default:      return 'rgba(74,96,112,.12)'
   }
+}
+
+// ── 投信診断パネル ────────────────────────────────────────────
+function TrustDiagnosticPanel({ trust }: { trust: Trust[] }) {
+  const macro    = useAppStore(s => s.macro)
+  const universe = useAppStore(s => s.universe)
+
+  if (trust.length === 0) return null
+
+  const totalEval   = trust.reduce((s, f) => s + f.eval, 0)
+  const jpEval      = trust.filter(f => f.policy === 'JAPAN_SHORTTERM').reduce((s, f) => s + f.eval, 0)
+  const overseasEval = trust.filter(f => f.policy === 'OVERSEAS_LONGTERM').reduce((s, f) => s + f.eval, 0)
+  const goldEval    = trust.filter(f => f.policy === 'GOLD').reduce((s, f) => s + f.eval, 0)
+
+  // 加重平均信託報酬（%）
+  const weightedCost = trust.reduce((s, f) => s + f.cost * f.eval, 0) / Math.max(totalEval, 1)
+  const annualCostYen = totalEval * weightedCost / 100
+
+  // 為替影響（海外投信は概ね無ヘッジ → 円安1%でほぼ同幅プラス）
+  const fxRatio      = totalEval > 0 ? overseasEval / totalEval : 0
+  const fxImpact1pct = overseasEval * 0.01
+
+  // 分散スコア（ジニ不均等度の逆数）
+  function divScore(): number {
+    if (totalEval === 0) return 0
+    const ratios = [jpEval, overseasEval, goldEval].map(v => v / totalEval)
+    const ideal  = 1 / 3
+    const sumSqErr = ratios.reduce((s, r) => s + Math.pow(r - ideal, 2), 0)
+    return Math.max(0, Math.round(100 - sumSqErr * 500))
+  }
+  const dScore = divScore()
+
+  // 理想PF対比（universeから投信関連カテゴリを取得）
+  const jpCat  = universe?.categories.find(c => c.class === 'JP_TRUST')
+  const ovCat  = universe?.categories.find(c => c.class === 'OVERSEAS_TRUST')
+  const goCat  = universe?.categories.find(c => c.class === 'GOLD')
+
+  const diagItems = [
+    {
+      label: '為替エクスポージャー',
+      value: `${(fxRatio * 100).toFixed(0)}%`,
+      sub:   `円安1%→ +${formatJPYAuto(fxImpact1pct)}`,
+      hint:  macro ? `現在 ${macro.usdjpy.toFixed(1)}円/USD (${macro.usdjpyChgPct >= 0 ? '+' : ''}${macro.usdjpyChgPct.toFixed(2)}%)` : '為替データ取得中',
+      color: fxRatio > 0.7 ? 'var(--a)' : 'var(--g)',
+    },
+    {
+      label: '加重平均信託報酬',
+      value: `${weightedCost.toFixed(2)}%/年`,
+      sub:   `年間費用 約${formatJPYAuto(annualCostYen)}`,
+      hint:  weightedCost > 0.8 ? '⚠ やや高め — 低コスト代替を検討' : '✓ 許容範囲内',
+      color: weightedCost > 1.0 ? 'var(--r)' : weightedCost > 0.5 ? 'var(--a)' : 'var(--g)',
+    },
+    {
+      label: '投信分散スコア',
+      value: `${dScore}/100`,
+      sub:   `JP${(jpEval/Math.max(totalEval,1)*100).toFixed(0)}% 海外${(overseasEval/Math.max(totalEval,1)*100).toFixed(0)}% 金${(goldEval/Math.max(totalEval,1)*100).toFixed(0)}%`,
+      hint:  dScore >= 70 ? '✓ 良好な分散' : '⚠ 特定カテゴリへの集中あり',
+      color: dScore >= 70 ? 'var(--g)' : dScore >= 40 ? 'var(--a)' : 'var(--r)',
+    },
+  ]
+
+  return (
+    <div className="card" style={{ marginBottom: 10 }}>
+      <div className="card-title" style={{ marginBottom: 10 }}>🔬 投信診断</div>
+
+      {/* 3指標グリッド */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 6, marginBottom: 12 }}>
+        {diagItems.map(d => (
+          <div key={d.label} style={{
+            background: 'rgba(0,0,0,.2)', borderRadius: 7,
+            padding: '8px 10px', border: '1px solid var(--b1)',
+          }}>
+            <div style={{ fontFamily: 'var(--mono)', fontSize: 8, color: 'var(--d)', marginBottom: 4 }}>{d.label}</div>
+            <div style={{ fontFamily: 'var(--mono)', fontSize: 14, fontWeight: 700, color: d.color, marginBottom: 2 }}>{d.value}</div>
+            <div style={{ fontFamily: 'var(--mono)', fontSize: 8, color: 'var(--d)' }}>{d.sub}</div>
+            <div style={{ fontSize: 9, color: d.color, marginTop: 3, lineHeight: 1.4 }}>{d.hint}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* 理想PF対比（universeがある場合） */}
+      {universe && (jpCat || ovCat || goCat) && (
+        <div>
+          <div style={{ fontFamily: 'var(--head)', fontSize: 8, color: 'var(--d)', letterSpacing: '.12em', marginBottom: 6 }}>
+            理想配分との比較
+          </div>
+          {[jpCat, ovCat, goCat].filter(Boolean).map(cat => cat && (
+            <div key={cat.class} style={{
+              display: 'flex', alignItems: 'center', gap: 8, marginBottom: 5,
+              fontFamily: 'var(--mono)', fontSize: 10,
+            }}>
+              <div style={{ width: 70, color: 'var(--d)', flexShrink: 0 }}>{cat.label}</div>
+              <div style={{ color: 'var(--w)' }}>{(cat.currentRatio * 100).toFixed(1)}%</div>
+              <div style={{ color: 'var(--d)' }}>→</div>
+              <div style={{ color: 'var(--a)' }}>目標 {(cat.targetRatio * 100).toFixed(1)}%</div>
+              <div style={{
+                marginLeft: 'auto',
+                color: Math.abs(cat.diffValue) < 500_000 ? 'var(--g)' : cat.diffValue > 0 ? 'var(--c)' : 'var(--r)',
+                fontSize: 9,
+              }}>
+                {Math.abs(cat.diffValue) < 500_000 ? '適正' : cat.diffValue > 0 ? `▲ +${formatJPYAuto(cat.diffValue)}` : `▼ ${formatJPYAuto(-cat.diffValue)}`}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* 役割サマリー */}
+      <div style={{ marginTop: 10, borderTop: '1px solid var(--b1)', paddingTop: 8 }}>
+        <div style={{ fontFamily: 'var(--head)', fontSize: 8, color: 'var(--d)', letterSpacing: '.12em', marginBottom: 6 }}>
+          各カテゴリの役割
+        </div>
+        {[
+          { label: '🇯🇵 国内株投信', role: '短期需給・VI・SQ連動売買（超短期〜短期）', color: 'var(--c)' },
+          { label: '🌍 海外株投信', role: 'グローバル分散・中長期成長（中長期）', color: 'var(--a)' },
+          { label: '🥇 ゴールド',   role: 'インフレ・有事ヘッジ（長期コア）', color: 'var(--gold, var(--a))' },
+        ].map(r => (
+          <div key={r.label} style={{ display: 'flex', gap: 8, marginBottom: 4, alignItems: 'flex-start' }}>
+            <span style={{ fontFamily: 'var(--mono)', fontSize: 10, color: r.color, flexShrink: 0 }}>{r.label}</span>
+            <span style={{ fontSize: 10, color: 'var(--d)', lineHeight: 1.4 }}>{r.role}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
 }
 
 export function T7_Trust() {
@@ -129,14 +256,12 @@ export function T7_Trust() {
       <div className="kpi-row">
         <div className="kpi">
           <div className="l">総評価額</div>
-          <div className="v wh">
-            {totalEval >= 1e6 ? `¥${(totalEval / 1e6).toFixed(2)}M` : `¥${(totalEval / 1000).toFixed(0)}K`}
-          </div>
+          <div className="v wh">{formatJPYAuto(totalEval)}</div>
         </div>
         <div className="kpi">
           <div className="l">含み損益</div>
           <div className="v" style={{ color: totalPnl >= 0 ? 'var(--g)' : 'var(--r)' }}>
-            {totalPnl >= 0 ? '+' : ''}{(totalPnl / 1e6).toFixed(2)}M
+            {totalPnl >= 0 ? '+' : ''}{formatJPYAuto(Math.abs(totalPnl))}
           </div>
         </div>
         <div className="kpi">
@@ -144,6 +269,9 @@ export function T7_Trust() {
           <div className="v wh">{trust.length}本</div>
         </div>
       </div>
+
+      {/* ── 投信診断 ── */}
+      <TrustDiagnosticPanel trust={trust} />
 
       {/* ── CSV D&D ── */}
       <div
@@ -175,8 +303,7 @@ export function T7_Trust() {
             }}>
               <span>{POLICY_LABEL[policy]}</span>
               <span style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--d)' }}>
-                {subTotal >= 1e6 ? `¥${(subTotal / 1e6).toFixed(2)}M` : `¥${(subTotal / 1000).toFixed(0)}K`}
-                &nbsp;({(subTotal / Math.max(totalEval, 1) * 100).toFixed(1)}%)
+                {formatJPYAuto(subTotal)}&nbsp;({(subTotal / Math.max(totalEval, 1) * 100).toFixed(1)}%)
               </span>
               <div style={{ flex: 1, height: 1, background: 'var(--b1)' }} />
             </div>
@@ -212,9 +339,7 @@ export function T7_Trust() {
 
                   {/* KPI行 */}
                   <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', fontFamily: 'var(--mono)', fontSize: 11 }}>
-                    <span className="wh">
-                      {f.eval >= 1e6 ? `¥${(f.eval / 1e6).toFixed(2)}M` : `¥${(f.eval / 1000).toFixed(0)}K`}
-                    </span>
+                    <span className="wh">{formatJPYAuto(f.eval)}</span>
                     <span className={f.pnlPct >= 0 ? 'p' : 'n'}>
                       {f.pnlPct >= 0 ? '+' : ''}{f.pnlPct.toFixed(2)}%
                     </span>

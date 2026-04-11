@@ -43,3 +43,64 @@ export const INST_WEIGHTS = {
     renaissance: 0.08,
   },
 } as const
+
+// ═══════════════════════════════════════════════════════════
+// v9.0 — 全資産統合の初期値（運用方針に基づく）
+// ═══════════════════════════════════════════════════════════
+
+/** 現金初期値（円）— 総1,000万のうち500-700万は暴落待機 */
+export const INITIAL_CASH = 3_000_000          // 通常現金
+export const INITIAL_CASH_RESERVE = 7_000_000  // 暴落待機資金
+export const INITIAL_ADD_ROOM = 4_000_000      // 日本株追加枠
+
+/** 日本株個別の上限（運用方針） */
+export const JP_STOCK_MAX_VALUE = 8_000_000
+
+/** 売却可能銘柄コード（3ヶ月ルールを満たす） */
+export const SELLABLE_CODES = new Set(['8306', '4661', '9697', '6098'])
+// 三菱UFJ / オリエンタルランド / カプコン / リクルートHD
+
+/** 理想ポートフォリオ比率（中立レジーム時） */
+export const TARGET_ALLOCATION_NEUTRAL = {
+  JP_STOCK: 0.15,         // 個別株 15%（中長期）
+  JP_TRUST: 0.05,         // 日本株投信 5%（短期売買）
+  OVERSEAS_TRUST: 0.55,   // 海外投信 55%（中長期）
+  GOLD: 0.05,             // ゴールド 5%
+  CASH: 0.08,             // 現金 8%
+  CASH_RESERVE: 0.12,     // 暴落待機 12%
+} as const
+
+/** 強気レジーム時（株式比率を上げる） */
+export const TARGET_ALLOCATION_BULL = {
+  JP_STOCK: 0.20,
+  JP_TRUST: 0.07,
+  OVERSEAS_TRUST: 0.62,
+  GOLD: 0.03,
+  CASH: 0.04,
+  CASH_RESERVE: 0.04,
+} as const
+
+/** 弱気レジーム時（現金比率を上げる） */
+export const TARGET_ALLOCATION_BEAR = {
+  JP_STOCK: 0.08,
+  JP_TRUST: 0.02,
+  OVERSEAS_TRUST: 0.38,
+  GOLD: 0.10,
+  CASH: 0.17,
+  CASH_RESERVE: 0.25,
+} as const
+
+/** VIX閾値 */
+export const VIX_CALM = 15      // 平穏
+export const VIX_NORMAL = 20    // 通常
+export const VIX_WARNING = 25   // 警戒
+export const VIX_PANIC = 30     // 暴落
+
+/** Nikkei 225 VI 閾値 */
+export const NIKKEI_VI_CALM = 18
+export const NIKKEI_VI_WARNING = 25
+export const NIKKEI_VI_PANIC = 35
+
+/** SQ前後の取引抑制日数（SQ前2営業日・後1営業日は短期売買抑制） */
+export const SQ_BUFFER_DAYS_BEFORE = 2
+export const SQ_BUFFER_DAYS_AFTER = 1
