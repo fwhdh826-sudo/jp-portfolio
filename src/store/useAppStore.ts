@@ -40,7 +40,17 @@ interface AppActions {
 
 // ── runFullAnalysis（内部ヘルパー）───────────────────────────
 function runFullAnalysis(state: AppState): Pick<AppState, 'analysis' | 'metrics' | 'holdings' | 'trust' | 'universe' | 'learning'> {
-  const analysis = computeAnalysis(state.holdings, state.market, state.correlation, state.news)
+  const adaptiveWeights =
+    state.learning && state.learning.summary.total >= 20
+      ? state.learning.suggestedWeights
+      : null
+  const analysis = computeAnalysis(
+    state.holdings,
+    state.market,
+    state.correlation,
+    state.news,
+    adaptiveWeights,
+  )
   const metrics = calcPortfolioMetrics(state.holdings, state.correlation)
 
   // holdingsにスコア・判定を書き戻す

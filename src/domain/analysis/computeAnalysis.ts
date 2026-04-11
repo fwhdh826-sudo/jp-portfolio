@@ -1,4 +1,14 @@
-import type { Holding, Market, CorrelationData, NewsData, HoldingAnalysis, PortfolioMetrics, AgentDebate, StrategyRank } from '../../types'
+import type {
+  Holding,
+  Market,
+  CorrelationData,
+  NewsData,
+  HoldingAnalysis,
+  PortfolioMetrics,
+  AgentDebate,
+  StrategyRank,
+  AdaptiveWeights,
+} from '../../types'
 import { RF, INST_WEIGHTS, SECTOR_GROUPS } from '../../constants/market'
 
 // ── 相関係数取得 ────────────────────────────────────────────────
@@ -359,15 +369,52 @@ function calcStrategyRank(totalScore: number, ev: number, confidence: number): S
   return 'E'
 }
 
+const DEFAULT_WEIGHTS: AdaptiveWeights = {
+  fundamental: 0.30,
+  market: 0.20,
+  technical: 0.20,
+  news: 0.15,
+  quality: 0.10,
+  risk: 0.15,
+}
+
+function resolveWeights(adaptive: AdaptiveWeights | null): AdaptiveWeights {
+  if (!adaptive) return DEFAULT_WEIGHTS
+
+  const raw = {
+    fundamental: Math.max(0, adaptive.fundamental),
+    market: Math.max(0, adaptive.market),
+    technical: Math.max(0, adaptive.technical),
+    news: Math.max(0, adaptive.news),
+    quality: Math.max(0, adaptive.quality),
+    risk: Math.max(0, adaptive.risk),
+  }
+  const sum = raw.fundamental + raw.market + raw.technical + raw.news + raw.quality + raw.risk
+  if (sum <= 0.0001) return DEFAULT_WEIGHTS
+
+  // スコア式の既存スケール（0.95 - 0.15 = v8.x互換）を維持するため1.10へ再スケール
+  const scale = 1.10 / sum
+  return {
+    fundamental: raw.fundamental * scale,
+    market: raw.market * scale,
+    technical: raw.technical * scale,
+    news: raw.news * scale,
+    quality: raw.quality * scale,
+    risk: raw.risk * scale,
+  }
+}
+
 // ── 全銘柄分析（main export）────────────────────────────────────
 export function computeAnalysis(
   holdings: Holding[],
   market: Market,
   _corr: CorrelationData | null,
   news: NewsData | null,
+  adaptiveWeights: AdaptiveWeights | null = null,
 ): HoldingAnalysis[] {
   const totalEval = holdings.reduce((s, h) => s + h.eval, 0)
   const mitsuW = holdings.filter(h => h.mitsu).reduce((s, h) => s + h.eval / Math.max(totalEval, 1), 0)
+  const w = resolveWeights(adaptiveWeights)
 
   return holdings.map(h => {
     const fundamentalScore = calcFundamentalScore(h)
@@ -385,12 +432,12 @@ export function computeAnalysis(
     const rN = riskPenalty      / 15 * 100
 
     const totalScore = Math.round(
-      fN * 0.30 +
-      mN * 0.20 +
-      tN * 0.20 +
-      nN * 0.15 +
-      qN * 0.10 -
-      rN * 0.15
+      fN * w.fundamental +
+      mN * w.market +
+      tN * w.technical +
+      nN * w.news +
+      qN * w.quality -
+      rN * w.risk
     )
 
     const ev = calcEV(h, market)

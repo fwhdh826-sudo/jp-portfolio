@@ -365,6 +365,11 @@ export function T3_Regime() {
           <div style={{ marginBottom: 8, fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--d)' }}>
             推奨重み（次サイクル）
           </div>
+          <div style={{ fontSize: 10, color: learning.summary.total >= 20 ? 'var(--g)' : 'var(--a)', marginBottom: 6 }}>
+            {learning.summary.total >= 20
+              ? '現在この重みを分析ロジックに適用中'
+              : `適用保留（適用まであと ${Math.max(0, 20 - learning.summary.total)} 件）`}
+          </div>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 8 }}>
             {Object.entries(learning.suggestedWeights).map(([k, v]) => (
               <span key={k} style={{
