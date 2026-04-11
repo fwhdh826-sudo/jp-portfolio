@@ -40,6 +40,8 @@ interface StockOptimalRow {
   locked: boolean
 }
 
+type PositionFilter = 'ALL' | 'SELL' | 'BUY' | 'HOLD' | 'LOCK'
+
 export function T2_Holdings() {
   const holdings = useAppStore(s => s.holdings)
   const analysis = useAppStore(s => s.analysis)
@@ -48,6 +50,7 @@ export function T2_Holdings() {
   const totalEval = useAppStore(selectTotalEval)
 
   const [expandedCode, setExpandedCode] = useState<string | null>(null)
+  const [positionFilter, setPositionFilter] = useState<PositionFilter>('ALL')
 
   const analysisByCode = useMemo(
     () => new Map(analysis.map(item => [item.code, item])),
@@ -87,6 +90,12 @@ export function T2_Holdings() {
         return right.eval - left.eval
       })
   }, [analysisByCode, holdings])
+
+  const filteredPositions = useMemo(() => {
+    if (positionFilter === 'ALL') return positions
+    if (positionFilter === 'LOCK') return positions.filter(holding => isSellLocked(holding))
+    return positions.filter(holding => (analysisByCode.get(holding.code)?.decision ?? 'HOLD') === positionFilter)
+  }, [analysisByCode, positionFilter, positions])
 
   const allocationDiffs = (universe?.categories ?? [])
     .filter(item => item.class === 'JP_STOCK' || item.class === 'CASH' || item.class === 'CASH_RESERVE' || item.class === 'ADD_ROOM')
@@ -163,6 +172,20 @@ export function T2_Holdings() {
     }
   }
 
+  const weightedPnl = totalEval > 0
+    ? holdings.reduce((sum, item) => sum + item.pnlPct * (item.eval / totalEval), 0)
+    : 0
+  const highVolCount = holdings.filter(item => item.sigma >= 0.35).length
+  const deepLossCount = holdings.filter(item => item.pnlPct <= -12).length
+  const lockSchedule = holdings
+    .map(holding => ({
+      ...holding,
+      remaining: getSellLockRemainingDays(holding),
+      locked: isSellLocked(holding),
+    }))
+    .filter(item => item.locked)
+    .sort((left, right) => left.remaining - right.remaining)
+
   return (
     <div className="tab-panel holdings-page">
       <section className="decision-grid">
@@ -188,14 +211,12 @@ export function T2_Holdings() {
             </div>
           </div>
 
-          {metrics && (
-            <div className="metrics-inline">
-              <span>期待リターン {(metrics.mu * 100).toFixed(1)}%</span>
-              <span>ボラティリティ {(metrics.sigma * 100).toFixed(1)}%</span>
-              <span>Sharpe {metrics.sharpe.toFixed(2)}</span>
-              <span>最大DD {(metrics.mdd * 100).toFixed(1)}%</span>
-            </div>
-          )}
+          <div className="metrics-inline">
+            <span>加重損益率 {weightedPnl >= 0 ? '+' : ''}{weightedPnl.toFixed(2)}%</span>
+            <span>高ボラ銘柄 {highVolCount}件</span>
+            <span>深い含み損 {deepLossCount}件</span>
+            {metrics && <span>Sharpe {metrics.sharpe.toFixed(2)}</span>}
+          </div>
         </article>
 
         <article className="card">
@@ -343,6 +364,28 @@ export function T2_Holdings() {
               <p>三菱グループ比率は35%以内を目安に維持します。</p>
             </div>
           </div>
+
+          <div className="section-subtitle" style={{ marginTop: 12 }}>ロック解除スケジュール</div>
+          {lockSchedule.length > 0 ? (
+            <div className="risk-register">
+              {lockSchedule.map(item => (
+                <div key={`lock-${item.code}`} className="risk-register__item risk-register__item--medium">
+                  <div className="risk-register__title">
+                    <strong>{item.code} {item.name}</strong>
+                    <span className="vd lock">LOCK {item.remaining}d</span>
+                  </div>
+                  <div className="risk-register__meta">
+                    <span>評価額 {formatJPYAuto(item.eval)}</span>
+                    <span>損益率 {item.pnlPct >= 0 ? '+' : ''}{item.pnlPct.toFixed(2)}%</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="empty-state" style={{ marginTop: 10 }}>
+              現在ロック中の銘柄はありません。
+            </div>
+          )}
         </article>
       </section>
 
@@ -352,11 +395,24 @@ export function T2_Holdings() {
             <div className="section-kicker">Position board</div>
             <h3 className="section-heading">保有ポジション</h3>
           </div>
-          <div className="section-caption">SELL優先表示</div>
+          <div className="section-caption">SELL優先表示 / {filteredPositions.length}件表示</div>
+        </div>
+
+        <div className="log-filter" style={{ marginTop: 12 }}>
+          {(['ALL', 'SELL', 'BUY', 'HOLD', 'LOCK'] as PositionFilter[]).map(item => (
+            <button
+              key={item}
+              className={`log-filter__button${positionFilter === item ? ' active' : ''}`}
+              onClick={() => setPositionFilter(item)}
+              type="button"
+            >
+              {item}
+            </button>
+          ))}
         </div>
 
         <div className="position-board">
-          {positions.map(holding => {
+          {filteredPositions.map(holding => {
             const item = analysisByCode.get(holding.code)
             const decision = item?.decision ?? 'HOLD'
             const isExpanded = expandedCode === holding.code
@@ -453,6 +509,11 @@ export function T2_Holdings() {
               </article>
             )
           })}
+          {filteredPositions.length === 0 && (
+            <div className="empty-state" style={{ marginTop: 10 }}>
+              この条件に一致するポジションはありません。
+            </div>
+          )}
         </div>
       </section>
     </div>

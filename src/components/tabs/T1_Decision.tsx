@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useAppStore } from '../../store/useAppStore'
 import {
   selectBuyList,
+  selectIsLoading,
   selectSellList,
   selectTotalEval,
 } from '../../store/selectors'
@@ -63,6 +64,12 @@ function getToneByDecision(decision: 'BUY' | 'SELL' | 'HOLD' | 'WAIT') {
   if (decision === 'BUY') return 'positive'
   if (decision === 'SELL') return 'negative'
   if (decision === 'WAIT') return 'caution'
+  return 'neutral'
+}
+
+function getSourceTone(status: string) {
+  if (status === 'loaded') return 'positive'
+  if (status === 'error' || status === 'none') return 'negative'
   return 'neutral'
 }
 
@@ -132,7 +139,9 @@ export function T1_Decision() {
   const cashReserve = useAppStore(s => s.cashReserve)
   const addRoom = useAppStore(s => s.addRoom)
   const importCsv = useAppStore(s => s.importCsv)
+  const refreshAllData = useAppStore(s => s.refreshAllData)
   const system = useAppStore(s => s.system)
+  const isLoading = useAppStore(selectIsLoading)
   const totalEval = useAppStore(selectTotalEval)
 
   const zeroPlan = useMemo(
@@ -229,6 +238,20 @@ export function T1_Decision() {
 
   const completedChecks = readinessChecks.filter(item => item.passed).length
   const allocationDiffs = (zeroPlan.categoryDiffs.length > 0 ? zeroPlan.categoryDiffs : universe?.categories ?? []).slice(0, 8)
+  const proposalStats = useMemo(() => {
+    const buy = zeroPlan.proposals.filter(item => item.action === 'BUY').length
+    const sell = zeroPlan.proposals.filter(item => item.action === 'SELL').length
+    const wait = zeroPlan.proposals.filter(item => item.action === 'WAIT').length
+    const netFlow = zeroPlan.proposals.reduce((sum, item) => sum + (item.action === 'BUY' ? item.amount : item.action === 'SELL' ? -item.amount : 0), 0)
+    return { buy, sell, wait, netFlow }
+  }, [zeroPlan.proposals])
+
+  const freshnessRows = [
+    { label: '市場', status: system.dataSourceStatus.market, ts: system.dataTimestamps?.market ?? null },
+    { label: '相関', status: system.dataSourceStatus.correlation, ts: system.dataTimestamps?.correlation ?? null },
+    { label: 'ニュース', status: system.dataSourceStatus.news, ts: system.dataTimestamps?.news ?? null },
+    { label: 'マクロ', status: system.dataSourceStatus.macro ?? 'none', ts: system.dataTimestamps?.macro ?? null },
+  ]
 
   const handleFileDrop = (event: React.DragEvent) => {
     event.preventDefault()
@@ -245,8 +268,20 @@ export function T1_Decision() {
     <div className="tab-panel decision-page">
       <section className="decision-grid">
         <article className={`card focus-card focus-card--${zeroPlan.board.marketMode}`}>
-          <div className="section-kicker">Execution brief</div>
-          <h2 className="section-heading">今日の基本方針</h2>
+          <div className="section-heading-row">
+            <div>
+              <div className="section-kicker">Execution brief</div>
+              <h2 className="section-heading">今日の基本方針</h2>
+            </div>
+            <button
+              className={`status-shell__refresh${isLoading ? ' is-loading' : ''}`}
+              onClick={() => { void refreshAllData() }}
+              disabled={isLoading}
+              type="button"
+            >
+              {isLoading ? '更新中...' : 'データ更新'}
+            </button>
+          </div>
           <p className="focus-card__summary">{zeroPlan.board.conclusion}</p>
 
           <div className="focus-card__badges">
@@ -256,6 +291,25 @@ export function T1_Decision() {
             <span className="tone-chip tone-chip--neutral">
               分析更新 {system.analysisLastRunAt ? formatDateTime(system.analysisLastRunAt) : '未実行'}
             </span>
+          </div>
+
+          <div className="plan-stats">
+            <div className="plan-stat">
+              <span>BUY候補</span>
+              <strong>{proposalStats.buy}</strong>
+            </div>
+            <div className="plan-stat">
+              <span>SELL候補</span>
+              <strong>{proposalStats.sell}</strong>
+            </div>
+            <div className="plan-stat">
+              <span>WAIT候補</span>
+              <strong>{proposalStats.wait}</strong>
+            </div>
+            <div className="plan-stat">
+              <span>想定資金フロー</span>
+              <strong>{`${proposalStats.netFlow >= 0 ? '+' : ''}${formatJPYAuto(proposalStats.netFlow)}`}</strong>
+            </div>
           </div>
 
           <div className="focus-card__columns">
@@ -301,6 +355,20 @@ export function T1_Decision() {
           <div className="health-card__footer">
             <span>総評価額 {formatJPYAuto(totalEval)}</span>
             <span>分析銘柄 {analysis.length}件</span>
+          </div>
+
+          <div className="freshness-board" style={{ marginTop: 12 }}>
+            {freshnessRows.map(item => (
+              <div key={item.label} className={`freshness-board__item freshness-board__item--${getSourceTone(item.status)}`}>
+                <div>
+                  <strong>{item.label}</strong>
+                  <span>{item.ts ? formatDateTime(item.ts) : '更新日時なし'}</span>
+                </div>
+                <div className="freshness-board__chips">
+                  <span className={`tone-chip tone-chip--${getSourceTone(item.status)}`}>{item.status}</span>
+                </div>
+              </div>
+            ))}
           </div>
         </article>
       </section>
