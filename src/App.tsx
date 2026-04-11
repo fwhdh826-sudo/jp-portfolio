@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect } from 'react'
 import { useAppStore } from './store/useAppStore'
 import { StatusBar } from './components/StatusBar'
 import { TabNav } from './components/TabNav'
@@ -11,71 +11,48 @@ import { T6_History } from './components/tabs/T6_History'
 import { T7_Trust } from './components/tabs/T7_Trust'
 import './styles/v5.css'
 
-const TABS = ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'] as const
+function ActiveTabPanel() {
+  const activeTab = useAppStore(s => s.activeTab)
+
+  if (activeTab === 'T1') return <T1_Decision />
+  if (activeTab === 'T2') return <T2_Holdings />
+  if (activeTab === 'T3') return <T3_Regime />
+  if (activeTab === 'T4') return <T4_Correlation />
+  if (activeTab === 'T5') return <T5_Backtest />
+  if (activeTab === 'T6') return <T6_History />
+  return <T7_Trust />
+}
 
 export function App() {
-  const initialize  = useAppStore(s => s.initialize)
-  const activeTab   = useAppStore(s => s.activeTab)
-  const setTab      = useAppStore(s => s.setTab)
-  const scrollRef   = useRef<HTMLDivElement>(null)
+  const initialize = useAppStore(s => s.initialize)
 
-  useEffect(() => { initialize() }, [initialize])
-
-  // ── スワイプでタブ切替 ──────────────────────────────────────
   useEffect(() => {
-    const el = scrollRef.current
-    if (!el) return
-    let startX = 0
-    let startY = 0
-
-    const onStart = (e: TouchEvent) => {
-      startX = e.touches[0].clientX
-      startY = e.touches[0].clientY
-    }
-    const onEnd = (e: TouchEvent) => {
-      const dX = e.changedTouches[0].clientX - startX
-      const dY = e.changedTouches[0].clientY - startY
-      if (Math.abs(dX) > 60 && Math.abs(dY) < 50) {
-        const cur = TABS.indexOf(activeTab)
-        if (dX < 0 && cur < TABS.length - 1) setTab(TABS[cur + 1])
-        if (dX > 0 && cur > 0) setTab(TABS[cur - 1])
-      }
-    }
-    el.addEventListener('touchstart', onStart, { passive: true })
-    el.addEventListener('touchend', onEnd, { passive: true })
-    return () => {
-      el.removeEventListener('touchstart', onStart)
-      el.removeEventListener('touchend', onEnd)
-    }
-  }, [activeTab, setTab])
+    void initialize()
+  }, [initialize])
 
   return (
-    <>
-      <StatusBar />
+    <div className="app-shell">
+      <aside className="shell-sidebar">
+        <div className="sidebar-brand">
+          <div className="sidebar-brand__eyebrow">JP Equity Decision OS</div>
+          <div className="sidebar-brand__title">Portfolio Control Room</div>
+          <div className="sidebar-brand__copy">
+            見る順番、判断順、実行順をそろえた運用ワークスペースです。
+          </div>
+        </div>
+        <TabNav variant="sidebar" />
+      </aside>
 
-      {/* スワイプ位置インジケーター */}
-      <div className="swipe-indicator">
-        {TABS.map(t => (
-          <div
-            key={t}
-            className={`swipe-ind-dot${t === activeTab ? ' active' : ''}`}
-          />
-        ))}
+      <div className="shell-main">
+        <StatusBar />
+        <main className="app-scroll-area">
+          <div className="workspace-content">
+            <ActiveTabPanel />
+          </div>
+        </main>
       </div>
 
-      {/* メインスクロールエリア */}
-      <div className="app-scroll-area" ref={scrollRef}>
-        {activeTab === 'T1' && <T1_Decision />}
-        {activeTab === 'T2' && <T2_Holdings />}
-        {activeTab === 'T3' && <T3_Regime />}
-        {activeTab === 'T4' && <T4_Correlation />}
-        {activeTab === 'T5' && <T5_Backtest />}
-        {activeTab === 'T6' && <T6_History />}
-        {activeTab === 'T7' && <T7_Trust />}
-      </div>
-
-      {/* ボトムナビ（fixed） */}
-      <TabNav />
-    </>
+      <TabNav variant="dock" />
+    </div>
   )
 }
