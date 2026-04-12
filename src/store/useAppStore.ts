@@ -44,6 +44,40 @@ interface AppActions {
   updateTrust: (id: string, patch: Partial<Trust>) => void
 }
 
+interface HoldingsSnapshotLike {
+  holdings: Array<{
+    code: string
+    eval?: number
+    pnlPct?: number
+    currentPrice?: number
+    price?: number
+  }>
+}
+
+function applyHoldingsSnapshot(
+  holdings: Holding[],
+  snapshot: HoldingsSnapshotLike | null | undefined,
+): Holding[] {
+  if (!snapshot?.holdings || snapshot.holdings.length === 0) return holdings
+  const byCode = new Map(snapshot.holdings.map(item => [item.code, item]))
+
+  return holdings.map(holding => {
+    const row = byCode.get(holding.code)
+    if (!row) return holding
+
+    const evalValue = typeof row.eval === 'number' && row.eval > 0 ? row.eval : holding.eval
+    const pnlPctValue = typeof row.pnlPct === 'number' ? row.pnlPct : holding.pnlPct
+    const priceValue = row.currentPrice ?? row.price
+
+    return {
+      ...holding,
+      eval: evalValue,
+      pnlPct: pnlPctValue,
+      currentPrice: typeof priceValue === 'number' && priceValue > 0 ? priceValue : holding.currentPrice,
+    }
+  })
+}
+
 // ── runFullAnalysis（内部ヘルパー）───────────────────────────
 function runFullAnalysis(state: AppState): Pick<AppState, 'analysis' | 'metrics' | 'holdings' | 'trust' | 'universe' | 'learning'> {
   const adaptiveWeights =
@@ -168,19 +202,20 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
 
       // データ取得（macro / nikkei VI / SQ 含む）
       const result = await loadPublishedData({ bustCache: true })
-      const { market, correlation, news, trust, macro, nikkeiVI, sq, margin, flows } = result
+      const { market, correlation, news, trust, holdingsSnapshot, macro, nikkeiVI, sq, margin, flows } = result
 
       set(s => {
         const nextTrust = trust.data
           ? s.trust.map(f => { const d = trust.data!.find(x => x.id === f.id); return d ? { ...f, ...d } : f })
           : s.trust
+        const snapshotMergedHoldings = applyHoldingsSnapshot(s.holdings, holdingsSnapshot.data)
         // volatilities反映
         const holdingsWithVol = correlation.data
-          ? s.holdings.map(h => {
+          ? snapshotMergedHoldings.map(h => {
               const v = correlation.data!.volatilities[h.code + '.T']
               return v ? { ...h, sigma: +v.toFixed(3), sigmaSource: 'yfinance' as const } : h
             })
-          : s.holdings
+          : snapshotMergedHoldings
         return {
           market: market.data,
           correlation: correlation.data,
@@ -249,18 +284,19 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
     set(s => ({ system: { ...s.system, status: 'loading', error: null } }))
     try {
       const result = await loadPublishedData({ bustCache: true })
-      const { market, correlation, news, trust, macro, nikkeiVI, sq, margin, flows } = result
+      const { market, correlation, news, trust, holdingsSnapshot, macro, nikkeiVI, sq, margin, flows } = result
 
       set(s => {
         const nextTrust = trust.data
           ? s.trust.map(f => { const d = trust.data!.find(x => x.id === f.id); return d ? { ...f, ...d } : f })
           : s.trust
+        const snapshotMergedHoldings = applyHoldingsSnapshot(s.holdings, holdingsSnapshot.data)
         const holdingsWithVol = correlation.data
-          ? s.holdings.map(h => {
+          ? snapshotMergedHoldings.map(h => {
               const v = correlation.data!.volatilities[h.code + '.T']
               return v ? { ...h, sigma: +v.toFixed(3), sigmaSource: 'yfinance' as const } : h
             })
-          : s.holdings
+          : snapshotMergedHoldings
         return {
           market: market.data, correlation: correlation.data, news: news.data,
           trust: nextTrust, holdings: holdingsWithVol,
@@ -340,6 +376,7 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
           trust: state.trust,
           market: state.market,
           macro: state.macro,
+          news: state.news,
           sqCalendar: state.sqCalendar,
           margin: state.margin,
           flows: state.flows,

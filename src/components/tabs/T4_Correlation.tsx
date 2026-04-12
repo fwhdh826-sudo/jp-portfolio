@@ -5,7 +5,9 @@ import { formatJPYAuto } from '../../utils/format'
 
 interface CorrelationPair {
   left: string
+  leftName: string
   right: string
+  rightName: string
   value: number
 }
 
@@ -34,6 +36,7 @@ export function T4_Correlation() {
 
   const mitsuEval = holdings.filter(item => item.mitsu).reduce((sum, item) => sum + item.eval, 0)
   const mitsuRatio = totalEval > 0 ? (mitsuEval / totalEval) * 100 : 0
+  const nameByCode = useMemo(() => new Map(holdings.map(item => [item.code, item.name])), [holdings])
 
   const flags = useMemo(() => {
     const items: { code: string; title: string; detail: string; priority: 'high' | 'medium'; action: string }[] = []
@@ -108,7 +111,13 @@ export function T4_Correlation() {
         const left = codes[i]
         const right = codes[j]
         const value = correlation.matrix[`${left}.T`]?.[`${right}.T`] ?? 0
-        pairs.push({ left, right, value })
+        pairs.push({
+          left,
+          leftName: nameByCode.get(left) ?? left,
+          right,
+          rightName: nameByCode.get(right) ?? right,
+          value,
+        })
       }
     }
 
@@ -116,7 +125,7 @@ export function T4_Correlation() {
       high: [...pairs].sort((a, b) => b.value - a.value).slice(0, 10),
       diversifying: [...pairs].sort((a, b) => a.value - b.value).slice(0, 10),
     }
-  }, [correlation, holdings])
+  }, [correlation, holdings, nameByCode])
 
   const riskOverview = [
     {
@@ -284,7 +293,7 @@ export function T4_Correlation() {
                 {flags.map(flag => (
                   <div key={`${flag.code}-${flag.title}`} className={`risk-register__item risk-register__item--${flag.priority}`}>
                     <div className="risk-register__title">
-                      <strong>{flag.code} {flag.title}</strong>
+                      <strong>{flag.code} {nameByCode.get(flag.code) ?? ''} {flag.title}</strong>
                       <span className={`vd ${flag.priority === 'high' ? 'sell' : 'wait'}`}>
                         {flag.priority === 'high' ? 'HIGH' : 'MID'}
                       </span>
@@ -344,7 +353,7 @@ export function T4_Correlation() {
                 {correlationPairs.high.map(pair => (
                   <div key={`${pair.left}-${pair.right}`} className="risk-pair-list__item">
                     <div>
-                      <strong>{pair.left} × {pair.right}</strong>
+                      <strong>{pair.left} {pair.leftName} × {pair.right} {pair.rightName}</strong>
                       <span>ショック局面では同時に下げる前提で管理。</span>
                     </div>
                     <div className={`risk-pair-list__score ${pair.value >= 0.7 ? 'is-danger' : pair.value >= 0.4 ? 'is-caution' : 'is-neutral'}`}>
@@ -373,7 +382,7 @@ export function T4_Correlation() {
                 {correlationPairs.diversifying.map(pair => (
                   <div key={`${pair.left}-${pair.right}`} className="risk-pair-list__item">
                     <div>
-                      <strong>{pair.left} × {pair.right}</strong>
+                      <strong>{pair.left} {pair.leftName} × {pair.right} {pair.rightName}</strong>
                       <span>逆相関・低相関。建て増し時の候補に有効。</span>
                     </div>
                     <div className={`risk-pair-list__score ${pair.value < 0 ? 'is-positive' : pair.value < 0.35 ? 'is-neutral' : 'is-caution'}`}>
@@ -414,13 +423,21 @@ export function T4_Correlation() {
               <thead>
                 <tr>
                   <th></th>
-                  {codes.map(code => <th key={code}>{code}</th>)}
+                  {codes.map(code => (
+                    <th key={code}>
+                      {code}
+                      <small>{nameByCode.get(code) ?? code}</small>
+                    </th>
+                  ))}
                 </tr>
               </thead>
               <tbody>
                 {codes.map(left => (
                   <tr key={left}>
-                    <th>{left}</th>
+                    <th>
+                      {left}
+                      <small>{nameByCode.get(left) ?? left}</small>
+                    </th>
                     {codes.map(right => {
                       const value = left === right ? 1 : correlation.matrix[`${left}.T`]?.[`${right}.T`] ?? 0
                       const tone = value >= 0.7 ? 'negative' : value >= 0.4 ? 'caution' : value < 0 ? 'positive' : 'neutral'

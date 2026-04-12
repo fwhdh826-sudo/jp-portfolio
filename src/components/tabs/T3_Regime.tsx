@@ -165,6 +165,12 @@ function buildSummaryComment(holding: Holding, analysis: HoldingAnalysis, axes: 
     `注意点は「${analysis.debate.bearReasons[0] ?? '短期のボラティリティ'}」です。`
 }
 
+function decisionTone(decision: HoldingAnalysis['decision']) {
+  if (decision === 'BUY') return 'positive'
+  if (decision === 'SELL') return 'negative'
+  return 'caution'
+}
+
 function buildRadarPoints(values: number[], center: number, radius: number) {
   const count = values.length
   return values.map((value, index) => {
@@ -267,6 +273,24 @@ export function T3_Regime() {
   const axes = buildAxisDetails(current.holding, current.analysis, market.vix)
   const comment = buildSummaryComment(current.holding, current.analysis, axes)
   const analyzedAt = system.analysisLastRunAt ? formatDateTime(system.analysisLastRunAt) : formatDateTime(new Date().toISOString())
+  const fundamentalRows = [
+    { label: 'ROE', value: `${current.holding.roe.toFixed(1)}%`, tone: current.holding.roe >= 12 ? 'positive' : current.holding.roe >= 8 ? 'caution' : 'negative', note: '会社がどれだけ効率よく利益を出せているか' },
+    { label: 'PER', value: current.holding.per > 0 ? `${current.holding.per.toFixed(1)}倍` : '赤字圏', tone: current.holding.per > 0 && current.holding.per <= 18 ? 'positive' : current.holding.per > 0 && current.holding.per <= 30 ? 'caution' : 'negative', note: '株価が利益に対して割高か割安か' },
+    { label: 'EPS成長', value: `${current.holding.epsG.toFixed(1)}%`, tone: current.holding.epsG >= 8 ? 'positive' : current.holding.epsG >= 0 ? 'caution' : 'negative', note: '1株あたり利益の伸び' },
+    { label: '財務安全性', value: `D/E ${current.holding.de.toFixed(2)}`, tone: current.holding.de <= 1.5 ? 'positive' : current.holding.de <= 3 ? 'caution' : 'negative', note: '借金の重さ。小さいほど安全' },
+  ] as const
+
+  const technicalRows = [
+    { label: 'トレンド', value: current.holding.ma ? '移動平均線より上' : '移動平均線より下', tone: current.holding.ma ? 'positive' : 'negative', note: '上向きなら買いが入りやすい' },
+    { label: 'MACD', value: current.holding.macd ? '上昇シグナル' : '下降シグナル', tone: current.holding.macd ? 'positive' : 'negative', note: '勢いの転換を見る指標' },
+    { label: 'RSI', value: current.holding.rsi.toFixed(0), tone: current.holding.rsi >= 42 && current.holding.rsi <= 68 ? 'positive' : 'caution', note: '70超えは過熱、30割れは売られすぎ' },
+    { label: '3ヶ月モメンタム', value: `${current.holding.mom3m >= 0 ? '+' : ''}${current.holding.mom3m.toFixed(1)}%`, tone: current.holding.mom3m >= 0 ? 'positive' : 'negative', note: '直近3ヶ月で上昇か下落か' },
+  ] as const
+
+  const yesterdaySimpleMemo =
+    market.nikkeiChgPct >= 0
+      ? `昨日は日経平均が${market.nikkeiChgPct.toFixed(2)}%上がり、買いが優勢でした。`
+      : `昨日は日経平均が${Math.abs(market.nikkeiChgPct).toFixed(2)}%下がり、売りが優勢でした。`
 
   return (
     <div className="tab-panel ai-report-tab">
@@ -293,18 +317,20 @@ export function T3_Regime() {
         </div>
 
         <div className="ai-report__selector">
-          <label htmlFor="ai-stock-select">銘柄選択</label>
-          <select
-            id="ai-stock-select"
-            value={current.holding.code}
-            onChange={event => setSelectedCode(event.target.value)}
-          >
+          <label>銘柄選択（色分け）</label>
+          <div className="analysis-chip-list">
             {analyzedHoldings.map(item => (
-              <option key={item.holding.code} value={item.holding.code}>
-                {item.holding.code} {item.holding.name}
-              </option>
+              <button
+                key={item.holding.code}
+                type="button"
+                className={`analysis-chip analysis-chip--${decisionTone(item.analysis.decision)}${selectedCode === item.holding.code ? ' is-active' : ''}`}
+                onClick={() => setSelectedCode(item.holding.code)}
+              >
+                <span>{item.holding.code}</span>
+                <strong>{item.holding.name}</strong>
+              </button>
             ))}
-          </select>
+          </div>
         </div>
 
         <div className="ai-report__top">
@@ -329,6 +355,47 @@ export function T3_Regime() {
             </div>
           </section>
         </div>
+
+        <section className="ai-report__section">
+          <h3>高校生向けの昨日解説</h3>
+          <div className="analysis-edu">
+            <p>{yesterdaySimpleMemo}</p>
+            <p>
+              株価は「将来どれだけ稼げるか」と「今の市場の空気」で動きます。
+              だから1日だけで判断せず、ファンダメンタルとテクニカルをセットで見ます。
+            </p>
+          </div>
+        </section>
+
+        <section className="ai-report__section">
+          <h3>ファンダメンタル（会社の実力）</h3>
+          <div className="analysis-factor-grid">
+            {fundamentalRows.map(row => (
+              <article key={row.label} className={`analysis-factor-card analysis-factor-card--${row.tone}`}>
+                <div className="analysis-factor-card__top">
+                  <strong>{row.label}</strong>
+                  <span>{row.value}</span>
+                </div>
+                <p>{row.note}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="ai-report__section">
+          <h3>テクニカル（今の勢い）</h3>
+          <div className="analysis-factor-grid">
+            {technicalRows.map(row => (
+              <article key={row.label} className={`analysis-factor-card analysis-factor-card--${row.tone}`}>
+                <div className="analysis-factor-card__top">
+                  <strong>{row.label}</strong>
+                  <span>{row.value}</span>
+                </div>
+                <p>{row.note}</p>
+              </article>
+            ))}
+          </div>
+        </section>
 
         <section className="ai-report__section">
           <h3>8軸スコア一覧</h3>

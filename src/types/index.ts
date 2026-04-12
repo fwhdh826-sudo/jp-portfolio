@@ -4,6 +4,7 @@ export interface Holding {
   name: string
   eval: number        // 評価額（円）
   pnlPct: number      // 損益率（%）
+  currentPrice?: number // 現在価格（円）
   mu: number          // 期待リターン
   sigma: number       // ボラティリティ（実測 or 推定）
   sigmaSource: 'yfinance' | 'static'
@@ -113,6 +114,7 @@ export interface NewsItem {
 export interface NewsData {
   updatedAt: string
   sourceStatus: Record<string, 'ok' | 'error' | 'timeout'>
+  sourceUpdatedAt?: Record<string, string | null> // ソース別最終更新
   marketNews: NewsItem[]
   stockNews: NewsItem[]
   meta: {

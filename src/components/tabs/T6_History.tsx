@@ -23,9 +23,11 @@ function getImportance(item: NewsItem) {
 
 function parseTimestamp(raw: string | null | undefined): Date | null {
   if (!raw) return null
+  const primary = new Date(raw)
+  if (!Number.isNaN(primary.getTime())) return primary
   const normalized = raw.includes('T') ? raw : raw.replace(' ', 'T')
-  const parsed = new Date(normalized)
-  return Number.isNaN(parsed.getTime()) ? null : parsed
+  const fallback = new Date(normalized)
+  return Number.isNaN(fallback.getTime()) ? null : fallback
 }
 
 function getFreshness(raw: string | null | undefined) {
@@ -74,6 +76,7 @@ function NewsEntry({ item, label }: { item: NewsItem; label: string }) {
             <span>{label}</span>
             <span>{item.source}</span>
             <span>{formatRelativeTime(item.publishedAt)}</span>
+            <span>{formatDateTime(item.publishedAt)}</span>
             <span>重要度 {(item.importance * 100).toFixed(0)}</span>
           </div>
         </div>
@@ -134,6 +137,15 @@ export function T6_History() {
 
   const holdingCodes = useMemo(() => new Set(holdings.map(item => item.code)), [holdings])
   const candidateCodes = useMemo(() => new Set(buyList.map(item => item.code)), [buyList])
+  const holdingKeywords = useMemo(
+    () =>
+      holdings.flatMap(item => [
+        item.code,
+        item.name,
+        item.name.replace(/\s/g, ''),
+      ]),
+    [holdings],
+  )
   const trustKeywords = useMemo(
     () => trust.map(item => item.abbr).concat(['S&P500', 'NASDAQ', 'FANG', 'オルカン', 'ゴールド', 'REIT', '日経225']),
     [trust],
@@ -149,10 +161,17 @@ export function T6_History() {
     [news],
   )
 
-  const holdingNews = useMemo(
-    () => stockNews.filter(item => item.tickers.some(code => holdingCodes.has(code))),
-    [holdingCodes, stockNews],
-  )
+  const holdingNews = useMemo(() => {
+    const direct = stockNews.filter(item => item.tickers.some(code => holdingCodes.has(code)))
+    if (direct.length > 0) return direct
+
+    const fallback = marketNews.filter(item => {
+      const text = `${item.title} ${item.summary}`
+      return holdingKeywords.some(keyword => keyword && text.includes(keyword))
+    })
+    if (fallback.length > 0) return fallback
+    return marketNews.slice(0, 12)
+  }, [holdingCodes, holdingKeywords, marketNews, stockNews])
 
   const candidateNews = useMemo(
     () =>
@@ -173,12 +192,23 @@ export function T6_History() {
     [marketNews, stockNews, trustKeywords],
   )
 
+  const latestNewsTimestampBySource = useMemo(() => {
+    const map = new Map<string, string>()
+    ;[...(news?.marketNews ?? []), ...(news?.stockNews ?? [])].forEach(item => {
+      const current = map.get(item.source)
+      if (!current || item.publishedAt > current) {
+        map.set(item.source, item.publishedAt)
+      }
+    })
+    return map
+  }, [news])
+
   const tabItems = [
     { id: 'market' as const, label: 'マーケット', count: marketNews.length },
     { id: 'holding' as const, label: '保有銘柄', count: holdingNews.length },
     { id: 'candidate' as const, label: '候補銘柄', count: candidateNews.length },
     { id: 'trust' as const, label: '投信関連', count: trustNews.length },
-    { id: 'history' as const, label: '更新履歴', count: Object.keys(system.dataSourceStatus).length },
+    { id: 'history' as const, label: '更新履歴', count: Object.keys(system.dataSourceStatus).length + Object.keys(news?.sourceStatus ?? {}).length },
   ]
 
   const activeItems =
@@ -203,8 +233,33 @@ export function T6_History() {
   ]
 
   const sourceRows = useMemo(() => {
+    const newsRows = Object.entries(news?.sourceStatus ?? {}).map(([source, status]) => {
+      const raw =
+        news?.sourceUpdatedAt?.[source] ??
+        latestNewsTimestampBySource.get(source) ??
+        news?.updatedAt ??
+        null
+      const freshness = getFreshness(raw)
+      const tone: Tone =
+        status === 'error' || status === 'timeout'
+          ? 'negative'
+          : freshness.tone === 'negative'
+            ? 'negative'
+            : freshness.tone === 'caution'
+              ? 'caution'
+              : 'positive'
+      return {
+        source,
+        label: source,
+        status,
+        raw,
+        freshness,
+        tone,
+      }
+    })
+
     const timestamps = system.dataTimestamps
-    return Object.entries(system.dataSourceStatus).map(([source, status]) => {
+    const infraRows = Object.entries(system.dataSourceStatus).map(([source, status]) => {
       const raw = timestamps?.[source as keyof typeof timestamps] ?? null
       const freshness = getFreshness(raw)
       const tone: Tone =
@@ -218,7 +273,7 @@ export function T6_History() {
                 ? 'positive'
                 : 'neutral'
       return {
-        source,
+        source: `infra:${source}`,
         label: sourceLabel(source),
         status,
         raw,
@@ -226,7 +281,9 @@ export function T6_History() {
         tone,
       }
     })
-  }, [system.dataSourceStatus, system.dataTimestamps])
+
+    return [...newsRows, ...infraRows]
+  }, [latestNewsTimestampBySource, news, system.dataSourceStatus, system.dataTimestamps])
 
   const staleRows = sourceRows.filter(row => row.tone === 'negative')
   const digestItems = useMemo(() => {

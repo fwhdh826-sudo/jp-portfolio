@@ -77,6 +77,7 @@ export function T7_Trust() {
   const trust = useAppStore(state => state.trust)
   const market = useAppStore(state => state.market)
   const macro = useAppStore(state => state.macro)
+  const news = useAppStore(state => state.news)
   const sqCalendar = useAppStore(state => state.sqCalendar)
   const margin = useAppStore(state => state.margin)
   const flows = useAppStore(state => state.flows)
@@ -95,13 +96,14 @@ export function T7_Trust() {
         trust,
         market,
         macro,
+        news,
         sqCalendar,
         margin,
         flows,
         todayEntryCount,
         performance30d: trackingStats,
       }),
-    [flows, macro, margin, market, sqCalendar, todayEntryCount, trackingStats, trust],
+    [flows, macro, margin, market, news, sqCalendar, todayEntryCount, trackingStats, trust],
   )
 
   useEffect(() => {
@@ -216,9 +218,22 @@ export function T7_Trust() {
               {decisionLabel(trustPlan.shortTermSignal)}
             </span>
             <span className="tone-chip tone-chip--neutral">確信度 {trustPlan.shortTermMode.confidence}%</span>
-            <span className="tone-chip tone-chip--neutral">条件一致 {trustPlan.shortTermMode.conditionsPassed}/4</span>
+            <span className="tone-chip tone-chip--neutral">
+              条件一致 {trustPlan.shortTermMode.conditionsPassed}/{trustPlan.shortTermMode.checklist.length}
+            </span>
             <span className={`tone-chip tone-chip--${todayEntryCount >= 1 ? 'negative' : 'neutral'}`}>
               1日上限 {todayEntryCount}/1
+            </span>
+            <span
+              className={`tone-chip tone-chip--${
+                trustPlan.newsContext.sentimentBias >= 2
+                  ? 'positive'
+                  : trustPlan.newsContext.sentimentBias <= -2
+                  ? 'negative'
+                  : 'caution'
+              }`}
+            >
+              ニュース {trustPlan.newsContext.sentimentBias >= 2 ? '追い風' : trustPlan.newsContext.sentimentBias <= -2 ? '逆風' : '中立'}
             </span>
           </div>
 
@@ -248,7 +263,39 @@ export function T7_Trust() {
               <div className="summary-tile__label">SQ</div>
               <div className="summary-tile__value">残り {trustPlan.marketContext.sqDays}営業日</div>
             </div>
+            <div
+              className={`summary-tile summary-tile--${
+                trustPlan.newsContext.sentimentBias >= 2
+                  ? 'positive'
+                  : trustPlan.newsContext.sentimentBias <= -2
+                  ? 'negative'
+                  : 'caution'
+              }`}
+            >
+              <div className="summary-tile__label">投信関連ニュース</div>
+              <div className="summary-tile__value">
+                {trustPlan.newsContext.trustHeadlineCount}件
+              </div>
+            </div>
           </div>
+
+          {trustPlan.newsContext.latestHeadline && (
+            <div className="risk-register" style={{ marginTop: 10 }}>
+              <div className="risk-register__item risk-register__item--low">
+                <div className="risk-register__title">
+                  <strong>最新ニュース反映</strong>
+                  <span className="vd hold">
+                    {trustPlan.newsContext.latestPublishedAt
+                      ? formatDateTime(trustPlan.newsContext.latestPublishedAt)
+                      : '時刻なし'}
+                  </span>
+                </div>
+                <div className="risk-register__meta">
+                  <span>{trustPlan.newsContext.latestHeadline}</span>
+                </div>
+              </div>
+            </div>
+          )}
 
           <div className="shortmode-budget-grid">
             <div className="shortmode-budget-card shortmode-budget-card--core">

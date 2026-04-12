@@ -15,6 +15,27 @@ function getRegimeLabel(regime: 'bull' | 'neutral' | 'bear') {
   return { label: '中立', tone: 'caution' as const }
 }
 
+function buildYesterdayDigest(params: {
+  nikkeiChgPct: number
+  vix: number
+  usdjpyChgPct: number | null
+  topHeadline: string | null
+}) {
+  const marketLine =
+    params.nikkeiChgPct >= 0
+      ? `昨日は日経平均が${params.nikkeiChgPct.toFixed(2)}%上昇し、買いが優勢でした。`
+      : `昨日は日経平均が${Math.abs(params.nikkeiChgPct).toFixed(2)}%下落し、売りが優勢でした。`
+  const riskLine =
+    params.vix >= 25
+      ? `VIXは${params.vix.toFixed(1)}で高め。値動きが荒れやすい状態です。`
+      : `VIXは${params.vix.toFixed(1)}で落ち着き気味。急変動リスクは相対的に低めです。`
+  const fxLine = params.usdjpyChgPct == null
+    ? '為替データは未取得です。'
+    : `ドル円は${params.usdjpyChgPct >= 0 ? '+' : ''}${params.usdjpyChgPct.toFixed(2)}%の変化でした。`
+  const headline = params.topHeadline ? `注目ニュース: ${params.topHeadline}` : '注目ニュースはまだ取り込まれていません。'
+  return [marketLine, riskLine, fxLine, headline]
+}
+
 export function StatusBar() {
   const activeTab = useAppStore(s => s.activeTab)
   const system = useAppStore(s => s.system)
@@ -52,7 +73,7 @@ export function StatusBar() {
     T1: {
       eyebrow: 'Execution Workspace',
       label: 'Execution focus',
-      copy: primaryMessage,
+      copy: `朝は「地合い→売却優先→買い優先」の順で確認します。${primaryMessage}`,
       notes: [
         `BUY ${buyList.length}`,
         `SELL ${sellList.length}`,
@@ -62,7 +83,7 @@ export function StatusBar() {
     T2: {
       eyebrow: 'Holdings Workspace',
       label: 'Holdings focus',
-      copy: `${holdings.length}銘柄を保有中です。ロック銘柄と集中比率を優先確認してください。`,
+      copy: `${holdings.length}銘柄を保有中。先にロック解除予定日、その次に集中比率を確認します。`,
       notes: [
         `保有 ${holdings.length}`,
         `三菱比率 ${mitsuRatio.toFixed(1)}%`,
@@ -72,7 +93,7 @@ export function StatusBar() {
     T3: {
       eyebrow: 'Analysis Workspace',
       label: 'Analysis focus',
-      copy: `${regime.label}レジームです。テクニカルとファンダの上位差分を先に確認してください。`,
+      copy: `${regime.label}レジーム。銘柄ごとに「会社の実力（ファンダ）」と「足元の勢い（テクニカル）」を分けて確認します。`,
       notes: [
         `Sharpe ${metrics ? metrics.sharpe.toFixed(2) : '—'}`,
         `ニュース ${news?.meta.totalCount ?? 0}`,
@@ -82,7 +103,7 @@ export function StatusBar() {
     T4: {
       eyebrow: 'Risk Workspace',
       label: 'Risk focus',
-      copy: `CVaRと最大DDを基準に、相関の高い組み合わせから先に監視します。`,
+      copy: `CVaRと最大DDを優先。相関が高い組み合わせは、銘柄名ベースで同時下落リスクを確認します。`,
       notes: [
         `CVaR ${metrics ? `${(metrics.cvar * 100).toFixed(1)}%` : '—'}`,
         `MDD ${metrics ? `${(metrics.mdd * 100).toFixed(1)}%` : '—'}`,
@@ -92,7 +113,7 @@ export function StatusBar() {
     T5: {
       eyebrow: 'Planning Workspace',
       label: 'Planning focus',
-      copy: `売買計画は BUY候補 ${buyList.length} / SELL候補 ${sellList.length} を基準に組み立てます。`,
+      copy: `売買計画は「現在価格・買いエントリー・売りエントリー」を同時に見て執行順を決めます。`,
       notes: [
         `BUY ${buyList.length}`,
         `SELL ${sellList.length}`,
@@ -102,7 +123,7 @@ export function StatusBar() {
     T6: {
       eyebrow: 'News Workspace',
       label: 'Coverage focus',
-      copy: `${news?.meta.totalCount ?? 0}件のニュースを集約中です。重要度の高い材料から順に判断へ反映します。`,
+      copy: `${news?.meta.totalCount ?? 0}件のニュースを集約。市場・個別・投信の順で、鮮度の新しい情報から判断に反映します。`,
       notes: [
         `市場 ${news?.meta.marketCount ?? 0}`,
         `個別 ${news?.meta.stockCount ?? 0}`,
@@ -112,7 +133,7 @@ export function StatusBar() {
     T7: {
       eyebrow: 'Trust Workspace',
       label: 'Trust focus',
-      copy: `${trust.length}本の投信を監視中です。役割別の配分差分と曜日シグナルを確認してください。`,
+      copy: `${trust.length}本の投信を監視。短期シグナルだけでなく最新ニュースの追い風/逆風も合わせて判断します。`,
       notes: [
         `投信 ${trust.length}`,
         `海外比率 ${trust.length > 0 ? `${overseasTrustRatio.toFixed(1)}%` : '—'}`,
@@ -140,6 +161,12 @@ export function StatusBar() {
     { label: 'ニュース', value: system.dataTimestamps?.news ? formatDateTime(system.dataTimestamps.news) : '未取得' },
     { label: 'マクロ', value: system.dataTimestamps?.macro ? formatDateTime(system.dataTimestamps.macro) : '未取得' },
   ]
+  const yesterdayDigest = buildYesterdayDigest({
+    nikkeiChgPct: market.nikkeiChgPct,
+    vix: market.vix,
+    usdjpyChgPct: macro?.usdjpyChgPct ?? null,
+    topHeadline: news?.marketNews?.[0]?.title ?? news?.stockNews?.[0]?.title ?? null,
+  })
 
   return (
     <header className="status-shell">
@@ -215,6 +242,14 @@ export function StatusBar() {
               <span className="source-pill__value">{item.value}</span>
             </div>
           ))}
+        </div>
+        <div className="status-shell__daily-note">
+          <div className="status-shell__daily-title">昨日の相場を高校生向けに一言で</div>
+          <ul>
+            {yesterdayDigest.map(line => (
+              <li key={line}>{line}</li>
+            ))}
+          </ul>
         </div>
         {system.error && <div className="status-shell__error">{system.error}</div>}
       </div>

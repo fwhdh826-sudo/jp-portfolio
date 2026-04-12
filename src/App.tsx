@@ -44,7 +44,8 @@ export function App() {
           <div className="sidebar-brand__eyebrow">JP Equity Decision OS</div>
           <div className="sidebar-brand__title">Portfolio Control Room</div>
           <div className="sidebar-brand__copy">
-            見る順番、判断順、実行順をそろえた運用ワークスペースです。
+            朝は「執行 → 個別株 → 分析 → リスク → 計画 → ニュース → 投信」の順で確認すると、
+            判断の抜け漏れを減らせます。
           </div>
         </div>
         <TabNav variant="sidebar" />

@@ -49,6 +49,7 @@ export function T1_Decision() {
   const metrics = useAppStore(s => s.metrics)
   const market = useAppStore(s => s.market)
   const macro = useAppStore(s => s.macro)
+  const news = useAppStore(s => s.news)
   const sqCalendar = useAppStore(s => s.sqCalendar)
   const margin = useAppStore(s => s.margin)
   const flows = useAppStore(s => s.flows)
@@ -86,8 +87,11 @@ export function T1_Decision() {
   )
 
   const stockPlan = useMemo(
-    () => buildStockPortfolioPlan(holdings, analysis),
-    [analysis, holdings],
+    () =>
+      buildStockPortfolioPlan(holdings, analysis, {
+        targetTotalValue: universe?.categories.find(item => item.class === 'JP_STOCK')?.targetValue,
+      }),
+    [analysis, holdings, universe],
   )
 
   const trustPlan = useMemo(
@@ -96,13 +100,14 @@ export function T1_Decision() {
         trust,
         market,
         macro,
+        news,
         sqCalendar,
         margin,
         flows,
         todayEntryCount: getTrustShortTodayExecutionCount(),
         performance30d: getTrustShortTrackingStats(),
       }),
-    [flows, macro, margin, market, sqCalendar, trust],
+    [flows, macro, margin, market, news, sqCalendar, trust],
   )
 
   const committee = useMemo(

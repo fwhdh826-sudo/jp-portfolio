@@ -3,6 +3,7 @@ import type {
   MacroSnapshot,
   MarginData,
   Market,
+  NewsData,
   SQCalendar,
   Trust,
   TrustPolicy,
@@ -97,6 +98,14 @@ export interface TrustPortfolioPlan {
   shortTermRows: TrustSignalRow[]
   executionQueue: TrustExecutionItem[]
   performance30d: TrustShortTrackingStats
+  newsContext: {
+    trustHeadlineCount: number
+    trustPositive: number
+    trustNegative: number
+    sentimentBias: number
+    latestHeadline: string | null
+    latestPublishedAt: string | null
+  }
   marketContext: {
     nikkeiDirection: number
     nikkeiFuturesDirection: number
@@ -132,6 +141,19 @@ const CORE_BUDGET = 4_500_000
 const SATELLITE_BUDGET = 1_000_000
 const ENTRY_CONFIDENCE_THRESHOLD = 90
 const ENTRY_CONDITION_THRESHOLD = 3
+const TRUST_NEWS_KEYWORDS = [
+  '日経225',
+  'S&P500',
+  'NASDAQ',
+  'FANG',
+  'オルカン',
+  'ゴールド',
+  'REIT',
+  '米国株',
+  '為替',
+  '利下げ',
+  '利上げ',
+]
 
 function clamp(value: number, min: number, max: number) {
   return Math.max(min, Math.min(max, value))
@@ -139,6 +161,83 @@ function clamp(value: number, min: number, max: number) {
 
 function roundToTenThousand(value: number) {
   return Math.max(0, Math.round(value / 10_000) * 10_000)
+}
+
+interface TrustNewsSignal {
+  count: number
+  positive: number
+  negative: number
+  sentimentBias: number
+  latestHeadline: string | null
+  latestPublishedAt: string | null
+}
+
+function getNewsImpact(item: {
+  impact?: 'positive' | 'negative' | 'neutral'
+  sentimentScore: number
+}) {
+  if (item.impact) return item.impact
+  if (item.sentimentScore > 0.15) return 'positive'
+  if (item.sentimentScore < -0.15) return 'negative'
+  return 'neutral'
+}
+
+function extractTrustNewsSignal(news: NewsData | null): TrustNewsSignal {
+  if (!news) {
+    return {
+      count: 0,
+      positive: 0,
+      negative: 0,
+      sentimentBias: 0,
+      latestHeadline: null,
+      latestPublishedAt: null,
+    }
+  }
+
+  const merged = [...news.marketNews, ...news.stockNews]
+  const filtered = merged
+    .filter(item => {
+      const text = `${item.title} ${item.summary}`.toLowerCase()
+      return TRUST_NEWS_KEYWORDS.some(keyword => text.includes(keyword.toLowerCase()))
+    })
+    .sort((left, right) => {
+      const leftTs = new Date(left.publishedAt).getTime()
+      const rightTs = new Date(right.publishedAt).getTime()
+      return rightTs - leftTs
+    })
+    .slice(0, 24)
+
+  if (filtered.length === 0) {
+    return {
+      count: 0,
+      positive: 0,
+      negative: 0,
+      sentimentBias: 0,
+      latestHeadline: null,
+      latestPublishedAt: null,
+    }
+  }
+
+  let positive = 0
+  let negative = 0
+  const avgSentiment = filtered.reduce((sum, item) => {
+    const impact = getNewsImpact(item)
+    if (impact === 'positive') positive += 1
+    if (impact === 'negative') negative += 1
+    return sum + item.sentimentScore
+  }, 0) / filtered.length
+
+  const bias = clamp(Math.round((positive - negative) * 1.2 + avgSentiment * 8), -10, 10)
+  const latest = filtered[0]
+
+  return {
+    count: filtered.length,
+    positive,
+    negative,
+    sentimentBias: bias,
+    latestHeadline: latest?.title ?? null,
+    latestPublishedAt: latest?.publishedAt ?? null,
+  }
 }
 
 function isLeveragedTrust(item: Trust) {
@@ -358,6 +457,7 @@ function calcBearConfidence(params: {
 function buildShortMode(params: {
   market: Market
   macro: MacroSnapshot | null
+  news: NewsData | null
   sqCalendar: SQCalendar | null
   todayEntryCount: number
 }): TrustShortMode {
@@ -394,8 +494,10 @@ function buildShortMode(params: {
   const bearPass = countPass(bearChecklist)
   const bullWarn = countWarn(bullChecklist)
   const bearWarn = countWarn(bearChecklist)
+  const newsSignal = extractTrustNewsSignal(params.news)
+  const newsBias = clamp(newsSignal.sentimentBias, -8, 8)
 
-  const bullConfidence = calcBullConfidence({
+  const bullConfidenceBase = calcBullConfidence({
     pass: bullPass,
     warn: bullWarn,
     futuresChgPct,
@@ -404,7 +506,7 @@ function buildShortMode(params: {
     spreadChg,
     sqDays,
   })
-  const bearConfidence = calcBearConfidence({
+  const bearConfidenceBase = calcBearConfidence({
     pass: bearPass,
     warn: bearWarn,
     futuresChgPct,
@@ -414,6 +516,8 @@ function buildShortMode(params: {
     nikkeiVIChg,
     spreadChg,
   })
+  const bullConfidence = Math.round(clamp(bullConfidenceBase + newsBias * 0.8, 30, 98))
+  const bearConfidence = Math.round(clamp(bearConfidenceBase - newsBias * 0.8, 30, 98))
 
   const candidateDirection: 'BULL' | 'BEAR' | 'WAIT' =
     bullConfidence >= bearConfidence + 6 && bullPass >= 2
@@ -422,7 +526,7 @@ function buildShortMode(params: {
       ? 'BEAR'
       : 'WAIT'
 
-  const candidateChecklist =
+  const baseChecklist =
     candidateDirection === 'BULL'
       ? bullChecklist
       : candidateDirection === 'BEAR'
@@ -430,6 +534,32 @@ function buildShortMode(params: {
       : bullConfidence >= bearConfidence
       ? bullChecklist
       : bearChecklist
+
+  const newsStatus: ConditionStatus =
+    newsSignal.count === 0
+      ? 'warn'
+      : newsSignal.sentimentBias >= 2
+      ? candidateDirection === 'BEAR'
+        ? 'fail'
+        : 'pass'
+      : newsSignal.sentimentBias <= -2
+      ? candidateDirection === 'BULL'
+        ? 'fail'
+        : 'pass'
+      : 'warn'
+
+  const candidateChecklist = [
+    ...baseChecklist,
+    {
+      id: 'trust-news',
+      label: '投信関連ニュースモメンタム',
+      status: newsStatus,
+      detail:
+        newsSignal.count > 0
+          ? `直近${newsSignal.count}件（+${newsSignal.positive} / -${newsSignal.negative}）`
+          : '関連ニュースが少ないため中立扱い',
+    },
+  ]
 
   const candidateConfidence =
     candidateDirection === 'BULL'
@@ -444,12 +574,13 @@ function buildShortMode(params: {
       : candidateDirection === 'BEAR'
       ? bearPass
       : Math.max(bullPass, bearPass)
+  const candidatePassWithNews = candidatePass + (newsStatus === 'pass' ? 1 : 0)
 
   const blockedByDailyLimit = params.todayEntryCount >= 1
   const canEnter =
     candidateDirection !== 'WAIT' &&
     candidateConfidence >= ENTRY_CONFIDENCE_THRESHOLD &&
-    candidatePass >= ENTRY_CONDITION_THRESHOLD &&
+    candidatePassWithNews >= ENTRY_CONDITION_THRESHOLD &&
     !blockedByDailyLimit
 
   const decision: 'BULL' | 'BEAR' | 'WAIT' = canEnter ? candidateDirection : 'WAIT'
@@ -463,11 +594,20 @@ function buildShortMode(params: {
       `OS確信度 ${candidateConfidence}% が実行基準 ${ENTRY_CONFIDENCE_THRESHOLD}% を下回る。`,
     )
   }
-  if (candidatePass < ENTRY_CONDITION_THRESHOLD) {
-    waitReasons.push(`4条件の一致数 ${candidatePass}/4（実行基準 3/4）`) 
+  if (candidatePassWithNews < ENTRY_CONDITION_THRESHOLD) {
+    waitReasons.push(
+      `${candidateChecklist.length}条件の一致数 ${candidatePassWithNews}/${candidateChecklist.length}（実行基準 ${ENTRY_CONDITION_THRESHOLD}/${candidateChecklist.length}）`,
+    )
   }
   if (blockedByDailyLimit) {
     waitReasons.push('1日最大エントリー1回の上限に到達。')
+  }
+  if (newsSignal.count === 0) {
+    waitReasons.push('投信関連ニュースが少ないため、確信度は保守的に評価。')
+  } else if (newsSignal.sentimentBias >= 3) {
+    waitReasons.push('投信関連ニュースは追い風（強気寄り）。')
+  } else if (newsSignal.sentimentBias <= -3) {
+    waitReasons.push('投信関連ニュースは逆風（弱気寄り）。')
   }
 
   const recommendedCoreBudget = decision === 'WAIT' ? 0 : CORE_BUDGET
@@ -476,16 +616,16 @@ function buildShortMode(params: {
 
   const summary =
     decision === 'BULL'
-      ? `ブル推奨（確信度 ${candidateConfidence}%）。4条件 ${candidatePass}/4 一致のため、超短期回転を許可。`
+      ? `ブル推奨（確信度 ${candidateConfidence}%）。${candidateChecklist.length}条件 ${candidatePassWithNews}/${candidateChecklist.length} 一致。`
       : decision === 'BEAR'
-      ? `ベア推奨（確信度 ${candidateConfidence}%）。4条件 ${candidatePass}/4 一致のため、下落局面の短期回転を許可。`
-      : `待機推奨。確信度 ${candidateConfidence}% / 条件一致 ${candidatePass}/4。実行条件が揃うまで見送る。`
+      ? `ベア推奨（確信度 ${candidateConfidence}%）。${candidateChecklist.length}条件 ${candidatePassWithNews}/${candidateChecklist.length} 一致。`
+      : `待機推奨。確信度 ${candidateConfidence}% / 条件一致 ${candidatePassWithNews}/${candidateChecklist.length}。実行条件が揃うまで見送る。`
 
   return {
     decision,
     candidateDirection,
     confidence: candidateConfidence,
-    conditionsPassed: candidatePass,
+    conditionsPassed: candidatePassWithNews,
     checklist: candidateChecklist,
     summary,
     waitReasons,
@@ -500,7 +640,7 @@ function buildShortMode(params: {
     partialTakeProfitRule: '+7%到達時に50%利確',
     stopLossRule: '-2.8%で即時売却',
     maxHoldingRule: '最長2営業日（中期保有禁止）',
-    invalidationRule: '4条件のうち2条件以上が崩れたら前提崩れ',
+    invalidationRule: '主要条件のうち2条件以上が崩れたら前提崩れ',
     leveragedWarning: 'ブルベアは短期専用。即時売却必須。減価リスクが高いため中期保有は禁止。',
     coreNote: '現物コア枠は減価リスクが低く、中期待機を許容。',
   }
@@ -651,7 +791,7 @@ function buildShortTermRows(
 
     const rationale = [
       `${role === 'CORE' ? 'コア回転枠' : 'サテライト高確信枠'}で管理。`,
-      `確信度 ${shortMode.confidence}% / 条件一致 ${shortMode.conditionsPassed}/4`,
+      `確信度 ${shortMode.confidence}% / 条件一致 ${shortMode.conditionsPassed}/${shortMode.checklist.length}`,
       leveraged
         ? 'ブルベア減価を避けるため、2営業日以内の解消を前提。'
         : '現物は減価リスクが低く、待機中心で回転。',
@@ -673,7 +813,7 @@ function buildShortTermRows(
       rationale,
       holdingStance,
       entryRule:
-        '4条件ほぼ一致（3/4以上）かつOS確信度90%以上で、1日1回のみ実行。',
+        `${shortMode.checklist.length}条件中${ENTRY_CONDITION_THRESHOLD}条件以上一致かつOS確信度90%以上で、1日1回のみ実行。`,
       takeProfitRule: `${shortMode.takeProfitRule} / ${shortMode.partialTakeProfitRule}`,
       stopLossRule: shortMode.stopLossRule,
       invalidationRule: shortMode.invalidationRule,
@@ -748,6 +888,7 @@ export function buildTrustPortfolioPlan(input: {
   trust: Trust[]
   market: Market
   macro: MacroSnapshot | null
+  news?: NewsData | null
   sqCalendar: SQCalendar | null
   margin: MarginData | null
   flows: FlowData | null
@@ -757,6 +898,7 @@ export function buildTrustPortfolioPlan(input: {
   const shortMode = buildShortMode({
     market: input.market,
     macro: input.macro,
+    news: input.news ?? null,
     sqCalendar: input.sqCalendar,
     todayEntryCount: input.todayEntryCount ?? 0,
   })
@@ -775,6 +917,7 @@ export function buildTrustPortfolioPlan(input: {
   const futuresChgPct = Number.isFinite(input.market.nikkeiFuturesChgPct)
     ? Number(input.market.nikkeiFuturesChgPct)
     : input.market.nikkeiChgPct
+  const newsSignal = extractTrustNewsSignal(input.news ?? null)
 
   return {
     generatedAt: new Date().toISOString(),
@@ -785,6 +928,14 @@ export function buildTrustPortfolioPlan(input: {
     shortTermRows,
     executionQueue,
     performance30d: input.performance30d ?? EMPTY_STATS,
+    newsContext: {
+      trustHeadlineCount: newsSignal.count,
+      trustPositive: newsSignal.positive,
+      trustNegative: newsSignal.negative,
+      sentimentBias: newsSignal.sentimentBias,
+      latestHeadline: newsSignal.latestHeadline,
+      latestPublishedAt: newsSignal.latestPublishedAt,
+    },
     marketContext: {
       nikkeiDirection: input.market.nikkeiChgPct,
       nikkeiFuturesDirection: futuresChgPct,

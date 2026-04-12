@@ -37,8 +37,11 @@ export function T2_Holdings() {
   const [positionFilter, setPositionFilter] = useState<PositionFilter>('ALL')
 
   const stockPlan = useMemo(
-    () => buildStockPortfolioPlan(holdings, analysis),
-    [analysis, holdings],
+    () =>
+      buildStockPortfolioPlan(holdings, analysis, {
+        targetTotalValue: universe?.categories.find(item => item.class === 'JP_STOCK')?.targetValue,
+      }),
+    [analysis, holdings, universe],
   )
 
   const analysisByCode = useMemo(

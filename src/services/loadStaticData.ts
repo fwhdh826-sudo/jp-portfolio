@@ -3,6 +3,7 @@ import type {
   CorrelationData,
   NewsData,
   Trust,
+  Holding,
   MacroSnapshot,
   SQCalendar,
   MarginData,
@@ -73,6 +74,22 @@ export async function loadTrustMaster(options: LoadOptions = {}): Promise<{ data
   }
 }
 
+interface HoldingsSnapshot {
+  last_updated?: string
+  holdings: Array<Pick<Holding, 'code'> & Partial<Pick<Holding, 'eval' | 'pnlPct' | 'currentPrice'>> & { price?: number }>
+}
+
+export async function loadHoldingsSnapshot(
+  options: LoadOptions = {},
+): Promise<{ data: HoldingsSnapshot | null; source: 'loaded' | 'none' | 'error' }> {
+  try {
+    const data = await fetchJson<HoldingsSnapshot>('data/holdings.json', options)
+    return { data, source: 'loaded' }
+  } catch {
+    return { data: null, source: 'none' }
+  }
+}
+
 // ═══════════════════════════════════════════════════════════
 // v9.0 追加: Macro / Nikkei VI / SQ / Margin / Flows
 // ═══════════════════════════════════════════════════════════
@@ -125,16 +142,17 @@ export async function loadFlows(options: LoadOptions = {}): Promise<{ data: Flow
 export async function refreshAllData(options: { bustCache?: boolean } = {}) {
   const loadOptions: LoadOptions = options.bustCache ? { bustToken: `${Date.now()}` } : {}
   // 並列fetch（partial updateしない — 全部揃ってからStore更新）
-  const [market, correlation, news, trust, macro, nikkeiVI, sq, margin, flows] = await Promise.all([
+  const [market, correlation, news, trust, holdingsSnapshot, macro, nikkeiVI, sq, margin, flows] = await Promise.all([
     loadMarket(loadOptions),
     loadCorrelation(loadOptions),
     loadNews(loadOptions),
     loadTrustMaster(loadOptions),
+    loadHoldingsSnapshot(loadOptions),
     loadMacro(loadOptions),
     loadNikkeiVI(loadOptions),
     loadSQCalendar(loadOptions),
     loadMargin(loadOptions),
     loadFlows(loadOptions),
   ])
-  return { market, correlation, news, trust, macro, nikkeiVI, sq, margin, flows }
+  return { market, correlation, news, trust, holdingsSnapshot, macro, nikkeiVI, sq, margin, flows }
 }
