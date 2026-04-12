@@ -2,45 +2,29 @@ import { useMemo, useState } from 'react'
 import { useAppStore } from '../../store/useAppStore'
 import { selectTotalEval } from '../../store/selectors'
 import { formatJPYAuto } from '../../utils/format'
-import { JP_STOCK_MAX_VALUE, SELLABLE_CODES } from '../../constants/market'
-import { getSellLockRemainingDays, isSellLocked } from '../../domain/constraints/stockLock'
+import { JP_STOCK_MAX_VALUE } from '../../constants/market'
+import {
+  getSellLockRemainingDays,
+  getSellableDate,
+  isSellLocked,
+} from '../../domain/constraints/stockLock'
+import { buildStockPortfolioPlan } from '../../domain/optimization/stockPortfolio'
 
-const sectorColors: Record<string, string> = {
-  金融: '#7f99ff',
-  'HR/テック': '#5cc6b7',
-  ゲーム: '#d490ff',
-  エネルギー: '#f08d49',
-  精密: '#d2b35f',
-  医療: '#6dbb7b',
-  内需: '#7db1f2',
-  重工: '#b7c1d1',
-  通信: '#5ea5d8',
+type PositionFilter = 'ALL' | 'SELL' | 'BUY' | 'HOLD' | 'LOCK'
+
+function recommendationTone(recommendation: string) {
+  if (recommendation === 'BUY') return 'positive'
+  if (recommendation === 'SELL') return 'negative'
+  if (recommendation === 'WAIT_LOCK') return 'neutral'
+  return 'neutral'
 }
 
-function getSectorColor(sector: string) {
-  return sectorColors[sector] ?? '#6f7c8f'
-}
-
-function decisionTone(decision: string, locked: boolean) {
+function positionTone(decision: string, locked: boolean) {
   if (locked) return 'neutral'
   if (decision === 'BUY') return 'positive'
   if (decision === 'SELL') return 'negative'
   return 'neutral'
 }
-
-interface StockOptimalRow {
-  code: string
-  name: string
-  currentValue: number
-  currentWeight: number
-  targetValue: number
-  targetWeight: number
-  diffValue: number
-  decision: 'BUY' | 'HOLD' | 'SELL'
-  locked: boolean
-}
-
-type PositionFilter = 'ALL' | 'SELL' | 'BUY' | 'HOLD' | 'LOCK'
 
 export function T2_Holdings() {
   const holdings = useAppStore(s => s.holdings)
@@ -52,43 +36,53 @@ export function T2_Holdings() {
   const [expandedCode, setExpandedCode] = useState<string | null>(null)
   const [positionFilter, setPositionFilter] = useState<PositionFilter>('ALL')
 
+  const stockPlan = useMemo(
+    () => buildStockPortfolioPlan(holdings, analysis),
+    [analysis, holdings],
+  )
+
   const analysisByCode = useMemo(
     () => new Map(analysis.map(item => [item.code, item])),
     [analysis],
   )
 
-  const sectorEntries = useMemo(() => {
-    const grouped = holdings.reduce<Record<string, number>>((acc, holding) => {
-      acc[holding.sector] = (acc[holding.sector] || 0) + holding.eval
-      return acc
-    }, {})
-
-    return Object.entries(grouped)
-      .sort((a, b) => b[1] - a[1])
-      .map(([sector, value]) => ({
-        sector,
-        value,
-        ratio: totalEval > 0 ? (value / totalEval) * 100 : 0,
-      }))
-  }, [holdings, totalEval])
-
-  const lockedCount = holdings.filter(holding => isSellLocked(holding)).length
-  const sellableCount = holdings.filter(holding => !isSellLocked(holding) && SELLABLE_CODES.has(holding.code)).length
-  const mitsuRatio = totalEval > 0
-    ? (holdings.filter(holding => holding.mitsu).reduce((sum, holding) => sum + holding.eval, 0) / totalEval) * 100
+  const weightedPnl = totalEval > 0
+    ? holdings.reduce((sum, item) => sum + item.pnlPct * (item.eval / totalEval), 0)
     : 0
+
+  const mitsuRatio = totalEval > 0
+    ? holdings.filter(item => item.mitsu).reduce((sum, item) => sum + item.eval, 0) / totalEval * 100
+    : 0
+
+  const highVolCount = holdings.filter(item => item.sigma >= 0.35).length
+  const deepLossCount = holdings.filter(item => item.pnlPct <= -12).length
+
+  const lockSchedule = holdings
+    .map(holding => {
+      const remaining = getSellLockRemainingDays(holding)
+      return {
+        ...holding,
+        remaining,
+        locked: isSellLocked(holding),
+        sellableAt: getSellableDate(holding),
+      }
+    })
+    .filter(item => item.locked)
+    .sort((left, right) => left.remaining - right.remaining)
+
+  const allocationDiffs = (universe?.categories ?? [])
+    .filter(item => item.class === 'JP_STOCK' || item.class === 'CASH' || item.class === 'CASH_RESERVE' || item.class === 'ADD_ROOM')
 
   const positions = useMemo(() => {
     const rank = { SELL: 0, BUY: 1, HOLD: 2 }
-    return [...holdings]
-      .sort((left, right) => {
-        const leftDecision = analysisByCode.get(left.code)?.decision ?? 'HOLD'
-        const rightDecision = analysisByCode.get(right.code)?.decision ?? 'HOLD'
-        if (rank[leftDecision] !== rank[rightDecision]) {
-          return rank[leftDecision] - rank[rightDecision]
-        }
-        return right.eval - left.eval
-      })
+    return [...holdings].sort((left, right) => {
+      const leftDecision = analysisByCode.get(left.code)?.decision ?? 'HOLD'
+      const rightDecision = analysisByCode.get(right.code)?.decision ?? 'HOLD'
+      if (rank[leftDecision] !== rank[rightDecision]) {
+        return rank[leftDecision] - rank[rightDecision]
+      }
+      return right.eval - left.eval
+    })
   }, [analysisByCode, holdings])
 
   const filteredPositions = useMemo(() => {
@@ -97,153 +91,57 @@ export function T2_Holdings() {
     return positions.filter(holding => (analysisByCode.get(holding.code)?.decision ?? 'HOLD') === positionFilter)
   }, [analysisByCode, positionFilter, positions])
 
-  const allocationDiffs = (universe?.categories ?? [])
-    .filter(item => item.class === 'JP_STOCK' || item.class === 'CASH' || item.class === 'CASH_RESERVE' || item.class === 'ADD_ROOM')
-
-  const stockOptimalRows = useMemo<StockOptimalRow[]>(() => {
-    const raw = holdings.map(holding => {
-      const item = analysisByCode.get(holding.code)
-      const locked = isSellLocked(holding)
-      const decision = item?.decision ?? 'HOLD'
-      const scoreBase = item?.totalScore ?? 50
-      const bonus = decision === 'BUY' ? 12 : decision === 'SELL' ? -18 : 0
-      const lockPenalty = locked ? -14 : 0
-      const concentrationPenalty = holding.mitsu ? -4 : 0
-      const volatilityPenalty = Math.round(holding.sigma * 24)
-      const weightSeed = Math.max(8, scoreBase + bonus + lockPenalty + concentrationPenalty - volatilityPenalty)
-      return {
-        holding,
-        locked,
-        decision,
-        weightSeed,
-      }
-    })
-
-    const totalSeed = raw.reduce((sum, row) => sum + row.weightSeed, 0)
-    if (totalSeed <= 0 || totalEval <= 0) return []
-
-    return raw
-      .map(row => {
-        const targetWeight = row.weightSeed / totalSeed
-        const targetValue = totalEval * targetWeight
-        const currentWeight = row.holding.eval / totalEval
-        return {
-          code: row.holding.code,
-          name: row.holding.name,
-          currentValue: row.holding.eval,
-          currentWeight,
-          targetValue,
-          targetWeight,
-          diffValue: targetValue - row.holding.eval,
-          decision: row.decision,
-          locked: row.locked,
-        }
-      })
-      .sort((a, b) => Math.abs(b.diffValue) - Math.abs(a.diffValue))
-  }, [analysisByCode, holdings, totalEval])
-
-  const calcInstitutionalScore = (code: string) => {
-    const holding = holdings.find(item => item.code === code)
-    if (!holding) {
-      return { fundamental: 0, technical: 0, risk: 0, flow: 0 }
-    }
-
-    return {
-      fundamental: Math.round(
-        (holding.roe >= 12 ? 8 : holding.roe >= 8 ? 5 : 2) +
-        (holding.epsG >= 10 ? 8 : holding.epsG >= 0 ? 5 : 0) +
-        (holding.per <= 15 ? 8 : holding.per <= 25 ? 5 : 2) +
-        (holding.cfOk ? 6 : 0),
-      ),
-      technical: Math.round(
-        (holding.ma ? 5 : 0) +
-        (holding.macd ? 5 : 0) +
-        (holding.rsi < 70 && holding.rsi > 30 ? 5 : 2) +
-        (holding.mom3m > 0 ? 5 : 0),
-      ),
-      risk: Math.round(
-        (holding.sigma < 0.25 ? 10 : holding.sigma < 0.35 ? 7 : 3) +
-        (holding.pnlPct >= 0 ? 10 : holding.pnlPct >= -10 ? 6 : 2),
-      ),
-      flow: Math.round(
-        (holding.vol ? 5 : 0) +
-        (holding.mom3m > 5 ? 5 : holding.mom3m > 0 ? 3 : 0),
-      ),
-    }
-  }
-
-  const weightedPnl = totalEval > 0
-    ? holdings.reduce((sum, item) => sum + item.pnlPct * (item.eval / totalEval), 0)
-    : 0
-  const highVolCount = holdings.filter(item => item.sigma >= 0.35).length
-  const deepLossCount = holdings.filter(item => item.pnlPct <= -12).length
-  const lockSchedule = holdings
-    .map(holding => ({
-      ...holding,
-      remaining: getSellLockRemainingDays(holding),
-      locked: isSellLocked(holding),
-    }))
-    .filter(item => item.locked)
-    .sort((left, right) => left.remaining - right.remaining)
-
   return (
     <div className="tab-panel holdings-page">
       <section className="decision-grid">
         <article className="card">
-          <div className="section-kicker">Overview</div>
-          <h2 className="section-heading">保有状況の要約</h2>
+          <div className="section-kicker">Stock overview</div>
+          <h2 className="section-heading">個別株ポートフォリオ要約</h2>
           <div className="summary-grid">
             <div className="summary-tile summary-tile--neutral">
-              <div className="summary-tile__label">国内株評価額</div>
+              <div className="summary-tile__label">評価額</div>
               <div className="summary-tile__value">{formatJPYAuto(totalEval)}</div>
             </div>
             <div className="summary-tile summary-tile--neutral">
               <div className="summary-tile__label">銘柄数</div>
               <div className="summary-tile__value">{holdings.length}</div>
             </div>
-            <div className={`summary-tile ${mitsuRatio > 35 ? 'summary-tile--negative' : 'summary-tile--caution'}`}>
-              <div className="summary-tile__label">三菱比率</div>
-              <div className="summary-tile__value">{mitsuRatio.toFixed(1)}%</div>
+            <div className={`summary-tile ${stockPlan.lockCount > 0 ? 'summary-tile--caution' : 'summary-tile--positive'}`}>
+              <div className="summary-tile__label">売却ロック</div>
+              <div className="summary-tile__value">{stockPlan.lockCount}件</div>
             </div>
             <div className="summary-tile summary-tile--neutral">
-              <div className="summary-tile__label">売却可能銘柄</div>
-              <div className="summary-tile__value">{sellableCount}</div>
+              <div className="summary-tile__label">売却可能</div>
+              <div className="summary-tile__value">{stockPlan.sellableCount}件</div>
             </div>
           </div>
-
           <div className="metrics-inline">
             <span>加重損益率 {weightedPnl >= 0 ? '+' : ''}{weightedPnl.toFixed(2)}%</span>
-            <span>高ボラ銘柄 {highVolCount}件</span>
+            <span>高ボラ {highVolCount}件</span>
             <span>深い含み損 {deepLossCount}件</span>
             {metrics && <span>Sharpe {metrics.sharpe.toFixed(2)}</span>}
           </div>
         </article>
 
         <article className="card">
-          <div className="section-kicker">Exposure</div>
-          <h2 className="section-heading">セクター配分</h2>
-          <div className="sector-bar">
-            {sectorEntries.map(item => (
-              <span
-                key={item.sector}
-                className="sector-bar__item"
-                style={{ width: `${Math.max(item.ratio, 4)}%`, background: getSectorColor(item.sector) }}
-              >
-                {item.ratio >= 10 ? `${item.sector} ${item.ratio.toFixed(0)}%` : item.sector}
-              </span>
-            ))}
-          </div>
-          <div className="sector-legend">
-            {sectorEntries.map(item => (
-              <div key={item.sector} className="sector-legend__item">
-                <span
-                  className="sector-legend__dot"
-                  style={{ background: getSectorColor(item.sector) }}
-                />
-                <span>{item.sector}</span>
-                <strong>{item.ratio.toFixed(1)}%</strong>
-              </div>
-            ))}
+          <div className="section-kicker">Constraints</div>
+          <h2 className="section-heading">運用制約</h2>
+          <div className="constraint-list">
+            <div className="constraint-list__item">
+              <strong>3ヶ月売却不可</strong>
+              <span>{stockPlan.lockCount}件</span>
+              <p>ロック中は売却せず、解除予定日を起点に再判定します。</p>
+            </div>
+            <div className="constraint-list__item">
+              <strong>国内個別株上限</strong>
+              <span>{totalEval > JP_STOCK_MAX_VALUE ? '超過' : '範囲内'}</span>
+              <p>現在 {formatJPYAuto(totalEval)} / 上限 {formatJPYAuto(JP_STOCK_MAX_VALUE)}</p>
+            </div>
+            <div className="constraint-list__item">
+              <strong>三菱系集中</strong>
+              <span>{mitsuRatio.toFixed(1)}%</span>
+              <p>35%を超える場合は縮小を優先して分散を確保します。</p>
+            </div>
           </div>
         </article>
       </section>
@@ -253,75 +151,91 @@ export function T2_Holdings() {
           <article className="card">
             <div className="section-heading-row">
               <div>
-                <div className="section-kicker">Stock-only optimizer</div>
-                <h3 className="section-heading">個別株 最適ポートフォリオ提案</h3>
+                <div className="section-kicker">Zero-base optimizer</div>
+                <h3 className="section-heading">個別株のみ最適ポートフォリオ</h3>
               </div>
-              <div className="section-caption">投信は含めない</div>
+              <div className="section-caption">投信は除外</div>
             </div>
             <p className="section-copy">
-              提案は個別株のみを対象に算出しています。`SELL` 判定でも 3ヶ月ロック中は即売却せず、ロック解除後の候補として扱います。
+              現保有に引きずられず、個別株だけで推奨比率を再計算しています。
+              売却制約中の銘柄は `ロック解除後に縮小` として扱います。
             </p>
 
-            <div className="tw" style={{ marginTop: 12 }}>
-              <table className="dt">
-                <thead>
-                  <tr>
-                    <th>銘柄</th>
-                    <th>現在</th>
-                    <th>目標</th>
-                    <th>差額</th>
-                    <th>アクション</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {stockOptimalRows.slice(0, 10).map(row => {
-                    const action =
-                      row.diffValue > 60_000
-                        ? '買い増し候補'
-                        : row.diffValue < -60_000
-                        ? row.locked
-                          ? 'ロック解除後に縮小'
-                          : '縮小候補'
-                        : '維持'
-                    return (
-                      <tr key={row.code}>
-                        <td>{row.code} {row.name}</td>
-                        <td>
-                          {formatJPYAuto(row.currentValue)}
-                          <div className="d">{(row.currentWeight * 100).toFixed(1)}%</div>
-                        </td>
-                        <td>
-                          {formatJPYAuto(row.targetValue)}
-                          <div className="d">{(row.targetWeight * 100).toFixed(1)}%</div>
-                        </td>
-                        <td className={row.diffValue >= 0 ? 'p' : 'n'}>
-                          {row.diffValue >= 0 ? '+' : ''}{formatJPYAuto(row.diffValue)}
-                        </td>
-                        <td>
-                          <span className={`vd ${row.locked ? 'lock' : row.decision === 'BUY' ? 'buy' : row.decision === 'SELL' ? 'sell' : 'hold'}`}>
-                            {action}
-                          </span>
-                        </td>
-                      </tr>
-                    )
-                  })}
-                </tbody>
-              </table>
+            <div className="recommendation-column" style={{ marginTop: 12 }}>
+              {stockPlan.rebalanceTop.map(item => (
+                <article key={item.code} className={`recommendation-card recommendation-card--${recommendationTone(item.recommendation)}`}>
+                  <div className="recommendation-card__top">
+                    <div>
+                      <div className="recommendation-card__code">{item.code}</div>
+                      <div className="recommendation-card__name">{item.name}</div>
+                    </div>
+                    <div className="recommendation-card__meta">
+                      <span className={`vd ${item.recommendation === 'BUY' ? 'buy' : item.recommendation === 'SELL' ? 'sell' : item.recommendation === 'WAIT_LOCK' ? 'wait' : 'hold'}`}>
+                        {item.recommendation}
+                      </span>
+                      <span className="recommendation-card__score">{item.score}</span>
+                    </div>
+                  </div>
+
+                  <div className="recommendation-card__metrics">
+                    <div>
+                      <span>現在比率</span>
+                      <strong>{(item.currentWeight * 100).toFixed(1)}%</strong>
+                    </div>
+                    <div>
+                      <span>推奨比率</span>
+                      <strong>{(item.targetWeight * 100).toFixed(1)}%</strong>
+                    </div>
+                    <div>
+                      <span>差額</span>
+                      <strong className={item.diffValue >= 0 ? 'p' : 'n'}>
+                        {item.diffValue >= 0 ? '+' : ''}{formatJPYAuto(item.diffValue)}
+                      </strong>
+                    </div>
+                    <div>
+                      <span>保有スタンス</span>
+                      <strong>{item.holdingStyle}</strong>
+                    </div>
+                  </div>
+
+                  <div className="recommendation-card__reasons">
+                    <p>{item.reason}</p>
+                    {item.locked && (
+                      <p>
+                        ロック中: 残り {item.lockRemainingDays}日
+                        {item.sellableAt ? ` / 売却可能予定日 ${item.sellableAt}` : ''}
+                      </p>
+                    )}
+                  </div>
+                </article>
+              ))}
             </div>
           </article>
 
           <article className="card">
-            <div className="section-heading-row">
-              <div>
-                <div className="section-kicker">Allocation drift</div>
-                <h3 className="section-heading">個別株運用差分</h3>
-              </div>
-              <div className="section-caption">
-                上限 {formatJPYAuto(JP_STOCK_MAX_VALUE)}
-              </div>
+            <div className="section-kicker">Swap ideas</div>
+            <h3 className="section-heading">入替候補（個別株のみ）</h3>
+            <div className="scenario-list" style={{ marginTop: 12 }}>
+              {stockPlan.swapIdeas.length > 0 ? stockPlan.swapIdeas.map(idea => (
+                <div key={`${idea.sellCode}-${idea.buyCode}`} className="scenario-list__item">
+                  <div>
+                    <strong>{idea.sellName} → {idea.buyName}</strong>
+                    <span>{idea.reason}</span>
+                  </div>
+                  <span className="tone-chip tone-chip--caution">候補</span>
+                </div>
+              )) : (
+                <div className="empty-state">明確な入替候補はまだありません。</div>
+              )}
             </div>
+          </article>
+        </div>
 
-            <div className="allocation-list">
+        <div className="stack-layout">
+          <article className="card">
+            <div className="section-kicker">Allocation drift</div>
+            <h3 className="section-heading">個別株運用差分</h3>
+            <div className="allocation-list" style={{ marginTop: 12 }}>
               {allocationDiffs.map(item => (
                 <div key={item.class} className="allocation-list__item">
                   <div className="allocation-list__header">
@@ -337,65 +251,40 @@ export function T2_Holdings() {
               ))}
             </div>
           </article>
+
+          <article className="card">
+            <div className="section-kicker">Lock schedule</div>
+            <h3 className="section-heading">ロック解除予定</h3>
+            {lockSchedule.length > 0 ? (
+              <div className="risk-register" style={{ marginTop: 12 }}>
+                {lockSchedule.map(item => (
+                  <div key={`lock-${item.code}`} className="risk-register__item risk-register__item--medium">
+                    <div className="risk-register__title">
+                      <strong>{item.code} {item.name}</strong>
+                      <span className="vd lock">LOCK {item.remaining}d</span>
+                    </div>
+                    <div className="risk-register__meta">
+                      <span>評価額 {formatJPYAuto(item.eval)}</span>
+                      <span>損益率 {item.pnlPct >= 0 ? '+' : ''}{item.pnlPct.toFixed(2)}%</span>
+                      <span>売却可能予定 {item.sellableAt ?? '未設定'}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="empty-state" style={{ marginTop: 12 }}>ロック中の銘柄はありません。</div>
+            )}
+          </article>
         </div>
-
-        <article className="card">
-          <div className="section-heading-row">
-            <div>
-              <div className="section-kicker">Constraints</div>
-              <h3 className="section-heading">運用制約</h3>
-            </div>
-          </div>
-
-          <div className="constraint-list">
-            <div className="constraint-list__item">
-              <strong>売却ロック銘柄</strong>
-              <span>{lockedCount}件</span>
-              <p>購入から3ヶ月以内は売却せず、解除日まで監視を継続します。</p>
-            </div>
-            <div className="constraint-list__item">
-              <strong>国内株上限</strong>
-              <span>{totalEval > JP_STOCK_MAX_VALUE ? '超過' : '範囲内'}</span>
-              <p>現在 {formatJPYAuto(totalEval)} / 上限 {formatJPYAuto(JP_STOCK_MAX_VALUE)}</p>
-            </div>
-            <div className="constraint-list__item">
-              <strong>集中管理</strong>
-              <span>{mitsuRatio.toFixed(1)}%</span>
-              <p>三菱グループ比率は35%以内を目安に維持します。</p>
-            </div>
-          </div>
-
-          <div className="section-subtitle" style={{ marginTop: 12 }}>ロック解除スケジュール</div>
-          {lockSchedule.length > 0 ? (
-            <div className="risk-register">
-              {lockSchedule.map(item => (
-                <div key={`lock-${item.code}`} className="risk-register__item risk-register__item--medium">
-                  <div className="risk-register__title">
-                    <strong>{item.code} {item.name}</strong>
-                    <span className="vd lock">LOCK {item.remaining}d</span>
-                  </div>
-                  <div className="risk-register__meta">
-                    <span>評価額 {formatJPYAuto(item.eval)}</span>
-                    <span>損益率 {item.pnlPct >= 0 ? '+' : ''}{item.pnlPct.toFixed(2)}%</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="empty-state" style={{ marginTop: 10 }}>
-              現在ロック中の銘柄はありません。
-            </div>
-          )}
-        </article>
       </section>
 
-      <section className="card">
+      <section className="card" style={{ marginTop: 14 }}>
         <div className="section-heading-row">
           <div>
             <div className="section-kicker">Position board</div>
-            <h3 className="section-heading">保有ポジション</h3>
+            <h3 className="section-heading">保有ポジション詳細</h3>
           </div>
-          <div className="section-caption">SELL優先表示 / {filteredPositions.length}件表示</div>
+          <div className="section-caption">{filteredPositions.length}件</div>
         </div>
 
         <div className="log-filter" style={{ marginTop: 12 }}>
@@ -411,22 +300,15 @@ export function T2_Holdings() {
           ))}
         </div>
 
-        <div className="position-board">
+        <div className="position-board" style={{ marginTop: 12 }}>
           {filteredPositions.map(holding => {
             const item = analysisByCode.get(holding.code)
             const decision = item?.decision ?? 'HOLD'
-            const isExpanded = expandedCode === holding.code
             const locked = isSellLocked(holding)
             const lockRemain = getSellLockRemainingDays(holding)
-            const tone = decisionTone(decision, locked)
+            const tone = positionTone(decision, locked)
+            const isExpanded = expandedCode === holding.code
             const weight = totalEval > 0 ? (holding.eval / totalEval) * 100 : 0
-            const institutional = calcInstitutionalScore(holding.code)
-            const institutionalRows = [
-              { label: 'Fundamental', value: institutional.fundamental, max: 30 },
-              { label: 'Technical', value: institutional.technical, max: 20 },
-              { label: 'Risk', value: institutional.risk, max: 20 },
-              { label: 'Flow', value: institutional.flow, max: 10 },
-            ]
 
             return (
               <article key={holding.code} className={`position-card position-card--${tone}`}>
@@ -461,7 +343,7 @@ export function T2_Holdings() {
                     <strong>{weight.toFixed(1)}%</strong>
                   </div>
                   <div>
-                    <span>年率σ</span>
+                    <span>σ</span>
                     <strong>{(holding.sigma * 100).toFixed(1)}%</strong>
                   </div>
                 </div>
@@ -469,16 +351,15 @@ export function T2_Holdings() {
                 <div className="position-card__footer">
                   <span>{holding.sector}</span>
                   {locked && <span>売却制約 残り{lockRemain}日</span>}
+                  {holding.acquiredAt && <span>取得日 {holding.acquiredAt}</span>}
                   <span>ROE {holding.roe.toFixed(1)}%</span>
-                  <span>EPS {holding.epsG >= 0 ? '+' : ''}{holding.epsG.toFixed(1)}%</span>
-                  <span>RSI {holding.rsi.toFixed(0)}</span>
                 </div>
 
                 {isExpanded && (
                   <div className="position-card__details">
                     <div className="detail-grid">
                       <div className="detail-panel">
-                        <div className="section-subtitle">判断メモ</div>
+                        <div className="section-subtitle">判断軸</div>
                         <div className="detail-list">
                           <span>ファンダ {item?.fundamentalScore ?? '—'} / 30</span>
                           <span>テクニカル {item?.technicalScore ?? '—'} / 20</span>
@@ -486,21 +367,16 @@ export function T2_Holdings() {
                           <span>ニュース {item?.newsScore ?? '—'} / 15</span>
                         </div>
                       </div>
-
                       <div className="detail-panel">
-                        <div className="section-subtitle">機関観点スコア</div>
-                        <div className="institution-grid">
-                          {institutionalRows.map(row => (
-                            <div key={row.label} className="institution-grid__item">
-                              <div className="institution-grid__label">
-                                <span>{row.label}</span>
-                                <strong>{row.value}/{row.max}</strong>
-                              </div>
-                              <div className="institution-grid__bar">
-                                <span style={{ width: `${(row.value / row.max) * 100}%` }} />
-                              </div>
-                            </div>
+                        <div className="section-subtitle">継続保有理由</div>
+                        <div className="detail-list">
+                          {(item?.debate.bullReasons ?? []).slice(0, 2).map(reason => (
+                            <span key={reason}>・{reason}</span>
                           ))}
+                          {(item?.debate.bearReasons ?? []).slice(0, 1).map(reason => (
+                            <span key={reason}>・注意: {reason}</span>
+                          ))}
+                          {locked && <span>・ロック解除後に売却可否を再判定</span>}
                         </div>
                       </div>
                     </div>
@@ -509,10 +385,9 @@ export function T2_Holdings() {
               </article>
             )
           })}
+
           {filteredPositions.length === 0 && (
-            <div className="empty-state" style={{ marginTop: 10 }}>
-              この条件に一致するポジションはありません。
-            </div>
+            <div className="empty-state">この条件に一致するポジションはありません。</div>
           )}
         </div>
       </section>

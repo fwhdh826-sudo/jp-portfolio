@@ -19,9 +19,9 @@ export const TAB_META: TabMeta[] = [
   {
     id: 'T2',
     short: '02',
-    label: '保有',
-    title: '保有ポジション',
-    description: '保有状況、配分差分、制約を確認します。',
+    label: '個別株',
+    title: '個別株ポートフォリオ',
+    description: '個別株のみの最適構成、差分、3ヶ月制約を確認します。',
   },
   {
     id: 'T3',
@@ -55,8 +55,8 @@ export const TAB_META: TabMeta[] = [
     id: 'T7',
     short: '07',
     label: '投信',
-    title: '投信ポートフォリオ',
-    description: '投信の役割、配分、曜日シグナルを確認します。',
+    title: '投信ポートフォリオ（短期戦術）',
+    description: '投信のみの最適配分と超短期売買シグナルを確認します。',
   },
 ]
 

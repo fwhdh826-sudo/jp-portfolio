@@ -7,6 +7,7 @@ interface ParsedRow {
   pnlPct: number
   dayPct: number
   price: number
+  acquiredAt?: string
 }
 
 /** SBI証券CSVパーサー（ブラウザ側）
@@ -26,7 +27,12 @@ export async function importPortfolioCsv(
   const updatedHoldings = holdings.map(h => {
     const row = rows.find(r => r.code === h.code)
     if (!row) return h
-    return { ...h, eval: row.eval, pnlPct: row.pnlPct }
+    return {
+      ...h,
+      eval: row.eval,
+      pnlPct: row.pnlPct,
+      acquiredAt: row.acquiredAt ?? h.acquiredAt,
+    }
   })
 
   // ── 投資信託: 銘柄名の部分一致 or trust.id/abbr で照合 ────────
@@ -84,6 +90,7 @@ function parseRows(text: string): ParsedRow[] {
   let pnlPctCol = -1
   let dayPctCol = -1
   let priceCol  = -1
+  let acquiredAtCol = -1
 
   // ヘッダー行を探す
   for (let i = 0; i < lines.length; i++) {
@@ -99,6 +106,7 @@ function parseRows(text: string): ParsedRow[] {
       pnlPctCol  = cols.findIndex(c => c.includes('損益率') || c.includes('評価損益率'))
       dayPctCol  = cols.findIndex(c => c.includes('前日比') || c.includes('騰落率'))
       priceCol   = cols.findIndex(c => c === '現在値' || c === '現在単価' || c === '基準価額')
+      acquiredAtCol = cols.findIndex(c => c.includes('取得日') || c.includes('買付日') || c.includes('購入日'))
       break
     }
   }
@@ -119,6 +127,9 @@ function parseRows(text: string): ParsedRow[] {
     const parseNum = (idx: number) =>
       idx >= 0 ? parseFloat((cols[idx] ?? '').replace(/[^\d.-]/g, '')) || 0 : 0
 
+    const acquiredRaw = acquiredAtCol >= 0 ? (cols[acquiredAtCol] ?? '') : ''
+    const acquiredAt = normalizeDate(acquiredRaw)
+
     rows.push({
       code,
       name,
@@ -126,6 +137,7 @@ function parseRows(text: string): ParsedRow[] {
       pnlPct: parseNum(pnlPctCol),
       dayPct: parseNum(dayPctCol),
       price:  parseNum(priceCol),
+      acquiredAt: acquiredAt ?? undefined,
     })
   }
 
@@ -150,4 +162,16 @@ function splitCsvLine(line: string): string[] {
   }
   result.push(cur.trim().replace(/,/g, ''))
   return result
+}
+
+function normalizeDate(raw: string): string | null {
+  if (!raw) return null
+  const cleaned = raw.trim()
+  if (!cleaned) return null
+  const match = cleaned.match(/(\d{4})[\/\-年](\d{1,2})[\/\-月](\d{1,2})/)
+  if (!match) return null
+  const y = match[1]
+  const m = match[2].padStart(2, '0')
+  const d = match[3].padStart(2, '0')
+  return `${y}-${m}-${d}`
 }

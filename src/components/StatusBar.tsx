@@ -153,7 +153,7 @@ export function StatusBar() {
         <div className="status-shell__actions">
           <div className="status-shell__meta">
             <span className={`tone-chip tone-chip--${regime.tone}`}>{regime.label}</span>
-            <span className="tone-chip tone-chip--neutral">v9.1</span>
+            <span className="tone-chip tone-chip--neutral">v{system.version}</span>
             <span className="status-shell__timestamp">
               最終更新 {system.lastUpdated ? formatDateTime(system.lastUpdated) : '未更新'}
             </span>

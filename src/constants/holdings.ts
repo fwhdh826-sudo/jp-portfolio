@@ -2,7 +2,7 @@ import type { Holding } from '../types'
 
 // V5から引き継いだ初期値（静的fallback）
 // eval/pnlPct はCSV or localStorage で上書きされる
-export const INITIAL_HOLDINGS: Holding[] = [
+const BASE_HOLDINGS: Holding[] = [
   { code:'6098', name:'リクルートHD',   sector:'HR/テック',   beta:1.2, target:8500, alert:6000, lock:false, mitsu:false,
     eval:34605,   pnlPct:169.19, mu:0.20, sigma:0.18, sigmaSource:'static',
     ma:true,  rsi:68, macd:true,  vol:true,  mom3m:12.4,
@@ -84,3 +84,27 @@ export const INITIAL_HOLDINGS: Holding[] = [
     roe:10.8, per:16, pbr:1.8, epsG:18, cfOk:true, de:0.7, divG:2,
     score:0, decision:'HOLD', ev:0 },
 ]
+
+const ACQUIRED_AT_BY_CODE: Record<string, string> = {
+  '6098': '2025-09-18',
+  '8306': '2025-11-20',
+  '9697': '2025-10-30',
+  '4661': '2025-12-03',
+  '8593': '2025-11-14',
+  '4755': '2026-03-22',
+  '5711': '2026-02-28',
+  '1605': '2026-02-14',
+  '5016': '2026-03-30',
+  '8058': '2026-01-25',
+  '9418': '2026-03-03',
+  '1928': '2026-02-09',
+  '7011': '2026-03-12',
+  '7974': '2026-02-20',
+  '9433': '2025-12-12',
+  '7012': '2025-12-28',
+}
+
+export const INITIAL_HOLDINGS: Holding[] = BASE_HOLDINGS.map(holding => ({
+  ...holding,
+  acquiredAt: ACQUIRED_AT_BY_CODE[holding.code],
+}))

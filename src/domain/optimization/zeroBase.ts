@@ -9,8 +9,7 @@ import type {
   AssetUniverse,
 } from '../../types'
 import type { AssetCategorySummary } from '../../types/universe'
-import { SELLABLE_CODES } from '../../constants/market'
-import { isSellLocked } from '../constraints/stockLock'
+import { getSellableDate, isSellLocked } from '../constraints/stockLock'
 
 export type MarketMode = 'normal' | 'caution' | 'emergency'
 
@@ -111,9 +110,12 @@ function deriveMarketMode(
   return { mode, reasons }
 }
 
-function fallbackStockUniverse(input: ZeroBaseInput): AssetCategorySummary[] {
+function fallbackUniverse(input: ZeroBaseInput): AssetCategorySummary[] {
   const jpStockValue = input.holdings.reduce((s, h) => s + h.eval, 0)
-  const total = jpStockValue + input.cash + input.cashReserve + input.addRoom
+  const jpTrustValue = input.trust.filter(f => f.policy === 'JAPAN_SHORTTERM').reduce((s, f) => s + f.eval, 0)
+  const ovTrustValue = input.trust.filter(f => f.policy === 'OVERSEAS_LONGTERM').reduce((s, f) => s + f.eval, 0)
+  const goldValue = input.trust.filter(f => f.policy === 'GOLD').reduce((s, f) => s + f.eval, 0)
+  const total = jpStockValue + jpTrustValue + ovTrustValue + goldValue + input.cash + input.cashReserve + input.addRoom
 
   const pack = (
     cls: AssetCategorySummary['class'],
@@ -141,10 +143,12 @@ function fallbackStockUniverse(input: ZeroBaseInput): AssetCategorySummary[] {
   }
 
   return [
-    pack('JP_STOCK', '国内個別株', '中長期成長の中核ポートフォリオ', jpStockValue, 0.72),
-    pack('CASH', '現金', '通常運用の機動資金', input.cash, 0.08),
-    pack('CASH_RESERVE', '暴落待機資金', '3ヶ月ロック中の防御余力', input.cashReserve, 0.14),
-    pack('ADD_ROOM', '追加投資枠', '高確信シグナル時の増額余地', input.addRoom, 0.06),
+    pack('JP_STOCK', '国内個別株', '成長の取り込み', jpStockValue, 0.15),
+    pack('JP_TRUST', '国内株投信', '短期需給対応', jpTrustValue, 0.05),
+    pack('OVERSEAS_TRUST', '海外株投信', '中長期の主軸', ovTrustValue, 0.55),
+    pack('GOLD', 'ゴールド', '有事ヘッジ', goldValue, 0.05),
+    pack('CASH', '現金', '機動資金', input.cash, 0.08),
+    pack('CASH_RESERVE', '暴落待機資金', '暴落時の買い余力', input.cashReserve, 0.12),
   ]
 }
 
@@ -259,9 +263,11 @@ function buildSellProposals(
     .sort((a, b) => a.analysis.totalScore - b.analysis.totalScore)
 
   for (const { h, analysis } of sorted) {
-    const sellable = !isSellLocked(h) && SELLABLE_CODES.has(h.code)
+    const locked = isSellLocked(h)
+    const sellable = !locked
 
     if (!sellable) {
+      const sellableAt = getSellableDate(h)
       results.push({
         id: `WAIT_${h.code}`,
         action: 'WAIT',
@@ -272,11 +278,15 @@ function buildSellProposals(
         ev: analysis.ev,
         confidence: analysis.confidence,
         strategyRank: analysis.strategyRank,
-        reason: '売却推奨だが、取得3ヶ月ルールにより現時点では売却不可。',
+        reason: sellableAt
+          ? `売却推奨だが、取得3ヶ月ルールで ${sellableAt} まで売却不可。`
+          : '売却推奨だが、取得3ヶ月ルールにより現時点では売却不可。',
         rule: {
           entryRationale: `現状は売却ロック中（score ${analysis.totalScore}/100）。`,
           holdingPremise: 'ロック解除までは新規買いを行わず、ポジション維持で監視。',
-          takeProfit: 'ロック解除後、戻り局面で分割売却。',
+          takeProfit: sellableAt
+            ? `ロック解除予定日(${sellableAt})以降、戻り局面で分割売却。`
+            : 'ロック解除後、戻り局面で分割売却。',
           stopLoss: 'ロック解除後に-5%追加下落で即時売却。',
           invalidation: '業績改善とニュース好転でSELL判定が解除された場合。',
           splitExecution: '解除時点で 60% → 40% の2段階売却。',
@@ -376,18 +386,18 @@ export function buildZeroBasePlan(input: ZeroBaseInput): ZeroBasePlan {
   const { mode, reasons } = deriveMarketMode(input.market, input.macro, input.sqCalendar)
 
   const analysisByCode = new Map(input.analysis.map(a => [a.code, a]))
-  const stockOnlyClasses = new Set(['JP_STOCK', 'CASH', 'CASH_RESERVE', 'ADD_ROOM'])
-  const stockOnlyDiffs = input.universe?.categories.filter(item => stockOnlyClasses.has(item.class))
-  const categoryDiffs = stockOnlyDiffs && stockOnlyDiffs.length > 0
-    ? stockOnlyDiffs
-    : fallbackStockUniverse(input)
+  const categoryDiffs = input.universe?.categories ?? fallbackUniverse(input)
 
   const sellProposals = buildSellProposals(input.holdings, analysisByCode, mode)
   const soldAmount = sellProposals
     .filter(p => p.action === 'SELL')
     .reduce((s, p) => s + p.amount, 0)
 
-  const deployableCash = Math.max(0, input.cash - 2_000_000)
+  // 待機資金: コア5,000,000円は cashReserve で保持、
+  // 追加2,000,000円は市場モードで可変バッファとして管理する。
+  const variableBuffer =
+    mode === 'normal' ? 1_000_000 : mode === 'caution' ? 2_000_000 : 3_000_000
+  const deployableCash = Math.max(0, input.cash - variableBuffer)
   const rawBudget = input.addRoom + deployableCash + soldAmount * 0.7
   const buyBudget = mode === 'normal' ? rawBudget : mode === 'caution' ? rawBudget * 0.5 : 0
 

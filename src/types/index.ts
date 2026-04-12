@@ -12,7 +12,7 @@ export interface Holding {
   target: number      // 目標株価
   alert: number       // アラート株価
   lock: boolean       // ロック中（売却不可期間）
-  acquiredAt?: string // 取得日（YYYY-MM-DD）: 3ヶ月売却制約の判定に使用
+  acquiredAt?: string // 取得日（YYYY-MM-DD）
   mitsu: boolean      // 三菱グループフラグ
   // テクニカル
   ma: boolean         // MA上位
@@ -61,6 +61,9 @@ export interface Market {
   nikkei: number
   nikkeiChg: number
   nikkeiChgPct: number
+  nikkeiFutures?: number
+  nikkeiFuturesChg?: number
+  nikkeiFuturesChgPct?: number
   ma5: number
   ma25: number
   ma75: number
@@ -254,7 +257,7 @@ export interface DataSourceInfo {
 }
 
 export interface SystemState {
-  version: '8.1' | '8.3' | '9.0' | '9.1'
+  version: '8.1' | '8.3' | '9.0' | '9.1' | '9.5'
   status: SystemStatus
   lastUpdated: string | null
   csvLastImportedAt: string | null
