@@ -21,6 +21,12 @@ import {
 } from './persist'
 import { buildAssetUniverse } from '../domain/optimization/idealAllocation'
 import { updatePerformanceTracker } from '../domain/learning/performanceTracker'
+import { buildTrustPortfolioPlan } from '../domain/optimization/trustPortfolio'
+import {
+  detectTrustExecutionFromCsvSync,
+  getTrustShortTodayExecutionCount,
+  recordTrustShortDecision,
+} from '../domain/learning/trustShortTracker'
 
 // ── アクション型 ─────────────────────────────────────────────
 interface AppActions {
@@ -117,7 +123,7 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
   cashReserve: INITIAL_CASH_RESERVE,
   addRoom: INITIAL_ADD_ROOM,
   system: {
-    version: '9.1',
+    version: '9.5',
     status: 'idle',
     lastUpdated: null,
     csvLastImportedAt: null,
@@ -311,6 +317,7 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
         get().trust,
       )
       const now = new Date().toISOString()
+      const trustExecution = detectTrustExecutionFromCsvSync(updatedT, now)
       set({ holdings: updatedH, trust: updatedT })
       const computed = runFullAnalysis(get())
       set(s => ({
@@ -323,6 +330,33 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
           error: null,
         },
       }))
+
+      if (trustExecution.executed && getTrustShortTodayExecutionCount(now) < 1) {
+        const state = get()
+        const trustPlan = buildTrustPortfolioPlan({
+          trust: state.trust,
+          market: state.market,
+          macro: state.macro,
+          sqCalendar: state.sqCalendar,
+          margin: state.margin,
+          flows: state.flows,
+          todayEntryCount: getTrustShortTodayExecutionCount(now),
+        })
+
+        recordTrustShortDecision({
+          date: now,
+          decision: trustPlan.shortTermMode.candidateDirection,
+          confidence: trustPlan.shortTermMode.confidence,
+          executed: true,
+          nikkeiChgPct: state.market.nikkeiChgPct,
+          futuresChgPct: trustPlan.marketContext.nikkeiFuturesDirection,
+          conditionsPassed: trustPlan.shortTermMode.conditionsPassed,
+          vix: trustPlan.marketContext.vix,
+          nikkeiVI: trustPlan.marketContext.nikkeiVI,
+          volatilitySpread: trustPlan.marketContext.volatilitySpread,
+        })
+      }
+
       persistPortfolio(get().holdings)
       persistTrust(get().trust)
       const learning = get().learning

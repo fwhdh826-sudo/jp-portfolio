@@ -12,6 +12,18 @@ from datetime import datetime
 
 OUTPUT_PATH = Path(__file__).parent / 'market.json'
 
+def fetch_price_pack(symbol, period='6mo'):
+    ticker = yf.Ticker(symbol)
+    hist = ticker.history(period=period)
+    if hist.empty or len(hist) < 2:
+        raise ValueError(f"{symbol} history is empty")
+    close = hist['Close']
+    price = float(close.iloc[-1])
+    prev = float(close.iloc[-2])
+    chg = price - prev
+    chg_pct = (chg / prev) * 100 if prev else 0.0
+    return price, chg, chg_pct, hist
+
 def calc_rsi(series, period=14):
     delta = series.diff()
     gain = delta.clip(lower=0).rolling(period).mean()
@@ -40,19 +52,14 @@ def main():
 
     try:
         # 日経225
-        nk = yf.Ticker('^N225')
-        hist = nk.history(period='6mo')
-        if hist.empty:
-            raise ValueError("日経225データ取得失敗")
-
+        price_raw, chg_raw, chg_pct_raw, hist = fetch_price_pack('^N225')
         close = hist['Close']
         volume_today = hist['Volume'].iloc[-1]
         vol_avg = hist['Volume'].rolling(20).mean().iloc[-1]
 
-        price     = round(float(close.iloc[-1]), 0)
-        prev      = round(float(close.iloc[-2]), 0)
-        chg       = round(price - prev, 0)
-        chg_pct   = round((chg / prev) * 100, 2)
+        price = round(price_raw, 0)
+        chg = round(chg_raw, 0)
+        chg_pct = round(chg_pct_raw, 2)
 
         ma5  = round(float(close.rolling(5).mean().iloc[-1]), 0)
         ma25 = round(float(close.rolling(25).mean().iloc[-1]), 0)
@@ -79,6 +86,22 @@ def main():
 
         print(f"  ✓ 日経225: {price:,.0f}円 ({chg:+.0f} / {chg_pct:+.2f}%)")
 
+        # 日経先物（利用可能なティッカーから順に取得）
+        futures_price = price
+        futures_chg = chg
+        futures_chg_pct = chg_pct
+        futures_symbols = ['NIY=F', 'NKD=F', 'N225M.CME']
+        for symbol in futures_symbols:
+            try:
+                f_price, f_chg, f_chg_pct, _ = fetch_price_pack(symbol, period='2mo')
+                futures_price = round(f_price, 0)
+                futures_chg = round(f_chg, 0)
+                futures_chg_pct = round(f_chg_pct, 2)
+                print(f"  ✓ 日経先物({symbol}): {futures_price:,.0f}円 ({futures_chg:+.0f} / {futures_chg_pct:+.2f}%)")
+                break
+            except Exception:
+                continue
+
         # VIX
         vix_val = 20.0
         try:
@@ -95,6 +118,9 @@ def main():
             "nikkei":       price,
             "nikkeiChg":    chg,
             "nikkeiChgPct": chg_pct,
+            "nikkeiFutures": futures_price,
+            "nikkeiFuturesChg": futures_chg,
+            "nikkeiFuturesChgPct": futures_chg_pct,
             "ma5":          ma5,
             "ma25":         ma25,
             "ma75":         ma75,

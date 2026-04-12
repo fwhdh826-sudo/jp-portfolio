@@ -9,7 +9,7 @@ import type {
   AssetUniverse,
 } from '../../types'
 import type { AssetCategorySummary } from '../../types/universe'
-import { SELLABLE_CODES } from '../../constants/market'
+import { getSellableDate, isSellLocked } from '../constraints/stockLock'
 
 export type MarketMode = 'normal' | 'caution' | 'emergency'
 
@@ -263,9 +263,11 @@ function buildSellProposals(
     .sort((a, b) => a.analysis.totalScore - b.analysis.totalScore)
 
   for (const { h, analysis } of sorted) {
-    const sellable = !h.lock && SELLABLE_CODES.has(h.code)
+    const locked = isSellLocked(h)
+    const sellable = !locked
 
     if (!sellable) {
+      const sellableAt = getSellableDate(h)
       results.push({
         id: `WAIT_${h.code}`,
         action: 'WAIT',
@@ -276,11 +278,15 @@ function buildSellProposals(
         ev: analysis.ev,
         confidence: analysis.confidence,
         strategyRank: analysis.strategyRank,
-        reason: '売却推奨だが、取得3ヶ月ルールにより現時点では売却不可。',
+        reason: sellableAt
+          ? `売却推奨だが、取得3ヶ月ルールで ${sellableAt} まで売却不可。`
+          : '売却推奨だが、取得3ヶ月ルールにより現時点では売却不可。',
         rule: {
           entryRationale: `現状は売却ロック中（score ${analysis.totalScore}/100）。`,
           holdingPremise: 'ロック解除までは新規買いを行わず、ポジション維持で監視。',
-          takeProfit: 'ロック解除後、戻り局面で分割売却。',
+          takeProfit: sellableAt
+            ? `ロック解除予定日(${sellableAt})以降、戻り局面で分割売却。`
+            : 'ロック解除後、戻り局面で分割売却。',
           stopLoss: 'ロック解除後に-5%追加下落で即時売却。',
           invalidation: '業績改善とニュース好転でSELL判定が解除された場合。',
           splitExecution: '解除時点で 60% → 40% の2段階売却。',
@@ -387,7 +393,11 @@ export function buildZeroBasePlan(input: ZeroBaseInput): ZeroBasePlan {
     .filter(p => p.action === 'SELL')
     .reduce((s, p) => s + p.amount, 0)
 
-  const deployableCash = Math.max(0, input.cash - 2_000_000)
+  // 待機資金: コア5,000,000円は cashReserve で保持、
+  // 追加2,000,000円は市場モードで可変バッファとして管理する。
+  const variableBuffer =
+    mode === 'normal' ? 1_000_000 : mode === 'caution' ? 2_000_000 : 3_000_000
+  const deployableCash = Math.max(0, input.cash - variableBuffer)
   const rawBudget = input.addRoom + deployableCash + soldAmount * 0.7
   const buyBudget = mode === 'normal' ? rawBudget : mode === 'caution' ? rawBudget * 0.5 : 0
 

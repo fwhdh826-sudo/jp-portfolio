@@ -6,6 +6,9 @@ export const STATIC_MARKET: Market = {
   nikkei: 56308,
   nikkeiChg: 2878,
   nikkeiChgPct: 5.39,
+  nikkeiFutures: 56390,
+  nikkeiFuturesChg: 2960,
+  nikkeiFuturesChgPct: 5.54,
   ma5: 54500,
   ma25: 53000,
   ma75: 51000,
@@ -48,9 +51,9 @@ export const INST_WEIGHTS = {
 // v9.0 — 全資産統合の初期値（運用方針に基づく）
 // ═══════════════════════════════════════════════════════════
 
-/** 現金初期値（円）— 総1,000万のうち500-700万は暴落待機 */
-export const INITIAL_CASH = 3_000_000          // 通常現金
-export const INITIAL_CASH_RESERVE = 7_000_000  // 暴落待機資金
+/** 現金初期値（円）— コア待機500万円 + 可変待機200万円を運用で調整 */
+export const INITIAL_CASH = 5_000_000          // 通常現金（可変待機を含む）
+export const INITIAL_CASH_RESERVE = 5_000_000  // 暴落待機コア資金
 export const INITIAL_ADD_ROOM = 4_000_000      // 日本株追加枠
 
 /** 日本株個別の上限（運用方針） */

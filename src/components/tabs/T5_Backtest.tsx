@@ -2,6 +2,11 @@ import { useState, useEffect, useMemo } from 'react'
 import { useAppStore } from '../../store/useAppStore'
 import { formatJPYAuto } from '../../utils/format'
 import { buildZeroBasePlan } from '../../domain/optimization/zeroBase'
+import {
+  getTrustShortFilterTuning,
+  getTrustShortRecentEntries,
+  getTrustShortTrackingStats,
+} from '../../domain/learning/trustShortTracker'
 
 interface WatchItem {
   code: string
@@ -32,6 +37,18 @@ function loadDecisionLog(): DecisionLog[] {
 
 function saveDecisionLog(log: DecisionLog[]) {
   localStorage.setItem('v83_declog', JSON.stringify(log))
+}
+
+function shortDecisionColor(decision: 'BULL' | 'BEAR' | 'WAIT') {
+  if (decision === 'BULL') return 'var(--g)'
+  if (decision === 'BEAR') return 'var(--r)'
+  return 'var(--a)'
+}
+
+function shortOutcomeColor(outcome: 'win' | 'loss' | 'flat') {
+  if (outcome === 'win') return 'var(--g)'
+  if (outcome === 'loss') return 'var(--r)'
+  return 'var(--d)'
 }
 
 export function T5_Backtest() {
@@ -122,10 +139,97 @@ export function T5_Backtest() {
     return                        { bg: 'rgba(212,160,23,.15)',  color: 'var(--a)',  border: 'var(--a)' }
   }
 
+  const shortStats = getTrustShortTrackingStats()
+  const shortEntries = getTrustShortRecentEntries(90)
+  const shortTuning = getTrustShortFilterTuning(90)
+
   return (
     <div className="tab-panel">
       <div style={{ fontFamily: 'var(--mono)', fontSize: 10, color: 'var(--d)', marginBottom: 10 }}>
         最終分析: {system.analysisLastRunAt?.slice(0, 19).replace('T', ' ') ?? '─'}
+      </div>
+
+      {/* ── 日本株投信 短期モジュール検証 ─────────────────────── */}
+      <div className="card" style={{ marginBottom: 10 }}>
+        <div className="card-title">短期モジュール検証（日本株投信） <span className="badge ai">30日/90日</span></div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: 8, marginBottom: 10 }}>
+          <div className="kpi">
+            <div className="l">30日勝率</div>
+            <div className="v" style={{ color: shortStats.winRate >= 78 ? 'var(--g)' : shortStats.winRate >= 65 ? 'var(--a)' : 'var(--r)' }}>
+              {shortStats.winRate.toFixed(1)}%
+            </div>
+          </div>
+          <div className="kpi">
+            <div className="l">実行回数</div>
+            <div className="v wh">{shortStats.executions}</div>
+          </div>
+          <div className="kpi">
+            <div className="l">待機日数</div>
+            <div className="v wh">{shortStats.waitDays}</div>
+          </div>
+          <div className="kpi">
+            <div className="l">待機後続勝率</div>
+            <div className="v" style={{ color: shortStats.postWaitWinRate >= 70 ? 'var(--g)' : shortStats.postWaitWinRate >= 55 ? 'var(--a)' : 'var(--d)' }}>
+              {shortStats.postWaitWinRate.toFixed(1)}%
+            </div>
+          </div>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 8, marginBottom: 10 }}>
+          <div style={{ border: '1px solid var(--b1)', borderRadius: 8, padding: '8px 10px', background: 'rgba(45,212,160,.06)' }}>
+            <div style={{ fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--d)', marginBottom: 4 }}>VIXフィルター提案（Bull）</div>
+            <div style={{ fontFamily: 'var(--mono)', fontSize: 12, color: 'var(--g)' }}>
+              VIX ≤ {shortTuning.recommendedBullVixMax.toFixed(1)}
+            </div>
+            <div style={{ fontSize: 10, color: 'var(--d)', marginTop: 3 }}>
+              該当 {shortTuning.bullSample}件 / 勝率 {shortTuning.bullWinRate.toFixed(1)}%
+            </div>
+          </div>
+          <div style={{ border: '1px solid var(--b1)', borderRadius: 8, padding: '8px 10px', background: 'rgba(232,64,90,.06)' }}>
+            <div style={{ fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--d)', marginBottom: 4 }}>VIXフィルター提案（Bear）</div>
+            <div style={{ fontFamily: 'var(--mono)', fontSize: 12, color: 'var(--r)' }}>
+              VIX ≥ {shortTuning.recommendedBearVixMin.toFixed(1)}
+            </div>
+            <div style={{ fontSize: 10, color: 'var(--d)', marginTop: 3 }}>
+              該当 {shortTuning.bearSample}件 / 勝率 {shortTuning.bearWinRate.toFixed(1)}%
+            </div>
+          </div>
+        </div>
+
+        <div style={{ fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--d)', marginBottom: 6 }}>
+          直近90日トレース（新しい順）
+        </div>
+        {shortEntries.length === 0 ? (
+          <div style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--d)' }}>
+            追跡データがありません。T7の短期モード判定またはCSV更新後に自動蓄積されます。
+          </div>
+        ) : (
+          shortEntries.slice(0, 12).map((entry, idx) => (
+            <div key={`${entry.date}-${idx}`} style={{ display: 'flex', gap: 8, alignItems: 'center', padding: '5px 0', borderBottom: '1px solid var(--b1)' }}>
+              <span style={{ fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--d)', minWidth: 64 }}>
+                {entry.date.slice(5)}
+              </span>
+              <span style={{ fontFamily: 'var(--mono)', fontSize: 9, color: shortDecisionColor(entry.decision), minWidth: 50 }}>
+                {entry.decision}
+              </span>
+              <span style={{ fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--d)', minWidth: 58 }}>
+                conf {entry.confidence}%
+              </span>
+              <span style={{ fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--d)', minWidth: 44 }}>
+                {entry.conditionsPassed}/4
+              </span>
+              <span style={{ fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--d)', minWidth: 52 }}>
+                VIX {entry.vix.toFixed(1)}
+              </span>
+              <span style={{ fontFamily: 'var(--mono)', fontSize: 9, color: shortOutcomeColor(entry.outcome), minWidth: 46 }}>
+                {entry.outcome}
+              </span>
+              <span style={{ fontFamily: 'var(--mono)', fontSize: 9, color: entry.executed ? 'var(--g)' : 'var(--a)' }}>
+                {entry.executed ? 'executed' : 'watch'}
+              </span>
+            </div>
+          ))
+        )}
       </div>
 
       {/* ── ゼロベース売買提案（理由/利確/損切/前提崩れ） ── */}

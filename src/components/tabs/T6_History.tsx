@@ -1,136 +1,141 @@
-import { useState, useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { useAppStore } from '../../store/useAppStore'
-import { selectBuyList, selectSellList, selectTotalEval } from '../../store/selectors'
-import { formatRelativeTime, formatJPYAuto } from '../../utils/format'
+import { selectBuyList, selectIsLoading, selectTotalEval } from '../../store/selectors'
+import { formatDateTime, formatJPYAuto, formatRelativeTime } from '../../utils/format'
 import type { NewsItem } from '../../types'
 
-function getImpact(item: NewsItem): { label: string; color: string } {
+type NewsTab = 'market' | 'holding' | 'candidate' | 'trust' | 'history'
+
+type Tone = 'positive' | 'caution' | 'negative' | 'neutral'
+
+function getImpact(item: NewsItem) {
   const impact = item.impact ?? (item.sentimentScore > 0.2 ? 'positive' : item.sentimentScore < -0.2 ? 'negative' : 'neutral')
-  if (impact === 'positive') return { label: 'プラス', color: 'var(--g)' }
-  if (impact === 'negative') return { label: 'マイナス', color: 'var(--r)' }
-  return { label: '中立', color: 'var(--d)' }
+  if (impact === 'positive') return { label: 'プラス', tone: 'positive' as const }
+  if (impact === 'negative') return { label: 'マイナス', tone: 'negative' as const }
+  return { label: '中立', tone: 'neutral' as const }
 }
 
-function getImportance(item: NewsItem): { label: string; color: string } {
-  if (item.importance >= 0.75) return { label: '高', color: 'var(--r)' }
-  if (item.importance >= 0.45) return { label: '中', color: 'var(--a)' }
-  return { label: '低', color: 'var(--d)' }
+function getImportance(item: NewsItem) {
+  if (item.importance >= 0.75) return { label: '高', tone: 'negative' as const }
+  if (item.importance >= 0.45) return { label: '中', tone: 'caution' as const }
+  return { label: '低', tone: 'neutral' as const }
 }
 
-// ── ニュースカード（意思決定支援形式）──────────────────────────
-function NewsCard({ item, category }: { item: NewsItem; category: string }) {
+function parseTimestamp(raw: string | null | undefined): Date | null {
+  if (!raw) return null
+  const normalized = raw.includes('T') ? raw : raw.replace(' ', 'T')
+  const parsed = new Date(normalized)
+  return Number.isNaN(parsed.getTime()) ? null : parsed
+}
+
+function getFreshness(raw: string | null | undefined) {
+  const parsed = parseTimestamp(raw)
+  if (!parsed) return { label: '未取得', tone: 'neutral' as Tone, minutes: null as number | null }
+  const minutes = Math.max(0, Math.round((Date.now() - parsed.getTime()) / 60000))
+  if (minutes <= 90) return { label: `${minutes}分前`, tone: 'positive' as Tone, minutes }
+  if (minutes <= 360) return { label: `${minutes}分前`, tone: 'caution' as Tone, minutes }
+  if (minutes <= 1440) return { label: `${Math.round(minutes / 60)}時間前`, tone: 'caution' as Tone, minutes }
+  return { label: `${Math.round(minutes / 1440)}日前`, tone: 'negative' as Tone, minutes }
+}
+
+function sourceLabel(source: string) {
+  const labels: Record<string, string> = {
+    market: 'Market',
+    correlation: 'Correlation',
+    news: 'News',
+    trust: 'Trust',
+    macro: 'Macro',
+    nikkeiVI: 'NikkeiVI',
+    sq: 'SQ',
+    margin: 'Margin',
+    flows: 'Flows',
+  }
+  return labels[source] ?? source
+}
+
+function NewsEntry({ item, label }: { item: NewsItem; label: string }) {
   const holdings = useAppStore(s => s.holdings)
   const impact = getImpact(item)
   const importance = getImportance(item)
-  const relatedNames = item.tickers.map(code =>
-    holdings.find(h => h.code === code)?.name ?? code
-  )
-  const whyImportant = item.whyImportant ?? (
-    item.importance >= 0.75
-      ? '市場ボラティリティと売買判断に直結するニュースです。'
-      : '保有・候補銘柄の前提を確認する補助情報です。'
-  )
-  const recommendation = item.recommendation ?? (
-    item.sentimentScore < -0.25
-      ? '関連銘柄の損切条件と前提崩れ条件を再確認する。'
-      : item.sentimentScore > 0.25
-      ? '分割エントリー余地があるか、理想PF差分と合わせて確認する。'
-      : 'まずは様子見で、次の決算・マクロデータ更新を待つ。'
-  )
+  const relatedNames = item.tickers
+    .map(code => holdings.find(holding => holding.code === code)?.name ?? code)
+    .slice(0, 4)
 
   return (
-    <div style={{
-      padding: '11px 0',
-      borderBottom: '1px solid var(--b1)',
-    }}>
-      <div style={{ display: 'flex', gap: 8, alignItems: 'flex-start' }}>
-        {/* 影響方向バー */}
-        <div style={{
-          width: 3, flexShrink: 0, borderRadius: 2, alignSelf: 'stretch',
-          background: impact.color,
-          minHeight: 64,
-        }} />
-        <div style={{ flex: 1, minWidth: 0 }}>
-          {/* タイトル */}
-          <div style={{ fontSize: 12, color: 'var(--w)', lineHeight: 1.55, marginBottom: 4 }}>
+    <article className={`news-entry news-entry--${impact.tone}`}>
+      <div className="news-entry__header">
+        <div>
+          <div className="news-entry__title">
             {item.url ? (
-              <a
-                href={item.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ color: 'inherit', textDecoration: 'none' }}
-              >
-                {item.title}
-              </a>
+              <a href={item.url} target="_blank" rel="noopener noreferrer">{item.title}</a>
             ) : item.title}
           </div>
-          {/* メタ行 */}
-          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
-            <span style={{ fontFamily: 'var(--mono)', fontSize: 9, color: impact.color }}>
-              影響: {impact.label}
-            </span>
-            <span style={{ fontFamily: 'var(--mono)', fontSize: 9, color: importance.color }}>
-              重要度: {importance.label}
-            </span>
-            <span style={{ fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--d)' }}>
-              {item.source}
-            </span>
-            <span style={{ fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--d)' }}>
-              {formatRelativeTime(item.publishedAt)}
-            </span>
-            <span style={{ fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--d)' }}>
-              {category}
-            </span>
-            {/* 関連保有銘柄 */}
-            {relatedNames.map((name, i) => (
-              <span key={i} style={{
-                fontFamily: 'var(--mono)', fontSize: 9,
-                background: 'rgba(45,212,160,.12)', border: '1px solid var(--g2)',
-                borderRadius: 4, padding: '1px 6px', color: 'var(--g)',
-              }}>
-                ★ {name}
-              </span>
-            ))}
-          </div>
-          {item.summary && (
-            <div style={{ marginTop: 5, fontSize: 11, color: 'var(--d)', lineHeight: 1.55 }}>
-              要約: {item.summary}
-            </div>
-          )}
-          <div style={{ marginTop: 4, fontSize: 10, color: 'var(--a)', lineHeight: 1.55 }}>
-            なぜ重要か: {whyImportant}
-          </div>
-          <div style={{ marginTop: 2, fontSize: 10, color: 'var(--c)', lineHeight: 1.55 }}>
-            推奨アクション: {recommendation}
+          <div className="news-entry__meta">
+            <span>{label}</span>
+            <span>{item.source}</span>
+            <span>{formatRelativeTime(item.publishedAt)}</span>
+            <span>重要度 {(item.importance * 100).toFixed(0)}</span>
           </div>
         </div>
+
+        <div className="news-entry__chips">
+          <span className={`tone-chip tone-chip--${impact.tone}`}>{impact.label}</span>
+          <span className={`tone-chip tone-chip--${importance.tone}`}>{importance.label}</span>
+        </div>
       </div>
-    </div>
+
+      {item.summary && <p className="news-entry__summary">{item.summary}</p>}
+
+      <div className="news-entry__notes">
+        <div>
+          <strong>なぜ重要か</strong>
+          <span>{item.whyImportant ?? '売買前提や需給認識を更新するための材料です。'}</span>
+        </div>
+        <div>
+          <strong>推奨アクション</strong>
+          <span>{item.recommendation ?? '前提に変化があるかを確認し、執行条件を再点検します。'}</span>
+        </div>
+      </div>
+
+      {relatedNames.length > 0 && (
+        <div className="metrics-inline">
+          {relatedNames.map(name => <span key={name}>{name}</span>)}
+        </div>
+      )}
+    </article>
   )
 }
 
-// ── T6_News ───────────────────────────────────────────────────
 export function T6_History() {
-  const [tab, setTab] = useState<'market' | 'holding' | 'candidate' | 'trust' | 'history'>('market')
-  const system    = useAppStore(s => s.system)
-  const news      = useAppStore(s => s.news)
-  const macro     = useAppStore(s => s.macro)
+  const [tab, setTab] = useState<NewsTab>('market')
+  const system = useAppStore(s => s.system)
+  const news = useAppStore(s => s.news)
+  const macro = useAppStore(s => s.macro)
   const sqCalendar = useAppStore(s => s.sqCalendar)
-  const metrics   = useAppStore(s => s.metrics)
-  const holdings  = useAppStore(s => s.holdings)
-  const trust     = useAppStore(s => s.trust)
-  const buyList   = useAppStore(selectBuyList)
-  const sellList  = useAppStore(selectSellList)
-  const totalEval = useAppStore(selectTotalEval)
+  const metrics = useAppStore(s => s.metrics)
+  const holdings = useAppStore(s => s.holdings)
+  const trust = useAppStore(s => s.trust)
   const importCsv = useAppStore(s => s.importCsv)
+  const refreshAllData = useAppStore(s => s.refreshAllData)
+  const buyList = useAppStore(selectBuyList)
+  const totalEval = useAppStore(selectTotalEval)
+  const isLoading = useAppStore(selectIsLoading)
 
-  const handleDrop       = (e: React.DragEvent)        => { e.preventDefault(); const f = e.dataTransfer.files[0]; if (f) void importCsv(f) }
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => { const f = e.target.files?.[0]; if (f) void importCsv(f) }
+  const handleDrop = (event: React.DragEvent) => {
+    event.preventDefault()
+    const file = event.dataTransfer.files[0]
+    if (file) void importCsv(file)
+  }
 
-  const holdingCodes = useMemo(() => new Set(holdings.map(h => h.code)), [holdings])
-  const candidateCodes = useMemo(() => new Set(buyList.map(b => b.code)), [buyList])
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (file) void importCsv(file)
+  }
+
+  const holdingCodes = useMemo(() => new Set(holdings.map(item => item.code)), [holdings])
+  const candidateCodes = useMemo(() => new Set(buyList.map(item => item.code)), [buyList])
   const trustKeywords = useMemo(
-    () => trust.map(f => f.abbr).concat(['S&P500', 'FANG', 'NASDAQ', 'オルカン', 'ゴールド', 'REIT', '日経225']),
+    () => trust.map(item => item.abbr).concat(['S&P500', 'NASDAQ', 'FANG', 'オルカン', 'ゴールド', 'REIT', '日経225']),
     [trust],
   )
 
@@ -138,380 +143,346 @@ export function T6_History() {
     () => [...(news?.marketNews ?? [])].sort((a, b) => b.importance - a.importance),
     [news],
   )
+
   const stockNews = useMemo(
     () => [...(news?.stockNews ?? [])].sort((a, b) => b.importance - a.importance),
     [news],
   )
 
   const holdingNews = useMemo(
-    () => stockNews.filter(n => n.tickers.some(code => holdingCodes.has(code))),
-    [stockNews, holdingCodes],
+    () => stockNews.filter(item => item.tickers.some(code => holdingCodes.has(code))),
+    [holdingCodes, stockNews],
   )
 
   const candidateNews = useMemo(
     () =>
       [...stockNews, ...marketNews]
-        .filter(n => {
-          if (n.tickers.some(code => candidateCodes.has(code))) return true
-          if (candidateCodes.size === 0) return false
-          return [...candidateCodes].some(code => n.title.includes(code) || n.summary.includes(code))
+        .filter(item => {
+          if (item.tickers.some(code => candidateCodes.has(code))) return true
+          return [...candidateCodes].some(code => item.title.includes(code) || item.summary.includes(code))
         })
-        .slice(0, 30),
-    [stockNews, marketNews, candidateCodes],
+        .slice(0, 40),
+    [candidateCodes, marketNews, stockNews],
   )
 
   const trustNews = useMemo(
     () =>
       [...marketNews, ...stockNews]
-        .filter(n => trustKeywords.some(k => k && (n.title.includes(k) || n.summary.includes(k))))
-        .slice(0, 30),
+        .filter(item => trustKeywords.some(keyword => keyword && (item.title.includes(keyword) || item.summary.includes(keyword))))
+        .slice(0, 40),
     [marketNews, stockNews, trustKeywords],
   )
 
-  // ニュース件数
-  const marketCount = marketNews.length
-  const holdingCount = holdingNews.length
-  const candidateCount = candidateNews.length
-  const trustCount = trustNews.length
+  const tabItems = [
+    { id: 'market' as const, label: 'マーケット', count: marketNews.length },
+    { id: 'holding' as const, label: '保有銘柄', count: holdingNews.length },
+    { id: 'candidate' as const, label: '候補銘柄', count: candidateNews.length },
+    { id: 'trust' as const, label: '投信関連', count: trustNews.length },
+    { id: 'history' as const, label: '更新履歴', count: Object.keys(system.dataSourceStatus).length },
+  ]
 
-  // 年間目標
-  const pnlPct = totalEval > 0
-    ? holdings.reduce((s, h) => s + h.pnlPct * (h.eval / totalEval), 0) : 0
-  const mitsuW = holdings.filter(h => h.mitsu).reduce((s, h) => s + h.eval, 0) / Math.max(totalEval, 1) * 100
+  const activeItems =
+    tab === 'market' ? marketNews :
+    tab === 'holding' ? holdingNews :
+    tab === 'candidate' ? candidateNews :
+    tab === 'trust' ? trustNews : []
+
+  const weightedPnlPct = totalEval > 0
+    ? holdings.reduce((sum, item) => sum + item.pnlPct * (item.eval / totalEval), 0)
+    : 0
+
+  const mitsuRatio = totalEval > 0
+    ? holdings.filter(item => item.mitsu).reduce((sum, item) => sum + item.eval, 0) / totalEval * 100
+    : 0
 
   const goals = [
-    { label: 'リターン +15%/年', current: pnlPct,                 target: 15,  unit: '%', invert: false },
-    { label: 'Sharpe ≥2.00',     current: metrics?.sharpe ?? 0,   target: 2.0, unit: '',  invert: false },
-    { label: '三菱集中 ≤35%',    current: mitsuW,                 target: 35,  unit: '%', invert: true  },
-    { label: 'SELL銘柄ゼロ',     current: sellList.length,        target: 0,   unit: '件',invert: true  },
+    { label: '年率 +15%', current: weightedPnlPct, target: 15, invert: false, unit: '%' },
+    { label: 'Sharpe 2.0', current: metrics?.sharpe ?? 0, target: 2, invert: false, unit: '' },
+    { label: '三菱比率 35%以下', current: mitsuRatio, target: 35, invert: true, unit: '%' },
+    { label: 'BUY候補監視', current: buyList.length, target: 3, invert: false, unit: '件' },
   ]
+
+  const sourceRows = useMemo(() => {
+    const timestamps = system.dataTimestamps
+    return Object.entries(system.dataSourceStatus).map(([source, status]) => {
+      const raw = timestamps?.[source as keyof typeof timestamps] ?? null
+      const freshness = getFreshness(raw)
+      const tone: Tone =
+        status === 'error' || status === 'none'
+          ? 'negative'
+          : freshness.tone === 'negative'
+            ? 'negative'
+            : freshness.tone === 'caution'
+              ? 'caution'
+              : status === 'loaded'
+                ? 'positive'
+                : 'neutral'
+      return {
+        source,
+        label: sourceLabel(source),
+        status,
+        raw,
+        freshness,
+        tone,
+      }
+    })
+  }, [system.dataSourceStatus, system.dataTimestamps])
+
+  const staleRows = sourceRows.filter(row => row.tone === 'negative')
+  const digestItems = useMemo(() => {
+    const merged = [...holdingNews, ...candidateNews, ...trustNews, ...marketNews]
+      .sort((left, right) => right.importance - left.importance)
+    const unique: NewsItem[] = []
+    const seen = new Set<string>()
+    merged.forEach(item => {
+      if (seen.has(item.id)) return
+      seen.add(item.id)
+      unique.push(item)
+    })
+    return unique
+      .filter(item => item.importance >= 0.68 || (item.impact ?? 'neutral') === 'negative')
+      .slice(0, 6)
+  }, [candidateNews, holdingNews, marketNews, trustNews])
 
   return (
     <div className="tab-panel">
-
-      {/* ── 朝メモ ヘッダー: マクロ4指標 + VI + SQ ── */}
-      <div style={{
-        background: 'linear-gradient(135deg,#0d1828,#0a1222)',
-        border: '1px solid var(--b1)', borderRadius: 12,
-        padding: '12px 14px', marginBottom: 10,
-      }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
-          <div style={{ fontFamily: 'var(--head)', fontSize: 9, color: 'var(--g)', letterSpacing: '.15em' }}>
-            📰 MARKET MORNING MEMO
+      <section className="decision-grid">
+        <article className="card news-command">
+          <div className="section-heading-row">
+            <div>
+              <div className="section-kicker">News command</div>
+              <h2 className="section-heading">情報更新の全体像</h2>
+            </div>
+            <button
+              className={`status-shell__refresh${isLoading ? ' is-loading' : ''}`}
+              onClick={() => { void refreshAllData() }}
+              disabled={isLoading}
+              type="button"
+            >
+              {isLoading ? '更新中...' : 'データ更新'}
+            </button>
           </div>
-          <div style={{ fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--d)' }}>
-            {macro?.last_updated ?? system.lastUpdated?.slice(0, 16).replace('T', ' ') ?? '─'}
-          </div>
-        </div>
 
-        {/* 4指標グリッド（朝メモ形式）*/}
-        {macro ? (
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginBottom: 10 }}>
-            {[
-              { label: 'S&P500', val: macro.sp500.toLocaleString('en-US', { maximumFractionDigits: 0 }), chgPct: macro.sp500ChgPct },
-              { label: 'VIX',    val: macro.vix.toFixed(2),  chgAbs: macro.vixChg, invertGood: true },
-              { label: 'NY原油', val: macro.nyCrude.toFixed(2), chgPct: macro.nyCrudeChgPct },
-              { label: 'ドル円', val: macro.usdjpy.toFixed(2),  chgPct: macro.usdjpyChgPct, neutral: true },
-            ].map(item => {
-              const chgVal = 'chgPct' in item
-                ? item.chgPct as number
-                : 'chgAbs' in item ? item.chgAbs as number : 0
-              const isUp = chgVal >= 0
-              const goodIsUp = !(item as { invertGood?: boolean }).invertGood
-              const isGood = (item as { neutral?: boolean }).neutral ? null : (goodIsUp ? isUp : !isUp)
-              const chgStr = 'chgPct' in item
-                ? `${(item as { chgPct: number }).chgPct >= 0 ? '+' : ''}${(item as { chgPct: number }).chgPct.toFixed(1)}%`
-                : `${chgVal >= 0 ? '+' : ''}${chgVal.toFixed(2)}`
-              return (
-                <div key={item.label} style={{
-                  background: 'rgba(0,0,0,.3)', borderRadius: 8,
-                  padding: '8px 12px',
-                  border: `1px solid ${isGood === null ? 'var(--b1)' : isGood ? 'rgba(45,212,160,.3)' : 'rgba(232,64,90,.3)'}`,
-                }}>
-                  <div style={{ fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--d)', marginBottom: 3 }}>
-                    {item.label}
-                  </div>
-                  <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, justifyContent: 'space-between' }}>
-                    <span style={{ fontFamily: 'var(--mono)', fontSize: 18, color: 'var(--w)', fontWeight: 700 }}>
-                      {item.val}
-                    </span>
-                    <span style={{
-                      fontFamily: 'var(--mono)', fontSize: 11, fontWeight: 700,
-                      padding: '2px 7px', borderRadius: 6,
-                      color: isGood === null ? 'var(--d)' : isGood ? 'var(--g)' : 'var(--r)',
-                      background: isGood === null ? 'rgba(74,96,112,.3)' : isGood ? 'rgba(45,212,160,.2)' : 'rgba(232,64,90,.2)',
-                    }}>
-                      {chgStr}
-                    </span>
-                  </div>
+          <div className="summary-grid" style={{ marginTop: 16 }}>
+            <div className="summary-tile summary-tile--neutral">
+              <div className="summary-tile__label">市場ニュース</div>
+              <div className="summary-tile__value">{marketNews.length}</div>
+            </div>
+            <div className="summary-tile summary-tile--neutral">
+              <div className="summary-tile__label">保有関連</div>
+              <div className="summary-tile__value">{holdingNews.length}</div>
+            </div>
+            <div className="summary-tile summary-tile--positive">
+              <div className="summary-tile__label">候補関連</div>
+              <div className="summary-tile__value">{candidateNews.length}</div>
+            </div>
+            <div className="summary-tile summary-tile--caution">
+              <div className="summary-tile__label">最終更新</div>
+              <div className="summary-tile__value" style={{ fontSize: 18 }}>
+                {news ? formatDateTime(news.updatedAt) : '未取得'}
+              </div>
+            </div>
+          </div>
+
+          <div className="metrics-inline">
+            <span>総資産 {formatJPYAuto(totalEval)}</span>
+            <span>BUY候補 {buyList.length}</span>
+            <span>ニュース総数 {news?.meta.totalCount ?? 0}</span>
+            <span>重複除去 {news?.meta.duplicateRemoved ?? 0}</span>
+            <span>データ異常 {staleRows.length}件</span>
+          </div>
+
+          {staleRows.length > 0 && (
+            <div className="news-command__alerts">
+              {staleRows.map(row => (
+                <div key={row.source} className="news-command__alert">
+                  <strong>{row.label}</strong>
+                  <span>{row.status} / {row.freshness.label}</span>
                 </div>
-              )
-            })}
-          </div>
-        ) : (
-          <div style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--d)', marginBottom: 10 }}>
-            マクロデータ読込中...
-          </div>
-        )}
+              ))}
+            </div>
+          )}
+        </article>
 
-        {/* 日経VI + SQ情報 */}
-        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-          {macro && (
-            <div style={{
-              flex: '1 1 120px', background: 'rgba(0,0,0,.2)', borderRadius: 8, padding: '7px 12px',
-              border: `1px solid ${macro.nikkeiVI > 25 ? 'rgba(232,64,90,.3)' : macro.nikkeiVI > 20 ? 'rgba(212,160,23,.3)' : 'var(--b1)'}`,
-            }}>
-              <div style={{ fontFamily: 'var(--mono)', fontSize: 8, color: 'var(--d)', marginBottom: 2 }}>
-                日経225 VI <span style={{ color: 'var(--d)', fontSize: 7 }}>（VIX近似）</span>
+        <article className="card">
+          <div className="section-kicker">Data freshness</div>
+          <h2 className="section-heading">ソース鮮度ボード</h2>
+          <div className="freshness-board" style={{ marginTop: 16 }}>
+            {sourceRows.map(row => (
+              <div key={row.source} className={`freshness-board__item freshness-board__item--${row.tone}`}>
+                <div>
+                  <strong>{row.label}</strong>
+                  <span>{row.raw ? formatDateTime(row.raw) : '更新日時なし'}</span>
+                </div>
+                <div className="freshness-board__chips">
+                  <span className={`tone-chip tone-chip--${row.tone}`}>{row.freshness.label}</span>
+                  <span className="tone-chip tone-chip--neutral">{row.status}</span>
+                </div>
               </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <span style={{
-                  fontFamily: 'var(--mono)', fontSize: 18, fontWeight: 700,
-                  color: macro.nikkeiVI > 25 ? 'var(--r)' : macro.nikkeiVI > 20 ? 'var(--a)' : 'var(--g)',
-                }}>
-                  {macro.nikkeiVI.toFixed(1)}
-                </span>
-                <span style={{
-                  fontFamily: 'var(--mono)', fontSize: 10, color: 'var(--d)',
-                }}>
-                  {macro.nikkeiVI > 25 ? '⚠ 警戒域' : macro.nikkeiVI > 20 ? '注意' : '平穏'}
-                </span>
-              </div>
-              <div style={{ fontFamily: 'var(--mono)', fontSize: 8, color: 'var(--d)', marginTop: 2 }}>
-                高いほど投信の短期売買タイミング注意
-              </div>
-            </div>
-          )}
-          {sqCalendar?.nextSQ && (
-            <div style={{
-              flex: '1 1 120px', background: 'rgba(0,0,0,.2)', borderRadius: 8, padding: '7px 12px',
-              border: `1px solid ${sqCalendar.nextSQ.dayUntil <= 3 ? 'rgba(232,64,90,.4)' : sqCalendar.nextSQ.dayUntil <= 7 ? 'rgba(212,160,23,.4)' : 'var(--b1)'}`,
-            }}>
-              <div style={{ fontFamily: 'var(--mono)', fontSize: 8, color: 'var(--d)', marginBottom: 2 }}>
-                次回SQ ({sqCalendar.nextSQ.type === 'quarterly' ? '四半期 ⚡' : '月次'})
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <span style={{
-                  fontFamily: 'var(--mono)', fontSize: 14, fontWeight: 700,
-                  color: sqCalendar.nextSQ.dayUntil <= 3 ? 'var(--r)' : sqCalendar.nextSQ.dayUntil <= 7 ? 'var(--a)' : 'var(--w)',
-                }}>
-                  {sqCalendar.nextSQ.date.slice(5)}
-                </span>
-                <span style={{
-                  fontFamily: 'var(--mono)', fontSize: 10,
-                  color: sqCalendar.nextSQ.dayUntil <= 3 ? 'var(--r)' : 'var(--d)',
-                }}>
-                  あと {sqCalendar.nextSQ.dayUntil}営業日
-                </span>
-              </div>
-              <div style={{ fontFamily: 'var(--mono)', fontSize: 8, color: 'var(--d)', marginTop: 2 }}>
-                {sqCalendar.nextSQ.dayUntil <= 3 ? '⚠ SQ直前 — 投信短期売買は慎重に' : sqCalendar.nextSQ.dayUntil <= 7 ? 'SQ週 — ボラ上昇注意' : 'SQ前はVIが上昇しやすい'}
-              </div>
-            </div>
-          )}
+            ))}
+          </div>
+        </article>
+      </section>
+
+      <article className="card">
+        <div className="section-heading-row">
+          <div>
+            <div className="section-kicker">Coverage</div>
+            <h3 className="section-heading">年間目標と情報カバレッジ</h3>
+          </div>
         </div>
-      </div>
 
-      {/* ── 年間目標 ── */}
-      <div className="card" style={{ marginBottom: 10 }}>
-        <div className="card-title" style={{ marginBottom: 8 }}>🎯 年間目標 2026</div>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
-          {goals.map(g => {
-            const progress = g.invert
-              ? g.target === 0
-                ? (g.current === 0 ? 100 : 0)
-                : Math.max(0, Math.min(100, (1 - g.current / (g.target * 2)) * 100))
-              : g.target > 0
-                ? Math.max(0, Math.min(100, (g.current / g.target) * 100))
+        <div className="goal-grid" style={{ marginTop: 16 }}>
+          {goals.map(goal => {
+            const progress = goal.invert
+              ? goal.target === 0
+                ? goal.current === 0 ? 100 : 0
+                : Math.max(0, Math.min(100, (1 - goal.current / (goal.target * 2)) * 100))
+              : goal.target > 0
+                ? Math.max(0, Math.min(100, (goal.current / goal.target) * 100))
                 : 0
-            const achieved = g.invert ? g.current <= g.target : g.current >= g.target
+            const achieved = goal.invert ? goal.current <= goal.target : goal.current >= goal.target
             return (
-              <div key={g.label} style={{
-                background: achieved ? 'rgba(45,212,160,.06)' : 'rgba(0,0,0,.2)',
-                borderRadius: 8, padding: '8px 10px',
-                border: `1px solid ${achieved ? 'var(--g3)' : 'var(--b1)'}`,
-              }}>
-                <div style={{ fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--d)', marginBottom: 4 }}>
-                  {g.label}
+              <div key={goal.label} className={`goal-card${achieved ? ' is-achieved' : ''}`}>
+                <div className="goal-card__label">{goal.label}</div>
+                <div className="goal-card__value">
+                  {goal.current.toFixed(goal.unit === '' ? 2 : 1)}{goal.unit}
                 </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 5 }}>
-                  <span style={{ fontFamily: 'var(--mono)', fontSize: 14, color: achieved ? 'var(--g)' : 'var(--a)' }}>
-                    {typeof g.current === 'number' ? g.current.toFixed(g.unit === '' ? 2 : 1) : g.current}{g.unit}
-                  </span>
-                  <span style={{ fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--d)' }}>
-                    目標 {g.target}{g.unit} {achieved ? '✓' : ''}
-                  </span>
-                </div>
-                <div style={{ height: 3, background: 'var(--b2)', borderRadius: 2, overflow: 'hidden' }}>
-                  <div style={{ height: '100%', width: `${progress}%`, background: achieved ? 'var(--g2)' : 'var(--a)', borderRadius: 2 }} />
+                <div className="goal-card__meta">目標 {goal.target}{goal.unit}</div>
+                <div className="goal-card__track">
+                  <span style={{ width: `${progress}%` }} />
                 </div>
               </div>
             )
           })}
         </div>
-      </div>
+      </article>
 
-      {/* ── ニュース タブ切替 ── */}
-      <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
-        {/* タブバー */}
-        <div style={{ display: 'flex', borderBottom: '1px solid var(--b1)' }}>
-          {([
-            { id: 'market',  label: `📈 マーケット (${marketCount})` },
-            { id: 'holding', label: `⭐ 保有銘柄 (${holdingCount})` },
-            { id: 'candidate', label: `🎯 候補銘柄 (${candidateCount})` },
-            { id: 'trust', label: `💼 投信関連 (${trustCount})` },
-            { id: 'history', label: '📂 履歴' },
-          ] as { id: typeof tab; label: string }[]).map(t => (
+      <article className="card" style={{ marginTop: 18 }}>
+        <div className="section-heading-row">
+          <div>
+            <div className="section-kicker">Urgent digest</div>
+            <h3 className="section-heading">優先確認ヘッドライン</h3>
+          </div>
+        </div>
+
+        {digestItems.length > 0 ? (
+          <div className="news-urgent" style={{ marginTop: 14 }}>
+            {digestItems.map(item => {
+              const impact = getImpact(item)
+              return (
+                <div key={item.id} className={`news-urgent__item news-urgent__item--${impact.tone}`}>
+                  <div>
+                    <strong>{item.title}</strong>
+                    <span>{item.source} / {formatRelativeTime(item.publishedAt)} / 重要度 {(item.importance * 100).toFixed(0)}</span>
+                  </div>
+                  <span className={`tone-chip tone-chip--${impact.tone}`}>{impact.label}</span>
+                </div>
+              )
+            })}
+          </div>
+        ) : (
+          <div className="empty-state" style={{ marginTop: 14 }}>
+            優先ヘッドラインはまだありません。
+          </div>
+        )}
+      </article>
+
+      <article className="card" style={{ marginTop: 18 }}>
+        <div className="section-heading-row">
+          <div>
+            <div className="section-kicker">Feed view</div>
+            <h3 className="section-heading">ニュース一覧</h3>
+          </div>
+        </div>
+
+        <div className="segmented-tabs" style={{ marginTop: 16 }}>
+          {tabItems.map(item => (
             <button
-              key={t.id}
-              onClick={() => setTab(t.id)}
-              style={{
-                flex: 1, padding: '10px 4px',
-                background: tab === t.id ? 'rgba(104,150,200,.1)' : 'transparent',
-                border: 'none', cursor: 'pointer',
-                borderBottom: `2px solid ${tab === t.id ? 'var(--c)' : 'transparent'}`,
-                fontFamily: 'var(--mono)', fontSize: 9,
-                color: tab === t.id ? 'var(--c)' : 'var(--d)',
-                WebkitTapHighlightColor: 'transparent',
-              }}
+              key={item.id}
+              className={`segmented-tabs__item${tab === item.id ? ' active' : ''}`}
+              onClick={() => setTab(item.id)}
+              type="button"
             >
-              {t.label}
+              <span>{item.label}</span>
+              <strong>{item.count}</strong>
             </button>
           ))}
         </div>
 
-        <div style={{ padding: '0 14px 12px' }}>
-          {/* マーケットニュース */}
-          {tab === 'market' && (
-            <>
-              {!news ? (
-                <div style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--d)', padding: '16px 0', textAlign: 'center' }}>
-                  ニュースデータなし<br />
-                  <span style={{ fontSize: 10 }}>GitHub Actions が news.json を生成後に表示されます</span>
-                </div>
-              ) : marketNews.length === 0 ? (
-                <div style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--d)', padding: '16px 0' }}>
-                  マーケットニュースなし
-                </div>
-              ) : (
-                marketNews.map(n => <NewsCard key={n.id} item={n} category="市場全体" />)
-              )}
-            </>
-          )}
+        {tab === 'history' ? (
+          <div className="stack-layout" style={{ marginTop: 18 }}>
+            <div
+              className="csv-drop"
+              onDrop={handleDrop}
+              onDragOver={event => event.preventDefault()}
+            >
+              <input type="file" accept=".csv" onChange={handleFileChange} />
+              <div>CSVを投入して保有・損益データを更新</div>
+              <small>{system.csvLastImportedAt ? `最終取込 ${formatDateTime(system.csvLastImportedAt)}` : 'まだ取り込みはありません。'}</small>
+            </div>
 
-          {/* 保有銘柄ニュース */}
-          {tab === 'holding' && (
-            <>
-              {holdingNews.length === 0 ? (
-                <div style={{ padding: '16px 0', textAlign: 'center' }}>
-                  <div style={{ fontSize: 24, marginBottom: 8 }}>⭐</div>
-                  <div style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--d)' }}>
-                    保有銘柄に関するニュースなし<br />
-                    <span style={{ fontSize: 10 }}>ニュースタイトルに銘柄名が含まれる場合に表示</span>
+            <div className="freshness-board">
+              {sourceRows.map(row => (
+                <div key={`history-${row.source}`} className={`freshness-board__item freshness-board__item--${row.tone}`}>
+                  <div>
+                    <strong>{row.label}</strong>
+                    <span>{row.raw ? formatDateTime(row.raw) : '更新日時なし'}</span>
                   </div>
-                </div>
-              ) : (
-                holdingNews.map(n => <NewsCard key={n.id} item={n} category="保有銘柄" />)
-              )}
-            </>
-          )}
-
-          {/* 候補銘柄ニュース */}
-          {tab === 'candidate' && (
-            <>
-              {candidateNews.length === 0 ? (
-                <div style={{ padding: '16px 0', textAlign: 'center' }}>
-                  <div style={{ fontSize: 24, marginBottom: 8 }}>🎯</div>
-                  <div style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--d)' }}>
-                    候補銘柄ニュースなし<br />
-                    <span style={{ fontSize: 10 }}>BUY候補がある時に優先表示されます</span>
+                  <div className="freshness-board__chips">
+                    <span className={`tone-chip tone-chip--${row.tone}`}>{row.freshness.label}</span>
+                    <span className="tone-chip tone-chip--neutral">{row.status}</span>
                   </div>
-                </div>
-              ) : (
-                candidateNews.map(n => <NewsCard key={n.id} item={n} category="候補銘柄" />)
-              )}
-            </>
-          )}
-
-          {/* 投信関連ニュース */}
-          {tab === 'trust' && (
-            <>
-              {trustNews.length === 0 ? (
-                <div style={{ padding: '16px 0', textAlign: 'center' }}>
-                  <div style={{ fontSize: 24, marginBottom: 8 }}>💼</div>
-                  <div style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--d)' }}>
-                    投信関連ニュースなし<br />
-                    <span style={{ fontSize: 10 }}>為替・米株・金利・指数関連を自動抽出します</span>
-                  </div>
-                </div>
-              ) : (
-                trustNews.map(n => <NewsCard key={n.id} item={n} category="投信関連" />)
-              )}
-            </>
-          )}
-
-          {/* 操作履歴 */}
-          {tab === 'history' && (
-            <div style={{ paddingTop: 10 }}>
-              {/* CSV取込ゾーン */}
-              <div
-                className="csv-drop"
-                onDrop={handleDrop}
-                onDragOver={e => e.preventDefault()}
-                style={{ marginBottom: 12 }}
-              >
-                <input type="file" accept=".csv" onChange={handleFileChange} />
-                <div style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--d)' }}>
-                  📁 SBI証券CSVをドロップ or タップして選択
-                </div>
-                {system.csvLastImportedAt && (
-                  <div style={{ fontFamily: 'var(--mono)', fontSize: 10, color: 'var(--g)', marginTop: 5 }}>
-                    最終取込: {system.csvLastImportedAt.slice(0, 16).replace('T', ' ')}
-                  </div>
-                )}
-              </div>
-
-              {/* データ更新タイムライン */}
-              <div style={{ fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--d)', marginBottom: 8 }}>
-                データソース更新状況
-              </div>
-              {(Object.entries(system.dataSourceStatus) as [string, string][]).map(([src, status]) => (
-                <div key={src} style={{
-                  display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                  padding: '6px 0', borderBottom: '1px solid var(--b2)',
-                  fontFamily: 'var(--mono)', fontSize: 10,
-                }}>
-                  <span style={{ color: 'var(--d)' }}>{src}</span>
-                  <span style={{
-                    color: status === 'loaded' ? 'var(--g)'
-                         : status === 'static' ? 'var(--a)'
-                         : status === 'none'   ? 'var(--d)' : 'var(--r)',
-                  }}>
-                    {status === 'loaded' ? '✓ ロード済' : status === 'static' ? '○ 静的値' : status === 'none' ? '─ なし' : '✗ エラー'}
-                  </span>
-                  <span style={{ color: 'var(--d)', fontSize: 9 }}>
-                    {system.dataTimestamps?.[src as keyof typeof system.dataTimestamps]?.slice(0, 16).replace('T', ' ') ?? '─'}
-                  </span>
                 </div>
               ))}
+            </div>
 
-              {system.lastUpdated && (
-                <div style={{ fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--d)', marginTop: 12 }}>
-                  最終全体更新: {system.lastUpdated.slice(0, 16).replace('T', ' ')}
+            <article className="card">
+              <div className="section-kicker">Macro memo</div>
+              <h3 className="section-heading">今朝の確認ポイント</h3>
+              <div className="detail-grid" style={{ marginTop: 14 }}>
+                <div className="detail-panel">
+                  <div className="section-subtitle">マクロ</div>
+                  <div className="detail-list">
+                    <span>S&P500 {macro ? `${macro.sp500.toLocaleString('en-US')} / ${macro.sp500ChgPct >= 0 ? '+' : ''}${macro.sp500ChgPct.toFixed(2)}%` : '—'}</span>
+                    <span>VIX {macro ? `${macro.vix.toFixed(2)} / ${macro.vixChg >= 0 ? '+' : ''}${macro.vixChg.toFixed(2)}` : '—'}</span>
+                    <span>ドル円 {macro ? `${macro.usdjpy.toFixed(2)} / ${macro.usdjpyChgPct >= 0 ? '+' : ''}${macro.usdjpyChgPct.toFixed(2)}%` : '—'}</span>
+                    <span>日経VI {macro ? `${macro.nikkeiVI.toFixed(1)} / ${macro.nikkeiVIChg >= 0 ? '+' : ''}${macro.nikkeiVIChg.toFixed(2)}` : '—'}</span>
+                  </div>
                 </div>
-              )}
 
-              {/* 総資産サマリー */}
-              <div style={{ marginTop: 12, padding: '10px', background: 'rgba(0,0,0,.2)', borderRadius: 8, border: '1px solid var(--b1)' }}>
-                <div style={{ fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--d)', marginBottom: 6 }}>総資産サマリー</div>
-                <div style={{ fontFamily: 'var(--mono)', fontSize: 14, color: 'var(--w)' }}>
-                  {formatJPYAuto(totalEval)}
+                <div className="detail-panel">
+                  <div className="section-subtitle">イベント</div>
+                  <div className="detail-list">
+                    <span>次回SQ {sqCalendar?.nextSQ ? `${sqCalendar.nextSQ.date} / 残り${sqCalendar.nextSQ.dayUntil}営業日` : '—'}</span>
+                    <span>CSV取込 {system.csvLastImportedAt ? formatDateTime(system.csvLastImportedAt) : '未実施'}</span>
+                    <span>分析更新 {system.analysisLastRunAt ? formatDateTime(system.analysisLastRunAt) : '未実行'}</span>
+                    <span>全体更新 {system.lastUpdated ? formatDateTime(system.lastUpdated) : '未更新'}</span>
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
-        </div>
-      </div>
+            </article>
+          </div>
+        ) : activeItems.length > 0 ? (
+          <div className="news-feed" style={{ marginTop: 18 }}>
+            {activeItems.map(item => (
+              <NewsEntry
+                key={item.id}
+                item={item}
+                label={
+                  tab === 'market' ? '市場全体' :
+                  tab === 'holding' ? '保有銘柄' :
+                  tab === 'candidate' ? '候補銘柄' : '投信関連'
+                }
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="empty-state" style={{ marginTop: 18 }}>
+            このカテゴリのニュースはまだありません。
+          </div>
+        )}
+      </article>
     </div>
   )
 }
