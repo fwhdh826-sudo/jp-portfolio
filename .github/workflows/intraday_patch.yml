@@ -60,8 +60,13 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add public/data/market.json public/data/news.json public/data/candidates_news.json data/candidates_news.json
+          git add data/market.json data/news.json data/candidates_news.json public/data/market.json public/data/news.json public/data/candidates_news.json
           git diff --staged --quiet || git commit -m "chore: intraday-patch $(date +'%Y-%m-%d %H:%M JST')"
+          git diff --quiet || {
+            echo "::error::Unstaged tracked changes remain after intraday staging"
+            git status --short
+            exit 1
+          }
           git pull --rebase
           git push
 
