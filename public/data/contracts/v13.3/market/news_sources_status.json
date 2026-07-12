@@ -1,0 +1,63 @@
+{
+  "_meta": {
+    "version": "v13.3",
+    "kind": "sample_contract",
+    "generated_for": "Card 0-5",
+    "not_for_trading": true
+  },
+  "news_sources_status": {
+    "checked_at": "2026-04-26T06:55:00+09:00",
+    "sources": {
+      "bloomberg": {
+        "status": "ok",
+        "last_fetch_at": "2026-04-26T06:50:00+09:00",
+        "items_fetched": 22,
+        "error_message": null
+      },
+      "reuters": {
+        "status": "ok",
+        "last_fetch_at": "2026-04-26T06:50:00+09:00",
+        "items_fetched": 18,
+        "error_message": null
+      },
+      "yahoo_finance_jp": {
+        "status": "ok",
+        "last_fetch_at": "2026-04-26T06:51:00+09:00",
+        "items_fetched": 35,
+        "error_message": null
+      },
+      "minkabu": {
+        "status": "ok",
+        "last_fetch_at": "2026-04-26T06:52:00+09:00",
+        "items_fetched": 28,
+        "error_message": null
+      },
+      "shikiho_online": {
+        "status": "ok",
+        "last_fetch_at": "2026-04-25T23:00:00+09:00",
+        "items_fetched": 12,
+        "error_message": null
+      },
+      "tdnet": {
+        "status": "ok",
+        "last_fetch_at": "2026-04-26T06:00:00+09:00",
+        "items_fetched": 8,
+        "error_message": null
+      },
+      "edinet": {
+        "status": "ok",
+        "last_fetch_at": "2026-04-26T06:00:00+09:00",
+        "items_fetched": 5,
+        "error_message": null
+      },
+      "jpx": {
+        "status": "ok",
+        "last_fetch_at": "2026-04-26T06:00:00+09:00",
+        "items_fetched": 3,
+        "error_message": null
+      }
+    },
+    "all_sources_ok": true,
+    "degraded_sources": []
+  }
+}

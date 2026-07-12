@@ -1,0 +1,37 @@
+{
+  "_meta": {
+    "version": "v13.3",
+    "kind": "sample_contract",
+    "generated_for": "Card 0-5",
+    "not_for_trading": true
+  },
+  "adversarial_check": {
+    "generated_at": "2026-04-26T06:55:00+09:00",
+    "ticker": "7011",
+    "company_name": "三菱重工業",
+    "pro_thesis": {
+      "title": "防衛・エネルギー複合企業として5年間の安定成長",
+      "key_points": [
+        "政府の5年防衛計画で受注2兆円パイプライン確保済み",
+        "ROE14%超・財務健全性A — 高クオリティ銘柄",
+        "PER18倍台は成長対比で明確に割安"
+      ],
+      "target_price": 8500,
+      "horizon_months": 12
+    },
+    "anti_thesis": {
+      "title": "防衛依存度過大・政治リスクで急落シナリオ",
+      "key_points": [
+        "売上高の40%超が防衛関連。政権交代で予算凍結リスク",
+        "地政学リスク後退で防衛株全体がセクター売りに",
+        "円高反転で輸出収益が圧迫"
+      ],
+      "downside_price": 5200,
+      "probability_pct": 18
+    },
+    "verdict": "pro_thesis_wins",
+    "verdict_reason": "防衛予算は超党派支持。政治リスクは限定的。Anti-Thesisの確率18%を考慮してもEV計算上は買い有利。",
+    "final_recommendation": "BUY",
+    "position_size_pct": 7.5
+  }
+}

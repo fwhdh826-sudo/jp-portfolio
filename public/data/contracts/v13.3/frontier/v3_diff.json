@@ -1,0 +1,26 @@
+{
+  "_meta": {
+    "version": "v13.3",
+    "kind": "sample_contract",
+    "generated_for": "Card 0-5",
+    "not_for_trading": true
+  },
+  "v3_diff": {
+    "generated_at": "2026-04-26T06:55:00+09:00",
+    "regime": "bull_volatile",
+    "diffs": {
+      "7011": { "ideal": 0.075, "current": 0.068, "diff": 0.007, "action": "buy" },
+      "9984": { "ideal": 0.052, "current": 0.055, "diff": -0.003, "action": "hold" },
+      "6857": { "ideal": 0.058, "current": 0.040, "diff": 0.018, "action": "buy" },
+      "6758": { "ideal": 0.048, "current": 0.060, "diff": -0.012, "action": "sell" },
+      "8058": { "ideal": 0.051, "current": 0.050, "diff": 0.001, "action": "hold" },
+      "4661": { "ideal": 0.042, "current": 0.045, "diff": -0.003, "action": "hold" }
+    },
+    "summary": {
+      "buy_count": 2,
+      "sell_count": 1,
+      "hold_count": 3,
+      "total_trade_pct": 0.038
+    }
+  }
+}

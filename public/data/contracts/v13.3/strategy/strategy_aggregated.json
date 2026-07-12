@@ -1,0 +1,80 @@
+{
+  "_meta": {
+    "version": "v13.3",
+    "kind": "sample_contract",
+    "generated_for": "Card 0-5",
+    "not_for_trading": true
+  },
+  "aggregated_strategy": {
+    "timestamp": "2026-04-26T06:55:00+09:00",
+    "regime": "bull_volatile",
+    "weights_used": {
+      "frontier": 0.30,
+      "quality_size": 0.20,
+      "fundamental": 0.30,
+      "cross_factor": 0.20
+    },
+    "strategy_outputs": {
+      "frontier": {
+        "ideal_pf": { "7011": 0.080, "9984": 0.060, "6758": 0.055, "6857": 0.050 },
+        "expected_return": 0.092,
+        "expected_vol": 0.188,
+        "sharpe_ratio": 0.489,
+        "max_dd_estimate": -0.215,
+        "strategy_id": "frontier",
+        "rationale": "高β・高モメンタム銘柄重点。防衛・半導体オーバーウェイト。"
+      },
+      "quality_size": {
+        "ideal_pf": { "7011": 0.075, "6857": 0.065, "6594": 0.060, "8058": 0.055 },
+        "expected_return": 0.078,
+        "expected_vol": 0.162,
+        "sharpe_ratio": 0.481,
+        "max_dd_estimate": -0.185,
+        "strategy_id": "quality_size",
+        "rationale": "中小型×高クオリティ。ROE優先、低ジャンク。"
+      },
+      "fundamental": {
+        "ideal_pf": { "8058": 0.070, "7011": 0.065, "8031": 0.060, "6758": 0.055 },
+        "expected_return": 0.071,
+        "expected_vol": 0.148,
+        "sharpe_ratio": 0.480,
+        "max_dd_estimate": -0.170,
+        "strategy_id": "fundamental",
+        "rationale": "売上・配当・CF・BV加重。大型バリュー重点。"
+      },
+      "cross_factor": {
+        "ideal_pf": { "6857": 0.075, "7011": 0.070, "6594": 0.060, "9984": 0.050 },
+        "expected_return": 0.085,
+        "expected_vol": 0.172,
+        "sharpe_ratio": 0.494,
+        "max_dd_estimate": -0.198,
+        "strategy_id": "cross_factor",
+        "rationale": "クロス軸シグナル。小型×モメンタム重点。"
+      }
+    },
+    "strategy_correlations": {
+      "frontier_vs_quality_size": 0.35,
+      "frontier_vs_fundamental": 0.42,
+      "frontier_vs_cross_factor": 0.28,
+      "quality_size_vs_fundamental": 0.31,
+      "quality_size_vs_cross_factor": 0.55,
+      "fundamental_vs_cross_factor": 0.22
+    },
+    "diversification_score": 0.45,
+    "ideal_pf": {
+      "7011": 0.075,
+      "9984": 0.052,
+      "6758": 0.048,
+      "6857": 0.058,
+      "8058": 0.051,
+      "4661": 0.042,
+      "6594": 0.046,
+      "8031": 0.038,
+      "6268": 0.025,
+      "7832": 0.022
+    },
+    "expected_return": 0.082,
+    "dd10_uniform_return": 0.210,
+    "high_correlation_warning": false
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "_meta": {
+    "version": "v13.3",
+    "kind": "operation_snapshot",
+    "not_for_trading": true
+  },
+  "safe_mode": {
+    "active": false,
+    "triggered_at": null,
+    "trigger_reason": null,
+    "trigger_reason_detail": null,
+    "trigger_conditions": {
+      "tier1_data_stale": false,
+      "tier_a_t3_violated": false,
+      "crisis_regime": false,
+      "system_error": false
+    },
+    "restrictions": {
+      "new_buys_frozen": false,
+      "rebalance_frozen": false,
+      "force_sell_active": false
+    },
+    "estimated_resume_at": null,
+    "last_checked": "2026-07-10T22:32:49.931832+00:00"
+  }
+}

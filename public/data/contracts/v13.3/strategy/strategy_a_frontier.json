@@ -1,0 +1,31 @@
+{
+  "_meta": {
+    "version": "v13.3",
+    "kind": "sample_contract",
+    "generated_for": "Card 0-5",
+    "not_for_trading": true
+  },
+  "strategy_file": {
+    "timestamp": "2026-04-26T06:55:00+09:00",
+    "strategy_id": "frontier",
+    "regime": "bull_volatile",
+    "output": {
+      "ideal_pf": {
+        "7011": 0.080,
+        "9984": 0.060,
+        "6758": 0.055,
+        "6857": 0.050,
+        "8058": 0.045,
+        "4661": 0.040,
+        "6594": 0.035,
+        "8031": 0.030
+      },
+      "expected_return": 0.092,
+      "expected_vol": 0.188,
+      "sharpe_ratio": 0.489,
+      "max_dd_estimate": -0.215,
+      "strategy_id": "frontier",
+      "rationale": "Frontier AI Indexは現在レジームbull_volatileにおいて、高β・高モメンタム銘柄を重点配分。防衛・半導体セクターをオーバーウェイト。"
+    }
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "_meta": {
+    "version": "v13.3",
+    "source": "phase7_fixture",
+    "not_for_trading": true,
+    "description": "Phase 7 fund observation fixture. Calculation-only, not an order, not a recommendation."
+  },
+  "fund_phase7": {
+    "nk225_sbi": {
+      "fund_id": "nk225_sbi",
+      "fund_name": "SBI 日経225",
+      "domain": "domestic_fund",
+      "behavioral_score": 28.0,
+      "sizing_multiplier_cap": 0.8,
+      "committee_confidence": 0.55,
+      "adjusted_size": 0.44,
+      "diagnostics": [
+        "observation: behavioral_score=28.0 (< threshold 60.0); no elevated behavioral risk",
+        "observation: sizing_multiplier_cap=0.8 (caution_count=1); pre-mortem cap applied",
+        "observation: committee_confidence=0.55; moderate confidence level",
+        "observation: adjusted_size=0.44 is a weight (0.0–1.0), not a JPY amount; calculation-only, not an order, not a recommendation"
+      ]
+    },
+    "4x3bull": {
+      "fund_id": "4x3bull",
+      "fund_name": "SBI 4.3ブル",
+      "domain": "domestic_fund",
+      "behavioral_score": 72.0,
+      "sizing_multiplier_cap": 0.2,
+      "committee_confidence": 0.35,
+      "adjusted_size": 0.07,
+      "diagnostics": [
+        "observation: behavioral_score=72.0 (≥ threshold 60.0); elevated behavioral risk detected",
+        "observation: sizing_multiplier_cap=0.2 (caution_count≥4); pre-mortem cap binding",
+        "observation: committee_confidence=0.35; low confidence level",
+        "observation: adjusted_size=0.07 is a weight (0.0–1.0), not a JPY amount; calculation-only, not an order, not a recommendation"
+      ]
+    },
+    "jpndiv": {
+      "fund_id": "jpndiv",
+      "fund_name": "SMT 日本株配当貴族",
+      "domain": "domestic_fund",
+      "behavioral_score": 18.0,
+      "sizing_multiplier_cap": 1.0,
+      "committee_confidence": 0.72,
+      "adjusted_size": 0.72,
+      "diagnostics": [
+        "observation: behavioral_score=18.0 (< threshold 60.0); no elevated behavioral risk",
+        "observation: sizing_multiplier_cap=1.0 (caution_count=0); no pre-mortem cap binding",
+        "observation: committee_confidence=0.72; moderate-high confidence level",
+        "observation: adjusted_size=0.72 is a weight (0.0–1.0), not a JPY amount; calculation-only, not an order, not a recommendation"
+      ]
+    }
+  }
+}

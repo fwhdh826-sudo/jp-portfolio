@@ -1,0 +1,58 @@
+{
+  "_meta": {
+    "version": "v13.3",
+    "kind": "sample_contract",
+    "generated_for": "Card 0-5",
+    "not_for_trading": true
+  },
+  "lots": [
+    {
+      "lot_id": "lot-7011-001",
+      "code": "7011",
+      "name": "三菱重工業",
+      "account": "specific",
+      "acquired_at": "2025-11-15",
+      "quantity": 200,
+      "acquisition_price": 5425,
+      "acquisition_cost": 1085000,
+      "current_price": 6970,
+      "current_eval": 1394000,
+      "pnl": 309000,
+      "pnl_pct": 28.5,
+      "lock_until": null,
+      "lock_active": false
+    },
+    {
+      "lot_id": "lot-7011-002",
+      "code": "7011",
+      "name": "三菱重工業",
+      "account": "specific",
+      "acquired_at": "2026-02-10",
+      "quantity": 300,
+      "acquisition_price": 6350,
+      "acquisition_cost": 1905000,
+      "current_price": 6970,
+      "current_eval": 2091000,
+      "pnl": 186000,
+      "pnl_pct": 9.8,
+      "lock_until": "2026-05-10",
+      "lock_active": true
+    },
+    {
+      "lot_id": "lot-9984-001",
+      "code": "9984",
+      "name": "ソフトバンクグループ",
+      "account": "specific",
+      "acquired_at": "2026-01-20",
+      "quantity": 300,
+      "acquisition_price": 7461,
+      "acquisition_cost": 2238300,
+      "current_price": 7850,
+      "current_eval": 2355000,
+      "pnl": 116700,
+      "pnl_pct": 5.2,
+      "lock_until": null,
+      "lock_active": false
+    }
+  ]
+}

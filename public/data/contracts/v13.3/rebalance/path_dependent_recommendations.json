@@ -1,0 +1,46 @@
+{
+  "_meta": {
+    "version": "v13.3",
+    "kind": "sample_contract",
+    "generated_for": "Card 0-5",
+    "not_for_trading": true
+  },
+  "path_dependent_recommendations": {
+    "timestamp": "2026-04-26T07:00:00+09:00",
+    "regime": "bull_volatile",
+    "recommendations": [
+      {
+        "ticker": "6857",
+        "current": 0.040,
+        "target": 0.058,
+        "action": "buy_low",
+        "priority": "high",
+        "relative_perf_30d": -0.042,
+        "asset_tier": "satellite",
+        "reason": "30日でインデックス比-4.2%アンダーパフォーム中。目標比率まで+1.8%の買い増しが有利。"
+      },
+      {
+        "ticker": "6758",
+        "current": 0.060,
+        "target": 0.048,
+        "action": "sell_high",
+        "priority": "medium",
+        "relative_perf_30d": 0.068,
+        "asset_tier": "satellite",
+        "reason": "30日でインデックス比+6.8%アウトパフォーム中。目標比率まで-1.2%の利確が適切。"
+      },
+      {
+        "ticker": "7011",
+        "current": 0.068,
+        "target": 0.075,
+        "action": "buy",
+        "priority": "low",
+        "relative_perf_30d": 0.025,
+        "asset_tier": "core",
+        "reason": "目標比率まで+0.7%の小幅追加。Coreポジション維持のため低優先。"
+      }
+    ],
+    "total_high_priority": 1,
+    "monthly_trade_count": 3
+  }
+}

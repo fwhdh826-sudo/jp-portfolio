@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3:*)",
+      "Bash(pip3:*)",
+      "Read(*)",
+      "Write(data/*)",
+      "Write(logs/*)"
+    ],
+    "deny": [
+      "Write(index.html)",
+      "Edit(index.html)"
+    ]
+  }
+}

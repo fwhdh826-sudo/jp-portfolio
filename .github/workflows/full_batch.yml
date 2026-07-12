@@ -1,0 +1,305 @@
+name: v13.3 Full Batch
+
+# schedule is intended for main after merge.
+# On v13.3-dev, use workflow_dispatch for manual verification only.
+on:
+  schedule:
+    # 毎週月〜金 06:30 JST (= 21:30 UTC 前日)
+    # 市場開場 (09:00 JST) の 2.5 時間前に完了させる
+    - cron: '30 21 * * 1-5'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: full-batch
+  cancel-in-progress: false  # 処理途中のキャンセルで中途半端な状態を残さない
+
+jobs:
+  # ── Job 1: Operation Health Gate ─────────────────────────────────────────
+  # pytest が通過しない限りデータ更新を行わない
+  operation-health:
+    name: Operation Health Gate (pytest)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install pytest
+        run: pip install pytest
+
+      - name: Run Operation + Tier A tests
+        # test_operation (Card 2-1/2-2) + test_tier_a (Card 1-2〜1-4) のみ対象
+        run: python -m pytest backend/tests/test_operation backend/tests/test_tier_a -q
+
+      - name: Report data freshness (detection-only, no writes)
+        # evaluate_freshness を呼び出して stdout にログ出力するだけ。
+        # JSON 書き込みは Card 2-4 の責務。
+        run: |
+          python - <<'EOF'
+          from datetime import datetime, timezone
+          from backend.engine.operation.data_freshness import evaluate_freshness
+          # 全ソースをキーなし(missing)で渡し、現在の鮮度状態をログ出力
+          result = evaluate_freshness({}, now=datetime.now(timezone.utc))
+          print(f"[freshness] checked_at={result.checked_at.isoformat()}")
+          print(f"[freshness] any_tier1_stale={result.any_tier1_stale}")
+          print(f"[freshness] any_tier2_stale={result.any_tier2_stale}")
+          print(f"[freshness] safe_mode_triggered={result.safe_mode_triggered}")
+          # NOTE: 全ソース missing のため safe_mode_triggered=True は期待値。
+          # 実際のタイムスタンプは Card 2-4 で system_status.json から取得して渡す。
+          EOF
+
+  # ── Job 2: Full Data Update ───────────────────────────────────────────────
+  # operation-health が成功した場合のみ実行
+  update-data:
+    name: Full Data Update
+    runs-on: ubuntu-latest
+    needs: [operation-health]
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Python deps
+        run: pip install yfinance pandas numpy feedparser
+
+      # ── データ更新（各スクリプト独立、失敗しても継続）─────────────────
+      - name: Update correlation.json
+        run: python3 data/update_correlation.py || true
+
+      - name: Update market.json
+        run: python3 data/update_market.py || true
+
+      - name: Update macro.json (金利/為替/VIX/指数/原油/金)
+        run: python3 data/update_macro.py || true
+
+      - name: Update sq_calendar.json (SQ日程)
+        run: python3 data/update_sq.py || true
+
+      - name: Update margin / flows
+        run: python3 data/update_flows.py || true
+
+      - name: Update earnings calendar
+        run: python3 data/update_earnings.py || true
+
+      - name: Collect news (RSS + 保有銘柄フィルタ)
+        # P4.5-A006: DEEPL_API_KEY未設定でもtranslate_to_ja()は安全にNoneへfallbackする
+        env:
+          DEEPL_API_KEY: ${{ secrets.DEEPL_API_KEY }}
+        run: python3 data/update_news.py || true
+
+      # ── P5-B002a: 新規個別株候補（市場公開情報のみ、observability-only） ──
+      - name: Build candidates_stocks.json (seed list, market data only)
+        run: python3 data/build_candidates_stocks.py || true
+
+      # ── public/data へコピー ──────────────────────────────────────────
+      - name: Copy JSON to public/data
+        run: |
+          for f in correlation market macro sq_calendar margin flows earnings_calendar news candidates_stocks; do
+            if [ -f "data/${f}.json" ]; then
+              cp "data/${f}.json" "public/data/${f}.json"
+            fi
+          done
+
+      - name: Smoke test candidates_stocks schema (personal-data guard)
+        run: |
+          python3 - <<'PY'
+          import json, sys
+          from pathlib import Path
+          ok = True
+          # P4.5-A010/A010-1a: 個人資産・実額・口座種別を含めない方針のguard
+          FORBIDDEN_KEYS = {
+              'eval', 'pnlPct', 'purchase_date', 'acquiredAt', 'account',
+              'accountType', 'holdings', 'cash', 'reserve', 'amount',
+              'maxAmount', 'sizing', 'headroom', 'score', 'action',
+          }
+          for p in ["data/candidates_stocks.json", "public/data/candidates_stocks.json"]:
+              try:
+                  d = json.loads(Path(p).read_text())
+                  assert d.get("schemaVersion") == "candidates-stocks-1", p
+                  assert isinstance(d.get("candidates"), list), p
+                  assert d.get("_meta", {}).get("not_for_trading") is True, p
+                  assert d.get("status") in ("ok", "partial", "empty"), p
+                  for c in d.get("candidates", []):
+                      leaked = FORBIDDEN_KEYS & set(c.keys())
+                      assert not leaked, f"{p}: forbidden keys {leaked} in candidate {c.get('code')}"
+              except Exception as e:
+                  print(f"WARN candidates_stocks smoke: {e}", file=sys.stderr)
+                  ok = False
+          print("candidates_stocks smoke ok" if ok else "candidates_stocks smoke WARN")
+          PY
+
+      - name: Build candidates news summary
+        run: python3 data/build_candidates_news.py
+
+      - name: Smoke test candidates_news schema
+        run: |
+          python3 - <<'PY'
+          import json, sys
+          ok = True
+          for p in ["data/candidates_news.json", "public/data/candidates_news.json"]:
+              try:
+                  d = json.load(open(p))
+                  assert d.get("schemaVersion") == "candidates-news-1", p
+                  assert isinstance(d.get("assetClassNews"), dict), p
+                  assert len(d["assetClassNews"]) >= 10, p
+              except Exception as e:
+                  print(f"WARN candidates_news smoke: {e}", file=sys.stderr)
+                  ok = False
+          print("candidates_news smoke ok" if ok else "candidates_news smoke WARN")
+          PY
+
+      # ── P4-A9d-1b: live regime state ──────────────────────────────────────
+      - name: Build live regime state
+        run: python3 data/update_regime_state.py
+
+      - name: Smoke test regime_state schema
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          allowed = {"bull_calm", "bull_volatile", "bear", "crisis", "uncertain"}
+          data = json.loads(Path("public/data/regime_state.json").read_text())
+          meta = data.get("_meta", {})
+          state = data.get("regime_state", {})
+          assert meta.get("schemaVersion") == "regime-state-1"
+          assert meta.get("kind") == "live_regime_state"
+          assert meta.get("kind") != "sample_contract"
+          assert meta.get("not_for_trading") is not True
+          assert state.get("current_regime") in allowed
+          print("regime_state smoke ok")
+          PY
+
+      # ── P4-A28: SAFE_MODE snapshot ────────────────────────────────────
+      # regime_state.json が確定した後に実行する（crisis_regime 判定に使用）
+      - name: Build SAFE_MODE snapshot
+        # Reads timestamps from public/data/market.json / regime_state.json / news.json
+        # Writes data/safe_mode.json + public/data/safe_mode.json
+        # Covered by the Commit and push step below
+        run: python3 data/update_safe_mode.py
+
+      - name: Smoke test safe_mode schema
+        run: |
+          python3 - <<'PY'
+          import json, sys
+          from pathlib import Path
+          ok = True
+          for p in ["data/safe_mode.json", "public/data/safe_mode.json"]:
+              try:
+                  d = json.loads(Path(p).read_text())
+                  assert d.get("_meta", {}).get("kind") == "operation_snapshot", p
+                  assert isinstance(d.get("safe_mode", {}).get("active"), bool), p
+              except Exception as e:
+                  print(f"FAIL safe_mode smoke: {e}", file=sys.stderr)
+                  ok = False
+          if ok:
+              print("safe_mode smoke ok")
+          else:
+              print("safe_mode smoke FAIL", file=sys.stderr)
+              sys.exit(1)
+          PY
+
+      # ── P4-A28: TierA snapshots ───────────────────────────────────────
+      # portfolio data unavailable from CLI → status="unavailable" (fail-safe)
+      # Writes tier_a_violations.json + tier_a_alerts.json to data/ + public/data/
+      # Covered by the Commit and push step below
+      - name: Build TierA snapshots
+        # Writes tier_a_violations.json + tier_a_alerts.json to data/ and public/data/
+        # Covered by the Commit and push step below
+        run: |
+          python3 -m backend.engine.tier_a.tier_a_snapshot_writer --output-dir public/data/
+          python3 -m backend.engine.tier_a.tier_a_snapshot_writer --output-dir data/
+
+      - name: Smoke test TierA schemas
+        run: |
+          python3 - <<'PY'
+          import json, sys
+          from pathlib import Path
+          ok = True
+          checks = [
+              ("data/tier_a_violations.json", "live_tier_a_violations", "violations"),
+              ("public/data/tier_a_violations.json", "live_tier_a_violations", "violations"),
+              ("data/tier_a_alerts.json", "live_tier_a_alerts", "alerts"),
+              ("public/data/tier_a_alerts.json", "live_tier_a_alerts", "alerts"),
+          ]
+          for p, kind, array_key in checks:
+              try:
+                  d = json.loads(Path(p).read_text())
+                  assert d.get("_meta", {}).get("kind") == kind, p
+                  assert isinstance(d.get(array_key, None), list), p
+              except Exception as e:
+                  print(f"FAIL tier_a smoke: {e}", file=sys.stderr)
+                  ok = False
+          if ok:
+              print("tier_a smoke ok")
+          else:
+              print("tier_a smoke FAIL", file=sys.stderr)
+              sys.exit(1)
+          PY
+
+      # ── git push ──────────────────────────────────────────────────────
+      - name: Commit and push
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/ public/data/
+          git diff --staged --quiet || git commit -m "chore: full-batch data update $(date +'%Y-%m-%d %H:%M JST')"
+          git pull --rebase origin main
+          git push
+
+  # ── Job 3: Routines (stub) ────────────────────────────────────────────────
+  # STUB: Card 2-5 (R1-R3) / Card 2-6 (R4-R6) / Card 2-7 (R7-R10) で実装予定
+  # P4-A23: R4 Pre-Trade を dry-run / log-only で接続。public/data への書き込みなし。
+  routines-stub:
+    name: Routines R1-R10 (stub — pending Card 2-5/2-6/2-7)
+    runs-on: ubuntu-latest
+    needs: [update-data]
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: R1 Morning Routine (stub)
+        run: echo "STUB R1 Morning — not yet implemented (Card 2-5)"
+
+      - name: R2 Intraday Routine (stub)
+        run: echo "STUB R2 Intraday — not yet implemented (Card 2-5)"
+
+      - name: R3 Post-Close Routine (stub)
+        run: echo "STUB R3 Post-Close — not yet implemented (Card 2-5)"
+
+      - name: Run SAFE_MODE pre-trade dry-run
+        # P4-A23: detection-only health check — no JSON written here
+        # P4-A28: safe_mode.json は update-data Job の Build SAFE_MODE snapshot ステップが生成する
+        # exit 1 on stale/missing data is expected; || true prevents CI failure
+        run: python3 -m backend.engine.operation.r4_pre_trade --dry-run || true
+
+      - name: Run TierA snapshot dry-run
+        # P4-A23: detection-only health check — no JSON written here
+        # P4-A28: tier_a snapshots は update-data Job の Build TierA snapshots ステップが生成する
+        run: python3 -m backend.engine.tier_a.tier_a_snapshot_writer --dry-run
+
+      - name: R5 Weekly Routine (stub)
+        run: echo "STUB R5 Weekly — not yet implemented (Card 2-6)"
+
+      - name: R6 Earnings Routine (stub)
+        run: echo "STUB R6 Earnings — not yet implemented (Card 2-6)"
+
+      - name: R7-R10 Routines (stub)
+        run: echo "STUB R7-R10 (Scenario/Audit/Tier A/Capitulation Deploy) — not yet implemented (Card 2-7)"
+
+      # NOTE: Discord 通知は Card 2-4 の責務。ここでは実装しない。
+      # NOTE: recovery_log 書き込みは Card 2-4 の責務。ここでは実装しない。
+      # NOTE: SAFE_MODE 実発動は行わない。判定のみ (safe_mode.py)。
+      # NOTE: 自動売買・証券API接続は一切行わない。

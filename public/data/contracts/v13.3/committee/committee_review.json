@@ -1,0 +1,61 @@
+{
+  "_meta": {
+    "version": "v13.3",
+    "kind": "sample_contract",
+    "generated_for": "Card 0-5",
+    "not_for_trading": true
+  },
+  "committee_review": {
+    "generated_at": "2026-04-26T06:55:00+09:00",
+    "ticker": "7011",
+    "company_name": "三菱重工業",
+    "agents": [
+      {
+        "agent": "Value Agent",
+        "style": "value",
+        "score": 78,
+        "bullPoints": ["PER18倍台で割安", "EV/EBITDA11.5倍は魅力的"],
+        "bearPoints": ["成長期待込みで本来のバリューとは言い難い"],
+        "buyReasons": ["現在価格はDCF適正価値比-12%で買い場"],
+        "waitReasons": [],
+        "sellReasons": [],
+        "premise": ["防衛予算の持続的拡大"],
+        "premiseBreak": ["防衛予算が政治的理由で凍結された場合"]
+      },
+      {
+        "agent": "Growth Agent",
+        "style": "growth",
+        "score": 72,
+        "bullPoints": ["EPS成長18.5%は同業最高水準", "受注残が利益の見通しを支える"],
+        "bearPoints": ["成長は防衛一本足。多角化リスクあり"],
+        "buyReasons": ["中期EPS成長が株価に織り込まれていない"],
+        "waitReasons": [],
+        "sellReasons": [],
+        "premise": ["防衛受注拡大継続"],
+        "premiseBreak": ["受注キャンセルまたは競合他社の台頭"]
+      }
+    ],
+    "debateScore": 75,
+    "confidence": 0.72,
+    "finalView": "BUY",
+    "bullReasons": ["割安水準", "高成長継続", "財務健全"],
+    "bearReasons": ["防衛一本足リスク", "セクター集中"],
+    "buyReasons": ["DCF比割安", "業績上振れ期待"],
+    "waitReasons": [],
+    "sellReasons": [],
+    "recommendedAction": "現保有維持。押し目（-5%）で買い増し検討。",
+    "takeProfitConditions": ["PER25倍超", "目標株価8,500円達成"],
+    "stopLossConditions": ["防衛予算凍結報道", "PER割高圏入り"],
+    "premiseBreakConditions": ["受注残が前年比20%減"],
+    "riskGatePass": true,
+    "sevenAxis": {
+      "growth": 72,
+      "valuation": 78,
+      "momentum": 70,
+      "macro": 68,
+      "quality": 81,
+      "risk": 75,
+      "news": 74
+    }
+  }
+}

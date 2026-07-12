@@ -1,0 +1,68 @@
+{
+  "_meta": {
+    "version": "v13.3",
+    "kind": "live_tier_a_alerts",
+    "generated_for": "Card 1-4 / P4-A22",
+    "not_for_trading": true,
+    "fail_closed": "missing/malformed/status=unavailable → treat as SAFE_MODE active (no silent false-clear)"
+  },
+  "_schema_notes": {
+    "status_values": "ok (highest_level=NONE) | degraded (any alert triggered) | unavailable (portfolio data absent or writer error)",
+    "recommended_action_type_semantics": "OS-internal action classification — NOT investment advice. BLOCK_NEW_BUY blocks BUY candidates via SAFE_MODE path, not directly.",
+    "l3_safe_mode_path": "L3 alert does NOT directly trigger SAFE_MODE — T3 hard gate violation does. L3 is an independent alert level.",
+    "opportunity_note": "OPPORTUNITY is a Capitulation Signal alert — strategic cash deployment candidate. Final execution is user decision."
+  },
+  "generated_at": "2026-06-17T01:00:00+00:00",
+  "source": "backend_tier_a_alerts_emitter",
+  "status": "ok",
+  "alerts": [
+    {
+      "code": "L1",
+      "triggered": false,
+      "severity": "ok",
+      "message": "L1 未トリガー (DD=-5.0%, VIX=20.0)",
+      "recommended_action_type": "MONITOR",
+      "_alert_definition": {
+        "condition": "portfolio_drawdown <= -0.10 OR vix > 30.0",
+        "action_semantics": "MONITOR — reduce new position size 50%, detection only"
+      }
+    },
+    {
+      "code": "L2",
+      "triggered": false,
+      "severity": "ok",
+      "message": "L2 未トリガー (DD=-5.0%)",
+      "recommended_action_type": "REVIEW",
+      "_alert_definition": {
+        "condition": "portfolio_drawdown <= -0.20",
+        "action_semantics": "REVIEW — reduce tactical allocation 50%, ensure cash 15%, detection only"
+      }
+    },
+    {
+      "code": "L3",
+      "triggered": false,
+      "severity": "ok",
+      "message": "L3 未トリガー (DD=-5.0%)",
+      "recommended_action_type": "BLOCK_NEW_BUY",
+      "_alert_definition": {
+        "condition": "portfolio_drawdown <= -0.30",
+        "action_semantics": "BLOCK_NEW_BUY — freeze all new buys 48h, reduce all risk 50%, detection only"
+      }
+    },
+    {
+      "code": "OPPORTUNITY",
+      "triggered": false,
+      "severity": "ok",
+      "message": "OPPORTUNITY 未トリガー (0/4 条件成立)",
+      "recommended_action_type": "REVIEW",
+      "_alert_definition": {
+        "condition": "capitulation_signal.is_capitulation=True (4/4 conditions met)",
+        "action_semantics": "REVIEW — strategic cash deployment candidate, execution is user decision"
+      }
+    }
+  ],
+  "summary": {
+    "total_triggered": 0,
+    "highest_level": "NONE"
+  }
+}

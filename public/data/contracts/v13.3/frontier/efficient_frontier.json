@@ -1,0 +1,28 @@
+{
+  "_meta": {
+    "version": "v13.3",
+    "kind": "sample_contract",
+    "generated_for": "Card 0-5",
+    "not_for_trading": true
+  },
+  "efficient_frontier": {
+    "generated_at": "2026-04-26T06:55:00+09:00",
+    "regime": "bull_volatile",
+    "points": [
+      { "vol": 0.10, "ret": 0.048, "sharpe": 0.480, "label": "min_variance" },
+      { "vol": 0.12, "ret": 0.060, "sharpe": 0.500, "label": null },
+      { "vol": 0.14, "ret": 0.071, "sharpe": 0.507, "label": null },
+      { "vol": 0.16, "ret": 0.080, "sharpe": 0.500, "label": null },
+      { "vol": 0.18, "ret": 0.086, "sharpe": 0.478, "label": "max_sharpe" },
+      { "vol": 0.20, "ret": 0.090, "sharpe": 0.450, "label": null },
+      { "vol": 0.22, "ret": 0.093, "sharpe": 0.423, "label": null },
+      { "vol": 0.25, "ret": 0.095, "sharpe": 0.380, "label": "max_return" }
+    ],
+    "current_portfolio": {
+      "vol": 0.188,
+      "ret": 0.082,
+      "sharpe": 0.436
+    },
+    "risk_free_rate": 0.005
+  }
+}

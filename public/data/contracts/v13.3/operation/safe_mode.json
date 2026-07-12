@@ -1,0 +1,36 @@
+{
+  "_meta": {
+    "version": "v13.3",
+    "kind": "operation_snapshot",
+    "generated_for": "Card 2-6 / P4-A22",
+    "not_for_trading": true,
+    "fail_closed": "missing/malformed → active=true (loadSafeMode must NOT default to active=false on error)"
+  },
+  "_schema_notes": {
+    "writer": "backend/engine/operation/recovery_log_writer.py:write_safe_mode_snapshot()",
+    "cli": "python3 -m backend.engine.operation.r4_pre_trade --output <path>",
+    "fail_closed_design": "Frontend loadSafeMode() MUST return active=true on missing/malformed/stale JSON. Defaulting to active=false is a safety regression.",
+    "stale_definition": "If last_checked is older than the freshness threshold, treat as active=true (conservative).",
+    "trigger_reason_values": "tier1_data_stale | tier_a_t3_violated | crisis_regime | system_error | null (when active=false)",
+    "tier_a_t3_path": "T3 hard gate violation → HardGateResult.safe_mode_recommended=True → r9_tier_a passes tier_a_t3_violated=True → safe_mode.active=True"
+  },
+  "safe_mode": {
+    "active": false,
+    "triggered_at": null,
+    "trigger_reason": null,
+    "trigger_reason_detail": null,
+    "trigger_conditions": {
+      "tier1_data_stale": false,
+      "tier_a_t3_violated": false,
+      "crisis_regime": false,
+      "system_error": false
+    },
+    "restrictions": {
+      "new_buys_frozen": false,
+      "rebalance_frozen": false,
+      "force_sell_active": false
+    },
+    "estimated_resume_at": null,
+    "last_checked": "2026-06-17T01:00:00+00:00"
+  }
+}

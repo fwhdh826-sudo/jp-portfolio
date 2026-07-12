@@ -1,0 +1,42 @@
+{
+  "_meta": {
+    "version": "v13.3",
+    "kind": "frontier_index",
+    "source": "phase8_hybrid: returns=yfinance-real, scores=public_scoring, asset_meta=manual-mapping, holdings=public_holdings_snapshot_2026-04-06, mean_return=returns_yfinance_52w_annualized, regime_table=manual_regime_constitution_v13_3, lock_calc=purchase_date_days_since_purchase_utc, market_intel=fresh, regime_probabilities=rule_based_concentrated_0_60_bull_calm, others=missing-safe-default",
+    "generated_at": "2026-05-27T11:47:06.295556+00:00",
+    "not_for_trading": true
+  },
+  "payload": {
+    "generated_at": "2026-05-27T11:47:06.295556+00:00",
+    "regime": "uncertain",
+    "constituents": {
+      "6098": 0.05874340691351798,
+      "8306": 0.05781032861726524,
+      "9697": 0.07633976285540464,
+      "4661": 0.0667734379771304,
+      "8593": 0.06417088656509314,
+      "4755": 0.05959774857902402,
+      "5711": 0.06512825278711828,
+      "1605": 0.06215851830764687,
+      "5016": 0.04892836206771296,
+      "8058": 0.059045320389108036,
+      "9418": 0.07999919292317133,
+      "1928": 0.0653233293876152,
+      "7011": 0.05356972763955513,
+      "7974": 0.06198395031512872,
+      "9433": 0.07010095128250429,
+      "7012": 0.05032682339300382
+    },
+    "total_weight": 1.0,
+    "cash_pct": 0.0,
+    "fund_pct": 0.0,
+    "expected_return": 0.0011073360428284712,
+    "expected_vol": 0.037971913948546064,
+    "sharpe_ratio": 0.029161975989121056,
+    "diagnostics": [
+      "observation: index weights are calculation-only estimates; not an order, not a recommendation",
+      "observation: cash_pct treated as 0.0 (adapter-supplied PF aggregate; caller must provide explicit value if non-zero)",
+      "observation: fund_pct treated as 0.0 (adapter-supplied PF aggregate; caller must provide explicit value if non-zero)"
+    ]
+  }
+}

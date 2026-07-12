@@ -1,0 +1,81 @@
+{
+  "_meta": {
+    "version": "v13.3",
+    "kind": "sample_contract",
+    "generated_for": "Card 0-5",
+    "not_for_trading": true
+  },
+  "market_news_aggregated": {
+    "fetched_at": "2026-04-26T07:00:00+09:00",
+    "total_items": 142,
+    "deduplicated_items": 87,
+    "sources_status": {
+      "bloomberg": "ok",
+      "reuters": "ok",
+      "yahoo_finance_jp": "ok",
+      "minkabu": "ok",
+      "shikiho_online": "ok",
+      "tdnet": "ok",
+      "edinet": "ok",
+      "jpx": "ok"
+    },
+    "categories": {
+      "macro": [
+        {
+          "source_id": "bloomberg",
+          "title": "米ISM製造業指数、予想上回る52.8 — 景気拡大継続",
+          "summary": "4月の米ISM製造業指数は52.8と市場予想の51.5を上回り、製造業の回復が続いていることが示された。",
+          "url": "https://example.com/bloomberg/ism-april",
+          "published_at": "2026-04-26T00:30:00+09:00",
+          "language": "ja",
+          "category": ["macro", "international"],
+          "related_tickers": [],
+          "sentiment_score": 0.45,
+          "importance_score": 0.82
+        }
+      ],
+      "japan": [
+        {
+          "source_id": "reuters",
+          "title": "日銀、4月会合で現行政策維持 — 次回6月に追加データ精査",
+          "summary": "日本銀行は4月の金融政策決定会合で現行の金融政策を維持した。植田総裁は会見で次回6月会合に向けてデータを精査すると述べた。",
+          "url": "https://example.com/reuters/boj-april",
+          "published_at": "2026-04-26T03:00:00+09:00",
+          "language": "ja",
+          "category": ["japan", "markets"],
+          "related_tickers": [],
+          "sentiment_score": 0.05,
+          "importance_score": 0.90
+        }
+      ],
+      "individual_stocks": [
+        {
+          "source_id": "tdnet",
+          "title": "三菱重工業（7011）— 2026年3月期 決算短信",
+          "summary": "三菱重工業は2026年3月期通期の純利益が前年比28%増の3,200億円となったと発表した。防衛関連受注の増加が寄与。",
+          "url": "https://example.com/tdnet/7011-2026q4",
+          "published_at": "2026-04-25T15:30:00+09:00",
+          "language": "ja",
+          "category": ["earnings", "individual_stocks"],
+          "related_tickers": ["7011"],
+          "sentiment_score": 0.70,
+          "importance_score": 0.88
+        }
+      ]
+    },
+    "top_items": [
+      {
+        "source_id": "bloomberg",
+        "title": "米ISM製造業指数、予想上回る52.8",
+        "summary": "4月の米ISM製造業指数は52.8。",
+        "url": "https://example.com/bloomberg/ism-april",
+        "published_at": "2026-04-26T00:30:00+09:00",
+        "language": "ja",
+        "category": ["macro"],
+        "related_tickers": [],
+        "sentiment_score": 0.45,
+        "importance_score": 0.82
+      }
+    ]
+  }
+}

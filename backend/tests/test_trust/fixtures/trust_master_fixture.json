@@ -1,0 +1,11 @@
+{
+  "last_updated": "2000-01-01",
+  "source": "manual",
+  "note": "テスト用フィクスチャ",
+  "funds": [
+    {"id": "nk225_sbi",  "csv_name": "日経225",  "csv_account": "特定",    "eval": 480000,  "pnlPct": -1.50, "dayPct": -0.20},
+    {"id": "fang_toku",  "csv_name": "FANG+",    "csv_account": "特定",    "eval": 4500000, "pnlPct": 200.00, "dayPct": -3.00},
+    {"id": "acwi",       "csv_name": "全世界株式","csv_account": "NISA成長","eval": 250000,  "pnlPct": -3.00, "dayPct": -1.50},
+    {"id": "orphan",     "csv_name": "", "csv_account": "", "eval": 0,      "pnlPct": 0.0,  "dayPct": 0.0}
+  ]
+}

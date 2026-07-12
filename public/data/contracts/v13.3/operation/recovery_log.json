@@ -1,0 +1,30 @@
+{
+  "_meta": {
+    "version": "v13.3",
+    "kind": "sample_contract",
+    "generated_for": "Card 0-5",
+    "not_for_trading": true
+  },
+  "recovery_log": [
+    {
+      "id": "rec-20260420-001",
+      "occurred_at": "2026-04-20T09:15:00+09:00",
+      "resolved_at": "2026-04-20T09:22:00+09:00",
+      "source": "news",
+      "error_type": "timeout",
+      "message": "bloomberg RSS fetch timeout after 30s",
+      "action_taken": "fallback_to_cache",
+      "safe_mode_triggered": false
+    },
+    {
+      "id": "rec-20260418-001",
+      "occurred_at": "2026-04-18T07:05:00+09:00",
+      "resolved_at": "2026-04-18T07:20:00+09:00",
+      "source": "regime",
+      "error_type": "llm_unavailable",
+      "message": "LLM quality detection unavailable, fell back to rule_based only",
+      "action_taken": "rule_based_only_mode",
+      "safe_mode_triggered": false
+    }
+  ]
+}

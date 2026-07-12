@@ -1,0 +1,30 @@
+{
+  "_meta": {
+    "version": "v13.3",
+    "kind": "sample_contract",
+    "generated_for": "Card 0-5",
+    "not_for_trading": true
+  },
+  "today_decision": {
+    "date": "2026-04-26",
+    "generated_at": "2026-04-26T07:00:00+09:00",
+    "regime": "bull_volatile",
+    "overall_posture": "neutral_bullish",
+    "summary": "bull_volatileレジームを維持。セクター集中度T5警告あり（防衛31%）。新規買いは防衛・半導体に絞り小ロット。既存コアポジション維持。",
+    "actions": [
+      {
+        "ticker": "6857",
+        "action": "BUY",
+        "reason": "30日アンダーパフォームの押し目。目標比率まで打診買い。",
+        "priority": "high",
+        "size_pct": 1.8,
+        "estimated_amount": 765000
+      }
+    ],
+    "watch_list": ["6758 — 利確検討ライン接近", "T5警告 — 防衛比率31%を監視"],
+    "risk_alerts": ["T5ソフト警告: 防衛セクター集中31%"],
+    "no_action_reasons": [],
+    "safe_mode_active": false,
+    "tier_a_clear": false
+  }
+}

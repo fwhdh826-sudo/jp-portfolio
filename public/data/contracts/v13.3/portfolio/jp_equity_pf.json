@@ -1,0 +1,34 @@
+{
+  "_meta": {
+    "version": "v13.3",
+    "kind": "sample_contract",
+    "generated_for": "Card 0-5",
+    "not_for_trading": true
+  },
+  "jp_equity_pf": {
+    "snapshot_at": "2026-04-26T07:00:00+09:00",
+    "total_eval": 18200000,
+    "total_cost": 14850000,
+    "total_pnl": 3350000,
+    "total_pnl_pct": 22.6,
+    "holdings_count": 8,
+    "metrics": {
+      "mu": 0.088,
+      "sigma": 0.195,
+      "sharpe": 0.451,
+      "beta_weighted": 1.18
+    },
+    "sector_breakdown": {
+      "精密機器・重工業": 0.38,
+      "情報通信": 0.18,
+      "卸売業": 0.15,
+      "電気機器": 0.14,
+      "サービス業": 0.10,
+      "その他": 0.05
+    },
+    "holdings": [
+      { "code": "7011", "name": "三菱重工業", "eval": 3485000, "weight_pct": 19.1, "pnlPct": 28.5, "score": 74, "decision": "BUY" },
+      { "code": "9984", "name": "ソフトバンクグループ", "eval": 2310000, "weight_pct": 12.7, "pnlPct": 5.2, "score": 61, "decision": "HOLD" }
+    ]
+  }
+}

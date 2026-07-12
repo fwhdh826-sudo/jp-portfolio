@@ -1,0 +1,214 @@
+{
+  "_meta": {
+    "version": "v13.3",
+    "kind": "sample_contract",
+    "generated_for": "Card 0-5",
+    "not_for_trading": true
+  },
+  "stock_scores_6axis": [
+    {
+      "ticker": "7011",
+      "company_name": "三菱重工業",
+      "size_segment": "large_cap",
+      "market_cap": 8200000000000,
+      "six_axis": {
+        "value": {
+          "axis": "value",
+          "name_ja": "バリュー",
+          "total": 72,
+          "rating": "A",
+          "components": [
+            {
+              "name": "per_score",
+              "weight": 0.35,
+              "raw_value": 18.2,
+              "normalized": 68,
+              "description": "PER18.2倍はセクター平均を下回る"
+            },
+            {
+              "name": "pbr_score",
+              "weight": 0.30,
+              "raw_value": 2.1,
+              "normalized": 74,
+              "description": "PBR2.1倍は適正水準"
+            },
+            {
+              "name": "ev_ebitda_score",
+              "weight": 0.35,
+              "raw_value": 11.5,
+              "normalized": 75,
+              "description": "EV/EBITDA11.5倍は割安圏"
+            }
+          ],
+          "explanation": "PER・PBR・EV/EBITDAいずれも同業他社対比で割安。バリュー評価A。"
+        },
+        "quality": {
+          "axis": "quality",
+          "name_ja": "クオリティ",
+          "total": 81,
+          "rating": "S",
+          "components": [
+            {
+              "name": "roe_score",
+              "weight": 0.40,
+              "raw_value": 14.2,
+              "normalized": 82,
+              "description": "ROE14.2%は業界水準を大幅に上回る"
+            },
+            {
+              "name": "cf_score",
+              "weight": 0.35,
+              "raw_value": 1.0,
+              "normalized": 80,
+              "description": "営業CF安定。FCF良好。"
+            },
+            {
+              "name": "de_score",
+              "weight": 0.25,
+              "raw_value": 0.85,
+              "normalized": 80,
+              "description": "D/E0.85倍。財務健全。"
+            }
+          ],
+          "explanation": "ROE・キャッシュフロー・財務健全性すべて高水準。クオリティS。"
+        },
+        "growth": {
+          "axis": "growth",
+          "name_ja": "グロース",
+          "total": 65,
+          "rating": "B",
+          "components": [
+            {
+              "name": "eps_growth_score",
+              "weight": 0.50,
+              "raw_value": 18.5,
+              "normalized": 68,
+              "description": "EPS成長率18.5%。防衛受注拡大で高成長継続。"
+            },
+            {
+              "name": "revenue_growth_score",
+              "weight": 0.50,
+              "raw_value": 12.0,
+              "normalized": 62,
+              "description": "売上高成長12%。"
+            }
+          ],
+          "explanation": "EPS・売上高ともに高成長。ただし基準値からやや低め。グロースB。"
+        },
+        "safety": {
+          "axis": "safety",
+          "name_ja": "安全性",
+          "total": 78,
+          "rating": "A",
+          "components": [
+            {
+              "name": "beta_score",
+              "weight": 0.40,
+              "raw_value": 1.15,
+              "normalized": 72,
+              "description": "β1.15。やや高めだが許容範囲。"
+            },
+            {
+              "name": "current_ratio_score",
+              "weight": 0.30,
+              "raw_value": 1.8,
+              "normalized": 82,
+              "description": "流動比率1.8倍。良好。"
+            },
+            {
+              "name": "interest_coverage_score",
+              "weight": 0.30,
+              "raw_value": 12.5,
+              "normalized": 82,
+              "description": "インタレストカバレッジ12.5倍。"
+            }
+          ],
+          "explanation": "財務安全性・流動性ともに高水準。安全性A。"
+        },
+        "momentum": {
+          "axis": "momentum",
+          "name_ja": "モメンタム",
+          "total": 70,
+          "rating": "A",
+          "components": [
+            {
+              "name": "mom_3m_score",
+              "weight": 0.50,
+              "raw_value": 12.5,
+              "normalized": 72,
+              "description": "3ヶ月モメンタム+12.5%。"
+            },
+            {
+              "name": "rsi_score",
+              "weight": 0.25,
+              "raw_value": 58,
+              "normalized": 68,
+              "description": "RSI58。過熱なし。"
+            },
+            {
+              "name": "ma_score",
+              "weight": 0.25,
+              "raw_value": 1.0,
+              "normalized": 70,
+              "description": "MA上位。上昇トレンド継続。"
+            }
+          ],
+          "explanation": "3ヶ月モメンタム良好。RSI適正。モメンタムA。"
+        },
+        "shareholder_return": {
+          "axis": "shareholder_return",
+          "name_ja": "還元力",
+          "total": 62,
+          "rating": "B",
+          "components": [
+            {
+              "name": "div_yield_score",
+              "weight": 0.50,
+              "raw_value": 2.1,
+              "normalized": 60,
+              "description": "配当利回り2.1%。"
+            },
+            {
+              "name": "div_growth_score",
+              "weight": 0.50,
+              "raw_value": 8.5,
+              "normalized": 64,
+              "description": "配当成長率8.5%。安定増配継続。"
+            }
+          ],
+          "explanation": "配当利回りは中程度だが増配傾向は評価できる。還元力B。"
+        }
+      },
+      "cross_axis": {
+        "quality_value": 0.762,
+        "quality_growth": 0.685,
+        "size_quality": 0.648,
+        "size_value": 0.576,
+        "size_momentum": 0.490,
+        "anti_junk": 31
+      },
+      "dynamic_total": {
+        "total": 74,
+        "rating": "A",
+        "axes": {
+          "value": 72,
+          "quality": 81,
+          "growth": 65,
+          "safety": 78,
+          "momentum": 70,
+          "shareholder_return": 62
+        },
+        "regime_used": "bull_volatile",
+        "weights_used": {
+          "value": 0.20,
+          "quality": 0.25,
+          "growth": 0.15,
+          "safety": 0.15,
+          "momentum": 0.15,
+          "shareholder_return": 0.10
+        }
+      },
+      "scored_at": "2026-04-26T06:55:00+09:00"
+    }
+  ]
+}

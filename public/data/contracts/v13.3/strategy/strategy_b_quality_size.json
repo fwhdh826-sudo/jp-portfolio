@@ -1,0 +1,31 @@
+{
+  "_meta": {
+    "version": "v13.3",
+    "kind": "sample_contract",
+    "generated_for": "Card 0-5",
+    "not_for_trading": true
+  },
+  "strategy_file": {
+    "timestamp": "2026-04-26T06:55:00+09:00",
+    "strategy_id": "quality_size",
+    "regime": "bull_volatile",
+    "output": {
+      "ideal_pf": {
+        "7011": 0.075,
+        "6857": 0.065,
+        "6594": 0.060,
+        "8058": 0.055,
+        "4661": 0.050,
+        "6758": 0.045,
+        "8031": 0.040,
+        "6268": 0.035
+      },
+      "expected_return": 0.078,
+      "expected_vol": 0.162,
+      "sharpe_ratio": 0.481,
+      "max_dd_estimate": -0.185,
+      "strategy_id": "quality_size",
+      "rationale": "Quality-Adjusted Size戦略（Asness 2018）は中小型×高品質銘柄を重点配分。低ジャンク・高ROEを優先し、バリュー罠を回避。"
+    }
+  }
+}

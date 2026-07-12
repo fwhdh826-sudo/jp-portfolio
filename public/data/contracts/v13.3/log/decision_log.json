@@ -1,0 +1,38 @@
+{
+  "_meta": {
+    "version": "v13.3",
+    "kind": "sample_contract",
+    "generated_for": "Card 0-5",
+    "not_for_trading": true
+  },
+  "decision_log": [
+    {
+      "code": "7011",
+      "predicted_at": "2026-03-01T07:00:00+09:00",
+      "evaluated_at": "2026-04-01T07:00:00+09:00",
+      "decision": "BUY",
+      "score": 72,
+      "confidence": 0.78,
+      "prev_pnl_pct": 14.2,
+      "curr_pnl_pct": 22.5,
+      "delta_pnl_pct": 8.3,
+      "reward": 0.83,
+      "result": "win",
+      "regime": "bull_calm"
+    },
+    {
+      "code": "6758",
+      "predicted_at": "2026-03-15T07:00:00+09:00",
+      "evaluated_at": "2026-04-15T07:00:00+09:00",
+      "decision": "HOLD",
+      "score": 58,
+      "confidence": 0.55,
+      "prev_pnl_pct": 8.5,
+      "curr_pnl_pct": 9.2,
+      "delta_pnl_pct": 0.7,
+      "reward": 0.07,
+      "result": "flat",
+      "regime": "bull_calm"
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "_meta": {
+    "version": "v13.3",
+    "kind": "sample_contract",
+    "generated_for": "Card 0-5",
+    "not_for_trading": true
+  },
+  "strategy_file": {
+    "timestamp": "2026-04-26T06:55:00+09:00",
+    "strategy_id": "cross_factor",
+    "regime": "bull_volatile",
+    "output": {
+      "ideal_pf": {
+        "6857": 0.075,
+        "7011": 0.070,
+        "6594": 0.060,
+        "9984": 0.050,
+        "8058": 0.045,
+        "6268": 0.040,
+        "4661": 0.035,
+        "6758": 0.030
+      },
+      "expected_return": 0.085,
+      "expected_vol": 0.172,
+      "sharpe_ratio": 0.494,
+      "max_dd_estimate": -0.198,
+      "strategy_id": "cross_factor",
+      "rationale": "Cross-Factor戦略（Alquist 2018）はQuality×Value・Size×Momentum等のクロス軸シグナルで配分。bull_volatileでは小型×モメンタムに重点。"
+    }
+  }
+}

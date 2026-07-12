@@ -1,0 +1,32 @@
+{
+  "_meta": {
+    "version": "v13.3",
+    "kind": "sample_contract",
+    "generated_for": "Card 0-5",
+    "not_for_trading": true
+  },
+  "regime_state": {
+    "timestamp": "2026-04-26T07:00:00+09:00",
+    "current_regime": "bull_volatile",
+    "consensus": 0.67,
+    "votes": {
+      "rule_based": "bull_volatile",
+      "hmm": ["bull_volatile", 0.78],
+      "llm": {
+        "regime": "bull_calm",
+        "confidence": 0.65,
+        "structural_changes": []
+      }
+    },
+    "market_data_snapshot": {
+      "vix": 22.5,
+      "nikkei_5d_return": 0.012,
+      "nikkei_60ma": 51200,
+      "nikkei_200ma": 49800,
+      "sp500_dd_30d": -0.04
+    },
+    "regime_changed_at": "2026-04-22T07:00:00+09:00",
+    "previous_regime": "bull_calm",
+    "duration_hours": 96
+  }
+}

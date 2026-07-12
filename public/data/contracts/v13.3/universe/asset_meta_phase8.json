@@ -1,0 +1,255 @@
+{
+  "_meta": {
+    "version": "v13.3",
+    "kind": "asset_meta_phase8",
+    "source": "manual mapping based on Phase8 simplified sector taxonomy; not official TSE feed",
+    "generated_for": "Card C-2a: phase8 asset_meta input wiring (data layer reference)",
+    "generated_at": "2026-05-24T02:05:00+00:00",
+    "not_for_trading": true,
+    "review_note": "manual hybrid reference; not derived from TSE official feed or auto-pipeline; market_cap values are approximate Q1 2026 estimates; user review required before treating as canonical; partial-real / hybrid (not full real / not full generated)"
+  },
+  "asset_meta_phase8": {
+    "updated_at": "2026-05-24",
+    "universe_count": 16,
+    "sector_taxonomy": "phase8_simplified",
+    "sector_taxonomy_note": "TSE 33 業種分類を Phase 8 用に thematic 集約した粗 sector. 例: machinery_heavy は TSE 機械 + 輸送用機器 を集約, electronics_games は TSE その他製品 + 情報・通信業 (ゲーム分野) を集約.",
+    "size_thresholds_billion": {
+      "large_cap_min": 1000,
+      "mid_cap_min": 200,
+      "small_cap_min": 50
+    },
+    "size_thresholds_note": "JPY 建て時価総額 (billion). 値は Q1 2026 approximate estimate.",
+    "risk_flags_basis": {
+      "is_overseas": "海外売上比 >= 30% を proxy 基準として付与",
+      "is_risk_on": "消費景気循環 / グロース寄り / beta > 1.2 を proxy 基準として付与",
+      "is_defensive": "通信 / 公益 / 食品 / 医薬 等の低 beta defensive 業種を proxy 基準として付与",
+      "is_energy": "直接的エネルギー資源 (石油・ガス) のみ付与. 商社の LNG/石炭エクスポージャや非鉄精錬は含めない"
+    },
+    "by_ticker": {
+      "1605": {
+        "name": "INPEX",
+        "sector": "energy_resources",
+        "size_segment": "large_cap",
+        "is_core": false,
+        "is_leveraged": false,
+        "risk_flags": {
+          "is_risk_on": false,
+          "is_defensive": false,
+          "is_energy": true,
+          "is_overseas": true
+        },
+        "source_note": "TSE 33: 鉱業; market cap approx 2800B JPY (Q1 2026); 国内唯一の上場 E&P (石油・ガス開発)"
+      },
+      "1928": {
+        "name": "積水ハウス",
+        "sector": "construction",
+        "size_segment": "large_cap",
+        "is_core": false,
+        "is_leveraged": false,
+        "risk_flags": {
+          "is_risk_on": false,
+          "is_defensive": false,
+          "is_energy": false,
+          "is_overseas": true
+        },
+        "source_note": "TSE 33: 建設業; market cap approx 2000B JPY (Q1 2026); MDC Holdings 買収以降 北米住宅売上比 ~40-50%"
+      },
+      "4661": {
+        "name": "オリエンタルランド",
+        "sector": "services_entertainment",
+        "size_segment": "large_cap",
+        "is_core": false,
+        "is_leveraged": false,
+        "risk_flags": {
+          "is_risk_on": true,
+          "is_defensive": false,
+          "is_energy": false,
+          "is_overseas": false
+        },
+        "source_note": "TSE 33: サービス業; market cap approx 7900B JPY (Q1 2026); 東京ディズニーリゾート運営 / 国内消費景気感応 / 海外売上少"
+      },
+      "4755": {
+        "name": "楽天グループ",
+        "sector": "services_internet",
+        "size_segment": "large_cap",
+        "is_core": false,
+        "is_leveraged": false,
+        "risk_flags": {
+          "is_risk_on": true,
+          "is_defensive": false,
+          "is_energy": false,
+          "is_overseas": false
+        },
+        "source_note": "TSE 33: サービス業; market cap approx 1800B JPY (Q1 2026); EC + Mobile + 金融複合体 / Phase 8 では internet platform として services_internet 集約"
+      },
+      "5016": {
+        "name": "JX金属",
+        "sector": "nonferrous_metals",
+        "size_segment": "large_cap",
+        "is_core": false,
+        "is_leveraged": false,
+        "risk_flags": {
+          "is_risk_on": false,
+          "is_defensive": false,
+          "is_energy": false,
+          "is_overseas": true
+        },
+        "source_note": "TSE 33: 非鉄金属; market cap approx 1300B JPY (Q1 2026); 銅製錬 + 半導体材料 / 海外比率高"
+      },
+      "5711": {
+        "name": "三菱マテリアル",
+        "sector": "nonferrous_metals",
+        "size_segment": "mid_cap",
+        "is_core": false,
+        "is_leveraged": false,
+        "risk_flags": {
+          "is_risk_on": false,
+          "is_defensive": false,
+          "is_energy": false,
+          "is_overseas": true
+        },
+        "source_note": "TSE 33: 非鉄金属; market cap approx 400B JPY (Q1 2026); 銅精錬 + セメント + 加工事業 / 海外比率高"
+      },
+      "6098": {
+        "name": "リクルートホールディングス",
+        "sector": "services_internet",
+        "size_segment": "large_cap",
+        "is_core": false,
+        "is_leveraged": false,
+        "risk_flags": {
+          "is_risk_on": true,
+          "is_defensive": false,
+          "is_energy": false,
+          "is_overseas": true
+        },
+        "source_note": "TSE 33: サービス業; market cap approx 14000B JPY (Q1 2026); Indeed / Glassdoor が連結売上 ~60% / Phase 8 では internet platform として services_internet 集約"
+      },
+      "7011": {
+        "name": "三菱重工業",
+        "sector": "machinery_heavy",
+        "size_segment": "large_cap",
+        "is_core": false,
+        "is_leveraged": false,
+        "risk_flags": {
+          "is_risk_on": false,
+          "is_defensive": false,
+          "is_energy": false,
+          "is_overseas": true
+        },
+        "source_note": "TSE 33: 機械; market cap approx 9500B JPY (Q1 2026); 防衛装備 + 発電 + 造船 + 航空宇宙 / 海外比率 ~50% / Phase 8 では 7012 と machinery_heavy 集約"
+      },
+      "7012": {
+        "name": "川崎重工業",
+        "sector": "machinery_heavy",
+        "size_segment": "large_cap",
+        "is_core": false,
+        "is_leveraged": false,
+        "risk_flags": {
+          "is_risk_on": false,
+          "is_defensive": false,
+          "is_energy": false,
+          "is_overseas": true
+        },
+        "source_note": "TSE 33: 輸送用機器; market cap approx 1800B JPY (Q1 2026); 造船 + 鉄道車両 + 航空宇宙 + 二輪 / Phase 8 では 7011 と machinery_heavy 集約 (TSE 33 とは異なる)"
+      },
+      "7974": {
+        "name": "任天堂",
+        "sector": "electronics_games",
+        "size_segment": "large_cap",
+        "is_core": false,
+        "is_leveraged": false,
+        "risk_flags": {
+          "is_risk_on": true,
+          "is_defensive": false,
+          "is_energy": false,
+          "is_overseas": true
+        },
+        "source_note": "TSE 33: その他製品; market cap approx 9800B JPY (Q1 2026); 家庭用ゲーム / 海外売上比 75%+ / Phase 8 では 9697 と electronics_games 集約 (TSE 33 とは異なる)"
+      },
+      "8058": {
+        "name": "三菱商事",
+        "sector": "trading_wholesale",
+        "size_segment": "large_cap",
+        "is_core": false,
+        "is_leveraged": false,
+        "risk_flags": {
+          "is_risk_on": false,
+          "is_defensive": false,
+          "is_energy": false,
+          "is_overseas": true
+        },
+        "source_note": "TSE 33: 卸売業; market cap approx 11000B JPY (Q1 2026); 総合商社 (金属 + エネルギー + 食品 + 機械) / 海外比率高 / LNG・石炭エクスポージャあるが is_energy は直接 E&P に限定したため false"
+      },
+      "8306": {
+        "name": "三菱UFJフィナンシャル・グループ",
+        "sector": "banking",
+        "size_segment": "large_cap",
+        "is_core": false,
+        "is_leveraged": false,
+        "risk_flags": {
+          "is_risk_on": false,
+          "is_defensive": false,
+          "is_energy": false,
+          "is_overseas": true
+        },
+        "source_note": "TSE 33: 銀行業; market cap approx 21000B JPY (Q1 2026); 国内 megabank / 海外売上比 ~40% (米州 + 東南アジア)"
+      },
+      "8593": {
+        "name": "三菱HCキャピタル",
+        "sector": "financials_other",
+        "size_segment": "large_cap",
+        "is_core": false,
+        "is_leveraged": false,
+        "risk_flags": {
+          "is_risk_on": false,
+          "is_defensive": false,
+          "is_energy": false,
+          "is_overseas": true
+        },
+        "source_note": "TSE 33: その他金融業; market cap approx 1800B JPY (Q1 2026); 総合リース / 海外比率高"
+      },
+      "9418": {
+        "name": "U-NEXT HOLDINGS",
+        "sector": "telecom_media",
+        "size_segment": "mid_cap",
+        "is_core": false,
+        "is_leveraged": false,
+        "risk_flags": {
+          "is_risk_on": true,
+          "is_defensive": false,
+          "is_energy": false,
+          "is_overseas": false
+        },
+        "source_note": "TSE 33: 情報・通信業; market cap approx 360B JPY (Q1 2026); 動画配信 (U-NEXT) + B2B IT / 国内中心 / Phase 8 では 9433 と telecom_media 集約 (KDDI=通信インフラ / U-NEXT=メディア で thematic 異質)"
+      },
+      "9433": {
+        "name": "KDDI",
+        "sector": "telecom_media",
+        "size_segment": "large_cap",
+        "is_core": false,
+        "is_leveraged": false,
+        "risk_flags": {
+          "is_risk_on": false,
+          "is_defensive": true,
+          "is_energy": false,
+          "is_overseas": false
+        },
+        "source_note": "TSE 33: 情報・通信業; market cap approx 10800B JPY (Q1 2026); 通信インフラ / defensive 業種 / 国内中心"
+      },
+      "9697": {
+        "name": "カプコン",
+        "sector": "electronics_games",
+        "size_segment": "mid_cap",
+        "is_core": false,
+        "is_leveraged": false,
+        "risk_flags": {
+          "is_risk_on": true,
+          "is_defensive": false,
+          "is_energy": false,
+          "is_overseas": true
+        },
+        "source_note": "TSE 33: 情報・通信業; market cap approx 700B JPY (Q1 2026); ゲームソフト開発 / 海外売上比 50%+ / Phase 8 では 7974 と electronics_games 集約 (TSE 33 とは異なる)"
+      }
+    }
+  }
+}

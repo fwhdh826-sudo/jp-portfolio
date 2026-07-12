@@ -1,0 +1,282 @@
+import { describe, it, expect } from 'vitest'
+import type { Trust } from '../types'
+import { useAppStore, runFullAnalysis } from './useAppStore'
+
+// P4.5-A013-T5:
+// public/data/trust_master.json はP4.5-A010-1aで恒久的に配信停止された（今後
+// dataTimestamps.trustは常にnull）。従来のcandidate pipelineゲートは
+// `dataTimestamps.trust != null` を条件にしていたため、CSV full-sync（T3）で
+// 得た信頼できる保有eval値があっても、投信候補パイプラインが恒久的に停止する
+// バグがあった。修正後は「csvLastImportedAtが設定されているか（＝eval値が
+// CSV由来で信頼できるか）」でゲートし、trust_masterの取得成否には依存しない。
+//
+// ここではrunFullAnalysisを直接呼び出し、以下を確認する:
+//  - trust timestamp null + 最新CSV + fresh market → 候補パイプラインが動く
+//  - trust timestamp null + stale market（DQ抑制）→ BUY抑制は維持される
+//  - CSV未取込（csvLastImportedAt=null）→ 候補パイプラインは動かない（安全側）
+//  - trust registry不正（空配列等）→ fail-safeでクラッシュしない
+//  - SAFE_MODE active → 候補抑制が維持される
+//  - noTrade（緊急） → 候補抑制が維持される
+
+function makeTrust(overrides: Partial<Trust> = {}): Trust {
+  return {
+    id: 'held_overseas',
+    name: '海外長期保有ファンド',
+    abbr: '海外長期',
+    account: '特定',
+    policy: 'OVERSEAS_LONGTERM',
+    eval: 1_000_000,
+    pnlPct: 10,
+    dayPct: 0,
+    cost: 0.2,
+    mu: 0.1,
+    sigma: 0.15,
+    score: 50,
+    signal: 'HOLD',
+    ev: 0,
+    decision: 'HOLD',
+    ...overrides,
+  }
+}
+
+// score>=75, sigma<0.25, marketCaution=false, cost<=0.60(gold threshold), account!=='NISA積立'
+// → 全gateを通過しBUY_NEWとなるゴールド候補（role='gold'はrole重複gate対象外）
+function makeGoldCandidate(overrides: Partial<Trust> = {}): Trust {
+  return makeTrust({
+    id: 'gold_candidate',
+    name: '金インデックスファンド',
+    abbr: 'ゴールド',
+    policy: 'GOLD',
+    eval: 0,
+    cost: 0.3,
+    mu: 0.10,
+    sigma: 0.10,
+    ...overrides,
+  })
+}
+
+// P0-PRIVACY-DEPLOY-RECOVERY: 固定の過去日時だと、selectMarketDataQuality /
+// computeSafeModeDataQuality が実行時のDate.now()と比較してMARKET_DATA_STALE_HOURS
+// (24h) / SAFE_MODE_STALE_HOURS (96h) を超過した時点でfail-closedに倒れ、
+// 「fresh」を意図したテストが実行日に依存して壊れる（テスト分離不足）。
+// stockLock.test.tsのdaysAgo()と同様に、実行時刻基準の動的な値にして
+// 常にfreshと評価されるようにする。
+const NOW = new Date().toISOString()
+
+function buildPermissiveState(overrides: {
+  trust?: Trust[]
+  csvLastImportedAt?: string | null
+  marketFresh?: boolean
+  safeModeActive?: boolean
+  safeModeFresh?: boolean
+}) {
+  const base = useAppStore.getState()
+  const marketFresh = overrides.marketFresh ?? true
+  const safeModeFresh = overrides.safeModeFresh ?? true
+  const safeModeActive = overrides.safeModeActive ?? false
+
+  return {
+    ...base,
+    holdings: [],
+    trust: overrides.trust ?? [makeTrust(), makeGoldCandidate()],
+    // P0-PRIVACY-HOTFIX: INITIAL_CASH/INITIAL_CASH_RESERVEが0になったため、
+    // BUY_NEW候補のavailableCash gate（INSUFFICIENT_CASH）を通過させるには
+    // このテスト用の"permissive"状態として明示的に十分な現金を与える必要がある。
+    cash: 5_000_000,
+    cashReserve: 0,
+    safeMode: {
+      ...base.safeMode,
+      safe_mode: { ...base.safeMode.safe_mode, active: safeModeActive },
+    },
+    system: {
+      ...base.system,
+      csvLastImportedAt: overrides.csvLastImportedAt === undefined ? NOW : overrides.csvLastImportedAt,
+      dataSourceStatus: {
+        ...base.system.dataSourceStatus,
+        market: marketFresh ? ('loaded' as const) : ('static' as const),
+        safeMode: 'loaded' as const,
+      },
+      dataTimestamps: {
+        ...base.system.dataTimestamps!,
+        market: marketFresh ? NOW : null,
+        trust: null, // public trust_master.jsonは常に404（P4.5-A010-1a）
+        safeMode: safeModeFresh ? NOW : null,
+      },
+    },
+  }
+}
+
+function goldCandidateAction(officialDecision: ReturnType<typeof runFullAnalysis>['officialDecision']) {
+  return officialDecision?.actions.find(a => a.isCandidate && a.assetType === 'gold')
+}
+
+describe('runFullAnalysis: 投信候補パイプラインとtrust_master公開停止の分離（P4.5-A013-T5）', () => {
+  it('trust timestamp null + 最新CSV + fresh market → 候補パイプラインが不必要に停止せずBUY_NEW候補が出る', () => {
+    const state = buildPermissiveState({})
+    const result = runFullAnalysis(state)
+
+    expect(state.system.dataTimestamps.trust).toBeNull() // 前提: public trust_masterは404
+    const candidate = goldCandidateAction(result.officialDecision)
+    expect(candidate).toBeDefined()
+    expect(candidate?.action).toBe('BUY_NEW')
+  })
+
+  it('trust timestamp null + stale market（DQ抑制） → BUY抑制が維持される（候補は出るがBLOCKED）', () => {
+    const state = buildPermissiveState({ marketFresh: false })
+    const result = runFullAnalysis(state)
+
+    // csvLastImportedAtがあるため候補パイプライン自体は動くが、
+    // market dqSuppressedによりGate1（DQ_SUPPRESSED）で即ブロックされる
+    const candidate = goldCandidateAction(result.officialDecision)
+    expect(candidate).toBeUndefined()
+  })
+
+  it('CSV未取込（csvLastImportedAt=null）+ registryのみ → 候補パイプラインは安全側で動かない', () => {
+    const state = buildPermissiveState({ csvLastImportedAt: null })
+    const result = runFullAnalysis(state)
+
+    const candidate = goldCandidateAction(result.officialDecision)
+    expect(candidate).toBeUndefined()
+  })
+
+  it('trust registryが空配列でもクラッシュせずfail-safeに動作する', () => {
+    const state = buildPermissiveState({ trust: [] })
+    expect(() => runFullAnalysis(state)).not.toThrow()
+    const result = runFullAnalysis(state)
+    expect(result.officialDecision).not.toBeNull()
+    expect(goldCandidateAction(result.officialDecision)).toBeUndefined()
+  })
+
+  it('trust registryが不正な値（eval等がNaN）でもクラッシュせずfail-safeに動作する', () => {
+    const state = buildPermissiveState({
+      trust: [makeTrust(), makeGoldCandidate({ eval: NaN as unknown as number })],
+    })
+    expect(() => runFullAnalysis(state)).not.toThrow()
+  })
+
+  it('SAFE_MODE active → 候補抑制が維持される（最新CSV・fresh marketでもBUY_NEWにならない）', () => {
+    const state = buildPermissiveState({ safeModeActive: true })
+    const result = runFullAnalysis(state)
+
+    const candidate = goldCandidateAction(result.officialDecision)
+    expect(candidate).toBeUndefined()
+  })
+
+  it('緊急noTrade（VIXパニック水準）→ 候補抑制が維持される', () => {
+    const state = buildPermissiveState({})
+    state.market = { ...state.market, vix: 35 } // VIX_PANIC(30)超過
+    const result = runFullAnalysis(state)
+
+    const candidate = goldCandidateAction(result.officialDecision)
+    expect(candidate).toBeUndefined()
+  })
+
+  it('zeroBase（zeroPlan）はtrust候補ゲートの変更後も引き続き生成される', () => {
+    const state = buildPermissiveState({})
+    const result = runFullAnalysis(state)
+    expect(result.zeroPlan).not.toBeNull()
+  })
+
+  it('officialDecisionはtrust候補ゲートの変更後も引き続き生成される（committee基本判定は候補と独立）', () => {
+    const state = buildPermissiveState({ csvLastImportedAt: null })
+    const result = runFullAnalysis(state)
+    // 候補パイプラインが止まっていてもcommitteeベースのofficialDecision自体は生成される
+    expect(result.officialDecision).not.toBeNull()
+    expect(result.officialDecision?.source).toBe('committee')
+  })
+})
+
+// P4.5-A013-HARDENING-F1:
+// importCsv内では従来 holdings/trust を先にset → runFullAnalysis(get()) → その後に
+// csvLastImportedAt=now をsetする順序だった。上のT5ゲートはstate.system.csvLastImportedAtの
+// 有無を見るため、csvLastImportedAtがnullのまま初回CSV取込のrunFullAnalysisが走る
+// 初回取込ターンだけ候補パイプラインが（誤って）止まっていた。
+// ここではrunFullAnalysisを直接叩くのではなく、実際のuseAppStore.importCsv()を
+// 呼び出し、初回取込と同一ターンでBUY_NEW候補がofficialDecisionへ反映されることを
+// 確認する（refresh/reload相当の2回目呼び出しは行わない）。
+if (typeof globalThis.FileReader === 'undefined') {
+  class NodeFileReaderPolyfill {
+    onload: ((event: { target: { result: ArrayBuffer } }) => void) | null = null
+    onerror: (() => void) | null = null
+    result: ArrayBuffer | null = null
+    readAsArrayBuffer(file: File) {
+      file.arrayBuffer().then(buf => {
+        this.result = buf
+        this.onload?.({ target: { result: buf } })
+      }).catch(() => {
+        this.onerror?.()
+      })
+    }
+  }
+  // @ts-expect-error Node環境専用の最小FileReader polyfill
+  globalThis.FileReader = NodeFileReaderPolyfill
+}
+
+function makeCsvFile(content: string, filename = 'portfolio.csv'): File {
+  return new File([content], filename)
+}
+
+describe('useAppStore.importCsv: 初回CSV取込でも同一ターンでtrust candidate pipelineが動く（P4.5-A013-HARDENING-F1）', () => {
+  const STOCK_ONLY_CSV = [
+    '株式（現物/特定預り）',
+    '銘柄コード,銘柄名,現在値,評価額,損益（％）,前日比（％）,取得日',
+    '6501,日立製作所,8500,900000,15.20,1.10,2025-06-01',
+  ].join('\n')
+
+  function resetToPermissiveFirstImportState(overrides: Parameters<typeof buildPermissiveState>[0] = {}) {
+    const permissive = buildPermissiveState({ csvLastImportedAt: null, ...overrides })
+    useAppStore.setState({
+      ...permissive,
+      // 前のテストがVIXパニック水準等でstate.marketを書き換えたまま残る可能性があるため、
+      // ここで明示的に平常値へ戻す（テスト間のstate leak防止）。
+      market: { ...permissive.market, vix: 19.9 },
+      holdings: [],
+      system: { ...permissive.system, status: 'idle', error: null, csvSyncSummary: null },
+    })
+  }
+
+  it('csvLastImportedAt=nullの初期状態から正常な初回CSV取込を行うと、同一ターンでBUY_NEW候補がofficialDecisionへ反映される（refresh不要）', async () => {
+    resetToPermissiveFirstImportState()
+    expect(useAppStore.getState().system.csvLastImportedAt).toBeNull()
+
+    await useAppStore.getState().importCsv(makeCsvFile(STOCK_ONLY_CSV))
+
+    const state = useAppStore.getState()
+    expect(state.system.status).toBe('success')
+    expect(state.system.csvLastImportedAt).not.toBeNull()
+    const candidate = goldCandidateAction(state.officialDecision)
+    expect(candidate).toBeDefined()
+    expect(candidate?.action).toBe('BUY_NEW')
+  })
+
+  it('stale market（DQ抑制）: 初回CSV取込後もF1修正後の候補抑制は維持される', async () => {
+    resetToPermissiveFirstImportState({ marketFresh: false })
+    await useAppStore.getState().importCsv(makeCsvFile(STOCK_ONLY_CSV))
+    const candidate = goldCandidateAction(useAppStore.getState().officialDecision)
+    expect(candidate).toBeUndefined()
+  })
+
+  it('SAFE_MODE active: 初回CSV取込後もF1修正後の候補抑制は維持される', async () => {
+    resetToPermissiveFirstImportState({ safeModeActive: true })
+    await useAppStore.getState().importCsv(makeCsvFile(STOCK_ONLY_CSV))
+    const candidate = goldCandidateAction(useAppStore.getState().officialDecision)
+    expect(candidate).toBeUndefined()
+  })
+
+  it('緊急noTrade（VIXパニック水準）: 初回CSV取込後もF1修正後の候補抑制は維持される', async () => {
+    resetToPermissiveFirstImportState()
+    useAppStore.setState(s => ({ market: { ...s.market, vix: 35 } })) // VIX_PANIC(30)超過
+    await useAppStore.getState().importCsv(makeCsvFile(STOCK_ONLY_CSV))
+    const candidate = goldCandidateAction(useAppStore.getState().officialDecision)
+    expect(candidate).toBeUndefined()
+  })
+
+  it('DQ/SAFE_MODE/noTradeいずれも該当しない通常時は、CSV取込のたびに候補が壊れず継続して出る（2回目以降の回帰なし）', async () => {
+    resetToPermissiveFirstImportState()
+    await useAppStore.getState().importCsv(makeCsvFile(STOCK_ONLY_CSV))
+    await useAppStore.getState().importCsv(makeCsvFile(STOCK_ONLY_CSV))
+    const candidate = goldCandidateAction(useAppStore.getState().officialDecision)
+    expect(candidate).toBeDefined()
+    expect(candidate?.action).toBe('BUY_NEW')
+  })
+})

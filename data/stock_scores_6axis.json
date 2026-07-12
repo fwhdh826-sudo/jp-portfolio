@@ -1,0 +1,4265 @@
+{
+  "_meta": {
+    "version": "v13.3",
+    "kind": "stock_scores_6axis",
+    "source": "scoring_orchestrator + data/fundamentals.json + public/data/returns.json",
+    "generated_at": "2026-05-20T00:52:09.699894+00:00",
+    "not_for_trading": true,
+    "note": "partial-real hybrid / not full real / not full generated / volatility_252d derived from returns.json / momentum and passthrough technical-deferred neutral / financial-sector bounded distortion documented"
+  },
+  "last_updated": "2026-05-20T00:52:09.699894+00:00",
+  "tickers": [
+    "6098.T",
+    "8306.T",
+    "9697.T",
+    "4661.T",
+    "8593.T",
+    "4755.T",
+    "5711.T",
+    "1605.T",
+    "5016.T",
+    "8058.T",
+    "9418.T",
+    "1928.T",
+    "7011.T",
+    "7974.T",
+    "9433.T",
+    "7012.T"
+  ],
+  "missing": [],
+  "stock_scores_6axis": [
+    {
+      "ticker": "6098.T",
+      "six_axis": {
+        "value": {
+          "axis": "value",
+          "name_ja": "バリュー",
+          "total": 10,
+          "components": [
+            {
+              "name": "per_score",
+              "weight": 0.3,
+              "raw_value": 28.329739,
+              "normalized": 8.351304999999996,
+              "description": "PER 28.33 — 割高水準（スコア8）"
+            },
+            {
+              "name": "pbr_score",
+              "weight": 0.25,
+              "raw_value": 8.873779,
+              "normalized": 0.0,
+              "description": "PBR 8.87 — 割高水準（スコア0）"
+            },
+            {
+              "name": "peg_score",
+              "weight": 0.2,
+              "raw_value": 2.41,
+              "normalized": 29.5,
+              "description": "PEG 2.41 — 割高水準（スコア30）"
+            },
+            {
+              "name": "div_yield",
+              "weight": 0.15,
+              "raw_value": 0.29,
+              "normalized": 7.249999999999999,
+              "description": "配当利回り 0.29% — 低配当（スコア7）"
+            },
+            {
+              "name": "ev_ebitda",
+              "weight": 0.1,
+              "raw_value": 17.425,
+              "normalized": 5.75,
+              "description": "EV/EBITDA 17.43 — 割高水準（スコア6）"
+            }
+          ],
+          "explanation": "バリュースコア 10 — PEGが高評価、PBRが相対的に低評価（割高水準）"
+        },
+        "safety": {
+          "axis": "safety",
+          "name_ja": "安全性",
+          "total": 71,
+          "components": [
+            {
+              "name": "equity_ratio",
+              "weight": 0.3,
+              "raw_value": 58.349024547551956,
+              "normalized": 87.52353682132794,
+              "description": "自己資本比率 58.35% — 財務健全（スコア88）"
+            },
+            {
+              "name": "de_ratio",
+              "weight": 0.25,
+              "raw_value": 0.7077805020085535,
+              "normalized": 71.68877991965786,
+              "description": "D/Eレシオ 0.71 — 低レバレッジ（スコア72）"
+            },
+            {
+              "name": "interest_cover",
+              "weight": 0.2,
+              "raw_value": 60.894588235294115,
+              "normalized": 100.0,
+              "description": "インタレストカバレッジ 60.89 — 高カバレッジ（スコア100）"
+            },
+            {
+              "name": "volatility_252d",
+              "weight": 0.15,
+              "raw_value": 0.47759355562206834,
+              "normalized": 4.48128887558633,
+              "description": "ボラティリティ 0.48 — 高ボラ（スコア4）"
+            },
+            {
+              "name": "beta_inverse",
+              "weight": 0.1,
+              "raw_value": 0.86,
+              "normalized": 64.0,
+              "description": "ベータ逆数 0.86 — 標準水準（スコア64）"
+            }
+          ],
+          "explanation": "安全性スコア 71 — インタレストカバレッジが高評価、ボラティリティが相対的に低評価（安全水準）"
+        },
+        "shareholder_return": {
+          "axis": "shareholder_return",
+          "name_ja": "還元力",
+          "total": 42,
+          "components": [
+            {
+              "name": "div_payout",
+              "weight": 0.3,
+              "raw_value": 0.0719,
+              "normalized": 10.785,
+              "description": "配当性向 0.0719 — 低配当性向（スコア11）"
+            },
+            {
+              "name": "buyback_yield",
+              "weight": 0.25,
+              "raw_value": 8.858534027811455,
+              "normalized": 100.0,
+              "description": "自社株買い利回り 8.8585 — 積極自社株買い（スコア100）"
+            },
+            {
+              "name": "doe",
+              "weight": 0.2,
+              "raw_value": 2.203535894934538,
+              "normalized": 66.10607684803614,
+              "description": "DOE 2.2035 — 標準水準（スコア66）"
+            },
+            {
+              "name": "div_growth_5y",
+              "weight": 0.15,
+              "raw_value": -2.031861831471815,
+              "normalized": 0.0,
+              "description": "5年増配率 -2.0319 — 増配少（スコア0）"
+            },
+            {
+              "name": "total_yield",
+              "weight": 0.1,
+              "raw_value": 0.29,
+              "normalized": 7.249999999999999,
+              "description": "総還元利回り 0.2900 — 低還元（スコア7）"
+            }
+          ],
+          "explanation": "還元力スコア 42 — 自社株買い利回りが高評価、5年増配率が相対的に低評価（標準水準）"
+        },
+        "quality": {
+          "axis": "quality",
+          "name_ja": "クオリティ",
+          "total": 76,
+          "components": [
+            {
+              "name": "roe_3y_avg",
+              "weight": 0.3,
+              "raw_value": 19.673134034148035,
+              "normalized": 98.36567017074017,
+              "description": "ROE(3年平均) 19.67% — 高収益性（スコア98）"
+            },
+            {
+              "name": "roa",
+              "weight": 0.2,
+              "raw_value": 14.735456949801101,
+              "normalized": 100.0,
+              "description": "ROA 14.74% — 高効率（スコア100）"
+            },
+            {
+              "name": "fcf_yield",
+              "weight": 0.2,
+              "raw_value": 3.9780814701900065,
+              "normalized": 59.6712220528501,
+              "description": "FCF利回り 3.98% — 標準水準（スコア60）"
+            },
+            {
+              "name": "moat_score",
+              "weight": 0.2,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "競争優位 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "earnings_stab",
+              "weight": 0.1,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "利益安定性 50.00 — 標準水準（スコア50）"
+            }
+          ],
+          "explanation": "クオリティスコア 76 — ROAが高評価、利益安定性が相対的に低評価（高品質水準）"
+        },
+        "growth": {
+          "axis": "growth",
+          "name_ja": "グロース",
+          "total": 43,
+          "components": [
+            {
+              "name": "revenue_cagr_3y",
+              "weight": 0.4,
+              "raw_value": 7.3991389616047565,
+              "normalized": 36.995694808023785,
+              "description": "売上CAGR 7.40% — 標準水準（スコア37）"
+            },
+            {
+              "name": "eps_growth_3y",
+              "weight": 0.3,
+              "raw_value": 11.231564061626752,
+              "normalized": 44.92625624650701,
+              "description": "EPS成長率 11.23% — 標準水準（スコア45）"
+            },
+            {
+              "name": "guidance",
+              "weight": 0.2,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "業績ガイダンス 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "tam_expansion",
+              "weight": 0.1,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "TAM拡大性 50.00 — 標準水準（スコア50）"
+            }
+          ],
+          "explanation": "グロースコア 43 — 業績ガイダンスが高評価、売上CAGRが相対的に低評価（標準水準）"
+        },
+        "momentum": {
+          "axis": "momentum",
+          "name_ja": "モメンタム",
+          "total": 50,
+          "components": [
+            {
+              "name": "trend_score",
+              "weight": 0.3,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "トレンドスコア 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "ma_spread",
+              "weight": 0.25,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "MA乖離 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "credit_ratio",
+              "weight": 0.2,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "信用倍率 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "volume_z",
+              "weight": 0.15,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "出来高Z 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "relative_strength",
+              "weight": 0.1,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "相対強度 50.00 — 標準水準（スコア50）"
+            }
+          ],
+          "explanation": "モメンタムスコア 50 — トレンドスコアが高評価、相対強度が相対的に低評価（標準水準）"
+        }
+      },
+      "diagnostics": [
+        "observation: scores are partial-real / hybrid (not full real / not full generated)",
+        "observation: missing components fall back to scorer MISSING_RAW_VALUES neutral",
+        "observation: financial-sector tickers may show bounded de_ratio/fcf_yield/equity_ratio distortion",
+        "observation: momentum components are technical-deferred (financial_data 不在→中立 50)",
+        "observation: volatility_252d expects caller-supplied value derived from returns.json",
+        "observation: 6098.T fundamentals snapshot from data/fundamentals.json"
+      ]
+    },
+    {
+      "ticker": "8306.T",
+      "six_axis": {
+        "value": {
+          "axis": "value",
+          "name_ja": "バリュー",
+          "total": 77,
+          "components": [
+            {
+              "name": "per_score",
+              "weight": 0.3,
+              "raw_value": 14.636213,
+              "normalized": 76.81893500000001,
+              "description": "PER 14.64 — 割安水準（スコア77）"
+            },
+            {
+              "name": "pbr_score",
+              "weight": 0.25,
+              "raw_value": 1.5750122,
+              "normalized": 82.749634,
+              "description": "PBR 1.58 — 割安水準（スコア83）"
+            },
+            {
+              "name": "peg_score",
+              "weight": 0.2,
+              "raw_value": 1.41,
+              "normalized": 79.5,
+              "description": "PEG 1.41 — 割安水準（スコア80）"
+            },
+            {
+              "name": "div_yield",
+              "weight": 0.15,
+              "raw_value": 3.21,
+              "normalized": 80.25,
+              "description": "配当利回り 3.21% — 高配当（スコア80）"
+            },
+            {
+              "name": "ev_ebitda",
+              "weight": 0.1,
+              "raw_value": 13.0,
+              "normalized": 50.0,
+              "description": "EV/EBITDA 13.00 — 標準水準（スコア50）"
+            }
+          ],
+          "explanation": "バリュースコア 77 — PBRが高評価、EV/EBITDAが相対的に低評価（割安水準）"
+        },
+        "safety": {
+          "axis": "safety",
+          "name_ja": "安全性",
+          "total": 28,
+          "components": [
+            {
+              "name": "equity_ratio",
+              "weight": 0.3,
+              "raw_value": 5.159233811655571,
+              "normalized": 7.738850717483356,
+              "description": "自己資本比率 5.16% — 財務脆弱（スコア8）"
+            },
+            {
+              "name": "de_ratio",
+              "weight": 0.25,
+              "raw_value": 18.316721932797105,
+              "normalized": 0.0,
+              "description": "D/Eレシオ 18.32 — 高レバレッジ（スコア0）"
+            },
+            {
+              "name": "interest_cover",
+              "weight": 0.2,
+              "raw_value": 6.25,
+              "normalized": 50.0,
+              "description": "インタレストカバレッジ 6.25 — 標準水準（スコア50）"
+            },
+            {
+              "name": "volatility_252d",
+              "weight": 0.15,
+              "raw_value": 0.30480313076834553,
+              "normalized": 39.039373846330896,
+              "description": "ボラティリティ 0.30 — 標準水準（スコア39）"
+            },
+            {
+              "name": "beta_inverse",
+              "weight": 0.1,
+              "raw_value": 0.325,
+              "normalized": 100.0,
+              "description": "ベータ逆数 0.33 — 低ベータ（スコア100）"
+            }
+          ],
+          "explanation": "安全性スコア 28 — ベータ逆数が高評価、D/Eレシオが相対的に低評価（要注意水準）"
+        },
+        "shareholder_return": {
+          "axis": "shareholder_return",
+          "name_ja": "還元力",
+          "total": 86,
+          "components": [
+            {
+              "name": "div_payout",
+              "weight": 0.3,
+              "raw_value": 0.405,
+              "normalized": 60.75000000000001,
+              "description": "配当性向 0.4050 — 標準水準（スコア61）"
+            },
+            {
+              "name": "buyback_yield",
+              "weight": 0.25,
+              "raw_value": 6.111235846021608,
+              "normalized": 100.0,
+              "description": "自社株買い利回り 6.1112 — 積極自社株買い（スコア100）"
+            },
+            {
+              "name": "doe",
+              "weight": 0.2,
+              "raw_value": 3.808922853689766,
+              "normalized": 100.0,
+              "description": "DOE 3.8089 — 高DOE（スコア100）"
+            },
+            {
+              "name": "div_growth_5y",
+              "weight": 0.15,
+              "raw_value": 9.060223492478926,
+              "normalized": 100.0,
+              "description": "5年増配率 9.0602 — 高増配（スコア100）"
+            },
+            {
+              "name": "total_yield",
+              "weight": 0.1,
+              "raw_value": 3.21,
+              "normalized": 80.25,
+              "description": "総還元利回り 3.2100 — 高還元（スコア80）"
+            }
+          ],
+          "explanation": "還元力スコア 86 — 自社株買い利回りが高評価、配当性向が相対的に低評価（高還元水準）"
+        },
+        "quality": {
+          "axis": "quality",
+          "name_ja": "クオリティ",
+          "total": 30,
+          "components": [
+            {
+              "name": "roe_3y_avg",
+              "weight": 0.3,
+              "raw_value": 9.266966620936886,
+              "normalized": 46.33483310468443,
+              "description": "ROE(3年平均) 9.27% — 標準水準（スコア46）"
+            },
+            {
+              "name": "roa",
+              "weight": 0.2,
+              "raw_value": 0.5622079301927688,
+              "normalized": 5.6220793019276885,
+              "description": "ROA 0.56% — 低効率（スコア6）"
+            },
+            {
+              "name": "fcf_yield",
+              "weight": 0.2,
+              "raw_value": -67.6632937653644,
+              "normalized": 0.0,
+              "description": "FCF利回り -67.66% — 低FCF（スコア0）"
+            },
+            {
+              "name": "moat_score",
+              "weight": 0.2,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "競争優位 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "earnings_stab",
+              "weight": 0.1,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "利益安定性 50.00 — 標準水準（スコア50）"
+            }
+          ],
+          "explanation": "クオリティスコア 30 — 競争優位が高評価、FCF利回りが相対的に低評価（低品質水準）"
+        },
+        "growth": {
+          "axis": "growth",
+          "name_ja": "グロース",
+          "total": 60,
+          "components": [
+            {
+              "name": "revenue_cagr_3y",
+              "weight": 0.4,
+              "raw_value": 7.482113955464631,
+              "normalized": 37.410569777323154,
+              "description": "売上CAGR 7.48% — 標準水準（スコア37）"
+            },
+            {
+              "name": "eps_growth_3y",
+              "weight": 0.3,
+              "raw_value": 29.544166267570926,
+              "normalized": 100.0,
+              "description": "EPS成長率 29.54% — 高EPS成長（スコア100）"
+            },
+            {
+              "name": "guidance",
+              "weight": 0.2,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "業績ガイダンス 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "tam_expansion",
+              "weight": 0.1,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "TAM拡大性 50.00 — 標準水準（スコア50）"
+            }
+          ],
+          "explanation": "グロースコア 60 — EPS成長率が高評価、売上CAGRが相対的に低評価（標準水準）"
+        },
+        "momentum": {
+          "axis": "momentum",
+          "name_ja": "モメンタム",
+          "total": 50,
+          "components": [
+            {
+              "name": "trend_score",
+              "weight": 0.3,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "トレンドスコア 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "ma_spread",
+              "weight": 0.25,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "MA乖離 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "credit_ratio",
+              "weight": 0.2,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "信用倍率 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "volume_z",
+              "weight": 0.15,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "出来高Z 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "relative_strength",
+              "weight": 0.1,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "相対強度 50.00 — 標準水準（スコア50）"
+            }
+          ],
+          "explanation": "モメンタムスコア 50 — トレンドスコアが高評価、相対強度が相対的に低評価（標準水準）"
+        }
+      },
+      "diagnostics": [
+        "observation: scores are partial-real / hybrid (not full real / not full generated)",
+        "observation: missing components fall back to scorer MISSING_RAW_VALUES neutral",
+        "observation: financial-sector tickers may show bounded de_ratio/fcf_yield/equity_ratio distortion",
+        "observation: momentum components are technical-deferred (financial_data 不在→中立 50)",
+        "observation: volatility_252d expects caller-supplied value derived from returns.json",
+        "observation: 8306.T fundamentals snapshot from data/fundamentals.json"
+      ]
+    },
+    {
+      "ticker": "9697.T",
+      "six_axis": {
+        "value": {
+          "axis": "value",
+          "name_ja": "バリュー",
+          "total": 35,
+          "components": [
+            {
+              "name": "per_score",
+              "weight": 0.3,
+              "raw_value": 22.129564,
+              "normalized": 39.352180000000004,
+              "description": "PER 22.13 — 標準水準（スコア39）"
+            },
+            {
+              "name": "pbr_score",
+              "weight": 0.25,
+              "raw_value": 5.3673663,
+              "normalized": 0.0,
+              "description": "PBR 5.37 — 割高水準（スコア0）"
+            },
+            {
+              "name": "peg_score",
+              "weight": 0.2,
+              "raw_value": 1.55,
+              "normalized": 72.5,
+              "description": "PEG 1.55 — 割安水準（スコア72）"
+            },
+            {
+              "name": "div_yield",
+              "weight": 0.15,
+              "raw_value": 1.51,
+              "normalized": 37.75,
+              "description": "配当利回り 1.51% — 標準水準（スコア38）"
+            },
+            {
+              "name": "ev_ebitda",
+              "weight": 0.1,
+              "raw_value": 14.911,
+              "normalized": 30.89,
+              "description": "EV/EBITDA 14.91 — 標準水準（スコア31）"
+            }
+          ],
+          "explanation": "バリュースコア 35 — PEGが高評価、PBRが相対的に低評価（割高水準）"
+        },
+        "safety": {
+          "axis": "safety",
+          "name_ja": "安全性",
+          "total": 84,
+          "components": [
+            {
+              "name": "equity_ratio",
+              "weight": 0.3,
+              "raw_value": 72.3054360953665,
+              "normalized": 100.0,
+              "description": "自己資本比率 72.31% — 財務健全（スコア100）"
+            },
+            {
+              "name": "de_ratio",
+              "weight": 0.25,
+              "raw_value": 0.3830218777479751,
+              "normalized": 84.679124890081,
+              "description": "D/Eレシオ 0.38 — 低レバレッジ（スコア85）"
+            },
+            {
+              "name": "interest_cover",
+              "weight": 0.2,
+              "raw_value": 879.875,
+              "normalized": 100.0,
+              "description": "インタレストカバレッジ 879.88 — 高カバレッジ（スコア100）"
+            },
+            {
+              "name": "volatility_252d",
+              "weight": 0.15,
+              "raw_value": 0.39054616987016566,
+              "normalized": 21.89076602596687,
+              "description": "ボラティリティ 0.39 — 高ボラ（スコア22）"
+            },
+            {
+              "name": "beta_inverse",
+              "weight": 0.1,
+              "raw_value": 0.488,
+              "normalized": 100.0,
+              "description": "ベータ逆数 0.49 — 低ベータ（スコア100）"
+            }
+          ],
+          "explanation": "安全性スコア 84 — 自己資本比率が高評価、ボラティリティが相対的に低評価（安全水準）"
+        },
+        "shareholder_return": {
+          "axis": "shareholder_return",
+          "name_ja": "還元力",
+          "total": 67,
+          "components": [
+            {
+              "name": "div_payout",
+              "weight": 0.3,
+              "raw_value": 0.2895,
+              "normalized": 43.425,
+              "description": "配当性向 0.2895 — 標準水準（スコア43）"
+            },
+            {
+              "name": "buyback_yield",
+              "weight": 0.25,
+              "raw_value": 2.0445783062102945,
+              "normalized": 61.337349186308835,
+              "description": "自社株買い利回り 2.0446 — 標準水準（スコア61）"
+            },
+            {
+              "name": "doe",
+              "weight": 0.2,
+              "raw_value": 7.433838702977866,
+              "normalized": 100.0,
+              "description": "DOE 7.4338 — 高DOE（スコア100）"
+            },
+            {
+              "name": "div_growth_5y",
+              "weight": 0.15,
+              "raw_value": 9.647819614318509,
+              "normalized": 100.0,
+              "description": "5年増配率 9.6478 — 高増配（スコア100）"
+            },
+            {
+              "name": "total_yield",
+              "weight": 0.1,
+              "raw_value": 1.51,
+              "normalized": 37.75,
+              "description": "総還元利回り 1.5100 — 標準水準（スコア38）"
+            }
+          ],
+          "explanation": "還元力スコア 67 — DOEが高評価、総還元利回りが相対的に低評価（標準水準）"
+        },
+        "quality": {
+          "axis": "quality",
+          "name_ja": "クオリティ",
+          "total": 79,
+          "components": [
+            {
+              "name": "roe_3y_avg",
+              "weight": 0.3,
+              "raw_value": 22.070580399064056,
+              "normalized": 100.0,
+              "description": "ROE(3年平均) 22.07% — 高収益性（スコア100）"
+            },
+            {
+              "name": "roa",
+              "weight": 0.2,
+              "raw_value": 15.48108197915535,
+              "normalized": 100.0,
+              "description": "ROA 15.48% — 高効率（スコア100）"
+            },
+            {
+              "name": "fcf_yield",
+              "weight": 0.2,
+              "raw_value": 4.566815858857512,
+              "normalized": 68.50223788286269,
+              "description": "FCF利回り 4.57% — 標準水準（スコア69）"
+            },
+            {
+              "name": "moat_score",
+              "weight": 0.2,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "競争優位 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "earnings_stab",
+              "weight": 0.1,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "利益安定性 50.00 — 標準水準（スコア50）"
+            }
+          ],
+          "explanation": "クオリティスコア 79 — ROE(3年平均)が高評価、利益安定性が相対的に低評価（高品質水準）"
+        },
+        "growth": {
+          "axis": "growth",
+          "name_ja": "グロース",
+          "total": 63,
+          "components": [
+            {
+              "name": "revenue_cagr_3y",
+              "weight": 0.4,
+              "raw_value": 15.507473924837821,
+              "normalized": 77.53736962418911,
+              "description": "売上CAGR 15.51% — 高成長（スコア78）"
+            },
+            {
+              "name": "eps_growth_3y",
+              "weight": 0.3,
+              "raw_value": 14.176454080000923,
+              "normalized": 56.70581632000369,
+              "description": "EPS成長率 14.18% — 標準水準（スコア57）"
+            },
+            {
+              "name": "guidance",
+              "weight": 0.2,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "業績ガイダンス 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "tam_expansion",
+              "weight": 0.1,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "TAM拡大性 50.00 — 標準水準（スコア50）"
+            }
+          ],
+          "explanation": "グロースコア 63 — 売上CAGRが高評価、TAM拡大性が相対的に低評価（標準水準）"
+        },
+        "momentum": {
+          "axis": "momentum",
+          "name_ja": "モメンタム",
+          "total": 50,
+          "components": [
+            {
+              "name": "trend_score",
+              "weight": 0.3,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "トレンドスコア 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "ma_spread",
+              "weight": 0.25,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "MA乖離 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "credit_ratio",
+              "weight": 0.2,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "信用倍率 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "volume_z",
+              "weight": 0.15,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "出来高Z 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "relative_strength",
+              "weight": 0.1,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "相対強度 50.00 — 標準水準（スコア50）"
+            }
+          ],
+          "explanation": "モメンタムスコア 50 — トレンドスコアが高評価、相対強度が相対的に低評価（標準水準）"
+        }
+      },
+      "diagnostics": [
+        "observation: scores are partial-real / hybrid (not full real / not full generated)",
+        "observation: missing components fall back to scorer MISSING_RAW_VALUES neutral",
+        "observation: financial-sector tickers may show bounded de_ratio/fcf_yield/equity_ratio distortion",
+        "observation: momentum components are technical-deferred (financial_data 不在→中立 50)",
+        "observation: volatility_252d expects caller-supplied value derived from returns.json",
+        "observation: 9697.T fundamentals snapshot from data/fundamentals.json"
+      ]
+    },
+    {
+      "ticker": "4661.T",
+      "six_axis": {
+        "value": {
+          "axis": "value",
+          "name_ja": "バリュー",
+          "total": 15,
+          "components": [
+            {
+              "name": "per_score",
+              "weight": 0.3,
+              "raw_value": 29.838602,
+              "normalized": 0.8069899999999848,
+              "description": "PER 29.84 — 割高水準（スコア1）"
+            },
+            {
+              "name": "pbr_score",
+              "weight": 0.25,
+              "raw_value": 3.3069541,
+              "normalized": 30.791376999999997,
+              "description": "PBR 3.31 — 標準水準（スコア31）"
+            },
+            {
+              "name": "peg_score",
+              "weight": 0.2,
+              "raw_value": 6.34,
+              "normalized": 0.0,
+              "description": "PEG 6.34 — 割高水準（スコア0）"
+            },
+            {
+              "name": "div_yield",
+              "weight": 0.15,
+              "raw_value": 0.75,
+              "normalized": 18.75,
+              "description": "配当利回り 0.75% — 低配当（スコア19）"
+            },
+            {
+              "name": "ev_ebitda",
+              "weight": 0.1,
+              "raw_value": 13.759,
+              "normalized": 42.41,
+              "description": "EV/EBITDA 13.76 — 標準水準（スコア42）"
+            }
+          ],
+          "explanation": "バリュースコア 15 — EV/EBITDAが高評価、PEGが相対的に低評価（割高水準）"
+        },
+        "safety": {
+          "axis": "safety",
+          "name_ja": "安全性",
+          "total": 86,
+          "components": [
+            {
+              "name": "equity_ratio",
+              "weight": 0.3,
+              "raw_value": 67.9452715671165,
+              "normalized": 100.0,
+              "description": "自己資本比率 67.95% — 財務健全（スコア100）"
+            },
+            {
+              "name": "de_ratio",
+              "weight": 0.25,
+              "raw_value": 0.4717727620121403,
+              "normalized": 81.1290895195144,
+              "description": "D/Eレシオ 0.47 — 低レバレッジ（スコア81）"
+            },
+            {
+              "name": "interest_cover",
+              "weight": 0.2,
+              "raw_value": 223.16402609506056,
+              "normalized": 100.0,
+              "description": "インタレストカバレッジ 223.16 — 高カバレッジ（スコア100）"
+            },
+            {
+              "name": "volatility_252d",
+              "weight": 0.15,
+              "raw_value": 0.29546571078780925,
+              "normalized": 40.90685784243815,
+              "description": "ボラティリティ 0.30 — 標準水準（スコア41）"
+            },
+            {
+              "name": "beta_inverse",
+              "weight": 0.1,
+              "raw_value": 0.302,
+              "normalized": 100.0,
+              "description": "ベータ逆数 0.30 — 低ベータ（スコア100）"
+            }
+          ],
+          "explanation": "安全性スコア 86 — 自己資本比率が高評価、ボラティリティが相対的に低評価（安全水準）"
+        },
+        "shareholder_return": {
+          "axis": "shareholder_return",
+          "name_ja": "還元力",
+          "total": 41,
+          "components": [
+            {
+              "name": "div_payout",
+              "weight": 0.3,
+              "raw_value": 0.2018,
+              "normalized": 30.27,
+              "description": "配当性向 0.2018 — 標準水準（スコア30）"
+            },
+            {
+              "name": "buyback_yield",
+              "weight": 0.25,
+              "raw_value": -0.08005766447283255,
+              "normalized": 0.0,
+              "description": "自社株買い利回り -0.0801 — 自社株買い少（スコア0）"
+            },
+            {
+              "name": "doe",
+              "weight": 0.2,
+              "raw_value": 2.524025303686182,
+              "normalized": 75.72075911058546,
+              "description": "DOE 2.5240 — 高DOE（スコア76）"
+            },
+            {
+              "name": "div_growth_5y",
+              "weight": 0.15,
+              "raw_value": 10.235043516805998,
+              "normalized": 100.0,
+              "description": "5年増配率 10.2350 — 高増配（スコア100）"
+            },
+            {
+              "name": "total_yield",
+              "weight": 0.1,
+              "raw_value": 0.75,
+              "normalized": 18.75,
+              "description": "総還元利回り 0.7500 — 低還元（スコア19）"
+            }
+          ],
+          "explanation": "還元力スコア 41 — 5年増配率が高評価、自社株買い利回りが相対的に低評価（標準水準）"
+        },
+        "quality": {
+          "axis": "quality",
+          "name_ja": "クオリティ",
+          "total": 58,
+          "components": [
+            {
+              "name": "roe_3y_avg",
+              "weight": 0.3,
+              "raw_value": 11.793950575678746,
+              "normalized": 58.969752878393734,
+              "description": "ROE(3年平均) 11.79% — 標準水準（スコア59）"
+            },
+            {
+              "name": "roa",
+              "weight": 0.2,
+              "raw_value": 8.631087067898209,
+              "normalized": 86.31087067898208,
+              "description": "ROA 8.63% — 高効率（スコア86）"
+            },
+            {
+              "name": "fcf_yield",
+              "weight": 0.2,
+              "raw_value": 2.5483707158910285,
+              "normalized": 38.22556073836543,
+              "description": "FCF利回り 2.55% — 標準水準（スコア38）"
+            },
+            {
+              "name": "moat_score",
+              "weight": 0.2,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "競争優位 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "earnings_stab",
+              "weight": 0.1,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "利益安定性 50.00 — 標準水準（スコア50）"
+            }
+          ],
+          "explanation": "クオリティスコア 58 — ROAが高評価、FCF利回りが相対的に低評価（標準水準）"
+        },
+        "growth": {
+          "axis": "growth",
+          "name_ja": "グロース",
+          "total": 85,
+          "components": [
+            {
+              "name": "revenue_cagr_3y",
+              "weight": 0.4,
+              "raw_value": 35.06495674425367,
+              "normalized": 100.0,
+              "description": "売上CAGR 35.06% — 高成長（スコア100）"
+            },
+            {
+              "name": "eps_growth_3y",
+              "weight": 0.3,
+              "raw_value": 148.74625388042463,
+              "normalized": 100.0,
+              "description": "EPS成長率 148.75% — 高EPS成長（スコア100）"
+            },
+            {
+              "name": "guidance",
+              "weight": 0.2,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "業績ガイダンス 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "tam_expansion",
+              "weight": 0.1,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "TAM拡大性 50.00 — 標準水準（スコア50）"
+            }
+          ],
+          "explanation": "グロースコア 85 — 売上CAGRが高評価、TAM拡大性が相対的に低評価（高成長水準）"
+        },
+        "momentum": {
+          "axis": "momentum",
+          "name_ja": "モメンタム",
+          "total": 50,
+          "components": [
+            {
+              "name": "trend_score",
+              "weight": 0.3,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "トレンドスコア 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "ma_spread",
+              "weight": 0.25,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "MA乖離 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "credit_ratio",
+              "weight": 0.2,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "信用倍率 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "volume_z",
+              "weight": 0.15,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "出来高Z 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "relative_strength",
+              "weight": 0.1,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "相対強度 50.00 — 標準水準（スコア50）"
+            }
+          ],
+          "explanation": "モメンタムスコア 50 — トレンドスコアが高評価、相対強度が相対的に低評価（標準水準）"
+        }
+      },
+      "diagnostics": [
+        "observation: scores are partial-real / hybrid (not full real / not full generated)",
+        "observation: missing components fall back to scorer MISSING_RAW_VALUES neutral",
+        "observation: financial-sector tickers may show bounded de_ratio/fcf_yield/equity_ratio distortion",
+        "observation: momentum components are technical-deferred (financial_data 不在→中立 50)",
+        "observation: volatility_252d expects caller-supplied value derived from returns.json",
+        "observation: 4661.T fundamentals snapshot from data/fundamentals.json"
+      ]
+    },
+    {
+      "ticker": "8593.T",
+      "six_axis": {
+        "value": {
+          "axis": "value",
+          "name_ja": "バリュー",
+          "total": 77,
+          "components": [
+            {
+              "name": "per_score",
+              "weight": 0.3,
+              "raw_value": 11.914893,
+              "normalized": 90.425535,
+              "description": "PER 11.91 — 割安水準（スコア90）"
+            },
+            {
+              "name": "pbr_score",
+              "weight": 0.25,
+              "raw_value": 0.9696361,
+              "normalized": 100.0,
+              "description": "PBR 0.97 — 割安水準（スコア100）"
+            },
+            {
+              "name": "peg_score",
+              "weight": 0.2,
+              "raw_value": 2.0,
+              "normalized": 50.0,
+              "description": "PEG 2.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "div_yield",
+              "weight": 0.15,
+              "raw_value": 3.89,
+              "normalized": 97.25,
+              "description": "配当利回り 3.89% — 高配当（スコア97）"
+            },
+            {
+              "name": "ev_ebitda",
+              "weight": 0.1,
+              "raw_value": 38.333,
+              "normalized": 0.0,
+              "description": "EV/EBITDA 38.33 — 割高水準（スコア0）"
+            }
+          ],
+          "explanation": "バリュースコア 77 — PBRが高評価、EV/EBITDAが相対的に低評価（割安水準）"
+        },
+        "safety": {
+          "axis": "safety",
+          "name_ja": "安全性",
+          "total": 46,
+          "components": [
+            {
+              "name": "equity_ratio",
+              "weight": 0.3,
+              "raw_value": 15.226504404058652,
+              "normalized": 22.839756606087978,
+              "description": "自己資本比率 15.23% — 財務脆弱（スコア23）"
+            },
+            {
+              "name": "de_ratio",
+              "weight": 0.25,
+              "raw_value": 5.559942199630149,
+              "normalized": 0.0,
+              "description": "D/Eレシオ 5.56 — 高レバレッジ（スコア0）"
+            },
+            {
+              "name": "interest_cover",
+              "weight": 0.2,
+              "raw_value": 69.54554090963069,
+              "normalized": 100.0,
+              "description": "インタレストカバレッジ 69.55 — 高カバレッジ（スコア100）"
+            },
+            {
+              "name": "volatility_252d",
+              "weight": 0.15,
+              "raw_value": 0.19227432238790795,
+              "normalized": 61.54513552241841,
+              "description": "ボラティリティ 0.19 — 標準水準（スコア62）"
+            },
+            {
+              "name": "beta_inverse",
+              "weight": 0.1,
+              "raw_value": 0.224,
+              "normalized": 100.0,
+              "description": "ベータ逆数 0.22 — 低ベータ（スコア100）"
+            }
+          ],
+          "explanation": "安全性スコア 46 — インタレストカバレッジが高評価、D/Eレシオが相対的に低評価（標準水準）"
+        },
+        "shareholder_return": {
+          "axis": "shareholder_return",
+          "name_ja": "還元力",
+          "total": 62,
+          "components": [
+            {
+              "name": "div_payout",
+              "weight": 0.3,
+              "raw_value": 0.4079,
+              "normalized": 61.184999999999995,
+              "description": "配当性向 0.4079 — 標準水準（スコア61）"
+            },
+            {
+              "name": "buyback_yield",
+              "weight": 0.25,
+              "raw_value": 0.02055895227906952,
+              "normalized": 0.6167685683720856,
+              "description": "自社株買い利回り 0.0206 — 自社株買い少（スコア1）"
+            },
+            {
+              "name": "doe",
+              "weight": 0.2,
+              "raw_value": 3.129997230585061,
+              "normalized": 93.89991691755183,
+              "description": "DOE 3.1300 — 高DOE（スコア94）"
+            },
+            {
+              "name": "div_growth_5y",
+              "weight": 0.15,
+              "raw_value": 12.73043940817109,
+              "normalized": 100.0,
+              "description": "5年増配率 12.7304 — 高増配（スコア100）"
+            },
+            {
+              "name": "total_yield",
+              "weight": 0.1,
+              "raw_value": 3.89,
+              "normalized": 97.25,
+              "description": "総還元利回り 3.8900 — 高還元（スコア97）"
+            }
+          ],
+          "explanation": "還元力スコア 62 — 5年増配率が高評価、自社株買い利回りが相対的に低評価（標準水準）"
+        },
+        "quality": {
+          "axis": "quality",
+          "name_ja": "クオリティ",
+          "total": 29,
+          "components": [
+            {
+              "name": "roe_3y_avg",
+              "weight": 0.3,
+              "raw_value": 7.491425989806815,
+              "normalized": 37.457129949034076,
+              "description": "ROE(3年平均) 7.49% — 標準水準（スコア37）"
+            },
+            {
+              "name": "roa",
+              "weight": 0.2,
+              "raw_value": 1.1491343723336493,
+              "normalized": 11.491343723336493,
+              "description": "ROA 1.15% — 低効率（スコア11）"
+            },
+            {
+              "name": "fcf_yield",
+              "weight": 0.2,
+              "raw_value": -15.882187664749377,
+              "normalized": 0.0,
+              "description": "FCF利回り -15.88% — 低FCF（スコア0）"
+            },
+            {
+              "name": "moat_score",
+              "weight": 0.2,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "競争優位 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "earnings_stab",
+              "weight": 0.1,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "利益安定性 50.00 — 標準水準（スコア50）"
+            }
+          ],
+          "explanation": "クオリティスコア 29 — 競争優位が高評価、FCF利回りが相対的に低評価（低品質水準）"
+        },
+        "growth": {
+          "axis": "growth",
+          "name_ja": "グロース",
+          "total": 40,
+          "components": [
+            {
+              "name": "revenue_cagr_3y",
+              "weight": 0.4,
+              "raw_value": 5.797963006523399,
+              "normalized": 28.989815032616995,
+              "description": "売上CAGR 5.80% — 低成長（スコア29）"
+            },
+            {
+              "name": "eps_growth_3y",
+              "weight": 0.3,
+              "raw_value": 10.787602742592917,
+              "normalized": 43.15041097037167,
+              "description": "EPS成長率 10.79% — 標準水準（スコア43）"
+            },
+            {
+              "name": "guidance",
+              "weight": 0.2,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "業績ガイダンス 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "tam_expansion",
+              "weight": 0.1,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "TAM拡大性 50.00 — 標準水準（スコア50）"
+            }
+          ],
+          "explanation": "グロースコア 40 — 業績ガイダンスが高評価、売上CAGRが相対的に低評価（低成長水準）"
+        },
+        "momentum": {
+          "axis": "momentum",
+          "name_ja": "モメンタム",
+          "total": 50,
+          "components": [
+            {
+              "name": "trend_score",
+              "weight": 0.3,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "トレンドスコア 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "ma_spread",
+              "weight": 0.25,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "MA乖離 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "credit_ratio",
+              "weight": 0.2,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "信用倍率 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "volume_z",
+              "weight": 0.15,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "出来高Z 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "relative_strength",
+              "weight": 0.1,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "相対強度 50.00 — 標準水準（スコア50）"
+            }
+          ],
+          "explanation": "モメンタムスコア 50 — トレンドスコアが高評価、相対強度が相対的に低評価（標準水準）"
+        }
+      },
+      "diagnostics": [
+        "observation: scores are partial-real / hybrid (not full real / not full generated)",
+        "observation: missing components fall back to scorer MISSING_RAW_VALUES neutral",
+        "observation: financial-sector tickers may show bounded de_ratio/fcf_yield/equity_ratio distortion",
+        "observation: momentum components are technical-deferred (financial_data 不在→中立 50)",
+        "observation: volatility_252d expects caller-supplied value derived from returns.json",
+        "observation: 8593.T fundamentals snapshot from data/fundamentals.json"
+      ]
+    },
+    {
+      "ticker": "4755.T",
+      "six_axis": {
+        "value": {
+          "axis": "value",
+          "name_ja": "バリュー",
+          "total": 51,
+          "components": [
+            {
+              "name": "per_score",
+              "weight": 0.3,
+              "raw_value": 20.0,
+              "normalized": 50.0,
+              "description": "PER 20.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "pbr_score",
+              "weight": 0.25,
+              "raw_value": 1.9196024,
+              "normalized": 72.411928,
+              "description": "PBR 1.92 — 割安水準（スコア72）"
+            },
+            {
+              "name": "peg_score",
+              "weight": 0.2,
+              "raw_value": 24.83,
+              "normalized": 0.0,
+              "description": "PEG 24.83 — 割高水準（スコア0）"
+            },
+            {
+              "name": "div_yield",
+              "weight": 0.15,
+              "raw_value": 2.0,
+              "normalized": 50.0,
+              "description": "配当利回り 2.00% — 標準水準（スコア50）"
+            },
+            {
+              "name": "ev_ebitda",
+              "weight": 0.1,
+              "raw_value": 5.897,
+              "normalized": 100.0,
+              "description": "EV/EBITDA 5.90 — 割安水準（スコア100）"
+            }
+          ],
+          "explanation": "バリュースコア 51 — EV/EBITDAが高評価、PEGが相対的に低評価（標準水準）"
+        },
+        "safety": {
+          "axis": "safety",
+          "name_ja": "安全性",
+          "total": 19,
+          "components": [
+            {
+              "name": "equity_ratio",
+              "weight": 0.3,
+              "raw_value": 3.445313910374804,
+              "normalized": 5.167970865562206,
+              "description": "自己資本比率 3.45% — 財務脆弱（スコア5）"
+            },
+            {
+              "name": "de_ratio",
+              "weight": 0.25,
+              "raw_value": 27.66033119643048,
+              "normalized": 0.0,
+              "description": "D/Eレシオ 27.66 — 高レバレッジ（スコア0）"
+            },
+            {
+              "name": "interest_cover",
+              "weight": 0.2,
+              "raw_value": 3.9266923533494964,
+              "normalized": 31.41353882679597,
+              "description": "インタレストカバレッジ 3.93 — 標準水準（スコア31）"
+            },
+            {
+              "name": "volatility_252d",
+              "weight": 0.15,
+              "raw_value": 0.3210973175359256,
+              "normalized": 35.78053649281489,
+              "description": "ボラティリティ 0.32 — 標準水準（スコア36）"
+            },
+            {
+              "name": "beta_inverse",
+              "weight": 0.1,
+              "raw_value": 0.882,
+              "normalized": 61.8,
+              "description": "ベータ逆数 0.88 — 標準水準（スコア62）"
+            }
+          ],
+          "explanation": "安全性スコア 19 — ベータ逆数が高評価、D/Eレシオが相対的に低評価（要注意水準）"
+        },
+        "shareholder_return": {
+          "axis": "shareholder_return",
+          "name_ja": "還元力",
+          "total": 24,
+          "components": [
+            {
+              "name": "div_payout",
+              "weight": 0.3,
+              "raw_value": 0.0,
+              "normalized": 0.0,
+              "description": "配当性向 0.0000 — 低配当性向（スコア0）"
+            },
+            {
+              "name": "buyback_yield",
+              "weight": 0.25,
+              "raw_value": -36.43613350326289,
+              "normalized": 0.0,
+              "description": "自社株買い利回り -36.4361 — 自社株買い少（スコア0）"
+            },
+            {
+              "name": "doe",
+              "weight": 0.2,
+              "raw_value": 0.7211795220082184,
+              "normalized": 21.635385660246552,
+              "description": "DOE 0.7212 — 低DOE（スコア22）"
+            },
+            {
+              "name": "div_growth_5y",
+              "weight": 0.15,
+              "raw_value": 18.6068147618508,
+              "normalized": 100.0,
+              "description": "5年増配率 18.6068 — 高増配（スコア100）"
+            },
+            {
+              "name": "total_yield",
+              "weight": 0.1,
+              "raw_value": 2.0,
+              "normalized": 50.0,
+              "description": "総還元利回り 2.0000 — 標準水準（スコア50）"
+            }
+          ],
+          "explanation": "還元力スコア 24 — 5年増配率が高評価、自社株買い利回りが相対的に低評価（低還元水準）"
+        },
+        "quality": {
+          "axis": "quality",
+          "name_ja": "クオリティ",
+          "total": 35,
+          "components": [
+            {
+              "name": "roe_3y_avg",
+              "weight": 0.3,
+              "raw_value": -24.658685553978067,
+              "normalized": 0.0,
+              "description": "ROE(3年平均) -24.66% — 低収益性（スコア0）"
+            },
+            {
+              "name": "roa",
+              "weight": 0.2,
+              "raw_value": -0.6175653719570622,
+              "normalized": 0.0,
+              "description": "ROA -0.62% — 低効率（スコア0）"
+            },
+            {
+              "name": "fcf_yield",
+              "weight": 0.2,
+              "raw_value": 12.609674379613542,
+              "normalized": 100.0,
+              "description": "FCF利回り 12.61% — 高FCF（スコア100）"
+            },
+            {
+              "name": "moat_score",
+              "weight": 0.2,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "競争優位 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "earnings_stab",
+              "weight": 0.1,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "利益安定性 50.00 — 標準水準（スコア50）"
+            }
+          ],
+          "explanation": "クオリティスコア 35 — FCF利回りが高評価、ROAが相対的に低評価（低品質水準）"
+        },
+        "growth": {
+          "axis": "growth",
+          "name_ja": "グロース",
+          "total": 48,
+          "components": [
+            {
+              "name": "revenue_cagr_3y",
+              "weight": 0.4,
+              "raw_value": 9.130733046330185,
+              "normalized": 45.653665231650926,
+              "description": "売上CAGR 9.13% — 標準水準（スコア46）"
+            },
+            {
+              "name": "eps_growth_3y",
+              "weight": 0.3,
+              "raw_value": 12.5,
+              "normalized": 50.0,
+              "description": "EPS成長率 12.50% — 標準水準（スコア50）"
+            },
+            {
+              "name": "guidance",
+              "weight": 0.2,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "業績ガイダンス 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "tam_expansion",
+              "weight": 0.1,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "TAM拡大性 50.00 — 標準水準（スコア50）"
+            }
+          ],
+          "explanation": "グロースコア 48 — EPS成長率が高評価、売上CAGRが相対的に低評価（標準水準）"
+        },
+        "momentum": {
+          "axis": "momentum",
+          "name_ja": "モメンタム",
+          "total": 50,
+          "components": [
+            {
+              "name": "trend_score",
+              "weight": 0.3,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "トレンドスコア 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "ma_spread",
+              "weight": 0.25,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "MA乖離 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "credit_ratio",
+              "weight": 0.2,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "信用倍率 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "volume_z",
+              "weight": 0.15,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "出来高Z 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "relative_strength",
+              "weight": 0.1,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "相対強度 50.00 — 標準水準（スコア50）"
+            }
+          ],
+          "explanation": "モメンタムスコア 50 — トレンドスコアが高評価、相対強度が相対的に低評価（標準水準）"
+        }
+      },
+      "diagnostics": [
+        "observation: scores are partial-real / hybrid (not full real / not full generated)",
+        "observation: missing components fall back to scorer MISSING_RAW_VALUES neutral",
+        "observation: financial-sector tickers may show bounded de_ratio/fcf_yield/equity_ratio distortion",
+        "observation: momentum components are technical-deferred (financial_data 不在→中立 50)",
+        "observation: volatility_252d expects caller-supplied value derived from returns.json",
+        "observation: 4755.T fundamentals snapshot from data/fundamentals.json"
+      ]
+    },
+    {
+      "ticker": "5711.T",
+      "six_axis": {
+        "value": {
+          "axis": "value",
+          "name_ja": "バリュー",
+          "total": 81,
+          "components": [
+            {
+              "name": "per_score",
+              "weight": 0.3,
+              "raw_value": 15.971014,
+              "normalized": 70.14493,
+              "description": "PER 15.97 — 割安水準（スコア70）"
+            },
+            {
+              "name": "pbr_score",
+              "weight": 0.25,
+              "raw_value": 0.8803469,
+              "normalized": 100.0,
+              "description": "PBR 0.88 — 割安水準（スコア100）"
+            },
+            {
+              "name": "peg_score",
+              "weight": 0.2,
+              "raw_value": 0.11,
+              "normalized": 100.0,
+              "description": "PEG 0.11 — 割安水準（スコア100）"
+            },
+            {
+              "name": "div_yield",
+              "weight": 0.15,
+              "raw_value": 2.29,
+              "normalized": 57.25,
+              "description": "配当利回り 2.29% — 標準水準（スコア57）"
+            },
+            {
+              "name": "ev_ebitda",
+              "weight": 0.1,
+              "raw_value": 11.209,
+              "normalized": 67.91,
+              "description": "EV/EBITDA 11.21 — 標準水準（スコア68）"
+            }
+          ],
+          "explanation": "バリュースコア 81 — PBRが高評価、配当利回りが相対的に低評価（割安水準）"
+        },
+        "safety": {
+          "axis": "safety",
+          "name_ja": "安全性",
+          "total": 41,
+          "components": [
+            {
+              "name": "equity_ratio",
+              "weight": 0.3,
+              "raw_value": 28.511563583395255,
+              "normalized": 42.76734537509288,
+              "description": "自己資本比率 28.51% — 標準水準（スコア43）"
+            },
+            {
+              "name": "de_ratio",
+              "weight": 0.25,
+              "raw_value": 2.4836854446229446,
+              "normalized": 0.6525822150822194,
+              "description": "D/Eレシオ 2.48 — 高レバレッジ（スコア1）"
+            },
+            {
+              "name": "interest_cover",
+              "weight": 0.2,
+              "raw_value": 14.368715083798882,
+              "normalized": 100.0,
+              "description": "インタレストカバレッジ 14.37 — 高カバレッジ（スコア100）"
+            },
+            {
+              "name": "volatility_252d",
+              "weight": 0.15,
+              "raw_value": 0.4626876109797989,
+              "normalized": 7.462477804040219,
+              "description": "ボラティリティ 0.46 — 高ボラ（スコア7）"
+            },
+            {
+              "name": "beta_inverse",
+              "weight": 0.1,
+              "raw_value": 0.781,
+              "normalized": 71.9,
+              "description": "ベータ逆数 0.78 — 低ベータ（スコア72）"
+            }
+          ],
+          "explanation": "安全性スコア 41 — インタレストカバレッジが高評価、D/Eレシオが相対的に低評価（標準水準）"
+        },
+        "shareholder_return": {
+          "axis": "shareholder_return",
+          "name_ja": "還元力",
+          "total": 42,
+          "components": [
+            {
+              "name": "div_payout",
+              "weight": 0.3,
+              "raw_value": 0.322,
+              "normalized": 48.300000000000004,
+              "description": "配当性向 0.3220 — 標準水準（スコア48）"
+            },
+            {
+              "name": "buyback_yield",
+              "weight": 0.25,
+              "raw_value": -0.013773613146649667,
+              "normalized": 0.0,
+              "description": "自社株買い利回り -0.0138 — 自社株買い少（スコア0）"
+            },
+            {
+              "name": "doe",
+              "weight": 0.2,
+              "raw_value": 1.874054999054999,
+              "normalized": 56.221649971649974,
+              "description": "DOE 1.8741 — 標準水準（スコア56）"
+            },
+            {
+              "name": "div_growth_5y",
+              "weight": 0.15,
+              "raw_value": 4.73955417063272,
+              "normalized": 71.09331255949081,
+              "description": "5年増配率 4.7396 — 高増配（スコア71）"
+            },
+            {
+              "name": "total_yield",
+              "weight": 0.1,
+              "raw_value": 2.29,
+              "normalized": 57.25,
+              "description": "総還元利回り 2.2900 — 標準水準（スコア57）"
+            }
+          ],
+          "explanation": "還元力スコア 42 — 5年増配率が高評価、自社株買い利回りが相対的に低評価（標準水準）"
+        },
+        "quality": {
+          "axis": "quality",
+          "name_ja": "クオリティ",
+          "total": 24,
+          "components": [
+            {
+              "name": "roe_3y_avg",
+              "weight": 0.3,
+              "raw_value": 4.375772070497539,
+              "normalized": 21.878860352487695,
+              "description": "ROE(3年平均) 4.38% — 低収益性（スコア22）"
+            },
+            {
+              "name": "roa",
+              "weight": 0.2,
+              "raw_value": 1.4345705571190712,
+              "normalized": 14.345705571190713,
+              "description": "ROA 1.43% — 低効率（スコア14）"
+            },
+            {
+              "name": "fcf_yield",
+              "weight": 0.2,
+              "raw_value": -0.21603957094587387,
+              "normalized": 0.0,
+              "description": "FCF利回り -0.22% — 低FCF（スコア0）"
+            },
+            {
+              "name": "moat_score",
+              "weight": 0.2,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "競争優位 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "earnings_stab",
+              "weight": 0.1,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "利益安定性 50.00 — 標準水準（スコア50）"
+            }
+          ],
+          "explanation": "クオリティスコア 24 — 競争優位が高評価、FCF利回りが相対的に低評価（低品質水準）"
+        },
+        "growth": {
+          "axis": "growth",
+          "name_ja": "グロース",
+          "total": 20,
+          "components": [
+            {
+              "name": "revenue_cagr_3y",
+              "weight": 0.4,
+              "raw_value": 2.6924383736503854,
+              "normalized": 13.462191868251928,
+              "description": "売上CAGR 2.69% — 低成長（スコア13）"
+            },
+            {
+              "name": "eps_growth_3y",
+              "weight": 0.3,
+              "raw_value": -8.86249850574654,
+              "normalized": 0.0,
+              "description": "EPS成長率 -8.86% — EPS低成長（スコア0）"
+            },
+            {
+              "name": "guidance",
+              "weight": 0.2,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "業績ガイダンス 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "tam_expansion",
+              "weight": 0.1,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "TAM拡大性 50.00 — 標準水準（スコア50）"
+            }
+          ],
+          "explanation": "グロースコア 20 — 業績ガイダンスが高評価、EPS成長率が相対的に低評価（低成長水準）"
+        },
+        "momentum": {
+          "axis": "momentum",
+          "name_ja": "モメンタム",
+          "total": 50,
+          "components": [
+            {
+              "name": "trend_score",
+              "weight": 0.3,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "トレンドスコア 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "ma_spread",
+              "weight": 0.25,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "MA乖離 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "credit_ratio",
+              "weight": 0.2,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "信用倍率 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "volume_z",
+              "weight": 0.15,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "出来高Z 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "relative_strength",
+              "weight": 0.1,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "相対強度 50.00 — 標準水準（スコア50）"
+            }
+          ],
+          "explanation": "モメンタムスコア 50 — トレンドスコアが高評価、相対強度が相対的に低評価（標準水準）"
+        }
+      },
+      "diagnostics": [
+        "observation: scores are partial-real / hybrid (not full real / not full generated)",
+        "observation: missing components fall back to scorer MISSING_RAW_VALUES neutral",
+        "observation: financial-sector tickers may show bounded de_ratio/fcf_yield/equity_ratio distortion",
+        "observation: momentum components are technical-deferred (financial_data 不在→中立 50)",
+        "observation: volatility_252d expects caller-supplied value derived from returns.json",
+        "observation: 5711.T fundamentals snapshot from data/fundamentals.json"
+      ]
+    },
+    {
+      "ticker": "1605.T",
+      "six_axis": {
+        "value": {
+          "axis": "value",
+          "name_ja": "バリュー",
+          "total": 76,
+          "components": [
+            {
+              "name": "per_score",
+              "weight": 0.3,
+              "raw_value": 12.083158,
+              "normalized": 89.58421,
+              "description": "PER 12.08 — 割安水準（スコア90）"
+            },
+            {
+              "name": "pbr_score",
+              "weight": 0.25,
+              "raw_value": 0.94901466,
+              "normalized": 100.0,
+              "description": "PBR 0.95 — 割安水準（スコア100）"
+            },
+            {
+              "name": "peg_score",
+              "weight": 0.2,
+              "raw_value": 2.62,
+              "normalized": 19.0,
+              "description": "PEG 2.62 — 割高水準（スコア19）"
+            },
+            {
+              "name": "div_yield",
+              "weight": 0.15,
+              "raw_value": 2.75,
+              "normalized": 68.75,
+              "description": "配当利回り 2.75% — 標準水準（スコア69）"
+            },
+            {
+              "name": "ev_ebitda",
+              "weight": 0.1,
+              "raw_value": 4.387,
+              "normalized": 100.0,
+              "description": "EV/EBITDA 4.39 — 割安水準（スコア100）"
+            }
+          ],
+          "explanation": "バリュースコア 76 — PBRが高評価、PEGが相対的に低評価（割安水準）"
+        },
+        "safety": {
+          "axis": "safety",
+          "name_ja": "安全性",
+          "total": 81,
+          "components": [
+            {
+              "name": "equity_ratio",
+              "weight": 0.3,
+              "raw_value": 61.370866007566974,
+              "normalized": 92.05629901135046,
+              "description": "自己資本比率 61.37% — 財務健全（スコア92）"
+            },
+            {
+              "name": "de_ratio",
+              "weight": 0.25,
+              "raw_value": 0.5713513222016204,
+              "normalized": 77.14594711193519,
+              "description": "D/Eレシオ 0.57 — 低レバレッジ（スコア77）"
+            },
+            {
+              "name": "interest_cover",
+              "weight": 0.2,
+              "raw_value": 15.282603668407152,
+              "normalized": 100.0,
+              "description": "インタレストカバレッジ 15.28 — 高カバレッジ（スコア100）"
+            },
+            {
+              "name": "volatility_252d",
+              "weight": 0.15,
+              "raw_value": 0.3613129388719425,
+              "normalized": 27.737412225611507,
+              "description": "ボラティリティ 0.36 — 高ボラ（スコア28）"
+            },
+            {
+              "name": "beta_inverse",
+              "weight": 0.1,
+              "raw_value": -0.149,
+              "normalized": 100.0,
+              "description": "ベータ逆数 -0.15 — 低ベータ（スコア100）"
+            }
+          ],
+          "explanation": "安全性スコア 81 — インタレストカバレッジが高評価、ボラティリティが相対的に低評価（安全水準）"
+        },
+        "shareholder_return": {
+          "axis": "shareholder_return",
+          "name_ja": "還元力",
+          "total": 73,
+          "components": [
+            {
+              "name": "div_payout",
+              "weight": 0.3,
+              "raw_value": 0.3025,
+              "normalized": 45.375,
+              "description": "配当性向 0.3025 — 標準水準（スコア45）"
+            },
+            {
+              "name": "buyback_yield",
+              "weight": 0.25,
+              "raw_value": 10.827948784117396,
+              "normalized": 100.0,
+              "description": "自社株買い利回り 10.8279 — 積極自社株買い（スコア100）"
+            },
+            {
+              "name": "doe",
+              "weight": 0.2,
+              "raw_value": 2.1117477025201183,
+              "normalized": 63.35243107560355,
+              "description": "DOE 2.1117 — 標準水準（スコア63）"
+            },
+            {
+              "name": "div_growth_5y",
+              "weight": 0.15,
+              "raw_value": 7.713613121986862,
+              "normalized": 100.0,
+              "description": "5年増配率 7.7136 — 高増配（スコア100）"
+            },
+            {
+              "name": "total_yield",
+              "weight": 0.1,
+              "raw_value": 2.75,
+              "normalized": 68.75,
+              "description": "総還元利回り 2.7500 — 標準水準（スコア69）"
+            }
+          ],
+          "explanation": "還元力スコア 73 — 自社株買い利回りが高評価、配当性向が相対的に低評価（高還元水準）"
+        },
+        "quality": {
+          "axis": "quality",
+          "name_ja": "クオリティ",
+          "total": 58,
+          "components": [
+            {
+              "name": "roe_3y_avg",
+              "weight": 0.3,
+              "raw_value": 8.294982517137386,
+              "normalized": 41.47491258568693,
+              "description": "ROE(3年平均) 8.29% — 標準水準（スコア41）"
+            },
+            {
+              "name": "roa",
+              "weight": 0.2,
+              "raw_value": 5.091479235567079,
+              "normalized": 50.91479235567079,
+              "description": "ROA 5.09% — 標準水準（スコア51）"
+            },
+            {
+              "name": "fcf_yield",
+              "weight": 0.2,
+              "raw_value": 7.621302424235369,
+              "normalized": 100.0,
+              "description": "FCF利回り 7.62% — 高FCF（スコア100）"
+            },
+            {
+              "name": "moat_score",
+              "weight": 0.2,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "競争優位 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "earnings_stab",
+              "weight": 0.1,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "利益安定性 50.00 — 標準水準（スコア50）"
+            }
+          ],
+          "explanation": "クオリティスコア 58 — FCF利回りが高評価、ROE(3年平均)が相対的に低評価（標準水準）"
+        },
+        "growth": {
+          "axis": "growth",
+          "name_ja": "グロース",
+          "total": 15,
+          "components": [
+            {
+              "name": "revenue_cagr_3y",
+              "weight": 0.4,
+              "raw_value": -4.7109915925091395,
+              "normalized": 0.0,
+              "description": "売上CAGR -4.71% — 低成長（スコア0）"
+            },
+            {
+              "name": "eps_growth_3y",
+              "weight": 0.3,
+              "raw_value": -5.118145875230251,
+              "normalized": 0.0,
+              "description": "EPS成長率 -5.12% — EPS低成長（スコア0）"
+            },
+            {
+              "name": "guidance",
+              "weight": 0.2,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "業績ガイダンス 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "tam_expansion",
+              "weight": 0.1,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "TAM拡大性 50.00 — 標準水準（スコア50）"
+            }
+          ],
+          "explanation": "グロースコア 15 — 業績ガイダンスが高評価、EPS成長率が相対的に低評価（低成長水準）"
+        },
+        "momentum": {
+          "axis": "momentum",
+          "name_ja": "モメンタム",
+          "total": 50,
+          "components": [
+            {
+              "name": "trend_score",
+              "weight": 0.3,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "トレンドスコア 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "ma_spread",
+              "weight": 0.25,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "MA乖離 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "credit_ratio",
+              "weight": 0.2,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "信用倍率 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "volume_z",
+              "weight": 0.15,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "出来高Z 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "relative_strength",
+              "weight": 0.1,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "相対強度 50.00 — 標準水準（スコア50）"
+            }
+          ],
+          "explanation": "モメンタムスコア 50 — トレンドスコアが高評価、相対強度が相対的に低評価（標準水準）"
+        }
+      },
+      "diagnostics": [
+        "observation: scores are partial-real / hybrid (not full real / not full generated)",
+        "observation: missing components fall back to scorer MISSING_RAW_VALUES neutral",
+        "observation: financial-sector tickers may show bounded de_ratio/fcf_yield/equity_ratio distortion",
+        "observation: momentum components are technical-deferred (financial_data 不在→中立 50)",
+        "observation: volatility_252d expects caller-supplied value derived from returns.json",
+        "observation: 1605.T fundamentals snapshot from data/fundamentals.json"
+      ]
+    },
+    {
+      "ticker": "5016.T",
+      "six_axis": {
+        "value": {
+          "axis": "value",
+          "name_ja": "バリュー",
+          "total": 17,
+          "components": [
+            {
+              "name": "per_score",
+              "weight": 0.3,
+              "raw_value": 34.194866,
+              "normalized": 0.0,
+              "description": "PER 34.19 — 割高水準（スコア0）"
+            },
+            {
+              "name": "pbr_score",
+              "weight": 0.25,
+              "raw_value": 5.371768,
+              "normalized": 0.0,
+              "description": "PBR 5.37 — 割高水準（スコア0）"
+            },
+            {
+              "name": "peg_score",
+              "weight": 0.2,
+              "raw_value": 2.0,
+              "normalized": 50.0,
+              "description": "PEG 2.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "div_yield",
+              "weight": 0.15,
+              "raw_value": 0.49,
+              "normalized": 12.25,
+              "description": "配当利回り 0.49% — 低配当（スコア12）"
+            },
+            {
+              "name": "ev_ebitda",
+              "weight": 0.1,
+              "raw_value": 13.0,
+              "normalized": 50.0,
+              "description": "EV/EBITDA 13.00 — 標準水準（スコア50）"
+            }
+          ],
+          "explanation": "バリュースコア 17 — PEGが高評価、PBRが相対的に低評価（割高水準）"
+        },
+        "safety": {
+          "axis": "safety",
+          "name_ja": "安全性",
+          "total": 62,
+          "components": [
+            {
+              "name": "equity_ratio",
+              "weight": 0.3,
+              "raw_value": 47.95760256024543,
+              "normalized": 71.93640384036814,
+              "description": "自己資本比率 47.96% — 財務健全（スコア72）"
+            },
+            {
+              "name": "de_ratio",
+              "weight": 0.25,
+              "raw_value": 0.9284101823997192,
+              "normalized": 62.86359270401123,
+              "description": "D/Eレシオ 0.93 — 標準水準（スコア63）"
+            },
+            {
+              "name": "interest_cover",
+              "weight": 0.2,
+              "raw_value": 21.4335805799056,
+              "normalized": 100.0,
+              "description": "インタレストカバレッジ 21.43 — 高カバレッジ（スコア100）"
+            },
+            {
+              "name": "volatility_252d",
+              "weight": 0.15,
+              "raw_value": 0.6723457291536524,
+              "normalized": 0.0,
+              "description": "ボラティリティ 0.67 — 高ボラ（スコア0）"
+            },
+            {
+              "name": "beta_inverse",
+              "weight": 0.1,
+              "raw_value": 1.0,
+              "normalized": 50.0,
+              "description": "ベータ逆数 1.00 — 標準水準（スコア50）"
+            }
+          ],
+          "explanation": "安全性スコア 62 — インタレストカバレッジが高評価、ボラティリティが相対的に低評価（標準水準）"
+        },
+        "shareholder_return": {
+          "axis": "shareholder_return",
+          "name_ja": "還元力",
+          "total": 41,
+          "components": [
+            {
+              "name": "div_payout",
+              "weight": 0.3,
+              "raw_value": 0.275,
+              "normalized": 41.25,
+              "description": "配当性向 0.2750 — 標準水準（スコア41）"
+            },
+            {
+              "name": "buyback_yield",
+              "weight": 0.25,
+              "raw_value": 0.0,
+              "normalized": 0.0,
+              "description": "自社株買い利回り 0.0000 — 自社株買い少（スコア0）"
+            },
+            {
+              "name": "doe",
+              "weight": 0.2,
+              "raw_value": 13.814466834715592,
+              "normalized": 100.0,
+              "description": "DOE 13.8145 — 高DOE（スコア100）"
+            },
+            {
+              "name": "div_growth_5y",
+              "weight": 0.15,
+              "raw_value": 3.3333333333333335,
+              "normalized": 50.0,
+              "description": "5年増配率 3.3333 — 標準水準（スコア50）"
+            },
+            {
+              "name": "total_yield",
+              "weight": 0.1,
+              "raw_value": 0.49,
+              "normalized": 12.25,
+              "description": "総還元利回り 0.4900 — 低還元（スコア12）"
+            }
+          ],
+          "explanation": "還元力スコア 41 — DOEが高評価、自社株買い利回りが相対的に低評価（標準水準）"
+        },
+        "quality": {
+          "axis": "quality",
+          "name_ja": "クオリティ",
+          "total": 56,
+          "components": [
+            {
+              "name": "roe_3y_avg",
+              "weight": 0.3,
+              "raw_value": 11.979919044396457,
+              "normalized": 59.89959522198228,
+              "description": "ROE(3年平均) 11.98% — 標準水準（スコア60）"
+            },
+            {
+              "name": "roa",
+              "weight": 0.2,
+              "raw_value": 5.321192016847986,
+              "normalized": 53.211920168479864,
+              "description": "ROA 5.32% — 標準水準（スコア53）"
+            },
+            {
+              "name": "fcf_yield",
+              "weight": 0.2,
+              "raw_value": 4.2649104903351,
+              "normalized": 63.9736573550265,
+              "description": "FCF利回り 4.26% — 標準水準（スコア64）"
+            },
+            {
+              "name": "moat_score",
+              "weight": 0.2,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "競争優位 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "earnings_stab",
+              "weight": 0.1,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "利益安定性 50.00 — 標準水準（スコア50）"
+            }
+          ],
+          "explanation": "クオリティスコア 56 — FCF利回りが高評価、利益安定性が相対的に低評価（標準水準）"
+        },
+        "growth": {
+          "axis": "growth",
+          "name_ja": "グロース",
+          "total": 45,
+          "components": [
+            {
+              "name": "revenue_cagr_3y",
+              "weight": 0.4,
+              "raw_value": -33.94378340952928,
+              "normalized": 0.0,
+              "description": "売上CAGR -33.94% — 低成長（スコア0）"
+            },
+            {
+              "name": "eps_growth_3y",
+              "weight": 0.3,
+              "raw_value": 35.965423042774546,
+              "normalized": 100.0,
+              "description": "EPS成長率 35.97% — 高EPS成長（スコア100）"
+            },
+            {
+              "name": "guidance",
+              "weight": 0.2,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "業績ガイダンス 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "tam_expansion",
+              "weight": 0.1,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "TAM拡大性 50.00 — 標準水準（スコア50）"
+            }
+          ],
+          "explanation": "グロースコア 45 — EPS成長率が高評価、売上CAGRが相対的に低評価（標準水準）"
+        },
+        "momentum": {
+          "axis": "momentum",
+          "name_ja": "モメンタム",
+          "total": 50,
+          "components": [
+            {
+              "name": "trend_score",
+              "weight": 0.3,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "トレンドスコア 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "ma_spread",
+              "weight": 0.25,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "MA乖離 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "credit_ratio",
+              "weight": 0.2,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "信用倍率 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "volume_z",
+              "weight": 0.15,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "出来高Z 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "relative_strength",
+              "weight": 0.1,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "相対強度 50.00 — 標準水準（スコア50）"
+            }
+          ],
+          "explanation": "モメンタムスコア 50 — トレンドスコアが高評価、相対強度が相対的に低評価（標準水準）"
+        }
+      },
+      "diagnostics": [
+        "observation: scores are partial-real / hybrid (not full real / not full generated)",
+        "observation: missing components fall back to scorer MISSING_RAW_VALUES neutral",
+        "observation: financial-sector tickers may show bounded de_ratio/fcf_yield/equity_ratio distortion",
+        "observation: momentum components are technical-deferred (financial_data 不在→中立 50)",
+        "observation: volatility_252d expects caller-supplied value derived from returns.json",
+        "observation: 5016.T fundamentals snapshot from data/fundamentals.json"
+      ]
+    },
+    {
+      "ticker": "8058.T",
+      "six_axis": {
+        "value": {
+          "axis": "value",
+          "name_ja": "バリュー",
+          "total": 39,
+          "components": [
+            {
+              "name": "per_score",
+              "weight": 0.3,
+              "raw_value": 26.337389,
+              "normalized": 18.31305499999999,
+              "description": "PER 26.34 — 割高水準（スコア18）"
+            },
+            {
+              "name": "pbr_score",
+              "weight": 0.25,
+              "raw_value": 2.2467875,
+              "normalized": 62.596375,
+              "description": "PBR 2.25 — 標準水準（スコア63）"
+            },
+            {
+              "name": "peg_score",
+              "weight": 0.2,
+              "raw_value": 2.02,
+              "normalized": 49.0,
+              "description": "PEG 2.02 — 標準水準（スコア49）"
+            },
+            {
+              "name": "div_yield",
+              "weight": 0.15,
+              "raw_value": 2.27,
+              "normalized": 56.75,
+              "description": "配当利回り 2.27% — 標準水準（スコア57）"
+            },
+            {
+              "name": "ev_ebitda",
+              "weight": 0.1,
+              "raw_value": 31.354,
+              "normalized": 0.0,
+              "description": "EV/EBITDA 31.35 — 割高水準（スコア0）"
+            }
+          ],
+          "explanation": "バリュースコア 39 — PBRが高評価、EV/EBITDAが相対的に低評価（割高水準）"
+        },
+        "safety": {
+          "axis": "safety",
+          "name_ja": "安全性",
+          "total": 63,
+          "components": [
+            {
+              "name": "equity_ratio",
+              "weight": 0.3,
+              "raw_value": 43.58331165498641,
+              "normalized": 65.37496748247962,
+              "description": "自己資本比率 43.58% — 標準水準（スコア65）"
+            },
+            {
+              "name": "de_ratio",
+              "weight": 0.25,
+              "raw_value": 1.2106017965752824,
+              "normalized": 51.5759281369887,
+              "description": "D/Eレシオ 1.21 — 標準水準（スコア52）"
+            },
+            {
+              "name": "interest_cover",
+              "weight": 0.2,
+              "raw_value": 9.368716262549892,
+              "normalized": 74.94973010039914,
+              "description": "インタレストカバレッジ 9.37 — 高カバレッジ（スコア75）"
+            },
+            {
+              "name": "volatility_252d",
+              "weight": 0.15,
+              "raw_value": 0.31671031501442315,
+              "normalized": 36.65793699711537,
+              "description": "ボラティリティ 0.32 — 標準水準（スコア37）"
+            },
+            {
+              "name": "beta_inverse",
+              "weight": 0.1,
+              "raw_value": 0.497,
+              "normalized": 100.0,
+              "description": "ベータ逆数 0.50 — 低ベータ（スコア100）"
+            }
+          ],
+          "explanation": "安全性スコア 63 — ベータ逆数が高評価、ボラティリティが相対的に低評価（標準水準）"
+        },
+        "shareholder_return": {
+          "axis": "shareholder_return",
+          "name_ja": "還元力",
+          "total": 89,
+          "components": [
+            {
+              "name": "div_payout",
+              "weight": 0.3,
+              "raw_value": 0.5244,
+              "normalized": 78.66,
+              "description": "配当性向 0.5244 — 高配当性向（スコア79）"
+            },
+            {
+              "name": "buyback_yield",
+              "weight": 0.25,
+              "raw_value": 10.196320376431117,
+              "normalized": 100.0,
+              "description": "自社株買い利回り 10.1963 — 積極自社株買い（スコア100）"
+            },
+            {
+              "name": "doe",
+              "weight": 0.2,
+              "raw_value": 3.6530840838988143,
+              "normalized": 100.0,
+              "description": "DOE 3.6531 — 高DOE（スコア100）"
+            },
+            {
+              "name": "div_growth_5y",
+              "weight": 0.15,
+              "raw_value": 12.344966199707375,
+              "normalized": 100.0,
+              "description": "5年増配率 12.3450 — 高増配（スコア100）"
+            },
+            {
+              "name": "total_yield",
+              "weight": 0.1,
+              "raw_value": 2.27,
+              "normalized": 56.75,
+              "description": "総還元利回り 2.2700 — 標準水準（スコア57）"
+            }
+          ],
+          "explanation": "還元力スコア 89 — 自社株買い利回りが高評価、総還元利回りが相対的に低評価（高還元水準）"
+        },
+        "quality": {
+          "axis": "quality",
+          "name_ja": "クオリティ",
+          "total": 60,
+          "components": [
+            {
+              "name": "roe_3y_avg",
+              "weight": 0.3,
+              "raw_value": 11.690502167800473,
+              "normalized": 58.452510839002365,
+              "description": "ROE(3年平均) 11.69% — 標準水準（スコア58）"
+            },
+            {
+              "name": "roa",
+              "weight": 0.2,
+              "raw_value": 4.4227037606442545,
+              "normalized": 44.22703760644254,
+              "description": "ROA 4.42% — 標準水準（スコア44）"
+            },
+            {
+              "name": "fcf_yield",
+              "weight": 0.2,
+              "raw_value": 6.304774869387994,
+              "normalized": 94.5716230408199,
+              "description": "FCF利回り 6.30% — 高FCF（スコア95）"
+            },
+            {
+              "name": "moat_score",
+              "weight": 0.2,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "競争優位 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "earnings_stab",
+              "weight": 0.1,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "利益安定性 50.00 — 標準水準（スコア50）"
+            }
+          ],
+          "explanation": "クオリティスコア 60 — FCF利回りが高評価、ROAが相対的に低評価（標準水準）"
+        },
+        "growth": {
+          "axis": "growth",
+          "name_ja": "グロース",
+          "total": 21,
+          "components": [
+            {
+              "name": "revenue_cagr_3y",
+              "weight": 0.4,
+              "raw_value": 2.5464162669013524,
+              "normalized": 12.732081334506763,
+              "description": "売上CAGR 2.55% — 低成長（スコア13）"
+            },
+            {
+              "name": "eps_growth_3y",
+              "weight": 0.3,
+              "raw_value": 0.46642878602245474,
+              "normalized": 1.865715144089819,
+              "description": "EPS成長率 0.47% — EPS低成長（スコア2）"
+            },
+            {
+              "name": "guidance",
+              "weight": 0.2,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "業績ガイダンス 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "tam_expansion",
+              "weight": 0.1,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "TAM拡大性 50.00 — 標準水準（スコア50）"
+            }
+          ],
+          "explanation": "グロースコア 21 — 業績ガイダンスが高評価、EPS成長率が相対的に低評価（低成長水準）"
+        },
+        "momentum": {
+          "axis": "momentum",
+          "name_ja": "モメンタム",
+          "total": 50,
+          "components": [
+            {
+              "name": "trend_score",
+              "weight": 0.3,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "トレンドスコア 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "ma_spread",
+              "weight": 0.25,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "MA乖離 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "credit_ratio",
+              "weight": 0.2,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "信用倍率 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "volume_z",
+              "weight": 0.15,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "出来高Z 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "relative_strength",
+              "weight": 0.1,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "相対強度 50.00 — 標準水準（スコア50）"
+            }
+          ],
+          "explanation": "モメンタムスコア 50 — トレンドスコアが高評価、相対強度が相対的に低評価（標準水準）"
+        }
+      },
+      "diagnostics": [
+        "observation: scores are partial-real / hybrid (not full real / not full generated)",
+        "observation: missing components fall back to scorer MISSING_RAW_VALUES neutral",
+        "observation: financial-sector tickers may show bounded de_ratio/fcf_yield/equity_ratio distortion",
+        "observation: momentum components are technical-deferred (financial_data 不在→中立 50)",
+        "observation: volatility_252d expects caller-supplied value derived from returns.json",
+        "observation: 8058.T fundamentals snapshot from data/fundamentals.json"
+      ]
+    },
+    {
+      "ticker": "9418.T",
+      "six_axis": {
+        "value": {
+          "axis": "value",
+          "name_ja": "バリュー",
+          "total": 58,
+          "components": [
+            {
+              "name": "per_score",
+              "weight": 0.3,
+              "raw_value": 15.318335,
+              "normalized": 73.408325,
+              "description": "PER 15.32 — 割安水準（スコア73）"
+            },
+            {
+              "name": "pbr_score",
+              "weight": 0.25,
+              "raw_value": 2.737387,
+              "normalized": 47.878389999999996,
+              "description": "PBR 2.74 — 標準水準（スコア48）"
+            },
+            {
+              "name": "peg_score",
+              "weight": 0.2,
+              "raw_value": 2.0,
+              "normalized": 50.0,
+              "description": "PEG 2.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "div_yield",
+              "weight": 0.15,
+              "raw_value": 1.11,
+              "normalized": 27.750000000000004,
+              "description": "配当利回り 1.11% — 低配当（スコア28）"
+            },
+            {
+              "name": "ev_ebitda",
+              "weight": 0.1,
+              "raw_value": 6.701,
+              "normalized": 100.0,
+              "description": "EV/EBITDA 6.70 — 割安水準（スコア100）"
+            }
+          ],
+          "explanation": "バリュースコア 58 — EV/EBITDAが高評価、配当利回りが相対的に低評価（標準水準）"
+        },
+        "safety": {
+          "axis": "safety",
+          "name_ja": "安全性",
+          "total": 61,
+          "components": [
+            {
+              "name": "equity_ratio",
+              "weight": 0.3,
+              "raw_value": 37.55802942467146,
+              "normalized": 56.33704413700719,
+              "description": "自己資本比率 37.56% — 標準水準（スコア56）"
+            },
+            {
+              "name": "de_ratio",
+              "weight": 0.25,
+              "raw_value": 1.5484016439647839,
+              "normalized": 38.063934241408646,
+              "description": "D/Eレシオ 1.55 — 標準水準（スコア38）"
+            },
+            {
+              "name": "interest_cover",
+              "weight": 0.2,
+              "raw_value": 55.48473282442748,
+              "normalized": 100.0,
+              "description": "インタレストカバレッジ 55.48 — 高カバレッジ（スコア100）"
+            },
+            {
+              "name": "volatility_252d",
+              "weight": 0.15,
+              "raw_value": 0.25394906278608226,
+              "normalized": 49.21018744278355,
+              "description": "ボラティリティ 0.25 — 標準水準（スコア49）"
+            },
+            {
+              "name": "beta_inverse",
+              "weight": 0.1,
+              "raw_value": 0.747,
+              "normalized": 75.3,
+              "description": "ベータ逆数 0.75 — 低ベータ（スコア75）"
+            }
+          ],
+          "explanation": "安全性スコア 61 — インタレストカバレッジが高評価、D/Eレシオが相対的に低評価（標準水準）"
+        },
+        "shareholder_return": {
+          "axis": "shareholder_return",
+          "name_ja": "還元力",
+          "total": 39,
+          "components": [
+            {
+              "name": "div_payout",
+              "weight": 0.3,
+              "raw_value": 0.1627,
+              "normalized": 24.405,
+              "description": "配当性向 0.1627 — 低配当性向（スコア24）"
+            },
+            {
+              "name": "buyback_yield",
+              "weight": 0.25,
+              "raw_value": -0.05979626334180515,
+              "normalized": 0.0,
+              "description": "自社株買い利回り -0.0598 — 自社株買い少（スコア0）"
+            },
+            {
+              "name": "doe",
+              "weight": 0.2,
+              "raw_value": 2.340907460361385,
+              "normalized": 70.22722381084155,
+              "description": "DOE 2.3409 — 高DOE（スコア70）"
+            },
+            {
+              "name": "div_growth_5y",
+              "weight": 0.15,
+              "raw_value": 16.691715580097654,
+              "normalized": 100.0,
+              "description": "5年増配率 16.6917 — 高増配（スコア100）"
+            },
+            {
+              "name": "total_yield",
+              "weight": 0.1,
+              "raw_value": 1.11,
+              "normalized": 27.750000000000004,
+              "description": "総還元利回り 1.1100 — 低還元（スコア28）"
+            }
+          ],
+          "explanation": "還元力スコア 39 — 5年増配率が高評価、自社株買い利回りが相対的に低評価（低還元水準）"
+        },
+        "quality": {
+          "axis": "quality",
+          "name_ja": "クオリティ",
+          "total": 60,
+          "components": [
+            {
+              "name": "roe_3y_avg",
+              "weight": 0.3,
+              "raw_value": 18.0371384887225,
+              "normalized": 90.18569244361251,
+              "description": "ROE(3年平均) 18.04% — 高収益性（スコア90）"
+            },
+            {
+              "name": "roa",
+              "weight": 0.2,
+              "raw_value": 7.08093709340909,
+              "normalized": 70.8093709340909,
+              "description": "ROA 7.08% — 高効率（スコア71）"
+            },
+            {
+              "name": "fcf_yield",
+              "weight": 0.2,
+              "raw_value": 1.2934864388844325,
+              "normalized": 19.402296583266487,
+              "description": "FCF利回り 1.29% — 低FCF（スコア19）"
+            },
+            {
+              "name": "moat_score",
+              "weight": 0.2,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "競争優位 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "earnings_stab",
+              "weight": 0.1,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "利益安定性 50.00 — 標準水準（スコア50）"
+            }
+          ],
+          "explanation": "クオリティスコア 60 — ROE(3年平均)が高評価、FCF利回りが相対的に低評価（標準水準）"
+        },
+        "growth": {
+          "axis": "growth",
+          "name_ja": "グロース",
+          "total": 81,
+          "components": [
+            {
+              "name": "revenue_cagr_3y",
+              "weight": 0.4,
+              "raw_value": 17.94829298499201,
+              "normalized": 89.74146492496004,
+              "description": "売上CAGR 17.95% — 高成長（スコア90）"
+            },
+            {
+              "name": "eps_growth_3y",
+              "weight": 0.3,
+              "raw_value": 28.413295116228344,
+              "normalized": 100.0,
+              "description": "EPS成長率 28.41% — 高EPS成長（スコア100）"
+            },
+            {
+              "name": "guidance",
+              "weight": 0.2,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "業績ガイダンス 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "tam_expansion",
+              "weight": 0.1,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "TAM拡大性 50.00 — 標準水準（スコア50）"
+            }
+          ],
+          "explanation": "グロースコア 81 — EPS成長率が高評価、TAM拡大性が相対的に低評価（高成長水準）"
+        },
+        "momentum": {
+          "axis": "momentum",
+          "name_ja": "モメンタム",
+          "total": 50,
+          "components": [
+            {
+              "name": "trend_score",
+              "weight": 0.3,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "トレンドスコア 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "ma_spread",
+              "weight": 0.25,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "MA乖離 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "credit_ratio",
+              "weight": 0.2,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "信用倍率 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "volume_z",
+              "weight": 0.15,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "出来高Z 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "relative_strength",
+              "weight": 0.1,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "相対強度 50.00 — 標準水準（スコア50）"
+            }
+          ],
+          "explanation": "モメンタムスコア 50 — トレンドスコアが高評価、相対強度が相対的に低評価（標準水準）"
+        }
+      },
+      "diagnostics": [
+        "observation: scores are partial-real / hybrid (not full real / not full generated)",
+        "observation: missing components fall back to scorer MISSING_RAW_VALUES neutral",
+        "observation: financial-sector tickers may show bounded de_ratio/fcf_yield/equity_ratio distortion",
+        "observation: momentum components are technical-deferred (financial_data 不在→中立 50)",
+        "observation: volatility_252d expects caller-supplied value derived from returns.json",
+        "observation: 9418.T fundamentals snapshot from data/fundamentals.json"
+      ]
+    },
+    {
+      "ticker": "1928.T",
+      "six_axis": {
+        "value": {
+          "axis": "value",
+          "name_ja": "バリュー",
+          "total": 98,
+          "components": [
+            {
+              "name": "per_score",
+              "weight": 0.3,
+              "raw_value": 9.504386,
+              "normalized": 100.0,
+              "description": "PER 9.50 — 割安水準（スコア100）"
+            },
+            {
+              "name": "pbr_score",
+              "weight": 0.25,
+              "raw_value": 1.030702,
+              "normalized": 99.07894,
+              "description": "PBR 1.03 — 割安水準（スコア99）"
+            },
+            {
+              "name": "peg_score",
+              "weight": 0.2,
+              "raw_value": 0.39,
+              "normalized": 100.0,
+              "description": "PEG 0.39 — 割安水準（スコア100）"
+            },
+            {
+              "name": "div_yield",
+              "weight": 0.15,
+              "raw_value": 4.37,
+              "normalized": 100.0,
+              "description": "配当利回り 4.37% — 高配当（スコア100）"
+            },
+            {
+              "name": "ev_ebitda",
+              "weight": 0.1,
+              "raw_value": 9.547,
+              "normalized": 84.53,
+              "description": "EV/EBITDA 9.55 — 割安水準（スコア85）"
+            }
+          ],
+          "explanation": "バリュースコア 98 — PERが高評価、EV/EBITDAが相対的に低評価（割安水準）"
+        },
+        "safety": {
+          "axis": "safety",
+          "name_ja": "安全性",
+          "total": 67,
+          "components": [
+            {
+              "name": "equity_ratio",
+              "weight": 0.3,
+              "raw_value": 42.73549290671563,
+              "normalized": 64.10323936007345,
+              "description": "自己資本比率 42.74% — 標準水準（スコア64）"
+            },
+            {
+              "name": "de_ratio",
+              "weight": 0.25,
+              "raw_value": 1.3172506591151383,
+              "normalized": 47.30997363539447,
+              "description": "D/Eレシオ 1.32 — 標準水準（スコア47）"
+            },
+            {
+              "name": "interest_cover",
+              "weight": 0.2,
+              "raw_value": 10.457213587525203,
+              "normalized": 83.65770870020162,
+              "description": "インタレストカバレッジ 10.46 — 高カバレッジ（スコア84）"
+            },
+            {
+              "name": "volatility_252d",
+              "weight": 0.15,
+              "raw_value": 0.19434616649156344,
+              "normalized": 61.130766701687314,
+              "description": "ボラティリティ 0.19 — 標準水準（スコア61）"
+            },
+            {
+              "name": "beta_inverse",
+              "weight": 0.1,
+              "raw_value": 0.291,
+              "normalized": 100.0,
+              "description": "ベータ逆数 0.29 — 低ベータ（スコア100）"
+            }
+          ],
+          "explanation": "安全性スコア 67 — ベータ逆数が高評価、D/Eレシオが相対的に低評価（標準水準）"
+        },
+        "shareholder_return": {
+          "axis": "shareholder_return",
+          "name_ja": "還元力",
+          "total": 76,
+          "components": [
+            {
+              "name": "div_payout",
+              "weight": 0.3,
+              "raw_value": 0.4023,
+              "normalized": 60.345,
+              "description": "配当性向 0.4023 — 標準水準（スコア60）"
+            },
+            {
+              "name": "buyback_yield",
+              "weight": 0.25,
+              "raw_value": 2.123161407563732,
+              "normalized": 63.694842226911966,
+              "description": "自社株買い利回り 2.1232 — 標準水準（スコア64）"
+            },
+            {
+              "name": "doe",
+              "weight": 0.2,
+              "raw_value": 4.333124105269603,
+              "normalized": 100.0,
+              "description": "DOE 4.3331 — 高DOE（スコア100）"
+            },
+            {
+              "name": "div_growth_5y",
+              "weight": 0.15,
+              "raw_value": 5.476607648164666,
+              "normalized": 82.14911472246999,
+              "description": "5年増配率 5.4766 — 高増配（スコア82）"
+            },
+            {
+              "name": "total_yield",
+              "weight": 0.1,
+              "raw_value": 4.37,
+              "normalized": 100.0,
+              "description": "総還元利回り 4.3700 — 高還元（スコア100）"
+            }
+          ],
+          "explanation": "還元力スコア 76 — DOEが高評価、配当性向が相対的に低評価（高還元水準）"
+        },
+        "quality": {
+          "axis": "quality",
+          "name_ja": "クオリティ",
+          "total": 57,
+          "components": [
+            {
+              "name": "roe_3y_avg",
+              "weight": 0.3,
+              "raw_value": 11.134909599986749,
+              "normalized": 55.67454799993374,
+              "description": "ROE(3年平均) 11.13% — 標準水準（スコア56）"
+            },
+            {
+              "name": "roa",
+              "weight": 0.2,
+              "raw_value": 4.635746510082517,
+              "normalized": 46.357465100825166,
+              "description": "ROA 4.64% — 標準水準（スコア46）"
+            },
+            {
+              "name": "fcf_yield",
+              "weight": 0.2,
+              "raw_value": 5.497519399333379,
+              "normalized": 82.46279099000068,
+              "description": "FCF利回り 5.50% — 高FCF（スコア82）"
+            },
+            {
+              "name": "moat_score",
+              "weight": 0.2,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "競争優位 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "earnings_stab",
+              "weight": 0.1,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "利益安定性 50.00 — 標準水準（スコア50）"
+            }
+          ],
+          "explanation": "クオリティスコア 57 — FCF利回りが高評価、ROAが相対的に低評価（標準水準）"
+        },
+        "growth": {
+          "axis": "growth",
+          "name_ja": "グロース",
+          "total": 50,
+          "components": [
+            {
+              "name": "revenue_cagr_3y",
+              "weight": 0.4,
+              "raw_value": 12.74911794990694,
+              "normalized": 63.7455897495347,
+              "description": "売上CAGR 12.75% — 標準水準（スコア64）"
+            },
+            {
+              "name": "eps_growth_3y",
+              "weight": 0.3,
+              "raw_value": 7.946221780206719,
+              "normalized": 31.784887120826877,
+              "description": "EPS成長率 7.95% — 標準水準（スコア32）"
+            },
+            {
+              "name": "guidance",
+              "weight": 0.2,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "業績ガイダンス 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "tam_expansion",
+              "weight": 0.1,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "TAM拡大性 50.00 — 標準水準（スコア50）"
+            }
+          ],
+          "explanation": "グロースコア 50 — 売上CAGRが高評価、EPS成長率が相対的に低評価（標準水準）"
+        },
+        "momentum": {
+          "axis": "momentum",
+          "name_ja": "モメンタム",
+          "total": 50,
+          "components": [
+            {
+              "name": "trend_score",
+              "weight": 0.3,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "トレンドスコア 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "ma_spread",
+              "weight": 0.25,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "MA乖離 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "credit_ratio",
+              "weight": 0.2,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "信用倍率 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "volume_z",
+              "weight": 0.15,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "出来高Z 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "relative_strength",
+              "weight": 0.1,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "相対強度 50.00 — 標準水準（スコア50）"
+            }
+          ],
+          "explanation": "モメンタムスコア 50 — トレンドスコアが高評価、相対強度が相対的に低評価（標準水準）"
+        }
+      },
+      "diagnostics": [
+        "observation: scores are partial-real / hybrid (not full real / not full generated)",
+        "observation: missing components fall back to scorer MISSING_RAW_VALUES neutral",
+        "observation: financial-sector tickers may show bounded de_ratio/fcf_yield/equity_ratio distortion",
+        "observation: momentum components are technical-deferred (financial_data 不在→中立 50)",
+        "observation: volatility_252d expects caller-supplied value derived from returns.json",
+        "observation: 1928.T fundamentals snapshot from data/fundamentals.json"
+      ]
+    },
+    {
+      "ticker": "7011.T",
+      "six_axis": {
+        "value": {
+          "axis": "value",
+          "name_ja": "バリュー",
+          "total": 18,
+          "components": [
+            {
+              "name": "per_score",
+              "weight": 0.3,
+              "raw_value": 39.445507,
+              "normalized": 0.0,
+              "description": "PER 39.45 — 割高水準（スコア0）"
+            },
+            {
+              "name": "pbr_score",
+              "weight": 0.25,
+              "raw_value": 4.488886,
+              "normalized": 0.0,
+              "description": "PBR 4.49 — 割高水準（スコア0）"
+            },
+            {
+              "name": "peg_score",
+              "weight": 0.2,
+              "raw_value": 1.52,
+              "normalized": 74.0,
+              "description": "PEG 1.52 — 割安水準（スコア74）"
+            },
+            {
+              "name": "div_yield",
+              "weight": 0.15,
+              "raw_value": 0.73,
+              "normalized": 18.25,
+              "description": "配当利回り 0.73% — 低配当（スコア18）"
+            },
+            {
+              "name": "ev_ebitda",
+              "weight": 0.1,
+              "raw_value": 20.368,
+              "normalized": 0.0,
+              "description": "EV/EBITDA 20.37 — 割高水準（スコア0）"
+            }
+          ],
+          "explanation": "バリュースコア 18 — PEGが高評価、EV/EBITDAが相対的に低評価（割高水準）"
+        },
+        "safety": {
+          "axis": "safety",
+          "name_ja": "安全性",
+          "total": 55,
+          "components": [
+            {
+              "name": "equity_ratio",
+              "weight": 0.3,
+              "raw_value": 35.24145943098315,
+              "normalized": 52.86218914647472,
+              "description": "自己資本比率 35.24% — 標準水準（スコア53）"
+            },
+            {
+              "name": "de_ratio",
+              "weight": 0.25,
+              "raw_value": 1.7851013890984029,
+              "normalized": 28.59594443606389,
+              "description": "D/Eレシオ 1.79 — 高レバレッジ（スコア29）"
+            },
+            {
+              "name": "interest_cover",
+              "weight": 0.2,
+              "raw_value": 24.984851880069915,
+              "normalized": 100.0,
+              "description": "インタレストカバレッジ 24.98 — 高カバレッジ（スコア100）"
+            },
+            {
+              "name": "volatility_252d",
+              "weight": 0.15,
+              "raw_value": 0.4282157485311254,
+              "normalized": 14.356850293774926,
+              "description": "ボラティリティ 0.43 — 高ボラ（スコア14）"
+            },
+            {
+              "name": "beta_inverse",
+              "weight": 0.1,
+              "raw_value": 0.398,
+              "normalized": 100.0,
+              "description": "ベータ逆数 0.40 — 低ベータ（スコア100）"
+            }
+          ],
+          "explanation": "安全性スコア 55 — インタレストカバレッジが高評価、ボラティリティが相対的に低評価（標準水準）"
+        },
+        "shareholder_return": {
+          "axis": "shareholder_return",
+          "name_ja": "還元力",
+          "total": 47,
+          "components": [
+            {
+              "name": "div_payout",
+              "weight": 0.3,
+              "raw_value": 0.23889999,
+              "normalized": 35.8349985,
+              "description": "配当性向 0.2389 — 標準水準（スコア36）"
+            },
+            {
+              "name": "buyback_yield",
+              "weight": 0.25,
+              "raw_value": -0.018492919686494587,
+              "normalized": 0.0,
+              "description": "自社株買い利回り -0.0185 — 自社株買い少（スコア0）"
+            },
+            {
+              "name": "doe",
+              "weight": 0.2,
+              "raw_value": 3.2882317396925558,
+              "normalized": 98.64695219077667,
+              "description": "DOE 3.2882 — 高DOE（スコア99）"
+            },
+            {
+              "name": "div_growth_5y",
+              "weight": 0.15,
+              "raw_value": 6.54635334405711,
+              "normalized": 98.19530016085665,
+              "description": "5年増配率 6.5464 — 高増配（スコア98）"
+            },
+            {
+              "name": "total_yield",
+              "weight": 0.1,
+              "raw_value": 0.73,
+              "normalized": 18.25,
+              "description": "総還元利回り 0.7300 — 低還元（スコア18）"
+            }
+          ],
+          "explanation": "還元力スコア 47 — DOEが高評価、自社株買い利回りが相対的に低評価（標準水準）"
+        },
+        "quality": {
+          "axis": "quality",
+          "name_ja": "クオリティ",
+          "total": 43,
+          "components": [
+            {
+              "name": "roe_3y_avg",
+              "weight": 0.3,
+              "raw_value": 9.442404461193856,
+              "normalized": 47.212022305969285,
+              "description": "ROE(3年平均) 9.44% — 標準水準（スコア47）"
+            },
+            {
+              "name": "roa",
+              "weight": 0.2,
+              "raw_value": 3.6859859040289393,
+              "normalized": 36.85985904028939,
+              "description": "ROA 3.69% — 標準水準（スコア37）"
+            },
+            {
+              "name": "fcf_yield",
+              "weight": 0.2,
+              "raw_value": 2.0900340725895203,
+              "normalized": 31.350511088842804,
+              "description": "FCF利回り 2.09% — 標準水準（スコア31）"
+            },
+            {
+              "name": "moat_score",
+              "weight": 0.2,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "競争優位 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "earnings_stab",
+              "weight": 0.1,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "利益安定性 50.00 — 標準水準（スコア50）"
+            }
+          ],
+          "explanation": "クオリティスコア 43 — 競争優位が高評価、FCF利回りが相対的に低評価（標準水準）"
+        },
+        "growth": {
+          "axis": "growth",
+          "name_ja": "グロース",
+          "total": 63,
+          "components": [
+            {
+              "name": "revenue_cagr_3y",
+              "weight": 0.4,
+              "raw_value": 9.203103734475903,
+              "normalized": 46.015518672379514,
+              "description": "売上CAGR 9.20% — 標準水準（スコア46）"
+            },
+            {
+              "name": "eps_growth_3y",
+              "weight": 0.3,
+              "raw_value": 29.300936714618796,
+              "normalized": 100.0,
+              "description": "EPS成長率 29.30% — 高EPS成長（スコア100）"
+            },
+            {
+              "name": "guidance",
+              "weight": 0.2,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "業績ガイダンス 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "tam_expansion",
+              "weight": 0.1,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "TAM拡大性 50.00 — 標準水準（スコア50）"
+            }
+          ],
+          "explanation": "グロースコア 63 — EPS成長率が高評価、売上CAGRが相対的に低評価（標準水準）"
+        },
+        "momentum": {
+          "axis": "momentum",
+          "name_ja": "モメンタム",
+          "total": 50,
+          "components": [
+            {
+              "name": "trend_score",
+              "weight": 0.3,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "トレンドスコア 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "ma_spread",
+              "weight": 0.25,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "MA乖離 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "credit_ratio",
+              "weight": 0.2,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "信用倍率 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "volume_z",
+              "weight": 0.15,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "出来高Z 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "relative_strength",
+              "weight": 0.1,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "相対強度 50.00 — 標準水準（スコア50）"
+            }
+          ],
+          "explanation": "モメンタムスコア 50 — トレンドスコアが高評価、相対強度が相対的に低評価（標準水準）"
+        }
+      },
+      "diagnostics": [
+        "observation: scores are partial-real / hybrid (not full real / not full generated)",
+        "observation: missing components fall back to scorer MISSING_RAW_VALUES neutral",
+        "observation: financial-sector tickers may show bounded de_ratio/fcf_yield/equity_ratio distortion",
+        "observation: momentum components are technical-deferred (financial_data 不在→中立 50)",
+        "observation: volatility_252d expects caller-supplied value derived from returns.json",
+        "observation: 7011.T fundamentals snapshot from data/fundamentals.json"
+      ]
+    },
+    {
+      "ticker": "7974.T",
+      "six_axis": {
+        "value": {
+          "axis": "value",
+          "name_ja": "バリュー",
+          "total": 37,
+          "components": [
+            {
+              "name": "per_score",
+              "weight": 0.3,
+              "raw_value": 20.608469,
+              "normalized": 46.957655,
+              "description": "PER 20.61 — 標準水準（スコア47）"
+            },
+            {
+              "name": "pbr_score",
+              "weight": 0.25,
+              "raw_value": 2.9343424,
+              "normalized": 41.969728,
+              "description": "PBR 2.93 — 標準水準（スコア42）"
+            },
+            {
+              "name": "peg_score",
+              "weight": 0.2,
+              "raw_value": 3.62,
+              "normalized": 0.0,
+              "description": "PEG 3.62 — 割高水準（スコア0）"
+            },
+            {
+              "name": "div_yield",
+              "weight": 0.15,
+              "raw_value": 3.05,
+              "normalized": 76.25,
+              "description": "配当利回り 3.05% — 高配当（スコア76）"
+            },
+            {
+              "name": "ev_ebitda",
+              "weight": 0.1,
+              "raw_value": 17.162,
+              "normalized": 8.38000000000001,
+              "description": "EV/EBITDA 17.16 — 割高水準（スコア8）"
+            }
+          ],
+          "explanation": "バリュースコア 37 — 配当利回りが高評価、PEGが相対的に低評価（割高水準）"
+        },
+        "safety": {
+          "axis": "safety",
+          "name_ja": "安全性",
+          "total": 86,
+          "components": [
+            {
+              "name": "equity_ratio",
+              "weight": 0.3,
+              "raw_value": 80.16224733449758,
+              "normalized": 100.0,
+              "description": "自己資本比率 80.16% — 財務健全（スコア100）"
+            },
+            {
+              "name": "de_ratio",
+              "weight": 0.25,
+              "raw_value": 0.24705927264211405,
+              "normalized": 90.11762909431543,
+              "description": "D/Eレシオ 0.25 — 低レバレッジ（スコア90）"
+            },
+            {
+              "name": "interest_cover",
+              "weight": 0.2,
+              "raw_value": 1794.578313253012,
+              "normalized": 100.0,
+              "description": "インタレストカバレッジ 1794.58 — 高カバレッジ（スコア100）"
+            },
+            {
+              "name": "volatility_252d",
+              "weight": 0.15,
+              "raw_value": 0.373388213733107,
+              "normalized": 25.3223572533786,
+              "description": "ボラティリティ 0.37 — 高ボラ（スコア25）"
+            },
+            {
+              "name": "beta_inverse",
+              "weight": 0.1,
+              "raw_value": 0.158,
+              "normalized": 100.0,
+              "description": "ベータ逆数 0.16 — 低ベータ（スコア100）"
+            }
+          ],
+          "explanation": "安全性スコア 86 — 自己資本比率が高評価、ボラティリティが相対的に低評価（安全水準）"
+        },
+        "shareholder_return": {
+          "axis": "shareholder_return",
+          "name_ja": "還元力",
+          "total": 75,
+          "components": [
+            {
+              "name": "div_payout",
+              "weight": 0.3,
+              "raw_value": 0.60080004,
+              "normalized": 90.120006,
+              "description": "配当性向 0.6008 — 高配当性向（スコア90）"
+            },
+            {
+              "name": "buyback_yield",
+              "weight": 0.25,
+              "raw_value": 0.7646986654111816,
+              "normalized": 22.940959962335448,
+              "description": "自社株買い利回り 0.7647 — 自社株買い少（スコア23）"
+            },
+            {
+              "name": "doe",
+              "weight": 0.2,
+              "raw_value": 7.091331947791857,
+              "normalized": 100.0,
+              "description": "DOE 7.0913 — 高DOE（スコア100）"
+            },
+            {
+              "name": "div_growth_5y",
+              "weight": 0.15,
+              "raw_value": 11.365758876668174,
+              "normalized": 100.0,
+              "description": "5年増配率 11.3658 — 高増配（スコア100）"
+            },
+            {
+              "name": "total_yield",
+              "weight": 0.1,
+              "raw_value": 3.05,
+              "normalized": 76.25,
+              "description": "総還元利回り 3.0500 — 高還元（スコア76）"
+            }
+          ],
+          "explanation": "還元力スコア 75 — DOEが高評価、自社株買い利回りが相対的に低評価（高還元水準）"
+        },
+        "quality": {
+          "axis": "quality",
+          "name_ja": "クオリティ",
+          "total": 55,
+          "components": [
+            {
+              "name": "roe_3y_avg",
+              "weight": 0.3,
+              "raw_value": 15.829933973030636,
+              "normalized": 79.14966986515319,
+              "description": "ROE(3年平均) 15.83% — 高収益性（スコア79）"
+            },
+            {
+              "name": "roa",
+              "weight": 0.2,
+              "raw_value": 8.203759583229735,
+              "normalized": 82.03759583229734,
+              "description": "ROA 8.20% — 高効率（スコア82）"
+            },
+            {
+              "name": "fcf_yield",
+              "weight": 0.2,
+              "raw_value": -0.08005195500537958,
+              "normalized": 0.0,
+              "description": "FCF利回り -0.08% — 低FCF（スコア0）"
+            },
+            {
+              "name": "moat_score",
+              "weight": 0.2,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "競争優位 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "earnings_stab",
+              "weight": 0.1,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "利益安定性 50.00 — 標準水準（スコア50）"
+            }
+          ],
+          "explanation": "クオリティスコア 55 — ROAが高評価、FCF利回りが相対的に低評価（標準水準）"
+        },
+        "growth": {
+          "axis": "growth",
+          "name_ja": "グロース",
+          "total": 15,
+          "components": [
+            {
+              "name": "revenue_cagr_3y",
+              "weight": 0.4,
+              "raw_value": -11.757120534115195,
+              "normalized": 0.0,
+              "description": "売上CAGR -11.76% — 低成長（スコア0）"
+            },
+            {
+              "name": "eps_growth_3y",
+              "weight": 0.3,
+              "raw_value": -16.429753038017836,
+              "normalized": 0.0,
+              "description": "EPS成長率 -16.43% — EPS低成長（スコア0）"
+            },
+            {
+              "name": "guidance",
+              "weight": 0.2,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "業績ガイダンス 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "tam_expansion",
+              "weight": 0.1,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "TAM拡大性 50.00 — 標準水準（スコア50）"
+            }
+          ],
+          "explanation": "グロースコア 15 — 業績ガイダンスが高評価、EPS成長率が相対的に低評価（低成長水準）"
+        },
+        "momentum": {
+          "axis": "momentum",
+          "name_ja": "モメンタム",
+          "total": 50,
+          "components": [
+            {
+              "name": "trend_score",
+              "weight": 0.3,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "トレンドスコア 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "ma_spread",
+              "weight": 0.25,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "MA乖離 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "credit_ratio",
+              "weight": 0.2,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "信用倍率 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "volume_z",
+              "weight": 0.15,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "出来高Z 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "relative_strength",
+              "weight": 0.1,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "相対強度 50.00 — 標準水準（スコア50）"
+            }
+          ],
+          "explanation": "モメンタムスコア 50 — トレンドスコアが高評価、相対強度が相対的に低評価（標準水準）"
+        }
+      },
+      "diagnostics": [
+        "observation: scores are partial-real / hybrid (not full real / not full generated)",
+        "observation: missing components fall back to scorer MISSING_RAW_VALUES neutral",
+        "observation: financial-sector tickers may show bounded de_ratio/fcf_yield/equity_ratio distortion",
+        "observation: momentum components are technical-deferred (financial_data 不在→中立 50)",
+        "observation: volatility_252d expects caller-supplied value derived from returns.json",
+        "observation: 7974.T fundamentals snapshot from data/fundamentals.json"
+      ]
+    },
+    {
+      "ticker": "9433.T",
+      "six_axis": {
+        "value": {
+          "axis": "value",
+          "name_ja": "バリュー",
+          "total": 69,
+          "components": [
+            {
+              "name": "per_score",
+              "weight": 0.3,
+              "raw_value": 15.052827,
+              "normalized": 74.73586499999999,
+              "description": "PER 15.05 — 割安水準（スコア75）"
+            },
+            {
+              "name": "pbr_score",
+              "weight": 0.25,
+              "raw_value": 2.0727408,
+              "normalized": 67.817776,
+              "description": "PBR 2.07 — 標準水準（スコア68）"
+            },
+            {
+              "name": "peg_score",
+              "weight": 0.2,
+              "raw_value": 2.11,
+              "normalized": 44.50000000000001,
+              "description": "PEG 2.11 — 標準水準（スコア45）"
+            },
+            {
+              "name": "div_yield",
+              "weight": 0.15,
+              "raw_value": 3.12,
+              "normalized": 78.0,
+              "description": "配当利回り 3.12% — 高配当（スコア78）"
+            },
+            {
+              "name": "ev_ebitda",
+              "weight": 0.1,
+              "raw_value": 8.59,
+              "normalized": 94.1,
+              "description": "EV/EBITDA 8.59 — 割安水準（スコア94）"
+            }
+          ],
+          "explanation": "バリュースコア 69 — EV/EBITDAが高評価、PEGが相対的に低評価（標準水準）"
+        },
+        "safety": {
+          "axis": "safety",
+          "name_ja": "安全性",
+          "total": 55,
+          "components": [
+            {
+              "name": "equity_ratio",
+              "weight": 0.3,
+              "raw_value": 30.10818376246836,
+              "normalized": 45.16227564370254,
+              "description": "自己資本比率 30.11% — 標準水準（スコア45）"
+            },
+            {
+              "name": "de_ratio",
+              "weight": 0.25,
+              "raw_value": 2.2175308668960425,
+              "normalized": 11.298765324158296,
+              "description": "D/Eレシオ 2.22 — 高レバレッジ（スコア11）"
+            },
+            {
+              "name": "interest_cover",
+              "weight": 0.2,
+              "raw_value": 60.31476793248945,
+              "normalized": 100.0,
+              "description": "インタレストカバレッジ 60.31 — 高カバレッジ（スコア100）"
+            },
+            {
+              "name": "volatility_252d",
+              "weight": 0.15,
+              "raw_value": 0.21682237868548143,
+              "normalized": 56.635524262903715,
+              "description": "ボラティリティ 0.22 — 標準水準（スコア57）"
+            },
+            {
+              "name": "beta_inverse",
+              "weight": 0.1,
+              "raw_value": -0.083,
+              "normalized": 100.0,
+              "description": "ベータ逆数 -0.08 — 低ベータ（スコア100）"
+            }
+          ],
+          "explanation": "安全性スコア 55 — インタレストカバレッジが高評価、D/Eレシオが相対的に低評価（標準水準）"
+        },
+        "shareholder_return": {
+          "axis": "shareholder_return",
+          "name_ja": "還元力",
+          "total": 87,
+          "components": [
+            {
+              "name": "div_payout",
+              "weight": 0.3,
+              "raw_value": 0.43580002,
+              "normalized": 65.370003,
+              "description": "配当性向 0.4358 — 標準水準（スコア65）"
+            },
+            {
+              "name": "buyback_yield",
+              "weight": 0.25,
+              "raw_value": 10.201020447710981,
+              "normalized": 100.0,
+              "description": "自社株買い利回り 10.2010 — 積極自社株買い（スコア100）"
+            },
+            {
+              "name": "doe",
+              "weight": 0.2,
+              "raw_value": 5.700651466121675,
+              "normalized": 100.0,
+              "description": "DOE 5.7007 — 高DOE（スコア100）"
+            },
+            {
+              "name": "div_growth_5y",
+              "weight": 0.15,
+              "raw_value": 13.484883303171813,
+              "normalized": 100.0,
+              "description": "5年増配率 13.4849 — 高増配（スコア100）"
+            },
+            {
+              "name": "total_yield",
+              "weight": 0.1,
+              "raw_value": 3.12,
+              "normalized": 78.0,
+              "description": "総還元利回り 3.1200 — 高還元（スコア78）"
+            }
+          ],
+          "explanation": "還元力スコア 87 — 自社株買い利回りが高評価、配当性向が相対的に低評価（高還元水準）"
+        },
+        "quality": {
+          "axis": "quality",
+          "name_ja": "クオリティ",
+          "total": 58,
+          "components": [
+            {
+              "name": "roe_3y_avg",
+              "weight": 0.3,
+              "raw_value": 12.477341290897066,
+              "normalized": 62.38670645448533,
+              "description": "ROE(3年平均) 12.48% — 標準水準（スコア62）"
+            },
+            {
+              "name": "roa",
+              "weight": 0.2,
+              "raw_value": 3.921193238912699,
+              "normalized": 39.21193238912699,
+              "description": "ROA 3.92% — 標準水準（スコア39）"
+            },
+            {
+              "name": "fcf_yield",
+              "weight": 0.2,
+              "raw_value": 5.379869393568444,
+              "normalized": 80.69804090352666,
+              "description": "FCF利回り 5.38% — 高FCF（スコア81）"
+            },
+            {
+              "name": "moat_score",
+              "weight": 0.2,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "競争優位 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "earnings_stab",
+              "weight": 0.1,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "利益安定性 50.00 — 標準水準（スコア50）"
+            }
+          ],
+          "explanation": "クオリティスコア 58 — FCF利回りが高評価、ROAが相対的に低評価（標準水準）"
+        },
+        "growth": {
+          "axis": "growth",
+          "name_ja": "グロース",
+          "total": 20,
+          "components": [
+            {
+              "name": "revenue_cagr_3y",
+              "weight": 0.4,
+              "raw_value": 2.3250456144065623,
+              "normalized": 11.625228072032812,
+              "description": "売上CAGR 2.33% — 低成長（スコア12）"
+            },
+            {
+              "name": "eps_growth_3y",
+              "weight": 0.3,
+              "raw_value": -0.8533760598208318,
+              "normalized": 0.0,
+              "description": "EPS成長率 -0.85% — EPS低成長（スコア0）"
+            },
+            {
+              "name": "guidance",
+              "weight": 0.2,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "業績ガイダンス 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "tam_expansion",
+              "weight": 0.1,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "TAM拡大性 50.00 — 標準水準（スコア50）"
+            }
+          ],
+          "explanation": "グロースコア 20 — 業績ガイダンスが高評価、EPS成長率が相対的に低評価（低成長水準）"
+        },
+        "momentum": {
+          "axis": "momentum",
+          "name_ja": "モメンタム",
+          "total": 50,
+          "components": [
+            {
+              "name": "trend_score",
+              "weight": 0.3,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "トレンドスコア 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "ma_spread",
+              "weight": 0.25,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "MA乖離 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "credit_ratio",
+              "weight": 0.2,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "信用倍率 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "volume_z",
+              "weight": 0.15,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "出来高Z 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "relative_strength",
+              "weight": 0.1,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "相対強度 50.00 — 標準水準（スコア50）"
+            }
+          ],
+          "explanation": "モメンタムスコア 50 — トレンドスコアが高評価、相対強度が相対的に低評価（標準水準）"
+        }
+      },
+      "diagnostics": [
+        "observation: scores are partial-real / hybrid (not full real / not full generated)",
+        "observation: missing components fall back to scorer MISSING_RAW_VALUES neutral",
+        "observation: financial-sector tickers may show bounded de_ratio/fcf_yield/equity_ratio distortion",
+        "observation: momentum components are technical-deferred (financial_data 不在→中立 50)",
+        "observation: volatility_252d expects caller-supplied value derived from returns.json",
+        "observation: 9433.T fundamentals snapshot from data/fundamentals.json"
+      ]
+    },
+    {
+      "ticker": "7012.T",
+      "six_axis": {
+        "value": {
+          "axis": "value",
+          "name_ja": "バリュー",
+          "total": 53,
+          "components": [
+            {
+              "name": "per_score",
+              "weight": 0.3,
+              "raw_value": 22.035734,
+              "normalized": 39.82132999999999,
+              "description": "PER 22.04 — 標準水準（スコア40）"
+            },
+            {
+              "name": "pbr_score",
+              "weight": 0.25,
+              "raw_value": 2.7118485,
+              "normalized": 48.644545,
+              "description": "PBR 2.71 — 標準水準（スコア49）"
+            },
+            {
+              "name": "peg_score",
+              "weight": 0.2,
+              "raw_value": 0.72,
+              "normalized": 100.0,
+              "description": "PEG 0.72 — 割安水準（スコア100）"
+            },
+            {
+              "name": "div_yield",
+              "weight": 0.15,
+              "raw_value": 1.39,
+              "normalized": 34.75,
+              "description": "配当利回り 1.39% — 標準水準（スコア35）"
+            },
+            {
+              "name": "ev_ebitda",
+              "weight": 0.1,
+              "raw_value": 14.287,
+              "normalized": 37.129999999999995,
+              "description": "EV/EBITDA 14.29 — 標準水準（スコア37）"
+            }
+          ],
+          "explanation": "バリュースコア 53 — PEGが高評価、配当利回りが相対的に低評価（標準水準）"
+        },
+        "safety": {
+          "axis": "safety",
+          "name_ja": "安全性",
+          "total": 26,
+          "components": [
+            {
+              "name": "equity_ratio",
+              "weight": 0.3,
+              "raw_value": 23.298853710252505,
+              "normalized": 34.94828056537876,
+              "description": "自己資本比率 23.30% — 標準水準（スコア35）"
+            },
+            {
+              "name": "de_ratio",
+              "weight": 0.25,
+              "raw_value": 3.2605478614057177,
+              "normalized": 0.0,
+              "description": "D/Eレシオ 3.26 — 高レバレッジ（スコア0）"
+            },
+            {
+              "name": "interest_cover",
+              "weight": 0.2,
+              "raw_value": 6.1488418571282155,
+              "normalized": 49.190734857025724,
+              "description": "インタレストカバレッジ 6.15 — 標準水準（スコア49）"
+            },
+            {
+              "name": "volatility_252d",
+              "weight": 0.15,
+              "raw_value": 0.516881065634131,
+              "normalized": 0.0,
+              "description": "ボラティリティ 0.52 — 高ボラ（スコア0）"
+            },
+            {
+              "name": "beta_inverse",
+              "weight": 0.1,
+              "raw_value": 0.923,
+              "normalized": 57.699999999999996,
+              "description": "ベータ逆数 0.92 — 標準水準（スコア58）"
+            }
+          ],
+          "explanation": "安全性スコア 26 — ベータ逆数が高評価、ボラティリティが相対的に低評価（要注意水準）"
+        },
+        "shareholder_return": {
+          "axis": "shareholder_return",
+          "name_ja": "還元力",
+          "total": 46,
+          "components": [
+            {
+              "name": "div_payout",
+              "weight": 0.3,
+              "raw_value": 0.2643,
+              "normalized": 39.644999999999996,
+              "description": "配当性向 0.2643 — 標準水準（スコア40）"
+            },
+            {
+              "name": "buyback_yield",
+              "weight": 0.25,
+              "raw_value": 0.2007639449510607,
+              "normalized": 6.022918348531821,
+              "description": "自社株買い利回り 0.2008 — 自社株買い少（スコア6）"
+            },
+            {
+              "name": "doe",
+              "weight": 0.2,
+              "raw_value": 2.384783366409879,
+              "normalized": 71.54350099229637,
+              "description": "DOE 2.3848 — 高DOE（スコア72）"
+            },
+            {
+              "name": "div_growth_5y",
+              "weight": 0.15,
+              "raw_value": 6.616714799334122,
+              "normalized": 99.25072199001184,
+              "description": "5年増配率 6.6167 — 高増配（スコア99）"
+            },
+            {
+              "name": "total_yield",
+              "weight": 0.1,
+              "raw_value": 1.39,
+              "normalized": 34.75,
+              "description": "総還元利回り 1.3900 — 標準水準（スコア35）"
+            }
+          ],
+          "explanation": "還元力スコア 46 — 5年増配率が高評価、自社株買い利回りが相対的に低評価（標準水準）"
+        },
+        "quality": {
+          "axis": "quality",
+          "name_ja": "クオリティ",
+          "total": 38,
+          "components": [
+            {
+              "name": "roe_3y_avg",
+              "weight": 0.3,
+              "raw_value": 8.697808808878918,
+              "normalized": 43.48904404439459,
+              "description": "ROE(3年平均) 8.70% — 標準水準（スコア43）"
+            },
+            {
+              "name": "roa",
+              "weight": 0.2,
+              "raw_value": 2.916885292469119,
+              "normalized": 29.168852924691187,
+              "description": "ROA 2.92% — 低効率（スコア29）"
+            },
+            {
+              "name": "fcf_yield",
+              "weight": 0.2,
+              "raw_value": 1.4823222045836166,
+              "normalized": 22.23483306875425,
+              "description": "FCF利回り 1.48% — 低FCF（スコア22）"
+            },
+            {
+              "name": "moat_score",
+              "weight": 0.2,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "競争優位 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "earnings_stab",
+              "weight": 0.1,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "利益安定性 50.00 — 標準水準（スコア50）"
+            }
+          ],
+          "explanation": "クオリティスコア 38 — 競争優位が高評価、FCF利回りが相対的に低評価（低品質水準）"
+        },
+        "growth": {
+          "axis": "growth",
+          "name_ja": "グロース",
+          "total": 70,
+          "components": [
+            {
+              "name": "revenue_cagr_3y",
+              "weight": 0.4,
+              "raw_value": 12.36519730715302,
+              "normalized": 61.8259865357651,
+              "description": "売上CAGR 12.37% — 標準水準（スコア62）"
+            },
+            {
+              "name": "eps_growth_3y",
+              "weight": 0.3,
+              "raw_value": 90.95736741629787,
+              "normalized": 100.0,
+              "description": "EPS成長率 90.96% — 高EPS成長（スコア100）"
+            },
+            {
+              "name": "guidance",
+              "weight": 0.2,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "業績ガイダンス 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "tam_expansion",
+              "weight": 0.1,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "TAM拡大性 50.00 — 標準水準（スコア50）"
+            }
+          ],
+          "explanation": "グロースコア 70 — EPS成長率が高評価、TAM拡大性が相対的に低評価（標準水準）"
+        },
+        "momentum": {
+          "axis": "momentum",
+          "name_ja": "モメンタム",
+          "total": 50,
+          "components": [
+            {
+              "name": "trend_score",
+              "weight": 0.3,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "トレンドスコア 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "ma_spread",
+              "weight": 0.25,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "MA乖離 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "credit_ratio",
+              "weight": 0.2,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "信用倍率 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "volume_z",
+              "weight": 0.15,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "出来高Z 50.00 — 標準水準（スコア50）"
+            },
+            {
+              "name": "relative_strength",
+              "weight": 0.1,
+              "raw_value": 50.0,
+              "normalized": 50.0,
+              "description": "相対強度 50.00 — 標準水準（スコア50）"
+            }
+          ],
+          "explanation": "モメンタムスコア 50 — トレンドスコアが高評価、相対強度が相対的に低評価（標準水準）"
+        }
+      },
+      "diagnostics": [
+        "observation: scores are partial-real / hybrid (not full real / not full generated)",
+        "observation: missing components fall back to scorer MISSING_RAW_VALUES neutral",
+        "observation: financial-sector tickers may show bounded de_ratio/fcf_yield/equity_ratio distortion",
+        "observation: momentum components are technical-deferred (financial_data 不在→中立 50)",
+        "observation: volatility_252d expects caller-supplied value derived from returns.json",
+        "observation: 7012.T fundamentals snapshot from data/fundamentals.json"
+      ]
+    }
+  ],
+  "diagnostics": [
+    "observation: scores are partial-real / hybrid (not full real / not full generated)",
+    "observation: volatility_252d derived from public/data/returns.json (caller-supplied)",
+    "observation: momentum components and 4 passthrough (moat_score / earnings_stab / guidance / tam_expansion) are technical-deferred → scorer MISSING_RAW_VALUES neutral",
+    "observation: financial-sector tickers may show bounded de_ratio/fcf_yield/equity_ratio distortion (documented hybrid limitation)",
+    "observation: fundamentals snapshot generated_at=2026-05-19T16:52:29.781230+00:00",
+    "observation: returns snapshot generated_at=2026-05-18T08:59:10.003947"
+  ],
+  "status": "ok"
+}

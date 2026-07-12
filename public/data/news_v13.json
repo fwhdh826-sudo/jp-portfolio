@@ -1,0 +1,269 @@
+{
+  "fetched_at": "2026-04-11T12:49:00Z",
+  "sources_status": {
+    "bloomberg":       "ok",
+    "reuters":         "ok",
+    "yahoo_finance_jp":"timeout",
+    "minkabu":         "ok",
+    "shikiho_online":  "rate_limited",
+    "tdnet":           "ok",
+    "edinet":          "ok",
+    "jpx":             "ok"
+  },
+  "total_items": 10,
+  "deduplicated_items": 10,
+  "categories": {
+    "macro": [
+      {
+        "source_id": "bloomberg",
+        "title": "日銀、金融政策据え置き — 次回会合でのYCC調整観測高まる",
+        "summary": "日本銀行は4月会合で政策金利を0.5%に据え置いた。市場では次回6月会合での追加利上げを見込む声が増加しており、長期金利は1.45%近辺で推移している。",
+        "url": "https://www.bloomberg.co.jp/news/articles/example-boj-001",
+        "published_at": "2026-04-11T10:30:00+09:00",
+        "language": "ja",
+        "category": ["macro", "japan"],
+        "related_tickers": [],
+        "sentiment_score": 0.1,
+        "importance_score": 82
+      },
+      {
+        "source_id": "reuters",
+        "title": "米雇用統計、非農業部門雇用者数は予想下回る — FRB利下げ観測再燃",
+        "summary": "米労働省が発表した3月の非農業部門雇用者数は前月比19万人増と市場予想の22万人を下回った。失業率は3.8%と前月から横ばい。FRBの利下げ開始時期を巡る議論が再び活発化している。",
+        "url": "https://jp.reuters.com/markets/example-nfp-001",
+        "published_at": "2026-04-11T09:15:00+09:00",
+        "language": "ja",
+        "category": ["macro", "international"],
+        "related_tickers": [],
+        "sentiment_score": -0.2,
+        "importance_score": 78
+      }
+    ],
+    "earnings": [
+      {
+        "source_id": "tdnet",
+        "title": "三菱重工業（7011）— 2026年3月期通期業績、営業利益が前年比32%増の過去最高",
+        "summary": "三菱重工業は2026年3月期の通期業績を発表。防衛・航空事業の拡大を受け、営業利益は前年比32%増の4,850億円と過去最高を更新した。来期の増配も発表した。",
+        "url": "https://www.release.tdnet.info/inbs/example-7011-001",
+        "published_at": "2026-04-11T16:30:00+09:00",
+        "language": "ja",
+        "category": ["earnings", "individual_stocks"],
+        "related_tickers": ["7011"],
+        "sentiment_score": 0.6,
+        "importance_score": 88
+      },
+      {
+        "source_id": "bloomberg",
+        "title": "半導体セクター一斉高 — 台湾積体電路製造（TSMC）好決算が追い風",
+        "summary": "TSMCが市場予想を上回る四半期決算を発表したことを受け、国内半導体関連株が軒並み上昇。東京エレクトロン、ルネサスエレクトロニクス等が大幅高。",
+        "url": "https://www.bloomberg.co.jp/news/articles/example-semi-001",
+        "published_at": "2026-04-11T11:00:00+09:00",
+        "language": "ja",
+        "category": ["earnings", "markets"],
+        "related_tickers": ["8035"],
+        "sentiment_score": 0.5,
+        "importance_score": 72
+      }
+    ],
+    "disclosure": [
+      {
+        "source_id": "edinet",
+        "title": "ソフトバンクグループ（9984）— 有価証券報告書提出（2025年9月期）",
+        "summary": "ソフトバンクグループは金融商品取引法に基づく有価証券報告書をEDINETに提出した。投資ファンド運用資産はSVF1・SVF2合計で約20兆円。",
+        "url": "https://disclosure.edinet-fsa.go.jp/example-9984-001",
+        "published_at": "2026-04-11T08:00:00+09:00",
+        "language": "ja",
+        "category": ["disclosure"],
+        "related_tickers": ["9984"],
+        "sentiment_score": 0.0,
+        "importance_score": 70
+      },
+      {
+        "source_id": "tdnet",
+        "title": "トヨタ自動車（7203）— 株式分割（1:5）および配当修正を発表",
+        "summary": "トヨタ自動車は2026年9月30日を基準日として1株を5株に分割すると発表した。あわせて年間配当を1株当たり36円から42円に増配修正した。",
+        "url": "https://www.release.tdnet.info/inbs/example-7203-001",
+        "published_at": "2026-04-10T16:30:00+09:00",
+        "language": "ja",
+        "category": ["disclosure", "individual_stocks"],
+        "related_tickers": ["7203"],
+        "sentiment_score": 0.4,
+        "importance_score": 74
+      }
+    ],
+    "markets": [
+      {
+        "source_id": "minkabu",
+        "title": "日経平均テクニカル分析 — 38,500円の抵抗線を突破すれば上昇モメンタム加速",
+        "summary": "日経平均は25日移動平均線を上回る水準で推移中。RSI(14)は58と過熱感なく、短期的な上値余地を示唆。38,500円の抵抗線突破が次の焦点となっている。",
+        "url": "https://minkabu.jp/analysis/example-nikkei-001",
+        "published_at": "2026-04-11T12:00:00+09:00",
+        "language": "ja",
+        "category": ["markets", "japan"],
+        "related_tickers": [],
+        "sentiment_score": 0.2,
+        "importance_score": 55
+      },
+      {
+        "source_id": "jpx",
+        "title": "東証プライム市場 — 4月第2週の売買代金統計（外国人・機関投資家動向）",
+        "summary": "東京証券取引所が発表した週次売買統計によると、外国人投資家は週次で1,240億円の買い越しを記録。信託銀行（年金）も3週連続の買い越しとなった。",
+        "url": "https://www.jpx.co.jp/markets/statistics-equities/example-001",
+        "published_at": "2026-04-11T07:30:00+09:00",
+        "language": "ja",
+        "category": ["markets", "market_structure"],
+        "related_tickers": [],
+        "sentiment_score": 0.1,
+        "importance_score": 50
+      }
+    ],
+    "individual_stocks": [
+      {
+        "source_id": "reuters",
+        "title": "原油価格続落 — OPEC+増産合意がコモディティ関連株に逆風",
+        "summary": "OPEC+が生産量を段階的に引き上げる方針を確認したことを受け、WTI原油先物は1バレル96.5ドル付近で推移。INPEXなど国内エネルギー株に売り圧力。",
+        "url": "https://jp.reuters.com/markets/example-oil-001",
+        "published_at": "2026-04-11T06:00:00+09:00",
+        "language": "ja",
+        "category": ["individual_stocks", "macro"],
+        "related_tickers": ["1605"],
+        "sentiment_score": -0.3,
+        "importance_score": 63
+      },
+      {
+        "source_id": "yahoo_finance_jp",
+        "title": "ソニーグループ（6758）— 映画・音楽部門好調で今期営業利益を上方修正",
+        "summary": "ソニーグループは2026年3月期の営業利益予想を1兆2,500億円から1兆3,200億円に上方修正。エンタメコンテンツ事業の好調が寄与。株価は前日比3.2%高で推移。",
+        "url": "https://finance.yahoo.co.jp/news/example-6758-001",
+        "published_at": "2026-04-10T18:00:00+09:00",
+        "language": "ja",
+        "category": ["individual_stocks", "earnings"],
+        "related_tickers": ["6758"],
+        "sentiment_score": 0.5,
+        "importance_score": 68
+      }
+    ]
+  },
+  "top_items": [
+    {
+      "source_id": "tdnet",
+      "title": "三菱重工業（7011）— 2026年3月期通期業績、営業利益が前年比32%増の過去最高",
+      "summary": "三菱重工業は2026年3月期の通期業績を発表。防衛・航空事業の拡大を受け、営業利益は前年比32%増の4,850億円と過去最高を更新した。来期の増配も発表した。",
+      "url": "https://www.release.tdnet.info/inbs/example-7011-001",
+      "published_at": "2026-04-11T16:30:00+09:00",
+      "language": "ja",
+      "category": ["earnings", "individual_stocks"],
+      "related_tickers": ["7011"],
+      "sentiment_score": 0.6,
+      "importance_score": 88
+    },
+    {
+      "source_id": "bloomberg",
+      "title": "日銀、金融政策据え置き — 次回会合でのYCC調整観測高まる",
+      "summary": "日本銀行は4月会合で政策金利を0.5%に据え置いた。市場では次回6月会合での追加利上げを見込む声が増加しており、長期金利は1.45%近辺で推移している。",
+      "url": "https://www.bloomberg.co.jp/news/articles/example-boj-001",
+      "published_at": "2026-04-11T10:30:00+09:00",
+      "language": "ja",
+      "category": ["macro", "japan"],
+      "related_tickers": [],
+      "sentiment_score": 0.1,
+      "importance_score": 82
+    },
+    {
+      "source_id": "reuters",
+      "title": "米雇用統計、非農業部門雇用者数は予想下回る — FRB利下げ観測再燃",
+      "summary": "米労働省が発表した3月の非農業部門雇用者数は前月比19万人増と市場予想の22万人を下回った。失業率は3.8%と前月から横ばい。FRBの利下げ開始時期を巡る議論が再び活発化している。",
+      "url": "https://jp.reuters.com/markets/example-nfp-001",
+      "published_at": "2026-04-11T09:15:00+09:00",
+      "language": "ja",
+      "category": ["macro", "international"],
+      "related_tickers": [],
+      "sentiment_score": -0.2,
+      "importance_score": 78
+    },
+    {
+      "source_id": "tdnet",
+      "title": "トヨタ自動車（7203）— 株式分割（1:5）および配当修正を発表",
+      "summary": "トヨタ自動車は2026年9月30日を基準日として1株を5株に分割すると発表した。あわせて年間配当を1株当たり36円から42円に増配修正した。",
+      "url": "https://www.release.tdnet.info/inbs/example-7203-001",
+      "published_at": "2026-04-10T16:30:00+09:00",
+      "language": "ja",
+      "category": ["disclosure", "individual_stocks"],
+      "related_tickers": ["7203"],
+      "sentiment_score": 0.4,
+      "importance_score": 74
+    },
+    {
+      "source_id": "edinet",
+      "title": "ソフトバンクグループ（9984）— 有価証券報告書提出（2025年9月期）",
+      "summary": "ソフトバンクグループは金融商品取引法に基づく有価証券報告書をEDINETに提出した。投資ファンド運用資産はSVF1・SVF2合計で約20兆円。",
+      "url": "https://disclosure.edinet-fsa.go.jp/example-9984-001",
+      "published_at": "2026-04-11T08:00:00+09:00",
+      "language": "ja",
+      "category": ["disclosure"],
+      "related_tickers": ["9984"],
+      "sentiment_score": 0.0,
+      "importance_score": 70
+    },
+    {
+      "source_id": "bloomberg",
+      "title": "半導体セクター一斉高 — 台湾積体電路製造（TSMC）好決算が追い風",
+      "summary": "TSMCが市場予想を上回る四半期決算を発表したことを受け、国内半導体関連株が軒並み上昇。東京エレクトロン、ルネサスエレクトロニクス等が大幅高。",
+      "url": "https://www.bloomberg.co.jp/news/articles/example-semi-001",
+      "published_at": "2026-04-11T11:00:00+09:00",
+      "language": "ja",
+      "category": ["earnings", "markets"],
+      "related_tickers": ["8035"],
+      "sentiment_score": 0.5,
+      "importance_score": 72
+    },
+    {
+      "source_id": "reuters",
+      "title": "原油価格続落 — OPEC+増産合意がコモディティ関連株に逆風",
+      "summary": "OPEC+が生産量を段階的に引き上げる方針を確認したことを受け、WTI原油先物は1バレル96.5ドル付近で推移。INPEXなど国内エネルギー株に売り圧力。",
+      "url": "https://jp.reuters.com/markets/example-oil-001",
+      "published_at": "2026-04-11T06:00:00+09:00",
+      "language": "ja",
+      "category": ["individual_stocks", "macro"],
+      "related_tickers": ["1605"],
+      "sentiment_score": -0.3,
+      "importance_score": 63
+    },
+    {
+      "source_id": "yahoo_finance_jp",
+      "title": "ソニーグループ（6758）— 映画・音楽部門好調で今期営業利益を上方修正",
+      "summary": "ソニーグループは2026年3月期の営業利益予想を1兆2,500億円から1兆3,200億円に上方修正。エンタメコンテンツ事業の好調が寄与。株価は前日比3.2%高で推移。",
+      "url": "https://finance.yahoo.co.jp/news/example-6758-001",
+      "published_at": "2026-04-10T18:00:00+09:00",
+      "language": "ja",
+      "category": ["individual_stocks", "earnings"],
+      "related_tickers": ["6758"],
+      "sentiment_score": 0.5,
+      "importance_score": 68
+    },
+    {
+      "source_id": "minkabu",
+      "title": "日経平均テクニカル分析 — 38,500円の抵抗線を突破すれば上昇モメンタム加速",
+      "summary": "日経平均は25日移動平均線を上回る水準で推移中。RSI(14)は58と過熱感なく、短期的な上値余地を示唆。38,500円の抵抗線突破が次の焦点となっている。",
+      "url": "https://minkabu.jp/analysis/example-nikkei-001",
+      "published_at": "2026-04-11T12:00:00+09:00",
+      "language": "ja",
+      "category": ["markets", "japan"],
+      "related_tickers": [],
+      "sentiment_score": 0.2,
+      "importance_score": 55
+    },
+    {
+      "source_id": "jpx",
+      "title": "東証プライム市場 — 4月第2週の売買代金統計（外国人・機関投資家動向）",
+      "summary": "東京証券取引所が発表した週次売買統計によると、外国人投資家は週次で1,240億円の買い越しを記録。信託銀行（年金）も3週連続の買い越しとなった。",
+      "url": "https://www.jpx.co.jp/markets/statistics-equities/example-001",
+      "published_at": "2026-04-11T07:30:00+09:00",
+      "language": "ja",
+      "category": ["markets", "market_structure"],
+      "related_tickers": [],
+      "sentiment_score": 0.1,
+      "importance_score": 50
+    }
+  ]
+}

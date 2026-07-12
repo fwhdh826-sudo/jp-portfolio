@@ -1,0 +1,83 @@
+{
+  "_meta": {
+    "version": "v13.3",
+    "kind": "live_tier_a_violations",
+    "generated_for": "Card 1-2 / P4-A22",
+    "not_for_trading": true,
+    "fail_closed": "missing/malformed/status=unavailable → treat as SAFE_MODE active (no silent false-clear)"
+  },
+  "_schema_notes": {
+    "status_values": "ok (no triggered violations) | degraded (any triggered) | unavailable (portfolio data absent or writer error)",
+    "safe_mode_related": "true ONLY for T3 — T3 triggers safe_mode_recommended=True in HardGateResult, which SAFE_MODE evaluator reads via tier_a_t3_violated",
+    "target_type_semantics": "holding = individual position concern (T1) | portfolio = portfolio-level concern (T2/T3) | system = market-condition concern (T4)",
+    "t1_t2_t4_not_buy_gate": "T1/T2/T4 are SELL/WAIT/REBALANCE audit signals for existing holdings — NOT BUY candidate gates",
+    "t3_safe_mode_path": "T3 triggered → safe_mode_recommended=True → r9_tier_a passes tier_a_t3_violated=True → r4_pre_trade SAFE_MODE active → new_buys_frozen"
+  },
+  "generated_at": "2026-06-17T01:00:00+00:00",
+  "source": "backend_tier_a_hard_gate",
+  "status": "ok",
+  "violations": [
+    {
+      "code": "T1",
+      "triggered": false,
+      "severity": "ok",
+      "target_type": "holding",
+      "message": "全ポジション T1 クリア",
+      "safe_mode_related": false,
+      "_rule_definition": {
+        "condition": "unrealized_return <= -0.40 (individual holding stop-loss threshold)",
+        "threshold": -0.40,
+        "unit": "unrealized return ratio",
+        "action_semantics": "SELL_AUDIT — detection only, user decides execution"
+      }
+    },
+    {
+      "code": "T2",
+      "triggered": false,
+      "severity": "ok",
+      "target_type": "portfolio",
+      "message": "全セクター T2 クリア",
+      "safe_mode_related": false,
+      "_rule_definition": {
+        "condition": "sector_exposure > 0.35 (sector concentration cap)",
+        "threshold": 0.35,
+        "unit": "sector weight ratio",
+        "action_semantics": "REBALANCE_AUDIT — compress sector to ≤35%, detection only"
+      }
+    },
+    {
+      "code": "T3",
+      "triggered": false,
+      "severity": "ok",
+      "target_type": "portfolio",
+      "message": "PF DD -5.0% — T3 未トリガー",
+      "safe_mode_related": true,
+      "_rule_definition": {
+        "condition": "portfolio.drawdown <= -0.30 (portfolio drawdown threshold)",
+        "threshold": -0.30,
+        "unit": "portfolio drawdown ratio from peak",
+        "action_semantics": "BLOCK_NEW_BUY — T3 is the ONLY rule that feeds into SAFE_MODE via safe_mode_recommended=True",
+        "capitulation_exception": "T3 is suppressed when capitulation_signal.is_capitulation=True"
+      }
+    },
+    {
+      "code": "T4",
+      "triggered": false,
+      "severity": "ok",
+      "target_type": "system",
+      "message": "VIX 20.0, 連続下落=False — T4 未トリガー",
+      "safe_mode_related": false,
+      "_rule_definition": {
+        "condition": "vix > 40.0 AND nikkei_3day_consecutive_decline <= -0.02",
+        "thresholds": {"vix": 40.0, "nikkei_daily": -0.02, "consecutive_days": 3},
+        "unit": "market stress indicators",
+        "action_semantics": "WAIT — scale down risk assets 50%, detection only, NOT a BUY gate"
+      }
+    }
+  ],
+  "summary": {
+    "total_violations": 0,
+    "t3_count": 0,
+    "safe_mode_related_count": 0
+  }
+}

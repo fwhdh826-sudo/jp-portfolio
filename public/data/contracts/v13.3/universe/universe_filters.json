@@ -1,0 +1,28 @@
+{
+  "_meta": {
+    "version": "v13.3",
+    "kind": "sample_contract",
+    "generated_for": "Card 0-5",
+    "not_for_trading": true
+  },
+  "universe_filters": {
+    "updated_at": "2026-04-26T07:00:00+09:00",
+    "jp_equity": {
+      "min_market_cap_billion": 100,
+      "min_avg_volume_1m": 1000000,
+      "exchanges": ["TSE_prime", "TSE_standard"],
+      "exclude_sectors": ["gambling"],
+      "min_roe": 5.0,
+      "max_de_ratio": 3.0,
+      "junk_filter_active": true,
+      "anti_junk_threshold": 50
+    },
+    "global_fund": {
+      "min_aum_billion": 10,
+      "max_expense_ratio_pct": 0.50,
+      "policies": ["OVERSEAS_LONGTERM", "JAPAN_SHORTTERM", "GOLD"]
+    },
+    "active_tickers": ["7011", "9984", "6758", "4661", "8058", "6857", "6594", "7832", "8031", "6268"],
+    "candidate_tickers": ["6857", "6594", "8058", "7832"]
+  }
+}

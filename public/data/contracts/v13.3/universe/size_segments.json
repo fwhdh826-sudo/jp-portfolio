@@ -1,0 +1,33 @@
+{
+  "_meta": {
+    "version": "v13.3",
+    "kind": "sample_contract",
+    "generated_for": "Card 0-5",
+    "not_for_trading": true
+  },
+  "size_segments": {
+    "updated_at": "2026-04-26T07:00:00+09:00",
+    "thresholds_billion": {
+      "large_cap_min": 1000,
+      "mid_cap_min": 200,
+      "small_cap_min": 50
+    },
+    "segments": {
+      "large_cap": {
+        "tickers": ["7011", "9984", "6758", "8058", "8031"],
+        "count": 5,
+        "avg_market_cap_billion": 8500
+      },
+      "mid_cap": {
+        "tickers": ["4661", "6857", "6268"],
+        "count": 3,
+        "avg_market_cap_billion": 650
+      },
+      "small_cap": {
+        "tickers": ["6594", "7832"],
+        "count": 2,
+        "avg_market_cap_billion": 180
+      }
+    }
+  }
+}

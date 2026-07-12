@@ -1,0 +1,73 @@
+name: v13.3 Intraday Patch
+
+# schedule is intended for main after merge.
+# On v13.3-dev, use workflow_dispatch for manual verification only.
+on:
+  schedule:
+    # 毎週月〜金 12:30 JST (= 03:30 UTC)
+    # 東証昼休み帯 (11:30〜12:30 JST) の後半に Tier 1 ソースを更新する
+    - cron: '30 3 * * 1-5'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: intraday-patch
+  cancel-in-progress: true  # 昼間は最新実行を優先。古い実行はキャンセル可
+
+jobs:
+  # ── Tier 1 軽量更新（市場 + ニュースのみ）────────────────────────────────
+  # pytest は実行しない（速度優先、Tier 1 更新のみ）
+  patch-tier1:
+    name: Patch Tier 1 Data (market + news)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Python deps
+        run: pip install yfinance pandas numpy feedparser
+
+      # ── Tier 1 ソースのみ更新 ─────────────────────────────────────────
+      - name: Update market.json (Tier 1 / max_age 30min)
+        run: python3 data/update_market.py || true
+
+      - name: Collect news (Tier 1 / max_age 30min)
+        # P4.5-A006: DEEPL_API_KEY未設定でもtranslate_to_ja()は安全にNoneへfallbackする
+        env:
+          DEEPL_API_KEY: ${{ secrets.DEEPL_API_KEY }}
+        run: python3 data/update_news.py || true
+
+      # ── public/data へコピー（Tier 1 のみ）──────────────────────────
+      - name: Copy Tier 1 JSON to public/data
+        run: |
+          for f in market news; do
+            if [ -f "data/${f}.json" ]; then
+              cp "data/${f}.json" "public/data/${f}.json"
+            fi
+          done
+
+      - name: Build candidates news summary
+        run: python3 data/build_candidates_news.py || true
+
+      # ── git push ──────────────────────────────────────────────────────
+      - name: Commit and push
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add public/data/market.json public/data/news.json public/data/candidates_news.json data/candidates_news.json
+          git diff --staged --quiet || git commit -m "chore: intraday-patch $(date +'%Y-%m-%d %H:%M JST')"
+          git pull --rebase
+          git push
+
+      # NOTE: pytest は実行しない（軽量更新優先）。health gate は full_batch.yml の責務。
+      # NOTE: Discord 通知は Card 2-4 の責務。ここでは実装しない。
+      # NOTE: recovery_log 書き込みは Card 2-4 の責務。ここでは実装しない。
+      # NOTE: SAFE_MODE 実発動は行わない。判定のみ (safe_mode.py)。
+      # NOTE: 自動売買・証券API接続は一切行わない。
+      # NOTE: npm build は deploy.yml の責務。ここでは実行しない。

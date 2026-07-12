@@ -1,0 +1,68 @@
+{
+  "_meta": {
+    "schemaVersion": "regime-state-1",
+    "kind": "live_regime_state",
+    "not_for_trading": false,
+    "generatedAt": "2026-07-12T01:05:48.162381+00:00",
+    "source": "public/data/market_intel.json"
+  },
+  "regime_state": {
+    "timestamp": "2026-07-12T01:05:48.184490+00:00",
+    "current_regime": "uncertain",
+    "consensus": 1.0,
+    "raw_consensus": 1.0,
+    "confidence": 1.0,
+    "is_override": false,
+    "is_crisis": false,
+    "votes": {
+      "rule_based": "uncertain",
+      "hmm": [
+        "uncertain",
+        0.9724573563775134
+      ],
+      "llm": {
+        "regime": "uncertain",
+        "confidence": 0.0,
+        "structural_changes": []
+      }
+    },
+    "layer_reliability": {
+      "rule_based": {
+        "effective_weight": 0.8,
+        "is_surrogate": false,
+        "is_stub": false,
+        "is_low_confidence": false
+      },
+      "hmm": {
+        "effective_weight": 0.2,
+        "is_surrogate": true,
+        "is_stub": false,
+        "is_low_confidence": false
+      },
+      "llm": {
+        "effective_weight": 0.0,
+        "is_surrogate": false,
+        "is_stub": true,
+        "is_low_confidence": true
+      }
+    },
+    "structural_changes": [],
+    "vote_count": 3,
+    "is_fallback": false,
+    "disagree_layers": [],
+    "hmm_confirmed": false,
+    "hmm_is_surrogate": true,
+    "llm_is_stub": true,
+    "market_data_snapshot": {
+      "vix": 15.03,
+      "nikkei_5d_return": -0.01701,
+      "nikkei_60ma": 64897.4,
+      "nikkei_200ma": 55570.5,
+      "sp500_dd_30d": -0.004519
+    },
+    "run_date": "2026-07-12",
+    "regime_changed_at": null,
+    "previous_regime": null,
+    "duration_hours": null
+  }
+}

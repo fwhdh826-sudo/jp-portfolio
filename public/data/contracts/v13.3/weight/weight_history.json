@@ -1,0 +1,48 @@
+{
+  "_meta": {
+    "version": "v13.3",
+    "kind": "sample_contract",
+    "generated_for": "Card 0-5",
+    "not_for_trading": true
+  },
+  "weight_history": [
+    {
+      "changed_at": "2026-04-22T07:00:00+09:00",
+      "from_regime": "bull_calm",
+      "to_regime": "bull_volatile",
+      "axis_weights": {
+        "value": 0.20,
+        "quality": 0.25,
+        "growth": 0.15,
+        "safety": 0.15,
+        "momentum": 0.15,
+        "shareholder_return": 0.10
+      },
+      "strategy_weights": {
+        "frontier": 0.30,
+        "quality_size": 0.20,
+        "fundamental": 0.30,
+        "cross_factor": 0.20
+      }
+    },
+    {
+      "changed_at": "2026-04-10T07:00:00+09:00",
+      "from_regime": "uncertain",
+      "to_regime": "bull_calm",
+      "axis_weights": {
+        "value": 0.25,
+        "quality": 0.30,
+        "growth": 0.15,
+        "safety": 0.10,
+        "momentum": 0.10,
+        "shareholder_return": 0.10
+      },
+      "strategy_weights": {
+        "frontier": 0.35,
+        "quality_size": 0.25,
+        "fundamental": 0.30,
+        "cross_factor": 0.10
+      }
+    }
+  ]
+}

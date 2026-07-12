@@ -1,0 +1,80 @@
+{
+  "_meta": {
+    "version": "v13.3",
+    "kind": "future_branching",
+    "source": "phase8_hybrid: returns=yfinance-real, scores=public_scoring, asset_meta=manual-mapping, holdings=public_holdings_snapshot_2026-04-06, mean_return=returns_yfinance_52w_annualized, regime_table=manual_regime_constitution_v13_3, lock_calc=purchase_date_days_since_purchase_utc, market_intel=fresh, regime_probabilities=rule_based_concentrated_0_60_bull_calm, others=missing-safe-default",
+    "generated_at": "2026-05-27T11:47:06.295556+00:00",
+    "not_for_trading": true
+  },
+  "payload": {
+    "branches": [
+      {
+        "regime": "bull_calm",
+        "expected_return": 0.09,
+        "expected_vol": 0.12,
+        "sharpe_ratio": 0.75,
+        "max_dd_estimate": -0.08,
+        "downside_case": -0.15,
+        "upside_case": 0.32999999999999996,
+        "probability": 0.6,
+        "is_base_regime": false
+      },
+      {
+        "regime": "bull_volatile",
+        "expected_return": 0.07,
+        "expected_vol": 0.18,
+        "sharpe_ratio": 0.38888888888888895,
+        "max_dd_estimate": -0.15,
+        "downside_case": -0.29,
+        "upside_case": 0.43,
+        "probability": 0.1,
+        "is_base_regime": false
+      },
+      {
+        "regime": "bear",
+        "expected_return": 0.03,
+        "expected_vol": 0.2,
+        "sharpe_ratio": 0.15,
+        "max_dd_estimate": -0.2,
+        "downside_case": -0.37,
+        "upside_case": 0.43000000000000005,
+        "probability": 0.1,
+        "is_base_regime": false
+      },
+      {
+        "regime": "crisis",
+        "expected_return": 0.01,
+        "expected_vol": 0.3,
+        "sharpe_ratio": 0.03333333333333333,
+        "max_dd_estimate": -0.35,
+        "downside_case": -0.59,
+        "upside_case": 0.61,
+        "probability": 0.1,
+        "is_base_regime": false
+      },
+      {
+        "regime": "uncertain",
+        "expected_return": 0.06,
+        "expected_vol": 0.15,
+        "sharpe_ratio": 0.4,
+        "max_dd_estimate": -0.12,
+        "downside_case": -0.24,
+        "upside_case": 0.36,
+        "probability": 0.1,
+        "is_base_regime": true
+      }
+    ],
+    "base_regime": "uncertain",
+    "weighted_expected_return": 0.07100000000000001,
+    "weighted_expected_vol": 0.15500000000000003,
+    "worst_case_dd": -0.35,
+    "worst_case_downside": -0.59,
+    "best_case_upside": 0.61,
+    "diagnostics": [
+      "observation: rule_based regime detected bull_calm (primary_rule=low_vol_uptrend); regime_probabilities concentrated 0.60 on detected, 0.10 each on others; not a forecast",
+      "observation: future branches are scenario calculations, not predictions",
+      "observation: not an order, not a recommendation",
+      "observation: weighted_expected_vol is linear aggregation, not covariance-aware"
+    ]
+  }
+}

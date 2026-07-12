@@ -1,0 +1,40 @@
+{
+  "_meta": {
+    "version": "v13.3",
+    "kind": "sample_contract",
+    "generated_for": "Card 0-5",
+    "not_for_trading": true
+  },
+  "regime_history": [
+    {
+      "timestamp": "2026-04-26T07:00:00+09:00",
+      "regime": "bull_volatile",
+      "consensus": 0.67,
+      "duration_hours": 96
+    },
+    {
+      "timestamp": "2026-04-22T07:00:00+09:00",
+      "regime": "bull_calm",
+      "consensus": 0.89,
+      "duration_hours": 168
+    },
+    {
+      "timestamp": "2026-04-15T07:00:00+09:00",
+      "regime": "bull_volatile",
+      "consensus": 0.72,
+      "duration_hours": 72
+    },
+    {
+      "timestamp": "2026-04-12T07:00:00+09:00",
+      "regime": "uncertain",
+      "consensus": 0.55,
+      "duration_hours": 48
+    },
+    {
+      "timestamp": "2026-04-10T07:00:00+09:00",
+      "regime": "bear",
+      "consensus": 0.78,
+      "duration_hours": 24
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "_meta": {
+    "version": "v13.3",
+    "kind": "sample_contract",
+    "generated_for": "Card 0-5",
+    "not_for_trading": true
+  },
+  "portfolio_state": {
+    "snapshot_at": "2026-04-26T07:00:00+09:00",
+    "total_eval": 42500000,
+    "jp_equity_eval": 18200000,
+    "fund_eval": 17900000,
+    "cash": 4800000,
+    "cash_reserve": 1500000,
+    "add_room": 3300000,
+    "metrics": {
+      "mu": 0.082,
+      "sigma": 0.168,
+      "sharpe": 0.488,
+      "sortino": 0.612,
+      "mdd": -0.215,
+      "calmar": 0.381,
+      "cvar": -0.145,
+      "total_eval": 42500000
+    },
+    "target_total": 64000000,
+    "progress_pct": 66.4,
+    "dd_from_peak": -0.08,
+    "regime": "bull_volatile"
+  }
+}

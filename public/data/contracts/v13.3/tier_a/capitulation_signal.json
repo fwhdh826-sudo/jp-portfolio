@@ -1,0 +1,38 @@
+{
+  "_meta": {
+    "version": "v13.3",
+    "kind": "sample_contract",
+    "generated_for": "Card 0-5",
+    "not_for_trading": true
+  },
+  "capitulation_signal": {
+    "timestamp": "2026-04-26T07:00:00+09:00",
+    "conditions": {
+      "vix_spike": {
+        "condition": "vix > 35",
+        "current_value": 22.5,
+        "met": false
+      },
+      "panic_selling": {
+        "condition": "nikkei_5d_return < -0.08",
+        "current_value": 0.012,
+        "met": false
+      },
+      "oversold": {
+        "condition": "nikkei_rsi_14 < 30",
+        "current_value": 52.3,
+        "met": false
+      },
+      "volume_spike": {
+        "condition": "nikkei_volume > avg_60d * 2",
+        "current_value": 1.1,
+        "met": false
+      }
+    },
+    "conditions_met": 0,
+    "is_capitulation": false,
+    "is_partial_capitulation": false,
+    "alert_level": "NONE",
+    "deployment_recommendation": null
+  }
+}

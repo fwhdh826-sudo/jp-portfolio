@@ -1,0 +1,28 @@
+{
+  "_meta": {
+    "version": "v13.3",
+    "kind": "sample_contract",
+    "generated_for": "Card 0-5",
+    "not_for_trading": true
+  },
+  "intuition_log": [
+    {
+      "id": "intuition-20260420-001",
+      "recorded_at": "2026-04-20T10:00:00+09:00",
+      "ticker": "7011",
+      "note": "決算発表前夜。防衛予算報道が好感されており、市場センチメントは強気。ただし株価は既に高値圏。決算サプライズなければ材料出尽くしのリスクも。",
+      "premise": ["防衛予算5年計画の詳細確定", "受注残3兆円突破"],
+      "premise_break_signals": ["政権交代による防衛政策転換"],
+      "author": "manual"
+    },
+    {
+      "id": "intuition-20260415-001",
+      "recorded_at": "2026-04-15T09:30:00+09:00",
+      "ticker": null,
+      "note": "市場全体がbull_volatileに転換。VIX22超でボラが高い。新規ポジションは小口で打診が基本方針。押し目を待つ戦略が有効な局面。",
+      "premise": ["FRBの利下げ後退観測が持続", "円安水準が維持"],
+      "premise_break_signals": ["FRB緊急利下げ（リスクオフ）", "円高150円割れ"],
+      "author": "manual"
+    }
+  ]
+}

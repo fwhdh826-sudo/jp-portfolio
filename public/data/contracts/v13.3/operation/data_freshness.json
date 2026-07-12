@@ -1,0 +1,72 @@
+{
+  "_meta": {
+    "version": "v13.3",
+    "kind": "sample_contract",
+    "generated_for": "Card 0-5",
+    "not_for_trading": true
+  },
+  "data_freshness": {
+    "checked_at": "2026-04-26T07:00:00+09:00",
+    "sources": {
+      "market": {
+        "status": "loaded",
+        "last_updated_at": "2026-04-26T06:00:00+09:00",
+        "tier": 1,
+        "max_age_minutes": 30,
+        "is_stale": false
+      },
+      "regime": {
+        "status": "loaded",
+        "last_updated_at": "2026-04-26T07:00:00+09:00",
+        "tier": 1,
+        "max_age_minutes": 60,
+        "is_stale": false
+      },
+      "news": {
+        "status": "loaded",
+        "last_updated_at": "2026-04-26T06:50:00+09:00",
+        "tier": 1,
+        "max_age_minutes": 30,
+        "is_stale": false
+      },
+      "scoring": {
+        "status": "loaded",
+        "last_updated_at": "2026-04-26T06:55:00+09:00",
+        "tier": 2,
+        "max_age_minutes": 240,
+        "is_stale": false
+      },
+      "strategy": {
+        "status": "loaded",
+        "last_updated_at": "2026-04-26T06:55:00+09:00",
+        "tier": 2,
+        "max_age_minutes": 240,
+        "is_stale": false
+      },
+      "correlation": {
+        "status": "loaded",
+        "last_updated_at": "2026-04-25T23:00:00+09:00",
+        "tier": 3,
+        "max_age_minutes": 1440,
+        "is_stale": false
+      },
+      "trust": {
+        "status": "loaded",
+        "last_updated_at": "2026-04-25T15:00:00+09:00",
+        "tier": 3,
+        "max_age_minutes": 1440,
+        "is_stale": false
+      },
+      "macro": {
+        "status": "loaded",
+        "last_updated_at": "2026-04-26T06:00:00+09:00",
+        "tier": 2,
+        "max_age_minutes": 480,
+        "is_stale": false
+      }
+    },
+    "any_tier1_stale": false,
+    "any_tier2_stale": false,
+    "safe_mode_triggered": false
+  }
+}

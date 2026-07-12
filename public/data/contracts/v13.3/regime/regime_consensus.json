@@ -1,0 +1,31 @@
+{
+  "_meta": {
+    "version": "v13.3",
+    "kind": "sample_contract",
+    "generated_for": "Card 0-5",
+    "not_for_trading": true
+  },
+  "regime_consensus": {
+    "timestamp": "2026-04-26T07:00:00+09:00",
+    "final_regime": "bull_volatile",
+    "consensus_ratio": 0.67,
+    "votes": {
+      "rule_based": "bull_volatile",
+      "hmm": ["bull_volatile", 0.78],
+      "llm": {
+        "regime": "bull_calm",
+        "confidence": 0.65,
+        "structural_changes": []
+      }
+    },
+    "structural_changes": [],
+    "override_active": false,
+    "override_reason": null,
+    "layer_agreement": {
+      "rule_hmm_agree": true,
+      "rule_llm_agree": false,
+      "hmm_llm_agree": false,
+      "all_agree": false
+    }
+  }
+}

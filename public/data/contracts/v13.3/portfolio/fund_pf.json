@@ -1,0 +1,62 @@
+{
+  "_meta": {
+    "version": "v13.3",
+    "kind": "sample_contract",
+    "generated_for": "Card 0-5",
+    "not_for_trading": true
+  },
+  "fund_pf": {
+    "snapshot_at": "2026-04-26T07:00:00+09:00",
+    "total_eval": 17900000,
+    "total_cost": 15200000,
+    "total_pnl": 2700000,
+    "total_pnl_pct": 17.8,
+    "funds_count": 5,
+    "metrics": {
+      "mu": 0.075,
+      "sigma": 0.140,
+      "sharpe": 0.536
+    },
+    "policy_breakdown": {
+      "OVERSEAS_LONGTERM": 0.60,
+      "JAPAN_SHORTTERM": 0.25,
+      "GOLD": 0.15
+    },
+    "holdings": [
+      {
+        "id": "eMAXIS_slim_global",
+        "name": "eMAXIS Slim 全世界株式（オール・カントリー）",
+        "abbr": "ACWI",
+        "account": "NISA_growth",
+        "policy": "OVERSEAS_LONGTERM",
+        "eval": 7200000,
+        "pnlPct": 22.5,
+        "dayPct": 0.3,
+        "cost": 0.057,
+        "mu": 0.078,
+        "sigma": 0.148,
+        "score": 82,
+        "signal": "HOLD",
+        "ev": 0.185,
+        "decision": "HOLD"
+      },
+      {
+        "id": "eMAXIS_slim_sp500",
+        "name": "eMAXIS Slim 米国株式（S&P500）",
+        "abbr": "SP500",
+        "account": "NISA_growth",
+        "policy": "OVERSEAS_LONGTERM",
+        "eval": 5500000,
+        "pnlPct": 18.2,
+        "dayPct": 0.5,
+        "cost": 0.093,
+        "mu": 0.082,
+        "sigma": 0.162,
+        "score": 79,
+        "signal": "HOLD",
+        "ev": 0.168,
+        "decision": "HOLD"
+      }
+    ]
+  }
+}

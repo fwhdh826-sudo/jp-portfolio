@@ -1,0 +1,186 @@
+{
+  "_meta": {
+    "version": "v13.3",
+    "kind": "strategy_aggregate",
+    "source": "phase8_hybrid: returns=yfinance-real, scores=public_scoring, asset_meta=manual-mapping, holdings=public_holdings_snapshot_2026-04-06, mean_return=returns_yfinance_52w_annualized, regime_table=manual_regime_constitution_v13_3, lock_calc=purchase_date_days_since_purchase_utc, market_intel=fresh, regime_probabilities=rule_based_concentrated_0_60_bull_calm, others=missing-safe-default",
+    "generated_at": "2026-05-27T11:47:06.295556+00:00",
+    "not_for_trading": true
+  },
+  "payload": {
+    "timestamp": "2026-05-27T11:47:06.295556+00:00",
+    "regime": "uncertain",
+    "weights_used": {
+      "cross_factor": 0.2,
+      "frontier": 0.4,
+      "fundamental": 0.2,
+      "quality_size": 0.2
+    },
+    "strategy_outputs": {
+      "frontier": {
+        "strategy_id": "frontier",
+        "strategy_name": "Frontier AI Index",
+        "ideal_pf": {
+          "6098": 0.05874340691351798,
+          "8306": 0.05781032861726524,
+          "9697": 0.07633976285540464,
+          "4661": 0.0667734379771304,
+          "8593": 0.06417088656509314,
+          "4755": 0.05959774857902402,
+          "5711": 0.06512825278711828,
+          "1605": 0.06215851830764687,
+          "5016": 0.04892836206771296,
+          "8058": 0.059045320389108036,
+          "9418": 0.07999919292317133,
+          "1928": 0.0653233293876152,
+          "7011": 0.05356972763955513,
+          "7974": 0.06198395031512872,
+          "9433": 0.07010095128250429,
+          "7012": 0.05032682339300382
+        },
+        "expected_return": 0.0011073360428284712,
+        "expected_vol": 0.037971913948546064,
+        "sharpe_ratio": 0.029161975989121056,
+        "max_dd_estimate": -0.07094864153935121,
+        "rationale": "Frontier AI Index: Phase 8 SLSQP optimization (regime=uncertain, n=16)",
+        "diagnostics": [
+          "observation: Phase 8 SLSQP optimization used (returns_data provided)",
+          "observation: James-Stein diagonal shrinkage applied (alpha=0.1)",
+          "observation: SLSQP converged (Optimization terminated successfully)",
+          "observation: index weights are calculation-only estimates; not an order, not a recommendation",
+          "observation: observed max drawdown computed from 16 ticker(s), 242 period(s) (calculation-only, not a prediction)",
+          "observation: max_dd_estimate is observed max drawdown from returns_data (calculation-only, not a prediction)"
+        ]
+      },
+      "quality_size": {
+        "strategy_id": "quality_size",
+        "strategy_name": "Quality-Size (Asness 2018)",
+        "ideal_pf": {
+          "6098": 0.0625,
+          "8306": 0.0625,
+          "9697": 0.0625,
+          "4661": 0.0625,
+          "8593": 0.0625,
+          "4755": 0.0625,
+          "5711": 0.0625,
+          "1605": 0.0625,
+          "5016": 0.0625,
+          "8058": 0.0625,
+          "9418": 0.0625,
+          "1928": 0.0625,
+          "7011": 0.0625,
+          "7974": 0.0625,
+          "9433": 0.0625,
+          "7012": 0.0625
+        },
+        "expected_return": 0.06,
+        "expected_vol": 0.14,
+        "sharpe_ratio": 0.4285714285714285,
+        "max_dd_estimate": -0.11,
+        "rationale": "Quality-Size (Asness 2018): quality/safety-biased fixed-weight allocation with QMJ quality premium (regime=uncertain)",
+        "diagnostics": [
+          "observation: 16 ticker(s) missing from scores — used DEFAULT_SCORE=50.0 fallback",
+          "observation: regime expected metrics are reference values, not guarantees"
+        ]
+      },
+      "fundamental": {
+        "strategy_id": "fundamental",
+        "strategy_name": "Fundamental Weighted (Arnott 2005)",
+        "ideal_pf": {
+          "6098": 0.0625,
+          "8306": 0.0625,
+          "9697": 0.0625,
+          "4661": 0.0625,
+          "8593": 0.0625,
+          "4755": 0.0625,
+          "5711": 0.0625,
+          "1605": 0.0625,
+          "5016": 0.0625,
+          "8058": 0.0625,
+          "9418": 0.0625,
+          "1928": 0.0625,
+          "7011": 0.0625,
+          "7974": 0.0625,
+          "9433": 0.0625,
+          "7012": 0.0625
+        },
+        "expected_return": 0.058,
+        "expected_vol": 0.145,
+        "sharpe_ratio": 0.4,
+        "max_dd_estimate": -0.115,
+        "rationale": "Fundamental Weighted (Arnott 2005): revenue/CF/book/dividend proportional allocation (regime=uncertain)",
+        "diagnostics": [
+          "observation: 16 ticker(s) missing from scores — used DEFAULT_SCORE=50.0 fallback",
+          "observation: regime expected metrics are reference values, not guarantees"
+        ]
+      },
+      "cross_factor": {
+        "strategy_id": "cross_factor",
+        "strategy_name": "Cross-Factor (Alquist 2018)",
+        "ideal_pf": {
+          "6098": 0.0625,
+          "8306": 0.0625,
+          "9697": 0.0625,
+          "4661": 0.0625,
+          "8593": 0.0625,
+          "4755": 0.0625,
+          "5711": 0.0625,
+          "1605": 0.0625,
+          "5016": 0.0625,
+          "8058": 0.0625,
+          "9418": 0.0625,
+          "1928": 0.0625,
+          "7011": 0.0625,
+          "7974": 0.0625,
+          "9433": 0.0625,
+          "7012": 0.0625
+        },
+        "expected_return": 0.055,
+        "expected_vol": 0.115,
+        "sharpe_ratio": 0.47826086956521735,
+        "max_dd_estimate": -0.09,
+        "rationale": "Cross-Factor (Alquist 2018): size×quality/value/momentum cross signals, equal-weight top-N extraction (calculation-only, not a recommendation) (regime=uncertain)",
+        "diagnostics": [
+          "observation: 16 ticker(s) missing from scores — used DEFAULT_SCORE=50.0 fallback",
+          "observation: regime expected metrics are reference values, not guarantees"
+        ]
+      }
+    },
+    "strategy_correlations": {
+      "frontier_vs_cross_factor": 0.0,
+      "frontier_vs_fundamental": 0.0,
+      "frontier_vs_quality_size": 0.0,
+      "fundamental_vs_cross_factor": 0.0,
+      "quality_size_vs_cross_factor": 0.0,
+      "quality_size_vs_fundamental": 0.0
+    },
+    "diversification_score": 1.0,
+    "ideal_pf": {
+      "9418": 0.06949967716926853,
+      "9697": 0.06803590514216186,
+      "9433": 0.06554038051300172,
+      "4661": 0.06420937519085215,
+      "1928": 0.06362933175504608,
+      "5711": 0.06355130111484732,
+      "8593": 0.06316835462603725,
+      "1605": 0.06236340732305874,
+      "7974": 0.06229358012605149,
+      "4755": 0.0613390994316096,
+      "8058": 0.061118128155643214,
+      "6098": 0.060997362765407195,
+      "8306": 0.06062413144690609,
+      "7011": 0.05892789105582205,
+      "7012": 0.057630729357201524,
+      "5016": 0.05707134482708519
+    },
+    "expected_return": 0.03504293441713139,
+    "dd10_uniform_return": 0.0,
+    "high_correlation_warning": false,
+    "diagnostics": [
+      "observation: aggregated metrics include hybrid metric sources — 'frontier' uses Phase 8 actual portfolio metrics (w^T mu / sqrt(w^T Sigma w)) while other strategies use regime reference values",
+      "observation: aggregate expected_vol is linear weighted aggregation, not covariance-aware (P2-7Q / P2-A2)",
+      "observation: aggregate sharpe_ratio is based on hybrid aggregate metrics — calculation-only, not a recommendation",
+      "observation: aggregate max_dd_estimate may include hybrid drawdown sources — frontier may use observed returns_data drawdown while other strategies use regime reference values",
+      "observation: aggregate max_dd_estimate is linear weighted aggregation; calculation-only, not a prediction"
+    ]
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "_meta": {
+    "version": "v13.3",
+    "kind": "sample_contract",
+    "generated_for": "Card 0-5",
+    "not_for_trading": true
+  },
+  "scenario_pre_commitments": {
+    "timestamp": "2026-04-26T07:00:00+09:00",
+    "triggered_scenarios": [
+      {
+        "id": "vix_spike_25",
+        "name": "VIX 25超 — ボラティリティ警戒",
+        "triggered": false,
+        "conditions_met": 0,
+        "pre_commitment": [
+          {
+            "action": "reduce_new_size",
+            "scale": 0.7
+          }
+        ],
+        "alert": "NONE",
+        "expiry": null
+      },
+      {
+        "id": "nikkei_dd_10",
+        "name": "日経 -10% DD — 戦略的現金投入検討",
+        "triggered": false,
+        "conditions_met": 0,
+        "pre_commitment": [
+          {
+            "action": "deploy_strategic_cash",
+            "amount_jpy": 2000000,
+            "target": "core_global"
+          }
+        ],
+        "alert": "NONE",
+        "expiry": null
+      },
+      {
+        "id": "capitulation_full",
+        "name": "Capitulation 4条件成立 — 全力投入",
+        "triggered": false,
+        "conditions_met": 0,
+        "pre_commitment": [
+          {
+            "action": "deploy_strategic_cash",
+            "amount_jpy": 4000000,
+            "target": "core_global"
+          },
+          {
+            "action": "scale_up_satellite",
+            "target": "small_cap_quality"
+          }
+        ],
+        "alert": "NONE",
+        "expiry": null
+      }
+    ],
+    "active_alert_level": "NONE"
+  }
+}

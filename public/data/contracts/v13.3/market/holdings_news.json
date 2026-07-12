@@ -1,0 +1,82 @@
+{
+  "_meta": {
+    "version": "v13.3",
+    "kind": "sample_contract",
+    "generated_for": "Card 0-5",
+    "not_for_trading": true
+  },
+  "holdings_news": {
+    "fetched_at": "2026-04-26T07:00:00+09:00",
+    "tracked_tickers": ["7011", "9984", "6758", "4661"],
+    "items_by_ticker": {
+      "7011": [
+        {
+          "source_id": "tdnet",
+          "title": "三菱重工業 — 2026年3月期 決算短信",
+          "summary": "純利益28%増の3,200億円。防衛関連受注増加が寄与。",
+          "url": "https://example.com/tdnet/7011-2026q4",
+          "published_at": "2026-04-25T15:30:00+09:00",
+          "language": "ja",
+          "category": ["earnings", "individual_stocks"],
+          "related_tickers": ["7011"],
+          "sentiment_score": 0.70,
+          "importance_score": 0.88
+        },
+        {
+          "source_id": "bloomberg",
+          "title": "三菱重工、防衛予算5年計画で受注パイプライン2兆円超",
+          "summary": "政府の防衛費拡大計画に基づき、三菱重工の中期受注パイプラインが2兆円を超えた。",
+          "url": "https://example.com/bloomberg/7011-pipeline",
+          "published_at": "2026-04-24T09:00:00+09:00",
+          "language": "ja",
+          "category": ["individual_stocks"],
+          "related_tickers": ["7011"],
+          "sentiment_score": 0.65,
+          "importance_score": 0.75
+        }
+      ],
+      "9984": [
+        {
+          "source_id": "reuters",
+          "title": "ソフトバンクG — ARM業績好調、AI需要で売上高2割増",
+          "summary": "ARMホールディングスの四半期売上高が前年同期比22%増。AI半導体向けライセンス収入が拡大。",
+          "url": "https://example.com/reuters/9984-arm",
+          "published_at": "2026-04-26T05:00:00+09:00",
+          "language": "ja",
+          "category": ["individual_stocks", "international"],
+          "related_tickers": ["9984"],
+          "sentiment_score": 0.60,
+          "importance_score": 0.80
+        }
+      ],
+      "6758": [],
+      "4661": []
+    },
+    "summary_per_ticker": {
+      "7011": {
+        "items_count": 2,
+        "avg_sentiment": 0.675,
+        "max_importance": 0.88,
+        "key_themes": ["防衛予算", "受注増加", "決算好調"]
+      },
+      "9984": {
+        "items_count": 1,
+        "avg_sentiment": 0.60,
+        "max_importance": 0.80,
+        "key_themes": ["ARM", "AI需要", "半導体"]
+      },
+      "6758": {
+        "items_count": 0,
+        "avg_sentiment": 0.0,
+        "max_importance": 0.0,
+        "key_themes": []
+      },
+      "4661": {
+        "items_count": 0,
+        "avg_sentiment": 0.0,
+        "max_importance": 0.0,
+        "key_themes": []
+      }
+    }
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "_meta": {
+    "version": "v13.3",
+    "kind": "sample_contract",
+    "generated_for": "Card 0-5",
+    "not_for_trading": true
+  },
+  "candidates_news": {
+    "fetched_at": "2026-04-26T07:00:00+09:00",
+    "tracked_tickers": ["6857", "6594", "8058", "7832"],
+    "items_by_ticker": {
+      "6857": [
+        {
+          "source_id": "minkabu",
+          "title": "アドバンテスト、HBM検査装置の出荷加速 — AI向け需要旺盛",
+          "summary": "アドバンテストはHBM向けメモリテスタの出荷が加速しており、2027年3月期の設備投資計画を上方修正する見通し。",
+          "url": "https://example.com/minkabu/6857-hbm",
+          "published_at": "2026-04-25T12:00:00+09:00",
+          "language": "ja",
+          "category": ["individual_stocks"],
+          "related_tickers": ["6857"],
+          "sentiment_score": 0.72,
+          "importance_score": 0.83
+        }
+      ],
+      "6594": [],
+      "8058": [],
+      "7832": []
+    },
+    "summary_per_ticker": {
+      "6857": {
+        "items_count": 1,
+        "avg_sentiment": 0.72,
+        "max_importance": 0.83,
+        "key_themes": ["HBM", "AI需要", "メモリテスタ"]
+      },
+      "6594": { "items_count": 0, "avg_sentiment": 0.0, "max_importance": 0.0, "key_themes": [] },
+      "8058": { "items_count": 0, "avg_sentiment": 0.0, "max_importance": 0.0, "key_themes": [] },
+      "7832": { "items_count": 0, "avg_sentiment": 0.0, "max_importance": 0.0, "key_themes": [] }
+    }
+  }
+}
