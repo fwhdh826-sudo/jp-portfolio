@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-07-12T21:12:34.110944+09:00",
-  "sourceUpdatedAt": "2026-07-12T12:03:18+00:00",
+  "updatedAt": "2026-07-13T00:35:56.577667+09:00",
+  "sourceUpdatedAt": "2026-07-12T15:28:42+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -44,16 +44,30 @@
       "items": []
     },
     "us_broad": {
-      "avgSentiment": 0.167,
+      "avgSentiment": 0.066,
       "negativeCount": 0,
-      "positiveCount": 2,
+      "positiveCount": 1,
       "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Warsh and US Inflation Will Set Tone for July Fed Decision",
-      "topPositiveTitle": "SK Hynix Rises After Record US Offering | The Close 7/10/2026",
+      "topNegativeTitle": "Markets Watch Walsh's First Testimony",
+      "topPositiveTitle": "Fed Vows to Deliver Price Stability in Monetary Policy Report",
       "items": [
+        {
+          "title": "Markets Watch Walsh's First Testimony",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-12T14:59:19+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-07-12/markets-watch-walsh-s-first-testimony-video",
+          "tags": [
+            "commodity",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
         {
           "title": "Warsh and US Inflation Will Set Tone for July Fed Decision",
           "source": "Bloomberg Markets",
@@ -85,18 +99,6 @@
           "sentimentScore": 0.0,
           "publishedAt": "2026-07-11T12:30:00+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-07-11/fed-task-force-picks-bring-credibility-and-support-for-warsh",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "MGM Resorts Engaged in Deal Talks With Diller, WSJ Says",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-10T23:02:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-10/mgm-resorts-engaged-in-deal-talks-with-diller-wsj-says",
           "tags": [
             "market",
             "us_broad"
@@ -142,16 +144,29 @@
       ]
     },
     "global_broad": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Funds Fret Over $4.4 Trillion AI Trio’s Grip on Emerging Markets",
+      "topPositiveTitle": "Funds Fret Over $4.4 Trillion AI Trio’s Grip on Emerging Markets",
+      "items": [
+        {
+          "title": "Funds Fret Over $4.4 Trillion AI Trio’s Grip on Emerging Markets",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-12T12:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-12/funds-fret-over-4-4-trillion-ai-trio-s-grip-on-emerging-markets",
+          "tags": [
+            "global_broad",
+            "market"
+          ]
+        }
+      ]
     },
     "gold": {
       "avgSentiment": 0,
@@ -190,29 +205,16 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.055,
-      "negativeCount": 1,
+      "avgSentiment": 0.165,
+      "negativeCount": 0,
       "positiveCount": 2,
-      "neutralCount": 3,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Eni’s Descalzi Says Energy Crisis May Worsen in Short Term: Sole",
+      "topNegativeTitle": "US Iran Talks Face Persistent Impasse",
       "topPositiveTitle": "Fuel Prices Are Slamming Consumers Even as Crude Crisis Fades",
       "items": [
-        {
-          "title": "Eni’s Descalzi Says Energy Crisis May Worsen in Short Term: Sole",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-07-11T08:45:56+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-11/eni-s-descalzi-says-energy-crisis-may-worsen-in-short-term-sole",
-          "tags": [
-            "commodity",
-            "macro_risk",
-            "market"
-          ]
-        },
         {
           "title": "US Iran Talks Face Persistent Impasse",
           "source": "Bloomberg Markets",
@@ -240,19 +242,6 @@
           ]
         },
         {
-          "title": "Turkey Central Bank Sees July Inflation as Key for Rate Outlook",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-10T15:05:33+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-10/turkey-central-bank-says-july-inflation-print-key-for-rate-outlook",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
           "title": "Fuel Prices Are Slamming Consumers Even as Crude Crisis Fades",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
@@ -264,32 +253,73 @@
             "macro_risk",
             "market"
           ]
+        },
+        {
+          "title": "China Tells Refiners to Keep Fuel Output High as Iran War Drags",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-07-11T09:00:20+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-11/china-tells-refiners-to-keep-fuel-output-high-as-iran-war-drags",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
+      "avgSentiment": -0.67,
+      "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "The $360 Billion Market that Medicine Got Wrong for 20 Years",
+      "topPositiveTitle": "The $360 Billion Market that Medicine Got Wrong for 20 Years",
+      "items": [
+        {
+          "title": "The $360 Billion Market that Medicine Got Wrong for 20 Years",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-07-12T14:04:14+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-07-12/why-wall-street-is-betting-on-menopause-video",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        }
+      ]
     },
     "rates": {
-      "avgSentiment": 0.33,
+      "avgSentiment": 0.165,
       "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 1,
       "sourceCount": 2,
       "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "日銀に金融政策方向性“事前に示すことない” 城内成長戦略相",
+      "topNegativeTitle": "Markets Watch Walsh's First Testimony",
       "topPositiveTitle": "日銀に金融政策方向性“事前に示すことない” 城内成長戦略相",
       "items": [
+        {
+          "title": "Markets Watch Walsh's First Testimony",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-12T14:59:19+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-07-12/markets-watch-walsh-s-first-testimony-video",
+          "tags": [
+            "commodity",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
         {
           "title": "日銀に金融政策方向性“事前に示すことない” 城内成長戦略相",
           "source": "NHK 経済",
@@ -303,31 +333,19 @@
             "rates"
           ],
           "titleJa": "日銀に金融政策方向性“事前に示すことない” 城内成長戦略相"
-        },
-        {
-          "title": "Brazil Inflation Surprise Bolsters Case for More Rate Cuts",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-07-10T12:17:58+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-10/brazil-inflation-surprise-bolsters-case-for-more-rate-cuts",
-          "tags": [
-            "market",
-            "rates"
-          ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.167,
-      "negativeCount": 2,
-      "positiveCount": 3,
-      "neutralCount": 1,
+      "avgSentiment": 0.066,
+      "negativeCount": 1,
+      "positiveCount": 2,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 5,
       "isStale": false,
       "topNegativeTitle": "Hormuz Reopening Faces Costly Hurdles",
-      "topPositiveTitle": "China Power Load Hits Early Record as Data, EV Demand Rises",
+      "topPositiveTitle": "Fuel Prices Are Slamming Consumers Even as Crude Crisis Fades",
       "items": [
         {
           "title": "Hormuz Reopening Faces Costly Hurdles",
@@ -343,16 +361,17 @@
           ]
         },
         {
-          "title": "Eni’s Descalzi Says Energy Crisis May Worsen in Short Term: Sole",
+          "title": "Markets Watch Walsh's First Testimony",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-07-11T08:45:56+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-11/eni-s-descalzi-says-energy-crisis-may-worsen-in-short-term-sole",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-12T14:59:19+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-07-12/markets-watch-walsh-s-first-testimony-video",
           "tags": [
             "commodity",
-            "macro_risk",
-            "market"
+            "market",
+            "rates",
+            "us_broad"
           ]
         },
         {
@@ -422,6 +441,18 @@
           ]
         },
         {
+          "title": "Fresh Strikes Threaten US Iran Talks",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-12T13:40:18+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-07-12/fresh-strikes-threaten-us-iran-talks-video",
+          "tags": [
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
           "title": "Hormuz Route Open Despite Iran Declaration, Maritime Group Says",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
@@ -434,7 +465,7 @@
           ]
         },
         {
-          "title": "US-Iran Strikes Ratchet Up Tensions as Tehran Says Hormuz Shut",
+          "title": "US, Iran Trade Wave of Strikes While Disputing Status of Hormuz",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
@@ -455,18 +486,6 @@
           "tags": [
             "geopolitical",
             "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Hormuz Dispute Clouds US Iran Diplomacy",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-11T13:57:06+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-07-11/hormuz-dispute-clouds-us-iran-diplomacy-video",
-          "tags": [
-            "geopolitical",
             "market"
           ]
         }
