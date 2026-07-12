@@ -1,6 +1,12 @@
 #!/usr/bin/env python3
 """
 P5-B002a: candidates_stocks.json 生成スクリプト（seed list方式）
+P5-B004a: 将来のmarket-wide universe接続に備え、
+  universe provider / enrichment / publish の3責務へ分離した
+  behavior-preserving scaffold。デフォルトでは現行SEED_LIST（41銘柄、
+  UNIVERSE="seed_list_v1"）をそのまま使い、通常成功時の出力・
+  schemaVersion・下流契約は変更しない。外部JPX等の広域sourceは
+  本ticketでは導入しない（provider差し替え可能な形にするのみ）。
 
 使用: python3 data/build_candidates_stocks.py
 出力: data/candidates_stocks.json
@@ -32,13 +38,20 @@ honesty / 非範囲:
   - yfinanceは他の data/update_*.py と同様に通常importする
     （実行環境に既にインストールされている前提。full_batch.ymlの
     Install Python deps ステップで導入済み）。
+  - stale-fallback guard: 新結果がempty相当（candidates 0件 or
+    status=='empty'）で、既存candidates_stocks.jsonがまだfresh
+    （staleThresholdHours以内）かつschema検証OKなら、既存fileを
+    破壊的にemptyで上書きしない。既存fileのタイムスタンプを書き換えて
+    偽装fresh化することはしない（単に書き込みをskipするのみ）。
+    既存fileがstale・存在しない・corrupt/schema不正の場合はfallbackせず
+    通常どおり新結果（empty含む）を書き出す。
 """
 import json
 import math
 import sys
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable
 
 SCHEMA_VERSION = "candidates-stocks-1"
 UNIVERSE = "seed_list_v1"
@@ -46,7 +59,13 @@ STALE_THRESHOLD_HOURS = 48
 OUTPUT_PATH = Path(__file__).parent / 'candidates_stocks.json'
 JST = timezone(timedelta(hours=9))
 
-# seed list（東証主要銘柄、多様なセクターから40銘柄）。
+# P5-B004a: 公開JSONの無制限肥大化を防ぐための明示的な上限。
+# 現行SEED_LIST(41件)では結果が変わらない値にしてある。
+# cap適用順序: provider→enrichment(全件)→publish capで先頭からcap件に
+# 切り詰め（sort/sampleなし・非決定性を持ち込まない）。
+PUBLISH_CAP = 200
+
+# seed list（東証主要銘柄、多様なセクターから41銘柄）。
 # 固定リストであり、保有有無による除外・フィルタは一切行わない
 # （batch側除外は保有情報の間接漏洩リスクがあるため）。
 SEED_LIST: list[tuple[str, str, str]] = [
@@ -92,6 +111,21 @@ SEED_LIST: list[tuple[str, str, str]] = [
     ('7011', '三菱重工業',         '重工'),
     ('4661', 'オリエンタルランド', 'レジャー'),
 ]
+
+# provider: universe（(code, name, sector)のリスト）を返す関数。
+# 将来はJPX全銘柄→eligibility→pre-screen等の別providerに差し替え可能。
+UniverseProvider = Callable[[], list[tuple[str, str, str]]]
+
+
+def default_universe_provider() -> list[tuple[str, str, str]]:
+    """デフォルトprovider。固定SEED_LIST(41銘柄・universe=seed_list_v1)を
+    そのまま返す。外部JPX等のfetchは行わない。"""
+    return list(SEED_LIST)
+
+
+# ---------------------------------------------------------------------------
+# Enrichment（銘柄単位の市場公開情報取得）
+# ---------------------------------------------------------------------------
 
 
 def fetch_one(code: str, name: str, sector: str) -> dict[str, Any]:
@@ -188,15 +222,21 @@ def fetch_one(code: str, name: str, sector: str) -> dict[str, Any]:
     return item
 
 
-def main() -> None:
-    print(f"[{datetime.now():%Y-%m-%d %H:%M}] candidates_stocks.json 生成開始（{len(SEED_LIST)}銘柄）")
+EnrichFn = Callable[[str, str, str], dict[str, Any]]
 
+
+def enrich_universe(
+    universe: list[tuple[str, str, str]], fetch_fn: EnrichFn = fetch_one
+) -> tuple[list[dict[str, Any]], list[str]]:
+    """universe（(code,name,sector)のリスト）を1件ずつenrichする。
+    銘柄単位fail-soft: 1銘柄が完全に例外を投げても全体を止めず、
+    partial扱いのitemを積んで続行する。"""
     candidates: list[dict[str, Any]] = []
     missing: list[str] = []
 
-    for code, name, sector in SEED_LIST:
+    for code, name, sector in universe:
         try:
-            item = fetch_one(code, name, sector)
+            item = fetch_fn(code, name, sector)
         except Exception as e:
             print(f"  ⚠ {code} 完全失敗: {e}", file=sys.stderr)
             item = {
@@ -209,16 +249,56 @@ def main() -> None:
             missing.append(code)
         candidates.append(item)
 
+    return candidates, missing
+
+
+# ---------------------------------------------------------------------------
+# Publish（cap適用 + JSON payload組み立て）
+# ---------------------------------------------------------------------------
+
+
+def apply_publish_cap(
+    candidates: list[dict[str, Any]], missing: list[str], cap: int
+) -> tuple[list[dict[str, Any]], list[str], int]:
+    """publish cap適用。enrichment順（=provider順）の先頭からcap件のみを
+    公開対象とする。sort/sampleは行わず、常に同じ入力に対して同じ結果になる
+    ようにして非決定性を避ける。戻り値: (published_candidates,
+    published_missing, truncated_count)。"""
+    truncated = max(0, len(candidates) - cap)
+    published = candidates[:cap]
+    published_codes = {c['code'] for c in published}
+    published_missing = [code for code in missing if code in published_codes]
+    return published, published_missing, truncated
+
+
+def build_candidates_stocks(
+    universe_provider: UniverseProvider = default_universe_provider,
+    fetch_fn: EnrichFn = fetch_one,
+    publish_cap: int = PUBLISH_CAP,
+    now: datetime | None = None,
+) -> dict[str, Any]:
+    """provider→enrichment→publish capの3段を実行し、公開JSON payload
+    （dict、ファイルI/Oなし）を返す純粋関数。"""
+    if now is None:
+        now = datetime.now(JST)
+
+    universe = universe_provider()
+    candidates_all, missing_all = enrich_universe(universe, fetch_fn=fetch_fn)
+    candidates, missing, truncated = apply_publish_cap(candidates_all, missing_all, publish_cap)
+
+    if truncated > 0:
+        print(f"  ⚠ publish cap={publish_cap}: {truncated}件を切り詰めました", file=sys.stderr)
+
     ok_count = sum(1 for c in candidates if c.get('dataStatus') == 'ok')
     if len(candidates) == 0 or ok_count == 0:
         status = 'empty'
-    elif ok_count < len(SEED_LIST):
+    elif ok_count < len(universe):
         status = 'partial'
     else:
         status = 'ok'
 
-    now_iso = datetime.now(JST).isoformat()
-    output = {
+    now_iso = now.isoformat()
+    return {
         "schemaVersion": SCHEMA_VERSION,
         "updatedAt": now_iso,
         "sourceUpdatedAt": now_iso if ok_count > 0 else None,
@@ -235,10 +315,127 @@ def main() -> None:
         "status": status,
     }
 
-    with open(OUTPUT_PATH, 'w', encoding='utf-8') as f:
-        json.dump(output, f, ensure_ascii=False, indent=2)
 
-    print(f"  ✓ {ok_count}/{len(SEED_LIST)}銘柄成功 → {OUTPUT_PATH} (status={status})")
+# ---------------------------------------------------------------------------
+# Stale-fallback guard（既存fileの検証・staleness判定・書き込み判断）
+# ---------------------------------------------------------------------------
+
+
+def _parse_iso(raw: Any) -> datetime | None:
+    """ISO文字列をaware datetimeへ。失敗時はNone。"""
+    if not isinstance(raw, str) or not raw:
+        return None
+    try:
+        dt = datetime.fromisoformat(raw.replace("Z", "+00:00"))
+        if dt.tzinfo is None:
+            dt = dt.replace(tzinfo=timezone.utc)
+        return dt
+    except ValueError:
+        return None
+
+
+def is_valid_candidates_stocks_schema(payload: Any) -> bool:
+    """既存candidates_stocks.jsonがschema上有効か（corruption/schema不正検出）。
+    fallback候補として使ってよいかの必要条件チェック。"""
+    if not isinstance(payload, dict):
+        return False
+    if payload.get('schemaVersion') != SCHEMA_VERSION:
+        return False
+    if not isinstance(payload.get('candidates'), list):
+        return False
+    if not isinstance(payload.get('missing'), list):
+        return False
+    if payload.get('status') not in ('ok', 'partial', 'empty'):
+        return False
+    return True
+
+
+def is_stale_payload(payload: dict[str, Any], now: datetime) -> bool:
+    """payloadのupdatedAt/sourceUpdatedAtのうち新しい方とnowの差が
+    STALE_THRESHOLD_HOURSを超えていればstale。両方欠損/parse不可ならstale扱い。"""
+    src_dt = _parse_iso(payload.get('sourceUpdatedAt'))
+    upd_dt = _parse_iso(payload.get('updatedAt'))
+
+    best = src_dt
+    if upd_dt is not None and (best is None or upd_dt > best):
+        best = upd_dt
+
+    if best is None:
+        return True
+
+    if now.tzinfo is None:
+        now = now.replace(tzinfo=timezone.utc)
+
+    return (now - best).total_seconds() / 3600 > STALE_THRESHOLD_HOURS
+
+
+def decide_write(
+    new_payload: dict[str, Any],
+    existing_payload: dict[str, Any] | None,
+    now: datetime,
+) -> tuple[bool, str]:
+    """新結果を書き込むべきか判断する（純粋関数）。
+    existing_payloadはNoneなら「既存fileなし、またはschema不正/corrupt」を表す
+    （呼び出し側で検証済みであること）。
+    戻り値: (should_write, reason)。should_write=Falseの場合は既存fileを
+    一切変更せず保持する（タイムスタンプの書き換えも行わない）。"""
+    new_is_empty = new_payload.get('status') == 'empty' or len(new_payload.get('candidates') or []) == 0
+
+    if not new_is_empty:
+        return True, 'new-nonempty'
+    if existing_payload is None:
+        return True, 'no-valid-existing'
+    if is_stale_payload(existing_payload, now):
+        return True, 'existing-stale'
+    return False, 'existing-fresh-fallback-guard'
+
+
+def load_existing(path: Path) -> dict[str, Any] | None:
+    """既存candidates_stocks.jsonを読み込み、schema検証済みならdictを、
+    存在しない/corrupt/schema不正ならNoneを返す。"""
+    if not path.exists():
+        return None
+    try:
+        raw = json.loads(path.read_text(encoding='utf-8'))
+    except (json.JSONDecodeError, OSError, UnicodeDecodeError):
+        return None
+    return raw if is_valid_candidates_stocks_schema(raw) else None
+
+
+# ---------------------------------------------------------------------------
+# CLI entrypoint
+# ---------------------------------------------------------------------------
+
+
+def main() -> None:
+    now = datetime.now(JST)
+    print(f"[{now:%Y-%m-%d %H:%M}] candidates_stocks.json 生成開始（universe={UNIVERSE}）")
+
+    payload = build_candidates_stocks(now=now)
+    ok_count = sum(1 for c in payload['candidates'] if c.get('dataStatus') == 'ok')
+    print(
+        f"  ✓ {ok_count}/{len(payload['candidates'])}銘柄成功 "
+        f"(status={payload['status']}, missing={len(payload['missing'])})"
+    )
+
+    existing = load_existing(OUTPUT_PATH)
+    should_write, reason = decide_write(payload, existing, now)
+
+    if not should_write:
+        print(
+            f"  ⚠ stale-fallback guard: 新結果がempty相当・既存fileがfreshのため "
+            f"上書きをskipします（既存fileを保持, reason={reason}）",
+            file=sys.stderr,
+        )
+        return
+
+    if reason != 'new-nonempty':
+        print(f"  ⚠ stale-fallback: reason={reason} のため新結果で書き込みます", file=sys.stderr)
+
+    with open(OUTPUT_PATH, 'w', encoding='utf-8') as f:
+        json.dump(payload, f, ensure_ascii=False, indent=2)
+
+    print(f"  → {OUTPUT_PATH}")
 
 
 if __name__ == '__main__':
