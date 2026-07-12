@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-07-12T10:05:48.083618+09:00",
-  "sourceUpdatedAt": "2026-07-12T01:02:07+00:00",
+  "updatedAt": "2026-07-12T21:12:34.110944+09:00",
+  "sourceUpdatedAt": "2026-07-12T12:03:18+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -32,37 +32,24 @@
       ]
     },
     "jp_semiconductor": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "SK Hynix Debut Is a Bet That AI Breaks Boom-and-Bust Chip Cycle",
-      "topPositiveTitle": "SK Hynix Debut Is a Bet That AI Breaks Boom-and-Bust Chip Cycle",
-      "items": [
-        {
-          "title": "SK Hynix Debut Is a Bet That AI Breaks Boom-and-Bust Chip Cycle",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-10T21:52:56+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-10/sk-hynix-debut-is-a-bet-that-ai-breaks-boom-and-bust-chip-cycle",
-          "tags": [
-            "jp_semiconductor",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "us_broad": {
-      "avgSentiment": 0.143,
+      "avgSentiment": 0.167,
       "negativeCount": 0,
       "positiveCount": 2,
-      "neutralCount": 5,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 7,
+      "itemCount": 6,
       "isStale": false,
       "topNegativeTitle": "Warsh and US Inflation Will Set Tone for July Fed Decision",
       "topPositiveTitle": "SK Hynix Rises After Record US Offering | The Close 7/10/2026",
@@ -116,12 +103,12 @@
           ]
         },
         {
-          "title": "Bloomberg Money 7/10/2026",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-10T22:00:10+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-07-10/bloomberg-money-7-10-2026-video",
+          "title": "Fed Vows to Deliver Price Stability in Monetary Policy Report",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-07-10T16:08:10+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-10/fed-vows-to-deliver-price-stability-in-monetary-policy-report",
           "tags": [
             "market",
             "us_broad"
@@ -130,16 +117,29 @@
       ]
     },
     "us_growth": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Options Brokers With Niche Expertise Defy Automation, AI Shift",
+      "topPositiveTitle": "Options Brokers With Niche Expertise Defy Automation, AI Shift",
+      "items": [
+        {
+          "title": "Options Brokers With Niche Expertise Defy Automation, AI Shift",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-12T11:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-12/options-brokers-with-niche-expertise-defy-automation-ai-shift",
+          "tags": [
+            "market",
+            "us_growth"
+          ]
+        }
+      ]
     },
     "global_broad": {
       "avgSentiment": 0,
@@ -319,12 +319,12 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.125,
+      "avgSentiment": 0.167,
       "negativeCount": 2,
       "positiveCount": 3,
-      "neutralCount": 3,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 8,
+      "itemCount": 6,
       "isStale": false,
       "topNegativeTitle": "Hormuz Reopening Faces Costly Hurdles",
       "topPositiveTitle": "China Power Load Hits Early Record as Data, EV Demand Rises",
@@ -356,18 +356,6 @@
           ]
         },
         {
-          "title": "Nuclear Energy Services Firm Holtec Joins Sector’s IPO Rush",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-10T21:40:08+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-10/nuclear-energy-services-firm-holtec-joins-sector-s-ipo-rush",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
           "title": "Gasoline Prices Fuel Fresh Acceleration in Russian Inflation",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
@@ -381,26 +369,41 @@
           ]
         },
         {
-          "title": "Nadia Martin Wiggen on Volatile Week in Oil",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-10T11:56:28+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-07-10/nadia-martin-wiggen-on-volatile-week-in-oil-video",
+          "title": "Fuel Prices Are Slamming Consumers Even as Crude Crisis Fades",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-07-11T13:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-11/fuel-prices-are-slamming-consumers-even-as-crude-crisis-fades",
           "tags": [
             "commodity",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "China Tells Refiners to Keep Fuel Output High as Iran War Drags",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-07-11T09:00:20+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-11/china-tells-refiners-to-keep-fuel-output-high-as-iran-war-drags",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
             "market"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.13,
+      "avgSentiment": 0.106,
       "negativeCount": 1,
       "positiveCount": 3,
-      "neutralCount": 5,
+      "neutralCount": 7,
       "sourceCount": 2,
-      "itemCount": 9,
+      "itemCount": 11,
       "isStale": false,
       "topNegativeTitle": "Hormuz Reopening Faces Costly Hurdles",
       "topPositiveTitle": "Patriot Supply Strains Shape Ukraine Aid",
@@ -414,6 +417,30 @@
           "url": "https://www.bloomberg.com/news/videos/2026-07-11/hormuz-reopening-faces-costly-hurdles-video",
           "tags": [
             "commodity",
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Hormuz Route Open Despite Iran Declaration, Maritime Group Says",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-12T10:02:26+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-12/hormuz-route-open-despite-iran-declaration-maritime-group-says",
+          "tags": [
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "US-Iran Strikes Ratchet Up Tensions as Tehran Says Hormuz Shut",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-12T08:06:08+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-12/us-iran-trade-wave-of-attacks-as-tehran-says-hormuz-closed",
+          "tags": [
             "geopolitical",
             "market"
           ]
@@ -439,32 +466,6 @@
           "publishedAt": "2026-07-11T13:57:06+00:00",
           "url": "https://www.bloomberg.com/news/videos/2026-07-11/hormuz-dispute-clouds-us-iran-diplomacy-video",
           "tags": [
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "Charting the Global Economy: Iran War Continues to Cloud Outlook",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-11T09:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-11/charting-the-global-economy-iran-war-continues-to-cloud-outlook",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Gasoline Prices Fuel Fresh Acceleration in Russian Inflation",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-10T16:16:08+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-10/gasoline-prices-fuel-fresh-acceleration-in-russian-inflation",
-          "tags": [
-            "commodity",
             "geopolitical",
             "market"
           ]

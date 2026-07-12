@@ -3,11 +3,11 @@
     "version": "v13.3",
     "kind": "stock_scores_6axis",
     "source": "scoring_orchestrator + data/fundamentals.json + public/data/returns.json",
-    "generated_at": "2026-07-12T01:05:48.368742+00:00",
+    "generated_at": "2026-07-12T12:12:34.422046+00:00",
     "not_for_trading": true,
     "note": "partial-real hybrid / not full real / not full generated / volatility_252d derived from returns.json / momentum and passthrough technical-deferred neutral / financial-sector bounded distortion documented"
   },
-  "last_updated": "2026-07-12T01:05:48.368742+00:00",
+  "last_updated": "2026-07-12T12:12:34.422046+00:00",
   "tickers": [
     "6098.T",
     "8306.T",
@@ -103,8 +103,8 @@
             {
               "name": "volatility_252d",
               "weight": 0.15,
-              "raw_value": 0.4813933865025514,
-              "normalized": 3.7213226994897184,
+              "raw_value": 0.48139337879912236,
+              "normalized": 3.7213242401755338,
               "description": "ボラティリティ 0.48 — 高ボラ（スコア4）"
             },
             {
@@ -367,8 +367,8 @@
             {
               "name": "volatility_252d",
               "weight": 0.15,
-              "raw_value": 0.31389864908549414,
-              "normalized": 37.220270182901174,
+              "raw_value": 0.3138986375277026,
+              "normalized": 37.220272494459486,
               "description": "ボラティリティ 0.31 — 標準水準（スコア37）"
             },
             {
@@ -631,8 +631,8 @@
             {
               "name": "volatility_252d",
               "weight": 0.15,
-              "raw_value": 0.4053101176170622,
-              "normalized": 18.937976476587565,
+              "raw_value": 0.4053101372421456,
+              "normalized": 18.93797255157088,
               "description": "ボラティリティ 0.41 — 高ボラ（スコア19）"
             },
             {
@@ -895,8 +895,8 @@
             {
               "name": "volatility_252d",
               "weight": 0.15,
-              "raw_value": 0.30220495637892536,
-              "normalized": 39.55900872421493,
+              "raw_value": 0.30220493804230575,
+              "normalized": 39.55901239153885,
               "description": "ボラティリティ 0.30 — 標準水準（スコア40）"
             },
             {
@@ -1687,7 +1687,7 @@
             {
               "name": "volatility_252d",
               "weight": 0.15,
-              "raw_value": 0.5010647656135772,
+              "raw_value": 0.5010647791518794,
               "normalized": 0.0,
               "description": "ボラティリティ 0.50 — 高ボラ（スコア0）"
             },
@@ -2215,7 +2215,7 @@
             {
               "name": "volatility_252d",
               "weight": 0.15,
-              "raw_value": 0.7558355354904277,
+              "raw_value": 0.7558355644316312,
               "normalized": 0.0,
               "description": "ボラティリティ 0.76 — 高ボラ（スコア0）"
             },
@@ -2479,8 +2479,8 @@
             {
               "name": "volatility_252d",
               "weight": 0.15,
-              "raw_value": 0.3262844193440572,
-              "normalized": 34.74311613118856,
+              "raw_value": 0.3262843920962207,
+              "normalized": 34.74312158075587,
               "description": "ボラティリティ 0.33 — 標準水準（スコア35）"
             },
             {
@@ -2743,8 +2743,8 @@
             {
               "name": "volatility_252d",
               "weight": 0.15,
-              "raw_value": 0.2389573346809212,
-              "normalized": 52.20853306381576,
+              "raw_value": 0.23895732038085155,
+              "normalized": 52.20853592382969,
               "description": "ボラティリティ 0.24 — 標準水準（スコア52）"
             },
             {
@@ -4259,7 +4259,7 @@
     "observation: momentum components and 4 passthrough (moat_score / earnings_stab / guidance / tam_expansion) are technical-deferred → scorer MISSING_RAW_VALUES neutral",
     "observation: financial-sector tickers may show bounded de_ratio/fcf_yield/equity_ratio distortion (documented hybrid limitation)",
     "observation: fundamentals snapshot generated_at=2026-05-19T16:52:29.781230+00:00",
-    "observation: returns snapshot generated_at=2026-07-12T01:05:47.117706"
+    "observation: returns snapshot generated_at=2026-07-12T12:12:33.032533"
   ],
   "status": "ok"
 }
