@@ -1,0 +1,202 @@
+name: DRYRUN JPX data_j.xls Fetch (P5-B004b-1, no writes)
+
+# workflow_dispatch専用。schedule/push発火なし。
+# このworkflowはJPX公式 data_j.xls をActions runnerから取得・parse可能か検証するだけで、
+# repoへのcommit・push・data/*.json等の変更は一切行わない(ログ出力のみ)。
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  dryrun-fetch:
+    name: Dry-run fetch + parse (log only)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install ephemeral parse dependencies (not added to repo requirements)
+        run: pip install requests pandas xlrd openpyxl
+
+      - name: Fetch JPX data_j.xls and validate (dry-run, no repo writes)
+        run: |
+          python - <<'PYEOF'
+          import sys
+          import time
+          import requests
+
+          URL = "https://www.jpx.co.jp/markets/statistics-equities/misc/tvdivq0000001vg2-att/data_j.xls"
+
+          attempts = [
+              {"label": "default-requests-ua", "headers": {}},
+              {"label": "browser-like-ua", "headers": {
+                  "User-Agent": (
+                      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                      "AppleWebKit/537.36 (KHTML, like Gecko) "
+                      "Chrome/124.0.0.0 Safari/537.36"
+                  )
+              }},
+          ]
+
+          content = None
+          resp = None
+          used_label = None
+
+          for attempt in attempts:
+              print(f"[fetch] attempt={attempt['label']}")
+              t0 = time.monotonic()
+              try:
+                  r = requests.get(URL, headers=attempt["headers"], timeout=30)
+              except Exception as e:
+                  print(f"[fetch] attempt={attempt['label']} EXCEPTION: {e!r}")
+                  continue
+              elapsed = time.monotonic() - t0
+              print(f"[fetch] attempt={attempt['label']} status={r.status_code} elapsed={elapsed:.2f}s")
+              print(f"[fetch] attempt={attempt['label']} content-type={r.headers.get('Content-Type')}")
+              print(f"[fetch] attempt={attempt['label']} content-length-header={r.headers.get('Content-Length')}")
+              print(f"[fetch] attempt={attempt['label']} actual-bytes={len(r.content)}")
+              if r.status_code == 200:
+                  content = r.content
+                  resp = r
+                  used_label = attempt["label"]
+                  break
+              else:
+                  print(f"[fetch] attempt={attempt['label']} non-200, trying next if available")
+
+          print("=" * 60)
+          if content is None:
+              print("[VERDICT] A=FAILURE (no attempt returned HTTP 200)")
+              print("[VERDICT] J=NO-GO (JPX direct fetch not viable from Actions runner)")
+              sys.exit(0)  # dry-run: do not fail the job hard, just report
+
+          print(f"[VERDICT] A=SUCCESS via attempt={used_label}")
+          print(f"[fetch] final content-type={resp.headers.get('Content-Type')}")
+          print(f"[fetch] final byte length={len(content)}")
+
+          sig = content[:8]
+          print(f"[fetch] first-8-bytes-hex={sig.hex()}")
+
+          OLE2_SIG = b"\xd0\xcf\x11\xe0\xa1\xb1\x1a\xe1"
+          ZIP_SIG = b"PK\x03\x04"
+          if sig.startswith(OLE2_SIG):
+              filetype = "ole2-xls"
+          elif sig.startswith(ZIP_SIG):
+              filetype = "zip-xlsx"
+          else:
+              filetype = "unknown/html?"
+              print(f"[fetch] WARNING unrecognized signature, first 200 bytes as text (best-effort):")
+              print(content[:200])
+
+          print(f"[fetch] detected-filetype={filetype}")
+
+          with open("/tmp/dryrun_data_j.xls", "wb") as f:
+              f.write(content)
+          print("[fetch] saved to /tmp/dryrun_data_j.xls (runner-local only, NOT committed to repo)")
+          PYEOF
+
+      - name: Parse and validate downloaded file (log only, no repo writes)
+        run: |
+          python - <<'PYEOF'
+          import os
+          import sys
+
+          path = "/tmp/dryrun_data_j.xls"
+          if not os.path.exists(path):
+              print("[VERDICT] B=SKIPPED (no file fetched in previous step)")
+              sys.exit(0)
+
+          import pandas as pd
+
+          with open(path, "rb") as f:
+              sig = f.read(8)
+
+          engine = None
+          if sig.startswith(b"\xd0\xcf\x11\xe0\xa1\xb1\x1a\xe1"):
+              engine = "xlrd"
+          elif sig.startswith(b"PK\x03\x04"):
+              engine = "openpyxl"
+
+          print(f"[parse] chosen engine={engine}")
+
+          df = None
+          errors = []
+          engines_to_try = [engine] if engine else ["xlrd", "openpyxl"]
+          for eng in engines_to_try:
+              try:
+                  df = pd.read_excel(path, engine=eng)
+                  print(f"[parse] SUCCESS with engine={eng}")
+                  break
+              except Exception as e:
+                  errors.append((eng, repr(e)))
+                  print(f"[parse] FAILED with engine={eng}: {e!r}")
+
+          if df is None:
+              print("[VERDICT] B=FAILURE (parse failed with all engines)")
+              print(f"[parse] errors={errors}")
+              print("[VERDICT] J=NO-GO (candidate file not parseable from Actions runner)")
+              sys.exit(0)
+
+          print("=" * 60)
+          print(f"[parse] columns={list(df.columns)}")
+          print(f"[parse] row_count={len(df)}")
+
+          # JPX data_j.xls想定列: コード, 銘柄名, 市場・商品区分, 33業種コード, 33業種区分,
+          # 17業種コード, 17業種区分, 規模コード, 規模区分
+          expected_cols_candidates = ["コード", "銘柄名", "市場・商品区分"]
+          missing = [c for c in expected_cols_candidates if c not in df.columns]
+          print(f"[parse] expected_core_columns_present={[c for c in expected_cols_candidates if c in df.columns]}")
+          print(f"[parse] expected_core_columns_missing={missing}")
+
+          code_col = "コード" if "コード" in df.columns else None
+          if code_col:
+              codes = df[code_col].astype(str).str.strip()
+              dup_count = int(codes.duplicated().sum())
+              print(f"[parse] duplicate_code_count={dup_count}")
+
+              four_digit_mask = codes.str.match(r"^\d{4}$")
+              four_digit_count = int(four_digit_mask.sum())
+              print(f"[parse] four_digit_numeric_code_count={four_digit_count}")
+
+              alnum_mask = ~four_digit_mask
+              alnum_count = int(alnum_mask.sum())
+              print(f"[parse] non_four_digit_numeric_code_count(includes alphabetic-suffix codes)={alnum_count}")
+              sample_alnum = codes[alnum_mask].head(10).tolist()
+              print(f"[parse] sample_non_four_digit_codes={sample_alnum}")
+          else:
+              print("[parse] WARNING: code column 'コード' not found, skipping code-shape checks")
+              dup_count = None
+              four_digit_count = None
+              alnum_count = None
+
+          market_col = "市場・商品区分" if "市場・商品区分" in df.columns else None
+          if market_col:
+              prime_mask = df[market_col].astype(str).str.contains("プライム", na=False)
+              prime_count = int(prime_mask.sum())
+              print(f"[parse] prime_market_candidate_count={prime_count}")
+              print(f"[parse] market_value_counts=\n{df[market_col].value_counts(dropna=False).to_string()}")
+          else:
+              print("[parse] WARNING: market column '市場・商品区分' not found, skipping Prime count")
+              prime_count = None
+
+          print("=" * 60)
+          verdict_b = "SUCCESS"
+          print(f"[VERDICT] B={verdict_b}")
+          print(f"[VERDICT] C=source_columns={list(df.columns)}")
+          print(f"[VERDICT] D=row_count={len(df)}")
+          print(f"[VERDICT] E=prime_eligible_count={prime_count}")
+          print(f"[VERDICT] F=duplicate_code_count={dup_count}")
+          PYEOF
+
+      - name: Cleanup runner-local temp file (no repo writes occurred)
+        if: always()
+        run: |
+          rm -f /tmp/dryrun_data_j.xls
+          echo "[cleanup] runner-local temp file removed (repo working tree untouched)"
+          echo "[cleanup] git status:"
+          git status
