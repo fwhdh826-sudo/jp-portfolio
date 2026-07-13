@@ -51,7 +51,7 @@ import math
 import sys
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
-from typing import Any, Callable
+from typing import Any, Callable, NamedTuple
 
 SCHEMA_VERSION = "candidates-stocks-1"
 UNIVERSE = "seed_list_v1"
@@ -64,6 +64,16 @@ JST = timezone(timedelta(hours=9))
 # cap適用順序: provider→enrichment(全件)→publish capで先頭からcap件に
 # 切り詰め（sort/sampleなし・非決定性を持ち込まない）。
 PUBLISH_CAP = 200
+
+# P5-B004b: enrichment safety guard。publish capはenrichment後の"公開"件数を
+# 絞るだけであり、それ以前のenrichment（yfinance等の外部fetch）自体の
+# runtime/API量は一切守らない。whole-market providerが誤って
+# enrich_universe()へ直結された場合に数千件を無制限にfetchしてしまうのを
+# 防ぐため、enrichment直前にuniverseサイズを明示的に検査しfail-fastする。
+# 現行SEED_LIST(41件)・将来のB004c pre-screen/shortlist（有界入力を想定）
+# には影響しない値にしてある。silent truncationはしない
+# （黙って一部だけenrichすると集計・公開結果が入力依存で不透明になるため）。
+MAX_ENRICHMENT_UNIVERSE = 500
 
 # seed list（東証主要銘柄、多様なセクターから41銘柄）。
 # 固定リストであり、保有有無による除外・フィルタは一切行わない
@@ -112,15 +122,24 @@ SEED_LIST: list[tuple[str, str, str]] = [
     ('4661', 'オリエンタルランド', 'レジャー'),
 ]
 
-# provider: universe（(code, name, sector)のリスト）を返す関数。
-# 将来はJPX全銘柄→eligibility→pre-screen等の別providerに差し替え可能。
-UniverseProvider = Callable[[], list[tuple[str, str, str]]]
+class UniverseResult(NamedTuple):
+    """providerの戻り値。universe_idは_meta.universeへそのまま反映される
+    provenance情報（provider差替え時にfixed定数へ追随しない実体）。"""
+    universe_id: str
+    items: list[tuple[str, str, str]]
 
 
-def default_universe_provider() -> list[tuple[str, str, str]]:
-    """デフォルトprovider。固定SEED_LIST(41銘柄・universe=seed_list_v1)を
+# provider: UniverseResult（universe_id + (code, name, sector)のリスト）を
+# 返す関数。将来はJPX全銘柄→eligibility→pre-screen等の別providerに
+# 差し替え可能。custom/future providerは自身のuniverse_idを明示的に
+# 返すことで_meta.universeを正しく追随させる（P5-B004b SCALE-02対応）。
+UniverseProvider = Callable[[], UniverseResult]
+
+
+def default_universe_provider() -> UniverseResult:
+    """デフォルトprovider。固定SEED_LIST(41銘柄・universe_id=seed_list_v1)を
     そのまま返す。外部JPX等のfetchは行わない。"""
-    return list(SEED_LIST)
+    return UniverseResult(universe_id=UNIVERSE, items=list(SEED_LIST))
 
 
 # ---------------------------------------------------------------------------
@@ -225,6 +244,24 @@ def fetch_one(code: str, name: str, sector: str) -> dict[str, Any]:
 EnrichFn = Callable[[str, str, str], dict[str, Any]]
 
 
+class EnrichmentGuardExceeded(RuntimeError):
+    """universeサイズがMAX_ENRICHMENT_UNIVERSEを超えた場合に送出される。
+    publish capはこの安全性を代替しない（cap適用はenrichment後のため）。"""
+
+
+def enforce_enrichment_guard(
+    universe: list[tuple[str, str, str]], max_items: int = MAX_ENRICHMENT_UNIVERSE
+) -> None:
+    """enrichment直前にuniverseサイズを検査する。超過時はsilent truncationせず
+    例外を送出しfail-fastする（whole-market providerの直結を防ぐ）。"""
+    if len(universe) > max_items:
+        raise EnrichmentGuardExceeded(
+            f"universe size {len(universe)} exceeds MAX_ENRICHMENT_UNIVERSE={max_items}; "
+            "whole-market/unbounded providers must be pre-screened into a bounded "
+            "shortlist before enrichment (see B004c)"
+        )
+
+
 def enrich_universe(
     universe: list[tuple[str, str, str]], fetch_fn: EnrichFn = fetch_one
 ) -> tuple[list[dict[str, Any]], list[str]]:
@@ -275,27 +312,38 @@ def build_candidates_stocks(
     universe_provider: UniverseProvider = default_universe_provider,
     fetch_fn: EnrichFn = fetch_one,
     publish_cap: int = PUBLISH_CAP,
+    enrichment_guard: int = MAX_ENRICHMENT_UNIVERSE,
     now: datetime | None = None,
 ) -> dict[str, Any]:
     """provider→enrichment→publish capの3段を実行し、公開JSON payload
-    （dict、ファイルI/Oなし）を返す純粋関数。"""
+    （dict、ファイルI/Oなし）を返す純粋関数。
+
+    enrichment_guard超過時はEnrichmentGuardExceededを送出する（fail-fast、
+    silent truncationはしない）。publish_capはこのguardの代替にはならない
+    ——capはenrichment"後"の公開件数を絞るだけで、enrichment自体の
+    runtime/API量は守らないため。"""
     if now is None:
         now = datetime.now(JST)
 
-    universe = universe_provider()
+    universe_id, universe = universe_provider()
+    enforce_enrichment_guard(universe, max_items=enrichment_guard)
+
     candidates_all, missing_all = enrich_universe(universe, fetch_fn=fetch_fn)
     candidates, missing, truncated = apply_publish_cap(candidates_all, missing_all, publish_cap)
 
     if truncated > 0:
         print(f"  ⚠ publish cap={publish_cap}: {truncated}件を切り詰めました", file=sys.stderr)
 
+    # status: publish対象（=公開JSONに実際に載る）candidatesの品質のみで判定する。
+    # cap外で切り捨てられたuniverse分の失敗・truncationはstatusに混ぜない
+    # （P5-B004b STATUS-1対応: universe > cap でも全publishedがokならstatus=ok）。
     ok_count = sum(1 for c in candidates if c.get('dataStatus') == 'ok')
     if len(candidates) == 0 or ok_count == 0:
         status = 'empty'
-    elif ok_count < len(universe):
-        status = 'partial'
-    else:
+    elif ok_count == len(candidates):
         status = 'ok'
+    else:
+        status = 'partial'
 
     now_iso = now.isoformat()
     return {
@@ -307,8 +355,14 @@ def build_candidates_stocks(
             "kind": "candidates_stocks",
             "source": "data/build_candidates_stocks.py + yfinance",
             "not_for_trading": True,
-            "universe": UNIVERSE,
+            "universe": universe_id,
             "note": "市場公開情報のみ。個人資産・保有実額・現金・口座情報は含まない",
+            "counts": {
+                "universeCount": len(universe),
+                "publishedCount": len(candidates),
+                "truncatedCount": truncated,
+                "failedTotalCount": len(missing_all),
+            },
         },
         "candidates": candidates,
         "missing": missing,

@@ -32,6 +32,14 @@ export interface CandidatesStocksData {
     not_for_trading: true
     universe: string
     note: string
+    // P5-B004b: publish cap外の失敗・truncationをstatusに混ぜないための
+    // 内訳。既存consumerには未使用のoptional追加フィールド。
+    counts?: {
+      universeCount: number
+      publishedCount: number
+      truncatedCount: number
+      failedTotalCount: number
+    }
   }
   candidates: StockCandidateItem[]
   missing: string[]
