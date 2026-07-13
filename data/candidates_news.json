@@ -1,10 +1,37 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-07-13T22:33:31.055551+09:00",
-  "sourceUpdatedAt": "2026-07-13T13:28:21+00:00",
+  "updatedAt": "2026-07-14T07:25:26.654839+09:00",
+  "sourceUpdatedAt": "2026-07-13T22:10:10+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "歴史的な円安「経済に悪い影響」61％ NHK世論調査",
+      "topPositiveTitle": "歴史的な円安「経済に悪い影響」61％ NHK世論調査",
+      "items": [
+        {
+          "title": "歴史的な円安「経済に悪い影響」61％ NHK世論調査",
+          "source": "NHK 経済",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-13T20:02:25+00:00",
+          "url": "https://news.web.nhk/newsweb/na/na-k10015175471000",
+          "tags": [
+            "fx",
+            "jp_broad",
+            "market"
+          ],
+          "titleJa": "歴史的な円安「経済に悪い影響」61％ NHK世論調査"
+        }
+      ]
+    },
+    "jp_semiconductor": {
       "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
@@ -16,47 +43,49 @@
       "topPositiveTitle": null,
       "items": []
     },
-    "jp_semiconductor": {
-      "avgSentiment": 0.6,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+    "us_broad": {
+      "avgSentiment": 0.018,
+      "negativeCount": 2,
+      "positiveCount": 3,
+      "neutralCount": 6,
+      "sourceCount": 2,
+      "itemCount": 11,
       "isStale": false,
-      "topNegativeTitle": "Chip Selloff Hits Stocks as Oil Gains Lift Yields: Markets Wrap",
-      "topPositiveTitle": "Chip Selloff Hits Stocks as Oil Gains Lift Yields: Markets Wrap",
+      "topNegativeTitle": "Gold Slumps as US-Iran Strikes, Fed’s Waller Fuel Rate Hike Bets",
+      "topPositiveTitle": "First Public Fusion Firm Jumps in Wall Street Trading Debut",
       "items": [
         {
-          "title": "Chip Selloff Hits Stocks as Oil Gains Lift Yields: Markets Wrap",
+          "title": "Gold Slumps as US-Iran Strikes, Fed’s Waller Fuel Rate Hike Bets",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.6,
-          "publishedAt": "2026-07-12T22:10:28+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-12/oil-climbs-us-futures-dip-on-fresh-iran-strikes-markets-wrap",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-07-12T23:13:35+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-12/gold-declines-as-renewed-us-iran-strikes-raise-rate-hike-bets",
+          "tags": [
+            "geopolitical",
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Gold Drops Below $4,000 as Fed Rate Hike Bets Surge",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.6,
+          "publishedAt": "2026-07-13T20:10:12+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-07-13/gold-drops-below-4-000-as-fed-rate-hike-bets-surge-video",
           "tags": [
             "commodity",
-            "jp_semiconductor",
-            "macro_risk",
+            "gold",
             "market",
-            "rates"
+            "rates",
+            "us_broad"
           ]
-        }
-      ]
-    },
-    "us_broad": {
-      "avgSentiment": 0.294,
-      "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 3,
-      "sourceCount": 2,
-      "itemCount": 5,
-      "isStale": false,
-      "topNegativeTitle": "US Stock Futures Fall as Mideast Tensions Flare Anew, Oil Climbs",
-      "topPositiveTitle": "Oil Rises as US, Iran Dispute Whether Hormuz is Open; Big Week in Markets | Bloomberg Brief 07/13/26",
-      "items": [
+        },
         {
-          "title": "US Stock Futures Fall as Mideast Tensions Flare Anew, Oil Climbs",
+          "title": "US Stocks Fall as Iran Blockade Restarts; Oil Surges Above $80",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.2,
@@ -70,52 +99,25 @@
           ]
         },
         {
-          "title": "Wall Street Mounts Pushback on Trillion-Dollar Stablecoin Boom",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-13T12:03:11+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-13/wall-street-mounts-pushback-on-trillion-dollar-stablecoin-boom",
-          "tags": [
-            "fx",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Warsh and US Inflation Will Set Tone for July Fed Decision",
+          "title": "Fed Maintains Reserve Management Purchases at $10 Billion",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-11T20:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-11/warsh-and-us-inflation-will-set-tone-for-july-fed-decision",
+          "publishedAt": "2026-07-13T19:21:12+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-13/fed-maintains-reserve-management-purchases-at-10-billion",
           "tags": [
             "market",
             "us_broad"
           ]
         },
         {
-          "title": "Fed’s Bowman Urges Global Financial Watchdog to be Flexible",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-07-13T09:25:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-13/fed-s-bowman-urges-global-financial-watchdog-to-be-flexible",
+          "title": "Warsh’s Balance-Sheet Panel Runs Into Market Reality Check",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-13T17:50:35+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-13/warsh-s-balance-sheet-panel-runs-into-market-reality-check",
           "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Oil Rises as US, Iran Dispute Whether Hormuz is Open; Big Week in Markets | Bloomberg Brief 07/13/26",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-07-13T12:16:02+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-07-13/bloomberg-brief-07-13-2026-video",
-          "tags": [
-            "commodity",
-            "geopolitical",
             "market",
             "us_broad"
           ]
@@ -123,30 +125,16 @@
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Apple’s $600 Billion Rally Fueled by Traders Fleeing AI Selloff",
-      "topPositiveTitle": "Apple’s $600 Billion Rally Fueled by Traders Fleeing AI Selloff",
-      "items": [
-        {
-          "title": "Apple’s $600 Billion Rally Fueled by Traders Fleeing AI Selloff",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-13T10:13:17+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-13/apple-s-600-billion-rally-fueled-by-traders-fleeing-ai-selloff",
-          "tags": [
-            "macro_risk",
-            "market",
-            "us_growth"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "global_broad": {
       "avgSentiment": 0,
@@ -161,16 +149,59 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
+      "avgSentiment": -0.423,
+      "negativeCount": 2,
+      "positiveCount": 1,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Gold Slumps as US-Iran Strikes, Fed’s Waller Fuel Rate Hike Bets",
+      "topPositiveTitle": "Gold Miners Cadillac, Amapa Minerals Add to Canada IPO Rebound",
+      "items": [
+        {
+          "title": "Gold Slumps as US-Iran Strikes, Fed’s Waller Fuel Rate Hike Bets",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-07-12T23:13:35+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-12/gold-declines-as-renewed-us-iran-strikes-raise-rate-hike-bets",
+          "tags": [
+            "geopolitical",
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Gold Drops Below $4,000 as Fed Rate Hike Bets Surge",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.6,
+          "publishedAt": "2026-07-13T20:10:12+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-07-13/gold-drops-below-4-000-as-fed-rate-hike-bets-surge-video",
+          "tags": [
+            "commodity",
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Gold Miners Cadillac, Amapa Minerals Add to Canada IPO Rebound",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-07-13T22:10:10+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-13/gold-miners-cadillac-amapa-minerals-add-to-canada-ipo-rebound",
+          "tags": [
+            "gold",
+            "market"
+          ]
+        }
+      ]
     },
     "reit": {
       "avgSentiment": 0,
@@ -197,7 +228,7 @@
       "items": [
         {
           "title": "Kenya Eyes $500 Million Eurobond Buyback to Ease Debt Pressure",
-          "source": "Bloomberg Markets",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
           "publishedAt": "2026-07-13T12:26:02+00:00",
@@ -210,16 +241,28 @@
       ]
     },
     "macro_risk": {
-      "avgSentiment": -0.069,
-      "negativeCount": 5,
-      "positiveCount": 2,
-      "neutralCount": 5,
+      "avgSentiment": -0.557,
+      "negativeCount": 2,
+      "positiveCount": 0,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 12,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Euro-Area Outlook Cut by Economists as Iran War Weighs on Region",
-      "topPositiveTitle": "Oil Rallies as Conflict Over Hormuz Escalates With Fresh Strikes",
+      "topNegativeTitle": "SK Hynix ADRs Tumble in Second Trading Day After Korea Selloff",
+      "topPositiveTitle": "Why Global Economy’s Resilience May Rise With Diminished Dollar Dominance",
       "items": [
+        {
+          "title": "SK Hynix ADRs Tumble in Second Trading Day After Korea Selloff",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-07-13T01:27:43+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-13/sk-hynix-shares-drop-in-seoul-after-much-hyped-us-trading-debut",
+          "tags": [
+            "macro_risk",
+            "market"
+          ]
+        },
         {
           "title": "Euro-Area Outlook Cut by Economists as Iran War Weighs on Region",
           "source": "Bloomberg Economics",
@@ -234,50 +277,14 @@
           ]
         },
         {
-          "title": "SK Hynix Shares Plunge Most on Record in Deepening Korea Selloff",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.6,
-          "publishedAt": "2026-07-13T01:27:43+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-13/sk-hynix-shares-drop-in-seoul-after-much-hyped-us-trading-debut",
+          "title": "Why Global Economy’s Resilience May Rise With Diminished Dollar Dominance",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-13T11:00:02+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-07-13/why-global-economy-s-resilience-may-rise-with-diminished-dollar-dominance",
           "tags": [
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Korea Selloff Deepens as SK Hynix Plunges Most on Record | The Pulse 7/13/2026",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.5,
-          "publishedAt": "2026-07-13T10:27:07+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-07-13/the-pulse-7-13-2026-video",
-          "tags": [
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Renewed Iran Woes Flip Script for Traders Betting War Risks Over",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-07-13T11:11:17+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-13/renewed-iran-woes-flip-script-for-traders-betting-war-risks-over",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Indonesia Avoids S&amp;P Rating Outlook Cut in Win for Prabowo",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-07-13T08:51:51+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-13/idr-usd-s-p-affirms-indonesia-s-credit-rating-keeps-stable-outlook",
-          "tags": [
+            "fx",
             "macro_risk",
             "market"
           ]
@@ -288,25 +295,26 @@
       "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 3,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Wall Street Mounts Pushback on Trillion-Dollar Stablecoin Boom",
-      "topPositiveTitle": "Wall Street Mounts Pushback on Trillion-Dollar Stablecoin Boom",
+      "topNegativeTitle": "歴史的な円安「経済に悪い影響」61％ NHK世論調査",
+      "topPositiveTitle": "歴史的な円安「経済に悪い影響」61％ NHK世論調査",
       "items": [
         {
-          "title": "Wall Street Mounts Pushback on Trillion-Dollar Stablecoin Boom",
-          "source": "Bloomberg Markets",
+          "title": "歴史的な円安「経済に悪い影響」61％ NHK世論調査",
+          "source": "NHK 経済",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-13T12:03:11+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-13/wall-street-mounts-pushback-on-trillion-dollar-stablecoin-boom",
+          "publishedAt": "2026-07-13T20:02:25+00:00",
+          "url": "https://news.web.nhk/newsweb/na/na-k10015175471000",
           "tags": [
             "fx",
-            "market",
-            "us_broad"
-          ]
+            "jp_broad",
+            "market"
+          ],
+          "titleJa": "歴史的な円安「経済に悪い影響」61％ NHK世論調査"
         },
         {
           "title": "Why Global Economy’s Resilience May Rise With Diminished Dollar Dominance",
@@ -320,32 +328,63 @@
             "macro_risk",
             "market"
           ]
-        },
-        {
-          "title": "Traders Grapple With World That’s Good for Dollar, Bad for Bonds",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-12T19:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-12/traders-grapple-with-world-that-s-good-for-dollar-bad-for-bonds",
-          "tags": [
-            "fx",
-            "market"
-          ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": 0.3,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 1,
+      "avgSentiment": -0.386,
+      "negativeCount": 3,
+      "positiveCount": 0,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 2,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Ethiopian Central Bank Raises Rates for First Time in Two Years",
-      "topPositiveTitle": "Chip Selloff Hits Stocks as Oil Gains Lift Yields: Markets Wrap",
+      "topNegativeTitle": "Gold Slumps as US-Iran Strikes, Fed’s Waller Fuel Rate Hike Bets",
+      "topPositiveTitle": "Ethiopian Central Bank Raises Rates for First Time in Two Years",
       "items": [
+        {
+          "title": "Gold Slumps as US-Iran Strikes, Fed’s Waller Fuel Rate Hike Bets",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-07-12T23:13:35+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-12/gold-declines-as-renewed-us-iran-strikes-raise-rate-hike-bets",
+          "tags": [
+            "geopolitical",
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Gold Drops Below $4,000 as Fed Rate Hike Bets Surge",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.6,
+          "publishedAt": "2026-07-13T20:10:12+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-07-13/gold-drops-below-4-000-as-fed-rate-hike-bets-surge-video",
+          "tags": [
+            "commodity",
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "【今朝の5本】仕事を始める前に読んでおきたい厳選ニュース",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-07-13T21:07:03+00:00",
+          "url": "https://www.bloomberg.com/jp/news/newsletters/2026-07-13/TI4TBRKIUPTZ00",
+          "tags": [
+            "market",
+            "rates"
+          ],
+          "titleJa": "【今朝の5本】仕事を始める前に読んでおきたい厳選ニュース"
+        },
         {
           "title": "Ethiopian Central Bank Raises Rates for First Time in Two Years",
           "source": "Bloomberg Economics",
@@ -359,35 +398,49 @@
           ]
         },
         {
-          "title": "Chip Selloff Hits Stocks as Oil Gains Lift Yields: Markets Wrap",
+          "title": "Traders See 50% Chance That Warsh Fed Hikes Rates This Month",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.6,
-          "publishedAt": "2026-07-12T22:10:28+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-12/oil-climbs-us-futures-dip-on-fresh-iran-strikes-markets-wrap",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-13T01:07:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-13/treasury-two-year-yield-rises-to-highest-since-2025-on-oil-gain",
           "tags": [
             "commodity",
-            "jp_semiconductor",
-            "macro_risk",
             "market",
-            "rates"
+            "rates",
+            "us_broad"
           ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.282,
-      "negativeCount": 0,
+      "avgSentiment": 0.171,
+      "negativeCount": 1,
       "positiveCount": 3,
-      "neutralCount": 6,
+      "neutralCount": 5,
       "sourceCount": 2,
       "itemCount": 9,
       "isStale": false,
-      "topNegativeTitle": "US Stock Futures Fall as Mideast Tensions Flare Anew, Oil Climbs",
-      "topPositiveTitle": "Oil Rises as US, Iran Dispute Whether Hormuz is Open; Big Week in Markets | Bloomberg Brief 07/13/26",
+      "topNegativeTitle": "Gold Drops Below $4,000 as Fed Rate Hike Bets Surge",
+      "topPositiveTitle": "Oil Surges as Trump Says US Wants 20% Charge for Hormuz Flows",
       "items": [
         {
-          "title": "US Stock Futures Fall as Mideast Tensions Flare Anew, Oil Climbs",
+          "title": "Gold Drops Below $4,000 as Fed Rate Hike Bets Surge",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.6,
+          "publishedAt": "2026-07-13T20:10:12+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-07-13/gold-drops-below-4-000-as-fed-rate-hike-bets-surge-video",
+          "tags": [
+            "commodity",
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "US Stocks Fall as Iran Blockade Restarts; Oil Surges Above $80",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.2,
@@ -401,36 +454,12 @@
           ]
         },
         {
-          "title": "Bangladesh Is a Nuclear Power Test Case for Developing Nations",
+          "title": "Argentina IPO Pipeline Grows as YPF Power Unit Files For US Listing",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-13T11:51:47+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-07-13/bangladesh-is-a-nuclear-power-test-case-for-developing-nations",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "Saudi Energy Minister’s Influence Grows With Industry Portfolio",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-13T11:17:59+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-13/saudi-energy-minister-s-influence-grows-with-industry-portfolio",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "UAE Steps Up Moves to Help Term Buyers Avoid Hormuz Transits",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-13T09:02:53+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-13/uae-tweaks-offshore-oil-pricing-to-support-non-hormuz-options",
+          "publishedAt": "2026-07-13T21:05:32+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-13/argentina-ipo-pipeline-grows-as-ypf-power-unit-files-for-us-listing",
           "tags": [
             "commodity",
             "market"
@@ -447,20 +476,49 @@
             "commodity",
             "market"
           ]
+        },
+        {
+          "title": "Traders See 50% Chance That Warsh Fed Hikes Rates This Month",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-13T01:07:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-13/treasury-two-year-yield-rises-to-highest-since-2025-on-oil-gain",
+          "tags": [
+            "commodity",
+            "market",
+            "rates",
+            "us_broad"
+          ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.115,
-      "negativeCount": 2,
-      "positiveCount": 3,
-      "neutralCount": 6,
+      "avgSentiment": -0.133,
+      "negativeCount": 3,
+      "positiveCount": 2,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 11,
+      "itemCount": 9,
       "isStale": false,
-      "topNegativeTitle": "Euro-Area Outlook Cut by Economists as Iran War Weighs on Region",
-      "topPositiveTitle": "Oil Rises as US, Iran Dispute Whether Hormuz is Open; Big Week in Markets | Bloomberg Brief 07/13/26",
+      "topNegativeTitle": "Gold Slumps as US-Iran Strikes, Fed’s Waller Fuel Rate Hike Bets",
+      "topPositiveTitle": "Oil Holds Gains as Iran Stokes Inflation Worries: Markets Wrap",
       "items": [
+        {
+          "title": "Gold Slumps as US-Iran Strikes, Fed’s Waller Fuel Rate Hike Bets",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-07-12T23:13:35+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-12/gold-declines-as-renewed-us-iran-strikes-raise-rate-hike-bets",
+          "tags": [
+            "geopolitical",
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
         {
           "title": "Euro-Area Outlook Cut by Economists as Iran War Weighs on Region",
           "source": "Bloomberg Economics",
@@ -475,20 +533,19 @@
           ]
         },
         {
-          "title": "Renewed Iran Woes Flip Script for Traders Betting War Risks Over",
+          "title": "Graham’s Death Deprives Ukraine of Key Trump Whisperer",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-07-13T11:11:17+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-13/renewed-iran-woes-flip-script-for-traders-betting-war-risks-over",
+          "publishedAt": "2026-07-13T18:20:42+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-07-13/graham-s-death-deprives-ukraine-of-key-trump-whisperer-video",
           "tags": [
             "geopolitical",
-            "macro_risk",
             "market"
           ]
         },
         {
-          "title": "US Stock Futures Fall as Mideast Tensions Flare Anew, Oil Climbs",
+          "title": "US Stocks Fall as Iran Blockade Restarts; Oil Surges Above $80",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.2,
@@ -502,27 +559,14 @@
           ]
         },
         {
-          "title": "A Summer Reading List to Grasp the Geopolitical Shifts Shaping the Future",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-13T11:00:02+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-07-13/geopolitical-changes-in-the-global-economy",
-          "tags": [
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "Chile Debt Sale Window Opens as Investors Ignore Mounting Risks",
+          "title": "Trump Restarts Iran Blockade as US Plans 20% Hormuz Charge",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-13T11:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-13/chile-debt-sale-window-opens-as-investors-ignore-mounting-risks",
+          "publishedAt": "2026-07-13T14:25:52+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-13/trump-says-us-will-be-reimbursed-20-rate-for-hormuz-traffic",
           "tags": [
             "geopolitical",
-            "macro_risk",
             "market"
           ]
         }
@@ -537,7 +581,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 2,
+    "excludedCount": 1,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
