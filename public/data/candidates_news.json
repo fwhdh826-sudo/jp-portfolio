@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-07-13T00:35:56.577667+09:00",
-  "sourceUpdatedAt": "2026-07-12T15:28:42+00:00",
+  "updatedAt": "2026-07-13T15:37:12.878231+09:00",
+  "sourceUpdatedAt": "2026-07-13T06:25:27+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -32,61 +32,63 @@
       ]
     },
     "jp_semiconductor": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "us_broad": {
-      "avgSentiment": 0.066,
+      "avgSentiment": 0.67,
       "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 4,
-      "sourceCount": 2,
-      "itemCount": 5,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Markets Watch Walsh's First Testimony",
-      "topPositiveTitle": "Fed Vows to Deliver Price Stability in Monetary Policy Report",
+      "topNegativeTitle": "TSMC Sales Surge 36% in Fresh Sign of AI Spending Momentum",
+      "topPositiveTitle": "TSMC Sales Surge 36% in Fresh Sign of AI Spending Momentum",
       "items": [
         {
-          "title": "Markets Watch Walsh's First Testimony",
+          "title": "TSMC Sales Surge 36% in Fresh Sign of AI Spending Momentum",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-12T14:59:19+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-07-12/markets-watch-walsh-s-first-testimony-video",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-07-13T05:40:42+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-13/tsmc-sales-surge-36-in-fresh-sign-of-ai-spending-momentum",
+          "tags": [
+            "geopolitical",
+            "jp_semiconductor",
+            "market"
+          ]
+        }
+      ]
+    },
+    "us_broad": {
+      "avgSentiment": 0.0,
+      "negativeCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 2,
+      "sourceCount": 2,
+      "itemCount": 4,
+      "isStale": false,
+      "topNegativeTitle": "Stocks Fall With Bonds as Iran Attacks Boost Oil: Markets Wrap",
+      "topPositiveTitle": "Treasury Two-Year Yields Rise to Highest Since 2025 as Oil Jumps",
+      "items": [
+        {
+          "title": "Stocks Fall With Bonds as Iran Attacks Boost Oil: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-07-12T22:10:28+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-12/oil-climbs-us-futures-dip-on-fresh-iran-strikes-markets-wrap",
           "tags": [
             "commodity",
+            "geopolitical",
             "market",
-            "rates",
             "us_broad"
           ]
         },
         {
           "title": "Warsh and US Inflation Will Set Tone for July Fed Decision",
-          "source": "Bloomberg Markets",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
           "publishedAt": "2026-07-11T20:00:00+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-07-11/warsh-and-us-inflation-will-set-tone-for-july-fed-decision",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Stocks Priced for ‘Sunshine and Rainbows’ Now Face Earnings Test",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-11T13:00:01+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-11/stocks-priced-for-sunshine-and-rainbows-now-face-earnings-test",
           "tags": [
             "market",
             "us_broad"
@@ -105,14 +107,17 @@
           ]
         },
         {
-          "title": "Fed Vows to Deliver Price Stability in Monetary Policy Report",
-          "source": "Bloomberg Economics",
+          "title": "Treasury Two-Year Yields Rise to Highest Since 2025 as Oil Jumps",
+          "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-07-10T16:08:10+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-10/fed-vows-to-deliver-price-stability-in-monetary-policy-report",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-07-13T01:07:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-13/treasury-two-year-yield-rises-to-highest-since-2025-on-oil-gain",
           "tags": [
+            "commodity",
+            "geopolitical",
             "market",
+            "rates",
             "us_broad"
           ]
         }
@@ -126,17 +131,19 @@
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Options Brokers With Niche Expertise Defy Automation, AI Shift",
-      "topPositiveTitle": "Options Brokers With Niche Expertise Defy Automation, AI Shift",
+      "topNegativeTitle": "AI, Iran War Risks Weigh on Indian IT Firms’ Earnings Outlook",
+      "topPositiveTitle": "AI, Iran War Risks Weigh on Indian IT Firms’ Earnings Outlook",
       "items": [
         {
-          "title": "Options Brokers With Niche Expertise Defy Automation, AI Shift",
+          "title": "AI, Iran War Risks Weigh on Indian IT Firms’ Earnings Outlook",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-12T11:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-12/options-brokers-with-niche-expertise-defy-automation-ai-shift",
+          "publishedAt": "2026-07-10T01:36:26+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-10/indian-it-firms-earnings-face-ai-middle-east-war-risks",
           "tags": [
+            "geopolitical",
+            "macro_risk",
             "market",
             "us_growth"
           ]
@@ -151,17 +158,18 @@
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Funds Fret Over $4.4 Trillion AI Trio’s Grip on Emerging Markets",
-      "topPositiveTitle": "Funds Fret Over $4.4 Trillion AI Trio’s Grip on Emerging Markets",
+      "topNegativeTitle": "Markets Weigh Fresh US Strikes on Iran | The Asia Trade 7/13/2026",
+      "topPositiveTitle": "Markets Weigh Fresh US Strikes on Iran | The Asia Trade 7/13/2026",
       "items": [
         {
-          "title": "Funds Fret Over $4.4 Trillion AI Trio’s Grip on Emerging Markets",
+          "title": "Markets Weigh Fresh US Strikes on Iran | The Asia Trade 7/13/2026",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-12T12:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-12/funds-fret-over-4-4-trillion-ai-trio-s-grip-on-emerging-markets",
+          "publishedAt": "2026-07-13T04:54:22+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-07-13/the-asia-trade-7-13-2026-video",
           "tags": [
+            "geopolitical",
             "global_broad",
             "market"
           ]
@@ -169,16 +177,43 @@
       ]
     },
     "gold": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
+      "avgSentiment": -0.665,
+      "negativeCount": 2,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Gold and Silver Drop as Mideast Strikes Heighten Rate-Hike Risks",
+      "topPositiveTitle": "Fall of Top Graft Hunter Raises Hard Questions for Indonesia",
+      "items": [
+        {
+          "title": "Gold and Silver Drop as Mideast Strikes Heighten Rate-Hike Risks",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-07-12T23:13:35+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-12/gold-declines-as-renewed-us-iran-strikes-raise-rate-hike-bets",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "gold",
+            "market"
+          ]
+        },
+        {
+          "title": "Fall of Top Graft Hunter Raises Hard Questions for Indonesia",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-07-13T03:36:56+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-13/gold-bars-pile-of-us-singapore-dollars-mark-fall-of-top-indonesia-graft-hunter",
+          "tags": [
+            "gold",
+            "market"
+          ]
+        }
+      ]
     },
     "reit": {
       "avgSentiment": 0,
@@ -205,23 +240,23 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.165,
-      "negativeCount": 0,
-      "positiveCount": 2,
+      "avgSentiment": 0.167,
+      "negativeCount": 1,
+      "positiveCount": 1,
       "neutralCount": 2,
       "sourceCount": 2,
       "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "US Iran Talks Face Persistent Impasse",
-      "topPositiveTitle": "Fuel Prices Are Slamming Consumers Even as Crude Crisis Fades",
+      "topNegativeTitle": "El Niño and Iran War Team Up in a Food Squeeze",
+      "topPositiveTitle": "Oil Jumps as Conflict Over Hormuz Escalates With Fresh Strikes",
       "items": [
         {
-          "title": "US Iran Talks Face Persistent Impasse",
+          "title": "El Niño and Iran War Team Up in a Food Squeeze",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-11T15:09:55+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-07-11/us-iran-talks-face-persistent-impasse-video",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-07-13T04:10:57+00:00",
+          "url": "https://www.bloomberg.com/opinion/newsletters/2026-07-13/el-nino-and-iran-war-team-up-in-a-food-squeeze",
           "tags": [
             "geopolitical",
             "macro_risk",
@@ -242,25 +277,26 @@
           ]
         },
         {
-          "title": "Fuel Prices Are Slamming Consumers Even as Crude Crisis Fades",
+          "title": "AI, Iran War Risks Weigh on Indian IT Firms’ Earnings Outlook",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-07-11T13:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-11/fuel-prices-are-slamming-consumers-even-as-crude-crisis-fades",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-10T01:36:26+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-10/indian-it-firms-earnings-face-ai-middle-east-war-risks",
           "tags": [
-            "commodity",
+            "geopolitical",
             "macro_risk",
-            "market"
+            "market",
+            "us_growth"
           ]
         },
         {
-          "title": "China Tells Refiners to Keep Fuel Output High as Iran War Drags",
+          "title": "Oil Jumps as Conflict Over Hormuz Escalates With Fresh Strikes",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-07-11T09:00:20+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-11/china-tells-refiners-to-keep-fuel-output-high-as-iran-war-drags",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-07-12T22:02:12+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-12/latest-oil-market-news-and-analysis-for-july-13",
           "tags": [
             "commodity",
             "geopolitical",
@@ -271,23 +307,23 @@
       ]
     },
     "fx": {
-      "avgSentiment": -0.67,
-      "negativeCount": 1,
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
+      "neutralCount": 1,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "The $360 Billion Market that Medicine Got Wrong for 20 Years",
-      "topPositiveTitle": "The $360 Billion Market that Medicine Got Wrong for 20 Years",
+      "topNegativeTitle": "Global Funds Return to Indian Stocks With $1 Billion in Buying",
+      "topPositiveTitle": "Global Funds Return to Indian Stocks With $1 Billion in Buying",
       "items": [
         {
-          "title": "The $360 Billion Market that Medicine Got Wrong for 20 Years",
+          "title": "Global Funds Return to Indian Stocks With $1 Billion in Buying",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-07-12T14:04:14+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-07-12/why-wall-street-is-betting-on-menopause-video",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-13T05:21:13+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-13/global-funds-return-to-indian-stocks-with-1-billion-in-buying",
           "tags": [
             "fx",
             "market"
@@ -296,28 +332,27 @@
       ]
     },
     "rates": {
-      "avgSentiment": 0.165,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 1,
+      "avgSentiment": 0.333,
+      "negativeCount": 1,
+      "positiveCount": 2,
+      "neutralCount": 0,
       "sourceCount": 2,
-      "itemCount": 2,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Markets Watch Walsh's First Testimony",
-      "topPositiveTitle": "日銀に金融政策方向性“事前に示すことない” 城内成長戦略相",
+      "topNegativeTitle": "China’s Oil Imports May Be Set to Recover as Stockpiling Returns",
+      "topPositiveTitle": "Treasury Two-Year Yields Rise to Highest Since 2025 as Oil Jumps",
       "items": [
         {
-          "title": "Markets Watch Walsh's First Testimony",
+          "title": "China’s Oil Imports May Be Set to Recover as Stockpiling Returns",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-12T14:59:19+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-07-12/markets-watch-walsh-s-first-testimony-video",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-07-13T05:11:35+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-13/china-s-oil-imports-may-be-set-to-recover-as-stockpiling-returns",
           "tags": [
             "commodity",
             "market",
-            "rates",
-            "us_broad"
+            "rates"
           ]
         },
         {
@@ -333,159 +368,176 @@
             "rates"
           ],
           "titleJa": "日銀に金融政策方向性“事前に示すことない” 城内成長戦略相"
-        }
-      ]
-    },
-    "commodity": {
-      "avgSentiment": 0.066,
-      "negativeCount": 1,
-      "positiveCount": 2,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 5,
-      "isStale": false,
-      "topNegativeTitle": "Hormuz Reopening Faces Costly Hurdles",
-      "topPositiveTitle": "Fuel Prices Are Slamming Consumers Even as Crude Crisis Fades",
-      "items": [
+        },
         {
-          "title": "Hormuz Reopening Faces Costly Hurdles",
+          "title": "Treasury Two-Year Yields Rise to Highest Since 2025 as Oil Jumps",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-07-11T13:57:43+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-07-11/hormuz-reopening-faces-costly-hurdles-video",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-07-13T01:07:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-13/treasury-two-year-yield-rises-to-highest-since-2025-on-oil-gain",
           "tags": [
             "commodity",
             "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "Markets Watch Walsh's First Testimony",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-12T14:59:19+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-07-12/markets-watch-walsh-s-first-testimony-video",
-          "tags": [
-            "commodity",
             "market",
             "rates",
             "us_broad"
           ]
+        }
+      ]
+    },
+    "commodity": {
+      "avgSentiment": -0.083,
+      "negativeCount": 4,
+      "positiveCount": 2,
+      "neutralCount": 2,
+      "sourceCount": 2,
+      "itemCount": 8,
+      "isStale": false,
+      "topNegativeTitle": "Gold and Silver Drop as Mideast Strikes Heighten Rate-Hike Risks",
+      "topPositiveTitle": "Treasury Two-Year Yields Rise to Highest Since 2025 as Oil Jumps",
+      "items": [
+        {
+          "title": "Gold and Silver Drop as Mideast Strikes Heighten Rate-Hike Risks",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-07-12T23:13:35+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-12/gold-declines-as-renewed-us-iran-strikes-raise-rate-hike-bets",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "gold",
+            "market"
+          ]
         },
         {
-          "title": "Gasoline Prices Fuel Fresh Acceleration in Russian Inflation",
+          "title": "Stocks Fall With Bonds as Iran Attacks Boost Oil: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-07-12T22:10:28+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-12/oil-climbs-us-futures-dip-on-fresh-iran-strikes-markets-wrap",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "China’s Oil Imports May Be Set to Recover as Stockpiling Returns",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-07-13T05:11:35+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-13/china-s-oil-imports-may-be-set-to-recover-as-stockpiling-returns",
+          "tags": [
+            "commodity",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Base Metals Decline as US, Iran Flare-Up Clouds Demand Outlook",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-07-13T04:31:13+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-13/base-metals-decline-as-us-iran-flare-up-clouds-demand-outlook",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Romanian Inflation Starts to Ease as Oil Still Casts Shadow",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-10T16:16:08+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-10/gasoline-prices-fuel-fresh-acceleration-in-russian-inflation",
+          "publishedAt": "2026-07-13T06:11:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-13/romanian-inflation-starts-to-ease-as-oil-still-casts-shadow",
           "tags": [
             "commodity",
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "Fuel Prices Are Slamming Consumers Even as Crude Crisis Fades",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-07-11T13:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-11/fuel-prices-are-slamming-consumers-even-as-crude-crisis-fades",
-          "tags": [
-            "commodity",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "China Tells Refiners to Keep Fuel Output High as Iran War Drags",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-07-11T09:00:20+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-11/china-tells-refiners-to-keep-fuel-output-high-as-iran-war-drags",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
             "market"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.106,
-      "negativeCount": 1,
-      "positiveCount": 3,
-      "neutralCount": 7,
+      "avgSentiment": -0.021,
+      "negativeCount": 6,
+      "positiveCount": 5,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 11,
+      "itemCount": 15,
       "isStale": false,
-      "topNegativeTitle": "Hormuz Reopening Faces Costly Hurdles",
-      "topPositiveTitle": "Patriot Supply Strains Shape Ukraine Aid",
+      "topNegativeTitle": "Bahoshy: Mideast Venture Funding Plunges in 1H",
+      "topPositiveTitle": "Treasury Two-Year Yields Rise to Highest Since 2025 as Oil Jumps",
       "items": [
         {
-          "title": "Hormuz Reopening Faces Costly Hurdles",
+          "title": "Bahoshy: Mideast Venture Funding Plunges in 1H",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-07-11T13:57:43+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-07-11/hormuz-reopening-faces-costly-hurdles-video",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-07-13T06:20:18+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-07-13/bahoshy-mideast-venture-funding-plunges-in-1h-video",
+          "tags": [
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Gold and Silver Drop as Mideast Strikes Heighten Rate-Hike Risks",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-07-12T23:13:35+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-12/gold-declines-as-renewed-us-iran-strikes-raise-rate-hike-bets",
           "tags": [
             "commodity",
             "geopolitical",
+            "gold",
             "market"
           ]
         },
         {
-          "title": "Fresh Strikes Threaten US Iran Talks",
+          "title": "Stocks Fall With Bonds as Iran Attacks Boost Oil: Markets Wrap",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-12T13:40:18+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-07-12/fresh-strikes-threaten-us-iran-talks-video",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-07-12T22:10:28+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-12/oil-climbs-us-futures-dip-on-fresh-iran-strikes-markets-wrap",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "FTSE 100 Futures, Pound Fall as Iran Tensions Ramp Up",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-07-13T05:45:54+00:00",
+          "url": "https://www.bloomberg.com/news/live-blog/2026-07-13/ftse-100-live-updated-iran-trump-oil-prices-pound-gilts-hormuz-uk-data-what-s-moving-uk-markets-right-now-markets-today-mrisu12x",
           "tags": [
             "geopolitical",
             "market"
           ]
         },
         {
-          "title": "Hormuz Route Open Despite Iran Declaration, Maritime Group Says",
+          "title": "Base Metals Decline as US, Iran Flare-Up Clouds Demand Outlook",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-12T10:02:26+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-12/hormuz-route-open-despite-iran-declaration-maritime-group-says",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-07-13T04:31:13+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-13/base-metals-decline-as-us-iran-flare-up-clouds-demand-outlook",
           "tags": [
+            "commodity",
             "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "US, Iran Trade Wave of Strikes While Disputing Status of Hormuz",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-12T08:06:08+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-12/us-iran-trade-wave-of-attacks-as-tehran-says-hormuz-closed",
-          "tags": [
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "US Iran Talks Face Persistent Impasse",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-11T15:09:55+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-07-11/us-iran-talks-face-persistent-impasse-video",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
             "market"
           ]
         }
@@ -500,7 +552,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 3,
+    "excludedCount": 2,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
