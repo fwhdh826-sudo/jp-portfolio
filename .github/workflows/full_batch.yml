@@ -69,7 +69,11 @@ jobs:
           python-version: '3.11'
 
       - name: Install Python deps
-        run: pip install yfinance pandas numpy feedparser
+        # P5-B004b: data/jpx_universe_provider.py (JPX data_j.xls source
+        # adapter) の依存。このticketではJPX providerをupdate-dataから
+        # 呼び出さない（B004cでpre-screen後に接続予定）が、依存だけ先に
+        # 用意しておく。requests/xlrdはJPX providerのfetch/parseにのみ使う。
+        run: pip install yfinance pandas numpy feedparser requests xlrd
 
       # ── データ更新（各スクリプト独立、失敗しても継続）─────────────────
       - name: Update correlation.json
