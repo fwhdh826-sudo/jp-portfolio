@@ -21,6 +21,11 @@ logs/
 # バックアップ（自動生成）
 data/correlation_backup.json
 
+# P5-B004b-1: JPX universe providerのinternal-only last-good cache。
+# full_batch.ymlの`git add data/ public/data/`が将来cacheを誤commitしないよう
+# 明示的にignoreする（public repoへ配信しない契約、テストで機械的に保護）。
+data/.jpx_cache/
+
 # Claude Code設定（ローカルのみ）
 .claude/
 

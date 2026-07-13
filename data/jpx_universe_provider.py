@@ -74,6 +74,20 @@ MARKET_SEGMENT_PRIME_DOMESTIC = "プライム（内国株式）"
 # 前回正常row_countの何%未満ならsource異常とみなしcache fallbackへ回すか。
 ROW_COUNT_MIN_RATIO = 0.7
 
+# 絶対floor（前回cacheの有無に関わらず常に適用）。2026-07-14実データでは
+# raw row_count=4437・eligible_count=1552。将来の銘柄数増減を過剰に拒否
+# しないよう実データの1/4程度に大きな余裕を持たせつつ、HTMLエラーページの
+# 誤parseやfirst-run（前回cacheなし）でのtruncated sourceをbaselineとして
+# 採用してしまう事態（F7）を防ぐ安全弁として機能する。
+MIN_RAW_ROW_COUNT = 1000
+MIN_ELIGIBLE_COUNT = 300
+
+# 前回last-good cacheのeligible件数（=cacheのitems件数）の何%未満なら
+# eligibility異常（market label drift等）とみなしcache fallbackへ回すか。
+# raw row_countは正常でもeligible_countだけが急減するケース（F1）を検知する
+# ため、raw用のROW_COUNT_MIN_RATIOとは独立に判定する。
+ELIGIBLE_COUNT_MIN_RATIO = 0.7
+
 CACHE_PATH = Path(__file__).parent / ".jpx_cache" / "jpx_universe_cache.json"
 CACHE_SCHEMA_KIND = "jpx_universe_cache_v1"
 
@@ -96,7 +110,15 @@ class JPXSchemaError(RuntimeError):
 
 
 class JPXRowCountGuardError(RuntimeError):
-    """row_countが前回正常値のROW_COUNT_MIN_RATIO未満に急減した。"""
+    """raw row_countが異常（絶対floor未満、または前回正常値の
+    ROW_COUNT_MIN_RATIO未満に急減）。"""
+
+
+class JPXEligibleCountGuardError(RuntimeError):
+    """eligible_countが異常（絶対floor未満、または前回last-good cacheの
+    eligible件数のELIGIBLE_COUNT_MIN_RATIO未満に急減）。raw row_countは
+    正常でもmarket label drift等でeligible側だけが崩壊するケース（F1）を
+    捕捉する。"""
 
 
 # ---------------------------------------------------------------------------
@@ -141,8 +163,15 @@ class JPXUniverseResult(NamedTuple):
 
 def fetch_jpx_xls(url: str = JPX_SOURCE_URL, timeout: int = FETCH_TIMEOUT_SECONDS) -> bytes:
     """JPX公式data_j.xlsをHTTPS取得する。200以外・OLE2/xls以外のシグネチャは
-    JPXFetchErrorとして送出する（呼び出し側でcache/seed fallbackへ回す）。"""
-    import requests
+    JPXFetchErrorとして送出する（呼び出し側でcache/seed fallbackへ回す）。
+
+    requests自体が未導入の環境（ImportError/ModuleNotFoundError）もfetch異常の
+    一種としてJPXFetchErrorへ正規化する。これによりdependency欠如が
+    live → valid cache → seed_list_v1 のfallback chainを突破しない。"""
+    try:
+        import requests
+    except ImportError as e:
+        raise JPXFetchError(f"requests is not installed: {e!r}") from e
 
     try:
         resp = requests.get(url, timeout=timeout)
@@ -239,15 +268,26 @@ def parse_rows_from_sheet(sheet: Any) -> tuple[list[dict[str, Any]], list[dict[s
 
 
 def parse_jpx_xls_bytes(content: bytes) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
-    """OLE2/xls bytesをxlrdでparseし、parse_rows_from_sheet()へ委譲する。"""
-    import xlrd
+    """OLE2/xls bytesをxlrdでparseし、parse_rows_from_sheet()へ委譲する。
+
+    xlrd自体が未導入の環境（ImportError/ModuleNotFoundError）、workbook open
+    失敗、sheet_by_index等のparse adapter失敗は、いずれもJPXParseErrorへ
+    正規化する。これによりdependency欠如を含むparse異常が
+    live → valid cache → seed_list_v1 のfallback chainを突破しない
+    （parse_rows_from_sheet自身が送出するJPXSchemaError/JPXSchemaError系の
+    schema異常はそのまま呼び出し元へ伝播させる——parseは成功したがschemaが
+    不正、という区別を保つため）。"""
+    try:
+        import xlrd
+    except ImportError as e:
+        raise JPXParseError(f"xlrd is not installed: {e!r}") from e
 
     try:
         wb = xlrd.open_workbook(file_contents=content)
+        sheet = wb.sheet_by_index(0)
     except Exception as e:  # noqa: BLE001
         raise JPXParseError(f"xlrd parse failed: {e!r}") from e
 
-    sheet = wb.sheet_by_index(0)
     return parse_rows_from_sheet(sheet)
 
 
@@ -356,13 +396,40 @@ def _parse_iso(raw: Any) -> datetime | None:
         return None
 
 
+def _cache_item_valid(item: Any) -> bool:
+    """cache items内の1要素が(code, name, sector)契約を満たすか。
+
+    list/tupleでlen==3、code/nameは非空str、sectorはstr（空可）であることを
+    要求する。int要素（items=[123]）やstr要素（items=["garbage-item"]）、
+    長さ不一致、code/name欠損はいずれも不正として拒否する。"""
+    if not isinstance(item, (list, tuple)):
+        return False
+    if len(item) != 3:
+        return False
+    code, name, sector = item
+    if not isinstance(code, str) or not code:
+        return False
+    if not isinstance(name, str) or not name:
+        return False
+    if not isinstance(sector, str):
+        return False
+    return True
+
+
 def _cache_payload_valid(payload: Any) -> bool:
-    """cacheファイルがschema上有効か（corruption検出）。"""
+    """cacheファイルがschema上有効か（corruption検出）。
+
+    items自体がlistであることに加え、各要素が_cache_item_valid契約を
+    満たすことまで深層検証する。malformed itemsを持つcacheはload_cache()で
+    Noneとなり、fallback側（_cache_to_result等）が新たな例外源にならない。"""
     if not isinstance(payload, dict):
         return False
     if payload.get("schemaKind") != CACHE_SCHEMA_KIND:
         return False
-    if not isinstance(payload.get("items"), list):
+    items = payload.get("items")
+    if not isinstance(items, list):
+        return False
+    if not all(_cache_item_valid(item) for item in items):
         return False
     if not isinstance(payload.get("row_count"), int):
         return False
@@ -384,8 +451,17 @@ def load_cache(path: Path = CACHE_PATH) -> dict[str, Any] | None:
 
 
 def save_cache(payload: dict[str, Any], path: Path = CACHE_PATH) -> None:
+    """cacheを同一ディレクトリの一時ファイルへ書き切ってからatomic replaceする。
+    書き込み中断・OSError発生時も、置換前の既存last-good cacheは無傷のまま
+    残る（部分書き込みが直接pathへ反映されることはない）。"""
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    tmp_path = path.with_name(path.name + ".tmp")
+    try:
+        tmp_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+        tmp_path.replace(path)
+    except BaseException:
+        tmp_path.unlink(missing_ok=True)
+        raise
 
 
 def _cache_age_hours(cache_payload: dict[str, Any], now: datetime) -> float:
@@ -454,15 +530,23 @@ def get_jpx_universe(
     cache_path: Path = CACHE_PATH,
 ) -> JPXUniverseResult:
     """JPX universe providerの主エントリポイント。failure chain:
-      1. live fetch成功 → validate（OLE2/schema/duplicate/row-count guard）
-         → eligible universe（fallbackUsed=False）
-      2. fetch/parse/schema/duplicate/row-count異常 → valid last-good cache
-         （fallbackUsed=True, cacheAgeHours>=0）
+      1. live fetch成功 → validate（OLE2/schema/duplicate/row-count/
+         eligible-count guard）→ eligible universe（fallbackUsed=False）
+      2. fetch/parse/schema/duplicate/row-count/eligible-count異常
+         → valid last-good cache（fallbackUsed=True, cacheAgeHours>=0）
       3. valid cacheなし → seed_list_v1 fallback
          （fallbackUsed=True, cacheAgeHours=None）
 
     corrupt cacheは使わない。stale状態はcacheAgeHoursで可視化する
-    （fallback時にtimestampを偽装しない）。
+    （fallback時にtimestampを偽装しない）。guard失敗時はsave_cache()に
+    到達しないため、last-good cacheが異常結果で上書きされることはない
+    （first-runでtruncated sourceをbaseline化することも防ぐ）。
+
+    integrity guardは4段階（raw row絶対floor→raw row前回比ratio→
+    eligible絶対floor→eligible前回比ratio）で、raw rowは正常でも
+    market label drift等でeligibleだけ崩壊するケース（F1）と、
+    前回cacheが無いfirst-runでtruncated sourceがbaseline化される
+    ケース（F7）の両方を捕捉する。
 
     fetch_fn/parse_fnはテスト用のdependency injectionポイント
     （fetch_fn: () -> bytes、parse_fn: (bytes) -> (rows, dropped)）。
@@ -481,6 +565,11 @@ def get_jpx_universe(
             raise JPXSchemaError(f"duplicate codes detected: {dupes[:10]}")
 
         row_count = len(rows)
+        if row_count < MIN_RAW_ROW_COUNT:
+            raise JPXRowCountGuardError(
+                f"row_count {row_count} is below absolute floor MIN_RAW_ROW_COUNT="
+                f"{MIN_RAW_ROW_COUNT}"
+            )
         if cache is not None:
             prev_row_count = cache.get("row_count", 0)
             if prev_row_count > 0 and row_count < prev_row_count * ROW_COUNT_MIN_RATIO:
@@ -490,6 +579,21 @@ def get_jpx_universe(
                 )
 
         eligible, segment_counts, filters_applied = apply_eligibility(rows)
+
+        eligible_count = len(eligible)
+        if eligible_count < MIN_ELIGIBLE_COUNT:
+            raise JPXEligibleCountGuardError(
+                f"eligible_count {eligible_count} is below absolute floor "
+                f"MIN_ELIGIBLE_COUNT={MIN_ELIGIBLE_COUNT}"
+            )
+        if cache is not None:
+            prev_eligible_count = len(cache.get("items", []))
+            if prev_eligible_count > 0 and eligible_count < prev_eligible_count * ELIGIBLE_COUNT_MIN_RATIO:
+                raise JPXEligibleCountGuardError(
+                    f"eligible_count {eligible_count} < {ELIGIBLE_COUNT_MIN_RATIO * 100:.0f}% "
+                    f"of previous good eligible_count {prev_eligible_count}"
+                )
+
         source_as_of = _source_as_of_iso(rows)
         items = [(r["code"], r["name"], r["sector"]) for r in eligible]
 
@@ -523,7 +627,13 @@ def get_jpx_universe(
 
         return result
 
-    except (JPXFetchError, JPXParseError, JPXSchemaError, JPXRowCountGuardError) as e:
+    except (
+        JPXFetchError,
+        JPXParseError,
+        JPXSchemaError,
+        JPXRowCountGuardError,
+        JPXEligibleCountGuardError,
+    ) as e:
         print(f"[jpx_universe_provider] live fetch/validate failed: {e!r}", file=sys.stderr)
         if cache is not None:
             print("[jpx_universe_provider] falling back to last-good cache", file=sys.stderr)

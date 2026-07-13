@@ -1,7 +1,8 @@
 """
-P5-B004b: data/jpx_universe_provider.py の回帰テスト。
+P5-B004b-1: data/jpx_universe_provider.py の回帰テスト（P5-B004b-1
+PROVIDER-HARDENINGでcache/dependency/eligibility guard関連を追加）。
 
-確認項目（goal記載の最低16項目 + row-count guard）:
+確認項目（goal記載の最低16項目 + row-count guard + hardening追加分）:
   1. valid xls parse
   2. required columns
   3. code string preservation
@@ -19,9 +20,15 @@ P5-B004b: data/jpx_universe_provider.py の回帰テスト。
   15. personal holdings/trust/cash/account非参照
   16. public/dataへcache非配信
   (+) row count急減guard
+  hardening追加: .jpx_cacheのgit ignore契約 / missing requests・xlrd正規化 /
+  eligible=0・急減guard / first-run truncated保護 / malformed cache items深層reject /
+  1552件相当のguard通過
 """
 import json
+import subprocess
+import sys
 from datetime import datetime, timedelta, timezone
+from pathlib import Path
 
 import pytest
 
@@ -33,16 +40,21 @@ from data.build_candidates_stocks import (
 )
 from data.jpx_universe_provider import (
     CACHE_PATH,
+    ELIGIBLE_COUNT_MIN_RATIO,
     FALLBACK_UNIVERSE_ID,
     MARKET_SEGMENT_PRIME_DOMESTIC,
+    MIN_ELIGIBLE_COUNT,
+    MIN_RAW_ROW_COUNT,
     REQUIRED_COLUMNS,
     UNIVERSE_ID,
+    JPXEligibleCountGuardError,
     JPXFetchError,
     JPXParseError,
     JPXRowCountGuardError,
     JPXSchemaError,
     apply_eligibility,
     detect_duplicate_codes,
+    fetch_jpx_xls,
     get_jpx_universe,
     is_preferred_or_class_share,
     load_cache,
@@ -99,6 +111,13 @@ def _sheet(rows):
     return _FakeSheet(FULL_HEADER, rows)
 
 
+def _bulk_rows(n, market='プライム（内国株式）', start_code=1300):
+    """MIN_RAW_ROW_COUNT/MIN_ELIGIBLE_COUNT絶対floorを満たす件数のrowを
+    合成するためのhelper。get_jpx_universe()をfake fetch/parse経由で通す
+    テストは、floor未満だと(意図せず)fallbackへ落ちてしまうため使う。"""
+    return [_row(code=float(start_code + i), name=f'銘柄{i}', market=market) for i in range(n)]
+
+
 # ---------------------------------------------------------------------------
 # 1. valid xls parse / 3-4. code string preservation, 4桁数字code
 # ---------------------------------------------------------------------------
@@ -123,8 +142,9 @@ class TestValidParse:
     def test_valid_xls_parse_end_to_end_real_file(self):
         # xlrdでOLE2/xls bytesを実際に開けることを確認する統合テスト。
         # 手書きの最小xlsをxlrd APIだけで作るのは非現実的なため、
-        # xlrd自体のOLE2読み込み経路は fetch 統合テスト
-        # (test_get_jpx_universe_live_fetch_smoke, network必須・skip可) で担保する。
+        # xlrd自体のOLE2読み込み経路の実データ検証はP5-B004b-1 dry-run
+        # （2026-07-14実施、handover/memory記録済み・本リポジトリには
+        # 常設テストとして同梱しない、network必須のため）で担保している。
         # ここではparse_jpx_xls_bytesが不正bytesに対し正しくJPXParseErrorを
         # 送出すること（xlrd経路が呼ばれていること）を確認する。
         with pytest.raises(JPXParseError):
@@ -328,7 +348,7 @@ class TestEligibility:
 class TestProvenance:
     def test_result_has_full_provenance_fields(self, tmp_path):
         cache_path = tmp_path / "cache.json"
-        rows = [_row(code=1301.0), _row(code='166A')]
+        rows = _bulk_rows(1200) + [_row(code='166A')]
 
         def fake_fetch():
             return b"irrelevant"
@@ -345,8 +365,8 @@ class TestProvenance:
         assert result.source_identifier == "jpx_data_j_xls"
         assert result.fetched_at == _NOW.isoformat()
         assert result.source_as_of == "2026-06-30"
-        assert result.row_count == 2
-        assert result.eligible_count == 2
+        assert result.row_count == 1201
+        assert result.eligible_count == 1201
         assert result.fallback_used is False
         assert result.cache_age_hours == 0.0
         assert isinstance(result.segment_counts, dict)
@@ -424,7 +444,7 @@ class TestFallbackChain:
 
     def test_live_fetch_success_updates_cache(self, tmp_path):
         cache_path = tmp_path / "cache.json"
-        rows = [_row(code=1301.0)]
+        rows = _bulk_rows(1200)
 
         def fake_fetch():
             return b"irrelevant"
@@ -435,7 +455,7 @@ class TestFallbackChain:
         get_jpx_universe(now=_NOW, fetch_fn=fake_fetch, parse_fn=fake_parse, cache_path=cache_path)
         cached = load_cache(cache_path)
         assert cached is not None
-        assert cached["row_count"] == 1
+        assert cached["row_count"] == 1200
 
 
 # ---------------------------------------------------------------------------
@@ -444,6 +464,8 @@ class TestFallbackChain:
 
 class TestRowCountGuard:
     def test_row_count_below_70_percent_triggers_cache_fallback(self, tmp_path):
+        # baselineを2000にすることで、60%(=1200)がMIN_RAW_ROW_COUNT(1000)の
+        # 絶対floorではなくratio guard自体で弾かれることを検証する。
         cache_path = tmp_path / "cache.json"
         save_cache({
             "schemaKind": "jpx_universe_cache_v1",
@@ -451,12 +473,12 @@ class TestRowCountGuard:
             "items": [["1301", "極洋", "水産・農林業"]],
             "source": "jpx_data_j_xls",
             "fetched_at": (_NOW - timedelta(hours=2)).isoformat(),
-            "row_count": 1000,
+            "row_count": 2000,
             "segment_counts": {},
             "filters_applied": [],
         }, cache_path)
 
-        small_rows = [_row(code=float(i)) for i in range(600)]  # 1000の60% < 70%閾値
+        small_rows = _bulk_rows(1200)  # 2000の60% < 70%閾値（絶対floor1000は超える）
 
         def fake_fetch():
             return b"irrelevant"
@@ -478,12 +500,12 @@ class TestRowCountGuard:
             "items": [["1301", "極洋", "水産・農林業"]],
             "source": "jpx_data_j_xls",
             "fetched_at": (_NOW - timedelta(hours=2)).isoformat(),
-            "row_count": 1000,
+            "row_count": 2000,
             "segment_counts": {},
             "filters_applied": [],
         }, cache_path)
 
-        ok_rows = [_row(code=float(i)) for i in range(800)]  # 1000の80% >= 70%閾値
+        ok_rows = _bulk_rows(1600)  # 2000の80% >= 70%閾値
 
         def fake_fetch():
             return b"irrelevant"
@@ -495,7 +517,7 @@ class TestRowCountGuard:
             now=_NOW, fetch_fn=fake_fetch, parse_fn=fake_parse, cache_path=cache_path
         )
         assert result.fallback_used is False
-        assert result.row_count == 800
+        assert result.row_count == 1600
 
 
 # ---------------------------------------------------------------------------
@@ -563,3 +585,316 @@ class TestCacheNotPublic:
         content = workflow_path.read_text(encoding="utf-8")
         assert "jpx_universe_cache" not in content
         assert "jpx_cache" not in content
+
+
+# ---------------------------------------------------------------------------
+# P5-B004b-1 hardening: F2 — .jpx_cache/の実際のgit ignore契約
+# 単なる文字列testではなく、実repoに対しgit check-ignore / git addを実行し
+# 実際の契約を確認する。
+# ---------------------------------------------------------------------------
+
+class TestCacheGitIgnored:
+    def test_cache_path_is_git_ignored(self):
+        repo_root = Path(__file__).resolve().parent.parent
+        result = subprocess.run(
+            ["git", "check-ignore", "-q", str(CACHE_PATH)],
+            cwd=repo_root,
+        )
+        assert result.returncode == 0
+
+    def test_broad_data_staging_does_not_stage_cache(self):
+        # full_batch.ymlの`git add data/ public/data/`と同じ広いstagingを
+        # --dry-runで再現し、実在するcacheファイルがstageされないことを検証する。
+        repo_root = Path(__file__).resolve().parent.parent
+        cache_dir = repo_root / "data" / ".jpx_cache"
+        cache_dir_existed = cache_dir.exists()
+        probe_path = cache_dir / "jpx_universe_cache.json"
+        probe_existed = probe_path.exists()
+        cache_dir.mkdir(parents=True, exist_ok=True)
+        if not probe_existed:
+            probe_path.write_text("{}", encoding="utf-8")
+        try:
+            result = subprocess.run(
+                ["git", "add", "--dry-run", "data/", "public/data/"],
+                cwd=repo_root,
+                capture_output=True,
+                text=True,
+            )
+            assert ".jpx_cache" not in result.stdout
+        finally:
+            if not probe_existed:
+                probe_path.unlink(missing_ok=True)
+            if not cache_dir_existed:
+                try:
+                    cache_dir.rmdir()
+                except OSError:
+                    pass
+
+
+# ---------------------------------------------------------------------------
+# P5-B004b-1 hardening: F5/T1 — requests/xlrd未導入時の正規化
+# ---------------------------------------------------------------------------
+
+class TestDependencyFailureNormalization:
+    def test_missing_requests_raises_jpx_fetch_error(self, monkeypatch):
+        monkeypatch.setitem(sys.modules, "requests", None)
+        with pytest.raises(JPXFetchError):
+            fetch_jpx_xls()
+
+    def test_missing_xlrd_raises_jpx_parse_error(self, monkeypatch):
+        monkeypatch.setitem(sys.modules, "xlrd", None)
+        with pytest.raises(JPXParseError):
+            parse_jpx_xls_bytes(b"irrelevant")
+
+    def test_missing_requests_flows_into_fallback_chain(self, monkeypatch, tmp_path):
+        # xlrd未導入環境でも(このtestはrequestsのみ欠如させるため)redにならない。
+        monkeypatch.setitem(sys.modules, "requests", None)
+        cache_path = tmp_path / "cache.json"
+        result = get_jpx_universe(now=_NOW, fetch_fn=fetch_jpx_xls, cache_path=cache_path)
+        assert result.fallback_used is True
+        assert result.universe_id == FALLBACK_UNIVERSE_ID
+        assert not cache_path.exists()
+
+    def test_missing_xlrd_flows_into_fallback_chain(self, monkeypatch, tmp_path):
+        # sys.modulesを直接偽装するため、実行環境に実際のxlrdが入っているか
+        # どうかに関わらずこのtestは決定的にpassする（xlrd未導入環境でもred化しない）。
+        monkeypatch.setitem(sys.modules, "xlrd", None)
+        cache_path = tmp_path / "cache.json"
+
+        def fake_fetch():
+            return b"irrelevant"
+
+        result = get_jpx_universe(
+            now=_NOW, fetch_fn=fake_fetch, parse_fn=parse_jpx_xls_bytes, cache_path=cache_path
+        )
+        assert result.fallback_used is True
+        assert result.universe_id == FALLBACK_UNIVERSE_ID
+        assert not cache_path.exists()
+
+
+# ---------------------------------------------------------------------------
+# P5-B004b-1 hardening: F1/F7 — raw/eligible absolute floor・eligible ratio guard
+# ---------------------------------------------------------------------------
+
+class TestEligibilityIntegrityGuard:
+    def test_eligible_zero_with_normal_raw_rows_falls_back_without_cache_pollution(self, tmp_path):
+        cache_path = tmp_path / "cache.json"
+        # raw row countはMIN_RAW_ROW_COUNTを超えるが、market segmentが
+        # ズレておりeligible=0（market label drift相当、F1が捕捉すべき事象）。
+        drifted_rows = _bulk_rows(1200, market='スタンダード（内国株式）')
+
+        def fake_fetch():
+            return b"irrelevant"
+
+        def fake_parse(_content):
+            return parse_rows_from_sheet(_sheet(drifted_rows))
+
+        result = get_jpx_universe(
+            now=_NOW, fetch_fn=fake_fetch, parse_fn=fake_parse, cache_path=cache_path
+        )
+        assert result.fallback_used is True
+        assert result.universe_id == FALLBACK_UNIVERSE_ID
+        assert load_cache(cache_path) is None  # cache非汚染（生成もされない）
+        assert not cache_path.exists()
+
+    def test_eligible_extreme_drop_falls_back_without_overwriting_last_good_cache(self, tmp_path):
+        cache_path = tmp_path / "cache.json"
+        previous_items = [[str(2000 + i), f'既存銘柄{i}', 'sector'] for i in range(1000)]
+        save_cache({
+            "schemaKind": "jpx_universe_cache_v1",
+            "universe_id": UNIVERSE_ID,
+            "items": previous_items,
+            "source": "jpx_data_j_xls",
+            "fetched_at": (_NOW - timedelta(hours=3)).isoformat(),
+            "row_count": 1000,
+            "segment_counts": {},
+            "filters_applied": [],
+        }, cache_path)
+        before = cache_path.read_text(encoding="utf-8")
+
+        # raw row_countは絶対floor・前回比ratioとも正常だが、eligibleだけ
+        # 前回1000件の70%(700件)を大きく下回る500件に急減する。
+        eligible_rows = _bulk_rows(500, market='プライム（内国株式）', start_code=1300)
+        excluded_rows = _bulk_rows(700, market='スタンダード（内国株式）', start_code=9000)
+
+        def fake_fetch():
+            return b"irrelevant"
+
+        def fake_parse(_content):
+            return parse_rows_from_sheet(_sheet(eligible_rows + excluded_rows))
+
+        result = get_jpx_universe(
+            now=_NOW, fetch_fn=fake_fetch, parse_fn=fake_parse, cache_path=cache_path
+        )
+        assert result.fallback_used is True
+        assert result.universe_id == UNIVERSE_ID  # last-good cacheのuniverse_id
+        assert len(result.items) == 1000  # last-good cacheの中身がそのまま返る
+        assert cache_path.read_text(encoding="utf-8") == before  # cache非汚染
+
+    def test_first_run_truncated_raw_source_falls_back_to_seed_without_creating_cache(self, tmp_path):
+        cache_path = tmp_path / "cache.json"
+        assert not cache_path.exists()
+
+        truncated_rows = _bulk_rows(10)  # MIN_RAW_ROW_COUNT(1000)を大きく下回る
+
+        def fake_fetch():
+            return b"irrelevant"
+
+        def fake_parse(_content):
+            return parse_rows_from_sheet(_sheet(truncated_rows))
+
+        result = get_jpx_universe(
+            now=_NOW, fetch_fn=fake_fetch, parse_fn=fake_parse, cache_path=cache_path
+        )
+        assert result.fallback_used is True
+        assert result.universe_id == FALLBACK_UNIVERSE_ID
+        assert len(result.items) == len(SEED_LIST)
+        assert not cache_path.exists()  # cache非生成
+
+    def test_guard_constants_are_well_below_real_2026_07_14_contract(self):
+        # 2026-07-14実データ: raw row_count=4437, eligible_count=1552。
+        # floorはこれを過剰に拒否しないよう十分小さい値であること。
+        assert MIN_RAW_ROW_COUNT < 4437
+        assert MIN_ELIGIBLE_COUNT < 1552
+        assert 0 < ELIGIBLE_COUNT_MIN_RATIO < 1
+
+
+# ---------------------------------------------------------------------------
+# P5-B004b-1 hardening: F3 — malformed cache itemsの深層reject
+# ---------------------------------------------------------------------------
+
+class TestMalformedCacheItemsRejected:
+    def _base_payload(self, items):
+        return {
+            "schemaKind": "jpx_universe_cache_v1",
+            "universe_id": UNIVERSE_ID,
+            "items": items,
+            "source": "jpx_data_j_xls",
+            "fetched_at": _NOW.isoformat(),
+            "row_count": len(items),
+            "segment_counts": {},
+            "filters_applied": [],
+        }
+
+    def test_int_item_rejected(self, tmp_path):
+        cache_path = tmp_path / "cache.json"
+        save_cache(self._base_payload([123]), cache_path)
+        assert load_cache(cache_path) is None
+
+    def test_string_item_rejected(self, tmp_path):
+        cache_path = tmp_path / "cache.json"
+        save_cache(self._base_payload(["garbage-item"]), cache_path)
+        assert load_cache(cache_path) is None
+
+    def test_wrong_length_item_rejected(self, tmp_path):
+        cache_path = tmp_path / "cache.json"
+        save_cache(self._base_payload([["1301", "極洋"]]), cache_path)
+        assert load_cache(cache_path) is None
+
+    def test_empty_code_rejected(self, tmp_path):
+        cache_path = tmp_path / "cache.json"
+        save_cache(self._base_payload([["", "極洋", "sector"]]), cache_path)
+        assert load_cache(cache_path) is None
+
+    def test_empty_name_rejected(self, tmp_path):
+        cache_path = tmp_path / "cache.json"
+        save_cache(self._base_payload([["1301", "", "sector"]]), cache_path)
+        assert load_cache(cache_path) is None
+
+    def test_non_string_sector_rejected(self, tmp_path):
+        cache_path = tmp_path / "cache.json"
+        save_cache(self._base_payload([["1301", "極洋", 123]]), cache_path)
+        assert load_cache(cache_path) is None
+
+    def test_valid_items_still_accepted(self, tmp_path):
+        cache_path = tmp_path / "cache.json"
+        save_cache(
+            self._base_payload([["1301", "極洋", "水産・農林業"], ["166A", "タスキHD", ""]]),
+            cache_path,
+        )
+        assert load_cache(cache_path) is not None
+
+    def test_malformed_cache_falls_back_to_seed_without_crashing(self, tmp_path):
+        # F3: malformed cacheはload_cache()でNoneとなり、fallback自身が
+        # tuple(123)のTypeErrorやgarbage tuple化のような新たな例外源にならない。
+        cache_path = tmp_path / "cache.json"
+        save_cache(self._base_payload([123]), cache_path)
+
+        def failing_fetch():
+            raise JPXFetchError("boom")
+
+        result = get_jpx_universe(now=_NOW, fetch_fn=failing_fetch, cache_path=cache_path)
+        assert result.fallback_used is True
+        assert result.universe_id == FALLBACK_UNIVERSE_ID  # malformed cacheは使えずseedへ
+
+
+# ---------------------------------------------------------------------------
+# P5-B004b-1 hardening: 2026-07-14実データ相当（eligible=1552）が
+# guardに拒否されないことをget_jpx_universe経由で確認
+# ---------------------------------------------------------------------------
+
+class TestRealisticScaleGuardPassthrough:
+    def test_jpx_scale_1552_eligible_passes_all_guards(self, tmp_path):
+        cache_path = tmp_path / "cache.json"
+        rows = []
+        for i in range(1552):
+            rows.append(_row(code=float(1300 + i), name=f'銘柄{i}', market='プライム（内国株式）'))
+        preferred_codes = [25935.0, 50765.0, 75505.0, 92015.0, 92025.0, 94345.0, 94346.0]
+        for c in preferred_codes:
+            rows.append(_row(code=c, name='優先株式', market='プライム（内国株式）'))
+        for i in range(1563):
+            rows.append(_row(code=float(30000 + i), name=f'standard{i}', market='スタンダード（内国株式）'))
+
+        def fake_fetch():
+            return b"irrelevant"
+
+        def fake_parse(_content):
+            return parse_rows_from_sheet(_sheet(rows))
+
+        result = get_jpx_universe(
+            now=_NOW, fetch_fn=fake_fetch, parse_fn=fake_parse, cache_path=cache_path
+        )
+        assert result.fallback_used is False
+        assert result.eligible_count == 1552
+        assert result.row_count == len(rows)
+        cached = load_cache(cache_path)
+        assert cached is not None
+        assert len(cached["items"]) == 1552
+
+
+# ---------------------------------------------------------------------------
+# P5-B004b-1 hardening: F10 — atomic cache write
+# ---------------------------------------------------------------------------
+
+class TestAtomicCacheWrite:
+    def test_save_cache_leaves_no_temp_file_on_success(self, tmp_path):
+        cache_path = tmp_path / "cache.json"
+        save_cache(
+            {"schemaKind": "jpx_universe_cache_v1", "items": [], "row_count": 0,
+             "fetched_at": _NOW.isoformat()},
+            cache_path,
+        )
+        assert cache_path.exists()
+        assert not (tmp_path / "cache.json.tmp").exists()
+
+    def test_save_cache_preserves_existing_file_on_serialization_failure(self, tmp_path):
+        cache_path = tmp_path / "cache.json"
+        save_cache(
+            {"schemaKind": "jpx_universe_cache_v1", "items": [], "row_count": 1,
+             "fetched_at": _NOW.isoformat()},
+            cache_path,
+        )
+        original = cache_path.read_text(encoding="utf-8")
+
+        class _Unserializable:
+            pass
+
+        with pytest.raises(TypeError):
+            save_cache(
+                {"schemaKind": "jpx_universe_cache_v1", "items": [], "row_count": 2,
+                 "fetched_at": _NOW.isoformat(), "bad": _Unserializable()},
+                cache_path,
+            )
+
+        assert cache_path.read_text(encoding="utf-8") == original
+        assert not (tmp_path / "cache.json.tmp").exists()
