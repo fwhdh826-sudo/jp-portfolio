@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-07-14T07:25:26.654839+09:00",
-  "sourceUpdatedAt": "2026-07-13T22:10:10+00:00",
+  "updatedAt": "2026-07-14T09:13:53.657478+09:00",
+  "sourceUpdatedAt": "2026-07-14T00:00:00+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -44,28 +44,26 @@
       "items": []
     },
     "us_broad": {
-      "avgSentiment": 0.018,
+      "avgSentiment": -0.02,
       "negativeCount": 2,
-      "positiveCount": 3,
-      "neutralCount": 6,
+      "positiveCount": 2,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 11,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "Gold Slumps as US-Iran Strikes, Fed’s Waller Fuel Rate Hike Bets",
+      "topNegativeTitle": "Gold Holds Decline on Renewed Hormuz Blockade and Hawkish Fed",
       "topPositiveTitle": "First Public Fusion Firm Jumps in Wall Street Trading Debut",
       "items": [
         {
-          "title": "Gold Slumps as US-Iran Strikes, Fed’s Waller Fuel Rate Hike Bets",
+          "title": "Gold Holds Decline on Renewed Hormuz Blockade and Hawkish Fed",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-07-12T23:13:35+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-12/gold-declines-as-renewed-us-iran-strikes-raise-rate-hike-bets",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-07-13T23:49:07+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-13/gold-holds-decline-on-renewed-hormuz-blockade-and-hawkish-fed",
           "tags": [
-            "geopolitical",
             "gold",
             "market",
-            "rates",
             "us_broad"
           ]
         },
@@ -149,28 +147,26 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": -0.423,
+      "avgSentiment": -0.313,
       "negativeCount": 2,
       "positiveCount": 1,
       "neutralCount": 0,
       "sourceCount": 1,
       "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Gold Slumps as US-Iran Strikes, Fed’s Waller Fuel Rate Hike Bets",
+      "topNegativeTitle": "Gold Holds Decline on Renewed Hormuz Blockade and Hawkish Fed",
       "topPositiveTitle": "Gold Miners Cadillac, Amapa Minerals Add to Canada IPO Rebound",
       "items": [
         {
-          "title": "Gold Slumps as US-Iran Strikes, Fed’s Waller Fuel Rate Hike Bets",
+          "title": "Gold Holds Decline on Renewed Hormuz Blockade and Hawkish Fed",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-07-12T23:13:35+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-12/gold-declines-as-renewed-us-iran-strikes-raise-rate-hike-bets",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-07-13T23:49:07+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-13/gold-holds-decline-on-renewed-hormuz-blockade-and-hawkish-fed",
           "tags": [
-            "geopolitical",
             "gold",
             "market",
-            "rates",
             "us_broad"
           ]
         },
@@ -241,15 +237,15 @@
       ]
     },
     "macro_risk": {
-      "avgSentiment": -0.557,
+      "avgSentiment": -0.417,
       "negativeCount": 2,
       "positiveCount": 0,
-      "neutralCount": 1,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 4,
       "isStale": false,
       "topNegativeTitle": "SK Hynix ADRs Tumble in Second Trading Day After Korea Selloff",
-      "topPositiveTitle": "Why Global Economy’s Resilience May Rise With Diminished Dollar Dominance",
+      "topPositiveTitle": "New Zealand Business Confidence Recovered as Iran War Subsided",
       "items": [
         {
           "title": "SK Hynix ADRs Tumble in Second Trading Day After Korea Selloff",
@@ -270,6 +266,19 @@
           "sentimentScore": -0.67,
           "publishedAt": "2026-07-13T06:30:00+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-07-13/euro-area-outlook-cut-by-economists-as-iran-war-weighs-on-region",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "New Zealand Business Confidence Recovered as Iran War Subsided",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-13T22:16:59+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-13/new-zealand-business-confidence-recovered-as-iran-war-subsided",
           "tags": [
             "geopolitical",
             "macro_risk",
@@ -332,31 +341,16 @@
       ]
     },
     "rates": {
-      "avgSentiment": -0.386,
-      "negativeCount": 3,
+      "avgSentiment": -0.31,
+      "negativeCount": 2,
       "positiveCount": 0,
-      "neutralCount": 2,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Gold Slumps as US-Iran Strikes, Fed’s Waller Fuel Rate Hike Bets",
+      "topNegativeTitle": "Gold Drops Below $4,000 as Fed Rate Hike Bets Surge",
       "topPositiveTitle": "Ethiopian Central Bank Raises Rates for First Time in Two Years",
       "items": [
-        {
-          "title": "Gold Slumps as US-Iran Strikes, Fed’s Waller Fuel Rate Hike Bets",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-07-12T23:13:35+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-12/gold-declines-as-renewed-us-iran-strikes-raise-rate-hike-bets",
-          "tags": [
-            "geopolitical",
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
         {
           "title": "Gold Drops Below $4,000 as Fed Rate Hike Bets Surge",
           "source": "Bloomberg Markets",
@@ -396,33 +390,19 @@
             "market",
             "rates"
           ]
-        },
-        {
-          "title": "Traders See 50% Chance That Warsh Fed Hikes Rates This Month",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-13T01:07:16+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-13/treasury-two-year-yield-rises-to-highest-since-2025-on-oil-gain",
-          "tags": [
-            "commodity",
-            "market",
-            "rates",
-            "us_broad"
-          ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.171,
+      "avgSentiment": 0.029,
       "negativeCount": 1,
-      "positiveCount": 3,
+      "positiveCount": 1,
       "neutralCount": 5,
       "sourceCount": 2,
-      "itemCount": 9,
+      "itemCount": 7,
       "isStale": false,
       "topNegativeTitle": "Gold Drops Below $4,000 as Fed Rate Hike Bets Surge",
-      "topPositiveTitle": "Oil Surges as Trump Says US Wants 20% Charge for Hormuz Flows",
+      "topPositiveTitle": "Oil Extends Surge as Trump Reinstates Blockade on Iranian Ships",
       "items": [
         {
           "title": "Gold Drops Below $4,000 as Fed Rate Hike Bets Surge",
@@ -454,6 +434,31 @@
           ]
         },
         {
+          "title": "UK Industry Tells PM to Move Energy Levies to General Taxation",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-13T23:00:01+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-13/uk-industry-tells-pm-to-move-energy-levies-to-general-taxation",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "Crude Oil Extends Advance, Asian Stocks Decline: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-13T22:05:56+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-13/oil-holds-gains-as-iran-stokes-inflation-worries-markets-wrap",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
           "title": "Argentina IPO Pipeline Grows as YPF Power Unit Files For US Listing",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
@@ -464,61 +469,20 @@
             "commodity",
             "market"
           ]
-        },
-        {
-          "title": "Romanian Inflation Starts to Ease as Oil Still Casts Shadow",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-13T06:11:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-13/romanian-inflation-starts-to-ease-as-oil-still-casts-shadow",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "Traders See 50% Chance That Warsh Fed Hikes Rates This Month",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-13T01:07:16+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-13/treasury-two-year-yield-rises-to-highest-since-2025-on-oil-gain",
-          "tags": [
-            "commodity",
-            "market",
-            "rates",
-            "us_broad"
-          ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": -0.133,
-      "negativeCount": 3,
-      "positiveCount": 2,
-      "neutralCount": 4,
+      "avgSentiment": -0.097,
+      "negativeCount": 2,
+      "positiveCount": 1,
+      "neutralCount": 6,
       "sourceCount": 2,
       "itemCount": 9,
       "isStale": false,
-      "topNegativeTitle": "Gold Slumps as US-Iran Strikes, Fed’s Waller Fuel Rate Hike Bets",
-      "topPositiveTitle": "Oil Holds Gains as Iran Stokes Inflation Worries: Markets Wrap",
+      "topNegativeTitle": "Euro-Area Outlook Cut by Economists as Iran War Weighs on Region",
+      "topPositiveTitle": "US, Iran Trade Wave of Attacks",
       "items": [
-        {
-          "title": "Gold Slumps as US-Iran Strikes, Fed’s Waller Fuel Rate Hike Bets",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-07-12T23:13:35+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-12/gold-declines-as-renewed-us-iran-strikes-raise-rate-hike-bets",
-          "tags": [
-            "geopolitical",
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
         {
           "title": "Euro-Area Outlook Cut by Economists as Iran War Weighs on Region",
           "source": "Bloomberg Economics",
@@ -559,14 +523,27 @@
           ]
         },
         {
-          "title": "Trump Restarts Iran Blockade as US Plans 20% Hormuz Charge",
-          "source": "Bloomberg Markets",
+          "title": "Singapore’s Economic Growth Slows to 5.7% in Second Quarter",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-13T14:25:52+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-13/trump-says-us-will-be-reimbursed-20-rate-for-hormuz-traffic",
+          "publishedAt": "2026-07-14T00:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-14/singapore-s-economic-growth-slows-to-5-7-in-second-quarter",
           "tags": [
             "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "New Zealand Business Confidence Recovered as Iran War Subsided",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-13T22:16:59+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-13/new-zealand-business-confidence-recovered-as-iran-war-subsided",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
             "market"
           ]
         }
