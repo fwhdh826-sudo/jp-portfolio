@@ -43890,6 +43890,37 @@ AssetSnapshotMini → AllocationGapStrip → 今日のアクション[TodoCard/R
 - pseudo dataは追加していない。internal cacheは既存の`.gitignore`対象。
 - GitHub Actionsの実runは、commit/push未実施のため未確認。
 
+### P5-B004e-4 actual Actions完了とmain pre-integration（最新記録）
+
+- 2026-07-15、branch `v13.3-dev`で実施。上記の「GitHub Actionsの実runは
+  未確認」は2026-07-14時点の履歴であり、以下のactual実績で上書きする。
+- actual GitHub Actions run **29348292542**はsuccess。Operation Health Gate、
+  JPX whole-market candidates build、current-run token、production E2E gate、
+  SAFE_MODE/TierA、branch-aware Commit and pushがすべてsuccessした。
+- 同runはwhole-market 200件、200/200 enrichment、
+  `pipelineContract=jpx_whole_market_candidates_v1`、`pipelinePath=normal`を持つ
+  data commit `5eced8c`を`v13.3-dev`へ生成した。
+- main integration前処理として、開始時HEAD `5eced8c`の`v13.3-dev`へ
+  `origin/main`（`a1e7d6b`）を`git merge --no-commit origin/main`で取り込んだ。
+  rebase / cherry-pick / branch切替、main直接変更、commit / pushは実施していない。
+- 3-way競合はdata artifact 12件のみ。merge indexでoursが現在の
+  `v13.3-dev`、theirsが`origin/main`であることを全12件のblobで確認し、
+  data/public整合と同一run生成連鎖を守るため、12件すべてを`5eced8c`の
+  dev側full-batch snapshot単位で採用した。hunk単位のmain/dev混在はない。
+- `data/candidates_stocks.json` / `public/data/candidates_stocks.json`は競合せず、
+  dev側whole-market production contractを維持する。
+- main-onlyの`public/data/market_intel.json`、`public/data/returns.json`、
+  `public/data/scoring/stock_scores_6axis.json`はmerge結果として保持する。
+- 競合解決後の12 artifactはpre-integration用の暫定統合snapshotである。
+  local統合検証後にcommitして`v13.3-dev`へpushし、actual `full_batch`を
+  再実行して統合済みdevから新しい同一run整合snapshotを生成する必要がある。
+- 統合後local実測は、B004 6ファイル群 **368 passed**、
+  `tests/test_full_batch_workflow.py` **47 passed**、workflow 3ファイル群
+  **88 passed**、frontend unit **723 passed / 40 files**、
+  `npx tsc --noEmit` exit 0、build success（121 modules transformed）、
+  workflow YAML 4ファイルparse success。500 kB超chunk warningは既知の
+  non-blocking warningである。
+
 ## T0-CC-4: T0 Home Card shell / section構造刷新（ロジック変更なし、CSS+見出し構造のみ）
 
 ### 実施日
