@@ -1,12 +1,17 @@
-"""P4-A23 / P4-A23-1 / P4-A23-2 / P4-A28: full_batch.yml integration guard.
+"""P4-A23 / P4-A23-1 / P4-A23-2 / P4-A28 / P5-B004e-3 guard.
 
 P4-A23: dry-run health-check steps are retained in routines-stub (detection-only).
 P4-A23-1: Job 2 commit/push step follows correct order (add → commit → pull → push).
 P4-A23-2: git add covers full data/ directory, not individual files.
 P4-A28: real write steps for safe_mode.json and TierA snapshots are wired in Job 2
         (update-data), covered by the existing "git add data/ public/data/" commit step.
+P5-B004e-3: pull/rebase and push target the validated workflow branch, fail-closed.
 """
+import os
 from pathlib import Path
+import subprocess
+
+import pytest
 
 _WORKFLOW = Path(__file__).parents[1] / ".github" / "workflows" / "full_batch.yml"
 _TEXT = _WORKFLOW.read_text()
@@ -37,26 +42,49 @@ def test_no_upload_artifact_added():
 
 # ── P4-A23-1: Job 2 commit/push order guards ─────────────────────────────────
 
-def test_git_pull_rebase_uses_explicit_remote():
-    assert "git pull --rebase origin main" in _TEXT
+def test_git_pull_rebase_uses_explicit_remote_and_target_branch():
+    assert 'git pull --rebase origin "$target_ref"' in _TEXT
+
+
+def test_git_pull_rebase_does_not_hardcode_main():
+    assert "git pull --rebase origin main" not in _TEXT
 
 
 def test_git_add_before_pull_rebase():
     add_pos = _TEXT.index("git add data/")
-    rebase_pos = _TEXT.index("git pull --rebase origin main")
+    rebase_pos = _TEXT.index('git pull --rebase origin "$target_ref"')
     assert add_pos < rebase_pos, "git add must come before git pull --rebase"
 
 
 def test_git_commit_before_pull_rebase():
     commit_pos = _TEXT.index("git diff --staged --quiet || git commit")
-    rebase_pos = _TEXT.index("git pull --rebase origin main")
+    rebase_pos = _TEXT.index('git pull --rebase origin "$target_ref"')
     assert commit_pos < rebase_pos, "git commit must come before git pull --rebase"
 
 
 def test_git_push_after_pull_rebase():
-    rebase_pos = _TEXT.index("git pull --rebase origin main")
+    rebase_pos = _TEXT.index('git pull --rebase origin "$target_ref"')
     push_pos = _TEXT.index("git push", rebase_pos)
     assert push_pos > rebase_pos, "git push must come after git pull --rebase"
+
+
+def test_git_push_uses_explicit_matching_target_refspec():
+    assert 'git push origin "HEAD:$target_ref"' in _TEXT
+
+
+def test_target_branch_comes_from_actions_runtime_environment():
+    assert 'target_branch="${GITHUB_REF_NAME:?' in _TEXT
+    assert "${{ github.ref_name }}" not in _update_data_section()
+
+
+def test_commit_push_requires_branch_ref_and_matching_checkout():
+    update_data_section = _update_data_section()
+    assert 'target_ref_type="${GITHUB_REF_TYPE:?' in update_data_section
+    assert '[ "$target_ref_type" != "branch" ]' in update_data_section
+    assert '[ "$target_ref" != "refs/heads/$target_branch" ]' in update_data_section
+    assert "git check-ref-format --branch \"$target_branch\"" in update_data_section
+    assert "git symbolic-ref --quiet --short HEAD" in update_data_section
+    assert '[ "$checked_out_branch" != "$target_branch" ]' in update_data_section
 
 
 def test_no_git_add_all():
@@ -99,6 +127,147 @@ def _update_data_section() -> str:
     (once in a section comment header, once as the job's name: field).
     """
     return _TEXT.split("  update-data:")[1].split("  routines-stub:")[0]
+
+
+def _commit_and_push_script() -> str:
+    """Return the exact shell body used by the Commit and push step."""
+    step = _update_data_section().split("      - name: Commit and push\n", 1)[1]
+    body = step.split("        run: |\n", 1)[1]
+    lines = []
+    for line in body.splitlines():
+        if line.startswith("          "):
+            lines.append(line[10:])
+        elif not line.strip():
+            lines.append("")
+        else:
+            break
+    return "\n".join(lines) + "\n"
+
+
+def _git(cwd: Path, *args: str, check: bool = True) -> subprocess.CompletedProcess:
+    return subprocess.run(
+        ["git", *args],
+        cwd=cwd,
+        check=check,
+        text=True,
+        capture_output=True,
+    )
+
+
+def _make_remote_with_release_branches(tmp_path: Path) -> Path:
+    remote = tmp_path / "remote.git"
+    seed = tmp_path / "seed"
+    _git(tmp_path, "init", "--bare", "-b", "main", str(remote))
+    _git(tmp_path, "init", "-b", "main", str(seed))
+    _git(seed, "config", "user.name", "Test User")
+    _git(seed, "config", "user.email", "test@example.com")
+    (seed / "data").mkdir()
+    (seed / "public" / "data").mkdir(parents=True)
+    (seed / "data" / "base.json").write_text("{}\n")
+    (seed / "public" / "data" / "base.json").write_text("{}\n")
+    _git(seed, "add", "data/", "public/data/")
+    _git(seed, "commit", "-m", "seed")
+    _git(seed, "remote", "add", "origin", str(remote))
+    _git(seed, "push", "-u", "origin", "main")
+    _git(seed, "branch", "v13.3-dev")
+    _git(seed, "push", "origin", "v13.3-dev")
+    return remote
+
+
+def _clone_branch(remote: Path, destination: Path, branch: str) -> None:
+    _git(destination.parent, "clone", "--branch", branch, str(remote), str(destination))
+
+
+def _run_commit_push(worktree: Path, branch: str) -> subprocess.CompletedProcess:
+    env = os.environ.copy()
+    env.update(
+        GITHUB_REF_NAME=branch,
+        GITHUB_REF=f"refs/heads/{branch}",
+        GITHUB_REF_TYPE="branch",
+    )
+    return subprocess.run(
+        ["bash", "-c", _commit_and_push_script()],
+        cwd=worktree,
+        env=env,
+        text=True,
+        capture_output=True,
+    )
+
+
+@pytest.mark.parametrize("branch", ["main", "v13.3-dev"])
+def test_commit_push_targets_current_execution_branch(tmp_path, branch):
+    remote = _make_remote_with_release_branches(tmp_path)
+    worktree = tmp_path / "worktree"
+    other_branch = "v13.3-dev" if branch == "main" else "main"
+    other_before = _git(remote, "rev-parse", f"refs/heads/{other_branch}").stdout.strip()
+    _clone_branch(remote, worktree, branch)
+    (worktree / "data" / "generated.json").write_text(f'{{"branch":"{branch}"}}\n')
+
+    result = _run_commit_push(worktree, branch)
+
+    assert result.returncode == 0, result.stderr
+    assert branch in _git(
+        remote, "show", f"refs/heads/{branch}:data/generated.json"
+    ).stdout
+    assert _git(remote, "rev-parse", f"refs/heads/{other_branch}").stdout.strip() == other_before
+
+
+def test_commit_push_rebases_onto_stale_remote_update(tmp_path):
+    remote = _make_remote_with_release_branches(tmp_path)
+    worktree = tmp_path / "worktree"
+    updater = tmp_path / "updater"
+    _clone_branch(remote, worktree, "v13.3-dev")
+    _clone_branch(remote, updater, "v13.3-dev")
+    _git(updater, "config", "user.name", "Remote Updater")
+    _git(updater, "config", "user.email", "updater@example.com")
+    (updater / "data" / "remote.json").write_text('{"remote":true}\n')
+    _git(updater, "add", "data/remote.json")
+    _git(updater, "commit", "-m", "concurrent remote update")
+    _git(updater, "push", "origin", "v13.3-dev")
+    remote_update = _git(remote, "rev-parse", "refs/heads/v13.3-dev").stdout.strip()
+    (worktree / "data" / "generated.json").write_text('{"local":true}\n')
+
+    result = _run_commit_push(worktree, "v13.3-dev")
+
+    assert result.returncode == 0, result.stderr
+    assert _git(remote, "show", "refs/heads/v13.3-dev:data/remote.json").stdout
+    assert _git(remote, "show", "refs/heads/v13.3-dev:data/generated.json").stdout
+    assert _git(remote, "rev-parse", "refs/heads/v13.3-dev^").stdout.strip() == remote_update
+
+
+@pytest.mark.parametrize(
+    ("ref_name", "ref", "ref_type", "detach"),
+    [
+        ("v1.0.0", "refs/tags/v1.0.0", "tag", False),
+        ("main", "refs/heads/main", "branch", True),
+        ("v13.3-dev", "refs/heads/v13.3-dev", "branch", False),
+    ],
+)
+def test_commit_push_fails_closed_for_unexpected_ref_or_checkout(
+    tmp_path, ref_name, ref, ref_type, detach
+):
+    remote = _make_remote_with_release_branches(tmp_path)
+    worktree = tmp_path / "worktree"
+    _clone_branch(remote, worktree, "main")
+    if detach:
+        _git(worktree, "checkout", "--detach")
+    main_before = _git(remote, "rev-parse", "refs/heads/main").stdout.strip()
+    dev_before = _git(remote, "rev-parse", "refs/heads/v13.3-dev").stdout.strip()
+    (worktree / "data" / "generated.json").write_text('{"must_not_push":true}\n')
+    env = os.environ.copy()
+    env.update(GITHUB_REF_NAME=ref_name, GITHUB_REF=ref, GITHUB_REF_TYPE=ref_type)
+
+    result = subprocess.run(
+        ["bash", "-c", _commit_and_push_script()],
+        cwd=worktree,
+        env=env,
+        text=True,
+        capture_output=True,
+    )
+
+    assert result.returncode != 0
+    assert _git(remote, "rev-parse", "refs/heads/main").stdout.strip() == main_before
+    assert _git(remote, "rev-parse", "refs/heads/v13.3-dev").stdout.strip() == dev_before
 
 
 def test_update_safe_mode_script_in_update_data_job():

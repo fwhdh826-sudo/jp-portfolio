@@ -262,12 +262,39 @@ jobs:
       # ── git push ──────────────────────────────────────────────────────
       - name: Commit and push
         run: |
+          set -euo pipefail
+
+          target_branch="${GITHUB_REF_NAME:?GITHUB_REF_NAME is required}"
+          target_ref="${GITHUB_REF:?GITHUB_REF is required}"
+          target_ref_type="${GITHUB_REF_TYPE:?GITHUB_REF_TYPE is required}"
+
+          if [ "$target_ref_type" != "branch" ]; then
+            echo "::error::Refusing data push for non-branch ref: $target_ref" >&2
+            exit 1
+          fi
+          if [ "$target_ref" != "refs/heads/$target_branch" ]; then
+            echo "::error::Ref name does not match branch ref: $target_ref" >&2
+            exit 1
+          fi
+          if ! git check-ref-format --branch "$target_branch" >/dev/null 2>&1; then
+            echo "::error::Invalid target branch name" >&2
+            exit 1
+          fi
+          if ! checked_out_branch="$(git symbolic-ref --quiet --short HEAD)"; then
+            echo "::error::Refusing data push from detached HEAD" >&2
+            exit 1
+          fi
+          if [ "$checked_out_branch" != "$target_branch" ]; then
+            echo "::error::Checked-out branch does not match workflow ref" >&2
+            exit 1
+          fi
+
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data/ public/data/
           git diff --staged --quiet || git commit -m "chore: full-batch data update $(date +'%Y-%m-%d %H:%M JST')"
-          git pull --rebase origin main
-          git push
+          git pull --rebase origin "$target_ref"
+          git push origin "HEAD:$target_ref"
 
   # ── Job 3: Routines (stub) ────────────────────────────────────────────────
   # STUB: Card 2-5 (R1-R3) / Card 2-6 (R4-R6) / Card 2-7 (R7-R10) で実装予定
