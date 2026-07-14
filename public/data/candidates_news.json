@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-07-15T02:10:23.329005+09:00",
-  "sourceUpdatedAt": "2026-07-14T16:43:23+00:00",
+  "updatedAt": "2026-07-15T07:33:09.737204+09:00",
+  "sourceUpdatedAt": "2026-07-14T22:24:00+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -179,16 +179,30 @@
       "items": []
     },
     "geopolitical": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "政府 ナフサの供給対策検討 イラン情勢による流通影響受け",
+      "topPositiveTitle": "政府 ナフサの供給対策検討 イラン情勢による流通影響受け",
+      "items": [
+        {
+          "title": "政府 ナフサの供給対策検討 イラン情勢による流通影響受け",
+          "source": "NHK 経済",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-14T21:42:52+00:00",
+          "url": "https://news.web.nhk/newsweb/na/na-k10015176971000",
+          "tags": [
+            "geopolitical",
+            "market"
+          ],
+          "titleJa": "政府 ナフサの供給対策検討 イラン情勢による流通影響受け"
+        }
+      ]
     }
   },
   "meta": {
@@ -199,7 +213,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 15,
+    "excludedCount": 16,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
