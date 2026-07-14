@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-07-14T14:49:30.241184+09:00",
-  "sourceUpdatedAt": "2026-07-14T05:36:44+00:00",
+  "updatedAt": "2026-07-15T01:11:11.423599+09:00",
+  "sourceUpdatedAt": "2026-07-14T15:52:13+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -32,244 +32,64 @@
       ]
     },
     "jp_semiconductor": {
-      "avgSentiment": -0.125,
-      "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 4,
-      "isStale": false,
-      "topNegativeTitle": "Leveraged Chip Bets Backfire in Korea as Biggest ETF Falls 45%",
-      "topPositiveTitle": "Brent Tops $85, Rate-Hike Bets Rise Before US CPI: Markets Wrap",
-      "items": [
-        {
-          "title": "Leveraged Chip Bets Backfire in Korea as Biggest ETF Falls 45%",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-07-14T02:18:34+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-14/leveraged-chip-bets-backfire-in-korea-as-biggest-etf-falls-45",
-          "tags": [
-            "jp_semiconductor",
-            "market",
-            "trust"
-          ]
-        },
-        {
-          "title": "South Korea Turns More Bullish on Economy as Chip Boom Rolls On",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-14T02:39:23+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-14/south-korea-turns-more-bullish-on-economy-as-chip-boom-rolls-on",
-          "tags": [
-            "geopolitical",
-            "jp_semiconductor",
-            "macro_risk",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "China Exports, Imports Soar Faster Than Forecast as AI Booms",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-14T02:34:54+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-14/china-s-exports-imports-soar-faster-than-forecast-amid-ai-rush",
-          "tags": [
-            "jp_semiconductor",
-            "market"
-          ]
-        },
-        {
-          "title": "Brent Tops $85, Rate-Hike Bets Rise Before US CPI: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.5,
-          "publishedAt": "2026-07-13T22:05:56+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-13/oil-holds-gains-as-iran-stokes-inflation-worries-markets-wrap",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "jp_semiconductor",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        }
-      ]
-    },
-    "us_broad": {
-      "avgSentiment": 0.125,
+      "avgSentiment": 0,
       "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 3,
-      "sourceCount": 2,
-      "itemCount": 4,
-      "isStale": false,
-      "topNegativeTitle": "What to Expect From Wall Street Banks Earnings",
-      "topPositiveTitle": "Brent Tops $85, Rate-Hike Bets Rise Before US CPI: Markets Wrap",
-      "items": [
-        {
-          "title": "What to Expect From Wall Street Banks Earnings",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-14T05:15:52+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-07-14/what-to-expect-from-wall-street-banks-earnings-video",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Fed Maintains Reserve Management Purchases at $10 Billion",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-13T19:21:12+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-13/fed-maintains-reserve-management-purchases-at-10-billion",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Warsh’s Balance-Sheet Panel Runs Into Market Reality Check",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-13T17:50:35+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-13/warsh-s-balance-sheet-panel-runs-into-market-reality-check",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Brent Tops $85, Rate-Hike Bets Rise Before US CPI: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.5,
-          "publishedAt": "2026-07-13T22:05:56+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-13/oil-holds-gains-as-iran-stokes-inflation-worries-markets-wrap",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "jp_semiconductor",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        }
-      ]
-    },
-    "us_growth": {
-      "avgSentiment": 0.22,
-      "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 1,
-      "sourceCount": 2,
-      "itemCount": 3,
-      "isStale": false,
-      "topNegativeTitle": "South Korea Turns More Bullish on Economy as Chip Boom Rolls On",
-      "topPositiveTitle": "SK Hynix Shares Rebound After Early Rout as AI Jitters Persist",
-      "items": [
-        {
-          "title": "South Korea Turns More Bullish on Economy as Chip Boom Rolls On",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-14T02:39:23+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-14/south-korea-turns-more-bullish-on-economy-as-chip-boom-rolls-on",
-          "tags": [
-            "geopolitical",
-            "jp_semiconductor",
-            "macro_risk",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "SK Hynix Shares Rebound After Early Rout as AI Jitters Persist",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-07-14T00:53:47+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-14/sk-hynix-shares-waver-in-seoul-after-wall-street-ai-memory-rout",
-          "tags": [
-            "macro_risk",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Singapore on Track to Beat Cautious Official Forecast on AI",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-07-14T00:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-14/singapore-s-economic-growth-slows-to-5-7-in-second-quarter",
-          "tags": [
-            "geopolitical",
-            "market",
-            "us_growth"
-          ]
-        }
-      ]
-    },
-    "global_broad": {
-      "avgSentiment": 0.67,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
-      "isStale": false,
-      "topNegativeTitle": "Oil Rises as Trump Resumes Hormuz Blockade | The Asia Trade 7/14/2026",
-      "topPositiveTitle": "Oil Rises as Trump Resumes Hormuz Blockade | The Asia Trade 7/14/2026",
-      "items": [
-        {
-          "title": "Oil Rises as Trump Resumes Hormuz Blockade | The Asia Trade 7/14/2026",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-07-14T04:10:46+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-07-14/the-asia-trade-7-14-2026-video",
-          "tags": [
-            "commodity",
-            "global_broad",
-            "market"
-          ]
-        }
-      ]
-    },
-    "gold": {
-      "avgSentiment": -0.5,
-      "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Gold Holds Drop as Mideast Risks, Waller Remarks Boost Headwinds",
-      "topPositiveTitle": "Gold Holds Drop as Mideast Risks, Waller Remarks Boost Headwinds",
-      "items": [
-        {
-          "title": "Gold Holds Drop as Mideast Risks, Waller Remarks Boost Headwinds",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.5,
-          "publishedAt": "2026-07-13T23:49:07+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-13/gold-holds-decline-on-renewed-hormuz-blockade-and-hawkish-fed",
-          "tags": [
-            "commodity",
-            "gold",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
+    },
+    "us_broad": {
+      "avgSentiment": 0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
+      "isStale": false,
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
+    },
+    "us_growth": {
+      "avgSentiment": 0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
+      "isStale": false,
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
+    },
+    "global_broad": {
+      "avgSentiment": 0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
+      "isStale": false,
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
+    },
+    "gold": {
+      "avgSentiment": 0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
+      "isStale": false,
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "reit": {
       "avgSentiment": 0,
@@ -284,6 +104,30 @@
       "items": []
     },
     "dividend": {
+      "avgSentiment": 0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
+      "isStale": false,
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
+    },
+    "macro_risk": {
+      "avgSentiment": 0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
+      "isStale": false,
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
+    },
+    "fx": {
       "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
@@ -291,151 +135,9 @@
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Kenya Eyes $500 Million Eurobond Buyback to Ease Debt Pressure",
-      "topPositiveTitle": "Kenya Eyes $500 Million Eurobond Buyback to Ease Debt Pressure",
+      "topNegativeTitle": "歴史的な円安「経済に悪い影響」61％ NHK世論調査",
+      "topPositiveTitle": "歴史的な円安「経済に悪い影響」61％ NHK世論調査",
       "items": [
-        {
-          "title": "Kenya Eyes $500 Million Eurobond Buyback to Ease Debt Pressure",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-13T12:26:02+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-13/kenya-eyes-500-million-eurobond-buyback-to-ease-debt-pressure",
-          "tags": [
-            "dividend",
-            "market"
-          ]
-        }
-      ]
-    },
-    "macro_risk": {
-      "avgSentiment": -0.134,
-      "negativeCount": 2,
-      "positiveCount": 1,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 5,
-      "isStale": false,
-      "topNegativeTitle": "China’s Crude Imports Plunge to Lowest in Nearly a Decade",
-      "topPositiveTitle": "SK Hynix Shares Rebound After Early Rout as AI Jitters Persist",
-      "items": [
-        {
-          "title": "China’s Crude Imports Plunge to Lowest in Nearly a Decade",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-07-14T03:00:32+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-14/china-s-crude-oil-imports-plunge-to-lowest-in-nearly-a-decade",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Indonesia Says S&amp;P Affirmation to Help Stabilize Bond Market",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-07-14T04:54:09+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-14/idr-usd-indonesia-says-s-p-affirmation-to-help-stabilize-bond-market",
-          "tags": [
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "South Korea Turns More Bullish on Economy as Chip Boom Rolls On",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-14T02:39:23+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-14/south-korea-turns-more-bullish-on-economy-as-chip-boom-rolls-on",
-          "tags": [
-            "geopolitical",
-            "jp_semiconductor",
-            "macro_risk",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "New Zealand Business Confidence Recovered as Iran War Subsided",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-13T22:16:59+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-13/new-zealand-business-confidence-recovered-as-iran-war-subsided",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "SK Hynix Shares Rebound After Early Rout as AI Jitters Persist",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-07-14T00:53:47+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-14/sk-hynix-shares-waver-in-seoul-after-wall-street-ai-memory-rout",
-          "tags": [
-            "macro_risk",
-            "market",
-            "us_growth"
-          ]
-        }
-      ]
-    },
-    "fx": {
-      "avgSentiment": 0.167,
-      "negativeCount": 1,
-      "positiveCount": 2,
-      "neutralCount": 3,
-      "sourceCount": 3,
-      "itemCount": 6,
-      "isStale": false,
-      "topNegativeTitle": "Phillippine Peso Approaches Record Low as Oil Prices Advance",
-      "topPositiveTitle": "South Korean Won Climbs to Two-Month High on Hynix ADR Inflows",
-      "items": [
-        {
-          "title": "Phillippine Peso Approaches Record Low as Oil Prices Advance",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-07-14T01:11:01+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-14/php-usd-phillippine-peso-approaches-record-low-as-oil-prices-advance",
-          "tags": [
-            "commodity",
-            "fx",
-            "market"
-          ]
-        },
-        {
-          "title": "South Korea Plans FX Rule Easing to Expand Won’s Global Use",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-14T04:37:40+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-14/south-korea-plans-fx-rule-easing-to-expand-won-s-global-use",
-          "tags": [
-            "fx",
-            "market"
-          ]
-        },
-        {
-          "title": "Katayama Floats JGBs in Tax-Free Accounts, GPIF Portfolio Review",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-14T01:03:25+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-14/japan-s-katayama-says-gpif-to-adjust-portfolio-if-needed",
-          "tags": [
-            "fx",
-            "market"
-          ]
-        },
         {
           "title": "歴史的な円安「経済に悪い影響」61％ NHK世論調査",
           "source": "NHK 経済",
@@ -449,216 +151,44 @@
             "market"
           ],
           "titleJa": "歴史的な円安「経済に悪い影響」61％ NHK世論調査"
-        },
-        {
-          "title": "India Asks State Banks to Step Up Foreign Currency Deposits",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-07-13T13:58:53+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-13/india-pushes-state-banks-to-step-up-foreign-currency-deposits",
-          "tags": [
-            "fx",
-            "market"
-          ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": 0.25,
+      "avgSentiment": 0,
       "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 1,
-      "sourceCount": 2,
-      "itemCount": 2,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Ethiopian Central Bank Raises Rates for First Time in Two Years",
-      "topPositiveTitle": "Brent Tops $85, Rate-Hike Bets Rise Before US CPI: Markets Wrap",
-      "items": [
-        {
-          "title": "Ethiopian Central Bank Raises Rates for First Time in Two Years",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-13T12:20:14+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-13/ethiopian-central-bank-raises-rates-for-first-time-in-two-years",
-          "tags": [
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Brent Tops $85, Rate-Hike Bets Rise Before US CPI: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.5,
-          "publishedAt": "2026-07-13T22:05:56+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-13/oil-holds-gains-as-iran-stokes-inflation-worries-markets-wrap",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "jp_semiconductor",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "commodity": {
-      "avgSentiment": 0.205,
-      "negativeCount": 3,
-      "positiveCount": 6,
-      "neutralCount": 4,
-      "sourceCount": 2,
-      "itemCount": 13,
+      "avgSentiment": 0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "China’s Crude Imports Plunge to Lowest in Nearly a Decade",
-      "topPositiveTitle": "Oil Advances Above $85 on Hormuz Tensions",
-      "items": [
-        {
-          "title": "China’s Crude Imports Plunge to Lowest in Nearly a Decade",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-07-14T03:00:32+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-14/china-s-crude-oil-imports-plunge-to-lowest-in-nearly-a-decade",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Gold Holds Drop as Mideast Risks, Waller Remarks Boost Headwinds",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.5,
-          "publishedAt": "2026-07-13T23:49:07+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-13/gold-holds-decline-on-renewed-hormuz-blockade-and-hawkish-fed",
-          "tags": [
-            "commodity",
-            "gold",
-            "market"
-          ]
-        },
-        {
-          "title": "Phillippine Peso Approaches Record Low as Oil Prices Advance",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-07-14T01:11:01+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-14/php-usd-phillippine-peso-approaches-record-low-as-oil-prices-advance",
-          "tags": [
-            "commodity",
-            "fx",
-            "market"
-          ]
-        },
-        {
-          "title": "UK’s Miliband Seen as Least Appealing Chancellor: Markets Pulse",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-14T05:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-14/uk-s-miliband-seen-as-least-appealing-chancellor-markets-pulse",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "US, Iran Check the Oil Price Before Pushing Limits",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-14T04:02:35+00:00",
-          "url": "https://www.bloomberg.com/opinion/newsletters/2026-07-14/us-iran-check-the-oil-price-before-pushing-limits",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "geopolitical": {
-      "avgSentiment": 0.14,
-      "negativeCount": 1,
-      "positiveCount": 5,
-      "neutralCount": 7,
-      "sourceCount": 2,
-      "itemCount": 13,
+      "avgSentiment": 0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "China’s Crude Imports Plunge to Lowest in Nearly a Decade",
-      "topPositiveTitle": "Palm Oil Advances as Crude Rally Boosts Outlook for Biofuels",
-      "items": [
-        {
-          "title": "China’s Crude Imports Plunge to Lowest in Nearly a Decade",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-07-14T03:00:32+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-14/china-s-crude-oil-imports-plunge-to-lowest-in-nearly-a-decade",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Trump Reinstates Iran Blockade, Plans Hormuz Ship Fee",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-14T05:36:44+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-07-14/trump-reinstates-iran-blockade-plans-hormuz-ship-fee-video",
-          "tags": [
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "US, Iran Check the Oil Price Before Pushing Limits",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-14T04:02:35+00:00",
-          "url": "https://www.bloomberg.com/opinion/newsletters/2026-07-14/us-iran-check-the-oil-price-before-pushing-limits",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "Iran Sneaking Out Tankers Via Hormuz as Trump Amps Up Threats",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-14T03:20:19+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-14/iran-sneaking-out-tankers-via-hormuz-as-trump-amps-up-threats",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "Taiwan Fund Profits 80% After Intervening to Blunt Trump Tariffs",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-14T02:58:04+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-14/taiwan-s-stabilization-fund-profits-80-after-intervening-to-blunt-trump-tariffs",
-          "tags": [
-            "geopolitical",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     }
   },
   "meta": {
@@ -669,7 +199,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 1,
+    "excludedCount": 15,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
