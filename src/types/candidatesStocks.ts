@@ -32,6 +32,10 @@ export interface CandidatesStocksData {
     not_for_trading: true
     universe: string
     note: string
+    // P5-B004e-2: workflow current-run証明。production build時のみ付与。
+    runToken?: string
+    pipelineContract?: 'jpx_whole_market_candidates_v1'
+    pipelinePath?: 'normal' | 'cache_fallback' | 'seed_fallback'
     // P5-B004b: publish cap外の失敗・truncationをstatusに混ぜないための
     // 内訳。既存consumerには未使用のoptional追加フィールド。
     counts?: {
@@ -44,6 +48,7 @@ export interface CandidatesStocksData {
     // seed_list_v1 default providerのままの場合は存在しない
     // （既存consumerには未使用のoptional追加フィールド）。
     universeProvenance?: {
+      pipelinePath?: 'normal' | 'cache_fallback' | 'seed_fallback'
       jpxSource?: string
       jpxFallbackUsed?: boolean
       jpxEligibleCount?: number

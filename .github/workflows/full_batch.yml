@@ -30,12 +30,23 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Install pytest
-        run: pip install pytest
+      - name: Install pytest and B004 test dependencies
+        run: pip install pytest pandas numpy requests xlrd
 
       - name: Run Operation + Tier A tests
         # test_operation (Card 2-1/2-2) + test_tier_a (Card 1-2〜1-4) のみ対象
         run: python -m pytest backend/tests/test_operation backend/tests/test_tier_a -q
+
+      - name: Run P5-B004 candidates pipeline contract tests
+        run: >-
+          python -m pytest
+          tests/test_build_candidates_stocks.py
+          tests/test_jpx_universe_provider.py
+          tests/test_jpx_cheap_prescreen.py
+          tests/test_whole_market_universe_provider.py
+          tests/test_candidates_stocks_privacy_smoke.py
+          tests/test_full_batch_workflow.py
+          -q
 
       - name: Report data freshness (detection-only, no writes)
         # evaluate_freshness を呼び出して stdout にログ出力するだけ。
@@ -102,11 +113,25 @@ jobs:
 
       # ── P5-B002a: 新規個別株候補（市場公開情報のみ、observability-only） ──
       # P5-B004d: whole-market provider(JPX eligible→cheap pre-screen→
-      # bounded shortlist)接続。あらゆる異常系でdefault seed_list_v1(41件)
-      # へ安全にfallbackするため、通常時と同様 || true は保険として残す
-      # （本provider自体は例外を外へ伝播させない設計）。
+      # bounded shortlist)接続。providerが明示的にcache/seed fallbackを
+      # 返す場合は成果物provenanceで区別する。builder自体の異常は
+      # current-run gateを迂回させないため、exit statusを握り潰さない。
+      - name: Record candidates_stocks run start
+        id: candidates-run-start
+        run: echo "started_at=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> "$GITHUB_OUTPUT"
+
+      - name: Generate candidates_stocks current-run token
+        id: candidates-run-token
+        run: |
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          import uuid
+          print(f"run_token={uuid.uuid4()}")
+          PY
+
       - name: Build candidates_stocks.json (whole-market provider, market data only)
-        run: python3 data/build_candidates_stocks.py || true
+        run: >-
+          python3 -m data.build_candidates_stocks
+          --run-token "${{ steps.candidates-run-token.outputs.run_token }}"
 
       # ── public/data へコピー ──────────────────────────────────────────
       - name: Copy JSON to public/data
@@ -117,11 +142,14 @@ jobs:
             fi
           done
 
-      - name: Smoke test candidates_stocks schema (personal-data guard)
+      - name: Gate candidates_stocks E2E contract (schema/privacy/provenance/freshness)
         # P5-B004c-3: 旧inline heredocはWARN-onlyでexit 0継続していた。
         # data/candidates_stocks_privacy_smoke.py へ抽出しfail-closed化
         # （schema/forbidden-key違反時はexit 1でjob failureにする）。
-        run: python3 -m data.candidates_stocks_privacy_smoke
+        run: >-
+          python3 -m data.candidates_stocks_privacy_smoke --production
+          --run-started-at "${{ steps.candidates-run-start.outputs.started_at }}"
+          --expected-run-token "${{ steps.candidates-run-token.outputs.run_token }}"
 
       - name: Build candidates news summary
         run: python3 data/build_candidates_news.py

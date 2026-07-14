@@ -8,7 +8,7 @@ P5-B004a: 将来のmarket-wide universe接続に備え、
   schemaVersion・下流契約は変更しない。外部JPX等の広域sourceは
   本ticketでは導入しない（provider差し替え可能な形にするのみ）。
 
-使用: python3 data/build_candidates_stocks.py
+使用: python3 -m data.build_candidates_stocks
 出力: data/candidates_stocks.json
 
 目的:
@@ -46,6 +46,7 @@ honesty / 非範囲:
     既存fileがstale・存在しない・corrupt/schema不正の場合はfallbackせず
     通常どおり新結果（empty含む）を書き出す。
 """
+import argparse
 import json
 import math
 import sys
@@ -55,6 +56,7 @@ from typing import Any, Callable, NamedTuple
 
 SCHEMA_VERSION = "candidates-stocks-1"
 UNIVERSE = "seed_list_v1"
+PIPELINE_CONTRACT = "jpx_whole_market_candidates_v1"
 STALE_THRESHOLD_HOURS = 48
 OUTPUT_PATH = Path(__file__).parent / 'candidates_stocks.json'
 JST = timezone(timedelta(hours=9))
@@ -194,9 +196,25 @@ def whole_market_universe_provider(
         if build_shortlist_fn is None:
             build_shortlist_fn = build_cheap_prescreen_shortlist
 
+    def seed_fallback_provenance(reason: str, jpx_source: str = "unavailable") -> dict[str, Any]:
+        """whole-market経路がseedへ縮退したことを同一形状で明示する。"""
+        return {
+            "pipelinePath": "seed_fallback",
+            "jpxSource": jpx_source,
+            "jpxFallbackUsed": True,
+            "jpxEligibleCount": 0,
+            "shortlistId": "seed_list_v1_bypass",
+            "shortlistCount": 0,
+            "shortlistSuccessRatio": 0.0,
+            "shortlistFallbackUsed": True,
+            "shortlistFallbackReason": reason,
+            "shortlistBypassSeedListV1": True,
+            "sectorCapRelaxed": False,
+            "sectorCapRelaxedCount": 0,
+        }
+
     try:
         jpx_universe = get_universe_fn(now=now)
-        prescreen = build_shortlist_fn(jpx_universe, now=now)
     except Exception as e:  # noqa: BLE001 - 最終防御。予期しない例外でも
         # enrichmentへ渡すよりseed_list_v1へ安全にfallbackする方が常に安全。
         print(
@@ -208,13 +226,50 @@ def whole_market_universe_provider(
         return UniverseResultWithProvenance(
             universe_id=fallback.universe_id,
             items=fallback.items,
-            provenance={
-                "shortlistBypassSeedListV1": True,
-                "shortlistFallbackReason": f"unexpected_error: {e!r}",
-            },
+            provenance=seed_fallback_provenance(f"unexpected_error: {e!r}"),
         )
 
+    # JPX provider自身がvalid cacheも使えずseedへ縮退した場合、41件に対して
+    # whole-market pre-screenを実行してもquality floor(50)を満たせない。
+    # 不要なbulk fetchをせず、明示的なseed fallbackとして直ちに返す。
+    if jpx_universe.universe_id == UNIVERSE:
+        fallback = default_universe_provider()
+        return UniverseResultWithProvenance(
+            universe_id=fallback.universe_id,
+            items=fallback.items,
+            provenance=seed_fallback_provenance(
+                "jpx_provider_seed_fallback",
+                jpx_source=jpx_universe.source,
+            ),
+        )
+
+    try:
+        prescreen = build_shortlist_fn(jpx_universe, now=now)
+    except Exception as e:  # noqa: BLE001 - enrichmentへ不定形入力を渡さない最終防御
+        print(
+            f"[whole_market_universe_provider] unexpected error: {e!r}; "
+            "falling back to seed_list_v1",
+            file=sys.stderr,
+        )
+        fallback = default_universe_provider()
+        return UniverseResultWithProvenance(
+            universe_id=fallback.universe_id,
+            items=fallback.items,
+            provenance=seed_fallback_provenance(
+                f"unexpected_error: {e!r}",
+                jpx_source=jpx_universe.source,
+            ),
+        )
+
+    if prescreen.bypass_seed_list_v1 or not prescreen.items:
+        pipeline_path = "seed_fallback"
+    elif jpx_universe.fallback_used or prescreen.fallback_used:
+        pipeline_path = "cache_fallback"
+    else:
+        pipeline_path = "normal"
+
     provenance: dict[str, Any] = {
+        "pipelinePath": pipeline_path,
         "jpxSource": jpx_universe.source,
         "jpxFallbackUsed": jpx_universe.fallback_used,
         "jpxEligibleCount": jpx_universe.eligible_count,
@@ -415,6 +470,7 @@ def build_candidates_stocks(
     publish_cap: int = PUBLISH_CAP,
     enrichment_guard: int = MAX_ENRICHMENT_UNIVERSE,
     now: datetime | None = None,
+    run_token: str | None = None,
 ) -> dict[str, Any]:
     """provider→enrichment→publish capの3段を実行し、公開JSON payload
     （dict、ファイルI/Oなし）を返す純粋関数。
@@ -466,11 +522,17 @@ def build_candidates_stocks(
             "failedTotalCount": len(missing_all),
         },
     }
+    if run_token is not None:
+        if not isinstance(run_token, str) or not run_token.strip():
+            raise ValueError("run_token must be a non-empty string when supplied")
+        meta["runToken"] = run_token
     # P5-B004d: whole-market provider使用時のみ付与されるoptional
     # provenance。既存default_universe_provider（SEED_LIST）はこの属性を
     # 持たないため、既存の全出力・全テストは_meta形状不変のまま。
     if universe_provenance:
         meta["universeProvenance"] = universe_provenance
+        meta["pipelineContract"] = PIPELINE_CONTRACT
+        meta["pipelinePath"] = universe_provenance.get("pipelinePath")
 
     return {
         "schemaVersion": SCHEMA_VERSION,
@@ -575,7 +637,10 @@ def load_existing(path: Path) -> dict[str, Any] | None:
 # ---------------------------------------------------------------------------
 
 
-def main() -> None:
+def main(argv: list[str] | tuple[str, ...] = ()) -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--run-token")
+    args = parser.parse_args(argv)
     now = datetime.now(JST)
     print(f"[{now:%Y-%m-%d %H:%M}] candidates_stocks.json 生成開始（whole-market provider）")
 
@@ -584,7 +649,11 @@ def main() -> None:
     # 失敗/予期しない例外のいずれの場合もdefault_universe_provider()
     # （SEED_LIST 41件）へ安全にfallbackするため、main()からは常に単に
     # whole_market_universe_providerを渡すだけでよい。
-    payload = build_candidates_stocks(universe_provider=whole_market_universe_provider, now=now)
+    payload = build_candidates_stocks(
+        universe_provider=whole_market_universe_provider,
+        now=now,
+        run_token=args.run_token,
+    )
     ok_count = sum(1 for c in payload['candidates'] if c.get('dataStatus') == 'ok')
     print(
         f"  ✓ {ok_count}/{len(payload['candidates'])}銘柄成功 "
@@ -612,4 +681,4 @@ def main() -> None:
 
 
 if __name__ == '__main__':
-    main()
+    main(sys.argv[1:])

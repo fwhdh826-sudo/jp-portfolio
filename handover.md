@@ -43813,6 +43813,83 @@ AssetSnapshotMini → AllocationGapStrip → 今日のアクション[TodoCard/R
   main未反映のため別チケットで対応
 - v10.css未使用クラスの安全な削除（R6）
 
+## P5-B004e: JPX whole-market candidates_stocks pipeline E2E completion gate
+
+### 実施日と作業状態
+
+- 2026-07-14
+- branch: `v13.3-dev`
+- 開始時HEAD: `d0ce0ca`（作業開始時は`origin/v13.3-dev`と一致、working tree clean）
+- commit / push / merge / branch切替は未実施
+
+### 変更前に実測した根因
+
+- `python3 data/build_candidates_stocks.py`はwhole-market providerのdata package
+  をimportする時点で`ModuleNotFoundError: No module named 'data'`となり、
+  workflowと同じ実行形では成果物を生成できなかった。
+- `full_batch.yml`の同コマンドに`|| true`があり、上記失敗後も
+  旧JSONを`public/data`へcopyしてworkflowを継続できた。
+- ネットワーク不可でenrichment 0/200となった実行は、
+  stale-fallback guardで旧fileを保持しexit 0となった。変更前smokeは
+  この「今回runで未更新」を検出しなかった。
+- production artifact testは`seed_list_v1` / 41件を固定期待していた。
+- 変更前B004関連6ファイルは**283 passed**だったが、
+  `operation-health`はroot B004 testsを実行していなかった。
+
+### 成果物契約とCI gateの変更
+
+- production実行は`python3 -m data.build_candidates_stocks`へ統一し、
+  candidates builderの`|| true`を削除。
+- whole-market成果物に`_meta.pipelineContract =
+  "jpx_whole_market_candidates_v1"`と`_meta.pipelinePath`を追加。
+  `pipelinePath`は`normal` / `cache_fallback` / `seed_fallback`の3種。
+- production gateはschema/privacyに加え、次をfail-closedで検査する:
+  provenance必須keyとpath整合、通常/cacheの50〜200件、
+  seedの41件、publish上限200件、counts内部整合、
+  最低1件のenrichment成功、`updatedAt`/`sourceUpdatedAt`がrun開始時刻
+  以降であること、`data`/`public` JSONの完全一致。
+- `full_batch.yml`はbuilder前のcurrent-run開始時刻を記録し、
+  copy後のproduction gateへ渡す。これにより旧41件JSONが残る場合は
+  freshness gateがredになる。
+- `operation-health`にB004 root Python tests 6ファイルを追加した。
+- JPX provider自身がseedへ縮退した場合、41件ではquality floor 50を
+  満たせないため不要なwhole-market pre-screenをskipする。
+
+### production-like dry-run実測
+
+- 通常経路（JPX live `data_j.xls`）:
+  raw 4,437、eligible 1,552、shortlist/publish 200、
+  enrichment 200/200、status `ok`、33 sectors、最大sector 24件（12%）、
+  `pipelinePath=normal`、runtime **165.43秒**、production gate pass。
+- cache fallback経路（JPX live parse不可→last-good universe cache）:
+  eligible 1,552、shortlist/publish 200、enrichment 200/200、status `ok`、
+  33 sectors、最大sector 24件（12%）、`pipelinePath=cache_fallback`、
+  `jpxFallbackUsed=true`、runtime **165.04秒**、production gate pass。
+- seed fallback経路（JPX live/cache不可相当を明示注入）:
+  actual seed 41件、live yfinance enrichment 41/41、status `ok`、
+  26 sectors、最大sector 5件、`pipelinePath=seed_fallback`、
+  pre-screen呼び出しなし、runtime **26.03秒**、production gate pass。
+- 最終追跡成果物は通常経路の200件で、`data`/`public`は同一。
+  privacy smokeとcurrent-run production gateはともにpass。
+
+### 回帰検証
+
+- B004 core Python tests: **197 passed**
+- production artifact / privacy tests: **66 passed**
+- full_batch workflow contract tests: **35 passed**
+- 上計3区分合計: **298 passed**
+- `npm run test:unit`: **723 passed / 40 files**
+- `npx tsc --noEmit`: exit 0
+- `npm run build`: success（121 modules transformed）。既存の500 kB超chunk warningあり。
+- `git diff --check`: pass
+
+### 変更していない範囲と未確認
+
+- SAFE_MODE、DQ、noTrade、headroom、officialDecision、zeroBase、
+  T0/T1/T2/T7のコードは変更していない。
+- pseudo dataは追加していない。internal cacheは既存の`.gitignore`対象。
+- GitHub Actionsの実runは、commit/push未実施のため未確認。
+
 ## T0-CC-4: T0 Home Card shell / section構造刷新（ロジック変更なし、CSS+見出し構造のみ）
 
 ### 実施日

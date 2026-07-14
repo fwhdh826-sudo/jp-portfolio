@@ -178,6 +178,8 @@ def test_normal_success_path_flows_to_enrichment():
     assert len(payload["candidates"]) == 200
     assert payload["status"] == "ok"
     assert payload["_meta"]["universe"] == "jpx_cheap_prescreen_v1"
+    assert payload["_meta"]["pipelineContract"] == "jpx_whole_market_candidates_v1"
+    assert payload["_meta"]["pipelinePath"] == "normal"
 
 
 # --- 2. 1552直接enrichment禁止 -------------------------------------------------
@@ -249,6 +251,7 @@ def test_jpx_cache_fallback_with_valid_sized_universe_still_prescreened():
     assert result.universe_id == "jpx_cheap_prescreen_v1"
     assert len(result.items) == 200
     assert result.provenance["jpxFallbackUsed"] is True
+    assert result.provenance["pipelinePath"] == "cache_fallback"
 
 
 # --- 7. shortlist rate-limit→last-good ----------------------------------------
@@ -265,6 +268,7 @@ def test_prescreen_rate_limit_uses_last_good_cache():
     assert len(result.items) == 180
     assert result.provenance["shortlistFallbackUsed"] is True
     assert "rate_limit" in result.provenance["shortlistFallbackReason"]
+    assert result.provenance["pipelinePath"] == "cache_fallback"
 
 
 # --- 8. success ratio<70%→fallback --------------------------------------------
@@ -329,6 +333,7 @@ def test_no_valid_cache_bypasses_to_seed_41():
     assert result.universe_id == default_universe_provider().universe_id == "seed_list_v1"
     assert result.items == default_universe_provider().items
     assert len(result.items) == 41
+    assert result.provenance["pipelinePath"] == "seed_fallback"
 
 
 def test_unexpected_exception_bypasses_to_seed_41():
@@ -341,6 +346,30 @@ def test_unexpected_exception_bypasses_to_seed_41():
     )
     assert result.universe_id == "seed_list_v1"
     assert len(result.items) == 41
+    assert result.provenance["shortlistBypassSeedListV1"] is True
+    assert result.provenance["pipelinePath"] == "seed_fallback"
+
+
+def test_jpx_provider_seed_fallback_skips_prescreen():
+    """JPX live/cacheとも利用不能でproviderがseedを返した場合は、quality
+    floor未満と分かっている41件へbulk pre-screenを実行しない。"""
+    seed_result = _fake_jpx(
+        fallback_used=True,
+        eligible_count=41,
+        source="data/build_candidates_stocks.py::SEED_LIST",
+        items=default_universe_provider().items,
+    )._replace(universe_id="seed_list_v1")
+
+    def must_not_run(*args, **kwargs):
+        raise AssertionError("pre-screen must not run for JPX seed fallback")
+
+    result = whole_market_universe_provider(
+        get_universe_fn=lambda now=None: seed_result,
+        build_shortlist_fn=must_not_run,
+    )
+    assert result.universe_id == "seed_list_v1"
+    assert len(result.items) == 41
+    assert result.provenance["pipelinePath"] == "seed_fallback"
     assert result.provenance["shortlistBypassSeedListV1"] is True
 
 

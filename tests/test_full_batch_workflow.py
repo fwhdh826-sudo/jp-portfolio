@@ -207,3 +207,59 @@ def test_dry_run_suppression_preserved_in_routines_stub():
     # routines-stub dry-runs MUST keep || true (stale data is expected there)
     routines_section = _TEXT.split("Job 3: Routines")[-1]
     assert "r4_pre_trade --dry-run || true" in routines_section
+
+
+# ── P5-B004e: candidates_stocks E2E completion gate ──────────────────────
+
+def test_operation_health_runs_b004_root_tests():
+    operation_section = _TEXT.split("  operation-health:")[1].split("  update-data:")[0]
+    for test_file in (
+        "tests/test_build_candidates_stocks.py",
+        "tests/test_jpx_universe_provider.py",
+        "tests/test_jpx_cheap_prescreen.py",
+        "tests/test_whole_market_universe_provider.py",
+        "tests/test_candidates_stocks_privacy_smoke.py",
+        "tests/test_full_batch_workflow.py",
+    ):
+        assert test_file in operation_section
+
+
+def test_candidates_builder_failure_is_not_suppressed():
+    update_data_section = _update_data_section()
+    assert "python3 data/build_candidates_stocks.py || true" not in update_data_section
+    assert "python3 -m data.build_candidates_stocks || true" not in update_data_section
+    assert "python3 -m data.build_candidates_stocks" in update_data_section
+
+
+def test_candidates_run_start_is_recorded_before_build():
+    update_data_section = _update_data_section()
+    marker_pos = update_data_section.index("candidates-run-start")
+    build_pos = update_data_section.index("python3 -m data.build_candidates_stocks")
+    assert marker_pos < build_pos
+
+
+def test_candidates_unique_run_token_is_generated_before_build():
+    update_data_section = _update_data_section()
+    token_pos = update_data_section.index("candidates-run-token")
+    build_pos = update_data_section.index("python3 -m data.build_candidates_stocks")
+    assert "uuid" in update_data_section[token_pos:build_pos].lower()
+    assert token_pos < build_pos
+
+
+def test_candidates_builder_receives_run_token():
+    update_data_section = _update_data_section()
+    assert '--run-token "${{ steps.candidates-run-token.outputs.run_token }}"' in update_data_section
+
+
+def test_candidates_production_gate_receives_current_run_marker():
+    update_data_section = _update_data_section()
+    assert "data.candidates_stocks_privacy_smoke --production" in update_data_section
+    assert "steps.candidates-run-start.outputs.started_at" in update_data_section
+    assert '--expected-run-token "${{ steps.candidates-run-token.outputs.run_token }}"' in update_data_section
+
+
+def test_candidates_production_gate_runs_after_copy():
+    update_data_section = _update_data_section()
+    copy_pos = update_data_section.index("Copy JSON to public/data")
+    gate_pos = update_data_section.index("data.candidates_stocks_privacy_smoke --production")
+    assert copy_pos < gate_pos

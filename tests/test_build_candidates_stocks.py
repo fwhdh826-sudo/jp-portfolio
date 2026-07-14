@@ -136,6 +136,23 @@ class TestDefaultProvider:
         assert payload["status"] == "ok"
         assert payload["missing"] == []
 
+    def test_run_token_is_recorded_when_supplied(self):
+        payload = build_candidates_stocks(
+            fetch_fn=_fake_fetch_ok, now=_NOW, run_token="local-test-token"
+        )
+        assert payload["_meta"]["runToken"] == "local-test-token"
+
+    def test_run_token_is_omitted_when_not_supplied(self):
+        payload = build_candidates_stocks(fetch_fn=_fake_fetch_ok, now=_NOW)
+        assert "runToken" not in payload["_meta"]
+
+    @pytest.mark.parametrize("bad_token", ["", "   "])
+    def test_blank_run_token_is_rejected(self, bad_token):
+        with pytest.raises(ValueError, match="run_token"):
+            build_candidates_stocks(
+                fetch_fn=_fake_fetch_ok, now=_NOW, run_token=bad_token
+            )
+
 
 # ---------------------------------------------------------------------------
 # 4. provider差替え可能 / provider provenance（P5-B004b SCALE-02）
