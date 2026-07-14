@@ -27,8 +27,9 @@ import {
   restoreLearning,
   persistCsvImportedAt,
   restoreCsvImportedAt,
-  persistCsvSyncSummary,
   restoreCsvSyncSummary,
+  persistCsvImportTransaction,
+  CsvImportPersistenceError,
   persistPortfolioPolicy,
   restorePortfolioPolicy,
   persistCashAssumptions,
@@ -67,7 +68,7 @@ interface AppActions {
   // 全データ再取得 → 全再計算 → Store一括更新
   refreshAllData: () => Promise<void>
   // CSV取込 → 即時再分析
-  importCsv: (file: File) => Promise<void>
+  importCsv: (file: File) => Promise<CsvImportResult>
   // タブ切替
   setTab: (tab: TabId) => void
   // holding手動更新（score等）
@@ -90,6 +91,82 @@ interface AppActions {
   // 巻き添えでrejectされてしまうことを避けるため。詳細はimplementationコメント参照）。
   importPortfolioSnapshot: (raw: string) =>
     { ok: true; skippedTrustIds?: string[] } | { ok: false; error: string }
+}
+
+export type CsvImportErrorCode =
+  | 'FILE_READ_ERROR'
+  | 'PARSE_ERROR'
+  | 'NO_VALID_ROWS'
+  | 'FULL_SYNC_GUARD_REJECTED'
+  | 'ANALYSIS_ERROR'
+  | 'OFFICIAL_DECISION_ERROR'
+  | 'PERSISTENCE_ERROR'
+  | 'IMPORT_IN_PROGRESS'
+  | 'UNKNOWN_ERROR'
+
+export type CsvImportResult =
+  | {
+      ok: true
+      code: 'SUCCESS'
+      message: string
+      imported: {
+        stock: { updated: number; added: number; removed: number }
+        trust: { updated: number; reheld: number; zeroed: number; unknown: number; ambiguous: number }
+      }
+      warnings: string[]
+      analysisCommitted: true
+      officialDecisionCommitted: true
+      persistence: { status: 'committed' }
+      importedAt: string
+    }
+  | {
+      ok: false
+      code: CsvImportErrorCode
+      message: string
+      warnings: string[]
+      analysisCommitted: false
+      officialDecisionCommitted: false
+      persistence: { status: 'not_attempted' | 'rolled_back' | 'rollback_failed' }
+    }
+
+class OfficialDecisionGenerationError extends Error {
+  constructor(cause: unknown) {
+    super(cause instanceof Error ? cause.message : String(cause))
+    this.name = 'OfficialDecisionGenerationError'
+  }
+}
+
+function csvImportFailure(
+  code: CsvImportErrorCode,
+  message: string,
+  persistence: 'not_attempted' | 'rolled_back' | 'rollback_failed' = 'not_attempted',
+): CsvImportResult {
+  return {
+    ok: false,
+    code,
+    message,
+    warnings: [],
+    analysisCommitted: false,
+    officialDecisionCommitted: false,
+    persistence: { status: persistence },
+  }
+}
+
+function classifyCsvParseFailure(error: unknown): CsvImportResult {
+  const message = error instanceof Error ? error.message : String(error)
+  if (message.includes('ファイル読み込みエラー')) {
+    return csvImportFailure('FILE_READ_ERROR', 'CSVファイルを読み込めませんでした。ファイルを確認して再試行してください。')
+  }
+  if (message.includes('有効な行が見つかりませんでした')) {
+    return csvImportFailure('NO_VALID_ROWS', message)
+  }
+  if (
+    message.includes('取込を中断しました') ||
+    message.includes('個別株の保有行が見つかりませんでした')
+  ) {
+    return csvImportFailure('FULL_SYNC_GUARD_REJECTED', message)
+  }
+  return csvImportFailure('PARSE_ERROR', message || 'CSVを解析できませんでした。')
 }
 
 interface HoldingsSnapshotLike {
@@ -489,7 +566,10 @@ export function selectAppendableStockCandidates(candidates: StockCandidateItem[]
 }
 
 // ── runFullAnalysis（内部ヘルパー）───────────────────────────
-export function runFullAnalysis(state: AppState): Pick<AppState, 'analysis' | 'metrics' | 'holdings' | 'trust' | 'universe' | 'learning' | 'zeroPlan' | 'stockPlan' | 'trustPlan' | 'officialDecision' | 'stockCandidates'> {
+export function runFullAnalysis(
+  state: AppState,
+  options: { requireOfficialDecision?: boolean } = {},
+): Pick<AppState, 'analysis' | 'metrics' | 'holdings' | 'trust' | 'universe' | 'learning' | 'zeroPlan' | 'stockPlan' | 'trustPlan' | 'officialDecision' | 'stockCandidates'> {
   const adaptiveWeights =
     state.learning && state.learning.summary.total >= 20
       ? state.learning.suggestedWeights
@@ -647,7 +727,8 @@ export function runFullAnalysis(state: AppState): Pick<AppState, 'analysis' | 'm
         officialDecision = { ...officialDecision, actions: [...officialDecision.actions, ...appendable] }
       }
     }
-  } catch {
+  } catch (error) {
+    if (options.requireOfficialDecision) throw new OfficialDecisionGenerationError(error)
     // plans remain null; analysis continues normally
   }
 
@@ -697,8 +778,13 @@ export function runFullAnalysis(state: AppState): Pick<AppState, 'analysis' | 'm
         officialDecision = { ...officialDecision, actions: [...officialDecision.actions, ...appendableStock] }
       }
     }
-  } catch {
+  } catch (error) {
+    if (options.requireOfficialDecision) throw new OfficialDecisionGenerationError(error)
     stockCandidates = []
+  }
+
+  if (options.requireOfficialDecision && officialDecision === null) {
+    throw new OfficialDecisionGenerationError('officialDecisionが生成されませんでした')
   }
 
   return { analysis, metrics, holdings, trust, universe, learning, zeroPlan, stockPlan, trustPlan, officialDecision, stockCandidates }
@@ -1032,36 +1118,93 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
 
   // ── CSV取込（個別株 + 投信 両対応）──────────────────────────
   importCsv: async (file: File) => {
-    if (get().system.status === 'loading') return
+    if (get().system.status === 'loading') {
+      return csvImportFailure('IMPORT_IN_PROGRESS', '別の取込または更新が進行中です。完了後に再試行してください。')
+    }
     set(s => ({ system: { ...s.system, status: 'loading', error: null } }))
+    const baseState = get()
+    const oldHoldings = baseState.holdings
+    const oldTrust = baseState.trust
+
+    let parsed: Awaited<ReturnType<typeof importPortfolioCsv>>
     try {
-      const oldHoldings = get().holdings
-      const oldTrust = get().trust
-      const { holdings: updatedH, trust: updatedT, trustSync } = await importPortfolioCsv(
+      parsed = await importPortfolioCsv(
         file,
         oldHoldings,
         oldTrust,
       )
-      const now = new Date().toISOString()
-      const trustExecution = detectTrustExecutionFromCsvSync(updatedT, now)
-      const syncSummary = buildCsvSyncSummary(oldHoldings, updatedH, oldTrust, updatedT, trustSync, now)
-      // T5の候補pipeline gate（system.csvLastImportedAt != null）はrunFullAnalysisが
-      // 読むstateスナップショットに反映されている必要があるため、holdings/trustと
-      // 同じsetでcsvLastImportedAtも先に確定させる（初回CSV取込でも同一ターンで候補を出す）。
-      set(s => ({ holdings: updatedH, trust: updatedT, system: { ...s.system, csvLastImportedAt: now } }))
-      const computed = runFullAnalysis(get())
-      set(s => ({
-        ...computed,
-        system: {
-          ...s.system,
-          status: 'success',
-          csvLastImportedAt: now,
-          csvSyncSummary: syncSummary,
-          analysisLastRunAt: now,
-          error: null,
-        },
-      }))
+    } catch (error) {
+      const failure = classifyCsvParseFailure(error)
+      set(s => ({ system: { ...s.system, status: 'error', error: failure.message } }))
+      return failure
+    }
 
+    const { holdings: updatedH, trust: updatedT, trustSync } = parsed
+    const now = new Date().toISOString()
+    const trustExecution = detectTrustExecutionFromCsvSync(updatedT, now)
+    const syncSummary = buildCsvSyncSummary(oldHoldings, updatedH, oldTrust, updatedT, trustSync, now)
+    const stagedState: AppState = {
+      ...baseState,
+      holdings: updatedH,
+      trust: updatedT,
+      system: {
+        ...baseState.system,
+        csvLastImportedAt: now,
+        csvSyncSummary: syncSummary,
+      },
+    }
+
+    let computed: ReturnType<typeof runFullAnalysis>
+    try {
+      computed = runFullAnalysis(stagedState, { requireOfficialDecision: true })
+    } catch (error) {
+      const isOfficialDecisionError = error instanceof OfficialDecisionGenerationError
+      const failure = csvImportFailure(
+        isOfficialDecisionError ? 'OFFICIAL_DECISION_ERROR' : 'ANALYSIS_ERROR',
+        isOfficialDecisionError
+          ? `公式判断の生成に失敗しました: ${error.message}`
+          : `分析に失敗しました: ${error instanceof Error ? error.message : String(error)}`,
+      )
+      set(s => ({ system: { ...s.system, status: 'error', error: failure.message } }))
+      return failure
+    }
+
+    try {
+      persistCsvImportTransaction({
+        holdings: computed.holdings,
+        trust: computed.trust,
+        learning: computed.learning,
+        importedAt: now,
+        syncSummary,
+      })
+    } catch (error) {
+      const persistenceStatus = error instanceof CsvImportPersistenceError
+        ? error.status
+        : 'rollback_failed'
+      const failure = csvImportFailure(
+        'PERSISTENCE_ERROR',
+        error instanceof Error ? error.message : String(error),
+        persistenceStatus,
+      )
+      set(s => ({ system: { ...s.system, status: 'error', error: failure.message } }))
+      return failure
+    }
+
+    const localStorageFreshness = computeLocalStorageFreshness()
+    set(s => ({
+      ...computed,
+      system: {
+        ...s.system,
+        status: 'success',
+        csvLastImportedAt: now,
+        csvSyncSummary: syncSummary,
+        analysisLastRunAt: now,
+        error: null,
+        localStorageFreshness,
+      },
+    }))
+
+    try {
       if (trustExecution.executed && getTrustShortTodayExecutionCount(now) < 1) {
         const state = get()
         const trustPlan = buildTrustPortfolioPlan({
@@ -1091,19 +1234,37 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
           volatilitySpread: trustPlan.marketContext.volatilitySpread,
         })
       }
+    } catch {
+      // 実行履歴は補助telemetry。portfolio transaction成功後の失敗で成功を反転させない。
+    }
 
-      persistPortfolio(get().holdings)
-      persistTrust(get().trust)
-      persistCsvImportedAt(now)  // Phase 8: リロード後も最終取込時刻を保持
-      persistCsvSyncSummary(syncSummary)  // P4.5-A013-T6: リロード後も取込結果を保持
-      // P4.5-A013-T6a: persist直後にlocalStorageFreshnessをその場で最新化する
-      // （リロードなしでT0/T1のstale警告が正しく消えるようにする）。
-      set(s => ({ system: { ...s.system, localStorageFreshness: computeLocalStorageFreshness() } }))
-      const learning = get().learning
-      if (learning) persistLearning(learning)
-    } catch (err) {
-      const msg = err instanceof Error ? err.message : String(err)
-      set(s => ({ system: { ...s.system, status: 'error', error: msg } }))
+    const warnings = [
+      ...(syncSummary.trust.unknownFunds.length > 0
+        ? [`未登録投信 ${syncSummary.trust.unknownFunds.length}件は反映されませんでした。`]
+        : []),
+      ...(syncSummary.trust.ambiguousFundIds.length > 0
+        ? [`口座を一意に特定できない投信 ${syncSummary.trust.ambiguousFundIds.length}件は更新されませんでした。`]
+        : []),
+    ]
+    return {
+      ok: true,
+      code: 'SUCCESS',
+      message: `${file.name} の取込み・分析・保存が完了しました。`,
+      imported: {
+        stock: { ...syncSummary.stock },
+        trust: {
+          updated: syncSummary.trust.updated,
+          reheld: syncSummary.trust.reheld,
+          zeroed: syncSummary.trust.zeroed,
+          unknown: syncSummary.trust.unknownFunds.length,
+          ambiguous: syncSummary.trust.ambiguousFundIds.length,
+        },
+      },
+      warnings,
+      analysisCommitted: true,
+      officialDecisionCommitted: true,
+      persistence: { status: 'committed' },
+      importedAt: now,
     }
   },
 

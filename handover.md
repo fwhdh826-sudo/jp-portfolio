@@ -43813,6 +43813,117 @@ AssetSnapshotMini → AllocationGapStrip → 今日のアクション[TodoCard/R
   main未反映のため別チケットで対応
 - v10.css未使用クラスの安全な削除（R6）
 
+## T9-A001 + T9-A002: truthful CSV import result contract + atomic import/analysis commit
+
+### 実施日 / branch / baseline
+
+- 実施日: 2026-07-15
+- branch: `v13.3-dev`（branch switchなし、commit/push/merge/rebaseなし）
+- 開始HEAD / `origin/main` / `origin/v13.3-dev`:
+  `2b8d6e694ff46e91ab70dc2048ede65f207484b0`
+- 開始working tree: clean
+
+### Goal / completion gate
+
+T9の緑の成功表示は、parse・full-sync・analysis・officialDecision・persistence・
+store commitがすべて成功したstructured resultだけを根拠にする。いずれかが失敗
+した場合、holdings/trust/csvLastImportedAt/analysis/officialDecisionと関連する
+永続化値を旧世代のまま維持し、partial generationをsubscriberへ公開しない。
+
+### Root cause（T9-F001 / T9-F002）
+
+- T9-F001: `CsvDropArea.handleFile`が`.csv`拡張子確認直後にlocal success stateを
+  設定し、`onFile`/`importCsv`をawaitしていなかった。store actionも
+  `Promise<void>`で例外をcatch後に再送出せず、UIが成否を観測できなかった。
+- T9-F002: store actionがparse後にholdings/trust/csvLastImportedAtを先に`set`し、
+  その後`runFullAnalysis(get())`を実行していた。analysis例外時は新portfolio入力と
+  旧analysis/officialDecisionが混在した。また`runFullAnalysis`のplan/
+  officialDecision生成ブロックが例外をcatchしてnullのまま成功継続していた。
+- persistence helperもquota等の例外を握り潰すため、保存失敗をsuccess contractへ
+  接続できなかった。
+
+### T9-A001: structured result / truthful UI
+
+- `importCsv(file)`を`Promise<CsvImportResult>`へ変更。discriminated unionで
+  success/failure、error code、user-facing message、import件数、warnings、
+  analysis/officialDecision commit、persistence status、importedAtを返す。
+- failure code: `FILE_READ_ERROR` / `PARSE_ERROR` / `NO_VALID_ROWS` /
+  `FULL_SYNC_GUARD_REJECTED` / `ANALYSIS_ERROR` /
+  `OFFICIAL_DECISION_ERROR` / `PERSISTENCE_ERROR` /
+  `IMPORT_IN_PROGRESS` / `UNKNOWN_ERROR`。
+- T9は`executeCsvImportUiFlow()`で前回結果を先に消し、`await importCsv(file)`後の
+  `result.ok`だけで緑/赤を表示する。拡張子確認だけでは成功表示しない。
+- picker/dropは同じ`handleFile`/contractを使用。inputは同一ファイル再選択のため
+  resetを維持し、loading中はclick/drop/key/inputをdisable。refによる同期lockと
+  store側`IMPORT_IN_PROGRESS`の二重防御でsecond importを明示拒否する。
+- FileReader/parser/full-sync/analysis/officialDecision/persistenceの各failure messageを
+  structured resultから表示し、global error文字列を推測して成否判定しない。
+
+### T9-A002: atomic staging / commit design
+
+- parse/full-sync結果からglobal storeを変更せず`stagedState`を構築する。
+  stagedStateには新holdings/trustと新csv timestamp/summaryを入れ、
+  `runFullAnalysis(stagedState, { requireOfficialDecision: true })`で全計算を行う。
+- CSV strict経路では、既存`runFullAnalysis`内のofficialDecision/candidate blockの
+  catchを`OfficialDecisionGenerationError`として再送出し、null decisionもfailureに
+  する。通常の既存analysis呼出しは従来どおりbest-effortで、投資判断計算式は変更なし。
+- 全計算後、CSV専用`persistCsvImportTransaction()`がholdings/trust/
+  csvLastImportedAt/csvSyncSummary/learningを事前serializeし、旧localStorage値を
+  snapshotして同期保存する。途中書込失敗は全keyを旧値へrollbackし、成功表示を禁止。
+- persistence完了後にcomputed portfolio世代とsystem metadataを1回のZustand `set`で
+  commitする。loading/error statusの更新を除き、portfolio generationのsubscriber
+  eventは成功時1回だけで、新holdings＋旧officialDecisionは観測されない。
+
+### Failure / success behavior
+
+- FileReader failure: `FILE_READ_ERROR`、successなし、state/persistence不変。
+- empty/no valid rows: `NO_VALID_ROWS`、successなし、state/persistence不変。
+- full-sync guard reject: `FULL_SYNC_GUARD_REJECTED`、successなし、state/persistence不変。
+- analysis exception: `ANALYSIS_ERROR`、staged値をcommitせず旧世代維持。
+- officialDecision exception/null: `OFFICIAL_DECISION_ERROR`、staged値をcommitせず旧世代維持。
+- persistence途中失敗: `PERSISTENCE_ERROR` + `rolled_back`（rollback自体も失敗した場合は
+  `rollback_failed`）、store旧世代維持、成功表示なし。
+- valid import: persistence完了後にholdings/trust/analysis/officialDecision/
+  csvLastImportedAt/summary/learningを同一世代としてcommitし、`SUCCESS`を返して緑表示。
+
+### Test-first evidence / added tests
+
+- 実装前に新規10 casesを実行: **10 failed / 10**。
+  UI helper不在3件、action resultが全て`undefined`7件を観測。
+- `src/store/useAppStore.csvImportAtomic.test.ts`: structured success、no-valid rows、
+  full-sync guard、analysis exception、officialDecision exception、FileReader failure、
+  persistence rollback、loading race、subscriber single-generation commit（9件）。
+- `src/components/tabs/T9_Settings.importContract.test.ts`: pending中success禁止、
+  old success後のfailure置換、invalid extension（3件）。
+- 既存`trustCandidatePipelineFreshness.test.ts`は新しいtruthful persistence境界に合わせ、
+  browser localStorage mockを明示した（候補/投資ロジックの期待値は無変更）。
+
+### Regression / non-scope
+
+- SAFE_MODE、DQ、noTrade、headroom、zeroBase、scoring、investment logic、target
+  allocation、officialDecision計算ロジック、P5-B004、candidates_stocks、workflow、
+  T0/T1/T2/T7 UIは変更なし。
+- T9-F003（古いCSVによる逆行）はT9-A004、0件full-sync確認フローはT9-A005の
+  non-scope。今回のtransaction化で既存挙動を悪化させていない。
+- browser process crash等を含む真のdurable multi-key transaction、rollback自体を
+  localStorageが拒否するケースの完全回復はT9-A003。今回のcontractは
+  `committed`/`rolled_back`/`rollback_failed`で将来境界を接続可能にした。
+- remaining: T9-A003〜T9-A008（A003 durable persistence、A004 stale CSV、
+  A005 zero-row full-syncを含む。A006〜A008の詳細scopeは別ticket定義に従う）。
+
+### Verification
+
+- `npm run test:unit`: **735 passed / 42 files**
+- T9/store/parser/persistence/analysis/officialDecision関連: **158 passed / 6 files**
+- `npx tsc --noEmit`: pass
+- `npm run build`: pass（TypeScript + Vite production build、既存chunk size warningのみ）
+- `git diff --check`: pass
+
+### Commit recommendation / next action
+
+全verification通過ならT9-A001/A002は`COMMIT READY`。commit/pushは今回禁止のため
+未実施。次は独立ticketとしてT9-A003（durable persistence）を扱う。
+
 ## P5-B004e: JPX whole-market candidates_stocks pipeline E2E completion gate
 
 ### 実施日と作業状態

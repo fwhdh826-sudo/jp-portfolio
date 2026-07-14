@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest'
+import { afterEach, beforeEach, describe, it, expect, vi } from 'vitest'
 import type { Trust } from '../types'
 import { useAppStore, runFullAnalysis } from './useAppStore'
 
@@ -217,6 +217,19 @@ function makeCsvFile(content: string, filename = 'portfolio.csv'): File {
 }
 
 describe('useAppStore.importCsv: 初回CSV取込でも同一ターンでtrust candidate pipelineが動く（P4.5-A013-HARDENING-F1）', () => {
+  const storage: Record<string, string> = {}
+  const localStorageMock = {
+    getItem: (key: string) => storage[key] ?? null,
+    setItem: (key: string, value: string) => { storage[key] = value },
+    removeItem: (key: string) => { delete storage[key] },
+  }
+
+  beforeEach(() => {
+    Object.keys(storage).forEach(key => delete storage[key])
+    vi.stubGlobal('localStorage', localStorageMock)
+  })
+  afterEach(() => vi.unstubAllGlobals())
+
   const STOCK_ONLY_CSV = [
     '株式（現物/特定預り）',
     '銘柄コード,銘柄名,現在値,評価額,損益（％）,前日比（％）,取得日',

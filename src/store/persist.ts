@@ -13,6 +13,24 @@ interface Snapshot<T> {
   savedAt: number
 }
 
+export interface CsvImportPersistencePayload {
+  holdings: Holding[]
+  trust: Trust[]
+  learning: LearningState | null
+  importedAt: string
+  syncSummary: CsvSyncSummary
+}
+
+export class CsvImportPersistenceError extends Error {
+  readonly status: 'not_attempted' | 'rolled_back' | 'rollback_failed'
+
+  constructor(message: string, status: 'not_attempted' | 'rolled_back' | 'rollback_failed') {
+    super(message)
+    this.name = 'CsvImportPersistenceError'
+    this.status = status
+  }
+}
+
 // P4.5-A012d: localStorage保存データの鮮度（表示専用）。
 // TTLを超えても値そのものは削除しないため、「保存されているか／古いか」を
 // UI側でstale警告に使うための読み取り専用ヘルパー。
@@ -136,6 +154,60 @@ export function restoreCsvImportedAt(): string | null {
 const CSV_SYNC_SUMMARY_KEY = 'v13_csv_sync_summary'
 
 interface CsvSyncSummarySnapshot { data: CsvSyncSummary; savedAt: number }
+
+/**
+ * CSV import専用の同期永続化境界。
+ *
+ * 通常の個別persist helperは既存互換のためquota例外を握り潰すが、CSV importは
+ * UI成功判定へ結果を返す必要がある。全payloadを先にserializeし、既存値をsnapshot
+ * してから書き込み、1件でも失敗したら書込済みkeyを旧値へ戻して例外を返す。
+ * localStorage自体がrollbackも拒否した場合はrollbackSucceeded=falseで明示する。
+ */
+export function persistCsvImportTransaction(payload: CsvImportPersistencePayload): void {
+  if (typeof localStorage === 'undefined') {
+    throw new CsvImportPersistenceError('永続化ストレージを利用できません', 'not_attempted')
+  }
+
+  const savedAt = Date.now()
+  let entries: Array<[string, string]>
+  try {
+    entries = [
+      [PORTFOLIO_KEY, JSON.stringify({ data: payload.holdings, savedAt } satisfies Snapshot<Holding[]>)],
+      [TRUST_KEY, JSON.stringify({ data: payload.trust, savedAt } satisfies Snapshot<Trust[]>)],
+      [CSV_IMPORTED_AT_KEY, JSON.stringify({ at: payload.importedAt, savedAt } satisfies CsvSnapshot)],
+      [CSV_SYNC_SUMMARY_KEY, JSON.stringify({ data: payload.syncSummary, savedAt } satisfies CsvSyncSummarySnapshot)],
+    ]
+    if (payload.learning) {
+      entries.push([LEARNING_KEY, JSON.stringify({ data: payload.learning, savedAt } satisfies Snapshot<LearningState>)])
+    }
+  } catch (error) {
+    const detail = error instanceof Error ? error.message : String(error)
+    throw new CsvImportPersistenceError(`CSV取込データを保存形式へ変換できませんでした: ${detail}`, 'not_attempted')
+  }
+
+  const previous = new Map<string, string | null>()
+  let writeStarted = false
+  try {
+    entries.forEach(([key]) => previous.set(key, localStorage.getItem(key)))
+    entries.forEach(([key, value]) => {
+      writeStarted = true
+      localStorage.setItem(key, value)
+    })
+  } catch (error) {
+    let rollbackSucceeded = true
+    previous.forEach((value, key) => {
+      try {
+        if (value === null) localStorage.removeItem(key)
+        else localStorage.setItem(key, value)
+      } catch {
+        rollbackSucceeded = false
+      }
+    })
+    const detail = error instanceof Error ? error.message : String(error)
+    const status = !writeStarted ? 'not_attempted' : rollbackSucceeded ? 'rolled_back' : 'rollback_failed'
+    throw new CsvImportPersistenceError(`CSV取込データの永続化に失敗しました: ${detail}`, status)
+  }
+}
 
 export function persistCsvSyncSummary(summary: CsvSyncSummary): void {
   const snap: CsvSyncSummarySnapshot = { data: summary, savedAt: Date.now() }

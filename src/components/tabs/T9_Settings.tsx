@@ -11,6 +11,7 @@ import { serializeCashAssumptionsExport, parseCashAssumptionsImport, buildExport
 import { colors, radius, spacing } from '../../theme/tokens'
 import { typography } from '../../theme/typography'
 import type { CsvSyncSummary } from '../../types'
+import type { CsvImportResult } from '../../store/useAppStore'
 
 // ── データソースラベル ────────────────────────────────────────
 const SOURCE_LABELS: Record<string, string> = {
@@ -43,31 +44,64 @@ function SourceBadge({ status }: { status: SourceStatus | string }) {
 }
 
 // ── CSV 取込エリア ────────────────────────────────────────────
+export interface CsvImportFeedback {
+  ok: boolean
+  message: string
+}
+
+export async function executeCsvImportUiFlow(
+  file: File,
+  importCsv: (file: File) => Promise<CsvImportResult>,
+  setFeedback: (feedback: CsvImportFeedback | null) => void,
+): Promise<CsvImportResult | null> {
+  if (!file.name.toLowerCase().endsWith('.csv')) {
+    setFeedback({ ok: false, message: `${file.name} — CSVファイルのみ対応しています。` })
+    return null
+  }
+
+  // 前回成功を即座に消し、actionのstructured resultが返るまで成功を表示しない。
+  setFeedback(null)
+  try {
+    const result = await importCsv(file)
+    setFeedback({ ok: result.ok, message: result.message })
+    return result
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error)
+    setFeedback({ ok: false, message: `CSV取込に失敗しました: ${message}` })
+    return null
+  }
+}
+
 function CsvDropArea({
   onFile,
   isLoading,
 }: {
-  onFile: (file: File) => void
+  onFile: (file: File) => Promise<CsvImportResult>
   isLoading: boolean
 }) {
   const inputRef = useRef<HTMLInputElement>(null)
+  const importInFlightRef = useRef(false)
   const [isDragOver, setIsDragOver] = useState(false)
-  const [lastResult, setLastResult] = useState<{ ok: boolean; name: string } | null>(null)
+  const [lastResult, setLastResult] = useState<CsvImportFeedback | null>(null)
 
-  const handleFile = useCallback((file: File) => {
-    if (!file.name.toLowerCase().endsWith('.csv')) {
-      setLastResult({ ok: false, name: `${file.name} — CSVファイルのみ対応` })
+  const handleFile = useCallback(async (file: File) => {
+    if (importInFlightRef.current || isLoading) {
+      setLastResult({ ok: false, message: '別の取込または更新が進行中です。完了後に再試行してください。' })
       return
     }
-    setLastResult({ ok: true, name: file.name })
-    onFile(file)
-  }, [onFile])
+    importInFlightRef.current = true
+    try {
+      await executeCsvImportUiFlow(file, onFile, setLastResult)
+    } finally {
+      importInFlightRef.current = false
+    }
+  }, [isLoading, onFile])
 
   const handleDrop = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault()
     setIsDragOver(false)
     const file = e.dataTransfer.files[0]
-    if (file) handleFile(file)
+    if (file) void handleFile(file)
   }
 
   const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
@@ -77,11 +111,13 @@ function CsvDropArea({
 
   const handleDragLeave = () => setIsDragOver(false)
 
-  const handleClick = () => inputRef.current?.click()
+  const handleClick = () => {
+    if (!isLoading && !importInFlightRef.current) inputRef.current?.click()
+  }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
-    if (file) handleFile(file)
+    if (file) void handleFile(file)
     // リセット（同じファイル再選択対応）
     if (inputRef.current) inputRef.current.value = ''
   }
@@ -96,8 +132,10 @@ function CsvDropArea({
         onDragLeave={handleDragLeave}
         role="button"
         tabIndex={0}
-        onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') handleClick() }}
+        onKeyDown={e => { if (!isLoading && (e.key === 'Enter' || e.key === ' ')) handleClick() }}
         aria-label="CSVファイルを選択またはドロップ"
+        aria-busy={isLoading}
+        aria-disabled={isLoading}
       >
         <div className="csv-drop-area__icon">
           {isLoading ? '⏳' : '📂'}
@@ -114,6 +152,7 @@ function CsvDropArea({
           accept=".csv"
           className="csv-drop-area__input"
           onChange={handleChange}
+          disabled={isLoading}
           aria-hidden="true"
         />
       </div>
@@ -129,7 +168,7 @@ function CsvDropArea({
           color: lastResult.ok ? 'var(--color-buy-text)' : 'var(--color-sell-text)',
           border: `1px solid ${lastResult.ok ? 'var(--color-buy-border)' : 'var(--color-sell-border)'}`,
         }}>
-          {lastResult.ok ? `✓ ${lastResult.name} を取込みました` : `✗ ${lastResult.name}`}
+          {lastResult.ok ? `✓ ${lastResult.message}` : `✗ ${lastResult.message}`}
         </div>
       )}
 
@@ -812,9 +851,7 @@ export function T9_Settings() {
 
   const isLoading = system.status === 'loading'
 
-  const handleImportCsv = useCallback((file: File) => {
-    void importCsv(file)
-  }, [importCsv])
+  const handleImportCsv = useCallback(async (file: File) => importCsv(file), [importCsv])
 
   const handleRefresh = useCallback(() => {
     void refreshAllData()
