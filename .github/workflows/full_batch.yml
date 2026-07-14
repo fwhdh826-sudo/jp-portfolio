@@ -114,32 +114,10 @@ jobs:
           done
 
       - name: Smoke test candidates_stocks schema (personal-data guard)
-        run: |
-          python3 - <<'PY'
-          import json, sys
-          from pathlib import Path
-          ok = True
-          # P4.5-A010/A010-1a: 個人資産・実額・口座種別を含めない方針のguard
-          FORBIDDEN_KEYS = {
-              'eval', 'pnlPct', 'purchase_date', 'acquiredAt', 'account',
-              'accountType', 'holdings', 'cash', 'reserve', 'amount',
-              'maxAmount', 'sizing', 'headroom', 'score', 'action',
-          }
-          for p in ["data/candidates_stocks.json", "public/data/candidates_stocks.json"]:
-              try:
-                  d = json.loads(Path(p).read_text())
-                  assert d.get("schemaVersion") == "candidates-stocks-1", p
-                  assert isinstance(d.get("candidates"), list), p
-                  assert d.get("_meta", {}).get("not_for_trading") is True, p
-                  assert d.get("status") in ("ok", "partial", "empty"), p
-                  for c in d.get("candidates", []):
-                      leaked = FORBIDDEN_KEYS & set(c.keys())
-                      assert not leaked, f"{p}: forbidden keys {leaked} in candidate {c.get('code')}"
-              except Exception as e:
-                  print(f"WARN candidates_stocks smoke: {e}", file=sys.stderr)
-                  ok = False
-          print("candidates_stocks smoke ok" if ok else "candidates_stocks smoke WARN")
-          PY
+        # P5-B004c-3: 旧inline heredocはWARN-onlyでexit 0継続していた。
+        # data/candidates_stocks_privacy_smoke.py へ抽出しfail-closed化
+        # （schema/forbidden-key違反時はexit 1でjob failureにする）。
+        run: python3 -m data.candidates_stocks_privacy_smoke
 
       - name: Build candidates news summary
         run: python3 data/build_candidates_news.py
