@@ -40,9 +40,11 @@ from data.jpx_cheap_prescreen import (
     MAIN_MIN_HISTORY_DAYS,
     MAIN_MIN_PRICE_JPY,
     MAX_BATCH_SIZE,
+    MIN_SHORTLIST_COUNT,
     NEWCOMER_MAX_COUNT,
     NEWCOMER_MAX_HISTORY_DAYS,
     NEWCOMER_MIN_HISTORY_DAYS,
+    PREVIOUS_SHORTLIST_MIN_RATIO,
     SECTOR_CAP,
     SEED_BYPASS_ID,
     SHORTLIST_CACHE_HARD_EXPIRY_HOURS,
@@ -63,6 +65,7 @@ from data.jpx_cheap_prescreen import (
     load_shortlist_cache,
     save_shortlist_cache,
     select_diversity_shortlist,
+    shortlist_quality_guard_reason,
 )
 from data.jpx_universe_provider import JPXUniverseResult
 
@@ -289,12 +292,18 @@ class TestSuccessRatioGuard:
         assert result.bypass_seed_list_v1 is True  # 有効cacheなし
 
     def test_success_ratio_exactly_at_floor_updates_cache(self, tmp_path):
+        # n=80・sector分散多めでMIN_SHORTLIST_COUNT(50)の絶対floorを
+        # 上回りつつ、success_ratioちょうど70%を再現する。
         cache_path = tmp_path / "cache.json"
-        n = 10
-        universe = make_universe([(f"{7000+i}", f"N{i}", f"sector{i%3}") for i in range(n)])
+        n = 80
+        universe = make_universe([(f"{7000+i}", f"N{i}", f"sector{i%10}") for i in range(n)])
 
         def fetch_fn(batch):
-            return {t: (flat_series(300, price=1000, volume=100_000) if i < 7 else None) for i, t in enumerate(batch)}
+            threshold = int(n * SUCCESS_RATIO_MIN)  # 70% = 56
+            return {
+                t: (flat_series(300, price=1000, volume=100_000) if i < threshold else None)
+                for i, t in enumerate(batch)
+            }
 
         result = build_cheap_prescreen_shortlist(
             universe, now=NOW, fetch_fn=fetch_fn, pacing_fn=lambda: None, cache_path=cache_path
@@ -304,13 +313,14 @@ class TestSuccessRatioGuard:
         assert result.fallback_used is False
 
     def test_partial_failure_excludes_failed_tickers_but_continues(self, tmp_path):
+        # n=60・sector分散ありでMIN_SHORTLIST_COUNT(50)を上回りつつ
+        # partial failure（10%失敗・90%成功）を再現する。
         cache_path = tmp_path / "cache.json"
-        n = 20
-        universe = make_universe([(f"{8000+i}", f"N{i}", f"sector{i%5}") for i in range(n)])
+        n = 60
+        universe = make_universe([(f"{8000+i}", f"N{i}", f"sector{i%6}") for i in range(n)])
 
         def fetch_fn(batch):
-            # 偶数indexのみ成功（success_ratio=50%は floor未満なのでここでは
-            # 90%成功にする——partial failure自体の許容を見るテスト）
+            # 10件に1件のみ失敗（90%成功）——partial failure自体の許容を見るテスト
             return {t: (flat_series(300, price=1000, volume=1_000_000) if i % 10 != 0 else None) for i, t in enumerate(batch)}
 
         result = build_cheap_prescreen_shortlist(
@@ -319,7 +329,7 @@ class TestSuccessRatioGuard:
         assert result.success_ratio == pytest.approx(0.9)
         assert result.fallback_used is False
         assert result.universe_count == n
-        assert result.main_pool_count <= 18  # 2件は取得失敗のため対象外
+        assert result.main_pool_count <= 54  # 6件は取得失敗のため対象外
 
 
 # ---------------------------------------------------------------------------
@@ -333,8 +343,13 @@ class TestAlphaMixedCode:
         assert tickers == ["166A.T", "285A.T"]
 
     def test_pipeline_handles_alpha_mixed_code_end_to_end(self, tmp_path):
+        # MIN_SHORTLIST_COUNT(50)の絶対floorを上回るようalpha-mixed 1件+
+        # 通常code多数を混在させる。
         cache_path = tmp_path / "cache.json"
-        universe = make_universe([("166A", "Foo", "sectorA"), ("1000", "Bar", "sectorB")])
+        items = [("166A", "Foo", "sectorA")] + [
+            (f"{1000+i}", f"Bar{i}", f"sector{i%10}") for i in range(59)
+        ]
+        universe = make_universe(items)
 
         def fetch_fn(batch):
             return {t: flat_series(300, price=1000, volume=1_000_000) for t in batch}
@@ -634,6 +649,228 @@ class TestAtomicWrite:
 
 
 # ---------------------------------------------------------------------------
+# P5-B004c-1-PRESCREEN-HARDENING Phase 1: shortlist quality guard
+# ---------------------------------------------------------------------------
+
+
+def _all_pass_main_floor_fetch_fn(batch):
+    return {t: flat_series(300, price=1000, volume=1_000_000) for t in batch}
+
+
+def _floor_failing_series_fetch_fn(batch):
+    # history=10日はmain(>=252日)/newcomer(63-251日)いずれのfloorも満たさない
+    return {t: flat_series(10, price=1000, volume=1_000_000) for t in batch}
+
+
+class TestShortlistQualityGuard:
+    # --- 1. entries=[] -> cache非更新 --------------------------------------
+
+    def test_unit_empty_entries_rejected(self):
+        assert shortlist_quality_guard_reason(0, None) is not None
+
+    def test_pipeline_all_floors_rejected_entries_empty_no_cache_write(self, tmp_path):
+        cache_path = tmp_path / "cache.json"
+        universe = make_universe([(f"{20000+i}", f"N{i}", f"sector{i%5}") for i in range(60)])
+
+        result = build_cheap_prescreen_shortlist(
+            universe, now=NOW, fetch_fn=_floor_failing_series_fetch_fn,
+            pacing_fn=lambda: None, cache_path=cache_path,
+        )
+        assert not cache_path.exists()
+        assert result.fallback_used is True
+        assert result.bypass_seed_list_v1 is True  # 有効last-goodなし
+
+    # --- 2. absolute floor未満 -> cache非更新 -------------------------------
+
+    def test_unit_below_absolute_floor_rejected(self):
+        assert shortlist_quality_guard_reason(MIN_SHORTLIST_COUNT - 1, None) is not None
+
+    def test_pipeline_below_absolute_floor_does_not_write_cache(self, tmp_path):
+        cache_path = tmp_path / "cache.json"
+        passing = [(f"21{i:03d}", f"P{i}", f"sector{i%3}") for i in range(10)]
+        failing = [(f"22{i:03d}", f"F{i}", f"sector{i%3}") for i in range(15)]
+        universe = make_universe(passing + failing)
+
+        def fetch_fn(batch):
+            out = {}
+            for t in batch:
+                code = t[:-2]  # ".T"を除去
+                if code.startswith("21"):
+                    out[t] = flat_series(300, price=1000, volume=1_000_000)
+                else:
+                    out[t] = flat_series(10, price=1000, volume=1_000_000)
+            return out
+
+        result = build_cheap_prescreen_shortlist(
+            universe, now=NOW, fetch_fn=fetch_fn, pacing_fn=lambda: None, cache_path=cache_path,
+        )
+        assert not cache_path.exists()
+        assert result.bypass_seed_list_v1 is True
+
+    # --- 3. previous last-good比50%未満 -> 既存cache維持 ---------------------
+
+    def test_unit_relative_collapse_rejected(self):
+        previous = valid_cache_payload(n=120)
+        assert shortlist_quality_guard_reason(55, previous) is not None  # 55/120 < 50%
+
+    def test_pipeline_relative_collapse_keeps_existing_cache_unchanged(self, tmp_path):
+        cache_path = tmp_path / "cache.json"
+        save_shortlist_cache(valid_cache_payload(now=NOW - timedelta(hours=1), n=120), cache_path)
+
+        universe = make_universe([(f"{23000+i}", f"N{i}", f"sector{i%6}") for i in range(55)])
+
+        build_cheap_prescreen_shortlist(
+            universe, now=NOW, fetch_fn=_all_pass_main_floor_fetch_fn,
+            pacing_fn=lambda: None, cache_path=cache_path,
+        )
+        payload = json.loads(cache_path.read_text(encoding="utf-8"))
+        assert len(payload["items"]) == 120  # 上書きされていない
+
+    # --- 4. guard失敗+valid cache -> fallback -------------------------------
+
+    def test_pipeline_guard_failure_with_valid_cache_returns_fallback(self, tmp_path):
+        cache_path = tmp_path / "cache.json"
+        save_shortlist_cache(valid_cache_payload(now=NOW - timedelta(hours=1), n=120), cache_path)
+
+        universe = make_universe([(f"{23500+i}", f"N{i}", f"sector{i%6}") for i in range(55)])
+
+        result = build_cheap_prescreen_shortlist(
+            universe, now=NOW, fetch_fn=_all_pass_main_floor_fetch_fn,
+            pacing_fn=lambda: None, cache_path=cache_path,
+        )
+        assert result.fallback_used is True
+        assert result.bypass_seed_list_v1 is False
+        assert result.shortlist_count == 120
+
+    # --- 5. guard失敗+cacheなし -> seed bypass ------------------------------
+
+    def test_pipeline_guard_failure_with_no_cache_bypasses_to_seed(self, tmp_path):
+        cache_path = tmp_path / "no_cache.json"
+        universe = make_universe([(f"{24000+i}", f"N{i}", f"sector{i%5}") for i in range(60)])
+
+        result = build_cheap_prescreen_shortlist(
+            universe, now=NOW, fetch_fn=_floor_failing_series_fetch_fn,
+            pacing_fn=lambda: None, cache_path=cache_path,
+        )
+        assert result.bypass_seed_list_v1 is True
+        assert result.shortlist_id == SEED_BYPASS_ID
+        assert not cache_path.exists()
+
+    # --- 6. 正常target相当 -> cache更新 --------------------------------------
+
+    def test_unit_normal_target_scale_accepted(self):
+        assert shortlist_quality_guard_reason(TARGET_SHORTLIST_SIZE, None) is None
+
+    def test_pipeline_normal_target_scale_updates_cache(self, tmp_path):
+        cache_path = tmp_path / "cache.json"
+        universe = make_universe([(f"{25000+i}", f"N{i}", f"sector{i%20}") for i in range(300)])
+
+        result = build_cheap_prescreen_shortlist(
+            universe, now=NOW, fetch_fn=_all_pass_main_floor_fetch_fn,
+            pacing_fn=lambda: None, cache_path=cache_path,
+        )
+        assert result.fallback_used is False
+        assert cache_path.exists()
+        assert result.shortlist_count == TARGET_SHORTLIST_SIZE
+
+
+# ---------------------------------------------------------------------------
+# P5-B004c-1-PRESCREEN-HARDENING Phase 2: sector soft-cap semantics
+# ---------------------------------------------------------------------------
+
+
+class TestSectorCapSoftCap:
+    # --- 1. cap非緩和 -> relaxed=false/count=0 ------------------------------
+
+    def test_primary_fill_no_relaxation(self):
+        candidates = [main_candidate(f"big{i}", "bigsector", score=1.0 - i * 0.001) for i in range(100)]
+        for s in range(8):
+            candidates += [
+                main_candidate(f"other{s}_{j}", f"sector{s}", score=0.5 - j * 0.001) for j in range(5)
+            ]
+        selection = select_diversity_shortlist(candidates, target_size=30, hard_max_size=100, sector_cap=5)
+        assert selection.sector_cap_relaxed is False
+        assert selection.sector_cap_relaxed_count == 0
+        assert selection.sector_cap_violations == {}
+
+    # --- 2. backfill緩和 -> relaxed=true/count>0 -----------------------------
+
+    def test_backfill_relaxation_tracked(self):
+        candidates = [main_candidate(f"s{i}", "onlysector", score=1.0 - i * 0.001) for i in range(30)]
+        selection = select_diversity_shortlist(candidates, target_size=20, hard_max_size=50, sector_cap=5)
+        assert selection.sector_cap_relaxed is True
+        assert selection.sector_cap_relaxed_count == 15
+        assert selection.sector_cap_violations == {"onlysector": 15}
+
+    # --- 3. fallback cacheでもmetadata維持 ------------------------------------
+
+    def test_fallback_cache_preserves_sector_cap_metadata(self, tmp_path):
+        cache_path = tmp_path / "cache.json"
+        payload = valid_cache_payload(now=NOW - timedelta(hours=1), n=5)
+        payload["sector_cap_relaxed"] = True
+        payload["sector_cap_relaxed_count"] = 7
+        payload["sector_cap_violations"] = {"sectorX": 7}
+        save_shortlist_cache(payload, cache_path)
+
+        universe = make_universe([(f"{30000+i}", f"N{i}", "sectorA") for i in range(5)])
+
+        def fetch_fn(batch):
+            raise PreScreenRateLimitError("boom")
+
+        result = build_cheap_prescreen_shortlist(
+            universe, now=NOW, fetch_fn=fetch_fn, pacing_fn=lambda: None, cache_path=cache_path
+        )
+        assert result.fallback_used is True
+        assert result.sector_cap_relaxed is True
+        assert result.sector_cap_relaxed_count == 7
+        assert result.sector_cap_violations == {"sectorX": 7}
+
+    # --- 4. malformed metadata reject または安全default ----------------------
+
+    def test_malformed_sector_cap_metadata_rejects_whole_cache(self, tmp_path):
+        cache_path = tmp_path / "cache.json"
+        payload = valid_cache_payload()
+        payload["sector_cap_relaxed"] = "not-a-bool"
+        save_shortlist_cache(payload, cache_path)
+        assert load_shortlist_cache(cache_path, now=NOW) is None
+
+    def test_missing_sector_cap_metadata_old_schema_gets_safe_defaults(self, tmp_path):
+        cache_path = tmp_path / "cache.json"
+        payload = valid_cache_payload(now=NOW - timedelta(hours=1), n=5)  # 旧schema: キー自体が無い
+        save_shortlist_cache(payload, cache_path)
+
+        universe = make_universe([(f"{31000+i}", f"N{i}", "sectorA") for i in range(5)])
+
+        def fetch_fn(batch):
+            raise PreScreenRateLimitError("boom")
+
+        result = build_cheap_prescreen_shortlist(
+            universe, now=NOW, fetch_fn=fetch_fn, pacing_fn=lambda: None, cache_path=cache_path
+        )
+        assert result.fallback_used is True
+        assert result.sector_cap_relaxed is False
+        assert result.sector_cap_relaxed_count == 0
+        assert result.sector_cap_violations == {}
+
+    # --- 5. newcomer<=10維持 --------------------------------------------------
+
+    def test_newcomer_cap_respected_even_when_sector_cap_relaxed(self):
+        mains = [main_candidate(f"m{i}", "onlysector", score=1.0 - i * 0.001) for i in range(30)]
+        newcomers = [newcomer_candidate(f"n{i}", "newsector", score=0.5, adv=1e7 + i) for i in range(20)]
+        selection = select_diversity_shortlist(mains + newcomers, target_size=20, hard_max_size=50, sector_cap=5)
+        assert selection.newcomer_count <= NEWCOMER_MAX_COUNT
+        assert selection.sector_cap_relaxed is True
+
+    # --- 6. hard max<=300維持 --------------------------------------------------
+
+    def test_hard_max_respected_even_when_sector_cap_relaxed(self):
+        candidates = [main_candidate(f"h{i}", "onlysector", score=1.0 - i * 0.001) for i in range(500)]
+        selection = select_diversity_shortlist(candidates, target_size=350, hard_max_size=300, sector_cap=5)
+        assert len(selection.entries) == 300
+        assert selection.sector_cap_relaxed is True
+
+
+# ---------------------------------------------------------------------------
 # 18. seed 41 production不変
 # ---------------------------------------------------------------------------
 
@@ -675,8 +912,9 @@ class TestPrivacyNonReference:
         assert not (fields & FORBIDDEN_KEYS)
 
     def test_cache_payload_has_no_forbidden_keys(self, tmp_path):
+        # MIN_SHORTLIST_COUNT(50)の絶対floorを上回るuniverseにする。
         cache_path = tmp_path / "cache.json"
-        universe = make_universe([(f"{9500+i}", f"N{i}", "sectorA") for i in range(5)])
+        universe = make_universe([(f"{9500+i}", f"N{i}", f"sector{i%5}") for i in range(60)])
 
         def fetch_fn(batch):
             return {t: flat_series(300, price=1000, volume=1_000_000) for t in batch}

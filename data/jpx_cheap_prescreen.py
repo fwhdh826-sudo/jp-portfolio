@@ -126,6 +126,20 @@ SECTOR_CAP = int(TARGET_SHORTLIST_SIZE * SECTOR_CAP_RATIO)
 SHORTLIST_CACHE_TARGET_TTL_HOURS = 7 * 24
 SHORTLIST_CACHE_HARD_EXPIRY_HOURS = 14 * 24
 
+# --- shortlist quality guard --------------------------------------------
+# success_ratio>=SUCCESS_RATIO_MIN(0.70)を通過しても、floors全滅・sector
+# 極端偏在等でshortlist自体が崩壊するケースはcache更新の対象外とする
+# （fetchは健全でもcandidate poolが不健全、というsuccess_ratioだけでは
+# 検出できない失敗モード）。2段のguardを設ける:
+#   1. 絶対floor: target(200)の25%。newcomer capやsector capの下でも
+#      通常の市場構成なら十分到達する水準であり、正常な日々の変動で
+#      これを割ることは想定しない。
+MIN_SHORTLIST_COUNT = 50
+#   2. 相対floor: 直前のvalid last-good cache件数に対する比率。急激な
+#      半減はdata異常（例: universe取得側の一時的欠損）を示唆するため、
+#      絶対floor以上であっても既存last-goodを上書きしない。
+PREVIOUS_SHORTLIST_MIN_RATIO = 0.50
+
 
 # ---------------------------------------------------------------------------
 # 例外
@@ -631,13 +645,24 @@ def build_candidate_pool(
 
 
 class ShortlistSelection(NamedTuple):
-    """diversity選抜の結果。entriesはscore降順・code昇順で決定的にsort済み。"""
+    """diversity選抜の結果。entriesはscore降順・code昇順で決定的にsort済み。
+
+    sector_capはsoft cap契約（正式契約: SECTOR_CAP_RATIO=12%はhard capでは
+    ない）。primary fillでは常にcapを維持するが、target未達時のbackfillは
+    capを一切適用せず埋める（既存動作）。sector_cap_relaxed/
+    sector_cap_relaxed_count/sector_cap_violationsは、backfillが実際に
+    capを超えて追加したかどうかのobservabilityを提供する
+    （silent violation禁止 — 呼び出し側がcap超過の有無・規模を検知できる）。
+    """
 
     entries: list[ScoredCandidate]
     sector_counts: dict[str, int]
     newcomer_count: int
     guaranteed_sector_count: int
     reserved_newcomer_count: int
+    sector_cap_relaxed: bool
+    sector_cap_relaxed_count: int
+    sector_cap_violations: dict[str, int]
 
 
 def select_diversity_shortlist(
@@ -716,18 +741,25 @@ def select_diversity_shortlist(
         selected_codes.add(c.code)
         sector_counts[c.sector] = sector_counts.get(c.sector, 0) + 1
 
+    sector_cap_violations: dict[str, int] = {}
     if len(selected) < effective_target:
         for c in pool_sorted:
             if len(selected) >= effective_target or len(selected) >= hard_max_size:
                 break
             if c.code in selected_codes:
                 continue
+            # backfillはcapを適用しないが、追加時点で既にcap以上だった
+            # sectorへの追加は「capを実際に超過させた」ものとしてtrackする
+            # （soft cap契約のobservability。silent violation禁止）。
+            if sector_counts.get(c.sector, 0) >= sector_cap:
+                sector_cap_violations[c.sector] = sector_cap_violations.get(c.sector, 0) + 1
             selected.append(c)
             selected_codes.add(c.code)
             sector_counts[c.sector] = sector_counts.get(c.sector, 0) + 1
 
     selected_sorted = sorted(selected, key=lambda c: (-c.score, c.code))
     newcomer_count = sum(1 for c in selected_sorted if c.pool_type == "newcomer")
+    sector_cap_relaxed_count = sum(sector_cap_violations.values())
 
     return ShortlistSelection(
         entries=selected_sorted,
@@ -735,6 +767,9 @@ def select_diversity_shortlist(
         newcomer_count=newcomer_count,
         guaranteed_sector_count=guaranteed_sector_count,
         reserved_newcomer_count=len(reserved_newcomers),
+        sector_cap_relaxed=sector_cap_relaxed_count > 0,
+        sector_cap_relaxed_count=sector_cap_relaxed_count,
+        sector_cap_violations=sector_cap_violations,
     )
 
 
@@ -788,6 +823,28 @@ def _cache_item_valid(item: Any) -> bool:
     return True
 
 
+def _sector_cap_metadata_valid(payload: dict[str, Any]) -> bool:
+    """sector cap soft-cap metadataのdeep validation。旧schema（本フィールド
+    導入前に書かれたcache）はフィールド自体が無いため、missingは有効
+    （呼び出し側でsafe default 0/False/{}を補う）。フィールドは存在するが
+    型不正な場合のみcorruption扱いでcache全体をrejectする。"""
+    if "sector_cap_relaxed" in payload:
+        if not isinstance(payload["sector_cap_relaxed"], bool):
+            return False
+    if "sector_cap_relaxed_count" in payload:
+        count = payload["sector_cap_relaxed_count"]
+        if not isinstance(count, int) or isinstance(count, bool) or count < 0:
+            return False
+    if "sector_cap_violations" in payload:
+        violations = payload["sector_cap_violations"]
+        if not isinstance(violations, dict):
+            return False
+        for k, v in violations.items():
+            if not isinstance(k, str) or not isinstance(v, int) or isinstance(v, bool) or v < 0:
+                return False
+    return True
+
+
 def _cache_payload_valid(payload: Any) -> bool:
     """cacheファイルがschema上有効か（corruption検出。malformed itemsを持つ
     cacheはload_shortlist_cache()でNoneとなり、last-good候補として使われない）。"""
@@ -803,6 +860,8 @@ def _cache_payload_valid(payload: Any) -> bool:
     if _parse_iso(payload.get("generated_at")) is None:
         return False
     if not isinstance(payload.get("success_ratio"), (int, float)):
+        return False
+    if not _sector_cap_metadata_valid(payload):
         return False
     return True
 
@@ -883,6 +942,9 @@ def _cache_to_prescreen_result(
         fallback_reason=fallback_reason,
         cache_age_hours=_cache_age_hours(cache_payload["generated_at"], now),
         bypass_seed_list_v1=False,
+        sector_cap_relaxed=bool(cache_payload.get("sector_cap_relaxed", False)),
+        sector_cap_relaxed_count=int(cache_payload.get("sector_cap_relaxed_count", 0)),
+        sector_cap_violations=dict(cache_payload.get("sector_cap_violations", {})),
     )
 
 
@@ -910,7 +972,42 @@ def _seed_list_v1_bypass_result(now: datetime, fallback_reason: str) -> "CheapPr
         fallback_reason=fallback_reason,
         cache_age_hours=None,
         bypass_seed_list_v1=True,
+        sector_cap_relaxed=False,
+        sector_cap_relaxed_count=0,
+        sector_cap_violations={},
     )
+
+
+def shortlist_quality_guard_reason(
+    entries_count: int,
+    previous_cache_payload: dict[str, Any] | None,
+) -> str | None:
+    """新shortlistをlast-goodとしてcache更新して良いか判定する（success_ratio
+    guardとは独立した2段目のguard。success_ratio>=SUCCESS_RATIO_MINでも、
+    floors全滅・sector極端偏在等でshortlist自体が崩壊するケースを検出する）。
+
+    問題なければNone。問題があれば理由文字列を返し、呼び出し元は
+    cacheを更新せず（既存last-goodを上書きしない）fallback経路へ回る。
+    """
+    if entries_count == 0:
+        return "shortlist_quality_guard: entries collapsed to empty (0 entries)"
+    if entries_count < MIN_SHORTLIST_COUNT:
+        return (
+            f"shortlist_quality_guard: entries count {entries_count} below "
+            f"absolute floor MIN_SHORTLIST_COUNT={MIN_SHORTLIST_COUNT}"
+        )
+    if previous_cache_payload is not None:
+        previous_items = previous_cache_payload.get("items")
+        previous_count = len(previous_items) if isinstance(previous_items, list) else 0
+        if previous_count > 0:
+            ratio = entries_count / previous_count
+            if ratio < PREVIOUS_SHORTLIST_MIN_RATIO:
+                return (
+                    f"shortlist_quality_guard: entries count {entries_count} is "
+                    f"{ratio:.2%} of previous last-good count {previous_count}, "
+                    f"below PREVIOUS_SHORTLIST_MIN_RATIO={PREVIOUS_SHORTLIST_MIN_RATIO:.0%}"
+                )
+    return None
 
 
 # ---------------------------------------------------------------------------
@@ -942,6 +1039,9 @@ class CheapPreScreenResult(NamedTuple):
     fallback_reason: str | None
     cache_age_hours: float | None
     bypass_seed_list_v1: bool
+    sector_cap_relaxed: bool
+    sector_cap_relaxed_count: int
+    sector_cap_violations: dict[str, int]
 
 
 def build_cheap_prescreen_shortlist(
@@ -967,7 +1067,10 @@ def build_cheap_prescreen_shortlist(
       2. fetch成功率(success_ratio) < SUCCESS_RATIO_MIN(0.70)
          → 同上（新結果を計算しても採用/cache更新しない——
          全滅（success_ratio=0）の場合も同じ経路でvalid last-goodへ回る）。
-      3. 成功率>=0.70 → 新shortlistを計算しcacheをatomic更新、
+      3. success_ratio>=0.70でも、新shortlistがshortlist_quality_guard_reason()
+         でreject（entries=0、絶対floor未満、または直前last-good比で
+         急減）された場合 → 同上（既存last-goodを上書きしない）。
+      4. 上記いずれにも該当しない → 新shortlistを計算しcacheをatomic更新、
          fallback_used=Falseで返す。
     """
     if now is None:
@@ -1005,6 +1108,14 @@ def build_cheap_prescreen_shortlist(
         ShortlistItem(code=c.code, name=c.name, sector=c.sector, pool_type=c.pool_type, score=c.score)
         for c in selection.entries
     ]
+
+    guard_reason = shortlist_quality_guard_reason(len(entries), cache_payload)
+    if guard_reason is not None:
+        print(f"[jpx_cheap_prescreen] {guard_reason}; shortlist cache not updated", file=sys.stderr)
+        if cache_payload is not None:
+            return _cache_to_prescreen_result(cache_payload, now, guard_reason)
+        return _seed_list_v1_bypass_result(now, guard_reason)
+
     out_items = [(e.code, e.name, e.sector) for e in entries]
     generated_at_iso = now.isoformat()
 
@@ -1021,6 +1132,9 @@ def build_cheap_prescreen_shortlist(
             "target_shortlist": target_size,
             "hard_max_shortlist": hard_max_size,
             "sector_counts": selection.sector_counts,
+            "sector_cap_relaxed": selection.sector_cap_relaxed,
+            "sector_cap_relaxed_count": selection.sector_cap_relaxed_count,
+            "sector_cap_violations": selection.sector_cap_violations,
         },
         cache_path,
     )
@@ -1043,4 +1157,7 @@ def build_cheap_prescreen_shortlist(
         fallback_reason=None,
         cache_age_hours=0.0,
         bypass_seed_list_v1=False,
+        sector_cap_relaxed=selection.sector_cap_relaxed,
+        sector_cap_relaxed_count=selection.sector_cap_relaxed_count,
+        sector_cap_violations=selection.sector_cap_violations,
     )
