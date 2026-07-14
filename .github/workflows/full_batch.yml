@@ -69,10 +69,10 @@ jobs:
           python-version: '3.11'
 
       - name: Install Python deps
-        # P5-B004b: data/jpx_universe_provider.py (JPX data_j.xls source
-        # adapter) の依存。このticketではJPX providerをupdate-dataから
-        # 呼び出さない（B004cでpre-screen後に接続予定）が、依存だけ先に
-        # 用意しておく。requests/xlrdはJPX providerのfetch/parseにのみ使う。
+        # P5-B004d: data/jpx_universe_provider.py (JPX data_j.xls source
+        # adapter) + data/jpx_cheap_prescreen.py (bulk OHLCV pre-screen) の
+        # 依存。requests/xlrdはJPX providerのfetch/parseに、
+        # pandas/numpyはcheap pre-screenのmetrics計算に使う。
         run: pip install yfinance pandas numpy feedparser requests xlrd
 
       # ── データ更新（各スクリプト独立、失敗しても継続）─────────────────
@@ -101,7 +101,11 @@ jobs:
         run: python3 data/update_news.py || true
 
       # ── P5-B002a: 新規個別株候補（市場公開情報のみ、observability-only） ──
-      - name: Build candidates_stocks.json (seed list, market data only)
+      # P5-B004d: whole-market provider(JPX eligible→cheap pre-screen→
+      # bounded shortlist)接続。あらゆる異常系でdefault seed_list_v1(41件)
+      # へ安全にfallbackするため、通常時と同様 || true は保険として残す
+      # （本provider自体は例外を外へ伝播させない設計）。
+      - name: Build candidates_stocks.json (whole-market provider, market data only)
         run: python3 data/build_candidates_stocks.py || true
 
       # ── public/data へコピー ──────────────────────────────────────────

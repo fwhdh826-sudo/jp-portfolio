@@ -40,6 +40,22 @@ export interface CandidatesStocksData {
       truncatedCount: number
       failedTotalCount: number
     }
+    // P5-B004d: whole-market universe接続時のみ付与されるprovenance。
+    // seed_list_v1 default providerのままの場合は存在しない
+    // （既存consumerには未使用のoptional追加フィールド）。
+    universeProvenance?: {
+      jpxSource?: string
+      jpxFallbackUsed?: boolean
+      jpxEligibleCount?: number
+      shortlistId?: string
+      shortlistCount?: number
+      shortlistSuccessRatio?: number
+      shortlistFallbackUsed?: boolean
+      shortlistFallbackReason?: string | null
+      shortlistBypassSeedListV1?: boolean
+      sectorCapRelaxed?: boolean
+      sectorCapRelaxedCount?: number
+    }
   }
   candidates: StockCandidateItem[]
   missing: string[]

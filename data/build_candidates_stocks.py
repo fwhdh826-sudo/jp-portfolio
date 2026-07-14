@@ -129,17 +129,118 @@ class UniverseResult(NamedTuple):
     items: list[tuple[str, str, str]]
 
 
+class UniverseResultWithProvenance(NamedTuple):
+    """P5-B004d: UniverseResultの上位互換。universe_id/itemsは同一契約を
+    保ちつつ、_metaへ付与する追加provenance情報を持つ。
+    build_candidates_stocks()はuniverse_id/items"属性"でアクセスするため
+    （tuple位置unpackではない）、既存UniverseResult providerと区別なく
+    duck typingで扱える。"""
+    universe_id: str
+    items: list[tuple[str, str, str]]
+    provenance: dict[str, Any]
+
+
 # provider: UniverseResult（universe_id + (code, name, sector)のリスト）を
 # 返す関数。将来はJPX全銘柄→eligibility→pre-screen等の別providerに
 # 差し替え可能。custom/future providerは自身のuniverse_idを明示的に
 # 返すことで_meta.universeを正しく追随させる（P5-B004b SCALE-02対応）。
+# P5-B004d: UniverseResultWithProvenanceを返すproviderも許容する
+# （duck typing、下記build_candidates_stocks()参照）。
 UniverseProvider = Callable[[], UniverseResult]
 
 
 def default_universe_provider() -> UniverseResult:
     """デフォルトprovider。固定SEED_LIST(41銘柄・universe_id=seed_list_v1)を
-    そのまま返す。外部JPX等のfetchは行わない。"""
+    そのまま返す。外部JPX等のfetchは行わない。offline test前提のため
+    ネットワークI/Oを一切行わない（whole-market providerの最終fallback
+    としても使われる、P5-B004d参照）。"""
     return UniverseResult(universe_id=UNIVERSE, items=list(SEED_LIST))
+
+
+def whole_market_universe_provider(
+    now: datetime | None = None,
+    get_universe_fn: Any = None,
+    build_shortlist_fn: Any = None,
+) -> UniverseResultWithProvenance:
+    """P5-B004d: production向けwhole-market provider。
+
+    data.jpx_universe_provider.get_jpx_universe() → data.jpx_cheap_prescreen.
+    build_cheap_prescreen_shortlist() の順に呼び出し、bounded shortlist
+    （target 200 / hard max 300。既存MAX_ENRICHMENT_UNIVERSE=500を常に
+    下回るため、下流のenforce_enrichment_guard()が本providerの結果で
+    発火することはない）をUniverseResult互換のuniverse_id/itemsへ変換する。
+
+    JPX fetch失敗・rate-limit・success_ratio<0.70・shortlist quality guard
+    失敗など、いずれの異常系でもdefault_universe_provider()（SEED_LIST
+    41件）へ安全にfallbackする。予期しない例外が発生した場合も同様に
+    fallbackし、本関数が例外を外へ伝播させることはない——空/unboundedな
+    universeがenrichmentへ渡ることを防ぐ最終防御。
+
+    get_universe_fn/build_shortlist_fnはテスト用のdependency injection
+    ポイント（省略時はget_jpx_universe/build_cheap_prescreen_shortlistの
+    実実装を使う）。"""
+    if now is None:
+        now = datetime.now(timezone.utc)
+
+    # lazy import: default_universe_providerのみを使う既存の高速offline
+    # testやnumpy/pandas非依存のcaller experienceを汚染しないため、
+    # モジュールレベルではなく関数内でimportする。
+    if get_universe_fn is None or build_shortlist_fn is None:
+        from data.jpx_universe_provider import get_jpx_universe
+        from data.jpx_cheap_prescreen import build_cheap_prescreen_shortlist
+
+        if get_universe_fn is None:
+            get_universe_fn = get_jpx_universe
+        if build_shortlist_fn is None:
+            build_shortlist_fn = build_cheap_prescreen_shortlist
+
+    try:
+        jpx_universe = get_universe_fn(now=now)
+        prescreen = build_shortlist_fn(jpx_universe, now=now)
+    except Exception as e:  # noqa: BLE001 - 最終防御。予期しない例外でも
+        # enrichmentへ渡すよりseed_list_v1へ安全にfallbackする方が常に安全。
+        print(
+            f"[whole_market_universe_provider] unexpected error: {e!r}; "
+            "falling back to seed_list_v1",
+            file=sys.stderr,
+        )
+        fallback = default_universe_provider()
+        return UniverseResultWithProvenance(
+            universe_id=fallback.universe_id,
+            items=fallback.items,
+            provenance={
+                "shortlistBypassSeedListV1": True,
+                "shortlistFallbackReason": f"unexpected_error: {e!r}",
+            },
+        )
+
+    provenance: dict[str, Any] = {
+        "jpxSource": jpx_universe.source,
+        "jpxFallbackUsed": jpx_universe.fallback_used,
+        "jpxEligibleCount": jpx_universe.eligible_count,
+        "shortlistId": prescreen.shortlist_id,
+        "shortlistCount": prescreen.shortlist_count,
+        "shortlistSuccessRatio": prescreen.success_ratio,
+        "shortlistFallbackUsed": prescreen.fallback_used,
+        "shortlistFallbackReason": prescreen.fallback_reason,
+        "shortlistBypassSeedListV1": prescreen.bypass_seed_list_v1,
+        "sectorCapRelaxed": prescreen.sector_cap_relaxed,
+        "sectorCapRelaxedCount": prescreen.sector_cap_relaxed_count,
+    }
+
+    if prescreen.bypass_seed_list_v1 or not prescreen.items:
+        fallback = default_universe_provider()
+        return UniverseResultWithProvenance(
+            universe_id=fallback.universe_id,
+            items=fallback.items,
+            provenance=provenance,
+        )
+
+    return UniverseResultWithProvenance(
+        universe_id=prescreen.shortlist_id,
+        items=prescreen.items,
+        provenance=provenance,
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -325,7 +426,13 @@ def build_candidates_stocks(
     if now is None:
         now = datetime.now(JST)
 
-    universe_id, universe = universe_provider()
+    # 属性アクセス（tuple位置unpackではない）: UniverseResult(2 field)と
+    # UniverseResultWithProvenance(P5-B004d、+provenance field)の両方を
+    # duck typingで区別なく扱うため。
+    provider_result = universe_provider()
+    universe_id = provider_result.universe_id
+    universe = provider_result.items
+    universe_provenance = getattr(provider_result, "provenance", None)
     enforce_enrichment_guard(universe, max_items=enrichment_guard)
 
     candidates_all, missing_all = enrich_universe(universe, fetch_fn=fetch_fn)
@@ -346,24 +453,31 @@ def build_candidates_stocks(
         status = 'partial'
 
     now_iso = now.isoformat()
+    meta: dict[str, Any] = {
+        "kind": "candidates_stocks",
+        "source": "data/build_candidates_stocks.py + yfinance",
+        "not_for_trading": True,
+        "universe": universe_id,
+        "note": "市場公開情報のみ。個人資産・保有実額・現金・口座情報は含まない",
+        "counts": {
+            "universeCount": len(universe),
+            "publishedCount": len(candidates),
+            "truncatedCount": truncated,
+            "failedTotalCount": len(missing_all),
+        },
+    }
+    # P5-B004d: whole-market provider使用時のみ付与されるoptional
+    # provenance。既存default_universe_provider（SEED_LIST）はこの属性を
+    # 持たないため、既存の全出力・全テストは_meta形状不変のまま。
+    if universe_provenance:
+        meta["universeProvenance"] = universe_provenance
+
     return {
         "schemaVersion": SCHEMA_VERSION,
         "updatedAt": now_iso,
         "sourceUpdatedAt": now_iso if ok_count > 0 else None,
         "staleThresholdHours": STALE_THRESHOLD_HOURS,
-        "_meta": {
-            "kind": "candidates_stocks",
-            "source": "data/build_candidates_stocks.py + yfinance",
-            "not_for_trading": True,
-            "universe": universe_id,
-            "note": "市場公開情報のみ。個人資産・保有実額・現金・口座情報は含まない",
-            "counts": {
-                "universeCount": len(universe),
-                "publishedCount": len(candidates),
-                "truncatedCount": truncated,
-                "failedTotalCount": len(missing_all),
-            },
-        },
+        "_meta": meta,
         "candidates": candidates,
         "missing": missing,
         "status": status,
@@ -463,9 +577,14 @@ def load_existing(path: Path) -> dict[str, Any] | None:
 
 def main() -> None:
     now = datetime.now(JST)
-    print(f"[{now:%Y-%m-%d %H:%M}] candidates_stocks.json 生成開始（universe={UNIVERSE}）")
+    print(f"[{now:%Y-%m-%d %H:%M}] candidates_stocks.json 生成開始（whole-market provider）")
 
-    payload = build_candidates_stocks(now=now)
+    # P5-B004d: production接続。whole_market_universe_provider()自体が
+    # JPX fetch失敗/rate-limit/success_ratio<0.70/shortlist quality guard
+    # 失敗/予期しない例外のいずれの場合もdefault_universe_provider()
+    # （SEED_LIST 41件）へ安全にfallbackするため、main()からは常に単に
+    # whole_market_universe_providerを渡すだけでよい。
+    payload = build_candidates_stocks(universe_provider=whole_market_universe_provider, now=now)
     ok_count = sum(1 for c in payload['candidates'] if c.get('dataStatus') == 'ok')
     print(
         f"  ✓ {ok_count}/{len(payload['candidates'])}銘柄成功 "
