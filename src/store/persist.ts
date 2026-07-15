@@ -2,6 +2,7 @@ import type { Holding, Trust, LearningState, PortfolioPolicy, CashAssumptions, C
 import { sanitizeLearningState } from '../domain/learning/performanceTracker'
 import type { TrustShortPortfolioSnapshot } from '../domain/learning/trustShortTracker'
 import { isStrictTimestamp } from '../utils/strictTimestamp'
+import { isCsvImportProvenance } from '../domain/csv/csvProvenance'
 
 const PORTFOLIO_KEY = 'v81_portfolio'
 const TRUST_KEY = 'v81_trust'
@@ -121,29 +122,6 @@ function isNonNegativeInteger(value: unknown): value is number {
 
 function isTimestamp(value: unknown, allowDateOnly = true): value is string {
   return isStrictTimestamp(value, { allowDateOnly })
-}
-
-function isCsvImportProvenance(value: unknown): value is CsvImportProvenance {
-  if (!isRecord(value) || !hasExactKeys(value, [
-    'importedAt', 'sourceAsOf', 'sourceAsOfKind', 'sourceAsOfConfidence',
-    'contentFingerprint', 'sourceFileName', 'fileLastModified',
-  ], ['semanticIdentity'])) return false
-  if (!isTimestamp(value.importedAt, false) ||
-      (value.sourceAsOf !== null && !isTimestamp(value.sourceAsOf, false)) ||
-      typeof value.contentFingerprint !== 'string' ||
-      !/^fnv1a32:[0-9a-f]{8}$/.test(value.contentFingerprint) ||
-      (value.semanticIdentity !== undefined &&
-        (typeof value.semanticIdentity !== 'string' || !/^sha256:[0-9a-f]{64}$/.test(value.semanticIdentity))) ||
-      (value.sourceFileName !== null && typeof value.sourceFileName !== 'string') ||
-      (value.fileLastModified !== null && !isTimestamp(value.fileLastModified, false))) return false
-
-  const kind = value.sourceAsOfKind
-  const confidence = value.sourceAsOfConfidence
-  if (kind === 'csv_explicit') return confidence === 'authoritative' && value.sourceAsOf !== null
-  if (kind === 'csv_exported_at' || kind === 'filename' || kind === 'file_last_modified') {
-    return confidence === 'weak' && value.sourceAsOf !== null
-  }
-  return kind === 'unknown' && confidence === 'unknown' && value.sourceAsOf === null
 }
 
 function isStringArray(value: unknown): value is string[] {

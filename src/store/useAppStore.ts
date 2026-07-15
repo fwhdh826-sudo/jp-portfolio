@@ -73,11 +73,26 @@ import { buildExportableCashAssumptions } from '../utils/cashAssumptionsTransfer
 import {
   serializePortfolioSnapshotExport,
   parsePortfolioSnapshotImport,
-  PORTFOLIO_SNAPSHOT_SCHEMA_VERSION_V2,
+  PORTFOLIO_SNAPSHOT_SCHEMA_VERSION,
   type PortfolioSnapshotHolding,
 } from '../utils/portfolioSnapshotTransfer'
 
 // ── アクション型 ─────────────────────────────────────────────
+export type PortfolioSnapshotImportResult =
+  | { ok: true; code: 'SUCCESS'; skippedTrustIds?: string[] }
+  | { ok: true; code: 'DUPLICATE_SNAPSHOT'; skippedTrustIds?: undefined }
+  | {
+      ok: false
+      code:
+        | 'INVALID_SNAPSHOT'
+        | 'INVALID_SNAPSHOT_PROVENANCE'
+        | 'SNAPSHOT_STALE'
+        | 'SNAPSHOT_PROVENANCE_CONFLICT'
+        | 'SNAPSHOT_PROVENANCE_UNKNOWN'
+        | 'SNAPSHOT_IMPORT_BLOCKED'
+      error: string
+    }
+
 interface AppActions {
   // 起動時初期化
   initialize: () => Promise<void>
@@ -102,11 +117,10 @@ interface AppActions {
   // P4.5-A012b: 保有株・投信・現金前提・portfolioPolicyのportfolio snapshotをexport（表示専用の文字列を返すだけ。保存・public出力はしない）
   exportPortfolioSnapshot: () => string
   // P4.5-A012b: 他端末でexportしたportfolio snapshotをimportする（未知のholding code/trust idが含まれる場合は全体rejectしstore/localStorageを変更しない）
-  // P4.5-A013-T7: v2はunknown trust idをsilent ignoreせずskip+warningとして
+  // P4.5-A013-T7: full-sync schema (v2/v3) はunknown trust idをsilent ignoreせずskip+warningとして
   // 呼び出し側へ返す（skippedTrustIds）。全体rejectはしない（他の有効な変更が
   // 巻き添えでrejectされてしまうことを避けるため。詳細はimplementationコメント参照）。
-  importPortfolioSnapshot: (raw: string) =>
-    { ok: true; skippedTrustIds?: string[] } | { ok: false; error: string }
+  importPortfolioSnapshot: (raw: string) => PortfolioSnapshotImportResult
 }
 
 export interface CsvImportOptions {
@@ -400,7 +414,8 @@ function persistCurrentPortfolioGeneration(state: AppState): void {
         trust: state.trust,
         learning: state.learning,
         importedAt: state.system.csvLastImportedAt ?? canonical.payload.importedAt,
-        provenance: state.system.csvImportProvenance ?? canonical.payload.provenance ?? null,
+        // Never attach a previous canonical generation's provenance to replacement content.
+        provenance: state.system.csvImportProvenance ?? null,
         syncSummary: state.system.csvSyncSummary ?? canonical.payload.syncSummary,
         trustShortSnapshot: canonical.payload.trustShortSnapshot,
       })
@@ -505,24 +520,13 @@ export function applyHoldingsFullSyncFromSnapshot(
   }
 }
 
-// P4.5-A013-T7: 「古いsnapshotで新しいlocal portfolioを逆行させない」ガード。
-// T4のshouldApplyPublishedSnapshot（published/auto-generated snapshotの適用判定）とは
-// 目的も安全側のデフォルトも異なるため意図的に別関数にする:
-//   - shouldApplyPublishedSnapshotは「timestamp不明なら適用しない」（自動処理なので
-//     安全側は非適用）
-//   - こちらは「timestampが片方でも不明なら拒否しない」（ユーザーが能動的に貼り付ける
-//     手動snapshotなので、不明な場合まで拒否すると従来のnull-csvImportedAt運用
-//     （CSV未取込端末からのexport等）を壊してしまう）
-// 両方のtimestampが判明していて、かつsnapshotの方が厳密に古い場合のみ拒否する。
-export function isSnapshotOlderThanCurrentBasis(
-  snapshotCsvImportedAt: string | null,
-  currentCsvLastImportedAt: string | null,
-): boolean {
-  if (!snapshotCsvImportedAt || !currentCsvLastImportedAt) return false
-  const snapshotTime = parseDataTimestamp(snapshotCsvImportedAt)
-  const currentTime = parseDataTimestamp(currentCsvLastImportedAt)
-  if (!snapshotTime || !currentTime) return false
-  return snapshotTime.getTime() < currentTime.getTime()
+function hasCurrentPortfolioGenerationEvidence(state: AppState): boolean {
+  return state.system.csvImportProvenance != null ||
+    state.system.csvLastImportedAt != null ||
+    state.holdings.length > 0 ||
+    state.trust.some(fund => fund.eval > 0) ||
+    state.portfolioPolicy.jpStockMaxRatio !== DEFAULT_PORTFOLIO_POLICY.jpStockMaxRatio ||
+    state.cashAssumptions.manualOverrideEnabled
 }
 
 // ── P1-3B: CommitteeDecision → OfficialDecision 変換 ─────────
@@ -1784,44 +1788,81 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
       portfolioPolicy: state.portfolioPolicy,
       cashAssumptions: exportableCash,
       csvImportedAt: state.system.csvLastImportedAt,
+      csvImportProvenance: state.system.csvImportProvenance ?? null,
     })
   },
 
   // P4.5-A012b: 他端末でexportしたportfolio snapshotをimportする。
   // parsePortfolioSnapshotImportが既に個々のフィールドを検証済みだが、それに加えて
-  // 「この端末のholdings/trustに存在しないcode/idが含まれていないか」を確認する。
-  // 今回のsnapshotはname/sector/policy等の静的属性を持たないため、未知の銘柄・投信を
-  // 新規作成することはできない（できてしまうと不完全なHolding/Trustが生成されてしまう）。
-  // 1件でも未知のcode/idがあれば全体をrejectし、store/localStorageは一切変更しない。
+  // v1は未知のcode/idを全体rejectし、full-syncのv2/v3は検証済みmetadataからholdingを
+  // 安全に再構築する。trust masterは全schemaでregistryとして維持する。
   importPortfolioSnapshot: (raw) => {
     if (isCsvImportCommitCriticalSection()) {
       reportRejectedReentrantMutation('importPortfolioSnapshot')
-      return { ok: false, error: 'CSV取込のcommit処理中です。完了後に再試行してください。' }
+      return { ok: false, code: 'SNAPSHOT_IMPORT_BLOCKED', error: 'CSV取込のcommit処理中です。完了後に再試行してください。' }
     }
     const parsed = parsePortfolioSnapshotImport(raw)
-    if (!parsed.ok) return { ok: false, error: parsed.error }
+    if (!parsed.ok) {
+      return {
+        ok: false,
+        code: parsed.code === 'INVALID_SNAPSHOT_PROVENANCE'
+          ? 'INVALID_SNAPSHOT_PROVENANCE'
+          : 'INVALID_SNAPSHOT',
+        error: parsed.error,
+      }
+    }
     const snapshot = parsed.data
     const state = get()
 
-    // P4.5-A013-T7: 古いsnapshotによる逆行防止（v1/v2共通）。両方のtimestampが
-    // 判明していて、かつsnapshotの方が厳密に古い場合のみ拒否する
-    // （詳細な安全側デフォルトの理由はisSnapshotOlderThanCurrentBasisのコメント参照）。
-    if (isSnapshotOlderThanCurrentBasis(snapshot.csvImportedAt, state.system.csvLastImportedAt)) {
-      return {
-        ok: false,
-        error: 'この端末の保有データの方がsnapshotより新しいため、取込を中断しました' +
-          '（保有株・投信は変更されていません）。',
+    // Only source provenance participates in monotonicity. exportedAt, csvImportedAt,
+    // browser time and File.lastModified are operation/file metadata, never freshness proof.
+    const currentGenerationExists = hasCurrentPortfolioGenerationEvidence(state)
+    if (snapshot.csvImportProvenance === null) {
+      if (currentGenerationExists) {
+        return {
+          ok: false,
+          code: 'SNAPSHOT_PROVENANCE_UNKNOWN',
+          error: 'データ基準情報のないsnapshotでは、この端末の保有データを上書きできません。',
+        }
+      }
+    } else {
+      const monotonicity = evaluateCsvImportMonotonicity({
+        incoming: snapshot.csvImportProvenance,
+        current: state.system.csvImportProvenance ?? null,
+        currentGenerationExists,
+      }).decision
+      if (monotonicity === 'DUPLICATE') return { ok: true, code: 'DUPLICATE_SNAPSHOT' }
+      if (monotonicity === 'REJECT_STALE') {
+        return {
+          ok: false,
+          code: 'SNAPSHOT_STALE',
+          error: 'この端末の保有データより古いデータ基準時刻のsnapshotのため、取込を中断しました。',
+        }
+      }
+      if (monotonicity === 'REJECT_CONFLICT') {
+        return {
+          ok: false,
+          code: 'SNAPSHOT_PROVENANCE_CONFLICT',
+          error: '同じデータ基準時刻で内容識別子が異なるsnapshotのため、取込を中断しました。',
+        }
+      }
+      if (monotonicity === 'REJECT_UNKNOWN_DOWNGRADE') {
+        return {
+          ok: false,
+          code: 'SNAPSHOT_PROVENANCE_UNKNOWN',
+          error: 'snapshotのデータ基準情報では安全な上書きを確認できないため、取込を中断しました。',
+        }
       }
     }
 
-    const isV2 = snapshot.schemaVersion === PORTFOLIO_SNAPSHOT_SCHEMA_VERSION_V2
+    const isFullSync = snapshot.schemaVersion !== PORTFOLIO_SNAPSHOT_SCHEMA_VERSION
 
     let nextHoldings: Holding[]
-    if (isV2) {
-      // P4.5-A013-T7: v2はholdingsをfull-sync（新規追加・受信端末だけの銘柄削除を含む）
+    if (isFullSync) {
+      // P4.5-A013-T7: v2/v3はholdingsをfull-sync（新規追加・受信端末だけの銘柄削除を含む）
       // する。ガード（消滅率>50%または絶対件数>5件）はapplyHoldingsFullSyncFromSnapshot内。
       const holdingsResult = applyHoldingsFullSyncFromSnapshot(state.holdings, snapshot.holdings)
-      if (!holdingsResult.ok) return { ok: false, error: holdingsResult.error }
+      if (!holdingsResult.ok) return { ok: false, code: 'INVALID_SNAPSHOT', error: holdingsResult.error }
       nextHoldings = holdingsResult.holdings
     } else {
       // v1: 既存のupdate-only契約を維持する（受信端末に存在しないcodeは全体reject）。
@@ -1832,6 +1873,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
       if (unknownHoldingCodes.length > 0) {
         return {
           ok: false,
+          code: 'INVALID_SNAPSHOT',
           error: `この端末に存在しない銘柄コードが含まれています: ${unknownHoldingCodes.join(', ')}`,
         }
       }
@@ -1848,22 +1890,23 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
     }
 
     // P4.5-A013-T7: trust masterはregistryとして維持し、不完全metadataから
-    // Trustを捏造しない（T3の原則）という一線はv1/v2共通で変えない。
+    // Trustを捏造しない（T3の原則）という一線は全schemaで変えない。
     // 違いはunknown idに遭遇した時の扱いのみ:
     //   - v1: 全体reject（既存契約を維持）
-    //   - v2: 該当idだけskipし、呼び出し側にskippedTrustIdsとして報告する
+    //   - v2/v3: 該当idだけskipし、呼び出し側にskippedTrustIdsとして報告する
     //     （silent ignoreはしない。既知idの通常の値更新は巻き添えでrejectしない）。
     // 既知id側のmerge（eval/pnlPct/dayPct/accountのみ上書き。name/policy/cost/
-    // sigma/mu/score/decision/ev等の静的属性・計算結果は保持）はv1/v2で共通。
+    // sigma/mu/score/decision/ev等の静的属性・計算結果は保持）は全schemaで共通。
     const currentTrustIds = new Set(state.trust.map(t => t.id))
     const unknownTrustIds = snapshot.trust.filter(t => !currentTrustIds.has(t.id)).map(t => t.id)
-    if (unknownTrustIds.length > 0 && !isV2) {
+    if (unknownTrustIds.length > 0 && !isFullSync) {
       return {
         ok: false,
+        code: 'INVALID_SNAPSHOT',
         error: `この端末に存在しない投信IDが含まれています: ${unknownTrustIds.join(', ')}`,
       }
     }
-    const skippedTrustIds = isV2 ? unknownTrustIds : []
+    const skippedTrustIds = isFullSync ? unknownTrustIds : []
 
     const trustRowById = new Map(snapshot.trust.filter(t => currentTrustIds.has(t.id)).map(t => [t.id, t]))
     const nextTrust = state.trust.map(f => {
@@ -1895,19 +1938,11 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
       trust: nextTrust,
       portfolioPolicy: nextPortfolioPolicy,
       cashAssumptions: nextCashAssumptions,
-      // snapshot.csvImportedAtがnull（exportした端末側でCSV未取込）の場合、この端末が
-      // 既に持つcsvLastImportedAtを消してはいけない（逆行防止判定は上のisSnapshotOlderThan
-      // CurrentBasisで別途行っており、ここでは「値がある方を優先して保持する」だけでよい）。
       system: {
         ...s.system,
-        csvLastImportedAt: typeof snapshot.csvImportedAt === 'string'
-          ? snapshot.csvImportedAt
-          : s.system.csvLastImportedAt,
-        // portfolio snapshotはCSV source provenanceを運ばない。別端末のoperation timeを
-        // 引き継ぐ場合、現在端末のCSV sourceAsOf/fingerprintを誤って結び付けない。
-        csvImportProvenance: typeof snapshot.csvImportedAt === 'string'
-          ? null
-          : s.system.csvImportProvenance ?? null,
+        // Operation metadata and source provenance are replaced from one incoming generation.
+        csvLastImportedAt: snapshot.csvImportedAt,
+        csvImportProvenance: snapshot.csvImportProvenance,
       },
     }))
 
@@ -1930,7 +1965,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
     // csvSyncSummaryはここでは一切変更しない（snapshot importをCSV取込結果として
     // 偽装しないため。P4.5-A013-T6の方針を維持する）。
     set(s => ({ system: { ...s.system, localStorageFreshness: computeLocalStorageFreshness() } }))
-    return { ok: true, skippedTrustIds: skippedTrustIds.length > 0 ? skippedTrustIds : undefined }
+    return { ok: true, code: 'SUCCESS', skippedTrustIds: skippedTrustIds.length > 0 ? skippedTrustIds : undefined }
   },
   })
 })

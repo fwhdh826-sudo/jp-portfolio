@@ -692,6 +692,7 @@ function PortfolioSnapshotSyncSection({ sectionTitleStyle }: { sectionTitleStyle
   const [importInput, setImportInput] = useState('')
   const [importError, setImportError] = useState<string | null>(null)
   const [importSuccess, setImportSuccess] = useState(false)
+  const [importDuplicate, setImportDuplicate] = useState(false)
   // P4.5-A013-T7: v2でtrust masterに未登録のためskipされた投信IDを非サイレントに警告表示する
   const [importSkippedTrustIds, setImportSkippedTrustIds] = useState<string[]>([])
 
@@ -717,11 +718,21 @@ function PortfolioSnapshotSyncSection({ sectionTitleStyle }: { sectionTitleStyle
     if (!result.ok) {
       setImportError(result.error)
       setImportSuccess(false)
+      setImportDuplicate(false)
       setImportSkippedTrustIds([])
+      return
+    }
+    if (result.code === 'DUPLICATE_SNAPSHOT') {
+      setImportError(null)
+      setImportSuccess(false)
+      setImportDuplicate(true)
+      setImportSkippedTrustIds([])
+      setImportInput('')
       return
     }
     setImportError(null)
     setImportSuccess(true)
+    setImportDuplicate(false)
     setImportSkippedTrustIds(result.skippedTrustIds ?? [])
     setImportInput('')
   }
@@ -810,7 +821,7 @@ function PortfolioSnapshotSyncSection({ sectionTitleStyle }: { sectionTitleStyle
           </label>
           <textarea
             value={importInput}
-            onChange={e => { setImportInput(e.target.value); setImportError(null); setImportSuccess(false) }}
+            onChange={e => { setImportInput(e.target.value); setImportError(null); setImportSuccess(false); setImportDuplicate(false) }}
             rows={8}
             placeholder="ここにエクスポートしたJSON文字列を貼り付けてください"
             style={{
@@ -856,6 +867,11 @@ function PortfolioSnapshotSyncSection({ sectionTitleStyle }: { sectionTitleStyle
                   : 'CSV取込時刻なし'}
               </span>
               <span>T0/T1/T2/T7の判断は再計算済みで反映されています。</span>
+            </div>
+          )}
+          {importDuplicate && (
+            <div style={{ ...typography.caption, color: 'var(--color-wait-text)' }}>
+              同じsource data timeと内容識別子のsnapshotは取込済みです。データは変更していません。
             </div>
           )}
           {importSkippedTrustIds.length > 0 && (

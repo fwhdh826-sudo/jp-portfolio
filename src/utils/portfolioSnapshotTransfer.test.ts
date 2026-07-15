@@ -6,6 +6,7 @@ import {
   parsePortfolioSnapshotImport,
   PORTFOLIO_SNAPSHOT_SCHEMA_VERSION,
   PORTFOLIO_SNAPSHOT_SCHEMA_VERSION_V2,
+  PORTFOLIO_SNAPSHOT_SCHEMA_VERSION_V3,
 } from './portfolioSnapshotTransfer'
 
 function makeExportArgs(overrides: Partial<Parameters<typeof serializePortfolioSnapshotExport>[0]> = {}) {
@@ -26,6 +27,16 @@ function makeExportArgs(overrides: Partial<Parameters<typeof serializePortfolioS
       manualUpdatedAt: '2026-07-01T00:00:00.000Z',
     },
     csvImportedAt: '2026-07-06T09:00:00.000Z',
+    csvImportProvenance: {
+      importedAt: '2026-07-06T09:00:00.000Z',
+      sourceAsOf: '2026-07-06T08:00:00.000Z',
+      sourceAsOfKind: 'csv_explicit' as const,
+      sourceAsOfConfidence: 'authoritative' as const,
+      semanticIdentity: `sha256:${'a'.repeat(64)}`,
+      contentFingerprint: 'fnv1a32:12345678',
+      sourceFileName: 'portfolio.csv',
+      fileLastModified: '2026-07-06T08:30:00.000Z',
+    },
     ...overrides,
   }
 }
@@ -33,14 +44,15 @@ function makeExportArgs(overrides: Partial<Parameters<typeof serializePortfolioS
 // P4.5-A013-T7: serializePortfolioSnapshotExportは常にschemaVersion v2を出力する
 // （新規個別株full-syncに必要なnameを含む）。v1形式の受け入れはparsePortfolioSnapshotImport
 // 側の後方互換テスト（下部の「v1後方互換」describe）で別途固定する。
-describe('serializePortfolioSnapshotExport / parsePortfolioSnapshotImport 往復（v2）', () => {
+describe('serializePortfolioSnapshotExport / parsePortfolioSnapshotImport 往復（v3）', () => {
   it('happy path: exportしたJSONをimportすると元の値が復元される', () => {
     const args = makeExportArgs()
     const json = serializePortfolioSnapshotExport(args)
     const result = parsePortfolioSnapshotImport(json)
     expect(result.ok).toBe(true)
     if (result.ok) {
-      expect(result.data.schemaVersion).toBe(PORTFOLIO_SNAPSHOT_SCHEMA_VERSION_V2)
+      expect(result.data.schemaVersion).toBe(PORTFOLIO_SNAPSHOT_SCHEMA_VERSION_V3)
+      expect(result.data.csvImportProvenance).toEqual(args.csvImportProvenance)
       expect(result.data.holdings).toEqual([
         { code: '1101', name: 'テスト商事', eval: 892_000, pnlPct: 4.94, currentPrice: 8920, acquiredAt: '2024-01-10' },
         { code: '2202', name: 'テスト銀行', eval: 710_000, pnlPct: 5.19 },
@@ -80,7 +92,12 @@ describe('serializePortfolioSnapshotExport / parsePortfolioSnapshotImport 往復
   })
 
   it('exportedAt/csvImportedAtが保持される', () => {
-    const args = makeExportArgs({ csvImportedAt: '2026-07-05T23:00:00.000Z' })
+    const base = makeExportArgs()
+    if (!base.csvImportProvenance) throw new Error('expected provenance')
+    const args = makeExportArgs({
+      csvImportedAt: '2026-07-05T23:00:00.000Z',
+      csvImportProvenance: { ...base.csvImportProvenance, importedAt: '2026-07-05T23:00:00.000Z' },
+    })
     const json = serializePortfolioSnapshotExport(args)
     const parsed = JSON.parse(json)
     expect(parsed.csvImportedAt).toBe('2026-07-05T23:00:00.000Z')
@@ -95,10 +112,10 @@ describe('serializePortfolioSnapshotExport / parsePortfolioSnapshotImport 往復
     }
   })
 
-  it('exportのJSONにschemaVersion v2/sourceが含まれる', () => {
+  it('exportのJSONにschemaVersion v3/sourceが含まれる', () => {
     const json = serializePortfolioSnapshotExport(makeExportArgs())
     const parsed = JSON.parse(json)
-    expect(parsed.schemaVersion).toBe(PORTFOLIO_SNAPSHOT_SCHEMA_VERSION_V2)
+    expect(parsed.schemaVersion).toBe(PORTFOLIO_SNAPSHOT_SCHEMA_VERSION_V3)
     expect(parsed.source).toBe('manual')
   })
 
@@ -153,6 +170,38 @@ describe('serializePortfolioSnapshotExport / parsePortfolioSnapshotImport 往復
     expect(parsed.holdings[0]).not.toHaveProperty('mu')
     expect(parsed.holdings[0]).not.toHaveProperty('sector')
     expect(parsed.holdings[0]).not.toHaveProperty('sigmaSource')
+  })
+
+  it('exportedAtだけが変わってもtransported provenanceは同一である', () => {
+    const args = makeExportArgs()
+    const first = JSON.parse(serializePortfolioSnapshotExport(args))
+    const second = JSON.parse(serializePortfolioSnapshotExport(args))
+    expect(first.csvImportProvenance).toEqual(second.csvImportProvenance)
+    expect(first.csvImportedAt).toBe(second.csvImportedAt)
+  })
+
+  it.each([
+    ['missing provenance', (payload: any) => { delete payload.csvImportProvenance }],
+    ['invalid sourceAsOf', (payload: any) => { payload.csvImportProvenance.sourceAsOf = '2026-02-30T00:00:00Z' }],
+    ['invalid semantic identity', (payload: any) => { payload.csvImportProvenance.semanticIdentity = 'fnv1a32:12345678' }],
+    ['invalid fingerprint', (payload: any) => { payload.csvImportProvenance.contentFingerprint = '12345678' }],
+    ['unknown provenance key', (payload: any) => { payload.csvImportProvenance.unexpected = true }],
+    ['kind/confidence mismatch', (payload: any) => { payload.csvImportProvenance.sourceAsOfConfidence = 'weak' }],
+    ['operation time mismatch', (payload: any) => { payload.csvImportProvenance.importedAt = '2026-07-06T10:00:00.000Z' }],
+  ])('v3 malformed provenance fails closed: %s', (_label, mutate) => {
+    const payload = JSON.parse(serializePortfolioSnapshotExport(makeExportArgs()))
+    mutate(payload)
+    const result = parsePortfolioSnapshotImport(JSON.stringify(payload))
+    expect(result).toMatchObject({ ok: false, code: 'INVALID_SNAPSHOT_PROVENANCE' })
+  })
+
+  it('v3 explicit null provenance remains unknown rather than being synthesized from operation times', () => {
+    const payload = JSON.parse(serializePortfolioSnapshotExport(makeExportArgs()))
+    payload.csvImportProvenance = null
+    payload.csvImportedAt = '2099-12-31T23:59:58.000Z'
+    payload.exportedAt = '2099-12-31T23:59:59.000Z'
+    const result = parsePortfolioSnapshotImport(JSON.stringify(payload))
+    expect(result).toMatchObject({ ok: true, data: { csvImportProvenance: null } })
   })
 })
 
@@ -305,6 +354,7 @@ describe('parsePortfolioSnapshotImport のvalidation（v1 payload・後方互換
     if (result.ok) {
       expect(result.data.portfolioPolicy).toBeNull()
       expect(result.data.cashAssumptions).toBeNull()
+      expect(result.data.csvImportProvenance).toBeNull()
     }
   })
 

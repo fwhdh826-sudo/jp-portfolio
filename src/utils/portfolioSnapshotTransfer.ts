@@ -1,6 +1,8 @@
 // ═══════════════════════════════════════════════════════════
 
 import { isStrictTimestamp } from './strictTimestamp'
+import type { CsvImportProvenance } from '../types'
+import { isCsvImportProvenance } from '../domain/csv/csvProvenance'
 // P4.5-A012a: 保有株・投信・現金前提・portfolioPolicyのportfolio snapshot
 // export/import — 表示専用のシリアライズ/検証のみ。
 // PC/スマホ間の同期はユーザーがJSON文字列を手動でコピー/貼り付けする方式に限定する
@@ -17,9 +19,13 @@ export const PORTFOLIO_SNAPSHOT_SCHEMA_VERSION = 'portfolio-snapshot-1' as const
 // 必要なmetadata（name/sector/mu/sigma/sigmaSource/beta）を追加した拡張schema。
 // v1は既存のupdate-only契約のまま残し、importでは両方を受け付ける（後方互換）。
 export const PORTFOLIO_SNAPSHOT_SCHEMA_VERSION_V2 = 'portfolio-snapshot-2' as const
+// T9-A004-R2: v3 transports the CSV source provenance belonging to the exported
+// portfolio generation. exportedAt/csvImportedAt remain operation metadata only.
+export const PORTFOLIO_SNAPSHOT_SCHEMA_VERSION_V3 = 'portfolio-snapshot-3' as const
 export type PortfolioSnapshotSchemaVersion =
   | typeof PORTFOLIO_SNAPSHOT_SCHEMA_VERSION
   | typeof PORTFOLIO_SNAPSHOT_SCHEMA_VERSION_V2
+  | typeof PORTFOLIO_SNAPSHOT_SCHEMA_VERSION_V3
 
 export interface PortfolioSnapshotHolding {
   code: string
@@ -62,6 +68,7 @@ export interface PortfolioSnapshotExportPayload {
   schemaVersion: PortfolioSnapshotSchemaVersion
   exportedAt: string
   csvImportedAt: string | null
+  csvImportProvenance: CsvImportProvenance | null
   source: 'manual'
   holdings: PortfolioSnapshotHolding[]
   trust: PortfolioSnapshotTrust[]
@@ -73,6 +80,8 @@ export interface PortfolioSnapshotData {
   schemaVersion: PortfolioSnapshotSchemaVersion
   exportedAt: string
   csvImportedAt: string | null
+  /** null for legacy v1/v2 and for an explicitly unknown v3 generation. */
+  csvImportProvenance: CsvImportProvenance | null
   holdings: PortfolioSnapshotHolding[]
   trust: PortfolioSnapshotTrust[]
   portfolioPolicy: PortfolioSnapshotPortfolioPolicy | null
@@ -81,7 +90,7 @@ export interface PortfolioSnapshotData {
 
 export type PortfolioSnapshotParseResult =
   | { ok: true; data: PortfolioSnapshotData }
-  | { ok: false; error: string }
+  | { ok: false; error: string; code?: 'INVALID_SNAPSHOT_PROVENANCE' }
 
 // 異常に大きすぎる値のガード（cashAssumptionsTransfer.tsと同じ基準。1兆円）
 const MAX_REASONABLE_AMOUNT = 1_000_000_000_000
@@ -135,6 +144,7 @@ export function serializePortfolioSnapshotExport(args: {
   portfolioPolicy: PortfolioSnapshotPortfolioPolicy | null
   cashAssumptions: PortfolioSnapshotCashAssumptions | null
   csvImportedAt: string | null
+  csvImportProvenance: CsvImportProvenance | null
 }): string {
   const holdings: PortfolioSnapshotHolding[] = args.holdings.map(h => {
     const picked: PortfolioSnapshotHolding = { code: h.code, name: h.name, eval: h.eval, pnlPct: h.pnlPct }
@@ -169,9 +179,10 @@ export function serializePortfolioSnapshotExport(args: {
     : null
 
   const payload: PortfolioSnapshotExportPayload = {
-    schemaVersion: PORTFOLIO_SNAPSHOT_SCHEMA_VERSION_V2,
+    schemaVersion: PORTFOLIO_SNAPSHOT_SCHEMA_VERSION_V3,
     exportedAt: new Date().toISOString(),
     csvImportedAt: args.csvImportedAt,
+    csvImportProvenance: args.csvImportProvenance,
     source: 'manual',
     holdings,
     trust,
@@ -356,11 +367,13 @@ export function parsePortfolioSnapshotImport(raw: string): PortfolioSnapshotPars
 
   const p = parsed as Record<string, unknown>
 
-  // P4.5-A013-T7: v1/v2の両方を受け付ける（後方互換）。それ以外の値は
+  // v1/v2 remain parseable as legacy/unknown provenance. v3 requires an explicit
+  // provenance field, including null, so malformed provenance cannot downgrade silently.
   // 不明schemaとしてfail-closedでreject（将来schemaとの誤動作を防ぐ）。
   if (
     p.schemaVersion !== PORTFOLIO_SNAPSHOT_SCHEMA_VERSION &&
-    p.schemaVersion !== PORTFOLIO_SNAPSHOT_SCHEMA_VERSION_V2
+    p.schemaVersion !== PORTFOLIO_SNAPSHOT_SCHEMA_VERSION_V2 &&
+    p.schemaVersion !== PORTFOLIO_SNAPSHOT_SCHEMA_VERSION_V3
   ) {
     return { ok: false, error: 'このアプリからエクスポートされたデータではないようです（schemaVersion不一致）。' }
   }
@@ -410,12 +423,31 @@ export function parsePortfolioSnapshotImport(raw: string): PortfolioSnapshotPars
   const csvImportedAt = p.csvImportedAt as string | null
   const exportedAt = p.exportedAt as string
 
+  let csvImportProvenance: CsvImportProvenance | null = null
+  if (schemaVersion === PORTFOLIO_SNAPSHOT_SCHEMA_VERSION_V3) {
+    if (!Object.prototype.hasOwnProperty.call(p, 'csvImportProvenance')) {
+      return { ok: false, code: 'INVALID_SNAPSHOT_PROVENANCE', error: 'snapshotのCSV provenanceが欠損しています。' }
+    }
+    if (p.csvImportProvenance !== null) {
+      if (!isCsvImportProvenance(p.csvImportProvenance)) {
+        return { ok: false, code: 'INVALID_SNAPSHOT_PROVENANCE', error: 'snapshotのCSV provenanceが不正です。' }
+      }
+      csvImportProvenance = p.csvImportProvenance
+      if (csvImportedAt !== csvImportProvenance.importedAt) {
+        return { ok: false, code: 'INVALID_SNAPSHOT_PROVENANCE', error: 'snapshotのCSV取込操作時刻とprovenanceが一致しません。' }
+      }
+    }
+  } else if (Object.prototype.hasOwnProperty.call(p, 'csvImportProvenance')) {
+    return { ok: false, code: 'INVALID_SNAPSHOT_PROVENANCE', error: 'legacy snapshotに未対応のprovenanceが含まれています。' }
+  }
+
   return {
     ok: true,
     data: {
       schemaVersion,
       exportedAt,
       csvImportedAt,
+      csvImportProvenance,
       holdings,
       trust,
       portfolioPolicy,

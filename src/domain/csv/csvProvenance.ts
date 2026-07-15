@@ -10,6 +10,42 @@ import {
   identifyCsvSemanticContent,
 } from './csvSemanticIdentity'
 
+type UnknownRecord = Record<string, unknown>
+
+function isRecord(value: unknown): value is UnknownRecord {
+  return value !== null && typeof value === 'object' && !Array.isArray(value)
+}
+
+function hasExactKeys(value: UnknownRecord, required: readonly string[], optional: readonly string[] = []): boolean {
+  const allowed = new Set([...required, ...optional])
+  return required.every(key => Object.prototype.hasOwnProperty.call(value, key)) &&
+    Object.keys(value).every(key => allowed.has(key))
+}
+
+/** Shared strict runtime contract for canonical and manual-snapshot CSV provenance. */
+export function isCsvImportProvenance(value: unknown): value is CsvImportProvenance {
+  if (!isRecord(value) || !hasExactKeys(value, [
+    'importedAt', 'sourceAsOf', 'sourceAsOfKind', 'sourceAsOfConfidence',
+    'contentFingerprint', 'sourceFileName', 'fileLastModified',
+  ], ['semanticIdentity'])) return false
+  if (!parseStrictTimestamp(value.importedAt) ||
+      (value.sourceAsOf !== null && !parseStrictTimestamp(value.sourceAsOf)) ||
+      typeof value.contentFingerprint !== 'string' ||
+      !/^fnv1a32:[0-9a-f]{8}$/.test(value.contentFingerprint) ||
+      (value.semanticIdentity !== undefined &&
+        (typeof value.semanticIdentity !== 'string' || !/^sha256:[0-9a-f]{64}$/.test(value.semanticIdentity))) ||
+      (value.sourceFileName !== null && typeof value.sourceFileName !== 'string') ||
+      (value.fileLastModified !== null && !parseStrictTimestamp(value.fileLastModified))) return false
+
+  const kind = value.sourceAsOfKind
+  const confidence = value.sourceAsOfConfidence
+  if (kind === 'csv_explicit') return confidence === 'authoritative' && value.sourceAsOf !== null
+  if (kind === 'csv_exported_at' || kind === 'filename' || kind === 'file_last_modified') {
+    return confidence === 'weak' && value.sourceAsOf !== null
+  }
+  return kind === 'unknown' && confidence === 'unknown' && value.sourceAsOf === null
+}
+
 const AUTHORITATIVE_LABELS = new Set([
   'データ基準日時',
   'データ基準日',

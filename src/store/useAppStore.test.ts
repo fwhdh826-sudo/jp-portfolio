@@ -3,7 +3,7 @@
 // 万が一BUYタイトルのCommitteeActionが渡された場合でも、officialDecision変換層で
 // 二重にBUYをBLOCKED化することを確認する。SELL/HOLD等の非BUYは対象外。
 import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest'
-import type { Holding, Trust } from '../types'
+import type { CsvImportProvenance, Holding, Trust } from '../types'
 import type { CommitteeDecision } from '../domain/analysis/committeeDecision'
 import { committeeToOfficialDecision, buildCsvSyncSummary, useAppStore } from './useAppStore'
 import { selectEffectiveCashAssumptions, selectCashAssumptionsFreshness } from './selectors'
@@ -84,6 +84,23 @@ function makeHolding(overrides: Partial<Holding> = {}): Holding {
     decision: 'BUY',
     ev: 0.05,
     ...overrides,
+  }
+}
+
+function snapshotProvenance(
+  importedAt: string,
+  sourceAsOf: string,
+  identityDigit = 'a',
+): CsvImportProvenance {
+  return {
+    importedAt,
+    sourceAsOf,
+    sourceAsOfKind: 'csv_explicit',
+    sourceAsOfConfidence: 'authoritative',
+    semanticIdentity: `sha256:${identityDigit.repeat(64)}`,
+    contentFingerprint: `fnv1a32:${identityDigit.repeat(8)}`,
+    sourceFileName: 'snapshot-source.csv',
+    fileLastModified: null,
   }
 }
 
@@ -352,16 +369,25 @@ describe('useAppStore: portfolio snapshot（P4.5-A012b）', () => {
       trust: [testTrust],
       portfolioPolicy: { jpStockMaxRatio: 0.10 },
       cashAssumptions: { cashDeposits: 0, standbyFunds: 0, manualOverrideEnabled: false, manualUpdatedAt: null },
-      system: { ...s.system, csvLastImportedAt: '2026-07-01T00:00:00.000Z' },
+      system: {
+        ...s.system,
+        csvLastImportedAt: '2026-07-01T00:00:00.000Z',
+        csvImportProvenance: snapshotProvenance(
+          '2026-07-01T00:00:00.000Z',
+          '2026-07-01T00:00:00.000Z',
+          '1',
+        ),
+      },
     }))
   })
   afterEach(() => { vi.unstubAllGlobals() })
 
-  it('exportPortfolioSnapshotがJSON文字列を返す（P4.5-A013-T7: v2形式）', () => {
+  it('exportPortfolioSnapshotがCSV provenance付きv3 JSON文字列を返す', () => {
     const json = useAppStore.getState().exportPortfolioSnapshot()
     expect(typeof json).toBe('string')
     const parsed = JSON.parse(json)
-    expect(parsed.schemaVersion).toBe('portfolio-snapshot-2')
+    expect(parsed.schemaVersion).toBe('portfolio-snapshot-3')
+    expect(parsed.csvImportProvenance).toEqual(useAppStore.getState().system.csvImportProvenance)
     expect(parsed.holdings).toHaveLength(2)
     expect(parsed.trust).toHaveLength(1)
   })
@@ -390,12 +416,14 @@ describe('useAppStore: portfolio snapshot（P4.5-A012b）', () => {
 
   it('importPortfolioSnapshot happy path: holdings/trust/portfolioPolicy/cashAssumptions/csvImportedAtが反映される', () => {
     const snapshotJson = JSON.stringify({
-      schemaVersion: 'portfolio-snapshot-1',
+      schemaVersion: 'portfolio-snapshot-3',
       exportedAt: '2026-07-06T00:00:00.000Z',
       csvImportedAt: '2026-07-05T23:00:00.000Z',
+      csvImportProvenance: snapshotProvenance('2026-07-05T23:00:00.000Z', '2026-07-05T22:00:00.000Z', '2'),
       source: 'manual',
       holdings: [
-        { code: 'TEST-A', eval: 150_000, pnlPct: 8, currentPrice: 1500, acquiredAt: '2026-01-01' },
+        { code: 'TEST-A', name: 'TEST-A', eval: 150_000, pnlPct: 8, currentPrice: 1500, acquiredAt: '2026-01-01' },
+        { code: 'TEST-B', name: 'TEST-B', eval: 200_000, pnlPct: -3, currentPrice: 2000 },
       ],
       trust: [
         { id: 'trust-a', eval: 600_000, pnlPct: 4, dayPct: 1.0, account: 'NISA成長' },
@@ -452,6 +480,7 @@ describe('useAppStore: portfolio snapshot（P4.5-A012b）', () => {
   })
 
   it('未知のholding codeが含まれるとrejectされstoreを変更しない', () => {
+    useAppStore.setState(s => ({ holdings: [], trust: [], system: { ...s.system, csvLastImportedAt: null, csvImportProvenance: null } }))
     const before = useAppStore.getState()
     const snapshotJson = JSON.stringify({
       schemaVersion: 'portfolio-snapshot-1',
@@ -471,6 +500,7 @@ describe('useAppStore: portfolio snapshot（P4.5-A012b）', () => {
   })
 
   it('未知のtrust idが含まれるとrejectされstoreを変更しない', () => {
+    useAppStore.setState(s => ({ holdings: [], trust: [], system: { ...s.system, csvLastImportedAt: null, csvImportProvenance: null } }))
     const before = useAppStore.getState()
     const snapshotJson = JSON.stringify({
       schemaVersion: 'portfolio-snapshot-1',
@@ -491,11 +521,15 @@ describe('useAppStore: portfolio snapshot（P4.5-A012b）', () => {
 
   it('import後にlocalStorageへpersistされる（holdings/trust/portfolioPolicy/cashAssumptions/csvImportedAt）', () => {
     const snapshotJson = JSON.stringify({
-      schemaVersion: 'portfolio-snapshot-1',
+      schemaVersion: 'portfolio-snapshot-3',
       exportedAt: '2026-07-06T00:00:00.000Z',
       csvImportedAt: '2026-07-05T23:00:00.000Z',
+      csvImportProvenance: snapshotProvenance('2026-07-05T23:00:00.000Z', '2026-07-05T22:00:00.000Z', '2'),
       source: 'manual',
-      holdings: [{ code: 'TEST-A', eval: 150_000, pnlPct: 8 }],
+      holdings: [
+        { code: 'TEST-A', name: 'TEST-A', eval: 150_000, pnlPct: 8 },
+        { code: 'TEST-B', name: 'TEST-B', eval: 200_000, pnlPct: -3 },
+      ],
       trust: [{ id: 'trust-a', eval: 600_000, pnlPct: 4 }],
       portfolioPolicy: { jpStockMaxRatio: 0.12 },
       cashAssumptions: {
@@ -518,7 +552,7 @@ describe('useAppStore: portfolio snapshot（P4.5-A012b）', () => {
     expect(savedCash.data.cashDeposits).toBe(5_000_000)
   })
 
-  it('csvImportedAtがnullの場合、既存のcsvLastImportedAtが維持されpersistCsvImportedAtは呼ばれない（P4.5-A013-HARDENING-F2）', () => {
+  it('provenance不明legacy snapshotは既存operation timeを保持したままrejectされる', () => {
     // beforeEachでcsvLastImportedAt='2026-07-01T00:00:00.000Z'が既にセットされている前提。
     // snapshot側がnull（export元端末がCSV未取込）だからといって、この端末が既に持つ
     // 保有データ鮮度の基準時刻を消してはいけない（過去は無条件上書きでnull化していたバグ）。
@@ -533,14 +567,14 @@ describe('useAppStore: portfolio snapshot（P4.5-A012b）', () => {
       cashAssumptions: null,
     })
     const result = useAppStore.getState().importPortfolioSnapshot(snapshotJson)
-    expect(result.ok).toBe(true)
+    expect(result).toMatchObject({ ok: false, code: 'SNAPSHOT_PROVENANCE_UNKNOWN' })
     expect(useAppStore.getState().system.csvLastImportedAt).toBe('2026-07-01T00:00:00.000Z')
     // 既存localStorageの古いcsvImportedAtの削除は次チケット扱い（今回は書き込みしないだけ）
     expect(store['v10_csv_imported_at']).toBeUndefined()
   })
 
-  it('current/snapshotともにcsvImportedAtが無い場合、nullのまま維持される（P4.5-A013-HARDENING-F2）', () => {
-    useAppStore.setState(s => ({ system: { ...s.system, csvLastImportedAt: null } }))
+  it('operation timeが双方nullでも、既存contentへlegacy unknownをsilent overwriteしない', () => {
+    useAppStore.setState(s => ({ system: { ...s.system, csvLastImportedAt: null, csvImportProvenance: null } }))
     const snapshotJson = JSON.stringify({
       schemaVersion: 'portfolio-snapshot-1',
       exportedAt: '2026-07-06T00:00:00.000Z',
@@ -552,18 +586,22 @@ describe('useAppStore: portfolio snapshot（P4.5-A012b）', () => {
       cashAssumptions: null,
     })
     const result = useAppStore.getState().importPortfolioSnapshot(snapshotJson)
-    expect(result.ok).toBe(true)
+    expect(result).toMatchObject({ ok: false, code: 'SNAPSHOT_PROVENANCE_UNKNOWN' })
     expect(useAppStore.getState().system.csvLastImportedAt).toBeNull()
   })
 
   it('portfolio snapshot importはcsvSyncSummaryを書き換えない（CSV取込結果として偽装しない）', () => {
     useAppStore.setState(s => ({ system: { ...s.system, csvSyncSummary: null } }))
     const snapshotJson = JSON.stringify({
-      schemaVersion: 'portfolio-snapshot-1',
+      schemaVersion: 'portfolio-snapshot-3',
       exportedAt: '2026-07-06T00:00:00.000Z',
       csvImportedAt: '2026-07-05T23:00:00.000Z',
+      csvImportProvenance: snapshotProvenance('2026-07-05T23:00:00.000Z', '2026-07-05T22:00:00.000Z', '2'),
       source: 'manual',
-      holdings: [{ code: 'TEST-A', eval: 150_000, pnlPct: 8 }],
+      holdings: [
+        { code: 'TEST-A', name: 'TEST-A', eval: 150_000, pnlPct: 8 },
+        { code: 'TEST-B', name: 'TEST-B', eval: 200_000, pnlPct: -3 },
+      ],
       trust: [],
       portfolioPolicy: null,
       cashAssumptions: null,
@@ -807,11 +845,12 @@ describe('useAppStore: localStorageFreshness即時更新（P4.5-A013-T6a）', ()
 
   it('portfolio snapshot import成功: stale状態からでも同一ターンでfreshnessがfreshになり、csvSyncSummaryは変更されない', () => {
     const snapshotJson = JSON.stringify({
-      schemaVersion: 'portfolio-snapshot-1',
+      schemaVersion: 'portfolio-snapshot-3',
       exportedAt: '2026-07-11T00:00:00.000Z',
-      csvImportedAt: null,
+      csvImportedAt: '2026-07-11T00:00:00.000Z',
+      csvImportProvenance: snapshotProvenance('2026-07-11T00:00:00.000Z', '2026-07-10T00:00:00.000Z', '2'),
       source: 'manual',
-      holdings: [{ code: '1001', eval: 150_000, pnlPct: 8 }],
+      holdings: [{ code: '1001', name: '1001', eval: 150_000, pnlPct: 8 }],
       trust: [{ id: 'fund1', eval: 600_000, pnlPct: 4 }],
       portfolioPolicy: null,
       cashAssumptions: null,
@@ -876,16 +915,36 @@ describe('useAppStore: importPortfolioSnapshot v2 full-sync（P4.5-A013-T7）', 
     useAppStore.setState(s => ({
       holdings: baseHoldings,
       trust: baseTrust,
-      system: { ...s.system, csvSyncSummary: null, csvLastImportedAt: '2026-07-01T00:00:00.000Z', status: 'idle', error: null },
+      system: {
+        ...s.system,
+        csvSyncSummary: null,
+        csvLastImportedAt: '2026-07-01T00:00:00.000Z',
+        csvImportProvenance: snapshotProvenance(
+          '2026-07-01T00:00:00.000Z',
+          '2026-07-01T00:00:00.000Z',
+          '1',
+        ),
+        status: 'idle',
+        error: null,
+      },
     }))
   })
   afterEach(() => { vi.unstubAllGlobals() })
 
   function makeV2Snapshot(overrides: Record<string, unknown> = {}) {
+    const csvImportedAt = Object.prototype.hasOwnProperty.call(overrides, 'csvImportedAt')
+      ? overrides.csvImportedAt as string | null
+      : '2026-07-10T00:00:00.000Z'
+    const csvImportProvenance = Object.prototype.hasOwnProperty.call(overrides, 'csvImportProvenance')
+      ? overrides.csvImportProvenance
+      : csvImportedAt === null
+        ? null
+        : snapshotProvenance(csvImportedAt, '2026-07-10T00:00:00.000Z', '2')
     return JSON.stringify({
-      schemaVersion: 'portfolio-snapshot-2',
+      schemaVersion: 'portfolio-snapshot-3',
       exportedAt: '2026-07-11T00:00:00.000Z',
-      csvImportedAt: '2026-07-10T00:00:00.000Z',
+      csvImportedAt,
+      csvImportProvenance,
       source: 'manual',
       holdings: [
         { code: 'HOLD-A', name: '既存銘柄A', eval: 150_000, pnlPct: 8, sector: '送信元の別業種', mu: 0.9, sigma: 0.9, beta: 4 },
@@ -1041,10 +1100,11 @@ describe('useAppStore: importPortfolioSnapshot v2 full-sync（P4.5-A013-T7）', 
     expect(store['v81_trust']).toBeUndefined()
   })
 
-  it('古いsnapshot逆行防止: snapshotのcsvImportedAtがこの端末より古い場合は拒否し、一切変更しない', () => {
-    // beforeEachで端末側csvLastImportedAt='2026-07-01T00:00:00.000Z'を設定済み。
-    // snapshot側をそれより古い日付にする。
-    const snapshot = makeV2Snapshot({ csvImportedAt: '2026-06-01T00:00:00.000Z' })
+  it('古いsourceAsOfのsnapshotはoperation timeに関係なく拒否し、一切変更しない', () => {
+    const snapshot = makeV2Snapshot({
+      csvImportedAt: '2026-07-20T00:00:00.000Z',
+      csvImportProvenance: snapshotProvenance('2026-07-20T00:00:00.000Z', '2026-06-01T00:00:00.000Z', '2'),
+    })
     const beforeState = useAppStore.getState()
     const result = useAppStore.getState().importPortfolioSnapshot(snapshot)
     expect(result.ok).toBe(false)
@@ -1053,17 +1113,15 @@ describe('useAppStore: importPortfolioSnapshot v2 full-sync（P4.5-A013-T7）', 
     expect(after.trust).toEqual(beforeState.trust)
   })
 
-  it('snapshotのcsvImportedAtがこの端末より新しい場合は許可される（逆行ではない）', () => {
+  it('newer authoritative sourceAsOf snapshotは許可される', () => {
     const result = useAppStore.getState().importPortfolioSnapshot(makeV2Snapshot({ csvImportedAt: '2026-07-10T00:00:00.000Z' }))
     expect(result.ok).toBe(true)
     expect(useAppStore.getState().system.csvLastImportedAt).toBe('2026-07-10T00:00:00.000Z')
   })
 
-  it('snapshot側のcsvImportedAtがnullの場合は逆行防止ガードの対象外で許可される', () => {
-    // beforeEachで端末側csvLastImportedAt='2026-07-01T00:00:00.000Z'を設定済み。
-    // 許可はされるが（P4.5-A013-HARDENING-F2）既存のcsvLastImportedAtを消してはいけない。
+  it('snapshot provenanceがnullならauthoritative currentを上書きできない', () => {
     const result = useAppStore.getState().importPortfolioSnapshot(makeV2Snapshot({ csvImportedAt: null }))
-    expect(result.ok).toBe(true)
+    expect(result).toMatchObject({ ok: false, code: 'SNAPSHOT_PROVENANCE_UNKNOWN' })
     expect(useAppStore.getState().system.csvLastImportedAt).toBe('2026-07-01T00:00:00.000Z')
   })
 
