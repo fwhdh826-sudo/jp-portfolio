@@ -43813,6 +43813,44 @@ AssetSnapshotMini → AllocationGapStrip → 今日のアクション[TodoCard/R
   main未反映のため別チケットで対応
 - v10.css未使用クラスの安全な削除（R6）
 
+## T9-A004-R1: strict timestamp validation / collision-safe semantic identity
+
+### Identity contract
+
+- CSV parserが関連fieldだけで作るrow-order invariantなnormalized semantic payloadを
+  UTF-8 SHA-256でdigest化し、`semanticIdentity: sha256:<64 lowercase hex>`として
+  canonical v2 provenanceに保存する。実装は同期pure functionで、Web Cryptoの
+  async/raceや利用不可時のweak fallbackを持たない。
+- `contentFingerprint: fnv1a32:<8 hex>`はlegacy canonical v2のhydrate互換のため
+  残すが、duplicate/no-opの根拠には使わない。duplicateはcurrent/incomingの
+  両方にstrong identityがあり、SHA-256が一致する場合だけ。
+
+### Legacy migration policy
+
+- canonical v1は従来どおりprovenanceなしでhydrateする。次のcoordinated
+  replacementでv2へ移行するという既存policyは変えない。
+- `semanticIdentity`を持たないexisting canonical v2/FNV-onlyもvalidとしてhydrateする。
+- FNV-only currentとstrong incomingは、FNVが一致してもsame contentとは証明しない。
+  same authoritative `sourceAsOf`はconflict、olderはstale、newer authoritativeは通常の
+  replacementを許可し、その成功時に初めてstrong identityを永続化する。
+  weak/unknown incomingは既存のconfirmation contractを維持する。
+- このためlegacy FNV-onlyとの初回same-time exact duplicate-equivalent importは
+  duplicateと断定せずconflictに倒す。legacy hash以外の証拠がないための
+  intentional fail-closedであり、existing canonicalを破棄する移行は行わない。
+
+### Timestamp contract
+
+- shared parserはgrammar、実カレンダー日、leap year、hour/minute/second、
+  timezoneを検証してからUTC ISOへ決定論的にnormalizeする。`Date.parse`に
+  fallbackしない。
+- timezone-less datetime（例: `2026-07-15T09:00:00`）はreject。runtime local
+  timezoneをauthorityにしない。
+- CSV sourceのdate-only（例: `2026-07-15`）は既存契約どおりJSTの
+  snapshot dateとし、`2026-07-15T00:00:00+09:00`相当へnormalizeする。
+- `sourceAsOf`はsource data time、`importedAt`はCSV import operation time、manifest
+  `savedAt`はdurable save time、snapshot `exportedAt/csvImportedAt`はそれぞれの
+  operation timeとして別々に検証する。`analysisNow`を`sourceAsOf`に置き換えない。
+
 ## T9-A004: stale CSV protection / CSV provenance and monotonicity
 
 ### 実施基準

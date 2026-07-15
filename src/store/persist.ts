@@ -1,6 +1,7 @@
 import type { Holding, Trust, LearningState, PortfolioPolicy, CashAssumptions, CsvImportProvenance, CsvSyncSummary } from '../types'
 import { sanitizeLearningState } from '../domain/learning/performanceTracker'
 import type { TrustShortPortfolioSnapshot } from '../domain/learning/trustShortTracker'
+import { isStrictTimestamp } from '../utils/strictTimestamp'
 
 const PORTFOLIO_KEY = 'v81_portfolio'
 const TRUST_KEY = 'v81_trust'
@@ -118,21 +119,23 @@ function isNonNegativeInteger(value: unknown): value is number {
   return Number.isInteger(value) && isNonNegativeNumber(value)
 }
 
-function isTimestamp(value: unknown): value is string {
-  return isNonEmptyString(value) && Number.isFinite(Date.parse(value))
+function isTimestamp(value: unknown, allowDateOnly = true): value is string {
+  return isStrictTimestamp(value, { allowDateOnly })
 }
 
 function isCsvImportProvenance(value: unknown): value is CsvImportProvenance {
   if (!isRecord(value) || !hasExactKeys(value, [
     'importedAt', 'sourceAsOf', 'sourceAsOfKind', 'sourceAsOfConfidence',
     'contentFingerprint', 'sourceFileName', 'fileLastModified',
-  ])) return false
-  if (!isTimestamp(value.importedAt) ||
-      (value.sourceAsOf !== null && !isTimestamp(value.sourceAsOf)) ||
+  ], ['semanticIdentity'])) return false
+  if (!isTimestamp(value.importedAt, false) ||
+      (value.sourceAsOf !== null && !isTimestamp(value.sourceAsOf, false)) ||
       typeof value.contentFingerprint !== 'string' ||
       !/^fnv1a32:[0-9a-f]{8}$/.test(value.contentFingerprint) ||
+      (value.semanticIdentity !== undefined &&
+        (typeof value.semanticIdentity !== 'string' || !/^sha256:[0-9a-f]{64}$/.test(value.semanticIdentity))) ||
       (value.sourceFileName !== null && typeof value.sourceFileName !== 'string') ||
-      (value.fileLastModified !== null && !isTimestamp(value.fileLastModified))) return false
+      (value.fileLastModified !== null && !isTimestamp(value.fileLastModified, false))) return false
 
   const kind = value.sourceAsOfKind
   const confidence = value.sourceAsOfConfidence
@@ -194,7 +197,7 @@ function isDecisionSummary(value: unknown): boolean {
 function isLearningBaseline(value: unknown): boolean {
   if (!isRecord(value) || !hasExactKeys(value,
     ['code', 'predictedAt', 'decision', 'score', 'confidence', 'pnlPct'], ['regime'])) return false
-  return isNonEmptyString(value.code) && isTimestamp(value.predictedAt) &&
+  return isNonEmptyString(value.code) && isTimestamp(value.predictedAt, false) &&
     (value.decision === 'BUY' || value.decision === 'HOLD' || value.decision === 'SELL') &&
     isFiniteNumber(value.score) && isFiniteNumber(value.confidence) && isFiniteNumber(value.pnlPct) &&
     (value.regime === undefined || value.regime === 'bull' || value.regime === 'neutral' || value.regime === 'bear')
@@ -205,7 +208,7 @@ function isLearningOutcome(value: unknown): boolean {
     'code', 'predictedAt', 'evaluatedAt', 'decision', 'score', 'confidence', 'prevPnlPct',
     'currPnlPct', 'deltaPnlPct', 'reward', 'result',
   ], ['regime'])) return false
-  return isNonEmptyString(value.code) && isTimestamp(value.predictedAt) && isTimestamp(value.evaluatedAt) &&
+  return isNonEmptyString(value.code) && isTimestamp(value.predictedAt, false) && isTimestamp(value.evaluatedAt, false) &&
     (value.decision === 'BUY' || value.decision === 'HOLD' || value.decision === 'SELL') &&
     ['score', 'confidence', 'prevPnlPct', 'currPnlPct', 'deltaPnlPct', 'reward']
       .every(field => isFiniteNumber(value[field])) &&
@@ -216,7 +219,7 @@ function isLearningOutcome(value: unknown): boolean {
 function isLearningState(value: unknown): value is LearningState {
   if (!isRecord(value) || !hasExactKeys(value,
     ['lastUpdated', 'baselineCount', 'baseline', 'outcomes', 'summary', 'suggestedWeights'])) return false
-  if (!isTimestamp(value.lastUpdated) || !isNonNegativeInteger(value.baselineCount) ||
+  if (!isTimestamp(value.lastUpdated, false) || !isNonNegativeInteger(value.baselineCount) ||
       !Array.isArray(value.baseline) || !value.baseline.every(isLearningBaseline) ||
       !Array.isArray(value.outcomes) || !value.outcomes.every(isLearningOutcome)) return false
   const summary = value.summary
@@ -238,7 +241,7 @@ function isLearningState(value: unknown): value is LearningState {
 
 function isCsvSyncSummary(value: unknown): value is CsvSyncSummary {
   if (!isRecord(value) || !hasExactKeys(value, ['importedAt', 'stock', 'trust']) ||
-      !isTimestamp(value.importedAt) || !isRecord(value.stock) || !isRecord(value.trust)) return false
+      !isTimestamp(value.importedAt, false) || !isRecord(value.stock) || !isRecord(value.trust)) return false
   const stock = value.stock
   const trust = value.trust
   if (!hasExactKeys(stock, ['updated', 'added', 'removed']) ||
@@ -266,7 +269,7 @@ function isCsvImportPayload(value: unknown, schemaVersion: string): value is Csv
   return Array.isArray(value.holdings) && value.holdings.every(isHolding) &&
     Array.isArray(value.trust) && value.trust.every(isTrust) &&
     (value.learning === null || isLearningState(value.learning)) &&
-    isTimestamp(value.importedAt) && isCsvSyncSummary(value.syncSummary) &&
+    isTimestamp(value.importedAt, false) && isCsvSyncSummary(value.syncSummary) &&
     isTrustShortSnapshot(value.trustShortSnapshot) &&
     (legacy || value.provenance === null ||
       (isCsvImportProvenance(value.provenance) && value.provenance.importedAt === value.importedAt))

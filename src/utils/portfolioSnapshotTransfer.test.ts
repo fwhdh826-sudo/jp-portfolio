@@ -318,6 +318,17 @@ describe('parsePortfolioSnapshotImport のvalidation（v1 payload・後方互換
     expect(result.ok).toBe(false)
   })
 
+  it.each([
+    ['exportedAt', '2026-02-30'],
+    ['exportedAt', '2026-07-15T25:00:00Z'],
+    ['csvImportedAt', '2025-02-29'],
+    ['csvImportedAt', '2026-07-15T09:00:00'],
+  ])('%sの不正またはtimezone-less timestampはreject', (field, invalid) => {
+    const payload = JSON.parse(validPayload())
+    payload[field] = invalid
+    expect(parsePortfolioSnapshotImport(JSON.stringify(payload)).ok).toBe(false)
+  })
+
   it('不明なschemaVersion（v1でもv2でもない）はreject', () => {
     const payload = JSON.parse(validPayload())
     payload.schemaVersion = 'portfolio-snapshot-999'

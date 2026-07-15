@@ -359,6 +359,9 @@ export interface CsvSourceProvenance {
   sourceAsOf: string | null
   sourceAsOfKind: CsvSourceAsOfKind
   sourceAsOfConfidence: CsvSourceAsOfConfidence
+  /** SHA-256 of normalized semantic CSV content. Absent only on legacy canonical v2 state. */
+  semanticIdentity?: string
+  /** Legacy FNV-1a checksum retained for canonical v2 migration compatibility. */
   contentFingerprint: string
   sourceFileName: string | null
   fileLastModified: string | null

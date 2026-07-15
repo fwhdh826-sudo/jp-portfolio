@@ -325,6 +325,38 @@ describe('T9-A001/A002: structured CSV result and atomic store commit', () => {
     expect(portfolioNotifications).toBe(0)
   })
 
+  it('T9-A004-R1: FNV-only v2 is preserved, fails closed at same time, and migrates on newer authority', async () => {
+    const first = csvWithSource('2026-07-15T09:00:00+09:00')
+    await expect(useAppStore.getState().importCsv(csvFile(first)))
+      .resolves.toMatchObject({ ok: true, code: 'SUCCESS' })
+
+    const strongGeneration = restoreCsvImportGeneration()
+    if (strongGeneration.status !== 'committed' || !strongGeneration.payload.provenance) {
+      throw new Error('expected committed provenance')
+    }
+    const legacyPayload = structuredClone(strongGeneration.payload)
+    delete legacyPayload.provenance?.semanticIdentity
+    const strongRaw = storage[CSV_IMPORT_GENERATION_KEY]
+    persistCsvImportTransaction(legacyPayload, Date.now(), strongRaw)
+    expect(restoreCsvImportGeneration()).toMatchObject({
+      status: 'committed', payload: { provenance: { contentFingerprint: expect.any(String) } },
+    })
+    const legacyGeneration = restoreCsvImportGeneration()
+    if (legacyGeneration.status !== 'committed') throw new Error('expected legacy v2 generation')
+    expect(legacyGeneration.payload.provenance?.semanticIdentity).toBeUndefined()
+
+    await expect(useAppStore.getState().importCsv(csvFile(first)))
+      .resolves.toMatchObject({ ok: false, code: 'CSV_PROVENANCE_CONFLICT' })
+
+    const newer = csvWithSource('2026-07-16T09:00:00+09:00')
+    await expect(useAppStore.getState().importCsv(csvFile(newer)))
+      .resolves.toMatchObject({ ok: true, code: 'SUCCESS' })
+    expect(restoreCsvImportGeneration()).toMatchObject({
+      status: 'committed',
+      payload: { provenance: { semanticIdentity: expect.stringMatching(/^sha256:[0-9a-f]{64}$/) } },
+    })
+  })
+
   it('T9-A004: unknown incoming provenance cannot overwrite an authoritative generation', async () => {
     await expect(useAppStore.getState().importCsv(csvFile(csvWithSource('2026-07-15T09:00:00+09:00'))))
       .resolves.toMatchObject({ ok: true, code: 'SUCCESS' })

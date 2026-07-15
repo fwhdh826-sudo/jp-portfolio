@@ -4,6 +4,11 @@ import type {
   CsvSourceAsOfKind,
   CsvSourceProvenance,
 } from '../../types'
+import { parseStrictTimestamp, normalizeStrictTimestamp } from '../../utils/strictTimestamp'
+import {
+  fingerprintLegacyCsvSemanticContent,
+  identifyCsvSemanticContent,
+} from './csvSemanticIdentity'
 
 const AUTHORITATIVE_LABELS = new Set([
   'データ基準日時',
@@ -41,12 +46,7 @@ function parseMetadataLine(line: string): [string, string] | null {
 
 function normalizeTimestamp(value: string): string | null {
   const raw = value.normalize('NFKC').trim()
-  if (/^\d{4}-\d{2}-\d{2}$/.test(raw)) {
-    const dateOnly = new Date(`${raw}T00:00:00+09:00`)
-    return Number.isFinite(dateOnly.getTime()) ? dateOnly.toISOString() : null
-  }
-  const parsed = new Date(raw)
-  return Number.isFinite(parsed.getTime()) ? parsed.toISOString() : null
+  return normalizeStrictTimestamp(raw, { allowDateOnly: true })
 }
 
 function extractStructuredTimestamp(text: string): {
@@ -87,22 +87,9 @@ function extractFilenameTimestamp(fileName: string): string | null {
   return normalizeTimestamp(`${year}-${month}-${day}T${hour}:${minute}:${second}+09:00`)
 }
 
-function stableStringify(value: unknown): string {
-  if (value === null || typeof value !== 'object') return JSON.stringify(value)
-  if (Array.isArray(value)) return `[${value.map(stableStringify).join(',')}]`
-  const record = value as Record<string, unknown>
-  return `{${Object.keys(record).sort().map(key => `${JSON.stringify(key)}:${stableStringify(record[key])}`).join(',')}}`
-}
-
-/** Stable semantic fingerprint; this is an identity checksum, not a security primitive. */
+/** Legacy compatibility checksum. Duplicate identity must never depend on this value alone. */
 export function fingerprintCsvSemanticContent(value: unknown): string {
-  const serialized = stableStringify(value)
-  let hash = 0x811c9dc5
-  for (let index = 0; index < serialized.length; index += 1) {
-    hash ^= serialized.charCodeAt(index)
-    hash = Math.imul(hash, 0x01000193)
-  }
-  return `fnv1a32:${(hash >>> 0).toString(16).padStart(8, '0')}`
+  return fingerprintLegacyCsvSemanticContent(value)
 }
 
 export function buildCsvSourceProvenance(input: {
@@ -127,6 +114,7 @@ export function buildCsvSourceProvenance(input: {
   return {
     ...selected,
     contentFingerprint: fingerprintCsvSemanticContent(input.semanticContent),
+    semanticIdentity: identifyCsvSemanticContent(input.semanticContent),
     sourceFileName: input.fileName || null,
     fileLastModified,
   }
@@ -148,14 +136,20 @@ export function evaluateCsvImportMonotonicity(input: {
 }): { decision: CsvImportMonotonicityDecision } {
   const { incoming, current, currentGenerationExists } = input
   if (!currentGenerationExists) return { decision: 'ALLOW_FIRST_IMPORT' }
-  const sameContent = current !== null && incoming.contentFingerprint === current.contentFingerprint
+  // FNV-only canonical v2 values remain valid legacy state, but cannot prove equality. They
+  // migrate only through a normal allowed replacement (for example a newer authoritative CSV).
+  const sameContent = current !== null &&
+    incoming.semanticIdentity !== undefined &&
+    current.semanticIdentity !== undefined &&
+    incoming.semanticIdentity === current.semanticIdentity
 
   const incomingAuthoritative = incoming.sourceAsOfConfidence === 'authoritative' && incoming.sourceAsOf !== null
   const currentAuthoritative = current?.sourceAsOfConfidence === 'authoritative' && current.sourceAsOf !== null
 
   if (incomingAuthoritative && currentAuthoritative && current) {
-    const incomingTime = Date.parse(incoming.sourceAsOf!)
-    const currentTime = Date.parse(current.sourceAsOf!)
+    const incomingTime = parseStrictTimestamp(incoming.sourceAsOf!)?.epochMs
+    const currentTime = parseStrictTimestamp(current.sourceAsOf!)?.epochMs
+    if (incomingTime === undefined || currentTime === undefined) return { decision: 'REJECT_CONFLICT' }
     if (incomingTime > currentTime) return { decision: 'ALLOW_NEWER' }
     if (incomingTime < currentTime) return { decision: sameContent ? 'DUPLICATE' : 'REJECT_STALE' }
     return { decision: sameContent ? 'DUPLICATE' : 'REJECT_CONFLICT' }

@@ -3,6 +3,7 @@ import type { CsvImportProvenance } from '../../types'
 import {
   buildCsvSourceProvenance,
   evaluateCsvImportMonotonicity,
+  fingerprintCsvSemanticContent,
 } from './csvProvenance'
 
 const semanticA = {
@@ -12,6 +13,23 @@ const semanticA = {
 const semanticB = {
   trustSectionSeen: true,
   rows: [{ assetType: 'stock', code: '1001', name: '銘柄1001', eval: 200_000 }],
+}
+
+// T9-A004-R1 permanent counterexample: these are different normalized portfolio payloads
+// with the same legacy FNV-1a 32-bit value. Do not replace this with a mocked fingerprint.
+const legacyCollisionA = {
+  trustSectionSeen: true,
+  rows: [{
+    assetType: 'stock', code: '9785', name: '銘柄8785', eval: 710_401,
+    pnlPct: 87.85, dayPct: 7.85, price: 8785, acquiredAt: null, accountHint: 'unknown',
+  }],
+}
+const legacyCollisionB = {
+  trustSectionSeen: true,
+  rows: [{
+    assetType: 'stock', code: '2361', name: '銘柄19361', eval: 7_072_081,
+    pnlPct: 193.61, dayPct: 13.61, price: 19_361, acquiredAt: null, accountHint: 'unknown',
+  }],
 }
 
 function source(
@@ -102,11 +120,50 @@ describe('T9-A004: CSV source provenance extraction', () => {
     const first = source('raw A\r\n', { semantic: semanticA })
     const second = source(' raw B \n', { semantic: semanticA })
     expect(first.contentFingerprint).toBe(second.contentFingerprint)
+    expect(first.semanticIdentity).toBe(second.semanticIdentity)
   })
 
   it('semantic fingerprint changes when normalized portfolio source content changes', () => {
     expect(source('', { semantic: semanticA }).contentFingerprint)
       .not.toBe(source('', { semantic: semanticB }).contentFingerprint)
+    expect(source('', { semantic: semanticA }).semanticIdentity)
+      .not.toBe(source('', { semantic: semanticB }).semanticIdentity)
+  })
+
+  it('rejects impossible calendar dates instead of normalizing them into authoritative provenance', () => {
+    for (const invalid of [
+      '2025-02-29',
+      '2026-02-30',
+      '2026-13-01',
+      '2026-00-01',
+      '2026-07-00',
+      '2026-07-32',
+      '2026-07-15T25:00:00Z',
+      '2026-07-15T23:60:00Z',
+      '2026-07-15T23:59:60Z',
+    ]) {
+      expect(source(`データ基準日時,${invalid}`)).toMatchObject({
+        sourceAsOf: null,
+        sourceAsOfKind: 'unknown',
+        sourceAsOfConfidence: 'unknown',
+      })
+    }
+  })
+
+  it('accepts a valid leap day and normalizes date-only source dates as JST midnight', () => {
+    expect(source('データ基準日,2024-02-29')).toMatchObject({
+      sourceAsOf: '2024-02-28T15:00:00.000Z',
+      sourceAsOfKind: 'csv_explicit',
+      sourceAsOfConfidence: 'authoritative',
+    })
+  })
+
+  it('rejects timezone-less datetimes as authoritative instead of using the runtime timezone', () => {
+    expect(source('データ基準日時,2026-07-15T09:00:00')).toMatchObject({
+      sourceAsOf: null,
+      sourceAsOfKind: 'unknown',
+      sourceAsOfConfidence: 'unknown',
+    })
   })
 })
 
@@ -151,6 +208,37 @@ describe('T9-A004: pure CSV monotonicity policy', () => {
     const conflict = imported(source('データ基準日時,2026-07-14T09:00:00+09:00', { semantic: semanticB }))
     expect(evaluateCsvImportMonotonicity({ incoming: conflict, current: explicitOld, currentGenerationExists: true }).decision)
       .toBe('REJECT_CONFLICT')
+  })
+
+  it('never treats different semantic payloads with the same legacy FNV as a duplicate', () => {
+    expect(legacyCollisionA).not.toEqual(legacyCollisionB)
+    expect(fingerprintCsvSemanticContent(legacyCollisionA)).toBe('fnv1a32:10260267')
+    expect(fingerprintCsvSemanticContent(legacyCollisionB)).toBe('fnv1a32:10260267')
+
+    const current = imported(source('データ基準日時,2026-07-15T09:00:00+09:00', {
+      semantic: legacyCollisionA,
+    }))
+    const incoming = imported(source('データ基準日時,2026-07-15T09:00:00+09:00', {
+      semantic: legacyCollisionB,
+    }))
+    expect(current.semanticIdentity).not.toBe(incoming.semanticIdentity)
+
+    expect(evaluateCsvImportMonotonicity({ incoming, current, currentGenerationExists: true }).decision)
+      .toBe('REJECT_CONFLICT')
+  })
+
+  it('keeps FNV-only canonical v2 compatible without using its weak hash as duplicate evidence', () => {
+    const current = imported(source('データ基準日時,2026-07-15T09:00:00+09:00'))
+    delete current.semanticIdentity
+    const sameTimeIncoming = imported(source('データ基準日時,2026-07-15T09:00:00+09:00'))
+    const newerIncoming = imported(source('データ基準日時,2026-07-16T09:00:00+09:00'))
+
+    expect(evaluateCsvImportMonotonicity({
+      incoming: sameTimeIncoming, current, currentGenerationExists: true,
+    }).decision).toBe('REJECT_CONFLICT')
+    expect(evaluateCsvImportMonotonicity({
+      incoming: newerIncoming, current, currentGenerationExists: true,
+    }).decision).toBe('ALLOW_NEWER')
   })
 
   it('rejects incoming unknown provenance when current provenance is authoritative', () => {

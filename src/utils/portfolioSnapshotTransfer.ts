@@ -1,4 +1,6 @@
 // ═══════════════════════════════════════════════════════════
+
+import { isStrictTimestamp } from './strictTimestamp'
 // P4.5-A012a: 保有株・投信・現金前提・portfolioPolicyのportfolio snapshot
 // export/import — 表示専用のシリアライズ/検証のみ。
 // PC/スマホ間の同期はユーザーがJSON文字列を手動でコピー/貼り付けする方式に限定する
@@ -100,7 +102,7 @@ function isValidOptionalString(v: unknown): v is string | null | undefined {
 }
 
 function isValidIsoDateString(v: unknown): boolean {
-  return typeof v === 'string' && v.length > 0 && !Number.isNaN(new Date(v).getTime())
+  return isStrictTimestamp(v)
 }
 
 /**
@@ -399,11 +401,14 @@ export function parsePortfolioSnapshotImport(raw: string): PortfolioSnapshotPars
     cashAssumptions = result.value
   }
 
-  const csvImportedAt =
-    typeof p.csvImportedAt === 'string' && isValidIsoDateString(p.csvImportedAt) ? p.csvImportedAt : null
-
-  const exportedAt =
-    typeof p.exportedAt === 'string' && isValidIsoDateString(p.exportedAt) ? p.exportedAt : new Date().toISOString()
+  if (p.csvImportedAt !== null && !isValidIsoDateString(p.csvImportedAt)) {
+    return { ok: false, error: 'csvImportedAtの日時形式が不正です。' }
+  }
+  if (!isValidIsoDateString(p.exportedAt)) {
+    return { ok: false, error: 'exportedAtの日時形式が不正です。' }
+  }
+  const csvImportedAt = p.csvImportedAt as string | null
+  const exportedAt = p.exportedAt as string
 
   return {
     ok: true,

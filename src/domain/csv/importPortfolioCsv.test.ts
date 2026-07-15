@@ -894,11 +894,46 @@ describe('importPortfolioCsv: 文字コード判定', () => {
 
     const holdings = [makeHolding({ code: '6501', name: '日立製作所', eval: 800_000 })]
     const result = await importPortfolioCsv(file, holdings, [])
+    const utf8Result = await importPortfolioCsv(makeCsvFile([
+      '株式（現物/特定預り）',
+      STOCK_HEADER,
+      '6501,日立製作所,9500,950000,12.50,1.20,2025-08-01',
+    ].join('\n')), holdings, [])
     const h = result.holdings.find(x => x.code === '6501')!
     expect(h.eval).toBe(950_000)
     expect(h.pnlPct).toBe(12.5)
     expect(h.currentPrice).toBe(9500)
     expect(h.acquiredAt).toBe('2025-08-01')
+    expect(result.sourceProvenance.semanticIdentity).toBe(utf8Result.sourceProvenance.semanticIdentity)
+  })
+
+  it('row order / whitespace / line ending / irrelevant column differences keep one semantic identity', async () => {
+    const first = [
+      '株式（現物/特定預り）',
+      `${STOCK_HEADER},メモ`,
+      '6501,日立製作所,8500,900000,15.20,1.10,2025-06-01,first',
+      '7203,トヨタ自動車,3000,600000,5.00,0.50,2025-07-01,ignored A',
+    ].join('\r\n')
+    const second = [
+      '株式（現物/特定預り）',
+      `${STOCK_HEADER},別メモ`,
+      ' 7203 , トヨタ自動車 , 3000 , 600000 , 5.00 , 0.50 , 2025-07-01 ,ignored B',
+      ' 6501 , 日立製作所 , 8500 , 900000 , 15.20 , 1.10 , 2025-06-01 ,second',
+    ].join('\n')
+
+    const firstResult = await importPortfolioCsv(makeCsvFile(first), [], [])
+    const secondResult = await importPortfolioCsv(makeCsvFile(second), [], [])
+    expect(firstResult.sourceProvenance.semanticIdentity)
+      .toBe(secondResult.sourceProvenance.semanticIdentity)
+  })
+
+  it('a relevant parsed field difference changes semantic identity', async () => {
+    const base = STOCK_STUB_CSV
+    const changed = STOCK_STUB_CSV.replace('900000', '900001')
+    const baseResult = await importPortfolioCsv(makeCsvFile(base), [], [])
+    const changedResult = await importPortfolioCsv(makeCsvFile(changed), [], [])
+    expect(baseResult.sourceProvenance.semanticIdentity)
+      .not.toBe(changedResult.sourceProvenance.semanticIdentity)
   })
 })
 

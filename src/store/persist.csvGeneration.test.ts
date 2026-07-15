@@ -142,6 +142,7 @@ function provenance(importedAt: string): CsvImportProvenance {
     sourceAsOf: '2026-07-15T00:00:00.000Z',
     sourceAsOfKind: 'csv_explicit',
     sourceAsOfConfidence: 'authoritative',
+    semanticIdentity: `sha256:${'12'.repeat(32)}`,
     contentFingerprint: 'fnv1a32:12345678',
     sourceFileName: 'portfolio.csv',
     fileLastModified: '2026-07-15T01:00:00.000Z',
@@ -195,6 +196,36 @@ describe('T9-A003: committed CSV generation durability and recovery', () => {
     })
   })
 
+  it('T9-A004-R1: existing FNV-only v2 canonical remains reload-compatible', () => {
+    const next = payload('new')
+    next.provenance = provenance(next.importedAt)
+    delete next.provenance.semanticIdentity
+
+    persistCsvImportTransaction(next)
+
+    expect(restoreCsvImportGeneration()).toMatchObject({
+      status: 'committed',
+      payload: { provenance: { contentFingerprint: 'fnv1a32:12345678' } },
+    })
+  })
+
+  it('T9-A004-R1: a coordinated replacement migrates legacy v2 to persisted strong identity', () => {
+    const legacy = payload('old')
+    legacy.provenance = provenance(legacy.importedAt)
+    delete legacy.provenance.semanticIdentity
+    persistCsvImportTransaction(legacy, 1)
+    const legacyRaw = store[CSV_IMPORT_GENERATION_KEY]
+
+    const next = payload('new')
+    next.provenance = provenance(next.importedAt)
+    persistCsvImportTransaction(next, 2, legacyRaw)
+
+    expect(restoreCsvImportGeneration()).toMatchObject({
+      status: 'committed',
+      payload: { provenance: { semanticIdentity: `sha256:${'12'.repeat(32)}` } },
+    })
+  })
+
   it('T9-A004: checksum-valid v1 canonical without provenance remains reload-compatible', () => {
     const legacyPayload = payload('old')
     const serializedPayload = JSON.stringify(legacyPayload)
@@ -245,6 +276,7 @@ describe('T9-A003: committed CSV generation durability and recovery', () => {
     ['missing provenance key', (value: any) => { delete value.provenance }],
     ['invalid source timestamp', (value: any) => { value.provenance.sourceAsOf = 'not-a-date' }],
     ['invalid fingerprint', (value: any) => { value.provenance.contentFingerprint = 'raw-hash' }],
+    ['invalid semantic identity', (value: any) => { value.provenance.semanticIdentity = 'fnv1a32:12345678' }],
     ['unknown confidence', (value: any) => { value.provenance.sourceAsOfConfidence = 'certain' }],
     ['kind/confidence mismatch', (value: any) => { value.provenance.sourceAsOfKind = 'filename' }],
     ['importedAt mismatch', (value: any) => { value.provenance.importedAt = '2026-07-01T00:00:00.000Z' }],
@@ -262,6 +294,40 @@ describe('T9-A003: committed CSV generation durability and recovery', () => {
     expect(restorePortfolio()).toBeNull()
     expect(restoreTrust()).toBeNull()
   })
+
+  it.each([
+    ['sourceAsOf', '2026-02-30'],
+    ['sourceAsOf leap day', '2025-02-29'],
+    ['sourceAsOf month', '2026-13-01'],
+    ['sourceAsOf hour', '2026-07-15T25:00:00Z'],
+  ])('T9-A004-R1: checksum-valid v2 canonical rejects impossible %s', (_label, invalid) => {
+    const next = payload('new')
+    next.provenance = provenance(next.importedAt)
+    persistCsvImportTransaction(next)
+    const envelope = JSON.parse(store[CSV_IMPORT_GENERATION_KEY])
+    envelope.payload.provenance.sourceAsOf = invalid
+    envelope.manifest.payloadChecksum = checksum(JSON.stringify(envelope.payload))
+    store[CSV_IMPORT_GENERATION_KEY] = JSON.stringify(envelope)
+
+    expect(restoreCsvImportGeneration()).toEqual({ status: 'invalid' })
+  })
+
+  it.each(['2026-02-30', '2025-02-29', '2026-07-15T09:00:00'])(
+    'T9-A004-R1: checksum-valid v2 canonical rejects invalid importedAt %s',
+    invalid => {
+      const next = payload('new')
+      next.provenance = provenance(next.importedAt)
+      persistCsvImportTransaction(next)
+      const envelope = JSON.parse(store[CSV_IMPORT_GENERATION_KEY])
+      envelope.payload.importedAt = invalid
+      envelope.payload.syncSummary.importedAt = invalid
+      envelope.payload.provenance.importedAt = invalid
+      envelope.manifest.payloadChecksum = checksum(JSON.stringify(envelope.payload))
+      store[CSV_IMPORT_GENERATION_KEY] = JSON.stringify(envelope)
+
+      expect(restoreCsvImportGeneration()).toEqual({ status: 'invalid' })
+    },
+  )
 
   it('tracker canonical status distinguishes absent and present-invalid without legacy ambiguity', () => {
     store.v95_trust_short_snapshot = JSON.stringify(payload('old').trustShortSnapshot)
