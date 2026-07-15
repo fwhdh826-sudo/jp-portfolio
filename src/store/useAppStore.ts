@@ -28,6 +28,7 @@ import {
   persistCsvImportedAt,
   restoreCsvImportedAt,
   restoreCsvSyncSummary,
+  restoreCsvImportGeneration,
   persistCsvImportTransaction,
   CsvImportPersistenceError,
   persistPortfolioPolicy,
@@ -48,7 +49,8 @@ import { buildCandidateUniverse, scoreCandidates, buildStockCandidatePlan, compu
 import type { CandidateItem, StockCandidateItem } from '../domain/candidates'
 import { computeRoleExposureByRole } from '../domain/candidates/roleExposure'
 import {
-  detectTrustExecutionFromCsvSync,
+  stageTrustExecutionFromCsvSync,
+  getTrustShortReadDependencyFingerprint,
   getTrustShortTodayExecutionCount,
   getTrustShortTrackingStats,
   recordTrustShortDecision,
@@ -101,6 +103,7 @@ export type CsvImportErrorCode =
   | 'ANALYSIS_ERROR'
   | 'OFFICIAL_DECISION_ERROR'
   | 'PERSISTENCE_ERROR'
+  | 'IMPORT_CONFLICT'
   | 'IMPORT_IN_PROGRESS'
   | 'UNKNOWN_ERROR'
 
@@ -167,6 +170,42 @@ function classifyCsvParseFailure(error: unknown): CsvImportResult {
     return csvImportFailure('FULL_SYNC_GUARD_REJECTED', message)
   }
   return csvImportFailure('PARSE_ERROR', message || 'CSVを解析できませんでした。')
+}
+
+/**
+ * runFullAnalysis / strict officialDecision が読むmutable inputだけを安定化して比較する。
+ * status/errorや既存derived outputは除外し、関連timestamp/source metadataは含める。
+ */
+export function buildPortfolioAnalysisFingerprint(state: AppState): string {
+  const serialize = (name: string, value: unknown) => {
+    try { return `${name}:${JSON.stringify(value)}` }
+    catch { return `${name}:<unreadable>` }
+  }
+  return [
+    serialize('holdings', state.holdings),
+    serialize('trust', state.trust),
+    serialize('market', state.market),
+    serialize('correlation', state.correlation),
+    serialize('news', state.news),
+    serialize('learning', state.learning),
+    serialize('macro', state.macro),
+    serialize('sqCalendar', state.sqCalendar),
+    serialize('margin', state.margin),
+    serialize('flows', state.flows),
+    serialize('cash', state.cash),
+    serialize('cashReserve', state.cashReserve),
+    serialize('addRoom', state.addRoom),
+    serialize('cashAssumptions', state.cashAssumptions),
+    serialize('portfolioPolicy', state.portfolioPolicy),
+    serialize('candidatesNews', state.candidatesNews),
+    serialize('candidatesStocks', state.candidatesStocks),
+    serialize('regimeState', state.regimeState),
+    serialize('safeMode', state.safeMode),
+    serialize('csvLastImportedAt', state.system.csvLastImportedAt),
+    serialize('dataSourceStatus', state.system.dataSourceStatus),
+    serialize('dataTimestamps', state.system.dataTimestamps),
+    serialize('trustShortTracker', getTrustShortReadDependencyFingerprint()),
+  ].join('|')
 }
 
 interface HoldingsSnapshotLike {
@@ -882,26 +921,40 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
     try {
       // localStorage復元（P4.5-A012d: holdings/trustはTTL失効時も値を保持する。
       // 鮮度はlocalStorageFreshnessとして表示専用にsystemへ反映する）
-      const savedPortfolio = restorePortfolio()
-      const savedTrust = restoreTrust()
-      const savedLearning = restoreLearning()
-      const savedCsvAt = restoreCsvImportedAt()
-      const savedCsvSyncSummary = restoreCsvSyncSummary()
+      const csvGeneration = restoreCsvImportGeneration()
+      // A committed envelope is hydrated as one logical generation. A present but invalid
+      // envelope fails closed instead of mixing possibly partial legacy keys. Legacy keys are
+      // read only when no generation envelope exists (backward compatibility).
+      const useLegacy = csvGeneration.status === 'none'
+      const savedPortfolio = csvGeneration.status === 'committed'
+        ? csvGeneration.payload.holdings
+        : useLegacy ? restorePortfolio() : null
+      const savedTrust = csvGeneration.status === 'committed'
+        ? csvGeneration.payload.trust
+        : useLegacy ? restoreTrust() : null
+      const savedLearning = csvGeneration.status === 'committed' || useLegacy
+        ? restoreLearning()
+        : null
+      const savedCsvAt = csvGeneration.status === 'committed' || useLegacy
+        ? restoreCsvImportedAt()
+        : null
+      const savedCsvSyncSummary = csvGeneration.status === 'committed' || useLegacy
+        ? restoreCsvSyncSummary()
+        : null
       const savedPolicy = restorePortfolioPolicy()
       const savedCashAssumptions = restoreCashAssumptions()
-      if (savedPortfolio) set({ holdings: savedPortfolio })
-      if (savedTrust) set({ trust: savedTrust })
-      if (savedLearning) set({ learning: savedLearning })
-      if (savedPolicy) set({ portfolioPolicy: savedPolicy })
-      if (savedCashAssumptions) set({ cashAssumptions: savedCashAssumptions })
-      // Phase 8: csvLastImportedAt をリロード後も維持
-      if (savedCsvAt) {
-        set(s => ({ system: { ...s.system, csvLastImportedAt: savedCsvAt } }))
-      }
-      // P4.5-A013-T6: CSV取込結果summaryをリロード後も維持（表示専用）
-      if (savedCsvSyncSummary) {
-        set(s => ({ system: { ...s.system, csvSyncSummary: savedCsvSyncSummary } }))
-      }
+      set(s => ({
+        ...(savedPortfolio ? { holdings: savedPortfolio } : {}),
+        ...(savedTrust ? { trust: savedTrust } : {}),
+        ...(savedLearning ? { learning: savedLearning } : {}),
+        ...(savedPolicy ? { portfolioPolicy: savedPolicy } : {}),
+        ...(savedCashAssumptions ? { cashAssumptions: savedCashAssumptions } : {}),
+        system: {
+          ...s.system,
+          ...(savedCsvAt ? { csvLastImportedAt: savedCsvAt } : {}),
+          ...(savedCsvSyncSummary ? { csvSyncSummary: savedCsvSyncSummary } : {}),
+        },
+      }))
       // P4.5-A012d: holdings/trustのlocalStorage鮮度を表示専用でsystemへ反映する。
       // 投資判断ロジックには一切使わない（UIのstale警告のみに使用）。
       set(s => ({ system: { ...s.system, localStorageFreshness: computeLocalStorageFreshness() } }))
@@ -1121,150 +1174,188 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
     if (get().system.status === 'loading') {
       return csvImportFailure('IMPORT_IN_PROGRESS', '別の取込または更新が進行中です。完了後に再試行してください。')
     }
-    set(s => ({ system: { ...s.system, status: 'loading', error: null } }))
-    const baseState = get()
-    const oldHoldings = baseState.holdings
-    const oldTrust = baseState.trust
-
-    let parsed: Awaited<ReturnType<typeof importPortfolioCsv>>
-    try {
-      parsed = await importPortfolioCsv(
-        file,
-        oldHoldings,
-        oldTrust,
-      )
-    } catch (error) {
-      const failure = classifyCsvParseFailure(error)
-      set(s => ({ system: { ...s.system, status: 'error', error: failure.message } }))
-      return failure
-    }
-
-    const { holdings: updatedH, trust: updatedT, trustSync } = parsed
-    const now = new Date().toISOString()
-    const trustExecution = detectTrustExecutionFromCsvSync(updatedT, now)
-    const syncSummary = buildCsvSyncSummary(oldHoldings, updatedH, oldTrust, updatedT, trustSync, now)
-    const stagedState: AppState = {
-      ...baseState,
-      holdings: updatedH,
-      trust: updatedT,
-      system: {
-        ...baseState.system,
-        csvLastImportedAt: now,
-        csvSyncSummary: syncSummary,
-      },
-    }
-
-    let computed: ReturnType<typeof runFullAnalysis>
-    try {
-      computed = runFullAnalysis(stagedState, { requireOfficialDecision: true })
-    } catch (error) {
-      const isOfficialDecisionError = error instanceof OfficialDecisionGenerationError
-      const failure = csvImportFailure(
-        isOfficialDecisionError ? 'OFFICIAL_DECISION_ERROR' : 'ANALYSIS_ERROR',
-        isOfficialDecisionError
-          ? `公式判断の生成に失敗しました: ${error.message}`
-          : `分析に失敗しました: ${error instanceof Error ? error.message : String(error)}`,
-      )
+    let lockAcquired = false
+    const publishFailure = (failure: CsvImportResult): CsvImportResult => {
+      if (failure.ok) return failure
       set(s => ({ system: { ...s.system, status: 'error', error: failure.message } }))
       return failure
     }
 
     try {
-      persistCsvImportTransaction({
-        holdings: computed.holdings,
-        trust: computed.trust,
-        learning: computed.learning,
-        importedAt: now,
-        syncSummary,
-      })
-    } catch (error) {
-      const persistenceStatus = error instanceof CsvImportPersistenceError
-        ? error.status
-        : 'rollback_failed'
-      const failure = csvImportFailure(
-        'PERSISTENCE_ERROR',
-        error instanceof Error ? error.message : String(error),
-        persistenceStatus,
-      )
-      set(s => ({ system: { ...s.system, status: 'error', error: failure.message } }))
-      return failure
-    }
+      const baseState = get()
+      const dependencyFingerprint = buildPortfolioAnalysisFingerprint(baseState)
+      const fileName = String(file.name || 'CSVファイル')
+      set(s => ({ system: { ...s.system, status: 'loading', error: null } }))
+      lockAcquired = true
+      const oldHoldings = baseState.holdings
+      const oldTrust = baseState.trust
 
-    const localStorageFreshness = computeLocalStorageFreshness()
-    set(s => ({
-      ...computed,
-      system: {
-        ...s.system,
-        status: 'success',
-        csvLastImportedAt: now,
-        csvSyncSummary: syncSummary,
-        analysisLastRunAt: now,
-        error: null,
-        localStorageFreshness,
-      },
-    }))
-
-    try {
-      if (trustExecution.executed && getTrustShortTodayExecutionCount(now) < 1) {
-        const state = get()
-        const trustPlan = buildTrustPortfolioPlan({
-          trust: state.trust,
-          market: state.market,
-          macro: state.macro,
-          news: state.news,
-          sqCalendar: state.sqCalendar,
-          margin: state.margin,
-          flows: state.flows,
-          todayEntryCount: getTrustShortTodayExecutionCount(now),
-          performance30d:  getTrustShortTrackingStats(),
-          noTrade:         checkNoTrade(state).noTrade,
-          jpTrustHeadroom: state.universe?.categories.find(c => c.class === 'JP_TRUST')?.diffValue,
-        })
-
-        recordTrustShortDecision({
-          date: now,
-          decision: trustPlan.shortTermMode.candidateDirection,
-          confidence: trustPlan.shortTermMode.confidence,
-          executed: true,
-          nikkeiChgPct: state.market.nikkeiChgPct,
-          futuresChgPct: trustPlan.marketContext.nikkeiFuturesDirection,
-          conditionsPassed: trustPlan.shortTermMode.conditionsPassed,
-          vix: trustPlan.marketContext.vix,
-          nikkeiVI: trustPlan.marketContext.nikkeiVI,
-          volatilitySpread: trustPlan.marketContext.volatilitySpread,
-        })
+      let parsed: Awaited<ReturnType<typeof importPortfolioCsv>>
+      try {
+        parsed = await importPortfolioCsv(file, oldHoldings, oldTrust)
+      } catch (error) {
+        return publishFailure(classifyCsvParseFailure(error))
       }
-    } catch {
-      // 実行履歴は補助telemetry。portfolio transaction成功後の失敗で成功を反転させない。
-    }
 
-    const warnings = [
-      ...(syncSummary.trust.unknownFunds.length > 0
-        ? [`未登録投信 ${syncSummary.trust.unknownFunds.length}件は反映されませんでした。`]
-        : []),
-      ...(syncSummary.trust.ambiguousFundIds.length > 0
-        ? [`口座を一意に特定できない投信 ${syncSummary.trust.ambiguousFundIds.length}件は更新されませんでした。`]
-        : []),
-    ]
-    return {
-      ok: true,
-      code: 'SUCCESS',
-      message: `${file.name} の取込み・分析・保存が完了しました。`,
-      imported: {
-        stock: { ...syncSummary.stock },
-        trust: {
-          updated: syncSummary.trust.updated,
-          reheld: syncSummary.trust.reheld,
-          zeroed: syncSummary.trust.zeroed,
-          unknown: syncSummary.trust.unknownFunds.length,
-          ambiguous: syncSummary.trust.ambiguousFundIds.length,
+      const { holdings: updatedH, trust: updatedT, trustSync } = parsed
+      const now = new Date().toISOString()
+      const stagedTrustExecution = stageTrustExecutionFromCsvSync(updatedT, now)
+      const trustExecution = stagedTrustExecution.detection
+      const syncSummary = buildCsvSyncSummary(oldHoldings, updatedH, oldTrust, updatedT, trustSync, now)
+      const stagedState: AppState = {
+        ...baseState,
+        holdings: updatedH,
+        trust: updatedT,
+        system: {
+          ...baseState.system,
+          csvLastImportedAt: now,
+          csvSyncSummary: syncSummary,
         },
-      },
-      warnings,
-      analysisCommitted: true,
-      officialDecisionCommitted: true,
-      persistence: { status: 'committed' },
-      importedAt: now,
+      }
+
+      let computed: ReturnType<typeof runFullAnalysis>
+      try {
+        computed = runFullAnalysis(stagedState, { requireOfficialDecision: true })
+      } catch (error) {
+        const isOfficialDecisionError = error instanceof OfficialDecisionGenerationError
+        return publishFailure(csvImportFailure(
+          isOfficialDecisionError ? 'OFFICIAL_DECISION_ERROR' : 'ANALYSIS_ERROR',
+          isOfficialDecisionError
+            ? `公式判断の生成に失敗しました: ${error.message}`
+            : `分析に失敗しました: ${error instanceof Error ? error.message : String(error)}`,
+        ))
+      }
+
+      const warnings = [
+        ...(syncSummary.trust.unknownFunds.length > 0
+          ? [`未登録投信 ${syncSummary.trust.unknownFunds.length}件は反映されませんでした。`]
+          : []),
+        ...(syncSummary.trust.ambiguousFundIds.length > 0
+          ? [`口座を一意に特定できない投信 ${syncSummary.trust.ambiguousFundIds.length}件は更新されませんでした。`]
+          : []),
+      ]
+
+      // No await is allowed after this CAS until durable commit + Zustand commit complete.
+      // JavaScript run-to-completion therefore closes the validation/commit race window.
+      if (buildPortfolioAnalysisFingerprint(get()) !== dependencyFingerprint) {
+        return publishFailure(csvImportFailure(
+          'IMPORT_CONFLICT',
+          '取込中に分析条件が変更されました。現在の状態を維持したまま取込を中断しました。再試行してください。',
+        ))
+      }
+
+      try {
+        persistCsvImportTransaction({
+          holdings: computed.holdings,
+          trust: computed.trust,
+          learning: computed.learning,
+          importedAt: now,
+          syncSummary,
+          trustShortSnapshot: stagedTrustExecution.snapshot,
+        })
+      } catch (error) {
+        const persistenceStatus = error instanceof CsvImportPersistenceError
+          ? error.status
+          : 'rollback_failed'
+        return publishFailure(csvImportFailure(
+          'PERSISTENCE_ERROR',
+          error instanceof Error ? error.message : String(error),
+          persistenceStatus,
+        ))
+      }
+
+      const localStorageFreshness = computeLocalStorageFreshness()
+      set(s => ({
+        ...computed,
+        system: {
+          ...s.system,
+          status: 'success',
+          csvLastImportedAt: now,
+          csvSyncSummary: syncSummary,
+          analysisLastRunAt: now,
+          error: null,
+          localStorageFreshness,
+        },
+      }))
+
+      try {
+        if (trustExecution.executed && getTrustShortTodayExecutionCount(now) < 1) {
+          const state = get()
+          const trustPlan = buildTrustPortfolioPlan({
+            trust: state.trust,
+            market: state.market,
+            macro: state.macro,
+            news: state.news,
+            sqCalendar: state.sqCalendar,
+            margin: state.margin,
+            flows: state.flows,
+            todayEntryCount: getTrustShortTodayExecutionCount(now),
+            performance30d:  getTrustShortTrackingStats(),
+            noTrade:         checkNoTrade(state).noTrade,
+            jpTrustHeadroom: state.universe?.categories.find(c => c.class === 'JP_TRUST')?.diffValue,
+          })
+
+          recordTrustShortDecision({
+            date: now,
+            decision: trustPlan.shortTermMode.candidateDirection,
+            confidence: trustPlan.shortTermMode.confidence,
+            executed: true,
+            nikkeiChgPct: state.market.nikkeiChgPct,
+            futuresChgPct: trustPlan.marketContext.nikkeiFuturesDirection,
+            conditionsPassed: trustPlan.shortTermMode.conditionsPassed,
+            vix: trustPlan.marketContext.vix,
+            nikkeiVI: trustPlan.marketContext.nikkeiVI,
+            volatilitySpread: trustPlan.marketContext.volatilitySpread,
+          })
+        }
+      } catch {
+        // Decision history is auxiliary post-commit telemetry; the staged portfolio snapshot
+        // itself is already part of the canonical durable generation.
+      }
+
+      return {
+        ok: true,
+        code: 'SUCCESS',
+        message: `${fileName} の取込み・分析・保存が完了しました。`,
+        imported: {
+          stock: { ...syncSummary.stock },
+          trust: {
+            updated: syncSummary.trust.updated,
+            reheld: syncSummary.trust.reheld,
+            zeroed: syncSummary.trust.zeroed,
+            unknown: syncSummary.trust.unknownFunds.length,
+            ambiguous: syncSummary.trust.ambiguousFundIds.length,
+          },
+        },
+        warnings,
+        analysisCommitted: true,
+        officialDecisionCommitted: true,
+        persistence: { status: 'committed' },
+        importedAt: now,
+      }
+    } catch (error) {
+      const detail = error instanceof Error ? error.message : String(error)
+      const failure = csvImportFailure(
+        'UNKNOWN_ERROR',
+        'CSV取込中に予期しないエラーが発生しました。状態は変更されていません。再試行してください。',
+      )
+      void detail
+      try { return publishFailure(failure) } catch { return failure }
+    } finally {
+      if (lockAcquired) {
+        try {
+          if (get().system.status === 'loading') {
+            set(s => ({ system: {
+              ...s.system,
+              status: 'error',
+              error: s.system.error ?? 'CSV取込は完了しませんでした。再試行してください。',
+            } }))
+          }
+        } catch {
+          // Zustand's in-memory set/get are synchronous; this final guard prevents a thrown
+          // observer from turning the action promise into a rejection.
+        }
+      }
     }
   },
 

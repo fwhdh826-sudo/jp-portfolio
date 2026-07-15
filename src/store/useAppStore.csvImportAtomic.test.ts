@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import type { Holding, Trust } from '../types'
-import { useAppStore } from './useAppStore'
+import { runFullAnalysis, useAppStore } from './useAppStore'
 
 class TestFileReader {
   onload: ((event: { target: { result: ArrayBuffer } }) => void) | null = null
@@ -16,6 +16,10 @@ class TestFileReader {
 const originalFileReader = globalThis.FileReader
 const baseMarket = useAppStore.getState().market
 const baseSafeMode = useAppStore.getState().safeMode
+const baseCashAssumptions = useAppStore.getState().cashAssumptions
+const baseCandidatesNews = useAppStore.getState().candidatesNews
+const baseCandidatesStocks = useAppStore.getState().candidatesStocks
+const baseRegimeState = useAppStore.getState().regimeState
 
 function holding(code = '1001', evalValue = 100_000): Holding {
   return {
@@ -70,6 +74,10 @@ function trust(): Trust {
   }
 }
 
+function shortTrust(): Trust {
+  return { ...trust(), policy: 'JAPAN_SHORTTERM' }
+}
+
 const VALID_CSV = [
   '株式（現物/特定預り）',
   '銘柄コード,銘柄名,現在値,評価額,損益（％）,前日比（％）,取得日',
@@ -99,6 +107,8 @@ function relevantState() {
     trustPlan: state.trustPlan,
     officialDecision: state.officialDecision,
     stockCandidates: state.stockCandidates,
+    candidatesNews: state.candidatesNews,
+    candidatesStocks: state.candidatesStocks,
   }
 }
 
@@ -129,6 +139,16 @@ describe('T9-A001/A002: structured CSV result and atomic store commit', () => {
       market: baseMarket,
       safeMode: baseSafeMode,
       portfolioPolicy: { jpStockMaxRatio: 0.1 },
+      cashAssumptions: baseCashAssumptions,
+      candidatesNews: baseCandidatesNews,
+      candidatesStocks: baseCandidatesStocks,
+      regimeState: baseRegimeState,
+      learning: null,
+      universe: null,
+      zeroPlan: null,
+      stockPlan: null,
+      trustPlan: null,
+      stockCandidates: [],
       analysis: [],
       metrics: null,
       officialDecision: null,
@@ -251,6 +271,28 @@ describe('T9-A001/A002: structured CSV result and atomic store commit', () => {
     expect(storage).toEqual({})
   })
 
+  it('F001: analysis failure does not mutate the pre-existing trust-short snapshot', async () => {
+    const oldSnapshot = '{"date":"2026-07-01","total":200000,"evalById":{"fund-1":200000}}'
+    storage.v95_trust_short_snapshot = oldSnapshot
+    vi.stubGlobal('window', { localStorage: localStorageMock })
+    useAppStore.setState({ trust: [shortTrust()] })
+    const currentMarket = useAppStore.getState().market
+    const throwingMarket = new Proxy(currentMarket, {
+      get(target, property) {
+        if (property === 'regime') throw new Error('forced analysis failure after staging')
+        return Reflect.get(target, property)
+      },
+    })
+    useAppStore.setState({ market: throwingMarket })
+    const before = structuredClone(relevantState())
+
+    const result = await useAppStore.getState().importCsv(csvFile())
+
+    expect(result).toMatchObject({ ok: false, code: 'ANALYSIS_ERROR' })
+    expect(structuredClone(relevantState())).toEqual(before)
+    expect(storage.v95_trust_short_snapshot).toBe(oldSnapshot)
+  })
+
   it('FileReader failure returns FILE_READ_ERROR and commits nothing', async () => {
     const before = relevantState()
     const brokenFile = {
@@ -272,7 +314,7 @@ describe('T9-A001/A002: structured CSV result and atomic store commit', () => {
     storage.v91_learning = 'old-learning'
     const persistedBefore = { ...storage }
     const stateBefore = relevantState()
-    failStorageWriteAt = 2
+    failStorageWriteAt = 1
 
     const result = await useAppStore.getState().importCsv(csvFile())
 
@@ -283,6 +325,31 @@ describe('T9-A001/A002: structured CSV result and atomic store commit', () => {
     })
     expect(relevantState()).toEqual(stateBefore)
     expect(storage).toEqual(persistedBefore)
+  })
+
+  it('deep state and all portfolio-generation references remain unchanged on forced persistence failure', async () => {
+    useAppStore.setState(runFullAnalysis(useAppStore.getState()))
+    const beforeReferences = relevantState()
+    const beforeDeep = structuredClone(beforeReferences)
+    let portfolioNotifications = 0
+    const unsubscribe = useAppStore.subscribe((state, previous) => {
+      if (
+        state.holdings !== previous.holdings || state.trust !== previous.trust ||
+        state.analysis !== previous.analysis || state.officialDecision !== previous.officialDecision ||
+        state.learning !== previous.learning || state.universe !== previous.universe ||
+        state.zeroPlan !== previous.zeroPlan || state.stockPlan !== previous.stockPlan ||
+        state.trustPlan !== previous.trustPlan || state.stockCandidates !== previous.stockCandidates
+      ) portfolioNotifications += 1
+    })
+    failStorageWriteAt = 1
+
+    const result = await useAppStore.getState().importCsv(csvFile())
+    unsubscribe()
+
+    expect(result).toMatchObject({ ok: false, code: 'PERSISTENCE_ERROR' })
+    expect(relevantState()).toEqual(beforeReferences)
+    expect(structuredClone(relevantState())).toEqual(beforeDeep)
+    expect(portfolioNotifications).toBe(0)
   })
 
   it('a second import while one is pending is explicitly rejected', async () => {
@@ -299,5 +366,67 @@ describe('T9-A001/A002: structured CSV result and atomic store commit', () => {
 
     release(new TextEncoder().encode(VALID_CSV).buffer)
     await first
+  })
+
+  it('F002: a cash dependency mutation while reading the CSV causes an explicit conflict', async () => {
+    let release!: (value: ArrayBuffer) => void
+    const pendingFile = {
+      name: 'pending.csv',
+      arrayBuffer: () => new Promise<ArrayBuffer>(resolve => { release = resolve }),
+    } as File
+
+    const first = useAppStore.getState().importCsv(pendingFile)
+    await Promise.resolve()
+    useAppStore.getState().setCashAssumptions({ cashDeposits: 9_000_000, standbyFunds: 8_000_000 })
+    release(new TextEncoder().encode(VALID_CSV).buffer)
+
+    await expect(first).resolves.toMatchObject({ ok: false, code: 'IMPORT_CONFLICT' })
+    expect(useAppStore.getState().cashAssumptions).toMatchObject({
+      cashDeposits: 9_000_000,
+      standbyFunds: 8_000_000,
+    })
+    expect(useAppStore.getState().holdings[0].eval).toBe(100_000)
+
+    const retry = await useAppStore.getState().importCsv(csvFile())
+    expect(retry.ok).toBe(true)
+  })
+
+  it.each([
+    ['standby cash', () => useAppStore.getState().setCashAssumptions({ cashDeposits: 1_000_000, standbyFunds: 7_000_000 })],
+    ['portfolio policy', () => useAppStore.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.15 })],
+    ['market refresh dependency', () => useAppStore.setState(state => ({ market: { ...state.market, nikkeiChgPct: state.market.nikkeiChgPct + 0.01 } }))],
+    ['SAFE_MODE dependency', () => useAppStore.setState(state => ({
+      safeMode: { ...state.safeMode, safe_mode: { ...state.safeMode.safe_mode, active: !state.safeMode.safe_mode.active } },
+    }))],
+  ])('concurrent %s mutation cannot silently commit stale analysis', async (_label, mutate) => {
+    let release!: (value: ArrayBuffer) => void
+    const pendingFile = {
+      name: 'pending.csv',
+      arrayBuffer: () => new Promise<ArrayBuffer>(resolve => { release = resolve }),
+    } as File
+    const first = useAppStore.getState().importCsv(pendingFile)
+    await Promise.resolve()
+    mutate()
+    release(new TextEncoder().encode(VALID_CSV).buffer)
+
+    await expect(first).resolves.toMatchObject({ ok: false, code: 'IMPORT_CONFLICT' })
+    expect(useAppStore.getState().holdings[0].eval).toBe(100_000)
+    expect(useAppStore.getState().system.status).not.toBe('loading')
+  })
+
+  it('F004: an unexpected staging exception is structured and always releases loading', async () => {
+    vi.useFakeTimers()
+    vi.setSystemTime(Number.NaN)
+    const before = structuredClone(relevantState())
+    try {
+      const result = await useAppStore.getState().importCsv(csvFile())
+      expect(result).toMatchObject({ ok: false, code: 'UNKNOWN_ERROR' })
+      expect(useAppStore.getState().system.status).not.toBe('loading')
+      expect(structuredClone(relevantState())).toEqual(before)
+    } finally {
+      vi.useRealTimers()
+    }
+    const retry = await useAppStore.getState().importCsv(csvFile())
+    expect(retry.ok).toBe(true)
   })
 })

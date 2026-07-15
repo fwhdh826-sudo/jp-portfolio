@@ -705,9 +705,10 @@ describe('useAppStore: importCsv → csvSyncSummary（P4.5-A013-T6）', () => {
 
   it('CSV成功: localStorageにもcsvSyncSummaryが永続化される', async () => {
     await useAppStore.getState().importCsv(makeCsvFile(VALID_CSV))
-    expect(store['v13_csv_sync_summary']).toBeDefined()
-    const saved = JSON.parse(store['v13_csv_sync_summary'])
-    expect(saved.data.stock.added).toBe(1)
+    expect(store['v13_csv_import_committed_generation']).toBeDefined()
+    const saved = JSON.parse(store['v13_csv_import_committed_generation'])
+    expect(saved.manifest.committed).toBe(true)
+    expect(saved.payload.syncSummary.stock.added).toBe(1)
   })
 
   it('CSV失敗（個別株セクション無し）: csvSyncSummaryは更新されない', async () => {

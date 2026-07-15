@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import type { Holding, Trust } from '../types'
 import { useAppStore, shouldApplyPublishedSnapshot } from './useAppStore'
+import { CSV_IMPORT_GENERATION_KEY, persistCsvImportTransaction } from './persist'
 
 // P4.5-A013-T4:
 // initialize/refreshAllDataは、published holdings/trust snapshot（data/holdings.json /
@@ -164,6 +165,52 @@ describe('useAppStore.initialize / refreshAllData: published snapshot優先順�
 
     const holding = useAppStore.getState().holdings.find(h => h.code === '7203')
     expect(holding?.eval).toBe(555_000)
+  })
+
+  it('initialize: clean committed envelope is hydrated as the canonical portfolio generation', async () => {
+    const committedHolding = makeHolding({ code: '7203', eval: 654_321 })
+    const committedTrust = makeTrust({ id: 'sp500_sbi', eval: 3_210_000 })
+    persistCsvImportTransaction({
+      holdings: [committedHolding],
+      trust: [committedTrust],
+      learning: null,
+      importedAt: '2099-07-15T00:00:00.000Z',
+      syncSummary: {
+        importedAt: '2099-07-15T00:00:00.000Z',
+        stock: { updated: 1, added: 0, removed: 0 },
+        trust: { updated: 1, reheld: 0, zeroed: 0, unknownFunds: [], ambiguousFundIds: [] },
+      },
+      trustShortSnapshot: { date: '2099-07-15', total: 0, evalById: {} },
+    })
+    mockFetchRouter({})
+    useAppStore.setState(state => ({ system: { ...state.system, status: 'idle' } }))
+
+    await useAppStore.getState().initialize()
+
+    expect(useAppStore.getState().holdings.find(item => item.code === '7203')?.eval).toBe(654_321)
+    expect(useAppStore.getState().trust.find(item => item.id === 'sp500_sbi')?.eval).toBe(3_210_000)
+    expect(useAppStore.getState().system.csvLastImportedAt).toBe('2099-07-15T00:00:00.000Z')
+  })
+
+  it('initialize: corrupted envelope refuses partial legacy fallback', async () => {
+    store[CSV_IMPORT_GENERATION_KEY] = '{"manifest":{"committed":false}}'
+    seedLocalStorage({
+      holdings: [makeHolding({ code: 'PARTIAL', eval: 999_999 })],
+      trust: [makeTrust({ id: 'partial-fund', eval: 999_999 })],
+      csvImportedAt: '2099-07-15T00:00:00.000Z',
+    })
+    mockFetchRouter({})
+    useAppStore.setState(state => ({
+      holdings: [makeHolding({ code: 'BASE', eval: 111_111 })],
+      trust: [makeTrust({ id: 'base-fund', eval: 222_222 })],
+      system: { ...state.system, status: 'idle', csvLastImportedAt: null },
+    }))
+
+    await useAppStore.getState().initialize()
+
+    expect(useAppStore.getState().holdings.some(item => item.code === 'PARTIAL')).toBe(false)
+    expect(useAppStore.getState().trust.some(item => item.id === 'partial-fund')).toBe(false)
+    expect(useAppStore.getState().system.csvLastImportedAt).toBeNull()
   })
 
   it('initialize: 古いCSV（古いcsvLastImportedAt） < 新しいpublished snapshot → 契約通りsnapshotが安全に適用される', async () => {

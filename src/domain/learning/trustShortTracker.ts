@@ -1,4 +1,5 @@
 import type { Trust } from '../../types'
+import { restoreCsvTrustShortSnapshot } from '../../store/persist'
 
 export type TrustShortDecision = 'WAIT' | 'BULL' | 'BEAR'
 export type TrustShortOutcome = 'win' | 'loss' | 'flat'
@@ -64,6 +65,11 @@ export interface TrustCsvExecutionDetection {
   changedFunds: number
 }
 
+export interface StagedTrustCsvExecution {
+  detection: TrustCsvExecutionDetection
+  snapshot: TrustShortPortfolioSnapshot
+}
+
 const KEY = 'v95_trust_short_tracker'
 const SNAPSHOT_KEY = 'v95_trust_short_snapshot'
 const RETENTION_DAYS = 120
@@ -71,7 +77,7 @@ const WINDOW_DAYS = 30
 const DEFAULT_BULL_VIX_MAX = 17
 const DEFAULT_BEAR_VIX_MIN = 26
 
-interface TrustShortPortfolioSnapshot {
+export interface TrustShortPortfolioSnapshot {
   date: string
   total: number
   evalById: Record<string, number>
@@ -191,6 +197,8 @@ function buildStats(entries: TrustShortTrackerEntry[]): TrustShortTrackingStats 
 function loadSnapshot(): TrustShortPortfolioSnapshot | null {
   if (!isBrowser()) return null
   try {
+    const committed = restoreCsvTrustShortSnapshot()
+    if (committed) return committed
     const raw = window.localStorage.getItem(SNAPSHOT_KEY)
     if (!raw) return null
     const parsed = JSON.parse(raw) as Partial<TrustShortPortfolioSnapshot>
@@ -286,12 +294,24 @@ export function detectTrustExecutionFromCsvSync(
   trust: Trust[],
   date = safeNowIso(),
 ): TrustCsvExecutionDetection {
+  const staged = stageTrustExecutionFromCsvSync(trust, date)
+  saveSnapshot(staged.snapshot)
+  return staged.detection
+}
+
+/** CSV strict transaction向けの副作用なし検出。 */
+export function stageTrustExecutionFromCsvSync(
+  trust: Trust[],
+  date = safeNowIso(),
+): StagedTrustCsvExecution {
   const current = buildShortTrustSnapshot(trust, date)
   const previous = loadSnapshot()
-  saveSnapshot(current)
 
   if (!previous) {
-    return { executed: false, absDiffSum: 0, turnover: 0, changedFunds: 0 }
+    return {
+      detection: { executed: false, absDiffSum: 0, turnover: 0, changedFunds: 0 },
+      snapshot: current,
+    }
   }
 
   const ids = new Set([...Object.keys(previous.evalById), ...Object.keys(current.evalById)])
@@ -315,10 +335,23 @@ export function detectTrustExecutionFromCsvSync(
     (absDiffSum >= 120_000 && changedFunds >= 2)
 
   return {
-    executed,
-    absDiffSum: Math.round(absDiffSum),
-    turnover: Number(turnover.toFixed(4)),
-    changedFunds,
+    detection: {
+      executed,
+      absDiffSum: Math.round(absDiffSum),
+      turnover: Number(turnover.toFixed(4)),
+      changedFunds,
+    },
+    snapshot: current,
+  }
+}
+
+/** runFullAnalysisがbrowser trackerから読む値をCAS対象へ含める。 */
+export function getTrustShortReadDependencyFingerprint(): string {
+  if (!isBrowser()) return 'unavailable'
+  try {
+    return window.localStorage.getItem(KEY) ?? 'missing'
+  } catch {
+    return 'read-error'
   }
 }
 

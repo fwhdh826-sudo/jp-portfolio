@@ -43813,6 +43813,178 @@ AssetSnapshotMini → AllocationGapStrip → 今日のアクション[TodoCard/R
   main未反映のため別チケットで対応
 - v10.css未使用クラスの安全な削除（R6）
 
+## T9-A001/A002-R1 + T9-A003: atomicity and durable persistence hardening
+
+### 実施日 / 基準
+
+- 実施日: 2026-07-15
+- branch: `v13.3-dev`（branch switchなし、main変更なし）
+- original A001/A002 commit: `1e4171706634156cc1b6010e9a7775224e959643`
+- fresh-session adversarial audit verdict: **C: BLOCKED**
+- blocker: T9-AR-F001〜F004
+- commit / push / merge / rebase は未実施（依頼どおり）
+
+### 固定completion gate
+
+緑の成功表示はparse・full-sync・analysis・officialDecision・canonical
+persistence・Zustand final generation commitが全て成功した後だけ返す。failure時は
+portfolio generationをcommitせず、subscriberへ新holdingsと旧derived stateの混在を
+公開しない。unexpected exceptionもstructured `CsvImportResult`へ変換し、loading lockを
+必ず解除する。process interruptionや旧multi-key rollback failureで残ったpartial dataを
+起動時の正規generationとして採用しない。
+
+### Test-first RED evidence（旧実装 1e41717）
+
+- F001: browser条件を再現すると、analysis failure後に
+  `v95_trust_short_snapshot`がold rawからnew rawへ書き換わった
+- F002: pending FileReader中にcash assumptionsを変更しても、stale `baseState`分析で
+  `SUCCESS`が返った
+- F003:2番目のprimary write failure + rollback set/remove failure後、
+  `restorePortfolio()`がoldではなくpartial new holdingsを返した
+- F004: staging timestampのunexpected `RangeError: Invalid time value`がPromise rejectionに
+  なり、structured resultを返さなかった
+
+### F001: pre-commit side effect / telemetry deferral
+
+- `stageTrustExecutionFromCsvSync()`を追加し、検出結果とpending snapshotをpureに返す
+- 既存`detectTrustExecutionFromCsvSync()`は通常利用向け互換wrapperとして、pure staging後に
+  legacy snapshotを明示保存する既存契約を維持
+- strict CSV pathはpure stagingのみ使用し、snapshotをcanonical durable envelopeへ含める
+- analysis / officialDecision / CAS / persistence failure時は
+  `v95_trust_short_snapshot` rawをbyte-for-byte変更しない
+- successful generationの次回execution detectionはcommitted envelope内snapshotを優先する
+
+### F002: concurrency / revision-CAS design
+
+方式はstore propertyの手動revisionではなく、analysis read dependencyのstable fingerprint
+によるoptimistic CASを採用した。import開始時にfingerprintを取得し、strict analysis完了後・
+durable write直前にcurrent stateから再計算する。不一致は`IMPORT_CONFLICT`でfailし、
+silent stale successを禁止する。CAS後はdurable commitとZustand commitの間に`await`を置かず、
+JavaScript run-to-completionでvalidation/commit windowを閉じる。UI action lockだけには依存しない。
+
+fingerprint inventory:
+
+- holdings / trust（nested contentを含む）
+- market / correlation / news
+- macro / SQ calendar / margin / flows
+- learning
+- cash / cashReserve / addRoom
+- cashAssumptions（cashDeposits / standbyFunds / manual timestamp）
+- portfolioPolicy（target allocation上限入力）
+- candidatesNews / candidatesStocks / regimeState
+- SAFE_MODE snapshot
+- system.csvLastImportedAt
+- dataSourceStatus / dataTimestamps（DQ、staleness、candidate source inputs）
+- trust-short tracker raw（runFullAnalysisが読むtoday count / statsのbrowser dependency）
+
+これらからeffective cash、asset universe/target allocation、noTrade、DQ、SAFE_MODE、headroom、
+zero/stock/trust plans、candidates、committee/officialDecisionが導出される。cash、standby、policy、
+market、SAFE_MODEの実raceとsecond direct importをテスト済み。conflict / unexpected failure後の
+retryも成功する。
+
+### F003 / T9-A003: durable persistence architecture
+
+旧方式の5 legacy key順次上書き + best-effort rollbackを廃止し、
+`v13_csv_import_committed_generation` 1 keyのsingle-envelope generationをcanonical sourceにした。
+envelopeは次を持つ。
+
+- manifest.schemaVersion = `csv-import-generation-1`
+- manifest.generationId
+- manifest.savedAt
+- manifest.committed = `true`（commit marker）
+- manifest.payloadChecksum（payload corruption検出）
+- payload: holdings / trust / learning / importedAt / syncSummary /
+  trustShortSnapshot
+
+write sequence:
+
+1. payloadを完全serialize
+2. generationId、schema、checksum、commit markerを含むenvelopeを完全serialize
+3. canonical keyを単一`localStorage.setItem`で置換
+4. write成功後だけZustand generationを1回commit
+
+単一key置換のためfirst/middle/last legacy writeもrollback loopも存在しない。canonical writeが
+quota等で失敗すれば旧envelopeがそのままactiveで、rollback set/removeの成否に依存しない。
+legacy keysは無条件削除・上書きしない。
+
+### Hydration / recovery
+
+- clean committed envelope: coordinated fieldsを同一generationとしてhydrate
+- envelopeなし: legacy keysだけをbackward-compatible fallbackとして読む
+- envelope presentだがmissing marker、`committed:false`、unknown schema、checksum mismatch、
+  malformed JSON、getItem failure: `invalid`でfail-closedし、partial legacy keysへfallbackしない
+- orphan/pending key（canonical key未置換）:無視してlast legacy/committed generationを維持
+- canonical replace後・Zustand final commit前のprocess crash相当:次回起動時にnew committed
+  generationをhydrateし、old/new混在を作らない
+- storage unavailable: structured persistence failure / hydration fail-closed
+- normal individual persist helpersはcanonical generation存在時に同じsingle envelopeを
+  best-effort更新し、既存の「例外をUIへ投げない」契約を維持
+
+### F004: total structured error boundary / lock
+
+- `importCsv`全体をouter `try/catch/finally`で囲んだ
+- FileReader/decode/parse/full-syncは既存structured parse classificationを維持
+- analysis / strict officialDecision / persistenceは段階別codeを維持
+- その他のstaging/serialize/CAS/final precondition unexpected throwは`UNKNOWN_ERROR`と
+  user-facing retry messageへ変換し、action Promiseをrejectしない
+- `finally`はlock取得済みかを確認し、`status === loading`を必ず解除
+- failure後はold successを残さず、retry可能
+
+### Subscriber / deep mutation proof
+
+- success時はholdings/trust/analysis/metrics/learning/universe/zeroPlan/stockPlan/trustPlan/
+  officialDecision/stockCandidates/system import metadataを1回のZustand `set`で公開
+- forced persistence failure時、portfolio-generation subscriber notificationは0
+- failure前後でnested holdings/trust/analysis/officialDecision.actions/learning/plans/
+  universe categories/candidate arraysをdeep clone比較し、content不変を確認
+- relevant object reference identityも維持
+
+### UI truthfulness
+
+- success sourceは`result.ok`のみ。pending中successなし、開始時にold feedbackをclear
+- `UNKNOWN_ERROR` / `IMPORT_CONFLICT`のstructured messageをfailure表示
+- store actionはtotal functionだが、UI側のdefensive catchは維持
+- picker/dropのlocal in-flight guardとstore-level direct-call lockを併用
+
+### Adversarial coverage / test results
+
+- `src/store/useAppStore.csvImportAtomic.test.ts`: 17 tests
+  - F001〜F004、cash/standby/policy/market/SAFE_MODE races、second import、retry、
+    single subscriber success、failure notification 0、deep mutation
+- `src/store/persist.csvGeneration.test.ts`: 17 tests
+  - clean generation、legacy first/middle/last write traps、commit write failure、manifest
+    preparation failure、rollback set/remove非依存、persistent quota、storage unavailable、
+    getItem failure、legacy-only/missing key、marker/schema/checksum corruption、pending orphan、
+    crash before/after canonical replace、reload
+- `src/store/persist.test.ts`: F003 rollback failure regressionを追加
+- `src/store/publishedSnapshotPriority.test.ts`: initializeでclean committed generationと
+  corrupted envelope fail-closedを追加
+- `src/components/tabs/T9_Settings.importContract.test.ts`: UNKNOWN/CONFLICT UI contract追加
+- `npm run test:unit`: **765 passed / 43 files**
+- `npx tsc --noEmit`: pass
+- `npm run build`: pass（既知の500kB chunk warningのみ）
+- `git diff --check`: pass
+
+### No-regression / non-scope
+
+変更していないもの:
+
+- SAFE_MODE / DQ / noTrade / headroomの計算式
+- officialDecision calculation logic、zeroBase、scoring、investment logic、target allocation
+- P5-B004、candidates_stocks pipeline、workflow
+- T0/T1/T2/T7 UI、production tracked data
+- 通常`runFullAnalysis`のbest-effort officialDecision contract
+
+### Verdict / remaining tickets
+
+- F001 fixed
+- F002 fixed
+- F003 fixed
+- F004 fixed
+- verdict: **A: COMMIT READY**（ただし本作業ではcommit禁止のため未commit）
+- remaining: T9-A004 stale CSV protection、T9-A005 zero-row full-sync confirmation、
+  T9-A006〜A008は各ticket定義に従う
+
 ## T9-A001 + T9-A002: truthful CSV import result contract + atomic import/analysis commit
 
 ### 実施日 / branch / baseline

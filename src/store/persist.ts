@@ -1,5 +1,6 @@
 import type { Holding, Trust, LearningState, PortfolioPolicy, CashAssumptions, CsvSyncSummary } from '../types'
 import { sanitizeLearningState } from '../domain/learning/performanceTracker'
+import type { TrustShortPortfolioSnapshot } from '../domain/learning/trustShortTracker'
 
 const PORTFOLIO_KEY = 'v81_portfolio'
 const TRUST_KEY = 'v81_trust'
@@ -7,6 +8,8 @@ const LEARNING_KEY = 'v91_learning'
 const CSV_IMPORTED_AT_KEY = 'v10_csv_imported_at'  // Phase 8: CSV取込時刻永続化
 const TTL_MS = 7 * 24 * 60 * 60 * 1000  // 7日
 const LEARNING_TTL_MS = 30 * 24 * 60 * 60 * 1000
+export const CSV_IMPORT_GENERATION_KEY = 'v13_csv_import_committed_generation'
+export const CSV_IMPORT_GENERATION_SCHEMA = 'csv-import-generation-1' as const
 
 interface Snapshot<T> {
   data: T
@@ -19,7 +22,25 @@ export interface CsvImportPersistencePayload {
   learning: LearningState | null
   importedAt: string
   syncSummary: CsvSyncSummary
+  trustShortSnapshot: TrustShortPortfolioSnapshot
 }
+
+interface CsvImportGenerationManifest {
+  schemaVersion: typeof CSV_IMPORT_GENERATION_SCHEMA
+  generationId: string
+  savedAt: number
+  committed: true
+  payloadChecksum: string
+}
+
+interface CsvImportGenerationEnvelope {
+  manifest: CsvImportGenerationManifest
+  payload: CsvImportPersistencePayload
+}
+
+export type CsvImportGenerationRestoreResult =
+  | { status: 'committed'; generationId: string; savedAt: number; payload: CsvImportPersistencePayload }
+  | { status: 'none' | 'invalid' }
 
 export class CsvImportPersistenceError extends Error {
   readonly status: 'not_attempted' | 'rolled_back' | 'rollback_failed'
@@ -43,8 +64,99 @@ export interface StorageFreshness {
 
 const NOT_SAVED_FRESHNESS: StorageFreshness = { exists: false, isStale: false, savedAt: null, ageDays: null }
 
+let generationSequence = 0
+
+function checksum(value: string): string {
+  let hash = 0x811c9dc5
+  for (let index = 0; index < value.length; index += 1) {
+    hash ^= value.charCodeAt(index)
+    hash = Math.imul(hash, 0x01000193)
+  }
+  return (hash >>> 0).toString(16).padStart(8, '0')
+}
+
+function isTrustShortSnapshot(value: unknown): value is TrustShortPortfolioSnapshot {
+  if (!value || typeof value !== 'object') return false
+  const snapshot = value as Partial<TrustShortPortfolioSnapshot>
+  return typeof snapshot.date === 'string' &&
+    typeof snapshot.total === 'number' && Number.isFinite(snapshot.total) &&
+    snapshot.evalById !== null && typeof snapshot.evalById === 'object' &&
+    Object.values(snapshot.evalById).every(item => typeof item === 'number' && Number.isFinite(item))
+}
+
+function isCsvImportPayload(value: unknown): value is CsvImportPersistencePayload {
+  if (!value || typeof value !== 'object') return false
+  const payload = value as Partial<CsvImportPersistencePayload>
+  return Array.isArray(payload.holdings) &&
+    Array.isArray(payload.trust) &&
+    (payload.learning === null || (payload.learning !== null && typeof payload.learning === 'object')) &&
+    typeof payload.importedAt === 'string' &&
+    payload.syncSummary !== null && typeof payload.syncSummary === 'object' &&
+    isTrustShortSnapshot(payload.trustShortSnapshot)
+}
+
+/**
+ * Canonical CSV generation reader. A present but malformed envelope is invalid and must not
+ * fall back to possibly partial legacy keys. Legacy fallback is allowed only when no envelope
+ * exists, which preserves backward compatibility without blessing a damaged generation.
+ */
+export function restoreCsvImportGeneration(): CsvImportGenerationRestoreResult {
+  if (typeof localStorage === 'undefined') return { status: 'invalid' }
+  try {
+    const raw = localStorage.getItem(CSV_IMPORT_GENERATION_KEY)
+    if (raw === null) return { status: 'none' }
+    const envelope = JSON.parse(raw) as Partial<CsvImportGenerationEnvelope>
+    const manifest = envelope.manifest
+    if (
+      !manifest ||
+      manifest.schemaVersion !== CSV_IMPORT_GENERATION_SCHEMA ||
+      typeof manifest.generationId !== 'string' || manifest.generationId.length === 0 ||
+      typeof manifest.savedAt !== 'number' || !Number.isFinite(manifest.savedAt) ||
+      manifest.committed !== true ||
+      typeof manifest.payloadChecksum !== 'string' ||
+      !isCsvImportPayload(envelope.payload)
+    ) return { status: 'invalid' }
+    const serializedPayload = JSON.stringify(envelope.payload)
+    if (checksum(serializedPayload) !== manifest.payloadChecksum) return { status: 'invalid' }
+    return {
+      status: 'committed',
+      generationId: manifest.generationId,
+      savedAt: manifest.savedAt,
+      payload: envelope.payload,
+    }
+  } catch {
+    return { status: 'invalid' }
+  }
+}
+
+function persistUpdatedCommittedGeneration(
+  update: (payload: CsvImportPersistencePayload) => CsvImportPersistencePayload,
+): boolean {
+  const current = restoreCsvImportGeneration()
+  if (current.status !== 'committed') return false
+  try {
+    persistCsvImportTransaction(update(current.payload))
+  } catch {
+    // Individual helpers retain their historical best-effort contract.
+  }
+  return true
+}
+
 function readStorageFreshness(key: string, ttlMs: number): StorageFreshness {
   try {
+    if (key === PORTFOLIO_KEY || key === TRUST_KEY) {
+      const generation = restoreCsvImportGeneration()
+      if (generation.status === 'committed') {
+        const ageMs = Date.now() - generation.savedAt
+        return {
+          exists: true,
+          isStale: ageMs > ttlMs,
+          savedAt: generation.savedAt,
+          ageDays: ageMs / (24 * 60 * 60 * 1000),
+        }
+      }
+      if (generation.status === 'invalid') return NOT_SAVED_FRESHNESS
+    }
     const raw = localStorage.getItem(key)
     if (!raw) return NOT_SAVED_FRESHNESS
     const snap = JSON.parse(raw) as Snapshot<unknown>
@@ -60,6 +172,7 @@ function readStorageFreshness(key: string, ttlMs: number): StorageFreshness {
 }
 
 export function persistPortfolio(holdings: Holding[]): void {
+  if (persistUpdatedCommittedGeneration(payload => ({ ...payload, holdings }))) return
   const snap: Snapshot<Holding[]> = { data: holdings, savedAt: Date.now() }
   try { localStorage.setItem(PORTFOLIO_KEY, JSON.stringify(snap)) } catch { /* quota */ }
 }
@@ -70,6 +183,9 @@ export function persistPortfolio(holdings: Holding[]): void {
 // しまうため。鮮度はgetPortfolioStorageFreshness()で表示専用に扱う。
 export function restorePortfolio(): Holding[] | null {
   try {
+    const generation = restoreCsvImportGeneration()
+    if (generation.status === 'committed') return generation.payload.holdings
+    if (generation.status === 'invalid') return null
     const raw = localStorage.getItem(PORTFOLIO_KEY)
     if (!raw) return null
     const snap = JSON.parse(raw) as Snapshot<Holding[]>
@@ -82,6 +198,7 @@ export function getPortfolioStorageFreshness(): StorageFreshness {
 }
 
 export function persistTrust(trust: Trust[]): void {
+  if (persistUpdatedCommittedGeneration(payload => ({ ...payload, trust }))) return
   const snap: Snapshot<Trust[]> = { data: trust, savedAt: Date.now() }
   try { localStorage.setItem(TRUST_KEY, JSON.stringify(snap)) } catch { /* quota */ }
 }
@@ -89,6 +206,9 @@ export function persistTrust(trust: Trust[]): void {
 // P4.5-A012d: restorePortfolioと同じ理由でTTL失効による無警告revertを廃止する。
 export function restoreTrust(): Trust[] | null {
   try {
+    const generation = restoreCsvImportGeneration()
+    if (generation.status === 'committed') return generation.payload.trust
+    if (generation.status === 'invalid') return null
     const raw = localStorage.getItem(TRUST_KEY)
     if (!raw) return null
     const snap = JSON.parse(raw) as Snapshot<Trust[]>
@@ -101,12 +221,19 @@ export function getTrustStorageFreshness(): StorageFreshness {
 }
 
 export function persistLearning(learning: LearningState): void {
+  if (persistUpdatedCommittedGeneration(payload => ({ ...payload, learning }))) return
   const snap: Snapshot<LearningState> = { data: learning, savedAt: Date.now() }
   try { localStorage.setItem(LEARNING_KEY, JSON.stringify(snap)) } catch { /* quota */ }
 }
 
 export function restoreLearning(): LearningState | null {
   try {
+    const generation = restoreCsvImportGeneration()
+    if (generation.status === 'committed') {
+      if (Date.now() - generation.savedAt > LEARNING_TTL_MS) return null
+      return generation.payload.learning ? sanitizeLearningState(generation.payload.learning) : null
+    }
+    if (generation.status === 'invalid') return null
     const raw = localStorage.getItem(LEARNING_KEY)
     if (!raw) return null
     const snap = JSON.parse(raw) as Snapshot<unknown>
@@ -124,12 +251,18 @@ const CSV_TTL_MS = 90 * 24 * 60 * 60 * 1000  // 90日
 interface CsvSnapshot { at: string; savedAt: number }
 
 export function persistCsvImportedAt(at: string): void {
+  if (persistUpdatedCommittedGeneration(payload => ({ ...payload, importedAt: at }))) return
   const snap: CsvSnapshot = { at, savedAt: Date.now() }
   try { localStorage.setItem(CSV_IMPORTED_AT_KEY, JSON.stringify(snap)) } catch { /* quota */ }
 }
 
 export function restoreCsvImportedAt(): string | null {
   try {
+    const generation = restoreCsvImportGeneration()
+    if (generation.status === 'committed') {
+      return Date.now() - generation.savedAt <= CSV_TTL_MS ? generation.payload.importedAt : null
+    }
+    if (generation.status === 'invalid') return null
     const raw = localStorage.getItem(CSV_IMPORTED_AT_KEY)
     if (!raw) return null
     // レガシー: 生のISO文字列だった場合は移行
@@ -159,9 +292,9 @@ interface CsvSyncSummarySnapshot { data: CsvSyncSummary; savedAt: number }
  * CSV import専用の同期永続化境界。
  *
  * 通常の個別persist helperは既存互換のためquota例外を握り潰すが、CSV importは
- * UI成功判定へ結果を返す必要がある。全payloadを先にserializeし、既存値をsnapshot
- * してから書き込み、1件でも失敗したら書込済みkeyを旧値へ戻して例外を返す。
- * localStorage自体がrollbackも拒否した場合はrollbackSucceeded=falseで明示する。
+ * UI成功判定へ結果を返す必要がある。payload・manifest・commit markerを単一envelopeへ
+ * serializeし、canonical keyを1回だけ置換する。localStorageの単一setItemが失敗した
+ * 場合は旧envelopeが有効なままで、multi-key rollbackやその再失敗に依存しない。
  */
 export function persistCsvImportTransaction(payload: CsvImportPersistencePayload): void {
   if (typeof localStorage === 'undefined') {
@@ -169,53 +302,46 @@ export function persistCsvImportTransaction(payload: CsvImportPersistencePayload
   }
 
   const savedAt = Date.now()
-  let entries: Array<[string, string]>
+  let serializedEnvelope: string
   try {
-    entries = [
-      [PORTFOLIO_KEY, JSON.stringify({ data: payload.holdings, savedAt } satisfies Snapshot<Holding[]>)],
-      [TRUST_KEY, JSON.stringify({ data: payload.trust, savedAt } satisfies Snapshot<Trust[]>)],
-      [CSV_IMPORTED_AT_KEY, JSON.stringify({ at: payload.importedAt, savedAt } satisfies CsvSnapshot)],
-      [CSV_SYNC_SUMMARY_KEY, JSON.stringify({ data: payload.syncSummary, savedAt } satisfies CsvSyncSummarySnapshot)],
-    ]
-    if (payload.learning) {
-      entries.push([LEARNING_KEY, JSON.stringify({ data: payload.learning, savedAt } satisfies Snapshot<LearningState>)])
-    }
+    const serializedPayload = JSON.stringify(payload)
+    const generationId = `${savedAt.toString(36)}-${(generationSequence += 1).toString(36)}`
+    serializedEnvelope = JSON.stringify({
+      manifest: {
+        schemaVersion: CSV_IMPORT_GENERATION_SCHEMA,
+        generationId,
+        savedAt,
+        committed: true,
+        payloadChecksum: checksum(serializedPayload),
+      },
+      payload,
+    } satisfies CsvImportGenerationEnvelope)
   } catch (error) {
     const detail = error instanceof Error ? error.message : String(error)
     throw new CsvImportPersistenceError(`CSV取込データを保存形式へ変換できませんでした: ${detail}`, 'not_attempted')
   }
 
-  const previous = new Map<string, string | null>()
-  let writeStarted = false
   try {
-    entries.forEach(([key]) => previous.set(key, localStorage.getItem(key)))
-    entries.forEach(([key, value]) => {
-      writeStarted = true
-      localStorage.setItem(key, value)
-    })
+    localStorage.setItem(CSV_IMPORT_GENERATION_KEY, serializedEnvelope)
   } catch (error) {
-    let rollbackSucceeded = true
-    previous.forEach((value, key) => {
-      try {
-        if (value === null) localStorage.removeItem(key)
-        else localStorage.setItem(key, value)
-      } catch {
-        rollbackSucceeded = false
-      }
-    })
     const detail = error instanceof Error ? error.message : String(error)
-    const status = !writeStarted ? 'not_attempted' : rollbackSucceeded ? 'rolled_back' : 'rollback_failed'
-    throw new CsvImportPersistenceError(`CSV取込データの永続化に失敗しました: ${detail}`, status)
+    throw new CsvImportPersistenceError(`CSV取込データの永続化に失敗しました: ${detail}`, 'rolled_back')
   }
 }
 
 export function persistCsvSyncSummary(summary: CsvSyncSummary): void {
+  if (persistUpdatedCommittedGeneration(payload => ({ ...payload, syncSummary: summary }))) return
   const snap: CsvSyncSummarySnapshot = { data: summary, savedAt: Date.now() }
   try { localStorage.setItem(CSV_SYNC_SUMMARY_KEY, JSON.stringify(snap)) } catch { /* quota */ }
 }
 
 export function restoreCsvSyncSummary(): CsvSyncSummary | null {
   try {
+    const generation = restoreCsvImportGeneration()
+    if (generation.status === 'committed') {
+      return Date.now() - generation.savedAt <= CSV_TTL_MS ? generation.payload.syncSummary : null
+    }
+    if (generation.status === 'invalid') return null
     const raw = localStorage.getItem(CSV_SYNC_SUMMARY_KEY)
     if (!raw) return null
     const snap = JSON.parse(raw) as CsvSyncSummarySnapshot
@@ -225,6 +351,11 @@ export function restoreCsvSyncSummary(): CsvSyncSummary | null {
     }
     return snap.data
   } catch { return null }
+}
+
+export function restoreCsvTrustShortSnapshot(): TrustShortPortfolioSnapshot | null {
+  const generation = restoreCsvImportGeneration()
+  return generation.status === 'committed' ? generation.payload.trustShortSnapshot : null
 }
 
 // ── P4-A47: PortfolioPolicy 永続化（TTL: 7日） ─────────────

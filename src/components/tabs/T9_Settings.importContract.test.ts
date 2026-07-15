@@ -75,4 +75,29 @@ describe('T9-A001: truthful CSV UI flow', () => {
     expect(called).toBe(false)
     expect(results[results.length - 1]).toMatchObject({ ok: false })
   })
+
+  it.each([
+    ['UNKNOWN_ERROR', 'CSV取込中に予期しないエラーが発生しました。再試行してください。'],
+    ['IMPORT_CONFLICT', '取込中に分析条件が変更されました。再試行してください。'],
+  ] as const)('%s structured failure is shown as failure and never as stale success', async (code, message) => {
+    const feedback: Array<{ ok: boolean; message: string } | null> = [{ ok: true, message: 'old success' }]
+    const failure: CsvImportResult = {
+      ok: false,
+      code,
+      message,
+      warnings: [],
+      analysisCommitted: false,
+      officialDecisionCommitted: false,
+      persistence: { status: 'not_attempted' },
+    }
+
+    const result = await executeCsvImportUiFlow(
+      new File(['csv'], 'portfolio.csv'),
+      async () => failure,
+      value => feedback.push(value),
+    )
+
+    expect(result).toEqual(failure)
+    expect(feedback).toEqual([{ ok: true, message: 'old success' }, null, { ok: false, message }])
+  })
 })

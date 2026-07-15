@@ -5,6 +5,7 @@ import {
   persistPortfolio, restorePortfolio, getPortfolioStorageFreshness,
   persistTrust, restoreTrust, getTrustStorageFreshness,
   persistCsvSyncSummary, restoreCsvSyncSummary,
+  persistCsvImportTransaction, CsvImportPersistenceError,
 } from './persist'
 import type { Holding, Trust, CsvSyncSummary } from '../types'
 
@@ -15,6 +16,40 @@ const TRUST_KEY = 'v81_trust'
 const CSV_SYNC_SUMMARY_KEY = 'v13_csv_sync_summary'
 const TTL_7D = 7 * 24 * 60 * 60 * 1000
 const TTL_90D = 90 * 24 * 60 * 60 * 1000
+
+describe('F003: CSV persistence survives rollback failure', () => {
+  it('never restores a partially written generation when primary write and rollback both fail', () => {
+    const oldHoldings = [{ code: 'OLD', eval: 10 }] as unknown as Holding[]
+    const newHoldings = [{ code: 'NEW', eval: 20 }] as unknown as Holding[]
+    const oldTrust = [{ id: 'old-fund', eval: 30 }] as unknown as Trust[]
+    const newTrust = [{ id: 'new-fund', eval: 40 }] as unknown as Trust[]
+    const store: Record<string, string> = {
+      [PORTFOLIO_KEY]: JSON.stringify({ data: oldHoldings, savedAt: 1 }),
+      [TRUST_KEY]: JSON.stringify({ data: oldTrust, savedAt: 1 }),
+    }
+    vi.stubGlobal('localStorage', {
+      getItem: (key: string) => store[key] ?? null,
+      setItem: () => { throw new Error('persistent primary quota failure') },
+      removeItem: () => { throw new Error('rollback removeItem failure') },
+    })
+
+    expect(() => persistCsvImportTransaction({
+      holdings: newHoldings,
+      trust: newTrust,
+      learning: null,
+      importedAt: '2026-07-15T00:00:00.000Z',
+      syncSummary: {
+        importedAt: '2026-07-15T00:00:00.000Z',
+        stock: { updated: 1, added: 0, removed: 0 },
+        trust: { updated: 1, reheld: 0, zeroed: 0, unknownFunds: [], ambiguousFundIds: [] },
+      },
+      trustShortSnapshot: { date: '2026-07-15', total: 40, evalById: { 'new-fund': 40 } },
+    })).toThrow(CsvImportPersistenceError)
+
+    expect(restorePortfolio()).toEqual(oldHoldings)
+    expect(restoreTrust()).toEqual(oldTrust)
+  })
+})
 
 describe('PortfolioPolicy persist/restore', () => {
   const store: Record<string, string> = {}
