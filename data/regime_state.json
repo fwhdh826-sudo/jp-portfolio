@@ -3,11 +3,11 @@
     "schemaVersion": "regime-state-1",
     "kind": "live_regime_state",
     "not_for_trading": false,
-    "generatedAt": "2026-07-14T22:33:09.812602+00:00",
+    "generatedAt": "2026-07-15T00:12:46.116144+00:00",
     "source": "public/data/market_intel.json"
   },
   "regime_state": {
-    "timestamp": "2026-07-14T22:33:09.834131+00:00",
+    "timestamp": "2026-07-15T00:12:46.137815+00:00",
     "current_regime": "uncertain",
     "consensus": 1.0,
     "raw_consensus": 1.0,
@@ -18,7 +18,7 @@
       "rule_based": "uncertain",
       "hmm": [
         "uncertain",
-        0.9774953805608295
+        0.962466030628267
       ],
       "llm": {
         "regime": "uncertain",
@@ -54,13 +54,13 @@
     "hmm_is_surrogate": true,
     "llm_is_stub": true,
     "market_data_snapshot": {
-      "vix": 17.13,
-      "nikkei_5d_return": -0.007522,
-      "nikkei_60ma": 65213.7,
-      "nikkei_200ma": 55797.0,
-      "sp500_dd_30d": -0.01241
+      "vix": 16.5,
+      "nikkei_5d_return": -0.035776,
+      "nikkei_60ma": 65053.5,
+      "nikkei_200ma": 55682.8,
+      "sp500_dd_30d": -0.008698
     },
-    "run_date": "2026-07-14",
+    "run_date": "2026-07-15",
     "regime_changed_at": null,
     "previous_regime": null,
     "duration_hours": null
