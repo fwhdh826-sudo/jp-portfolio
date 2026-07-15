@@ -152,6 +152,7 @@ function runAIDebate(
   riskPenalty: number,
   news: NewsData | null,
   market: Market,
+  now: Date,
 ): AgentDebate {
   const weights = INST_WEIGHTS.JAPAN_STOCK
 
@@ -509,7 +510,7 @@ function runAIDebate(
   // ── Phase 4: 委員会統合出力 ──────────────────────────────────
 
   // ロック判定（3ヶ月売却不可）
-  const isLocked = isSellLocked(h)
+  const isLocked = isSellLocked(h, now)
   const lockDate = getSellableDate(h)
   const lockDateLabel = lockDate ?? 'ロック解除日不明'
 
@@ -667,6 +668,7 @@ export function computeAnalysis(
   _corr: CorrelationData | null,
   news: NewsData | null,
   adaptiveWeights: AdaptiveWeights | null = null,
+  nowMs = Date.now(),
 ): HoldingAnalysis[] {
   const totalEval = holdings.reduce((s, h) => s + h.eval, 0)
   const mitsuW = holdings.filter(h => h.mitsu).reduce((s, h) => s + h.eval / Math.max(totalEval, 1), 0)
@@ -703,7 +705,7 @@ export function computeAnalysis(
 
     const debate = runAIDebate(
       h, fundamentalScore, technicalScore, marketScore,
-      newsScore, qualityScore, riskPenalty, news, market,
+      newsScore, qualityScore, riskPenalty, news, market, new Date(nowMs),
     )
 
     const capped = Math.max(0, Math.min(100, totalScore))

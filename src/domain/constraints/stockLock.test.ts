@@ -158,3 +158,42 @@ describe('isSellLocked: 90-day rule vs setMonth+3 discrepancy (fixed date 2001-0
     expect(getSellableDate(h)).toBe('2001-04-01')
   })
 })
+
+describe('isSellLocked: deterministic threshold matrix', () => {
+  const acquiredAt = '2026-01-01T00:00:00.000Z'
+  const holding = makeHolding({ acquiredAt })
+  const at = (elapsedMs: number) => new Date(Date.parse(acquiredAt) + elapsedMs)
+  const day = 24 * 60 * 60 * 1000
+
+  it.each([
+    ['89d23h', 89 * day + 23 * 60 * 60 * 1000, true],
+    ['90d1h', 90 * day + 60 * 60 * 1000, false],
+    ['89d23:59', 89 * day + 23 * 60 * 60 * 1000 + 59 * 60 * 1000, true],
+    ['90d00:01', 90 * day + 60 * 1000, false],
+    ['threshold exact', 90 * day, false],
+    ['threshold immediately before', 90 * day - 1, true],
+    ['threshold immediately after', 90 * day + 1, false],
+    ['backwards clock', -365 * day, true],
+    ['very large forward jump', 10_000 * day, false],
+  ] as const)('%s', (_label, elapsedMs, expected) => {
+    expect(isSellLocked(holding, at(elapsedMs))).toBe(expected)
+  })
+
+  it('evaluates multiple holdings independently at one supplied clock', () => {
+    const now = at(90 * day)
+    const holdings = [
+      makeHolding({ code: 'old', acquiredAt: '2025-12-31T00:00:00.000Z' }),
+      makeHolding({ code: 'boundary', acquiredAt }),
+      makeHolding({ code: 'new', acquiredAt: '2026-01-02T00:00:00.000Z' }),
+    ]
+    expect(holdings.map(item => isSellLocked(item, now))).toEqual([false, false, true])
+  })
+
+  it('preserves missing and invalid acquiredAt fallback contracts', () => {
+    const now = at(90 * day)
+    expect(isSellLocked(makeHolding({ lock: true }), now)).toBe(true)
+    expect(isSellLocked(makeHolding({ lock: false }), now)).toBe(false)
+    expect(isSellLocked(makeHolding({ acquiredAt: 'invalid-date', lock: true }), now)).toBe(true)
+    expect(isSellLocked(makeHolding({ acquiredAt: 'invalid-date', lock: false }), now)).toBe(false)
+  })
+})

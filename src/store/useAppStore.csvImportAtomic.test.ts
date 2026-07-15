@@ -1,7 +1,16 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import type { Holding, Trust } from '../types'
 import { runFullAnalysis, useAppStore } from './useAppStore'
-import { CSV_IMPORT_GENERATION_KEY, restoreCsvImportGeneration } from './persist'
+import {
+  CSV_IMPORT_GENERATION_KEY,
+  persistCsvImportTransaction,
+  restoreCsvImportGeneration,
+  restoreCsvImportedAt,
+  restoreCsvSyncSummary,
+  restoreLearning,
+  restorePortfolio,
+  restoreTrust,
+} from './persist'
 
 class TestFileReader {
   onload: ((event: { target: { result: ArrayBuffer } }) => void) | null = null
@@ -199,6 +208,23 @@ describe('T9-A001/A002: structured CSV result and atomic store commit', () => {
     expect(useAppStore.getState().analysis.length).toBeGreaterThan(0)
     expect(useAppStore.getState().officialDecision).not.toBeNull()
     expect(useAppStore.getState().system.csvLastImportedAt).not.toBe('2026-07-01T00:00:00.000Z')
+
+    const state = useAppStore.getState()
+    const physical = JSON.parse(storage[CSV_IMPORT_GENERATION_KEY]) as {
+      manifest: { generationId: string }
+    }
+    const restored = restoreCsvImportGeneration()
+    if (restored.status !== 'committed') throw new Error('expected committed generation')
+    expect(physical.manifest.generationId).toBe(restored.generationId)
+    expect(restored.payload.holdings).toEqual(state.holdings)
+    expect(restored.payload.trust).toEqual(state.trust)
+    expect(restored.payload.learning).toEqual(state.learning)
+    expect(restored.payload.importedAt).toBe(state.system.csvLastImportedAt)
+    expect(restorePortfolio()).toEqual(state.holdings)
+    expect(restoreTrust()).toEqual(state.trust)
+    expect(restoreLearning()).toEqual(state.learning)
+    expect(restoreCsvImportedAt()).toBe(state.system.csvLastImportedAt)
+    expect(restoreCsvSyncSummary()).toEqual(state.system.csvSyncSummary)
   })
 
   it('subscribers observe exactly one portfolio-generation commit, never new holdings with an old decision', async () => {
@@ -489,6 +515,39 @@ describe('T9-A001/A002: structured CSV result and atomic store commit', () => {
     expect(retry.ok).toBe(true)
   })
 
+  it('canonical changed after transaction capture is rejected by pre-write CAS and remains retryable', async () => {
+    await expect(useAppStore.getState().importCsv(csvFile())).resolves.toMatchObject({ ok: true })
+    const previousGlobal = structuredClone(relevantState())
+    let release!: (value: ArrayBuffer) => void
+    const pendingFile = {
+      name: 'pending.csv',
+      arrayBuffer: () => new Promise<ArrayBuffer>(resolve => { release = resolve }),
+    } as File
+
+    const importing = useAppStore.getState().importCsv(pendingFile)
+    await Promise.resolve()
+    const previous = restoreCsvImportGeneration()
+    if (previous.status !== 'committed') throw new Error('expected committed generation')
+    persistCsvImportTransaction({
+      ...previous.payload,
+      holdings: previous.payload.holdings.map(item => ({ ...item, eval: 888_000 })),
+    }, previous.savedAt + 1)
+    const externalRaw = storage[CSV_IMPORT_GENERATION_KEY]
+    release(new TextEncoder().encode(VALID_CSV.replace('150000,8.00', '175000,8.00')).buffer)
+
+    await expect(importing).resolves.toMatchObject({
+      ok: false,
+      code: 'IMPORT_CONFLICT',
+      persistence: { status: 'not_attempted' },
+    })
+    expect(storage[CSV_IMPORT_GENERATION_KEY]).toBe(externalRaw)
+    expect(relevantState()).toEqual(previousGlobal)
+    expect(restorePortfolio()?.[0].eval).toBe(888_000)
+    expect(useAppStore.getState().system.status).toBe('error')
+
+    await expect(useAppStore.getState().importCsv(csvFile())).resolves.toMatchObject({ ok: true })
+  })
+
   it.each([
     ['standby cash', () => useAppStore.getState().setCashAssumptions({ cashDeposits: 1_000_000, standbyFunds: 7_000_000 })],
     ['portfolio policy', () => useAppStore.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.15 })],
@@ -659,6 +718,146 @@ describe('T9-A001/A002: structured CSV result and atomic store commit', () => {
     expect(storage.v95_trust_short_tracker).toBeUndefined()
     expect(useAppStore.getState().holdings[0].eval).toBe(100_000)
     await expect(useAppStore.getState().importCsv(csvFile())).resolves.toMatchObject({ ok: true })
+  })
+
+  it('C1: valid external canonical replacement loses exact-byte ownership without publishing or rollback', async () => {
+    await expect(useAppStore.getState().importCsv(csvFile())).resolves.toMatchObject({ ok: true })
+    const previousGlobalEval = useAppStore.getState().holdings[0].eval
+    const previousRaw = storage[CSV_IMPORT_GENERATION_KEY]
+    const previous = restoreCsvImportGeneration()
+    if (previous.status !== 'committed') throw new Error('expected committed baseline generation')
+
+    persistCsvImportTransaction({
+      ...previous.payload,
+      holdings: previous.payload.holdings.map(item => ({ ...item, eval: 999_000 })),
+    }, previous.savedAt + 1)
+    const externalRaw = storage[CSV_IMPORT_GENERATION_KEY]
+    storage[CSV_IMPORT_GENERATION_KEY] = previousRaw
+
+    let transactionCommittedRaw: string | null = null
+    let replaced = false
+    storageReentry = key => {
+      if (key !== CSV_IMPORT_GENERATION_KEY || replaced) return
+      replaced = true
+      transactionCommittedRaw = storage[key]
+      storage[key] = externalRaw
+    }
+
+    const nextCsv = VALID_CSV.replace('150000,8.00', '175000,8.00')
+    const result = await useAppStore.getState().importCsv(csvFile(nextCsv))
+    storageReentry = null
+
+    expect(transactionCommittedRaw).not.toBeNull()
+    expect(transactionCommittedRaw).not.toBe(externalRaw)
+    expect(storage[CSV_IMPORT_GENERATION_KEY]).toBe(externalRaw)
+    expect(result).toMatchObject({
+      ok: false,
+      code: 'IMPORT_CONFLICT',
+      persistence: { status: 'ownership_lost' },
+    })
+    expect(useAppStore.getState().holdings[0].eval).toBe(previousGlobalEval)
+    expect(restoreCsvImportGeneration()).toMatchObject({
+      status: 'committed',
+      payload: { holdings: [{ eval: 999_000 }] },
+    })
+    expect(restorePortfolio()?.[0].eval).toBe(999_000)
+    expect(useAppStore.getState().system.status).toBe('error')
+
+    storageReentry = null
+    await expect(useAppStore.getState().importCsv(csvFile(nextCsv))).resolves.toMatchObject({ ok: true })
+  })
+
+  it('C2: sell-lock boundary crossing keeps analysis, plans, and official decision on one transaction clock', async () => {
+    vi.useFakeTimers()
+    const analysisNow = new Date('2026-07-15T14:00:00.000Z').getTime()
+    const afterThreshold = analysisNow + 12 * 60 * 60 * 1000
+    vi.setSystemTime(analysisNow)
+    useAppStore.setState(state => ({
+      holdings: [{
+        ...holding(),
+        mu: -0.2,
+        sigma: 0.5,
+        beta: 1.5,
+        ma: false,
+        rsi: 80,
+        macd: false,
+        mom3m: -20,
+        roe: 0,
+        per: 100,
+        epsG: -30,
+        cfOk: false,
+        de: 10,
+        divG: 0,
+      }],
+      system: {
+        ...state.system,
+        dataSourceStatus: {
+          ...state.system.dataSourceStatus,
+          market: 'loaded',
+          safeMode: 'loaded',
+        },
+        dataTimestamps: {
+          ...state.system.dataTimestamps,
+          market: new Date(analysisNow).toISOString(),
+          safeMode: new Date(analysisNow).toISOString(),
+        } as NonNullable<typeof state.system.dataTimestamps>,
+      },
+    }))
+    const boundaryCsv = VALID_CSV.replace('2025-01-01', '2026-04-17')
+
+    class BoundaryCrossingReader extends TestFileReader {
+      override readAsArrayBuffer(file: File) {
+        file.arrayBuffer()
+          .then(result => {
+            vi.setSystemTime(afterThreshold)
+            this.onload?.({ target: { result } })
+          })
+          .catch(() => this.onerror?.())
+      }
+    }
+    vi.stubGlobal('FileReader', BoundaryCrossingReader)
+
+    try {
+      const result = await useAppStore.getState().importCsv(csvFile(boundaryCsv))
+      const state = useAppStore.getState()
+      const analysis = state.analysis.find(item => item.code === '1001')
+      const stockRow = state.stockPlan?.rows.find(item => item.code === '1001')
+      const zeroAction = state.zeroPlan?.proposals.find(item => item.code === '1001')
+      const officialAction = state.officialDecision?.actions.find(item => item.code === '1001')
+
+      expect(result).toMatchObject({ ok: true, code: 'SUCCESS' })
+      expect(state.system.analysisLastRunAt).toBe(new Date(analysisNow).toISOString())
+      expect(state.stockPlan?.generatedAt).toBe(new Date(analysisNow).toISOString())
+      expect(state.zeroPlan?.generatedAt).toBe(new Date(analysisNow).toISOString())
+      expect(state.trustPlan?.generatedAt).toBe(new Date(analysisNow).toISOString())
+      expect(state.officialDecision?.generatedAt).toBe(new Date(analysisNow).toISOString())
+      expect(analysis?.debate.recommendedAction).toContain('売却不可期間中')
+      expect(stockRow?.locked).toBe(true)
+      expect(zeroAction?.action).toBe('WAIT')
+      expect(officialAction?.action).toBe('HOLD')
+
+      vi.stubGlobal('FileReader', TestFileReader)
+      const nextResult = await useAppStore.getState().importCsv(csvFile(boundaryCsv))
+      const nextState = useAppStore.getState()
+      const nextAnalysis = nextState.analysis.find(item => item.code === '1001')
+      const nextStockRow = nextState.stockPlan?.rows.find(item => item.code === '1001')
+      const nextZeroAction = nextState.zeroPlan?.proposals.find(item => item.code === '1001')
+      const nextOfficialAction = nextState.officialDecision?.actions.find(item => item.code === '1001')
+
+      expect(nextResult).toMatchObject({ ok: true, code: 'SUCCESS' })
+      expect(nextState.system.analysisLastRunAt).toBe(new Date(afterThreshold).toISOString())
+      expect(nextState.stockPlan?.generatedAt).toBe(new Date(afterThreshold).toISOString())
+      expect(nextState.zeroPlan?.generatedAt).toBe(new Date(afterThreshold).toISOString())
+      expect(nextState.trustPlan?.generatedAt).toBe(new Date(afterThreshold).toISOString())
+      expect(nextState.officialDecision?.generatedAt).toBe(new Date(afterThreshold).toISOString())
+      expect(nextAnalysis?.debate.recommendedAction).not.toContain('売却不可期間中')
+      expect(nextStockRow?.locked).toBe(false)
+      expect(nextZeroAction?.action).toBe('SELL')
+      expect(nextOfficialAction?.action).toBe('SELL')
+    } finally {
+      vi.stubGlobal('FileReader', TestFileReader)
+      vi.useRealTimers()
+    }
   })
 
   it('F3: persistence-time clock crossing cannot change a transaction-scoped analysis result', async () => {

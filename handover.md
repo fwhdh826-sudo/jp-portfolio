@@ -43813,6 +43813,80 @@ AssetSnapshotMini → AllocationGapStrip → 今日のアクション[TodoCard/R
   main未反映のため別チケットで対応
 - v10.css未使用クラスの安全な削除（R6）
 
+## T9-A001/A002-R4 + T9-A003-R3: canonical ownership / sell-lock clock closure
+
+### 実施日・基準
+
+- 実施日: 2026-07-15
+- branch: `v13.3-dev`（commit/push/main反映なし）
+- source commit: `d9b848b6e19c0efe0bf8e4c5d26583352b7102e0`
+- fresh-session adversarial audit C: **BLOCKED**
+- blocker: `F-CANONICAL-OWNERSHIP-01`, `F-CLOCK-SELLLOCK-02`
+
+### 選択した修正
+
+- strict CSV transaction開始時にphysical canonical rawをexact bytesでcaptureし、
+  write直前にexpected previous rawとのCASを実行する。absentは`null`をexact expected
+  valueとして扱う。
+- persistence receiptの`committedRaw`とpublish直前のphysical canonical rawを
+  byte-for-byteで再比較する。payload/generationのsemantic equalityでは代用しない。
+- post-write ownership lossは`IMPORT_CONFLICT`かつ
+  `persistence.status = ownership_lost`。prepared generationをglobalへpublishせず、
+  external canonical bytesをrollback/remove/overwriteしない。
+- rollbackはphysical canonicalがreceiptの`committedRaw`と完全一致する場合だけ、
+  `previousRaw`へ復元（以前absentならremove）する。
+- `computeAnalysis(..., nowMs?)`へlogical analysis clockを注入し、strict CSVでは
+  transaction開始時の`analysisNow`を必ず渡す。`runAIDebate`は同じclockから作った
+  `Date`を`isSellLocked`へ渡す。
+
+### ownership / clock contract
+
+- normal SUCCESS: physical canonical envelope、`restoreCsvImportGeneration()`、
+  `restorePortfolio/Trust/Learning`、global Zustand portfolio fields、UI SUCCESS resultが
+  同じgeneration payloadを表す。
+- pre-write conflict: external current rawを維持し、write/publishしない。
+- post-write ownership loss: external current rawを維持し、prepared globalをpublish
+  せず、system statusはerror、lockをreleaseしてretry可能。
+- strict transaction: analysis/debate、stockPlan、zeroPlan、trustPlan、committee、
+  officialDecision、sell-lock判定は同一`analysisNow`を使用する。次transactionだけ
+  新しい`Date.now()`をcaptureする。
+
+### 恒久test / adversarial recheck
+
+- valid external generation Bがcanonical write callbackでAを同期置換:
+  AはSUCCESS/publishされず、Bはphysical/hydration sourceとして保持、globalは取込前
+  generationのまま、status error、retry成功。
+- transaction capture後・write前のabsent→external、valid→different valid、
+  valid→corruptをCAS conflictとして拒否。
+- post-write exact match、different valid generation、generationId差、savedAt差、
+  property order差、malformed、removed、getItem throw/inaccessible、repeated checkを検証。
+- rollbackのold restore、absent remove、external overwrite/delete保護、set/remove throw、
+  repeated attempt、reload after rollback/ownership lossを検証。
+- READING中に89日14時間相当から90日超へwall clockを進めても、transaction Tでは
+  analysis lock文言、stockPlan locked、zeroPlan WAIT、officialDecision HOLDが一致。
+  次transactionではunlocked、zeroPlan/officialDecision SELLへ更新。
+- threshold matrix: 89d23h→90d1h、89d23:59→90d00:01、exact/before/after、
+  backwards、large forward、multiple holdings、missing/invalid acquiredAt。
+
+### regression / verification
+
+- R1 subscriber throw、R2 FileReader callback throw、R3 checksum-valid malformed、
+  R4 individual helper canonical isolation、F1 owner/token nested/retry、F2 tracker mutation、
+  R6 absent/valid/present-invalid canonical recoveryを維持。
+- `npm run test:unit`: **831 passed / 43 files**
+- `npx tsc --noEmit`: success
+- `npm run build`: success（既知のchunk-size warningのみ）
+- `git diff --check`: success
+
+### follow-upを維持
+
+- P2 tracker rollback: tracker mismatch rollbackがexternal actorのtracker versionを
+  baselineで上書きし得る既知課題は今回未変更。T9-A004以降でtrackerにも
+  exact-current ownership ruleを導入する。
+- R8 P3: underlying `error.message`がuser-facing UIへ到達する課題は未変更。
+  A006/A007候補として維持する。
+- remaining: T9-A004〜A008。
+
 ## T9-A001/A002-R2 + T9-A003-R1: completion gate blocker repair
 
 ### 実施日 / source / audit verdict

@@ -57,6 +57,13 @@ export class CsvImportPersistenceError extends Error {
   }
 }
 
+export class CsvImportCanonicalConflictError extends CsvImportPersistenceError {
+  constructor(message: string) {
+    super(message, 'not_attempted')
+    this.name = 'CsvImportCanonicalConflictError'
+  }
+}
+
 // P4.5-A012d: localStorage保存データの鮮度（表示専用）。
 // TTLを超えても値そのものは削除しないため、「保存されているか／古いか」を
 // UI側でstale警告に使うための読み取り専用ヘルパー。
@@ -426,16 +433,17 @@ interface CsvSyncSummarySnapshot { data: CsvSyncSummary; savedAt: number }
 export function persistCsvImportTransaction(
   payload: CsvImportPersistencePayload,
   savedAt = Date.now(),
+  expectedPreviousRaw?: string | null,
 ): CsvImportPersistenceReceipt {
   if (typeof localStorage === 'undefined') {
     throw new CsvImportPersistenceError('永続化ストレージを利用できません', 'not_attempted')
   }
 
-  let previousRaw: string | null
-  try { previousRaw = localStorage.getItem(CSV_IMPORT_GENERATION_KEY) }
-  catch (error) {
-    const detail = error instanceof Error ? error.message : String(error)
-    throw new CsvImportPersistenceError(`CSV取込データの既存世代を確認できませんでした: ${detail}`, 'not_attempted')
+  const previousRaw = readCsvImportCanonicalRaw()
+  if (expectedPreviousRaw !== undefined && previousRaw !== expectedPreviousRaw) {
+    throw new CsvImportCanonicalConflictError(
+      'CSV取込データの保存前にcanonical世代が変更されました。外部の世代を維持して取込を中断しました。',
+    )
   }
   let serializedEnvelope: string
   try {
@@ -463,6 +471,28 @@ export function persistCsvImportTransaction(
   } catch (error) {
     const detail = error instanceof Error ? error.message : String(error)
     throw new CsvImportPersistenceError(`CSV取込データの永続化に失敗しました: ${detail}`, 'rolled_back')
+  }
+}
+
+/** Capture the exact physical canonical bytes for a later compare-and-swap. */
+export function readCsvImportCanonicalRaw(): string | null {
+  if (typeof localStorage === 'undefined') {
+    throw new CsvImportPersistenceError('永続化ストレージを利用できません', 'not_attempted')
+  }
+  try {
+    return localStorage.getItem(CSV_IMPORT_GENERATION_KEY)
+  } catch (error) {
+    const detail = error instanceof Error ? error.message : String(error)
+    throw new CsvImportPersistenceError(`CSV取込データの既存世代を確認できませんでした: ${detail}`, 'not_attempted')
+  }
+}
+
+/** Publish is allowed only while the exact bytes written by this transaction remain physical. */
+export function ownsCsvImportCanonicalBytes(receipt: CsvImportPersistenceReceipt): boolean {
+  try {
+    return localStorage.getItem(CSV_IMPORT_GENERATION_KEY) === receipt.committedRaw
+  } catch {
+    return false
   }
 }
 

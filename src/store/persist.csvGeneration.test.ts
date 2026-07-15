@@ -2,7 +2,9 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import type { CsvSyncSummary, Holding, LearningState, Trust } from '../types'
 import {
   CSV_IMPORT_GENERATION_KEY,
+  CsvImportCanonicalConflictError,
   CsvImportPersistenceError,
+  ownsCsvImportCanonicalBytes,
   persistCsvImportTransaction,
   persistCsvImportedAt,
   persistCsvSyncSummary,
@@ -18,6 +20,7 @@ import {
   restoreLearning,
   restorePortfolio,
   restoreTrust,
+  readCsvImportCanonicalRaw,
   type CsvImportPersistencePayload,
 } from './persist'
 
@@ -188,6 +191,122 @@ describe('T9-A003: committed CSV generation durability and recovery', () => {
     store[CSV_IMPORT_GENERATION_KEY] = oldRaw
     expect(rollbackCsvImportTransaction(staleReceipt)).toBe(false)
     expect(store[CSV_IMPORT_GENERATION_KEY]).toBe(oldRaw)
+  })
+
+  describe('canonical exact-byte ownership', () => {
+    it('pre-write CAS accepts exact old bytes and exact absence', () => {
+      const absentReceipt = persistCsvImportTransaction(payload('old'), 1, null)
+      expect(absentReceipt.previousRaw).toBeNull()
+      expect(ownsCsvImportCanonicalBytes(absentReceipt)).toBe(true)
+
+      const oldRaw = readCsvImportCanonicalRaw()
+      const nextReceipt = persistCsvImportTransaction(payload('new'), 2, oldRaw)
+      expect(nextReceipt.previousRaw).toBe(oldRaw)
+      expect(ownsCsvImportCanonicalBytes(nextReceipt)).toBe(true)
+    })
+
+    it.each([
+      ['absent to external valid generation', null, 'valid'],
+      ['valid old to different valid generation', 'old', 'valid'],
+      ['valid old to corrupt raw', 'old', 'corrupt'],
+    ] as const)('pre-write CAS rejects %s without destroying current bytes', (_label, baseline, replacement) => {
+      if (baseline === 'old') persistCsvImportTransaction(payload('old'), 10)
+      const expected = readCsvImportCanonicalRaw()
+      if (replacement === 'valid') persistCsvImportTransaction(payload('new'), 11)
+      else store[CSV_IMPORT_GENERATION_KEY] = '{external-corrupt'
+      const externalRaw = store[CSV_IMPORT_GENERATION_KEY]
+
+      expect(() => persistCsvImportTransaction(payload('old'), 12, expected))
+        .toThrow(CsvImportCanonicalConflictError)
+      expect(store[CSV_IMPORT_GENERATION_KEY]).toBe(externalRaw)
+    })
+
+    it('post-write verification rejects every non-exact physical representation', () => {
+      const receipt = persistCsvImportTransaction(payload('new'), 20)
+      const exact = receipt.committedRaw
+      const parsed = JSON.parse(exact) as {
+        manifest: { generationId: string; savedAt: number }
+        payload: CsvImportPersistencePayload
+      }
+      expect(ownsCsvImportCanonicalBytes(receipt)).toBe(true)
+
+      const variants: Array<[string, string | null]> = [
+        ['different checksum-valid generation', persistCsvImportTransaction(payload('old'), 21).committedRaw],
+        ['same payload with generationId changed', JSON.stringify({
+          ...parsed,
+          manifest: { ...parsed.manifest, generationId: `${parsed.manifest.generationId}-external` },
+        })],
+        ['same payload with savedAt changed', JSON.stringify({
+          ...parsed,
+          manifest: { ...parsed.manifest, savedAt: parsed.manifest.savedAt + 1 },
+        })],
+        ['same payload with property order changed', JSON.stringify({
+          payload: parsed.payload,
+          manifest: parsed.manifest,
+        })],
+        ['malformed external raw', '{malformed'],
+        ['canonical removed', null],
+      ]
+
+      for (const [, raw] of variants) {
+        if (raw === null) delete store[CSV_IMPORT_GENERATION_KEY]
+        else store[CSV_IMPORT_GENERATION_KEY] = raw
+        expect(ownsCsvImportCanonicalBytes(receipt)).toBe(false)
+      }
+    })
+
+    it('post-write verification fails closed when canonical read is inaccessible or throws repeatedly', () => {
+      const receipt = persistCsvImportTransaction(payload('new'), 30)
+      vi.stubGlobal('localStorage', {
+        ...storage,
+        getItem: () => { throw new Error('storage inaccessible') },
+      })
+      expect(ownsCsvImportCanonicalBytes(receipt)).toBe(false)
+      expect(ownsCsvImportCanonicalBytes(receipt)).toBe(false)
+      expect(() => readCsvImportCanonicalRaw()).toThrow(CsvImportPersistenceError)
+    })
+
+    it('rollback restores/removes only owned bytes and is idempotently safe after ownership loss', () => {
+      persistCsvImportTransaction(payload('old'), 40)
+      const oldRaw = store[CSV_IMPORT_GENERATION_KEY]
+      const owned = persistCsvImportTransaction(payload('new'), 41)
+      expect(rollbackCsvImportTransaction(owned)).toBe(true)
+      expect(store[CSV_IMPORT_GENERATION_KEY]).toBe(oldRaw)
+      expect(rollbackCsvImportTransaction(owned)).toBe(false)
+
+      delete store[CSV_IMPORT_GENERATION_KEY]
+      const created = persistCsvImportTransaction(payload('new'), 42, null)
+      expect(rollbackCsvImportTransaction(created)).toBe(true)
+      expect(store[CSV_IMPORT_GENERATION_KEY]).toBeUndefined()
+
+      const overwritten = persistCsvImportTransaction(payload('new'), 43, null)
+      persistCsvImportTransaction(payload('old'), 44, overwritten.committedRaw)
+      const externalRaw = store[CSV_IMPORT_GENERATION_KEY]
+      expect(rollbackCsvImportTransaction(overwritten)).toBe(false)
+      expect(store[CSV_IMPORT_GENERATION_KEY]).toBe(externalRaw)
+      expect(restoreCsvImportGeneration()).toMatchObject({ status: 'committed', payload: payload('old') })
+
+      const deleted = persistCsvImportTransaction(payload('new'), 45, externalRaw)
+      delete store[CSV_IMPORT_GENERATION_KEY]
+      expect(rollbackCsvImportTransaction(deleted)).toBe(false)
+      expect(store[CSV_IMPORT_GENERATION_KEY]).toBeUndefined()
+      expect(restoreCsvImportGeneration()).toEqual({ status: 'none' })
+    })
+
+    it.each(['setItem', 'removeItem'] as const)('rollback %s failure is reported without claiming success', operation => {
+      if (operation === 'setItem') persistCsvImportTransaction(payload('old'), 50)
+      const receipt = persistCsvImportTransaction(payload('new'), 51)
+      vi.stubGlobal('localStorage', {
+        ...storage,
+        setItem: operation === 'setItem'
+          ? () => { throw new Error('rollback set failed') }
+          : storage.setItem,
+        removeItem: operation === 'removeItem'
+          ? () => { throw new Error('rollback remove failed') }
+          : storage.removeItem,
+      })
+      expect(rollbackCsvImportTransaction(receipt)).toBe(false)
+    })
   })
 
   it.each(LEGACY_KEYS)(

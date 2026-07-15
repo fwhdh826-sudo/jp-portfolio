@@ -30,7 +30,10 @@ import {
   restoreCsvSyncSummary,
   restoreCsvImportGeneration,
   persistCsvImportTransaction,
+  readCsvImportCanonicalRaw,
+  ownsCsvImportCanonicalBytes,
   rollbackCsvImportTransaction,
+  CsvImportCanonicalConflictError,
   CsvImportPersistenceError,
   persistPortfolioPolicy,
   restorePortfolioPolicy,
@@ -135,7 +138,7 @@ export type CsvImportResult =
       warnings: string[]
       analysisCommitted: false
       officialDecisionCommitted: false
-      persistence: { status: 'not_attempted' | 'rolled_back' | 'rollback_failed' }
+      persistence: { status: 'not_attempted' | 'rolled_back' | 'rollback_failed' | 'ownership_lost' }
     }
 
 class OfficialDecisionGenerationError extends Error {
@@ -148,7 +151,7 @@ class OfficialDecisionGenerationError extends Error {
 function csvImportFailure(
   code: CsvImportErrorCode,
   message: string,
-  persistence: 'not_attempted' | 'rolled_back' | 'rollback_failed' = 'not_attempted',
+  persistence: 'not_attempted' | 'rolled_back' | 'rollback_failed' | 'ownership_lost' = 'not_attempted',
 ): CsvImportResult {
   return {
     ok: false,
@@ -194,6 +197,7 @@ interface CsvImportTransaction {
   initialFingerprint: string
   trackerSnapshot: TrustShortAnalysisInput | null
   trackerPortfolioBaseline: TrustShortPortfolioBaseline | null
+  canonicalPreviousRaw: string | null
 }
 
 let activeCsvImportTransaction: CsvImportTransaction | null = null
@@ -703,6 +707,7 @@ export function runFullAnalysis(
     state.correlation,
     state.news,
     adaptiveWeights,
+    nowMs,
   )
   const metrics = calcPortfolioMetrics(state.holdings, state.correlation)
 
@@ -1294,6 +1299,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
       initialFingerprint: '',
       trackerSnapshot: null,
       trackerPortfolioBaseline: null,
+      canonicalPreviousRaw: null,
     }
     activeCsvImportTransaction = transaction
     let durableCommitted = false
@@ -1307,6 +1313,14 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
     }
 
     try {
+      try {
+        transaction.canonicalPreviousRaw = readCsvImportCanonicalRaw()
+      } catch (error) {
+        return publishFailure(csvImportFailure(
+          'PERSISTENCE_ERROR',
+          error instanceof Error ? error.message : String(error),
+        ))
+      }
       transaction.trackerSnapshot = captureTrustShortAnalysisInput(transaction.analysisNow)
       transaction.trackerPortfolioBaseline = captureTrustShortPortfolioBaseline()
       const baseState = get()
@@ -1415,7 +1429,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
           importedAt: now,
           syncSummary,
           trustShortSnapshot: stagedTrustExecution.snapshot,
-        }, transaction.analysisNow)
+        }, transaction.analysisNow, transaction.canonicalPreviousRaw)
         durableCommitted = true
         setCsvImportTransactionPhase(transaction, 'COMMITTED')
       } catch (error) {
@@ -1424,7 +1438,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
           ? error.status
           : 'rollback_failed'
         return publishFailure(csvImportFailure(
-          'PERSISTENCE_ERROR',
+          error instanceof CsvImportCanonicalConflictError ? 'IMPORT_CONFLICT' : 'PERSISTENCE_ERROR',
           error instanceof Error ? error.message : String(error),
           persistenceStatus,
         ))
@@ -1453,6 +1467,18 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
       }
 
       const localStorageFreshness = computeLocalStorageFreshness(transaction.analysisNow)
+
+      // This is deliberately the final storage operation before global publication. Payload
+      // equality is not ownership: only the exact serialized bytes in the receipt prove that
+      // this transaction still owns the physical canonical key.
+      if (persistenceReceipt === null || !ownsCsvImportCanonicalBytes(persistenceReceipt)) {
+        durableCommitted = false
+        return publishFailure(csvImportFailure(
+          'IMPORT_CONFLICT',
+          '保存後にcanonical世代の所有権を失ったため、準備した分析結果は公開しませんでした。外部の保存世代を維持したまま再試行してください。',
+          'ownership_lost',
+        ))
+      }
 
       // Publish the complete prepared state, including the exact dependency snapshot used by
       // analysis. This is the synchronous commit-section closure: a storage shim or callback
