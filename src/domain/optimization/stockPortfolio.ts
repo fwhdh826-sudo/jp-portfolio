@@ -47,6 +47,7 @@ export interface StockPortfolioPlan {
 
 export interface StockPortfolioPlanOptions {
   targetTotalValue?: number
+  nowMs?: number
 }
 
 function clamp(value: number, min: number, max: number) {
@@ -243,10 +244,12 @@ export function buildStockPortfolioPlan(
   analysis: HoldingAnalysis[],
   options: StockPortfolioPlanOptions = {},
 ): StockPortfolioPlan {
+  const nowMs = options.nowMs ?? Date.now()
+  const now = new Date(nowMs)
   const totalStockValue = holdings.reduce((sum, holding) => sum + holding.eval, 0)
   if (holdings.length === 0) {
     return {
-      generatedAt: new Date().toISOString(),
+      generatedAt: new Date(nowMs).toISOString(),
       totalStockValue: 0,
       lockCount: 0,
       sellableCount: 0,
@@ -275,8 +278,8 @@ export function buildStockPortfolioPlan(
       const targetValue = roundToTenThousand(targetTotalValue * targetWeight)
       const currentWeight = totalStockValue > 0 ? holding.eval / totalStockValue : 0
       const diffValue = targetValue - holding.eval
-      const locked = isSellLocked(holding)
-      const lockRemainingDays = getSellLockRemainingDays(holding)
+      const locked = isSellLocked(holding, now)
+      const lockRemainingDays = getSellLockRemainingDays(holding, now)
       const sellableAt = getSellableDate(holding)
       const recommendation = item
         ? determineRecommendation(diffValue, item, locked)
@@ -326,7 +329,7 @@ export function buildStockPortfolioPlan(
   const swapIdeas = buildSwapIdeas(rows)
 
   return {
-    generatedAt: new Date().toISOString(),
+    generatedAt: new Date(nowMs).toISOString(),
     totalStockValue,
     lockCount,
     sellableCount,

@@ -134,7 +134,9 @@ export function buildCommitteeDecision(input: {
   metrics: PortfolioMetrics | null
   market: Market
   holdings: Holding[]
+  nowMs?: number
 }): CommitteeDecision {
+  const nowMs = input.nowMs ?? Date.now()
   const verdict = resolveVerdict(
     input.zeroPlan.board.marketMode,
     input.trustPlan.shortTermSignal,
@@ -196,7 +198,7 @@ export function buildCommitteeDecision(input: {
   })
 
   return {
-    generatedAt: new Date().toISOString(),
+    generatedAt: new Date(nowMs).toISOString(),
     verdict: {
       ...verdict,
       summary: input.zeroPlan.board.conclusion,

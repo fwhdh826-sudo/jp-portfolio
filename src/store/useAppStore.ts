@@ -30,6 +30,7 @@ import {
   restoreCsvSyncSummary,
   restoreCsvImportGeneration,
   persistCsvImportTransaction,
+  rollbackCsvImportTransaction,
   CsvImportPersistenceError,
   persistPortfolioPolicy,
   restorePortfolioPolicy,
@@ -50,10 +51,15 @@ import type { CandidateItem, StockCandidateItem } from '../domain/candidates'
 import { computeRoleExposureByRole } from '../domain/candidates/roleExposure'
 import {
   stageTrustExecutionFromCsvSync,
+  captureTrustShortAnalysisInput,
+  captureTrustShortPortfolioBaseline,
   getTrustShortReadDependencyFingerprint,
   getTrustShortTodayExecutionCount,
   getTrustShortTrackingStats,
   recordTrustShortDecision,
+  restoreTrustShortAnalysisInput,
+  type TrustShortAnalysisInput,
+  type TrustShortPortfolioBaseline,
 } from '../domain/learning/trustShortTracker'
 import { buildExportableCashAssumptions } from '../utils/cashAssumptionsTransfer'
 import {
@@ -173,7 +179,6 @@ function classifyCsvParseFailure(error: unknown): CsvImportResult {
 }
 
 type CsvImportTransactionPhase =
-  | 'IDLE'
   | 'READING'
   | 'STAGING'
   | 'ANALYZING'
@@ -182,10 +187,30 @@ type CsvImportTransactionPhase =
   | 'COMMITTED'
   | 'PUBLISHED'
 
-let csvImportTransactionPhase: CsvImportTransactionPhase = 'IDLE'
+interface CsvImportTransaction {
+  token: symbol
+  phase: CsvImportTransactionPhase
+  analysisNow: number
+  initialFingerprint: string
+  trackerSnapshot: TrustShortAnalysisInput | null
+  trackerPortfolioBaseline: TrustShortPortfolioBaseline | null
+}
+
+let activeCsvImportTransaction: CsvImportTransaction | null = null
+
+function setCsvImportTransactionPhase(
+  transaction: CsvImportTransaction,
+  phase: CsvImportTransactionPhase,
+): void {
+  if (activeCsvImportTransaction?.token !== transaction.token) {
+    throw new Error('CSV import transaction owner was lost')
+  }
+  transaction.phase = phase
+}
 
 function isCsvImportCommitCriticalSection(): boolean {
-  return csvImportTransactionPhase === 'PERSISTING' || csvImportTransactionPhase === 'COMMITTED'
+  const phase = activeCsvImportTransaction?.phase
+  return phase === 'PERSISTING' || phase === 'COMMITTED' || phase === 'PUBLISHED'
 }
 
 function reportRejectedReentrantMutation(source: string): void {
@@ -196,7 +221,10 @@ function reportRejectedReentrantMutation(source: string): void {
  * runFullAnalysis / strict officialDecision が読むmutable inputだけを安定化して比較する。
  * status/errorや既存derived outputは除外し、関連timestamp/source metadataは含める。
  */
-export function buildPortfolioAnalysisFingerprint(state: AppState): string {
+export function buildPortfolioAnalysisFingerprint(
+  state: AppState,
+  trackerFingerprint = getTrustShortReadDependencyFingerprint(),
+): string {
   const serialize = (name: string, value: unknown) => {
     try { return `${name}:${JSON.stringify(value)}` }
     catch { return `${name}:<unreadable>` }
@@ -224,7 +252,7 @@ export function buildPortfolioAnalysisFingerprint(state: AppState): string {
     serialize('csvLastImportedAt', state.system.csvLastImportedAt),
     serialize('dataSourceStatus', state.system.dataSourceStatus),
     serialize('dataTimestamps', state.system.dataTimestamps),
-    serialize('trustShortTracker', getTrustShortReadDependencyFingerprint()),
+    serialize('trustShortTracker', trackerFingerprint),
   ].join('|')
 }
 
@@ -323,9 +351,9 @@ export function buildCsvSyncSummary(
 // 成功時にsystem.localStorageFreshnessをその場で最新化できる（従来はinitialize時にしか
 // 計算されず、stale状態からimportに成功してもリロードするまでT0/T1の警告が消えなかった）。
 // 投資判断ロジックは一切参照しない（P4.5-A012dの方針は不変）。
-function computeLocalStorageFreshness(): NonNullable<SystemState['localStorageFreshness']> {
-  const portfolioFreshness = getPortfolioStorageFreshness()
-  const trustFreshness = getTrustStorageFreshness()
+function computeLocalStorageFreshness(nowMs = Date.now()): NonNullable<SystemState['localStorageFreshness']> {
+  const portfolioFreshness = getPortfolioStorageFreshness(nowMs)
+  const trustFreshness = getTrustStorageFreshness(nowMs)
   return {
     portfolio: { isStale: portfolioFreshness.isStale, ageDays: portfolioFreshness.ageDays },
     trust: { isStale: trustFreshness.isStale, ageDays: trustFreshness.ageDays },
@@ -564,10 +592,10 @@ function parseDataTimestamp(value?: string | null): Date | null {
   return null
 }
 
-function dataAgeDays(value?: string | null): number | null {
+function dataAgeDays(value: string | null | undefined, nowMs: number): number | null {
   const parsed = parseDataTimestamp(value)
   if (!parsed) return null
-  const diffMs = Date.now() - parsed.getTime()
+  const diffMs = nowMs - parsed.getTime()
   if (diffMs < 0) return 0
   return Math.floor(diffMs / (1000 * 60 * 60 * 24))
 }
@@ -656,8 +684,15 @@ export function selectAppendableStockCandidates(candidates: StockCandidateItem[]
 // ── runFullAnalysis（内部ヘルパー）───────────────────────────
 export function runFullAnalysis(
   state: AppState,
-  options: { requireOfficialDecision?: boolean } = {},
+  options: {
+    requireOfficialDecision?: boolean
+    nowMs?: number
+    trustShortInput?: TrustShortAnalysisInput
+  } = {},
 ): Pick<AppState, 'analysis' | 'metrics' | 'holdings' | 'trust' | 'universe' | 'learning' | 'zeroPlan' | 'stockPlan' | 'trustPlan' | 'officialDecision' | 'stockCandidates'> {
+  const nowMs = options.nowMs ?? Date.now()
+  const nowIso = new Date(nowMs).toISOString()
+  const trustShortInput = options.trustShortInput ?? captureTrustShortAnalysisInput(nowMs)
   const adaptiveWeights =
     state.learning && state.learning.summary.total >= 20
       ? state.learning.suggestedWeights
@@ -710,13 +745,13 @@ export function runFullAnalysis(
     cash: effectiveCash.cash,
     cashReserve: effectiveCash.cashReserve,
   }
-  const universe = buildAssetUniverse(stateWithComputed)
+  const universe = buildAssetUniverse(stateWithComputed, nowMs)
   const noTradeResult = checkNoTrade(stateWithComputed)
   const learning = updatePerformanceTracker(
     state.learning,
     holdings,
     analysis,
-    new Date().toISOString(),
+    nowIso,
     state.market.regime,  // Phase 8: レジーム別有効性蓄積
   )
 
@@ -729,11 +764,11 @@ export function runFullAnalysis(
     // P4-A45: noTrade合成条件 — VIX/VI/SQゲート(noTradeResult) OR SAFE_MODE active OR data stale(dqSuppressed)
     // P4-A148: zeroPlan(個別株BUY抑制)・officialDecision(BUY→BLOCKED変換)にも同じ2値を渡すため、
     // zeroPlan生成より前に算出する。
-    const dqSuppressed = selectMarketDataQuality(state).isSuppressed
+    const dqSuppressed = selectMarketDataQuality(state, nowMs).isSuppressed
     // P4-A159/P4.5-A011: safe_mode.jsonの取得成功・schema正当性だけでは鮮度は保証されない。
     // last_checkedが欠損/不正/SAFE_MODE_STALE_HOURS超過ならfail-closed（active相当）に倒す。
     // selectEffectiveSafeModeActiveへ集約し、タブ表示ゲートとも同一の式を共有する。
-    const safeModeActive = selectEffectiveSafeModeActive(state)
+    const safeModeActive = selectEffectiveSafeModeActive(state, nowMs)
     zeroPlan = buildZeroBasePlan({
       holdings,
       trust,
@@ -749,9 +784,11 @@ export function runFullAnalysis(
       jpStockMaxRatio:  state.portfolioPolicy.jpStockMaxRatio,
       safeModeActive,
       dqSuppressed,
+      nowMs,
     })
     stockPlan = buildStockPortfolioPlan(holdings, analysis, {
       targetTotalValue: universe?.categories.find(c => c.class === 'JP_STOCK')?.targetValue,
+      nowMs,
     })
     // P4-A48: JP_TRUST理想配分差分をheadroomとしてCORE_BUDGETを上限制御
     const jpTrustHeadroom = universe?.categories.find(c => c.class === 'JP_TRUST')?.diffValue
@@ -763,12 +800,13 @@ export function runFullAnalysis(
       sqCalendar:      state.sqCalendar,
       margin:          state.margin,
       flows:           state.flows,
-      todayEntryCount: getTrustShortTodayExecutionCount(),
-      performance30d:  getTrustShortTrackingStats(),
+      todayEntryCount: trustShortInput.todayEntryCount,
+      performance30d:  trustShortInput.performance30d,
       noTrade:         noTradeResult.noTrade || safeModeActive || dqSuppressed,
       jpTrustHeadroom,
+      nowMs,
     })
-    const cd = buildCommitteeDecision({ zeroPlan, stockPlan, trustPlan, metrics, market: state.market, holdings })
+    const cd = buildCommitteeDecision({ zeroPlan, stockPlan, trustPlan, metrics, market: state.market, holdings, nowMs })
     officialDecision = committeeToOfficialDecision(cd, dqSuppressed, safeModeActive, holdings)
 
     // P4-A1' → P4.5-A013-T5で判定基準を変更:
@@ -799,7 +837,7 @@ export function runFullAnalysis(
         const cat = universe?.categories.find(c => c.class === cls)
         return { classCurrentValue: cat?.currentValue ?? 0, classTargetValue: cat?.targetValue ?? 0 }
       }
-      const baseCtx = { dqSuppressed, noTrade: noTradeResult.noTrade, marketCaution: noTradeResult.mode === 'caution', availableCash, roleExposureByRole, totalTrustValue, marketRegime: state.market.regime, marketDataAgeDays: dataAgeDays(state.system.dataTimestamps?.market), trustDataAgeDays: dataAgeDays(state.system.dataTimestamps?.trust), marketNikkeiChgPct: state.market.nikkeiChgPct ?? null, macroSp500ChgPct: state.macro?.sp500ChgPct ?? null, macroNasdaqChgPct: state.macro?.nasdaqChgPct ?? null, macroGoldChgPct: state.macro?.goldChgPct ?? null, candidatesNews: state.candidatesNews, candidatesNewsSource: state.system.dataSourceStatus.candidatesNews, regimeState: state.regimeState, regimeStateSource: state.system.dataSourceStatus.regime, safeModeActive }
+      const baseCtx = { dqSuppressed, noTrade: noTradeResult.noTrade, marketCaution: noTradeResult.mode === 'caution', availableCash, roleExposureByRole, totalTrustValue, marketRegime: state.market.regime, marketDataAgeDays: dataAgeDays(state.system.dataTimestamps?.market, nowMs), trustDataAgeDays: dataAgeDays(state.system.dataTimestamps?.trust, nowMs), marketNikkeiChgPct: state.market.nikkeiChgPct ?? null, macroSp500ChgPct: state.macro?.sp500ChgPct ?? null, macroNasdaqChgPct: state.macro?.nasdaqChgPct ?? null, macroGoldChgPct: state.macro?.goldChgPct ?? null, candidatesNews: state.candidatesNews, candidatesNewsSource: state.system.dataSourceStatus.candidatesNews, regimeState: state.regimeState, regimeStateSource: state.system.dataSourceStatus.regime, safeModeActive }
       const scored = [
         ...scoreCandidates(rawCandidates.filter(c => c.assetType === 'jp_trust'),     { ...baseCtx, ...getClassCtx('JP_TRUST') }),
         ...scoreCandidates(rawCandidates.filter(c => c.assetType === 'global_trust'), { ...baseCtx, ...getClassCtx('OVERSEAS_TRUST') }),
@@ -828,10 +866,10 @@ export function runFullAnalysis(
   // trust候補appendとは別のslice(0,3)を使い、trust候補の3件枠を侵食しない。
   let stockCandidates: AppState['stockCandidates'] = []
   try {
-    const dqSuppressedForStock = selectMarketDataQuality(state).isSuppressed
-    const safeModeActiveForStock = selectEffectiveSafeModeActive(state)
+    const dqSuppressedForStock = selectMarketDataQuality(state, nowMs).isSuppressed
+    const safeModeActiveForStock = selectEffectiveSafeModeActive(state, nowMs)
     const effectiveCashForStock = selectEffectiveCashAssumptions(state)
-    const cashFreshness = selectCashAssumptionsFreshness(state)
+    const cashFreshness = selectCashAssumptionsFreshness(state, nowMs)
     // P5-B002b-1: 資金前提が既定値運用中（手動override無効）または鮮度切れの場合、
     // BUY_NEW候補は出さない（gate内でDATA_STALEとして扱う）。
     const cashAssumptionsUsable = effectiveCashForStock.source === 'manual' && !cashFreshness.isStale
@@ -855,6 +893,7 @@ export function runFullAnalysis(
       availableCash: availableCashForStock,
       jpStockHeadroom,
       cashAssumptionsUsable,
+      now: nowMs,
     })
 
     // P5-B003: BUY_NEW / WATCH のみ score 降順、最大3件を officialDecision.actions に追加。
@@ -988,6 +1027,10 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
 
   // ── 起動時初期化 ──────────────────────────────────────────
   initialize: async () => {
+    if (isCsvImportCommitCriticalSection()) {
+      reportRejectedReentrantMutation('initialize')
+      return
+    }
     if (get().system.status === 'loading') return
     set(s => ({ system: { ...s.system, status: 'loading' } }))
     try {
@@ -1150,6 +1193,10 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
 
   // ── 全データ再取得 ────────────────────────────────────────
   refreshAllData: async () => {
+    if (isCsvImportCommitCriticalSection()) {
+      reportRejectedReentrantMutation('refreshAllData')
+      return
+    }
     if (get().system.status === 'loading') return
     set(s => ({ system: { ...s.system, status: 'loading', error: null } }))
     try {
@@ -1237,25 +1284,40 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
 
   // ── CSV取込（個別株 + 投信 両対応）──────────────────────────
   importCsv: async (file: File) => {
-    if (get().system.status === 'loading') {
+    if (activeCsvImportTransaction !== null || get().system.status === 'loading') {
       return csvImportFailure('IMPORT_IN_PROGRESS', '別の取込または更新が進行中です。完了後に再試行してください。')
     }
-    let lockAcquired = false
+    const transaction: CsvImportTransaction = {
+      token: Symbol('csv-import-owner'),
+      phase: 'READING',
+      analysisNow: Date.now(),
+      initialFingerprint: '',
+      trackerSnapshot: null,
+      trackerPortfolioBaseline: null,
+    }
+    activeCsvImportTransaction = transaction
     let durableCommitted = false
     let committedSuccess: CsvImportResult | null = null
     const publishFailure = (failure: CsvImportResult): CsvImportResult => {
       if (failure.ok) return failure
-      set(s => ({ system: { ...s.system, status: 'error', error: failure.message } }))
+      if (activeCsvImportTransaction?.token === transaction.token) {
+        set(s => ({ system: { ...s.system, status: 'error', error: failure.message } }))
+      }
       return failure
     }
 
     try {
+      transaction.trackerSnapshot = captureTrustShortAnalysisInput(transaction.analysisNow)
+      transaction.trackerPortfolioBaseline = captureTrustShortPortfolioBaseline()
       const baseState = get()
-      const dependencyFingerprint = buildPortfolioAnalysisFingerprint(baseState)
+      const dependencyFingerprint = buildPortfolioAnalysisFingerprint(
+        baseState,
+        transaction.trackerSnapshot.fingerprint,
+      )
+      transaction.initialFingerprint = dependencyFingerprint
       const fileName = String(file.name || 'CSVファイル')
       set(s => ({ system: { ...s.system, status: 'loading', error: null } }))
-      lockAcquired = true
-      csvImportTransactionPhase = 'READING'
+      setCsvImportTransactionPhase(transaction, 'READING')
       const oldHoldings = baseState.holdings
       const oldTrust = baseState.trust
 
@@ -1267,9 +1329,13 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
       }
 
       const { holdings: updatedH, trust: updatedT, trustSync } = parsed
-      csvImportTransactionPhase = 'STAGING'
-      const now = new Date().toISOString()
-      const stagedTrustExecution = stageTrustExecutionFromCsvSync(updatedT, now)
+      setCsvImportTransactionPhase(transaction, 'STAGING')
+      const now = new Date(transaction.analysisNow).toISOString()
+      const stagedTrustExecution = stageTrustExecutionFromCsvSync(
+        updatedT,
+        now,
+        transaction.trackerPortfolioBaseline,
+      )
       const trustExecution = stagedTrustExecution.detection
       const syncSummary = buildCsvSyncSummary(oldHoldings, updatedH, oldTrust, updatedT, trustSync, now)
       const stagedState: AppState = {
@@ -1285,8 +1351,12 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
 
       let computed: ReturnType<typeof runFullAnalysis>
       try {
-        csvImportTransactionPhase = 'ANALYZING'
-        computed = runFullAnalysis(stagedState, { requireOfficialDecision: true })
+        setCsvImportTransactionPhase(transaction, 'ANALYZING')
+        computed = runFullAnalysis(stagedState, {
+          requireOfficialDecision: true,
+          nowMs: transaction.analysisNow,
+          trustShortInput: transaction.trackerSnapshot,
+        })
       } catch (error) {
         const isOfficialDecisionError = error instanceof OfficialDecisionGenerationError
         return publishFailure(csvImportFailure(
@@ -1305,7 +1375,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
           ? [`口座を一意に特定できない投信 ${syncSummary.trust.ambiguousFundIds.length}件は更新されませんでした。`]
           : []),
       ]
-      csvImportTransactionPhase = 'PREPARED'
+      setCsvImportTransactionPhase(transaction, 'PREPARED')
 
       if (buildPortfolioAnalysisFingerprint(get()) !== dependencyFingerprint) {
         return publishFailure(csvImportFailure(
@@ -1335,20 +1405,21 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
         importedAt: now,
       }
 
+      let persistenceReceipt: ReturnType<typeof persistCsvImportTransaction> | null = null
       try {
-        csvImportTransactionPhase = 'PERSISTING'
-        persistCsvImportTransaction({
+        setCsvImportTransactionPhase(transaction, 'PERSISTING')
+        persistenceReceipt = persistCsvImportTransaction({
           holdings: computed.holdings,
           trust: computed.trust,
           learning: computed.learning,
           importedAt: now,
           syncSummary,
           trustShortSnapshot: stagedTrustExecution.snapshot,
-        })
+        }, transaction.analysisNow)
         durableCommitted = true
-        csvImportTransactionPhase = 'COMMITTED'
+        setCsvImportTransactionPhase(transaction, 'COMMITTED')
       } catch (error) {
-        csvImportTransactionPhase = 'PREPARED'
+        setCsvImportTransactionPhase(transaction, 'PREPARED')
         const persistenceStatus = error instanceof CsvImportPersistenceError
           ? error.status
           : 'rollback_failed'
@@ -1359,11 +1430,29 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
         ))
       }
 
-      const localStorageFreshness = computeLocalStorageFreshness()
-      const reentryChangedDependencies = buildPortfolioAnalysisFingerprint(get()) !== dependencyFingerprint
-      if (reentryChangedDependencies) {
-        reportRejectedReentrantMutation('post-persistence fingerprint mismatch (prepared generation restored)')
+      const currentTrackerFingerprint = getTrustShortReadDependencyFingerprint()
+      const postPersistenceFingerprint = buildPortfolioAnalysisFingerprint(get(), currentTrackerFingerprint)
+      if (postPersistenceFingerprint !== dependencyFingerprint) {
+        const trackerRolledBack = currentTrackerFingerprint === transaction.trackerSnapshot.fingerprint ||
+          restoreTrustShortAnalysisInput(transaction.trackerSnapshot, currentTrackerFingerprint)
+        const canonicalRolledBack = persistenceReceipt !== null && rollbackCsvImportTransaction(persistenceReceipt)
+        if (canonicalRolledBack) durableCommitted = false
+        const restoredFingerprint = buildPortfolioAnalysisFingerprint(get())
+        if (!trackerRolledBack || !canonicalRolledBack || restoredFingerprint !== dependencyFingerprint) {
+          return publishFailure(csvImportFailure(
+            'PERSISTENCE_ERROR',
+            '保存中に分析条件の競合を検出し、安全な世代へ復旧できませんでした。再読み込み後に再試行してください。',
+            'rollback_failed',
+          ))
+        }
+        return publishFailure(csvImportFailure(
+          'IMPORT_CONFLICT',
+          '保存中に分析条件が変更されたため、保存を取り消しました。現在の状態を維持したまま再試行してください。',
+          'rolled_back',
+        ))
       }
+
+      const localStorageFreshness = computeLocalStorageFreshness(transaction.analysisNow)
 
       // Publish the complete prepared state, including the exact dependency snapshot used by
       // analysis. This is the synchronous commit-section closure: a storage shim or callback
@@ -1381,7 +1470,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
           localStorageFreshness,
         },
       })
-      csvImportTransactionPhase = 'PUBLISHED'
+      setCsvImportTransactionPhase(transaction, 'PUBLISHED')
 
       try {
         if (trustExecution.executed && getTrustShortTodayExecutionCount(now) < 1) {
@@ -1395,9 +1484,10 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
             margin: state.margin,
             flows: state.flows,
             todayEntryCount: getTrustShortTodayExecutionCount(now),
-            performance30d:  getTrustShortTrackingStats(),
+            performance30d:  getTrustShortTrackingStats(transaction.analysisNow),
             noTrade:         checkNoTrade(state).noTrade,
             jpTrustHeadroom: state.universe?.categories.find(c => c.class === 'JP_TRUST')?.diffValue,
+            nowMs: transaction.analysisNow,
           })
 
           recordTrustShortDecision({
@@ -1432,7 +1522,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
       void detail
       try { return publishFailure(failure) } catch { return failure }
     } finally {
-      if (lockAcquired) {
+      if (activeCsvImportTransaction?.token === transaction.token) {
         try {
           if (get().system.status === 'loading') {
             set(s => ({ system: {
@@ -1445,8 +1535,8 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
           // Zustand's in-memory set/get are synchronous; this final guard prevents a thrown
           // observer from turning the action promise into a rejection.
         }
+        activeCsvImportTransaction = null
       }
-      csvImportTransactionPhase = 'IDLE'
     }
   },
 

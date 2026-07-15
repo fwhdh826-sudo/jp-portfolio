@@ -25,6 +25,11 @@ export interface CsvImportPersistencePayload {
   trustShortSnapshot: TrustShortPortfolioSnapshot
 }
 
+export interface CsvImportPersistenceReceipt {
+  previousRaw: string | null
+  committedRaw: string
+}
+
 interface CsvImportGenerationManifest {
   schemaVersion: typeof CSV_IMPORT_GENERATION_SCHEMA
   generationId: string
@@ -268,12 +273,12 @@ export function restoreCsvImportGeneration(): CsvImportGenerationRestoreResult {
   }
 }
 
-function readStorageFreshness(key: string, ttlMs: number): StorageFreshness {
+function readStorageFreshness(key: string, ttlMs: number, nowMs = Date.now()): StorageFreshness {
   try {
     if (key === PORTFOLIO_KEY || key === TRUST_KEY) {
       const generation = restoreCsvImportGeneration()
       if (generation.status === 'committed') {
-        const ageMs = Date.now() - generation.savedAt
+        const ageMs = nowMs - generation.savedAt
         return {
           exists: true,
           isStale: ageMs > ttlMs,
@@ -287,7 +292,7 @@ function readStorageFreshness(key: string, ttlMs: number): StorageFreshness {
     if (!raw) return NOT_SAVED_FRESHNESS
     const snap = JSON.parse(raw) as Snapshot<unknown>
     if (typeof snap?.savedAt !== 'number') return NOT_SAVED_FRESHNESS
-    const ageMs = Date.now() - snap.savedAt
+    const ageMs = nowMs - snap.savedAt
     return {
       exists: true,
       isStale: ageMs > ttlMs,
@@ -318,8 +323,8 @@ export function restorePortfolio(): Holding[] | null {
   } catch { return null }
 }
 
-export function getPortfolioStorageFreshness(): StorageFreshness {
-  return readStorageFreshness(PORTFOLIO_KEY, TTL_MS)
+export function getPortfolioStorageFreshness(nowMs = Date.now()): StorageFreshness {
+  return readStorageFreshness(PORTFOLIO_KEY, TTL_MS, nowMs)
 }
 
 export function persistTrust(trust: Trust[]): void {
@@ -340,8 +345,8 @@ export function restoreTrust(): Trust[] | null {
   } catch { return null }
 }
 
-export function getTrustStorageFreshness(): StorageFreshness {
-  return readStorageFreshness(TRUST_KEY, TTL_MS)
+export function getTrustStorageFreshness(nowMs = Date.now()): StorageFreshness {
+  return readStorageFreshness(TRUST_KEY, TTL_MS, nowMs)
 }
 
 export function persistLearning(learning: LearningState): void {
@@ -418,12 +423,20 @@ interface CsvSyncSummarySnapshot { data: CsvSyncSummary; savedAt: number }
  * serializeし、canonical keyを1回だけ置換する。localStorageの単一setItemが失敗した
  * 場合は旧envelopeが有効なままで、multi-key rollbackやその再失敗に依存しない。
  */
-export function persistCsvImportTransaction(payload: CsvImportPersistencePayload): void {
+export function persistCsvImportTransaction(
+  payload: CsvImportPersistencePayload,
+  savedAt = Date.now(),
+): CsvImportPersistenceReceipt {
   if (typeof localStorage === 'undefined') {
     throw new CsvImportPersistenceError('永続化ストレージを利用できません', 'not_attempted')
   }
 
-  const savedAt = Date.now()
+  let previousRaw: string | null
+  try { previousRaw = localStorage.getItem(CSV_IMPORT_GENERATION_KEY) }
+  catch (error) {
+    const detail = error instanceof Error ? error.message : String(error)
+    throw new CsvImportPersistenceError(`CSV取込データの既存世代を確認できませんでした: ${detail}`, 'not_attempted')
+  }
   let serializedEnvelope: string
   try {
     if (!isCsvImportPayload(payload)) throw new Error('canonical payload schema validation failed')
@@ -446,9 +459,22 @@ export function persistCsvImportTransaction(payload: CsvImportPersistencePayload
 
   try {
     localStorage.setItem(CSV_IMPORT_GENERATION_KEY, serializedEnvelope)
+    return { previousRaw, committedRaw: serializedEnvelope }
   } catch (error) {
     const detail = error instanceof Error ? error.message : String(error)
     throw new CsvImportPersistenceError(`CSV取込データの永続化に失敗しました: ${detail}`, 'rolled_back')
+  }
+}
+
+/** Roll back only the exact tentative generation written by this transaction. */
+export function rollbackCsvImportTransaction(receipt: CsvImportPersistenceReceipt): boolean {
+  try {
+    if (localStorage.getItem(CSV_IMPORT_GENERATION_KEY) !== receipt.committedRaw) return false
+    if (receipt.previousRaw === null) localStorage.removeItem(CSV_IMPORT_GENERATION_KEY)
+    else localStorage.setItem(CSV_IMPORT_GENERATION_KEY, receipt.previousRaw)
+    return localStorage.getItem(CSV_IMPORT_GENERATION_KEY) === receipt.previousRaw
+  } catch {
+    return false
   }
 }
 
@@ -478,6 +504,18 @@ export function restoreCsvSyncSummary(): CsvSyncSummary | null {
 export function restoreCsvTrustShortSnapshot(): TrustShortPortfolioSnapshot | null {
   const generation = restoreCsvImportGeneration()
   return generation.status === 'committed' ? generation.payload.trustShortSnapshot : null
+}
+
+export type CsvTrustShortSnapshotRestoreResult =
+  | { status: 'committed'; snapshot: TrustShortPortfolioSnapshot }
+  | { status: 'none' | 'invalid'; snapshot: null }
+
+export function restoreCsvTrustShortSnapshotState(): CsvTrustShortSnapshotRestoreResult {
+  const generation = restoreCsvImportGeneration()
+  if (generation.status === 'committed') {
+    return { status: 'committed', snapshot: generation.payload.trustShortSnapshot }
+  }
+  return { status: generation.status, snapshot: null }
 }
 
 // ── P4-A47: PortfolioPolicy 永続化（TTL: 7日） ─────────────

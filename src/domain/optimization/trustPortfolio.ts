@@ -917,7 +917,9 @@ export function buildTrustPortfolioPlan(input: {
   noTrade?: boolean
   /** P4-A48: JP_TRUST理想配分差分（buildAssetUniverseのdiffValue）。省略時はCORE_BUDGET上限で動作 */
   jpTrustHeadroom?: number
+  nowMs?: number
 }): TrustPortfolioPlan {
+  const nowMs = input.nowMs ?? Date.now()
   const shortMode = buildShortMode({
     market: input.market,
     macro: input.macro,
@@ -982,7 +984,7 @@ export function buildTrustPortfolioPlan(input: {
   const newsSignal = extractTrustNewsSignal(input.news ?? null)
 
   return {
-    generatedAt: new Date().toISOString(),
+    generatedAt: new Date(nowMs).toISOString(),
     shortTermSignal: shortModeWithBudget.decision,
     shortTermSummary: shortModeWithBudget.summary,
     shortTermMode: shortModeWithBudget,

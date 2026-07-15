@@ -129,14 +129,14 @@ describe('T9-A001/A002: structured CSV result and atomic store commit', () => {
   const storage: Record<string, string> = {}
   let storageWriteCount = 0
   let failStorageWriteAt: number | null = null
-  let storageReentry: (() => void) | null = null
+  let storageReentry: ((key: string) => void) | null = null
   const localStorageMock = {
     getItem: (key: string) => storage[key] ?? null,
     setItem: (key: string, value: string) => {
       storageWriteCount += 1
       if (storageWriteCount === failStorageWriteAt) throw new Error('forced quota failure')
       storage[key] = value
-      storageReentry?.()
+      storageReentry?.(key)
     },
     removeItem: (key: string) => { delete storage[key] },
   }
@@ -598,6 +598,205 @@ describe('T9-A001/A002: structured CSV result and atomic store commit', () => {
     expect(result.ok).toBe(true)
     expect(useAppStore.getState().market).toEqual(marketBefore)
     expect(laterObservedConsistent).toBe(true)
+  })
+
+  it('F1: nested import from a publish subscriber is rejected without releasing the outer mutation guard', async () => {
+    const marketBefore = useAppStore.getState().market
+    let nestedResult: Awaited<ReturnType<ReturnType<typeof useAppStore.getState>['importCsv']>> | null = null
+    let nestedPromise: Promise<void> | null = null
+    let nestedAttempts = 0
+    const unsubscribeNested = useAppStore.subscribe((state, previous) => {
+      if (state.holdings === previous.holdings || nestedAttempts > 0) return
+      nestedAttempts += 1
+      nestedPromise = useAppStore.getState().importCsv(csvFile()).then(result => {
+        nestedResult = result
+      })
+    })
+    const unsubscribeMutating = useAppStore.subscribe((state, previous) => {
+      if (state.holdings === previous.holdings) return
+      useAppStore.setState(current => ({
+        market: { ...current.market, nikkeiChgPct: current.market.nikkeiChgPct + 42 },
+      }))
+    })
+
+    const outerResult = await useAppStore.getState().importCsv(csvFile())
+    if (nestedPromise) await nestedPromise
+    unsubscribeNested()
+    unsubscribeMutating()
+
+    expect(outerResult).toMatchObject({ ok: true, code: 'SUCCESS' })
+    expect(nestedResult).toMatchObject({ ok: false, code: 'IMPORT_IN_PROGRESS' })
+    expect(useAppStore.getState().market).toEqual(marketBefore)
+    expect(useAppStore.getState().system.status).toBe('success')
+    await expect(useAppStore.getState().importCsv(csvFile())).resolves.toMatchObject({ ok: true })
+  })
+
+  it('F2: tracker mutation during canonical write cannot publish stale tracker-derived SUCCESS', async () => {
+    const nextTracker = JSON.stringify({
+      entries: [{
+        date: '2026-07-15', decision: 'BULL', confidence: 90, executed: true,
+        outcome: 'win', nikkeiChgPct: 1, futuresChgPct: 1, conditionsPassed: 5,
+        vix: 15, nikkeiVI: 18, volatilitySpread: 0, updatedAt: '2026-07-15T00:00:00.000Z',
+      }],
+    })
+    let fired = false
+    let nestedResult: Awaited<ReturnType<ReturnType<typeof useAppStore.getState>['importCsv']>> | null = null
+    let nestedPromise: Promise<void> | null = null
+    storageReentry = () => {
+      if (fired) return
+      fired = true
+      storage.v95_trust_short_tracker = nextTracker
+      nestedPromise = useAppStore.getState().importCsv(csvFile()).then(value => { nestedResult = value })
+    }
+
+    const result = await useAppStore.getState().importCsv(csvFile())
+    if (nestedPromise) await nestedPromise
+    storageReentry = null
+
+    expect(result).toMatchObject({ ok: false, code: 'IMPORT_CONFLICT' })
+    expect(nestedResult).toMatchObject({ ok: false, code: 'IMPORT_IN_PROGRESS' })
+    expect(storage[CSV_IMPORT_GENERATION_KEY]).toBeUndefined()
+    expect(storage.v95_trust_short_tracker).toBeUndefined()
+    expect(useAppStore.getState().holdings[0].eval).toBe(100_000)
+    await expect(useAppStore.getState().importCsv(csvFile())).resolves.toMatchObject({ ok: true })
+  })
+
+  it('F3: persistence-time clock crossing cannot change a transaction-scoped analysis result', async () => {
+    vi.useFakeTimers()
+    const analysisNow = new Date('2026-07-15T14:00:00.000Z').getTime()
+    vi.setSystemTime(analysisNow)
+    storage.v95_trust_short_tracker = JSON.stringify({
+      entries: [{
+        date: '2026-06-15', decision: 'BULL', confidence: 90, executed: true,
+        outcome: 'win', nikkeiChgPct: 1, futuresChgPct: 1, conditionsPassed: 5,
+        vix: 15, nikkeiVI: 18, volatilitySpread: 0, updatedAt: '2026-06-15T00:00:00.000Z',
+      }],
+    })
+    useAppStore.setState(state => ({
+      cashAssumptions: {
+        cashDeposits: 4_000_000,
+        standbyFunds: 1_000_000,
+        manualOverrideEnabled: true,
+        manualUpdatedAt: new Date(analysisNow - 167 * 60 * 60 * 1000).toISOString(),
+      },
+      system: {
+        ...state.system,
+        dataSourceStatus: {
+          ...state.system.dataSourceStatus,
+          market: 'loaded',
+          safeMode: 'loaded',
+        },
+        dataTimestamps: {
+          ...state.system.dataTimestamps,
+          market: new Date(analysisNow - 23 * 60 * 60 * 1000).toISOString(),
+          safeMode: new Date(analysisNow - 95 * 60 * 60 * 1000).toISOString(),
+        } as NonNullable<typeof state.system.dataTimestamps>,
+      },
+    }))
+    let fired = false
+    storageReentry = () => {
+      if (fired) return
+      fired = true
+      vi.setSystemTime(analysisNow + 2 * 60 * 60 * 1000)
+    }
+
+    try {
+      const result = await useAppStore.getState().importCsv(csvFile())
+      storageReentry = null
+      const state = useAppStore.getState()
+      const fixedRecomputed = runFullAnalysis(state, {
+        requireOfficialDecision: true,
+        nowMs: analysisNow,
+      } as { requireOfficialDecision: true; nowMs: number })
+
+      expect(result).toMatchObject({ ok: true, code: 'SUCCESS' })
+      expect(state.system.analysisLastRunAt).toBe(new Date(analysisNow).toISOString())
+      expect(withoutGeneratedTimestamps(state.officialDecision))
+        .toEqual(withoutGeneratedTimestamps(fixedRecomputed.officialDecision))
+      expect(state.officialDecision?.dataQualitySuppressed).toBe(false)
+      expect(state.trustPlan?.performance30d.trackedDays).toBe(1)
+
+      const nextResult = await useAppStore.getState().importCsv(csvFile())
+      expect(nextResult).toMatchObject({ ok: true, code: 'SUCCESS' })
+      expect(useAppStore.getState().officialDecision?.dataQualitySuppressed).toBe(true)
+      expect(useAppStore.getState().trustPlan?.performance30d.trackedDays).toBe(0)
+    } finally {
+      storageReentry = null
+      vi.useRealTimers()
+    }
+  })
+
+  it('multiple nested publish attempts plus a throwing observer preserve one outer generation and retryability', async () => {
+    const nestedResults: Array<Awaited<ReturnType<ReturnType<typeof useAppStore.getState>['importCsv']>>> = []
+    const nestedPromises: Promise<void>[] = []
+    const subscribeNested = () => useAppStore.subscribe((state, previous) => {
+      if (state.holdings === previous.holdings) return
+      nestedPromises.push(useAppStore.getState().importCsv(csvFile()).then(result => { nestedResults.push(result) }))
+    })
+    const unsubscribeFirst = subscribeNested()
+    const unsubscribeThrowing = useAppStore.subscribe((state, previous) => {
+      if (state.holdings !== previous.holdings) throw new Error('nested observer failure')
+    })
+    const unsubscribeSecond = subscribeNested()
+    let laterCalls = 0
+    const unsubscribeLater = useAppStore.subscribe((state, previous) => {
+      if (state.holdings !== previous.holdings) laterCalls += 1
+    })
+
+    const outer = await useAppStore.getState().importCsv(csvFile())
+    await Promise.all(nestedPromises)
+    unsubscribeFirst()
+    unsubscribeThrowing()
+    unsubscribeSecond()
+    unsubscribeLater()
+
+    expect(outer).toMatchObject({ ok: true, code: 'SUCCESS' })
+    expect(nestedResults).toHaveLength(2)
+    expect(nestedResults.every(result => !result.ok && result.code === 'IMPORT_IN_PROGRESS')).toBe(true)
+    expect(laterCalls).toBe(1)
+    expect(useAppStore.getState().system.status).toBe('success')
+    await expect(useAppStore.getState().importCsv(csvFile())).resolves.toMatchObject({ ok: true })
+  })
+
+  it('R6: absent canonical permits legacy trust snapshot baseline and PUBLISHED rejects nested telemetry import', async () => {
+    useAppStore.setState({ trust: [shortTrust()] })
+    storage.v95_trust_short_snapshot = JSON.stringify({
+      date: '2026-07-01',
+      total: 1,
+      evalById: { 'fund-1': 0 },
+    })
+    let nestedResult: Awaited<ReturnType<ReturnType<typeof useAppStore.getState>['importCsv']>> | null = null
+    let nestedPromise: Promise<void> | null = null
+    storageReentry = key => {
+      if (key !== 'v95_trust_short_tracker' || nestedPromise) return
+      nestedPromise = useAppStore.getState().importCsv(csvFile()).then(result => { nestedResult = result })
+    }
+
+    const result = await useAppStore.getState().importCsv(csvFile())
+    if (nestedPromise) await nestedPromise
+    storageReentry = null
+
+    expect(result).toMatchObject({ ok: true, code: 'SUCCESS' })
+    expect(storage.v95_trust_short_tracker).toBeDefined()
+    expect(nestedResult).toMatchObject({ ok: false, code: 'IMPORT_IN_PROGRESS' })
+    expect(useAppStore.getState().system.status).toBe('success')
+    await expect(useAppStore.getState().importCsv(csvFile())).resolves.toMatchObject({ ok: true })
+  })
+
+  it('R6: present-invalid canonical forbids legacy trust snapshot fallback', async () => {
+    useAppStore.setState({ trust: [shortTrust()] })
+    storage[CSV_IMPORT_GENERATION_KEY] = '{malformed'
+    storage.v95_trust_short_snapshot = JSON.stringify({
+      date: '2026-07-01',
+      total: 1,
+      evalById: { 'fund-1': 0 },
+    })
+
+    const result = await useAppStore.getState().importCsv(csvFile())
+
+    expect(result).toMatchObject({ ok: true, code: 'SUCCESS' })
+    expect(storage.v95_trust_short_tracker).toBeUndefined()
+    expect(restoreCsvImportGeneration()).toMatchObject({ status: 'committed' })
   })
 
   it('F004: an unexpected staging exception is structured and always releases loading', async () => {

@@ -1,5 +1,5 @@
 import type { Trust } from '../../types'
-import { restoreCsvTrustShortSnapshot } from '../../store/persist'
+import { restoreCsvTrustShortSnapshotState } from '../../store/persist'
 
 export type TrustShortDecision = 'WAIT' | 'BULL' | 'BEAR'
 export type TrustShortOutcome = 'win' | 'loss' | 'flat'
@@ -17,7 +17,7 @@ export interface TrustShortDecisionSnapshot {
   volatilitySpread?: number
 }
 
-interface TrustShortTrackerEntry {
+export interface TrustShortTrackerEntry {
   date: string
   decision: TrustShortDecision
   confidence: number
@@ -34,6 +34,19 @@ interface TrustShortTrackerEntry {
 
 interface TrustShortTrackerState {
   entries: TrustShortTrackerEntry[]
+}
+
+export interface TrustShortAnalysisInput {
+  /** Exact storage bytes captured at transaction start. */
+  raw: string | null
+  fingerprint: string
+  todayEntryCount: number
+  performance30d: TrustShortTrackingStats
+}
+
+export interface TrustShortPortfolioBaseline {
+  status: 'committed' | 'none' | 'invalid'
+  snapshot: TrustShortPortfolioSnapshot | null
 }
 
 export interface TrustShortTrackingStats {
@@ -88,18 +101,29 @@ function toDateKey(value: string) {
   return value.slice(0, 10)
 }
 
-function safeNowIso() {
-  return new Date().toISOString()
+function safeNowIso(nowMs = Date.now()) {
+  return new Date(nowMs).toISOString()
 }
 
-function isBrowser() {
-  return typeof window !== 'undefined' && typeof window.localStorage !== 'undefined'
+function trackerStorage(): Storage | null {
+  if (typeof window !== 'undefined' && typeof window.localStorage !== 'undefined') {
+    return window.localStorage
+  }
+  if (typeof globalThis.localStorage !== 'undefined') return globalThis.localStorage
+  return null
 }
 
-function loadState(): TrustShortTrackerState {
-  if (!isBrowser()) return { entries: [] }
+function restoreCanonicalSnapshotFor(storage: Storage) {
+  // In browsers globalThis === window. Tests may intentionally provide only window.localStorage;
+  // in that case there is no canonical store to consult and legacy fallback remains valid.
+  if (typeof globalThis.localStorage === 'undefined' || globalThis.localStorage !== storage) {
+    return { status: 'none' as const, snapshot: null }
+  }
+  return restoreCsvTrustShortSnapshotState()
+}
+
+function parseState(raw: string | null, nowMs = Date.now()): TrustShortTrackerState {
   try {
-    const raw = window.localStorage.getItem(KEY)
     if (!raw) return { entries: [] }
     const parsed = JSON.parse(raw) as Partial<TrustShortTrackerState>
     if (!Array.isArray(parsed.entries)) return { entries: [] }
@@ -123,7 +147,7 @@ function loadState(): TrustShortTrackerState {
           volatilitySpread: Number.isFinite(entry.volatilitySpread)
             ? Number(entry.volatilitySpread)
             : 0,
-          updatedAt: typeof entry.updatedAt === 'string' ? entry.updatedAt : safeNowIso(),
+          updatedAt: typeof entry.updatedAt === 'string' ? entry.updatedAt : safeNowIso(nowMs),
         })),
     }
   } catch {
@@ -131,10 +155,18 @@ function loadState(): TrustShortTrackerState {
   }
 }
 
+function loadState(nowMs = Date.now()): TrustShortTrackerState {
+  const storage = trackerStorage()
+  if (!storage) return { entries: [] }
+  try { return parseState(storage.getItem(KEY), nowMs) }
+  catch { return { entries: [] } }
+}
+
 function saveState(state: TrustShortTrackerState) {
-  if (!isBrowser()) return
+  const storage = trackerStorage()
+  if (!storage) return
   try {
-    window.localStorage.setItem(KEY, JSON.stringify(state))
+    storage.setItem(KEY, JSON.stringify(state))
   } catch {
     // ignore quota errors
   }
@@ -158,23 +190,23 @@ function evaluateOutcome(decision: TrustShortDecision, nikkeiChgPct: number): Tr
   return 'flat'
 }
 
-function cutoffDate(days: number) {
-  const date = new Date()
+function cutoffDate(days: number, nowMs = Date.now()) {
+  const date = new Date(nowMs)
   date.setHours(0, 0, 0, 0)
   date.setDate(date.getDate() - days)
   return date
 }
 
-function filterRecent(entries: TrustShortTrackerEntry[], days: number) {
-  const cutoff = cutoffDate(days)
+function filterRecent(entries: TrustShortTrackerEntry[], days: number, nowMs = Date.now()) {
+  const cutoff = cutoffDate(days, nowMs)
   return entries.filter(entry => {
     const parsed = new Date(entry.date)
     return !Number.isNaN(parsed.getTime()) && parsed >= cutoff
   })
 }
 
-function buildStats(entries: TrustShortTrackerEntry[]): TrustShortTrackingStats {
-  const recent = filterRecent(entries, WINDOW_DAYS)
+function buildStats(entries: TrustShortTrackerEntry[], nowMs = Date.now()): TrustShortTrackingStats {
+  const recent = filterRecent(entries, WINDOW_DAYS, nowMs)
   const executions = recent.filter(entry => entry.executed)
   const waitDays = recent.filter(entry => entry.decision === 'WAIT')
   const wins = executions.filter(entry => entry.outcome === 'win').length
@@ -194,32 +226,39 @@ function buildStats(entries: TrustShortTrackerEntry[]): TrustShortTrackingStats 
   }
 }
 
+function readLegacySnapshot(storage: Storage): TrustShortPortfolioSnapshot | null {
+  const raw = storage.getItem(SNAPSHOT_KEY)
+  if (!raw) return null
+  const parsed = JSON.parse(raw) as Partial<TrustShortPortfolioSnapshot>
+  if (!parsed || typeof parsed.date !== 'string' || typeof parsed.total !== 'number') return null
+  if (!parsed.evalById || typeof parsed.evalById !== 'object') return null
+  return {
+    date: parsed.date,
+    total: Number(parsed.total) || 0,
+    evalById: Object.fromEntries(
+      Object.entries(parsed.evalById).map(([key, value]) => [key, Number(value) || 0]),
+    ),
+  }
+}
+
 function loadSnapshot(): TrustShortPortfolioSnapshot | null {
-  if (!isBrowser()) return null
+  const storage = trackerStorage()
+  if (!storage) return null
   try {
-    const committed = restoreCsvTrustShortSnapshot()
-    if (committed) return committed
-    const raw = window.localStorage.getItem(SNAPSHOT_KEY)
-    if (!raw) return null
-    const parsed = JSON.parse(raw) as Partial<TrustShortPortfolioSnapshot>
-    if (!parsed || typeof parsed.date !== 'string' || typeof parsed.total !== 'number') return null
-    if (!parsed.evalById || typeof parsed.evalById !== 'object') return null
-    return {
-      date: parsed.date,
-      total: Number(parsed.total) || 0,
-      evalById: Object.fromEntries(
-        Object.entries(parsed.evalById).map(([key, value]) => [key, Number(value) || 0]),
-      ),
-    }
+    const canonical = restoreCanonicalSnapshotFor(storage)
+    if (canonical.status === 'committed') return canonical.snapshot
+    if (canonical.status === 'invalid') return null
+    return readLegacySnapshot(storage)
   } catch {
     return null
   }
 }
 
 function saveSnapshot(snapshot: TrustShortPortfolioSnapshot) {
-  if (!isBrowser()) return
+  const storage = trackerStorage()
+  if (!storage) return
   try {
-    window.localStorage.setItem(SNAPSHOT_KEY, JSON.stringify(snapshot))
+    storage.setItem(SNAPSHOT_KEY, JSON.stringify(snapshot))
   } catch {
     // ignore quota errors
   }
@@ -238,17 +277,17 @@ export function getTrustShortTodayExecutionCount(date = safeNowIso()) {
   return state.entries.some(entry => entry.date === key && entry.executed) ? 1 : 0
 }
 
-export function getTrustShortTrackingStats() {
-  return buildStats(loadState().entries)
+export function getTrustShortTrackingStats(nowMs = Date.now()) {
+  return buildStats(loadState(nowMs).entries, nowMs)
 }
 
-export function getTrustShortRecentEntries(days = WINDOW_DAYS) {
+export function getTrustShortRecentEntries(days = WINDOW_DAYS, nowMs = Date.now()) {
   const state = loadState()
-  return filterRecent(state.entries, days)
+  return filterRecent(state.entries, days, nowMs)
 }
 
-export function getTrustShortFilterTuning(days = 90): TrustShortFilterTuning {
-  const entries = filterRecent(loadState().entries, days)
+export function getTrustShortFilterTuning(days = 90, nowMs = Date.now()): TrustShortFilterTuning {
+  const entries = filterRecent(loadState(nowMs).entries, days, nowMs)
   const bullEntries = entries.filter(entry => entry.executed && entry.decision === 'BULL' && entry.vix > 0)
   const bearEntries = entries.filter(entry => entry.executed && entry.decision === 'BEAR' && entry.vix > 0)
 
@@ -303,9 +342,10 @@ export function detectTrustExecutionFromCsvSync(
 export function stageTrustExecutionFromCsvSync(
   trust: Trust[],
   date = safeNowIso(),
+  baseline?: TrustShortPortfolioBaseline,
 ): StagedTrustCsvExecution {
   const current = buildShortTrustSnapshot(trust, date)
-  const previous = loadSnapshot()
+  const previous = baseline ? baseline.snapshot : loadSnapshot()
 
   if (!previous) {
     return {
@@ -347,18 +387,61 @@ export function stageTrustExecutionFromCsvSync(
 
 /** runFullAnalysisがbrowser trackerから読む値をCAS対象へ含める。 */
 export function getTrustShortReadDependencyFingerprint(): string {
-  if (!isBrowser()) return 'unavailable'
+  const storage = trackerStorage()
+  if (!storage) return 'unavailable'
   try {
-    return window.localStorage.getItem(KEY) ?? 'missing'
+    return storage.getItem(KEY) ?? 'missing'
   } catch {
     return 'read-error'
+  }
+}
+
+/** Capture every tracker value used by strict CSV analysis with one storage read. */
+export function captureTrustShortAnalysisInput(nowMs: number): TrustShortAnalysisInput {
+  const storage = trackerStorage()
+  let raw: string | null = null
+  try { raw = storage?.getItem(KEY) ?? null } catch { raw = null }
+  const state = parseState(raw, nowMs)
+  const todayKey = toDateKey(safeNowIso(nowMs))
+  return {
+    raw,
+    fingerprint: raw ?? 'missing',
+    todayEntryCount: state.entries.some(entry => entry.date === todayKey && entry.executed) ? 1 : 0,
+    performance30d: buildStats(state.entries, nowMs),
+  }
+}
+
+export function captureTrustShortPortfolioBaseline(): TrustShortPortfolioBaseline {
+  const storage = trackerStorage()
+  if (!storage) return { status: 'invalid', snapshot: null }
+  const canonical = restoreCanonicalSnapshotFor(storage)
+  if (canonical.status === 'committed') return canonical
+  if (canonical.status === 'invalid') return { status: 'invalid', snapshot: null }
+  try { return { status: 'none', snapshot: readLegacySnapshot(storage) } }
+  catch { return { status: 'none', snapshot: null } }
+}
+
+/** CAS rollback for a tracker write that raced the tentative canonical commit. */
+export function restoreTrustShortAnalysisInput(
+  snapshot: TrustShortAnalysisInput,
+  expectedCurrentFingerprint: string,
+): boolean {
+  const storage = trackerStorage()
+  if (!storage) return snapshot.fingerprint === 'unavailable'
+  try {
+    if (getTrustShortReadDependencyFingerprint() !== expectedCurrentFingerprint) return false
+    if (snapshot.raw === null) storage.removeItem(KEY)
+    else storage.setItem(KEY, snapshot.raw)
+    return getTrustShortReadDependencyFingerprint() === snapshot.fingerprint
+  } catch {
+    return false
   }
 }
 
 export function recordTrustShortDecision(snapshot: TrustShortDecisionSnapshot) {
   const state = loadState()
   const date = toDateKey(snapshot.date)
-  const now = safeNowIso()
+  const now = snapshot.date || safeNowIso()
   const outcome = evaluateOutcome(snapshot.decision, snapshot.nikkeiChgPct)
 
   const nextEntry: TrustShortTrackerEntry = {
@@ -388,9 +471,11 @@ export function recordTrustShortDecision(snapshot: TrustShortDecisionSnapshot) {
     state.entries.push(nextEntry)
   }
 
-  state.entries = filterRecent(state.entries, RETENTION_DAYS)
+  const snapshotNowMs = new Date(snapshot.date).getTime()
+  const retentionNowMs = Number.isFinite(snapshotNowMs) ? snapshotNowMs : Date.now()
+  state.entries = filterRecent(state.entries, RETENTION_DAYS, retentionNowMs)
     .sort((left, right) => right.date.localeCompare(left.date))
 
   saveState(state)
-  return buildStats(state.entries)
+  return buildStats(state.entries, retentionNowMs)
 }

@@ -95,7 +95,7 @@ function parseMarketTimestamp(ts: string | null | undefined): number | null {
 
 const MARKET_STALE_THRESHOLD_MS = MARKET_DATA_STALE_HOURS * 60 * 60 * 1000
 
-export const selectMarketDataQuality = (s: AppState): MarketDataQuality => {
+export const selectMarketDataQuality = (s: AppState, now: number = Date.now()): MarketDataQuality => {
   const source = s.system.dataSourceStatus.market
 
   if (source === 'error') {
@@ -113,7 +113,7 @@ export const selectMarketDataQuality = (s: AppState): MarketDataQuality => {
     return { isSuppressed: true, level: 'stale', reason: 'データの更新日時を確認できません — 新規買いを抑制中' }
   }
 
-  const ageMs = Date.now() - tsMs
+  const ageMs = now - tsMs
   if (ageMs > MARKET_STALE_THRESHOLD_MS) {
     const hoursAgo = Math.floor(ageMs / (60 * 60 * 1000))
     return {
@@ -190,11 +190,11 @@ export function computeSafeModeDataQuality(
   return { isStale: false, level: 'ok', reason: null, ageHours }
 }
 
-export const selectSafeModeDataQuality = (s: AppState): SafeModeDataQuality =>
+export const selectSafeModeDataQuality = (s: AppState, now: number = Date.now()): SafeModeDataQuality =>
   computeSafeModeDataQuality(
     s.system.dataTimestamps?.safeMode,
     s.system.dataSourceStatus.safeMode,
-    Date.now(),
+    now,
   )
 
 // ── P4.5-A011: SAFE_MODEの実効active（生値 OR データ鮮度によるfail-closed） ──
@@ -202,8 +202,8 @@ export const selectSafeModeDataQuality = (s: AppState): SafeModeDataQuality =>
 // 超えていれば安全側に倒す（P4-A159のfail-closed方針をタブ表示ゲートにも一貫させる）。
 // runFullAnalysis（useAppStore.ts）の合成条件と同一式— 新しいゲートを追加するのではなく、
 // 既存の「active || isStale」を単一のセレクタに集約し、各タブのraw active参照を置換する。
-export const selectEffectiveSafeModeActive = (s: AppState): boolean =>
-  s.safeMode.safe_mode.active || selectSafeModeDataQuality(s).isStale
+export const selectEffectiveSafeModeActive = (s: AppState, now: number = Date.now()): boolean =>
+  s.safeMode.safe_mode.active || selectSafeModeDataQuality(s, now).isStale
 
 // ── P4.5-A002: 資金前提（現金・待機資金）の実効値 ─────────────
 // 手動override中は手動値を総額として使う（CSV/既定値との加算は行わない）。
@@ -268,10 +268,13 @@ export function computeCashAssumptionsFreshness(
   return { isStale: ageHours > CASH_ASSUMPTIONS_STALE_HOURS, ageHours }
 }
 
-export function selectCashAssumptionsFreshness(s: AppState): CashAssumptionsFreshness {
+export function selectCashAssumptionsFreshness(
+  s: AppState,
+  now: number = Date.now(),
+): CashAssumptionsFreshness {
   return computeCashAssumptionsFreshness(
     s.cashAssumptions.manualOverrideEnabled,
     s.cashAssumptions.manualUpdatedAt,
-    Date.now(),
+    now,
   )
 }

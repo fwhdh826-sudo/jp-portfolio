@@ -72,6 +72,8 @@ export interface ZeroBaseInput {
   safeModeActive?: boolean
   /** P4-A148: データ品質抑制中は個別株BUY提案を生成しない。省略時はfalse（現行互換） */
   dqSuppressed?: boolean
+  /** Logical analysis clock used for lock and generatedAt calculations. */
+  nowMs?: number
 }
 
 function roundToUnit(value: number, unit = 10_000): number {
@@ -270,6 +272,7 @@ function buildSellProposals(
   holdings: Holding[],
   analysisByCode: Map<string, HoldingAnalysis>,
   mode: MarketMode,
+  now: Date,
 ): TradeProposal[] {
   const results: TradeProposal[] = []
 
@@ -280,7 +283,7 @@ function buildSellProposals(
     .sort((a, b) => a.analysis.totalScore - b.analysis.totalScore)
 
   for (const { h, analysis } of sorted) {
-    const locked = isSellLocked(h)
+    const locked = isSellLocked(h, now)
     const sellable = !locked
 
     if (!sellable) {
@@ -400,12 +403,13 @@ function buildConclusion(
 }
 
 export function buildZeroBasePlan(input: ZeroBaseInput): ZeroBasePlan {
+  const nowMs = input.nowMs ?? Date.now()
   const { mode, reasons } = deriveMarketMode(input.market, input.macro, input.sqCalendar)
 
   const analysisByCode = new Map(input.analysis.map(a => [a.code, a]))
   const categoryDiffs = input.universe?.categories ?? fallbackUniverse(input)
 
-  const sellProposals = buildSellProposals(input.holdings, analysisByCode, mode)
+  const sellProposals = buildSellProposals(input.holdings, analysisByCode, mode, new Date(nowMs))
 
   // 待機資金: コア分は cashReserve で保持、
   // 追加分は市場モードで可変バッファとして管理する。
@@ -434,7 +438,7 @@ export function buildZeroBasePlan(input: ZeroBaseInput): ZeroBasePlan {
   )
 
   return {
-    generatedAt: new Date().toISOString(),
+    generatedAt: new Date(nowMs).toISOString(),
     board,
     proposals,
     categoryDiffs,

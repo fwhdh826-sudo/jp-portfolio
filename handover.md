@@ -45111,6 +45111,149 @@ portfolioPolicyへ拡張する方針を確定した。
 - P5-B002b/B003（headroom式新設・T0表示の株/投信出し分け）
 - v10.css未使用クラスの安全な削除（R6）
 
+## T9-A001/A002-R3 + T9-A003-R2: transaction ownership / deterministic analysis clock hardening
+
+### 実施日 / source / fresh audit
+
+- 実施日: 2026-07-15
+- source commit: `7fb3ae4d2f778f1473d1a02ff14a1b3d5a343b57`
+- branch: `v13.3-dev`（branch switch / main変更なし）
+- fresh-session adversarial re-audit verdict: **C: BLOCKED**
+- blockers: F1 nested import phase overwrite、F2 tracker post-persistence mismatchをwarningで継続、
+  F3 clockがfingerprint外でthreshold crossing後もstale SUCCESS
+- commit / push / merge / rebase: 未実施（依頼どおり）
+
+### Test-first RED evidence（source `7fb3ae4`）
+
+実装前に`src/store/useAppStore.csvImportAtomic.test.ts`へF1〜F3を追加し、対象suiteで
+**26 passed / 3 failed**を確認した。
+
+- F1: final publish先頭subscriberからnested `importCsv`を開始するとinnerがREADINGへ進み、
+  後続subscriberのmarket mutationが通過。inner resultは`IMPORT_CONFLICT`まで進み、outer ownerの
+  phase/status/cleanupがinnerへ干渉した
+- F2: canonical `setItem` hookで`v95_trust_short_tracker`を直接変更してもouterは`SUCCESS`。
+  post-persistence fingerprint mismatchはdiagnosticだけでstale tracker-derived generationを公開した
+- F3: persistence hookでmarket 24h DQ境界を跨ぐと、開始時刻を指定した再分析との
+  officialDecision（DQ/noTrade/stance/actions）が不一致になった
+
+### Transaction owner / token design
+
+- module globalのphase単独管理を廃止し、`activeCsvImportTransaction: CsvImportTransaction | null`
+  へ置換した
+- transactionは一意な`Symbol` token、phase、`analysisNow`、initial fingerprint、immutable
+  tracker analysis snapshot、trust portfolio baselineを所有する
+- phase更新は`active.token === transaction.token`の場合だけ許可する
+- active transactionが存在する間の別`importCsv`はstatusに依存せず、FileReader開始前に
+  structured `IMPORT_IN_PROGRESS`で拒否する
+- phase modelは`READING → STAGING → ANALYZING → PREPARED → PERSISTING → COMMITTED →
+  PUBLISHED`。idleはphase値ではなく`activeCsvImportTransaction === null`で表す
+- `finally`はtoken一致時だけloading fallbackとactive owner解放を行う。nested rejectionやstale
+  tokenはouterのphase/status/lockを変更できない
+
+### Nested import / critical section semantics
+
+- READING中のsecond direct import、PERSISTING中のstorage hook nested import、COMMITTED中の
+  final subscriber nested import、PUBLISHED中のtracker telemetry hook nested importを拒否確認
+- nested attemptはouter phase/status/canonical/global generationを変更しない
+- `PERSISTING / COMMITTED / PUBLISHED`をcommit critical sectionとし、public `setState`、
+  holding、trust、cash/standby/cashReserve/addRoom相当のcash assumptions、policy、snapshot import、
+  initialize、refreshAllDataを同期rejectする
+- market/macro/correlation/SAFE_MODE/source status/timestamps/learning/candidates/manual state等の
+  public `setState`経路も同じwrapperでrejectする。外部localStorage直書換は完全には阻止できないため、
+  immutable capture + pre/post CASで扱う
+
+### Deterministic analysisNow / clock inventory
+
+- CSV transaction開始時に`analysisNow = Date.now()`を1回captureし、importedAt、analysisLastRunAt、
+  persistence savedAt、全derived generatedAtへ同じ値を渡す
+- `runFullAnalysis`へ`nowMs`と`trustShortInput`を追加。通常non-CSV pathはdefaultで開始時に
+  `Date.now()`を1回captureする従来best-effort contractを維持する
+- fixed clockを注入したdependency:
+  - market DQ (`selectMarketDataQuality`)
+  - SAFE_MODE data quality / effective active
+  - cash assumptions freshness
+  - market/trust source age days
+  - candidates_stocks freshness
+  - trust tracker 30d stats / 120d retention / today execution count
+  - stock sell-lock remaining days
+  - performance learning timestamp
+  - asset universe / zeroPlan / stockPlan / trustPlan / committee / officialDecision generation timestamps
+  - canonical generation savedAtとlocalStorage freshness
+- fake clockでmarket 23h→25h、SAFE_MODE 95h→97h、cash 167h→169h、tracker retentionの
+  日付境界を同時に跨ぎ、同一transactionは開始時結果を維持。次transactionは新しい
+  `analysisNow`をcaptureしてDQ suppressed / retention expiryへ切り替わることを確認した
+
+### Tracker immutable input / canonical status (R6)
+
+- strict transaction開始時にtracker raw bytesを1回読み、fingerprint、today count、30d statsを
+  immutable `TrustShortAnalysisInput`へ変換する
+- analysis / officialDecision / persistence中はtracker localStorageをderived dependencyとして再読込せず、
+  capture済み値だけを使用する。pre/post CASのみcurrent bytesをintegrity checkとして読む
+- trust execution baselineも開始時にcaptureし、STAGING中はcanonical/legacy localStorageを再読込しない
+- `restoreCsvTrustShortSnapshotState()`で`none / invalid / committed`を区別した
+  - canonical absent: legacy `v95_trust_short_snapshot` fallback可
+  - canonical present-invalid: legacy fallback禁止
+  - canonical committed: canonical snapshot優先
+- absent legacy baselineからexecution telemetryが動くこと、present-invalidでは同じlegacy bytesを
+  採用しないことをatomic import testで確認した
+
+### Post-persistence integrity semantics
+
+- canonical replacementはpublish前のtentative durable generationとしてreceipt（previous exact raw / new exact raw）を返す
+- write直後にowner保持とfull fingerprint（current state + current tracker bytes）を再検証する
+- mismatch時はwarning継続を廃止し、trackerをcaptured exact bytesへCAS restoreし、canonicalも
+  receiptが書いたexact generationである場合だけprevious exact bytesへrollbackする
+- rollbackとfingerprint復元が全て成功した場合は`IMPORT_CONFLICT` +
+  `persistence.status = rolled_back`。Zustand portfolio generationは公開せずretry可能
+- exact owner/CAS rollbackが成立しない場合は`PERSISTENCE_ERROR` + `rollback_failed`でfail closedし、
+  stale derived `SUCCESS`は返さない
+- normal successはcanonical commit後、captured dependency snapshot + computed fieldsをZustandへ
+  1 logical generationでpublishする
+
+### Transaction consistency model
+
+1. Start: owner token / analysisNow / base state / tracker raw+stats / tracker portfolio baseline capture
+2. Prepare: parse / full-sync / pure trust execution staging / fixed-clock full analysis / strict officialDecision /
+   canonical payload生成
+3. Pre-persistence: current state + tracker bytesのCAS
+4. Persistence: single canonical replacement（tentative durable receipt）
+5. Post-persistence: owner + full fingerprint再検証。mismatchはexact rollbackしてconflict
+6. Publish: base dependency snapshotとcomputed generationを1回のZustand setで公開
+7. Complete: truthful `SUCCESS`、owner token一致時のみcleanup
+
+### Regression / adversarial coverage
+
+- R1: throwing subscriberはdiagnostic、later subscriber継続、durable/global success、retry可
+- R2: async FileReader callback throwはstructured `FILE_READ_ERROR`、loading解放、retry可
+- R3: checksum-valid deep malformed canonicalはinvalidでfail closed
+- R4: individual helperはcanonical bytesを部分変更せず、manual actionはfull replacement
+- R5: cash/market/policy/SAFE_MODE/mixed synchronous reentryをcritical sectionでreject
+- subscriber: simple/multiple throw、read-only/later observer、direct mutation、nested、nested+mutation、
+  nested+throw、multiple nested、completion後retry
+- persistence/tracker: canonical success/failure、legacy tracker direct mutation、absent/invalid/committed
+  canonical status、exact rollback owner、retry、reload
+- structured result codeは既存`SUCCESS`、parse/read/guard/analysis/official/persistence/conflict/in-progress/
+  unknownを維持。nested rejectionは`IMPORT_IN_PROGRESS`を使用しPromise rejectionをUI契約にしない
+
+### Verification
+
+- focused T9/canonical/store verification: **254 passed / 9 files**（追加R6 test前のfocused run）
+- `npm run test:unit`: **808 passed / 43 files**
+- `npx tsc --noEmit`: pass
+- `npm run build`: pass（121 modules transformed、既知の500kB chunk warningのみ）
+- `git diff --check`: pass
+
+### No-regression / status / remaining
+
+- SAFE_MODE/DQ/noTrade/headroom/officialDecision/zeroBase/scoring/investment/target allocation/
+  candidate logic自体は変更せず、context clock注入だけを行った
+- P5-B004、workflow、T0/T1/T2/T7 UI、production localStorage実データは未変更
+- **R6: fixed**（canonical none/invalid/committed statusとlegacy fallback policyを実装・test済み）
+- **R8: current依頼に定義がなく、F1〜F3修正のための推測変更はせずunverified follow-upのまま**
+- remaining tickets: T9-A004 stale CSV protection、T9-A005 zero-row full-sync confirmation、
+  T9-A006〜A008（各ticket定義に従う）
+- final verdict: **A: COMMIT READY**（full verification green。commitは禁止のため未実施）
+
 ## P4.5-A012c: T9への保有株・投信同期UI追加
 
 ### 実施日

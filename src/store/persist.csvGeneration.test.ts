@@ -13,6 +13,8 @@ import {
   restoreCsvImportedAt,
   restoreCsvSyncSummary,
   restoreCsvTrustShortSnapshot,
+  restoreCsvTrustShortSnapshotState,
+  rollbackCsvImportTransaction,
   restoreLearning,
   restorePortfolio,
   restoreTrust,
@@ -158,6 +160,34 @@ describe('T9-A003: committed CSV generation durability and recovery', () => {
     expect(restoreCsvImportedAt()).toBe(next.importedAt)
     expect(restoreCsvSyncSummary()).toEqual(next.syncSummary)
     expect(restoreCsvTrustShortSnapshot()).toEqual(next.trustShortSnapshot)
+    expect(restoreCsvTrustShortSnapshotState()).toEqual({
+      status: 'committed',
+      snapshot: next.trustShortSnapshot,
+    })
+  })
+
+  it('tracker canonical status distinguishes absent and present-invalid without legacy ambiguity', () => {
+    store.v95_trust_short_snapshot = JSON.stringify(payload('old').trustShortSnapshot)
+    expect(restoreCsvTrustShortSnapshotState()).toEqual({ status: 'none', snapshot: null })
+
+    store[CSV_IMPORT_GENERATION_KEY] = '{malformed'
+    expect(restoreCsvTrustShortSnapshotState()).toEqual({ status: 'invalid', snapshot: null })
+    expect(restoreCsvTrustShortSnapshot()).toBeNull()
+  })
+
+  it('tentative canonical replacement rolls back only its own exact bytes', () => {
+    persistCsvImportTransaction(payload('old'))
+    const oldRaw = store[CSV_IMPORT_GENERATION_KEY]
+    const receipt = persistCsvImportTransaction(payload('new'))
+
+    expect(rollbackCsvImportTransaction(receipt)).toBe(true)
+    expect(store[CSV_IMPORT_GENERATION_KEY]).toBe(oldRaw)
+    expect(restoreCsvImportGeneration()).toMatchObject({ status: 'committed', payload: payload('old') })
+
+    const staleReceipt = persistCsvImportTransaction(payload('new'))
+    store[CSV_IMPORT_GENERATION_KEY] = oldRaw
+    expect(rollbackCsvImportTransaction(staleReceipt)).toBe(false)
+    expect(store[CSV_IMPORT_GENERATION_KEY]).toBe(oldRaw)
   })
 
   it.each(LEGACY_KEYS)(

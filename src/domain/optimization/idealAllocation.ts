@@ -19,7 +19,7 @@ import { HORIZON_BY_CLASS, CLASS_LABEL, CLASS_ROLE } from '../../types/universe'
 import type { AssetClass } from '../../types/universe'
 import { isSellLocked, getSellLockRemainingDays, getSellableDate } from '../constraints/stockLock'
 
-export function buildAssetUniverse(state: AppState): AssetUniverse {
+export function buildAssetUniverse(state: AppState, nowMs = Date.now()): AssetUniverse {
   const { holdings, trust, cash, cashReserve, addRoom, market, metrics } = state
 
   // ── 現在の各資産クラス評価額 ──────────────────────────────────
@@ -92,7 +92,7 @@ export function buildAssetUniverse(state: AppState): AssetUniverse {
     cash,
     cashReserve,
     addRoom,
-    lastUpdatedAt: new Date().toISOString(),
+    lastUpdatedAt: new Date(nowMs).toISOString(),
   }
 }
 
