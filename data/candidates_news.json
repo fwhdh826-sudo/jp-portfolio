@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-07-15T21:49:14.125114+09:00",
-  "sourceUpdatedAt": "2026-07-15T12:30:59+00:00",
+  "updatedAt": "2026-07-16T07:32:26.860364+09:00",
+  "sourceUpdatedAt": "2026-07-15T22:13:55+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -32,40 +32,171 @@
       ]
     },
     "jp_semiconductor": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.33,
       "negativeCount": 0,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Stocks Rise as Inflation Data Outweighs Chip Rout: Markets Wrap",
+      "topPositiveTitle": "Stocks Rise as Inflation Data Outweighs Chip Rout: Markets Wrap",
+      "items": [
+        {
+          "title": "Stocks Rise as Inflation Data Outweighs Chip Rout: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-07-14T22:06:21+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-14/asian-stocks-poised-to-track-us-gains-on-soft-cpi-markets-wrap",
+          "tags": [
+            "jp_semiconductor",
+            "market",
+            "us_broad"
+          ]
+        }
+      ]
     },
     "us_broad": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "avgSentiment": -0.0,
+      "negativeCount": 3,
+      "positiveCount": 3,
+      "neutralCount": 5,
+      "sourceCount": 2,
+      "itemCount": 11,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Gold Wavers as Traders Weigh Fed Rate Path After Tame Inflation",
+      "topPositiveTitle": "US Bonds Extend Rally as Soft Inflation Data Dims Fed Hike Bets",
+      "items": [
+        {
+          "title": "Gold Wavers as Traders Weigh Fed Rate Path After Tame Inflation",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-07-14T22:54:29+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-14/gold-steadies-after-soft-us-inflation-data-trims-rate-hike-bets",
+          "tags": [
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Fed’s Cook Says Prepared to Act If Inflation Doesn’t Cool",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-07-15T17:01:10+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-15/fed-s-cook-says-she-s-prepared-to-act-if-inflation-doesn-t-cool",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Kevin Warsh Talks the Talk on Inflation While Leaving the Walk in Question",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-07-15T11:00:01+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-07-15/kevin-warsh-talks-the-talk-on-inflation-while-leaving-the-walk-in-question",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Fed’s Beige Book Shows Slight to Moderate Growth Across US",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-15T18:12:34+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-15/fed-s-beige-book-shows-slight-to-moderate-growth-across-us",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "SpaceX IPO Lifts Wall Street ECM Revenue to Best Since 2021",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-15T17:53:31+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-15/record-ipos-spur-best-wall-street-share-sale-revenue-since-2021",
+          "tags": [
+            "market",
+            "us_broad",
+            "us_growth"
+          ]
+        }
+      ]
     },
     "us_growth": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
+      "avgSentiment": -0.25,
+      "negativeCount": 1,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 3,
+      "sourceCount": 2,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "SpaceX Shares Briefly Slip Below IPO Price for First Time",
+      "topPositiveTitle": "SpaceX IPO Lifts Wall Street ECM Revenue to Best Since 2021",
+      "items": [
+        {
+          "title": "SpaceX Shares Briefly Slip Below IPO Price for First Time",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-07-15T16:08:36+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-15/spacex-shares-fall-below-ipo-price-for-first-time-as-hype-fades",
+          "tags": [
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "SpaceX IPO Lifts Wall Street ECM Revenue to Best Since 2021",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-15T17:53:31+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-15/record-ipos-spur-best-wall-street-share-sale-revenue-since-2021",
+          "tags": [
+            "market",
+            "us_broad",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Fed’s Warsh Cools Talk That AI Boom Is Spurring Inflation",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-15T14:55:34+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-15/warsh-says-price-pressures-from-ai-not-necessarily-inflationary",
+          "tags": [
+            "market",
+            "us_broad",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Fed’s Williams Says Rates Well Positioned Despite AI Demand",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-15T12:41:52+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-15/fed-s-williams-says-rates-well-positioned-despite-ai-demand",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad",
+            "us_growth"
+          ]
+        }
+      ]
     },
     "global_broad": {
       "avgSentiment": 0,
@@ -80,16 +211,31 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
+      "avgSentiment": -1.0,
+      "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Gold Wavers as Traders Weigh Fed Rate Path After Tame Inflation",
+      "topPositiveTitle": "Gold Wavers as Traders Weigh Fed Rate Path After Tame Inflation",
+      "items": [
+        {
+          "title": "Gold Wavers as Traders Weigh Fed Rate Path After Tame Inflation",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-07-14T22:54:29+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-14/gold-steadies-after-soft-us-inflation-data-trims-rate-hike-bets",
+          "tags": [
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        }
+      ]
     },
     "reit": {
       "avgSentiment": 0,
@@ -116,27 +262,92 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.066,
       "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 4,
+      "sourceCount": 1,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "US Producer Prices Come in Tame as Pipeline Pressures Abate",
+      "topPositiveTitle": "Containers Surge Into Top US Ports Amid Tariff, Iran Uncertainty",
+      "items": [
+        {
+          "title": "US Producer Prices Come in Tame as Pipeline Pressures Abate",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-15T12:33:05+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-15/us-producer-prices-rise-at-slower-pace-as-core-gauge-decelerates",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "La llegada del gusano barrenador a EE.UU. prolonga la crisis ganadera en México",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-15T11:00:22+00:00",
+          "url": "https://www.bloomberg.com/news/features/2026-07-15/la-llegada-del-gusano-barrenador-a-ee-uu-prolonga-la-crisis-ganadera-en-mexico",
+          "tags": [
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Trump and Iran war and shipping through Hormuz",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-15T11:00:01+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-07-15/trump-and-iran-war-and-shipping-through-hormuz",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "France Raises Regulated Savings Rate as Inflation Speeds Up",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-15T08:36:48+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-15/bank-of-france-calls-for-higher-livret-a-rate-as-inflation-rises",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Containers Surge Into Top US Ports Amid Tariff, Iran Uncertainty",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-07-15T17:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-15/containers-surge-into-top-us-ports-amid-tariff-iran-uncertainty",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        }
+      ]
     },
     "fx": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0.165,
       "negativeCount": 0,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 2,
+      "itemCount": 2,
       "isStale": false,
       "topNegativeTitle": "歴史的な円安「経済に悪い影響」61％ NHK世論調査",
-      "topPositiveTitle": "歴史的な円安「経済に悪い影響」61％ NHK世論調査",
+      "topPositiveTitle": "Emerging Currencies Gain as Traders Cut Back Fed Bets on US PPI",
       "items": [
         {
           "title": "歴史的な円安「経済に悪い影響」61％ NHK世論調査",
@@ -151,56 +362,252 @@
             "market"
           ],
           "titleJa": "歴史的な円安「経済に悪い影響」61％ NHK世論調査"
+        },
+        {
+          "title": "Emerging Currencies Gain as Traders Cut Back Fed Bets on US PPI",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-07-15T10:29:22+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-15/emerging-stocks-rise-as-asia-tech-rally-offsets-gold-miner-slump",
+          "tags": [
+            "fx",
+            "market",
+            "us_broad"
+          ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "avgSentiment": 0.047,
+      "negativeCount": 1,
+      "positiveCount": 2,
+      "neutralCount": 4,
+      "sourceCount": 2,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "commodity": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "geopolitical": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
-      "isStale": false,
-      "topNegativeTitle": "政府 ナフサの供給対策検討 イラン情勢による流通影響受け",
-      "topPositiveTitle": "政府 ナフサの供給対策検討 イラン情勢による流通影響受け",
+      "topNegativeTitle": "Gold Wavers as Traders Weigh Fed Rate Path After Tame Inflation",
+      "topPositiveTitle": "US Bonds Extend Rally as Soft Inflation Data Dims Fed Hike Bets",
       "items": [
         {
-          "title": "政府 ナフサの供給対策検討 イラン情勢による流通影響受け",
-          "source": "NHK 経済",
+          "title": "Gold Wavers as Traders Weigh Fed Rate Path After Tame Inflation",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-07-14T22:54:29+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-14/gold-steadies-after-soft-us-inflation-data-trims-rate-hike-bets",
+          "tags": [
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Kalshi Seeks to Let Traders Bet on Flight Cancellation Rates",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-14T21:42:52+00:00",
-          "url": "https://news.web.nhk/newsweb/na/na-k10015176971000",
+          "publishedAt": "2026-07-15T18:13:33+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-15/kalshi-seeks-to-let-traders-hedge-on-flight-cancellation-rates",
           "tags": [
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Warsh Says He’s Told Trump ‘Repeatedly’ He’s Independent",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-15T15:36:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-15/warsh-says-he-s-told-trump-repeatedly-he-s-an-independent-guy",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Nigerian Inflation Holds Steady Ahead of Interest-Rate Call",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-15T14:21:48+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-15/nigerian-inflation-holds-steady-ahead-of-rate-setting-meeting",
+          "tags": [
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Fed’s Williams Says Rates Well Positioned Despite AI Demand",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-15T12:41:52+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-15/fed-s-williams-says-rates-well-positioned-despite-ai-demand",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad",
+            "us_growth"
+          ]
+        }
+      ]
+    },
+    "commodity": {
+      "avgSentiment": 0.266,
+      "negativeCount": 0,
+      "positiveCount": 3,
+      "neutralCount": 2,
+      "sourceCount": 2,
+      "itemCount": 5,
+      "isStale": false,
+      "topNegativeTitle": "Iran’s Tanker Attacks Squeeze the Hormuz Oil-Shuttling Trade",
+      "topPositiveTitle": "Russian Fuel Prices Soar as Drone Attacks Curb Refinery Output",
+      "items": [
+        {
+          "title": "Iran’s Tanker Attacks Squeeze the Hormuz Oil-Shuttling Trade",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-15T17:14:59+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-15/iran-s-tanker-attacks-squeeze-the-hormuz-oil-shuttling-trade",
+          "tags": [
+            "commodity",
             "geopolitical",
             "market"
-          ],
-          "titleJa": "政府 ナフサの供給対策検討 イラン情勢による流通影響受け"
+          ]
+        },
+        {
+          "title": "Saudi Gulf Oil Loads Slump as Iran Hits Tankers in Hormuz",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-15T17:03:20+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-15/saudi-s-gulf-oil-loads-slump-as-iran-hits-supertankers-in-hormuz",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Latest Oil Market News and Analysis for July 16",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-07-15T22:02:01+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-15/latest-oil-market-news-and-analysis-for-july-16",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Bank of Canada Holds at 2.25% as Growth Outlook Improves",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-07-15T13:45:20+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-15/bank-of-canada-holds-rates-at-2-25-as-growth-outlook-improves",
+          "tags": [
+            "commodity",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Russian Fuel Prices Soar as Drone Attacks Curb Refinery Output",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-07-15T16:24:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-15/russian-fuel-prices-soar-as-drone-attacks-curb-refinery-output",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        }
+      ]
+    },
+    "geopolitical": {
+      "avgSentiment": 0.094,
+      "negativeCount": 0,
+      "positiveCount": 2,
+      "neutralCount": 5,
+      "sourceCount": 2,
+      "itemCount": 7,
+      "isStale": false,
+      "topNegativeTitle": "Iran’s Tanker Attacks Squeeze the Hormuz Oil-Shuttling Trade",
+      "topPositiveTitle": "Latest Oil Market News and Analysis for July 16",
+      "items": [
+        {
+          "title": "Iran’s Tanker Attacks Squeeze the Hormuz Oil-Shuttling Trade",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-15T17:14:59+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-15/iran-s-tanker-attacks-squeeze-the-hormuz-oil-shuttling-trade",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Saudi Gulf Oil Loads Slump as Iran Hits Tankers in Hormuz",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-15T17:03:20+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-15/saudi-s-gulf-oil-loads-slump-as-iran-hits-supertankers-in-hormuz",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "US Producer Prices Come in Tame as Pipeline Pressures Abate",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-15T12:33:05+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-15/us-producer-prices-rise-at-slower-pace-as-core-gauge-decelerates",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Trump and Iran war and shipping through Hormuz",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-15T11:00:01+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-07-15/trump-and-iran-war-and-shipping-through-hormuz",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "France Raises Regulated Savings Rate as Inflation Speeds Up",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-15T08:36:48+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-15/bank-of-france-calls-for-higher-livret-a-rate-as-inflation-rises",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
         }
       ]
     }
@@ -213,7 +620,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 19,
+    "excludedCount": 7,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
