@@ -151,6 +151,9 @@ describe('useAppStore.initialize / refreshAllData: published snapshot優先順�
   beforeEach(() => {
     store = {}
     vi.stubGlobal('localStorage', lsMock)
+    useAppStore.setState(state => ({
+      system: { ...state.system, status: 'idle', csvLastImportedAt: null, csvImportProvenance: null },
+    }))
   })
 
   afterEach(() => {
@@ -190,6 +193,15 @@ describe('useAppStore.initialize / refreshAllData: published snapshot優先順�
         trust: { updated: 1, reheld: 0, zeroed: 0, unknownFunds: [], ambiguousFundIds: [] },
       },
       trustShortSnapshot: { date: '2099-07-15', total: 0, evalById: {} },
+      provenance: {
+        importedAt: '2099-07-15T00:00:00.000Z',
+        sourceAsOf: '2099-07-14T00:00:00.000Z',
+        sourceAsOfKind: 'csv_explicit',
+        sourceAsOfConfidence: 'authoritative',
+        contentFingerprint: 'fnv1a32:12345678',
+        sourceFileName: 'portfolio.csv',
+        fileLastModified: null,
+      },
     })
     mockFetchRouter({})
     useAppStore.setState(state => ({ system: { ...state.system, status: 'idle' } }))
@@ -199,6 +211,7 @@ describe('useAppStore.initialize / refreshAllData: published snapshot優先順�
     expect(useAppStore.getState().holdings.find(item => item.code === '7203')?.eval).toBe(654_321)
     expect(useAppStore.getState().trust.find(item => item.id === 'sp500_sbi')?.eval).toBe(3_210_000)
     expect(useAppStore.getState().system.csvLastImportedAt).toBe('2099-07-15T00:00:00.000Z')
+    expect(useAppStore.getState().system.csvImportProvenance?.sourceAsOf).toBe('2099-07-14T00:00:00.000Z')
   })
 
   it('initialize: corrupted envelope refuses partial legacy fallback', async () => {
@@ -258,7 +271,7 @@ describe('useAppStore.initialize / refreshAllData: published snapshot優先順�
     expect(useAppStore.getState().system.csvLastImportedAt).toBeNull()
   })
 
-  it('initialize: 古いCSV（古いcsvLastImportedAt） < 新しいpublished snapshot → 契約通りsnapshotが安全に適用される', async () => {
+  it('initialize: legacy operation timeだけではsource freshnessを証明できずpublished snapshotを適用しない', async () => {
     seedLocalStorage({
       holdings: [makeHolding({ code: '7203', eval: 555_000 })],
       csvImportedAt: '2026-07-01T00:00:00+09:00',
@@ -274,7 +287,7 @@ describe('useAppStore.initialize / refreshAllData: published snapshot優先順�
     await useAppStore.getState().initialize()
 
     const holding = useAppStore.getState().holdings.find(h => h.code === '7203')
-    expect(holding?.eval).toBe(999_999)
+    expect(holding?.eval).toBe(555_000)
   })
 
   it('initialize: timestamp同値の場合はsnapshotを適用せず、既存のユーザー状態を保持する', async () => {
@@ -316,7 +329,7 @@ describe('useAppStore.initialize / refreshAllData: published snapshot優先順�
     expect(holding?.eval).toBe(555_000)
   })
 
-  it('initialize: stock（holdings）とtrust（trust_master）は個別に判定される（holdingsのみ新しい場合、holdingsだけ適用されtrustは維持）', async () => {
+  it('initialize: legacy operation timeしかない場合はholdings/trustともunknown provenanceとして保護する', async () => {
     seedLocalStorage({
       holdings: [makeHolding({ code: '7203', eval: 555_000 })],
       trust: [makeTrust({ id: 'sp500_sbi', eval: 4_000_000 })],
@@ -339,7 +352,7 @@ describe('useAppStore.initialize / refreshAllData: published snapshot優先順�
 
     const holding = useAppStore.getState().holdings.find(h => h.code === '7203')
     const trust = useAppStore.getState().trust.find(t => t.id === 'sp500_sbi')
-    expect(holding?.eval).toBe(999_999)
+    expect(holding?.eval).toBe(555_000)
     expect(trust?.eval).toBe(4_000_000)
   })
 
@@ -374,7 +387,7 @@ describe('useAppStore.initialize / refreshAllData: published snapshot優先順�
     expect(trust?.eval).toBe(4_000_000)
   })
 
-  it('refreshAllData: 古いCSV < 新しいpublished snapshot → 契約通り安全に適用される', async () => {
+  it('refreshAllData: authoritative sourceAsOfより新しいpublished snapshotは適用される', async () => {
     useAppStore.setState({
       holdings: [makeHolding({ code: '7203', eval: 700_000 })],
       trust: [makeTrust({ id: 'sp500_sbi', eval: 4_000_000 })],
@@ -382,6 +395,15 @@ describe('useAppStore.initialize / refreshAllData: published snapshot優先順�
         ...useAppStore.getState().system,
         status: 'idle',
         csvLastImportedAt: '2026-07-01T00:00:00+09:00',
+        csvImportProvenance: {
+          importedAt: '2026-07-01T00:00:00+09:00',
+          sourceAsOf: '2026-07-01T00:00:00.000Z',
+          sourceAsOfKind: 'csv_explicit',
+          sourceAsOfConfidence: 'authoritative',
+          contentFingerprint: 'fnv1a32:12345678',
+          sourceFileName: 'portfolio.csv',
+          fileLastModified: null,
+        },
       },
     })
     mockFetchRouter({

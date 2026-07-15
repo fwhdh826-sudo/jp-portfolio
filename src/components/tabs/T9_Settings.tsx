@@ -11,7 +11,7 @@ import { serializeCashAssumptionsExport, parseCashAssumptionsImport, buildExport
 import { colors, radius, spacing } from '../../theme/tokens'
 import { typography } from '../../theme/typography'
 import type { CsvSyncSummary } from '../../types'
-import type { CsvImportResult } from '../../store/useAppStore'
+import type { CsvImportOptions, CsvImportResult } from '../../store/useAppStore'
 
 // ── データソースラベル ────────────────────────────────────────
 const SOURCE_LABELS: Record<string, string> = {
@@ -47,12 +47,14 @@ function SourceBadge({ status }: { status: SourceStatus | string }) {
 export interface CsvImportFeedback {
   ok: boolean
   message: string
+  tone?: 'info'
 }
 
 export async function executeCsvImportUiFlow(
   file: File,
-  importCsv: (file: File) => Promise<CsvImportResult>,
+  importCsv: (file: File, options?: CsvImportOptions) => Promise<CsvImportResult>,
   setFeedback: (feedback: CsvImportFeedback | null) => void,
+  options?: CsvImportOptions,
 ): Promise<CsvImportResult | null> {
   if (!file.name.toLowerCase().endsWith('.csv')) {
     setFeedback({ ok: false, message: `${file.name} — CSVファイルのみ対応しています。` })
@@ -62,8 +64,12 @@ export async function executeCsvImportUiFlow(
   // 前回成功を即座に消し、actionのstructured resultが返るまで成功を表示しない。
   setFeedback(null)
   try {
-    const result = await importCsv(file)
-    setFeedback({ ok: result.ok, message: result.message })
+    const result = await importCsv(file, options)
+    setFeedback({
+      ok: result.ok,
+      message: result.message,
+      ...(result.ok && result.code === 'DUPLICATE_CSV' ? { tone: 'info' as const } : {}),
+    })
     return result
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error)
@@ -76,13 +82,14 @@ function CsvDropArea({
   onFile,
   isLoading,
 }: {
-  onFile: (file: File) => Promise<CsvImportResult>
+  onFile: (file: File, options?: CsvImportOptions) => Promise<CsvImportResult>
   isLoading: boolean
 }) {
   const inputRef = useRef<HTMLInputElement>(null)
   const importInFlightRef = useRef(false)
   const [isDragOver, setIsDragOver] = useState(false)
   const [lastResult, setLastResult] = useState<CsvImportFeedback | null>(null)
+  const [confirmationFile, setConfirmationFile] = useState<File | null>(null)
 
   const handleFile = useCallback(async (file: File) => {
     if (importInFlightRef.current || isLoading) {
@@ -91,11 +98,28 @@ function CsvDropArea({
     }
     importInFlightRef.current = true
     try {
-      await executeCsvImportUiFlow(file, onFile, setLastResult)
+      const result = await executeCsvImportUiFlow(file, onFile, setLastResult)
+      setConfirmationFile(result?.ok === false && result.code === 'CSV_PROVENANCE_UNKNOWN' ? file : null)
     } finally {
       importInFlightRef.current = false
     }
   }, [isLoading, onFile])
+
+  const handleConfirmedImport = useCallback(async () => {
+    if (!confirmationFile || importInFlightRef.current || isLoading) return
+    importInFlightRef.current = true
+    try {
+      setConfirmationFile(null)
+      await executeCsvImportUiFlow(
+        confirmationFile,
+        onFile,
+        setLastResult,
+        { confirmUnknownProvenance: true },
+      )
+    } finally {
+      importInFlightRef.current = false
+    }
+  }, [confirmationFile, isLoading, onFile])
 
   const handleDrop = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault()
@@ -164,12 +188,29 @@ function CsvDropArea({
           padding: `${spacing[2]} ${spacing[3]}`,
           borderRadius: radius.md,
           ...typography.caption,
-          background: lastResult.ok ? 'var(--color-buy-bg)' : 'var(--color-sell-bg)',
-          color: lastResult.ok ? 'var(--color-buy-text)' : 'var(--color-sell-text)',
-          border: `1px solid ${lastResult.ok ? 'var(--color-buy-border)' : 'var(--color-sell-border)'}`,
+          background: lastResult.tone === 'info'
+            ? 'var(--color-wait-bg)'
+            : lastResult.ok ? 'var(--color-buy-bg)' : 'var(--color-sell-bg)',
+          color: lastResult.tone === 'info'
+            ? 'var(--color-wait-text)'
+            : lastResult.ok ? 'var(--color-buy-text)' : 'var(--color-sell-text)',
+          border: `1px solid ${lastResult.tone === 'info'
+            ? 'var(--color-wait-border)'
+            : lastResult.ok ? 'var(--color-buy-border)' : 'var(--color-sell-border)'}`,
         }}>
-          {lastResult.ok ? `✓ ${lastResult.message}` : `✗ ${lastResult.message}`}
+          {lastResult.tone === 'info' ? `ℹ ${lastResult.message}` : lastResult.ok ? `✓ ${lastResult.message}` : `✗ ${lastResult.message}`}
         </div>
+      )}
+
+      {confirmationFile && (
+        <button
+          type="button"
+          onClick={() => { void handleConfirmedImport() }}
+          disabled={isLoading}
+          style={{ marginTop: spacing[2] }}
+        >
+          基準時刻不明を確認して、このCSVを再取込
+        </button>
       )}
 
       {/* 使い方ヒント */}
@@ -811,7 +852,7 @@ function PortfolioSnapshotSyncSection({ sectionTitleStyle }: { sectionTitleStyle
               <span>✓ インポートしました。保有株・投信・現金前提・方針を反映しました。</span>
               <span>
                 {csvLastImportedAt
-                  ? `取込元CSV取込時刻: ${formatDateTime(csvLastImportedAt)}`
+                  ? `取込元端末のCSV取込操作時刻: ${formatDateTime(csvLastImportedAt)}`
                   : 'CSV取込時刻なし'}
               </span>
               <span>T0/T1/T2/T7の判断は再計算済みで反映されています。</span>
@@ -851,7 +892,10 @@ export function T9_Settings() {
 
   const isLoading = system.status === 'loading'
 
-  const handleImportCsv = useCallback(async (file: File) => importCsv(file), [importCsv])
+  const handleImportCsv = useCallback(
+    async (file: File, options?: CsvImportOptions) => importCsv(file, options),
+    [importCsv],
+  )
 
   const handleRefresh = useCallback(() => {
     void refreshAllData()
@@ -986,7 +1030,7 @@ export function T9_Settings() {
           )}
           {system.csvLastImportedAt && (
             <div style={{ ...typography.caption, color: colors.textMuted, marginTop: spacing[1] }}>
-              CSV最終取込: {formatRelativeTime(system.csvLastImportedAt)}
+              CSV取込操作: {formatRelativeTime(system.csvLastImportedAt)}
             </div>
           )}
         </div>
@@ -1015,6 +1059,13 @@ export function T9_Settings() {
           )}
         </div>
         <CsvDropArea onFile={handleImportCsv} isLoading={isLoading} />
+        {system.csvImportProvenance && (
+          <div style={{ ...typography.caption, color: colors.textMuted, marginTop: spacing[2] }}>
+            CSVデータ基準時刻: {system.csvImportProvenance.sourceAsOf
+              ? `${formatDateTime(system.csvImportProvenance.sourceAsOf)}（${system.csvImportProvenance.sourceAsOfConfidence === 'authoritative' ? 'CSV明示' : '参考情報'}）`
+              : '不明（取込操作時刻を鮮度の代用には使用しません）'}
+          </div>
+        )}
         <CsvSyncSummaryPanel summary={system.csvSyncSummary} />
       </div>
 

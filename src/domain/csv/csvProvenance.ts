@@ -1,0 +1,175 @@
+import type {
+  CsvImportProvenance,
+  CsvSourceAsOfConfidence,
+  CsvSourceAsOfKind,
+  CsvSourceProvenance,
+} from '../../types'
+
+const AUTHORITATIVE_LABELS = new Set([
+  'データ基準日時',
+  'データ基準日',
+  'スナップショット日時',
+  'スナップショット時点',
+])
+const WEAK_EXPORT_LABELS = new Set(['出力日時', 'エクスポート日時', 'ダウンロード日時', '作成日時'])
+
+function normalizeLabel(value: string): string {
+  return value.normalize('NFKC').replace(/^\uFEFF/, '').trim().replace(/\s+/g, '')
+}
+
+function parseMetadataLine(line: string): [string, string] | null {
+  const separator = line.includes('\t') ? '\t' : ','
+  const parts: string[] = []
+  let current = ''
+  let quoted = false
+  for (let index = 0; index < line.length; index += 1) {
+    const char = line[index]
+    if (char === '"') {
+      if (quoted && line[index + 1] === '"') {
+        current += '"'
+        index += 1
+      } else quoted = !quoted
+    } else if (char === separator && !quoted) {
+      parts.push(current.trim())
+      current = ''
+    } else current += char
+  }
+  parts.push(current.trim())
+  if (parts.length < 2) return null
+  return [normalizeLabel(parts[0] ?? ''), parts[1] ?? '']
+}
+
+function normalizeTimestamp(value: string): string | null {
+  const raw = value.normalize('NFKC').trim()
+  if (/^\d{4}-\d{2}-\d{2}$/.test(raw)) {
+    const dateOnly = new Date(`${raw}T00:00:00+09:00`)
+    return Number.isFinite(dateOnly.getTime()) ? dateOnly.toISOString() : null
+  }
+  const parsed = new Date(raw)
+  return Number.isFinite(parsed.getTime()) ? parsed.toISOString() : null
+}
+
+function extractStructuredTimestamp(text: string): {
+  sourceAsOf: string
+  sourceAsOfKind: CsvSourceAsOfKind
+  sourceAsOfConfidence: CsvSourceAsOfConfidence
+} | null {
+  let weak: ReturnType<typeof extractStructuredTimestamp> = null
+  for (const line of text.split(/\r?\n/)) {
+    const metadata = parseMetadataLine(line.trim())
+    if (!metadata) continue
+    const [label, rawTimestamp] = metadata
+    const timestamp = normalizeTimestamp(rawTimestamp)
+    if (!timestamp) continue
+    if (AUTHORITATIVE_LABELS.has(label)) {
+      return {
+        sourceAsOf: timestamp,
+        sourceAsOfKind: 'csv_explicit',
+        sourceAsOfConfidence: 'authoritative',
+      }
+    }
+    if (weak === null && WEAK_EXPORT_LABELS.has(label)) {
+      weak = {
+        sourceAsOf: timestamp,
+        sourceAsOfKind: 'csv_exported_at',
+        sourceAsOfConfidence: 'weak',
+      }
+    }
+  }
+  return weak
+}
+
+function extractFilenameTimestamp(fileName: string): string | null {
+  const normalized = fileName.normalize('NFKC')
+  const match = normalized.match(/(?:^|[^\d])(20\d{2})[-_]?([01]\d)[-_]?([0-3]\d)(?:[T_ -]?([0-2]\d)[-_:]?([0-5]\d)(?:[-_:]?([0-5]\d))?)?(?:[^\d]|$)/)
+  if (!match) return null
+  const [, year, month, day, hour = '00', minute = '00', second = '00'] = match
+  return normalizeTimestamp(`${year}-${month}-${day}T${hour}:${minute}:${second}+09:00`)
+}
+
+function stableStringify(value: unknown): string {
+  if (value === null || typeof value !== 'object') return JSON.stringify(value)
+  if (Array.isArray(value)) return `[${value.map(stableStringify).join(',')}]`
+  const record = value as Record<string, unknown>
+  return `{${Object.keys(record).sort().map(key => `${JSON.stringify(key)}:${stableStringify(record[key])}`).join(',')}}`
+}
+
+/** Stable semantic fingerprint; this is an identity checksum, not a security primitive. */
+export function fingerprintCsvSemanticContent(value: unknown): string {
+  const serialized = stableStringify(value)
+  let hash = 0x811c9dc5
+  for (let index = 0; index < serialized.length; index += 1) {
+    hash ^= serialized.charCodeAt(index)
+    hash = Math.imul(hash, 0x01000193)
+  }
+  return `fnv1a32:${(hash >>> 0).toString(16).padStart(8, '0')}`
+}
+
+export function buildCsvSourceProvenance(input: {
+  text: string
+  fileName: string
+  fileLastModified: number
+  semanticContent: unknown
+}): CsvSourceProvenance {
+  const explicit = extractStructuredTimestamp(input.text)
+  let fileLastModified: string | null = null
+  if (Number.isFinite(input.fileLastModified) && input.fileLastModified > 0) {
+    const fileDate = new Date(input.fileLastModified)
+    if (Number.isFinite(fileDate.getTime())) fileLastModified = fileDate.toISOString()
+  }
+  const filenameTimestamp = extractFilenameTimestamp(input.fileName)
+  const selected = explicit ?? (filenameTimestamp
+    ? { sourceAsOf: filenameTimestamp, sourceAsOfKind: 'filename' as const, sourceAsOfConfidence: 'weak' as const }
+    : fileLastModified
+      ? { sourceAsOf: fileLastModified, sourceAsOfKind: 'file_last_modified' as const, sourceAsOfConfidence: 'weak' as const }
+      : { sourceAsOf: null, sourceAsOfKind: 'unknown' as const, sourceAsOfConfidence: 'unknown' as const })
+
+  return {
+    ...selected,
+    contentFingerprint: fingerprintCsvSemanticContent(input.semanticContent),
+    sourceFileName: input.fileName || null,
+    fileLastModified,
+  }
+}
+
+export type CsvImportMonotonicityDecision =
+  | 'ALLOW_FIRST_IMPORT'
+  | 'ALLOW_NEWER'
+  | 'ALLOW_FIRST_KNOWN'
+  | 'DUPLICATE'
+  | 'REJECT_STALE'
+  | 'REJECT_CONFLICT'
+  | 'REJECT_UNKNOWN_DOWNGRADE'
+
+export function evaluateCsvImportMonotonicity(input: {
+  incoming: CsvImportProvenance
+  current: CsvImportProvenance | null
+  currentGenerationExists: boolean
+}): { decision: CsvImportMonotonicityDecision } {
+  const { incoming, current, currentGenerationExists } = input
+  if (!currentGenerationExists) return { decision: 'ALLOW_FIRST_IMPORT' }
+  const sameContent = current !== null && incoming.contentFingerprint === current.contentFingerprint
+
+  const incomingAuthoritative = incoming.sourceAsOfConfidence === 'authoritative' && incoming.sourceAsOf !== null
+  const currentAuthoritative = current?.sourceAsOfConfidence === 'authoritative' && current.sourceAsOf !== null
+
+  if (incomingAuthoritative && currentAuthoritative && current) {
+    const incomingTime = Date.parse(incoming.sourceAsOf!)
+    const currentTime = Date.parse(current.sourceAsOf!)
+    if (incomingTime > currentTime) return { decision: 'ALLOW_NEWER' }
+    if (incomingTime < currentTime) return { decision: sameContent ? 'DUPLICATE' : 'REJECT_STALE' }
+    return { decision: sameContent ? 'DUPLICATE' : 'REJECT_CONFLICT' }
+  }
+  if (incomingAuthoritative && !currentAuthoritative) return { decision: 'ALLOW_FIRST_KNOWN' }
+  if (sameContent) {
+    // Copying/renaming the same semantic CSV can change weak file metadata. A metadata downgrade
+    // or an older identical snapshot preserves the current (stronger/newer) provenance as a no-op.
+    return { decision: 'DUPLICATE' }
+  }
+  if (!incomingAuthoritative && currentAuthoritative) return { decision: 'REJECT_UNKNOWN_DOWNGRADE' }
+
+  // Weak/unknown timestamps are retained for provenance display but never authorize a silent
+  // overwrite. In particular, import operation time and a freshly copied file's mtime are not
+  // evidence that the portfolio snapshot itself is newer.
+  return { decision: 'REJECT_UNKNOWN_DOWNGRADE' }
+}

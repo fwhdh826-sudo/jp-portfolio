@@ -286,6 +286,9 @@ export interface SystemState {
   status: SystemStatus
   lastUpdated: string | null
   csvLastImportedAt: string | null
+  // T9-A004: csvLastImportedAtは取込操作時刻。CSVデータ自体の基準時点は
+  // csvImportProvenance.sourceAsOfとして別に保持し、両者を鮮度比較で混同しない。
+  csvImportProvenance?: CsvImportProvenance | null
   analysisLastRunAt: string | null
   error: string | null
   dataSourceStatus: {
@@ -341,6 +344,29 @@ export interface SystemState {
   // P4.5-A013-T6: 直近CSV取込結果の集計（表示専用）。importPortfolioCsv成功時のみ更新し、
   // 失敗時・portfolio snapshot importでは変更しない（虚偽の成功表示を避けるため）。
   csvSyncSummary?: CsvSyncSummary | null
+}
+
+export type CsvSourceAsOfKind =
+  | 'csv_explicit'
+  | 'csv_exported_at'
+  | 'filename'
+  | 'file_last_modified'
+  | 'unknown'
+
+export type CsvSourceAsOfConfidence = 'authoritative' | 'weak' | 'unknown'
+
+export interface CsvSourceProvenance {
+  sourceAsOf: string | null
+  sourceAsOfKind: CsvSourceAsOfKind
+  sourceAsOfConfidence: CsvSourceAsOfConfidence
+  contentFingerprint: string
+  sourceFileName: string | null
+  fileLastModified: string | null
+}
+
+export interface CsvImportProvenance extends CsvSourceProvenance {
+  /** CSV取込操作を開始した時刻。sourceAsOfの代用品にはしない。 */
+  importedAt: string
 }
 
 // P4.5-A013-T6: CSV取込1回分の変更点サマリ（表示専用。投資判断ロジックは参照しない）。

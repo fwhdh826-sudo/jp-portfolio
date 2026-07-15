@@ -1,4 +1,5 @@
-import type { Holding, Trust } from '../../types'
+import type { CsvSourceProvenance, Holding, Trust } from '../../types'
+import { buildCsvSourceProvenance } from './csvProvenance'
 
 type AssetType = 'stock' | 'trust'
 type AccountHint = '' | '特定' | 'NISA成長' | 'NISA積立'
@@ -154,7 +155,7 @@ export async function importPortfolioCsv(
   file: File,
   holdings: Holding[],
   trust: Trust[],
-): Promise<{ holdings: Holding[]; trust: Trust[]; trustSync: TrustSyncReport }> {
+): Promise<{ holdings: Holding[]; trust: Trust[]; trustSync: TrustSyncReport; sourceProvenance: CsvSourceProvenance }> {
   const text = await readFileAsText(file)
   const { rows, trustSectionSeen } = parseRows(text)
   if (rows.length === 0) throw new Error('CSV: 有効な行が見つかりませんでした')
@@ -281,7 +282,27 @@ export async function importPortfolioCsv(
     }
   }
 
-  return { holdings: updatedHoldings, trust: updatedTrust, trustSync }
+  const semanticRows = rows
+    .map(row => ({
+      assetType: row.assetType,
+      code: row.code,
+      name: row.name,
+      eval: row.eval,
+      pnlPct: row.pnlPct,
+      dayPct: row.dayPct,
+      price: row.price,
+      acquiredAt: row.acquiredAt ?? null,
+      accountHint: row.accountHint,
+    }))
+    .sort((left, right) => JSON.stringify(left).localeCompare(JSON.stringify(right)))
+  const sourceProvenance = buildCsvSourceProvenance({
+    text,
+    fileName: String(file.name || ''),
+    fileLastModified: Number(file.lastModified || 0),
+    semanticContent: { trustSectionSeen, rows: semanticRows },
+  })
+
+  return { holdings: updatedHoldings, trust: updatedTrust, trustSync, sourceProvenance }
 }
 
 // P4.5-A013-T2: CSVにしか存在しない新規銘柄のHolding生成。

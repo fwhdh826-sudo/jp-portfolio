@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import type { CsvSyncSummary, Holding, LearningState, Trust } from '../types'
+import type { CsvImportProvenance, CsvSyncSummary, Holding, LearningState, Trust } from '../types'
 import {
   CSV_IMPORT_GENERATION_KEY,
   CsvImportCanonicalConflictError,
@@ -136,6 +136,18 @@ function payload(label: string): CsvImportPersistencePayload {
   }
 }
 
+function provenance(importedAt: string): CsvImportProvenance {
+  return {
+    importedAt,
+    sourceAsOf: '2026-07-15T00:00:00.000Z',
+    sourceAsOfKind: 'csv_explicit',
+    sourceAsOfConfidence: 'authoritative',
+    contentFingerprint: 'fnv1a32:12345678',
+    sourceFileName: 'portfolio.csv',
+    fileLastModified: '2026-07-15T01:00:00.000Z',
+  }
+}
+
 describe('T9-A003: committed CSV generation durability and recovery', () => {
   const store: Record<string, string> = {}
   const storage = {
@@ -167,6 +179,88 @@ describe('T9-A003: committed CSV generation durability and recovery', () => {
       status: 'committed',
       snapshot: next.trustShortSnapshot,
     })
+  })
+
+  it('T9-A004: v2 canonical persists and restores validated CSV provenance', () => {
+    const next = payload('new')
+    next.provenance = provenance(next.importedAt)
+
+    persistCsvImportTransaction(next, Date.parse('2026-07-15T03:00:00.000Z'))
+
+    const physical = JSON.parse(store[CSV_IMPORT_GENERATION_KEY])
+    expect(physical.manifest.schemaVersion).toBe('csv-import-generation-2')
+    expect(restoreCsvImportGeneration()).toMatchObject({
+      status: 'committed',
+      payload: { provenance: next.provenance },
+    })
+  })
+
+  it('T9-A004: checksum-valid v1 canonical without provenance remains reload-compatible', () => {
+    const legacyPayload = payload('old')
+    const serializedPayload = JSON.stringify(legacyPayload)
+    store[CSV_IMPORT_GENERATION_KEY] = JSON.stringify({
+      manifest: {
+        schemaVersion: 'csv-import-generation-1',
+        generationId: 'legacy-generation',
+        savedAt: Date.parse('2026-07-14T00:00:00.000Z'),
+        committed: true,
+        payloadChecksum: checksum(serializedPayload),
+      },
+      payload: legacyPayload,
+    })
+
+    const restored = restoreCsvImportGeneration()
+    expect(restored).toMatchObject({ status: 'committed', generationId: 'legacy-generation' })
+    if (restored.status !== 'committed') throw new Error('expected legacy committed generation')
+    expect(restored.payload.provenance).toBeUndefined()
+    expect(restorePortfolio()).toEqual(legacyPayload.holdings)
+    expect(restoreTrust()).toEqual(legacyPayload.trust)
+  })
+
+  it('T9-A004: the next coordinated replacement explicitly migrates v1 to v2 with null provenance', () => {
+    const legacyPayload = payload('old')
+    const serializedPayload = JSON.stringify(legacyPayload)
+    store[CSV_IMPORT_GENERATION_KEY] = JSON.stringify({
+      manifest: {
+        schemaVersion: 'csv-import-generation-1',
+        generationId: 'legacy-generation',
+        savedAt: 1,
+        committed: true,
+        payloadChecksum: checksum(serializedPayload),
+      },
+      payload: legacyPayload,
+    })
+    const restored = restoreCsvImportGeneration()
+    if (restored.status !== 'committed') throw new Error('expected legacy committed generation')
+
+    persistCsvImportTransaction({ ...restored.payload, provenance: null }, 2, store[CSV_IMPORT_GENERATION_KEY])
+
+    const migrated = JSON.parse(store[CSV_IMPORT_GENERATION_KEY])
+    expect(migrated.manifest.schemaVersion).toBe('csv-import-generation-2')
+    expect(migrated.payload.provenance).toBeNull()
+    expect(restoreCsvImportGeneration()).toMatchObject({ status: 'committed' })
+  })
+
+  it.each([
+    ['missing provenance key', (value: any) => { delete value.provenance }],
+    ['invalid source timestamp', (value: any) => { value.provenance.sourceAsOf = 'not-a-date' }],
+    ['invalid fingerprint', (value: any) => { value.provenance.contentFingerprint = 'raw-hash' }],
+    ['unknown confidence', (value: any) => { value.provenance.sourceAsOfConfidence = 'certain' }],
+    ['kind/confidence mismatch', (value: any) => { value.provenance.sourceAsOfKind = 'filename' }],
+    ['importedAt mismatch', (value: any) => { value.provenance.importedAt = '2026-07-01T00:00:00.000Z' }],
+    ['unknown provenance key', (value: any) => { value.provenance.unexpected = true }],
+  ])('T9-A004: checksum-valid malformed v2 provenance (%s) fails closed', (_label, mutate) => {
+    const next = payload('new')
+    next.provenance = provenance(next.importedAt)
+    persistCsvImportTransaction(next)
+    const envelope = JSON.parse(store[CSV_IMPORT_GENERATION_KEY])
+    mutate(envelope.payload)
+    envelope.manifest.payloadChecksum = checksum(JSON.stringify(envelope.payload))
+    store[CSV_IMPORT_GENERATION_KEY] = JSON.stringify(envelope)
+
+    expect(restoreCsvImportGeneration()).toEqual({ status: 'invalid' })
+    expect(restorePortfolio()).toBeNull()
+    expect(restoreTrust()).toBeNull()
   })
 
   it('tracker canonical status distinguishes absent and present-invalid without legacy ambiguity', () => {

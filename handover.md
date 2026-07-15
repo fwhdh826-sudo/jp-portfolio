@@ -43813,6 +43813,170 @@ AssetSnapshotMini → AllocationGapStrip → 今日のアクション[TodoCard/R
   main未反映のため別チケットで対応
 - v10.css未使用クラスの安全な削除（R6）
 
+## T9-A004: stale CSV protection / CSV provenance and monotonicity
+
+### 実施基準
+
+- source commit: `9411509b18a38ec204ea127b0cc59cc2cde38f92`
+- branch: `v13.3-dev`
+- goal: 古い／provenance不明CSVが新しいcommitted portfolio generationをsilent regressionさせない
+- commit/push/merge/rebase/branch switchは未実施
+
+### 現行監査とroot cause
+
+- browser parser入口は`importPortfolioCsv()`、FileReaderは`readAsArrayBuffer()`、UTF-8とShift-JISを
+  両decodeして日本語keyword scoreの高い方を採用する
+- parsed rowはstock/trust、code/name、eval、pnlPct/dayPct、price、`acquiredAt`、accountHint。
+  full-sync後にholdings/trustへ分割反映する
+- 実SBI fixtureのヘッダーは現在値／評価額／損益／前日比／買付日等であり、export時刻・
+  portfolio snapshot時刻を示す列／preamble metadataは存在しない
+- `取得日/買付日/購入日`はholding取得日であり、portfolio snapshot freshnessには使用しない。
+  trust rowにもsnapshot時点はない
+- 旧`csvLastImportedAt`は`analysisNow`から作るCSV取込操作時刻であり、source data timeではない。
+  canonical v1 payloadの`importedAt`、legacy key、hydrate、T9表示へ伝播していた
+- parserはCSV内snapshot/export timestamp、filename date、`File.lastModified`を一切読まず、
+  canonical generationにもsource provenance/content identityが無かった
+- `initialize/refreshAllData`のpublished snapshot優先判定がoperation timeをsource freshnessとして
+  比較していたため、A004でauthoritative `sourceAsOf`へ切替えた。unknown currentはfail-safeで保護する
+- `runFullAnalysis`/officialDecisionの直接時刻比較はない。candidate gateは`csvLastImportedAt != null`を
+  static INITIAL_TRUSTか手動import済みかのmarkerとしてのみ使う。コメントをsource freshnessでない旨へ修正した
+
+### Timestamp inventory / authority
+
+| Candidate | Classification | Policy |
+|---|---|---|
+| CSV top-level `データ基準日時/データ基準日/スナップショット日時/スナップショット時点` | A authoritative | `csv_explicit`、monotonic比較に使用 |
+| CSV `出力日時/エクスポート日時/ダウンロード日時/作成日時` | B weak | provenance保持のみ。silent overwriteを許可しない |
+| filename date/time | B weak | `filename`。renameでfresh扱いしない |
+| `File.lastModified` | B weak | `file_last_modified`。copy todayでfresh扱いしない |
+| valuation date | fixture/現parser対象に存在せず | 観測事実なし。推測利用しない |
+| trade/acquisition date (`acquiredAt`) | C unrelated business date | snapshot freshness利用禁止 |
+| browser import time | D unsafe for source comparison | `importedAt`として操作監査のみ |
+
+Precedenceはexplicit snapshot > structured export time > filename > File.lastModified > unknown。
+explicitとweak metadataが競合した場合はexplicitが常に優先される。
+
+### Provenance / canonical model
+
+`CsvImportProvenance`:
+
+- `importedAt`: 操作開始時刻
+- `sourceAsOf`: source snapshot時刻またはnull
+- `sourceAsOfKind`: `csv_explicit | csv_exported_at | filename | file_last_modified | unknown`
+- `sourceAsOfConfidence`: `authoritative | weak | unknown`
+- `contentFingerprint`: normalized semantic rowsの`fnv1a32:<8hex>` identity checksum
+- `sourceFileName`, `fileLastModified`: non-authoritative audit provenance
+
+committed generation time/idはcanonical manifestの`savedAt`/`generationId`として別管理する。
+`savedAt`はpersistence直前のclockで、`importedAt`（transaction開始clock）や`sourceAsOf`とは別意味。
+
+canonical schemaは`csv-import-generation-2`へbump。v2 payloadの`provenance`はrequired keyで
+`null | validated provenance`。deep exact-key、timestamp、kind/confidence整合、fingerprint形式、
+payload.importedAt一致、checksumを検証する。v1はv1 exact-key/checksumでreload互換を維持し、
+次のcoordinated full replacementでv2 + `provenance:null`へ明示migrationする。present-invalidは
+従来どおりlegacy fallback禁止。
+
+### Semantic fingerprint
+
+- raw bytesではなく、parserがaggregateしたstock/trust source rowsをsemantic fieldsへ射影しsortしてhashする
+- row order、raw whitespace、line ending、UTF-8/Shift-JIS表現、irrelevant columnsはidentityを変えない
+- asset/account/code/name/eval/pnl/day/price/acquiredAtとtrust section presenceはidentityへ含める
+- duplicate rowはparserの既存aggregate semantics後の意味内容で比較する
+- security hashではなくduplicate/conflict identity checksum。canonical envelope checksumとは別責務
+
+### Monotonicity / duplicate / unknown policy
+
+| Incoming / current | Guard | Result / side effect |
+|---|---|---|
+| first import | `ALLOW_FIRST_IMPORT` | normal `SUCCESS` |
+| authoritative newer | `ALLOW_NEWER` | normal `SUCCESS`、provenance更新 |
+| authoritative older + different content | `REJECT_STALE` | `STALE_CSV`、portfolio side effect 0 |
+| same authoritative time + same content | `DUPLICATE` | `DUPLICATE_CSV` no-op |
+| same authoritative time + different content | `REJECT_CONFLICT` | `CSV_PROVENANCE_CONFLICT` |
+| older authoritative + identical content | `DUPLICATE` | newer current provenanceを保持するno-op |
+| incoming authoritative / current weak・unknown・v1 null | `ALLOW_FIRST_KNOWN` | normal `SUCCESS` |
+| incoming weak・unknown / current authoritative | `REJECT_UNKNOWN_DOWNGRADE` | first attemptは`CSV_PROVENANCE_UNKNOWN` |
+| both weak/unknown + same content | `DUPLICATE` | rename/copy metadata差でもno-op |
+| both weak/unknown + different content | `REJECT_UNKNOWN_DOWNGRADE` | first attemptはconfirmation-required |
+
+weak/unknown拒否だけはT9に明示再取込ボタンを出し、同じFileを
+`confirmUnknownProvenance:true`で再評価してから進められる。確認後もconfidenceはweak/unknownのまま保存し、
+freshへ格上げしない。authoritative staleとsame-time authoritative conflictは確認でoverrideできない。
+
+### Import timing / atomicity / concurrency
+
+flowはFileReader/decode → parse/full-sync staging → semantic provenance → exact captured canonical再確認 →
+pure monotonic guard → trust staging → fixed-clock analysis/officialDecision → pre-write CAS → canonical v2 write →
+post-write owner/tracker CAS → one Zustand publish。
+
+stale/conflict/unknown first rejectionおよびduplicateはanalysis/persistence/tracker telemetry前にreturnする。
+holdings、trust、analysis、officialDecision、learning、universe、plans、candidates、csv metadata、canonical、
+tracker bytesを維持し、portfolio subscriber notificationは0、owner/loadingはfinallyで解放、retry可能。
+
+既存adversarial coverageでpending import + state mutation、second/nested import、canonical pre-write conflict、
+post-write exact-byte ownership loss、tracker mismatch/rollback、subscriber throw、clock crossingを再確認。
+canonicalがFileReader中に変わった場合はprovenance判定前に`IMPORT_CONFLICT`。duplicate/staleはtracker write 0。
+
+### Persistence/provenance matrix
+
+| Case | Canonical/global/csvLastImportedAt | Notification | Retry |
+|---|---|---:|---|
+| first explicit | v2/current incomingで一致 | 1 logical | yes |
+| newer explicit | v2/current incomingで一致 | 1 logical | yes |
+| older explicit | unchanged | 0 | newer CSV可 |
+| same time/same content | unchanged | 0 | duplicate可 |
+| same time/different content | unchanged | 0 | corrected/newer CSV可 |
+| incoming unknown/current known | first attempt unchanged | 0 | explicit confirm可 |
+| incoming known/current unknown | v2/current knownへ更新 | 1 logical | yes |
+| both unknown/same content | unchanged | 0 | duplicate可 |
+| both unknown/different content | first attempt unchanged、confirm後v2更新 | 0 then 1 | yes |
+| weak vs authoritative | first attempt unchanged | 0 | explicit confirm可 |
+| explicit vs filename/mtime conflict | explicit採用 | normal policy | yes |
+| reload after success | v2 provenance hydrate | n/a | yes |
+| reload after rejection/duplicate | prior exact canonical hydrate | n/a | yes |
+| ownership loss / pre-write conflict | external exact bytes維持 | 0 | yes |
+
+### UI / observability impact
+
+- T9は`CSV取込操作`と`CSVデータ基準時刻`を分離表示する
+- stale/conflict/unknownはfixed structured messageのfailure表示でgreen禁止
+- duplicateはgreen successではなくneutral info (`ℹ`) 表示
+- unknown/weakは明示確認ボタンを表示。旧success feedbackは新attempt開始時にclear
+- `dataTimestamps/dataSourceStatus`へ大規模追加はせずA007へ残した
+- portfolio snapshotはCSV provenanceをtransportしないため、別端末snapshot operation timeを採用する際は
+  local `csvImportProvenance`をnull化し、別contentへ誤結合しない
+
+### RED / tests / verification
+
+- 旧`9411509` RED: newer explicit `2026-07-15` commit後にolder `2026-07-14`をimportすると
+  actual `SUCCESS`、expected `STALE_CSV`でfailすることを確認
+- pure provenance/monotonicity tests: 24
+- atomic import tests: 42（stale atomicity、same-time conflict、duplicate reference/canonical/tracker no-op、
+  unknown confirmation、first-known、mtime downgrade、retry、新er success、C1/C2/F1/F2/R1-R4/R6含む）
+- canonical durability/recovery tests: 55（v1/v2、migration、malformed provenance、exact-key/checksum含む）
+- T9 import contract tests: 7（pending、failure、duplicate neutral、confirmation option含む）
+- `npm run test:unit`: **874 passed / 44 files**
+- `npx tsc --noEmit`: pass
+- `npm run build`: pass（122 modules、既知の500kB chunk warningのみ）
+- `git diff --check`: pass
+- in-app Browserはenvironment unavailableのためmanual DOM verification未実施。UI contract tests/buildで代替
+
+### Regression / remaining
+
+- C1 exact-byte ownership: pass
+- C2 deterministic analysis clock / sell-lock: pass。analysisNowとgeneration savedAtの分離も固定
+- F1 owner/token nested protection: pass
+- F2 tracker stale-SUCCESS prevention: pass
+- R1 subscriber false-failure、R2 FileReader totality、R3 deep canonical schema、R4 helper boundary、
+  R6 present-invalid telemetry fallback: pass
+- SAFE_MODE、DQ、noTrade、headroom、scoring、allocation、candidate pipeline、P5-B004、
+  T0/T1/T2/T7 UI、workflow、production localStorage実データは未変更
+- known P2 tracker rollback（external tracker Eをbaselineで上書きし得る）は未修正。
+  A004 stale/conflict/duplicate pathはtracker write/rollback 0で頻度を増やさない
+- R8 raw underlying error.messageの既存UI到達はP3 follow-upのまま。A004新規codeはfixed messageのみ
+- remaining tickets: T9-A005 zero-row full-sync、A006 parser hardening、A007 observability、A008 E2E gate
+- verdict: **B: READY WITH FOLLOW-UP**（A004 completion gate達成。P2/P3とA005〜A008のみ残る）
+
 ## T9-A001/A002-R4 + T9-A003-R3: canonical ownership / sell-lock clock closure
 
 ### 実施日・基準

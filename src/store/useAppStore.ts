@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import type { AppState, Holding, Trust, TabId, StockScoreRecord, FundPhase7Map, OfficialDecision, OfficialDecisionItem, OfficialDecisionAction, PortfolioPolicy, CashAssumptions, CsvSyncSummary, SystemState } from '../types'
+import type { AppState, Holding, Trust, TabId, StockScoreRecord, FundPhase7Map, OfficialDecision, OfficialDecisionItem, OfficialDecisionAction, PortfolioPolicy, CashAssumptions, CsvImportProvenance, CsvSyncSummary, SystemState } from '../types'
 import { DEFAULT_PORTFOLIO_POLICY, DEFAULT_CASH_ASSUMPTIONS } from '../types'
 import { INITIAL_HOLDINGS } from '../constants/holdings'
 import { INITIAL_TRUST } from '../constants/trust'
@@ -29,6 +29,7 @@ import {
   restoreCsvImportedAt,
   restoreCsvSyncSummary,
   restoreCsvImportGeneration,
+  restoreCsvImportGenerationFromRaw,
   persistCsvImportTransaction,
   readCsvImportCanonicalRaw,
   ownsCsvImportCanonicalBytes,
@@ -42,6 +43,7 @@ import {
   getPortfolioStorageFreshness,
   getTrustStorageFreshness,
 } from './persist'
+import { evaluateCsvImportMonotonicity } from '../domain/csv/csvProvenance'
 import { buildAssetUniverse, checkNoTrade } from '../domain/optimization/idealAllocation'
 import { updatePerformanceTracker } from '../domain/learning/performanceTracker'
 import { buildTrustPortfolioPlan } from '../domain/optimization/trustPortfolio'
@@ -79,7 +81,7 @@ interface AppActions {
   // 全データ再取得 → 全再計算 → Store一括更新
   refreshAllData: () => Promise<void>
   // CSV取込 → 即時再分析
-  importCsv: (file: File) => Promise<CsvImportResult>
+  importCsv: (file: File, options?: CsvImportOptions) => Promise<CsvImportResult>
   // タブ切替
   setTab: (tab: TabId) => void
   // holding手動更新（score等）
@@ -104,6 +106,11 @@ interface AppActions {
     { ok: true; skippedTrustIds?: string[] } | { ok: false; error: string }
 }
 
+export interface CsvImportOptions {
+  /** Weak/unknown source provenance may proceed only after an explicit user confirmation. */
+  confirmUnknownProvenance?: boolean
+}
+
 export type CsvImportErrorCode =
   | 'FILE_READ_ERROR'
   | 'PARSE_ERROR'
@@ -114,22 +121,26 @@ export type CsvImportErrorCode =
   | 'PERSISTENCE_ERROR'
   | 'IMPORT_CONFLICT'
   | 'IMPORT_IN_PROGRESS'
+  | 'STALE_CSV'
+  | 'CSV_PROVENANCE_CONFLICT'
+  | 'CSV_PROVENANCE_UNKNOWN'
   | 'UNKNOWN_ERROR'
 
 export type CsvImportResult =
   | {
       ok: true
-      code: 'SUCCESS'
+      code: 'SUCCESS' | 'DUPLICATE_CSV'
       message: string
       imported: {
         stock: { updated: number; added: number; removed: number }
         trust: { updated: number; reheld: number; zeroed: number; unknown: number; ambiguous: number }
       }
       warnings: string[]
-      analysisCommitted: true
-      officialDecisionCommitted: true
-      persistence: { status: 'committed' }
+      analysisCommitted: boolean
+      officialDecisionCommitted: boolean
+      persistence: { status: 'committed' | 'not_attempted' }
       importedAt: string
+      provenance: CsvImportProvenance
     }
   | {
       ok: false
@@ -254,6 +265,7 @@ export function buildPortfolioAnalysisFingerprint(
     serialize('regimeState', state.regimeState),
     serialize('safeMode', state.safeMode),
     serialize('csvLastImportedAt', state.system.csvLastImportedAt),
+    serialize('csvImportProvenance', state.system.csvImportProvenance ?? null),
     serialize('dataSourceStatus', state.system.dataSourceStatus),
     serialize('dataTimestamps', state.system.dataTimestamps),
     serialize('trustShortTracker', trackerFingerprint),
@@ -378,6 +390,7 @@ function persistCurrentPortfolioGeneration(state: AppState): void {
         trust: state.trust,
         learning: state.learning,
         importedAt: state.system.csvLastImportedAt ?? canonical.payload.importedAt,
+        provenance: state.system.csvImportProvenance ?? canonical.payload.provenance ?? null,
         syncSummary: state.system.csvSyncSummary ?? canonical.payload.syncSummary,
         trustShortSnapshot: canonical.payload.trustShortSnapshot,
       })
@@ -604,23 +617,24 @@ function dataAgeDays(value: string | null | undefined, nowMs: number): number | 
   return Math.floor(diffMs / (1000 * 60 * 60 * 24))
 }
 
-// ── P4.5-A013-T4: published holdings/trust snapshotが新しいユーザー保有状態を
-// 上書きしないための優先順位判定。csvLastImportedAt（CSV取込・portfolio snapshot
-// importで更新される「現在の保有状態の基準時刻」）より新しいsnapshotのみ適用する。
+// ── P4.5-A013-T4 / T9-A004: published holdings/trust snapshotが新しいユーザー保有状態を
+// 上書きしないための優先順位判定。currentSourceAsOfはsource data自体の基準時刻であり、
+// CSV取込操作時刻csvLastImportedAtとは明確に分離する。
 // getPortfolioStorageFreshness等のlocalStorage鮮度（stale警告用・initialize/
 // refreshAllDataの度に更新される表示専用の値）はここでは使わない。混同すると
 // 「再読み込みしただけ」でsnapshotが常に適用可能になってしまうため。
 export function shouldApplyPublishedSnapshot(
   snapshotLastUpdated: string | null | undefined,
-  csvLastImportedAt: string | null,
+  currentSourceAsOf: string | null,
+  hasCurrentPortfolioGeneration = false,
 ): boolean {
   const snapshotTime = parseDataTimestamp(snapshotLastUpdated)
   if (!snapshotTime) return false // timestamp不明のsnapshotは常にfail-safeで適用しない
 
-  if (!csvLastImportedAt) return true // ユーザー側に保護すべき更新時刻がなければ適用してよい
+  if (!currentSourceAsOf) return !hasCurrentPortfolioGeneration
 
-  const csvTime = parseDataTimestamp(csvLastImportedAt)
-  if (!csvTime) return true // csvLastImportedAt自体が不正な場合は保護対象なしとして適用する
+  const csvTime = parseDataTimestamp(currentSourceAsOf)
+  if (!csvTime) return !hasCurrentPortfolioGeneration
 
   return snapshotTime.getTime() > csvTime.getTime() // 同値以下は適用しない（逆行防止）
 }
@@ -821,10 +835,11 @@ export function runFullAnalysis(
     // 恒久的に停止された（dataTimestamps.trustは今後常にnull）ため、この基準のままでは
     // 実際のCSV full-sync（P4.5-A013-T3）で得た信頼できるeval値があっても候補パイプ
     // ラインが恒久的に停止してしまう。
-    // 保有データ鮮度（csvLastImportedAt: CSV取込・portfolio snapshot importで更新）と
+    // 保有データが手動import済みかを示すoperation marker（csvLastImportedAt）と
     // trust registryのmetadata鮮度（id/policy/cost/mu/sigma — INITIAL_TRUSTのハード
     // コードが常にsource of truthでtrust_masterの成否に依存しない）は別物であるため、
-    // ゲートは「eval値が信頼できるか」を表すcsvLastImportedAtの有無で判定する。
+    // ゲートは「INITIAL_TRUSTの静的evalのままか」を分けるcsvLastImportedAtの有無で判定する。
+    // T9-A004: これはsource freshness比較ではなく、sourceAsOfの代用にも使用しない。
     // csvLastImportedAtが無い（CSV未取込＝INITIAL_TRUSTの静的eval:0のまま）場合のみ
     // 候補パイプラインを停止する。市場鮮度・SAFE_MODE・DQ等のstale判定はここでは
     // 混同せず、scoreCandidates内の既存gate（baseCtxのdqSuppressed/safeModeActive等）
@@ -995,6 +1010,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
     status: 'idle',
     lastUpdated: null,
     csvLastImportedAt: null,
+    csvImportProvenance: null,
     csvSyncSummary: null,
     analysisLastRunAt: null,
     error: null,
@@ -1061,6 +1077,9 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
       const savedCsvSyncSummary = csvGeneration.status === 'committed' || useLegacy
         ? restoreCsvSyncSummary()
         : null
+      const savedCsvProvenance = csvGeneration.status === 'committed'
+        ? csvGeneration.payload.provenance ?? null
+        : null
       const savedPolicy = restorePortfolioPolicy()
       const savedCashAssumptions = restoreCashAssumptions()
       set(s => ({
@@ -1073,6 +1092,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
           ...s.system,
           ...(savedCsvAt ? { csvLastImportedAt: savedCsvAt } : {}),
           ...(savedCsvSyncSummary ? { csvSyncSummary: savedCsvSyncSummary } : {}),
+          csvImportProvenance: savedCsvProvenance,
         },
       }))
       // P4.5-A012d: holdings/trustのlocalStorage鮮度を表示専用でsystemへ反映する。
@@ -1091,11 +1111,14 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
       const { market, correlation, news, trust, holdingsSnapshot, macro, nikkeiVI, sq, margin, flows, candidatesNews, candidatesStocks, regimeState, safeMode, tierAViolations, tierAAlerts } = result
 
       set(s => {
-        const csvLastImportedAt = s.system.csvLastImportedAt
-        const nextTrust = trust.data && shouldApplyPublishedSnapshot(trust.lastUpdated, csvLastImportedAt)
+        const sourceAsOf = s.system.csvImportProvenance?.sourceAsOfConfidence === 'authoritative'
+          ? s.system.csvImportProvenance.sourceAsOf
+          : null
+        const hasCurrentGeneration = s.system.csvLastImportedAt !== null
+        const nextTrust = trust.data && shouldApplyPublishedSnapshot(trust.lastUpdated, sourceAsOf, hasCurrentGeneration)
           ? s.trust.map(f => { const d = trust.data!.find(x => x.id === f.id); return d ? { ...f, ...d } : f })
           : s.trust
-        const snapshotMergedHoldings = shouldApplyPublishedSnapshot(holdingsSnapshot.lastUpdated, csvLastImportedAt)
+        const snapshotMergedHoldings = shouldApplyPublishedSnapshot(holdingsSnapshot.lastUpdated, sourceAsOf, hasCurrentGeneration)
           ? applyHoldingsSnapshot(s.holdings, holdingsSnapshot.data)
           : s.holdings
         // volatilities反映
@@ -1209,11 +1232,14 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
       const { market, correlation, news, trust, holdingsSnapshot, macro, nikkeiVI, sq, margin, flows, candidatesNews, candidatesStocks, regimeState, safeMode, tierAViolations, tierAAlerts } = result
 
       set(s => {
-        const csvLastImportedAt = s.system.csvLastImportedAt
-        const nextTrust = trust.data && shouldApplyPublishedSnapshot(trust.lastUpdated, csvLastImportedAt)
+        const sourceAsOf = s.system.csvImportProvenance?.sourceAsOfConfidence === 'authoritative'
+          ? s.system.csvImportProvenance.sourceAsOf
+          : null
+        const hasCurrentGeneration = s.system.csvLastImportedAt !== null
+        const nextTrust = trust.data && shouldApplyPublishedSnapshot(trust.lastUpdated, sourceAsOf, hasCurrentGeneration)
           ? s.trust.map(f => { const d = trust.data!.find(x => x.id === f.id); return d ? { ...f, ...d } : f })
           : s.trust
-        const snapshotMergedHoldings = shouldApplyPublishedSnapshot(holdingsSnapshot.lastUpdated, csvLastImportedAt)
+        const snapshotMergedHoldings = shouldApplyPublishedSnapshot(holdingsSnapshot.lastUpdated, sourceAsOf, hasCurrentGeneration)
           ? applyHoldingsSnapshot(s.holdings, holdingsSnapshot.data)
           : s.holdings
         const holdingsWithVol = correlation.data
@@ -1288,7 +1314,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
   },
 
   // ── CSV取込（個別株 + 投信 両対応）──────────────────────────
-  importCsv: async (file: File) => {
+  importCsv: async (file: File, options = {}) => {
     if (activeCsvImportTransaction !== null || get().system.status === 'loading') {
       return csvImportFailure('IMPORT_IN_PROGRESS', '別の取込または更新が進行中です。完了後に再試行してください。')
     }
@@ -1342,9 +1368,76 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
         return publishFailure(classifyCsvParseFailure(error))
       }
 
-      const { holdings: updatedH, trust: updatedT, trustSync } = parsed
+      // The monotonicity decision must be based on the exact canonical bytes captured at the
+      // transaction boundary. If ownership already changed while FileReader was pending, report
+      // the concurrency conflict before interpreting provenance from a stale baseline.
+      if (readCsvImportCanonicalRaw() !== transaction.canonicalPreviousRaw) {
+        return publishFailure(csvImportFailure(
+          'IMPORT_CONFLICT',
+          '取込中にcanonical世代が変更されました。外部の世代を維持したまま再試行してください。',
+        ))
+      }
+
+      const { holdings: updatedH, trust: updatedT, trustSync, sourceProvenance } = parsed
       setCsvImportTransactionPhase(transaction, 'STAGING')
       const now = new Date(transaction.analysisNow).toISOString()
+      const incomingProvenance: CsvImportProvenance = { importedAt: now, ...sourceProvenance }
+      const currentGeneration = restoreCsvImportGenerationFromRaw(transaction.canonicalPreviousRaw)
+      const monotonicity = evaluateCsvImportMonotonicity({
+        incoming: incomingProvenance,
+        current: currentGeneration.status === 'committed'
+          ? currentGeneration.payload.provenance ?? null
+          : null,
+        currentGenerationExists: currentGeneration.status === 'committed',
+      })
+
+      if (monotonicity.decision === 'DUPLICATE') {
+        const currentProvenance = currentGeneration.status === 'committed'
+          ? currentGeneration.payload.provenance
+          : null
+        if (!currentProvenance) {
+          return publishFailure(csvImportFailure(
+            'CSV_PROVENANCE_UNKNOWN',
+            '現在のCSV世代のprovenanceを確認できないため、同一内容として確定できませんでした。状態は変更されていません。',
+          ))
+        }
+        set(s => ({ system: { ...s.system, status: 'success', error: null } }))
+        return {
+          ok: true,
+          code: 'DUPLICATE_CSV',
+          message: '同じ内容のCSVは既に取り込み済みです。portfolio generationは変更していません。',
+          imported: {
+            stock: { updated: 0, added: 0, removed: 0 },
+            trust: { updated: 0, reheld: 0, zeroed: 0, unknown: 0, ambiguous: 0 },
+          },
+          warnings: [],
+          analysisCommitted: false,
+          officialDecisionCommitted: false,
+          persistence: { status: 'not_attempted' },
+          importedAt: currentProvenance.importedAt,
+          provenance: currentProvenance,
+        }
+      }
+      if (monotonicity.decision === 'REJECT_STALE') {
+        return publishFailure(csvImportFailure(
+          'STALE_CSV',
+          'CSVのデータ基準時刻が現在のportfolio generationより古いため、取込を中断しました。状態は変更されていません。',
+        ))
+      }
+      if (monotonicity.decision === 'REJECT_CONFLICT') {
+        return publishFailure(csvImportFailure(
+          'CSV_PROVENANCE_CONFLICT',
+          '同じデータ基準時刻で内容が異なるCSVを検出したため、取込を中断しました。状態は変更されていません。',
+        ))
+      }
+      if (monotonicity.decision === 'REJECT_UNKNOWN_DOWNGRADE') {
+        if (!options.confirmUnknownProvenance) {
+          return publishFailure(csvImportFailure(
+            'CSV_PROVENANCE_UNKNOWN',
+            'CSVデータの基準時刻を信頼できず、現在のportfolio generationより新しいと確認できません。状態は変更されていません。内容を確認した上で明示的な再取込が必要です。',
+          ))
+        }
+      }
       const stagedTrustExecution = stageTrustExecutionFromCsvSync(
         updatedT,
         now,
@@ -1359,6 +1452,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
         system: {
           ...baseState.system,
           csvLastImportedAt: now,
+          csvImportProvenance: incomingProvenance,
           csvSyncSummary: syncSummary,
         },
       }
@@ -1382,6 +1476,9 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
       }
 
       const warnings = [
+        ...(monotonicity.decision === 'REJECT_UNKNOWN_DOWNGRADE'
+          ? ['CSVデータの基準時刻が不明または参考情報のため、明示確認により取り込みました。']
+          : []),
         ...(syncSummary.trust.unknownFunds.length > 0
           ? [`未登録投信 ${syncSummary.trust.unknownFunds.length}件は反映されませんでした。`]
           : []),
@@ -1417,9 +1514,11 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
         officialDecisionCommitted: true,
         persistence: { status: 'committed' },
         importedAt: now,
+        provenance: incomingProvenance,
       }
 
       let persistenceReceipt: ReturnType<typeof persistCsvImportTransaction> | null = null
+      const generationCommittedAt = Date.now()
       try {
         setCsvImportTransactionPhase(transaction, 'PERSISTING')
         persistenceReceipt = persistCsvImportTransaction({
@@ -1427,9 +1526,10 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
           trust: computed.trust,
           learning: computed.learning,
           importedAt: now,
+          provenance: incomingProvenance,
           syncSummary,
           trustShortSnapshot: stagedTrustExecution.snapshot,
-        }, transaction.analysisNow, transaction.canonicalPreviousRaw)
+        }, generationCommittedAt, transaction.canonicalPreviousRaw)
         durableCommitted = true
         setCsvImportTransactionPhase(transaction, 'COMMITTED')
       } catch (error) {
@@ -1466,7 +1566,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
         ))
       }
 
-      const localStorageFreshness = computeLocalStorageFreshness(transaction.analysisNow)
+      const localStorageFreshness = computeLocalStorageFreshness(generationCommittedAt)
 
       // This is deliberately the final storage operation before global publication. Payload
       // equality is not ownership: only the exact serialized bytes in the receipt prove that
@@ -1490,6 +1590,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
           ...baseState.system,
           status: 'success',
           csvLastImportedAt: now,
+          csvImportProvenance: incomingProvenance,
           csvSyncSummary: syncSummary,
           analysisLastRunAt: now,
           error: null,
@@ -1792,6 +1893,11 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
         csvLastImportedAt: typeof snapshot.csvImportedAt === 'string'
           ? snapshot.csvImportedAt
           : s.system.csvLastImportedAt,
+        // portfolio snapshotはCSV source provenanceを運ばない。別端末のoperation timeを
+        // 引き継ぐ場合、現在端末のCSV sourceAsOf/fingerprintを誤って結び付けない。
+        csvImportProvenance: typeof snapshot.csvImportedAt === 'string'
+          ? null
+          : s.system.csvImportProvenance ?? null,
       },
     }))
 

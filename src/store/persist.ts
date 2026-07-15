@@ -1,4 +1,4 @@
-import type { Holding, Trust, LearningState, PortfolioPolicy, CashAssumptions, CsvSyncSummary } from '../types'
+import type { Holding, Trust, LearningState, PortfolioPolicy, CashAssumptions, CsvImportProvenance, CsvSyncSummary } from '../types'
 import { sanitizeLearningState } from '../domain/learning/performanceTracker'
 import type { TrustShortPortfolioSnapshot } from '../domain/learning/trustShortTracker'
 
@@ -9,7 +9,8 @@ const CSV_IMPORTED_AT_KEY = 'v10_csv_imported_at'  // Phase 8: CSV取込時刻�
 const TTL_MS = 7 * 24 * 60 * 60 * 1000  // 7日
 const LEARNING_TTL_MS = 30 * 24 * 60 * 60 * 1000
 export const CSV_IMPORT_GENERATION_KEY = 'v13_csv_import_committed_generation'
-export const CSV_IMPORT_GENERATION_SCHEMA = 'csv-import-generation-1' as const
+const CSV_IMPORT_GENERATION_SCHEMA_V1 = 'csv-import-generation-1' as const
+export const CSV_IMPORT_GENERATION_SCHEMA = 'csv-import-generation-2' as const
 
 interface Snapshot<T> {
   data: T
@@ -23,6 +24,8 @@ export interface CsvImportPersistencePayload {
   importedAt: string
   syncSummary: CsvSyncSummary
   trustShortSnapshot: TrustShortPortfolioSnapshot
+  /** Absent only on legacy v1 callers/envelopes; every new v2 envelope normalizes this to null. */
+  provenance?: CsvImportProvenance | null
 }
 
 export interface CsvImportPersistenceReceipt {
@@ -31,7 +34,7 @@ export interface CsvImportPersistenceReceipt {
 }
 
 interface CsvImportGenerationManifest {
-  schemaVersion: typeof CSV_IMPORT_GENERATION_SCHEMA
+  schemaVersion: typeof CSV_IMPORT_GENERATION_SCHEMA | typeof CSV_IMPORT_GENERATION_SCHEMA_V1
   generationId: string
   savedAt: number
   committed: true
@@ -117,6 +120,27 @@ function isNonNegativeInteger(value: unknown): value is number {
 
 function isTimestamp(value: unknown): value is string {
   return isNonEmptyString(value) && Number.isFinite(Date.parse(value))
+}
+
+function isCsvImportProvenance(value: unknown): value is CsvImportProvenance {
+  if (!isRecord(value) || !hasExactKeys(value, [
+    'importedAt', 'sourceAsOf', 'sourceAsOfKind', 'sourceAsOfConfidence',
+    'contentFingerprint', 'sourceFileName', 'fileLastModified',
+  ])) return false
+  if (!isTimestamp(value.importedAt) ||
+      (value.sourceAsOf !== null && !isTimestamp(value.sourceAsOf)) ||
+      typeof value.contentFingerprint !== 'string' ||
+      !/^fnv1a32:[0-9a-f]{8}$/.test(value.contentFingerprint) ||
+      (value.sourceFileName !== null && typeof value.sourceFileName !== 'string') ||
+      (value.fileLastModified !== null && !isTimestamp(value.fileLastModified))) return false
+
+  const kind = value.sourceAsOfKind
+  const confidence = value.sourceAsOfConfidence
+  if (kind === 'csv_explicit') return confidence === 'authoritative' && value.sourceAsOf !== null
+  if (kind === 'csv_exported_at' || kind === 'filename' || kind === 'file_last_modified') {
+    return confidence === 'weak' && value.sourceAsOf !== null
+  }
+  return kind === 'unknown' && confidence === 'unknown' && value.sourceAsOf === null
 }
 
 function isStringArray(value: unknown): value is string[] {
@@ -233,14 +257,19 @@ function isTrustShortSnapshot(value: unknown): value is TrustShortPortfolioSnaps
   return Object.values(value.evalById).every(isNonNegativeNumber)
 }
 
-function isCsvImportPayload(value: unknown): value is CsvImportPersistencePayload {
+function isCsvImportPayload(value: unknown, schemaVersion: string): value is CsvImportPersistencePayload {
+  const legacy = schemaVersion === CSV_IMPORT_GENERATION_SCHEMA_V1
   if (!isRecord(value) || !hasExactKeys(value,
-    ['holdings', 'trust', 'learning', 'importedAt', 'syncSummary', 'trustShortSnapshot'])) return false
+    legacy
+      ? ['holdings', 'trust', 'learning', 'importedAt', 'syncSummary', 'trustShortSnapshot']
+      : ['holdings', 'trust', 'learning', 'importedAt', 'syncSummary', 'trustShortSnapshot', 'provenance'])) return false
   return Array.isArray(value.holdings) && value.holdings.every(isHolding) &&
     Array.isArray(value.trust) && value.trust.every(isTrust) &&
     (value.learning === null || isLearningState(value.learning)) &&
     isTimestamp(value.importedAt) && isCsvSyncSummary(value.syncSummary) &&
-    isTrustShortSnapshot(value.trustShortSnapshot)
+    isTrustShortSnapshot(value.trustShortSnapshot) &&
+    (legacy || value.provenance === null ||
+      (isCsvImportProvenance(value.provenance) && value.provenance.importedAt === value.importedAt))
 }
 
 /**
@@ -252,6 +281,15 @@ export function restoreCsvImportGeneration(): CsvImportGenerationRestoreResult {
   if (typeof localStorage === 'undefined') return { status: 'invalid' }
   try {
     const raw = localStorage.getItem(CSV_IMPORT_GENERATION_KEY)
+    return restoreCsvImportGenerationFromRaw(raw)
+  } catch {
+    return { status: 'invalid' }
+  }
+}
+
+/** Parse the exact canonical bytes captured by a transaction, without a second storage read. */
+export function restoreCsvImportGenerationFromRaw(raw: string | null): CsvImportGenerationRestoreResult {
+  try {
     if (raw === null) return { status: 'none' }
     const envelope = JSON.parse(raw) as unknown
     if (!isRecord(envelope) || !hasExactKeys(envelope, ['manifest', 'payload']) || !isRecord(envelope.manifest)) {
@@ -260,12 +298,13 @@ export function restoreCsvImportGeneration(): CsvImportGenerationRestoreResult {
     const manifest = envelope.manifest
     if (
       !hasExactKeys(manifest, ['schemaVersion', 'generationId', 'savedAt', 'committed', 'payloadChecksum']) ||
-      manifest.schemaVersion !== CSV_IMPORT_GENERATION_SCHEMA ||
+      (manifest.schemaVersion !== CSV_IMPORT_GENERATION_SCHEMA &&
+        manifest.schemaVersion !== CSV_IMPORT_GENERATION_SCHEMA_V1) ||
       typeof manifest.generationId !== 'string' || manifest.generationId.length === 0 ||
       typeof manifest.savedAt !== 'number' || !Number.isFinite(manifest.savedAt) ||
       manifest.committed !== true ||
       typeof manifest.payloadChecksum !== 'string' ||
-      !isCsvImportPayload(envelope.payload)
+      !isCsvImportPayload(envelope.payload, manifest.schemaVersion as string)
     ) return { status: 'invalid' }
     const serializedPayload = JSON.stringify(envelope.payload)
     if (checksum(serializedPayload) !== manifest.payloadChecksum) return { status: 'invalid' }
@@ -275,9 +314,7 @@ export function restoreCsvImportGeneration(): CsvImportGenerationRestoreResult {
       savedAt: manifest.savedAt,
       payload: envelope.payload,
     }
-  } catch {
-    return { status: 'invalid' }
-  }
+  } catch { return { status: 'invalid' } }
 }
 
 function readStorageFreshness(key: string, ttlMs: number, nowMs = Date.now()): StorageFreshness {
@@ -447,8 +484,14 @@ export function persistCsvImportTransaction(
   }
   let serializedEnvelope: string
   try {
-    if (!isCsvImportPayload(payload)) throw new Error('canonical payload schema validation failed')
-    const serializedPayload = JSON.stringify(payload)
+    const normalizedPayload: CsvImportPersistencePayload = {
+      ...payload,
+      provenance: payload.provenance ?? null,
+    }
+    if (!isCsvImportPayload(normalizedPayload, CSV_IMPORT_GENERATION_SCHEMA)) {
+      throw new Error('canonical payload schema validation failed')
+    }
+    const serializedPayload = JSON.stringify(normalizedPayload)
     const generationId = `${savedAt.toString(36)}-${(generationSequence += 1).toString(36)}`
     serializedEnvelope = JSON.stringify({
       manifest: {
@@ -458,7 +501,7 @@ export function persistCsvImportTransaction(
         committed: true,
         payloadChecksum: checksum(serializedPayload),
       },
-      payload,
+      payload: normalizedPayload,
     } satisfies CsvImportGenerationEnvelope)
   } catch (error) {
     const detail = error instanceof Error ? error.message : String(error)

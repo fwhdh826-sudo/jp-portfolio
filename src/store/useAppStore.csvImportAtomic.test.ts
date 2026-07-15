@@ -101,12 +101,17 @@ function csvFile(content = VALID_CSV) {
   return new File([content], 'portfolio.csv', { type: 'text/csv' })
 }
 
+function csvWithSource(sourceAsOf: string, content = VALID_CSV) {
+  return `データ基準日時,${sourceAsOf}\n${content}`
+}
+
 function relevantState() {
   const state = useAppStore.getState()
   return {
     holdings: state.holdings,
     trust: state.trust,
     csvLastImportedAt: state.system.csvLastImportedAt,
+    csvImportProvenance: state.system.csvImportProvenance,
     csvSyncSummary: state.system.csvSyncSummary,
     analysis: state.analysis,
     metrics: state.metrics,
@@ -182,6 +187,7 @@ describe('T9-A001/A002: structured CSV result and atomic store commit', () => {
         status: 'idle',
         error: null,
         csvLastImportedAt: '2026-07-01T00:00:00.000Z',
+        csvImportProvenance: null,
         csvSyncSummary: null,
       },
     }))
@@ -225,6 +231,161 @@ describe('T9-A001/A002: structured CSV result and atomic store commit', () => {
     expect(restoreLearning()).toEqual(state.learning)
     expect(restoreCsvImportedAt()).toBe(state.system.csvLastImportedAt)
     expect(restoreCsvSyncSummary()).toEqual(state.system.csvSyncSummary)
+  })
+
+  it('T9-A004 RED: an explicitly older CSV cannot overwrite a newer committed generation', async () => {
+    const newerCsv = [
+      'データ基準日時,2026-07-15T09:00:00+09:00',
+      VALID_CSV.replace('150000,8.00', '190000,9.00'),
+    ].join('\n')
+    const olderCsv = [
+      'データ基準日時,2026-07-14T09:00:00+09:00',
+      VALID_CSV.replace('150000,8.00', '110000,1.00'),
+    ].join('\n')
+
+    await expect(useAppStore.getState().importCsv(csvFile(newerCsv)))
+      .resolves.toMatchObject({ ok: true, code: 'SUCCESS' })
+    const before = relevantState()
+    const canonicalBefore = storage[CSV_IMPORT_GENERATION_KEY]
+    const storageBefore = structuredClone(storage)
+    let portfolioNotifications = 0
+    const unsubscribe = useAppStore.subscribe((state, previous) => {
+      if (state.holdings !== previous.holdings || state.trust !== previous.trust ||
+          state.analysis !== previous.analysis || state.officialDecision !== previous.officialDecision) {
+        portfolioNotifications += 1
+      }
+    })
+
+    const result = await useAppStore.getState().importCsv(csvFile(olderCsv))
+    unsubscribe()
+
+    expect(result).toMatchObject({ ok: false, code: 'STALE_CSV' })
+    expect(relevantState()).toEqual(before)
+    expect(storage[CSV_IMPORT_GENERATION_KEY]).toBe(canonicalBefore)
+    expect(storage).toEqual(storageBefore)
+    expect(portfolioNotifications).toBe(0)
+    expect(useAppStore.getState().system.status).not.toBe('loading')
+
+    const retry = csvWithSource(
+      '2026-07-16T09:00:00+09:00',
+      VALID_CSV.replace('150000,8.00', '210000,10.00'),
+    )
+    await expect(useAppStore.getState().importCsv(csvFile(retry)))
+      .resolves.toMatchObject({ ok: true, code: 'SUCCESS' })
+  })
+
+  it('T9-A004: same source time with different semantic content is a structured conflict', async () => {
+    const first = csvWithSource('2026-07-15T09:00:00+09:00')
+    const conflict = csvWithSource(
+      '2026-07-15T09:00:00+09:00',
+      VALID_CSV.replace('150000,8.00', '175000,8.50'),
+    )
+    await expect(useAppStore.getState().importCsv(csvFile(first)))
+      .resolves.toMatchObject({ ok: true, code: 'SUCCESS' })
+    const stateBefore = relevantState()
+    const storageBefore = structuredClone(storage)
+
+    await expect(useAppStore.getState().importCsv(csvFile(conflict)))
+      .resolves.toMatchObject({ ok: false, code: 'CSV_PROVENANCE_CONFLICT' })
+
+    expect(relevantState()).toEqual(stateBefore)
+    expect(storage).toEqual(storageBefore)
+  })
+
+  it('T9-A004: repeated semantic CSV is a no-op without generation/importedAt/analysis/tracker churn', async () => {
+    const repeated = csvWithSource('2026-07-15T09:00:00+09:00')
+    await expect(useAppStore.getState().importCsv(csvFile(repeated)))
+      .resolves.toMatchObject({ ok: true, code: 'SUCCESS' })
+    const stateBefore = useAppStore.getState()
+    const relevantBefore = relevantState()
+    const storageBefore = structuredClone(storage)
+    const writesBefore = storageWriteCount
+    let portfolioNotifications = 0
+    const unsubscribe = useAppStore.subscribe((state, previous) => {
+      if (state.holdings !== previous.holdings || state.trust !== previous.trust ||
+          state.analysis !== previous.analysis || state.officialDecision !== previous.officialDecision) {
+        portfolioNotifications += 1
+      }
+    })
+
+    const result = await useAppStore.getState().importCsv(csvFile(repeated))
+    unsubscribe()
+
+    expect(result).toMatchObject({
+      ok: true,
+      code: 'DUPLICATE_CSV',
+      analysisCommitted: false,
+      persistence: { status: 'not_attempted' },
+    })
+    expect(relevantState()).toEqual(relevantBefore)
+    expect(useAppStore.getState().analysis).toBe(stateBefore.analysis)
+    expect(useAppStore.getState().officialDecision).toBe(stateBefore.officialDecision)
+    expect(storage).toEqual(storageBefore)
+    expect(storageWriteCount).toBe(writesBefore)
+    expect(portfolioNotifications).toBe(0)
+  })
+
+  it('T9-A004: unknown incoming provenance cannot overwrite an authoritative generation', async () => {
+    await expect(useAppStore.getState().importCsv(csvFile(csvWithSource('2026-07-15T09:00:00+09:00'))))
+      .resolves.toMatchObject({ ok: true, code: 'SUCCESS' })
+    const before = relevantState()
+    const canonicalBefore = storage[CSV_IMPORT_GENERATION_KEY]
+
+    await expect(useAppStore.getState().importCsv(csvFile(VALID_CSV.replace('150000,8.00', '180000,9.00'))))
+      .resolves.toMatchObject({ ok: false, code: 'CSV_PROVENANCE_UNKNOWN' })
+
+    expect(relevantState()).toEqual(before)
+    expect(storage[CSV_IMPORT_GENERATION_KEY]).toBe(canonicalBefore)
+  })
+
+  it('T9-A004: authoritative incoming provenance may establish first-known provenance over unknown current', async () => {
+    await expect(useAppStore.getState().importCsv(csvFile()))
+      .resolves.toMatchObject({ ok: true, code: 'SUCCESS' })
+    const next = csvWithSource(
+      '2026-07-15T09:00:00+09:00',
+      VALID_CSV.replace('150000,8.00', '180000,9.00'),
+    )
+
+    await expect(useAppStore.getState().importCsv(csvFile(next)))
+      .resolves.toMatchObject({ ok: true, code: 'SUCCESS' })
+    expect(useAppStore.getState().system.csvImportProvenance).toMatchObject({
+      sourceAsOfKind: 'csv_explicit',
+      sourceAsOfConfidence: 'authoritative',
+    })
+  })
+
+  it('T9-A004: two unknown different CSVs do not use later import operation time as freshness', async () => {
+    const unknownFile = (content: string) => new File([content], 'portfolio.csv', {
+      type: 'text/csv',
+      lastModified: 0,
+    })
+    await expect(useAppStore.getState().importCsv(unknownFile(VALID_CSV)))
+      .resolves.toMatchObject({ ok: true, code: 'SUCCESS' })
+    const importedAt = useAppStore.getState().system.csvLastImportedAt
+
+    const nextUnknown = unknownFile(VALID_CSV.replace('150000,8.00', '180000,9.00'))
+    await expect(useAppStore.getState().importCsv(nextUnknown))
+      .resolves.toMatchObject({ ok: false, code: 'CSV_PROVENANCE_UNKNOWN' })
+    expect(useAppStore.getState().system.csvLastImportedAt).toBe(importedAt)
+
+    const confirmed = await useAppStore.getState().importCsv(nextUnknown, { confirmUnknownProvenance: true })
+    expect(confirmed).toMatchObject({ ok: true, code: 'SUCCESS' })
+    if (!confirmed.ok) throw new Error('expected confirmed import success')
+    expect(confirmed.warnings).toContain('CSVデータの基準時刻が不明または参考情報のため、明示確認により取り込みました。')
+    expect(useAppStore.getState().holdings[0].eval).toBe(180_000)
+  })
+
+  it('T9-A004: a newer filesystem mtime cannot outrank authoritative current provenance', async () => {
+    await expect(useAppStore.getState().importCsv(csvFile(csvWithSource('2026-07-15T09:00:00+09:00'))))
+      .resolves.toMatchObject({ ok: true, code: 'SUCCESS' })
+    const weakFile = new File(
+      [VALID_CSV.replace('150000,8.00', '180000,9.00')],
+      'portfolio.csv',
+      { type: 'text/csv', lastModified: Date.parse('2099-01-01T00:00:00.000Z') },
+    )
+
+    await expect(useAppStore.getState().importCsv(weakFile))
+      .resolves.toMatchObject({ ok: false, code: 'CSV_PROVENANCE_UNKNOWN' })
   })
 
   it('subscribers observe exactly one portfolio-generation commit, never new holdings with an old decision', async () => {
@@ -721,7 +882,8 @@ describe('T9-A001/A002: structured CSV result and atomic store commit', () => {
   })
 
   it('C1: valid external canonical replacement loses exact-byte ownership without publishing or rollback', async () => {
-    await expect(useAppStore.getState().importCsv(csvFile())).resolves.toMatchObject({ ok: true })
+    await expect(useAppStore.getState().importCsv(csvFile(csvWithSource('2026-07-14T09:00:00+09:00'))))
+      .resolves.toMatchObject({ ok: true })
     const previousGlobalEval = useAppStore.getState().holdings[0].eval
     const previousRaw = storage[CSV_IMPORT_GENERATION_KEY]
     const previous = restoreCsvImportGeneration()
@@ -743,7 +905,10 @@ describe('T9-A001/A002: structured CSV result and atomic store commit', () => {
       storage[key] = externalRaw
     }
 
-    const nextCsv = VALID_CSV.replace('150000,8.00', '175000,8.00')
+    const nextCsv = csvWithSource(
+      '2026-07-15T09:00:00+09:00',
+      VALID_CSV.replace('150000,8.00', '175000,8.00'),
+    )
     const result = await useAppStore.getState().importCsv(csvFile(nextCsv))
     storageReentry = null
 
@@ -803,7 +968,10 @@ describe('T9-A001/A002: structured CSV result and atomic store commit', () => {
         } as NonNullable<typeof state.system.dataTimestamps>,
       },
     }))
-    const boundaryCsv = VALID_CSV.replace('2025-01-01', '2026-04-17')
+    const boundaryCsv = csvWithSource(
+      '2026-07-14T09:00:00+09:00',
+      VALID_CSV.replace('2025-01-01', '2026-04-17'),
+    )
 
     class BoundaryCrossingReader extends TestFileReader {
       override readAsArrayBuffer(file: File) {
@@ -831,13 +999,21 @@ describe('T9-A001/A002: structured CSV result and atomic store commit', () => {
       expect(state.zeroPlan?.generatedAt).toBe(new Date(analysisNow).toISOString())
       expect(state.trustPlan?.generatedAt).toBe(new Date(analysisNow).toISOString())
       expect(state.officialDecision?.generatedAt).toBe(new Date(analysisNow).toISOString())
+      const firstGeneration = restoreCsvImportGeneration()
+      if (firstGeneration.status !== 'committed') throw new Error('expected committed generation')
+      expect(firstGeneration.payload.importedAt).toBe(new Date(analysisNow).toISOString())
+      expect(firstGeneration.savedAt).toBe(afterThreshold)
       expect(analysis?.debate.recommendedAction).toContain('売却不可期間中')
       expect(stockRow?.locked).toBe(true)
       expect(zeroAction?.action).toBe('WAIT')
       expect(officialAction?.action).toBe('HOLD')
 
       vi.stubGlobal('FileReader', TestFileReader)
-      const nextResult = await useAppStore.getState().importCsv(csvFile(boundaryCsv))
+      const nextBoundaryCsv = csvWithSource(
+        '2026-07-15T09:00:00+09:00',
+        VALID_CSV.replace('2025-01-01', '2026-04-17').replace('150000,8.00', '150001,8.00'),
+      )
+      const nextResult = await useAppStore.getState().importCsv(csvFile(nextBoundaryCsv))
       const nextState = useAppStore.getState()
       const nextAnalysis = nextState.analysis.find(item => item.code === '1001')
       const nextStockRow = nextState.stockPlan?.rows.find(item => item.code === '1001')
@@ -900,7 +1076,7 @@ describe('T9-A001/A002: structured CSV result and atomic store commit', () => {
     }
 
     try {
-      const result = await useAppStore.getState().importCsv(csvFile())
+      const result = await useAppStore.getState().importCsv(csvFile(csvWithSource('2026-07-14T09:00:00+09:00')))
       storageReentry = null
       const state = useAppStore.getState()
       const fixedRecomputed = runFullAnalysis(state, {
@@ -915,7 +1091,10 @@ describe('T9-A001/A002: structured CSV result and atomic store commit', () => {
       expect(state.officialDecision?.dataQualitySuppressed).toBe(false)
       expect(state.trustPlan?.performance30d.trackedDays).toBe(1)
 
-      const nextResult = await useAppStore.getState().importCsv(csvFile())
+      const nextResult = await useAppStore.getState().importCsv(csvFile(csvWithSource(
+        '2026-07-15T09:00:00+09:00',
+        VALID_CSV.replace('150000,8.00', '150001,8.00'),
+      )))
       expect(nextResult).toMatchObject({ ok: true, code: 'SUCCESS' })
       expect(useAppStore.getState().officialDecision?.dataQualitySuppressed).toBe(true)
       expect(useAppStore.getState().trustPlan?.performance30d.trackedDays).toBe(0)

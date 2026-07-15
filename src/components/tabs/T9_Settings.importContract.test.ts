@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import type { CsvImportResult } from '../../store/useAppStore'
 import { executeCsvImportUiFlow } from './T9_Settings'
 
-function successResult(): CsvImportResult {
+function successResult(): Extract<CsvImportResult, { ok: true }> {
   return {
     ok: true,
     code: 'SUCCESS',
@@ -16,6 +16,15 @@ function successResult(): CsvImportResult {
     officialDecisionCommitted: true,
     persistence: { status: 'committed' },
     importedAt: '2026-07-15T00:00:00.000Z',
+    provenance: {
+      importedAt: '2026-07-15T00:00:00.000Z',
+      sourceAsOf: '2026-07-15T00:00:00.000Z',
+      sourceAsOfKind: 'csv_explicit',
+      sourceAsOfConfidence: 'authoritative',
+      contentFingerprint: 'fnv1a32:12345678',
+      sourceFileName: 'portfolio.csv',
+      fileLastModified: null,
+    },
   }
 }
 
@@ -99,5 +108,40 @@ describe('T9-A001: truthful CSV UI flow', () => {
 
     expect(result).toEqual(failure)
     expect(feedback).toEqual([{ ok: true, message: 'old success' }, null, { ok: false, message }])
+  })
+
+  it('duplicate no-op is truthful info feedback rather than green success', async () => {
+    const duplicate: CsvImportResult = {
+      ...successResult(),
+      code: 'DUPLICATE_CSV',
+      message: '同じ内容のCSVは取込み済みです',
+      analysisCommitted: false,
+      officialDecisionCommitted: false,
+      persistence: { status: 'not_attempted' },
+    }
+    const feedback: Array<{ ok: boolean; message: string; tone?: 'info' } | null> = []
+
+    await executeCsvImportUiFlow(
+      new File(['csv'], 'portfolio.csv'),
+      async () => duplicate,
+      value => feedback.push(value),
+    )
+
+    expect(feedback[feedback.length - 1]).toEqual({ ok: true, tone: 'info', message: duplicate.message })
+  })
+
+  it('passes explicit unknown-provenance confirmation only when requested', async () => {
+    let receivedConfirmation = false
+    await executeCsvImportUiFlow(
+      new File(['csv'], 'portfolio.csv'),
+      async (_file, options) => {
+        receivedConfirmation = options?.confirmUnknownProvenance === true
+        return successResult()
+      },
+      () => undefined,
+      { confirmUnknownProvenance: true },
+    )
+
+    expect(receivedConfirmation).toBe(true)
   })
 })
