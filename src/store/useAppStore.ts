@@ -172,6 +172,26 @@ function classifyCsvParseFailure(error: unknown): CsvImportResult {
   return csvImportFailure('PARSE_ERROR', message || 'CSVを解析できませんでした。')
 }
 
+type CsvImportTransactionPhase =
+  | 'IDLE'
+  | 'READING'
+  | 'STAGING'
+  | 'ANALYZING'
+  | 'PREPARED'
+  | 'PERSISTING'
+  | 'COMMITTED'
+  | 'PUBLISHED'
+
+let csvImportTransactionPhase: CsvImportTransactionPhase = 'IDLE'
+
+function isCsvImportCommitCriticalSection(): boolean {
+  return csvImportTransactionPhase === 'PERSISTING' || csvImportTransactionPhase === 'COMMITTED'
+}
+
+function reportRejectedReentrantMutation(source: string): void {
+  try { console.warn(`[useAppStore] rejected synchronous mutation during CSV commit: ${source}`) } catch { /* diagnostic sink */ }
+}
+
 /**
  * runFullAnalysis / strict officialDecision が読むmutable inputだけを安定化して比較する。
  * status/errorや既存derived outputは除外し、関連timestamp/source metadataは含める。
@@ -310,6 +330,35 @@ function computeLocalStorageFreshness(): NonNullable<SystemState['localStorageFr
     portfolio: { isStale: portfolioFreshness.isStale, ageDays: portfolioFreshness.ageDays },
     trust: { isStale: trustFreshness.isStale, ageDays: trustFreshness.ageDays },
   }
+}
+
+/**
+ * Non-CSV actions may change portfolio inputs after a canonical CSV generation exists. They
+ * must either replace the whole coordinated payload atomically or leave that canonical byte
+ * sequence untouched; individual helpers are never allowed to splice one field into it.
+ */
+function persistCurrentPortfolioGeneration(state: AppState): void {
+  const canonical = restoreCsvImportGeneration()
+  if (canonical.status === 'committed') {
+    try {
+      persistCsvImportTransaction({
+        holdings: state.holdings,
+        trust: state.trust,
+        learning: state.learning,
+        importedAt: state.system.csvLastImportedAt ?? canonical.payload.importedAt,
+        syncSummary: state.system.csvSyncSummary ?? canonical.payload.syncSummary,
+        trustShortSnapshot: canonical.payload.trustShortSnapshot,
+      })
+    } catch {
+      // These historical actions are best-effort persistence. A failed full replacement leaves
+      // the previous canonical envelope valid; it must not fall through to partial legacy writes.
+    }
+    return
+  }
+
+  persistPortfolio(state.holdings)
+  persistTrust(state.trust)
+  if (state.learning) persistLearning(state.learning)
 }
 
 // P4.5-A013-T7: portfolio snapshot v2専用の新規銘柄構築。
@@ -829,8 +878,31 @@ export function runFullAnalysis(
   return { analysis, metrics, holdings, trust, universe, learning, zeroPlan, stockPlan, trustPlan, officialDecision, stockCandidates }
 }
 
+function reportSubscriberException(error: unknown): void {
+  // Observer failures are diagnostic events, not transaction failures. Reporting here keeps
+  // later subscribers running and prevents a published durable generation from becoming a
+  // false red result merely because one consumer threw while observing it.
+  try { console.error('[useAppStore] subscriber callback failed', error) } catch { /* diagnostic sink */ }
+}
+
 // ── Store ─────────────────────────────────────────────────────
-export const useAppStore = create<AppState & AppActions>((set, get) => ({
+export const useAppStore = create<AppState & AppActions>((set, get, api) => {
+  const rawSetState = api.setState
+  api.setState = ((...args: Parameters<typeof api.setState>) => {
+    if (isCsvImportCommitCriticalSection()) {
+      reportRejectedReentrantMutation('setState')
+      return
+    }
+    return rawSetState(...args)
+  }) as typeof api.setState
+
+  const rawSubscribe = api.subscribe
+  api.subscribe = ((listener: (state: AppState & AppActions, previous: AppState & AppActions) => void) =>
+    rawSubscribe((state, previous) => {
+      try { listener(state, previous) } catch (error) { reportSubscriberException(error) }
+    })) as typeof api.subscribe
+
+  return ({
   // 初期値
   holdings: INITIAL_HOLDINGS,
   trust: INITIAL_TRUST,
@@ -1069,10 +1141,7 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
       }))
 
       // 永続化
-      persistPortfolio(get().holdings)
-      persistTrust(get().trust)
-      const learning = get().learning
-      if (learning) persistLearning(learning)
+      persistCurrentPortfolioGeneration(get())
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err)
       set(s => ({ system: { ...s.system, status: 'error', error: msg } }))
@@ -1159,10 +1228,7 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
         system: { ...s.system, status: 'success', lastUpdated: now, analysisLastRunAt: now, error: null },
       }))
 
-      persistPortfolio(get().holdings)
-      persistTrust(get().trust)
-      const learning = get().learning
-      if (learning) persistLearning(learning)
+      persistCurrentPortfolioGeneration(get())
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err)
       set(s => ({ system: { ...s.system, status: 'error', error: msg } }))
@@ -1175,6 +1241,8 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
       return csvImportFailure('IMPORT_IN_PROGRESS', '別の取込または更新が進行中です。完了後に再試行してください。')
     }
     let lockAcquired = false
+    let durableCommitted = false
+    let committedSuccess: CsvImportResult | null = null
     const publishFailure = (failure: CsvImportResult): CsvImportResult => {
       if (failure.ok) return failure
       set(s => ({ system: { ...s.system, status: 'error', error: failure.message } }))
@@ -1187,6 +1255,7 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
       const fileName = String(file.name || 'CSVファイル')
       set(s => ({ system: { ...s.system, status: 'loading', error: null } }))
       lockAcquired = true
+      csvImportTransactionPhase = 'READING'
       const oldHoldings = baseState.holdings
       const oldTrust = baseState.trust
 
@@ -1198,6 +1267,7 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
       }
 
       const { holdings: updatedH, trust: updatedT, trustSync } = parsed
+      csvImportTransactionPhase = 'STAGING'
       const now = new Date().toISOString()
       const stagedTrustExecution = stageTrustExecutionFromCsvSync(updatedT, now)
       const trustExecution = stagedTrustExecution.detection
@@ -1215,6 +1285,7 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
 
       let computed: ReturnType<typeof runFullAnalysis>
       try {
+        csvImportTransactionPhase = 'ANALYZING'
         computed = runFullAnalysis(stagedState, { requireOfficialDecision: true })
       } catch (error) {
         const isOfficialDecisionError = error instanceof OfficialDecisionGenerationError
@@ -1234,9 +1305,8 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
           ? [`口座を一意に特定できない投信 ${syncSummary.trust.ambiguousFundIds.length}件は更新されませんでした。`]
           : []),
       ]
+      csvImportTransactionPhase = 'PREPARED'
 
-      // No await is allowed after this CAS until durable commit + Zustand commit complete.
-      // JavaScript run-to-completion therefore closes the validation/commit race window.
       if (buildPortfolioAnalysisFingerprint(get()) !== dependencyFingerprint) {
         return publishFailure(csvImportFailure(
           'IMPORT_CONFLICT',
@@ -1244,7 +1314,29 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
         ))
       }
 
+      committedSuccess = {
+        ok: true,
+        code: 'SUCCESS',
+        message: `${fileName} の取込み・分析・保存が完了しました。`,
+        imported: {
+          stock: { ...syncSummary.stock },
+          trust: {
+            updated: syncSummary.trust.updated,
+            reheld: syncSummary.trust.reheld,
+            zeroed: syncSummary.trust.zeroed,
+            unknown: syncSummary.trust.unknownFunds.length,
+            ambiguous: syncSummary.trust.ambiguousFundIds.length,
+          },
+        },
+        warnings,
+        analysisCommitted: true,
+        officialDecisionCommitted: true,
+        persistence: { status: 'committed' },
+        importedAt: now,
+      }
+
       try {
+        csvImportTransactionPhase = 'PERSISTING'
         persistCsvImportTransaction({
           holdings: computed.holdings,
           trust: computed.trust,
@@ -1253,7 +1345,10 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
           syncSummary,
           trustShortSnapshot: stagedTrustExecution.snapshot,
         })
+        durableCommitted = true
+        csvImportTransactionPhase = 'COMMITTED'
       } catch (error) {
+        csvImportTransactionPhase = 'PREPARED'
         const persistenceStatus = error instanceof CsvImportPersistenceError
           ? error.status
           : 'rollback_failed'
@@ -1265,10 +1360,19 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
       }
 
       const localStorageFreshness = computeLocalStorageFreshness()
-      set(s => ({
+      const reentryChangedDependencies = buildPortfolioAnalysisFingerprint(get()) !== dependencyFingerprint
+      if (reentryChangedDependencies) {
+        reportRejectedReentrantMutation('post-persistence fingerprint mismatch (prepared generation restored)')
+      }
+
+      // Publish the complete prepared state, including the exact dependency snapshot used by
+      // analysis. This is the synchronous commit-section closure: a storage shim or callback
+      // cannot leave newer dependencies paired with stale derived output.
+      set({
+        ...baseState,
         ...computed,
         system: {
-          ...s.system,
+          ...baseState.system,
           status: 'success',
           csvLastImportedAt: now,
           csvSyncSummary: syncSummary,
@@ -1276,7 +1380,8 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
           error: null,
           localStorageFreshness,
         },
-      }))
+      })
+      csvImportTransactionPhase = 'PUBLISHED'
 
       try {
         if (trustExecution.executed && getTrustShortTodayExecutionCount(now) < 1) {
@@ -1313,28 +1418,13 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
         // itself is already part of the canonical durable generation.
       }
 
-      return {
-        ok: true,
-        code: 'SUCCESS',
-        message: `${fileName} の取込み・分析・保存が完了しました。`,
-        imported: {
-          stock: { ...syncSummary.stock },
-          trust: {
-            updated: syncSummary.trust.updated,
-            reheld: syncSummary.trust.reheld,
-            zeroed: syncSummary.trust.zeroed,
-            unknown: syncSummary.trust.unknownFunds.length,
-            ambiguous: syncSummary.trust.ambiguousFundIds.length,
-          },
-        },
-        warnings,
-        analysisCommitted: true,
-        officialDecisionCommitted: true,
-        persistence: { status: 'committed' },
-        importedAt: now,
-      }
+      return committedSuccess
     } catch (error) {
       const detail = error instanceof Error ? error.message : String(error)
+      if (durableCommitted && committedSuccess?.ok) {
+        try { console.error('[useAppStore] post-commit CSV observer/publish diagnostic', error) } catch { /* diagnostic sink */ }
+        return committedSuccess
+      }
       const failure = csvImportFailure(
         'UNKNOWN_ERROR',
         'CSV取込中に予期しないエラーが発生しました。状態は変更されていません。再試行してください。',
@@ -1356,31 +1446,40 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
           // observer from turning the action promise into a rejection.
         }
       }
+      csvImportTransactionPhase = 'IDLE'
     }
   },
 
   setTab: (tab) => set({ activeTab: tab }),
 
   updateHolding: (code, patch) => {
+    if (isCsvImportCommitCriticalSection()) {
+      reportRejectedReentrantMutation('updateHolding')
+      return
+    }
     set(s => ({ holdings: s.holdings.map(h => h.code === code ? { ...h, ...patch } : h) }))
     const computed = runFullAnalysis(get())
     set(computed)
-    persistPortfolio(get().holdings)
-    const learning = get().learning
-    if (learning) persistLearning(learning)
+    persistCurrentPortfolioGeneration(get())
   },
 
   updateTrust: (id, patch) => {
+    if (isCsvImportCommitCriticalSection()) {
+      reportRejectedReentrantMutation('updateTrust')
+      return
+    }
     set(s => ({ trust: s.trust.map(f => f.id === id ? { ...f, ...patch } : f) }))
     const computed = runFullAnalysis(get())
     set(computed)
-    persistTrust(get().trust)
-    const learning = get().learning
-    if (learning) persistLearning(learning)
+    persistCurrentPortfolioGeneration(get())
   },
 
   // P4-A47: jpStockMaxRatio更新 → 再分析 → 永続化
   setPortfolioPolicy: (policy) => {
+    if (isCsvImportCommitCriticalSection()) {
+      reportRejectedReentrantMutation('setPortfolioPolicy')
+      return
+    }
     set({ portfolioPolicy: policy })
     const computed = runFullAnalysis(get())
     set(computed)
@@ -1390,6 +1489,10 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
   // P4.5-A002: 資金前提の手動入力を保存する。入力値は総額として置き換わる
   // （CSV/既定値への加算は行わない）。0以上の整数円に丸めてから保存する。
   setCashAssumptions: ({ cashDeposits, standbyFunds }) => {
+    if (isCsvImportCommitCriticalSection()) {
+      reportRejectedReentrantMutation('setCashAssumptions')
+      return
+    }
     const sanitize = (v: number) => Math.max(0, Math.round(Number.isFinite(v) ? v : 0))
     const next: CashAssumptions = {
       cashDeposits: sanitize(cashDeposits),
@@ -1405,6 +1508,10 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
 
   // P4.5-A002: 手動overrideを解除し、既定値（constants/market.ts由来）へ戻す
   clearCashAssumptionsOverride: () => {
+    if (isCsvImportCommitCriticalSection()) {
+      reportRejectedReentrantMutation('clearCashAssumptionsOverride')
+      return
+    }
     const next: CashAssumptions = { ...get().cashAssumptions, manualOverrideEnabled: false, manualUpdatedAt: null }
     set({ cashAssumptions: next })
     const computed = runFullAnalysis(get())
@@ -1417,6 +1524,10 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
   // parseCashAssumptionsImportが不正/欠損時にnullへfallback済み — nullはA008の
   // freshness判定でstale扱いになるため、無警告で「最新」扱いにはならない）。
   importCashAssumptions: ({ cashDeposits, standbyFunds, manualUpdatedAt }) => {
+    if (isCsvImportCommitCriticalSection()) {
+      reportRejectedReentrantMutation('importCashAssumptions')
+      return
+    }
     const sanitize = (v: number) => Math.max(0, Math.round(Number.isFinite(v) ? v : 0))
     const next: CashAssumptions = {
       cashDeposits: sanitize(cashDeposits),
@@ -1456,6 +1567,10 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
   // 新規作成することはできない（できてしまうと不完全なHolding/Trustが生成されてしまう）。
   // 1件でも未知のcode/idがあれば全体をrejectし、store/localStorageは一切変更しない。
   importPortfolioSnapshot: (raw) => {
+    if (isCsvImportCommitCriticalSection()) {
+      reportRejectedReentrantMutation('importPortfolioSnapshot')
+      return { ok: false, error: 'CSV取込のcommit処理中です。完了後に再試行してください。' }
+    }
     const parsed = parsePortfolioSnapshotImport(raw)
     if (!parsed.ok) return { ok: false, error: parsed.error }
     const snapshot = parsed.data
@@ -1571,8 +1686,7 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
       system: { ...s.system, status: 'success', analysisLastRunAt: now, error: null },
     }))
 
-    persistPortfolio(get().holdings)
-    persistTrust(get().trust)
+    persistCurrentPortfolioGeneration(get())
     persistPortfolioPolicy(get().portfolioPolicy)
     persistCashAssumptions(get().cashAssumptions)
     // csvImportedAtがnullの場合、persistCsvImportedAtは文字列専用のため呼ばない
@@ -1584,9 +1698,7 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
     // csvSyncSummaryはここでは一切変更しない（snapshot importをCSV取込結果として
     // 偽装しないため。P4.5-A013-T6の方針を維持する）。
     set(s => ({ system: { ...s.system, localStorageFreshness: computeLocalStorageFreshness() } }))
-    const learning = get().learning
-    if (learning) persistLearning(learning)
-
     return { ok: true, skippedTrustIds: skippedTrustIds.length > 0 ? skippedTrustIds : undefined }
   },
-}))
+  })
+})

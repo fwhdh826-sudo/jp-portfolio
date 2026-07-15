@@ -334,24 +334,64 @@ export function buildNewHoldingFromCsvRow(row: ParsedRow & { code: string }): Ho
 // ── ファイル読み込み（UTF-8 / Shift-JIS判定）───────────────────
 async function readFileAsText(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
-    const reader = new FileReader()
-    reader.onload = event => {
-      const buffer = event.target?.result as ArrayBuffer
-      const utf8 = decodeBuffer(buffer, 'utf-8')
-      const sjis = decodeBuffer(buffer, 'shift-jis')
-      resolve(scoreDecodedText(utf8) >= scoreDecodedText(sjis) ? utf8 : sjis)
+    let settled = false
+    let reader: FileReader
+
+    const cleanup = () => {
+      try { reader.onload = null } catch { /* cleanup is best-effort after settlement */ }
+      try { reader.onerror = null } catch { /* cleanup is best-effort after settlement */ }
+      try { reader.onabort = null } catch { /* cleanup is best-effort after settlement */ }
     }
-    reader.onerror = () => reject(new Error('ファイル読み込みエラー'))
-    reader.readAsArrayBuffer(file)
+    const settleResolve = (value: string) => {
+      if (settled) return
+      settled = true
+      cleanup()
+      resolve(value)
+    }
+    const settleReject = (reason: unknown) => {
+      if (settled) return
+      settled = true
+      cleanup()
+      let detail = 'unknown callback failure'
+      try { detail = reason instanceof Error ? reason.message : String(reason) } catch { /* hostile error value */ }
+      reject(new Error(`ファイル読み込みエラー${detail ? `: ${detail}` : ''}`))
+    }
+
+    try {
+      reader = new FileReader()
+    } catch (error) {
+      reject(new Error(`ファイル読み込みエラー: ${error instanceof Error ? error.message : String(error)}`))
+      return
+    }
+
+    reader.onload = event => {
+      try {
+        const target = event.target
+        if (!target) throw new Error('読み込み結果を取得できませんでした')
+        const result = target.result
+        if (!(result instanceof ArrayBuffer)) throw new Error('読み込み結果の形式が不正です')
+        const utf8 = decodeBuffer(result, 'utf-8')
+        const sjis = decodeBuffer(result, 'shift-jis')
+        settleResolve(scoreDecodedText(utf8) >= scoreDecodedText(sjis) ? utf8 : sjis)
+      } catch (error) {
+        settleReject(error)
+      }
+    }
+    reader.onerror = () => {
+      try { settleReject(reader.error ?? new Error('FileReader error event')) } catch (error) { settleReject(error) }
+    }
+    reader.onabort = () => settleReject(new Error('ファイル読み込みが中断されました'))
+
+    try {
+      reader.readAsArrayBuffer(file)
+    } catch (error) {
+      settleReject(error)
+    }
   })
 }
 
 function decodeBuffer(buffer: ArrayBuffer, encoding: 'utf-8' | 'shift-jis') {
-  try {
-    return new TextDecoder(encoding).decode(buffer)
-  } catch {
-    return ''
-  }
+  return new TextDecoder(encoding).decode(buffer)
 }
 
 function scoreDecodedText(text: string) {

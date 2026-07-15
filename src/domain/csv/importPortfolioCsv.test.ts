@@ -901,3 +901,115 @@ describe('importPortfolioCsv: 文字コード判定', () => {
     expect(h.acquiredAt).toBe('2025-08-01')
   })
 })
+
+describe('T9-A001/A002-R2: FileReader Promise totality', () => {
+  const originalReader = globalThis.FileReader
+  const holdings = [makeHolding({ code: '6501', name: '日立製作所', eval: 800_000 })]
+  const VALID_UTF8_CSV = [
+    '株式（現物/特定預り）',
+    STOCK_HEADER,
+    '6501,日立製作所,8500,900000,15.20,1.10,2025-06-01',
+  ].join('\n')
+
+  afterEach(() => {
+    vi.unstubAllGlobals()
+    if (originalReader) globalThis.FileReader = originalReader
+  })
+
+  function installReader(
+    trigger: (reader: {
+      onload: ((event: ProgressEvent<FileReader>) => void) | null
+      onerror: (() => void) | null
+      onabort: (() => void) | null
+    }) => void,
+  ) {
+    class AdversarialFileReader {
+      onload: ((event: ProgressEvent<FileReader>) => void) | null = null
+      onerror: (() => void) | null = null
+      onabort: (() => void) | null = null
+      readAsArrayBuffer() { trigger(this) }
+    }
+    vi.stubGlobal('FileReader', AdversarialFileReader)
+  }
+
+  const settleWithin = <T>(promise: Promise<T>) => Promise.race([
+    promise.then(
+      value => ({ kind: 'resolved' as const, value }),
+      error => ({ kind: 'rejected' as const, error }),
+    ),
+    new Promise<{ kind: 'timeout' }>(resolve => setTimeout(() => resolve({ kind: 'timeout' }), 30)),
+  ])
+
+  it('settles when an unexpected exception occurs inside the asynchronous onload callback', async () => {
+    installReader(reader => {
+      queueMicrotask(() => {
+        try {
+          reader.onload?.({
+            target: {
+              get result() { throw new Error('result getter exploded') },
+            },
+          } as unknown as ProgressEvent<FileReader>)
+        } catch {
+          // Browsers report uncaught event-listener exceptions out-of-band. Keeping the
+          // harness alive lets Promise.race prove whether the wrapper settled.
+        }
+      })
+    })
+
+    const settled = await settleWithin(importPortfolioCsv(makeCsvFile(VALID_UTF8_CSV), holdings, []))
+    expect(settled.kind).toBe('rejected')
+  })
+
+  it.each([
+    ['error', (reader: any) => reader.onerror?.()],
+    ['abort', (reader: any) => reader.onabort?.()],
+    ['null target', (reader: any) => reader.onload?.({ target: null })],
+  ])('settles for async %s', async (_label, fire) => {
+    installReader(reader => queueMicrotask(() => fire(reader)))
+    const settled = await settleWithin(importPortfolioCsv(makeCsvFile(VALID_UTF8_CSV), holdings, []))
+    expect(settled.kind).toBe('rejected')
+  })
+
+  it('settles when readAsArrayBuffer throws synchronously', async () => {
+    class ThrowingReader {
+      onload = null
+      onerror = null
+      onabort = null
+      readAsArrayBuffer() { throw new Error('sync read exploded') }
+    }
+    vi.stubGlobal('FileReader', ThrowingReader)
+    const settled = await settleWithin(importPortfolioCsv(makeCsvFile(VALID_UTF8_CSV), holdings, []))
+    expect(settled.kind).toBe('rejected')
+  })
+
+  it('honors only the first terminal event', async () => {
+    installReader(reader => queueMicrotask(() => {
+      reader.onerror?.()
+      reader.onload?.({ target: { result: new TextEncoder().encode(VALID_UTF8_CSV).buffer } } as unknown as ProgressEvent<FileReader>)
+    }))
+    const settled = await settleWithin(importPortfolioCsv(makeCsvFile(VALID_UTF8_CSV), holdings, []))
+    expect(settled.kind).toBe('rejected')
+  })
+
+  it('ignores an error event after a successful onload settlement', async () => {
+    installReader(reader => queueMicrotask(() => {
+      reader.onload?.({ target: { result: new TextEncoder().encode(VALID_UTF8_CSV).buffer } } as unknown as ProgressEvent<FileReader>)
+      reader.onerror?.()
+    }))
+    const settled = await settleWithin(importPortfolioCsv(makeCsvFile(VALID_UTF8_CSV), holdings, []))
+    expect(settled.kind).toBe('resolved')
+  })
+
+  it('converts a decoder exception into rejection', async () => {
+    const NativeTextDecoder = TextDecoder
+    class ThrowingDecoder extends NativeTextDecoder {
+      decode(): string { throw new Error('decoder exploded') }
+    }
+    vi.stubGlobal('TextDecoder', ThrowingDecoder)
+    installReader(reader => queueMicrotask(() => {
+      reader.onload?.({ target: { result: new TextEncoder().encode(VALID_UTF8_CSV).buffer } } as unknown as ProgressEvent<FileReader>)
+    }))
+    const settled = await settleWithin(importPortfolioCsv(makeCsvFile(VALID_UTF8_CSV), holdings, []))
+    expect(settled.kind).toBe('rejected')
+  })
+})

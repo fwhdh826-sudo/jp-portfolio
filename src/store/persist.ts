@@ -75,24 +75,160 @@ function checksum(value: string): string {
   return (hash >>> 0).toString(16).padStart(8, '0')
 }
 
+type UnknownRecord = Record<string, unknown>
+
+function isRecord(value: unknown): value is UnknownRecord {
+  return value !== null && typeof value === 'object' && !Array.isArray(value)
+}
+
+function hasExactKeys(value: UnknownRecord, required: readonly string[], optional: readonly string[] = []): boolean {
+  const allowed = new Set([...required, ...optional])
+  return required.every(key => Object.prototype.hasOwnProperty.call(value, key)) &&
+    Object.keys(value).every(key => allowed.has(key))
+}
+
+function isNonEmptyString(value: unknown): value is string {
+  return typeof value === 'string' && value.length > 0
+}
+
+function isFiniteNumber(value: unknown): value is number {
+  return typeof value === 'number' && Number.isFinite(value)
+}
+
+function isNonNegativeNumber(value: unknown): value is number {
+  return isFiniteNumber(value) && value >= 0
+}
+
+function isNonNegativeInteger(value: unknown): value is number {
+  return Number.isInteger(value) && isNonNegativeNumber(value)
+}
+
+function isTimestamp(value: unknown): value is string {
+  return isNonEmptyString(value) && Number.isFinite(Date.parse(value))
+}
+
+function isStringArray(value: unknown): value is string[] {
+  return Array.isArray(value) && value.every(item => typeof item === 'string')
+}
+
+function isHolding(value: unknown): value is Holding {
+  if (!isRecord(value) || !hasExactKeys(value, [
+    'code', 'name', 'eval', 'pnlPct', 'mu', 'sigma', 'sigmaSource', 'beta', 'sector',
+    'target', 'alert', 'lock', 'mitsu', 'ma', 'rsi', 'macd', 'vol', 'mom3m', 'roe',
+    'per', 'pbr', 'epsG', 'cfOk', 'de', 'divG', 'score', 'decision', 'ev',
+  ], ['currentPrice', 'acquiredAt'])) return false
+
+  const finiteFields = [
+    'eval', 'pnlPct', 'mu', 'sigma', 'beta', 'target', 'alert', 'rsi', 'mom3m',
+    'roe', 'per', 'pbr', 'epsG', 'de', 'divG', 'score', 'ev',
+  ] as const
+  const booleanFields = ['lock', 'mitsu', 'ma', 'macd', 'vol', 'cfOk'] as const
+  return isNonEmptyString(value.code) && isNonEmptyString(value.name) &&
+    isNonEmptyString(value.sector) && finiteFields.every(field => isFiniteNumber(value[field])) &&
+    isNonNegativeNumber(value.eval) && isNonNegativeNumber(value.sigma) &&
+    booleanFields.every(field => typeof value[field] === 'boolean') &&
+    (value.sigmaSource === 'yfinance' || value.sigmaSource === 'static') &&
+    (value.decision === 'BUY' || value.decision === 'HOLD' || value.decision === 'SELL') &&
+    (value.currentPrice === undefined || isFiniteNumber(value.currentPrice)) &&
+    (value.acquiredAt === undefined || isTimestamp(value.acquiredAt))
+}
+
+function isTrust(value: unknown): value is Trust {
+  if (!isRecord(value) || !hasExactKeys(value, [
+    'id', 'name', 'abbr', 'account', 'policy', 'eval', 'pnlPct', 'dayPct', 'cost',
+    'mu', 'sigma', 'score', 'signal', 'ev', 'decision',
+  ], ['notForTrading'])) return false
+  const finiteFields = ['eval', 'pnlPct', 'dayPct', 'cost', 'mu', 'sigma', 'score', 'ev'] as const
+  return isNonEmptyString(value.id) && isNonEmptyString(value.name) &&
+    isNonEmptyString(value.abbr) && isNonEmptyString(value.account) && isNonEmptyString(value.signal) &&
+    finiteFields.every(field => isFiniteNumber(value[field])) && isNonNegativeNumber(value.eval) &&
+    isNonNegativeNumber(value.cost) && isNonNegativeNumber(value.sigma) &&
+    (value.policy === 'JAPAN_SHORTTERM' || value.policy === 'OVERSEAS_LONGTERM' || value.policy === 'GOLD') &&
+    (value.decision === 'BUY' || value.decision === 'HOLD' || value.decision === 'WAIT' || value.decision === 'SELL') &&
+    (value.notForTrading === undefined || typeof value.notForTrading === 'boolean')
+}
+
+function isDecisionSummary(value: unknown): boolean {
+  if (!isRecord(value) || !hasExactKeys(value, ['count', 'wins', 'losses', 'flats', 'accuracy', 'avgReward'])) return false
+  return isNonNegativeInteger(value.count) && isNonNegativeInteger(value.wins) &&
+    isNonNegativeInteger(value.losses) && isNonNegativeInteger(value.flats) &&
+    isFiniteNumber(value.accuracy) && isFiniteNumber(value.avgReward)
+}
+
+function isLearningBaseline(value: unknown): boolean {
+  if (!isRecord(value) || !hasExactKeys(value,
+    ['code', 'predictedAt', 'decision', 'score', 'confidence', 'pnlPct'], ['regime'])) return false
+  return isNonEmptyString(value.code) && isTimestamp(value.predictedAt) &&
+    (value.decision === 'BUY' || value.decision === 'HOLD' || value.decision === 'SELL') &&
+    isFiniteNumber(value.score) && isFiniteNumber(value.confidence) && isFiniteNumber(value.pnlPct) &&
+    (value.regime === undefined || value.regime === 'bull' || value.regime === 'neutral' || value.regime === 'bear')
+}
+
+function isLearningOutcome(value: unknown): boolean {
+  if (!isRecord(value) || !hasExactKeys(value, [
+    'code', 'predictedAt', 'evaluatedAt', 'decision', 'score', 'confidence', 'prevPnlPct',
+    'currPnlPct', 'deltaPnlPct', 'reward', 'result',
+  ], ['regime'])) return false
+  return isNonEmptyString(value.code) && isTimestamp(value.predictedAt) && isTimestamp(value.evaluatedAt) &&
+    (value.decision === 'BUY' || value.decision === 'HOLD' || value.decision === 'SELL') &&
+    ['score', 'confidence', 'prevPnlPct', 'currPnlPct', 'deltaPnlPct', 'reward']
+      .every(field => isFiniteNumber(value[field])) &&
+    (value.result === 'win' || value.result === 'loss' || value.result === 'flat') &&
+    (value.regime === undefined || value.regime === 'bull' || value.regime === 'neutral' || value.regime === 'bear')
+}
+
+function isLearningState(value: unknown): value is LearningState {
+  if (!isRecord(value) || !hasExactKeys(value,
+    ['lastUpdated', 'baselineCount', 'baseline', 'outcomes', 'summary', 'suggestedWeights'])) return false
+  if (!isTimestamp(value.lastUpdated) || !isNonNegativeInteger(value.baselineCount) ||
+      !Array.isArray(value.baseline) || !value.baseline.every(isLearningBaseline) ||
+      !Array.isArray(value.outcomes) || !value.outcomes.every(isLearningOutcome)) return false
+  const summary = value.summary
+  const weights = value.suggestedWeights
+  if (!isRecord(summary) || !hasExactKeys(summary,
+    ['total', 'wins', 'losses', 'flats', 'accuracy', 'avgReward', 'byDecision', 'driftSignals']) ||
+      !isNonNegativeInteger(summary.total) || !isNonNegativeInteger(summary.wins) ||
+      !isNonNegativeInteger(summary.losses) || !isNonNegativeInteger(summary.flats) ||
+      !isFiniteNumber(summary.accuracy) || !isFiniteNumber(summary.avgReward) ||
+      !isStringArray(summary.driftSignals)) return false
+  if (!isRecord(summary.byDecision) || !hasExactKeys(summary.byDecision, ['BUY', 'HOLD', 'SELL']) ||
+      !isDecisionSummary(summary.byDecision.BUY) || !isDecisionSummary(summary.byDecision.HOLD) ||
+      !isDecisionSummary(summary.byDecision.SELL)) return false
+  return isRecord(weights) && hasExactKeys(weights,
+    ['fundamental', 'market', 'technical', 'news', 'quality', 'risk']) &&
+    ['fundamental', 'market', 'technical', 'news', 'quality', 'risk']
+      .every(field => isFiniteNumber(weights[field]))
+}
+
+function isCsvSyncSummary(value: unknown): value is CsvSyncSummary {
+  if (!isRecord(value) || !hasExactKeys(value, ['importedAt', 'stock', 'trust']) ||
+      !isTimestamp(value.importedAt) || !isRecord(value.stock) || !isRecord(value.trust)) return false
+  const stock = value.stock
+  const trust = value.trust
+  if (!hasExactKeys(stock, ['updated', 'added', 'removed']) ||
+      !['updated', 'added', 'removed'].every(field => isNonNegativeInteger(stock[field]))) return false
+  if (!hasExactKeys(trust,
+    ['updated', 'reheld', 'zeroed', 'unknownFunds', 'ambiguousFundIds']) ||
+      !['updated', 'reheld', 'zeroed'].every(field => isNonNegativeInteger(trust[field])) ||
+      !Array.isArray(trust.unknownFunds) || !isStringArray(trust.ambiguousFundIds)) return false
+  return trust.unknownFunds.every(item => isRecord(item) && hasExactKeys(item, ['name', 'eval']) &&
+    isNonEmptyString(item.name) && isNonNegativeNumber(item.eval))
+}
+
 function isTrustShortSnapshot(value: unknown): value is TrustShortPortfolioSnapshot {
-  if (!value || typeof value !== 'object') return false
-  const snapshot = value as Partial<TrustShortPortfolioSnapshot>
-  return typeof snapshot.date === 'string' &&
-    typeof snapshot.total === 'number' && Number.isFinite(snapshot.total) &&
-    snapshot.evalById !== null && typeof snapshot.evalById === 'object' &&
-    Object.values(snapshot.evalById).every(item => typeof item === 'number' && Number.isFinite(item))
+  if (!isRecord(value) || !hasExactKeys(value, ['date', 'total', 'evalById']) ||
+      !isTimestamp(value.date) || !isNonNegativeNumber(value.total) || !isRecord(value.evalById)) return false
+  return Object.values(value.evalById).every(isNonNegativeNumber)
 }
 
 function isCsvImportPayload(value: unknown): value is CsvImportPersistencePayload {
-  if (!value || typeof value !== 'object') return false
-  const payload = value as Partial<CsvImportPersistencePayload>
-  return Array.isArray(payload.holdings) &&
-    Array.isArray(payload.trust) &&
-    (payload.learning === null || (payload.learning !== null && typeof payload.learning === 'object')) &&
-    typeof payload.importedAt === 'string' &&
-    payload.syncSummary !== null && typeof payload.syncSummary === 'object' &&
-    isTrustShortSnapshot(payload.trustShortSnapshot)
+  if (!isRecord(value) || !hasExactKeys(value,
+    ['holdings', 'trust', 'learning', 'importedAt', 'syncSummary', 'trustShortSnapshot'])) return false
+  return Array.isArray(value.holdings) && value.holdings.every(isHolding) &&
+    Array.isArray(value.trust) && value.trust.every(isTrust) &&
+    (value.learning === null || isLearningState(value.learning)) &&
+    isTimestamp(value.importedAt) && isCsvSyncSummary(value.syncSummary) &&
+    isTrustShortSnapshot(value.trustShortSnapshot)
 }
 
 /**
@@ -105,10 +241,13 @@ export function restoreCsvImportGeneration(): CsvImportGenerationRestoreResult {
   try {
     const raw = localStorage.getItem(CSV_IMPORT_GENERATION_KEY)
     if (raw === null) return { status: 'none' }
-    const envelope = JSON.parse(raw) as Partial<CsvImportGenerationEnvelope>
+    const envelope = JSON.parse(raw) as unknown
+    if (!isRecord(envelope) || !hasExactKeys(envelope, ['manifest', 'payload']) || !isRecord(envelope.manifest)) {
+      return { status: 'invalid' }
+    }
     const manifest = envelope.manifest
     if (
-      !manifest ||
+      !hasExactKeys(manifest, ['schemaVersion', 'generationId', 'savedAt', 'committed', 'payloadChecksum']) ||
       manifest.schemaVersion !== CSV_IMPORT_GENERATION_SCHEMA ||
       typeof manifest.generationId !== 'string' || manifest.generationId.length === 0 ||
       typeof manifest.savedAt !== 'number' || !Number.isFinite(manifest.savedAt) ||
@@ -127,19 +266,6 @@ export function restoreCsvImportGeneration(): CsvImportGenerationRestoreResult {
   } catch {
     return { status: 'invalid' }
   }
-}
-
-function persistUpdatedCommittedGeneration(
-  update: (payload: CsvImportPersistencePayload) => CsvImportPersistencePayload,
-): boolean {
-  const current = restoreCsvImportGeneration()
-  if (current.status !== 'committed') return false
-  try {
-    persistCsvImportTransaction(update(current.payload))
-  } catch {
-    // Individual helpers retain their historical best-effort contract.
-  }
-  return true
 }
 
 function readStorageFreshness(key: string, ttlMs: number): StorageFreshness {
@@ -172,7 +298,6 @@ function readStorageFreshness(key: string, ttlMs: number): StorageFreshness {
 }
 
 export function persistPortfolio(holdings: Holding[]): void {
-  if (persistUpdatedCommittedGeneration(payload => ({ ...payload, holdings }))) return
   const snap: Snapshot<Holding[]> = { data: holdings, savedAt: Date.now() }
   try { localStorage.setItem(PORTFOLIO_KEY, JSON.stringify(snap)) } catch { /* quota */ }
 }
@@ -198,7 +323,6 @@ export function getPortfolioStorageFreshness(): StorageFreshness {
 }
 
 export function persistTrust(trust: Trust[]): void {
-  if (persistUpdatedCommittedGeneration(payload => ({ ...payload, trust }))) return
   const snap: Snapshot<Trust[]> = { data: trust, savedAt: Date.now() }
   try { localStorage.setItem(TRUST_KEY, JSON.stringify(snap)) } catch { /* quota */ }
 }
@@ -221,7 +345,6 @@ export function getTrustStorageFreshness(): StorageFreshness {
 }
 
 export function persistLearning(learning: LearningState): void {
-  if (persistUpdatedCommittedGeneration(payload => ({ ...payload, learning }))) return
   const snap: Snapshot<LearningState> = { data: learning, savedAt: Date.now() }
   try { localStorage.setItem(LEARNING_KEY, JSON.stringify(snap)) } catch { /* quota */ }
 }
@@ -251,7 +374,6 @@ const CSV_TTL_MS = 90 * 24 * 60 * 60 * 1000  // 90日
 interface CsvSnapshot { at: string; savedAt: number }
 
 export function persistCsvImportedAt(at: string): void {
-  if (persistUpdatedCommittedGeneration(payload => ({ ...payload, importedAt: at }))) return
   const snap: CsvSnapshot = { at, savedAt: Date.now() }
   try { localStorage.setItem(CSV_IMPORTED_AT_KEY, JSON.stringify(snap)) } catch { /* quota */ }
 }
@@ -304,6 +426,7 @@ export function persistCsvImportTransaction(payload: CsvImportPersistencePayload
   const savedAt = Date.now()
   let serializedEnvelope: string
   try {
+    if (!isCsvImportPayload(payload)) throw new Error('canonical payload schema validation failed')
     const serializedPayload = JSON.stringify(payload)
     const generationId = `${savedAt.toString(36)}-${(generationSequence += 1).toString(36)}`
     serializedEnvelope = JSON.stringify({
@@ -330,7 +453,6 @@ export function persistCsvImportTransaction(payload: CsvImportPersistencePayload
 }
 
 export function persistCsvSyncSummary(summary: CsvSyncSummary): void {
-  if (persistUpdatedCommittedGeneration(payload => ({ ...payload, syncSummary: summary }))) return
   const snap: CsvSyncSummarySnapshot = { data: summary, savedAt: Date.now() }
   try { localStorage.setItem(CSV_SYNC_SUMMARY_KEY, JSON.stringify(snap)) } catch { /* quota */ }
 }

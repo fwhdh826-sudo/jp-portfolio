@@ -1,9 +1,14 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import type { CsvSyncSummary, Holding, Trust } from '../types'
+import type { CsvSyncSummary, Holding, LearningState, Trust } from '../types'
 import {
   CSV_IMPORT_GENERATION_KEY,
   CsvImportPersistenceError,
   persistCsvImportTransaction,
+  persistCsvImportedAt,
+  persistCsvSyncSummary,
+  persistLearning,
+  persistPortfolio,
+  persistTrust,
   restoreCsvImportGeneration,
   restoreCsvImportedAt,
   restoreCsvSyncSummary,
@@ -23,11 +28,83 @@ const LEGACY_KEYS = [
 ] as const
 
 function holding(code: string, evalValue: number): Holding {
-  return { code, eval: evalValue } as Holding
+  return {
+    code,
+    name: `holding-${code}`,
+    eval: evalValue,
+    pnlPct: 1,
+    currentPrice: 100,
+    mu: 0.08,
+    sigma: 0.2,
+    sigmaSource: 'static',
+    beta: 1,
+    sector: 'test',
+    target: 0,
+    alert: 0,
+    lock: false,
+    acquiredAt: '2026-01-01',
+    mitsu: false,
+    ma: true,
+    rsi: 50,
+    macd: true,
+    vol: false,
+    mom3m: 0,
+    roe: 10,
+    per: 15,
+    pbr: 1,
+    epsG: 5,
+    cfOk: true,
+    de: 0.5,
+    divG: 1,
+    score: 50,
+    decision: 'HOLD',
+    ev: 0,
+  }
 }
 
 function trust(id: string, evalValue: number): Trust {
-  return { id, eval: evalValue } as Trust
+  return {
+    id,
+    name: `trust-${id}`,
+    abbr: id,
+    account: '特定',
+    policy: 'OVERSEAS_LONGTERM',
+    eval: evalValue,
+    pnlPct: 1,
+    dayPct: 0,
+    cost: 0.2,
+    mu: 0.08,
+    sigma: 0.15,
+    score: 50,
+    signal: 'HOLD',
+    ev: 0,
+    decision: 'HOLD',
+  }
+}
+
+function learning(): LearningState {
+  const emptyDecision = { count: 0, wins: 0, losses: 0, flats: 0, accuracy: 0, avgReward: 0 }
+  return {
+    lastUpdated: '2026-07-15T00:00:00.000Z',
+    baselineCount: 0,
+    baseline: [],
+    outcomes: [],
+    summary: {
+      total: 0, wins: 0, losses: 0, flats: 0, accuracy: 0, avgReward: 0,
+      byDecision: { BUY: { ...emptyDecision }, HOLD: { ...emptyDecision }, SELL: { ...emptyDecision } },
+      driftSignals: [],
+    },
+    suggestedWeights: { fundamental: 0.3, market: 0.2, technical: 0.2, news: 0.15, quality: 0.1, risk: 0.05 },
+  }
+}
+
+function checksum(value: string): string {
+  let hash = 0x811c9dc5
+  for (let index = 0; index < value.length; index += 1) {
+    hash ^= value.charCodeAt(index)
+    hash = Math.imul(hash, 0x01000193)
+  }
+  return (hash >>> 0).toString(16).padStart(8, '0')
 }
 
 function summary(importedAt: string): CsvSyncSummary {
@@ -201,5 +278,55 @@ describe('T9-A003: committed CSV generation durability and recovery', () => {
     expect(restorePortfolio()).toEqual(next.holdings)
     expect(restoreTrust()).toEqual(next.trust)
     expect(restoreCsvImportedAt()).toBe(next.importedAt)
+  })
+
+  it.each([
+    ['holdings [null]', (value: any) => { value.holdings = [null] }],
+    ['holdings [{}]', (value: any) => { value.holdings = [{}] }],
+    ['trust [null]', (value: any) => { value.trust = [null] }],
+    ['trust [{}]', (value: any) => { value.trust = [{}] }],
+    ['syncSummary {}', (value: any) => { value.syncSummary = {} }],
+    ['learning malformed', (value: any) => { value.learning = { baseline: [null] } }],
+    ['invalid importedAt', (value: any) => { value.importedAt = 'not-a-timestamp' }],
+    ['invalid trust snapshot', (value: any) => { value.trustShortSnapshot.evalById = { fund: 'NaN' } }],
+    ['required nested field missing', (value: any) => { delete value.syncSummary.trust.unknownFunds }],
+    ['wrong scalar type', (value: any) => { value.holdings[0].eval = '200' }],
+    ['non-finite JSON representation', (value: any) => { value.trust[0].sigma = null }],
+    ['extra malformed nested object', (value: any) => { value.syncSummary.unexpected = { rows: [null] } }],
+  ])('R3: checksum-valid semantic-invalid payload (%s) is rejected', (_label, mutate) => {
+    persistCsvImportTransaction(payload('old'))
+    const envelope = JSON.parse(store[CSV_IMPORT_GENERATION_KEY])
+    mutate(envelope.payload)
+    envelope.manifest.payloadChecksum = checksum(JSON.stringify(envelope.payload))
+    store[CSV_IMPORT_GENERATION_KEY] = JSON.stringify(envelope)
+    store.v81_portfolio = JSON.stringify({ data: payload('new').holdings, savedAt: Date.now() })
+
+    expect(restoreCsvImportGeneration()).toEqual({ status: 'invalid' })
+    expect(restorePortfolio()).toBeNull()
+    expect(restoreTrust()).toBeNull()
+    expect(restoreLearning()).toBeNull()
+    expect(restoreCsvImportedAt()).toBeNull()
+    expect(restoreCsvSyncSummary()).toBeNull()
+  })
+
+  it.each([
+    ['persistPortfolio', () => persistPortfolio(payload('new').holdings)],
+    ['persistTrust', () => persistTrust(payload('new').trust)],
+    ['persistLearning', () => persistLearning(learning())],
+    ['persistCsvImportedAt', () => persistCsvImportedAt(payload('new').importedAt)],
+    ['persistCsvSyncSummary', () => persistCsvSyncSummary(payload('new').syncSummary)],
+  ])('R4: %s cannot partially rewrite a committed canonical generation', (_label, persistOneField) => {
+    const old = payload('old')
+    persistCsvImportTransaction(old)
+    const canonicalBefore = store[CSV_IMPORT_GENERATION_KEY]
+
+    persistOneField()
+
+    expect(store[CSV_IMPORT_GENERATION_KEY]).toBe(canonicalBefore)
+    expect(restoreCsvImportGeneration()).toMatchObject({ status: 'committed', payload: old })
+    expect(restorePortfolio()).toEqual(old.holdings)
+    expect(restoreTrust()).toEqual(old.trust)
+    expect(restoreCsvImportedAt()).toBe(old.importedAt)
+    expect(restoreCsvSyncSummary()).toEqual(old.syncSummary)
   })
 })

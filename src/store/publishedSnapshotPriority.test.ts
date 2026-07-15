@@ -66,6 +66,15 @@ function makeTrust(overrides: Partial<Trust> = {}): Trust {
   }
 }
 
+function checksum(value: string): string {
+  let hash = 0x811c9dc5
+  for (let index = 0; index < value.length; index += 1) {
+    hash ^= value.charCodeAt(index)
+    hash = Math.imul(hash, 0x01000193)
+  }
+  return (hash >>> 0).toString(16).padStart(8, '0')
+}
+
 // ═══════════════════════════════════════════════════════════
 // shouldApplyPublishedSnapshot: 純粋関数の単体テスト
 // ═══════════════════════════════════════════════════════════
@@ -210,6 +219,42 @@ describe('useAppStore.initialize / refreshAllData: published snapshot優先順�
 
     expect(useAppStore.getState().holdings.some(item => item.code === 'PARTIAL')).toBe(false)
     expect(useAppStore.getState().trust.some(item => item.id === 'partial-fund')).toBe(false)
+    expect(useAppStore.getState().system.csvLastImportedAt).toBeNull()
+  })
+
+  it('initialize: checksum-valid deep-malformed canonical is not hydrated and cannot use legacy fallback', async () => {
+    persistCsvImportTransaction({
+      holdings: [makeHolding()],
+      trust: [makeTrust()],
+      learning: null,
+      importedAt: '2026-07-15T00:00:00.000Z',
+      syncSummary: {
+        importedAt: '2026-07-15T00:00:00.000Z',
+        stock: { updated: 1, added: 0, removed: 0 },
+        trust: { updated: 1, reheld: 0, zeroed: 0, unknownFunds: [], ambiguousFundIds: [] },
+      },
+      trustShortSnapshot: { date: '2026-07-15', total: 0, evalById: {} },
+    })
+    const envelope = JSON.parse(store[CSV_IMPORT_GENERATION_KEY])
+    envelope.payload.holdings = [null]
+    envelope.manifest.payloadChecksum = checksum(JSON.stringify(envelope.payload))
+    store[CSV_IMPORT_GENERATION_KEY] = JSON.stringify(envelope)
+    seedLocalStorage({
+      holdings: [makeHolding({ code: 'LEGACY-PARTIAL', eval: 999_999 })],
+      trust: [makeTrust({ id: 'legacy-partial-fund', eval: 999_999 })],
+      csvImportedAt: '2099-07-15T00:00:00.000Z',
+    })
+    mockFetchRouter({})
+    useAppStore.setState(state => ({
+      holdings: [makeHolding({ code: 'BASE', eval: 111_111 })],
+      trust: [makeTrust({ id: 'base-fund', eval: 222_222 })],
+      system: { ...state.system, status: 'idle', csvLastImportedAt: null },
+    }))
+
+    await useAppStore.getState().initialize()
+
+    expect(useAppStore.getState().holdings.some(item => item.code === 'LEGACY-PARTIAL')).toBe(false)
+    expect(useAppStore.getState().trust.some(item => item.id === 'legacy-partial-fund')).toBe(false)
     expect(useAppStore.getState().system.csvLastImportedAt).toBeNull()
   })
 

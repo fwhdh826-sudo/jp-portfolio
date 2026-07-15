@@ -43813,6 +43813,127 @@ AssetSnapshotMini → AllocationGapStrip → 今日のアクション[TodoCard/R
   main未反映のため別チケットで対応
 - v10.css未使用クラスの安全な削除（R6）
 
+## T9-A001/A002-R2 + T9-A003-R1: completion gate blocker repair
+
+### 実施日 / source / audit verdict
+
+- 実施日: 2026-07-15
+- source commit: `2b419dbc0700a3eaeef0c07844a9969eb07e4792` (`2b419db`)
+- branch: `v13.3-dev`（branch switchなし）
+- fresh-session adversarial re-audit: **C: BLOCKED**
+- blocker: R1 subscriber false failure / R2 FileReader永久pending / R3 deep-malformed
+  canonical hydration / R4 individual helper mixed generation / R5 post-CAS synchronous reentry
+- commit / push / merge / rebase: 未実施
+
+### Test-first RED evidence（source `2b419db`）
+
+実装変更前にR1〜R5のadversarial testを追加して対象3ファイルを実行し、
+**78 passed / 22 failed**を確認した。
+
+- R1: canonical writeとfinal Zustand state更新後、holding subscriber throwにより
+  resultだけ`UNKNOWN_ERROR`へ反転。global/canonicalはnew generationだった
+- R2: async `onload`内のresult getter throwと`abort`がPromise.race timeout。
+  storeは`loading`のままでretryは`IMPORT_IN_PROGRESS`
+- R3: checksumを再計算した`holdings:[null]` / `[{}]`、trust malformed、
+  `{}` summary、malformed learning、invalid timestamp、missing nested field、wrong scalar、
+  non-finite JSON representation、unknown nested fieldの大半を`committed`として採用
+- R4: `persistPortfolio` / `persistTrust` / `persistLearning` /
+  `persistCsvImportedAt` / `persistCsvSyncSummary`の全helperがcanonicalを部分再commit
+- R5: canonical `setItem` hook内のcash/market/policy/SAFE_MODE変更後も`SUCCESS`を返し、
+  committed derivedとcurrent state再分析が不一致
+
+### R1 / durable commit and subscriber semantics
+
+- Zustand 4.5.5の`setState`はstateを先に置換し、その後listenerを同期実行する。
+  listener throwはcallerへ伝播し、先頭listenerがthrowすると後続listenerも停止する
+- store生成時に`api.subscribe`をlistener単位のexception boundaryでwrapした。
+  observer errorは`console.error` diagnosticへ送り、後続subscriberを継続する
+- import actionは`durableCommitted`とprepared success resultを保持する。canonical write後の
+  observer/publish diagnosticではred failureへ反転せず、committed `SUCCESS`を返す
+- throwing first subscriber、later subscriber、new global、new canonical、success result、
+  status success、lock release、retry成功を同一testで確認
+
+### R2 / FileReader Promise totality
+
+- `readFileAsText`へone-settlement guardとhandler cleanupを追加
+- `onload` callback全体、null target、result getter/type、UTF-8/Shift-JIS decodeをtry/catch
+- `onerror` / `onabort` / synchronous constructor・`readAsArrayBuffer` throwをrejectへ集約
+- cleanup property setterやhostile error stringificationがthrowしてもsettlementを止めない
+- onload→onerror / onerror→onloadを含むdouble eventは最初のterminal eventだけを採用
+- outer import boundaryで`FILE_READ_ERROR`へ変換し、loading releaseとretry成功を確認
+
+### R3 / versioned deep canonical schema
+
+- envelope / manifest / payloadはschema versionごとのexact-key policy（unknown key拒否）
+- Holding: required identity、全required scalar、finite numeric、boolean、enum、optional timestamp
+- Trust: required id/name/abbr/account/policy、finite numeric、decision/policy enum、optional boolean
+- CsvSyncSummary: required stock/trust counters、non-negative integer、unknownFunds/ID arrays deep shape
+- Learning: baseline/outcome/summary/byDecision/suggestedWeightsをnested itemまで検証
+- importedAt: parse可能なtimestamp（既存contractどおりfuture timestampは拒否しない）
+- trustShortSnapshot: exact `date/total/evalById`、valid date、finite non-negative numeric rows
+- write前にも同じvalidatorを通し、checksum-validとschema-validを分離
+- present-invalid canonicalは`invalid`でfail-closed。portfolio/trust/learning/import metadataは
+  legacy fallbackしない。initialize統合testでもdeep-malformed canonicalをhydrateしない
+
+### R4 / canonical ownership boundary
+
+- individual legacy helperからcanonical payloadのread-modify-writeを完全削除
+- individual helperは従来のlegacy key best-effort writeだけを担当し、canonical bytesを変更しない
+- canonical存在後のinitialize / refresh / manual holding・trust action / snapshot importは
+  `persistCurrentPortfolioGeneration`でholdings/trust/learning/import metadata/trust snapshotを
+  1 payloadへ再構築し、single canonical replacementする
+- full replacement失敗時はprevious canonicalをactiveのまま維持し、partial legacyへfall throughしない
+- individual helper 5種のcrash-equivalent reloadでold canonical全体を維持するtestと、
+  manual holding→trust更新が全payloadを一括再構築するtestを追加
+
+### R5 / CAS and synchronous reentry closure
+
+- phase model: `IDLE → READING → STAGING → ANALYZING → PREPARED → PERSISTING →
+  COMMITTED → PUBLISHED → IDLE`
+- pre-persistence fingerprint CASは維持。`PERSISTING/COMMITTED`を同期critical sectionとした
+- public `api.setState`とrelevant store actions（holding/trust/cash/policy/snapshot）は、
+  critical section中の同期mutationを明示rejectし`console.warn` diagnosticへ記録
+- final publishはcomputed fieldだけでなく、分析に使った`baseState` dependency snapshotと
+  computed generationを1回のZustand setで公開する。したがってunwrapped reentryがあっても
+  current dependenciesとstale derivedを組み合わせない
+- durable write直後にpost-persistence fingerprintを再確認。差分はdiagnosticに記録し、
+  prepared dependency generationをpublishする（canonical new/global oldのfailureにはしない）
+- cash / market / policy / SAFE_MODE、mixed/repeated action/public-set reentry、pre-CAS async race、
+  retryをadversarial testで確認
+
+### Structured result / recovery semantics
+
+- pre-durable failure:既存code (`FILE_READ_ERROR`〜`IMPORT_CONFLICT`)を維持し、
+  portfolio generation notification 0、canonical/global old、loading release
+- durable committed + global published: `SUCCESS`
+- post-commit observer exception: explicit new result codeは増やさず、truthful committed `SUCCESS` + diagnostic
+- absent canonicalだけlegacy fallback。malformed JSON/checksum/schema/deep payload/committed falseはfail-closed
+- canonical replace後・global publish前のcrash相当は次回hydrateでcanonical new generationを採用
+
+### Tests / verification
+
+- added/expanded:
+  - `src/domain/csv/importPortfolioCsv.test.ts`: FileReader totality 8 adversarial paths
+  - `src/store/persist.csvGeneration.test.ts`: deep schema 12 fixtures、individual helper 5種、recovery
+  - `src/store/useAppStore.csvImportAtomic.test.ts`: R1 subscriber、R2 lock/retry、R4 manual full
+    replacement、R5 dependency/mixed reentry
+  - `src/store/publishedSnapshotPriority.test.ts`: checksum-valid deep-malformed initialize rejection
+- focused T9/persist/store verification: **225 passed / 7 files**
+- `npm run test:unit`: **800 passed / 43 files**
+- `npx tsc --noEmit`: pass
+- `npm run build`: pass（Vite既知の500kB chunk warningのみ）
+- `git diff --check`: pass
+
+### No-regression / remaining
+
+- SAFE_MODE calculation、DQ、noTrade、headroom、officialDecision calculation、zeroBase、scoring、
+  investment logic、target allocation、candidate pipeline、P5-B004、workflow、T0/T1/T2/T7 UIは未変更
+- auditのR6〜R8詳細は今回依頼本文とrepository内artifactに定義がないため、推測実装せず
+  **remaining / unverified**として維持
+- remaining tickets: T9-A004 stale CSV protection、T9-A005 zero-row full-sync confirmation、
+  T9-A006〜A008（各ticket定義に従う）
+- verdict: **A: COMMIT READY**（R1〜R5 fixed、commitは禁止のため未実施）
+
 ## T9-A001/A002-R1 + T9-A003: atomicity and durable persistence hardening
 
 ### 実施日 / 基準
