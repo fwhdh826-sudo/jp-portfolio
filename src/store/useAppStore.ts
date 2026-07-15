@@ -43,7 +43,10 @@ import {
   getPortfolioStorageFreshness,
   getTrustStorageFreshness,
 } from './persist'
-import { evaluateCsvImportMonotonicity } from '../domain/csv/csvProvenance'
+import {
+  evaluateCsvImportMonotonicity,
+  InvalidCsvSourceTimestampError,
+} from '../domain/csv/csvProvenance'
 import { buildAssetUniverse, checkNoTrade } from '../domain/optimization/idealAllocation'
 import { updatePerformanceTracker } from '../domain/learning/performanceTracker'
 import { buildTrustPortfolioPlan } from '../domain/optimization/trustPortfolio'
@@ -116,6 +119,7 @@ export type CsvImportErrorCode =
   | 'PARSE_ERROR'
   | 'NO_VALID_ROWS'
   | 'FULL_SYNC_GUARD_REJECTED'
+  | 'INVALID_CSV_SOURCE_TIMESTAMP'
   | 'ANALYSIS_ERROR'
   | 'OFFICIAL_DECISION_ERROR'
   | 'PERSISTENCE_ERROR'
@@ -176,6 +180,12 @@ function csvImportFailure(
 }
 
 function classifyCsvParseFailure(error: unknown): CsvImportResult {
+  if (error instanceof InvalidCsvSourceTimestampError) {
+    return csvImportFailure(
+      'INVALID_CSV_SOURCE_TIMESTAMP',
+      'CSVのデータ基準日時が不正です。日時を確認し、タイムゾーン付きISO形式または日付形式で再試行してください。状態は変更されていません。',
+    )
+  }
   const message = error instanceof Error ? error.message : String(error)
   if (message.includes('ファイル読み込みエラー')) {
     return csvImportFailure('FILE_READ_ERROR', 'CSVファイルを読み込めませんでした。ファイルを確認して再試行してください。')

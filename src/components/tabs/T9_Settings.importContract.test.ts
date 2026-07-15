@@ -88,6 +88,7 @@ describe('T9-A001: truthful CSV UI flow', () => {
   it.each([
     ['UNKNOWN_ERROR', 'CSV取込中に予期しないエラーが発生しました。再試行してください。'],
     ['IMPORT_CONFLICT', '取込中に分析条件が変更されました。再試行してください。'],
+    ['INVALID_CSV_SOURCE_TIMESTAMP', 'CSVのデータ基準日時が不正です。状態は変更されていません。'],
   ] as const)('%s structured failure is shown as failure and never as stale success', async (code, message) => {
     const feedback: Array<{ ok: boolean; message: string } | null> = [{ ok: true, message: 'old success' }]
     const failure: CsvImportResult = {

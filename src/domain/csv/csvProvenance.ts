@@ -49,26 +49,58 @@ function normalizeTimestamp(value: string): string | null {
   return normalizeStrictTimestamp(raw, { allowDateOnly: true })
 }
 
-function extractStructuredTimestamp(text: string): {
+interface ExtractedTimestamp {
   sourceAsOf: string
   sourceAsOfKind: CsvSourceAsOfKind
   sourceAsOfConfidence: CsvSourceAsOfConfidence
-} | null {
-  let weak: ReturnType<typeof extractStructuredTimestamp> = null
+}
+
+export type ExplicitSourceTimestampResult =
+  | { status: 'absent' }
+  | { status: 'valid'; value: ExtractedTimestamp }
+  | { status: 'invalid'; rawValue: string; reason: 'invalid_timestamp' }
+
+export class InvalidCsvSourceTimestampError extends Error {
+  readonly code = 'INVALID_CSV_SOURCE_TIMESTAMP' as const
+  readonly reason = 'invalid_timestamp' as const
+
+  constructor(readonly rawValue: string) {
+    super('recognized authoritative CSV timestamp is invalid')
+    this.name = 'InvalidCsvSourceTimestampError'
+  }
+}
+
+export function extractExplicitSourceTimestamp(text: string): ExplicitSourceTimestampResult {
+  let valid: ExtractedTimestamp | null = null
   for (const line of text.split(/\r?\n/)) {
     const metadata = parseMetadataLine(line.trim())
     if (!metadata) continue
     const [label, rawTimestamp] = metadata
+    if (!AUTHORITATIVE_LABELS.has(label)) continue
     const timestamp = normalizeTimestamp(rawTimestamp)
-    if (!timestamp) continue
-    if (AUTHORITATIVE_LABELS.has(label)) {
-      return {
+    if (!timestamp) {
+      return { status: 'invalid', rawValue: rawTimestamp.normalize('NFKC').trim(), reason: 'invalid_timestamp' }
+    }
+    if (valid === null) {
+      valid = {
         sourceAsOf: timestamp,
         sourceAsOfKind: 'csv_explicit',
         sourceAsOfConfidence: 'authoritative',
       }
     }
-    if (weak === null && WEAK_EXPORT_LABELS.has(label)) {
+  }
+  return valid === null ? { status: 'absent' } : { status: 'valid', value: valid }
+}
+
+function extractWeakStructuredTimestamp(text: string): ExtractedTimestamp | null {
+  let weak: ExtractedTimestamp | null = null
+  for (const line of text.split(/\r?\n/)) {
+    const metadata = parseMetadataLine(line.trim())
+    if (!metadata) continue
+    const [label, rawTimestamp] = metadata
+    if (!WEAK_EXPORT_LABELS.has(label)) continue
+    const timestamp = normalizeTimestamp(rawTimestamp)
+    if (timestamp && weak === null) {
       weak = {
         sourceAsOf: timestamp,
         sourceAsOfKind: 'csv_exported_at',
@@ -98,14 +130,16 @@ export function buildCsvSourceProvenance(input: {
   fileLastModified: number
   semanticContent: unknown
 }): CsvSourceProvenance {
-  const explicit = extractStructuredTimestamp(input.text)
+  const explicit = extractExplicitSourceTimestamp(input.text)
+  if (explicit.status === 'invalid') throw new InvalidCsvSourceTimestampError(explicit.rawValue)
+  const structured = explicit.status === 'valid' ? explicit.value : extractWeakStructuredTimestamp(input.text)
   let fileLastModified: string | null = null
   if (Number.isFinite(input.fileLastModified) && input.fileLastModified > 0) {
     const fileDate = new Date(input.fileLastModified)
     if (Number.isFinite(fileDate.getTime())) fileLastModified = fileDate.toISOString()
   }
   const filenameTimestamp = extractFilenameTimestamp(input.fileName)
-  const selected = explicit ?? (filenameTimestamp
+  const selected = structured ?? (filenameTimestamp
     ? { sourceAsOf: filenameTimestamp, sourceAsOfKind: 'filename' as const, sourceAsOfConfidence: 'weak' as const }
     : fileLastModified
       ? { sourceAsOf: fileLastModified, sourceAsOfKind: 'file_last_modified' as const, sourceAsOfConfidence: 'weak' as const }

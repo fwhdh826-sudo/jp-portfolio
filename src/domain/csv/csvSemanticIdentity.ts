@@ -9,6 +9,57 @@ const SHA256_ROUND_CONSTANTS = new Uint32Array([
   0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208, 0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2,
 ])
 
+export interface CsvSemanticRow {
+  assetType: 'stock' | 'trust'
+  code: string
+  name: string
+  eval: number
+  pnlPct: number
+  dayPct: number
+  price: number
+  acquiredAt: string | null
+  accountHint: '' | '特定' | 'NISA成長' | 'NISA積立'
+}
+
+function canonicalSemanticNumber(value: number): number {
+  // JSON represents -0 as 0. Make that parser-level semantic equivalence explicit before
+  // constructing the ordering key, so comparator equality and identity equality cannot diverge.
+  return Object.is(value, -0) ? 0 : value
+}
+
+export function serializeCsvSemanticRowForOrdering(row: CsvSemanticRow): string {
+  // A fixed-position tuple is injective for the parser's reachable domain: normalized strings,
+  // finite numbers, and acquiredAt string|null. Every identity-relevant field is present.
+  return JSON.stringify([
+    row.assetType,
+    row.code,
+    row.name,
+    canonicalSemanticNumber(row.eval),
+    canonicalSemanticNumber(row.pnlPct),
+    canonicalSemanticNumber(row.dayPct),
+    canonicalSemanticNumber(row.price),
+    row.acquiredAt,
+    row.accountHint,
+  ])
+}
+
+export function compareUtf16CodeUnits(left: string, right: string): number {
+  const sharedLength = Math.min(left.length, right.length)
+  for (let index = 0; index < sharedLength; index += 1) {
+    const difference = left.charCodeAt(index) - right.charCodeAt(index)
+    if (difference !== 0) return difference < 0 ? -1 : 1
+  }
+  if (left.length === right.length) return 0
+  return left.length < right.length ? -1 : 1
+}
+
+export function compareCsvSemanticRows(left: CsvSemanticRow, right: CsvSemanticRow): number {
+  return compareUtf16CodeUnits(
+    serializeCsvSemanticRowForOrdering(left),
+    serializeCsvSemanticRowForOrdering(right),
+  )
+}
+
 export function stableSerializeCsvSemanticContent(value: unknown): string {
   if (value === null || typeof value !== 'object') return JSON.stringify(value)
   if (Array.isArray(value)) return `[${value.map(stableSerializeCsvSemanticContent).join(',')}]`

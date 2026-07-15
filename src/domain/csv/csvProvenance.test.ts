@@ -3,6 +3,7 @@ import type { CsvImportProvenance } from '../../types'
 import {
   buildCsvSourceProvenance,
   evaluateCsvImportMonotonicity,
+  extractExplicitSourceTimestamp,
   fingerprintCsvSemanticContent,
 } from './csvProvenance'
 
@@ -52,9 +53,40 @@ function imported(
 }
 
 describe('T9-A004: CSV source provenance extraction', () => {
+  it('represents authoritative metadata as an explicit ABSENT / VALID / INVALID union', () => {
+    expect(extractExplicitSourceTimestamp('出力日時,2026-07-15T09:00:00+09:00'))
+      .toEqual({ status: 'absent' })
+    expect(extractExplicitSourceTimestamp('データ基準日時,2026-07-15')).toMatchObject({
+      status: 'valid',
+      value: {
+        sourceAsOf: '2026-07-14T15:00:00.000Z',
+        sourceAsOfKind: 'csv_explicit',
+        sourceAsOfConfidence: 'authoritative',
+      },
+    })
+    expect(extractExplicitSourceTimestamp('データ基準日時,2026-02-30')).toEqual({
+      status: 'invalid',
+      rawValue: '2026-02-30',
+      reason: 'invalid_timestamp',
+    })
+  })
+
   it('uses an explicit CSV snapshot timestamp as authoritative provenance', () => {
     expect(source('データ基準日時,2026-07-15T09:00:00+09:00')).toMatchObject({
       sourceAsOf: '2026-07-15T00:00:00.000Z',
+      sourceAsOfKind: 'csv_explicit',
+      sourceAsOfConfidence: 'authoritative',
+    })
+  })
+
+  it.each([
+    ['2026-07-15T00:00:00Z', '2026-07-15T00:00:00.000Z'],
+    ['2026-07-15T09:00:00+09:00', '2026-07-15T00:00:00.000Z'],
+    ['2026-07-15', '2026-07-14T15:00:00.000Z'],
+    ['2024-02-29', '2024-02-28T15:00:00.000Z'],
+  ])('keeps valid explicit authority %s authoritative', (raw, normalized) => {
+    expect(source(`データ基準日時,${raw}`)).toMatchObject({
+      sourceAsOf: normalized,
       sourceAsOfKind: 'csv_explicit',
       sourceAsOfConfidence: 'authoritative',
     })
@@ -130,7 +162,7 @@ describe('T9-A004: CSV source provenance extraction', () => {
       .not.toBe(source('', { semantic: semanticB }).semanticIdentity)
   })
 
-  it('rejects impossible calendar dates instead of normalizing them into authoritative provenance', () => {
+  it('distinguishes recognized invalid authority from absent metadata and fails closed', () => {
     for (const invalid of [
       '2025-02-29',
       '2026-02-30',
@@ -142,12 +174,20 @@ describe('T9-A004: CSV source provenance extraction', () => {
       '2026-07-15T23:60:00Z',
       '2026-07-15T23:59:60Z',
     ]) {
-      expect(source(`データ基準日時,${invalid}`)).toMatchObject({
-        sourceAsOf: null,
-        sourceAsOfKind: 'unknown',
-        sourceAsOfConfidence: 'unknown',
-      })
+      expect(() => source(`データ基準日時,${invalid}`)).toThrowError(
+        expect.objectContaining({
+          name: 'InvalidCsvSourceTimestampError',
+          code: 'INVALID_CSV_SOURCE_TIMESTAMP',
+          rawValue: invalid,
+        }),
+      )
     }
+
+    expect(source('')).toMatchObject({
+      sourceAsOf: null,
+      sourceAsOfKind: 'unknown',
+      sourceAsOfConfidence: 'unknown',
+    })
   })
 
   it('accepts a valid leap day and normalizes date-only source dates as JST midnight', () => {
@@ -158,12 +198,14 @@ describe('T9-A004: CSV source provenance extraction', () => {
     })
   })
 
-  it('rejects timezone-less datetimes as authoritative instead of using the runtime timezone', () => {
-    expect(source('データ基準日時,2026-07-15T09:00:00')).toMatchObject({
-      sourceAsOf: null,
-      sourceAsOfKind: 'unknown',
-      sourceAsOfConfidence: 'unknown',
-    })
+  it('fails closed for timezone-less explicit datetimes instead of using the runtime timezone', () => {
+    expect(() => source('データ基準日時,2026-07-15T09:00:00')).toThrowError(
+      expect.objectContaining({
+        name: 'InvalidCsvSourceTimestampError',
+        code: 'INVALID_CSV_SOURCE_TIMESTAMP',
+        rawValue: '2026-07-15T09:00:00',
+      }),
+    )
   })
 })
 

@@ -937,6 +937,152 @@ describe('importPortfolioCsv: 文字コード判定', () => {
   })
 })
 
+describe('T9-A004-R1-F1: semantic row ordering is a locale-independent total order', () => {
+  const stockSection = (rows: string[], account = '特定預り') => [
+    `株式（現物/${account}）`,
+    STOCK_HEADER,
+    ...rows,
+  ].join('\n')
+  const trustSection = (rows: string[], account = '特定預り') => [
+    `投資信託（金額/${account}）`,
+    TRUST_HEADER,
+    ...rows,
+  ].join('\n')
+  const identity = async (csv: string) =>
+    (await importPortfolioCsv(makeCsvFile(csv), [], [])).sourceProvenance.semanticIdentity
+
+  it('keeps the known あ / ア reverse-order counterexample identical even if the runtime collation treats them as equal', async () => {
+    const first = [
+      STOCK_STUB_CSV,
+      trustSection([
+        'あ,10000,100000,1.00,0.10,',
+        'ア,10000,200000,2.00,0.20,',
+      ]),
+    ].join('\n')
+    const reversed = [
+      STOCK_STUB_CSV,
+      trustSection([
+        'ア,10000,200000,2.00,0.20,',
+        'あ,10000,100000,1.00,0.10,',
+      ]),
+    ].join('\n')
+    const nativeLocaleCompare = String.prototype.localeCompare
+    const localeSpy = vi.spyOn(String.prototype, 'localeCompare').mockImplementation(function (this: string, other: string) {
+      const left = String(this)
+      const right = String(other)
+      const isCounterexample = [left, right].some(value => value.includes('"name":"あ"')) &&
+        [left, right].some(value => value.includes('"name":"ア"'))
+      return isCounterexample ? 0 : nativeLocaleCompare.call(left, right)
+    })
+
+    try {
+      expect(await identity(first)).toBe(await identity(reversed))
+    } finally {
+      localeSpy.mockRestore()
+    }
+  })
+
+  it.each([
+    ['ordinary stock',
+      stockSection([
+        '6501,日立製作所,8500,900000,15.20,1.10,2025-06-01',
+        '7203,トヨタ自動車,3000,600000,5.00,0.50,2025-07-01',
+      ]),
+      stockSection([
+        '7203,トヨタ自動車,3000,600000,5.00,0.50,2025-07-01',
+        '6501,日立製作所,8500,900000,15.20,1.10,2025-06-01',
+      ])],
+    ['trust',
+      [STOCK_STUB_CSV, trustSection([
+        'SBI・V・S&P500,26000,4500000,95.50,-1.80,',
+        'eMAXIS Slim 全世界株式,21000,3500000,55.00,0.80,',
+      ])].join('\n'),
+      [STOCK_STUB_CSV, trustSection([
+        'eMAXIS Slim 全世界株式,21000,3500000,55.00,0.80,',
+        'SBI・V・S&P500,26000,4500000,95.50,-1.80,',
+      ])].join('\n')],
+    ['mixed assets',
+      [stockSection(['6501,日立製作所,8500,900000,15.20,1.10,2025-06-01']),
+        trustSection(['SBI・V・S&P500,26000,4500000,95.50,-1.80,'])].join('\n'),
+      [trustSection(['SBI・V・S&P500,26000,4500000,95.50,-1.80,']),
+        stockSection(['6501,日立製作所,8500,900000,15.20,1.10,2025-06-01'])].join('\n')],
+    ['same name with different codes',
+      stockSection([
+        '6501,同名銘柄,8500,900000,15.20,1.10,2025-06-01',
+        '7203,同名銘柄,3000,600000,5.00,0.50,2025-07-01',
+      ]),
+      stockSection([
+        '7203,同名銘柄,3000,600000,5.00,0.50,2025-07-01',
+        '6501,同名銘柄,8500,900000,15.20,1.10,2025-06-01',
+      ])],
+  ])('%s rows have one identity when input order is reversed', async (_label, first, reversed) => {
+    expect(await identity(first)).toBe(await identity(reversed))
+  })
+
+  it('preserves same-code rows with different account hints and remains order-independent', async () => {
+    const taxable = stockSection([
+      '6501,日立製作所,8500,600000,15.20,1.10,2025-06-01',
+    ], '特定預り')
+    const nisa = stockSection([
+      '6501,日立製作所,8500,300000,15.20,1.10,2025-06-01',
+    ], 'NISA預り（成長投資枠）')
+
+    expect(await identity([taxable, nisa].join('\n')))
+      .toBe(await identity([nisa, taxable].join('\n')))
+
+    const redistributedTaxable = stockSection([
+      '6501,日立製作所,8500,300000,15.20,1.10,2025-06-01',
+    ], '特定預り')
+    const redistributedNisa = stockSection([
+      '6501,日立製作所,8500,600000,15.20,1.10,2025-06-01',
+    ], 'NISA預り（成長投資枠）')
+    expect(await identity([taxable, nisa].join('\n')))
+      .not.toBe(await identity([redistributedTaxable, redistributedNisa].join('\n')))
+  })
+
+  it.each([
+    ['code', '6501,日立製作所,8500,900000,15.20,1.10,2025-06-01', '7203,日立製作所,8500,900000,15.20,1.10,2025-06-01'],
+    ['name', '6501,日立製作所,8500,900000,15.20,1.10,2025-06-01', '6501,日立製作所A,8500,900000,15.20,1.10,2025-06-01'],
+    ['eval', '6501,日立製作所,8500,900000,15.20,1.10,2025-06-01', '6501,日立製作所,8500,900001,15.20,1.10,2025-06-01'],
+    ['pnlPct', '6501,日立製作所,8500,900000,15.20,1.10,2025-06-01', '6501,日立製作所,8500,900000,15.21,1.10,2025-06-01'],
+    ['dayPct', '6501,日立製作所,8500,900000,15.20,1.10,2025-06-01', '6501,日立製作所,8500,900000,15.20,1.11,2025-06-01'],
+    ['price', '6501,日立製作所,8500,900000,15.20,1.10,2025-06-01', '6501,日立製作所,8501,900000,15.20,1.10,2025-06-01'],
+    ['acquiredAt', '6501,日立製作所,8500,900000,15.20,1.10,2025-06-01', '6501,日立製作所,8500,900000,15.20,1.10,2025-06-02'],
+  ])('%s remains identity-relevant', async (_field, first, changed) => {
+    expect(await identity(stockSection([first])))
+      .not.toBe(await identity(stockSection([changed])))
+  })
+
+  it('does not lose duplicate-row multiplicity', async () => {
+    const row = '6501,日立製作所,8500,900000,15.20,1.10,2025-06-01'
+    expect(await identity(stockSection([row])))
+      .not.toBe(await identity(stockSection([row, row])))
+  })
+
+  it.each([
+    ['NFKC full-width/half-width', 'ABC', 'ＡＢＣ'],
+    ['NFKC composed/decomposed', 'é', 'e\u0301'],
+  ])('%s representations normalize to one identity', async (_label, firstName, secondName) => {
+    const row = (name: string) => `6501,${name},8500,900000,15.20,1.10,2025-06-01`
+    expect(await identity(stockSection([row(firstName)])))
+      .toBe(await identity(stockSection([row(secondName)])))
+  })
+})
+
+describe('T9-A004-R1-F1: invalid explicit timestamp precedence', () => {
+  it('rejects recognized invalid authority before row parsing or full-sync guards', async () => {
+    await expect(importPortfolioCsv(
+      makeCsvFile('データ基準日時,2026-02-30'),
+      [],
+      [],
+    )).rejects.toMatchObject({
+      name: 'InvalidCsvSourceTimestampError',
+      code: 'INVALID_CSV_SOURCE_TIMESTAMP',
+      rawValue: '2026-02-30',
+    })
+  })
+})
+
 describe('T9-A001/A002-R2: FileReader Promise totality', () => {
   const originalReader = globalThis.FileReader
   const holdings = [makeHolding({ code: '6501', name: '日立製作所', eval: 800_000 })]

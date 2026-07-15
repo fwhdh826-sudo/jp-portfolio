@@ -1,5 +1,10 @@
 import type { CsvSourceProvenance, Holding, Trust } from '../../types'
-import { buildCsvSourceProvenance } from './csvProvenance'
+import {
+  buildCsvSourceProvenance,
+  extractExplicitSourceTimestamp,
+  InvalidCsvSourceTimestampError,
+} from './csvProvenance'
+import { compareCsvSemanticRows, type CsvSemanticRow } from './csvSemanticIdentity'
 
 type AssetType = 'stock' | 'trust'
 type AccountHint = '' | '特定' | 'NISA成長' | 'NISA積立'
@@ -157,7 +162,11 @@ export async function importPortfolioCsv(
   trust: Trust[],
 ): Promise<{ holdings: Holding[]; trust: Trust[]; trustSync: TrustSyncReport; sourceProvenance: CsvSourceProvenance }> {
   const text = await readFileAsText(file)
-  const { rows, trustSectionSeen } = parseRows(text)
+  const explicitSourceTimestamp = extractExplicitSourceTimestamp(text)
+  if (explicitSourceTimestamp.status === 'invalid') {
+    throw new InvalidCsvSourceTimestampError(explicitSourceTimestamp.rawValue)
+  }
+  const { rows, semanticRows: parsedSemanticRows, trustSectionSeen } = parseRows(text)
   if (rows.length === 0) throw new Error('CSV: 有効な行が見つかりませんでした')
 
   const stockRows = rows.filter((row): row is ParsedRow & { code: string } => row.assetType === 'stock' && STOCK_CODE_FULL_RE.test(row.code))
@@ -282,19 +291,19 @@ export async function importPortfolioCsv(
     }
   }
 
-  const semanticRows = rows
-    .map(row => ({
+  const semanticRows = parsedSemanticRows
+    .map((row): CsvSemanticRow => ({
       assetType: row.assetType,
       code: row.code,
-      name: row.name,
-      eval: row.eval,
-      pnlPct: row.pnlPct,
-      dayPct: row.dayPct,
-      price: row.price,
+      name: normalizeCell(row.name),
+      eval: Object.is(row.eval, -0) ? 0 : row.eval,
+      pnlPct: Object.is(row.pnlPct, -0) ? 0 : row.pnlPct,
+      dayPct: Object.is(row.dayPct, -0) ? 0 : row.dayPct,
+      price: Object.is(row.price, -0) ? 0 : row.price,
       acquiredAt: row.acquiredAt ?? null,
       accountHint: row.accountHint,
     }))
-    .sort((left, right) => JSON.stringify(left).localeCompare(JSON.stringify(right)))
+    .sort(compareCsvSemanticRows)
   const sourceProvenance = buildCsvSourceProvenance({
     text,
     fileName: String(file.name || ''),
@@ -430,7 +439,11 @@ function scoreDecodedText(text: string) {
 }
 
 // ── CSVパース ─────────────────────────────────────────────────
-function parseRows(text: string): { rows: ParsedRow[]; trustSectionSeen: boolean } {
+function parseRows(text: string): {
+  rows: ParsedRow[]
+  semanticRows: ParsedRow[]
+  trustSectionSeen: boolean
+} {
   const lines = text.split(/\r?\n/)
   const parsedRows: ParsedRow[] = []
   let section: SectionContext | null = null
@@ -480,7 +493,7 @@ function parseRows(text: string): { rows: ParsedRow[]; trustSectionSeen: boolean
     if (row) parsedRows.push(row)
   }
 
-  return { rows: aggregateRows(parsedRows), trustSectionSeen }
+  return { rows: aggregateRows(parsedRows), semanticRows: parsedRows, trustSectionSeen }
 }
 
 function detectSection(firstCellRaw: string): SectionContext | null {

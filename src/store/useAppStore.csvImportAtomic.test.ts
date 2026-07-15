@@ -113,6 +113,7 @@ function relevantState() {
     csvLastImportedAt: state.system.csvLastImportedAt,
     csvImportProvenance: state.system.csvImportProvenance,
     csvSyncSummary: state.system.csvSyncSummary,
+    analysisLastRunAt: state.system.analysisLastRunAt,
     analysis: state.analysis,
     metrics: state.metrics,
     learning: state.learning,
@@ -231,6 +232,62 @@ describe('T9-A001/A002: structured CSV result and atomic store commit', () => {
     expect(restoreLearning()).toEqual(state.learning)
     expect(restoreCsvImportedAt()).toBe(state.system.csvLastImportedAt)
     expect(restoreCsvSyncSummary()).toEqual(state.system.csvSyncSummary)
+  })
+
+  it.each([
+    '2026-02-30',
+    '2025-02-29',
+    '2026-07-15T09:00:00',
+    '2026-13-01',
+    '2026-07-15T25:00:00Z',
+  ])('T9-A004-R1-F1: invalid explicit authority %s rejects before analysis, persistence, tracker, and publication', async invalid => {
+    const before = relevantState()
+    const storageBefore = structuredClone(storage)
+    const writesBefore = storageWriteCount
+    let portfolioNotifications = 0
+    const unsubscribe = useAppStore.subscribe((state, previous) => {
+      if (state.holdings !== previous.holdings || state.trust !== previous.trust ||
+          state.analysis !== previous.analysis || state.officialDecision !== previous.officialDecision) {
+        portfolioNotifications += 1
+      }
+    })
+
+    const result = await useAppStore.getState().importCsv(csvFile(csvWithSource(invalid)))
+    unsubscribe()
+
+    expect(result).toMatchObject({
+      ok: false,
+      code: 'INVALID_CSV_SOURCE_TIMESTAMP',
+      message: 'CSVのデータ基準日時が不正です。日時を確認し、タイムゾーン付きISO形式または日付形式で再試行してください。状態は変更されていません。',
+      analysisCommitted: false,
+      officialDecisionCommitted: false,
+      persistence: { status: 'not_attempted' },
+    })
+    expect(relevantState()).toEqual(before)
+    expect(storage).toEqual(storageBefore)
+    expect(storageWriteCount).toBe(writesBefore)
+    expect(portfolioNotifications).toBe(0)
+    expect(useAppStore.getState().system.status).not.toBe('loading')
+
+    await expect(useAppStore.getState().importCsv(csvFile(csvWithSource(invalid))))
+      .resolves.toMatchObject({ ok: false, code: 'INVALID_CSV_SOURCE_TIMESTAMP' })
+    await expect(useAppStore.getState().importCsv(csvFile(csvWithSource('2026-07-16T09:00:00+09:00'))))
+      .resolves.toMatchObject({ ok: true, code: 'SUCCESS' })
+  })
+
+  it('T9-A004-R1-F1: an invalid explicit rejection releases the lock and does not turn absent metadata into invalid', async () => {
+    await expect(useAppStore.getState().importCsv(csvFile(csvWithSource('2026-02-30'))))
+      .resolves.toMatchObject({ ok: false, code: 'INVALID_CSV_SOURCE_TIMESTAMP' })
+
+    const absent = new File([VALID_CSV], 'portfolio.csv', { type: 'text/csv', lastModified: 0 })
+    const retry = await useAppStore.getState().importCsv(absent)
+    expect(retry).toMatchObject({ ok: true, code: 'SUCCESS' })
+    if (!retry.ok) throw new Error('expected absent-metadata first import to preserve unknown policy')
+    expect(retry.provenance).toMatchObject({
+      sourceAsOf: null,
+      sourceAsOfKind: 'unknown',
+      sourceAsOfConfidence: 'unknown',
+    })
   })
 
   it('T9-A004 RED: an explicitly older CSV cannot overwrite a newer committed generation', async () => {
