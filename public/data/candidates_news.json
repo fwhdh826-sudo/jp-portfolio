@@ -1,47 +1,61 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-07-16T09:54:38.225117+09:00",
-  "sourceUpdatedAt": "2026-07-16T00:05:30+00:00",
+  "updatedAt": "2026-07-16T14:58:59.052345+09:00",
+  "sourceUpdatedAt": "2026-07-16T05:46:48+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "歴史的な円安「経済に悪い影響」61％ NHK世論調査",
-      "topPositiveTitle": "歴史的な円安「経済に悪い影響」61％ NHK世論調査",
-      "items": [
-        {
-          "title": "歴史的な円安「経済に悪い影響」61％ NHK世論調査",
-          "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-13T20:02:25+00:00",
-          "url": "https://news.web.nhk/newsweb/na/na-k10015175471000",
-          "tags": [
-            "fx",
-            "jp_broad",
-            "market"
-          ],
-          "titleJa": "歴史的な円安「経済に悪い影響」61％ NHK世論調査"
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "jp_semiconductor": {
-      "avgSentiment": 0.11,
-      "negativeCount": 0,
-      "positiveCount": 1,
+      "avgSentiment": -0.167,
+      "negativeCount": 1,
+      "positiveCount": 0,
       "neutralCount": 2,
-      "sourceCount": 1,
+      "sourceCount": 2,
       "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Global Investors Hunt For Creative Backdoors Into China’s Mega CXMT IPO",
-      "topPositiveTitle": "Stocks Rise as Inflation Data Outweighs Chip Rout: Markets Wrap",
+      "topNegativeTitle": "Stocks Fall as Chip Selloff Hits Kospi, Oil Slips: Markets Wrap",
+      "topPositiveTitle": "Korea Raises Rates for First Time Since 2023 on Chip-Led Boom",
       "items": [
+        {
+          "title": "Stocks Fall as Chip Selloff Hits Kospi, Oil Slips: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.5,
+          "publishedAt": "2026-07-15T22:07:47+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-15/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "jp_semiconductor",
+            "macro_risk",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Korea Raises Rates for First Time Since 2023 on Chip-Led Boom",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-16T00:50:29+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-16/bok-delivers-first-rate-hike-since-early-2023-amid-chip-led-boom",
+          "tags": [
+            "jp_semiconductor",
+            "market",
+            "rates",
+            "us_growth"
+          ]
+        },
         {
           "title": "Global Investors Hunt For Creative Backdoors Into China’s Mega CXMT IPO",
           "source": "Bloomberg Markets",
@@ -53,46 +67,19 @@
             "jp_semiconductor",
             "market"
           ]
-        },
-        {
-          "title": "Asian Equities Drop Led by Kospi, Oil Extends Gain: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-15T22:07:47+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-15/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "jp_semiconductor",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Stocks Rise as Inflation Data Outweighs Chip Rout: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-07-14T22:06:21+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-14/asian-stocks-poised-to-track-us-gains-on-soft-cpi-markets-wrap",
-          "tags": [
-            "jp_semiconductor",
-            "market",
-            "us_broad"
-          ]
         }
       ]
     },
     "us_broad": {
-      "avgSentiment": 0.222,
+      "avgSentiment": 0.0,
       "negativeCount": 1,
-      "positiveCount": 4,
-      "neutralCount": 4,
+      "positiveCount": 1,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 9,
+      "itemCount": 5,
       "isStale": false,
       "topNegativeTitle": "Fed’s Cook Says Prepared to Act If Inflation Doesn’t Cool",
-      "topPositiveTitle": "US Bonds Extend Rally as Soft Inflation Data Dims Fed Hike Bets",
+      "topPositiveTitle": "Nickel Hits Three-Week High on Indonesia Supply Risks, Fed View",
       "items": [
         {
           "title": "Fed’s Cook Says Prepared to Act If Inflation Doesn’t Cool",
@@ -145,55 +132,56 @@
           ]
         },
         {
-          "title": "Fed’s Williams Says Rates Well Positioned Despite AI Demand",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-15T12:41:52+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-15/fed-s-williams-says-rates-well-positioned-despite-ai-demand",
+          "title": "Nickel Hits Three-Week High on Indonesia Supply Risks, Fed View",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-07-16T04:54:51+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-16/nickel-hits-three-week-high-on-indonesia-supply-risks-fed-view",
           "tags": [
             "market",
-            "rates",
-            "us_broad",
-            "us_growth"
+            "us_broad"
           ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": -0.25,
+      "avgSentiment": -0.167,
       "negativeCount": 1,
       "positiveCount": 0,
-      "neutralCount": 3,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "SpaceX Shares Briefly Slip Below IPO Price for First Time",
-      "topPositiveTitle": "Asian Equities Drop Led by Kospi, Oil Extends Gain: Markets Wrap",
+      "topNegativeTitle": "Stocks Fall as Chip Selloff Hits Kospi, Oil Slips: Markets Wrap",
+      "topPositiveTitle": "Korea Raises Rates for First Time Since 2023 on Chip-Led Boom",
       "items": [
         {
-          "title": "SpaceX Shares Briefly Slip Below IPO Price for First Time",
+          "title": "Stocks Fall as Chip Selloff Hits Kospi, Oil Slips: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-07-15T16:08:36+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-15/spacex-shares-fall-below-ipo-price-for-first-time-as-hype-fades",
-          "tags": [
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Asian Equities Drop Led by Kospi, Oil Extends Gain: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
+          "sentimentScore": -0.5,
           "publishedAt": "2026-07-15T22:07:47+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-07-15/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
             "jp_semiconductor",
+            "macro_risk",
             "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Korea Raises Rates for First Time Since 2023 on Chip-Led Boom",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-16T00:50:29+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-16/bok-delivers-first-rate-hike-since-early-2023-amid-chip-led-boom",
+          "tags": [
+            "jp_semiconductor",
+            "market",
+            "rates",
             "us_growth"
           ]
         },
@@ -206,20 +194,6 @@
           "url": "https://www.bloomberg.com/news/articles/2026-07-15/warsh-says-price-pressures-from-ai-not-necessarily-inflationary",
           "tags": [
             "market",
-            "us_broad",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Fed’s Williams Says Rates Well Positioned Despite AI Demand",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-15T12:41:52+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-15/fed-s-williams-says-rates-well-positioned-despite-ai-demand",
-          "tags": [
-            "market",
-            "rates",
             "us_broad",
             "us_growth"
           ]
@@ -239,29 +213,41 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": 0.67,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 0,
+      "avgSentiment": -0.3,
+      "negativeCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Gold Steadies as Soft Inflation, War Risk Cloud Fed Rate Outlook",
-      "topPositiveTitle": "Gold Steadies as Soft Inflation, War Risk Cloud Fed Rate Outlook",
+      "topNegativeTitle": "Gold Declines as Fresh US Strikes on Iran Fuel Inflation Fears",
+      "topPositiveTitle": "Fidelity Plans to Rebuild Gold Holdings on Long-Term Bull Case",
       "items": [
         {
-          "title": "Gold Steadies as Soft Inflation, War Risk Cloud Fed Rate Outlook",
+          "title": "Gold Declines as Fresh US Strikes on Iran Fuel Inflation Fears",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
+          "sentiment": "negative",
+          "sentimentScore": -0.6,
           "publishedAt": "2026-07-15T22:57:36+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-07-15/gold-steadies-as-soft-inflation-war-risk-cloud-fed-rate-outlook",
           "tags": [
+            "commodity",
             "geopolitical",
             "gold",
             "macro_risk",
-            "market",
-            "us_broad"
+            "market"
+          ]
+        },
+        {
+          "title": "Fidelity Plans to Rebuild Gold Holdings on Long-Term Bull Case",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-16T04:41:01+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-16/fidelity-plans-to-rebuild-gold-holdings-on-long-term-bull-case",
+          "tags": [
+            "gold",
+            "market"
           ]
         }
       ]
@@ -291,78 +277,78 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.125,
-      "negativeCount": 0,
+      "avgSentiment": -0.055,
+      "negativeCount": 2,
       "positiveCount": 2,
-      "neutralCount": 6,
+      "neutralCount": 4,
       "sourceCount": 2,
       "itemCount": 8,
       "isStale": false,
-      "topNegativeTitle": "IEA Boss Warns Global Economy in Peril If Hormuz Crisis Persists",
-      "topPositiveTitle": "Gold Steadies as Soft Inflation, War Risk Cloud Fed Rate Outlook",
+      "topNegativeTitle": "Gold Declines as Fresh US Strikes on Iran Fuel Inflation Fears",
+      "topPositiveTitle": "Containers Surge Into Top US Ports Amid Tariff, Iran Uncertainty",
       "items": [
         {
-          "title": "IEA Boss Warns Global Economy in Peril If Hormuz Crisis Persists",
+          "title": "Gold Declines as Fresh US Strikes on Iran Fuel Inflation Fears",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-16T00:05:30+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-16/iea-boss-warns-global-economy-in-peril-if-hormuz-crisis-persists",
+          "sentiment": "negative",
+          "sentimentScore": -0.6,
+          "publishedAt": "2026-07-15T22:57:36+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-15/gold-steadies-as-soft-inflation-war-risk-cloud-fed-rate-outlook",
           "tags": [
             "commodity",
             "geopolitical",
+            "gold",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Iran War Drives New Investment in US LNG, S&P Global Says",
+          "title": "Stocks Fall as Chip Selloff Hits Kospi, Oil Slips: Markets Wrap",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-15T23:18:14+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-15/iran-war-drives-new-investment-in-us-lng-s-p-global-says",
+          "sentiment": "negative",
+          "sentimentScore": -0.5,
+          "publishedAt": "2026-07-15T22:07:47+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-15/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
-            "geopolitical",
+            "jp_semiconductor",
             "macro_risk",
-            "market"
+            "market",
+            "us_growth"
           ]
         },
         {
-          "title": "US Producer Prices Come in Tame as Pipeline Pressures Abate",
+          "title": "Greer Praises Swiss Investments as US Weighs Tariff Decision",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-15T12:33:05+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-15/us-producer-prices-rise-at-slower-pace-as-core-gauge-decelerates",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "La llegada del gusano barrenador a EE.UU. prolonga la crisis ganadera en México",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-15T11:00:22+00:00",
-          "url": "https://www.bloomberg.com/news/features/2026-07-15/la-llegada-del-gusano-barrenador-a-ee-uu-prolonga-la-crisis-ganadera-en-mexico",
+          "publishedAt": "2026-07-16T03:08:51+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-16/greer-praises-swiss-investments-as-us-weighs-tariff-decision",
           "tags": [
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Trump and Iran war and shipping through Hormuz",
+          "title": "US Pushes Vietnam on Trade Barriers, IP Violations in Deal Talks",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-15T11:00:01+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-07-15/trump-and-iran-war-and-shipping-through-hormuz",
+          "publishedAt": "2026-07-16T01:07:42+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-16/us-pushes-vietnam-on-trade-barriers-ip-violations-in-deal-talks",
           "tags": [
-            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "US Sets 25% Tariff on Some Brazilian Imports Starting July 22",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-16T00:51:47+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-16/greer-says-us-to-announce-decision-on-brazil-tariffs-wednesdsay",
+          "tags": [
             "macro_risk",
             "market"
           ]
@@ -370,68 +356,56 @@
       ]
     },
     "fx": {
-      "avgSentiment": -0.223,
-      "negativeCount": 1,
-      "positiveCount": 1,
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
+      "positiveCount": 0,
       "neutralCount": 1,
-      "sourceCount": 3,
-      "itemCount": 3,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Yen Options Suggest a Slide to 165 Level Before Japan Intervenes",
-      "topPositiveTitle": "Emerging Currencies Gain as Traders Cut Back Fed Bets on US PPI",
+      "topNegativeTitle": "Modi Pushes to Cut Imports to Shield India From Shocks",
+      "topPositiveTitle": "Modi Pushes to Cut Imports to Shield India From Shocks",
       "items": [
         {
-          "title": "Yen Options Suggest a Slide to 165 Level Before Japan Intervenes",
+          "title": "Modi Pushes to Cut Imports to Shield India From Shocks",
           "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-07-15T23:51:07+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-15/yen-options-suggest-a-slide-to-165-level-before-japan-intervenes",
-          "tags": [
-            "fx",
-            "market"
-          ]
-        },
-        {
-          "title": "歴史的な円安「経済に悪い影響」61％ NHK世論調査",
-          "source": "NHK 経済",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-13T20:02:25+00:00",
-          "url": "https://news.web.nhk/newsweb/na/na-k10015175471000",
+          "publishedAt": "2026-07-16T01:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-16/modi-pushes-to-cut-import-reliance-to-shield-india-from-shocks",
           "tags": [
             "fx",
-            "jp_broad",
+            "geopolitical",
             "market"
-          ],
-          "titleJa": "歴史的な円安「経済に悪い影響」61％ NHK世論調査"
-        },
-        {
-          "title": "Emerging Currencies Gain as Traders Cut Back Fed Bets on US PPI",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-07-15T10:29:22+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-15/emerging-stocks-rise-as-asia-tech-rally-offsets-gold-miner-slump",
-          "tags": [
-            "fx",
-            "market",
-            "us_broad"
           ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": 0.286,
+      "avgSentiment": 0.083,
       "negativeCount": 0,
-      "positiveCount": 3,
-      "neutralCount": 4,
+      "positiveCount": 1,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 7,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Kalshi Seeks to Let Traders Bet on Flight Cancellation Rates",
-      "topPositiveTitle": "US Bonds Extend Rally as Soft Inflation Data Dims Fed Hike Bets",
+      "topNegativeTitle": "Korea Raises Rates for First Time Since 2023 on Chip-Led Boom",
+      "topPositiveTitle": "Bank of Canada Holds at 2.25% as Growth Outlook Improves",
       "items": [
+        {
+          "title": "Korea Raises Rates for First Time Since 2023 on Chip-Led Boom",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-16T00:50:29+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-16/bok-delivers-first-rate-hike-since-early-2023-amid-chip-led-boom",
+          "tags": [
+            "jp_semiconductor",
+            "market",
+            "rates",
+            "us_growth"
+          ]
+        },
         {
           "title": "Kalshi Seeks to Let Traders Bet on Flight Cancellation Rates",
           "source": "Bloomberg Markets",
@@ -458,32 +432,6 @@
           ]
         },
         {
-          "title": "Nigerian Inflation Holds Steady Ahead of Interest-Rate Call",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-15T14:21:48+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-15/nigerian-inflation-holds-steady-ahead-of-rate-setting-meeting",
-          "tags": [
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Fed’s Williams Says Rates Well Positioned Despite AI Demand",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-15T12:41:52+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-15/fed-s-williams-says-rates-well-positioned-despite-ai-demand",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad",
-            "us_growth"
-          ]
-        },
-        {
           "title": "Bank of Canada Holds at 2.25% as Growth Outlook Improves",
           "source": "Bloomberg Economics",
           "sentiment": "positive",
@@ -499,100 +447,61 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.167,
-      "negativeCount": 0,
-      "positiveCount": 2,
+      "avgSentiment": 0.056,
+      "negativeCount": 2,
+      "positiveCount": 4,
       "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 10,
       "isStale": false,
-      "topNegativeTitle": "IEA Boss Warns Global Economy in Peril If Hormuz Crisis Persists",
-      "topPositiveTitle": "Latest Oil Market News and Analysis for July 16",
+      "topNegativeTitle": "Gold Declines as Fresh US Strikes on Iran Fuel Inflation Fears",
+      "topPositiveTitle": "Asian Gas Prices Rise to Highest Since March on Mideast Tensions",
       "items": [
         {
-          "title": "IEA Boss Warns Global Economy in Peril If Hormuz Crisis Persists",
+          "title": "Gold Declines as Fresh US Strikes on Iran Fuel Inflation Fears",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-16T00:05:30+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-16/iea-boss-warns-global-economy-in-peril-if-hormuz-crisis-persists",
+          "sentiment": "negative",
+          "sentimentScore": -0.6,
+          "publishedAt": "2026-07-15T22:57:36+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-15/gold-steadies-as-soft-inflation-war-risk-cloud-fed-rate-outlook",
           "tags": [
             "commodity",
             "geopolitical",
+            "gold",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Iran War Drives New Investment in US LNG, S&P Global Says",
+          "title": "Stocks Fall as Chip Selloff Hits Kospi, Oil Slips: Markets Wrap",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-15T23:18:14+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-15/iran-war-drives-new-investment-in-us-lng-s-p-global-says",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Asian Equities Drop Led by Kospi, Oil Extends Gain: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
+          "sentiment": "negative",
+          "sentimentScore": -0.5,
           "publishedAt": "2026-07-15T22:07:47+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-07-15/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
             "jp_semiconductor",
+            "macro_risk",
             "market",
             "us_growth"
           ]
         },
         {
-          "title": "Iran’s Tanker Attacks Squeeze the Hormuz Oil-Shuttling Trade",
-          "source": "Bloomberg Economics",
+          "title": "IEA Sees $6.5 Trillion At Risk if China Imposes Rare-Earth Curbs",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-15T17:14:59+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-15/iran-s-tanker-attacks-squeeze-the-hormuz-oil-shuttling-trade",
+          "publishedAt": "2026-07-16T05:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-16/iea-risk-china-rare-earth-curbs",
           "tags": [
             "commodity",
-            "geopolitical",
             "market"
           ]
         },
         {
-          "title": "Bank of Canada Holds at 2.25% as Growth Outlook Improves",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-07-15T13:45:20+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-15/bank-of-canada-holds-rates-at-2-25-as-growth-outlook-improves",
-          "tags": [
-            "commodity",
-            "market",
-            "rates"
-          ]
-        }
-      ]
-    },
-    "geopolitical": {
-      "avgSentiment": 0.186,
-      "negativeCount": 0,
-      "positiveCount": 3,
-      "neutralCount": 6,
-      "sourceCount": 2,
-      "itemCount": 9,
-      "isStale": false,
-      "topNegativeTitle": "IEA Boss Warns Global Economy in Peril If Hormuz Crisis Persists",
-      "topPositiveTitle": "Gold Steadies as Soft Inflation, War Risk Cloud Fed Rate Outlook",
-      "items": [
-        {
           "title": "IEA Boss Warns Global Economy in Peril If Hormuz Crisis Persists",
-          "source": "Bloomberg Markets",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
           "publishedAt": "2026-07-16T00:05:30+00:00",
@@ -605,12 +514,66 @@
           ]
         },
         {
-          "title": "Iran War Drives New Investment in US LNG, S&P Global Says",
-          "source": "Bloomberg Markets",
+          "title": "Iran’s Tanker Attacks Squeeze the Hormuz Oil-Shuttling Trade",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-15T23:18:14+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-15/iran-war-drives-new-investment-in-us-lng-s-p-global-says",
+          "publishedAt": "2026-07-15T17:14:59+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-15/iran-s-tanker-attacks-squeeze-the-hormuz-oil-shuttling-trade",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
+          ]
+        }
+      ]
+    },
+    "geopolitical": {
+      "avgSentiment": 0.049,
+      "negativeCount": 1,
+      "positiveCount": 3,
+      "neutralCount": 4,
+      "sourceCount": 2,
+      "itemCount": 8,
+      "isStale": false,
+      "topNegativeTitle": "Gold Declines as Fresh US Strikes on Iran Fuel Inflation Fears",
+      "topPositiveTitle": "India Raises Export Levies on Diesel and Jet Fuel",
+      "items": [
+        {
+          "title": "Gold Declines as Fresh US Strikes on Iran Fuel Inflation Fears",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.6,
+          "publishedAt": "2026-07-15T22:57:36+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-15/gold-steadies-as-soft-inflation-war-risk-cloud-fed-rate-outlook",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "gold",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Modi Pushes to Cut Imports to Shield India From Shocks",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-16T01:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-16/modi-pushes-to-cut-import-reliance-to-shield-india-from-shocks",
+          "tags": [
+            "fx",
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "IEA Boss Warns Global Economy in Peril If Hormuz Crisis Persists",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-16T00:05:30+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-16/iea-boss-warns-global-economy-in-peril-if-hormuz-crisis-persists",
           "tags": [
             "commodity",
             "geopolitical",
@@ -632,28 +595,15 @@
           ]
         },
         {
-          "title": "US Producer Prices Come in Tame as Pipeline Pressures Abate",
+          "title": "Russia Sanctions Threat May Complicate US-India Trade Talks",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-15T12:33:05+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-15/us-producer-prices-rise-at-slower-pace-as-core-gauge-decelerates",
+          "publishedAt": "2026-07-15T13:06:24+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-15/russia-oil-sanctions-threat-may-complicate-us-india-trade-talks",
           "tags": [
+            "commodity",
             "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Trump and Iran war and shipping through Hormuz",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-15T11:00:01+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-07-15/trump-and-iran-war-and-shipping-through-hormuz",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
             "market"
           ]
         }
