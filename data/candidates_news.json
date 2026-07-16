@@ -1,104 +1,119 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-07-16T21:58:53.584277+09:00",
-  "sourceUpdatedAt": "2026-07-16T12:47:29+00:00",
+  "updatedAt": "2026-07-17T07:31:29.722074+09:00",
+  "sourceUpdatedAt": "2026-07-16T22:12:17+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": 0.67,
+      "avgSentiment": 0,
       "negativeCount": 0,
-      "positiveCount": 1,
+      "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Japan’s Household Inflation Expectations Hit Highest Since 2006",
-      "topPositiveTitle": "Japan’s Household Inflation Expectations Hit Highest Since 2006",
-      "items": [
-        {
-          "title": "Japan’s Household Inflation Expectations Hit Highest Since 2006",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-07-16T06:08:51+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-16/japan-s-household-inflation-expectations-hit-highest-since-2006",
-          "tags": [
-            "jp_broad",
-            "market",
-            "rates"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "jp_semiconductor": {
       "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 2,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "TSMC Says AI Boom Will Go Another Three Years, Defying Skeptics",
-      "topPositiveTitle": "TSMC Says AI Boom Will Go Another Three Years, Defying Skeptics",
+      "topNegativeTitle": "Chip Stocks Get Hit as AI Spending Anxiety Builds: Markets Wrap",
+      "topPositiveTitle": "Chip Stocks Get Hit as AI Spending Anxiety Builds: Markets Wrap",
       "items": [
         {
-          "title": "TSMC Says AI Boom Will Go Another Three Years, Defying Skeptics",
+          "title": "Chip Stocks Get Hit as AI Spending Anxiety Builds: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-16T09:55:04+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-07-16/tsmc-says-ai-boom-will-go-another-three-years-defying-skeptics",
+          "publishedAt": "2026-07-15T22:07:47+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-15/stock-market-today-dow-s-p-live-updates",
           "tags": [
+            "geopolitical",
             "jp_semiconductor",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Korea Raises Rates for First Time Since 2023 on Chip-Led Boom",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-16T00:50:29+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-16/bok-delivers-first-rate-hike-since-early-2023-amid-chip-led-boom",
-          "tags": [
-            "jp_semiconductor",
-            "market",
-            "rates"
+            "macro_risk",
+            "market"
           ]
         }
       ]
     },
     "us_broad": {
-      "avgSentiment": 0.165,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 1,
+      "avgSentiment": -0.388,
+      "negativeCount": 3,
+      "positiveCount": 0,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 2,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "The Fed and Bank of Korea Ponder AI’s Impact on Inflation",
-      "topPositiveTitle": "Nickel Hits Three-Week High on Indonesia Supply Risks, Fed View",
+      "topNegativeTitle": "Asia Stocks to Track US Slide on Chipmaker Selloff: Markets Wrap",
+      "topPositiveTitle": "Fed’s Schmid Says Inflation Too Hot, Above Target Too Long",
       "items": [
         {
-          "title": "The Fed and Bank of Korea Ponder AI’s Impact on Inflation",
+          "title": "Asia Stocks to Track US Slide on Chipmaker Selloff: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-07-16T22:05:23+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-16/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Gold Falls as US-Iran Hostilities Rekindles Fed Hike Bets",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-07-15T22:57:36+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-15/gold-steadies-as-soft-inflation-war-risk-cloud-fed-rate-outlook",
+          "tags": [
+            "geopolitical",
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Bond Traders Bail on Fed Hike Bets on Softer Inflation Path",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-07-16T15:00:01+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-16/bond-traders-bail-on-fed-hike-wagers-on-softer-inflation-outlook",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Fed’s Schmid Says Inflation Too Hot, Above Target Too Long",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-16T11:00:01+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-07-16/the-fed-and-bank-of-korea-ponder-ai-s-impact-on-inflation",
+          "publishedAt": "2026-07-16T17:25:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-16/fed-s-schmid-says-inflation-is-too-hot-above-target-too-long",
           "tags": [
             "market",
             "us_broad"
           ]
         },
         {
-          "title": "Nickel Hits Three-Week High on Indonesia Supply Risks, Fed View",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-07-16T04:54:51+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-16/nickel-hits-three-week-high-on-indonesia-supply-risks-fed-view",
+          "title": "Fed’s Watchdog Warns On Insider Risk after China Secrets Case",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-16T15:04:42+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-16/fed-s-watchdog-warns-on-insider-risk-after-china-secrets-case",
           "tags": [
             "market",
             "us_broad"
@@ -107,54 +122,16 @@
       ]
     },
     "us_growth": {
-      "avgSentiment": -0.11,
-      "negativeCount": 1,
+      "avgSentiment": 0,
+      "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 2,
-      "sourceCount": 1,
-      "itemCount": 3,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "US Power Grid Faces Defining Test for AI Boom",
-      "topPositiveTitle": "Broker Alpaca Raises $435 Million, Explores Prime Broking Entry",
-      "items": [
-        {
-          "title": "US Power Grid Faces Defining Test for AI Boom",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-07-16T11:34:43+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-07-16/us-power-grid-faces-defining-test-for-ai-boom",
-          "tags": [
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Broker Alpaca Raises $435 Million, Explores Prime Broking Entry",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-16T10:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-16/broker-alpaca-raises-435-million-explores-prime-broking-entry",
-          "tags": [
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "TSMC Says AI Boom Will Go Another Three Years, Defying Skeptics",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-16T09:55:04+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-07-16/tsmc-says-ai-boom-will-go-another-three-years-defying-skeptics",
-          "tags": [
-            "jp_semiconductor",
-            "market",
-            "us_growth"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "global_broad": {
       "avgSentiment": 0,
@@ -169,41 +146,29 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": -0.3,
+      "avgSentiment": -1.0,
       "negativeCount": 1,
       "positiveCount": 0,
-      "neutralCount": 1,
+      "neutralCount": 0,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Gold Declines as Fresh US Strikes on Iran Fuel Inflation Fears",
-      "topPositiveTitle": "Utility Warns Blast at South Africa Water Plant to Hit Supply",
+      "topNegativeTitle": "Gold Falls as US-Iran Hostilities Rekindles Fed Hike Bets",
+      "topPositiveTitle": "Gold Falls as US-Iran Hostilities Rekindles Fed Hike Bets",
       "items": [
         {
-          "title": "Gold Declines as Fresh US Strikes on Iran Fuel Inflation Fears",
+          "title": "Gold Falls as US-Iran Hostilities Rekindles Fed Hike Bets",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.6,
+          "sentimentScore": -1.0,
           "publishedAt": "2026-07-15T22:57:36+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-07-15/gold-steadies-as-soft-inflation-war-risk-cloud-fed-rate-outlook",
           "tags": [
-            "commodity",
             "geopolitical",
             "gold",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Utility Warns Blast at South Africa Water Plant to Hit Supply",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-16T11:22:52+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-16/utility-warns-blast-at-south-africa-water-plant-to-hit-supply",
-          "tags": [
-            "gold",
-            "market"
+            "market",
+            "rates",
+            "us_broad"
           ]
         }
       ]
@@ -233,39 +198,51 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.141,
-      "negativeCount": 2,
-      "positiveCount": 1,
+      "avgSentiment": 0.0,
+      "negativeCount": 1,
+      "positiveCount": 2,
       "neutralCount": 6,
       "sourceCount": 2,
       "itemCount": 9,
       "isStale": false,
-      "topNegativeTitle": "Stocks Fall After Retail Sales Amid AI Trade Angst: Markets Wrap",
-      "topPositiveTitle": "US Drivers Are Again Paying More Than $5 a Gallon for Diesel",
+      "topNegativeTitle": "Asia Stocks to Track US Slide on Chipmaker Selloff: Markets Wrap",
+      "topPositiveTitle": "Oil Traders Crowd Into Cheap TACO Hedge as Iran War Amps Up",
       "items": [
         {
-          "title": "Stocks Fall After Retail Sales Amid AI Trade Angst: Markets Wrap",
+          "title": "Asia Stocks to Track US Slide on Chipmaker Selloff: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -1.0,
-          "publishedAt": "2026-07-15T22:07:47+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-15/stock-market-today-dow-s-p-live-updates",
+          "publishedAt": "2026-07-16T22:05:23+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-16/stock-market-today-dow-s-p-live-updates",
           "tags": [
+            "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "How the Iran War Is Rewiring the Oil Market",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-16T21:12:59+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-16/how-the-iran-war-is-rewiring-the-oil-market",
+          "tags": [
+            "commodity",
+            "geopolitical",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Gold Declines as Fresh US Strikes on Iran Fuel Inflation Fears",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.6,
-          "publishedAt": "2026-07-15T22:57:36+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-15/gold-steadies-as-soft-inflation-war-risk-cloud-fed-rate-outlook",
+          "title": "Britain’s Still Paying the Price of the Truss Crisis, IMF Tells Burnhamuk",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-16T13:07:35+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-16/britain-s-still-paying-the-price-of-the-truss-crisis-imf-tells-burnhamuk",
           "tags": [
-            "commodity",
-            "geopolitical",
-            "gold",
             "macro_risk",
             "market"
           ]
@@ -295,39 +272,27 @@
             "macro_risk",
             "market"
           ]
-        },
-        {
-          "title": "Greer Praises Swiss Investments as US Weighs Tariff Decision",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-16T03:08:51+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-16/greer-praises-swiss-investments-as-us-weighs-tariff-decision",
-          "tags": [
-            "macro_risk",
-            "market"
-          ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0.2,
       "negativeCount": 0,
       "positiveCount": 0,
       "neutralCount": 1,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Modi Pushes to Cut Imports to Shield India From Shocks",
-      "topPositiveTitle": "Modi Pushes to Cut Imports to Shield India From Shocks",
+      "topNegativeTitle": "Emerging Currencies Fall as US, Iran Tensions Strengthen Dollar",
+      "topPositiveTitle": "Emerging Currencies Fall as US, Iran Tensions Strengthen Dollar",
       "items": [
         {
-          "title": "Modi Pushes to Cut Imports to Shield India From Shocks",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-16T01:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-16/modi-pushes-to-cut-import-reliance-to-shield-india-from-shocks",
+          "title": "Emerging Currencies Fall as US, Iran Tensions Strengthen Dollar",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.2,
+          "publishedAt": "2026-07-16T09:13:20+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-16/emerging-stocks-slump-as-korea-curbs-fan-selloff-in-chip-giants",
           "tags": [
             "fx",
             "geopolitical",
@@ -337,26 +302,42 @@
       ]
     },
     "rates": {
-      "avgSentiment": 0.168,
-      "negativeCount": 0,
+      "avgSentiment": -0.25,
+      "negativeCount": 2,
       "positiveCount": 1,
-      "neutralCount": 3,
+      "neutralCount": 1,
       "sourceCount": 2,
       "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "SMBC Bolsters Global Sales and Trading Push With Macro Hire",
-      "topPositiveTitle": "Japan’s Household Inflation Expectations Hit Highest Since 2006",
+      "topNegativeTitle": "Gold Falls as US-Iran Hostilities Rekindles Fed Hike Bets",
+      "topPositiveTitle": "IMF Cautions Burnham Against Raising UK’s Top Income Tax Rate",
       "items": [
         {
-          "title": "SMBC Bolsters Global Sales and Trading Push With Macro Hire",
+          "title": "Gold Falls as US-Iran Hostilities Rekindles Fed Hike Bets",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-16T12:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-16/smbc-bolsters-global-sales-and-trading-push-with-macro-hire",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-07-15T22:57:36+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-15/gold-steadies-as-soft-inflation-war-risk-cloud-fed-rate-outlook",
+          "tags": [
+            "geopolitical",
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Bond Traders Bail on Fed Hike Bets on Softer Inflation Path",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-07-16T15:00:01+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-16/bond-traders-bail-on-fed-hike-wagers-on-softer-inflation-outlook",
           "tags": [
             "market",
-            "rates"
+            "rates",
+            "us_broad"
           ]
         },
         {
@@ -372,27 +353,13 @@
           ]
         },
         {
-          "title": "Korea Raises Rates for First Time Since 2023 on Chip-Led Boom",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-16T00:50:29+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-16/bok-delivers-first-rate-hike-since-early-2023-amid-chip-led-boom",
-          "tags": [
-            "jp_semiconductor",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Japan’s Household Inflation Expectations Hit Highest Since 2006",
+          "title": "IMF Cautions Burnham Against Raising UK’s Top Income Tax Rate",
           "source": "Bloomberg Economics",
           "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-07-16T06:08:51+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-16/japan-s-household-inflation-expectations-hit-highest-since-2006",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-07-16T15:30:17+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-16/imf-cautions-burnham-against-raising-uk-s-top-income-tax-rate",
           "tags": [
-            "jp_broad",
             "market",
             "rates"
           ]
@@ -400,38 +367,37 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.106,
-      "negativeCount": 1,
-      "positiveCount": 2,
-      "neutralCount": 4,
+      "avgSentiment": 0.222,
+      "negativeCount": 0,
+      "positiveCount": 3,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 7,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Gold Declines as Fresh US Strikes on Iran Fuel Inflation Fears",
-      "topPositiveTitle": "US Stock Futures Today: AtaiBeckley, GE Aerospace, UnitedHealth",
+      "topNegativeTitle": "How the Iran War Is Rewiring the Oil Market",
+      "topPositiveTitle": "Oil Traders Crowd Into Cheap TACO Hedge as Iran War Amps Up",
       "items": [
         {
-          "title": "Gold Declines as Fresh US Strikes on Iran Fuel Inflation Fears",
+          "title": "How the Iran War Is Rewiring the Oil Market",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.6,
-          "publishedAt": "2026-07-15T22:57:36+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-15/gold-steadies-as-soft-inflation-war-risk-cloud-fed-rate-outlook",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-16T21:12:59+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-16/how-the-iran-war-is-rewiring-the-oil-market",
           "tags": [
             "commodity",
             "geopolitical",
-            "gold",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "DCC Gets Sweetened Bid From KKR, ECP After Drawn-Out Talks",
-          "source": "Bloomberg Markets",
+          "title": "Mahmood’s Economic ‘Blank Slate’ Key to Appeal as UK Chancellor",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-16T06:39:07+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-16/dcc-gets-sweetened-bid-from-kkr-ecp-after-drawn-out-deal-talks",
+          "publishedAt": "2026-07-16T14:10:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-16/mahmood-s-economic-blank-slate-key-to-appeal-as-uk-chancellor",
           "tags": [
             "commodity",
             "market"
@@ -452,12 +418,12 @@
           ]
         },
         {
-          "title": "IEA Boss Warns Global Economy in Peril If Hormuz Crisis Persists",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-16T00:05:30+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-16/iea-boss-warns-global-economy-in-peril-if-hormuz-crisis-persists",
+          "title": "Latest Oil Market News and Analysis for July 17",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-07-16T22:01:44+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-16/latest-oil-market-news-and-analysis-for-july-17",
           "tags": [
             "commodity",
             "geopolitical",
@@ -466,42 +432,55 @@
           ]
         },
         {
-          "title": "Russia Sanctions Threat May Complicate US-India Trade Talks",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-15T13:06:24+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-15/russia-oil-sanctions-threat-may-complicate-us-india-trade-talks",
+          "title": "Chevron Plans to Sign Iraq Oil Accord, Seeks Hormuz Bypass",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-07-16T15:52:26+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-16/chevron-to-sign-oil-investment-accords-with-iraq-on-friday",
           "tags": [
             "commodity",
-            "geopolitical",
             "market"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.156,
+      "avgSentiment": 0.029,
       "negativeCount": 1,
-      "positiveCount": 4,
+      "positiveCount": 2,
       "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 9,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "Gold Declines as Fresh US Strikes on Iran Fuel Inflation Fears",
-      "topPositiveTitle": "US Stock Futures Today: AtaiBeckley, GE Aerospace, UnitedHealth",
+      "topNegativeTitle": "Gold Falls as US-Iran Hostilities Rekindles Fed Hike Bets",
+      "topPositiveTitle": "Oil Traders Crowd Into Cheap TACO Hedge as Iran War Amps Up",
       "items": [
         {
-          "title": "Gold Declines as Fresh US Strikes on Iran Fuel Inflation Fears",
+          "title": "Gold Falls as US-Iran Hostilities Rekindles Fed Hike Bets",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.6,
+          "sentimentScore": -1.0,
           "publishedAt": "2026-07-15T22:57:36+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-07-15/gold-steadies-as-soft-inflation-war-risk-cloud-fed-rate-outlook",
           "tags": [
-            "commodity",
             "geopolitical",
             "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "How the Iran War Is Rewiring the Oil Market",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-16T21:12:59+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-16/how-the-iran-war-is-rewiring-the-oil-market",
+          "tags": [
+            "commodity",
+            "geopolitical",
             "macro_risk",
             "market"
           ]
@@ -521,41 +500,28 @@
           ]
         },
         {
-          "title": "Modi Pushes to Cut Imports to Shield India From Shocks",
-          "source": "Bloomberg Economics",
+          "title": "Chip Stocks Get Hit as AI Spending Anxiety Builds: Markets Wrap",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-16T01:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-16/modi-pushes-to-cut-import-reliance-to-shield-india-from-shocks",
+          "publishedAt": "2026-07-15T22:07:47+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-15/stock-market-today-dow-s-p-live-updates",
           "tags": [
-            "fx",
             "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "IEA Boss Warns Global Economy in Peril If Hormuz Crisis Persists",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-16T00:05:30+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-16/iea-boss-warns-global-economy-in-peril-if-hormuz-crisis-persists",
-          "tags": [
-            "commodity",
-            "geopolitical",
+            "jp_semiconductor",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Russia Sanctions Threat May Complicate US-India Trade Talks",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-15T13:06:24+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-15/russia-oil-sanctions-threat-may-complicate-us-india-trade-talks",
+          "title": "Emerging Currencies Fall as US, Iran Tensions Strengthen Dollar",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.2,
+          "publishedAt": "2026-07-16T09:13:20+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-16/emerging-stocks-slump-as-korea-curbs-fan-selloff-in-chip-giants",
           "tags": [
-            "commodity",
+            "fx",
             "geopolitical",
             "market"
           ]
@@ -571,7 +537,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 6,
+    "excludedCount": 5,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
