@@ -76,6 +76,7 @@ import {
   PORTFOLIO_SNAPSHOT_SCHEMA_VERSION,
   type PortfolioSnapshotHolding,
 } from '../utils/portfolioSnapshotTransfer'
+import { computeSnapshotGenerationIdentity } from '../utils/snapshotGenerationIdentity'
 
 // ── アクション型 ─────────────────────────────────────────────
 export type PortfolioSnapshotImportResult =
@@ -86,9 +87,11 @@ export type PortfolioSnapshotImportResult =
       code:
         | 'INVALID_SNAPSHOT'
         | 'INVALID_SNAPSHOT_PROVENANCE'
+        | 'INVALID_SNAPSHOT_GENERATION'
         | 'SNAPSHOT_STALE'
         | 'SNAPSHOT_PROVENANCE_CONFLICT'
         | 'SNAPSHOT_PROVENANCE_UNKNOWN'
+        | 'SNAPSHOT_OVERWRITE_BLOCKED'
         | 'SNAPSHOT_IMPORT_BLOCKED'
       error: string
     }
@@ -528,6 +531,28 @@ function hasCurrentPortfolioGenerationEvidence(state: AppState): boolean {
     state.portfolioPolicy.jpStockMaxRatio !== DEFAULT_PORTFOLIO_POLICY.jpStockMaxRatio ||
     state.cashAssumptions.manualOverrideEnabled
 }
+
+function computeCurrentSnapshotStateIdentity(state: AppState): string | null {
+  try {
+    return computeSnapshotGenerationIdentity({
+      holdings: state.holdings,
+      trust: state.trust,
+      portfolioPolicy: state.portfolioPolicy,
+      cashAssumptions: state.cashAssumptions,
+      csvImportedAt: state.system.csvLastImportedAt,
+      csvImportProvenance: state.system.csvImportProvenance ?? null,
+    })
+  } catch {
+    return null
+  }
+}
+
+// Same-session retry evidence only. The incoming unkeyed digest never authorizes an overwrite:
+// it can prove a no-op solely while the exact post-import state dependency digest is unchanged.
+let lastAppliedSnapshotGeneration: {
+  incomingIdentity: string
+  currentStateIdentity: string
+} | null = null
 
 // ── P1-3B: CommitteeDecision → OfficialDecision 変換 ─────────
 // P4-A148: safeModeActive引数を追加。SAFE_MODE発動中はBUYのみBLOCKED化する
@@ -1807,7 +1832,9 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
         ok: false,
         code: parsed.code === 'INVALID_SNAPSHOT_PROVENANCE'
           ? 'INVALID_SNAPSHOT_PROVENANCE'
-          : 'INVALID_SNAPSHOT',
+          : parsed.code === 'INVALID_SNAPSHOT_GENERATION'
+            ? 'INVALID_SNAPSHOT_GENERATION'
+            : 'INVALID_SNAPSHOT',
         error: parsed.error,
       }
     }
@@ -1817,6 +1844,16 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
     // Only source provenance participates in monotonicity. exportedAt, csvImportedAt,
     // browser time and File.lastModified are operation/file metadata, never freshness proof.
     const currentGenerationExists = hasCurrentPortfolioGenerationEvidence(state)
+    const currentStateIdentity = currentGenerationExists
+      ? computeCurrentSnapshotStateIdentity(state)
+      : null
+    if (snapshot.snapshotGenerationIdentity !== null && (
+      snapshot.snapshotGenerationIdentity === currentStateIdentity ||
+      (lastAppliedSnapshotGeneration?.incomingIdentity === snapshot.snapshotGenerationIdentity &&
+        lastAppliedSnapshotGeneration.currentStateIdentity === currentStateIdentity)
+    )) {
+      return { ok: true, code: 'DUPLICATE_SNAPSHOT' }
+    }
     if (snapshot.csvImportProvenance === null) {
       if (currentGenerationExists) {
         return {
@@ -1831,7 +1868,6 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
         current: state.system.csvImportProvenance ?? null,
         currentGenerationExists,
       }).decision
-      if (monotonicity === 'DUPLICATE') return { ok: true, code: 'DUPLICATE_SNAPSHOT' }
       if (monotonicity === 'REJECT_STALE') {
         return {
           ok: false,
@@ -1852,6 +1888,17 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
           code: 'SNAPSHOT_PROVENANCE_UNKNOWN',
           error: 'snapshotのデータ基準情報では安全な上書きを確認できないため、取込を中断しました。',
         }
+      }
+    }
+
+    // A manual snapshot's provenance and unkeyed generation digest are both self-asserted by
+    // anyone able to rewrite the JSON. They detect accidental mixing but do not authenticate a
+    // deliberate author, so a different snapshot never receives automatic overwrite authority.
+    if (currentGenerationExists) {
+      return {
+        ok: false,
+        code: 'SNAPSHOT_OVERWRITE_BLOCKED',
+        error: '別generationのsnapshotでは、この端末の既存保有データを自動上書きできません。',
       }
     }
 
@@ -1965,6 +2012,17 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
     // csvSyncSummaryはここでは一切変更しない（snapshot importをCSV取込結果として
     // 偽装しないため。P4.5-A013-T6の方針を維持する）。
     set(s => ({ system: { ...s.system, localStorageFreshness: computeLocalStorageFreshness() } }))
+    if (snapshot.snapshotGenerationIdentity !== null) {
+      const appliedStateIdentity = computeCurrentSnapshotStateIdentity(get())
+      lastAppliedSnapshotGeneration = appliedStateIdentity === null
+        ? null
+        : {
+            incomingIdentity: snapshot.snapshotGenerationIdentity,
+            currentStateIdentity: appliedStateIdentity,
+          }
+    } else {
+      lastAppliedSnapshotGeneration = null
+    }
     return { ok: true, code: 'SUCCESS', skippedTrustIds: skippedTrustIds.length > 0 ? skippedTrustIds : undefined }
   },
   })

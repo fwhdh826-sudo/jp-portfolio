@@ -119,6 +119,72 @@ describe('serializePortfolioSnapshotExport / parsePortfolioSnapshotImport 往復
     expect(parsed.source).toBe('manual')
   })
 
+  it('R2-F1 RED: v3 without snapshot generation identity fails closed', () => {
+    const payload = JSON.parse(serializePortfolioSnapshotExport(makeExportArgs()))
+    delete payload.snapshotGenerationIdentity
+    const result = parsePortfolioSnapshotImport(JSON.stringify(payload))
+    expect(result).toMatchObject({ ok: false, code: 'INVALID_SNAPSHOT_GENERATION' })
+  })
+
+  it.each([
+    ['stock eval', (payload: any) => { payload.holdings[0].eval += 1 }, 'INVALID_SNAPSHOT_GENERATION'],
+    ['stock name', (payload: any) => { payload.holdings[0].name = '別名' }, 'INVALID_SNAPSHOT_GENERATION'],
+    ['stock code', (payload: any) => { payload.holdings[0].code = '9999' }, 'INVALID_SNAPSHOT_GENERATION'],
+    ['trust eval', (payload: any) => { payload.trust[0].eval += 1 }, 'INVALID_SNAPSHOT_GENERATION'],
+    ['trust id', (payload: any) => { payload.trust[0].id = 'other-fund' }, 'INVALID_SNAPSHOT_GENERATION'],
+    ['trust account classification', (payload: any) => { payload.trust[0].account = 'NISA積立' }, 'INVALID_SNAPSHOT_GENERATION'],
+    ['csvImportedAt', (payload: any) => { payload.csvImportedAt = '2026-07-06T09:00:01.000Z' }, 'INVALID_SNAPSHOT_PROVENANCE'],
+    ['provenance sourceAsOf', (payload: any) => { payload.csvImportProvenance.sourceAsOf = '2026-07-06T08:00:01.000Z' }, 'INVALID_SNAPSHOT_GENERATION'],
+    ['provenance semanticIdentity', (payload: any) => { payload.csvImportProvenance.semanticIdentity = `sha256:${'b'.repeat(64)}` }, 'INVALID_SNAPSHOT_GENERATION'],
+    ['provenance contentFingerprint', (payload: any) => { payload.csvImportProvenance.contentFingerprint = 'fnv1a32:87654321' }, 'INVALID_SNAPSHOT_GENERATION'],
+    ['provenance sourceFileName', (payload: any) => { payload.csvImportProvenance.sourceFileName = 'other.csv' }, 'INVALID_SNAPSHOT_GENERATION'],
+    ['provenance fileLastModified', (payload: any) => { payload.csvImportProvenance.fileLastModified = '2026-07-06T08:30:01.000Z' }, 'INVALID_SNAPSHOT_GENERATION'],
+    ['portfolio policy', (payload: any) => { payload.portfolioPolicy.jpStockMaxRatio = 0.15 }, 'INVALID_SNAPSHOT_GENERATION'],
+    ['cash assumptions', (payload: any) => { payload.cashAssumptions.cashDeposits += 1 }, 'INVALID_SNAPSHOT_GENERATION'],
+  ])('R2-F1: stale generation identity rejects changed %s', (_label, mutate, code) => {
+    const payload = JSON.parse(serializePortfolioSnapshotExport(makeExportArgs()))
+    payload.snapshotGenerationIdentity = `sha256:${'f'.repeat(64)}`
+    mutate(payload)
+    expect(parsePortfolioSnapshotImport(JSON.stringify(payload)))
+      .toMatchObject({ ok: false, code })
+  })
+
+  it('row order, object key order, JSON whitespace, and CRLF are representation-only', () => {
+    const original = JSON.parse(serializePortfolioSnapshotExport(makeExportArgs()))
+    const identity = original.snapshotGenerationIdentity
+
+    const reversedRows = { ...original, holdings: [...original.holdings].reverse(), trust: [...original.trust].reverse() }
+    expect(parsePortfolioSnapshotImport(JSON.stringify(reversedRows))).toMatchObject({
+      ok: true,
+      data: { snapshotGenerationIdentity: identity },
+    })
+
+    const reversedKeys = Object.fromEntries(Object.entries(original).reverse())
+    const compact = JSON.stringify(reversedKeys)
+    const crlf = JSON.stringify(reversedKeys, null, 2).replace(/\n/g, '\r\n')
+    expect(parsePortfolioSnapshotImport(compact)).toMatchObject({ ok: true })
+    expect(parsePortfolioSnapshotImport(` \n${crlf}\n `)).toMatchObject({ ok: true })
+  })
+
+  it('exportedAt alone is excluded from generation identity', () => {
+    const payload = JSON.parse(serializePortfolioSnapshotExport(makeExportArgs()))
+    const identity = payload.snapshotGenerationIdentity
+    payload.exportedAt = '2099-12-31T23:59:59.000Z'
+    expect(parsePortfolioSnapshotImport(JSON.stringify(payload))).toMatchObject({
+      ok: true,
+      data: { snapshotGenerationIdentity: identity },
+    })
+  })
+
+  it('null and non-null provenance are different generations', () => {
+    const known = JSON.parse(serializePortfolioSnapshotExport(makeExportArgs()))
+    const unknown = JSON.parse(serializePortfolioSnapshotExport(makeExportArgs({
+      csvImportedAt: null,
+      csvImportProvenance: null,
+    })))
+    expect(known.snapshotGenerationIdentity).not.toBe(unknown.snapshotGenerationIdentity)
+  })
+
   it('accountはsnapshotに含まれる（口座区分は個人情報だが手動同期対象として許容）', () => {
     const json = serializePortfolioSnapshotExport(makeExportArgs())
     const parsed = JSON.parse(json)
@@ -196,9 +262,10 @@ describe('serializePortfolioSnapshotExport / parsePortfolioSnapshotImport 往復
   })
 
   it('v3 explicit null provenance remains unknown rather than being synthesized from operation times', () => {
-    const payload = JSON.parse(serializePortfolioSnapshotExport(makeExportArgs()))
-    payload.csvImportProvenance = null
-    payload.csvImportedAt = '2099-12-31T23:59:58.000Z'
+    const payload = JSON.parse(serializePortfolioSnapshotExport(makeExportArgs({
+      csvImportProvenance: null,
+      csvImportedAt: '2099-12-31T23:59:58.000Z',
+    })))
     payload.exportedAt = '2099-12-31T23:59:59.000Z'
     const result = parsePortfolioSnapshotImport(JSON.stringify(payload))
     expect(result).toMatchObject({ ok: true, data: { csvImportProvenance: null } })

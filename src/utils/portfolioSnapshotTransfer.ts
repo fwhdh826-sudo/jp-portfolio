@@ -3,6 +3,10 @@
 import { isStrictTimestamp } from './strictTimestamp'
 import type { CsvImportProvenance } from '../types'
 import { isCsvImportProvenance } from '../domain/csv/csvProvenance'
+import {
+  computeSnapshotGenerationIdentity,
+  isSnapshotGenerationIdentity,
+} from './snapshotGenerationIdentity'
 // P4.5-A012a: 保有株・投信・現金前提・portfolioPolicyのportfolio snapshot
 // export/import — 表示専用のシリアライズ/検証のみ。
 // PC/スマホ間の同期はユーザーがJSON文字列を手動でコピー/貼り付けする方式に限定する
@@ -20,7 +24,8 @@ export const PORTFOLIO_SNAPSHOT_SCHEMA_VERSION = 'portfolio-snapshot-1' as const
 // v1は既存のupdate-only契約のまま残し、importでは両方を受け付ける（後方互換）。
 export const PORTFOLIO_SNAPSHOT_SCHEMA_VERSION_V2 = 'portfolio-snapshot-2' as const
 // T9-A004-R2: v3 transports the CSV source provenance belonging to the exported
-// portfolio generation. exportedAt/csvImportedAt remain operation metadata only.
+// portfolio generation. exportedAt is operation-only and excluded from the binding;
+// csvImportedAt remains non-authoritative operation metadata but is bound as transported state.
 export const PORTFOLIO_SNAPSHOT_SCHEMA_VERSION_V3 = 'portfolio-snapshot-3' as const
 export type PortfolioSnapshotSchemaVersion =
   | typeof PORTFOLIO_SNAPSHOT_SCHEMA_VERSION
@@ -69,6 +74,7 @@ export interface PortfolioSnapshotExportPayload {
   exportedAt: string
   csvImportedAt: string | null
   csvImportProvenance: CsvImportProvenance | null
+  snapshotGenerationIdentity: string
   source: 'manual'
   holdings: PortfolioSnapshotHolding[]
   trust: PortfolioSnapshotTrust[]
@@ -82,6 +88,8 @@ export interface PortfolioSnapshotData {
   csvImportedAt: string | null
   /** null for legacy v1/v2 and for an explicitly unknown v3 generation. */
   csvImportProvenance: CsvImportProvenance | null
+  /** Required and independently verified for v3; null for legacy v1/v2. */
+  snapshotGenerationIdentity: string | null
   holdings: PortfolioSnapshotHolding[]
   trust: PortfolioSnapshotTrust[]
   portfolioPolicy: PortfolioSnapshotPortfolioPolicy | null
@@ -90,7 +98,7 @@ export interface PortfolioSnapshotData {
 
 export type PortfolioSnapshotParseResult =
   | { ok: true; data: PortfolioSnapshotData }
-  | { ok: false; error: string; code?: 'INVALID_SNAPSHOT_PROVENANCE' }
+  | { ok: false; error: string; code?: 'INVALID_SNAPSHOT_PROVENANCE' | 'INVALID_SNAPSHOT_GENERATION' }
 
 // 異常に大きすぎる値のガード（cashAssumptionsTransfer.tsと同じ基準。1兆円）
 const MAX_REASONABLE_AMOUNT = 1_000_000_000_000
@@ -171,8 +179,9 @@ export function serializePortfolioSnapshotExport(args: {
 
   const cashAssumptions: PortfolioSnapshotCashAssumptions | null = args.cashAssumptions
     ? {
-        cashDeposits: args.cashAssumptions.cashDeposits,
-        standbyFunds: args.cashAssumptions.standbyFunds,
+        // Match the parser/store representation so the exported binding covers applied values.
+        cashDeposits: Math.round(args.cashAssumptions.cashDeposits),
+        standbyFunds: Math.round(args.cashAssumptions.standbyFunds),
         manualOverrideEnabled: args.cashAssumptions.manualOverrideEnabled,
         manualUpdatedAt: args.cashAssumptions.manualUpdatedAt,
       }
@@ -183,6 +192,14 @@ export function serializePortfolioSnapshotExport(args: {
     exportedAt: new Date().toISOString(),
     csvImportedAt: args.csvImportedAt,
     csvImportProvenance: args.csvImportProvenance,
+    snapshotGenerationIdentity: computeSnapshotGenerationIdentity({
+      holdings,
+      trust,
+      portfolioPolicy,
+      cashAssumptions,
+      csvImportedAt: args.csvImportedAt,
+      csvImportProvenance: args.csvImportProvenance,
+    }),
     source: 'manual',
     holdings,
     trust,
@@ -411,7 +428,9 @@ export function parsePortfolioSnapshotImport(raw: string): PortfolioSnapshotPars
   if (p.cashAssumptions !== null && p.cashAssumptions !== undefined) {
     const result = validateCashAssumptions(p.cashAssumptions)
     if (!result.ok) return { ok: false, error: result.error }
-    cashAssumptions = result.value
+    cashAssumptions = schemaVersion === PORTFOLIO_SNAPSHOT_SCHEMA_VERSION_V3
+      ? { ...result.value, manualOverrideEnabled: true }
+      : result.value
   }
 
   if (p.csvImportedAt !== null && !isValidIsoDateString(p.csvImportedAt)) {
@@ -424,6 +443,7 @@ export function parsePortfolioSnapshotImport(raw: string): PortfolioSnapshotPars
   const exportedAt = p.exportedAt as string
 
   let csvImportProvenance: CsvImportProvenance | null = null
+  let snapshotGenerationIdentity: string | null = null
   if (schemaVersion === PORTFOLIO_SNAPSHOT_SCHEMA_VERSION_V3) {
     if (!Object.prototype.hasOwnProperty.call(p, 'csvImportProvenance')) {
       return { ok: false, code: 'INVALID_SNAPSHOT_PROVENANCE', error: 'snapshotのCSV provenanceが欠損しています。' }
@@ -437,6 +457,22 @@ export function parsePortfolioSnapshotImport(raw: string): PortfolioSnapshotPars
         return { ok: false, code: 'INVALID_SNAPSHOT_PROVENANCE', error: 'snapshotのCSV取込操作時刻とprovenanceが一致しません。' }
       }
     }
+    if (!Object.prototype.hasOwnProperty.call(p, 'snapshotGenerationIdentity') ||
+        !isSnapshotGenerationIdentity(p.snapshotGenerationIdentity)) {
+      return { ok: false, code: 'INVALID_SNAPSHOT_GENERATION', error: 'snapshotのgeneration identityが欠損または不正です。' }
+    }
+    snapshotGenerationIdentity = p.snapshotGenerationIdentity
+    const recomputedIdentity = computeSnapshotGenerationIdentity({
+      holdings,
+      trust,
+      portfolioPolicy,
+      cashAssumptions,
+      csvImportedAt,
+      csvImportProvenance,
+    })
+    if (snapshotGenerationIdentity !== recomputedIdentity) {
+      return { ok: false, code: 'INVALID_SNAPSHOT_GENERATION', error: 'snapshotの内容とgeneration identityが一致しません。' }
+    }
   } else if (Object.prototype.hasOwnProperty.call(p, 'csvImportProvenance')) {
     return { ok: false, code: 'INVALID_SNAPSHOT_PROVENANCE', error: 'legacy snapshotに未対応のprovenanceが含まれています。' }
   }
@@ -448,6 +484,7 @@ export function parsePortfolioSnapshotImport(raw: string): PortfolioSnapshotPars
       exportedAt,
       csvImportedAt,
       csvImportProvenance,
+      snapshotGenerationIdentity,
       holdings,
       trust,
       portfolioPolicy,

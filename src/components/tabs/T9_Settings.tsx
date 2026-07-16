@@ -755,6 +755,7 @@ function PortfolioSnapshotSyncSection({ sectionTitleStyle }: { sectionTitleStyle
           <span>PC/スマホ間の自動同期ではありません。コピー/貼り付けによる手動同期です。</span>
           <span>public/dataやGitHub Pagesには保存されません。</span>
           <span>インポートすると、この端末の保有株・投信・現金前提・portfolioPolicyがsnapshot内容で上書きされます。</span>
+          <span>既存の保有generationがある端末では、別generationのsnapshotは安全のため自動上書きされません。</span>
           <span>個別株はsnapshotの構成に一致させます（新規銘柄は追加、この端末だけの銘柄は削除されます）。投信は登録済みIDのみ値を更新します。</span>
         </div>
 
@@ -871,7 +872,7 @@ function PortfolioSnapshotSyncSection({ sectionTitleStyle }: { sectionTitleStyle
           )}
           {importDuplicate && (
             <div style={{ ...typography.caption, color: 'var(--color-wait-text)' }}>
-              同じsource data timeと内容識別子のsnapshotは取込済みです。データは変更していません。
+              同じsnapshot generationは取込済みです。データは変更していません。
             </div>
           )}
           {importSkippedTrustIds.length > 0 && (

@@ -43813,6 +43813,33 @@ AssetSnapshotMini → AllocationGapStrip → 今日のアクション[TodoCard/R
   main未反映のため別チケットで対応
 - v10.css未使用クラスの安全な削除（R6）
 
+## T9-A004-R2-F1: snapshot generation binding / untrusted overwrite gate
+
+- 未公開の `portfolio-snapshot-3` をin-place hardenし、
+  `snapshotGenerationIdentity` (`sha256:<64 lowercase hex>`) を必須化した。
+- canonical envelope `portfolio-snapshot-generation-1` は、snapshotからstoreへ
+  反映され得るholdings、trust、portfolioPolicy、cashAssumptions、
+  `csvImportedAt`、CSV provenance全fieldを固定順序で結合する。holdings/trustの
+  row順だけはUTF-16 code unit total orderでcanonical sortする。`exportedAt`は
+  export operation timeなので含めない。
+- importはdeep validationとprovenance validationの後、monotonicity判定より前に
+  identityを独立再計算し、不一致・欠落・不正形式を
+  `INVALID_SNAPSHOT_GENERATION`でfail-closedにする。旧identityなしv3は受理しない。
+- このidentityはclipboard破損、partial copy、field edit、別generationのcontentと
+  provenanceの混在を検出するためのunkeyed integrity digestであり、snapshot作者の
+  authenticationや改ざん防止を保証しない。content/provenance/digestを全て再生成できる
+  deliberate authorは脅威モデル内に残る。
+- snapshot内のsourceAsOf、semanticIdentity、generation identityはいずれも
+  self-assertedであるため、non-empty currentへのdifferent valid generationは
+  `SNAPSHOT_OVERWRITE_BLOCKED`でrejectする。exact generationだけduplicate no-op、
+  truly-empty currentだけ従来どおりapply可能。今回は安全にbindされたconfirmation
+  token/current dependency/TOCTOU UI infrastructureがないためconfirmationは追加していない。
+- `exportedAt`、browser wall clock、raw JSON whitespace/key order/line endingsはidentityや
+  freshness authorityにしない。provenance内のfile metadataはgeneration mixing検出のため
+  bindするが、monotonicity/overwrite authorityには使用しない。
+- R3のshared portfolio generation transaction、R4のpublished/initialize/refresh
+  truthfulness統合、既知4件のP1、v3 name validation P2は本変更ではclosed扱いしない。
+
 ## T9-A004-R1: strict timestamp validation / collision-safe semantic identity
 
 ### Identity contract

@@ -82,7 +82,8 @@ function rotateRight(value: number, amount: number): number {
   return (value >>> amount) | (value << (32 - amount))
 }
 
-function sha256Hex(value: string): string {
+/** Pure UTF-8 SHA-256 primitive shared by identities with separate domain contracts. */
+export function sha256Utf8Hex(value: string): string {
   const input = new TextEncoder().encode(value)
   const paddedLength = Math.ceil((input.length + 9) / 64) * 64
   const bytes = new Uint8Array(paddedLength)
@@ -138,5 +139,5 @@ function sha256Hex(value: string): string {
 }
 
 export function identifyCsvSemanticContent(value: unknown): string {
-  return `sha256:${sha256Hex(stableSerializeCsvSemanticContent(value))}`
+  return `sha256:${sha256Utf8Hex(stableSerializeCsvSemanticContent(value))}`
 }
