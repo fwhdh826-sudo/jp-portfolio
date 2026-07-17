@@ -230,6 +230,7 @@ type CsvImportTransactionPhase =
 
 interface CsvImportTransaction {
   token: symbol
+  origin: 'csv'
   phase: CsvImportTransactionPhase
   analysisNow: number
   initialFingerprint: string
@@ -238,25 +239,37 @@ interface CsvImportTransaction {
   canonicalPreviousRaw: string | null
 }
 
-let activeCsvImportTransaction: CsvImportTransaction | null = null
+interface SnapshotImportTransaction {
+  token: symbol
+  origin: 'snapshot'
+  phase: CsvImportTransactionPhase
+  analysisNow: number
+}
 
-function setCsvImportTransactionPhase(
-  transaction: CsvImportTransaction,
+// T9-A004-R3a: importCsvとimportPortfolioSnapshotは同一のportfolio generationを
+// 書き換えるため、originを問わず単一のtransactionだけが同時に進行できる
+// （CSV同士・snapshot同士・CSVとsnapshotの全組み合わせで相互排他する）。
+type PortfolioGenerationTransaction = CsvImportTransaction | SnapshotImportTransaction
+
+let activePortfolioGenerationTransaction: PortfolioGenerationTransaction | null = null
+
+function setPortfolioGenerationTransactionPhase(
+  transaction: PortfolioGenerationTransaction,
   phase: CsvImportTransactionPhase,
 ): void {
-  if (activeCsvImportTransaction?.token !== transaction.token) {
-    throw new Error('CSV import transaction owner was lost')
+  if (activePortfolioGenerationTransaction?.token !== transaction.token) {
+    throw new Error('portfolio generation transaction owner was lost')
   }
   transaction.phase = phase
 }
 
-function isCsvImportCommitCriticalSection(): boolean {
-  const phase = activeCsvImportTransaction?.phase
+function isPortfolioGenerationCriticalSection(): boolean {
+  const phase = activePortfolioGenerationTransaction?.phase
   return phase === 'PERSISTING' || phase === 'COMMITTED' || phase === 'PUBLISHED'
 }
 
 function reportRejectedReentrantMutation(source: string): void {
-  try { console.warn(`[useAppStore] rejected synchronous mutation during CSV commit: ${source}`) } catch { /* diagnostic sink */ }
+  try { console.warn(`[useAppStore] rejected synchronous mutation during portfolio generation commit: ${source}`) } catch { /* diagnostic sink */ }
 }
 
 /**
@@ -987,7 +1000,7 @@ function reportSubscriberException(error: unknown): void {
 export const useAppStore = create<AppState & AppActions>((set, get, api) => {
   const rawSetState = api.setState
   api.setState = ((...args: Parameters<typeof api.setState>) => {
-    if (isCsvImportCommitCriticalSection()) {
+    if (isPortfolioGenerationCriticalSection()) {
       reportRejectedReentrantMutation('setState')
       return
     }
@@ -1087,7 +1100,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
 
   // ── 起動時初期化 ──────────────────────────────────────────
   initialize: async () => {
-    if (isCsvImportCommitCriticalSection()) {
+    if (isPortfolioGenerationCriticalSection()) {
       reportRejectedReentrantMutation('initialize')
       return
     }
@@ -1260,7 +1273,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
 
   // ── 全データ再取得 ────────────────────────────────────────
   refreshAllData: async () => {
-    if (isCsvImportCommitCriticalSection()) {
+    if (isPortfolioGenerationCriticalSection()) {
       reportRejectedReentrantMutation('refreshAllData')
       return
     }
@@ -1354,11 +1367,12 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
 
   // ── CSV取込（個別株 + 投信 両対応）──────────────────────────
   importCsv: async (file: File, options = {}) => {
-    if (activeCsvImportTransaction !== null || get().system.status === 'loading') {
+    if (activePortfolioGenerationTransaction !== null || get().system.status === 'loading') {
       return csvImportFailure('IMPORT_IN_PROGRESS', '別の取込または更新が進行中です。完了後に再試行してください。')
     }
     const transaction: CsvImportTransaction = {
       token: Symbol('csv-import-owner'),
+      origin: 'csv',
       phase: 'READING',
       analysisNow: Date.now(),
       initialFingerprint: '',
@@ -1366,12 +1380,12 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
       trackerPortfolioBaseline: null,
       canonicalPreviousRaw: null,
     }
-    activeCsvImportTransaction = transaction
+    activePortfolioGenerationTransaction = transaction
     let durableCommitted = false
     let committedSuccess: CsvImportResult | null = null
     const publishFailure = (failure: CsvImportResult): CsvImportResult => {
       if (failure.ok) return failure
-      if (activeCsvImportTransaction?.token === transaction.token) {
+      if (activePortfolioGenerationTransaction?.token === transaction.token) {
         set(s => ({ system: { ...s.system, status: 'error', error: failure.message } }))
       }
       return failure
@@ -1396,7 +1410,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
       transaction.initialFingerprint = dependencyFingerprint
       const fileName = String(file.name || 'CSVファイル')
       set(s => ({ system: { ...s.system, status: 'loading', error: null } }))
-      setCsvImportTransactionPhase(transaction, 'READING')
+      setPortfolioGenerationTransactionPhase(transaction, 'READING')
       const oldHoldings = baseState.holdings
       const oldTrust = baseState.trust
 
@@ -1418,7 +1432,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
       }
 
       const { holdings: updatedH, trust: updatedT, trustSync, sourceProvenance } = parsed
-      setCsvImportTransactionPhase(transaction, 'STAGING')
+      setPortfolioGenerationTransactionPhase(transaction, 'STAGING')
       const now = new Date(transaction.analysisNow).toISOString()
       const incomingProvenance: CsvImportProvenance = { importedAt: now, ...sourceProvenance }
       const currentGeneration = restoreCsvImportGenerationFromRaw(transaction.canonicalPreviousRaw)
@@ -1498,7 +1512,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
 
       let computed: ReturnType<typeof runFullAnalysis>
       try {
-        setCsvImportTransactionPhase(transaction, 'ANALYZING')
+        setPortfolioGenerationTransactionPhase(transaction, 'ANALYZING')
         computed = runFullAnalysis(stagedState, {
           requireOfficialDecision: true,
           nowMs: transaction.analysisNow,
@@ -1525,7 +1539,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
           ? [`口座を一意に特定できない投信 ${syncSummary.trust.ambiguousFundIds.length}件は更新されませんでした。`]
           : []),
       ]
-      setCsvImportTransactionPhase(transaction, 'PREPARED')
+      setPortfolioGenerationTransactionPhase(transaction, 'PREPARED')
 
       if (buildPortfolioAnalysisFingerprint(get()) !== dependencyFingerprint) {
         return publishFailure(csvImportFailure(
@@ -1559,7 +1573,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
       let persistenceReceipt: ReturnType<typeof persistCsvImportTransaction> | null = null
       const generationCommittedAt = Date.now()
       try {
-        setCsvImportTransactionPhase(transaction, 'PERSISTING')
+        setPortfolioGenerationTransactionPhase(transaction, 'PERSISTING')
         persistenceReceipt = persistCsvImportTransaction({
           holdings: computed.holdings,
           trust: computed.trust,
@@ -1570,9 +1584,9 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
           trustShortSnapshot: stagedTrustExecution.snapshot,
         }, generationCommittedAt, transaction.canonicalPreviousRaw)
         durableCommitted = true
-        setCsvImportTransactionPhase(transaction, 'COMMITTED')
+        setPortfolioGenerationTransactionPhase(transaction, 'COMMITTED')
       } catch (error) {
-        setCsvImportTransactionPhase(transaction, 'PREPARED')
+        setPortfolioGenerationTransactionPhase(transaction, 'PREPARED')
         const persistenceStatus = error instanceof CsvImportPersistenceError
           ? error.status
           : 'rollback_failed'
@@ -1636,7 +1650,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
           localStorageFreshness,
         },
       })
-      setCsvImportTransactionPhase(transaction, 'PUBLISHED')
+      setPortfolioGenerationTransactionPhase(transaction, 'PUBLISHED')
 
       try {
         if (trustExecution.executed && getTrustShortTodayExecutionCount(now) < 1) {
@@ -1688,7 +1702,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
       void detail
       try { return publishFailure(failure) } catch { return failure }
     } finally {
-      if (activeCsvImportTransaction?.token === transaction.token) {
+      if (activePortfolioGenerationTransaction?.token === transaction.token) {
         try {
           if (get().system.status === 'loading') {
             set(s => ({ system: {
@@ -1701,7 +1715,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
           // Zustand's in-memory set/get are synchronous; this final guard prevents a thrown
           // observer from turning the action promise into a rejection.
         }
-        activeCsvImportTransaction = null
+        activePortfolioGenerationTransaction = null
       }
     }
   },
@@ -1709,7 +1723,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
   setTab: (tab) => set({ activeTab: tab }),
 
   updateHolding: (code, patch) => {
-    if (isCsvImportCommitCriticalSection()) {
+    if (isPortfolioGenerationCriticalSection()) {
       reportRejectedReentrantMutation('updateHolding')
       return
     }
@@ -1720,7 +1734,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
   },
 
   updateTrust: (id, patch) => {
-    if (isCsvImportCommitCriticalSection()) {
+    if (isPortfolioGenerationCriticalSection()) {
       reportRejectedReentrantMutation('updateTrust')
       return
     }
@@ -1732,7 +1746,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
 
   // P4-A47: jpStockMaxRatio更新 → 再分析 → 永続化
   setPortfolioPolicy: (policy) => {
-    if (isCsvImportCommitCriticalSection()) {
+    if (isPortfolioGenerationCriticalSection()) {
       reportRejectedReentrantMutation('setPortfolioPolicy')
       return
     }
@@ -1745,7 +1759,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
   // P4.5-A002: 資金前提の手動入力を保存する。入力値は総額として置き換わる
   // （CSV/既定値への加算は行わない）。0以上の整数円に丸めてから保存する。
   setCashAssumptions: ({ cashDeposits, standbyFunds }) => {
-    if (isCsvImportCommitCriticalSection()) {
+    if (isPortfolioGenerationCriticalSection()) {
       reportRejectedReentrantMutation('setCashAssumptions')
       return
     }
@@ -1764,7 +1778,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
 
   // P4.5-A002: 手動overrideを解除し、既定値（constants/market.ts由来）へ戻す
   clearCashAssumptionsOverride: () => {
-    if (isCsvImportCommitCriticalSection()) {
+    if (isPortfolioGenerationCriticalSection()) {
       reportRejectedReentrantMutation('clearCashAssumptionsOverride')
       return
     }
@@ -1780,7 +1794,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
   // parseCashAssumptionsImportが不正/欠損時にnullへfallback済み — nullはA008の
   // freshness判定でstale扱いになるため、無警告で「最新」扱いにはならない）。
   importCashAssumptions: ({ cashDeposits, standbyFunds, manualUpdatedAt }) => {
-    if (isCsvImportCommitCriticalSection()) {
+    if (isPortfolioGenerationCriticalSection()) {
       reportRejectedReentrantMutation('importCashAssumptions')
       return
     }
@@ -1822,208 +1836,230 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
   // v1は未知のcode/idを全体rejectし、full-syncのv2/v3は検証済みmetadataからholdingを
   // 安全に再構築する。trust masterは全schemaでregistryとして維持する。
   importPortfolioSnapshot: (raw) => {
-    if (isCsvImportCommitCriticalSection()) {
+    // T9-A004-R3a: CSV/snapshotは同一の共有transactionを取り合う。既に他のorigin
+    // （またはnestedなsnapshot自身）が進行中なら、critical phaseに達しているかを問わず
+    // 即座にblockする（importCsvのREADING等の非critical phase中も含む）。
+    if (activePortfolioGenerationTransaction !== null) {
       reportRejectedReentrantMutation('importPortfolioSnapshot')
-      return { ok: false, code: 'SNAPSHOT_IMPORT_BLOCKED', error: 'CSV取込のcommit処理中です。完了後に再試行してください。' }
+      return { ok: false, code: 'SNAPSHOT_IMPORT_BLOCKED', error: '別の取込または更新が進行中です。完了後に再試行してください。' }
     }
-    const parsed = parsePortfolioSnapshotImport(raw)
-    if (!parsed.ok) {
-      return {
-        ok: false,
-        code: parsed.code === 'INVALID_SNAPSHOT_PROVENANCE'
-          ? 'INVALID_SNAPSHOT_PROVENANCE'
-          : parsed.code === 'INVALID_SNAPSHOT_GENERATION'
-            ? 'INVALID_SNAPSHOT_GENERATION'
-            : 'INVALID_SNAPSHOT',
-        error: parsed.error,
+    const transaction: SnapshotImportTransaction = {
+      token: Symbol('snapshot-import-owner'),
+      origin: 'snapshot',
+      phase: 'STAGING',
+      analysisNow: Date.now(),
+    }
+    activePortfolioGenerationTransaction = transaction
+    try {
+      const parsed = parsePortfolioSnapshotImport(raw)
+      if (!parsed.ok) {
+        return {
+          ok: false,
+          code: parsed.code === 'INVALID_SNAPSHOT_PROVENANCE'
+            ? 'INVALID_SNAPSHOT_PROVENANCE'
+            : parsed.code === 'INVALID_SNAPSHOT_GENERATION'
+              ? 'INVALID_SNAPSHOT_GENERATION'
+              : 'INVALID_SNAPSHOT',
+          error: parsed.error,
+        }
       }
-    }
-    const snapshot = parsed.data
-    const state = get()
+      const snapshot = parsed.data
+      const state = get()
 
-    // Only source provenance participates in monotonicity. exportedAt, csvImportedAt,
-    // browser time and File.lastModified are operation/file metadata, never freshness proof.
-    const currentGenerationExists = hasCurrentPortfolioGenerationEvidence(state)
-    const currentStateIdentity = currentGenerationExists
-      ? computeCurrentSnapshotStateIdentity(state)
-      : null
-    if (snapshot.snapshotGenerationIdentity !== null && (
-      snapshot.snapshotGenerationIdentity === currentStateIdentity ||
-      (lastAppliedSnapshotGeneration?.incomingIdentity === snapshot.snapshotGenerationIdentity &&
-        lastAppliedSnapshotGeneration.currentStateIdentity === currentStateIdentity)
-    )) {
-      return { ok: true, code: 'DUPLICATE_SNAPSHOT' }
-    }
-    if (snapshot.csvImportProvenance === null) {
+      // Only source provenance participates in monotonicity. exportedAt, csvImportedAt,
+      // browser time and File.lastModified are operation/file metadata, never freshness proof.
+      const currentGenerationExists = hasCurrentPortfolioGenerationEvidence(state)
+      const currentStateIdentity = currentGenerationExists
+        ? computeCurrentSnapshotStateIdentity(state)
+        : null
+      if (snapshot.snapshotGenerationIdentity !== null && (
+        snapshot.snapshotGenerationIdentity === currentStateIdentity ||
+        (lastAppliedSnapshotGeneration?.incomingIdentity === snapshot.snapshotGenerationIdentity &&
+          lastAppliedSnapshotGeneration.currentStateIdentity === currentStateIdentity)
+      )) {
+        return { ok: true, code: 'DUPLICATE_SNAPSHOT' }
+      }
+      if (snapshot.csvImportProvenance === null) {
+        if (currentGenerationExists) {
+          return {
+            ok: false,
+            code: 'SNAPSHOT_PROVENANCE_UNKNOWN',
+            error: 'データ基準情報のないsnapshotでは、この端末の保有データを上書きできません。',
+          }
+        }
+      } else {
+        const monotonicity = evaluateCsvImportMonotonicity({
+          incoming: snapshot.csvImportProvenance,
+          current: state.system.csvImportProvenance ?? null,
+          currentGenerationExists,
+        }).decision
+        if (monotonicity === 'REJECT_STALE') {
+          return {
+            ok: false,
+            code: 'SNAPSHOT_STALE',
+            error: 'この端末の保有データより古いデータ基準時刻のsnapshotのため、取込を中断しました。',
+          }
+        }
+        if (monotonicity === 'REJECT_CONFLICT') {
+          return {
+            ok: false,
+            code: 'SNAPSHOT_PROVENANCE_CONFLICT',
+            error: '同じデータ基準時刻で内容識別子が異なるsnapshotのため、取込を中断しました。',
+          }
+        }
+        if (monotonicity === 'REJECT_UNKNOWN_DOWNGRADE') {
+          return {
+            ok: false,
+            code: 'SNAPSHOT_PROVENANCE_UNKNOWN',
+            error: 'snapshotのデータ基準情報では安全な上書きを確認できないため、取込を中断しました。',
+          }
+        }
+      }
+
+      // A manual snapshot's provenance and unkeyed generation digest are both self-asserted by
+      // anyone able to rewrite the JSON. They detect accidental mixing but do not authenticate a
+      // deliberate author, so a different snapshot never receives automatic overwrite authority.
       if (currentGenerationExists) {
         return {
           ok: false,
-          code: 'SNAPSHOT_PROVENANCE_UNKNOWN',
-          error: 'データ基準情報のないsnapshotでは、この端末の保有データを上書きできません。',
+          code: 'SNAPSHOT_OVERWRITE_BLOCKED',
+          error: '別generationのsnapshotでは、この端末の既存保有データを自動上書きできません。',
         }
       }
-    } else {
-      const monotonicity = evaluateCsvImportMonotonicity({
-        incoming: snapshot.csvImportProvenance,
-        current: state.system.csvImportProvenance ?? null,
-        currentGenerationExists,
-      }).decision
-      if (monotonicity === 'REJECT_STALE') {
-        return {
-          ok: false,
-          code: 'SNAPSHOT_STALE',
-          error: 'この端末の保有データより古いデータ基準時刻のsnapshotのため、取込を中断しました。',
-        }
-      }
-      if (monotonicity === 'REJECT_CONFLICT') {
-        return {
-          ok: false,
-          code: 'SNAPSHOT_PROVENANCE_CONFLICT',
-          error: '同じデータ基準時刻で内容識別子が異なるsnapshotのため、取込を中断しました。',
-        }
-      }
-      if (monotonicity === 'REJECT_UNKNOWN_DOWNGRADE') {
-        return {
-          ok: false,
-          code: 'SNAPSHOT_PROVENANCE_UNKNOWN',
-          error: 'snapshotのデータ基準情報では安全な上書きを確認できないため、取込を中断しました。',
-        }
-      }
-    }
 
-    // A manual snapshot's provenance and unkeyed generation digest are both self-asserted by
-    // anyone able to rewrite the JSON. They detect accidental mixing but do not authenticate a
-    // deliberate author, so a different snapshot never receives automatic overwrite authority.
-    if (currentGenerationExists) {
-      return {
-        ok: false,
-        code: 'SNAPSHOT_OVERWRITE_BLOCKED',
-        error: '別generationのsnapshotでは、この端末の既存保有データを自動上書きできません。',
+      const isFullSync = snapshot.schemaVersion !== PORTFOLIO_SNAPSHOT_SCHEMA_VERSION
+
+      let nextHoldings: Holding[]
+      if (isFullSync) {
+        // P4.5-A013-T7: v2/v3はholdingsをfull-sync（新規追加・受信端末だけの銘柄削除を含む）
+        // する。ガード（消滅率>50%または絶対件数>5件）はapplyHoldingsFullSyncFromSnapshot内。
+        const holdingsResult = applyHoldingsFullSyncFromSnapshot(state.holdings, snapshot.holdings)
+        if (!holdingsResult.ok) return { ok: false, code: 'INVALID_SNAPSHOT', error: holdingsResult.error }
+        nextHoldings = holdingsResult.holdings
+      } else {
+        // v1: 既存のupdate-only契約を維持する（受信端末に存在しないcodeは全体reject）。
+        const currentHoldingCodes = new Set(state.holdings.map(h => h.code))
+        const unknownHoldingCodes = snapshot.holdings
+          .filter(h => !currentHoldingCodes.has(h.code))
+          .map(h => h.code)
+        if (unknownHoldingCodes.length > 0) {
+          return {
+            ok: false,
+            code: 'INVALID_SNAPSHOT',
+            error: `この端末に存在しない銘柄コードが含まれています: ${unknownHoldingCodes.join(', ')}`,
+          }
+        }
+        const holdingsSnapshotLike: HoldingsSnapshotLike = {
+          holdings: snapshot.holdings.map(row => ({
+            code: row.code,
+            eval: row.eval,
+            pnlPct: row.pnlPct,
+            currentPrice: row.currentPrice,
+            purchase_date: row.acquiredAt ?? undefined,
+          })),
+        }
+        nextHoldings = applyHoldingsSnapshot(state.holdings, holdingsSnapshotLike)
       }
-    }
 
-    const isFullSync = snapshot.schemaVersion !== PORTFOLIO_SNAPSHOT_SCHEMA_VERSION
-
-    let nextHoldings: Holding[]
-    if (isFullSync) {
-      // P4.5-A013-T7: v2/v3はholdingsをfull-sync（新規追加・受信端末だけの銘柄削除を含む）
-      // する。ガード（消滅率>50%または絶対件数>5件）はapplyHoldingsFullSyncFromSnapshot内。
-      const holdingsResult = applyHoldingsFullSyncFromSnapshot(state.holdings, snapshot.holdings)
-      if (!holdingsResult.ok) return { ok: false, code: 'INVALID_SNAPSHOT', error: holdingsResult.error }
-      nextHoldings = holdingsResult.holdings
-    } else {
-      // v1: 既存のupdate-only契約を維持する（受信端末に存在しないcodeは全体reject）。
-      const currentHoldingCodes = new Set(state.holdings.map(h => h.code))
-      const unknownHoldingCodes = snapshot.holdings
-        .filter(h => !currentHoldingCodes.has(h.code))
-        .map(h => h.code)
-      if (unknownHoldingCodes.length > 0) {
+      // P4.5-A013-T7: trust masterはregistryとして維持し、不完全metadataから
+      // Trustを捏造しない（T3の原則）という一線は全schemaで変えない。
+      // 違いはunknown idに遭遇した時の扱いのみ:
+      //   - v1: 全体reject（既存契約を維持）
+      //   - v2/v3: 該当idだけskipし、呼び出し側にskippedTrustIdsとして報告する
+      //     （silent ignoreはしない。既知idの通常の値更新は巻き添えでrejectしない）。
+      // 既知id側のmerge（eval/pnlPct/dayPct/accountのみ上書き。name/policy/cost/
+      // sigma/mu/score/decision/ev等の静的属性・計算結果は保持）は全schemaで共通。
+      const currentTrustIds = new Set(state.trust.map(t => t.id))
+      const unknownTrustIds = snapshot.trust.filter(t => !currentTrustIds.has(t.id)).map(t => t.id)
+      if (unknownTrustIds.length > 0 && !isFullSync) {
         return {
           ok: false,
           code: 'INVALID_SNAPSHOT',
-          error: `この端末に存在しない銘柄コードが含まれています: ${unknownHoldingCodes.join(', ')}`,
+          error: `この端末に存在しない投信IDが含まれています: ${unknownTrustIds.join(', ')}`,
         }
       }
-      const holdingsSnapshotLike: HoldingsSnapshotLike = {
-        holdings: snapshot.holdings.map(row => ({
-          code: row.code,
-          eval: row.eval,
-          pnlPct: row.pnlPct,
-          currentPrice: row.currentPrice,
-          purchase_date: row.acquiredAt ?? undefined,
-        })),
-      }
-      nextHoldings = applyHoldingsSnapshot(state.holdings, holdingsSnapshotLike)
-    }
+      const skippedTrustIds = isFullSync ? unknownTrustIds : []
 
-    // P4.5-A013-T7: trust masterはregistryとして維持し、不完全metadataから
-    // Trustを捏造しない（T3の原則）という一線は全schemaで変えない。
-    // 違いはunknown idに遭遇した時の扱いのみ:
-    //   - v1: 全体reject（既存契約を維持）
-    //   - v2/v3: 該当idだけskipし、呼び出し側にskippedTrustIdsとして報告する
-    //     （silent ignoreはしない。既知idの通常の値更新は巻き添えでrejectしない）。
-    // 既知id側のmerge（eval/pnlPct/dayPct/accountのみ上書き。name/policy/cost/
-    // sigma/mu/score/decision/ev等の静的属性・計算結果は保持）は全schemaで共通。
-    const currentTrustIds = new Set(state.trust.map(t => t.id))
-    const unknownTrustIds = snapshot.trust.filter(t => !currentTrustIds.has(t.id)).map(t => t.id)
-    if (unknownTrustIds.length > 0 && !isFullSync) {
-      return {
-        ok: false,
-        code: 'INVALID_SNAPSHOT',
-        error: `この端末に存在しない投信IDが含まれています: ${unknownTrustIds.join(', ')}`,
-      }
-    }
-    const skippedTrustIds = isFullSync ? unknownTrustIds : []
+      const trustRowById = new Map(snapshot.trust.filter(t => currentTrustIds.has(t.id)).map(t => [t.id, t]))
+      const nextTrust = state.trust.map(f => {
+        const row = trustRowById.get(f.id)
+        if (!row) return f
+        const patch: Partial<Trust> = { eval: row.eval, pnlPct: row.pnlPct }
+        if (row.dayPct !== undefined) patch.dayPct = row.dayPct
+        if (row.account !== undefined && row.account !== null) patch.account = row.account
+        return { ...f, ...patch }
+      })
 
-    const trustRowById = new Map(snapshot.trust.filter(t => currentTrustIds.has(t.id)).map(t => [t.id, t]))
-    const nextTrust = state.trust.map(f => {
-      const row = trustRowById.get(f.id)
-      if (!row) return f
-      const patch: Partial<Trust> = { eval: row.eval, pnlPct: row.pnlPct }
-      if (row.dayPct !== undefined) patch.dayPct = row.dayPct
-      if (row.account !== undefined && row.account !== null) patch.account = row.account
-      return { ...f, ...patch }
-    })
+      const nextPortfolioPolicy: PortfolioPolicy = snapshot.portfolioPolicy
+        ? { jpStockMaxRatio: snapshot.portfolioPolicy.jpStockMaxRatio }
+        : state.portfolioPolicy
 
-    const nextPortfolioPolicy: PortfolioPolicy = snapshot.portfolioPolicy
-      ? { jpStockMaxRatio: snapshot.portfolioPolicy.jpStockMaxRatio }
-      : state.portfolioPolicy
-
-    // cashAssumptionsはimportCashAssumptionsと同じ思想: manualOverrideEnabledは常にtrue、
-    // manualUpdatedAtは現在時刻へ差し替えずimport元をそのまま引き継ぐ。
-    const nextCashAssumptions: CashAssumptions = snapshot.cashAssumptions
-      ? {
-          cashDeposits: snapshot.cashAssumptions.cashDeposits,
-          standbyFunds: snapshot.cashAssumptions.standbyFunds,
-          manualOverrideEnabled: true,
-          manualUpdatedAt: snapshot.cashAssumptions.manualUpdatedAt,
-        }
-      : state.cashAssumptions
-
-    set(s => ({
-      holdings: nextHoldings,
-      trust: nextTrust,
-      portfolioPolicy: nextPortfolioPolicy,
-      cashAssumptions: nextCashAssumptions,
-      system: {
-        ...s.system,
-        // Operation metadata and source provenance are replaced from one incoming generation.
-        csvLastImportedAt: snapshot.csvImportedAt,
-        csvImportProvenance: snapshot.csvImportProvenance,
-      },
-    }))
-
-    const computed = runFullAnalysis(get())
-    const now = new Date().toISOString()
-    set(s => ({
-      ...computed,
-      system: { ...s.system, status: 'success', analysisLastRunAt: now, error: null },
-    }))
-
-    persistCurrentPortfolioGeneration(get())
-    persistPortfolioPolicy(get().portfolioPolicy)
-    persistCashAssumptions(get().cashAssumptions)
-    // csvImportedAtがnullの場合、persistCsvImportedAtは文字列専用のため呼ばない
-    // （既存localStorageの古い値の削除は次チケットで扱う。store上はnullに揃えている）。
-    if (typeof snapshot.csvImportedAt === 'string') {
-      persistCsvImportedAt(snapshot.csvImportedAt)
-    }
-    // P4.5-A013-T6a: persist直後にlocalStorageFreshnessをその場で最新化する。
-    // csvSyncSummaryはここでは一切変更しない（snapshot importをCSV取込結果として
-    // 偽装しないため。P4.5-A013-T6の方針を維持する）。
-    set(s => ({ system: { ...s.system, localStorageFreshness: computeLocalStorageFreshness() } }))
-    if (snapshot.snapshotGenerationIdentity !== null) {
-      const appliedStateIdentity = computeCurrentSnapshotStateIdentity(get())
-      lastAppliedSnapshotGeneration = appliedStateIdentity === null
-        ? null
-        : {
-            incomingIdentity: snapshot.snapshotGenerationIdentity,
-            currentStateIdentity: appliedStateIdentity,
+      // cashAssumptionsはimportCashAssumptionsと同じ思想: manualOverrideEnabledは常にtrue、
+      // manualUpdatedAtは現在時刻へ差し替えずimport元をそのまま引き継ぐ。
+      const nextCashAssumptions: CashAssumptions = snapshot.cashAssumptions
+        ? {
+            cashDeposits: snapshot.cashAssumptions.cashDeposits,
+            standbyFunds: snapshot.cashAssumptions.standbyFunds,
+            manualOverrideEnabled: true,
+            manualUpdatedAt: snapshot.cashAssumptions.manualUpdatedAt,
           }
-    } else {
-      lastAppliedSnapshotGeneration = null
+        : state.cashAssumptions
+
+      // ここから先はsubscriberへ最初の通知が飛ぶcritical phase。internal transaction自身の
+      // publishはこのset()群そのものなので妨げない（guardは他action経由のreentrant
+      // mutationだけを弾く。isPortfolioGenerationCriticalSection参照）。
+      setPortfolioGenerationTransactionPhase(transaction, 'PERSISTING')
+
+      set(s => ({
+        holdings: nextHoldings,
+        trust: nextTrust,
+        portfolioPolicy: nextPortfolioPolicy,
+        cashAssumptions: nextCashAssumptions,
+        system: {
+          ...s.system,
+          // Operation metadata and source provenance are replaced from one incoming generation.
+          csvLastImportedAt: snapshot.csvImportedAt,
+          csvImportProvenance: snapshot.csvImportProvenance,
+        },
+      }))
+
+      const computed = runFullAnalysis(get())
+      const now = new Date().toISOString()
+      set(s => ({
+        ...computed,
+        system: { ...s.system, status: 'success', analysisLastRunAt: now, error: null },
+      }))
+
+      persistCurrentPortfolioGeneration(get())
+      persistPortfolioPolicy(get().portfolioPolicy)
+      persistCashAssumptions(get().cashAssumptions)
+      // csvImportedAtがnullの場合、persistCsvImportedAtは文字列専用のため呼ばない
+      // （既存localStorageの古い値の削除は次チケットで扱う。store上はnullに揃えている）。
+      if (typeof snapshot.csvImportedAt === 'string') {
+        persistCsvImportedAt(snapshot.csvImportedAt)
+      }
+      // P4.5-A013-T6a: persist直後にlocalStorageFreshnessをその場で最新化する。
+      // csvSyncSummaryはここでは一切変更しない（snapshot importをCSV取込結果として
+      // 偽装しないため。P4.5-A013-T6の方針を維持する）。
+      set(s => ({ system: { ...s.system, localStorageFreshness: computeLocalStorageFreshness() } }))
+      setPortfolioGenerationTransactionPhase(transaction, 'PUBLISHED')
+      if (snapshot.snapshotGenerationIdentity !== null) {
+        const appliedStateIdentity = computeCurrentSnapshotStateIdentity(get())
+        lastAppliedSnapshotGeneration = appliedStateIdentity === null
+          ? null
+          : {
+              incomingIdentity: snapshot.snapshotGenerationIdentity,
+              currentStateIdentity: appliedStateIdentity,
+            }
+      } else {
+        lastAppliedSnapshotGeneration = null
+      }
+      return { ok: true, code: 'SUCCESS', skippedTrustIds: skippedTrustIds.length > 0 ? skippedTrustIds : undefined }
+    } finally {
+      if (activePortfolioGenerationTransaction?.token === transaction.token) {
+        activePortfolioGenerationTransaction = null
+      }
     }
-    return { ok: true, code: 'SUCCESS', skippedTrustIds: skippedTrustIds.length > 0 ? skippedTrustIds : undefined }
   },
   })
 })
