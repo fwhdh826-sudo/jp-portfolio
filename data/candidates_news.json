@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-07-17T07:31:29.722074+09:00",
-  "sourceUpdatedAt": "2026-07-16T22:12:17+00:00",
+  "updatedAt": "2026-07-17T09:58:13.172867+09:00",
+  "sourceUpdatedAt": "2026-07-17T00:44:31+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -17,16 +17,30 @@
       "items": []
     },
     "jp_semiconductor": {
-      "avgSentiment": 0.0,
+      "avgSentiment": -0.1,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
+      "neutralCount": 2,
       "sourceCount": 1,
-      "itemCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Chip Stocks Get Hit as AI Spending Anxiety Builds: Markets Wrap",
+      "topNegativeTitle": "Asian Stocks Drop as Chip Selloff Extends, Oil Up: Markets Wrap",
       "topPositiveTitle": "Chip Stocks Get Hit as AI Spending Anxiety Builds: Markets Wrap",
       "items": [
+        {
+          "title": "Asian Stocks Drop as Chip Selloff Extends, Oil Up: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.2,
+          "publishedAt": "2026-07-16T22:05:23+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-16/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "jp_semiconductor",
+            "macro_risk",
+            "market"
+          ]
+        },
         {
           "title": "Chip Stocks Get Hit as AI Spending Anxiety Builds: Markets Wrap",
           "source": "Bloomberg Markets",
@@ -44,29 +58,16 @@
       ]
     },
     "us_broad": {
-      "avgSentiment": -0.388,
+      "avgSentiment": -0.286,
       "negativeCount": 3,
       "positiveCount": 0,
-      "neutralCount": 3,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "Asia Stocks to Track US Slide on Chipmaker Selloff: Markets Wrap",
-      "topPositiveTitle": "Fed’s Schmid Says Inflation Too Hot, Above Target Too Long",
+      "topNegativeTitle": "Gold Falls as US-Iran Hostilities Rekindles Fed Hike Bets",
+      "topPositiveTitle": "Fed’s Jefferson Says Policy Well Positioned If Inflation Cools",
       "items": [
-        {
-          "title": "Asia Stocks to Track US Slide on Chipmaker Selloff: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-07-16T22:05:23+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-16/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "macro_risk",
-            "market",
-            "us_broad"
-          ]
-        },
         {
           "title": "Gold Falls as US-Iran Hostilities Rekindles Fed Hike Bets",
           "source": "Bloomberg Markets",
@@ -76,6 +77,20 @@
           "url": "https://www.bloomberg.com/news/articles/2026-07-15/gold-steadies-as-soft-inflation-war-risk-cloud-fed-rate-outlook",
           "tags": [
             "geopolitical",
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Gold Heads for Weekly Fall as Hormuz Strikes Raise Fed-Hike Bets",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-07-16T23:59:51+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-16/gold-heads-for-weekly-fall-as-hormuz-strikes-raise-fed-hike-bets",
+          "tags": [
             "gold",
             "market",
             "rates",
@@ -96,6 +111,19 @@
           ]
         },
         {
+          "title": "Fed’s Jefferson Says Policy Well Positioned If Inflation Cools",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-16T23:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-16/jefferson-says-policy-well-positioned-can-reconsider-if-needed",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
           "title": "Fed’s Schmid Says Inflation Too Hot, Above Target Too Long",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
@@ -106,32 +134,33 @@
             "market",
             "us_broad"
           ]
-        },
-        {
-          "title": "Fed’s Watchdog Warns On Insider Risk after China Secrets Case",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-16T15:04:42+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-16/fed-s-watchdog-warns-on-insider-risk-after-china-secrets-case",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0,
+      "avgSentiment": 1.0,
       "negativeCount": 0,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "China AI Stocks’ 1000%-Plus Profit Gain May Fail to Revive Rally",
+      "topPositiveTitle": "China AI Stocks’ 1000%-Plus Profit Gain May Fail to Revive Rally",
+      "items": [
+        {
+          "title": "China AI Stocks’ 1000%-Plus Profit Gain May Fail to Revive Rally",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-07-17T00:14:42+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-17/china-ai-stocks-1000-plus-profit-gain-may-fail-to-revive-rally",
+          "tags": [
+            "market",
+            "us_growth"
+          ]
+        }
+      ]
     },
     "global_broad": {
       "avgSentiment": 0,
@@ -146,15 +175,15 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": -1.0,
-      "negativeCount": 1,
+      "avgSentiment": -0.835,
+      "negativeCount": 2,
       "positiveCount": 0,
       "neutralCount": 0,
       "sourceCount": 1,
-      "itemCount": 1,
+      "itemCount": 2,
       "isStale": false,
       "topNegativeTitle": "Gold Falls as US-Iran Hostilities Rekindles Fed Hike Bets",
-      "topPositiveTitle": "Gold Falls as US-Iran Hostilities Rekindles Fed Hike Bets",
+      "topPositiveTitle": "Gold Heads for Weekly Fall as Hormuz Strikes Raise Fed-Hike Bets",
       "items": [
         {
           "title": "Gold Falls as US-Iran Hostilities Rekindles Fed Hike Bets",
@@ -165,6 +194,20 @@
           "url": "https://www.bloomberg.com/news/articles/2026-07-15/gold-steadies-as-soft-inflation-war-risk-cloud-fed-rate-outlook",
           "tags": [
             "geopolitical",
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Gold Heads for Weekly Fall as Hormuz Strikes Raise Fed-Hike Bets",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-07-16T23:59:51+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-16/gold-heads-for-weekly-fall-as-hormuz-strikes-raise-fed-hike-bets",
+          "tags": [
             "gold",
             "market",
             "rates",
@@ -198,27 +241,28 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.0,
-      "negativeCount": 1,
-      "positiveCount": 2,
-      "neutralCount": 6,
+      "avgSentiment": 0.016,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 7,
       "sourceCount": 2,
-      "itemCount": 9,
+      "itemCount": 8,
       "isStale": false,
-      "topNegativeTitle": "Asia Stocks to Track US Slide on Chipmaker Selloff: Markets Wrap",
-      "topPositiveTitle": "Oil Traders Crowd Into Cheap TACO Hedge as Iran War Amps Up",
+      "topNegativeTitle": "Asian Stocks Drop as Chip Selloff Extends, Oil Up: Markets Wrap",
+      "topPositiveTitle": "Latest Oil Market News and Analysis for July 17",
       "items": [
         {
-          "title": "Asia Stocks to Track US Slide on Chipmaker Selloff: Markets Wrap",
+          "title": "Asian Stocks Drop as Chip Selloff Extends, Oil Up: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
+          "sentimentScore": -0.2,
           "publishedAt": "2026-07-16T22:05:23+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-07-16/stock-market-today-dow-s-p-live-updates",
           "tags": [
+            "commodity",
+            "jp_semiconductor",
             "macro_risk",
-            "market",
-            "us_broad"
+            "market"
           ]
         },
         {
@@ -276,15 +320,15 @@
       ]
     },
     "fx": {
-      "avgSentiment": 0.2,
+      "avgSentiment": 0.265,
       "negativeCount": 0,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 1,
+      "itemCount": 2,
       "isStale": false,
       "topNegativeTitle": "Emerging Currencies Fall as US, Iran Tensions Strengthen Dollar",
-      "topPositiveTitle": "Emerging Currencies Fall as US, Iran Tensions Strengthen Dollar",
+      "topPositiveTitle": "Top Currency Forecaster Says Yen May Reach 170 Against Dollar",
       "items": [
         {
           "title": "Emerging Currencies Fall as US, Iran Tensions Strengthen Dollar",
@@ -298,16 +342,28 @@
             "geopolitical",
             "market"
           ]
+        },
+        {
+          "title": "Top Currency Forecaster Says Yen May Reach 170 Against Dollar",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-07-16T23:30:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-16/top-currency-forecaster-says-yen-may-reach-170-against-dollar",
+          "tags": [
+            "fx",
+            "market"
+          ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": -0.25,
-      "negativeCount": 2,
+      "avgSentiment": -0.278,
+      "negativeCount": 3,
       "positiveCount": 1,
-      "neutralCount": 1,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 6,
       "isStale": false,
       "topNegativeTitle": "Gold Falls as US-Iran Hostilities Rekindles Fed Hike Bets",
       "topPositiveTitle": "IMF Cautions Burnham Against Raising UK’s Top Income Tax Rate",
@@ -328,12 +384,39 @@
           ]
         },
         {
+          "title": "Gold Heads for Weekly Fall as Hormuz Strikes Raise Fed-Hike Bets",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-07-16T23:59:51+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-16/gold-heads-for-weekly-fall-as-hormuz-strikes-raise-fed-hike-bets",
+          "tags": [
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
           "title": "Bond Traders Bail on Fed Hike Bets on Softer Inflation Path",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
           "publishedAt": "2026-07-16T15:00:01+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-07-16/bond-traders-bail-on-fed-hike-wagers-on-softer-inflation-outlook",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Fed’s Jefferson Says Policy Well Positioned If Inflation Cools",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-16T23:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-16/jefferson-says-policy-well-positioned-can-reconsider-if-needed",
           "tags": [
             "market",
             "rates",
@@ -351,32 +434,34 @@
             "market",
             "rates"
           ]
-        },
-        {
-          "title": "IMF Cautions Burnham Against Raising UK’s Top Income Tax Rate",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-07-16T15:30:17+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-16/imf-cautions-burnham-against-raising-uk-s-top-income-tax-rate",
-          "tags": [
-            "market",
-            "rates"
-          ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.222,
+      "avgSentiment": 0.026,
       "negativeCount": 0,
-      "positiveCount": 3,
-      "neutralCount": 3,
+      "positiveCount": 1,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "How the Iran War Is Rewiring the Oil Market",
-      "topPositiveTitle": "Oil Traders Crowd Into Cheap TACO Hedge as Iran War Amps Up",
+      "topNegativeTitle": "Asian Stocks Drop as Chip Selloff Extends, Oil Up: Markets Wrap",
+      "topPositiveTitle": "Latest Oil Market News and Analysis for July 17",
       "items": [
+        {
+          "title": "Asian Stocks Drop as Chip Selloff Extends, Oil Up: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.2,
+          "publishedAt": "2026-07-16T22:05:23+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-16/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "jp_semiconductor",
+            "macro_risk",
+            "market"
+          ]
+        },
         {
           "title": "How the Iran War Is Rewiring the Oil Market",
           "source": "Bloomberg Markets",
@@ -430,31 +515,19 @@
             "macro_risk",
             "market"
           ]
-        },
-        {
-          "title": "Chevron Plans to Sign Iraq Oil Accord, Seeks Hormuz Bypass",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-07-16T15:52:26+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-16/chevron-to-sign-oil-investment-accords-with-iraq-on-friday",
-          "tags": [
-            "commodity",
-            "market"
-          ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.029,
+      "avgSentiment": -0.078,
       "negativeCount": 1,
-      "positiveCount": 2,
+      "positiveCount": 1,
       "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 7,
+      "itemCount": 6,
       "isStale": false,
       "topNegativeTitle": "Gold Falls as US-Iran Hostilities Rekindles Fed Hike Bets",
-      "topPositiveTitle": "Oil Traders Crowd Into Cheap TACO Hedge as Iran War Amps Up",
+      "topPositiveTitle": "Latest Oil Market News and Analysis for July 17",
       "items": [
         {
           "title": "Gold Falls as US-Iran Hostilities Rekindles Fed Hike Bets",
@@ -537,7 +610,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 5,
+    "excludedCount": 3,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
