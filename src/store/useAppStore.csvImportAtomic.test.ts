@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import type { Holding, Trust } from '../types'
-import { runFullAnalysis, useAppStore } from './useAppStore'
+import { csvImportCommitBoundaryTestProbe, runFullAnalysis, useAppStore } from './useAppStore'
 import {
   CSV_IMPORT_GENERATION_KEY,
   persistCsvImportTransaction,
@@ -1274,7 +1274,11 @@ describe('T9-A001/A002: structured CSV result and atomic store commit', () => {
     await expect(useAppStore.getState().importCsv(csvFile())).resolves.toMatchObject({ ok: true })
   })
 
-  it('R6: present-invalid canonical forbids legacy trust snapshot fallback', async () => {
+  // T9-A004-R3-FIX-B (R3-F004): 旧契約「present-invalid canonicalでもCSV importは
+  // SUCCESSし、legacy trust snapshot fallbackだけを禁止する」を置き換える。
+  // present-invalid canonicalの通常CSV importはfail-closedし、修復自体を行わない
+  // （legacy fallback禁止はrejectにより自明に維持される）。
+  it('R6: present-invalid canonical fails the import closed and forbids legacy trust snapshot fallback', async () => {
     useAppStore.setState({ trust: [shortTrust()] })
     storage[CSV_IMPORT_GENERATION_KEY] = '{malformed'
     storage.v95_trust_short_snapshot = JSON.stringify({
@@ -1285,9 +1289,14 @@ describe('T9-A001/A002: structured CSV result and atomic store commit', () => {
 
     const result = await useAppStore.getState().importCsv(csvFile())
 
-    expect(result).toMatchObject({ ok: true, code: 'SUCCESS' })
+    expect(result).toMatchObject({
+      ok: false,
+      code: 'CSV_CANONICAL_INVALID',
+      persistence: { status: 'not_attempted' },
+    })
     expect(storage.v95_trust_short_tracker).toBeUndefined()
-    expect(restoreCsvImportGeneration()).toMatchObject({ status: 'committed' })
+    expect(storage[CSV_IMPORT_GENERATION_KEY]).toBe('{malformed')
+    expect(restoreCsvImportGeneration()).toEqual({ status: 'invalid' })
   })
 
   it('F004: an unexpected staging exception is structured and always releases loading', async () => {
@@ -1304,5 +1313,394 @@ describe('T9-A001/A002: structured CSV result and atomic store commit', () => {
     }
     const retry = await useAppStore.getState().importCsv(csvFile())
     expect(retry.ok).toBe(true)
+  })
+})
+
+// 新describe共通のstore baseline（main describeのbeforeEachと同一内容）。
+function seedCsvImportBaselineState() {
+  useAppStore.setState(state => ({
+    holdings: [holding()],
+    trust: [trust()],
+    correlation: null,
+    market: baseMarket,
+    safeMode: baseSafeMode,
+    portfolioPolicy: { jpStockMaxRatio: 0.1 },
+    cashAssumptions: baseCashAssumptions,
+    candidatesNews: baseCandidatesNews,
+    candidatesStocks: baseCandidatesStocks,
+    regimeState: baseRegimeState,
+    learning: null,
+    universe: null,
+    zeroPlan: null,
+    stockPlan: null,
+    trustPlan: null,
+    stockCandidates: [],
+    analysis: [],
+    metrics: null,
+    officialDecision: null,
+    system: {
+      ...state.system,
+      status: 'idle',
+      error: null,
+      csvLastImportedAt: '2026-07-01T00:00:00.000Z',
+      csvImportProvenance: null,
+      csvSyncSummary: null,
+    },
+  }))
+}
+
+// T9-A004-R3-FIX-B (R3-F004): present-invalid canonicalの通常CSV importはfail-closed。
+// absent（ALLOW_FIRST_IMPORT可）とpresent-invalidを同一視せず、stale CSVによる
+// canonical/store世代の逆行・自動修復・legacy fallbackを禁止する。修復は将来の
+// 明示repair actionへ分離する（本チケットでは未実装）。
+describe('T9-A004-R3-FIX-B: present-invalid canonical CSV write policy (R3-F004)', () => {
+  const storage: Record<string, string> = {}
+  let storageWriteCount = 0
+  const localStorageMock = {
+    getItem: (key: string) => storage[key] ?? null,
+    setItem: (key: string, value: string) => {
+      storageWriteCount += 1
+      storage[key] = value
+    },
+    removeItem: (key: string) => { delete storage[key] },
+  }
+
+  function subscribeGenerationNotifications(counter: { count: number }) {
+    return useAppStore.subscribe((state, previous) => {
+      if (state.holdings !== previous.holdings || state.trust !== previous.trust ||
+          state.analysis !== previous.analysis || state.officialDecision !== previous.officialDecision) {
+        counter.count += 1
+      }
+    })
+  }
+
+  beforeEach(() => {
+    vi.stubGlobal('FileReader', TestFileReader)
+    vi.stubGlobal('localStorage', localStorageMock)
+    Object.keys(storage).forEach(key => delete storage[key])
+    storageWriteCount = 0
+    seedCsvImportBaselineState()
+  })
+
+  afterEach(() => {
+    vi.unstubAllGlobals()
+    if (originalFileReader) globalThis.FileReader = originalFileReader
+  })
+
+  it('F004-1: store generation A + present-invalid canonical + stale CSV Bは逆行できない（reject・A維持・invalid bytes維持）', async () => {
+    // store/canonicalへauthoritative generation A（2026-07-15基準）を確立する
+    await expect(useAppStore.getState().importCsv(csvFile(csvWithSource('2026-07-15T09:00:00+09:00'))))
+      .resolves.toMatchObject({ ok: true, code: 'SUCCESS' })
+    storage[CSV_IMPORT_GENERATION_KEY] = '{malformed'
+    const before = relevantState()
+    const writesBefore = storageWriteCount
+    const notifications = { count: 0 }
+    const unsubscribe = subscribeGenerationNotifications(notifications)
+
+    // Aより古い基準時刻のstale CSV B。present-invalidをabsent扱いすると
+    // ALLOW_FIRST_IMPORTで逆行取込が成立してしまう。
+    const staleCsvB = csvWithSource(
+      '2026-07-14T09:00:00+09:00',
+      VALID_CSV.replace('150000,8.00', '110000,1.00'),
+    )
+    const result = await useAppStore.getState().importCsv(csvFile(staleCsvB))
+    unsubscribe()
+
+    expect(result).toMatchObject({
+      ok: false,
+      code: 'CSV_CANONICAL_INVALID',
+      persistence: { status: 'not_attempted' },
+      analysisCommitted: false,
+      officialDecisionCommitted: false,
+    })
+    expect(relevantState()).toEqual(before)
+    expect(storage[CSV_IMPORT_GENERATION_KEY]).toBe('{malformed')
+    expect(storageWriteCount).toBe(writesBefore)
+    expect(notifications.count).toBe(0)
+    expect(useAppStore.getState().system.status).not.toBe('loading')
+  })
+
+  it('F004-2: store empty + present-invalid canonicalでもCSV importはrejectされる', async () => {
+    useAppStore.setState(state => ({
+      holdings: [],
+      trust: [],
+      system: { ...state.system, csvLastImportedAt: null, csvImportProvenance: null },
+    }))
+    storage[CSV_IMPORT_GENERATION_KEY] = '{malformed'
+    const writesBefore = storageWriteCount
+
+    const result = await useAppStore.getState().importCsv(csvFile())
+
+    expect(result).toMatchObject({ ok: false, code: 'CSV_CANONICAL_INVALID' })
+    expect(useAppStore.getState().holdings).toEqual([])
+    expect(useAppStore.getState().system.csvLastImportedAt).toBeNull()
+    expect(storage[CSV_IMPORT_GENERATION_KEY]).toBe('{malformed')
+    expect(storageWriteCount).toBe(writesBefore)
+  })
+
+  it('F004-3: 有効なlegacy keysが存在してもpresent-invalid canonicalはlegacy fallbackせずrejectされる', async () => {
+    const legacyPortfolioRaw = JSON.stringify({ data: [holding('8888', 800_000)], savedAt: Date.now() })
+    const legacyTrustRaw = JSON.stringify({ data: [trust()], savedAt: Date.now() })
+    storage[CSV_IMPORT_GENERATION_KEY] = '{malformed'
+    storage.v81_portfolio = legacyPortfolioRaw
+    storage.v81_trust = legacyTrustRaw
+    const writesBefore = storageWriteCount
+
+    const result = await useAppStore.getState().importCsv(csvFile())
+
+    expect(result).toMatchObject({ ok: false, code: 'CSV_CANONICAL_INVALID' })
+    expect(storage.v81_portfolio).toBe(legacyPortfolioRaw)
+    expect(storage.v81_trust).toBe(legacyTrustRaw)
+    expect(storageWriteCount).toBe(writesBefore)
+    // invalid canonicalがある限りreload読取はlegacyへfallbackしない（dead write禁止の前提）
+    expect(restorePortfolio()).toBeNull()
+  })
+
+  it.each([
+    ['malformed JSON', () => '{malformed'],
+    ['checksum mismatch', (raw: string) => {
+      const envelope = JSON.parse(raw)
+      envelope.payload.holdings[0].eval += 1
+      return JSON.stringify(envelope)
+    }],
+    ['manifest committed marker欠落', (raw: string) => {
+      const envelope = JSON.parse(raw)
+      envelope.manifest.committed = false
+      return JSON.stringify(envelope)
+    }],
+    ['deep validation不正（負のeval）', (raw: string) => {
+      const envelope = JSON.parse(raw)
+      envelope.payload.holdings[0].eval = -1
+      return JSON.stringify(envelope)
+    }],
+    ['未知schema version', (raw: string) => {
+      const envelope = JSON.parse(raw)
+      envelope.manifest.schemaVersion = 'csv-import-generation-99'
+      return JSON.stringify(envelope)
+    }],
+  ])('F004-4: %s のpresent-invalid canonicalは構造化fail-closedし、raw parser/storage詳細をUIへ出さない', async (_label, corrupt) => {
+    await expect(useAppStore.getState().importCsv(csvFile(csvWithSource('2026-07-15T09:00:00+09:00'))))
+      .resolves.toMatchObject({ ok: true, code: 'SUCCESS' })
+    const corruptedRaw = corrupt(storage[CSV_IMPORT_GENERATION_KEY])
+    storage[CSV_IMPORT_GENERATION_KEY] = corruptedRaw
+    const before = relevantState()
+
+    const result = await useAppStore.getState().importCsv(csvFile(csvWithSource(
+      '2026-07-16T09:00:00+09:00',
+      VALID_CSV.replace('150000,8.00', '175000,8.00'),
+    )))
+
+    expect(result).toMatchObject({ ok: false, code: 'CSV_CANONICAL_INVALID' })
+    if (!result.ok) {
+      expect(result.message).not.toMatch(/Unexpected|JSON|token|checksum|parse|schema/i)
+    }
+    expect(storage[CSV_IMPORT_GENERATION_KEY]).toBe(corruptedRaw)
+    expect(relevantState()).toEqual(before)
+  })
+
+  it('F004-5: reject後にcanonicalを明示除去（absent化）したretryはfirst importとして成功する', async () => {
+    storage[CSV_IMPORT_GENERATION_KEY] = '{malformed'
+    await expect(useAppStore.getState().importCsv(csvFile()))
+      .resolves.toMatchObject({ ok: false, code: 'CSV_CANONICAL_INVALID' })
+
+    delete storage[CSV_IMPORT_GENERATION_KEY]
+    const retry = await useAppStore.getState().importCsv(csvFile())
+
+    expect(retry).toMatchObject({ ok: true, code: 'SUCCESS', persistence: { status: 'committed' } })
+    expect(useAppStore.getState().holdings[0].eval).toBe(150_000)
+    expect(restoreCsvImportGeneration()).toMatchObject({ status: 'committed' })
+    expect(restorePortfolio()).toEqual(useAppStore.getState().holdings)
+  })
+
+  it('F004-6: reject後にvalid canonicalへ修復したretryは通常のduplicate/stale/monotonicity判定へ戻る', async () => {
+    await expect(useAppStore.getState().importCsv(csvFile(csvWithSource('2026-07-15T09:00:00+09:00'))))
+      .resolves.toMatchObject({ ok: true, code: 'SUCCESS' })
+    const validRaw = storage[CSV_IMPORT_GENERATION_KEY]
+    storage[CSV_IMPORT_GENERATION_KEY] = '{malformed'
+
+    const staleCsv = csvFile(csvWithSource(
+      '2026-07-14T09:00:00+09:00',
+      VALID_CSV.replace('150000,8.00', '110000,1.00'),
+    ))
+    await expect(useAppStore.getState().importCsv(staleCsv))
+      .resolves.toMatchObject({ ok: false, code: 'CSV_CANONICAL_INVALID' })
+
+    // 修復（valid committed世代へ復元）後は通常判定が再開される
+    storage[CSV_IMPORT_GENERATION_KEY] = validRaw
+    await expect(useAppStore.getState().importCsv(staleCsv))
+      .resolves.toMatchObject({ ok: false, code: 'STALE_CSV' })
+    await expect(useAppStore.getState().importCsv(csvFile(csvWithSource('2026-07-15T09:00:00+09:00'))))
+      .resolves.toMatchObject({ ok: true, code: 'DUPLICATE_CSV' })
+    await expect(useAppStore.getState().importCsv(csvFile(csvWithSource(
+      '2026-07-16T09:00:00+09:00',
+      VALID_CSV.replace('150000,8.00', '175000,8.00'),
+    )))).resolves.toMatchObject({ ok: true, code: 'SUCCESS' })
+    expect(useAppStore.getState().holdings[0].eval).toBe(175_000)
+  })
+
+  it('F004-7: reject時はanalysisも実行されない（analysis失敗を強制してもcodeはCSV_CANONICAL_INVALIDのまま・lock残留なし）', async () => {
+    const throwingMarket = new Proxy(baseMarket, {
+      get(target, property) {
+        if (property === 'regime') throw new Error('forced analysis failure')
+        return Reflect.get(target, property)
+      },
+    })
+    useAppStore.setState({ market: throwingMarket })
+    storage[CSV_IMPORT_GENERATION_KEY] = '{malformed'
+    const writesBefore = storageWriteCount
+    const notifications = { count: 0 }
+    const unsubscribe = subscribeGenerationNotifications(notifications)
+
+    const result = await useAppStore.getState().importCsv(csvFile())
+    unsubscribe()
+
+    expect(result).toMatchObject({ ok: false, code: 'CSV_CANONICAL_INVALID' })
+    expect(storageWriteCount).toBe(writesBefore)
+    expect(notifications.count).toBe(0)
+    expect(useAppStore.getState().system.status).not.toBe('loading')
+
+    // 修復後のretryが完全実行できる（transaction lock残留なし）
+    useAppStore.setState({ market: baseMarket })
+    delete storage[CSV_IMPORT_GENERATION_KEY]
+    await expect(useAppStore.getState().importCsv(csvFile())).resolves.toMatchObject({ ok: true, code: 'SUCCESS' })
+  })
+})
+
+// T9-A004-R3-FIX-B (R3-F003): CSV canonical receipt取得後〜Zustand publish完了までを
+// 明示的なfailure boundaryとして扱う。durableCommittedだけを根拠にSUCCESSを返さず、
+// canonical/store/resultの三者を必ず物理状態と一致させる。
+describe('T9-A004-R3-FIX-B: CSV post-receipt failure boundary (R3-F003)', () => {
+  const storage: Record<string, string> = {}
+  const localStorageMock = {
+    getItem: (key: string) => storage[key] ?? null,
+    setItem: (key: string, value: string) => { storage[key] = value },
+    removeItem: (key: string) => { delete storage[key] },
+  }
+
+  beforeEach(() => {
+    vi.stubGlobal('FileReader', TestFileReader)
+    vi.stubGlobal('localStorage', localStorageMock)
+    Object.keys(storage).forEach(key => delete storage[key])
+    csvImportCommitBoundaryTestProbe.onBoundary = null
+    seedCsvImportBaselineState()
+  })
+
+  afterEach(() => {
+    csvImportCommitBoundaryTestProbe.onBoundary = null
+    vi.unstubAllGlobals()
+    if (originalFileReader) globalThis.FileReader = originalFileReader
+  })
+
+  it('F003-1: receipt取得後・fingerprint処理前の例外はcommitted世代をbyte-exact rollbackし、durableCommittedだけでSUCCESSにしない', async () => {
+    let probeCalls = 0
+    csvImportCommitBoundaryTestProbe.onBoundary = boundary => {
+      if (boundary === 'after-durable-commit') {
+        probeCalls += 1
+        throw new Error('injected failure after durable commit')
+      }
+    }
+    const before = relevantState()
+    let generationNotifications = 0
+    const unsubscribe = useAppStore.subscribe((state, previous) => {
+      if (state.holdings !== previous.holdings || state.trust !== previous.trust ||
+          state.analysis !== previous.analysis || state.officialDecision !== previous.officialDecision) {
+        generationNotifications += 1
+      }
+    })
+
+    const result = await useAppStore.getState().importCsv(csvFile())
+    unsubscribe()
+
+    expect(probeCalls).toBe(1)
+    // 三者整合: canonical=旧（absentへ復旧）/ store=旧 / result=構造化failure
+    expect(result).toMatchObject({ ok: false, code: 'UNKNOWN_ERROR', persistence: { status: 'rolled_back' } })
+    expect(storage[CSV_IMPORT_GENERATION_KEY]).toBeUndefined()
+    expect(restoreCsvImportGeneration()).toEqual({ status: 'none' })
+    expect(relevantState()).toEqual(before)
+    expect(generationNotifications).toBe(0)
+    expect(useAppStore.getState().system.status).not.toBe('loading')
+
+    // lock解放・retry可能
+    csvImportCommitBoundaryTestProbe.onBoundary = null
+    const retry = await useAppStore.getState().importCsv(csvFile())
+    expect(retry).toMatchObject({ ok: true, code: 'SUCCESS' })
+    expect(useAppStore.getState().holdings[0].eval).toBe(150_000)
+    expect(restorePortfolio()).toEqual(useAppStore.getState().holdings)
+  })
+
+  it('F003-2: fingerprint確認後・Zustand set直前の例外はcanonicalを前世代bytesへ復旧し、canonical新/store旧のSUCCESSを禁止する', async () => {
+    await expect(useAppStore.getState().importCsv(csvFile(csvWithSource('2026-07-14T09:00:00+09:00'))))
+      .resolves.toMatchObject({ ok: true, code: 'SUCCESS' })
+    const gen1Raw = storage[CSV_IMPORT_GENERATION_KEY]
+    const before = relevantState()
+    csvImportCommitBoundaryTestProbe.onBoundary = boundary => {
+      if (boundary === 'before-publish') throw new Error('injected failure before publish')
+    }
+
+    const nextCsv = csvWithSource(
+      '2026-07-15T09:00:00+09:00',
+      VALID_CSV.replace('150000,8.00', '175000,8.00'),
+    )
+    const result = await useAppStore.getState().importCsv(csvFile(nextCsv))
+
+    // 三者整合: canonical=gen1（byte-exact復旧）/ store=gen1 / result=構造化failure
+    expect(result).toMatchObject({ ok: false, code: 'UNKNOWN_ERROR', persistence: { status: 'rolled_back' } })
+    expect(storage[CSV_IMPORT_GENERATION_KEY]).toBe(gen1Raw)
+    expect(relevantState()).toEqual(before)
+    expect(useAppStore.getState().holdings[0].eval).toBe(150_000)
+
+    // false rollbackなし: rolled_back報告どおり、reloadしてもgen2は出現しない
+    expect(restorePortfolio()?.[0].eval).toBe(150_000)
+
+    csvImportCommitBoundaryTestProbe.onBoundary = null
+    const retry = await useAppStore.getState().importCsv(csvFile(nextCsv))
+    expect(retry).toMatchObject({ ok: true, code: 'SUCCESS' })
+    expect(useAppStore.getState().holdings[0].eval).toBe(175_000)
+    expect(restorePortfolio()?.[0].eval).toBe(175_000)
+  })
+
+  it('F003-3: Zustand state適用後・result返却前の例外は、generation identity一致を確認した上でSUCCESSを返す（false rollbackなし）', async () => {
+    let probeCalls = 0
+    csvImportCommitBoundaryTestProbe.onBoundary = boundary => {
+      if (boundary === 'after-publish') {
+        probeCalls += 1
+        throw new Error('injected failure after publish')
+      }
+    }
+
+    const result = await useAppStore.getState().importCsv(csvFile())
+
+    expect(probeCalls).toBe(1)
+    // 三者整合: canonical=新 / store=新 / result=SUCCESS
+    expect(result).toMatchObject({ ok: true, code: 'SUCCESS', persistence: { status: 'committed' } })
+    expect(useAppStore.getState().holdings[0].eval).toBe(150_000)
+    expect(useAppStore.getState().system.status).toBe('success')
+    const durable = restoreCsvImportGeneration()
+    if (durable.status !== 'committed') throw new Error('expected committed generation')
+    expect(durable.payload.holdings).toEqual(useAppStore.getState().holdings)
+  })
+
+  it('F003-4: receipt後に外部writerがcanonicalを置換した場合、例外recoveryは外部bytesへ触れずownership喪失を報告する', async () => {
+    const externalBytes = 'external-transaction-bytes'
+    csvImportCommitBoundaryTestProbe.onBoundary = boundary => {
+      if (boundary === 'after-durable-commit') {
+        storage[CSV_IMPORT_GENERATION_KEY] = externalBytes
+        throw new Error('injected failure after external replacement')
+      }
+    }
+    const before = relevantState()
+
+    const result = await useAppStore.getState().importCsv(csvFile())
+
+    // 三者整合: canonical=外部bytes（無傷）/ store=旧 / result=ownership喪失の構造化failure
+    expect(result).toMatchObject({ ok: false, code: 'IMPORT_CONFLICT', persistence: { status: 'ownership_lost' } })
+    expect(storage[CSV_IMPORT_GENERATION_KEY]).toBe(externalBytes)
+    expect(relevantState()).toEqual(before)
+    expect(useAppStore.getState().holdings[0].eval).toBe(100_000)
+
+    // 外部世代を除去した上でretry可能（lock残留なし）
+    csvImportCommitBoundaryTestProbe.onBoundary = null
+    delete storage[CSV_IMPORT_GENERATION_KEY]
+    await expect(useAppStore.getState().importCsv(csvFile())).resolves.toMatchObject({ ok: true, code: 'SUCCESS' })
   })
 })

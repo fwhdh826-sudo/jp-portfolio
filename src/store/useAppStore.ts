@@ -159,6 +159,11 @@ export type CsvImportErrorCode =
   | 'STALE_CSV'
   | 'CSV_PROVENANCE_CONFLICT'
   | 'CSV_PROVENANCE_UNKNOWN'
+  // T9-A004-R3-FIX-B (R3-F004): canonical keyは存在するが検証を通らないpresent-invalid
+  // 世代。absent（key自体が無い）とは区別され、ALLOW_FIRST_IMPORT・自動修復・legacy
+  // fallbackのいずれにも入らずfail-closedする（snapshot側のSNAPSHOT_CANONICAL_INVALID
+  // と同一のstorage evidence policy）。
+  | 'CSV_CANONICAL_INVALID'
   | 'UNKNOWN_ERROR'
 
 export type CsvImportResult =
@@ -285,6 +290,13 @@ function isPortfolioGenerationCriticalSection(): boolean {
 function reportRejectedReentrantMutation(source: string): void {
   try { console.warn(`[useAppStore] rejected synchronous mutation during portfolio generation commit: ${source}`) } catch { /* diagnostic sink */ }
 }
+
+// T9-A004-R3-FIX-B: importCsvのreceipt取得後〜result返却（post-receipt failure boundary）
+// の例外をテストから決定論的に再現するための最小internal seam。productionコードは値を
+// 設定せず常にno-op。広いtest-only APIを避けるため、commit境界の3点でのみ呼び出す。
+export const csvImportCommitBoundaryTestProbe: {
+  onBoundary: ((boundary: 'after-durable-commit' | 'before-publish' | 'after-publish') => void) | null
+} = { onBoundary: null }
 
 /**
  * runFullAnalysis / strict officialDecision が読むmutable inputだけを安定化して比較する。
@@ -1447,6 +1459,12 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
     activePortfolioGenerationTransaction = transaction
     let durableCommitted = false
     let committedSuccess: CsvImportResult | null = null
+    // T9-A004-R3-FIX-B (R3-F003): receipt取得後の予期しない例外recovery（outer catch）が
+    // 「committed世代がstoreへ完全適用済みか」をgeneration identityで判定し、未適用なら
+    // byte-exact rollbackへ進めるよう、receiptとcommitted transfer identityをtransaction
+    // scopeで保持する。
+    let persistenceReceipt: CsvImportPersistenceReceipt | null = null
+    let committedTransferIdentity: string | null = null
     const publishFailure = (failure: CsvImportResult): CsvImportResult => {
       if (failure.ok) return failure
       if (activePortfolioGenerationTransaction?.token === transaction.token) {
@@ -1464,6 +1482,21 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
           error instanceof Error ? error.message : String(error),
         ))
       }
+
+      // T9-A004-R3-FIX-B (R3-F004): present-invalid canonical（keyは存在するが
+      // JSON/manifest/checksum/schema検証を通らない）はfail-closed。absent扱いで
+      // ALLOW_FIRST_IMPORTへ進むと、storeに残るauthoritative provenanceより古いCSVで
+      // canonical/store世代を逆行・自動上書きできてしまう。修復は通常importから分離し、
+      // 将来の明示repair actionだけに委ねる。raw parser/storage詳細はUIへ出さない。
+      if (transaction.canonicalPreviousRaw !== null &&
+          restoreCsvImportGenerationFromRaw(transaction.canonicalPreviousRaw).status === 'invalid') {
+        return publishFailure(csvImportFailure(
+          'CSV_CANONICAL_INVALID',
+          '保存済みの取込世代データが破損しているため、CSVの取込を中断しました。' +
+            '破損した保存世代を修復または削除してから再試行してください。状態は変更されていません。',
+        ))
+      }
+
       transaction.trackerSnapshot = captureTrustShortAnalysisInput(transaction.analysisNow)
       transaction.trackerPortfolioBaseline = captureTrustShortPortfolioBaseline()
       const baseState = get()
@@ -1634,10 +1667,17 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
         provenance: incomingProvenance,
       }
 
-      let persistenceReceipt: ReturnType<typeof persistCsvImportTransaction> | null = null
       const generationCommittedAt = Date.now()
       try {
         setPortfolioGenerationTransactionPhase(transaction, 'PERSISTING')
+        const stagedTransferIdentity = computeSnapshotGenerationIdentity({
+          holdings: computed.holdings,
+          trust: computed.trust,
+          portfolioPolicy: baseState.portfolioPolicy,
+          cashAssumptions: baseState.cashAssumptions,
+          csvImportedAt: now,
+          csvImportProvenance: incomingProvenance,
+        })
         persistenceReceipt = persistCsvImportTransaction({
           holdings: computed.holdings,
           trust: computed.trust,
@@ -1649,15 +1689,9 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
           portfolioPolicy: baseState.portfolioPolicy,
           cashAssumptions: baseState.cashAssumptions,
           origin: 'csv',
-          snapshotTransferIdentity: computeSnapshotGenerationIdentity({
-            holdings: computed.holdings,
-            trust: computed.trust,
-            portfolioPolicy: baseState.portfolioPolicy,
-            cashAssumptions: baseState.cashAssumptions,
-            csvImportedAt: now,
-            csvImportProvenance: incomingProvenance,
-          }),
+          snapshotTransferIdentity: stagedTransferIdentity,
         }, generationCommittedAt, transaction.canonicalPreviousRaw)
+        committedTransferIdentity = stagedTransferIdentity
         durableCommitted = true
         setPortfolioGenerationTransactionPhase(transaction, 'COMMITTED')
       } catch (error) {
@@ -1671,6 +1705,8 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
           persistenceStatus,
         ))
       }
+
+      csvImportCommitBoundaryTestProbe.onBoundary?.('after-durable-commit')
 
       const currentTrackerFingerprint = getTrustShortReadDependencyFingerprint()
       const postPersistenceFingerprint = buildPortfolioAnalysisFingerprint(get(), currentTrackerFingerprint)
@@ -1708,6 +1744,8 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
         ))
       }
 
+      csvImportCommitBoundaryTestProbe.onBoundary?.('before-publish')
+
       // Publish the complete prepared state, including the exact dependency snapshot used by
       // analysis. This is the synchronous commit-section closure: a storage shim or callback
       // cannot leave newer dependencies paired with stale derived output.
@@ -1726,6 +1764,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
         },
       })
       setPortfolioGenerationTransactionPhase(transaction, 'PUBLISHED')
+      csvImportCommitBoundaryTestProbe.onBoundary?.('after-publish')
 
       try {
         if (trustExecution.executed && getTrustShortTodayExecutionCount(now) < 1) {
@@ -1765,16 +1804,48 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
 
       return committedSuccess
     } catch (error) {
-      const detail = error instanceof Error ? error.message : String(error)
-      if (durableCommitted && committedSuccess?.ok) {
-        try { console.error('[useAppStore] post-commit CSV observer/publish diagnostic', error) } catch { /* diagnostic sink */ }
-        return committedSuccess
+      // T9-A004-R3-FIX-B (R3-F003): receipt取得後〜publish完了は明示的なfailure boundary。
+      // durableCommittedだけを根拠にSUCCESSへ倒さず、canonical/store/resultの三者を
+      // 物理状態と一致させる。
+      if (durableCommitted && committedSuccess?.ok && persistenceReceipt !== null) {
+        // committed generationがstoreへ完全適用済みか（transfer identity一致）を確認する。
+        // 適用済みなら成立したtransactionであり、post-publish例外は偽failure化しない。
+        const appliedStateIdentity = computeCurrentSnapshotStateIdentity(get())
+        if (committedTransferIdentity !== null && appliedStateIdentity === committedTransferIdentity) {
+          try { console.error('[useAppStore] post-commit CSV observer/publish diagnostic', error) } catch { /* diagnostic sink */ }
+          return committedSuccess
+        }
+        // 未適用（canonical新/store旧）。外部writerが置換済みのbytesにはbyte-exact規則上
+        // 一切触れず、所有権喪失を物理状態どおりに報告する。
+        if (!ownsCsvImportCanonicalBytes(persistenceReceipt)) {
+          const failure = csvImportFailure(
+            'IMPORT_CONFLICT',
+            '保存後にエラーが発生し、canonical世代の所有権も失われていたため公開を中止しました。外部の保存世代を維持したまま再試行してください。',
+            'ownership_lost',
+          )
+          try { return publishFailure(failure) } catch { return failure }
+        }
+        // 自transactionの所有bytesであることを確認した上で、previousRawへbyte-exact
+        // rollbackする。rolled_backと報告する以上、canonicalへ新bytesは残さない。
+        const rolledBack = rollbackCsvImportTransaction(persistenceReceipt)
+        if (rolledBack) durableCommitted = false
+        const failure = rolledBack
+          ? csvImportFailure(
+              'UNKNOWN_ERROR',
+              'CSV取込の公開前に予期しないエラーが発生したため、保存済みの世代を取り消しました。状態は変更されていません。再試行してください。',
+              'rolled_back',
+            )
+          : csvImportFailure(
+              'PERSISTENCE_ERROR',
+              'CSV取込の公開前に予期しないエラーが発生し、保存済み世代の取り消しを確認できませんでした。再読み込み後に内容を確認してください。',
+              'rollback_failed',
+            )
+        try { return publishFailure(failure) } catch { return failure }
       }
       const failure = csvImportFailure(
         'UNKNOWN_ERROR',
         'CSV取込中に予期しないエラーが発生しました。状態は変更されていません。再試行してください。',
       )
-      void detail
       try { return publishFailure(failure) } catch { return failure }
     } finally {
       if (activePortfolioGenerationTransaction?.token === transaction.token) {
@@ -2271,6 +2342,19 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
           persistCsvImportedAt(snapshot.csvImportedAt)
         }
         const localStorageFreshness = computeLocalStorageFreshness(generationCommittedAt)
+
+        // T9-A004-R3-FIX-B (R3-F002): legacy mirror書込を含む最後のstorage operationの後、
+        // Zustand set直前にfinal ownershipを再確認する。mirror callback中に外部writerが
+        // canonicalを置換した場合はincoming世代をpublishせず（generation通知・
+        // lastAppliedSnapshotGeneration更新も0）、外部bytesにはbyte-exact規則上一切
+        // 触れない（所有していないbytesへのrollback/deleteは存在しない）。
+        if (!ownsCsvImportCanonicalBytes(receipt)) {
+          return {
+            ok: false,
+            code: 'SNAPSHOT_OWNERSHIP_LOST',
+            error: '公開直前にcanonical世代の所有権を失ったため、snapshotの取込は公開しませんでした。外部の保存世代を維持したまま再試行してください。',
+          }
+        }
 
         // durable commit確認後の完全世代を単一set()でpublishする。subscriberは
         // content・analysis・officialDecision・plans・candidates・policy・cash・

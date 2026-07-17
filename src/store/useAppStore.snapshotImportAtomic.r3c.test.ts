@@ -466,4 +466,58 @@ describe('T9-A004-R3c: snapshot import atomic commit contract', () => {
       evalById: {},
     })
   })
+
+  it('R3-F002: legacy mirror書込中の外部canonical置換はpublish直前のfinal ownership checkで検出し、incoming世代をpublishしない', () => {
+    // 外部writerが書くvalid committed canonical bytesを先に構築し、canonicalはabsentへ戻す
+    // （pre-persist CAS・initial ownership確認はいずれも成功するfixture）。
+    persistCsvImportTransaction(oldGenerationPayload())
+    const externalRaw = storage[CSV_IMPORT_GENERATION_KEY]
+    delete storage[CSV_IMPORT_GENERATION_KEY]
+
+    // canonical commitとinitial ownership確認の後、最初のlegacy mirror書込
+    // （v13_portfolio_policy）の最中に外部valid世代へ置換する。
+    let replaced = false
+    storageReentry = key => {
+      if (key !== 'v13_portfolio_policy' || replaced) return
+      replaced = true
+      storage[CSV_IMPORT_GENERATION_KEY] = externalRaw
+    }
+    const raw = v3Snapshot(incomingProvenance('9'), {
+      holdings: [{ code: 'R3FIXB-F002', name: 'F002銘柄', eval: 999_000, pnlPct: 0 }],
+    })
+    const before = useAppStore.getState()
+    let notifications = 0
+    const unsubscribe = useAppStore.subscribe(() => { notifications += 1 })
+
+    const result = useAppStore.getState().importPortfolioSnapshot(raw)
+    unsubscribe()
+    storageReentry = null
+
+    expect({
+      replaced,
+      resultOk: result.ok,
+      resultCode: result.code,
+      notifications,
+      externalBytesPreserved: storage[CSV_IMPORT_GENERATION_KEY] === externalRaw,
+      storeUntouched: useAppStore.getState() === before,
+      storeHoldings: useAppStore.getState().holdings,
+      csvLastImportedAt: useAppStore.getState().system.csvLastImportedAt,
+    }).toEqual({
+      replaced: true,
+      resultOk: false,
+      resultCode: 'SNAPSHOT_OWNERSHIP_LOST',
+      notifications: 0,
+      externalBytesPreserved: true,  // rollback/deleteは外部bytesへ一切行われない
+      storeUntouched: true,          // incoming storeはpublishされない（部分set 0）
+      storeHoldings: [],
+      csvLastImportedAt: null,
+    })
+
+    // 外部世代を正しく除去（absent化）した上でのretryは完全実行できる
+    // （transaction lock残留・lastAppliedSnapshotGenerationの誤更新が無い証明）。
+    delete storage[CSV_IMPORT_GENERATION_KEY]
+    const retry = useAppStore.getState().importPortfolioSnapshot(raw)
+    expect(retry).toMatchObject({ ok: true, code: 'SUCCESS' })
+    expect(useAppStore.getState().holdings.map(h => h.code)).toEqual(['R3FIXB-F002'])
+  })
 })
