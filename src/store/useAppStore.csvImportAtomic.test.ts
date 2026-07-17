@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import type { Holding, Trust } from '../types'
-import { csvImportCommitBoundaryTestProbe, runFullAnalysis, useAppStore } from './useAppStore'
+import { runFullAnalysis, useAppStore } from './useAppStore'
 import {
   CSV_IMPORT_GENERATION_KEY,
   persistCsvImportTransaction,
@@ -723,6 +723,58 @@ describe('T9-A001/A002: structured CSV result and atomic store commit', () => {
     })
     expect(relevantState()).toEqual(stateBefore)
     expect(storage).toEqual(persistedBefore)
+  })
+
+  it('R3-FIX-C RA-001: write-then-throw plus unreadable commit check returns indeterminate without publishing', async () => {
+    const before = relevantState()
+    let failCommitCheck = false
+    let removeCalls = 0
+    vi.stubGlobal('localStorage', {
+      getItem: (key: string) => {
+        if (key === CSV_IMPORT_GENERATION_KEY && failCommitCheck) {
+          failCommitCheck = false
+          throw new Error('raw commit-check read failure')
+        }
+        return storage[key] ?? null
+      },
+      setItem: (key: string, value: string) => {
+        storage[key] = value
+        if (key === CSV_IMPORT_GENERATION_KEY) {
+          failCommitCheck = true
+          throw new Error('raw completion notification failure')
+        }
+      },
+      removeItem: (key: string) => {
+        removeCalls += 1
+        delete storage[key]
+      },
+    })
+    let generationNotifications = 0
+    const unsubscribe = useAppStore.subscribe((state, previous) => {
+      if (state.holdings !== previous.holdings || state.trust !== previous.trust ||
+          state.analysis !== previous.analysis || state.officialDecision !== previous.officialDecision) {
+        generationNotifications += 1
+      }
+    })
+
+    const result = await useAppStore.getState().importCsv(csvFile())
+    unsubscribe()
+
+    expect(result).toMatchObject({
+      ok: false,
+      code: 'PERSISTENCE_INDETERMINATE',
+      message: '保存結果を確認できません。再読み込みして状態を確認してください。',
+      persistence: { status: 'indeterminate' },
+    })
+    expect(relevantState()).toEqual(before)
+    expect(generationNotifications).toBe(0)
+    expect(removeCalls).toBe(0)
+    expect(storage[CSV_IMPORT_GENERATION_KEY]).toBeTypeOf('string')
+
+    vi.stubGlobal('localStorage', localStorageMock)
+    expect(restorePortfolio()?.[0].eval).toBe(150_000)
+    delete storage[CSV_IMPORT_GENERATION_KEY]
+    await expect(useAppStore.getState().importCsv(csvFile())).resolves.toMatchObject({ ok: true, code: 'SUCCESS' })
   })
 
   it('deep state and all portfolio-generation references remain unchanged on forced persistence failure', async () => {
@@ -1581,25 +1633,35 @@ describe('T9-A004-R3-FIX-B: CSV post-receipt failure boundary (R3-F003)', () => 
     vi.stubGlobal('FileReader', TestFileReader)
     vi.stubGlobal('localStorage', localStorageMock)
     Object.keys(storage).forEach(key => delete storage[key])
-    csvImportCommitBoundaryTestProbe.onBoundary = null
     seedCsvImportBaselineState()
   })
 
   afterEach(() => {
-    csvImportCommitBoundaryTestProbe.onBoundary = null
     vi.unstubAllGlobals()
     if (originalFileReader) globalThis.FileReader = originalFileReader
   })
 
   it('F003-1: receipt取得後・fingerprint処理前の例外はcommitted世代をbyte-exact rollbackし、durableCommittedだけでSUCCESSにしない', async () => {
-    let probeCalls = 0
-    csvImportCommitBoundaryTestProbe.onBoundary = boundary => {
-      if (boundary === 'after-durable-commit') {
-        probeCalls += 1
-        throw new Error('injected failure after durable commit')
-      }
-    }
     const before = relevantState()
+    let canonicalWritten = false
+    let injected = false
+    vi.stubGlobal('localStorage', {
+      ...localStorageMock,
+      setItem: (key: string, value: string) => {
+        storage[key] = value
+        if (key === CSV_IMPORT_GENERATION_KEY) canonicalWritten = true
+      },
+    })
+    const stateBeforeProxy = useAppStore.getState()
+    useAppStore.setState(new Proxy(stateBeforeProxy, {
+      get(target, property, receiver) {
+        if (property === 'holdings' && canonicalWritten && !injected) {
+          injected = true
+          throw new Error('injected failure after durable commit')
+        }
+        return Reflect.get(target, property, receiver)
+      },
+    }), true)
     let generationNotifications = 0
     const unsubscribe = useAppStore.subscribe((state, previous) => {
       if (state.holdings !== previous.holdings || state.trust !== previous.trust ||
@@ -1611,7 +1673,7 @@ describe('T9-A004-R3-FIX-B: CSV post-receipt failure boundary (R3-F003)', () => 
     const result = await useAppStore.getState().importCsv(csvFile())
     unsubscribe()
 
-    expect(probeCalls).toBe(1)
+    expect(injected).toBe(true)
     // 三者整合: canonical=旧（absentへ復旧）/ store=旧 / result=構造化failure
     expect(result).toMatchObject({ ok: false, code: 'UNKNOWN_ERROR', persistence: { status: 'rolled_back' } })
     expect(storage[CSV_IMPORT_GENERATION_KEY]).toBeUndefined()
@@ -1621,7 +1683,7 @@ describe('T9-A004-R3-FIX-B: CSV post-receipt failure boundary (R3-F003)', () => 
     expect(useAppStore.getState().system.status).not.toBe('loading')
 
     // lock解放・retry可能
-    csvImportCommitBoundaryTestProbe.onBoundary = null
+    vi.stubGlobal('localStorage', localStorageMock)
     const retry = await useAppStore.getState().importCsv(csvFile())
     expect(retry).toMatchObject({ ok: true, code: 'SUCCESS' })
     expect(useAppStore.getState().holdings[0].eval).toBe(150_000)
@@ -1633,9 +1695,33 @@ describe('T9-A004-R3-FIX-B: CSV post-receipt failure boundary (R3-F003)', () => 
       .resolves.toMatchObject({ ok: true, code: 'SUCCESS' })
     const gen1Raw = storage[CSV_IMPORT_GENERATION_KEY]
     const before = relevantState()
-    csvImportCommitBoundaryTestProbe.onBoundary = boundary => {
-      if (boundary === 'before-publish') throw new Error('injected failure before publish')
-    }
+    let canonicalWritten = false
+    let postCommitCanonicalReads = 0
+    let throwOnSystemRead = false
+    vi.stubGlobal('localStorage', {
+      ...localStorageMock,
+      getItem: (key: string) => {
+        if (key === CSV_IMPORT_GENERATION_KEY && canonicalWritten) {
+          postCommitCanonicalReads += 1
+          if (postCommitCanonicalReads === 4) throwOnSystemRead = true
+        }
+        return storage[key] ?? null
+      },
+      setItem: (key: string, value: string) => {
+        storage[key] = value
+        if (key === CSV_IMPORT_GENERATION_KEY) canonicalWritten = true
+      },
+    })
+    const stateBeforeProxy = useAppStore.getState()
+    useAppStore.setState(new Proxy(stateBeforeProxy, {
+      get(target, property, receiver) {
+        if (property === 'system' && throwOnSystemRead) {
+          throwOnSystemRead = false
+          throw new Error('injected failure before publish')
+        }
+        return Reflect.get(target, property, receiver)
+      },
+    }), true)
 
     const nextCsv = csvWithSource(
       '2026-07-15T09:00:00+09:00',
@@ -1652,25 +1738,87 @@ describe('T9-A004-R3-FIX-B: CSV post-receipt failure boundary (R3-F003)', () => 
     // false rollbackなし: rolled_back報告どおり、reloadしてもgen2は出現しない
     expect(restorePortfolio()?.[0].eval).toBe(150_000)
 
-    csvImportCommitBoundaryTestProbe.onBoundary = null
+    vi.stubGlobal('localStorage', localStorageMock)
     const retry = await useAppStore.getState().importCsv(csvFile(nextCsv))
     expect(retry).toMatchObject({ ok: true, code: 'SUCCESS' })
     expect(useAppStore.getState().holdings[0].eval).toBe(175_000)
     expect(restorePortfolio()?.[0].eval).toBe(175_000)
   })
 
-  it('F003-3: Zustand state適用後・result返却前の例外は、generation identity一致を確認した上でSUCCESSを返す（false rollbackなし）', async () => {
-    let probeCalls = 0
-    csvImportCommitBoundaryTestProbe.onBoundary = boundary => {
-      if (boundary === 'after-publish') {
-        probeCalls += 1
-        throw new Error('injected failure after publish')
+  it('R3-FIX-C RA-002: normal-return pre-publish storage seam replacement is caught by final ownership', async () => {
+    persistCsvImportTransaction({
+      holdings: [holding('EXTERNAL', 999_000)],
+      trust: [trust()],
+      learning: null,
+      csvImportedAt: null,
+      provenance: null,
+      syncSummary: null,
+      trustShortSnapshot: { date: '2026-07-16', total: 0, evalById: {} },
+      portfolioPolicy: { jpStockMaxRatio: 0.1 },
+      cashAssumptions: baseCashAssumptions,
+      origin: 'snapshot',
+    })
+    const externalRaw = storage[CSV_IMPORT_GENERATION_KEY]
+    delete storage[CSV_IMPORT_GENERATION_KEY]
+    const before = relevantState()
+    let canonicalWritten = false
+    let postCommitCanonicalReads = 0
+    let replaced = false
+    vi.stubGlobal('localStorage', {
+      ...localStorageMock,
+      getItem: (key: string) => {
+        if (key === CSV_IMPORT_GENERATION_KEY && canonicalWritten) {
+          postCommitCanonicalReads += 1
+          if (postCommitCanonicalReads === 2 && !replaced) {
+            replaced = true
+            storage[CSV_IMPORT_GENERATION_KEY] = externalRaw
+          }
+        }
+        return storage[key] ?? null
+      },
+      setItem: (key: string, value: string) => {
+        storage[key] = value
+        if (key === CSV_IMPORT_GENERATION_KEY) canonicalWritten = true
+      },
+    })
+    let generationNotifications = 0
+    const unsubscribe = useAppStore.subscribe((state, previous) => {
+      if (state.holdings !== previous.holdings || state.trust !== previous.trust ||
+          state.analysis !== previous.analysis || state.officialDecision !== previous.officialDecision) {
+        generationNotifications += 1
       }
-    }
+    })
 
     const result = await useAppStore.getState().importCsv(csvFile())
+    unsubscribe()
 
-    expect(probeCalls).toBe(1)
+    expect(replaced).toBe(true)
+    expect(result).toMatchObject({
+      ok: false,
+      code: 'IMPORT_CONFLICT',
+      persistence: { status: 'ownership_lost' },
+    })
+    expect(relevantState()).toEqual(before)
+    expect(generationNotifications).toBe(0)
+    expect(storage[CSV_IMPORT_GENERATION_KEY]).toBe(externalRaw)
+    vi.stubGlobal('localStorage', localStorageMock)
+    delete storage[CSV_IMPORT_GENERATION_KEY]
+    await expect(useAppStore.getState().importCsv(csvFile())).resolves.toMatchObject({ ok: true, code: 'SUCCESS' })
+  })
+
+  it('F003-3: Zustand state適用後・result返却前の例外は、generation identity一致を確認した上でSUCCESSを返す（false rollbackなし）', async () => {
+    let subscriberCalls = 0
+    const unsubscribe = useAppStore.subscribe((state, previous) => {
+      if (state.holdings !== previous.holdings) {
+        subscriberCalls += 1
+        throw new Error('injected observer failure after publish')
+      }
+    })
+
+    const result = await useAppStore.getState().importCsv(csvFile())
+    unsubscribe()
+
+    expect(subscriberCalls).toBe(1)
     // 三者整合: canonical=新 / store=新 / result=SUCCESS
     expect(result).toMatchObject({ ok: true, code: 'SUCCESS', persistence: { status: 'committed' } })
     expect(useAppStore.getState().holdings[0].eval).toBe(150_000)
@@ -1682,12 +1830,17 @@ describe('T9-A004-R3-FIX-B: CSV post-receipt failure boundary (R3-F003)', () => 
 
   it('F003-4: receipt後に外部writerがcanonicalを置換した場合、例外recoveryは外部bytesへ触れずownership喪失を報告する', async () => {
     const externalBytes = 'external-transaction-bytes'
-    csvImportCommitBoundaryTestProbe.onBoundary = boundary => {
-      if (boundary === 'after-durable-commit') {
-        storage[CSV_IMPORT_GENERATION_KEY] = externalBytes
-        throw new Error('injected failure after external replacement')
-      }
-    }
+    let replaced = false
+    vi.stubGlobal('localStorage', {
+      ...localStorageMock,
+      setItem: (key: string, value: string) => {
+        storage[key] = value
+        if (key === CSV_IMPORT_GENERATION_KEY && !replaced) {
+          replaced = true
+          storage[key] = externalBytes
+        }
+      },
+    })
     const before = relevantState()
 
     const result = await useAppStore.getState().importCsv(csvFile())
@@ -1699,7 +1852,7 @@ describe('T9-A004-R3-FIX-B: CSV post-receipt failure boundary (R3-F003)', () => 
     expect(useAppStore.getState().holdings[0].eval).toBe(100_000)
 
     // 外部世代を除去した上でretry可能（lock残留なし）
-    csvImportCommitBoundaryTestProbe.onBoundary = null
+    vi.stubGlobal('localStorage', localStorageMock)
     delete storage[CSV_IMPORT_GENERATION_KEY]
     await expect(useAppStore.getState().importCsv(csvFile())).resolves.toMatchObject({ ok: true, code: 'SUCCESS' })
   })

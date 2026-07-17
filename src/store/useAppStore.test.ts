@@ -11,6 +11,7 @@ import { selectEffectiveCashAssumptions, selectCashAssumptionsFreshness } from '
 import { computeSnapshotGenerationIdentity } from '../utils/snapshotGenerationIdentity'
 import {
   CSV_IMPORT_GENERATION_KEY,
+  persistCsvImportTransaction,
   restoreCsvImportedAt,
   restoreCsvImportGeneration,
   restoreCsvSyncSummary,
@@ -593,14 +594,10 @@ describe('useAppStore: portfolio snapshot（P4.5-A012b）', () => {
         origin: 'snapshot',
       },
     })
-    expect(store['v13_portfolio_policy']).toBeDefined()
-    expect(store['v13_cash_assumptions']).toBeDefined()
-    expect(store['v10_csv_imported_at']).toBeDefined()
-
-    const savedPolicy = JSON.parse(store['v13_portfolio_policy'])
-    expect(savedPolicy.data.jpStockMaxRatio).toBe(0.12)
-    const savedCash = JSON.parse(store['v13_cash_assumptions'])
-    expect(savedCash.data.cashDeposits).toBe(5_000_000)
+    // canonical valid時はlegacy mirrorを生成せず、完全世代だけをauthorityにする。
+    expect(store['v13_portfolio_policy']).toBeUndefined()
+    expect(store['v13_cash_assumptions']).toBeUndefined()
+    expect(store['v10_csv_imported_at']).toBeUndefined()
   })
 
   it('provenance不明legacy snapshotは既存operation timeを保持したままrejectされる', () => {
@@ -735,6 +732,116 @@ describe('useAppStore: portfolio snapshot（P4.5-A012b）', () => {
   })
 })
 
+describe('T9-A004-R3-FIX-C: present-invalid canonical manual persistence policy (RA-004)', () => {
+  const storage: Record<string, string> = {}
+  const writes: string[] = []
+  const lsMock = {
+    getItem: (key: string) => storage[key] ?? null,
+    setItem: (key: string, value: string) => {
+      writes.push(key)
+      storage[key] = value
+    },
+    removeItem: (key: string) => { delete storage[key] },
+  }
+
+  beforeEach(() => {
+    vi.stubGlobal('localStorage', lsMock)
+    Object.keys(storage).forEach(key => delete storage[key])
+    writes.length = 0
+    useAppStore.setState(state => ({
+      holdings: [makeHolding({ code: '7777', eval: 100_000 })],
+      trust: [makeTrust()],
+      learning: null,
+      portfolioPolicy: { ...DEFAULT_PORTFOLIO_POLICY },
+      cashAssumptions: { ...DEFAULT_CASH_ASSUMPTIONS },
+      system: {
+        ...state.system,
+        status: 'idle',
+        error: null,
+        csvLastImportedAt: null,
+        csvImportProvenance: null,
+        csvSyncSummary: null,
+      },
+    }))
+  })
+
+  afterEach(() => { vi.unstubAllGlobals() })
+
+  function seedInvalidWithLegacy(): Record<string, string> {
+    storage[CSV_IMPORT_GENERATION_KEY] = '{present-invalid'
+    storage.v81_portfolio = JSON.stringify({ data: [makeHolding({ eval: 11 })], savedAt: 1 })
+    storage.v81_trust = JSON.stringify({ data: [makeTrust({ eval: 22 })], savedAt: 1 })
+    storage.v13_portfolio_policy = JSON.stringify({ data: { jpStockMaxRatio: 0.08 }, savedAt: 1 })
+    storage.v13_cash_assumptions = JSON.stringify({ data: DEFAULT_CASH_ASSUMPTIONS, savedAt: 1 })
+    storage.v10_csv_imported_at = JSON.stringify({ at: '2026-01-01T00:00:00.000Z', savedAt: 1 })
+    storage.v13_csv_sync_summary = JSON.stringify({ data: {}, savedAt: 1 })
+    writes.length = 0
+    return { ...storage }
+  }
+
+  it('updateHolding leaves invalid bytes and every existing legacy generation byte-exact', () => {
+    const before = seedInvalidWithLegacy()
+
+    useAppStore.getState().updateHolding('7777', { eval: 125_000 })
+
+    expect(writes).toEqual([])
+    expect(storage).toEqual(before)
+    expect(useAppStore.getState().system).toMatchObject({ status: 'error' })
+    expect(useAppStore.getState().system.error).not.toMatch(/JSON|parse|token/i)
+  })
+
+  it('policy and cash mutations perform no legacy/canonical write while invalid is present', () => {
+    const before = seedInvalidWithLegacy()
+
+    useAppStore.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.12 })
+    useAppStore.getState().setCashAssumptions({ cashDeposits: 123, standbyFunds: 456 })
+
+    expect(writes).toEqual([])
+    expect(storage).toEqual(before)
+  })
+
+  it('explicit removal restores legacy persistence and valid repair restores coordinated canonical persistence', () => {
+    seedInvalidWithLegacy()
+    delete storage[CSV_IMPORT_GENERATION_KEY]
+    writes.length = 0
+
+    useAppStore.getState().updateHolding('7777', { eval: 130_000 })
+    useAppStore.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.12 })
+    useAppStore.getState().setCashAssumptions({ cashDeposits: 500, standbyFunds: 600 })
+    expect(writes).toEqual(expect.arrayContaining([
+      'v81_portfolio',
+      'v81_trust',
+      'v13_portfolio_policy',
+      'v13_cash_assumptions',
+    ]))
+
+    const state = useAppStore.getState()
+    persistCsvImportTransaction({
+      holdings: state.holdings,
+      trust: state.trust,
+      learning: state.learning,
+      csvImportedAt: null,
+      provenance: null,
+      syncSummary: null,
+      trustShortSnapshot: { date: '2026-07-17', total: 0, evalById: {} },
+      portfolioPolicy: state.portfolioPolicy,
+      cashAssumptions: state.cashAssumptions,
+      origin: 'snapshot',
+    })
+    const validBefore = storage[CSV_IMPORT_GENERATION_KEY]
+    writes.length = 0
+
+    useAppStore.getState().updateHolding('7777', { eval: 140_000 })
+
+    expect(storage[CSV_IMPORT_GENERATION_KEY]).not.toBe(validBefore)
+    expect(writes).toEqual([CSV_IMPORT_GENERATION_KEY])
+    expect(restoreCsvImportGeneration()).toMatchObject({
+      status: 'committed',
+      payload: { holdings: [{ code: '7777', eval: 140_000 }] },
+    })
+  })
+})
+
 describe('buildCsvSyncSummary（P4.5-A013-T6: CSV取込結果の集計・純関数）', () => {
   const importedAt = '2026-07-11T05:00:00.000Z'
 
@@ -846,6 +953,8 @@ describe('useAppStore: importCsv → csvSyncSummary（P4.5-A013-T6）', () => {
     useAppStore.setState(s => ({
       holdings: oldHoldings,
       trust: oldTrust,
+      portfolioPolicy: { ...DEFAULT_PORTFOLIO_POLICY },
+      cashAssumptions: { ...DEFAULT_CASH_ASSUMPTIONS },
       system: { ...s.system, csvSyncSummary: null, csvLastImportedAt: null, status: 'idle', error: null },
     }))
   })
@@ -984,7 +1093,7 @@ describe('useAppStore: localStorageFreshness即時更新（P4.5-A013-T6a）', ()
       cashAssumptions: null,
     })
     const result = useAppStore.getState().importPortfolioSnapshot(snapshotJson)
-    expect(result.ok).toBe(true)
+    expect(result).toMatchObject({ ok: true })
     const state = useAppStore.getState()
     expect(state.system.localStorageFreshness?.portfolio.isStale).toBe(false)
     expect(state.system.localStorageFreshness?.trust.isStale).toBe(false)

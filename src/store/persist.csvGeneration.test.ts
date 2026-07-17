@@ -801,6 +801,45 @@ describe('T9-A003: committed CSV generation durability and recovery', () => {
     expect(() => persistCsvImportTransaction(payload('new'))).not.toThrow()
   })
 
+  it('R3-FIX-C RA-001: durable write followed by an unreadable commit check is indeterminate and never rolls back', () => {
+    let canonicalSetCalls = 0
+    let removeCalls = 0
+    let failCommitCheck = false
+    vi.stubGlobal('localStorage', {
+      getItem: (key: string) => {
+        if (key === CSV_IMPORT_GENERATION_KEY && failCommitCheck) {
+          failCommitCheck = false
+          throw new Error('raw commit-check read failure')
+        }
+        return store[key] ?? null
+      },
+      setItem: (key: string, value: string) => {
+        canonicalSetCalls += 1
+        store[key] = value
+        failCommitCheck = true
+        throw new Error('raw completion notification failure')
+      },
+      removeItem: () => { removeCalls += 1 },
+    })
+
+    let caught: unknown = null
+    try { persistCsvImportTransaction(payload('new')) } catch (error) { caught = error }
+
+    expect(caught).toMatchObject({
+      name: 'CsvImportPersistenceIndeterminateError',
+      status: 'indeterminate',
+      message: '保存結果を確認できません。再読み込みして状態を確認してください。',
+    })
+    expect(canonicalSetCalls).toBe(1)
+    expect(removeCalls).toBe(0)
+    expect(store[CSV_IMPORT_GENERATION_KEY]).toBeTypeOf('string')
+    vi.stubGlobal('localStorage', storage)
+    expect(restoreCsvImportGeneration()).toMatchObject({
+      status: 'committed',
+      payload: { holdings: payload('new').holdings },
+    })
+  })
+
   it('serialization/manifest preparation failure leaves the old envelope byte-for-byte intact', () => {
     persistCsvImportTransaction(payload('old'))
     const previousRaw = store[CSV_IMPORT_GENERATION_KEY]
@@ -920,5 +959,36 @@ describe('T9-A003: committed CSV generation durability and recovery', () => {
     expect(restoreTrust()).toEqual(old.trust)
     expect(restoreCsvImportedAt()).toBe(old.importedAt)
     expect(restoreCsvSyncSummary()).toEqual(old.syncSummary)
+  })
+
+  it.each([
+    ['persistPortfolio', () => persistPortfolio(payload('new').holdings)],
+    ['persistTrust', () => persistTrust(payload('new').trust)],
+    ['persistLearning', () => persistLearning(learning())],
+    ['persistCsvImportedAt', () => persistCsvImportedAt(payload('new').importedAt!)],
+    ['persistCsvSyncSummary', () => persistCsvSyncSummary(payload('new').syncSummary!)],
+    ['persistPortfolioPolicy', () => persistPortfolioPolicy({ jpStockMaxRatio: 0.15 })],
+    ['persistCashAssumptions', () => persistCashAssumptions({
+      cashDeposits: 9,
+      standbyFunds: 8,
+      manualOverrideEnabled: true,
+      manualUpdatedAt: '2026-07-15T01:00:00.000Z',
+    })],
+  ])('R3-FIX-C RA-004: %s performs no legacy write while canonical is present-invalid', (_label, persistLegacy) => {
+    store[CSV_IMPORT_GENERATION_KEY] = '{present-invalid'
+    const before = { ...store }
+    let writes = 0
+    vi.stubGlobal('localStorage', {
+      ...storage,
+      setItem: (key: string, value: string) => {
+        writes += 1
+        store[key] = value
+      },
+    })
+
+    persistLegacy()
+
+    expect(writes).toBe(0)
+    expect(store).toEqual(before)
   })
 })

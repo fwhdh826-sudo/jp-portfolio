@@ -92,12 +92,19 @@ export type CsvImportGenerationRestoreResult =
   | { status: 'none' | 'invalid' }
 
 export class CsvImportPersistenceError extends Error {
-  readonly status: 'not_attempted' | 'rolled_back' | 'rollback_failed'
+  readonly status: 'not_attempted' | 'rolled_back' | 'rollback_failed' | 'indeterminate'
 
-  constructor(message: string, status: 'not_attempted' | 'rolled_back' | 'rollback_failed') {
+  constructor(message: string, status: 'not_attempted' | 'rolled_back' | 'rollback_failed' | 'indeterminate') {
     super(message)
     this.name = 'CsvImportPersistenceError'
     this.status = status
+  }
+}
+
+export class CsvImportPersistenceIndeterminateError extends CsvImportPersistenceError {
+  constructor() {
+    super('保存結果を確認できません。再読み込みして状態を確認してください。', 'indeterminate')
+    this.name = 'CsvImportPersistenceIndeterminateError'
   }
 }
 
@@ -444,9 +451,26 @@ function readStorageFreshness(key: string, ttlMs: number, nowMs = Date.now()): S
   } catch { return NOT_SAVED_FRESHNESS }
 }
 
-export function persistPortfolio(holdings: Holding[]): void {
+export type LegacyPersistenceResult =
+  | { status: 'persisted' }
+  | { status: 'blocked'; reason: 'canonical_committed' | 'canonical_invalid' }
+  | { status: 'failed' }
+
+function persistLegacyValue(key: string, value: string): LegacyPersistenceResult {
+  const canonical = restoreCsvImportGeneration()
+  if (canonical.status === 'committed') return { status: 'blocked', reason: 'canonical_committed' }
+  if (canonical.status === 'invalid') return { status: 'blocked', reason: 'canonical_invalid' }
+  try {
+    localStorage.setItem(key, value)
+    return { status: 'persisted' }
+  } catch {
+    return { status: 'failed' }
+  }
+}
+
+export function persistPortfolio(holdings: Holding[]): LegacyPersistenceResult {
   const snap: Snapshot<Holding[]> = { data: holdings, savedAt: Date.now() }
-  try { localStorage.setItem(PORTFOLIO_KEY, JSON.stringify(snap)) } catch { /* quota */ }
+  return persistLegacyValue(PORTFOLIO_KEY, JSON.stringify(snap))
 }
 
 // P4.5-A012d: TTL失効による無警告revertを廃止する（P4.5-A008のcashAssumptionsと同じ
@@ -469,9 +493,9 @@ export function getPortfolioStorageFreshness(nowMs = Date.now()): StorageFreshne
   return readStorageFreshness(PORTFOLIO_KEY, TTL_MS, nowMs)
 }
 
-export function persistTrust(trust: Trust[]): void {
+export function persistTrust(trust: Trust[]): LegacyPersistenceResult {
   const snap: Snapshot<Trust[]> = { data: trust, savedAt: Date.now() }
-  try { localStorage.setItem(TRUST_KEY, JSON.stringify(snap)) } catch { /* quota */ }
+  return persistLegacyValue(TRUST_KEY, JSON.stringify(snap))
 }
 
 // P4.5-A012d: restorePortfolioと同じ理由でTTL失効による無警告revertを廃止する。
@@ -491,9 +515,9 @@ export function getTrustStorageFreshness(nowMs = Date.now()): StorageFreshness {
   return readStorageFreshness(TRUST_KEY, TTL_MS, nowMs)
 }
 
-export function persistLearning(learning: LearningState): void {
+export function persistLearning(learning: LearningState): LegacyPersistenceResult {
   const snap: Snapshot<LearningState> = { data: learning, savedAt: Date.now() }
-  try { localStorage.setItem(LEARNING_KEY, JSON.stringify(snap)) } catch { /* quota */ }
+  return persistLegacyValue(LEARNING_KEY, JSON.stringify(snap))
 }
 
 export function restoreLearning(): LearningState | null {
@@ -520,9 +544,9 @@ const CSV_TTL_MS = 90 * 24 * 60 * 60 * 1000  // 90日
 
 interface CsvSnapshot { at: string; savedAt: number }
 
-export function persistCsvImportedAt(at: string): void {
+export function persistCsvImportedAt(at: string): LegacyPersistenceResult {
   const snap: CsvSnapshot = { at, savedAt: Date.now() }
-  try { localStorage.setItem(CSV_IMPORTED_AT_KEY, JSON.stringify(snap)) } catch { /* quota */ }
+  return persistLegacyValue(CSV_IMPORTED_AT_KEY, JSON.stringify(snap))
 }
 
 /** Interpret CSV source/import time without rewriting legacy v1-v3 payload bytes. */
@@ -658,11 +682,23 @@ export function persistCsvImportTransaction(
     // （書込成功後・完了通知前のcrash相当例外）。物理bytesが新envelopeへ置換済みなら
     // commitは成立している — 「rolled_back」と偽ってreloadで失敗世代が出現する
     // 偽状態を作らず、成立したtransactionとしてreceiptを返す。
+    let physicalRaw: string | null
     try {
-      if (localStorage.getItem(CSV_IMPORT_GENERATION_KEY) === serializedEnvelope) {
-        return { previousRaw, committedRaw: serializedEnvelope }
-      }
-    } catch { /* 物理状態を確認できない場合は下の失敗報告に倒す */ }
+      physicalRaw = localStorage.getItem(CSV_IMPORT_GENERATION_KEY)
+    } catch {
+      // Ownership cannot be established, so neither rollback nor recovery is safe. In
+      // particular, never claim rolled_back while the new bytes may already be physical.
+      throw new CsvImportPersistenceIndeterminateError()
+    }
+    if (physicalRaw === serializedEnvelope) {
+      return { previousRaw, committedRaw: serializedEnvelope }
+    }
+    if (physicalRaw !== previousRaw) {
+      throw new CsvImportPersistenceError(
+        'CSV取込データの保存後にcanonical世代が変更されました。再読み込み後に状態を確認してください。',
+        'rollback_failed',
+      )
+    }
     const detail = error instanceof Error ? error.message : String(error)
     throw new CsvImportPersistenceError(`CSV取込データの永続化に失敗しました: ${detail}`, 'rolled_back')
   }
@@ -702,9 +738,9 @@ export function rollbackCsvImportTransaction(receipt: CsvImportPersistenceReceip
   }
 }
 
-export function persistCsvSyncSummary(summary: CsvSyncSummary): void {
+export function persistCsvSyncSummary(summary: CsvSyncSummary): LegacyPersistenceResult {
   const snap: CsvSyncSummarySnapshot = { data: summary, savedAt: Date.now() }
-  try { localStorage.setItem(CSV_SYNC_SUMMARY_KEY, JSON.stringify(snap)) } catch { /* quota */ }
+  return persistLegacyValue(CSV_SYNC_SUMMARY_KEY, JSON.stringify(snap))
 }
 
 export function restoreCsvSyncSummary(): CsvSyncSummary | null {
@@ -745,9 +781,9 @@ export function restoreCsvTrustShortSnapshotState(): CsvTrustShortSnapshotRestor
 // ── P4-A47: PortfolioPolicy 永続化（TTL: 7日） ─────────────
 const PORTFOLIO_POLICY_KEY = 'v13_portfolio_policy'
 
-export function persistPortfolioPolicy(policy: PortfolioPolicy): void {
+export function persistPortfolioPolicy(policy: PortfolioPolicy): LegacyPersistenceResult {
   const snap: Snapshot<PortfolioPolicy> = { data: policy, savedAt: Date.now() }
-  try { localStorage.setItem(PORTFOLIO_POLICY_KEY, JSON.stringify(snap)) } catch { /* quota */ }
+  return persistLegacyValue(PORTFOLIO_POLICY_KEY, JSON.stringify(snap))
 }
 
 export function restorePortfolioPolicy(): PortfolioPolicy | null {
@@ -776,9 +812,9 @@ export function restorePortfolioPolicy(): PortfolioPolicy | null {
 // この端末（ブラウザ）にのみ保存される。PC/スマホ間の自動共有は未実装（次チケットで検討）。
 const CASH_ASSUMPTIONS_KEY = 'v13_cash_assumptions'
 
-export function persistCashAssumptions(assumptions: CashAssumptions): void {
+export function persistCashAssumptions(assumptions: CashAssumptions): LegacyPersistenceResult {
   const snap: Snapshot<CashAssumptions> = { data: assumptions, savedAt: Date.now() }
-  try { localStorage.setItem(CASH_ASSUMPTIONS_KEY, JSON.stringify(snap)) } catch { /* quota */ }
+  return persistLegacyValue(CASH_ASSUMPTIONS_KEY, JSON.stringify(snap))
 }
 
 export function restoreCashAssumptions(): CashAssumptions | null {

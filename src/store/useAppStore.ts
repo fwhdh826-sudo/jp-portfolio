@@ -25,7 +25,6 @@ import {
   restoreTrust,
   persistLearning,
   restoreLearning,
-  persistCsvImportedAt,
   restoreCsvImportedAt,
   restoreCsvSyncSummary,
   getCsvImportPayloadCsvImportedAt,
@@ -37,6 +36,7 @@ import {
   rollbackCsvImportTransaction,
   CsvImportCanonicalConflictError,
   CsvImportPersistenceError,
+  CsvImportPersistenceIndeterminateError,
   persistPortfolioPolicy,
   restorePortfolioPolicy,
   persistCashAssumptions,
@@ -105,9 +105,11 @@ export type PortfolioSnapshotImportResult =
         // いずれもstore/subscriber副作用0で返し、raw exceptionをUIへ伝播させない。
         | 'SNAPSHOT_ANALYSIS_ERROR'
         | 'SNAPSHOT_PERSISTENCE_ERROR'
+        | 'SNAPSHOT_PERSISTENCE_INDETERMINATE'
         | 'SNAPSHOT_OWNERSHIP_LOST'
         | 'IMPORT_CONFLICT'
       error: string
+      persistence?: { status: 'indeterminate' }
     }
 
 interface AppActions {
@@ -154,6 +156,7 @@ export type CsvImportErrorCode =
   | 'ANALYSIS_ERROR'
   | 'OFFICIAL_DECISION_ERROR'
   | 'PERSISTENCE_ERROR'
+  | 'PERSISTENCE_INDETERMINATE'
   | 'IMPORT_CONFLICT'
   | 'IMPORT_IN_PROGRESS'
   | 'STALE_CSV'
@@ -189,7 +192,7 @@ export type CsvImportResult =
       warnings: string[]
       analysisCommitted: false
       officialDecisionCommitted: false
-      persistence: { status: 'not_attempted' | 'rolled_back' | 'rollback_failed' | 'ownership_lost' }
+      persistence: { status: 'not_attempted' | 'rolled_back' | 'rollback_failed' | 'ownership_lost' | 'indeterminate' }
     }
 
 class OfficialDecisionGenerationError extends Error {
@@ -202,7 +205,7 @@ class OfficialDecisionGenerationError extends Error {
 function csvImportFailure(
   code: CsvImportErrorCode,
   message: string,
-  persistence: 'not_attempted' | 'rolled_back' | 'rollback_failed' | 'ownership_lost' = 'not_attempted',
+  persistence: 'not_attempted' | 'rolled_back' | 'rollback_failed' | 'ownership_lost' | 'indeterminate' = 'not_attempted',
 ): CsvImportResult {
   return {
     ok: false,
@@ -290,13 +293,6 @@ function isPortfolioGenerationCriticalSection(): boolean {
 function reportRejectedReentrantMutation(source: string): void {
   try { console.warn(`[useAppStore] rejected synchronous mutation during portfolio generation commit: ${source}`) } catch { /* diagnostic sink */ }
 }
-
-// T9-A004-R3-FIX-B: importCsvのreceipt取得後〜result返却（post-receipt failure boundary）
-// の例外をテストから決定論的に再現するための最小internal seam。productionコードは値を
-// 設定せず常にno-op。広いtest-only APIを避けるため、commit境界の3点でのみ呼び出す。
-export const csvImportCommitBoundaryTestProbe: {
-  onBoundary: ((boundary: 'after-durable-commit' | 'before-publish' | 'after-publish') => void) | null
-} = { onBoundary: null }
 
 /**
  * runFullAnalysis / strict officialDecision が読むmutable inputだけを安定化して比較する。
@@ -447,7 +443,12 @@ function computeLocalStorageFreshness(nowMs = Date.now()): NonNullable<SystemSta
  * must either replace the whole coordinated payload atomically or leave that canonical byte
  * sequence untouched; individual helpers are never allowed to splice one field into it.
  */
-function persistCurrentPortfolioGeneration(state: AppState): void {
+type CurrentPortfolioPersistenceResult =
+  | { status: 'persisted'; target: 'canonical' | 'legacy' }
+  | { status: 'blocked'; reason: 'canonical_invalid' }
+  | { status: 'failed' }
+
+function persistCurrentPortfolioGeneration(state: AppState): CurrentPortfolioPersistenceResult {
   const canonical = restoreCsvImportGeneration()
   if (canonical.status === 'committed') {
     try {
@@ -483,16 +484,33 @@ function persistCurrentPortfolioGeneration(state: AppState): void {
           csvImportProvenance: provenance,
         }),
       })
+      return { status: 'persisted', target: 'canonical' }
     } catch {
       // These historical actions are best-effort persistence. A failed full replacement leaves
       // the previous canonical envelope valid; it must not fall through to partial legacy writes.
+      return { status: 'failed' }
     }
-    return
   }
 
-  persistPortfolio(state.holdings)
-  persistTrust(state.trust)
-  if (state.learning) persistLearning(state.learning)
+  if (canonical.status === 'invalid') return { status: 'blocked', reason: 'canonical_invalid' }
+
+  const results = [persistPortfolio(state.holdings), persistTrust(state.trust)]
+  if (state.learning) results.push(persistLearning(state.learning))
+  if (results.some(result => result.status === 'blocked' && result.reason === 'canonical_invalid')) {
+    return { status: 'blocked', reason: 'canonical_invalid' }
+  }
+  if (results.some(result => result.status !== 'persisted')) return { status: 'failed' }
+  return { status: 'persisted', target: 'legacy' }
+}
+
+function reflectPortfolioPersistenceResult(result: CurrentPortfolioPersistenceResult): void {
+  if (result.status === 'persisted') return
+  const message = result.status === 'blocked'
+    ? '保存済みcanonicalデータが不正なため、変更の永続化を中止しました。再読み込み後に状態を確認してください。'
+    : '変更を保存できませんでした。再読み込み後に状態を確認してください。'
+  useAppStore.setState(state => ({
+    system: { ...state.system, status: 'error', error: message },
+  }))
 }
 
 // P4.5-A013-T7: portfolio snapshot v2専用の新規銘柄構築。
@@ -1340,7 +1358,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
       }))
 
       // 永続化
-      persistCurrentPortfolioGeneration(get())
+      reflectPortfolioPersistenceResult(persistCurrentPortfolioGeneration(get()))
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err)
       set(s => ({ system: { ...s.system, status: 'error', error: msg } }))
@@ -1434,7 +1452,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
         system: { ...s.system, status: 'success', lastUpdated: now, analysisLastRunAt: now, error: null },
       }))
 
-      persistCurrentPortfolioGeneration(get())
+      reflectPortfolioPersistenceResult(persistCurrentPortfolioGeneration(get()))
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err)
       set(s => ({ system: { ...s.system, status: 'error', error: msg } }))
@@ -1696,6 +1714,13 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
         setPortfolioGenerationTransactionPhase(transaction, 'COMMITTED')
       } catch (error) {
         setPortfolioGenerationTransactionPhase(transaction, 'PREPARED')
+        if (error instanceof CsvImportPersistenceIndeterminateError) {
+          return publishFailure(csvImportFailure(
+            'PERSISTENCE_INDETERMINATE',
+            '保存結果を確認できません。再読み込みして状態を確認してください。',
+            'indeterminate',
+          ))
+        }
         const persistenceStatus = error instanceof CsvImportPersistenceError
           ? error.status
           : 'rollback_failed'
@@ -1705,8 +1730,6 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
           persistenceStatus,
         ))
       }
-
-      csvImportCommitBoundaryTestProbe.onBoundary?.('after-durable-commit')
 
       const currentTrackerFingerprint = getTrustShortReadDependencyFingerprint()
       const postPersistenceFingerprint = buildPortfolioAnalysisFingerprint(get(), currentTrackerFingerprint)
@@ -1730,11 +1753,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
         ))
       }
 
-      const localStorageFreshness = computeLocalStorageFreshness(generationCommittedAt)
-
-      // This is deliberately the final storage operation before global publication. Payload
-      // equality is not ownership: only the exact serialized bytes in the receipt prove that
-      // this transaction still owns the physical canonical key.
+      // Initial post-commit ownership must succeed before any publish preparation continues.
       if (persistenceReceipt === null || !ownsCsvImportCanonicalBytes(persistenceReceipt)) {
         durableCommitted = false
         return publishFailure(csvImportFailure(
@@ -1744,7 +1763,18 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
         ))
       }
 
-      csvImportCommitBoundaryTestProbe.onBoundary?.('before-publish')
+      // Freshness reads are the final pre-publish operation. They can yield to a storage shim or
+      // observe an external writer, so exact-byte ownership is checked again immediately before
+      // the single Zustand publish.
+      const localStorageFreshness = computeLocalStorageFreshness(generationCommittedAt)
+      if (!ownsCsvImportCanonicalBytes(persistenceReceipt)) {
+        durableCommitted = false
+        return publishFailure(csvImportFailure(
+          'IMPORT_CONFLICT',
+          '公開直前にcanonical世代の所有権を失ったため、準備した分析結果は公開しませんでした。外部の保存世代を維持したまま再試行してください。',
+          'ownership_lost',
+        ))
+      }
 
       // Publish the complete prepared state, including the exact dependency snapshot used by
       // analysis. This is the synchronous commit-section closure: a storage shim or callback
@@ -1764,7 +1794,6 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
         },
       })
       setPortfolioGenerationTransactionPhase(transaction, 'PUBLISHED')
-      csvImportCommitBoundaryTestProbe.onBoundary?.('after-publish')
 
       try {
         if (trustExecution.executed && getTrustShortTodayExecutionCount(now) < 1) {
@@ -1876,7 +1905,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
     set(s => ({ holdings: s.holdings.map(h => h.code === code ? { ...h, ...patch } : h) }))
     const computed = runFullAnalysis(get())
     set(computed)
-    persistCurrentPortfolioGeneration(get())
+    reflectPortfolioPersistenceResult(persistCurrentPortfolioGeneration(get()))
   },
 
   updateTrust: (id, patch) => {
@@ -1887,7 +1916,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
     set(s => ({ trust: s.trust.map(f => f.id === id ? { ...f, ...patch } : f) }))
     const computed = runFullAnalysis(get())
     set(computed)
-    persistCurrentPortfolioGeneration(get())
+    reflectPortfolioPersistenceResult(persistCurrentPortfolioGeneration(get()))
   },
 
   // P4-A47: jpStockMaxRatio更新 → 再分析 → 永続化
@@ -1900,7 +1929,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
     const computed = runFullAnalysis(get())
     set(computed)
     const canonical = restoreCsvImportGeneration()
-    if (canonical.status === 'committed') persistCurrentPortfolioGeneration(get())
+    if (canonical.status === 'committed') reflectPortfolioPersistenceResult(persistCurrentPortfolioGeneration(get()))
     else if (canonical.status === 'none') persistPortfolioPolicy(policy)
   },
 
@@ -1922,7 +1951,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
     const computed = runFullAnalysis(get())
     set(computed)
     const canonical = restoreCsvImportGeneration()
-    if (canonical.status === 'committed') persistCurrentPortfolioGeneration(get())
+    if (canonical.status === 'committed') reflectPortfolioPersistenceResult(persistCurrentPortfolioGeneration(get()))
     else if (canonical.status === 'none') persistCashAssumptions(next)
   },
 
@@ -1937,7 +1966,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
     const computed = runFullAnalysis(get())
     set(computed)
     const canonical = restoreCsvImportGeneration()
-    if (canonical.status === 'committed') persistCurrentPortfolioGeneration(get())
+    if (canonical.status === 'committed') reflectPortfolioPersistenceResult(persistCurrentPortfolioGeneration(get()))
     else if (canonical.status === 'none') persistCashAssumptions(next)
   },
 
@@ -1961,7 +1990,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
     const computed = runFullAnalysis(get())
     set(computed)
     const canonical = restoreCsvImportGeneration()
-    if (canonical.status === 'committed') persistCurrentPortfolioGeneration(get())
+    if (canonical.status === 'committed') reflectPortfolioPersistenceResult(persistCurrentPortfolioGeneration(get()))
     else if (canonical.status === 'none') persistCashAssumptions(next)
   },
 
@@ -2292,6 +2321,14 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
         if (error instanceof CsvImportCanonicalConflictError) {
           return { ok: false, code: 'IMPORT_CONFLICT', error: error.message }
         }
+        if (error instanceof CsvImportPersistenceIndeterminateError) {
+          return {
+            ok: false,
+            code: 'SNAPSHOT_PERSISTENCE_INDETERMINATE',
+            error: '保存結果を確認できません。再読み込みして状態を確認してください。',
+            persistence: { status: 'indeterminate' },
+          }
+        }
         return {
           ok: false,
           code: 'SNAPSHOT_PERSISTENCE_ERROR',
@@ -2332,20 +2369,13 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
       }
 
       try {
-        // 旧mirror key（policy/cash/csvImportedAt）はcanonical成功後のbest-effort書込
-        // （restore側はcommitted canonicalを常に優先する。mirror廃止は別チケット）。
-        persistPortfolioPolicy(nextPortfolioPolicy)
-        persistCashAssumptions(nextCashAssumptions)
-        // csvImportedAtがnullの場合、persistCsvImportedAtは文字列専用のため呼ばない
-        // （既存localStorageの古い値の削除は次チケットで扱う。store上はnullに揃えている）。
-        if (typeof snapshot.csvImportedAt === 'string') {
-          persistCsvImportedAt(snapshot.csvImportedAt)
-        }
+        // A valid canonical generation is the only durable writer. Legacy helpers are reserved
+        // for canonical absence and are not used as mirrors behind a committed envelope.
         const localStorageFreshness = computeLocalStorageFreshness(generationCommittedAt)
 
-        // T9-A004-R3-FIX-B (R3-F002): legacy mirror書込を含む最後のstorage operationの後、
-        // Zustand set直前にfinal ownershipを再確認する。mirror callback中に外部writerが
-        // canonicalを置換した場合はincoming世代をpublishせず（generation通知・
+        // T9-A004-R3-FIX-B (R3-F002): freshness用の最後のstorage readの後、Zustand
+        // set直前にfinal ownershipを再確認する。read中に外部writerがcanonicalを
+        // 置換した場合はincoming世代をpublishせず（generation通知・
         // lastAppliedSnapshotGeneration更新も0）、外部bytesにはbyte-exact規則上一切
         // 触れない（所有していないbytesへのrollback/deleteは存在しない）。
         if (!ownsCsvImportCanonicalBytes(receipt)) {

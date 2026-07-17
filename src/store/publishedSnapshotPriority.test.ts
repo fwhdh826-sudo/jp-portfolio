@@ -136,9 +136,10 @@ function mockFetchRouter(handlers: Record<string, unknown>) {
 
 describe('useAppStore.initialize / refreshAllData: published snapshot優先順位（P4.5-A013-T4）', () => {
   let store: Record<string, string>
+  let writeLog: string[]
   const lsMock = {
     getItem: (k: string) => store[k] ?? null,
-    setItem: (k: string, v: string) => { store[k] = v },
+    setItem: (k: string, v: string) => { writeLog.push(k); store[k] = v },
     removeItem: (k: string) => { delete store[k] },
   }
 
@@ -150,6 +151,7 @@ describe('useAppStore.initialize / refreshAllData: published snapshot優先順�
 
   beforeEach(() => {
     store = {}
+    writeLog = []
     vi.stubGlobal('localStorage', lsMock)
     useAppStore.setState(state => ({
       system: { ...state.system, status: 'idle', csvLastImportedAt: null, csvImportProvenance: null },
@@ -297,6 +299,28 @@ describe('useAppStore.initialize / refreshAllData: published snapshot優先順�
     expect(useAppStore.getState().holdings.some(item => item.code === 'LEGACY-PARTIAL')).toBe(false)
     expect(useAppStore.getState().trust.some(item => item.id === 'legacy-partial-fund')).toBe(false)
     expect(useAppStore.getState().system.csvLastImportedAt).toBeNull()
+  })
+
+  it('R3-FIX-C RA-004: initialize performs zero canonical/legacy generation writes while canonical is present-invalid', async () => {
+    store[CSV_IMPORT_GENERATION_KEY] = '{present-invalid'
+    seedLocalStorage({
+      holdings: [makeHolding({ code: 'LEGACY', eval: 111_000 })],
+      trust: [makeTrust({ id: 'legacy', eval: 222_000 })],
+      csvImportedAt: '2026-01-01T00:00:00.000Z',
+    })
+    store.v13_portfolio_policy = JSON.stringify({ data: { jpStockMaxRatio: 0.08 }, savedAt: 1 })
+    store.v13_cash_assumptions = JSON.stringify({ data: {}, savedAt: 1 })
+    store.v13_csv_sync_summary = JSON.stringify({ data: {}, savedAt: 1 })
+    const before = { ...store }
+    writeLog.length = 0
+    mockFetchRouter({})
+
+    await useAppStore.getState().initialize()
+
+    expect(writeLog).toEqual([])
+    expect(store).toEqual(before)
+    expect(useAppStore.getState().system).toMatchObject({ status: 'error' })
+    expect(useAppStore.getState().system.error).not.toMatch(/JSON|parse|token/i)
   })
 
   it('initialize: legacy operation timeだけではsource freshnessを証明できずpublished snapshotを適用しない', async () => {
@@ -453,5 +477,28 @@ describe('useAppStore.initialize / refreshAllData: published snapshot優先順�
     const trust = useAppStore.getState().trust.find(t => t.id === 'sp500_sbi')
     expect(holding?.eval).toBe(999_999)
     expect(trust?.eval).toBe(1_234_567)
+  })
+
+  it('R3-FIX-C RA-004: refreshAllData does not create dead legacy state behind present-invalid canonical', async () => {
+    store[CSV_IMPORT_GENERATION_KEY] = '{present-invalid'
+    seedLocalStorage({
+      holdings: [makeHolding({ code: 'LEGACY', eval: 333_000 })],
+      trust: [makeTrust({ id: 'legacy', eval: 444_000 })],
+      csvImportedAt: '2026-01-01T00:00:00.000Z',
+    })
+    const before = { ...store }
+    writeLog.length = 0
+    useAppStore.setState({
+      holdings: [makeHolding({ code: '7203', eval: 700_000 })],
+      trust: [makeTrust({ id: 'sp500_sbi', eval: 4_000_000 })],
+      system: { ...useAppStore.getState().system, status: 'idle' },
+    })
+    mockFetchRouter({})
+
+    await useAppStore.getState().refreshAllData()
+
+    expect(writeLog).toEqual([])
+    expect(store).toEqual(before)
+    expect(useAppStore.getState().system).toMatchObject({ status: 'error' })
   })
 })

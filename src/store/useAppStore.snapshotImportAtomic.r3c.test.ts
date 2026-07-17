@@ -294,6 +294,61 @@ describe('T9-A004-R3c: snapshot import atomic commit contract', () => {
     })
   })
 
+  it('R3-FIX-C RA-001: snapshot write-then-throw plus unreadable commit check is indeterminate and leaves store unpublished', () => {
+    const raw = v3Snapshot(incomingProvenance('a'), {
+      holdings: [{ code: 'R3FIXC-INDETERMINATE', name: 'indeterminate銘柄', eval: 229_000, pnlPct: 0 }],
+    })
+    let failCommitCheck = false
+    let removeCalls = 0
+    vi.stubGlobal('localStorage', {
+      getItem: (key: string) => {
+        if (key === CSV_IMPORT_GENERATION_KEY && failCommitCheck) {
+          failCommitCheck = false
+          throw new Error('raw commit-check read failure')
+        }
+        return storage[key] ?? null
+      },
+      setItem: (key: string, value: string) => {
+        storage[key] = value
+        if (key === CSV_IMPORT_GENERATION_KEY) {
+          failCommitCheck = true
+          throw new Error('raw completion notification failure')
+        }
+      },
+      removeItem: (key: string) => {
+        removeCalls += 1
+        delete storage[key]
+      },
+    })
+    const before = useAppStore.getState()
+    let generationNotifications = 0
+    const unsubscribe = useAppStore.subscribe((state, previous) => {
+      if (state.holdings !== previous.holdings || state.trust !== previous.trust ||
+          state.analysis !== previous.analysis || state.officialDecision !== previous.officialDecision) {
+        generationNotifications += 1
+      }
+    })
+
+    const result = useAppStore.getState().importPortfolioSnapshot(raw)
+    unsubscribe()
+
+    expect(result).toMatchObject({
+      ok: false,
+      code: 'SNAPSHOT_PERSISTENCE_INDETERMINATE',
+      error: '保存結果を確認できません。再読み込みして状態を確認してください。',
+      persistence: { status: 'indeterminate' },
+    })
+    expect(useAppStore.getState()).toBe(before)
+    expect(generationNotifications).toBe(0)
+    expect(removeCalls).toBe(0)
+    expect(storage[CSV_IMPORT_GENERATION_KEY]).toBeTypeOf('string')
+
+    vi.stubGlobal('localStorage', localStorageMock)
+    expect(restorePortfolio()?.map(item => item.code)).toEqual(['R3FIXC-INDETERMINATE'])
+    delete storage[CSV_IMPORT_GENERATION_KEY]
+    expect(useAppStore.getState().importPortfolioSnapshot(raw)).toMatchObject({ ok: true, code: 'SUCCESS' })
+  })
+
   it('durable書込直後の所有権喪失ではpublishせず、外部transactionのbytesを維持する', () => {
     const raw = v3Snapshot(incomingProvenance('3'), {
       holdings: [{ code: 'R3C-CASE3', name: 'R3C-3銘柄', eval: 333_000, pnlPct: 0 }],
@@ -467,21 +522,35 @@ describe('T9-A004-R3c: snapshot import atomic commit contract', () => {
     })
   })
 
-  it('R3-F002: legacy mirror書込中の外部canonical置換はpublish直前のfinal ownership checkで検出し、incoming世代をpublishしない', () => {
+  it('R3-F002: final pre-publish storage read中の外部canonical置換をfinal ownership checkで検出し、incoming世代をpublishしない', () => {
     // 外部writerが書くvalid committed canonical bytesを先に構築し、canonicalはabsentへ戻す
     // （pre-persist CAS・initial ownership確認はいずれも成功するfixture）。
     persistCsvImportTransaction(oldGenerationPayload())
     const externalRaw = storage[CSV_IMPORT_GENERATION_KEY]
     delete storage[CSV_IMPORT_GENERATION_KEY]
 
-    // canonical commitとinitial ownership確認の後、最初のlegacy mirror書込
-    // （v13_portfolio_policy）の最中に外部valid世代へ置換する。
+    // canonical commitとinitial ownership確認の後、freshness用storage read中に
+    // 外部valid世代へ置換する。callbackはthrowせず正常returnする。
     let replaced = false
-    storageReentry = key => {
-      if (key !== 'v13_portfolio_policy' || replaced) return
-      replaced = true
-      storage[CSV_IMPORT_GENERATION_KEY] = externalRaw
-    }
+    let canonicalWritten = false
+    let postCommitCanonicalReads = 0
+    vi.stubGlobal('localStorage', {
+      ...localStorageMock,
+      getItem: (key: string) => {
+        if (key === CSV_IMPORT_GENERATION_KEY && canonicalWritten) {
+          postCommitCanonicalReads += 1
+          if (postCommitCanonicalReads === 2 && !replaced) {
+            replaced = true
+            storage[CSV_IMPORT_GENERATION_KEY] = externalRaw
+          }
+        }
+        return storage[key] ?? null
+      },
+      setItem: (key: string, value: string) => {
+        storage[key] = value
+        if (key === CSV_IMPORT_GENERATION_KEY) canonicalWritten = true
+      },
+    })
     const raw = v3Snapshot(incomingProvenance('9'), {
       holdings: [{ code: 'R3FIXB-F002', name: 'F002銘柄', eval: 999_000, pnlPct: 0 }],
     })
@@ -491,7 +560,7 @@ describe('T9-A004-R3c: snapshot import atomic commit contract', () => {
 
     const result = useAppStore.getState().importPortfolioSnapshot(raw)
     unsubscribe()
-    storageReentry = null
+    vi.stubGlobal('localStorage', localStorageMock)
 
     expect({
       replaced,
