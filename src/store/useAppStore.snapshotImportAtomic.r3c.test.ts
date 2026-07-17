@@ -437,11 +437,22 @@ describe('T9-A004-R3c: snapshot import atomic commit contract', () => {
   })
 
   it('新世代envelopeのtrust-short baselineはincoming generationからstageされ、旧canonical baselineを再添付しない', () => {
+    // T9-A004-R3d以降、store emptyでもcommitted canonicalはgeneration evidenceとして
+    // 別generation snapshotの置換自体をblockする（旧envelope＝旧baselineはbyte単位で温存）。
     persistCsvImportTransaction(oldGenerationPayload())
+    const seededRaw = localStorage.getItem(CSV_IMPORT_GENERATION_KEY)
     const raw = v3Snapshot(incomingProvenance('8'), {
       holdings: [{ code: 'R3C-CASE8', name: 'R3C-8銘柄', eval: 888_000, pnlPct: 0 }],
     })
 
+    const blocked = useAppStore.getState().importPortfolioSnapshot(raw)
+    expect(blocked.ok).toBe(false)
+    expect(localStorage.getItem(CSV_IMPORT_GENERATION_KEY)).toBe(seededRaw)
+
+    // canonicalを正しく除去（absent化）した上での取込だけが新envelopeを書ける。
+    // その新envelopeのbaselineはincoming generationからstageされたものであり、
+    // 旧canonical世代の実行判定baselineを再添付してはならない。
+    localStorage.removeItem(CSV_IMPORT_GENERATION_KEY)
     const result = useAppStore.getState().importPortfolioSnapshot(raw)
 
     const generation = restoreCsvImportGeneration()

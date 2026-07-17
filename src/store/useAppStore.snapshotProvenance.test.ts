@@ -74,7 +74,9 @@ describe('T9-A004-R2: portfolio snapshot provenance action contract', () => {
 
   beforeEach(() => {
     for (const key of Object.keys(storage)) delete storage[key]
-    storage.v13_csv_import_committed_generation = 'canonical-before'
+    // T9-A004-R3d以降、present-invalidなcanonical（旧: 'canonical-before' sentinel）は
+    // 全importをfail-closedさせる。R2契約はcanonical absent（store側evidenceのみ）を
+    // baselineに固定する。canonical present時の判定契約はsnapshotImportAtomic.r3d側。
     storage.v95_trust_short_snapshot = 'tracker-before'
     storageWrites = 0
     vi.stubGlobal('localStorage', {

@@ -96,6 +96,10 @@ export type PortfolioSnapshotImportResult =
         | 'SNAPSHOT_PROVENANCE_UNKNOWN'
         | 'SNAPSHOT_OVERWRITE_BLOCKED'
         | 'SNAPSHOT_IMPORT_BLOCKED'
+        // T9-A004-R3d: canonical keyは存在するがJSON/manifest/checksum/schema検証を
+        // 通らないpresent-invalid世代。absent（key自体が無い）とは区別され、
+        // legacy fallbackにもmutation/analysisにも入らずfail-closedする。
+        | 'SNAPSHOT_CANONICAL_INVALID'
         // T9-A004-R3c: analysis/persistence/CAS conflict/ownership lossの構造化失敗。
         // いずれもstore/subscriber副作用0で返し、raw exceptionをUIへ伝播させない。
         | 'SNAPSHOT_ANALYSIS_ERROR'
@@ -568,6 +572,25 @@ function computeCurrentSnapshotStateIdentity(state: AppState): string | null {
       cashAssumptions: state.cashAssumptions,
       csvImportedAt: state.system.csvLastImportedAt,
       csvImportProvenance: state.system.csvImportProvenance ?? null,
+    })
+  } catch {
+    return null
+  }
+}
+
+// T9-A004-R3d: committed canonical envelopeをcurrent generation evidenceへ射影する。
+// storeがempty/partial/staleでも、durableに成立した世代のholdings・trust・policy・
+// cash・importedAt・provenanceが取込判定のauthorityになる（Zustandへのhydrateを
+// 経由せず、判定前のstore mutationは0のまま）。
+function computeCanonicalSnapshotStateIdentity(payload: CsvImportPersistencePayload): string | null {
+  try {
+    return computeSnapshotGenerationIdentity({
+      holdings: payload.holdings,
+      trust: payload.trust,
+      portfolioPolicy: payload.portfolioPolicy ?? { ...DEFAULT_PORTFOLIO_POLICY },
+      cashAssumptions: payload.cashAssumptions ?? { ...DEFAULT_CASH_ASSUMPTIONS },
+      csvImportedAt: payload.importedAt,
+      csvImportProvenance: payload.provenance ?? null,
     })
   } catch {
     return null
@@ -1909,14 +1932,41 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
         }
       }
 
+      // T9-A004-R3d: transaction開始時に捕捉した物理bytesを一度だけ解釈し、canonical
+      // statusをabsent / valid committed / present-invalidへ固定する（同一transaction中に
+      // 再読取・再解釈しない）。present-invalid（keyは存在するが検証を通らない）は
+      // fail-closed: mutation・analysis・canonical write・legacy writeのいずれにも入らず、
+      // absentとのlegacy互換扱いへも倒さない。raw parser/storage詳細はUIへ出さない。
+      const canonicalGeneration = restoreCsvImportGenerationFromRaw(canonicalPreviousRaw)
+      if (canonicalGeneration.status === 'invalid') {
+        return {
+          ok: false,
+          code: 'SNAPSHOT_CANONICAL_INVALID',
+          error: '保存済みの取込世代データが破損しているため、snapshotの取込を中断しました。' +
+            '破損した保存世代を修復または削除してから再試行してください。状態は変更されていません。',
+        }
+      }
+      const canonicalPayload = canonicalGeneration.status === 'committed'
+        ? canonicalGeneration.payload
+        : null
+
       // Only source provenance participates in monotonicity. exportedAt, csvImportedAt,
       // browser time and File.lastModified are operation/file metadata, never freshness proof.
-      const currentGenerationExists = hasCurrentPortfolioGenerationEvidence(state)
+      // T9-A004-R3d: valid committed canonicalは、storeがempty（hydration前/別tab相当）
+      // でもcurrent generation evidenceとして扱う。storeだけを見たALLOW_FIRST_IMPORT
+      // 扱いでcommitted世代をsilent overwriteしない。
+      const currentGenerationExists = canonicalPayload !== null ||
+        hasCurrentPortfolioGenerationEvidence(state)
       const currentStateIdentity = currentGenerationExists
         ? computeCurrentSnapshotStateIdentity(state)
         : null
+      const canonicalStateIdentity = canonicalPayload !== null
+        ? computeCanonicalSnapshotStateIdentity(canonicalPayload)
+        : null
       if (snapshot.snapshotGenerationIdentity !== null && (
         snapshot.snapshotGenerationIdentity === currentStateIdentity ||
+        (canonicalStateIdentity !== null &&
+          snapshot.snapshotGenerationIdentity === canonicalStateIdentity) ||
         (lastAppliedSnapshotGeneration?.incomingIdentity === snapshot.snapshotGenerationIdentity &&
           lastAppliedSnapshotGeneration.currentStateIdentity === currentStateIdentity)
       )) {
@@ -1931,11 +1981,23 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
           }
         }
       } else {
+        // T9-A004-R3d: 比較対象のcurrent provenanceはcanonical committed世代を優先する
+        // （store側がstale/partialでもdurable世代が正）。canonical absent時のみ
+        // store世代のprovenanceへfallbackする。
+        const currentProvenance = canonicalPayload !== null
+          ? canonicalPayload.provenance ?? null
+          : state.system.csvImportProvenance ?? null
         const monotonicity = evaluateCsvImportMonotonicity({
           incoming: snapshot.csvImportProvenance,
-          current: state.system.csvImportProvenance ?? null,
+          current: currentProvenance,
           currentGenerationExists,
         }).decision
+        if (monotonicity === 'DUPLICATE') {
+          // canonical世代と同一のsemantic contentは再取込・再analysisせずno-opで返す
+          // （importCsvのDUPLICATE_CSVと同じ扱い。store emptyでもcanonical世代を
+          // 上書き・再analysisしない）。
+          return { ok: true, code: 'DUPLICATE_SNAPSHOT' }
+        }
         if (monotonicity === 'REJECT_STALE') {
           return {
             ok: false,
