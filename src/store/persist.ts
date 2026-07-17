@@ -548,6 +548,15 @@ export function persistCsvImportTransaction(
     localStorage.setItem(CSV_IMPORT_GENERATION_KEY, serializedEnvelope)
     return { previousRaw, committedRaw: serializedEnvelope }
   } catch (error) {
+    // T9-A004-R3c: setItemのthrowはbytesが物理的に書かれなかったことを保証しない
+    // （書込成功後・完了通知前のcrash相当例外）。物理bytesが新envelopeへ置換済みなら
+    // commitは成立している — 「rolled_back」と偽ってreloadで失敗世代が出現する
+    // 偽状態を作らず、成立したtransactionとしてreceiptを返す。
+    try {
+      if (localStorage.getItem(CSV_IMPORT_GENERATION_KEY) === serializedEnvelope) {
+        return { previousRaw, committedRaw: serializedEnvelope }
+      }
+    } catch { /* 物理状態を確認できない場合は下の失敗報告に倒す */ }
     const detail = error instanceof Error ? error.message : String(error)
     throw new CsvImportPersistenceError(`CSV取込データの永続化に失敗しました: ${detail}`, 'rolled_back')
   }

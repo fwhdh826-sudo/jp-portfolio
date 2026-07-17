@@ -43,6 +43,7 @@ import {
   getPortfolioStorageFreshness,
   getTrustStorageFreshness,
   type CsvImportPersistencePayload,
+  type CsvImportPersistenceReceipt,
 } from './persist'
 import {
   evaluateCsvImportMonotonicity,
@@ -69,6 +70,7 @@ import {
   restoreTrustShortAnalysisInput,
   type TrustShortAnalysisInput,
   type TrustShortPortfolioBaseline,
+  type TrustShortPortfolioSnapshot,
 } from '../domain/learning/trustShortTracker'
 import { buildExportableCashAssumptions } from '../utils/cashAssumptionsTransfer'
 import {
@@ -94,6 +96,12 @@ export type PortfolioSnapshotImportResult =
         | 'SNAPSHOT_PROVENANCE_UNKNOWN'
         | 'SNAPSHOT_OVERWRITE_BLOCKED'
         | 'SNAPSHOT_IMPORT_BLOCKED'
+        // T9-A004-R3c: analysis/persistence/CAS conflict/ownership lossの構造化失敗。
+        // いずれもstore/subscriber副作用0で返し、raw exceptionをUIへ伝播させない。
+        | 'SNAPSHOT_ANALYSIS_ERROR'
+        | 'SNAPSHOT_PERSISTENCE_ERROR'
+        | 'SNAPSHOT_OWNERSHIP_LOST'
+        | 'IMPORT_CONFLICT'
       error: string
     }
 
@@ -451,39 +459,6 @@ function persistCurrentPortfolioGeneration(state: AppState): void {
   persistPortfolio(state.holdings)
   persistTrust(state.trust)
   if (state.learning) persistLearning(state.learning)
-}
-
-/** Build the complete durable generation written by a successful snapshot import. */
-export function buildSnapshotPortfolioGenerationPayload(
-  state: AppState,
-  generatedAt = new Date().toISOString(),
-): CsvImportPersistencePayload {
-  const importedAt = state.system.csvImportProvenance?.importedAt ??
-    state.system.csvLastImportedAt ?? generatedAt
-  const existingTrustShortSnapshot = captureTrustShortPortfolioBaseline().snapshot
-  return {
-    holdings: state.holdings,
-    trust: state.trust,
-    learning: state.learning,
-    importedAt,
-    provenance: state.system.csvImportProvenance ?? null,
-    syncSummary: state.system.csvSyncSummary ?? {
-      importedAt,
-      stock: { updated: 0, added: 0, removed: 0 },
-      trust: { updated: 0, reheld: 0, zeroed: 0, unknownFunds: [], ambiguousFundIds: [] },
-    },
-    // R3b does not stage a trust-short baseline from incoming snapshot content. Preserving the
-    // prior baseline (or an empty baseline when none exists) intentionally leaves replacement
-    // staging to R3c's analysis/CAS/commit boundary.
-    trustShortSnapshot: existingTrustShortSnapshot ?? {
-      date: generatedAt.slice(0, 10),
-      total: 0,
-      evalById: {},
-    },
-    portfolioPolicy: state.portfolioPolicy,
-    cashAssumptions: state.cashAssumptions,
-    origin: 'snapshot',
-  }
 }
 
 // P4.5-A013-T7: portfolio snapshot v2専用の新規銘柄構築。
@@ -1920,6 +1895,20 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
       const snapshot = parsed.data
       const state = get()
 
+      // T9-A004-R3c: transaction開始時の物理canonical bytesを捕捉する。durable commitは
+      // このbytesを期待前世代とするCASでのみ成立し、取込中に成立した外部世代を
+      // 無条件上書きしない。
+      let canonicalPreviousRaw: string | null
+      try {
+        canonicalPreviousRaw = readCsvImportCanonicalRaw()
+      } catch (error) {
+        return {
+          ok: false,
+          code: 'SNAPSHOT_PERSISTENCE_ERROR',
+          error: error instanceof Error ? error.message : String(error),
+        }
+      }
+
       // Only source provenance participates in monotonicity. exportedAt, csvImportedAt,
       // browser time and File.lastModified are operation/file metadata, never freshness proof.
       const currentGenerationExists = hasCurrentPortfolioGenerationEvidence(state)
@@ -2059,56 +2048,176 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
           }
         : state.cashAssumptions
 
-      // ここから先はsubscriberへ最初の通知が飛ぶcritical phase。internal transaction自身の
-      // publishはこのset()群そのものなので妨げない（guardは他action経由のreentrant
-      // mutationだけを弾く。isPortfolioGenerationCriticalSection参照）。
-      setPortfolioGenerationTransactionPhase(transaction, 'PERSISTING')
-
-      set(s => ({
+      // T9-A004-R3c: 新世代のcandidate contentをメモリ上でstageし、analysis・decision・
+      // plans・candidatesをpublish前に完了する。ここで失敗してもstore/subscriber/storageの
+      // 副作用は0のまま構造化failureを返す（部分世代のset()は一切行わない）。
+      const nowIso = new Date(transaction.analysisNow).toISOString()
+      const stagedState: AppState = {
+        ...state,
         holdings: nextHoldings,
         trust: nextTrust,
         portfolioPolicy: nextPortfolioPolicy,
         cashAssumptions: nextCashAssumptions,
         system: {
-          ...s.system,
+          ...state.system,
           // Operation metadata and source provenance are replaced from one incoming generation.
           csvLastImportedAt: snapshot.csvImportedAt,
           csvImportProvenance: snapshot.csvImportProvenance,
         },
-      }))
-
-      const computed = runFullAnalysis(get())
-      const now = new Date().toISOString()
-      set(s => ({
-        ...computed,
-        system: { ...s.system, status: 'success', analysisLastRunAt: now, error: null },
-      }))
-
-      persistCsvImportTransaction(buildSnapshotPortfolioGenerationPayload(get(), now))
-      persistPortfolioPolicy(get().portfolioPolicy)
-      persistCashAssumptions(get().cashAssumptions)
-      // csvImportedAtがnullの場合、persistCsvImportedAtは文字列専用のため呼ばない
-      // （既存localStorageの古い値の削除は次チケットで扱う。store上はnullに揃えている）。
-      if (typeof snapshot.csvImportedAt === 'string') {
-        persistCsvImportedAt(snapshot.csvImportedAt)
       }
-      // P4.5-A013-T6a: persist直後にlocalStorageFreshnessをその場で最新化する。
-      // csvSyncSummaryはここでは一切変更しない（snapshot importをCSV取込結果として
-      // 偽装しないため。P4.5-A013-T6の方針を維持する）。
-      set(s => ({ system: { ...s.system, localStorageFreshness: computeLocalStorageFreshness() } }))
-      setPortfolioGenerationTransactionPhase(transaction, 'PUBLISHED')
-      if (snapshot.snapshotGenerationIdentity !== null) {
-        const appliedStateIdentity = computeCurrentSnapshotStateIdentity(get())
-        lastAppliedSnapshotGeneration = appliedStateIdentity === null
-          ? null
-          : {
-              incomingIdentity: snapshot.snapshotGenerationIdentity,
-              currentStateIdentity: appliedStateIdentity,
-            }
-      } else {
-        lastAppliedSnapshotGeneration = null
+
+      setPortfolioGenerationTransactionPhase(transaction, 'ANALYZING')
+      let computed: ReturnType<typeof runFullAnalysis>
+      try {
+        computed = runFullAnalysis(stagedState, { nowMs: transaction.analysisNow })
+      } catch (error) {
+        return {
+          ok: false,
+          code: 'SNAPSHOT_ANALYSIS_ERROR',
+          error: `snapshotの分析に失敗しました: ${error instanceof Error ? error.message : String(error)}。状態は変更されていません。`,
+        }
       }
-      return { ok: true, code: 'SUCCESS', skippedTrustIds: skippedTrustIds.length > 0 ? skippedTrustIds : undefined }
+
+      // 当該incoming世代からtrust-short baselineをstageする。旧canonical世代の
+      // 実行判定baselineを新envelopeへ再添付しない（tracker telemetry本体の
+      // 別key契約はここでは変更しない）。staging失敗時は世代をpublishしない。
+      const importedAt = snapshot.csvImportProvenance?.importedAt ??
+        snapshot.csvImportedAt ?? nowIso
+      let stagedTrustShortSnapshot: TrustShortPortfolioSnapshot
+      try {
+        stagedTrustShortSnapshot = stageTrustExecutionFromCsvSync(
+          computed.trust,
+          importedAt,
+          captureTrustShortPortfolioBaseline(),
+        ).snapshot
+      } catch (error) {
+        return {
+          ok: false,
+          code: 'SNAPSHOT_ANALYSIS_ERROR',
+          error: `snapshot世代のtracker baseline準備に失敗しました: ${error instanceof Error ? error.message : String(error)}。状態は変更されていません。`,
+        }
+      }
+
+      const payload: CsvImportPersistencePayload = {
+        holdings: computed.holdings,
+        trust: computed.trust,
+        learning: computed.learning,
+        importedAt,
+        provenance: snapshot.csvImportProvenance,
+        syncSummary: state.system.csvSyncSummary ?? {
+          importedAt,
+          stock: { updated: 0, added: 0, removed: 0 },
+          trust: { updated: 0, reheld: 0, zeroed: 0, unknownFunds: [], ambiguousFundIds: [] },
+        },
+        trustShortSnapshot: stagedTrustShortSnapshot,
+        portfolioPolicy: nextPortfolioPolicy,
+        cashAssumptions: nextCashAssumptions,
+        origin: 'snapshot',
+      }
+
+      // pre-persist CAS付き単一durable commit。transaction開始時に捕捉したbytesと
+      // 物理bytesが一致する場合のみcanonical世代を置換できる（stale writerはconflict）。
+      setPortfolioGenerationTransactionPhase(transaction, 'PERSISTING')
+      const generationCommittedAt = Date.now()
+      let receipt: CsvImportPersistenceReceipt
+      try {
+        receipt = persistCsvImportTransaction(payload, generationCommittedAt, canonicalPreviousRaw)
+      } catch (error) {
+        if (error instanceof CsvImportCanonicalConflictError) {
+          return { ok: false, code: 'IMPORT_CONFLICT', error: error.message }
+        }
+        return {
+          ok: false,
+          code: 'SNAPSHOT_PERSISTENCE_ERROR',
+          error: error instanceof Error ? error.message : String(error),
+        }
+      }
+      setPortfolioGenerationTransactionPhase(transaction, 'COMMITTED')
+
+      // Payload equality is not ownership: only the exact serialized bytes in the receipt
+      // prove that this transaction still owns the physical canonical key. 所有権を失った
+      // 場合はpublishせず、外部transactionのbytesには一切触れない（rollbackは
+      // rollbackCsvImportTransactionのbyte-exact規則でのみ許される）。
+      if (!ownsCsvImportCanonicalBytes(receipt)) {
+        return {
+          ok: false,
+          code: 'SNAPSHOT_OWNERSHIP_LOST',
+          error: '保存後にcanonical世代の所有権を失ったため、snapshotの取込は公開しませんでした。外部の保存世代を維持したまま再試行してください。',
+        }
+      }
+
+      const successResult: PortfolioSnapshotImportResult = {
+        ok: true,
+        code: 'SUCCESS',
+        skippedTrustIds: skippedTrustIds.length > 0 ? skippedTrustIds : undefined,
+      }
+      const markSnapshotGenerationApplied = () => {
+        if (snapshot.snapshotGenerationIdentity !== null) {
+          const appliedStateIdentity = computeCurrentSnapshotStateIdentity(get())
+          lastAppliedSnapshotGeneration = appliedStateIdentity === null
+            ? null
+            : {
+                incomingIdentity: snapshot.snapshotGenerationIdentity,
+                currentStateIdentity: appliedStateIdentity,
+              }
+        } else {
+          lastAppliedSnapshotGeneration = null
+        }
+      }
+
+      try {
+        // 旧mirror key（policy/cash/csvImportedAt）はcanonical成功後のbest-effort書込
+        // （restore側はcommitted canonicalを常に優先する。mirror廃止は別チケット）。
+        persistPortfolioPolicy(nextPortfolioPolicy)
+        persistCashAssumptions(nextCashAssumptions)
+        // csvImportedAtがnullの場合、persistCsvImportedAtは文字列専用のため呼ばない
+        // （既存localStorageの古い値の削除は次チケットで扱う。store上はnullに揃えている）。
+        if (typeof snapshot.csvImportedAt === 'string') {
+          persistCsvImportedAt(snapshot.csvImportedAt)
+        }
+        const localStorageFreshness = computeLocalStorageFreshness(generationCommittedAt)
+
+        // durable commit確認後の完全世代を単一set()でpublishする。subscriberは
+        // content・analysis・officialDecision・plans・candidates・policy・cash・
+        // provenance・freshness・statusを同一通知で観測し、部分世代は存在しない。
+        // csvSyncSummaryはここでは一切変更しない（snapshot importをCSV取込結果として
+        // 偽装しないため。P4.5-A013-T6の方針を維持する）。
+        set(s => ({
+          ...computed,
+          portfolioPolicy: nextPortfolioPolicy,
+          cashAssumptions: nextCashAssumptions,
+          system: {
+            ...s.system,
+            status: 'success',
+            csvLastImportedAt: snapshot.csvImportedAt,
+            csvImportProvenance: snapshot.csvImportProvenance,
+            analysisLastRunAt: nowIso,
+            error: null,
+            localStorageFreshness,
+          },
+        }))
+        setPortfolioGenerationTransactionPhase(transaction, 'PUBLISHED')
+        markSnapshotGenerationApplied()
+        return successResult
+      } catch (error) {
+        // durable commit後・publish完了前の例外。zustandはlistener通知前にstateを
+        // 適用するため、新世代が既にstoreへ載っていればcommitted generationとして
+        // SUCCESSを返す（throwing observerが成立済み世代を偽failure化しない）。
+        // 載っていなければbyte-exact rollbackを試み、物理状態を偽らずに報告する。
+        if (get().holdings === computed.holdings) {
+          try { console.error('[useAppStore] post-commit snapshot publish diagnostic', error) } catch { /* diagnostic sink */ }
+          markSnapshotGenerationApplied()
+          return successResult
+        }
+        const rolledBack = rollbackCsvImportTransaction(receipt)
+        return {
+          ok: false,
+          code: 'SNAPSHOT_PERSISTENCE_ERROR',
+          error: rolledBack
+            ? '公開直前にエラーが発生したため、保存済みのsnapshot世代を取り消しました。状態は変更されていません。再試行してください。'
+            : '公開直前にエラーが発生し、保存済みsnapshot世代の取り消しを確認できませんでした。再読み込み後に内容を確認してください。',
+        }
+      }
     } finally {
       if (activePortfolioGenerationTransaction?.token === transaction.token) {
         activePortfolioGenerationTransaction = null
