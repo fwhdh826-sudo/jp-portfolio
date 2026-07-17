@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-07-17T09:58:13.172867+09:00",
-  "sourceUpdatedAt": "2026-07-17T00:44:31+00:00",
+  "updatedAt": "2026-07-17T14:59:33.219057+09:00",
+  "sourceUpdatedAt": "2026-07-17T05:57:55+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -17,72 +17,68 @@
       "items": []
     },
     "jp_semiconductor": {
-      "avgSentiment": -0.1,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 2,
+      "avgSentiment": -0.46,
+      "negativeCount": 2,
+      "positiveCount": 1,
+      "neutralCount": 0,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Asian Stocks Drop as Chip Selloff Extends, Oil Up: Markets Wrap",
-      "topPositiveTitle": "Chip Stocks Get Hit as AI Spending Anxiety Builds: Markets Wrap",
+      "topNegativeTitle": "Chip Stock Rout Deepens as TSMC Selloff Drives Taiwan Correction",
+      "topPositiveTitle": "China Chip Stock Pullback Drives Investor Fear to Four-Year High",
       "items": [
         {
-          "title": "Asian Stocks Drop as Chip Selloff Extends, Oil Up: Markets Wrap",
+          "title": "Chip Stock Rout Deepens as TSMC Selloff Drives Taiwan Correction",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.2,
-          "publishedAt": "2026-07-16T22:05:23+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-16/stock-market-today-dow-s-p-live-updates",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-07-17T03:51:14+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-17/chip-stock-selloff-deepens-in-asia-as-tsmc-fails-to-impress",
           "tags": [
-            "commodity",
+            "geopolitical",
             "jp_semiconductor",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Chip Stocks Get Hit as AI Spending Anxiety Builds: Markets Wrap",
+          "title": "Stocks Slide With Futures as Chip Selloff Deepens: Markets Wrap",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-15T22:07:47+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-15/stock-market-today-dow-s-p-live-updates",
+          "sentiment": "negative",
+          "sentimentScore": -0.71,
+          "publishedAt": "2026-07-16T22:05:23+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-16/stock-market-today-dow-s-p-live-updates",
           "tags": [
-            "geopolitical",
             "jp_semiconductor",
             "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "China Chip Stock Pullback Drives Investor Fear to Four-Year High",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-07-17T01:13:27+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-17/china-chip-stock-pullback-drives-investor-fear-to-four-year-high",
+          "tags": [
+            "jp_semiconductor",
             "market"
           ]
         }
       ]
     },
     "us_broad": {
-      "avgSentiment": -0.286,
-      "negativeCount": 3,
+      "avgSentiment": -0.2,
+      "negativeCount": 2,
       "positiveCount": 0,
-      "neutralCount": 4,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 7,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Gold Falls as US-Iran Hostilities Rekindles Fed Hike Bets",
+      "topNegativeTitle": "Gold Heads for Weekly Fall as Hormuz Strikes Raise Fed-Hike Bets",
       "topPositiveTitle": "Fed’s Jefferson Says Policy Well Positioned If Inflation Cools",
       "items": [
-        {
-          "title": "Gold Falls as US-Iran Hostilities Rekindles Fed Hike Bets",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-07-15T22:57:36+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-15/gold-steadies-as-soft-inflation-war-risk-cloud-fed-rate-outlook",
-          "tags": [
-            "geopolitical",
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
         {
           "title": "Gold Heads for Weekly Fall as Hormuz Strikes Raise Fed-Hike Bets",
           "source": "Bloomberg Markets",
@@ -98,12 +94,12 @@
           ]
         },
         {
-          "title": "Bond Traders Bail on Fed Hike Bets on Softer Inflation Path",
+          "title": "Industrial Metals Decline as Traders Weigh Fed Rate Outlook",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-07-16T15:00:01+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-16/bond-traders-bail-on-fed-hike-wagers-on-softer-inflation-outlook",
+          "publishedAt": "2026-07-17T02:21:21+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-17/industrial-metals-decline-as-traders-weigh-fed-rate-outlook",
           "tags": [
             "market",
             "rates",
@@ -134,6 +130,18 @@
             "market",
             "us_broad"
           ]
+        },
+        {
+          "title": "Fed’s Watchdog Warns On Insider Risk after China Secrets Case",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-16T15:04:42+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-16/fed-s-watchdog-warns-on-insider-risk-after-china-secrets-case",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
         }
       ]
     },
@@ -145,11 +153,11 @@
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "China AI Stocks’ 1000%-Plus Profit Gain May Fail to Revive Rally",
-      "topPositiveTitle": "China AI Stocks’ 1000%-Plus Profit Gain May Fail to Revive Rally",
+      "topNegativeTitle": "Chinese AI Stocks’ 1,000%-Plus Profit Gains Fail to Spur Rally",
+      "topPositiveTitle": "Chinese AI Stocks’ 1,000%-Plus Profit Gains Fail to Spur Rally",
       "items": [
         {
-          "title": "China AI Stocks’ 1000%-Plus Profit Gain May Fail to Revive Rally",
+          "title": "Chinese AI Stocks’ 1,000%-Plus Profit Gains Fail to Spur Rally",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 1.0,
@@ -163,43 +171,43 @@
       ]
     },
     "global_broad": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "gold": {
-      "avgSentiment": -0.835,
-      "negativeCount": 2,
+      "avgSentiment": -1.0,
+      "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 0,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Gold Falls as US-Iran Hostilities Rekindles Fed Hike Bets",
-      "topPositiveTitle": "Gold Heads for Weekly Fall as Hormuz Strikes Raise Fed-Hike Bets",
+      "topNegativeTitle": "EM Stocks Headed For Weekly Loss on Tech Selloff, Rising Crude",
+      "topPositiveTitle": "EM Stocks Headed For Weekly Loss on Tech Selloff, Rising Crude",
       "items": [
         {
-          "title": "Gold Falls as US-Iran Hostilities Rekindles Fed Hike Bets",
+          "title": "EM Stocks Headed For Weekly Loss on Tech Selloff, Rising Crude",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -1.0,
-          "publishedAt": "2026-07-15T22:57:36+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-15/gold-steadies-as-soft-inflation-war-risk-cloud-fed-rate-outlook",
+          "publishedAt": "2026-07-17T03:54:14+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-17/em-stocks-headed-for-weekly-loss-on-tech-selloff-rising-crude",
           "tags": [
-            "geopolitical",
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
+            "commodity",
+            "global_broad",
+            "macro_risk",
+            "market"
           ]
-        },
+        }
+      ]
+    },
+    "gold": {
+      "avgSentiment": -0.67,
+      "negativeCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "Gold Heads for Weekly Fall as Hormuz Strikes Raise Fed-Hike Bets",
+      "topPositiveTitle": "Gold Heads for Weekly Fall as Hormuz Strikes Raise Fed-Hike Bets",
+      "items": [
         {
           "title": "Gold Heads for Weekly Fall as Hormuz Strikes Raise Fed-Hike Bets",
           "source": "Bloomberg Markets",
@@ -241,39 +249,65 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.016,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 7,
+      "avgSentiment": -0.214,
+      "negativeCount": 4,
+      "positiveCount": 2,
+      "neutralCount": 2,
       "sourceCount": 2,
       "itemCount": 8,
       "isStale": false,
-      "topNegativeTitle": "Asian Stocks Drop as Chip Selloff Extends, Oil Up: Markets Wrap",
-      "topPositiveTitle": "Latest Oil Market News and Analysis for July 17",
+      "topNegativeTitle": "EM Stocks Headed For Weekly Loss on Tech Selloff, Rising Crude",
+      "topPositiveTitle": "Malaysian Growth Surges to 5.8% as Services, Tech Sales Counter Impact of War",
       "items": [
         {
-          "title": "Asian Stocks Drop as Chip Selloff Extends, Oil Up: Markets Wrap",
+          "title": "EM Stocks Headed For Weekly Loss on Tech Selloff, Rising Crude",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.2,
-          "publishedAt": "2026-07-16T22:05:23+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-16/stock-market-today-dow-s-p-live-updates",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-07-17T03:54:14+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-17/em-stocks-headed-for-weekly-loss-on-tech-selloff-rising-crude",
           "tags": [
             "commodity",
+            "global_broad",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Chip Stock Rout Deepens as TSMC Selloff Drives Taiwan Correction",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-07-17T03:51:14+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-17/chip-stock-selloff-deepens-in-asia-as-tsmc-fails-to-impress",
+          "tags": [
+            "geopolitical",
             "jp_semiconductor",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "How the Iran War Is Rewiring the Oil Market",
+          "title": "Stocks Slide With Futures as Chip Selloff Deepens: Markets Wrap",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-16T21:12:59+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-16/how-the-iran-war-is-rewiring-the-oil-market",
+          "sentiment": "negative",
+          "sentimentScore": -0.71,
+          "publishedAt": "2026-07-16T22:05:23+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-16/stock-market-today-dow-s-p-live-updates",
           "tags": [
-            "commodity",
+            "jp_semiconductor",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Iran War, Monsoons Key Risk for India Economy, RBI Governor Says",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-07-17T04:49:39+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-17/iran-war-monsoons-key-risk-for-india-economy-rbi-governor-says",
+          "tags": [
             "geopolitical",
             "macro_risk",
             "market"
@@ -290,66 +324,51 @@
             "macro_risk",
             "market"
           ]
-        },
-        {
-          "title": "Trump and tariff authorities",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-16T11:00:02+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-07-16/trump-and-tariff-authorities",
-          "tags": [
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "UK Economy Grows as Services Defy Energy, Political Turmoil",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-16T06:04:09+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-16/uk-economy-grew-in-may-despite-energy-political-turmoil",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": 0.265,
+      "avgSentiment": 0.22,
       "negativeCount": 0,
-      "positiveCount": 1,
+      "positiveCount": 2,
       "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 2,
+      "sourceCount": 2,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Emerging Currencies Fall as US, Iran Tensions Strengthen Dollar",
-      "topPositiveTitle": "Top Currency Forecaster Says Yen May Reach 170 Against Dollar",
+      "topNegativeTitle": "Eoptolink Is Said to File for Up to $5 Billion Hong Kong Listing",
+      "topPositiveTitle": "HDFC Bank, ICICI Bank Eye FX Deposits For Margin Boost",
       "items": [
         {
-          "title": "Emerging Currencies Fall as US, Iran Tensions Strengthen Dollar",
+          "title": "Eoptolink Is Said to File for Up to $5 Billion Hong Kong Listing",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.2,
-          "publishedAt": "2026-07-16T09:13:20+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-16/emerging-stocks-slump-as-korea-curbs-fan-selloff-in-chip-giants",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-17T04:15:54+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-17/eoptolink-is-said-to-file-for-up-to-5-billion-hong-kong-listing",
           "tags": [
             "fx",
-            "geopolitical",
             "market"
           ]
         },
         {
-          "title": "Top Currency Forecaster Says Yen May Reach 170 Against Dollar",
+          "title": "HDFC Bank, ICICI Bank Eye FX Deposits For Margin Boost",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.33,
-          "publishedAt": "2026-07-16T23:30:16+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-16/top-currency-forecaster-says-yen-may-reach-170-against-dollar",
+          "publishedAt": "2026-07-17T02:05:07+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-17/hdfc-bank-icici-bank-eye-fx-deposits-for-margin-boost",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        },
+        {
+          "title": "Japan’s ‘Decisive Action’ Threat Does Little to Scare Yen Bears",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-07-17T00:54:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-17/japan-s-katayama-warns-of-decisive-action-on-yen-if-needed",
           "tags": [
             "fx",
             "market"
@@ -358,31 +377,16 @@
       ]
     },
     "rates": {
-      "avgSentiment": -0.278,
+      "avgSentiment": -0.2,
       "negativeCount": 3,
       "positiveCount": 1,
-      "neutralCount": 2,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Gold Falls as US-Iran Hostilities Rekindles Fed Hike Bets",
+      "topNegativeTitle": "Gold Heads for Weekly Fall as Hormuz Strikes Raise Fed-Hike Bets",
       "topPositiveTitle": "IMF Cautions Burnham Against Raising UK’s Top Income Tax Rate",
       "items": [
-        {
-          "title": "Gold Falls as US-Iran Hostilities Rekindles Fed Hike Bets",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-07-15T22:57:36+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-15/gold-steadies-as-soft-inflation-war-risk-cloud-fed-rate-outlook",
-          "tags": [
-            "geopolitical",
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
         {
           "title": "Gold Heads for Weekly Fall as Hormuz Strikes Raise Fed-Hike Bets",
           "source": "Bloomberg Markets",
@@ -398,12 +402,24 @@
           ]
         },
         {
-          "title": "Bond Traders Bail on Fed Hike Bets on Softer Inflation Path",
+          "title": "ECB Set to Wait for September to Hike One Last Time, Poll Shows",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-07-17T04:15:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-17/ecb-set-to-wait-for-september-to-hike-one-last-time-poll-shows",
+          "tags": [
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Industrial Metals Decline as Traders Weigh Fed Rate Outlook",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-07-16T15:00:01+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-16/bond-traders-bail-on-fed-hike-wagers-on-softer-inflation-outlook",
+          "publishedAt": "2026-07-17T02:21:21+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-17/industrial-metals-decline-as-traders-weigh-fed-rate-outlook",
           "tags": [
             "market",
             "rates",
@@ -424,12 +440,12 @@
           ]
         },
         {
-          "title": "BOE’s Breeden Says Weak Economy Cuts Risk of Sticky Prices",
+          "title": "IMF Cautions Burnham Against Raising UK’s Top Income Tax Rate",
           "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-16T08:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-16/boe-s-breeden-says-weak-uk-economy-cuts-risk-of-sticky-inflation",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-07-16T15:30:17+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-16/imf-cautions-burnham-against-raising-uk-s-top-income-tax-rate",
           "tags": [
             "market",
             "rates"
@@ -438,41 +454,40 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.026,
-      "negativeCount": 0,
+      "avgSentiment": -0.167,
+      "negativeCount": 1,
       "positiveCount": 1,
-      "neutralCount": 4,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Asian Stocks Drop as Chip Selloff Extends, Oil Up: Markets Wrap",
+      "topNegativeTitle": "EM Stocks Headed For Weekly Loss on Tech Selloff, Rising Crude",
       "topPositiveTitle": "Latest Oil Market News and Analysis for July 17",
       "items": [
         {
-          "title": "Asian Stocks Drop as Chip Selloff Extends, Oil Up: Markets Wrap",
+          "title": "EM Stocks Headed For Weekly Loss on Tech Selloff, Rising Crude",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.2,
-          "publishedAt": "2026-07-16T22:05:23+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-16/stock-market-today-dow-s-p-live-updates",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-07-17T03:54:14+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-17/em-stocks-headed-for-weekly-loss-on-tech-selloff-rising-crude",
           "tags": [
             "commodity",
-            "jp_semiconductor",
+            "global_broad",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "How the Iran War Is Rewiring the Oil Market",
+          "title": "Iran-Linked Tankers U-Turn and Zig-Zag as US Enforces Blockade",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-16T21:12:59+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-16/how-the-iran-war-is-rewiring-the-oil-market",
+          "publishedAt": "2026-07-17T04:31:21+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-17/iran-linked-tankers-u-turn-and-zig-zag-as-us-enforces-blockade",
           "tags": [
             "commodity",
             "geopolitical",
-            "macro_risk",
             "market"
           ]
         },
@@ -485,20 +500,6 @@
           "url": "https://www.bloomberg.com/news/articles/2026-07-16/mahmood-s-economic-blank-slate-key-to-appeal-as-uk-chancellor",
           "tags": [
             "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "UK Economy Grows as Services Defy Energy, Political Turmoil",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-16T06:04:09+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-16/uk-economy-grew-in-may-despite-energy-political-turmoil",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
             "market"
           ]
         },
@@ -519,66 +520,23 @@
       ]
     },
     "geopolitical": {
-      "avgSentiment": -0.078,
-      "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 4,
+      "avgSentiment": -0.0,
+      "negativeCount": 2,
+      "positiveCount": 2,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Gold Falls as US-Iran Hostilities Rekindles Fed Hike Bets",
-      "topPositiveTitle": "Latest Oil Market News and Analysis for July 17",
+      "topNegativeTitle": "Chip Stock Rout Deepens as TSMC Selloff Drives Taiwan Correction",
+      "topPositiveTitle": "Malaysian Growth Surges to 5.8% as Services, Tech Sales Counter Impact of War",
       "items": [
         {
-          "title": "Gold Falls as US-Iran Hostilities Rekindles Fed Hike Bets",
+          "title": "Chip Stock Rout Deepens as TSMC Selloff Drives Taiwan Correction",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -1.0,
-          "publishedAt": "2026-07-15T22:57:36+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-15/gold-steadies-as-soft-inflation-war-risk-cloud-fed-rate-outlook",
-          "tags": [
-            "geopolitical",
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "How the Iran War Is Rewiring the Oil Market",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-16T21:12:59+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-16/how-the-iran-war-is-rewiring-the-oil-market",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "UK Economy Grows as Services Defy Energy, Political Turmoil",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-16T06:04:09+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-16/uk-economy-grew-in-may-despite-energy-political-turmoil",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Chip Stocks Get Hit as AI Spending Anxiety Builds: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-15T22:07:47+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-15/stock-market-today-dow-s-p-live-updates",
+          "publishedAt": "2026-07-17T03:51:14+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-17/chip-stock-selloff-deepens-in-asia-as-tsmc-fails-to-impress",
           "tags": [
             "geopolitical",
             "jp_semiconductor",
@@ -587,15 +545,55 @@
           ]
         },
         {
-          "title": "Emerging Currencies Fall as US, Iran Tensions Strengthen Dollar",
+          "title": "Iran War, Monsoons Key Risk for India Economy, RBI Governor Says",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-07-17T04:49:39+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-17/iran-war-monsoons-key-risk-for-india-economy-rbi-governor-says",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Iran-Linked Tankers U-Turn and Zig-Zag as US Enforces Blockade",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-17T04:31:21+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-17/iran-linked-tankers-u-turn-and-zig-zag-as-us-enforces-blockade",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Latest Oil Market News and Analysis for July 17",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.2,
-          "publishedAt": "2026-07-16T09:13:20+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-16/emerging-stocks-slump-as-korea-curbs-fan-selloff-in-chip-giants",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-07-16T22:01:44+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-16/latest-oil-market-news-and-analysis-for-july-17",
           "tags": [
-            "fx",
+            "commodity",
             "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Malaysian Growth Surges to 5.8% as Services, Tech Sales Counter Impact of War",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-07-17T04:00:13+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-17/malaysian-growth-surges-to-5-8-as-services-tech-sales-counter-impact-of-war",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
             "market"
           ]
         }
