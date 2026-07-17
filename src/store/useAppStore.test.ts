@@ -4,11 +4,17 @@
 // 二重にBUYをBLOCKED化することを確認する。SELL/HOLD等の非BUYは対象外。
 import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest'
 import type { CsvImportProvenance, Holding, Trust } from '../types'
+import { DEFAULT_CASH_ASSUMPTIONS, DEFAULT_PORTFOLIO_POLICY } from '../types'
 import type { CommitteeDecision } from '../domain/analysis/committeeDecision'
 import { committeeToOfficialDecision, buildCsvSyncSummary, useAppStore } from './useAppStore'
 import { selectEffectiveCashAssumptions, selectCashAssumptionsFreshness } from './selectors'
 import { computeSnapshotGenerationIdentity } from '../utils/snapshotGenerationIdentity'
-import { restoreCsvImportGeneration } from './persist'
+import {
+  CSV_IMPORT_GENERATION_KEY,
+  restoreCsvImportedAt,
+  restoreCsvImportGeneration,
+  restoreCsvSyncSummary,
+} from './persist'
 
 function boundV3Snapshot(payload: Record<string, any>): string {
   const value = { ...payload }
@@ -549,7 +555,7 @@ describe('useAppStore: portfolio snapshot（P4.5-A012b）', () => {
     expect(after.trust).toEqual(before.trust)
   })
 
-  it('import後にholdings/trust/policy/cash/originがcanonical v3へpersistされる', () => {
+  it('import後にholdings/trust/policy/cash/originがcanonical v4へpersistされる', () => {
     useAppStore.setState(s => ({
       holdings: [],
       trust: [{ ...testTrust, eval: 0 }],
@@ -660,6 +666,72 @@ describe('useAppStore: portfolio snapshot（P4.5-A012b）', () => {
     expect(result.ok).toBe(true)
     expect(useAppStore.getState().system.csvSyncSummary).toBeNull()
     expect(store['v13_csv_sync_summary']).toBeUndefined()
+  })
+
+  it('R3-F001: csvImportedAt=null snapshotはcommit時刻をCSV時刻へ合成せずimmediate/reloadともnull', () => {
+    useAppStore.setState(s => ({
+      holdings: [], trust: [], portfolioPolicy: { ...DEFAULT_PORTFOLIO_POLICY },
+      cashAssumptions: { ...DEFAULT_CASH_ASSUMPTIONS },
+      system: { ...s.system, csvLastImportedAt: null, csvImportProvenance: null, csvSyncSummary: null },
+    }))
+    const raw = boundV3Snapshot({
+      schemaVersion: 'portfolio-snapshot-3', exportedAt: '2026-07-06T00:00:00.000Z',
+      csvImportedAt: null, csvImportProvenance: null, source: 'manual',
+      holdings: [], trust: [], portfolioPolicy: null, cashAssumptions: null,
+    })
+
+    expect(useAppStore.getState().importPortfolioSnapshot(raw)).toMatchObject({ ok: true, code: 'SUCCESS' })
+    expect(useAppStore.getState().system.csvLastImportedAt).toBeNull()
+    const physical = JSON.parse(store[CSV_IMPORT_GENERATION_KEY])
+    expect(physical.manifest.schemaVersion).toBe('csv-import-generation-4')
+    expect(physical.payload).toMatchObject({ origin: 'snapshot', csvImportedAt: null, syncSummary: null })
+    expect(physical.payload).not.toHaveProperty('importedAt')
+    expect(restoreCsvImportedAt()).toBeNull()
+  })
+
+  it('R3-F001: csvImportedAt非null snapshotはimmediate/canonical/reloadで同一値', () => {
+    useAppStore.setState(s => ({
+      holdings: [], trust: [],
+      system: { ...s.system, csvLastImportedAt: null, csvImportProvenance: null, csvSyncSummary: null },
+    }))
+    const importedAt = '2026-07-05T23:00:00.000Z'
+    const raw = boundV3Snapshot({
+      schemaVersion: 'portfolio-snapshot-3', exportedAt: '2026-07-06T00:00:00.000Z',
+      csvImportedAt: importedAt,
+      csvImportProvenance: snapshotProvenance(importedAt, '2026-07-05T22:00:00.000Z', '8'),
+      source: 'manual', holdings: [], trust: [], portfolioPolicy: null, cashAssumptions: null,
+    })
+
+    expect(useAppStore.getState().importPortfolioSnapshot(raw)).toMatchObject({ ok: true, code: 'SUCCESS' })
+    expect(useAppStore.getState().system.csvLastImportedAt).toBe(importedAt)
+    expect(JSON.parse(store[CSV_IMPORT_GENERATION_KEY]).payload.csvImportedAt).toBe(importedAt)
+    expect(restoreCsvImportedAt()).toBe(importedAt)
+  })
+
+  it('R3-F006: stale store csvSyncSummaryをsnapshot canonicalへ混載せずstore/reloadもnull', () => {
+    const staleAt = '2026-06-01T00:00:00.000Z'
+    useAppStore.setState(s => ({
+      holdings: [], trust: [], portfolioPolicy: { ...DEFAULT_PORTFOLIO_POLICY },
+      cashAssumptions: { ...DEFAULT_CASH_ASSUMPTIONS },
+      system: {
+        ...s.system, csvLastImportedAt: null, csvImportProvenance: null,
+        csvSyncSummary: {
+          importedAt: staleAt,
+          stock: { updated: 99, added: 0, removed: 0 },
+          trust: { updated: 0, reheld: 0, zeroed: 0, unknownFunds: [], ambiguousFundIds: [] },
+        },
+      },
+    }))
+    const raw = boundV3Snapshot({
+      schemaVersion: 'portfolio-snapshot-3', exportedAt: '2026-07-06T00:00:00.000Z',
+      csvImportedAt: null, csvImportProvenance: null, source: 'manual',
+      holdings: [], trust: [], portfolioPolicy: null, cashAssumptions: null,
+    })
+
+    expect(useAppStore.getState().importPortfolioSnapshot(raw)).toMatchObject({ ok: true, code: 'SUCCESS' })
+    expect(useAppStore.getState().system.csvSyncSummary).toBeNull()
+    expect(JSON.parse(store[CSV_IMPORT_GENERATION_KEY]).payload.syncSummary).toBeNull()
+    expect(restoreCsvSyncSummary()).toBeNull()
   })
 })
 
@@ -1223,7 +1295,7 @@ describe('useAppStore: importPortfolioSnapshot v2 full-sync（P4.5-A013-T7）', 
     expect(freshness?.trust.isStale).toBe(false)
   })
 
-  it('csvSyncSummary不変: v2 importはcsvSyncSummaryを一切変更しない（CSV取込結果として偽装しない）', () => {
+  it('csvSyncSummary世代分離: v2 importは古いCSV summaryをsnapshot generationへ持ち越さない', () => {
     setTrulyEmptySnapshotGeneration()
     useAppStore.setState(s => ({
       system: {
@@ -1235,10 +1307,9 @@ describe('useAppStore: importPortfolioSnapshot v2 full-sync（P4.5-A013-T7）', 
         },
       },
     }))
-    const before = useAppStore.getState().system.csvSyncSummary
     const result = useAppStore.getState().importPortfolioSnapshot(makeV2Snapshot())
     expect(result.ok).toBe(true)
-    expect(useAppStore.getState().system.csvSyncSummary).toEqual(before)
+    expect(useAppStore.getState().system.csvSyncSummary).toBeNull()
   })
 
   it('portfolioPolicy/cashAssumptionsがv2 snapshotに含まれる場合は反映される', () => {

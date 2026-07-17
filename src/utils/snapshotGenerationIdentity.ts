@@ -1,8 +1,18 @@
-import type { CsvImportProvenance } from '../types'
+import type {
+  CashAssumptions,
+  CsvImportProvenance,
+  CsvSyncSummary,
+  Holding,
+  LearningState,
+  PortfolioPolicy,
+  Trust,
+} from '../types'
+import type { TrustShortPortfolioSnapshot } from '../domain/learning/trustShortTracker'
 import { compareUtf16CodeUnits, sha256Utf8Hex } from '../domain/csv/csvSemanticIdentity'
 import { normalizeStrictTimestamp } from './strictTimestamp'
 
 export const SNAPSHOT_GENERATION_CONTRACT = 'portfolio-snapshot-generation-1' as const
+export const CANONICAL_GENERATION_CONTRACT = 'canonical-portfolio-generation-1' as const
 
 export interface SnapshotGenerationHolding {
   code: string
@@ -38,6 +48,20 @@ export interface SnapshotGenerationInput {
   } | null
   csvImportedAt: string | null
   csvImportProvenance: CsvImportProvenance | null
+}
+
+export interface CanonicalPortfolioGenerationIdentityInput {
+  holdings: Holding[]
+  trust: Trust[]
+  learning: LearningState | null
+  portfolioPolicy: PortfolioPolicy
+  cashAssumptions: CashAssumptions
+  csvImportedAt: string | null
+  csvImportProvenance: CsvImportProvenance | null
+  syncSummary: CsvSyncSummary | null
+  trustShortSnapshot: TrustShortPortfolioSnapshot
+  origin: 'csv' | 'snapshot' | null
+  snapshotTransferIdentity: string | null
 }
 
 type CanonicalScalar = string | number | boolean | null
@@ -131,6 +155,58 @@ export function serializeSnapshotGeneration(input: SnapshotGenerationInput): str
 
 export function computeSnapshotGenerationIdentity(input: SnapshotGenerationInput): string {
   return `sha256:${sha256Utf8Hex(serializeSnapshotGeneration(input))}`
+}
+
+function stableCanonicalValue(value: unknown): unknown {
+  if (Array.isArray(value)) return value.map(stableCanonicalValue)
+  if (value !== null && typeof value === 'object') {
+    const record = value as Record<string, unknown>
+    const keys = Object.keys(record).sort(compareUtf16CodeUnits)
+    return Object.fromEntries(keys.map(key => [key, stableCanonicalValue(record[key])]))
+  }
+  if (typeof value === 'number') return canonicalNumber(value)
+  return value
+}
+
+function stableRows<T>(rows: T[]): unknown[] {
+  return rows
+    .map(row => stableCanonicalValue(row))
+    .map(row => ({ row, key: JSON.stringify(row) }))
+    .sort((left, right) => compareUtf16CodeUnits(left.key, right.key))
+    .map(entry => entry.row)
+}
+
+/**
+ * Identity of the complete durable canonical generation. Unlike the transfer identity, this
+ * also binds derived holdings/trust fields, learning, tracker baseline, sync metadata, and origin.
+ */
+export function serializeCanonicalPortfolioGeneration(
+  input: CanonicalPortfolioGenerationIdentityInput,
+): string {
+  return JSON.stringify(stableCanonicalValue({
+    contract: CANONICAL_GENERATION_CONTRACT,
+    holdings: stableRows(input.holdings),
+    trust: stableRows(input.trust),
+    learning: input.learning,
+    transferGeneration: JSON.parse(serializeSnapshotGeneration({
+      holdings: input.holdings,
+      trust: input.trust,
+      portfolioPolicy: input.portfolioPolicy,
+      cashAssumptions: input.cashAssumptions,
+      csvImportedAt: input.csvImportedAt,
+      csvImportProvenance: input.csvImportProvenance,
+    })),
+    syncSummary: input.syncSummary,
+    trustShortSnapshot: input.trustShortSnapshot,
+    origin: input.origin,
+    snapshotTransferIdentity: input.snapshotTransferIdentity,
+  }))
+}
+
+export function computeCanonicalPortfolioGenerationIdentity(
+  input: CanonicalPortfolioGenerationIdentityInput,
+): string {
+  return `sha256:${sha256Utf8Hex(serializeCanonicalPortfolioGeneration(input))}`
 }
 
 export function isSnapshotGenerationIdentity(value: unknown): value is string {

@@ -3,6 +3,7 @@ import { createHash } from 'node:crypto'
 import { describe, expect, it } from 'vitest'
 import type { CsvImportProvenance } from '../types'
 import {
+  computeCanonicalPortfolioGenerationIdentity,
   computeSnapshotGenerationIdentity,
   serializeSnapshotGeneration,
   type SnapshotGenerationInput,
@@ -98,5 +99,50 @@ describe('T9-A004-R2-F1 snapshot generation identity', () => {
     })
     const jst = envelope({ csvImportedAt: authoritative.importedAt, csvImportProvenance: authoritative })
     expect(computeSnapshotGenerationIdentity(jst)).toBe(computeSnapshotGenerationIdentity(utc))
+  })
+})
+
+describe('T9-A004-R3-FIX-A canonical generation identity', () => {
+  const fullGeneration = {
+    holdings: [
+      { code: 'B', name: 'B', eval: 2, pnlPct: 2 },
+      { code: 'A', name: 'A', eval: 1, pnlPct: 1 },
+    ],
+    trust: [],
+    learning: null,
+    portfolioPolicy: { jpStockMaxRatio: 0.1 },
+    cashAssumptions: {
+      cashDeposits: 0,
+      standbyFunds: 0,
+      manualOverrideEnabled: false,
+      manualUpdatedAt: null,
+    },
+    csvImportedAt: null,
+    csvImportProvenance: null,
+    syncSummary: null,
+    trustShortSnapshot: { date: '2026-07-17', total: 0, evalById: {} },
+    origin: 'snapshot' as const,
+    snapshotTransferIdentity: `sha256:${'a'.repeat(64)}`,
+  } as any
+
+  it('is locale-independent for row order and binds learning/trust-short/transfer metadata', () => {
+    const baseline = computeCanonicalPortfolioGenerationIdentity(fullGeneration)
+    expect(baseline).toMatch(/^sha256:[0-9a-f]{64}$/)
+    expect(computeCanonicalPortfolioGenerationIdentity({
+      ...fullGeneration,
+      holdings: [...fullGeneration.holdings].reverse(),
+    })).toBe(baseline)
+    expect(computeCanonicalPortfolioGenerationIdentity({
+      ...fullGeneration,
+      learning: { marker: 'changed' },
+    })).not.toBe(baseline)
+    expect(computeCanonicalPortfolioGenerationIdentity({
+      ...fullGeneration,
+      trustShortSnapshot: { ...fullGeneration.trustShortSnapshot, total: 1 },
+    })).not.toBe(baseline)
+    expect(computeCanonicalPortfolioGenerationIdentity({
+      ...fullGeneration,
+      snapshotTransferIdentity: `sha256:${'b'.repeat(64)}`,
+    })).not.toBe(baseline)
   })
 })

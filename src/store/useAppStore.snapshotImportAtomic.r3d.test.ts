@@ -137,8 +137,12 @@ describe('T9-A004-R3d: canonical storage evidence / present-invalid writer polic
   }
 
   // committed canonical世代をseedし、seed書込自体をwriteLogから除外して返す。
-  function seedCommittedCanonical(tag: string, sourceAsOf: string): string {
-    persistCsvImportTransaction(canonicalPayload(tag, sourceAsOf))
+  function seedCommittedCanonical(
+    tag: string,
+    sourceAsOf: string,
+    overrides: Partial<CsvImportPersistencePayload> = {},
+  ): string {
+    persistCsvImportTransaction(canonicalPayload(tag, sourceAsOf, overrides))
     writeLog.length = 0
     return storage[CSV_IMPORT_GENERATION_KEY]
   }
@@ -187,11 +191,20 @@ describe('T9-A004-R3d: canonical storage evidence / present-invalid writer polic
   })
 
   describe('valid committed canonicalはstore emptyでもcurrent generation evidence', () => {
-    it('R3d-1: store empty + canonical valid + 同一generationのincomingはDUPLICATE_SNAPSHOTのno-op（上書き・再analysis・side effect 0）', () => {
-      const seededRaw = seedCommittedCanonical('0', '2026-07-10T00:00:00.000Z')
-      // canonicalと同一のsource provenanceを持つsnapshot（同一generationの再取込相当）
+    it('R3d-1: store empty + canonical valid + complete snapshot identity一致だけがDUPLICATE_SNAPSHOT（side effect 0）', () => {
+      const matchingCash = { ...DEFAULT_CASH_ASSUMPTIONS, manualOverrideEnabled: true }
+      const seededRaw = seedCommittedCanonical('0', '2026-07-10T00:00:00.000Z', {
+        portfolioPolicy: DEFAULT_PORTFOLIO_POLICY,
+        cashAssumptions: matchingCash,
+      })
+      // CSV provenanceだけでなく、snapshot transfer上の全generation fieldをcanonicalへ揃える。
       const raw = v3Snapshot(generationProvenance('0', '2026-07-10T00:00:00.000Z'), {
-        holdings: [{ code: 'R3D-CASE1', name: 'R3d-1銘柄', eval: 111_000, pnlPct: 0 }],
+        holdings: [{
+          code: '9999', name: '銘柄9999', eval: 200_000, pnlPct: 1,
+          sector: 'テスト', mu: 0.08, sigma: 0.2, sigmaSource: 'static', beta: 1,
+        }],
+        portfolioPolicy: DEFAULT_PORTFOLIO_POLICY,
+        cashAssumptions: matchingCash,
       })
       const before = useAppStore.getState()
       let notifications = 0
@@ -331,7 +344,7 @@ describe('T9-A004-R3d: canonical storage evidence / present-invalid writer polic
       })
     })
 
-    it('R3d-6: store provenance null + canonical authoritativeでもcanonicalがevidence（別generationはblock、同一generationはduplicate）', () => {
+    it('R3d-6: store provenance null + canonical authoritativeでもcanonicalがevidence（CSV provenance一致だけではduplicateにしない）', () => {
       // store: 内容はあるがprovenance評価不能（provenance null + importedAtのみ）
       useAppStore.setState(state => ({
         holdings: [holding('9999', 200_000)],
@@ -352,13 +365,58 @@ describe('T9-A004-R3d: canonical storage evidence / present-invalid writer polic
       // 存在する以上silent overwriteはできない
       expect(blocked).toMatchObject({ ok: false, code: 'SNAPSHOT_OVERWRITE_BLOCKED' })
 
-      const duplicate = useAppStore.getState().importPortfolioSnapshot(
+      const sameCsvDifferentSnapshot = useAppStore.getState().importPortfolioSnapshot(
         v3Snapshot(generationProvenance('0', '2026-07-10T00:00:00.000Z'), {
           holdings: [{ code: 'R3D-CASE6B', name: 'R3d-6b銘柄', eval: 666_500, pnlPct: 0 }],
         }),
       )
-      expect(duplicate).toEqual({ ok: true, code: 'DUPLICATE_SNAPSHOT' })
+      expect(sameCsvDifferentSnapshot).toMatchObject({ ok: false, code: 'SNAPSHOT_OVERWRITE_BLOCKED' })
       expect(writeLog.length).toBe(0)
+    })
+
+    it('R3-F005: 同じCSV provenanceでもpolicy/cashが異なるsnapshotはduplicateにしない', () => {
+      const seededRaw = seedCommittedCanonical('0', '2026-07-10T00:00:00.000Z')
+      const raw = v3Snapshot(generationProvenance('0', '2026-07-10T00:00:00.000Z'), {
+        holdings: [{
+          code: '9999', name: '銘柄9999', eval: 200_000, pnlPct: 1,
+          sector: 'テスト', mu: 0.08, sigma: 0.2, sigmaSource: 'static', beta: 1,
+        }],
+        portfolioPolicy: { jpStockMaxRatio: 0.15 },
+        cashAssumptions: {
+          ...DEFAULT_CASH_ASSUMPTIONS,
+          cashDeposits: 123,
+          manualOverrideEnabled: true,
+        },
+      })
+      const before = useAppStore.getState()
+      let notifications = 0
+      const unsubscribe = useAppStore.subscribe(() => { notifications += 1 })
+      const result = useAppStore.getState().importPortfolioSnapshot(raw)
+      unsubscribe()
+
+      expect(result).toMatchObject({ ok: false, code: 'SNAPSHOT_OVERWRITE_BLOCKED' })
+      expect(storage[CSV_IMPORT_GENERATION_KEY]).toBe(seededRaw)
+      expect(useAppStore.getState()).toBe(before)
+      expect(writeLog).toEqual([])
+      expect(notifications).toBe(0)
+    })
+
+    it('R3-F005: 同じCSV provenanceでもholdingsが異なるsnapshotはduplicateにせず全副作用0', () => {
+      const seededRaw = seedCommittedCanonical('0', '2026-07-10T00:00:00.000Z')
+      const raw = v3Snapshot(generationProvenance('0', '2026-07-10T00:00:00.000Z'), {
+        holdings: [{ code: 'DIFFERENT', name: '別snapshot', eval: 777_000, pnlPct: 7 }],
+      })
+      const before = useAppStore.getState()
+      let notifications = 0
+      const unsubscribe = useAppStore.subscribe(() => { notifications += 1 })
+      const result = useAppStore.getState().importPortfolioSnapshot(raw)
+      unsubscribe()
+
+      expect(result).toMatchObject({ ok: false, code: 'SNAPSHOT_OVERWRITE_BLOCKED' })
+      expect(storage[CSV_IMPORT_GENERATION_KEY]).toBe(seededRaw)
+      expect(useAppStore.getState()).toBe(before)
+      expect(writeLog).toEqual([])
+      expect(notifications).toBe(0)
     })
   })
 

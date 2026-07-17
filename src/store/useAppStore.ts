@@ -28,6 +28,7 @@ import {
   persistCsvImportedAt,
   restoreCsvImportedAt,
   restoreCsvSyncSummary,
+  getCsvImportPayloadCsvImportedAt,
   restoreCsvImportGeneration,
   restoreCsvImportGenerationFromRaw,
   persistCsvImportTransaction,
@@ -438,20 +439,37 @@ function persistCurrentPortfolioGeneration(state: AppState): void {
   const canonical = restoreCsvImportGeneration()
   if (canonical.status === 'committed') {
     try {
+      const origin = Object.prototype.hasOwnProperty.call(canonical.payload, 'origin')
+        ? canonical.payload.origin ?? null
+        : null
+      const csvImportedAt = state.system.csvLastImportedAt ??
+        getCsvImportPayloadCsvImportedAt(canonical.payload)
+      const syncSummary = origin === 'snapshot'
+        ? null
+        : state.system.csvSyncSummary ?? canonical.payload.syncSummary
+      const provenance = state.system.csvImportProvenance ?? null
       persistCsvImportTransaction({
         holdings: state.holdings,
         trust: state.trust,
         learning: state.learning,
-        importedAt: state.system.csvLastImportedAt ?? canonical.payload.importedAt,
+        csvImportedAt,
         // Never attach a previous canonical generation's provenance to replacement content.
-        provenance: state.system.csvImportProvenance ?? null,
-        syncSummary: state.system.csvSyncSummary ?? canonical.payload.syncSummary,
+        provenance,
+        syncSummary,
         trustShortSnapshot: canonical.payload.trustShortSnapshot,
         portfolioPolicy: state.portfolioPolicy,
         cashAssumptions: state.cashAssumptions,
-        // v1/v2 were CSV-only. Once a v3 origin exists, ordinary coordinated replacements
-        // preserve it; origin is descriptive metadata and never freshness authority.
-        origin: canonical.payload.origin ?? 'csv',
+        // Legacy v1/v2 origin is unknown. Forward migration records that explicitly instead of
+        // guessing CSV merely because the old envelope lacked an origin field.
+        origin,
+        snapshotTransferIdentity: computeSnapshotGenerationIdentity({
+          holdings: state.holdings,
+          trust: state.trust,
+          portfolioPolicy: state.portfolioPolicy,
+          cashAssumptions: state.cashAssumptions,
+          csvImportedAt,
+          csvImportProvenance: provenance,
+        }),
       })
     } catch {
       // These historical actions are best-effort persistence. A failed full replacement leaves
@@ -584,12 +602,13 @@ function computeCurrentSnapshotStateIdentity(state: AppState): string | null {
 // 経由せず、判定前のstore mutationは0のまま）。
 function computeCanonicalSnapshotStateIdentity(payload: CsvImportPersistencePayload): string | null {
   try {
+    if (payload.snapshotTransferIdentity) return payload.snapshotTransferIdentity
     return computeSnapshotGenerationIdentity({
       holdings: payload.holdings,
       trust: payload.trust,
       portfolioPolicy: payload.portfolioPolicy ?? { ...DEFAULT_PORTFOLIO_POLICY },
       cashAssumptions: payload.cashAssumptions ?? { ...DEFAULT_CASH_ASSUMPTIONS },
-      csvImportedAt: payload.importedAt,
+      csvImportedAt: getCsvImportPayloadCsvImportedAt(payload),
       csvImportProvenance: payload.provenance ?? null,
     })
   } catch {
@@ -1183,8 +1202,12 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
         cashAssumptions: savedCashAssumptions,
         system: {
           ...s.system,
-          ...(savedCsvAt ? { csvLastImportedAt: savedCsvAt } : {}),
-          ...(savedCsvSyncSummary ? { csvSyncSummary: savedCsvSyncSummary } : {}),
+          ...(csvGeneration.status === 'committed'
+            ? { csvLastImportedAt: savedCsvAt, csvSyncSummary: savedCsvSyncSummary }
+            : {
+                ...(savedCsvAt ? { csvLastImportedAt: savedCsvAt } : {}),
+                ...(savedCsvSyncSummary ? { csvSyncSummary: savedCsvSyncSummary } : {}),
+              }),
           csvImportProvenance: savedCsvProvenance,
         },
       }))
@@ -1619,13 +1642,21 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
           holdings: computed.holdings,
           trust: computed.trust,
           learning: computed.learning,
-          importedAt: now,
+          csvImportedAt: now,
           provenance: incomingProvenance,
           syncSummary,
           trustShortSnapshot: stagedTrustExecution.snapshot,
           portfolioPolicy: baseState.portfolioPolicy,
           cashAssumptions: baseState.cashAssumptions,
           origin: 'csv',
+          snapshotTransferIdentity: computeSnapshotGenerationIdentity({
+            holdings: computed.holdings,
+            trust: computed.trust,
+            portfolioPolicy: baseState.portfolioPolicy,
+            cashAssumptions: baseState.cashAssumptions,
+            csvImportedAt: now,
+            csvImportProvenance: incomingProvenance,
+          }),
         }, generationCommittedAt, transaction.canonicalPreviousRaw)
         durableCommitted = true
         setPortfolioGenerationTransactionPhase(transaction, 'COMMITTED')
@@ -1957,17 +1988,18 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
       // 扱いでcommitted世代をsilent overwriteしない。
       const currentGenerationExists = canonicalPayload !== null ||
         hasCurrentPortfolioGenerationEvidence(state)
-      const currentStateIdentity = currentGenerationExists
+      const currentStateIdentity = canonicalPayload === null && currentGenerationExists
         ? computeCurrentSnapshotStateIdentity(state)
         : null
       const canonicalStateIdentity = canonicalPayload !== null
         ? computeCanonicalSnapshotStateIdentity(canonicalPayload)
         : null
       if (snapshot.snapshotGenerationIdentity !== null && (
-        snapshot.snapshotGenerationIdentity === currentStateIdentity ||
+        (canonicalPayload === null && snapshot.snapshotGenerationIdentity === currentStateIdentity) ||
         (canonicalStateIdentity !== null &&
           snapshot.snapshotGenerationIdentity === canonicalStateIdentity) ||
-        (lastAppliedSnapshotGeneration?.incomingIdentity === snapshot.snapshotGenerationIdentity &&
+        (canonicalPayload === null &&
+          lastAppliedSnapshotGeneration?.incomingIdentity === snapshot.snapshotGenerationIdentity &&
           lastAppliedSnapshotGeneration.currentStateIdentity === currentStateIdentity)
       )) {
         return { ok: true, code: 'DUPLICATE_SNAPSHOT' }
@@ -1993,10 +2025,13 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
           currentGenerationExists,
         }).decision
         if (monotonicity === 'DUPLICATE') {
-          // canonical世代と同一のsemantic contentは再取込・再analysisせずno-opで返す
-          // （importCsvのDUPLICATE_CSVと同じ扱い。store emptyでもcanonical世代を
-          // 上書き・再analysisしない）。
-          return { ok: true, code: 'DUPLICATE_SNAPSHOT' }
+          // CSV semantic identity only identifies the CSV source. Snapshot policy, cash, and
+          // holdings may still differ, so only the complete identity check above may no-op.
+          return {
+            ok: false,
+            code: 'SNAPSHOT_OVERWRITE_BLOCKED',
+            error: '同じCSV由来でもsnapshot全体のgenerationが異なるため、既存データを自動上書きできません。',
+          }
         }
         if (monotonicity === 'REJECT_STALE') {
           return {
@@ -2125,6 +2160,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
           // Operation metadata and source provenance are replaced from one incoming generation.
           csvLastImportedAt: snapshot.csvImportedAt,
           csvImportProvenance: snapshot.csvImportProvenance,
+          csvSyncSummary: null,
         },
       }
 
@@ -2143,13 +2179,13 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
       // 当該incoming世代からtrust-short baselineをstageする。旧canonical世代の
       // 実行判定baselineを新envelopeへ再添付しない（tracker telemetry本体の
       // 別key契約はここでは変更しない）。staging失敗時は世代をpublishしない。
-      const importedAt = snapshot.csvImportProvenance?.importedAt ??
+      const trackerBaselineAt = snapshot.csvImportProvenance?.importedAt ??
         snapshot.csvImportedAt ?? nowIso
       let stagedTrustShortSnapshot: TrustShortPortfolioSnapshot
       try {
         stagedTrustShortSnapshot = stageTrustExecutionFromCsvSync(
           computed.trust,
-          importedAt,
+          trackerBaselineAt,
           captureTrustShortPortfolioBaseline(),
         ).snapshot
       } catch (error) {
@@ -2164,17 +2200,14 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
         holdings: computed.holdings,
         trust: computed.trust,
         learning: computed.learning,
-        importedAt,
+        csvImportedAt: snapshot.csvImportedAt,
         provenance: snapshot.csvImportProvenance,
-        syncSummary: state.system.csvSyncSummary ?? {
-          importedAt,
-          stock: { updated: 0, added: 0, removed: 0 },
-          trust: { updated: 0, reheld: 0, zeroed: 0, unknownFunds: [], ambiguousFundIds: [] },
-        },
+        syncSummary: null,
         trustShortSnapshot: stagedTrustShortSnapshot,
         portfolioPolicy: nextPortfolioPolicy,
         cashAssumptions: nextCashAssumptions,
         origin: 'snapshot',
+        snapshotTransferIdentity: snapshot.snapshotGenerationIdentity,
       }
 
       // pre-persist CAS付き単一durable commit。transaction開始時に捕捉したbytesと
@@ -2253,6 +2286,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
             status: 'success',
             csvLastImportedAt: snapshot.csvImportedAt,
             csvImportProvenance: snapshot.csvImportProvenance,
+            csvSyncSummary: null,
             analysisLastRunAt: nowIso,
             error: null,
             localStorageFreshness,

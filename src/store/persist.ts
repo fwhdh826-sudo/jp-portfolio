@@ -13,6 +13,10 @@ import { sanitizeLearningState } from '../domain/learning/performanceTracker'
 import type { TrustShortPortfolioSnapshot } from '../domain/learning/trustShortTracker'
 import { isStrictTimestamp } from '../utils/strictTimestamp'
 import { isCsvImportProvenance } from '../domain/csv/csvProvenance'
+import {
+  computeCanonicalPortfolioGenerationIdentity,
+  isSnapshotGenerationIdentity,
+} from '../utils/snapshotGenerationIdentity'
 
 const PORTFOLIO_KEY = 'v81_portfolio'
 const TRUST_KEY = 'v81_trust'
@@ -23,9 +27,10 @@ const LEARNING_TTL_MS = 30 * 24 * 60 * 60 * 1000
 export const CSV_IMPORT_GENERATION_KEY = 'v13_csv_import_committed_generation'
 const CSV_IMPORT_GENERATION_SCHEMA_V1 = 'csv-import-generation-1' as const
 const CSV_IMPORT_GENERATION_SCHEMA_V2 = 'csv-import-generation-2' as const
-export const CSV_IMPORT_GENERATION_SCHEMA = 'csv-import-generation-3' as const
+const CSV_IMPORT_GENERATION_SCHEMA_V3 = 'csv-import-generation-3' as const
+export const CSV_IMPORT_GENERATION_SCHEMA = 'csv-import-generation-4' as const
 
-export type PortfolioGenerationOrigin = 'csv' | 'snapshot'
+export type PortfolioGenerationOrigin = 'csv' | 'snapshot' | null
 
 interface Snapshot<T> {
   data: T
@@ -36,8 +41,11 @@ export interface CsvImportPersistencePayload {
   holdings: Holding[]
   trust: Trust[]
   learning: LearningState | null
-  importedAt: string
-  syncSummary: CsvSyncSummary
+  /** Legacy v1-v3 field. New v4 envelopes never persist this key. */
+  importedAt?: string
+  /** Durable CSV source/import time. Null is preserved for snapshots without CSV metadata. */
+  csvImportedAt?: string | null
+  syncSummary: CsvSyncSummary | null
   trustShortSnapshot: TrustShortPortfolioSnapshot
   /** Absent only on legacy v1 callers/envelopes; every v2/v3 envelope contains this key. */
   provenance?: CsvImportProvenance | null
@@ -45,6 +53,10 @@ export interface CsvImportPersistencePayload {
   portfolioPolicy?: PortfolioPolicy
   cashAssumptions?: CashAssumptions
   origin?: PortfolioGenerationOrigin
+  /** Complete durable canonical identity; absent only in legacy v1-v3 envelopes/callers. */
+  snapshotGenerationIdentity?: string | null
+  /** Incoming/export transfer identity used for pre-analysis duplicate classification. */
+  snapshotTransferIdentity?: string | null
 }
 
 export interface CsvImportPersistenceReceipt {
@@ -55,6 +67,7 @@ export interface CsvImportPersistenceReceipt {
 interface CsvImportGenerationManifest {
   schemaVersion:
     | typeof CSV_IMPORT_GENERATION_SCHEMA
+    | typeof CSV_IMPORT_GENERATION_SCHEMA_V3
     | typeof CSV_IMPORT_GENERATION_SCHEMA_V2
     | typeof CSV_IMPORT_GENERATION_SCHEMA_V1
   generationId: string
@@ -69,7 +82,13 @@ interface CsvImportGenerationEnvelope {
 }
 
 export type CsvImportGenerationRestoreResult =
-  | { status: 'committed'; generationId: string; savedAt: number; payload: CsvImportPersistencePayload }
+  | {
+      status: 'committed'
+      schemaVersion: CsvImportGenerationManifest['schemaVersion']
+      generationId: string
+      savedAt: number
+      payload: CsvImportPersistencePayload
+    }
   | { status: 'none' | 'invalid' }
 
 export class CsvImportPersistenceError extends Error {
@@ -277,27 +296,75 @@ function isCashAssumptions(value: unknown): value is CashAssumptions {
 function isCsvImportPayload(value: unknown, schemaVersion: string): value is CsvImportPersistencePayload {
   const isV1 = schemaVersion === CSV_IMPORT_GENERATION_SCHEMA_V1
   const isV2 = schemaVersion === CSV_IMPORT_GENERATION_SCHEMA_V2
-  const isV3 = schemaVersion === CSV_IMPORT_GENERATION_SCHEMA
-  if (!isV1 && !isV2 && !isV3) return false
+  const isV3 = schemaVersion === CSV_IMPORT_GENERATION_SCHEMA_V3
+  const isV4 = schemaVersion === CSV_IMPORT_GENERATION_SCHEMA
+  if (!isV1 && !isV2 && !isV3 && !isV4) return false
   const baseKeys = ['holdings', 'trust', 'learning', 'importedAt', 'syncSummary', 'trustShortSnapshot'] as const
-  if (!isRecord(value) || !hasExactKeys(value,
-    isV1
+  if (!isRecord(value)) return false
+  if (!hasExactKeys(value, isV4
+    ? [
+        'holdings', 'trust', 'learning', 'csvImportedAt', 'provenance', 'syncSummary',
+        'trustShortSnapshot', 'portfolioPolicy', 'cashAssumptions', 'origin',
+        'snapshotGenerationIdentity', 'snapshotTransferIdentity',
+      ]
+    : isV1
       ? baseKeys
       : isV2
         ? [...baseKeys, 'provenance']
         : [...baseKeys, 'provenance', 'portfolioPolicy', 'cashAssumptions', 'origin'])) return false
-  return Array.isArray(value.holdings) && value.holdings.every(isHolding) &&
+
+  const commonValid = Array.isArray(value.holdings) && value.holdings.every(isHolding) &&
     Array.isArray(value.trust) && value.trust.every(isTrust) &&
     (value.learning === null || isLearningState(value.learning)) &&
-    isTimestamp(value.importedAt, false) && isCsvSyncSummary(value.syncSummary) &&
-    isTrustShortSnapshot(value.trustShortSnapshot) &&
-    (isV1 || value.provenance === null ||
-      (isCsvImportProvenance(value.provenance) && value.provenance.importedAt === value.importedAt)) &&
-    (!isV3 || (
-      isPortfolioPolicy(value.portfolioPolicy) &&
-      isCashAssumptions(value.cashAssumptions) &&
-      (value.origin === 'csv' || value.origin === 'snapshot')
-    ))
+    isTrustShortSnapshot(value.trustShortSnapshot)
+  if (!commonValid) return false
+
+  if (!isV4) {
+    return isTimestamp(value.importedAt, false) && isCsvSyncSummary(value.syncSummary) &&
+      (isV1 || value.provenance === null ||
+        (isCsvImportProvenance(value.provenance) && value.provenance.importedAt === value.importedAt)) &&
+      (!isV3 || (
+        isPortfolioPolicy(value.portfolioPolicy) &&
+        isCashAssumptions(value.cashAssumptions) &&
+        (value.origin === 'csv' || value.origin === 'snapshot')
+      ))
+  }
+
+  const csvImportedAt = value.csvImportedAt
+  const provenance = value.provenance
+  const syncSummary = value.syncSummary
+  const origin = value.origin
+  if ((csvImportedAt !== null && !isTimestamp(csvImportedAt, false)) ||
+      (provenance !== null && !isCsvImportProvenance(provenance)) ||
+      (syncSummary !== null && !isCsvSyncSummary(syncSummary)) ||
+      !isPortfolioPolicy(value.portfolioPolicy) ||
+      !isCashAssumptions(value.cashAssumptions) ||
+      (origin !== 'csv' && origin !== 'snapshot' && origin !== null) ||
+      !isSnapshotGenerationIdentity(value.snapshotGenerationIdentity) ||
+      (value.snapshotTransferIdentity !== null &&
+        !isSnapshotGenerationIdentity(value.snapshotTransferIdentity))) return false
+
+  if (provenance !== null && provenance.importedAt !== csvImportedAt) return false
+  if (syncSummary !== null &&
+      (csvImportedAt === null || syncSummary.importedAt !== csvImportedAt)) return false
+  if (origin === 'csv' && (csvImportedAt === null || syncSummary === null)) return false
+  // The current snapshot transfer schema has no summary field. Never bless an ambient store
+  // summary as part of the incoming snapshot generation.
+  if (origin === 'snapshot' && syncSummary !== null) return false
+  if (value.snapshotGenerationIdentity !== computeCanonicalPortfolioGenerationIdentity({
+    holdings: value.holdings as Holding[],
+    trust: value.trust as Trust[],
+    learning: value.learning as LearningState | null,
+    portfolioPolicy: value.portfolioPolicy,
+    cashAssumptions: value.cashAssumptions,
+    csvImportedAt,
+    csvImportProvenance: provenance,
+    syncSummary,
+    trustShortSnapshot: value.trustShortSnapshot as TrustShortPortfolioSnapshot,
+    origin,
+    snapshotTransferIdentity: value.snapshotTransferIdentity,
+  })) return false
+  return true
 }
 
 /**
@@ -327,6 +394,7 @@ export function restoreCsvImportGenerationFromRaw(raw: string | null): CsvImport
     if (
       !hasExactKeys(manifest, ['schemaVersion', 'generationId', 'savedAt', 'committed', 'payloadChecksum']) ||
       (manifest.schemaVersion !== CSV_IMPORT_GENERATION_SCHEMA &&
+        manifest.schemaVersion !== CSV_IMPORT_GENERATION_SCHEMA_V3 &&
         manifest.schemaVersion !== CSV_IMPORT_GENERATION_SCHEMA_V2 &&
         manifest.schemaVersion !== CSV_IMPORT_GENERATION_SCHEMA_V1) ||
       typeof manifest.generationId !== 'string' || manifest.generationId.length === 0 ||
@@ -339,6 +407,7 @@ export function restoreCsvImportGenerationFromRaw(raw: string | null): CsvImport
     if (checksum(serializedPayload) !== manifest.payloadChecksum) return { status: 'invalid' }
     return {
       status: 'committed',
+      schemaVersion: manifest.schemaVersion,
       generationId: manifest.generationId,
       savedAt: manifest.savedAt,
       payload: envelope.payload,
@@ -456,11 +525,20 @@ export function persistCsvImportedAt(at: string): void {
   try { localStorage.setItem(CSV_IMPORTED_AT_KEY, JSON.stringify(snap)) } catch { /* quota */ }
 }
 
+/** Interpret CSV source/import time without rewriting legacy v1-v3 payload bytes. */
+export function getCsvImportPayloadCsvImportedAt(payload: CsvImportPersistencePayload): string | null {
+  return Object.prototype.hasOwnProperty.call(payload, 'csvImportedAt')
+    ? payload.csvImportedAt ?? null
+    : payload.importedAt ?? null
+}
+
 export function restoreCsvImportedAt(): string | null {
   try {
     const generation = restoreCsvImportGeneration()
     if (generation.status === 'committed') {
-      return Date.now() - generation.savedAt <= CSV_TTL_MS ? generation.payload.importedAt : null
+      return Date.now() - generation.savedAt <= CSV_TTL_MS
+        ? getCsvImportPayloadCsvImportedAt(generation.payload)
+        : null
     }
     if (generation.status === 'invalid') return null
     const raw = localStorage.getItem(CSV_IMPORTED_AT_KEY)
@@ -513,8 +591,17 @@ export function persistCsvImportTransaction(
   }
   let serializedEnvelope: string
   try {
-    const normalizedPayload: CsvImportPersistencePayload = {
-      ...payload,
+    const hasCsvImportedAt = Object.prototype.hasOwnProperty.call(payload, 'csvImportedAt')
+    const {
+      importedAt: legacyImportedAt,
+      csvImportedAt: requestedCsvImportedAt,
+      snapshotGenerationIdentity: _requestedSnapshotGenerationIdentity,
+      snapshotTransferIdentity: requestedSnapshotTransferIdentity,
+      ...payloadWithoutTimestampAliases
+    } = payload
+    const normalizedBase = {
+      ...payloadWithoutTimestampAliases,
+      csvImportedAt: hasCsvImportedAt ? requestedCsvImportedAt ?? null : legacyImportedAt ?? null,
       provenance: payload.provenance ?? null,
       portfolioPolicy: Object.prototype.hasOwnProperty.call(payload, 'portfolioPolicy')
         ? payload.portfolioPolicy
@@ -522,7 +609,26 @@ export function persistCsvImportTransaction(
       cashAssumptions: Object.prototype.hasOwnProperty.call(payload, 'cashAssumptions')
         ? payload.cashAssumptions
         : { ...DEFAULT_CASH_ASSUMPTIONS },
-      origin: Object.prototype.hasOwnProperty.call(payload, 'origin') ? payload.origin : 'csv',
+      // Missing origin belongs to a legacy/unknown caller. Do not infer CSV merely because
+      // v1/v2 had no origin key; production CSV and snapshot commits always pass it explicitly.
+      origin: payload.origin ?? null,
+      snapshotTransferIdentity: requestedSnapshotTransferIdentity ?? null,
+    }
+    const normalizedPayload: CsvImportPersistencePayload = {
+      ...normalizedBase,
+      snapshotGenerationIdentity: computeCanonicalPortfolioGenerationIdentity({
+        holdings: normalizedBase.holdings,
+        trust: normalizedBase.trust,
+        learning: normalizedBase.learning,
+        portfolioPolicy: normalizedBase.portfolioPolicy!,
+        cashAssumptions: normalizedBase.cashAssumptions!,
+        csvImportedAt: normalizedBase.csvImportedAt,
+        csvImportProvenance: normalizedBase.provenance,
+        syncSummary: normalizedBase.syncSummary,
+        trustShortSnapshot: normalizedBase.trustShortSnapshot,
+        origin: normalizedBase.origin,
+        snapshotTransferIdentity: normalizedBase.snapshotTransferIdentity,
+      }),
     }
     if (!isCsvImportPayload(normalizedPayload, CSV_IMPORT_GENERATION_SCHEMA)) {
       throw new Error('canonical payload schema validation failed')

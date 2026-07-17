@@ -6,7 +6,7 @@
 //     部分世代のset()を複数回公開し、永続化失敗をSUCCESSとして返す
 //   - F-SNAPSHOT-CANONICAL-DIVERGENCE-03: canonical世代(localStorage envelope)と
 //     store世代がCAS無しに乖離・相互上書きされる
-// 各testは修正後の期待contract（envelope v3 + 共有transaction）で書かれており、
+// 各testは修正後の期待contract（canonical envelope + 共有transaction）で書かれており、
 // 修正実装が入った時点でGREENへ転じることを意図する。helper単体ではなく必ず
 // store actionを経由し、fault injectionはlocalStorage mock / zustand subscriber /
 // 状態Proxyのみで行う（production codeは一切変更しない）。

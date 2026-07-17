@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import type { CsvImportProvenance, CsvSyncSummary, Holding, LearningState, Trust } from '../types'
 import { DEFAULT_CASH_ASSUMPTIONS, DEFAULT_PORTFOLIO_POLICY } from '../types'
+import { computeCanonicalPortfolioGenerationIdentity } from '../utils/snapshotGenerationIdentity'
 import {
   CSV_IMPORT_GENERATION_KEY,
   CsvImportCanonicalConflictError,
@@ -155,6 +156,75 @@ function v3Payload(label: string, origin: 'csv' | 'snapshot' = 'csv'): CsvImport
   }
 }
 
+function v4Payload(
+  label: string,
+  origin: 'csv' | 'snapshot' | null = 'csv',
+  csvImportedAt: string | null = `2026-07-${label === 'old' ? '14' : '15'}T00:00:00.000Z`,
+): any {
+  const legacyBase = v3Payload(label, origin === 'snapshot' ? 'snapshot' : 'csv')
+  const base = {
+    holdings: legacyBase.holdings,
+    trust: legacyBase.trust,
+    learning: legacyBase.learning,
+    csvImportedAt,
+    provenance: csvImportedAt === null ? null : provenance(csvImportedAt),
+    syncSummary: origin === 'snapshot' ? null : csvImportedAt === null ? null : summary(csvImportedAt),
+    trustShortSnapshot: legacyBase.trustShortSnapshot,
+    portfolioPolicy: legacyBase.portfolioPolicy!,
+    cashAssumptions: legacyBase.cashAssumptions!,
+    origin,
+    snapshotTransferIdentity: origin === 'snapshot' ? `sha256:${'ab'.repeat(32)}` : null,
+  }
+  return {
+    ...base,
+    snapshotGenerationIdentity: computeCanonicalPortfolioGenerationIdentity({
+      holdings: base.holdings,
+      trust: base.trust,
+      learning: base.learning,
+      portfolioPolicy: base.portfolioPolicy,
+      cashAssumptions: base.cashAssumptions,
+      csvImportedAt: base.csvImportedAt,
+      csvImportProvenance: base.provenance,
+      syncSummary: base.syncSummary,
+      trustShortSnapshot: base.trustShortSnapshot,
+      origin: base.origin,
+      snapshotTransferIdentity: base.snapshotTransferIdentity,
+    }),
+  }
+}
+
+function persistedV4(input: CsvImportPersistencePayload): Record<string, unknown> {
+  const base = {
+    holdings: input.holdings,
+    trust: input.trust,
+    learning: input.learning,
+    csvImportedAt: input.csvImportedAt ?? input.importedAt ?? null,
+    provenance: input.provenance ?? null,
+    syncSummary: input.syncSummary,
+    trustShortSnapshot: input.trustShortSnapshot,
+    portfolioPolicy: input.portfolioPolicy ?? DEFAULT_PORTFOLIO_POLICY,
+    cashAssumptions: input.cashAssumptions ?? DEFAULT_CASH_ASSUMPTIONS,
+    origin: input.origin ?? null,
+    snapshotTransferIdentity: input.snapshotTransferIdentity ?? null,
+  }
+  return {
+    ...base,
+    snapshotGenerationIdentity: computeCanonicalPortfolioGenerationIdentity({
+      holdings: base.holdings,
+      trust: base.trust,
+      learning: base.learning,
+      portfolioPolicy: base.portfolioPolicy,
+      cashAssumptions: base.cashAssumptions,
+      csvImportedAt: base.csvImportedAt,
+      csvImportProvenance: base.provenance,
+      syncSummary: base.syncSummary,
+      trustShortSnapshot: base.trustShortSnapshot,
+      origin: base.origin,
+      snapshotTransferIdentity: base.snapshotTransferIdentity,
+    }),
+  }
+}
+
 function writeCanonical(
   target: Record<string, string>,
   schemaVersion: string,
@@ -208,7 +278,7 @@ describe('T9-A003: committed CSV generation durability and recovery', () => {
     persistCsvImportTransaction(next)
 
     expect(Object.keys(store)).toEqual([CSV_IMPORT_GENERATION_KEY])
-    expect(restoreCsvImportGeneration()).toMatchObject({ status: 'committed', payload: next })
+    expect(restoreCsvImportGeneration()).toMatchObject({ status: 'committed', payload: persistedV4(next) })
     expect(restorePortfolio()).toEqual(next.holdings)
     expect(restoreTrust()).toEqual(next.trust)
     expect(restoreLearning()).toBeNull()
@@ -221,9 +291,9 @@ describe('T9-A003: committed CSV generation durability and recovery', () => {
     })
   })
 
-  it('T9-A004-R3b: v3 canonical round-trips policy, cash, origin, and provenance', () => {
+  it('T9-A004-R3-FIX-A: a snapshot caller forward-saves policy, cash, origin, and provenance as v4', () => {
     const next = payload('new')
-    next.provenance = provenance(next.importedAt)
+    next.provenance = provenance(next.importedAt!)
     next.portfolioPolicy = { jpStockMaxRatio: 0.12 }
     next.cashAssumptions = {
       cashDeposits: 1_000_000,
@@ -232,11 +302,12 @@ describe('T9-A003: committed CSV generation durability and recovery', () => {
       manualUpdatedAt: '2026-07-15T01:00:00.000Z',
     }
     next.origin = 'snapshot'
+    next.syncSummary = null
 
     persistCsvImportTransaction(next, Date.parse('2026-07-15T03:00:00.000Z'))
 
     const physical = JSON.parse(store[CSV_IMPORT_GENERATION_KEY])
-    expect(physical.manifest.schemaVersion).toBe('csv-import-generation-3')
+    expect(physical.manifest.schemaVersion).toBe('csv-import-generation-4')
     expect(restoreCsvImportGeneration()).toMatchObject({
       status: 'committed',
       payload: {
@@ -248,9 +319,78 @@ describe('T9-A003: committed CSV generation durability and recovery', () => {
     })
   })
 
+  it.each([
+    ['snapshot without CSV time', v4Payload('new', 'snapshot', null)],
+    ['snapshot with CSV time', v4Payload('new', 'snapshot')],
+    ['CSV generation', v4Payload('new', 'csv')],
+  ])('T9-A004-R3-FIX-A: v4 %s round-trips exact metadata semantics', (_label, next) => {
+    persistCsvImportTransaction(next, Date.parse('2026-07-16T03:00:00.000Z'))
+
+    const physical = JSON.parse(store[CSV_IMPORT_GENERATION_KEY])
+    expect(physical.manifest.schemaVersion).toBe('csv-import-generation-4')
+    expect(physical.payload).toEqual(next)
+    expect(restoreCsvImportedAt()).toBe(next.csvImportedAt)
+    expect(restoreCsvSyncSummary()).toEqual(next.syncSummary)
+  })
+
+  it.each([
+    'csv-import-generation-1',
+    'csv-import-generation-2',
+    'csv-import-generation-3',
+  ])('T9-A004-R3-FIX-A: %s read compatibility preserves physical bytes and next save alone migrates to v4', schemaVersion => {
+    const legacy = schemaVersion === 'csv-import-generation-3' ? v3Payload('old') : payload('old')
+    if (schemaVersion === 'csv-import-generation-3') legacy.provenance = null
+    if (schemaVersion === 'csv-import-generation-2') legacy.provenance = provenance(legacy.importedAt!)
+    const originalRaw = writeCanonical(store, schemaVersion, legacy)
+
+    expect(restoreCsvImportGeneration()).toMatchObject({ status: 'committed' })
+    expect(store[CSV_IMPORT_GENERATION_KEY]).toBe(originalRaw)
+    expect(restoreCsvImportedAt()).toBe(legacy.importedAt)
+    expect(restoreCsvSyncSummary()).toEqual(legacy.syncSummary)
+
+    const next = v4Payload('new', 'csv')
+    persistCsvImportTransaction(next, 2, originalRaw)
+    expect(JSON.parse(store[CSV_IMPORT_GENERATION_KEY]).manifest.schemaVersion).toBe('csv-import-generation-4')
+  })
+
+  it.each([
+    ['missing csvImportedAt', (value: any) => { delete value.csvImportedAt }],
+    ['invalid origin', (value: any) => { value.origin = 'manual' }],
+    ['extra payload key', (value: any) => { value.unexpected = true }],
+    ['missing syncSummary', (value: any) => { delete value.syncSummary }],
+    ['missing provenance', (value: any) => { delete value.provenance }],
+    ['missing generation identity', (value: any) => { delete value.snapshotGenerationIdentity }],
+    ['null-invalid policy', (value: any) => { value.portfolioPolicy = null }],
+    ['null-invalid cash', (value: any) => { value.cashAssumptions = null }],
+    ['invalid nullable field', (value: any) => { value.csvImportedAt = 0 }],
+    ['invalid identity', (value: any) => { value.snapshotGenerationIdentity = 'fnv1a32:12345678' }],
+    ['invalid transfer identity', (value: any) => { value.snapshotTransferIdentity = 'fnv1a32:12345678' }],
+    ['identity does not bind changed holdings', (value: any) => { value.holdings[0].eval += 1 }],
+    ['identity does not bind changed learning', (value: any) => { value.learning = learning() }],
+    ['identity does not bind changed trust-short baseline', (value: any) => { value.trustShortSnapshot.total += 1 }],
+  ])('T9-A004-R3-FIX-A: checksum-valid malformed v4 payload (%s) fails closed', (_label, mutate) => {
+    const next = v4Payload('new', 'snapshot')
+    mutate(next)
+    writeCanonical(store, 'csv-import-generation-4', next)
+    expect(restoreCsvImportGeneration()).toEqual({ status: 'invalid' })
+  })
+
+  it.each([
+    ['CSV without csvImportedAt', (value: any) => { value.csvImportedAt = null; value.provenance = null; value.syncSummary = null }],
+    ['CSV without summary', (value: any) => { value.syncSummary = null }],
+    ['summary from another generation', (value: any) => { value.syncSummary.importedAt = '2026-07-01T00:00:00.000Z' }],
+    ['provenance from another generation', (value: any) => { value.provenance.importedAt = '2026-07-01T00:00:00.000Z' }],
+    ['snapshot carrying CSV summary', (value: any) => { value.origin = 'snapshot' }],
+  ])('T9-A004-R3-FIX-A: v4 origin/time/summary coherence rejects %s', (_label, mutate) => {
+    const next = v4Payload('new', 'csv')
+    mutate(next)
+    writeCanonical(store, 'csv-import-generation-4', next)
+    expect(restoreCsvImportGeneration()).toEqual({ status: 'invalid' })
+  })
+
   it('T9-A004-R1: existing FNV-only v2 canonical remains reload-compatible', () => {
     const next = payload('new')
-    next.provenance = provenance(next.importedAt)
+    next.provenance = provenance(next.importedAt!)
     delete next.provenance.semanticIdentity
     const originalRaw = writeCanonical(store, 'csv-import-generation-2', next)
 
@@ -263,20 +403,20 @@ describe('T9-A003: committed CSV generation durability and recovery', () => {
 
   it('T9-A004-R1: a coordinated replacement migrates legacy v2 to persisted strong identity', () => {
     const legacy = payload('old')
-    legacy.provenance = provenance(legacy.importedAt)
+    legacy.provenance = provenance(legacy.importedAt!)
     delete legacy.provenance.semanticIdentity
     const legacyRaw = writeCanonical(store, 'csv-import-generation-2', legacy)
 
     const next = payload('new')
-    next.provenance = provenance(next.importedAt)
+    next.provenance = provenance(next.importedAt!)
     persistCsvImportTransaction(next, 2, legacyRaw)
 
     const physical = JSON.parse(store[CSV_IMPORT_GENERATION_KEY])
-    expect(physical.manifest.schemaVersion).toBe('csv-import-generation-3')
+    expect(physical.manifest.schemaVersion).toBe('csv-import-generation-4')
     expect(physical.payload).toMatchObject({
       portfolioPolicy: DEFAULT_PORTFOLIO_POLICY,
       cashAssumptions: DEFAULT_CASH_ASSUMPTIONS,
-      origin: 'csv',
+      origin: null,
     })
     expect(restoreCsvImportGeneration()).toMatchObject({
       status: 'committed',
@@ -306,7 +446,7 @@ describe('T9-A003: committed CSV generation durability and recovery', () => {
     expect(restoreTrust()).toEqual(legacyPayload.trust)
   })
 
-  it('T9-A004-R3b: the next coordinated replacement explicitly migrates v1 to v3', () => {
+  it('T9-A004-R3-FIX-A: the next coordinated replacement explicitly migrates v1 to v4', () => {
     const legacyPayload = payload('old')
     const serializedPayload = JSON.stringify(legacyPayload)
     store[CSV_IMPORT_GENERATION_KEY] = JSON.stringify({
@@ -325,12 +465,12 @@ describe('T9-A003: committed CSV generation durability and recovery', () => {
     persistCsvImportTransaction({ ...restored.payload, provenance: null }, 2, store[CSV_IMPORT_GENERATION_KEY])
 
     const migrated = JSON.parse(store[CSV_IMPORT_GENERATION_KEY])
-    expect(migrated.manifest.schemaVersion).toBe('csv-import-generation-3')
+    expect(migrated.manifest.schemaVersion).toBe('csv-import-generation-4')
     expect(migrated.payload.provenance).toBeNull()
     expect(migrated.payload).toMatchObject({
       portfolioPolicy: DEFAULT_PORTFOLIO_POLICY,
       cashAssumptions: DEFAULT_CASH_ASSUMPTIONS,
-      origin: 'csv',
+      origin: null,
     })
     expect(restoreCsvImportGeneration()).toMatchObject({ status: 'committed' })
   })
@@ -341,7 +481,6 @@ describe('T9-A003: committed CSV generation durability and recovery', () => {
     ['missing cashAssumptions', (value: any) => { delete value.cashAssumptions }],
     ['null cashAssumptions', (value: any) => { value.cashAssumptions = null }],
     ['missing origin', (value: any) => { delete value.origin }],
-    ['null origin', (value: any) => { value.origin = null }],
     ['invalid origin', (value: any) => { value.origin = 'manual' }],
     ['malformed policy range', (value: any) => { value.portfolioPolicy.jpStockMaxRatio = 0.31 }],
     ['extra policy key', (value: any) => { value.portfolioPolicy.unexpected = true }],
@@ -427,7 +566,7 @@ describe('T9-A003: committed CSV generation durability and recovery', () => {
     ['unknown provenance key', (value: any) => { value.provenance.unexpected = true }],
   ])('T9-A004: checksum-valid malformed v2 provenance (%s) fails closed', (_label, mutate) => {
     const next = payload('new')
-    next.provenance = provenance(next.importedAt)
+    next.provenance = provenance(next.importedAt!)
     persistCsvImportTransaction(next)
     const envelope = JSON.parse(store[CSV_IMPORT_GENERATION_KEY])
     mutate(envelope.payload)
@@ -446,7 +585,7 @@ describe('T9-A003: committed CSV generation durability and recovery', () => {
     ['sourceAsOf hour', '2026-07-15T25:00:00Z'],
   ])('T9-A004-R1: checksum-valid v2 canonical rejects impossible %s', (_label, invalid) => {
     const next = payload('new')
-    next.provenance = provenance(next.importedAt)
+    next.provenance = provenance(next.importedAt!)
     persistCsvImportTransaction(next)
     const envelope = JSON.parse(store[CSV_IMPORT_GENERATION_KEY])
     envelope.payload.provenance.sourceAsOf = invalid
@@ -460,7 +599,7 @@ describe('T9-A003: committed CSV generation durability and recovery', () => {
     'T9-A004-R1: checksum-valid v2 canonical rejects invalid importedAt %s',
     invalid => {
       const next = payload('new')
-      next.provenance = provenance(next.importedAt)
+      next.provenance = provenance(next.importedAt!)
       persistCsvImportTransaction(next)
       const envelope = JSON.parse(store[CSV_IMPORT_GENERATION_KEY])
       envelope.payload.importedAt = invalid
@@ -489,7 +628,7 @@ describe('T9-A003: committed CSV generation durability and recovery', () => {
 
     expect(rollbackCsvImportTransaction(receipt)).toBe(true)
     expect(store[CSV_IMPORT_GENERATION_KEY]).toBe(oldRaw)
-    expect(restoreCsvImportGeneration()).toMatchObject({ status: 'committed', payload: payload('old') })
+    expect(restoreCsvImportGeneration()).toMatchObject({ status: 'committed', payload: persistedV4(payload('old')) })
 
     const staleReceipt = persistCsvImportTransaction(payload('new'))
     store[CSV_IMPORT_GENERATION_KEY] = oldRaw
@@ -588,7 +727,7 @@ describe('T9-A003: committed CSV generation durability and recovery', () => {
       const externalRaw = store[CSV_IMPORT_GENERATION_KEY]
       expect(rollbackCsvImportTransaction(overwritten)).toBe(false)
       expect(store[CSV_IMPORT_GENERATION_KEY]).toBe(externalRaw)
-      expect(restoreCsvImportGeneration()).toMatchObject({ status: 'committed', payload: payload('old') })
+      expect(restoreCsvImportGeneration()).toMatchObject({ status: 'committed', payload: persistedV4(payload('old')) })
 
       const deleted = persistCsvImportTransaction(payload('new'), 45, externalRaw)
       delete store[CSV_IMPORT_GENERATION_KEY]
@@ -766,8 +905,8 @@ describe('T9-A003: committed CSV generation durability and recovery', () => {
     ['persistPortfolio', () => persistPortfolio(payload('new').holdings)],
     ['persistTrust', () => persistTrust(payload('new').trust)],
     ['persistLearning', () => persistLearning(learning())],
-    ['persistCsvImportedAt', () => persistCsvImportedAt(payload('new').importedAt)],
-    ['persistCsvSyncSummary', () => persistCsvSyncSummary(payload('new').syncSummary)],
+    ['persistCsvImportedAt', () => persistCsvImportedAt(payload('new').importedAt!)],
+    ['persistCsvSyncSummary', () => persistCsvSyncSummary(payload('new').syncSummary!)],
   ])('R4: %s cannot partially rewrite a committed canonical generation', (_label, persistOneField) => {
     const old = payload('old')
     persistCsvImportTransaction(old)
@@ -776,7 +915,7 @@ describe('T9-A003: committed CSV generation durability and recovery', () => {
     persistOneField()
 
     expect(store[CSV_IMPORT_GENERATION_KEY]).toBe(canonicalBefore)
-    expect(restoreCsvImportGeneration()).toMatchObject({ status: 'committed', payload: old })
+    expect(restoreCsvImportGeneration()).toMatchObject({ status: 'committed', payload: persistedV4(old) })
     expect(restorePortfolio()).toEqual(old.holdings)
     expect(restoreTrust()).toEqual(old.trust)
     expect(restoreCsvImportedAt()).toBe(old.importedAt)
