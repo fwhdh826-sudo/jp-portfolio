@@ -8,6 +8,7 @@ import type { CommitteeDecision } from '../domain/analysis/committeeDecision'
 import { committeeToOfficialDecision, buildCsvSyncSummary, useAppStore } from './useAppStore'
 import { selectEffectiveCashAssumptions, selectCashAssumptionsFreshness } from './selectors'
 import { computeSnapshotGenerationIdentity } from '../utils/snapshotGenerationIdentity'
+import { restoreCsvImportGeneration } from './persist'
 
 function boundV3Snapshot(payload: Record<string, any>): string {
   const value = { ...payload }
@@ -487,6 +488,15 @@ describe('useAppStore: portfolio snapshot（P4.5-A012b）', () => {
     expect(state.system.csvLastImportedAt).toBe('2026-07-05T23:00:00.000Z')
     expect(state.system.status).toBe('success')
     expect(state.system.analysisLastRunAt).not.toBe(before)
+    const durable = restoreCsvImportGeneration()
+    expect(durable).toMatchObject({
+      status: 'committed',
+      payload: {
+        origin: 'snapshot',
+        portfolioPolicy: state.portfolioPolicy,
+        cashAssumptions: state.cashAssumptions,
+      },
+    })
   })
 
   it('parse失敗時はstoreを変更しない', () => {
@@ -539,7 +549,7 @@ describe('useAppStore: portfolio snapshot（P4.5-A012b）', () => {
     expect(after.trust).toEqual(before.trust)
   })
 
-  it('import後にlocalStorageへpersistされる（holdings/trust/portfolioPolicy/cashAssumptions/csvImportedAt）', () => {
+  it('import後にholdings/trust/policy/cash/originがcanonical v3へpersistされる', () => {
     useAppStore.setState(s => ({
       holdings: [],
       trust: [{ ...testTrust, eval: 0 }],
@@ -566,8 +576,17 @@ describe('useAppStore: portfolio snapshot（P4.5-A012b）', () => {
     const result = useAppStore.getState().importPortfolioSnapshot(snapshotJson)
     expect(result.ok).toBe(true)
 
-    expect(store['v81_portfolio']).toBeDefined()
-    expect(store['v81_trust']).toBeDefined()
+    const canonical = restoreCsvImportGeneration()
+    expect(canonical).toMatchObject({
+      status: 'committed',
+      payload: {
+        holdings: [{ code: 'TEST-A' }, { code: 'TEST-B' }],
+        trust: [{ id: 'trust-a', eval: 600_000 }],
+        portfolioPolicy: { jpStockMaxRatio: 0.12 },
+        cashAssumptions: { cashDeposits: 5_000_000, standbyFunds: 3_000_000 },
+        origin: 'snapshot',
+      },
+    })
     expect(store['v13_portfolio_policy']).toBeDefined()
     expect(store['v13_cash_assumptions']).toBeDefined()
     expect(store['v10_csv_imported_at']).toBeDefined()

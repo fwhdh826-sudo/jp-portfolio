@@ -42,6 +42,7 @@ import {
   restoreCashAssumptions,
   getPortfolioStorageFreshness,
   getTrustStorageFreshness,
+  type CsvImportPersistencePayload,
 } from './persist'
 import {
   evaluateCsvImportMonotonicity,
@@ -434,6 +435,11 @@ function persistCurrentPortfolioGeneration(state: AppState): void {
         provenance: state.system.csvImportProvenance ?? null,
         syncSummary: state.system.csvSyncSummary ?? canonical.payload.syncSummary,
         trustShortSnapshot: canonical.payload.trustShortSnapshot,
+        portfolioPolicy: state.portfolioPolicy,
+        cashAssumptions: state.cashAssumptions,
+        // v1/v2 were CSV-only. Once a v3 origin exists, ordinary coordinated replacements
+        // preserve it; origin is descriptive metadata and never freshness authority.
+        origin: canonical.payload.origin ?? 'csv',
       })
     } catch {
       // These historical actions are best-effort persistence. A failed full replacement leaves
@@ -445,6 +451,39 @@ function persistCurrentPortfolioGeneration(state: AppState): void {
   persistPortfolio(state.holdings)
   persistTrust(state.trust)
   if (state.learning) persistLearning(state.learning)
+}
+
+/** Build the complete durable generation written by a successful snapshot import. */
+export function buildSnapshotPortfolioGenerationPayload(
+  state: AppState,
+  generatedAt = new Date().toISOString(),
+): CsvImportPersistencePayload {
+  const importedAt = state.system.csvImportProvenance?.importedAt ??
+    state.system.csvLastImportedAt ?? generatedAt
+  const existingTrustShortSnapshot = captureTrustShortPortfolioBaseline().snapshot
+  return {
+    holdings: state.holdings,
+    trust: state.trust,
+    learning: state.learning,
+    importedAt,
+    provenance: state.system.csvImportProvenance ?? null,
+    syncSummary: state.system.csvSyncSummary ?? {
+      importedAt,
+      stock: { updated: 0, added: 0, removed: 0 },
+      trust: { updated: 0, reheld: 0, zeroed: 0, unknownFunds: [], ambiguousFundIds: [] },
+    },
+    // R3b does not stage a trust-short baseline from incoming snapshot content. Preserving the
+    // prior baseline (or an empty baseline when none exists) intentionally leaves replacement
+    // staging to R3c's analysis/CAS/commit boundary.
+    trustShortSnapshot: existingTrustShortSnapshot ?? {
+      date: generatedAt.slice(0, 10),
+      total: 0,
+      evalById: {},
+    },
+    portfolioPolicy: state.portfolioPolicy,
+    cashAssumptions: state.cashAssumptions,
+    origin: 'snapshot',
+  }
 }
 
 // P4.5-A013-T7: portfolio snapshot v2専用の新規銘柄構築。
@@ -1132,14 +1171,18 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
       const savedCsvProvenance = csvGeneration.status === 'committed'
         ? csvGeneration.payload.provenance ?? null
         : null
-      const savedPolicy = restorePortfolioPolicy()
-      const savedCashAssumptions = restoreCashAssumptions()
+      const savedPolicy = csvGeneration.status === 'committed'
+        ? csvGeneration.payload.portfolioPolicy ?? DEFAULT_PORTFOLIO_POLICY
+        : useLegacy ? restorePortfolioPolicy() ?? DEFAULT_PORTFOLIO_POLICY : DEFAULT_PORTFOLIO_POLICY
+      const savedCashAssumptions = csvGeneration.status === 'committed'
+        ? csvGeneration.payload.cashAssumptions ?? DEFAULT_CASH_ASSUMPTIONS
+        : useLegacy ? restoreCashAssumptions() ?? DEFAULT_CASH_ASSUMPTIONS : DEFAULT_CASH_ASSUMPTIONS
       set(s => ({
         ...(savedPortfolio ? { holdings: savedPortfolio } : {}),
         ...(savedTrust ? { trust: savedTrust } : {}),
         ...(savedLearning ? { learning: savedLearning } : {}),
-        ...(savedPolicy ? { portfolioPolicy: savedPolicy } : {}),
-        ...(savedCashAssumptions ? { cashAssumptions: savedCashAssumptions } : {}),
+        portfolioPolicy: savedPolicy,
+        cashAssumptions: savedCashAssumptions,
         system: {
           ...s.system,
           ...(savedCsvAt ? { csvLastImportedAt: savedCsvAt } : {}),
@@ -1582,6 +1625,9 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
           provenance: incomingProvenance,
           syncSummary,
           trustShortSnapshot: stagedTrustExecution.snapshot,
+          portfolioPolicy: baseState.portfolioPolicy,
+          cashAssumptions: baseState.cashAssumptions,
+          origin: 'csv',
         }, generationCommittedAt, transaction.canonicalPreviousRaw)
         durableCommitted = true
         setPortfolioGenerationTransactionPhase(transaction, 'COMMITTED')
@@ -1753,7 +1799,9 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
     set({ portfolioPolicy: policy })
     const computed = runFullAnalysis(get())
     set(computed)
-    persistPortfolioPolicy(policy)
+    const canonical = restoreCsvImportGeneration()
+    if (canonical.status === 'committed') persistCurrentPortfolioGeneration(get())
+    else if (canonical.status === 'none') persistPortfolioPolicy(policy)
   },
 
   // P4.5-A002: 資金前提の手動入力を保存する。入力値は総額として置き換わる
@@ -1773,7 +1821,9 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
     set({ cashAssumptions: next })
     const computed = runFullAnalysis(get())
     set(computed)
-    persistCashAssumptions(next)
+    const canonical = restoreCsvImportGeneration()
+    if (canonical.status === 'committed') persistCurrentPortfolioGeneration(get())
+    else if (canonical.status === 'none') persistCashAssumptions(next)
   },
 
   // P4.5-A002: 手動overrideを解除し、既定値（constants/market.ts由来）へ戻す
@@ -1786,7 +1836,9 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
     set({ cashAssumptions: next })
     const computed = runFullAnalysis(get())
     set(computed)
-    persistCashAssumptions(next)
+    const canonical = restoreCsvImportGeneration()
+    if (canonical.status === 'committed') persistCurrentPortfolioGeneration(get())
+    else if (canonical.status === 'none') persistCashAssumptions(next)
   },
 
   // P4.5-A009: export/importで既に検証済みの値をimportする。setCashAssumptionsと異なり、
@@ -1808,7 +1860,9 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
     set({ cashAssumptions: next })
     const computed = runFullAnalysis(get())
     set(computed)
-    persistCashAssumptions(next)
+    const canonical = restoreCsvImportGeneration()
+    if (canonical.status === 'committed') persistCurrentPortfolioGeneration(get())
+    else if (canonical.status === 'none') persistCashAssumptions(next)
   },
 
   // P4.5-A012b: 保有株・投信・現金前提・portfolioPolicyのportfolio snapshotをexportする。
@@ -2030,7 +2084,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
         system: { ...s.system, status: 'success', analysisLastRunAt: now, error: null },
       }))
 
-      persistCurrentPortfolioGeneration(get())
+      persistCsvImportTransaction(buildSnapshotPortfolioGenerationPayload(get(), now))
       persistPortfolioPolicy(get().portfolioPolicy)
       persistCashAssumptions(get().cashAssumptions)
       // csvImportedAtがnullの場合、persistCsvImportedAtは文字列専用のため呼ばない

@@ -218,15 +218,19 @@ describe('T9-A001/A002: structured CSV result and atomic store commit', () => {
 
     const state = useAppStore.getState()
     const physical = JSON.parse(storage[CSV_IMPORT_GENERATION_KEY]) as {
-      manifest: { generationId: string }
+      manifest: { generationId: string; schemaVersion: string }
     }
     const restored = restoreCsvImportGeneration()
     if (restored.status !== 'committed') throw new Error('expected committed generation')
     expect(physical.manifest.generationId).toBe(restored.generationId)
+    expect(physical.manifest.schemaVersion).toBe('csv-import-generation-3')
     expect(restored.payload.holdings).toEqual(state.holdings)
     expect(restored.payload.trust).toEqual(state.trust)
     expect(restored.payload.learning).toEqual(state.learning)
     expect(restored.payload.importedAt).toBe(state.system.csvLastImportedAt)
+    expect(restored.payload.portfolioPolicy).toEqual(state.portfolioPolicy)
+    expect(restored.payload.cashAssumptions).toEqual(state.cashAssumptions)
+    expect(restored.payload.origin).toBe('csv')
     expect(restorePortfolio()).toEqual(state.holdings)
     expect(restoreTrust()).toEqual(state.trust)
     expect(restoreLearning()).toEqual(state.learning)
@@ -555,6 +559,24 @@ describe('T9-A001/A002: structured CSV result and atomic store commit', () => {
     expect(afterTrust.payload.trust[0].eval).toBe(275_000)
     expect(afterTrust.payload.importedAt).toBe(before.payload.importedAt)
     expect(afterTrust.payload.syncSummary).toEqual(before.payload.syncSummary)
+
+    useAppStore.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.12 })
+    const afterPolicy = restoreCsvImportGeneration()
+    if (afterPolicy.status !== 'committed') throw new Error('expected committed generation')
+    expect(afterPolicy.payload.portfolioPolicy).toEqual({ jpStockMaxRatio: 0.12 })
+    expect(afterPolicy.payload.cashAssumptions).toEqual(before.payload.cashAssumptions)
+    expect(afterPolicy.payload.origin).toBe('csv')
+
+    useAppStore.getState().setCashAssumptions({ cashDeposits: 1_234_567, standbyFunds: 765_432 })
+    const afterCash = restoreCsvImportGeneration()
+    if (afterCash.status !== 'committed') throw new Error('expected committed generation')
+    expect(afterCash.payload.portfolioPolicy).toEqual({ jpStockMaxRatio: 0.12 })
+    expect(afterCash.payload.cashAssumptions).toMatchObject({
+      cashDeposits: 1_234_567,
+      standbyFunds: 765_432,
+      manualOverrideEnabled: true,
+    })
+    expect(afterCash.payload.origin).toBe('csv')
   })
 
   it('parser/no-valid-rows failure returns NO_VALID_ROWS and leaves all relevant state and persistence unchanged', async () => {

@@ -1,5 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import type { CsvImportProvenance, CsvSyncSummary, Holding, LearningState, Trust } from '../types'
+import { DEFAULT_CASH_ASSUMPTIONS, DEFAULT_PORTFOLIO_POLICY } from '../types'
 import {
   CSV_IMPORT_GENERATION_KEY,
   CsvImportCanonicalConflictError,
@@ -9,7 +10,9 @@ import {
   persistCsvImportedAt,
   persistCsvSyncSummary,
   persistLearning,
+  persistCashAssumptions,
   persistPortfolio,
+  persistPortfolioPolicy,
   persistTrust,
   restoreCsvImportGeneration,
   restoreCsvImportedAt,
@@ -18,7 +21,9 @@ import {
   restoreCsvTrustShortSnapshotState,
   rollbackCsvImportTransaction,
   restoreLearning,
+  restoreCashAssumptions,
   restorePortfolio,
+  restorePortfolioPolicy,
   restoreTrust,
   readCsvImportCanonicalRaw,
   type CsvImportPersistencePayload,
@@ -136,6 +141,40 @@ function payload(label: string): CsvImportPersistencePayload {
   }
 }
 
+function v3Payload(label: string, origin: 'csv' | 'snapshot' = 'csv'): CsvImportPersistencePayload {
+  return {
+    ...payload(label),
+    portfolioPolicy: { jpStockMaxRatio: 0.12 },
+    cashAssumptions: {
+      cashDeposits: 1_000_000,
+      standbyFunds: 250_000,
+      manualOverrideEnabled: true,
+      manualUpdatedAt: '2026-07-15T01:00:00.000Z',
+    },
+    origin,
+  }
+}
+
+function writeCanonical(
+  target: Record<string, string>,
+  schemaVersion: string,
+  canonicalPayload: CsvImportPersistencePayload,
+): string {
+  const serializedPayload = JSON.stringify(canonicalPayload)
+  const raw = JSON.stringify({
+    manifest: {
+      schemaVersion,
+      generationId: `test-${schemaVersion}`,
+      savedAt: Date.parse('2026-07-15T03:00:00.000Z'),
+      committed: true,
+      payloadChecksum: checksum(serializedPayload),
+    },
+    payload: canonicalPayload,
+  })
+  target[CSV_IMPORT_GENERATION_KEY] = raw
+  return raw
+}
+
 function provenance(importedAt: string): CsvImportProvenance {
   return {
     importedAt,
@@ -182,17 +221,30 @@ describe('T9-A003: committed CSV generation durability and recovery', () => {
     })
   })
 
-  it('T9-A004: v2 canonical persists and restores validated CSV provenance', () => {
+  it('T9-A004-R3b: v3 canonical round-trips policy, cash, origin, and provenance', () => {
     const next = payload('new')
     next.provenance = provenance(next.importedAt)
+    next.portfolioPolicy = { jpStockMaxRatio: 0.12 }
+    next.cashAssumptions = {
+      cashDeposits: 1_000_000,
+      standbyFunds: 250_000,
+      manualOverrideEnabled: true,
+      manualUpdatedAt: '2026-07-15T01:00:00.000Z',
+    }
+    next.origin = 'snapshot'
 
     persistCsvImportTransaction(next, Date.parse('2026-07-15T03:00:00.000Z'))
 
     const physical = JSON.parse(store[CSV_IMPORT_GENERATION_KEY])
-    expect(physical.manifest.schemaVersion).toBe('csv-import-generation-2')
+    expect(physical.manifest.schemaVersion).toBe('csv-import-generation-3')
     expect(restoreCsvImportGeneration()).toMatchObject({
       status: 'committed',
-      payload: { provenance: next.provenance },
+      payload: {
+        provenance: next.provenance,
+        portfolioPolicy: next.portfolioPolicy,
+        cashAssumptions: next.cashAssumptions,
+        origin: 'snapshot',
+      },
     })
   })
 
@@ -200,26 +252,32 @@ describe('T9-A003: committed CSV generation durability and recovery', () => {
     const next = payload('new')
     next.provenance = provenance(next.importedAt)
     delete next.provenance.semanticIdentity
-
-    persistCsvImportTransaction(next)
+    const originalRaw = writeCanonical(store, 'csv-import-generation-2', next)
 
     expect(restoreCsvImportGeneration()).toMatchObject({
       status: 'committed',
       payload: { provenance: { contentFingerprint: 'fnv1a32:12345678' } },
     })
+    expect(store[CSV_IMPORT_GENERATION_KEY]).toBe(originalRaw)
   })
 
   it('T9-A004-R1: a coordinated replacement migrates legacy v2 to persisted strong identity', () => {
     const legacy = payload('old')
     legacy.provenance = provenance(legacy.importedAt)
     delete legacy.provenance.semanticIdentity
-    persistCsvImportTransaction(legacy, 1)
-    const legacyRaw = store[CSV_IMPORT_GENERATION_KEY]
+    const legacyRaw = writeCanonical(store, 'csv-import-generation-2', legacy)
 
     const next = payload('new')
     next.provenance = provenance(next.importedAt)
     persistCsvImportTransaction(next, 2, legacyRaw)
 
+    const physical = JSON.parse(store[CSV_IMPORT_GENERATION_KEY])
+    expect(physical.manifest.schemaVersion).toBe('csv-import-generation-3')
+    expect(physical.payload).toMatchObject({
+      portfolioPolicy: DEFAULT_PORTFOLIO_POLICY,
+      cashAssumptions: DEFAULT_CASH_ASSUMPTIONS,
+      origin: 'csv',
+    })
     expect(restoreCsvImportGeneration()).toMatchObject({
       status: 'committed',
       payload: { provenance: { semanticIdentity: `sha256:${'12'.repeat(32)}` } },
@@ -248,7 +306,7 @@ describe('T9-A003: committed CSV generation durability and recovery', () => {
     expect(restoreTrust()).toEqual(legacyPayload.trust)
   })
 
-  it('T9-A004: the next coordinated replacement explicitly migrates v1 to v2 with null provenance', () => {
+  it('T9-A004-R3b: the next coordinated replacement explicitly migrates v1 to v3', () => {
     const legacyPayload = payload('old')
     const serializedPayload = JSON.stringify(legacyPayload)
     store[CSV_IMPORT_GENERATION_KEY] = JSON.stringify({
@@ -267,10 +325,96 @@ describe('T9-A003: committed CSV generation durability and recovery', () => {
     persistCsvImportTransaction({ ...restored.payload, provenance: null }, 2, store[CSV_IMPORT_GENERATION_KEY])
 
     const migrated = JSON.parse(store[CSV_IMPORT_GENERATION_KEY])
-    expect(migrated.manifest.schemaVersion).toBe('csv-import-generation-2')
+    expect(migrated.manifest.schemaVersion).toBe('csv-import-generation-3')
     expect(migrated.payload.provenance).toBeNull()
+    expect(migrated.payload).toMatchObject({
+      portfolioPolicy: DEFAULT_PORTFOLIO_POLICY,
+      cashAssumptions: DEFAULT_CASH_ASSUMPTIONS,
+      origin: 'csv',
+    })
     expect(restoreCsvImportGeneration()).toMatchObject({ status: 'committed' })
   })
+
+  it.each([
+    ['missing portfolioPolicy', (value: any) => { delete value.portfolioPolicy }],
+    ['null portfolioPolicy', (value: any) => { value.portfolioPolicy = null }],
+    ['missing cashAssumptions', (value: any) => { delete value.cashAssumptions }],
+    ['null cashAssumptions', (value: any) => { value.cashAssumptions = null }],
+    ['missing origin', (value: any) => { delete value.origin }],
+    ['null origin', (value: any) => { value.origin = null }],
+    ['invalid origin', (value: any) => { value.origin = 'manual' }],
+    ['malformed policy range', (value: any) => { value.portfolioPolicy.jpStockMaxRatio = 0.31 }],
+    ['extra policy key', (value: any) => { value.portfolioPolicy.unexpected = true }],
+    ['malformed cash scalar', (value: any) => { value.cashAssumptions.cashDeposits = '100' }],
+    ['malformed cash timestamp', (value: any) => { value.cashAssumptions.manualUpdatedAt = '2026-02-30' }],
+    ['missing nested cash key', (value: any) => { delete value.cashAssumptions.standbyFunds }],
+    ['extra cash key', (value: any) => { value.cashAssumptions.unexpected = true }],
+    ['extra payload key', (value: any) => { value.unexpected = true }],
+  ])('T9-A004-R3b: checksum-valid malformed v3 payload (%s) fails closed', (_label, mutate) => {
+    persistCsvImportTransaction(v3Payload('new'))
+    const envelope = JSON.parse(store[CSV_IMPORT_GENERATION_KEY])
+    mutate(envelope.payload)
+    envelope.manifest.payloadChecksum = checksum(JSON.stringify(envelope.payload))
+    store[CSV_IMPORT_GENERATION_KEY] = JSON.stringify(envelope)
+
+    expect(restoreCsvImportGeneration()).toEqual({ status: 'invalid' })
+    expect(restorePortfolioPolicy()).toBeNull()
+    expect(restoreCashAssumptions()).toBeNull()
+  })
+
+  it('T9-A004-R3b: v3 canonical policy/cash override contradictory legacy mirrors', () => {
+    const canonical = v3Payload('new')
+    persistCsvImportTransaction(canonical)
+    persistPortfolioPolicy({ jpStockMaxRatio: 0.15 })
+    persistCashAssumptions({
+      cashDeposits: 9,
+      standbyFunds: 8,
+      manualOverrideEnabled: true,
+      manualUpdatedAt: '2026-07-10T00:00:00.000Z',
+    })
+
+    expect(restorePortfolioPolicy()).toEqual(canonical.portfolioPolicy)
+    expect(restoreCashAssumptions()).toEqual(canonical.cashAssumptions)
+  })
+
+  it('T9-A004-R3b: legacy policy/cash are used only when canonical is absent', () => {
+    const legacyPolicy = { jpStockMaxRatio: 0.15 }
+    const legacyCash = {
+      cashDeposits: 9,
+      standbyFunds: 8,
+      manualOverrideEnabled: true,
+      manualUpdatedAt: '2026-07-10T00:00:00.000Z',
+    }
+    persistPortfolioPolicy(legacyPolicy)
+    persistCashAssumptions(legacyCash)
+    expect(restorePortfolioPolicy()).toEqual(legacyPolicy)
+    expect(restoreCashAssumptions()).toEqual(legacyCash)
+
+    store[CSV_IMPORT_GENERATION_KEY] = '{malformed'
+    expect(restorePortfolioPolicy()).toBeNull()
+    expect(restoreCashAssumptions()).toBeNull()
+  })
+
+  it.each(['csv-import-generation-1', 'csv-import-generation-2'])(
+    'T9-A004-R3b: %s canonical does not mix legacy policy/cash and reading preserves exact bytes',
+    schemaVersion => {
+      const legacyPayload = payload('old')
+      if (schemaVersion === 'csv-import-generation-2') legacyPayload.provenance = null
+      const originalRaw = writeCanonical(store, schemaVersion, legacyPayload)
+      persistPortfolioPolicy({ jpStockMaxRatio: 0.15 })
+      persistCashAssumptions({
+        cashDeposits: 9,
+        standbyFunds: 8,
+        manualOverrideEnabled: true,
+        manualUpdatedAt: '2026-07-10T00:00:00.000Z',
+      })
+
+      expect(restoreCsvImportGeneration()).toMatchObject({ status: 'committed' })
+      expect(restorePortfolioPolicy()).toBeNull()
+      expect(restoreCashAssumptions()).toBeNull()
+      expect(store[CSV_IMPORT_GENERATION_KEY]).toBe(originalRaw)
+    },
+  )
 
   it.each([
     ['missing provenance key', (value: any) => { delete value.provenance }],

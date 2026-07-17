@@ -202,6 +202,27 @@ describe('useAppStore.initialize / refreshAllData: published snapshot優先順�
         sourceFileName: 'portfolio.csv',
         fileLastModified: null,
       },
+      portfolioPolicy: { jpStockMaxRatio: 0.12 },
+      cashAssumptions: {
+        cashDeposits: 1_250_000,
+        standbyFunds: 350_000,
+        manualOverrideEnabled: true,
+        manualUpdatedAt: '2099-07-14T12:00:00.000Z',
+      },
+      origin: 'csv',
+    })
+    store.v13_portfolio_policy = JSON.stringify({
+      data: { jpStockMaxRatio: 0.15 },
+      savedAt: Date.now(),
+    })
+    store.v13_cash_assumptions = JSON.stringify({
+      data: {
+        cashDeposits: 9,
+        standbyFunds: 8,
+        manualOverrideEnabled: true,
+        manualUpdatedAt: '2099-07-01T00:00:00.000Z',
+      },
+      savedAt: Date.now(),
     })
     mockFetchRouter({})
     useAppStore.setState(state => ({ system: { ...state.system, status: 'idle' } }))
@@ -212,6 +233,13 @@ describe('useAppStore.initialize / refreshAllData: published snapshot優先順�
     expect(useAppStore.getState().trust.find(item => item.id === 'sp500_sbi')?.eval).toBe(3_210_000)
     expect(useAppStore.getState().system.csvLastImportedAt).toBe('2099-07-15T00:00:00.000Z')
     expect(useAppStore.getState().system.csvImportProvenance?.sourceAsOf).toBe('2099-07-14T00:00:00.000Z')
+    expect(useAppStore.getState().portfolioPolicy).toEqual({ jpStockMaxRatio: 0.12 })
+    expect(useAppStore.getState().cashAssumptions).toEqual({
+      cashDeposits: 1_250_000,
+      standbyFunds: 350_000,
+      manualOverrideEnabled: true,
+      manualUpdatedAt: '2099-07-14T12:00:00.000Z',
+    })
   })
 
   it('initialize: corrupted envelope refuses partial legacy fallback', async () => {
