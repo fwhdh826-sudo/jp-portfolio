@@ -45,6 +45,7 @@ import {
   getTrustStorageFreshness,
   type CsvImportPersistencePayload,
   type CsvImportPersistenceReceipt,
+  type LegacyPersistenceResult,
 } from './persist'
 import {
   evaluateCsvImportMonotonicity,
@@ -503,14 +504,28 @@ function persistCurrentPortfolioGeneration(state: AppState): CurrentPortfolioPer
   return { status: 'persisted', target: 'legacy' }
 }
 
-function reflectPortfolioPersistenceResult(result: CurrentPortfolioPersistenceResult): void {
+function reflectPortfolioPersistenceResult(result: CurrentPortfolioPersistenceResult | LegacyPersistenceResult): void {
   if (result.status === 'persisted') return
-  const message = result.status === 'blocked'
-    ? '保存済みcanonicalデータが不正なため、変更の永続化を中止しました。再読み込み後に状態を確認してください。'
-    : '変更を保存できませんでした。再読み込み後に状態を確認してください。'
+  const message = result.status === 'failed'
+    ? '変更を保存できませんでした。再読み込み後に状態を確認してください。'
+    : result.reason === 'canonical_invalid'
+      ? '保存済みcanonicalデータが不正なため、変更の永続化を中止しました。再読み込み後に状態を確認してください。'
+      : '保存中にcanonicalデータが更新されたため、legacy保存を中止しました。再読み込み後に状態を確認してください。'
   useAppStore.setState(state => ({
     system: { ...state.system, status: 'error', error: message },
   }))
+}
+
+function persistPortfolioAction(
+  state: AppState,
+  persistLegacy: () => LegacyPersistenceResult,
+): void {
+  const canonical = restoreCsvImportGeneration()
+  let result: CurrentPortfolioPersistenceResult | LegacyPersistenceResult
+  if (canonical.status === 'committed') result = persistCurrentPortfolioGeneration(state)
+  else if (canonical.status === 'none') result = persistLegacy()
+  else result = { status: 'blocked', reason: 'canonical_invalid' }
+  reflectPortfolioPersistenceResult(result)
 }
 
 // P4.5-A013-T7: portfolio snapshot v2専用の新規銘柄構築。
@@ -1928,9 +1943,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
     set({ portfolioPolicy: policy })
     const computed = runFullAnalysis(get())
     set(computed)
-    const canonical = restoreCsvImportGeneration()
-    if (canonical.status === 'committed') reflectPortfolioPersistenceResult(persistCurrentPortfolioGeneration(get()))
-    else if (canonical.status === 'none') persistPortfolioPolicy(policy)
+    persistPortfolioAction(get(), () => persistPortfolioPolicy(policy))
   },
 
   // P4.5-A002: 資金前提の手動入力を保存する。入力値は総額として置き換わる
@@ -1950,9 +1963,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
     set({ cashAssumptions: next })
     const computed = runFullAnalysis(get())
     set(computed)
-    const canonical = restoreCsvImportGeneration()
-    if (canonical.status === 'committed') reflectPortfolioPersistenceResult(persistCurrentPortfolioGeneration(get()))
-    else if (canonical.status === 'none') persistCashAssumptions(next)
+    persistPortfolioAction(get(), () => persistCashAssumptions(next))
   },
 
   // P4.5-A002: 手動overrideを解除し、既定値（constants/market.ts由来）へ戻す
@@ -1965,9 +1976,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
     set({ cashAssumptions: next })
     const computed = runFullAnalysis(get())
     set(computed)
-    const canonical = restoreCsvImportGeneration()
-    if (canonical.status === 'committed') reflectPortfolioPersistenceResult(persistCurrentPortfolioGeneration(get()))
-    else if (canonical.status === 'none') persistCashAssumptions(next)
+    persistPortfolioAction(get(), () => persistCashAssumptions(next))
   },
 
   // P4.5-A009: export/importで既に検証済みの値をimportする。setCashAssumptionsと異なり、
@@ -1989,9 +1998,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
     set({ cashAssumptions: next })
     const computed = runFullAnalysis(get())
     set(computed)
-    const canonical = restoreCsvImportGeneration()
-    if (canonical.status === 'committed') reflectPortfolioPersistenceResult(persistCurrentPortfolioGeneration(get()))
-    else if (canonical.status === 'none') persistCashAssumptions(next)
+    persistPortfolioAction(get(), () => persistCashAssumptions(next))
   },
 
   // P4.5-A012b: 保有株・投信・現金前提・portfolioPolicyのportfolio snapshotをexportする。

@@ -45966,3 +45966,69 @@ persistence hardening系列（`portfolio-snapshot-3`、
 
 - canonical absent時のpolicy/cash legacy persistence resultを破棄せず、保存失敗・
   blocked状態をsystem/UIへtruthfulに反映する
+
+## R4-A002: persistence result visibility
+
+### 対象
+
+- FIXC-RA-F1
+
+### root cause
+
+- canonical absent分岐で`persistPortfolioPolicy` / `persistCashAssumptions`の
+  `LegacyPersistenceResult`を破棄していた
+- legacy保存の`failed`、`canonical_committed` race、`canonical_invalid`を
+  `system.status` / `system.error`へ反映できなかった
+
+### 実装
+
+- legacy persistence resultを既存のsystem error reflection経路へ接続
+- `persisted` / `failed` / `canonical_invalid` / `canonical_committed`を区別
+- `setPortfolioPolicy` / `setCashAssumptions` /
+  `clearCashAssumptionsOverride` / `importCashAssumptions`の4 actionすべてを対象化
+- action開始時点のcanonical invalidもwrite 0のまま専用errorを反映
+- in-memory変更と再分析結果はrollbackしない既存contractを維持
+- persistence format、localStorage key、canonical schemaの変更なし
+
+### 検証
+
+- UTC targeted: 4 files / 245 tests GREEN
+- JST targeted: 4 files / 245 tests GREEN
+- UTC full unit: 52 files / 1228 tests GREEN
+- JST full unit: 52 files / 1228 tests GREEN
+- `npx tsc --noEmit`: GREEN
+- `npm run build`: GREEN（500kB chunk warningは既知のnon-blocker）
+- `git diff --check`: GREEN
+
+### 判定
+
+- FIXC-RA-F1: CLOSED
+- R4-A002: CLOSED
+
+### 残存R4
+
+- R4-JST-F2
+- RA-003
+- RA-005
+- RA-006残余
+- Web Locks
+- BroadcastChannel / storage event
+- cross-tab CAS / rollback TOCTOU
+- explicit canonical repair UI
+- v1/v2 policy/cash migration UI
+
+### 次チケット
+
+`R4-A003: canonical snapshot date contract audit`
+
+対象:
+
+- R4-JST-F2
+
+目的:
+
+- `TrustShortPortfolioSnapshot.date`をJST market-day metadataへ変更する場合のschema
+  version、canonical digest、既存v4 envelope compatibility、migration方針を
+  read-only auditで確定する
+- R4-A003では原則として実装しない
+- 先に設計・互換性・migration test matrixを固定する

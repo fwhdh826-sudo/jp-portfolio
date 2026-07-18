@@ -842,6 +842,233 @@ describe('T9-A004-R3-FIX-C: present-invalid canonical manual persistence policy 
   })
 })
 
+describe('R4-A002: policy/cash persistence result visibility', () => {
+  const GENERIC_FAILURE = '変更を保存できませんでした。再読み込み後に状態を確認してください。'
+  const CANONICAL_INVALID = '保存済みcanonicalデータが不正なため、変更の永続化を中止しました。再読み込み後に状態を確認してください。'
+  const CANONICAL_COMMITTED = '保存中にcanonicalデータが更新されたため、legacy保存を中止しました。再読み込み後に状態を確認してください。'
+  const storage: Record<string, string> = {}
+  const getItem = vi.fn((key: string): string | null => storage[key] ?? null)
+  const setItem = vi.fn((key: string, value: string) => { storage[key] = value })
+  const removeItem = vi.fn((key: string) => { delete storage[key] })
+  const lsMock = { getItem, setItem, removeItem }
+
+  const actionCases = [
+    {
+      name: 'setPortfolioPolicy',
+      legacyKey: 'v13_portfolio_policy',
+      invoke: () => useAppStore.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.17 }),
+      assertInMemory: () => expect(useAppStore.getState().portfolioPolicy).toEqual({ jpStockMaxRatio: 0.17 }),
+    },
+    {
+      name: 'setCashAssumptions',
+      legacyKey: 'v13_cash_assumptions',
+      invoke: () => useAppStore.getState().setCashAssumptions({ cashDeposits: 1_111, standbyFunds: 2_222 }),
+      assertInMemory: () => expect(useAppStore.getState().cashAssumptions).toMatchObject({
+        cashDeposits: 1_111,
+        standbyFunds: 2_222,
+        manualOverrideEnabled: true,
+      }),
+    },
+    {
+      name: 'clearCashAssumptionsOverride',
+      legacyKey: 'v13_cash_assumptions',
+      invoke: () => useAppStore.getState().clearCashAssumptionsOverride(),
+      assertInMemory: () => expect(useAppStore.getState().cashAssumptions).toEqual({
+        cashDeposits: 333,
+        standbyFunds: 444,
+        manualOverrideEnabled: false,
+        manualUpdatedAt: null,
+      }),
+    },
+    {
+      name: 'importCashAssumptions',
+      legacyKey: 'v13_cash_assumptions',
+      invoke: () => useAppStore.getState().importCashAssumptions({
+        cashDeposits: 5_555,
+        standbyFunds: 6_666,
+        manualUpdatedAt: '2026-07-18T00:00:00.000Z',
+      }),
+      assertInMemory: () => expect(useAppStore.getState().cashAssumptions).toEqual({
+        cashDeposits: 5_555,
+        standbyFunds: 6_666,
+        manualOverrideEnabled: true,
+        manualUpdatedAt: '2026-07-18T00:00:00.000Z',
+      }),
+    },
+  ]
+
+  beforeEach(() => {
+    vi.stubGlobal('localStorage', lsMock)
+    Object.keys(storage).forEach(key => delete storage[key])
+    getItem.mockReset()
+    getItem.mockImplementation((key: string) => storage[key] ?? null)
+    setItem.mockReset()
+    setItem.mockImplementation((key: string, value: string) => { storage[key] = value })
+    removeItem.mockReset()
+    removeItem.mockImplementation((key: string) => { delete storage[key] })
+    useAppStore.setState(state => ({
+      holdings: [makeHolding({ code: '7777', eval: 100_000 })],
+      trust: [makeTrust()],
+      learning: null,
+      analysis: [],
+      metrics: null,
+      universe: null,
+      portfolioPolicy: { ...DEFAULT_PORTFOLIO_POLICY },
+      cashAssumptions: {
+        cashDeposits: 333,
+        standbyFunds: 444,
+        manualOverrideEnabled: true,
+        manualUpdatedAt: '2026-07-17T00:00:00.000Z',
+      },
+      system: {
+        ...state.system,
+        status: 'idle',
+        error: null,
+        csvLastImportedAt: null,
+        csvImportProvenance: null,
+        csvSyncSummary: null,
+      },
+    }))
+  })
+
+  afterEach(() => { vi.unstubAllGlobals() })
+
+  function expectAnalysisCompleted(): void {
+    const state = useAppStore.getState()
+    expect(state.analysis).toHaveLength(state.holdings.length)
+    expect(state.metrics).not.toBeNull()
+    expect(state.universe).not.toBeNull()
+  }
+
+  function createValidCanonicalRaw(): string {
+    const state = useAppStore.getState()
+    persistCsvImportTransaction({
+      holdings: state.holdings,
+      trust: state.trust,
+      learning: state.learning,
+      csvImportedAt: null,
+      provenance: null,
+      syncSummary: null,
+      trustShortSnapshot: { date: '2026-07-18', total: 0, evalById: {} },
+      portfolioPolicy: state.portfolioPolicy,
+      cashAssumptions: state.cashAssumptions,
+      origin: 'snapshot',
+    })
+    const raw = storage[CSV_IMPORT_GENERATION_KEY]
+    delete storage[CSV_IMPORT_GENERATION_KEY]
+    getItem.mockClear()
+    setItem.mockClear()
+    removeItem.mockClear()
+    return raw
+  }
+
+  it.each([
+    actionCases[0],
+    actionCases[1],
+  ])('$name reflects legacy persisted success without a system error', ({ legacyKey, invoke, assertInMemory }) => {
+    expect(() => invoke()).not.toThrow()
+
+    assertInMemory()
+    expectAnalysisCompleted()
+    expect(storage[legacyKey]).toBeDefined()
+    expect(setItem).toHaveBeenCalledTimes(1)
+    expect(setItem).toHaveBeenCalledWith(legacyKey, expect.any(String))
+    expect(setItem).not.toHaveBeenCalledWith(CSV_IMPORT_GENERATION_KEY, expect.any(String))
+    expect(useAppStore.getState().system).toMatchObject({ status: 'idle', error: null })
+  })
+
+  it.each(actionCases)('$name reflects legacy failed without rolling back memory or analysis', ({ legacyKey, invoke, assertInMemory }) => {
+    setItem.mockImplementation(() => { throw new Error('quota exceeded') })
+
+    expect(() => invoke()).not.toThrow()
+
+    assertInMemory()
+    expectAnalysisCompleted()
+    expect(useAppStore.getState().system).toMatchObject({ status: 'error', error: GENERIC_FAILURE })
+    expect(storage[legacyKey]).toBeUndefined()
+    expect(storage[CSV_IMPORT_GENERATION_KEY]).toBeUndefined()
+    expect(setItem).toHaveBeenCalledTimes(1)
+    expect(setItem).toHaveBeenCalledWith(legacyKey, expect.any(String))
+    expect(setItem).not.toHaveBeenCalledWith(CSV_IMPORT_GENERATION_KEY, expect.any(String))
+  })
+
+  it.each(actionCases)('$name reflects a canonical_committed race and performs zero writes', ({ invoke, assertInMemory }) => {
+    const canonicalRaw = createValidCanonicalRaw()
+    let canonicalReads = 0
+    getItem.mockImplementation((key: string) => {
+      if (key !== CSV_IMPORT_GENERATION_KEY) return storage[key] ?? null
+      canonicalReads += 1
+      if (canonicalReads === 1) return null
+      storage[key] = canonicalRaw
+      return canonicalRaw
+    })
+
+    expect(() => invoke()).not.toThrow()
+
+    assertInMemory()
+    expectAnalysisCompleted()
+    expect(canonicalReads).toBe(2)
+    expect(storage[CSV_IMPORT_GENERATION_KEY]).toBe(canonicalRaw)
+    expect(setItem).not.toHaveBeenCalled()
+    expect(useAppStore.getState().system).toMatchObject({ status: 'error', error: CANONICAL_COMMITTED })
+    expect(useAppStore.getState().system.error).not.toBe(CANONICAL_INVALID)
+    expect(useAppStore.getState().system.error).not.toBe(GENERIC_FAILURE)
+  })
+
+  it.each(actionCases)('$name reflects a canonical_invalid race and performs zero writes', ({ invoke, assertInMemory }) => {
+    const invalidRaw = '{present-invalid'
+    let canonicalReads = 0
+    getItem.mockImplementation((key: string) => {
+      if (key !== CSV_IMPORT_GENERATION_KEY) return storage[key] ?? null
+      canonicalReads += 1
+      if (canonicalReads === 1) return null
+      storage[key] = invalidRaw
+      return invalidRaw
+    })
+
+    expect(() => invoke()).not.toThrow()
+
+    assertInMemory()
+    expectAnalysisCompleted()
+    expect(canonicalReads).toBe(2)
+    expect(storage[CSV_IMPORT_GENERATION_KEY]).toBe(invalidRaw)
+    expect(setItem).not.toHaveBeenCalled()
+    expect(useAppStore.getState().system).toMatchObject({ status: 'error', error: CANONICAL_INVALID })
+  })
+
+  it.each(actionCases)('$name reflects canonical invalid at action start and performs zero writes', ({ invoke, assertInMemory }) => {
+    const invalidRaw = '{present-invalid'
+    storage[CSV_IMPORT_GENERATION_KEY] = invalidRaw
+
+    expect(() => invoke()).not.toThrow()
+
+    assertInMemory()
+    expectAnalysisCompleted()
+    expect(storage[CSV_IMPORT_GENERATION_KEY]).toBe(invalidRaw)
+    expect(setItem).not.toHaveBeenCalled()
+    expect(useAppStore.getState().system).toMatchObject({ status: 'error', error: CANONICAL_INVALID })
+  })
+
+  it('keeps the coordinated canonical replacement path for an existing committed generation', () => {
+    const canonicalRaw = createValidCanonicalRaw()
+    storage[CSV_IMPORT_GENERATION_KEY] = canonicalRaw
+
+    expect(() => useAppStore.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.19 })).not.toThrow()
+
+    expectAnalysisCompleted()
+    expect(storage.v13_portfolio_policy).toBeUndefined()
+    expect(storage.v13_cash_assumptions).toBeUndefined()
+    expect(setItem).toHaveBeenCalledTimes(1)
+    expect(setItem).toHaveBeenCalledWith(CSV_IMPORT_GENERATION_KEY, expect.any(String))
+    expect(storage[CSV_IMPORT_GENERATION_KEY]).not.toBe(canonicalRaw)
+    expect(restoreCsvImportGeneration()).toMatchObject({
+      status: 'committed',
+      payload: { portfolioPolicy: { jpStockMaxRatio: 0.19 } },
+    })
+    expect(useAppStore.getState().system).toMatchObject({ status: 'idle', error: null })
+  })
+})
+
 describe('buildCsvSyncSummary（P4.5-A013-T6: CSV取込結果の集計・純関数）', () => {
   const importedAt = '2026-07-11T05:00:00.000Z'
 
