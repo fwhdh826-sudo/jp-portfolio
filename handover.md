@@ -46385,3 +46385,88 @@ persistence hardening系列（`portfolio-snapshot-3`、
 - cross-tab CAS / rollback TOCTOU
 - explicit canonical repair UI
 - v1/v2 policy / cash migration UI
+
+## RA-003: initialize / refresh / CSV / snapshot single-tab mutual exclusion
+
+### Read-only design audit
+
+- Fable 5 read-only design audit result: existing
+  `activePortfolioGenerationTransaction` correctly owns the CSV/snapshot inner commit state
+  machine, but it does not cover the full await lifetime of `initialize` / `refreshAllData`.
+  `system.status` is mutable compatibility state and cannot be the mutual-exclusion authority.
+- The minimum compatible design is a separate operation-level coordinator around all four
+  action entries. Existing CSV/snapshot phase, canonical CAS, ownership, rollback, recovery,
+  snapshot overwrite authority, schema v5, and identity v2 contracts remain unchanged.
+
+### Implementation
+
+- Added four operation kinds: `initialize` / `refresh` / `csv` / `snapshot`.
+- Added token-owner `acquirePortfolioOperation` / `releasePortfolioOperation` helpers.
+  Each successful acquire returns a unique `Symbol` ticket. Same-kind, different-kind, and
+  reentrant acquisition all fail immediately with no queue and no Promise wait.
+- Release succeeds only for the exact owner ticket and token. Fake/copied/non-owner tickets
+  return `false` and cannot clear the active operation. Double release returns `false`.
+- `initialize` and `refreshAllData` retain `Promise<void>` and fail fast with one
+  `console.warn` diagnostic and no Zustand/system error mutation for a busy operation.
+- `importCsv` retains `IMPORT_IN_PROGRESS`; `importPortfolioSnapshot` retains
+  `SNAPSHOT_IMPORT_BLOCKED`. No result code or public action/result union was added.
+- The operation ticket is acquired before storage read/parse/FileReader/fetch/analysis/set/
+  persistence, and released in `finally`. CSV/snapshot release their existing generation
+  transaction owner first, then release the outer operation ticket in reverse acquisition order.
+
+### Adversarial verification
+
+- Direct 16-operation matrix: all first × second combinations GREEN. First boundaries were
+  deferred initialize published-data load, deferred refresh load, deferred CSV FileReader, and
+  synchronous snapshot publish subscriber reentry.
+- Blocked second-operation delta was 0 for canonical and legacy storage writes/removes,
+  trust-short tracker writes, Zustand subscriber notifications, fetch starts, FileReader starts,
+  analysis calls, and store object identity.
+- initialize in-flight → snapshot: `SNAPSHOT_IMPORT_BLOCKED`, canonical/store/subscriber side
+  effect 0; initialize completed normally; post-completion retry reached normal snapshot policy.
+- refresh in-flight → snapshot: same result and retry contract.
+- Status sentinel destruction: changing `system.status` to `error` while initialize/refresh was
+  in flight did not release the coordinator; all four second operations remained blocked.
+- Nested subscriber test synchronously reentered all four actions: all failed fast, outer
+  snapshot succeeded, deadlock 0.
+- Failure/retry matrix covered initialize/refresh fetch, analysis and persistence failures;
+  CSV parse, analysis, CAS conflict and ownership loss; snapshot parse, analysis, persistence
+  and ownership loss; subscriber throw; synchronous nested action; and non-owner release.
+  Every case released the operation coordinator and allowed retry without coordinator blockage.
+- Existing CSV/snapshot transaction state machine, provenance monotonicity, exact-byte CAS,
+  exact committed ownership, owner-only rollback, write-then-throw recovery, third-party bytes
+  protection, and snapshot overwrite policy changed 0.
+
+### Files and validation
+
+- Production: `src/store/useAppStore.ts` only.
+- Test: `src/store/useAppStore.operationCoordinator.test.ts` (new, 45 tests).
+- Existing regression test files changed 0.
+- UTC targeted: 8 files / 286 tests / skipped 0 — GREEN.
+- Asia/Tokyo targeted: 8 files / 286 tests / skipped 0 — GREEN.
+- UTC full unit: 53 files / 1361 tests / skipped 0 — GREEN.
+- Asia/Tokyo full unit: 53 files / 1361 tests / skipped 0 — GREEN.
+- `npx tsc --noEmit`: GREEN.
+- `npm run build`: GREEN; known 500 kB chunk warning only.
+- `git diff --check`: GREEN.
+- Completed verification at 2026-07-18T17:54:52Z / 2026-07-19T02:54:52+09:00.
+
+### Residual P3 scope
+
+- `updateHolding`, `updateTrust`, `setPortfolioPolicy`, `setCashAssumptions`,
+  `clearCashAssumptionsOverride`, and `importCashAssumptions` may still run during the await
+  portion of initialize/refresh. Comprehensive blocking remains deferred to RA-006 or a later
+  single-tab hardening ticket. RA-003 only proves coordinator ownership is independent of
+  `system.status` changes.
+- Cross-tab coordination, Web Locks, BroadcastChannel, and storage events remain out of scope.
+- main is not updated by RA-003.
+
+### Status
+
+- RA-003 implementation: **CLOSED**
+- RA-003 independent audit: **PENDING**
+- main integration: **PENDING**
+
+### Next
+
+`RA-003-AUDIT: independent adversarial audit`

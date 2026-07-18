@@ -280,6 +280,32 @@ type PortfolioGenerationTransaction = CsvImportTransaction | SnapshotImportTrans
 
 let activePortfolioGenerationTransaction: PortfolioGenerationTransaction | null = null
 
+export type PortfolioOperationKind = 'initialize' | 'refresh' | 'csv' | 'snapshot'
+
+export interface PortfolioOperationTicket {
+  readonly token: symbol
+  readonly kind: PortfolioOperationKind
+}
+
+let activePortfolioOperation: PortfolioOperationTicket | null = null
+
+export function acquirePortfolioOperation(
+  kind: PortfolioOperationKind,
+): PortfolioOperationTicket | null {
+  if (activePortfolioOperation !== null) return null
+  const ticket: PortfolioOperationTicket = { token: Symbol(`portfolio-operation:${kind}`), kind }
+  activePortfolioOperation = ticket
+  return ticket
+}
+
+export function releasePortfolioOperation(ticket: PortfolioOperationTicket): boolean {
+  if (activePortfolioOperation !== ticket || activePortfolioOperation.token !== ticket.token) {
+    return false
+  }
+  activePortfolioOperation = null
+  return true
+}
+
 function setPortfolioGenerationTransactionPhase(
   transaction: PortfolioGenerationTransaction,
   phase: CsvImportTransactionPhase,
@@ -297,6 +323,10 @@ function isPortfolioGenerationCriticalSection(): boolean {
 
 function reportRejectedReentrantMutation(source: string): void {
   try { console.warn(`[useAppStore] rejected synchronous mutation during portfolio generation commit: ${source}`) } catch { /* diagnostic sink */ }
+}
+
+function reportRejectedPortfolioOperation(source: string): void {
+  try { console.warn(`[useAppStore] rejected portfolio operation while another operation is active: ${source}`) } catch { /* diagnostic sink */ }
 }
 
 /**
@@ -1222,9 +1252,14 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
       reportRejectedReentrantMutation('initialize')
       return
     }
-    if (get().system.status === 'loading') return
-    set(s => ({ system: { ...s.system, status: 'loading' } }))
+    const operationTicket = acquirePortfolioOperation('initialize')
+    if (operationTicket === null) {
+      reportRejectedPortfolioOperation('initialize')
+      return
+    }
     try {
+      if (get().system.status === 'loading') return
+      set(s => ({ system: { ...s.system, status: 'loading' } }))
       // localStorage復元（P4.5-A012d: holdings/trustはTTL失効時も値を保持する。
       // 鮮度はlocalStorageFreshnessとして表示専用にsystemへ反映する）
       const csvGeneration = restoreCsvImportGeneration()
@@ -1394,6 +1429,8 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err)
       set(s => ({ system: { ...s.system, status: 'error', error: msg } }))
+    } finally {
+      releasePortfolioOperation(operationTicket)
     }
   },
 
@@ -1403,9 +1440,14 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
       reportRejectedReentrantMutation('refreshAllData')
       return
     }
-    if (get().system.status === 'loading') return
-    set(s => ({ system: { ...s.system, status: 'loading', error: null } }))
+    const operationTicket = acquirePortfolioOperation('refresh')
+    if (operationTicket === null) {
+      reportRejectedPortfolioOperation('refreshAllData')
+      return
+    }
     try {
+      if (get().system.status === 'loading') return
+      set(s => ({ system: { ...s.system, status: 'loading', error: null } }))
       const result = await loadPublishedData({ bustCache: true })
       const { market, correlation, news, trust, holdingsSnapshot, macro, nikkeiVI, sq, margin, flows, candidatesNews, candidatesStocks, regimeState, safeMode, tierAViolations, tierAAlerts } = result
 
@@ -1488,12 +1530,18 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err)
       set(s => ({ system: { ...s.system, status: 'error', error: msg } }))
+    } finally {
+      releasePortfolioOperation(operationTicket)
     }
   },
 
   // ── CSV取込（個別株 + 投信 両対応）──────────────────────────
   importCsv: async (file: File, options = {}) => {
-    if (activePortfolioGenerationTransaction !== null || get().system.status === 'loading') {
+    if (activePortfolioOperation !== null || activePortfolioGenerationTransaction !== null || get().system.status === 'loading') {
+      return csvImportFailure('IMPORT_IN_PROGRESS', '別の取込または更新が進行中です。完了後に再試行してください。')
+    }
+    const operationTicket = acquirePortfolioOperation('csv')
+    if (operationTicket === null) {
       return csvImportFailure('IMPORT_IN_PROGRESS', '別の取込または更新が進行中です。完了後に再試行してください。')
     }
     const transaction: CsvImportTransaction = {
@@ -1926,6 +1974,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
         }
         activePortfolioGenerationTransaction = null
       }
+      releasePortfolioOperation(operationTicket)
     }
   },
 
@@ -2048,7 +2097,12 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
     // T9-A004-R3a: CSV/snapshotは同一の共有transactionを取り合う。既に他のorigin
     // （またはnestedなsnapshot自身）が進行中なら、critical phaseに達しているかを問わず
     // 即座にblockする（importCsvのREADING等の非critical phase中も含む）。
-    if (activePortfolioGenerationTransaction !== null) {
+    if (activePortfolioOperation !== null || activePortfolioGenerationTransaction !== null) {
+      reportRejectedReentrantMutation('importPortfolioSnapshot')
+      return { ok: false, code: 'SNAPSHOT_IMPORT_BLOCKED', error: '別の取込または更新が進行中です。完了後に再試行してください。' }
+    }
+    const operationTicket = acquirePortfolioOperation('snapshot')
+    if (operationTicket === null) {
       reportRejectedReentrantMutation('importPortfolioSnapshot')
       return { ok: false, code: 'SNAPSHOT_IMPORT_BLOCKED', error: '別の取込または更新が進行中です。完了後に再試行してください。' }
     }
@@ -2458,6 +2512,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
       if (activePortfolioGenerationTransaction?.token === transaction.token) {
         activePortfolioGenerationTransaction = null
       }
+      releasePortfolioOperation(operationTicket)
     }
   },
   })
