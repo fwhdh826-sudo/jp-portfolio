@@ -11,10 +11,11 @@ import {
 } from '../types'
 import { sanitizeLearningState } from '../domain/learning/performanceTracker'
 import type { TrustShortPortfolioSnapshot } from '../domain/learning/trustShortTracker'
-import { isStrictTimestamp } from '../utils/strictTimestamp'
+import { isStrictTimestamp, parseStrictTimestamp } from '../utils/strictTimestamp'
 import { isCsvImportProvenance } from '../domain/csv/csvProvenance'
 import {
   computeCanonicalPortfolioGenerationIdentity,
+  computeCanonicalPortfolioGenerationIdentityV2,
   isSnapshotGenerationIdentity,
 } from '../utils/snapshotGenerationIdentity'
 
@@ -28,7 +29,14 @@ export const CSV_IMPORT_GENERATION_KEY = 'v13_csv_import_committed_generation'
 const CSV_IMPORT_GENERATION_SCHEMA_V1 = 'csv-import-generation-1' as const
 const CSV_IMPORT_GENERATION_SCHEMA_V2 = 'csv-import-generation-2' as const
 const CSV_IMPORT_GENERATION_SCHEMA_V3 = 'csv-import-generation-3' as const
-export const CSV_IMPORT_GENERATION_SCHEMA = 'csv-import-generation-4' as const
+export const CSV_IMPORT_GENERATION_SCHEMA_V4 = 'csv-import-generation-4' as const
+/** Backward-compatible default writer schema name. */
+export const CSV_IMPORT_GENERATION_SCHEMA = CSV_IMPORT_GENERATION_SCHEMA_V4
+export const CSV_IMPORT_GENERATION_SCHEMA_V5 = 'csv-import-generation-5' as const
+
+export type CsvImportCanonicalWriteContract =
+  | { schemaVersion: typeof CSV_IMPORT_GENERATION_SCHEMA }
+  | { schemaVersion: typeof CSV_IMPORT_GENERATION_SCHEMA_V5 }
 
 export type PortfolioGenerationOrigin = 'csv' | 'snapshot' | null
 
@@ -66,6 +74,7 @@ export interface CsvImportPersistenceReceipt {
 
 interface CsvImportGenerationManifest {
   schemaVersion:
+    | typeof CSV_IMPORT_GENERATION_SCHEMA_V5
     | typeof CSV_IMPORT_GENERATION_SCHEMA
     | typeof CSV_IMPORT_GENERATION_SCHEMA_V3
     | typeof CSV_IMPORT_GENERATION_SCHEMA_V2
@@ -278,9 +287,15 @@ function isCsvSyncSummary(value: unknown): value is CsvSyncSummary {
     isNonEmptyString(item.name) && isNonNegativeNumber(item.eval))
 }
 
-function isTrustShortSnapshot(value: unknown): value is TrustShortPortfolioSnapshot {
+function isTrustShortSnapshot(
+  value: unknown,
+  requireDateOnly = false,
+): value is TrustShortPortfolioSnapshot {
   if (!isRecord(value) || !hasExactKeys(value, ['date', 'total', 'evalById']) ||
-      !isTimestamp(value.date) || !isNonNegativeNumber(value.total) || !isRecord(value.evalById)) return false
+      (requireDateOnly
+        ? parseStrictTimestamp(value.date, { allowDateOnly: true })?.kind !== 'date-only'
+        : !isTimestamp(value.date)) ||
+      !isNonNegativeNumber(value.total) || !isRecord(value.evalById)) return false
   return Object.values(value.evalById).every(isNonNegativeNumber)
 }
 
@@ -305,10 +320,11 @@ function isCsvImportPayload(value: unknown, schemaVersion: string): value is Csv
   const isV2 = schemaVersion === CSV_IMPORT_GENERATION_SCHEMA_V2
   const isV3 = schemaVersion === CSV_IMPORT_GENERATION_SCHEMA_V3
   const isV4 = schemaVersion === CSV_IMPORT_GENERATION_SCHEMA
-  if (!isV1 && !isV2 && !isV3 && !isV4) return false
+  const isV5 = schemaVersion === CSV_IMPORT_GENERATION_SCHEMA_V5
+  if (!isV1 && !isV2 && !isV3 && !isV4 && !isV5) return false
   const baseKeys = ['holdings', 'trust', 'learning', 'importedAt', 'syncSummary', 'trustShortSnapshot'] as const
   if (!isRecord(value)) return false
-  if (!hasExactKeys(value, isV4
+  if (!hasExactKeys(value, isV4 || isV5
     ? [
         'holdings', 'trust', 'learning', 'csvImportedAt', 'provenance', 'syncSummary',
         'trustShortSnapshot', 'portfolioPolicy', 'cashAssumptions', 'origin',
@@ -323,10 +339,10 @@ function isCsvImportPayload(value: unknown, schemaVersion: string): value is Csv
   const commonValid = Array.isArray(value.holdings) && value.holdings.every(isHolding) &&
     Array.isArray(value.trust) && value.trust.every(isTrust) &&
     (value.learning === null || isLearningState(value.learning)) &&
-    isTrustShortSnapshot(value.trustShortSnapshot)
+    isTrustShortSnapshot(value.trustShortSnapshot, isV5)
   if (!commonValid) return false
 
-  if (!isV4) {
+  if (!isV4 && !isV5) {
     return isTimestamp(value.importedAt, false) && isCsvSyncSummary(value.syncSummary) &&
       (isV1 || value.provenance === null ||
         (isCsvImportProvenance(value.provenance) && value.provenance.importedAt === value.importedAt)) &&
@@ -358,7 +374,12 @@ function isCsvImportPayload(value: unknown, schemaVersion: string): value is Csv
   // The current snapshot transfer schema has no summary field. Never bless an ambient store
   // summary as part of the incoming snapshot generation.
   if (origin === 'snapshot' && syncSummary !== null) return false
-  if (value.snapshotGenerationIdentity !== computeCanonicalPortfolioGenerationIdentity({
+  const canonicalOrigin: PortfolioGenerationOrigin = origin === 'csv'
+    ? 'csv'
+    : origin === 'snapshot'
+      ? 'snapshot'
+      : null
+  const identityInput = {
     holdings: value.holdings as Holding[],
     trust: value.trust as Trust[],
     learning: value.learning as LearningState | null,
@@ -368,9 +389,13 @@ function isCsvImportPayload(value: unknown, schemaVersion: string): value is Csv
     csvImportProvenance: provenance,
     syncSummary,
     trustShortSnapshot: value.trustShortSnapshot as TrustShortPortfolioSnapshot,
-    origin,
+    origin: canonicalOrigin,
     snapshotTransferIdentity: value.snapshotTransferIdentity,
-  })) return false
+  }
+  const expectedIdentity = isV5
+    ? computeCanonicalPortfolioGenerationIdentityV2(identityInput)
+    : computeCanonicalPortfolioGenerationIdentity(identityInput)
+  if (value.snapshotGenerationIdentity !== expectedIdentity) return false
   return true
 }
 
@@ -400,7 +425,8 @@ export function restoreCsvImportGenerationFromRaw(raw: string | null): CsvImport
     const manifest = envelope.manifest
     if (
       !hasExactKeys(manifest, ['schemaVersion', 'generationId', 'savedAt', 'committed', 'payloadChecksum']) ||
-      (manifest.schemaVersion !== CSV_IMPORT_GENERATION_SCHEMA &&
+      (manifest.schemaVersion !== CSV_IMPORT_GENERATION_SCHEMA_V5 &&
+        manifest.schemaVersion !== CSV_IMPORT_GENERATION_SCHEMA &&
         manifest.schemaVersion !== CSV_IMPORT_GENERATION_SCHEMA_V3 &&
         manifest.schemaVersion !== CSV_IMPORT_GENERATION_SCHEMA_V2 &&
         manifest.schemaVersion !== CSV_IMPORT_GENERATION_SCHEMA_V1) ||
@@ -602,6 +628,7 @@ export function persistCsvImportTransaction(
   payload: CsvImportPersistencePayload,
   savedAt = Date.now(),
   expectedPreviousRaw?: string | null,
+  writeContract: CsvImportCanonicalWriteContract = { schemaVersion: CSV_IMPORT_GENERATION_SCHEMA },
 ): CsvImportPersistenceReceipt {
   if (typeof localStorage === 'undefined') {
     throw new CsvImportPersistenceError('永続化ストレージを利用できません', 'not_attempted')
@@ -638,30 +665,33 @@ export function persistCsvImportTransaction(
       origin: payload.origin ?? null,
       snapshotTransferIdentity: requestedSnapshotTransferIdentity ?? null,
     }
+    const identityInput = {
+      holdings: normalizedBase.holdings,
+      trust: normalizedBase.trust,
+      learning: normalizedBase.learning,
+      portfolioPolicy: normalizedBase.portfolioPolicy!,
+      cashAssumptions: normalizedBase.cashAssumptions!,
+      csvImportedAt: normalizedBase.csvImportedAt,
+      csvImportProvenance: normalizedBase.provenance,
+      syncSummary: normalizedBase.syncSummary,
+      trustShortSnapshot: normalizedBase.trustShortSnapshot,
+      origin: normalizedBase.origin,
+      snapshotTransferIdentity: normalizedBase.snapshotTransferIdentity,
+    }
     const normalizedPayload: CsvImportPersistencePayload = {
       ...normalizedBase,
-      snapshotGenerationIdentity: computeCanonicalPortfolioGenerationIdentity({
-        holdings: normalizedBase.holdings,
-        trust: normalizedBase.trust,
-        learning: normalizedBase.learning,
-        portfolioPolicy: normalizedBase.portfolioPolicy!,
-        cashAssumptions: normalizedBase.cashAssumptions!,
-        csvImportedAt: normalizedBase.csvImportedAt,
-        csvImportProvenance: normalizedBase.provenance,
-        syncSummary: normalizedBase.syncSummary,
-        trustShortSnapshot: normalizedBase.trustShortSnapshot,
-        origin: normalizedBase.origin,
-        snapshotTransferIdentity: normalizedBase.snapshotTransferIdentity,
-      }),
+      snapshotGenerationIdentity: writeContract.schemaVersion === CSV_IMPORT_GENERATION_SCHEMA_V5
+        ? computeCanonicalPortfolioGenerationIdentityV2(identityInput)
+        : computeCanonicalPortfolioGenerationIdentity(identityInput),
     }
-    if (!isCsvImportPayload(normalizedPayload, CSV_IMPORT_GENERATION_SCHEMA)) {
+    if (!isCsvImportPayload(normalizedPayload, writeContract.schemaVersion)) {
       throw new Error('canonical payload schema validation failed')
     }
     const serializedPayload = JSON.stringify(normalizedPayload)
     const generationId = `${savedAt.toString(36)}-${(generationSequence += 1).toString(36)}`
     serializedEnvelope = JSON.stringify({
       manifest: {
-        schemaVersion: CSV_IMPORT_GENERATION_SCHEMA,
+        schemaVersion: writeContract.schemaVersion,
         generationId,
         savedAt,
         committed: true,

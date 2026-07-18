@@ -46032,3 +46032,66 @@ persistence hardening系列（`portfolio-snapshot-3`、
   read-only auditで確定する
 - R4-A003では原則として実装しない
 - 先に設計・互換性・migration test matrixを固定する
+
+## R4-A004a: schema/parser/identity compatibility
+
+### 対象
+
+- R4-JST-F2 compatibility foundation
+- canonical schema v5（`csv-import-generation-5`）
+- canonical identity contract v2（`canonical-portfolio-generation-2`）
+
+### 実装
+
+- canonical schema v5を追加し、v5だけ`trustShortSnapshot.date`をstrictな実在する
+  `YYYY-MM-DD`（`0001-01-01`〜`9999-12-31`）として検証
+- canonical identity contract v1をv4専用として維持し、v5はschema v5をdigest domainへ
+  明示したidentity contract v2で検証
+- v1〜v3はcanonical identity検証なし、v4はidentity v1、v5はidentity v2、
+  unknown schemaはfail-closed
+- v1〜v4のrequired/optional fieldとlegacy timestamp validation semanticを維持
+- v1〜v4をreadした場合の`setItem` / `removeItem`、checksum再生成、identity再生成、
+  schema/date rewriteを0とし、physical bytesを維持
+- `CsvImportCanonicalWriteContract`でv4/v5を型安全に明示選択できるAPIを追加
+- option未指定時はv4 writerを維持し、v5指定時だけidentity v2を生成
+- write contract optionはpayloadへ混入せず、production call siteとproducerは変更なし
+
+### 検証
+
+- UTC targeted: 2 files / 157 tests GREEN（skipped 0）
+- JST targeted: 2 files / 157 tests GREEN（skipped 0）
+- UTC full unit: 52 files / 1260 tests GREEN（skipped 0）
+- JST full unit: 52 files / 1260 tests GREEN（skipped 0）
+- `npx tsc --noEmit`: GREEN
+- `npm run build`: GREEN（500kB chunk warningは既知のnon-blocker）
+- `git diff --check`: GREEN
+
+### 判定
+
+- R4-A004a: CLOSED
+- R4-JST-F2: 互換基盤のみ完了、全体はOPEN
+
+### 残存
+
+- R4-A004b producer JST conversion
+- R4-A004c migration/read compatibility tests
+- R4-A004d final audit
+- RA-003
+- RA-005
+- RA-006残余
+- Web Locks
+- BroadcastChannel / storage event
+- cross-tab CAS / rollback TOCTOU
+- explicit canonical repair UI
+- v1/v2 policy/cash migration UI
+
+### 次チケット
+
+`R4-A004b: producer JST conversion`
+
+目的:
+
+- baseline producerをtransaction-scoped epochからJST dateへ統一
+- raw input string sliceを廃止
+- fresh baselineを生成する経路だけ明示的にv5 writerを選択
+- existing legacy baseline forward経路はv4を維持

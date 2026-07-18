@@ -12,7 +12,12 @@ import { compareUtf16CodeUnits, sha256Utf8Hex } from '../domain/csv/csvSemanticI
 import { normalizeStrictTimestamp } from './strictTimestamp'
 
 export const SNAPSHOT_GENERATION_CONTRACT = 'portfolio-snapshot-generation-1' as const
-export const CANONICAL_GENERATION_CONTRACT = 'canonical-portfolio-generation-1' as const
+export const CANONICAL_GENERATION_CONTRACT_V1 = 'canonical-portfolio-generation-1' as const
+export const CANONICAL_GENERATION_CONTRACT_V2 = 'canonical-portfolio-generation-2' as const
+/** Backward-compatible name for the v4 canonical identity contract. */
+export const CANONICAL_GENERATION_CONTRACT = CANONICAL_GENERATION_CONTRACT_V1
+
+const CANONICAL_GENERATION_SCHEMA_V5 = 'csv-import-generation-5' as const
 
 export interface SnapshotGenerationHolding {
   code: string
@@ -184,7 +189,7 @@ export function serializeCanonicalPortfolioGeneration(
   input: CanonicalPortfolioGenerationIdentityInput,
 ): string {
   return JSON.stringify(stableCanonicalValue({
-    contract: CANONICAL_GENERATION_CONTRACT,
+    contract: CANONICAL_GENERATION_CONTRACT_V1,
     holdings: stableRows(input.holdings),
     trust: stableRows(input.trust),
     learning: input.learning,
@@ -207,6 +212,40 @@ export function computeCanonicalPortfolioGenerationIdentity(
   input: CanonicalPortfolioGenerationIdentityInput,
 ): string {
   return `sha256:${sha256Utf8Hex(serializeCanonicalPortfolioGeneration(input))}`
+}
+
+/**
+ * Identity contract for canonical schema v5. The schema tag is deliberately part of the
+ * digest domain so byte-equivalent v4 and v5 payloads cannot share an identity.
+ */
+export function serializeCanonicalPortfolioGenerationV2(
+  input: CanonicalPortfolioGenerationIdentityInput,
+): string {
+  return JSON.stringify(stableCanonicalValue({
+    contract: CANONICAL_GENERATION_CONTRACT_V2,
+    schemaVersion: CANONICAL_GENERATION_SCHEMA_V5,
+    holdings: stableRows(input.holdings),
+    trust: stableRows(input.trust),
+    learning: input.learning,
+    transferGeneration: JSON.parse(serializeSnapshotGeneration({
+      holdings: input.holdings,
+      trust: input.trust,
+      portfolioPolicy: input.portfolioPolicy,
+      cashAssumptions: input.cashAssumptions,
+      csvImportedAt: input.csvImportedAt,
+      csvImportProvenance: input.csvImportProvenance,
+    })),
+    syncSummary: input.syncSummary,
+    trustShortSnapshot: input.trustShortSnapshot,
+    origin: input.origin,
+    snapshotTransferIdentity: input.snapshotTransferIdentity,
+  }))
+}
+
+export function computeCanonicalPortfolioGenerationIdentityV2(
+  input: CanonicalPortfolioGenerationIdentityInput,
+): string {
+  return `sha256:${sha256Utf8Hex(serializeCanonicalPortfolioGenerationV2(input))}`
 }
 
 export function isSnapshotGenerationIdentity(value: unknown): value is string {

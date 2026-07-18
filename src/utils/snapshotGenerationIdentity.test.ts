@@ -3,8 +3,13 @@ import { createHash } from 'node:crypto'
 import { describe, expect, it } from 'vitest'
 import type { CsvImportProvenance } from '../types'
 import {
+  CANONICAL_GENERATION_CONTRACT_V1,
+  CANONICAL_GENERATION_CONTRACT_V2,
   computeCanonicalPortfolioGenerationIdentity,
+  computeCanonicalPortfolioGenerationIdentityV2,
   computeSnapshotGenerationIdentity,
+  serializeCanonicalPortfolioGeneration,
+  serializeCanonicalPortfolioGenerationV2,
   serializeSnapshotGeneration,
   type SnapshotGenerationInput,
 } from './snapshotGenerationIdentity'
@@ -144,5 +149,82 @@ describe('T9-A004-R3-FIX-A canonical generation identity', () => {
       ...fullGeneration,
       snapshotTransferIdentity: `sha256:${'b'.repeat(64)}`,
     })).not.toBe(baseline)
+  })
+
+  it('R4-A004a: v1/v2 contracts are deterministic and schema-domain separated', () => {
+    const v1 = computeCanonicalPortfolioGenerationIdentity(fullGeneration)
+    const v2 = computeCanonicalPortfolioGenerationIdentityV2(fullGeneration)
+
+    expect(CANONICAL_GENERATION_CONTRACT_V1).toBe('canonical-portfolio-generation-1')
+    expect(CANONICAL_GENERATION_CONTRACT_V2).toBe('canonical-portfolio-generation-2')
+    expect(v1).not.toBe(v2)
+    expect(computeCanonicalPortfolioGenerationIdentity(fullGeneration)).toBe(v1)
+    expect(computeCanonicalPortfolioGenerationIdentityV2(fullGeneration)).toBe(v2)
+    expect(serializeCanonicalPortfolioGeneration(fullGeneration)).toContain(
+      '"contract":"canonical-portfolio-generation-1"',
+    )
+    expect(serializeCanonicalPortfolioGenerationV2(fullGeneration)).toContain(
+      '"contract":"canonical-portfolio-generation-2"',
+    )
+    expect(serializeCanonicalPortfolioGenerationV2(fullGeneration)).toContain(
+      '"schemaVersion":"csv-import-generation-5"',
+    )
+  })
+
+  it('R4-A004a: fixed v1/v2 fixture identities match independent constants', () => {
+    // These fixed values are intentionally not derived through either production serializer.
+    expect(computeCanonicalPortfolioGenerationIdentity(fullGeneration)).toBe(
+      'sha256:1d7a4a0e6c787072b1a89cfb2ce108b82a4ec675a22d3e77adc39b8e6c1a3d28',
+    )
+    expect(computeCanonicalPortfolioGenerationIdentityV2(fullGeneration)).toBe(
+      'sha256:ce2d2c2198dc2742f858ae8b203c631305d5a1e2eaa4d21cfbf2c1a7f94f5da6',
+    )
+  })
+
+  it.each([
+    ['v1', computeCanonicalPortfolioGenerationIdentity],
+    ['v2', computeCanonicalPortfolioGenerationIdentityV2],
+  ] as const)('R4-A004a: %s is insertion-order independent and retains stable holding/trust sort', (_label, compute) => {
+    const reordered = {
+      snapshotTransferIdentity: fullGeneration.snapshotTransferIdentity,
+      origin: fullGeneration.origin,
+      trustShortSnapshot: {
+        evalById: { z: 0, a: 0 },
+        total: fullGeneration.trustShortSnapshot.total,
+        date: fullGeneration.trustShortSnapshot.date,
+      },
+      syncSummary: fullGeneration.syncSummary,
+      csvImportProvenance: fullGeneration.csvImportProvenance,
+      csvImportedAt: fullGeneration.csvImportedAt,
+      cashAssumptions: fullGeneration.cashAssumptions,
+      portfolioPolicy: fullGeneration.portfolioPolicy,
+      learning: fullGeneration.learning,
+      trust: [...fullGeneration.trust].reverse(),
+      holdings: [...fullGeneration.holdings].reverse(),
+    }
+    const equivalent = {
+      ...fullGeneration,
+      trustShortSnapshot: {
+        date: fullGeneration.trustShortSnapshot.date,
+        total: fullGeneration.trustShortSnapshot.total,
+        evalById: { a: 0, z: 0 },
+      },
+    }
+
+    expect(compute(reordered)).toBe(compute(equivalent))
+  })
+
+  it('R4-A004a: v2 identity binds the strict date-only generation field', () => {
+    const july18 = {
+      ...fullGeneration,
+      trustShortSnapshot: { ...fullGeneration.trustShortSnapshot, date: '2026-07-18' },
+    }
+    const july19 = {
+      ...fullGeneration,
+      trustShortSnapshot: { ...fullGeneration.trustShortSnapshot, date: '2026-07-19' },
+    }
+
+    expect(computeCanonicalPortfolioGenerationIdentityV2(july18))
+      .not.toBe(computeCanonicalPortfolioGenerationIdentityV2(july19))
   })
 })

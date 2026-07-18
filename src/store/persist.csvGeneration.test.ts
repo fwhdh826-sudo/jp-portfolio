@@ -1,9 +1,14 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import type { CsvImportProvenance, CsvSyncSummary, Holding, LearningState, Trust } from '../types'
 import { DEFAULT_CASH_ASSUMPTIONS, DEFAULT_PORTFOLIO_POLICY } from '../types'
-import { computeCanonicalPortfolioGenerationIdentity } from '../utils/snapshotGenerationIdentity'
 import {
+  computeCanonicalPortfolioGenerationIdentity,
+  computeCanonicalPortfolioGenerationIdentityV2,
+} from '../utils/snapshotGenerationIdentity'
+import {
+  CSV_IMPORT_GENERATION_SCHEMA,
   CSV_IMPORT_GENERATION_KEY,
+  CSV_IMPORT_GENERATION_SCHEMA_V5,
   CsvImportCanonicalConflictError,
   CsvImportPersistenceError,
   CsvImportPersistenceIndeterminateError,
@@ -17,6 +22,7 @@ import {
   persistPortfolioPolicy,
   persistTrust,
   restoreCsvImportGeneration,
+  restoreCsvImportGenerationFromRaw,
   restoreCsvImportedAt,
   restoreCsvSyncSummary,
   restoreCsvTrustShortSnapshot,
@@ -194,6 +200,36 @@ function v4Payload(
   }
 }
 
+function canonicalIdentityInput(value: any) {
+  return {
+    holdings: value.holdings,
+    trust: value.trust,
+    learning: value.learning,
+    portfolioPolicy: value.portfolioPolicy,
+    cashAssumptions: value.cashAssumptions,
+    csvImportedAt: value.csvImportedAt,
+    csvImportProvenance: value.provenance,
+    syncSummary: value.syncSummary,
+    trustShortSnapshot: value.trustShortSnapshot,
+    origin: value.origin,
+    snapshotTransferIdentity: value.snapshotTransferIdentity,
+  }
+}
+
+function v5Payload(label: string, origin: 'csv' | 'snapshot' | null = 'csv'): any {
+  const value = v4Payload(label, origin)
+  value.snapshotGenerationIdentity = computeCanonicalPortfolioGenerationIdentityV2(
+    canonicalIdentityInput(value),
+  )
+  return value
+}
+
+function refreshCanonicalIdentity(value: any, version: 1 | 2): void {
+  value.snapshotGenerationIdentity = version === 1
+    ? computeCanonicalPortfolioGenerationIdentity(canonicalIdentityInput(value))
+    : computeCanonicalPortfolioGenerationIdentityV2(canonicalIdentityInput(value))
+}
+
 function persistedV4(input: CsvImportPersistencePayload): Record<string, unknown> {
   const base = {
     holdings: input.holdings,
@@ -352,6 +388,197 @@ describe('T9-A003: committed CSV generation durability and recovery', () => {
     const next = v4Payload('new', 'csv')
     persistCsvImportTransaction(next, 2, originalRaw)
     expect(JSON.parse(store[CSV_IMPORT_GENERATION_KEY]).manifest.schemaVersion).toBe('csv-import-generation-4')
+  })
+
+  it.each([
+    'csv-import-generation-1',
+    'csv-import-generation-2',
+    'csv-import-generation-3',
+    'csv-import-generation-4',
+  ])('R4-A004a: %s reader preserves legacy timestamp semantics and exact physical bytes', schemaVersion => {
+    let legacy: any
+    if (schemaVersion === 'csv-import-generation-4') {
+      legacy = v4Payload('old')
+    } else if (schemaVersion === 'csv-import-generation-3') {
+      legacy = { ...v3Payload('old'), provenance: null }
+    } else if (schemaVersion === 'csv-import-generation-2') {
+      legacy = { ...payload('old'), provenance: null }
+    } else {
+      legacy = payload('old')
+    }
+    legacy.trustShortSnapshot.date = '2026-07-14T00:00:00.000Z'
+    if (schemaVersion === 'csv-import-generation-4') refreshCanonicalIdentity(legacy, 1)
+    const originalRaw = writeCanonical(store, schemaVersion, legacy)
+    const setItem = vi.fn()
+    const removeItem = vi.fn()
+    vi.stubGlobal('localStorage', {
+      getItem: vi.fn((key: string) => store[key] ?? null),
+      setItem,
+      removeItem,
+    })
+
+    expect(restoreCsvImportGeneration()).toMatchObject({
+      status: 'committed',
+      schemaVersion,
+      payload: { trustShortSnapshot: { date: '2026-07-14T00:00:00.000Z' } },
+    })
+    expect(setItem).not.toHaveBeenCalled()
+    expect(removeItem).not.toHaveBeenCalled()
+    expect(store[CSV_IMPORT_GENERATION_KEY]).toBe(originalRaw)
+  })
+
+  it('R4-A004a: explicit v5 writer emits checksum-valid identity-v2 bytes and round-trips', () => {
+    const next = v4Payload('new')
+    next.trustShortSnapshot.date = '2026-07-19'
+    const receipt = persistCsvImportTransaction(
+      next,
+      Date.parse('2026-07-19T03:00:00.000Z'),
+      undefined,
+      { schemaVersion: CSV_IMPORT_GENERATION_SCHEMA_V5 },
+    )
+    const physical = JSON.parse(receipt.committedRaw)
+
+    expect(physical.manifest.schemaVersion).toBe('csv-import-generation-5')
+    expect(physical.manifest.payloadChecksum).toBe(checksum(JSON.stringify(physical.payload)))
+    expect(physical.payload.snapshotGenerationIdentity).toBe(
+      computeCanonicalPortfolioGenerationIdentityV2(canonicalIdentityInput(physical.payload)),
+    )
+    expect(physical.payload.snapshotGenerationIdentity).not.toBe(
+      computeCanonicalPortfolioGenerationIdentity(canonicalIdentityInput(physical.payload)),
+    )
+    expect(physical.payload).not.toHaveProperty('schemaVersion')
+    expect(restoreCsvImportGeneration()).toMatchObject({
+      status: 'committed',
+      schemaVersion: 'csv-import-generation-5',
+      payload: { trustShortSnapshot: { date: '2026-07-19' } },
+    })
+    expect(restoreCsvImportGenerationFromRaw(receipt.committedRaw)).toMatchObject({
+      status: 'committed',
+      schemaVersion: 'csv-import-generation-5',
+    })
+  })
+
+  it.each(['0001-01-01', '2000-02-29', '9999-12-31'])(
+    'R4-A004a: v5 accepts strict real calendar date %s',
+    date => {
+      const next = v4Payload('new')
+      next.trustShortSnapshot.date = date
+      const receipt = persistCsvImportTransaction(
+        next,
+        1,
+        undefined,
+        { schemaVersion: CSV_IMPORT_GENERATION_SCHEMA_V5 },
+      )
+
+      expect(restoreCsvImportGenerationFromRaw(receipt.committedRaw)).toMatchObject({
+        status: 'committed',
+        schemaVersion: 'csv-import-generation-5',
+        payload: { trustShortSnapshot: { date } },
+      })
+    },
+  )
+
+  it.each([
+    '',
+    '2026-02-30',
+    '2026-07-18T00:00:00Z',
+    '2026-07-18T00:00:00+09:00',
+    '0000-01-01',
+    '10000-01-01',
+    '2026-13-01',
+    '2026-01-32',
+    ' 2026-07-18',
+    '2026-07-18 ',
+  ])('R4-A004a: v5 rejects non-date-only trustShortSnapshot.date %j without mutation', invalidDate => {
+    const next = v5Payload('new')
+    next.trustShortSnapshot.date = invalidDate
+    refreshCanonicalIdentity(next, 2)
+    const originalRaw = writeCanonical(store, CSV_IMPORT_GENERATION_SCHEMA_V5, next)
+    store.v95_trust_short_snapshot = JSON.stringify(payload('old').trustShortSnapshot)
+    const setItem = vi.fn()
+    const removeItem = vi.fn()
+    vi.stubGlobal('localStorage', {
+      getItem: vi.fn((key: string) => store[key] ?? null),
+      setItem,
+      removeItem,
+    })
+
+    expect(restoreCsvImportGeneration()).toEqual({ status: 'invalid' })
+    expect(restoreCsvTrustShortSnapshotState()).toEqual({ status: 'invalid', snapshot: null })
+    expect(setItem).not.toHaveBeenCalled()
+    expect(removeItem).not.toHaveBeenCalled()
+    expect(store[CSV_IMPORT_GENERATION_KEY]).toBe(originalRaw)
+  })
+
+  it.each([
+    ['missing date', () => {
+      const value = v5Payload('new'); delete value.trustShortSnapshot.date
+      refreshCanonicalIdentity(value, 2)
+      return writeCanonical(store, CSV_IMPORT_GENERATION_SCHEMA_V5, value)
+    }],
+    ['unknown trust-short field', () => {
+      const value = v5Payload('new'); value.trustShortSnapshot.unexpected = true
+      refreshCanonicalIdentity(value, 2)
+      return writeCanonical(store, CSV_IMPORT_GENERATION_SCHEMA_V5, value)
+    }],
+    ['unknown payload field', () => {
+      const value = v5Payload('new'); value.unexpected = true
+      return writeCanonical(store, CSV_IMPORT_GENERATION_SCHEMA_V5, value)
+    }],
+    ['unknown schema v6', () => writeCanonical(store, 'csv-import-generation-6', v5Payload('new'))],
+    ['checksum-valid identity mismatch', () => {
+      const value = v5Payload('new'); value.snapshotGenerationIdentity = `sha256:${'f'.repeat(64)}`
+      return writeCanonical(store, CSV_IMPORT_GENERATION_SCHEMA_V5, value)
+    }],
+    ['identity-valid checksum mismatch', () => {
+      const raw = JSON.parse(writeCanonical(store, CSV_IMPORT_GENERATION_SCHEMA_V5, v5Payload('new')))
+      raw.manifest.payloadChecksum = '00000000'
+      store[CSV_IMPORT_GENERATION_KEY] = JSON.stringify(raw)
+      return store[CSV_IMPORT_GENERATION_KEY]
+    }],
+    ['v5 paired with identity v1', () => {
+      const value = v5Payload('new'); refreshCanonicalIdentity(value, 1)
+      return writeCanonical(store, CSV_IMPORT_GENERATION_SCHEMA_V5, value)
+    }],
+    ['v4 paired with identity v2', () => {
+      const value = v4Payload('new'); refreshCanonicalIdentity(value, 2)
+      return writeCanonical(store, CSV_IMPORT_GENERATION_SCHEMA, value)
+    }],
+  ] as const)('R4-A004a: %s fails closed without rewriting bytes', (_label, makeRaw) => {
+    const originalRaw = makeRaw()
+    const setItem = vi.fn()
+    const removeItem = vi.fn()
+    vi.stubGlobal('localStorage', {
+      getItem: vi.fn((key: string) => store[key] ?? null),
+      setItem,
+      removeItem,
+    })
+
+    expect(restoreCsvImportGeneration()).toEqual({ status: 'invalid' })
+    expect(setItem).not.toHaveBeenCalled()
+    expect(removeItem).not.toHaveBeenCalled()
+    expect(store[CSV_IMPORT_GENERATION_KEY]).toBe(originalRaw)
+  })
+
+  it('R4-A004a: omitted write contract keeps production and policy/cash replacements on v4 identity v1', () => {
+    const next = v4Payload('new')
+    next.portfolioPolicy = { jpStockMaxRatio: 0.15 }
+    next.cashAssumptions = {
+      cashDeposits: 9,
+      standbyFunds: 8,
+      manualOverrideEnabled: true,
+      manualUpdatedAt: '2026-07-18T00:00:00.000Z',
+    }
+    const receipt = persistCsvImportTransaction(next)
+    const physical = JSON.parse(receipt.committedRaw)
+
+    expect(physical.manifest.schemaVersion).toBe(CSV_IMPORT_GENERATION_SCHEMA)
+    expect(physical.payload.snapshotGenerationIdentity).toBe(
+      computeCanonicalPortfolioGenerationIdentity(canonicalIdentityInput(physical.payload)),
+    )
+    expect(physical.payload.snapshotGenerationIdentity).not.toBe(
+      computeCanonicalPortfolioGenerationIdentityV2(canonicalIdentityInput(physical.payload)),
+    )
   })
 
   it.each([
