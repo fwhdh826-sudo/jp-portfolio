@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-07-18T07:14:49.683055+09:00",
-  "sourceUpdatedAt": "2026-07-17T22:06:46+00:00",
+  "updatedAt": "2026-07-18T09:53:07.527837+09:00",
+  "sourceUpdatedAt": "2026-07-17T22:10:11+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -30,12 +30,12 @@
       ]
     },
     "jp_semiconductor": {
-      "avgSentiment": -0.167,
+      "avgSentiment": -0.134,
       "negativeCount": 1,
       "positiveCount": 1,
-      "neutralCount": 2,
+      "neutralCount": 3,
       "sourceCount": 1,
-      "itemCount": 4,
+      "itemCount": 5,
       "isStale": false,
       "topNegativeTitle": "Chip Stocks Slide Into Bear Market in AI Unwind: Markets Wrap",
       "topPositiveTitle": "AI Upheaval Crushes Retail Traders Crowding Into Leveraged Funds",
@@ -51,6 +51,19 @@
             "jp_semiconductor",
             "macro_risk",
             "market"
+          ]
+        },
+        {
+          "title": "Apple Briefly Tops Nvidia as World’s Most Valuable Company",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-17T13:42:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-17/apple-tops-nvidia-as-world-s-largest-company-amid-tech-rotation",
+          "tags": [
+            "jp_semiconductor",
+            "market",
+            "us_growth"
           ]
         },
         {
@@ -95,12 +108,12 @@
       ]
     },
     "us_broad": {
-      "avgSentiment": 0.12,
+      "avgSentiment": 0.15,
       "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 4,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 4,
       "isStale": false,
       "topNegativeTitle": "Hammack Sees No Conflict in Fed’s Goals, Inflation Her Worry",
       "topPositiveTitle": "Treasuries Post Weekly Advance as Inflation Optimism Prevails",
@@ -145,19 +158,6 @@
           ]
         },
         {
-          "title": "Fed’s Jefferson Says Policy Well Positioned If Inflation Cools",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-16T23:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-16/jefferson-says-policy-well-positioned-can-reconsider-if-needed",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
           "title": "Treasuries Post Weekly Advance as Inflation Optimism Prevails",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
@@ -174,12 +174,12 @@
       ]
     },
     "us_growth": {
-      "avgSentiment": -0.223,
+      "avgSentiment": -0.167,
       "negativeCount": 1,
       "positiveCount": 1,
-      "neutralCount": 1,
+      "neutralCount": 2,
       "sourceCount": 1,
-      "itemCount": 3,
+      "itemCount": 4,
       "isStale": false,
       "topNegativeTitle": "‘Sea of Red’ Hits Emerging Stocks as AI Concerns Jolts Markets",
       "topPositiveTitle": "Gauge of Oracle’s Credit Risk Hits Fresh All Time High",
@@ -192,6 +192,19 @@
           "publishedAt": "2026-07-17T03:54:14+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-07-17/em-stocks-headed-for-weekly-loss-on-tech-selloff-rising-crude",
           "tags": [
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Apple Briefly Tops Nvidia as World’s Most Valuable Company",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-17T13:42:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-17/apple-tops-nvidia-as-world-s-largest-company-amid-tech-rotation",
+          "tags": [
+            "jp_semiconductor",
             "market",
             "us_growth"
           ]
@@ -410,12 +423,12 @@
       ]
     },
     "rates": {
-      "avgSentiment": -0.146,
+      "avgSentiment": -0.182,
       "negativeCount": 2,
       "positiveCount": 1,
-      "neutralCount": 2,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 4,
       "isStale": false,
       "topNegativeTitle": "Gold Trims Weekly Drop on Dip-Buying Despite Rate Hike Odds",
       "topPositiveTitle": "Treasuries Post Weekly Advance as Inflation Optimism Prevails",
@@ -445,19 +458,6 @@
           "tags": [
             "market",
             "rates"
-          ]
-        },
-        {
-          "title": "Fed’s Jefferson Says Policy Well Positioned If Inflation Cools",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-16T23:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-16/jefferson-says-policy-well-positioned-can-reconsider-if-needed",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
           ]
         },
         {
