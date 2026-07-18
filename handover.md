@@ -46250,3 +46250,67 @@ persistence hardening系列（`portfolio-snapshot-3`、
 ### 次チケット
 
 `R4-A004d: final audit and integration readiness`
+
+## R4-A004d: final audit and integration readiness
+
+### 監査対象
+
+- `fb504ac` — R4-A004a: schema/parser/identity compatibility
+- `cfc538a` — R4-A004b: producer JST conversion
+- `3df3edd` — R4-A004c: migration and read compatibility closure
+- `e22dd7d`はrepository Skill追加のみで、R4-A004a〜cのproduction contract変更を含まない
+
+### 監査判定
+
+- Verdict: **READY_WITH_NON_BLOCKING_FINDINGS**
+- P0: 0
+- P1: 0
+- P2: 1（`R4-A004d-F001`）
+- P3: 0
+- main integration blocker: なし
+- audit中のproduction changes: 0
+- audit中のrepository mutation: 0
+
+### contract audit
+
+- schema v5 / identity v2: PASS
+- v1〜v4 read compatibility: PASS
+- JST producer: PASS
+- CSV migration / no-migration: PASS
+- corrected snapshot overwrite policy: PASS
+- nonbaseline schema preservation: PASS
+- CAS / ownership / rollback / write-then-throw: PASS
+- UTC / JST determinism: PASS
+- 全test matrixはDIRECT。MISSING / CONTRADICTORY: 0
+
+### validation
+
+- UTC targeted: 8 files / 476 tests / skipped 0
+- JST targeted: 8 files / 476 tests / skipped 0
+- UTC full: 52 files / 1316 tests / skipped 0
+- JST full: 52 files / 1316 tests / skipped 0
+- `npx tsc --noEmit`: PASS
+- `npm run build`: PASS
+- `git diff --check`: PASS
+- 500kB chunk warningのみ既知のnon-blocker
+
+### R4-A004d-F001（P2）とrollback policy
+
+- `origin/main`の`709a16c`はschema v1〜v4 readerであり、v5を認識しない
+- 統合後のfresh CSVまたはgenuinely empty snapshot first importはv5を書き込む
+- v5が端末へ保存された後に`709a16c`以前のpre-v5 buildを直接deployすると、その端末では
+  canonicalがunknown schemaとしてfail-closedとなり、データは破壊しないがCSV、snapshot、
+  manual persistenceが停止する可能性がある
+- v5 production write開始後はpre-v5 buildへ直接rollbackしない
+- rollbackは、v5 reader/parser/identity compatibilityを維持した互換rollback commit、または
+  forward fixをmainへ追加して再deployする
+- 旧main commitの単純な再deployをrollback手順にしない
+- canonical keyの自動削除やuser storageの強制削除を通常rollbackに使用しない
+- rollback contract: **forward-only / v5-reader-compatible**
+
+### status
+
+- R4-A004d: **CLOSED**
+- R4-A004e: **IN PROGRESS**
+- R4-JST-F2: **deployment verification pending**
+- R4-JST-F2はmain deploy確認後にCLOSED予定
