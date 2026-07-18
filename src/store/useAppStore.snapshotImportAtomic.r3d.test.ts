@@ -14,6 +14,7 @@ import { DEFAULT_CASH_ASSUMPTIONS, DEFAULT_PORTFOLIO_POLICY } from '../types'
 import { useAppStore } from './useAppStore'
 import {
   CSV_IMPORT_GENERATION_KEY,
+  CSV_IMPORT_GENERATION_SCHEMA_V5,
   persistCsvImportTransaction,
   restorePortfolio,
   type CsvImportPersistencePayload,
@@ -105,13 +106,14 @@ function v3Snapshot(
 describe('T9-A004-R3d: canonical storage evidence / present-invalid writer policy', () => {
   const storage: Record<string, string> = {}
   const writeLog: string[] = []
+  const removeLog: string[] = []
   const localStorageMock = {
     getItem: (key: string) => storage[key] ?? null,
     setItem: (key: string, value: string) => {
       writeLog.push(key)
       storage[key] = value
     },
-    removeItem: (key: string) => { delete storage[key] },
+    removeItem: (key: string) => { removeLog.push(key); delete storage[key] },
   }
 
   function canonicalPayload(
@@ -141,9 +143,16 @@ describe('T9-A004-R3d: canonical storage evidence / present-invalid writer polic
     tag: string,
     sourceAsOf: string,
     overrides: Partial<CsvImportPersistencePayload> = {},
+    schemaVersion: 'csv-import-generation-4' | typeof CSV_IMPORT_GENERATION_SCHEMA_V5 = 'csv-import-generation-4',
   ): string {
-    persistCsvImportTransaction(canonicalPayload(tag, sourceAsOf, overrides))
+    persistCsvImportTransaction(
+      canonicalPayload(tag, sourceAsOf, overrides),
+      Date.parse('2026-07-15T03:00:00.000Z'),
+      undefined,
+      { schemaVersion },
+    )
     writeLog.length = 0
+    removeLog.length = 0
     return storage[CSV_IMPORT_GENERATION_KEY]
   }
 
@@ -153,6 +162,7 @@ describe('T9-A004-R3d: canonical storage evidence / present-invalid writer polic
     vi.stubGlobal('localStorage', localStorageMock)
     Object.keys(storage).forEach(key => delete storage[key])
     writeLog.length = 0
+    removeLog.length = 0
     // 空generation（hydration直後・CSV未取込・手動override無し）を既定baselineにする。
     useAppStore.setState(state => ({
       holdings: [],
@@ -255,6 +265,67 @@ describe('T9-A004-R3d: canonical storage evidence / present-invalid writer polic
         storageWrites: 0,
         notifications: 0,
       })
+    })
+
+    it.each([
+      ['csv-import-generation-4', 1],
+      [CSV_IMPORT_GENERATION_SCHEMA_V5, 2],
+    ] as const)('R4-A004c: valid %s canonical + complete identity match is a byte-exact duplicate no-migration (identity v%s)', (schemaVersion, identityVersion) => {
+      const matchingCash = { ...DEFAULT_CASH_ASSUMPTIONS, manualOverrideEnabled: true }
+      const seededRaw = seedCommittedCanonical('4', '2026-07-10T00:00:00.000Z', {
+        portfolioPolicy: DEFAULT_PORTFOLIO_POLICY,
+        cashAssumptions: matchingCash,
+      }, schemaVersion)
+      const seededEnvelope = JSON.parse(seededRaw)
+      const raw = v3Snapshot(generationProvenance('4', '2026-07-10T00:00:00.000Z'), {
+        holdings: [{
+          code: '9999', name: '銘柄9999', eval: 200_000, pnlPct: 1,
+          sector: 'テスト', mu: 0.08, sigma: 0.2, sigmaSource: 'static', beta: 1,
+        }],
+        portfolioPolicy: DEFAULT_PORTFOLIO_POLICY,
+        cashAssumptions: matchingCash,
+      })
+      const before = useAppStore.getState()
+      let notifications = 0
+      const unsubscribe = useAppStore.subscribe(() => { notifications += 1 })
+
+      const result = useAppStore.getState().importPortfolioSnapshot(raw)
+      unsubscribe()
+
+      expect(result).toEqual({ ok: true, code: 'DUPLICATE_SNAPSHOT' })
+      expect(storage[CSV_IMPORT_GENERATION_KEY]).toBe(seededRaw)
+      expect(JSON.parse(storage[CSV_IMPORT_GENERATION_KEY]).manifest).toEqual(seededEnvelope.manifest)
+      expect(useAppStore.getState()).toBe(before)
+      expect(writeLog).toEqual([])
+      expect(removeLog).toEqual([])
+      expect(notifications).toBe(0)
+      expect(seededEnvelope.manifest.schemaVersion).toBe(schemaVersion)
+      expect(identityVersion).toBe(schemaVersion === CSV_IMPORT_GENERATION_SCHEMA_V5 ? 2 : 1)
+    })
+
+    it.each([
+      'csv-import-generation-4',
+      CSV_IMPORT_GENERATION_SCHEMA_V5,
+    ] as const)('R4-A004c: valid %s canonical + same CSV provenance but different complete generation is overwrite-blocked without migration', schemaVersion => {
+      const seededRaw = seedCommittedCanonical('5', '2026-07-10T00:00:00.000Z', {}, schemaVersion)
+      const seededEnvelope = JSON.parse(seededRaw)
+      const raw = v3Snapshot(generationProvenance('5', '2026-07-10T00:00:00.000Z'), {
+        holdings: [{ code: '9999', name: 'same CSV, changed holding', eval: 200_001, pnlPct: 1 }],
+      })
+      const before = useAppStore.getState()
+      let notifications = 0
+      const unsubscribe = useAppStore.subscribe(() => { notifications += 1 })
+
+      const result = useAppStore.getState().importPortfolioSnapshot(raw)
+      unsubscribe()
+
+      expect(result).toMatchObject({ ok: false, code: 'SNAPSHOT_OVERWRITE_BLOCKED' })
+      expect(storage[CSV_IMPORT_GENERATION_KEY]).toBe(seededRaw)
+      expect(JSON.parse(storage[CSV_IMPORT_GENERATION_KEY]).manifest).toEqual(seededEnvelope.manifest)
+      expect(useAppStore.getState()).toBe(before)
+      expect(writeLog).toEqual([])
+      expect(removeLog).toEqual([])
+      expect(notifications).toBe(0)
     })
 
     it('R3d-3: store empty + canonical valid + provenance無しincomingはlegacy互換扱いにならない（absentとpresentの混同禁止）。canonical除去後のretryはfirst importとして成功する', () => {

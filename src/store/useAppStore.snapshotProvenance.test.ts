@@ -116,6 +116,7 @@ describe('T9-A004-R2: portfolio snapshot provenance action contract', () => {
     const storageBefore = { ...storage }
     let notifications = 0
     const unsubscribe = useAppStore.subscribe(() => { notifications += 1 })
+    expect(storage[CSV_IMPORT_GENERATION_KEY]).toBeUndefined()
 
     const result = useAppStore.getState().importPortfolioSnapshot(v3Snapshot(incoming, {
       holdings: [{ code: 'R2-TEST', name: 'substituted content B', eval: 999_999, pnlPct: 42 }],
@@ -127,6 +128,7 @@ describe('T9-A004-R2: portfolio snapshot provenance action contract', () => {
     expect(storage).toEqual(storageBefore)
     expect(storageWrites).toBe(0)
     expect(notifications).toBe(0)
+    expect(storage[CSV_IMPORT_GENERATION_KEY]).toBeUndefined()
   })
 
   it('a binding mismatch rejects before all store, subscriber, canonical, tracker, and storage effects', () => {
@@ -253,6 +255,7 @@ describe('T9-A004-R2: portfolio snapshot provenance action contract', () => {
       },
     })
     const before = useAppStore.getState()
+    expect(storage[CSV_IMPORT_GENERATION_KEY]).toBeUndefined()
     let notifications = 0
     const unsubscribe = useAppStore.subscribe(() => { notifications += 1 })
     const result = useAppStore.getState().importPortfolioSnapshot(raw)
@@ -264,6 +267,7 @@ describe('T9-A004-R2: portfolio snapshot provenance action contract', () => {
     expect(useAppStore.getState()).toBe(before)
     expect(storageWrites).toBe(0)
     expect(notifications).toBe(0)
+    expect(storage[CSV_IMPORT_GENERATION_KEY]).toBeUndefined()
   })
 
   it('same sourceAsOf plus different strong identity is a conflict with zero side effects', () => {

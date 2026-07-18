@@ -422,6 +422,18 @@ describe('T9-A003: committed CSV generation durability and recovery', () => {
       schemaVersion,
       payload: { trustShortSnapshot: { date: '2026-07-14T00:00:00.000Z' } },
     })
+    const restored = restoreCsvImportGeneration()
+    if (restored.status !== 'committed') throw new Error('expected committed legacy generation')
+    if (schemaVersion === CSV_IMPORT_GENERATION_SCHEMA) {
+      expect(restored.payload.snapshotGenerationIdentity).toBe(
+        computeCanonicalPortfolioGenerationIdentity(canonicalIdentityInput(restored.payload)),
+      )
+      expect(restored.payload.snapshotGenerationIdentity).not.toBe(
+        computeCanonicalPortfolioGenerationIdentityV2(canonicalIdentityInput(restored.payload)),
+      )
+    } else {
+      expect(restored.payload).not.toHaveProperty('snapshotGenerationIdentity')
+    }
     expect(setItem).not.toHaveBeenCalled()
     expect(removeItem).not.toHaveBeenCalled()
     expect(store[CSV_IMPORT_GENERATION_KEY]).toBe(originalRaw)
@@ -877,6 +889,56 @@ describe('T9-A003: committed CSV generation durability and recovery', () => {
     })
 
     it.each([
+      [CSV_IMPORT_GENERATION_SCHEMA, 1],
+      [CSV_IMPORT_GENERATION_SCHEMA_V5, 2],
+    ] as const)('R4-A004c: %s CAS/ownership/rollback preserves schema and exact bytes', (schemaVersion, identityVersion) => {
+      const writeContract = { schemaVersion }
+      const previous = v4Payload('old')
+      const previousReceipt = persistCsvImportTransaction(previous, 100, null, writeContract)
+      const previousRaw = previousReceipt.committedRaw
+      const previousEnvelope = JSON.parse(previousRaw)
+
+      expect(() => persistCsvImportTransaction(
+        v4Payload('new'),
+        101,
+        `${previousRaw.slice(0, -1)} `,
+        writeContract,
+      )).toThrow(CsvImportCanonicalConflictError)
+      expect(store[CSV_IMPORT_GENERATION_KEY]).toBe(previousRaw)
+
+      const receipt = persistCsvImportTransaction(v4Payload('new'), 102, previousRaw, writeContract)
+      expect(ownsCsvImportCanonicalBytes(receipt)).toBe(true)
+      const committedEnvelope = JSON.parse(receipt.committedRaw)
+      store[CSV_IMPORT_GENERATION_KEY] = JSON.stringify({
+        payload: committedEnvelope.payload,
+        manifest: committedEnvelope.manifest,
+      })
+      expect(ownsCsvImportCanonicalBytes(receipt)).toBe(false)
+
+      store[CSV_IMPORT_GENERATION_KEY] = receipt.committedRaw
+      expect(rollbackCsvImportTransaction(receipt)).toBe(true)
+      expect(store[CSV_IMPORT_GENERATION_KEY]).toBe(previousRaw)
+      expect(JSON.parse(store[CSV_IMPORT_GENERATION_KEY])).toEqual(previousEnvelope)
+      const restored = restoreCsvImportGeneration()
+      expect(restored).toMatchObject({ status: 'committed', schemaVersion })
+      if (restored.status !== 'committed') throw new Error('expected rolled-back generation')
+      const expectedIdentity = identityVersion === 1
+        ? computeCanonicalPortfolioGenerationIdentity(canonicalIdentityInput(restored.payload))
+        : computeCanonicalPortfolioGenerationIdentityV2(canonicalIdentityInput(restored.payload))
+      expect(restored.payload.snapshotGenerationIdentity).toBe(expectedIdentity)
+
+      delete store[CSV_IMPORT_GENERATION_KEY]
+      const created = persistCsvImportTransaction(v4Payload('new'), 103, null, writeContract)
+      const removeItem = vi.fn(storage.removeItem)
+      const setItem = vi.fn(storage.setItem)
+      vi.stubGlobal('localStorage', { ...storage, setItem, removeItem })
+      expect(rollbackCsvImportTransaction(created)).toBe(true)
+      expect(removeItem).toHaveBeenCalledTimes(1)
+      expect(setItem).not.toHaveBeenCalled()
+      expect(store[CSV_IMPORT_GENERATION_KEY]).toBeUndefined()
+    })
+
+    it.each([
       ['absent to external valid generation', null, 'valid'],
       ['valid old to different valid generation', 'old', 'valid'],
       ['valid old to corrupt raw', 'old', 'corrupt'],
@@ -1064,6 +1126,109 @@ describe('T9-A003: committed CSV generation durability and recovery', () => {
     // Third-party ownership detection must be the terminal operation: no rollback write/remove.
     expect(setItem).toHaveBeenCalledTimes(1)
     expect(removeItem).toHaveBeenCalledTimes(0)
+    expect(store[CSV_IMPORT_GENERATION_KEY]).toBe(thirdPartyRaw)
+  })
+
+  it('R4-A004c: v5 write-then-throw after physical replacement recovers a committed receipt', () => {
+    const previous = persistCsvImportTransaction(
+      v4Payload('old'),
+      200,
+      null,
+      { schemaVersion: CSV_IMPORT_GENERATION_SCHEMA_V5 },
+    )
+    let attemptedRaw: string | null = null
+    const setItem = vi.fn((key: string, value: string) => {
+      attemptedRaw = value
+      store[key] = value
+      throw new Error('completion notification failed after durable v5 write')
+    })
+    const removeItem = vi.fn(storage.removeItem)
+    vi.stubGlobal('localStorage', { ...storage, setItem, removeItem })
+
+    const receipt = persistCsvImportTransaction(
+      v4Payload('new'),
+      201,
+      previous.committedRaw,
+      { schemaVersion: CSV_IMPORT_GENERATION_SCHEMA_V5 },
+    )
+
+    expect(setItem).toHaveBeenCalledTimes(1)
+    expect(removeItem).not.toHaveBeenCalled()
+    expect(receipt.committedRaw).toBe(attemptedRaw)
+    expect(store[CSV_IMPORT_GENERATION_KEY]).toBe(receipt.committedRaw)
+    expect(restoreCsvImportGeneration()).toMatchObject({
+      status: 'committed',
+      schemaVersion: CSV_IMPORT_GENERATION_SCHEMA_V5,
+      savedAt: 201,
+    })
+  })
+
+  it('R4-A004c: v5 write-then-throw before physical replacement reports rolled_back', () => {
+    const previous = persistCsvImportTransaction(
+      v4Payload('old'),
+      210,
+      null,
+      { schemaVersion: CSV_IMPORT_GENERATION_SCHEMA_V5 },
+    )
+    const setItem = vi.fn(() => { throw new Error('v5 write rejected before replacement') })
+    const removeItem = vi.fn(storage.removeItem)
+    vi.stubGlobal('localStorage', { ...storage, setItem, removeItem })
+
+    let caught: unknown = null
+    try {
+      persistCsvImportTransaction(
+        v4Payload('new'),
+        211,
+        previous.committedRaw,
+        { schemaVersion: CSV_IMPORT_GENERATION_SCHEMA_V5 },
+      )
+    } catch (error) {
+      caught = error
+    }
+
+    expect(caught).toBeInstanceOf(CsvImportPersistenceError)
+    expect(caught).toMatchObject({ status: 'rolled_back' })
+    expect(setItem).toHaveBeenCalledTimes(1)
+    expect(removeItem).not.toHaveBeenCalled()
+    expect(store[CSV_IMPORT_GENERATION_KEY]).toBe(previous.committedRaw)
+    expect(restoreCsvImportGeneration()).toMatchObject({
+      status: 'committed',
+      schemaVersion: CSV_IMPORT_GENERATION_SCHEMA_V5,
+      savedAt: 210,
+    })
+  })
+
+  it('R4-A004c: v5 write-then-throw observing third-party bytes reports rollback_failed without extra writes', () => {
+    const previous = persistCsvImportTransaction(
+      v4Payload('old'),
+      220,
+      null,
+      { schemaVersion: CSV_IMPORT_GENERATION_SCHEMA_V5 },
+    )
+    const thirdPartyRaw = JSON.stringify({ owner: 'third-party-v5-test' })
+    const setItem = vi.fn((key: string) => {
+      store[key] = thirdPartyRaw
+      throw new Error('external v5 replacement won')
+    })
+    const removeItem = vi.fn(storage.removeItem)
+    vi.stubGlobal('localStorage', { ...storage, setItem, removeItem })
+
+    let caught: unknown = null
+    try {
+      persistCsvImportTransaction(
+        v4Payload('new'),
+        221,
+        previous.committedRaw,
+        { schemaVersion: CSV_IMPORT_GENERATION_SCHEMA_V5 },
+      )
+    } catch (error) {
+      caught = error
+    }
+
+    expect(caught).toBeInstanceOf(CsvImportPersistenceError)
+    expect(caught).toMatchObject({ status: 'rollback_failed' })
+    expect(setItem).toHaveBeenCalledTimes(1)
+    expect(removeItem).not.toHaveBeenCalled()
     expect(store[CSV_IMPORT_GENERATION_KEY]).toBe(thirdPartyRaw)
   })
 

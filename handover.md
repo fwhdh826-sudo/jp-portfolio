@@ -46169,3 +46169,84 @@ persistence hardening系列（`portfolio-snapshot-3`、
 - UTC/JST host determinism
 
 をadversarial fixtureで最終固定する。
+
+## R4-A004c: migration and read compatibility closure
+
+### 前回BLOCKEDとcorrected contract
+
+- initial Phase 6 expectationの「valid v4/v5 canonicalが存在する状態から別generationの
+  portfolio snapshotをSUCCESSさせてv5へmigrationする」は、現行snapshot overwrite
+  policyと矛盾していたため、前回は正しくBLOCKEDとなった
+- production contractは変更せず、test contractだけを現行overwrite authorityへ修正した
+- snapshot importでcanonical v5を新規作成できるのは、canonical raw absent、CSV時刻・
+  provenanceなし、holdings empty、全trust eval 0、default policy、cash manual override無効、
+  same-session retry evidenceなし、active transactionなしのgenuinely empty first importだけ
+- valid canonicalまたはcurrent-state evidenceがある場合、complete transfer identity一致だけが
+  `DUPLICATE_SNAPSHOT`。別generationは`SNAPSHOT_OVERWRITE_BLOCKED`、またはprovenanceに
+  応じて`SNAPSHOT_STALE` / `SNAPSHOT_PROVENANCE_CONFLICT` /
+  `SNAPSHOT_PROVENANCE_UNKNOWN`となり、automatic overwrite authorityを持たない
+- 上記duplicate/no-op/rejectはcanonical raw、schema、generationId、savedAt、baselineを
+  byte-exactに維持し、storage write/remove、store mutation、subscriber notification、
+  v4→v5 migration、v5 generation churnを0とする
+
+### closure matrix
+
+- genuinely empty first snapshot importは`SUCCESS`。transaction `analysisNow`由来のJST dateを
+  baselineとするschema v5 / identity v2をcanonical keyへ1回だけwriteし、incomingの
+  `csvImportedAt`、provenance、sourceAsOf、transfer identityは既存契約どおり保持した。
+  incoming metadataはbaseline authorityにせず、exact ownership確認後だけstoreへ1回publishし、
+  reloadもcommitted世代と一致した
+- valid v4 / valid v5 canonicalとcomplete identity一致はともに`DUPLICATE_SNAPSHOT`。
+  raw bytes、schema、generationId、savedAt、baseline、store object identityを維持し、write/remove・
+  notification・migration/churnは0
+- valid v4 / valid v5 canonicalとsame CSV provenanceだがholdings等のcomplete generation fieldが
+  異なる場合はともに`SNAPSHOT_OVERWRITE_BLOCKED`。canonical/storeはbyte/reference-exact不変、
+  write/remove・notification・migration/rewriteは0
+- canonical absentでもZustandにcurrent generation evidenceがある場合、complete identity一致は
+  `DUPLICATE_SNAPSHOT`、不一致はoverwrite blockedまたはunknown/conflict/stale rejectionで、
+  first import扱い・write・store mutationは0
+- fresh CSV migrationはcurrent canonical absent / v1 / v2 / v3 / v4 / v5の全matrixで、
+  newer authoritative CSVの`SUCCESS`後にschema v5 / identity v2 / transaction clock由来JST
+  baselineとなる。canonical writeは1回、legacy partial write/removeは0、reload/storeは一致し、
+  exact-byte CAS/ownershipを維持した
+- CSV no-migrationはduplicate、stale、provenance conflict、provenance unknown、parse failure、
+  analysis failure、official-decision failure、canonical invalid、pre-persist CAS conflict、
+  persistence rollbackを固定した。current raw/schema/generationId/savedAt/baselineはbyte-exact不変で、
+  canonical transactionからlegacy keyへのpartial writeは0
+- v1〜v4 canonical readはcommitted semanticを保持し、physical bytesを変更せず、setItem/removeItem 0。
+  legacy timestamp semanticを維持し、v4はidentity v1、v1〜v3にはidentityを後付けせず、read時の
+  v5 migrationは0
+- current v4 / v5へのpolicy、cash、holding、trust代表actionはcanonicalを1回だけcomplete replaceし、
+  v4はschema v4 / identity v1、v5はschema v5 / identity v2を維持した。baseline不変、upgrade/
+  downgradeとlegacy writeは0
+- initialize / refreshAllDataはv4 / v5ともschema・identity semanticとbaselineを維持し、
+  v4→v5 silent upgrade、v5→v4 downgradeは0。既存published-data merge contractも維持した
+- CASはexact `expectedPreviousRaw`だけ成功し、1 byte差をconflictとした。ownershipはreceiptの
+  `committedRaw`完全一致時だけtrueで、同payloadのproperty order変更を含むsemantic equalityでは
+  false。rollbackはprevious rawをbyte-exact復元し、previousRaw null時だけremoveし、schema migrationなし
+- v5 write-then-throwは、new v5 bytesがphysicalならcommitted receiptを回収してreload committed、
+  physicalがprevious rawなら`rolled_back`、第三者bytesなら`rollback_failed`として第三者bytesを
+  維持し、追加setItem/removeItem 0。既存R4-A001 fixtureも維持した
+- canonical transaction対象経路はportfolio/trust/learning/CSV metadata/policy/cash/
+  trust-short legacy keyへのpartial write 0。tracker telemetry等の独立契約とは区別した
+- production code変更なし
+
+### 検証
+
+- UTC targeted: 8 files / 476 tests GREEN（skipped 0）
+- JST targeted: 8 files / 476 tests GREEN（skipped 0）
+- UTC full unit: 52 files / 1316 tests GREEN（skipped 0）
+- JST full unit: 52 files / 1316 tests GREEN（skipped 0）
+- `npx tsc --noEmit`: GREEN
+- `npm run build`: GREEN（500kB chunk warningは既知のnon-blocker）
+- `git diff --check`: GREEN
+
+### 判定
+
+- R4-A004c: CLOSED
+- R4-JST-F2: implementation/test closure完了
+- R4-JST-F2全体はR4-A004d final auditまでOPEN
+
+### 次チケット
+
+`R4-A004d: final audit and integration readiness`

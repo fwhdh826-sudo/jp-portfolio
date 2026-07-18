@@ -136,11 +136,14 @@ describe('T9-A004-R3c: snapshot import atomic commit contract', () => {
   const storage: Record<string, string> = {}
   const failKeys = new Set<string>()
   const crashAfterStoreKeys = new Set<string>()
+  const writeLog: string[] = []
+  const removeLog: string[] = []
   let failAllWrites = false
   let storageReentry: ((key: string) => void) | null = null
   const localStorageMock = {
     getItem: (key: string) => storage[key] ?? null,
     setItem: (key: string, value: string) => {
+      writeLog.push(key)
       if (failAllWrites) throw new Error('forced quota failure (all writes)')
       if (failKeys.has(key)) throw new Error(`forced quota failure (${key})`)
       storage[key] = value
@@ -151,7 +154,7 @@ describe('T9-A004-R3c: snapshot import atomic commit contract', () => {
         throw new Error('crash-equivalent failure after durable write')
       }
     },
-    removeItem: (key: string) => { delete storage[key] },
+    removeItem: (key: string) => { removeLog.push(key); delete storage[key] },
   }
 
   const OLD_TRUST_SHORT_BASELINE: TrustShortPortfolioSnapshot = {
@@ -193,6 +196,8 @@ describe('T9-A004-R3c: snapshot import atomic commit contract', () => {
     Object.keys(storage).forEach(key => delete storage[key])
     failKeys.clear()
     crashAfterStoreKeys.clear()
+    writeLog.length = 0
+    removeLog.length = 0
     failAllWrites = false
     storageReentry = null
     useAppStore.setState(state => ({
@@ -230,6 +235,90 @@ describe('T9-A004-R3c: snapshot import atomic commit contract', () => {
     vi.useRealTimers()
     vi.unstubAllGlobals()
     if (originalFileReader) globalThis.FileReader = originalFileReader
+  })
+
+  it('R4-A004c: genuinely empty first snapshot import writes one owned canonical v5 generation and publishes only after ownership', () => {
+    const incoming = incomingProvenance('c', {
+      importedAt: '2026-07-14T01:02:03.000Z',
+      sourceAsOf: '2026-07-13T23:00:00.000Z',
+    })
+    const raw = v3Snapshot(incoming, {
+      exportedAt: '2099-12-31T23:59:59.000Z',
+      csvImportedAt: incoming.importedAt,
+      holdings: [{ code: 'R4-A004C-FRESH', name: 'fresh snapshot', eval: 404_000, pnlPct: 4 }],
+      trust: [],
+      portfolioPolicy: null,
+      cashAssumptions: null,
+    })
+    const incomingTransferIdentity = JSON.parse(raw).snapshotGenerationIdentity
+    expect(storage[CSV_IMPORT_GENERATION_KEY]).toBeUndefined()
+    expect(useAppStore.getState()).toMatchObject({
+      holdings: [],
+      trust: [],
+      portfolioPolicy: DEFAULT_PORTFOLIO_POLICY,
+      cashAssumptions: { ...DEFAULT_CASH_ASSUMPTIONS, manualOverrideEnabled: false },
+      system: { csvLastImportedAt: null, csvImportProvenance: null },
+    })
+    let notifications = 0
+    let publishedOnlyAfterOwnedCanonical = true
+    const unsubscribe = useAppStore.subscribe(() => {
+      notifications += 1
+      const physical = storage[CSV_IMPORT_GENERATION_KEY]
+      publishedOnlyAfterOwnedCanonical &&= typeof physical === 'string' &&
+        JSON.parse(physical).payload.snapshotTransferIdentity === incomingTransferIdentity
+    })
+
+    const result = useAppStore.getState().importPortfolioSnapshot(raw)
+    unsubscribe()
+
+    expect(result).toEqual({ ok: true, code: 'SUCCESS', skippedTrustIds: undefined })
+    expect(notifications).toBe(1)
+    expect(publishedOnlyAfterOwnedCanonical).toBe(true)
+    expect(writeLog).toEqual([CSV_IMPORT_GENERATION_KEY])
+    expect(removeLog).toEqual([])
+    expect(Object.keys(storage)).toEqual([CSV_IMPORT_GENERATION_KEY])
+    const physicalRaw = storage[CSV_IMPORT_GENERATION_KEY]
+    const physical = JSON.parse(physicalRaw)
+    expect(physical.manifest.schemaVersion).toBe(CSV_IMPORT_GENERATION_SCHEMA_V5)
+    expect(physical.payload).toMatchObject({
+      csvImportedAt: incoming.importedAt,
+      provenance: incoming,
+      origin: 'snapshot',
+      snapshotTransferIdentity: incomingTransferIdentity,
+      trustShortSnapshot: { date: '2026-07-16', total: 0, evalById: {} },
+    })
+    expect(physical.payload.trustShortSnapshot.date).not.toBe(incoming.importedAt.slice(0, 10))
+    expect(physical.payload.trustShortSnapshot.date).not.toBe(incoming.sourceAsOf?.slice(0, 10))
+    expect(physical.payload.snapshotGenerationIdentity).toBe(
+      computeCanonicalPortfolioGenerationIdentityV2({
+        holdings: physical.payload.holdings,
+        trust: physical.payload.trust,
+        learning: physical.payload.learning,
+        portfolioPolicy: physical.payload.portfolioPolicy,
+        cashAssumptions: physical.payload.cashAssumptions,
+        csvImportedAt: physical.payload.csvImportedAt,
+        csvImportProvenance: physical.payload.provenance,
+        syncSummary: physical.payload.syncSummary,
+        trustShortSnapshot: physical.payload.trustShortSnapshot,
+        origin: physical.payload.origin,
+        snapshotTransferIdentity: physical.payload.snapshotTransferIdentity,
+      }),
+    )
+    const reloaded = restoreCsvImportGeneration()
+    expect(reloaded).toMatchObject({
+      status: 'committed',
+      schemaVersion: CSV_IMPORT_GENERATION_SCHEMA_V5,
+      payload: {
+        provenance: incoming,
+        snapshotTransferIdentity: incomingTransferIdentity,
+      },
+    })
+    if (reloaded.status !== 'committed') throw new Error('expected reloaded snapshot generation')
+    expect(reloaded.payload.holdings).toEqual(physical.payload.holdings)
+    expect(reloaded.payload.trust).toEqual(physical.payload.trust)
+    expect(reloaded.payload.holdings.map(item => ({ code: item.code, eval: item.eval }))).toEqual(
+      useAppStore.getState().holdings.map(item => ({ code: item.code, eval: item.eval })),
+    )
   })
 
   it('analysis失敗は構造化failureを返し、store/subscriber/storageの副作用が0である', () => {

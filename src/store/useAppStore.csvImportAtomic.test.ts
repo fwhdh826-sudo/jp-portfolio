@@ -161,20 +161,32 @@ function canonicalIdentityInput(payload: any) {
   }
 }
 
+function canonicalChecksum(value: string): string {
+  let hash = 0x811c9dc5
+  for (let index = 0; index < value.length; index += 1) {
+    hash ^= value.charCodeAt(index)
+    hash = Math.imul(hash, 0x01000193)
+  }
+  return (hash >>> 0).toString(16).padStart(8, '0')
+}
+
 describe('T9-A001/A002: structured CSV result and atomic store commit', () => {
   const storage: Record<string, string> = {}
   let storageWriteCount = 0
+  let storageRemoveCount = 0
+  const storageWriteKeys: string[] = []
   let failStorageWriteAt: number | null = null
   let storageReentry: ((key: string) => void) | null = null
   const localStorageMock = {
     getItem: (key: string) => storage[key] ?? null,
     setItem: (key: string, value: string) => {
       storageWriteCount += 1
+      storageWriteKeys.push(key)
       if (storageWriteCount === failStorageWriteAt) throw new Error('forced quota failure')
       storage[key] = value
       storageReentry?.(key)
     },
-    removeItem: (key: string) => { delete storage[key] },
+    removeItem: (key: string) => { storageRemoveCount += 1; delete storage[key] },
   }
 
   beforeEach(() => {
@@ -182,6 +194,8 @@ describe('T9-A001/A002: structured CSV result and atomic store commit', () => {
     vi.stubGlobal('localStorage', localStorageMock)
     Object.keys(storage).forEach(key => delete storage[key])
     storageWriteCount = 0
+    storageRemoveCount = 0
+    storageWriteKeys.length = 0
     failStorageWriteAt = null
     storageReentry = null
     useAppStore.setState(state => ({
@@ -288,6 +302,225 @@ describe('T9-A001/A002: structured CSV result and atomic store commit', () => {
       expect(generation.payload.snapshotGenerationIdentity).toBe(
         computeCanonicalPortfolioGenerationIdentityV2(canonicalIdentityInput(generation.payload)),
       )
+    } finally {
+      vi.useRealTimers()
+    }
+  })
+
+  it.each([
+    ['duplicate', true, 'DUPLICATE_CSV'],
+    ['stale', false, 'STALE_CSV'],
+    ['conflict', false, 'CSV_PROVENANCE_CONFLICT'],
+    ['unknown', false, 'CSV_PROVENANCE_UNKNOWN'],
+    ['parse', false, 'NO_VALID_ROWS'],
+    ['analysis', false, 'ANALYSIS_ERROR'],
+    ['official', false, 'OFFICIAL_DECISION_ERROR'],
+    ['persistence', false, 'PERSISTENCE_ERROR'],
+  ] as const)('R4-A004c: CSV %s no-migration preserves current v5 raw/schema/generation/savedAt/baseline', async (failureCase, expectedOk, expectedCode) => {
+    const currentCsv = csvWithSource('2026-07-15T09:00:00+09:00')
+    await expect(useAppStore.getState().importCsv(csvFile(currentCsv)))
+      .resolves.toMatchObject({ ok: true, code: 'SUCCESS' })
+    const canonicalBefore = storage[CSV_IMPORT_GENERATION_KEY]
+    const envelopeBefore = JSON.parse(canonicalBefore)
+    storageWriteCount = 0
+    storageRemoveCount = 0
+    storageWriteKeys.length = 0
+
+    let candidate: File
+    if (failureCase === 'duplicate') {
+      candidate = csvFile(currentCsv)
+    } else if (failureCase === 'stale') {
+      candidate = csvFile(csvWithSource(
+        '2026-07-14T09:00:00+09:00',
+        VALID_CSV.replace('150000,8.00', '140000,7.00'),
+      ))
+    } else if (failureCase === 'conflict') {
+      candidate = csvFile(csvWithSource(
+        '2026-07-15T09:00:00+09:00',
+        VALID_CSV.replace('150000,8.00', '151000,8.10'),
+      ))
+    } else if (failureCase === 'unknown') {
+      candidate = new File(
+        [VALID_CSV.replace('150000,8.00', '152000,8.20')],
+        'portfolio.csv',
+        { type: 'text/csv', lastModified: 0 },
+      )
+    } else if (failureCase === 'parse') {
+      candidate = csvFile('')
+    } else {
+      candidate = csvFile(csvWithSource(
+        '2026-07-16T09:00:00+09:00',
+        VALID_CSV.replace('150000,8.00', '160000,9.00'),
+      ))
+      if (failureCase === 'analysis') {
+        const currentMarket = useAppStore.getState().market
+        useAppStore.setState({
+          market: new Proxy(currentMarket, {
+            get(target, property) {
+              if (property === 'regime') throw new Error('forced A004c analysis failure')
+              return Reflect.get(target, property)
+            },
+          }),
+        })
+      } else if (failureCase === 'official') {
+        const currentSafeMode = useAppStore.getState().safeMode
+        useAppStore.setState({
+          safeMode: new Proxy(currentSafeMode, {
+            get(target, property) {
+              if (property === 'safe_mode') throw new Error('forced A004c official failure')
+              return Reflect.get(target, property)
+            },
+          }),
+        })
+      } else {
+        failStorageWriteAt = 1
+      }
+    }
+
+    const result = await useAppStore.getState().importCsv(candidate)
+
+    expect(result).toMatchObject({ ok: expectedOk, code: expectedCode })
+    expect(storage[CSV_IMPORT_GENERATION_KEY]).toBe(canonicalBefore)
+    const envelopeAfter = JSON.parse(storage[CSV_IMPORT_GENERATION_KEY])
+    expect(envelopeAfter.manifest).toEqual(envelopeBefore.manifest)
+    expect(envelopeAfter.payload.trustShortSnapshot).toEqual(envelopeBefore.payload.trustShortSnapshot)
+    expect(envelopeAfter.manifest.schemaVersion).toBe(CSV_IMPORT_GENERATION_SCHEMA_V5)
+    expect(storageWriteKeys.every(key => key === CSV_IMPORT_GENERATION_KEY)).toBe(true)
+    expect(storageRemoveCount).toBe(0)
+    for (const legacyKey of [
+      'v81_portfolio', 'v81_trust', 'v91_learning', 'v10_csv_imported_at',
+      'v13_csv_sync_summary', 'v13_portfolio_policy', 'v13_cash_assumptions',
+      'v95_trust_short_snapshot',
+    ]) {
+      expect(storage[legacyKey]).toBeUndefined()
+    }
+  })
+
+  it.each([
+    'absent',
+    'csv-import-generation-1',
+    'csv-import-generation-2',
+    'csv-import-generation-3',
+    'csv-import-generation-4',
+    CSV_IMPORT_GENERATION_SCHEMA_V5,
+  ] as const)('R4-A004c: newer authoritative CSV migrates current canonical %s to one v5/JST generation', async currentSchema => {
+    vi.useFakeTimers()
+    vi.setSystemTime('2026-07-19T00:00:00.000Z')
+    try {
+      const currentImportedAt = '2026-07-10T00:00:00.000Z'
+      const currentProvenance = {
+        importedAt: currentImportedAt,
+        sourceAsOf: '2026-07-10T00:00:00.000Z',
+        sourceAsOfKind: 'csv_explicit' as const,
+        sourceAsOfConfidence: 'authoritative' as const,
+        semanticIdentity: `sha256:${'0'.repeat(64)}`,
+        contentFingerprint: 'fnv1a32:00000000',
+        sourceFileName: 'current.csv',
+        fileLastModified: currentImportedAt,
+      }
+      const currentSummary = {
+        importedAt: currentImportedAt,
+        stock: { updated: 1, added: 0, removed: 0 },
+        trust: { updated: 1, reheld: 0, zeroed: 0, unknownFunds: [], ambiguousFundIds: [] },
+      }
+      const state = useAppStore.getState()
+      const legacyBase = {
+        holdings: state.holdings,
+        trust: state.trust,
+        learning: state.learning,
+        importedAt: currentImportedAt,
+        syncSummary: currentSummary,
+        trustShortSnapshot: {
+          date: '2026-07-10T00:00:00.000Z',
+          total: state.trust.reduce((sum, item) => sum + item.eval, 0),
+          evalById: Object.fromEntries(state.trust.map(item => [item.id, item.eval])),
+        },
+      }
+      if (currentSchema !== 'absent') {
+        if (currentSchema === 'csv-import-generation-4' || currentSchema === CSV_IMPORT_GENERATION_SCHEMA_V5) {
+          persistCsvImportTransaction({
+            holdings: state.holdings,
+            trust: state.trust,
+            learning: state.learning,
+            csvImportedAt: currentImportedAt,
+            provenance: currentProvenance,
+            syncSummary: currentSummary,
+            trustShortSnapshot: {
+              ...legacyBase.trustShortSnapshot,
+              date: '2026-07-10',
+            },
+            portfolioPolicy: state.portfolioPolicy,
+            cashAssumptions: state.cashAssumptions,
+            origin: 'csv',
+          }, Date.parse('2026-07-10T01:00:00.000Z'), undefined, { schemaVersion: currentSchema })
+        } else {
+          const payload = currentSchema === 'csv-import-generation-1'
+            ? legacyBase
+            : currentSchema === 'csv-import-generation-2'
+              ? { ...legacyBase, provenance: currentProvenance }
+              : {
+                  ...legacyBase,
+                  provenance: currentProvenance,
+                  portfolioPolicy: state.portfolioPolicy,
+                  cashAssumptions: state.cashAssumptions,
+                  origin: 'csv',
+                }
+          const serializedPayload = JSON.stringify(payload)
+          storage[CSV_IMPORT_GENERATION_KEY] = JSON.stringify({
+            manifest: {
+              schemaVersion: currentSchema,
+              generationId: `seed-${currentSchema}`,
+              savedAt: Date.parse('2026-07-10T01:00:00.000Z'),
+              committed: true,
+              payloadChecksum: canonicalChecksum(serializedPayload),
+            },
+            payload,
+          })
+        }
+      }
+      const previousRaw = storage[CSV_IMPORT_GENERATION_KEY] ?? null
+      storageWriteCount = 0
+      storageRemoveCount = 0
+
+      const result = await useAppStore.getState().importCsv(csvFile(csvWithSource(
+        '2026-07-18T09:00:00+09:00',
+      )))
+
+      expect(result).toMatchObject({
+        ok: true,
+        code: 'SUCCESS',
+        persistence: { status: 'committed' },
+      })
+      expect(storageWriteCount).toBe(1)
+      expect(storageRemoveCount).toBe(0)
+      expect(storage[CSV_IMPORT_GENERATION_KEY]).not.toBe(previousRaw)
+      expect(Object.keys(storage)).toEqual([CSV_IMPORT_GENERATION_KEY])
+      const generation = restoreCsvImportGeneration()
+      expect(generation).toMatchObject({
+        status: 'committed',
+        schemaVersion: CSV_IMPORT_GENERATION_SCHEMA_V5,
+        payload: {
+          trustShortSnapshot: { date: '2026-07-19' },
+          origin: 'csv',
+        },
+      })
+      if (generation.status !== 'committed') throw new Error('expected migrated v5 generation')
+      expect(generation.payload.snapshotGenerationIdentity).toBe(
+        computeCanonicalPortfolioGenerationIdentityV2(canonicalIdentityInput(generation.payload)),
+      )
+      expect(generation.payload.snapshotGenerationIdentity).not.toBe(
+        computeCanonicalPortfolioGenerationIdentity(canonicalIdentityInput(generation.payload)),
+      )
+      expect(generation.payload.holdings).toEqual(useAppStore.getState().holdings)
+      expect(generation.payload.trust).toEqual(useAppStore.getState().trust)
+      expect(generation.payload.csvImportedAt).toBe(useAppStore.getState().system.csvLastImportedAt)
+      for (const legacyKey of [
+        'v81_portfolio', 'v81_trust', 'v91_learning', 'v10_csv_imported_at',
+        'v13_csv_sync_summary', 'v13_portfolio_policy', 'v13_cash_assumptions',
+        'v95_trust_short_snapshot',
+      ]) {
+        expect(storage[legacyKey]).toBeUndefined()
+      }
     } finally {
       vi.useRealTimers()
     }

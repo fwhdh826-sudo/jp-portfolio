@@ -35,6 +35,22 @@ function boundV3Snapshot(payload: Record<string, any>): string {
   return JSON.stringify(value)
 }
 
+function canonicalGenerationIdentityInput(payload: any) {
+  return {
+    holdings: payload.holdings,
+    trust: payload.trust,
+    learning: payload.learning,
+    portfolioPolicy: payload.portfolioPolicy,
+    cashAssumptions: payload.cashAssumptions,
+    csvImportedAt: payload.csvImportedAt,
+    csvImportProvenance: payload.provenance,
+    syncSummary: payload.syncSummary,
+    trustShortSnapshot: payload.trustShortSnapshot,
+    origin: payload.origin,
+    snapshotTransferIdentity: payload.snapshotTransferIdentity,
+  }
+}
+
 // P4.5-A013-T6: importCsvはFileReader経由でCSVを読み込むため、node環境用の
 // 最小polyfillを用意する（domain/csv/importPortfolioCsv.test.tsと同じ方式）。
 if (typeof globalThis.FileReader === 'undefined') {
@@ -1134,6 +1150,156 @@ describe('R4-A002: policy/cash persistence result visibility', () => {
     expect(setItem).toHaveBeenCalledWith(CSV_IMPORT_GENERATION_KEY, expect.any(String))
     expect(storage.v13_portfolio_policy).toBeUndefined()
     expect(storage.v13_cash_assumptions).toBeUndefined()
+  })
+
+  it.each([
+    ['csv-import-generation-4', 1, 'policy', () => useAppStore.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.18 })],
+    ['csv-import-generation-4', 1, 'cash', () => useAppStore.getState().setCashAssumptions({ cashDeposits: 7_777, standbyFunds: 8_888 })],
+    ['csv-import-generation-4', 1, 'holding', () => useAppStore.getState().updateHolding('7777', { eval: 123_456 })],
+    ['csv-import-generation-4', 1, 'trust', () => useAppStore.getState().updateTrust('test_fund', { eval: 654_321 })],
+    [CSV_IMPORT_GENERATION_SCHEMA_V5, 2, 'policy', () => useAppStore.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.18 })],
+    [CSV_IMPORT_GENERATION_SCHEMA_V5, 2, 'cash', () => useAppStore.getState().setCashAssumptions({ cashDeposits: 7_777, standbyFunds: 8_888 })],
+    [CSV_IMPORT_GENERATION_SCHEMA_V5, 2, 'holding', () => useAppStore.getState().updateHolding('7777', { eval: 123_456 })],
+    [CSV_IMPORT_GENERATION_SCHEMA_V5, 2, 'trust', () => useAppStore.getState().updateTrust('test_fund', { eval: 654_321 })],
+  ] as const)('R4-A004c: current %s nonbaseline %s replacement preserves schema/identity v%s and baseline', (schemaVersion, identityVersion, _action, invoke) => {
+    const state = useAppStore.getState()
+    const baseline = { date: '2026-07-19', total: 1_000_000, evalById: { test_fund: 1_000_000 } }
+    persistCsvImportTransaction({
+      holdings: state.holdings,
+      trust: state.trust,
+      learning: state.learning,
+      csvImportedAt: null,
+      provenance: null,
+      syncSummary: null,
+      trustShortSnapshot: baseline,
+      portfolioPolicy: state.portfolioPolicy,
+      cashAssumptions: state.cashAssumptions,
+      origin: 'snapshot',
+    }, Date.parse('2026-07-19T01:00:00.000Z'), undefined, { schemaVersion })
+    const beforeRaw = storage[CSV_IMPORT_GENERATION_KEY]
+    const beforeEnvelope = JSON.parse(beforeRaw)
+    setItem.mockClear()
+    removeItem.mockClear()
+
+    invoke()
+
+    const afterRaw = storage[CSV_IMPORT_GENERATION_KEY]
+    const afterEnvelope = JSON.parse(afterRaw)
+    expect(afterRaw).not.toBe(beforeRaw)
+    expect(afterEnvelope.manifest.schemaVersion).toBe(schemaVersion)
+    expect(afterEnvelope.manifest.generationId).not.toBe(beforeEnvelope.manifest.generationId)
+    expect(afterEnvelope.payload.trustShortSnapshot).toEqual(baseline)
+    const generation = restoreCsvImportGeneration()
+    expect(generation).toMatchObject({
+      status: 'committed',
+      schemaVersion,
+      payload: { trustShortSnapshot: baseline },
+    })
+    if (generation.status !== 'committed') throw new Error('expected nonbaseline replacement')
+    const expectedIdentity = identityVersion === 1
+      ? computeCanonicalPortfolioGenerationIdentity(canonicalIdentityInput(generation.payload))
+      : computeCanonicalPortfolioGenerationIdentityV2(canonicalIdentityInput(generation.payload))
+    expect(generation.payload.snapshotGenerationIdentity).toBe(expectedIdentity)
+    expect(setItem).toHaveBeenCalledTimes(1)
+    expect(setItem).toHaveBeenCalledWith(CSV_IMPORT_GENERATION_KEY, expect.any(String))
+    expect(removeItem).not.toHaveBeenCalled()
+    for (const legacyKey of [
+      'v81_portfolio', 'v81_trust', 'v91_learning', 'v10_csv_imported_at',
+      'v13_csv_sync_summary', 'v13_portfolio_policy', 'v13_cash_assumptions',
+      'v95_trust_short_snapshot',
+    ]) {
+      expect(storage[legacyKey]).toBeUndefined()
+    }
+  })
+})
+
+describe('R4-A004c: initialize/refresh preserve canonical v4/v5 semantics', () => {
+  const storage: Record<string, string> = {}
+  const setItem = vi.fn((key: string, value: string) => { storage[key] = value })
+  const removeItem = vi.fn((key: string) => { delete storage[key] })
+
+  beforeEach(() => {
+    Object.keys(storage).forEach(key => delete storage[key])
+    setItem.mockClear()
+    removeItem.mockClear()
+    vi.stubGlobal('localStorage', {
+      getItem: (key: string) => storage[key] ?? null,
+      setItem,
+      removeItem,
+    })
+    vi.stubGlobal('fetch', vi.fn(() => Promise.resolve({
+      ok: false,
+      status: 404,
+      json: () => Promise.resolve({}),
+    })))
+    useAppStore.setState(state => ({
+      holdings: [makeHolding({ code: '7777', eval: 700_000 })],
+      trust: [makeTrust({ id: 'test_fund', eval: 800_000 })],
+      learning: null,
+      portfolioPolicy: { jpStockMaxRatio: 0.13 },
+      cashAssumptions: {
+        cashDeposits: 123_000,
+        standbyFunds: 456_000,
+        manualOverrideEnabled: true,
+        manualUpdatedAt: '2026-07-18T00:00:00.000Z',
+      },
+      system: {
+        ...state.system,
+        status: 'idle',
+        error: null,
+        csvLastImportedAt: null,
+        csvImportProvenance: null,
+        csvSyncSummary: null,
+      },
+    }))
+  })
+
+  afterEach(() => vi.unstubAllGlobals())
+
+  it.each([
+    ['initialize', 'csv-import-generation-4', 1],
+    ['initialize', CSV_IMPORT_GENERATION_SCHEMA_V5, 2],
+    ['refreshAllData', 'csv-import-generation-4', 1],
+    ['refreshAllData', CSV_IMPORT_GENERATION_SCHEMA_V5, 2],
+  ] as const)('%s keeps %s, identity v%s, and the existing baseline without a silent schema conversion', async (operation, schemaVersion, identityVersion) => {
+    const seededState = useAppStore.getState()
+    const baseline = { date: '2026-07-18', total: 800_000, evalById: { test_fund: 800_000 } }
+    persistCsvImportTransaction({
+      holdings: seededState.holdings,
+      trust: seededState.trust,
+      learning: seededState.learning,
+      csvImportedAt: null,
+      provenance: null,
+      syncSummary: null,
+      trustShortSnapshot: baseline,
+      portfolioPolicy: seededState.portfolioPolicy,
+      cashAssumptions: seededState.cashAssumptions,
+      origin: 'snapshot',
+    }, Date.now(), undefined, { schemaVersion })
+    setItem.mockClear()
+    removeItem.mockClear()
+
+    await useAppStore.getState()[operation]()
+
+    const generation = restoreCsvImportGeneration()
+    expect(generation).toMatchObject({
+      status: 'committed',
+      schemaVersion,
+      payload: {
+        trustShortSnapshot: baseline,
+        portfolioPolicy: useAppStore.getState().portfolioPolicy,
+        cashAssumptions: useAppStore.getState().cashAssumptions,
+      },
+    })
+    if (generation.status !== 'committed') throw new Error('expected initialized/refreshed generation')
+    const expectedIdentity = identityVersion === 1
+      ? computeCanonicalPortfolioGenerationIdentity(canonicalGenerationIdentityInput(generation.payload))
+      : computeCanonicalPortfolioGenerationIdentityV2(canonicalGenerationIdentityInput(generation.payload))
+    expect(generation.payload.snapshotGenerationIdentity).toBe(expectedIdentity)
+    expect(setItem).toHaveBeenCalledTimes(1)
+    expect(setItem).toHaveBeenCalledWith(CSV_IMPORT_GENERATION_KEY, expect.any(String))
+    expect(removeItem).not.toHaveBeenCalled()
+    expect(Object.keys(storage)).toEqual([CSV_IMPORT_GENERATION_KEY])
   })
 })
 
