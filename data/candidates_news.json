@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-07-15T07:33:09.737204+09:00",
-  "sourceUpdatedAt": "2026-07-14T22:24:00+00:00",
+  "updatedAt": "2026-07-18T07:14:49.683055+09:00",
+  "sourceUpdatedAt": "2026-07-17T22:06:46+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -12,84 +12,270 @@
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "歴史的な円安「経済に悪い影響」61％ NHK世論調査",
-      "topPositiveTitle": "歴史的な円安「経済に悪い影響」61％ NHK世論調査",
+      "topNegativeTitle": "BOJ Is Said Likely to Raise Growth Forecast, Stand Pat",
+      "topPositiveTitle": "BOJ Is Said Likely to Raise Growth Forecast, Stand Pat",
       "items": [
         {
-          "title": "歴史的な円安「経済に悪い影響」61％ NHK世論調査",
-          "source": "NHK 経済",
+          "title": "BOJ Is Said Likely to Raise Growth Forecast, Stand Pat",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-13T20:02:25+00:00",
-          "url": "https://news.web.nhk/newsweb/na/na-k10015175471000",
+          "publishedAt": "2026-07-17T08:37:31+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-17/boj-is-said-likely-to-raise-growth-forecast-stand-pat-on-rates",
           "tags": [
-            "fx",
             "jp_broad",
             "market"
-          ],
-          "titleJa": "歴史的な円安「経済に悪い影響」61％ NHK世論調査"
+          ]
         }
       ]
     },
     "jp_semiconductor": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "avgSentiment": -0.167,
+      "negativeCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 2,
+      "sourceCount": 1,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Chip Stocks Slide Into Bear Market in AI Unwind: Markets Wrap",
+      "topPositiveTitle": "AI Upheaval Crushes Retail Traders Crowding Into Leveraged Funds",
+      "items": [
+        {
+          "title": "Chip Stocks Slide Into Bear Market in AI Unwind: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-07-16T22:05:23+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-16/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "jp_semiconductor",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Chips Stocks Sink Into Bear Market as 105% AI Rally Fizzles",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-17T13:38:19+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-17/chips-stocks-tumble-into-bear-market-as-105-ai-rally-fizzles",
+          "tags": [
+            "jp_semiconductor",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "US Stocks End Week Lower on Fears of Another ‘DeepSeek Moment’",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-17T08:13:01+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-17/us-stock-index-futures-slide-as-jitters-grow-on-chip-selloff",
+          "tags": [
+            "jp_semiconductor",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "AI Upheaval Crushes Retail Traders Crowding Into Leveraged Funds",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-07-17T20:36:28+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-17/ai-upheaval-crushes-retail-traders-crowding-into-leveraged-funds",
+          "tags": [
+            "global_broad",
+            "jp_semiconductor",
+            "market"
+          ]
+        }
+      ]
     },
     "us_broad": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.12,
       "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 4,
+      "sourceCount": 2,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Hammack Sees No Conflict in Fed’s Goals, Inflation Her Worry",
+      "topPositiveTitle": "Treasuries Post Weekly Advance as Inflation Optimism Prevails",
+      "items": [
+        {
+          "title": "Hammack Sees No Conflict in Fed’s Goals, Inflation Her Worry",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-17T14:10:43+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-17/fed-s-hammack-sees-no-conflict-in-mandate-inflation-her-worry",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Warsh Puts an ‘Easter Egg’ in Key Report, Shining Light on Money Supply",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-17T11:00:01+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-07-17/warsh-puts-an-easter-egg-in-key-report-shining-light-on-money-supply",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "US Stocks End Week Lower on Fears of Another ‘DeepSeek Moment’",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-17T08:13:01+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-17/us-stock-index-futures-slide-as-jitters-grow-on-chip-selloff",
+          "tags": [
+            "jp_semiconductor",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Fed’s Jefferson Says Policy Well Positioned If Inflation Cools",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-16T23:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-16/jefferson-says-policy-well-positioned-can-reconsider-if-needed",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Treasuries Post Weekly Advance as Inflation Optimism Prevails",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.6,
+          "publishedAt": "2026-07-17T19:46:27+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-17/treasuries-post-weekly-advance-as-inflation-optimism-prevails",
+          "tags": [
+            "commodity",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        }
+      ]
     },
     "us_growth": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "avgSentiment": -0.223,
+      "negativeCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "‘Sea of Red’ Hits Emerging Stocks as AI Concerns Jolts Markets",
+      "topPositiveTitle": "Gauge of Oracle’s Credit Risk Hits Fresh All Time High",
+      "items": [
+        {
+          "title": "‘Sea of Red’ Hits Emerging Stocks as AI Concerns Jolts Markets",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-07-17T03:54:14+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-17/em-stocks-headed-for-weekly-loss-on-tech-selloff-rising-crude",
+          "tags": [
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Chips Stocks Sink Into Bear Market as 105% AI Rally Fizzles",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-17T13:38:19+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-17/chips-stocks-tumble-into-bear-market-as-105-ai-rally-fizzles",
+          "tags": [
+            "jp_semiconductor",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Gauge of Oracle’s Credit Risk Hits Fresh All Time High",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-07-17T21:43:03+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-17/gauge-of-oracle-s-credit-risk-hits-fresh-all-time-high",
+          "tags": [
+            "market",
+            "us_growth"
+          ]
+        }
+      ]
     },
     "global_broad": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.33,
       "negativeCount": 0,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "AI Upheaval Crushes Retail Traders Crowding Into Leveraged Funds",
+      "topPositiveTitle": "AI Upheaval Crushes Retail Traders Crowding Into Leveraged Funds",
+      "items": [
+        {
+          "title": "AI Upheaval Crushes Retail Traders Crowding Into Leveraged Funds",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-07-17T20:36:28+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-17/ai-upheaval-crushes-retail-traders-crowding-into-leveraged-funds",
+          "tags": [
+            "global_broad",
+            "jp_semiconductor",
+            "market"
+          ]
+        }
+      ]
     },
     "gold": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
+      "avgSentiment": -1.0,
+      "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Gold Trims Weekly Drop on Dip-Buying Despite Rate Hike Odds",
+      "topPositiveTitle": "Gold Trims Weekly Drop on Dip-Buying Despite Rate Hike Odds",
+      "items": [
+        {
+          "title": "Gold Trims Weekly Drop on Dip-Buying Despite Rate Hike Odds",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-07-16T23:59:51+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-16/gold-heads-for-weekly-fall-as-hormuz-strikes-raise-fed-hike-bets",
+          "tags": [
+            "geopolitical",
+            "gold",
+            "macro_risk",
+            "market",
+            "rates"
+          ]
+        }
+      ]
     },
     "reit": {
       "avgSentiment": 0,
@@ -116,91 +302,352 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "avgSentiment": -0.11,
+      "negativeCount": 3,
+      "positiveCount": 2,
+      "neutralCount": 1,
+      "sourceCount": 2,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Gold Trims Weekly Drop on Dip-Buying Despite Rate Hike Odds",
+      "topPositiveTitle": "Malaysian Growth Surges to 5.8% as Services, Tech Sales Counter Impact of War",
+      "items": [
+        {
+          "title": "Gold Trims Weekly Drop on Dip-Buying Despite Rate Hike Odds",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-07-16T23:59:51+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-16/gold-heads-for-weekly-fall-as-hormuz-strikes-raise-fed-hike-bets",
+          "tags": [
+            "geopolitical",
+            "gold",
+            "macro_risk",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Chip Stocks Slide Into Bear Market in AI Unwind: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-07-16T22:05:23+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-16/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "jp_semiconductor",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "US Oil Rig Count Notches Longest Streak Without Drop Since 2022",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-07-17T18:30:43+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-17/us-oil-rig-count-notches-longest-streak-without-drop-since-2022",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Hammack Sees No Conflict in Fed’s Goals, Inflation Her Worry",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-17T14:10:43+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-17/fed-s-hammack-sees-no-conflict-in-mandate-inflation-her-worry",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Latest Oil Market News and Analysis for July 17",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-07-16T22:01:44+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-16/latest-oil-market-news-and-analysis-for-july-17",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        }
+      ]
     },
     "fx": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0.33,
       "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 0,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "歴史的な円安「経済に悪い影響」61％ NHK世論調査",
-      "topPositiveTitle": "歴史的な円安「経済に悪い影響」61％ NHK世論調査",
+      "topNegativeTitle": "Japan’s ‘Decisive Action’ Threat Does Little to Scare Yen Bears",
+      "topPositiveTitle": "Japan’s ‘Decisive Action’ Threat Does Little to Scare Yen Bears",
       "items": [
         {
-          "title": "歴史的な円安「経済に悪い影響」61％ NHK世論調査",
-          "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-13T20:02:25+00:00",
-          "url": "https://news.web.nhk/newsweb/na/na-k10015175471000",
+          "title": "Japan’s ‘Decisive Action’ Threat Does Little to Scare Yen Bears",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-07-17T00:54:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-17/japan-s-katayama-warns-of-decisive-action-on-yen-if-needed",
           "tags": [
             "fx",
-            "jp_broad",
             "market"
-          ],
-          "titleJa": "歴史的な円安「経済に悪い影響」61％ NHK世論調査"
+          ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "avgSentiment": -0.146,
+      "negativeCount": 2,
+      "positiveCount": 1,
+      "neutralCount": 2,
+      "sourceCount": 2,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "commodity": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "geopolitical": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
-      "isStale": false,
-      "topNegativeTitle": "政府 ナフサの供給対策検討 イラン情勢による流通影響受け",
-      "topPositiveTitle": "政府 ナフサの供給対策検討 イラン情勢による流通影響受け",
+      "topNegativeTitle": "Gold Trims Weekly Drop on Dip-Buying Despite Rate Hike Odds",
+      "topPositiveTitle": "Treasuries Post Weekly Advance as Inflation Optimism Prevails",
       "items": [
         {
-          "title": "政府 ナフサの供給対策検討 イラン情勢による流通影響受け",
-          "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-14T21:42:52+00:00",
-          "url": "https://news.web.nhk/newsweb/na/na-k10015176971000",
+          "title": "Gold Trims Weekly Drop on Dip-Buying Despite Rate Hike Odds",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-07-16T23:59:51+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-16/gold-heads-for-weekly-fall-as-hormuz-strikes-raise-fed-hike-bets",
           "tags": [
             "geopolitical",
+            "gold",
+            "macro_risk",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "ECB Set to Wait for September to Hike One Last Time, Poll Shows",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-07-17T04:15:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-17/ecb-set-to-wait-for-september-to-hike-one-last-time-poll-shows",
+          "tags": [
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Fed’s Jefferson Says Policy Well Positioned If Inflation Cools",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-16T23:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-16/jefferson-says-policy-well-positioned-can-reconsider-if-needed",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "CoreLogic Wraps Up $5.25 Billion Debt Deal With Hefty Yields",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-16T21:32:22+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-16/corelogic-in-talks-to-sweeten-terms-on-struggling-debt-sale",
+          "tags": [
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Treasuries Post Weekly Advance as Inflation Optimism Prevails",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.6,
+          "publishedAt": "2026-07-17T19:46:27+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-17/treasuries-post-weekly-advance-as-inflation-optimism-prevails",
+          "tags": [
+            "commodity",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        }
+      ]
+    },
+    "commodity": {
+      "avgSentiment": 0.188,
+      "negativeCount": 1,
+      "positiveCount": 2,
+      "neutralCount": 2,
+      "sourceCount": 1,
+      "itemCount": 5,
+      "isStale": false,
+      "topNegativeTitle": "US Oil Rig Count Notches Longest Streak Without Drop Since 2022",
+      "topPositiveTitle": "Latest Oil Market News and Analysis for July 17",
+      "items": [
+        {
+          "title": "US Oil Rig Count Notches Longest Streak Without Drop Since 2022",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-07-17T18:30:43+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-17/us-oil-rig-count-notches-longest-streak-without-drop-since-2022",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
             "market"
-          ],
-          "titleJa": "政府 ナフサの供給対策検討 イラン情勢による流通影響受け"
+          ]
+        },
+        {
+          "title": "Hedge Funds Add Bullish Oil Bets at Fastest Pace in a Decade",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-17T20:12:56+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-17/hedge-funds-add-bullish-oil-bets-at-fastest-pace-in-a-decade",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Argentina Oil-Boom Province to Pitch First US Bond Since 2017",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-17T19:56:32+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-17/argentina-oil-boom-province-to-pitch-first-us-bond-since-2017",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "Treasuries Post Weekly Advance as Inflation Optimism Prevails",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.6,
+          "publishedAt": "2026-07-17T19:46:27+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-17/treasuries-post-weekly-advance-as-inflation-optimism-prevails",
+          "tags": [
+            "commodity",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Latest Oil Market News and Analysis for July 17",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-07-16T22:01:44+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-16/latest-oil-market-news-and-analysis-for-july-17",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        }
+      ]
+    },
+    "geopolitical": {
+      "avgSentiment": 0.057,
+      "negativeCount": 2,
+      "positiveCount": 2,
+      "neutralCount": 2,
+      "sourceCount": 2,
+      "itemCount": 6,
+      "isStale": false,
+      "topNegativeTitle": "Gold Trims Weekly Drop on Dip-Buying Despite Rate Hike Odds",
+      "topPositiveTitle": "Malaysian Growth Surges to 5.8% as Services, Tech Sales Counter Impact of War",
+      "items": [
+        {
+          "title": "Gold Trims Weekly Drop on Dip-Buying Despite Rate Hike Odds",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-07-16T23:59:51+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-16/gold-heads-for-weekly-fall-as-hormuz-strikes-raise-fed-hike-bets",
+          "tags": [
+            "geopolitical",
+            "gold",
+            "macro_risk",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "US Oil Rig Count Notches Longest Streak Without Drop Since 2022",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-07-17T18:30:43+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-17/us-oil-rig-count-notches-longest-streak-without-drop-since-2022",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Hedge Funds Add Bullish Oil Bets at Fastest Pace in a Decade",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-17T20:12:56+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-17/hedge-funds-add-bullish-oil-bets-at-fastest-pace-in-a-decade",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Hammack Sees No Conflict in Fed’s Goals, Inflation Her Worry",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-17T14:10:43+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-17/fed-s-hammack-sees-no-conflict-in-mandate-inflation-her-worry",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Latest Oil Market News and Analysis for July 17",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-07-16T22:01:44+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-16/latest-oil-market-news-and-analysis-for-july-17",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
         }
       ]
     }
@@ -213,7 +660,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 16,
+    "excludedCount": 4,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
