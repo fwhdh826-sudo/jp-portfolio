@@ -45890,3 +45890,79 @@ persistence hardening系列（`portfolio-snapshot-3`、
 
 - production behaviorを変えず、未固定のfailure branchとtimezone boundary
   testを閉じる
+
+## R4-A001: test adequacy closure
+
+### 対象
+
+- FIXC-RA-F2
+- R4-JST-F1
+
+### 実施内容
+
+- `persistCsvImportTransaction`のwrite-then-throw後にcanonical physical bytesが
+  `previousRaw`でも新serialized envelopeでもない第三者bytesへ置換された場合を
+  `rollback_failed`とする専用fixtureを追加
+- 第三者bytesを非破壊で維持し、検出後の追加rollback `setItem` / `removeItem`が
+  いずれも0回であることを直接assert
+- `getTrustShortFilterTuning`が`INVALID_NOW_MS_CASES`の全ケースで`TypeError`を
+  throwし、有効entryが存在してもdefault thresholdや`sampleDays: 0`へ隠蔽しない
+  ことを固定
+- 下限側Date範囲外（`-MAX_DATE_EPOCH_MS - 1`）と、`setUTCFullYear`で構築した
+  JST calendar year 0001未満の有限値をpublic `nowMs` consumer tableへ追加
+- fractional millisecondの有効`nowMs`がhost timezoneに依存せずtracking結果を
+  返すことを追加
+- UTC `2026-12-31T14:59:59Z`から`2026-12-31T15:00:00Z`への境界で、JST
+  `2026-12-31`から`2027-01-01`へentryが切り替わることを直接固定
+- invalid `recordTrustShortDecision`の空文字、`not-a-date`、`2026-02-30`、
+  不正offset（および不正time）について、`getItem` / `setItem` / `removeItem`が
+  すべて0回、保存bytesとexisting entryが不変、`TypeError`となることを直接assert
+- `0001-01-01` / `0099-12-31`をtable-drivenでそれぞれ直接recordし、保存された
+  `entry.date`との一致とcase間のstorage state非共有を固定
+
+### production behavior
+
+- production code変更なし
+- test-only closure
+
+### 検証
+
+- UTC targeted: 2 files / 193 tests GREEN
+- JST targeted: 2 files / 193 tests GREEN
+- UTC full unit: 52 files / 1209 tests GREEN
+- JST full unit: 52 files / 1209 tests GREEN
+- `npx tsc --noEmit`: GREEN
+- `npm run build`: GREEN（500kB chunk warningは既知のnon-blocker）
+- `git diff --check`: GREEN
+
+### 判定
+
+- FIXC-RA-F2: CLOSED
+- R4-JST-F1: CLOSED
+- R4-A001: CLOSED
+
+### 残存R4
+
+- R4-JST-F2
+- FIXC-RA-F1
+- RA-003
+- RA-005
+- RA-006の残余項目
+- Web Locks
+- BroadcastChannel / storage event
+- cross-tab CAS / rollback TOCTOU
+- explicit canonical repair UI
+- v1/v2 policy/cash migration UI
+
+### 次チケット
+
+`R4-A002: persistence result visibility`
+
+対象:
+
+- FIXC-RA-F1
+
+目的:
+
+- canonical absent時のpolicy/cash legacy persistence resultを破棄せず、保存失敗・
+  blocked状態をsystem/UIへtruthfulに反映する

@@ -3,6 +3,7 @@ import type { Trust } from '../../types'
 import {
   detectTrustExecutionFromCsvSync,
   getTrustShortRecentEntries,
+  getTrustShortFilterTuning,
   getTrustShortTodayExecutionCount,
   getTrustShortTrackingStats,
   captureTrustShortAnalysisInput,
@@ -306,6 +307,15 @@ function stubLocalStorage() {
   return store
 }
 
+function stubSpiedLocalStorage() {
+  const store: Record<string, string> = {}
+  const getItem = vi.fn((key: string) => store[key] ?? null)
+  const setItem = vi.fn((key: string, value: string) => { store[key] = value })
+  const removeItem = vi.fn((key: string) => { delete store[key] })
+  vi.stubGlobal('window', { localStorage: { getItem, setItem, removeItem } })
+  return { store, getItem, setItem, removeItem }
+}
+
 function seedTrackerEntries(store: Record<string, string>, dates: string[]) {
   const entries: TrustShortTrackerEntry[] = dates.map(date => ({
     date,
@@ -329,12 +339,23 @@ function seedTrackerEntries(store: Record<string, string>, dates: string[]) {
 const MAX_DATE_EPOCH_MS = 8_640_000_000_000_000
 const JST_OFFSET_MS = 9 * 60 * 60 * 1000
 
+// Date.UTC(year, ...)は年0〜99を1900〜1999年へ丸めるため、setUTCFullYearで構築する。
+function utcMsForYear(year: number, month: number, day: number): number {
+  const date = new Date(0)
+  date.setUTCFullYear(year, month - 1, day)
+  return date.getTime()
+}
+
+const JST_YEAR_BELOW_0001_NOW_MS = utcMsForYear(0, 1, 1) - JST_OFFSET_MS
+
 const INVALID_NOW_MS_CASES: Array<[string, number]> = [
   ['NaN', NaN],
   ['Infinity', Infinity],
   ['-Infinity', -Infinity],
   ['Date表現範囲外（超過）', MAX_DATE_EPOCH_MS + 1],
+  ['Date表現範囲外（下限未満）', -MAX_DATE_EPOCH_MS - 1],
   ['JST offset加算後にDate表現範囲外', MAX_DATE_EPOCH_MS - 100],
+  ['JST calendar yearが0001未満', JST_YEAR_BELOW_0001_NOW_MS],
   ['JST calendar yearが9999超過', 253_402_268_400_000], // JST 10000-01-01T00:00:00
 ]
 
@@ -360,18 +381,42 @@ describe('F1: invalid nowMsは統一してTypeErrorをrejectする（0件・0統
     expect(() => captureTrustShortAnalysisInput(nowMs)).toThrow(TypeError)
   })
 
+  it.each(INVALID_NOW_MS_CASES)('getTrustShortFilterTuning: %s はTypeError', (_label, nowMs) => {
+    expect(() => getTrustShortFilterTuning(90, nowMs)).toThrow(TypeError)
+  })
+
   it('invalid nowMsでも既存entryを"0件"としてすり替えない: 有効entryがある状態でthrowする', () => {
     seedTrackerEntries(store, ['2026-07-15'])
     expect(() => getTrustShortTrackingStats(NaN)).toThrow(TypeError)
     // storageは一切変更されない
     expect(JSON.parse(store.v95_trust_short_tracker).entries).toHaveLength(1)
   })
+
+  it('getTrustShortFilterTuningは有効entryが存在してもinvalid nowMsをdefault thresholdやsampleDays: 0へ隠蔽しない', () => {
+    seedTrackerEntries(store, ['2026-07-15'])
+    expect(() => getTrustShortFilterTuning(90, NaN)).toThrow(TypeError)
+    expect(JSON.parse(store.v95_trust_short_tracker).entries).toHaveLength(1)
+  })
+
+  it('fractional millisecondのnowMsはhost timezoneに依存せずtracking結果を返す', () => {
+    seedTrackerEntries(store, ['2026-07-15'])
+    const nowMs = new Date('2026-07-15T12:00:00.000Z').getTime() + 0.5
+
+    expect(() => captureTrustShortAnalysisInput(nowMs)).not.toThrow()
+    expect(getTrustShortTodayExecutionCount(nowMs)).toBe(1)
+    expect(getTrustShortTrackingStats(nowMs).trackedDays).toBe(1)
+    expect(getTrustShortRecentEntries(30, nowMs)).toHaveLength(1)
+  })
 })
 
 describe('F2: recordTrustShortDecisionのsnapshot.date検証', () => {
   let store: Record<string, string>
+  let storageSpies: ReturnType<typeof stubSpiedLocalStorage>
 
-  beforeEach(() => { store = stubLocalStorage() })
+  beforeEach(() => {
+    storageSpies = stubSpiedLocalStorage()
+    store = storageSpies.store
+  })
   afterEach(() => { vi.unstubAllGlobals() })
 
   function makeSnapshot(date: string) {
@@ -420,9 +465,18 @@ describe('F2: recordTrustShortDecisionのsnapshot.date検証', () => {
     ['不正offset', '2026-07-15T10:00:00+25:00'],
     ['不正time', '2026-07-15T25:00:00Z'],
     ['空文字', ''],
-  ])('invalid snapshot.date（%s）はTypeErrorでrejectし、storage副作用ゼロ', (_label, date) => {
+  ])('invalid snapshot.date（%s）はstorage access前にTypeErrorでrejectする', (_label, date) => {
+    seedTrackerEntries(store, ['2026-07-15'])
+    const before = store.v95_trust_short_tracker
+
     expect(() => recordTrustShortDecision(makeSnapshot(date))).toThrow(TypeError)
-    expect(store.v95_trust_short_tracker).toBeUndefined()
+    expect(storageSpies.getItem).toHaveBeenCalledTimes(0)
+    expect(storageSpies.setItem).toHaveBeenCalledTimes(0)
+    expect(storageSpies.removeItem).toHaveBeenCalledTimes(0)
+    expect(store.v95_trust_short_tracker).toBe(before)
+    expect(JSON.parse(store.v95_trust_short_tracker).entries).toEqual(
+      JSON.parse(before).entries,
+    )
   })
 
   it('invalid snapshot.dateは既存entryの書き換えも発生させない', () => {
@@ -438,14 +492,6 @@ describe('F3: 0001〜0099年のJST market-day keyを正しく扱う', () => {
 
   beforeEach(() => { store = stubLocalStorage() })
   afterEach(() => { vi.unstubAllGlobals() })
-
-  // Date.UTC(year, ...)は年0〜99を1900〜1999年へ丸めるため（F3で修正対象のバグそのもの）、
-  // テスト側の期待値算出でも同じ罠を踏まないよう setUTCFullYear ベースで計算する。
-  function utcMsForYear(year: number, month: number, day: number): number {
-    const d = new Date(0)
-    d.setUTCFullYear(year, month - 1, day)
-    return d.getTime()
-  }
 
   it('0001-01-01・0099-12-31は有効な暦日として扱われる（filterRecent経由）', () => {
     seedTrackerEntries(store, ['0001-01-01'])
@@ -477,19 +523,24 @@ describe('F3: 0001〜0099年のJST market-day keyを正しく扱う', () => {
     expect(getTrustShortRecentEntries(800_000, nowMs)).toHaveLength(0)
   })
 
-  it('recordTrustShortDecisionでも0001-01-01・0099-12-31が有効なJST market-day keyとして受理される', () => {
-    recordTrustShortDecision({
-      date: '0099-12-31',
-      decision: 'WAIT',
-      confidence: 50,
-      executed: false,
-      nikkeiChgPct: 0,
-      futuresChgPct: 0,
-      conditionsPassed: 0,
-    })
-    const entries = JSON.parse(store.v95_trust_short_tracker).entries as TrustShortTrackerEntry[]
-    expect(entries[0].date).toBe('0099-12-31')
-  })
+  it.each(['0001-01-01', '0099-12-31'])(
+    'recordTrustShortDecisionは%sを直接受理しcase間でstorage stateを共有しない',
+    date => {
+      expect(() => recordTrustShortDecision({
+        date,
+        decision: 'WAIT',
+        confidence: 50,
+        executed: false,
+        nikkeiChgPct: 0,
+        futuresChgPct: 0,
+        conditionsPassed: 0,
+      })).not.toThrow()
+      const entries = JSON.parse(store.v95_trust_short_tracker).entries as TrustShortTrackerEntry[]
+      expect(entries).toHaveLength(1)
+      expect(entries[0].date).toBe(date)
+      expect(entries.map(entry => entry.date)).toEqual([date])
+    },
+  )
 
   it('現代の日付処理（2020年代）は変更されない', () => {
     seedTrackerEntries(store, ['2026-06-16'])
@@ -513,6 +564,19 @@ describe('F4: 直接テスト（JST midnight境界・120日retention境界）', 
     expect(getTrustShortTodayExecutionCount(after)).toBe(0)
 
     seedTrackerEntries(store, ['2026-07-16'])
+    expect(getTrustShortTodayExecutionCount(after)).toBe(1)
+  })
+
+  it('Dec/Jan年境界は14:59:59Zの2026-12-31から15:00:00Zの2027-01-01へ切り替わる', () => {
+    const before = new Date('2026-12-31T14:59:59.000Z').getTime()
+    const after = new Date('2026-12-31T15:00:00.000Z').getTime()
+
+    seedTrackerEntries(store, ['2026-12-31'])
+    expect(getTrustShortTodayExecutionCount(before)).toBe(1)
+    expect(getTrustShortTodayExecutionCount(after)).toBe(0)
+
+    seedTrackerEntries(store, ['2027-01-01'])
+    expect(getTrustShortTodayExecutionCount(before)).toBe(0)
     expect(getTrustShortTodayExecutionCount(after)).toBe(1)
   })
 

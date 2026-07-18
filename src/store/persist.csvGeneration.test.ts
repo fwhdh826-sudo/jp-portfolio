@@ -6,6 +6,7 @@ import {
   CSV_IMPORT_GENERATION_KEY,
   CsvImportCanonicalConflictError,
   CsvImportPersistenceError,
+  CsvImportPersistenceIndeterminateError,
   ownsCsvImportCanonicalBytes,
   persistCsvImportTransaction,
   persistCsvImportedAt,
@@ -799,6 +800,44 @@ describe('T9-A003: committed CSV generation durability and recovery', () => {
     expect(removeCalls).toBe(0)
     vi.stubGlobal('localStorage', storage)
     expect(() => persistCsvImportTransaction(payload('new'))).not.toThrow()
+  })
+
+  it('R4-A001 / FIXC-RA-F2: write-then-throw後に第三者bytesを観測した場合はrollback_failedとなり第三者bytesを破壊しない', () => {
+    persistCsvImportTransaction(payload('old'))
+    const previousRaw = store[CSV_IMPORT_GENERATION_KEY]
+    const thirdPartyRaw = JSON.stringify({ owner: 'third-party', generation: 'external' })
+    let attemptedEnvelope: string | null = null
+    const setItem = vi.fn((key: string, value: string) => {
+      attemptedEnvelope = value
+      store[key] = thirdPartyRaw
+      throw new Error('write completion notification failed after external replacement')
+    })
+    const removeItem = vi.fn((key: string) => { delete store[key] })
+    vi.stubGlobal('localStorage', {
+      getItem: storage.getItem,
+      setItem,
+      removeItem,
+    })
+
+    let caught: unknown = null
+    try { persistCsvImportTransaction(payload('new')) } catch (error) { caught = error }
+
+    expect(caught).toBeInstanceOf(CsvImportPersistenceError)
+    expect(caught).not.toBeInstanceOf(CsvImportPersistenceIndeterminateError)
+    expect(caught).toMatchObject({ status: 'rollback_failed' })
+    expect(setItem).toHaveBeenCalledTimes(1)
+    expect(removeItem).not.toHaveBeenCalled()
+    expect(attemptedEnvelope).toBeTypeOf('string')
+    expect(thirdPartyRaw).not.toBe(previousRaw)
+    expect(thirdPartyRaw).not.toBe(attemptedEnvelope)
+    expect(store[CSV_IMPORT_GENERATION_KEY]).toBe(thirdPartyRaw)
+    expect(store[CSV_IMPORT_GENERATION_KEY]).not.toBe(previousRaw)
+    expect(store[CSV_IMPORT_GENERATION_KEY]).not.toBe(attemptedEnvelope)
+
+    // Third-party ownership detection must be the terminal operation: no rollback write/remove.
+    expect(setItem).toHaveBeenCalledTimes(1)
+    expect(removeItem).toHaveBeenCalledTimes(0)
+    expect(store[CSV_IMPORT_GENERATION_KEY]).toBe(thirdPartyRaw)
   })
 
   it('R3-FIX-C RA-001: durable write followed by an unreadable commit check is indeterminate and never rolls back', () => {
