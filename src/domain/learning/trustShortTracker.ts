@@ -1,5 +1,6 @@
 import type { Trust } from '../../types'
 import { restoreCsvTrustShortSnapshotState } from '../../store/persist'
+import { parseStrictTimestamp } from '../../utils/strictTimestamp'
 
 export type TrustShortDecision = 'WAIT' | 'BULL' | 'BEAR'
 export type TrustShortOutcome = 'win' | 'loss' | 'flat'
@@ -105,6 +106,65 @@ function safeNowIso(nowMs = Date.now()) {
   return new Date(nowMs).toISOString()
 }
 
+const JST_OFFSET_MS = 9 * 60 * 60 * 1000
+const MS_PER_DAY = 24 * 60 * 60 * 1000
+const DATE_KEY_RE = /^\d{4}-\d{2}-\d{2}$/
+// ECMA-262 Date値の表現可能範囲（±100,000,000日 = ±8.64e15ms）。
+const MIN_DATE_EPOCH_MS = -8_640_000_000_000_000
+const MAX_DATE_EPOCH_MS = 8_640_000_000_000_000
+
+/**
+ * JST calendar day算出の唯一の入り口となるepoch millisecond validator。
+ * NaN/Infinity/Date表現範囲外/JST offset加算後に範囲外/JST暦年が0001-9999外を
+ * すべてTypeErrorとして統一し、「0件」等へ隠蔽させない（jstDateKeyFromMs/jstEpochDayの両方が必ず経由する）。
+ */
+function assertValidEpochMs(nowMs: number): void {
+  if (typeof nowMs !== 'number' || !Number.isFinite(nowMs)) {
+    throw new TypeError(`trustShortTracker: nowMs must be a finite number, got ${String(nowMs)}`)
+  }
+  if (nowMs < MIN_DATE_EPOCH_MS || nowMs > MAX_DATE_EPOCH_MS) {
+    throw new TypeError(`trustShortTracker: nowMs is outside the representable Date range: ${nowMs}`)
+  }
+  const jstMs = nowMs + JST_OFFSET_MS
+  if (jstMs < MIN_DATE_EPOCH_MS || jstMs > MAX_DATE_EPOCH_MS) {
+    throw new TypeError(
+      `trustShortTracker: nowMs is outside the representable Date range after JST offset: ${nowMs}`,
+    )
+  }
+  // jstMsがDate範囲内である以上getUTCFullYear()はNaNにならず、この比較は安全に機能する。
+  const jstYear = new Date(jstMs).getUTCFullYear()
+  if (jstYear < 1 || jstYear > 9999) {
+    throw new TypeError(`trustShortTracker: JST calendar year is outside [0001,9999]: ${jstYear}`)
+  }
+}
+
+/**
+ * 日本市場日（Asia/Tokyo, UTC+9, DSTなし）のcalendar day keyをnowMsから導出する。
+ * host timezoneに一切依存しない（Date.setHours/setDateなどlocal time APIを使わない）。
+ */
+function jstDateKeyFromMs(nowMs: number): string {
+  assertValidEpochMs(nowMs)
+  return new Date(nowMs + JST_OFFSET_MS).toISOString().slice(0, 10)
+}
+
+/** nowMsが属するJST calendar dayのepoch day数（1970-01-01 UTC起点）。 */
+function jstEpochDay(nowMs: number): number {
+  assertValidEpochMs(nowMs)
+  return Math.floor((nowMs + JST_OFFSET_MS) / MS_PER_DAY)
+}
+
+/**
+ * "YYYY-MM-DD"を厳密に検証してepoch day数へ変換する。
+ * 形式不正・存在しない暦日（例: 2026-02-30）・0001-9999範囲外の年はnullを返し、
+ * 呼び出し側で除外させる。calendar検証はstrictTimestamp.tsのparseStrictTimestampを再利用し、
+ * Date.UTC(0-99年を1900年代へ丸める既知の罠)を避ける。
+ */
+function dayKeyToEpochDay(key: string): number | null {
+  if (!DATE_KEY_RE.test(key)) return null
+  const parsed = parseStrictTimestamp(key, { allowDateOnly: true })
+  return parsed ? jstEpochDay(parsed.epochMs) : null
+}
+
 function trackerStorage(): Storage | null {
   if (typeof window !== 'undefined' && typeof window.localStorage !== 'undefined') {
     return window.localStorage
@@ -190,18 +250,11 @@ function evaluateOutcome(decision: TrustShortDecision, nikkeiChgPct: number): Tr
   return 'flat'
 }
 
-function cutoffDate(days: number, nowMs = Date.now()) {
-  const date = new Date(nowMs)
-  date.setHours(0, 0, 0, 0)
-  date.setDate(date.getDate() - days)
-  return date
-}
-
 function filterRecent(entries: TrustShortTrackerEntry[], days: number, nowMs = Date.now()) {
-  const cutoff = cutoffDate(days, nowMs)
+  const cutoffEpochDay = jstEpochDay(nowMs) - days
   return entries.filter(entry => {
-    const parsed = new Date(entry.date)
-    return !Number.isNaN(parsed.getTime()) && parsed >= cutoff
+    const epochDay = dayKeyToEpochDay(entry.date)
+    return epochDay !== null && epochDay >= cutoffEpochDay
   })
 }
 
@@ -271,8 +324,8 @@ function buildShortTrustSnapshot(trust: Trust[], date: string): TrustShortPortfo
   return { date: toDateKey(date), total, evalById }
 }
 
-export function getTrustShortTodayExecutionCount(date = safeNowIso()) {
-  const key = toDateKey(date)
+export function getTrustShortTodayExecutionCount(nowMs = Date.now()) {
+  const key = jstDateKeyFromMs(nowMs)
   const state = loadState()
   return state.entries.some(entry => entry.date === key && entry.executed) ? 1 : 0
 }
@@ -402,7 +455,7 @@ export function captureTrustShortAnalysisInput(nowMs: number): TrustShortAnalysi
   let raw: string | null = null
   try { raw = storage?.getItem(KEY) ?? null } catch { raw = null }
   const state = parseState(raw, nowMs)
-  const todayKey = toDateKey(safeNowIso(nowMs))
+  const todayKey = jstDateKeyFromMs(nowMs)
   return {
     raw,
     fingerprint: raw ?? 'missing',
@@ -438,11 +491,29 @@ export function restoreTrustShortAnalysisInput(
   }
 }
 
+/**
+ * snapshot.dateを厳密検証する。有効形式は次の2種のみ:
+ *  - "YYYY-MM-DD": 明示的なJST market-day keyとしてそのまま同じ日付を使用する。
+ *  - "Z"またはtimezone offset付きISO timestamp: instantをJST calendar dayへ変換する。
+ * 不正文字列・存在しない暦日・不正offset・空文字はすべてTypeErrorでrejectし、
+ * 呼び出し側にstorage write/mutationをさせない（副作用ゼロを呼び出し元で保証するための事前関門）。
+ */
+function requireValidSnapshotDate(date: unknown): { epochMs: number; normalized: string } {
+  const parsed = parseStrictTimestamp(date, { allowDateOnly: true })
+  if (!parsed) {
+    throw new TypeError(`trustShortTracker: invalid snapshot.date: ${JSON.stringify(date)}`)
+  }
+  return parsed
+}
+
 export function recordTrustShortDecision(snapshot: TrustShortDecisionSnapshot) {
-  const state = loadState()
-  const date = toDateKey(snapshot.date)
-  const now = snapshot.date || safeNowIso()
+  const parsedDate = requireValidSnapshotDate(snapshot.date)
+  const retentionNowMs = parsedDate.epochMs
+  const date = jstDateKeyFromMs(retentionNowMs)
+  const now = parsedDate.normalized
   const outcome = evaluateOutcome(snapshot.decision, snapshot.nikkeiChgPct)
+
+  const state = loadState()
 
   const nextEntry: TrustShortTrackerEntry = {
     date,
@@ -471,8 +542,6 @@ export function recordTrustShortDecision(snapshot: TrustShortDecisionSnapshot) {
     state.entries.push(nextEntry)
   }
 
-  const snapshotNowMs = new Date(snapshot.date).getTime()
-  const retentionNowMs = Number.isFinite(snapshotNowMs) ? snapshotNowMs : Date.now()
   state.entries = filterRecent(state.entries, RETENTION_DAYS, retentionNowMs)
     .sort((left, right) => right.date.localeCompare(left.date))
 

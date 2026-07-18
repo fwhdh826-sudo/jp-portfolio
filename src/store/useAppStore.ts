@@ -1796,7 +1796,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
       setPortfolioGenerationTransactionPhase(transaction, 'PUBLISHED')
 
       try {
-        if (trustExecution.executed && getTrustShortTodayExecutionCount(now) < 1) {
+        if (trustExecution.executed && getTrustShortTodayExecutionCount(transaction.analysisNow) < 1) {
           const state = get()
           const trustPlan = buildTrustPortfolioPlan({
             trust: state.trust,
@@ -1806,7 +1806,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
             sqCalendar: state.sqCalendar,
             margin: state.margin,
             flows: state.flows,
-            todayEntryCount: getTrustShortTodayExecutionCount(now),
+            todayEntryCount: getTrustShortTodayExecutionCount(transaction.analysisNow),
             performance30d:  getTrustShortTrackingStats(transaction.analysisNow),
             noTrade:         checkNoTrade(state).noTrade,
             jpTrustHeadroom: state.universe?.categories.find(c => c.class === 'JP_TRUST')?.diffValue,
