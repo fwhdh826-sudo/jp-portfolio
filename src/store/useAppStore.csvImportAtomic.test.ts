@@ -1,8 +1,13 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import type { Holding, Trust } from '../types'
+import {
+  computeCanonicalPortfolioGenerationIdentity,
+  computeCanonicalPortfolioGenerationIdentityV2,
+} from '../utils/snapshotGenerationIdentity'
 import { runFullAnalysis, useAppStore } from './useAppStore'
 import {
   CSV_IMPORT_GENERATION_KEY,
+  CSV_IMPORT_GENERATION_SCHEMA_V5,
   persistCsvImportTransaction,
   restoreCsvImportGeneration,
   restoreCsvImportedAt,
@@ -140,6 +145,22 @@ function withoutGeneratedTimestamps<T>(value: T): T {
   return value
 }
 
+function canonicalIdentityInput(payload: any) {
+  return {
+    holdings: payload.holdings,
+    trust: payload.trust,
+    learning: payload.learning,
+    portfolioPolicy: payload.portfolioPolicy,
+    cashAssumptions: payload.cashAssumptions,
+    csvImportedAt: payload.csvImportedAt,
+    csvImportProvenance: payload.provenance,
+    syncSummary: payload.syncSummary,
+    trustShortSnapshot: payload.trustShortSnapshot,
+    origin: payload.origin,
+    snapshotTransferIdentity: payload.snapshotTransferIdentity,
+  }
+}
+
 describe('T9-A001/A002: structured CSV result and atomic store commit', () => {
   const storage: Record<string, string> = {}
   let storageWriteCount = 0
@@ -223,7 +244,13 @@ describe('T9-A001/A002: structured CSV result and atomic store commit', () => {
     const restored = restoreCsvImportGeneration()
     if (restored.status !== 'committed') throw new Error('expected committed generation')
     expect(physical.manifest.generationId).toBe(restored.generationId)
-    expect(physical.manifest.schemaVersion).toBe('csv-import-generation-4')
+    expect(physical.manifest.schemaVersion).toBe(CSV_IMPORT_GENERATION_SCHEMA_V5)
+    expect(restored.payload.snapshotGenerationIdentity).toBe(
+      computeCanonicalPortfolioGenerationIdentityV2(canonicalIdentityInput(restored.payload)),
+    )
+    expect(restored.payload.snapshotGenerationIdentity).not.toBe(
+      computeCanonicalPortfolioGenerationIdentity(canonicalIdentityInput(restored.payload)),
+    )
     expect(restored.payload.holdings).toEqual(state.holdings)
     expect(restored.payload.trust).toEqual(state.trust)
     expect(restored.payload.learning).toEqual(state.learning)
@@ -238,6 +265,32 @@ describe('T9-A001/A002: structured CSV result and atomic store commit', () => {
     expect(restoreLearning()).toEqual(state.learning)
     expect(restoreCsvImportedAt()).toBe(state.system.csvLastImportedAt)
     expect(restoreCsvSyncSummary()).toEqual(state.system.csvSyncSummary)
+  })
+
+  it.each([
+    ['2026-07-18T14:59:59.999Z', '2026-07-18'],
+    ['2026-07-18T15:00:00.000Z', '2026-07-19'],
+  ])('R4-A004b: fresh CSV at %s writes canonical v5 with JST baseline %s', async (now, date) => {
+    vi.useFakeTimers()
+    vi.setSystemTime(now)
+    try {
+      const result = await useAppStore.getState().importCsv(csvFile(csvWithSource(
+        '2026-07-18T09:00:00+09:00',
+      )))
+      expect(result).toMatchObject({ ok: true, code: 'SUCCESS' })
+      const generation = restoreCsvImportGeneration()
+      expect(generation).toMatchObject({
+        status: 'committed',
+        schemaVersion: CSV_IMPORT_GENERATION_SCHEMA_V5,
+        payload: { trustShortSnapshot: { date } },
+      })
+      if (generation.status !== 'committed') throw new Error('expected committed v5 generation')
+      expect(generation.payload.snapshotGenerationIdentity).toBe(
+        computeCanonicalPortfolioGenerationIdentityV2(canonicalIdentityInput(generation.payload)),
+      )
+    } finally {
+      vi.useRealTimers()
+    }
   })
 
   it.each([
@@ -416,6 +469,7 @@ describe('T9-A001/A002: structured CSV result and atomic store commit', () => {
       .resolves.toMatchObject({ ok: true, code: 'SUCCESS' })
     expect(restoreCsvImportGeneration()).toMatchObject({
       status: 'committed',
+      schemaVersion: CSV_IMPORT_GENERATION_SCHEMA_V5,
       payload: { provenance: { semanticIdentity: expect.stringMatching(/^sha256:[0-9a-f]{64}$/) } },
     })
   })

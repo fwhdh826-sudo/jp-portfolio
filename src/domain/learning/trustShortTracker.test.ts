@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import type { Trust } from '../../types'
 import {
   detectTrustExecutionFromCsvSync,
+  stageTrustExecutionFromCsvSync,
   getTrustShortRecentEntries,
   getTrustShortFilterTuning,
   getTrustShortTodayExecutionCount,
@@ -212,6 +213,84 @@ describe('detectTrustExecutionFromCsvSync', () => {
     expect(detection.absDiffSum).toBe(118_000)
     expect(detection.changedFunds).toBe(2)
     expect(detection.executed).toBe(false)
+  })
+})
+
+describe('R4-A004b: trust-short baseline clock is normalized to a JST calendar day', () => {
+  const baseline = { status: 'none' as const, snapshot: null }
+
+  afterEach(() => {
+    vi.restoreAllMocks()
+    vi.unstubAllGlobals()
+  })
+
+  it.each([
+    ['2026-07-18T14:59:59.999Z', '2026-07-18'],
+    ['2026-07-18T15:00:00.000Z', '2026-07-19'],
+    ['2026-12-31T14:59:59.999Z', '2026-12-31'],
+    ['2026-12-31T15:00:00.000Z', '2027-01-01'],
+    ['2028-02-28T15:00:00.000Z', '2028-02-29'],
+    ['2028-02-29T15:00:00.000Z', '2028-03-01'],
+  ])('%s becomes JST day %s', (instant, expectedDate) => {
+    const staged = stageTrustExecutionFromCsvSync([makeTrust()], Date.parse(instant), baseline)
+    expect(staged.snapshot.date).toBe(expectedDate)
+  })
+
+  it('same instant in Z and +09:00 representations yields the same complete snapshot', () => {
+    const trust = [makeTrust({ id: 'same-instant', eval: 345_678 })]
+    const utc = stageTrustExecutionFromCsvSync(trust, '2026-07-18T15:00:00.000Z', baseline)
+    const jst = stageTrustExecutionFromCsvSync(trust, '2026-07-19T00:00:00.000+09:00', baseline)
+
+    expect(utc.snapshot).toEqual({
+      date: '2026-07-19',
+      total: 345_678,
+      evalById: { 'same-instant': 345_678 },
+    })
+    expect(jst.snapshot).toEqual(utc.snapshot)
+  })
+
+  it('preserves strict date-only string compatibility as an explicit JST day', () => {
+    expect(stageTrustExecutionFromCsvSync([], '2026-07-19', baseline).snapshot.date)
+      .toBe('2026-07-19')
+  })
+
+  it.each([
+    Number.NaN,
+    Number.POSITIVE_INFINITY,
+    8_640_000_000_000_001,
+    '',
+    'not-a-timestamp',
+    '2026-02-30',
+    '2026-07-19T00:00:00+24:00',
+  ])('rejects invalid clock %j before any direct-helper storage access or write', clock => {
+    const existing = JSON.stringify({ date: '2026-07-01', total: 1, evalById: { old: 1 } })
+    const getItem = vi.fn(() => existing)
+    const setItem = vi.fn()
+    const removeItem = vi.fn()
+    vi.stubGlobal('window', { localStorage: { getItem, setItem, removeItem } })
+
+    expect(() => detectTrustExecutionFromCsvSync([], clock)).toThrow(TypeError)
+    expect(getItem).not.toHaveBeenCalled()
+    expect(setItem).not.toHaveBeenCalled()
+    expect(removeItem).not.toHaveBeenCalled()
+  })
+
+  it('captures the default Date.now once and writes the resulting JST date', () => {
+    const store: Record<string, string> = {}
+    vi.stubGlobal('window', {
+      localStorage: {
+        getItem: (key: string) => store[key] ?? null,
+        setItem: (key: string, value: string) => { store[key] = value },
+        removeItem: (key: string) => { delete store[key] },
+      },
+    })
+    const now = vi.spyOn(Date, 'now').mockReturnValue(Date.parse('2026-07-18T15:00:00.000Z'))
+
+    detectTrustExecutionFromCsvSync([])
+
+    expect(now).toHaveBeenCalledTimes(1)
+    expect(JSON.parse(store.v95_trust_short_snapshot).date).toBe('2026-07-19')
+    now.mockRestore()
   })
 })
 

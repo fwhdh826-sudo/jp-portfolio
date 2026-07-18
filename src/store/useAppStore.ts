@@ -37,6 +37,8 @@ import {
   CsvImportCanonicalConflictError,
   CsvImportPersistenceError,
   CsvImportPersistenceIndeterminateError,
+  CSV_IMPORT_GENERATION_SCHEMA_V4,
+  CSV_IMPORT_GENERATION_SCHEMA_V5,
   persistPortfolioPolicy,
   restorePortfolioPolicy,
   persistCashAssumptions,
@@ -45,6 +47,8 @@ import {
   getTrustStorageFreshness,
   type CsvImportPersistencePayload,
   type CsvImportPersistenceReceipt,
+  type CsvImportCanonicalWriteContract,
+  type CsvImportGenerationRestoreResult,
   type LegacyPersistenceResult,
 } from './persist'
 import {
@@ -449,6 +453,19 @@ type CurrentPortfolioPersistenceResult =
   | { status: 'blocked'; reason: 'canonical_invalid' }
   | { status: 'failed' }
 
+type CsvImportCanonicalSchemaVersion = Extract<
+  CsvImportGenerationRestoreResult,
+  { status: 'committed' }
+>['schemaVersion']
+
+function canonicalReplacementWriteContract(
+  schemaVersion: CsvImportCanonicalSchemaVersion,
+): CsvImportCanonicalWriteContract {
+  return schemaVersion === CSV_IMPORT_GENERATION_SCHEMA_V5
+    ? { schemaVersion: CSV_IMPORT_GENERATION_SCHEMA_V5 }
+    : { schemaVersion: CSV_IMPORT_GENERATION_SCHEMA_V4 }
+}
+
 function persistCurrentPortfolioGeneration(state: AppState): CurrentPortfolioPersistenceResult {
   const canonical = restoreCsvImportGeneration()
   if (canonical.status === 'committed') {
@@ -484,7 +501,7 @@ function persistCurrentPortfolioGeneration(state: AppState): CurrentPortfolioPer
           csvImportedAt,
           csvImportProvenance: provenance,
         }),
-      })
+      }, undefined, undefined, canonicalReplacementWriteContract(canonical.schemaVersion))
       return { status: 'persisted', target: 'canonical' }
     } catch {
       // These historical actions are best-effort persistence. A failed full replacement leaves
@@ -1623,7 +1640,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
       }
       const stagedTrustExecution = stageTrustExecutionFromCsvSync(
         updatedT,
-        now,
+        transaction.analysisNow,
         transaction.trackerPortfolioBaseline,
       )
       const trustExecution = stagedTrustExecution.detection
@@ -1723,7 +1740,9 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
           cashAssumptions: baseState.cashAssumptions,
           origin: 'csv',
           snapshotTransferIdentity: stagedTransferIdentity,
-        }, generationCommittedAt, transaction.canonicalPreviousRaw)
+        }, generationCommittedAt, transaction.canonicalPreviousRaw, {
+          schemaVersion: CSV_IMPORT_GENERATION_SCHEMA_V5,
+        })
         committedTransferIdentity = stagedTransferIdentity
         durableCommitted = true
         setPortfolioGenerationTransactionPhase(transaction, 'COMMITTED')
@@ -2286,13 +2305,11 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
       // 当該incoming世代からtrust-short baselineをstageする。旧canonical世代の
       // 実行判定baselineを新envelopeへ再添付しない（tracker telemetry本体の
       // 別key契約はここでは変更しない）。staging失敗時は世代をpublishしない。
-      const trackerBaselineAt = snapshot.csvImportProvenance?.importedAt ??
-        snapshot.csvImportedAt ?? nowIso
       let stagedTrustShortSnapshot: TrustShortPortfolioSnapshot
       try {
         stagedTrustShortSnapshot = stageTrustExecutionFromCsvSync(
           computed.trust,
-          trackerBaselineAt,
+          transaction.analysisNow,
           captureTrustShortPortfolioBaseline(),
         ).snapshot
       } catch (error) {
@@ -2323,7 +2340,9 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
       const generationCommittedAt = Date.now()
       let receipt: CsvImportPersistenceReceipt
       try {
-        receipt = persistCsvImportTransaction(payload, generationCommittedAt, canonicalPreviousRaw)
+        receipt = persistCsvImportTransaction(payload, generationCommittedAt, canonicalPreviousRaw, {
+          schemaVersion: CSV_IMPORT_GENERATION_SCHEMA_V5,
+        })
       } catch (error) {
         if (error instanceof CsvImportCanonicalConflictError) {
           return { ok: false, code: 'IMPORT_CONFLICT', error: error.message }

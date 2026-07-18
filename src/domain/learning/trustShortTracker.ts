@@ -97,6 +97,8 @@ export interface TrustShortPortfolioSnapshot {
   evalById: Record<string, number>
 }
 
+export type TrustShortBaselineClock = number | string
+
 function toDateKey(value: string) {
   if (!value) return new Date().toISOString().slice(0, 10)
   return value.slice(0, 10)
@@ -145,6 +147,19 @@ function assertValidEpochMs(nowMs: number): void {
 function jstDateKeyFromMs(nowMs: number): string {
   assertValidEpochMs(nowMs)
   return new Date(nowMs + JST_OFFSET_MS).toISOString().slice(0, 10)
+}
+
+function normalizeTrustShortBaselineClock(clock: TrustShortBaselineClock): number {
+  if (typeof clock === 'number') {
+    assertValidEpochMs(clock)
+    return clock
+  }
+  const parsed = parseStrictTimestamp(clock, { allowDateOnly: true })
+  if (!parsed) {
+    throw new TypeError(`trustShortTracker: invalid baseline clock: ${JSON.stringify(clock)}`)
+  }
+  assertValidEpochMs(parsed.epochMs)
+  return parsed.epochMs
 }
 
 /** nowMsが属するJST calendar dayのepoch day数（1970-01-01 UTC起点）。 */
@@ -317,11 +332,15 @@ function saveSnapshot(snapshot: TrustShortPortfolioSnapshot) {
   }
 }
 
-function buildShortTrustSnapshot(trust: Trust[], date: string): TrustShortPortfolioSnapshot {
+function buildShortTrustSnapshot(
+  trust: Trust[],
+  clock: TrustShortBaselineClock,
+): TrustShortPortfolioSnapshot {
+  const epochMs = normalizeTrustShortBaselineClock(clock)
   const items = trust.filter(item => item.policy === 'JAPAN_SHORTTERM')
   const evalById = Object.fromEntries(items.map(item => [item.id, item.eval]))
   const total = items.reduce((sum, item) => sum + item.eval, 0)
-  return { date: toDateKey(date), total, evalById }
+  return { date: jstDateKeyFromMs(epochMs), total, evalById }
 }
 
 export function getTrustShortTodayExecutionCount(nowMs = Date.now()) {
@@ -384,9 +403,9 @@ export function getTrustShortFilterTuning(days = 90, nowMs = Date.now()): TrustS
 
 export function detectTrustExecutionFromCsvSync(
   trust: Trust[],
-  date = safeNowIso(),
+  clock: TrustShortBaselineClock = Date.now(),
 ): TrustCsvExecutionDetection {
-  const staged = stageTrustExecutionFromCsvSync(trust, date)
+  const staged = stageTrustExecutionFromCsvSync(trust, clock)
   saveSnapshot(staged.snapshot)
   return staged.detection
 }
@@ -394,10 +413,10 @@ export function detectTrustExecutionFromCsvSync(
 /** CSV strict transaction向けの副作用なし検出。 */
 export function stageTrustExecutionFromCsvSync(
   trust: Trust[],
-  date = safeNowIso(),
+  clock: TrustShortBaselineClock = Date.now(),
   baseline?: TrustShortPortfolioBaseline,
 ): StagedTrustCsvExecution {
-  const current = buildShortTrustSnapshot(trust, date)
+  const current = buildShortTrustSnapshot(trust, clock)
   const previous = baseline ? baseline.snapshot : loadSnapshot()
 
   if (!previous) {

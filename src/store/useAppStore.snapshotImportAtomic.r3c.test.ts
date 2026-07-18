@@ -11,6 +11,7 @@ import { DEFAULT_CASH_ASSUMPTIONS, DEFAULT_PORTFOLIO_POLICY } from '../types'
 import { useAppStore } from './useAppStore'
 import {
   CSV_IMPORT_GENERATION_KEY,
+  CSV_IMPORT_GENERATION_SCHEMA_V5,
   persistCsvImportTransaction,
   restoreCashAssumptions,
   restoreCsvImportGeneration,
@@ -19,7 +20,11 @@ import {
   restorePortfolioPolicy,
   type CsvImportPersistencePayload,
 } from './persist'
-import { computeSnapshotGenerationIdentity } from '../utils/snapshotGenerationIdentity'
+import {
+  computeCanonicalPortfolioGenerationIdentity,
+  computeCanonicalPortfolioGenerationIdentityV2,
+  computeSnapshotGenerationIdentity,
+} from '../utils/snapshotGenerationIdentity'
 import type { TrustShortPortfolioSnapshot } from '../domain/learning/trustShortTracker'
 
 class TestFileReader {
@@ -514,12 +519,34 @@ describe('T9-A004-R3c: snapshot import atomic commit contract', () => {
     if (generation.status !== 'committed') throw new Error('expected committed generation after import')
     expect(result).toMatchObject({ ok: true, code: 'SUCCESS' })
     expect(generation.payload.trustShortSnapshot).not.toEqual(OLD_TRUST_SHORT_BASELINE)
-    // incoming generation（trust構成は空・基準時刻は2026-07-15）から導出されたbaseline。
+    // incoming metadataは2026-07-15だが、baseline authorityはtransaction clock
+    // FIXED_NOW（JST 2026-07-16）。provenance metadata自体は従来どおり保持する。
     expect(generation.payload.trustShortSnapshot).toEqual({
-      date: '2026-07-15',
+      date: '2026-07-16',
       total: 0,
       evalById: {},
     })
+    expect(generation.schemaVersion).toBe(CSV_IMPORT_GENERATION_SCHEMA_V5)
+    expect(generation.payload.provenance).toEqual(incomingProvenance('8'))
+    const identityInput = {
+      holdings: generation.payload.holdings,
+      trust: generation.payload.trust,
+      learning: generation.payload.learning,
+      portfolioPolicy: generation.payload.portfolioPolicy!,
+      cashAssumptions: generation.payload.cashAssumptions!,
+      csvImportedAt: generation.payload.csvImportedAt ?? null,
+      csvImportProvenance: generation.payload.provenance ?? null,
+      syncSummary: generation.payload.syncSummary,
+      trustShortSnapshot: generation.payload.trustShortSnapshot,
+      origin: generation.payload.origin ?? null,
+      snapshotTransferIdentity: generation.payload.snapshotTransferIdentity ?? null,
+    }
+    expect(generation.payload.snapshotGenerationIdentity).toBe(
+      computeCanonicalPortfolioGenerationIdentityV2(identityInput),
+    )
+    expect(generation.payload.snapshotGenerationIdentity).not.toBe(
+      computeCanonicalPortfolioGenerationIdentity(identityInput),
+    )
   })
 
   it('R3-F002: final pre-publish storage read中の外部canonical置換をfinal ownership checkで検出し、incoming世代をpublishしない', () => {

@@ -46095,3 +46095,77 @@ persistence hardening系列（`portfolio-snapshot-3`、
 - raw input string sliceを廃止
 - fresh baselineを生成する経路だけ明示的にv5 writerを選択
 - existing legacy baseline forward経路はv4を維持
+
+## R4-A004b: producer JST conversion
+
+### 対象
+
+- R4-JST-F2 producer conversion
+- CSV fresh baseline
+- snapshot import fresh baseline
+- direct baseline helper
+- canonical v5 production wiring
+
+### 実装
+
+- baseline producerをepochからJST calendar dateへ統一し、number clockを
+  `assertValidEpochMs`、`jstDateKeyFromMs`の順で処理
+- raw timestamp stringの先頭10文字をbaseline dateへ流用する処理を除去
+- direct/test caller互換のstring clockは`parseStrictTimestamp(..., { allowDateOnly: true })`で
+  strict parseしてepochへ正規化し、Z/offset表記のsame instantを同じJST dateへ統一
+- CSV importのfresh baselineはtransaction開始時の`analysisNow`を使用
+- snapshot importのfresh baselineもtransaction開始時の`analysisNow`を使用し、incomingの
+  provenance/importedAt/exportedAt/sourceAsOfをoperation date authorityにしない
+- fresh successful CSV/snapshot generationはschema v5とidentity v2を明示選択
+- duplicate/reject/failureはbaseline stageまたはdurable write前にreturnする既存contractを維持し、
+  canonical migrationとgeneration churnを0に固定
+- v5 canonicalのnonbaseline replacementはv5/identity v2を維持
+- v1〜v4 canonicalのnonbaseline replacementは互換writer v4/identity v1を使用し、v5へ
+  silent upgradeしない。canonical absent/invalidの既存contractも維持
+- execution detectionの金額、turnover、changedFunds、閾値、減少無視、first baseline logicは変更なし
+- CSV provenance、snapshot provenance、freshness、transfer identityは変更なし
+
+### 検証
+
+- UTC targeted: 6 files / 281 tests GREEN（skipped 0）
+- JST targeted: 6 files / 281 tests GREEN（skipped 0）
+- UTC full unit: 52 files / 1280 tests GREEN（skipped 0）
+- JST full unit: 52 files / 1280 tests GREEN（skipped 0）
+- `npx tsc --noEmit`: GREEN
+- `npm run build`: GREEN（500kB chunk warningは既知のnon-blocker）
+- `git diff --check`: GREEN
+
+### 判定
+
+- R4-A004b: CLOSED
+- R4-JST-F2: producer conversion完了
+- R4-JST-F2全体はA004c/A004d完了までOPEN
+
+### 残存
+
+- R4-A004c migration/read compatibility tests
+- R4-A004d final audit
+- RA-003
+- RA-005
+- RA-006残余
+- Web Locks
+- BroadcastChannel / storage event
+- cross-tab CAS / rollback TOCTOU
+- explicit canonical repair UI
+- v1/v2 policy/cash migration UI
+
+### 次チケット
+
+`R4-A004c: migration and read compatibility closure`
+
+目的:
+
+- v1〜v4 read byte preservation
+- fresh baseline migration
+- nonbaseline schema preservation
+- duplicate/reject no-migration
+- initialize/refresh no-silent-upgrade
+- CAS/ownership/rollback/write-then-throw/third-party bytes
+- UTC/JST host determinism
+
+をadversarial fixtureで最終固定する。

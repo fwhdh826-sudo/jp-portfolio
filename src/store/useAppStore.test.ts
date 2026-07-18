@@ -8,9 +8,14 @@ import { DEFAULT_CASH_ASSUMPTIONS, DEFAULT_PORTFOLIO_POLICY } from '../types'
 import type { CommitteeDecision } from '../domain/analysis/committeeDecision'
 import { committeeToOfficialDecision, buildCsvSyncSummary, useAppStore } from './useAppStore'
 import { selectEffectiveCashAssumptions, selectCashAssumptionsFreshness } from './selectors'
-import { computeSnapshotGenerationIdentity } from '../utils/snapshotGenerationIdentity'
+import {
+  computeCanonicalPortfolioGenerationIdentity,
+  computeCanonicalPortfolioGenerationIdentityV2,
+  computeSnapshotGenerationIdentity,
+} from '../utils/snapshotGenerationIdentity'
 import {
   CSV_IMPORT_GENERATION_KEY,
+  CSV_IMPORT_GENERATION_SCHEMA_V5,
   persistCsvImportTransaction,
   restoreCsvImportedAt,
   restoreCsvImportGeneration,
@@ -680,7 +685,7 @@ describe('useAppStore: portfolio snapshot（P4.5-A012b）', () => {
     expect(useAppStore.getState().importPortfolioSnapshot(raw)).toMatchObject({ ok: true, code: 'SUCCESS' })
     expect(useAppStore.getState().system.csvLastImportedAt).toBeNull()
     const physical = JSON.parse(store[CSV_IMPORT_GENERATION_KEY])
-    expect(physical.manifest.schemaVersion).toBe('csv-import-generation-4')
+    expect(physical.manifest.schemaVersion).toBe(CSV_IMPORT_GENERATION_SCHEMA_V5)
     expect(physical.payload).toMatchObject({ origin: 'snapshot', csvImportedAt: null, syncSummary: null })
     expect(physical.payload).not.toHaveProperty('importedAt')
     expect(restoreCsvImportedAt()).toBeNull()
@@ -962,6 +967,22 @@ describe('R4-A002: policy/cash persistence result visibility', () => {
     return raw
   }
 
+  function canonicalIdentityInput(payload: any) {
+    return {
+      holdings: payload.holdings,
+      trust: payload.trust,
+      learning: payload.learning,
+      portfolioPolicy: payload.portfolioPolicy,
+      cashAssumptions: payload.cashAssumptions,
+      csvImportedAt: payload.csvImportedAt,
+      csvImportProvenance: payload.provenance,
+      syncSummary: payload.syncSummary,
+      trustShortSnapshot: payload.trustShortSnapshot,
+      origin: payload.origin,
+      snapshotTransferIdentity: payload.snapshotTransferIdentity,
+    }
+  }
+
   it.each([
     actionCases[0],
     actionCases[1],
@@ -1063,9 +1084,56 @@ describe('R4-A002: policy/cash persistence result visibility', () => {
     expect(storage[CSV_IMPORT_GENERATION_KEY]).not.toBe(canonicalRaw)
     expect(restoreCsvImportGeneration()).toMatchObject({
       status: 'committed',
+      schemaVersion: 'csv-import-generation-4',
       payload: { portfolioPolicy: { jpStockMaxRatio: 0.19 } },
     })
+    const generation = restoreCsvImportGeneration()
+    if (generation.status !== 'committed') throw new Error('expected committed v4 generation')
+    expect(generation.payload.snapshotGenerationIdentity).toBe(
+      computeCanonicalPortfolioGenerationIdentity(canonicalIdentityInput(generation.payload)),
+    )
     expect(useAppStore.getState().system).toMatchObject({ status: 'idle', error: null })
+  })
+
+  it.each([
+    ['policy', () => useAppStore.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.18 })],
+    ['cash', () => useAppStore.getState().setCashAssumptions({ cashDeposits: 7_777, standbyFunds: 8_888 })],
+  ])('R4-A004b: canonical v5 survives a nonbaseline %s replacement with identity v2 and baseline unchanged', (_name, invoke) => {
+    const state = useAppStore.getState()
+    const baseline = { date: '2026-07-19', total: 0, evalById: {} }
+    persistCsvImportTransaction({
+      holdings: state.holdings,
+      trust: state.trust,
+      learning: state.learning,
+      csvImportedAt: null,
+      provenance: null,
+      syncSummary: null,
+      trustShortSnapshot: baseline,
+      portfolioPolicy: state.portfolioPolicy,
+      cashAssumptions: state.cashAssumptions,
+      origin: 'snapshot',
+    }, Date.now(), undefined, { schemaVersion: CSV_IMPORT_GENERATION_SCHEMA_V5 })
+    setItem.mockClear()
+
+    invoke()
+
+    const generation = restoreCsvImportGeneration()
+    expect(generation).toMatchObject({
+      status: 'committed',
+      schemaVersion: CSV_IMPORT_GENERATION_SCHEMA_V5,
+      payload: { trustShortSnapshot: baseline },
+    })
+    if (generation.status !== 'committed') throw new Error('expected committed v5 generation')
+    expect(generation.payload.snapshotGenerationIdentity).toBe(
+      computeCanonicalPortfolioGenerationIdentityV2(canonicalIdentityInput(generation.payload)),
+    )
+    expect(generation.payload.snapshotGenerationIdentity).not.toBe(
+      computeCanonicalPortfolioGenerationIdentity(canonicalIdentityInput(generation.payload)),
+    )
+    expect(setItem).toHaveBeenCalledTimes(1)
+    expect(setItem).toHaveBeenCalledWith(CSV_IMPORT_GENERATION_KEY, expect.any(String))
+    expect(storage.v13_portfolio_policy).toBeUndefined()
+    expect(storage.v13_cash_assumptions).toBeUndefined()
   })
 })
 
