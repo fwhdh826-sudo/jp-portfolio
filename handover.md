@@ -46314,3 +46314,74 @@ persistence hardening系列（`portfolio-snapshot-3`、
 - R4-A004e: **IN PROGRESS**
 - R4-JST-F2: **deployment verification pending**
 - R4-JST-F2はmain deploy確認後にCLOSED予定
+
+## R4-A004e: docs closeout and main integration
+
+### integration
+
+- readiness documentation commit: `9310ebcf125bee8e35a98931fac5c2c35e81bcb4`
+- main fast-forward integration SHA: `9310ebcf125bee8e35a98931fac5c2c35e81bcb4`
+- `origin/main...origin/v13.3-dev`: 0 / 0 after integration
+- integration時のproduction code変更: 0
+- integration時のtest変更: 0
+- integration時のworkflow変更: 0
+
+### pre-integration verification
+
+- UTC targeted: 8 files / 476 tests / skipped 0 — PASS
+- JST targeted: 8 files / 476 tests / skipped 0 — PASS
+- UTC full: 52 files / 1316 tests / skipped 0 — PASS
+- JST full: 52 files / 1316 tests / skipped 0 — PASS
+- `npx tsc --noEmit`: PASS
+- `npm run build`: PASS（500kB chunk warningのみ既知のnon-blocker）
+- `git diff --check`: PASS
+
+### first main Actions / Pages verification
+
+- workflow: `Deploy to GitHub Pages`
+- run ID: `29653540195`
+- event / head SHA: `push` / `9310ebcf125bee8e35a98931fac5c2c35e81bcb4`
+- workflow conclusion: success
+- build job `88103812937`: success。checkout、setup-node、npm ci、unit test、build、
+  artifact uploadを含む全step success
+- deploy job `88103861063`: success。Deploy to GitHub Pages step success
+- cancelled / skipped / failure: 0
+- check-run annotations: build 0 / deploy 0
+- Pages deployment ID `5503722464`: environment `github-pages`、state success、SHA一致
+- project root `https://fwhdh826-sudo.github.io/jp-portfolio/`: HTTP 200
+- cache bypass hard-load相当: HTTP 200
+- HTML shell: title、`#root`、base path `/jp-portfolio/`を確認
+- main CSS `/jp-portfolio/assets/index-CiHz3Gz-.css`: HTTP 200
+- main JS `/jp-portfolio/assets/index-DEjv-_id.js`: HTTP 200
+- 配信JS/CSSはintegration SHAのlocal verified buildとSHA-256一致
+- GitHub user-domain root `/`はproject site対象外で404。project root/base pathの配信には影響なし
+- in-app Browserは利用可能backendが0件だったため、視覚表示とconsoleのlive smokeは未実施。
+  Actions build/test、HTML shell、asset 200、配信byte一致で起動阻害がないことを検証した
+- 実ユーザーstorageを変更するfresh v5 live testは実施していない
+
+### R4-A004d-F001 / rollback contract
+
+- v5 production write開始後はpre-v5 buildへ直接rollbackしない
+- `709a16c`以前の旧main commitを単純再deployしない
+- rollbackはv5 reader/parser/identity compatibilityを維持した互換rollback commit、または
+  mainへのforward fix追加と再deployだけを使用する
+- canonical keyの自動削除、user storageの強制削除を通常rollbackに使用しない
+- rollback contract: **forward-only / v5-reader-compatible**
+
+### formal status
+
+- R4-A004e: **CLOSED**
+- R4-JST-F2: **CLOSED**
+- schema v5 / identity v2 / JST baseline contract: **production integrated**
+- rollback contract: **forward-only / v5-reader-compatible**
+
+### next remaining tickets
+
+- RA-003 initialize / snapshot mutual exclusion
+- RA-005 CSV metadata TTL `savedAt`
+- RA-006 residual identity / subscriber assertions
+- Web Locks
+- BroadcastChannel / storage event
+- cross-tab CAS / rollback TOCTOU
+- explicit canonical repair UI
+- v1/v2 policy / cash migration UI
