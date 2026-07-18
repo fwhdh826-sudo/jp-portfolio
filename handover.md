@@ -45698,3 +45698,83 @@ trustも同じ思想へ揃えた。
 - P4.5-A012系（A012a〜d）のmain反映
 - P5-B002b/B003（headroom式新設・T0表示の株/投信出し分け）
 - v10.css未使用クラスの安全な削除（R6）
+
+## T9-A004-R3-FIX-C-REAUDIT: 最終監査 Verdict B（main反映可能）
+
+### 実施日
+
+2026-07-18
+
+### ブランチ / HEAD
+
+v13.3-dev（HEAD: `86dee8d993867245570c6207ad184efdda9d78e2`、
+origin/v13.3-devと同期、ahead/behind 0/0、working tree clean）
+
+### 対象
+
+T9-A004-R3a〜R3d、R3-FIX-A/B/Cを経た canonical snapshot generation /
+persistence hardening系列（`portfolio-snapshot-3`、
+`SNAPSHOT_CANONICAL_INVALID`、`CSV_CANONICAL_INVALID`、
+`SNAPSHOT_OWNERSHIP_LOST`まわり）の最終re-audit。
+
+### 監査確定事項（Verdict B）
+
+- **Verdict: B**（Verdict Aではない。P0/P1 blockerは0件で main反映可能だが、
+  非blockerのP3 findingが2件残存する状態としての確定）
+- P0: 0件
+- P1: 0件
+- RA-001: CLOSED
+- RA-002: CLOSED
+- RA-004: CLOSED
+- F001〜F006: regressionなし
+- unit test: **1140/1140 GREEN**
+- tsc: GREEN
+- production build: GREEN
+- bundle probe grep: no match
+- **main反映blocker: なし**
+
+### 非blocker follow-up（新規・R4行き）
+
+#### FIXC-RA-F1（P3）
+
+- 対象: `src/store/useAppStore.ts`の`setPortfolioPolicy` / cash setter周辺
+- 現状: canonical absent分岐で`persistPortfolioPolicy` /
+  `persistCashAssumptions`の`LegacyPersistenceResult`を破棄している。quota
+  failureやinvalid化race時に非永続化がsilentとなり得る。
+- 安全性: present-invalid時のwrite 0契約は維持されており、虚偽SUCCESSや
+  data truthfulness P1は成立しない（non-blocker）。
+- 修正方向: `LegacyPersistenceResult`を`reflectPortfolioPersistenceResult`
+  相当へ接続し、失敗・blockedをUI/system statusへ反映する。
+- Destination: R4 persistence UX / explicit repair UI
+
+#### FIXC-RA-F2（P3）
+
+- 対象: `src/store/persist.ts`の`setItem`throw後、physical bytesが
+  第三者bytesとなる`rollback_failed`分岐
+- 現状: 実装はfail-closed・追加write 0・第三者bytes非破壊だが、専用
+  fixtureがない。
+- 修正方向: `setItem`がthrowし、確認`getItem`が第三者bytesを返す独立test
+  を1件追加する。`result=rollback_failed`、write/remove 0、第三者bytes
+  維持を固定するテストとする。
+- Destination: R4 / RA-006 test adequacy
+
+### 維持中のR4 follow-up（今回で削除しない・引き続きopen）
+
+- RA-003: initialize進行中snapshot全面相互排他
+- RA-005: CSV metadata TTLのsavedAt依存
+- RA-006: identity oracle / complete subscriber assertion
+- Web Locks
+- BroadcastChannel / storage event
+- cross-tab CAS / rollback TOCTOU
+- explicit canonical repair UI
+- v1/v2 policy/cash migration UI
+- FIXC-RA-F1（本エントリで新規追加）
+- FIXC-RA-F2（本エントリで新規追加）
+
+### 次に切るべきチケット
+
+- R3系（T9-A004-R3a〜R3d、R3-FIX-A/B/C）全体のcommit整理→main反映
+- R4: 上記follow-up一覧（RA-003/005/006、FIXC-RA-F1/F2、Web Locks、
+  BroadcastChannel/storage event、cross-tab CAS/rollback TOCTOU、
+  explicit canonical repair UI、v1/v2 policy/cash migration UI）の
+  着手順検討
