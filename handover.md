@@ -45778,3 +45778,115 @@ persistence hardening系列（`portfolio-snapshot-3`、
   BroadcastChannel/storage event、cross-tab CAS/rollback TOCTOU、
   explicit canonical repair UI、v1/v2 policy/cash migration UI）の
   着手順検討
+
+## T9-A004-R3-JST-CLOSEOUT: timezone非決定性修正・Deploy成功
+
+### 実施日
+
+2026-07-18
+
+### 最終状態
+
+- R3本体のfinal HEAD: `709a16c0965216804b8be7df9fc75af995489ceb`
+  （main再統合commit）
+- `HEAD` / `origin/v13.3-dev` / `origin/main`は上記SHAで同期、
+  `origin/main...origin/v13.3-dev`のdivergenceは0/0
+- closeout記録作業開始時のworking treeはclean
+- Deploy to GitHub Pages run `29645483776`: build job success、deploy job success
+- 今回のcloseout記録は`v13.3-dev`のみへ追加し、mainへは反映しない
+
+### 障害
+
+- 失敗したDeploy to GitHub Pages: run `29624293664`
+- `src/store/useAppStore.csvImportAtomic.test.ts`のF3
+  「persistence-time clock crossing cannot change a transaction-scoped analysis
+  result」がGitHub ActionsのUTC環境だけで失敗し、Asia/Tokyo環境では成功した
+- assertionは`trackedDays`についてexpected `0`、received `1`
+
+### root cause
+
+- `trustShortTracker`の日付処理で、`Date.setHours` / `Date.setDate`によるhost
+  local timezone計算、`YYYY-MM-DD`のUTC midnight解釈、
+  `toISOString().slice(0, 10)`によるUTC暦日、日本市場日として必要なJST暦日を
+  混在させていた
+- transaction clock自体は固定されていたが、trackerが使用するcalendar dayは
+  host timezone非依存に固定されていなかった。このため同じtransaction clockでも
+  実行環境のtimezoneによって30日windowの結果が変化していた
+
+### 修正
+
+- R3 JST修正commit: `4a5e1ec2c8288d43e9e9b235dad0bf331ed4ad3b`
+  （`fix: make trust-short tracking use JST calendar days`）
+- epoch millisecond validatorを共通化し、invalid `nowMs`を`TypeError`へ統一
+- invalid timestampが「履歴なし」等のvalid-looking stateへ化けないようにした
+- `recordTrustShortDecision`の明示timestampをstorage access前に厳密検証し、
+  invalid timestamp rejection時のstorage/state副作用を0にした
+- `YYYY-MM-DD`を明示的なJST market-dayとして処理し、`Z` / `+09:00`
+  timestampはinstantからJST market-dayへ変換するcontractへ統一
+- `Date.UTC`の0〜99年補正問題を回避し、early-yearを正しく処理
+- transaction内callerを`transaction.analysisNow`へ統一
+- main再統合commit: `709a16c0965216804b8be7df9fc75af995489ceb`
+- 統合した自動データcommit: `148663680ca568739f69e8da3c2f53720d0e7a3c`
+
+### 検証
+
+- `TZ=UTC`: 52 files / 1188 tests GREEN
+- `TZ=Asia/Tokyo`: 52 files / 1188 tests GREEN
+- main再統合後の`TZ=UTC`: 52 files / 1188 tests GREEN
+- `npx tsc --noEmit`: GREEN
+- `npm run build`: GREEN
+- `git diff --check`: GREEN
+- 500kB chunk warningは既知のnon-blocker
+- 最終Deploy to GitHub Pages run `29645483776`: build job success、
+  deploy job success
+- 最終監査Verdict: B、P0: 0、P1: 0、P2: 0
+- F1: CLOSED、F2: CLOSED、F3: CLOSED、F4: 主要契約はCLOSED
+  （追加test補完のみP3）
+
+### R3正式判定
+
+- T9-A004-R3a〜R3d、R3-FIX-A/B/C、JST timezone追加修正はすべて
+  mainへ反映済みで、最終Deployも成功済み
+- **R3を正式CLOSEとする**
+- reopen条件は、新しいP0/P1 regressionが判明した場合、または本番で問題が
+  再現した場合のみとする
+
+### R4 follow-up
+
+既存のR4 follow-upは削除せず、以下を追加する。
+
+#### R4-JST-F1（P3）
+
+`trustShortTracker`の追加test補完:
+
+- `getTrustShortFilterTuning` invalid `nowMs`
+- 下限側Date範囲外
+- JST暦年0001未満
+- fractional millisecond
+- Dec/Jan年境界
+- invalid record時のstorage method call count直接assert
+- 0001と0099両方の直接record test
+
+#### R4-JST-F2（P3）
+
+`TrustShortPortfolioSnapshot.date`のJST metadata化:
+
+- 現状はUTC date metadata
+- execution detection、baseline selection、duplicate/conflict、freshness、
+  monotonicityには不使用
+- canonical payload metadata/digestに含まれる
+- migrationとdigest互換性を設計してから変更する
+
+### 次のチケット
+
+**R4-A001: test adequacy closure**
+
+対象:
+
+- FIXC-RA-F2
+- R4-JST-F1
+
+目的:
+
+- production behaviorを変えず、未固定のfailure branchとtimezone boundary
+  testを閉じる
