@@ -47469,3 +47469,81 @@ persistence hardening系列（`portfolio-snapshot-3`、
 ### Next
 
 `RA-006-MAIN-FF-1: explicit operator fast-forward and deployment verification`
+
+## RA-006-INTEGRATE: main deployment closeout
+
+### Commits
+
+- Implementation: `a79ef6053e21c5044d7afd07cd98dfe6100ca4a2`.
+- Audit fix: `3206010d18269b958883247ee65e6889e4416750`.
+- DIRECT closure: `43c0268de6232392c0923f659386ac5921671f54`.
+- Readiness: `9dcfff0cb019076e0bad8651092ff6761637f147`.
+- Integrated main SHA: `9dcfff0cb019076e0bad8651092ff6761637f147`.
+
+### Verification
+
+- Final confirmation: **READY**.
+- Findings P0 / P1 / P2 / P3: **0 / 0 / 0 / 0**.
+- Adequacy classification: **39 DIRECT**.
+- Targeted UTC: **6 files / 336 tests / skipped 0 — PASS**.
+- Targeted Asia/Tokyo: **6 files / 336 tests / skipped 0 — PASS**.
+- Full UTC: **59 files / 1572 tests / skipped 0 — PASS**.
+- Full Asia/Tokyo: **59 files / 1572 tests / skipped 0 — PASS**.
+- `npx tsc --noEmit`: **PASS**.
+- `npm run build`: **PASS** (125 modules; known 500 kB chunk warning only).
+- `git diff --check`: **PASS**.
+- Actions workflow: `Deploy to GitHub Pages`.
+- Actions run ID / event / branch / head SHA: `29686112490` / `push` / `main` /
+  `9dcfff0cb019076e0bad8651092ff6761637f147`.
+- Actions URL: `https://github.com/fwhdh826-sudo/jp-portfolio/actions/runs/29686112490`.
+- Workflow conclusion: success.
+- Build job `88190516017`: success. Unit test step and production build step both succeeded.
+- Deploy job `88190554769`: success. Deploy to GitHub Pages step succeeded.
+- Failure / cancelled / unexpected skipped: **0 / 0 / 0**.
+- Check-run annotations: build **0** / deploy **0** / total **0**.
+- Pages deployment ID `5510426808`: environment `github-pages`, status success, SHA
+  `9dcfff0cb019076e0bad8651092ff6761637f147`.
+- Project root: HTTP 200.
+- Cache-bypassed index HTML: HTTP 200; title `JP株OS V10`, `#root`, and
+  `/jp-portfolio/` asset base confirmed.
+- Main JS `/jp-portfolio/assets/index-PumXYZ2v.js`: HTTP 200.
+- Main CSS `/jp-portfolio/assets/index-CiHz3Gz-.css`: HTTP 200.
+- Asset 404: **0**.
+- Deployed/local JS: **670579 bytes**, SHA-256
+  `969bdb807c54f3fcc18c3d2b9f6a6adfc854514664f5f0d78f625f1aa086a2b9`, byte- and
+  SHA-identical.
+- Deployed/local CSS: **67089 bytes**, SHA-256
+  `239584bd0a6557b49970617b9178c1d05a4de11a1c44cf0faba6e2ec693e60cc`, byte- and
+  SHA-identical.
+- Deployed test-seam names: **0**.
+- In-app Browser backend was unavailable, so visual rendering and live console smoke were not
+  performed. Actions success, Pages deployment success, root/index/JS/CSS HTTP 200, asset
+  byte/SHA equality, and deployed seam-name result 0 were used as the permitted substitute.
+  No real-user localStorage was accessed or changed.
+- Additional production changes during closeout: **0**.
+- Additional test changes during closeout: **0**.
+- Workflow changes during closeout: **0**.
+- Data / public data changes during closeout: **0**.
+
+### Formal status
+
+- RA-006 implementation: **CLOSED**.
+- RA-006 independent audit: **CLOSED**.
+- RA-006 re-audit: **CLOSED**.
+- RA-006 final confirmation: **CLOSED**.
+- RA-006 main integration: **CLOSED**.
+- RA-006: **CLOSED**.
+
+### Residual
+
+- RA-006 blocker: **0**.
+- Single-tab manual mutation atomicity is established.
+- Cross-tab serialization is not implemented.
+- Web Locks / BroadcastChannel / storage event / cross-tab CAS are deferred to a follow-up.
+
+### Next
+
+`RA-007: Web Locks cross-tab portfolio generation coordination`
+
+This docs-only closeout commit itself remains pending an external operator fast-forward to main.
+It is prepared and pushed only on `v13.3-dev`; this ticket does not push to main.
