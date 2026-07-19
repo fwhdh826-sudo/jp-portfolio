@@ -19,11 +19,8 @@ import {
   type TrustSyncReport,
 } from '../domain/csv/importPortfolioCsv'
 import {
-  persistPortfolio,
   restorePortfolio,
-  persistTrust,
   restoreTrust,
-  persistLearning,
   restoreLearning,
   restoreCsvImportedAt,
   restoreCsvImportProvenance,
@@ -42,10 +39,9 @@ import {
   CsvImportPersistenceIndeterminateError,
   CSV_IMPORT_GENERATION_SCHEMA_V4,
   CSV_IMPORT_GENERATION_SCHEMA_V5,
-  persistPortfolioPolicy,
   restorePortfolioPolicy,
-  persistCashAssumptions,
   restoreCashAssumptions,
+  persistLegacyPortfolioGenerationTransaction,
   getPortfolioStorageFreshness,
   getTrustStorageFreshness,
   type CsvImportPersistencePayload,
@@ -53,10 +49,12 @@ import {
   type CsvImportCanonicalWriteContract,
   type CsvImportGenerationRestoreResult,
   type LegacyPersistenceResult,
+  type LegacyPortfolioGenerationTransactionResult,
 } from './persist'
 import {
   evaluateCsvImportMonotonicity,
   InvalidCsvSourceTimestampError,
+  isCsvImportProvenance,
 } from '../domain/csv/csvProvenance'
 import { buildAssetUniverse, checkNoTrade } from '../domain/optimization/idealAllocation'
 import { updatePerformanceTracker } from '../domain/learning/performanceTracker'
@@ -483,8 +481,14 @@ function computeLocalStorageFreshness(nowMs = Date.now()): NonNullable<SystemSta
  */
 type CurrentPortfolioPersistenceResult =
   | { status: 'persisted'; target: 'canonical' | 'legacy' }
-  | { status: 'blocked'; reason: 'canonical_invalid' }
-  | { status: 'failed' }
+  | {
+      status: 'blocked'
+      reason: 'canonical_committed' | 'canonical_invalid' | 'canonical_changed' | 'metadata_misaligned'
+    }
+  | {
+      status: 'failed'
+      reason?: 'rolled_back' | 'rollback_failed' | 'ownership_lost' | 'indeterminate'
+    }
 
 type CsvImportCanonicalSchemaVersion = Extract<
   CsvImportGenerationRestoreResult,
@@ -502,6 +506,8 @@ function canonicalReplacementWriteContract(
 function persistCurrentPortfolioGeneration(
   state: AppState,
   knownCanonical?: CsvImportGenerationRestoreResult,
+  knownCanonicalRaw?: string | null,
+  savedAt = Date.now(),
 ): CurrentPortfolioPersistenceResult {
   const canonical = knownCanonical ?? restoreCsvImportGeneration()
   if (canonical.status === 'committed') {
@@ -509,8 +515,9 @@ function persistCurrentPortfolioGeneration(
       const origin = Object.prototype.hasOwnProperty.call(canonical.payload, 'origin')
         ? canonical.payload.origin ?? null
         : null
-      const csvImportedAt = state.system.csvLastImportedAt ??
-        getCsvImportPayloadCsvImportedAt(canonical.payload)
+      const csvImportedAt = knownCanonicalRaw !== undefined
+        ? state.system.csvLastImportedAt
+        : state.system.csvLastImportedAt ?? getCsvImportPayloadCsvImportedAt(canonical.payload)
       const syncSummary = origin === 'snapshot'
         ? null
         : state.system.csvSyncSummary ?? canonical.payload.syncSummary
@@ -537,7 +544,7 @@ function persistCurrentPortfolioGeneration(
           csvImportedAt,
           csvImportProvenance: provenance,
         }),
-      }, undefined, undefined, canonicalReplacementWriteContract(canonical.schemaVersion))
+      }, savedAt, knownCanonicalRaw, canonicalReplacementWriteContract(canonical.schemaVersion))
       return { status: 'persisted', target: 'canonical' }
     } catch {
       // These historical actions are best-effort persistence. A failed full replacement leaves
@@ -548,13 +555,14 @@ function persistCurrentPortfolioGeneration(
 
   if (canonical.status === 'invalid') return { status: 'blocked', reason: 'canonical_invalid' }
 
-  const results = [persistPortfolio(state.holdings), persistTrust(state.trust)]
-  if (state.learning) results.push(persistLearning(state.learning))
-  if (results.some(result => result.status === 'blocked' && result.reason === 'canonical_invalid')) {
-    return { status: 'blocked', reason: 'canonical_invalid' }
-  }
-  if (results.some(result => result.status !== 'persisted')) return { status: 'failed' }
-  return { status: 'persisted', target: 'legacy' }
+  const result = persistLegacyPortfolioGenerationTransaction({
+    holdings: state.holdings,
+    trust: state.trust,
+    ...(state.learning ? { learning: state.learning } : {}),
+  }, savedAt)
+  return result.status === 'persisted'
+    ? { status: 'persisted', target: 'legacy' }
+    : result
 }
 
 function reflectPortfolioPersistenceResult(result: CurrentPortfolioPersistenceResult | LegacyPersistenceResult): void {
@@ -706,6 +714,42 @@ let lastAppliedSnapshotGeneration: {
   incomingIdentity: string
   currentStateIdentity: string
 } | null = null
+
+/** @internal Test-only read access for subscriber-order assertions; application code must not use. */
+export function readLastAppliedSnapshotGenerationForTest(): Readonly<{
+  incomingIdentity: string
+  currentStateIdentity: string
+}> | null {
+  return lastAppliedSnapshotGeneration
+}
+
+const CSV_PROVENANCE_ALIGNMENT_FIELDS = [
+  'importedAt',
+  'sourceAsOf',
+  'sourceAsOfKind',
+  'sourceAsOfConfidence',
+  'contentFingerprint',
+  'semanticIdentity',
+  'sourceFileName',
+  'fileLastModified',
+] as const
+
+function isCanonicalMetadataAlignedWithPublishedState(
+  payload: CsvImportPersistencePayload,
+  state: AppState,
+): boolean {
+  if (getCsvImportPayloadCsvImportedAt(payload) !== state.system.csvLastImportedAt) return false
+  const canonicalProvenance = payload.provenance ?? null
+  const publishedProvenance: unknown = state.system.csvImportProvenance ?? null
+  if (canonicalProvenance === null || publishedProvenance === null) {
+    return canonicalProvenance === null && publishedProvenance === null
+  }
+  if (!isCsvImportProvenance(canonicalProvenance) || !isCsvImportProvenance(publishedProvenance)) {
+    return false
+  }
+  return CSV_PROVENANCE_ALIGNMENT_FIELDS.every(field =>
+    Object.is(canonicalProvenance[field], publishedProvenance[field]))
+}
 
 // ── P1-3B: CommitteeDecision → OfficialDecision 変換 ─────────
 // P4-A148: safeModeActive引数を追加。SAFE_MODE発動中はBUYのみBLOCKED化する
@@ -1164,14 +1208,25 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
     })) as typeof api.subscribe
 
   type ManualPortfolioState = AppState & AppActions
-  type PrepareManualCandidate = (baseState: ManualPortfolioState) => ManualPortfolioState | null
-  type PersistManualLegacy = (finalState: ManualPortfolioState) => LegacyPersistenceResult | CurrentPortfolioPersistenceResult
+  type PrepareManualCandidate = (
+    baseState: ManualPortfolioState,
+    operationNowMs: number,
+  ) => ManualPortfolioState | null
+  type PersistManualLegacy = (
+    finalState: ManualPortfolioState,
+    operationNowMs: number,
+  ) => LegacyPersistenceResult | LegacyPortfolioGenerationTransactionResult | CurrentPortfolioPersistenceResult
 
   const publishManualPersistenceError = (
-    result: Exclude<LegacyPersistenceResult | CurrentPortfolioPersistenceResult, { status: 'persisted' }>,
+    result: Exclude<
+      LegacyPersistenceResult | LegacyPortfolioGenerationTransactionResult | CurrentPortfolioPersistenceResult,
+      { status: 'persisted' }
+    >,
   ): void => {
     const message = result.status === 'failed'
       ? '変更を保存できなかったため、手動変更を反映しませんでした。再試行してください。'
+      : result.reason === 'metadata_misaligned'
+        ? '保存済みCSVメタデータを現在の公開状態と安全に一致させられないため、手動変更を中止しました。CSVまたはportfolio snapshotを再取込してから再試行してください。'
       : result.reason === 'canonical_invalid'
         ? '保存済みcanonicalデータが不正なため、手動変更を反映しませんでした。再読み込み後に状態を確認してください。'
         : '保存中にcanonicalデータが更新されたため、手動変更を反映しませんでした。再読み込み後に状態を確認してください。'
@@ -1201,20 +1256,34 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
 
     try {
       const baseState = get()
-      const candidateState = prepareCandidateState(baseState)
+      const operationNowMs = Date.now()
+      const candidateState = prepareCandidateState(baseState, operationNowMs)
       if (candidateState === null) return
 
-      // Fail closed before analysis. A present-invalid canonical key is neither absence nor
-      // permission to fall back to legacy persistence.
-      const canonical = restoreCsvImportGeneration()
+      // Capture and parse the exact canonical bytes once. Metadata alignment is a pre-analysis
+      // invariant: canonical metadata may not be revived after RA-005 intentionally published
+      // null for TTL-expired, future, or malformed values.
+      let canonicalRaw: string | null
+      try {
+        canonicalRaw = readCsvImportCanonicalRaw()
+      } catch {
+        publishManualPersistenceError({ status: 'failed', reason: 'indeterminate' })
+        return
+      }
+      const canonical = restoreCsvImportGenerationFromRaw(canonicalRaw)
       if (canonical.status === 'invalid') {
         publishManualPersistenceError({ status: 'blocked', reason: 'canonical_invalid' })
+        return
+      }
+      if (canonical.status === 'committed' &&
+          !isCanonicalMetadataAlignedWithPublishedState(canonical.payload, baseState)) {
+        publishManualPersistenceError({ status: 'blocked', reason: 'metadata_misaligned' })
         return
       }
 
       let computed: ReturnType<typeof runFullAnalysis>
       try {
-        computed = runFullAnalysis(candidateState)
+        computed = runFullAnalysis(candidateState, { nowMs: operationNowMs })
       } catch (error) {
         try { console.error(`[useAppStore] manual portfolio analysis failed: ${source}`, error) } catch { /* diagnostic sink */ }
         return
@@ -1222,18 +1291,19 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
       const finalState: ManualPortfolioState = { ...candidateState, ...computed }
 
       const persistenceResult = canonical.status === 'committed'
-        ? persistCurrentPortfolioGeneration(finalState, canonical)
-        : persistLegacy(finalState)
+        ? persistCurrentPortfolioGeneration(finalState, canonical, canonicalRaw, operationNowMs)
+        : persistLegacy(finalState, operationNowMs)
       if (persistenceResult.status !== 'persisted') {
         publishManualPersistenceError(persistenceResult)
         return
       }
 
+      const previousCache = lastAppliedSnapshotGeneration
+      lastAppliedSnapshotGeneration = null
       try {
         // Object-form set performs exactly one Zustand publication containing the complete
         // input+derived generation. All existing system/source metadata is carried unchanged.
         set(finalState)
-        lastAppliedSnapshotGeneration = null
       } catch (error) {
         // Zustand applies state before invoking synchronous subscribers. If an unwrapped observer
         // still throws, treat an already-applied complete generation as success and never roll it
@@ -1245,7 +1315,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
           published.cashAssumptions === finalState.cashAssumptions &&
           published.analysis === finalState.analysis &&
           published.officialDecision === finalState.officialDecision
-        if (applied) lastAppliedSnapshotGeneration = null
+        if (!applied) lastAppliedSnapshotGeneration = previousCache
         try { console.error('[useAppStore] manual portfolio publish observer failed', error) } catch { /* diagnostic sink */ }
       }
     } finally {
@@ -2107,7 +2177,11 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
           holding === current ? { ...holding, ...patch } : holding)
         return { ...baseState, holdings }
       },
-      finalState => persistCurrentPortfolioGeneration(finalState, { status: 'none' }),
+      (finalState, operationNowMs) => persistLegacyPortfolioGenerationTransaction({
+        holdings: finalState.holdings,
+        trust: finalState.trust,
+        ...(finalState.learning ? { learning: finalState.learning } : {}),
+      }, operationNowMs),
     )
   },
 
@@ -2124,7 +2198,11 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
           fund === current ? { ...fund, ...patch } : fund)
         return { ...baseState, trust }
       },
-      finalState => persistCurrentPortfolioGeneration(finalState, { status: 'none' }),
+      (finalState, operationNowMs) => persistLegacyPortfolioGenerationTransaction({
+        holdings: finalState.holdings,
+        trust: finalState.trust,
+        ...(finalState.learning ? { learning: finalState.learning } : {}),
+      }, operationNowMs),
     )
   },
 
@@ -2135,7 +2213,9 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
       baseState => baseState.portfolioPolicy.jpStockMaxRatio === policy.jpStockMaxRatio
         ? null
         : { ...baseState, portfolioPolicy: policy },
-      finalState => persistPortfolioPolicy(finalState.portfolioPolicy),
+      (finalState, operationNowMs) => persistLegacyPortfolioGenerationTransaction({
+        portfolioPolicy: finalState.portfolioPolicy,
+      }, operationNowMs),
     )
   },
 
@@ -2144,17 +2224,19 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
   setCashAssumptions: ({ cashDeposits, standbyFunds }) => {
     runManualPortfolioMutation(
       'setCashAssumptions',
-      baseState => {
+      (baseState, operationNowMs) => {
         const sanitize = (value: number) => Math.max(0, Math.round(Number.isFinite(value) ? value : 0))
         const next: CashAssumptions = {
           cashDeposits: sanitize(cashDeposits),
           standbyFunds: sanitize(standbyFunds),
           manualOverrideEnabled: true,
-          manualUpdatedAt: new Date().toISOString(),
+          manualUpdatedAt: new Date(operationNowMs).toISOString(),
         }
         return { ...baseState, cashAssumptions: next }
       },
-      finalState => persistCashAssumptions(finalState.cashAssumptions),
+      (finalState, operationNowMs) => persistLegacyPortfolioGenerationTransaction({
+        cashAssumptions: finalState.cashAssumptions,
+      }, operationNowMs),
     )
   },
 
@@ -2174,7 +2256,9 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
           },
         }
       },
-      finalState => persistCashAssumptions(finalState.cashAssumptions),
+      (finalState, operationNowMs) => persistLegacyPortfolioGenerationTransaction({
+        cashAssumptions: finalState.cashAssumptions,
+      }, operationNowMs),
     )
   },
 
@@ -2200,7 +2284,9 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
             current.manualUpdatedAt === next.manualUpdatedAt) return null
         return { ...baseState, cashAssumptions: next }
       },
-      finalState => persistCashAssumptions(finalState.cashAssumptions),
+      (finalState, operationNowMs) => persistLegacyPortfolioGenerationTransaction({
+        cashAssumptions: finalState.cashAssumptions,
+      }, operationNowMs),
     )
   },
 

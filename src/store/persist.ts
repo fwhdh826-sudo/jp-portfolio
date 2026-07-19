@@ -482,6 +482,214 @@ export type LegacyPersistenceResult =
   | { status: 'blocked'; reason: 'canonical_committed' | 'canonical_invalid' }
   | { status: 'failed' }
 
+export interface LegacyPortfolioGenerationTransactionInput {
+  holdings?: Holding[]
+  trust?: Trust[]
+  learning?: LearningState
+  portfolioPolicy?: PortfolioPolicy
+  cashAssumptions?: CashAssumptions
+}
+
+export type LegacyPortfolioGenerationTransactionResult =
+  | { status: 'persisted' }
+  | {
+      status: 'blocked'
+      reason: 'canonical_committed' | 'canonical_invalid' | 'canonical_changed'
+    }
+  | {
+      status: 'failed'
+      reason: 'rolled_back' | 'rollback_failed' | 'ownership_lost' | 'indeterminate'
+    }
+
+interface LegacyTransactionTarget {
+  key: string
+  previousRaw: string | null
+  intendedRaw: string
+}
+
+function readExactStorageBytes(key: string): { ok: true; raw: string | null } | { ok: false } {
+  try {
+    return { ok: true, raw: localStorage.getItem(key) }
+  } catch {
+    return { ok: false }
+  }
+}
+
+/**
+ * Persist one explicitly selected legacy portfolio generation with exact-byte ownership.
+ * All reads and serialization complete before the first write; a failed write rolls owned
+ * targets back in reverse order without touching bytes installed by another writer.
+ */
+export function persistLegacyPortfolioGenerationTransaction(
+  input: LegacyPortfolioGenerationTransactionInput,
+  nowMs = Date.now(),
+): LegacyPortfolioGenerationTransactionResult {
+  if (typeof localStorage === 'undefined' || !Number.isFinite(nowMs)) {
+    return { status: 'failed', reason: 'indeterminate' }
+  }
+
+  const canonicalCapture = readExactStorageBytes(CSV_IMPORT_GENERATION_KEY)
+  if (!canonicalCapture.ok) return { status: 'failed', reason: 'indeterminate' }
+  const canonical = restoreCsvImportGenerationFromRaw(canonicalCapture.raw)
+  if (canonical.status === 'committed') {
+    return { status: 'blocked', reason: 'canonical_committed' }
+  }
+  if (canonical.status === 'invalid') {
+    return { status: 'blocked', reason: 'canonical_invalid' }
+  }
+
+  const definitions: Array<[string, unknown] | null> = [
+    Object.prototype.hasOwnProperty.call(input, 'holdings')
+      ? [PORTFOLIO_KEY, { data: input.holdings, savedAt: nowMs } satisfies Snapshot<Holding[] | undefined>]
+      : null,
+    Object.prototype.hasOwnProperty.call(input, 'trust')
+      ? [TRUST_KEY, { data: input.trust, savedAt: nowMs } satisfies Snapshot<Trust[] | undefined>]
+      : null,
+    Object.prototype.hasOwnProperty.call(input, 'learning')
+      ? [LEARNING_KEY, { data: input.learning, savedAt: nowMs } satisfies Snapshot<LearningState | undefined>]
+      : null,
+    Object.prototype.hasOwnProperty.call(input, 'portfolioPolicy')
+      ? [PORTFOLIO_POLICY_KEY, { data: input.portfolioPolicy, savedAt: nowMs } satisfies Snapshot<PortfolioPolicy | undefined>]
+      : null,
+    Object.prototype.hasOwnProperty.call(input, 'cashAssumptions')
+      ? [CASH_ASSUMPTIONS_KEY, { data: input.cashAssumptions, savedAt: nowMs } satisfies Snapshot<CashAssumptions | undefined>]
+      : null,
+  ]
+
+  const capturedTargets: Array<{
+    key: string
+    previousRaw: string | null
+    value: unknown
+  }> = []
+  for (const definition of definitions) {
+    if (definition === null) continue
+    const [key, value] = definition
+    const previous = readExactStorageBytes(key)
+    if (!previous.ok) return { status: 'failed', reason: 'indeterminate' }
+    capturedTargets.push({ key, previousRaw: previous.raw, value })
+  }
+
+  const targets: LegacyTransactionTarget[] = []
+  try {
+    for (const target of capturedTargets) {
+      targets.push({
+        key: target.key,
+        previousRaw: target.previousRaw,
+        intendedRaw: JSON.stringify(target.value),
+      })
+    }
+  } catch {
+    return { status: 'failed', reason: 'indeterminate' }
+  }
+
+  const owned: LegacyTransactionTarget[] = []
+  let primaryResult: LegacyPortfolioGenerationTransactionResult | null = null
+
+  for (const target of targets) {
+    const canonicalBeforeWrite = readExactStorageBytes(CSV_IMPORT_GENERATION_KEY)
+    if (!canonicalBeforeWrite.ok) {
+      primaryResult = { status: 'failed', reason: 'indeterminate' }
+      break
+    }
+    if (canonicalBeforeWrite.raw !== canonicalCapture.raw) {
+      primaryResult = { status: 'blocked', reason: 'canonical_changed' }
+      break
+    }
+
+    let writeThrew = false
+    try {
+      localStorage.setItem(target.key, target.intendedRaw)
+    } catch {
+      writeThrew = true
+    }
+
+    const physical = readExactStorageBytes(target.key)
+    if (!physical.ok) {
+      primaryResult = { status: 'failed', reason: 'indeterminate' }
+      break
+    }
+    if (physical.raw === target.intendedRaw) {
+      owned.push(target)
+      if (writeThrew) {
+        primaryResult = { status: 'failed', reason: 'rolled_back' }
+        break
+      }
+    } else if (physical.raw === target.previousRaw) {
+      primaryResult = { status: 'failed', reason: 'rolled_back' }
+      break
+    } else {
+      primaryResult = { status: 'failed', reason: 'ownership_lost' }
+      break
+    }
+
+    const canonicalAfterWrite = readExactStorageBytes(CSV_IMPORT_GENERATION_KEY)
+    if (!canonicalAfterWrite.ok) {
+      primaryResult = { status: 'failed', reason: 'indeterminate' }
+      break
+    }
+    if (canonicalAfterWrite.raw !== canonicalCapture.raw) {
+      primaryResult = { status: 'blocked', reason: 'canonical_changed' }
+      break
+    }
+  }
+
+  if (primaryResult === null) {
+    const canonicalAtCommit = readExactStorageBytes(CSV_IMPORT_GENERATION_KEY)
+    if (!canonicalAtCommit.ok) primaryResult = { status: 'failed', reason: 'indeterminate' }
+    else if (canonicalAtCommit.raw !== canonicalCapture.raw) {
+      primaryResult = { status: 'blocked', reason: 'canonical_changed' }
+    } else {
+      return { status: 'persisted' }
+    }
+  }
+
+  let rollbackFailure = false
+  let ownershipLost = primaryResult.status === 'failed' && primaryResult.reason === 'ownership_lost'
+  let indeterminate = primaryResult.status === 'failed' && primaryResult.reason === 'indeterminate'
+
+  for (let index = owned.length - 1; index >= 0; index -= 1) {
+    const target = owned[index]
+    const current = readExactStorageBytes(target.key)
+    if (!current.ok) {
+      indeterminate = true
+      continue
+    }
+    if (current.raw !== target.intendedRaw) {
+      if (current.raw !== target.previousRaw) ownershipLost = true
+      continue
+    }
+    try {
+      if (target.previousRaw === null) localStorage.removeItem(target.key)
+      else localStorage.setItem(target.key, target.previousRaw)
+    } catch {
+      // Re-read physical bytes below; write-then-throw may still have restored the target.
+    }
+    const restored = readExactStorageBytes(target.key)
+    if (!restored.ok) indeterminate = true
+    else if (restored.raw !== target.previousRaw) rollbackFailure = true
+  }
+
+  for (const target of targets) {
+    const restored = readExactStorageBytes(target.key)
+    if (!restored.ok) indeterminate = true
+    else if (restored.raw !== target.previousRaw && restored.raw !== target.intendedRaw) ownershipLost = true
+    else if (restored.raw === target.intendedRaw && target.intendedRaw !== target.previousRaw) rollbackFailure = true
+  }
+
+  const canonicalAfterRollback = readExactStorageBytes(CSV_IMPORT_GENERATION_KEY)
+  if (!canonicalAfterRollback.ok) indeterminate = true
+  const canonicalChanged = canonicalAfterRollback.ok &&
+    canonicalAfterRollback.raw !== canonicalCapture.raw
+
+  if (indeterminate) return { status: 'failed', reason: 'indeterminate' }
+  if (ownershipLost) return { status: 'failed', reason: 'ownership_lost' }
+  if (rollbackFailure) return { status: 'failed', reason: 'rollback_failed' }
+  if (canonicalChanged) return { status: 'blocked', reason: 'canonical_changed' }
+  return primaryResult.status === 'blocked'
+    ? primaryResult
+    : { status: 'failed', reason: 'rolled_back' }
+}
+
 function persistLegacyValue(key: string, value: string): LegacyPersistenceResult {
   const canonical = restoreCsvImportGeneration()
   if (canonical.status === 'committed') return { status: 'blocked', reason: 'canonical_committed' }

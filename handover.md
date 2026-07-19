@@ -47165,3 +47165,108 @@ persistence hardening系列（`portfolio-snapshot-3`、
 ### Next
 
 `RA-006-AUDIT: independent manual mutation atomicity and identity audit`
+
+## RA-006-AUDIT-FIX: legacy atomicity and identity alignment
+
+### Audit verdict and closed findings
+
+- Independent audit verdict: **BLOCKED**.
+- P1 `RA-006-AUDIT-F001`: canonical absent時のlegacy multi-key manual保存が途中失敗で
+  partial generationを残し得た。
+- P1 `RA-006-AUDIT-F002`: RA-005がCSV metadataをpublished stateでnull化した場合、manual
+  canonical replacementが旧canonical metadataへfallbackし、published identityと
+  `snapshotTransferIdentity`が分裂し得た。
+- P2 `RA-006-AUDIT-F003`: `lastAppliedSnapshotGeneration`の無効化がfinal subscriber開始後だった。
+- P2 `RA-006-AUDIT-F004`: targeted oracleの173 tests表記が実測226 testsと矛盾し、DIRECT matrixが不足した。
+
+### Legacy exact-byte transaction
+
+- `persistLegacyPortfolioGenerationTransaction()`を追加した。callerが明示したfieldだけを対象にし、
+  deterministic orderはportfolio → trust → learning → portfolio policy → cash assumptions。
+- holding/trust manual mutationはportfolio + trust + nonnull learning、policyはpolicy keyのみ、cashの
+  set/clear/importはcash keyのみを選択する。対象外keyとcanonical keyの生成は0。
+- transaction開始時に1つのfinite `nowMs`を捕捉し、portfolio/trust/learningの`Snapshot.savedAt`を
+  完全一致させる。invalid clockはwrite 0でfail closedする。
+- preflightはcanonical raw exact bytesとstatus、全target previous raw bytes、全serialized intended rawを
+  first write前に確定する。canonical committed/invalidはblocked、transaction中の出現・置換は
+  `canonical_changed`として残りwriteを停止する。
+- 各write前後とcommit直前にcanonical exact bytesを確認し、各write後にphysical rawとintended rawの
+  exact ownershipを確認する。write-then-throwはphysical bytesを再読し、自transaction bytesだけを
+  rollback対象へ含める。
+- failureはowned targetを逆順rollbackする。previous nonnullはexact `setItem`、previous nullは
+  `removeItem`を使い、rollback write-then-throwもphysical rereadで判定する。第三者bytesは変更しない。
+- resultは`persisted`、blocked `canonical_committed` / `canonical_invalid` / `canonical_changed`、failed
+  `rolled_back` / `rollback_failed` / `ownership_lost` / `indeterminate`を区別する。
+- first/middle/final × before/after mutation throw、previous-byte restore failure、absent remove failure、
+  rollback write-then-throw、third-party replacement、canonical appearance、serialization failureをDIRECT確認。
+- public `updateHolding` / `updateTrust`でportfolio成功後trust失敗をDIRECT確認し、portfolio/trust previous
+  bytes、reload restore、portfolio publish 0、system-only error 1、coordinator release、valid retryを確認。
+  learning write失敗でもportfolio/trust/learningのpartial candidate bytesは0。
+
+### Canonical and published identity alignment
+
+- committed canonicalはanalysis前にcanonical `csvImportedAt`とpublished
+  `system.csvLastImportedAt`をnullを含めexact比較する。
+- canonical/published provenanceはnull対称性、runtime schema validity、およびimportedAt、sourceAsOf、
+  sourceAsOfKind、sourceAsOfConfidence、contentFingerprint、semanticIdentity、sourceFileName、
+  fileLastModifiedの全fieldを構造比較する。
+- mismatchはanalysis 0、canonical/legacy write 0、portfolio generation publish 0、cache変更0、
+  system-only error 1以内でfail closedし、ticketをreleaseする。canonical metadataをZustandへ再公開せず、
+  nullへ書換えない。
+- manual canonical replacementの`state.system.csvLastImportedAt ?? canonical importedAt` fallbackを除去し、
+  final published `csvLastImportedAt` / `csvImportProvenance`だけをpayloadとtransfer identityへ使用する。
+- v4/v5双方でaligned nonnull/null success、canonical/published null非対称、provenance null非対称、
+  importedAt/sourceAsOf/semanticIdentity mismatch、malformed published provenance、RA-005 TTL-expired/future
+  metadata null化をDIRECT確認した。TTL/future mismatchはmanual actionをblockedにし、RA-005契約を解除しない。
+- 6 manual actionsすべてをv4/v5の両schemaでDIRECT実行し、holdings/trust/policy/cash、CSV metadata、origin、
+  schema、subscriber exactly 1、およびpublished stateから計算した`snapshotTransferIdentity`完全一致を確認。
+- CSV-originのnonnull `syncSummary`、importedAt、summary data、originを保持し、snapshot-originは
+  `syncSummary: null`を維持する。summaryはsnapshot transfer identityへ含めない既存契約を維持する。
+
+### Cache ordering, phases, and clocks
+
+- persistence成功後にprevious cacheをcaptureし、`lastAppliedSnapshotGeneration = null`を
+  `set(finalState)`より前へ移動した。subscriber開始時にcache null、state適用済みsubscriber throwではnull維持、
+  未適用throwだけprevious cache復旧、ticket releaseはsubscriber終了後。
+- subscriber内DIRECT観測だけのread-only `readLastAppliedSnapshotGenerationForTest()`を追加した。
+  setterは公開せずapplication code使用0。snapshot importでcache成立後、manual final subscriber内null、
+  manual/snapshot reentry blocked、完了後の同snapshotはexact `SNAPSHOT_PROVENANCE_UNKNOWN`であり
+  `DUPLICATE_SNAPSHOT`ではないことを確認した。
+- initialize pending、refresh pending、CSV READING/ANALYZING/PREPARED、snapshot transactionの各phase ×
+  6 manual actionsをtable-driven DIRECT確認した。manual subscriber reentryも6 actionsすべてで確認し、
+  input/system/storage/subscriber/cache変更0とouter owner維持を確認した。
+- `setCashAssumptions`はmanual operation clockを1回だけcaptureし、candidate/canonical/publishedの
+  `manualUpdatedAt`とcanonical manifest savedAtへ同じ値を使用する。reverse-clockでDate.now 1回と値一致を
+  DIRECT確認した。`importCashAssumptions`はinput timestampを保持する既存contractを維持する。
+
+### Regression and verification
+
+- analysis failure、canonical persistence failure、present-invalid canonical、RA-003 coordinator、RA-005
+  TTL/future fail-closed、CSV/snapshot transaction、exact-byte canonical ownership、rollback/write-then-throw、
+  third-party protection、officialDecision、investment logic、SAFE_MODE/TierA、P5は全GREEN。
+- canonical schema v1-v5、identity v2、snapshot schema/identity utility変更0。
+  `src/utils/portfolioSnapshotTransfer.ts` / `src/utils/snapshotGenerationIdentity.ts` diff 0。
+- Web Locks、BroadcastChannel、storage event、cross-tab CAS/rollback/TOCTOU変更0。
+- Corrected targeted baseline: **4 files / 226 tests / skipped 0**。
+- Added: **1 file / 88 tests**。Final targeted UTC/JST: **5 files / 314 tests / skipped 0 — PASS**。
+- Full baseline: **57 files / 1462 tests / skipped 0**。Final full UTC/JST:
+  **58 files / 1550 tests / skipped 0 — PASS**。
+- `npx tsc --noEmit`: PASS。
+- `npm run build`: PASS（125 modules、known 500 kB chunk warning only）。
+- `git diff --check`: PASS。
+- Completed verification at 2026-07-19T07:31:49Z / 2026-07-19T16:31:49+09:00。
+- Main is not updated by RA-006-AUDIT-FIX。
+
+### Status
+
+- RA-006 implementation: **CLOSED**。
+- RA-006-AUDIT-F001: **CLOSED**。
+- RA-006-AUDIT-F002: **CLOSED**。
+- RA-006-AUDIT-F003: **CLOSED**。
+- RA-006-AUDIT-F004: **CLOSED**。
+- RA-006 independent re-audit: **PENDING**。
+- main integration: **PENDING**。
+
+### Next
+
+`RA-006-REAUDIT: legacy transaction and identity closure audit`

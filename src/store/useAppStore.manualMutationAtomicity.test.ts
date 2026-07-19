@@ -1,17 +1,21 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import type { CsvImportProvenance, Holding } from '../types'
+import type { CsvImportProvenance, CsvSyncSummary, Holding } from '../types'
 import { DEFAULT_CASH_ASSUMPTIONS, DEFAULT_PORTFOLIO_POLICY } from '../types'
 import { INITIAL_TRUST } from '../constants/trust'
 import { STATIC_MARKET } from '../constants/market'
 import { computeSnapshotGenerationIdentity } from '../utils/snapshotGenerationIdentity'
 import {
   CSV_IMPORT_GENERATION_KEY,
+  CSV_IMPORT_GENERATION_SCHEMA_V4,
   CSV_IMPORT_GENERATION_SCHEMA_V5,
   persistCsvImportTransaction,
+  restorePortfolio,
+  restoreTrust,
   restoreCsvImportGeneration,
 } from './persist'
 import {
   acquirePortfolioOperation,
+  readLastAppliedSnapshotGenerationForTest,
   releasePortfolioOperation,
   useAppStore,
   type PortfolioOperationKind,
@@ -275,13 +279,23 @@ describe('RA-006 manual mutation coordinator and atomic publish', () => {
     expect(notifications).toBe(0)
   })
 
-  it.each(successCases.map((action, index) => ({
+  const operationPhases: Array<{ phase: string; activeKind: PortfolioOperationKind }> = [
+    { phase: 'initialize pending', activeKind: 'initialize' },
+    { phase: 'refresh pending', activeKind: 'refresh' },
+    { phase: 'CSV READING', activeKind: 'csv' },
+    { phase: 'CSV ANALYZING', activeKind: 'csv' },
+    { phase: 'CSV PREPARED', activeKind: 'csv' },
+    { phase: 'snapshot transaction', activeKind: 'snapshot' },
+  ]
+
+  it.each(operationPhases.flatMap(operationPhase => successCases.map(action => ({
+    ...operationPhase,
     ...action,
-    activeKind: (['initialize', 'refresh', 'csv', 'snapshot', 'initialize', 'refresh'] as PortfolioOperationKind[])[index],
-  })))('$name is rejected with zero side effects while $activeKind is active', ({ invoke, activeKind }) => {
+  }))))('$phase rejects $name with zero side effects and keeps the outer owner', ({ invoke, activeKind }) => {
     const ticket = acquirePortfolioOperation(activeKind)
     if (!ticket) throw new Error('failed to acquire test operation')
     const before = useAppStore.getState()
+    const cacheBefore = readLastAppliedSnapshotGenerationForTest()
     let notifications = 0
     const unsubscribe = useAppStore.subscribe(() => { notifications += 1 })
 
@@ -293,33 +307,46 @@ describe('RA-006 manual mutation coordinator and atomic publish', () => {
     expect(setItem).not.toHaveBeenCalled()
     expect(removeItem).not.toHaveBeenCalled()
     expect(notifications).toBe(0)
+    expect(readLastAppliedSnapshotGenerationForTest()).toBe(cacheBefore)
+    expect(acquirePortfolioOperation('manual')).toBeNull()
     expect(releasePortfolioOperation(ticket)).toBe(true)
   })
 
-  function seedCanonical(): string {
+  function seedCanonical(options: {
+    schemaVersion?: typeof CSV_IMPORT_GENERATION_SCHEMA_V4 | typeof CSV_IMPORT_GENERATION_SCHEMA_V5
+    csvImportedAt?: string | null
+    csvImportProvenance?: CsvImportProvenance | null
+    origin?: 'csv' | 'snapshot' | null
+    syncSummary?: CsvSyncSummary | null
+  } = {}): string {
     const state = useAppStore.getState()
-    const csvImportProvenance = state.system.csvImportProvenance ?? null
+    const csvImportedAt = Object.prototype.hasOwnProperty.call(options, 'csvImportedAt')
+      ? options.csvImportedAt ?? null
+      : state.system.csvLastImportedAt
+    const csvImportProvenance = Object.prototype.hasOwnProperty.call(options, 'csvImportProvenance')
+      ? options.csvImportProvenance ?? null
+      : state.system.csvImportProvenance ?? null
     const snapshotTransferIdentity = computeSnapshotGenerationIdentity({
       holdings: state.holdings,
       trust: state.trust,
       portfolioPolicy: state.portfolioPolicy,
       cashAssumptions: state.cashAssumptions,
-      csvImportedAt: state.system.csvLastImportedAt,
+      csvImportedAt,
       csvImportProvenance,
     })
     persistCsvImportTransaction({
       holdings: state.holdings,
       trust: state.trust,
       learning: state.learning,
-      csvImportedAt: state.system.csvLastImportedAt,
+      csvImportedAt,
       provenance: csvImportProvenance,
-      syncSummary: null,
+      syncSummary: options.syncSummary ?? null,
       trustShortSnapshot: { date: '2026-07-18', total: 0, evalById: {} },
       portfolioPolicy: state.portfolioPolicy,
       cashAssumptions: state.cashAssumptions,
-      origin: 'snapshot',
+      origin: options.origin ?? 'snapshot',
       snapshotTransferIdentity,
-    }, undefined, undefined, { schemaVersion: CSV_IMPORT_GENERATION_SCHEMA_V5 })
+    }, undefined, undefined, { schemaVersion: options.schemaVersion ?? CSV_IMPORT_GENERATION_SCHEMA_V5 })
     const raw = storage[CSV_IMPORT_GENERATION_KEY]
     getItem.mockClear()
     setItem.mockClear()
@@ -328,8 +355,11 @@ describe('RA-006 manual mutation coordinator and atomic publish', () => {
     return raw
   }
 
-  it.each(successCases.slice(0, 4))('$name rewrites one v5 canonical generation with published transfer identity', ({ invoke, assertInput }) => {
-    seedCanonical()
+  it.each(([CSV_IMPORT_GENERATION_SCHEMA_V4, CSV_IMPORT_GENERATION_SCHEMA_V5] as const)
+    .flatMap(schemaVersion => successCases.map(action => ({ schemaVersion, ...action }))))(
+    '$schemaVersion $name rewrites one canonical generation with published transfer identity',
+    ({ schemaVersion, invoke, assertInput }) => {
+    seedCanonical({ schemaVersion })
     invoke()
 
     const published = useAppStore.getState()
@@ -337,7 +367,7 @@ describe('RA-006 manual mutation coordinator and atomic publish', () => {
     const generation = restoreCsvImportGeneration()
     expect(generation.status).toBe('committed')
     if (generation.status !== 'committed') throw new Error('expected canonical generation')
-    expect(generation.schemaVersion).toBe(CSV_IMPORT_GENERATION_SCHEMA_V5)
+    expect(generation.schemaVersion).toBe(schemaVersion)
     expect(generation.payload.holdings).toEqual(published.holdings)
     expect(generation.payload.trust).toEqual(published.trust)
     expect(generation.payload.portfolioPolicy).toEqual(published.portfolioPolicy)
@@ -356,6 +386,201 @@ describe('RA-006 manual mutation coordinator and atomic publish', () => {
     }))
     expect(setItem).toHaveBeenCalledTimes(1)
     expect(setItem).toHaveBeenCalledWith(CSV_IMPORT_GENERATION_KEY, expect.any(String))
+  })
+
+  const canonicalSchemas = [CSV_IMPORT_GENERATION_SCHEMA_V4, CSV_IMPORT_GENERATION_SCHEMA_V5] as const
+
+  it.each(canonicalSchemas)('%s aligned metadata succeeds and preserves the published identity inputs', schemaVersion => {
+    seedCanonical({ schemaVersion })
+    let notifications = 0
+    const unsubscribe = useAppStore.subscribe(() => { notifications += 1 })
+    useAppStore.getState().updateHolding(HOLDING_CODE, { eval: 222_222 })
+    unsubscribe()
+
+    const published = useAppStore.getState()
+    const generation = restoreCsvImportGeneration()
+    if (generation.status !== 'committed') throw new Error('expected committed generation')
+    expect(generation.schemaVersion).toBe(schemaVersion)
+    expect(generation.payload.csvImportedAt).toBe(published.system.csvLastImportedAt)
+    expect(generation.payload.provenance).toEqual(published.system.csvImportProvenance)
+    expect(generation.payload.snapshotTransferIdentity).toBe(computeSnapshotGenerationIdentity({
+      holdings: published.holdings,
+      trust: published.trust,
+      portfolioPolicy: published.portfolioPolicy,
+      cashAssumptions: published.cashAssumptions,
+      csvImportedAt: published.system.csvLastImportedAt,
+      csvImportProvenance: published.system.csvImportProvenance ?? null,
+    }))
+    expect(notifications).toBe(1)
+  })
+
+  it.each(canonicalSchemas)('%s aligned null metadata succeeds without canonical fallback', schemaVersion => {
+    useAppStore.setState(state => ({
+      system: { ...state.system, csvLastImportedAt: null, csvImportProvenance: null, csvSyncSummary: null },
+    }))
+    seedCanonical({ schemaVersion, csvImportedAt: null, csvImportProvenance: null })
+    useAppStore.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.17 })
+    const generation = restoreCsvImportGeneration()
+    if (generation.status !== 'committed') throw new Error('expected committed generation')
+    expect(generation.payload.csvImportedAt).toBeNull()
+    expect(generation.payload.provenance).toBeNull()
+    expect(generation.payload.snapshotTransferIdentity).toBe(computeSnapshotGenerationIdentity({
+      holdings: useAppStore.getState().holdings,
+      trust: useAppStore.getState().trust,
+      portfolioPolicy: useAppStore.getState().portfolioPolicy,
+      cashAssumptions: useAppStore.getState().cashAssumptions,
+      csvImportedAt: null,
+      csvImportProvenance: null,
+    }))
+  })
+
+  const mismatchCases: Array<{
+    name: string
+    canonicalImportedAt: string | null
+    canonicalProvenance: CsvImportProvenance | null
+    publishedImportedAt: string | null
+    publishedProvenance: CsvImportProvenance | null | Record<string, unknown>
+  }> = [
+    {
+      name: 'canonical importedAt nonnull / published null',
+      canonicalImportedAt: CSV_IMPORTED_AT,
+      canonicalProvenance: null,
+      publishedImportedAt: null,
+      publishedProvenance: null,
+    },
+    {
+      name: 'canonical provenance object / published null',
+      canonicalImportedAt: CSV_IMPORTED_AT,
+      canonicalProvenance: provenance(),
+      publishedImportedAt: CSV_IMPORTED_AT,
+      publishedProvenance: null,
+    },
+    {
+      name: 'canonical null metadata / published provenance object',
+      canonicalImportedAt: null,
+      canonicalProvenance: null,
+      publishedImportedAt: CSV_IMPORTED_AT,
+      publishedProvenance: provenance(),
+    },
+    {
+      name: 'provenance importedAt mismatch',
+      canonicalImportedAt: CSV_IMPORTED_AT,
+      canonicalProvenance: provenance(),
+      publishedImportedAt: CSV_IMPORTED_AT,
+      publishedProvenance: { ...provenance(), importedAt: '2026-07-18T03:00:00.001Z' },
+    },
+    {
+      name: 'sourceAsOf mismatch',
+      canonicalImportedAt: CSV_IMPORTED_AT,
+      canonicalProvenance: provenance(),
+      publishedImportedAt: CSV_IMPORTED_AT,
+      publishedProvenance: { ...provenance(), sourceAsOf: '2026-07-18T01:59:59.999Z' },
+    },
+    {
+      name: 'semanticIdentity mismatch',
+      canonicalImportedAt: CSV_IMPORTED_AT,
+      canonicalProvenance: provenance(),
+      publishedImportedAt: CSV_IMPORTED_AT,
+      publishedProvenance: { ...provenance(), semanticIdentity: `sha256:${'7'.repeat(64)}` },
+    },
+    {
+      name: 'TTL-expired canonical metadata invalidated by RA-005',
+      canonicalImportedAt: '2026-01-01T00:00:00.000Z',
+      canonicalProvenance: null,
+      publishedImportedAt: null,
+      publishedProvenance: null,
+    },
+    {
+      name: 'future canonical metadata invalidated by RA-005',
+      canonicalImportedAt: '2099-01-01T00:00:00.000Z',
+      canonicalProvenance: null,
+      publishedImportedAt: null,
+      publishedProvenance: null,
+    },
+    {
+      name: 'malformed published provenance',
+      canonicalImportedAt: CSV_IMPORTED_AT,
+      canonicalProvenance: provenance(),
+      publishedImportedAt: CSV_IMPORTED_AT,
+      publishedProvenance: { ...provenance(), sourceAsOfKind: 'malformed' },
+    },
+  ]
+
+  it.each(canonicalSchemas.flatMap(schemaVersion => mismatchCases.map(testCase => ({
+    schemaVersion,
+    ...testCase,
+  }))))('$schemaVersion blocks $name before analysis or persistence and releases the ticket', testCase => {
+    seedCanonical({
+      schemaVersion: testCase.schemaVersion,
+      csvImportedAt: testCase.canonicalImportedAt,
+      csvImportProvenance: testCase.canonicalProvenance,
+    })
+    useAppStore.setState(state => ({
+      system: {
+        ...state.system,
+        status: 'idle',
+        error: null,
+        csvLastImportedAt: testCase.publishedImportedAt,
+        csvImportProvenance: testCase.publishedProvenance as CsvImportProvenance | null,
+      },
+    }))
+    const canonicalBefore = storage[CSV_IMPORT_GENERATION_KEY]
+    let analysisReads = 0
+    const throwingMarket = new Proxy(STATIC_MARKET, {
+      get() {
+        analysisReads += 1
+        throw new Error('alignment must stop before analysis')
+      },
+    })
+    useAppStore.setState({ market: throwingMarket })
+    getItem.mockClear()
+    setItem.mockClear()
+    removeItem.mockClear()
+    const before = useAppStore.getState()
+    const cacheBefore = readLastAppliedSnapshotGenerationForTest()
+    const observed: StoreState[] = []
+    const unsubscribe = useAppStore.subscribe(state => { observed.push(state) })
+
+    useAppStore.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.17 })
+    unsubscribe()
+
+    expect(analysisReads).toBe(0)
+    expectPortfolioReferencesUnchanged(before)
+    expect(storage[CSV_IMPORT_GENERATION_KEY]).toBe(canonicalBefore)
+    expect(setItem).not.toHaveBeenCalled()
+    expect(removeItem).not.toHaveBeenCalled()
+    expect(getItem.mock.calls.every(([key]) => key === CSV_IMPORT_GENERATION_KEY)).toBe(true)
+    expect(observed).toHaveLength(1)
+    expect(observed[0].system.status).toBe('error')
+    expect(observed[0].system.error).toContain('CSVメタデータ')
+    expect(readLastAppliedSnapshotGenerationForTest()).toBe(cacheBefore)
+    const ticket = acquirePortfolioOperation('manual')
+    expect(ticket).not.toBeNull()
+    if (ticket) expect(releasePortfolioOperation(ticket)).toBe(true)
+  })
+
+  it.each(canonicalSchemas)('%s CSV-origin manual replacement preserves nonnull syncSummary and origin', schemaVersion => {
+    const summary: CsvSyncSummary = {
+      importedAt: CSV_IMPORTED_AT,
+      stock: { updated: 2, added: 1, removed: 0 },
+      trust: { updated: 3, reheld: 1, zeroed: 0, unknownFunds: [], ambiguousFundIds: [] },
+    }
+    useAppStore.setState(state => ({ system: { ...state.system, csvSyncSummary: summary } }))
+    seedCanonical({ schemaVersion, origin: 'csv', syncSummary: summary })
+    useAppStore.getState().updateTrust(TRUST_ID, { eval: 123_456 })
+    const generation = restoreCsvImportGeneration()
+    if (generation.status !== 'committed') throw new Error('expected committed generation')
+    expect(generation.payload.origin).toBe('csv')
+    expect(generation.payload.csvImportedAt).toBe(CSV_IMPORTED_AT)
+    expect(generation.payload.syncSummary).toEqual(summary)
+    expect(generation.payload.snapshotTransferIdentity).toBe(computeSnapshotGenerationIdentity({
+      holdings: generation.payload.holdings,
+      trust: generation.payload.trust,
+      portfolioPolicy: generation.payload.portfolioPolicy!,
+      cashAssumptions: generation.payload.cashAssumptions!,
+      csvImportedAt: generation.payload.csvImportedAt ?? null,
+      csvImportProvenance: generation.payload.provenance ?? null,
+    }))
   })
 
   it('canonical persistence failure publishes no portfolio generation, preserves bytes, and permits retry', () => {
@@ -377,6 +602,92 @@ describe('RA-006 manual mutation coordinator and atomic publish', () => {
     useAppStore.getState().updateHolding(HOLDING_CODE, { eval: 222_222 })
     unsubscribe()
     expect(useAppStore.getState().holdings.find(item => item.code === HOLDING_CODE)?.eval).toBe(222_222)
+  })
+
+  it.each([
+    ['updateHolding', () => useAppStore.getState().updateHolding(HOLDING_CODE, { eval: 222_222 })],
+    ['updateTrust', () => useAppStore.getState().updateTrust(TRUST_ID, { eval: 222_222 })],
+  ] as const)('%s rolls portfolio back when the trust write fails and a later retry succeeds', (_name, invoke) => {
+    const oldHoldings = [{ ...TEST_HOLDING, eval: 101_010 }]
+    const oldTrust = INITIAL_TRUST.map(fund => ({ ...fund, eval: fund.id === TRUST_ID ? 202_020 : fund.eval }))
+    storage.v81_portfolio = JSON.stringify({ data: oldHoldings, savedAt: 1 })
+    storage.v81_trust = JSON.stringify({ data: oldTrust, savedAt: 1 })
+    const previousPortfolioRaw = storage.v81_portfolio
+    const previousTrustRaw = storage.v81_trust
+    const before = useAppStore.getState()
+    const observed: StoreState[] = []
+    const unsubscribe = useAppStore.subscribe(state => { observed.push(state) })
+    setItem.mockImplementation((key: string, value: string) => {
+      if (key === 'v81_trust' && JSON.parse(value).savedAt !== 1) throw new Error('trust quota')
+      storage[key] = value
+    })
+
+    invoke()
+
+    expectPortfolioReferencesUnchanged(before)
+    expect(observed).toHaveLength(1)
+    expect(observed[0].system.status).toBe('error')
+    expect(storage.v81_portfolio).toBe(previousPortfolioRaw)
+    expect(storage.v81_trust).toBe(previousTrustRaw)
+    expect(restorePortfolio()).toEqual(oldHoldings)
+    expect(restoreTrust()).toEqual(oldTrust)
+    expect(storage[CSV_IMPORT_GENERATION_KEY]).toBeUndefined()
+
+    setItem.mockImplementation((key: string, value: string) => { storage[key] = value })
+    invoke()
+    unsubscribe()
+    expect(useAppStore.getState()).not.toBe(before)
+    expect(observed).toHaveLength(2)
+  })
+
+  it('rolls portfolio and trust back when the learning write fails', () => {
+    const priorPortfolio = JSON.stringify({ data: [{ ...TEST_HOLDING, eval: 1 }], savedAt: 1 })
+    const priorTrust = JSON.stringify({ data: INITIAL_TRUST, savedAt: 1 })
+    const priorLearning = JSON.stringify({ data: { lastUpdated: 'old' }, savedAt: 1 })
+    storage.v81_portfolio = priorPortfolio
+    storage.v81_trust = priorTrust
+    storage.v91_learning = priorLearning
+    const emptyDecisionSummary = { count: 0, wins: 0, losses: 0, flats: 0, accuracy: 0, avgReward: 0 }
+    useAppStore.setState({ learning: {
+      lastUpdated: '2026-07-18T00:00:00.000Z',
+      baselineCount: 0,
+      baseline: [],
+      outcomes: [],
+      summary: {
+        total: 0,
+        wins: 0,
+        losses: 0,
+        flats: 0,
+        accuracy: 0,
+        avgReward: 0,
+        byDecision: {
+          BUY: { ...emptyDecisionSummary },
+          HOLD: { ...emptyDecisionSummary },
+          SELL: { ...emptyDecisionSummary },
+        },
+        driftSignals: [],
+      },
+      suggestedWeights: {
+        fundamental: 0.3,
+        market: 0.2,
+        technical: 0.2,
+        news: 0.1,
+        quality: 0.1,
+        risk: 0.1,
+      },
+    } })
+    const before = useAppStore.getState()
+    setItem.mockImplementation((key: string, value: string) => {
+      if (key === 'v91_learning' && JSON.parse(value).savedAt !== 1) throw new Error('learning quota')
+      storage[key] = value
+    })
+
+    useAppStore.getState().updateHolding(HOLDING_CODE, { eval: 333_333 })
+
+    expectPortfolioReferencesUnchanged(before)
+    expect(storage.v81_portfolio).toBe(priorPortfolio)
+    expect(storage.v81_trust).toBe(priorTrust)
+    expect(storage.v91_learning).toBe(priorLearning)
   })
 
   it('present-invalid canonical stops before analysis and legacy fallback', () => {
@@ -457,6 +768,23 @@ describe('RA-006 manual mutation coordinator and atomic publish', () => {
     })
   })
 
+  it.each(successCases)('manual subscriber reentry during $name rejects all six manual actions', ({ invoke, assertInput }) => {
+    let notifications = 0
+    const unsubscribe = useAppStore.subscribe(() => {
+      notifications += 1
+      for (const nested of successCases) nested.invoke()
+    })
+
+    invoke()
+    unsubscribe()
+
+    expect(notifications).toBe(1)
+    assertInput(useAppStore.getState())
+    const ticket = acquirePortfolioOperation('manual')
+    expect(ticket).not.toBeNull()
+    if (ticket) expect(releasePortfolioOperation(ticket)).toBe(true)
+  })
+
   it('manual publish subscriber cannot start initialize, refresh, CSV, or snapshot operations', async () => {
     let initializeResult: Promise<void> | undefined
     let refreshResult: Promise<void> | undefined
@@ -513,7 +841,29 @@ describe('RA-006 manual mutation coordinator and atomic publish', () => {
     }))
   })
 
-  it('successful manual mutation invalidates same-session snapshot duplicate evidence', () => {
+  it('setCashAssumptions uses one operation clock for candidate, canonical, and published values', () => {
+    seedCanonical()
+    const operationNowMs = Date.parse('2026-07-19T06:07:08.009Z')
+    let calls = 0
+    const nowSpy = vi.spyOn(Date, 'now').mockImplementation(() => {
+      calls += 1
+      return calls === 1 ? operationNowMs : operationNowMs - calls
+    })
+
+    useAppStore.getState().setCashAssumptions({ cashDeposits: 123_456, standbyFunds: 654_321 })
+
+    const expectedTimestamp = new Date(operationNowMs).toISOString()
+    const published = useAppStore.getState()
+    const generation = restoreCsvImportGeneration()
+    if (generation.status !== 'committed') throw new Error('expected committed generation')
+    expect(calls).toBe(1)
+    expect(published.cashAssumptions.manualUpdatedAt).toBe(expectedTimestamp)
+    expect(generation.payload.cashAssumptions?.manualUpdatedAt).toBe(expectedTimestamp)
+    expect(JSON.parse(storage[CSV_IMPORT_GENERATION_KEY]).manifest.savedAt).toBe(operationNowMs)
+    nowSpy.mockRestore()
+  })
+
+  it('invalidates snapshot cache before the final subscriber and later returns the exact provenance result', () => {
     useAppStore.setState(state => ({
       holdings: [{ ...TEST_HOLDING, eval: 111_111 }],
       trust: [],
@@ -537,10 +887,24 @@ describe('RA-006 manual mutation coordinator and atomic publish', () => {
     delete storage[CSV_IMPORT_GENERATION_KEY]
 
     expect(useAppStore.getState().importPortfolioSnapshot(raw)).toMatchObject({ ok: true, code: 'SUCCESS' })
+    expect(readLastAppliedSnapshotGenerationForTest()).not.toBeNull()
+    let cacheSeenBySubscriber: ReturnType<typeof readLastAppliedSnapshotGenerationForTest> | undefined
+    let reentrantManualState: StoreState | undefined
+    let reentrantSnapshotResult: ReturnType<StoreState['importPortfolioSnapshot']> | undefined
+    const unsubscribe = useAppStore.subscribe(() => {
+      cacheSeenBySubscriber = readLastAppliedSnapshotGenerationForTest()
+      useAppStore.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.17 })
+      reentrantManualState = useAppStore.getState()
+      reentrantSnapshotResult = useAppStore.getState().importPortfolioSnapshot(raw)
+    })
     useAppStore.getState().updateHolding(HOLDING_CODE, { eval: 222_222 })
+    unsubscribe()
+    expect(cacheSeenBySubscriber).toBeNull()
+    expect(reentrantManualState?.portfolioPolicy).toEqual(DEFAULT_PORTFOLIO_POLICY)
+    expect(reentrantSnapshotResult).toMatchObject({ ok: false, code: 'SNAPSHOT_IMPORT_BLOCKED' })
     const repeated = useAppStore.getState().importPortfolioSnapshot(raw)
 
-    expect(repeated.code).not.toBe('DUPLICATE_SNAPSHOT')
+    expect(repeated).toMatchObject({ ok: false, code: 'SNAPSHOT_PROVENANCE_UNKNOWN' })
     expect(useAppStore.getState().holdings.find(item => item.code === HOLDING_CODE)?.eval).toBe(222_222)
   })
 })
