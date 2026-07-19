@@ -1105,7 +1105,7 @@ describe('T9-A001/A002: structured CSV result and atomic store commit', () => {
     await first
   })
 
-  it('F002: a cash dependency mutation while reading the CSV causes an explicit conflict', async () => {
+  it('RA-006: a cash manual action while reading the CSV is rejected and the outer import continues', async () => {
     let release!: (value: ArrayBuffer) => void
     const pendingFile = {
       name: 'pending.csv',
@@ -1114,15 +1114,14 @@ describe('T9-A001/A002: structured CSV result and atomic store commit', () => {
 
     const first = useAppStore.getState().importCsv(pendingFile)
     await Promise.resolve()
+    const duringReading = useAppStore.getState()
     useAppStore.getState().setCashAssumptions({ cashDeposits: 9_000_000, standbyFunds: 8_000_000 })
+    expect(useAppStore.getState()).toBe(duringReading)
     release(new TextEncoder().encode(VALID_CSV).buffer)
 
-    await expect(first).resolves.toMatchObject({ ok: false, code: 'IMPORT_CONFLICT' })
-    expect(useAppStore.getState().cashAssumptions).toMatchObject({
-      cashDeposits: 9_000_000,
-      standbyFunds: 8_000_000,
-    })
-    expect(useAppStore.getState().holdings[0].eval).toBe(100_000)
+    await expect(first).resolves.toMatchObject({ ok: true, code: 'SUCCESS' })
+    expect(useAppStore.getState().cashAssumptions).toBe(duringReading.cashAssumptions)
+    expect(useAppStore.getState().holdings[0].eval).toBe(150_000)
 
     const retry = await useAppStore.getState().importCsv(csvFile())
     expect(retry.ok).toBe(true)
@@ -1162,13 +1161,13 @@ describe('T9-A001/A002: structured CSV result and atomic store commit', () => {
   })
 
   it.each([
-    ['standby cash', () => useAppStore.getState().setCashAssumptions({ cashDeposits: 1_000_000, standbyFunds: 7_000_000 })],
-    ['portfolio policy', () => useAppStore.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.15 })],
-    ['market refresh dependency', () => useAppStore.setState(state => ({ market: { ...state.market, nikkeiChgPct: state.market.nikkeiChgPct + 0.01 } }))],
-    ['SAFE_MODE dependency', () => useAppStore.setState(state => ({
+    ['standby cash manual action', true, () => useAppStore.getState().setCashAssumptions({ cashDeposits: 1_000_000, standbyFunds: 7_000_000 })],
+    ['portfolio policy manual action', true, () => useAppStore.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.15 })],
+    ['market external dependency', false, () => useAppStore.setState(state => ({ market: { ...state.market, nikkeiChgPct: state.market.nikkeiChgPct + 0.01 } }))],
+    ['SAFE_MODE external dependency', false, () => useAppStore.setState(state => ({
       safeMode: { ...state.safeMode, safe_mode: { ...state.safeMode.safe_mode, active: !state.safeMode.safe_mode.active } },
     }))],
-  ])('concurrent %s mutation cannot silently commit stale analysis', async (_label, mutate) => {
+  ] as const)('concurrent %s cannot silently commit stale analysis', async (_label, manualRejected, mutate) => {
     let release!: (value: ArrayBuffer) => void
     const pendingFile = {
       name: 'pending.csv',
@@ -1176,11 +1175,16 @@ describe('T9-A001/A002: structured CSV result and atomic store commit', () => {
     } as File
     const first = useAppStore.getState().importCsv(pendingFile)
     await Promise.resolve()
+    const beforeMutation = useAppStore.getState()
     mutate()
+    if (manualRejected) expect(useAppStore.getState()).toBe(beforeMutation)
+    else expect(useAppStore.getState()).not.toBe(beforeMutation)
     release(new TextEncoder().encode(VALID_CSV).buffer)
 
-    await expect(first).resolves.toMatchObject({ ok: false, code: 'IMPORT_CONFLICT' })
-    expect(useAppStore.getState().holdings[0].eval).toBe(100_000)
+    await expect(first).resolves.toMatchObject(manualRejected
+      ? { ok: true, code: 'SUCCESS' }
+      : { ok: false, code: 'IMPORT_CONFLICT' })
+    expect(useAppStore.getState().holdings[0].eval).toBe(manualRejected ? 150_000 : 100_000)
     expect(useAppStore.getState().system.status).not.toBe('loading')
   })
 

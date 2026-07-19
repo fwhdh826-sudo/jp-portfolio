@@ -47075,3 +47075,93 @@ persistence hardening系列（`portfolio-snapshot-3`、
 - RA-005 blockers: 0.
 - Cross-tab coordination remains deferred to a later ticket.
 - Next: `RA-006: residual identity and subscriber assertions / manual mutation operations`.
+
+## RA-006: manual mutation coordinator, atomic publish, and identity assertions
+
+### Root cause and implementation
+
+- 対象6 actions (`updateHolding`, `updateTrust`, `setPortfolioPolicy`,
+  `setCashAssumptions`, `clearCashAssumptionsOverride`, `importCashAssumptions`) は、従来
+  input-only `set()`、`runFullAnalysis(get())`、derived-only `set()`、persistence の順で
+  個別実装されていた。このため中間世代、複数subscriber通知、analysis/persistence失敗後の
+  memory/storage不一致、およびoperation中のmanual変更経路が残っていた。
+- `PortfolioOperationKind`へ`manual`を追加し、6 actionsを単一
+  `runManualPortfolioMutation()`へ統合した。manual ticketはbase capture、candidate preparation、
+  analysis、persistence、最終publish、同期subscriber callbackの全期間保持し、全経路で
+  `finally` releaseする。
+- acquisitionは`activePortfolioOperation !== null`または
+  `activePortfolioGenerationTransaction !== null`ならphaseに関係なくrejectする。initialize、
+  refresh、CSV READING以降、snapshot、manual publish subscriberからの再入を副作用0で拒否する。
+- blocked manual actionはinput/derived/system/storage/analysis/subscriber/cache変更0で、diagnostic
+  warningだけを許す。CSV READING中に拒否されたmanual actionはouter CSV generationへも影響せず、
+  既存の外部dependency mutation conflict契約は維持する。
+- candidate inputはcaptured baseからmemory上で作り、`runFullAnalysis(candidateState)`の完全な
+  derived outputと合成する。canonical validityをanalysis前にfail-closed確認し、persistence成功後に
+  完全世代を単一object-form `set()`でpublishする。成功subscriber通知は正確に1回、partial generation
+  exposureは0。
+- canonical committedではholdings、trust、learning、policy、cashを含む全payloadを1回再保存し、
+  schema v4/v5の既存replacement契約を維持する。origin、CSV importedAt/provenance、trust-short
+  snapshotを維持し、snapshot originのsyncSummaryはnullのまま保持する。canonical failureからlegacy
+  fallbackしない。present-invalidはanalysis 0 / write 0でsystem-only errorへfail closedする。
+- canonical payloadの`holdings`、`trust`、`portfolioPolicy`、`cashAssumptions`をpublished stateと一致させ、
+  `snapshotTransferIdentity`をpublished holdings/trust/policy/cash/CSV importedAt/provenanceから再計算する。
+  CSV source freshness、importedAt、provenance、semantic identity、originはmanual operation timeへ変更しない。
+- manual success後だけsame-session `lastAppliedSnapshotGeneration`をnullへ無効化する。同じsnapshotの
+  再importはstale cacheによる`DUPLICATE_SNAPSHOT`にならず、既存overwrite/provenance policyへ進み、
+  manual canonical stateをsilent overwriteしない。blocked/no-op/analysis failure/persistence failureでは
+  cacheを変更しない。
+- persistence failureはportfolio input/derived publish 0、previous canonical bytes維持、legacy fallback 0、
+  system-only error 1通知以内でretry可能。analysis failureはportfolio/system/storage publish 0でretry可能。
+- reentrant manual subscriberはfirst generationだけを成立させ、second manual actionおよびinitialize/
+  refresh/CSV/snapshot開始を拒否する。throwing subscriberは診断化され、適用済みstateとcanonicalを
+  rollback/deleteせず、ticket release後の次actionを許可する。
+
+### No-op and compatibility matrix
+
+- missing holding code、unchanged holding patch、missing trust id、unchanged trust patch、same policy、
+  already-cleared cash override、identical imported cash assumptionsはroot identity不変、analysis/storage/
+  subscriber/cache変更0。他holding/trust objectをno-opで再生成しない。
+- cash sanitize（non-finite→0、0以上、整数円）、manual override、`setCashAssumptions`のoperation内1回の
+  timestamp capture、および`importCashAssumptions`のtimestamp preservationを維持する。
+- canonical absentではholding/trustの既存portfolio/trust/learning legacy contract、policy key、cash keyだけを
+  使用し、canonical keyを生成せずsingle publishする。legacy schema/key変更0。
+- cross-tab exact-byte CAS、Web Locks、BroadcastChannel、storage event、cross-tab rollback/TOCTOUは未実装。
+- persistence schema v1-v5、identity v2、snapshot schema/identity、CSV provenance/TTL、canonical checksum/
+  generationId、CSV/snapshot transaction、investment logic、officialDecision、SAFE_MODE/TierA、P5、workflow、
+  data/public dataの変更0。
+
+### Files and DIRECT tests
+
+- Production: `src/store/useAppStore.ts` only.
+- Tests: new `src/store/useAppStore.manualMutationAtomicity.test.ts`、updated
+  `src/store/useAppStore.test.ts`、およびRA-003/CSV READING rejection regressionとして
+  `src/store/useAppStore.csvImportAtomic.test.ts`。
+- DIRECT success matrixは6 actionsすべてでinput適用、同一input由来derived output、persistence-before-
+  publish、唯一の完全世代、subscriber exactly 1、coordinator releaseを確認。
+- DIRECT canonical identityはupdateHolding/updateTrust/policy/cashでschema v5維持、payload一致、source
+  metadata/origin/syncSummary維持、canonical write 1、published state由来snapshotTransferIdentity一致を確認。
+- DIRECT failure/reentry/cache/legacy matrixは7 no-op、active operation table、holding/policy/cash analysis failure、
+  canonical persistence failure、present-invalid、reentrant/throwing subscriber、all-operation subscriber reentry、
+  same-session snapshot retry、legacy keys/canonical key 0を確認。
+
+### Verification
+
+- UTC targeted: **4 files / 173 tests / skipped 0 — PASS**.
+- Asia/Tokyo targeted: **4 files / 173 tests / skipped 0 — PASS**.
+- UTC full unit: **57 files / 1462 tests / skipped 0 — PASS**.
+- Asia/Tokyo full unit: **57 files / 1462 tests / skipped 0 — PASS**.
+- `npx tsc --noEmit`: PASS.
+- `npm run build`: PASS (125 modules; known 500 kB chunk warning only).
+- `git diff --check`: PASS.
+- Completed verification at 2026-07-19T06:36:06Z / 2026-07-19T15:36:06+09:00.
+- Main is not updated by RA-006.
+
+### Status
+
+- RA-006 implementation: **CLOSED**.
+- RA-006 independent audit: **PENDING**.
+- main integration: **PENDING**.
+
+### Next
+
+`RA-006-AUDIT: independent manual mutation atomicity and identity audit`

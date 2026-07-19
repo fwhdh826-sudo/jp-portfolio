@@ -981,9 +981,9 @@ describe('T9-A004-R3-FIX-C: present-invalid canonical manual persistence policy 
 })
 
 describe('R4-A002: policy/cash persistence result visibility', () => {
-  const GENERIC_FAILURE = '変更を保存できませんでした。再読み込み後に状態を確認してください。'
-  const CANONICAL_INVALID = '保存済みcanonicalデータが不正なため、変更の永続化を中止しました。再読み込み後に状態を確認してください。'
-  const CANONICAL_COMMITTED = '保存中にcanonicalデータが更新されたため、legacy保存を中止しました。再読み込み後に状態を確認してください。'
+  const GENERIC_FAILURE = '変更を保存できなかったため、手動変更を反映しませんでした。再試行してください。'
+  const CANONICAL_INVALID = '保存済みcanonicalデータが不正なため、手動変更を反映しませんでした。再読み込み後に状態を確認してください。'
+  const CANONICAL_COMMITTED = '保存中にcanonicalデータが更新されたため、手動変更を反映しませんでした。再読み込み後に状態を確認してください。'
   const storage: Record<string, string> = {}
   const getItem = vi.fn((key: string): string | null => storage[key] ?? null)
   const setItem = vi.fn((key: string, value: string) => { storage[key] = value })
@@ -1078,6 +1078,18 @@ describe('R4-A002: policy/cash persistence result visibility', () => {
     expect(state.universe).not.toBeNull()
   }
 
+  function expectPortfolioGenerationUnchanged(before: ReturnType<typeof useAppStore.getState>): void {
+    const after = useAppStore.getState()
+    expect(after.holdings).toBe(before.holdings)
+    expect(after.trust).toBe(before.trust)
+    expect(after.portfolioPolicy).toBe(before.portfolioPolicy)
+    expect(after.cashAssumptions).toBe(before.cashAssumptions)
+    expect(after.analysis).toBe(before.analysis)
+    expect(after.metrics).toBe(before.metrics)
+    expect(after.universe).toBe(before.universe)
+    expect(after.officialDecision).toBe(before.officialDecision)
+  }
+
   function createValidCanonicalRaw(): string {
     const state = useAppStore.getState()
     persistCsvImportTransaction({
@@ -1131,13 +1143,13 @@ describe('R4-A002: policy/cash persistence result visibility', () => {
     expect(useAppStore.getState().system).toMatchObject({ status: 'idle', error: null })
   })
 
-  it.each(actionCases)('$name reflects legacy failed without rolling back memory or analysis', ({ legacyKey, invoke, assertInMemory }) => {
+  it.each(actionCases)('$name reflects legacy failure without publishing input or analysis', ({ legacyKey, invoke }) => {
+    const before = useAppStore.getState()
     setItem.mockImplementation(() => { throw new Error('quota exceeded') })
 
     expect(() => invoke()).not.toThrow()
 
-    assertInMemory()
-    expectAnalysisCompleted()
+    expectPortfolioGenerationUnchanged(before)
     expect(useAppStore.getState().system).toMatchObject({ status: 'error', error: GENERIC_FAILURE })
     expect(storage[legacyKey]).toBeUndefined()
     expect(storage[CSV_IMPORT_GENERATION_KEY]).toBeUndefined()
@@ -1146,7 +1158,8 @@ describe('R4-A002: policy/cash persistence result visibility', () => {
     expect(setItem).not.toHaveBeenCalledWith(CSV_IMPORT_GENERATION_KEY, expect.any(String))
   })
 
-  it.each(actionCases)('$name reflects a canonical_committed race and performs zero writes', ({ invoke, assertInMemory }) => {
+  it.each(actionCases)('$name reflects a canonical_committed race without publishing a generation', ({ invoke }) => {
+    const before = useAppStore.getState()
     const canonicalRaw = createValidCanonicalRaw()
     let canonicalReads = 0
     getItem.mockImplementation((key: string) => {
@@ -1159,8 +1172,7 @@ describe('R4-A002: policy/cash persistence result visibility', () => {
 
     expect(() => invoke()).not.toThrow()
 
-    assertInMemory()
-    expectAnalysisCompleted()
+    expectPortfolioGenerationUnchanged(before)
     expect(canonicalReads).toBe(2)
     expect(storage[CSV_IMPORT_GENERATION_KEY]).toBe(canonicalRaw)
     expect(setItem).not.toHaveBeenCalled()
@@ -1169,7 +1181,8 @@ describe('R4-A002: policy/cash persistence result visibility', () => {
     expect(useAppStore.getState().system.error).not.toBe(GENERIC_FAILURE)
   })
 
-  it.each(actionCases)('$name reflects a canonical_invalid race and performs zero writes', ({ invoke, assertInMemory }) => {
+  it.each(actionCases)('$name reflects a canonical_invalid race without publishing a generation', ({ invoke }) => {
+    const before = useAppStore.getState()
     const invalidRaw = '{present-invalid'
     let canonicalReads = 0
     getItem.mockImplementation((key: string) => {
@@ -1182,22 +1195,21 @@ describe('R4-A002: policy/cash persistence result visibility', () => {
 
     expect(() => invoke()).not.toThrow()
 
-    assertInMemory()
-    expectAnalysisCompleted()
+    expectPortfolioGenerationUnchanged(before)
     expect(canonicalReads).toBe(2)
     expect(storage[CSV_IMPORT_GENERATION_KEY]).toBe(invalidRaw)
     expect(setItem).not.toHaveBeenCalled()
     expect(useAppStore.getState().system).toMatchObject({ status: 'error', error: CANONICAL_INVALID })
   })
 
-  it.each(actionCases)('$name reflects canonical invalid at action start and performs zero writes', ({ invoke, assertInMemory }) => {
+  it.each(actionCases)('$name reflects canonical invalid at action start before analysis and writes', ({ invoke }) => {
     const invalidRaw = '{present-invalid'
     storage[CSV_IMPORT_GENERATION_KEY] = invalidRaw
+    const before = useAppStore.getState()
 
     expect(() => invoke()).not.toThrow()
 
-    assertInMemory()
-    expectAnalysisCompleted()
+    expectPortfolioGenerationUnchanged(before)
     expect(storage[CSV_IMPORT_GENERATION_KEY]).toBe(invalidRaw)
     expect(setItem).not.toHaveBeenCalled()
     expect(useAppStore.getState().system).toMatchObject({ status: 'error', error: CANONICAL_INVALID })
