@@ -104,7 +104,7 @@ describe('T9-A004-R2: portfolio snapshot provenance action contract', () => {
 
   afterEach(() => vi.unstubAllGlobals())
 
-  it('R2-F1 RED: self-asserted newer provenance cannot authorize content substitution over a non-empty generation', () => {
+  it('R2-F1 RED: self-asserted newer provenance cannot authorize content substitution over a non-empty generation', async () => {
     const incoming = provenance({
       importedAt: '2026-07-15T12:00:00.000Z',
       sourceAsOf: '2026-07-15T11:00:00.000Z',
@@ -118,7 +118,7 @@ describe('T9-A004-R2: portfolio snapshot provenance action contract', () => {
     const unsubscribe = useAppStore.subscribe(() => { notifications += 1 })
     expect(storage[CSV_IMPORT_GENERATION_KEY]).toBeUndefined()
 
-    const result = useAppStore.getState().importPortfolioSnapshot(v3Snapshot(incoming, {
+    const result = await useAppStore.getState().importPortfolioSnapshot(v3Snapshot(incoming, {
       holdings: [{ code: 'R2-TEST', name: 'substituted content B', eval: 999_999, pnlPct: 42 }],
     }))
     unsubscribe()
@@ -131,7 +131,7 @@ describe('T9-A004-R2: portfolio snapshot provenance action contract', () => {
     expect(storage[CSV_IMPORT_GENERATION_KEY]).toBeUndefined()
   })
 
-  it('a binding mismatch rejects before all store, subscriber, canonical, tracker, and storage effects', () => {
+  it('a binding mismatch rejects before all store, subscriber, canonical, tracker, and storage effects', async () => {
     const incoming = provenance({
       importedAt: '2026-07-15T12:00:00.000Z',
       sourceAsOf: '2026-07-15T11:00:00.000Z',
@@ -145,7 +145,7 @@ describe('T9-A004-R2: portfolio snapshot provenance action contract', () => {
     let notifications = 0
     const unsubscribe = useAppStore.subscribe(() => { notifications += 1 })
 
-    const result = useAppStore.getState().importPortfolioSnapshot(JSON.stringify(payload))
+    const result = await useAppStore.getState().importPortfolioSnapshot(JSON.stringify(payload))
     unsubscribe()
 
     expect(result).toMatchObject({ ok: false, code: 'INVALID_SNAPSHOT_GENERATION' })
@@ -154,17 +154,17 @@ describe('T9-A004-R2: portfolio snapshot provenance action contract', () => {
     expect(storageWrites).toBe(0)
     expect(notifications).toBe(0)
 
-    expect(useAppStore.getState().importPortfolioSnapshot(validRaw))
+    expect(await useAppStore.getState().importPortfolioSnapshot(validRaw))
       .toMatchObject({ ok: false, code: 'SNAPSHOT_OVERWRITE_BLOCKED' })
   })
 
-  it('operation timestamps cannot authorize a legacy/unknown snapshot over authoritative current content', () => {
+  it('operation timestamps cannot authorize a legacy/unknown snapshot over authoritative current content', async () => {
     const before = useAppStore.getState()
     const storageBefore = { ...storage }
     let notifications = 0
     const unsubscribe = useAppStore.subscribe(() => { notifications += 1 })
 
-    const result = useAppStore.getState().importPortfolioSnapshot(
+    const result = await useAppStore.getState().importPortfolioSnapshot(
       legacyV2Snapshot('2026-07-15T11:00:00.000Z'),
     )
     unsubscribe()
@@ -180,13 +180,13 @@ describe('T9-A004-R2: portfolio snapshot provenance action contract', () => {
     expect(notifications).toBe(0)
   })
 
-  it('an unknown legacy snapshot cannot replace content while retaining authoritative provenance', () => {
+  it('an unknown legacy snapshot cannot replace content while retaining authoritative provenance', async () => {
     const before = useAppStore.getState()
     const storageBefore = { ...storage }
     let notifications = 0
     const unsubscribe = useAppStore.subscribe(() => { notifications += 1 })
 
-    const result = useAppStore.getState().importPortfolioSnapshot(legacyV2Snapshot(null))
+    const result = await useAppStore.getState().importPortfolioSnapshot(legacyV2Snapshot(null))
     unsubscribe()
 
     expect(result).toMatchObject({ ok: false, code: 'SNAPSHOT_PROVENANCE_UNKNOWN' })
@@ -199,7 +199,7 @@ describe('T9-A004-R2: portfolio snapshot provenance action contract', () => {
     expect(notifications).toBe(0)
   })
 
-  it('an older authoritative v3 snapshot is stale even when import/export operation times are newer', () => {
+  it('an older authoritative v3 snapshot is stale even when import/export operation times are newer', async () => {
     const incoming = provenance({
       importedAt: '2026-07-15T12:00:00.000Z',
       sourceAsOf: '2026-07-15T08:00:00.000Z',
@@ -216,7 +216,7 @@ describe('T9-A004-R2: portfolio snapshot provenance action contract', () => {
     const before = useAppStore.getState()
     let notifications = 0
     const unsubscribe = useAppStore.subscribe(() => { notifications += 1 })
-    const result = useAppStore.getState().importPortfolioSnapshot(raw)
+    const result = await useAppStore.getState().importPortfolioSnapshot(raw)
     unsubscribe()
 
     expect(result).toMatchObject({ ok: false, code: 'SNAPSHOT_STALE' })
@@ -231,12 +231,12 @@ describe('T9-A004-R2: portfolio snapshot provenance action contract', () => {
       semanticIdentity: `sha256:${'2'.repeat(64)}`,
       contentFingerprint: 'fnv1a32:22222222',
     })
-    expect(useAppStore.getState().importPortfolioSnapshot(v3Snapshot(newer)))
+    expect(await useAppStore.getState().importPortfolioSnapshot(v3Snapshot(newer)))
       .toMatchObject({ ok: false, code: 'SNAPSHOT_OVERWRITE_BLOCKED' })
     expect(useAppStore.getState().system.csvImportProvenance).toEqual(provenance())
   })
 
-  it('the exact current snapshot generation is a duplicate no-op', () => {
+  it('the exact current snapshot generation is a duplicate no-op', async () => {
     useAppStore.setState(state => ({
       cashAssumptions: {
         ...state.cashAssumptions,
@@ -258,8 +258,8 @@ describe('T9-A004-R2: portfolio snapshot provenance action contract', () => {
     expect(storage[CSV_IMPORT_GENERATION_KEY]).toBeUndefined()
     let notifications = 0
     const unsubscribe = useAppStore.subscribe(() => { notifications += 1 })
-    const result = useAppStore.getState().importPortfolioSnapshot(raw)
-    const repeated = useAppStore.getState().importPortfolioSnapshot(raw)
+    const result = await useAppStore.getState().importPortfolioSnapshot(raw)
+    const repeated = await useAppStore.getState().importPortfolioSnapshot(raw)
     unsubscribe()
 
     expect(result).toEqual({ ok: true, code: 'DUPLICATE_SNAPSHOT' })
@@ -270,7 +270,7 @@ describe('T9-A004-R2: portfolio snapshot provenance action contract', () => {
     expect(storage[CSV_IMPORT_GENERATION_KEY]).toBeUndefined()
   })
 
-  it('same sourceAsOf plus different strong identity is a conflict with zero side effects', () => {
+  it('same sourceAsOf plus different strong identity is a conflict with zero side effects', async () => {
     const incoming = provenance({
       importedAt: '2026-07-15T12:00:00.000Z',
       semanticIdentity: `sha256:${'2'.repeat(64)}`,
@@ -278,7 +278,7 @@ describe('T9-A004-R2: portfolio snapshot provenance action contract', () => {
     })
     const before = useAppStore.getState()
     const storageBefore = { ...storage }
-    const result = useAppStore.getState().importPortfolioSnapshot(v3Snapshot(incoming))
+    const result = await useAppStore.getState().importPortfolioSnapshot(v3Snapshot(incoming))
 
     expect(result).toMatchObject({ ok: false, code: 'SNAPSHOT_PROVENANCE_CONFLICT' })
     expect(useAppStore.getState()).toBe(before)
@@ -286,7 +286,7 @@ describe('T9-A004-R2: portfolio snapshot provenance action contract', () => {
     expect(storageWrites).toBe(0)
   })
 
-  it('a newer authoritative snapshot cannot automatically replace a non-empty generation', () => {
+  it('a newer authoritative snapshot cannot automatically replace a non-empty generation', async () => {
     const incoming = provenance({
       importedAt: '2026-07-15T12:00:00.000Z',
       sourceAsOf: '2026-07-15T11:00:00.000Z',
@@ -294,14 +294,14 @@ describe('T9-A004-R2: portfolio snapshot provenance action contract', () => {
       contentFingerprint: 'fnv1a32:22222222',
       sourceFileName: 'newer.csv',
     })
-    const result = useAppStore.getState().importPortfolioSnapshot(v3Snapshot(incoming))
+    const result = await useAppStore.getState().importPortfolioSnapshot(v3Snapshot(incoming))
 
     expect(result).toMatchObject({ ok: false, code: 'SNAPSHOT_OVERWRITE_BLOCKED' })
     expect(useAppStore.getState().holdings[0]?.eval).toBe(200_000)
     expect(useAppStore.getState().system.csvImportProvenance).toEqual(provenance())
   })
 
-  it('a blocked replacement leaves coordinated canonical content and provenance byte-for-byte unchanged', () => {
+  it('a blocked replacement leaves coordinated canonical content and provenance byte-for-byte unchanged', async () => {
     const current = provenance()
     const state = useAppStore.getState()
     delete storage[CSV_IMPORT_GENERATION_KEY]
@@ -326,7 +326,7 @@ describe('T9-A004-R2: portfolio snapshot provenance action contract', () => {
       semanticIdentity: `sha256:${'2'.repeat(64)}`,
       contentFingerprint: 'fnv1a32:22222222',
     })
-    const result = useAppStore.getState().importPortfolioSnapshot(v3Snapshot(incoming))
+    const result = await useAppStore.getState().importPortfolioSnapshot(v3Snapshot(incoming))
 
     expect(result).toMatchObject({ ok: false, code: 'SNAPSHOT_OVERWRITE_BLOCKED' })
     const canonical = JSON.parse(storage[CSV_IMPORT_GENERATION_KEY])
@@ -334,12 +334,12 @@ describe('T9-A004-R2: portfolio snapshot provenance action contract', () => {
     expect(canonical.payload.provenance).toEqual(current)
   })
 
-  it('current unknown accepts first-known authoritative but rejects unknown-to-unknown replacement', () => {
+  it('current unknown accepts first-known authoritative but rejects unknown-to-unknown replacement', async () => {
     useAppStore.setState(state => ({
       system: { ...state.system, csvImportProvenance: null, csvLastImportedAt: '2026-07-15T10:00:00.000Z' },
     }))
     const beforeUnknown = useAppStore.getState()
-    const rejected = useAppStore.getState().importPortfolioSnapshot(legacyV2Snapshot(null))
+    const rejected = await useAppStore.getState().importPortfolioSnapshot(legacyV2Snapshot(null))
     expect(rejected).toMatchObject({ ok: false, code: 'SNAPSHOT_PROVENANCE_UNKNOWN' })
     expect(useAppStore.getState()).toBe(beforeUnknown)
 
@@ -348,12 +348,12 @@ describe('T9-A004-R2: portfolio snapshot provenance action contract', () => {
       sourceAsOf: '2026-07-15T11:00:00.000Z',
       semanticIdentity: `sha256:${'2'.repeat(64)}`,
     })
-    const allowed = useAppStore.getState().importPortfolioSnapshot(v3Snapshot(incoming))
+    const allowed = await useAppStore.getState().importPortfolioSnapshot(v3Snapshot(incoming))
     expect(allowed).toMatchObject({ ok: false, code: 'SNAPSHOT_OVERWRITE_BLOCKED' })
     expect(useAppStore.getState().system.csvImportProvenance).toBeNull()
   })
 
-  it('legacy FNV-only provenance cannot prove a duplicate and remains conflict-safe', () => {
+  it('legacy FNV-only provenance cannot prove a duplicate and remains conflict-safe', async () => {
     const current = provenance()
     delete current.semanticIdentity
     useAppStore.setState(state => ({
@@ -361,13 +361,13 @@ describe('T9-A004-R2: portfolio snapshot provenance action contract', () => {
     }))
     const incoming = { ...current, importedAt: '2026-07-15T11:00:00.000Z' }
 
-    const result = useAppStore.getState().importPortfolioSnapshot(v3Snapshot(incoming))
+    const result = await useAppStore.getState().importPortfolioSnapshot(v3Snapshot(incoming))
 
     expect(result).toMatchObject({ ok: false, code: 'SNAPSHOT_PROVENANCE_CONFLICT' })
     expect(storageWrites).toBe(0)
   })
 
-  it('malformed semanticIdentity rejects and releases the action', () => {
+  it('malformed semanticIdentity rejects and releases the action', async () => {
     const valid = provenance({
       importedAt: '2026-07-15T12:00:00.000Z',
       sourceAsOf: '2026-07-15T11:00:00.000Z',
@@ -377,17 +377,17 @@ describe('T9-A004-R2: portfolio snapshot provenance action contract', () => {
     malformed.csvImportProvenance.semanticIdentity = 'fnv1a32:deadbeef'
     const before = useAppStore.getState()
 
-    const rejected = useAppStore.getState().importPortfolioSnapshot(JSON.stringify(malformed))
+    const rejected = await useAppStore.getState().importPortfolioSnapshot(JSON.stringify(malformed))
     expect(rejected).toMatchObject({ ok: false, code: 'INVALID_SNAPSHOT_PROVENANCE' })
     expect(useAppStore.getState()).toBe(before)
     expect(storageWrites).toBe(0)
 
-    const retried = useAppStore.getState().importPortfolioSnapshot(v3Snapshot(valid))
+    const retried = await useAppStore.getState().importPortfolioSnapshot(v3Snapshot(valid))
     expect(retried).toMatchObject({ ok: false, code: 'SNAPSHOT_OVERWRITE_BLOCKED' })
     expect(useAppStore.getState().system.csvImportProvenance).toEqual(provenance())
   })
 
-  it('a legacy snapshot remains compatible only for a genuinely empty/unknown first generation', () => {
+  it('a legacy snapshot remains compatible only for a genuinely empty/unknown first generation', async () => {
     useAppStore.setState(state => ({
       holdings: [],
       trust: [],
@@ -395,7 +395,7 @@ describe('T9-A004-R2: portfolio snapshot provenance action contract', () => {
       system: { ...state.system, csvLastImportedAt: null, csvImportProvenance: null },
     }))
 
-    const result = useAppStore.getState().importPortfolioSnapshot(legacyV2Snapshot(null))
+    const result = await useAppStore.getState().importPortfolioSnapshot(legacyV2Snapshot(null))
 
     expect(result).toMatchObject({ ok: true, code: 'SUCCESS' })
     expect(useAppStore.getState().holdings[0]?.eval).toBe(100_000)
@@ -403,7 +403,7 @@ describe('T9-A004-R2: portfolio snapshot provenance action contract', () => {
     expect(useAppStore.getState().system.csvImportProvenance).toBeNull()
   })
 
-  it('a valid bound v3 imports into a truly empty generation and exact retry is deterministic duplicate', () => {
+  it('a valid bound v3 imports into a truly empty generation and exact retry is deterministic duplicate', async () => {
     useAppStore.setState(state => ({
       holdings: [],
       trust: [],
@@ -427,14 +427,14 @@ describe('T9-A004-R2: portfolio snapshot provenance action contract', () => {
       },
     })
 
-    expect(useAppStore.getState().importPortfolioSnapshot(raw))
+    expect(await useAppStore.getState().importPortfolioSnapshot(raw))
       .toMatchObject({ ok: true, code: 'SUCCESS' })
     const afterSuccess = useAppStore.getState()
     const storageAfterSuccess = { ...storage }
     storageWrites = 0
     let notifications = 0
     const unsubscribe = useAppStore.subscribe(() => { notifications += 1 })
-    const retry = useAppStore.getState().importPortfolioSnapshot(raw)
+    const retry = await useAppStore.getState().importPortfolioSnapshot(raw)
     unsubscribe()
 
     expect(retry).toEqual({ ok: true, code: 'DUPLICATE_SNAPSHOT' })

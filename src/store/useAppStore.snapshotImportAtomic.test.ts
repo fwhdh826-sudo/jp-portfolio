@@ -49,7 +49,7 @@ const baseRegimeState = useAppStore.getState().regimeState
 
 const FIXED_NOW = new Date('2026-07-16T00:00:00.000Z')
 
-type SnapshotImportResult = ReturnType<ReturnType<typeof useAppStore.getState>['importPortfolioSnapshot']>
+type SnapshotImportResult = Awaited<ReturnType<ReturnType<typeof useAppStore.getState>['importPortfolioSnapshot']>>
 
 function holding(code = '1001', evalValue = 100_000): Holding {
   return {
@@ -264,7 +264,7 @@ describe('T9-A004-R3-RED: snapshot import transaction failure counterexamples', 
   })
 
   describe('F-SNAPSHOT-NONATOMIC-PUBLISH-04: importPortfolioSnapshotのnon-atomic publish', () => {
-    it('R3-1 RED: analysis失敗は構造化エラーを返しportfolio generation副作用0（現行: 例外がthrowされ新content+旧analysisが残留する）', () => {
+    it('R3-1 RED: analysis失敗は構造化エラーを返しportfolio generation副作用0（現行: 例外がthrowされ新content+旧analysisが残留する）', async () => {
       const raw = v3Snapshot(incomingProvenance('1'), {
         holdings: [{ code: 'R3-CASE1', name: 'R3-1銘柄', eval: 111_000, pnlPct: 0 }],
       })
@@ -282,7 +282,7 @@ describe('T9-A004-R3-RED: snapshot import transaction failure counterexamples', 
       let result: SnapshotImportResult | null = null
       let thrown: unknown = null
       try {
-        result = useAppStore.getState().importPortfolioSnapshot(raw)
+        result = await useAppStore.getState().importPortfolioSnapshot(raw)
       } catch (error) {
         thrown = error
       }
@@ -306,7 +306,7 @@ describe('T9-A004-R3-RED: snapshot import transaction failure counterexamples', 
       })
     })
 
-    it('R3-2 RED: 永続化(setItem)全滅時はok:falseでstore/storage/subscriber副作用0（現行: 何も保存できないままSUCCESS）', () => {
+    it('R3-2 RED: 永続化(setItem)全滅時はok:falseでstore/storage/subscriber副作用0（現行: 何も保存できないままSUCCESS）', async () => {
       const raw = v3Snapshot(incomingProvenance('2'), {
         holdings: [{ code: 'R3-CASE2', name: 'R3-2銘柄', eval: 222_000, pnlPct: 0 }],
       })
@@ -314,7 +314,7 @@ describe('T9-A004-R3-RED: snapshot import transaction failure counterexamples', 
       let notifications = 0
       const unsubscribe = useAppStore.subscribe(() => { notifications += 1 })
 
-      const result = useAppStore.getState().importPortfolioSnapshot(raw)
+      const result = await useAppStore.getState().importPortfolioSnapshot(raw)
       unsubscribe()
 
       const state = useAppStore.getState()
@@ -335,7 +335,7 @@ describe('T9-A004-R3-RED: snapshot import transaction failure counterexamples', 
       })
     })
 
-    it('R3-6 RED: subscriberはgeneration通知を1回だけ・完全な同一世代として観測する（現行: 3回の部分世代通知）', () => {
+    it('R3-6 RED: subscriberはgeneration通知を1回だけ・完全な同一世代として観測する（現行: 3回の部分世代通知）', async () => {
       const raw = v3Snapshot(incomingProvenance('6'), {
         holdings: [{ code: 'R3-CASE6', name: 'R3-6銘柄', eval: 666_000, pnlPct: 0 }],
       })
@@ -347,7 +347,7 @@ describe('T9-A004-R3-RED: snapshot import transaction failure counterexamples', 
         })
       })
 
-      const result = useAppStore.getState().importPortfolioSnapshot(raw)
+      const result = await useAppStore.getState().importPortfolioSnapshot(raw)
       unsubscribe()
 
       expect(result).toMatchObject({ ok: true, code: 'SUCCESS' })
@@ -364,7 +364,7 @@ describe('T9-A004-R3-RED: snapshot import transaction failure counterexamples', 
       })
     })
 
-    it('R3-8 RED: crash相当の部分的multi-key失敗後、reloadは旧世代か新世代の二値のみ（現行: SUCCESSなのにholdingsだけ旧世代へ戻る鋏状混合）', () => {
+    it('R3-8 RED: crash相当の部分的multi-key失敗後、reloadは旧世代か新世代の二値のみ（現行: SUCCESSなのにholdingsだけ旧世代へ戻る鋏状混合）', async () => {
       failKeys.add('v81_portfolio')
       const raw = v3Snapshot(incomingProvenance('8'), {
         holdings: [{ code: 'R3-CASE8', name: 'R3-8銘柄', eval: 888_000, pnlPct: 0 }],
@@ -376,7 +376,7 @@ describe('T9-A004-R3-RED: snapshot import transaction failure counterexamples', 
         },
       })
 
-      const result = useAppStore.getState().importPortfolioSnapshot(raw)
+      const result = await useAppStore.getState().importPortfolioSnapshot(raw)
 
       const state = useAppStore.getState()
       if (result.ok) {
@@ -397,15 +397,15 @@ describe('T9-A004-R3-RED: snapshot import transaction failure counterexamples', 
       }
     })
 
-    it('R3-11 RED: 永続化に失敗したimportの同一snapshot再試行は完全再実行される（現行: DUPLICATE_SNAPSHOT偽成功でdurable世代0のまま）', () => {
+    it('R3-11 RED: 永続化に失敗したimportの同一snapshot再試行は完全再実行される（現行: DUPLICATE_SNAPSHOT偽成功でdurable世代0のまま）', async () => {
       const raw = v3Snapshot(incomingProvenance('b'), {
         holdings: [{ code: 'R3-CASE11', name: 'R3-11銘柄', eval: 311_000, pnlPct: 0 }],
       })
       failAllWrites = true
-      const first = useAppStore.getState().importPortfolioSnapshot(raw)
+      const first = await useAppStore.getState().importPortfolioSnapshot(raw)
       failAllWrites = false
 
-      const retry = useAppStore.getState().importPortfolioSnapshot(raw)
+      const retry = await useAppStore.getState().importPortfolioSnapshot(raw)
 
       const state = useAppStore.getState()
       expect({
@@ -422,7 +422,7 @@ describe('T9-A004-R3-RED: snapshot import transaction failure counterexamples', 
   })
 
   describe('F-SNAPSHOT-CANONICAL-DIVERGENCE-03: canonical世代とstore世代の乖離', () => {
-    it('R3-3 RED: transaction開始後に成立した別generationのcanonicalはIMPORT_CONFLICTで保護される（現行: CAS無しの無条件上書き）', () => {
+    it('R3-3 RED: transaction開始後に成立した別generationのcanonicalはIMPORT_CONFLICTで保護される（現行: CAS無しの無条件上書き）', async () => {
       let externalRaw: string | null = null
       const unsubscribe = useAppStore.subscribe(state => {
         // 部分世代の通知（新contentが公開済みなのにanalysisが旧世代のまま）は
@@ -454,7 +454,7 @@ describe('T9-A004-R3-RED: snapshot import transaction failure counterexamples', 
       const raw = v3Snapshot(incomingProvenance('3'), {
         holdings: [{ code: 'R3-CASE3', name: 'R3-3銘柄', eval: 303_000, pnlPct: 0 }],
       })
-      const result = useAppStore.getState().importPortfolioSnapshot(raw)
+      const result = await useAppStore.getState().importPortfolioSnapshot(raw)
       unsubscribe()
 
       if (externalRaw !== null) {
@@ -474,13 +474,13 @@ describe('T9-A004-R3-RED: snapshot import transaction failure counterexamples', 
       }
     })
 
-    it('R3-4 RED: store空(hydration前/別tab相当)でもcommitted canonicalはgeneration evidenceとして上書きを阻止する（現行: ALLOW_FIRST_IMPORTで上書きSUCCESS）', () => {
+    it('R3-4 RED: store空(hydration前/別tab相当)でもcommitted canonicalはgeneration evidenceとして上書きを阻止する（現行: ALLOW_FIRST_IMPORTで上書きSUCCESS）', async () => {
       const seededRaw = seedCommittedCanonical()
       const raw = v3Snapshot(incomingProvenance('4'), {
         holdings: [{ code: 'R3-CASE4', name: 'R3-4銘柄', eval: 304_000, pnlPct: 0 }],
       })
 
-      const result = useAppStore.getState().importPortfolioSnapshot(raw)
+      const result = await useAppStore.getState().importPortfolioSnapshot(raw)
 
       expect({
         resultOk: result.ok,
@@ -493,13 +493,13 @@ describe('T9-A004-R3-RED: snapshot import transaction failure counterexamples', 
       })
     })
 
-    it('R3-5 RED: 新世代envelopeへ旧generationのtrustShortSnapshot baselineを再添付しない（現行: canonical.payloadの旧baselineをそのまま引き継ぐ）', () => {
+    it('R3-5 RED: 新世代envelopeへ旧generationのtrustShortSnapshot baselineを再添付しない（現行: canonical.payloadの旧baselineをそのまま引き継ぐ）', async () => {
       const seededRaw = seedCommittedCanonical()
       const raw = v3Snapshot(incomingProvenance('5'), {
         holdings: [{ code: 'R3-CASE5', name: 'R3-5銘柄', eval: 305_000, pnlPct: 0 }],
       })
 
-      const result = useAppStore.getState().importPortfolioSnapshot(raw)
+      const result = await useAppStore.getState().importPortfolioSnapshot(raw)
 
       const envelopeChanged = storage[CSV_IMPORT_GENERATION_KEY] !== seededRaw
       if (envelopeChanged) {
@@ -515,7 +515,7 @@ describe('T9-A004-R3-RED: snapshot import transaction failure counterexamples', 
       }
     })
 
-    it('R3-9 RED: canonical成功後のmirror key(policy/cash)書込失敗でも、reload時の正は単一世代（現行: envelope新+policy/cash旧の鋏状混合）', () => {
+    it('R3-9 RED: canonical成功後のmirror key(policy/cash)書込失敗でも、reload時の正は単一世代（現行: envelope新+policy/cash旧の鋏状混合）', async () => {
       const seededRaw = seedCommittedCanonical()
       persistPortfolioPolicy({ jpStockMaxRatio: 0.15 })
       persistCashAssumptions({
@@ -538,7 +538,7 @@ describe('T9-A004-R3-RED: snapshot import transaction failure counterexamples', 
         cashAssumptions: snapshotCash,
       })
 
-      const result = useAppStore.getState().importPortfolioSnapshot(raw)
+      const result = await useAppStore.getState().importPortfolioSnapshot(raw)
 
       const canonicalChanged = storage[CSV_IMPORT_GENERATION_KEY] !== seededRaw
       if (result.ok && canonicalChanged) {
@@ -556,7 +556,7 @@ describe('T9-A004-R3-RED: snapshot import transaction failure counterexamples', 
       }
     })
 
-    it('R3-10 RED: durable書込直後に所有権を失ったimportはSUCCESSを公開せず、外部transactionのbytesを消さない（現行: 所有権検証なしにSUCCESS）', () => {
+    it('R3-10 RED: durable書込直後に所有権を失ったimportはSUCCESSを公開せず、外部transactionのbytesを消さない（現行: 所有権検証なしにSUCCESS）', async () => {
       const seededRaw = seedCommittedCanonical()
       // 外部transactionが書く別generationのbytesを先に構築しておく
       persistCsvImportTransaction(oldGenerationPayload({
@@ -589,7 +589,7 @@ describe('T9-A004-R3-RED: snapshot import transaction failure counterexamples', 
       const raw = v3Snapshot(incomingProvenance('a'), {
         holdings: [{ code: 'R3-CASE10', name: 'R3-10銘柄', eval: 310_000, pnlPct: 0 }],
       })
-      const result = useAppStore.getState().importPortfolioSnapshot(raw)
+      const result = await useAppStore.getState().importPortfolioSnapshot(raw)
       storageReentry = null
 
       if (canonicalWriteHappened) {
@@ -606,13 +606,13 @@ describe('T9-A004-R3-RED: snapshot import transaction failure counterexamples', 
       }
     })
 
-    it('R3-13 RED: present-invalid canonicalはfail-closedし、deadなlegacy書込を発生させない（現行: SUCCESS + 復元されないlegacy write）', () => {
+    it('R3-13 RED: present-invalid canonicalはfail-closedし、deadなlegacy書込を発生させない（現行: SUCCESS + 復元されないlegacy write）', async () => {
       storage[CSV_IMPORT_GENERATION_KEY] = '{malformed'
       const raw = v3Snapshot(incomingProvenance('f'), {
         holdings: [{ code: 'R3-CASE13', name: 'R3-13銘柄', eval: 313_500, pnlPct: 0 }],
       })
 
-      const result = useAppStore.getState().importPortfolioSnapshot(raw)
+      const result = await useAppStore.getState().importPortfolioSnapshot(raw)
 
       const state = useAppStore.getState()
       expect({

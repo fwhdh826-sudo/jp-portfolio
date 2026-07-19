@@ -190,7 +190,7 @@ describe('RA-005-FINAL-AUDIT-FIX: field-isolated provenance timestamp validation
     const observedStates: typeof before[] = []
     const unsubscribe = harness.useAppStore.subscribe(state => observedStates.push(state))
 
-    const rejected = harness.useAppStore.getState().importPortfolioSnapshot(raw)
+    const rejected = await harness.useAppStore.getState().importPortfolioSnapshot(raw)
     unsubscribe()
 
     expect(harness.parseMock).toHaveBeenNthCalledWith(1, raw)
@@ -200,7 +200,7 @@ describe('RA-005-FINAL-AUDIT-FIX: field-isolated provenance timestamp validation
       error: PROVENANCE_ERROR,
     })
     if (rejected.ok) throw new Error('expected provenance rejection')
-    expect(rejected.error).not.toBe(CSV_IMPORTED_AT_ERROR)
+    expect('error' in rejected ? rejected.error : null).not.toBe(CSV_IMPORTED_AT_ERROR)
     expect(harness.storageCounts).toEqual({
       canonical: { get: 0, set: 0, remove: 0 },
       legacy: { get: 0, set: 0, remove: 0 },
@@ -226,9 +226,9 @@ describe('RA-005-FINAL-AUDIT-FIX: field-isolated provenance timestamp validation
       csvSyncSummary: after.system.csvSyncSummary,
     })).not.toContain(importedAt)
 
-    const retry = harness.useAppStore.getState().importPortfolioSnapshot('valid-retry')
+    const retry = await harness.useAppStore.getState().importPortfolioSnapshot('valid-retry')
     expect(harness.parseMock).toHaveBeenNthCalledWith(2, 'valid-retry')
-    expect(retry).not.toMatchObject({ code: 'SNAPSHOT_IMPORT_BLOCKED' })
+    expect(retry).not.toMatchObject({ code: 'LOCAL_OPERATION_BUSY' })
     expect(retry).toMatchObject({ ok: true, code: 'SUCCESS' })
     expect(harness.directCounters.analysis).toBeGreaterThan(0)
     expect(harness.directCounters.tracker).toBeGreaterThan(0)

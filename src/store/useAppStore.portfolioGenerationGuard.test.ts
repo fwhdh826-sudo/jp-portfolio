@@ -31,7 +31,7 @@ const baseRegimeState = useAppStore.getState().regimeState
 
 const FIXED_NOW = new Date('2026-07-16T00:00:00.000Z')
 
-type SnapshotImportResult = ReturnType<ReturnType<typeof useAppStore.getState>['importPortfolioSnapshot']>
+type SnapshotImportResult = Awaited<ReturnType<ReturnType<typeof useAppStore.getState>['importPortfolioSnapshot']>>
 type CsvResult = Awaited<ReturnType<ReturnType<typeof useAppStore.getState>['importCsv']>>
 
 function provenance(overrides: Partial<CsvImportProvenance> = {}): CsvImportProvenance {
@@ -161,7 +161,7 @@ describe('T9-A004-R3a: 共有portfolio-generation transaction guard', () => {
     if (originalFileReader) globalThis.FileReader = originalFileReader
   })
 
-  it('R3-7 GREEN: 第1通知中のreentrant setCashAssumptionsはtransaction guardで拒否される', () => {
+  it('R3-7 GREEN: 第1通知中のreentrant setCashAssumptionsはtransaction guardで拒否される', async () => {
     const snapshotCash = {
       cashDeposits: 500_000,
       standbyFunds: 200_000,
@@ -173,13 +173,14 @@ describe('T9-A004-R3a: 共有portfolio-generation transaction guard', () => {
       cashAssumptions: snapshotCash,
     })
     let fired = false
+    let nestedResult: ReturnType<ReturnType<typeof useAppStore.getState>['setCashAssumptions']> | null = null
     const unsubscribe = useAppStore.subscribe(() => {
       if (fired) return
       fired = true
-      useAppStore.getState().setCashAssumptions({ cashDeposits: 9_000_000, standbyFunds: 8_000_000 })
+      nestedResult = useAppStore.getState().setCashAssumptions({ cashDeposits: 9_000_000, standbyFunds: 8_000_000 })
     })
 
-    const result = useAppStore.getState().importPortfolioSnapshot(raw)
+    const result = await useAppStore.getState().importPortfolioSnapshot(raw)
     unsubscribe()
 
     const state = useAppStore.getState()
@@ -192,6 +193,7 @@ describe('T9-A004-R3a: 共有portfolio-generation transaction guard', () => {
       cashDeposits: 500_000,
       standbyFunds: 200_000,
     })
+    await expect(nestedResult).resolves.toMatchObject({ ok: false, code: 'LOCAL_OPERATION_BUSY' })
   })
 
   it('R3-12a GREEN: importCsv進行中のsnapshot importは共通transaction guardで拒否される', async () => {
@@ -206,7 +208,7 @@ describe('T9-A004-R3a: 共有portfolio-generation transaction guard', () => {
     const raw = v3Snapshot(incomingProvenance('c'), {
       holdings: [{ code: 'R3-CASE12A', name: 'R3-12a銘柄', eval: 312_000, pnlPct: 0 }],
     })
-    const snapshotResult = useAppStore.getState().importPortfolioSnapshot(raw)
+    const snapshotResult = await useAppStore.getState().importPortfolioSnapshot(raw)
 
     release(new TextEncoder().encode(VALID_CSV).buffer)
     const csvResult = await csvPromise
@@ -218,7 +220,7 @@ describe('T9-A004-R3a: 共有portfolio-generation transaction guard', () => {
       finalStatusNotLoading: useAppStore.getState().system.status !== 'loading',
     }).toEqual({
       snapshotOk: false,
-      snapshotCode: 'SNAPSHOT_IMPORT_BLOCKED',
+      snapshotCode: 'LOCAL_OPERATION_BUSY',
       finalStatusNotLoading: true,
     })
   })
@@ -235,7 +237,7 @@ describe('T9-A004-R3a: 共有portfolio-generation transaction guard', () => {
       nestedCapture.promise = useAppStore.getState().importCsv(csvFile())
     })
 
-    const outer = useAppStore.getState().importPortfolioSnapshot(raw)
+    const outer = await useAppStore.getState().importPortfolioSnapshot(raw)
     unsubscribe()
     const nested = nestedCapture.promise ? await nestedCapture.promise : null
 
@@ -256,8 +258,8 @@ describe('T9-A004-R3a: 共有portfolio-generation transaction guard', () => {
     expect(retryCsv).toMatchObject({ ok: true, code: 'SUCCESS' })
   })
 
-  it('snapshot importの構造化失敗（早期return）後、共有guardは解放されCSV importが即座に実行できる', () => {
-    const badResult = useAppStore.getState().importPortfolioSnapshot('not-json')
+  it('snapshot importの構造化失敗（早期return）後、共有guardは解放されCSV importが即座に実行できる', async () => {
+    const badResult = await useAppStore.getState().importPortfolioSnapshot('not-json')
     expect(badResult.ok).toBe(false)
 
     const state = useAppStore.getState()
@@ -271,29 +273,30 @@ describe('T9-A004-R3a: 共有portfolio-generation transaction guard', () => {
     const raw = v3Snapshot(incomingProvenance('1'), {
       holdings: [{ code: 'R3A-REL1', name: 'guard解放確認', eval: 1, pnlPct: 0 }],
     })
-    const snapshotResult = useAppStore.getState().importPortfolioSnapshot(raw)
+    const snapshotResult = await useAppStore.getState().importPortfolioSnapshot(raw)
 
     expect(snapshotResult).toMatchObject({ ok: true, code: 'SUCCESS' })
     expect(useAppStore.getState().holdings.map(h => h.code)).toEqual(['R3A-REL1'])
   })
 
-  it('snapshot importのcritical phase中に発火したnested snapshot importはSNAPSHOT_IMPORT_BLOCKEDで拒否され、outerはSUCCESSを維持する', () => {
+  it('snapshot importのcritical phase中に発火したnested snapshot importはLOCAL_OPERATION_BUSYで拒否され、outerはSUCCESSを維持する', async () => {
     const outerRaw = v3Snapshot(incomingProvenance('2'), {
       holdings: [{ code: 'R3A-NEST-OUTER', name: 'outer', eval: 1, pnlPct: 0 }],
     })
     const innerRaw = v3Snapshot(incomingProvenance('3'), {
       holdings: [{ code: 'R3A-NEST-INNER', name: 'inner', eval: 1, pnlPct: 0 }],
     })
-    let nestedResult: SnapshotImportResult | null = null
+    let nestedResultPromise: Promise<SnapshotImportResult> | null = null
     let fired = false
     const unsubscribe = useAppStore.subscribe(() => {
       if (fired) return
       fired = true
-      nestedResult = useAppStore.getState().importPortfolioSnapshot(innerRaw)
+      nestedResultPromise = useAppStore.getState().importPortfolioSnapshot(innerRaw)
     })
 
-    const outerResult = useAppStore.getState().importPortfolioSnapshot(outerRaw)
+    const outerResult = await useAppStore.getState().importPortfolioSnapshot(outerRaw)
     unsubscribe()
+    const nestedResult = nestedResultPromise === null ? null : await nestedResultPromise
 
     expect({
       outerOk: outerResult.ok,
@@ -303,25 +306,26 @@ describe('T9-A004-R3a: 共有portfolio-generation transaction guard', () => {
     }).toEqual({
       outerOk: true,
       outerCode: 'SUCCESS',
-      nestedCode: 'SNAPSHOT_IMPORT_BLOCKED',
+      nestedCode: 'LOCAL_OPERATION_BUSY',
       holdingCodes: ['R3A-NEST-OUTER'],
     })
   })
 
-  it('CSV importのnested rejection（IMPORT_IN_PROGRESS / SNAPSHOT_IMPORT_BLOCKED）はouter CSV transactionのSUCCESS/holdingsを上書きしない', async () => {
+  it('CSV importのnested rejection（IMPORT_IN_PROGRESS / LOCAL_OPERATION_BUSY）はouter CSV transactionのSUCCESS/holdingsを上書きしない', async () => {
     const nestedSnapshotRaw = v3Snapshot(incomingProvenance('4'), {
       holdings: [{ code: 'R3A-NESTED-DURING-CSV', name: 'nested', eval: 1, pnlPct: 0 }],
     })
-    let nestedResult: SnapshotImportResult | null = null
+    let nestedResultPromise: Promise<SnapshotImportResult> | null = null
     let fired = false
     const unsubscribe = useAppStore.subscribe(() => {
       if (fired) return
       fired = true
-      nestedResult = useAppStore.getState().importPortfolioSnapshot(nestedSnapshotRaw)
+      nestedResultPromise = useAppStore.getState().importPortfolioSnapshot(nestedSnapshotRaw)
     })
 
     const result = await useAppStore.getState().importCsv(csvFile())
     unsubscribe()
+    const nestedResult = nestedResultPromise === null ? null : await nestedResultPromise
 
     const holdingCodes = useAppStore.getState().holdings.map(h => h.code)
     expect({
@@ -334,7 +338,7 @@ describe('T9-A004-R3a: 共有portfolio-generation transaction guard', () => {
     }).toEqual({
       resultOk: true,
       resultCode: 'SUCCESS',
-      nestedCode: 'SNAPSHOT_IMPORT_BLOCKED',
+      nestedCode: 'LOCAL_OPERATION_BUSY',
       holdsNestedCode: false,
       holdsCsvCode: true,
       status: 'success',
@@ -355,8 +359,8 @@ describe('T9-A004-R3a: 共有portfolio-generation transaction guard', () => {
     })
     // 1回目の拒否がstale tokenで共有lockを誤って解放していれば、2回目はブロック
     // されず実行されてしまう。両方とも同一codeで拒否されることを固定する。
-    const first = useAppStore.getState().importPortfolioSnapshot(raw)
-    const second = useAppStore.getState().importPortfolioSnapshot(raw)
+    const first = await useAppStore.getState().importPortfolioSnapshot(raw)
+    const second = await useAppStore.getState().importPortfolioSnapshot(raw)
 
     release(new TextEncoder().encode(VALID_CSV).buffer)
     const csvResult = await csvPromise
@@ -369,8 +373,8 @@ describe('T9-A004-R3a: 共有portfolio-generation transaction guard', () => {
       holdsStaleCode: holdingCodes.includes('R3A-STALE'),
       holdsCsvCode: holdingCodes.includes('1001'),
     }).toEqual({
-      firstCode: 'SNAPSHOT_IMPORT_BLOCKED',
-      secondCode: 'SNAPSHOT_IMPORT_BLOCKED',
+      firstCode: 'LOCAL_OPERATION_BUSY',
+      secondCode: 'LOCAL_OPERATION_BUSY',
       csvOk: true,
       holdsStaleCode: false,
       holdsCsvCode: true,
@@ -378,7 +382,7 @@ describe('T9-A004-R3a: 共有portfolio-generation transaction guard', () => {
 
     // transaction解放後は即座にretryできる（stale tokenの誤解放が無い証拠として、
     // ここまでの間に共有lockが壊れていなかったことも合わせて確認する）。
-    const retry = useAppStore.getState().importPortfolioSnapshot(
+    const retry = await useAppStore.getState().importPortfolioSnapshot(
       v3Snapshot(incomingProvenance('6'), {
         holdings: [{ code: 'R3A-STALE-RETRY', name: 'retry', eval: 1, pnlPct: 0 }],
       }),

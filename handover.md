@@ -47635,3 +47635,96 @@ It is prepared and pushed only on `v13.3-dev`; this ticket does not push to main
 ### Next
 
 `RA-007-B: async portfolio operation results and caller migration`
+
+## RA-007-B1: async manual and snapshot results
+
+### Retry scope and caller migration
+
+- RA-007-B1の初回blocked原因は、既存snapshot callerを含む7 test filesがallowlistに不足して
+  いたこと。このretryではoperation coordinator、generation guard、future metadata、R3c、
+  R3d、atomic base、metadata validation directの7 filesを明示追加した。
+- 追加allowlist 7 filesの`importPortfolioSnapshot()` callerは **78 / 78** をPromise contractへ
+  移行した。全`src` inventoryは **135 call sites**（production 1 / test 134）で、全件がawait、
+  return、またはsubscriber reentry用Promise捕捉済み。未await・fire-and-forget・action完了前
+  state assertionは **0**。
+- 許可file外の対象action callerは **0**。`SNAPSHOT_IMPORT_BLOCKED`参照は **0**。
+
+### Public contracts and runner behavior
+
+- `importPortfolioSnapshot(raw)`は`Promise<PortfolioSnapshotImportResult>`、manual 6 actions
+  （`updateHolding`、`updateTrust`、`setPortfolioPolicy`、`setCashAssumptions`、
+  `clearCashAssumptionsOverride`、`importCashAssumptions`）は
+  `Promise<ManualMutationResult>`を返す。
+- Manual operation taxonomy、`SUCCESS | NO_CHANGE`、`MANUAL_ANALYSIS_ERROR |
+  MANUAL_PERSISTENCE_ERROR | MANUAL_PUBLISH_ERROR`を追加し、coordination failureの
+  `LOCAL_OPERATION_BUSY`と`PORTFOLIO_GENERATION_CONFLICT`を同じstructured resultへ統合した。
+  Resultにraw exception、stack、cause、canonical bytes、holding/trust内容、timestamp、user data、
+  persistence内部reason、日本語UI messageは含めない。
+- Manual runnerはPromise resultを返すが、意図的な`await`、microtask、timerは追加していない。
+  local ticket取得からfinal publishまでの既存同期critical sectionとZustand subscriberの同期呼出しを
+  維持するtransitional実装である。
+- `SUCCESS`: persistence-before-publish、complete generationのfinal set exactly 1、subscriber
+  exactly 1、callback中ticket保持、callback後release、snapshot cache orderingを維持する。
+- `NO_CHANGE`: analysis 0、persistence/storage 0、subscriber 0、root state exact reference不変、
+  ticket release。
+- `LOCAL_OPERATION_BUSY`: retryable true、analysis/storage/publish/subscriber 0、silent void 0。
+- Analysis failureは`MANUAL_ANALYSIS_ERROR`、persistence副作用とfinal publish 0。diagnosticとpublic
+  resultは固定sanitized内容のみ。
+- Canonical read/invalid/metadata misalignment/serialization/write/rollback indeterminateは
+  `MANUAL_PERSISTENCE_ERROR`。canonical change、ownership loss、generation conflictは
+  `PORTFOLIO_GENERATION_CONFLICT`。
+- Publish前の未適用exceptionはprevious snapshot cacheのexact referenceを復旧し
+  `MANUAL_PUBLISH_ERROR`。state適用済みsubscriber exceptionはobserver failureとして
+  persisted/published generationを維持し`SUCCESS`。
+- Failure後もticket releaseと後続retryの`SUCCESS`をdirect testで確認した。subscriber reentryでは
+  nested manual 6 actionsとsnapshotがすべて`LOCAL_OPERATION_BUSY`、storage access 0、最初の世代
+  だけ成立し、outerは`SUCCESS`。
+- Snapshot importもPromise化し、parse/schema/stale/authority/provenance/analysis/persistence/
+  byte-exact canonical/cache/domain result contractを維持した。local coordinator/transaction busyは
+  `LOCAL_OPERATION_BUSY`へ統一し、例外由来messageはraw detailを公開しない。
+
+### T9 Settings
+
+- Snapshot import、portfolio policy save、cash assumptions save/clear/importの5 handlersをasync化し、
+  structured resultをawaitしてからfeedbackを出す。
+- Operation別pending state、対応button disabled、pending表示、single-flight duplicate guard、
+  `finally` releaseを追加した。duplicate clickのaction callは1回。
+- `SUCCESS`はresolve後のみ成功表示、`NO_CHANGE`は「変更はありません」、coordination/manual failureは
+  code別のsanitized message。cash importを含むpremature success表示は **0**、manual failure時の
+  success表示は **0**、raw rejection/stack表示は **0**、`act()` warningは **0**。
+
+### Mutation-catching and validation
+
+- 7 required mutations（busy時undefined、NO_CHANGEをSUCCESS、persistence failureをSUCCESS、
+  subscriber前ticket release、snapshot callerのawait除去、cash/manual UIのpremature success、
+  pre-apply failureをSUCCESS）はすべて該当testのREDを確認し、inverse patchで完全復元した。
+- Taxonomy targeted UTC / Asia/Tokyo: **1 file / 20 tests / skipped 0 — PASS**。
+- Manual/snapshot complete targeted UTC / Asia/Tokyo: **12 files / 420 tests / skipped 0 — PASS**。
+- T9 targeted UTC / Asia/Tokyo: **1 file / 16 tests / skipped 0 — PASS**。
+- Lock adapter regression UTC / Asia/Tokyo: **1 file / 47 tests / skipped 0 — PASS**。
+  （現行adapter test fileの実数。taxonomyとの合計は67 tests。）
+- Full UTC / Asia/Tokyo: **62 files / 1655 tests / skipped 0 — PASS**。file/test差分 **0**。
+- `npx tsc --noEmit`: **PASS**。`npm run build`: **PASS**（126 modules、既知500kB warningのみ）。
+  `git diff --check`: **PASS**。
+- Bundle isolation: `jp-portfolio:portfolio-generation:v1` / `PORTFOLIO_GENERATION_LOCK_NAME`は
+  `dist`に **0 matches**。
+- `portfolioGenerationLock.ts` diff **0**、`fakeLockManager.ts` diff **0**、`persist.ts` diff **0**。
+  Store/T9のadapter import・`runExclusive`は **0**、runtime Web Lock integration **0**、
+  `navigator.locks.request()` **0**。
+- initialize、refreshAllData、importCsvのsignature/result変更 **0**。Workflow、data/public data、
+  dependency、schema、identity、CSV parser、investment logic、BroadcastChannel、storage event、
+  cross-tab hydration、CAS変更 **0**。mainは未反映。
+- Completed validation at 2026-07-20T15:27:55Z / 2026-07-21T00:27:55+09:00.
+
+### Status
+
+- RA-007 design audit: **CLOSED**。
+- RA-007-A: **CLOSED**。
+- RA-007-B1: **CLOSED**。
+- RA-007-B2: **PENDING**。
+- RA-007-B3: **PENDING**。
+- Web Lock production serialization: **NOT YET ACTIVE**。
+
+### Next
+
+`RA-007-B2: initialize and refresh structured results and caller migration`

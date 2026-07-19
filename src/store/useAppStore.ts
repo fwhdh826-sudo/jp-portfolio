@@ -87,6 +87,14 @@ import {
   type PortfolioSnapshotHolding,
 } from '../utils/portfolioSnapshotTransfer'
 import { computeSnapshotGenerationIdentity } from '../utils/snapshotGenerationIdentity'
+import {
+  createManualMutationFailure,
+  createManualMutationSuccess,
+  createPortfolioCoordinationFailure,
+  type ManualMutationResult,
+  type ManualPortfolioMutationOperation,
+  type PortfolioCoordinationFailure,
+} from './portfolioOperationResult'
 
 // ── アクション型 ─────────────────────────────────────────────
 export type PortfolioSnapshotImportResult =
@@ -102,7 +110,6 @@ export type PortfolioSnapshotImportResult =
         | 'SNAPSHOT_PROVENANCE_CONFLICT'
         | 'SNAPSHOT_PROVENANCE_UNKNOWN'
         | 'SNAPSHOT_OVERWRITE_BLOCKED'
-        | 'SNAPSHOT_IMPORT_BLOCKED'
         // T9-A004-R3d: canonical keyは存在するがJSON/manifest/checksum/schema検証を
         // 通らないpresent-invalid世代。absent（key自体が無い）とは区別され、
         // legacy fallbackにもmutation/analysisにも入らずfail-closedする。
@@ -117,6 +124,7 @@ export type PortfolioSnapshotImportResult =
       error: string
       persistence?: { status: 'indeterminate' }
     }
+  | (PortfolioCoordinationFailure & { operation: 'importPortfolioSnapshot' })
 
 interface AppActions {
   // 起動時初期化
@@ -128,24 +136,24 @@ interface AppActions {
   // タブ切替
   setTab: (tab: TabId) => void
   // holding手動更新（score等）
-  updateHolding: (code: string, patch: Partial<Holding>) => void
+  updateHolding: (code: string, patch: Partial<Holding>) => Promise<ManualMutationResult>
   // trust手動更新
-  updateTrust: (id: string, patch: Partial<Trust>) => void
+  updateTrust: (id: string, patch: Partial<Trust>) => Promise<ManualMutationResult>
   // P4-A47: PortfolioPolicy更新（localStorage永続化込み）
-  setPortfolioPolicy: (policy: PortfolioPolicy) => void
+  setPortfolioPolicy: (policy: PortfolioPolicy) => Promise<ManualMutationResult>
   // P4.5-A002: 資金前提の手動入力を保存（総額として置き換え、CSV/既定値とは加算しない）
-  setCashAssumptions: (input: { cashDeposits: number; standbyFunds: number }) => void
+  setCashAssumptions: (input: { cashDeposits: number; standbyFunds: number }) => Promise<ManualMutationResult>
   // P4.5-A002: 手動overrideを解除し、既定値（CSV/JSON由来があればそれ、無ければconstants）へ戻す
-  clearCashAssumptionsOverride: () => void
+  clearCashAssumptionsOverride: () => Promise<ManualMutationResult>
   // P4.5-A009: export/importで検証済みの値をimportする（manualUpdatedAtはimport元をそのまま引き継ぐ）
-  importCashAssumptions: (input: { cashDeposits: number; standbyFunds: number; manualUpdatedAt: string | null }) => void
+  importCashAssumptions: (input: { cashDeposits: number; standbyFunds: number; manualUpdatedAt: string | null }) => Promise<ManualMutationResult>
   // P4.5-A012b: 保有株・投信・現金前提・portfolioPolicyのportfolio snapshotをexport（表示専用の文字列を返すだけ。保存・public出力はしない）
   exportPortfolioSnapshot: () => string
   // P4.5-A012b: 他端末でexportしたportfolio snapshotをimportする（未知のholding code/trust idが含まれる場合は全体rejectしstore/localStorageを変更しない）
   // P4.5-A013-T7: full-sync schema (v2/v3) はunknown trust idをsilent ignoreせずskip+warningとして
   // 呼び出し側へ返す（skippedTrustIds）。全体rejectはしない（他の有効な変更が
   // 巻き添えでrejectされてしまうことを避けるため。詳細はimplementationコメント参照）。
-  importPortfolioSnapshot: (raw: string) => PortfolioSnapshotImportResult
+  importPortfolioSnapshot: (raw: string) => Promise<PortfolioSnapshotImportResult>
 }
 
 export interface CsvImportOptions {
@@ -1267,25 +1275,33 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
    * invokes subscribers, so synchronous re-entry cannot create a second generation.
    */
   const runManualPortfolioMutation = (
-    source: string,
+    source: ManualPortfolioMutationOperation,
     prepareCandidateState: PrepareManualCandidate,
     persistLegacy: PersistManualLegacy,
-  ): void => {
+  ): Promise<ManualMutationResult> => {
     if (activePortfolioOperation !== null || activePortfolioGenerationTransaction !== null) {
       reportRejectedPortfolioOperation(source)
-      return
+      return Promise.resolve(createPortfolioCoordinationFailure(source, 'LOCAL_OPERATION_BUSY'))
     }
     const operationTicket = acquirePortfolioOperation('manual')
     if (operationTicket === null) {
       reportRejectedPortfolioOperation(source)
-      return
+      return Promise.resolve(createPortfolioCoordinationFailure(source, 'LOCAL_OPERATION_BUSY'))
     }
 
     try {
       const baseState = get()
       const operationNowMs = Date.now()
-      const candidateState = prepareCandidateState(baseState, operationNowMs)
-      if (candidateState === null) return
+      let candidateState: ManualPortfolioState | null
+      try {
+        candidateState = prepareCandidateState(baseState, operationNowMs)
+      } catch {
+        try { console.error(`[useAppStore] manual candidate preparation failed: ${source}`) } catch { /* diagnostic sink */ }
+        return Promise.resolve(createManualMutationFailure(source, 'MANUAL_ANALYSIS_ERROR'))
+      }
+      if (candidateState === null) {
+        return Promise.resolve(createManualMutationSuccess(source, 'NO_CHANGE'))
+      }
 
       // Capture and parse the exact canonical bytes once. Metadata alignment is a pre-analysis
       // invariant: canonical metadata may not be revived after RA-005 intentionally published
@@ -1295,25 +1311,25 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
         canonicalRaw = readCsvImportCanonicalRaw()
       } catch {
         publishManualPersistenceError({ status: 'failed', reason: 'indeterminate' })
-        return
+        return Promise.resolve(createManualMutationFailure(source, 'MANUAL_PERSISTENCE_ERROR'))
       }
       const canonical = restoreCsvImportGenerationFromRaw(canonicalRaw)
       if (canonical.status === 'invalid') {
         publishManualPersistenceError({ status: 'blocked', reason: 'canonical_invalid' })
-        return
+        return Promise.resolve(createManualMutationFailure(source, 'MANUAL_PERSISTENCE_ERROR'))
       }
       if (canonical.status === 'committed' &&
           !isCanonicalMetadataAlignedWithPublishedState(canonical.payload, baseState)) {
         publishManualPersistenceError({ status: 'blocked', reason: 'metadata_misaligned' })
-        return
+        return Promise.resolve(createManualMutationFailure(source, 'MANUAL_PERSISTENCE_ERROR'))
       }
 
       let computed: ReturnType<typeof runFullAnalysis>
       try {
         computed = runFullAnalysis(candidateState, { nowMs: operationNowMs })
-      } catch (error) {
-        try { console.error(`[useAppStore] manual portfolio analysis failed: ${source}`, error) } catch { /* diagnostic sink */ }
-        return
+      } catch {
+        try { console.error(`[useAppStore] manual portfolio analysis failed: ${source}`) } catch { /* diagnostic sink */ }
+        return Promise.resolve(createManualMutationFailure(source, 'MANUAL_ANALYSIS_ERROR'))
       }
       const finalState: ManualPortfolioState = { ...candidateState, ...computed }
 
@@ -1322,7 +1338,15 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
         : persistLegacy(finalState, operationNowMs)
       if (persistenceResult.status !== 'persisted') {
         publishManualPersistenceError(persistenceResult)
-        return
+        const conflict =
+          (persistenceResult.status === 'blocked' &&
+            (persistenceResult.reason === 'canonical_changed' ||
+              persistenceResult.reason === 'canonical_committed')) ||
+          (persistenceResult.status === 'failed' &&
+            'reason' in persistenceResult && persistenceResult.reason === 'ownership_lost')
+        return Promise.resolve(conflict
+          ? createPortfolioCoordinationFailure(source, 'PORTFOLIO_GENERATION_CONFLICT')
+          : createManualMutationFailure(source, 'MANUAL_PERSISTENCE_ERROR'))
       }
 
       const previousCache = lastAppliedSnapshotGeneration
@@ -1334,7 +1358,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
         // Object-form set performs exactly one Zustand publication containing the complete
         // input+derived generation. All existing system/source metadata is carried unchanged.
         set(finalState)
-      } catch (error) {
+      } catch {
         // Zustand applies state before invoking synchronous subscribers. If an unwrapped observer
         // still throws, treat an already-applied complete generation as success and never roll it
         // back behind its committed canonical bytes.
@@ -1345,9 +1369,14 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
           published.cashAssumptions === finalState.cashAssumptions &&
           published.analysis === finalState.analysis &&
           published.officialDecision === finalState.officialDecision
-        if (!applied) lastAppliedSnapshotGeneration = previousCache
-        try { console.error('[useAppStore] manual portfolio publish observer failed', error) } catch { /* diagnostic sink */ }
+        if (!applied) {
+          lastAppliedSnapshotGeneration = previousCache
+          try { console.error('[useAppStore] manual portfolio publish failed before apply') } catch { /* diagnostic sink */ }
+          return Promise.resolve(createManualMutationFailure(source, 'MANUAL_PUBLISH_ERROR'))
+        }
+        try { console.error('[useAppStore] manual portfolio publish observer failed') } catch { /* diagnostic sink */ }
       }
+      return Promise.resolve(createManualMutationSuccess(source, 'SUCCESS'))
     } finally {
       releasePortfolioOperation(operationTicket)
     }
@@ -2195,7 +2224,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
   setTab: (tab) => set({ activeTab: tab }),
 
   updateHolding: (code, patch) => {
-    runManualPortfolioMutation(
+    return runManualPortfolioMutation(
       'updateHolding',
       baseState => {
         const current = baseState.holdings.find(holding => holding.code === code)
@@ -2216,7 +2245,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
   },
 
   updateTrust: (id, patch) => {
-    runManualPortfolioMutation(
+    return runManualPortfolioMutation(
       'updateTrust',
       baseState => {
         const current = baseState.trust.find(fund => fund.id === id)
@@ -2238,7 +2267,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
 
   // P4-A47: jpStockMaxRatio更新 → 再分析 → 永続化
   setPortfolioPolicy: (policy) => {
-    runManualPortfolioMutation(
+    return runManualPortfolioMutation(
       'setPortfolioPolicy',
       baseState => baseState.portfolioPolicy.jpStockMaxRatio === policy.jpStockMaxRatio
         ? null
@@ -2252,7 +2281,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
   // P4.5-A002: 資金前提の手動入力を保存する。入力値は総額として置き換わる
   // （CSV/既定値への加算は行わない）。0以上の整数円に丸めてから保存する。
   setCashAssumptions: ({ cashDeposits, standbyFunds }) => {
-    runManualPortfolioMutation(
+    return runManualPortfolioMutation(
       'setCashAssumptions',
       (baseState, operationNowMs) => {
         const sanitize = (value: number) => Math.max(0, Math.round(Number.isFinite(value) ? value : 0))
@@ -2272,7 +2301,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
 
   // P4.5-A002: 手動overrideを解除し、既定値（constants/market.ts由来）へ戻す
   clearCashAssumptionsOverride: () => {
-    runManualPortfolioMutation(
+    return runManualPortfolioMutation(
       'clearCashAssumptionsOverride',
       baseState => {
         if (!baseState.cashAssumptions.manualOverrideEnabled &&
@@ -2297,7 +2326,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
   // parseCashAssumptionsImportが不正/欠損時にnullへfallback済み — nullはA008の
   // freshness判定でstale扱いになるため、無警告で「最新」扱いにはならない）。
   importCashAssumptions: ({ cashDeposits, standbyFunds, manualUpdatedAt }) => {
-    runManualPortfolioMutation(
+    return runManualPortfolioMutation(
       'importCashAssumptions',
       baseState => {
         const sanitize = (value: number) => Math.max(0, Math.round(Number.isFinite(value) ? value : 0))
@@ -2344,18 +2373,18 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
   // parsePortfolioSnapshotImportが既に個々のフィールドを検証済みだが、それに加えて
   // v1は未知のcode/idを全体rejectし、full-syncのv2/v3は検証済みmetadataからholdingを
   // 安全に再構築する。trust masterは全schemaでregistryとして維持する。
-  importPortfolioSnapshot: (raw) => {
+  importPortfolioSnapshot: async (raw) => {
     // T9-A004-R3a: CSV/snapshotは同一の共有transactionを取り合う。既に他のorigin
     // （またはnestedなsnapshot自身）が進行中なら、critical phaseに達しているかを問わず
     // 即座にblockする（importCsvのREADING等の非critical phase中も含む）。
     if (activePortfolioOperation !== null || activePortfolioGenerationTransaction !== null) {
       reportRejectedReentrantMutation('importPortfolioSnapshot')
-      return { ok: false, code: 'SNAPSHOT_IMPORT_BLOCKED', error: '別の取込または更新が進行中です。完了後に再試行してください。' }
+      return createPortfolioCoordinationFailure('importPortfolioSnapshot', 'LOCAL_OPERATION_BUSY')
     }
     const operationTicket = acquirePortfolioOperation('snapshot')
     if (operationTicket === null) {
       reportRejectedReentrantMutation('importPortfolioSnapshot')
-      return { ok: false, code: 'SNAPSHOT_IMPORT_BLOCKED', error: '別の取込または更新が進行中です。完了後に再試行してください。' }
+      return createPortfolioCoordinationFailure('importPortfolioSnapshot', 'LOCAL_OPERATION_BUSY')
     }
     const transaction: SnapshotImportTransaction = {
       token: Symbol('snapshot-import-owner'),
@@ -2411,11 +2440,11 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
       let canonicalPreviousRaw: string | null
       try {
         canonicalPreviousRaw = readCsvImportCanonicalRaw()
-      } catch (error) {
+      } catch {
         return {
           ok: false,
           code: 'SNAPSHOT_PERSISTENCE_ERROR',
-          error: error instanceof Error ? error.message : String(error),
+          error: '保存済みデータを読み込めないため、snapshotの取込を中断しました。再読み込み後に再試行してください。',
         }
       }
 
@@ -2624,11 +2653,11 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
       let computed: ReturnType<typeof runFullAnalysis>
       try {
         computed = runFullAnalysis(stagedState, { nowMs: transaction.analysisNow })
-      } catch (error) {
+      } catch {
         return {
           ok: false,
           code: 'SNAPSHOT_ANALYSIS_ERROR',
-          error: `snapshotの分析に失敗しました: ${error instanceof Error ? error.message : String(error)}。状態は変更されていません。`,
+          error: 'snapshotの分析に失敗しました。状態は変更されていません。',
         }
       }
 
@@ -2642,11 +2671,11 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
           transaction.analysisNow,
           captureTrustShortPortfolioBaseline(),
         ).snapshot
-      } catch (error) {
+      } catch {
         return {
           ok: false,
           code: 'SNAPSHOT_ANALYSIS_ERROR',
-          error: `snapshot世代のtracker baseline準備に失敗しました: ${error instanceof Error ? error.message : String(error)}。状態は変更されていません。`,
+          error: 'snapshot世代のtracker baseline準備に失敗しました。状態は変更されていません。',
         }
       }
 
@@ -2675,7 +2704,11 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
         })
       } catch (error) {
         if (error instanceof CsvImportCanonicalConflictError) {
-          return { ok: false, code: 'IMPORT_CONFLICT', error: error.message }
+          return {
+            ok: false,
+            code: 'IMPORT_CONFLICT',
+            error: '保存中にcanonicalデータが更新されたため、snapshotの取込を中断しました。再読み込み後に再試行してください。',
+          }
         }
         if (error instanceof CsvImportPersistenceIndeterminateError) {
           return {
@@ -2688,7 +2721,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
         return {
           ok: false,
           code: 'SNAPSHOT_PERSISTENCE_ERROR',
-          error: error instanceof Error ? error.message : String(error),
+          error: 'snapshotを保存できませんでした。再読み込み後に再試行してください。',
         }
       }
       setPortfolioGenerationTransactionPhase(transaction, 'COMMITTED')

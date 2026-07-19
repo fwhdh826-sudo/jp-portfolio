@@ -833,7 +833,7 @@ describe('T9-A001/A002: structured CSV result and atomic store commit', () => {
     const before = restoreCsvImportGeneration()
     if (before.status !== 'committed') throw new Error('expected committed generation')
 
-    useAppStore.getState().updateHolding('1001', { eval: 175_000 })
+    await useAppStore.getState().updateHolding('1001', { eval: 175_000 })
     const afterHolding = restoreCsvImportGeneration()
     if (afterHolding.status !== 'committed') throw new Error('expected committed generation')
     expect(afterHolding.payload.holdings[0].eval).toBe(175_000)
@@ -841,7 +841,7 @@ describe('T9-A001/A002: structured CSV result and atomic store commit', () => {
     expect(afterHolding.payload.csvImportedAt).toBe(before.payload.csvImportedAt)
     expect(afterHolding.payload.syncSummary).toEqual(before.payload.syncSummary)
 
-    useAppStore.getState().updateTrust('fund-1', { eval: 275_000 })
+    await useAppStore.getState().updateTrust('fund-1', { eval: 275_000 })
     const afterTrust = restoreCsvImportGeneration()
     if (afterTrust.status !== 'committed') throw new Error('expected committed generation')
     expect(afterTrust.payload.holdings[0].eval).toBe(175_000)
@@ -849,14 +849,14 @@ describe('T9-A001/A002: structured CSV result and atomic store commit', () => {
     expect(afterTrust.payload.csvImportedAt).toBe(before.payload.csvImportedAt)
     expect(afterTrust.payload.syncSummary).toEqual(before.payload.syncSummary)
 
-    useAppStore.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.12 })
+    await useAppStore.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.12 })
     const afterPolicy = restoreCsvImportGeneration()
     if (afterPolicy.status !== 'committed') throw new Error('expected committed generation')
     expect(afterPolicy.payload.portfolioPolicy).toEqual({ jpStockMaxRatio: 0.12 })
     expect(afterPolicy.payload.cashAssumptions).toEqual(before.payload.cashAssumptions)
     expect(afterPolicy.payload.origin).toBe('csv')
 
-    useAppStore.getState().setCashAssumptions({ cashDeposits: 1_234_567, standbyFunds: 765_432 })
+    await useAppStore.getState().setCashAssumptions({ cashDeposits: 1_234_567, standbyFunds: 765_432 })
     const afterCash = restoreCsvImportGeneration()
     if (afterCash.status !== 'committed') throw new Error('expected committed generation')
     expect(afterCash.payload.portfolioPolicy).toEqual({ jpStockMaxRatio: 0.12 })
@@ -1115,7 +1115,7 @@ describe('T9-A001/A002: structured CSV result and atomic store commit', () => {
     const first = useAppStore.getState().importCsv(pendingFile)
     await Promise.resolve()
     const duringReading = useAppStore.getState()
-    useAppStore.getState().setCashAssumptions({ cashDeposits: 9_000_000, standbyFunds: 8_000_000 })
+    await useAppStore.getState().setCashAssumptions({ cashDeposits: 9_000_000, standbyFunds: 8_000_000 })
     expect(useAppStore.getState()).toBe(duringReading)
     release(new TextEncoder().encode(VALID_CSV).buffer)
 
@@ -1176,7 +1176,14 @@ describe('T9-A001/A002: structured CSV result and atomic store commit', () => {
     const first = useAppStore.getState().importCsv(pendingFile)
     await Promise.resolve()
     const beforeMutation = useAppStore.getState()
-    mutate()
+    const mutationResult = mutate()
+    if (manualRejected) {
+      await expect(mutationResult).resolves.toMatchObject({
+        ok: false,
+        code: 'LOCAL_OPERATION_BUSY',
+        retryable: true,
+      })
+    }
     if (manualRejected) expect(useAppStore.getState()).toBe(beforeMutation)
     else expect(useAppStore.getState()).not.toBe(beforeMutation)
     release(new TextEncoder().encode(VALID_CSV).buffer)
@@ -1226,9 +1233,12 @@ describe('T9-A001/A002: structured CSV result and atomic store commit', () => {
   it('R5: repeated mixed action/public-set reentry is rejected for the critical section and remains retryable', async () => {
     const cashBefore = useAppStore.getState().cashAssumptions
     const policyBefore = useAppStore.getState().portfolioPolicy
+    let manualResults: Array<ReturnType<ReturnType<typeof useAppStore.getState>['setPortfolioPolicy']>> = []
     storageReentry = () => {
-      useAppStore.getState().setCashAssumptions({ cashDeposits: 9_000_000, standbyFunds: 8_000_000 })
-      useAppStore.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.2 })
+      manualResults = [
+        useAppStore.getState().setCashAssumptions({ cashDeposits: 9_000_000, standbyFunds: 8_000_000 }),
+        useAppStore.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.2 }),
+      ]
       useAppStore.setState(state => ({ market: { ...state.market, nikkeiChgPct: 99 } }))
       useAppStore.setState(state => ({
         safeMode: { ...state.safeMode, safe_mode: { ...state.safeMode.safe_mode, active: true } },
@@ -1236,6 +1246,10 @@ describe('T9-A001/A002: structured CSV result and atomic store commit', () => {
     }
 
     const result = await useAppStore.getState().importCsv(csvFile())
+    await expect(Promise.all(manualResults)).resolves.toEqual([
+      { ok: false, operation: 'setCashAssumptions', code: 'LOCAL_OPERATION_BUSY', retryable: true },
+      { ok: false, operation: 'setPortfolioPolicy', code: 'LOCAL_OPERATION_BUSY', retryable: true },
+    ])
     storageReentry = null
     const state = useAppStore.getState()
     const recomputed = runFullAnalysis(state, { requireOfficialDecision: true })

@@ -25,7 +25,7 @@ import {
 } from './useAppStore'
 
 type StoreState = ReturnType<typeof useAppStore.getState>
-type ManualAction = () => void
+type ManualAction = () => ReturnType<StoreState['updateHolding']>
 
 const TEST_HOLDING: Holding = {
   code: 'RA006', name: 'RA-006 test holding', eval: 100_000, pnlPct: 0,
@@ -214,17 +214,18 @@ describe('RA-006 manual mutation coordinator and atomic publish', () => {
     vi.unstubAllGlobals()
   })
 
-  it.each(successCases)('$name persists before one complete subscriber publication', ({ invoke, assertInput, legacyKeys }) => {
+  it.each(successCases)('$name persists before one complete subscriber publication', async ({ name, invoke, assertInput, legacyKeys }) => {
     const observed: StoreState[] = []
     const unsubscribe = useAppStore.subscribe(state => {
       events.push('publish')
       observed.push(state)
     })
 
-    invoke()
+    const result = await invoke()
     unsubscribe()
 
     expect(observed).toHaveLength(1)
+    expect(result).toEqual({ ok: true, operation: name, code: 'SUCCESS' })
     assertInput(observed[0])
     expectCompleteGeneration(observed[0])
     expect(events[events.length - 1]).toBe('publish')
@@ -240,12 +241,12 @@ describe('RA-006 manual mutation coordinator and atomic publish', () => {
     { name: 'missing holding code', invoke: () => useAppStore.getState().updateHolding('missing', { eval: 1 }) },
     { name: 'unchanged holding patch', invoke: () => {
       const holding = useAppStore.getState().holdings.find(item => item.code === HOLDING_CODE)!
-      useAppStore.getState().updateHolding(HOLDING_CODE, { eval: holding.eval })
+      return useAppStore.getState().updateHolding(HOLDING_CODE, { eval: holding.eval })
     } },
     { name: 'missing trust id', invoke: () => useAppStore.getState().updateTrust('missing', { eval: 1 }) },
     { name: 'unchanged trust patch', invoke: () => {
       const fund = useAppStore.getState().trust.find(item => item.id === TRUST_ID)!
-      useAppStore.getState().updateTrust(TRUST_ID, { eval: fund.eval })
+      return useAppStore.getState().updateTrust(TRUST_ID, { eval: fund.eval })
     } },
     { name: 'same policy', invoke: () => useAppStore.getState().setPortfolioPolicy({ jpStockMaxRatio: DEFAULT_PORTFOLIO_POLICY.jpStockMaxRatio }) },
     { name: 'identical imported cash assumptions', invoke: () => useAppStore.getState().importCashAssumptions({
@@ -255,29 +256,31 @@ describe('RA-006 manual mutation coordinator and atomic publish', () => {
     }) },
   ]
 
-  it.each(noOpCases)('$name is a root-identity no-op with zero storage and subscriber effects', ({ invoke }) => {
+  it.each(noOpCases)('$name is a root-identity no-op with zero storage and subscriber effects', async ({ invoke }) => {
     const before = useAppStore.getState()
     let notifications = 0
     const unsubscribe = useAppStore.subscribe(() => { notifications += 1 })
-    invoke()
+    const result = await invoke()
     unsubscribe()
 
     expect(useAppStore.getState()).toBe(before)
+    expect(result).toMatchObject({ ok: true, code: 'NO_CHANGE' })
     expect(getItem).not.toHaveBeenCalled()
     expect(setItem).not.toHaveBeenCalled()
     expect(removeItem).not.toHaveBeenCalled()
     expect(notifications).toBe(0)
   })
 
-  it('already-cleared cash override is directly a root-identity no-op', () => {
+  it('already-cleared cash override is directly a root-identity no-op', async () => {
     useAppStore.setState({ cashAssumptions: { ...DEFAULT_CASH_ASSUMPTIONS } })
     getItem.mockClear()
     const before = useAppStore.getState()
     let notifications = 0
     const unsubscribe = useAppStore.subscribe(() => { notifications += 1 })
-    useAppStore.getState().clearCashAssumptionsOverride()
+    const result = await useAppStore.getState().clearCashAssumptionsOverride()
     unsubscribe()
     expect(useAppStore.getState()).toBe(before)
+    expect(result).toEqual({ ok: true, operation: 'clearCashAssumptionsOverride', code: 'NO_CHANGE' })
     expect(getItem).not.toHaveBeenCalled()
     expect(setItem).not.toHaveBeenCalled()
     expect(notifications).toBe(0)
@@ -295,7 +298,7 @@ describe('RA-006 manual mutation coordinator and atomic publish', () => {
   it.each(operationPhases.flatMap(operationPhase => successCases.map(action => ({
     ...operationPhase,
     ...action,
-  }))))('$phase rejects $name with zero side effects and keeps the outer owner', ({ invoke, activeKind }) => {
+  }))))('$phase rejects $name with zero side effects and keeps the outer owner', async ({ name, invoke, activeKind }) => {
     const ticket = acquirePortfolioOperation(activeKind)
     if (!ticket) throw new Error('failed to acquire test operation')
     const before = useAppStore.getState()
@@ -303,10 +306,11 @@ describe('RA-006 manual mutation coordinator and atomic publish', () => {
     let notifications = 0
     const unsubscribe = useAppStore.subscribe(() => { notifications += 1 })
 
-    invoke()
+    const result = await invoke()
 
     unsubscribe()
     expect(useAppStore.getState()).toBe(before)
+    expect(result).toEqual({ ok: false, operation: name, code: 'LOCAL_OPERATION_BUSY', retryable: true })
     expect(getItem).not.toHaveBeenCalled()
     expect(setItem).not.toHaveBeenCalled()
     expect(removeItem).not.toHaveBeenCalled()
@@ -359,7 +363,7 @@ describe('RA-006 manual mutation coordinator and atomic publish', () => {
     return raw
   }
 
-  function primeSnapshotCache(): void {
+  async function primeSnapshotCache(): Promise<void> {
     const desiredState = useAppStore.getState()
     useAppStore.setState(state => ({
       holdings: [{ ...TEST_HOLDING, eval: 111_111 }],
@@ -387,7 +391,7 @@ describe('RA-006 manual mutation coordinator and atomic publish', () => {
       },
     }))
     delete storage[CSV_IMPORT_GENERATION_KEY]
-    expect(useAppStore.getState().importPortfolioSnapshot(snapshot)).toMatchObject({ ok: true, code: 'SUCCESS' })
+    expect(await useAppStore.getState().importPortfolioSnapshot(snapshot)).toMatchObject({ ok: true, code: 'SUCCESS' })
     expect(readLastAppliedSnapshotGenerationForTest()).not.toBeNull()
     useAppStore.setState(desiredState, true)
     getItem.mockClear()
@@ -399,8 +403,8 @@ describe('RA-006 manual mutation coordinator and atomic publish', () => {
   it.each(([CSV_IMPORT_GENERATION_SCHEMA_V4, CSV_IMPORT_GENERATION_SCHEMA_V5] as const)
     .flatMap(schemaVersion => successCases.map(action => ({ schemaVersion, ...action }))))(
     '$schemaVersion $name rewrites one canonical generation with published transfer identity',
-    ({ schemaVersion, invoke, assertInput }) => {
-    primeSnapshotCache()
+    async ({ schemaVersion, invoke, assertInput }) => {
+    await primeSnapshotCache()
     seedCanonical({ schemaVersion })
     const before = useAppStore.getState()
     const callbackEvidence: Array<{
@@ -417,7 +421,7 @@ describe('RA-006 manual mutation coordinator and atomic publish', () => {
         nestedTicket: acquirePortfolioOperation('manual'),
       })
     })
-    invoke()
+    await invoke()
     unsubscribe()
 
     const published = useAppStore.getState()
@@ -477,7 +481,7 @@ describe('RA-006 manual mutation coordinator and atomic publish', () => {
     expect(nextTicket).not.toBeNull()
     if (nextTicket) expect(releasePortfolioOperation(nextTicket)).toBe(true)
     const writesAfterCommit = setItem.mock.calls.length
-    useAppStore.getState().setPortfolioPolicy({
+    await useAppStore.getState().setPortfolioPolicy({
       jpStockMaxRatio: useAppStore.getState().portfolioPolicy.jpStockMaxRatio,
     })
     expect(setItem).toHaveBeenCalledTimes(writesAfterCommit)
@@ -485,11 +489,11 @@ describe('RA-006 manual mutation coordinator and atomic publish', () => {
 
   const canonicalSchemas = [CSV_IMPORT_GENERATION_SCHEMA_V4, CSV_IMPORT_GENERATION_SCHEMA_V5] as const
 
-  it.each(canonicalSchemas)('%s aligned metadata succeeds and preserves the published identity inputs', schemaVersion => {
+  it.each(canonicalSchemas)('%s aligned metadata succeeds and preserves the published identity inputs', async schemaVersion => {
     seedCanonical({ schemaVersion })
     let notifications = 0
     const unsubscribe = useAppStore.subscribe(() => { notifications += 1 })
-    useAppStore.getState().updateHolding(HOLDING_CODE, { eval: 222_222 })
+    await useAppStore.getState().updateHolding(HOLDING_CODE, { eval: 222_222 })
     unsubscribe()
 
     const published = useAppStore.getState()
@@ -509,12 +513,12 @@ describe('RA-006 manual mutation coordinator and atomic publish', () => {
     expect(notifications).toBe(1)
   })
 
-  it.each(canonicalSchemas)('%s aligned null metadata succeeds without canonical fallback', schemaVersion => {
+  it.each(canonicalSchemas)('%s aligned null metadata succeeds without canonical fallback', async schemaVersion => {
     useAppStore.setState(state => ({
       system: { ...state.system, csvLastImportedAt: null, csvImportProvenance: null, csvSyncSummary: null },
     }))
     seedCanonical({ schemaVersion, csvImportedAt: null, csvImportProvenance: null })
-    useAppStore.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.17 })
+    await useAppStore.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.17 })
     const generation = restoreCsvImportGeneration()
     if (generation.status !== 'committed') throw new Error('expected committed generation')
     expect(generation.payload.csvImportedAt).toBeNull()
@@ -653,7 +657,7 @@ describe('RA-006 manual mutation coordinator and atomic publish', () => {
   it.each(canonicalSchemas.flatMap(schemaVersion => mismatchCases.map(testCase => ({
     schemaVersion,
     ...testCase,
-  }))))('$schemaVersion blocks $name before analysis or persistence and releases the ticket', testCase => {
+  }))))('$schemaVersion blocks $name before analysis or persistence and releases the ticket', async testCase => {
     expect(metadataDifferencePaths(testCase)).toEqual(testCase.expectedDifferences)
     seedCanonical({
       schemaVersion: testCase.schemaVersion,
@@ -686,7 +690,7 @@ describe('RA-006 manual mutation coordinator and atomic publish', () => {
     const observed: StoreState[] = []
     const unsubscribe = useAppStore.subscribe(state => { observed.push(state) })
 
-    useAppStore.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.17 })
+    await useAppStore.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.17 })
     unsubscribe()
 
     expect(analysisReads).toBe(0)
@@ -718,7 +722,7 @@ describe('RA-006 manual mutation coordinator and atomic publish', () => {
     seedCanonical({ schemaVersion: testCase.schemaVersion })
     let retryNotifications = 0
     const unsubscribeRetry = useAppStore.subscribe(() => { retryNotifications += 1 })
-    useAppStore.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.17 })
+    await useAppStore.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.17 })
     unsubscribeRetry()
     expect(retryNotifications).toBe(1)
     expect(useAppStore.getState().portfolioPolicy.jpStockMaxRatio).toBe(0.17)
@@ -726,7 +730,7 @@ describe('RA-006 manual mutation coordinator and atomic publish', () => {
     expect(setItem).toHaveBeenCalledWith(CSV_IMPORT_GENERATION_KEY, expect.any(String))
   })
 
-  it.each(canonicalSchemas)('%s CSV-origin manual replacement preserves nonnull syncSummary and origin', schemaVersion => {
+  it.each(canonicalSchemas)('%s CSV-origin manual replacement preserves nonnull syncSummary and origin', async schemaVersion => {
     const summary: CsvSyncSummary = {
       importedAt: CSV_IMPORTED_AT,
       stock: { updated: 2, added: 1, removed: 0 },
@@ -734,7 +738,7 @@ describe('RA-006 manual mutation coordinator and atomic publish', () => {
     }
     useAppStore.setState(state => ({ system: { ...state.system, csvSyncSummary: summary } }))
     seedCanonical({ schemaVersion, origin: 'csv', syncSummary: summary })
-    useAppStore.getState().updateTrust(TRUST_ID, { eval: 123_456 })
+    await useAppStore.getState().updateTrust(TRUST_ID, { eval: 123_456 })
     const generation = restoreCsvImportGeneration()
     if (generation.status !== 'committed') throw new Error('expected committed generation')
     expect(generation.payload.origin).toBe('csv')
@@ -750,15 +754,21 @@ describe('RA-006 manual mutation coordinator and atomic publish', () => {
     }))
   })
 
-  it('canonical persistence failure publishes no portfolio generation, preserves bytes, and permits retry', () => {
+  it('canonical persistence failure publishes no portfolio generation, preserves bytes, and permits retry', async () => {
     const previousRaw = seedCanonical()
     const before = useAppStore.getState()
     let notifications = 0
     const unsubscribe = useAppStore.subscribe(() => { notifications += 1 })
     setItem.mockImplementation(() => { throw new Error('quota') })
 
-    useAppStore.getState().updateHolding(HOLDING_CODE, { eval: 222_222 })
+    const failure = await useAppStore.getState().updateHolding(HOLDING_CODE, { eval: 222_222 })
 
+    expect(failure).toEqual({
+      ok: false,
+      operation: 'updateHolding',
+      code: 'MANUAL_PERSISTENCE_ERROR',
+      retryable: true,
+    })
     expectPortfolioReferencesUnchanged(before)
     expect(storage[CSV_IMPORT_GENERATION_KEY]).toBe(previousRaw)
     expect(Object.keys(storage)).toEqual([CSV_IMPORT_GENERATION_KEY])
@@ -766,15 +776,16 @@ describe('RA-006 manual mutation coordinator and atomic publish', () => {
     expect(useAppStore.getState().system.status).toBe('error')
 
     setItem.mockImplementation((key: string, value: string) => { storage[key] = value })
-    useAppStore.getState().updateHolding(HOLDING_CODE, { eval: 222_222 })
+    const retry = await useAppStore.getState().updateHolding(HOLDING_CODE, { eval: 222_222 })
     unsubscribe()
+    expect(retry).toEqual({ ok: true, operation: 'updateHolding', code: 'SUCCESS' })
     expect(useAppStore.getState().holdings.find(item => item.code === HOLDING_CODE)?.eval).toBe(222_222)
   })
 
   it.each([
     ['updateHolding', () => useAppStore.getState().updateHolding(HOLDING_CODE, { eval: 222_222 })],
     ['updateTrust', () => useAppStore.getState().updateTrust(TRUST_ID, { eval: 222_222 })],
-  ] as const)('%s rolls portfolio back when the trust write fails and a later retry succeeds', (_name, invoke) => {
+  ] as const)('%s rolls portfolio back when the trust write fails and a later retry succeeds', async (_name, invoke) => {
     const oldHoldings = [{ ...TEST_HOLDING, eval: 101_010 }]
     const oldTrust = INITIAL_TRUST.map(fund => ({ ...fund, eval: fund.id === TRUST_ID ? 202_020 : fund.eval }))
     storage.v81_portfolio = JSON.stringify({ data: oldHoldings, savedAt: 1 })
@@ -789,8 +800,9 @@ describe('RA-006 manual mutation coordinator and atomic publish', () => {
       storage[key] = value
     })
 
-    invoke()
+    const failure = await invoke()
 
+    expect(failure).toMatchObject({ ok: false, code: 'MANUAL_PERSISTENCE_ERROR', retryable: true })
     expectPortfolioReferencesUnchanged(before)
     expect(observed).toHaveLength(1)
     expect(observed[0].system.status).toBe('error')
@@ -801,13 +813,14 @@ describe('RA-006 manual mutation coordinator and atomic publish', () => {
     expect(storage[CSV_IMPORT_GENERATION_KEY]).toBeUndefined()
 
     setItem.mockImplementation((key: string, value: string) => { storage[key] = value })
-    invoke()
+    const retry = await invoke()
     unsubscribe()
+    expect(retry).toMatchObject({ ok: true, code: 'SUCCESS' })
     expect(useAppStore.getState()).not.toBe(before)
     expect(observed).toHaveLength(2)
   })
 
-  it('rolls portfolio and trust back when the learning write fails', () => {
+  it('rolls portfolio and trust back when the learning write fails', async () => {
     const priorPortfolio = JSON.stringify({ data: [{ ...TEST_HOLDING, eval: 1 }], savedAt: 1 })
     const priorTrust = JSON.stringify({ data: INITIAL_TRUST, savedAt: 1 })
     const priorLearning = JSON.stringify({ data: { lastUpdated: 'old' }, savedAt: 1 })
@@ -849,7 +862,7 @@ describe('RA-006 manual mutation coordinator and atomic publish', () => {
       storage[key] = value
     })
 
-    useAppStore.getState().updateHolding(HOLDING_CODE, { eval: 333_333 })
+    await useAppStore.getState().updateHolding(HOLDING_CODE, { eval: 333_333 })
 
     expectPortfolioReferencesUnchanged(before)
     expect(storage.v81_portfolio).toBe(priorPortfolio)
@@ -857,7 +870,7 @@ describe('RA-006 manual mutation coordinator and atomic publish', () => {
     expect(storage.v91_learning).toBe(priorLearning)
   })
 
-  it('present-invalid canonical stops before analysis and legacy fallback', () => {
+  it('present-invalid canonical stops before analysis and legacy fallback', async () => {
     storage[CSV_IMPORT_GENERATION_KEY] = '{present-invalid'
     let analysisReads = 0
     const throwingMarket = new Proxy(STATIC_MARKET, {
@@ -870,7 +883,7 @@ describe('RA-006 manual mutation coordinator and atomic publish', () => {
     getItem.mockClear()
     const before = useAppStore.getState()
 
-    useAppStore.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.17 })
+    await useAppStore.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.17 })
 
     expectPortfolioReferencesUnchanged(before)
     expect(analysisReads).toBe(0)
@@ -883,7 +896,7 @@ describe('RA-006 manual mutation coordinator and atomic publish', () => {
     ['holding/trust', () => useAppStore.getState().updateHolding(HOLDING_CODE, { eval: 222_222 })],
     ['policy', () => useAppStore.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.17 })],
     ['cash', () => useAppStore.getState().setCashAssumptions({ cashDeposits: 222_222, standbyFunds: 333_333 })],
-  ] as const)('%s analysis failure has zero persistence/portfolio publication and a valid retry succeeds', (_category, invoke) => {
+  ] as const)('%s analysis failure has zero persistence/portfolio publication and a valid retry succeeds', async (_category, invoke) => {
     let analysisReads = 0
     const throwingMarket = new Proxy(STATIC_MARKET, {
       get() {
@@ -896,8 +909,9 @@ describe('RA-006 manual mutation coordinator and atomic publish', () => {
     let notifications = 0
     const unsubscribe = useAppStore.subscribe(() => { notifications += 1 })
 
-    invoke()
+    const failure = await invoke()
 
+    expect(failure).toMatchObject({ ok: false, code: 'MANUAL_ANALYSIS_ERROR', retryable: true })
     expect(analysisReads).toBeGreaterThan(0)
     expectPortfolioReferencesUnchanged(before)
     expect(setItem).not.toHaveBeenCalled()
@@ -906,8 +920,9 @@ describe('RA-006 manual mutation coordinator and atomic publish', () => {
     useAppStore.setState({ market: STATIC_MARKET })
     notifications = 0
     getItem.mockClear()
-    invoke()
+    const retry = await invoke()
     unsubscribe()
+    expect(retry).toMatchObject({ ok: true, code: 'SUCCESS' })
     expect(useAppStore.getState()).not.toBe(before)
     expect(notifications).toBe(1)
   })
@@ -915,12 +930,13 @@ describe('RA-006 manual mutation coordinator and atomic publish', () => {
   it('reentrant manual subscriber creates only the first generation', () => {
     seedCanonical()
     let notifications = 0
+    let nestedResult: ReturnType<StoreState['setPortfolioPolicy']> | null = null
     const unsubscribe = useAppStore.subscribe(() => {
       notifications += 1
-      useAppStore.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.17 })
+      nestedResult = useAppStore.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.17 })
     })
 
-    useAppStore.getState().updateHolding(HOLDING_CODE, { eval: 222_222 })
+    const outerResult = useAppStore.getState().updateHolding(HOLDING_CODE, { eval: 222_222 })
     unsubscribe()
 
     expect(notifications).toBe(1)
@@ -933,20 +949,29 @@ describe('RA-006 manual mutation coordinator and atomic publish', () => {
       status: 'committed',
       payload: { portfolioPolicy: DEFAULT_PORTFOLIO_POLICY },
     })
+    return Promise.all([
+      expect(outerResult).resolves.toMatchObject({ ok: true, code: 'SUCCESS' }),
+      expect(nestedResult).resolves.toMatchObject({ ok: false, code: 'LOCAL_OPERATION_BUSY' }),
+    ])
   })
 
-  it.each(successCases)('manual subscriber reentry during $name rejects all six manual actions', ({ invoke, assertInput }) => {
+  it.each(successCases)('manual subscriber reentry during $name rejects all six manual actions', async ({ name, invoke, assertInput }) => {
     seedCanonical()
     let notifications = 0
+    let nestedResults: ReturnType<ManualAction>[] = []
     const unsubscribe = useAppStore.subscribe(() => {
       notifications += 1
-      for (const nested of successCases) nested.invoke()
+      nestedResults = successCases.map(nested => nested.invoke())
     })
 
-    invoke()
+    const outerResult = await invoke()
     unsubscribe()
+    const resolvedNestedResults = await Promise.all(nestedResults)
 
     expect(notifications).toBe(1)
+    expect(outerResult).toEqual({ ok: true, operation: name, code: 'SUCCESS' })
+    expect(resolvedNestedResults.map(result => ({ operation: result.operation, code: result.code })))
+      .toEqual(successCases.map(action => ({ operation: action.name, code: 'LOCAL_OPERATION_BUSY' })))
     assertInput(useAppStore.getState())
     expect(setItem).toHaveBeenCalledTimes(1)
     expect(setItem).toHaveBeenCalledWith(CSV_IMPORT_GENERATION_KEY, expect.any(String))
@@ -960,7 +985,7 @@ describe('RA-006 manual mutation coordinator and atomic publish', () => {
     expect(ticket).not.toBeNull()
     if (ticket) expect(releasePortfolioOperation(ticket)).toBe(true)
     const nextEval = (useAppStore.getState().holdings.find(item => item.code === HOLDING_CODE)?.eval ?? 0) + 1
-    useAppStore.getState().updateHolding(HOLDING_CODE, { eval: nextEval })
+    await useAppStore.getState().updateHolding(HOLDING_CODE, { eval: nextEval })
     expect(useAppStore.getState().holdings.find(item => item.code === HOLDING_CODE)?.eval).toBe(nextEval)
     expect(setItem).toHaveBeenCalledTimes(2)
   })
@@ -980,18 +1005,18 @@ describe('RA-006 manual mutation coordinator and atomic publish', () => {
       snapshotResult = state.importPortfolioSnapshot('{not-read-while-blocked')
     })
 
-    useAppStore.getState().updateHolding(HOLDING_CODE, { eval: 222_222 })
+    await useAppStore.getState().updateHolding(HOLDING_CODE, { eval: 222_222 })
     unsubscribe()
 
     await initializeResult
     await refreshResult
     await expect(csvResult).resolves.toMatchObject({ ok: false, code: 'IMPORT_IN_PROGRESS' })
-    expect(snapshotResult).toMatchObject({ ok: false, code: 'SNAPSHOT_IMPORT_BLOCKED' })
+    await expect(snapshotResult).resolves.toMatchObject({ ok: false, code: 'LOCAL_OPERATION_BUSY' })
     expect(notifications).toBe(1)
     expect(useAppStore.getState().holdings.find(item => item.code === HOLDING_CODE)?.eval).toBe(222_222)
   })
 
-  it('throwing subscriber cannot undo the durable state or leak the manual ticket', () => {
+  it('throwing subscriber cannot undo the durable state or leak the manual ticket', async () => {
     seedCanonical()
     const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined)
     let calls = 0
@@ -1000,10 +1025,12 @@ describe('RA-006 manual mutation coordinator and atomic publish', () => {
       throw new Error('subscriber throw')
     })
 
-    expect(() => useAppStore.getState().updateHolding(HOLDING_CODE, { eval: 222_222 })).not.toThrow()
+    await expect(useAppStore.getState().updateHolding(HOLDING_CODE, { eval: 222_222 }))
+      .resolves.toMatchObject({ ok: true, operation: 'updateHolding', code: 'SUCCESS' })
     expect(calls).toBe(1)
     expect(useAppStore.getState().holdings.find(item => item.code === HOLDING_CODE)?.eval).toBe(222_222)
-    expect(() => useAppStore.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.17 })).not.toThrow()
+    await expect(useAppStore.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.17 }))
+      .resolves.toMatchObject({ ok: true, operation: 'setPortfolioPolicy', code: 'SUCCESS' })
     expect(calls).toBe(2)
     expect(useAppStore.getState().portfolioPolicy.jpStockMaxRatio).toBe(0.17)
     unsubscribe()
@@ -1021,7 +1048,7 @@ describe('RA-006 manual mutation coordinator and atomic publish', () => {
     }))
   })
 
-  it('setCashAssumptions uses one operation clock for candidate, canonical, and published values', () => {
+  it('setCashAssumptions uses one operation clock for candidate, canonical, and published values', async () => {
     seedCanonical()
     const operationNowMs = Date.parse('2026-07-19T06:07:08.009Z')
     let calls = 0
@@ -1030,7 +1057,7 @@ describe('RA-006 manual mutation coordinator and atomic publish', () => {
       return calls === 1 ? operationNowMs : operationNowMs - calls
     })
 
-    useAppStore.getState().setCashAssumptions({ cashDeposits: 123_456, standbyFunds: 654_321 })
+    await useAppStore.getState().setCashAssumptions({ cashDeposits: 123_456, standbyFunds: 654_321 })
 
     const expectedTimestamp = new Date(operationNowMs).toISOString()
     const published = useAppStore.getState()
@@ -1043,8 +1070,8 @@ describe('RA-006 manual mutation coordinator and atomic publish', () => {
     nowSpy.mockRestore()
   })
 
-  it('restores the exact previous snapshot cache when final manual publish throws before state apply', () => {
-    primeSnapshotCache()
+  it('restores the exact previous snapshot cache when final manual publish throws before state apply', async () => {
+    await primeSnapshotCache()
     seedCanonical()
     const previousCache = readLastAppliedSnapshotGenerationForTest()
     expect(previousCache).not.toBeNull()
@@ -1056,7 +1083,8 @@ describe('RA-006 manual mutation coordinator and atomic publish', () => {
     const unsubscribe = useAppStore.subscribe(() => { notifications += 1 })
     setManualPublishBeforeApplyHookForTest(() => { throw rawError })
 
-    expect(() => useAppStore.getState().updateHolding(HOLDING_CODE, { eval: 222_222 })).not.toThrow()
+    await expect(useAppStore.getState().updateHolding(HOLDING_CODE, { eval: 222_222 }))
+      .resolves.toMatchObject({ ok: false, operation: 'updateHolding', code: 'MANUAL_PUBLISH_ERROR' })
 
     expect(useAppStore.getState()).toBe(rootBefore)
     expectPortfolioReferencesUnchanged(rootBefore)
@@ -1070,22 +1098,21 @@ describe('RA-006 manual mutation coordinator and atomic publish', () => {
       .toBe(rootBefore.holdings.find(item => item.code === HOLDING_CODE)?.eval)
     expect(useAppStore.getState().system.error).toBe(rootBefore.system.error)
     expect(useAppStore.getState().system.error ?? '').not.toContain(rawError.message)
-    expect(errorSpy).toHaveBeenCalledWith(
-      '[useAppStore] manual portfolio publish observer failed',
-      rawError,
-    )
+    expect(errorSpy).toHaveBeenCalledWith('[useAppStore] manual portfolio publish failed before apply')
+    expect(errorSpy.mock.calls.flat()).not.toContain(rawError)
+    expect(errorSpy.mock.calls.flat().join(' ')).not.toMatch(/sentinel|stack|cause/i)
     const ticket = acquirePortfolioOperation('manual')
     expect(ticket).not.toBeNull()
     if (ticket) expect(releasePortfolioOperation(ticket)).toBe(true)
 
-    useAppStore.getState().updateHolding(HOLDING_CODE, { eval: 222_222 })
+    await useAppStore.getState().updateHolding(HOLDING_CODE, { eval: 222_222 })
     unsubscribe()
     expect(notifications).toBe(1)
     expect(useAppStore.getState().holdings.find(item => item.code === HOLDING_CODE)?.eval).toBe(222_222)
     expect(readLastAppliedSnapshotGenerationForTest()).toBeNull()
   })
 
-  it('invalidates snapshot cache before the final subscriber and later returns the exact provenance result', () => {
+  it('invalidates snapshot cache before the final subscriber and later returns the exact provenance result', async () => {
     useAppStore.setState(state => ({
       holdings: [{ ...TEST_HOLDING, eval: 111_111 }],
       trust: [],
@@ -1108,29 +1135,32 @@ describe('RA-006 manual mutation coordinator and atomic publish', () => {
     }))
     delete storage[CSV_IMPORT_GENERATION_KEY]
 
-    expect(useAppStore.getState().importPortfolioSnapshot(raw)).toMatchObject({ ok: true, code: 'SUCCESS' })
+    expect(await useAppStore.getState().importPortfolioSnapshot(raw)).toMatchObject({ ok: true, code: 'SUCCESS' })
     expect(readLastAppliedSnapshotGenerationForTest()).not.toBeNull()
     let cacheSeenBySubscriber: ReturnType<typeof readLastAppliedSnapshotGenerationForTest> | undefined
     let reentrantManualState: StoreState | undefined
     let reentrantSnapshotResult: ReturnType<StoreState['importPortfolioSnapshot']> | undefined
+    let reentrantManualResult: ReturnType<StoreState['setPortfolioPolicy']> | undefined
     const unsubscribe = useAppStore.subscribe(() => {
       cacheSeenBySubscriber = readLastAppliedSnapshotGenerationForTest()
-      useAppStore.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.17 })
+      reentrantManualResult = useAppStore.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.17 })
       reentrantManualState = useAppStore.getState()
       reentrantSnapshotResult = useAppStore.getState().importPortfolioSnapshot(raw)
     })
-    useAppStore.getState().updateHolding(HOLDING_CODE, { eval: 222_222 })
+    const outerResult = await useAppStore.getState().updateHolding(HOLDING_CODE, { eval: 222_222 })
     unsubscribe()
+    expect(outerResult).toMatchObject({ ok: true, operation: 'updateHolding', code: 'SUCCESS' })
     expect(cacheSeenBySubscriber).toBeNull()
     expect(reentrantManualState?.portfolioPolicy).toEqual(DEFAULT_PORTFOLIO_POLICY)
-    expect(reentrantSnapshotResult).toMatchObject({ ok: false, code: 'SNAPSHOT_IMPORT_BLOCKED' })
+    await expect(reentrantManualResult).resolves.toMatchObject({ ok: false, code: 'LOCAL_OPERATION_BUSY' })
+    await expect(reentrantSnapshotResult).resolves.toMatchObject({ ok: false, code: 'LOCAL_OPERATION_BUSY' })
     const canonicalBeforeRetry = storage[CSV_IMPORT_GENERATION_KEY]
     const beforeRetry = useAppStore.getState()
     const writesBeforeRetry = setItem.mock.calls.length
     const removesBeforeRetry = removeItem.mock.calls.length
     let retryNotifications = 0
     const unsubscribeRetry = useAppStore.subscribe(() => { retryNotifications += 1 })
-    const repeated = useAppStore.getState().importPortfolioSnapshot(raw)
+    const repeated = await useAppStore.getState().importPortfolioSnapshot(raw)
     unsubscribeRetry()
 
     expect(repeated).toEqual({

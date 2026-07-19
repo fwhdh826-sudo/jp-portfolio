@@ -283,8 +283,8 @@ describe('useAppStore: cashAssumptions（資金前提の手動override）', () =
     expect(eff.source).toBe('default')
   })
 
-  it('setCashAssumptionsで手動値が実効値になり、cashTotalが自動計算される', () => {
-    useAppStore.getState().setCashAssumptions({ cashDeposits: 1_000_000, standbyFunds: 2_000_000 })
+  it('setCashAssumptionsで手動値が実効値になり、cashTotalが自動計算される', async () => {
+    await useAppStore.getState().setCashAssumptions({ cashDeposits: 1_000_000, standbyFunds: 2_000_000 })
     const state = useAppStore.getState()
     expect(state.cashAssumptions.manualOverrideEnabled).toBe(true)
     expect(state.cashAssumptions.cashDeposits).toBe(1_000_000)
@@ -298,15 +298,15 @@ describe('useAppStore: cashAssumptions（資金前提の手動override）', () =
     expect(eff.source).toBe('manual')
   })
 
-  it('setCashAssumptionsの入力は0以上の整数に丸められる（負数・小数のガード）', () => {
-    useAppStore.getState().setCashAssumptions({ cashDeposits: -500, standbyFunds: 1234.6 })
+  it('setCashAssumptionsの入力は0以上の整数に丸められる（負数・小数のガード）', async () => {
+    await useAppStore.getState().setCashAssumptions({ cashDeposits: -500, standbyFunds: 1234.6 })
     const state = useAppStore.getState()
     expect(state.cashAssumptions.cashDeposits).toBe(0)
     expect(state.cashAssumptions.standbyFunds).toBe(1235)
   })
 
-  it('保存するとlocalStorage（persist.ts経由）に反映される', () => {
-    useAppStore.getState().setCashAssumptions({ cashDeposits: 500_000, standbyFunds: 700_000 })
+  it('保存するとlocalStorage（persist.ts経由）に反映される', async () => {
+    await useAppStore.getState().setCashAssumptions({ cashDeposits: 500_000, standbyFunds: 700_000 })
     const raw = store['v13_cash_assumptions']
     expect(raw).toBeDefined()
     const saved = JSON.parse(raw)
@@ -315,44 +315,44 @@ describe('useAppStore: cashAssumptions（資金前提の手動override）', () =
     expect(saved.data.manualOverrideEnabled).toBe(true)
   })
 
-  it('clearCashAssumptionsOverrideで既定値に戻る', () => {
-    useAppStore.getState().setCashAssumptions({ cashDeposits: 1_000_000, standbyFunds: 2_000_000 })
+  it('clearCashAssumptionsOverrideで既定値に戻る', async () => {
+    await useAppStore.getState().setCashAssumptions({ cashDeposits: 1_000_000, standbyFunds: 2_000_000 })
     expect(selectEffectiveCashAssumptions(useAppStore.getState()).source).toBe('manual')
 
-    useAppStore.getState().clearCashAssumptionsOverride()
+    await useAppStore.getState().clearCashAssumptionsOverride()
     const state = useAppStore.getState()
     expect(state.cashAssumptions.manualOverrideEnabled).toBe(false)
     expect(state.cashAssumptions.manualUpdatedAt).toBeNull()
     expect(selectEffectiveCashAssumptions(state).source).toBe('default')
   })
 
-  it('手動値と既定値のcashフィールドは加算されない（置き換えのみ）', () => {
+  it('手動値と既定値のcashフィールドは加算されない（置き換えのみ）', async () => {
     // P0-PRIVACY-HOTFIX: INITIAL_CASHが0になったため、加算されていないことを
     // 検証するにはdefaultCashが非ゼロであることをテスト側で明示する必要がある。
     useAppStore.setState({ cash: 100 })
     const defaultCash = useAppStore.getState().cash
-    useAppStore.getState().setCashAssumptions({ cashDeposits: 10, standbyFunds: 20 })
+    await useAppStore.getState().setCashAssumptions({ cashDeposits: 10, standbyFunds: 20 })
     const eff = selectEffectiveCashAssumptions(useAppStore.getState())
     expect(eff.cash).toBe(10)
     expect(eff.cash).not.toBe(defaultCash + 10)
   })
 
-  it('P4.5-A008: clearCashAssumptionsOverride後はstale警告（isStale）も消える', () => {
+  it('P4.5-A008: clearCashAssumptionsOverride後はstale警告（isStale）も消える', async () => {
     const staleUpdatedAt = new Date(Date.now() - 8 * 24 * 60 * 60 * 1000).toISOString()
     useAppStore.setState({
       cashAssumptions: { cashDeposits: 1, standbyFunds: 2, manualOverrideEnabled: true, manualUpdatedAt: staleUpdatedAt },
     })
     expect(selectCashAssumptionsFreshness(useAppStore.getState()).isStale).toBe(true)
 
-    useAppStore.getState().clearCashAssumptionsOverride()
+    await useAppStore.getState().clearCashAssumptionsOverride()
     expect(selectCashAssumptionsFreshness(useAppStore.getState()).isStale).toBe(false)
   })
 
-  it('P4.5-A009: importCashAssumptionsでmanualOverrideEnabled=trueになり、既存値が置き換わる', () => {
-    useAppStore.getState().setCashAssumptions({ cashDeposits: 111, standbyFunds: 222 })
+  it('P4.5-A009: importCashAssumptionsでmanualOverrideEnabled=trueになり、既存値が置き換わる', async () => {
+    await useAppStore.getState().setCashAssumptions({ cashDeposits: 111, standbyFunds: 222 })
     expect(useAppStore.getState().cashAssumptions.cashDeposits).toBe(111)
 
-    useAppStore.getState().importCashAssumptions({ cashDeposits: 3_000_000, standbyFunds: 7_000_000, manualUpdatedAt: '2026-06-20T00:00:00.000Z' })
+    await useAppStore.getState().importCashAssumptions({ cashDeposits: 3_000_000, standbyFunds: 7_000_000, manualUpdatedAt: '2026-06-20T00:00:00.000Z' })
     const state = useAppStore.getState()
     expect(state.cashAssumptions.manualOverrideEnabled).toBe(true)
     expect(state.cashAssumptions.cashDeposits).toBe(3_000_000)
@@ -364,20 +364,20 @@ describe('useAppStore: cashAssumptions（資金前提の手動override）', () =
     expect(eff.source).toBe('manual')
   })
 
-  it('P4.5-A009: importCashAssumptionsはmanualUpdatedAtを現在時刻で上書きせず、渡された値をそのまま使う', () => {
-    useAppStore.getState().importCashAssumptions({ cashDeposits: 1, standbyFunds: 2, manualUpdatedAt: '2020-01-01T00:00:00.000Z' })
+  it('P4.5-A009: importCashAssumptionsはmanualUpdatedAtを現在時刻で上書きせず、渡された値をそのまま使う', async () => {
+    await useAppStore.getState().importCashAssumptions({ cashDeposits: 1, standbyFunds: 2, manualUpdatedAt: '2020-01-01T00:00:00.000Z' })
     expect(useAppStore.getState().cashAssumptions.manualUpdatedAt).toBe('2020-01-01T00:00:00.000Z')
   })
 
-  it('P4.5-A009: importCashAssumptionsにmanualUpdatedAt=nullを渡すとstale扱いになる', () => {
-    useAppStore.getState().importCashAssumptions({ cashDeposits: 1, standbyFunds: 2, manualUpdatedAt: null })
+  it('P4.5-A009: importCashAssumptionsにmanualUpdatedAt=nullを渡すとstale扱いになる', async () => {
+    await useAppStore.getState().importCashAssumptions({ cashDeposits: 1, standbyFunds: 2, manualUpdatedAt: null })
     const state = useAppStore.getState()
     expect(state.cashAssumptions.manualUpdatedAt).toBeNull()
     expect(selectCashAssumptionsFreshness(state).isStale).toBe(true)
   })
 
-  it('P4.5-A009: localStorageに反映される（persist.ts経由）', () => {
-    useAppStore.getState().importCashAssumptions({ cashDeposits: 500_000, standbyFunds: 600_000, manualUpdatedAt: '2026-07-01T00:00:00.000Z' })
+  it('P4.5-A009: localStorageに反映される（persist.ts経由）', async () => {
+    await useAppStore.getState().importCashAssumptions({ cashDeposits: 500_000, standbyFunds: 600_000, manualUpdatedAt: '2026-07-01T00:00:00.000Z' })
     const raw = store['v13_cash_assumptions']
     expect(raw).toBeDefined()
     const saved = JSON.parse(raw)
@@ -527,7 +527,7 @@ describe('useAppStore: portfolio snapshot（P4.5-A012b）', () => {
     const nowSpy = vi.spyOn(Date, 'now').mockReturnValue(nowMs)
 
     const importSetCountBefore = canonicalSetCount
-    expect(useAppStore.getState().importPortfolioSnapshot(exported))
+    expect(await useAppStore.getState().importPortfolioSnapshot(exported))
       .toMatchObject({ ok: true, code: 'SUCCESS' })
     expect(canonicalSetCount - importSetCountBefore).toBe(1)
     expect(canonicalRemoveCount).toBe(0)
@@ -574,7 +574,7 @@ describe('useAppStore: portfolio snapshot（P4.5-A012b）', () => {
     nowSpy.mockRestore()
   })
 
-  it('importPortfolioSnapshot happy path: holdings/trust/portfolioPolicy/cashAssumptions/csvImportedAtが反映される', () => {
+  it('importPortfolioSnapshot happy path: holdings/trust/portfolioPolicy/cashAssumptions/csvImportedAtが反映される', async () => {
     useAppStore.setState(s => ({
       holdings: [],
       trust: [{ ...testTrust, eval: 0 }],
@@ -602,7 +602,7 @@ describe('useAppStore: portfolio snapshot（P4.5-A012b）', () => {
     })
 
     const before = useAppStore.getState().system.analysisLastRunAt
-    const result = useAppStore.getState().importPortfolioSnapshot(snapshotJson)
+    const result = await useAppStore.getState().importPortfolioSnapshot(snapshotJson)
     expect(result.ok).toBe(true)
 
     const state = useAppStore.getState()
@@ -644,9 +644,9 @@ describe('useAppStore: portfolio snapshot（P4.5-A012b）', () => {
     })
   })
 
-  it('parse失敗時はstoreを変更しない', () => {
+  it('parse失敗時はstoreを変更しない', async () => {
     const before = useAppStore.getState()
-    const result = useAppStore.getState().importPortfolioSnapshot('{invalid json')
+    const result = await useAppStore.getState().importPortfolioSnapshot('{invalid json')
     expect(result.ok).toBe(false)
     const after = useAppStore.getState()
     expect(after.holdings).toEqual(before.holdings)
@@ -654,7 +654,7 @@ describe('useAppStore: portfolio snapshot（P4.5-A012b）', () => {
     expect(after.portfolioPolicy).toEqual(before.portfolioPolicy)
   })
 
-  it('未知のholding codeが含まれるとrejectされstoreを変更しない', () => {
+  it('未知のholding codeが含まれるとrejectされstoreを変更しない', async () => {
     useAppStore.setState(s => ({ holdings: [], trust: [], system: { ...s.system, csvLastImportedAt: null, csvImportProvenance: null } }))
     const before = useAppStore.getState()
     const snapshotJson = JSON.stringify({
@@ -667,14 +667,14 @@ describe('useAppStore: portfolio snapshot（P4.5-A012b）', () => {
       portfolioPolicy: null,
       cashAssumptions: null,
     })
-    const result = useAppStore.getState().importPortfolioSnapshot(snapshotJson)
+    const result = await useAppStore.getState().importPortfolioSnapshot(snapshotJson)
     expect(result.ok).toBe(false)
-    if (!result.ok) expect(result.error).toContain('UNKNOWN-CODE')
+    if (!result.ok && 'error' in result) expect(result.error).toContain('UNKNOWN-CODE')
     const after = useAppStore.getState()
     expect(after.holdings).toEqual(before.holdings)
   })
 
-  it('未知のtrust idが含まれるとrejectされstoreを変更しない', () => {
+  it('未知のtrust idが含まれるとrejectされstoreを変更しない', async () => {
     useAppStore.setState(s => ({ holdings: [], trust: [], system: { ...s.system, csvLastImportedAt: null, csvImportProvenance: null } }))
     const before = useAppStore.getState()
     const snapshotJson = JSON.stringify({
@@ -687,14 +687,14 @@ describe('useAppStore: portfolio snapshot（P4.5-A012b）', () => {
       portfolioPolicy: null,
       cashAssumptions: null,
     })
-    const result = useAppStore.getState().importPortfolioSnapshot(snapshotJson)
+    const result = await useAppStore.getState().importPortfolioSnapshot(snapshotJson)
     expect(result.ok).toBe(false)
-    if (!result.ok) expect(result.error).toContain('unknown-trust-id')
+    if (!result.ok && 'error' in result) expect(result.error).toContain('unknown-trust-id')
     const after = useAppStore.getState()
     expect(after.trust).toEqual(before.trust)
   })
 
-  it('import後にholdings/trust/policy/cash/originがcanonical v4へpersistされる', () => {
+  it('import後にholdings/trust/policy/cash/originがcanonical v4へpersistされる', async () => {
     useAppStore.setState(s => ({
       holdings: [],
       trust: [{ ...testTrust, eval: 0 }],
@@ -718,7 +718,7 @@ describe('useAppStore: portfolio snapshot（P4.5-A012b）', () => {
         manualOverrideEnabled: true, manualUpdatedAt: '2026-07-05T00:00:00.000Z',
       },
     })
-    const result = useAppStore.getState().importPortfolioSnapshot(snapshotJson)
+    const result = await useAppStore.getState().importPortfolioSnapshot(snapshotJson)
     expect(result.ok).toBe(true)
 
     const canonical = restoreCsvImportGeneration()
@@ -738,7 +738,7 @@ describe('useAppStore: portfolio snapshot（P4.5-A012b）', () => {
     expect(store['v10_csv_imported_at']).toBeUndefined()
   })
 
-  it('provenance不明legacy snapshotは既存operation timeを保持したままrejectされる', () => {
+  it('provenance不明legacy snapshotは既存operation timeを保持したままrejectされる', async () => {
     // beforeEachでcsvLastImportedAt='2026-07-01T00:00:00.000Z'が既にセットされている前提。
     // snapshot側がnull（export元端末がCSV未取込）だからといって、この端末が既に持つ
     // 保有データ鮮度の基準時刻を消してはいけない（過去は無条件上書きでnull化していたバグ）。
@@ -752,14 +752,14 @@ describe('useAppStore: portfolio snapshot（P4.5-A012b）', () => {
       portfolioPolicy: null,
       cashAssumptions: null,
     })
-    const result = useAppStore.getState().importPortfolioSnapshot(snapshotJson)
+    const result = await useAppStore.getState().importPortfolioSnapshot(snapshotJson)
     expect(result).toMatchObject({ ok: false, code: 'SNAPSHOT_PROVENANCE_UNKNOWN' })
     expect(useAppStore.getState().system.csvLastImportedAt).toBe('2026-07-01T00:00:00.000Z')
     // 既存localStorageの古いcsvImportedAtの削除は次チケット扱い（今回は書き込みしないだけ）
     expect(store['v10_csv_imported_at']).toBeUndefined()
   })
 
-  it('operation timeが双方nullでも、既存contentへlegacy unknownをsilent overwriteしない', () => {
+  it('operation timeが双方nullでも、既存contentへlegacy unknownをsilent overwriteしない', async () => {
     useAppStore.setState(s => ({ system: { ...s.system, csvLastImportedAt: null, csvImportProvenance: null } }))
     const snapshotJson = JSON.stringify({
       schemaVersion: 'portfolio-snapshot-1',
@@ -771,12 +771,12 @@ describe('useAppStore: portfolio snapshot（P4.5-A012b）', () => {
       portfolioPolicy: null,
       cashAssumptions: null,
     })
-    const result = useAppStore.getState().importPortfolioSnapshot(snapshotJson)
+    const result = await useAppStore.getState().importPortfolioSnapshot(snapshotJson)
     expect(result).toMatchObject({ ok: false, code: 'SNAPSHOT_PROVENANCE_UNKNOWN' })
     expect(useAppStore.getState().system.csvLastImportedAt).toBeNull()
   })
 
-  it('portfolio snapshot importはcsvSyncSummaryを書き換えない（CSV取込結果として偽装しない）', () => {
+  it('portfolio snapshot importはcsvSyncSummaryを書き換えない（CSV取込結果として偽装しない）', async () => {
     useAppStore.setState(s => ({
       holdings: [],
       trust: [{ ...testTrust, eval: 0 }],
@@ -797,13 +797,13 @@ describe('useAppStore: portfolio snapshot（P4.5-A012b）', () => {
       portfolioPolicy: null,
       cashAssumptions: null,
     })
-    const result = useAppStore.getState().importPortfolioSnapshot(snapshotJson)
+    const result = await useAppStore.getState().importPortfolioSnapshot(snapshotJson)
     expect(result.ok).toBe(true)
     expect(useAppStore.getState().system.csvSyncSummary).toBeNull()
     expect(store['v13_csv_sync_summary']).toBeUndefined()
   })
 
-  it('R3-F001: csvImportedAt=null snapshotはcommit時刻をCSV時刻へ合成せずimmediate/reloadともnull', () => {
+  it('R3-F001: csvImportedAt=null snapshotはcommit時刻をCSV時刻へ合成せずimmediate/reloadともnull', async () => {
     useAppStore.setState(s => ({
       holdings: [], trust: [], portfolioPolicy: { ...DEFAULT_PORTFOLIO_POLICY },
       cashAssumptions: { ...DEFAULT_CASH_ASSUMPTIONS },
@@ -815,7 +815,7 @@ describe('useAppStore: portfolio snapshot（P4.5-A012b）', () => {
       holdings: [], trust: [], portfolioPolicy: null, cashAssumptions: null,
     })
 
-    expect(useAppStore.getState().importPortfolioSnapshot(raw)).toMatchObject({ ok: true, code: 'SUCCESS' })
+    expect(await useAppStore.getState().importPortfolioSnapshot(raw)).toMatchObject({ ok: true, code: 'SUCCESS' })
     expect(useAppStore.getState().system.csvLastImportedAt).toBeNull()
     const physical = JSON.parse(store[CSV_IMPORT_GENERATION_KEY])
     expect(physical.manifest.schemaVersion).toBe(CSV_IMPORT_GENERATION_SCHEMA_V5)
@@ -824,7 +824,7 @@ describe('useAppStore: portfolio snapshot（P4.5-A012b）', () => {
     expect(restoreCsvImportedAt()).toBeNull()
   })
 
-  it('R3-F001: csvImportedAt非null snapshotはimmediate/canonical/reloadで同一値', () => {
+  it('R3-F001: csvImportedAt非null snapshotはimmediate/canonical/reloadで同一値', async () => {
     useAppStore.setState(s => ({
       holdings: [], trust: [],
       system: { ...s.system, csvLastImportedAt: null, csvImportProvenance: null, csvSyncSummary: null },
@@ -837,13 +837,13 @@ describe('useAppStore: portfolio snapshot（P4.5-A012b）', () => {
       source: 'manual', holdings: [], trust: [], portfolioPolicy: null, cashAssumptions: null,
     })
 
-    expect(useAppStore.getState().importPortfolioSnapshot(raw)).toMatchObject({ ok: true, code: 'SUCCESS' })
+    expect(await useAppStore.getState().importPortfolioSnapshot(raw)).toMatchObject({ ok: true, code: 'SUCCESS' })
     expect(useAppStore.getState().system.csvLastImportedAt).toBe(importedAt)
     expect(JSON.parse(store[CSV_IMPORT_GENERATION_KEY]).payload.csvImportedAt).toBe(importedAt)
     expect(restoreCsvImportedAt()).toBe(importedAt)
   })
 
-  it('R3-F006: stale store csvSyncSummaryをsnapshot canonicalへ混載せずstore/reloadもnull', () => {
+  it('R3-F006: stale store csvSyncSummaryをsnapshot canonicalへ混載せずstore/reloadもnull', async () => {
     const staleAt = '2026-06-01T00:00:00.000Z'
     useAppStore.setState(s => ({
       holdings: [], trust: [], portfolioPolicy: { ...DEFAULT_PORTFOLIO_POLICY },
@@ -863,7 +863,7 @@ describe('useAppStore: portfolio snapshot（P4.5-A012b）', () => {
       holdings: [], trust: [], portfolioPolicy: null, cashAssumptions: null,
     })
 
-    expect(useAppStore.getState().importPortfolioSnapshot(raw)).toMatchObject({ ok: true, code: 'SUCCESS' })
+    expect(await useAppStore.getState().importPortfolioSnapshot(raw)).toMatchObject({ ok: true, code: 'SUCCESS' })
     expect(useAppStore.getState().system.csvSyncSummary).toBeNull()
     expect(JSON.parse(store[CSV_IMPORT_GENERATION_KEY]).payload.syncSummary).toBeNull()
     expect(restoreCsvSyncSummary()).toBeNull()
@@ -917,10 +917,10 @@ describe('T9-A004-R3-FIX-C: present-invalid canonical manual persistence policy 
     return { ...storage }
   }
 
-  it('updateHolding leaves invalid bytes and every existing legacy generation byte-exact', () => {
+  it('updateHolding leaves invalid bytes and every existing legacy generation byte-exact', async () => {
     const before = seedInvalidWithLegacy()
 
-    useAppStore.getState().updateHolding('7777', { eval: 125_000 })
+    await useAppStore.getState().updateHolding('7777', { eval: 125_000 })
 
     expect(writes).toEqual([])
     expect(storage).toEqual(before)
@@ -928,24 +928,24 @@ describe('T9-A004-R3-FIX-C: present-invalid canonical manual persistence policy 
     expect(useAppStore.getState().system.error).not.toMatch(/JSON|parse|token/i)
   })
 
-  it('policy and cash mutations perform no legacy/canonical write while invalid is present', () => {
+  it('policy and cash mutations perform no legacy/canonical write while invalid is present', async () => {
     const before = seedInvalidWithLegacy()
 
-    useAppStore.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.12 })
-    useAppStore.getState().setCashAssumptions({ cashDeposits: 123, standbyFunds: 456 })
+    await useAppStore.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.12 })
+    await useAppStore.getState().setCashAssumptions({ cashDeposits: 123, standbyFunds: 456 })
 
     expect(writes).toEqual([])
     expect(storage).toEqual(before)
   })
 
-  it('explicit removal restores legacy persistence and valid repair restores coordinated canonical persistence', () => {
+  it('explicit removal restores legacy persistence and valid repair restores coordinated canonical persistence', async () => {
     seedInvalidWithLegacy()
     delete storage[CSV_IMPORT_GENERATION_KEY]
     writes.length = 0
 
-    useAppStore.getState().updateHolding('7777', { eval: 130_000 })
-    useAppStore.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.12 })
-    useAppStore.getState().setCashAssumptions({ cashDeposits: 500, standbyFunds: 600 })
+    await useAppStore.getState().updateHolding('7777', { eval: 130_000 })
+    await useAppStore.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.12 })
+    await useAppStore.getState().setCashAssumptions({ cashDeposits: 500, standbyFunds: 600 })
     expect(writes).toEqual(expect.arrayContaining([
       'v81_portfolio',
       'v81_trust',
@@ -969,7 +969,7 @@ describe('T9-A004-R3-FIX-C: present-invalid canonical manual persistence policy 
     const validBefore = storage[CSV_IMPORT_GENERATION_KEY]
     writes.length = 0
 
-    useAppStore.getState().updateHolding('7777', { eval: 140_000 })
+    await useAppStore.getState().updateHolding('7777', { eval: 140_000 })
 
     expect(storage[CSV_IMPORT_GENERATION_KEY]).not.toBe(validBefore)
     expect(writes).toEqual([CSV_IMPORT_GENERATION_KEY])
@@ -1131,8 +1131,8 @@ describe('R4-A002: policy/cash persistence result visibility', () => {
   it.each([
     actionCases[0],
     actionCases[1],
-  ])('$name reflects legacy persisted success without a system error', ({ legacyKey, invoke, assertInMemory }) => {
-    expect(() => invoke()).not.toThrow()
+  ])('$name reflects legacy persisted success without a system error', async ({ legacyKey, invoke, assertInMemory }) => {
+    await expect(invoke()).resolves.toMatchObject({ ok: true, code: 'SUCCESS' })
 
     assertInMemory()
     expectAnalysisCompleted()
@@ -1143,11 +1143,11 @@ describe('R4-A002: policy/cash persistence result visibility', () => {
     expect(useAppStore.getState().system).toMatchObject({ status: 'idle', error: null })
   })
 
-  it.each(actionCases)('$name reflects legacy failure without publishing input or analysis', ({ legacyKey, invoke }) => {
+  it.each(actionCases)('$name reflects legacy failure without publishing input or analysis', async ({ legacyKey, invoke }) => {
     const before = useAppStore.getState()
     setItem.mockImplementation(() => { throw new Error('quota exceeded') })
 
-    expect(() => invoke()).not.toThrow()
+    await expect(invoke()).resolves.toMatchObject({ ok: false, code: 'MANUAL_PERSISTENCE_ERROR' })
 
     expectPortfolioGenerationUnchanged(before)
     expect(useAppStore.getState().system).toMatchObject({ status: 'error', error: GENERIC_FAILURE })
@@ -1158,7 +1158,7 @@ describe('R4-A002: policy/cash persistence result visibility', () => {
     expect(setItem).not.toHaveBeenCalledWith(CSV_IMPORT_GENERATION_KEY, expect.any(String))
   })
 
-  it.each(actionCases)('$name reflects a canonical_committed race without publishing a generation', ({ invoke }) => {
+  it.each(actionCases)('$name reflects a canonical_committed race without publishing a generation', async ({ invoke }) => {
     const before = useAppStore.getState()
     const canonicalRaw = createValidCanonicalRaw()
     let canonicalReads = 0
@@ -1170,7 +1170,7 @@ describe('R4-A002: policy/cash persistence result visibility', () => {
       return canonicalRaw
     })
 
-    expect(() => invoke()).not.toThrow()
+    await expect(invoke()).resolves.toMatchObject({ ok: false, code: 'PORTFOLIO_GENERATION_CONFLICT' })
 
     expectPortfolioGenerationUnchanged(before)
     expect(canonicalReads).toBe(2)
@@ -1181,7 +1181,7 @@ describe('R4-A002: policy/cash persistence result visibility', () => {
     expect(useAppStore.getState().system.error).not.toBe(GENERIC_FAILURE)
   })
 
-  it.each(actionCases)('$name reflects a canonical_invalid race without publishing a generation', ({ invoke }) => {
+  it.each(actionCases)('$name reflects a canonical_invalid race without publishing a generation', async ({ invoke }) => {
     const before = useAppStore.getState()
     const invalidRaw = '{present-invalid'
     let canonicalReads = 0
@@ -1193,7 +1193,7 @@ describe('R4-A002: policy/cash persistence result visibility', () => {
       return invalidRaw
     })
 
-    expect(() => invoke()).not.toThrow()
+    await expect(invoke()).resolves.toMatchObject({ ok: false, code: 'MANUAL_PERSISTENCE_ERROR' })
 
     expectPortfolioGenerationUnchanged(before)
     expect(canonicalReads).toBe(2)
@@ -1202,12 +1202,12 @@ describe('R4-A002: policy/cash persistence result visibility', () => {
     expect(useAppStore.getState().system).toMatchObject({ status: 'error', error: CANONICAL_INVALID })
   })
 
-  it.each(actionCases)('$name reflects canonical invalid at action start before analysis and writes', ({ invoke }) => {
+  it.each(actionCases)('$name reflects canonical invalid at action start before analysis and writes', async ({ invoke }) => {
     const invalidRaw = '{present-invalid'
     storage[CSV_IMPORT_GENERATION_KEY] = invalidRaw
     const before = useAppStore.getState()
 
-    expect(() => invoke()).not.toThrow()
+    await expect(invoke()).resolves.toMatchObject({ ok: false, code: 'MANUAL_PERSISTENCE_ERROR' })
 
     expectPortfolioGenerationUnchanged(before)
     expect(storage[CSV_IMPORT_GENERATION_KEY]).toBe(invalidRaw)
@@ -1215,11 +1215,12 @@ describe('R4-A002: policy/cash persistence result visibility', () => {
     expect(useAppStore.getState().system).toMatchObject({ status: 'error', error: CANONICAL_INVALID })
   })
 
-  it('keeps the coordinated canonical replacement path for an existing committed generation', () => {
+  it('keeps the coordinated canonical replacement path for an existing committed generation', async () => {
     const canonicalRaw = createValidCanonicalRaw()
     storage[CSV_IMPORT_GENERATION_KEY] = canonicalRaw
 
-    expect(() => useAppStore.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.19 })).not.toThrow()
+    await expect(useAppStore.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.19 }))
+      .resolves.toMatchObject({ ok: true, code: 'SUCCESS' })
 
     expectAnalysisCompleted()
     expect(storage.v13_portfolio_policy).toBeUndefined()
@@ -1243,7 +1244,7 @@ describe('R4-A002: policy/cash persistence result visibility', () => {
   it.each([
     ['policy', () => useAppStore.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.18 })],
     ['cash', () => useAppStore.getState().setCashAssumptions({ cashDeposits: 7_777, standbyFunds: 8_888 })],
-  ])('R4-A004b: canonical v5 survives a nonbaseline %s replacement with identity v2 and baseline unchanged', (_name, invoke) => {
+  ])('R4-A004b: canonical v5 survives a nonbaseline %s replacement with identity v2 and baseline unchanged', async (_name, invoke) => {
     const state = useAppStore.getState()
     const baseline = { date: '2026-07-19', total: 0, evalById: {} }
     persistCsvImportTransaction({
@@ -1260,7 +1261,7 @@ describe('R4-A002: policy/cash persistence result visibility', () => {
     }, Date.now(), undefined, { schemaVersion: CSV_IMPORT_GENERATION_SCHEMA_V5 })
     setItem.mockClear()
 
-    invoke()
+    await invoke()
 
     const generation = restoreCsvImportGeneration()
     expect(generation).toMatchObject({
@@ -1290,7 +1291,7 @@ describe('R4-A002: policy/cash persistence result visibility', () => {
     [CSV_IMPORT_GENERATION_SCHEMA_V5, 2, 'cash', () => useAppStore.getState().setCashAssumptions({ cashDeposits: 7_777, standbyFunds: 8_888 })],
     [CSV_IMPORT_GENERATION_SCHEMA_V5, 2, 'holding', () => useAppStore.getState().updateHolding('7777', { eval: 123_456 })],
     [CSV_IMPORT_GENERATION_SCHEMA_V5, 2, 'trust', () => useAppStore.getState().updateTrust('test_fund', { eval: 654_321 })],
-  ] as const)('R4-A004c: current %s nonbaseline %s replacement preserves schema/identity v%s and baseline', (schemaVersion, identityVersion, _action, invoke) => {
+  ] as const)('R4-A004c: current %s nonbaseline %s replacement preserves schema/identity v%s and baseline', async (schemaVersion, identityVersion, _action, invoke) => {
     const state = useAppStore.getState()
     const baseline = { date: '2026-07-19', total: 1_000_000, evalById: { test_fund: 1_000_000 } }
     persistCsvImportTransaction({
@@ -1310,7 +1311,7 @@ describe('R4-A002: policy/cash persistence result visibility', () => {
     setItem.mockClear()
     removeItem.mockClear()
 
-    invoke()
+    await invoke()
 
     const afterRaw = storage[CSV_IMPORT_GENERATION_KEY]
     const afterEnvelope = JSON.parse(afterRaw)
@@ -1796,7 +1797,7 @@ describe('useAppStore: localStorageFreshness即時更新（P4.5-A013-T6a）', ()
     expect(JSON.parse(store['v81_portfolio']).savedAt).toBe(STALE_SAVED_AT)
   })
 
-  it('portfolio snapshot import成功: stale状態からでも同一ターンでfreshnessがfreshになり、csvSyncSummaryは変更されない', () => {
+  it('portfolio snapshot import成功: stale状態からでも同一ターンでfreshnessがfreshになり、csvSyncSummaryは変更されない', async () => {
     useAppStore.setState(s => ({
       holdings: [],
       trust: oldTrust.map(fund => ({ ...fund, eval: 0 })),
@@ -1814,7 +1815,7 @@ describe('useAppStore: localStorageFreshness即時更新（P4.5-A013-T6a）', ()
       portfolioPolicy: null,
       cashAssumptions: null,
     })
-    const result = useAppStore.getState().importPortfolioSnapshot(snapshotJson)
+    const result = await useAppStore.getState().importPortfolioSnapshot(snapshotJson)
     expect(result).toMatchObject({ ok: true })
     const state = useAppStore.getState()
     expect(state.system.localStorageFreshness?.portfolio.isStale).toBe(false)
@@ -1823,7 +1824,7 @@ describe('useAppStore: localStorageFreshness即時更新（P4.5-A013-T6a）', ()
     expect(state.system.csvSyncSummary).toBeNull()
   })
 
-  it('portfolio snapshot import失敗（未知の銘柄コード）: localStorageFreshnessは変更されない', () => {
+  it('portfolio snapshot import失敗（未知の銘柄コード）: localStorageFreshnessは変更されない', async () => {
     const snapshotJson = JSON.stringify({
       schemaVersion: 'portfolio-snapshot-1',
       exportedAt: '2026-07-11T00:00:00.000Z',
@@ -1834,7 +1835,7 @@ describe('useAppStore: localStorageFreshness即時更新（P4.5-A013-T6a）', ()
       portfolioPolicy: null,
       cashAssumptions: null,
     })
-    const result = useAppStore.getState().importPortfolioSnapshot(snapshotJson)
+    const result = await useAppStore.getState().importPortfolioSnapshot(snapshotJson)
     expect(result.ok).toBe(false)
     const state = useAppStore.getState()
     expect(state.system.localStorageFreshness).toEqual(STALE_FRESHNESS)
@@ -1937,9 +1938,9 @@ describe('useAppStore: importPortfolioSnapshot v2 full-sync（P4.5-A013-T7）', 
     }))
   }
 
-  it('v2既存個別株更新: eval/pnlPctは更新されるが、既存metadata(sector/mu/sigma/beta)は上書きされない', () => {
+  it('v2既存個別株更新: eval/pnlPctは更新されるが、既存metadata(sector/mu/sigma/beta)は上書きされない', async () => {
     const before = useAppStore.getState()
-    const result = useAppStore.getState().importPortfolioSnapshot(makeV2Snapshot())
+    const result = await useAppStore.getState().importPortfolioSnapshot(makeV2Snapshot())
     expect(result).toMatchObject({ ok: false, code: 'SNAPSHOT_OVERWRITE_BLOCKED' })
     const state = useAppStore.getState()
     const a = state.holdings.find(h => h.code === 'HOLD-A')!
@@ -1953,9 +1954,9 @@ describe('useAppStore: importPortfolioSnapshot v2 full-sync（P4.5-A013-T7）', 
     expect(state).toBe(before)
   })
 
-  it('v2新規個別株追加: snapshotにしかないcodeが安全なmetadataとともに新規追加される', () => {
+  it('v2新規個別株追加: snapshotにしかないcodeが安全なmetadataとともに新規追加される', async () => {
     setTrulyEmptySnapshotGeneration()
-    const result = useAppStore.getState().importPortfolioSnapshot(makeV2Snapshot())
+    const result = await useAppStore.getState().importPortfolioSnapshot(makeV2Snapshot())
     expect(result.ok).toBe(true)
     const state = useAppStore.getState()
     const created = state.holdings.find(h => h.code === 'HOLD-NEW')
@@ -1979,7 +1980,7 @@ describe('useAppStore: importPortfolioSnapshot v2 full-sync（P4.5-A013-T7）', 
     expect(created!.decision).not.toBe('BUY')
   })
 
-  it('v2 safe metadata: sector/mu/sigma/beta未指定の新規銘柄はT2と同じsafe defaultになる', () => {
+  it('v2 safe metadata: sector/mu/sigma/beta未指定の新規銘柄はT2と同じsafe defaultになる', async () => {
     setTrulyEmptySnapshotGeneration()
     const snapshot = makeV2Snapshot({
       holdings: [
@@ -1988,7 +1989,7 @@ describe('useAppStore: importPortfolioSnapshot v2 full-sync（P4.5-A013-T7）', 
         { code: 'HOLD-NEW2', name: 'metadata無し新規銘柄', eval: 30_000, pnlPct: 0 },
       ],
     })
-    const result = useAppStore.getState().importPortfolioSnapshot(snapshot)
+    const result = await useAppStore.getState().importPortfolioSnapshot(snapshot)
     expect(result.ok).toBe(true)
     const created = useAppStore.getState().holdings.find(h => h.code === 'HOLD-NEW2')!
     expect(created.sector).toBe('未分類')
@@ -1998,25 +1999,25 @@ describe('useAppStore: importPortfolioSnapshot v2 full-sync（P4.5-A013-T7）', 
     expect(created.beta).toBe(1.0)
   })
 
-  it('v2送信元から消えた個別株の同期: 受信端末だけに残るcodeは削除される（構成一致）', () => {
+  it('v2送信元から消えた個別株の同期: 受信端末だけに残るcodeは削除される（構成一致）', async () => {
     const before = useAppStore.getState()
-    const result = useAppStore.getState().importPortfolioSnapshot(makeV2Snapshot())
+    const result = await useAppStore.getState().importPortfolioSnapshot(makeV2Snapshot())
     expect(result).toMatchObject({ ok: false, code: 'SNAPSHOT_OVERWRITE_BLOCKED' })
     const state = useAppStore.getState()
     expect(state.holdings.find(h => h.code === 'HOLD-REMOVE')).toBeDefined()
     expect(state).toBe(before)
   })
 
-  it('v2 acquiredAt維持: 既存holdingのacquiredAtがある場合、snapshot側の値があっても優先されない', () => {
+  it('v2 acquiredAt維持: 既存holdingのacquiredAtがある場合、snapshot側の値があっても優先されない', async () => {
     const before = useAppStore.getState()
-    const result = useAppStore.getState().importPortfolioSnapshot(makeV2Snapshot())
+    const result = await useAppStore.getState().importPortfolioSnapshot(makeV2Snapshot())
     expect(result).toMatchObject({ ok: false, code: 'SNAPSHOT_OVERWRITE_BLOCKED' })
     const b = useAppStore.getState().holdings.find(h => h.code === 'HOLD-B')!
     expect(b.acquiredAt).toBe('2024-01-01')
     expect(useAppStore.getState()).toBe(before)
   })
 
-  it('v2 unknown trust: 未登録の投信idはsilent ignoreされずskippedTrustIdsとして報告され、trust masterに捏造されない', () => {
+  it('v2 unknown trust: 未登録の投信idはsilent ignoreされずskippedTrustIdsとして報告され、trust masterに捏造されない', async () => {
     setTrulyEmptySnapshotGeneration()
     const snapshot = makeV2Snapshot({
       trust: [
@@ -2024,7 +2025,7 @@ describe('useAppStore: importPortfolioSnapshot v2 full-sync（P4.5-A013-T7）', 
         { id: 'fund-unknown-on-device', eval: 999_999, pnlPct: 10 },
       ],
     })
-    const result = useAppStore.getState().importPortfolioSnapshot(snapshot)
+    const result = await useAppStore.getState().importPortfolioSnapshot(snapshot)
     expect(result.ok).toBe(true)
     if (result.ok) expect(result.skippedTrustIds).toEqual(['fund-unknown-on-device'])
     const state = useAppStore.getState()
@@ -2035,9 +2036,9 @@ describe('useAppStore: importPortfolioSnapshot v2 full-sync（P4.5-A013-T7）', 
     expect(state.trust).toHaveLength(2)
   })
 
-  it('v2再保有投信: eval=0だった登録済み投信がsnapshotで再度eval>0になる', () => {
+  it('v2再保有投信: eval=0だった登録済み投信がsnapshotで再度eval>0になる', async () => {
     setTrulyEmptySnapshotGeneration()
-    const result = useAppStore.getState().importPortfolioSnapshot(makeV2Snapshot())
+    const result = await useAppStore.getState().importPortfolioSnapshot(makeV2Snapshot())
     expect(result.ok).toBe(true)
     const resold = useAppStore.getState().trust.find(t => t.id === 'fund-resold')!
     expect(resold.eval).toBe(400_000)
@@ -2047,32 +2048,32 @@ describe('useAppStore: importPortfolioSnapshot v2 full-sync（P4.5-A013-T7）', 
     expect(resold.policy).toBe('JAPAN_SHORTTERM')
   })
 
-  it('malformed payload（壊れたJSON）はreject、storeは一切変更されない', () => {
+  it('malformed payload（壊れたJSON）はreject、storeは一切変更されない', async () => {
     const before = useAppStore.getState()
-    const result = useAppStore.getState().importPortfolioSnapshot('{not valid json')
+    const result = await useAppStore.getState().importPortfolioSnapshot('{not valid json')
     expect(result.ok).toBe(false)
     const after = useAppStore.getState()
     expect(after.holdings).toEqual(before.holdings)
     expect(after.trust).toEqual(before.trust)
   })
 
-  it('unknown schema（v1でもv2でもない）はreject、storeは一切変更されない', () => {
+  it('unknown schema（v1でもv2でもない）はreject、storeは一切変更されない', async () => {
     const snapshot = makeV2Snapshot({ schemaVersion: 'portfolio-snapshot-999' })
     const before = useAppStore.getState()
-    const result = useAppStore.getState().importPortfolioSnapshot(snapshot)
+    const result = await useAppStore.getState().importPortfolioSnapshot(snapshot)
     expect(result.ok).toBe(false)
     const after = useAppStore.getState()
     expect(after.holdings).toEqual(before.holdings)
     expect(after.trust).toEqual(before.trust)
   })
 
-  it('atomicity: 消滅率ガード超過で拒否された場合、holdings/trust/localStorage/freshness/csvSyncSummaryとも一切変更されない', () => {
+  it('atomicity: 消滅率ガード超過で拒否された場合、holdings/trust/localStorage/freshness/csvSyncSummaryとも一切変更されない', async () => {
     // 受信端末の3銘柄中、snapshotに1つも一致しない（消滅率100% > 50%閾値）
     const snapshot = makeV2Snapshot({
       holdings: [{ code: 'TOTALLY-DIFFERENT', name: '別銘柄', eval: 100, pnlPct: 0 }],
     })
     const beforeState = useAppStore.getState()
-    const result = useAppStore.getState().importPortfolioSnapshot(snapshot)
+    const result = await useAppStore.getState().importPortfolioSnapshot(snapshot)
     expect(result.ok).toBe(false)
     const after = useAppStore.getState()
     expect(after.holdings).toEqual(beforeState.holdings)
@@ -2083,33 +2084,33 @@ describe('useAppStore: importPortfolioSnapshot v2 full-sync（P4.5-A013-T7）', 
     expect(store['v81_trust']).toBeUndefined()
   })
 
-  it('古いsourceAsOfのsnapshotはoperation timeに関係なく拒否し、一切変更しない', () => {
+  it('古いsourceAsOfのsnapshotはoperation timeに関係なく拒否し、一切変更しない', async () => {
     const snapshot = makeV2Snapshot({
       csvImportedAt: '2026-07-20T00:00:00.000Z',
       csvImportProvenance: snapshotProvenance('2026-07-20T00:00:00.000Z', '2026-06-01T00:00:00.000Z', '2'),
     })
     const beforeState = useAppStore.getState()
-    const result = useAppStore.getState().importPortfolioSnapshot(snapshot)
+    const result = await useAppStore.getState().importPortfolioSnapshot(snapshot)
     expect(result.ok).toBe(false)
     const after = useAppStore.getState()
     expect(after.holdings).toEqual(beforeState.holdings)
     expect(after.trust).toEqual(beforeState.trust)
   })
 
-  it('newer authoritative sourceAsOf snapshotだけではnon-empty currentを上書きできない', () => {
+  it('newer authoritative sourceAsOf snapshotだけではnon-empty currentを上書きできない', async () => {
     const before = useAppStore.getState()
-    const result = useAppStore.getState().importPortfolioSnapshot(makeV2Snapshot({ csvImportedAt: '2026-07-10T00:00:00.000Z' }))
+    const result = await useAppStore.getState().importPortfolioSnapshot(makeV2Snapshot({ csvImportedAt: '2026-07-10T00:00:00.000Z' }))
     expect(result).toMatchObject({ ok: false, code: 'SNAPSHOT_OVERWRITE_BLOCKED' })
     expect(useAppStore.getState()).toBe(before)
   })
 
-  it('snapshot provenanceがnullならauthoritative currentを上書きできない', () => {
-    const result = useAppStore.getState().importPortfolioSnapshot(makeV2Snapshot({ csvImportedAt: null }))
+  it('snapshot provenanceがnullならauthoritative currentを上書きできない', async () => {
+    const result = await useAppStore.getState().importPortfolioSnapshot(makeV2Snapshot({ csvImportedAt: null }))
     expect(result).toMatchObject({ ok: false, code: 'SNAPSHOT_PROVENANCE_UNKNOWN' })
     expect(useAppStore.getState().system.csvLastImportedAt).toBe('2026-07-01T00:00:00.000Z')
   })
 
-  it('freshness即時更新: stale状態からv2 import成功で同一ターンにfreshになる', () => {
+  it('freshness即時更新: stale状態からv2 import成功で同一ターンにfreshになる', async () => {
     store['v81_portfolio'] = JSON.stringify({ data: baseHoldings, savedAt: Date.now() - 8 * 24 * 60 * 60 * 1000 })
     store['v81_trust'] = JSON.stringify({ data: baseTrust, savedAt: Date.now() - 8 * 24 * 60 * 60 * 1000 })
     useAppStore.setState(s => ({
@@ -2119,14 +2120,14 @@ describe('useAppStore: importPortfolioSnapshot v2 full-sync（P4.5-A013-T7）', 
       },
     }))
     setTrulyEmptySnapshotGeneration()
-    const result = useAppStore.getState().importPortfolioSnapshot(makeV2Snapshot())
+    const result = await useAppStore.getState().importPortfolioSnapshot(makeV2Snapshot())
     expect(result.ok).toBe(true)
     const freshness = useAppStore.getState().system.localStorageFreshness
     expect(freshness?.portfolio.isStale).toBe(false)
     expect(freshness?.trust.isStale).toBe(false)
   })
 
-  it('csvSyncSummary世代分離: v2 importは古いCSV summaryをsnapshot generationへ持ち越さない', () => {
+  it('csvSyncSummary世代分離: v2 importは古いCSV summaryをsnapshot generationへ持ち越さない', async () => {
     setTrulyEmptySnapshotGeneration()
     useAppStore.setState(s => ({
       system: {
@@ -2138,12 +2139,12 @@ describe('useAppStore: importPortfolioSnapshot v2 full-sync（P4.5-A013-T7）', 
         },
       },
     }))
-    const result = useAppStore.getState().importPortfolioSnapshot(makeV2Snapshot())
+    const result = await useAppStore.getState().importPortfolioSnapshot(makeV2Snapshot())
     expect(result.ok).toBe(true)
     expect(useAppStore.getState().system.csvSyncSummary).toBeNull()
   })
 
-  it('portfolioPolicy/cashAssumptionsがv2 snapshotに含まれる場合は反映される', () => {
+  it('portfolioPolicy/cashAssumptionsがv2 snapshotに含まれる場合は反映される', async () => {
     setTrulyEmptySnapshotGeneration()
     const snapshot = makeV2Snapshot({
       portfolioPolicy: { jpStockMaxRatio: 0.15 },
@@ -2152,7 +2153,7 @@ describe('useAppStore: importPortfolioSnapshot v2 full-sync（P4.5-A013-T7）', 
         manualOverrideEnabled: true, manualUpdatedAt: '2026-07-09T00:00:00.000Z',
       },
     })
-    const result = useAppStore.getState().importPortfolioSnapshot(snapshot)
+    const result = await useAppStore.getState().importPortfolioSnapshot(snapshot)
     expect(result.ok).toBe(true)
     const state = useAppStore.getState()
     expect(state.portfolioPolicy.jpStockMaxRatio).toBe(0.15)

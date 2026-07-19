@@ -199,25 +199,29 @@ const actionNames = [
   'importCashAssumptions',
 ] as const
 
-function invokeAllManualActions(): void {
+type ManualResultPromise = ReturnType<ReturnType<typeof useAppStore.getState>['updateHolding']>
+
+function invokeAllManualActions(): ManualResultPromise[] {
   const state = useAppStore.getState()
-  state.updateHolding(HOLDING_CODE, { eval: 999_001 })
-  state.updateTrust(TRUST_ID, { eval: 999_002 })
-  state.setPortfolioPolicy({ jpStockMaxRatio: 0.17 })
-  state.setCashAssumptions({ cashDeposits: 999_003, standbyFunds: 999_004 })
-  state.clearCashAssumptionsOverride()
-  state.importCashAssumptions({
-    cashDeposits: 999_005,
-    standbyFunds: 999_006,
-    manualUpdatedAt: '2026-07-19T01:00:00.000Z',
-  })
+  return [
+    state.updateHolding(HOLDING_CODE, { eval: 999_001 }),
+    state.updateTrust(TRUST_ID, { eval: 999_002 }),
+    state.setPortfolioPolicy({ jpStockMaxRatio: 0.17 }),
+    state.setCashAssumptions({ cashDeposits: 999_003, standbyFunds: 999_004 }),
+    state.clearCashAssumptionsOverride(),
+    state.importCashAssumptions({
+      cashDeposits: 999_005,
+      standbyFunds: 999_006,
+      manualUpdatedAt: '2026-07-19T01:00:00.000Z',
+    }),
+  ]
 }
 
 let notifications = 0
 let unsubscribe: (() => void) | null = null
 let warningSpy: ReturnType<typeof vi.spyOn>
 
-function assertSixActionsBlockedInActualOperation(): void {
+function assertSixActionsBlockedInActualOperation(): ManualResultPromise[] {
   const rootBefore = useAppStore.getState()
   const cacheBefore = readLastAppliedSnapshotGenerationForTest()
   const countsBefore = { ...storageCounts }
@@ -225,7 +229,7 @@ function assertSixActionsBlockedInActualOperation(): void {
   const notificationsBefore = notifications
   const warningsBefore = warningSpy.mock.calls.length
 
-  invokeAllManualActions()
+  const resultPromises = invokeAllManualActions()
 
   expect(useAppStore.getState()).toBe(rootBefore)
   expect(readLastAppliedSnapshotGenerationForTest()).toBe(cacheBefore)
@@ -236,9 +240,17 @@ function assertSixActionsBlockedInActualOperation(): void {
     actionNames.map(name => `[useAppStore] rejected portfolio operation while another operation is active: ${name}`),
   )
   expect(acquirePortfolioOperation('manual')).toBeNull()
+  return resultPromises
 }
 
-function expectOwnerReleasedAndManualRetrySucceeds(): void {
+async function expectSixBusy(resultPromises: ManualResultPromise[]): Promise<void> {
+  const results = await Promise.all(resultPromises)
+  expect(results.map(result => ({ operation: result.operation, code: result.code }))).toEqual(
+    actionNames.map(operation => ({ operation, code: 'LOCAL_OPERATION_BUSY' })),
+  )
+}
+
+async function expectOwnerReleasedAndManualRetrySucceeds(): Promise<void> {
   const probe = acquirePortfolioOperation('manual')
   expect(probe).not.toBeNull()
   if (probe) expect(releasePortfolioOperation(probe)).toBe(true)
@@ -246,7 +258,8 @@ function expectOwnerReleasedAndManualRetrySucceeds(): void {
     useAppStore.setState({ holdings: [{ ...TEST_HOLDING }] })
   }
   const writesBefore = storageCounts.set
-  useAppStore.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.17 })
+  await expect(useAppStore.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.17 }))
+    .resolves.toMatchObject({ ok: true, operation: 'setPortfolioPolicy', code: 'SUCCESS' })
   expect(useAppStore.getState().portfolioPolicy.jpStockMaxRatio).toBe(0.17)
   expect(storageCounts.set).toBeGreaterThan(writesBefore)
 }
@@ -296,14 +309,14 @@ describe('RA-006-REAUDIT-F004 actual operation phase matrix', () => {
 
     expect(settled).toBe(false)
     expect(loadProbe.calls).toBe(1)
-    assertSixActionsBlockedInActualOperation()
+    await expectSixBusy(assertSixActionsBlockedInActualOperation())
 
     gate.resolve(publishedData())
     await outer
     expect(settled).toBe(true)
     expect(useAppStore.getState().system).toMatchObject({ status: 'success', error: null })
     expect(analysisProbe.calls).toBeGreaterThan(0)
-    expectOwnerReleasedAndManualRetrySucceeds()
+    await expectOwnerReleasedAndManualRetrySucceeds()
   })
 
   it('public CSV remains in actual READING while File.arrayBuffer is pending', async () => {
@@ -317,14 +330,14 @@ describe('RA-006-REAUDIT-F004 actual operation phase matrix', () => {
     await Promise.resolve()
 
     expect(settled).toBe(false)
-    assertSixActionsBlockedInActualOperation()
+    await expectSixBusy(assertSixActionsBlockedInActualOperation())
 
     gate.resolve(new TextEncoder().encode(VALID_CSV).buffer)
     const result = await outer
     expect(result).toMatchObject({ ok: true, code: 'SUCCESS' })
     expect(storage[CANONICAL_KEY]).toBeDefined()
     expect(useAppStore.getState().holdings.find(item => item.code === HOLDING_CODE)?.eval).toBe(150_000)
-    expectOwnerReleasedAndManualRetrySucceeds()
+    await expectOwnerReleasedAndManualRetrySucceeds()
   })
 
   it.each(['ANALYZING', 'PREPARED'] as const)(
@@ -332,15 +345,17 @@ describe('RA-006-REAUDIT-F004 actual operation phase matrix', () => {
     async targetPhase => {
       let phaseEvidence = 0
       let originalAnalysisCallsAfterPhase = 0
+      let blockedResults: ManualResultPromise[] = []
       setPortfolioGenerationPhaseObserverForTest((origin, phase) => {
         if (origin !== 'csv' || phase !== targetPhase) return
         phaseEvidence += 1
         const analysisBefore = analysisProbe.calls
-        assertSixActionsBlockedInActualOperation()
+        blockedResults = assertSixActionsBlockedInActualOperation()
         originalAnalysisCallsAfterPhase = analysisBefore
       })
 
       const result = await useAppStore.getState().importCsv(csvFile())
+      await expectSixBusy(blockedResults)
 
       expect(result).toMatchObject({ ok: true, code: 'SUCCESS' })
       expect(phaseEvidence).toBe(1)
@@ -350,11 +365,11 @@ describe('RA-006-REAUDIT-F004 actual operation phase matrix', () => {
       }
       expect(storage[CANONICAL_KEY]).toBeDefined()
       expect(useAppStore.getState().holdings.find(item => item.code === HOLDING_CODE)?.eval).toBe(150_000)
-      expectOwnerReleasedAndManualRetrySucceeds()
+      await expectOwnerReleasedAndManualRetrySucceeds()
     },
   )
 
-  it('public snapshot reaches its actual ANALYZING transaction and blocks all six actions', () => {
+  it('public snapshot reaches its actual ANALYZING transaction and blocks all six actions', async () => {
     resetStore({ empty: true })
     useAppStore.setState({ holdings: [{ ...TEST_HOLDING, eval: 321_000 }], trust: [] })
     const snapshot = useAppStore.getState().exportPortfolioSnapshot()
@@ -365,20 +380,22 @@ describe('RA-006-REAUDIT-F004 actual operation phase matrix', () => {
     storageCounts.remove = 0
     notifications = 0
     let phaseEvidence = 0
+    let blockedResults: ManualResultPromise[] = []
     setPortfolioGenerationPhaseObserverForTest((origin, phase) => {
       if (origin !== 'snapshot' || phase !== 'ANALYZING') return
       phaseEvidence += 1
-      assertSixActionsBlockedInActualOperation()
+      blockedResults = assertSixActionsBlockedInActualOperation()
     })
 
-    const result = useAppStore.getState().importPortfolioSnapshot(snapshot)
+    const result = await useAppStore.getState().importPortfolioSnapshot(snapshot)
+    await expectSixBusy(blockedResults)
 
     expect(result).toMatchObject({ ok: true, code: 'SUCCESS' })
     expect(phaseEvidence).toBe(1)
     expect(analysisProbe.calls).toBeGreaterThan(0)
     expect(storage[CANONICAL_KEY]).toBeDefined()
     expect(useAppStore.getState().holdings.find(item => item.code === HOLDING_CODE)?.eval).toBe(321_000)
-    expectOwnerReleasedAndManualRetrySucceeds()
+    await expectOwnerReleasedAndManualRetrySucceeds()
   })
 
   it('test seams are disabled after reset and do not observe or inject normal operations', async () => {
@@ -390,6 +407,6 @@ describe('RA-006-REAUDIT-F004 actual operation phase matrix', () => {
 
     expect(result).toMatchObject({ ok: true, code: 'SUCCESS' })
     expect(phaseCalls).toBe(0)
-    expectOwnerReleasedAndManualRetrySucceeds()
+    await expectOwnerReleasedAndManualRetrySucceeds()
   })
 })

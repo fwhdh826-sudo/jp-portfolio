@@ -11,7 +11,116 @@ import { serializeCashAssumptionsExport, parseCashAssumptionsImport, buildExport
 import { colors, radius, spacing } from '../../theme/tokens'
 import { typography } from '../../theme/typography'
 import type { CsvImportProvenance, CsvSyncSummary } from '../../types'
-import type { CsvImportOptions, CsvImportResult } from '../../store/useAppStore'
+import type { CsvImportOptions, CsvImportResult, PortfolioSnapshotImportResult } from '../../store/useAppStore'
+import type { ManualMutationResult } from '../../store/portfolioOperationResult'
+
+export type PendingPortfolioOperation =
+  | 'importPortfolioSnapshot'
+  | 'setPortfolioPolicy'
+  | 'setCashAssumptions'
+  | 'clearCashAssumptionsOverride'
+  | 'importCashAssumptions'
+  | null
+
+export interface PortfolioOperationFeedback {
+  tone: 'success' | 'info' | 'error'
+  message: string
+}
+
+export function createPortfolioOperationSingleFlight() {
+  let active = false
+  return {
+    async run<T>(task: () => Promise<T>): Promise<T | null> {
+      if (active) return null
+      active = true
+      try {
+        return await task()
+      } finally {
+        active = false
+      }
+    },
+  }
+}
+
+function coordinationFailureMessage(code: string): string {
+  switch (code) {
+    case 'LOCAL_OPERATION_BUSY':
+      return '別の処理が進行中です。完了後に再試行してください。'
+    case 'PORTFOLIO_GENERATION_CONFLICT':
+      return '保存世代が競合しました。画面を再読み込みしてから再試行してください。'
+    default:
+      return '処理を安全に完了できませんでした。再読み込み後に再試行してください。'
+  }
+}
+
+export function manualMutationFeedback(result: ManualMutationResult): PortfolioOperationFeedback {
+  if (result.ok) {
+    return result.code === 'NO_CHANGE'
+      ? { tone: 'info', message: '変更はありません。' }
+      : { tone: 'success', message: '変更を保存しました。' }
+  }
+  switch (result.code) {
+    case 'MANUAL_ANALYSIS_ERROR':
+      return { tone: 'error', message: '再計算に失敗しました。状態は変更されていません。' }
+    case 'MANUAL_PERSISTENCE_ERROR':
+      return { tone: 'error', message: '変更を保存できませんでした。再読み込み後に再試行してください。' }
+    case 'MANUAL_PUBLISH_ERROR':
+      return { tone: 'error', message: '保存後の画面反映に失敗しました。画面を再読み込みしてください。' }
+    default:
+      return { tone: 'error', message: coordinationFailureMessage(result.code) }
+  }
+}
+
+export function snapshotImportFeedback(result: PortfolioSnapshotImportResult): PortfolioOperationFeedback {
+  if (result.ok) {
+    return result.code === 'DUPLICATE_SNAPSHOT'
+      ? { tone: 'info', message: '同じsnapshot generationは取込済みです。データは変更していません。' }
+      : { tone: 'success', message: 'snapshotをインポートしました。' }
+  }
+  return {
+    tone: 'error',
+    message: 'error' in result ? result.error : coordinationFailureMessage(result.code),
+  }
+}
+
+export async function executeManualMutationUiFlow(
+  operation: Exclude<PendingPortfolioOperation, 'importPortfolioSnapshot' | null>,
+  action: () => Promise<ManualMutationResult>,
+  setPending: (operation: PendingPortfolioOperation) => void,
+  setFeedback: (feedback: PortfolioOperationFeedback | null) => void,
+): Promise<ManualMutationResult | null> {
+  setPending(operation)
+  setFeedback(null)
+  try {
+    const result = await action()
+    setFeedback(manualMutationFeedback(result))
+    return result
+  } catch {
+    setFeedback({ tone: 'error', message: '処理に失敗しました。再読み込み後に再試行してください。' })
+    return null
+  } finally {
+    setPending(null)
+  }
+}
+
+export async function executeSnapshotImportUiFlow(
+  action: () => Promise<PortfolioSnapshotImportResult>,
+  setPending: (operation: PendingPortfolioOperation) => void,
+  setFeedback: (feedback: PortfolioOperationFeedback | null) => void,
+): Promise<PortfolioSnapshotImportResult | null> {
+  setPending('importPortfolioSnapshot')
+  setFeedback(null)
+  try {
+    const result = await action()
+    setFeedback(snapshotImportFeedback(result))
+    return result
+  } catch {
+    setFeedback({ tone: 'error', message: 'snapshot取込に失敗しました。再読み込み後に再試行してください。' })
+    return null
+  } finally {
+    setPending(null)
+  }
+}
 
 // ── データソースラベル ────────────────────────────────────────
 const SOURCE_LABELS: Record<string, string> = {
@@ -374,6 +483,9 @@ function CashAssumptionsSection({ sectionTitleStyle }: { sectionTitleStyle: CSSP
   const [importInput, setImportInput] = useState('')
   const [importError, setImportError] = useState<string | null>(null)
   const [importSuccess, setImportSuccess] = useState(false)
+  const [operationFeedback, setOperationFeedback] = useState<PortfolioOperationFeedback | null>(null)
+  const [pendingOperation, setPendingOperation] = useState<PendingPortfolioOperation>(null)
+  const singleFlightRef = useRef(createPortfolioOperationSingleFlight())
 
   // ストア側の実効値が変わったとき（初期化復元・他タブでの解除操作等）に入力欄も追従させる
   useEffect(() => {
@@ -386,12 +498,29 @@ function CashAssumptionsSection({ sectionTitleStyle }: { sectionTitleStyle: CSSP
   const parsedStandby  = Math.max(0, Math.round(Number(standbyFundsInput) || 0))
   const cashTotalPreview = parsedDeposits + parsedStandby
 
-  const handleSave = () => {
-    setCashAssumptions({ cashDeposits: parsedDeposits, standbyFunds: parsedStandby })
+  const runManualAction = async (
+    operation: Exclude<PendingPortfolioOperation, 'importPortfolioSnapshot' | null>,
+    action: () => Promise<ManualMutationResult>,
+  ) => {
+    return singleFlightRef.current.run(() =>
+      executeManualMutationUiFlow(
+        operation,
+        action,
+        setPendingOperation,
+        setOperationFeedback,
+      ),
+    )
   }
 
-  const handleClear = () => {
-    clearOverride()
+  const handleSave = async () => {
+    await runManualAction(
+      'setCashAssumptions',
+      () => setCashAssumptions({ cashDeposits: parsedDeposits, standbyFunds: parsedStandby }),
+    )
+  }
+
+  const handleClear = async () => {
+    await runManualAction('clearCashAssumptionsOverride', clearOverride)
   }
 
   // P4.5-A009: エクスポート（保存はしない。表示用の文字列を生成するのみ）
@@ -417,17 +546,21 @@ function CashAssumptionsSection({ sectionTitleStyle }: { sectionTitleStyle: CSSP
 
   // P4.5-A009: 貼り付けられたJSONを検証し、有効な場合のみimportする。
   // 不正な入力ではcashAssumptionsを一切変更しない（既存値を維持したままエラー表示のみ）。
-  const handleImport = () => {
+  const handleImport = async () => {
     const result = parseCashAssumptionsImport(importInput)
     if (!result.ok) {
       setImportError(result.error)
       setImportSuccess(false)
       return
     }
-    importCashAssumptionsAction(result.data)
+    const mutationResult = await runManualAction(
+      'importCashAssumptions',
+      () => importCashAssumptionsAction(result.data),
+    )
+    const imported = mutationResult?.ok === true && mutationResult.code === 'SUCCESS'
     setImportError(null)
-    setImportSuccess(true)
-    setImportInput('')
+    setImportSuccess(imported)
+    if (mutationResult?.ok) setImportInput('')
   }
 
   const inputStyle: CSSProperties = {
@@ -540,13 +673,14 @@ function CashAssumptionsSection({ sectionTitleStyle }: { sectionTitleStyle: CSSP
           <button
             className="refresh-btn"
             onClick={handleSave}
+            disabled={pendingOperation !== null}
             style={{ flex: '1 1 auto', justifyContent: 'center' }}
           >
-            保存
+            {pendingOperation === 'setCashAssumptions' ? '保存中…' : '保存'}
           </button>
           <button
             onClick={handleClear}
-            disabled={!cashAssumptions.manualOverrideEnabled}
+            disabled={!cashAssumptions.manualOverrideEnabled || pendingOperation !== null}
             style={{
               ...typography.bodySmall,
               padding: `${spacing[1.5]} ${spacing[3]}`,
@@ -554,13 +688,28 @@ function CashAssumptionsSection({ sectionTitleStyle }: { sectionTitleStyle: CSSP
               border: `1px solid var(--color-border-default)`,
               background: 'var(--color-surface)',
               color: cashAssumptions.manualOverrideEnabled ? colors.textPrimary : colors.textMuted,
-              cursor: cashAssumptions.manualOverrideEnabled ? 'pointer' : 'default',
+              cursor: cashAssumptions.manualOverrideEnabled && pendingOperation === null ? 'pointer' : 'default',
               flex: '1 1 auto',
             }}
           >
-            手動入力を解除（既定値に戻す）
+            {pendingOperation === 'clearCashAssumptionsOverride'
+              ? '解除中…'
+              : '手動入力を解除（既定値に戻す）'}
           </button>
         </div>
+
+        {operationFeedback && (
+          <div style={{
+            ...typography.caption,
+            color: operationFeedback.tone === 'error'
+              ? 'var(--color-sell-text)'
+              : operationFeedback.tone === 'success'
+                ? 'var(--color-buy-text)'
+                : 'var(--color-wait-text)',
+          }}>
+            {operationFeedback.message}
+          </div>
+        )}
 
         <div style={{ ...typography.caption, color: colors.textMuted, display: 'flex', flexDirection: 'column', gap: spacing[1] }}>
           <span>CSVに含まれない他金融機関の資産を反映できます。</span>
@@ -661,18 +810,18 @@ function CashAssumptionsSection({ sectionTitleStyle }: { sectionTitleStyle: CSSP
             />
             <button
               onClick={handleImport}
-              disabled={!importInput.trim()}
+              disabled={!importInput.trim() || pendingOperation !== null}
               style={{
                 ...typography.bodySmall,
                 padding: `${spacing[1.5]} ${spacing[3]}`,
                 borderRadius: radius.md,
                 border: `1px solid var(--color-border-default)`,
                 background: 'var(--color-surface)',
-                color: importInput.trim() ? colors.textPrimary : colors.textMuted,
-                cursor: importInput.trim() ? 'pointer' : 'default',
+                color: importInput.trim() && pendingOperation === null ? colors.textPrimary : colors.textMuted,
+                cursor: importInput.trim() && pendingOperation === null ? 'pointer' : 'default',
               }}
             >
-              インポート
+              {pendingOperation === 'importCashAssumptions' ? 'インポート中…' : 'インポート'}
             </button>
             {importError && (
               <div style={{ ...typography.caption, color: 'var(--color-sell-text)' }}>
@@ -706,6 +855,9 @@ function PortfolioSnapshotSyncSection({ sectionTitleStyle }: { sectionTitleStyle
   const [importError, setImportError] = useState<string | null>(null)
   const [importSuccess, setImportSuccess] = useState(false)
   const [importDuplicate, setImportDuplicate] = useState(false)
+  const [operationFeedback, setOperationFeedback] = useState<PortfolioOperationFeedback | null>(null)
+  const [pendingOperation, setPendingOperation] = useState<PendingPortfolioOperation>(null)
+  const singleFlightRef = useRef(createPortfolioOperationSingleFlight())
   // P4.5-A013-T7: v2でtrust masterに未登録のためskipされた投信IDを非サイレントに警告表示する
   const [importSkippedTrustIds, setImportSkippedTrustIds] = useState<string[]>([])
 
@@ -726,10 +878,22 @@ function PortfolioSnapshotSyncSection({ sectionTitleStyle }: { sectionTitleStyle
 
   // 不正な入力ではstore/localStorageを一切変更しない（importPortfolioSnapshot側の
   // 全体reject方式に委譲。ここでは成否のみを受け取って表示を切り替える）。
-  const handleImport = () => {
-    const result = importPortfolioSnapshot(importInput)
+  const handleImport = async () => {
+    const result = await singleFlightRef.current.run(() =>
+      executeSnapshotImportUiFlow(
+        () => importPortfolioSnapshot(importInput),
+        setPendingOperation,
+        setOperationFeedback,
+      ),
+    )
+    if (result === null) {
+      setImportSuccess(false)
+      setImportDuplicate(false)
+      setImportSkippedTrustIds([])
+      return
+    }
     if (!result.ok) {
-      setImportError(result.error)
+      setImportError('error' in result ? result.error : null)
       setImportSuccess(false)
       setImportDuplicate(false)
       setImportSkippedTrustIds([])
@@ -853,19 +1017,24 @@ function PortfolioSnapshotSyncSection({ sectionTitleStyle }: { sectionTitleStyle
           />
           <button
             onClick={handleImport}
-            disabled={!importInput.trim()}
+            disabled={!importInput.trim() || pendingOperation !== null}
             style={{
               ...typography.bodySmall,
               padding: `${spacing[1.5]} ${spacing[3]}`,
               borderRadius: radius.md,
               border: `1px solid var(--color-border-default)`,
               background: 'var(--color-surface)',
-              color: importInput.trim() ? colors.textPrimary : colors.textMuted,
-              cursor: importInput.trim() ? 'pointer' : 'default',
+              color: importInput.trim() && pendingOperation === null ? colors.textPrimary : colors.textMuted,
+              cursor: importInput.trim() && pendingOperation === null ? 'pointer' : 'default',
             }}
           >
-            インポート
+            {pendingOperation === 'importPortfolioSnapshot' ? 'インポート中…' : 'インポート'}
           </button>
+          {operationFeedback && operationFeedback.tone === 'error' && !importError && (
+            <div style={{ ...typography.caption, color: 'var(--color-sell-text)' }}>
+              ✗ {operationFeedback.message}
+            </div>
+          )}
           {importError && (
             <div style={{ ...typography.caption, color: 'var(--color-sell-text)', display: 'flex', flexDirection: 'column', gap: spacing[0.5] }}>
               <span>✗ {importError}</span>
@@ -919,6 +1088,9 @@ export function T9_Settings() {
   const isStale           = useAppStore(selectIsStale)
   const portfolioPolicy   = useAppStore(s => s.portfolioPolicy)
   const setPortfolioPolicy = useAppStore(s => s.setPortfolioPolicy)
+  const [pendingOperation, setPendingOperation] = useState<PendingPortfolioOperation>(null)
+  const [policyFeedback, setPolicyFeedback] = useState<PortfolioOperationFeedback | null>(null)
+  const singleFlightRef = useRef(createPortfolioOperationSingleFlight())
 
   const isLoading = system.status === 'loading'
 
@@ -930,6 +1102,17 @@ export function T9_Settings() {
   const handleRefresh = useCallback(() => {
     void refreshAllData()
   }, [refreshAllData])
+
+  const handlePortfolioPolicy = useCallback(async (jpStockMaxRatio: number) => {
+    await singleFlightRef.current.run(() =>
+      executeManualMutationUiFlow(
+        'setPortfolioPolicy',
+        () => setPortfolioPolicy({ ...portfolioPolicy, jpStockMaxRatio }),
+        setPendingOperation,
+        setPolicyFeedback,
+      ),
+    )
+  }, [portfolioPolicy, setPortfolioPolicy])
 
   const panelStyle = {
     padding: spacing[4],
@@ -998,7 +1181,8 @@ export function T9_Settings() {
             {JP_STOCK_RATIO_OPTIONS.map(opt => (
               <button
                 key={opt.value}
-                onClick={() => setPortfolioPolicy({ ...portfolioPolicy, jpStockMaxRatio: opt.value })}
+                onClick={() => handlePortfolioPolicy(opt.value)}
+                disabled={pendingOperation !== null}
                 style={{
                   ...typography.bodySmall,
                   padding:       `${spacing[1.5]} ${spacing[3]}`,
@@ -1014,6 +1198,24 @@ export function T9_Settings() {
               </button>
             ))}
           </div>
+          {pendingOperation === 'setPortfolioPolicy' && (
+            <div style={{ ...typography.caption, color: colors.textMuted, marginTop: spacing[2] }}>
+              方針を保存中…
+            </div>
+          )}
+          {policyFeedback && (
+            <div style={{
+              ...typography.caption,
+              marginTop: spacing[2],
+              color: policyFeedback.tone === 'error'
+                ? 'var(--color-sell-text)'
+                : policyFeedback.tone === 'success'
+                  ? 'var(--color-buy-text)'
+                  : 'var(--color-wait-text)',
+            }}>
+              {policyFeedback.message}
+            </div>
+          )}
           <div style={{ ...typography.caption, color: colors.textMuted, marginTop: spacing[2] }}>
             国内個別株の最大保有比率（標準: 10%）。上限超過時は新規BUYを抑制し、超過分は長期資産優先で再配分します。
           </div>

@@ -204,7 +204,7 @@ describe('RA-005-REAUDIT-FIX: public snapshot future metadata boundary', () => {
     },
   ]
 
-  it.each(futureCases)('$label rejects before every observable side effect and permits a valid retry', ({ raw, expectedError }) => {
+  it.each(futureCases)('$label rejects before every observable side effect and permits a valid retry', async ({ raw, expectedError }) => {
     const before = useAppStore.getState()
     const beforeRefs = {
       holdings: before.holdings,
@@ -215,7 +215,7 @@ describe('RA-005-REAUDIT-FIX: public snapshot future metadata boundary', () => {
     let subscriberCount = 0
     const unsubscribe = useAppStore.subscribe(() => { subscriberCount += 1 })
 
-    const result = useAppStore.getState().importPortfolioSnapshot(raw())
+    const result = await useAppStore.getState().importPortfolioSnapshot(raw())
     unsubscribe()
 
     expect(result).toEqual({
@@ -239,7 +239,7 @@ describe('RA-005-REAUDIT-FIX: public snapshot future metadata boundary', () => {
     expect(useAppStore.getState().system.csvSyncSummary).toBeNull()
     expect(storage[CSV_IMPORT_GENERATION_KEY]).toBeUndefined()
 
-    const retry = useAppStore.getState().importPortfolioSnapshot(snapshotRaw({
+    const retry = await useAppStore.getState().importPortfolioSnapshot(snapshotRaw({
       csvImportedAt: NOW_ISO,
       csvImportProvenance: provenance(),
       code: 'RA005-RETRY',
@@ -254,8 +254,8 @@ describe('RA-005-REAUDIT-FIX: public snapshot future metadata boundary', () => {
     ['exact analysisNow', NOW_ISO, provenance()],
     ['stale past metadata', PAST_ISO, provenance({ importedAt: PAST_ISO, sourceAsOf: PAST_ISO })],
     ['null metadata', null, null],
-  ] as const)('%s reaches the normal empty-target policy', (_label, csvImportedAt, csvImportProvenance) => {
-    const result = useAppStore.getState().importPortfolioSnapshot(snapshotRaw({
+  ] as const)('%s reaches the normal empty-target policy', async (_label, csvImportedAt, csvImportProvenance) => {
+    const result = await useAppStore.getState().importPortfolioSnapshot(snapshotRaw({
       csvImportedAt,
       csvImportProvenance,
       code: `RA005-${_label}`,
@@ -275,7 +275,7 @@ describe('RA-005-REAUDIT-FIX: public snapshot future metadata boundary', () => {
     let subscriberCount = 0
     const unsubscribe = useAppStore.subscribe(() => { subscriberCount += 1 })
 
-    const rejected = useAppStore.getState().importPortfolioSnapshot(futureRaw)
+    const rejected = await useAppStore.getState().importPortfolioSnapshot(futureRaw)
     unsubscribe()
 
     expect(rejected).toMatchObject({ ok: false, code: 'INVALID_SNAPSHOT_PROVENANCE' })
@@ -288,7 +288,7 @@ describe('RA-005-REAUDIT-FIX: public snapshot future metadata boundary', () => {
       useAppStore.getState().system.csvSyncSummary,
     ]).not.toContain(FUTURE_ISO)
 
-    const validRetry = useAppStore.getState().importPortfolioSnapshot(snapshotRaw({
+    const validRetry = await useAppStore.getState().importPortfolioSnapshot(snapshotRaw({
       csvImportedAt: NOW_ISO,
       csvImportProvenance: provenance(),
       code: 'RA005-E2E-VALID',

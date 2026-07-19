@@ -26,6 +26,39 @@ export interface PortfolioCoordinationFailure {
   retryable: boolean
 }
 
+export type ManualPortfolioMutationOperation = Extract<
+  PortfolioGenerationOperation,
+  | 'updateHolding'
+  | 'updateTrust'
+  | 'setPortfolioPolicy'
+  | 'setCashAssumptions'
+  | 'clearCashAssumptionsOverride'
+  | 'importCashAssumptions'
+>
+
+export type ManualMutationSuccessCode = 'SUCCESS' | 'NO_CHANGE'
+
+export type ManualMutationFailureCode =
+  | 'MANUAL_ANALYSIS_ERROR'
+  | 'MANUAL_PERSISTENCE_ERROR'
+  | 'MANUAL_PUBLISH_ERROR'
+
+export type ManualMutationResult =
+  | {
+      ok: true
+      operation: ManualPortfolioMutationOperation
+      code: ManualMutationSuccessCode
+    }
+  | (PortfolioCoordinationFailure & {
+      operation: ManualPortfolioMutationOperation
+    })
+  | {
+      ok: false
+      operation: ManualPortfolioMutationOperation
+      code: ManualMutationFailureCode
+      retryable: true
+    }
+
 export const PORTFOLIO_COORDINATION_RETRYABILITY = {
   LOCAL_OPERATION_BUSY: true,
   WEB_LOCK_UNAVAILABLE: false,
@@ -42,14 +75,28 @@ export function isPortfolioCoordinationRetryable(
   return PORTFOLIO_COORDINATION_RETRYABILITY[code]
 }
 
-export function createPortfolioCoordinationFailure(
-  operation: PortfolioGenerationOperation,
+export function createPortfolioCoordinationFailure<TOperation extends PortfolioGenerationOperation>(
+  operation: TOperation,
   code: PortfolioCoordinationErrorCode,
-): PortfolioCoordinationFailure {
+): PortfolioCoordinationFailure & { operation: TOperation } {
   return {
     ok: false,
     operation,
     code,
     retryable: isPortfolioCoordinationRetryable(code),
   }
+}
+
+export function createManualMutationSuccess(
+  operation: ManualPortfolioMutationOperation,
+  code: ManualMutationSuccessCode,
+): Extract<ManualMutationResult, { ok: true }> {
+  return { ok: true, operation, code }
+}
+
+export function createManualMutationFailure(
+  operation: ManualPortfolioMutationOperation,
+  code: ManualMutationFailureCode,
+): Extract<ManualMutationResult, { ok: false; code: ManualMutationFailureCode }> {
+  return { ok: false, operation, code, retryable: true }
 }

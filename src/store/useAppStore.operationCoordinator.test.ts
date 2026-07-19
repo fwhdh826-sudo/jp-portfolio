@@ -54,7 +54,7 @@ import {
 
 type OperationName = 'initialize' | 'refresh' | 'csv' | 'snapshot'
 type ActionResult = void | Awaited<ReturnType<ReturnType<typeof useAppStore.getState>['importCsv']>> |
-  ReturnType<ReturnType<typeof useAppStore.getState>['importPortfolioSnapshot']>
+  Awaited<ReturnType<ReturnType<typeof useAppStore.getState>['importPortfolioSnapshot']>>
 
 const FIXED_NOW = new Date('2026-07-19T03:00:00.000Z')
 const CANONICAL_KEY = 'v13_csv_import_committed_generation'
@@ -263,7 +263,7 @@ async function invokeOperation(operation: OperationName): Promise<ActionResult> 
   if (operation === 'initialize') return useAppStore.getState().initialize()
   if (operation === 'refresh') return useAppStore.getState().refreshAllData()
   if (operation === 'csv') return useAppStore.getState().importCsv(csvFile())
-  return useAppStore.getState().importPortfolioSnapshot(snapshotRaw())
+  return await useAppStore.getState().importPortfolioSnapshot(snapshotRaw())
 }
 
 function assertBlockedResult(operation: OperationName, result: ActionResult) {
@@ -272,7 +272,7 @@ function assertBlockedResult(operation: OperationName, result: ActionResult) {
   } else if (operation === 'csv') {
     expect(result).toMatchObject({ ok: false, code: 'IMPORT_IN_PROGRESS' })
   } else {
-    expect(result).toMatchObject({ ok: false, code: 'SNAPSHOT_IMPORT_BLOCKED' })
+    expect(result).toMatchObject({ ok: false, code: 'LOCAL_OPERATION_BUSY' })
   }
 }
 
@@ -513,7 +513,7 @@ describe('RA-003 Phase B: direct 16-operation exclusion matrix', () => {
           after = sideEffectSnapshot()
         })
 
-        const outer = useAppStore.getState().importPortfolioSnapshot(snapshotRaw())
+        const outer = await useAppStore.getState().importPortfolioSnapshot(snapshotRaw())
         unsubscribe()
         if (nestedPromise) nestedResult = await nestedPromise
 
@@ -531,13 +531,13 @@ describe('RA-003 Phase C: key race regressions', () => {
     it(`${first} -> snapshot is blocked, then retry reaches normal snapshot policy`, async () => {
       const pending = await startPendingOperation(first)
       const before = sideEffectSnapshot()
-      const blocked = useAppStore.getState().importPortfolioSnapshot(snapshotRaw())
-      expect(blocked).toMatchObject({ ok: false, code: 'SNAPSHOT_IMPORT_BLOCKED' })
+      const blocked = await useAppStore.getState().importPortfolioSnapshot(snapshotRaw())
+      expect(blocked).toMatchObject({ ok: false, code: 'LOCAL_OPERATION_BUSY' })
       expect(sideEffectSnapshot()).toEqual(before)
 
       await pending.finish()
-      const retry = useAppStore.getState().importPortfolioSnapshot(snapshotRaw())
-      expect(retry.code).not.toBe('SNAPSHOT_IMPORT_BLOCKED')
+      const retry = await useAppStore.getState().importPortfolioSnapshot(snapshotRaw())
+      expect(retry.code).not.toBe('LOCAL_OPERATION_BUSY')
     })
 
     it(`${first} lock survives system.status sentinel destruction for all four second operations`, async () => {
@@ -591,7 +591,7 @@ describe('RA-003 Phase C: key race regressions', () => {
       }
     })
 
-    const outer = useAppStore.getState().importPortfolioSnapshot(snapshotRaw())
+    const outer = await useAppStore.getState().importPortfolioSnapshot(snapshotRaw())
     unsubscribe()
     expect(outer).toMatchObject({ ok: true, code: 'SUCCESS' })
     for (const operation of ['initialize', 'refresh', 'csv', 'snapshot'] as const) {
@@ -616,9 +616,9 @@ describe('RA-003 Phase C: key race regressions', () => {
     const snapshotWarning = vi.spyOn(console, 'warn').mockImplementation(() => undefined)
     snapshotWarning.mockClear()
     const storageGetsBefore = storageCounts.get
-    const snapshotRetry = useAppStore.getState().importPortfolioSnapshot(snapshotRaw())
+    const snapshotRetry = await useAppStore.getState().importPortfolioSnapshot(snapshotRaw())
     expect(storageCounts.get).toBeGreaterThan(storageGetsBefore)
-    expect(snapshotRetry.code).not.toBe('SNAPSHOT_IMPORT_BLOCKED')
+    expect(snapshotRetry.code).not.toBe('LOCAL_OPERATION_BUSY')
     expect(snapshotWarning).not.toHaveBeenCalled()
     snapshotWarning.mockRestore()
   })
@@ -721,31 +721,31 @@ describe('RA-003 Phase D: failure releases owner and permits retry', () => {
     expect(retry.code).not.toBe('IMPORT_IN_PROGRESS')
   })
 
-  it('snapshot parse failure releases coordinator and retry reaches normal policy', () => {
-    const failure = useAppStore.getState().importPortfolioSnapshot('not-json')
+  it('snapshot parse failure releases coordinator and retry reaches normal policy', async () => {
+    const failure = await useAppStore.getState().importPortfolioSnapshot('not-json')
     expect(failure).toMatchObject({ ok: false, code: 'INVALID_SNAPSHOT' })
-    const retry = useAppStore.getState().importPortfolioSnapshot(snapshotRaw())
-    expect(retry.code).not.toBe('SNAPSHOT_IMPORT_BLOCKED')
+    const retry = await useAppStore.getState().importPortfolioSnapshot(snapshotRaw())
+    expect(retry.code).not.toBe('LOCAL_OPERATION_BUSY')
   })
 
-  it('snapshot analysis failure releases coordinator and retry succeeds', () => {
+  it('snapshot analysis failure releases coordinator and retry succeeds', async () => {
     analysisProbe.throwNext = true
-    const failure = useAppStore.getState().importPortfolioSnapshot(snapshotRaw())
+    const failure = await useAppStore.getState().importPortfolioSnapshot(snapshotRaw())
     expect(failure).toMatchObject({ ok: false, code: 'SNAPSHOT_ANALYSIS_ERROR' })
-    const retry = useAppStore.getState().importPortfolioSnapshot(snapshotRaw())
-    expect(retry.code).not.toBe('SNAPSHOT_IMPORT_BLOCKED')
+    const retry = await useAppStore.getState().importPortfolioSnapshot(snapshotRaw())
+    expect(retry.code).not.toBe('LOCAL_OPERATION_BUSY')
   })
 
-  it('snapshot persistence failure releases coordinator and retry succeeds', () => {
+  it('snapshot persistence failure releases coordinator and retry succeeds', async () => {
     storageThrowOnSet = true
-    const failure = useAppStore.getState().importPortfolioSnapshot(snapshotRaw())
+    const failure = await useAppStore.getState().importPortfolioSnapshot(snapshotRaw())
     expect(failure).toMatchObject({ ok: false, code: 'SNAPSHOT_PERSISTENCE_ERROR' })
     storageThrowOnSet = false
-    const retry = useAppStore.getState().importPortfolioSnapshot(snapshotRaw())
-    expect(retry.code).not.toBe('SNAPSHOT_IMPORT_BLOCKED')
+    const retry = await useAppStore.getState().importPortfolioSnapshot(snapshotRaw())
+    expect(retry.code).not.toBe('LOCAL_OPERATION_BUSY')
   })
 
-  it('snapshot ownership loss preserves third-party bytes, releases coordinator, and permits retry', () => {
+  it('snapshot ownership loss preserves third-party bytes, releases coordinator, and permits retry', async () => {
     const externalRaw = 'third-party-snapshot-generation'
     let replaced = false
     storageSetHook = key => {
@@ -754,26 +754,26 @@ describe('RA-003 Phase D: failure releases owner and permits retry', () => {
       storage[CANONICAL_KEY] = externalRaw
     }
 
-    const failure = useAppStore.getState().importPortfolioSnapshot(snapshotRaw())
+    const failure = await useAppStore.getState().importPortfolioSnapshot(snapshotRaw())
     storageSetHook = null
     expect(replaced).toBe(true)
     expect(failure).toMatchObject({ ok: false, code: 'SNAPSHOT_OWNERSHIP_LOST' })
     expect(storage[CANONICAL_KEY]).toBe(externalRaw)
 
     delete storage[CANONICAL_KEY]
-    const retry = useAppStore.getState().importPortfolioSnapshot(snapshotRaw())
-    expect(retry.code).not.toBe('SNAPSHOT_IMPORT_BLOCKED')
+    const retry = await useAppStore.getState().importPortfolioSnapshot(snapshotRaw())
+    expect(retry.code).not.toBe('LOCAL_OPERATION_BUSY')
   })
 
-  it('throwing subscriber cannot leak coordinator and retry reaches normal policy', () => {
+  it('throwing subscriber cannot leak coordinator and retry reaches normal policy', async () => {
     const error = vi.spyOn(console, 'error').mockImplementation(() => undefined)
     const unsubscribe = useAppStore.subscribe(() => { throw new Error('subscriber throw') })
-    const first = useAppStore.getState().importPortfolioSnapshot(snapshotRaw())
+    const first = await useAppStore.getState().importPortfolioSnapshot(snapshotRaw())
     unsubscribe()
     expect(first).toMatchObject({ ok: true, code: 'SUCCESS' })
     expect(error).toHaveBeenCalled()
-    const retry = useAppStore.getState().importPortfolioSnapshot(snapshotRaw())
-    expect(retry.code).not.toBe('SNAPSHOT_IMPORT_BLOCKED')
+    const retry = await useAppStore.getState().importPortfolioSnapshot(snapshotRaw())
+    expect(retry.code).not.toBe('LOCAL_OPERATION_BUSY')
   })
 
   it('non-owner release attempt cannot unlock an in-flight action', async () => {

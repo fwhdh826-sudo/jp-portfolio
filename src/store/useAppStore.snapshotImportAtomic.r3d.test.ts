@@ -201,7 +201,7 @@ describe('T9-A004-R3d: canonical storage evidence / present-invalid writer polic
   })
 
   describe('valid committed canonicalはstore emptyでもcurrent generation evidence', () => {
-    it('R3d-1: store empty + canonical valid + complete snapshot identity一致だけがDUPLICATE_SNAPSHOT（side effect 0）', () => {
+    it('R3d-1: store empty + canonical valid + complete snapshot identity一致だけがDUPLICATE_SNAPSHOT（side effect 0）', async () => {
       const matchingCash = { ...DEFAULT_CASH_ASSUMPTIONS, manualOverrideEnabled: true }
       const seededRaw = seedCommittedCanonical('0', '2026-07-10T00:00:00.000Z', {
         portfolioPolicy: DEFAULT_PORTFOLIO_POLICY,
@@ -220,7 +220,7 @@ describe('T9-A004-R3d: canonical storage evidence / present-invalid writer polic
       let notifications = 0
       const unsubscribe = useAppStore.subscribe(() => { notifications += 1 })
 
-      const result = useAppStore.getState().importPortfolioSnapshot(raw)
+      const result = await useAppStore.getState().importPortfolioSnapshot(raw)
       unsubscribe()
 
       expect({
@@ -238,7 +238,7 @@ describe('T9-A004-R3d: canonical storage evidence / present-invalid writer polic
       })
     })
 
-    it('R3d-2: store empty + canonical valid + 別generationのincomingはSNAPSHOT_OVERWRITE_BLOCKED（canonical世代のsilent overwrite禁止・side effect 0）', () => {
+    it('R3d-2: store empty + canonical valid + 別generationのincomingはSNAPSHOT_OVERWRITE_BLOCKED（canonical世代のsilent overwrite禁止・side effect 0）', async () => {
       const seededRaw = seedCommittedCanonical('0', '2026-07-10T00:00:00.000Z')
       const raw = v3Snapshot(generationProvenance('2', '2026-07-15T11:00:00.000Z'), {
         holdings: [{ code: 'R3D-CASE2', name: 'R3d-2銘柄', eval: 222_000, pnlPct: 0 }],
@@ -247,7 +247,7 @@ describe('T9-A004-R3d: canonical storage evidence / present-invalid writer polic
       let notifications = 0
       const unsubscribe = useAppStore.subscribe(() => { notifications += 1 })
 
-      const result = useAppStore.getState().importPortfolioSnapshot(raw)
+      const result = await useAppStore.getState().importPortfolioSnapshot(raw)
       unsubscribe()
 
       expect({
@@ -270,7 +270,7 @@ describe('T9-A004-R3d: canonical storage evidence / present-invalid writer polic
     it.each([
       ['csv-import-generation-4', 1],
       [CSV_IMPORT_GENERATION_SCHEMA_V5, 2],
-    ] as const)('R4-A004c: valid %s canonical + complete identity match is a byte-exact duplicate no-migration (identity v%s)', (schemaVersion, identityVersion) => {
+    ] as const)('R4-A004c: valid %s canonical + complete identity match is a byte-exact duplicate no-migration (identity v%s)', async (schemaVersion, identityVersion) => {
       const matchingCash = { ...DEFAULT_CASH_ASSUMPTIONS, manualOverrideEnabled: true }
       const seededRaw = seedCommittedCanonical('4', '2026-07-10T00:00:00.000Z', {
         portfolioPolicy: DEFAULT_PORTFOLIO_POLICY,
@@ -289,7 +289,7 @@ describe('T9-A004-R3d: canonical storage evidence / present-invalid writer polic
       let notifications = 0
       const unsubscribe = useAppStore.subscribe(() => { notifications += 1 })
 
-      const result = useAppStore.getState().importPortfolioSnapshot(raw)
+      const result = await useAppStore.getState().importPortfolioSnapshot(raw)
       unsubscribe()
 
       expect(result).toEqual({ ok: true, code: 'DUPLICATE_SNAPSHOT' })
@@ -306,7 +306,7 @@ describe('T9-A004-R3d: canonical storage evidence / present-invalid writer polic
     it.each([
       'csv-import-generation-4',
       CSV_IMPORT_GENERATION_SCHEMA_V5,
-    ] as const)('R4-A004c: valid %s canonical + same CSV provenance but different complete generation is overwrite-blocked without migration', schemaVersion => {
+    ] as const)('R4-A004c: valid %s canonical + same CSV provenance but different complete generation is overwrite-blocked without migration', async schemaVersion => {
       const seededRaw = seedCommittedCanonical('5', '2026-07-10T00:00:00.000Z', {}, schemaVersion)
       const seededEnvelope = JSON.parse(seededRaw)
       const raw = v3Snapshot(generationProvenance('5', '2026-07-10T00:00:00.000Z'), {
@@ -316,7 +316,7 @@ describe('T9-A004-R3d: canonical storage evidence / present-invalid writer polic
       let notifications = 0
       const unsubscribe = useAppStore.subscribe(() => { notifications += 1 })
 
-      const result = useAppStore.getState().importPortfolioSnapshot(raw)
+      const result = await useAppStore.getState().importPortfolioSnapshot(raw)
       unsubscribe()
 
       expect(result).toMatchObject({ ok: false, code: 'SNAPSHOT_OVERWRITE_BLOCKED' })
@@ -328,24 +328,24 @@ describe('T9-A004-R3d: canonical storage evidence / present-invalid writer polic
       expect(notifications).toBe(0)
     })
 
-    it('R3d-3: store empty + canonical valid + provenance無しincomingはlegacy互換扱いにならない（absentとpresentの混同禁止）。canonical除去後のretryはfirst importとして成功する', () => {
+    it('R3d-3: store empty + canonical valid + provenance無しincomingはlegacy互換扱いにならない（absentとpresentの混同禁止）。canonical除去後のretryはfirst importとして成功する', async () => {
       seedCommittedCanonical('0', '2026-07-10T00:00:00.000Z')
       const raw = v3Snapshot(null, {
         holdings: [{ code: 'R3D-CASE3', name: 'R3d-3銘柄', eval: 333_000, pnlPct: 0 }],
       })
 
-      const blocked = useAppStore.getState().importPortfolioSnapshot(raw)
+      const blocked = await useAppStore.getState().importPortfolioSnapshot(raw)
       expect(blocked).toMatchObject({ ok: false, code: 'SNAPSHOT_PROVENANCE_UNKNOWN' })
       expect(useAppStore.getState().holdings).toEqual([])
 
       // canonicalを正しく除去（absent化）した状態でのretryは既存first-import policyへ戻る
       delete storage[CSV_IMPORT_GENERATION_KEY]
-      const retry = useAppStore.getState().importPortfolioSnapshot(raw)
+      const retry = await useAppStore.getState().importPortfolioSnapshot(raw)
       expect(retry).toMatchObject({ ok: true, code: 'SUCCESS' })
       expect(useAppStore.getState().holdings.map(h => h.code)).toEqual(['R3D-CASE3'])
     })
 
-    it('R3d-4: store stale + canonical newerでは判定はcanonical基準（storeより新しくcanonicalより古いincomingはSNAPSHOT_STALE）', () => {
+    it('R3d-4: store stale + canonical newerでは判定はcanonical基準（storeより新しくcanonicalより古いincomingはSNAPSHOT_STALE）', async () => {
       // store: 旧generation a（2026-07-09）を保持したままのstale状態
       const staleStoreProvenance = generationProvenance('a', '2026-07-09T00:00:00.000Z')
       useAppStore.setState(state => ({
@@ -364,7 +364,7 @@ describe('T9-A004-R3d: canonical storage evidence / present-invalid writer polic
       })
       const before = useAppStore.getState()
 
-      const result = useAppStore.getState().importPortfolioSnapshot(raw)
+      const result = await useAppStore.getState().importPortfolioSnapshot(raw)
 
       expect({
         resultOk: result.ok,
@@ -381,7 +381,7 @@ describe('T9-A004-R3d: canonical storage evidence / present-invalid writer polic
       })
     })
 
-    it('R3d-5: store generation A + canonical generation Bの乖離ではcanonicalが勝つ（canonicalと同時刻・別identityはSNAPSHOT_PROVENANCE_CONFLICT）', () => {
+    it('R3d-5: store generation A + canonical generation Bの乖離ではcanonicalが勝つ（canonicalと同時刻・別identityはSNAPSHOT_PROVENANCE_CONFLICT）', async () => {
       const staleStoreProvenance = generationProvenance('a', '2026-07-09T00:00:00.000Z')
       useAppStore.setState(state => ({
         holdings: [holding('1001', 150_000)],
@@ -398,7 +398,7 @@ describe('T9-A004-R3d: canonical storage evidence / present-invalid writer polic
       })
       const before = useAppStore.getState()
 
-      const result = useAppStore.getState().importPortfolioSnapshot(raw)
+      const result = await useAppStore.getState().importPortfolioSnapshot(raw)
 
       expect({
         resultOk: result.ok,
@@ -415,7 +415,7 @@ describe('T9-A004-R3d: canonical storage evidence / present-invalid writer polic
       })
     })
 
-    it('R3d-6: store provenance null + canonical authoritativeでもcanonicalがevidence（CSV provenance一致だけではduplicateにしない）', () => {
+    it('R3d-6: store provenance null + canonical authoritativeでもcanonicalがevidence（CSV provenance一致だけではduplicateにしない）', async () => {
       // store: 内容はあるがprovenance評価不能（provenance null + importedAtのみ）
       useAppStore.setState(state => ({
         holdings: [holding('9999', 200_000)],
@@ -427,7 +427,7 @@ describe('T9-A004-R3d: canonical storage evidence / present-invalid writer polic
       }))
       seedCommittedCanonical('0', '2026-07-10T00:00:00.000Z')
 
-      const blocked = useAppStore.getState().importPortfolioSnapshot(
+      const blocked = await useAppStore.getState().importPortfolioSnapshot(
         v3Snapshot(generationProvenance('2', '2026-07-15T11:00:00.000Z'), {
           holdings: [{ code: 'R3D-CASE6', name: 'R3d-6銘柄', eval: 666_000, pnlPct: 0 }],
         }),
@@ -436,7 +436,7 @@ describe('T9-A004-R3d: canonical storage evidence / present-invalid writer polic
       // 存在する以上silent overwriteはできない
       expect(blocked).toMatchObject({ ok: false, code: 'SNAPSHOT_OVERWRITE_BLOCKED' })
 
-      const sameCsvDifferentSnapshot = useAppStore.getState().importPortfolioSnapshot(
+      const sameCsvDifferentSnapshot = await useAppStore.getState().importPortfolioSnapshot(
         v3Snapshot(generationProvenance('0', '2026-07-10T00:00:00.000Z'), {
           holdings: [{ code: 'R3D-CASE6B', name: 'R3d-6b銘柄', eval: 666_500, pnlPct: 0 }],
         }),
@@ -445,7 +445,7 @@ describe('T9-A004-R3d: canonical storage evidence / present-invalid writer polic
       expect(writeLog.length).toBe(0)
     })
 
-    it('R3-F005: 同じCSV provenanceでもpolicy/cashが異なるsnapshotはduplicateにしない', () => {
+    it('R3-F005: 同じCSV provenanceでもpolicy/cashが異なるsnapshotはduplicateにしない', async () => {
       const seededRaw = seedCommittedCanonical('0', '2026-07-10T00:00:00.000Z')
       const raw = v3Snapshot(generationProvenance('0', '2026-07-10T00:00:00.000Z'), {
         holdings: [{
@@ -462,7 +462,7 @@ describe('T9-A004-R3d: canonical storage evidence / present-invalid writer polic
       const before = useAppStore.getState()
       let notifications = 0
       const unsubscribe = useAppStore.subscribe(() => { notifications += 1 })
-      const result = useAppStore.getState().importPortfolioSnapshot(raw)
+      const result = await useAppStore.getState().importPortfolioSnapshot(raw)
       unsubscribe()
 
       expect(result).toMatchObject({ ok: false, code: 'SNAPSHOT_OVERWRITE_BLOCKED' })
@@ -472,7 +472,7 @@ describe('T9-A004-R3d: canonical storage evidence / present-invalid writer polic
       expect(notifications).toBe(0)
     })
 
-    it('R3-F005: 同じCSV provenanceでもholdingsが異なるsnapshotはduplicateにせず全副作用0', () => {
+    it('R3-F005: 同じCSV provenanceでもholdingsが異なるsnapshotはduplicateにせず全副作用0', async () => {
       const seededRaw = seedCommittedCanonical('0', '2026-07-10T00:00:00.000Z')
       const raw = v3Snapshot(generationProvenance('0', '2026-07-10T00:00:00.000Z'), {
         holdings: [{ code: 'DIFFERENT', name: '別snapshot', eval: 777_000, pnlPct: 7 }],
@@ -480,7 +480,7 @@ describe('T9-A004-R3d: canonical storage evidence / present-invalid writer polic
       const before = useAppStore.getState()
       let notifications = 0
       const unsubscribe = useAppStore.subscribe(() => { notifications += 1 })
-      const result = useAppStore.getState().importPortfolioSnapshot(raw)
+      const result = await useAppStore.getState().importPortfolioSnapshot(raw)
       unsubscribe()
 
       expect(result).toMatchObject({ ok: false, code: 'SNAPSHOT_OVERWRITE_BLOCKED' })
@@ -492,7 +492,7 @@ describe('T9-A004-R3d: canonical storage evidence / present-invalid writer polic
   })
 
   describe('present-invalid canonicalのfail-closed writer policy', () => {
-    function expectFailClosed(rawCanonical: string, incomingTag: string) {
+    async function expectFailClosed(rawCanonical: string, incomingTag: string) {
       storage[CSV_IMPORT_GENERATION_KEY] = rawCanonical
       writeLog.length = 0
       const raw = v3Snapshot(generationProvenance(incomingTag, '2026-07-15T11:00:00.000Z'), {
@@ -502,7 +502,7 @@ describe('T9-A004-R3d: canonical storage evidence / present-invalid writer polic
       let notifications = 0
       const unsubscribe = useAppStore.subscribe(() => { notifications += 1 })
 
-      const result = useAppStore.getState().importPortfolioSnapshot(raw)
+      const result = await useAppStore.getState().importPortfolioSnapshot(raw)
       unsubscribe()
 
       expect({
@@ -521,44 +521,44 @@ describe('T9-A004-R3d: canonical storage evidence / present-invalid writer polic
         notifications: 0,
       })
       // raw parser/storage errorをUI（result.error）へ素通ししない
-      if (result.ok === false) {
+      if (result.ok === false && 'error' in result) {
         expect(result.error).not.toMatch(/Unexpected|JSON|token|checksum|parse/i)
       }
     }
 
-    it('R3d-7: malformed JSON canonicalは構造化fail-closed（mutation/analysis/storage write/通知 0）', () => {
-      expectFailClosed('{malformed', '3')
+    it('R3d-7: malformed JSON canonicalは構造化fail-closed（mutation/analysis/storage write/通知 0）', async () => {
+      await expectFailClosed('{malformed', '3')
     })
 
-    it('R3d-8: checksum不正canonicalは構造化fail-closed', () => {
+    it('R3d-8: checksum不正canonicalは構造化fail-closed', async () => {
       seedCommittedCanonical('0', '2026-07-10T00:00:00.000Z')
       const envelope = JSON.parse(storage[CSV_IMPORT_GENERATION_KEY])
       envelope.payload.holdings[0].eval += 1  // checksumと不一致になる改変
-      expectFailClosed(JSON.stringify(envelope), '4')
+      await expectFailClosed(JSON.stringify(envelope), '4')
     })
 
-    it('R3d-9: manifest不正（committed marker欠落）canonicalは構造化fail-closed', () => {
+    it('R3d-9: manifest不正（committed marker欠落）canonicalは構造化fail-closed', async () => {
       seedCommittedCanonical('0', '2026-07-10T00:00:00.000Z')
       const envelope = JSON.parse(storage[CSV_IMPORT_GENERATION_KEY])
       envelope.manifest.committed = false
-      expectFailClosed(JSON.stringify(envelope), '5')
+      await expectFailClosed(JSON.stringify(envelope), '5')
     })
 
-    it('R3d-10: deep validation不正（holdingsの負のeval）canonicalは構造化fail-closed', () => {
+    it('R3d-10: deep validation不正（holdingsの負のeval）canonicalは構造化fail-closed', async () => {
       seedCommittedCanonical('0', '2026-07-10T00:00:00.000Z')
       const envelope = JSON.parse(storage[CSV_IMPORT_GENERATION_KEY])
       envelope.payload.holdings[0].eval = -1
-      expectFailClosed(JSON.stringify(envelope), '6')
+      await expectFailClosed(JSON.stringify(envelope), '6')
     })
 
-    it('R3d-11: 未知schema versionのpresent-invalid v3 canonicalは構造化fail-closed', () => {
+    it('R3d-11: 未知schema versionのpresent-invalid v3 canonicalは構造化fail-closed', async () => {
       seedCommittedCanonical('0', '2026-07-10T00:00:00.000Z')
       const envelope = JSON.parse(storage[CSV_IMPORT_GENERATION_KEY])
       envelope.manifest.schemaVersion = 'csv-import-generation-99'
-      expectFailClosed(JSON.stringify(envelope), '7')
+      await expectFailClosed(JSON.stringify(envelope), '7')
     })
 
-    it('R3d-12: present-invalid canonical + 有効なlegacy keysでもlegacy fallback/legacy write 0（dead write禁止・reloadはnullのまま）', () => {
+    it('R3d-12: present-invalid canonical + 有効なlegacy keysでもlegacy fallback/legacy write 0（dead write禁止・reloadはnullのまま）', async () => {
       storage[CSV_IMPORT_GENERATION_KEY] = '{malformed'
       const legacyPortfolioRaw = JSON.stringify({ data: [holding('8888', 800_000)], savedAt: FIXED_NOW.getTime() })
       const legacyTrustRaw = JSON.stringify({ data: [], savedAt: FIXED_NOW.getTime() })
@@ -569,7 +569,7 @@ describe('T9-A004-R3d: canonical storage evidence / present-invalid writer polic
         holdings: [{ code: 'R3D-CASE12', name: 'R3d-12銘柄', eval: 812_000, pnlPct: 0 }],
       })
 
-      const result = useAppStore.getState().importPortfolioSnapshot(raw)
+      const result = await useAppStore.getState().importPortfolioSnapshot(raw)
 
       expect({
         resultOk: result.ok,
@@ -592,7 +592,7 @@ describe('T9-A004-R3d: canonical storage evidence / present-invalid writer polic
       })
     })
 
-    it('R3d-13: reject中はanalysisが一切実行されない（analysis失敗を強制してもcodeはSNAPSHOT_CANONICAL_INVALIDのまま）', () => {
+    it('R3d-13: reject中はanalysisが一切実行されない（analysis失敗を強制してもcodeはSNAPSHOT_CANONICAL_INVALIDのまま）', async () => {
       const throwingMarket = new Proxy(baseMarket, {
         get(target, property) {
           if (property === 'regime') throw new Error('forced analysis failure')
@@ -606,10 +606,10 @@ describe('T9-A004-R3d: canonical storage evidence / present-invalid writer polic
         holdings: [{ code: 'R3D-CASE13', name: 'R3d-13銘柄', eval: 913_000, pnlPct: 0 }],
       })
 
-      let result: ReturnType<ReturnType<typeof useAppStore.getState>['importPortfolioSnapshot']> | null = null
+      let result: Awaited<ReturnType<ReturnType<typeof useAppStore.getState>['importPortfolioSnapshot']>> | null = null
       let thrown: unknown = null
       try {
-        result = useAppStore.getState().importPortfolioSnapshot(raw)
+        result = await useAppStore.getState().importPortfolioSnapshot(raw)
       } catch (error) {
         thrown = error
       }
@@ -621,25 +621,25 @@ describe('T9-A004-R3d: canonical storage evidence / present-invalid writer polic
       })
     })
 
-    it('R3d-14: present-invalid reject後、canonicalを修復（valid世代へ復元）した状態のretryは正常judgmentへ戻る。除去（absent化）ならfirst importとして成功する', () => {
+    it('R3d-14: present-invalid reject後、canonicalを修復（valid世代へ復元）した状態のretryは正常judgmentへ戻る。除去（absent化）ならfirst importとして成功する', async () => {
       storage[CSV_IMPORT_GENERATION_KEY] = '{malformed'
       const raw = v3Snapshot(generationProvenance('b', '2026-07-15T11:00:00.000Z'), {
         holdings: [{ code: 'R3D-CASE14', name: 'R3d-14銘柄', eval: 914_000, pnlPct: 0 }],
       })
 
-      const rejected = useAppStore.getState().importPortfolioSnapshot(raw)
+      const rejected = await useAppStore.getState().importPortfolioSnapshot(raw)
       expect(rejected).toMatchObject({ ok: false, code: 'SNAPSHOT_CANONICAL_INVALID' })
 
       // 修復1: valid committed世代へ復元 → canonical evidence基準の正常judgment（block）
       delete storage[CSV_IMPORT_GENERATION_KEY]
       seedCommittedCanonical('0', '2026-07-10T00:00:00.000Z')
-      const judged = useAppStore.getState().importPortfolioSnapshot(raw)
+      const judged = await useAppStore.getState().importPortfolioSnapshot(raw)
       expect(judged).toMatchObject({ ok: false, code: 'SNAPSHOT_OVERWRITE_BLOCKED' })
 
       // 修復2: 除去（absent化） → first importとして完全実行される
       // （rejectがtransaction lockやlastAppliedSnapshotGenerationを残していない証明）
       delete storage[CSV_IMPORT_GENERATION_KEY]
-      const retry = useAppStore.getState().importPortfolioSnapshot(raw)
+      const retry = await useAppStore.getState().importPortfolioSnapshot(raw)
       expect(retry).toMatchObject({ ok: true, code: 'SUCCESS' })
       expect(useAppStore.getState().holdings.map(h => h.code)).toEqual(['R3D-CASE14'])
       expect(JSON.parse(storage[CSV_IMPORT_GENERATION_KEY]).manifest.committed).toBe(true)

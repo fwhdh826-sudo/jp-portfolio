@@ -237,7 +237,7 @@ describe('T9-A004-R3c: snapshot import atomic commit contract', () => {
     if (originalFileReader) globalThis.FileReader = originalFileReader
   })
 
-  it('R4-A004c: genuinely empty first snapshot import writes one owned canonical v5 generation and publishes only after ownership', () => {
+  it('R4-A004c: genuinely empty first snapshot import writes one owned canonical v5 generation and publishes only after ownership', async () => {
     const incoming = incomingProvenance('c', {
       importedAt: '2026-07-14T01:02:03.000Z',
       sourceAsOf: '2026-07-13T23:00:00.000Z',
@@ -268,7 +268,7 @@ describe('T9-A004-R3c: snapshot import atomic commit contract', () => {
         JSON.parse(physical).payload.snapshotTransferIdentity === incomingTransferIdentity
     })
 
-    const result = useAppStore.getState().importPortfolioSnapshot(raw)
+    const result = await useAppStore.getState().importPortfolioSnapshot(raw)
     unsubscribe()
 
     expect(result).toEqual({ ok: true, code: 'SUCCESS', skippedTrustIds: undefined })
@@ -321,7 +321,7 @@ describe('T9-A004-R3c: snapshot import atomic commit contract', () => {
     )
   })
 
-  it('analysis失敗は構造化failureを返し、store/subscriber/storageの副作用が0である', () => {
+  it('analysis失敗は構造化failureを返し、store/subscriber/storageの副作用が0である', async () => {
     const raw = v3Snapshot(incomingProvenance('1'), {
       holdings: [{ code: 'R3C-CASE1', name: 'R3C-1銘柄', eval: 111_000, pnlPct: 0 }],
     })
@@ -336,7 +336,7 @@ describe('T9-A004-R3c: snapshot import atomic commit contract', () => {
     let notifications = 0
     const unsubscribe = useAppStore.subscribe(() => { notifications += 1 })
 
-    const result = useAppStore.getState().importPortfolioSnapshot(raw)
+    const result = await useAppStore.getState().importPortfolioSnapshot(raw)
     unsubscribe()
 
     const state = useAppStore.getState()
@@ -359,7 +359,7 @@ describe('T9-A004-R3c: snapshot import atomic commit contract', () => {
     })
   })
 
-  it('永続化失敗は構造化failureを返し、storage世代もstore通知も発生しない', () => {
+  it('永続化失敗は構造化failureを返し、storage世代もstore通知も発生しない', async () => {
     const raw = v3Snapshot(incomingProvenance('2'), {
       holdings: [{ code: 'R3C-CASE2', name: 'R3C-2銘柄', eval: 222_000, pnlPct: 0 }],
     })
@@ -367,7 +367,7 @@ describe('T9-A004-R3c: snapshot import atomic commit contract', () => {
     let notifications = 0
     const unsubscribe = useAppStore.subscribe(() => { notifications += 1 })
 
-    const result = useAppStore.getState().importPortfolioSnapshot(raw)
+    const result = await useAppStore.getState().importPortfolioSnapshot(raw)
     unsubscribe()
 
     const state = useAppStore.getState()
@@ -388,7 +388,7 @@ describe('T9-A004-R3c: snapshot import atomic commit contract', () => {
     })
   })
 
-  it('R3-FIX-C RA-001: snapshot write-then-throw plus unreadable commit check is indeterminate and leaves store unpublished', () => {
+  it('R3-FIX-C RA-001: snapshot write-then-throw plus unreadable commit check is indeterminate and leaves store unpublished', async () => {
     const raw = v3Snapshot(incomingProvenance('a'), {
       holdings: [{ code: 'R3FIXC-INDETERMINATE', name: 'indeterminate銘柄', eval: 229_000, pnlPct: 0 }],
     })
@@ -423,7 +423,7 @@ describe('T9-A004-R3c: snapshot import atomic commit contract', () => {
       }
     })
 
-    const result = useAppStore.getState().importPortfolioSnapshot(raw)
+    const result = await useAppStore.getState().importPortfolioSnapshot(raw)
     unsubscribe()
 
     expect(result).toMatchObject({
@@ -440,10 +440,10 @@ describe('T9-A004-R3c: snapshot import atomic commit contract', () => {
     vi.stubGlobal('localStorage', localStorageMock)
     expect(restorePortfolio()?.map(item => item.code)).toEqual(['R3FIXC-INDETERMINATE'])
     delete storage[CSV_IMPORT_GENERATION_KEY]
-    expect(useAppStore.getState().importPortfolioSnapshot(raw)).toMatchObject({ ok: true, code: 'SUCCESS' })
+    expect(await useAppStore.getState().importPortfolioSnapshot(raw)).toMatchObject({ ok: true, code: 'SUCCESS' })
   })
 
-  it('durable書込直後の所有権喪失ではpublishせず、外部transactionのbytesを維持する', () => {
+  it('durable書込直後の所有権喪失ではpublishせず、外部transactionのbytesを維持する', async () => {
     const raw = v3Snapshot(incomingProvenance('3'), {
       holdings: [{ code: 'R3C-CASE3', name: 'R3C-3銘柄', eval: 333_000, pnlPct: 0 }],
     })
@@ -457,7 +457,7 @@ describe('T9-A004-R3c: snapshot import atomic commit contract', () => {
     let notifications = 0
     const unsubscribe = useAppStore.subscribe(() => { notifications += 1 })
 
-    const result = useAppStore.getState().importPortfolioSnapshot(raw)
+    const result = await useAppStore.getState().importPortfolioSnapshot(raw)
     unsubscribe()
     storageReentry = null
 
@@ -502,7 +502,7 @@ describe('T9-A004-R3c: snapshot import atomic commit contract', () => {
     })
   })
 
-  it('snapshot importのdurable commit後・publish直前のcrash相当例外でも、reloadはpublish済みstore世代と一致する', () => {
+  it('snapshot importのdurable commit後・publish直前のcrash相当例外でも、reloadはpublish済みstore世代と一致する', async () => {
     crashAfterStoreKeys.add(CSV_IMPORT_GENERATION_KEY)
     const raw = v3Snapshot(incomingProvenance('4'), {
       holdings: [{ code: 'R3C-CASE5', name: 'R3C-5銘柄', eval: 555_000, pnlPct: 0 }],
@@ -515,7 +515,7 @@ describe('T9-A004-R3c: snapshot import atomic commit contract', () => {
       },
     })
 
-    const result = useAppStore.getState().importPortfolioSnapshot(raw)
+    const result = await useAppStore.getState().importPortfolioSnapshot(raw)
 
     const state = useAppStore.getState()
     expect(result).toMatchObject({ ok: true, code: 'SUCCESS' })
@@ -532,7 +532,7 @@ describe('T9-A004-R3c: snapshot import atomic commit contract', () => {
     })
   })
 
-  it('成功時のsubscriberはcomplete generationをちょうど1回の通知として観測する', () => {
+  it('成功時のsubscriberはcomplete generationをちょうど1回の通知として観測する', async () => {
     const raw = v3Snapshot(incomingProvenance('6'), {
       holdings: [{ code: 'R3C-CASE6', name: 'R3C-6銘柄', eval: 666_000, pnlPct: 0 }],
     })
@@ -551,7 +551,7 @@ describe('T9-A004-R3c: snapshot import atomic commit contract', () => {
       })
     })
 
-    const result = useAppStore.getState().importPortfolioSnapshot(raw)
+    const result = await useAppStore.getState().importPortfolioSnapshot(raw)
     unsubscribe()
 
     expect(result).toMatchObject({ ok: true, code: 'SUCCESS' })
@@ -563,15 +563,15 @@ describe('T9-A004-R3c: snapshot import atomic commit contract', () => {
     }])
   })
 
-  it('永続化失敗したimportの同一snapshot再試行は完全再実行され、durable世代とstore世代が一致する', () => {
+  it('永続化失敗したimportの同一snapshot再試行は完全再実行され、durable世代とstore世代が一致する', async () => {
     const raw = v3Snapshot(incomingProvenance('7'), {
       holdings: [{ code: 'R3C-CASE7', name: 'R3C-7銘柄', eval: 777_000, pnlPct: 0 }],
     })
     failAllWrites = true
-    const first = useAppStore.getState().importPortfolioSnapshot(raw)
+    const first = await useAppStore.getState().importPortfolioSnapshot(raw)
     failAllWrites = false
 
-    const retry = useAppStore.getState().importPortfolioSnapshot(raw)
+    const retry = await useAppStore.getState().importPortfolioSnapshot(raw)
 
     const state = useAppStore.getState()
     expect({
@@ -585,7 +585,7 @@ describe('T9-A004-R3c: snapshot import atomic commit contract', () => {
     })
   })
 
-  it('新世代envelopeのtrust-short baselineはincoming generationからstageされ、旧canonical baselineを再添付しない', () => {
+  it('新世代envelopeのtrust-short baselineはincoming generationからstageされ、旧canonical baselineを再添付しない', async () => {
     // T9-A004-R3d以降、store emptyでもcommitted canonicalはgeneration evidenceとして
     // 別generation snapshotの置換自体をblockする（旧envelope＝旧baselineはbyte単位で温存）。
     persistCsvImportTransaction(oldGenerationPayload())
@@ -594,7 +594,7 @@ describe('T9-A004-R3c: snapshot import atomic commit contract', () => {
       holdings: [{ code: 'R3C-CASE8', name: 'R3C-8銘柄', eval: 888_000, pnlPct: 0 }],
     })
 
-    const blocked = useAppStore.getState().importPortfolioSnapshot(raw)
+    const blocked = await useAppStore.getState().importPortfolioSnapshot(raw)
     expect(blocked.ok).toBe(false)
     expect(localStorage.getItem(CSV_IMPORT_GENERATION_KEY)).toBe(seededRaw)
 
@@ -602,7 +602,7 @@ describe('T9-A004-R3c: snapshot import atomic commit contract', () => {
     // その新envelopeのbaselineはincoming generationからstageされたものであり、
     // 旧canonical世代の実行判定baselineを再添付してはならない。
     localStorage.removeItem(CSV_IMPORT_GENERATION_KEY)
-    const result = useAppStore.getState().importPortfolioSnapshot(raw)
+    const result = await useAppStore.getState().importPortfolioSnapshot(raw)
 
     const generation = restoreCsvImportGeneration()
     if (generation.status !== 'committed') throw new Error('expected committed generation after import')
@@ -638,7 +638,7 @@ describe('T9-A004-R3c: snapshot import atomic commit contract', () => {
     )
   })
 
-  it('R3-F002: final pre-publish storage read中の外部canonical置換をfinal ownership checkで検出し、incoming世代をpublishしない', () => {
+  it('R3-F002: final pre-publish storage read中の外部canonical置換をfinal ownership checkで検出し、incoming世代をpublishしない', async () => {
     // 外部writerが書くvalid committed canonical bytesを先に構築し、canonicalはabsentへ戻す
     // （pre-persist CAS・initial ownership確認はいずれも成功するfixture）。
     persistCsvImportTransaction(oldGenerationPayload())
@@ -674,7 +674,7 @@ describe('T9-A004-R3c: snapshot import atomic commit contract', () => {
     let notifications = 0
     const unsubscribe = useAppStore.subscribe(() => { notifications += 1 })
 
-    const result = useAppStore.getState().importPortfolioSnapshot(raw)
+    const result = await useAppStore.getState().importPortfolioSnapshot(raw)
     unsubscribe()
     vi.stubGlobal('localStorage', localStorageMock)
 
@@ -701,7 +701,7 @@ describe('T9-A004-R3c: snapshot import atomic commit contract', () => {
     // 外部世代を正しく除去（absent化）した上でのretryは完全実行できる
     // （transaction lock残留・lastAppliedSnapshotGenerationの誤更新が無い証明）。
     delete storage[CSV_IMPORT_GENERATION_KEY]
-    const retry = useAppStore.getState().importPortfolioSnapshot(raw)
+    const retry = await useAppStore.getState().importPortfolioSnapshot(raw)
     expect(retry).toMatchObject({ ok: true, code: 'SUCCESS' })
     expect(useAppStore.getState().holdings.map(h => h.code)).toEqual(['R3FIXB-F002'])
   })
