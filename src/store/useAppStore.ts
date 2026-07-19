@@ -1,4 +1,5 @@
-import { create } from 'zustand'
+import { create, type StateCreator } from 'zustand'
+import { createStore, type StoreApi } from 'zustand/vanilla'
 import type { AppState, Holding, Trust, TabId, StockScoreRecord, FundPhase7Map, OfficialDecision, OfficialDecisionItem, OfficialDecisionAction, PortfolioPolicy, CashAssumptions, CsvImportProvenance, CsvSyncSummary, SystemState } from '../types'
 import { DEFAULT_PORTFOLIO_POLICY, DEFAULT_CASH_ASSUMPTIONS } from '../types'
 import { INITIAL_HOLDINGS } from '../constants/holdings'
@@ -260,7 +261,7 @@ function classifyCsvParseFailure(error: unknown): CsvImportResult {
   return csvImportFailure('PARSE_ERROR', message || 'CSVを解析できませんでした。')
 }
 
-type CsvImportTransactionPhase =
+export type CsvImportTransactionPhase =
   | 'READING'
   | 'STAGING'
   | 'ANALYZING'
@@ -292,58 +293,97 @@ interface SnapshotImportTransaction {
 // （CSV同士・snapshot同士・CSVとsnapshotの全組み合わせで相互排他する）。
 type PortfolioGenerationTransaction = CsvImportTransaction | SnapshotImportTransaction
 
-let activePortfolioGenerationTransaction: PortfolioGenerationTransaction | null = null
-
-type PortfolioGenerationPhaseObserverForTest = (
+export type PortfolioGenerationPhaseObserverForTest = (
   origin: PortfolioGenerationTransaction['origin'],
   phase: CsvImportTransactionPhase,
 ) => void
 
-let portfolioGenerationPhaseObserverForTest: PortfolioGenerationPhaseObserverForTest | null = null
-let manualPublishBeforeApplyHookForTest: (() => void) | null = null
-let loadPublishBeforeApplyHookForTest: (() => void) | null = null
-let loadRestoreBeforeReadHookForTest: (() => void) | null = null
+// Same-session retry evidence only. The incoming unkeyed digest never authorizes an overwrite:
+// it can prove a no-op solely while the exact post-import state dependency digest is unchanged.
+type SnapshotGenerationCache = {
+  incomingIdentity: string
+  currentStateIdentity: string
+} | null
+
+interface AppStoreRuntime {
+  activePortfolioOperation: PortfolioOperationTicket | null
+  activePortfolioGenerationTransaction: PortfolioGenerationTransaction | null
+  lastAppliedSnapshotGeneration: SnapshotGenerationCache
+  testSeams: {
+    portfolioGenerationPhaseObserver: PortfolioGenerationPhaseObserverForTest | null
+    manualPublishBeforeApplyHook: (() => void) | null
+    loadPublishBeforeApplyHook: (() => void) | null
+    loadRestoreBeforeReadHook: (() => void) | null
+  }
+}
+
+function createAppStoreRuntime(): AppStoreRuntime {
+  return {
+    activePortfolioOperation: null,
+    activePortfolioGenerationTransaction: null,
+    lastAppliedSnapshotGeneration: null,
+    testSeams: {
+      portfolioGenerationPhaseObserver: null,
+      manualPublishBeforeApplyHook: null,
+      loadPublishBeforeApplyHook: null,
+      loadRestoreBeforeReadHook: null,
+    },
+  }
+}
+
+const defaultAppStoreRuntime = createAppStoreRuntime()
+
+function resetRuntimeTestSeams(runtime: AppStoreRuntime): void {
+  runtime.testSeams.portfolioGenerationPhaseObserver = null
+  runtime.testSeams.manualPublishBeforeApplyHook = null
+  runtime.testSeams.loadPublishBeforeApplyHook = null
+  runtime.testSeams.loadRestoreBeforeReadHook = null
+}
+
+function resetAppStoreRuntime(runtime: AppStoreRuntime): void {
+  runtime.activePortfolioOperation = null
+  runtime.activePortfolioGenerationTransaction = null
+  runtime.lastAppliedSnapshotGeneration = null
+  resetRuntimeTestSeams(runtime)
+}
 
 /** @internal Test-only read-only observer; application code must not use. */
 export function setPortfolioGenerationPhaseObserverForTest(
   observer: PortfolioGenerationPhaseObserverForTest,
 ): void {
-  portfolioGenerationPhaseObserverForTest = observer
+  defaultAppStoreRuntime.testSeams.portfolioGenerationPhaseObserver = observer
 }
 
 /** @internal Test-only one-shot failure injection; application code must not use. */
 export function setManualPublishBeforeApplyHookForTest(hook: () => void): void {
-  manualPublishBeforeApplyHookForTest = hook
+  defaultAppStoreRuntime.testSeams.manualPublishBeforeApplyHook = hook
 }
 
 /** @internal Test-only one-shot load publication failure injection. */
 export function setLoadPublishBeforeApplyHookForTest(hook: () => void): void {
-  loadPublishBeforeApplyHookForTest = hook
+  defaultAppStoreRuntime.testSeams.loadPublishBeforeApplyHook = hook
 }
 
 /** @internal Test-only one-shot initialize restore failure injection. */
 export function setLoadRestoreBeforeReadHookForTest(hook: () => void): void {
-  loadRestoreBeforeReadHookForTest = hook
+  defaultAppStoreRuntime.testSeams.loadRestoreBeforeReadHook = hook
 }
 
-function runLoadPublishBeforeApplyHookForTest(): void {
-  const hook = loadPublishBeforeApplyHookForTest
-  loadPublishBeforeApplyHookForTest = null
+function runLoadPublishBeforeApplyHookForTest(runtime: AppStoreRuntime): void {
+  const hook = runtime.testSeams.loadPublishBeforeApplyHook
+  runtime.testSeams.loadPublishBeforeApplyHook = null
   hook?.()
 }
 
-function runLoadRestoreBeforeReadHookForTest(): void {
-  const hook = loadRestoreBeforeReadHookForTest
-  loadRestoreBeforeReadHookForTest = null
+function runLoadRestoreBeforeReadHookForTest(runtime: AppStoreRuntime): void {
+  const hook = runtime.testSeams.loadRestoreBeforeReadHook
+  runtime.testSeams.loadRestoreBeforeReadHook = null
   hook?.()
 }
 
 /** @internal Reset all module-local RA-006 test seams. */
 export function resetPortfolioGenerationTestSeams(): void {
-  portfolioGenerationPhaseObserverForTest = null
-  manualPublishBeforeApplyHookForTest = null
-  loadPublishBeforeApplyHookForTest = null
-  loadRestoreBeforeReadHookForTest = null
+  resetRuntimeTestSeams(defaultAppStoreRuntime)
 }
 
 export type PortfolioOperationKind = 'initialize' | 'refresh' | 'csv' | 'snapshot' | 'manual'
@@ -353,38 +393,51 @@ export interface PortfolioOperationTicket {
   readonly kind: PortfolioOperationKind
 }
 
-let activePortfolioOperation: PortfolioOperationTicket | null = null
+function acquirePortfolioOperationFromRuntime(
+  runtime: AppStoreRuntime,
+  kind: PortfolioOperationKind,
+): PortfolioOperationTicket | null {
+  if (runtime.activePortfolioOperation !== null) return null
+  const ticket: PortfolioOperationTicket = { token: Symbol(`portfolio-operation:${kind}`), kind }
+  runtime.activePortfolioOperation = ticket
+  return ticket
+}
+
+function releasePortfolioOperationFromRuntime(
+  runtime: AppStoreRuntime,
+  ticket: PortfolioOperationTicket,
+): boolean {
+  if (runtime.activePortfolioOperation !== ticket || runtime.activePortfolioOperation.token !== ticket.token) {
+    return false
+  }
+  runtime.activePortfolioOperation = null
+  return true
+}
 
 export function acquirePortfolioOperation(
   kind: PortfolioOperationKind,
 ): PortfolioOperationTicket | null {
-  if (activePortfolioOperation !== null) return null
-  const ticket: PortfolioOperationTicket = { token: Symbol(`portfolio-operation:${kind}`), kind }
-  activePortfolioOperation = ticket
-  return ticket
+  return acquirePortfolioOperationFromRuntime(defaultAppStoreRuntime, kind)
 }
 
 export function releasePortfolioOperation(ticket: PortfolioOperationTicket): boolean {
-  if (activePortfolioOperation !== ticket || activePortfolioOperation.token !== ticket.token) {
-    return false
-  }
-  activePortfolioOperation = null
-  return true
+  return releasePortfolioOperationFromRuntime(defaultAppStoreRuntime, ticket)
 }
 
 function setPortfolioGenerationTransactionPhase(
+  runtime: AppStoreRuntime,
   transaction: PortfolioGenerationTransaction,
   phase: CsvImportTransactionPhase,
 ): void {
-  if (activePortfolioGenerationTransaction?.token !== transaction.token) {
+  if (runtime.activePortfolioGenerationTransaction?.token !== transaction.token) {
     throw new Error('portfolio generation transaction owner was lost')
   }
   transaction.phase = phase
-  portfolioGenerationPhaseObserverForTest?.(transaction.origin, phase)
+  runtime.testSeams.portfolioGenerationPhaseObserver?.(transaction.origin, phase)
 }
 
-function isPortfolioGenerationCriticalSection(): boolean {
-  const phase = activePortfolioGenerationTransaction?.phase
+function isPortfolioGenerationCriticalSection(runtime: AppStoreRuntime): boolean {
+  const phase = runtime.activePortfolioGenerationTransaction?.phase
   return phase === 'PERSISTING' || phase === 'COMMITTED' || phase === 'PUBLISHED'
 }
 
@@ -795,19 +848,12 @@ function computeCanonicalSnapshotStateIdentity(payload: CsvImportPersistencePayl
   }
 }
 
-// Same-session retry evidence only. The incoming unkeyed digest never authorizes an overwrite:
-// it can prove a no-op solely while the exact post-import state dependency digest is unchanged.
-let lastAppliedSnapshotGeneration: {
-  incomingIdentity: string
-  currentStateIdentity: string
-} | null = null
-
 /** @internal Test-only read access for subscriber-order assertions; application code must not use. */
 export function readLastAppliedSnapshotGenerationForTest(): Readonly<{
   incomingIdentity: string
   currentStateIdentity: string
 }> | null {
-  return lastAppliedSnapshotGeneration
+  return defaultAppStoreRuntime.lastAppliedSnapshotGeneration
 }
 
 const CSV_PROVENANCE_ALIGNMENT_FIELDS = [
@@ -1277,11 +1323,15 @@ function reportSubscriberException(error: unknown): void {
   try { console.error('[useAppStore] subscriber callback failed', error) } catch { /* diagnostic sink */ }
 }
 
+export type AppStoreState = AppState & AppActions
+
 // ── Store ─────────────────────────────────────────────────────
-export const useAppStore = create<AppState & AppActions>((set, get, api) => {
+const createAppStoreStateCreator = (
+  runtime: AppStoreRuntime,
+): StateCreator<AppStoreState> => (set, get, api) => {
   const rawSetState = api.setState
   api.setState = ((...args: Parameters<typeof api.setState>) => {
-    if (isPortfolioGenerationCriticalSection()) {
+    if (isPortfolioGenerationCriticalSection(runtime)) {
       reportRejectedReentrantMutation('setState')
       return
     }
@@ -1331,11 +1381,11 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
     prepareCandidateState: PrepareManualCandidate,
     persistLegacy: PersistManualLegacy,
   ): Promise<ManualMutationResult> => {
-    if (activePortfolioOperation !== null || activePortfolioGenerationTransaction !== null) {
+    if (runtime.activePortfolioOperation !== null || runtime.activePortfolioGenerationTransaction !== null) {
       reportRejectedPortfolioOperation(source)
       return Promise.resolve(createPortfolioCoordinationFailure(source, 'LOCAL_OPERATION_BUSY'))
     }
-    const operationTicket = acquirePortfolioOperation('manual')
+    const operationTicket = acquirePortfolioOperationFromRuntime(runtime, 'manual')
     if (operationTicket === null) {
       reportRejectedPortfolioOperation(source)
       return Promise.resolve(createPortfolioCoordinationFailure(source, 'LOCAL_OPERATION_BUSY'))
@@ -1401,11 +1451,11 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
           : createManualMutationFailure(source, 'MANUAL_PERSISTENCE_ERROR'))
       }
 
-      const previousCache = lastAppliedSnapshotGeneration
-      lastAppliedSnapshotGeneration = null
+      const previousCache = runtime.lastAppliedSnapshotGeneration
+      runtime.lastAppliedSnapshotGeneration = null
       try {
-        const beforeApplyHook = manualPublishBeforeApplyHookForTest
-        manualPublishBeforeApplyHookForTest = null
+        const beforeApplyHook = runtime.testSeams.manualPublishBeforeApplyHook
+        runtime.testSeams.manualPublishBeforeApplyHook = null
         beforeApplyHook?.()
         // Object-form set performs exactly one Zustand publication containing the complete
         // input+derived generation. All existing system/source metadata is carried unchanged.
@@ -1422,7 +1472,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
           published.analysis === finalState.analysis &&
           published.officialDecision === finalState.officialDecision
         if (!applied) {
-          lastAppliedSnapshotGeneration = previousCache
+          runtime.lastAppliedSnapshotGeneration = previousCache
           try { console.error('[useAppStore] manual portfolio publish failed before apply') } catch { /* diagnostic sink */ }
           return Promise.resolve(createManualMutationFailure(source, 'MANUAL_PUBLISH_ERROR'))
         }
@@ -1430,7 +1480,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
       }
       return Promise.resolve(createManualMutationSuccess(source, 'SUCCESS'))
     } finally {
-      releasePortfolioOperation(operationTicket)
+      releasePortfolioOperationFromRuntime(runtime, operationTicket)
     }
   }
 
@@ -1522,11 +1572,11 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
   // ── 起動時初期化 ──────────────────────────────────────────
   initialize: async () => {
     const operation: PortfolioLoadOperation = 'initialize'
-    if (isPortfolioGenerationCriticalSection()) {
+    if (isPortfolioGenerationCriticalSection(runtime)) {
       reportRejectedReentrantMutation('initialize')
       return createPortfolioCoordinationFailure(operation, 'LOCAL_OPERATION_BUSY')
     }
-    const operationTicket = acquirePortfolioOperation('initialize')
+    const operationTicket = acquirePortfolioOperationFromRuntime(runtime, 'initialize')
     if (operationTicket === null) {
       reportRejectedPortfolioOperation('initialize')
       return createPortfolioCoordinationFailure(operation, 'LOCAL_OPERATION_BUSY')
@@ -1539,7 +1589,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
       phase = 'publish'
       set(s => ({ system: { ...s.system, status: 'loading' } }))
       phase = 'restore'
-      runLoadRestoreBeforeReadHookForTest()
+      runLoadRestoreBeforeReadHookForTest(runtime)
       // localStorage復元（P4.5-A012d: holdings/trustはTTL失効時も値を保持する。
       // 鮮度はlocalStorageFreshnessとして表示専用にsystemへ反映する）
       const csvGeneration = restoreCsvImportGeneration()
@@ -1610,7 +1660,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
       const { market, correlation, news, trust, holdingsSnapshot, macro, nikkeiVI, sq, margin, flows, candidatesNews, candidatesStocks, regimeState, safeMode, tierAViolations, tierAAlerts } = result
 
       phase = 'publish'
-      runLoadPublishBeforeApplyHookForTest()
+      runLoadPublishBeforeApplyHookForTest(runtime)
       set(s => {
         const sourceAsOf = getSafeAuthoritativeCsvSourceAsOf(s.system.csvImportProvenance, csvMetadataNowMs)
         const hasCurrentGeneration = hasCommittedCanonicalGeneration || hasCurrentPortfolioContentEvidence(s)
@@ -1732,18 +1782,18 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
       }
       return createPortfolioLoadFailure(operation, code)
     } finally {
-      releasePortfolioOperation(operationTicket)
+      releasePortfolioOperationFromRuntime(runtime, operationTicket)
     }
   },
 
   // ── 全データ再取得 ────────────────────────────────────────
   refreshAllData: async () => {
     const operation: PortfolioLoadOperation = 'refreshAllData'
-    if (isPortfolioGenerationCriticalSection()) {
+    if (isPortfolioGenerationCriticalSection(runtime)) {
       reportRejectedReentrantMutation('refreshAllData')
       return createPortfolioCoordinationFailure(operation, 'LOCAL_OPERATION_BUSY')
     }
-    const operationTicket = acquirePortfolioOperation('refresh')
+    const operationTicket = acquirePortfolioOperationFromRuntime(runtime, 'refresh')
     if (operationTicket === null) {
       reportRejectedPortfolioOperation('refreshAllData')
       return createPortfolioCoordinationFailure(operation, 'LOCAL_OPERATION_BUSY')
@@ -1761,7 +1811,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
       const hasCommittedCanonicalGeneration = restoreCsvImportGeneration().status === 'committed'
 
       phase = 'publish'
-      runLoadPublishBeforeApplyHookForTest()
+      runLoadPublishBeforeApplyHookForTest(runtime)
       set(s => {
         const safeCsvLastImportedAt = isCsvMetadataTimestampNotFuture(
           s.system.csvLastImportedAt,
@@ -1876,16 +1926,16 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
       }
       return createPortfolioLoadFailure(operation, code)
     } finally {
-      releasePortfolioOperation(operationTicket)
+      releasePortfolioOperationFromRuntime(runtime, operationTicket)
     }
   },
 
   // ── CSV取込（個別株 + 投信 両対応）──────────────────────────
   importCsv: async (file: File, options = {}) => {
-    if (activePortfolioOperation !== null || activePortfolioGenerationTransaction !== null || get().system.status === 'loading') {
+    if (runtime.activePortfolioOperation !== null || runtime.activePortfolioGenerationTransaction !== null || get().system.status === 'loading') {
       return csvImportFailure('IMPORT_IN_PROGRESS', '別の取込または更新が進行中です。完了後に再試行してください。')
     }
-    const operationTicket = acquirePortfolioOperation('csv')
+    const operationTicket = acquirePortfolioOperationFromRuntime(runtime, 'csv')
     if (operationTicket === null) {
       return csvImportFailure('IMPORT_IN_PROGRESS', '別の取込または更新が進行中です。完了後に再試行してください。')
     }
@@ -1899,7 +1949,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
       trackerPortfolioBaseline: null,
       canonicalPreviousRaw: null,
     }
-    activePortfolioGenerationTransaction = transaction
+    runtime.activePortfolioGenerationTransaction = transaction
     let durableCommitted = false
     let committedSuccess: CsvImportResult | null = null
     // T9-A004-R3-FIX-B (R3-F003): receipt取得後の予期しない例外recovery（outer catch）が
@@ -1910,7 +1960,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
     let committedTransferIdentity: string | null = null
     const publishFailure = (failure: CsvImportResult): CsvImportResult => {
       if (failure.ok) return failure
-      if (activePortfolioGenerationTransaction?.token === transaction.token) {
+      if (runtime.activePortfolioGenerationTransaction?.token === transaction.token) {
         set(s => ({ system: { ...s.system, status: 'error', error: failure.message } }))
       }
       return failure
@@ -1950,7 +2000,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
       transaction.initialFingerprint = dependencyFingerprint
       const fileName = String(file.name || 'CSVファイル')
       set(s => ({ system: { ...s.system, status: 'loading', error: null } }))
-      setPortfolioGenerationTransactionPhase(transaction, 'READING')
+      setPortfolioGenerationTransactionPhase(runtime, transaction, 'READING')
       const oldHoldings = baseState.holdings
       const oldTrust = baseState.trust
 
@@ -1972,7 +2022,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
       }
 
       const { holdings: updatedH, trust: updatedT, trustSync, sourceProvenance } = parsed
-      setPortfolioGenerationTransactionPhase(transaction, 'STAGING')
+      setPortfolioGenerationTransactionPhase(runtime, transaction, 'STAGING')
       const now = new Date(transaction.analysisNow).toISOString()
       const incomingProvenance: CsvImportProvenance = { importedAt: now, ...sourceProvenance }
       const currentGeneration = restoreCsvImportGenerationFromRaw(transaction.canonicalPreviousRaw)
@@ -2052,7 +2102,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
 
       let computed: ReturnType<typeof runFullAnalysis>
       try {
-        setPortfolioGenerationTransactionPhase(transaction, 'ANALYZING')
+        setPortfolioGenerationTransactionPhase(runtime, transaction, 'ANALYZING')
         computed = runFullAnalysis(stagedState, {
           requireOfficialDecision: true,
           nowMs: transaction.analysisNow,
@@ -2079,7 +2129,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
           ? [`口座を一意に特定できない投信 ${syncSummary.trust.ambiguousFundIds.length}件は更新されませんでした。`]
           : []),
       ]
-      setPortfolioGenerationTransactionPhase(transaction, 'PREPARED')
+      setPortfolioGenerationTransactionPhase(runtime, transaction, 'PREPARED')
 
       if (buildPortfolioAnalysisFingerprint(get()) !== dependencyFingerprint) {
         return publishFailure(csvImportFailure(
@@ -2112,7 +2162,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
 
       const generationCommittedAt = Date.now()
       try {
-        setPortfolioGenerationTransactionPhase(transaction, 'PERSISTING')
+        setPortfolioGenerationTransactionPhase(runtime, transaction, 'PERSISTING')
         const stagedTransferIdentity = computeSnapshotGenerationIdentity({
           holdings: computed.holdings,
           trust: computed.trust,
@@ -2138,9 +2188,9 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
         })
         committedTransferIdentity = stagedTransferIdentity
         durableCommitted = true
-        setPortfolioGenerationTransactionPhase(transaction, 'COMMITTED')
+        setPortfolioGenerationTransactionPhase(runtime, transaction, 'COMMITTED')
       } catch (error) {
-        setPortfolioGenerationTransactionPhase(transaction, 'PREPARED')
+        setPortfolioGenerationTransactionPhase(runtime, transaction, 'PREPARED')
         if (error instanceof CsvImportPersistenceIndeterminateError) {
           return publishFailure(csvImportFailure(
             'PERSISTENCE_INDETERMINATE',
@@ -2220,7 +2270,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
           localStorageFreshness,
         },
       })
-      setPortfolioGenerationTransactionPhase(transaction, 'PUBLISHED')
+      setPortfolioGenerationTransactionPhase(runtime, transaction, 'PUBLISHED')
 
       try {
         if (trustExecution.executed && getTrustShortTodayExecutionCount(transaction.analysisNow) < 1) {
@@ -2304,7 +2354,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
       )
       try { return publishFailure(failure) } catch { return failure }
     } finally {
-      if (activePortfolioGenerationTransaction?.token === transaction.token) {
+      if (runtime.activePortfolioGenerationTransaction?.token === transaction.token) {
         try {
           if (get().system.status === 'loading') {
             set(s => ({ system: {
@@ -2317,9 +2367,9 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
           // Zustand's in-memory set/get are synchronous; this final guard prevents a thrown
           // observer from turning the action promise into a rejection.
         }
-        activePortfolioGenerationTransaction = null
+        runtime.activePortfolioGenerationTransaction = null
       }
-      releasePortfolioOperation(operationTicket)
+      releasePortfolioOperationFromRuntime(runtime, operationTicket)
     }
   },
 
@@ -2479,11 +2529,11 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
     // T9-A004-R3a: CSV/snapshotは同一の共有transactionを取り合う。既に他のorigin
     // （またはnestedなsnapshot自身）が進行中なら、critical phaseに達しているかを問わず
     // 即座にblockする（importCsvのREADING等の非critical phase中も含む）。
-    if (activePortfolioOperation !== null || activePortfolioGenerationTransaction !== null) {
+    if (runtime.activePortfolioOperation !== null || runtime.activePortfolioGenerationTransaction !== null) {
       reportRejectedReentrantMutation('importPortfolioSnapshot')
       return createPortfolioCoordinationFailure('importPortfolioSnapshot', 'LOCAL_OPERATION_BUSY')
     }
-    const operationTicket = acquirePortfolioOperation('snapshot')
+    const operationTicket = acquirePortfolioOperationFromRuntime(runtime, 'snapshot')
     if (operationTicket === null) {
       reportRejectedReentrantMutation('importPortfolioSnapshot')
       return createPortfolioCoordinationFailure('importPortfolioSnapshot', 'LOCAL_OPERATION_BUSY')
@@ -2494,7 +2544,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
       phase: 'STAGING',
       analysisNow: Date.now(),
     }
-    activePortfolioGenerationTransaction = transaction
+    runtime.activePortfolioGenerationTransaction = transaction
     try {
       const parsed = parsePortfolioSnapshotImport(raw)
       if (!parsed.ok) {
@@ -2586,8 +2636,8 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
         (canonicalStateIdentity !== null &&
           snapshot.snapshotGenerationIdentity === canonicalStateIdentity) ||
         (canonicalPayload === null &&
-          lastAppliedSnapshotGeneration?.incomingIdentity === snapshot.snapshotGenerationIdentity &&
-          lastAppliedSnapshotGeneration.currentStateIdentity === currentStateIdentity)
+          runtime.lastAppliedSnapshotGeneration?.incomingIdentity === snapshot.snapshotGenerationIdentity &&
+          runtime.lastAppliedSnapshotGeneration.currentStateIdentity === currentStateIdentity)
       )) {
         return { ok: true, code: 'DUPLICATE_SNAPSHOT' }
       }
@@ -2751,7 +2801,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
         },
       }
 
-      setPortfolioGenerationTransactionPhase(transaction, 'ANALYZING')
+      setPortfolioGenerationTransactionPhase(runtime, transaction, 'ANALYZING')
       let computed: ReturnType<typeof runFullAnalysis>
       try {
         computed = runFullAnalysis(stagedState, { nowMs: transaction.analysisNow })
@@ -2797,7 +2847,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
 
       // pre-persist CAS付き単一durable commit。transaction開始時に捕捉したbytesと
       // 物理bytesが一致する場合のみcanonical世代を置換できる（stale writerはconflict）。
-      setPortfolioGenerationTransactionPhase(transaction, 'PERSISTING')
+      setPortfolioGenerationTransactionPhase(runtime, transaction, 'PERSISTING')
       const generationCommittedAt = Date.now()
       let receipt: CsvImportPersistenceReceipt
       try {
@@ -2826,7 +2876,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
           error: 'snapshotを保存できませんでした。再読み込み後に再試行してください。',
         }
       }
-      setPortfolioGenerationTransactionPhase(transaction, 'COMMITTED')
+      setPortfolioGenerationTransactionPhase(runtime, transaction, 'COMMITTED')
 
       // Payload equality is not ownership: only the exact serialized bytes in the receipt
       // prove that this transaction still owns the physical canonical key. 所有権を失った
@@ -2848,14 +2898,14 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
       const markSnapshotGenerationApplied = () => {
         if (snapshot.snapshotGenerationIdentity !== null) {
           const appliedStateIdentity = computeCurrentSnapshotStateIdentity(get())
-          lastAppliedSnapshotGeneration = appliedStateIdentity === null
+          runtime.lastAppliedSnapshotGeneration = appliedStateIdentity === null
             ? null
             : {
                 incomingIdentity: snapshot.snapshotGenerationIdentity,
                 currentStateIdentity: appliedStateIdentity,
               }
         } else {
-          lastAppliedSnapshotGeneration = null
+          runtime.lastAppliedSnapshotGeneration = null
         }
       }
 
@@ -2897,7 +2947,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
             localStorageFreshness,
           },
         }))
-        setPortfolioGenerationTransactionPhase(transaction, 'PUBLISHED')
+        setPortfolioGenerationTransactionPhase(runtime, transaction, 'PUBLISHED')
         markSnapshotGenerationApplied()
         return successResult
       } catch (error) {
@@ -2920,11 +2970,72 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
         }
       }
     } finally {
-      if (activePortfolioGenerationTransaction?.token === transaction.token) {
-        activePortfolioGenerationTransaction = null
+      if (runtime.activePortfolioGenerationTransaction?.token === transaction.token) {
+        runtime.activePortfolioGenerationTransaction = null
       }
-      releasePortfolioOperation(operationTicket)
+      releasePortfolioOperationFromRuntime(runtime, operationTicket)
     }
   },
   })
-})
+}
+
+export interface AppStoreInstanceTestControls {
+  acquirePortfolioOperation(kind: PortfolioOperationKind): PortfolioOperationTicket | null
+  releasePortfolioOperation(ticket: PortfolioOperationTicket): boolean
+  setPortfolioGenerationPhaseObserver(observer: PortfolioGenerationPhaseObserverForTest): void
+  setManualPublishBeforeApplyHook(hook: () => void): void
+  setLoadPublishBeforeApplyHook(hook: () => void): void
+  setLoadRestoreBeforeReadHook(hook: () => void): void
+  reset(): void
+  inspect(): {
+    activeOperationKind: PortfolioOperationKind | null
+    activeGenerationOrigin: 'csv' | 'snapshot' | null
+    activeGenerationPhase: CsvImportTransactionPhase | null
+    hasSnapshotCache: boolean
+    hasPhaseObserver: boolean
+    hasManualPublishHook: boolean
+    hasLoadPublishHook: boolean
+    hasLoadRestoreHook: boolean
+  }
+}
+
+/** @internal Test-only factory for a vanilla store with an isolated coordination runtime. */
+export function createAppStoreInstanceForTest(): {
+  store: StoreApi<AppStoreState>
+  controls: AppStoreInstanceTestControls
+} {
+  const runtime = createAppStoreRuntime()
+  const store = createStore<AppStoreState>(createAppStoreStateCreator(runtime))
+  const controls: AppStoreInstanceTestControls = {
+    acquirePortfolioOperation: kind => acquirePortfolioOperationFromRuntime(runtime, kind),
+    releasePortfolioOperation: ticket => releasePortfolioOperationFromRuntime(runtime, ticket),
+    setPortfolioGenerationPhaseObserver: observer => {
+      runtime.testSeams.portfolioGenerationPhaseObserver = observer
+    },
+    setManualPublishBeforeApplyHook: hook => {
+      runtime.testSeams.manualPublishBeforeApplyHook = hook
+    },
+    setLoadPublishBeforeApplyHook: hook => {
+      runtime.testSeams.loadPublishBeforeApplyHook = hook
+    },
+    setLoadRestoreBeforeReadHook: hook => {
+      runtime.testSeams.loadRestoreBeforeReadHook = hook
+    },
+    reset: () => resetAppStoreRuntime(runtime),
+    inspect: () => ({
+      activeOperationKind: runtime.activePortfolioOperation?.kind ?? null,
+      activeGenerationOrigin: runtime.activePortfolioGenerationTransaction?.origin ?? null,
+      activeGenerationPhase: runtime.activePortfolioGenerationTransaction?.phase ?? null,
+      hasSnapshotCache: runtime.lastAppliedSnapshotGeneration !== null,
+      hasPhaseObserver: runtime.testSeams.portfolioGenerationPhaseObserver !== null,
+      hasManualPublishHook: runtime.testSeams.manualPublishBeforeApplyHook !== null,
+      hasLoadPublishHook: runtime.testSeams.loadPublishBeforeApplyHook !== null,
+      hasLoadRestoreHook: runtime.testSeams.loadRestoreBeforeReadHook !== null,
+    }),
+  }
+  return { store, controls }
+}
+
+export const useAppStore = create<AppStoreState>(
+  createAppStoreStateCreator(defaultAppStoreRuntime),
+)

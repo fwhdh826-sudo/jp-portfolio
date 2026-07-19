@@ -47822,3 +47822,80 @@ It is prepared and pushed only on `v13.3-dev`; this ticket does not push to main
 ### Next
 
 `RA-007-B3: store factory and instance-scoped coordination state`
+
+## RA-007-B3: store factory and instance-scoped coordination runtime
+
+### Factory and runtime
+
+- B2 commit: `6c62f57e0bfca80d6a2cbd2ce41eabe1ff50465a`。
+- `AppStoreState = AppState & AppActions`と`createAppStoreStateCreator(runtime)`を導入し、既存の
+  state creatorをruntime closureへ分離した。initial state、action signature、result code、error message、
+  subscriber timing、React selector behaviorは変更していない。
+- `defaultAppStoreRuntime`はmodule内に1個だけ生成し、既存`useAppStore`は同runtimeから作るため、
+  `getState` / `setState` / `subscribe`を含むproduction APIを維持した。production caller変更は0、
+  AppActions変更は0、UI変更は0。
+- `createAppStoreInstanceForTest()`は呼出しごとに新しいruntimeと`zustand/vanilla` StoreApiを返す。
+  default store/runtimeは返さず共有もしない。DIRECT testではdefault + A + Bの3 runtimeを同時に検証した。
+- runtimeはZustand state/AppState/AppActionsへ保存・公開せず、test controlsの`inspect()`はoperation kind、
+  generation origin/phase、cache/seam有無だけを返す。token、identity、canonical bytes、callback、portfolio内容は
+  公開しない。
+
+### Moved mutable coordination state and direct isolation
+
+- instance runtimeへ移したmutable symbolsは`activePortfolioOperation`、
+  `activePortfolioGenerationTransaction`、`lastAppliedSnapshotGeneration`、
+  `portfolioGenerationPhaseObserverForTest`、`manualPublishBeforeApplyHookForTest`、
+  `loadPublishBeforeApplyHookForTest`、`loadRestoreBeforeReadHookForTest`の7個。
+  対象名のmodule-scope `let`は0。
+- imported mutable-state auditで追加検出した`persist.ts`の`generationSequence`はdurable generation IDの
+  process-wide一意性カウンタで、operation ownership/cache/test seamではないためstore-local化対象外。
+  allowed files外にtwo-store correctnessを妨げるper-store mutable stateは0。
+- A/BはStoreApi、root state、action function、subscriber、state updateを共有しない。A updateによるB通知と
+  B updateによるA通知はいずれも0。
+- A/Bは同時にmanual ticketを取得でき、tokenは別。wrong-instance releaseとdefault-wrapper releaseはfalse、
+  owner release後も他instance ownershipは不変。A busyはA nested actionだけを`LOCAL_OPERATION_BUSY`にし、
+  B/default manual actionをblockしない。
+- A/Bのpending CSV transactionは独立し、origin/phase、operation ownership、phase observer、cleanupを共有しない。
+  A completion中のB state reference/phase call countは不変で、B completionはA observerを呼ばない。
+- snapshot success cache、manual invalidation、controls reset、default cacheはinstance限定。A/B cacheを個別に
+  primeした後のA resetでB cacheは維持された。
+- manual publish、load publish、load restore、phase observer seamはinstance限定。one-shot消費とA resetはB seamを
+  変更せず、default resetもA/B seamを変更しない。
+- 既存default compatibility exports（4 seam setters、reset、acquire/release、cache test reader）はdefault runtime
+  のみを操作する。store内部actionはcompatibility wrapperを呼ばずclosure runtime helperを使用する。
+
+### Mutation-catching and validation
+
+- required 7 mutations（A/B同一runtime、state creator内default acquire wrapper、snapshot cache default-global、
+  instance hookのdefault登録、A resetによる全instance reset、factoryがdefault store返却、phase observerの
+  default-global化）はすべてinstance isolation testのREDを直接確認し、各inverse patchで完全復元した。
+- Instance isolation targeted UTC / Asia/Tokyo: **1 file / 13 tests / skipped 0 — PASS**。
+- Coordination targeted UTC / Asia/Tokyo: **8 files / 388 tests / skipped 0 — PASS**。
+- B2 load regression UTC / Asia/Tokyo: **5 files / 199 tests / skipped 0 — PASS**。
+- Lock adapter regression UTC / Asia/Tokyo: **1 file / 47 tests / skipped 0 — PASS**。
+- Full UTC / Asia/Tokyo: **68 files / 1706 tests / skipped 0 — PASS**。file/test差分0。
+- `npx tsc --noEmit`: **PASS**。`npm run build`: **PASS**（127 modules、既知500kB warningのみ）。
+  `git diff --check`: **PASS**。
+- Bundle isolationはlock name、test factory/control、旧seam symbolの全検索で0 matches。
+  `portfolioGenerationLock.ts`、`fakeLockManager.ts`、`persist.ts`、`portfolioOperationResult.ts`のdiffは0。
+- Web Lock store接続、adapter import、`runExclusive`、`navigator.locks.request()`は0。persistence、result taxonomy、
+  workflow、data/public data、dependency、schema、identity、CSV parser、snapshot transfer、investment logic、
+  BroadcastChannel、storage event、cross-tab hydration、CAS変更は0。mainは未反映。
+- Completed validation at 2026-07-19T16:38:32Z / 2026-07-20T01:38:32+09:00.
+
+### Residual and status
+
+- FactoryはまだWeb Lock adapterを受け取らない。localStorage/canonicalは複数store間で共有され得る。
+  cross-tab stale detectionは未実装。initialize/refreshの既存partial publicationは維持。
+  production cross-tab serializationは未稼働。
+- RA-007 design audit: **CLOSED**。
+- RA-007-A: **CLOSED**。
+- RA-007-B1: **CLOSED**。
+- RA-007-B2: **CLOSED**。
+- RA-007-B3: **CLOSED**。
+- RA-007-C: **PENDING**。
+- Web Lock production serialization: **NOT YET ACTIVE**。
+
+### Next
+
+`RA-007-C: connect Web Lock to manual mutations and snapshot import`
