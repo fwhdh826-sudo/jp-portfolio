@@ -46577,3 +46577,66 @@ persistence hardening系列（`portfolio-snapshot-3`、
 - RA-003 independent re-audit: **CLOSED**
 - RA-003 main integration: **PENDING**
 - RA-003 formal closeout: **deployment verification pending**
+
+## RA-003-INTEGRATE: main deployment closeout
+
+### Integration commits
+
+- Implementation commit: `749c8754a473f45d3471e2c816c1f089cd846a98`
+- Audit-fix commit: `49657cdcd8f9326e9c7acca8fdeddd738a9bd23a`
+- Synchronized main data commit: `ef6640495403bf779780f52e965321de11795461`
+- Main synchronization merge commit: `016f7001c9fb48380b2b3e7a34e7d1d7f61db4ce`
+- Readiness documentation commit: `067ec5d692563d3361f3c9b1eebf5ca10d0d1064`
+- First main integration SHA: `067ec5d692563d3361f3c9b1eebf5ca10d0d1064`
+
+### First main Actions / Pages verification
+
+- Workflow: `Deploy to GitHub Pages`
+- Run ID / event / head SHA: `29668424759` / `push` /
+  `067ec5d692563d3361f3c9b1eebf5ca10d0d1064`
+- Workflow conclusion: success
+- Build job `88142970265`: success. Checkout, Node setup, `npm ci`, unit test,
+  production build, and artifact upload steps all succeeded.
+- Deploy job `88143008210`: success. Deploy to GitHub Pages step succeeded.
+- Cancelled / skipped / failure: 0
+- Check-run annotations: build 0 / deploy 0
+- Pages deployment ID `5506903014`: environment `github-pages`, state success,
+  SHA `067ec5d692563d3361f3c9b1eebf5ca10d0d1064`
+- Project root: HTTP 200
+- Cache-bypassed `index.html`: HTTP 200
+- HTML shell: title `JP株OS V10`, `#root`, and `/jp-portfolio/` asset base confirmed
+- Main JS `/jp-portfolio/assets/index-Bf-SxS0N.js`: HTTP 200
+- Main CSS `/jp-portfolio/assets/index-CiHz3Gz-.css`: HTTP 200
+- Deployed JS/CSS bytes match the local verified build by SHA-256 and byte comparison
+- In-app Browser backend was unavailable, so visual rendering and live console smoke were not
+  performed. Actions, HTML shell, asset HTTP 200, and byte equality were used as the permitted
+  substitute. No real-user localStorage CSV/snapshot smoke was performed.
+
+### Audit closure and scope
+
+- All 17 failure/retry classifications: **DIRECT**
+- `RA-003-AUDIT-F001`: **CLOSED**
+- Additional production changes during integration: 0
+- Additional test changes during integration: 0
+- Workflow changes during integration: 0
+- `origin/main` / `origin/v13.3-dev` after first integration: identical
+
+### Formal status
+
+- RA-003 implementation: **CLOSED**
+- RA-003-AUDIT-F001: **CLOSED**
+- RA-003 independent audit: **CLOSED**
+- RA-003 main integration: **CLOSED**
+- RA-003: **CLOSED**
+
+### Residual scope
+
+- The six manual mutations `updateHolding`, `updateTrust`, `setPortfolioPolicy`,
+  `setCashAssumptions`, `clearCashAssumptionsOverride`, and `importCashAssumptions` remain for
+  RA-006 or a later ticket.
+- Cross-tab coordination remains deferred until after Web Locks.
+- `system.status` is compatibility/display state and is not lock authority.
+
+### Next
+
+`RA-005: CSV metadata TTL savedAt dependency removal`
