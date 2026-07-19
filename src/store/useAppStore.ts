@@ -281,6 +281,32 @@ type PortfolioGenerationTransaction = CsvImportTransaction | SnapshotImportTrans
 
 let activePortfolioGenerationTransaction: PortfolioGenerationTransaction | null = null
 
+type PortfolioGenerationPhaseObserverForTest = (
+  origin: PortfolioGenerationTransaction['origin'],
+  phase: CsvImportTransactionPhase,
+) => void
+
+let portfolioGenerationPhaseObserverForTest: PortfolioGenerationPhaseObserverForTest | null = null
+let manualPublishBeforeApplyHookForTest: (() => void) | null = null
+
+/** @internal Test-only read-only observer; application code must not use. */
+export function setPortfolioGenerationPhaseObserverForTest(
+  observer: PortfolioGenerationPhaseObserverForTest,
+): void {
+  portfolioGenerationPhaseObserverForTest = observer
+}
+
+/** @internal Test-only one-shot failure injection; application code must not use. */
+export function setManualPublishBeforeApplyHookForTest(hook: () => void): void {
+  manualPublishBeforeApplyHookForTest = hook
+}
+
+/** @internal Reset all module-local RA-006 test seams. */
+export function resetPortfolioGenerationTestSeams(): void {
+  portfolioGenerationPhaseObserverForTest = null
+  manualPublishBeforeApplyHookForTest = null
+}
+
 export type PortfolioOperationKind = 'initialize' | 'refresh' | 'csv' | 'snapshot' | 'manual'
 
 export interface PortfolioOperationTicket {
@@ -315,6 +341,7 @@ function setPortfolioGenerationTransactionPhase(
     throw new Error('portfolio generation transaction owner was lost')
   }
   transaction.phase = phase
+  portfolioGenerationPhaseObserverForTest?.(transaction.origin, phase)
 }
 
 function isPortfolioGenerationCriticalSection(): boolean {
@@ -1301,6 +1328,9 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
       const previousCache = lastAppliedSnapshotGeneration
       lastAppliedSnapshotGeneration = null
       try {
+        const beforeApplyHook = manualPublishBeforeApplyHookForTest
+        manualPublishBeforeApplyHookForTest = null
+        beforeApplyHook?.()
         // Object-form set performs exactly one Zustand publication containing the complete
         // input+derived generation. All existing system/source metadata is carried unchanged.
         set(finalState)

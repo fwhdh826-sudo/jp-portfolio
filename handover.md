@@ -47270,3 +47270,137 @@ persistence hardening系列（`portfolio-snapshot-3`、
 ### Next
 
 `RA-006-REAUDIT: legacy transaction and identity closure audit`
+
+## RA-006-REAUDIT-FIX: DIRECT closure matrices
+
+### Re-audit verdict and closed findings
+
+- Independent re-audit verdict before this fix: **BLOCKED**.
+- Audited production runtime findings: P0 **0** / P1 **0**.
+- P2 `RA-006-REAUDIT-F001`: legacy rollback order、remove write-then-throw、canonical
+  transition、byte-exact ownershipのDIRECT不足を閉鎖。
+- P2 `RA-006-REAUDIT-F002`: field-isolated metadata 11 casesとsix-action publish
+  contractのDIRECT不足を閉鎖。
+- P2 `RA-006-REAUDIT-F003`: final state未適用publish throwのprevious cache復旧分岐を
+  DIRECT化。
+- P2 `RA-006-REAUDIT-F004`: generic operation ticketをphase証拠にしていた不足を、actual
+  public operation matrixで閉鎖。
+
+### Rollback / canonical DIRECT matrix
+
+- portfolio → trust → learningのcandidate write後にfinal canonical failureを発生させ、rollbackを
+  learning exact `setItem` → trust physical `removeItem` → portfolio exact `setItem`の逆順で、
+  operation type / key / exact rawを分離assertした。
+- previous trust absentのrollback `removeItem`がphysical delete後にthrowしても、reread absentを
+  成功として`rolled_back`とする。remove前throwの`rollback_failed` fixtureも維持した。
+- canonical absent → valid committed、present-invalid、arbitrary third-party raw、explicit A → B、
+  semantic-equivalentだがbyte-different JSONを独立fixture化。remaining legacy write停止、owned
+  legacyだけ逆順rollback、canonical exact raw非変更、candidate legacy bytes 0を確認した。
+- legacy targetをsemantic-equivalentだがbyte-different rawへ置換した場合はexact ownerと扱わず、
+  `ownership_lost`で第三者bytesを維持する。
+- `src/store/persist.ts` production diffは0。
+
+### Metadata 11 cases × v4/v5
+
+- Required 11 casesをschema v4/v5双方でfield-isolatedに実行: top-level importedAtの両null
+  asymmetry、provenance object/nullの両asymmetry、top-level importedAt A/B、provenanceの
+  importedAt / sourceAsOf / semanticIdentity / contentFingerprint単独差、TTL-expired、future。
+- Case 3/4はtop-level importedAt一致、Case 5はprovenance双方null、Case 6〜9はtop-level
+  importedAtと非対象provenance field一致をaction前にdifference pathでassertした。
+- malformed published provenanceも維持。各caseでanalysis 0、canonical write/remove 0、legacy
+  access 0、portfolio input/derived publish 0、cache exact不変、system-only notification exactly 1、
+  deterministic alignment error、ticket release、repaired aligned retry成功を同一caseで確認した。
+
+### Six actions × v4/v5 complete publish contract
+
+- updateHolding / updateTrust / setPortfolioPolicy / setCashAssumptions /
+  clearCashAssumptionsOverride / importCashAssumptionsの6 actionsをv4/v5、計12 casesで実行。
+- 各同一case内でsnapshot cacheをnonnullに確立し、canonical aligned、subscriber開始後、唯一の
+  callback内でcanonical raw、cache、manual ticket、complete stateをDIRECT観測した。
+- callback時点でcanonical write済み、raw restore committed、payloadとcallback state一致、
+  `snapshotTransferIdentity`必須式一致、cache null、manual ticket取得null、requested inputと同世代
+  derived output成立、system CSV metadata保持を確認した。
+- callback後はsubscriber exactly 1、canonical write exactly 1、holdings/trust/policy/cash、
+  importedAt/provenance/origin/syncSummary/schema一致、cache null、ticket release、後続no-op/valid
+  manual action可能を確認した。manual subscriber reentryもfirst canonical/stateだけを成立させ、
+  nested six actions 0、callback後の次manual成功を確認した。
+
+### Pre-apply publish failure / same-snapshot retry
+
+- `manualPublishBeforeApplyHookForTest`をmodule-local、default null、one-shot、reset可能なtest-only
+  seamとして追加。final manual publish直前、state適用前throwをDIRECT注入した。
+- snapshot importでprevious cacheを成立させ、throw後はstore root、portfolio input、derived reference
+  が旧世代のまま、subscriber 0、previous cache exact reference復旧、ticket release、raw error UI非公開、
+  次manual成功を確認した。
+- canonical candidateはpublish前に既にdurable commit済みのため、この既存failure windowでは
+  physical storage新 / memory旧となる事実をassertした。監査済みcontractはcache復旧を要求し、
+  canonical rollbackは要求していない。新規P1 runtime defectは検出されなかった。
+- same-snapshot rejected retryはexact `SNAPSHOT_PROVENANCE_UNKNOWN`、canonical raw byte-exact不変、
+  cache null、holdings/trust/policy/cash reference不変、subscriber 0、persistence 0を確認した。
+
+### Actual operation phase matrix
+
+- 新規`src/store/useAppStore.manualMutationPhaseDirect.test.ts`でpublic `initialize()`と
+  `refreshAllData()`をdeferred published-data load中に停止し、pending証拠の下でsix actionsを拒否。
+  deferred resolve後のsystem success、original analysis、owner release、後続manual成功まで確認した。
+- public `importCsv()`をpending `File.arrayBuffer()`でactual READINGに停止しsix actionsを拒否、release後
+  outer exact SUCCESS、canonical/state成立、owner releaseを確認した。
+- module-local read-only `portfolioGenerationPhaseObserverForTest`でactual CSV ANALYZING / PREPAREDを
+  観測し、そのcallback内でsix actionsを拒否。analysis module wrapperはoriginal `computeAnalysis`へ
+  委譲し、outer CSV SUCCESSとcanonical/state成立を確認した。
+- public `importPortfolioSnapshot()`のactual ANALYZING callback内でsix actionsを拒否し、outer exact
+  SUCCESS、canonical/state成立、owner releaseを確認した。
+- generic ticket取得testはcoordinator unit guardとしてのみ残し、operation phaseのDIRECT分類には使用しない。
+  phase証拠はactual public outer operationとobserver evidenceだけに切り替えた。
+- 全actual callbackでmanual input/derived/system、analysis追加、canonical/legacy access、subscriber、
+  cacheのdelta 0、outer owner維持を確認した。
+
+### Test-only seam audit
+
+- `src/store/useAppStore.ts`のproduction差分はtest-only seamだけ。通常runtime分岐、AppActions、
+  canonical/storage/analysis/CSV/snapshot/investment logicの変更0。
+- phase observerはread-onlyでphase変更APIなし。publish hookはone-shot。双方default null、application
+  caller/import 0、test fileだけがsetterをimportし、全`afterEach`でresetする。
+- seam default-disabled test、UTC/JST fullでleak 0、build 125 modulesで通常挙動への影響0を確認した。
+
+### Mutation-catching evidence
+
+- rollback iteration reverse → forward: exact reverse-order test RED。
+- rollback remove catchをunconditional failure化: physical delete後throw testが
+  `rolled_back` expected / `rollback_failed` actualでRED。
+- provenance null asymmetryをalways equal化: v4/v5 isolated object/null casesがanalysis到達でRED。
+- unapplied publishのcache restore行を除去: previous cache expected / null actualでRED。
+- actual phase observer evidenceを除去（generic owner取得だけでは代替不能）: CSV/snapshot
+  ANALYZING phaseEvidence 0でRED。
+- cache null化を`set(finalState)`後へ移動: six actions × v4/v5のcallback cacheがnonnullで12 RED。
+- 全mutationをprecise inverse patchで復元。最終`persist.ts` diff 0。
+
+### Classification / verification
+
+- Reclassified adequacy items: **39 DIRECT**。
+- `INDIRECT`: **0** / `MISSING`: **0** / `CONTRADICTORY`: **0**。
+- Item 4 previous bytes preflight、12 reverse rollback、16 remove write-then-throw、18 canonical
+  appearance、25 provenance field mismatch、28 six actions v4、29 six actions v5、34 unapplied
+  publish cache restore、36 actual operation phase matrix、37 cash reverse clockはいずれもDIRECT。
+- Targeted UTC: **6 files / 336 tests / skipped 0 — PASS**。
+- Targeted Asia/Tokyo: **6 files / 336 tests / skipped 0 — PASS**。
+- Full UTC: **59 files / 1572 tests / skipped 0 — PASS**。
+- Full Asia/Tokyo: **59 files / 1572 tests / skipped 0 — PASS**。
+- `npx tsc --noEmit`: PASS。
+- `npm run build`: PASS（125 modules、known 500 kB chunk warning only）。
+- `git diff --check`: PASS。
+- Node `--localstorage-file` warningは既知warningでfailureではない。
+- Completed verification at 2026-07-19T10:17:56Z / 2026-07-19T19:17:56+09:00。
+- Main is not updated by RA-006-REAUDIT-FIX。
+
+### Status
+
+- RA-006 implementation: **CLOSED**。
+- RA-006-AUDIT-F001〜F004: **CLOSED**。
+- RA-006-REAUDIT-F001〜F004: **CLOSED**。
+- RA-006 final confirmation audit: **PENDING**。
+- main integration: **PENDING**。
+
+### Next
+
+`RA-006-FINAL-CONFIRM: DIRECT closure and integration readiness`

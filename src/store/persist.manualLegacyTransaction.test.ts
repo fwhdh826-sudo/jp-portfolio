@@ -1,8 +1,12 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import type { Holding, LearningState, Trust } from '../types'
+import { DEFAULT_CASH_ASSUMPTIONS, DEFAULT_PORTFOLIO_POLICY } from '../types'
+import { computeSnapshotGenerationIdentity } from '../utils/snapshotGenerationIdentity'
 import {
   CSV_IMPORT_GENERATION_KEY,
+  CSV_IMPORT_GENERATION_SCHEMA_V5,
   persistLegacyPortfolioGenerationTransaction,
+  persistCsvImportTransaction,
 } from './persist'
 
 const PORTFOLIO_KEY = 'v81_portfolio'
@@ -51,6 +55,36 @@ describe('RA-006-AUDIT-F001 legacy portfolio generation transaction', () => {
   function expectPrevious(previous: Record<string, string | undefined>): void {
     for (const [key, value] of Object.entries(previous)) expect(storage[key]).toBe(value)
     expect(storage[CSV_IMPORT_GENERATION_KEY]).toBeUndefined()
+  }
+
+  function buildValidCanonicalRaw(): string {
+    const snapshotTransferIdentity = computeSnapshotGenerationIdentity({
+      holdings: [],
+      trust: [],
+      portfolioPolicy: DEFAULT_PORTFOLIO_POLICY,
+      cashAssumptions: DEFAULT_CASH_ASSUMPTIONS,
+      csvImportedAt: null,
+      csvImportProvenance: null,
+    })
+    persistCsvImportTransaction({
+      holdings: [],
+      trust: [],
+      learning: null,
+      csvImportedAt: null,
+      provenance: null,
+      syncSummary: null,
+      trustShortSnapshot: { date: '2026-07-19', total: 0, evalById: {} },
+      portfolioPolicy: DEFAULT_PORTFOLIO_POLICY,
+      cashAssumptions: DEFAULT_CASH_ASSUMPTIONS,
+      origin: 'snapshot',
+      snapshotTransferIdentity,
+    }, NOW_MS, null, { schemaVersion: CSV_IMPORT_GENERATION_SCHEMA_V5 })
+    const raw = storage[CSV_IMPORT_GENERATION_KEY]
+    delete storage[CSV_IMPORT_GENERATION_KEY]
+    getItem.mockClear()
+    setItem.mockClear()
+    removeItem.mockClear()
+    return raw
   }
 
   it('persists portfolio, trust, and learning in deterministic order with one savedAt', () => {
@@ -210,6 +244,169 @@ describe('RA-006-AUDIT-F001 legacy portfolio generation transaction', () => {
     expect(persistLegacyPortfolioGenerationTransaction({ holdings, trust, learning }, NOW_MS))
       .toEqual({ status: 'failed', reason: 'rolled_back' })
     expectPrevious(previous)
+  })
+
+  it('rolls all three owned writes back in exact reverse order with operation type and bytes', () => {
+    const previous = seedMixedPreviousGeneration()
+    const candidateWrites: Array<{ key: string; raw: string }> = []
+    const rollbackOperations: Array<{ type: 'set' | 'remove'; key: string; raw: string | null }> = []
+    setItem.mockImplementation((key: string, value: string) => {
+      const isCandidate = [PORTFOLIO_KEY, TRUST_KEY, LEARNING_KEY].includes(key) &&
+        JSON.parse(value).savedAt === NOW_MS
+      if (isCandidate) {
+        candidateWrites.push({ key, raw: value })
+        storage[key] = value
+        if (key === LEARNING_KEY) storage[CSV_IMPORT_GENERATION_KEY] = 'canonical-final-failure'
+        return
+      }
+      rollbackOperations.push({ type: 'set', key, raw: value })
+      storage[key] = value
+    })
+    removeItem.mockImplementation(key => {
+      rollbackOperations.push({ type: 'remove', key, raw: null })
+      delete storage[key]
+    })
+
+    expect(persistLegacyPortfolioGenerationTransaction({ holdings, trust, learning }, NOW_MS))
+      .toEqual({ status: 'blocked', reason: 'canonical_changed' })
+    expect(candidateWrites.map(({ key }) => key)).toEqual([PORTFOLIO_KEY, TRUST_KEY, LEARNING_KEY])
+    expect(rollbackOperations).toEqual([
+      { type: 'set', key: LEARNING_KEY, raw: previous[LEARNING_KEY] },
+      { type: 'remove', key: TRUST_KEY, raw: null },
+      { type: 'set', key: PORTFOLIO_KEY, raw: previous[PORTFOLIO_KEY] },
+    ])
+    expect(storage[PORTFOLIO_KEY]).toBe(previous[PORTFOLIO_KEY])
+    expect(storage[TRUST_KEY]).toBeUndefined()
+    expect(storage[LEARNING_KEY]).toBe(previous[LEARNING_KEY])
+    expect(storage[POLICY_KEY]).toBe(previous[POLICY_KEY])
+    expect(storage[CASH_KEY]).toBe(previous[CASH_KEY])
+    expect(storage[CSV_IMPORT_GENERATION_KEY]).toBe('canonical-final-failure')
+    for (const { key, raw } of candidateWrites) expect(storage[key]).not.toBe(raw)
+  })
+
+  it('treats rollback remove write-then-throw as successful after physical reread', () => {
+    const previous = seedMixedPreviousGeneration()
+    const candidateRaws = new Map<string, string>()
+    setItem.mockImplementation((key: string, value: string) => {
+      if ([PORTFOLIO_KEY, TRUST_KEY, LEARNING_KEY].includes(key) && JSON.parse(value).savedAt === NOW_MS) {
+        candidateRaws.set(key, value)
+        storage[key] = value
+        if (key === LEARNING_KEY) throw new Error('stop after final candidate write')
+        return
+      }
+      storage[key] = value
+    })
+    removeItem.mockImplementation(key => {
+      delete storage[key]
+      if (key === TRUST_KEY) throw new Error('remove acknowledgement lost')
+    })
+
+    expect(persistLegacyPortfolioGenerationTransaction({ holdings, trust, learning }, NOW_MS))
+      .toEqual({ status: 'failed', reason: 'rolled_back' })
+    expect(storage[TRUST_KEY]).toBeUndefined()
+    expect(storage[PORTFOLIO_KEY]).toBe(previous[PORTFOLIO_KEY])
+    expect(storage[LEARNING_KEY]).toBe(previous[LEARNING_KEY])
+    for (const [key, raw] of candidateRaws) expect(storage[key]).not.toBe(raw)
+  })
+
+  it.each([
+    ['absent to valid committed canonical', (): string => buildValidCanonicalRaw()],
+    ['absent to present-invalid canonical', (): string => '{present-invalid'],
+    ['absent to arbitrary third-party raw', (): string => 'third-party-canonical'],
+  ] as const)('%s stops remaining writes, rolls back owned legacy bytes, and never touches canonical raw', (_name, rawFactory) => {
+    const previous = seedMixedPreviousGeneration()
+    const externalCanonical = rawFactory()
+    const legacyOperations: string[] = []
+    setItem.mockImplementation((key: string, value: string) => {
+      storage[key] = value
+      if (key !== CSV_IMPORT_GENERATION_KEY) legacyOperations.push(`set:${key}`)
+      if (key === PORTFOLIO_KEY && JSON.parse(value).savedAt === NOW_MS) {
+        storage[CSV_IMPORT_GENERATION_KEY] = externalCanonical
+      }
+    })
+    removeItem.mockImplementation(key => {
+      legacyOperations.push(`remove:${key}`)
+      delete storage[key]
+    })
+
+    expect(persistLegacyPortfolioGenerationTransaction({ holdings, trust, learning }, NOW_MS))
+      .toEqual({ status: 'blocked', reason: 'canonical_changed' })
+    expect(legacyOperations).toEqual([`set:${PORTFOLIO_KEY}`, `set:${PORTFOLIO_KEY}`])
+    expect(storage[PORTFOLIO_KEY]).toBe(previous[PORTFOLIO_KEY])
+    expect(storage[TRUST_KEY]).toBeUndefined()
+    expect(storage[LEARNING_KEY]).toBe(previous[LEARNING_KEY])
+    expect(storage[CSV_IMPORT_GENERATION_KEY]).toBe(externalCanonical)
+  })
+
+  it('records explicit absent -> canonical A -> canonical B transition and leaves B untouched', () => {
+    const previous = seedMixedPreviousGeneration()
+    const canonicalA = '{"generation":"A"}'
+    const canonicalB = '{"generation":"B"}'
+    let canonicalReads = 0
+    const sequencedGetItem = (key: string): string | null => {
+      if (key !== CSV_IMPORT_GENERATION_KEY) return storage[key] ?? null
+      canonicalReads += 1
+      if (canonicalReads === 1) return null
+      if (canonicalReads === 2) {
+        storage[key] = canonicalA
+        return canonicalA
+      }
+      storage[key] = canonicalB
+      return canonicalB
+    }
+    getItem.mockImplementation(sequencedGetItem as never)
+
+    expect(persistLegacyPortfolioGenerationTransaction({ holdings, trust, learning }, NOW_MS))
+      .toEqual({ status: 'blocked', reason: 'canonical_changed' })
+    expect(setItem).not.toHaveBeenCalled()
+    expect(removeItem).not.toHaveBeenCalled()
+    expect(storage[PORTFOLIO_KEY]).toBe(previous[PORTFOLIO_KEY])
+    expect(storage[TRUST_KEY]).toBeUndefined()
+    expect(storage[LEARNING_KEY]).toBe(previous[LEARNING_KEY])
+    expect(storage[CSV_IMPORT_GENERATION_KEY]).toBe(canonicalB)
+  })
+
+  it('treats byte-different equivalent canonical JSON as changed and preserves exact external bytes', () => {
+    const previous = seedMixedPreviousGeneration()
+    const canonicalA = '{"a":1,"b":2}'
+    const canonicalB = '{ "b": 2, "a": 1 }'
+    setItem.mockImplementation((key: string, value: string) => {
+      storage[key] = value
+      if (key === PORTFOLIO_KEY && JSON.parse(value).savedAt === NOW_MS) {
+        storage[CSV_IMPORT_GENERATION_KEY] = canonicalA
+      }
+      if (key === PORTFOLIO_KEY && value === previous[PORTFOLIO_KEY]) {
+        storage[CSV_IMPORT_GENERATION_KEY] = canonicalB
+      }
+    })
+
+    expect(JSON.parse(canonicalA)).toEqual(JSON.parse(canonicalB))
+    expect(persistLegacyPortfolioGenerationTransaction({ holdings, trust, learning }, NOW_MS))
+      .toEqual({ status: 'blocked', reason: 'canonical_changed' })
+    expect(storage[PORTFOLIO_KEY]).toBe(previous[PORTFOLIO_KEY])
+    expect(storage[CSV_IMPORT_GENERATION_KEY]).toBe(canonicalB)
+  })
+
+  it('does not roll back byte-different equivalent legacy JSON after exact ownership is lost', () => {
+    const previous = seedMixedPreviousGeneration()
+    let thirdPartyEquivalent = ''
+    setItem.mockImplementation((key: string, value: string) => {
+      if (key === PORTFOLIO_KEY && JSON.parse(value).savedAt === NOW_MS) {
+        const parsed = JSON.parse(value)
+        thirdPartyEquivalent = JSON.stringify({ savedAt: parsed.savedAt, data: parsed.data }, null, 2)
+        expect(JSON.parse(thirdPartyEquivalent)).toEqual(parsed)
+        storage[key] = thirdPartyEquivalent
+        return
+      }
+      storage[key] = value
+    })
+
+    expect(persistLegacyPortfolioGenerationTransaction({ holdings, trust, learning }, NOW_MS))
+      .toEqual({ status: 'failed', reason: 'ownership_lost' })
+    expect(storage[PORTFOLIO_KEY]).toBe(thirdPartyEquivalent)
+    expect(storage[PORTFOLIO_KEY]).not.toBe(previous[PORTFOLIO_KEY])
+    expect(setItem).toHaveBeenCalledTimes(1)
+    expect(removeItem).not.toHaveBeenCalled()
   })
 
   it('stops on canonical appearance, rolls back owned legacy bytes, and leaves canonical bytes untouched', () => {
