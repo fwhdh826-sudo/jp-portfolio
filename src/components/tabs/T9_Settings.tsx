@@ -10,7 +10,7 @@ import { formatDateTime, formatRelativeTime, formatJPYAuto } from '../../utils/f
 import { serializeCashAssumptionsExport, parseCashAssumptionsImport, buildExportableCashAssumptions } from '../../utils/cashAssumptionsTransfer'
 import { colors, radius, spacing } from '../../theme/tokens'
 import { typography } from '../../theme/typography'
-import type { CsvSyncSummary } from '../../types'
+import type { CsvImportProvenance, CsvSyncSummary } from '../../types'
 import type { CsvImportOptions, CsvImportResult } from '../../store/useAppStore'
 
 // ── データソースラベル ────────────────────────────────────────
@@ -246,6 +246,19 @@ export interface CsvSyncSummaryDisplay {
   trustLine: string | null
   unknownFundsWarning: string | null
   ambiguousWarning: string | null
+}
+
+export const CSV_METADATA_STORAGE_DETAIL =
+  '最大90日保持（CSV基準時刻を優先。保存し直しても鮮度は更新されません）'
+
+export function computeCsvSourceAsOfDisplay(provenance: CsvImportProvenance): string {
+  if (provenance.sourceAsOf) {
+    const confidenceLabel = provenance.sourceAsOfConfidence === 'authoritative'
+      ? 'CSV明示'
+      : '参考情報'
+    return `${formatDateTime(provenance.sourceAsOf)}（${confidenceLabel}）`
+  }
+  return '不明（取込操作時刻を鮮度の代用には使用しません）'
 }
 
 // P4.5-A013-T6a: CsvSyncSummaryPanelの「何を表示するか」を純関数として抽出。
@@ -1078,9 +1091,7 @@ export function T9_Settings() {
         <CsvDropArea onFile={handleImportCsv} isLoading={isLoading} />
         {system.csvImportProvenance && (
           <div style={{ ...typography.caption, color: colors.textMuted, marginTop: spacing[2] }}>
-            CSVデータ基準時刻: {system.csvImportProvenance.sourceAsOf
-              ? `${formatDateTime(system.csvImportProvenance.sourceAsOf)}（${system.csvImportProvenance.sourceAsOfConfidence === 'authoritative' ? 'CSV明示' : '参考情報'}）`
-              : '不明（取込操作時刻を鮮度の代用には使用しません）'}
+            CSVデータ基準時刻: {computeCsvSourceAsOfDisplay(system.csvImportProvenance)}
           </div>
         )}
         <CsvSyncSummaryPanel summary={system.csvSyncSummary} />
@@ -1140,7 +1151,7 @@ export function T9_Settings() {
             { label: 'ポートフォリオ', detail: 'localStorageに保存（7日超過で古い可能性あり警告）' },
             { label: '投資信託',       detail: 'localStorageに保存（7日超過で古い可能性あり警告）' },
             { label: '学習データ',     detail: 'localStorageに30日間保存（最大500件）' },
-            { label: 'CSV取込時刻',   detail: 'localStorageに無期限保存' },
+            { label: 'CSV取込メタデータ', detail: CSV_METADATA_STORAGE_DETAIL },
           ].map(({ label, detail }) => (
             <div key={label} style={{
               display: 'flex',

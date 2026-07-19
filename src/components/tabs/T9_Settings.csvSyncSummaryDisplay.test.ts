@@ -2,8 +2,12 @@
 // （computeCsvSyncSummaryDisplay）の回帰guard。componentレンダリングなしで
 // 「summaryあり/なし」「unknown/ambiguousの警告有無」を固定する。
 import { describe, it, expect } from 'vitest'
-import { computeCsvSyncSummaryDisplay } from './T9_Settings'
-import type { CsvSyncSummary } from '../../types'
+import {
+  CSV_METADATA_STORAGE_DETAIL,
+  computeCsvSourceAsOfDisplay,
+  computeCsvSyncSummaryDisplay,
+} from './T9_Settings'
+import type { CsvImportProvenance, CsvSyncSummary } from '../../types'
 
 function makeSummary(overrides: Partial<CsvSyncSummary> = {}): CsvSyncSummary {
   return {
@@ -72,5 +76,51 @@ describe('computeCsvSyncSummaryDisplay', () => {
     expect(result.hasWarning).toBe(true)
     expect(result.unknownFundsWarning).not.toBeNull()
     expect(result.ambiguousWarning).not.toBeNull()
+  })
+})
+
+function provenance(
+  sourceAsOf: string | null,
+  confidence: 'authoritative' | 'weak' | 'unknown',
+): CsvImportProvenance {
+  return {
+    importedAt: '2026-07-18T00:00:00.000Z',
+    sourceAsOf,
+    sourceAsOfKind: confidence === 'authoritative'
+      ? 'csv_explicit'
+      : confidence === 'weak'
+        ? 'filename'
+        : 'unknown',
+    sourceAsOfConfidence: confidence,
+    semanticIdentity: `sha256:${'1'.repeat(64)}`,
+    contentFingerprint: 'fnv1a32:12345678',
+    sourceFileName: 'portfolio.csv',
+    fileLastModified: null,
+  }
+}
+
+describe('RA-005 CSV metadata UI honesty', () => {
+  it('authoritative sourceAsOf keeps the CSV明示 label', () => {
+    expect(computeCsvSourceAsOfDisplay(
+      provenance('2026-07-17T00:00:00.000Z', 'authoritative'),
+    )).toContain('CSV明示')
+  })
+
+  it('weak sourceAsOf remains reference information', () => {
+    expect(computeCsvSourceAsOfDisplay(
+      provenance('2026-07-17T00:00:00.000Z', 'weak'),
+    )).toContain('参考情報')
+  })
+
+  it('unknown sourceAsOf says import operation time is not a freshness substitute', () => {
+    expect(computeCsvSourceAsOfDisplay(provenance(null, 'unknown')))
+      .toBe('不明（取込操作時刻を鮮度の代用には使用しません）')
+  })
+
+  it('storage wording states the 90-day immutable-reference contract and removes indefinite retention', () => {
+    expect(CSV_METADATA_STORAGE_DETAIL).toContain('最大90日保持')
+    expect(CSV_METADATA_STORAGE_DETAIL).toContain('CSV基準時刻を優先')
+    expect(CSV_METADATA_STORAGE_DETAIL).toContain('保存し直しても鮮度は更新されません')
+    expect(CSV_METADATA_STORAGE_DETAIL).not.toContain('無期限')
   })
 })

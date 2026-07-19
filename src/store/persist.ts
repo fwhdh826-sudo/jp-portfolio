@@ -570,6 +570,63 @@ const CSV_TTL_MS = 90 * 24 * 60 * 60 * 1000  // 90日
 
 interface CsvSnapshot { at: string; savedAt: number }
 
+export interface CsvMetadataReferenceInput {
+  provenance?: CsvImportProvenance | null
+  csvImportedAt?: string | null
+  importedAt?: string | null
+  legacySnapshotAt?: string | null
+  syncSummaryImportedAt?: string | null
+}
+
+/**
+ * Resolve the immutable timestamp used only for the 90-day CSV metadata retention window.
+ * Physical persistence clocks (manifest/wrapper savedAt) are intentionally not inputs.
+ */
+export function resolveCsvMetadataReferenceEpochMs(input: CsvMetadataReferenceInput): number | null {
+  const provenance = input.provenance
+  if (provenance?.sourceAsOfConfidence === 'authoritative' && provenance.sourceAsOf !== null) {
+    const sourceAsOf = parseStrictTimestamp(provenance.sourceAsOf)
+    return sourceAsOf?.epochMs ?? null
+  }
+
+  for (const candidate of [
+    input.csvImportedAt,
+    input.importedAt,
+    provenance?.importedAt,
+    input.legacySnapshotAt,
+    input.syncSummaryImportedAt,
+  ]) {
+    if (candidate !== null && candidate !== undefined) {
+      return parseStrictTimestamp(candidate)?.epochMs ?? null
+    }
+  }
+  return null
+}
+
+export function isCsvMetadataReferenceWithinTtl(
+  input: CsvMetadataReferenceInput,
+  nowMs: number,
+): boolean {
+  if (!Number.isFinite(nowMs)) return false
+  const referenceEpochMs = resolveCsvMetadataReferenceEpochMs(input)
+  if (referenceEpochMs === null) return false
+  const ageMs = nowMs - referenceEpochMs
+  return ageMs >= 0 && ageMs <= CSV_TTL_MS
+}
+
+function canonicalCsvMetadataReferenceInput(
+  payload: CsvImportPersistencePayload,
+): CsvMetadataReferenceInput {
+  return {
+    provenance: payload.provenance,
+    csvImportedAt: Object.prototype.hasOwnProperty.call(payload, 'csvImportedAt')
+      ? payload.csvImportedAt ?? null
+      : null,
+    importedAt: payload.importedAt,
+    syncSummaryImportedAt: payload.syncSummary?.importedAt,
+  }
+}
+
 export function persistCsvImportedAt(at: string): LegacyPersistenceResult {
   const snap: CsvSnapshot = { at, savedAt: Date.now() }
   return persistLegacyValue(CSV_IMPORTED_AT_KEY, JSON.stringify(snap))
@@ -582,11 +639,14 @@ export function getCsvImportPayloadCsvImportedAt(payload: CsvImportPersistencePa
     : payload.importedAt ?? null
 }
 
-export function restoreCsvImportedAt(): string | null {
+export function restoreCsvImportedAt(nowMs = Date.now()): string | null {
   try {
     const generation = restoreCsvImportGeneration()
     if (generation.status === 'committed') {
-      return Date.now() - generation.savedAt <= CSV_TTL_MS
+      return isCsvMetadataReferenceWithinTtl(
+        canonicalCsvMetadataReferenceInput(generation.payload),
+        nowMs,
+      )
         ? getCsvImportPayloadCsvImportedAt(generation.payload)
         : null
     }
@@ -599,7 +659,9 @@ export function restoreCsvImportedAt(): string | null {
       return null
     }
     const snap = JSON.parse(raw) as CsvSnapshot
-    if (Date.now() - snap.savedAt > CSV_TTL_MS) {
+    const referenceEpochMs = resolveCsvMetadataReferenceEpochMs({ legacySnapshotAt: snap.at })
+    if (referenceEpochMs === null || !Number.isFinite(nowMs) || nowMs - referenceEpochMs < 0) return null
+    if (nowMs - referenceEpochMs > CSV_TTL_MS) {
       localStorage.removeItem(CSV_IMPORTED_AT_KEY)
       return null
     }
@@ -608,9 +670,9 @@ export function restoreCsvImportedAt(): string | null {
 }
 
 // ── P4.5-A013-T6: CSV取込結果summaryの永続化（表示専用・90日TTL） ──────
-// csvLastImportedAtと同じTTLを使う（詳細summaryは「最終CSV取込がいつだったか」の
-// 補助情報であり、csvLastImportedAt自体のTTL失効時に古い詳細だけが残っても
-// 意味がないため）。portfolio snapshot importはこのkeyへ一切書き込まない
+// csvLastImportedAtと同じimmutable reference（authoritative sourceAsOf優先、
+// importedAt fallback）によるTTLを使う。詳細summaryだけが残っても意味がないため、
+// 両metadataは同じreference/clockで失効する。portfolio snapshot importはこのkeyへ一切書き込まない
 // （snapshot importの結果をCSV取込結果として偽装しないため）。
 const CSV_SYNC_SUMMARY_KEY = 'v13_csv_sync_summary'
 
@@ -773,17 +835,27 @@ export function persistCsvSyncSummary(summary: CsvSyncSummary): LegacyPersistenc
   return persistLegacyValue(CSV_SYNC_SUMMARY_KEY, JSON.stringify(snap))
 }
 
-export function restoreCsvSyncSummary(): CsvSyncSummary | null {
+export function restoreCsvSyncSummary(nowMs = Date.now()): CsvSyncSummary | null {
   try {
     const generation = restoreCsvImportGeneration()
     if (generation.status === 'committed') {
-      return Date.now() - generation.savedAt <= CSV_TTL_MS ? generation.payload.syncSummary : null
+      return isCsvMetadataReferenceWithinTtl(
+        canonicalCsvMetadataReferenceInput(generation.payload),
+        nowMs,
+      )
+        ? generation.payload.syncSummary
+        : null
     }
     if (generation.status === 'invalid') return null
     const raw = localStorage.getItem(CSV_SYNC_SUMMARY_KEY)
     if (!raw) return null
     const snap = JSON.parse(raw) as CsvSyncSummarySnapshot
-    if (Date.now() - snap.savedAt > CSV_TTL_MS) {
+    if (!isCsvSyncSummary(snap.data)) return null
+    const referenceEpochMs = resolveCsvMetadataReferenceEpochMs({
+      syncSummaryImportedAt: snap.data.importedAt,
+    })
+    if (referenceEpochMs === null || !Number.isFinite(nowMs) || nowMs - referenceEpochMs < 0) return null
+    if (nowMs - referenceEpochMs > CSV_TTL_MS) {
       localStorage.removeItem(CSV_SYNC_SUMMARY_KEY)
       return null
     }

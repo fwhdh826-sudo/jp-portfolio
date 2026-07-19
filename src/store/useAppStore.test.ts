@@ -1301,6 +1301,67 @@ describe('R4-A004c: initialize/refresh preserve canonical v4/v5 semantics', () =
     expect(removeItem).not.toHaveBeenCalled()
     expect(Object.keys(storage)).toEqual([CSV_IMPORT_GENERATION_KEY])
   })
+
+  it('RA-005: initialize captures one CSV metadata clock so a boundary jump cannot split restores', async () => {
+    const nowMs = Date.parse('2026-07-19T00:00:00.000Z')
+    const sourceAsOf = new Date(nowMs - 90 * 24 * 60 * 60 * 1000).toISOString()
+    const importedAt = new Date(nowMs - 24 * 60 * 60 * 1000).toISOString()
+    const seededState = useAppStore.getState()
+    const syncSummary = buildCsvSyncSummary([], [], [], [], {
+      trustSectionSeen: true,
+      unknownFunds: [],
+      zeroedFundIds: [],
+      ambiguousFundIds: [],
+    }, importedAt)
+    persistCsvImportTransaction({
+      holdings: seededState.holdings,
+      trust: seededState.trust,
+      learning: null,
+      csvImportedAt: importedAt,
+      provenance: snapshotProvenance(importedAt, sourceAsOf, '4'),
+      syncSummary,
+      trustShortSnapshot: { date: '2026-07-19', total: 0, evalById: {} },
+      portfolioPolicy: seededState.portfolioPolicy,
+      cashAssumptions: seededState.cashAssumptions,
+      origin: 'csv',
+    }, nowMs, undefined, { schemaVersion: CSV_IMPORT_GENERATION_SCHEMA_V5 })
+    const canonicalBefore = storage[CSV_IMPORT_GENERATION_KEY]
+    setItem.mockClear()
+    removeItem.mockClear()
+
+    let resolveFetch!: (value: { ok: false; status: number; json: () => Promise<Record<string, never>> }) => void
+    const deferredFetch = new Promise<{ ok: false; status: number; json: () => Promise<Record<string, never>> }>(resolve => {
+      resolveFetch = resolve
+    })
+    vi.stubGlobal('fetch', vi.fn(() => deferredFetch))
+
+    let nowCall = 0
+    const nowSpy = vi.spyOn(Date, 'now').mockImplementation(() => {
+      nowCall += 1
+      // restoreLearning consumes the first call. The second call is the single CSV metadata
+      // capture. Any later metadata-local call would cross the boundary by 1ms.
+      return nowCall <= 2 ? nowMs : nowMs + 1
+    })
+    let notifications = 0
+    const unsubscribe = useAppStore.subscribe(() => { notifications += 1 })
+
+    const pendingInitialize = useAppStore.getState().initialize()
+    await Promise.resolve()
+
+    expect(useAppStore.getState().system.csvLastImportedAt).toBe(importedAt)
+    expect(useAppStore.getState().system.csvSyncSummary).toEqual(syncSummary)
+    expect(nowCall).toBeGreaterThanOrEqual(2)
+    expect(storage[CSV_IMPORT_GENERATION_KEY]).toBe(canonicalBefore)
+    expect(setItem).not.toHaveBeenCalled()
+    expect(removeItem).not.toHaveBeenCalled()
+    // loading + coordinated hydration + existing freshness publication. RA-005 adds no set.
+    expect(notifications).toBe(3)
+
+    unsubscribe()
+    resolveFetch({ ok: false, status: 404, json: () => Promise.resolve({}) })
+    await pendingInitialize
+    nowSpy.mockRestore()
+  })
 })
 
 describe('buildCsvSyncSummary（P4.5-A013-T6: CSV取込結果の集計・純関数）', () => {

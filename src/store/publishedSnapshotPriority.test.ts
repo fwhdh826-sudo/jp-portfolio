@@ -188,16 +188,16 @@ describe('useAppStore.initialize / refreshAllData: published snapshot優先順�
       holdings: [committedHolding],
       trust: [committedTrust],
       learning: null,
-      importedAt: '2099-07-15T00:00:00.000Z',
+      importedAt: '2026-07-15T00:00:00.000Z',
       syncSummary: {
-        importedAt: '2099-07-15T00:00:00.000Z',
+        importedAt: '2026-07-15T00:00:00.000Z',
         stock: { updated: 1, added: 0, removed: 0 },
         trust: { updated: 1, reheld: 0, zeroed: 0, unknownFunds: [], ambiguousFundIds: [] },
       },
-      trustShortSnapshot: { date: '2099-07-15', total: 0, evalById: {} },
+      trustShortSnapshot: { date: '2026-07-15', total: 0, evalById: {} },
       provenance: {
-        importedAt: '2099-07-15T00:00:00.000Z',
-        sourceAsOf: '2099-07-14T00:00:00.000Z',
+        importedAt: '2026-07-15T00:00:00.000Z',
+        sourceAsOf: '2026-07-14T00:00:00.000Z',
         sourceAsOfKind: 'csv_explicit',
         sourceAsOfConfidence: 'authoritative',
         contentFingerprint: 'fnv1a32:12345678',
@@ -209,7 +209,7 @@ describe('useAppStore.initialize / refreshAllData: published snapshot優先順�
         cashDeposits: 1_250_000,
         standbyFunds: 350_000,
         manualOverrideEnabled: true,
-        manualUpdatedAt: '2099-07-14T12:00:00.000Z',
+        manualUpdatedAt: '2026-07-14T12:00:00.000Z',
       },
       origin: 'csv',
     })
@@ -233,14 +233,14 @@ describe('useAppStore.initialize / refreshAllData: published snapshot優先順�
 
     expect(useAppStore.getState().holdings.find(item => item.code === '7203')?.eval).toBe(654_321)
     expect(useAppStore.getState().trust.find(item => item.id === 'sp500_sbi')?.eval).toBe(3_210_000)
-    expect(useAppStore.getState().system.csvLastImportedAt).toBe('2099-07-15T00:00:00.000Z')
-    expect(useAppStore.getState().system.csvImportProvenance?.sourceAsOf).toBe('2099-07-14T00:00:00.000Z')
+    expect(useAppStore.getState().system.csvLastImportedAt).toBe('2026-07-15T00:00:00.000Z')
+    expect(useAppStore.getState().system.csvImportProvenance?.sourceAsOf).toBe('2026-07-14T00:00:00.000Z')
     expect(useAppStore.getState().portfolioPolicy).toEqual({ jpStockMaxRatio: 0.12 })
     expect(useAppStore.getState().cashAssumptions).toEqual({
       cashDeposits: 1_250_000,
       standbyFunds: 350_000,
       manualOverrideEnabled: true,
-      manualUpdatedAt: '2099-07-14T12:00:00.000Z',
+      manualUpdatedAt: '2026-07-14T12:00:00.000Z',
     })
   })
 

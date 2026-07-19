@@ -46640,3 +46640,67 @@ persistence hardening系列（`portfolio-snapshot-3`、
 ### Next
 
 `RA-005: CSV metadata TTL savedAt dependency removal`
+
+## RA-005: CSV metadata TTL savedAt dependency removal
+
+### Previous defect and implemented contract
+
+- Canonical `restoreCsvImportedAt()` and `restoreCsvSyncSummary()` previously used manifest
+  `savedAt` as their 90-day TTL reference. Re-saving identical canonical payload bytes or
+  transferring a snapshot therefore made unchanged CSV metadata appear fresh again.
+- CSV metadata now resolves its immutable retention reference in this order: authoritative
+  `provenance.sourceAsOf`; payload `csvImportedAt`; legacy payload `importedAt`;
+  `provenance.importedAt`; legacy snapshot `at`; sync summary `importedAt`.
+- `sourceAsOf` is source-freshness proof only when its confidence is `authoritative` and the
+  value is a valid strict timestamp. Weak and unknown source times are never freshness proof;
+  their immutable importedAt values are metadata-retention fallbacks only.
+- Manifest/wrapper `savedAt`, snapshot `exportedAt`, snapshot-import time, browser time, file
+  copy time, weak source time, and public-data `updatedAt` are not CSV source-freshness proof.
+- The 90-day boundary is closed: exactly 90 days is valid; 90 days plus 1 ms is expired.
+  Future, malformed, or absent reference timestamps fail closed. Strict parsing produces the
+  same result under UTC and Asia/Tokyo and for equivalent `Z` / `+09:00` instants.
+- Canonical re-save and snapshot transfer tests prove a new manifest `savedAt` does not refresh
+  source or import metadata. Canonical restore performs zero rewrite, migration, or key removal.
+- Legacy imported metadata uses `CsvSnapshot.at`; legacy summaries use
+  `CsvSyncSummary.importedAt`. A current wrapper `savedAt` cannot revive stale metadata.
+- Initialize captures one `csvMetadataNowMs` and passes it to both CSV metadata restore calls,
+  preventing a wall-clock jump from splitting the boundary result. The restore stage adds no
+  canonical write/migration or subscriber notification.
+- Settings retains the CSV import-operation time and source-time confidence labels
+  (`CSV明示`, `参考情報`, and the unknown non-substitution warning) and now states that CSV
+  metadata is retained for at most 90 days and is not refreshed by re-saving.
+
+### Scope
+
+- Production files: `src/store/persist.ts`, `src/store/useAppStore.ts`,
+  `src/components/tabs/T9_Settings.tsx`.
+- Test files: `src/store/persist.csvMetadataTtl.test.ts`, `src/store/persist.test.ts`,
+  `src/store/useAppStore.test.ts`, `src/store/publishedSnapshotPriority.test.ts`,
+  `src/components/tabs/T9_Settings.csvSyncSummaryDisplay.test.ts`.
+- Manifest schema v5 changes: 0.
+- Canonical payload schema changes: 0.
+- Identity v2 / checksum / generationId changes: 0.
+- CAS / ownership / rollback / write-then-throw recovery changes: 0.
+- Portfolio/trust freshness, learning TTL, cash freshness, investment logic, workflow, data,
+  and public-data changes: 0.
+
+### Verification
+
+- UTC targeted: 6 files / 346 tests / skipped 0 — PASS.
+- Asia/Tokyo targeted: 6 files / 346 tests / skipped 0 — PASS.
+- UTC full unit: 54 files / 1399 tests / skipped 0 — PASS.
+- Asia/Tokyo full unit: 54 files / 1399 tests / skipped 0 — PASS.
+- `npx tsc --noEmit`: PASS.
+- `npm run build`: PASS (known 500 kB chunk warning only).
+- `git diff --check`: PASS.
+- Main is not updated by RA-005.
+
+### Status
+
+- RA-005 implementation: **CLOSED**
+- RA-005 independent audit: **PENDING**
+- main integration: **PENDING**
+
+### Next
+
+`RA-005-AUDIT: independent timestamp and TTL contract audit`

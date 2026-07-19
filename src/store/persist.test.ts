@@ -322,7 +322,11 @@ describe('CsvSyncSummary persist/restore（P4.5-A013-T6）', () => {
   })
 
   it('restoreCsvSyncSummary: TTL超過（stale）はnullを返しremoveItemする', () => {
-    store[CSV_SYNC_SUMMARY_KEY] = JSON.stringify({ data: testSummary, savedAt: Date.now() - TTL_90D - 1000 })
+    const staleSummary = {
+      ...testSummary,
+      importedAt: new Date(Date.now() - TTL_90D - 1000).toISOString(),
+    }
+    store[CSV_SYNC_SUMMARY_KEY] = JSON.stringify({ data: staleSummary, savedAt: Date.now() })
     expect(restoreCsvSyncSummary()).toBeNull()
     expect(store[CSV_SYNC_SUMMARY_KEY]).toBeUndefined()
   })

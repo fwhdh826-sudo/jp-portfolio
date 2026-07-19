@@ -1276,11 +1276,14 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
       const savedLearning = csvGeneration.status === 'committed' || useLegacy
         ? restoreLearning()
         : null
+      // RA-005: both CSV metadata restores share one transaction-local clock so a wall-clock
+      // jump cannot split their exact 90-day boundary result.
+      const csvMetadataNowMs = Date.now()
       const savedCsvAt = csvGeneration.status === 'committed' || useLegacy
-        ? restoreCsvImportedAt()
+        ? restoreCsvImportedAt(csvMetadataNowMs)
         : null
       const savedCsvSyncSummary = csvGeneration.status === 'committed' || useLegacy
-        ? restoreCsvSyncSummary()
+        ? restoreCsvSyncSummary(csvMetadataNowMs)
         : null
       const savedCsvProvenance = csvGeneration.status === 'committed'
         ? csvGeneration.payload.provenance ?? null
