@@ -36,6 +36,57 @@ export type ManualPortfolioMutationOperation = Extract<
   | 'importCashAssumptions'
 >
 
+export type PortfolioLoadOperation = Extract<
+  PortfolioGenerationOperation,
+  'initialize' | 'refreshAllData'
+>
+
+export type PortfolioLoadSuccessCode = 'SUCCESS'
+
+export type PortfolioLoadFailureCode =
+  | 'LOAD_RESTORE_ERROR'
+  | 'LOAD_DATA_ERROR'
+  | 'LOAD_ANALYSIS_ERROR'
+  | 'LOAD_PERSISTENCE_ERROR'
+  | 'LOAD_PUBLISH_ERROR'
+
+export type PortfolioLoadResult =
+  | {
+      ok: true
+      operation: PortfolioLoadOperation
+      code: PortfolioLoadSuccessCode
+    }
+  | (PortfolioCoordinationFailure & {
+      operation: PortfolioLoadOperation
+    })
+  | {
+      ok: false
+      operation: PortfolioLoadOperation
+      code: PortfolioLoadFailureCode
+      retryable: boolean
+    }
+
+export const PORTFOLIO_LOAD_RETRYABILITY = {
+  LOAD_RESTORE_ERROR: false,
+  LOAD_DATA_ERROR: true,
+  LOAD_ANALYSIS_ERROR: true,
+  LOAD_PERSISTENCE_ERROR: true,
+  LOAD_PUBLISH_ERROR: false,
+} as const satisfies Record<PortfolioLoadFailureCode, boolean>
+
+export function createPortfolioLoadSuccess(
+  operation: PortfolioLoadOperation,
+): Extract<PortfolioLoadResult, { ok: true }> {
+  return { ok: true, operation, code: 'SUCCESS' }
+}
+
+export function createPortfolioLoadFailure(
+  operation: PortfolioLoadOperation,
+  code: PortfolioLoadFailureCode,
+): Extract<PortfolioLoadResult, { ok: false; code: PortfolioLoadFailureCode }> {
+  return { ok: false, operation, code, retryable: PORTFOLIO_LOAD_RETRYABILITY[code] }
+}
+
 export type ManualMutationSuccessCode = 'SUCCESS' | 'NO_CHANGE'
 
 export type ManualMutationFailureCode =

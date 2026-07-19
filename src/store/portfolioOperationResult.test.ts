@@ -1,12 +1,18 @@
 import { describe, expect, expectTypeOf, it } from 'vitest'
 import {
   createPortfolioCoordinationFailure,
+  createPortfolioLoadFailure,
+  createPortfolioLoadSuccess,
   createManualMutationFailure,
   createManualMutationSuccess,
   isPortfolioCoordinationRetryable,
   PORTFOLIO_COORDINATION_RETRYABILITY,
+  PORTFOLIO_LOAD_RETRYABILITY,
   type PortfolioCoordinationErrorCode,
   type PortfolioGenerationOperation,
+  type PortfolioLoadFailureCode,
+  type PortfolioLoadOperation,
+  type PortfolioLoadResult,
   type ManualMutationFailureCode,
   type ManualMutationResult,
   type ManualMutationSuccessCode,
@@ -37,6 +43,14 @@ const ERROR_CODES = [
 ] as const satisfies readonly PortfolioCoordinationErrorCode[]
 
 const MANUAL_OPERATIONS = OPERATIONS.slice(4) as readonly ManualPortfolioMutationOperation[]
+const LOAD_OPERATIONS = OPERATIONS.slice(0, 2) as readonly PortfolioLoadOperation[]
+const LOAD_FAILURE_CODES = [
+  'LOAD_RESTORE_ERROR',
+  'LOAD_DATA_ERROR',
+  'LOAD_ANALYSIS_ERROR',
+  'LOAD_PERSISTENCE_ERROR',
+  'LOAD_PUBLISH_ERROR',
+] as const satisfies readonly PortfolioLoadFailureCode[]
 const MANUAL_SUCCESS_CODES = ['SUCCESS', 'NO_CHANGE'] as const satisfies readonly ManualMutationSuccessCode[]
 const MANUAL_FAILURE_CODES = [
   'MANUAL_ANALYSIS_ERROR',
@@ -128,6 +142,47 @@ describe('portfolio operation coordination taxonomy', () => {
       expect(result).not.toHaveProperty('message')
       expect(result).not.toHaveProperty('stack')
       expect(result).not.toHaveProperty('cause')
+    }
+  })
+
+  it('defines the exact load operations, failure codes, and retryability mapping', () => {
+    expectTypeOf<PortfolioLoadOperation>()
+      .toEqualTypeOf<(typeof LOAD_OPERATIONS)[number]>()
+    expectTypeOf<PortfolioLoadFailureCode>()
+      .toEqualTypeOf<(typeof LOAD_FAILURE_CODES)[number]>()
+    expect(LOAD_OPERATIONS).toEqual(['initialize', 'refreshAllData'])
+    expect(LOAD_FAILURE_CODES).toEqual([
+      'LOAD_RESTORE_ERROR',
+      'LOAD_DATA_ERROR',
+      'LOAD_ANALYSIS_ERROR',
+      'LOAD_PERSISTENCE_ERROR',
+      'LOAD_PUBLISH_ERROR',
+    ])
+    expect(PORTFOLIO_LOAD_RETRYABILITY).toEqual({
+      LOAD_RESTORE_ERROR: false,
+      LOAD_DATA_ERROR: true,
+      LOAD_ANALYSIS_ERROR: true,
+      LOAD_PERSISTENCE_ERROR: true,
+      LOAD_PUBLISH_ERROR: false,
+    })
+  })
+
+  it.each(LOAD_OPERATIONS)('constructs sanitized load results for %s', operation => {
+    const success: PortfolioLoadResult = createPortfolioLoadSuccess(operation)
+    expect(success).toEqual({ ok: true, operation, code: 'SUCCESS' })
+    for (const code of LOAD_FAILURE_CODES) {
+      const failure: PortfolioLoadResult = createPortfolioLoadFailure(operation, code)
+      expect(failure).toEqual({
+        ok: false,
+        operation,
+        code,
+        retryable: PORTFOLIO_LOAD_RETRYABILITY[code],
+      })
+      expect(Object.keys(failure).sort()).toEqual(['code', 'ok', 'operation', 'retryable'])
+      expect(failure).not.toHaveProperty('error')
+      expect(failure).not.toHaveProperty('message')
+      expect(failure).not.toHaveProperty('stack')
+      expect(failure).not.toHaveProperty('cause')
     }
   })
 })

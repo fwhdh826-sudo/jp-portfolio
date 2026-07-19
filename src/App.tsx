@@ -19,6 +19,12 @@ import { T6_Committee } from './components/tabs/T6_Committee' // Phase 4: AI投�
 import { T7_Trust }      from './components/tabs/T7_Trust'
 import { T8_Learning }   from './components/tabs/T8_Learning'  // Phase 9: 学習/検証
 import { T9_Settings }   from './components/tabs/T9_Settings'  // Phase 9: 設定/CSV取込
+import {
+  portfolioLoadFeedback,
+  PORTFOLIO_LOAD_REJECTION_FEEDBACK,
+  type PortfolioLoadFeedback,
+} from './components/portfolioLoadUi'
+import type { PortfolioLoadResult } from './store/portfolioOperationResult'
 import './styles/v10.css'
 
 // ── UI-9-6: Header右側 — 日付 + システムステータスドット ────────
@@ -133,6 +139,24 @@ function GlobalErrorBanner() {
   )
 }
 
+export async function executeAppInitializeUiFlow(
+  initialize: () => Promise<PortfolioLoadResult>,
+  isActive: () => boolean,
+  setFeedback: (feedback: PortfolioLoadFeedback | null) => void,
+): Promise<void> {
+  try {
+    const result = await initialize()
+    if (!isActive()) return
+    if (!result.ok && result.code === 'LOCAL_OPERATION_BUSY') {
+      setFeedback(null)
+      return
+    }
+    setFeedback(portfolioLoadFeedback(result))
+  } catch {
+    if (isActive()) setFeedback(PORTFOLIO_LOAD_REJECTION_FEEDBACK)
+  }
+}
+
 function ActiveTabPanel() {
   const activeTab = useAppStore(s => s.activeTab)
 
@@ -157,9 +181,16 @@ export function App() {
   const initialize = useAppStore(s => s.initialize)
   const activeTab  = useAppStore(s => s.activeTab)
   const mainRef    = useRef<HTMLElement | null>(null)
+  const [initializeFeedback, setInitializeFeedback] = useState<PortfolioLoadFeedback | null>(null)
 
   useEffect(() => {
-    void initialize()
+    let active = true
+    void (async () => {
+      await executeAppInitializeUiFlow(initialize, () => active, setInitializeFeedback)
+    })()
+    return () => {
+      active = false
+    }
   }, [initialize])
 
   // タブ切替時にコンテンツエリアをトップへ
@@ -185,6 +216,13 @@ export function App() {
 
       {/* Phase 8: グローバルエラーバナー */}
       <GlobalErrorBanner />
+
+      {initializeFeedback && (
+        <div className="global-error-banner" role="alert">
+          <span className="global-error-banner__icon">⚠️</span>
+          <span className="global-error-banner__text">{initializeFeedback.message}</span>
+        </div>
+      )}
 
       {/* app-shell-body: tablet以下=縦積み / desktop(≥1024px)=横並び(sidebar+content) */}
       <div className="app-shell-body">

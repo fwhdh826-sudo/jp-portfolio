@@ -1,9 +1,26 @@
+import { useRef, useState } from 'react'
 import { useAppStore } from '../store/useAppStore'
 import { selectIsLoading, selectTotalEval, selectTotalPnl } from '../store/selectors'
 import { formatDateTime, formatJPYAuto } from '../utils/format'
+import {
+  createPortfolioLoadSingleFlight,
+  executePortfolioLoadUiFlow,
+  portfolioLoadButtonState,
+  type PortfolioLoadFeedback,
+} from './portfolioLoadUi'
+import type { PortfolioLoadResult } from '../store/portfolioOperationResult'
 
 function pct(v: number, digits = 2) {
   return `${v >= 0 ? '+' : ''}${v.toFixed(digits)}%`
+}
+
+export async function executeStatusBarRefreshFlow(
+  refresh: () => Promise<PortfolioLoadResult>,
+  singleFlight: ReturnType<typeof createPortfolioLoadSingleFlight>,
+  setPending: (pending: boolean) => void,
+  setFeedback: (feedback: PortfolioLoadFeedback | null) => void,
+): Promise<void> {
+  await singleFlight.run(() => executePortfolioLoadUiFlow(refresh, setPending, setFeedback))
 }
 
 export function StatusBar() {
@@ -15,6 +32,23 @@ export function StatusBar() {
   const isLoading = useAppStore(selectIsLoading)
   const totalEval = useAppStore(selectTotalEval)
   const totalPnl  = useAppStore(selectTotalPnl)
+  const [refreshPending, setRefreshPending] = useState(false)
+  const [refreshFeedback, setRefreshFeedback] = useState<PortfolioLoadFeedback | null>(null)
+  const singleFlightRef = useRef(createPortfolioLoadSingleFlight())
+  const refreshButton = portfolioLoadButtonState(isLoading, refreshPending, {
+    idle: '更新',
+    globallyLoading: '読込中…',
+    locallyPending: '更新中…',
+  })
+
+  const handleRefresh = async () => {
+    await executeStatusBarRefreshFlow(
+      refresh,
+      singleFlightRef.current,
+      setRefreshPending,
+      setRefreshFeedback,
+    )
+  }
 
   const regime = market.regime
   const regimeLabel = regime === 'bull' ? '強気相場' : regime === 'bear' ? '弱気相場' : '中立相場'
@@ -97,24 +131,31 @@ export function StatusBar() {
       </div>
 
       <button
-        onClick={() => { void refresh() }}
-        disabled={isLoading}
+        onClick={handleRefresh}
+        disabled={refreshButton.disabled}
+        aria-busy={refreshButton.ariaBusy}
         type="button"
         style={{
           flexShrink: 0,
           fontSize: '10px',
           padding: '3px 10px',
-          background: isLoading ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.15)',
+          background: refreshButton.disabled ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.15)',
           color: 'var(--color-text-on-navy)',
           border: '1px solid rgba(255,255,255,0.2)',
           borderRadius: '4px',
-          cursor: isLoading ? 'default' : 'pointer',
+          cursor: refreshButton.disabled ? 'default' : 'pointer',
           fontFamily: 'inherit',
           whiteSpace: 'nowrap',
         }}
       >
-        {isLoading ? '更新中…' : '更新'}
+        {refreshButton.label}
       </button>
+
+      {refreshFeedback && (
+        <span role="alert" style={{ fontSize: '10px', color: '#f07575', flexShrink: 0 }}>
+          ⚠ {refreshFeedback.message}
+        </span>
+      )}
 
       {system.error && (
         <span style={{ fontSize: '10px', color: '#f07575', flexShrink: 0 }}>

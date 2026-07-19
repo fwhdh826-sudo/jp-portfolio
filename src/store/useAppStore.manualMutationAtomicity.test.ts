@@ -991,8 +991,8 @@ describe('RA-006 manual mutation coordinator and atomic publish', () => {
   })
 
   it('manual publish subscriber cannot start initialize, refresh, CSV, or snapshot operations', async () => {
-    let initializeResult: Promise<void> | undefined
-    let refreshResult: Promise<void> | undefined
+    let initializeResult: ReturnType<StoreState['initialize']> | undefined
+    let refreshResult: ReturnType<StoreState['refreshAllData']> | undefined
     let csvResult: ReturnType<StoreState['importCsv']> | undefined
     let snapshotResult: ReturnType<StoreState['importPortfolioSnapshot']> | undefined
     let notifications = 0
@@ -1010,6 +1010,8 @@ describe('RA-006 manual mutation coordinator and atomic publish', () => {
 
     await initializeResult
     await refreshResult
+    await expect(initializeResult).resolves.toMatchObject({ ok: false, code: 'LOCAL_OPERATION_BUSY' })
+    await expect(refreshResult).resolves.toMatchObject({ ok: false, code: 'LOCAL_OPERATION_BUSY' })
     await expect(csvResult).resolves.toMatchObject({ ok: false, code: 'IMPORT_IN_PROGRESS' })
     await expect(snapshotResult).resolves.toMatchObject({ ok: false, code: 'LOCAL_OPERATION_BUSY' })
     expect(notifications).toBe(1)

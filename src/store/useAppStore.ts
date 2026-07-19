@@ -91,9 +91,14 @@ import {
   createManualMutationFailure,
   createManualMutationSuccess,
   createPortfolioCoordinationFailure,
+  createPortfolioLoadFailure,
+  createPortfolioLoadSuccess,
   type ManualMutationResult,
   type ManualPortfolioMutationOperation,
   type PortfolioCoordinationFailure,
+  type PortfolioLoadFailureCode,
+  type PortfolioLoadOperation,
+  type PortfolioLoadResult,
 } from './portfolioOperationResult'
 
 // ── アクション型 ─────────────────────────────────────────────
@@ -128,9 +133,9 @@ export type PortfolioSnapshotImportResult =
 
 interface AppActions {
   // 起動時初期化
-  initialize: () => Promise<void>
+  initialize: () => Promise<PortfolioLoadResult>
   // 全データ再取得 → 全再計算 → Store一括更新
-  refreshAllData: () => Promise<void>
+  refreshAllData: () => Promise<PortfolioLoadResult>
   // CSV取込 → 即時再分析
   importCsv: (file: File, options?: CsvImportOptions) => Promise<CsvImportResult>
   // タブ切替
@@ -296,6 +301,8 @@ type PortfolioGenerationPhaseObserverForTest = (
 
 let portfolioGenerationPhaseObserverForTest: PortfolioGenerationPhaseObserverForTest | null = null
 let manualPublishBeforeApplyHookForTest: (() => void) | null = null
+let loadPublishBeforeApplyHookForTest: (() => void) | null = null
+let loadRestoreBeforeReadHookForTest: (() => void) | null = null
 
 /** @internal Test-only read-only observer; application code must not use. */
 export function setPortfolioGenerationPhaseObserverForTest(
@@ -309,10 +316,34 @@ export function setManualPublishBeforeApplyHookForTest(hook: () => void): void {
   manualPublishBeforeApplyHookForTest = hook
 }
 
+/** @internal Test-only one-shot load publication failure injection. */
+export function setLoadPublishBeforeApplyHookForTest(hook: () => void): void {
+  loadPublishBeforeApplyHookForTest = hook
+}
+
+/** @internal Test-only one-shot initialize restore failure injection. */
+export function setLoadRestoreBeforeReadHookForTest(hook: () => void): void {
+  loadRestoreBeforeReadHookForTest = hook
+}
+
+function runLoadPublishBeforeApplyHookForTest(): void {
+  const hook = loadPublishBeforeApplyHookForTest
+  loadPublishBeforeApplyHookForTest = null
+  hook?.()
+}
+
+function runLoadRestoreBeforeReadHookForTest(): void {
+  const hook = loadRestoreBeforeReadHookForTest
+  loadRestoreBeforeReadHookForTest = null
+  hook?.()
+}
+
 /** @internal Reset all module-local RA-006 test seams. */
 export function resetPortfolioGenerationTestSeams(): void {
   portfolioGenerationPhaseObserverForTest = null
   manualPublishBeforeApplyHookForTest = null
+  loadPublishBeforeApplyHookForTest = null
+  loadRestoreBeforeReadHookForTest = null
 }
 
 export type PortfolioOperationKind = 'initialize' | 'refresh' | 'csv' | 'snapshot' | 'manual'
@@ -600,17 +631,38 @@ function persistCurrentPortfolioGeneration(
     : result
 }
 
-function reflectPortfolioPersistenceResult(result: CurrentPortfolioPersistenceResult | LegacyPersistenceResult): void {
+function reflectPortfolioPersistenceResult(
+  result: CurrentPortfolioPersistenceResult | LegacyPersistenceResult,
+  messageOverride?: string,
+): void {
   if (result.status === 'persisted') return
-  const message = result.status === 'failed'
+  const message = messageOverride ?? (result.status === 'failed'
     ? '変更を保存できませんでした。再読み込み後に状態を確認してください。'
     : result.reason === 'canonical_invalid'
       ? '保存済みcanonicalデータが不正なため、変更の永続化を中止しました。再読み込み後に状態を確認してください。'
-      : '保存中にcanonicalデータが更新されたため、legacy保存を中止しました。再読み込み後に状態を確認してください。'
+      : '保存中にcanonicalデータが更新されたため、legacy保存を中止しました。再読み込み後に状態を確認してください。')
   useAppStore.setState(state => ({
     system: { ...state.system, status: 'error', error: message },
   }))
 }
+
+type PortfolioLoadPhase = 'restore' | 'data' | 'publish' | 'analysis' | 'persistence'
+
+const PORTFOLIO_LOAD_FAILURE_BY_PHASE = {
+  restore: 'LOAD_RESTORE_ERROR',
+  data: 'LOAD_DATA_ERROR',
+  publish: 'LOAD_PUBLISH_ERROR',
+  analysis: 'LOAD_ANALYSIS_ERROR',
+  persistence: 'LOAD_PERSISTENCE_ERROR',
+} as const satisfies Record<PortfolioLoadPhase, PortfolioLoadFailureCode>
+
+const PORTFOLIO_LOAD_SYSTEM_ERROR = {
+  restore: '保存データを安全に復元できませんでした。状態を確認してください。',
+  data: '最新データを取得できませんでした。通信状態を確認して再試行してください。',
+  analysis: 'データ取得後の再計算に失敗しました。再試行してください。',
+  persistence: '更新結果を保存できませんでした。画面を再読み込みして状態を確認してください。',
+  publish: '更新結果を画面へ反映できませんでした。画面を再読み込みしてください。',
+} as const satisfies Record<PortfolioLoadPhase, string>
 
 // P4.5-A013-T7: portfolio snapshot v2専用の新規銘柄構築。
 // T2のCSV full-sync新規銘柄と全く同じsafe default契約（buildNewHoldingFromCsvRow）を
@@ -1469,18 +1521,25 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
 
   // ── 起動時初期化 ──────────────────────────────────────────
   initialize: async () => {
+    const operation: PortfolioLoadOperation = 'initialize'
     if (isPortfolioGenerationCriticalSection()) {
       reportRejectedReentrantMutation('initialize')
-      return
+      return createPortfolioCoordinationFailure(operation, 'LOCAL_OPERATION_BUSY')
     }
     const operationTicket = acquirePortfolioOperation('initialize')
     if (operationTicket === null) {
       reportRejectedPortfolioOperation('initialize')
-      return
+      return createPortfolioCoordinationFailure(operation, 'LOCAL_OPERATION_BUSY')
     }
+    let phase: PortfolioLoadPhase = 'restore'
     try {
-      if (get().system.status === 'loading') return
+      if (get().system.status === 'loading') {
+        return createPortfolioCoordinationFailure(operation, 'LOCAL_OPERATION_BUSY')
+      }
+      phase = 'publish'
       set(s => ({ system: { ...s.system, status: 'loading' } }))
+      phase = 'restore'
+      runLoadRestoreBeforeReadHookForTest()
       // localStorage復元（P4.5-A012d: holdings/trustはTTL失効時も値を保持する。
       // 鮮度はlocalStorageFreshnessとして表示専用にsystemへ反映する）
       const csvGeneration = restoreCsvImportGeneration()
@@ -1516,6 +1575,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
       const savedCashAssumptions = csvGeneration.status === 'committed'
         ? csvGeneration.payload.cashAssumptions ?? DEFAULT_CASH_ASSUMPTIONS
         : useLegacy ? restoreCashAssumptions() ?? DEFAULT_CASH_ASSUMPTIONS : DEFAULT_CASH_ASSUMPTIONS
+      phase = 'publish'
       set(s => ({
         ...(savedPortfolio ? { holdings: savedPortfolio } : {}),
         ...(savedTrust ? { trust: savedTrust } : {}),
@@ -1540,6 +1600,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
       // データ取得（macro / nikkei VI / SQ / Phase 7 含む）
       // stock_scores_6axis: 本番生成ファイル（data/scoring/）を参照。contracts/v13.3 フィクスチャは使用しない
       // fund_phase7: 本番生成物が存在しないためfetch廃止。フィクスチャ(phase7_fixture)は使用しない
+      phase = 'data'
       const [result, phase7StockRaw] = await Promise.all([
         loadPublishedData({ bustCache: true }),
         fetch('data/scoring/stock_scores_6axis.json')
@@ -1548,6 +1609,8 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
       ])
       const { market, correlation, news, trust, holdingsSnapshot, macro, nikkeiVI, sq, margin, flows, candidatesNews, candidatesStocks, regimeState, safeMode, tierAViolations, tierAAlerts } = result
 
+      phase = 'publish'
+      runLoadPublishBeforeApplyHookForTest()
       set(s => {
         const sourceAsOf = getSafeAuthoritativeCsvSourceAsOf(s.system.csvImportProvenance, csvMetadataNowMs)
         const hasCurrentGeneration = hasCommittedCanonicalGeneration || hasCurrentPortfolioContentEvidence(s)
@@ -1640,18 +1703,34 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
       })
 
       // 全再計算
+      phase = 'analysis'
       const computed = runFullAnalysis(get())
       const now = new Date().toISOString()
+      phase = 'publish'
       set(s => ({
         ...computed,
         system: { ...s.system, status: 'success', lastUpdated: now, analysisLastRunAt: now, error: null },
       }))
 
       // 永続化
-      reflectPortfolioPersistenceResult(persistCurrentPortfolioGeneration(get()))
-    } catch (err) {
-      const msg = err instanceof Error ? err.message : String(err)
-      set(s => ({ system: { ...s.system, status: 'error', error: msg } }))
+      phase = 'persistence'
+      const persistenceResult = persistCurrentPortfolioGeneration(get())
+      reflectPortfolioPersistenceResult(persistenceResult, PORTFOLIO_LOAD_SYSTEM_ERROR.persistence)
+      if (persistenceResult.status !== 'persisted') {
+        return createPortfolioLoadFailure(operation, 'LOAD_PERSISTENCE_ERROR')
+      }
+      return createPortfolioLoadSuccess(operation)
+    } catch {
+      const failurePhase = phase
+      let code = PORTFOLIO_LOAD_FAILURE_BY_PHASE[failurePhase]
+      try {
+        set(s => ({
+          system: { ...s.system, status: 'error', error: PORTFOLIO_LOAD_SYSTEM_ERROR[failurePhase] },
+        }))
+      } catch {
+        code = 'LOAD_PUBLISH_ERROR'
+      }
+      return createPortfolioLoadFailure(operation, code)
     } finally {
       releasePortfolioOperation(operationTicket)
     }
@@ -1659,23 +1738,30 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
 
   // ── 全データ再取得 ────────────────────────────────────────
   refreshAllData: async () => {
+    const operation: PortfolioLoadOperation = 'refreshAllData'
     if (isPortfolioGenerationCriticalSection()) {
       reportRejectedReentrantMutation('refreshAllData')
-      return
+      return createPortfolioCoordinationFailure(operation, 'LOCAL_OPERATION_BUSY')
     }
     const operationTicket = acquirePortfolioOperation('refresh')
     if (operationTicket === null) {
       reportRejectedPortfolioOperation('refreshAllData')
-      return
+      return createPortfolioCoordinationFailure(operation, 'LOCAL_OPERATION_BUSY')
     }
+    let phase: PortfolioLoadPhase = 'publish'
     try {
-      if (get().system.status === 'loading') return
+      if (get().system.status === 'loading') {
+        return createPortfolioCoordinationFailure(operation, 'LOCAL_OPERATION_BUSY')
+      }
       set(s => ({ system: { ...s.system, status: 'loading', error: null } }))
+      phase = 'data'
       const result = await loadPublishedData({ bustCache: true })
       const { market, correlation, news, trust, holdingsSnapshot, macro, nikkeiVI, sq, margin, flows, candidatesNews, candidatesStocks, regimeState, safeMode, tierAViolations, tierAAlerts } = result
       const csvMetadataNowMs = Date.now()
       const hasCommittedCanonicalGeneration = restoreCsvImportGeneration().status === 'committed'
 
+      phase = 'publish'
+      runLoadPublishBeforeApplyHookForTest()
       set(s => {
         const safeCsvLastImportedAt = isCsvMetadataTimestampNotFuture(
           s.system.csvLastImportedAt,
@@ -1762,17 +1848,33 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
         set(s => ({ macro: s.macro ? { ...s.macro, nikkeiVI: nikkeiVI.data!.vi, nikkeiVIChg: nikkeiVI.data!.viChg } : s.macro }))
       }
 
+      phase = 'analysis'
       const computed = runFullAnalysis(get())
       const now = new Date().toISOString()
+      phase = 'publish'
       set(s => ({
         ...computed,
         system: { ...s.system, status: 'success', lastUpdated: now, analysisLastRunAt: now, error: null },
       }))
 
-      reflectPortfolioPersistenceResult(persistCurrentPortfolioGeneration(get()))
-    } catch (err) {
-      const msg = err instanceof Error ? err.message : String(err)
-      set(s => ({ system: { ...s.system, status: 'error', error: msg } }))
+      phase = 'persistence'
+      const persistenceResult = persistCurrentPortfolioGeneration(get())
+      reflectPortfolioPersistenceResult(persistenceResult, PORTFOLIO_LOAD_SYSTEM_ERROR.persistence)
+      if (persistenceResult.status !== 'persisted') {
+        return createPortfolioLoadFailure(operation, 'LOAD_PERSISTENCE_ERROR')
+      }
+      return createPortfolioLoadSuccess(operation)
+    } catch {
+      const failurePhase = phase
+      let code = PORTFOLIO_LOAD_FAILURE_BY_PHASE[failurePhase]
+      try {
+        set(s => ({
+          system: { ...s.system, status: 'error', error: PORTFOLIO_LOAD_SYSTEM_ERROR[failurePhase] },
+        }))
+      } catch {
+        code = 'LOAD_PUBLISH_ERROR'
+      }
+      return createPortfolioLoadFailure(operation, code)
     } finally {
       releasePortfolioOperation(operationTicket)
     }

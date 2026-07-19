@@ -3,7 +3,7 @@
  * Phase 5: 市場概況 + 情報源階層 + 5カテゴリ判断支援ニュース
  * 表示順: 市場概況 → 情報源優先順位 → ニュース一覧
  */
-import { useMemo, useState, useEffect } from 'react'
+import { useMemo, useState, useEffect, useRef } from 'react'
 import { useAppStore } from '../../store/useAppStore'
 import { selectBuyList, selectIsLoading } from '../../store/selectors'
 import { formatRelativeTime, formatDateTime } from '../../utils/format'
@@ -12,6 +12,22 @@ import type { NewsItem } from '../../types'
 import type { MarketNewsItemV13 } from '../../types/news'
 import type { MarketIntelData } from '../../types/market_intel'
 import { MacroIntelPanel, NewsCardV13, EarningsCalendarCard } from '../v13'
+import {
+  createPortfolioLoadSingleFlight,
+  executePortfolioLoadUiFlow,
+  portfolioLoadButtonState,
+  type PortfolioLoadFeedback,
+} from '../portfolioLoadUi'
+import type { PortfolioLoadResult } from '../../store/portfolioOperationResult'
+
+export async function executeNewsRefreshFlow(
+  refresh: () => Promise<PortfolioLoadResult>,
+  singleFlight: ReturnType<typeof createPortfolioLoadSingleFlight>,
+  setPending: (pending: boolean) => void,
+  setFeedback: (feedback: PortfolioLoadFeedback | null) => void,
+): Promise<void> {
+  await singleFlight.run(() => executePortfolioLoadUiFlow(refresh, setPending, setFeedback))
+}
 
 // ─────────────────────────────────────────────────────────────
 // 情報源レイヤー定義（優先順位）
@@ -457,6 +473,23 @@ export function T5_News() {
   const refreshAllData = useAppStore(s => s.refreshAllData)
   const isLoading      = useAppStore(selectIsLoading)
   const buyList        = useAppStore(selectBuyList)
+  const [refreshPending, setRefreshPending] = useState(false)
+  const [refreshFeedback, setRefreshFeedback] = useState<PortfolioLoadFeedback | null>(null)
+  const refreshSingleFlightRef = useRef(createPortfolioLoadSingleFlight())
+  const refreshButton = portfolioLoadButtonState(isLoading, refreshPending, {
+    idle: '更新',
+    globallyLoading: '読込中...',
+    locallyPending: '更新中...',
+  })
+
+  const handleRefresh = async () => {
+    await executeNewsRefreshFlow(
+      refreshAllData,
+      refreshSingleFlightRef.current,
+      setRefreshPending,
+      setRefreshFeedback,
+    )
+  }
 
   // ── ニュース分類 ─────────────────────────────────────────────
   const holdingCodes   = useMemo(() => new Set(holdings.map(h => h.code)), [holdings])
@@ -651,15 +684,22 @@ export function T5_News() {
             </div>
           </div>
           <button
-            className={`status-shell__refresh${isLoading ? ' is-loading' : ''}`}
-            onClick={() => { void refreshAllData() }}
-            disabled={isLoading}
+            className={`status-shell__refresh${refreshButton.disabled ? ' is-loading' : ''}`}
+            onClick={handleRefresh}
+            disabled={refreshButton.disabled}
+            aria-busy={refreshButton.ariaBusy}
             type="button"
             style={{ fontSize: '11px' }}
           >
-            {isLoading ? '更新中...' : '更新'}
+            {refreshButton.label}
           </button>
         </div>
+
+        {refreshFeedback && (
+          <div role="alert" style={{ padding: '8px 18px 0', color: 'var(--color-sell-text)', fontSize: '11px' }}>
+            {refreshFeedback.message}
+          </div>
+        )}
 
         {/* Big index card grid */}
         <div style={{ padding: '16px 18px' }}>

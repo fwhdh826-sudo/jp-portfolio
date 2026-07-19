@@ -35,6 +35,7 @@ vi.mock('../domain/analysis/computeAnalysis', async importOriginal => {
 })
 
 import type { CsvImportProvenance } from '../types'
+import type { PortfolioLoadResult } from './portfolioOperationResult'
 import { DEFAULT_CASH_ASSUMPTIONS, DEFAULT_PORTFOLIO_POLICY } from '../types'
 import {
   DEFAULT_CANDIDATES_NEWS_DATA,
@@ -48,12 +49,15 @@ import { computeSnapshotGenerationIdentity } from '../utils/snapshotGenerationId
 import {
   acquirePortfolioOperation,
   releasePortfolioOperation,
+  resetPortfolioGenerationTestSeams,
+  setLoadPublishBeforeApplyHookForTest,
+  setLoadRestoreBeforeReadHookForTest,
   useAppStore,
   type PortfolioOperationTicket,
 } from './useAppStore'
 
 type OperationName = 'initialize' | 'refresh' | 'csv' | 'snapshot'
-type ActionResult = void | Awaited<ReturnType<ReturnType<typeof useAppStore.getState>['importCsv']>> |
+type ActionResult = PortfolioLoadResult | Awaited<ReturnType<ReturnType<typeof useAppStore.getState>['importCsv']>> |
   Awaited<ReturnType<ReturnType<typeof useAppStore.getState>['importPortfolioSnapshot']>>
 
 const FIXED_NOW = new Date('2026-07-19T03:00:00.000Z')
@@ -266,9 +270,14 @@ async function invokeOperation(operation: OperationName): Promise<ActionResult> 
   return await useAppStore.getState().importPortfolioSnapshot(snapshotRaw())
 }
 
-function assertBlockedResult(operation: OperationName, result: ActionResult) {
+function assertBlockedResult(operation: OperationName, result: ActionResult | undefined) {
   if (operation === 'initialize' || operation === 'refresh') {
-    expect(result).toBeUndefined()
+    expect(result).toMatchObject({
+      ok: false,
+      operation: operation === 'initialize' ? 'initialize' : 'refreshAllData',
+      code: 'LOCAL_OPERATION_BUSY',
+      retryable: true,
+    })
   } else if (operation === 'csv') {
     expect(result).toMatchObject({ ok: false, code: 'IMPORT_IN_PROGRESS' })
   } else {
@@ -321,8 +330,9 @@ async function runInjectedLoadFailure(operation: LoadOperation, failureKind: Loa
     storageThrowOnSet = true
   }
 
+  let result: ActionResult
   try {
-    await invokeOperation(operation)
+    result = await invokeOperation(operation)
   } finally {
     loadProbe.implementation = async () => publishedData()
     analysisProbe.throwNext = false
@@ -332,13 +342,23 @@ async function runInjectedLoadFailure(operation: LoadOperation, failureKind: Loa
   expect(loadProbe.calls).toBe(loadCallsBefore + 1)
   expect(analysisProbe.calls).toBe(analysisCallsBefore + (failureKind === 'fetch' ? 0 : 1))
   if (failureKind === 'persistence') expect(storageCounts.set).toBeGreaterThan(storageSetsBefore)
+  expect(result).toMatchObject({
+    ok: false,
+    operation: operation === 'initialize' ? 'initialize' : 'refreshAllData',
+    code: failureKind === 'fetch'
+      ? 'LOAD_DATA_ERROR'
+      : failureKind === 'analysis'
+        ? 'LOAD_ANALYSIS_ERROR'
+        : 'LOAD_PERSISTENCE_ERROR',
+    retryable: true,
+  })
   expect(useAppStore.getState().system).toMatchObject({
     status: 'error',
     error: failureKind === 'fetch'
-      ? 'injected fetch failure'
+      ? '最新データを取得できませんでした。通信状態を確認して再試行してください。'
       : failureKind === 'analysis'
-        ? 'injected analysis failure'
-        : '変更を保存できませんでした。再読み込み後に状態を確認してください。',
+        ? 'データ取得後の再計算に失敗しました。再試行してください。'
+        : '更新結果を保存できませんでした。画面を再読み込みして状態を確認してください。',
   })
 }
 
@@ -364,7 +384,7 @@ async function expectDirectLoadAction(operation: LoadOperation) {
   const retryLoadResolvedWhilePending = retryLoadResolved
   const fetchStartsWhilePending = fetchStarts
   gate.resolve(publishedData())
-  await retryPromise
+  const retryResult = await retryPromise
   const warningCalls = warning.mock.calls.length
   warning.mockRestore()
   loadProbe.implementation = async () => publishedData()
@@ -378,6 +398,11 @@ async function expectDirectLoadAction(operation: LoadOperation) {
   expect(analysisProbe.calls).toBe(analysisCallsBefore + 1)
   expect(storageCounts.get).toBeGreaterThan(storageGetsBefore)
   expect(storageCounts.set).toBeGreaterThan(storageSetsBefore)
+  expect(retryResult).toMatchObject({
+    ok: true,
+    operation: operation === 'initialize' ? 'initialize' : 'refreshAllData',
+    code: 'SUCCESS',
+  })
   expect(useAppStore.getState().system).toMatchObject({ status: 'success', error: null })
   expect(warningCalls).toBe(0)
 }
@@ -400,6 +425,7 @@ beforeEach(() => {
   Object.keys(storage).forEach(key => delete storage[key])
   storageSetHook = null
   storageThrowOnSet = false
+  resetPortfolioGenerationTestSeams()
   analysisProbe.throwNext = false
   loadProbe.implementation = async () => publishedData()
   resetStore()
@@ -415,6 +441,7 @@ afterEach(() => {
   expect(probe, 'operation coordinator must be released after every test').not.toBeNull()
   if (probe) expect(releasePortfolioOperation(probe)).toBe(true)
   vi.restoreAllMocks()
+  resetPortfolioGenerationTestSeams()
   vi.useRealTimers()
   vi.unstubAllGlobals()
 })
@@ -500,7 +527,7 @@ describe('RA-003 Phase B: direct 16-operation exclusion matrix', () => {
           return
         }
 
-        let nestedResult: ActionResult = undefined
+        let nestedResult: ActionResult | undefined = undefined
         let before: ReturnType<typeof sideEffectSnapshot> | null = null
         let after: ReturnType<typeof sideEffectSnapshot> | null = null
         let nestedPromise: Promise<ActionResult> | null = null
@@ -524,6 +551,22 @@ describe('RA-003 Phase B: direct 16-operation exclusion matrix', () => {
       })
     }
   }
+
+  it.each(['initialize', 'refresh'] as const)('%s maps a loading sentinel to LOCAL_OPERATION_BUSY with zero side effects', async operation => {
+    useAppStore.setState(state => ({ system: { ...state.system, status: 'loading', error: null } }))
+    const before = sideEffectSnapshot()
+    const result = await invokeOperation(operation)
+    expect(result).toEqual({
+      ok: false,
+      operation: operation === 'initialize' ? 'initialize' : 'refreshAllData',
+      code: 'LOCAL_OPERATION_BUSY',
+      retryable: true,
+    })
+    expect(sideEffectSnapshot()).toEqual(before)
+
+    useAppStore.setState(state => ({ system: { ...state.system, status: 'idle' } }))
+    await expectDirectLoadAction(operation)
+  })
 })
 
 describe('RA-003 Phase C: key race regressions', () => {
@@ -622,16 +665,96 @@ describe('RA-003 Phase C: key race regressions', () => {
     expect(snapshotWarning).not.toHaveBeenCalled()
     snapshotWarning.mockRestore()
   })
+
+  it.each(['initialize', 'refresh'] as const)('%s holds its ticket through subscriber reentry and releases afterward', async operation => {
+    let fired = false
+    let before: ReturnType<typeof sideEffectSnapshot> | null = null
+    let after: ReturnType<typeof sideEffectSnapshot> | null = null
+    const nested: Array<Promise<unknown>> = []
+    const unsubscribe = useAppStore.subscribe(() => {
+      if (fired) return
+      fired = true
+      before = sideEffectSnapshot()
+      const probe = acquirePortfolioOperation('manual')
+      expect(probe).toBeNull()
+      nested.push(useAppStore.getState().initialize())
+      nested.push(useAppStore.getState().refreshAllData())
+      nested.push(useAppStore.getState().updateHolding('missing', { eval: 1 }))
+      nested.push(useAppStore.getState().importPortfolioSnapshot(snapshotRaw()))
+      after = sideEffectSnapshot()
+    })
+
+    const outer = await invokeOperation(operation)
+    unsubscribe()
+    const [nestedInitialize, nestedRefresh, nestedManual, nestedSnapshot] = await Promise.all(nested)
+
+    expect(outer).toMatchObject({
+      ok: true,
+      operation: operation === 'initialize' ? 'initialize' : 'refreshAllData',
+      code: 'SUCCESS',
+    })
+    expect(nestedInitialize).toMatchObject({ ok: false, code: 'LOCAL_OPERATION_BUSY' })
+    expect(nestedRefresh).toMatchObject({ ok: false, code: 'LOCAL_OPERATION_BUSY' })
+    expect(nestedManual).toMatchObject({ ok: false, code: 'LOCAL_OPERATION_BUSY' })
+    expect(nestedSnapshot).toMatchObject({ ok: false, code: 'LOCAL_OPERATION_BUSY' })
+    expect(after).toEqual(before)
+
+    const released = acquirePortfolioOperation('manual')
+    expect(released).not.toBeNull()
+    if (released) expect(releasePortfolioOperation(released)).toBe(true)
+    await expectDirectLoadAction(operation)
+  })
 })
 
 describe('RA-003 Phase D: failure releases owner and permits retry', () => {
+  it('initialize restore failure is sanitized, releases the ticket, and performs no network or analysis', async () => {
+    setLoadRestoreBeforeReadHookForTest(() => { throw new Error('raw restore sentinel stack') })
+    const loadCallsBefore = loadProbe.calls
+    const analysisCallsBefore = analysisProbe.calls
+    const result = await useAppStore.getState().initialize()
+    expect(result).toEqual({
+      ok: false,
+      operation: 'initialize',
+      code: 'LOAD_RESTORE_ERROR',
+      retryable: false,
+    })
+    expect(loadProbe.calls).toBe(loadCallsBefore)
+    expect(analysisProbe.calls).toBe(analysisCallsBefore)
+    expect(useAppStore.getState().system).toMatchObject({
+      status: 'error',
+      error: '保存データを安全に復元できませんでした。状態を確認してください。',
+    })
+    expect(JSON.stringify(result)).not.toContain('raw restore sentinel')
+    await expectDirectLoadAction('initialize')
+  })
+
+  it.each(['initialize', 'refresh'] as const)('%s publication failure is LOAD_PUBLISH_ERROR and retryable only by a new call', async operation => {
+    setLoadPublishBeforeApplyHookForTest(() => { throw new Error('raw publish sentinel stack') })
+    const result = await invokeOperation(operation)
+    expect(result).toEqual({
+      ok: false,
+      operation: operation === 'initialize' ? 'initialize' : 'refreshAllData',
+      code: 'LOAD_PUBLISH_ERROR',
+      retryable: false,
+    })
+    expect(useAppStore.getState().system).toMatchObject({
+      status: 'error',
+      error: '更新結果を画面へ反映できませんでした。画面を再読み込みしてください。',
+    })
+    expect(JSON.stringify(result)).not.toContain('raw publish sentinel')
+    await expectDirectLoadAction(operation)
+  })
+
   it.each([
     ['initialize fetch failure', 'initialize'],
     ['refresh fetch failure', 'refresh'],
   ] as const)('%s', async (_label, operation) => {
     const differentOperation = operation === 'initialize' ? 'refresh' : 'initialize'
     await runInjectedLoadFailure(operation, 'fetch')
-    expect(useAppStore.getState().system).toMatchObject({ status: 'error', error: 'injected fetch failure' })
+    expect(useAppStore.getState().system).toMatchObject({
+      status: 'error',
+      error: '最新データを取得できませんでした。通信状態を確認して再試行してください。',
+    })
     await expectDirectLoadAction(operation)
     await runInjectedLoadFailure(operation, 'fetch')
     await expectDirectLoadAction(differentOperation)
@@ -645,7 +768,10 @@ describe('RA-003 Phase D: failure releases owner and permits retry', () => {
   ] as const)('%s', async (_label, operation) => {
     const differentOperation = operation === 'initialize' ? 'refresh' : 'initialize'
     await runInjectedLoadFailure(operation, 'analysis')
-    expect(useAppStore.getState().system).toMatchObject({ status: 'error', error: 'injected analysis failure' })
+    expect(useAppStore.getState().system).toMatchObject({
+      status: 'error',
+      error: 'データ取得後の再計算に失敗しました。再試行してください。',
+    })
     await expectDirectLoadAction(operation)
     await runInjectedLoadFailure(operation, 'analysis')
     await expectDirectLoadAction(differentOperation)
@@ -664,6 +790,23 @@ describe('RA-003 Phase D: failure releases owner and permits retry', () => {
     await expectDirectLoadAction(differentOperation)
     await expectDirectLoadAction(operation)
     expect(useAppStore.getState().system.status).not.toBe('loading')
+  })
+
+  it.each([
+    ['initialize', 7],
+    ['refresh', 4],
+  ] as const)('%s persistence failure keeps the existing transitional publications without rollback', async (operation, expectedNotifications) => {
+    storageThrowOnSet = true
+    const removeBefore = storageCounts.remove
+    const result = await invokeOperation(operation)
+    storageThrowOnSet = false
+
+    expect(result).toMatchObject({ ok: false, code: 'LOAD_PERSISTENCE_ERROR' })
+    expect(notifications).toBe(expectedNotifications)
+    expect(storageCounts.remove).toBe(removeBefore)
+    expect(useAppStore.getState().metrics).not.toBeNull()
+    expect(useAppStore.getState().system.analysisLastRunAt).not.toBeNull()
+    expect(useAppStore.getState().system.status).toBe('error')
   })
 
   it('CSV parse failure releases coordinator and retry is not IMPORT_IN_PROGRESS', async () => {

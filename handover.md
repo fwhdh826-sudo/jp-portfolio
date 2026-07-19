@@ -47728,3 +47728,97 @@ It is prepared and pushed only on `v13.3-dev`; this ticket does not push to main
 ### Next
 
 `RA-007-B2: initialize and refresh structured results and caller migration`
+
+## RA-007-B2: async initialize and refresh results
+
+### Public contract and store behavior
+
+- B1 commit: `917997a51530e21a3510befef7d38b300379cb1d`。
+- `initialize()`と`refreshAllData()`を、それぞれ
+  `Promise<PortfolioLoadResult>`へ移行した。成功はoperation付き`SUCCESS`、失敗はraw exceptionを
+  含まないstructured resultとしてresolveする。
+- Load failure taxonomyは`LOAD_RESTORE_ERROR`、`LOAD_DATA_ERROR`、
+  `LOAD_ANALYSIS_ERROR`、`LOAD_PERSISTENCE_ERROR`、`LOAD_PUBLISH_ERROR`。
+  retryabilityは順にfalse / true / true / true / falseで一元管理する。
+- critical section reentry、ticket取得失敗、`system.status === 'loading'`、initialize/refresh相互競合、
+  CSV/snapshot/manual operationとの競合はすべてretryableな`LOCAL_OPERATION_BUSY`。blocked actionの
+  network、analysis、persistence、新規portfolio publishは0、silent voidは0。
+- initializeはrestore / publish / data / analysis / persistence、refreshはpublish / data / analysis /
+  persistenceのphaseで固定failure codeを分類する。restore、data、analysis、persistence、publishの
+  direct failureと後続retryをtestで確認した。
+- `persistCurrentPortfolioGeneration()`のresultを捕捉し、`status !== 'persisted'`は必ず
+  `LOAD_PERSISTENCE_ERROR`。system.errorもphase別の固定sanitized messageとし、raw exception、stack、
+  cause、storage内部reason、portfolio/user dataの公開は0。
+- ticketはoperation開始からpersistence/result確定まで保持し、Zustand subscriber callback中のnested
+  initialize、refresh、manual、snapshotを`LOCAL_OPERATION_BUSY`で拒否する。callback後にreleaseし、
+  後続operationを実行可能にする。
+- 既存のdata source status、RA-005 metadata validation、network flow、analysis、official decision、
+  investment logic、persistence順序は維持した。
+
+### Caller inventory and UI migration
+
+- 初期production callerは`src/App.tsx`、`src/components/StatusBar.tsx`、
+  `src/components/tabs/T5_News.tsx`、`src/components/tabs/T9_Settings.tsx`の4 files。許可file外callerは0。
+- 初期test caller inventoryは次の6 files:
+  `publishedSnapshotPriority.test.ts`、`useAppStore.manualMutationAtomicity.test.ts`、
+  `useAppStore.manualMutationPhaseDirect.test.ts`、`useAppStore.operationCoordinator.test.ts`、
+  `useAppStore.snapshotFutureMetadata.test.ts`、`useAppStore.test.ts`。
+- 最終inventoryではproduction fire-and-forget、uncaptured Promise、test uncaptured Promise、
+  action完了前result assertion、`void initialize()`、`void refreshAllData()`、`void refresh()`はすべて0。
+  subscriber内nested Promiseは明示捕捉済み。
+- Appはeffect内のasync flowでinitialize resultをawaitする。cleanup後のlocal state更新は0、store actionは
+  abortしない。SUCCESS bannerは0、StrictMode duplicateに由来し得る`LOCAL_OPERATION_BUSY`はtop-level
+  bannerから抑止し、その他failureとraw rejectionはfixed sanitized bannerへ変換する。
+- StatusBar、T5 News、T9 Settingsのrefresh handlerはstructured resultをawaitする。各callerに
+  component-local pending/error path、global loadingとlocal pending双方のdisabled、pending label、
+  `aria-busy`、`role="alert"`、single-flightを追加した。duplicate action callは1、完了前success表示は0、
+  failure/rejection後も`finally`でpending解除し再実行可能。
+- StatusBarの既存`system.error`表示は維持し、store stateを変更しないcoordination failureはlocal alertで
+  表示する。T5は更新button付近、T9は更新section内にlocal alertを持つ。
+- T9はload専用`refreshAllData` pending discriminantを追加し、B1 manual/snapshotの既存single-flightを
+  共有して相互duplicateも防止する。manual/snapshot contractとfeedback behaviorの変更は0。
+
+### Transitional limitation
+
+- initialize/refreshの既存複数partial publicationとpublication countは維持した。persistence failure時も
+  新規rollbackは行わず、B2が新しいpublicationを追加していないことをinitialize 7 notifications、
+  refresh 4 notificationsで固定した。
+- load operationsのpersist-before-single-publishは未対応であり、atomicity改善は主張しない。
+  network fetchもまだlocal ticket保持中で、Web Lock production serializationは未稼働。これらは
+  RA-007-D対象。
+
+### Mutation-catching and validation
+
+- 7 required mutations（busy時undefined、App initializeのfire-and-forget復元、refresh callerのawait除去、
+  raw exceptionのsystem.error露出、persistence failureのSUCCESS化、failure時pending release除去、
+  duplicate guard除去）はすべて該当testのREDを確認し、inverse patchで完全復元した。
+- Taxonomy targeted UTC / Asia/Tokyo: **1 file / 23 tests / skipped 0 — PASS**。
+- Load store targeted UTC / Asia/Tokyo: **7 files / 317 tests / skipped 0 — PASS**。
+  対象は初期test caller 6 filesに`useAppStore.portfolioGenerationGuard.test.ts`を加えた集合。
+- UI targeted UTC / Asia/Tokyo: **6 files / 42 tests / skipped 0 — PASS**。
+  App、shared load UI、StatusBar、T5、T9 refresh、B1 T9 async actionsを含む。
+- B1 regression UTC / Asia/Tokyo: **4 files / 148 tests / skipped 0 — PASS**。
+- Lock adapter regression UTC / Asia/Tokyo: **1 file / 47 tests / skipped 0 — PASS**。
+- Full UTC / Asia/Tokyo: **67 files / 1693 tests / skipped 0 — PASS**。file/test差分0。
+- `npx tsc --noEmit`: **PASS**。`npm run build`: **PASS**（127 modules、既知500kB warningのみ）。
+  `git diff --check`: **PASS**。
+- Bundle isolation: `jp-portfolio:portfolio-generation:v1` / `PORTFOLIO_GENERATION_LOCK_NAME`は
+  `dist`に0 matches。
+- `portfolioGenerationLock.ts` diff 0、`fakeLockManager.ts` diff 0、`persist.ts` diff 0。
+  Web Lock adapter import / `runExclusive` / runtime integrationは0、`navigator.locks.request()`は0。
+- importCsv、manual/snapshot behavior、workflow、data/public data、dependency、schema、identity、CSV parser、
+  investment logic、BroadcastChannel、storage event、cross-tab hydration、CAS変更は0。mainは未反映。
+- Completed validation at 2026-07-19T16:06:36Z / 2026-07-20T01:06:36+09:00.
+
+### Status
+
+- RA-007 design audit: **CLOSED**。
+- RA-007-A: **CLOSED**。
+- RA-007-B1: **CLOSED**。
+- RA-007-B2: **CLOSED**。
+- RA-007-B3: **PENDING**。
+- Web Lock production serialization: **NOT YET ACTIVE**。
+
+### Next
+
+`RA-007-B3: store factory and instance-scoped coordination state`

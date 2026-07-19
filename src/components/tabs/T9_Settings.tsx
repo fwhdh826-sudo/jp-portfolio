@@ -13,8 +13,16 @@ import { typography } from '../../theme/typography'
 import type { CsvImportProvenance, CsvSyncSummary } from '../../types'
 import type { CsvImportOptions, CsvImportResult, PortfolioSnapshotImportResult } from '../../store/useAppStore'
 import type { ManualMutationResult } from '../../store/portfolioOperationResult'
+import type { PortfolioLoadResult } from '../../store/portfolioOperationResult'
+import {
+  createPortfolioLoadSingleFlight,
+  executePortfolioLoadUiFlow,
+  portfolioLoadButtonState,
+  type PortfolioLoadFeedback,
+} from '../portfolioLoadUi'
 
 export type PendingPortfolioOperation =
+  | 'refreshAllData'
   | 'importPortfolioSnapshot'
   | 'setPortfolioPolicy'
   | 'setCashAssumptions'
@@ -40,6 +48,15 @@ export function createPortfolioOperationSingleFlight() {
       }
     },
   }
+}
+
+export async function executeSettingsRefreshFlow(
+  refresh: () => Promise<PortfolioLoadResult>,
+  singleFlight: ReturnType<typeof createPortfolioLoadSingleFlight>,
+  setPending: (pending: boolean) => void,
+  setFeedback: (feedback: PortfolioLoadFeedback | null) => void,
+): Promise<void> {
+  await singleFlight.run(() => executePortfolioLoadUiFlow(refresh, setPending, setFeedback))
 }
 
 function coordinationFailureMessage(code: string): string {
@@ -84,7 +101,7 @@ export function snapshotImportFeedback(result: PortfolioSnapshotImportResult): P
 }
 
 export async function executeManualMutationUiFlow(
-  operation: Exclude<PendingPortfolioOperation, 'importPortfolioSnapshot' | null>,
+  operation: Exclude<PendingPortfolioOperation, 'refreshAllData' | 'importPortfolioSnapshot' | null>,
   action: () => Promise<ManualMutationResult>,
   setPending: (operation: PendingPortfolioOperation) => void,
   setFeedback: (feedback: PortfolioOperationFeedback | null) => void,
@@ -499,7 +516,7 @@ function CashAssumptionsSection({ sectionTitleStyle }: { sectionTitleStyle: CSSP
   const cashTotalPreview = parsedDeposits + parsedStandby
 
   const runManualAction = async (
-    operation: Exclude<PendingPortfolioOperation, 'importPortfolioSnapshot' | null>,
+    operation: Exclude<PendingPortfolioOperation, 'refreshAllData' | 'importPortfolioSnapshot' | null>,
     action: () => Promise<ManualMutationResult>,
   ) => {
     return singleFlightRef.current.run(() =>
@@ -1090,17 +1107,28 @@ export function T9_Settings() {
   const setPortfolioPolicy = useAppStore(s => s.setPortfolioPolicy)
   const [pendingOperation, setPendingOperation] = useState<PendingPortfolioOperation>(null)
   const [policyFeedback, setPolicyFeedback] = useState<PortfolioOperationFeedback | null>(null)
+  const [refreshFeedback, setRefreshFeedback] = useState<PortfolioLoadFeedback | null>(null)
   const singleFlightRef = useRef(createPortfolioOperationSingleFlight())
 
   const isLoading = system.status === 'loading'
+  const refreshButton = portfolioLoadButtonState(isLoading, pendingOperation !== null, {
+    idle: '今すぐ更新',
+    globallyLoading: '⏳ 読込中...',
+    locallyPending: pendingOperation === 'refreshAllData' ? '⏳ 更新中...' : '別の処理を実行中...',
+  })
 
   const handleImportCsv = useCallback(
     async (file: File, options?: CsvImportOptions) => importCsv(file, options),
     [importCsv],
   )
 
-  const handleRefresh = useCallback(() => {
-    void refreshAllData()
+  const handleRefresh = useCallback(async () => {
+    await executeSettingsRefreshFlow(
+      refreshAllData,
+      singleFlightRef.current,
+      pending => setPendingOperation(pending ? 'refreshAllData' : null),
+      setRefreshFeedback,
+    )
   }, [refreshAllData])
 
   const handlePortfolioPolicy = useCallback(async (jpStockMaxRatio: number) => {
@@ -1270,11 +1298,17 @@ export function T9_Settings() {
         <button
           className="refresh-btn"
           onClick={handleRefresh}
-          disabled={isLoading}
+          disabled={refreshButton.disabled}
+          aria-busy={pendingOperation === 'refreshAllData'}
           style={{ width: '100%', justifyContent: 'center' }}
         >
-          {isLoading ? '⏳ 更新中...' : '今すぐ更新'}
+          {refreshButton.label}
         </button>
+        {refreshFeedback && (
+          <div role="alert" style={{ ...typography.caption, color: 'var(--color-sell-text)', marginTop: spacing[2] }}>
+            {refreshFeedback.message}
+          </div>
+        )}
         <div style={{ ...typography.caption, color: colors.textMuted, marginTop: spacing[2] }}>
           市場データ・ニュース・マクロ指標・SQカレンダー等を一括取得して分析を再実行します。
         </div>
