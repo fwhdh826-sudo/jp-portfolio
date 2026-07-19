@@ -19,6 +19,7 @@ import {
   persistCsvImportTransaction,
   restoreCsvImportedAt,
   restoreCsvImportGeneration,
+  restoreCsvImportProvenance,
   restoreCsvSyncSummary,
 } from './persist'
 
@@ -455,6 +456,103 @@ describe('useAppStore: portfolio snapshot（P4.5-A012b）', () => {
     // buildExportableCashAssumptionsによりmanualOverrideEnabledは常にtrueとしてexportされる
     expect(parsed.cashAssumptions.manualOverrideEnabled).toBe(true)
     expect(typeof parsed.cashAssumptions.cashDeposits).toBe('number')
+  })
+
+  it('RA-005: actual export→empty-target import keeps stale CSV metadata stale despite a new manifest savedAt', async () => {
+    const nowMs = Date.parse('2026-07-19T00:00:00.000Z')
+    const staleImportedAt = new Date(nowMs - 91 * 24 * 60 * 60 * 1000).toISOString()
+    const staleSourceAsOf = new Date(nowMs - 92 * 24 * 60 * 60 * 1000).toISOString()
+    const sourceProvenance = snapshotProvenance(staleImportedAt, staleSourceAsOf, 'a')
+    const sourceSummary = buildCsvSyncSummary([], [], [], [], {
+      trustSectionSeen: true,
+      unknownFunds: [],
+      zeroedFundIds: [],
+      ambiguousFundIds: [],
+    }, staleImportedAt)
+    const sourceState = useAppStore.getState()
+    useAppStore.setState(s => ({
+      system: {
+        ...s.system,
+        status: 'idle',
+        csvLastImportedAt: staleImportedAt,
+        csvImportProvenance: sourceProvenance,
+        csvSyncSummary: sourceSummary,
+      },
+    }))
+    persistCsvImportTransaction({
+      holdings: sourceState.holdings,
+      trust: sourceState.trust,
+      learning: null,
+      csvImportedAt: staleImportedAt,
+      provenance: sourceProvenance,
+      syncSummary: sourceSummary,
+      trustShortSnapshot: { date: '2026-04-18', total: sourceState.trust[0]?.eval ?? 0, evalById: { 'trust-a': sourceState.trust[0]?.eval ?? 0 } },
+      portfolioPolicy: sourceState.portfolioPolicy,
+      cashAssumptions: sourceState.cashAssumptions,
+      origin: 'csv',
+    }, nowMs - 2 * 24 * 60 * 60 * 1000, undefined, { schemaVersion: CSV_IMPORT_GENERATION_SCHEMA_V5 })
+    const sourceEnvelope = JSON.parse(store[CSV_IMPORT_GENERATION_KEY])
+
+    const exported = useAppStore.getState().exportPortfolioSnapshot()
+    const exportedPayload = JSON.parse(exported)
+    expect(exportedPayload.csvImportedAt).toBe(staleImportedAt)
+    expect(exportedPayload.csvImportProvenance).toEqual(sourceProvenance)
+
+    delete store[CSV_IMPORT_GENERATION_KEY]
+    useAppStore.setState(s => ({
+      holdings: [],
+      trust: [{ ...testTrust, eval: 0 }],
+      learning: null,
+      portfolioPolicy: { ...DEFAULT_PORTFOLIO_POLICY },
+      cashAssumptions: { ...DEFAULT_CASH_ASSUMPTIONS },
+      system: {
+        ...s.system,
+        status: 'idle',
+        error: null,
+        csvLastImportedAt: null,
+        csvImportProvenance: null,
+        csvSyncSummary: null,
+      },
+    }))
+    const nowSpy = vi.spyOn(Date, 'now').mockReturnValue(nowMs)
+
+    expect(useAppStore.getState().importPortfolioSnapshot(exported))
+      .toMatchObject({ ok: true, code: 'SUCCESS' })
+    const importedRaw = store[CSV_IMPORT_GENERATION_KEY]
+    const importedEnvelope = JSON.parse(importedRaw)
+    expect(importedEnvelope.manifest.savedAt).toBe(nowMs)
+    expect(importedEnvelope.manifest.savedAt).toBeGreaterThan(sourceEnvelope.manifest.savedAt)
+    expect(importedEnvelope.payload.csvImportedAt).toBe(staleImportedAt)
+    expect(importedEnvelope.payload.provenance).toEqual(sourceProvenance)
+    expect(importedEnvelope.payload.syncSummary).toBeNull()
+    expect(restoreCsvImportedAt(nowMs)).toBeNull()
+    expect(restoreCsvSyncSummary(nowMs)).toBeNull()
+
+    let resolveFetch!: (value: { ok: false; status: number; json: () => Promise<Record<string, never>> }) => void
+    const deferredFetch = new Promise<{ ok: false; status: number; json: () => Promise<Record<string, never>> }>(resolve => {
+      resolveFetch = resolve
+    })
+    vi.stubGlobal('fetch', vi.fn(() => deferredFetch))
+    const pendingInitialize = useAppStore.getState().initialize()
+    await Promise.resolve()
+
+    expect(store[CSV_IMPORT_GENERATION_KEY]).toBe(importedRaw)
+    expect(useAppStore.getState().system.csvLastImportedAt).toBeNull()
+    expect(useAppStore.getState().system.csvSyncSummary).toBeNull()
+    expect(useAppStore.getState().system.csvImportProvenance).toEqual(sourceProvenance)
+    expect(useAppStore.getState().holdings.map(item => item.code)).toEqual(['TEST-A', 'TEST-B'])
+    resolveFetch({ ok: false, status: 404, json: () => Promise.resolve({}) })
+    await pendingInitialize
+
+    const reloaded = restoreCsvImportGeneration()
+    expect(reloaded.status).toBe('committed')
+    if (reloaded.status !== 'committed') throw new Error('expected imported canonical generation')
+    expect(reloaded.payload.csvImportedAt).toBe(staleImportedAt)
+    expect(reloaded.payload.provenance).toEqual(sourceProvenance)
+    expect(restoreCsvImportedAt(nowMs)).toBeNull()
+    expect(restoreCsvSyncSummary(nowMs)).toBeNull()
+    expect(restoreCsvImportProvenance(reloaded.payload, nowMs)).toEqual(sourceProvenance)
+    nowSpy.mockRestore()
   })
 
   it('importPortfolioSnapshot happy path: holdings/trust/portfolioPolicy/cashAssumptions/csvImportedAtが反映される', () => {
@@ -1350,11 +1448,80 @@ describe('R4-A004c: initialize/refresh preserve canonical v4/v5 semantics', () =
 
     expect(useAppStore.getState().system.csvLastImportedAt).toBe(importedAt)
     expect(useAppStore.getState().system.csvSyncSummary).toEqual(syncSummary)
+    expect(useAppStore.getState().system.csvImportProvenance).toEqual(
+      snapshotProvenance(importedAt, sourceAsOf, '4'),
+    )
     expect(nowCall).toBeGreaterThanOrEqual(2)
     expect(storage[CSV_IMPORT_GENERATION_KEY]).toBe(canonicalBefore)
     expect(setItem).not.toHaveBeenCalled()
     expect(removeItem).not.toHaveBeenCalled()
     // loading + coordinated hydration + existing freshness publication. RA-005 adds no set.
+    expect(notifications).toBe(3)
+
+    unsubscribe()
+    resolveFetch({ ok: false, status: 404, json: () => Promise.resolve({}) })
+    await pendingInitialize
+    nowSpy.mockRestore()
+  })
+
+  it.each([
+    {
+      label: 'future authoritative sourceAsOf',
+      importedAt: '2026-07-18T00:00:00.000Z',
+      sourceAsOf: '2026-07-19T00:00:00.001Z',
+    },
+    {
+      label: 'past authoritative sourceAsOf with future returned importedAt',
+      importedAt: '2026-07-19T00:00:00.001Z',
+      sourceAsOf: '2026-07-18T00:00:00.000Z',
+    },
+  ])('RA-005: initialize restores portfolio but publishes no future CSV metadata for $label', async ({ importedAt, sourceAsOf }) => {
+    const nowMs = Date.parse('2026-07-19T00:00:00.000Z')
+    const seededState = useAppStore.getState()
+    const provenance = snapshotProvenance(importedAt, sourceAsOf, 'f')
+    const syncSummary = buildCsvSyncSummary([], [], [], [], {
+      trustSectionSeen: true,
+      unknownFunds: [],
+      zeroedFundIds: [],
+      ambiguousFundIds: [],
+    }, importedAt)
+    persistCsvImportTransaction({
+      holdings: [makeHolding({ code: 'FUTURE-META', eval: 765_432 })],
+      trust: [makeTrust({ id: 'future-meta-fund', eval: 876_543 })],
+      learning: null,
+      csvImportedAt: importedAt,
+      provenance,
+      syncSummary,
+      trustShortSnapshot: { date: '2026-07-19', total: 876_543, evalById: { 'future-meta-fund': 876_543 } },
+      portfolioPolicy: seededState.portfolioPolicy,
+      cashAssumptions: seededState.cashAssumptions,
+      origin: 'csv',
+    }, nowMs, undefined, { schemaVersion: CSV_IMPORT_GENERATION_SCHEMA_V5 })
+    const canonicalBefore = storage[CSV_IMPORT_GENERATION_KEY]
+    setItem.mockClear()
+    removeItem.mockClear()
+    const nowSpy = vi.spyOn(Date, 'now').mockReturnValue(nowMs)
+    let resolveFetch!: (value: { ok: false; status: number; json: () => Promise<Record<string, never>> }) => void
+    const deferredFetch = new Promise<{ ok: false; status: number; json: () => Promise<Record<string, never>> }>(resolve => {
+      resolveFetch = resolve
+    })
+    vi.stubGlobal('fetch', vi.fn(() => deferredFetch))
+    let notifications = 0
+    const unsubscribe = useAppStore.subscribe(() => { notifications += 1 })
+
+    const pendingInitialize = useAppStore.getState().initialize()
+    await Promise.resolve()
+
+    const hydrated = useAppStore.getState()
+    expect(hydrated.holdings.find(item => item.code === 'FUTURE-META')?.eval).toBe(765_432)
+    expect(hydrated.trust.find(item => item.id === 'future-meta-fund')?.eval).toBe(876_543)
+    expect(hydrated.system.csvLastImportedAt).toBeNull()
+    expect(hydrated.system.csvSyncSummary).toBeNull()
+    expect(hydrated.system.csvImportProvenance).toBeNull()
+    expect(JSON.stringify(hydrated.system)).not.toContain('2026-07-19T00:00:00.001Z')
+    expect(storage[CSV_IMPORT_GENERATION_KEY]).toBe(canonicalBefore)
+    expect(setItem).not.toHaveBeenCalled()
+    expect(removeItem).not.toHaveBeenCalled()
     expect(notifications).toBe(3)
 
     unsubscribe()

@@ -3,10 +3,12 @@ import type { CsvImportProvenance, CsvSyncSummary } from '../types'
 import { DEFAULT_CASH_ASSUMPTIONS, DEFAULT_PORTFOLIO_POLICY } from '../types'
 import {
   CSV_IMPORT_GENERATION_KEY,
+  isCsvMetadataTimestampNotFuture,
   isCsvMetadataReferenceWithinTtl,
   persistCsvImportTransaction,
   resolveCsvMetadataReferenceEpochMs,
   restoreCsvImportedAt,
+  restoreCsvImportProvenance,
   restoreCsvSyncSummary,
   type CsvImportPersistencePayload,
 } from './persist'
@@ -294,6 +296,117 @@ describe('RA-005 CSV metadata TTL reference contract', () => {
     })
   })
 
+  describe('returned metadata and provenance future validation', () => {
+    it('common validator accepts exact-now and stale past values but rejects future by 1ms, malformed values, and invalid nowMs', () => {
+      expect(isCsvMetadataTimestampNotFuture(iso(NOW_MS), NOW_MS)).toBe(true)
+      expect(isCsvMetadataTimestampNotFuture(iso(NOW_MS - 365 * DAY_MS), NOW_MS)).toBe(true)
+      expect(isCsvMetadataTimestampNotFuture(iso(NOW_MS + 1), NOW_MS)).toBe(false)
+      expect(isCsvMetadataTimestampNotFuture('2026-02-30T00:00:00Z', NOW_MS)).toBe(false)
+      expect(isCsvMetadataTimestampNotFuture(iso(NOW_MS), Number.NaN)).toBe(false)
+    })
+
+    it('authoritative source past / returned importedAt and summary future fails closed without canonical mutation', () => {
+      const futureImportedAt = iso(NOW_MS + 1)
+      const payload = canonicalPayload({
+        importedAt: futureImportedAt,
+        sourceAsOf: iso(NOW_MS - DAY_MS),
+      })
+      persistCsvImportTransaction(payload, NOW_MS)
+      const rawBefore = storage[CSV_IMPORT_GENERATION_KEY]
+      setItem.mockClear()
+      removeItem.mockClear()
+
+      expect(restoreCsvImportedAt(NOW_MS)).toBeNull()
+      expect(restoreCsvSyncSummary(NOW_MS)).toBeNull()
+      expect(restoreCsvImportProvenance(payload, NOW_MS)).toBeNull()
+      expect(storage[CSV_IMPORT_GENERATION_KEY]).toBe(rawBefore)
+      expect(setItem).not.toHaveBeenCalled()
+      expect(removeItem).not.toHaveBeenCalled()
+    })
+
+    it('authoritative source future / returned importedAt and summary past fails closed on the immutable reference', () => {
+      const importedAt = iso(NOW_MS - DAY_MS)
+      const payload = canonicalPayload({ importedAt, sourceAsOf: iso(NOW_MS + 1) })
+      persistCsvImportTransaction(payload, NOW_MS)
+
+      expect(restoreCsvImportedAt(NOW_MS)).toBeNull()
+      expect(restoreCsvSyncSummary(NOW_MS)).toBeNull()
+      expect(restoreCsvImportProvenance(payload, NOW_MS)).toBeNull()
+    })
+
+    it.each(['weak', 'unknown'] as const)('%s source with future importedAt fails closed', confidence => {
+      const payload = canonicalPayload({
+        importedAt: iso(NOW_MS + 1),
+        sourceAsOf: confidence === 'weak' ? iso(NOW_MS - DAY_MS) : null,
+        confidence,
+      })
+      persistCsvImportTransaction(payload, NOW_MS)
+
+      expect(restoreCsvImportedAt(NOW_MS)).toBeNull()
+      expect(restoreCsvSyncSummary(NOW_MS)).toBeNull()
+      expect(restoreCsvImportProvenance(payload, NOW_MS)).toBeNull()
+    })
+
+    it('fresh authoritative source retains stale returned importedAt, summary, and provenance', () => {
+      const staleImportedAt = iso(NOW_MS - CSV_TTL_MS - DAY_MS)
+      const payload = canonicalPayload({
+        importedAt: staleImportedAt,
+        sourceAsOf: iso(NOW_MS - DAY_MS),
+      })
+      persistCsvImportTransaction(payload, NOW_MS)
+
+      expect(restoreCsvImportedAt(NOW_MS)).toBe(staleImportedAt)
+      expect(restoreCsvSyncSummary(NOW_MS)).toEqual(payload.syncSummary)
+      expect(restoreCsvImportProvenance(payload, NOW_MS)).toEqual(payload.provenance)
+    })
+
+    it('invalid nowMs rejects importedAt, summary, and provenance through all three restore paths', () => {
+      const payload = canonicalPayload()
+      persistCsvImportTransaction(payload, NOW_MS)
+
+      expect(restoreCsvImportedAt(Number.POSITIVE_INFINITY)).toBeNull()
+      expect(restoreCsvSyncSummary(Number.NaN)).toBeNull()
+      expect(restoreCsvImportProvenance(payload, Number.NEGATIVE_INFINITY)).toBeNull()
+    })
+
+    it('valid provenance is cloned without normalization, confidence downgrade, or payload mutation', () => {
+      const payload = canonicalPayload({ importedAt: iso(NOW_MS), sourceAsOf: iso(NOW_MS) })
+      const before = JSON.stringify(payload)
+      const restored = restoreCsvImportProvenance(payload, NOW_MS)
+
+      expect(restored).toEqual(payload.provenance)
+      expect(restored).not.toBe(payload.provenance)
+      expect(restored?.sourceAsOfConfidence).toBe('authoritative')
+      expect(JSON.stringify(payload)).toBe(before)
+    })
+
+    it('legacy v1 payload reference past / summary importedAt future returns importedAt but rejects summary', () => {
+      const importedAt = iso(NOW_MS - DAY_MS)
+      const legacyPayload = {
+        holdings: [], trust: [], learning: null, importedAt,
+        syncSummary: summary(iso(NOW_MS + 1)),
+        trustShortSnapshot: { date: '2026-07-19', total: 0, evalById: {} },
+      }
+      const serializedPayload = JSON.stringify(legacyPayload)
+      storage[CSV_IMPORT_GENERATION_KEY] = JSON.stringify({
+        manifest: {
+          schemaVersion: 'csv-import-generation-1', generationId: 'legacy-summary-mismatch',
+          savedAt: NOW_MS, committed: true, payloadChecksum: checksum(serializedPayload),
+        },
+        payload: legacyPayload,
+      })
+      const rawBefore = storage[CSV_IMPORT_GENERATION_KEY]
+      setItem.mockClear()
+      removeItem.mockClear()
+
+      expect(restoreCsvImportedAt(NOW_MS)).toBe(importedAt)
+      expect(restoreCsvSyncSummary(NOW_MS)).toBeNull()
+      expect(storage[CSV_IMPORT_GENERATION_KEY]).toBe(rawBefore)
+      expect(setItem).not.toHaveBeenCalled()
+      expect(removeItem).not.toHaveBeenCalled()
+    })
+  })
+
   describe('legacy importedAt and summary matrix', () => {
     it.each([
       ['exact 90d', NOW_MS - CSV_TTL_MS, true],
@@ -308,6 +421,7 @@ describe('RA-005 CSV metadata TTL reference contract', () => {
     it('legacy importedAt malformed value fails closed without using wrapper savedAt', () => {
       storage[CSV_IMPORTED_AT_KEY] = JSON.stringify({ at: 'not-a-timestamp', savedAt: NOW_MS })
       expect(restoreCsvImportedAt(NOW_MS)).toBeNull()
+      expect(storage[CSV_IMPORTED_AT_KEY]).toBeDefined()
     })
 
     it('legacy summary uses summary.importedAt and removes only stale valid metadata', () => {
@@ -327,7 +441,26 @@ describe('RA-005 CSV metadata TTL reference contract', () => {
       ['malformed summary shape', { importedAt: iso(NOW_MS) }],
     ])('legacy summary %s fails closed', (_label, data) => {
       storage[CSV_SYNC_SUMMARY_KEY] = JSON.stringify({ data, savedAt: NOW_MS })
+      const rawBefore = storage[CSV_SYNC_SUMMARY_KEY]
       expect(restoreCsvSyncSummary(NOW_MS)).toBeNull()
+      expect(storage[CSV_SYNC_SUMMARY_KEY]).toBe(rawBefore)
+    })
+
+    it('legacy metadata cleanup changes only the stale metadata key and leaves unrelated keys untouched', () => {
+      const unrelated = JSON.stringify({ keep: true })
+      storage.unrelated = unrelated
+      storage[CSV_IMPORTED_AT_KEY] = JSON.stringify({
+        at: iso(NOW_MS - CSV_TTL_MS - 1), savedAt: NOW_MS,
+      })
+      storage[CSV_SYNC_SUMMARY_KEY] = JSON.stringify({
+        data: summary(iso(NOW_MS + 1)), savedAt: NOW_MS,
+      })
+
+      expect(restoreCsvImportedAt(NOW_MS)).toBeNull()
+      expect(restoreCsvSyncSummary(NOW_MS)).toBeNull()
+      expect(storage[CSV_IMPORTED_AT_KEY]).toBeUndefined()
+      expect(storage[CSV_SYNC_SUMMARY_KEY]).toBeDefined()
+      expect(storage.unrelated).toBe(unrelated)
     })
   })
 })

@@ -46704,3 +46704,87 @@ persistence hardening系列（`portfolio-snapshot-3`、
 ### Next
 
 `RA-005-AUDIT: independent timestamp and TTL contract audit`
+
+## RA-005-AUDIT-FIX: future metadata fail-closed and cross-field closure
+
+### Audit findings and closure
+
+- Independent audit verdict: **BLOCKED**.
+- P1 `RA-005-AUDIT-F001`: a valid retention reference could still publish future
+  `csvImportedAt`, `CsvSyncSummary.importedAt`, or `CsvImportProvenance` values.
+- P2 `RA-005-AUDIT-F002`: the cross-field future matrix, initialize/UI provenance flow,
+  legacy summary mismatch, published snapshot priority, and actual snapshot transfer path lacked
+  direct closure tests.
+- The retention reference priority and 90-day contract changed **0**. Authoritative
+  `provenance.sourceAsOf` still has priority and never falls back when present-invalid; exactly
+  90 days remains valid and 90 days plus 1 ms remains expired.
+- Added an independent strict returned-metadata validator. It rejects malformed values,
+  non-finite `nowMs`, and any timestamp future by even 1 ms, but performs no 90-day test.
+- `restoreCsvImportedAt()` now requires both a valid retention reference and a non-future returned
+  timestamp. Fresh source / stale importedAt remains valid.
+- `restoreCsvSyncSummary()` now independently validates `summary.importedAt` after retention
+  succeeds. Fresh source / stale summary importedAt remains valid.
+- Added canonical provenance restore validation. Future or malformed `provenance.importedAt` and
+  non-null `sourceAsOf` fail closed; valid provenance is cloned without normalization, confidence
+  downgrade, fallback, or canonical mutation.
+- Initialize passes its single captured `csvMetadataNowMs` to importedAt, summary, and provenance
+  restore. Future metadata is not published to `system.csvLastImportedAt`,
+  `system.csvSyncSummary`, or `system.csvImportProvenance`; valid holdings/trust remain restored.
+- Canonical generation existence is separated from `csvLastImportedAt`. Initialize retains the
+  committed status it already read; refresh rechecks canonical status safely. Metadata becoming
+  null therefore does not make a committed canonical generation look absent.
+- Published snapshot priority receives `sourceAsOf = null` for future provenance and
+  `hasCurrentGeneration = true` for a committed canonical generation. Older and newer published
+  holdings/trust snapshots cannot overwrite that user generation. Canonical absent and
+  present-invalid contracts remain unchanged.
+- Direct tests cover authoritative source past / returned future, authoritative source future /
+  returned past, weak/unknown future importedAt, exactly-now, future by 1 ms, invalid now,
+  malformed timestamps, exact 90-day boundaries, Z/+09:00 equivalence, and fresh-source/stale-
+  metadata preservation.
+- Legacy mismatch closure directly covers v1 payload importedAt past / summary importedAt future,
+  future and malformed legacy key retention, stale-valid key deletion, and unrelated-key mutation
+  0.
+- Actual public `exportPortfolioSnapshot()` → empty-target `importPortfolioSnapshot()` E2E proves
+  a newer manifest `savedAt` preserves original stale `sourceAsOf`, `csvImportedAt`, and provenance
+  importedAt, while both CSV metadata restores remain stale/null before and after initialize.
+  Canonical hydration rewrite is 0.
+- T9 production changes: 0. Because future provenance, importedAt, and summary do not reach system
+  state, future timestamps do not reach the existing T9 display conditions. Existing `CSV明示`,
+  `参考情報`, unknown non-substitution, 90-day, and no-unlimited-label tests remain green.
+
+### Scope and invariants
+
+- Production files: `src/store/persist.ts`, `src/store/useAppStore.ts`.
+- Test files: `src/store/persist.csvMetadataTtl.test.ts`, `src/store/useAppStore.test.ts`,
+  `src/store/publishedSnapshotPriority.test.ts`.
+- Canonical mutation from restore helpers: 0.
+- Schema v5 / canonical serializer changes: 0.
+- Identity v2 / payload checksum / generationId changes: 0.
+- CAS / ownership / owner-only rollback / write-then-throw recovery changes: 0.
+- CSV monotonicity / snapshot overwrite authority / duplicate detection changes: 0.
+- RA-003 coordinator changes: 0; full regression remains green.
+- Portfolio/trust freshness, learning TTL, investment logic, SAFE_MODE/TierA, P5, workflow, data,
+  and public-data changes: 0.
+
+### Verification
+
+- UTC targeted: **6 files / 363 tests / skipped 0 — PASS**.
+- Asia/Tokyo targeted: **6 files / 363 tests / skipped 0 — PASS**.
+- UTC full unit: **54 files / 1416 tests / skipped 0 — PASS**.
+- Asia/Tokyo full unit: **54 files / 1416 tests / skipped 0 — PASS**.
+- `npx tsc --noEmit`: PASS.
+- `npm run build`: PASS (known 500 kB chunk warning only).
+- `git diff --check`: PASS.
+- Main is not updated by RA-005-AUDIT-FIX.
+
+### Status
+
+- RA-005 implementation: **CLOSED**.
+- RA-005-AUDIT-F001: **CLOSED**.
+- RA-005-AUDIT-F002: **CLOSED**.
+- RA-005 independent re-audit: **PENDING**.
+- main integration: **PENDING**.
+
+### Next
+
+`RA-005-REAUDIT: independent future metadata closure audit`

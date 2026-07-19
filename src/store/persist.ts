@@ -614,6 +614,40 @@ export function isCsvMetadataReferenceWithinTtl(
   return ageMs >= 0 && ageMs <= CSV_TTL_MS
 }
 
+/**
+ * Validate a timestamp that will be returned or published as CSV metadata.
+ * This is intentionally independent from the 90-day retention window: an old metadata
+ * timestamp remains publishable when the immutable retention reference is still fresh.
+ */
+export function isCsvMetadataTimestampNotFuture(
+  timestamp: unknown,
+  nowMs: number,
+): timestamp is string {
+  if (!Number.isFinite(nowMs)) return false
+  const parsed = parseStrictTimestamp(timestamp)
+  return parsed !== null && parsed.epochMs <= nowMs
+}
+
+/** Validate and clone provenance before it crosses the persistence/store boundary. */
+export function validateCsvImportProvenanceForRestore(
+  provenance: CsvImportProvenance | null | undefined,
+  nowMs: number,
+): CsvImportProvenance | null {
+  if (!Number.isFinite(nowMs) || !isCsvImportProvenance(provenance)) return null
+  if (!isCsvMetadataTimestampNotFuture(provenance.importedAt, nowMs)) return null
+  if (provenance.sourceAsOf !== null &&
+      !isCsvMetadataTimestampNotFuture(provenance.sourceAsOf, nowMs)) return null
+  return { ...provenance }
+}
+
+/** Restore canonical provenance without mutating or rewriting the canonical payload. */
+export function restoreCsvImportProvenance(
+  payload: CsvImportPersistencePayload,
+  nowMs = Date.now(),
+): CsvImportProvenance | null {
+  return validateCsvImportProvenanceForRestore(payload.provenance, nowMs)
+}
+
 function canonicalCsvMetadataReferenceInput(
   payload: CsvImportPersistencePayload,
 ): CsvMetadataReferenceInput {
@@ -643,11 +677,13 @@ export function restoreCsvImportedAt(nowMs = Date.now()): string | null {
   try {
     const generation = restoreCsvImportGeneration()
     if (generation.status === 'committed') {
-      return isCsvMetadataReferenceWithinTtl(
+      if (!isCsvMetadataReferenceWithinTtl(
         canonicalCsvMetadataReferenceInput(generation.payload),
         nowMs,
-      )
-        ? getCsvImportPayloadCsvImportedAt(generation.payload)
+      )) return null
+      const returnedTimestamp = getCsvImportPayloadCsvImportedAt(generation.payload)
+      return isCsvMetadataTimestampNotFuture(returnedTimestamp, nowMs)
+        ? returnedTimestamp
         : null
     }
     if (generation.status === 'invalid') return null
@@ -660,7 +696,7 @@ export function restoreCsvImportedAt(nowMs = Date.now()): string | null {
     }
     const snap = JSON.parse(raw) as CsvSnapshot
     const referenceEpochMs = resolveCsvMetadataReferenceEpochMs({ legacySnapshotAt: snap.at })
-    if (referenceEpochMs === null || !Number.isFinite(nowMs) || nowMs - referenceEpochMs < 0) return null
+    if (referenceEpochMs === null || !isCsvMetadataTimestampNotFuture(snap.at, nowMs)) return null
     if (nowMs - referenceEpochMs > CSV_TTL_MS) {
       localStorage.removeItem(CSV_IMPORTED_AT_KEY)
       return null
@@ -839,11 +875,13 @@ export function restoreCsvSyncSummary(nowMs = Date.now()): CsvSyncSummary | null
   try {
     const generation = restoreCsvImportGeneration()
     if (generation.status === 'committed') {
-      return isCsvMetadataReferenceWithinTtl(
+      if (!isCsvMetadataReferenceWithinTtl(
         canonicalCsvMetadataReferenceInput(generation.payload),
         nowMs,
-      )
-        ? generation.payload.syncSummary
+      )) return null
+      const summary = generation.payload.syncSummary
+      return summary !== null && isCsvMetadataTimestampNotFuture(summary.importedAt, nowMs)
+        ? summary
         : null
     }
     if (generation.status === 'invalid') return null
@@ -854,7 +892,8 @@ export function restoreCsvSyncSummary(nowMs = Date.now()): CsvSyncSummary | null
     const referenceEpochMs = resolveCsvMetadataReferenceEpochMs({
       syncSummaryImportedAt: snap.data.importedAt,
     })
-    if (referenceEpochMs === null || !Number.isFinite(nowMs) || nowMs - referenceEpochMs < 0) return null
+    if (referenceEpochMs === null ||
+        !isCsvMetadataTimestampNotFuture(snap.data.importedAt, nowMs)) return null
     if (nowMs - referenceEpochMs > CSV_TTL_MS) {
       localStorage.removeItem(CSV_SYNC_SUMMARY_KEY)
       return null

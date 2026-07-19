@@ -26,7 +26,9 @@ import {
   persistLearning,
   restoreLearning,
   restoreCsvImportedAt,
+  restoreCsvImportProvenance,
   restoreCsvSyncSummary,
+  validateCsvImportProvenanceForRestore,
   getCsvImportPayloadCsvImportedAt,
   restoreCsvImportGeneration,
   restoreCsvImportGenerationFromRaw,
@@ -817,6 +819,16 @@ function dataAgeDays(value: string | null | undefined, nowMs: number): number | 
   return Math.floor(diffMs / (1000 * 60 * 60 * 24))
 }
 
+function getSafeAuthoritativeCsvSourceAsOf(
+  provenance: CsvImportProvenance | null | undefined,
+  nowMs: number,
+): string | null {
+  const validated = validateCsvImportProvenanceForRestore(provenance, nowMs)
+  return validated?.sourceAsOfConfidence === 'authoritative'
+    ? validated.sourceAsOf
+    : null
+}
+
 // ── P4.5-A013-T4 / T9-A004: published holdings/trust snapshotが新しいユーザー保有状態を
 // 上書きしないための優先順位判定。currentSourceAsOfはsource data自体の基準時刻であり、
 // CSV取込操作時刻csvLastImportedAtとは明確に分離する。
@@ -1286,8 +1298,9 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
         ? restoreCsvSyncSummary(csvMetadataNowMs)
         : null
       const savedCsvProvenance = csvGeneration.status === 'committed'
-        ? csvGeneration.payload.provenance ?? null
+        ? restoreCsvImportProvenance(csvGeneration.payload, csvMetadataNowMs)
         : null
+      const hasCommittedCanonicalGeneration = csvGeneration.status === 'committed'
       const savedPolicy = csvGeneration.status === 'committed'
         ? csvGeneration.payload.portfolioPolicy ?? DEFAULT_PORTFOLIO_POLICY
         : useLegacy ? restorePortfolioPolicy() ?? DEFAULT_PORTFOLIO_POLICY : DEFAULT_PORTFOLIO_POLICY
@@ -1327,10 +1340,8 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
       const { market, correlation, news, trust, holdingsSnapshot, macro, nikkeiVI, sq, margin, flows, candidatesNews, candidatesStocks, regimeState, safeMode, tierAViolations, tierAAlerts } = result
 
       set(s => {
-        const sourceAsOf = s.system.csvImportProvenance?.sourceAsOfConfidence === 'authoritative'
-          ? s.system.csvImportProvenance.sourceAsOf
-          : null
-        const hasCurrentGeneration = s.system.csvLastImportedAt !== null
+        const sourceAsOf = getSafeAuthoritativeCsvSourceAsOf(s.system.csvImportProvenance, csvMetadataNowMs)
+        const hasCurrentGeneration = hasCommittedCanonicalGeneration || s.system.csvLastImportedAt !== null
         const nextTrust = trust.data && shouldApplyPublishedSnapshot(trust.lastUpdated, sourceAsOf, hasCurrentGeneration)
           ? s.trust.map(f => { const d = trust.data!.find(x => x.id === f.id); return d ? { ...f, ...d } : f })
           : s.trust
@@ -1453,12 +1464,12 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
       set(s => ({ system: { ...s.system, status: 'loading', error: null } }))
       const result = await loadPublishedData({ bustCache: true })
       const { market, correlation, news, trust, holdingsSnapshot, macro, nikkeiVI, sq, margin, flows, candidatesNews, candidatesStocks, regimeState, safeMode, tierAViolations, tierAAlerts } = result
+      const csvMetadataNowMs = Date.now()
+      const hasCommittedCanonicalGeneration = restoreCsvImportGeneration().status === 'committed'
 
       set(s => {
-        const sourceAsOf = s.system.csvImportProvenance?.sourceAsOfConfidence === 'authoritative'
-          ? s.system.csvImportProvenance.sourceAsOf
-          : null
-        const hasCurrentGeneration = s.system.csvLastImportedAt !== null
+        const sourceAsOf = getSafeAuthoritativeCsvSourceAsOf(s.system.csvImportProvenance, csvMetadataNowMs)
+        const hasCurrentGeneration = hasCommittedCanonicalGeneration || s.system.csvLastImportedAt !== null
         const nextTrust = trust.data && shouldApplyPublishedSnapshot(trust.lastUpdated, sourceAsOf, hasCurrentGeneration)
           ? s.trust.map(f => { const d = trust.data!.find(x => x.id === f.id); return d ? { ...f, ...d } : f })
           : s.trust

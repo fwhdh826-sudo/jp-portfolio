@@ -244,6 +244,165 @@ describe('useAppStore.initialize / refreshAllData: published snapshot優先順�
     })
   })
 
+  it.each([
+    ['older', '2026-07-18T00:00:00.000Z'],
+    ['newer', '2026-07-20T00:00:00.000Z'],
+  ] as const)('RA-005: committed canonical with future sourceAsOf protects state from %s published snapshots without comparing the future value', async (_label, publishedAt) => {
+    const nowMs = Date.parse('2026-07-19T00:00:00.000Z')
+    const importedAt = '2026-07-18T00:00:00.000Z'
+    const futureSourceAsOf = '2026-07-19T00:00:00.001Z'
+    const committedHolding = makeHolding({ code: '7203', eval: 654_321 })
+    const committedTrust = makeTrust({ id: 'sp500_sbi', eval: 3_210_000 })
+    persistCsvImportTransaction({
+      holdings: [committedHolding],
+      trust: [committedTrust],
+      learning: null,
+      csvImportedAt: importedAt,
+      syncSummary: {
+        importedAt,
+        stock: { updated: 1, added: 0, removed: 0 },
+        trust: { updated: 1, reheld: 0, zeroed: 0, unknownFunds: [], ambiguousFundIds: [] },
+      },
+      trustShortSnapshot: { date: '2026-07-19', total: 3_210_000, evalById: { sp500_sbi: 3_210_000 } },
+      provenance: {
+        importedAt,
+        sourceAsOf: futureSourceAsOf,
+        sourceAsOfKind: 'csv_explicit',
+        sourceAsOfConfidence: 'authoritative',
+        contentFingerprint: 'fnv1a32:12345678',
+        sourceFileName: 'portfolio.csv',
+        fileLastModified: null,
+      },
+      portfolioPolicy: { jpStockMaxRatio: 0.12 },
+      cashAssumptions: {
+        cashDeposits: 1_250_000,
+        standbyFunds: 350_000,
+        manualOverrideEnabled: true,
+        manualUpdatedAt: '2026-07-18T00:00:00.000Z',
+      },
+      origin: 'csv',
+    }, nowMs)
+    mockFetchRouter({
+      'holdings.json': {
+        last_updated: publishedAt,
+        source: 'sbi_csv',
+        holdings: [{ code: '7203', eval: 999_999 }],
+      },
+      'trust_master.json': {
+        last_updated: publishedAt,
+        source: 'sbi_csv',
+        funds: [{ id: 'sp500_sbi', eval: 1_234_567 }],
+      },
+    })
+    const nowSpy = vi.spyOn(Date, 'now').mockReturnValue(nowMs)
+
+    await useAppStore.getState().initialize()
+
+    const state = useAppStore.getState()
+    expect(state.holdings.find(item => item.code === '7203')?.eval).toBe(654_321)
+    expect(state.trust.find(item => item.id === 'sp500_sbi')?.eval).toBe(3_210_000)
+    expect(state.system.csvLastImportedAt).toBeNull()
+    expect(state.system.csvSyncSummary).toBeNull()
+    expect(state.system.csvImportProvenance).toBeNull()
+    expect(JSON.stringify(state.system)).not.toContain(futureSourceAsOf)
+    nowSpy.mockRestore()
+  })
+
+  it('RA-005: refresh keeps committed canonical generation evidence when future importedAt makes csvLastImportedAt null', async () => {
+    const nowMs = Date.parse('2026-07-19T00:00:00.000Z')
+    const futureImportedAt = '2026-07-19T00:00:00.001Z'
+    const committedHolding = makeHolding({ code: '7203', eval: 700_000 })
+    const committedTrust = makeTrust({ id: 'sp500_sbi', eval: 4_000_000 })
+    persistCsvImportTransaction({
+      holdings: [committedHolding],
+      trust: [committedTrust],
+      learning: null,
+      csvImportedAt: futureImportedAt,
+      syncSummary: {
+        importedAt: futureImportedAt,
+        stock: { updated: 1, added: 0, removed: 0 },
+        trust: { updated: 1, reheld: 0, zeroed: 0, unknownFunds: [], ambiguousFundIds: [] },
+      },
+      trustShortSnapshot: { date: '2026-07-19', total: 4_000_000, evalById: { sp500_sbi: 4_000_000 } },
+      provenance: {
+        importedAt: futureImportedAt,
+        sourceAsOf: '2026-07-18T00:00:00.000Z',
+        sourceAsOfKind: 'csv_explicit',
+        sourceAsOfConfidence: 'authoritative',
+        contentFingerprint: 'fnv1a32:12345678',
+        sourceFileName: 'portfolio.csv',
+        fileLastModified: null,
+      },
+      portfolioPolicy: { jpStockMaxRatio: 0.12 },
+      cashAssumptions: {
+        cashDeposits: 0, standbyFunds: 0,
+        manualOverrideEnabled: false, manualUpdatedAt: null,
+      },
+      origin: 'csv',
+    }, nowMs)
+    useAppStore.setState(state => ({
+      holdings: [committedHolding],
+      trust: [committedTrust],
+      system: {
+        ...state.system,
+        status: 'idle',
+        csvLastImportedAt: null,
+        csvImportProvenance: null,
+        csvSyncSummary: null,
+      },
+    }))
+    mockFetchRouter({
+      'holdings.json': {
+        last_updated: '2026-07-20T00:00:00.000Z',
+        source: 'sbi_csv',
+        holdings: [{ code: '7203', eval: 999_999 }],
+      },
+      'trust_master.json': {
+        last_updated: '2026-07-20T00:00:00.000Z',
+        source: 'sbi_csv',
+        funds: [{ id: 'sp500_sbi', eval: 1_234_567 }],
+      },
+    })
+    const nowSpy = vi.spyOn(Date, 'now').mockReturnValue(nowMs)
+
+    await useAppStore.getState().refreshAllData()
+
+    expect(useAppStore.getState().holdings.find(item => item.code === '7203')?.eval).toBe(700_000)
+    expect(useAppStore.getState().trust.find(item => item.id === 'sp500_sbi')?.eval).toBe(4_000_000)
+    expect(useAppStore.getState().system.csvLastImportedAt).toBeNull()
+    nowSpy.mockRestore()
+  })
+
+  it('RA-005: canonical absent keeps the existing valid published snapshot application contract', async () => {
+    useAppStore.setState(state => ({
+      holdings: [makeHolding({ code: '7203', eval: 700_000 })],
+      trust: [makeTrust({ id: 'sp500_sbi', eval: 4_000_000 })],
+      system: {
+        ...state.system,
+        status: 'idle',
+        csvLastImportedAt: null,
+        csvImportProvenance: null,
+      },
+    }))
+    mockFetchRouter({
+      'holdings.json': {
+        last_updated: '2026-07-20T00:00:00.000Z',
+        source: 'sbi_csv',
+        holdings: [{ code: '7203', eval: 999_999 }],
+      },
+      'trust_master.json': {
+        last_updated: '2026-07-20T00:00:00.000Z',
+        source: 'sbi_csv',
+        funds: [{ id: 'sp500_sbi', eval: 1_234_567 }],
+      },
+    })
+
+    await useAppStore.getState().refreshAllData()
+
+    expect(useAppStore.getState().holdings.find(item => item.code === '7203')?.eval).toBe(999_999)
+    expect(useAppStore.getState().trust.find(item => item.id === 'sp500_sbi')?.eval).toBe(1_234_567)
+  })
+
   it('initialize: corrupted envelope refuses partial legacy fallback', async () => {
     store[CSV_IMPORT_GENERATION_KEY] = '{"manifest":{"committed":false}}'
     seedLocalStorage({
