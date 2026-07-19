@@ -46470,3 +46470,65 @@ persistence hardening系列（`portfolio-snapshot-3`、
 ### Next
 
 `RA-003-AUDIT: independent adversarial audit`
+
+## RA-003-AUDIT-FIX: direct failure/retry test closure
+
+### Audit finding and test closure
+
+- Independent audit found 0 production defects and one P2 test-adequacy finding,
+  `RA-003-AUDIT-F001`.
+- The three initialize failure paths (fetch, analysis, persistence) now directly prove both
+  same-operation `initialize()` retry and different-operation `refreshAllData()` retry.
+- The three refresh failure paths (fetch, analysis, persistence) now directly prove both
+  same-operation `refreshAllData()` retry and different-operation `initialize()` retry.
+- Every direct load-action retry captures the pre-retry counters, switches to a dedicated
+  deferred load mock, proves the public action increments the load counter while pending,
+  resolves that exact retry mock, then proves analysis and persistence counters advance and the
+  normal `system.status = success` contract is reached.
+- Retry diagnostics are cleared immediately before entry and remain free of coordinator-busy
+  warnings. A subsequent different public operation also starts and completes through the same
+  direct evidence path.
+- The synchronous snapshot subscriber reentry test now directly retries initialize, refresh,
+  CSV, and snapshot after the outer operation completes. Initialize/refresh increment load and
+  analysis counters; CSV starts FileReader and returns a code other than `IMPORT_IN_PROGRESS`;
+  snapshot reads canonical storage and returns a code other than `SNAPSHOT_IMPORT_BLOCKED`.
+- Pending initialize with `system.status = success` and pending refresh with
+  `system.status = idle` each continue to block a second public action at coordinator entry with
+  blocked side effect 0.
+- Retry evidence depends on public-action counters, resolved retry mocks, normal action paths,
+  and non-busy structured results. It does not use coordinator helper reacquire as retry proof,
+  and it does not use status-only assertions as success proof.
+- Existing direct 16-operation matrix and all original 45 coordinator tests remain. Two status
+  variant tests were added (47 coordinator tests total); seven existing tests were strengthened.
+
+### Scope and regression
+
+- Production changes: 0.
+- Existing coordinator contract changes: 0.
+- CSV/snapshot transaction, provenance, canonical CAS, ownership, rollback,
+  write-then-throw, third-party bytes, snapshot overwrite policy, schema v5, and identity v2
+  changes: 0.
+- Test implementation file: `src/store/useAppStore.operationCoordinator.test.ts` only.
+
+### Verification
+
+- UTC targeted: 8 files / 288 tests / skipped 0 — GREEN.
+- Asia/Tokyo targeted: 8 files / 288 tests / skipped 0 — GREEN.
+- UTC full unit: 53 files / 1363 tests / skipped 0 — GREEN.
+- Asia/Tokyo full unit: 53 files / 1363 tests / skipped 0 — GREEN.
+- `npx tsc --noEmit`: GREEN.
+- `npm run build`: GREEN; known 500 kB chunk warning only.
+- `git diff --check`: GREEN.
+- Completed verification at 2026-07-19T00:13:14Z / 2026-07-19T09:13:14+09:00.
+- main remains not updated.
+
+### Status
+
+- RA-003 implementation: **CLOSED**
+- RA-003-AUDIT-F001: **CLOSED**
+- RA-003 independent audit: **RE-AUDIT PENDING**
+- main integration: **PENDING**
+
+### Next
+
+`RA-003-REAUDIT: independent test adequacy closure`
