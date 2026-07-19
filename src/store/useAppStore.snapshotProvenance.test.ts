@@ -367,7 +367,7 @@ describe('T9-A004-R2: portfolio snapshot provenance action contract', () => {
     expect(storageWrites).toBe(0)
   })
 
-  it('a malformed provenance reject releases the action for a valid retry', () => {
+  it('malformed semanticIdentity rejects and releases the action', () => {
     const valid = provenance({
       importedAt: '2026-07-15T12:00:00.000Z',
       sourceAsOf: '2026-07-15T11:00:00.000Z',

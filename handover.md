@@ -46876,3 +46876,84 @@ persistence hardening系列（`portfolio-snapshot-3`、
 ### Next
 
 `RA-005-FINAL-AUDIT: public import and DIRECT closure audit`
+
+## RA-005-FINAL-AUDIT-FIX: field-isolated provenance timestamp DIRECT closure
+
+### Final audit finding and closure
+
+- Final audit verdict: **BLOCKED**.
+- P2 `RA-005-FINAL-AUDIT-F001`: the public-import future
+  `csvImportProvenance.importedAt` test was rejected by the earlier future `csvImportedAt`
+  precheck, and the test described as malformed provenance damaged `semanticIdentity` rather than
+  a timestamp. Runtime P0/P1 findings: 0.
+- Production changes: 0. Parser, validation order, error codes, schemas, snapshot/canonical
+  identity, checksum, CAS, ownership, rollback, workflows, and data are unchanged.
+- The v3 parser invariant `csvImportedAt === csvImportProvenance.importedAt` prevents a real raw
+  snapshot from isolating valid-now `csvImportedAt` from future provenance `importedAt`. The
+  production parser was not weakened.
+- New module-isolated `src/store/useAppStore.snapshotMetadataValidationDirect.test.ts` resets the
+  module graph, preserves every original `portfolioSnapshotTransfer` export, overrides only the
+  parser with a per-test controllable mock, and dynamically imports `useAppStore` afterward.
+  Cleanup resets modules, removes all three module mocks, restores spies, and unstubs globals.
+- The mocked parsed snapshot keeps `csvImportedAt` exactly at `analysisNow`, with only provenance
+  `importedAt` future by 1 ms. Public `importPortfolioSnapshot(raw)` then reaches the real
+  production `validateCsvImportProvenanceForRestore()` path and returns exact
+  `INVALID_SNAPSHOT_PROVENANCE` with the provenance future/malformed timestamp error, explicitly
+  not the `csvImportedAt` error.
+- A second post-parse public-action case isolates malformed provenance `importedAt`. A real raw v3
+  case independently mutates only provenance `sourceAsOf` to `not-a-timestamp` after generating a
+  valid identity and proves the real parser returns `INVALID_SNAPSHOT_PROVENANCE` with the
+  provenance-invalid error before generation identity comparison.
+- The existing malformed provenance test is retained and renamed as the distinct
+  `malformed semanticIdentity rejects and releases the action` identity regression. Existing
+  tests deleted: 0; assertions weakened: 0; skip/todo added: 0.
+- The existing future `csvImportedAt` / null provenance DIRECT contract remains unchanged. The
+  bound future provenance case is accurately labelled as rejection by the `csvImportedAt`
+  precheck. The exact-now importedAt / future authoritative `sourceAsOf` DIRECT contract remains
+  unchanged.
+
+### Zero-side-effect and coordinator evidence
+
+- Both post-parse timestamp cases directly assert canonical and legacy get/set/remove 0,
+  canonical key absent, and rejected future/malformed bytes 0.
+- Analysis and tracker staging counters remain 0. Canonical read 0 also proves no progression to
+  canonical identity comparison or monotonicity.
+- Zustand root, holdings, trust, portfolio policy, cash assumptions, and system references remain
+  identical. `csvLastImportedAt`, `csvImportProvenance`, and `csvSyncSummary` remain null.
+- Subscriber notification count and intermediate observed-state count are 0. Immediate T9 input
+  serialization contains neither rejected timestamp.
+- After each rejection, the same public action immediately accepts the next valid parsed snapshot
+  as `SUCCESS`, not `SNAPSHOT_IMPORT_BLOCKED`; analysis/tracker and canonical persistence then run.
+  This directly proves operation-ticket release and valid retry.
+- Mutation evidence: making public provenance validation always pass made the isolated future
+  importedAt test RED; allowing malformed importedAt past that validation made the malformed test
+  RED; disabling only the `csvImportedAt` precheck left the isolated future provenance test GREEN.
+  Every mutation was reverted, and final production diff is 0.
+
+### Scope and verification
+
+- Test files: `src/store/useAppStore.snapshotFutureMetadata.test.ts`,
+  `src/store/useAppStore.snapshotProvenance.test.ts`, and new
+  `src/store/useAppStore.snapshotMetadataValidationDirect.test.ts`.
+- Documentation: `handover.md` only after all verification was GREEN.
+- UTC targeted: **8 files / 377 tests / skipped 0 — PASS**.
+- Asia/Tokyo targeted: **8 files / 377 tests / skipped 0 — PASS**.
+- UTC full unit: **56 files / 1430 tests / skipped 0 — PASS**.
+- Asia/Tokyo full unit: **56 files / 1430 tests / skipped 0 — PASS**.
+- `npx tsc --noEmit`: PASS.
+- `npm run build`: PASS (125 modules; known 500 kB chunk warning only).
+- `git diff --check`: PASS.
+- Completed verification at 2026-07-19T05:29:22Z / 2026-07-19T14:29:22+09:00.
+- Main is not updated by RA-005-FINAL-AUDIT-FIX.
+
+### Status
+
+- RA-005-AUDIT-F001/F002: **CLOSED**.
+- RA-005-REAUDIT-F001 through RA-005-REAUDIT-F004: **CLOSED**.
+- RA-005-FINAL-AUDIT-F001: **CLOSED**.
+- RA-005 final confirmation audit: **PENDING**.
+- main integration: **PENDING**.
+
+### Next
+
+`RA-005-FINAL-CONFIRM: test adequacy closure and integration readiness`

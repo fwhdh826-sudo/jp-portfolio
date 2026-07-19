@@ -87,6 +87,15 @@ function snapshotRaw(input: {
   return JSON.stringify(payload)
 }
 
+function malformedSourceAsOfRaw(): string {
+  const payload = JSON.parse(snapshotRaw({
+    csvImportedAt: NOW_ISO,
+    csvImportProvenance: provenance(),
+  }))
+  payload.csvImportProvenance.sourceAsOf = 'not-a-timestamp'
+  return JSON.stringify(payload)
+}
+
 describe('RA-005-REAUDIT-FIX: public snapshot future metadata boundary', () => {
   const storage: Record<string, string> = {}
   const storageCounts = {
@@ -173,7 +182,7 @@ describe('RA-005-REAUDIT-FIX: public snapshot future metadata boundary', () => {
       expectedError: 'snapshotのCSV取込操作時刻が現在時刻より未来または不正なため、取込を中断しました。',
     },
     {
-      label: 'provenance.importedAt is analysisNow + 1ms',
+      label: 'bound future provenance.importedAt is rejected by csvImportedAt precheck',
       raw: () => snapshotRaw({
         csvImportedAt: FUTURE_ISO,
         csvImportProvenance: provenance({ importedAt: FUTURE_ISO }),
@@ -187,6 +196,11 @@ describe('RA-005-REAUDIT-FIX: public snapshot future metadata boundary', () => {
         csvImportProvenance: provenance({ sourceAsOf: FUTURE_ISO }),
       }),
       expectedError: 'snapshotのCSV provenanceに現在時刻より未来または不正な日時が含まれるため、取込を中断しました。',
+    },
+    {
+      label: 'malformed provenance.sourceAsOf is rejected by the real parser boundary',
+      raw: malformedSourceAsOfRaw,
+      expectedError: 'snapshotのCSV provenanceが不正です。',
     },
   ]
 
