@@ -47404,3 +47404,68 @@ persistence hardening系列（`portfolio-snapshot-3`、
 ### Next
 
 `RA-006-FINAL-CONFIRM: DIRECT closure and integration readiness`
+
+## RA-006-FINAL-CONFIRM: integration readiness
+
+### Verdict and findings
+
+- Final confirmation verdict: **READY**。
+- Findings: P0 **0** / P1 **0** / P2 **0** / P3 **0**。
+- `RA-006-AUDIT-F001`〜`RA-006-AUDIT-F004`: **CLOSED**。
+- `RA-006-REAUDIT-F001`〜`RA-006-REAUDIT-F004`: **CLOSED**。
+
+### Final confirmation evidence
+
+- Manual actions covered: **6** (`updateHolding`、`updateTrust`、`setPortfolioPolicy`、
+  `setCashAssumptions`、`clearCashAssumptionsOverride`、`importCashAssumptions`)。
+- 6 actionsはshared coordinator `runManualPortfolioMutation()`を使用し、candidate inputとanalysis結果を
+  store外でstagingする。persistence成功後だけcomplete generationをpublishする
+  **persistence-before-publish** 契約を維持する。
+- Successful subscriber notification: **exactly 1**。Intermediate generation exposure: **0**。
+- Legacy partial generation: **0**。canonical/published identity mismatch: **0**。
+- RA-005が失効・future・malformed metadataをnull化した後のmetadata revival: **0**。
+- Snapshot cache callback ordering: **PASS**。final callback開始前にcacheをnull化し、未適用publish
+  failureだけprevious cacheを復旧する。
+- Actual operation phases: **DIRECT**。initialize / refresh pending、CSV READING / ANALYZING /
+  PREPARED、snapshot ANALYZINGのpublic operation evidenceでmanual action拒否とowner維持を確認した。
+- Adequacy classification: **39 DIRECT** / INDIRECT **0** / MISSING **0** /
+  CONTRADICTORY **0**。
+- Test-only seamはmodule-local、default disabled、observerはread-only、publish hookはone-shotで、
+  reset APIを含めtest filesだけが使用する。`AppActions` exposure: **0**。Application import: **0**。
+- Production bundleのtest-seam names: **0**。Artificial pre-apply pathはhook default nullのため
+  通常runtimeから到達不能。
+- Cross-tab coordination（Web Locks / BroadcastChannel / storage event / cross-tab CAS・rollback・
+  TOCTOU）は未実装のまま。Investment logic変更: **0**。
+
+### Validation
+
+- Targeted UTC: **6 files / 336 tests / skipped 0 — PASS**。
+- Targeted Asia/Tokyo: **6 files / 336 tests / skipped 0 — PASS**。
+- Full UTC: **59 files / 1572 tests / skipped 0 — PASS**。
+- Full Asia/Tokyo: **59 files / 1572 tests / skipped 0 — PASS**。
+- UTC/JST差: **0**。Failures: **0**。Skipped: **0**。
+- `npx tsc --noEmit`: **PASS**。
+- `npm run build`: **PASS**（125 modules、known 500 kB chunk warning only）。
+- `git diff --check`: **PASS**。
+- Node `--localstorage-file` warningは既知warningでfailureではない。
+
+### Integration readiness
+
+- Verified `origin/main`: `f7425fbbaf6f5ec1bc33e3ca92562cf9f19b5e94`。
+- `origin/main`はRA-006の3 implementation/audit commitsのancestorであり、このreadiness docs commitの
+  ancestorになる見込み。main integrationは外部operatorによる明示的fast-forward操作待ち。
+- Production追加変更: **0**。Test追加変更: **0**。Workflow / data / public data変更: **0**。
+- このfinal confirmationではmain checkout、main更新、merge、rebase、cherry-pickを行っていない。
+
+### Status
+
+- RA-006 implementation: **CLOSED**。
+- RA-006 independent audit: **CLOSED**。
+- RA-006 re-audit: **CLOSED**。
+- RA-006 final confirmation: **CLOSED**。
+- RA-006 main integration: **PENDING**。
+- RA-006 formal closeout: **PENDING**。
+
+### Next
+
+`RA-006-MAIN-FF-1: explicit operator fast-forward and deployment verification`
