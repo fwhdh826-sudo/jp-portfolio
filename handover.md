@@ -46998,3 +46998,80 @@ persistence hardening系列（`portfolio-snapshot-3`、
 - `origin/main` is an ancestor of the verified RA-005 HEAD; fast-forward main integration is
   possible.
 - Main integration: **PENDING**.
+
+## RA-005-INTEGRATE: main deployment closeout
+
+### Integration commits
+
+- RA-005 implementation/fix commits:
+  - `3fd0721debddd107c4df057bf3a945faeb6fee94` — decouple CSV metadata TTL from
+    save time.
+  - `76b3605d9261c08f611c5f574564d6322214d4e0` — reject future CSV metadata on
+    restore.
+  - `78dd28234b709273eebdceb4b5efb1de8a8a42d2` — reject future metadata during
+    snapshot import.
+  - `bcdb5b3b2bcd25d45adce401cbbff303ea0fb59f` — prove snapshot provenance
+    timestamp rejection.
+- Readiness documentation commit: `6d1e9d603b3eefb929512629cda309fec78b15a3`.
+- First main integration SHA: `6d1e9d603b3eefb929512629cda309fec78b15a3`.
+
+### Final confirmation evidence
+
+- Findings P0 / P1 / P2 / P3: **0 / 0 / 0 / 0**; all RA-005 findings are
+  **CLOSED**.
+- UTC targeted: **8 files / 377 tests / skipped 0 — PASS**.
+- Asia/Tokyo targeted: **8 files / 377 tests / skipped 0 — PASS**.
+- UTC full unit: **56 files / 1430 tests / skipped 0 — PASS**.
+- Asia/Tokyo full unit: **56 files / 1430 tests / skipped 0 — PASS**.
+- `npx tsc --noEmit`: PASS.
+- `npm run build`: PASS (125 modules; known 500 kB chunk warning only).
+- `git diff --check`: PASS.
+
+### First main Actions / Pages verification
+
+- Workflow: `Deploy to GitHub Pages`.
+- Run ID / event / branch / head SHA: `29675503663` / `push` / `main` /
+  `6d1e9d603b3eefb929512629cda309fec78b15a3`.
+- Workflow conclusion: success.
+- Build job `88162099764`: success. Checkout, Node setup, `npm ci`, unit tests,
+  production build, and artifact upload all succeeded.
+- Deploy job `88162136215`: success. Deploy to GitHub Pages succeeded.
+- Cancelled / skipped / failure: 0.
+- Check-run annotations: build 0 / deploy 0.
+- Pages deployment ID `5508268142`: environment `github-pages`, state success,
+  SHA `6d1e9d603b3eefb929512629cda309fec78b15a3`.
+- Project root: HTTP 200.
+- Cache-bypassed `index.html`: HTTP 200.
+- HTML shell: title `JP株OS V10`, `#root`, and `/jp-portfolio/` asset base confirmed.
+- Main JS `/jp-portfolio/assets/index-B_nXMO0p.js`: HTTP 200.
+- Main CSS `/jp-portfolio/assets/index-CiHz3Gz-.css`: HTTP 200.
+- Asset 404: 0.
+- Deployed JS: 665569 bytes, SHA-256
+  `5522ca8aad91a91904f0b0efa9c78fff45ec4bbd5ee088de1faa192e63b8ba3c`, byte-
+  identical to the local verified build.
+- Deployed CSS: 67089 bytes, SHA-256
+  `239584bd0a6557b49970617b9178c1d05a4de11a1c44cf0faba6e2ec693e60cc`, byte-
+  identical to the local verified build.
+- In-app Browser backend was unavailable, so visual rendering and live console smoke were not
+  performed. Actions, Pages deployment, HTML shell, asset HTTP 200, and byte/SHA equality were
+  used as the permitted substitute. No real-user localStorage was accessed or changed.
+
+### Integration scope
+
+- Additional production changes during integration: 0.
+- Additional test changes during integration: 0.
+- Workflow changes during integration: 0.
+
+### Formal status
+
+- RA-005 implementation: **CLOSED**.
+- RA-005 independent audit: **CLOSED**.
+- RA-005 final confirmation: **CLOSED**.
+- RA-005 main integration: **CLOSED**.
+- RA-005: **CLOSED**.
+
+### Residual and next
+
+- RA-005 blockers: 0.
+- Cross-tab coordination remains deferred to a later ticket.
+- Next: `RA-006: residual identity and subscriber assertions / manual mutation operations`.
