@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-07-19T09:58:32.705568+09:00",
-  "sourceUpdatedAt": "2026-07-19T00:38:56+00:00",
+  "updatedAt": "2026-07-19T21:11:45.238542+09:00",
+  "sourceUpdatedAt": "2026-07-19T11:39:04+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -32,25 +32,13 @@
       "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 3,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Charting the Global Economy: US CPI Cools, China Growth Slows",
-      "topPositiveTitle": "Charting the Global Economy: US CPI Cools, China Growth Slows",
+      "topNegativeTitle": "Vanishing CLO Profits Are Sparking Infighting: Credit Weekly",
+      "topPositiveTitle": "Vanishing CLO Profits Are Sparking Infighting: Credit Weekly",
       "items": [
-        {
-          "title": "Charting the Global Economy: US CPI Cools, China Growth Slows",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-18T09:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-18/charting-the-global-economy-us-cpi-cools-china-growth-slows",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
         {
           "title": "Vanishing CLO Profits Are Sparking Infighting: Credit Weekly",
           "source": "Bloomberg Markets",
@@ -78,29 +66,16 @@
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Not Done Yet Refunding Tariffs or Realizing AI’s Promise",
-      "topPositiveTitle": "Not Done Yet Refunding Tariffs or Realizing AI’s Promise",
-      "items": [
-        {
-          "title": "Not Done Yet Refunding Tariffs or Realizing AI’s Promise",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-18T12:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-07-18/not-done-yet-refunding-tariffs-or-realizing-ai-s-promise",
-          "tags": [
-            "market",
-            "us_growth"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "global_broad": {
       "avgSentiment": 0.0,
@@ -167,9 +142,9 @@
       "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 2,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 2,
+      "itemCount": 3,
       "isStale": false,
       "topNegativeTitle": "Chinese Trucks Pose New Peril in Mexico’s US Tariff Relief Bid",
       "topPositiveTitle": "Chinese Trucks Pose New Peril in Mexico’s US Tariff Relief Bid",
@@ -182,6 +157,20 @@
           "publishedAt": "2026-07-18T13:00:02+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-07-18/chinese-trucks-pose-new-peril-in-mexico-s-us-tariff-relief-bid",
           "tags": [
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Oil’s Battered Shock Absorbers Risk Price Spike as War Returns",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-18T12:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-18/oil-s-battered-shock-absorbers-risk-price-spike-as-war-returns",
+          "tags": [
+            "commodity",
+            "geopolitical",
             "macro_risk",
             "market"
           ]
@@ -210,9 +199,21 @@
       "sourceCount": 2,
       "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "共産 田村委員長“政府は早急に追加の物価高対策を”",
-      "topPositiveTitle": "共産 田村委員長“政府は早急に追加の物価高対策を”",
+      "topNegativeTitle": "South Korea Details Plan for Foreigners to Trade Won Easier",
+      "topPositiveTitle": "South Korea Details Plan for Foreigners to Trade Won Easier",
       "items": [
+        {
+          "title": "South Korea Details Plan for Foreigners to Trade Won Easier",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-19T03:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-19/south-korea-to-ease-fx-rules-for-foreigners-to-trade-won-easier",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        },
         {
           "title": "共産 田村委員長“政府は早急に追加の物価高対策を”",
           "source": "NHK 経済",
@@ -225,18 +226,6 @@
             "market"
           ],
           "titleJa": "共産 田村委員長“政府は早急に追加の物価高対策を”"
-        },
-        {
-          "title": "RBI Currency Printer Seeks Bids for Polymer Banknote Material",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-18T06:35:43+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-18/rbi-currency-printer-seeks-bids-for-polymer-banknote-material",
-          "tags": [
-            "fx",
-            "market"
-          ]
         }
       ]
     },
@@ -269,13 +258,40 @@
       "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 2,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 2,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Kuwait Energy Infrastructure Hit During Intense Iran Attacks",
-      "topPositiveTitle": "Kuwait Energy Infrastructure Hit During Intense Iran Attacks",
+      "topNegativeTitle": "Caspian Pipeline Consortium Halts Loadings After Drone Strike",
+      "topPositiveTitle": "Caspian Pipeline Consortium Halts Loadings After Drone Strike",
       "items": [
+        {
+          "title": "Caspian Pipeline Consortium Halts Loadings After Drone Strike",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-19T08:03:40+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-19/caspian-pipeline-consortium-halts-loadings-after-drone-strike",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Oil’s Battered Shock Absorbers Risk Price Spike as War Returns",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-18T12:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-18/oil-s-battered-shock-absorbers-risk-price-spike-as-war-returns",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
         {
           "title": "Kuwait Energy Infrastructure Hit During Intense Iran Attacks",
           "source": "Bloomberg Markets",
@@ -306,16 +322,55 @@
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.083,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 3,
-      "sourceCount": 3,
-      "itemCount": 4,
+      "positiveCount": 0,
+      "neutralCount": 6,
+      "sourceCount": 2,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Zelenskyy May Fire Commander Syrskyi After Protests, FT Reports",
-      "topPositiveTitle": "How Regional Chaos Aids Turkey’s Strategic Strength: New Economy",
+      "topNegativeTitle": "Caspian Pipeline Consortium Halts Loadings After Drone Strike",
+      "topPositiveTitle": "Caspian Pipeline Consortium Halts Loadings After Drone Strike",
       "items": [
+        {
+          "title": "Caspian Pipeline Consortium Halts Loadings After Drone Strike",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-19T08:03:40+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-19/caspian-pipeline-consortium-halts-loadings-after-drone-strike",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "US, Iran Launch Fresh Strikes After Two Troops Die in Jordan",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-19T06:58:45+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-19/us-iran-trade-more-attacks-after-two-troops-killed-in-jordan",
+          "tags": [
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Oil’s Battered Shock Absorbers Risk Price Spike as War Returns",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-18T12:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-18/oil-s-battered-shock-absorbers-risk-price-spike-as-war-returns",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
         {
           "title": "Zelenskyy May Fire Commander Syrskyi After Protests, FT Reports",
           "source": "Bloomberg Markets",
@@ -339,31 +394,6 @@
             "commodity",
             "geopolitical",
             "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "バーブルマンデブ海峡封鎖の報道 赤澤経産相 “深刻に注視”",
-          "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-17T06:45:08+00:00",
-          "url": "https://news.web.nhk/newsweb/na/na-k10015179211000",
-          "tags": [
-            "geopolitical",
-            "market"
-          ],
-          "titleJa": "バーブルマンデブ海峡封鎖の報道 赤澤経産相 “深刻に注視”"
-        },
-        {
-          "title": "How Regional Chaos Aids Turkey’s Strategic Strength: New Economy",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-07-18T10:45:01+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-07-18/how-regional-chaos-aids-turkey-s-strategic-strength-new-economy",
-          "tags": [
-            "geopolitical",
             "market"
           ]
         }
