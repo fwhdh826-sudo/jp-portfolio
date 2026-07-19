@@ -47547,3 +47547,91 @@ persistence hardening系列（`portfolio-snapshot-3`、
 
 This docs-only closeout commit itself remains pending an external operator fast-forward to main.
 It is prepared and pushed only on `v13.3-dev`; this ticket does not push to main.
+
+## RA-007-A: Web Lock adapter foundation
+
+### Design and implementation
+
+- Design audit: **READY_FOR_IMPLEMENTATION**; the adapter foundation is implemented as new,
+  unconnected modules only.
+- Lock name: `jp-portfolio:portfolio-generation:v1`.
+- Lock mode: `exclusive`; FIFO ordering is provided by the Web Locks queue and directly modeled
+  by the deterministic fake.
+- Default pending timeout: **15,000ms**; finite positive custom timeouts and timer functions are
+  injectable. Invalid timeouts fail at adapter creation with `RangeError`.
+- Request options contain `mode` and the internal timeout/abort `signal` only. `ifAvailable`: **0**;
+  `steal`: **0**; manual unlock API: **0**.
+- Browser capability detection is lazy. Module import reads `navigator`, `navigator.locks`, and
+  `globalThis.isSecureContext` **0** times and is safe under SSR/Node.
+- Navigator absent, insecure context, locks absent, and request function absent classify as
+  `WEB_LOCK_UNAVAILABLE`. Throwing locks access, synchronous request invocation failure, and an
+  unexpected pre-callback request rejection classify as `WEB_LOCK_REQUEST_FAILED`.
+- Pending timeout aborts the internal request, removes the queued waiter, returns
+  `WEB_LOCK_TIMEOUT`, and cleans the timer/external listener. Pending external abort forwards to
+  the internal controller and returns `WEB_LOCK_ABORTED`; an already-aborted signal short-circuits
+  before request creation.
+- Timeout versus external abort and timeout versus grant are first-wins with single settlement.
+  Grant clears the timer and external listener before starting the callback. External abort after
+  grant does not interrupt the callback.
+- The callback starts only after grant, runs at most once, and is awaited while the lock remains
+  held. Synchronous throw and asynchronous rejection propagate with the same error identity and
+  are never converted to `WEB_LOCK_REQUEST_FAILED`. Completion or failure releases automatically,
+  and the next waiter can acquire.
+
+### Taxonomy and deterministic fake
+
+- Operations: `initialize`, `refreshAllData`, `importCsv`, `importPortfolioSnapshot`,
+  `updateHolding`, `updateTrust`, `setPortfolioPolicy`, `setCashAssumptions`,
+  `clearCashAssumptionsOverride`, and `importCashAssumptions`.
+- Coordination codes: `LOCAL_OPERATION_BUSY`, `WEB_LOCK_UNAVAILABLE`, `WEB_LOCK_TIMEOUT`,
+  `WEB_LOCK_ABORTED`, `WEB_LOCK_REQUEST_FAILED`, `CROSS_TAB_STATE_STALE`, and
+  `PORTFOLIO_GENERATION_CONFLICT`. `WEB_LOCK_BUSY` is not defined.
+- Retryability is centralized: local busy / timeout / aborted / request failed are retryable;
+  unavailable / stale / generation conflict are not retryable. Structured failures contain only
+  `ok`, `operation`, `code`, and `retryable`.
+- `FakeLockManager` supports named exclusive locks, FIFO pending queues, deterministic
+  `grantNext(name)`, held and pending queries, pending `AbortSignal`, aborted waiter removal,
+  callback resolve/reject, automatic release, next-waiter grant, independent lock names, and a
+  sanitized event log (`requested`, `queued`, `granted`, `callback_resolved`,
+  `callback_rejected`, `released`, `aborted`). Production imports of the fake: **0**.
+- FIFO evidence: three same-name adapter waiters completed in order `1, 2, 3` with maximum
+  simultaneous callbacks **1**. Separate lock names were held independently. Event order directly
+  proves callback completion/rejection precedes automatic release.
+
+### Mutation-catching and validation
+
+- Mutation-catching RED was directly observed for all six required mutations: `exclusive` to
+  `shared`; request signal removal; grant-time timer cleanup removal; callback rejection conversion
+  to `WEB_LOCK_REQUEST_FAILED`; FIFO to LIFO; and aborted waiter retention. Every mutation was
+  restored by an inverse patch before final validation.
+- Adapter/taxonomy targeted UTC: **2 files / 60 tests / skipped 0 — PASS**.
+- Adapter/taxonomy targeted Asia/Tokyo: **2 files / 60 tests / skipped 0 — PASS**.
+- RA-006 regression UTC: **6 files / 336 tests / skipped 0 — PASS**.
+- RA-006 regression Asia/Tokyo: **6 files / 336 tests / skipped 0 — PASS**.
+- Full UTC: **61 files / 1632 tests / skipped 0 — PASS**.
+- Full Asia/Tokyo: **61 files / 1632 tests / skipped 0 — PASS**.
+- UTC/JST file and test count difference: **0**; unexpected skipped: **0**.
+- `npx tsc --noEmit`: **PASS**.
+- `npm run build`: **PASS**; 125 modules and the known 500kB chunk warning only.
+- `git diff --check`: **PASS**.
+- Bundle isolation search for the lock name, exported constant, timeout code, and fake under
+  `dist`: **0 matches**.
+- Store connection: **0**; runtime Web Lock request from the production app: **0**; production
+  caller changes: **0**.
+- `useAppStore.ts` diff: **0**; `persist.ts` diff: **0**; AppActions changes: **0**; UI changes:
+  **0**; existing action signatures, behavior, and call sites changed: **0**.
+- Workflow, data/public data, dependency, schema, identity, CSV/snapshot parser, investment logic,
+  BroadcastChannel, storage event, hydration, and CAS changes: **0**.
+- Completed validation at 2026-07-19T14:18:47Z / 2026-07-19T23:18:47+09:00.
+- Main is not updated by RA-007-A.
+
+### Status
+
+- RA-007 design audit: **CLOSED**.
+- RA-007-A adapter foundation: **CLOSED**.
+- RA-007-B async public contract migration: **PENDING**.
+- Web Lock production serialization: **NOT YET ACTIVE**.
+
+### Next
+
+`RA-007-B: async portfolio operation results and caller migration`
