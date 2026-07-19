@@ -1,4 +1,9 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { createImmediatePortfolioGenerationLockAdapterForTest } from './testing/portfolioGenerationLockTestAdapters'
+import { resetPortfolioGenerationLockAdapterForTest, setPortfolioGenerationLockAdapterForTest } from './useAppStore'
+
+beforeEach(() => setPortfolioGenerationLockAdapterForTest(createImmediatePortfolioGenerationLockAdapterForTest()))
+afterEach(() => resetPortfolioGenerationLockAdapterForTest())
 import type { CsvImportProvenance, Holding } from '../types'
 import { CSV_IMPORT_GENERATION_KEY, persistCsvImportTransaction } from './persist'
 import { useAppStore } from './useAppStore'
@@ -328,7 +333,7 @@ describe('T9-A004-R2: portfolio snapshot provenance action contract', () => {
     })
     const result = await useAppStore.getState().importPortfolioSnapshot(v3Snapshot(incoming))
 
-    expect(result).toMatchObject({ ok: false, code: 'SNAPSHOT_OVERWRITE_BLOCKED' })
+    expect(result).toMatchObject({ ok: false, code: 'CROSS_TAB_STATE_STALE', retryable: false })
     const canonical = JSON.parse(storage[CSV_IMPORT_GENERATION_KEY])
     expect(canonical.payload.holdings[0].eval).toBe(200_000)
     expect(canonical.payload.provenance).toEqual(current)

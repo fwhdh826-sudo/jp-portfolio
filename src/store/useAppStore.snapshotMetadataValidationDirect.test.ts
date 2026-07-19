@@ -1,4 +1,9 @@
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { createImmediatePortfolioGenerationLockAdapterForTest } from './testing/portfolioGenerationLockTestAdapters'
+import { resetPortfolioGenerationLockAdapterForTest, setPortfolioGenerationLockAdapterForTest } from './useAppStore'
+
+beforeEach(() => setPortfolioGenerationLockAdapterForTest(createImmediatePortfolioGenerationLockAdapterForTest()))
+afterEach(() => resetPortfolioGenerationLockAdapterForTest())
 import type { CsvImportProvenance } from '../types'
 import type { PortfolioSnapshotData } from '../utils/portfolioSnapshotTransfer'
 
@@ -111,7 +116,10 @@ async function loadIsolatedHarness(rejectedSnapshot: PortfolioSnapshotData) {
     },
   })
 
-  const { useAppStore } = await import('./useAppStore')
+  const { useAppStore, setPortfolioGenerationLockAdapterForTest } = await import('./useAppStore')
+  const { createImmediatePortfolioGenerationLockAdapterForTest } =
+    await import('./testing/portfolioGenerationLockTestAdapters')
+  setPortfolioGenerationLockAdapterForTest(createImmediatePortfolioGenerationLockAdapterForTest())
   useAppStore.setState(state => ({
     holdings: [],
     trust: [],

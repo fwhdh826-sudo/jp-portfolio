@@ -62,9 +62,19 @@ export async function executeSettingsRefreshFlow(
 function coordinationFailureMessage(code: string): string {
   switch (code) {
     case 'LOCAL_OPERATION_BUSY':
-      return '別の処理が進行中です。完了後に再試行してください。'
+      return '別のポートフォリオ処理が実行中です。完了後に再試行してください。'
+    case 'WEB_LOCK_UNAVAILABLE':
+      return 'この環境では安全な複数タブ同期を利用できません。対応ブラウザのHTTPS環境で再読み込みしてください。'
+    case 'WEB_LOCK_TIMEOUT':
+      return '別タブの処理待機がタイムアウトしました。別タブを確認して再試行してください。'
+    case 'WEB_LOCK_ABORTED':
+      return '処理開始前に操作が中断されました。再試行してください。'
+    case 'WEB_LOCK_REQUEST_FAILED':
+      return '安全な排他制御を開始できませんでした。再読み込み後に再試行してください。'
+    case 'CROSS_TAB_STATE_STALE':
+      return '別タブで更新された状態を検出しました。画面を再読み込みしてください。'
     case 'PORTFOLIO_GENERATION_CONFLICT':
-      return '保存世代が競合しました。画面を再読み込みしてから再試行してください。'
+      return '保存世代の競合を検出しました。画面を再読み込みしてください。'
     default:
       return '処理を安全に完了できませんでした。再読み込み後に再試行してください。'
   }

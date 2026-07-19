@@ -129,6 +129,32 @@ describe('RA-007-B1 T9 async portfolio actions', () => {
     expect(feedback.message).not.toMatch(/stack|cause|sentinel/i)
   })
 
+  it.each([
+    ['WEB_LOCK_UNAVAILABLE', 'この環境では安全な複数タブ同期を利用できません。対応ブラウザのHTTPS環境で再読み込みしてください。'],
+    ['WEB_LOCK_TIMEOUT', '別タブの処理待機がタイムアウトしました。別タブを確認して再試行してください。'],
+    ['WEB_LOCK_ABORTED', '処理開始前に操作が中断されました。再試行してください。'],
+    ['WEB_LOCK_REQUEST_FAILED', '安全な排他制御を開始できませんでした。再読み込み後に再試行してください。'],
+    ['CROSS_TAB_STATE_STALE', '別タブで更新された状態を検出しました。画面を再読み込みしてください。'],
+    ['PORTFOLIO_GENERATION_CONFLICT', '保存世代の競合を検出しました。画面を再読み込みしてください。'],
+  ] as const)('%s uses the exact shared manual/snapshot coordination message', (code, message) => {
+    const manual: ManualMutationResult = {
+      ok: false,
+      operation: 'setPortfolioPolicy',
+      code,
+      retryable: code === 'WEB_LOCK_UNAVAILABLE' || code === 'CROSS_TAB_STATE_STALE' ||
+        code === 'PORTFOLIO_GENERATION_CONFLICT' ? false : true,
+    }
+    const snapshot: PortfolioSnapshotImportResult = {
+      ok: false,
+      operation: 'importPortfolioSnapshot',
+      code,
+      retryable: manual.retryable,
+    }
+    expect(manualMutationFeedback(manual)).toEqual({ tone: 'error', message })
+    expect(snapshotImportFeedback(snapshot)).toEqual({ tone: 'error', message })
+    expect(message).not.toMatch(/stack|cause|sentinel/i)
+  })
+
   it('success and failure both release pending, including rejected raw exceptions', async () => {
     const pending: PendingPortfolioOperation[] = []
     const feedback: Array<PortfolioOperationFeedback | null> = []

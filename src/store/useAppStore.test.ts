@@ -3,6 +3,11 @@
 // 万が一BUYタイトルのCommitteeActionが渡された場合でも、officialDecision変換層で
 // 二重にBUYをBLOCKED化することを確認する。SELL/HOLD等の非BUYは対象外。
 import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest'
+import { createImmediatePortfolioGenerationLockAdapterForTest } from './testing/portfolioGenerationLockTestAdapters'
+import { resetPortfolioGenerationLockAdapterForTest, setPortfolioGenerationLockAdapterForTest } from './useAppStore'
+
+beforeEach(() => setPortfolioGenerationLockAdapterForTest(createImmediatePortfolioGenerationLockAdapterForTest()))
+afterEach(() => resetPortfolioGenerationLockAdapterForTest())
 import type { CsvImportProvenance, Holding, Trust } from '../types'
 import { DEFAULT_CASH_ASSUMPTIONS, DEFAULT_PORTFOLIO_POLICY } from '../types'
 import type { CommitteeDecision } from '../domain/analysis/committeeDecision'
@@ -941,9 +946,22 @@ describe('T9-A004-R3-FIX-C: present-invalid canonical manual persistence policy 
   it('explicit removal restores legacy persistence and valid repair restores coordinated canonical persistence', async () => {
     seedInvalidWithLegacy()
     delete storage[CSV_IMPORT_GENERATION_KEY]
+    delete storage.v81_portfolio
+    delete storage.v81_trust
+    delete storage.v13_portfolio_policy
+    delete storage.v13_cash_assumptions
+    delete storage.v10_csv_imported_at
+    delete storage.v13_csv_sync_summary
+    useAppStore.setState({
+      holdings: [makeHolding()],
+      trust: [makeTrust()],
+      portfolioPolicy: { ...DEFAULT_PORTFOLIO_POLICY },
+      cashAssumptions: { ...DEFAULT_CASH_ASSUMPTIONS },
+    })
     writes.length = 0
 
-    await useAppStore.getState().updateHolding('7777', { eval: 130_000 })
+    const holdingResult = await useAppStore.getState().updateHolding('7777', { eval: 130_000 })
+    expect(holdingResult).toMatchObject({ ok: true, code: 'SUCCESS' })
     await useAppStore.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.12 })
     await useAppStore.getState().setCashAssumptions({ cashDeposits: 500, standbyFunds: 600 })
     expect(writes).toEqual(expect.arrayContaining([
@@ -1815,11 +1833,13 @@ describe('useAppStore: localStorageFreshness即時更新（P4.5-A013-T6a）', ()
       portfolioPolicy: null,
       cashAssumptions: null,
     })
+    const before = useAppStore.getState()
     const result = await useAppStore.getState().importPortfolioSnapshot(snapshotJson)
-    expect(result).toMatchObject({ ok: true })
+    expect(result).toMatchObject({ ok: false, code: 'CROSS_TAB_STATE_STALE', retryable: false })
     const state = useAppStore.getState()
-    expect(state.system.localStorageFreshness?.portfolio.isStale).toBe(false)
-    expect(state.system.localStorageFreshness?.trust.isStale).toBe(false)
+    expect(state).toBe(before)
+    expect(state.system.localStorageFreshness?.portfolio.isStale).toBe(true)
+    expect(state.system.localStorageFreshness?.trust.isStale).toBe(true)
     // snapshot importはCSV取込結果として偽装しない（csvSyncSummaryは不変のまま）
     expect(state.system.csvSyncSummary).toBeNull()
   })
@@ -2120,11 +2140,13 @@ describe('useAppStore: importPortfolioSnapshot v2 full-sync（P4.5-A013-T7）', 
       },
     }))
     setTrulyEmptySnapshotGeneration()
+    const before = useAppStore.getState()
     const result = await useAppStore.getState().importPortfolioSnapshot(makeV2Snapshot())
-    expect(result.ok).toBe(true)
+    expect(result).toMatchObject({ ok: false, code: 'CROSS_TAB_STATE_STALE', retryable: false })
+    expect(useAppStore.getState()).toBe(before)
     const freshness = useAppStore.getState().system.localStorageFreshness
-    expect(freshness?.portfolio.isStale).toBe(false)
-    expect(freshness?.trust.isStale).toBe(false)
+    expect(freshness?.portfolio.isStale).toBe(true)
+    expect(freshness?.trust.isStale).toBe(true)
   })
 
   it('csvSyncSummary世代分離: v2 importは古いCSV summaryをsnapshot generationへ持ち越さない', async () => {

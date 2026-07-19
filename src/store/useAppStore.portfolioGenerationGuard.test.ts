@@ -6,6 +6,11 @@
 // 参照。helper単体ではなく必ずstore actionを経由し、fault injectionはlocalStorage
 // mock / zustand subscriberのみで行う（production codeは一切変更しない）。
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { createImmediatePortfolioGenerationLockAdapterForTest } from './testing/portfolioGenerationLockTestAdapters'
+import { resetPortfolioGenerationLockAdapterForTest, setPortfolioGenerationLockAdapterForTest } from './useAppStore'
+
+beforeEach(() => setPortfolioGenerationLockAdapterForTest(createImmediatePortfolioGenerationLockAdapterForTest()))
+afterEach(() => resetPortfolioGenerationLockAdapterForTest())
 import type { CsvImportProvenance } from '../types'
 import { DEFAULT_CASH_ASSUMPTIONS, DEFAULT_PORTFOLIO_POLICY } from '../types'
 import { useAppStore } from './useAppStore'

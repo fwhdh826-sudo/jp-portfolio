@@ -27,17 +27,26 @@ import {
 } from '../services/loadStaticData'
 import {
   acquirePortfolioOperation,
-  createAppStoreInstanceForTest,
+  createAppStoreInstanceForTest as createAppStoreInstanceWithOptionsForTest,
   readLastAppliedSnapshotGenerationForTest,
   releasePortfolioOperation,
+  resetPortfolioGenerationLockAdapterForTest,
   resetPortfolioGenerationTestSeams,
   setLoadPublishBeforeApplyHookForTest,
   setLoadRestoreBeforeReadHookForTest,
   setManualPublishBeforeApplyHookForTest,
   setPortfolioGenerationPhaseObserverForTest,
+  setPortfolioGenerationLockAdapterForTest,
   useAppStore,
   type AppStoreState,
 } from './useAppStore'
+import { createImmediatePortfolioGenerationLockAdapterForTest } from './testing/portfolioGenerationLockTestAdapters'
+
+function createAppStoreInstanceForTest() {
+  return createAppStoreInstanceWithOptionsForTest({
+    portfolioGenerationLock: createImmediatePortfolioGenerationLockAdapterForTest(),
+  })
+}
 
 class TestFileReader {
   onload: ((event: { target: { result: ArrayBuffer } }) => void) | null = null
@@ -158,6 +167,7 @@ function deferredFile() {
 }
 
 beforeEach(() => {
+  setPortfolioGenerationLockAdapterForTest(createImmediatePortfolioGenerationLockAdapterForTest())
   vi.useFakeTimers()
   vi.setSystemTime(FIXED_NOW)
   vi.stubGlobal('FileReader', TestFileReader)
@@ -174,6 +184,7 @@ afterEach(() => {
   expect(leaked, 'default operation ticket leaked').not.toBeNull()
   if (leaked) expect(releasePortfolioOperation(leaked)).toBe(true)
   resetPortfolioGenerationTestSeams()
+  resetPortfolioGenerationLockAdapterForTest()
   useAppStore.setState(defaultInitialState, true)
   vi.restoreAllMocks()
   vi.useRealTimers()

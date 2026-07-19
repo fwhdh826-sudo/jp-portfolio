@@ -47899,3 +47899,94 @@ It is prepared and pushed only on `v13.3-dev`; this ticket does not push to main
 ### Next
 
 `RA-007-C: connect Web Lock to manual mutations and snapshot import`
+
+## RA-007-C: Web Lock manual and snapshot serialization
+
+### Runtime activation and ordering
+
+- B3 commit: `f4523895433cb1589ee4841f3aeec542bb1879ea`。
+- production Web Lockを`importPortfolioSnapshot`、`updateHolding`、`updateTrust`、
+  `setPortfolioPolicy`、`setCashAssumptions`、`clearCashAssumptionsOverride`、
+  `importCashAssumptions`の7 operationsへ有効化した。固定lock nameは
+  `jp-portfolio:portfolio-generation:v1`、modeは`exclusive`、timeoutは15秒。
+- `AppStoreRuntime`へ`PortfolioGenerationLockAdapter`を注入し、default runtimeはlazy capability detectionの
+  production browser adapterを使用する。factory A/Bは別adapterを注入でき、同一Fake LockManagerを共有できる。
+  default、A、Bのadapter/runtime state共有は0。
+- 順序はlocal busy check → local ticket取得 → Web Lock request/grant → current store再読取 → durable generation再読取
+  → stale check → candidate/validation/analysis → persistence → final Zustand publish → synchronous subscriber完了
+  → Web Lock自動release → local ticket release。lock待機中もlocal ticketを保持し、same-store reentryは
+  `LOCAL_OPERATION_BUSY`、nested Web Lock requestは0。
+- grant前のportfolio `get()`固定、localStorage/canonical/legacy read、snapshot cache/authority/provenance判定、
+  analysis、persistence、publishは0。snapshotの純粋なJSON/schema parseだけをlock外で行う。
+- persistence、snapshot cache更新、final set、同期subscriber完了までlockを保持する。manual unlockは0。
+  callback、timeout、abort、request failure後もautomatic releaseとlocal ticket cleanupを行う。
+
+### Stale policy and structured failures
+
+- grant後の同一`nowMs`で、holdings、trust、portfolioPolicy、cashAssumptions、csvLastImportedAt、
+  csvImportProvenance、csvSyncSummaryをcurrent published stateとlatest durable generation間でstructural compareする。
+  metadata object keyはstable normalizationし、holdings/trustの保存順は維持する。TTL-expired/future metadataは
+  RA-005と同じvalidationで両側をnormalizeする。derived analysis、system status/error、activeTab、market、news、
+  UI/load/lastUpdated/test seamはprojection外。
+- canonical committed不一致は`CROSS_TAB_STATE_STALE`。canonical invalidはmanualで
+  `MANUAL_PERSISTENCE_ERROR`、snapshotで`SNAPSHOT_CANONICAL_INVALID`としてfail-closedし、staleへ誤分類しない。
+- canonical absentではportfolio、trust、policy、cash、CSV importedAt/sync summaryのlegacy evidenceを確認する。
+  durable evidence 0の初回mutationだけalignedとして許可し、安全なalignmentを証明できないpartial legacy evidenceは
+  `CROSS_TAB_STATE_STALE`。legacy/canonicalからのautomatic merge、automatic rehydrateはいずれも0。
+- stale時はanalysis、write、publish、subscriber、snapshot cache更新、incoming snapshot適用、local/durable state変更が
+  すべて0で、`retryable: false`のcoordination resultをresolveする。raw exception、stack、canonical bytesの公開は0。
+- adapterの`WEB_LOCK_UNAVAILABLE`、`WEB_LOCK_TIMEOUT`、`WEB_LOCK_ABORTED`、
+  `WEB_LOCK_REQUEST_FAILED`はcodeを変換せず返す。unexpected callback errorはphase別のsanitized manual/snapshot resultへ
+  変換し、public actionのraw rejectionは0。
+
+### Two-store behavior and UI
+
+- shared Fake LockManagerのtwo-store DIRECT testsでmanual/manual、snapshot/manual、manual/snapshot、
+  snapshot/snapshotをFIFO直列化した。A durable success後のBは`CROSS_TAB_STATE_STALE`でwrite 0。
+  A `NO_CHANGE`またはpre-persistence analysis/validation failure後はBがalignedなら成功する。
+- A persistence success + publish前failureではBと未reloadのA自身がstaleになり、明示的state realignment後のretryは成功。
+  subscriber中はlockとlocal ticketを保持し、nested manual/snapshotは`LOCAL_OPERATION_BUSY`、nested request 0。
+  subscriber完了前の次waiter grantは0、完了後にgrantする。
+- default-store regression用に明示的なtest-only adapter override/resetとimmediate adapterを追加した。
+  resetは新しいproduction browser adapterを生成し、factory A/Bへ波及しない。production caller/importは0。
+- T9はmanual/snapshot共通mappingで7 coordination codesすべてに固定日本語feedbackを表示する。
+  failure時pending解除、success表示0、raw error/stack表示0、既存B1 duplicate guard/button label/load feedbackを維持。
+- CSV、initialize、refreshAllDataのWeb Lock requestはDIRECT 0で、RA-007-Dまでproduction非接続。
+
+### Mutation-catching and validation
+
+- required 10 mutations（grant前storage read、lock待機前ticket release、stale check削除、stale auto-rehydrate、
+  subscriber前callback resolve、nested request許可、unsupported fallback、lock failure誤分類、grant前snapshot cache、
+  canonical invalidのstale誤分類）はすべて新DIRECT testのREDを確認し、各inverse patch後にproduction 2 fileの
+  SHA-256完全一致と`git diff --check`を確認した。
+- New integration UTC / Asia/Tokyo: **1 file / 24 tests / skipped 0 — PASS**。
+- Manual/snapshot regression UTC / Asia/Tokyo: **13 files / 442 tests / skipped 0 — PASS**。
+- Instance isolation UTC / Asia/Tokyo: **1 file / 13 tests / skipped 0 — PASS**。
+- Lock adapter regression UTC / Asia/Tokyo: **1 file / 47 tests / skipped 0 — PASS**。
+- T9 regression UTC / Asia/Tokyo: **1 file / 22 tests / skipped 0 — PASS**。
+- Full UTC / Asia/Tokyo: **69 files / 1736 tests / skipped 0 — PASS**。file/test差分0。
+- `npx tsc --noEmit`: **PASS**。`npm run build`: **PASS**（128 modules、既知500kB warningのみ）。
+  `git diff --check`: **PASS**。
+- production bundleの固定lock nameは1 match、test factory/control/override/immediate/FakeLockManager/旧seam symbolは
+  0 matches。native requestはadapterの`capability.lockManager.request`だけで、useAppStoreからのnative API直呼出しは0。
+- `portfolioGenerationLock.ts`、`portfolioOperationResult.ts`、`fakeLockManager.ts`、`persist.ts`、workflow、dependency、
+  data/public dataの最終diffは0。mainは未反映。
+- Completed validation at 2026-07-19T17:37:08Z / 2026-07-20T02:37:08+09:00.
+
+### Residual and status
+
+- CSV、initialize、refreshはWeb Lock未接続。BroadcastChannel、storage event、stale tabのautomatic UI refreshは未実装。
+  cross-tab CAS/rollback TOCTOUは後続で、initialize/refreshの既存partial publicationは維持。
+- RA-007 design audit: **CLOSED**。
+- RA-007-A: **CLOSED**。
+- RA-007-B1: **CLOSED**。
+- RA-007-B2: **CLOSED**。
+- RA-007-B3: **CLOSED**。
+- RA-007-C: **CLOSED**。
+- RA-007-D: **PENDING**。
+- manual/snapshot production Web Lock: **ACTIVE**。
+- full portfolio writer Web Lock coverage: **INCOMPLETE**。
+
+### Next
+
+`RA-007-D: connect Web Lock to CSV, initialize, and refresh`

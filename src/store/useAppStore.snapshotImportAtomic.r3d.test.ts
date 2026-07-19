@@ -9,6 +9,11 @@
 // absent（key自体が無い）とpresent-invalidは厳密に区別される: legacy互換のfirst-import
 // policyが許されるのはabsentのみで、present-invalidからのlegacy fallbackは存在しない。
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { createImmediatePortfolioGenerationLockAdapterForTest } from './testing/portfolioGenerationLockTestAdapters'
+import { resetPortfolioGenerationLockAdapterForTest, setPortfolioGenerationLockAdapterForTest } from './useAppStore'
+
+beforeEach(() => setPortfolioGenerationLockAdapterForTest(createImmediatePortfolioGenerationLockAdapterForTest()))
+afterEach(() => resetPortfolioGenerationLockAdapterForTest())
 import type { CsvImportProvenance, Holding } from '../types'
 import { DEFAULT_CASH_ASSUMPTIONS, DEFAULT_PORTFOLIO_POLICY } from '../types'
 import { useAppStore } from './useAppStore'
@@ -230,7 +235,7 @@ describe('T9-A004-R3d: canonical storage evidence / present-invalid writer polic
         storageWrites: writeLog.length,
         notifications,
       }).toEqual({
-        result: { ok: true, code: 'DUPLICATE_SNAPSHOT' },
+        result: { ok: false, operation: 'importPortfolioSnapshot', code: 'CROSS_TAB_STATE_STALE', retryable: false },
         canonicalUnchanged: true,
         storeUntouched: true,
         storageWrites: 0,
@@ -259,7 +264,7 @@ describe('T9-A004-R3d: canonical storage evidence / present-invalid writer polic
         notifications,
       }).toEqual({
         resultOk: false,
-        resultCode: 'SNAPSHOT_OVERWRITE_BLOCKED',
+        resultCode: 'CROSS_TAB_STATE_STALE',
         canonicalUnchanged: true,
         storeUntouched: true,
         storageWrites: 0,
@@ -292,7 +297,12 @@ describe('T9-A004-R3d: canonical storage evidence / present-invalid writer polic
       const result = await useAppStore.getState().importPortfolioSnapshot(raw)
       unsubscribe()
 
-      expect(result).toEqual({ ok: true, code: 'DUPLICATE_SNAPSHOT' })
+      expect(result).toEqual({
+        ok: false,
+        operation: 'importPortfolioSnapshot',
+        code: 'CROSS_TAB_STATE_STALE',
+        retryable: false,
+      })
       expect(storage[CSV_IMPORT_GENERATION_KEY]).toBe(seededRaw)
       expect(JSON.parse(storage[CSV_IMPORT_GENERATION_KEY]).manifest).toEqual(seededEnvelope.manifest)
       expect(useAppStore.getState()).toBe(before)
@@ -319,7 +329,7 @@ describe('T9-A004-R3d: canonical storage evidence / present-invalid writer polic
       const result = await useAppStore.getState().importPortfolioSnapshot(raw)
       unsubscribe()
 
-      expect(result).toMatchObject({ ok: false, code: 'SNAPSHOT_OVERWRITE_BLOCKED' })
+      expect(result).toMatchObject({ ok: false, code: 'CROSS_TAB_STATE_STALE', retryable: false })
       expect(storage[CSV_IMPORT_GENERATION_KEY]).toBe(seededRaw)
       expect(JSON.parse(storage[CSV_IMPORT_GENERATION_KEY]).manifest).toEqual(seededEnvelope.manifest)
       expect(useAppStore.getState()).toBe(before)
@@ -335,7 +345,7 @@ describe('T9-A004-R3d: canonical storage evidence / present-invalid writer polic
       })
 
       const blocked = await useAppStore.getState().importPortfolioSnapshot(raw)
-      expect(blocked).toMatchObject({ ok: false, code: 'SNAPSHOT_PROVENANCE_UNKNOWN' })
+      expect(blocked).toMatchObject({ ok: false, code: 'CROSS_TAB_STATE_STALE', retryable: false })
       expect(useAppStore.getState().holdings).toEqual([])
 
       // canonicalを正しく除去（absent化）した状態でのretryは既存first-import policyへ戻る
@@ -374,7 +384,7 @@ describe('T9-A004-R3d: canonical storage evidence / present-invalid writer polic
         storageWrites: writeLog.length,
       }).toEqual({
         resultOk: false,
-        resultCode: 'SNAPSHOT_STALE',
+        resultCode: 'CROSS_TAB_STATE_STALE',
         canonicalUnchanged: true,
         storeUntouched: true,
         storageWrites: 0,
@@ -408,7 +418,7 @@ describe('T9-A004-R3d: canonical storage evidence / present-invalid writer polic
         storageWrites: writeLog.length,
       }).toEqual({
         resultOk: false,
-        resultCode: 'SNAPSHOT_PROVENANCE_CONFLICT',
+        resultCode: 'CROSS_TAB_STATE_STALE',
         canonicalUnchanged: true,
         storeUntouched: true,
         storageWrites: 0,
@@ -434,14 +444,14 @@ describe('T9-A004-R3d: canonical storage evidence / present-invalid writer polic
       )
       // store側provenance nullならALLOW_FIRST_KNOWNだが、いずれもcurrent generationが
       // 存在する以上silent overwriteはできない
-      expect(blocked).toMatchObject({ ok: false, code: 'SNAPSHOT_OVERWRITE_BLOCKED' })
+      expect(blocked).toMatchObject({ ok: false, code: 'CROSS_TAB_STATE_STALE', retryable: false })
 
       const sameCsvDifferentSnapshot = await useAppStore.getState().importPortfolioSnapshot(
         v3Snapshot(generationProvenance('0', '2026-07-10T00:00:00.000Z'), {
           holdings: [{ code: 'R3D-CASE6B', name: 'R3d-6b銘柄', eval: 666_500, pnlPct: 0 }],
         }),
       )
-      expect(sameCsvDifferentSnapshot).toMatchObject({ ok: false, code: 'SNAPSHOT_OVERWRITE_BLOCKED' })
+      expect(sameCsvDifferentSnapshot).toMatchObject({ ok: false, code: 'CROSS_TAB_STATE_STALE', retryable: false })
       expect(writeLog.length).toBe(0)
     })
 
@@ -465,7 +475,7 @@ describe('T9-A004-R3d: canonical storage evidence / present-invalid writer polic
       const result = await useAppStore.getState().importPortfolioSnapshot(raw)
       unsubscribe()
 
-      expect(result).toMatchObject({ ok: false, code: 'SNAPSHOT_OVERWRITE_BLOCKED' })
+      expect(result).toMatchObject({ ok: false, code: 'CROSS_TAB_STATE_STALE', retryable: false })
       expect(storage[CSV_IMPORT_GENERATION_KEY]).toBe(seededRaw)
       expect(useAppStore.getState()).toBe(before)
       expect(writeLog).toEqual([])
@@ -483,7 +493,7 @@ describe('T9-A004-R3d: canonical storage evidence / present-invalid writer polic
       const result = await useAppStore.getState().importPortfolioSnapshot(raw)
       unsubscribe()
 
-      expect(result).toMatchObject({ ok: false, code: 'SNAPSHOT_OVERWRITE_BLOCKED' })
+      expect(result).toMatchObject({ ok: false, code: 'CROSS_TAB_STATE_STALE', retryable: false })
       expect(storage[CSV_IMPORT_GENERATION_KEY]).toBe(seededRaw)
       expect(useAppStore.getState()).toBe(before)
       expect(writeLog).toEqual([])
@@ -634,7 +644,7 @@ describe('T9-A004-R3d: canonical storage evidence / present-invalid writer polic
       delete storage[CSV_IMPORT_GENERATION_KEY]
       seedCommittedCanonical('0', '2026-07-10T00:00:00.000Z')
       const judged = await useAppStore.getState().importPortfolioSnapshot(raw)
-      expect(judged).toMatchObject({ ok: false, code: 'SNAPSHOT_OVERWRITE_BLOCKED' })
+      expect(judged).toMatchObject({ ok: false, code: 'CROSS_TAB_STATE_STALE', retryable: false })
 
       // 修復2: 除去（absent化） → first importとして完全実行される
       // （rejectがtransaction lockやlastAppliedSnapshotGenerationを残していない証明）

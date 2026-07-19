@@ -26,6 +26,7 @@ import {
   restoreCsvImportedAt,
   restoreCsvImportProvenance,
   restoreCsvSyncSummary,
+  isCsvMetadataReferenceWithinTtl,
   isCsvMetadataTimestampNotFuture,
   validateCsvImportProvenanceForRestore,
   getCsvImportPayloadCsvImportedAt,
@@ -55,7 +56,6 @@ import {
 import {
   evaluateCsvImportMonotonicity,
   InvalidCsvSourceTimestampError,
-  isCsvImportProvenance,
 } from '../domain/csv/csvProvenance'
 import { buildAssetUniverse, checkNoTrade } from '../domain/optimization/idealAllocation'
 import { updatePerformanceTracker } from '../domain/learning/performanceTracker'
@@ -101,6 +101,10 @@ import {
   type PortfolioLoadOperation,
   type PortfolioLoadResult,
 } from './portfolioOperationResult'
+import {
+  createPortfolioGenerationLockAdapter,
+  type PortfolioGenerationLockAdapter,
+} from './portfolioGenerationLock'
 
 // ── アクション型 ─────────────────────────────────────────────
 export type PortfolioSnapshotImportResult =
@@ -306,6 +310,8 @@ type SnapshotGenerationCache = {
 } | null
 
 interface AppStoreRuntime {
+  portfolioGenerationLock: PortfolioGenerationLockAdapter
+  lastLocallyPersistedLegacyProjection: string | null
   activePortfolioOperation: PortfolioOperationTicket | null
   activePortfolioGenerationTransaction: PortfolioGenerationTransaction | null
   lastAppliedSnapshotGeneration: SnapshotGenerationCache
@@ -317,8 +323,12 @@ interface AppStoreRuntime {
   }
 }
 
-function createAppStoreRuntime(): AppStoreRuntime {
+function createAppStoreRuntime(
+  portfolioGenerationLock = createPortfolioGenerationLockAdapter(),
+): AppStoreRuntime {
   return {
+    portfolioGenerationLock,
+    lastLocallyPersistedLegacyProjection: null,
     activePortfolioOperation: null,
     activePortfolioGenerationTransaction: null,
     lastAppliedSnapshotGeneration: null,
@@ -333,6 +343,18 @@ function createAppStoreRuntime(): AppStoreRuntime {
 
 const defaultAppStoreRuntime = createAppStoreRuntime()
 
+/** @internal Test-only adapter override for the default store runtime. */
+export function setPortfolioGenerationLockAdapterForTest(
+  adapter: PortfolioGenerationLockAdapter,
+): void {
+  defaultAppStoreRuntime.portfolioGenerationLock = adapter
+}
+
+/** @internal Restore the default runtime to a fresh production browser adapter. */
+export function resetPortfolioGenerationLockAdapterForTest(): void {
+  defaultAppStoreRuntime.portfolioGenerationLock = createPortfolioGenerationLockAdapter()
+}
+
 function resetRuntimeTestSeams(runtime: AppStoreRuntime): void {
   runtime.testSeams.portfolioGenerationPhaseObserver = null
   runtime.testSeams.manualPublishBeforeApplyHook = null
@@ -344,6 +366,7 @@ function resetAppStoreRuntime(runtime: AppStoreRuntime): void {
   runtime.activePortfolioOperation = null
   runtime.activePortfolioGenerationTransaction = null
   runtime.lastAppliedSnapshotGeneration = null
+  runtime.lastLocallyPersistedLegacyProjection = null
   resetRuntimeTestSeams(runtime)
 }
 
@@ -856,32 +879,195 @@ export function readLastAppliedSnapshotGenerationForTest(): Readonly<{
   return defaultAppStoreRuntime.lastAppliedSnapshotGeneration
 }
 
-const CSV_PROVENANCE_ALIGNMENT_FIELDS = [
-  'importedAt',
-  'sourceAsOf',
-  'sourceAsOfKind',
-  'sourceAsOfConfidence',
-  'contentFingerprint',
-  'semanticIdentity',
-  'sourceFileName',
-  'fileLastModified',
+interface PortfolioGenerationProjection {
+  holdings: Holding[]
+  trust: Trust[]
+  portfolioPolicy: PortfolioPolicy
+  cashAssumptions: CashAssumptions
+  csvLastImportedAt: string | null
+  csvImportProvenance: CsvImportProvenance | null
+  csvSyncSummary: CsvSyncSummary | null
+}
+
+type DurableAlignmentResult =
+  | { status: 'aligned'; canonical: CsvImportGenerationRestoreResult; canonicalRaw: string | null }
+  | { status: 'stale' }
+  | { status: 'invalid'; canonicalInvalid: boolean }
+
+const LEGACY_PORTFOLIO_GENERATION_KEYS = [
+  'v81_portfolio',
+  'v81_trust',
+  'v13_portfolio_policy',
+  'v13_cash_assumptions',
+  'v10_csv_imported_at',
+  'v13_csv_sync_summary',
 ] as const
 
-function isCanonicalMetadataAlignedWithPublishedState(
-  payload: CsvImportPersistencePayload,
+function normalizeCsvMetadataProjection(
+  csvLastImportedAt: string | null,
+  csvImportProvenance: CsvImportProvenance | null,
+  csvSyncSummary: CsvSyncSummary | null,
+  nowMs: number,
+): Pick<PortfolioGenerationProjection, 'csvLastImportedAt' | 'csvImportProvenance' | 'csvSyncSummary'> {
+  const retentionValid = isCsvMetadataReferenceWithinTtl({
+    provenance: csvImportProvenance,
+    csvImportedAt: csvLastImportedAt,
+    syncSummaryImportedAt: csvSyncSummary?.importedAt,
+  }, nowMs)
+  return {
+    csvLastImportedAt: retentionValid && csvLastImportedAt !== null &&
+        isCsvMetadataTimestampNotFuture(csvLastImportedAt, nowMs)
+      ? csvLastImportedAt
+      : null,
+    csvImportProvenance: csvImportProvenance === null
+      ? null
+      : validateCsvImportProvenanceForRestore(csvImportProvenance, nowMs),
+    csvSyncSummary: retentionValid && csvSyncSummary !== null &&
+        isCsvMetadataTimestampNotFuture(csvSyncSummary.importedAt, nowMs)
+      ? csvSyncSummary
+      : null,
+  }
+}
+
+function buildPublishedPortfolioGenerationProjection(
   state: AppState,
+  nowMs: number,
+): PortfolioGenerationProjection {
+  return {
+    holdings: state.holdings,
+    trust: state.trust,
+    portfolioPolicy: state.portfolioPolicy,
+    cashAssumptions: state.cashAssumptions,
+    ...normalizeCsvMetadataProjection(
+      state.system.csvLastImportedAt,
+      state.system.csvImportProvenance ?? null,
+      state.system.csvSyncSummary ?? null,
+      nowMs,
+    ),
+  }
+}
+
+function buildCanonicalPortfolioGenerationProjection(
+  payload: CsvImportPersistencePayload,
+  nowMs: number,
+): PortfolioGenerationProjection {
+  return {
+    holdings: payload.holdings,
+    trust: payload.trust,
+    portfolioPolicy: payload.portfolioPolicy ?? { ...DEFAULT_PORTFOLIO_POLICY },
+    cashAssumptions: payload.cashAssumptions ?? { ...DEFAULT_CASH_ASSUMPTIONS },
+    ...normalizeCsvMetadataProjection(
+      getCsvImportPayloadCsvImportedAt(payload),
+      payload.provenance ?? null,
+      payload.syncSummary,
+      nowMs,
+    ),
+  }
+}
+
+function stableStructuralValue(value: unknown): unknown {
+  if (Array.isArray(value)) return value.map(stableStructuralValue)
+  if (typeof value !== 'object' || value === null) return value
+  return Object.fromEntries(Object.entries(value)
+    .sort(([left], [right]) => left.localeCompare(right))
+    .map(([key, child]) => [key, stableStructuralValue(child)]))
+}
+
+function portfolioGenerationProjectionsEqual(
+  left: PortfolioGenerationProjection,
+  right: PortfolioGenerationProjection,
 ): boolean {
-  if (getCsvImportPayloadCsvImportedAt(payload) !== state.system.csvLastImportedAt) return false
-  const canonicalProvenance = payload.provenance ?? null
-  const publishedProvenance: unknown = state.system.csvImportProvenance ?? null
-  if (canonicalProvenance === null || publishedProvenance === null) {
-    return canonicalProvenance === null && publishedProvenance === null
+  return JSON.stringify(stableStructuralValue(left)) ===
+    JSON.stringify(stableStructuralValue(right))
+}
+
+function portfolioGenerationProjectionFingerprint(
+  projection: PortfolioGenerationProjection,
+): string {
+  return JSON.stringify(stableStructuralValue(projection))
+}
+
+function inspectDurablePortfolioAlignment(
+  runtime: AppStoreRuntime,
+  state: AppState,
+  nowMs: number,
+): DurableAlignmentResult {
+  let canonicalRaw: string | null
+  try {
+    canonicalRaw = readCsvImportCanonicalRaw()
+  } catch {
+    return { status: 'invalid', canonicalInvalid: false }
   }
-  if (!isCsvImportProvenance(canonicalProvenance) || !isCsvImportProvenance(publishedProvenance)) {
-    return false
+  const canonical = restoreCsvImportGenerationFromRaw(canonicalRaw)
+  if (canonical.status === 'invalid') {
+    return { status: 'invalid', canonicalInvalid: true }
   }
-  return CSV_PROVENANCE_ALIGNMENT_FIELDS.every(field =>
-    Object.is(canonicalProvenance[field], publishedProvenance[field]))
+  const publishedProjection = buildPublishedPortfolioGenerationProjection(state, nowMs)
+  if (canonical.status === 'committed') {
+    return portfolioGenerationProjectionsEqual(
+      publishedProjection,
+      buildCanonicalPortfolioGenerationProjection(canonical.payload, nowMs),
+    )
+      ? { status: 'aligned', canonical, canonicalRaw }
+      : { status: 'stale' }
+  }
+
+  let legacyRaw: Array<string | null>
+  try {
+    legacyRaw = LEGACY_PORTFOLIO_GENERATION_KEYS.map(key => localStorage.getItem(key))
+  } catch {
+    return { status: 'invalid', canonicalInvalid: false }
+  }
+  if (legacyRaw.every(raw => raw === null)) {
+    runtime.lastLocallyPersistedLegacyProjection = null
+    return { status: 'aligned', canonical, canonicalRaw }
+  }
+  if (runtime.lastLocallyPersistedLegacyProjection ===
+      portfolioGenerationProjectionFingerprint(publishedProjection)) {
+    return { status: 'aligned', canonical, canonicalRaw }
+  }
+  const legacyHoldings = restorePortfolio()
+  const legacyTrust = restoreTrust()
+  const legacyPolicy = restorePortfolioPolicy()
+  const legacyCash = restoreCashAssumptions()
+  if (
+    (legacyRaw[0] !== null && legacyHoldings === null) ||
+    (legacyRaw[1] !== null && legacyTrust === null) ||
+    (legacyRaw[2] !== null && legacyPolicy === null) ||
+    (legacyRaw[3] !== null && legacyCash === null)
+  ) {
+    return { status: 'stale' }
+  }
+  // A legacy portfolio generation is provable only when both core collections exist. Optional
+  // legacy fields are compared when present; absent optional keys carry no overwrite authority.
+  if (legacyHoldings === null || legacyTrust === null) return { status: 'stale' }
+  if (!portfolioGenerationProjectionsEqual(
+    { ...publishedProjection, portfolioPolicy: DEFAULT_PORTFOLIO_POLICY,
+      cashAssumptions: DEFAULT_CASH_ASSUMPTIONS, csvLastImportedAt: null,
+      csvImportProvenance: null, csvSyncSummary: null },
+    { holdings: legacyHoldings, trust: legacyTrust,
+      portfolioPolicy: DEFAULT_PORTFOLIO_POLICY, cashAssumptions: DEFAULT_CASH_ASSUMPTIONS,
+      csvLastImportedAt: null, csvImportProvenance: null, csvSyncSummary: null },
+  )) return { status: 'stale' }
+  if (legacyRaw[2] !== null &&
+      JSON.stringify(stableStructuralValue(state.portfolioPolicy)) !==
+        JSON.stringify(stableStructuralValue(legacyPolicy))) return { status: 'stale' }
+  if (legacyRaw[3] !== null &&
+      JSON.stringify(stableStructuralValue(state.cashAssumptions)) !==
+        JSON.stringify(stableStructuralValue(legacyCash))) return { status: 'stale' }
+  const legacyMetadata = normalizeCsvMetadataProjection(
+    restoreCsvImportedAt(nowMs),
+    null,
+    restoreCsvSyncSummary(nowMs),
+    nowMs,
+  )
+  if ((legacyRaw[4] !== null || legacyRaw[5] !== null) &&
+      JSON.stringify(stableStructuralValue({
+        csvLastImportedAt: publishedProjection.csvLastImportedAt,
+        csvImportProvenance: publishedProjection.csvImportProvenance,
+        csvSyncSummary: publishedProjection.csvSyncSummary,
+      })) !== JSON.stringify(stableStructuralValue(legacyMetadata))) return { status: 'stale' }
+  return { status: 'aligned', canonical, canonicalRaw }
 }
 
 // ── P1-3B: CommitteeDecision → OfficialDecision 変換 ─────────
@@ -1376,7 +1562,7 @@ const createAppStoreStateCreator = (
    * been committed. The operation ticket intentionally remains held while the single final set()
    * invokes subscribers, so synchronous re-entry cannot create a second generation.
    */
-  const runManualPortfolioMutation = (
+  const runManualPortfolioMutation = async (
     source: ManualPortfolioMutationOperation,
     prepareCandidateState: PrepareManualCandidate,
     persistLegacy: PersistManualLegacy,
@@ -1391,94 +1577,118 @@ const createAppStoreStateCreator = (
       return Promise.resolve(createPortfolioCoordinationFailure(source, 'LOCAL_OPERATION_BUSY'))
     }
 
+    const failurePhase: { current: 'analysis' | 'persistence' | 'publish' } = {
+      current: 'persistence',
+    }
     try {
-      const baseState = get()
-      const operationNowMs = Date.now()
-      let candidateState: ManualPortfolioState | null
       try {
-        candidateState = prepareCandidateState(baseState, operationNowMs)
-      } catch {
-        try { console.error(`[useAppStore] manual candidate preparation failed: ${source}`) } catch { /* diagnostic sink */ }
-        return Promise.resolve(createManualMutationFailure(source, 'MANUAL_ANALYSIS_ERROR'))
-      }
-      if (candidateState === null) {
-        return Promise.resolve(createManualMutationSuccess(source, 'NO_CHANGE'))
-      }
+        const lockResult = await runtime.portfolioGenerationLock.runExclusive(source, async () => {
+          failurePhase.current = 'persistence'
+          const baseState = get()
+          const operationNowMs = Date.now()
+          const alignment = inspectDurablePortfolioAlignment(runtime, baseState, operationNowMs)
+          if (alignment.status === 'stale') {
+            return createPortfolioCoordinationFailure(source, 'CROSS_TAB_STATE_STALE')
+          }
+          if (alignment.status === 'invalid') {
+            publishManualPersistenceError(alignment.canonicalInvalid
+              ? { status: 'blocked', reason: 'canonical_invalid' }
+              : { status: 'failed', reason: 'indeterminate' })
+            return createManualMutationFailure(source, 'MANUAL_PERSISTENCE_ERROR')
+          }
 
-      // Capture and parse the exact canonical bytes once. Metadata alignment is a pre-analysis
-      // invariant: canonical metadata may not be revived after RA-005 intentionally published
-      // null for TTL-expired, future, or malformed values.
-      let canonicalRaw: string | null
-      try {
-        canonicalRaw = readCsvImportCanonicalRaw()
-      } catch {
-        publishManualPersistenceError({ status: 'failed', reason: 'indeterminate' })
-        return Promise.resolve(createManualMutationFailure(source, 'MANUAL_PERSISTENCE_ERROR'))
-      }
-      const canonical = restoreCsvImportGenerationFromRaw(canonicalRaw)
-      if (canonical.status === 'invalid') {
-        publishManualPersistenceError({ status: 'blocked', reason: 'canonical_invalid' })
-        return Promise.resolve(createManualMutationFailure(source, 'MANUAL_PERSISTENCE_ERROR'))
-      }
-      if (canonical.status === 'committed' &&
-          !isCanonicalMetadataAlignedWithPublishedState(canonical.payload, baseState)) {
-        publishManualPersistenceError({ status: 'blocked', reason: 'metadata_misaligned' })
-        return Promise.resolve(createManualMutationFailure(source, 'MANUAL_PERSISTENCE_ERROR'))
-      }
+          failurePhase.current = 'analysis'
+          let candidateState: ManualPortfolioState | null
+          try {
+            candidateState = prepareCandidateState(baseState, operationNowMs)
+          } catch {
+            try { console.error(`[useAppStore] manual candidate preparation failed: ${source}`) } catch { /* diagnostic sink */ }
+            return createManualMutationFailure(source, 'MANUAL_ANALYSIS_ERROR')
+          }
+          if (candidateState === null) {
+            return createManualMutationSuccess(source, 'NO_CHANGE')
+          }
 
-      let computed: ReturnType<typeof runFullAnalysis>
-      try {
-        computed = runFullAnalysis(candidateState, { nowMs: operationNowMs })
-      } catch {
-        try { console.error(`[useAppStore] manual portfolio analysis failed: ${source}`) } catch { /* diagnostic sink */ }
-        return Promise.resolve(createManualMutationFailure(source, 'MANUAL_ANALYSIS_ERROR'))
-      }
-      const finalState: ManualPortfolioState = { ...candidateState, ...computed }
+          let computed: ReturnType<typeof runFullAnalysis>
+          try {
+            computed = runFullAnalysis(candidateState, { nowMs: operationNowMs })
+          } catch {
+            try { console.error(`[useAppStore] manual portfolio analysis failed: ${source}`) } catch { /* diagnostic sink */ }
+            return createManualMutationFailure(source, 'MANUAL_ANALYSIS_ERROR')
+          }
+          const finalState: ManualPortfolioState = { ...candidateState, ...computed }
 
-      const persistenceResult = canonical.status === 'committed'
-        ? persistCurrentPortfolioGeneration(finalState, canonical, canonicalRaw, operationNowMs)
-        : persistLegacy(finalState, operationNowMs)
-      if (persistenceResult.status !== 'persisted') {
-        publishManualPersistenceError(persistenceResult)
-        const conflict =
-          (persistenceResult.status === 'blocked' &&
-            (persistenceResult.reason === 'canonical_changed' ||
-              persistenceResult.reason === 'canonical_committed')) ||
-          (persistenceResult.status === 'failed' &&
-            'reason' in persistenceResult && persistenceResult.reason === 'ownership_lost')
-        return Promise.resolve(conflict
-          ? createPortfolioCoordinationFailure(source, 'PORTFOLIO_GENERATION_CONFLICT')
-          : createManualMutationFailure(source, 'MANUAL_PERSISTENCE_ERROR'))
-      }
+          failurePhase.current = 'persistence'
+          let persistenceResult: ReturnType<PersistManualLegacy>
+          try {
+            persistenceResult = alignment.canonical.status === 'committed'
+              ? persistCurrentPortfolioGeneration(
+                  finalState,
+                  alignment.canonical,
+                  alignment.canonicalRaw,
+                  operationNowMs,
+                )
+              : persistLegacy(finalState, operationNowMs)
+          } catch {
+            publishManualPersistenceError({ status: 'failed', reason: 'indeterminate' })
+            return createManualMutationFailure(source, 'MANUAL_PERSISTENCE_ERROR')
+          }
+          if (persistenceResult.status !== 'persisted') {
+            publishManualPersistenceError(persistenceResult)
+            const conflict =
+              (persistenceResult.status === 'blocked' &&
+                (persistenceResult.reason === 'canonical_changed' ||
+                  persistenceResult.reason === 'canonical_committed')) ||
+              (persistenceResult.status === 'failed' &&
+                'reason' in persistenceResult && persistenceResult.reason === 'ownership_lost')
+            return conflict
+              ? createPortfolioCoordinationFailure(source, 'PORTFOLIO_GENERATION_CONFLICT')
+              : createManualMutationFailure(source, 'MANUAL_PERSISTENCE_ERROR')
+          }
 
-      const previousCache = runtime.lastAppliedSnapshotGeneration
-      runtime.lastAppliedSnapshotGeneration = null
-      try {
-        const beforeApplyHook = runtime.testSeams.manualPublishBeforeApplyHook
-        runtime.testSeams.manualPublishBeforeApplyHook = null
-        beforeApplyHook?.()
-        // Object-form set performs exactly one Zustand publication containing the complete
-        // input+derived generation. All existing system/source metadata is carried unchanged.
-        set(finalState)
+          failurePhase.current = 'publish'
+          const previousCache = runtime.lastAppliedSnapshotGeneration
+          runtime.lastAppliedSnapshotGeneration = null
+          try {
+            const beforeApplyHook = runtime.testSeams.manualPublishBeforeApplyHook
+            runtime.testSeams.manualPublishBeforeApplyHook = null
+            beforeApplyHook?.()
+            // set() invokes synchronous subscribers before the lock callback resolves.
+            set(finalState)
+          } catch {
+            const published = get()
+            const applied = published.holdings === finalState.holdings &&
+              published.trust === finalState.trust &&
+              published.portfolioPolicy === finalState.portfolioPolicy &&
+              published.cashAssumptions === finalState.cashAssumptions &&
+              published.analysis === finalState.analysis &&
+              published.officialDecision === finalState.officialDecision
+            if (!applied) {
+              runtime.lastAppliedSnapshotGeneration = previousCache
+              try { console.error('[useAppStore] manual portfolio publish failed before apply') } catch { /* diagnostic sink */ }
+              return createManualMutationFailure(source, 'MANUAL_PUBLISH_ERROR')
+            }
+            try { console.error('[useAppStore] manual portfolio publish observer failed') } catch { /* diagnostic sink */ }
+          }
+          runtime.lastLocallyPersistedLegacyProjection = alignment.canonical.status === 'committed'
+            ? null
+            : portfolioGenerationProjectionFingerprint(
+                buildPublishedPortfolioGenerationProjection(finalState, operationNowMs),
+              )
+          return createManualMutationSuccess(source, 'SUCCESS')
+        })
+        return lockResult.ok
+          ? lockResult.value
+          : createPortfolioCoordinationFailure(source, lockResult.code)
       } catch {
-        // Zustand applies state before invoking synchronous subscribers. If an unwrapped observer
-        // still throws, treat an already-applied complete generation as success and never roll it
-        // back behind its committed canonical bytes.
-        const published = get()
-        const applied = published.holdings === finalState.holdings &&
-          published.trust === finalState.trust &&
-          published.portfolioPolicy === finalState.portfolioPolicy &&
-          published.cashAssumptions === finalState.cashAssumptions &&
-          published.analysis === finalState.analysis &&
-          published.officialDecision === finalState.officialDecision
-        if (!applied) {
-          runtime.lastAppliedSnapshotGeneration = previousCache
-          try { console.error('[useAppStore] manual portfolio publish failed before apply') } catch { /* diagnostic sink */ }
-          return Promise.resolve(createManualMutationFailure(source, 'MANUAL_PUBLISH_ERROR'))
+        if (failurePhase.current === 'analysis') {
+          return createManualMutationFailure(source, 'MANUAL_ANALYSIS_ERROR')
         }
-        try { console.error('[useAppStore] manual portfolio publish observer failed') } catch { /* diagnostic sink */ }
+        if (failurePhase.current === 'publish') {
+          return createManualMutationFailure(source, 'MANUAL_PUBLISH_ERROR')
+        }
+        return createManualMutationFailure(source, 'MANUAL_PERSISTENCE_ERROR')
       }
-      return Promise.resolve(createManualMutationSuccess(source, 'SUCCESS'))
     } finally {
       releasePortfolioOperationFromRuntime(runtime, operationTicket)
     }
@@ -2538,13 +2748,6 @@ const createAppStoreStateCreator = (
       reportRejectedReentrantMutation('importPortfolioSnapshot')
       return createPortfolioCoordinationFailure('importPortfolioSnapshot', 'LOCAL_OPERATION_BUSY')
     }
-    const transaction: SnapshotImportTransaction = {
-      token: Symbol('snapshot-import-owner'),
-      origin: 'snapshot',
-      phase: 'STAGING',
-      analysisNow: Date.now(),
-    }
-    runtime.activePortfolioGenerationTransaction = transaction
     try {
       const parsed = parsePortfolioSnapshotImport(raw)
       if (!parsed.ok) {
@@ -2558,6 +2761,18 @@ const createAppStoreStateCreator = (
           error: parsed.error,
         }
       }
+      try {
+        const lockResult = await runtime.portfolioGenerationLock.runExclusive(
+          'importPortfolioSnapshot',
+          async (): Promise<PortfolioSnapshotImportResult> => {
+      const transaction: SnapshotImportTransaction = {
+        token: Symbol('snapshot-import-owner'),
+        origin: 'snapshot',
+        phase: 'STAGING',
+        analysisNow: Date.now(),
+      }
+      runtime.activePortfolioGenerationTransaction = transaction
+      try {
       const parsedSnapshot = parsed.data
       if (parsedSnapshot.csvImportedAt !== null &&
           !isCsvMetadataTimestampNotFuture(parsedSnapshot.csvImportedAt, transaction.analysisNow)) {
@@ -2585,28 +2800,21 @@ const createAppStoreStateCreator = (
         csvImportProvenance: validatedCsvImportProvenance,
       }
       const state = get()
-
-      // T9-A004-R3c: transaction開始時の物理canonical bytesを捕捉する。durable commitは
-      // このbytesを期待前世代とするCASでのみ成立し、取込中に成立した外部世代を
-      // 無条件上書きしない。
-      let canonicalPreviousRaw: string | null
-      try {
-        canonicalPreviousRaw = readCsvImportCanonicalRaw()
-      } catch {
+      const alignment = inspectDurablePortfolioAlignment(runtime, state, transaction.analysisNow)
+      if (alignment.status === 'stale') {
+        return createPortfolioCoordinationFailure(
+          'importPortfolioSnapshot',
+          'CROSS_TAB_STATE_STALE',
+        )
+      }
+      if (alignment.status === 'invalid' && !alignment.canonicalInvalid) {
         return {
           ok: false,
           code: 'SNAPSHOT_PERSISTENCE_ERROR',
           error: '保存済みデータを読み込めないため、snapshotの取込を中断しました。再読み込み後に再試行してください。',
         }
       }
-
-      // T9-A004-R3d: transaction開始時に捕捉した物理bytesを一度だけ解釈し、canonical
-      // statusをabsent / valid committed / present-invalidへ固定する（同一transaction中に
-      // 再読取・再解釈しない）。present-invalid（keyは存在するが検証を通らない）は
-      // fail-closed: mutation・analysis・canonical write・legacy writeのいずれにも入らず、
-      // absentとのlegacy互換扱いへも倒さない。raw parser/storage詳細はUIへ出さない。
-      const canonicalGeneration = restoreCsvImportGenerationFromRaw(canonicalPreviousRaw)
-      if (canonicalGeneration.status === 'invalid') {
+      if (alignment.status === 'invalid') {
         return {
           ok: false,
           code: 'SNAPSHOT_CANONICAL_INVALID',
@@ -2614,6 +2822,8 @@ const createAppStoreStateCreator = (
             '破損した保存世代を修復または削除してから再試行してください。状態は変更されていません。',
         }
       }
+      const canonicalPreviousRaw = alignment.canonicalRaw
+      const canonicalGeneration = alignment.canonical
       const canonicalPayload = canonicalGeneration.status === 'committed'
         ? canonicalGeneration.payload
         : null
@@ -2896,6 +3106,7 @@ const createAppStoreStateCreator = (
         skippedTrustIds: skippedTrustIds.length > 0 ? skippedTrustIds : undefined,
       }
       const markSnapshotGenerationApplied = () => {
+        runtime.lastLocallyPersistedLegacyProjection = null
         if (snapshot.snapshotGenerationIdentity !== null) {
           const appliedStateIdentity = computeCurrentSnapshotStateIdentity(get())
           runtime.lastAppliedSnapshotGeneration = appliedStateIdentity === null
@@ -2973,6 +3184,20 @@ const createAppStoreStateCreator = (
       if (runtime.activePortfolioGenerationTransaction?.token === transaction.token) {
         runtime.activePortfolioGenerationTransaction = null
       }
+      }
+          },
+        )
+        return lockResult.ok
+          ? lockResult.value
+          : createPortfolioCoordinationFailure('importPortfolioSnapshot', lockResult.code)
+      } catch {
+        return {
+          ok: false,
+          code: 'SNAPSHOT_PERSISTENCE_ERROR',
+          error: 'snapshot処理を安全に完了できませんでした。再読み込み後に再試行してください。',
+        }
+      }
+    } finally {
       releasePortfolioOperationFromRuntime(runtime, operationTicket)
     }
   },
@@ -2999,12 +3224,18 @@ export interface AppStoreInstanceTestControls {
   }
 }
 
+export interface CreateAppStoreInstanceForTestOptions {
+  portfolioGenerationLock?: PortfolioGenerationLockAdapter
+}
+
 /** @internal Test-only factory for a vanilla store with an isolated coordination runtime. */
-export function createAppStoreInstanceForTest(): {
+export function createAppStoreInstanceForTest(
+  options: CreateAppStoreInstanceForTestOptions = {},
+): {
   store: StoreApi<AppStoreState>
   controls: AppStoreInstanceTestControls
 } {
-  const runtime = createAppStoreRuntime()
+  const runtime = createAppStoreRuntime(options.portfolioGenerationLock)
   const store = createStore<AppStoreState>(createAppStoreStateCreator(runtime))
   const controls: AppStoreInstanceTestControls = {
     acquirePortfolioOperation: kind => acquirePortfolioOperationFromRuntime(runtime, kind),

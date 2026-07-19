@@ -1,4 +1,9 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { createImmediatePortfolioGenerationLockAdapterForTest } from './testing/portfolioGenerationLockTestAdapters'
+import { resetPortfolioGenerationLockAdapterForTest, setPortfolioGenerationLockAdapterForTest } from './useAppStore'
+
+beforeEach(() => setPortfolioGenerationLockAdapterForTest(createImmediatePortfolioGenerationLockAdapterForTest()))
+afterEach(() => resetPortfolioGenerationLockAdapterForTest())
 import type { CsvImportProvenance, CsvSyncSummary, Holding } from '../types'
 import { DEFAULT_CASH_ASSUMPTIONS, DEFAULT_PORTFOLIO_POLICY } from '../types'
 import { INITIAL_TRUST } from '../constants/trust'
@@ -256,7 +261,7 @@ describe('RA-006 manual mutation coordinator and atomic publish', () => {
     }) },
   ]
 
-  it.each(noOpCases)('$name is a root-identity no-op with zero storage and subscriber effects', async ({ invoke }) => {
+  it.each(noOpCases)('$name is a root-identity no-op after durable alignment with zero writes and subscriber effects', async ({ invoke }) => {
     const before = useAppStore.getState()
     let notifications = 0
     const unsubscribe = useAppStore.subscribe(() => { notifications += 1 })
@@ -265,7 +270,15 @@ describe('RA-006 manual mutation coordinator and atomic publish', () => {
 
     expect(useAppStore.getState()).toBe(before)
     expect(result).toMatchObject({ ok: true, code: 'NO_CHANGE' })
-    expect(getItem).not.toHaveBeenCalled()
+    expect(getItem.mock.calls.map(([key]) => key)).toEqual([
+      CSV_IMPORT_GENERATION_KEY,
+      'v81_portfolio',
+      'v81_trust',
+      'v13_portfolio_policy',
+      'v13_cash_assumptions',
+      'v10_csv_imported_at',
+      'v13_csv_sync_summary',
+    ])
     expect(setItem).not.toHaveBeenCalled()
     expect(removeItem).not.toHaveBeenCalled()
     expect(notifications).toBe(0)
@@ -281,7 +294,15 @@ describe('RA-006 manual mutation coordinator and atomic publish', () => {
     unsubscribe()
     expect(useAppStore.getState()).toBe(before)
     expect(result).toEqual({ ok: true, operation: 'clearCashAssumptionsOverride', code: 'NO_CHANGE' })
-    expect(getItem).not.toHaveBeenCalled()
+    expect(getItem.mock.calls.map(([key]) => key)).toEqual([
+      CSV_IMPORT_GENERATION_KEY,
+      'v81_portfolio',
+      'v81_trust',
+      'v13_portfolio_policy',
+      'v13_cash_assumptions',
+      'v10_csv_imported_at',
+      'v13_csv_sync_summary',
+    ])
     expect(setItem).not.toHaveBeenCalled()
     expect(notifications).toBe(0)
   })
@@ -690,20 +711,25 @@ describe('RA-006 manual mutation coordinator and atomic publish', () => {
     const observed: StoreState[] = []
     const unsubscribe = useAppStore.subscribe(state => { observed.push(state) })
 
-    await useAppStore.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.17 })
+    const result = await useAppStore.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.17 })
     unsubscribe()
 
-    expect(analysisReads).toBe(0)
+    const metadataNormalizesAligned = testCase.name.startsWith('TTL-expired') ||
+      testCase.name.startsWith('future canonical')
+    expect(analysisReads).toBe(metadataNormalizesAligned ? 1 : 0)
+    expect(result).toMatchObject({
+      ok: false,
+      code: metadataNormalizesAligned ? 'MANUAL_ANALYSIS_ERROR' : 'CROSS_TAB_STATE_STALE',
+    })
     expectPortfolioReferencesUnchanged(before)
     expect(storage[CSV_IMPORT_GENERATION_KEY]).toBe(canonicalBefore)
     expect(setItem).not.toHaveBeenCalled()
     expect(removeItem).not.toHaveBeenCalled()
-    expect(getItem.mock.calls.every(([key]) => key === CSV_IMPORT_GENERATION_KEY)).toBe(true)
-    expect(observed).toHaveLength(1)
-    expect(observed[0].system.status).toBe('error')
-    expect(observed[0].system.error).toBe(
-      '保存済みCSVメタデータを現在の公開状態と安全に一致させられないため、手動変更を中止しました。CSVまたはportfolio snapshotを再取込してから再試行してください。',
-    )
+    expect(getItem.mock.calls.every(([key]) => key === CSV_IMPORT_GENERATION_KEY))
+      .toBe(!metadataNormalizesAligned)
+    expect(observed).toHaveLength(0)
+    expect(useAppStore.getState().system.status).toBe('idle')
+    expect(useAppStore.getState().system.error).toBeNull()
     expect(readLastAppliedSnapshotGenerationForTest()).toBe(cacheBefore)
     const ticket = acquirePortfolioOperation('manual')
     expect(ticket).not.toBeNull()
@@ -790,6 +816,7 @@ describe('RA-006 manual mutation coordinator and atomic publish', () => {
     const oldTrust = INITIAL_TRUST.map(fund => ({ ...fund, eval: fund.id === TRUST_ID ? 202_020 : fund.eval }))
     storage.v81_portfolio = JSON.stringify({ data: oldHoldings, savedAt: 1 })
     storage.v81_trust = JSON.stringify({ data: oldTrust, savedAt: 1 })
+    useAppStore.setState({ holdings: oldHoldings, trust: oldTrust })
     const previousPortfolioRaw = storage.v81_portfolio
     const previousTrustRaw = storage.v81_trust
     const before = useAppStore.getState()
@@ -1107,11 +1134,13 @@ describe('RA-006 manual mutation coordinator and atomic publish', () => {
     expect(ticket).not.toBeNull()
     if (ticket) expect(releasePortfolioOperation(ticket)).toBe(true)
 
-    await useAppStore.getState().updateHolding(HOLDING_CODE, { eval: 222_222 })
+    const retry = await useAppStore.getState().updateHolding(HOLDING_CODE, { eval: 222_222 })
     unsubscribe()
-    expect(notifications).toBe(1)
-    expect(useAppStore.getState().holdings.find(item => item.code === HOLDING_CODE)?.eval).toBe(222_222)
-    expect(readLastAppliedSnapshotGenerationForTest()).toBeNull()
+    expect(retry).toMatchObject({ ok: false, code: 'CROSS_TAB_STATE_STALE', retryable: false })
+    expect(notifications).toBe(0)
+    expect(useAppStore.getState().holdings.find(item => item.code === HOLDING_CODE)?.eval)
+      .toBe(rootBefore.holdings.find(item => item.code === HOLDING_CODE)?.eval)
+    expect(readLastAppliedSnapshotGenerationForTest()).toBe(previousCache)
   })
 
   it('invalidates snapshot cache before the final subscriber and later returns the exact provenance result', async () => {
