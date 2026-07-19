@@ -46957,3 +46957,44 @@ persistence hardening系列（`portfolio-snapshot-3`、
 ### Next
 
 `RA-005-FINAL-CONFIRM: test adequacy closure and integration readiness`
+
+## RA-005-FINAL-CONFIRM: integration readiness
+
+### Verdict and findings
+
+- Verdict: **READY**.
+- Findings P0 / P1 / P2 / P3: **0 / 0 / 0 / 0**.
+- All RA-005 audit findings are **CLOSED**.
+- Production runtime defects: 0.
+- CSV metadata TTL dependency on manifest/wrapper `savedAt`: 0.
+- Future restore metadata publication: 0.
+- Future public snapshot import metadata publication: 0.
+- Canonical generation existence dependency on metadata timestamps: 0.
+
+### Direct closure evidence
+
+- The exact 90-day boundary is closed: exactly 90 days remains valid and 90 days plus 1 ms
+  expires.
+- Canonical re-save does not revive stale CSV metadata.
+- Snapshot transfer does not revive stale CSV metadata.
+- Initialize uses one shared captured `now` for importedAt, summary, and provenance; the
+  reverse-clock fixture proves all three paths DIRECT.
+- Field-isolated public-import provenance `importedAt` future/malformed rejection is DIRECT and
+  reaches the real production validation path after the parser boundary.
+- Future restore/public import rejection, timestamp-independent generation evidence, schema and
+  identity preservation, CAS/rollback invariants, and zero investment-logic change are directly
+  covered by the RA-005 test matrix.
+
+### Final pre-integration validation
+
+- UTC targeted: **8 files / 377 tests / skipped 0 — PASS**.
+- Asia/Tokyo targeted: **8 files / 377 tests / skipped 0 — PASS**.
+- UTC full unit: **56 files / 1430 tests / skipped 0 — PASS**.
+- Asia/Tokyo full unit: **56 files / 1430 tests / skipped 0 — PASS**.
+- `npx tsc --noEmit`: PASS.
+- `npm run build`: PASS (125 modules; known 500 kB chunk warning only).
+- `git diff --check`: PASS.
+- Synchronized main SHA: `39a682f6c653a32811ae2c8499faedccb5c1e5b9`.
+- `origin/main` is an ancestor of the verified RA-005 HEAD; fast-forward main integration is
+  possible.
+- Main integration: **PENDING**.
