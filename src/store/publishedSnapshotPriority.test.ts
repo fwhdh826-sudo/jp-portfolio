@@ -308,7 +308,10 @@ describe('useAppStore.initialize / refreshAllData: published snapshot優先順�
     nowSpy.mockRestore()
   })
 
-  it('RA-005: refresh keeps committed canonical generation evidence when future importedAt makes csvLastImportedAt null', async () => {
+  it.each([
+    ['older', '2026-07-18T00:00:00.000Z'],
+    ['newer', '2026-07-20T00:00:00.000Z'],
+  ] as const)('RA-005 DIRECT: refresh sanitizes future metadata and protects committed unknown-provenance generation from %s published data', async (_label, publishedAt) => {
     const nowMs = Date.parse('2026-07-19T00:00:00.000Z')
     const futureImportedAt = '2026-07-19T00:00:00.001Z'
     const committedHolding = makeHolding({ code: '7203', eval: 700_000 })
@@ -346,6 +349,117 @@ describe('useAppStore.initialize / refreshAllData: published snapshot優先順�
       system: {
         ...state.system,
         status: 'idle',
+        csvLastImportedAt: futureImportedAt,
+        csvImportProvenance: {
+          importedAt: futureImportedAt,
+          sourceAsOf: '2026-07-18T00:00:00.000Z',
+          sourceAsOfKind: 'csv_explicit',
+          sourceAsOfConfidence: 'authoritative',
+          contentFingerprint: 'fnv1a32:12345678',
+          sourceFileName: 'portfolio.csv',
+          fileLastModified: null,
+        },
+        csvSyncSummary: {
+          importedAt: futureImportedAt,
+          stock: { updated: 1, added: 0, removed: 0 },
+          trust: { updated: 1, reheld: 0, zeroed: 0, unknownFunds: [], ambiguousFundIds: [] },
+        },
+      },
+    }))
+    mockFetchRouter({
+      'holdings.json': {
+        last_updated: publishedAt,
+        source: 'sbi_csv',
+        holdings: [{ code: '7203', eval: 999_999 }],
+      },
+      'trust_master.json': {
+        last_updated: publishedAt,
+        source: 'sbi_csv',
+        funds: [{ id: 'sp500_sbi', eval: 1_234_567 }],
+      },
+    })
+    const nowSpy = vi.spyOn(Date, 'now').mockReturnValue(nowMs)
+    const canonicalBefore = store[CSV_IMPORT_GENERATION_KEY]
+    writeLog.length = 0
+    let canonicalDuringSanitation: string | null = null
+    let writesDuringSanitation: number | null = null
+    const unsubscribe = useAppStore.subscribe(state => {
+      if (state.system.csvLastImportedAt === null &&
+          state.system.csvImportProvenance === null &&
+          state.system.csvSyncSummary === null &&
+          canonicalDuringSanitation === null) {
+        canonicalDuringSanitation = store[CSV_IMPORT_GENERATION_KEY]
+        writesDuringSanitation = writeLog.length
+      }
+    })
+
+    await useAppStore.getState().refreshAllData()
+    unsubscribe()
+
+    expect(useAppStore.getState().holdings.find(item => item.code === '7203')?.eval).toBe(700_000)
+    expect(useAppStore.getState().trust.find(item => item.id === 'sp500_sbi')?.eval).toBe(4_000_000)
+    expect(useAppStore.getState().system.csvLastImportedAt).toBeNull()
+    expect(useAppStore.getState().system.csvImportProvenance).toBeNull()
+    expect(useAppStore.getState().system.csvSyncSummary).toBeNull()
+    expect(canonicalDuringSanitation).toBe(canonicalBefore)
+    expect(writesDuringSanitation).toBe(0)
+    // refresh末尾の既存normal persistenceはsanitation writeと分離して1回だけ発生する。
+    expect(writeLog.filter(key => key === CSV_IMPORT_GENERATION_KEY)).toHaveLength(1)
+    nowSpy.mockRestore()
+  })
+
+  it.each([
+    ['past', '2026-07-18T00:00:00.000Z'],
+    ['future', '2026-07-19T00:00:00.001Z'],
+  ] as const)('RA-005 DIRECT: canonical absent + %s timestamp-only state has no generation evidence', async (_label, timestampOnly) => {
+    const nowSpy = vi.spyOn(Date, 'now').mockReturnValue(Date.parse('2026-07-19T00:00:00.000Z'))
+    useAppStore.setState(state => ({
+      holdings: [],
+      trust: [makeTrust({ id: 'sp500_sbi', eval: 0 })],
+      portfolioPolicy: { jpStockMaxRatio: 0.10 },
+      cashAssumptions: {
+        cashDeposits: 0,
+        standbyFunds: 0,
+        manualOverrideEnabled: false,
+        manualUpdatedAt: null,
+      },
+      system: {
+        ...state.system,
+        status: 'idle',
+        csvLastImportedAt: timestampOnly,
+        csvImportProvenance: null,
+        csvSyncSummary: null,
+      },
+    }))
+    mockFetchRouter({
+      'holdings.json': {
+        last_updated: '2026-07-20T00:00:00.000Z',
+        source: 'sbi_csv',
+        holdings: [{ code: '7203', eval: 999_999 }],
+      },
+      'trust_master.json': {
+        last_updated: '2026-07-20T00:00:00.000Z',
+        source: 'sbi_csv',
+        funds: [{ id: 'sp500_sbi', eval: 1_234_567 }],
+      },
+    })
+
+    await useAppStore.getState().refreshAllData()
+
+    expect(useAppStore.getState().trust.find(item => item.id === 'sp500_sbi')?.eval).toBe(1_234_567)
+    expect(useAppStore.getState().system.csvLastImportedAt).toBe(
+      _label === 'future' ? null : timestampOnly,
+    )
+    nowSpy.mockRestore()
+  })
+
+  it('RA-005 DIRECT: canonical absent + portfolio content protects the current generation with timestamp null', async () => {
+    useAppStore.setState(state => ({
+      holdings: [makeHolding({ code: '7203', eval: 700_000 })],
+      trust: [makeTrust({ id: 'sp500_sbi', eval: 4_000_000 })],
+      system: {
+        ...state.system,
+        status: 'idle',
         csvLastImportedAt: null,
         csvImportProvenance: null,
         csvSyncSummary: null,
@@ -363,44 +477,11 @@ describe('useAppStore.initialize / refreshAllData: published snapshot優先順�
         funds: [{ id: 'sp500_sbi', eval: 1_234_567 }],
       },
     })
-    const nowSpy = vi.spyOn(Date, 'now').mockReturnValue(nowMs)
 
     await useAppStore.getState().refreshAllData()
 
     expect(useAppStore.getState().holdings.find(item => item.code === '7203')?.eval).toBe(700_000)
     expect(useAppStore.getState().trust.find(item => item.id === 'sp500_sbi')?.eval).toBe(4_000_000)
-    expect(useAppStore.getState().system.csvLastImportedAt).toBeNull()
-    nowSpy.mockRestore()
-  })
-
-  it('RA-005: canonical absent keeps the existing valid published snapshot application contract', async () => {
-    useAppStore.setState(state => ({
-      holdings: [makeHolding({ code: '7203', eval: 700_000 })],
-      trust: [makeTrust({ id: 'sp500_sbi', eval: 4_000_000 })],
-      system: {
-        ...state.system,
-        status: 'idle',
-        csvLastImportedAt: null,
-        csvImportProvenance: null,
-      },
-    }))
-    mockFetchRouter({
-      'holdings.json': {
-        last_updated: '2026-07-20T00:00:00.000Z',
-        source: 'sbi_csv',
-        holdings: [{ code: '7203', eval: 999_999 }],
-      },
-      'trust_master.json': {
-        last_updated: '2026-07-20T00:00:00.000Z',
-        source: 'sbi_csv',
-        funds: [{ id: 'sp500_sbi', eval: 1_234_567 }],
-      },
-    })
-
-    await useAppStore.getState().refreshAllData()
-
-    expect(useAppStore.getState().holdings.find(item => item.code === '7203')?.eval).toBe(999_999)
-    expect(useAppStore.getState().trust.find(item => item.id === 'sp500_sbi')?.eval).toBe(1_234_567)
   })
 
   it('initialize: corrupted envelope refuses partial legacy fallback', async () => {
@@ -499,6 +580,40 @@ describe('useAppStore.initialize / refreshAllData: published snapshot優先順�
 
     const holding = useAppStore.getState().holdings.find(h => h.code === '7203')
     expect(holding?.eval).toBe(555_000)
+  })
+
+  it('RA-005 DIRECT: initialize does not treat a legacy timestamp-only state as generation evidence', async () => {
+    seedLocalStorage({ csvImportedAt: '2026-07-01T00:00:00+09:00' })
+    useAppStore.setState(state => ({
+      holdings: [],
+      trust: [makeTrust({ id: 'sp500_sbi', eval: 0 })],
+      portfolioPolicy: { jpStockMaxRatio: 0.10 },
+      cashAssumptions: {
+        cashDeposits: 0,
+        standbyFunds: 0,
+        manualOverrideEnabled: false,
+        manualUpdatedAt: null,
+      },
+      system: {
+        ...state.system,
+        status: 'idle',
+        csvLastImportedAt: null,
+        csvImportProvenance: null,
+        csvSyncSummary: null,
+      },
+    }))
+    mockFetchRouter({
+      'trust_master.json': {
+        last_updated: '2026-07-10T00:00:00+09:00',
+        source: 'sbi_csv',
+        funds: [{ id: 'sp500_sbi', eval: 1_234_567 }],
+      },
+    })
+
+    await useAppStore.getState().initialize()
+
+    expect(useAppStore.getState().system.csvLastImportedAt).toBe('2026-07-01T00:00:00+09:00')
+    expect(useAppStore.getState().trust.find(item => item.id === 'sp500_sbi')?.eval).toBe(1_234_567)
   })
 
   it('initialize: timestamp同値の場合はsnapshotを適用せず、既存のユーザー状態を保持する', async () => {

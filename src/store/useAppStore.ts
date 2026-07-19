@@ -28,6 +28,7 @@ import {
   restoreCsvImportedAt,
   restoreCsvImportProvenance,
   restoreCsvSyncSummary,
+  isCsvMetadataTimestampNotFuture,
   validateCsvImportProvenanceForRestore,
   getCsvImportPayloadCsvImportedAt,
   restoreCsvImportGeneration,
@@ -666,10 +667,8 @@ export function applyHoldingsFullSyncFromSnapshot(
   }
 }
 
-function hasCurrentPortfolioGenerationEvidence(state: AppState): boolean {
-  return state.system.csvImportProvenance != null ||
-    state.system.csvLastImportedAt != null ||
-    state.holdings.length > 0 ||
+function hasCurrentPortfolioContentEvidence(state: AppState): boolean {
+  return state.holdings.length > 0 ||
     state.trust.some(fund => fund.eval > 0) ||
     state.portfolioPolicy.jpStockMaxRatio !== DEFAULT_PORTFOLIO_POLICY.jpStockMaxRatio ||
     state.cashAssumptions.manualOverrideEnabled
@@ -1285,12 +1284,12 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
       const savedTrust = csvGeneration.status === 'committed'
         ? csvGeneration.payload.trust
         : useLegacy ? restoreTrust() : null
+      // RA-005: all three CSV metadata restore paths receive this transaction-local clock.
+      // Capture it before any other restore helper can consult its own default wall clock.
+      const csvMetadataNowMs = Date.now()
       const savedLearning = csvGeneration.status === 'committed' || useLegacy
         ? restoreLearning()
         : null
-      // RA-005: both CSV metadata restores share one transaction-local clock so a wall-clock
-      // jump cannot split their exact 90-day boundary result.
-      const csvMetadataNowMs = Date.now()
       const savedCsvAt = csvGeneration.status === 'committed' || useLegacy
         ? restoreCsvImportedAt(csvMetadataNowMs)
         : null
@@ -1341,7 +1340,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
 
       set(s => {
         const sourceAsOf = getSafeAuthoritativeCsvSourceAsOf(s.system.csvImportProvenance, csvMetadataNowMs)
-        const hasCurrentGeneration = hasCommittedCanonicalGeneration || s.system.csvLastImportedAt !== null
+        const hasCurrentGeneration = hasCommittedCanonicalGeneration || hasCurrentPortfolioContentEvidence(s)
         const nextTrust = trust.data && shouldApplyPublishedSnapshot(trust.lastUpdated, sourceAsOf, hasCurrentGeneration)
           ? s.trust.map(f => { const d = trust.data!.find(x => x.id === f.id); return d ? { ...f, ...d } : f })
           : s.trust
@@ -1468,8 +1467,25 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
       const hasCommittedCanonicalGeneration = restoreCsvImportGeneration().status === 'committed'
 
       set(s => {
-        const sourceAsOf = getSafeAuthoritativeCsvSourceAsOf(s.system.csvImportProvenance, csvMetadataNowMs)
-        const hasCurrentGeneration = hasCommittedCanonicalGeneration || s.system.csvLastImportedAt !== null
+        const safeCsvLastImportedAt = isCsvMetadataTimestampNotFuture(
+          s.system.csvLastImportedAt,
+          csvMetadataNowMs,
+        )
+          ? s.system.csvLastImportedAt
+          : null
+        const safeCsvImportProvenance = validateCsvImportProvenanceForRestore(
+          s.system.csvImportProvenance,
+          csvMetadataNowMs,
+        )
+        const safeCsvSyncSummary = s.system.csvSyncSummary &&
+          isCsvMetadataTimestampNotFuture(
+            s.system.csvSyncSummary.importedAt,
+            csvMetadataNowMs,
+          )
+          ? s.system.csvSyncSummary
+          : null
+        const sourceAsOf = getSafeAuthoritativeCsvSourceAsOf(safeCsvImportProvenance, csvMetadataNowMs)
+        const hasCurrentGeneration = hasCommittedCanonicalGeneration || hasCurrentPortfolioContentEvidence(s)
         const nextTrust = trust.data && shouldApplyPublishedSnapshot(trust.lastUpdated, sourceAsOf, hasCurrentGeneration)
           ? s.trust.map(f => { const d = trust.data!.find(x => x.id === f.id); return d ? { ...f, ...d } : f })
           : s.trust
@@ -1494,6 +1510,9 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
           tierAAlerts: tierAAlerts.data,
           system: {
             ...s.system,
+            csvLastImportedAt: safeCsvLastImportedAt,
+            csvImportProvenance: safeCsvImportProvenance,
+            csvSyncSummary: safeCsvSyncSummary,
             dataSourceStatus: {
               market: market.source, correlation: correlation.source,
               news: news.source, trust: trust.source,
@@ -2140,7 +2159,32 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
           error: parsed.error,
         }
       }
-      const snapshot = parsed.data
+      const parsedSnapshot = parsed.data
+      if (parsedSnapshot.csvImportedAt !== null &&
+          !isCsvMetadataTimestampNotFuture(parsedSnapshot.csvImportedAt, transaction.analysisNow)) {
+        return {
+          ok: false,
+          code: 'INVALID_SNAPSHOT_PROVENANCE',
+          error: 'snapshotのCSV取込操作時刻が現在時刻より未来または不正なため、取込を中断しました。',
+        }
+      }
+      const validatedCsvImportProvenance = parsedSnapshot.csvImportProvenance === null
+        ? null
+        : validateCsvImportProvenanceForRestore(
+            parsedSnapshot.csvImportProvenance,
+            transaction.analysisNow,
+          )
+      if (parsedSnapshot.csvImportProvenance !== null && validatedCsvImportProvenance === null) {
+        return {
+          ok: false,
+          code: 'INVALID_SNAPSHOT_PROVENANCE',
+          error: 'snapshotのCSV provenanceに現在時刻より未来または不正な日時が含まれるため、取込を中断しました。',
+        }
+      }
+      const snapshot = {
+        ...parsedSnapshot,
+        csvImportProvenance: validatedCsvImportProvenance,
+      }
       const state = get()
 
       // T9-A004-R3c: transaction開始時の物理canonical bytesを捕捉する。durable commitは
@@ -2181,7 +2225,7 @@ export const useAppStore = create<AppState & AppActions>((set, get, api) => {
       // でもcurrent generation evidenceとして扱う。storeだけを見たALLOW_FIRST_IMPORT
       // 扱いでcommitted世代をsilent overwriteしない。
       const currentGenerationExists = canonicalPayload !== null ||
-        hasCurrentPortfolioGenerationEvidence(state)
+        hasCurrentPortfolioContentEvidence(state)
       const currentStateIdentity = canonicalPayload === null && currentGenerationExists
         ? computeCurrentSnapshotStateIdentity(state)
         : null

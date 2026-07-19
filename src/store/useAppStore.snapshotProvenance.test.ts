@@ -165,7 +165,7 @@ describe('T9-A004-R2: portfolio snapshot provenance action contract', () => {
     const unsubscribe = useAppStore.subscribe(() => { notifications += 1 })
 
     const result = useAppStore.getState().importPortfolioSnapshot(
-      legacyV2Snapshot('2099-12-31T23:59:58.000Z'),
+      legacyV2Snapshot('2026-07-15T11:00:00.000Z'),
     )
     unsubscribe()
 
@@ -201,12 +201,12 @@ describe('T9-A004-R2: portfolio snapshot provenance action contract', () => {
 
   it('an older authoritative v3 snapshot is stale even when import/export operation times are newer', () => {
     const incoming = provenance({
-      importedAt: '2099-12-31T23:59:58.000Z',
+      importedAt: '2026-07-15T12:00:00.000Z',
       sourceAsOf: '2026-07-15T08:00:00.000Z',
       semanticIdentity: `sha256:${'2'.repeat(64)}`,
       contentFingerprint: 'fnv1a32:22222222',
       sourceFileName: 'older-source.csv',
-      fileLastModified: '2099-12-31T23:59:57.000Z',
+      fileLastModified: '2026-07-15T11:59:00.000Z',
     })
     const raw = v3Snapshot(incoming, {
       holdings: [{ code: 'R2-TEST', name: 'R2テスト銘柄', eval: 100_000, pnlPct: 0 }],
@@ -272,7 +272,7 @@ describe('T9-A004-R2: portfolio snapshot provenance action contract', () => {
 
   it('same sourceAsOf plus different strong identity is a conflict with zero side effects', () => {
     const incoming = provenance({
-      importedAt: '2099-12-31T23:59:58.000Z',
+      importedAt: '2026-07-15T12:00:00.000Z',
       semanticIdentity: `sha256:${'2'.repeat(64)}`,
       contentFingerprint: 'fnv1a32:22222222',
     })

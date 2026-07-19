@@ -390,10 +390,18 @@ describe('useAppStore: cashAssumptions（資金前提の手動override）', () =
 // P4.5-A012b: portfolio snapshot（保有株・投信・現金前提・portfolioPolicy）のexport/import
 describe('useAppStore: portfolio snapshot（P4.5-A012b）', () => {
   const store: Record<string, string> = {}
+  let canonicalSetCount = 0
+  let canonicalRemoveCount = 0
   const lsMock = {
     getItem:    (k: string) => store[k] ?? null,
-    setItem:    (k: string, v: string) => { store[k] = v },
-    removeItem: (k: string) => { delete store[k] },
+    setItem:    (k: string, v: string) => {
+      if (k === CSV_IMPORT_GENERATION_KEY) canonicalSetCount += 1
+      store[k] = v
+    },
+    removeItem: (k: string) => {
+      if (k === CSV_IMPORT_GENERATION_KEY) canonicalRemoveCount += 1
+      delete store[k]
+    },
   }
 
   const testHoldingA = makeHolding({ code: 'TEST-A', eval: 100_000, pnlPct: 5, currentPrice: 1000 })
@@ -408,6 +416,8 @@ describe('useAppStore: portfolio snapshot（P4.5-A012b）', () => {
   beforeEach(() => {
     vi.stubGlobal('localStorage', lsMock)
     for (const k in store) delete store[k]
+    canonicalSetCount = 0
+    canonicalRemoveCount = 0
     useAppStore.setState(s => ({
       holdings: [testHoldingA, testHoldingB],
       trust: [testTrust],
@@ -516,8 +526,11 @@ describe('useAppStore: portfolio snapshot（P4.5-A012b）', () => {
     }))
     const nowSpy = vi.spyOn(Date, 'now').mockReturnValue(nowMs)
 
+    const importSetCountBefore = canonicalSetCount
     expect(useAppStore.getState().importPortfolioSnapshot(exported))
       .toMatchObject({ ok: true, code: 'SUCCESS' })
+    expect(canonicalSetCount - importSetCountBefore).toBe(1)
+    expect(canonicalRemoveCount).toBe(0)
     const importedRaw = store[CSV_IMPORT_GENERATION_KEY]
     const importedEnvelope = JSON.parse(importedRaw)
     expect(importedEnvelope.manifest.savedAt).toBe(nowMs)
@@ -527,6 +540,8 @@ describe('useAppStore: portfolio snapshot（P4.5-A012b）', () => {
     expect(importedEnvelope.payload.syncSummary).toBeNull()
     expect(restoreCsvImportedAt(nowMs)).toBeNull()
     expect(restoreCsvSyncSummary(nowMs)).toBeNull()
+    canonicalSetCount = 0
+    canonicalRemoveCount = 0
 
     let resolveFetch!: (value: { ok: false; status: number; json: () => Promise<Record<string, never>> }) => void
     const deferredFetch = new Promise<{ ok: false; status: number; json: () => Promise<Record<string, never>> }>(resolve => {
@@ -537,12 +552,16 @@ describe('useAppStore: portfolio snapshot（P4.5-A012b）', () => {
     await Promise.resolve()
 
     expect(store[CSV_IMPORT_GENERATION_KEY]).toBe(importedRaw)
+    expect(canonicalSetCount).toBe(0)
+    expect(canonicalRemoveCount).toBe(0)
     expect(useAppStore.getState().system.csvLastImportedAt).toBeNull()
     expect(useAppStore.getState().system.csvSyncSummary).toBeNull()
     expect(useAppStore.getState().system.csvImportProvenance).toEqual(sourceProvenance)
     expect(useAppStore.getState().holdings.map(item => item.code)).toEqual(['TEST-A', 'TEST-B'])
     resolveFetch({ ok: false, status: 404, json: () => Promise.resolve({}) })
     await pendingInitialize
+    expect(canonicalSetCount).toBe(1)
+    expect(canonicalRemoveCount).toBe(0)
 
     const reloaded = restoreCsvImportGeneration()
     expect(reloaded.status).toBe('committed')
@@ -1400,10 +1419,10 @@ describe('R4-A004c: initialize/refresh preserve canonical v4/v5 semantics', () =
     expect(Object.keys(storage)).toEqual([CSV_IMPORT_GENERATION_KEY])
   })
 
-  it('RA-005: initialize captures one CSV metadata clock so a boundary jump cannot split restores', async () => {
+  it('RA-005 DIRECT: initialize passes one captured now to importedAt, summary, and provenance under a reverse clock', async () => {
     const nowMs = Date.parse('2026-07-19T00:00:00.000Z')
-    const sourceAsOf = new Date(nowMs - 90 * 24 * 60 * 60 * 1000).toISOString()
-    const importedAt = new Date(nowMs - 24 * 60 * 60 * 1000).toISOString()
+    const sourceAsOf = new Date(nowMs).toISOString()
+    const importedAt = new Date(nowMs).toISOString()
     const seededState = useAppStore.getState()
     const syncSummary = buildCsvSyncSummary([], [], [], [], {
       trustSectionSeen: true,
@@ -1436,9 +1455,9 @@ describe('R4-A004c: initialize/refresh preserve canonical v4/v5 semantics', () =
     let nowCall = 0
     const nowSpy = vi.spyOn(Date, 'now').mockImplementation(() => {
       nowCall += 1
-      // restoreLearning consumes the first call. The second call is the single CSV metadata
-      // capture. Any later metadata-local call would cross the boundary by 1ms.
-      return nowCall <= 2 ? nowMs : nowMs + 1
+      // initialize's first call captures the shared metadata clock. Any of the three restore
+      // paths falling back to its own Date.now() sees a 1ms-earlier clock and rejects NOW_MS.
+      return nowCall === 1 ? nowMs : nowMs - 1
     })
     let notifications = 0
     const unsubscribe = useAppStore.subscribe(() => { notifications += 1 })
@@ -1451,7 +1470,9 @@ describe('R4-A004c: initialize/refresh preserve canonical v4/v5 semantics', () =
     expect(useAppStore.getState().system.csvImportProvenance).toEqual(
       snapshotProvenance(importedAt, sourceAsOf, '4'),
     )
-    expect(nowCall).toBeGreaterThanOrEqual(2)
+    expect(useAppStore.getState().system.csvSyncSummary?.importedAt).toBe(importedAt)
+    expect(useAppStore.getState().system.csvImportProvenance?.importedAt).toBe(importedAt)
+    expect(useAppStore.getState().system.csvImportProvenance?.sourceAsOf).toBe(sourceAsOf)
     expect(storage[CSV_IMPORT_GENERATION_KEY]).toBe(canonicalBefore)
     expect(setItem).not.toHaveBeenCalled()
     expect(removeItem).not.toHaveBeenCalled()

@@ -46788,3 +46788,91 @@ persistence hardening系列（`portfolio-snapshot-3`、
 ### Next
 
 `RA-005-REAUDIT: independent future metadata closure audit`
+
+## RA-005-REAUDIT-FIX: public snapshot future metadata rejection and DIRECT closure
+
+### Re-audit findings and closure
+
+- Re-audit verdict: **BLOCKED**.
+- P1 `RA-005-REAUDIT-F001`: public `importPortfolioSnapshot()` could commit future
+  `csvImportedAt` or future `csvImportProvenance` into canonical storage and immediately publish
+  it to Zustand.
+- P2 `RA-005-REAUDIT-F002`: initialize's three shared-now metadata paths were not all proven
+  DIRECT.
+- P2 `RA-005-REAUDIT-F003`: snapshot export/import E2E did not separate initialize hydration's
+  zero canonical writes from normal completion persistence with a write counter.
+- P2 `RA-005-REAUDIT-F004`: generation existence still depended on `csvLastImportedAt` or
+  provenance timestamp evidence.
+- Public snapshot import now validates CSV metadata immediately after successful structural/
+  identity parsing and before `get()`, canonical storage read, monotonicity, analysis,
+  persistence, or publish. It uses only the transaction's captured `analysisNow`.
+- Future or malformed non-null `csvImportedAt` and future/malformed provenance `importedAt` or
+  non-null `sourceAsOf` return `INVALID_SNAPSHOT_PROVENANCE`. Valid provenance is cloned and the
+  validated clone is used by monotonicity, staging, analysis, canonical payload, and final
+  Zustand publish. Null metadata, exact-now metadata, stale past metadata, and future
+  `exportedAt` retain their existing policies.
+- Future rejection directly proves canonical and legacy get/set/remove 0, analysis 0, tracker 0,
+  Zustand set/subscriber notification 0, store and portfolio sub-reference identity unchanged,
+  canonical future bytes 0, immediate T9 input future exposure 0, coordinator release, and valid
+  retry.
+- Refresh captures one `csvMetadataNowMs`, nulls only future/malformed `csvLastImportedAt`,
+  provenance, and summary, and uses only validated provenance for source priority. Past stale
+  metadata remains unchanged and no 90-day TTL is re-applied. The sanitation publication itself
+  performs zero canonical write; the existing normal refresh persistence remains a separately
+  observed completion write.
+- Generation evidence now consists only of committed canonical status or non-timestamp portfolio
+  content. Committed canonical with null/invalidated metadata remains protected; canonical absent
+  with timestamp only permits the existing published snapshot policy; canonical absent with real
+  holdings/trust/policy/cash content remains protected. Present-invalid canonical retains its
+  fail-closed, no-legacy-fallback, no-partial-hydrate behavior.
+- Initialize captures the shared CSV metadata clock before other default-clock restore helpers.
+  The reverse-clock DIRECT fixture seeds importedAt, summary.importedAt, provenance.importedAt,
+  and provenance.sourceAsOf at exact `NOW_MS`, then returns `NOW_MS - 1ms` for all later default
+  clock calls. All three hydrated state fields are asserted before deferred fetch resolution.
+  Removing each explicit clock argument independently made its corresponding assertion RED; all
+  mutations were reverted.
+- The public export to empty-target import E2E fixes canonical write counts by phase: snapshot
+  import 1, initialize hydration 0, existing normal initialize completion 1. Hydration also
+  preserves byte-exact canonical data and performs remove 0.
+- A valid-identity actual future snapshot E2E proves public rejection, canonical write 0,
+  Zustand/subscriber publish 0, refresh/initialize future metadata 0, T9 state-input future string
+  0, and subsequent valid snapshot retry.
+- Original RA-005 retention priority, authoritative sourceAsOf rules, exact 90-day boundary,
+  schema v1-v5, identity v2, snapshot identity, monotonicity, overwrite/duplicate policy, CAS,
+  ownership, rollback, write-then-throw recovery, RA-003 coordinator, investment logic,
+  SAFE_MODE/TierA, P5, workflow/data/public data, and T9 wording changed 0.
+
+### Scope and verification
+
+- Production file: `src/store/useAppStore.ts` only.
+- Test files: `src/store/useAppStore.test.ts`, `src/store/publishedSnapshotPriority.test.ts`,
+  `src/store/useAppStore.snapshotProvenance.test.ts`, and new
+  `src/store/useAppStore.snapshotFutureMetadata.test.ts`.
+- `src/store/persist.ts` production diff: 0.
+- `src/utils/portfolioSnapshotTransfer.ts` production diff: 0.
+- `src/components/tabs/T9_Settings.tsx` production diff: 0.
+- UTC targeted: **7 files / 374 tests / skipped 0 — PASS**.
+- Asia/Tokyo targeted: **7 files / 374 tests / skipped 0 — PASS**.
+- UTC full unit: **55 files / 1427 tests / skipped 0 — PASS**.
+- Asia/Tokyo full unit: **55 files / 1427 tests / skipped 0 — PASS**.
+- `npx tsc --noEmit`: PASS.
+- `npm run build`: PASS (125 modules; known 500 kB chunk warning only).
+- `git diff --check`: PASS.
+- Completed verification at 2026-07-19T04:41:26Z / 2026-07-19T13:41:26+09:00.
+- Main is not updated by RA-005-REAUDIT-FIX.
+
+### Status
+
+- RA-005 implementation: **CLOSED**.
+- RA-005-AUDIT-F001: **CLOSED**.
+- RA-005-AUDIT-F002: **CLOSED**.
+- RA-005-REAUDIT-F001: **CLOSED**.
+- RA-005-REAUDIT-F002: **CLOSED**.
+- RA-005-REAUDIT-F003: **CLOSED**.
+- RA-005-REAUDIT-F004: **CLOSED**.
+- RA-005 final independent audit: **PENDING**.
+- main integration: **PENDING**.
+
+### Next
+
+`RA-005-FINAL-AUDIT: public import and DIRECT closure audit`
