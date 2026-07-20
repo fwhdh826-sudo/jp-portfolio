@@ -1,34 +1,10 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-07-20T15:32:05.357502+09:00",
-  "sourceUpdatedAt": "2026-07-20T06:19:45+00:00",
+  "updatedAt": "2026-07-20T22:23:34.305458+09:00",
+  "sourceUpdatedAt": "2026-07-20T12:56:59+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "jp_semiconductor": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "us_broad": {
       "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
@@ -36,27 +12,139 @@
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Gold Steadies as Traders Assess Rates Path After US-Iran Clashes",
-      "topPositiveTitle": "Gold Steadies as Traders Assess Rates Path After US-Iran Clashes",
+      "topNegativeTitle": "South Korea Stock Boom: Why Kospi Is World’s Most Volatile Benchmark Stock Index",
+      "topPositiveTitle": "South Korea Stock Boom: Why Kospi Is World’s Most Volatile Benchmark Stock Index",
       "items": [
         {
-          "title": "Gold Steadies as Traders Assess Rates Path After US-Iran Clashes",
+          "title": "South Korea Stock Boom: Why Kospi Is World’s Most Volatile Benchmark Stock Index",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-19T23:33:09+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-19/gold-falls-as-us-iran-hostilities-keep-rate-hike-bets-on-table",
+          "publishedAt": "2026-07-20T10:54:11+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-20/south-korea-stock-boom-why-kospi-is-world-s-most-volatile-benchmark-stock-index",
           "tags": [
+            "jp_broad",
+            "macro_risk",
+            "market"
+          ]
+        }
+      ]
+    },
+    "jp_semiconductor": {
+      "avgSentiment": -1.0,
+      "negativeCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "Emerging Stocks Extend Drop on Energy, Semiconductor Jitters",
+      "topPositiveTitle": "Emerging Stocks Extend Drop on Energy, Semiconductor Jitters",
+      "items": [
+        {
+          "title": "Emerging Stocks Extend Drop on Energy, Semiconductor Jitters",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-07-20T04:45:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-20/emerging-market-stocks-mixed-as-investors-weigh-iran-tensions",
+          "tags": [
+            "commodity",
             "geopolitical",
-            "gold",
+            "jp_semiconductor",
+            "market"
+          ]
+        }
+      ]
+    },
+    "us_broad": {
+      "avgSentiment": 1.0,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "Short Bets Against US Equities Hit Record as AI Risks Mount",
+      "topPositiveTitle": "Short Bets Against US Equities Hit Record as AI Risks Mount",
+      "items": [
+        {
+          "title": "Short Bets Against US Equities Hit Record as AI Risks Mount",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-07-20T12:30:17+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-20/short-bets-against-us-equities-hit-record-as-ai-risks-mount",
+          "tags": [
             "market",
-            "rates",
             "us_broad"
           ]
         }
       ]
     },
     "us_growth": {
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 2,
+      "sourceCount": 1,
+      "itemCount": 2,
+      "isStale": false,
+      "topNegativeTitle": "Big Tech Needs to Prove that AI Spending Is Going Somewhere",
+      "topPositiveTitle": "Big Tech Needs to Prove that AI Spending Is Going Somewhere",
+      "items": [
+        {
+          "title": "Big Tech Needs to Prove that AI Spending Is Going Somewhere",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-20T10:04:36+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-07-20/big-tech-needs-to-prove-that-ai-spending-is-going-somewhere",
+          "tags": [
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Citi Says Magnificent Seven Tag Is Obsolete in AI Stock Winners",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-20T09:40:05+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-20/citi-says-magnificent-seven-tag-is-obsolete-in-ai-stock-winners",
+          "tags": [
+            "market",
+            "us_growth"
+          ]
+        }
+      ]
+    },
+    "global_broad": {
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "Shapoorji Closes One of India’s Biggest Private Credit Deals",
+      "topPositiveTitle": "Shapoorji Closes One of India’s Biggest Private Credit Deals",
+      "items": [
+        {
+          "title": "Shapoorji Closes One of India’s Biggest Private Credit Deals",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-20T12:53:49+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-20/shapoorji-closes-one-of-india-s-biggest-private-credit-deals",
+          "tags": [
+            "global_broad",
+            "market"
+          ]
+        }
+      ]
+    },
+    "gold": {
       "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
@@ -67,75 +155,6 @@
       "topNegativeTitle": null,
       "topPositiveTitle": null,
       "items": []
-    },
-    "global_broad": {
-      "avgSentiment": -0.5,
-      "negativeCount": 2,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 2,
-      "isStale": false,
-      "topNegativeTitle": "Safest Carry in Emerging Markets Is in Latin American Currencies",
-      "topPositiveTitle": "Emerging-Market Stocks Mixed as Investors Weigh Iran Tensions",
-      "items": [
-        {
-          "title": "Safest Carry in Emerging Markets Is in Latin American Currencies",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-07-19T12:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-19/safest-carry-in-emerging-markets-is-in-latin-american-currencies",
-          "tags": [
-            "fx",
-            "global_broad",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Emerging-Market Stocks Mixed as Investors Weigh Iran Tensions",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-07-20T04:45:06+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-20/emerging-market-stocks-mixed-as-investors-weigh-iran-tensions",
-          "tags": [
-            "geopolitical",
-            "global_broad",
-            "macro_risk",
-            "market"
-          ]
-        }
-      ]
-    },
-    "gold": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
-      "isStale": false,
-      "topNegativeTitle": "Gold Steadies as Traders Assess Rates Path After US-Iran Clashes",
-      "topPositiveTitle": "Gold Steadies as Traders Assess Rates Path After US-Iran Clashes",
-      "items": [
-        {
-          "title": "Gold Steadies as Traders Assess Rates Path After US-Iran Clashes",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-19T23:33:09+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-19/gold-falls-as-us-iran-hostilities-keep-rate-hike-bets-on-table",
-          "tags": [
-            "geopolitical",
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        }
-      ]
     },
     "reit": {
       "avgSentiment": 0,
@@ -162,64 +181,62 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.078,
-      "negativeCount": 2,
-      "positiveCount": 2,
-      "neutralCount": 2,
-      "sourceCount": 1,
-      "itemCount": 6,
+      "avgSentiment": 0.333,
+      "negativeCount": 0,
+      "positiveCount": 3,
+      "neutralCount": 4,
+      "sourceCount": 2,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "Safest Carry in Emerging Markets Is in Latin American Currencies",
-      "topPositiveTitle": "Palm Climbs to Near One-Month High as Iran Conflict Boosts Crude",
+      "topNegativeTitle": "Goldman Offers Preferred Stock Days After Post-Crisis Spread Low",
+      "topPositiveTitle": "Hormuz Crisis Flares Just as Fuel Markets Tighten",
       "items": [
         {
-          "title": "Safest Carry in Emerging Markets Is in Latin American Currencies",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-07-19T12:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-19/safest-carry-in-emerging-markets-is-in-latin-american-currencies",
-          "tags": [
-            "fx",
-            "global_broad",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Emerging-Market Stocks Mixed as Investors Weigh Iran Tensions",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-07-20T04:45:06+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-20/emerging-market-stocks-mixed-as-investors-weigh-iran-tensions",
-          "tags": [
-            "geopolitical",
-            "global_broad",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "China Is Exporting 20% Fewer Magnets to US Despite Trade Truce",
+          "title": "Goldman Offers Preferred Stock Days After Post-Crisis Spread Low",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-20T06:02:24+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-20/china-is-exporting-20-fewer-magnets-to-us-despite-trade-truce",
+          "publishedAt": "2026-07-20T12:56:59+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-20/goldman-offers-preferred-stock-days-after-post-crisis-spread-low",
           "tags": [
-            "geopolitical",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Oil Rises as US-Iran Attacks Intensify, Bonds Fall: Markets Wrap",
+          "title": "South Korea Stock Boom: Why Kospi Is World’s Most Volatile Benchmark Stock Index",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
-          "sentimentScore": 0.14,
-          "publishedAt": "2026-07-19T22:10:10+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-19/oil-climbs-as-middle-east-conflict-escalates-markets-wrap",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-20T10:54:11+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-20/south-korea-stock-boom-why-kospi-is-world-s-most-volatile-benchmark-stock-index",
+          "tags": [
+            "jp_broad",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Euro-Area Firms Faced Rising Interest Rates in Second Quarter",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-20T08:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-20/euro-area-firms-faced-rising-interest-rates-in-second-quarter",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Latest Oil Market News and Analysis for July 20",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-19T22:02:08+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-19/latest-oil-market-news-and-analysis-for-july-20",
           "tags": [
             "commodity",
             "geopolitical",
@@ -228,13 +245,14 @@
           ]
         },
         {
-          "title": "Rising Demand for Hedges Hints at Volatility Ahead: Taking Stock",
+          "title": "Stocks Climb as Chipmakers Bounce, Oil Fluctuates: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.33,
-          "publishedAt": "2026-07-20T06:19:45+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-20/rising-demand-for-hedges-hints-at-volatility-ahead-taking-stock",
+          "publishedAt": "2026-07-19T22:10:10+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-19/oil-climbs-as-middle-east-conflict-escalates-markets-wrap",
           "tags": [
+            "commodity",
             "macro_risk",
             "market"
           ]
@@ -243,38 +261,23 @@
     },
     "fx": {
       "avgSentiment": 0.0,
-      "negativeCount": 1,
-      "positiveCount": 1,
+      "negativeCount": 0,
+      "positiveCount": 0,
       "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Safest Carry in Emerging Markets Is in Latin American Currencies",
-      "topPositiveTitle": "NZD: Hedge Funds Amass Biggest New Zealand Dollar Net Short Since 2006",
+      "topNegativeTitle": "SBI Funds Pays Razor-Thin Banker Fees on Top India IPO of 2026",
+      "topPositiveTitle": "SBI Funds Pays Razor-Thin Banker Fees on Top India IPO of 2026",
       "items": [
         {
-          "title": "Safest Carry in Emerging Markets Is in Latin American Currencies",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-07-19T12:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-19/safest-carry-in-emerging-markets-is-in-latin-american-currencies",
-          "tags": [
-            "fx",
-            "global_broad",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "RBI Intervenes to Support Rupee as Currency Nears Record Low",
+          "title": "SBI Funds Pays Razor-Thin Banker Fees on Top India IPO of 2026",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-20T04:27:59+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-20/rbi-intervenes-to-support-rupee-as-currency-nears-record-low",
+          "publishedAt": "2026-07-20T09:50:53+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-20/sbi-funds-pays-razor-thin-banker-fees-on-top-india-ipo-of-2026",
           "tags": [
-            "commodity",
             "fx",
             "market"
           ]
@@ -291,19 +294,6 @@
             "market"
           ],
           "titleJa": "共産 田村委員長“政府は早急に追加の物価高対策を”"
-        },
-        {
-          "title": "NZD: Hedge Funds Amass Biggest New Zealand Dollar Net Short Since 2006",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-07-20T03:12:21+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-20/hedge-funds-dial-up-bearish-kiwi-bets-to-record-on-oil-rebound",
-          "tags": [
-            "commodity",
-            "fx",
-            "market"
-          ]
         }
       ]
     },
@@ -311,75 +301,89 @@
       "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
+      "neutralCount": 2,
       "sourceCount": 1,
-      "itemCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Gold Steadies as Traders Assess Rates Path After US-Iran Clashes",
-      "topPositiveTitle": "Gold Steadies as Traders Assess Rates Path After US-Iran Clashes",
+      "topNegativeTitle": "UK Latest: Andy Burnham’s Growth Gamble Starts Today",
+      "topPositiveTitle": "UK Latest: Andy Burnham’s Growth Gamble Starts Today",
       "items": [
         {
-          "title": "Gold Steadies as Traders Assess Rates Path After US-Iran Clashes",
-          "source": "Bloomberg Markets",
+          "title": "UK Latest: Andy Burnham’s Growth Gamble Starts Today",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-19T23:33:09+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-19/gold-falls-as-us-iran-hostilities-keep-rate-hike-bets-on-table",
+          "publishedAt": "2026-07-20T11:00:02+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-07-20/uk-latest-andy-burnham-s-growth-gamble-starts-today",
+          "tags": [
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Euro-Area Firms Faced Rising Interest Rates in Second Quarter",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-20T08:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-20/euro-area-firms-faced-rising-interest-rates-in-second-quarter",
           "tags": [
             "geopolitical",
-            "gold",
+            "macro_risk",
             "market",
-            "rates",
-            "us_broad"
+            "rates"
           ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.31,
-      "negativeCount": 0,
-      "positiveCount": 3,
-      "neutralCount": 5,
+      "avgSentiment": -0.134,
+      "negativeCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 8,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Octopus-Backed MOPO Partners Nigeria in $75 Million Battery Plan",
-      "topPositiveTitle": "Palm Climbs to Near One-Month High as Iran Conflict Boosts Crude",
+      "topNegativeTitle": "Emerging Stocks Extend Drop on Energy, Semiconductor Jitters",
+      "topPositiveTitle": "Stocks Climb as Chipmakers Bounce, Oil Fluctuates: Markets Wrap",
       "items": [
         {
-          "title": "Octopus-Backed MOPO Partners Nigeria in $75 Million Battery Plan",
+          "title": "Emerging Stocks Extend Drop on Energy, Semiconductor Jitters",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-07-20T04:45:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-20/emerging-market-stocks-mixed-as-investors-weigh-iran-tensions",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "jp_semiconductor",
+            "market"
+          ]
+        },
+        {
+          "title": "KKR-Backed Serentica Eyes $450 Million Loan in Renewables Push",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-20T06:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-20/octopus-backed-mopo-partners-nigeria-in-75-million-battery-plan",
+          "publishedAt": "2026-07-20T10:30:51+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-20/kkr-backed-serentica-eyes-450-million-loan-in-renewables-push",
           "tags": [
             "commodity",
             "market"
           ]
         },
         {
-          "title": "FTSE 100 Live: Oil Back to $90 to Keep Inflation Pressures Rumbling",
+          "title": "Latest Oil Market News and Analysis for July 20",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-20T05:45:06+00:00",
-          "url": "https://www.bloomberg.com/news/live-blog/2026-07-20/ftse-100-live-updates-burnham-uk-house-prices-pound-bonds-brent-oil-prices-iran-trump-news-what-s-moving-uk-markets-right-now-markets-today",
+          "publishedAt": "2026-07-19T22:02:08+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-19/latest-oil-market-news-and-analysis-for-july-20",
           "tags": [
             "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "RBI Intervenes to Support Rupee as Currency Nears Record Low",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-20T04:27:59+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-20/rbi-intervenes-to-support-rupee-as-currency-nears-record-low",
-          "tags": [
-            "commodity",
-            "fx",
+            "geopolitical",
+            "macro_risk",
             "market"
           ]
         },
@@ -397,15 +401,14 @@
           "titleJa": "クロマグロの漁獲枠 “他国などと連携し協議再開を” 鈴木農相"
         },
         {
-          "title": "Oil Rises as US-Iran Attacks Intensify, Bonds Fall: Markets Wrap",
+          "title": "Stocks Climb as Chipmakers Bounce, Oil Fluctuates: Markets Wrap",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.14,
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
           "publishedAt": "2026-07-19T22:10:10+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-07-19/oil-climbs-as-middle-east-conflict-escalates-markets-wrap",
           "tags": [
             "commodity",
-            "geopolitical",
             "macro_risk",
             "market"
           ]
@@ -413,67 +416,55 @@
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.185,
+      "avgSentiment": 0.0,
       "negativeCount": 1,
-      "positiveCount": 2,
-      "neutralCount": 5,
-      "sourceCount": 2,
-      "itemCount": 8,
+      "positiveCount": 1,
+      "neutralCount": 3,
+      "sourceCount": 3,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Emerging-Market Stocks Mixed as Investors Weigh Iran Tensions",
-      "topPositiveTitle": "Palm Climbs to Near One-Month High as Iran Conflict Boosts Crude",
+      "topNegativeTitle": "Emerging Stocks Extend Drop on Energy, Semiconductor Jitters",
+      "topPositiveTitle": "US Gasoline Tops $4 a Gallon Again as Iran War Escalates",
       "items": [
         {
-          "title": "Emerging-Market Stocks Mixed as Investors Weigh Iran Tensions",
+          "title": "Emerging Stocks Extend Drop on Energy, Semiconductor Jitters",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
+          "sentimentScore": -1.0,
           "publishedAt": "2026-07-20T04:45:06+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-07-20/emerging-market-stocks-mixed-as-investors-weigh-iran-tensions",
           "tags": [
+            "commodity",
             "geopolitical",
-            "global_broad",
-            "macro_risk",
+            "jp_semiconductor",
             "market"
           ]
         },
         {
-          "title": "China Is Exporting 20% Fewer Magnets to US Despite Trade Truce",
-          "source": "Bloomberg Markets",
+          "title": "Euro-Area Firms Faced Rising Interest Rates in Second Quarter",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-20T06:02:24+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-20/china-is-exporting-20-fewer-magnets-to-us-despite-trade-truce",
+          "publishedAt": "2026-07-20T08:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-20/euro-area-firms-faced-rising-interest-rates-in-second-quarter",
           "tags": [
             "geopolitical",
             "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Gold Steadies as Traders Assess Rates Path After US-Iran Clashes",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-19T23:33:09+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-19/gold-falls-as-us-iran-hostilities-keep-rate-hike-bets-on-table",
-          "tags": [
-            "geopolitical",
-            "gold",
             "market",
-            "rates",
-            "us_broad"
+            "rates"
           ]
         },
         {
-          "title": "US Strikes Iran in Escalating Campaign After Troops Killed",
+          "title": "Latest Oil Market News and Analysis for July 20",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-19T06:58:45+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-19/us-iran-trade-more-attacks-after-two-troops-killed-in-jordan",
+          "publishedAt": "2026-07-19T22:02:08+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-19/latest-oil-market-news-and-analysis-for-july-20",
           "tags": [
+            "commodity",
             "geopolitical",
+            "macro_risk",
             "market"
           ]
         },
@@ -489,6 +480,19 @@
             "market"
           ],
           "titleJa": "バーブルマンデブ海峡封鎖の報道 赤澤経産相 “深刻に注視”"
+        },
+        {
+          "title": "US Gasoline Tops $4 a Gallon Again as Iran War Escalates",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-07-20T07:58:46+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-20/us-average-gasoline-prices-rise-above-4-a-gallon-again",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
         }
       ]
     }
@@ -501,7 +505,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 5,
+    "excludedCount": 3,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
