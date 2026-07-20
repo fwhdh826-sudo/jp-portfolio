@@ -1,11 +1,13 @@
 import { describe, expect, it, vi } from 'vitest'
-import type { PortfolioSnapshotImportResult } from '../../store/useAppStore'
+import type { CsvImportResult, PortfolioSnapshotImportResult } from '../../store/useAppStore'
 import type {
   ManualMutationResult,
   ManualPortfolioMutationOperation,
 } from '../../store/portfolioOperationResult'
 import {
   createPortfolioOperationSingleFlight,
+  csvImportFeedback,
+  executeCsvImportUiFlow,
   executeManualMutationUiFlow,
   executeSnapshotImportUiFlow,
   manualMutationFeedback,
@@ -210,5 +212,50 @@ describe('RA-007-B1 T9 async portfolio actions', () => {
       expect(Object.keys(result).sort()).toEqual(['code', 'ok', 'operation'])
       expect(manualMutationFeedback(result).message).toBe('変更を保存しました。')
     }
+  })
+})
+
+describe('RA-007-D1 T9 CSV coordination flow', () => {
+  it.each([
+    ['LOCAL_OPERATION_BUSY', '別のポートフォリオ処理が実行中です。完了後に再試行してください。', true],
+    ['WEB_LOCK_UNAVAILABLE', 'この環境では安全な複数タブ同期を利用できません。対応ブラウザのHTTPS環境で再読み込みしてください。', false],
+    ['WEB_LOCK_TIMEOUT', '別タブの処理待機がタイムアウトしました。別タブを確認して再試行してください。', true],
+    ['WEB_LOCK_ABORTED', '処理開始前に操作が中断されました。再試行してください。', true],
+    ['WEB_LOCK_REQUEST_FAILED', '安全な排他制御を開始できませんでした。再読み込み後に再試行してください。', true],
+    ['CROSS_TAB_STATE_STALE', '別タブで更新された状態を検出しました。画面を再読み込みしてください。', false],
+    ['PORTFOLIO_GENERATION_CONFLICT', '保存世代の競合を検出しました。画面を再読み込みしてください。', false],
+  ] as const)('%s maps to the fixed shared message without a raw message field', (code, message, retryable) => {
+    const result: CsvImportResult = { ok: false, operation: 'importCsv', code, retryable }
+    expect(csvImportFeedback(result)).toEqual({ ok: false, message })
+    expect(Object.keys(result).sort()).toEqual(['code', 'ok', 'operation', 'retryable'])
+  })
+
+  it('shows no completion feedback while pending and maps coordination only after resolve', async () => {
+    const gate = deferred<CsvImportResult>()
+    const feedback: Array<ReturnType<typeof csvImportFeedback> | null> = []
+    const running = executeCsvImportUiFlow(
+      new File(['csv'], 'portfolio.csv'),
+      () => gate.promise,
+      value => feedback.push(value),
+    )
+    expect(feedback).toEqual([null])
+    gate.resolve({
+      ok: false,
+      operation: 'importCsv',
+      code: 'CROSS_TAB_STATE_STALE',
+      retryable: false,
+    })
+    await running
+    expect(feedback[feedback.length - 1]).toMatchObject({ ok: false, message: expect.stringContaining('別タブ') })
+  })
+
+  it('does not expose a raw rejection message', async () => {
+    const feedback: Array<ReturnType<typeof csvImportFeedback> | null> = []
+    await executeCsvImportUiFlow(
+      new File(['csv'], 'portfolio.csv'),
+      async () => { throw new Error('raw sentinel stack') },
+      value => feedback.push(value),
+    )
+    expect(feedback[feedback.length - 1]?.message).not.toMatch(/raw sentinel|stack/)
   })
 })

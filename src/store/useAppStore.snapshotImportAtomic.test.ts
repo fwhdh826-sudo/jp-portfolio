@@ -652,7 +652,7 @@ describe('T9-A004-R3-RED: snapshot import transaction failure counterexamples', 
       if (result.ok) {
         // recovery方式: SUCCESSを返すならstoreはcommitted generationへ回復していること
         expect({ durableIsNew, storeIsNew }).toEqual({ durableIsNew: true, storeIsNew: true })
-      } else if (result.persistence.status === 'rolled_back') {
+      } else if (!('operation' in result) && result.persistence.status === 'rolled_back') {
         // 構造化失敗方式: rolled_backと報告する以上、物理bytesも旧世代へ戻っていること。
         // 現行はcanonicalに新世代bytesが残ったままrolled_backを返す（reloadすると
         // 失敗したはずのimport世代が出現する）。
@@ -665,9 +665,11 @@ describe('T9-A004-R3-RED: snapshot import transaction failure counterexamples', 
           durableHoldsNewGeneration: false,  // 現行: true
           storeIsNew: false,
         })
-      } else {
+      } else if (!('operation' in result)) {
         // それ以外は物理残留を正確に報告する構造化recovery resultであること
         expect(['rollback_failed', 'ownership_lost', 'not_attempted']).toContain(result.persistence.status)
+      } else {
+        expect(result.code).not.toBe('LOCAL_OPERATION_BUSY')
       }
     })
   })

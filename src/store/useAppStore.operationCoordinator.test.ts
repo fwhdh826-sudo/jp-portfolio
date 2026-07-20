@@ -284,7 +284,7 @@ function assertBlockedResult(operation: OperationName, result: ActionResult | un
       retryable: true,
     })
   } else if (operation === 'csv') {
-    expect(result).toMatchObject({ ok: false, code: 'IMPORT_IN_PROGRESS' })
+    expect(result).toMatchObject({ ok: false, code: 'LOCAL_OPERATION_BUSY' })
   } else {
     expect(result).toMatchObject({ ok: false, code: 'LOCAL_OPERATION_BUSY' })
   }
@@ -928,7 +928,7 @@ describe('RA-003 Phase D: failure releases owner and permits retry', () => {
     const pending = await startPendingOperation('refresh')
     const fake = { token: Symbol('attacker'), kind: 'refresh' } as PortfolioOperationTicket
     expect(releasePortfolioOperation(fake)).toBe(false)
-    expect(await useAppStore.getState().importCsv(csvFile())).toMatchObject({ ok: false, code: 'IMPORT_IN_PROGRESS' })
+    expect(await useAppStore.getState().importCsv(csvFile())).toMatchObject({ ok: false, code: 'LOCAL_OPERATION_BUSY' })
     await pending.finish()
     expect((await useAppStore.getState().importCsv(csvFile())).code).not.toBe('IMPORT_IN_PROGRESS')
   })

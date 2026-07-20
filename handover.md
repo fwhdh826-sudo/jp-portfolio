@@ -47990,3 +47990,72 @@ It is prepared and pushed only on `v13.3-dev`; this ticket does not push to main
 ### Next
 
 `RA-007-D: connect Web Lock to CSV, initialize, and refresh`
+
+## RA-007-D1: Web Lock CSV serialization
+
+### Retry and caller inventory
+
+- The previous RA-007-D1 run correctly stopped before changes because an existing `importCsv()`
+  caller was outside its allowlist.
+- `trustCandidatePipelineFreshness.test.ts` was an existing importCsv caller.
+  The retry explicitly added its immediate adapter setup/reset without
+  changing freshness or candidate-pipeline assertions.
+- Initial inventory contained **11 test files / 436 tests**. The retry changed only the
+  inventory-backed callers that required the immediate adapter, the `LOCAL_OPERATION_BUSY`
+  structured result, or the new CSV activation/non-activation expectation. Additional caller
+  blockers: **0**.
+- Freshness/candidate-pipeline assertions changed: **0**. Existing freshness fixtures changed:
+  **0**. Existing two import regression tests and the full file remained GREEN in UTC/JST
+  (**1 file / 14 tests / skipped 0**).
+
+### Runtime serialization and stale policy
+
+- `importCsv` now follows local busy check -> local ticket -> Web Lock request/grant -> current
+  state and durable generation reread -> stale alignment -> CSV transaction -> FileReader/full
+  sync parse -> monotonicity/fingerprint/analysis -> persistence -> one final publish and
+  synchronous subscribers -> automatic Web Lock release -> local ticket release.
+- Grant-before state/storage/FileReader/transaction work is **0**. The local ticket remains held
+  while queued; same-store reentry returns `LOCAL_OPERATION_BUSY` and makes no second lock
+  request.
+- CSV/CSV FIFO, manual/CSV, snapshot/CSV, CSV/manual, and CSV/snapshot use the same fixed
+  same-origin exclusive lock. A successful durable writer makes an unrefreshed second store
+  return `CROSS_TAB_STATE_STALE` without reading the CSV or mutating state/storage.
+- The RA-007-C seven-field projection is reused for holdings, trust, portfolio policy, cash
+  assumptions, CSV imported time, provenance, and sync summary. TTL-expired/future metadata is
+  normalized consistently; derived-only differences are ignored; unsafe partial legacy evidence
+  is rejected. Automatic merge/rehydrate remains 0.
+- Existing CSV canonical-invalid, transaction CAS conflict, exact-byte ownership, fingerprint,
+  rollback, committed identity, atomic publish, and subscriber contracts remain active.
+- Unsupported, timeout, aborted, and request-failure paths do not fall back to single-tab mode.
+  initialize and refresh remain unconnected to Web Locks.
+
+### T9 and DIRECT verification
+
+- T9 maps all seven coordination codes through the shared fixed sanitized messages. Coordination
+  results have no `message` access, and raw Promise rejection detail is not displayed.
+- The CSV drop area has component-local pending state while waiting for the Web Lock. Drop,
+  click, keyboard activation, file input, and confirmation are disabled; `aria-busy`,
+  `aria-disabled`, and the pending label remain active until `finally` cleanup.
+- New CSV Web Lock DIRECT suite: **1 file / 27 tests / skipped 0** in both UTC and Asia/Tokyo.
+- T9 async suite: **1 file / 31 tests / skipped 0** in both timezones.
+- RA-007-C regression: **3 files / 84 tests / skipped 0** in both timezones
+  (manual/snapshot 24, instance isolation 13, adapter 47).
+- All CSV caller regression: **11 files / 436 tests / skipped 0** in both timezones.
+- Full unit: **70 files / 1772 tests / skipped 0** in both timezones; UTC/JST difference 0.
+- `npx tsc --noEmit`: PASS. `npm run build`: PASS (128 modules; known 500 kB warning only).
+  `git diff --check`: PASS.
+- Twelve required mutations all produced RED and were restored by precise inverse patches.
+  Production SHA-256 matched before/after mutation restoration.
+
+### Status
+
+```text
+RA-007-D1: CLOSED
+manual/snapshot/CSV Web Lock: ACTIVE
+initialize/refresh Web Lock: INACTIVE
+full writer coverage: INCOMPLETE
+```
+
+### Next
+
+`RA-007-D2: serialize initialize and refresh with Web Locks and single final publication`

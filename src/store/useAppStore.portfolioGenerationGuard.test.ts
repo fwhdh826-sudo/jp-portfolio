@@ -230,7 +230,7 @@ describe('T9-A004-R3a: 共有portfolio-generation transaction guard', () => {
     })
   })
 
-  it('R3-12b GREEN: snapshot import中のimportCsvはIMPORT_IN_PROGRESSで即拒否され、完了後にretry可能', async () => {
+  it('R3-12b GREEN: snapshot import中のimportCsvはLOCAL_OPERATION_BUSYで即拒否され、完了後にretry可能', async () => {
     const raw = v3Snapshot(incomingProvenance('d'), {
       holdings: [{ code: '1001', name: '銘柄1001', eval: 313_000, pnlPct: 0 }],
     })
@@ -252,7 +252,7 @@ describe('T9-A004-R3a: 共有portfolio-generation transaction guard', () => {
       finalStatus: useAppStore.getState().system.status,
     }).toEqual({
       outerCode: 'SUCCESS',
-      nestedCode: 'IMPORT_IN_PROGRESS',
+      nestedCode: 'LOCAL_OPERATION_BUSY',
       finalStatus: 'success',
     })
 

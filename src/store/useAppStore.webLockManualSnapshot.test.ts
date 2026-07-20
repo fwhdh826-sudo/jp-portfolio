@@ -523,7 +523,7 @@ describe('RA-007-C lock lifetime, timeout, and scope', () => {
     expect(await grant(manager, retry)).toMatchObject({ ok: true, code: 'SUCCESS' })
   })
 
-  it('does not connect initialize, refresh, or CSV to the injected Web Lock', async () => {
+  it('does not connect initialize or refresh, while CSV uses the injected Web Lock', async () => {
     let requests = 0
     const countingAdapter = immediateAdapter(() => { requests += 1 })
     const instance = createAppStoreInstanceForTest({ portfolioGenerationLock: countingAdapter })
@@ -531,7 +531,7 @@ describe('RA-007-C lock lifetime, timeout, and scope', () => {
     await instance.store.getState().refreshAllData()
     storage[CSV_IMPORT_GENERATION_KEY] = '{invalid'
     await instance.store.getState().importCsv({ name: 'no-lock.csv' } as File)
-    expect(requests).toBe(0)
+    expect(requests).toBe(1)
   })
 })
 

@@ -218,6 +218,7 @@ export type CsvImportResult =
       officialDecisionCommitted: false
       persistence: { status: 'not_attempted' | 'rolled_back' | 'rollback_failed' | 'ownership_lost' | 'indeterminate' }
     }
+  | (PortfolioCoordinationFailure & { operation: 'importCsv' })
 
 class OfficialDecisionGenerationError extends Error {
   constructor(cause: unknown) {
@@ -2142,22 +2143,48 @@ const createAppStoreStateCreator = (
 
   // ── CSV取込（個別株 + 投信 両対応）──────────────────────────
   importCsv: async (file: File, options = {}) => {
-    if (runtime.activePortfolioOperation !== null || runtime.activePortfolioGenerationTransaction !== null || get().system.status === 'loading') {
-      return csvImportFailure('IMPORT_IN_PROGRESS', '別の取込または更新が進行中です。完了後に再試行してください。')
+    // Do not read Zustand before the Web Lock grant. Runtime ownership is the only local
+    // preflight authority, and the acquired ticket stays held while this request is queued.
+    if (runtime.activePortfolioOperation !== null || runtime.activePortfolioGenerationTransaction !== null) {
+      return createPortfolioCoordinationFailure('importCsv', 'LOCAL_OPERATION_BUSY')
     }
     const operationTicket = acquirePortfolioOperationFromRuntime(runtime, 'csv')
     if (operationTicket === null) {
-      return csvImportFailure('IMPORT_IN_PROGRESS', '別の取込または更新が進行中です。完了後に再試行してください。')
+      return createPortfolioCoordinationFailure('importCsv', 'LOCAL_OPERATION_BUSY')
     }
+    try {
+      const lockResult = await runtime.portfolioGenerationLock.runExclusive(
+        'importCsv',
+        async (): Promise<CsvImportResult> => {
+    const grantedState = get()
+    const analysisNow = Date.now()
+    const alignment = inspectDurablePortfolioAlignment(runtime, grantedState, analysisNow)
+    if (alignment.status === 'stale') {
+      return createPortfolioCoordinationFailure('importCsv', 'CROSS_TAB_STATE_STALE')
+    }
+    if (alignment.status === 'invalid') {
+      return alignment.canonicalInvalid
+        ? csvImportFailure(
+            'CSV_CANONICAL_INVALID',
+            '保存済みの取込世代データが破損しているため、CSVの取込を中断しました。' +
+              '破損した保存世代を修復または削除してから再試行してください。状態は変更されていません。',
+          )
+        : csvImportFailure(
+            'PERSISTENCE_ERROR',
+            '保存済みデータを読み込めないため、CSVの取込を中断しました。再読み込み後に再試行してください。',
+          )
+    }
+
+    // Transaction creation and all CSV work start only after grant and alignment.
     const transaction: CsvImportTransaction = {
       token: Symbol('csv-import-owner'),
       origin: 'csv',
       phase: 'READING',
-      analysisNow: Date.now(),
+      analysisNow,
       initialFingerprint: '',
       trackerSnapshot: null,
       trackerPortfolioBaseline: null,
-      canonicalPreviousRaw: null,
+      canonicalPreviousRaw: alignment.canonicalRaw,
     }
     runtime.activePortfolioGenerationTransaction = transaction
     let durableCommitted = false
@@ -2169,7 +2196,7 @@ const createAppStoreStateCreator = (
     let persistenceReceipt: CsvImportPersistenceReceipt | null = null
     let committedTransferIdentity: string | null = null
     const publishFailure = (failure: CsvImportResult): CsvImportResult => {
-      if (failure.ok) return failure
+      if (failure.ok || 'operation' in failure) return failure
       if (runtime.activePortfolioGenerationTransaction?.token === transaction.token) {
         set(s => ({ system: { ...s.system, status: 'error', error: failure.message } }))
       }
@@ -2177,28 +2204,6 @@ const createAppStoreStateCreator = (
     }
 
     try {
-      try {
-        transaction.canonicalPreviousRaw = readCsvImportCanonicalRaw()
-      } catch (error) {
-        return publishFailure(csvImportFailure(
-          'PERSISTENCE_ERROR',
-          error instanceof Error ? error.message : String(error),
-        ))
-      }
-
-      // T9-A004-R3-FIX-B (R3-F004): present-invalid canonical（keyは存在するが
-      // JSON/manifest/checksum/schema検証を通らない）はfail-closed。absent扱いで
-      // ALLOW_FIRST_IMPORTへ進むと、storeに残るauthoritative provenanceより古いCSVで
-      // canonical/store世代を逆行・自動上書きできてしまう。修復は通常importから分離し、
-      // 将来の明示repair actionだけに委ねる。raw parser/storage詳細はUIへ出さない。
-      if (transaction.canonicalPreviousRaw !== null &&
-          restoreCsvImportGenerationFromRaw(transaction.canonicalPreviousRaw).status === 'invalid') {
-        return publishFailure(csvImportFailure(
-          'CSV_CANONICAL_INVALID',
-          '保存済みの取込世代データが破損しているため、CSVの取込を中断しました。' +
-            '破損した保存世代を修復または削除してから再試行してください。状態は変更されていません。',
-        ))
-      }
 
       transaction.trackerSnapshot = captureTrustShortAnalysisInput(transaction.analysisNow)
       transaction.trackerPortfolioBaseline = captureTrustShortPortfolioBaseline()
@@ -2579,6 +2584,18 @@ const createAppStoreStateCreator = (
         }
         runtime.activePortfolioGenerationTransaction = null
       }
+    }
+        },
+      )
+      return lockResult.ok
+        ? lockResult.value
+        : createPortfolioCoordinationFailure('importCsv', lockResult.code)
+    } catch {
+      return csvImportFailure(
+        'UNKNOWN_ERROR',
+        'CSV取込中に予期しないエラーが発生しました。状態は変更されていません。再試行してください。',
+      )
+    } finally {
       releasePortfolioOperationFromRuntime(runtime, operationTicket)
     }
   },

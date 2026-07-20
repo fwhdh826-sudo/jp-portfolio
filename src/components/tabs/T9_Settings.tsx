@@ -186,6 +186,17 @@ export interface CsvImportFeedback {
   tone?: 'info'
 }
 
+export function csvImportFeedback(result: CsvImportResult): CsvImportFeedback {
+  if (!result.ok && 'operation' in result) {
+    return { ok: false, message: coordinationFailureMessage(result.code) }
+  }
+  return {
+    ok: result.ok,
+    message: result.message,
+    ...(result.ok && result.code === 'DUPLICATE_CSV' ? { tone: 'info' as const } : {}),
+  }
+}
+
 export async function executeCsvImportUiFlow(
   file: File,
   importCsv: (file: File, options?: CsvImportOptions) => Promise<CsvImportResult>,
@@ -201,15 +212,10 @@ export async function executeCsvImportUiFlow(
   setFeedback(null)
   try {
     const result = await importCsv(file, options)
-    setFeedback({
-      ok: result.ok,
-      message: result.message,
-      ...(result.ok && result.code === 'DUPLICATE_CSV' ? { tone: 'info' as const } : {}),
-    })
+    setFeedback(csvImportFeedback(result))
     return result
-  } catch (error) {
-    const message = error instanceof Error ? error.message : String(error)
-    setFeedback({ ok: false, message: `CSV取込に失敗しました: ${message}` })
+  } catch {
+    setFeedback({ ok: false, message: 'CSV取込に失敗しました。再読み込み後に再試行してください。' })
     return null
   }
 }
@@ -223,27 +229,28 @@ function CsvDropArea({
 }) {
   const inputRef = useRef<HTMLInputElement>(null)
   const importInFlightRef = useRef(false)
+  const [isPending, setIsPending] = useState(false)
   const [isDragOver, setIsDragOver] = useState(false)
   const [lastResult, setLastResult] = useState<CsvImportFeedback | null>(null)
   const [confirmationFile, setConfirmationFile] = useState<File | null>(null)
 
   const handleFile = useCallback(async (file: File) => {
-    if (importInFlightRef.current || isLoading) {
-      setLastResult({ ok: false, message: '別の取込または更新が進行中です。完了後に再試行してください。' })
-      return
-    }
+    if (importInFlightRef.current || isLoading) return
     importInFlightRef.current = true
+    setIsPending(true)
     try {
       const result = await executeCsvImportUiFlow(file, onFile, setLastResult)
       setConfirmationFile(result?.ok === false && result.code === 'CSV_PROVENANCE_UNKNOWN' ? file : null)
     } finally {
       importInFlightRef.current = false
+      setIsPending(false)
     }
   }, [isLoading, onFile])
 
   const handleConfirmedImport = useCallback(async () => {
     if (!confirmationFile || importInFlightRef.current || isLoading) return
     importInFlightRef.current = true
+    setIsPending(true)
     try {
       setConfirmationFile(null)
       await executeCsvImportUiFlow(
@@ -254,6 +261,7 @@ function CsvDropArea({
       )
     } finally {
       importInFlightRef.current = false
+      setIsPending(false)
     }
   }, [confirmationFile, isLoading, onFile])
 
@@ -271,8 +279,10 @@ function CsvDropArea({
 
   const handleDragLeave = () => setIsDragOver(false)
 
+  const pending = isLoading || isPending
+
   const handleClick = () => {
-    if (!isLoading && !importInFlightRef.current) inputRef.current?.click()
+    if (!pending && !importInFlightRef.current) inputRef.current?.click()
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -286,22 +296,22 @@ function CsvDropArea({
     <div>
       <div
         className={`csv-drop-area${isDragOver ? ' drag-over' : ''}`}
-        onClick={isLoading ? undefined : handleClick}
-        onDrop={isLoading ? undefined : handleDrop}
+        onClick={pending ? undefined : handleClick}
+        onDrop={pending ? undefined : handleDrop}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         role="button"
         tabIndex={0}
-        onKeyDown={e => { if (!isLoading && (e.key === 'Enter' || e.key === ' ')) handleClick() }}
+        onKeyDown={e => { if (!pending && (e.key === 'Enter' || e.key === ' ')) handleClick() }}
         aria-label="CSVファイルを選択またはドロップ"
-        aria-busy={isLoading}
-        aria-disabled={isLoading}
+        aria-busy={pending}
+        aria-disabled={pending}
       >
         <div className="csv-drop-area__icon">
-          {isLoading ? '⏳' : '📂'}
+          {pending ? '⏳' : '📂'}
         </div>
         <div className="csv-drop-area__main">
-          {isLoading ? '取込中...' : 'CSVをドロップ / タップして選択'}
+          {pending ? '取込中...' : 'CSVをドロップ / タップして選択'}
         </div>
         <div className="csv-drop-area__sub">
           SBI証券「保有証券一覧」CSV（UTF-8・Shift-JIS 両対応）
@@ -312,7 +322,7 @@ function CsvDropArea({
           accept=".csv"
           className="csv-drop-area__input"
           onChange={handleChange}
-          disabled={isLoading}
+          disabled={pending}
           aria-hidden="true"
         />
       </div>
@@ -342,7 +352,7 @@ function CsvDropArea({
         <button
           type="button"
           onClick={() => { void handleConfirmedImport() }}
-          disabled={isLoading}
+          disabled={pending}
           style={{ marginTop: spacing[2] }}
         >
           基準時刻不明を確認して、このCSVを再取込

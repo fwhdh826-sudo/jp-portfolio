@@ -1039,7 +1039,7 @@ describe('RA-006 manual mutation coordinator and atomic publish', () => {
     await refreshResult
     await expect(initializeResult).resolves.toMatchObject({ ok: false, code: 'LOCAL_OPERATION_BUSY' })
     await expect(refreshResult).resolves.toMatchObject({ ok: false, code: 'LOCAL_OPERATION_BUSY' })
-    await expect(csvResult).resolves.toMatchObject({ ok: false, code: 'IMPORT_IN_PROGRESS' })
+    await expect(csvResult).resolves.toMatchObject({ ok: false, code: 'LOCAL_OPERATION_BUSY' })
     await expect(snapshotResult).resolves.toMatchObject({ ok: false, code: 'LOCAL_OPERATION_BUSY' })
     expect(notifications).toBe(1)
     expect(useAppStore.getState().holdings.find(item => item.code === HOLDING_CODE)?.eval).toBe(222_222)

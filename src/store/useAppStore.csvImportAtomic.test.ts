@@ -429,6 +429,18 @@ describe('T9-A001/A002: structured CSV result and atomic store commit', () => {
         trust: { updated: 1, reheld: 0, zeroed: 0, unknownFunds: [], ambiguousFundIds: [] },
       }
       const state = useAppStore.getState()
+      if (currentSchema !== 'absent') {
+        useAppStore.setState(current => ({
+          system: {
+            ...current.system,
+            csvLastImportedAt: currentImportedAt,
+            csvImportProvenance: currentSchema === 'csv-import-generation-1'
+              ? null
+              : currentProvenance,
+            csvSyncSummary: currentSummary,
+          },
+        }))
+      }
       const legacyBase = {
         holdings: state.holdings,
         trust: state.trust,
@@ -698,6 +710,12 @@ describe('T9-A001/A002: structured CSV result and atomic store commit', () => {
     const legacyGeneration = restoreCsvImportGeneration()
     if (legacyGeneration.status !== 'committed') throw new Error('expected legacy v2 generation')
     expect(legacyGeneration.payload.provenance?.semanticIdentity).toBeUndefined()
+    useAppStore.setState(state => ({
+      system: {
+        ...state.system,
+        csvImportProvenance: legacyGeneration.payload.provenance ?? null,
+      },
+    }))
 
     await expect(useAppStore.getState().importCsv(csvFile(first)))
       .resolves.toMatchObject({ ok: false, code: 'CSV_PROVENANCE_CONFLICT' })
@@ -996,7 +1014,7 @@ describe('T9-A001/A002: structured CSV result and atomic store commit', () => {
     expect(retry.ok).toBe(true)
   })
 
-  it('persistence write failure rolls all keys back and leaves the store generation unchanged', async () => {
+  it('unsafe partial legacy evidence is rejected before persistence and leaves the store generation unchanged', async () => {
     storage.v81_portfolio = 'old-portfolio'
     storage.v81_trust = 'old-trust'
     storage.v10_csv_imported_at = 'old-imported-at'
@@ -1004,15 +1022,14 @@ describe('T9-A001/A002: structured CSV result and atomic store commit', () => {
     storage.v91_learning = 'old-learning'
     const persistedBefore = { ...storage }
     const stateBefore = relevantState()
-    failStorageWriteAt = 1
-
     const result = await useAppStore.getState().importCsv(csvFile())
 
     expect(result).toMatchObject({
       ok: false,
-      code: 'PERSISTENCE_ERROR',
-      persistence: { status: 'rolled_back' },
+      code: 'CROSS_TAB_STATE_STALE',
+      retryable: false,
     })
+    expect(storageWriteCount).toBe(0)
     expect(relevantState()).toEqual(stateBefore)
     expect(storage).toEqual(persistedBefore)
   })
@@ -1104,7 +1121,7 @@ describe('T9-A001/A002: structured CSV result and atomic store commit', () => {
     const first = useAppStore.getState().importCsv(pendingFile)
     await Promise.resolve()
     const second = await useAppStore.getState().importCsv(csvFile())
-    expect(second).toMatchObject({ ok: false, code: 'IMPORT_IN_PROGRESS' })
+    expect(second).toMatchObject({ ok: false, code: 'LOCAL_OPERATION_BUSY' })
 
     release(new TextEncoder().encode(VALID_CSV).buffer)
     await first
@@ -1132,7 +1149,7 @@ describe('T9-A001/A002: structured CSV result and atomic store commit', () => {
     expect(retry.ok).toBe(true)
   })
 
-  it('canonical changed after transaction capture is rejected by pre-write CAS and remains retryable', async () => {
+  it('canonical changed after transaction capture is rejected by pre-write CAS and a stale local retry is rejected', async () => {
     await expect(useAppStore.getState().importCsv(csvFile())).resolves.toMatchObject({ ok: true })
     const previousGlobal = structuredClone(relevantState())
     let release!: (value: ArrayBuffer) => void
@@ -1162,7 +1179,10 @@ describe('T9-A001/A002: structured CSV result and atomic store commit', () => {
     expect(restorePortfolio()?.[0].eval).toBe(888_000)
     expect(useAppStore.getState().system.status).toBe('error')
 
-    await expect(useAppStore.getState().importCsv(csvFile())).resolves.toMatchObject({ ok: true })
+    await expect(useAppStore.getState().importCsv(csvFile())).resolves.toMatchObject({
+      ok: false,
+      code: 'CROSS_TAB_STATE_STALE',
+    })
   })
 
   it.each([
@@ -1320,7 +1340,7 @@ describe('T9-A001/A002: structured CSV result and atomic store commit', () => {
     unsubscribeMutating()
 
     expect(outerResult).toMatchObject({ ok: true, code: 'SUCCESS' })
-    expect(nestedResult).toMatchObject({ ok: false, code: 'IMPORT_IN_PROGRESS' })
+    expect(nestedResult).toMatchObject({ ok: false, code: 'LOCAL_OPERATION_BUSY' })
     expect(useAppStore.getState().market).toEqual(marketBefore)
     expect(useAppStore.getState().system.status).toBe('success')
     await expect(useAppStore.getState().importCsv(csvFile())).resolves.toMatchObject({ ok: true })
@@ -1349,7 +1369,7 @@ describe('T9-A001/A002: structured CSV result and atomic store commit', () => {
     storageReentry = null
 
     expect(result).toMatchObject({ ok: false, code: 'IMPORT_CONFLICT' })
-    expect(nestedResult).toMatchObject({ ok: false, code: 'IMPORT_IN_PROGRESS' })
+    expect(nestedResult).toMatchObject({ ok: false, code: 'LOCAL_OPERATION_BUSY' })
     expect(storage[CSV_IMPORT_GENERATION_KEY]).toBeUndefined()
     expect(storage.v95_trust_short_tracker).toBeUndefined()
     expect(useAppStore.getState().holdings[0].eval).toBe(100_000)
@@ -1404,7 +1424,10 @@ describe('T9-A001/A002: structured CSV result and atomic store commit', () => {
     expect(useAppStore.getState().system.status).toBe('error')
 
     storageReentry = null
-    await expect(useAppStore.getState().importCsv(csvFile(nextCsv))).resolves.toMatchObject({ ok: true })
+    await expect(useAppStore.getState().importCsv(csvFile(nextCsv))).resolves.toMatchObject({
+      ok: false,
+      code: 'CROSS_TAB_STATE_STALE',
+    })
   })
 
   it('C2: sell-lock boundary crossing keeps analysis, plans, and official decision on one transaction clock', async () => {
@@ -1605,7 +1628,7 @@ describe('T9-A001/A002: structured CSV result and atomic store commit', () => {
 
     expect(outer).toMatchObject({ ok: true, code: 'SUCCESS' })
     expect(nestedResults).toHaveLength(2)
-    expect(nestedResults.every(result => !result.ok && result.code === 'IMPORT_IN_PROGRESS')).toBe(true)
+    expect(nestedResults.every(result => !result.ok && result.code === 'LOCAL_OPERATION_BUSY')).toBe(true)
     expect(laterCalls).toBe(1)
     expect(useAppStore.getState().system.status).toBe('success')
     await expect(useAppStore.getState().importCsv(csvFile())).resolves.toMatchObject({ ok: true })
@@ -1631,7 +1654,7 @@ describe('T9-A001/A002: structured CSV result and atomic store commit', () => {
 
     expect(result).toMatchObject({ ok: true, code: 'SUCCESS' })
     expect(storage.v95_trust_short_tracker).toBeDefined()
-    expect(nestedResult).toMatchObject({ ok: false, code: 'IMPORT_IN_PROGRESS' })
+    expect(nestedResult).toMatchObject({ ok: false, code: 'LOCAL_OPERATION_BUSY' })
     expect(useAppStore.getState().system.status).toBe('success')
     await expect(useAppStore.getState().importCsv(csvFile())).resolves.toMatchObject({ ok: true })
   })
@@ -1853,7 +1876,7 @@ describe('T9-A004-R3-FIX-B: present-invalid canonical CSV write policy (R3-F004)
     )))
 
     expect(result).toMatchObject({ ok: false, code: 'CSV_CANONICAL_INVALID' })
-    if (!result.ok) {
+    if (!result.ok && !('operation' in result)) {
       expect(result.message).not.toMatch(/Unexpected|JSON|token|checksum|parse|schema/i)
     }
     expect(storage[CSV_IMPORT_GENERATION_KEY]).toBe(corruptedRaw)

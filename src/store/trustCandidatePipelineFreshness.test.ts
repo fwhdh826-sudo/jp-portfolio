@@ -1,6 +1,12 @@
 import { afterEach, beforeEach, describe, it, expect, vi } from 'vitest'
 import type { Trust } from '../types'
-import { useAppStore, runFullAnalysis } from './useAppStore'
+import {
+  resetPortfolioGenerationLockAdapterForTest,
+  runFullAnalysis,
+  setPortfolioGenerationLockAdapterForTest,
+  useAppStore,
+} from './useAppStore'
+import { createImmediatePortfolioGenerationLockAdapterForTest } from './testing/portfolioGenerationLockTestAdapters'
 
 // P4.5-A013-T5:
 // public/data/trust_master.json はP4.5-A010-1aで恒久的に配信停止された（今後
@@ -225,10 +231,16 @@ describe('useAppStore.importCsv: 初回CSV取込でも同一ターンでtrust ca
   }
 
   beforeEach(() => {
+    setPortfolioGenerationLockAdapterForTest(
+      createImmediatePortfolioGenerationLockAdapterForTest(),
+    )
     Object.keys(storage).forEach(key => delete storage[key])
     vi.stubGlobal('localStorage', localStorageMock)
   })
-  afterEach(() => vi.unstubAllGlobals())
+  afterEach(() => {
+    vi.unstubAllGlobals()
+    resetPortfolioGenerationLockAdapterForTest()
+  })
 
   const STOCK_ONLY_CSV = [
     '株式（現物/特定預り）',
