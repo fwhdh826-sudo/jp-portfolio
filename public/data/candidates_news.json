@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-07-20T10:02:37.578801+09:00",
-  "sourceUpdatedAt": "2026-07-20T00:05:50+00:00",
+  "updatedAt": "2026-07-20T15:32:05.357502+09:00",
+  "sourceUpdatedAt": "2026-07-20T06:19:45+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -29,21 +29,21 @@
       "items": []
     },
     "us_broad": {
-      "avgSentiment": -0.165,
-      "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 0,
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Gold Falls as US-Iran Hostilities Keep Rate Hike Bets on Table",
-      "topPositiveTitle": "Bond Traders Take Warsh at Word, See Inflation Fight Continuing",
+      "topNegativeTitle": "Gold Steadies as Traders Assess Rates Path After US-Iran Clashes",
+      "topPositiveTitle": "Gold Steadies as Traders Assess Rates Path After US-Iran Clashes",
       "items": [
         {
-          "title": "Gold Falls as US-Iran Hostilities Keep Rate Hike Bets on Table",
+          "title": "Gold Steadies as Traders Assess Rates Path After US-Iran Clashes",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
           "publishedAt": "2026-07-19T23:33:09+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-07-19/gold-falls-as-us-iran-hostilities-keep-rate-hike-bets-on-table",
           "tags": [
@@ -51,18 +51,6 @@
             "gold",
             "market",
             "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Bond Traders Take Warsh at Word, See Inflation Fight Continuing",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-07-19T17:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-19/bond-traders-take-warsh-at-word-see-inflation-fight-continuing",
-          "tags": [
-            "market",
             "us_broad"
           ]
         }
@@ -81,15 +69,15 @@
       "items": []
     },
     "global_broad": {
-      "avgSentiment": -0.67,
-      "negativeCount": 1,
+      "avgSentiment": -0.5,
+      "negativeCount": 2,
       "positiveCount": 0,
       "neutralCount": 0,
       "sourceCount": 1,
-      "itemCount": 1,
+      "itemCount": 2,
       "isStale": false,
       "topNegativeTitle": "Safest Carry in Emerging Markets Is in Latin American Currencies",
-      "topPositiveTitle": "Safest Carry in Emerging Markets Is in Latin American Currencies",
+      "topPositiveTitle": "Emerging-Market Stocks Mixed as Investors Weigh Iran Tensions",
       "items": [
         {
           "title": "Safest Carry in Emerging Markets Is in Latin American Currencies",
@@ -104,25 +92,39 @@
             "macro_risk",
             "market"
           ]
+        },
+        {
+          "title": "Emerging-Market Stocks Mixed as Investors Weigh Iran Tensions",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-07-20T04:45:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-20/emerging-market-stocks-mixed-as-investors-weigh-iran-tensions",
+          "tags": [
+            "geopolitical",
+            "global_broad",
+            "macro_risk",
+            "market"
+          ]
         }
       ]
     },
     "gold": {
-      "avgSentiment": -1.0,
-      "negativeCount": 1,
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
+      "neutralCount": 1,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Gold Falls as US-Iran Hostilities Keep Rate Hike Bets on Table",
-      "topPositiveTitle": "Gold Falls as US-Iran Hostilities Keep Rate Hike Bets on Table",
+      "topNegativeTitle": "Gold Steadies as Traders Assess Rates Path After US-Iran Clashes",
+      "topPositiveTitle": "Gold Steadies as Traders Assess Rates Path After US-Iran Clashes",
       "items": [
         {
-          "title": "Gold Falls as US-Iran Hostilities Keep Rate Hike Bets on Table",
+          "title": "Gold Steadies as Traders Assess Rates Path After US-Iran Clashes",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
           "publishedAt": "2026-07-19T23:33:09+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-07-19/gold-falls-as-us-iran-hostilities-keep-rate-hike-bets-on-table",
           "tags": [
@@ -160,15 +162,15 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.243,
-      "negativeCount": 1,
-      "positiveCount": 0,
+      "avgSentiment": 0.078,
+      "negativeCount": 2,
+      "positiveCount": 2,
       "neutralCount": 2,
       "sourceCount": 1,
-      "itemCount": 3,
+      "itemCount": 6,
       "isStale": false,
       "topNegativeTitle": "Safest Carry in Emerging Markets Is in Latin American Currencies",
-      "topPositiveTitle": "Oil Jumps, Bonds Fall as US-Iran Attacks Escalate: Markets Wrap",
+      "topPositiveTitle": "Palm Climbs to Near One-Month High as Iran Conflict Boosts Crude",
       "items": [
         {
           "title": "Safest Carry in Emerging Markets Is in Latin American Currencies",
@@ -185,21 +187,34 @@
           ]
         },
         {
-          "title": "Aussie’s Slide Versus Kiwi to Slow on Rate Gap, Strategists Say",
+          "title": "Emerging-Market Stocks Mixed as Investors Weigh Iran Tensions",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.2,
-          "publishedAt": "2026-07-19T19:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-19/aussie-s-slide-versus-kiwi-to-slow-on-rate-gap-strategists-say",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-07-20T04:45:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-20/emerging-market-stocks-mixed-as-investors-weigh-iran-tensions",
           "tags": [
-            "fx",
+            "geopolitical",
+            "global_broad",
             "macro_risk",
-            "market",
-            "rates"
+            "market"
           ]
         },
         {
-          "title": "Oil Jumps, Bonds Fall as US-Iran Attacks Escalate: Markets Wrap",
+          "title": "China Is Exporting 20% Fewer Magnets to US Despite Trade Truce",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-20T06:02:24+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-20/china-is-exporting-20-fewer-magnets-to-us-despite-trade-truce",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Oil Rises as US-Iran Attacks Intensify, Bonds Fall: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.14,
@@ -211,19 +226,31 @@
             "macro_risk",
             "market"
           ]
+        },
+        {
+          "title": "Rising Demand for Hedges Hints at Volatility Ahead: Taking Stock",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-07-20T06:19:45+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-20/rising-demand-for-hedges-hints-at-volatility-ahead-taking-stock",
+          "tags": [
+            "macro_risk",
+            "market"
+          ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": -0.108,
+      "avgSentiment": 0.0,
       "negativeCount": 1,
       "positiveCount": 1,
-      "neutralCount": 3,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 4,
       "isStale": false,
       "topNegativeTitle": "Safest Carry in Emerging Markets Is in Latin American Currencies",
-      "topPositiveTitle": "IDR/USD: Rupiah May Recover on Rate Hike, Stronger Fiscals, Analysts Say",
+      "topPositiveTitle": "NZD: Hedge Funds Amass Biggest New Zealand Dollar Net Short Since 2006",
       "items": [
         {
           "title": "Safest Carry in Emerging Markets Is in Latin American Currencies",
@@ -240,27 +267,14 @@
           ]
         },
         {
-          "title": "Aussie’s Slide Versus Kiwi to Slow on Rate Gap, Strategists Say",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.2,
-          "publishedAt": "2026-07-19T19:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-19/aussie-s-slide-versus-kiwi-to-slow-on-rate-gap-strategists-say",
-          "tags": [
-            "fx",
-            "macro_risk",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "South Korea Details Plan to Make Won Freely Tradable Abroad",
+          "title": "RBI Intervenes to Support Rupee as Currency Nears Record Low",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-19T03:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-19/south-korea-to-ease-fx-rules-for-foreigners-to-trade-won-easier",
+          "publishedAt": "2026-07-20T04:27:59+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-20/rbi-intervenes-to-support-rupee-as-currency-nears-record-low",
           "tags": [
+            "commodity",
             "fx",
             "market"
           ]
@@ -279,36 +293,36 @@
           "titleJa": "共産 田村委員長“政府は早急に追加の物価高対策を”"
         },
         {
-          "title": "IDR/USD: Rupiah May Recover on Rate Hike, Stronger Fiscals, Analysts Say",
+          "title": "NZD: Hedge Funds Amass Biggest New Zealand Dollar Net Short Since 2006",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-07-20T00:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-20/idr-usd-rupiah-may-recover-on-rate-hike-stronger-fiscals-analysts-say",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-07-20T03:12:21+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-20/hedge-funds-dial-up-bearish-kiwi-bets-to-record-on-oil-rebound",
           "tags": [
+            "commodity",
             "fx",
-            "market",
-            "rates"
+            "market"
           ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": -0.29,
-      "negativeCount": 1,
-      "positiveCount": 1,
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
+      "positiveCount": 0,
       "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 3,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Gold Falls as US-Iran Hostilities Keep Rate Hike Bets on Table",
-      "topPositiveTitle": "IDR/USD: Rupiah May Recover on Rate Hike, Stronger Fiscals, Analysts Say",
+      "topNegativeTitle": "Gold Steadies as Traders Assess Rates Path After US-Iran Clashes",
+      "topPositiveTitle": "Gold Steadies as Traders Assess Rates Path After US-Iran Clashes",
       "items": [
         {
-          "title": "Gold Falls as US-Iran Hostilities Keep Rate Hike Bets on Table",
+          "title": "Gold Steadies as Traders Assess Rates Path After US-Iran Clashes",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
           "publishedAt": "2026-07-19T23:33:09+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-07-19/gold-falls-as-us-iran-hostilities-keep-rate-hike-bets-on-table",
           "tags": [
@@ -318,57 +332,54 @@
             "rates",
             "us_broad"
           ]
-        },
-        {
-          "title": "Aussie’s Slide Versus Kiwi to Slow on Rate Gap, Strategists Say",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.2,
-          "publishedAt": "2026-07-19T19:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-19/aussie-s-slide-versus-kiwi-to-slow-on-rate-gap-strategists-say",
-          "tags": [
-            "fx",
-            "macro_risk",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "IDR/USD: Rupiah May Recover on Rate Hike, Stronger Fiscals, Analysts Say",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-07-20T00:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-20/idr-usd-rupiah-may-recover-on-rate-hike-stronger-fiscals-analysts-say",
-          "tags": [
-            "fx",
-            "market",
-            "rates"
-          ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.203,
+      "avgSentiment": 0.31,
       "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 3,
+      "positiveCount": 3,
+      "neutralCount": 5,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 8,
       "isStale": false,
-      "topNegativeTitle": "Caspian Pipeline Consortium Halts Loadings on Drone Strike",
-      "topPositiveTitle": "Latest Oil Market News and Analysis for July 20",
+      "topNegativeTitle": "Octopus-Backed MOPO Partners Nigeria in $75 Million Battery Plan",
+      "topPositiveTitle": "Palm Climbs to Near One-Month High as Iran Conflict Boosts Crude",
       "items": [
         {
-          "title": "Caspian Pipeline Consortium Halts Loadings on Drone Strike",
+          "title": "Octopus-Backed MOPO Partners Nigeria in $75 Million Battery Plan",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-19T08:03:40+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-19/caspian-pipeline-consortium-halts-loadings-after-drone-strike",
+          "publishedAt": "2026-07-20T06:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-20/octopus-backed-mopo-partners-nigeria-in-75-million-battery-plan",
           "tags": [
             "commodity",
-            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "FTSE 100 Live: Oil Back to $90 to Keep Inflation Pressures Rumbling",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-20T05:45:06+00:00",
+          "url": "https://www.bloomberg.com/news/live-blog/2026-07-20/ftse-100-live-updates-burnham-uk-house-prices-pound-bonds-brent-oil-prices-iran-trump-news-what-s-moving-uk-markets-right-now-markets-today",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "RBI Intervenes to Support Rupee as Currency Nears Record Low",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-20T04:27:59+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-20/rbi-intervenes-to-support-rupee-as-currency-nears-record-low",
+          "tags": [
+            "commodity",
+            "fx",
             "market"
           ]
         },
@@ -386,7 +397,7 @@
           "titleJa": "クロマグロの漁獲枠 “他国などと連携し協議再開を” 鈴木農相"
         },
         {
-          "title": "Oil Jumps, Bonds Fall as US-Iran Attacks Escalate: Markets Wrap",
+          "title": "Oil Rises as US-Iran Attacks Intensify, Bonds Fall: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.14,
@@ -398,38 +409,52 @@
             "macro_risk",
             "market"
           ]
-        },
-        {
-          "title": "Latest Oil Market News and Analysis for July 20",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-07-19T22:02:08+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-19/latest-oil-market-news-and-analysis-for-july-20",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "market"
-          ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": -0.032,
+      "avgSentiment": 0.185,
       "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 4,
+      "positiveCount": 2,
+      "neutralCount": 5,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 8,
       "isStale": false,
-      "topNegativeTitle": "Gold Falls as US-Iran Hostilities Keep Rate Hike Bets on Table",
-      "topPositiveTitle": "Latest Oil Market News and Analysis for July 20",
+      "topNegativeTitle": "Emerging-Market Stocks Mixed as Investors Weigh Iran Tensions",
+      "topPositiveTitle": "Palm Climbs to Near One-Month High as Iran Conflict Boosts Crude",
       "items": [
         {
-          "title": "Gold Falls as US-Iran Hostilities Keep Rate Hike Bets on Table",
+          "title": "Emerging-Market Stocks Mixed as Investors Weigh Iran Tensions",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-07-20T04:45:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-20/emerging-market-stocks-mixed-as-investors-weigh-iran-tensions",
+          "tags": [
+            "geopolitical",
+            "global_broad",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "China Is Exporting 20% Fewer Magnets to US Despite Trade Truce",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-20T06:02:24+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-20/china-is-exporting-20-fewer-magnets-to-us-despite-trade-truce",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Gold Steadies as Traders Assess Rates Path After US-Iran Clashes",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
           "publishedAt": "2026-07-19T23:33:09+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-07-19/gold-falls-as-us-iran-hostilities-keep-rate-hike-bets-on-table",
           "tags": [
@@ -441,20 +466,7 @@
           ]
         },
         {
-          "title": "Caspian Pipeline Consortium Halts Loadings on Drone Strike",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-19T08:03:40+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-19/caspian-pipeline-consortium-halts-loadings-after-drone-strike",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "US Launches Ninth Wave of Strikes on Iran After Troops Killed",
+          "title": "US Strikes Iran in Escalating Campaign After Troops Killed",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
@@ -477,20 +489,6 @@
             "market"
           ],
           "titleJa": "バーブルマンデブ海峡封鎖の報道 赤澤経産相 “深刻に注視”"
-        },
-        {
-          "title": "Oil Jumps, Bonds Fall as US-Iran Attacks Escalate: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.14,
-          "publishedAt": "2026-07-19T22:10:10+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-19/oil-climbs-as-middle-east-conflict-escalates-markets-wrap",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
         }
       ]
     }
@@ -503,7 +501,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 4,
+    "excludedCount": 5,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
