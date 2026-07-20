@@ -48300,3 +48300,234 @@ RA-007-E: PENDING
 ### Next
 
 `RA-007-E: adversarial full-writer two-tab validation`
+
+## RA-007-E: adversarial full-writer two-tab validation
+
+### Scope
+
+- Audited SHA: `beb98431b18b44091b306805106d18e7f1d692c4` (D2 HEAD, unchanged throughout this
+  ticket). `origin/main` advanced by one data-only commit (`3c94be8`, `data/**`/`public/data/**`
+  only) during the audit; not merged/rebased/cherry-picked, final divergence recorded below.
+- Test-hardening only, as scoped: **zero** production changes survive. All 10 writers
+  (`initialize`, `refreshAllData`, `importCsv`, `importPortfolioSnapshot`, `updateHolding`,
+  `updateTrust`, `setPortfolioPolicy`, `setCashAssumptions`, `clearCashAssumptionsOverride`,
+  `importCashAssumptions`) confirmed on the single fixed lock name
+  (`jp-portfolio:portfolio-generation:v1`, same-origin, exclusive, 15s timeout, local-ticket-first,
+  persist-before-publish, lock held through subscriber completion, Web-Lock-release-before-local-
+  ticket-release). Operation-specific locks: **0**.
+- Three new test files (self-contained, each duplicates its own baseline fixtures per this
+  repo's existing per-file convention rather than sharing a module): `useAppStore
+  .webLockFullWriterMatrix.test.ts` (241 tests), `useAppStore.webLockFailureRecovery.test.ts` (82
+  tests), `useAppStore.webLockThreeStore.test.ts` (8 tests). No existing RA-007 test file required
+  edits.
+
+### Full 10x10 writer matrix (100 ordered pairs)
+
+- `first x second` for all 10x10 = **100** cases, one parameterized `it.each`. Each `first` drives
+  a genuine durable-projection change (seeded/committed via that writer's own real code path, not
+  a shortcut); `second` runs against an untouched shared baseline on an independent store sharing
+  the same `FakeLockManager` + `localStorage`.
+  - **second = `initialize`** (10/10 cases): always `SUCCESS`, never `CROSS_TAB_STATE_STALE`,
+    and the specific field each `first` writer committed durably survives the bootstrap (verified
+    per-writer: e.g. `setPortfolioPolicy`'s new ratio, `updateHolding`'s new eval,
+    `clearCashAssumptionsOverride`'s `manualOverrideEnabled: false`). One nuance surfaced and
+    accounted for: manual writers other than CSV/snapshot/initialize/refresh persist through the
+    *legacy per-field* keys (not a full canonical envelope) when no canonical generation is
+    committed yet, so only the field that specific writer touched carries durable authority after
+    a bootstrap — unrelated fields correctly fall back to the coded initial defaults rather than
+    to the first store's untouched in-memory baseline. This is existing, correct
+    `buildInitializeRestoredState` behavior (`useAppStore.ts:862`), not a defect; the per-writer
+    field-level check is the correct assertion, not a full-object equality shortcut.
+  - **second = `refreshAllData`** (10/10 cases): `CROSS_TAB_STATE_STALE` in every case (every
+    `first` fixture genuinely changes the durable projection), with zero prework-result
+    application, zero analysis, zero persistence, zero publication, zero subscriber notification.
+    A separate DIRECT test confirms the complementary case from D2 still holds: a preceding
+    refresh that changes only market/news (projection-equivalent) does **not** stale a following
+    refresh.
+  - **second = the other 8 writers** (CSV/snapshot/6 manual, 80/80 cases): `CROSS_TAB_STATE_STALE`
+    in every case, same zero-side-effect proof (subscriber count 0, `analysisProbe` calls 0,
+    `localStorage.setItem` calls 0, root state reference unchanged).
+- Same-store nested reentry matrix: 5 outer writers (`initialize`, `refreshAllData`, `importCsv`,
+  `importPortfolioSnapshot`, `setPortfolioPolicy`) x all 10 inner writers = **50/50** cases. Every
+  inner call fired synchronously from inside the outer's own subscriber is
+  `LOCAL_OPERATION_BUSY` with **0** additional Web Lock requests (`manager.requests.length`
+  unchanged across the nested call), the outer result is always the writer's normal success, and
+  the outer's Web Lock request count is confirmed unchanged between "queued" and "just before
+  grant" — i.e. the nested call never reaches `lockManager.request` at all. One documented,
+  non-defect asymmetry: `importCsv` performs an interim `system.status = 'loading'` publish before
+  its final commit (pre-existing CSV transaction behavior, unrelated to Web Lock), so it notifies
+  subscribers twice where every other writer here notifies once; the nested probe still only ever
+  fires on the first notification and the lock is held for both.
+
+### FIFO and three-store queue
+
+- Two-store FIFO, both requests queued concurrently (`pendingWaiterIds` shows submission order)
+  before either is granted, event log asserts `granted[1] < resolved[1] < granted[2]`: **6/6**
+  required combinations DIRECT (manual->CSV, CSV->snapshot, snapshot->refresh, refresh->initialize,
+  initialize->manual, cash mutation->policy mutation) — all produce `CROSS_TAB_STATE_STALE` for
+  the second writer except refresh->initialize (bootstrap always succeeds).
+- Three-store queue: **2/2** scenarios.
+  - A `setPortfolioPolicy` (SUCCESS) / B `updateHolding` (`CROSS_TAB_STATE_STALE`, zero additional
+    `localStorage.setItem` calls in B's own grant window) / C `initialize` (SUCCESS, adopts A's
+    committed policy ratio). Grant order and release order both strictly `[1,2,3]`; every waiter
+    granted exactly once and resolved (`callback_resolved`/`callback_rejected`) exactly once —
+    zero starvation, zero duplicate callback invocation.
+  - A `updateHolding` no-write `NO_CHANGE` (zero `localStorage.setItem` calls, lock released) / B
+    `updateHolding` `SUCCESS` / C `refreshAllData` `CROSS_TAB_STATE_STALE` — the queue continues
+    past a no-write first waiter with grant order `[1,2,3]` preserved.
+
+### Failure recovery
+
+- Capability failures across all 10 writers (**50** cases): `WEB_LOCK_UNAVAILABLE`/
+  `WEB_LOCK_ABORTED`/`WEB_LOCK_REQUEST_FAILED` (30, exact code/retryable, zero callback/analysis/
+  storage-read/storage-write/FileReader invocation, ticket released, root state unchanged) plus
+  `WEB_LOCK_TIMEOUT` (10, classified before grant, ticket released, queue empties, later retry on a
+  fresh instance succeeds) plus a second `WEB_LOCK_REQUEST_FAILED` retry-permitted pass (10).
+- No-write / pre-commit failures (**18** cases): manual `NO_CHANGE` for `updateHolding`/
+  `updateTrust`/`setPortfolioPolicy` (identical values, zero writes, next aligned waiter succeeds);
+  CSV `NO_VALID_ROWS`/`FULL_SYNC_GUARD_REJECTED`/`FILE_READ_ERROR`/`ANALYSIS_ERROR`/`DUPLICATE_CSV`
+  (5); snapshot `INVALID_SNAPSHOT`/`DUPLICATE_SNAPSHOT`/`SNAPSHOT_PROVENANCE_UNKNOWN`/
+  `SNAPSHOT_ANALYSIS_ERROR` (4); load `LOAD_DATA_ERROR`/`LOAD_ANALYSIS_ERROR`/
+  `LOAD_PERSISTENCE_ERROR`(pre-commit)/canonical-invalid-for-both-`initialize`(`LOAD_RESTORE_ERROR`)
+  -and-`refreshAllData`(`LOAD_PERSISTENCE_ERROR`, never misclassified as stale) (5). Every case:
+  next queued waiter is granted, lock/ticket hold nothing residual, durable bytes unchanged, next
+  aligned writer succeeds.
+- Persistence success / local publish failure recovery (**2** categories, manual and
+  initialize/refresh): durable committed, local store stays on the pre-call reference, category
+  code (`MANUAL_PUBLISH_ERROR` / `LOAD_PUBLISH_ERROR`), zero automatic rollback/rehydrate, the next
+  non-bootstrap writer on another store is `CROSS_TAB_STATE_STALE`, and the next `initialize`
+  still succeeds and adopts the committed generation. CSV/snapshot's equivalent "committed but not
+  applied" scenario is intentionally **not** independently re-derived here — the codebase's own
+  `useAppStore.snapshotImportAtomic.test.ts`/`csvImportAtomic.test.ts` R3-13/R3-14 suites already
+  document this exact gap as pre-existing, tracked (RED-labeled) technical debt unrelated to Web
+  Lock; inventing a second reproduction risked either duplicating that known issue or masking it
+  with an easier-to-pass shortcut. The Web-Lock-specific concern (lock/ticket released regardless)
+  is covered by the CSV/snapshot no-write and capability-failure cases above.
+- CAS/ownership/rollback defenses under Web Lock (**3** cases): (1) a canonical change injected
+  during a CSV `FileReader` await reports `IMPORT_CONFLICT` with `persistence.status:
+  'not_attempted'`, external bytes preserved exactly, no raw bytes in the result; (2) a manual
+  mutation taking the legacy per-field persistence path reports `PORTFOLIO_GENERATION_CONFLICT`
+  (not `SUCCESS`) when an external writer commits a canonical envelope in the exact window between
+  the transaction's initial capture and its pre-write re-check, with zero bytes written to the
+  target key; (3) an injected analysis failure exposes no raw exception message/stack in the
+  serialized result. Web Lock wrapping does not bypass, weaken, or duplicate any existing CAS/
+  ownership defense.
+- Root-state invariants (**9** cases): `LOCAL_OPERATION_BUSY`, all four `WEB_LOCK_*` codes,
+  `CROSS_TAB_STATE_STALE`, an analysis failure, and a pre-commit persistence failure / invalid
+  canonical each leave every portfolio-data field (`holdings`, `trust`, `portfolioPolicy`,
+  `cashAssumptions`, `analysis`, CSV metadata) at its exact prior reference. The two
+  `MANUAL_PERSISTENCE_ERROR` cases are the one documented exception: they intentionally publish a
+  user-facing `system.status`/`system.error` banner (pre-existing RA-006 behavior, unrelated to
+  Web Lock) — verified as the *only* field allowed to change, with every data field's reference
+  checked explicitly.
+
+### Finding (P3, informational — not a coordination defect)
+
+- `setCashAssumptions` has no current-vs-next equality check: unlike `updateHolding`/
+  `updateTrust`/`setPortfolioPolicy`/`importCashAssumptions`, it always re-stamps
+  `manualUpdatedAt` to the operation's `nowMs` and therefore always returns `SUCCESS` (never
+  `NO_CHANGE`), even when `cashDeposits`/`standbyFunds` are identical to the current durable
+  values. This still commits and publishes correctly and does not violate the Web Lock/
+  coordination contract (confirmed: lock/ticket released normally, next waiter proceeds); it is a
+  pre-existing NO_CHANGE-detection asymmetry across the six manual writers, worth a follow-up
+  ticket if a "no-op resubmission should be free" guarantee is ever wanted for cash assumptions.
+
+### Mutation-catching
+
+- 14/14 required mutations produced the expected RED, each reverted by `git checkout --` and
+  confirmed zero residual diff before the next mutation:
+  1. `initialize`'s operation label swapped to `'refreshAllData'` — 11 failed (operation-field
+     mismatches across the new matrix/failure-recovery suites).
+  2. `refreshAllData` routed through a fresh `createPortfolioGenerationLockAdapter()` instead of
+     the injected `runtime.portfolioGenerationLock` — 41 failed (falls back to
+     `WEB_LOCK_UNAVAILABLE` in every test).
+  3. Manual mutation's local ticket released immediately after acquisition (before the Web Lock
+     await) instead of in `finally` — 14 failed (queued-ticket-held assertions).
+  4. Manual mutation's `CROSS_TAB_STATE_STALE` check short-circuited to never fire — 77 failed.
+  5. `initialize` given an added (incorrect) alignment stale-check — 32 failed (bootstrap-never-
+     stale assertions).
+  6. Manual mutation's final `set()` detached via `setTimeout(..., 0)` instead of running
+     synchronously inside the lock callback — 11 failed (lock/ticket-held-through-subscriber
+     assertions; fake timers never advance, so the publish never happens inside the observed
+     window).
+  7. `acquirePortfolioOperationFromRuntime`'s busy check removed (always acquires) — 12 failed,
+     including timeouts from runaway nested reentry (same-store nested reentry matrix).
+  8. Manual mutation's final `set(finalState)` moved before the persistence block — 13 failed
+     (persist-before-publish assertions).
+  9. Manual mutation's publish-failure branch changed to return `SUCCESS` instead of
+     `MANUAL_PUBLISH_ERROR` — 2 failed.
+  10. Manual mutation's `finally` ticket release removed — 43 failed (ticket-residual assertions
+      across nearly every suite).
+  11. `cashAssumptions` forced to a constant default in both projection builders (excluded from
+      staleness comparison) — 1 failed (existing `webLockManualSnapshot.test.ts` stale-projection
+      parameterized case).
+  12. A derived-only field (`market`) added to the alignment stale comparison — 1 failed (existing
+      "ignores derived/market/news differences" test).
+  13. `portfolioGenerationLock.ts`'s timeout path stopped calling `internalController.abort()` —
+      17 failed (`pendingCount()` no longer returns to 0 after timeout; the `FakeLockManager`'s
+      abort-listener-driven queue removal is what actually prevents a late grant, not the
+      `settled` guard inside `onGrant` alone — confirmed by first attempting the `onGrant`-guard
+      removal alone, which produced 0 failures, before locating the correct lever).
+  14. `releasePortfolioOperationFromRuntime`'s token-ownership check removed (always releases) —
+      2 failed (existing `useAppStore.instanceIsolation.test.ts` wrong-instance-release
+      assertions).
+- `useAppStore.ts`/`portfolioGenerationLock.ts` diff was `git diff --check`-clean (0 bytes) after
+  every single revert and after all 14 mutations were complete.
+
+### Validation
+
+- New suites, both timezones: `useAppStore.webLockFullWriterMatrix.test.ts` (151: 100 matrix + 1
+  projection-equivalent + 50 reentry), `useAppStore.webLockFailureRecovery.test.ts` (82),
+  `useAppStore.webLockThreeStore.test.ts` (8) — **241 tests / skipped 0**, UTC == Asia/Tokyo.
+- Existing RA-007 suites, both timezones (adapter 47, taxonomy 23, instance isolation 13,
+  manual/snapshot 24, CSV 27, load 41, single publication 20): **195 tests / skipped 0**, exactly
+  matching the required minimums.
+- Full unit, both timezones: **75 files / 2074 tests / skipped 0**, UTC == Asia/Tokyo. Baseline was
+  72 files / 1833 tests; +3 files / +241 tests, exactly the three new RA-007-E suites.
+- `npx tsc --noEmit`: PASS (two pre-existing-pattern TS7024/TS2345 inference errors in the new
+  suites fixed with explicit return-type/`Promise<unknown>` annotations — test-only, no production
+  touch). `npm run build`: PASS (128 modules, known >500 kB chunk warning only). `git diff --check`:
+  PASS.
+- Production diff: **0** (`git diff --name-status` empty; only the three new untracked test files
+  and this handover addendum exist in the working tree).
+
+### HEAD / origin / push
+
+- HEAD: `beb98431b18b44091b306805106d18e7f1d692c4`. `origin/v13.3-dev`: same. `origin/main`:
+  `3c94be84db98ed3fee054384201a5f38cc09e0ea` (one data-only advance from the confirmed
+  `d38e91ea4fc869edfa8155c4d19970ae099e6b26` baseline — `data/**`/`public/data/**` only, verified
+  via `git diff --name-status`). main: not merged, not rebased, not cherry-picked, not pushed to.
+- Working tree: clean except the three new test files (committed below) and this handover
+  addendum.
+
+### Residual
+
+- BroadcastChannel: not implemented.
+- storage event: not implemented.
+- Stale-tab automatic UI refresh: not implemented.
+- Cross-tab CAS/rollback TOCTOU: the CSV/snapshot "committed-but-not-locally-applied" publish
+  failure path remains pre-existing tracked technical debt (R3-13/R3-14 in
+  `useAppStore.snapshotImportAtomic.test.ts`), out of RA-007's Web-Lock scope; a full cross-tab
+  CAS/rollback TOCTOU audit is deferred to RA-008.
+- Canonical repair UI: not implemented.
+- v1/v2 migration UI: not implemented.
+- setCashAssumptions NO_CHANGE-detection asymmetry (see Finding above): follow-up ticket if wanted.
+
+### Status
+
+```text
+RA-007-A: CLOSED
+RA-007-B1: CLOSED
+RA-007-B2: CLOSED
+RA-007-B3: CLOSED
+RA-007-C: CLOSED
+RA-007-D1: CLOSED
+RA-007-D2: CLOSED
+RA-007-E: CLOSED
+Web Lock implementation: COMPLETE
+Web Lock adversarial validation: PASS_WITH_FINDINGS (1 P3 informational finding; 0 P0/P1/P2)
+```
+
+### Next
+
+`RA-008-A: design audit for BroadcastChannel / storage-event invalidation`
