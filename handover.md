@@ -48059,3 +48059,244 @@ full writer coverage: INCOMPLETE
 ### Next
 
 `RA-007-D2: serialize initialize and refresh with Web Locks and single final publication`
+
+## RA-007-D2: Web Lock load serialization and single final publication
+
+### Scope
+
+- D1 commit: `59f72e2ad67e92f4e71f68815e8d1b9285606215` (`feat(store): serialize CSV imports with
+  Web Locks`).
+- `initialize`/`refreshAllData` now connect to the same fixed same-origin exclusive lock
+  (`jp-portfolio:portfolio-generation:v1`, `exclusive`, 15s timeout) already used by manual
+  mutations/CSV/snapshot imports. Full portfolio-writer Web Lock coverage is now **10/10**
+  (`initialize`, `refreshAllData`, `importCsv`, `importPortfolioSnapshot`, `updateHolding`,
+  `updateTrust`, `setPortfolioPolicy`, `setCashAssumptions`, `clearCashAssumptionsOverride`,
+  `importCashAssumptions`). Operation-specific locks: **0**. Nested Web Lock requests: **0**.
+
+### Execution order and prework
+
+- Both operations follow: runtime-only busy check -> local operation ticket -> settled network
+  prework start -> Web Lock request -> grant -> latest local/durable state read -> restore
+  (initialize) or stale check (refresh) -> staged-state construction -> analysis -> persistence
+  -> exactly one final `set()` and synchronous subscriber completion -> Web Lock release -> local
+  ticket release.
+- `initialize` starts `loadPublishedData({ bustCache: true })` and the `stock_scores_6axis.json`
+  fetch immediately after acquiring the local ticket, before the Web Lock is even requested.
+  `refreshAllData` starts only `loadPublishedData`. Both are wrapped in a `SettledPrework<T>`
+  (`{ok:true,value}|{ok:false}`) so a raw fetch/parse rejection can never surface as an unhandled
+  rejection or leak past the classified `PortfolioLoadResult` — confirmed with a
+  `process.on('unhandledRejection', ...)` listener across both an immediate rejection and a late
+  rejection arriving after `WEB_LOCK_TIMEOUT`. Duplicate same-store calls perform **0** additional
+  network requests and **0** additional Web Lock requests (rejected as `LOCAL_OPERATION_BUSY` by
+  the local ticket before either would fire). Grant-before Zustand `get()`/state read/storage
+  read/publication is **0** (verified directly with a property-getter probe on `holdings`, not
+  just localStorage call counts).
+
+### Initialize bootstrap and refresh stale fail-closed
+
+- `initialize` is a bootstrap: it always reads the latest durable canonical/legacy generation as
+  the restore base regardless of what the just-created local Zustand state holds, and never
+  returns `CROSS_TAB_STATE_STALE`. A present-but-corrupt canonical (`status: 'invalid'`) fails
+  closed as `LOAD_RESTORE_ERROR` with zero legacy fallback, zero network application, zero
+  analysis, zero persistence, and zero publication — this is a behavior *fix* versus pre-D2
+  `initialize`, which silently fell back to all-defaults on an invalid canonical. Canonical-absent
+  keeps the existing partial legacy-restore policy (no double-applied cash/policy defaults, no
+  mid-restore publish). No durable evidence bootstraps from the initial default state.
+- `refreshAllData` reuses the same `inspectDurablePortfolioAlignment` projection helper (holdings,
+  trust, portfolio policy, cash assumptions, CSV imported time, provenance, sync summary) that
+  manual mutations/CSV/snapshot already use. Any mismatch between the currently published
+  projection and the latest durable projection fails closed as `CROSS_TAB_STATE_STALE` before any
+  prework result, analysis, persistence, or publication — including when a preceding
+  manual/snapshot/CSV success on another store changed the durable generation, or when refresh
+  itself changed the projection first. Derived-only/market/news-only differences do not trigger
+  staleness. A present-but-corrupt canonical returns `LOAD_PERSISTENCE_ERROR` (never
+  misclassified as stale), since refresh cannot prove a safe write base. Already-started network
+  prework whose result is discarded on a stale/invalid classification never applies, never
+  analyzes, never persists, never publishes.
+- Persistence for both operations calls `persistCurrentPortfolioGeneration(finalState, undefined,
+  undefined, nowMs)` — deliberately **not** threading `alignment.canonical`/`canonicalRaw`
+  through. Passing a known `canonicalRaw` makes that helper trust `finalState.system
+  .csvLastImportedAt` without its usual fallback to the existing canonical's own `csvImportedAt`,
+  while `csvSyncSummary` still falls back to the canonical's stale value independently — refresh's
+  CSV-metadata future-timestamp sanitization can null `csvLastImportedAt` while a `syncSummary`
+  fallback survives, which fails `persistCsvImportTransaction`'s schema validation (a present
+  `syncSummary` requires a matching non-null `csvImportedAt`). Re-reading canonical internally
+  avoids this without changing `persistCurrentPortfolioGeneration` itself (manual mutations still
+  call it with explicit `alignment.canonical`/`canonicalRaw`, unchanged). The Web Lock already
+  serializes writers, so there is no conflict window a known-raw CAS check would protect against
+  here.
+
+### Pure staged-state construction and single publication
+
+- New pure helpers in `useAppStore.ts`: `settlePrework`, `buildStateWithPublishedData` (merges
+  fetched market/correlation/news/trust-snapshot/macro/Nikkei VI/SQ/margin/flows/candidates/
+  regime/SAFE_MODE/TierA/Phase 7 scores onto a staged base state — no Zustand/localStorage/network
+  calls, no input mutation), `buildInitializeRestoredState` (bootstrap restore, impure I/O but no
+  Zustand calls), `sanitizeRefreshCsvMetadata` (future/expired CSV metadata guard, mirrors the
+  pre-D2 refresh safety net), `classifyLoadPersistenceFailure` (blocked `canonical_changed` /
+  `canonical_committed` / `metadata_misaligned` and failed `ownership_lost` map to
+  `PORTFOLIO_GENERATION_CONFLICT`; everything else including `canonical_invalid` maps to
+  `LOAD_PERSISTENCE_ERROR`), and the closure-scoped `publishLoadFinalState` (applies `finalState`
+  exactly once via `set()`, classifies a one-shot publish-hook failure or an unwrapped exception
+  before apply as `LOAD_PUBLISH_ERROR` without publishing the staged portfolio, since durable
+  persistence already committed but the local store never applied).
+- `runFullAnalysis(stagedState, { nowMs })` runs on the off-store staged state, never
+  `runFullAnalysis(get())`. Restore-only, published-data-only, macro-only (Nikkei VI merge), and
+  Phase 7-only intermediate publications are all **0** — there is only ever one `set()` call across
+  the entire successful path, so no partial state is ever observable. The intermediate
+  `system.status = 'loading'` publication that pre-D2 `initialize`/`refreshAllData` used is
+  removed entirely; UI pending state already comes from component-local state (B2), confirmed
+  unaffected. Loading-intermediate publication count: **0**.
+- Persist-before-publish: analysis -> persistence -> exactly one final `set()`. The store still
+  shows the pre-call state at the exact moment `localStorage.setItem` (persistence) fires, proving
+  analysis ran on an unpublished staged object, not the live store. On success, initialize and
+  refresh each publish/notify subscribers exactly **1** time carrying the complete final state
+  (holdings, trust, policy, cash, CSV metadata, market/macro/correlation/news/candidates/
+  SAFE_MODE/TierA, Nikkei VI merge, Phase 7 scores, analysis, metrics, universe, plans,
+  officialDecision, `system.status: 'success'`, timestamps) together — never a partial slice.
+- All failure paths (restore-invalid, data, analysis, persistence, stale, Web Lock
+  unavailable/timeout/aborted/request-failed, `LOCAL_OPERATION_BUSY`, publish-hook failure) leave
+  the store's root state reference byte-identical to before the call — **0** publications, matching
+  the proven `runManualPortfolioMutation` pattern rather than adding a new error-only publish path
+  (permitted but not required by spec; omitted for the simplest, most consistent invariant). No
+  raw error text/stack/cause is ever included in a returned `PortfolioLoadResult` — confirmed with
+  injected `Error` messages absent from `JSON.stringify(result)` and the result's key set limited
+  to `{code, ok, operation, retryable}`.
+- A synchronous subscriber throwing after apply is unaffected: `api.subscribe` already wraps every
+  listener (`reportSubscriberException`), so observer failures never reach
+  `publishLoadFinalState`'s catch — result stays `SUCCESS`, notification count stays exactly 1, no
+  double publication, no raw subscriber error exposed (only logged via `console.error`).
+
+### Lock lifetime and two-store matrix
+
+- The Web Lock and local ticket are held through restore, the network-prework await, analysis,
+  persistence, the final `set()`, and synchronous subscriber completion — confirmed by sampling
+  `manager.isHeld(...)` at every `localStorage.setItem` call and inside the subscriber itself.
+  Nested `initialize`/`refreshAllData`/`updateHolding`/`setPortfolioPolicy`/
+  `importPortfolioSnapshot`/`importCsv` calls fired synchronously from inside the subscriber are
+  all `LOCAL_OPERATION_BUSY` with **0** additional Web Lock requests; the next store's grant
+  proceeds only after the subscriber completes and the lock is released (confirmed lock-release
+  event ordering strictly after `callback_resolved`).
+- Two-store matrix (shared `FakeLockManager` + shared `localStorage`, independent store
+  instances), all confirmed DIRECT:
+  - manual/snapshot/CSV success on B -> initialize on A: SUCCESS (bootstrap ignores alignment).
+  - initialize -> initialize FIFO across two stores: both SUCCESS.
+  - manual/snapshot/CSV success on B -> refresh on A: `CROSS_TAB_STATE_STALE`.
+  - initialize changing a store's projection -> refresh on another store: `CROSS_TAB_STATE_STALE`.
+  - refresh changing a store's projection -> a queued refresh on another store:
+    `CROSS_TAB_STATE_STALE`.
+  - a preceding refresh that only changes market/news does not block a following refresh.
+  - preceding `LOAD_DATA_ERROR`/`LOAD_ANALYSIS_ERROR`/zero-commit `LOAD_PERSISTENCE_ERROR`: durable
+    state unchanged, next operation on the same store proceeds normally.
+  - persistence success + publish-hook failure: durable committed, local staged state NOT applied,
+    `LOAD_PUBLISH_ERROR`; the next refresh on that store is then `CROSS_TAB_STATE_STALE` (local
+    projection now trails the durably-committed generation), and the next initialize still
+    succeeds (bootstrap adopts the newly-committed durable generation).
+
+### T9/StatusBar/T5 coordination mapping
+
+- `portfolioLoadUi.ts` already mapped all seven coordination codes
+  (`LOCAL_OPERATION_BUSY`/`WEB_LOCK_UNAVAILABLE`/`WEB_LOCK_TIMEOUT`/`WEB_LOCK_ABORTED`/
+  `WEB_LOCK_REQUEST_FAILED`/`CROSS_TAB_STATE_STALE`/`PORTFOLIO_GENERATION_CONFLICT`) from an
+  earlier phase; the only fix needed here was the `WEB_LOCK_TIMEOUT` message text, which said
+  "再読み込みしてください" instead of the spec-fixed "再試行してください" — corrected to match
+  exactly. No other component changes were required: `App.tsx`/`StatusBar.tsx`/`T5_News.tsx`/
+  `T9_Settings.tsx` already source their local pending/feedback state from B2's
+  `executePortfolioLoadUiFlow`/`executeAppInitializeUiFlow`, driven purely by the action's return
+  value — never by `store.system.error`/`status` — so they needed zero changes for D2's contract
+  (verified by full-suite regression, zero diffs to those four files).
+
+### Load caller inventory and existing-test updates
+
+- Initial inventory (files calling `.initialize()`/`refreshAllData()` directly): **9 files**
+  (`publishedSnapshotPriority.test.ts`, `useAppStore.instanceIsolation.test.ts`,
+  `useAppStore.manualMutationAtomicity.test.ts`, `useAppStore.manualMutationPhaseDirect.test.ts`,
+  `useAppStore.operationCoordinator.test.ts`, `useAppStore.snapshotFutureMetadata.test.ts`,
+  `useAppStore.test.ts`, `useAppStore.webLockCsv.test.ts`, `useAppStore.webLockManualSnapshot
+  .test.ts`). Files needing edits for the D2 contract: **5** of the 9
+  (`publishedSnapshotPriority.test.ts`, `useAppStore.operationCoordinator.test.ts`,
+  `useAppStore.test.ts`, `useAppStore.webLockCsv.test.ts`, `useAppStore.webLockManualSnapshot
+  .test.ts`) — the other 4 needed no change. No inventory-external test file required editing;
+  no BLOCKED condition was hit.
+- All edits were either (a) updating a D1-era "initialize/refresh do NOT use the Web Lock"
+  assertion to the new "DO connect" contract, (b) moving intermediate-state assertions that
+  assumed the old multi-publish model to occur after operation completion instead of mid-flight
+  (with an added explicit zero-intermediate-publish assertion), (c) removing now-redundant
+  `system.error`/`status` assertions on domain failures in favor of root-state-reference-unchanged
+  assertions, or (d) fixing test setup that lacked matching `portfolioPolicy`/`cashAssumptions`
+  for the new refresh alignment check, or lacked the `createImmediatePortfolioGenerationLockAdapterForTest`
+  wiring the default store now needs. Zero investment-logic expectation changes, zero test
+  deletions/skips, zero fixture semantic changes, zero loosened assertions.
+
+### Mutation-catching
+
+- 14/14 required mutations produced the expected RED (network prework moved before ticket /
+  after grant; `get()` before grant; loading publication reinstated; restore/published-data
+  mid-flight publish; final `set()` before persistence; staged-state publish after persistence
+  failure; refresh stale check removed; initialize turned into an incorrect stale rejection;
+  publish deferred past subscriber notification (`setTimeout`); nested load allowed to request the
+  Web Lock while busy; publish-hook failure misreported as SUCCESS; a post-apply subscriber throw
+  misclassified as `LOAD_PUBLISH_ERROR` — this last one required temporarily also disabling the
+  `api.subscribe` exception-swallowing wrapper, since with it in place a subscriber throw never
+  reaches `publishLoadFinalState`'s catch at all). Each mutation was reverted by an exact inverse
+  patch; `useAppStore.ts` SHA-256 matched the pre-mutation baseline after every single revert and
+  after all 14 were complete. `git diff --check`: PASS throughout, zero stray temp files.
+
+### Validation
+
+- New load DIRECT suites: `useAppStore.webLockLoad.test.ts` (41 tests) +
+  `useAppStore.loadSinglePublication.test.ts` (20 tests) — **2 files / 61 tests / skipped 0** in
+  both UTC and Asia/Tokyo.
+- Load caller regression (9 files): **373 tests / skipped 0** in both timezones.
+- UI regression (`App.initialize`/`portfolioLoadUi`/`StatusBar.refresh`/`T5_News.refresh`/
+  `T9_Settings.refresh`): **26 tests / skipped 0** in both timezones.
+- RA-007-C/D1 regression (manual/snapshot 24, CSV 27, instance isolation 13, adapter 47):
+  **111 tests / skipped 0** in both timezones — matches the required minimums exactly.
+- Full unit: **72 files / 1833 tests / skipped 0** in both UTC and Asia/Tokyo; UTC/JST difference
+  **0**. (Baseline was 70 files / 1772 tests; +2 new files / +61 new tests, consistent with the
+  new DIRECT suites and the added mutation-9 (D1) get()-before-grant regression test.)
+- `npx tsc --noEmit`: PASS. `npm run build`: PASS (128 modules; known >500 kB chunk warning only).
+  `git diff --check`: PASS.
+- Bundle verification: `jp-portfolio:portfolio-generation:v1` appears **1** time in
+  `dist/assets/*.js`; test-only symbols (`createAppStoreInstanceForTest`,
+  `AppStoreInstanceTestControls`, `setPortfolioGenerationLockAdapterForTest`,
+  `resetPortfolioGenerationLockAdapterForTest`,
+  `createImmediatePortfolioGenerationLockAdapterForTest`, `FakeLockManager`, `webLockLoad`,
+  `loadSinglePublication`) appear **0** times in `dist/`. No second portfolio-generation lock
+  name exists anywhere.
+- Full writer coverage: **10/10** operations route through
+  `runtime.portfolioGenerationLock.runExclusive`. Operation-specific locks: **0**. Nested Web Lock
+  requests: **0**. `navigator.locks.request`/`lockManager.request` appear only inside
+  `portfolioGenerationLock.ts`; `useAppStore.ts` never calls the native API directly.
+- main: not touched, not merged, not rebased, not cherry-picked, not pushed to.
+
+### Residual
+
+- BroadcastChannel: not implemented.
+- storage event: not implemented.
+- Stale-tab automatic UI refresh: not implemented (user must reload after
+  `CROSS_TAB_STATE_STALE`/`PORTFOLIO_GENERATION_CONFLICT`).
+- A publish-hook failure requires a reload (staged portfolio is durably committed but not locally
+  applied; the next refresh correctly reports stale, but there is no automatic rehydrate).
+- Cross-tab CAS/rollback TOCTOU: deferred to a later phase.
+- Canonical repair UI: not implemented.
+- v1/v2 migration UI: not implemented.
+
+### Status
+
+```text
+RA-007-A: CLOSED
+RA-007-B1: CLOSED
+RA-007-B2: CLOSED
+RA-007-B3: CLOSED
+RA-007-C: CLOSED
+RA-007-D1: CLOSED
+RA-007-D2: CLOSED
+manual/snapshot/CSV/load Web Lock: ACTIVE
+full portfolio writer Web Lock coverage: COMPLETE
+RA-007-E: PENDING
+```
+
+### Next
+
+`RA-007-E: adversarial full-writer two-tab validation`

@@ -553,20 +553,25 @@ describe('useAppStore: portfolio snapshot（P4.5-A012b）', () => {
       resolveFetch = resolve
     })
     vi.stubGlobal('fetch', vi.fn(() => deferredFetch))
+    const beforeInitialize = useAppStore.getState()
     const pendingInitialize = useAppStore.getState().initialize()
     await Promise.resolve()
 
+    // RA-007-D2: restore/data/analysis all stage off-store, and persist-before-publish means
+    // nothing reaches the store until persistence has already succeeded — so with the network
+    // prework still pending, the store must be byte-for-byte untouched (no intermediate publish).
+    expect(useAppStore.getState()).toBe(beforeInitialize)
     expect(store[CSV_IMPORT_GENERATION_KEY]).toBe(importedRaw)
     expect(canonicalSetCount).toBe(0)
+    expect(canonicalRemoveCount).toBe(0)
+    resolveFetch({ ok: false, status: 404, json: () => Promise.resolve({}) })
+    await pendingInitialize
+    expect(canonicalSetCount).toBe(1)
     expect(canonicalRemoveCount).toBe(0)
     expect(useAppStore.getState().system.csvLastImportedAt).toBeNull()
     expect(useAppStore.getState().system.csvSyncSummary).toBeNull()
     expect(useAppStore.getState().system.csvImportProvenance).toEqual(sourceProvenance)
     expect(useAppStore.getState().holdings.map(item => item.code)).toEqual(['TEST-A', 'TEST-B'])
-    resolveFetch({ ok: false, status: 404, json: () => Promise.resolve({}) })
-    await pendingInitialize
-    expect(canonicalSetCount).toBe(1)
-    expect(canonicalRemoveCount).toBe(0)
 
     const reloaded = restoreCsvImportGeneration()
     expect(reloaded.status).toBe('committed')
@@ -1486,9 +1491,11 @@ describe('R4-A004c: initialize/refresh preserve canonical v4/v5 semantics', () =
     let nowCall = 0
     const nowSpy = vi.spyOn(Date, 'now').mockImplementation(() => {
       nowCall += 1
-      // initialize's first call captures the shared metadata clock. Any of the three restore
-      // paths falling back to its own Date.now() sees a 1ms-earlier clock and rejects NOW_MS.
-      return nowCall === 1 ? nowMs : nowMs - 1
+      // RA-007-D2: call #1 is the network prework's bust-cache token, started before the Web
+      // Lock grant; call #2 is initialize's own captured metadata clock (after grant). Any of
+      // the three restore paths falling back to its own later Date.now() sees a 1ms-earlier
+      // clock and rejects NOW_MS.
+      return nowCall <= 2 ? nowMs : nowMs - 1
     })
     let notifications = 0
     const unsubscribe = useAppStore.subscribe(() => { notifications += 1 })
@@ -1496,6 +1503,20 @@ describe('R4-A004c: initialize/refresh preserve canonical v4/v5 semantics', () =
     const pendingInitialize = useAppStore.getState().initialize()
     await Promise.resolve()
 
+    // RA-007-D2: restore/data/analysis stage entirely off-store and persist-before-publish means
+    // nothing reaches the store or localStorage while the network prework is still pending.
+    expect(storage[CSV_IMPORT_GENERATION_KEY]).toBe(canonicalBefore)
+    expect(setItem).not.toHaveBeenCalled()
+    expect(removeItem).not.toHaveBeenCalled()
+    expect(notifications).toBe(0)
+
+    resolveFetch({ ok: false, status: 404, json: () => Promise.resolve({}) })
+    await pendingInitialize
+    unsubscribe()
+    nowSpy.mockRestore()
+
+    // RA-005: the one captured now flows unchanged into csvImportedAt/summary/provenance — no
+    // restore path fell back to its own later (nowMs - 1) clock read.
     expect(useAppStore.getState().system.csvLastImportedAt).toBe(importedAt)
     expect(useAppStore.getState().system.csvSyncSummary).toEqual(syncSummary)
     expect(useAppStore.getState().system.csvImportProvenance).toEqual(
@@ -1504,16 +1525,8 @@ describe('R4-A004c: initialize/refresh preserve canonical v4/v5 semantics', () =
     expect(useAppStore.getState().system.csvSyncSummary?.importedAt).toBe(importedAt)
     expect(useAppStore.getState().system.csvImportProvenance?.importedAt).toBe(importedAt)
     expect(useAppStore.getState().system.csvImportProvenance?.sourceAsOf).toBe(sourceAsOf)
-    expect(storage[CSV_IMPORT_GENERATION_KEY]).toBe(canonicalBefore)
-    expect(setItem).not.toHaveBeenCalled()
-    expect(removeItem).not.toHaveBeenCalled()
-    // loading + coordinated hydration + existing freshness publication. RA-005 adds no set.
-    expect(notifications).toBe(3)
-
-    unsubscribe()
-    resolveFetch({ ok: false, status: 404, json: () => Promise.resolve({}) })
-    await pendingInitialize
-    nowSpy.mockRestore()
+    // RA-007-D2: exactly one final publication for the whole successful operation.
+    expect(notifications).toBe(1)
   })
 
   it.each([
@@ -1561,8 +1574,22 @@ describe('R4-A004c: initialize/refresh preserve canonical v4/v5 semantics', () =
     let notifications = 0
     const unsubscribe = useAppStore.subscribe(() => { notifications += 1 })
 
+    const beforeInitialize = useAppStore.getState()
     const pendingInitialize = useAppStore.getState().initialize()
     await Promise.resolve()
+
+    // RA-007-D2: restore stages entirely off-store; nothing is visible while network prework is
+    // still pending.
+    expect(useAppStore.getState()).toBe(beforeInitialize)
+    expect(storage[CSV_IMPORT_GENERATION_KEY]).toBe(canonicalBefore)
+    expect(setItem).not.toHaveBeenCalled()
+    expect(removeItem).not.toHaveBeenCalled()
+    expect(notifications).toBe(0)
+
+    resolveFetch({ ok: false, status: 404, json: () => Promise.resolve({}) })
+    await pendingInitialize
+    unsubscribe()
+    nowSpy.mockRestore()
 
     const hydrated = useAppStore.getState()
     expect(hydrated.holdings.find(item => item.code === 'FUTURE-META')?.eval).toBe(765_432)
@@ -1571,15 +1598,8 @@ describe('R4-A004c: initialize/refresh preserve canonical v4/v5 semantics', () =
     expect(hydrated.system.csvSyncSummary).toBeNull()
     expect(hydrated.system.csvImportProvenance).toBeNull()
     expect(JSON.stringify(hydrated.system)).not.toContain('2026-07-19T00:00:00.001Z')
-    expect(storage[CSV_IMPORT_GENERATION_KEY]).toBe(canonicalBefore)
-    expect(setItem).not.toHaveBeenCalled()
-    expect(removeItem).not.toHaveBeenCalled()
-    expect(notifications).toBe(3)
-
-    unsubscribe()
-    resolveFetch({ ok: false, status: 404, json: () => Promise.resolve({}) })
-    await pendingInitialize
-    nowSpy.mockRestore()
+    // RA-007-D2: exactly one final publication for the whole successful operation.
+    expect(notifications).toBe(1)
   })
 })
 

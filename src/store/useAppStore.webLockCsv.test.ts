@@ -393,12 +393,14 @@ describe('RA-007-D1 lock lifetime and coordination classification', () => {
       .resolves.toMatchObject({ ok: true, code: 'SUCCESS' })
   })
 
-  it('does not activate Web Locks for initialize or refreshAllData', async () => {
+  it('RA-007-D2: also activates the same injected Web Lock for initialize and refreshAllData', async () => {
     const operations: string[] = []
     const instance = instanceWith(immediateAdapter(operation => operations.push(operation)))
-    await instance.store.getState().initialize()
-    await instance.store.getState().refreshAllData()
-    expect(operations).toEqual([])
+    const initializeResult = await instance.store.getState().initialize()
+    const refreshResult = await instance.store.getState().refreshAllData()
+    expect(operations).toEqual(['initialize', 'refreshAllData'])
+    expect(initializeResult).toMatchObject({ ok: true, code: 'SUCCESS' })
+    expect(refreshResult).toMatchObject({ ok: true, code: 'SUCCESS' })
   })
 })
 

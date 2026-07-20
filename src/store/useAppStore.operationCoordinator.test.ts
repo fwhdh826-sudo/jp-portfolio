@@ -326,6 +326,7 @@ async function runInjectedLoadFailure(operation: LoadOperation, failureKind: Loa
   const loadCallsBefore = loadProbe.calls
   const analysisCallsBefore = analysisProbe.calls
   const storageSetsBefore = storageCounts.set
+  const before = useAppStore.getState()
 
   if (failureKind === 'fetch') {
     loadProbe.implementation = async () => { throw new Error('injected fetch failure') }
@@ -357,14 +358,9 @@ async function runInjectedLoadFailure(operation: LoadOperation, failureKind: Loa
         : 'LOAD_PERSISTENCE_ERROR',
     retryable: true,
   })
-  expect(useAppStore.getState().system).toMatchObject({
-    status: 'error',
-    error: failureKind === 'fetch'
-      ? '最新データを取得できませんでした。通信状態を確認して再試行してください。'
-      : failureKind === 'analysis'
-        ? 'データ取得後の再計算に失敗しました。再試行してください。'
-        : '更新結果を保存できませんでした。画面を再読み込みして状態を確認してください。',
-  })
+  // RA-007-D2: persist-before-publish — a data/analysis/persistence domain failure never
+  // publishes to the store, not even an error-only interim state.
+  expect(useAppStore.getState()).toBe(before)
 }
 
 async function expectDirectLoadAction(operation: LoadOperation) {
@@ -557,19 +553,10 @@ describe('RA-003 Phase B: direct 16-operation exclusion matrix', () => {
     }
   }
 
-  it.each(['initialize', 'refresh'] as const)('%s maps a loading sentinel to LOCAL_OPERATION_BUSY with zero side effects', async operation => {
+  it.each(['initialize', 'refresh'] as const)('%s ignores a stale loading sentinel — busy detection is ticket-only (RA-007-D2)', async operation => {
+    // RA-007-D2 removes the global `system.status === 'loading'` publication and the busy check
+    // that read it; only the runtime-only local operation ticket determines busy-ness now.
     useAppStore.setState(state => ({ system: { ...state.system, status: 'loading', error: null } }))
-    const before = sideEffectSnapshot()
-    const result = await invokeOperation(operation)
-    expect(result).toEqual({
-      ok: false,
-      operation: operation === 'initialize' ? 'initialize' : 'refreshAllData',
-      code: 'LOCAL_OPERATION_BUSY',
-      retryable: true,
-    })
-    expect(sideEffectSnapshot()).toEqual(before)
-
-    useAppStore.setState(state => ({ system: { ...state.system, status: 'idle' } }))
     await expectDirectLoadAction(operation)
   })
 })
@@ -712,10 +699,11 @@ describe('RA-003 Phase C: key race regressions', () => {
 })
 
 describe('RA-003 Phase D: failure releases owner and permits retry', () => {
-  it('initialize restore failure is sanitized, releases the ticket, and performs no network or analysis', async () => {
+  it('initialize restore failure is sanitized, releases the ticket, and performs no analysis', async () => {
     setLoadRestoreBeforeReadHookForTest(() => { throw new Error('raw restore sentinel stack') })
     const loadCallsBefore = loadProbe.calls
     const analysisCallsBefore = analysisProbe.calls
+    const before = useAppStore.getState()
     const result = await useAppStore.getState().initialize()
     expect(result).toEqual({
       ok: false,
@@ -723,18 +711,18 @@ describe('RA-003 Phase D: failure releases owner and permits retry', () => {
       code: 'LOAD_RESTORE_ERROR',
       retryable: false,
     })
-    expect(loadProbe.calls).toBe(loadCallsBefore)
+    // RA-007-D2: network prework starts right after the local ticket, before the Web Lock
+    // grant — it has already begun even though the restore hook fails immediately after grant.
+    expect(loadProbe.calls).toBe(loadCallsBefore + 1)
     expect(analysisProbe.calls).toBe(analysisCallsBefore)
-    expect(useAppStore.getState().system).toMatchObject({
-      status: 'error',
-      error: '保存データを安全に復元できませんでした。状態を確認してください。',
-    })
+    expect(useAppStore.getState()).toBe(before)
     expect(JSON.stringify(result)).not.toContain('raw restore sentinel')
     await expectDirectLoadAction('initialize')
   })
 
-  it.each(['initialize', 'refresh'] as const)('%s publication failure is LOAD_PUBLISH_ERROR and retryable only by a new call', async operation => {
+  it.each(['initialize', 'refresh'] as const)('%s publication failure is LOAD_PUBLISH_ERROR; the durable-committed generation is not applied locally (RA-007-D2)', async operation => {
     setLoadPublishBeforeApplyHookForTest(() => { throw new Error('raw publish sentinel stack') })
+    const before = useAppStore.getState()
     const result = await invokeOperation(operation)
     expect(result).toEqual({
       ok: false,
@@ -742,10 +730,9 @@ describe('RA-003 Phase D: failure releases owner and permits retry', () => {
       code: 'LOAD_PUBLISH_ERROR',
       retryable: false,
     })
-    expect(useAppStore.getState().system).toMatchObject({
-      status: 'error',
-      error: '更新結果を画面へ反映できませんでした。画面を再読み込みしてください。',
-    })
+    // RA-007-D2: the hook fires right before the single final set(), so a hook failure leaves
+    // the store completely untouched even though persistence already committed durably.
+    expect(useAppStore.getState()).toBe(before)
     expect(JSON.stringify(result)).not.toContain('raw publish sentinel')
     await expectDirectLoadAction(operation)
   })
@@ -756,10 +743,6 @@ describe('RA-003 Phase D: failure releases owner and permits retry', () => {
   ] as const)('%s', async (_label, operation) => {
     const differentOperation = operation === 'initialize' ? 'refresh' : 'initialize'
     await runInjectedLoadFailure(operation, 'fetch')
-    expect(useAppStore.getState().system).toMatchObject({
-      status: 'error',
-      error: '最新データを取得できませんでした。通信状態を確認して再試行してください。',
-    })
     await expectDirectLoadAction(operation)
     await runInjectedLoadFailure(operation, 'fetch')
     await expectDirectLoadAction(differentOperation)
@@ -773,10 +756,6 @@ describe('RA-003 Phase D: failure releases owner and permits retry', () => {
   ] as const)('%s', async (_label, operation) => {
     const differentOperation = operation === 'initialize' ? 'refresh' : 'initialize'
     await runInjectedLoadFailure(operation, 'analysis')
-    expect(useAppStore.getState().system).toMatchObject({
-      status: 'error',
-      error: 'データ取得後の再計算に失敗しました。再試行してください。',
-    })
     await expectDirectLoadAction(operation)
     await runInjectedLoadFailure(operation, 'analysis')
     await expectDirectLoadAction(differentOperation)
@@ -797,21 +776,23 @@ describe('RA-003 Phase D: failure releases owner and permits retry', () => {
     expect(useAppStore.getState().system.status).not.toBe('loading')
   })
 
-  it.each([
-    ['initialize', 7],
-    ['refresh', 4],
-  ] as const)('%s persistence failure keeps the existing transitional publications without rollback', async (operation, expectedNotifications) => {
+  it.each(['initialize', 'refresh'] as const)('%s persistence failure leaves the store completely untouched (RA-007-D2 persist-before-publish)', async operation => {
     storageThrowOnSet = true
     const removeBefore = storageCounts.remove
+    const before = useAppStore.getState()
     const result = await invokeOperation(operation)
     storageThrowOnSet = false
 
     expect(result).toMatchObject({ ok: false, code: 'LOAD_PERSISTENCE_ERROR' })
-    expect(notifications).toBe(expectedNotifications)
+    // RA-007-D2: analysis runs on a staged state that is never published before persistence
+    // succeeds, so a persistence failure leaves zero notifications and the store byte-identical
+    // to before the call — no transitional restore/data/analysis publication survives it.
+    expect(notifications).toBe(0)
     expect(storageCounts.remove).toBe(removeBefore)
-    expect(useAppStore.getState().metrics).not.toBeNull()
-    expect(useAppStore.getState().system.analysisLastRunAt).not.toBeNull()
-    expect(useAppStore.getState().system.status).toBe('error')
+    expect(useAppStore.getState()).toBe(before)
+    expect(useAppStore.getState().metrics).toBeNull()
+    expect(useAppStore.getState().system.analysisLastRunAt).toBeNull()
+    expect(useAppStore.getState().system.status).toBe('idle')
   })
 
   it('CSV parse failure releases coordinator and retry is not IMPORT_IN_PROGRESS', async () => {

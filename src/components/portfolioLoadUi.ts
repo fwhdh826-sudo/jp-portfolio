@@ -33,7 +33,7 @@ export function portfolioLoadButtonState(
 const COORDINATION_MESSAGES: Record<PortfolioCoordinationErrorCode, string> = {
   LOCAL_OPERATION_BUSY: '別のポートフォリオ処理が実行中です。完了後に再試行してください。',
   WEB_LOCK_UNAVAILABLE: 'この環境では安全な複数タブ同期を利用できません。対応ブラウザのHTTPS環境で再読み込みしてください。',
-  WEB_LOCK_TIMEOUT: '別タブの処理待機がタイムアウトしました。別タブを確認して再読み込みしてください。',
+  WEB_LOCK_TIMEOUT: '別タブの処理待機がタイムアウトしました。別タブを確認して再試行してください。',
   WEB_LOCK_ABORTED: '処理開始前に操作が中断されました。再試行してください。',
   WEB_LOCK_REQUEST_FAILED: '安全な排他制御を開始できませんでした。再読み込み後に再試行してください。',
   CROSS_TAB_STATE_STALE: '別タブで更新された状態を検出しました。画面を再読み込みしてください。',

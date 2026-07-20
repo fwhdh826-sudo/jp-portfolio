@@ -708,21 +708,6 @@ function persistCurrentPortfolioGeneration(
     : result
 }
 
-function reflectPortfolioPersistenceResult(
-  result: CurrentPortfolioPersistenceResult | LegacyPersistenceResult,
-  messageOverride?: string,
-): void {
-  if (result.status === 'persisted') return
-  const message = messageOverride ?? (result.status === 'failed'
-    ? '変更を保存できませんでした。再読み込み後に状態を確認してください。'
-    : result.reason === 'canonical_invalid'
-      ? '保存済みcanonicalデータが不正なため、変更の永続化を中止しました。再読み込み後に状態を確認してください。'
-      : '保存中にcanonicalデータが更新されたため、legacy保存を中止しました。再読み込み後に状態を確認してください。')
-  useAppStore.setState(state => ({
-    system: { ...state.system, status: 'error', error: message },
-  }))
-}
-
 type PortfolioLoadPhase = 'restore' | 'data' | 'publish' | 'analysis' | 'persistence'
 
 const PORTFOLIO_LOAD_FAILURE_BY_PHASE = {
@@ -733,13 +718,239 @@ const PORTFOLIO_LOAD_FAILURE_BY_PHASE = {
   persistence: 'LOAD_PERSISTENCE_ERROR',
 } as const satisfies Record<PortfolioLoadPhase, PortfolioLoadFailureCode>
 
-const PORTFOLIO_LOAD_SYSTEM_ERROR = {
-  restore: '保存データを安全に復元できませんでした。状態を確認してください。',
-  data: '最新データを取得できませんでした。通信状態を確認して再試行してください。',
-  analysis: 'データ取得後の再計算に失敗しました。再試行してください。',
-  persistence: '更新結果を保存できませんでした。画面を再読み込みして状態を確認してください。',
-  publish: '更新結果を画面へ反映できませんでした。画面を再読み込みしてください。',
-} as const satisfies Record<PortfolioLoadPhase, string>
+// ── RA-007-D2: initialize/refreshAllData Web Lock staging helpers ───────────
+// A settled outcome never rejects: network prework starts right after the local ticket (before
+// the Web Lock grant) so raw fetch/parse failures can never surface as an unhandled rejection or
+// leak past the classified PortfolioLoadResult codes.
+type SettledPrework<T> =
+  | { ok: true; value: T }
+  | { ok: false }
+
+function settlePrework<T>(promise: Promise<T>): Promise<SettledPrework<T>> {
+  return promise.then(
+    value => ({ ok: true as const, value }),
+    () => ({ ok: false as const }),
+  )
+}
+
+type PublishedLoadData = Awaited<ReturnType<typeof loadPublishedData>>
+
+interface Phase7StockRaw {
+  _meta?: { kind?: string }
+  stock_scores_6axis?: StockScoreRecord[]
+}
+
+/**
+ * Pure merge of freshly fetched published data (market/correlation/news/trust snapshot/macro/
+ * Nikkei VI/SQ/margin/flows/candidates/regime/SAFE_MODE/TierA/Phase 7 scores) onto a staged
+ * base state. Never touches Zustand, localStorage, or the network — callers read/write those
+ * before or after calling this helper so the whole load stays off-store until the single final
+ * publish.
+ */
+function buildStateWithPublishedData(
+  baseState: AppState,
+  publishedData: PublishedLoadData,
+  options: {
+    nowMs: number
+    hasCommittedCanonicalGeneration: boolean
+    phase7StockRaw?: Phase7StockRaw | null
+    localStorageFreshness?: SystemState['localStorageFreshness']
+  },
+): AppState {
+  const { market, correlation, news, trust, holdingsSnapshot, macro, nikkeiVI, sq, margin, flows, candidatesNews, candidatesStocks, regimeState, safeMode, tierAViolations, tierAAlerts } = publishedData
+  const sourceAsOf = getSafeAuthoritativeCsvSourceAsOf(baseState.system.csvImportProvenance, options.nowMs)
+  const hasCurrentGeneration = options.hasCommittedCanonicalGeneration || hasCurrentPortfolioContentEvidence(baseState)
+  const nextTrust = trust.data && shouldApplyPublishedSnapshot(trust.lastUpdated, sourceAsOf, hasCurrentGeneration)
+    ? baseState.trust.map(f => { const d = trust.data!.find(x => x.id === f.id); return d ? { ...f, ...d } : f })
+    : baseState.trust
+  const snapshotMergedHoldings = shouldApplyPublishedSnapshot(holdingsSnapshot.lastUpdated, sourceAsOf, hasCurrentGeneration)
+    ? applyHoldingsSnapshot(baseState.holdings, holdingsSnapshot.data)
+    : baseState.holdings
+  const holdingsWithVol = correlation.data
+    ? snapshotMergedHoldings.map(h => {
+        const v = correlation.data!.volatilities[h.code + '.T']
+        return v ? { ...h, sigma: +v.toFixed(3), sigmaSource: 'yfinance' as const } : h
+      })
+    : snapshotMergedHoldings
+  // NikkeiVI merges into macro (v9.0 has no dedicated market field for it yet); only when both
+  // the newly fetched macro payload and the NikkeiVI payload exist, matching the pre-D2 behavior
+  // that read the just-applied macro back via get() before deciding whether to merge.
+  const mergedMacro = macro.data && nikkeiVI.data
+    ? { ...macro.data, nikkeiVI: nikkeiVI.data.vi, nikkeiVIChg: nikkeiVI.data.viChg }
+    : macro.data
+
+  const isValidScoringData = options.phase7StockRaw != null &&
+    options.phase7StockRaw._meta?.kind !== 'sample_contract'
+  const normalizedScores: StockScoreRecord[] = isValidScoringData && options.phase7StockRaw?.stock_scores_6axis
+    ? options.phase7StockRaw.stock_scores_6axis.map(r => ({ ...r, ticker: r.ticker.replace(/\.T$/, '') }))
+    : []
+
+  return {
+    ...baseState,
+    market: market.data,
+    correlation: correlation.data,
+    news: news.data,
+    trust: nextTrust,
+    holdings: holdingsWithVol,
+    macro: mergedMacro,
+    sqCalendar: sq.data,
+    margin: margin.data,
+    flows: flows.data,
+    candidatesNews: candidatesNews.data,
+    candidatesStocks: candidatesStocks.data,
+    regimeState: regimeState.data,
+    safeMode: safeMode.data,
+    tierAViolations: tierAViolations.data,
+    tierAAlerts: tierAAlerts.data,
+    stockScores6Axis: normalizedScores,
+    fundPhase7: null, // 本番生成物なし — フィクスチャ(phase7_fixture)は使用しない
+    system: {
+      ...baseState.system,
+      ...(options.localStorageFreshness !== undefined
+        ? { localStorageFreshness: options.localStorageFreshness }
+        : {}),
+      dataSourceStatus: {
+        market: market.source,
+        correlation: correlation.source,
+        news: news.source,
+        trust: trust.source,
+        holdings: holdingsSnapshot.source,
+        macro: macro.source,
+        nikkeiVI: nikkeiVI.source,
+        sq: sq.source,
+        margin: margin.source,
+        flows: flows.source,
+        candidatesNews: candidatesNews.source,
+        candidatesStocks: candidatesStocks.source,
+        regime: regimeState.source,
+        safeMode: safeMode.source,
+        tierAViolations: tierAViolations.source,
+        tierAAlerts: tierAAlerts.source,
+      },
+      dataTimestamps: {
+        market: market.data?.last_updated ?? null,
+        correlation: correlation.data?.last_updated ?? null,
+        news: news.data?.updatedAt ?? null,
+        trust: trust.lastUpdated ?? null,
+        holdings: holdingsSnapshot.lastUpdated ?? null,
+        macro: macro.data?.last_updated ?? null,
+        nikkeiVI: nikkeiVI.data?.last_updated ?? null,
+        sq: sq.data?.last_updated ?? null,
+        margin: margin.data?.last_updated ?? null,
+        flows: flows.data?.last_updated ?? null,
+        candidatesNews: candidatesNews.data.updatedAt || null,
+        candidatesStocks: candidatesStocks.data.updatedAt || null,
+        regime: regimeState.generatedAt,
+        safeMode: safeMode.lastChecked,
+        tierAViolations: tierAViolations.generatedAt,
+        tierAAlerts: tierAAlerts.generatedAt,
+      },
+    },
+  }
+}
+
+type InitializeRestoreOutcome =
+  | { kind: 'invalid' }
+  | { kind: 'restored'; state: AppState; hasCommittedCanonicalGeneration: boolean }
+
+/**
+ * Bootstrap restore for initialize: the latest durable canonical/legacy generation is always the
+ * base, regardless of whatever the just-created local Zustand state currently holds. A present
+ * but corrupt canonical envelope fails closed (no legacy fallback, no defaults) instead of mixing
+ * possibly partial legacy keys.
+ */
+function buildInitializeRestoredState(baseState: AppState, nowMs: number): InitializeRestoreOutcome {
+  const csvGeneration = restoreCsvImportGeneration()
+  if (csvGeneration.status === 'invalid') return { kind: 'invalid' }
+  const useLegacy = csvGeneration.status === 'none'
+  const savedPortfolio = csvGeneration.status === 'committed'
+    ? csvGeneration.payload.holdings
+    : useLegacy ? restorePortfolio() : null
+  const savedTrust = csvGeneration.status === 'committed'
+    ? csvGeneration.payload.trust
+    : useLegacy ? restoreTrust() : null
+  const savedLearning = csvGeneration.status === 'committed' || useLegacy
+    ? restoreLearning()
+    : null
+  const savedCsvAt = csvGeneration.status === 'committed' || useLegacy
+    ? restoreCsvImportedAt(nowMs)
+    : null
+  const savedCsvSyncSummary = csvGeneration.status === 'committed' || useLegacy
+    ? restoreCsvSyncSummary(nowMs)
+    : null
+  const savedCsvProvenance = csvGeneration.status === 'committed'
+    ? restoreCsvImportProvenance(csvGeneration.payload, nowMs)
+    : null
+  const hasCommittedCanonicalGeneration = csvGeneration.status === 'committed'
+  const savedPolicy = csvGeneration.status === 'committed'
+    ? csvGeneration.payload.portfolioPolicy ?? DEFAULT_PORTFOLIO_POLICY
+    : useLegacy ? restorePortfolioPolicy() ?? DEFAULT_PORTFOLIO_POLICY : DEFAULT_PORTFOLIO_POLICY
+  const savedCashAssumptions = csvGeneration.status === 'committed'
+    ? csvGeneration.payload.cashAssumptions ?? DEFAULT_CASH_ASSUMPTIONS
+    : useLegacy ? restoreCashAssumptions() ?? DEFAULT_CASH_ASSUMPTIONS : DEFAULT_CASH_ASSUMPTIONS
+
+  const state: AppState = {
+    ...baseState,
+    ...(savedPortfolio ? { holdings: savedPortfolio } : {}),
+    ...(savedTrust ? { trust: savedTrust } : {}),
+    ...(savedLearning ? { learning: savedLearning } : {}),
+    portfolioPolicy: savedPolicy,
+    cashAssumptions: savedCashAssumptions,
+    system: {
+      ...baseState.system,
+      ...(csvGeneration.status === 'committed'
+        ? { csvLastImportedAt: savedCsvAt, csvSyncSummary: savedCsvSyncSummary }
+        : {
+            ...(savedCsvAt ? { csvLastImportedAt: savedCsvAt } : {}),
+            ...(savedCsvSyncSummary ? { csvSyncSummary: savedCsvSyncSummary } : {}),
+          }),
+      csvImportProvenance: savedCsvProvenance,
+      localStorageFreshness: computeLocalStorageFreshness(nowMs),
+    },
+  }
+  return { kind: 'restored', state, hasCommittedCanonicalGeneration }
+}
+
+/**
+ * refreshAllData is not a bootstrap: a future/expired local CSV metadata reading must not persist
+ * forward across refreshes just because a clock skewed once. This mirrors the pre-D2 refresh
+ * safety net, applied to the state captured at Web Lock grant time instead of inside a set().
+ */
+function sanitizeRefreshCsvMetadata(baseState: AppState, nowMs: number): AppState {
+  const safeCsvLastImportedAt = isCsvMetadataTimestampNotFuture(baseState.system.csvLastImportedAt, nowMs)
+    ? baseState.system.csvLastImportedAt
+    : null
+  const safeCsvImportProvenance = validateCsvImportProvenanceForRestore(baseState.system.csvImportProvenance, nowMs)
+  const safeCsvSyncSummary = baseState.system.csvSyncSummary &&
+    isCsvMetadataTimestampNotFuture(baseState.system.csvSyncSummary.importedAt, nowMs)
+    ? baseState.system.csvSyncSummary
+    : null
+  return {
+    ...baseState,
+    system: {
+      ...baseState.system,
+      csvLastImportedAt: safeCsvLastImportedAt,
+      csvImportProvenance: safeCsvImportProvenance,
+      csvSyncSummary: safeCsvSyncSummary,
+    },
+  }
+}
+
+/** Persist-before-publish classification shared by initialize/refreshAllData (RA-007-D2). */
+function classifyLoadPersistenceFailure(
+  operation: PortfolioLoadOperation,
+  result: Exclude<CurrentPortfolioPersistenceResult, { status: 'persisted' }>,
+): PortfolioLoadResult {
+  const conflict =
+    (result.status === 'blocked' &&
+      (result.reason === 'canonical_changed' ||
+        result.reason === 'canonical_committed' ||
+        result.reason === 'metadata_misaligned')) ||
+    (result.status === 'failed' && result.reason === 'ownership_lost')
+  return conflict
+    ? createPortfolioCoordinationFailure(operation, 'PORTFOLIO_GENERATION_CONFLICT')
+    : createPortfolioLoadFailure(operation, 'LOAD_PERSISTENCE_ERROR')
+}
 
 // P4.5-A013-T7: portfolio snapshot v2専用の新規銘柄構築。
 // T2のCSV full-sync新規銘柄と全く同じsafe default契約（buildNewHoldingFromCsvRow）を
@@ -1695,6 +1906,36 @@ const createAppStoreStateCreator = (
     }
   }
 
+  /**
+   * RA-007-D2: applies the fully staged initialize/refreshAllData final state exactly once and
+   * classifies the outcome. If a one-shot test hook fires before apply, the durable generation is
+   * already committed but the local store never sees the staged portfolio (LOAD_PUBLISH_ERROR). A
+   * thrown synchronous subscriber cannot reach this catch: api.subscribe already wraps every
+   * listener (reportSubscriberException), so observer failures never re-enter here — matching the
+   * "subscriber throw is still SUCCESS" contract.
+   */
+  const publishLoadFinalState = (
+    operation: PortfolioLoadOperation,
+    finalState: AppState,
+  ): PortfolioLoadResult => {
+    try {
+      runLoadPublishBeforeApplyHookForTest(runtime)
+      set(finalState)
+    } catch {
+      const published = get()
+      const applied = published.system.status === 'success' &&
+        published.holdings === finalState.holdings &&
+        published.trust === finalState.trust &&
+        published.analysis === finalState.analysis
+      if (!applied) {
+        try { console.error(`[useAppStore] load publish failed before apply: ${operation}`) } catch { /* diagnostic sink */ }
+        return createPortfolioLoadFailure(operation, 'LOAD_PUBLISH_ERROR')
+      }
+      try { console.error(`[useAppStore] load publish observer failed: ${operation}`) } catch { /* diagnostic sink */ }
+    }
+    return createPortfolioLoadSuccess(operation)
+  }
+
   return ({
   // 初期値
   holdings: INITIAL_HOLDINGS,
@@ -1781,6 +2022,12 @@ const createAppStoreStateCreator = (
   },
 
   // ── 起動時初期化 ──────────────────────────────────────────
+  // RA-007-D2: connected to the same-origin exclusive Web Lock. initialize is a bootstrap
+  // operation — the latest durable canonical/legacy generation is always the restore base,
+  // regardless of whatever the just-created local Zustand state currently holds. Network
+  // prework starts right after the local ticket (before the Web Lock is even requested);
+  // restore/analysis/persistence all stage off-store and publish exactly once, only after
+  // persistence has already succeeded (persist-before-publish).
   initialize: async () => {
     const operation: PortfolioLoadOperation = 'initialize'
     if (isPortfolioGenerationCriticalSection(runtime)) {
@@ -1792,212 +2039,97 @@ const createAppStoreStateCreator = (
       reportRejectedPortfolioOperation('initialize')
       return createPortfolioCoordinationFailure(operation, 'LOCAL_OPERATION_BUSY')
     }
-    let phase: PortfolioLoadPhase = 'restore'
+
+    // stock_scores_6axis: 本番生成ファイル（data/scoring/）を参照。contracts/v13.3 フィクスチャは
+    // 使用しない。fund_phase7は本番生成物が存在しないためfetch自体を行わない。
+    const prework = settlePrework(Promise.all([
+      loadPublishedData({ bustCache: true }),
+      fetch('data/scoring/stock_scores_6axis.json')
+        .then(r => r.ok ? (r.json() as Promise<Phase7StockRaw>) : null)
+        .catch(() => null),
+    ]))
+
+    const failurePhase: { current: PortfolioLoadPhase } = { current: 'restore' }
     try {
-      if (get().system.status === 'loading') {
-        return createPortfolioCoordinationFailure(operation, 'LOCAL_OPERATION_BUSY')
-      }
-      phase = 'publish'
-      set(s => ({ system: { ...s.system, status: 'loading' } }))
-      phase = 'restore'
-      runLoadRestoreBeforeReadHookForTest(runtime)
-      // localStorage復元（P4.5-A012d: holdings/trustはTTL失効時も値を保持する。
-      // 鮮度はlocalStorageFreshnessとして表示専用にsystemへ反映する）
-      const csvGeneration = restoreCsvImportGeneration()
-      // A committed envelope is hydrated as one logical generation. A present but invalid
-      // envelope fails closed instead of mixing possibly partial legacy keys. Legacy keys are
-      // read only when no generation envelope exists (backward compatibility).
-      const useLegacy = csvGeneration.status === 'none'
-      const savedPortfolio = csvGeneration.status === 'committed'
-        ? csvGeneration.payload.holdings
-        : useLegacy ? restorePortfolio() : null
-      const savedTrust = csvGeneration.status === 'committed'
-        ? csvGeneration.payload.trust
-        : useLegacy ? restoreTrust() : null
-      // RA-005: all three CSV metadata restore paths receive this transaction-local clock.
-      // Capture it before any other restore helper can consult its own default wall clock.
-      const csvMetadataNowMs = Date.now()
-      const savedLearning = csvGeneration.status === 'committed' || useLegacy
-        ? restoreLearning()
-        : null
-      const savedCsvAt = csvGeneration.status === 'committed' || useLegacy
-        ? restoreCsvImportedAt(csvMetadataNowMs)
-        : null
-      const savedCsvSyncSummary = csvGeneration.status === 'committed' || useLegacy
-        ? restoreCsvSyncSummary(csvMetadataNowMs)
-        : null
-      const savedCsvProvenance = csvGeneration.status === 'committed'
-        ? restoreCsvImportProvenance(csvGeneration.payload, csvMetadataNowMs)
-        : null
-      const hasCommittedCanonicalGeneration = csvGeneration.status === 'committed'
-      const savedPolicy = csvGeneration.status === 'committed'
-        ? csvGeneration.payload.portfolioPolicy ?? DEFAULT_PORTFOLIO_POLICY
-        : useLegacy ? restorePortfolioPolicy() ?? DEFAULT_PORTFOLIO_POLICY : DEFAULT_PORTFOLIO_POLICY
-      const savedCashAssumptions = csvGeneration.status === 'committed'
-        ? csvGeneration.payload.cashAssumptions ?? DEFAULT_CASH_ASSUMPTIONS
-        : useLegacy ? restoreCashAssumptions() ?? DEFAULT_CASH_ASSUMPTIONS : DEFAULT_CASH_ASSUMPTIONS
-      phase = 'publish'
-      set(s => ({
-        ...(savedPortfolio ? { holdings: savedPortfolio } : {}),
-        ...(savedTrust ? { trust: savedTrust } : {}),
-        ...(savedLearning ? { learning: savedLearning } : {}),
-        portfolioPolicy: savedPolicy,
-        cashAssumptions: savedCashAssumptions,
-        system: {
-          ...s.system,
-          ...(csvGeneration.status === 'committed'
-            ? { csvLastImportedAt: savedCsvAt, csvSyncSummary: savedCsvSyncSummary }
-            : {
-                ...(savedCsvAt ? { csvLastImportedAt: savedCsvAt } : {}),
-                ...(savedCsvSyncSummary ? { csvSyncSummary: savedCsvSyncSummary } : {}),
-              }),
-          csvImportProvenance: savedCsvProvenance,
+      const lockResult = await runtime.portfolioGenerationLock.runExclusive(
+        operation,
+        async (): Promise<PortfolioLoadResult> => {
+          runLoadRestoreBeforeReadHookForTest(runtime)
+          const grantedState = get()
+          const nowMs = Date.now()
+
+          // localStorage復元（P4.5-A012d: holdings/trustはTTL失効時も値を保持する。鮮度は
+          // localStorageFreshnessとして表示専用にsystemへ反映する）。restore結果はまだ
+          // storeへ一切publishしない — 完全にstage済みのAppStateとして保持するだけ。
+          failurePhase.current = 'restore'
+          const restoreOutcome = buildInitializeRestoredState(grantedState, nowMs)
+          if (restoreOutcome.kind === 'invalid') {
+            return createPortfolioLoadFailure(operation, 'LOAD_RESTORE_ERROR')
+          }
+          const restoredState = restoreOutcome.state
+
+          // データ取得（macro / nikkei VI / SQ / Phase 7 含む）。fetchはWeb Lock grant前に
+          // 開始済みで、ここではsettled outcomeを待つだけ。
+          failurePhase.current = 'data'
+          const preworkResult = await prework
+          if (!preworkResult.ok) {
+            return createPortfolioLoadFailure(operation, 'LOAD_DATA_ERROR')
+          }
+          const [publishedData, phase7StockRaw] = preworkResult.value
+          const stagedState = buildStateWithPublishedData(restoredState, publishedData, {
+            nowMs,
+            hasCommittedCanonicalGeneration: restoreOutcome.hasCommittedCanonicalGeneration,
+            phase7StockRaw,
+          })
+
+          // 全再計算（未publishのstaged stateに対して実行する）
+          failurePhase.current = 'analysis'
+          let computed: ReturnType<typeof runFullAnalysis>
+          try {
+            computed = runFullAnalysis(stagedState, { nowMs })
+          } catch {
+            return createPortfolioLoadFailure(operation, 'LOAD_ANALYSIS_ERROR')
+          }
+          const nowIso = new Date(nowMs).toISOString()
+          const finalState: AppState = {
+            ...stagedState,
+            ...computed,
+            system: { ...stagedState.system, status: 'success', lastUpdated: nowIso, analysisLastRunAt: nowIso, error: null },
+          }
+
+          // 永続化（persist-before-publish）
+          failurePhase.current = 'persistence'
+          let persistenceResult: CurrentPortfolioPersistenceResult
+          try {
+            persistenceResult = persistCurrentPortfolioGeneration(finalState, undefined, undefined, nowMs)
+          } catch {
+            return createPortfolioLoadFailure(operation, 'LOAD_PERSISTENCE_ERROR')
+          }
+          if (persistenceResult.status !== 'persisted') {
+            return classifyLoadPersistenceFailure(operation, persistenceResult)
+          }
+
+          // exactly one final publication
+          failurePhase.current = 'publish'
+          return publishLoadFinalState(operation, finalState)
         },
-      }))
-      // P4.5-A012d: holdings/trustのlocalStorage鮮度を表示専用でsystemへ反映する。
-      // 投資判断ロジックには一切使わない（UIのstale警告のみに使用）。
-      set(s => ({ system: { ...s.system, localStorageFreshness: computeLocalStorageFreshness() } }))
-
-      // データ取得（macro / nikkei VI / SQ / Phase 7 含む）
-      // stock_scores_6axis: 本番生成ファイル（data/scoring/）を参照。contracts/v13.3 フィクスチャは使用しない
-      // fund_phase7: 本番生成物が存在しないためfetch廃止。フィクスチャ(phase7_fixture)は使用しない
-      phase = 'data'
-      const [result, phase7StockRaw] = await Promise.all([
-        loadPublishedData({ bustCache: true }),
-        fetch('data/scoring/stock_scores_6axis.json')
-          .then(r => r.ok ? (r.json() as Promise<{ _meta?: { kind?: string }; stock_scores_6axis?: StockScoreRecord[] }>) : null)
-          .catch(() => null),
-      ])
-      const { market, correlation, news, trust, holdingsSnapshot, macro, nikkeiVI, sq, margin, flows, candidatesNews, candidatesStocks, regimeState, safeMode, tierAViolations, tierAAlerts } = result
-
-      phase = 'publish'
-      runLoadPublishBeforeApplyHookForTest(runtime)
-      set(s => {
-        const sourceAsOf = getSafeAuthoritativeCsvSourceAsOf(s.system.csvImportProvenance, csvMetadataNowMs)
-        const hasCurrentGeneration = hasCommittedCanonicalGeneration || hasCurrentPortfolioContentEvidence(s)
-        const nextTrust = trust.data && shouldApplyPublishedSnapshot(trust.lastUpdated, sourceAsOf, hasCurrentGeneration)
-          ? s.trust.map(f => { const d = trust.data!.find(x => x.id === f.id); return d ? { ...f, ...d } : f })
-          : s.trust
-        const snapshotMergedHoldings = shouldApplyPublishedSnapshot(holdingsSnapshot.lastUpdated, sourceAsOf, hasCurrentGeneration)
-          ? applyHoldingsSnapshot(s.holdings, holdingsSnapshot.data)
-          : s.holdings
-        // volatilities反映
-        const holdingsWithVol = correlation.data
-          ? snapshotMergedHoldings.map(h => {
-              const v = correlation.data!.volatilities[h.code + '.T']
-              return v ? { ...h, sigma: +v.toFixed(3), sigmaSource: 'yfinance' as const } : h
-            })
-          : snapshotMergedHoldings
-        return {
-          market: market.data,
-          correlation: correlation.data,
-          news: news.data,
-          trust: nextTrust,
-          holdings: holdingsWithVol,
-          macro: macro.data,
-          sqCalendar: sq.data,
-          margin: margin.data,
-          flows: flows.data,
-          candidatesNews: candidatesNews.data,
-          candidatesStocks: candidatesStocks.data,
-          regimeState: regimeState.data,
-          safeMode: safeMode.data,
-          tierAViolations: tierAViolations.data,
-          tierAAlerts: tierAAlerts.data,
-          system: {
-            ...s.system,
-            dataSourceStatus: {
-              market: market.source,
-              correlation: correlation.source,
-              news: news.source,
-              trust: trust.source,
-              holdings: holdingsSnapshot.source,
-              macro: macro.source,
-              nikkeiVI: nikkeiVI.source,
-              sq: sq.source,
-              margin: margin.source,
-              flows: flows.source,
-              candidatesNews: candidatesNews.source,
-              candidatesStocks: candidatesStocks.source,
-              regime: regimeState.source,
-              safeMode: safeMode.source,
-              tierAViolations: tierAViolations.source,
-              tierAAlerts: tierAAlerts.source,
-            },
-            dataTimestamps: {
-              market: market.data?.last_updated ?? null,
-              correlation: correlation.data?.last_updated ?? null,
-              news: news.data?.updatedAt ?? null,
-              trust: trust.lastUpdated ?? null,
-              holdings: holdingsSnapshot.lastUpdated ?? null,
-              macro: macro.data?.last_updated ?? null,
-              nikkeiVI: nikkeiVI.data?.last_updated ?? null,
-              sq: sq.data?.last_updated ?? null,
-              margin: margin.data?.last_updated ?? null,
-              flows: flows.data?.last_updated ?? null,
-              candidatesNews: candidatesNews.data.updatedAt || null,
-              candidatesStocks: candidatesStocks.data.updatedAt || null,
-              regime: regimeState.generatedAt,
-              safeMode: safeMode.lastChecked,
-              tierAViolations: tierAViolations.generatedAt,
-              tierAAlerts: tierAAlerts.generatedAt,
-            },
-          },
-        }
-      })
-
-      // NikkeiVI を market に合流（v9.0 では market型にまだフィールドないので macro経由で表示）
-      if (nikkeiVI.data && get().macro) {
-        set(s => ({ macro: s.macro ? { ...s.macro, nikkeiVI: nikkeiVI.data!.vi, nikkeiVIChg: nikkeiVI.data!.viChg } : s.macro }))
-      }
-
-      // Phase 7 観察値セット
-      // _meta.kind === 'sample_contract' のフィクスチャデータは拒否し空配列にする
-      // 本番ファイルは ticker が '6098.T' 形式なので '.T' サフィックスを除去してコードに合わせる
-      const isValidScoringData = phase7StockRaw !== null && phase7StockRaw?._meta?.kind !== 'sample_contract'
-      const normalizedScores: StockScoreRecord[] = isValidScoringData && phase7StockRaw?.stock_scores_6axis
-        ? phase7StockRaw.stock_scores_6axis.map(r => ({ ...r, ticker: r.ticker.replace(/\.T$/, '') }))
-        : []
-      set({
-        stockScores6Axis: normalizedScores,
-        fundPhase7: null,  // 本番生成物なし — フィクスチャ(phase7_fixture)は使用しない
-      })
-
-      // 全再計算
-      phase = 'analysis'
-      const computed = runFullAnalysis(get())
-      const now = new Date().toISOString()
-      phase = 'publish'
-      set(s => ({
-        ...computed,
-        system: { ...s.system, status: 'success', lastUpdated: now, analysisLastRunAt: now, error: null },
-      }))
-
-      // 永続化
-      phase = 'persistence'
-      const persistenceResult = persistCurrentPortfolioGeneration(get())
-      reflectPortfolioPersistenceResult(persistenceResult, PORTFOLIO_LOAD_SYSTEM_ERROR.persistence)
-      if (persistenceResult.status !== 'persisted') {
-        return createPortfolioLoadFailure(operation, 'LOAD_PERSISTENCE_ERROR')
-      }
-      return createPortfolioLoadSuccess(operation)
+      )
+      return lockResult.ok
+        ? lockResult.value
+        : createPortfolioCoordinationFailure(operation, lockResult.code)
     } catch {
-      const failurePhase = phase
-      let code = PORTFOLIO_LOAD_FAILURE_BY_PHASE[failurePhase]
-      try {
-        set(s => ({
-          system: { ...s.system, status: 'error', error: PORTFOLIO_LOAD_SYSTEM_ERROR[failurePhase] },
-        }))
-      } catch {
-        code = 'LOAD_PUBLISH_ERROR'
-      }
-      return createPortfolioLoadFailure(operation, code)
+      return createPortfolioLoadFailure(operation, PORTFOLIO_LOAD_FAILURE_BY_PHASE[failurePhase.current])
     } finally {
       releasePortfolioOperationFromRuntime(runtime, operationTicket)
     }
   },
 
   // ── 全データ再取得 ────────────────────────────────────────
+  // RA-007-D2: connected to the same-origin exclusive Web Lock. refreshAllData is NOT a
+  // bootstrap — after grant it re-uses the same durable-alignment projection helper as manual
+  // mutations/CSV/snapshot imports. Any mismatch between the currently published projection and
+  // the latest durable generation fails closed as CROSS_TAB_STATE_STALE before any prework
+  // result, analysis, persistence, or publication happens.
   refreshAllData: async () => {
     const operation: PortfolioLoadOperation = 'refreshAllData'
     if (isPortfolioGenerationCriticalSection(runtime)) {
@@ -2009,133 +2141,84 @@ const createAppStoreStateCreator = (
       reportRejectedPortfolioOperation('refreshAllData')
       return createPortfolioCoordinationFailure(operation, 'LOCAL_OPERATION_BUSY')
     }
-    let phase: PortfolioLoadPhase = 'publish'
+
+    const prework = settlePrework(loadPublishedData({ bustCache: true }))
+
+    const failurePhase: { current: PortfolioLoadPhase } = { current: 'data' }
     try {
-      if (get().system.status === 'loading') {
-        return createPortfolioCoordinationFailure(operation, 'LOCAL_OPERATION_BUSY')
-      }
-      set(s => ({ system: { ...s.system, status: 'loading', error: null } }))
-      phase = 'data'
-      const result = await loadPublishedData({ bustCache: true })
-      const { market, correlation, news, trust, holdingsSnapshot, macro, nikkeiVI, sq, margin, flows, candidatesNews, candidatesStocks, regimeState, safeMode, tierAViolations, tierAAlerts } = result
-      const csvMetadataNowMs = Date.now()
-      const hasCommittedCanonicalGeneration = restoreCsvImportGeneration().status === 'committed'
+      const lockResult = await runtime.portfolioGenerationLock.runExclusive(
+        operation,
+        async (): Promise<PortfolioLoadResult> => {
+          const grantedState = get()
+          const nowMs = Date.now()
 
-      phase = 'publish'
-      runLoadPublishBeforeApplyHookForTest(runtime)
-      set(s => {
-        const safeCsvLastImportedAt = isCsvMetadataTimestampNotFuture(
-          s.system.csvLastImportedAt,
-          csvMetadataNowMs,
-        )
-          ? s.system.csvLastImportedAt
-          : null
-        const safeCsvImportProvenance = validateCsvImportProvenanceForRestore(
-          s.system.csvImportProvenance,
-          csvMetadataNowMs,
-        )
-        const safeCsvSyncSummary = s.system.csvSyncSummary &&
-          isCsvMetadataTimestampNotFuture(
-            s.system.csvSyncSummary.importedAt,
-            csvMetadataNowMs,
-          )
-          ? s.system.csvSyncSummary
-          : null
-        const sourceAsOf = getSafeAuthoritativeCsvSourceAsOf(safeCsvImportProvenance, csvMetadataNowMs)
-        const hasCurrentGeneration = hasCommittedCanonicalGeneration || hasCurrentPortfolioContentEvidence(s)
-        const nextTrust = trust.data && shouldApplyPublishedSnapshot(trust.lastUpdated, sourceAsOf, hasCurrentGeneration)
-          ? s.trust.map(f => { const d = trust.data!.find(x => x.id === f.id); return d ? { ...f, ...d } : f })
-          : s.trust
-        const snapshotMergedHoldings = shouldApplyPublishedSnapshot(holdingsSnapshot.lastUpdated, sourceAsOf, hasCurrentGeneration)
-          ? applyHoldingsSnapshot(s.holdings, holdingsSnapshot.data)
-          : s.holdings
-        const holdingsWithVol = correlation.data
-          ? snapshotMergedHoldings.map(h => {
-              const v = correlation.data!.volatilities[h.code + '.T']
-              return v ? { ...h, sigma: +v.toFixed(3), sigmaSource: 'yfinance' as const } : h
-            })
-          : snapshotMergedHoldings
-        return {
-          market: market.data, correlation: correlation.data, news: news.data,
-          trust: nextTrust, holdings: holdingsWithVol,
-          macro: macro.data, sqCalendar: sq.data, margin: margin.data, flows: flows.data,
-          candidatesNews: candidatesNews.data,
-          candidatesStocks: candidatesStocks.data,
-          regimeState: regimeState.data,
-          safeMode: safeMode.data,
-          tierAViolations: tierAViolations.data,
-          tierAAlerts: tierAAlerts.data,
-          system: {
-            ...s.system,
-            csvLastImportedAt: safeCsvLastImportedAt,
-            csvImportProvenance: safeCsvImportProvenance,
-            csvSyncSummary: safeCsvSyncSummary,
-            dataSourceStatus: {
-              market: market.source, correlation: correlation.source,
-              news: news.source, trust: trust.source,
-              holdings: holdingsSnapshot.source,
-              macro: macro.source, nikkeiVI: nikkeiVI.source, sq: sq.source,
-              margin: margin.source, flows: flows.source,
-              candidatesNews: candidatesNews.source,
-              candidatesStocks: candidatesStocks.source,
-              regime: regimeState.source,
-              safeMode: safeMode.source,
-              tierAViolations: tierAViolations.source,
-              tierAAlerts: tierAAlerts.source,
-            },
-            dataTimestamps: {
-              market: market.data?.last_updated ?? null,
-              correlation: correlation.data?.last_updated ?? null,
-              news: news.data?.updatedAt ?? null,
-              trust: trust.lastUpdated ?? null,
-              holdings: holdingsSnapshot.lastUpdated ?? null,
-              macro: macro.data?.last_updated ?? null,
-              nikkeiVI: nikkeiVI.data?.last_updated ?? null,
-              sq: sq.data?.last_updated ?? null,
-              margin: margin.data?.last_updated ?? null,
-              flows: flows.data?.last_updated ?? null,
-              candidatesNews: candidatesNews.data.updatedAt || null,
-              candidatesStocks: candidatesStocks.data.updatedAt || null,
-              regime: regimeState.generatedAt,
-              safeMode: safeMode.lastChecked,
-              tierAViolations: tierAViolations.generatedAt,
-              tierAAlerts: tierAAlerts.generatedAt,
-            },
-          },
-        }
-      })
+          // refreshはbootstrapではない。公開済みprojectionと最新durable projectionを比較し、
+          // 安全なwrite baseだと証明できない限りprework結果・analysis・persistence・publishへ
+          // 一切進まない（すでに開始済みのnetwork preworkがあっても結果は破棄する）。
+          const alignment = inspectDurablePortfolioAlignment(runtime, grantedState, nowMs)
+          if (alignment.status === 'stale') {
+            return createPortfolioCoordinationFailure(operation, 'CROSS_TAB_STATE_STALE')
+          }
+          if (alignment.status === 'invalid') {
+            return createPortfolioLoadFailure(operation, 'LOAD_PERSISTENCE_ERROR')
+          }
 
-      if (nikkeiVI.data && get().macro) {
-        set(s => ({ macro: s.macro ? { ...s.macro, nikkeiVI: nikkeiVI.data!.vi, nikkeiVIChg: nikkeiVI.data!.viChg } : s.macro }))
-      }
+          failurePhase.current = 'data'
+          const preworkResult = await prework
+          if (!preworkResult.ok) {
+            return createPortfolioLoadFailure(operation, 'LOAD_DATA_ERROR')
+          }
 
-      phase = 'analysis'
-      const computed = runFullAnalysis(get())
-      const now = new Date().toISOString()
-      phase = 'publish'
-      set(s => ({
-        ...computed,
-        system: { ...s.system, status: 'success', lastUpdated: now, analysisLastRunAt: now, error: null },
-      }))
+          // refreshはbootstrapでないため、future/expired化したlocal CSV metadataがそのまま
+          // 前方へ持ち越されないよう正規化してからpublished dataをmergeする。
+          const safeBaseState = sanitizeRefreshCsvMetadata(grantedState, nowMs)
+          const stagedState = buildStateWithPublishedData(safeBaseState, preworkResult.value, {
+            nowMs,
+            hasCommittedCanonicalGeneration: alignment.canonical.status === 'committed',
+          })
 
-      phase = 'persistence'
-      const persistenceResult = persistCurrentPortfolioGeneration(get())
-      reflectPortfolioPersistenceResult(persistenceResult, PORTFOLIO_LOAD_SYSTEM_ERROR.persistence)
-      if (persistenceResult.status !== 'persisted') {
-        return createPortfolioLoadFailure(operation, 'LOAD_PERSISTENCE_ERROR')
-      }
-      return createPortfolioLoadSuccess(operation)
+          failurePhase.current = 'analysis'
+          let computed: ReturnType<typeof runFullAnalysis>
+          try {
+            computed = runFullAnalysis(stagedState, { nowMs })
+          } catch {
+            return createPortfolioLoadFailure(operation, 'LOAD_ANALYSIS_ERROR')
+          }
+          const nowIso = new Date(nowMs).toISOString()
+          const finalState: AppState = {
+            ...stagedState,
+            ...computed,
+            system: { ...stagedState.system, status: 'success', lastUpdated: nowIso, analysisLastRunAt: nowIso, error: null },
+          }
+
+          // Deliberately re-reads canonical rather than threading alignment.canonical/canonicalRaw
+          // through: passing a known canonicalRaw makes persistCurrentPortfolioGeneration trust
+          // finalState.system.csvLastImportedAt without its usual fallback to the existing
+          // canonical's own csvImportedAt, while csvSyncSummary still falls back independently —
+          // refresh's CSV-metadata sanitization can null csvLastImportedAt while a syncSummary
+          // fallback survives, which fails schema validation (syncSummary present without a
+          // matching csvImportedAt). The Web Lock already serializes writers, so there is no
+          // conflict window for a known-raw CAS check to protect against here.
+          failurePhase.current = 'persistence'
+          let persistenceResult: CurrentPortfolioPersistenceResult
+          try {
+            persistenceResult = persistCurrentPortfolioGeneration(finalState, undefined, undefined, nowMs)
+          } catch {
+            return createPortfolioLoadFailure(operation, 'LOAD_PERSISTENCE_ERROR')
+          }
+          if (persistenceResult.status !== 'persisted') {
+            return classifyLoadPersistenceFailure(operation, persistenceResult)
+          }
+
+          failurePhase.current = 'publish'
+          return publishLoadFinalState(operation, finalState)
+        },
+      )
+      return lockResult.ok
+        ? lockResult.value
+        : createPortfolioCoordinationFailure(operation, lockResult.code)
     } catch {
-      const failurePhase = phase
-      let code = PORTFOLIO_LOAD_FAILURE_BY_PHASE[failurePhase]
-      try {
-        set(s => ({
-          system: { ...s.system, status: 'error', error: PORTFOLIO_LOAD_SYSTEM_ERROR[failurePhase] },
-        }))
-      } catch {
-        code = 'LOAD_PUBLISH_ERROR'
-      }
-      return createPortfolioLoadFailure(operation, code)
+      return createPortfolioLoadFailure(operation, PORTFOLIO_LOAD_FAILURE_BY_PHASE[failurePhase.current])
     } finally {
       releasePortfolioOperationFromRuntime(runtime, operationTicket)
     }

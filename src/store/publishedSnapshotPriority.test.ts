@@ -1,7 +1,19 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import type { Holding, Trust } from '../types'
-import { useAppStore, shouldApplyPublishedSnapshot } from './useAppStore'
+import {
+  resetPortfolioGenerationLockAdapterForTest,
+  setPortfolioGenerationLockAdapterForTest,
+  shouldApplyPublishedSnapshot,
+  useAppStore,
+} from './useAppStore'
 import { CSV_IMPORT_GENERATION_KEY, persistCsvImportTransaction } from './persist'
+import { createImmediatePortfolioGenerationLockAdapterForTest } from './testing/portfolioGenerationLockTestAdapters'
+
+// RA-007-D2: initialize/refreshAllData now connect to the same-origin exclusive Web Lock. The
+// default store's production adapter has no navigator.locks in this test environment, so every
+// initialize()/refreshAllData() call here needs the immediate test adapter installed.
+beforeEach(() => setPortfolioGenerationLockAdapterForTest(createImmediatePortfolioGenerationLockAdapterForTest()))
+afterEach(() => resetPortfolioGenerationLockAdapterForTest())
 
 // P4.5-A013-T4:
 // initialize/refreshAllDataは、published holdings/trust snapshot（data/holdings.json /
@@ -346,6 +358,15 @@ describe('useAppStore.initialize / refreshAllData: published snapshot優先順�
     useAppStore.setState(state => ({
       holdings: [committedHolding],
       trust: [committedTrust],
+      // RA-007-D2: refresh now checks durable alignment before doing anything else, so the
+      // published projection (holdings/trust/policy/cash/CSV metadata) must byte-match the
+      // just-committed canonical generation, or refresh fails closed with CROSS_TAB_STATE_STALE
+      // before ever reaching the sanitize/merge/persist steps this test exercises.
+      portfolioPolicy: { jpStockMaxRatio: 0.12 },
+      cashAssumptions: {
+        cashDeposits: 0, standbyFunds: 0,
+        manualOverrideEnabled: false, manualUpdatedAt: null,
+      },
       system: {
         ...state.system,
         status: 'idle',
@@ -379,31 +400,23 @@ describe('useAppStore.initialize / refreshAllData: published snapshot優先順�
       },
     })
     const nowSpy = vi.spyOn(Date, 'now').mockReturnValue(nowMs)
-    const canonicalBefore = store[CSV_IMPORT_GENERATION_KEY]
     writeLog.length = 0
-    let canonicalDuringSanitation: string | null = null
-    let writesDuringSanitation: number | null = null
-    const unsubscribe = useAppStore.subscribe(state => {
-      if (state.system.csvLastImportedAt === null &&
-          state.system.csvImportProvenance === null &&
-          state.system.csvSyncSummary === null &&
-          canonicalDuringSanitation === null) {
-        canonicalDuringSanitation = store[CSV_IMPORT_GENERATION_KEY]
-        writesDuringSanitation = writeLog.length
-      }
-    })
+    let notifications = 0
+    const unsubscribe = useAppStore.subscribe(() => { notifications += 1 })
 
     await useAppStore.getState().refreshAllData()
     unsubscribe()
 
+    // RA-007-D2: CSV-metadata sanitization stages entirely off-store (buildStateWithPublishedData
+    // never runs before persistence succeeds), so the sanitized (nulled) fields only ever become
+    // visible as part of the single final publication — never as an interim state.
+    expect(notifications).toBe(1)
     expect(useAppStore.getState().holdings.find(item => item.code === '7203')?.eval).toBe(700_000)
     expect(useAppStore.getState().trust.find(item => item.id === 'sp500_sbi')?.eval).toBe(4_000_000)
     expect(useAppStore.getState().system.csvLastImportedAt).toBeNull()
     expect(useAppStore.getState().system.csvImportProvenance).toBeNull()
     expect(useAppStore.getState().system.csvSyncSummary).toBeNull()
-    expect(canonicalDuringSanitation).toBe(canonicalBefore)
-    expect(writesDuringSanitation).toBe(0)
-    // refresh末尾の既存normal persistenceはsanitation writeと分離して1回だけ発生する。
+    // persist-before-publish: exactly one canonical write for the whole successful operation.
     expect(writeLog.filter(key => key === CSV_IMPORT_GENERATION_KEY)).toHaveLength(1)
     nowSpy.mockRestore()
   })
@@ -554,13 +567,17 @@ describe('useAppStore.initialize / refreshAllData: published snapshot優先順�
     const before = { ...store }
     writeLog.length = 0
     mockFetchRouter({})
+    const beforeState = useAppStore.getState()
 
-    await useAppStore.getState().initialize()
+    const result = await useAppStore.getState().initialize()
 
     expect(writeLog).toEqual([])
     expect(store).toEqual(before)
-    expect(useAppStore.getState().system).toMatchObject({ status: 'error' })
-    expect(useAppStore.getState().system.error).not.toMatch(/JSON|parse|token/i)
+    expect(result).toMatchObject({ ok: false, operation: 'initialize', code: 'LOAD_RESTORE_ERROR' })
+    // RA-007-D2: a restore-invalid failure never publishes to the store, not even an
+    // error-only interim state.
+    expect(useAppStore.getState()).toBe(beforeState)
+    expect(JSON.stringify(result)).not.toMatch(/JSON|parse|token/i)
   })
 
   it('initialize: legacy operation timeだけではsource freshnessを証明できずpublished snapshotを適用しない', async () => {
@@ -768,11 +785,16 @@ describe('useAppStore.initialize / refreshAllData: published snapshot優先順�
       system: { ...useAppStore.getState().system, status: 'idle' },
     })
     mockFetchRouter({})
+    const beforeState = useAppStore.getState()
 
-    await useAppStore.getState().refreshAllData()
+    const result = await useAppStore.getState().refreshAllData()
 
     expect(writeLog).toEqual([])
     expect(store).toEqual(before)
-    expect(useAppStore.getState().system).toMatchObject({ status: 'error' })
+    // RA-007-D2: refresh cannot prove a safe write base when canonical is present-invalid, so it
+    // fails closed as LOAD_PERSISTENCE_ERROR (never misclassified as CROSS_TAB_STATE_STALE) and
+    // never publishes to the store.
+    expect(result).toMatchObject({ ok: false, operation: 'refreshAllData', code: 'LOAD_PERSISTENCE_ERROR' })
+    expect(useAppStore.getState()).toBe(beforeState)
   })
 })
