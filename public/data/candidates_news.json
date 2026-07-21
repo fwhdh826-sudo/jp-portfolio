@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-07-21T21:51:02.043704+09:00",
-  "sourceUpdatedAt": "2026-07-21T12:44:59+00:00",
+  "updatedAt": "2026-07-22T07:29:53.490770+09:00",
+  "sourceUpdatedAt": "2026-07-21T22:17:55+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -56,36 +56,75 @@
       ]
     },
     "us_broad": {
-      "avgSentiment": 0.165,
+      "avgSentiment": 0.4,
       "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 1,
+      "positiveCount": 2,
+      "neutralCount": 3,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Wall Street Talks Up Carry Trade as Returns Soar Most in Decades",
-      "topPositiveTitle": "Economic Momentum Flips From Blessing to Curse for S&P 500 Bulls",
+      "topNegativeTitle": "Capital One Profit Beats Estimates as Loan-Loss Provisions Drop",
+      "topPositiveTitle": "Gold and Silver Rise on Dip-Buying as Traders Weigh Fed Strategy",
       "items": [
         {
-          "title": "Wall Street Talks Up Carry Trade as Returns Soar Most in Decades",
+          "title": "Capital One Profit Beats Estimates as Loan-Loss Provisions Drop",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-21T11:50:38+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-21/wall-street-talks-up-carry-trade-as-returns-soar-most-in-decades",
+          "publishedAt": "2026-07-21T20:18:44+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-21/capital-one-profit-beats-estimates-as-loan-loss-provisions-drop",
           "tags": [
-            "macro_risk",
             "market",
             "us_broad"
           ]
         },
         {
-          "title": "Economic Momentum Flips From Blessing to Curse for S&P 500 Bulls",
+          "title": "Treasury Flags Concern Over ‘Potentially Abusive’ Tax Trades",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-21T17:29:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-21/treasury-flags-concern-over-potentially-abusive-tax-strategies",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "US Yields Hit Two-Month High as Oil Sparks Inflation Risk",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-21T14:31:19+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-21/treasury-yields-hit-two-month-high-as-oil-sparks-inflation-risk",
+          "tags": [
+            "commodity",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Gold and Silver Rise on Dip-Buying as Traders Weigh Fed Strategy",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-07-21T11:56:30+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-21/economic-momentum-flips-from-blessing-to-curse-for-s-p-500-bulls",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-07-20T23:47:34+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-20/gold-steady-as-traders-watch-middle-east-war-for-inflation-clues",
+          "tags": [
+            "commodity",
+            "gold",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Stocks Climb as Rebound in Chipmakers Gathers Pace: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-07-20T22:09:48+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-20/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "market",
             "us_broad"
@@ -94,24 +133,40 @@
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0.665,
       "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 1,
+      "positiveCount": 2,
+      "neutralCount": 0,
       "sourceCount": 1,
-      "itemCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Biotech IPOs Outperform AI Listings, Leading US Market in 2026",
-      "topPositiveTitle": "Biotech IPOs Outperform AI Listings, Leading US Market in 2026",
+      "topNegativeTitle": "Nasdaq 100 Notches Best Day in Weeks as Chipmakers Rebound",
+      "topPositiveTitle": "Asian Stocks Set for Gains as Chipmakers Rebound: Markets Wrap",
       "items": [
         {
-          "title": "Biotech IPOs Outperform AI Listings, Leading US Market in 2026",
+          "title": "Nasdaq 100 Notches Best Day in Weeks as Chipmakers Rebound",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-21T12:35:25+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-21/biotech-ipos-outperform-ai-listings-leading-us-market-in-2026",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-07-21T12:31:43+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-21/us-stock-futures-rise-as-chipmaker-rebound-overshadows-iran-war",
           "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Asian Stocks Set for Gains as Chipmakers Rebound: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-07-21T22:07:30+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-21/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
             "market",
             "us_growth"
           ]
@@ -131,28 +186,69 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": 0,
+      "avgSentiment": 1.0,
       "negativeCount": 0,
-      "positiveCount": 0,
+      "positiveCount": 2,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Canadian Stocks Climb as Gold Surge Offsets Trump Tariff Threat",
+      "topPositiveTitle": "Canadian Stocks Climb as Gold Surge Offsets Trump Tariff Threat",
+      "items": [
+        {
+          "title": "Canadian Stocks Climb as Gold Surge Offsets Trump Tariff Threat",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-07-21T20:18:29+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-21/canadian-stocks-climb-as-gold-surge-offsets-trump-tariff-threat",
+          "tags": [
+            "gold",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Gold and Silver Rise on Dip-Buying as Traders Weigh Fed Strategy",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-07-20T23:47:34+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-20/gold-steady-as-traders-watch-middle-east-war-for-inflation-clues",
+          "tags": [
+            "commodity",
+            "gold",
+            "market",
+            "us_broad"
+          ]
+        }
+      ]
     },
     "reit": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "KKR Commercial Real Estate Lender Studies Potential Sale, Merger",
+      "topPositiveTitle": "KKR Commercial Real Estate Lender Studies Potential Sale, Merger",
+      "items": [
+        {
+          "title": "KKR Commercial Real Estate Lender Studies Potential Sale, Merger",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-21T22:17:55+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-21/kkr-commercial-real-estate-lender-studies-potential-sale-merger",
+          "tags": [
+            "market",
+            "reit"
+          ]
+        }
+      ]
     },
     "dividend": {
       "avgSentiment": 0,
@@ -167,16 +263,42 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.096,
-      "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 5,
+      "avgSentiment": 0.244,
+      "negativeCount": 3,
+      "positiveCount": 5,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 7,
+      "itemCount": 11,
       "isStale": false,
-      "topNegativeTitle": "Iran War Risk Set to Keep African Interest Rates Higher for Longer",
-      "topPositiveTitle": "US Stock Futures Rise as Chipmaker Rebound Overshadows Iran War",
+      "topNegativeTitle": "Subprime Auto Dealer Goes From Covid-Era Rockstar to Near Demise",
+      "topPositiveTitle": "Asian Stocks Set for Gains as Chipmakers Rebound: Markets Wrap",
       "items": [
+        {
+          "title": "Subprime Auto Dealer Goes From Covid-Era Rockstar to Near Demise",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-07-21T17:33:26+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-21/subprime-auto-dealer-goes-from-covid-era-rockstar-to-near-demise",
+          "tags": [
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Nigeria Holds Interest Rates as War Stokes Inflation Fears",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-07-21T13:07:29+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-21/nigeria-holds-interest-rates-as-iran-war-stokes-inflation-fears",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "rates"
+          ]
+        },
         {
           "title": "Iran War Risk Set to Keep African Interest Rates Higher for Longer",
           "source": "Bloomberg Economics",
@@ -189,19 +311,6 @@
             "macro_risk",
             "market",
             "rates"
-          ]
-        },
-        {
-          "title": "Wall Street Talks Up Carry Trade as Returns Soar Most in Decades",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-21T11:50:38+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-21/wall-street-talks-up-carry-trade-as-returns-soar-most-in-decades",
-          "tags": [
-            "macro_risk",
-            "market",
-            "us_broad"
           ]
         },
         {
@@ -228,32 +337,32 @@
             "macro_risk",
             "market"
           ]
-        },
-        {
-          "title": "Trump Vows 50% Tariff on Canadian Goods Using Depression-Era Law",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-20T21:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-20/us-sets-50-tariff-on-some-canadian-goods-over-retaliation-claim",
-          "tags": [
-            "macro_risk",
-            "market"
-          ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": 0.5,
+      "avgSentiment": 0.333,
       "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 1,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 2,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "共産 田村委員長“政府は早急に追加の物価高対策を”",
-      "topPositiveTitle": "SBI Funds Rises 6.2% in Trading Debut After $1 Billion India IPO",
+      "topNegativeTitle": "Banks Wrap Up Loan Backing SoftBank’s $5.4 Billion Robotics Bet",
+      "topPositiveTitle": "High Yielders Pace Emerging-Market Currency Gains, Stocks Jump",
       "items": [
+        {
+          "title": "Banks Wrap Up Loan Backing SoftBank’s $5.4 Billion Robotics Bet",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-21T21:05:03+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-21/banks-wrap-up-loan-backing-softbank-s-5-4-billion-robotics-bet",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        },
         {
           "title": "共産 田村委員長“政府は早急に追加の物価高対策を”",
           "source": "NHK 経済",
@@ -268,12 +377,12 @@
           "titleJa": "共産 田村委員長“政府は早急に追加の物価高対策を”"
         },
         {
-          "title": "SBI Funds Rises 6.2% in Trading Debut After $1 Billion India IPO",
+          "title": "High Yielders Pace Emerging-Market Currency Gains, Stocks Jump",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 1.0,
-          "publishedAt": "2026-07-21T02:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-21/sbi-funds-poised-for-strong-india-debut-after-1-billion-ipo",
+          "publishedAt": "2026-07-21T10:31:54+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-21/emerging-market-assets-rally-on-china-tech-support-iran-talks",
           "tags": [
             "fx",
             "market"
@@ -282,16 +391,30 @@
       ]
     },
     "rates": {
-      "avgSentiment": -0.11,
-      "negativeCount": 1,
+      "avgSentiment": -0.132,
+      "negativeCount": 2,
       "positiveCount": 0,
-      "neutralCount": 2,
-      "sourceCount": 1,
-      "itemCount": 3,
+      "neutralCount": 3,
+      "sourceCount": 2,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Iran War Risk Set to Keep African Interest Rates Higher for Longer",
-      "topPositiveTitle": "Hungary Cuts Rates for Second Month as Inflation Stays Soft",
+      "topNegativeTitle": "Nigeria Holds Interest Rates as War Stokes Inflation Fears",
+      "topPositiveTitle": "US Yields Hit Two-Month High as Oil Sparks Inflation Risk",
       "items": [
+        {
+          "title": "Nigeria Holds Interest Rates as War Stokes Inflation Fears",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-07-21T13:07:29+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-21/nigeria-holds-interest-rates-as-iran-war-stokes-inflation-fears",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "rates"
+          ]
+        },
         {
           "title": "Iran War Risk Set to Keep African Interest Rates Higher for Longer",
           "source": "Bloomberg Economics",
@@ -307,7 +430,21 @@
           ]
         },
         {
-          "title": "Hungary Cuts Rates for Second Month as Inflation Stays Soft",
+          "title": "US Yields Hit Two-Month High as Oil Sparks Inflation Risk",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-21T14:31:19+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-21/treasury-yields-hit-two-month-high-as-oil-sparks-inflation-risk",
+          "tags": [
+            "commodity",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Hungary Eyes More Rate Cuts, Review of Cycle in September",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
@@ -333,59 +470,23 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.134,
+      "avgSentiment": 0.333,
       "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 4,
+      "neutralCount": 2,
       "sourceCount": 1,
-      "itemCount": 5,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Saudi Crude Flow From Red Sea Hit Record Before Houthi Warning",
-      "topPositiveTitle": "Stocks Rise as Rebound in Chipmakers Gathers Pace: Markets Wrap",
+      "topNegativeTitle": "Latest Oil Market News and Analysis for July 22",
+      "topPositiveTitle": "Gold and Silver Rise on Dip-Buying as Traders Weigh Fed Strategy",
       "items": [
         {
-          "title": "Saudi Crude Flow From Red Sea Hit Record Before Houthi Warning",
+          "title": "Latest Oil Market News and Analysis for July 22",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-21T12:30:19+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-21/saudi-crude-flow-from-red-sea-hit-record-before-houthi-warning",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "Chinese Oil Tanker U-Turns in Red Sea After Houthi Attack Threat",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-21T12:12:34+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-21/chinese-oil-tanker-u-turns-in-red-sea-after-houthi-attack-threat",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "IEA Warns Mideast Hostilities Are Increasing Oil Supply Concerns",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-21T10:57:16+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-21/iea-warns-mideast-hostilities-are-increasing-oil-supply-concerns",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "Kazakh Oil Flows to Black Sea Forced to Stop as Tankers Hit",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-21T10:55:46+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-21/kazakhstan-to-stop-piping-oil-to-black-sea-after-tanker-attacks",
+          "publishedAt": "2026-07-21T22:11:41+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-21/latest-oil-market-news-and-analysis-for-july-22",
           "tags": [
             "commodity",
             "geopolitical",
@@ -393,31 +494,60 @@
           ]
         },
         {
-          "title": "Stocks Rise as Rebound in Chipmakers Gathers Pace: Markets Wrap",
+          "title": "US Yields Hit Two-Month High as Oil Sparks Inflation Risk",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-21T14:31:19+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-21/treasury-yields-hit-two-month-high-as-oil-sparks-inflation-risk",
+          "tags": [
+            "commodity",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Gold and Silver Rise on Dip-Buying as Traders Weigh Fed Strategy",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-07-20T22:09:48+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-20/stock-market-today-dow-s-p-live-updates",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-07-20T23:47:34+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-20/gold-steady-as-traders-watch-middle-east-war-for-inflation-clues",
           "tags": [
             "commodity",
-            "geopolitical",
-            "market"
+            "gold",
+            "market",
+            "us_broad"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.173,
-      "negativeCount": 2,
-      "positiveCount": 2,
+      "avgSentiment": 0.112,
+      "negativeCount": 3,
+      "positiveCount": 3,
       "neutralCount": 3,
       "sourceCount": 3,
-      "itemCount": 7,
+      "itemCount": 9,
       "isStale": false,
-      "topNegativeTitle": "Iran War Risk Set to Keep African Interest Rates Higher for Longer",
-      "topPositiveTitle": "US Stock Futures Rise as Chipmaker Rebound Overshadows Iran War",
+      "topNegativeTitle": "Nigeria Holds Interest Rates as War Stokes Inflation Fears",
+      "topPositiveTitle": "Asian Stocks Set for Gains as Chipmakers Rebound: Markets Wrap",
       "items": [
+        {
+          "title": "Nigeria Holds Interest Rates as War Stokes Inflation Fears",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-07-21T13:07:29+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-21/nigeria-holds-interest-rates-as-iran-war-stokes-inflation-fears",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "rates"
+          ]
+        },
         {
           "title": "Iran War Risk Set to Keep African Interest Rates Higher for Longer",
           "source": "Bloomberg Economics",
@@ -446,12 +576,12 @@
           "titleJa": "中国艦艇が日本のEEZ内で機関銃射撃訓練実施 防衛省が確認"
         },
         {
-          "title": "Kazakh Oil Flows to Black Sea Forced to Stop as Tankers Hit",
+          "title": "Latest Oil Market News and Analysis for July 22",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-21T10:55:46+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-21/kazakhstan-to-stop-piping-oil-to-black-sea-after-tanker-attacks",
+          "publishedAt": "2026-07-21T22:11:41+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-21/latest-oil-market-news-and-analysis-for-july-22",
           "tags": [
             "commodity",
             "geopolitical",
@@ -459,25 +589,12 @@
           ]
         },
         {
-          "title": "Euro-Zone Banks Further Tighten Companies’ Credit Standards",
+          "title": "Russia Halts Bond Auctions With More Monetary Easing in Question",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-21T08:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-21/euro-zone-banks-further-tighten-companies-credit-standards",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Emerging Market Assets Rally on China Tech Support, Iran Talks",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.2,
-          "publishedAt": "2026-07-21T10:31:54+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-21/emerging-market-assets-rally-on-china-tech-support-iran-talks",
+          "publishedAt": "2026-07-21T14:20:56+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-21/russia-halts-bond-auctions-with-more-monetary-easing-in-question",
           "tags": [
             "geopolitical",
             "market"
