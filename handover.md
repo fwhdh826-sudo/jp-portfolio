@@ -48976,3 +48976,260 @@ verified initialize clear: INACTIVE
 ### Next
 
 `RA-008-C: connect exactly-once invalidation emission to all durable writer commit boundaries`
+
+---
+
+## RA-008-C1: manual/load invalidation emission
+
+### Scope
+
+- RA-008-B2 commit SHA: `8fc5231ba9c034c602bfd44efa28658088b34851` (`feat(store): integrate
+  cross-tab invalidation runtime` — the gated `v13.3-dev` HEAD at the start of this task).
+- Connects the RA-008-B2 receive-only runtime to exactly-once emission on the 8 durable writer
+  commit boundaries that have no rollback window: `initialize`, `refreshAllData`, `updateHolding`,
+  `updateTrust`, `setPortfolioPolicy`, `setCashAssumptions`, `clearCashAssumptionsOverride`,
+  `importCashAssumptions`. `importCsv` and `importPortfolioSnapshot` are explicitly out of scope —
+  both have a post-durable-commit rollback/ownership window (`rollbackCsvImportTransaction`,
+  `ownsCsvImportCanonicalBytes`) that RA-008-C2 must account for before any emission wires in;
+  this task proved (DIRECT, real successful imports) that neither calls
+  `transport.publish`/`createPortfolioGenerationInvalidationEvent` at all.
+- Still does not: Zustand/UI pending flush, StatusBar warning, verified-initialize clear wired to
+  production, or CSV/snapshot emission. Those remain RA-008-D and RA-008-C2.
+
+### Emission helper
+
+- `emitPortfolioGenerationInvalidationAfterCommit(runtime, { operation, committedAtMs })`
+  (`useAppStore.ts`) builds the event via the existing
+  `createPortfolioGenerationInvalidationEvent` (RA-008-B1) with `senderInstanceId` from
+  `runtime.portfolioGenerationInvalidation.instanceId` and `committedAt` from
+  `new Date(committedAtMs).toISOString()`, then calls `runtime.portfolioGenerationInvalidation.
+  transport.publish(event)`. Both event construction and publish are inside one `try { } catch {
+  }` — a bare, comment-only catch — so a throwing `publish()` or (hypothetically) a throwing
+  `createPortfolioGenerationInvalidationEvent` never escapes into the caller. It reads no
+  portfolio data, performs no Zustand `get()`/`set()`, requests no Web Lock, and reads no
+  localStorage; its only argument besides the operation name is the already-computed
+  `operationNowMs`/`nowMs` local variable each writer already had in scope for persistence.
+  Exactly-once is the caller's responsibility — the helper itself has no dedupe/idempotency logic
+  and must be called at most once per durable commit.
+- `portfolioGenerationProjectionChanged(before, after)` is a thin boolean wrapper around the
+  existing RA-007 `portfolioGenerationProjectionsEqual` (no second diff formula): `!equal`, with
+  the comparison itself wrapped in `try/catch` returning `false` (no change → no emit) on failure.
+  Reasoning: notification is best-effort only (RA-007's Web Lock + grant-time stale check already
+  own correctness per RA-008-A policy), so a missed emit from a broken comparison is safe while a
+  spurious one is not — the fail-closed direction favors under- not over-notifying.
+
+### Projection definition (reused, not reimplemented)
+
+- The notification-worthy diff is exactly RA-007's existing `PortfolioGenerationProjection`:
+  `holdings`, `trust`, `portfolioPolicy`, `cashAssumptions`, `csvLastImportedAt`,
+  `csvImportProvenance`, `csvSyncSummary` — built via the existing
+  `buildPublishedPortfolioGenerationProjection(state, nowMs)` (unchanged, same TTL/future-
+  timestamp normalization as the alignment-staleness check). `market`/`news`/`macro`/analysis/
+  `system.*`/etc. are excluded by construction, since that helper already excludes them.
+  `analysis`-derived fields on `holdings`/`trust` themselves (`score`/`decision`/`ev`) ARE part of
+  this projection (they're plain fields on the `Holding`/`Trust` objects) — see the priming note
+  below.
+
+### Commit-boundary wiring (3 call sites cover all 8 writers)
+
+- **`runManualPortfolioMutation`** (shared by all 6 manual writers): after
+  `persistenceResult.status === 'persisted'` is confirmed and before `failurePhase.current =
+  'publish'`/the final `set(finalState)`, compares
+  `buildPublishedPortfolioGenerationProjection(baseState, operationNowMs)` (pre-mutation `get()`)
+  against the same for `finalState` (post-analysis, about to be persisted/published) and emits iff
+  changed. Reaching this point already implies `alignment.status === 'aligned'` and
+  `persistenceResult.status === 'persisted'` — `NO_CHANGE` (`candidateState === null`),
+  `CROSS_TAB_STATE_STALE`, `PORTFOLIO_GENERATION_CONFLICT`, and persistence failure all return
+  before this line, so none of them ever emit.
+- **`initialize`**: after `persistenceResult.status === 'persisted'`, before `publishLoadFinalState`
+  is called, compares `buildPublishedPortfolioGenerationProjection(restoredState, nowMs)` (the
+  durable restore base — step "2. commit前projectionを確定" from spec) against `finalState`.
+  `buildStateWithPublishedData` never touches `portfolioPolicy`/`cashAssumptions`/CSV metadata (it
+  only overwrites `market`/`correlation`/`news`/`trust`/`holdings`/`macro`/etc. and
+  `system.{dataSourceStatus,dataTimestamps,localStorageFreshness}`), so a projection-changing
+  initialize can only come from a holdings/trust published-snapshot merge
+  (`shouldApplyPublishedSnapshot` + `applyHoldingsSnapshot`/trust merge) over existing holdings/
+  trust entries — CSV-metadata-only or market/news-only bootstraps are structurally projection-
+  equivalent and always emit 0.
+- **`refreshAllData`**: same shape, comparing `buildPublishedPortfolioGenerationProjection
+  (safeBaseState, nowMs)` (the sanitized grant-time base, after `sanitizeRefreshCsvMetadata`, so a
+  future/expired CSV-metadata sanitization itself is never mistaken for a real change) against
+  `finalState`.
+- All three sites emit strictly after persistence success and strictly before the operation's one
+  final Zustand publication (`set(finalState)` / `publishLoadFinalState`), so the emit is inside
+  the still-open Web Lock callback and while the local `PortfolioOperationTicket` is still held —
+  DIRECT-verified with a `FakeLockManager` (`manager.isHeld(...)` true at publish time) and a
+  reentrant `controls.acquirePortfolioOperation(...)` returning `null` at publish time, for both a
+  manual writer and `initialize`.
+
+### Test-fixture note: analysis output is part of the tracked projection
+
+`runFullAnalysis` recomputes `score`/`decision`/`ev` on every holding/trust and these are plain
+fields of the tracked `holdings`/`trust` projection arrays. A canonical seeded with raw,
+un-analyzed fixture values (`score: 0`) therefore always looks "changed" on its first load for a
+reason unrelated to RA-008-C1's contract. The new DIRECT suite primes projection-equivalent
+initialize/refresh cases with one real load first (which persists its own analysis-scored
+`finalState` as the new canonical) before asserting 0 events on a second, data-unchanged load —
+this is a test-authoring note, not a production behavior change.
+
+### setCashAssumptions P3 (unchanged, confirmed by design)
+
+`prepareCandidateState` for `setCashAssumptions` always sets a fresh `manualUpdatedAt` and never
+compares it against the current value, so identical `cashDeposits`/`standbyFunds` still produce a
+changed `cashAssumptions` object and `SUCCESS` (never `NO_CHANGE`) — durable projection changes,
+so this emits 1, DIRECT-verified. This P3 asymmetry is explicitly out of scope for RA-008-C1 and
+was not touched.
+
+### Fail-soft / transport-failure behavior (DIRECT-verified)
+
+- `publish()` throwing, an empty/invalid `senderInstanceId` (silently dropped by the transport's
+  own `parsePortfolioGenerationInvalidationEvent` self-validation), a disposed transport, and both
+  BroadcastChannel `postMessage` and storage `setItem` throwing — none of these change the
+  writer's operation result, block the durable commit, or leak the raw injected error message
+  into the result/`system.error`.
+- A local publish-hook failure (`MANUAL_PUBLISH_ERROR` / `LOAD_PUBLISH_ERROR`) after a successful
+  durable commit still leaves exactly 1 event recorded — the emit happens before the publish
+  attempt, so a failure there can never retract it. Confirmed for manual, `initialize`, and
+  `refreshAllData`.
+- Subscriber throw: unaffected by construction — `api.subscribe`'s existing wrapper
+  (`reportSubscriberException`) already isolates every listener, and emission happens before
+  `set()` triggers any subscriber regardless.
+
+### Cross-tab DIRECT proof (shared `FakeBroadcastChannelHub`/`FakeStorageEventHub`, independent
+runtimes)
+
+- All 8 target writers: a real success emits exactly 1 well-formed event
+  (`protocolVersion: 1`, non-empty unique `messageId`, canonical ISO `committedAt`, exact operation
+  name, `senderInstanceId` matching the sender's own instanceId, and exactly these 5 keys — no
+  portfolio data field). The sending runtime's own `pendingInvalidation` stays `null` (transport
+  self-suppression); an independent receiving runtime's `pendingInvalidation` records it once.
+- A receiver mid-operation (an active local ticket) when a remote commit arrives: the event is
+  still recorded into `pending`, the receiver's ticket/kind and result are unaffected, no nested
+  Web Lock request happens, root state reference is unchanged, and 0 subscribers fire.
+- Three-tab fan-out: one commit reaches two independent receivers exactly once each
+  (`receiveSequence`/`receivedSequence` both 1, proving the dual BroadcastChannel+storage delivery
+  of the same logical event collapses to a single receive per recipient — RA-008-B1's messageId
+  dedupe), the sender's own pending stays 0, and a disposed fourth participant receives nothing.
+
+### Mutation-catching
+
+18 mutations applied to `useAppStore.ts` and reverted, each producing the expected RED before
+being restored to an exact SHA-256 match (verified after every single revert):
+
+1. Manual emit moved to before persistence — 12 failed.
+2. Manual emit moved to after (inside the try for) the final `set()` — 2 failed.
+3. Manual success emitting twice — 10 failed.
+4. Load (`initialize`) success emitting twice — 3 failed.
+5. `NO_CHANGE` made to also emit — 4 failed.
+6. `refreshAllData`'s projection-changed guard removed (unconditional emit) — 3 failed.
+7. `refreshAllData`'s projection-changed condition inverted — 5 failed.
+8. `initialize`'s projection-changed condition inverted — 4 failed.
+9. Manual emit deferred to only fire after a successful final publish (skipped on
+   `MANUAL_PUBLISH_ERROR`) — 2 failed.
+10. The helper's `try/catch` removed, letting a `transport.publish` throw convert the whole
+    operation into a failure — 1 failed.
+11. Manual emit's `operation` field hardcoded to `'updateHolding'` regardless of the real writer —
+    6 failed.
+12. Emit helper's `senderInstanceId` read from `defaultAppStoreRuntime` instead of the passed-in
+    `runtime` — 8 failed.
+13. An extra `holdings` key spliced onto the constructed event object before publish — 13 failed
+    (the transport's own exact-key self-validation silently drops the malformed event, breaking
+    every delivery-based assertion).
+14. Manual emit deferred via `queueMicrotask` (runs after the final `set()`) — 1 failed (the
+    Web-Lock-held/before-final-set timing test).
+15. `recordPendingCrossTabInvalidation` made to no-op while the receiver has an active local
+    ticket (discarding the incoming event) — 3 failed, including a pre-existing RA-008-B2 test.
+16. `importCsv`'s committed-success path made to call the emit helper — 2 failed (the CSV/snapshot
+    scope guard and the existing `invalidationRuntime.test.ts` proof).
+17. `importPortfolioSnapshot`'s committed-success path made to call the emit helper — 2 failed
+    (same two suites).
+18. `setCashAssumptions`'s candidate preparation made to return `null` (`NO_CHANGE`) when
+    `cashDeposits`/`standbyFunds` are unchanged, defeating the documented P3 always-`SUCCESS`
+    behavior — 1 failed.
+
+`git diff --check` was clean (0 bytes) after every single revert; `useAppStore.ts` matched its
+pre-mutation SHA-256 exactly after each restore.
+
+### Existing-test updates (minimal, both allowed by scope)
+
+- `useAppStore.invalidationRuntime.test.ts`'s `describe('no writer emission', ...)` block (a
+  blanket "all 10 writers never publish" proof that RA-008-C1 necessarily invalidates for 8 of
+  them) is narrowed to a per-writer expected-count table using the exact same fixed
+  `WRITER_INVOCATIONS`/`baselineStore` harness: `importCsv`/`importPortfolioSnapshot` stay at 0
+  (scope guard), `updateHolding`/`updateTrust`/`setPortfolioPolicy`/`setCashAssumptions`/
+  `importCashAssumptions` are 1 (the fixed invocations are real changes against that baseline),
+  and `initialize`/`refreshAllData`/`clearCashAssumptionsOverride` are 0 for that specific fixed
+  harness (a seeded canonical that already matches the published baseline is a no-op bootstrap/
+  refresh, and the baseline's cash assumptions have no active override to clear). Test count is
+  unchanged (still 10 `it.each` rows via `ALL_WRITERS`), so the file's total stays at 41.
+- `useAppStore.manualMutationAtomicity.test.ts`'s single-clock assertion for `setCashAssumptions`
+  updated from `expect(calls).toBe(1)` to `expect(calls).toBe(2)`: the transport's own
+  publish-time `parsePortfolioGenerationInvalidationEvent` future-skew self-check reads
+  `Date.now()` once (via its own `now()` option default), independent of and unrelated to the
+  operation's own single `operationNowMs` clock — every other assertion in that test (candidate/
+  canonical/published timestamps all equal to the one `operationNowMs`) is untouched and still
+  passes.
+
+### Validation
+
+- New suite `useAppStore.invalidationEmissionManualLoad.test.ts`, both timezones: **47 tests /
+  skipped 0**, UTC == Asia/Tokyo.
+- Runtime/transport regression, both timezones (`useAppStore.invalidationRuntime.test.ts`,
+  `portfolioGenerationInvalidationTransport.test.ts`, `useAppStore.instanceIsolation.test.ts`):
+  **41 + 96 + 14 = 151 tests / skipped 0**, UTC == Asia/Tokyo — exactly the required minimums, no
+  reduction.
+- Manual/load regression, both timezones (`useAppStore.manualMutationAtomicity.test.ts`,
+  `useAppStore.webLockManualSnapshot.test.ts`, `useAppStore.loadSinglePublication.test.ts`,
+  `useAppStore.webLockLoad.test.ts`): **196 tests / skipped 0**, UTC == Asia/Tokyo.
+- RA-007 full-writer regression, both timezones (`useAppStore.webLockFullWriterMatrix.test.ts`,
+  `useAppStore.webLockFailureRecovery.test.ts`, `useAppStore.webLockThreeStore.test.ts`): **241
+  tests / skipped 0**, UTC == Asia/Tokyo, unchanged.
+- Full unit, both timezones: **78 files / 2259 tests / skipped 0**, UTC == Asia/Tokyo. Baseline was
+  77 files / 2212 tests; +1 file / +47 tests (the new emission suite only — no other file's test
+  count changed).
+- `npx tsc --noEmit`: PASS. `npm run build`: PASS (129 modules — unchanged from the B2 baseline,
+  no new production import edges; known >500 kB chunk warning only, no new warnings). `git diff
+  --check`: PASS.
+- Bundle: invalidation channel name, storage key, and Web Lock name each still appear **1** time
+  in `dist/assets/*.js` (unchanged from B2 — no new production dependency introduced; emission
+  reuses the already-bundled transport/event-creation code). Test-only symbols
+  (`invalidationEmissionManualLoad`, `FakeBroadcastChannelHub`, `FakeStorageEventHub`,
+  `AppStoreInstanceTestControls`) appear **0** times in `dist`. No production code path builds an
+  event payload containing portfolio fields — the event type itself has exactly 5 keys and every
+  DIRECT success test asserts this structurally.
+- Diff scope: exactly the files this task was allowed to touch — `src/store/useAppStore.ts`,
+  `src/store/useAppStore.invalidationEmissionManualLoad.test.ts` (new),
+  `src/store/useAppStore.invalidationRuntime.test.ts`,
+  `src/store/useAppStore.manualMutationAtomicity.test.ts`, and this handover addendum. Zero diff
+  in `portfolioGenerationInvalidationTransport.ts`, `persist.ts`, `portfolioGenerationLock.ts`,
+  `portfolioOperationResult.ts`, any fake/testing helper, `src/types/**`, `src/components/**`,
+  `src/App.tsx`, package/dependency files, or CI workflow files.
+
+### Status
+
+```text
+RA-007 Web Lock: COMPLETE
+RA-008-A: CLOSED
+RA-008-B1: CLOSED
+RA-008-B2: CLOSED
+RA-008-C1: CLOSED
+
+runtime event reception: ACTIVE
+manual/load writer emission: ACTIVE
+CSV/snapshot writer emission: INACTIVE
+Zustand/UI warning: INACTIVE
+verified initialize clear: INACTIVE
+```
+
+### Residual
+
+- CSV/snapshot rollback-aware emission not implemented — both proven (DIRECT, real successful
+  imports) to emit 0.
+- `pending` still never reaches Zustand state or the UI; no StatusBar warning; no verified-
+  initialize clear wired to any production path; no automatic merge/rehydrate.
+- `setCashAssumptions`'s P3 NO_CHANGE/SUCCESS asymmetry remains unmodified by design (out of this
+  task's scope), so identical-value `setCashAssumptions` calls keep emitting 1.
+
+### Next
+
+`RA-008-C2: connect rollback-aware invalidation emission to CSV and snapshot commit finalization`

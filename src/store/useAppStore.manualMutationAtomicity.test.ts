@@ -1092,7 +1092,11 @@ describe('RA-006 manual mutation coordinator and atomic publish', () => {
     const published = useAppStore.getState()
     const generation = restoreCsvImportGeneration()
     if (generation.status !== 'committed') throw new Error('expected committed generation')
-    expect(calls).toBe(1)
+    // RA-008-C1: the durable-commit invalidation emit reuses `operationNowMs` for its own
+    // `committedAt` (passed explicitly, never re-reading Date.now()) — the second Date.now()
+    // call below is the transport's own publish-time future-skew self-validation, unrelated to
+    // any candidate/canonical/published timestamp.
+    expect(calls).toBe(2)
     expect(published.cashAssumptions.manualUpdatedAt).toBe(expectedTimestamp)
     expect(generation.payload.cashAssumptions?.manualUpdatedAt).toBe(expectedTimestamp)
     expect(JSON.parse(storage[CSV_IMPORT_GENERATION_KEY]).manifest.savedAt).toBe(operationNowMs)

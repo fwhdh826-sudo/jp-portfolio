@@ -737,7 +737,7 @@ describe('instance isolation', () => {
 // Negative emission: 10 writers must never call transport.publish in B2
 // ─────────────────────────────────────────────────────────────
 
-describe('no writer emission', () => {
+describe('writer emission (CSV/snapshot scope guard + fixed-harness baseline)', () => {
   const NOW_MS = Date.parse('2026-07-21T03:00:00.000Z')
   const NOW_ISO = new Date(NOW_MS).toISOString()
 
@@ -881,6 +881,28 @@ describe('no writer emission', () => {
     }),
   }
 
+  // RA-008-C1: initialize/refreshAllData and the 6 manual writers now emit exactly 1 invalidation
+  // on a projection-changing commit; importCsv/importPortfolioSnapshot stay scope-guarded at 0
+  // (rollback/ownership-aware emission is RA-008-C2). This fixed WRITER_INVOCATIONS/baselineStore
+  // pair does not change every one of the 8 in-scope writers' projections — initialize/
+  // refreshAllData here bootstrap/refresh from a canonical that already matches the published
+  // baseline (a no-op commit), and clearCashAssumptionsOverride starts from a baseline with no
+  // active override (NO_CHANGE) — so each row documents the actual expected count for THIS
+  // harness. Full success/no-change/failure emission coverage for all 8 target writers lives in
+  // useAppStore.invalidationEmissionManualLoad.test.ts.
+  const WRITER_EXPECTED_PUBLISH_COUNT: Record<string, number> = {
+    initialize: 0,
+    refreshAllData: 0,
+    importCsv: 0,
+    importPortfolioSnapshot: 0,
+    updateHolding: 1,
+    updateTrust: 1,
+    setPortfolioPolicy: 1,
+    setCashAssumptions: 1,
+    clearCashAssumptionsOverride: 0,
+    importCashAssumptions: 1,
+  }
+
   const ALL_WRITERS = Object.keys(WRITER_INVOCATIONS)
 
   beforeEach(() => {
@@ -899,7 +921,7 @@ describe('no writer emission', () => {
     loadProbe.implementation = null
   })
 
-  it.each(ALL_WRITERS)('%s never calls transport.publish', async writer => {
+  it.each(ALL_WRITERS)('%s calls transport.publish the expected number of times', async writer => {
     const { transport, publishCount } = createNoopSpyTransport()
     const instance = createAppStoreInstanceForTest({
       portfolioGenerationLock: createImmediatePortfolioGenerationLockAdapterForTest(),
@@ -909,7 +931,7 @@ describe('no writer emission', () => {
 
     await WRITER_INVOCATIONS[writer](instance)
 
-    expect(publishCount()).toBe(0)
+    expect(publishCount()).toBe(WRITER_EXPECTED_PUBLISH_COUNT[writer])
     instance.controls.dispose()
   })
 })

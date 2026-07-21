@@ -109,6 +109,7 @@ import {
 import {
   createBrowserPortfolioGenerationInvalidationTransport,
   createPortfolioGenerationInstanceId,
+  createPortfolioGenerationInvalidationEvent,
   type PortfolioGenerationInvalidationEvent,
   type PortfolioGenerationInvalidationTransport,
 } from './portfolioGenerationInvalidationTransport'
@@ -1325,6 +1326,44 @@ function portfolioGenerationProjectionFingerprint(
   return JSON.stringify(stableStructuralValue(projection))
 }
 
+/**
+ * RA-008-C1: reuses the existing alignment-projection equality rather than a second diff
+ * formula. A comparison failure (e.g. an unstringifiable value) falls back to "unchanged" —
+ * notification is best-effort only (RA-007's Web Lock + grant-time stale check own
+ * correctness), so a missed emit is safe while a spurious one is not.
+ */
+function portfolioGenerationProjectionChanged(
+  before: PortfolioGenerationProjection,
+  after: PortfolioGenerationProjection,
+): boolean {
+  try {
+    return !portfolioGenerationProjectionsEqual(before, after)
+  } catch {
+    return false
+  }
+}
+
+/**
+ * RA-008-C1: best-effort cross-tab notification only — never authoritative, never blocks or
+ * rolls back the caller's durable commit or local publication. Exactly-once is the caller's
+ * responsibility (call this at most once per durable commit); this never retries.
+ */
+function emitPortfolioGenerationInvalidationAfterCommit(
+  runtime: AppStoreRuntime,
+  input: { operation: PortfolioGenerationOperation; committedAtMs: number },
+): void {
+  try {
+    const event = createPortfolioGenerationInvalidationEvent({
+      senderInstanceId: runtime.portfolioGenerationInvalidation.instanceId,
+      operation: input.operation,
+      committedAt: new Date(input.committedAtMs).toISOString(),
+    })
+    runtime.portfolioGenerationInvalidation.transport.publish(event)
+  } catch {
+    // notification is best-effort only; correctness never depends on delivery
+  }
+}
+
 function inspectDurablePortfolioAlignment(
   runtime: AppStoreRuntime,
   state: AppState,
@@ -1984,6 +2023,16 @@ const createAppStoreStateCreator = (
               : createManualMutationFailure(source, 'MANUAL_PERSISTENCE_ERROR')
           }
 
+          if (portfolioGenerationProjectionChanged(
+            buildPublishedPortfolioGenerationProjection(baseState, operationNowMs),
+            buildPublishedPortfolioGenerationProjection(finalState, operationNowMs),
+          )) {
+            emitPortfolioGenerationInvalidationAfterCommit(runtime, {
+              operation: source,
+              committedAtMs: operationNowMs,
+            })
+          }
+
           failurePhase.current = 'publish'
           const previousCache = runtime.lastAppliedSnapshotGeneration
           runtime.lastAppliedSnapshotGeneration = null
@@ -2235,6 +2284,16 @@ const createAppStoreStateCreator = (
             return classifyLoadPersistenceFailure(operation, persistenceResult)
           }
 
+          if (portfolioGenerationProjectionChanged(
+            buildPublishedPortfolioGenerationProjection(restoredState, nowMs),
+            buildPublishedPortfolioGenerationProjection(finalState, nowMs),
+          )) {
+            emitPortfolioGenerationInvalidationAfterCommit(runtime, {
+              operation,
+              committedAtMs: nowMs,
+            })
+          }
+
           // exactly one final publication
           failurePhase.current = 'publish'
           return publishLoadFinalState(operation, finalState)
@@ -2334,6 +2393,16 @@ const createAppStoreStateCreator = (
           }
           if (persistenceResult.status !== 'persisted') {
             return classifyLoadPersistenceFailure(operation, persistenceResult)
+          }
+
+          if (portfolioGenerationProjectionChanged(
+            buildPublishedPortfolioGenerationProjection(safeBaseState, nowMs),
+            buildPublishedPortfolioGenerationProjection(finalState, nowMs),
+          )) {
+            emitPortfolioGenerationInvalidationAfterCommit(runtime, {
+              operation,
+              committedAtMs: nowMs,
+            })
           }
 
           failurePhase.current = 'publish'
