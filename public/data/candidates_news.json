@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-07-21T09:56:47.679174+09:00",
-  "sourceUpdatedAt": "2026-07-21T00:14:57+00:00",
+  "updatedAt": "2026-07-21T15:11:03.876258+09:00",
+  "sourceUpdatedAt": "2026-07-21T05:56:00+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -17,6 +17,43 @@
       "items": []
     },
     "jp_semiconductor": {
+      "avgSentiment": -0.33,
+      "negativeCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "Korean Stock Traders Slash Margin Loans to Lowest Since April",
+      "topPositiveTitle": "Korean Stock Traders Slash Margin Loans to Lowest Since April",
+      "items": [
+        {
+          "title": "Korean Stock Traders Slash Margin Loans to Lowest Since April",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-07-21T00:45:49+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-21/korean-stock-traders-unwind-leveraged-bets-to-lowest-since-april",
+          "tags": [
+            "jp_semiconductor",
+            "market"
+          ]
+        }
+      ]
+    },
+    "us_broad": {
+      "avgSentiment": 0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
+      "isStale": false,
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
+    },
+    "us_growth": {
       "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
@@ -24,77 +61,8 @@
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Asian Stocks Recover as Chips Rebound, Oil Dips: Markets Wrap",
-      "topPositiveTitle": "Asian Stocks Recover as Chips Rebound, Oil Dips: Markets Wrap",
-      "items": [
-        {
-          "title": "Asian Stocks Recover as Chips Rebound, Oil Dips: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-20T22:09:48+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-20/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "jp_semiconductor",
-            "macro_risk",
-            "market"
-          ]
-        }
-      ]
-    },
-    "us_broad": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 2,
-      "sourceCount": 1,
-      "itemCount": 2,
-      "isStale": false,
-      "topNegativeTitle": "DoubleLine Says Higher Bond Yields to Help Fed Keep Rates Steady",
-      "topPositiveTitle": "DoubleLine Says Higher Bond Yields to Help Fed Keep Rates Steady",
-      "items": [
-        {
-          "title": "DoubleLine Says Higher Bond Yields to Help Fed Keep Rates Steady",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-20T16:00:49+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-20/doubleline-says-higher-bond-yields-to-help-fed-keep-rates-steady",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Gold Steadies as Traders Assess Rate Path Amid US-Iran Conflict",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-19T23:33:09+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-19/gold-falls-as-us-iran-hostilities-keep-rate-hike-bets-on-table",
-          "tags": [
-            "geopolitical",
-            "gold",
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        }
-      ]
-    },
-    "us_growth": {
-      "avgSentiment": 0.355,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 2,
-      "isStale": false,
       "topNegativeTitle": "Australia’s Stock Market Emerges as Haven From Volatile AI Trade",
-      "topPositiveTitle": "S&P Slips as Apple, Tesla Keep Broader Chipmaker Gains in Check",
+      "topPositiveTitle": "Australia’s Stock Market Emerges as Haven From Volatile AI Trade",
       "items": [
         {
           "title": "Australia’s Stock Market Emerges as Haven From Volatile AI Trade",
@@ -105,18 +73,6 @@
           "url": "https://www.bloomberg.com/news/articles/2026-07-20/australia-s-stock-market-emerges-as-haven-from-volatile-ai-trade",
           "tags": [
             "macro_risk",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "S&P Slips as Apple, Tesla Keep Broader Chipmaker Gains in Check",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.71,
-          "publishedAt": "2026-07-20T13:41:52+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-20/us-stocks-rebound-from-selloff-as-nvidia-other-chipmakers-rise",
-          "tags": [
             "market",
             "us_growth"
           ]
@@ -151,45 +107,27 @@
       ]
     },
     "gold": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 1.0,
       "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 2,
+      "positiveCount": 1,
+      "neutralCount": 0,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Gold Steady as Traders Watch Middle East War for Inflation Clues",
-      "topPositiveTitle": "Gold Steady as Traders Watch Middle East War for Inflation Clues",
+      "topNegativeTitle": "Gold Rises on Dip-Buying as Traders Weigh Middle East Clashes",
+      "topPositiveTitle": "Gold Rises on Dip-Buying as Traders Weigh Middle East Clashes",
       "items": [
         {
-          "title": "Gold Steady as Traders Watch Middle East War for Inflation Clues",
+          "title": "Gold Rises on Dip-Buying as Traders Weigh Middle East Clashes",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
           "publishedAt": "2026-07-20T23:47:34+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-07-20/gold-steady-as-traders-watch-middle-east-war-for-inflation-clues",
           "tags": [
             "commodity",
-            "geopolitical",
             "gold",
-            "macro_risk",
             "market"
-          ]
-        },
-        {
-          "title": "Gold Steadies as Traders Assess Rate Path Amid US-Iran Conflict",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-19T23:33:09+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-19/gold-falls-as-us-iran-hostilities-keep-rate-hike-bets-on-table",
-          "tags": [
-            "geopolitical",
-            "gold",
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
           ]
         }
       ]
@@ -219,26 +157,38 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.091,
-      "negativeCount": 1,
-      "positiveCount": 2,
-      "neutralCount": 8,
+      "avgSentiment": 0.038,
+      "negativeCount": 2,
+      "positiveCount": 1,
+      "neutralCount": 6,
       "sourceCount": 2,
-      "itemCount": 11,
+      "itemCount": 9,
       "isStale": false,
-      "topNegativeTitle": "Stocks, Bonds Fall as US-Iran Risks Whipsaw Oil: Markets Wrap",
+      "topNegativeTitle": "Iran War Risk Set to Keep African Interest Rates Higher for Longer",
       "topPositiveTitle": "Global Stocks Lift Australian Pension Funds to 9.5% Annual Gain",
       "items": [
         {
-          "title": "Stocks, Bonds Fall as US-Iran Risks Whipsaw Oil: Markets Wrap",
+          "title": "Iran War Risk Set to Keep African Interest Rates Higher for Longer",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-07-21T04:05:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-21/iran-war-risk-set-to-keep-african-interest-rates-higher-for-longer",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "China Unleashes Broad State Support to Halt Tech Stock Selloff",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-07-19T22:10:10+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-19/oil-climbs-as-middle-east-conflict-escalates-markets-wrap",
+          "publishedAt": "2026-07-21T02:10:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-21/china-broadens-market-rescue-with-record-inflows-into-tech-etf",
           "tags": [
-            "commodity",
-            "geopolitical",
             "macro_risk",
             "market"
           ]
@@ -257,21 +207,6 @@
           ]
         },
         {
-          "title": "Gold Steady as Traders Watch Middle East War for Inflation Clues",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-20T23:47:34+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-20/gold-steady-as-traders-watch-middle-east-war-for-inflation-clues",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "gold",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
           "title": "Kioxia Bulls Ride Out Volatility With Targets 130% Above Market",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
@@ -284,7 +219,7 @@
           ]
         },
         {
-          "title": "Asian Stocks Recover as Chips Rebound, Oil Dips: Markets Wrap",
+          "title": "Stocks Rise as Chipmakers Extend Rebound, Oil Dips: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
@@ -292,7 +227,6 @@
           "url": "https://www.bloomberg.com/news/articles/2026-07-20/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
-            "jp_semiconductor",
             "macro_risk",
             "market"
           ]
@@ -300,15 +234,15 @@
       ]
     },
     "fx": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0.5,
       "negativeCount": 0,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 2,
+      "itemCount": 2,
       "isStale": false,
       "topNegativeTitle": "共産 田村委員長“政府は早急に追加の物価高対策を”",
-      "topPositiveTitle": "共産 田村委員長“政府は早急に追加の物価高対策を”",
+      "topPositiveTitle": "SBI Funds Rises 8.5% in Debut After $1 Billion India IPO",
       "items": [
         {
           "title": "共産 田村委員長“政府は早急に追加の物価高対策を”",
@@ -322,40 +256,53 @@
             "market"
           ],
           "titleJa": "共産 田村委員長“政府は早急に追加の物価高対策を”"
+        },
+        {
+          "title": "SBI Funds Rises 8.5% in Debut After $1 Billion India IPO",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-07-21T02:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-21/sbi-funds-poised-for-strong-india-debut-after-1-billion-ipo",
+          "tags": [
+            "fx",
+            "market"
+          ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
+      "avgSentiment": -0.083,
+      "negativeCount": 1,
       "positiveCount": 0,
-      "neutralCount": 5,
-      "sourceCount": 2,
-      "itemCount": 5,
+      "neutralCount": 3,
+      "sourceCount": 1,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "DoubleLine Says Higher Bond Yields to Help Fed Keep Rates Steady",
-      "topPositiveTitle": "DoubleLine Says Higher Bond Yields to Help Fed Keep Rates Steady",
+      "topNegativeTitle": "Iran War Risk Set to Keep African Interest Rates Higher for Longer",
+      "topPositiveTitle": "Hungary Set for Another Rate Cut as Inflation Stays Muted",
       "items": [
         {
-          "title": "DoubleLine Says Higher Bond Yields to Help Fed Keep Rates Steady",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-20T16:00:49+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-20/doubleline-says-higher-bond-yields-to-help-fed-keep-rates-steady",
+          "title": "Iran War Risk Set to Keep African Interest Rates Higher for Longer",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-07-21T04:05:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-21/iran-war-risk-set-to-keep-african-interest-rates-higher-for-longer",
           "tags": [
+            "geopolitical",
+            "macro_risk",
             "market",
-            "rates",
-            "us_broad"
+            "rates"
           ]
         },
         {
-          "title": "India’s Central Bank Says Forex Deposits Net $17.4 Billion",
+          "title": "Hungary Set for Another Rate Cut as Inflation Stays Muted",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-20T13:46:59+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-20/india-s-central-bank-says-forex-deposits-net-17-4-billion",
+          "publishedAt": "2026-07-21T04:15:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-21/hungary-set-for-another-rate-cut-as-inflation-stays-muted",
           "tags": [
             "market",
             "rates"
@@ -386,67 +333,34 @@
             "market",
             "rates"
           ]
-        },
-        {
-          "title": "Gold Steadies as Traders Assess Rate Path Amid US-Iran Conflict",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-19T23:33:09+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-19/gold-falls-as-us-iran-hostilities-keep-rate-hike-bets-on-table",
-          "tags": [
-            "geopolitical",
-            "gold",
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
-          ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.055,
+      "avgSentiment": 0.2,
       "negativeCount": 1,
-      "positiveCount": 2,
-      "neutralCount": 3,
+      "positiveCount": 3,
+      "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 6,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Stocks, Bonds Fall as US-Iran Risks Whipsaw Oil: Markets Wrap",
-      "topPositiveTitle": "Latest Oil Market News and Analysis for July 21",
+      "topNegativeTitle": "Palm Slips from Month-High as Weak Crude Dents Biofuel Appeal",
+      "topPositiveTitle": "Gold Rises on Dip-Buying as Traders Weigh Middle East Clashes",
       "items": [
         {
-          "title": "Stocks, Bonds Fall as US-Iran Risks Whipsaw Oil: Markets Wrap",
+          "title": "Palm Slips from Month-High as Weak Crude Dents Biofuel Appeal",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-07-19T22:10:10+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-19/oil-climbs-as-middle-east-conflict-escalates-markets-wrap",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-07-21T04:56:30+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-21/palm-slips-from-month-high-as-weak-crude-dents-biofuel-appeal",
           "tags": [
             "commodity",
-            "geopolitical",
-            "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Gold Steady as Traders Watch Middle East War for Inflation Clues",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-20T23:47:34+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-20/gold-steady-as-traders-watch-middle-east-war-for-inflation-clues",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "gold",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Asian Stocks Recover as Chips Rebound, Oil Dips: Markets Wrap",
+          "title": "Stocks Rise as Chipmakers Extend Rebound, Oil Dips: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
@@ -454,18 +368,17 @@
           "url": "https://www.bloomberg.com/news/articles/2026-07-20/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
-            "jp_semiconductor",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Lionheart (CUB) Nears $400 Million Deal for Venezuela Oil Stake",
+          "title": "Goldman Says Brent Could Top $120 If Hormuz Disruptions Persist",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-20T14:38:33+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-20/lionheart-cub-nears-400-million-deal-for-venezuela-oil-stake",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-07-21T03:22:23+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-21/goldman-says-brent-could-top-120-if-hormuz-disruptions-persist",
           "tags": [
             "commodity",
             "market"
@@ -475,7 +388,7 @@
           "title": "Latest Oil Market News and Analysis for July 21",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.33,
+          "sentimentScore": 0.67,
           "publishedAt": "2026-07-20T22:11:54+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-07-20/latest-oil-market-news-and-analysis-for-july-20",
           "tags": [
@@ -483,32 +396,57 @@
             "geopolitical",
             "market"
           ]
+        },
+        {
+          "title": "Gold Rises on Dip-Buying as Traders Weigh Middle East Clashes",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-07-20T23:47:34+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-20/gold-steady-as-traders-watch-middle-east-war-for-inflation-clues",
+          "tags": [
+            "commodity",
+            "gold",
+            "market"
+          ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.084,
-      "negativeCount": 2,
+      "avgSentiment": 0.049,
+      "negativeCount": 3,
       "positiveCount": 2,
-      "neutralCount": 4,
+      "neutralCount": 2,
       "sourceCount": 3,
-      "itemCount": 8,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "Stocks, Bonds Fall as US-Iran Risks Whipsaw Oil: Markets Wrap",
+      "topNegativeTitle": "Iron Ore Drops as China Steel Losses Deepen, Hormuz Risks Rise",
       "topPositiveTitle": "Global Stocks Lift Australian Pension Funds to 9.5% Annual Gain",
       "items": [
         {
-          "title": "Stocks, Bonds Fall as US-Iran Risks Whipsaw Oil: Markets Wrap",
+          "title": "Iron Ore Drops as China Steel Losses Deepen, Hormuz Risks Rise",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-07-19T22:10:10+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-19/oil-climbs-as-middle-east-conflict-escalates-markets-wrap",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-07-21T03:40:17+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-21/iron-ore-drops-as-china-steel-losses-deepen-hormuz-risks-rise",
           "tags": [
-            "commodity",
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Iran War Risk Set to Keep African Interest Rates Higher for Longer",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-07-21T04:05:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-21/iran-war-risk-set-to-keep-african-interest-rates-higher-for-longer",
+          "tags": [
             "geopolitical",
             "macro_risk",
-            "market"
+            "market",
+            "rates"
           ]
         },
         {
@@ -516,7 +454,7 @@
           "source": "NHK 経済",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-07-20T19:44:47+00:00",
+          "publishedAt": "2026-07-21T05:56:00+00:00",
           "url": "https://news.web.nhk/newsweb/na/na-k10015181411000",
           "tags": [
             "geopolitical",
@@ -525,16 +463,14 @@
           "titleJa": "中国艦艇が日本のEEZ内で機関銃射撃訓練実施 防衛省が確認"
         },
         {
-          "title": "Gold Steady as Traders Watch Middle East War for Inflation Clues",
-          "source": "Bloomberg Markets",
+          "title": "US Vows Fresh 50% Tariff on Canada as New Trade War Looms",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-20T23:47:34+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-20/gold-steady-as-traders-watch-middle-east-war-for-inflation-clues",
+          "publishedAt": "2026-07-20T21:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-20/us-sets-50-tariff-on-some-canadian-goods-over-retaliation-claim",
           "tags": [
-            "commodity",
             "geopolitical",
-            "gold",
             "macro_risk",
             "market"
           ]
@@ -551,22 +487,6 @@
             "macro_risk",
             "market",
             "rates"
-          ]
-        },
-        {
-          "title": "Gold Steadies as Traders Assess Rate Path Amid US-Iran Conflict",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-19T23:33:09+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-19/gold-falls-as-us-iran-hostilities-keep-rate-hike-bets-on-table",
-          "tags": [
-            "geopolitical",
-            "gold",
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
           ]
         }
       ]
