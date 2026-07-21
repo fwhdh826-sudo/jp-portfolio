@@ -48531,3 +48531,213 @@ Web Lock adversarial validation: PASS_WITH_FINDINGS (1 P3 informational finding;
 ### Next
 
 `RA-008-A: design audit for BroadcastChannel / storage-event invalidation`
+
+## RA-008-B1: cross-tab invalidation transport foundation
+
+### Scope
+
+- RA-008-A audited SHA: `0945d91455132df6fc202c774ce3788019a745bc` (`test(store): validate
+  full-writer Web Lock matrix` — the gated `v13.3-dev` HEAD at the start of this task).
+- New, untouched-elsewhere production module implementing the transport, payload validator,
+  browser capability handling, self/duplicate suppression, and dispose lifecycle agreed in
+  RA-008-A. **Not wired into `AppStoreRuntime`, `useAppStore`, any writer emit point, Zustand
+  state, or `StatusBar`** — that connection work is explicitly out of scope for B1 and deferred to
+  RA-008-B2+.
+- P1-A (ownership_lost non-emission) and P1-B (stale-downgrade non-clear) are policy constraints on
+  the *caller* that will connect a writer in RA-008-C/D. The transport itself has no notion of
+  operation results, commit success, or ownership — `publish()` takes an already-constructed,
+  already-validated `PortfolioGenerationInvalidationEvent` and best-effort delivers it. It exposes
+  **no** stale-clear API, alignment-judgment API, portfolio-rehydrate API, or generation-authority
+  API, matching the P1-B constraint precisely.
+
+### Transport interface and constants
+
+- `PORTFOLIO_GENERATION_INVALIDATION_PROTOCOL_VERSION = 1`,
+  `PORTFOLIO_GENERATION_INVALIDATION_CHANNEL = 'jp-portfolio:portfolio-generation-events:v1'`,
+  `PORTFOLIO_GENERATION_INVALIDATION_STORAGE_KEY = 'jp-portfolio:portfolio-generation-event:v1'` —
+  all distinct from the Web Lock name (`jp-portfolio:portfolio-generation:v1`) and from each other,
+  version-suffixed, never dynamically generated. A single fixed channel/key is used for every
+  operation — no per-operation channels.
+- `PortfolioGenerationInvalidationEvent` has exactly five fields: `protocolVersion`, `messageId`,
+  `senderInstanceId`, `committedAt`, `operation` (reusing the existing 10-member
+  `PortfolioGenerationOperation` from `portfolioOperationResult.ts`, not redeclared). No holdings,
+  trust, fund/code, valuation, cash, policy, CSV/snapshot content, canonical raw, analysis,
+  officialDecision, error detail, user ID, or account ID field exists anywhere on the wire type.
+- `createPortfolioGenerationInvalidationTransport(options)` takes an explicit
+  `instanceId`/`createBroadcastChannel`/`storage`/`storageEventTarget`/`now`/`diagnosticSink`/
+  `dedupeLimit`, all independently DI-able (including explicit `null` to force-disable one
+  channel). `createBrowserPortfolioGenerationInvalidationTransport({ instanceId })` is a thin
+  wrapper that omits the DI overrides so the base factory's own lazy/safe browser-global resolution
+  runs. Module import touches none of `window`/`localStorage`/`BroadcastChannel`/`crypto` — proven
+  by a dedicated getter-probe test (`SSR and Node import safety`).
+
+### Payload validator
+
+- `parsePortfolioGenerationInvalidationEvent(input, { nowMs? })` enforces: object (not array/null),
+  exact five-key set (extra/missing both rejected), `protocolVersion === 1` (strict, no
+  stringified `'1'`), non-empty `messageId`/`senderInstanceId` each capped at 128 chars, `operation`
+  drawn from a runtime `Record<PortfolioGenerationOperation, true>` membership map that is
+  compile-time exhaustive (adding/removing a union member without updating the map is a `tsc`
+  error) and additionally pinned by a hand-written 10-item array in the test file plus an
+  `expectTypeOf` type-level equality assertion — so the runtime list and the type can never drift
+  silently. `committedAt` must satisfy `new Date(v).toISOString() === v` exactly (rejects missing
+  milliseconds, timezone offsets, and any non-canonical ISO form) and must not exceed a 5-minute
+  future skew against `nowMs`. A final UTF-8 byte-length check (1024 bytes) runs against the
+  reconstructed candidate. The function never throws: getter-throwing payloads, `Object.keys`-
+  throwing proxies, `__proto__`-bearing JSON-parsed objects, and every exotic input shape
+  (`Symbol`, `Map`, `Date`, arrays, `null`, primitives) all return `null` cleanly, verified directly.
+  The candidate is always rebuilt field-by-field from the five known keys, so no additional/hidden
+  own property (enumerable or not) can leak into the output regardless of validator branch.
+
+### Identity, self suppression, duplicate suppression
+
+- `createPortfolioGenerationInstanceId`/`createPortfolioGenerationMessageId` prefer
+  `crypto.randomUUID()`, falling back (unavailable or throwing) to a counter + `Math.random`
+  synthetic id (`<prefix>-fb-<seq>-<random>`) that is guaranteed to differ across calls even with
+  `crypto` fully absent. Instance id is never written to `localStorage`. `createPortfolioGeneration
+  InvalidationEvent` defaults `committedAt` to `new Date().toISOString()` and always produces
+  output that round-trips through the validator.
+- Receive path order is fixed: parse/validate -> self-suppression (`senderInstanceId ===
+  instanceId`, checked before touching the dedupe cache) -> duplicate suppression (bounded
+  FIFO cache, default limit 32, keyed on `messageId` only — differing payload with the same id is
+  still suppressed) -> listener fan-out. Malformed and self-originated events never consume a
+  dedupe slot (verified directly: a self event and a remote event sharing the same `messageId`
+  both get their normal treatment independently).
+
+### Option B dual publish and fail-soft
+
+- `publish()` always attempts BroadcastChannel `postMessage` first, then the storage `setItem`
+  marker, independently try/caught — either failing does not skip or discard the other, and
+  `publish()` itself never throws regardless of which channel(s) fail, what the diagnostic sink
+  does, or whether a listener throws mid fan-out. An invalid outbound event is rejected by the
+  same validator before either channel is touched (0 attempts, 0 delivery). The storage marker
+  value is `JSON.stringify(event)`, never removed after writing (no self-inflicted second storage
+  event), and every publish produces a new `messageId` so the marker value always changes.
+- Storage receive: only `event.key === STORAGE_KEY` and a string `newValue` are considered; an
+  oversized `newValue` (clearly over the 1024-byte bound) is rejected before `JSON.parse` is even
+  attempted; `JSON.parse` failure and shape-invalid-but-syntactically-valid JSON are both ignored
+  without reaching a listener (tested as two independent cases).
+
+### Dispose lifecycle and browser capability
+
+- `dispose()` is idempotent, closes the BroadcastChannel and removes its message listener, removes
+  the storage event listener, clears local listeners and the dedupe cache, and guarantees zero
+  future publish/receive/subscribe-effect afterward (subscribe after dispose returns a working
+  no-op unsubscribe). `close()`/`removeEventListener()` throwing during dispose is fail-soft and
+  does not propagate.
+- Factory construction never throws across all nine required capability permutations (both
+  channels present, either one absent, both absent, BroadcastChannel constructor throw,
+  `localStorage` getter throw, `window.addEventListener` throw, `postMessage`/`setItem` throw at
+  publish time) — with both channels unavailable the transport behaves as a fully working no-op
+  (subscribe/publish/dispose all succeed, delivery is always 0).
+
+### Fakes
+
+- `src/store/testing/fakeBroadcastChannelHub.ts`: `FakeBroadcastChannelHub` models multiple named
+  channels with independent participants, sender-self-exclusion, cross-channel isolation,
+  constructor-failure injection (`failNextConstruction`), postMessage-failure injection
+  (`setPostMessageShouldThrow`), a synchronous-by-default delivery mode with an explicit
+  `flush('fifo'|'reverse')` for deferred/out-of-order delivery testing, an event log, and
+  participant/pending-delivery counts. Never imports the production module's implementation, only
+  its DI types.
+- `src/store/testing/fakeStorageEventHub.ts`: `FakeStorageEventHub` models multiple window
+  contexts sharing one key/value store, sender-context-self-exclusion, a low-level `injectRaw` for
+  wrong-key/null/malformed/oversized/shape-invalid injection, setItem-failure injection
+  (`setSetItemShouldThrow`), an event log, write count, and per-context listener counts.
+- Both fakes' sender-self-exclusion is independently verified at the hub level (bypassing the
+  transport entirely), specifically so a regression in the fake itself cannot hide behind the
+  transport's own (separate) self-suppression layer.
+
+### Mutation-catching
+
+- 16 mutations applied and reverted (14 required + 2 targeting the fakes' own self-exclusion),
+  each producing the expected RED before being restored to an exact byte-for-byte match (SHA-256
+  compared before/after every single mutation, not just at the end):
+  1. Self-suppression check removed — 1 failed.
+  2. Dedupe check removed entirely — 7 failed.
+  3. Dedupe eviction (FIFO cap) removed — 1 failed.
+  4. Storage `setItem` attempt removed from `publish()` — 7 failed.
+  5. BroadcastChannel `postMessage` attempt removed from `publish()` — 9 failed.
+  6. BC-failure path made to `return` before the storage attempt — 1 failed.
+  7. Publish order swapped to storage-first with an early `return` on storage failure, discarding
+     the BC attempt — 1 failed.
+  8. Exact-key-set check removed from the validator (extra fields accepted) — 2 failed.
+  9. `protocolVersion` check removed from the validator — 3 failed.
+  10. Storage receive path bypassed validation entirely, dispatching the raw parsed JSON — 5
+      failed.
+  11. `dispatchToListeners`'s per-listener try/catch removed (a throw aborts the remaining
+      fan-out) — 1 failed.
+  12. Dispose's `storageEventTarget.removeEventListener` call removed — 2 failed.
+  13. `publish()`'s `disposed` guard removed — 1 failed.
+  14. Self-originated events made to consume the dedupe cache before being suppressed — 1 failed.
+  15. `messageId` omitted from the storage marker payload — 6 failed.
+  16. `FakeStorageEventHub.deliver`'s sender-context exclusion removed — 1 failed (only the
+      dedicated hub-level self-exclusion test; the transport-level self-suppression layer masks
+      this regression for every other test, confirming the dedicated hub-level test was
+      necessary).
+- `git diff --check` was clean (0 bytes) after every single revert.
+
+### Validation
+
+- New suite, both timezones: `portfolioGenerationInvalidationTransport.test.ts` — **94 tests /
+  skipped 0**, UTC == Asia/Tokyo.
+- Existing RA-007 Web Lock regression, both timezones (`portfolioGenerationLock.test.ts`,
+  `useAppStore.instanceIsolation.test.ts`, `useAppStore.webLockFullWriterMatrix.test.ts`,
+  `useAppStore.webLockFailureRecovery.test.ts`, `useAppStore.webLockThreeStore.test.ts`): **301
+  tests / skipped 0**, UTC == Asia/Tokyo, unchanged from before this task (these files were not
+  touched).
+- Full unit, both timezones: **76 files / 2168 tests / skipped 0**, UTC == Asia/Tokyo. Baseline was
+  75 files / 2074 tests; +1 file / +94 tests, exactly the one new transport suite.
+- `npx tsc --noEmit`: PASS. `npm run build`: PASS (128 modules, known >500 kB chunk warning only).
+  `git diff --check`: PASS.
+- Bundle: the invalidation channel name and storage key appear **0** times in `dist/assets/*.js`
+  (not yet imported from any production entry point — expected for B1, since nothing wires this
+  module in yet). Test-only symbols (`FakeBroadcastChannelHub`, `FakeStorageEventHub`, fake file
+  paths, the transport test file path) appear **0** times in `dist`. The existing Web Lock name
+  (`jp-portfolio:portfolio-generation:v1`) still appears **1** time, confirming RA-007 is
+  unaffected.
+- Production diff: **0** (`git diff --name-status` against tracked files is empty; only four new
+  untracked files — one production module, one test file, two fakes — plus this handover addendum
+  exist in the working tree).
+
+### HEAD / origin / push
+
+- Start-of-task HEAD: `0945d91455132df6fc202c774ce3788019a745bc`, matching both the required exact
+  SHA and `origin/v13.3-dev` (`0 0` ahead/behind).
+- `origin/main` advanced from the confirmed `b72a68c2a8d3e567ccbcbf3c06633eb9827aecda` baseline to
+  `90fd476d478457c7c96890347b0b8e7f81e4ea98` — a data-only advance (`git diff --name-status`
+  against the confirmed baseline touches only `data/**`/`public/data/**`, zero source/test/
+  handover/workflow/dependency changes). main was not merged, not rebased, not cherry-picked, and
+  not pushed to.
+
+### Residual
+
+- Transport is not connected to `useAppStore`/`AppStoreRuntime`: emit count 0, runtime listener
+  count 0, cross-tab stale UI 0.
+- No active-operation pending-flush behavior, no initialize-time stale clear, no writer
+  commit-boundary connection — all deferred to RA-008-B2+.
+- BroadcastChannel/storage constants are not present in the production bundle yet (by design for
+  B1; see Bundle above).
+- The P1-A `ownership_lost`/`indeterminate`/`rollback_failed`/`canonical_changed`/
+  `metadata_misaligned`/`PORTFOLIO_GENERATION_CONFLICT` non-emission rule is a constraint on the
+  RA-008-C writer-connection work, not enforced by anything in this module (the transport has no
+  operation-result awareness to enforce it against).
+- The P1-B rule that unlocked/best-effort durable reads must not clear cross-tab stale state is a
+  constraint on RA-008-D; this module deliberately exposes no stale-clear/alignment/rehydrate/
+  generation-authority API for that future work to misuse.
+
+### Status
+
+```text
+RA-007 Web Lock: COMPLETE
+RA-008-A: CLOSED
+RA-008-B1: CLOSED
+cross-tab transport foundation: COMPLETE
+AppStoreRuntime integration: PENDING
+writer emission: PENDING
+Zustand/UI warning: PENDING
+```
+
+### Next
+
+`RA-008-B2: inject invalidation transport into AppStoreRuntime and add lifecycle/pending runtime state`
