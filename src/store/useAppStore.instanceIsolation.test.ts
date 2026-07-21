@@ -450,4 +450,23 @@ describe('RA-007-B3 store instance isolation', () => {
     resetPortfolioGenerationTestSeams()
     expect(b.controls.inspect().hasManualPublishHook).toBe(true)
   })
+
+  it('keeps RA-008-B2 invalidation runtime state independent, with no wrong-instance reset/dispose leakage', () => {
+    const a = createAppStoreInstanceForTest()
+    const b = createAppStoreInstanceForTest()
+
+    expect(a.controls.inspect().invalidationInstanceId).not.toBe(b.controls.inspect().invalidationInstanceId)
+    expect(a.controls.inspect().hasInvalidationSubscription).toBe(true)
+    expect(b.controls.inspect().hasInvalidationSubscription).toBe(true)
+
+    a.controls.reset()
+    expect(a.controls.inspect().invalidationReceiveSequence).toBe(0)
+    expect(b.controls.inspect().hasInvalidationSubscription).toBe(true)
+    expect(b.controls.inspect().invalidationDisposed).toBe(false)
+
+    a.controls.dispose()
+    expect(a.controls.inspect().invalidationDisposed).toBe(true)
+    expect(b.controls.inspect().invalidationDisposed).toBe(false)
+    expect(b.controls.inspect().hasInvalidationSubscription).toBe(true)
+  })
 })

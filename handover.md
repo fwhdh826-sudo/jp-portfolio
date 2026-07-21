@@ -48741,3 +48741,238 @@ Zustand/UI warning: PENDING
 ### Next
 
 `RA-008-B2: inject invalidation transport into AppStoreRuntime and add lifecycle/pending runtime state`
+
+## RA-008-B2: AppStoreRuntime invalidation lifecycle integration
+
+### Scope
+
+- RA-008-B1 commit SHA: `b61a0ed40abed4601dac4e47edde7f71f777013f` (`feat(store): add cross-tab
+  invalidation transport` — the gated `v13.3-dev` HEAD at the start of this task).
+- Wires the RA-008-B1 transport into `AppStoreRuntime` as an instance-scoped dependency: receives
+  remote events, holds them as runtime-local pending state, keeps every runtime instance's
+  bookkeeping isolated, and provides reset/dispose lifecycle. **Still does not**: publish from any
+  writer, connect to a durable commit point, touch Zustand state, warn in `StatusBar`,
+  auto-initialize, auto-refresh, auto-merge/rehydrate, or clear pending outside the (production-
+  unused) test-only verified-alignment seam. Writer emission is RA-008-C; Zustand/UI warning and
+  verified clear are RA-008-D.
+
+### Runtime dependency shape
+
+- `PortfolioGenerationInvalidationRuntimeDependency = { instanceId: string; transport:
+  PortfolioGenerationInvalidationTransport }` — instanceId and transport travel together as one
+  object so a runtime can never end up with an instanceId from one dependency paired with another's
+  transport.
+- `AppStoreRuntime.portfolioGenerationInvalidation` holds `{ instanceId, transport, unsubscribe,
+  disposed, receiveSequence, clearWatermark, pending }`. `pending` is at most one `{ event,
+  receivedSequence }` — never an array/queue.
+- `createAppStoreRuntime(portfolioGenerationLock?, portfolioGenerationInvalidation?)` builds the
+  full runtime object first (so the subscription closure can capture `runtime` itself), then
+  subscribes to `transport` and stores the returned `unsubscribe`. No other code path constructs an
+  `AppStoreRuntime`.
+
+### Default runtime vs. test runtime
+
+- `defaultAppStoreRuntime = createAppStoreRuntime()` (module load, called exactly once) resolves
+  its invalidation dependency via `createDefaultBrowserInvalidationDependency()`: one
+  `createPortfolioGenerationInstanceId()` call, one `createBrowserPortfolioGenerationInvalidationTransport()`
+  call, one subscription. This is the only place in the codebase that creates a real
+  BroadcastChannel/localStorage-backed transport for application use; its dispose API is not
+  exposed anywhere.
+- `createAppStoreInstanceForTest(options)` always passes an explicit second argument to
+  `createAppStoreRuntime` — either `options.portfolioGenerationInvalidation` or
+  `createDefaultTestInvalidationDependency()` (a fresh unique instanceId + a plain no-op transport
+  object: `publish`/`subscribe`/`dispose` all no-ops, touching no global). This bypasses
+  `createAppStoreRuntime`'s own default parameter (the browser dependency) entirely, so **no test
+  store ever constructs a real BroadcastChannel** unless a test explicitly injects one via a fake
+  hub.
+- `CreateAppStoreInstanceForTestOptions.portfolioGenerationInvalidation` takes the same
+  `{ instanceId, transport }` pair atomically — there is no way to supply one without the other.
+
+### Browser-only SSR/Node guard (transport file)
+
+- `createBrowserPortfolioGenerationInvalidationTransport` now gates all three backends
+  (`createBroadcastChannel`, `storage`, `storageEventTarget`) on `typeof window !== 'undefined'`
+  instead of delegating to the generic factory's default resolution (which only checked
+  `typeof BroadcastChannel === 'undefined'`, a check a Node 18+ global `BroadcastChannel` — with no
+  browser tab behind it — would pass). Without `window`, all three are forced to `null` — no BC
+  handle, no storage, no storage listener, a pure no-op transport — regardless of what globals
+  happen to exist. This is the only transport-file change; the generic
+  `createPortfolioGenerationInvalidationTransport` factory, its validator, dedupe, and dispose
+  logic are untouched.
+- Two DIRECT regression tests added to `portfolioGenerationInvalidationTransport.test.ts`: one
+  proves a Node-global `BroadcastChannel` class is never constructed by the browser factory when
+  `window` is absent (constructor-call counter stays 0, publish/receive both no-op); the other
+  proves the factory still wires up a real BroadcastChannel-shaped backend once `window` is
+  present (participant count 1 on a fake hub).
+
+### Receive path and local monotonic sequence
+
+- `recordPendingCrossTabInvalidation(runtime, event)` is the sole subscription listener: it
+  short-circuits on `disposed`, else increments `receiveSequence` by exactly 1 and overwrites
+  `pending` with the new event — no `get()`/`set()`, no localStorage read, no Web Lock request, no
+  writer/initialize/refresh call, no subscriber notification, no `transport.publish` call, and
+  it never throws (assignments only).
+- Ordering authority is the local receive sequence, never `event.committedAt` and never
+  `Date.now()`: a remote tab's wall clock can run behind or ahead, and a later real commit from a
+  slow-clocked sender must never be mistaken for stale. Two events with `committedAt` in reverse
+  arrival order, or identical `committedAt`, both resolve pending to whichever arrived (was
+  received) last.
+- A dual BroadcastChannel+storage delivery of the same logical event (already deduped by the
+  transport's messageId cache) advances the local sequence by exactly 1, not 2.
+
+### Active operation coexistence
+
+- A remote event arriving while a local `PortfolioOperationTicket`/generation transaction is
+  active is recorded into `pending` exactly like any other receive: the ticket, its kind, the
+  transaction, and the eventual operation result are all unaffected, no nested Web Lock request is
+  made, and pending survives ticket release (RA-008-D, not B2, will decide when to flush it to
+  Zustand).
+
+### Clear watermark (RA-008-D seam, unused in production)
+
+- `clearPendingCrossTabInvalidationAfterVerifiedAlignment(runtime)` sets
+  `clearWatermark = receiveSequence` and nulls `pending`. Not called from any production writer,
+  initialize path, or lock-adapter code in B2 — reachable only via
+  `AppStoreInstanceTestControls.clearPendingInvalidationAfterVerifiedAlignment()`.
+- Fail-closed by design: an event that arrives after a clear becomes a new pending regardless of
+  its `committedAt` (even if older than the cleared one) — a delayed event is never silently
+  dropped by comparing timestamps, only genuinely superseded local knowledge (the watermark, a
+  receive-sequence integer) suppresses re-warning, and only for events already accounted for at
+  clear time.
+
+### Reset / dispose lifecycle
+
+- `resetAppStoreRuntime` (existing `controls.reset()`) now also nulls `pending` and zeroes
+  `receiveSequence`/`clearWatermark`, but leaves `unsubscribe`/`transport` untouched — reset re-arms
+  a test runtime for more activity, it is not a teardown.
+- `disposeAppStoreRuntimeInvalidation` (new `controls.dispose()`, test-only) is idempotent (checked
+  via the `disposed` flag before doing anything): calls the stored `unsubscribe` exactly once,
+  disposes the transport exactly once, clears `pending`, and clears the runtime's test seams. Both
+  the unsubscribe and transport-dispose calls are individually try/caught so cleanup itself never
+  throws. After dispose, `reset()` does not resurrect the subscription (reset never re-subscribes,
+  by construction). No default-runtime dispose API is exposed.
+
+### Test controls and instance isolation
+
+- `AppStoreInstanceTestControls.inspect()` gained `invalidationInstanceId`,
+  `hasInvalidationSubscription`, `invalidationDisposed`, `invalidationReceiveSequence`,
+  `invalidationClearWatermark`, and `pendingInvalidation` (the five plain-data event fields plus
+  `receivedSequence` — never the transport object itself; confirmed by a DIRECT test asserting
+  `inspect()`'s own key list excludes `transport`).
+- Two independent store instances sharing one `FakeBroadcastChannelHub`/`FakeStorageEventHub` never
+  cross-contaminate: an event whose `senderInstanceId` equals instance B's own instanceId is
+  self-suppressed by B (as any genuine self-published commit would be) while genuinely remote to A,
+  and vice versa — proving `pending`/`receiveSequence`/`clearWatermark` are tracked per runtime, not
+  per hub. Clear, reset, and dispose on one instance never touch another's state; disposing one
+  participant leaves the others' hub participation and mutual delivery intact (verified with a
+  3-store fan-out plus a disposed-participant no-delivery check).
+
+### Mutation-catching
+
+- 16 mutations applied to `useAppStore.ts`/`portfolioGenerationInvalidationTransport.ts` and
+  reverted, each producing the expected RED before being restored to an exact SHA-256 match
+  (checked after every single revert, not just at the end):
+  1. Default runtime and test runtime made to share the same transport singleton — 1 failed.
+  2. Two test stores' default dependency pinned to the same fixed instanceId — 1 failed.
+  3. Subscription registered twice on the same transport — 8 failed.
+  4. Receive listener made to call Zustand `set()` — 1 failed (root state reference changed).
+  5. Receive listener made to request the Web Lock (`runExclusive`) — 2 failed.
+  6. `receiveSequence` replaced with `Date.now()` — 8 failed.
+  7. Pending made to keep the first event instead of collapsing to the latest — 3 failed.
+  8. Pending made to discard an incoming event whose `committedAt` is older than the current
+     pending's — 1 failed (the arrival-order-over-committedAt contract).
+  9. Clear watermark made to store `Date.parse(pending.committedAt)` instead of the local
+     `receiveSequence` — 1 failed.
+  10. Receive made to no-op entirely while a local operation ticket is active — 2 failed.
+  11. `reset()` made to also call `transport.dispose()` — 1 failed (subscription no longer
+      survives reset).
+  12. `dispose()` made to skip calling `unsubscribe()` — 1 failed.
+  13. `dispose()` made to skip calling `transport.dispose()` — 3 failed.
+  14. `dispose()` made to close whichever runtime's transport was created most recently (a
+      module-level "last created" reference) instead of its own — 2 failed (cross-instance
+      leakage).
+  15. A manual writer (`runManualPortfolioMutation`'s shared success path) made to call
+      `transport.publish()` once — 5 failed (every manual writer sharing that path: updateHolding,
+      updateTrust, setPortfolioPolicy, setCashAssumptions, importCashAssumptions).
+  16. The browser-only SSR/Node guard removed from
+      `createBrowserPortfolioGenerationInvalidationTransport` — 1 failed (Node-global
+      `BroadcastChannel` constructed despite no `window`).
+- `git diff --check` was clean (0 bytes) after every single revert; both production files matched
+  their pre-mutation SHA-256 exactly after each restore.
+
+### Validation
+
+- New suite, both timezones: `useAppStore.invalidationRuntime.test.ts` — **41 tests / skipped 0**,
+  UTC == Asia/Tokyo.
+- Transport + instance isolation, both timezones (`portfolioGenerationInvalidationTransport.test.ts`,
+  `useAppStore.instanceIsolation.test.ts`): **96 + 14 = 110 tests / skipped 0**, UTC == Asia/Tokyo.
+  Transport baseline was 94 (+2 new SSR-guard regression tests); instance isolation baseline was 13
+  (+1 new RA-008-B2 isolation test), both minimums cleared, no existing assertion removed.
+- RA-007 Web Lock regression, both timezones (`portfolioGenerationLock.test.ts`,
+  `useAppStore.webLockFullWriterMatrix.test.ts`, `useAppStore.webLockFailureRecovery.test.ts`,
+  `useAppStore.webLockThreeStore.test.ts`): **288 tests / skipped 0**, UTC == Asia/Tokyo, unchanged.
+- Full unit, both timezones: **77 files / 2212 tests / skipped 0**, UTC == Asia/Tokyo. Baseline was
+  76 files / 2168 tests; +1 file / +44 tests (41 new runtime tests + 2 transport SSR-guard tests +
+  1 new instance-isolation test).
+- `npx tsc --noEmit`: PASS. `npm run build`: PASS (129 modules — +1 vs. the 128-module B1 baseline,
+  since `portfolioGenerationInvalidationTransport.ts` is now reachable from a production entry
+  point for the first time; known >500 kB chunk warning only, no new warnings). `git diff --check`:
+  PASS.
+- Bundle: the invalidation channel name and storage key each appear **1** time in
+  `dist/assets/*.js` (first production appearance, now that `useAppStore.ts` imports the transport
+  module) — expected, since B2 wires reception into the shipped runtime. The existing Web Lock name
+  still appears **1** time. Test-only symbols (`FakeBroadcastChannelHub`, `FakeStorageEventHub`,
+  `useAppStore.invalidationRuntime`, `clearPendingInvalidationAfterVerifiedAlignment`,
+  `AppStoreInstanceTestControls`) appear **0** times in `dist`.
+- Diff scope: exactly the files this task was allowed to touch —
+  `src/store/useAppStore.ts`, `src/store/useAppStore.invalidationRuntime.test.ts` (new),
+  `src/store/useAppStore.instanceIsolation.test.ts`,
+  `src/store/portfolioGenerationInvalidationTransport.ts`,
+  `src/store/portfolioGenerationInvalidationTransport.test.ts`, and this handover addendum. Zero
+  diff in `persist.ts`, `portfolioGenerationLock.ts`, `portfolioOperationResult.ts`, any fake,
+  `src/types/**`, `src/components/**`, `src/App.tsx`, package/dependency files, or CI workflow
+  files.
+
+### HEAD / origin / push
+
+- Start-of-task HEAD: `b61a0ed40abed4601dac4e47edde7f71f777013f`, matching both the required exact
+  SHA and `origin/v13.3-dev` (`0 0` ahead/behind).
+- `origin/main` measured at the confirmed `90fd476d478457c7c96890347b0b8e7f81e4ea98` baseline with
+  no further advance during this task — main was not merged, not rebased, not cherry-picked, and
+  not pushed to.
+
+### Residual
+
+- No writer calls `transport.publish` anywhere — confirmed by a dedicated 10-writer proof
+  (initialize, refreshAllData, importCsv, importPortfolioSnapshot, updateHolding, updateTrust,
+  setPortfolioPolicy, setCashAssumptions, clearCashAssumptionsOverride, importCashAssumptions) each
+  asserting a spy transport's publish counter stays 0 through a real SUCCESS-reaching invocation.
+- No commit-boundary emit connection exists yet; the `ownership_lost`/other non-emission policy
+  constraints from RA-008-A remain unenforced by anything in this module, same as B1 — there is
+  still no operation-result-aware emission code for that policy to apply to.
+- `pending` never reaches Zustand state or the UI; there is no StatusBar warning, no
+  verified-initialize clear wired to any real initialize path, and no automatic merge/rehydrate.
+  The only way to clear `pending` in this codebase today is the test-only
+  `clearPendingInvalidationAfterVerifiedAlignment` seam, unreachable from production code.
+
+### Status
+
+```text
+RA-007 Web Lock: COMPLETE
+RA-008-A: CLOSED
+RA-008-B1: CLOSED
+RA-008-B2: CLOSED
+
+cross-tab transport foundation: COMPLETE
+AppStoreRuntime integration: COMPLETE
+runtime event reception: ACTIVE
+runtime pending invalidation: ACTIVE
+
+writer emission: INACTIVE
+Zustand/UI warning: INACTIVE
+verified initialize clear: INACTIVE
+```
+
+### Next
+
+`RA-008-C: connect exactly-once invalidation emission to all durable writer commit boundaries`

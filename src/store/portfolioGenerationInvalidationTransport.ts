@@ -556,5 +556,15 @@ export function createPortfolioGenerationInvalidationTransport(
 export function createBrowserPortfolioGenerationInvalidationTransport(
   options: { instanceId: string },
 ): PortfolioGenerationInvalidationTransport {
-  return createPortfolioGenerationInvalidationTransport({ instanceId: options.instanceId })
+  // SSR/Node import safety: a Node runtime may expose a global `BroadcastChannel`
+  // (and, less commonly, a `localStorage`/`window` polyfill) with no browser tab
+  // behind it. Gate all backends on `window` so this factory never wires up a
+  // real cross-process channel outside a browser tab.
+  const isBrowserEnvironment = typeof window !== 'undefined'
+  return createPortfolioGenerationInvalidationTransport({
+    instanceId: options.instanceId,
+    createBroadcastChannel: isBrowserEnvironment ? undefined : null,
+    storage: isBrowserEnvironment ? undefined : null,
+    storageEventTarget: isBrowserEnvironment ? undefined : null,
+  })
 }

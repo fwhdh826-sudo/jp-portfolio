@@ -1193,6 +1193,61 @@ describe('browser capability handling', () => {
       }),
     ).not.toThrow()
   })
+
+  it('never constructs a Node global BroadcastChannel from the browser factory when window is absent', () => {
+    let constructed = 0
+    class NodeGlobalBroadcastChannel {
+      constructor(_name: string) { constructed += 1 }
+      postMessage(): void {}
+      close(): void {}
+      addEventListener(): void {}
+      removeEventListener(): void {}
+    }
+    vi.stubGlobal('BroadcastChannel', NodeGlobalBroadcastChannel)
+    vi.stubGlobal('window', undefined)
+    vi.stubGlobal('localStorage', undefined)
+
+    const transport = createBrowserPortfolioGenerationInvalidationTransport({ instanceId: 'node-a' })
+    expect(constructed).toBe(0)
+
+    const received: unknown[] = []
+    transport.subscribe(event => received.push(event))
+    expect(() => transport.publish(createPortfolioGenerationInvalidationEvent({
+      senderInstanceId: 'node-a', operation: 'initialize',
+    }))).not.toThrow()
+    expect(received).toHaveLength(0)
+    expect(constructed).toBe(0)
+    expect(() => transport.dispose()).not.toThrow()
+  })
+
+  it('uses the BroadcastChannel backend from the browser factory once window is present', () => {
+    const bcHub = new FakeBroadcastChannelHub()
+    const fakeFactory = bcHub.createFactory()
+    class BroadcastChannelStub {
+      private readonly handle: PortfolioGenerationInvalidationBroadcastChannelLike
+      constructor(channelName: string) {
+        this.handle = fakeFactory(channelName)
+      }
+      postMessage(message: unknown): void { this.handle.postMessage(message) }
+      close(): void { this.handle.close() }
+      addEventListener(type: 'message', listener: (event: { data: unknown }) => void): void {
+        this.handle.addEventListener(type, listener)
+      }
+      removeEventListener(type: 'message', listener: (event: { data: unknown }) => void): void {
+        this.handle.removeEventListener(type, listener)
+      }
+    }
+    vi.stubGlobal('BroadcastChannel', BroadcastChannelStub)
+    vi.stubGlobal('window', {
+      addEventListener() {},
+      removeEventListener() {},
+    })
+    vi.stubGlobal('localStorage', undefined)
+
+    createBrowserPortfolioGenerationInvalidationTransport({ instanceId: 'browser-a' })
+
+    expect(bcHub.participantCount).toBe(1)
+  })
 })
 
 // ---------------------------------------------------------------------------

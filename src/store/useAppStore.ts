@@ -97,6 +97,7 @@ import {
   type ManualMutationResult,
   type ManualPortfolioMutationOperation,
   type PortfolioCoordinationFailure,
+  type PortfolioGenerationOperation,
   type PortfolioLoadFailureCode,
   type PortfolioLoadOperation,
   type PortfolioLoadResult,
@@ -105,6 +106,12 @@ import {
   createPortfolioGenerationLockAdapter,
   type PortfolioGenerationLockAdapter,
 } from './portfolioGenerationLock'
+import {
+  createBrowserPortfolioGenerationInvalidationTransport,
+  createPortfolioGenerationInstanceId,
+  type PortfolioGenerationInvalidationEvent,
+  type PortfolioGenerationInvalidationTransport,
+} from './portfolioGenerationInvalidationTransport'
 
 // ── アクション型 ─────────────────────────────────────────────
 export type PortfolioSnapshotImportResult =
@@ -310,8 +317,33 @@ type SnapshotGenerationCache = {
   currentStateIdentity: string
 } | null
 
+// RA-008-B2: one transport + one instanceId per runtime instance, bundled so they can
+// never be mismatched (an instanceId from one runtime paired with another's transport).
+export interface PortfolioGenerationInvalidationRuntimeDependency {
+  instanceId: string
+  transport: PortfolioGenerationInvalidationTransport
+}
+
+interface AppStoreRuntimeInvalidationState {
+  instanceId: string
+  transport: PortfolioGenerationInvalidationTransport
+  unsubscribe: (() => void) | null
+  disposed: boolean
+  // Local monotonic count of remote events received by THIS runtime instance.
+  // Never derived from sender committedAt/Date.now(): a remote tab's wall clock
+  // can run behind ours, and treating its timestamp as authoritative could let a
+  // genuinely newer commit be misjudged as stale (a false negative).
+  receiveSequence: number
+  clearWatermark: number
+  pending: {
+    event: PortfolioGenerationInvalidationEvent
+    receivedSequence: number
+  } | null
+}
+
 interface AppStoreRuntime {
   portfolioGenerationLock: PortfolioGenerationLockAdapter
+  portfolioGenerationInvalidation: AppStoreRuntimeInvalidationState
   lastLocallyPersistedLegacyProjection: string | null
   activePortfolioOperation: PortfolioOperationTicket | null
   activePortfolioGenerationTransaction: PortfolioGenerationTransaction | null
@@ -324,11 +356,94 @@ interface AppStoreRuntime {
   }
 }
 
-function createAppStoreRuntime(
-  portfolioGenerationLock = createPortfolioGenerationLockAdapter(),
-): AppStoreRuntime {
+/** @internal Test-only no-op transport: never touches BroadcastChannel/localStorage/window. */
+function createNoopInvalidationTransportForTest(): PortfolioGenerationInvalidationTransport {
   return {
+    publish: () => {},
+    subscribe: () => () => {},
+    dispose: () => {},
+  }
+}
+
+function createDefaultBrowserInvalidationDependency(): PortfolioGenerationInvalidationRuntimeDependency {
+  const instanceId = createPortfolioGenerationInstanceId()
+  const transport = createBrowserPortfolioGenerationInvalidationTransport({ instanceId })
+  return { instanceId, transport }
+}
+
+/** @internal Test factories must not create a real BroadcastChannel/localStorage listener. */
+function createDefaultTestInvalidationDependency(): PortfolioGenerationInvalidationRuntimeDependency {
+  return {
+    instanceId: createPortfolioGenerationInstanceId(),
+    transport: createNoopInvalidationTransportForTest(),
+  }
+}
+
+/**
+ * Runtime-local reception only: records the latest remote event and bumps the local
+ * receive sequence. Must never call Zustand get()/set(), touch localStorage, request the
+ * Web Lock, or call transport.publish — production emission/consumption is RA-008-C/D.
+ */
+function recordPendingCrossTabInvalidation(
+  runtime: AppStoreRuntime,
+  event: PortfolioGenerationInvalidationEvent,
+): void {
+  const invalidation = runtime.portfolioGenerationInvalidation
+  if (invalidation.disposed) return
+  invalidation.receiveSequence += 1
+  invalidation.pending = { event, receivedSequence: invalidation.receiveSequence }
+}
+
+/**
+ * @internal RA-008-D will call this only after a Web-Lock-verified initialize/alignment
+ * read confirms the local state matches durable storage. Not wired to any production
+ * operation in B2; a delayed remote event arriving after this clear must still become a
+ * new pending (fail-closed over trusting stale sender committedAt).
+ */
+function clearPendingCrossTabInvalidationAfterVerifiedAlignment(runtime: AppStoreRuntime): void {
+  runtime.portfolioGenerationInvalidation.clearWatermark =
+    runtime.portfolioGenerationInvalidation.receiveSequence
+  runtime.portfolioGenerationInvalidation.pending = null
+}
+
+/** @internal Test-instance cleanup only; not exposed for the default application runtime. */
+function disposeAppStoreRuntimeInvalidation(runtime: AppStoreRuntime): void {
+  const invalidation = runtime.portfolioGenerationInvalidation
+  resetRuntimeTestSeams(runtime)
+  if (invalidation.disposed) return
+  invalidation.disposed = true
+  invalidation.pending = null
+  const unsubscribe = invalidation.unsubscribe
+  invalidation.unsubscribe = null
+  try {
+    unsubscribe?.()
+  } catch {
+    // unsubscribe must never throw into caller cleanup
+  }
+  try {
+    invalidation.transport.dispose()
+  } catch {
+    // dispose must never throw into caller cleanup
+  }
+}
+
+function createAppStoreRuntime(
+  portfolioGenerationLock: PortfolioGenerationLockAdapter = createPortfolioGenerationLockAdapter(),
+  portfolioGenerationInvalidation: PortfolioGenerationInvalidationRuntimeDependency = createDefaultBrowserInvalidationDependency(),
+): AppStoreRuntime {
+  const invalidationState: AppStoreRuntimeInvalidationState = {
+    instanceId: portfolioGenerationInvalidation.instanceId,
+    transport: portfolioGenerationInvalidation.transport,
+    unsubscribe: null,
+    disposed: false,
+    receiveSequence: 0,
+    clearWatermark: 0,
+    pending: null,
+  }
+
+  const runtime: AppStoreRuntime = {
     portfolioGenerationLock,
+    portfolioGenerationInvalidation: invalidationState,
     lastLocallyPersistedLegacyProjection: null,
     activePortfolioOperation: null,
     activePortfolioGenerationTransaction: null,
@@ -340,6 +455,12 @@ function createAppStoreRuntime(
       loadRestoreBeforeReadHook: null,
     },
   }
+
+  invalidationState.unsubscribe = invalidationState.transport.subscribe(event => {
+    recordPendingCrossTabInvalidation(runtime, event)
+  })
+
+  return runtime
 }
 
 const defaultAppStoreRuntime = createAppStoreRuntime()
@@ -369,6 +490,11 @@ function resetAppStoreRuntime(runtime: AppStoreRuntime): void {
   runtime.lastAppliedSnapshotGeneration = null
   runtime.lastLocallyPersistedLegacyProjection = null
   resetRuntimeTestSeams(runtime)
+  // Transport subscription is intentionally left untouched: reset re-arms the runtime for
+  // more test activity, it does not tear down the cross-tab dependency.
+  runtime.portfolioGenerationInvalidation.pending = null
+  runtime.portfolioGenerationInvalidation.receiveSequence = 0
+  runtime.portfolioGenerationInvalidation.clearWatermark = 0
 }
 
 /** @internal Test-only read-only observer; application code must not use. */
@@ -3312,6 +3438,10 @@ export interface AppStoreInstanceTestControls {
   setLoadPublishBeforeApplyHook(hook: () => void): void
   setLoadRestoreBeforeReadHook(hook: () => void): void
   reset(): void
+  /** @internal RA-008-D seam: clears pending only after a verified alignment read. Not used in B2 production paths. */
+  clearPendingInvalidationAfterVerifiedAlignment(): void
+  /** @internal Test-instance cleanup: unsubscribes and disposes this instance's invalidation transport. Idempotent. */
+  dispose(): void
   inspect(): {
     activeOperationKind: PortfolioOperationKind | null
     activeGenerationOrigin: 'csv' | 'snapshot' | null
@@ -3321,11 +3451,24 @@ export interface AppStoreInstanceTestControls {
     hasManualPublishHook: boolean
     hasLoadPublishHook: boolean
     hasLoadRestoreHook: boolean
+    invalidationInstanceId: string
+    hasInvalidationSubscription: boolean
+    invalidationDisposed: boolean
+    invalidationReceiveSequence: number
+    invalidationClearWatermark: number
+    pendingInvalidation: {
+      messageId: string
+      senderInstanceId: string
+      committedAt: string
+      operation: PortfolioGenerationOperation
+      receivedSequence: number
+    } | null
   }
 }
 
 export interface CreateAppStoreInstanceForTestOptions {
   portfolioGenerationLock?: PortfolioGenerationLockAdapter
+  portfolioGenerationInvalidation?: PortfolioGenerationInvalidationRuntimeDependency
 }
 
 /** @internal Test-only factory for a vanilla store with an isolated coordination runtime. */
@@ -3335,7 +3478,10 @@ export function createAppStoreInstanceForTest(
   store: StoreApi<AppStoreState>
   controls: AppStoreInstanceTestControls
 } {
-  const runtime = createAppStoreRuntime(options.portfolioGenerationLock)
+  const runtime = createAppStoreRuntime(
+    options.portfolioGenerationLock,
+    options.portfolioGenerationInvalidation ?? createDefaultTestInvalidationDependency(),
+  )
   const store = createStore<AppStoreState>(createAppStoreStateCreator(runtime))
   const controls: AppStoreInstanceTestControls = {
     acquirePortfolioOperation: kind => acquirePortfolioOperationFromRuntime(runtime, kind),
@@ -3353,6 +3499,9 @@ export function createAppStoreInstanceForTest(
       runtime.testSeams.loadRestoreBeforeReadHook = hook
     },
     reset: () => resetAppStoreRuntime(runtime),
+    clearPendingInvalidationAfterVerifiedAlignment: () =>
+      clearPendingCrossTabInvalidationAfterVerifiedAlignment(runtime),
+    dispose: () => disposeAppStoreRuntimeInvalidation(runtime),
     inspect: () => ({
       activeOperationKind: runtime.activePortfolioOperation?.kind ?? null,
       activeGenerationOrigin: runtime.activePortfolioGenerationTransaction?.origin ?? null,
@@ -3362,6 +3511,20 @@ export function createAppStoreInstanceForTest(
       hasManualPublishHook: runtime.testSeams.manualPublishBeforeApplyHook !== null,
       hasLoadPublishHook: runtime.testSeams.loadPublishBeforeApplyHook !== null,
       hasLoadRestoreHook: runtime.testSeams.loadRestoreBeforeReadHook !== null,
+      invalidationInstanceId: runtime.portfolioGenerationInvalidation.instanceId,
+      hasInvalidationSubscription: runtime.portfolioGenerationInvalidation.unsubscribe !== null,
+      invalidationDisposed: runtime.portfolioGenerationInvalidation.disposed,
+      invalidationReceiveSequence: runtime.portfolioGenerationInvalidation.receiveSequence,
+      invalidationClearWatermark: runtime.portfolioGenerationInvalidation.clearWatermark,
+      pendingInvalidation: runtime.portfolioGenerationInvalidation.pending
+        ? {
+            messageId: runtime.portfolioGenerationInvalidation.pending.event.messageId,
+            senderInstanceId: runtime.portfolioGenerationInvalidation.pending.event.senderInstanceId,
+            committedAt: runtime.portfolioGenerationInvalidation.pending.event.committedAt,
+            operation: runtime.portfolioGenerationInvalidation.pending.event.operation,
+            receivedSequence: runtime.portfolioGenerationInvalidation.pending.receivedSequence,
+          }
+        : null,
     }),
   }
   return { store, controls }
