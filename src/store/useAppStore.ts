@@ -340,6 +340,10 @@ interface AppStoreRuntimeInvalidationState {
     event: PortfolioGenerationInvalidationEvent
     receivedSequence: number
   } | null
+  // RA-008-D1: bound once per store instance in createAppStoreStateCreator, after the Zustand
+  // set/get closures exist. Never a module-level singleton — each runtime (default or test)
+  // owns its own callback, so instances never cross-publish into one another's store.
+  flushPendingToStore: (() => void) | null
 }
 
 interface AppStoreRuntime {
@@ -382,8 +386,9 @@ function createDefaultTestInvalidationDependency(): PortfolioGenerationInvalidat
 
 /**
  * Runtime-local reception only: records the latest remote event and bumps the local
- * receive sequence. Must never call Zustand get()/set(), touch localStorage, request the
- * Web Lock, or call transport.publish — production emission/consumption is RA-008-C/D.
+ * receive sequence, then asks the bound store (if any) to project it as a display-only
+ * warning. Must never itself touch localStorage, request the Web Lock, or call
+ * transport.publish — production emission/consumption is RA-008-C/D.
  */
 function recordPendingCrossTabInvalidation(
   runtime: AppStoreRuntime,
@@ -393,13 +398,22 @@ function recordPendingCrossTabInvalidation(
   if (invalidation.disposed) return
   invalidation.receiveSequence += 1
   invalidation.pending = { event, receivedSequence: invalidation.receiveSequence }
+  flushPendingCrossTabInvalidationToStore(runtime)
 }
 
 /**
- * @internal RA-008-D will call this only after a Web-Lock-verified initialize/alignment
- * read confirms the local state matches durable storage. Not wired to any production
- * operation in B2; a delayed remote event arriving after this clear must still become a
- * new pending (fail-closed over trusting stale sender committedAt).
+ * RA-008-D1: bound callback trampoline. The real logic (Zustand get/set) is bound onto
+ * runtime.portfolioGenerationInvalidation.flushPendingToStore by createAppStoreStateCreator;
+ * before binding, or once disposed, this is always a no-op (0 publications).
+ */
+function flushPendingCrossTabInvalidationToStore(runtime: AppStoreRuntime): void {
+  runtime.portfolioGenerationInvalidation.flushPendingToStore?.()
+}
+
+/**
+ * Only production caller is initialize()'s single final publish, after a Web-Lock-verified
+ * restore/analysis/persistence/apply has succeeded. A delayed remote event arriving after this
+ * clear must still become a new pending (fail-closed over trusting stale sender committedAt).
  */
 function clearPendingCrossTabInvalidationAfterVerifiedAlignment(runtime: AppStoreRuntime): void {
   runtime.portfolioGenerationInvalidation.clearWatermark =
@@ -414,6 +428,7 @@ function disposeAppStoreRuntimeInvalidation(runtime: AppStoreRuntime): void {
   if (invalidation.disposed) return
   invalidation.disposed = true
   invalidation.pending = null
+  invalidation.flushPendingToStore = null
   const unsubscribe = invalidation.unsubscribe
   invalidation.unsubscribe = null
   try {
@@ -440,6 +455,7 @@ function createAppStoreRuntime(
     receiveSequence: 0,
     clearWatermark: 0,
     pending: null,
+    flushPendingToStore: null,
   }
 
   const runtime: AppStoreRuntime = {
@@ -562,6 +578,11 @@ function releasePortfolioOperationFromRuntime(
     return false
   }
   runtime.activePortfolioOperation = null
+  // RA-008-D1: a remote event received while this ticket was held only got recorded, never
+  // flushed to Zustand (see flushPendingCrossTabInvalidationToStore's active-operation guard).
+  // Whatever the operation's own outcome, a valid release is the one place that backlog can
+  // safely surface — this runs after the Web Lock itself has already released.
+  flushPendingCrossTabInvalidationToStore(runtime)
   return true
 }
 
@@ -1907,6 +1928,26 @@ const createAppStoreStateCreator = (
       try { listener(state, previous) } catch (error) { reportSubscriberException(error) }
     })) as typeof api.subscribe
 
+  // RA-008-D1: bind this store's own set/get as the runtime's display-only flush callback,
+  // exactly once per store instance. Deliberately calls the closured `set`/`get` (not
+  // api.setState above) — same convention as every other publish in this file — and never
+  // subscribes to the transport itself; reception stays recordPendingCrossTabInvalidation's job.
+  // Note: get()/set() are only safe to call once the surrounding createStore/create() call has
+  // returned (zustand assigns its internal state right after this creator function returns), so
+  // the bind-time "flush anything already pending" pass happens at the createStore/create() call
+  // sites below, never synchronously inside this function body.
+  runtime.portfolioGenerationInvalidation.flushPendingToStore = () => {
+    const invalidation = runtime.portfolioGenerationInvalidation
+    if (invalidation.disposed) return
+    const pending = invalidation.pending
+    if (pending === null) return
+    if (pending.receivedSequence <= invalidation.clearWatermark) return
+    if (runtime.activePortfolioOperation !== null) return
+    if (runtime.activePortfolioGenerationTransaction !== null) return
+    if (get().system.crossTabInvalidation !== undefined) return
+    set(state => ({ system: { ...state.system, crossTabInvalidation: { status: 'stale' } } }))
+  }
+
   type ManualPortfolioState = AppState & AppActions
   type PrepareManualCandidate = (
     baseState: ManualPortfolioState,
@@ -2088,25 +2129,38 @@ const createAppStoreStateCreator = (
    * thrown synchronous subscriber cannot reach this catch: api.subscribe already wraps every
    * listener (reportSubscriberException), so observer failures never re-enter here — matching the
    * "subscriber throw is still SUCCESS" contract.
+   *
+   * RA-008-D1: initialize is the only clear authority. Its finalState folds
+   * crossTabInvalidation: undefined into this SAME single publish (no second set()), and only
+   * once that publish is confirmed applied does the runtime pending/watermark clear — still
+   * inside the Web Lock, before the ticket (and thus any deferred flush) is released. A publish
+   * that never actually applied (LOAD_PUBLISH_ERROR) must leave both the displayed warning and
+   * the runtime pending untouched, so the clear happens after the failure return, never before.
    */
   const publishLoadFinalState = (
     operation: PortfolioLoadOperation,
     finalState: AppState,
   ): PortfolioLoadResult => {
+    const stateToPublish: AppState = operation === 'initialize'
+      ? { ...finalState, system: { ...finalState.system, crossTabInvalidation: undefined } }
+      : finalState
     try {
       runLoadPublishBeforeApplyHookForTest(runtime)
-      set(finalState)
+      set(stateToPublish)
     } catch {
       const published = get()
       const applied = published.system.status === 'success' &&
-        published.holdings === finalState.holdings &&
-        published.trust === finalState.trust &&
-        published.analysis === finalState.analysis
+        published.holdings === stateToPublish.holdings &&
+        published.trust === stateToPublish.trust &&
+        published.analysis === stateToPublish.analysis
       if (!applied) {
         try { console.error(`[useAppStore] load publish failed before apply: ${operation}`) } catch { /* diagnostic sink */ }
         return createPortfolioLoadFailure(operation, 'LOAD_PUBLISH_ERROR')
       }
       try { console.error(`[useAppStore] load publish observer failed: ${operation}`) } catch { /* diagnostic sink */ }
+    }
+    if (operation === 'initialize') {
+      clearPendingCrossTabInvalidationAfterVerifiedAlignment(runtime)
     }
     return createPortfolioLoadSuccess(operation)
   }
@@ -3592,6 +3646,7 @@ export interface AppStoreInstanceTestControls {
     hasLoadRestoreHook: boolean
     invalidationInstanceId: string
     hasInvalidationSubscription: boolean
+    hasInvalidationFlushCallback: boolean
     invalidationDisposed: boolean
     invalidationReceiveSequence: number
     invalidationClearWatermark: number
@@ -3622,6 +3677,9 @@ export function createAppStoreInstanceForTest(
     options.portfolioGenerationInvalidation ?? createDefaultTestInvalidationDependency(),
   )
   const store = createStore<AppStoreState>(createAppStoreStateCreator(runtime))
+  // Surfaces a remote event recorded before this store existed (e.g. a transport whose
+  // subscribe() replays synchronously) — safe only now that createStore has returned.
+  flushPendingCrossTabInvalidationToStore(runtime)
   const controls: AppStoreInstanceTestControls = {
     acquirePortfolioOperation: kind => acquirePortfolioOperationFromRuntime(runtime, kind),
     releasePortfolioOperation: ticket => releasePortfolioOperationFromRuntime(runtime, ticket),
@@ -3637,7 +3695,12 @@ export function createAppStoreInstanceForTest(
     setLoadRestoreBeforeReadHook: hook => {
       runtime.testSeams.loadRestoreBeforeReadHook = hook
     },
-    reset: () => resetAppStoreRuntime(runtime),
+    reset: () => {
+      resetAppStoreRuntime(runtime)
+      // Test-cleanup only (not a production clear authority, see RA-008-D1): re-arms the
+      // instance for the next test's idle-receive assertions without a stale carryover warning.
+      store.setState(state => ({ system: { ...state.system, crossTabInvalidation: undefined } }))
+    },
     clearPendingInvalidationAfterVerifiedAlignment: () =>
       clearPendingCrossTabInvalidationAfterVerifiedAlignment(runtime),
     dispose: () => disposeAppStoreRuntimeInvalidation(runtime),
@@ -3649,6 +3712,7 @@ export function createAppStoreInstanceForTest(
       hasPhaseObserver: runtime.testSeams.portfolioGenerationPhaseObserver !== null,
       hasManualPublishHook: runtime.testSeams.manualPublishBeforeApplyHook !== null,
       hasLoadPublishHook: runtime.testSeams.loadPublishBeforeApplyHook !== null,
+      hasInvalidationFlushCallback: runtime.portfolioGenerationInvalidation.flushPendingToStore !== null,
       hasLoadRestoreHook: runtime.testSeams.loadRestoreBeforeReadHook !== null,
       invalidationInstanceId: runtime.portfolioGenerationInvalidation.instanceId,
       hasInvalidationSubscription: runtime.portfolioGenerationInvalidation.unsubscribe !== null,
@@ -3672,3 +3736,6 @@ export function createAppStoreInstanceForTest(
 export const useAppStore = create<AppStoreState>(
   createAppStoreStateCreator(defaultAppStoreRuntime),
 )
+// Surfaces a remote event recorded before this store existed — safe only now that create() has
+// returned (see the matching call in createAppStoreInstanceForTest).
+flushPendingCrossTabInvalidationToStore(defaultAppStoreRuntime)

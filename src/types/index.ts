@@ -344,6 +344,18 @@ export interface SystemState {
   // P4.5-A013-T6: 直近CSV取込結果の集計（表示専用）。importPortfolioCsv成功時のみ更新し、
   // 失敗時・portfolio snapshot importでは変更しない（虚偽の成功表示を避けるため）。
   csvSyncSummary?: CsvSyncSummary | null
+  /**
+   * RA-008-D1: 別タブでdurable portfolio generationが更新された可能性を示す表示専用状態。
+   * portfolio dataのauthorityではなく、投資判断ロジックや永続化には使用しない。
+   * undefinedは警告なしを表す。clearできるのはWeb-Lock-verified initialize SUCCESSのみ。
+   */
+  crossTabInvalidation?: CrossTabInvalidationState
+}
+
+// RA-008-D1: Zustand投影専用のUI状態。messageId/senderInstanceId/committedAt/operationなど
+// event由来のraw dataは一切保持しない（表示にはstale/not-staleの二値で十分なため）。
+export interface CrossTabInvalidationState {
+  status: 'stale'
 }
 
 export type CsvSourceAsOfKind =

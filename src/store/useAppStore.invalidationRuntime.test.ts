@@ -383,11 +383,18 @@ describe('receive', () => {
 })
 
 // ─────────────────────────────────────────────────────────────
-// No Zustand effect
+// Zustand warning projection (RA-008-D1)
 // ─────────────────────────────────────────────────────────────
+// Superseded contract: B2 asserted "idle remote receive touches Zustand not at all." D1 adds a
+// display-only projection of runtime pending onto system.crossTabInvalidation, so an idle receive
+// now publishes exactly once (system reference only) and notifies subscribers exactly once.
+// storage/Web Lock/active-operation independence — and full flush/clear semantics — are covered
+// in useAppStore.invalidationWarningState.test.ts; this suite only re-asserts that the B2
+// negative contract (no storage write, no Web Lock call, no operation ticket disturbance) still
+// holds once that projection exists.
 
-describe('no zustand effect', () => {
-  it('leaves root state, subscribers, storage, Web Lock, and active operation untouched on receive', () => {
+describe('zustand warning projection', () => {
+  it('projects an idle remote receive as a system-only warning: one publish, portfolio references unchanged, no storage/lock/operation side effects', () => {
     const bcHub = new FakeBroadcastChannelHub()
     const storageHub = new FakeStorageEventHub()
     const { adapter, callCount } = createCountingLockAdapter()
@@ -407,12 +414,21 @@ describe('no zustand effect', () => {
 
     publisher.publish(remoteEvent())
 
-    expect(instance.store.getState()).toBe(stateBefore)
-    expect(notifications).toBe(0)
+    const stateAfter = instance.store.getState()
+    expect(stateAfter).not.toBe(stateBefore)
+    expect(stateAfter.system).not.toBe(stateBefore.system)
+    expect(stateAfter.system.crossTabInvalidation).toEqual({ status: 'stale' })
+    expect(stateAfter.holdings).toBe(stateBefore.holdings)
+    expect(stateAfter.trust).toBe(stateBefore.trust)
+    expect(stateAfter.portfolioPolicy).toBe(stateBefore.portfolioPolicy)
+    expect(stateAfter.cashAssumptions).toBe(stateBefore.cashAssumptions)
+    expect(stateAfter.analysis).toBe(stateBefore.analysis)
+    expect(notifications).toBe(1)
     expect(writes).toBe(0)
     expect(callCount()).toBe(0)
     expect(instance.controls.inspect().activeOperationKind).toBeNull()
     expect(instance.controls.inspect().activeGenerationOrigin).toBeNull()
+    expect(instance.controls.inspect().pendingInvalidation).not.toBeNull()
 
     unsubscribe()
     instance.controls.dispose()
