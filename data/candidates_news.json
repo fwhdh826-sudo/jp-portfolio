@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-07-22T07:29:53.490770+09:00",
-  "sourceUpdatedAt": "2026-07-21T22:17:55+00:00",
+  "updatedAt": "2026-07-22T09:14:51.973414+09:00",
+  "sourceUpdatedAt": "2026-07-22T00:09:07+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -56,10 +56,10 @@
       ]
     },
     "us_broad": {
-      "avgSentiment": 0.4,
+      "avgSentiment": 0.466,
       "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 3,
+      "positiveCount": 3,
+      "neutralCount": 2,
       "sourceCount": 1,
       "itemCount": 5,
       "isStale": false,
@@ -79,18 +79,6 @@
           ]
         },
         {
-          "title": "Treasury Flags Concern Over ‘Potentially Abusive’ Tax Trades",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-21T17:29:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-21/treasury-flags-concern-over-potentially-abusive-tax-strategies",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
-        {
           "title": "US Yields Hit Two-Month High as Oil Sparks Inflation Risk",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
@@ -99,6 +87,21 @@
           "url": "https://www.bloomberg.com/news/articles/2026-07-21/treasury-yields-hit-two-month-high-as-oil-sparks-inflation-risk",
           "tags": [
             "commodity",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Gold Holds Gain as Traders Weigh Impact of Oil Risks on Rates",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-07-21T23:34:45+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-21/gold-holds-gain-as-traders-weigh-impact-of-oil-risks-on-rates",
+          "tags": [
+            "commodity",
+            "gold",
             "market",
             "rates",
             "us_broad"
@@ -133,7 +136,7 @@
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.665,
+      "avgSentiment": 0.5,
       "negativeCount": 0,
       "positiveCount": 2,
       "neutralCount": 0,
@@ -141,7 +144,7 @@
       "itemCount": 2,
       "isStale": false,
       "topNegativeTitle": "Nasdaq 100 Notches Best Day in Weeks as Chipmakers Rebound",
-      "topPositiveTitle": "Asian Stocks Set for Gains as Chipmakers Rebound: Markets Wrap",
+      "topPositiveTitle": "Asian Stocks Advance on Tech Rally, Yen Weakens: Markets Wrap",
       "items": [
         {
           "title": "Nasdaq 100 Notches Best Day in Weeks as Chipmakers Rebound",
@@ -158,13 +161,15 @@
           ]
         },
         {
-          "title": "Asian Stocks Set for Gains as Chipmakers Rebound: Markets Wrap",
+          "title": "Asian Stocks Advance on Tech Rally, Yen Weakens: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 1.0,
+          "sentimentScore": 0.67,
           "publishedAt": "2026-07-21T22:07:30+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-07-21/stock-market-today-dow-s-p-live-updates",
           "tags": [
+            "commodity",
+            "fx",
             "geopolitical",
             "macro_risk",
             "market",
@@ -186,16 +191,31 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": 1.0,
+      "avgSentiment": 0.777,
       "negativeCount": 0,
-      "positiveCount": 2,
+      "positiveCount": 3,
       "neutralCount": 0,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Canadian Stocks Climb as Gold Surge Offsets Trump Tariff Threat",
+      "topNegativeTitle": "Gold Holds Gain as Traders Weigh Impact of Oil Risks on Rates",
       "topPositiveTitle": "Canadian Stocks Climb as Gold Surge Offsets Trump Tariff Threat",
       "items": [
+        {
+          "title": "Gold Holds Gain as Traders Weigh Impact of Oil Risks on Rates",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-07-21T23:34:45+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-21/gold-holds-gain-as-traders-weigh-impact-of-oil-risks-on-rates",
+          "tags": [
+            "commodity",
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
         {
           "title": "Canadian Stocks Climb as Gold Surge Offsets Trump Tariff Threat",
           "source": "Bloomberg Markets",
@@ -263,24 +283,27 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.244,
+      "avgSentiment": 0.214,
       "negativeCount": 3,
       "positiveCount": 5,
       "neutralCount": 3,
       "sourceCount": 2,
       "itemCount": 11,
       "isStale": false,
-      "topNegativeTitle": "Subprime Auto Dealer Goes From Covid-Era Rockstar to Near Demise",
-      "topPositiveTitle": "Asian Stocks Set for Gains as Chipmakers Rebound: Markets Wrap",
+      "topNegativeTitle": "Japan’s Trade Deficit Widens as Yen, Iran War Inflates Imports",
+      "topPositiveTitle": "Canadian Stocks Climb as Gold Surge Offsets Trump Tariff Threat",
       "items": [
         {
-          "title": "Subprime Auto Dealer Goes From Covid-Era Rockstar to Near Demise",
-          "source": "Bloomberg Markets",
+          "title": "Japan’s Trade Deficit Widens as Yen, Iran War Inflates Imports",
+          "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-07-21T17:33:26+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-21/subprime-auto-dealer-goes-from-covid-era-rockstar-to-near-demise",
+          "publishedAt": "2026-07-21T23:58:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-21/japan-s-trade-deficit-widens-as-yen-iran-war-inflates-imports",
           "tags": [
+            "commodity",
+            "fx",
+            "geopolitical",
             "macro_risk",
             "market"
           ]
@@ -341,16 +364,55 @@
       ]
     },
     "fx": {
-      "avgSentiment": 0.333,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 3,
+      "avgSentiment": 0.144,
+      "negativeCount": 2,
+      "positiveCount": 2,
+      "neutralCount": 3,
+      "sourceCount": 3,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "Banks Wrap Up Loan Backing SoftBank’s $5.4 Billion Robotics Bet",
+      "topNegativeTitle": "Japan’s Trade Deficit Widens as Yen, Iran War Inflates Imports",
       "topPositiveTitle": "High Yielders Pace Emerging-Market Currency Gains, Stocks Jump",
       "items": [
+        {
+          "title": "Japan’s Trade Deficit Widens as Yen, Iran War Inflates Imports",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-07-21T23:58:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-21/japan-s-trade-deficit-widens-as-yen-iran-war-inflates-imports",
+          "tags": [
+            "commodity",
+            "fx",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Yen Slides Past 163 Mark to Fresh Four-Decade Low Against Dollar",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-07-21T22:35:01+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-21/yen-slides-past-163-mark-to-fresh-four-decade-low-against-dollar",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        },
+        {
+          "title": "EUR/CNY: Why China’s Yuan Is Drawing Scrutiny in Europe, What It Means for Euro",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-22T00:09:07+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-22/eur-cny-why-china-s-yuan-is-drawing-scrutiny-in-europe-what-it-means-for-euro",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        },
         {
           "title": "Banks Wrap Up Loan Backing SoftBank’s $5.4 Billion Robotics Bet",
           "source": "Bloomberg Markets",
@@ -375,31 +437,19 @@
             "market"
           ],
           "titleJa": "共産 田村委員長“政府は早急に追加の物価高対策を”"
-        },
-        {
-          "title": "High Yielders Pace Emerging-Market Currency Gains, Stocks Jump",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-07-21T10:31:54+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-21/emerging-market-assets-rally-on-china-tech-support-iran-talks",
-          "tags": [
-            "fx",
-            "market"
-          ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": -0.132,
+      "avgSentiment": -0.055,
       "negativeCount": 2,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 6,
       "isStale": false,
       "topNegativeTitle": "Nigeria Holds Interest Rates as War Stokes Inflation Fears",
-      "topPositiveTitle": "US Yields Hit Two-Month High as Oil Sparks Inflation Risk",
+      "topPositiveTitle": "Gold Holds Gain as Traders Weigh Impact of Oil Risks on Rates",
       "items": [
         {
           "title": "Nigeria Holds Interest Rates as War Stokes Inflation Fears",
@@ -470,16 +520,31 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.333,
-      "negativeCount": 0,
-      "positiveCount": 1,
+      "avgSentiment": 0.278,
+      "negativeCount": 1,
+      "positiveCount": 3,
       "neutralCount": 2,
-      "sourceCount": 1,
-      "itemCount": 3,
+      "sourceCount": 2,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Latest Oil Market News and Analysis for July 22",
+      "topNegativeTitle": "Japan’s Trade Deficit Widens as Yen, Iran War Inflates Imports",
       "topPositiveTitle": "Gold and Silver Rise on Dip-Buying as Traders Weigh Fed Strategy",
       "items": [
+        {
+          "title": "Japan’s Trade Deficit Widens as Yen, Iran War Inflates Imports",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-07-21T23:58:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-21/japan-s-trade-deficit-widens-as-yen-iran-war-inflates-imports",
+          "tags": [
+            "commodity",
+            "fx",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
         {
           "title": "Latest Oil Market News and Analysis for July 22",
           "source": "Bloomberg Markets",
@@ -508,32 +573,64 @@
           ]
         },
         {
-          "title": "Gold and Silver Rise on Dip-Buying as Traders Weigh Fed Strategy",
+          "title": "Gold Holds Gain as Traders Weigh Impact of Oil Risks on Rates",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-07-20T23:47:34+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-20/gold-steady-as-traders-watch-middle-east-war-for-inflation-clues",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-07-21T23:34:45+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-21/gold-holds-gain-as-traders-weigh-impact-of-oil-risks-on-rates",
           "tags": [
             "commodity",
             "gold",
             "market",
+            "rates",
             "us_broad"
+          ]
+        },
+        {
+          "title": "Asian Stocks Advance on Tech Rally, Yen Weakens: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-07-21T22:07:30+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-21/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "fx",
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "us_growth"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.112,
-      "negativeCount": 3,
+      "avgSentiment": 0.035,
+      "negativeCount": 4,
       "positiveCount": 3,
       "neutralCount": 3,
       "sourceCount": 3,
-      "itemCount": 9,
+      "itemCount": 10,
       "isStale": false,
-      "topNegativeTitle": "Nigeria Holds Interest Rates as War Stokes Inflation Fears",
-      "topPositiveTitle": "Asian Stocks Set for Gains as Chipmakers Rebound: Markets Wrap",
+      "topNegativeTitle": "Japan’s Trade Deficit Widens as Yen, Iran War Inflates Imports",
+      "topPositiveTitle": "Asian Stocks Advance on Tech Rally, Yen Weakens: Markets Wrap",
       "items": [
+        {
+          "title": "Japan’s Trade Deficit Widens as Yen, Iran War Inflates Imports",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-07-21T23:58:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-21/japan-s-trade-deficit-widens-as-yen-iran-war-inflates-imports",
+          "tags": [
+            "commodity",
+            "fx",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
         {
           "title": "Nigeria Holds Interest Rates as War Stokes Inflation Fears",
           "source": "Bloomberg Economics",
@@ -584,18 +681,6 @@
           "url": "https://www.bloomberg.com/news/articles/2026-07-21/latest-oil-market-news-and-analysis-for-july-22",
           "tags": [
             "commodity",
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "Russia Halts Bond Auctions With More Monetary Easing in Question",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-21T14:20:56+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-21/russia-halts-bond-auctions-with-more-monetary-easing-in-question",
-          "tags": [
             "geopolitical",
             "market"
           ]
