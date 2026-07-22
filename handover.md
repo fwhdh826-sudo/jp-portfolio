@@ -50074,6 +50074,237 @@ automatic merge/rehydrate: INACTIVE
   until reload/re-initialize; `ownership_lost`/`rollback_failed`/`indeterminate` still never emit by
   design; `setCashAssumptions`'s NO_CHANGE/SUCCESS asymmetry remains unmodified (out of scope).
 
-### Next
+### Next (superseded below — see RA-008-D2)
 
 `RA-008-D2: render the StatusBar cross-tab warning and an explicit reload action`
+
+## RA-008-D2: StatusBar cross-tab warning and explicit reload action
+
+### Scope
+
+- Built on RA-008-D1-V (commit `9c3822b38e8b721144999272006f0bea8f502e1f`). `store/**`,
+  `types/**`, `App.tsx`, `tabs/**`, transport, Web Lock, and persistence are untouched — this
+  ticket is UI-only, reading the already-established `system.crossTabInvalidation` projection.
+- Files changed: `src/components/StatusBar.tsx`, `src/components/portfolioLoadUi.ts` (production);
+  `src/components/StatusBar.crossTabInvalidation.test.tsx` (new),
+  `src/components/StatusBar.refresh.test.tsx`, `src/components/portfolioLoadUi.test.ts` (existing,
+  minimally extended); this `handover.md` addendum.
+
+### Shared warning message
+
+- `CROSS_TAB_STATE_STALE_MESSAGE` exported from `portfolioLoadUi.ts` — the single source for the
+  literal `'別タブで更新された状態を検出しました。画面を再読み込みしてください。'`.
+  `COORDINATION_MESSAGES.CROSS_TAB_STATE_STALE` now references this constant instead of a second
+  hard-coded copy. `StatusBar.tsx` imports the same constant; `crossTabInvalidationViewModel`
+  places it verbatim into the banner. A DIRECT test asserts `StatusBar.tsx`'s own source text never
+  contains the literal Japanese string (single-source guarantee).
+
+### StatusBar display
+
+- Single display location: a `<CrossTabInvalidationWarning>` banner rendered once, immediately
+  before the existing `.status-bar` div (returned as a two-child Fragment). `role="alert"`,
+  `aria-label="別タブ更新通知"`.
+- Warning condition: `isCrossTabInvalidationStale(system.crossTabInvalidation)` — a single exported
+  pure predicate (`crossTabInvalidation?.status === 'stale'`), reusing the existing `system`
+  selector (no duplicate `useAppStore` subscription added).
+- Warning absent when `crossTabInvalidation === undefined` (verified via a real SSR render of the
+  untouched default store state — see Testing approach below).
+
+### Reload action
+
+- Button label `再読み込み`; pending label `再読み込み中…`; target is a real
+  `window.location.reload()` call (`reloadBrowserPage`), never `refreshAllData()`.
+- `executeStatusBarCrossTabReload(reload)` — fail-soft pure helper: try/catch, returns
+  `true`/`false`, never throws, never touches the store, never calls initialize/refresh.
+- `executeStatusBarCrossTabReloadFlow` — the click handler's full logic: guards duplicate clicks via
+  `reloadRequested` (no reload call while already requested), clears prior failure, sets
+  `reloadRequested=true`, and on failure resets `reloadRequested=false` and sets the fixed
+  `CROSS_TAB_RELOAD_FAILURE_MESSAGE` (`'画面を再読み込みできませんでした。ブラウザの再読み込みを実行し
+  てください。'`) — never the raw caught error. Retry is possible after a failure (guard resets).
+- Component wiring: `handleCrossTabReload` is a single-line delegation to
+  `executeStatusBarCrossTabReloadFlow(reloadBrowserPage, reloadRequested, setReloadRequested,
+  setReloadFailure)` — verified by an exact source-text match, not just behavioral inference.
+- No automatic reload (never called during render — verified by a mutation that moved the call to
+  the render body, which the DIRECT suite caught). No `store.setState` call anywhere in
+  `StatusBar.tsx` (verified by a source-text regex over the whole file — reload click never clears
+  `system.crossTabInvalidation`, runtime pending, or any other store field). Clear authority remains
+  exclusively RA-008-D1's Web-Lock-verified `initialize()` SUCCESS.
+
+### Normal refresh interaction
+
+- `statusBarRefreshButtonDisabled(refreshButton.disabled, stale)` ORs the existing global-loading/
+  local-pending disabled reason with `stale` — existing `portfolioLoadButtonState` contract and
+  labels are untouched.
+- `executeStatusBarRefreshClickFlow(staleBlocked, ...)` wraps the pre-existing
+  `executeStatusBarRefreshFlow` (signature unchanged) with a `staleBlocked` early-return — while
+  stale, `refreshAllData` is called 0 times; once cleared, delegation resumes with the existing
+  single-flight contract.
+
+### External clear (UI-local cleanup only)
+
+- `statusBarCrossTabExternalClearReset(stale, setReloadRequested, setReloadFailure)` — invoked from
+  a `useEffect([stale])`. When `stale` flips to `false` (RA-008-D1's initialize SUCCESS clearing
+  `crossTabInvalidation`), local `reloadRequested`/`reloadFailure` reset to their initial values.
+  This is UI-local state cleanup only — it does not touch the store and adds no new clear authority.
+  If the warning reappears later, the reload button starts in its normal (non-pending,
+  non-failed) state.
+
+### Testing approach (no jsdom/RTL in this repo — documented departure from a literal reading of
+the review checklist)
+
+- This repository has no `jsdom`, `happy-dom`, or `@testing-library/*` installed, and the task
+  scope forbids `package.json`/dependency changes. Every existing `*.test.tsx` file in this repo
+  (`StatusBar.refresh.test.tsx`, `T9_Settings.refresh.test.tsx`, `App.initialize.test.tsx`, etc.)
+  already follows the same constraint: it tests exported pure functions, never a rendered DOM tree.
+  RA-008-D2 continues that pattern and adds two more DOM-free techniques:
+  1. `CrossTabInvalidationWarning` has zero hooks, so it is called directly as a plain function;
+     the returned React element (a plain object tree) is inspected for `type`/`props`/`children`
+     (role, aria-label, exact message text, button `type`/`disabled`/`onClick` identity,
+     `autoFocus` absence, exact child count) with no rendering at all.
+  2. `react-dom/server`'s `renderToStaticMarkup` (already a transitive dependency of `react-dom`,
+     no new package) renders the real `StatusBar` component against the real `useAppStore`
+     singleton for one deterministic case: the default (never-mutated) initial store state, which
+     genuinely has `crossTabInvalidation === undefined`. **Known limitation, verified empirically**:
+     zustand v4's `useStore` uses `api.getServerState || api.getInitialState` as the React 18
+     server snapshot; since this store never sets `getServerState`, a `useAppStore.setState(...)`
+     mutation made after module load is invisible to a subsequent `renderToStaticMarkup` pass (it
+     always reflects the frozen state at store-creation time). This was confirmed by direct
+     experiment before committing to the approach; store-mutation-dependent full-component SSR
+     assertions were therefore replaced with the pure-function/element-tree techniques above, which
+     do not have this limitation.
+  3. A small set of source-text assertions (exact-substring and occurrence-count checks against
+     `StatusBar.tsx`'s own text, loaded via Vite's `?raw` import — no `node:fs`/`@types/node`
+     needed) pin wiring that plain-function tests cannot observe without a live click (e.g., "the
+     click handler's body is exactly this one line", "`window` is referenced nowhere outside
+     `reloadBrowserPage`", "`.setState(` appears nowhere in the file").
+- All 43 tests in `StatusBar.crossTabInvalidation.test.tsx` are green under both TZ=UTC and
+  TZ=Asia/Tokyo, and every one of the 12 required mutations (see below) turns a specific one of
+  these tests RED.
+
+### Accessibility / mobile layout
+
+- Banner: `display:flex; flexWrap:wrap; alignItems:center; gap:8px`. Message span:
+  `flex:'1 1 240px', minWidth:0` (shrinks first, wraps under the button on narrow widths). Reload
+  button: `flexShrink:0` (keeps a tappable width). No new CSS files touched; existing navy/
+  `--color-text-on-navy` tokens reused; no animation/blink. Banner sits above `.status-bar`; the
+  existing market-indicator layout and refresh-feedback position inside `.status-bar` are
+  unchanged. Reload button has no `autoFocus`; both banner button and refresh button are keyboard-
+  activatable native `<button type="button">` elements.
+
+### Privacy
+
+- `CrossTabInvalidationState` (RA-008-D1) only ever carries `{status:'stale'}` — there is no
+  senderInstanceId/messageId/committedAt/operation/CSV-filename/holding/amount data available to
+  this component to leak in the first place. The banner and failure text are both drawn from fixed
+  constants (`CROSS_TAB_STATE_STALE_MESSAGE`, `CROSS_TAB_RELOAD_FAILURE_MESSAGE`); the reload
+  failure path never surfaces the caught `Error`'s `message`/`stack`/`cause`.
+
+### Mutation-catching — 12/12
+
+All applied one at a time against the post-implementation production files, confirmed RED, then
+reverted with the exact inverse edit; final SHA-256 (`StatusBar.tsx` + `portfolioLoadUi.ts`)
+byte-identical to the pre-mutation baseline (`diff -u before after` → empty).
+
+1. `isCrossTabInvalidationStale` forced to always return `true` → RED (`shows no banner...by
+   default`, `isCrossTabInvalidationStale > is false when undefined`).
+2. `executeStatusBarCrossTabReloadFlow(reloadBrowserPage, ...)` called unconditionally in the render
+   body → RED (`shows no banner...by default` crashed via a render-phase setState loop;
+   `references reloadBrowserPage exactly twice` failed on the extra call site).
+3. `handleCrossTabReload` body replaced with `refresh()` → RED (`handleCrossTabReload delegates to
+   the pure flow...`, `never calls refreshAllData/refresh from within...`, `references
+   reloadBrowserPage exactly twice`).
+4. `handleCrossTabReload` body appended with a direct `useAppStore.setState(...)` clearing
+   `crossTabInvalidation` → RED (`handleCrossTabReload delegates to the pure flow...`, `never calls
+   store.setState anywhere in StatusBar.tsx`).
+5. `statusBarRefreshButtonDisabled` changed to ignore `stale` (`return baseDisabled`) → RED
+   (`statusBarRefreshButtonDisabled > is disabled when stale, even if otherwise idle`).
+6. `if (reloadRequested) return` guard removed from `executeStatusBarCrossTabReloadFlow` → RED
+   (`suppresses a duplicate click while already requested`).
+7. Failure branch replaced with a raw `try/catch` that sets `reloadFailure` to the caught `Error`'s
+   own `.message` → RED (`sanitizes a thrown reload error, re-enables the button, and permits
+   retry`).
+8. `setReloadRequested(false)` removed from the failure branch (button stays disabled after
+   failure) → RED (same test as #7).
+9. `crossTabInvalidationViewModel`'s `message` hard-coded to a different Japanese string → RED
+   (`StatusBar warning view model uses the same constant`, `renders role=alert, aria-label,
+   message, and a wired reload button`).
+10. An extra `<span>operation: refreshAllData</span>` child added to `CrossTabInvalidationWarning`
+    → RED (`renders role=alert...` — the `expect(children).toHaveLength(3)` assertion catches any
+    injected extra content).
+11. A module-top-level `const _x = typeof window !== 'undefined' ? window.location.reload :
+    undefined` added outside any function → RED (`never accesses window outside the
+    reloadBrowserPage function body`).
+12. `crossTabInvalidationViewModel`'s `visible` changed to `stale && !reloadRequested` (hides the
+    banner via local state right after a reload attempt, instead of staying tied to the store) →
+    RED (`stays visible while stale even immediately after a successful reload call`,
+    `shows the pending label and disables the button while reload is requested`, `never introduces
+    a local-only visibility flag for the banner`).
+
+### Validation
+
+- D2 UI suite (`StatusBar.crossTabInvalidation.test.tsx`), both timezones: **43 tests / skipped 0**,
+  UTC == Asia/Tokyo.
+- StatusBar/load UI regression (`StatusBar.refresh.test.tsx` + `portfolioLoadUi.test.ts`), both
+  timezones: **22 tests / skipped 0**, UTC == Asia/Tokyo (was 18 before this session's minimal
+  additions — 2 new cases in `portfolioLoadUi.test.ts`, 1 new case in `StatusBar.refresh.test.tsx`;
+  the pre-existing assertions in both files are unmodified).
+- D1 store regression (`invalidationWarningState.test.ts`, `invalidationRuntime.test.ts`,
+  `loadSinglePublication.test.ts`) + emission regression
+  (`invalidationEmissionManualLoad.test.ts`, `invalidationEmissionCsvSnapshot.test.ts`) + App
+  initialize regression (`App.initialize.test.tsx`), both timezones: **204 tests / skipped 0**,
+  UTC == Asia/Tokyo.
+- Full unit, both timezones: **81 files / 2398 tests / skipped 0**, UTC == Asia/Tokyo (was 80
+  files / 2352 tests before this session; +1 new test file, +46 new test cases across the three
+  touched/new test files).
+- `npx tsc --noEmit`: PASS. `npm run build`: PASS (129 modules, known >500 kB chunk warning only,
+  no new warnings). `git diff --check`: PASS, including after every one of the 12 mutation-catching
+  reverts.
+- Bundle verification (`dist/assets/*.js`): stale message literal present (2 occurrences — the
+  `COORDINATION_MESSAGES` map value and the constant's own definition both survive minification as
+  distinct string literals); reload-failure message present (1); existing cross-tab
+  channel/event/generation storage-key literals each present (1 each, unchanged from D1); zero
+  occurrences of `StatusBar.crossTabInvalidation`/`FakeBroadcastChannelHub`/
+  `FakeStorageEventHub`/`AppStoreInstanceTestControls` test-only symbols in `dist`.
+- main: not merged, not rebased onto, not pushed to. `origin/main` observed unchanged at
+  `69ac8a49891a006a01233fbfe72e070e9dc1d42b` throughout this session (no data-only advance to
+  reconcile).
+
+### Status
+
+```text
+RA-007 Web Lock: COMPLETE
+
+RA-008-A: CLOSED
+RA-008-B1: CLOSED
+RA-008-B2: CLOSED
+RA-008-C1: CLOSED
+RA-008-C2: CLOSED
+RA-008-D1: CLOSED
+RA-008-D1-V: CLOSED
+RA-008-D2: CLOSED
+
+runtime event reception: ACTIVE
+all 10 writer emission: ACTIVE
+Zustand stale projection: ACTIVE
+verified initialize clear: ACTIVE
+StatusBar warning UI: ACTIVE
+explicit hard reload action: ACTIVE
+
+automatic merge/rehydrate: INACTIVE
+```
+
+### Residual
+
+- Automatic merge/rehydrate remains 0 by design.
+- A false-positive warning persists until the user reloads or a fresh `initialize()` succeeds (no
+  dismiss action, by design).
+- `ownership_lost`/`rollback_failed`/`indeterminate` still never emit an invalidation event by
+  design; grant-time `CROSS_TAB_STATE_STALE` remains the actual correctness backstop for those
+  paths, not this display layer.
+- `setCashAssumptions`'s NO_CHANGE/SUCCESS asymmetry remains unmodified (out of scope).
+- End-to-end adversarial UI validation (a real second-tab commit observed by a real first tab
+  through an actual browser) has not been performed — this session's validation is unit-level only.
+
+### Next
+
+`RA-008-E: adversarial end-to-end cross-tab invalidation and UI validation`

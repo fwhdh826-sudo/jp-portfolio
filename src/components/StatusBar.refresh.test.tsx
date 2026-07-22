@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
 import { createPortfolioLoadSingleFlight, type PortfolioLoadFeedback } from './portfolioLoadUi'
-import { executeStatusBarRefreshFlow } from './StatusBar'
+import { executeStatusBarRefreshClickFlow, executeStatusBarRefreshFlow } from './StatusBar'
 
 describe('RA-007-B2 StatusBar refresh caller', () => {
   it('single-flights duplicate refresh, holds pending, and clears it after failure', async () => {
@@ -42,5 +42,20 @@ describe('RA-007-B2 StatusBar refresh caller', () => {
       value => feedback.push(value),
     )
     expect(feedback[feedback.length - 1]).toBeNull()
+  })
+
+  it('RA-008-D2: cross-tab stale gating leaves executeStatusBarRefreshFlow itself untouched', async () => {
+    // executeStatusBarRefreshFlow's own single-flight contract (tested above) is unaffected by
+    // RA-008-D2 — the stale gate lives entirely in the new executeStatusBarRefreshClickFlow wrapper.
+    const action = vi.fn(async () => ({ ok: true as const, operation: 'refreshAllData' as const, code: 'SUCCESS' as const }))
+    const singleFlight = createPortfolioLoadSingleFlight()
+    const pending: boolean[] = []
+    const feedback: Array<PortfolioLoadFeedback | null> = []
+
+    await executeStatusBarRefreshClickFlow(true, action, singleFlight, v => pending.push(v), v => feedback.push(v))
+    expect(action).not.toHaveBeenCalled()
+
+    await executeStatusBarRefreshClickFlow(false, action, singleFlight, v => pending.push(v), v => feedback.push(v))
+    expect(action).toHaveBeenCalledTimes(1)
   })
 })

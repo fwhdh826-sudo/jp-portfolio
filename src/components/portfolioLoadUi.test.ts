@@ -5,6 +5,7 @@ import {
   executePortfolioLoadUiFlow,
   portfolioLoadButtonState,
   portfolioLoadFeedback,
+  CROSS_TAB_STATE_STALE_MESSAGE,
   PORTFOLIO_LOAD_REJECTION_FEEDBACK,
   type PortfolioLoadFeedback,
 } from './portfolioLoadUi'
@@ -60,6 +61,22 @@ describe('RA-007-B2 portfolio load UI contract', () => {
     expect(feedback).toMatchObject({ tone: 'error' })
     expect(feedback?.message).toContain(expected)
     expect(feedback?.message).not.toMatch(/raw|sentinel|stack|cause/i)
+  })
+
+  it('RA-008-D2: CROSS_TAB_STATE_STALE resolves to the exported shared constant', () => {
+    expect(CROSS_TAB_STATE_STALE_MESSAGE).toBe('別タブで更新された状態を検出しました。画面を再読み込みしてください。')
+    const feedback = portfolioLoadFeedback({ ok: false, operation: 'refreshAllData', code: 'CROSS_TAB_STATE_STALE', retryable: false })
+    expect(feedback?.message).toBe(CROSS_TAB_STATE_STALE_MESSAGE)
+  })
+
+  it('RA-008-D2: other coordination messages are unaffected by the shared constant extraction', () => {
+    const cases: Array<[PortfolioLoadResult, string]> = [
+      [{ ok: false, operation: 'refreshAllData', code: 'WEB_LOCK_UNAVAILABLE', retryable: false }, '複数タブ同期'],
+      [{ ok: false, operation: 'refreshAllData', code: 'PORTFOLIO_GENERATION_CONFLICT', retryable: false }, '保存世代'],
+    ]
+    for (const [result, expected] of cases) {
+      expect(portfolioLoadFeedback(result)?.message).toContain(expected)
+    }
   })
 
   it('keeps pending until success resolves and emits no premature feedback', async () => {
