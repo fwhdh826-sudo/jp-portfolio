@@ -737,7 +737,7 @@ describe('instance isolation', () => {
 // Negative emission: 10 writers must never call transport.publish in B2
 // ─────────────────────────────────────────────────────────────
 
-describe('writer emission (CSV/snapshot scope guard + fixed-harness baseline)', () => {
+describe('writer emission (all 10 writers, fixed-harness baseline)', () => {
   const NOW_MS = Date.parse('2026-07-21T03:00:00.000Z')
   const NOW_ISO = new Date(NOW_MS).toISOString()
 
@@ -881,20 +881,22 @@ describe('writer emission (CSV/snapshot scope guard + fixed-harness baseline)', 
     }),
   }
 
-  // RA-008-C1: initialize/refreshAllData and the 6 manual writers now emit exactly 1 invalidation
-  // on a projection-changing commit; importCsv/importPortfolioSnapshot stay scope-guarded at 0
-  // (rollback/ownership-aware emission is RA-008-C2). This fixed WRITER_INVOCATIONS/baselineStore
-  // pair does not change every one of the 8 in-scope writers' projections — initialize/
-  // refreshAllData here bootstrap/refresh from a canonical that already matches the published
-  // baseline (a no-op commit), and clearCashAssumptionsOverride starts from a baseline with no
-  // active override (NO_CHANGE) — so each row documents the actual expected count for THIS
-  // harness. Full success/no-change/failure emission coverage for all 8 target writers lives in
-  // useAppStore.invalidationEmissionManualLoad.test.ts.
+  // RA-008-C1 connected initialize/refreshAllData and the 6 manual writers, which emit exactly 1
+  // invalidation on a projection-changing commit. RA-008-C2 connects the remaining 2 rollback-aware
+  // writers (importCsv/importPortfolioSnapshot), which emit only after their post-commit
+  // rollback/ownership window closes and the committed generation is confirmed applied to the
+  // local store. This fixed WRITER_INVOCATIONS/baselineStore pair does not change every one of the
+  // 10 writers' projections — initialize/refreshAllData here bootstrap/refresh from a canonical
+  // that already matches the published baseline (a no-op commit), and clearCashAssumptionsOverride
+  // starts from a baseline with no active override (NO_CHANGE) — so each row documents the actual
+  // expected count for THIS harness. Full success/no-change/failure emission coverage for all 10
+  // target writers lives in useAppStore.invalidationEmissionManualLoad.test.ts (8 non-rollback
+  // writers) and useAppStore.invalidationEmissionCsvSnapshot.test.ts (CSV/snapshot).
   const WRITER_EXPECTED_PUBLISH_COUNT: Record<string, number> = {
     initialize: 0,
     refreshAllData: 0,
-    importCsv: 0,
-    importPortfolioSnapshot: 0,
+    importCsv: 1,
+    importPortfolioSnapshot: 1,
     updateHolding: 1,
     updateTrust: 1,
     setPortfolioPolicy: 1,

@@ -2473,6 +2473,21 @@ const createAppStoreStateCreator = (
     // scopeで保持する。
     let persistenceReceipt: CsvImportPersistenceReceipt | null = null
     let committedTransferIdentity: string | null = null
+    // RA-008-C2: transaction-scoped exactly-once invalidation guard. `let` (not module/runtime
+    // global) so a retried transaction always gets a fresh flag. `generationCommittedAt` is
+    // declared here (rather than as a `const` at its point of use) so the catch block below —
+    // a sibling scope to the inner try that assigns it — can still read it through this closure.
+    let generationCommittedAt: number | null = null
+    let invalidationEmitted = false
+    const emitCommittedInvalidationOnce = (): void => {
+      if (invalidationEmitted) return
+      invalidationEmitted = true
+      if (generationCommittedAt === null) return
+      emitPortfolioGenerationInvalidationAfterCommit(runtime, {
+        operation: 'importCsv',
+        committedAtMs: generationCommittedAt,
+      })
+    }
     const publishFailure = (failure: CsvImportResult): CsvImportResult => {
       if (failure.ok || 'operation' in failure) return failure
       if (runtime.activePortfolioGenerationTransaction?.token === transaction.token) {
@@ -2653,7 +2668,7 @@ const createAppStoreStateCreator = (
         provenance: incomingProvenance,
       }
 
-      const generationCommittedAt = Date.now()
+      generationCommittedAt = Date.now()
       try {
         setPortfolioGenerationTransactionPhase(runtime, transaction, 'PERSISTING')
         const stagedTransferIdentity = computeSnapshotGenerationIdentity({
@@ -2765,6 +2780,14 @@ const createAppStoreStateCreator = (
       })
       setPortfolioGenerationTransactionPhase(runtime, transaction, 'PUBLISHED')
 
+      // RA-008-C2: emit only after the complete state apply above is confirmed to have landed —
+      // never earlier. Directly proves appliedStateIdentity === committedTransferIdentity rather
+      // than assuming set() succeeded; a mismatch (should be unreachable here) suppresses emission.
+      if (committedTransferIdentity !== null &&
+          computeCurrentSnapshotStateIdentity(get()) === committedTransferIdentity) {
+        emitCommittedInvalidationOnce()
+      }
+
       try {
         if (trustExecution.executed && getTrustShortTodayExecutionCount(transaction.analysisNow) < 1) {
           const state = get()
@@ -2812,6 +2835,9 @@ const createAppStoreStateCreator = (
         const appliedStateIdentity = computeCurrentSnapshotStateIdentity(get())
         if (committedTransferIdentity !== null && appliedStateIdentity === committedTransferIdentity) {
           try { console.error('[useAppStore] post-commit CSV observer/publish diagnostic', error) } catch { /* diagnostic sink */ }
+          // RA-008-C2: normal path never reached its own emit call (it threw before/at set()),
+          // so the exactly-once guard has not fired yet here — this is the transaction's one shot.
+          emitCommittedInvalidationOnce()
           return committedSuccess
         }
         // 未適用（canonical新/store旧）。外部writerが置換済みのbytesにはbyte-exact規則上
@@ -3415,6 +3441,46 @@ const createAppStoreStateCreator = (
         }
       }
 
+      // RA-008-C2: transaction-scoped exactly-once invalidation guard (`let`, not module/runtime
+      // global — a retried transaction gets a fresh flag). Declared in the outer try's scope so
+      // the applied-but-exception catch below — a sibling of the inner publish try — can still
+      // reach it via this closure.
+      let invalidationEmitted = false
+      const emitCommittedInvalidationOnce = (): void => {
+        if (invalidationEmitted) return
+        invalidationEmitted = true
+        emitPortfolioGenerationInvalidationAfterCommit(runtime, {
+          operation: 'importPortfolioSnapshot',
+          committedAtMs: generationCommittedAt,
+        })
+      }
+      // Reuses the existing projection-equality helper (no new diff formula): a successful
+      // snapshot commit that leaves the tracked holdings/trust/policy/cash/CSV-metadata
+      // projection unchanged (e.g. a no-op re-apply) must not notify other tabs. This whole
+      // computation sits outside the rollback-protected inner try below, so — same fail-safe
+      // convention as portfolioGenerationProjectionChanged itself — any failure here must default
+      // to "unchanged" rather than risk an uncaught throw skipping byte-exact rollback.
+      let projectionChanged = false
+      try {
+        projectionChanged = portfolioGenerationProjectionChanged(
+          buildPublishedPortfolioGenerationProjection(state, transaction.analysisNow),
+          buildPublishedPortfolioGenerationProjection({
+            ...state,
+            ...computed,
+            portfolioPolicy: nextPortfolioPolicy,
+            cashAssumptions: nextCashAssumptions,
+            system: {
+              ...state.system,
+              csvLastImportedAt: snapshot.csvImportedAt,
+              csvImportProvenance: snapshot.csvImportProvenance,
+              csvSyncSummary: null,
+            },
+          }, transaction.analysisNow),
+        )
+      } catch {
+        projectionChanged = false
+      }
+
       try {
         // A valid canonical generation is the only durable writer. Legacy helpers are reserved
         // for canonical absence and are not used as mirrors behind a committed envelope.
@@ -3455,6 +3521,7 @@ const createAppStoreStateCreator = (
         }))
         setPortfolioGenerationTransactionPhase(runtime, transaction, 'PUBLISHED')
         markSnapshotGenerationApplied()
+        if (projectionChanged) emitCommittedInvalidationOnce()
         return successResult
       } catch (error) {
         // durable commit後・publish完了前の例外。zustandはlistener通知前にstateを
@@ -3464,6 +3531,9 @@ const createAppStoreStateCreator = (
         if (get().holdings === computed.holdings) {
           try { console.error('[useAppStore] post-commit snapshot publish diagnostic', error) } catch { /* diagnostic sink */ }
           markSnapshotGenerationApplied()
+          // RA-008-C2: normal path never reached its own emit call (it threw before/at set()),
+          // so the exactly-once guard has not fired yet here — this is the transaction's one shot.
+          if (projectionChanged) emitCommittedInvalidationOnce()
           return successResult
         }
         const rolledBack = rollbackCsvImportTransaction(receipt)

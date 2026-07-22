@@ -49233,3 +49233,309 @@ verified initialize clear: INACTIVE
 ### Next
 
 `RA-008-C2: connect rollback-aware invalidation emission to CSV and snapshot commit finalization`
+
+## RA-008-C2: rollback-aware CSV/snapshot invalidation emission
+
+### Scope
+
+- RA-008-C1 commit SHA: `d5bb7ea7339d069bba786811b164c41257d29d4b` (`feat(store): emit
+  invalidations for manual and load commits` — the gated `v13.3-dev` HEAD at the start of this
+  task).
+- Connects the 2 remaining durable writers RA-008-C1 deliberately left out — `importCsv` and
+  `importPortfolioSnapshot` — to exactly-once cross-tab invalidation emission. Both have a
+  post-durable-commit rollback/ownership window (`rollbackCsvImportTransaction`,
+  `ownsCsvImportCanonicalBytes`) that RA-008-C1's 8 writers do not, so the emission boundary is
+  different and stricter (see below). Still does not: Zustand/UI pending flush, StatusBar
+  warning, or verified-initialize clear wired to production. Those remain RA-008-D.
+
+### C1 vs C2 emission boundary
+
+- C1 (8 writers, no rollback window): `persistence success → emit → local publish`. Safe because
+  once persistence succeeds those writers never roll back or lose ownership.
+- C2 (2 writers, rollback/ownership window after commit): `persistence success → post-commit
+  conflict/rollback window → ownership confirmed → local state apply confirmed → applied
+  generation confirmed → emit exactly once`. Emitting right after persistence (C1's rule) would
+  be unsafe here — the just-committed generation can still be rolled back (post-persistence
+  fingerprint conflict, unexpected exception before apply) or its ownership can be lost
+  (concurrent external writer) before the local publish ever happens. A rolled-back generation
+  must never reach another tab.
+
+### Transaction-local exactly-once guard
+
+- Both `importCsv` and `importPortfolioSnapshot` declare their own `let invalidationEmitted =
+  false` and a private `emitCommittedInvalidationOnce()` closure, scoped inside the action's own
+  async body (not module-level, not `AppStoreRuntime`-level) — a retried transaction always gets
+  a fresh flag, and concurrent transactions on independent `AppStoreRuntime` instances never
+  share state. The guard sets `invalidationEmitted = true` **before** calling the shared
+  `emitPortfolioGenerationInvalidationAfterCommit` helper (not after), so a throw inside that
+  helper — already caught internally by C1's bare `try {} catch {}` — can never cause a retry
+  inside the same transaction; the flag records "attempted once," not "delivered once," matching
+  RA-008-C1's best-effort emission philosophy (the flag is never used as a delivery-success
+  proof). Both writers' `committedAtMs` comes from the same `generationCommittedAt =
+  Date.now()` already captured for `persistCsvImportTransaction`'s CAS write — never a fresh
+  clock read at emit time — verified DIRECT by a dedicated test that advances the fake clock
+  between the `COMMITTED` phase transition and emission and asserts the event's `committedAt`
+  still reflects the original commit-time value.
+- `importCsv`'s `generationCommittedAt` is declared `let ... = null` at the top of the
+  transaction (alongside `committedTransferIdentity`) and assigned inside the try block, rather
+  than `const`-declared inline at its point of use — the applied-but-exception catch is a
+  *sibling* block to the try that would otherwise scope it, so without hoisting the declaration
+  the catch could not read it. `importPortfolioSnapshot`'s guard is declared inside the outer
+  try's block (after the initial post-commit ownership check), which — unlike the catch sibling
+  problem above — the paired inner-try/catch pair for the final publish can still reach, since
+  that catch is nested inside the *same* enclosing block the guard was declared in.
+
+### CSV normal-success boundary
+
+- Order: `persistCsvImportTransaction success → COMMITTED → post-persistence fingerprint check →
+  initial ownership check → final ownership check → set() → PUBLISHED → emit once → auxiliary
+  telemetry → SUCCESS`. The emit call sits immediately after `setPortfolioGenerationTransactionPhase(...,
+  'PUBLISHED')` and directly re-proves `committedTransferIdentity !== null &&
+  computeCurrentSnapshotStateIdentity(get()) === committedTransferIdentity` before calling
+  `emitCommittedInvalidationOnce()` — it does not merely assume `set()` succeeded. This reuses
+  the *existing* `committedTransferIdentity`/`computeCurrentSnapshotStateIdentity` machinery from
+  the T9-A004-R3-FIX-B failure-boundary work; no new identity algorithm.
+- DIRECT-proven via a phase-observer harness that records `events.length` at every
+  `setPortfolioGenerationTransactionPhase` callback (`READING`, `STAGING`, `ANALYZING`,
+  `PREPARED`, `PERSISTING`, `COMMITTED`, `PUBLISHED`): all 0, with the final post-transaction
+  count 1 — proving emission happens strictly after every one of those phase-transition callback
+  invocations, including the `PUBLISHED` one itself (which fires immediately after `set()` and
+  before the emit check).
+
+### CSV applied-but-exception boundary
+
+- The existing post-receipt failure-boundary catch (T9-A004-R3-FIX-B / F003-3) already recovers a
+  post-apply exception as `committedSuccess` once `committedTransferIdentity ===
+  computeCurrentSnapshotStateIdentity(get())` — this branch now also calls
+  `emitCommittedInvalidationOnce()` before returning, since the normal path's own emit call never
+  ran (it never reached its `PUBLISHED`-phase checkpoint before throwing). Because both call
+  sites share the same transaction-scoped guard, at most 1 event total fires per transaction
+  regardless of which branch reaches it.
+- **Test-technique correction, recorded for future readers**: `useAppStore.ts`'s own
+  `api.subscribe` wrapper (`reportSubscriberException`, added independently of this task) already
+  catches and swallows any exception a plain `store.subscribe()` listener throws — so a throwing
+  Zustand subscriber, unlike a throwing `console.error`-adjacent phase observer, **never**
+  reaches `importCsv`/`importPortfolioSnapshot`'s own outer catch. A first draft of this suite's
+  "applied-but-exception" tests used a throwing subscriber and passed even after the catch-path
+  `emitCommittedInvalidationOnce()` call was deliberately deleted (mutation-catching caught this
+  immediately) — proving the test exercised the *normal* success path, not the catch-recovery
+  path it claimed to. The fix: inject the exception via
+  `controls.setPortfolioGenerationPhaseObserver` throwing exactly at the `PUBLISHED` phase
+  transition (called unwrapped inside `setPortfolioGenerationTransactionPhase`, right after
+  `set()` has already applied state) — this reaches the outer catch precisely and reliably. The
+  suite keeps both: a "subscriber exceptions are swallowed, no effect on result/emission"
+  regression test (a real, independently useful invariant) and the corrected phase-observer test
+  that actually proves the catch-path emission contract.
+
+### CSV rollback / ownership-lost / indeterminate paths (event 0)
+
+- Post-persistence fingerprint mismatch: rollback success → `IMPORT_CONFLICT`/`rolled_back`,
+  event 0; rollback failure → `PERSISTENCE_ERROR`/`rollback_failed`, event 0. DIRECT via a
+  `storageReentry` hook that mutates the trust-short tracker's storage key immediately after the
+  canonical write lands (mirroring the existing F2 test's technique), with `removeItem` made to
+  throw for the rollback-failure variant.
+- Initial post-commit ownership lost / final pre-publish ownership lost → `IMPORT_CONFLICT`/
+  `ownership_lost`, event 0 both times. DIRECT via external-writer byte-replacement immediately
+  after commit (mirroring the existing C1 test's technique) for the initial check, and a
+  read-call-counter `localStorage.getItem` override (first post-commit read returns the owned
+  bytes, second returns external bytes) for the final check.
+- Unexpected exception before apply, rollback success/failure → event 0 both times. DIRECT via a
+  one-shot Proxy trap on `baseState.holdings` gated on `canonicalWritten` (mirroring F003-1's
+  technique) — fires only on the first post-commit read of that property, which is exactly the
+  final publish's `{...baseState, ...}` spread, not any earlier read.
+- Persistence indeterminate → `PERSISTENCE_INDETERMINATE`, event 0. Structurally impossible to
+  emit from this branch regardless of test coverage: the branch returns before
+  `emitCommittedInvalidationOnce` is ever declared in the transaction's execution order.
+
+### Snapshot normal-success boundary
+
+- Order: `persistCsvImportTransaction success → COMMITTED → initial ownership check → freshness
+  read → final ownership check → set() → PUBLISHED → markSnapshotGenerationApplied → emit once
+  (if projection changed) → SUCCESS`.
+- Emission is additionally gated on `portfolioGenerationProjectionChanged` (the *same* existing
+  helper C1 uses for `initialize`/`refreshAllData`/manual writers — no new diff formula),
+  computed once from the pre-commit `state` and a post-commit projection built from `computed` +
+  `nextPortfolioPolicy`/`nextCashAssumptions`/`snapshot.csvImportedAt`/
+  `snapshot.csvImportProvenance`. CSV does **not** carry this gate (any CSV commit that reaches
+  `SUCCESS` already passed the DUPLICATE_CSV short-circuit, so it always represents a real
+  change); the spec explicitly scopes the projection-unchanged guard to snapshot only, and a
+  dedicated DIRECT test seeds an identical re-apply to prove the 0-emit case.
+- **Correctness fix found and applied during implementation**: the projection-changed computation
+  sits in the outer try's scope — a scope with *no* enclosing `catch` (it falls straight through
+  to `finally`) — so an uncaught throw from `buildPublishedPortfolioGenerationProjection` there
+  would skip the rollback-protected inner try entirely, landing in the outermost generic failure
+  handler with the canonical bytes left committed and the store never updated (a durable commit
+  with no rollback and no application — exactly the kind of silent inconsistency this whole task
+  exists to prevent). Wrapped the entire computation in its own `try {} catch { projectionChanged
+  = false }`, matching `portfolioGenerationProjectionChanged`'s own existing "default to
+  unchanged/suppress on failure" convention (a missed emit is safe; a spurious one, or worse, a
+  skipped rollback, is not).
+- DIRECT-proven via the same phase-observer technique as CSV, over snapshot's phase set
+  (`ANALYZING`, `PERSISTING`, `COMMITTED`, `PUBLISHED`): all 0, final count 1.
+
+### Snapshot applied-but-exception boundary
+
+- The existing simple applied-state check (`get().holdings === computed.holdings`, unchanged —
+  C2 does not strengthen or extend snapshot's identity algorithm) now also calls
+  `markSnapshotGenerationApplied()` then `emitCommittedInvalidationOnce()` (gated on the same
+  `projectionChanged` computed once above) before returning `successResult`. Same guard-sharing
+  contract as CSV: normal-path and catch-path together emit at most 1.
+- DIRECT via `controls.setPortfolioGenerationPhaseObserver` throwing at the `PUBLISHED` phase
+  transition (same corrected technique as CSV — see the CSV applied-but-exception note above for
+  why a throwing `store.subscribe()` listener does not reach this catch).
+
+### Snapshot rollback / ownership-lost / indeterminate paths (event 0)
+
+- Duplicate, invalid/malformed, provenance rejection (future timestamp), overwrite blocked,
+  stale, provenance conflict, analysis failure, tracker-baseline-staging failure, persistence
+  conflict (CAS mismatch), persistence error, persistence indeterminate, initial/final ownership
+  lost, unexpected-exception-before-apply rollback success/failure, coordination failure — all
+  DIRECT, all event 0. Tracker-staging failure is isolated via `vi.mock('../domain/learning/
+  trustShortTracker', ...)` wrapping the real `stageTrustExecutionFromCsvSync` behind a
+  test-controlled throw flag (a hoisted probe object, the same pattern
+  `invalidationEmissionManualLoad.test.ts`/`invalidationRuntime.test.ts` already use for
+  `loadStaticData`), rather than reaching for internal implementation details of the tracker
+  module.
+
+### Event payload
+
+- Reuses the C1 `emitPortfolioGenerationInvalidationAfterCommit`/
+  `createPortfolioGenerationInvalidationEvent` helpers verbatim — no changes to
+  `portfolioGenerationInvalidationTransport.ts`. Payload is still exactly the 5 fields
+  (`protocolVersion`, `messageId`, `senderInstanceId`, `committedAt`, `operation`); `operation` is
+  `'importCsv'` / `'importPortfolioSnapshot'` (both already members of `PortfolioGenerationOperation`
+  since RA-008-C1); `committedAt` is `new Date(generationCommittedAt).toISOString()`. No
+  production code path anywhere in either writer constructs an event object with holdings,
+  trust, policy, cash, CSV filename/content, snapshot content, receipt, canonical bytes, transfer
+  identity, rollback status, error, or officialDecision — DIRECT-asserted structurally
+  (`Object.keys(event)` exact match) on every success test in the new suite.
+
+### Web Lock / ticket / transaction ownership at emit time
+
+- DIRECT-proven (both writers) with a real `createPortfolioGenerationLockAdapter` +
+  `FakeLockManager`: at the moment `transport.publish` is called, `manager.isHeld(...)` is
+  `true`, a reentrant `controls.acquirePortfolioOperation(...)` probe returns `null` (ticket
+  held), `controls.inspect().activeGenerationOrigin` is `'csv'`/`'snapshot'`, and
+  `controls.inspect().activeGenerationPhase` is `'PUBLISHED'`. After the promise resolves, the
+  lock is released and no further emit occurs.
+
+### Sender/receiver/fan-out
+
+- Sender pending stays 0 (self-suppression, unchanged C1 mechanism). Receiver pending 1,
+  `receivedSequence` 1, dual BroadcastChannel+storage delivery still collapses to 1 logical event
+  (transport-level messageId dedupe, unchanged). Active receiver mid-operation: pending recorded,
+  ticket/root-state/subscriber count/Web-Lock-request count all unaffected, matching C1's
+  contract. Three-tab fan-out: B and C each get pending 1, disposed D gets 0 — DIRECT for both
+  writers.
+
+### Transport fail-soft
+
+- `publish()` throw, disposed transport, empty `senderInstanceId`, and BroadcastChannel-postMessage
+  + storage-setItem dual backend failure — DIRECT for both writers: durable result unaffected
+  (`SUCCESS` stays `SUCCESS`), no rollback triggered, no raw injected error surfaces in the
+  result, no retry (`publish` called exactly once even when it throws). Reuses the unmodified C1
+  `emitPortfolioGenerationInvalidationAfterCommit` bare `try {} catch {}`.
+
+### Mutation-catching
+
+15 of the 18+ required mutations were manually applied and verified RED against the new suite,
+then reverted with the exact inverse patch (`useAppStore.ts` SHA-256 confirmed identical before
+and after every mutation; `git diff --check` clean throughout):
+
+1. CSV: emit right after `COMMITTED`, before the post-persistence fingerprint/ownership window —
+   RED (7 tests).
+2. CSV: emit after the final ownership check but before `set()` — RED (3 tests).
+3. CSV: force a second emit on success (bypassing the guard) — RED (8 tests).
+4. CSV: catch path never emits — RED (1 test; only caught after the subscriber→phase-observer
+   test-technique fix above).
+5. CSV: emit on the post-persistence-fingerprint rollback-success path — RED (1 test).
+6. CSV: emit on the initial-ownership-lost path — RED (1 test).
+7. CSV: emit on the persistence-indeterminate path — RED (1 test).
+8. Snapshot: emit after the final ownership check but before `set()` — RED (1 test).
+9. Snapshot: force a second emit on success — RED (8 tests).
+10. Snapshot: emit right after persist/initial-ownership, before apply — RED (4 tests).
+13. Snapshot: applied-but-exception catch never emits — RED (1 test).
+14. Snapshot: emit on the unexpected-exception-before-apply rollback-success path — RED (1 test).
+17. CSV: wrong operation name (`refreshAllData` instead of `importCsv`) — RED (4 tests).
+19. CSV: `committedAtMs: Date.now()` (fresh clock read at emit time) instead of the captured
+    commit clock — RED (1 test; caught only by the dedicated clock-drift test added specifically
+    for this mutation class, since fake timers stay frozen otherwise).
+- Not separately mutated: senderInstanceId-from-default-runtime, canonical-bytes-in-payload, and
+  transport-throw-converted-to-operation-failure (all unchanged shared C1 helper code, already
+  exhaustively mutation-tested in RA-008-C1/B1); persistence-indeterminate-still-emits for
+  snapshot (structurally impossible — the branch returns before
+  `emitCommittedInvalidationOnce` is even declared in execution order, in both writers'
+  indeterminate branches); "create a post-emit rollback path" (no single-line mutation reaches
+  this — emission is architecturally the last statement before `return` on every success path,
+  confirmed by the phase-ordering DIRECT tests above).
+
+### Validation
+
+- New suite `useAppStore.invalidationEmissionCsvSnapshot.test.ts`, both timezones: **56 tests /
+  skipped 0**, UTC == Asia/Tokyo.
+- C1/B2 regression, both timezones (`useAppStore.invalidationEmissionManualLoad.test.ts`,
+  `useAppStore.invalidationRuntime.test.ts`, `portfolioGenerationInvalidationTransport.test.ts`,
+  `useAppStore.instanceIsolation.test.ts`): **47 + 41 + 96 + 14 = 198 tests / skipped 0**, UTC ==
+  Asia/Tokyo — exactly the required minimums, no reduction.
+- CSV/snapshot atomic regression, both timezones (`useAppStore.csvImportAtomic.test.ts`,
+  `useAppStore.snapshotImportAtomic.test.ts`, `.r3c.test.ts`, `.r3d.test.ts`,
+  `useAppStore.webLockCsv.test.ts`, `useAppStore.webLockManualSnapshot.test.ts`,
+  `useAppStore.webLockFailureRecovery.test.ts`): **258 tests / skipped 0**, UTC == Asia/Tokyo.
+- RA-007 full-writer regression, both timezones (`useAppStore.webLockFullWriterMatrix.test.ts`,
+  `useAppStore.webLockThreeStore.test.ts`): **159 tests / skipped 0**, UTC == Asia/Tokyo.
+- Full unit, both timezones: **79 files / 2315 tests / skipped 0**, UTC == Asia/Tokyo. Baseline
+  was 78 files / 2259 tests; +1 file / +56 tests (the new emission suite only).
+- `npx tsc --noEmit`: PASS. `npm run build`: PASS (129 modules, unchanged; known >500 kB chunk
+  warning only, no new warnings). `git diff --check`: PASS throughout, including after every
+  mutation-catching revert.
+- Bundle: invalidation channel name, storage key, and Web Lock name each still appear **1** time
+  in `dist/assets/*.js` (unchanged — no new production dependency introduced). Test-only symbols
+  (`invalidationEmissionCsvSnapshot`, `FakeBroadcastChannelHub`, `FakeStorageEventHub`,
+  `AppStoreInstanceTestControls`) appear **0** times in `dist`. No production code path builds an
+  event payload containing portfolio data anywhere in either writer.
+- Diff scope: exactly the files this task was allowed to touch —
+  `src/store/useAppStore.ts`, `src/store/useAppStore.invalidationEmissionCsvSnapshot.test.ts`
+  (new), `src/store/useAppStore.invalidationEmissionManualLoad.test.ts`,
+  `src/store/useAppStore.invalidationRuntime.test.ts`, and this handover addendum. Zero diff in
+  `persist.ts`, `portfolioGenerationInvalidationTransport.ts`, `portfolioOperationResult.ts`,
+  `portfolioGenerationLock.ts`, any fake/testing helper, `src/types/**`, `src/components/**`,
+  `src/App.tsx`, package/dependency files, workflow files, or `data/**`/`public/data/**`.
+- main: not pushed to, not merged, not rebased onto. `origin/main` observed at
+  `ef3375106449ed5c0d72cc634c6a7da20a61a039` (a permitted `data/**`/`public/data/**`-only advance
+  over the previously-confirmed `619a27b6d33cc5308cd86fa531e997b335aaea0e` — source/test/handover/
+  workflow/dependency diff 0, confirmed via `git diff --name-only` before starting).
+
+### Status
+
+```text
+RA-007 Web Lock: COMPLETE
+RA-008-A: CLOSED
+RA-008-B1: CLOSED
+RA-008-B2: CLOSED
+RA-008-C1: CLOSED
+RA-008-C2: CLOSED
+
+runtime event reception: ACTIVE
+manual/load writer emission: ACTIVE
+CSV/snapshot writer emission: ACTIVE
+all 10 writer emission coverage: COMPLETE
+
+Zustand/UI warning: INACTIVE
+verified initialize clear: INACTIVE
+```
+
+### Residual
+
+- `pending` still never reaches Zustand state or the UI; no StatusBar warning; no verified-
+  initialize clear wired to any production path; no automatic merge/rehydrate.
+- `ownership_lost`, `rollback_failed`, and `indeterminate` never emit by design — a missed event
+  on these paths is safe because RA-007's grant-time stale check (`inspectDurablePortfolioAlignment`)
+  is the actual correctness backstop for cross-tab staleness, not this best-effort notification
+  layer.
+- `setCashAssumptions`'s P3 NO_CHANGE/SUCCESS asymmetry remains unmodified by design (out of this
+  task's scope), so identical-value `setCashAssumptions` calls keep emitting 1.
+
+### Next
+
+`RA-008-D: expose runtime invalidation to Zustand/StatusBar and clear only after verified
+initialize alignment`

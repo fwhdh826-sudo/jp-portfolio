@@ -1160,12 +1160,14 @@ describe('three-tab fan-out', () => {
 })
 
 // ─────────────────────────────────────────────────────────────
-// Scope guard: importCsv/importPortfolioSnapshot are explicitly out of RA-008-C1 scope. Even a
-// real, successful, projection-changing commit through either must emit 0 (RA-008-C2 territory).
+// RA-008-C2 connection: importCsv/importPortfolioSnapshot now emit exactly 1 rollback-aware
+// invalidation on a real, successful, projection-changing commit. Full ordering/rollback/
+// exactly-once coverage for these two writers lives in
+// useAppStore.invalidationEmissionCsvSnapshot.test.ts — this is a regression guard only.
 // ─────────────────────────────────────────────────────────────
 
-describe('CSV/snapshot scope guard', () => {
-  it('importCsv success emits 0', async () => {
+describe('CSV/snapshot writer emission (RA-008-C2 regression guard)', () => {
+  it('importCsv success emits exactly 1', async () => {
     const bcHub = new FakeBroadcastChannelHub()
     const storageHub = new FakeStorageEventHub()
     const { instance: a, events } = makeInstance(bcHub, storageHub, 'sender-csv-scope')
@@ -1174,11 +1176,12 @@ describe('CSV/snapshot scope guard', () => {
     const result = await a.store.getState().importCsv(csvFile(444_000))
 
     expect(result.ok).toBe(true)
-    expect(events).toHaveLength(0)
+    expect(events).toHaveLength(1)
+    expect(events[0].operation).toBe('importCsv')
     a.controls.dispose()
   })
 
-  it('importPortfolioSnapshot success emits 0', async () => {
+  it('importPortfolioSnapshot success emits exactly 1', async () => {
     const bcHub = new FakeBroadcastChannelHub()
     const storageHub = new FakeStorageEventHub()
     const { instance: a, events } = makeInstance(bcHub, storageHub, 'sender-snapshot-scope')
@@ -1192,7 +1195,8 @@ describe('CSV/snapshot scope guard', () => {
     const result = await a.store.getState().importPortfolioSnapshot(distinctSnapshotRaw('9101'))
 
     expect(result.ok).toBe(true)
-    expect(events).toHaveLength(0)
+    expect(events).toHaveLength(1)
+    expect(events[0].operation).toBe('importPortfolioSnapshot')
     a.controls.dispose()
   })
 })
