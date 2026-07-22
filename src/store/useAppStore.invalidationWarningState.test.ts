@@ -716,6 +716,7 @@ describe('initialize verified clear', () => {
     const a = immediateInstance(bcHub, storageHub, 'a')
     const publisher = harnessTransport(bcHub, storageHub, 'external')
     publisher.publish(remoteEvent())
+    const sequenceBefore = a.controls.inspect().invalidationReceiveSequence
 
     storageThrowOnSet = true
     const result = await a.store.getState().initialize()
@@ -723,6 +724,13 @@ describe('initialize verified clear', () => {
 
     expect(result).toMatchObject({ ok: false, code: 'LOAD_PERSISTENCE_ERROR' })
     expect(a.store.getState().system.crossTabInvalidation).toEqual({ status: 'stale' })
+    // RA-008-D1-V mutation coverage: the runtime pending/watermark must survive a persistence
+    // failure exactly like the Zustand-level warning does — the clear authority is a *verified*
+    // initialize SUCCESS, and persistence failing before that verification must leave both layers
+    // untouched, not just the displayed field.
+    expect(a.controls.inspect().pendingInvalidation).not.toBeNull()
+    expect(a.controls.inspect().invalidationClearWatermark).toBe(0)
+    expect(a.controls.inspect().invalidationReceiveSequence).toBe(sequenceBefore)
 
     a.controls.dispose()
     publisher.dispose()

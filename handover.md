@@ -49827,6 +49827,253 @@ automatic merge/rehydrate: INACTIVE
   backstop for those paths, not this display layer.
 - `setCashAssumptions`'s NO_CHANGE/SUCCESS asymmetry remains unmodified (out of this task's scope).
 
+### Next (superseded below — see RA-008-D1-V)
+
+`RA-008-D2: render the StatusBar cross-tab warning and an explicit reload action`
+
+## RA-008-D1-V: invalidation warning mutation coverage completion
+
+### Scope
+
+- Production implementation of RA-008-D1 is **not** changed. This ticket only completes the
+  mutation-catching matrix RA-008-D1's own handover under-reported: RA-008-D1 claimed "8
+  representative mutations" but its own numbered list enumerated 9; against the ticket's required
+  minimum of 18 (here treated as a fixed 20-item matrix, M01–M20), only those 9 were actually
+  executed. This session reconstructed the full 20-item matrix, re-verified the 9 previously-
+  executed mutations against the current tree, and directly executed the 11 that were missing.
+- Audited D1 SHA (gated `v13.3-dev` HEAD at the start of this session, unchanged throughout):
+  `176bdfc29e6c7710eb6be3292926a7a0d1a60aa7`.
+- Required mutation count: 20 (M01–M20). Previously executed (identified from the RA-008-D1
+  handover's own numbered list, matched to this ticket's matrix IDs): **9** — M04, M05, M08, M09,
+  M13, M14, M16, M17, M20. Revalidated this session (re-applied, re-confirmed RED, re-reverted,
+  re-confirmed SHA match): all 9. Newly executed this session: **11** — M01, M02, M03, M06, M07,
+  M10, M11, M12, M15, M18, M19. Total caught/adjudicated mutations: **20/20**.
+
+### Per-mutation results
+
+All mutations applied one at a time to `src/store/useAppStore.ts` only, exact inverse patch
+reverted immediately after each RED/proof was captured, `git diff --check` clean and production
+SHA-256 confirmed identical to the pre-mutation baseline after every single revert (never batched).
+
+- **M01** (holdings reference copy in the flush closure, `set(state => ({ holdings: [...state.
+  holdings], system: {...} }))` at the flush callback ~`useAppStore.ts:1948`) — RED: `idle receive
+  > projects a stale warning...leaving every portfolio/analysis reference untouched`
+  (`invalidationWarningState.test.ts`) and `zustand warning projection > ...portfolio references
+  unchanged...` (`invalidationRuntime.test.ts`), both on the `holdings` reference-identity
+  assertion. Reverted; SHA match.
+- **M02** (automatic writer-path reach: inserted `runFullAnalysis(get(), {nowMs: Date.now()})` into
+  the flush closure before its `set()`) — RED: `no side effects on receive > reads/writes zero
+  storage...runs analysis zero times...` — `reads` went from 0 to 1 (analysis reads
+  `localStorage`-backed trust-short state). Reverted; SHA match.
+- **M03** (Web Lock request on receive: inserted `runtime.portfolioGenerationLock.runExclusive(...)`
+  into the flush closure) — RED on the same "no side effects" test (`manager.requests.length`
+  0→1) and on `zustand warning projection`'s `callCount()` assertion (0→1). Reverted; SHA match.
+- **M04** (removed the `activePortfolioOperation !== null` guard from the flush closure) — RED: 3
+  tests in `active operation defer` (immediate flush while ticket held, breaking the "defers until
+  release" and "flushes only after Web Lock actually released" contracts). Reverted; SHA match.
+- **M05** (removed the ticket-ownership check in `releasePortfolioOperationFromRuntime`, so any
+  release nulls the ticket and flushes) — RED: `does not flush on a wrong-owner release...` (return
+  value `true` instead of contractual `false`). Reverted; SHA match.
+- **M06** (swapped release order: `flushPendingCrossTabInvalidationToStore(runtime)` called
+  *before* `runtime.activePortfolioOperation = null`, so the flush's own ticket guard sees the
+  ticket still held and no-ops) — RED: 4 tests in `active operation defer`, most directly "flushes
+  exactly once after a valid release" (notifications stayed 0 instead of 1 — the deferred backlog
+  never surfaces at all under this ordering). Reverted; SHA match.
+- **M07** (Web Lock release-before-flush) — **structural impossibility**, see below.
+- **M08** (removed the "already stale → no-op" guard, `if (get().system.crossTabInvalidation !==
+  undefined) return`) — RED: `a second logical event while already stale collapses pending to the
+  latest, with zero additional publication` (notifications 1→2). Reverted; SHA match.
+- **M09** (cleared `invalidation.pending = null` inside the flush closure itself, conflating
+  "displayed" with "verified") — RED: 10 tests across `initial state`/`idle receive`/`duplicate
+  collapse`/`active operation defer`/`initialize verified clear`/`operations that never clear`.
+  Reverted; SHA match.
+- **M10** (committedAt-based ordering: `if (invalidation.pending !== null && event.committedAt <
+  invalidation.pending.event.committedAt) return` inserted into `recordPendingCrossTabInvalidation`)
+  — RED: `uses arrival order rather than committedAt order to decide which event is pending`
+  (`invalidationRuntime.test.ts`) — pending stayed `'later-committed'` instead of collapsing to the
+  newest arrival `'earlier-committed'`. Reverted; SHA match.
+- **M11** (moved `clearPendingCrossTabInvalidationAfterVerifiedAlignment(runtime)` to run in
+  `initialize()` immediately before the persistence attempt, i.e. before persistence success is
+  confirmed) — **first pass GREEN** (test gap): `does not clear on persistence failure` only
+  asserted the Zustand-level `crossTabInvalidation` field, which this mutation never touches (it
+  only clears the runtime `pending`/`clearWatermark`), so the existing assertion missed it entirely.
+  Strengthened the test with `pendingInvalidation`/`invalidationClearWatermark`/
+  `invalidationReceiveSequence` assertions (matching the sibling "restore failure" test's shape);
+  re-ran mutated — RED (`pendingInvalidation` became `null`, contract violated); reverted
+  production; re-ran clean — GREEN. Net test diff: this file only, 8 lines added.
+- **M12** (moved the `if (operation === 'initialize') clearPendingCrossTabInvalidationAfter
+  VerifiedAlignment(runtime)` call to *before* the `try { set(stateToPublish) }` in
+  `publishLoadFinalState`, i.e. before the final Zustand publish is confirmed applied) — RED: `does
+  not clear on a publish-hook failure: warning, pending, and watermark all survive` (runtime pending
+  cleared even though the publish-hook threw and the state never actually applied). Reverted; SHA
+  match.
+- **M13** (moved the initialize clear call to run unconditionally on every
+  `publishLoadFinalState` invocation, before the try/catch — reproducing the exact RA-008-D1
+  handover mutation #5) — RED: 3 tests (`does not clear on a publish-hook failure`, `refreshAllData
+  SUCCESS leaves an existing warning...`, and `flushes only once the operation...has actually
+  released...` — the last one incidental: refresh's own clear now races the deferred-flush test's
+  assumptions). This is a strictly broader failure surface than the RA-008-D1 handover's original
+  "1 test" claim, which only reflects that RA-008-D1's own suite had not yet added the
+  `refreshAllData` non-clearing assertions this session's M11 fix strengthened; re-verified against
+  the *current* (fuller) suite as required by this ticket's "re-confirm with catching test name and
+  RED result" instruction. Reverted; SHA match.
+- **M14** (removed the `operation === 'initialize'` gate entirely, so `refreshAllData` SUCCESS also
+  clears the runtime pending/watermark) — RED: `refreshAllData SUCCESS leaves an existing warning,
+  the runtime pending, and the watermark in place` (`pendingInvalidation` became `null`). Reverted;
+  SHA match.
+- **M15** (CSV success clear) — **first attempt GREEN via self-healing, not a test gap**: adding
+  `crossTabInvalidation: undefined` to the CSV success `set({...system: {...}})` payload
+  (`useAppStore.ts` ~line 2833) cleared the Zustand field, but `importCsv`'s outer `finally` still
+  calls `releasePortfolioOperationFromRuntime`, whose valid-release flush (M04/M06's own guarded
+  path) observed the still-non-null runtime `pending` and re-published `{status:'stale'}` before
+  the action returned — a genuine architectural self-heal, confirmed by an inline debug probe
+  (`[DEBUG-M15] undefined` immediately after the mutated `set()`, yet the test's final assertion
+  still saw `{status:'stale'}`). Re-targeted the mutation to the runtime layer instead — inserted
+  `clearPendingCrossTabInvalidationAfterVerifiedAlignment(runtime)` right after the same `set()` —
+  which the self-heal cannot undo (it only republishes the *display* field, never repopulates
+  `pending`). RED: `a CSV import SUCCESS leaves an existing warning, the runtime pending, and the
+  watermark in place` (`pendingInvalidation` became `null`, `invalidationClearWatermark` became
+  non-zero). Reverted; SHA match. No test file changes were needed for this mutation (existing
+  assertions caught the runtime-layer variant directly).
+- **M16** (added `runtime.portfolioGenerationInvalidation.flushPendingToStore = null` to
+  `resetAppStoreRuntime`, so the binding is destroyed instead of surviving reset) — RED: `reset
+  clears the Zustand warning...` — the post-reset probe event (`messageId: 'post-reset'`) failed to
+  re-arm the warning (`crossTabInvalidation` stayed `undefined` instead of re-becoming
+  `{status:'stale'}`). Reverted; SHA match.
+- **M17** (removed `invalidation.flushPendingToStore = null` from
+  `disposeAppStoreRuntimeInvalidation`) — RED: `dispose unbinds the flush callback:...` —
+  `hasInvalidationFlushCallback` stayed `true` after dispose. Reverted; SHA match.
+- **M18** (persist warning into the canonical payload) — **structural impossibility**, see below.
+- **M19** (added `crossTabInvalidation: state.system.crossTabInvalidation` to
+  `buildPublishedPortfolioGenerationProjection`'s return) — RED: `does not make refresh spuriously
+  stale: the durable-alignment projection ignores the warning field` — `refreshAllData` on a warned-
+  but-otherwise-aligned store returned `{ok: false, code: 'CROSS_TAB_STATE_STALE'}` instead of
+  `SUCCESS`, because the durable canonical projection (built from the persisted payload, which never
+  carries this field per M18's proof) now structurally mismatches the in-memory published
+  projection on this field alone. Reverted; SHA match.
+- **M20** (split the initialize clear into two `set()` calls: removed the `crossTabInvalidation:
+  undefined` field-fold from `stateToPublish`, then added a second `set(state => ({system: {...
+  state.system, crossTabInvalidation: undefined}}))` immediately after the runtime clear) — RED: 2
+  tests (`clears an existing warning and the runtime pending in the SAME single initialize
+  publication`, `still clears when a synchronous subscriber throws after the final state has
+  actually applied`) — `notifications` went from 1 to 2 in both, violating the "exactly one final
+  publication" contract. Reverted; SHA match.
+
+### Structural impossibility proofs (2 of the allowed maximum 2)
+
+1. **M07 — Web Lock release-before-flush is not a reachable state.** `flushPendingCrossTabInvalid
+   ationToStore`'s bound closure (`useAppStore.ts:1939-1949`) gates on `runtime.
+   activePortfolioOperation !== null` (line 1945) before it will ever call `set()`. Every operation
+   that requests the Web Lock (`initialize`, `refreshAllData`, `importCsv`, every manual mutation)
+   acquires its `PortfolioOperationTicket` via `acquirePortfolioOperationFromRuntime` strictly
+   *before* calling `runtime.portfolioGenerationLock.runExclusive(...)` (e.g. `initialize` at
+   `useAppStore.ts:2266` acquires the ticket, then requests the lock at line 2283), and releases
+   that same ticket only in the operation's outer `finally`
+   (`releasePortfolioOperationFromRuntime`, e.g. line 2362), which by construction runs strictly
+   *after* `await runtime.portfolioGenerationLock.runExclusive(...)` has already settled. There is
+   therefore no code position in this file where the Web Lock is not yet released but the ticket
+   already is (or vice versa) — ticket lifetime always strictly encompasses Web Lock lifetime. A
+   flush attempted from inside any lock callback (Web Lock still held) is therefore always also a
+   flush attempted while the ticket is still held, which is exactly M06's already-covered mutation
+   surface, not a distinguishable new one. Empirically confirmed rather than merely inferred: the
+   *exact* production flush helper (unmodified) was temporarily inserted at the end of
+   `refreshAllData`'s lock callback, immediately before `return publishLoadFinalState(...)` (still
+   inside `runExclusive`, ticket and Web Lock both held) — full re-run of
+   `invalidationWarningState.test.ts` stayed **37/37 GREEN**, i.e. the insertion is observably a
+   no-op under every existing contract, which is itself the proof that this state is unreachable
+   with distinguishable behavior. Reverted; SHA match.
+2. **M18 — the canonical payload's exact-key schema validation (in the change-forbidden
+   `persist.ts`) rejects any leaked field before serialization.** `persistCurrentPortfolioGeneration`
+   (`useAppStore.ts:797`) is the only production path from Zustand state to the canonical payload,
+   and it builds an explicit object literal (lines 816-826) passed to `persistCsvImportTransaction`
+   (`persist.ts:933`, forbidden to edit per this ticket's scope). That function's `normalizedBase`
+   spreads unrecognized extra payload keys through (`persist.ts:957-960`), so an added
+   `crossTabInvalidation` key is not silently dropped in isolation — but before the spread result is
+   ever serialized, `isCsvImportPayload` (`persist.ts:318`) validates it via `hasExactKeys` against
+   a fixed V4/V5 whitelist of 11 keys (`persist.ts:327-332`) that does not include
+   `crossTabInvalidation`; any payload with an extra key fails this check (line 337) and
+   `persistCsvImportTransaction` throws `"canonical payload schema validation failed"`
+   (`persist.ts:994`) before `JSON.stringify` ever runs. Empirically confirmed: added
+   `crossTabInvalidation: state.system.crossTabInvalidation` to the payload literal at
+   `useAppStore.ts:816-826` and ran `never appears in the canonical persisted payload` — the test
+   stayed **GREEN**, and a temporary debug probe in `persistCurrentPortfolioGeneration`'s catch
+   block (line 841) confirmed the exact thrown message (`[DEBUG-M18] CSV取込データを保存形式へ変換で
+   きませんでした: canonical payload schema validation failed`) before the whole persistence attempt
+   fails closed to `{status:'failed'}` — the field is provably never reachable in the serialized
+   canonical envelope without relaxing `persist.ts`'s forbidden whitelist. Both the field addition
+   and the debug probe were reverted; SHA match confirmed after each.
+
+### Surviving mutations and added assertions
+
+- Surviving (undetected-by-existing-tests-until-strengthened) mutation count: **1** (M11). All
+  other 19 mutations produced RED against the existing suite on first application.
+- Added assertion count: 3 `expect` lines in one existing test (`does not clear on persistence
+  failure`, `invalidationWarningState.test.ts`) — `pendingInvalidation`, `invalidationClearWatermark`,
+  `invalidationReceiveSequence`, mirroring the sibling `does not clear on restore failure` test's
+  shape. No new test file was created; no other existing test needed strengthening.
+
+### Production restoration gate
+
+- Production SHA-256 (`useAppStore.ts` + `types/index.ts`) confirmed byte-identical to the
+  pre-session baseline after every one of the 20 mutations' reverts, and again at the end of the
+  session: `diff -u before after` → empty.
+- Final `git diff --name-status`: only `src/store/useAppStore.invalidationWarningState.test.ts`
+  (+8 lines) and this `handover.md` addendum. Zero diff in `src/components/**`, `src/App.tsx`,
+  `src/store/persist.ts`, `portfolioGenerationInvalidationTransport.ts`, `portfolioGenerationLock.
+  ts`, `portfolioOperationResult.ts`, any `testing/**` fake, `package.json`/`package-lock.json`,
+  `.github/**`, `data/**`, `public/data/**`.
+
+### Validation
+
+- D1 mutation-target suites (`invalidationWarningState.test.ts`, `invalidationRuntime.test.ts`,
+  `loadSinglePublication.test.ts`, `webLockLoad.test.ts`), both timezones: **139 tests / skipped 0**,
+  UTC == Asia/Tokyo (was 139/139 before this session's test strengthening changed assertion count,
+  not test count — M11's fix added `expect` lines to an existing test, not a new `it`).
+- Isolation/emission regression (`instanceIsolation.test.ts`,
+  `invalidationEmissionManualLoad.test.ts`, `invalidationEmissionCsvSnapshot.test.ts`), both
+  timezones: **117 tests / skipped 0**, UTC == Asia/Tokyo.
+- RA-007 regression (`webLockFullWriterMatrix.test.ts`, `webLockFailureRecovery.test.ts`,
+  `webLockThreeStore.test.ts`), both timezones: **241 tests / skipped 0**, UTC == Asia/Tokyo.
+- Full unit, both timezones: **80 files / 2352 tests / skipped 0**, UTC == Asia/Tokyo — unchanged
+  from the RA-008-D1 baseline (80 files / 2352 tests), since this session only strengthened
+  assertions inside an existing test, adding zero new test cases.
+- `npx tsc --noEmit`: PASS. `npm run build`: PASS (129 modules, known >500 kB chunk warning only,
+  no new warnings). `git diff --check`: PASS throughout, including after every one of the 20
+  mutation-catching reverts and the two structural-impossibility probe reverts.
+- main: not merged, not rebased onto, not pushed to. `origin/main` observed unchanged at
+  `ef3375106449ed5c0d72cc634c6a7da20a61a039` throughout this session (no data-only advance).
+
+### Status
+
+```text
+RA-007 Web Lock: COMPLETE
+RA-008-A: CLOSED
+RA-008-B1: CLOSED
+RA-008-B2: CLOSED
+RA-008-C1: CLOSED
+RA-008-C2: CLOSED
+RA-008-D1 implementation: COMPLETE
+RA-008-D1 functional validation: PASS
+RA-008-D1 mutation coverage: COMPLETE
+RA-008-D1: CLOSED
+
+runtime event reception: ACTIVE
+all 10 writer emission: ACTIVE
+Zustand stale projection: ACTIVE
+active-operation deferred flush: ACTIVE
+verified initialize clear: ACTIVE
+
+StatusBar warning UI: INACTIVE
+automatic merge/rehydrate: INACTIVE
+```
+
+### Residual
+
+- Unchanged from RA-008-D1: StatusBar warning display and an explicit reload action are not
+  implemented; automatic merge/rehydrate remains 0 by design; a false-positive warning persists
+  until reload/re-initialize; `ownership_lost`/`rollback_failed`/`indeterminate` still never emit by
+  design; `setCashAssumptions`'s NO_CHANGE/SUCCESS asymmetry remains unmodified (out of scope).
+
 ### Next
 
 `RA-008-D2: render the StatusBar cross-tab warning and an explicit reload action`
