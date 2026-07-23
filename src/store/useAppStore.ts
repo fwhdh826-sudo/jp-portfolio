@@ -350,6 +350,7 @@ interface AppStoreRuntime {
   portfolioGenerationLock: PortfolioGenerationLockAdapter
   portfolioGenerationInvalidation: AppStoreRuntimeInvalidationState
   lastLocallyPersistedLegacyProjection: string | null
+  lastLocallyPersistedLegacyLearningFingerprint: string | null
   activePortfolioOperation: PortfolioOperationTicket | null
   activePortfolioGenerationTransaction: PortfolioGenerationTransaction | null
   lastAppliedSnapshotGeneration: SnapshotGenerationCache
@@ -462,6 +463,7 @@ function createAppStoreRuntime(
     portfolioGenerationLock,
     portfolioGenerationInvalidation: invalidationState,
     lastLocallyPersistedLegacyProjection: null,
+    lastLocallyPersistedLegacyLearningFingerprint: null,
     activePortfolioOperation: null,
     activePortfolioGenerationTransaction: null,
     lastAppliedSnapshotGeneration: null,
@@ -506,6 +508,7 @@ function resetAppStoreRuntime(runtime: AppStoreRuntime): void {
   runtime.activePortfolioGenerationTransaction = null
   runtime.lastAppliedSnapshotGeneration = null
   runtime.lastLocallyPersistedLegacyProjection = null
+  runtime.lastLocallyPersistedLegacyLearningFingerprint = null
   resetRuntimeTestSeams(runtime)
   // Transport subscription is intentionally left untouched: reset re-arms the runtime for
   // more test activity, it does not tear down the cross-tab dependency.
@@ -794,6 +797,35 @@ function canonicalReplacementWriteContract(
     : { schemaVersion: CSV_IMPORT_GENERATION_SCHEMA_V4 }
 }
 
+/**
+ * Maps a thrown persistCsvImportTransaction error to the caller-facing persistence result. Pure:
+ * no localStorage/Zustand/Web Lock access, and no raw error message/stack ever crosses this
+ * boundary — only the already-typed status this codebase already models.
+ */
+function classifyCurrentPortfolioPersistenceError(
+  error: unknown,
+): Exclude<CurrentPortfolioPersistenceResult, { status: 'persisted' }> {
+  if (error instanceof CsvImportCanonicalConflictError) {
+    return { status: 'blocked', reason: 'canonical_changed' }
+  }
+  if (error instanceof CsvImportPersistenceIndeterminateError) {
+    return { status: 'failed', reason: 'indeterminate' }
+  }
+  if (error instanceof CsvImportPersistenceError) {
+    switch (error.status) {
+      case 'rolled_back':
+        return { status: 'failed', reason: 'rolled_back' }
+      case 'rollback_failed':
+        return { status: 'failed', reason: 'rollback_failed' }
+      case 'indeterminate':
+        return { status: 'failed', reason: 'indeterminate' }
+      case 'not_attempted':
+        return { status: 'failed' }
+    }
+  }
+  return { status: 'failed' }
+}
+
 function persistCurrentPortfolioGeneration(
   state: AppState,
   knownCanonical?: CsvImportGenerationRestoreResult,
@@ -837,10 +869,10 @@ function persistCurrentPortfolioGeneration(
         }),
       }, savedAt, knownCanonicalRaw, canonicalReplacementWriteContract(canonical.schemaVersion))
       return { status: 'persisted', target: 'canonical' }
-    } catch {
+    } catch (error) {
       // These historical actions are best-effort persistence. A failed full replacement leaves
       // the previous canonical envelope valid; it must not fall through to partial legacy writes.
-      return { status: 'failed' }
+      return classifyCurrentPortfolioPersistenceError(error)
     }
   }
 
@@ -1261,6 +1293,7 @@ const LEGACY_PORTFOLIO_GENERATION_KEYS = [
   'v13_cash_assumptions',
   'v10_csv_imported_at',
   'v13_csv_sync_summary',
+  'v91_learning',
 ] as const
 
 function normalizeCsvMetadataProjection(
@@ -1341,10 +1374,27 @@ function portfolioGenerationProjectionsEqual(
     JSON.stringify(stableStructuralValue(right))
 }
 
-function portfolioGenerationProjectionFingerprint(
-  projection: PortfolioGenerationProjection,
-): string {
-  return JSON.stringify(stableStructuralValue(projection))
+/**
+ * Legacy-only self-persist cache key for holdings/trust/portfolioPolicy/cashAssumptions/CSV
+ * metadata. Deliberately excludes `learning` — that field is verified separately and
+ * unconditionally via `lastLocallyPersistedLegacyLearningFingerprint` in
+ * inspectDurablePortfolioAlignment, since (unlike this projection) it can be mutated directly by
+ * a non-cooperative writer without ever touching this runtime's own published state.
+ */
+function buildLegacyProjectionOnlyFingerprint(state: AppState, nowMs: number): string {
+  return JSON.stringify(stableStructuralValue(buildPublishedPortfolioGenerationProjection(state, nowMs)))
+}
+
+/**
+ * Re-reads v91_learning right after a successful legacy-mode persist and caches its fingerprint
+ * as this runtime's own recognized write. Not every legacy writer's persistLegacy callback
+ * includes `learning` (e.g. setPortfolioPolicy/setCashAssumptions touch only their own key), so
+ * trusting `finalState.learning` directly here would wrongly cache a value that was never
+ * actually durably written; reading disk back is the only way to know what is actually there.
+ */
+function syncLegacyLearningFingerprintFromDisk(runtime: AppStoreRuntime): void {
+  runtime.lastLocallyPersistedLegacyLearningFingerprint =
+    JSON.stringify(stableStructuralValue(restoreLearning()))
 }
 
 /**
@@ -1418,10 +1468,36 @@ function inspectDurablePortfolioAlignment(
   }
   if (legacyRaw.every(raw => raw === null)) {
     runtime.lastLocallyPersistedLegacyProjection = null
+    runtime.lastLocallyPersistedLegacyLearningFingerprint = null
     return { status: 'aligned', canonical, canonicalRaw }
   }
+  // v91_learning is verified unconditionally, before (and independent of) the projection
+  // shortcut below. A non-cooperative external mutation can rewrite it directly without ever
+  // touching this runtime's own published state, so "live state hasn't changed since our last
+  // write" cannot stand in as proof the disk content is still ours the way it can for
+  // holdings/trust/portfolioPolicy/cashAssumptions — those four are only ever written through
+  // this same Web-Lock-protected code, so skipping their re-read when live state is unchanged is
+  // safe. Gating this learning check behind that same shortcut would let it go stale-blind
+  // whenever nothing else changed, exactly the scenario the shortcut exists to skip.
+  if (legacyRaw[6] !== null) {
+    const legacyLearning = restoreLearning()
+    if (legacyLearning === null) return { status: 'stale' }
+    const diskLearningFingerprint = JSON.stringify(stableStructuralValue(legacyLearning))
+    // learning is recomputed on every load operation (fresh lastUpdated/outcomes each run), so a
+    // plain live-state-vs-disk compare would misfire whenever this runtime's own durable write
+    // outran its own publish (e.g. a load's publish-before-apply hook failing after persistence
+    // already committed) — the disk content is legitimately this runtime's own generation even
+    // though the published state has not caught up yet. lastLocallyPersistedLegacyLearningFingerprint
+    // recognizes that case; only content nobody here just wrote is compared against live state.
+    const recognizedAsOwnWrite =
+      runtime.lastLocallyPersistedLegacyLearningFingerprint === diskLearningFingerprint
+    if (!recognizedAsOwnWrite &&
+        JSON.stringify(stableStructuralValue(state.learning ?? null)) !== diskLearningFingerprint) {
+      return { status: 'stale' }
+    }
+  }
   if (runtime.lastLocallyPersistedLegacyProjection ===
-      portfolioGenerationProjectionFingerprint(publishedProjection)) {
+      JSON.stringify(stableStructuralValue(publishedProjection))) {
     return { status: 'aligned', canonical, canonicalRaw }
   }
   const legacyHoldings = restorePortfolio()
@@ -2064,6 +2140,19 @@ const createAppStoreStateCreator = (
               : createManualMutationFailure(source, 'MANUAL_PERSISTENCE_ERROR')
           }
 
+          // Cache the durable write's own identity now, before the publish attempt below: a
+          // publish-before-apply failure must not leave this runtime unable to recognize its own
+          // just-committed legacy generation on the very next call (mirrors the same
+          // persist-before-publish-outcome ordering used by initialize/refreshAllData).
+          if (alignment.canonical.status === 'committed') {
+            runtime.lastLocallyPersistedLegacyProjection = null
+            runtime.lastLocallyPersistedLegacyLearningFingerprint = null
+          } else {
+            runtime.lastLocallyPersistedLegacyProjection =
+              buildLegacyProjectionOnlyFingerprint(finalState, operationNowMs)
+            syncLegacyLearningFingerprintFromDisk(runtime)
+          }
+
           if (portfolioGenerationProjectionChanged(
             buildPublishedPortfolioGenerationProjection(baseState, operationNowMs),
             buildPublishedPortfolioGenerationProjection(finalState, operationNowMs),
@@ -2098,11 +2187,6 @@ const createAppStoreStateCreator = (
             }
             try { console.error('[useAppStore] manual portfolio publish observer failed') } catch { /* diagnostic sink */ }
           }
-          runtime.lastLocallyPersistedLegacyProjection = alignment.canonical.status === 'committed'
-            ? null
-            : portfolioGenerationProjectionFingerprint(
-                buildPublishedPortfolioGenerationProjection(finalState, operationNowMs),
-              )
           return createManualMutationSuccess(source, 'SUCCESS')
         })
         return lockResult.ok
@@ -2337,6 +2421,11 @@ const createAppStoreStateCreator = (
           if (persistenceResult.status !== 'persisted') {
             return classifyLoadPersistenceFailure(operation, persistenceResult)
           }
+          if (persistenceResult.target === 'canonical') {
+            runtime.lastLocallyPersistedLegacyLearningFingerprint = null
+          } else {
+            syncLegacyLearningFingerprintFromDisk(runtime)
+          }
 
           if (portfolioGenerationProjectionChanged(
             buildPublishedPortfolioGenerationProjection(restoredState, nowMs),
@@ -2447,6 +2536,11 @@ const createAppStoreStateCreator = (
           }
           if (persistenceResult.status !== 'persisted') {
             return classifyLoadPersistenceFailure(operation, persistenceResult)
+          }
+          if (persistenceResult.target === 'canonical') {
+            runtime.lastLocallyPersistedLegacyLearningFingerprint = null
+          } else {
+            syncLegacyLearningFingerprintFromDisk(runtime)
           }
 
           if (portfolioGenerationProjectionChanged(

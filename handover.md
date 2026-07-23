@@ -50500,3 +50500,225 @@ RA-008 cross-tab invalidation: COMPLETE
 ### Next
 
 `RA-009-A: cross-tab CAS / rollback TOCTOU design audit`
+
+## RA-009-B1: localStorage persistence hardening
+
+Implements the two findings and one terminology finding from the RA-009-A design audit with no
+new persistence mechanism, schema, authority key, result code, or migration. Production changes
+are confined to `src/store/useAppStore.ts` and `src/store/persist.ts`.
+
+- RA-009-A audited SHA: `0c1e56cf82b84939763a05cc968045b21d5680dd` (origin/v13.3-dev at session
+  start).
+- Design verdict carried forward unchanged: true atomic localStorage CAS —
+  `NOT_POSSIBLE_WITH_LOCALSTORAGE`; cooperative same-origin writers —
+  `COOPERATIVE_CAS_VIA_WEB_LOCK_ONLY`; non-cooperative direct mutation —
+  `BEST_EFFORT_COMPARE_VERIFY_ONLY`. No new production mechanism added (0 new locks, schemas,
+  authority keys, result codes, or diagnostic codes).
+
+### Finding P2: canonical persistence error reason propagation
+
+`persistCurrentPortfolioGeneration()`'s canonical-replacement `catch` previously collapsed every
+`persistCsvImportTransaction()` failure to a reason-less `{ status: 'failed' }`, discarding
+`CsvImportCanonicalConflictError` and `CsvImportPersistenceError.status`. Extracted a pure,
+unexported `classifyCurrentPortfolioPersistenceError(error)` helper (0 localStorage/Zustand/Web
+Lock access, exhaustive switch, no raw error message/stack ever returned) and call it from the
+catch:
+
+- `CsvImportCanonicalConflictError` → `{ status: 'blocked', reason: 'canonical_changed' }`, which
+  the existing `classifyLoadPersistenceFailure` (load ops) and the existing conflict check in
+  `runManualPortfolioMutation` (manual ops) already mapped to `PORTFOLIO_GENERATION_CONFLICT` —
+  confirmed via direct behavior tests for `initialize`, `refreshAllData`, and `setCashAssumptions`
+  (fault-injected via a partial `./persist` module mock so a real error instance reaches the real,
+  unmodified classifier — no production runtime seam added).
+- `rolled_back` / `rollback_failed` / (`CsvImportPersistenceIndeterminateError` and the switch's own)
+  `indeterminate` → reason preserved, `{ status: 'failed', reason }`.
+- `not_attempted` and any non-`CsvImportPersistenceError` (unknown) → reason-less
+  `{ status: 'failed' }`; raw error `.message`/stack never threaded into the result.
+- Downstream classification is unchanged: `canonical_changed` → `PORTFOLIO_GENERATION_CONFLICT`;
+  `rolled_back`/`rollback_failed`/`indeterminate`/no-reason → the existing
+  `LOAD_PERSISTENCE_ERROR`/`MANUAL_PERSISTENCE_ERROR` codes (never `SUCCESS`, never a new code).
+  `rolled_back`/`rollback_failed`/`indeterminate` currently have no downstream consumer that
+  branches on the specific reason (only `canonical_changed`/`canonical_committed`/
+  `metadata_misaligned`/`ownership_lost` affect conflict classification) — confirmed by grepping
+  every `.reason ===` read site in `useAppStore.ts` — so those three are additionally verified via
+  a scoped structural check (`useAppStore.ts?raw`) that the classifier's switch literally assigns
+  each its own reason string, since no behavior assertion can distinguish "reason kept" from
+  "reason discarded" for them today without adding a new public result code (out of scope).
+
+### Finding P3: legacy learning generation change detection
+
+`v91_learning` appended to `LEGACY_PORTFOLIO_GENERATION_KEYS` (index 6, after
+`v13_csv_sync_summary`; indices 0–5 unchanged). Adding the key alone was insufficient: the
+pre-existing `lastLocallyPersistedLegacyProjection` self-persist shortcut in
+`inspectDurablePortfolioAlignment` compared only a projection that (like the canonical envelope
+and the RA-008 invalidation projection) intentionally excludes `learning`, so an external,
+non-cooperative direct mutation of `v91_learning` after that shortcut had been primed by this
+runtime's own prior write would have gone completely undetected.
+
+Fix, scoped only to legacy-mode alignment (canonical `PortfolioGenerationProjection`, the RA-008
+invalidation projection, and the canonical schema are all untouched):
+
+- `v91_learning` is checked **unconditionally**, before and independent of the existing
+  holdings/trust/portfolioPolicy/cashAssumptions projection shortcut. That shortcut is safe to
+  keep gating those four fields (only ever written through this same Web-Lock-protected code, so
+  "live state unchanged" does prove disk is unchanged for them) but must never gate `learning`
+  (which a non-cooperative writer can rewrite without ever touching this runtime's published
+  state).
+- Because `learning` is recomputed fresh (new `lastUpdated`/outcomes) on every analysis pass
+  regardless of whether anything else changed, a plain live-state-vs-disk content compare would
+  misfire whenever this runtime's own durable legacy write outran its own publish (a
+  publish-before-apply hook failing after persistence already committed — for both a manual
+  writer and a load operation). A second runtime-local cache,
+  `lastLocallyPersistedLegacyLearningFingerprint`, records what this runtime itself most recently
+  confirmed as durably written (via a disk re-read immediately after each successful legacy
+  persist, since not every manual writer's `persistLegacy` callback includes `learning` even when
+  it is non-null — e.g. `setPortfolioPolicy`/`setCashAssumptions` touch only their own key); only
+  content this runtime did **not** just write is compared against live state. The manual-mutation
+  write site updates this cache (and the projection-only cache) immediately after a successful
+  persist, before the publish attempt — mirroring the load-operation ordering — so a
+  publish-before-apply failure can't leave the runtime unable to recognize its own just-committed
+  write on the very next call.
+- Malformed `v91_learning` (present but fails `sanitizeLearningState`) → `stale`, matching the
+  existing holdings/trust malformed-snapshot contract.
+- Absent `v91_learning` (deleted after having existed) → does **not** force staleness, matching
+  the existing `portfolioPolicy`/`cashAssumptions` optional-field contract (an absent legacy key
+  carries no overwrite authority; only compared when present).
+- Canonical committed → legacy `v91_learning` is never even read (canonical branch returns before
+  the legacy section); canonical remains the sole authority, confirmed directly.
+- Runtime isolation: `lastLocallyPersistedLegacyLearningFingerprint`/
+  `lastLocallyPersistedLegacyProjection` live on `AppStoreRuntime`, are per-instance (never
+  module-level), and are reset to `null` on `resetAppStoreRuntime` (already-existing reset path),
+  so `reset()` correctly forces re-evaluation from storage evidence rather than a stale cached
+  recognition.
+
+### CAS terminology clarification
+
+- `persist.ts`'s `readCsvImportCanonicalRaw()` doc comment no longer says "for a later
+  compare-and-swap"; now states the capture is for a "conditional compare-and-restore" and
+  explicitly that this is cooperative safety under the shared Web Lock, not a true atomic CAS
+  against non-cooperating storage mutations.
+- `rollbackCsvImportTransaction()`'s doc comment now states its read-current /
+  compare-with-committedRaw / restore-previousRaw / read-back sequence is safe against
+  cooperating same-origin writers under the Web Lock but best-effort only against non-cooperating
+  direct mutation — not a true atomic CAS, so a non-cooperating write landing between the compare
+  and the restore cannot be fully prevented.
+- Existing `CAS conflict`/pre-persist-CAS comments in `useAppStore.ts` were left untouched — their
+  meaning (canonical expected-bytes conflict) was already unambiguous and none claimed "atomic
+  CAS" against localStorage.
+- No function/type/result-code renames; no behavior change.
+
+### Mutation-catching (12/12)
+
+Applied one at a time (production SHA-256 captured before the pass, diffed back to it after every
+revert; `git diff --check` clean throughout):
+
+1. `CsvImportCanonicalConflictError` → generic `failed` — caught (3 canonical-conflict behavior
+   tests RED).
+2. `rolled_back` reason discarded — caught (structural reason-mapping test RED).
+3. `rollback_failed` reason discarded — caught (structural test RED).
+4. `indeterminate` reason discarded (switch case) — caught (structural test RED; a second,
+   independent RED path exists via the `CsvImportPersistenceIndeterminateError` special-case
+   branch, verified separately).
+5. Unknown-error raw message threaded into `reason` — caught (structural
+   never-thread-raw-error test RED).
+6. `v91_learning` removed from `LEGACY_PORTFOLIO_GENERATION_KEYS` — caught (6 tests RED).
+7. `v91_learning` kept in the key list but its content check disabled — caught (4 tests RED).
+8. Legacy self-persist shortcut re-ordered to run before (and therefore mask) the learning check —
+   caught by the dedicated "primed shortcut still catches a subsequent non-cooperative direct
+   mutation" test (1 test RED). This exact re-ordering was also the actual, real bug initially
+   found and fixed during implementation (not merely a synthetic mutation) — the first
+   implementation attempt gated the learning check behind the shortcut and silently passed every
+   test until this scenario was added.
+9. Canonical-committed branch made to additionally treat legacy `v91_learning` as authority —
+   caught (1 test RED).
+10. Malformed `v91_learning` treated as recognized-own-write (aligned) instead of `stale` — caught
+    (2 tests RED).
+11. Own-write learning-fingerprint cache sync dropped from the refreshAllData write site — caught
+    (the dedicated publish-before-apply self-stale regression test, 1 test RED). The equivalent
+    drop at the manual-mutation write site was also tried first and found **not** independently
+    observable: any manual mutation that actually changes a field will, on a publish-failure
+    retry, already be expected to report `CROSS_TAB_STATE_STALE` for that field alone (confirmed
+    against the pre-existing, intentional canonical-mode precedent in
+    `useAppStore.manualMutationAtomicity.test.ts`), so this mutation is only meaningfully
+    catchable via a load operation, which the added test exercises directly with holdings/trust
+    held constant so only `learning` can differ.
+12. `persist.ts` comments reverted to describe "atomic compare-and-swap" — caught (2 terminology
+    tests RED).
+
+### Real bug found and fixed during implementation (not a listed finding)
+
+Discovered while writing mutation 11's test: the manual-mutation write site only updated
+`lastLocallyPersistedLegacyProjection`/`lastLocallyPersistedLegacyLearningFingerprint` **after** a
+successful publish, unlike the load-operation write sites (which already updated their cache
+right after a successful persist, before the publish attempt). A publish-before-apply failure on
+a manual writer would therefore leave those caches stale relative to what was just durably
+written. Reordered the manual-mutation write site to cache the durable write's identity
+immediately after persistence succeeds, before the publish attempt — matching the load-operation
+ordering. Verified against the full regression suite (no observable behavior change for any
+existing test) before adding the dedicated new test.
+
+### Out-of-scope test touched (flagged to and approved by the user mid-session)
+
+`src/store/useAppStore.webLockManualSnapshot.test.ts` (not on the originally-scoped allowed-test
+list) needed a 1-line, 2-field addition: its "two-store serialization and stale policy" durable
+realignment simulation (`b.store.setState({ holdings, trust })`) did not also restore `learning`,
+which a real reload/`initialize()` would. Once `v91_learning` joined the alignment check, this
+incomplete simulation caused a false `CROSS_TAB_STATE_STALE` on the test's own retry. Fixed by
+adding `learning: restoreLearning()` to that one `setState` call. Flagged via `AskUserQuestion`
+before editing; user selected "fix the test and continue."
+
+### Targeted validation (UTC / Asia/Tokyo, both green, skipped 0)
+
+- New hardening suite `useAppStore.localStorageHardening.test.ts`: **25/25**.
+- Persistence/generation regression (`portfolioGenerationGuard`, `manualMutationAtomicity`,
+  `loadSinglePublication`, `webLockFailureRecovery`): **221/221**.
+- RA-007 coordination regression (`webLockFullWriterMatrix`, `webLockThreeStore`): **159/159**.
+- RA-008 invalidation regression (`invalidationRuntime`, `invalidationEmissionManualLoad`,
+  `invalidationEmissionCsvSnapshot`, `invalidationWarningState`): **181/181**.
+- Full unit suite: **82 files / 2423 tests** (81/2398 baseline + 1 new file / 25 new tests: the
+  24 originally-planned hardening tests + 1 additional real-bug regression test).
+- `npx tsc --noEmit`: PASS. `npm run build`: PASS (129 modules, known >500 kB chunk warning
+  only). `git diff --check`: PASS.
+
+### Bundle verification
+
+- `v13_csv_import_committed_generation` in `dist/assets/*.js`: 1 occurrence (≥1 expected).
+- `v91_learning` in `dist/assets/*.js`: 2 occurrences (≥1 expected).
+- Forbidden-mechanism grep (`canonical\.slot|canonical\.active|write.ahead|transaction.journal|
+  indexedDB|IDBDatabase`) in `dist`: 0 matches.
+- Test-only symbol grep (`localStorageHardening|AppStoreInstanceTestControls|FakeLockManager`) in
+  `dist`: 0 matches.
+
+### Status
+
+```text
+RA-007 Web Lock: COMPLETE
+RA-008 cross-tab invalidation: COMPLETE
+
+RA-009-A: CLOSED
+RA-009-B1: CLOSED
+
+canonical single-key authority: ACTIVE
+cooperative Web-Lock CAS guarantee: ACTIVE
+structured persistence reason propagation: ACTIVE
+legacy learning alignment detection: ACTIVE
+
+true atomic localStorage CAS: NOT AVAILABLE
+IndexedDB migration: NOT REQUIRED
+RA-009 cross-tab CAS / rollback TOCTOU: COMPLETE
+```
+
+### Residual
+
+- Non-cooperative script compare→restore-window mutation on localStorage remains not fully
+  preventable by design (documented, not fixed — matches the fixed architecture conclusions).
+- Malicious browser extensions remain outside this security guarantee's scope.
+- Automatic canonical repair UI remains unimplemented.
+- `setCashAssumptions`'s NO_CHANGE/SUCCESS asymmetry remains unmodified (out of scope).
+- Legacy multi-key mode remains present only until the first canonical commit (unchanged).
+- IndexedDB remains a future-only consideration if the authority key ever needs to become plural.
+
+### Next
+
+`T9 cross-audit: audit the combined RA-007/RA-008/RA-009 state and determine whether v13.3-dev is
+ready to land on main`

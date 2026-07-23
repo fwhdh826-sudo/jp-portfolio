@@ -1040,7 +1040,11 @@ export function persistCsvImportTransaction(
   }
 }
 
-/** Capture the exact physical canonical bytes for a later compare-and-swap. */
+/**
+ * Capture exact canonical bytes for a later conditional compare-and-restore. This is
+ * cooperative safety under the shared Web Lock, not a true atomic CAS against
+ * non-cooperating storage mutations.
+ */
 export function readCsvImportCanonicalRaw(): string | null {
   if (typeof localStorage === 'undefined') {
     throw new CsvImportPersistenceError('永続化ストレージを利用できません', 'not_attempted')
@@ -1062,7 +1066,13 @@ export function ownsCsvImportCanonicalBytes(receipt: CsvImportPersistenceReceipt
   }
 }
 
-/** Roll back only the exact tentative generation written by this transaction. */
+/**
+ * Roll back only the exact tentative generation written by this transaction: read current,
+ * compare with committedRaw, restore previousRaw, read back. Under the shared Web Lock this is
+ * safe against cooperating same-origin writers; against non-cooperating direct mutation it is
+ * best-effort only — this is not a true atomic CAS on localStorage, so a non-cooperating write
+ * landing between the compare and the restore cannot be fully prevented.
+ */
 export function rollbackCsvImportTransaction(receipt: CsvImportPersistenceReceipt): boolean {
   try {
     if (localStorage.getItem(CSV_IMPORT_GENERATION_KEY) !== receipt.committedRaw) return false

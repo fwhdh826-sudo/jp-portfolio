@@ -278,6 +278,7 @@ describe('RA-006 manual mutation coordinator and atomic publish', () => {
       'v13_cash_assumptions',
       'v10_csv_imported_at',
       'v13_csv_sync_summary',
+      'v91_learning',
     ])
     expect(setItem).not.toHaveBeenCalled()
     expect(removeItem).not.toHaveBeenCalled()
@@ -302,6 +303,7 @@ describe('RA-006 manual mutation coordinator and atomic publish', () => {
       'v13_cash_assumptions',
       'v10_csv_imported_at',
       'v13_csv_sync_summary',
+      'v91_learning',
     ])
     expect(setItem).not.toHaveBeenCalled()
     expect(notifications).toBe(0)
@@ -850,12 +852,14 @@ describe('RA-006 manual mutation coordinator and atomic publish', () => {
   it('rolls portfolio and trust back when the learning write fails', async () => {
     const priorPortfolio = JSON.stringify({ data: [{ ...TEST_HOLDING, eval: 1 }], savedAt: 1 })
     const priorTrust = JSON.stringify({ data: INITIAL_TRUST, savedAt: 1 })
-    const priorLearning = JSON.stringify({ data: { lastUpdated: 'old' }, savedAt: 1 })
-    storage.v81_portfolio = priorPortfolio
-    storage.v81_trust = priorTrust
-    storage.v91_learning = priorLearning
+    // RA-009-B1: the legacy alignment check now structurally compares a present v91_learning
+    // key against state.learning, so the stored snapshot must be a valid LearningState that
+    // matches the store's in-memory learning exactly (not the old placeholder blob), and its
+    // savedAt must fall inside restoreLearning()'s TTL window rather than reusing the
+    // portfolio/trust sentinel `savedAt: 1` (which reads as decades-expired and would be
+    // deleted by the TTL check before this test's persistence-failure path is reached).
     const emptyDecisionSummary = { count: 0, wins: 0, losses: 0, flats: 0, accuracy: 0, avgReward: 0 }
-    useAppStore.setState({ learning: {
+    const learningState = {
       lastUpdated: '2026-07-18T00:00:00.000Z',
       baselineCount: 0,
       baseline: [],
@@ -882,10 +886,16 @@ describe('RA-006 manual mutation coordinator and atomic publish', () => {
         quality: 0.1,
         risk: 0.1,
       },
-    } })
+    }
+    const priorLearningSavedAt = Date.now() - 1_000
+    const priorLearning = JSON.stringify({ data: learningState, savedAt: priorLearningSavedAt })
+    storage.v81_portfolio = priorPortfolio
+    storage.v81_trust = priorTrust
+    storage.v91_learning = priorLearning
+    useAppStore.setState({ learning: learningState })
     const before = useAppStore.getState()
     setItem.mockImplementation((key: string, value: string) => {
-      if (key === 'v91_learning' && JSON.parse(value).savedAt !== 1) throw new Error('learning quota')
+      if (key === 'v91_learning' && JSON.parse(value).savedAt !== priorLearningSavedAt) throw new Error('learning quota')
       storage[key] = value
     })
 

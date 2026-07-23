@@ -22,6 +22,7 @@ import {
   persistCsvImportTransaction,
   restorePortfolio,
   restoreTrust,
+  restoreLearning,
 } from './persist'
 import {
   createPortfolioGenerationLockAdapter,
@@ -427,7 +428,10 @@ describe('RA-007-C two-store serialization and stale policy', () => {
     const durableTrust = restoreTrust()
     expect(durableHoldings).not.toBeNull()
     expect(durableTrust).not.toBeNull()
-    b.store.setState({ holdings: durableHoldings!, trust: durableTrust! })
+    // RA-009-B1: a real reload/initialize also restores legacy learning, so a durable
+    // realignment simulation must include it — otherwise B's stale (unset) learning would
+    // itself now be flagged as diverged from A's durably persisted legacy learning generation.
+    b.store.setState({ holdings: durableHoldings!, trust: durableTrust!, learning: restoreLearning() })
     const retry = b.store.getState().updateTrust(trustId, { eval: 222_000 })
     expect(await grant(manager, retry)).toMatchObject({ ok: true, code: 'SUCCESS' })
   })
