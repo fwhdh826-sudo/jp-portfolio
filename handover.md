@@ -50308,3 +50308,195 @@ automatic merge/rehydrate: INACTIVE
 ### Next
 
 `RA-008-E: adversarial end-to-end cross-tab invalidation and UI validation`
+
+## RA-008-E: real-browser adversarial cross-tab invalidation validation
+
+Real Google Chrome (not fake transports, not jsdom/happy-dom, not source-text assertions) driven
+directly over the Chrome DevTools Protocol via a Node-standard-library-only runner, against the
+production Vite preview build. Validation-only; no production code was touched.
+
+- Audited D2/E SHA: `28ba7b25529576431c21df07fc0d1003a0f23e0b` (origin/v13.3-dev, unchanged
+  throughout this session).
+- Chrome: `Google Chrome 150.0.7871.129`. Node: `v25.5.0` (global `fetch`/`WebSocket` both
+  available; no dependency install needed).
+- Production preview: `http://127.0.0.1:4173/jp-portfolio/` (`vite preview --host 127.0.0.1 --port
+  4173 --strictPort`, built from `npm run build`).
+- Secure context: `window.isSecureContext === true`. `navigator.locks`: available. `BroadcastChannel`:
+  available. `localStorage` read/write: available. Real `storage` event delivery: confirmed
+  (scenario C).
+- Isolated profile strategy: one fresh `/tmp/jp-portfolio-ra008e-<scenario>-chrome` user-data-dir
+  per scenario, Chrome launched headless (`--headless=new`) — same real engine/APIs as headed
+  Chrome (Web Locks, BroadcastChannel, storage events, localStorage are all engine-level, not
+  rendering-mode-dependent); chosen to avoid flashing windows on the operator's desktop across ~15
+  Chrome launches. Every scenario tears its own Chrome process and profile directory down in a
+  `finally` block regardless of pass/fail.
+- CDP runner: `scripts/validation/ra008e-cross-tab-browser.mjs` (+ sibling
+  `scripts/validation/ra008e-cdp-client.mjs`). Zero external dependencies (Node built-ins only:
+  `node:child_process`, `node:fs`, `node:path`, `node:timers/promises`, global `fetch`/`WebSocket`).
+  Not imported by `src/**`, not present in `dist/**` (`rg` for
+  `ra008e-cross-tab-browser|CDP|remote-debugging-port` in `dist`: 0 matches). No `package.json`/
+  `package-lock.json` changes.
+
+### Scenario results (all real-browser, both consecutive runner executions PASSED identically)
+
+- **A — dual transport full flow**: PASS. Writer (Tab A, synthetic `+137`/`+251` cash delta)
+  succeeds with self-suppression (0 warning on A); recipient (Tab B) gets exactly 1 warning banner
+  via the real dual BroadcastChannel+storage transport, exactly 1 reload button, normal refresh
+  disabled, 0 automatic navigation, 0 sensitive fields (`senderInstanceId`/`messageId`/
+  `committedAt`/operation names/`protocolVersion`) in the banner DOM. Stale-writer rejection
+  confirmed: Tab B attempting its own mutation while stale gets the fixed cross-tab-stale feedback,
+  no durable write, Tab A's saved value is untouched, Tab A stays warning-free. Hard reload via the
+  banner's `再読み込み` button: exactly 1 real page navigation, warning clears, normal refresh
+  re-enables, T9 cash inputs on reload show Tab A's durable value (not the rejected stale-writer
+  value). Mobile viewport (390×844) sanity check at the end of this scenario: no horizontal
+  overflow (`scrollWidth <= innerWidth`), banner/reload button remain visible and clickable.
+- **B — BroadcastChannel-only delivery** (storage marker write faulted via a scenario-local
+  `Storage.prototype.setItem` patch, `RA008E_STORAGE_MARKER_BLOCKED`): PASS. Writer still succeeds
+  (canonical persistence is independent of the marker write), delivery to Tab B still occurs via
+  the live BroadcastChannel path, 0 raw injected-error text in the banner, 0 impact on the writer's
+  own result. `reportDiagnostic('storage_publish_failed')` is swallowed internally — 0 real console
+  errors observed in either tab.
+- **C — storage-event-only delivery** (BroadcastChannel publish faulted via a scenario-local
+  `BroadcastChannel.prototype.postMessage` patch, `RA008E_BROADCAST_BLOCKED`): PASS. Writer still
+  succeeds, delivery to Tab B occurs via a real browser `storage` event, 0 raw injected-error text
+  in the banner, 0 real console errors.
+- **D — concurrent-writer ordering under an active operation** (see Finding below — adapted from
+  the ticket's literal section-14 ordering): PASS. Tab B's gated refresh holds the shared Web Lock
+  the entire gated period (0 warning, 0 banner insertion, 0 navigation on B while gated); Tab A's
+  concurrent write attempt genuinely queues (`保存中…`) rather than completing, demonstrating real
+  cross-tab mutual exclusion for manual mutations too. On release, B's own refresh settles cleanly
+  (its grant-time alignment check already passed before anything else happened), then A's queued
+  write is granted next and succeeds; A's commit delivers a real (non-deferred, since B is idle by
+  then) invalidation to B — exactly 1 banner insertion, normal refresh disabled, self-suppression
+  holds for A, 0 uncaught exceptions.
+- **E — real Web Lock simultaneous writers**: PASS. Both tabs' `保存` clicks dispatched without
+  sequential await (genuinely concurrent CDP command delivery); exactly 1 of the 2 concurrent
+  writers succeeds, the other gets the cross-tab-stale feedback — never both, never neither. 0 raw
+  conflict data exposed to the loser. Winner/loser determined empirically per run, not fixed. Loser
+  hard-reloads and converges on the winner's durable value — 0 lost update.
+- **F — three-tab fan-out**: PASS. A's synthetic mutation delivers exactly 1 warning banner each to
+  B and C (identical text, 1 banner-insertion event each, 0 duplicates), A stays warning-free.
+  After closing Tab C and performing a second mutation on A: 0 additional banner insertion on the
+  already-warned B (no duplicate/refresh from repeated delivery), 0 crash/delivery attempt toward
+  the closed C target, A stays warning-free.
+
+### Finding (informational, not a production bug — no separate fix ticket)
+
+Section 14 assumed a second tab's write ("Tab Aでsynthetic cash mutationを成功させる") can succeed
+while a first tab's fetch remains gated/unreleased, with the first tab only detecting staleness
+("grant-time stale check") once its gate later opens. Real-browser testing against this exact
+preview build shows this ordering is architecturally impossible: `refreshAllData`, `importCsv`,
+`importPortfolioSnapshot`, and every manual mutation (`setCashAssumptions` included) all serialize
+on the single shared exclusive Web Lock `jp-portfolio:portfolio-generation:v1`
+(`src/store/portfolioGenerationLock.ts`, requested via `runtime.portfolioGenerationLock.runExclusive`
+in `src/store/useAppStore.ts`). A gated tab acquires this lock uncontended the instant it is
+clicked — before its own network fetch is even reached — and holds it for the whole gated
+duration; a second tab's write against the same lock does not run concurrently, it queues
+(`保存中…`) until the first releases. This is intentional cross-tab mutual exclusion, already
+validated by RA-007's full writer matrix, not a defect — it is a scenario-authoring assumption in
+RA-008-E's own ticket template that doesn't match the (correct, by-design) architecture. Scenario D
+above was adapted to the closest achievable real ordering while still exercising a genuinely new
+(vs. RA-007/RA-008-D1) real-browser interaction: a manual mutation queued behind another tab's
+in-flight refresh, both settling in grant order, ending in a real (not deferred, since the
+recipient is idle by the time it arrives) cross-tab delivery. RA-008-D1's specific
+deferred-until-ticket-release code path (an event arriving while the *recipient's own* ticket is
+held) remains validated by its own dedicated ticket, which used controlled timing precisely because
+the real-browser window for that exact interior race is either unreachable (mutual exclusion, as
+shown here) or a sub-millisecond, unwinnable race against real message-passing latency.
+
+### Cross-cutting results
+
+- Mobile overflow: 0 (checked at 390×844 in scenario A).
+- Automatic reload count from a passive warning alone: 0 in every scenario. Automatic refresh-click
+  count from a passive warning alone: 0. Raw error exposure (injected sentinel text, stack,
+  `cause`, `senderInstanceId`, `messageId`, `committedAt`, canonical/CSV/snapshot raw payloads) in
+  any banner/feedback/screenshot: 0.
+- Uncaught exceptions across all 6 scenarios, both runner executions: 0. Page crashes
+  (`Inspector.targetCrashed`): 0. Unexpected console errors: 0 (the scenario-injected
+  `RA008E_STORAGE_MARKER_BLOCKED`/`RA008E_BROADCAST_BLOCKED` faults are caught and reported via the
+  transport's internal `reportDiagnostic` sink, which does not `console.error` — nothing needed
+  allowlisting).
+- Screenshots (9 required + none extra needed): `scenario-dual-warning.png`,
+  `scenario-stale-writer.png`, `scenario-reload-recovered.png`, `scenario-broadcast-only.png`,
+  `scenario-storage-only.png`, `scenario-active-defer-before.png`,
+  `scenario-active-defer-after.png`, `scenario-three-tab-b.png`, `scenario-three-tab-c.png`.
+- Runner external dependency count: 0. Runner executed twice consecutively, both PASS with
+  identical assertion counts (76 assertions, 0 failed, 0 uncaught exceptions each run). Orphan
+  Chrome process count after both runs: 0. Orphan preview process count: 0 (preview process
+  terminated after this session's validation completed). Temporary profile directories: all
+  removed (0 remaining under `/tmp/jp-portfolio-ra008e-*`).
+
+### Post-browser-validation regression (unchanged from D2/D1/RA-007)
+
+- D2 UI (`StatusBar.crossTabInvalidation.test.tsx`, `StatusBar.refresh.test.tsx`,
+  `portfolioLoadUi.test.ts`): **65 tests**, UTC == Asia/Tokyo, skipped 0.
+- D1/C (`invalidationWarningState.test.ts`, `invalidationRuntime.test.ts`,
+  `invalidationEmissionManualLoad.test.ts`, `invalidationEmissionCsvSnapshot.test.ts`): **181
+  tests**, UTC == Asia/Tokyo, skipped 0.
+- RA-007 (`webLockFullWriterMatrix.test.ts`, `webLockFailureRecovery.test.ts`,
+  `webLockThreeStore.test.ts`): **241 tests**, UTC == Asia/Tokyo, skipped 0.
+- Full unit suite: **81 files / 2398 tests**, UTC == Asia/Tokyo, skipped 0 (unchanged from before
+  this session — RA-008-E added no unit tests, only the validation-only browser runner).
+- `npx tsc --noEmit`: PASS. `npm run build`: PASS (129 modules, known >500 kB chunk warning only).
+  `git diff --check`: PASS.
+- Validation-script bundle leakage (`rg` for
+  `ra008e-cross-tab-browser|CDP|remote-debugging-port` in `dist`): 0 matches.
+
+### Repository gate
+
+- HEAD / origin/v13.3-dev: `28ba7b25529576431c21df07fc0d1003a0f23e0b` (unchanged).
+- origin/main: `650396ec18330fdbfa72c18b2971490c63399c43` (unchanged from the session-start check;
+  no data-only advance needed reconciling).
+- `origin/main...origin/v13.3-dev` divergence: measured `15 15` (commits-only-in-main /
+  commits-only-in-dev) both at this session's repo-gate check and again at the final re-check
+  before commit, via `git rev-list --left-right --count`; no merge/rebase/cherry-pick performed
+  either direction. (The ticket's own prior reference value of `15 16` predates this session and
+  was not reproduced here — not investigated further, as it is outside this ticket's scope.)
+- Production diff: 0 (`src/**`, `package.json`, `package-lock.json`, `vite.config.ts`,
+  `.github/**`, `data/**`, `public/data/**` all untouched). Only new files:
+  `scripts/validation/ra008e-cross-tab-browser.mjs`,
+  `scripts/validation/ra008e-cdp-client.mjs`, and this `handover.md` section.
+- Evidence (report.json, report.md, chrome-version.txt, node-version.txt, 9 screenshots) saved
+  outside the repository at `/Users/ryo/jp-portfolio-audit-reports/ra-008-e/`. No portfolio real
+  data, cash real amounts, canonical bytes, or CSV content saved to any report — all mutation
+  values were synthetic deltas (e.g. `+137`, `+251`, `+601`, `+907`, ...) applied to the fresh
+  isolated profile's own (sample) starting values.
+
+### Status
+
+```text
+RA-007 Web Lock: COMPLETE
+
+RA-008-A: CLOSED
+RA-008-B1: CLOSED
+RA-008-B2: CLOSED
+RA-008-C1: CLOSED
+RA-008-C2: CLOSED
+RA-008-D1: CLOSED
+RA-008-D1-V: CLOSED
+RA-008-D2: CLOSED
+RA-008-E: CLOSED
+
+real-browser Web Lock validation: PASS
+real-browser BroadcastChannel validation: PASS
+real-browser storage-event fallback: PASS
+real-browser stale warning UI: PASS
+real-browser hard-reload recovery: PASS
+
+RA-008 cross-tab invalidation: COMPLETE
+```
+
+### Residual
+
+- Automatic merge/rehydrate is intentionally unimplemented — a false-positive warning persists
+  until the user reloads or a fresh `initialize()` succeeds.
+- `ownership_lost`/`rollback_failed`/`indeterminate` still never emit an invalidation event by
+  design; the next writer's grant-time stale check remains the correctness backstop.
+- `setCashAssumptions`'s NO_CHANGE/SUCCESS asymmetry remains unmodified (out of scope).
+- Safari/Firefox real-device validation is out of scope for this ticket (separate ticket).
+- Mobile real-device validation (as opposed to the emulated 390×844 viewport check performed here)
+  is out of scope for this ticket (separate ticket).
+
+### Next
+
+`RA-009-A: cross-tab CAS / rollback TOCTOU design audit`
