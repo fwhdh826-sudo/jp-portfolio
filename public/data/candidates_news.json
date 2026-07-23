@@ -1,28 +1,29 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-07-23T21:55:49.035494+09:00",
-  "sourceUpdatedAt": "2026-07-23T12:39:43+00:00",
+  "updatedAt": "2026-07-24T07:33:34.248792+09:00",
+  "sourceUpdatedAt": "2026-07-23T22:17:25+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
+      "avgSentiment": -0.33,
+      "negativeCount": 1,
       "positiveCount": 0,
-      "neutralCount": 1,
+      "neutralCount": 0,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Half of Economists Still See BOJ Waiting Until December to Hike",
-      "topPositiveTitle": "Half of Economists Still See BOJ Waiting Until December to Hike",
+      "topNegativeTitle": "Historic Yen Slide Poses New Risk to Japan Stocks’ Bull Run",
+      "topPositiveTitle": "Historic Yen Slide Poses New Risk to Japan Stocks’ Bull Run",
       "items": [
         {
-          "title": "Half of Economists Still See BOJ Waiting Until December to Hike",
+          "title": "Historic Yen Slide Poses New Risk to Japan Stocks’ Bull Run",
           "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-23T04:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-23/half-of-economists-still-see-boj-waiting-until-december-to-hike",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-07-23T22:15:03+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-23/historic-yen-slide-poses-new-risk-to-japan-stocks-bull-run",
           "tags": [
+            "fx",
             "jp_broad",
             "market"
           ]
@@ -30,44 +31,30 @@
       ]
     },
     "jp_semiconductor": {
-      "avgSentiment": 0.67,
+      "avgSentiment": 0,
       "negativeCount": 0,
-      "positiveCount": 1,
+      "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "South Korea’s Economy Beats Estimates as Chip Boom Continues",
-      "topPositiveTitle": "South Korea’s Economy Beats Estimates as Chip Boom Continues",
-      "items": [
-        {
-          "title": "South Korea’s Economy Beats Estimates as Chip Boom Continues",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-07-22T23:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-22/south-korea-s-economy-beats-estimates-as-chip-boom-continues",
-          "tags": [
-            "jp_semiconductor",
-            "market",
-            "us_growth"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "us_broad": {
-      "avgSentiment": -0.25,
-      "negativeCount": 1,
-      "positiveCount": 0,
-      "neutralCount": 3,
+      "avgSentiment": -0.069,
+      "negativeCount": 2,
+      "positiveCount": 3,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "Gold Falls as Middle East Conflict Curbs Dip-Buying Momentum",
-      "topPositiveTitle": "Global Reliance on US Equities Flashes Alarm, Along With China Corporate Debt",
+      "topNegativeTitle": "Gold Falls as Middle East Conflict Reverses Dip-Buying Momentum",
+      "topPositiveTitle": "US Treasury Yields Rise to 2026 Highs With Oil Sparking Fed Bets",
       "items": [
         {
-          "title": "Gold Falls as Middle East Conflict Curbs Dip-Buying Momentum",
+          "title": "Gold Falls as Middle East Conflict Reverses Dip-Buying Momentum",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -1.0,
@@ -77,6 +64,35 @@
             "commodity",
             "geopolitical",
             "gold",
+            "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "S&P 500 Suffers Worst Day in a Month as Oil Soars Over $100",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-07-23T12:09:56+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-23/us-stock-futures-drop-as-traders-focus-on-ai-spending-oil-jumps",
+          "tags": [
+            "commodity",
+            "market",
+            "us_broad",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Asian Stocks Set to Fall as Oil Surges Past $100: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": -0.14,
+          "publishedAt": "2026-07-23T22:06:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-23/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "geopolitical",
             "macro_risk",
             "market",
             "us_broad"
@@ -95,81 +111,83 @@
           ]
         },
         {
-          "title": "AI Debt Competing with Treasuries Is Adding to Lofty US Yields",
+          "title": "Magnificent 7 Lose $797 Billion as AI Skeptics Dump Tech Stocks",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-23T10:32:14+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-07-23/ai-debt-competing-with-treasuries-is-adding-to-lofty-us-yields",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-07-23T16:53:22+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-23/magnificent-7-loses-767-billion-as-ai-skeptics-dump-tech-stocks",
           "tags": [
+            "geopolitical",
             "macro_risk",
             "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "BlackRock Says Treasury Yields Offer Buffer Against Losses",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-23T09:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-23/blackrock-says-elevated-yields-offer-bond-investors-a-cushion",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
+            "us_broad",
+            "us_growth"
           ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": -0.223,
+      "avgSentiment": -0.168,
       "negativeCount": 2,
       "positiveCount": 1,
-      "neutralCount": 0,
-      "sourceCount": 2,
-      "itemCount": 3,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Alphabet’s Century Bond Has Now Lost a 10th of Its Face Value",
-      "topPositiveTitle": "South Korea’s Economy Beats Estimates as Chip Boom Continues",
+      "topNegativeTitle": "S&P 500 Suffers Worst Day in a Month as Oil Soars Over $100",
+      "topPositiveTitle": "Magnificent 7 Lose $797 Billion as AI Skeptics Dump Tech Stocks",
       "items": [
         {
-          "title": "Alphabet’s Century Bond Has Now Lost a 10th of Its Face Value",
+          "title": "S&P 500 Suffers Worst Day in a Month as Oil Soars Over $100",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.67,
-          "publishedAt": "2026-07-23T11:39:29+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-23/alphabet-s-century-bond-has-now-lost-a-10th-of-its-face-value",
-          "tags": [
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Stocks Fall on AI Jitters as Oil Lifts Bond Yields: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-07-22T22:12:30+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-22/stock-market-today-dow-s-p-live-updates",
+          "publishedAt": "2026-07-23T12:09:56+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-23/us-stock-futures-drop-as-traders-focus-on-ai-spending-oil-jumps",
           "tags": [
             "commodity",
             "market",
-            "rates",
+            "us_broad",
             "us_growth"
           ]
         },
         {
-          "title": "South Korea’s Economy Beats Estimates as Chip Boom Continues",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-07-22T23:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-22/south-korea-s-economy-beats-estimates-as-chip-boom-continues",
+          "title": "Tesla Short Sellers Rake In $4 Billion as Shares Nosedive",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-07-23T18:04:36+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-23/tesla-short-sellers-mint-4-billion-profit-as-shares-nosedive",
           "tags": [
-            "jp_semiconductor",
             "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Goldman Offers Way to Trade AI Junk Bonds $250 Million at a Time",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-23T20:41:12+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-23/goldman-offers-way-to-trade-ai-junk-bonds-250-million-at-a-time",
+          "tags": [
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Magnificent 7 Lose $797 Billion as AI Skeptics Dump Tech Stocks",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-07-23T16:53:22+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-23/magnificent-7-loses-767-billion-as-ai-skeptics-dump-tech-stocks",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "us_broad",
             "us_growth"
           ]
         }
@@ -195,11 +213,11 @@
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Gold Falls as Middle East Conflict Curbs Dip-Buying Momentum",
-      "topPositiveTitle": "Gold Falls as Middle East Conflict Curbs Dip-Buying Momentum",
+      "topNegativeTitle": "Gold Falls as Middle East Conflict Reverses Dip-Buying Momentum",
+      "topPositiveTitle": "Gold Falls as Middle East Conflict Reverses Dip-Buying Momentum",
       "items": [
         {
-          "title": "Gold Falls as Middle East Conflict Curbs Dip-Buying Momentum",
+          "title": "Gold Falls as Middle East Conflict Reverses Dip-Buying Momentum",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -1.0,
@@ -241,18 +259,18 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.1,
-      "negativeCount": 2,
-      "positiveCount": 1,
-      "neutralCount": 7,
+      "avgSentiment": 0.096,
+      "negativeCount": 1,
+      "positiveCount": 6,
+      "neutralCount": 6,
       "sourceCount": 3,
-      "itemCount": 10,
+      "itemCount": 13,
       "isStale": false,
-      "topNegativeTitle": "Gold Falls as Middle East Conflict Curbs Dip-Buying Momentum",
-      "topPositiveTitle": "Crop Prices Hit 3-Year High as Black Sea Attacks, Heat Stoke Food Inflation",
+      "topNegativeTitle": "Gold Falls as Middle East Conflict Reverses Dip-Buying Momentum",
+      "topPositiveTitle": "US Treasury Yields Rise to 2026 Highs With Oil Sparking Fed Bets",
       "items": [
         {
-          "title": "Gold Falls as Middle East Conflict Curbs Dip-Buying Momentum",
+          "title": "Gold Falls as Middle East Conflict Reverses Dip-Buying Momentum",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -1.0,
@@ -268,165 +286,186 @@
           ]
         },
         {
-          "title": "ECB Rate Decision: Lagarde Set to Keep Policy Unchanged to Gauge Iran War Risks",
-          "source": "Bloomberg Economics",
+          "title": "Yen’s Slump Extends Beyond Dollar and Stokes Inflation Fears",
+          "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-07-23T04:15:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-23/ecb-rate-decision-lagarde-set-to-keep-policy-unchanged-to-gauge-iran-war-risks",
+          "sentimentScore": -0.2,
+          "publishedAt": "2026-07-23T00:39:28+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-23/yen-s-slump-in-trade-weighted-gauge-shows-its-broad-based-drop",
           "tags": [
-            "geopolitical",
+            "fx",
             "macro_risk",
-            "market",
-            "rates"
+            "market"
           ]
         },
         {
-          "title": "ECB Keeps Rate Steady to Gauge Iran War Impact on Inflation",
+          "title": "Asian Stocks Set to Fall as Oil Surges Past $100: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": -0.14,
+          "publishedAt": "2026-07-23T22:06:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-23/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "How Houthis’ Red Sea Attacks Worsen Oil Shock",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-23T12:16:55+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-23/ecb-keeps-rate-steady-to-gauge-iran-war-s-impact-on-inflation",
+          "publishedAt": "2026-07-23T18:58:09+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-23/how-houthis-red-sea-attacks-worsen-oil-shock",
           "tags": [
+            "commodity",
             "geopolitical",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Turkey Holds Rates as Oil Price Spike Tests Inflation Fight",
+          "title": "How Trump Plans to Maintain His Tariff Wall",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-23T11:01:33+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-23/turkey-holds-rates-as-iran-war-threatens-inflation-fight",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "AI Debt Competing with Treasuries Is Adding to Lofty US Yields",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-23T10:32:14+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-07-23/ai-debt-competing-with-treasuries-is-adding-to-lofty-us-yields",
+          "publishedAt": "2026-07-23T13:39:29+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-23/how-trump-plans-to-maintain-his-tariff-wall",
           "tags": [
             "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
+            "market"
           ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 2,
-      "sourceCount": 1,
-      "itemCount": 2,
-      "isStale": false,
-      "topNegativeTitle": "Dangote Reverts to Pricing Gasoline in Naira After Dollar Switch",
-      "topPositiveTitle": "Dangote Reverts to Pricing Gasoline in Naira After Dollar Switch",
-      "items": [
-        {
-          "title": "Dangote Reverts to Pricing Gasoline in Naira After Dollar Switch",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-23T10:34:16+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-23/dangote-reverts-to-pricing-gasoline-in-naira-after-dollar-switch",
-          "tags": [
-            "fx",
-            "market"
-          ]
-        },
-        {
-          "title": "Pound Rally Fizzles as Burnham Keeps UK Fiscal Plans Unclear",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-23T10:16:34+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-23/pound-rally-fizzles-as-burnham-keeps-uk-fiscal-plans-unclear",
-          "tags": [
-            "fx",
-            "market"
-          ]
-        }
-      ]
-    },
-    "rates": {
-      "avgSentiment": -0.111,
-      "negativeCount": 3,
+      "avgSentiment": 0.014,
+      "negativeCount": 1,
       "positiveCount": 1,
-      "neutralCount": 5,
-      "sourceCount": 3,
-      "itemCount": 9,
+      "neutralCount": 3,
+      "sourceCount": 2,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Stocks Fall on AI Jitters as Oil Lifts Bond Yields: Markets Wrap",
-      "topPositiveTitle": "Mexico Inflation Slows Again After Banxico Holds Rates Firm",
+      "topNegativeTitle": "Historic Yen Slide Poses New Risk to Japan Stocks’ Bull Run",
+      "topPositiveTitle": "Dollar Rises as Intensifying Iran War Lifts Rate Hike Bets",
       "items": [
         {
-          "title": "Stocks Fall on AI Jitters as Oil Lifts Bond Yields: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-07-22T22:12:30+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-22/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "market",
-            "rates",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "ECB Rate Decision: Lagarde Set to Keep Policy Unchanged to Gauge Iran War Risks",
+          "title": "Historic Yen Slide Poses New Risk to Japan Stocks’ Bull Run",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-07-23T04:15:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-23/ecb-rate-decision-lagarde-set-to-keep-policy-unchanged-to-gauge-iran-war-risks",
+          "publishedAt": "2026-07-23T22:15:03+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-23/historic-yen-slide-poses-new-risk-to-japan-stocks-bull-run",
           "tags": [
+            "fx",
+            "jp_broad",
+            "market"
+          ]
+        },
+        {
+          "title": "Yen’s Slump Extends Beyond Dollar and Stokes Inflation Fears",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.2,
+          "publishedAt": "2026-07-23T00:39:28+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-23/yen-s-slump-in-trade-weighted-gauge-shows-its-broad-based-drop",
+          "tags": [
+            "fx",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "US Treasury Calls Out China for Lack of Transparency on Currency",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-23T20:27:32+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-23/us-treasury-calls-out-china-for-lack-of-transparency-on-currency",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        },
+        {
+          "title": "ECB Presents 10 Design Options for New Euro-Area Banknotes",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-23T14:42:55+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-23/ecb-presents-10-design-options-for-new-euro-area-banknotes",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        },
+        {
+          "title": "Dollar Rises as Intensifying Iran War Lifts Rate Hike Bets",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.6,
+          "publishedAt": "2026-07-23T14:28:14+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-23/dollar-jumps-on-haven-flows-as-middle-east-war-intensifies",
+          "tags": [
+            "commodity",
+            "fx",
             "geopolitical",
             "macro_risk",
             "market",
             "rates"
           ]
-        },
+        }
+      ]
+    },
+    "rates": {
+      "avgSentiment": 0.141,
+      "negativeCount": 2,
+      "positiveCount": 4,
+      "neutralCount": 3,
+      "sourceCount": 2,
+      "itemCount": 9,
+      "isStale": false,
+      "topNegativeTitle": "Rand Is World’s Worst Performer After South Africa Holds Rates",
+      "topPositiveTitle": "Heat Worries US Wheat Farmers Just as Crop Prices Surge",
+      "items": [
         {
-          "title": "South Africa Set for Rate Hike as Inflation Flares: Day Guide",
+          "title": "Rand Is World’s Worst Performer After South Africa Holds Rates",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-07-22T23:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-22/south-africa-set-rate-hike-inflation-flares-day-guide",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-07-23T13:05:51+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-23/south-africa-unexpectedly-holds-rates-as-it-flags-growth-risks",
           "tags": [
             "market",
             "rates"
           ]
         },
         {
-          "title": "欧州中銀 政策金利据え置き 物価・経済動向見極める姿勢",
-          "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-23T12:37:53+00:00",
-          "url": "https://news.web.nhk/newsweb/na/na-k10015184521000",
+          "title": "Lagarde Signals ECB Is Primed for Possible Move in September",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-07-23T12:16:55+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-23/ecb-keeps-rate-steady-to-gauge-iran-war-s-impact-on-inflation",
           "tags": [
-            "commodity",
-            "geopolitical",
             "market",
             "rates"
-          ],
-          "titleJa": "欧州中銀 政策金利据え置き 物価・経済動向見極める姿勢"
+          ]
+        },
+        {
+          "title": "ECB Officials Are Ready to Raise Interest Rates in September",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-23T14:18:05+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-23/ecb-officials-are-ready-to-raise-interest-rates-in-september",
+          "tags": [
+            "market",
+            "rates"
+          ]
         },
         {
           "title": "Turkey Holds Rates as Oil Price Spike Tests Inflation Fight",
@@ -439,6 +478,18 @@
             "commodity",
             "geopolitical",
             "macro_risk",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Burnham Cuts Business Rates on Pubs, Clubs and Live Venues",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-23T05:23:45+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-23/uk-burnham-cuts-business-rates-pubs-clubs-live-venues",
+          "tags": [
             "market",
             "rates"
           ]
@@ -446,18 +497,18 @@
       ]
     },
     "commodity": {
-      "avgSentiment": -0.149,
+      "avgSentiment": 0.011,
       "negativeCount": 2,
-      "positiveCount": 1,
-      "neutralCount": 6,
-      "sourceCount": 3,
-      "itemCount": 9,
+      "positiveCount": 4,
+      "neutralCount": 5,
+      "sourceCount": 2,
+      "itemCount": 11,
       "isStale": false,
-      "topNegativeTitle": "Gold Falls as Middle East Conflict Curbs Dip-Buying Momentum",
-      "topPositiveTitle": "US Stock Futures Drop as Traders Focus on AI Spending, Oil Jumps",
+      "topNegativeTitle": "Gold Falls as Middle East Conflict Reverses Dip-Buying Momentum",
+      "topPositiveTitle": "US Treasury Yields Rise to 2026 Highs With Oil Sparking Fed Bets",
       "items": [
         {
-          "title": "Gold Falls as Middle East Conflict Curbs Dip-Buying Momentum",
+          "title": "Gold Falls as Middle East Conflict Reverses Dip-Buying Momentum",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -1.0,
@@ -473,56 +524,54 @@
           ]
         },
         {
-          "title": "Stocks Fall on AI Jitters as Oil Lifts Bond Yields: Markets Wrap",
+          "title": "S&P 500 Suffers Worst Day in a Month as Oil Soars Over $100",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.67,
-          "publishedAt": "2026-07-22T22:12:30+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-22/stock-market-today-dow-s-p-live-updates",
+          "publishedAt": "2026-07-23T12:09:56+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-23/us-stock-futures-drop-as-traders-focus-on-ai-spending-oil-jumps",
           "tags": [
             "commodity",
             "market",
-            "rates",
+            "us_broad",
             "us_growth"
           ]
         },
         {
-          "title": "欧州中銀 政策金利据え置き 物価・経済動向見極める姿勢",
-          "source": "NHK 経済",
+          "title": "Asian Stocks Set to Fall as Oil Surges Past $100: Markets Wrap",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-23T12:37:53+00:00",
-          "url": "https://news.web.nhk/newsweb/na/na-k10015184521000",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "market",
-            "rates"
-          ],
-          "titleJa": "欧州中銀 政策金利据え置き 物価・経済動向見極める姿勢"
-        },
-        {
-          "title": "Turkey Holds Rates as Oil Price Spike Tests Inflation Fight",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-23T11:01:33+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-23/turkey-holds-rates-as-iran-war-threatens-inflation-fight",
+          "sentimentScore": -0.14,
+          "publishedAt": "2026-07-23T22:06:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-23/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
             "geopolitical",
             "macro_risk",
             "market",
-            "rates"
+            "us_broad"
           ]
         },
         {
-          "title": "Goldman Sachs, Absa See Ghana Rate Cuts Delayed by Iran War, Oil Prices",
+          "title": "Overseas Buyers In Hot Pursuit of US Crude as Wars Escalate",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-23T21:17:29+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-23/overseas-buyers-in-hot-pursuit-of-us-crude-as-wars-escalate",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "How Houthis’ Red Sea Attacks Worsen Oil Shock",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-23T09:52:09+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-23/goldman-sachs-absa-see-ghana-rate-cuts-delayed-by-iran-war-oil-prices",
+          "publishedAt": "2026-07-23T18:58:09+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-23/how-houthis-red-sea-attacks-worsen-oil-shock",
           "tags": [
             "commodity",
             "geopolitical",
@@ -533,18 +582,18 @@
       ]
     },
     "geopolitical": {
-      "avgSentiment": -0.111,
-      "negativeCount": 2,
-      "positiveCount": 1,
-      "neutralCount": 6,
-      "sourceCount": 3,
-      "itemCount": 9,
+      "avgSentiment": 0.132,
+      "negativeCount": 1,
+      "positiveCount": 6,
+      "neutralCount": 4,
+      "sourceCount": 2,
+      "itemCount": 11,
       "isStale": false,
-      "topNegativeTitle": "Gold Falls as Middle East Conflict Curbs Dip-Buying Momentum",
-      "topPositiveTitle": "Crop Prices Hit 3-Year High as Black Sea Attacks, Heat Stoke Food Inflation",
+      "topNegativeTitle": "Gold Falls as Middle East Conflict Reverses Dip-Buying Momentum",
+      "topPositiveTitle": "US Treasury Yields Rise to 2026 Highs With Oil Sparking Fed Bets",
       "items": [
         {
-          "title": "Gold Falls as Middle East Conflict Curbs Dip-Buying Momentum",
+          "title": "Gold Falls as Middle East Conflict Reverses Dip-Buying Momentum",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -1.0,
@@ -560,42 +609,42 @@
           ]
         },
         {
-          "title": "ECB Rate Decision: Lagarde Set to Keep Policy Unchanged to Gauge Iran War Risks",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-07-23T04:15:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-23/ecb-rate-decision-lagarde-set-to-keep-policy-unchanged-to-gauge-iran-war-risks",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "欧州中銀 政策金利据え置き 物価・経済動向見極める姿勢",
-          "source": "NHK 経済",
+          "title": "Asian Stocks Set to Fall as Oil Surges Past $100: Markets Wrap",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-23T12:37:53+00:00",
-          "url": "https://news.web.nhk/newsweb/na/na-k10015184521000",
+          "sentimentScore": -0.14,
+          "publishedAt": "2026-07-23T22:06:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-23/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
             "geopolitical",
+            "macro_risk",
             "market",
-            "rates"
-          ],
-          "titleJa": "欧州中銀 政策金利据え置き 物価・経済動向見極める姿勢"
+            "us_broad"
+          ]
         },
         {
-          "title": "ECB Keeps Rate Steady to Gauge Iran War Impact on Inflation",
+          "title": "Overseas Buyers In Hot Pursuit of US Crude as Wars Escalate",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-23T21:17:29+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-23/overseas-buyers-in-hot-pursuit-of-us-crude-as-wars-escalate",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "How Houthis’ Red Sea Attacks Worsen Oil Shock",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-23T12:16:55+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-23/ecb-keeps-rate-steady-to-gauge-iran-war-s-impact-on-inflation",
+          "publishedAt": "2026-07-23T18:58:09+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-23/how-houthis-red-sea-attacks-worsen-oil-shock",
           "tags": [
+            "commodity",
             "geopolitical",
             "macro_risk",
             "market"
