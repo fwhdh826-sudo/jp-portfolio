@@ -1,51 +1,96 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-07-24T21:53:44.743522+09:00",
-  "sourceUpdatedAt": "2026-07-24T12:53:20+00:00",
+  "updatedAt": "2026-07-25T07:37:07.690600+09:00",
+  "sourceUpdatedAt": "2026-07-24T21:47:14+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "jp_semiconductor": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "us_broad": {
-      "avgSentiment": 0.134,
+      "avgSentiment": -0.67,
       "negativeCount": 1,
-      "positiveCount": 2,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 5,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Stocks Get Some Relief as Brent Slips Below $100: Markets Wrap",
-      "topPositiveTitle": "Geopolitics and Tech Woes Put Traders on Edge Before Weekend",
+      "topNegativeTitle": "Yen’s Slide Bolsters Appeal of Hawkish Bank of Japan Hedges",
+      "topPositiveTitle": "Yen’s Slide Bolsters Appeal of Hawkish Bank of Japan Hedges",
       "items": [
         {
-          "title": "Stocks Get Some Relief as Brent Slips Below $100: Markets Wrap",
+          "title": "Yen’s Slide Bolsters Appeal of Hawkish Bank of Japan Hedges",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-07-24T16:53:05+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-24/yen-s-slide-bolsters-appeal-of-hawkish-bank-of-japan-hedges",
+          "tags": [
+            "fx",
+            "jp_broad",
+            "market"
+          ]
+        }
+      ]
+    },
+    "jp_semiconductor": {
+      "avgSentiment": -0.5,
+      "negativeCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "S&P 500 Churns as Oil Decline Offsets Chip Selloff: Markets Wrap",
+      "topPositiveTitle": "S&P 500 Churns as Oil Decline Offsets Chip Selloff: Markets Wrap",
+      "items": [
+        {
+          "title": "S&P 500 Churns as Oil Decline Offsets Chip Selloff: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
+          "sentimentScore": -0.5,
           "publishedAt": "2026-07-23T22:06:16+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-07-23/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "jp_semiconductor",
+            "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        }
+      ]
+    },
+    "us_broad": {
+      "avgSentiment": -0.167,
+      "negativeCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 2,
+      "sourceCount": 2,
+      "itemCount": 3,
+      "isStale": false,
+      "topNegativeTitle": "S&P 500 Churns as Oil Decline Offsets Chip Selloff: Markets Wrap",
+      "topPositiveTitle": "Wall Street Bulls Are Staring Down $100 Oil, Tariffs, AI Angst",
+      "items": [
+        {
+          "title": "S&P 500 Churns as Oil Decline Offsets Chip Selloff: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.5,
+          "publishedAt": "2026-07-23T22:06:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-23/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "jp_semiconductor",
+            "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Wall Street Bulls Are Staring Down $100 Oil, Tariffs, AI Angst",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-24T20:12:40+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-24/wall-street-bulls-are-staring-down-100-oil-tariffs-ai-angst",
           "tags": [
             "commodity",
             "market",
@@ -65,59 +110,47 @@
             "rates",
             "us_broad"
           ]
-        },
-        {
-          "title": "Gold Edges Up as Traders Weigh Mideast Conflict, Fed Rate Path",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-23T23:37:23+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-23/gold-holds-decline-as-surging-energy-costs-raise-rate-hike-bets",
-          "tags": [
-            "geopolitical",
-            "gold",
-            "macro_risk",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Travelers Draws Wave of Bears as Stock Eyes Best Year Since 2000",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-07-24T11:10:13+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-24/travelers-draws-wave-of-bears-as-stock-eyes-best-year-since-2000",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Geopolitics and Tech Woes Put Traders on Edge Before Weekend",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-07-24T10:32:07+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-07-24/geopolitics-and-tech-woes-put-traders-on-edge-before-weekend",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": -0.33,
-      "negativeCount": 1,
+      "avgSentiment": -0.587,
+      "negativeCount": 3,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 2,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Global Inflation Angst Is Back on $100 Oil and More Tariffs",
+      "topNegativeTitle": "BlackRock Gets Soft Demand for Bond Sale After AI Debt Selloff",
       "topPositiveTitle": "Global Inflation Angst Is Back on $100 Oil and More Tariffs",
       "items": [
+        {
+          "title": "BlackRock Gets Soft Demand for Bond Sale After AI Debt Selloff",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-07-24T13:09:57+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-24/blackrock-kicks-off-12-3-billion-bond-sale-for-meta-data-center",
+          "tags": [
+            "macro_risk",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Nasdaq 100 Tumbles as Oil Spike, AI Jitters Hit Tech Stocks",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.43,
+          "publishedAt": "2026-07-24T12:39:22+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-24/s-p-500-futures-steady-as-big-tech-rebounds-oil-dips-below-100",
+          "tags": [
+            "commodity",
+            "macro_risk",
+            "market",
+            "us_growth"
+          ]
+        },
         {
           "title": "Global Inflation Angst Is Back on $100 Oil and More Tariffs",
           "source": "Bloomberg Economics",
@@ -135,6 +168,31 @@
       ]
     },
     "global_broad": {
+      "avgSentiment": 1.0,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "European Stocks Gain on Earnings Boost, Robust Business Activity",
+      "topPositiveTitle": "European Stocks Gain on Earnings Boost, Robust Business Activity",
+      "items": [
+        {
+          "title": "European Stocks Gain on Earnings Boost, Robust Business Activity",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-07-24T07:22:43+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-24/european-stocks-edge-higher-as-sap-earnings-beat-estimates",
+          "tags": [
+            "global_broad",
+            "market"
+          ]
+        }
+      ]
+    },
+    "gold": {
       "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
@@ -145,34 +203,6 @@
       "topNegativeTitle": null,
       "topPositiveTitle": null,
       "items": []
-    },
-    "gold": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
-      "isStale": false,
-      "topNegativeTitle": "Gold Edges Up as Traders Weigh Mideast Conflict, Fed Rate Path",
-      "topPositiveTitle": "Gold Edges Up as Traders Weigh Mideast Conflict, Fed Rate Path",
-      "items": [
-        {
-          "title": "Gold Edges Up as Traders Weigh Mideast Conflict, Fed Rate Path",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-23T23:37:23+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-23/gold-holds-decline-as-surging-energy-costs-raise-rate-hike-bets",
-          "tags": [
-            "geopolitical",
-            "gold",
-            "macro_risk",
-            "market",
-            "us_broad"
-          ]
-        }
-      ]
     },
     "reit": {
       "avgSentiment": 0,
@@ -187,38 +217,82 @@
       "items": []
     },
     "dividend": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "macro_risk": {
-      "avgSentiment": 0.167,
-      "negativeCount": 2,
-      "positiveCount": 3,
-      "neutralCount": 5,
-      "sourceCount": 3,
-      "itemCount": 10,
-      "isStale": false,
-      "topNegativeTitle": "Momentum Crash Hits YOLO Traders’ Returns by Most in Four Years",
-      "topPositiveTitle": "Euro-Zone Business Activity Jumps to Five-Month High",
+      "topNegativeTitle": "Vitol Paid Out $5.9 Billion to Traders as Profit Halved in 2025",
+      "topPositiveTitle": "Vitol Paid Out $5.9 Billion to Traders as Profit Halved in 2025",
       "items": [
         {
-          "title": "Momentum Crash Hits YOLO Traders’ Returns by Most in Four Years",
+          "title": "Vitol Paid Out $5.9 Billion to Traders as Profit Halved in 2025",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-24T20:54:24+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-24/vitol-paid-out-5-9-billion-to-traders-as-profit-halved-in-2025",
+          "tags": [
+            "commodity",
+            "dividend",
+            "market"
+          ]
+        }
+      ]
+    },
+    "macro_risk": {
+      "avgSentiment": -0.265,
+      "negativeCount": 4,
+      "positiveCount": 1,
+      "neutralCount": 1,
+      "sourceCount": 2,
+      "itemCount": 6,
+      "isStale": false,
+      "topNegativeTitle": "BlackRock Gets Soft Demand for Bond Sale After AI Debt Selloff",
+      "topPositiveTitle": "Oil Prices Volatile as Supply Disruptions Hit Four Global Fronts",
+      "items": [
+        {
+          "title": "BlackRock Gets Soft Demand for Bond Sale After AI Debt Selloff",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-07-24T12:20:23+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-24/momentum-crash-hits-yolo-traders-returns-by-most-in-four-years",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-07-24T13:09:57+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-24/blackrock-kicks-off-12-3-billion-bond-sale-for-meta-data-center",
           "tags": [
             "macro_risk",
-            "market"
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "S&P 500 Churns as Oil Decline Offsets Chip Selloff: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.5,
+          "publishedAt": "2026-07-23T22:06:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-23/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "jp_semiconductor",
+            "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Nasdaq 100 Tumbles as Oil Spike, AI Jitters Hit Tech Stocks",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.43,
+          "publishedAt": "2026-07-24T12:39:22+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-24/s-p-500-futures-steady-as-big-tech-rebounds-oil-dips-below-100",
+          "tags": [
+            "commodity",
+            "macro_risk",
+            "market",
+            "us_growth"
           ]
         },
         {
@@ -233,31 +307,6 @@
             "macro_risk",
             "market",
             "us_growth"
-          ]
-        },
-        {
-          "title": "‘Ridiculously’ Cheap US Bank Capital Risks Trapping Investors",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-24T11:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-24/-ridiculously-tight-us-preferred-spreads-risk-trapping-buyers",
-          "tags": [
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Russia Cuts Key Rate to 14% as Drone Strikes Batter Economy",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-24T10:42:41+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-24/russia-cuts-key-rate-to-14-as-drone-strikes-batter-economy",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
           ]
         },
         {
@@ -276,18 +325,18 @@
       ]
     },
     "fx": {
-      "avgSentiment": -0.5,
-      "negativeCount": 1,
-      "positiveCount": 0,
+      "avgSentiment": -0.25,
+      "negativeCount": 2,
+      "positiveCount": 1,
       "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 2,
+      "sourceCount": 2,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Yen’s Worst Week Since May Brings It Close to 165 Versus Dollar",
-      "topPositiveTitle": "Dollar Set for Best Week in a Month as Haven Flows Offer Support",
+      "topNegativeTitle": "Yen’s Worst Week Since May Brings It Close to 165 Per Dollar",
+      "topPositiveTitle": "Dollar Wraps Its Best Week in a Month as Haven Demand Rises",
       "items": [
         {
-          "title": "Yen’s Worst Week Since May Brings It Close to 165 Versus Dollar",
+          "title": "Yen’s Worst Week Since May Brings It Close to 165 Per Dollar",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -1.0,
@@ -299,10 +348,35 @@
           ]
         },
         {
-          "title": "Dollar Set for Best Week in a Month as Haven Flows Offer Support",
+          "title": "Yen’s Slide Bolsters Appeal of Hawkish Bank of Japan Hedges",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-07-24T16:53:05+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-24/yen-s-slide-bolsters-appeal-of-hawkish-bank-of-japan-hedges",
+          "tags": [
+            "fx",
+            "jp_broad",
+            "market"
+          ]
+        },
+        {
+          "title": "Hedge Funds Turn Most Negative on Canadian Dollar Since 2024",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
+          "publishedAt": "2026-07-24T19:47:47+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-24/hedge-funds-turn-most-negative-on-canadian-dollar-since-2024",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        },
+        {
+          "title": "Dollar Wraps Its Best Week in a Month as Haven Demand Rises",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
           "publishedAt": "2026-07-24T10:12:33+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-07-24/dollar-set-for-best-week-in-a-month-as-haven-flows-offer-support",
           "tags": [
@@ -314,28 +388,52 @@
       ]
     },
     "rates": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0.143,
       "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 2,
+      "positiveCount": 2,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "Stocks Get Some Relief as Brent Slips Below $100: Markets Wrap",
-      "topPositiveTitle": "Moneta Bank CEO Sees Chance Czech Rates Will Rise Further",
+      "topNegativeTitle": "Euro-Zone Resilience and More Inflation Seen in First Data for ECB",
+      "topPositiveTitle": "US New Home Sales Rise for First Time in Three Months",
       "items": [
         {
-          "title": "Stocks Get Some Relief as Brent Slips Below $100: Markets Wrap",
-          "source": "Bloomberg Markets",
+          "title": "Euro-Zone Resilience and More Inflation Seen in First Data for ECB",
+          "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-07-23T22:06:16+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-23/stock-market-today-dow-s-p-live-updates",
+          "publishedAt": "2026-07-24T15:29:21+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-24/euro-zone-resilience-and-more-inflation-seen-in-first-data-for-ecb",
+          "tags": [
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Wall Street Bulls Are Staring Down $100 Oil, Tariffs, AI Angst",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-24T20:12:40+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-24/wall-street-bulls-are-staring-down-100-oil-tariffs-ai-angst",
           "tags": [
             "commodity",
             "market",
             "rates",
             "us_broad"
+          ]
+        },
+        {
+          "title": "ECB’s Lane Sets Up September as Next Key Moment for Rates",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-24T16:30:30+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-24/ecb-s-lane-sets-up-september-as-next-key-moment-for-rates",
+          "tags": [
+            "market",
+            "rates"
           ]
         },
         {
@@ -362,42 +460,47 @@
             "rates",
             "us_broad"
           ]
-        },
-        {
-          "title": "Moneta Bank CEO Sees Chance Czech Rates Will Rise Further",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-07-24T10:14:22+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-24/moneta-bank-ceo-sees-chance-czech-rates-will-rise-further",
-          "tags": [
-            "market",
-            "rates"
-          ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": -0.12,
+      "avgSentiment": -0.045,
       "negativeCount": 4,
-      "positiveCount": 1,
-      "neutralCount": 6,
+      "positiveCount": 2,
+      "neutralCount": 7,
       "sourceCount": 3,
-      "itemCount": 11,
+      "itemCount": 13,
       "isStale": false,
-      "topNegativeTitle": "ECB Says Consumer Price Expectations Fell Sharply in June",
-      "topPositiveTitle": "Oil Keeps Flowing From Red Sea as Hormuz Bypass Stays Open",
+      "topNegativeTitle": "S&P 500 Churns as Oil Decline Offsets Chip Selloff: Markets Wrap",
+      "topPositiveTitle": "Oil Prices Volatile as Supply Disruptions Hit Four Global Fronts",
       "items": [
         {
-          "title": "ECB Says Consumer Price Expectations Fell Sharply in June",
-          "source": "Bloomberg Economics",
+          "title": "S&P 500 Churns as Oil Decline Offsets Chip Selloff: Markets Wrap",
+          "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-07-24T08:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-24/ecb-says-consumer-price-expectations-fell-significantly-in-june",
+          "sentimentScore": -0.5,
+          "publishedAt": "2026-07-23T22:06:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-23/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
-            "market"
+            "jp_semiconductor",
+            "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Nasdaq 100 Tumbles as Oil Spike, AI Jitters Hit Tech Stocks",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.43,
+          "publishedAt": "2026-07-24T12:39:22+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-24/s-p-500-futures-steady-as-big-tech-rebounds-oil-dips-below-100",
+          "tags": [
+            "commodity",
+            "macro_risk",
+            "market",
+            "us_growth"
           ]
         },
         {
@@ -415,7 +518,7 @@
           ]
         },
         {
-          "title": "Global Bonds Are Reeling as Oil Surge Renews Inflation Threat",
+          "title": "Global Bonds Are Reeling as Oil Surge Rekindles Inflation Threat",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
@@ -427,78 +530,52 @@
           ]
         },
         {
-          "title": "Stocks Get Some Relief as Brent Slips Below $100: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-07-23T22:06:16+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-23/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Oil Tankers Run The Houthi Gauntlet to Keep Saudi Exports Flowing",
+          "title": "Vitol Paid Out $5.9 Billion to Traders as Profit Halved in 2025",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-24T11:45:23+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-07-24/oil-tankers-run-the-houthi-gauntlet-to-keep-saudi-exports-flowing",
+          "publishedAt": "2026-07-24T20:54:24+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-24/vitol-paid-out-5-9-billion-to-traders-as-profit-halved-in-2025",
           "tags": [
             "commodity",
+            "dividend",
             "market"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.222,
-      "negativeCount": 1,
+      "avgSentiment": 0.278,
+      "negativeCount": 0,
       "positiveCount": 3,
-      "neutralCount": 5,
-      "sourceCount": 3,
-      "itemCount": 9,
+      "neutralCount": 3,
+      "sourceCount": 2,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "India Activity Slows to Over Four-Year Low on Iran Risks",
-      "topPositiveTitle": "Euro-Zone Business Activity Jumps to Five-Month High",
+      "topNegativeTitle": "Oil to End Year Near $100 on Mideast Disruptions, Rapidan Says",
+      "topPositiveTitle": "Oil Prices Volatile as Supply Disruptions Hit Four Global Fronts",
       "items": [
         {
-          "title": "India Activity Slows to Over Four-Year Low on Iran Risks",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-07-24T05:50:52+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-24/india-activity-slows-to-over-four-year-low-on-iran-risks",
+          "title": "Oil to End Year Near $100 on Mideast Disruptions, Rapidan Says",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-24T19:01:24+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-24/oil-to-end-year-near-100-on-mideast-disruptions-rapidan-says",
           "tags": [
+            "commodity",
             "geopolitical",
             "market"
           ]
         },
         {
-          "title": "Russia Cuts Key Rate to 14% as Drone Strikes Batter Economy",
+          "title": "Russia Cuts Key Rate as Kyiv’s Drone Strikes Batter Economy",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
           "publishedAt": "2026-07-24T10:42:41+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-07-24/russia-cuts-key-rate-to-14-as-drone-strikes-batter-economy",
           "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Dollar Set for Best Week in a Month as Haven Flows Offer Support",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-24T10:12:33+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-24/dollar-set-for-best-week-in-a-month-as-haven-flows-offer-support",
-          "tags": [
-            "fx",
             "geopolitical",
             "market"
           ]
@@ -517,18 +594,30 @@
           ]
         },
         {
-          "title": "Gold Edges Up as Traders Weigh Mideast Conflict, Fed Rate Path",
+          "title": "Russia’s Top Black Sea Oil Port Halts Loadings Amid Safety Fears",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-23T23:37:23+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-23/gold-holds-decline-as-surging-energy-costs-raise-rate-hike-bets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-07-24T16:14:27+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-24/russia-s-top-black-sea-oil-port-halts-loadings-amid-safety-fears",
           "tags": [
+            "commodity",
             "geopolitical",
-            "gold",
+            "market"
+          ]
+        },
+        {
+          "title": "Oil Prices Volatile as Supply Disruptions Hit Four Global Fronts",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-07-24T20:15:20+00:00",
+          "url": "https://www.bloomberg.com/news/features/2026-07-24/oil-prices-volatile-as-supply-disruptions-hit-four-global-fronts",
+          "tags": [
+            "commodity",
+            "geopolitical",
             "macro_risk",
-            "market",
-            "us_broad"
+            "market"
           ]
         }
       ]
@@ -542,7 +631,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 1,
+    "excludedCount": 3,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
