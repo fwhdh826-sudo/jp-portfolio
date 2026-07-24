@@ -1,47 +1,20 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-07-24T15:08:33.556054+09:00",
-  "sourceUpdatedAt": "2026-07-24T06:01:34+00:00",
+  "updatedAt": "2026-07-24T21:53:44.743522+09:00",
+  "sourceUpdatedAt": "2026-07-24T12:53:20+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": -0.33,
-      "negativeCount": 2,
+      "avgSentiment": 0,
+      "negativeCount": 0,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 2,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Japan’s Inflation Picks Up, Keeping BOJ on Path for Rate Hikes",
-      "topPositiveTitle": "Japan’s Inflation Picks Up, Keeping BOJ on Path for Rate Hikes",
-      "items": [
-        {
-          "title": "Japan’s Inflation Picks Up, Keeping BOJ on Path for Rate Hikes",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-07-23T23:31:36+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-23/japan-s-inflation-picks-up-keeping-boj-on-path-for-rate-hikes",
-          "tags": [
-            "jp_broad",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Historic Yen Slide Poses New Risk to Japan Stocks’ Bull Run",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-07-23T22:15:03+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-23/historic-yen-slide-poses-new-risk-to-japan-stocks-bull-run",
-          "tags": [
-            "fx",
-            "jp_broad",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "jp_semiconductor": {
       "avgSentiment": 0,
@@ -56,28 +29,78 @@
       "items": []
     },
     "us_broad": {
-      "avgSentiment": -0.33,
+      "avgSentiment": 0.134,
       "negativeCount": 1,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "positiveCount": 2,
+      "neutralCount": 2,
+      "sourceCount": 2,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Gold Extends Decline as Higher Energy Costs Raise Rate-Hike Bets",
-      "topPositiveTitle": "Gold Extends Decline as Higher Energy Costs Raise Rate-Hike Bets",
+      "topNegativeTitle": "Stocks Get Some Relief as Brent Slips Below $100: Markets Wrap",
+      "topPositiveTitle": "Geopolitics and Tech Woes Put Traders on Edge Before Weekend",
       "items": [
         {
-          "title": "Gold Extends Decline as Higher Energy Costs Raise Rate-Hike Bets",
+          "title": "Stocks Get Some Relief as Brent Slips Below $100: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
+          "publishedAt": "2026-07-23T22:06:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-23/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Economists Stick to Fed Rate Cut Call as Markets Price In Hikes",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-24T10:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-24/economists-stick-to-fed-rate-cut-call-as-markets-price-in-hikes",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Gold Edges Up as Traders Weigh Mideast Conflict, Fed Rate Path",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
           "publishedAt": "2026-07-23T23:37:23+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-07-23/gold-holds-decline-as-surging-energy-costs-raise-rate-hike-bets",
           "tags": [
-            "commodity",
             "geopolitical",
             "gold",
             "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Travelers Draws Wave of Bears as Stock Eyes Best Year Since 2000",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-07-24T11:10:13+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-24/travelers-draws-wave-of-bears-as-stock-eyes-best-year-since-2000",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Geopolitics and Tech Woes Put Traders on Edge Before Weekend",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-07-24T10:32:07+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-07-24/geopolitics-and-tech-woes-put-traders-on-edge-before-weekend",
+          "tags": [
             "market",
             "us_broad"
           ]
@@ -85,23 +108,23 @@
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
+      "avgSentiment": -0.33,
+      "negativeCount": 1,
       "positiveCount": 0,
-      "neutralCount": 1,
+      "neutralCount": 0,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Stock Slide Extends on AI Jitters, Oil Near $100: Markets Wrap",
-      "topPositiveTitle": "Stock Slide Extends on AI Jitters, Oil Near $100: Markets Wrap",
+      "topNegativeTitle": "Global Inflation Angst Is Back on $100 Oil and More Tariffs",
+      "topPositiveTitle": "Global Inflation Angst Is Back on $100 Oil and More Tariffs",
       "items": [
         {
-          "title": "Stock Slide Extends on AI Jitters, Oil Near $100: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-23T22:06:16+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-23/stock-market-today-dow-s-p-live-updates",
+          "title": "Global Inflation Angst Is Back on $100 Oil and More Tariffs",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-07-24T11:26:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-24/global-inflation-angst-is-back-with-100-oil-and-more-tariffs",
           "tags": [
             "commodity",
             "macro_risk",
@@ -124,25 +147,24 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": -0.33,
-      "negativeCount": 1,
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
+      "neutralCount": 1,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Gold Extends Decline as Higher Energy Costs Raise Rate-Hike Bets",
-      "topPositiveTitle": "Gold Extends Decline as Higher Energy Costs Raise Rate-Hike Bets",
+      "topNegativeTitle": "Gold Edges Up as Traders Weigh Mideast Conflict, Fed Rate Path",
+      "topPositiveTitle": "Gold Edges Up as Traders Weigh Mideast Conflict, Fed Rate Path",
       "items": [
         {
-          "title": "Gold Extends Decline as Higher Energy Costs Raise Rate-Hike Bets",
+          "title": "Gold Edges Up as Traders Weigh Mideast Conflict, Fed Rate Path",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
           "publishedAt": "2026-07-23T23:37:23+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-07-23/gold-holds-decline-as-surging-energy-costs-raise-rate-hike-bets",
           "tags": [
-            "commodity",
             "geopolitical",
             "gold",
             "macro_risk",
@@ -178,155 +200,74 @@
     },
     "macro_risk": {
       "avgSentiment": 0.167,
-      "negativeCount": 1,
-      "positiveCount": 5,
-      "neutralCount": 6,
-      "sourceCount": 2,
-      "itemCount": 12,
+      "negativeCount": 2,
+      "positiveCount": 3,
+      "neutralCount": 5,
+      "sourceCount": 3,
+      "itemCount": 10,
       "isStale": false,
-      "topNegativeTitle": "Gold Extends Decline as Higher Energy Costs Raise Rate-Hike Bets",
-      "topPositiveTitle": "BOE Bond Sales Decision Complicated by Burnham Yield Surge",
+      "topNegativeTitle": "Momentum Crash Hits YOLO Traders’ Returns by Most in Four Years",
+      "topPositiveTitle": "Euro-Zone Business Activity Jumps to Five-Month High",
       "items": [
         {
-          "title": "Gold Extends Decline as Higher Energy Costs Raise Rate-Hike Bets",
+          "title": "Momentum Crash Hits YOLO Traders’ Returns by Most in Four Years",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-07-23T23:37:23+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-23/gold-holds-decline-as-surging-energy-costs-raise-rate-hike-bets",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "gold",
-            "macro_risk",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Kyiv’s Strikes Battering Russian Economy Hang Over Rate Decision",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-24T04:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-24/kyiv-s-strikes-battering-russian-economy-hang-over-rate-decision",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Here’s the Full List of Trump’s New Tariffs on 60 Economies",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-24T00:58:30+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-24/here-s-the-full-list-of-trump-s-new-tariffs-on-60-economies",
+          "publishedAt": "2026-07-24T12:20:23+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-24/momentum-crash-hits-yolo-traders-returns-by-most-in-four-years",
           "tags": [
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "UK Consumer Confidence Recovers to Pre-War Levels, GfK Says",
+          "title": "Global Inflation Angst Is Back on $100 Oil and More Tariffs",
           "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-23T23:01:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-23/uk-consumer-confidence-recovers-to-pre-war-levels-gfk-says",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Stock Slide Extends on AI Jitters, Oil Near $100: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-23T22:06:16+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-23/stock-market-today-dow-s-p-live-updates",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-07-24T11:26:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-24/global-inflation-angst-is-back-with-100-oil-and-more-tariffs",
           "tags": [
             "commodity",
             "macro_risk",
             "market",
             "us_growth"
           ]
-        }
-      ]
-    },
-    "fx": {
-      "avgSentiment": 0.068,
-      "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 3,
-      "sourceCount": 2,
-      "itemCount": 5,
-      "isStale": false,
-      "topNegativeTitle": "Historic Yen Slide Poses New Risk to Japan Stocks’ Bull Run",
-      "topPositiveTitle": "Malaysia Sells First Dollar Bonds in Five Years as Fuel Subsidy Bill Rises",
-      "items": [
-        {
-          "title": "Historic Yen Slide Poses New Risk to Japan Stocks’ Bull Run",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-07-23T22:15:03+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-23/historic-yen-slide-poses-new-risk-to-japan-stocks-bull-run",
-          "tags": [
-            "fx",
-            "jp_broad",
-            "market"
-          ]
         },
         {
-          "title": "Japan’s Katayama Says to Take Bold FX Steps Decisively as Needed",
+          "title": "‘Ridiculously’ Cheap US Bank Capital Risks Trapping Investors",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-24T01:31:29+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-24/japan-s-katayama-says-to-take-bold-fx-steps-decisively-as-needed",
+          "publishedAt": "2026-07-24T11:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-24/-ridiculously-tight-us-preferred-spreads-risk-trapping-buyers",
           "tags": [
-            "fx",
+            "macro_risk",
             "market"
           ]
         },
         {
-          "title": "US Treasury Calls Out China for Lack of Transparency on Yuan",
+          "title": "Russia Cuts Key Rate to 14% as Drone Strikes Batter Economy",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-23T20:27:32+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-23/us-treasury-calls-out-china-for-lack-of-transparency-on-currency",
+          "publishedAt": "2026-07-24T10:42:41+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-24/russia-cuts-key-rate-to-14-as-drone-strikes-batter-economy",
           "tags": [
-            "fx",
+            "geopolitical",
+            "macro_risk",
             "market"
           ]
         },
         {
-          "title": "ECB Presents 10 Design Options for New Euro-Area Banknotes",
+          "title": "UK Food Prices to Peak Lower Than Thought, BOE Survey Finds",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-23T14:42:55+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-23/ecb-presents-10-design-options-for-new-euro-area-banknotes",
+          "publishedAt": "2026-07-24T08:55:48+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-24/uk-food-prices-to-peak-lower-than-thought-boe-survey-finds",
           "tags": [
-            "fx",
-            "market"
-          ]
-        },
-        {
-          "title": "Malaysia Sells First Dollar Bonds in Five Years as Fuel Subsidy Bill Rises",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-07-24T02:37:48+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-24/malaysia-sells-first-dollar-bonds-in-five-years-as-fuel-subsidy-bill-rises",
-          "tags": [
-            "fx",
             "geopolitical",
             "macro_risk",
             "market"
@@ -334,73 +275,101 @@
         }
       ]
     },
-    "rates": {
-      "avgSentiment": -0.134,
-      "negativeCount": 2,
-      "positiveCount": 1,
-      "neutralCount": 2,
+    "fx": {
+      "avgSentiment": -0.5,
+      "negativeCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 5,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Rand Is World’s Worst Performer After South Africa Holds Rates",
-      "topPositiveTitle": "Mexico Inflation Slows Again After Banxico Holds Rates Firm",
+      "topNegativeTitle": "Yen’s Worst Week Since May Brings It Close to 165 Versus Dollar",
+      "topPositiveTitle": "Dollar Set for Best Week in a Month as Haven Flows Offer Support",
       "items": [
         {
-          "title": "Rand Is World’s Worst Performer After South Africa Holds Rates",
-          "source": "Bloomberg Economics",
+          "title": "Yen’s Worst Week Since May Brings It Close to 165 Versus Dollar",
+          "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-07-23T13:05:51+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-23/south-africa-unexpectedly-holds-rates-as-it-flags-growth-risks",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-07-24T00:43:39+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-24/yen-s-worst-week-since-may-brings-it-close-to-165-versus-dollar",
           "tags": [
-            "market",
-            "rates"
+            "fx",
+            "market"
           ]
         },
         {
-          "title": "Japan’s Inflation Picks Up, Keeping BOJ on Path for Rate Hikes",
-          "source": "Bloomberg Economics",
+          "title": "Dollar Set for Best Week in a Month as Haven Flows Offer Support",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-24T10:12:33+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-24/dollar-set-for-best-week-in-a-month-as-haven-flows-offer-support",
+          "tags": [
+            "fx",
+            "geopolitical",
+            "market"
+          ]
+        }
+      ]
+    },
+    "rates": {
+      "avgSentiment": 0.0,
+      "negativeCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 2,
+      "sourceCount": 2,
+      "itemCount": 4,
+      "isStale": false,
+      "topNegativeTitle": "Stocks Get Some Relief as Brent Slips Below $100: Markets Wrap",
+      "topPositiveTitle": "Moneta Bank CEO Sees Chance Czech Rates Will Rise Further",
+      "items": [
+        {
+          "title": "Stocks Get Some Relief as Brent Slips Below $100: Markets Wrap",
+          "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-07-23T23:31:36+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-23/japan-s-inflation-picks-up-keeping-boj-on-path-for-rate-hikes",
+          "publishedAt": "2026-07-23T22:06:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-23/stock-market-today-dow-s-p-live-updates",
           "tags": [
-            "jp_broad",
+            "commodity",
             "market",
-            "rates"
+            "rates",
+            "us_broad"
           ]
         },
         {
-          "title": "Nagel Says ECB in Good Position, Stays Quiet on Next Rate Move",
+          "title": "ECB Still More Likely to Hike Rates Than Hold, Simkus Says",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-24T05:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-24/nagel-says-ecb-in-good-position-stays-quiet-on-next-rate-move",
+          "publishedAt": "2026-07-24T10:03:03+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-24/ecb-still-more-likely-to-hike-rates-than-hold-simkus-says",
           "tags": [
             "market",
             "rates"
           ]
         },
         {
-          "title": "ECB Officials Are Ready to Raise Interest Rates in September",
+          "title": "Economists Stick to Fed Rate Cut Call as Markets Price In Hikes",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-23T14:18:05+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-23/ecb-officials-are-ready-to-raise-interest-rates-in-september",
+          "publishedAt": "2026-07-24T10:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-24/economists-stick-to-fed-rate-cut-call-as-markets-price-in-hikes",
           "tags": [
             "market",
-            "rates"
+            "rates",
+            "us_broad"
           ]
         },
         {
-          "title": "Mexico Inflation Slows Again After Banxico Holds Rates Firm",
+          "title": "Moneta Bank CEO Sees Chance Czech Rates Will Rise Further",
           "source": "Bloomberg Economics",
           "sentiment": "positive",
           "sentimentScore": 0.33,
-          "publishedAt": "2026-07-23T12:20:03+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-23/mexico-s-inflation-slows-again-after-banxico-holds-rates-firm",
+          "publishedAt": "2026-07-24T10:14:22+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-24/moneta-bank-ceo-sees-chance-czech-rates-will-rise-further",
           "tags": [
             "market",
             "rates"
@@ -409,16 +378,42 @@
       ]
     },
     "commodity": {
-      "avgSentiment": -0.047,
-      "negativeCount": 2,
-      "positiveCount": 0,
-      "neutralCount": 9,
-      "sourceCount": 2,
+      "avgSentiment": -0.12,
+      "negativeCount": 4,
+      "positiveCount": 1,
+      "neutralCount": 6,
+      "sourceCount": 3,
       "itemCount": 11,
       "isStale": false,
-      "topNegativeTitle": "Global Bonds Are Reeling as Oil Surge Renews Inflation Threat",
-      "topPositiveTitle": "PHP/USD: Philippine Peso Falls to Fresh Record Low as Oil Advances",
+      "topNegativeTitle": "ECB Says Consumer Price Expectations Fell Sharply in June",
+      "topPositiveTitle": "Oil Keeps Flowing From Red Sea as Hormuz Bypass Stays Open",
       "items": [
+        {
+          "title": "ECB Says Consumer Price Expectations Fell Sharply in June",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-07-24T08:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-24/ecb-says-consumer-price-expectations-fell-significantly-in-june",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "Global Inflation Angst Is Back on $100 Oil and More Tariffs",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-07-24T11:26:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-24/global-inflation-angst-is-back-with-100-oil-and-more-tariffs",
+          "tags": [
+            "commodity",
+            "macro_risk",
+            "market",
+            "us_growth"
+          ]
+        },
         {
           "title": "Global Bonds Are Reeling as Oil Surge Renews Inflation Threat",
           "source": "Bloomberg Markets",
@@ -432,70 +427,43 @@
           ]
         },
         {
-          "title": "Gold Extends Decline as Higher Energy Costs Raise Rate-Hike Bets",
+          "title": "Stocks Get Some Relief as Brent Slips Below $100: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-07-23T23:37:23+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-23/gold-holds-decline-as-surging-energy-costs-raise-rate-hike-bets",
+          "publishedAt": "2026-07-23T22:06:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-23/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
-            "geopolitical",
-            "gold",
-            "macro_risk",
             "market",
+            "rates",
             "us_broad"
           ]
         },
         {
-          "title": "Tanker Exits Red Sea Dark as Another China Ship Heads to Strait",
+          "title": "Oil Tankers Run The Houthi Gauntlet to Keep Saudi Exports Flowing",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-24T06:01:34+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-24/tanker-exits-red-sea-dark-as-another-china-ship-heads-to-strait",
+          "publishedAt": "2026-07-24T11:45:23+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-07-24/oil-tankers-run-the-houthi-gauntlet-to-keep-saudi-exports-flowing",
           "tags": [
             "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "FTSE 100 Live: UK Stocks Set to Underperform as Oil Pulls Back",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-24T05:51:38+00:00",
-          "url": "https://www.bloomberg.com/news/live-blog/2026-07-24/ftse-100-live-pound-uk-retail-sales-pmi-data-trump-tariffs-iran-hormuz-oil-prices-ai-stocks-what-s-moving-uk-markets-right-now-markets-today",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "China Rushes to Buy East Russian Oil as Middle East Risks Grow",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-24T05:19:40+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-24/china-rushes-to-buy-east-russian-oil-as-middle-east-risks-grow",
-          "tags": [
-            "commodity",
-            "geopolitical",
             "market"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.091,
-      "negativeCount": 2,
-      "positiveCount": 4,
+      "avgSentiment": 0.222,
+      "negativeCount": 1,
+      "positiveCount": 3,
       "neutralCount": 5,
-      "sourceCount": 2,
-      "itemCount": 11,
+      "sourceCount": 3,
+      "itemCount": 9,
       "isStale": false,
       "topNegativeTitle": "India Activity Slows to Over Four-Year Low on Iran Risks",
-      "topPositiveTitle": "Malaysia Sells First Dollar Bonds in Five Years as Fuel Subsidy Bill Rises",
+      "topPositiveTitle": "Euro-Zone Business Activity Jumps to Five-Month High",
       "items": [
         {
           "title": "India Activity Slows to Over Four-Year Low on Iran Risks",
@@ -510,59 +478,57 @@
           ]
         },
         {
-          "title": "Gold Extends Decline as Higher Energy Costs Raise Rate-Hike Bets",
+          "title": "Russia Cuts Key Rate to 14% as Drone Strikes Batter Economy",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-24T10:42:41+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-24/russia-cuts-key-rate-to-14-as-drone-strikes-batter-economy",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Dollar Set for Best Week in a Month as Haven Flows Offer Support",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-24T10:12:33+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-24/dollar-set-for-best-week-in-a-month-as-haven-flows-offer-support",
+          "tags": [
+            "fx",
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "UK Food Prices to Peak Lower Than Thought, BOE Survey Finds",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-24T08:55:48+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-24/uk-food-prices-to-peak-lower-than-thought-boe-survey-finds",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Gold Edges Up as Traders Weigh Mideast Conflict, Fed Rate Path",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
           "publishedAt": "2026-07-23T23:37:23+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-07-23/gold-holds-decline-as-surging-energy-costs-raise-rate-hike-bets",
           "tags": [
-            "commodity",
             "geopolitical",
             "gold",
             "macro_risk",
             "market",
             "us_broad"
-          ]
-        },
-        {
-          "title": "China Rushes to Buy East Russian Oil as Middle East Risks Grow",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-24T05:19:40+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-24/china-rushes-to-buy-east-russian-oil-as-middle-east-risks-grow",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "Kyiv’s Strikes Battering Russian Economy Hang Over Rate Decision",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-24T04:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-24/kyiv-s-strikes-battering-russian-economy-hang-over-rate-decision",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "UK Consumer Confidence Recovers to Pre-War Levels, GfK Says",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-23T23:01:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-23/uk-consumer-confidence-recovers-to-pre-war-levels-gfk-says",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
           ]
         }
       ]
