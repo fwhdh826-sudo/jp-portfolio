@@ -50722,3 +50722,180 @@ RA-009 cross-tab CAS / rollback TOCTOU: COMPLETE
 
 `T9 cross-audit: audit the combined RA-007/RA-008/RA-009 state and determine whether v13.3-dev is
 ready to land on main`
+
+---
+
+## P5-B005-B1-R: frozen market-wide candidate funnel engine
+
+### Sources
+
+- A audit: `/Users/ryo/jp-portfolio-audit-reports/p5-b005-a-candidate-funnel-design.md`
+- A2 frozen spec: `/Users/ryo/jp-portfolio-audit-reports/p5-b005-a2-scoring-specification.md`
+- Audited SHA (both reports): `665eba993b3d3ccfcf434c245a8784765f34bf43` (branch `v13.3-dev` = HEAD =
+  `origin/v13.3-dev` at start). `origin/main` was 1 commit ahead (`9215125 chore: auto-update data
+  2026-07-24`, data-only) — allowed per gate; not merged.
+
+### What was implemented
+
+- `data/candidate_funnel_engine.py`: stdlib-only pure engine (`build_candidate_funnel(candidates,
+  context)`). No file I/O, network, `datetime.now`, `random`, env vars, or global mutable state.
+- `src/types/candidateFunnel.ts`: TypeScript contract mirroring every Python constant/enum
+  (`not_for_trading: true` included; zero portfolio-related types).
+- `tests/test_candidate_funnel_engine.py`: 85 direct tests (spec/formula/safety/determinism/tier/
+  explainability-privacy/degraded-compatibility + calibration + extra mutation-catchers).
+- `src/types/candidateFunnel.contract.test.ts`: 18 Python/TypeScript parity tests via a stdlib
+  subprocess (`python3 -c ...`) that dumps Python constants as JSON, no code-generation framework.
+- `tests/fixtures/candidate_funnel_calibration_v1.json`: self-authored deterministic calibration
+  fixture (see Calibration section — A2's own calibration was run in an external, non-reproducible
+  scratchpad, so exact bit-for-bit A2 numbers cannot be replayed; structural properties are
+  verified instead).
+
+### Frozen values implemented exactly (A2 §17)
+
+```text
+prescreen prior weight        = 0.35
+Stage3 composite weight       = 0.65  (sum = 1.00)
+valuation weight              = 0.55
+quality weight                = 0.45
+zero-weight components        = 8 (growth, momentum, financialStability,
+                                    earningsRevisionEvent, themeDurability,
+                                    regimeFit, risk, dataConfidence)
+base score 50                 = absent (not implemented, tested absent)
+formula                       = marketScore = round_half_up(100 * clamp01(
+                                   0.35*normalizedPrescreenScore +
+                                   0.65*(0.55*valuation + 0.45*quality)), 1)
+winsorization                 = 1% / 99%, finite population only
+normalization population      = all valid (non hard-excluded) candidates, single population
+hard reasons                  = 8 exact codes (HARD_NOT_PRIME_DOMESTIC .. HARD_NO_TRADABLE_SERIES)
+soft reasons                  = 10 exact codes (SOFT_ELEVATED_VOLATILITY .. SOFT_FALLBACK_PROVENANCE)
+deep-review threshold/max/cap = 55.0 / 40 / 6 sectors
+actionable threshold/max/cap  = 68.0 / 12 / 2 sectors (+ valuation/quality floor 0.40 each)
+bear/crisis actionable max    = 5 (sector cap stays 2)
+sector cap relaxation         = false (no backfill, ever)
+dataConfidence                = (usableAxes/6) * (1.0 if dataStatus=='ok' else 0.6), gate-only (weight 0)
+tie-break                     = marketScore desc, dataConfidence desc, prescreenRank asc (missing=+inf), code asc
+```
+
+### Honesty boundary (B1 input contract §8)
+
+Of the 8 `HARD_*` codes, only 2 are reachable given the B1 input contract (code/name/sector/price/
+per/pbr/roe/dividendYield/sigma252d/mom3m/dataStatus/prescreenScore/prescreenRank/prescreenPool):
+`HARD_CONTRACT_VIOLATION` (schema violation: invalid code/sector/dataStatus, or abnormal price
+present-but-broken) and `HARD_PREFERRED_OR_NONSTANDARD_CODE` (5-digit numeric code). The remaining
+6 (`HARD_NOT_PRIME_DOMESTIC`, `HARD_NON_EQUITY_INSTRUMENT`, `HARD_INSUFFICIENT_HISTORY`,
+`HARD_BELOW_MAIN_FLOOR`, `HARD_NONFINITE_SERIES`, `HARD_NO_TRADABLE_SERIES`) require
+`market_segment` / instrument type / `history_days` / `adv20_jpy` / raw OHLCV series, none of which
+exist in this input contract — they remain defined as exact constants (parity/count requirements
+still hold) but are structurally unreachable from this engine, documented inline, not faked via
+proxy. Similarly `themeDurability`/`regimeFit`/`growth`/`financialStability`/`earningsRevisionEvent`
+stay `value=null, status='reserved'` — no sector→theme or momentum→growth proxying.
+
+`SOFT_PRESCREEN_METADATA_MISSING` appears in A2 §3.2/§9 prose but is **not** one of the 10 frozen
+`SOFT_*` codes in A2 §14/§17 — this is an internal inconsistency in A2 itself. The frozen *behavior*
+(cap missing-prescreen candidates at `deep_review`, never `actionable`) is implemented exactly per
+`tierMaxByCondition.prescreenMetadataMissing: deep_review`; no reason-code string was invented to
+paper over the naming gap (adding an 11th soft code would itself violate "10 exact codes").
+
+### Degraded-compatibility result (current `candidates_stocks.json`, 200 candidates, real data)
+
+```text
+status: generated
+counts: {total: 200, excluded: 0, screened: 198, deepReview: 2, actionable: 0}
+scoreDistribution: {min: 1.6, max: 55.0}
+degradationReasons: ["PRESCREEN_METADATA_MISSING: ..."]
+```
+
+actionable=0 as required (A2 §9: with prescreen prior forced to 0, max achievable marketScore is
+65.0 < 68.0 threshold; the observed 2 deep-review candidates land exactly at marketScore=55.0).
+
+### Calibration (self-authored fixture, `tests/fixtures/candidate_funnel_calibration_v1.json`)
+
+```text
+FULL path:    deepReview+actionable = 40 (hard max saturated), actionable = 12 (hard max reached,
+              3 sectors overflow sector cap 2 — both mechanisms exercised)
+bear regime:  actionable = 5 (BEAR_CRISIS_ACTIONABLE_HARD_MAX enforced)
+crisis regime: actionable = 5 (same)
+DEGRADED (prescreen stripped): actionable = 0
+rank stability under fixed +/-2% per/roe perturbation: top-40 Jaccard = 1.0 (>= 0.85 threshold used)
+```
+
+A2's own Preset-B calibration ("74→40 sectors20", "12→10 sectors7") was run in a scratchpad outside
+the repository (A2 §16.1: "この評価はscratchpad のみで行い、repository外・一時領域のみで評価する") and
+is not reproducible bit-for-bit; this fixture instead demonstrates the same structural properties
+(hard-max saturation, sector-cap overflow, bear/crisis capacity reduction, degraded suppression)
+deterministically, without post-hoc tuning to force specific numbers.
+
+### Mutation-catching: 26/26 (25 required mutations + 1 additional variant, all caught)
+
+All 20 required + 5 additional (§21 items 21-25) mutations applied one at a time to
+`data/candidate_funnel_engine.py`, each produced a RED direct-test failure, each reverted via exact
+inverse patch with SHA-256 verified identical to the pre-mutation file after every iteration
+(`80d3e5ee33e69e8d750ea183d146f084dbf954d1539cc4084c1a1cc4779a07d4`, unchanged throughout).
+
+### Validation results
+
+```text
+python3 -m py_compile data/candidate_funnel_engine.py         PASS
+python3 -m pytest tests/test_candidate_funnel_engine.py       85 passed
+python3 -m pytest tests/test_build_candidates_stocks.py tests/test_jpx_cheap_prescreen.py
+  tests/test_candidates_stocks_privacy_smoke.py tests/test_jpx_universe_provider.py
+  tests/test_whole_market_universe_provider.py                321 passed (existing pipeline unaffected)
+TZ=UTC npx vitest run src/types/candidateFunnel.contract.test.ts       18 passed
+TZ=Asia/Tokyo npx vitest run src/types/candidateFunnel.contract.test.ts 18 passed
+existing frontend candidate regression (UTC/JST)               85 passed / 85 passed
+TZ=UTC npm run test:unit                                        83 files, 2441 tests passed
+TZ=Asia/Tokyo npm run test:unit                                 83 files, 2441 tests passed
+  (baseline 82 files / 2423 tests; +1 file / +18 tests = new contract test file only)
+npx tsc --noEmit                                                 0 errors
+npm run build                                                    PASS (129 modules, known 500kB warning only)
+git diff --check                                                 PASS (no whitespace errors)
+bundle grep candidate_funnel_engine|SCORING_SPEC_INCOMPLETE in dist   0 matches
+bundle grep candidateFunnel.contract|candidate_funnel_calibration_v1 in dist  0 matches
+data/candidates_stocks.json + public/data/candidates_stocks.json SHA-256   unchanged before/after
+data/candidate_funnel.json, public/data/candidate_funnel.json    absent (not generated)
+```
+
+Note: `src/types/candidateFunnel.contract.test.ts` needed Node builtin access (`child_process`) for
+the subprocess parity check, but this repo has no `@types/node` (adding it would touch
+`package.json`, out of scope). Resolved with a minimal `declare global { function require(id:
+string): any }` ambient declaration instead of importing `node:child_process`/`node:path` — avoids
+`@types/node` entirely and avoids the "invalid module name in augmentation" TS error that a
+`declare module 'child_process'` block hits inside a file with top-level imports.
+
+### Status
+
+```text
+P5-B005-A: CLOSED
+P5-B005-A2: CLOSED
+P5-B005-B1-R: CLOSED
+
+scoring specification: FROZEN
+pure funnel engine: ACTIVE
+TypeScript artifact contract: ACTIVE
+
+prescreen metadata join: INACTIVE
+derived artifact generation: INACTIVE
+batch quality gate: INACTIVE
+frontend integration: INACTIVE
+portfolioFit: INACTIVE
+officialDecision: INACTIVE
+```
+
+### Residual data limitations
+
+- Current `candidates_stocks.json` carries no prescreen metadata (score/rank/pool), so every
+  degraded-path run forces `normalizedPrescreenScore=0.0` and suppresses `actionable` — this is
+  expected/frozen behavior, not a bug, until B2 wires the prescreen cache join.
+- 6 of 8 `HARD_*` reasons and 5 of 10 `SOFT_*`-adjacent conditions are defined but structurally
+  unreachable from this engine's input contract (documented above) — they will become reachable
+  once B2/later tickets supply `market_segment`, `history_days`, `adv20_jpy`, raw OHLCV series, or
+  a persisted `earnings_calendar`/theme taxonomy join.
+- `candidate_funnel.json` is not generated by this ticket; no consumer references it yet.
+
+### Next
+
+```text
+P5-B005-B2:
+prescreen cache score/rank/poolをenrichment candidateへcode-joinし、
+candidate_funnel.jsonを生成するbatch、quality gate、privacy smokeを実装
+```
