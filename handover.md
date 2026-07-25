@@ -51001,6 +51001,233 @@ soft-vol(VOL_ELEVATED) 帯が deep-review hard max 40 を占有しても、actio
 B1-V probe K を T-07 で再現・回帰化）。
 ```
 
+## P5-B005-B1-R3: A2-S2 限定authority clarificationに基づく実装/testギャップ修正
+
+### Status
+
+```text
+P5-B005-B1-R3: CLOSED（このticketのscope）
+B1-V2（先行監査）: FAIL — 監査契約の中核2要求（unknown regime fail-closed / riskReasons
+  enum順）はA2-S2でAUDIT_CONTRACT_OVERRULEDと裁定され不採用。実装違反3点・test gap 7件
+  +αのみ修正対象として本ticketで解消。
+B1-V3（このticketの独立監査）: REQUIRED、B2着手前必須
+B2: NOT STARTED（BLOCKED、A2-S §25.20 P-01..P-15 gateを完了条件に含めること）
+```
+
+Authority path（rank順）:
+1. `/Users/ryo/jp-portfolio-audit-reports/p5-b005-a2-s2-authority-clarification.md`
+   （`LIMITED_SUPPLEMENT_FROZEN`、§19が本ticketの唯一のexact実装指示）
+2. `/Users/ryo/jp-portfolio-audit-reports/p5-b005-a2-s-scoring-specification-supplement.md`（§25、A2-S2が
+   supersedeしない全条項が引き続き有効）
+3. `/Users/ryo/jp-portfolio-audit-reports/p5-b005-a2-scoring-specification.md`
+4. `/Users/ryo/jp-portfolio-audit-reports/p5-b005-a-candidate-funnel-design.md`
+
+Reviewed / base SHA: `5ff7198bdfea1a1274e9dcf80fbd8f1c5be3d47b`（B1-R2、v13.3-dev = origin/v13.3-dev、
+working tree clean。origin/main は data-only commit 4件先行、merge不要と確認済み）。
+
+### Changed production files (1)
+
+```text
+data/candidate_funnel_engine.py     (P3-01..P3-04のみ。formula/weight/threshold/cap/reason code変更0)
+```
+
+`src/types/candidateFunnel.ts` は A2-S2 §19.16が変更を要求しなかったため**変更0**（M-07回帰確認時に
+一時mutationを適用したが exact inverse patchで復元しSHA-256一致を確認済み）。
+
+### Changed test/documentation files
+
+```text
+tests/test_candidate_funnel_engine.py            (T3-01..T3-16追加 + test_28弱assertion修正; 136→220 tests)
+src/types/candidateFunnel.contract.test.ts       (T3-07 compile-time negative test追加 + T3-16
+                                                   deep_review無条件化 + fixture 1002調整; 39→43 tests)
+handover.md                                       (この節)
+```
+
+`tests/fixtures/candidate_funnel_calibration_v1.json` は変更0（calibration設計は本ticketのscope外）。
+`data/build_candidates_stocks.py` / `data/jpx_cheap_prescreen.py` /
+`data/candidates_stocks_privacy_smoke.py` / `data/candidates_stocks.json` / `public/data/**` /
+`.github/**` / `package.json` / `package-lock.json` / `src/store/**` / `src/domain/candidates/**` /
+`src/services/**` / `src/components/**` は変更0。
+
+### P3-01..P3-04 result
+
+| ID | 内容 | Result |
+|---|---|---|
+| P3-01 | 引数型guard追加。`candidates`が list/tuple でなければ `TypeError("candidates must be a list or tuple")`。`context`がNoneでもMappingでもなければ `TypeError("context must be a mapping or None")`。`context = context or {}`（falsy非mapping黙認）を`context = {} if context is None else context`へ置換 | DONE |
+| P3-02 | `pipeline_path = context.get("pipelinePath", "normal")` + silent coerce行を削除し `context.get("pipelinePath")`（デフォルトNone）のみに変更。欠損/不正値は既存の連言（`in ("normal","cache_fallback")` / `== "normal"`）が自然にFalse評価するため、reason code追加・新規分岐は不要 | DONE |
+| P3-03 | `_resolve_stale_threshold_hours()`新設。int/float かつ非bool かつ isfinite かつ >=0 のみ採用、それ以外はfrozen default 48.0を使用。stale gateを無効化しない | DONE |
+| P3-04 | hard-excluded recordの`code`echoから`str()`捏造を削除。`isinstance(raw.get("code"), str)`のときのみverbatim、それ以外は`""`（name/sectorの既存echoは変更なし） | DONE |
+
+### T3-01..T3-16 result
+
+全16項目 GREEN（既存136 test + TS 39 testを維持した上で追加）。
+
+| Test ID | 内容 | Result |
+|---|---|---|
+| T3-01 | riskReasons exact order（RR-01..RR-06、`==`完全一致、enum-sort mismatch >=3件確認） | PASS |
+| T3-02 | resolve_actionable_capacity monkeypatch behavioral（normal/bear両経路） | PASS |
+| T3-03 | deep-review境界 exact 55.0/54.9 behavioral | PASS |
+| T3-04 | actionable境界 exact 68.0/67.9 behavioral | PASS |
+| T3-05 | quality floor単独 exact 0.40/0.375 behavioral（valuation floorと独立） | PASS |
+| T3-06 | FORBIDDEN_KEYS に portfolioFit追加、payload全階層再帰検査 | PASS |
+| T3-07 | TS compile-time negative test（Equal/Expect type-level checker、`node_modules/.bin/tsc --noEmit`をtemp fileへ起動。themes/themeStatus optional化・selectedReasons拡大の3変異で非0確認） | PASS |
+| T3-08 | context型境界（CTX-01..CTX-08） | PASS |
+| T3-09 | candidates型境界（CTX-09..CTX-14） | PASS |
+| T3-10 | pipelinePath matrix（PP-01..PP-11、observability 0件assert含む） | PASS |
+| T3-11 | staleness matrix（ST-01..ST-18、TZ=UTC/Asia/Tokyo双方） | PASS |
+| T3-12 | identity echo matrix（ID-01..ID-14） | PASS |
+| T3-13 | invariance（INV-01..INV-04、§19.14(a')のrecord multiset比較、20置換） | PASS |
+| T3-14 | numeric matrix固定（1軸/2軸invalidでもactionable可、3軸でactionable不可・deep_review可） | PASS |
+| T3-15 | regime matrix（REG-01..REG-08） | PASS |
+| T3-16 | 既存弱assertion修正（test_28の同語反復解消、TS側deep_review条件付きskip解消） | PASS |
+
+### Mandatory mutation 13件 result
+
+全13件 behavioral RED確認 → exact inverse patch → SHA-256完全一致で復元。V2 survivor 7件
+（resolver bypass / deep-review `>` / actionable `>` / quality floor削除 / portfolioFit注入 /
+TS弱体化 / riskReasons enum-sort）を含め全件RED化。加えてA2-S §21.1 M-01..M-20（+M-18b、計21件）を
+現行コードベースで再実行し全件CAUGHT（RED維持）を確認。
+
+Mutation manifest path: `/Users/ryo/jp-portfolio-audit-reports/p5-b005-b1-r3-mutation-manifest.md`
+
+### Resolver bypass / threshold boundary / quality-floor result
+
+```text
+resolver bypass:        monkeypatch(resolve_actionable_capacity)経由の呼び出し経路をT3-02で直接検証。
+                        inline等価置換mutation(M3-02)はRED化を確認。
+deep-review 55.0境界:   marketScore=55.0ちょうどでdeep_review到達、54.9でscreened（T3-03）。
+actionable 68.0境界:    marketScore=68.0ちょうどでactionable到達、67.9でdeep_review止まり（T3-04）。
+quality floor:          quality=0.40ちょうどでactionable到達、0.375（<0.40）で非actionable。
+                        valuation floorとは独立に検証（T3-05）。
+```
+
+### Forbidden portfolioFit result
+
+`FORBIDDEN_KEYS`（test側）へ`portfolioFit`を追加。production出力への注入mutation(M3-06)は
+既存test_t20/t20bおよび新規T3-06で検出。productionは元よりportfolioFitを出力しない。
+
+### TS compile-time contract result
+
+`src/types/candidateFunnel.contract.test.ts`に`Equal`/`Expect`型レベルassertionを組み込んだ
+専用checkerを追加。実ソースを一時ファイルへ複製・mutationし`node_modules/.bin/tsc --noEmit --strict`
+を直接起動。themes optional化・themeStatus optional化・selectedReasons拡大の3変異すべてで
+非0 exit（`TS2344`）を確認。**プロジェクト全体の`npx tsc --noEmit`ではこの型が現状どこからも
+consumeされていないため検出不能（mirror-insufficient）であることも実測確認済み**——専用checkerが
+唯一の有効経路。
+
+### Risk reason order result
+
+A2-S §25.6の発火順（append順）を維持。V2が要求したenum順ソートはAUDIT_CONTRACT_OVERRULED。
+riskReasons append順を壊すmutation(M3-01)はT3-01の4 exact-order testで検出。
+
+### pipelinePath result
+
+silent coercion（欠損/不正値を`"normal"`扱い）を撤廃。欠損・`None`・非文字列・未知文字列・
+大小違い・`""`はすべて「全valid候補がscreened上限、reason code追加なし、artifact影響なし」で統一。
+`seed_fallback`のnot_generated分岐は変更なし。
+
+### staleThresholdHours result
+
+`_resolve_stale_threshold_hours()`により、int/float かつ非bool かつ isfinite かつ >=0 のみ採用。
+それ以外（None/bool/NaN/±Inf/負値/文字列/list）はfrozen default 48.0へfallbackし、stale gateを
+無効化しない。
+
+### Code echo / identity result
+
+hard-excluded recordの`code`echoから`str()`捏造を削除。invalid code（bool/int/float/list等）は
+すべて`""`を返す。`code="7777"`(valid)と`code=7777`(int, excluded)を同時に含む入力でも、
+出力`code`が捏造されて衝突することはない（INV-01で20置換 x record multiset比較 + excluded record
+echo検証）。
+
+### Unknown regime unchanged result
+
+A2-S §25.7を一字一句維持（変更0）。unknown/invalid/missing/非文字列regimeはすべて
+`regimeApplied=null`・capacity`(12,2)`・tier cap/reason code影響なしで統一。V2のfail-closed化要求は
+AUDIT_CONTRACT_OVERRULED（INVALID_FINDING）としてA2-S2で裁定済み、本ticketでは実装しない。
+
+### Numeric truth table unchanged result
+
+A2 §6.1・A2-S §8.5のfrozen truth tableを変更0で維持。1軸/2軸invalidでもactionable到達可
+（4/6==2/3 PASS）、3軸invalidでactionable不可・deep_review可をT3-14で新規behavioral固定。
+
+### Calibration results
+
+CAL-01..CAL-13（+CAL-08b/08c/09b、計16 test）すべてPASS、変更0。
+deep-review=40 / actionable=12 / bear・crisis actionable=5 / degraded actionable=0 / cap binding /
+top-40 Jaccard>=0.95（実測0.9512、既存fixtureのまま）/ rank swap>=1件、いずれも維持。
+fixture変更は行っていない。
+
+### Python test totals
+
+```text
+PYTHONDONTWRITEBYTECODE=1 python3 -B -m pytest tests/test_candidate_funnel_engine.py     220 passed（136→220）
++ adjacent（test_build_candidates_stocks / candidates_stocks_privacy_smoke /
+  jpx_universe_provider / whole_market_universe_provider）                                合計 466 passed
+```
+
+### UTC/JST Python totals
+
+```text
+TZ=UTC        target+adjacent   466 passed
+TZ=Asia/Tokyo target+adjacent   466 passed
+```
+
+### Vitest UTC/JST totals
+
+```text
+TZ=UTC        npx vitest run src/types/candidateFunnel.contract.test.ts    43 passed（39→43）
+TZ=Asia/Tokyo npx vitest run src/types/candidateFunnel.contract.test.ts    43 passed
+```
+
+### Full frontend test totals
+
+```text
+TZ=UTC        npm run test:unit    83 files / 2466 tests passed
+TZ=Asia/Tokyo npm run test:unit    83 files / 2466 tests passed
+```
+
+### TypeScript/build result
+
+```text
+npx tsc --noEmit     0 errors
+npm run build        PASS（129 modules, 既知の500kB warningのみ）
+git diff --check     PASS（whitespace error 0件）
+```
+
+### Artifact integrity
+
+```text
+candidate_funnel.json / candidate-funnel.json    repository全体で0件
+git diff --name-status 5ff7198..HEAD             3ファイルのみ（production 1 / test 2）
+data/candidates_stocks.json / public/data/**     差分0
+.github/** / package.json / package-lock.json    差分0
+src/store/** / src/domain/candidates/** /
+  src/services/** / src/components/**            差分0
+```
+
+### Residual constraints
+
+- prescreen metadata join は引き続きINACTIVE（degraded compatibility pathのみ動作確認可能）。
+- unknown regime neutral fallback（`regimeApplied=null`, capacity`(12,2)`）は仕様どおり維持。
+  fail-closed化は行っていない。
+- riskReasons append順（enum順ではない）を維持。
+- `candidate_funnel.json`は生成していない（scope外）。
+- frontend統合・portfolioFit・officialDecision・SAFE_MODE/Tier A接続はすべてINACTIVE。
+
+### Next
+
+```text
+P5-B005-B1-V3:
+このB1-R3実装の独立監査（GPT-5.6/Codex high等）。P3-01..P3-04・T3-01..T3-16・mandatory mutation
+13件・A2-S §21.1回帰21件の主張を独立検証すること。V2/A2-S2の裁定内容（unknown regime neutral
+fallback維持・riskReasons append順維持が正である旨）を所与として監査すること。
+
+B1-V3通過後にのみ P5-B005-B2 着手可:
+prescreen cache score/rank/poolをenrichment candidateへcode-joinし、candidate_funnel.jsonを
+生成するbatch・quality gate・privacy smokeを実装。A2-S §25.20のB2 production-distribution
+calibration gate（P-01..P-15）を完了条件に含めること。
+```
+
 ### deep-review/actionable counts result
 
 ```text

@@ -124,7 +124,7 @@ def make(code, sector, per, pbr, roe, div, sigma, mom, status="ok", prescreen=No
 
 candidates = [
     make("1001", "SecA", 5.0, 0.4, 35.0, 6.0, 0.10, 20.0, prescreen=0.9),   # actionable-eligible
-    make("1002", "SecB", 12.0, 1.0, 15.0, 3.0, 0.20, 5.0, prescreen=0.5),   # deep-review-eligible
+    make("1002", "SecB", 25.0, 2.0, 5.0, 1.0, 0.20, 0.0, prescreen=0.2),    # deep-review (not actionable)
     make("1003", "SecC", 60.0, 4.0, -5.0, 0.1, 0.15, -10.0, prescreen=0.1), # screened
     make("", "SecD", 10.0, 1.0, 10.0, 2.0, 0.2, 5.0, prescreen=0.5),        # excluded (empty code)
 ]
@@ -482,14 +482,131 @@ describe('candidateFunnel payload shape parity (P5-B005-B1-R2, A2-S MF-09)', () 
   })
 
   it('actionable candidate carries SELECTED_ACTIONABLE and deep_review carries SELECTED_DEEP_REVIEW', () => {
+    // A2-S2 §19.17 T3-16: 旧 test は `if (tier) { assert }` という条件付き
+    // skip だったため、母集団がその tier に到達しない場合でも無条件に
+    // PASS していた（deep_review 分岐は一度も実行されていなかった）。
+    // fixture population（1002）は deep_review に確実に到達するよう
+    // 調整済みのため、precondition を toBeDefined() で先に assert した上で
+    // 各 tier の selectedReasons を無条件に検証する。
     const candidates = payload.candidates as Record<string, unknown>[]
     const actionable = candidates.find((c) => c.tier === 'actionable')
-    if (actionable) {
-      expect(actionable.selectedReasons).toEqual(['SELECTED_ACTIONABLE'])
-    }
+    expect(actionable).toBeDefined()
+    expect(actionable?.selectedReasons).toEqual(['SELECTED_ACTIONABLE'])
+
+    const deepReview = candidates.find((c) => c.tier === 'deep_review')
+    expect(deepReview).toBeDefined()
+    expect(deepReview?.selectedReasons).toEqual(['SELECTED_DEEP_REVIEW'])
+
     const screened = candidates.find((c) => c.tier === 'screened')
-    if (screened) {
-      expect(screened.selectedReasons).toEqual([])
+    expect(screened).toBeDefined()
+    expect(screened?.selectedReasons).toEqual([])
+  })
+})
+
+// A2-S2 §19.17 T3-07: candidateFunnel.ts の interface を弱体化する3変異
+// （themes optional化 / themeStatus optional化 / selectedReasons を
+// string[] へ拡大）のそれぞれで `tsc --noEmit` が非0で終了することを
+// compile-time に検証する。runtime のみの parity test（既存の
+// 'tier values all belong to the TS tier union' 等）はここで代替しない
+// — M3-07（TS interface requiredness/nullable 弱体化）は型システムの
+// 静的検査でしか kill できないため、実際に tsc プロセスを起動する。
+describe('candidateFunnel TypeScript compile-time contract (A2-S2 T3-07)', () => {
+  const fs = require('fs') as {
+    readFileSync: (p: string, enc: string) => string
+    mkdtempSync: (prefix: string) => string
+    writeFileSync: (p: string, content: string) => void
+    rmSync: (p: string, opts: { recursive: boolean; force: boolean }) => void
+  }
+  const os = require('os') as { tmpdir: () => string }
+  const path = require('path') as { join: (...parts: string[]) => string }
+  const { execFileSync } = require('child_process') as {
+    execFileSync: (file: string, args: string[], options: { encoding: 'utf-8'; stdio?: string[] }) => string
+  }
+
+  // vitestはrepository rootから実行される契約（既存 loadPythonConstants と
+  // 同じ前提）。tsc バイナリは devDependencies に既に存在する
+  // node_modules/.bin/tsc を直接呼び出す（package.json 変更なしで完結）。
+  const SOURCE_PATH = path.join('src', 'types', 'candidateFunnel.ts')
+  const TSC_BIN = path.join('node_modules', '.bin', 'tsc')
+
+  const TYPE_CHECKER_SNIPPET = `
+// ---- T3-07 compile-time contract checker (test-only, generated at runtime) ----
+type __Eq<A, B> = (<T>() => T extends A ? 1 : 0) extends (<T>() => T extends B ? 1 : 0) ? true : false
+type __Expect<T extends true> = T
+
+type __ThemesRequired = __Eq<
+  Pick<CandidateFunnelCandidate, 'themes'>,
+  Required<Pick<CandidateFunnelCandidate, 'themes'>>
+>
+type __ThemeStatusRequired = __Eq<
+  Pick<CandidateFunnelCandidate, 'themeStatus'>,
+  Required<Pick<CandidateFunnelCandidate, 'themeStatus'>>
+>
+type __SelectedReasonsNarrow = __Eq<
+  CandidateFunnelCandidate['selectedReasons'],
+  CandidateFunnelSelectedReason[]
+>
+
+type __check1 = __Expect<__ThemesRequired>
+type __check2 = __Expect<__ThemeStatusRequired>
+type __check3 = __Expect<__SelectedReasonsNarrow>
+`
+
+  function compileCheck(mutatedSource: string): { exitCode: number; output: string } {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'candidate-funnel-t307-'))
+    const file = path.join(dir, 'check.ts')
+    fs.writeFileSync(file, mutatedSource + TYPE_CHECKER_SNIPPET)
+    try {
+      const output = execFileSync(TSC_BIN, ['--noEmit', '--strict', '--target', 'ES2020', '--module', 'commonjs', file], {
+        encoding: 'utf-8',
+      })
+      return { exitCode: 0, output }
+    } catch (e) {
+      const err = e as { status?: number; stdout?: string; message?: string }
+      return { exitCode: err.status ?? 1, output: err.stdout ?? err.message ?? '' }
+    } finally {
+      fs.rmSync(dir, { recursive: true, force: true })
     }
+  }
+
+  const originalSource = fs.readFileSync(SOURCE_PATH, 'utf-8')
+
+  function replaceOnce(source: string, find: string, replace: string): string {
+    const count = source.split(find).length - 1
+    if (count !== 1) {
+      throw new Error(`expected exactly 1 occurrence of ${JSON.stringify(find)}, found ${count}`)
+    }
+    return source.replace(find, replace)
+  }
+
+  it('baseline (unmutated) source compiles cleanly with all 3 checks true', () => {
+    const result = compileCheck(originalSource)
+    expect(result.exitCode).toBe(0)
+  })
+
+  it('M3-07a: making themes optional causes tsc --noEmit to fail', () => {
+    const mutated = replaceOnce(originalSource, '  themes: string[]\n', '  themes?: string[]\n')
+    const result = compileCheck(mutated)
+    expect(result.exitCode).not.toBe(0)
+  })
+
+  it('M3-07b: making themeStatus optional causes tsc --noEmit to fail', () => {
+    const mutated = replaceOnce(
+      originalSource,
+      '  themeStatus: CandidateFunnelThemeStatus\n',
+      '  themeStatus?: CandidateFunnelThemeStatus\n'
+    )
+    const result = compileCheck(mutated)
+    expect(result.exitCode).not.toBe(0)
+  })
+
+  it('M3-07c: widening selectedReasons to string[] causes tsc --noEmit to fail', () => {
+    const mutated = replaceOnce(
+      originalSource,
+      '  selectedReasons: CandidateFunnelSelectedReason[]\n',
+      '  selectedReasons: string[]\n'
+    )
+    const result = compileCheck(mutated)
+    expect(result.exitCode).not.toBe(0)
   })
 })

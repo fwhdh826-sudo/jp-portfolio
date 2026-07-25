@@ -11,7 +11,10 @@ audited SHA 665eba993b3d3ccfcf434c245a8784765f34bf43）に対する実装検証�
   compatibility(64-70)。
 """
 import copy
+import json
 import math
+
+import pytest
 
 import data.candidate_funnel_engine as engine
 from data.candidate_funnel_engine import (
@@ -64,6 +67,7 @@ FORBIDDEN_KEYS = {
     "maxAmount",
     "sizing",
     "portfolio",
+    "portfolioFit",
     "holdings",
     "cash",
     "reserve",
@@ -422,11 +426,14 @@ def test_27_negative_roe_no_quality_benefit():
 
 
 def test_28_nan_rejected_degraded():
+    # A2-S2 §19.17 T3-16: `in ("invalid", "available")` は常に真になる同語
+    # 反復だった。per=NaN でも pbr/dividendYield が有効な母集団では
+    # _combine_status が必ず "available" を返すことを単一の期待値で固定する。
     pop = make_population(10, seed_offset=900)
     pop[0]["per"] = float("nan")
     result = run(pop)
     comp = next(x for x in result["candidates"][0]["scoreBreakdown"] if x["id"] == "valuation")
-    assert comp["status"] in ("invalid", "available")  # per invalid だが pbr/div は有効なら available
+    assert comp["status"] == "available"  # pbr/dividendYield が present_valid のため
 
 
 def test_29_infinity_rejected_degraded():
@@ -1803,3 +1810,787 @@ def test_t01b_round_half_up_behavioral_market_score():
     result = run([c])
     out = result["candidates"][0]
     assert out["marketScore"] == 34.3
+
+
+# ===========================================================================
+# P5-B005-B1-R3: A2-S2 Frozen Authority Clarification §19.17 T3-01..T3-16
+#
+# authority: /Users/ryo/jp-portfolio-audit-reports/p5-b005-a2-s2-authority-
+# clarification.md §19（Frozen Authority Clarification）。P3-01..P3-04 の
+# production 修正と、B1-V2 survived mutation 7件（VALID_TEST_GAP）を閉じる
+# behavioral test 群。V2 の unknown regime fail-closed / riskReasons enum順
+# 要求は AUDIT_CONTRACT_OVERRULED（§6/§10/§11）のため実装しない — 本節の
+# テストは既存 frozen 挙動（append順・neutral fallback）を固定する。
+# ===========================================================================
+
+
+def _canonical_multiset(candidates):
+    """A2-S2 §19.14 (a'): code をキーとする写像ではなく、JSON
+    sort_keys=True 直列化文字列の multiset で入力順不変性を検証する
+    （出力 code が一意でない入力でも well-defined）。"""
+    return sorted(json.dumps(c, sort_keys=True) for c in candidates)
+
+
+# ---------------------------------------------------------------------------
+# T3-01: riskReasons exact order（RR-01..RR-06）
+# ---------------------------------------------------------------------------
+
+
+def _rr_filler(n, offset):
+    out = []
+    for i in range(n):
+        idx = i + offset
+        out.append(
+            make_candidate(
+                code=f"8{idx % 900:03d}",
+                sector=f"rrfill{idx}",
+                per=20.0 + idx,
+                pbr=1.0 + idx * 0.1,
+                roe=5.0 + idx * 0.2,
+                dividendYield=1.0,
+                sigma252d=0.15,
+                mom3m=10.0 + idx,
+                prescreenScore=0.5,
+            )
+        )
+    return out
+
+
+def test_t3_01a_rr01_red_flag_plus_weak_momentum_exact_order():
+    c = make_candidate(code="1001", sector="secRR1", sigma252d=0.60, mom3m=-999.0, prescreenScore=0.5)
+    result = run([c] + _rr_filler(20, 100))
+    assert result["candidates"][0]["riskReasons"] == ["SOFT_VOLATILITY_RED_FLAG", "SOFT_WEAK_MOMENTUM"]
+
+
+def test_t3_01b_rr02_volatility_unavailable_plus_low_confidence_exact_order():
+    c = make_candidate(
+        code="1002", sector="secRR2", sigma252d=None, per=None, pbr=None, mom3m=-999.0, prescreenScore=0.5
+    )
+    result = run([c] + _rr_filler(20, 200))
+    assert result["candidates"][0]["riskReasons"] == [
+        "SOFT_VOLATILITY_UNAVAILABLE",
+        "SOFT_WEAK_MOMENTUM",
+        "SOFT_LOW_DATA_CONFIDENCE",
+    ]
+
+
+def test_t3_01c_rr03_red_flag_momentum_stale_fallback_exact_order():
+    c = make_candidate(code="1003", sector="secRR3", sigma252d=0.60, mom3m=-999.0, prescreenScore=0.5)
+    result = run(
+        [c] + _rr_filler(20, 300),
+        pipelinePath="cache_fallback",
+        sourceUpdatedAt="2020-01-01T00:00:00Z",
+        asOf="2026-01-01T00:00:00Z",
+        staleThresholdHours=48,
+    )
+    assert result["candidates"][0]["riskReasons"] == [
+        "SOFT_VOLATILITY_RED_FLAG",
+        "SOFT_WEAK_MOMENTUM",
+        "SOFT_STALE_SOURCE",
+        "SOFT_FALLBACK_PROVENANCE",
+    ]
+
+
+def test_t3_01d_rr04_red_flag_momentum_low_confidence_prescreen_missing_exact_order():
+    c = make_candidate(
+        code="1004", sector="secRR4", sigma252d=0.60, mom3m=-999.0, per=None, pbr=None, roe=None
+    )
+    result = run([c] + _rr_filler(20, 400))
+    assert result["candidates"][0]["riskReasons"] == [
+        "SOFT_VOLATILITY_RED_FLAG",
+        "SOFT_WEAK_MOMENTUM",
+        "SOFT_LOW_DATA_CONFIDENCE",
+        "SOFT_PRESCREEN_METADATA_MISSING",
+    ]
+
+
+def test_t3_01e_rr05_sector_crowding_is_last():
+    # A2-S §25.6 #9: SOFT_SECTOR_CROWDING は他の soft reason より必ず後段で
+    # 評価される。VOL_ELEVATED（deep_review-only）候補を同一 sector に
+    # DEEP_REVIEW_SECTOR_HARD_CAP(6) 超過数だけ配置し、cap で screened へ
+    # 降格した候補の riskReasons 末尾が SOFT_SECTOR_CROWDING であることを
+    # 検証する。
+    pop = [
+        make_candidate(code=f"700{i}", sector="SAMESEC_RR5", sigma252d=0.40, prescreenScore=0.9)
+        for i in range(8)
+    ]
+    result = run(pop)
+    overflowed = [c for c in result["candidates"] if c["tier"] == "screened"]
+    assert len(overflowed) == 2  # 8件中 cap=6 を超えた2件
+    for c in overflowed:
+        assert c["riskReasons"][-1] == "SOFT_SECTOR_CROWDING"
+        assert c["riskReasons"] == ["SOFT_ELEVATED_VOLATILITY", "SOFT_SECTOR_CROWDING"]
+
+
+def test_t3_01f_rr06_append_order_differs_from_enum_sort_order():
+    # A2-S2 §19.13: riskReasons を enum index 順へソートする mutation は
+    # RR-01..RR-04 のうち最低3件で出力を変えること（append順が enum順と
+    # 一致しないことの固定）。
+    order = {code: idx for idx, code in enumerate(CANDIDATE_FUNNEL_SOFT_REASON_CODES)}
+    vectors = [
+        ["SOFT_VOLATILITY_RED_FLAG", "SOFT_WEAK_MOMENTUM"],
+        ["SOFT_VOLATILITY_UNAVAILABLE", "SOFT_WEAK_MOMENTUM", "SOFT_LOW_DATA_CONFIDENCE"],
+        ["SOFT_VOLATILITY_RED_FLAG", "SOFT_WEAK_MOMENTUM", "SOFT_STALE_SOURCE", "SOFT_FALLBACK_PROVENANCE"],
+        [
+            "SOFT_VOLATILITY_RED_FLAG",
+            "SOFT_WEAK_MOMENTUM",
+            "SOFT_LOW_DATA_CONFIDENCE",
+            "SOFT_PRESCREEN_METADATA_MISSING",
+        ],
+    ]
+    differing = sum(1 for v in vectors if sorted(v, key=lambda r: order[r]) != v)
+    assert differing >= 3
+
+
+# ---------------------------------------------------------------------------
+# T3-02: resolve_actionable_capacity call-path（resolver bypass 検出）
+# ---------------------------------------------------------------------------
+
+
+def test_t3_02a_resolver_call_path_behavioral_normal(monkeypatch):
+    # A2-S2 §19.17 T3-02: resolve_actionable_capacity を monkeypatch し、
+    # inline bypass mutation では検出できない「呼び出し経路そのもの」を
+    # 検証する。定数直接参照へ置換する mutation は、この monkeypatch が
+    # 反映されないため counts.actionable が 1 にならず RED になる。
+    monkeypatch.setattr(engine, "resolve_actionable_capacity", lambda regime: (1, 1))
+    strong = [_strong_candidate(f"990{i}", f"secT302_{i}") for i in range(5)]
+    filler = make_weak_filler(15, seed_offset=9900)
+    result = run(strong + filler)
+    assert result["counts"]["actionable"] == 1
+    assert result["selectionObservability"]["actionableSectorCapApplied"] == 1
+    assert result["selectionObservability"]["actionableHardMaxApplied"] == 1
+
+
+def test_t3_02b_resolver_call_path_behavioral_bear(monkeypatch):
+    monkeypatch.setattr(engine, "resolve_actionable_capacity", lambda regime: (1, 1))
+    strong = [_strong_candidate(f"991{i}", f"secT302B_{i}") for i in range(5)]
+    filler = make_weak_filler(15, seed_offset=9910)
+    result = run(strong + filler, regime="bear")
+    assert result["counts"]["actionable"] == 1
+    assert result["selectionObservability"]["actionableSectorCapApplied"] == 1
+    assert result["selectionObservability"]["actionableHardMaxApplied"] == 1
+
+
+# ---------------------------------------------------------------------------
+# T3-03: deep-review 境界 behavioral（marketScore exact 55.0 / 54.9）
+# ---------------------------------------------------------------------------
+
+
+def test_t3_03a_deep_review_exact_55_0_passes():
+    # n=1 母集団は percentile_rank が全軸 0.5 固定になるため
+    # stage3 = 0.55*0.5 + 0.45*0.5 = 0.5。raw_composite = 0.35*p + 0.325。
+    # p = 9/14 で raw_composite = 0.55 -> marketScore = 55.0 ちょうど。
+    c = make_candidate(code="7001", sector="secT303", prescreenScore=9.0 / 14.0)
+    result = run([c])
+    out = result["candidates"][0]
+    assert out["marketScore"] == 55.0
+    assert out["tier"] == "deep_review"
+
+
+def test_t3_03b_deep_review_exact_54_9_fails():
+    c = make_candidate(code="7002", sector="secT303b", prescreenScore=0.64)
+    result = run([c])
+    out = result["candidates"][0]
+    assert out["marketScore"] == 54.9
+    assert out["tier"] != "deep_review"
+    assert out["tier"] == "screened"
+
+
+# ---------------------------------------------------------------------------
+# T3-04: actionable 境界 behavioral（marketScore exact 68.0 / 67.9）
+# ---------------------------------------------------------------------------
+
+
+def _t304_pair(prescreen_score):
+    # target(8001) は per/pbr/roe/dividendYield の全軸で filler(8002) より
+    # 明確に優れており、2候補中で valuation=quality=1.0 ちょうどになる。
+    target = make_candidate(
+        code="8001",
+        sector="secT304X",
+        per=0.5,
+        pbr=0.1,
+        roe=50.0,
+        dividendYield=20.0,
+        sigma252d=0.10,
+        mom3m=5.0,
+        prescreenScore=prescreen_score,
+    )
+    filler = make_candidate(
+        code="8002",
+        sector="secT304Y",
+        per=50.0,
+        pbr=5.0,
+        roe=-10.0,
+        dividendYield=0.0,
+        sigma252d=0.10,
+        mom3m=5.0,
+        prescreenScore=0.1,
+    )
+    return [target, filler]
+
+
+def test_t3_04a_actionable_exact_68_0_passes():
+    # stage3 = 0.55*1.0 + 0.45*1.0 = 1.0。raw_composite = 0.35*p + 0.65。
+    # p = 3/35 で raw_composite = 0.68 -> marketScore = 68.0 ちょうど。
+    result = run(_t304_pair(3.0 / 35.0))
+    out = next(c for c in result["candidates"] if c["code"] == "8001")
+    assert out["marketScore"] == 68.0
+    assert out["tier"] == "actionable"
+
+
+def test_t3_04b_actionable_exact_67_9_fails():
+    result = run(_t304_pair(29.0 / 350.0))
+    out = next(c for c in result["candidates"] if c["code"] == "8001")
+    assert out["marketScore"] == 67.9
+    assert out["tier"] != "actionable"
+    assert out["tier"] == "deep_review"
+
+
+# ---------------------------------------------------------------------------
+# T3-05: quality floor 単独 behavioral（valuation floor と独立に検証）
+# ---------------------------------------------------------------------------
+
+
+def _t305_population(target_roe, target_code, other_roes, sector_prefix):
+    # 6候補。per/pbr/dividendYield は target が最良（valuation rank=1.0
+    # 固定）で、roe だけを target_roe / other_roes で分散させ quality の
+    # percentile rank を厳密に制御する。
+    pop = []
+    pop.append(
+        make_candidate(
+            code=target_code,
+            sector=f"{sector_prefix}T",
+            per=0.5,
+            pbr=0.05,
+            roe=target_roe,
+            dividendYield=20.0,
+            sigma252d=0.10,
+            mom3m=5.0,
+            prescreenScore=1.0,
+        )
+    )
+    for i, roe_v in enumerate(other_roes):
+        pop.append(
+            make_candidate(
+                code=f"61{i:02d}",
+                sector=f"{sector_prefix}{i}",
+                per=1.0 + i,
+                pbr=0.1 + i * 0.1,
+                roe=roe_v,
+                dividendYield=10.0 - i,
+                sigma252d=0.10,
+                mom3m=5.0,
+                prescreenScore=0.1,
+            )
+        )
+    return pop
+
+
+def test_t3_05a_quality_exact_040_boundary_passes_actionable():
+    # 6候補・roe=[target=20,0,10,30,40,50] -> percentile_rank([0,10,20,30,40,50])
+    # の 20 に対応する rank は厳密に 0.4（count_less=2, N=6 -> 2/5）。
+    pop = _t305_population(20.0, "5002", [0.0, 10.0, 30.0, 40.0, 50.0], "secT305A")
+    result = run(pop)
+    out = next(c for c in result["candidates"] if c["code"] == "5002")
+    valuation = next(x for x in out["scoreBreakdown"] if x["id"] == "valuation")["value"]
+    quality = next(x for x in out["scoreBreakdown"] if x["id"] == "quality")["value"]
+    assert valuation is not None and valuation >= ACTIONABLE_MIN_VALUATION_PERCENTILE
+    assert quality == 0.4
+    assert out["marketScore"] is not None and out["marketScore"] >= ACTIONABLE_MIN_MARKET_SCORE
+    assert out["tier"] == "actionable"
+
+
+def test_t3_05b_quality_just_below_040_blocks_actionable():
+    # 9候補・roe を8刻みで分散させ target を count_less=3 の位置（3/8=0.375）
+    # に置く。valuation は floor(0.40) を明確に上回ったまま quality だけが
+    # floor 未満になる。
+    other_roes = [0.0, 10.0, 20.0, 40.0, 50.0, 60.0, 70.0, 80.0]
+    pop = _t305_population(30.0, "6003", other_roes, "secT305B")
+    result = run(pop)
+    out = next(c for c in result["candidates"] if c["code"] == "6003")
+    valuation = next(x for x in out["scoreBreakdown"] if x["id"] == "valuation")["value"]
+    quality = next(x for x in out["scoreBreakdown"] if x["id"] == "quality")["value"]
+    assert valuation is not None and valuation >= ACTIONABLE_MIN_VALUATION_PERCENTILE
+    assert quality is not None and quality < ACTIONABLE_MIN_QUALITY_PERCENTILE
+    assert out["marketScore"] is not None and out["marketScore"] >= ACTIONABLE_MIN_MARKET_SCORE
+    assert out["tier"] != "actionable"
+
+
+# ---------------------------------------------------------------------------
+# T3-06: FORBIDDEN_KEYS に portfolioFit を含め全階層再帰検査（M1-05）
+# ---------------------------------------------------------------------------
+
+
+def test_t3_06_portfolio_fit_is_forbidden_and_absent_recursively():
+    assert "portfolioFit" in FORBIDDEN_KEYS
+    pop = make_population(10, seed_offset=6000)
+    pop[0]["code"] = "12345"  # excluded record も含める
+    result = run(pop)
+    found = _walk_forbidden_keys(result)
+    assert found == set(), f"forbidden keys leaked: {found}"
+    assert "portfolioFit" not in json.dumps(result)
+
+
+# ---------------------------------------------------------------------------
+# T3-08 / T3-09: context / candidates 型境界（CTX-01..CTX-14）
+# ---------------------------------------------------------------------------
+
+
+def test_t3_08_context_none_and_empty_dict_no_pipeline_path_all_screened():
+    # CTX-01 / CTX-02
+    pop = make_population(5, seed_offset=6100)
+    for ctx in (None, {}):
+        result = build_candidate_funnel(copy.deepcopy(pop), ctx)
+        assert result["status"] == "generated"
+        assert result["counts"]["deepReview"] == 0
+        assert result["counts"]["actionable"] == 0
+
+
+def test_t3_08b_context_non_mapping_raises_type_error():
+    # CTX-03..CTX-07
+    pop = make_population(3, seed_offset=6200)
+    for bad_ctx in ("normal", 0, [], False, ("normal",)):
+        try:
+            build_candidate_funnel(copy.deepcopy(pop), bad_ctx)
+            raise AssertionError(f"expected TypeError for context={bad_ctx!r}")
+        except TypeError as e:
+            assert str(e) == "context must be a mapping or None"
+
+
+def test_t3_08c_context_unknown_key_ignored():
+    # CTX-08
+    pop = make_population(3, seed_offset=6300)
+    result = build_candidate_funnel(pop, {"pipelinePath": "normal", "unknownKey": object()})
+    assert result["status"] == "generated"
+
+
+def test_t3_09_candidates_non_sequence_raises_type_error():
+    # CTX-09..CTX-12: TypeError を送出し、record を捏造しない
+    ctx = {"pipelinePath": "normal"}
+    for bad_candidates in (None, "abc", {"a": 1}, 123):
+        try:
+            build_candidate_funnel(bad_candidates, ctx)
+            raise AssertionError(f"expected TypeError for candidates={bad_candidates!r}")
+        except TypeError as e:
+            assert str(e) == "candidates must be a list or tuple"
+
+
+def test_t3_09b_candidates_empty_list_or_tuple_no_exception():
+    # CTX-13
+    ctx = {"pipelinePath": "normal"}
+    for empty in ([], ()):
+        result = build_candidate_funnel(empty, ctx)
+        assert result["counts"] == {"total": 0, "excluded": 0, "screened": 0, "deepReview": 0, "actionable": 0}
+        assert result["scoreDistribution"]["count"] == 0
+
+
+def test_t3_09c_candidates_tuple_behaves_like_list():
+    # CTX-14
+    pop = make_population(10, seed_offset=6400)
+    r_list = build_candidate_funnel(pop, {"pipelinePath": "normal"})
+    r_tuple = build_candidate_funnel(tuple(pop), {"pipelinePath": "normal"})
+    assert r_list == r_tuple
+
+
+# ---------------------------------------------------------------------------
+# T3-10: pipelinePath matrix（PP-01..PP-11）
+# ---------------------------------------------------------------------------
+
+
+def _filler_with_prescreen(n, seed_offset):
+    # make_weak_filler は prescreenScore を持たないため、そのままだと
+    # PRESCREEN_METADATA_MISSING degradation が population 全体へ混入する。
+    # pipelinePath / regime matrix の「degradationReasons == []」期待に
+    # 合わせ、全 filler へ有効な prescreenScore を明示的に付与する。
+    out = make_weak_filler(n, seed_offset=seed_offset)
+    for i, c in enumerate(out):
+        c["prescreenScore"] = 0.1 + (i % 5) * 0.05
+    return out
+
+
+def _pp_population():
+    strong = [_strong_candidate(f"66{i:02d}", f"secPP{i}") for i in range(5)]
+    filler = _filler_with_prescreen(15, seed_offset=6600)
+    return strong + filler
+
+
+@pytest.mark.parametrize(
+    "pipeline_path,expected_tier,expected_status",
+    [
+        ("normal", "actionable", "generated"),
+        ("cache_fallback", "deep_review", "generated"),
+        ("NORMAL", "screened", "generated"),
+        ("unknown", "screened", "generated"),
+        ("", "screened", "generated"),
+        (None, "screened", "generated"),
+        (123, "screened", "generated"),
+        (True, "screened", "generated"),
+        (["normal"], "screened", "generated"),
+    ],
+)
+def test_t3_10a_pipeline_path_matrix(pipeline_path, expected_tier, expected_status):
+    pop = _pp_population()
+    ctx = {"pipelinePath": pipeline_path}
+    result = build_candidate_funnel(pop, ctx)
+    assert result["status"] == expected_status
+    strong_out = result["candidates"][0]
+    assert strong_out["tier"] == expected_tier
+    if expected_tier == "screened":
+        assert strong_out["riskReasons"] == []
+        assert result["degradationReasons"] == []
+        obs = result["selectionObservability"]
+        assert obs["deepReviewEligibleCount"] == 0
+        assert obs["actionableEligibleCount"] == 0
+        assert result["counts"]["screened"] == result["counts"]["total"] - result["counts"]["excluded"]
+
+
+def test_t3_10b_pipeline_path_missing_key_screened():
+    # PP-11
+    pop = _pp_population()
+    result = build_candidate_funnel(pop, {})
+    assert result["status"] == "generated"
+    assert result["candidates"][0]["tier"] == "screened"
+    obs = result["selectionObservability"]
+    assert obs["deepReviewEligibleCount"] == 0
+    assert obs["actionableEligibleCount"] == 0
+
+
+def test_t3_10c_pipeline_path_seed_fallback_not_generated():
+    # PP-03
+    pop = _pp_population()
+    result = build_candidate_funnel(pop, {"pipelinePath": "seed_fallback"})
+    assert result["status"] == "not_generated"
+    assert result["counts"]["actionable"] == 0
+    assert result["candidates"] == []
+    assert any("SEED_FALLBACK_PIPELINE_PATH" in r for r in result["degradationReasons"])
+
+
+def test_t3_10d_pipeline_path_score_not_suppressed_when_invalid():
+    # PP-04..PP-11 の marketScore は PP-01 と同一値であること（score算出を
+    # pipelinePath 不正で抑制しない）。
+    pop = _pp_population()
+    result_normal = build_candidate_funnel(copy.deepcopy(pop), {"pipelinePath": "normal"})
+    result_unknown = build_candidate_funnel(copy.deepcopy(pop), {"pipelinePath": "unknown"})
+    assert result_normal["candidates"][0]["marketScore"] == result_unknown["candidates"][0]["marketScore"]
+
+
+# ---------------------------------------------------------------------------
+# T3-11: staleness matrix（ST-01..ST-18）
+# ---------------------------------------------------------------------------
+
+_ST_RECENT = "2026-07-25T00:00:00Z"
+_ST_PAST = "2026-06-01T00:00:00Z"  # _ST_RECENT との差は約1296時間
+_ST_FUTURE = "2099-01-01T00:00:00Z"
+
+
+@pytest.mark.parametrize(
+    "threshold,source_updated_at,as_of,expected_is_stale",
+    [
+        (48.0, _ST_PAST, _ST_RECENT, True),  # ST-01
+        ("__missing__", _ST_PAST, _ST_RECENT, True),  # ST-02（キー欠損 -> 48.0 fallback）
+        (None, _ST_PAST, _ST_RECENT, True),  # ST-03
+        ("abc", _ST_PAST, _ST_RECENT, True),  # ST-04
+        (float("nan"), _ST_PAST, _ST_RECENT, True),  # ST-05
+        (float("inf"), _ST_PAST, _ST_RECENT, True),  # ST-06
+        (-1, _ST_RECENT, _ST_RECENT, False),  # ST-07（直近 + 48.0 fallback）
+        (True, _ST_PAST, _ST_RECENT, True),  # ST-08（bool は数値として認めない）
+        (48.0, "__missing__", _ST_RECENT, False),  # ST-09
+        (48.0, None, _ST_RECENT, False),  # ST-10
+        (48.0, "not-a-date", _ST_RECENT, False),  # ST-11
+        (48.0, 12345, _ST_RECENT, False),  # ST-12
+        (48.0, _ST_PAST, "__missing__", False),  # ST-13
+        (48.0, _ST_PAST, "xx", False),  # ST-14
+        (48.0, _ST_FUTURE, _ST_RECENT, False),  # ST-15
+        (0, "2026-07-24T23:59:59Z", _ST_RECENT, True),  # ST-18
+    ],
+)
+def test_t3_11a_staleness_matrix_behavioral(threshold, source_updated_at, as_of, expected_is_stale):
+    strong = _strong_candidate("7501", "secST1")
+    filler = make_weak_filler(15, seed_offset=7500)
+    ctx = {"pipelinePath": "normal"}
+    if source_updated_at != "__missing__":
+        ctx["sourceUpdatedAt"] = source_updated_at
+    if as_of is not None:
+        ctx["asOf"] = as_of
+    if threshold != "__missing__":
+        ctx["staleThresholdHours"] = threshold
+    result = run([strong] + filler, **{k: v for k, v in ctx.items() if k != "pipelinePath"})
+    out = result["candidates"][0]
+    expected_tier = "deep_review" if expected_is_stale else "actionable"
+    assert result["selectionObservability"]["sourceStale"] == expected_is_stale
+    assert out["marketScore"] is not None and out["marketScore"] >= 68.0
+    assert out["tier"] == expected_tier
+    if expected_is_stale:
+        assert "SOFT_STALE_SOURCE" in out["riskReasons"]
+    else:
+        assert "SOFT_STALE_SOURCE" not in out["riskReasons"]
+
+
+def test_t3_11b_naive_timestamp_treated_as_utc_tz_independent():
+    # ST-16: timezone なし ISO は UTC とみなす（TZ=UTC / TZ=Asia/Tokyo の
+    # いずれで pytest を実行しても同一結果になること — engine は壁時計
+    # 時刻を一切使わないため、この behavioral test 自体はプロセスの TZ
+    # 環境変数に依存しない）。
+    strong = _strong_candidate("7502", "secST16")
+    filler = make_weak_filler(15, seed_offset=7600)
+    result = run(
+        [strong] + filler,
+        sourceUpdatedAt="2026-06-01T00:00:00",
+        asOf="2026-07-25T00:00:00",
+        staleThresholdHours=48,
+    )
+    out = result["candidates"][0]
+    assert result["selectionObservability"]["sourceStale"] is True
+    assert out["tier"] == "deep_review"
+
+
+def test_t3_11c_offset_aware_timestamp_stale_true():
+    # ST-17
+    strong = _strong_candidate("7503", "secST17")
+    filler = make_weak_filler(15, seed_offset=7700)
+    result = run(
+        [strong] + filler,
+        sourceUpdatedAt="2026-06-01T00:00:00Z",
+        asOf="2026-07-25T09:00:00+09:00",
+        staleThresholdHours=48,
+    )
+    out = result["candidates"][0]
+    assert result["selectionObservability"]["sourceStale"] is True
+    assert out["tier"] == "deep_review"
+
+
+# ---------------------------------------------------------------------------
+# T3-12: identity echo matrix（ID-01..ID-14）
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize(
+    "code_value,expected_excluded,expected_hard_reasons,expected_echo",
+    [
+        ("1234", False, [], "1234"),  # ID-01
+        ("   ", False, [], "   "),  # ID-02
+        ("BAD!", False, [], "BAD!"),  # ID-03
+        ("12345", True, ["HARD_PREFERRED_OR_NONSTANDARD_CODE"], "12345"),  # ID-04
+        ("", True, ["HARD_CONTRACT_VIOLATION"], ""),  # ID-05
+        (None, True, ["HARD_CONTRACT_VIOLATION"], ""),  # ID-06
+        (True, True, ["HARD_CONTRACT_VIOLATION"], ""),  # ID-07: "True" 禁止
+        (7777, True, ["HARD_CONTRACT_VIOLATION"], ""),  # ID-08: "7777" 禁止
+        (77.0, True, ["HARD_CONTRACT_VIOLATION"], ""),  # ID-09
+        (["x"], True, ["HARD_CONTRACT_VIOLATION"], ""),  # ID-10
+    ],
+)
+def test_t3_12a_identity_echo_matrix(code_value, expected_excluded, expected_hard_reasons, expected_echo):
+    c = make_candidate(code=code_value)
+    result = run([c])
+    out = result["candidates"][0]
+    assert (out["tier"] == "excluded") == expected_excluded
+    assert out["hardExclusionReasons"] == expected_hard_reasons
+    assert out["code"] == expected_echo
+
+
+def test_t3_12b_code_key_missing_excluded_empty_echo():
+    # ID-11
+    c = make_candidate()
+    del c["code"]
+    result = run([c])
+    out = result["candidates"][0]
+    assert out["tier"] == "excluded"
+    assert out["hardExclusionReasons"] == ["HARD_CONTRACT_VIOLATION"]
+    assert out["code"] == ""
+
+
+def test_t3_12c_name_non_str_valid_record_empty_echo():
+    # ID-12
+    for bad_name in (None, 123, True, ["n"]):
+        c = make_candidate(name=bad_name)
+        result = run([c])
+        out = result["candidates"][0]
+        assert out["tier"] != "excluded"
+        assert out["hardExclusionReasons"] == []
+        assert out["name"] == ""
+
+
+def test_t3_12d_sector_non_str_excluded_empty_echo():
+    # ID-13
+    for bad_sector in (None, 123, True, ["s"]):
+        c = make_candidate(sector=bad_sector)
+        result = run([c])
+        out = result["candidates"][0]
+        assert out["tier"] == "excluded"
+        assert out["hardExclusionReasons"] == ["HARD_CONTRACT_VIOLATION"]
+        assert out["sector"] == ""
+
+
+def test_t3_12e_non_dict_record_all_identity_fields_empty():
+    # ID-14
+    for bad_record in (None, "str_record", 123, ["a"], ("a",)):
+        result = run([bad_record])
+        out = result["candidates"][0]
+        assert out["tier"] == "excluded"
+        assert out["code"] == "" and out["name"] == "" and out["sector"] == ""
+        assert out["hardExclusionReasons"] == ["HARD_CONTRACT_VIOLATION"]
+
+
+# ---------------------------------------------------------------------------
+# T3-13: invariance（INV-01..INV-04, multiset比較, 20置換）
+# ---------------------------------------------------------------------------
+
+
+def _assert_permutation_invariant_multiset(base_population, n_perms=20, seed=101):
+    import random as _random
+
+    _random.seed(seed)
+    baseline = run(copy.deepcopy(base_population))
+    baseline_ms = _canonical_multiset(baseline["candidates"])
+    tried = 0
+    for _ in range(n_perms):
+        shuffled = copy.deepcopy(base_population)
+        _random.shuffle(shuffled)
+        result = run(shuffled)
+        assert _canonical_multiset(result["candidates"]) == baseline_ms
+        assert result["counts"] == baseline["counts"]
+        assert result["excludedSummary"] == baseline["excludedSummary"]
+        assert result["sectorDistribution"] == baseline["sectorDistribution"]
+        assert result["scoreDistribution"] == baseline["scoreDistribution"]
+        assert result["selectionObservability"] == baseline["selectionObservability"]
+        tried += 1
+    assert tried == n_perms
+    return baseline
+
+
+def test_t3_13a_inv01_valid_str_vs_invalid_int_code_collision_permutation_invariant():
+    # INV-01: code="7777"(valid) と code=7777(int, excluded) を同時に含む
+    # 集合を20通り置換しても (a') multiset が一致し、かつ出力 code が
+    # "7777" であるレコードがちょうど1件であること（str() 捏造の再発防止）。
+    a = make_candidate(code="7777")
+    b = make_candidate(code=7777, sector="secINV01B")
+    base = [a, b]
+    baseline = _assert_permutation_invariant_multiset(base)
+    # code をキーとする写像そのものが一意でないと well-defined でないため
+    # （§19.14 精密化の理由）、"code=='7777' である全レコード" ではなく
+    # tier で区別した2つの独立条件として検証する: 有効レコードは
+    # ちょうど1件、かつ excluded レコードの echo は "7777" へ捏造されず ""
+    # のままであること（M3-12 の str() 復活を直接検出する）。
+    valid_7777 = [c for c in baseline["candidates"] if c["code"] == "7777" and c["tier"] != "excluded"]
+    assert len(valid_7777) == 1
+    excluded_record = next(c for c in baseline["candidates"] if c["tier"] == "excluded")
+    assert excluded_record["code"] == ""
+
+
+def test_t3_13b_inv02_duplicate_code_permutation_invariant_multiset():
+    pop = make_population(15, seed_offset=6800)
+    pop[2]["code"] = pop[9]["code"]
+    _assert_permutation_invariant_multiset(pop)
+
+
+def test_t3_13c_inv03_sector_hard_max_binding_permutation_invariant_multiset():
+    strong = [_strong_candidate(f"690{i}", "secINV03") for i in range(10)]
+    _assert_permutation_invariant_multiset(strong)
+
+
+def test_t3_13d_inv04_multiple_non_dict_records_permutation_invariant_multiset():
+    base = make_population(10, seed_offset=6900) + ["broken1", "broken2", None, 123]
+    _assert_permutation_invariant_multiset(base)
+
+
+# ---------------------------------------------------------------------------
+# T3-14: numeric matrix 固定（1軸/2軸 invalid でも actionable 可、3軸で不可）
+# ---------------------------------------------------------------------------
+
+
+def _numeric_matrix_strong(code, sector, **overrides):
+    base = make_candidate(
+        code=code,
+        sector=sector,
+        per=5.0,
+        pbr=0.3,
+        roe=40.0,
+        dividendYield=8.0,
+        sigma252d=0.10,
+        mom3m=30.0,
+        prescreenScore=0.95,
+    )
+    base.update(overrides)
+    return base
+
+
+def test_t3_14a_one_axis_invalid_still_actionable():
+    # usableAxes=5（mom3m のみ invalid, zero-weight component なので
+    # valuation/quality floor へ影響しない）-> dataConfidence 5/6=0.8333.
+    c = _numeric_matrix_strong("9001", "secT314A", mom3m=float("nan"))
+    filler = make_weak_filler(15, seed_offset=9000)
+    result = run([c] + filler)
+    out = result["candidates"][0]
+    assert out["dataConfidence"] == 0.8333
+    assert out["tier"] == "actionable"
+
+
+def test_t3_14b_two_axes_invalid_still_actionable():
+    # usableAxes=4（mom3m + dividendYield invalid）-> dataConfidence
+    # 4/6 == 2/3 == ACTIONABLE_MIN_DATA_CONFIDENCE（frozen truth table PASS）。
+    c = _numeric_matrix_strong("9002", "secT314B", mom3m=float("nan"), dividendYield=float("nan"))
+    filler = make_weak_filler(15, seed_offset=9100)
+    result = run([c] + filler)
+    out = result["candidates"][0]
+    assert out["dataConfidence"] == 0.6667
+    assert out["tier"] == "actionable"
+
+
+def test_t3_14c_three_axes_invalid_blocks_actionable_but_not_deep_review():
+    # usableAxes=3（mom3m + dividendYield + pbr invalid）
+    # -> dataConfidence 3/6=0.5 < 2/3 -> actionable FAIL, deep_review PASS。
+    c = _numeric_matrix_strong(
+        "9003", "secT314C", mom3m=float("nan"), dividendYield=float("nan"), pbr=float("nan")
+    )
+    filler = make_weak_filler(15, seed_offset=9200)
+    result = run([c] + filler)
+    out = result["candidates"][0]
+    assert out["dataConfidence"] == 0.5
+    assert out["tier"] != "actionable"
+    assert out["tier"] == "deep_review"
+
+
+# ---------------------------------------------------------------------------
+# T3-15: regime matrix（REG-01..REG-08）
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize(
+    "regime,expected_regime_applied,expected_capacity",
+    [
+        ("bear", "bear", (5, 2)),  # REG-01
+        ("crisis", "crisis", (5, 2)),  # REG-02
+        ("bull_calm", "bull_calm", (12, 2)),  # REG-03
+        ("bull_volatile", "bull_volatile", (12, 2)),
+        ("uncertain", "uncertain", (12, 2)),
+        ("BEAR", None, (12, 2)),  # REG-04
+        ("unknown", None, (12, 2)),  # REG-05
+        (None, None, (12, 2)),  # REG-06
+        (123, None, (12, 2)),  # REG-07
+        (True, None, (12, 2)),
+        (["bear"], None, (12, 2)),
+    ],
+)
+def test_t3_15a_regime_matrix_behavioral(regime, expected_regime_applied, expected_capacity):
+    strong = _strong_candidate("9601", "secT315")
+    filler = _filler_with_prescreen(15, seed_offset=9600)
+    result = run([strong] + filler, regime=regime)
+    obs = result["selectionObservability"]
+    out = result["candidates"][0]
+    assert obs["regimeApplied"] == expected_regime_applied
+    assert (obs["actionableHardMaxApplied"], obs["actionableSectorCapApplied"]) == expected_capacity
+    assert out["tier"] == "actionable"
+    assert out["riskReasons"] == []
+    assert result["degradationReasons"] == []
+
+
+def test_t3_15b_regime_missing_key_actionable_reachable():
+    # REG-08
+    strong = _strong_candidate("9602", "secT315B")
+    filler = make_weak_filler(15, seed_offset=9700)
+    result = run([strong] + filler)
+    obs = result["selectionObservability"]
+    out = result["candidates"][0]
+    assert obs["regimeApplied"] is None
+    assert (obs["actionableHardMaxApplied"], obs["actionableSectorCapApplied"]) == (12, 2)
+    assert out["tier"] == "actionable"

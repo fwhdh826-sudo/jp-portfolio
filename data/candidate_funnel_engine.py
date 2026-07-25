@@ -36,6 +36,7 @@ from __future__ import annotations
 
 import math
 from bisect import bisect_left, bisect_right
+from collections.abc import Mapping
 from datetime import datetime, timezone
 from typing import Any
 
@@ -455,6 +456,23 @@ def _parse_iso(raw: Any) -> datetime | None:
         return None
 
 
+_STALE_THRESHOLD_HOURS_DEFAULT = 48.0  # A2 §14 #8: frozen threshold value
+
+
+def _resolve_stale_threshold_hours(raw: Any) -> float:
+    """A2-S2 §19.7 P3-03: staleThresholdHours の定義域は int/float かつ非
+    bool かつ math.isfinite かつ >= 0 のみ。それ以外（欠損・None・bool・
+    NaN・±Inf・負値・文字列・list 等）は frozen default 48.0 を使う
+    （invalid override で stale gate を無効化しない）。"""
+    if isinstance(raw, bool):
+        return _STALE_THRESHOLD_HOURS_DEFAULT
+    if isinstance(raw, (int, float)):
+        v = float(raw)
+        if math.isfinite(v) and v >= 0:
+            return v
+    return _STALE_THRESHOLD_HOURS_DEFAULT
+
+
 def _resolve_is_stale(source_updated_at: Any, as_of: Any, stale_threshold_hours: Any) -> bool:
     """sourceUpdatedAt / asOf のいずれかが欠損・不正なら判定不能として
     False（stale ではない）を返す（不明を stale と断定しない安全側）。"""
@@ -462,10 +480,7 @@ def _resolve_is_stale(source_updated_at: Any, as_of: Any, stale_threshold_hours:
     asof_dt = _parse_iso(as_of)
     if src_dt is None or asof_dt is None:
         return False
-    try:
-        threshold = float(stale_threshold_hours)
-    except (TypeError, ValueError):
-        return False
+    threshold = _resolve_stale_threshold_hours(stale_threshold_hours)
     age_hours = (asof_dt - src_dt).total_seconds() / 3600.0
     return age_hours > threshold
 
@@ -583,11 +598,18 @@ def build_candidate_funnel(candidates: list[Any], context: dict[str, Any] | None
         （どちらか欠損なら stale と断定しない）。
       staleThresholdHours: 既定 48.0（candidates_stocks.json既定値と同一）。
       prescreenFallbackUsed: bool。prescreen 側が fallback cache だった場合。
+
+    raises:
+      TypeError: candidates が list/tuple でない、または context が None でも
+        Mapping でもない場合（A2-S2 §19.7/§19.8 frozen exception policy。
+        引数そのものの型契約違反のみが例外を許容される唯一のケース）。
     """
-    context = context or {}
-    pipeline_path = context.get("pipelinePath", "normal")
-    if pipeline_path not in CANDIDATE_FUNNEL_PIPELINE_PATHS:
-        pipeline_path = "normal"
+    if not isinstance(candidates, (list, tuple)):
+        raise TypeError("candidates must be a list or tuple")
+    if context is not None and not isinstance(context, Mapping):
+        raise TypeError("context must be a mapping or None")
+    context = {} if context is None else context
+    pipeline_path = context.get("pipelinePath")
 
     if pipeline_path == "seed_fallback":
         return _not_generated_result(
@@ -921,7 +943,7 @@ def build_candidate_funnel(candidates: list[Any], context: dict[str, Any] | None
         raw = candidates[i] if isinstance(candidates[i], dict) else {}
         data_status = raw.get("dataStatus")
         candidate_results[i] = {
-            "code": raw.get("code") if isinstance(raw.get("code"), str) else (str(raw.get("code")) if raw.get("code") is not None else ""),
+            "code": raw.get("code") if isinstance(raw.get("code"), str) else "",
             "name": raw.get("name") if isinstance(raw.get("name"), str) else "",
             "sector": raw.get("sector") if isinstance(raw.get("sector"), str) else "",
             "prescreenScore": None,
