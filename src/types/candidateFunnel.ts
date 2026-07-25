@@ -1,10 +1,13 @@
 // ═══════════════════════════════════════════════════════════
-// P5-B005-B1-R: market-wide candidate funnel TypeScript contract。
+// P5-B005-B1-R2: market-wide candidate funnel TypeScript contract。
 //
 // data/candidate_funnel_engine.py（P5-B005-A2 frozen scoring specification,
 // /Users/ryo/jp-portfolio-audit-reports/p5-b005-a2-scoring-specification.md,
-// audited SHA 665eba993b3d3ccfcf434c245a8784765f34bf43）と exact に一致する
-// version / enum / threshold 定数・型を定義する。
+// audited SHA 665eba993b3d3ccfcf434c245a8784765f34bf43）と、これを限定修正する
+// P5-B005-A2-S Frozen Specification Supplement
+// （/Users/ryo/jp-portfolio-audit-reports/p5-b005-a2-s-scoring-specification-supplement.md,
+// §25 が唯一の実装 authority）と exact に一致する version / enum / threshold
+// 定数・型を定義する。
 //
 // この ticket の非 scope: candidate_funnel.json の生成（この契約は将来の
 // artifact 用の型のみを定義する。file はまだ生成しない）。
@@ -101,7 +104,9 @@ export const CANDIDATE_FUNNEL_HARD_REASON_CODES = [
 ] as const
 export type CandidateFunnelHardReason = (typeof CANDIDATE_FUNNEL_HARD_REASON_CODES)[number]
 
-// ── Soft penalty reason codes（A2 §14。10件 exact） ────────────
+// ── Soft penalty reason codes（A2-S §25.6。frozen 13件 exact。
+//    index 0-9 は A2 §14 と完全に同一、文字列・順序・意味とも不変。
+//    index 10-12 は A2-S で追加。） ────────────
 export const CANDIDATE_FUNNEL_SOFT_REASON_CODES = [
   'SOFT_ELEVATED_VOLATILITY',
   'SOFT_WEAK_MOMENTUM',
@@ -113,8 +118,33 @@ export const CANDIDATE_FUNNEL_SOFT_REASON_CODES = [
   'SOFT_STALE_SOURCE',
   'SOFT_PORTFOLIO_OVERLAP',
   'SOFT_FALLBACK_PROVENANCE',
+  'SOFT_PRESCREEN_METADATA_MISSING',
+  'SOFT_VOLATILITY_RED_FLAG',
+  'SOFT_VOLATILITY_UNAVAILABLE',
 ] as const
 export type CandidateFunnelSoftReason = (typeof CANDIDATE_FUNNEL_SOFT_REASON_CODES)[number]
+
+// ── selectedReasons exact enum（A2-S §25.12。2件のみ。tier 確定後にのみ
+//    生成する。DEEP_REVIEW_THRESHOLD_MET / ACTIONABLE_THRESHOLD_MET は廃止。） ──
+export const CANDIDATE_FUNNEL_SELECTED_REASON_CODES = ['SELECTED_DEEP_REVIEW', 'SELECTED_ACTIONABLE'] as const
+export type CandidateFunnelSelectedReason = (typeof CANDIDATE_FUNNEL_SELECTED_REASON_CODES)[number]
+
+// ── theme output status（A2-S §25.14。v1 では "unavailable" のみ出力。
+//    themes: [] かつ themeStatus: "unavailable" は「未評価」を意味し、
+//    「テーマ無し」ではない — source（per-stock theme taxonomy）が未接続。） ──
+export const CANDIDATE_FUNNEL_THEME_STATUSES = ['unavailable', 'available'] as const
+export type CandidateFunnelThemeStatus = (typeof CANDIDATE_FUNNEL_THEME_STATUSES)[number]
+
+// ── dataset-level degradation reason codes（A2-S §25.14。順序= index 昇順） ──
+export const CANDIDATE_FUNNEL_DEGRADATION_REASON_CODES = [
+  'SEED_FALLBACK_PIPELINE_PATH',
+  'CACHE_FALLBACK_PROVENANCE',
+  'STALE_SOURCE',
+  'PRESCREEN_FALLBACK_USED',
+  'PRESCREEN_METADATA_MISSING',
+  'DUPLICATE_CANDIDATE_CODE',
+] as const
+export type CandidateFunnelDegradationReasonCode = (typeof CANDIDATE_FUNNEL_DEGRADATION_REASON_CODES)[number]
 
 // ── Normalization / thresholds（A2 §8・§9・§10・§17） ──────────
 export const CANDIDATE_FUNNEL_WINSORIZE_LOWER_PCT = 0.01
@@ -128,7 +158,9 @@ export const CANDIDATE_FUNNEL_DEEP_REVIEW_HARD_MAX = 40
 export const CANDIDATE_FUNNEL_DEEP_REVIEW_SECTOR_HARD_CAP = 6
 
 export const CANDIDATE_FUNNEL_ACTIONABLE_MIN_MARKET_SCORE = 68.0
-export const CANDIDATE_FUNNEL_ACTIONABLE_MIN_DATA_CONFIDENCE = 0.67
+// A2-S §25.3: literal 0.67 の使用を禁止する（4/6 = 0.6666... < 0.67 で
+// 4軸を落としてしまう算術矛盾のため）。gate 比較は丸め前の internal 値に対して行う。
+export const CANDIDATE_FUNNEL_ACTIONABLE_MIN_DATA_CONFIDENCE = 2 / 3
 export const CANDIDATE_FUNNEL_ACTIONABLE_HARD_MAX = 12
 export const CANDIDATE_FUNNEL_ACTIONABLE_SECTOR_HARD_CAP = 2
 export const CANDIDATE_FUNNEL_ACTIONABLE_MIN_VALUATION_PERCENTILE = 0.4
@@ -166,9 +198,15 @@ export interface CandidateFunnelCandidate {
   marketScore: number | null
   marketRank: number | null
   tier: CandidateFunnelTier
-  selectedReasons: string[]
+  selectedReasons: CandidateFunnelSelectedReason[]
   riskReasons: CandidateFunnelSoftReason[]
-  blockedReasons: CandidateFunnelHardReason[]
+  // A2-S §25.13: blockedReasons を rename（frontend 専用の同名 concept との
+  // 名称衝突を解消。旧 key は出力に残さない）。
+  hardExclusionReasons: CandidateFunnelHardReason[]
+  // A2-S §25.14: themes == [] かつ themeStatus == "unavailable" は
+  // 「未評価（source 未接続）」を意味する。「テーマ無し」と解釈してはならない。
+  themes: string[]
+  themeStatus: CandidateFunnelThemeStatus
   dataStatus: CandidateFunnelDataStatus | null
 }
 

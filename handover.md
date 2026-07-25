@@ -50899,3 +50899,311 @@ P5-B005-B2:
 prescreen cache score/rank/poolをenrichment candidateへcode-joinし、
 candidate_funnel.jsonを生成するbatch、quality gate、privacy smokeを実装
 ```
+
+---
+
+## P5-B005-B1-R2: candidate funnel engine — A2-S Frozen Specification Supplement compliance
+
+### Status
+
+```text
+P5-B005-B1-R2: CLOSED (this ticket's scope)
+B1-V (prior audit): FAIL / REOPEN_REQUIRED — the fixes below address every finding
+B1-V2 (independent re-audit of this work): REQUIRED before B2 can start
+B2: NOT STARTED
+```
+
+This ticket implements the limited-scope fixes prescribed by the **P5-B005-A2-S Frozen Specification
+Supplement** (`/Users/ryo/jp-portfolio-audit-reports/p5-b005-a2-s-scoring-specification-supplement.md`, §25
+is the sole implementation authority) in response to `P5-B005-B1-V`'s `FAIL` verdict on the original B1-R
+implementation (base SHA `665eba993b3d3ccfcf434c245a8784765f34bf43`, B1-R SHA
+`a5a497357b2a9408bf020ba4a31e065a97152a4e`). The A2-S supplement itself made **zero repository changes** — it
+is a specification-only document; **all findings it responds to (B1-V FIN-01..FIN-20) required this
+implementation ticket to actually close.**
+
+A2-S authority path: `/Users/ryo/jp-portfolio-audit-reports/p5-b005-a2-s-scoring-specification-supplement.md`
+A2-S §25 (Frozen Specification Supplement Block) was used as the literal, sole implementation instruction —
+no re-interpretation or re-design was performed. Where A2-S superseded A2, A2-S won; where A2-S was silent,
+the unchanged A2 clauses (A2-S §24) continued to apply verbatim.
+
+### Changed production files (2, as authorized)
+
+```text
+data/candidate_funnel_engine.py     (MF-01..MF-08, MF-11, MF-12; core engine logic)
+src/types/candidateFunnel.ts        (MF-03, MF-07, MF-08, MF-11; TS contract types/enums)
+```
+
+### Changed test/documentation files
+
+```text
+tests/test_candidate_funnel_engine.py                (T-01..T-25 added; 85→136 tests)
+src/types/candidateFunnel.contract.test.ts            (MF-09 shape parity; 18→39 tests)
+tests/fixtures/candidate_funnel_calibration_v1.json   (CAL-01..CAL-13 rebuild; 100→207 candidates)
+handover.md                                            (this section)
+```
+
+No file outside this list was touched. `data/candidates_stocks.json` / `public/data/candidates_stocks.json`
+SHA-256 unchanged before/after (`f04c8c3fd4a5f8e2ba4b604ec560fb61efb7f1f95f2f622e6c1217a11470079e`).
+`data/build_candidates_stocks.py`, `data/jpx_cheap_prescreen.py`, `data/candidates_stocks_privacy_smoke.py`,
+`public/data/**`, `.github/**`, `package.json`, `package-lock.json`, `src/store/**`, `src/domain/candidates/**`,
+`src/services/**`, `src/components/**` were not modified.
+
+### MF-01..MF-12 result
+
+| ID | Fix | Result |
+|---|---|---|
+| MF-01 | σ 欠損 fail-closed（3値 `volatilityClass` + `VOL_UNAVAILABLE`） | DONE |
+| MF-02 | actionable selection population を §25.9 Option B へ（actionable 先行選抜・排他 tier） | DONE |
+| MF-03 | selectedReasons 2-code enum（`SELECTED_DEEP_REVIEW`/`SELECTED_ACTIONABLE`）、tier確定後生成 | DONE |
+| MF-04 | `COMPONENT_WEIGHTS`/`VALUATION_SUB_WEIGHTS` table 駆動化 + import assertion 6件 | DONE |
+| MF-05 | `resolve_actionable_capacity(regime)` 導入、`SECTOR_CAP_RELAXATION` 参照配線 | DONE |
+| MF-06 | duplicate candidate code → `HARD_CONTRACT_VIOLATION` で全件 excluded | DONE |
+| MF-07 | `themes`/`themeStatus` 追加（v1 常に `[]`/`"unavailable"`） | DONE |
+| MF-08 | `SOFT_PRESCREEN_METADATA_MISSING` 追加・missing/invalid 統一・`prescreenScore` 生値 echo | DONE |
+| MF-09 | Python/TS shape parity test 追加（root 12key/candidate 18key/scoreBreakdown 6key 等） | DONE |
+| MF-10 | survived mutation 対応 behavioral test 追加（T-01..T-25） | DONE |
+| MF-11 | `blockedReasons` → `hardExclusionReasons` rename（index 昇順） | DONE |
+| MF-12 | `SOFT_WEAK_MOMENTUM` に `mom3m` provenance 条件追加 | DONE |
+
+### dataConfidence result
+
+```text
+ACTIONABLE_MIN_DATA_CONFIDENCE = 2.0 / 3.0  (literal 0.67 除去)
+DEEP_REVIEW_MIN_DATA_CONFIDENCE = 0.5       (unchanged)
+gate 比較は丸め前 internal 値（dataConfidence_internal）に対して行う。出力は round_half_up 4dp。
+4軸 + dataStatus='ok' は actionable gate を PASS する（4/6 == 2/3, bit-identical, epsilon 不要）。
+partial は usableAxes によらず actionable を必ず FAIL（最大 0.6 < 2/3）。
+§8.6 B1..B7 の frozen truth table を T-06 でリテラル固定・全ケース検証済み。
+```
+
+### volatility result
+
+```text
+volatilityClass(sigma_raw):
+  bool / 非数値型 / None / NaN / ±Inf -> VOL_UNAVAILABLE  (screened 上限, SOFT_VOLATILITY_UNAVAILABLE)
+  sigma >= 0.45                       -> VOL_RED_FLAG     (screened 上限, SOFT_VOLATILITY_RED_FLAG)
+  sigma >= 0.35                       -> VOL_ELEVATED     (deep_review 上限, SOFT_ELEVATED_VOLATILITY)
+  それ以外                            -> VOL_NORMAL       (制限なし)
+境界は両方とも `>=`。marketScore への減算なし。tier="excluded" にしない。正規化 population から除外しない。
+S-01..S-11 の11ベクトルすべて T-05 でリテラル固定・境界含め検証済み。
+```
+
+### actionable selection result (Option B)
+
+```text
+Step順序（A2-S §25.9、変更禁止）:
+  1. hard exclusion（duplicate code 含む） -> 2. 正規化 -> 3-4. score/marketRank
+  -> 5. volatilityClass -> 6. eligibility conjunction -> 7. capacity resolve
+  -> 8. ★actionable を eligible 全件から先に選抜 -> 9. deep-review は残余から選抜
+  -> 10. tier確定（排他） -> 11. reason生成（tier確定後） -> 12. 集計
+soft-vol(VOL_ELEVATED) 帯が deep-review hard max 40 を占有しても、actionable-eligible な
+候補は marketRank 46位以降に落ちても actionable へ到達する（旧実装 FIN-02 の根本解決、
+B1-V probe K を T-07 で再現・回帰化）。
+```
+
+### deep-review/actionable counts result
+
+```text
+tier は排他（excluded|screened|deep_review|actionable）。actionable は counts.deepReview に含まれない。
+counts.total == excluded + screened + deepReview + actionable（恒等式、T-08 で検証）。
+表示上限 = DEEP_REVIEW_HARD_MAX(40) + actionableHardMax(12 通常 / 5 bear・crisis) = 52 または 45。
+sector cap は tier ごとに独立計数（同一 sector が actionable 2 + deep_review 6 = 最大8件表示されうる）。
+calibration fixture で deepReview==40・actionable==12 を literal に確認（T-21, CAL-07/08）。
+```
+
+### selectedReasons result
+
+```text
+CANDIDATE_FUNNEL_SELECTED_REASON_CODES = ("SELECTED_DEEP_REVIEW", "SELECTED_ACTIONABLE")  # 2件のみ
+tier確定後にのみ生成（分岐は tier の1つのみ）。screened/excludedは常に[]。
+DEEP_REVIEW_THRESHOLD_MET / ACTIONABLE_THRESHOLD_MET は完全に廃止（旧実装が発明したcodeを削除）。
+veto候補（VOL_RED_FLAG/VOL_UNAVAILABLE）は[]（T-09で σ=0.60・marketScore>=68・screenedの
+候補が selectedReasons=[]であることを直接確認）。
+```
+
+### reason code counts
+
+```text
+HARD reason: 8件（変更なし）
+SOFT reason: 13件（既存10件の文字列・順序・index 0-9 は不変。末尾に3件追加:
+  SOFT_PRESCREEN_METADATA_MISSING(10) / SOFT_VOLATILITY_RED_FLAG(11) / SOFT_VOLATILITY_UNAVAILABLE(12)）
+selectedReasons enum: 2件
+themeStatus enum: 2件（"unavailable"のみv1で出力）
+degradationReasons code: 6件（SEED_FALLBACK_PIPELINE_PATH/CACHE_FALLBACK_PROVENANCE/STALE_SOURCE/
+  PRESCREEN_FALLBACK_USED/PRESCREEN_METADATA_MISSING/DUPLICATE_CANDIDATE_CODE）
+```
+
+### prescreen missing result
+
+```text
+prescreenUsable(raw) := "prescreenScore" キーが存在し、boolでなく、int/floatであり、isfinite。
+missing/invalid を同一扱い: normalizedPrescreenScore=0.0（再配分なし）、出力prescreenScore=null、
+SOFT_PRESCREEN_METADATA_MISSING発火、actionable禁止。
+出力 prescreenScore は usable な場合のみ生値echo（clampしない、範囲制約なし）。
+degradationReasons の PRESCREEN_METADATA_MISSING は「1件以上のvalid candidateが欠損」で発火し
+件数/valid総数を detail に含む（全欠損のみだった旧実装から変更）。
+```
+
+### theme output result
+
+```text
+themes: string[]（v1では常に[]）
+themeStatus: "unavailable" | "available"（v1では常に"unavailable"）
+themeStatus=="unavailable"かつthemes==[]は「未評価（source未接続）」を意味し「テーマ無し」ではない。
+sectorからのtheme生成は行っていない（T-19で全候補[]/"unavailable"を確認、mutation M-17で検出済み）。
+```
+
+### bear/crisis resolver result
+
+```text
+resolve_actionable_capacity(regime) -> (actionable_hard_max, actionable_sector_cap)
+  bear/crisis -> (5, 2)　　通常/None/未知regime -> (12, 2)
+選抜・observability の両方がこの関数の戻り値のみを参照（定数直書き禁止）。
+T-17でリテラル(5,2)/(12,2)を直接確認 + bear単一sector behavioral test。
+BEAR_CRISIS_ACTIONABLE_SECTOR_HARD_CAP(2)がACTIONABLE_SECTOR_HARD_CAP(2)と同値のため
+通常のbehavioral testでは検出不能な性質（A2-S §15.4既知）に対応するため、定数自体を
+monkeypatchするT-17dを追加。
+```
+
+### weight authority result
+
+```text
+COMPONENT_WEIGHTS / VALUATION_SUB_WEIGHTS が唯一のauthority（table駆動sum、リテラル0.55/0.45/
+"/3.0"の直書きなし）。import時assertion 6件実装（§25.15）。
+weightedContributionはfull precision値から算出（丸め値からではない）。
+sum(weightedContribution) ≈ stage3Composite（誤差<=1e-9、T-16bで検証）。
+excluded候補のreserved 5componentはstatus="reserved"（旧"invalid"一律から修正）。
+```
+
+### duplicate code result
+
+```text
+判定順: (1)既存per-record hard reason判定 -> (2)hard reason済みは対象外 -> (3)残りのcode出現回数
+>=2を集計 -> (4)該当code全レコードにHARD_CONTRACT_VIOLATION付与・tier=excluded。
+先勝ち/後勝ち/dedupe/secondary tie-key一切禁止。全て実装どおり。
+degradationReasonsにDUPLICATE_CANDIDATE_CODE追加（重複code数・excluded件数を含む）。
+T-18(2件)/T-18b(3件・非連続)/T-18c(20置換不変性)で検証。
+```
+
+### blockedReasons rename result
+
+```text
+candidate出力fieldを blockedReasons -> hardExclusionReasons へrename。
+順序はCANDIDATE_FUNNEL_HARD_REASON_CODESのindex昇順（検出順ではない、T-25で確認）。
+repository全体grep: blockedReasons という出力keyの生成箇所は0件（handover本文中の過去の
+frontend専用blockedReasons言及・test内の文字列比較のみ残存、production出力ではない）。
+```
+
+### Python/TS parity result
+
+```text
+既存定数33件比較に加え、MF-09でshape parityをbehavioralに追加（Python subprocess経由で実際の
+build_candidate_funnel()出力を取得しTS側で検証）:
+  root 12key / candidate 18key / scoreBreakdown 6key×10component / counts 5key /
+  excludedSummary 2key / sectorDistribution 3key / scoreDistribution 5key /
+  selectionObservability 15key / not_for_trading===true / 全enum所属 / nullable field。
+新規enum parity: selectedReason 2 / softReason 13 / themeStatus 2 / degradationReason 6。
+39 vitest tests (旧18から21件追加)。
+```
+
+### T-01..T-25 result
+
+全25項目 GREEN。既存85 testに加え51件追加（T-01..T-25本体 + T-05d/T-06b/T-07b等の追加境界
+ケース + T-16d/T-17c/T-17d のmutation専用test）。合計136 test。
+
+### M-01..M-20 result
+
+**21/21 CAUGHT**（M-01..M-20 + M-18b variant）。全件behavioral RED（build_candidate_funnelを
+実行するtest、またはPython subprocess経由のTS shape parity test）。manifest詳細は下記。
+
+### Mutation manifest path
+
+`/Users/ryo/jp-portfolio-audit-reports/p5-b005-b1-r2-mutation-manifest.md`
+（repository外、commitしない。mutation ID / production change / expected-actual failure /
+exit status / inverse patch / SHA-256 before-after-restore / behavioral判定を記録）
+
+### Calibration results
+
+```text
+fixture: tests/fixtures/candidate_funnel_calibration_v1.json（100->207候補に再構築）
+CAL-01 prescreenScore distinct >= 10件（0.0/1.0含む、実測12件）: PASS
+CAL-02 sigma 4層すべて含む（VOL_NORMAL/ELEVATED/RED_FLAG/UNAVAILABLE）: PASS
+CAL-03 dataStatus partial + null数値field（per/pbr/roe/dividendYield/mom3m全て）: PASS
+CAL-04 prescreen missing + invalid(NaN)両方含む: PASS
+CAL-05 deep-review sector cap overflow実測（DR-CROWD sector, overflow>0）: PASS
+CAL-06 actionable sector cap overflow実測（ACT-CROWD sector, overflow>0）: PASS
+CAL-07 counts.deepReview == 40（リテラル）: PASS
+CAL-08 counts.actionable == 12（リテラル）: PASS
+CAL-09 bear/crisis counts.actionable == 5（リテラル）: PASS
+CAL-10 degraded(prescreen剥奪) counts.actionable == 0: PASS
+CAL-11 +/-2%固定perturbation, top-40 Jaccard >= 0.95（実測0.9512、緩和なし）: PASS
+CAL-12 perturbation前後で順位入れ替わり>=1件（実測、Jaccard<1.0で縮退回避）: PASS
+CAL-13 fixtureはproduction分布の証明ではない旨をdescriptionに明記: PASS
+distinct actionable sector >= 4（実測6）、distinct deep-review sector >= 7（実測10-12）も達成。
+```
+
+### Rank stability result
+
+top-40 Jaccard = 0.9512195121951219（>= 0.95 required, not relaxed）。perturbation前後で
+順位集合が変化すること（縮退した1.0固定ではないこと）を確認済み。
+
+### Python test totals
+
+```text
+python3 -m pytest tests/test_candidate_funnel_engine.py                    136 passed
+python3 -m pytest tests/test_build_candidates_stocks.py
+  tests/test_candidates_stocks_privacy_smoke.py tests/test_jpx_universe_provider.py
+  tests/test_whole_market_universe_provider.py                              246 passed (既存パイプライン非影響)
+```
+
+### Vitest UTC/JST totals
+
+```text
+TZ=UTC   npx vitest run src/types/candidateFunnel.contract.test.ts          39 passed
+TZ=Asia/Tokyo npx vitest run src/types/candidateFunnel.contract.test.ts     39 passed
+TZ=UTC   npm run test:unit                                                   83 files / 2462 tests passed
+TZ=Asia/Tokyo npm run test:unit                                              83 files / 2462 tests passed
+```
+
+### TypeScript/build result
+
+```text
+npx tsc --noEmit     0 errors
+npm run build        PASS（129 modules, 既知の500kB warningのみ）
+git diff --check     PASS（whitespace error 0件）
+```
+
+### Artifact integrity
+
+```text
+candidate_funnel.json / candidate-funnel.json           repository全体で0件（生成していない）
+data/candidates_stocks.json SHA-256                       変更前後で不変
+public/data/candidates_stocks.json SHA-256                変更前後で不変
+public/data/** / .github/** / package.json / package-lock.json           差分0
+bundle grep (blockedReasons/BUY_NEW)                      既存の無関係なfrontend専用blockedReasons
+                                                           概念（src/domain/candidates/stockCandidates.ts系）
+                                                           のみヒット。candidateFunnel.ts はどのUI
+                                                           コンポーネントからもimportされておらず
+                                                           bundleに含まれない（frontend integration未着手）
+bundle grep (SOFT_VOLATILITY_UNAVAILABLE/SELECTED_ACTIONABLE/candidate_funnel_engine)   0件
+```
+
+### Residual constraints (unchanged from B1-R)
+
+- prescreen metadata join は依然 INACTIVE（`candidates_stocks.json` に prescreenScore/Rank/Pool
+  が無いため、degraded compatibility path のみ動作確認可能）。
+- 6/8 HARD_* reason、v1で発火しないSOFT 4件は引き続きこのengineの入力契約では到達不能（reserved）。
+- `candidate_funnel.json` は生成していない（この ticket の scope 外）。
+- frontend統合・portfolioFit・officialDecision・SAFE_MODE/Tier A接続はすべてINACTIVE。
+
+### Next
+
+```text
+P5-B005-B1-V2:
+このB1-R2実装の独立監査。MF-01..MF-12・T-01..T-25・M-01..M-20の主張を独立検証すること。
+
+B1-V2通過後にのみ P5-B005-B2 着手可:
+prescreen cache score/rank/poolをenrichment candidateへcode-joinし、candidate_funnel.jsonを
+生成するbatch・quality gate・privacy smokeを実装。A2-S §25.20のB2 production-distribution
+calibration gate（P-01..P-15）を完了条件に含めること。
+```
