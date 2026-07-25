@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-07-25T09:58:54.117838+09:00",
-  "sourceUpdatedAt": "2026-07-25T00:00:00+00:00",
+  "updatedAt": "2026-07-25T21:14:04.013997+09:00",
+  "sourceUpdatedAt": "2026-07-25T12:00:01+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -59,10 +59,10 @@
       ]
     },
     "us_broad": {
-      "avgSentiment": -0.167,
-      "negativeCount": 1,
+      "avgSentiment": -0.277,
+      "negativeCount": 2,
       "positiveCount": 0,
-      "neutralCount": 2,
+      "neutralCount": 1,
       "sourceCount": 2,
       "itemCount": 3,
       "isStale": false,
@@ -85,6 +85,19 @@
           ]
         },
         {
+          "title": "Charting the Global Economy: Growth Picks Up, AI Boom Continues",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-07-25T09:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-25/charting-the-global-economy-growth-picks-up-ai-boom-continues",
+          "tags": [
+            "market",
+            "us_broad",
+            "us_growth"
+          ]
+        },
+        {
           "title": "Wall Street Bulls Are Staring Down $100 Oil, Tariffs, AI Angst",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
@@ -93,19 +106,6 @@
           "url": "https://www.bloomberg.com/news/articles/2026-07-24/wall-street-bulls-are-staring-down-100-oil-tariffs-ai-angst",
           "tags": [
             "commodity",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Economists Stick to Fed Rate Cut Call as Markets Price In Hikes",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-24T10:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-24/economists-stick-to-fed-rate-cut-call-as-markets-price-in-hikes",
-          "tags": [
             "market",
             "rates",
             "us_broad"
@@ -122,7 +122,7 @@
       "itemCount": 3,
       "isStale": false,
       "topNegativeTitle": "BlackRock Gets Soft Demand for Bond Sale After AI Debt Selloff",
-      "topPositiveTitle": "Global Inflation Angst Is Back on $100 Oil and More Tariffs",
+      "topPositiveTitle": "Charting the Global Economy: Growth Picks Up, AI Boom Continues",
       "items": [
         {
           "title": "BlackRock Gets Soft Demand for Bond Sale After AI Debt Selloff",
@@ -152,16 +152,15 @@
           ]
         },
         {
-          "title": "Global Inflation Angst Is Back on $100 Oil and More Tariffs",
+          "title": "Charting the Global Economy: Growth Picks Up, AI Boom Continues",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-07-24T11:26:16+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-24/global-inflation-angst-is-back-with-100-oil-and-more-tariffs",
+          "publishedAt": "2026-07-25T09:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-25/charting-the-global-economy-growth-picks-up-ai-boom-continues",
           "tags": [
-            "commodity",
-            "macro_risk",
             "market",
+            "us_broad",
             "us_growth"
           ]
         }
@@ -193,16 +192,29 @@
       ]
     },
     "gold": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.33,
       "negativeCount": 0,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Indonesia Arrests Former Top Graft Prosecutor After Police Raids",
+      "topPositiveTitle": "Indonesia Arrests Former Top Graft Prosecutor After Police Raids",
+      "items": [
+        {
+          "title": "Indonesia Arrests Former Top Graft Prosecutor After Police Raids",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-07-25T05:21:13+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-25/indonesia-arrests-former-top-graft-prosecutor-after-police-raids",
+          "tags": [
+            "gold",
+            "market"
+          ]
+        }
+      ]
     },
     "reit": {
       "avgSentiment": 0,
@@ -243,12 +255,12 @@
       ]
     },
     "macro_risk": {
-      "avgSentiment": -0.318,
+      "avgSentiment": -0.265,
       "negativeCount": 4,
       "positiveCount": 1,
-      "neutralCount": 0,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 6,
       "isStale": false,
       "topNegativeTitle": "BlackRock Gets Soft Demand for Bond Sale After AI Debt Selloff",
       "topPositiveTitle": "Oil Prices Volatile as Supply Disruptions Hit Four Global Fronts",
@@ -296,28 +308,26 @@
           ]
         },
         {
-          "title": "Global Inflation Angst Is Back on $100 Oil and More Tariffs",
+          "title": "ECB’s Zigman Says War Fallout on Inflation Takes Time to Be Seen",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-07-24T11:26:16+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-24/global-inflation-angst-is-back-with-100-oil-and-more-tariffs",
+          "publishedAt": "2026-07-25T05:06:21+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-25/ecb-s-zigman-says-war-fallout-on-inflation-take-time-to-be-seen",
           "tags": [
-            "commodity",
+            "geopolitical",
             "macro_risk",
-            "market",
-            "us_growth"
+            "market"
           ]
         },
         {
-          "title": "Oil Prices Volatile as Supply Disruptions Hit Four Global Fronts",
+          "title": "El Niño Worsens Plight of Asia’s Rice Belt After War Price Shock",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-07-24T20:15:20+00:00",
-          "url": "https://www.bloomberg.com/news/features/2026-07-24/oil-prices-volatile-as-supply-disruptions-hit-four-global-fronts",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-25T01:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-25/el-nino-worsens-plight-of-asia-s-rice-belt-after-war-price-shock",
           "tags": [
-            "commodity",
             "geopolitical",
             "macro_risk",
             "market"
@@ -326,28 +336,16 @@
       ]
     },
     "fx": {
-      "avgSentiment": -0.25,
-      "negativeCount": 2,
+      "avgSentiment": 0.0,
+      "negativeCount": 1,
       "positiveCount": 1,
-      "neutralCount": 1,
+      "neutralCount": 0,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Yen’s Worst Week Since May Brings It Close to 165 Per Dollar",
+      "topNegativeTitle": "Yen’s Slide Bolsters Appeal of Hawkish Bank of Japan Hedges",
       "topPositiveTitle": "Dollar Wraps Its Best Week in a Month as Haven Demand Rises",
       "items": [
-        {
-          "title": "Yen’s Worst Week Since May Brings It Close to 165 Per Dollar",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-07-24T00:43:39+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-24/yen-s-worst-week-since-may-brings-it-close-to-165-versus-dollar",
-          "tags": [
-            "fx",
-            "market"
-          ]
-        },
         {
           "title": "Yen’s Slide Bolsters Appeal of Hawkish Bank of Japan Hedges",
           "source": "Bloomberg Economics",
@@ -358,18 +356,6 @@
           "tags": [
             "fx",
             "jp_broad",
-            "market"
-          ]
-        },
-        {
-          "title": "Hedge Funds Turn Most Negative on Canadian Dollar Since 2024",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-24T19:47:47+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-24/hedge-funds-turn-most-negative-on-canadian-dollar-since-2024",
-          "tags": [
-            "fx",
             "market"
           ]
         },
@@ -389,12 +375,12 @@
       ]
     },
     "rates": {
-      "avgSentiment": 0.143,
+      "avgSentiment": 0.167,
       "negativeCount": 1,
-      "positiveCount": 2,
-      "neutralCount": 4,
+      "positiveCount": 1,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 7,
+      "itemCount": 4,
       "isStale": false,
       "topNegativeTitle": "Euro-Zone Resilience and More Inflation Seen in First Data for ECB",
       "topPositiveTitle": "US New Home Sales Rise for First Time in Three Months",
@@ -438,39 +424,26 @@
           ]
         },
         {
-          "title": "ECB Still More Likely to Hike Rates Than Hold, Simkus Says",
+          "title": "US New Home Sales Rise for First Time in Three Months",
           "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-24T10:03:03+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-24/ecb-still-more-likely-to-hike-rates-than-hold-simkus-says",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-07-24T14:02:07+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-24/us-new-home-sales-rise-for-first-time-in-three-months",
           "tags": [
             "market",
             "rates"
-          ]
-        },
-        {
-          "title": "Economists Stick to Fed Rate Cut Call as Markets Price In Hikes",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-24T10:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-24/economists-stick-to-fed-rate-cut-call-as-markets-price-in-hikes",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
           ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": -0.045,
-      "negativeCount": 4,
-      "positiveCount": 2,
-      "neutralCount": 7,
+      "avgSentiment": -0.029,
+      "negativeCount": 2,
+      "positiveCount": 1,
+      "neutralCount": 6,
       "sourceCount": 3,
-      "itemCount": 13,
+      "itemCount": 9,
       "isStale": false,
       "topNegativeTitle": "S&P 500 Wavers as Oil Decline Offsets Chip Selloff: Markets Wrap",
       "topPositiveTitle": "Oil Prices Volatile as Supply Disruptions Hit Four Global Fronts",
@@ -505,28 +478,15 @@
           ]
         },
         {
-          "title": "Global Inflation Angst Is Back on $100 Oil and More Tariffs",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-07-24T11:26:16+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-24/global-inflation-angst-is-back-with-100-oil-and-more-tariffs",
-          "tags": [
-            "commodity",
-            "macro_risk",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Global Bonds Are Reeling as Oil Surge Rekindles Inflation Threat",
+          "title": "Ukraine Seeks 30-Year Energy Pact With Canada, Minister Says",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-07-24T04:33:23+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-24/global-bonds-are-reeling-as-oil-surge-renews-inflation-threat",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-25T09:07:34+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-25/ukraine-seeks-30-year-energy-pact-with-canada-minister-says",
           "tags": [
             "commodity",
+            "geopolitical",
             "market"
           ]
         },
@@ -542,30 +502,82 @@
             "dividend",
             "market"
           ]
+        },
+        {
+          "title": "Wall Street Bulls Are Staring Down $100 Oil, Tariffs, AI Angst",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-24T20:12:40+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-24/wall-street-bulls-are-staring-down-100-oil-tariffs-ai-angst",
+          "tags": [
+            "commodity",
+            "market",
+            "rates",
+            "us_broad"
+          ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.334,
-      "negativeCount": 0,
-      "positiveCount": 3,
-      "neutralCount": 2,
+      "avgSentiment": 0.144,
+      "negativeCount": 1,
+      "positiveCount": 2,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "Oil to End Year Near $100 on Mideast Disruptions, Rapidan Says",
+      "topNegativeTitle": "ECB’s Zigman Says War Fallout on Inflation Takes Time to Be Seen",
       "topPositiveTitle": "Oil Prices Volatile as Supply Disruptions Hit Four Global Fronts",
       "items": [
         {
-          "title": "Oil to End Year Near $100 on Mideast Disruptions, Rapidan Says",
+          "title": "ECB’s Zigman Says War Fallout on Inflation Takes Time to Be Seen",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-07-25T05:06:21+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-25/ecb-s-zigman-says-war-fallout-on-inflation-take-time-to-be-seen",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Ukraine Seeks 30-Year Energy Pact With Canada, Minister Says",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-24T19:01:24+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-24/oil-to-end-year-near-100-on-mideast-disruptions-rapidan-says",
+          "publishedAt": "2026-07-25T09:07:34+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-25/ukraine-seeks-30-year-energy-pact-with-canada-minister-says",
           "tags": [
             "commodity",
             "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "India Flags Attack on LPG Tanker in Iran Waters, Says Crew Safe",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-25T03:31:07+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-25/india-flags-attack-on-lpg-tanker-in-iran-waters-says-crew-safe",
+          "tags": [
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "El Niño Worsens Plight of Asia’s Rice Belt After War Price Shock",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-25T01:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-25/el-nino-worsens-plight-of-asia-s-rice-belt-after-war-price-shock",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
             "market"
           ]
         },
@@ -577,46 +589,6 @@
           "publishedAt": "2026-07-24T10:42:41+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-07-24/russia-cuts-key-rate-to-14-as-drone-strikes-batter-economy",
           "tags": [
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "Russia’s Top Black Sea Oil Port Halts Loadings Amid Safety Fears",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-07-24T16:14:27+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-24/russia-s-top-black-sea-oil-port-halts-loadings-amid-safety-fears",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "Oil Prices Volatile as Supply Disruptions Hit Four Global Fronts",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-07-24T20:15:20+00:00",
-          "url": "https://www.bloomberg.com/news/features/2026-07-24/oil-prices-volatile-as-supply-disruptions-hit-four-global-fronts",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Dollar Wraps Its Best Week in a Month as Haven Demand Rises",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-07-24T10:12:33+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-24/dollar-set-for-best-week-in-a-month-as-haven-flows-offer-support",
-          "tags": [
-            "fx",
             "geopolitical",
             "market"
           ]
