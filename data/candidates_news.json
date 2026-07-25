@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-07-25T07:37:07.690600+09:00",
-  "sourceUpdatedAt": "2026-07-24T21:47:14+00:00",
+  "updatedAt": "2026-07-25T09:58:54.117838+09:00",
+  "sourceUpdatedAt": "2026-07-25T00:00:00+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -38,11 +38,11 @@
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "S&P 500 Churns as Oil Decline Offsets Chip Selloff: Markets Wrap",
-      "topPositiveTitle": "S&P 500 Churns as Oil Decline Offsets Chip Selloff: Markets Wrap",
+      "topNegativeTitle": "S&P 500 Wavers as Oil Decline Offsets Chip Selloff: Markets Wrap",
+      "topPositiveTitle": "S&P 500 Wavers as Oil Decline Offsets Chip Selloff: Markets Wrap",
       "items": [
         {
-          "title": "S&P 500 Churns as Oil Decline Offsets Chip Selloff: Markets Wrap",
+          "title": "S&P 500 Wavers as Oil Decline Offsets Chip Selloff: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.5,
@@ -66,11 +66,11 @@
       "sourceCount": 2,
       "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "S&P 500 Churns as Oil Decline Offsets Chip Selloff: Markets Wrap",
+      "topNegativeTitle": "S&P 500 Wavers as Oil Decline Offsets Chip Selloff: Markets Wrap",
       "topPositiveTitle": "Wall Street Bulls Are Staring Down $100 Oil, Tariffs, AI Angst",
       "items": [
         {
-          "title": "S&P 500 Churns as Oil Decline Offsets Chip Selloff: Markets Wrap",
+          "title": "S&P 500 Wavers as Oil Decline Offsets Chip Selloff: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.5,
@@ -243,12 +243,12 @@
       ]
     },
     "macro_risk": {
-      "avgSentiment": -0.265,
+      "avgSentiment": -0.318,
       "negativeCount": 4,
       "positiveCount": 1,
-      "neutralCount": 1,
+      "neutralCount": 0,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 5,
       "isStale": false,
       "topNegativeTitle": "BlackRock Gets Soft Demand for Bond Sale After AI Debt Selloff",
       "topPositiveTitle": "Oil Prices Volatile as Supply Disruptions Hit Four Global Fronts",
@@ -267,7 +267,7 @@
           ]
         },
         {
-          "title": "S&P 500 Churns as Oil Decline Offsets Chip Selloff: Markets Wrap",
+          "title": "S&P 500 Wavers as Oil Decline Offsets Chip Selloff: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.5,
@@ -310,13 +310,14 @@
           ]
         },
         {
-          "title": "UK Food Prices to Peak Lower Than Thought, BOE Survey Finds",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-24T08:55:48+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-24/uk-food-prices-to-peak-lower-than-thought-boe-survey-finds",
+          "title": "Oil Prices Volatile as Supply Disruptions Hit Four Global Fronts",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-07-24T20:15:20+00:00",
+          "url": "https://www.bloomberg.com/news/features/2026-07-24/oil-prices-volatile-as-supply-disruptions-hit-four-global-fronts",
           "tags": [
+            "commodity",
             "geopolitical",
             "macro_risk",
             "market"
@@ -471,11 +472,11 @@
       "sourceCount": 3,
       "itemCount": 13,
       "isStale": false,
-      "topNegativeTitle": "S&P 500 Churns as Oil Decline Offsets Chip Selloff: Markets Wrap",
+      "topNegativeTitle": "S&P 500 Wavers as Oil Decline Offsets Chip Selloff: Markets Wrap",
       "topPositiveTitle": "Oil Prices Volatile as Supply Disruptions Hit Four Global Fronts",
       "items": [
         {
-          "title": "S&P 500 Churns as Oil Decline Offsets Chip Selloff: Markets Wrap",
+          "title": "S&P 500 Wavers as Oil Decline Offsets Chip Selloff: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.5,
@@ -545,12 +546,12 @@
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.278,
+      "avgSentiment": 0.334,
       "negativeCount": 0,
       "positiveCount": 3,
-      "neutralCount": 3,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 5,
       "isStale": false,
       "topNegativeTitle": "Oil to End Year Near $100 on Mideast Disruptions, Rapidan Says",
       "topPositiveTitle": "Oil Prices Volatile as Supply Disruptions Hit Four Global Fronts",
@@ -581,19 +582,6 @@
           ]
         },
         {
-          "title": "UK Food Prices to Peak Lower Than Thought, BOE Survey Finds",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-24T08:55:48+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-24/uk-food-prices-to-peak-lower-than-thought-boe-survey-finds",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
           "title": "Russia’s Top Black Sea Oil Port Halts Loadings Amid Safety Fears",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
@@ -617,6 +605,19 @@
             "commodity",
             "geopolitical",
             "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Dollar Wraps Its Best Week in a Month as Haven Demand Rises",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-07-24T10:12:33+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-24/dollar-set-for-best-week-in-a-month-as-haven-flows-offer-support",
+          "tags": [
+            "fx",
+            "geopolitical",
             "market"
           ]
         }
