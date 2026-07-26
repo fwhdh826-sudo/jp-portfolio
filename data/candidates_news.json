@@ -1,89 +1,59 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-07-25T21:14:04.013997+09:00",
-  "sourceUpdatedAt": "2026-07-25T12:00:01+00:00",
+  "updatedAt": "2026-07-26T10:05:22.119944+09:00",
+  "sourceUpdatedAt": "2026-07-26T00:51:09+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": -0.67,
-      "negativeCount": 1,
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
+      "neutralCount": 1,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Yen’s Slide Bolsters Appeal of Hawkish Bank of Japan Hedges",
-      "topPositiveTitle": "Yen’s Slide Bolsters Appeal of Hawkish Bank of Japan Hedges",
+      "topNegativeTitle": "Fed, Bank of England, Bank of Japan Face $100 Oil Inflation Test",
+      "topPositiveTitle": "Fed, Bank of England, Bank of Japan Face $100 Oil Inflation Test",
       "items": [
         {
-          "title": "Yen’s Slide Bolsters Appeal of Hawkish Bank of Japan Hedges",
+          "title": "Fed, Bank of England, Bank of Japan Face $100 Oil Inflation Test",
           "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-07-24T16:53:05+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-24/yen-s-slide-bolsters-appeal-of-hawkish-bank-of-japan-hedges",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-25T20:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-25/fed-bank-of-england-bank-of-japan-face-100-oil-inflation-test",
           "tags": [
-            "fx",
+            "commodity",
             "jp_broad",
-            "market"
+            "market",
+            "us_broad"
           ]
         }
       ]
     },
     "jp_semiconductor": {
-      "avgSentiment": -0.5,
-      "negativeCount": 1,
+      "avgSentiment": 0,
+      "negativeCount": 0,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "S&P 500 Wavers as Oil Decline Offsets Chip Selloff: Markets Wrap",
-      "topPositiveTitle": "S&P 500 Wavers as Oil Decline Offsets Chip Selloff: Markets Wrap",
-      "items": [
-        {
-          "title": "S&P 500 Wavers as Oil Decline Offsets Chip Selloff: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.5,
-          "publishedAt": "2026-07-23T22:06:16+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-23/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "jp_semiconductor",
-            "macro_risk",
-            "market",
-            "us_broad"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "us_broad": {
-      "avgSentiment": -0.277,
-      "negativeCount": 2,
+      "avgSentiment": -0.165,
+      "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 1,
-      "sourceCount": 2,
-      "itemCount": 3,
+      "sourceCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "S&P 500 Wavers as Oil Decline Offsets Chip Selloff: Markets Wrap",
-      "topPositiveTitle": "Wall Street Bulls Are Staring Down $100 Oil, Tariffs, AI Angst",
+      "topNegativeTitle": "Charting the Global Economy: Growth Picks Up, AI Boom Continues",
+      "topPositiveTitle": "Fed, Bank of England, Bank of Japan Face $100 Oil Inflation Test",
       "items": [
-        {
-          "title": "S&P 500 Wavers as Oil Decline Offsets Chip Selloff: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.5,
-          "publishedAt": "2026-07-23T22:06:16+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-23/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "jp_semiconductor",
-            "macro_risk",
-            "market",
-            "us_broad"
-          ]
-        },
         {
           "title": "Charting the Global Economy: Growth Picks Up, AI Boom Continues",
           "source": "Bloomberg Economics",
@@ -98,59 +68,32 @@
           ]
         },
         {
-          "title": "Wall Street Bulls Are Staring Down $100 Oil, Tariffs, AI Angst",
-          "source": "Bloomberg Markets",
+          "title": "Fed, Bank of England, Bank of Japan Face $100 Oil Inflation Test",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-24T20:12:40+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-24/wall-street-bulls-are-staring-down-100-oil-tariffs-ai-angst",
+          "publishedAt": "2026-07-25T20:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-25/fed-bank-of-england-bank-of-japan-face-100-oil-inflation-test",
           "tags": [
             "commodity",
+            "jp_broad",
             "market",
-            "rates",
             "us_broad"
           ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": -0.587,
-      "negativeCount": 3,
+      "avgSentiment": -0.33,
+      "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 2,
-      "itemCount": 3,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "BlackRock Gets Soft Demand for Bond Sale After AI Debt Selloff",
+      "topNegativeTitle": "Charting the Global Economy: Growth Picks Up, AI Boom Continues",
       "topPositiveTitle": "Charting the Global Economy: Growth Picks Up, AI Boom Continues",
       "items": [
-        {
-          "title": "BlackRock Gets Soft Demand for Bond Sale After AI Debt Selloff",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-07-24T13:09:57+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-24/blackrock-kicks-off-12-3-billion-bond-sale-for-meta-data-center",
-          "tags": [
-            "macro_risk",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Nasdaq 100 Tumbles as Oil Spike, AI Jitters Hit Tech Stocks",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.43,
-          "publishedAt": "2026-07-24T12:39:22+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-24/s-p-500-futures-steady-as-big-tech-rebounds-oil-dips-below-100",
-          "tags": [
-            "commodity",
-            "macro_risk",
-            "market",
-            "us_growth"
-          ]
-        },
         {
           "title": "Charting the Global Economy: Growth Picks Up, AI Boom Continues",
           "source": "Bloomberg Economics",
@@ -167,29 +110,16 @@
       ]
     },
     "global_broad": {
-      "avgSentiment": 1.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
-      "positiveCount": 1,
+      "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "European Stocks Gain on Earnings Boost, Robust Business Activity",
-      "topPositiveTitle": "European Stocks Gain on Earnings Boost, Robust Business Activity",
-      "items": [
-        {
-          "title": "European Stocks Gain on Earnings Boost, Robust Business Activity",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-07-24T07:22:43+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-24/european-stocks-edge-higher-as-sap-earnings-beat-estimates",
-          "tags": [
-            "global_broad",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "gold": {
       "avgSentiment": 0.33,
@@ -229,84 +159,28 @@
       "items": []
     },
     "dividend": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Vitol Paid Out $5.9 Billion to Traders as Profit Halved in 2025",
-      "topPositiveTitle": "Vitol Paid Out $5.9 Billion to Traders as Profit Halved in 2025",
-      "items": [
-        {
-          "title": "Vitol Paid Out $5.9 Billion to Traders as Profit Halved in 2025",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-24T20:54:24+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-24/vitol-paid-out-5-9-billion-to-traders-as-profit-halved-in-2025",
-          "tags": [
-            "commodity",
-            "dividend",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.265,
-      "negativeCount": 4,
-      "positiveCount": 1,
+      "avgSentiment": -0.165,
+      "negativeCount": 1,
+      "positiveCount": 0,
       "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "BlackRock Gets Soft Demand for Bond Sale After AI Debt Selloff",
-      "topPositiveTitle": "Oil Prices Volatile as Supply Disruptions Hit Four Global Fronts",
+      "topNegativeTitle": "ECB’s Zigman Says War Fallout on Inflation Takes Time to Be Seen",
+      "topPositiveTitle": "茂木外相 日本の対ロシア政策変わらずも意思疎通は必要",
       "items": [
-        {
-          "title": "BlackRock Gets Soft Demand for Bond Sale After AI Debt Selloff",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-07-24T13:09:57+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-24/blackrock-kicks-off-12-3-billion-bond-sale-for-meta-data-center",
-          "tags": [
-            "macro_risk",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "S&P 500 Wavers as Oil Decline Offsets Chip Selloff: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.5,
-          "publishedAt": "2026-07-23T22:06:16+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-23/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "jp_semiconductor",
-            "macro_risk",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Nasdaq 100 Tumbles as Oil Spike, AI Jitters Hit Tech Stocks",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.43,
-          "publishedAt": "2026-07-24T12:39:22+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-24/s-p-500-futures-steady-as-big-tech-rebounds-oil-dips-below-100",
-          "tags": [
-            "commodity",
-            "macro_risk",
-            "market",
-            "us_growth"
-          ]
-        },
         {
           "title": "ECB’s Zigman Says War Fallout on Inflation Takes Time to Be Seen",
           "source": "Bloomberg Economics",
@@ -321,160 +195,92 @@
           ]
         },
         {
-          "title": "El Niño Worsens Plight of Asia’s Rice Belt After War Price Shock",
-          "source": "Bloomberg Markets",
+          "title": "茂木外相 日本の対ロシア政策変わらずも意思疎通は必要",
+          "source": "NHK 経済",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-25T01:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-25/el-nino-worsens-plight-of-asia-s-rice-belt-after-war-price-shock",
+          "publishedAt": "2026-07-24T07:27:40+00:00",
+          "url": "https://news.web.nhk/newsweb/na/na-k10015185281000",
           "tags": [
             "geopolitical",
             "macro_risk",
             "market"
-          ]
+          ],
+          "titleJa": "茂木外相 日本の対ロシア政策変わらずも意思疎通は必要"
         }
       ]
     },
     "fx": {
-      "avgSentiment": 0.0,
-      "negativeCount": 1,
-      "positiveCount": 1,
+      "avgSentiment": 0,
+      "negativeCount": 0,
+      "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 2,
-      "itemCount": 2,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Yen’s Slide Bolsters Appeal of Hawkish Bank of Japan Hedges",
-      "topPositiveTitle": "Dollar Wraps Its Best Week in a Month as Haven Demand Rises",
-      "items": [
-        {
-          "title": "Yen’s Slide Bolsters Appeal of Hawkish Bank of Japan Hedges",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-07-24T16:53:05+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-24/yen-s-slide-bolsters-appeal-of-hawkish-bank-of-japan-hedges",
-          "tags": [
-            "fx",
-            "jp_broad",
-            "market"
-          ]
-        },
-        {
-          "title": "Dollar Wraps Its Best Week in a Month as Haven Demand Rises",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-07-24T10:12:33+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-24/dollar-set-for-best-week-in-a-month-as-haven-flows-offer-support",
-          "tags": [
-            "fx",
-            "geopolitical",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "rates": {
-      "avgSentiment": 0.167,
-      "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 4,
+      "avgSentiment": 0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Euro-Zone Resilience and More Inflation Seen in First Data for ECB",
-      "topPositiveTitle": "US New Home Sales Rise for First Time in Three Months",
-      "items": [
-        {
-          "title": "Euro-Zone Resilience and More Inflation Seen in First Data for ECB",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-07-24T15:29:21+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-24/euro-zone-resilience-and-more-inflation-seen-in-first-data-for-ecb",
-          "tags": [
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Wall Street Bulls Are Staring Down $100 Oil, Tariffs, AI Angst",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-24T20:12:40+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-24/wall-street-bulls-are-staring-down-100-oil-tariffs-ai-angst",
-          "tags": [
-            "commodity",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "ECB’s Lane Sets Up September as Next Key Moment for Rates",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-24T16:30:30+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-24/ecb-s-lane-sets-up-september-as-next-key-moment-for-rates",
-          "tags": [
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "US New Home Sales Rise for First Time in Three Months",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-07-24T14:02:07+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-24/us-new-home-sales-rise-for-first-time-in-three-months",
-          "tags": [
-            "market",
-            "rates"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "commodity": {
-      "avgSentiment": -0.029,
-      "negativeCount": 2,
-      "positiveCount": 1,
-      "neutralCount": 6,
+      "avgSentiment": -0.066,
+      "negativeCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 4,
       "sourceCount": 3,
-      "itemCount": 9,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "S&P 500 Wavers as Oil Decline Offsets Chip Selloff: Markets Wrap",
-      "topPositiveTitle": "Oil Prices Volatile as Supply Disruptions Hit Four Global Fronts",
+      "topNegativeTitle": "Heat Bakes Central US, Raising Energy Demand as East Stays Cool",
+      "topPositiveTitle": "Iraq to Sign Agreement with Syria on Building of Oil Pipelines",
       "items": [
         {
-          "title": "S&P 500 Wavers as Oil Decline Offsets Chip Selloff: Markets Wrap",
+          "title": "Heat Bakes Central US, Raising Energy Demand as East Stays Cool",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.5,
-          "publishedAt": "2026-07-23T22:06:16+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-23/stock-market-today-dow-s-p-live-updates",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-07-25T11:41:32+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-25/heat-bakes-central-us-raising-energy-demand-as-east-stays-cool",
           "tags": [
             "commodity",
-            "jp_semiconductor",
-            "macro_risk",
-            "market",
-            "us_broad"
+            "market"
           ]
         },
         {
-          "title": "Nasdaq 100 Tumbles as Oil Spike, AI Jitters Hit Tech Stocks",
+          "title": "Iraq to Sign Agreement with Syria on Building of Oil Pipelines",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.43,
-          "publishedAt": "2026-07-24T12:39:22+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-24/s-p-500-futures-steady-as-big-tech-rebounds-oil-dips-below-100",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-25T23:34:54+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-25/iraq-to-sign-agreement-with-syria-on-building-of-oil-pipelines",
           "tags": [
             "commodity",
-            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Fed, Bank of England, Bank of Japan Face $100 Oil Inflation Test",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-25T20:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-25/fed-bank-of-england-bank-of-japan-face-100-oil-inflation-test",
+          "tags": [
+            "commodity",
+            "jp_broad",
             "market",
-            "us_growth"
+            "us_broad"
           ]
         },
         {
@@ -491,44 +297,30 @@
           ]
         },
         {
-          "title": "Vitol Paid Out $5.9 Billion to Traders as Profit Halved in 2025",
-          "source": "Bloomberg Markets",
+          "title": "“来月の原油 去年の実績とほぼ同じ量 調達できる”赤澤経産相",
+          "source": "NHK 経済",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-24T20:54:24+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-24/vitol-paid-out-5-9-billion-to-traders-as-profit-halved-in-2025",
+          "publishedAt": "2026-07-24T07:45:27+00:00",
+          "url": "https://news.web.nhk/newsweb/na/na-k10015185271000",
           "tags": [
             "commodity",
-            "dividend",
             "market"
-          ]
-        },
-        {
-          "title": "Wall Street Bulls Are Staring Down $100 Oil, Tariffs, AI Angst",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-24T20:12:40+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-24/wall-street-bulls-are-staring-down-100-oil-tariffs-ai-angst",
-          "tags": [
-            "commodity",
-            "market",
-            "rates",
-            "us_broad"
-          ]
+          ],
+          "titleJa": "“来月の原油 去年の実績とほぼ同じ量 調達できる”赤澤経産相"
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.144,
+      "avgSentiment": -0.083,
       "negativeCount": 1,
-      "positiveCount": 2,
-      "neutralCount": 4,
-      "sourceCount": 2,
-      "itemCount": 7,
+      "positiveCount": 0,
+      "neutralCount": 3,
+      "sourceCount": 3,
+      "itemCount": 4,
       "isStale": false,
       "topNegativeTitle": "ECB’s Zigman Says War Fallout on Inflation Takes Time to Be Seen",
-      "topPositiveTitle": "Oil Prices Volatile as Supply Disruptions Hit Four Global Fronts",
+      "topPositiveTitle": "Ukraine Seeks 30-Year Energy Pact With Canada, Minister Says",
       "items": [
         {
           "title": "ECB’s Zigman Says War Fallout on Inflation Takes Time to Be Seen",
@@ -569,29 +361,18 @@
           ]
         },
         {
-          "title": "El Niño Worsens Plight of Asia’s Rice Belt After War Price Shock",
-          "source": "Bloomberg Markets",
+          "title": "茂木外相 日本の対ロシア政策変わらずも意思疎通は必要",
+          "source": "NHK 経済",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-25T01:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-25/el-nino-worsens-plight-of-asia-s-rice-belt-after-war-price-shock",
+          "publishedAt": "2026-07-24T07:27:40+00:00",
+          "url": "https://news.web.nhk/newsweb/na/na-k10015185281000",
           "tags": [
             "geopolitical",
             "macro_risk",
             "market"
-          ]
-        },
-        {
-          "title": "Russia Cuts Key Rate as Kyiv’s Drone Strikes Batter Economy",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-24T10:42:41+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-24/russia-cuts-key-rate-to-14-as-drone-strikes-batter-economy",
-          "tags": [
-            "geopolitical",
-            "market"
-          ]
+          ],
+          "titleJa": "茂木外相 日本の対ロシア政策変わらずも意思疎通は必要"
         }
       ]
     }
@@ -604,7 +385,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 3,
+    "excludedCount": 7,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
