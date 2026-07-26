@@ -61,6 +61,15 @@ STALE_THRESHOLD_HOURS = 48
 OUTPUT_PATH = Path(__file__).parent / 'candidates_stocks.json'
 JST = timezone(timedelta(hours=9))
 
+# P5-B005-B2: prescreen score/rank/pool の唯一の永続化先。
+# candidates_stocks.jsonの生成に使われたのと同一のwhole_market_universe_provider()
+# 呼び出し1回分のprescreen entriesをそのまま書き出す（再fetch・再計算はしない）。
+# gitignore対象（.gitignore参照）: full_batch.yml実行中の同一job内でのみ
+# 後続のcandidate funnel batch stepから読めればよく、恒久artifactとしては
+# 公開しない（新規許可artifactはdata/public両方のcandidate_funnel.jsonのみ）。
+PRESCREEN_METADATA_SCHEMA_VERSION = "prescreen-metadata-1"
+PRESCREEN_METADATA_PATH = Path(__file__).parent / 'prescreen_metadata.json'
+
 # P5-B004a: 公開JSONの無制限肥大化を防ぐための明示的な上限。
 # 現行SEED_LIST(41件)では結果が変わらない値にしてある。
 # cap適用順序: provider→enrichment(全件)→publish capで先頭からcap件に
@@ -136,10 +145,20 @@ class UniverseResultWithProvenance(NamedTuple):
     保ちつつ、_metaへ付与する追加provenance情報を持つ。
     build_candidates_stocks()はuniverse_id/items"属性"でアクセスするため
     （tuple位置unpackではない）、既存UniverseResult providerと区別なく
-    duck typingで扱える。"""
+    duck typingで扱える。
+
+    prescreenEntries: P5-B005-B2。jpx_cheap_prescreen.build_cheap_prescreen_shortlist()
+      が算出したper-code prescreen score/pool_typeを、candidates_stocks.json
+      には出力しないまま（既存schema不変）呼び出し元（main()）が
+      prescreen_metadata.jsonへ独立して永続化できるよう保持する。
+      (code, name, sector, pool_type, score) のtupleで、既存の
+      score降順・code昇順ソート順（jpx_cheap_prescreen.select_diversity_shortlist
+      の最終順）を保つ。whole-market経路がprescreenを実行しない場合
+      （seed fallback等）は空tuple。"""
     universe_id: str
     items: list[tuple[str, str, str]]
     provenance: dict[str, Any]
+    prescreenEntries: tuple[tuple[str, str, str, str, float], ...] = ()
 
 
 # provider: UniverseResult（universe_id + (code, name, sector)のリスト）を
@@ -283,18 +302,24 @@ def whole_market_universe_provider(
         "sectorCapRelaxedCount": prescreen.sector_cap_relaxed_count,
     }
 
+    prescreen_entries = tuple(
+        (e.code, e.name, e.sector, e.pool_type, e.score) for e in prescreen.entries
+    )
+
     if prescreen.bypass_seed_list_v1 or not prescreen.items:
         fallback = default_universe_provider()
         return UniverseResultWithProvenance(
             universe_id=fallback.universe_id,
             items=fallback.items,
             provenance=provenance,
+            prescreenEntries=prescreen_entries,
         )
 
     return UniverseResultWithProvenance(
         universe_id=prescreen.shortlist_id,
         items=prescreen.items,
         provenance=provenance,
+        prescreenEntries=prescreen_entries,
     )
 
 
@@ -620,6 +645,55 @@ def decide_write(
     return False, 'existing-fresh-fallback-guard'
 
 
+def build_prescreen_metadata_payload(provider_result: Any, now: datetime) -> dict[str, Any]:
+    """P5-B005-B2: whole_market_universe_provider()の戻り値から、
+    candidate funnel batchが code join に使うprescreen metadata payloadを
+    組み立てる（純粋関数）。
+
+    entriesはjpx_cheap_prescreen.select_diversity_shortlist()が確定させた
+    順序（score降順・code昇順）をそのまま使い、その1-indexed位置を
+    prescreenRankとする（re-sortしない — 呼び出し元のtie-break契約を
+    再解釈しない）。
+
+    duplicateCodesは construction 上は空であるべきだが（select_diversity_shortlist
+    はcode一意性を保証する）、上流JPX universeが将来重複codeを含んだ場合の
+    fail-closed観測用に明示的に検出する。"""
+    entries = list(getattr(provider_result, "prescreenEntries", None) or ())
+    provenance = getattr(provider_result, "provenance", None) or {}
+
+    code_counts: dict[str, int] = {}
+    for code, _name, _sector, _pool_type, _score in entries:
+        code_counts[code] = code_counts.get(code, 0) + 1
+
+    out_entries = [
+        {
+            "code": code,
+            "prescreenScore": score,
+            "prescreenRank": idx + 1,
+            "prescreenPool": pool_type,
+        }
+        for idx, (code, _name, _sector, pool_type, score) in enumerate(entries)
+    ]
+
+    return {
+        "schemaVersion": PRESCREEN_METADATA_SCHEMA_VERSION,
+        "generatedAt": now.isoformat(),
+        "not_for_trading": True,
+        "shortlistId": provenance.get("shortlistId"),
+        "pipelinePath": provenance.get("pipelinePath"),
+        "duplicateCodes": sorted(code for code, cnt in code_counts.items() if cnt > 1),
+        "entries": out_entries,
+    }
+
+
+def write_prescreen_metadata(
+    provider_result: Any, now: datetime, path: Path = PRESCREEN_METADATA_PATH
+) -> None:
+    payload = build_prescreen_metadata_payload(provider_result, now)
+    with open(path, 'w', encoding='utf-8') as f:
+        json.dump(payload, f, ensure_ascii=False, indent=2)
+
+
 def load_existing(path: Path) -> dict[str, Any] | None:
     """既存candidates_stocks.jsonを読み込み、schema検証済みならdictを、
     存在しない/corrupt/schema不正ならNoneを返す。"""
@@ -649,8 +723,12 @@ def main(argv: list[str] | tuple[str, ...] = ()) -> None:
     # 失敗/予期しない例外のいずれの場合もdefault_universe_provider()
     # （SEED_LIST 41件）へ安全にfallbackするため、main()からは常に単に
     # whole_market_universe_providerを渡すだけでよい。
+    # P5-B005-B2: provider呼び出しは1回のみ行い（re-fetch禁止）、その結果を
+    # build_candidates_stocks()とprescreen_metadata.json書き出しの両方で
+    # 共有する（同一runの同一prescreen結果であることをconstructionで保証する）。
+    provider_result = whole_market_universe_provider(now=now)
     payload = build_candidates_stocks(
-        universe_provider=whole_market_universe_provider,
+        universe_provider=lambda: provider_result,
         now=now,
         run_token=args.run_token,
     )
@@ -678,6 +756,11 @@ def main(argv: list[str] | tuple[str, ...] = ()) -> None:
         json.dump(payload, f, ensure_ascii=False, indent=2)
 
     print(f"  → {OUTPUT_PATH}")
+
+    # P5-B005-B2: candidates_stocks.jsonを実際に書き込んだ場合のみ、対応する
+    # prescreen_metadata.jsonも同期して書き込む（片方だけ古い状態を防ぐ）。
+    write_prescreen_metadata(provider_result, now)
+    print(f"  → {PRESCREEN_METADATA_PATH}")
 
 
 if __name__ == '__main__':

@@ -51782,3 +51782,112 @@ prescreen cache score/rank/poolをenrichment candidateへcode-joinし、candidat
 生成するbatch・quality gate・privacy smokeを実装。A2-S §25.20のB2 production-distribution
 calibration gate（P-01..P-15）を完了条件に含めること。
 ```
+
+## P5-B005-B2: candidate funnel batch / join / artifact / production-distribution quality gate
+
+B1-V3b PASS（B2 readiness: READY）を受けて着手。B1 engine（`data/candidate_funnel_engine.py`）・
+TS contract（`src/types/candidateFunnel.ts`）・fixture（`tests/fixtures/candidate_funnel_calibration_v1.json`）は
+**無変更**（`git status --short`で確認）。
+
+### 発見: prescreen score/rank/poolは既存パイプラインのどこにも永続化されていなかった
+
+`data/build_candidates_stocks.py::whole_market_universe_provider()`が
+`data.jpx_cheap_prescreen.build_cheap_prescreen_shortlist()`を呼び出した際に得る
+`CheapPreScreenResult.entries`（per-code score/pool_type、shortlist選抜順で既にscore降順・
+code昇順にsort済み）は、`UniverseResultWithProvenance(universe_id, items, provenance)`へ
+変換される際に`items`（(code,name,sector)のみ）へ縮退し、score/pool_typeは破棄されていた。
+`data/.jpx_cache/cheap_prescreen_cache.json`はinternal-only・gitignore対象・CI ephemeral
+runner上では同一job内でのみ有効という契約であり、B2 joinのsource of truthとしては使えない。
+
+### 設計判断: `UniverseResultWithProvenance`にprescreenEntriesを追加 + 同一run内のみで有効な中間file
+
+- `UniverseResultWithProvenance`（NamedTuple）へ`prescreenEntries: tuple = ()`を追加（デフォルト値で
+  既存呼び出し・既存testと完全後方互換）。`whole_market_universe_provider()`のprescreen成功/
+  cache_fallback経路でこれを`prescreen.entries`から埋める（re-fetch・再計算は一切行わない —
+  同一プロセス内の同一`build_cheap_prescreen_shortlist()`呼び出し結果をそのまま運ぶだけ）。
+- `data/build_candidates_stocks.py::main()`を、providerを1回だけ呼んで`build_candidates_stocks()`と
+  `write_prescreen_metadata()`の両方へ共有するよう変更（re-fetch防止、同一runであることを
+  constructionで保証）。
+- 新規`data/prescreen_metadata.json`（schemaVersion "prescreen-metadata-1"）を
+  candidates_stocks.json書き込みと同期して生成。**`.gitignore`へ追加**（`data/.jpx_cache/`と同様、
+  同一CI job内の後続stepでのみ読めればよいplumbingであり、ticketが許可する新規artifactは
+  `candidate_funnel.json`（data/public）のみのため恒久artifactとしては公開・commitしない）。
+
+### 新規module: `data/candidate_funnel_batch.py`
+
+`candidates_stocks.json`のcandidates + `prescreen_metadata.json`のentriesをcode（文字列identity、
+numeric coercion禁止）でjoinし、`build_candidate_funnel()`（無変更）を呼び出し、A2-S §22.2/§25.20の
+P-01..P-15 production-distribution gateを実データに対して計算し、全gate PASS時のみ
+`data/candidate_funnel.json` + `public/data/candidate_funnel.json`をatomic・byte-identicalに
+publishする（fail-closed — gate FAIL/schema violation時は新規artifactを一切書かず、既存artifactを
+無変更のまま保持しexit 1）。
+
+- join: candidate側duplicateはdedupeせずengineへそのまま渡す（engine自身がHARD_CONTRACT_VIOLATION+
+  DUPLICATE_CANDIDATE_CODEで自律的にexcluded化、A2-S §25.16）。prescreen側duplicateはindexから
+  完全に除外したうえでfail-closed gate（`PRESCREEN_DUPLICATE`）で検出する（dedupe/先勝ち/後勝ち禁止の
+  精神を適用）。unmatched candidateはprescreenScore等のkeyを一切追加しない
+  （engineのSOFT_PRESCREEN_METADATA_MISSING規律にそのまま委ねる）。
+- context: `pipelinePath`欠損（seed_list default provider使用時）を`"normal"`へsilent coerceしない
+  （A2-S2 §19.15 PP-07のfail-closed screened上限をそのまま活かす）。regimeは
+  `public/data/regime_state.json`の`current_regime`を読み、不正/欠損はNone（neutral fallback）。
+- artifact: engineのfrozen 12 top-level keyはそのまま維持し、`_meta`（generatedAt/asOf/
+  pipelinePath/join統計/qualityGate結果）を追加のsibling keyとして持たせる（既存の
+  candidates_stocks.json等と同じ`_meta`慣行。engine自体の出力・TS parity testの対象は不変）。
+- P-14（rank stability）はB1 CAL-11/12テストと同一の±2% perturbation式（indexの偶奇でper/roeへ
+  交互適用）を実データへ適用するproduction mirrorとして実装。P-15（前回artifactとのrank drift）は
+  記録のみ（<0.80で警告、非blocking）。
+
+### 新規module: `data/candidate_funnel_privacy_smoke.py`
+
+`data/candidates_stocks_privacy_smoke.py`と同じexact-key規律で、`candidate_funnel.json`の
+root/candidate/scoreBreakdown各shapeとforbidden fieldをrecursiveに検査する（substring一致では
+なくkey名exact一致、値文字列に禁止語を含むだけの誤検出を避ける）。data/public byte一致も検査。
+
+### Workflow統合
+
+`.github/workflows/full_batch.yml`のupdate-data jobへ、「Build live regime state」の後・
+「Build SAFE_MODE snapshot」の前に2step追加（`python3 -m data.candidate_funnel_batch || true` +
+`python3 -m data.candidate_funnel_privacy_smoke || true`）。他の大半の独立data更新stepと同様
+`|| true`とし、B2のgate失敗が当日の他データ更新・commitを止めないようにした（script自体の
+publish判断は内部的に厳格にfail-closedのまま — `|| true`はjob継続のみを意味する）。
+`git add data/ public/data/`は既存のまま（新規artifactも自動的に対象、`data/prescreen_metadata.json`は
+gitignore済みのため対象外）。新規pip dependency追加なし。
+
+### Test totals
+
+```text
+新規: tests/test_candidate_funnel_batch.py (45) + tests/test_candidate_funnel_privacy_smoke.py (16) +
+      tests/test_prescreen_metadata.py (8) + tests/test_candidate_funnel_workflow.py (9)  = 78 passed
+
+Full python suite (system TZ): 7250 passed, 10 skipped
+TZ=UTC / TZ=Asia/Tokyo（B004/B005関連ファイル一式）: 373 passed / 373 passed
+
+Vitest full unit UTC:        83 files / 2466 passed（candidateFunnel.contract.test.ts 43件含む）
+Vitest full unit Asia/Tokyo: 83 files / 2466 passed
+
+npx tsc --noEmit    0 errors
+npm run build       PASS
+git diff --check    PASS
+```
+
+### Dry-run（repository外scratchpad、production data非上書き）
+
+実production `data/candidates_stocks.json`（200件、pipelinePath=normal）+ 合成prescreen entries
+（200件、code一致）でrun_batch()→publish_artifact()を実行し、P-01..P-15全gate PASS、
+data/public byte一致、privacy smoke 0 violationsを確認。ネットワーク接続が無い開発環境のため、
+prescreen scoreの値自体は合成（本番のjpx_cheap_prescreen実測値ではない）——
+**P-06/P-07/P-10/P-14の実production evidence（実測prescreen score使用）は、次回
+full_batch.yml実行（GitHub Actions、ネットワーク接続あり）でのみ得られる**。
+`--dry-run`フラグ（`python3 -m data.candidate_funnel_batch --dry-run`）を実repositoryへ実行した
+場合は、`data/prescreen_metadata.json`が実際に不在のためP-02/P-08/P-10/P-14がFAILし、
+新規artifactが一切書かれないことを確認済み（fail-closedの実地確認）。
+
+### Next
+
+```text
+origin/v13.3-devへpush後、workflow_dispatchでfull_batch.ymlを手動実行し、実際のJPX/yfinance
+fetchを経たprescreen_metadata.json + candidates_stocks.jsonでcandidate_funnel_batchを走らせ、
+P-01..P-15の実production evidence（特にP-07 IQR/range、P-10 sector breadth、P-14 Jaccard）を
+記録すること。B3（frontend/store/UI接続、officialDecision/portfolioFit接続）はP-01..P-15実測PASS
+確認後にのみ着手可。
+```

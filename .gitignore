@@ -26,6 +26,12 @@ data/correlation_backup.json
 # 明示的にignoreする（public repoへ配信しない契約、テストで機械的に保護）。
 data/.jpx_cache/
 
+# P5-B005-B2: candidate funnel batchがcode joinに使うprescreen metadataの
+# job内限定plumbing。data/build_candidates_stocks.pyの実行時にのみ生成され、
+# 同一CI job内の後続stepでのみ読まれる。恒久artifactとして公開・commitしない
+# （新規許可artifactはdata/public両方のcandidate_funnel.jsonのみ）。
+data/prescreen_metadata.json
+
 # Claude Code設定（ローカルのみ）
 .claude/
 
