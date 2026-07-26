@@ -437,6 +437,72 @@ def test_publish_artifact_first_publish_rolls_back_to_absent_on_public_failure(t
     assert not public_path.exists()
 
 
+def test_publish_artifact_cleans_up_data_tmp_when_first_replace_fails(tmp_path, monkeypatch):
+    """1件目（data側）のreplace自体が失敗した場合も、data_tmp/public_tmpの
+    どちらも孤立させない。"""
+    from pathlib import Path
+
+    artifact, _report = _run_calibration_batch(tmp_path)
+    data_path = tmp_path / "out" / "candidate_funnel.json"
+    public_path = tmp_path / "public_out" / "candidate_funnel.json"
+
+    original_replace = Path.replace
+
+    def _flaky_replace(self, target):
+        if self == data_path.with_name(data_path.name + ".tmp"):
+            raise OSError("simulated failure writing data copy")
+        return original_replace(self, target)
+
+    monkeypatch.setattr(Path, "replace", _flaky_replace)
+
+    with pytest.raises(OSError):
+        batch.publish_artifact(artifact, data_path=data_path, public_path=public_path)
+
+    assert not data_path.exists()
+    assert not public_path.exists()
+    assert not data_path.with_name(data_path.name + ".tmp").exists()
+    assert not public_path.with_name(public_path.name + ".tmp").exists()
+
+
+def test_publish_artifact_surfaces_both_errors_when_rollback_itself_fails(tmp_path, monkeypatch):
+    """public側replace失敗 かつ rollback（data側復元）自体も失敗する
+    最悪caseで、元のpublic replace failureをraise ... fromで保持したまま
+    RuntimeErrorとして明示的に報告する（例外を握り潰して正常終了しない）。"""
+    from pathlib import Path
+
+    artifact, _report = _run_calibration_batch(tmp_path)
+    data_path = tmp_path / "out" / "candidate_funnel.json"
+    public_path = tmp_path / "public_out" / "candidate_funnel.json"
+    data_path.parent.mkdir(parents=True)
+    public_path.parent.mkdir(parents=True)
+    data_path.write_text('{"sentinel": "previous-good-data"}', encoding="utf-8")
+    public_path.write_text('{"sentinel": "previous-good-public"}', encoding="utf-8")
+
+    original_replace = Path.replace
+
+    def _flaky_replace(self, target):
+        if self == public_path.with_name(public_path.name + ".tmp"):
+            raise OSError("simulated failure writing public copy")
+        return original_replace(self, target)
+
+    def _flaky_write_bytes(self, data):
+        if self == data_path:
+            raise OSError("simulated failure during rollback write")
+        return original_write_bytes(self, data)
+
+    original_write_bytes = Path.write_bytes
+    monkeypatch.setattr(Path, "replace", _flaky_replace)
+    monkeypatch.setattr(Path, "write_bytes", _flaky_write_bytes)
+
+    with pytest.raises(RuntimeError) as excinfo:
+        batch.publish_artifact(artifact, data_path=data_path, public_path=public_path)
+
+    assert "public replace failed" in str(excinfo.value)
+    assert "rollback" in str(excinfo.value)
+    assert excinfo.value.__cause__ is not None  # 元のpublic replace failureを保持
+    assert not public_path.with_name(public_path.name + ".tmp").exists()
+
+
 def test_artifact_deterministic_repeat(tmp_path):
     artifact1, _r1 = _run_calibration_batch(tmp_path)
     artifact2, _r2 = _run_calibration_batch(tmp_path)

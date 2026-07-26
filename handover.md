@@ -51956,3 +51956,49 @@ JPX/yfinance fetchを経たprescreen_metadata.json + candidates_stocks.jsonでca
 Jaccard）を記録すること（Codex audit finding #1、唯一の残課題）。B2 CLOSED判定はこの実測PASS
 確認後。B3（frontend/store/UI接続、officialDecision/portfolioFit接続）はB2 CLOSED後にのみ着手可。
 ```
+
+### Codex follow-up 検証（同一thread resume）→ #3のみ残存エッジケース3件 → 再修正・再commit
+
+修正5件（#2-#6）についてCodexへ確認を依頼（同一audit threadをresume、read-only）。**#2/#4/#5/#6は
+"FIXED"と確認**。**#3（`publish_artifact()`のペアtransaction）は"PARTIALLY FIXED"** — 以下3件の
+残存edge caseを指摘:
+
+1. `data_path.read_bytes()`（既存fileのbackup読込）がどのcleanup handlerの外にもあり、読込自体が
+   失敗した場合に両方のtmp fileが孤立し得る。
+2. 1件目（data側）の`replace()`自体が失敗した場合、`public_tmp`のみcleanupされ`data_tmp`が
+   孤立し得る。
+3. rollback（`data_path.unlink()`/`write_bytes()`）自体が失敗した場合、その例外が伝播して
+   元のpublic replace失敗の原因を握り潰し得る。
+
+3件とも修正: backup読込を専用try/exceptで包みcleanupしてからraiseするよう変更、1件目replace
+失敗時のexcept節でも`data_tmp`/`public_tmp`両方をunlinkするよう統一（`_cleanup_tmps()`
+helperへ集約）、rollback自体が失敗した場合は`RuntimeError`として明示的に報告し
+`raise ... from public_replace_error`で元のpublic replace失敗を`__cause__`として保持する
+（例外を握り潰さない）よう変更。新規test 3件（1件目replace失敗時のtmp孤立防止、
+rollback自体の失敗時にRuntimeErrorへ両方の原因が保持されること）を追加。
+
+**再verification**: Full python suite 7257 passed/10 skipped（system TZ）。B004/B005関連
+ファイル一式 427 passed（TZ=UTC/Asia/Tokyo両方）。dry-run（実production candidates_stocks.json +
+合成prescreen entries）で再実行しoverallPass=True・privacy smoke 0 violations・data/public
+byte一致を再確認。
+
+**注記**: Codexの実行sandboxはこのfollow-up検証中、writable temp directoryが無くpytestを
+起動できなかった（`FileNotFoundError: No usable temporary directory found`、Codex側の
+sandbox制約であり本repositoryの問題ではない）。pytestの実行・pass count確認はこちら側の
+開発環境（本レポートに記載の全数値）でのみ独立に得られている。
+
+次のCodex round（3周目）は行わない（収穫逓減、かつ`publish_artifact()`の3エッジケースは
+自前のadversarial testで直接検証済み）。以降のCodex監査は次回実CI run後のP-01..P-15実測結果に
+対して行うのが適切。
+
+### Next（最終）
+
+```text
+1. origin/v13.3-devへ本追加修正をpush。
+2. workflow_dispatchでfull_batch.ymlを手動実行し、実際のJPX/yfinance fetchを経た
+   prescreen_metadata.json + candidates_stocks.jsonでcandidate_funnel_batchを走らせ、
+   P-01..P-15の実production evidence（特にP-07 IQR/range、P-10 sector breadth、P-14 Jaccard）
+   を記録する（唯一の残課題=Codex finding #1）。
+3. 実測PASSを確認した時点でB2 CLOSED。B3（frontend/store/UI接続、officialDecision/
+   portfolioFit接続）はB2 CLOSED後にのみ着手可。
+```

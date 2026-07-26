@@ -739,9 +739,12 @@ def publish_artifact(
     （byte-for-byte一致を保証するため、シリアライズは1回だけ行う）。
 
     2fileをペアで扱う: 両方のtmp fileを先に書き切ってから両方をreplaceし、
-    2件目のreplaceが失敗した場合は1件目を書き換え前の内容へrollbackする
-    （プロセスがos.replace呼び出しの間でkillされる極端なcaseを除き、
-    data/publicの一方だけが更新された不整合状態を残さない）。"""
+    2件目のreplaceが失敗した場合は1件目を書き換え前の内容へrollbackする。
+    バックアップ読み込み・各write/replace・rollback自体のいずれの段階で
+    例外が発生してもtmp fileを孤立させず、rollback自体が失敗した場合も
+    元の例外を握り潰さない（`raise ... from`で両方を保持する）。
+    プロセスが2回のos.replace呼び出しの間でkillされる極端なcaseのみが
+    対処範囲外として残る（ephemeral CI runでは次回runが自己修復する）。"""
     text = json.dumps(artifact, ensure_ascii=False, indent=2)
 
     data_path.parent.mkdir(parents=True, exist_ok=True)
@@ -749,28 +752,45 @@ def publish_artifact(
     data_tmp = data_path.with_name(data_path.name + ".tmp")
     public_tmp = public_path.with_name(public_path.name + ".tmp")
 
+    def _cleanup_tmps() -> None:
+        data_tmp.unlink(missing_ok=True)
+        public_tmp.unlink(missing_ok=True)
+
+    try:
+        data_backup = data_path.read_bytes() if data_path.exists() else None
+    except BaseException:
+        _cleanup_tmps()
+        raise
+
     try:
         data_tmp.write_text(text, encoding="utf-8")
         public_tmp.write_text(text, encoding="utf-8")
     except BaseException:
-        data_tmp.unlink(missing_ok=True)
-        public_tmp.unlink(missing_ok=True)
+        _cleanup_tmps()
         raise
 
-    data_backup = data_path.read_bytes() if data_path.exists() else None
     try:
         data_tmp.replace(data_path)
     except BaseException:
-        public_tmp.unlink(missing_ok=True)
+        _cleanup_tmps()
         raise
+
     try:
         public_tmp.replace(public_path)
-    except BaseException:
-        public_tmp.unlink(missing_ok=True)
-        if data_backup is None:
-            data_path.unlink(missing_ok=True)
-        else:
-            data_path.write_bytes(data_backup)
+    except BaseException as public_replace_error:
+        try:
+            if data_backup is None:
+                data_path.unlink(missing_ok=True)
+            else:
+                data_path.write_bytes(data_backup)
+        except BaseException as rollback_error:
+            raise RuntimeError(
+                f"public replace failed ({public_replace_error!r}) AND rollback of the data "
+                f"copy also failed ({rollback_error!r}); data/public may now be inconsistent "
+                "and require manual inspection"
+            ) from public_replace_error
+        finally:
+            public_tmp.unlink(missing_ok=True)
         raise
 
 
