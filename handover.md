@@ -51434,3 +51434,201 @@ prescreen cache score/rank/poolをenrichment candidateへcode-joinし、candidat
 生成するbatch・quality gate・privacy smokeを実装。A2-S §25.20のB2 production-distribution
 calibration gate（P-01..P-15）を完了条件に含めること。
 ```
+
+## P5-B005-B1-R3-T1: B1-V3 test acceptance closure（SV3-01/SV3-02/T3-06/T3-15）
+
+### Status
+
+```text
+P5-B005-B1-R3-T1: CLOSED（このticketのscope = test-only acceptance closure）
+B1-V3（先行独立監査）: FAIL — production自体はP3-01..P3-04・formula・normalization・
+  tier selection・authority conformityすべてPASS。FAIL理由はtest acceptanceの2件のみ:
+  T3-11 ST-13が実際にはmissing asOfを検証していなかった（SV3-01survived 220/220）、
+  T3-13がdegradationReasonsをpermutation比較対象から漏らしていた（SV3-02survived 220/220）。
+  加えてP2follow-up 2件（T3-06 substring assertion混入、T3-15missing-regime precondition欠如）。
+B1-V3a（このticketの限定再監査）: REQUIRED、B2着手前必須（SV3-01/SV3-02/T3-06/T3-15の
+  4点に範囲を限定した再監査で足りる。production/formula/threshold/cap/reason順/regime fallback/
+  fixture/production TypeScript typeはすべて不変のため、フル再監査は不要）
+B2: NOT STARTED（BLOCKED、A2-S §25.20 P-01..P-15 gateを完了条件に含めること）
+```
+
+Authority path（rank順、B1-R3から不変）:
+1. `/Users/ryo/jp-portfolio-audit-reports/p5-b005-a2-s2-authority-clarification.md`
+2. `/Users/ryo/jp-portfolio-audit-reports/p5-b005-a2-s-scoring-specification-supplement.md`
+3. `/Users/ryo/jp-portfolio-audit-reports/p5-b005-a2-scoring-specification.md`
+
+監査report: `/Users/ryo/jp-portfolio-audit-reports/p5-b005-b1-v3-independent-audit.md`
+
+Base SHA: `32c3108383a91a68743317a6e52d6152578ba096`（B1-R3、v13.3-dev = origin/v13.3-dev、
+working tree clean。origin/main は data-only commit 4件先行、merge不要と確認済み）。
+
+### Changed production files (0)
+
+```text
+data/candidate_funnel_engine.py     変更0（SHA-256不変、下記参照）
+src/types/candidateFunnel.ts        変更0
+tests/fixtures/candidate_funnel_calibration_v1.json   変更0
+data/candidates_stocks.json         変更0
+public/data/**                      変更0
+.github/**                          変更0
+package.json / package-lock.json    変更0
+```
+
+Production SHA-256（変更前後で不変）: `25e12a4217ace5d807963b54fe2e9918d8613c834b06b730fff8701a4b45d710`
+
+Calibration fixture SHA-256（変更前後で不変）: `021c8844af764b4a5bd06acdaf0c45fb83a2a3456f1131da2e57ac7d415b5926`
+
+Production TS type SHA-256（変更前後で不変）: `ce448945954f62576017b4f4fabbb0523867c6a285af94bf2e93599c6666d252`
+
+`data/candidates_stocks.json` SHA-256（変更前後で不変）: `f04c8c3fd4a5f8e2ba4b604ec560fb61efb7f1f95f2f622e6c1217a11470079e`
+
+calibration非回帰: `tests/fixtures/candidate_funnel_calibration_v1.json`はbyte-for-byte不変。deep-review 40 /
+actionable 12 / bear 5 / crisis 5 / degraded actionable 0 の literal expectation を維持する
+`test_t21_calibration_literal_expectations_not_import_comparison`はGREENのまま。
+
+### Changed test files
+
+```text
+tests/test_candidate_funnel_engine.py    220→224 tests（SV3-01/SV3-02/T3-06/T3-15の4点修正 + 4 new test）
+handover.md                              この節
+```
+
+`src/types/candidateFunnel.contract.test.ts`は本ticketで実際に必要な修正がなかったため**変更0**
+（39/43 testとも不変）。
+
+### SV3-01 correction（T3-11 ST-13 missing asOf false coverage、P1-01）
+
+原因: `test_t3_11a_staleness_matrix_behavioral`のctx構築が`if as_of is not None: ctx["asOf"] = as_of`
+だったため、ST-13の sentinel `"__missing__"`（None ではない）がそのまま`ctx["asOf"] = "__missing__"`
+という文字列値として設定され、production の真の missing-key 分岐（`context.get("asOf") is None`）を
+一度も通過していなかった。
+
+修正:
+- ctx構築の条件を`if as_of != "__missing__":`へ変更（`sourceUpdatedAt`/`staleThresholdHours`と統一）。
+  ST-13は真にasOf keyを欠損させるようになった。
+- ST-13bとして`as_of=None`（key欠損とは別vector、明示的None値）を新規追加。
+- `test_t3_11d_missing_asof_key_precondition_and_not_stale`を新設。asOf key非存在・sourceUpdatedAt
+  parse可能性・pipelinePath意図どおり・他gate非支配をpreconditionとしてassertした上で、
+  `sourceStale is False`・`tier == "actionable"`（stale tier cap不適用）・
+  `"SOFT_STALE_SOURCE" not in riskReasons`をexact assertする。
+
+Mutation結果: `if as_of is None and src_dt is not None: return True`をproductionへ一時適用し、
+ST-13・ST-13b・test_t3_11dの3件がbehavioral REDになることを確認。inverse patchで復元し
+SHA-256完全一致を確認。
+
+### SV3-02 correction（T3-13 permutation invariance incomplete、P1-02）
+
+原因: `_assert_permutation_invariant_multiset`が`degradationReasons`を比較対象に含んでおらず、
+かつ20回のshuffle試行が実際に相異なる入力順を生んだことを証明していなかった。
+
+修正:
+- `_assert_permutation_invariant_multiset`へ`degradationReasons`比較とrank bijection検証
+  （excluded以外のmarketRankが1..Nの連続整数、excludedはNone）を追加（INV-01..04全4testへ適用）。
+- `test_t3_13e_degradation_reasons_and_rank_bijection_20_distinct_permutations`を新設。
+  同一candidate multiset（duplicate code 1件を含む15件）から20個のpairwise-distinct permutation
+  を`random.sample`で構築し、先にdistinctness（`len(set(orders)) == 20`）をprecondition assertした
+  上で、root全体（status/counts/scoreDistribution/degradationReasons/selectionObservability/
+  not_for_trading/schema・versionフィールド）・candidate全field（code/name/sector/tier/marketScore/
+  marketRank/dataConfidence/prescreenScore/prescreenRank/prescreenPool/selectedReasons/
+  riskReasons/hardExclusionReasons/themes/themeStatus/scoreBreakdown）をcanonical identity
+  （元配列position、code重複でも折り畳まれない）対応で比較し、rank bijectionを全permutationで
+  検証する。
+
+Mutation結果: `DUPLICATE_CANDIDATE_CODE`detailへ`candidates[0]!r`を注入する監査記載のmutationを
+productionへ一時適用し、`test_t3_13b`・`test_t3_13e`の2件がbehavioral REDになることを確認。
+inverse patchで復元しSHA-256完全一致を確認。
+
+追加推奨mutation（rank assignmentへのinput-order混入、`codes[k]`→`k`へtie-break差し替え）も
+一時適用し、`test_35_deterministic_ties`・`test_t3_13c`がbehavioral REDになることを確認。復元済み。
+
+### T3-06 exact-key hygiene correction（P2-01）
+
+原因: `test_t3_06_portfolio_fit_is_forbidden_and_absent_recursively`が
+`assert "portfolioFit" not in json.dumps(result)`という生JSON substring assertionを持っており、
+候補`name`等の値文字列にたまたま`"portfolioFit"`が含まれるだけで誤ってFAILし得た。
+
+修正:
+- 該当substring assertionを削除（`_walk_forbidden_keys`によるexact-key再帰検査のみ残す）。
+- `test_t3_06b_forbidden_key_walker_exact_key_hygiene`を新設。禁止keyの検出（dict/list全階層）、
+  値文字列中の禁止語の非検出、`actionableSelectedCount`等の正当keyの部分一致非検出、非string key
+  での安全な処理、production end-to-end（値に`portfolioFit`を含む候補名を混入）での非検出を
+  それぞれ直接assertする。
+
+Mutation結果: `_walk_forbidden_keys`（test-only helper）をsubstring判定へ一時mutationし、
+`test_t3_06`・`test_t3_06b`の2件がbehavioral REDになることを確認。復元済み。production非該当
+（`_walk_forbidden_keys`はtest fileのみに定義）。
+
+### T3-15 missing-regime precondition correction（P2-02）
+
+原因: `test_t3_15b_regime_missing_key_actionable_reachable`が`make_weak_filler`をそのまま使用して
+おり、filler全体にprescreenScoreが欠けているため`degradationReasons == []`というREG-08 precondition
+を検証できていなかった。
+
+修正: `_filler_with_prescreen`（prescreen-complete filler）へ切り替え、`assert "regime" not in ctx`
+をprecondition化（REG-06のNone明示ケース、REG-04/05のunknown文字列ケースとは別vectorであることを
+明示）。`out["riskReasons"] == []`・`result["degradationReasons"] == []`をliteralにassert。
+
+Mutation結果: test内で`ctx["regime"] = None`を一時混入（missing-keyとNoneケースの取り違え回帰）し、
+`test_t3_15b`がprecondition assertion (`"regime" not in ctx`) でbehavioral REDになることを確認。
+復元済み。
+
+### Mutation manifest
+
+`/Users/ryo/jp-portfolio-audit-reports/p5-b005-b1-r3-t1-mutation-manifest.md`
+
+5/5 mutation RED（SV3-01・SV3-02必須2件 + 追加推奨3件: rank order混入・T3-06 substring判定・
+T3-15 regime=None回帰）。各mutation後、production/test-file SHA-256のexact restore一致を確認。
+
+### Test totals
+
+```text
+target:    PYTHONDONTWRITEBYTECODE=1 python3 -B -m pytest -q tests/test_candidate_funnel_engine.py
+           224 passed（220→224、SV3-01/SV3-02/T3-06の新規4 test + ST-13b parametrize行1件分）
+
+adjacent:  target + test_build_candidates_stocks.py + test_candidates_stocks_privacy_smoke.py +
+           test_jpx_universe_provider.py + test_whole_market_universe_provider.py
+           470 passed
+
+UTC:       TZ=UTC 同上フルセット        470 passed
+Asia/Tokyo: TZ=Asia/Tokyo 同上フルセット  470 passed
+
+Vitest UTC:        candidateFunnel.contract.test.ts   43 passed
+Vitest Asia/Tokyo: candidateFunnel.contract.test.ts   43 passed
+
+Full unit UTC:        83 files / 2466 passed
+Full unit Asia/Tokyo: 83 files / 2466 passed
+
+npx tsc --noEmit    0 errors
+npm run build       PASS（129 modules, 既知の500kB chunk warningのみ）
+git diff --check    PASS（whitespace error 0件）
+```
+
+### Artifact integrity
+
+```text
+git diff --name-status 32c3108383a91a68743317a6e52d6152578ba096   -> tests/test_candidate_funnel_engine.py, handover.md のみ
+production/fixture/TS type/data-artifact/.github/package diff     全て空
+candidate_funnel.json / candidate-funnel.json                     repository全体で0件
+```
+
+### Residual constraints（B1-R3から不変）
+
+- production/formula/threshold/cap/reason順/regime fallback/fixture/production TypeScript type
+  はすべて不変。V2で不採用と裁定されたunknown regime fail-closed / riskReasons enum順要求は
+  引き続き実装していない。
+- prescreen metadata join・frontend統合・candidate_funnel.json生成はすべて本ticket scope外
+  （INACTIVE、B2以降）。
+
+### Next
+
+```text
+P5-B005-B1-V3a:
+このB1-R3-T1修正の限定再監査。SV3-01・SV3-02・T3-06・T3-15の4点が実際に是正されたことのみを
+検証すれば足りる（production/formula/threshold/cap/reason順/regime fallback/fixture/production
+TypeScript typeはB1-V3で既にPASS確認済みのため再検証不要）。
+
+B1-V3a通過後にのみ P5-B005-B2 着手可:
+prescreen cache score/rank/poolをenrichment candidateへcode-joinし、candidate_funnel.jsonを
+生成するbatch・quality gate・privacy smokeを実装。A2-S §25.20のB2 production-distribution
+calibration gate（P-01..P-15）を完了条件に含めること。
+```

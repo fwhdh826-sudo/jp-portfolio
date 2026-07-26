@@ -13,6 +13,7 @@ audited SHA 665eba993b3d3ccfcf434c245a8784765f34bf43）に対する実装検証�
 import copy
 import json
 import math
+from datetime import datetime
 
 import pytest
 
@@ -2128,7 +2129,44 @@ def test_t3_06_portfolio_fit_is_forbidden_and_absent_recursively():
     result = run(pop)
     found = _walk_forbidden_keys(result)
     assert found == set(), f"forbidden keys leaked: {found}"
-    assert "portfolioFit" not in json.dumps(result)
+
+
+def test_t3_06b_forbidden_key_walker_exact_key_hygiene():
+    """B1-V3 P2-01 correction: 禁止field recursive scanはkey名のみで判定
+    し、値やコメント文字列中の部分一致・正当keyの部分一致で誤検出しない
+    ことを直接検証する（旧 `"portfolioFit" not in json.dumps(result)` は
+    値文字列にたまたま同じ文字列が含まれるだけで誤ってFAILし得たため削除
+    済み）。"""
+    # (a) 実際に禁止keyがあれば dict / list のどの深さでも検出される
+    assert _walk_forbidden_keys({"portfolioFit": 1}) == {"portfolioFit"}
+    assert _walk_forbidden_keys([{"a": {"cash": 1}}]) == {"cash"}
+    assert _walk_forbidden_keys({"outer": [{"inner": {"holdings": []}}]}) == {"holdings"}
+
+    # (b) 値やコメント文字列に禁止語があるだけでは検出しない
+    assert _walk_forbidden_keys({"name": "portfolioFitStrategy"}) == set()
+    assert _walk_forbidden_keys({"note": "cash flow analysis for holdings"}) == set()
+    assert _walk_forbidden_keys(["portfolioFit as a plain list element"]) == set()
+
+    # (c) 正当keyの部分一致による誤検出をしない（"action" は禁止keyだが
+    #     "actionableSelectedCount" 等の正当keyは exact match しない）
+    assert _walk_forbidden_keys({"actionableSelectedCount": 3}) == set()
+    assert _walk_forbidden_keys({"actionableHardMaxApplied": 12}) == set()
+    assert _walk_forbidden_keys({"actionableSectorCapApplied": 2}) == set()
+
+    # (d) key type が string でなくても安全に処理する（クラッシュしない、
+    #     かつ FORBIDDEN_KEYS は文字列集合のため非string keyは一致しない）
+    assert _walk_forbidden_keys({1: "portfolioFit", ("a", "b"): {2: "cash"}}) == set()
+
+    # (e) production output に対しても、値文字列中の禁止語や
+    #     selectionObservability 内の action* 系正当keyが誤検出されない
+    #     ことを end-to-end で確認する
+    pop = make_population(10, seed_offset=6000)
+    pop[0]["code"] = "12345"
+    pop[0]["name"] = "有効企業portfolioFitという文字列を含む名称"
+    result = run(pop)
+    assert "actionableSelectedCount" in result["selectionObservability"]
+    found = _walk_forbidden_keys(result)
+    assert found == set(), f"forbidden keys leaked: {found}"
 
 
 # ---------------------------------------------------------------------------
@@ -2298,7 +2336,8 @@ _ST_FUTURE = "2099-01-01T00:00:00Z"
         (48.0, None, _ST_RECENT, False),  # ST-10
         (48.0, "not-a-date", _ST_RECENT, False),  # ST-11
         (48.0, 12345, _ST_RECENT, False),  # ST-12
-        (48.0, _ST_PAST, "__missing__", False),  # ST-13
+        (48.0, _ST_PAST, "__missing__", False),  # ST-13（asOf key 欠損）
+        (48.0, _ST_PAST, None, False),  # ST-13b（asOf 明示的 None。key欠損とは別vector）
         (48.0, _ST_PAST, "xx", False),  # ST-14
         (48.0, _ST_FUTURE, _ST_RECENT, False),  # ST-15
         (0, "2026-07-24T23:59:59Z", _ST_RECENT, True),  # ST-18
@@ -2310,10 +2349,18 @@ def test_t3_11a_staleness_matrix_behavioral(threshold, source_updated_at, as_of,
     ctx = {"pipelinePath": "normal"}
     if source_updated_at != "__missing__":
         ctx["sourceUpdatedAt"] = source_updated_at
-    if as_of is not None:
+    # "__missing__" は「context に asOf key を一切設定しない」ことを表す
+    # sentinel。以前は `if as_of is not None` で判定していたため、
+    # as_of=="__missing__"（None ではない）という文字列がそのまま
+    # ctx["asOf"] = "__missing__" として設定されてしまい、production の
+    # 真の missing-key 分岐（context.get("asOf") is None）を一度も
+    # 通過していなかった（B1-V3 SV3-01 / P1-01）。asOf=None は
+    # 明示的にキーを None 値で設定する、missing-key とは別のベクトル。
+    if as_of != "__missing__":
         ctx["asOf"] = as_of
     if threshold != "__missing__":
         ctx["staleThresholdHours"] = threshold
+    assert ("asOf" in ctx) == (as_of != "__missing__")  # ST-13/ST-13b precondition
     result = run([strong] + filler, **{k: v for k, v in ctx.items() if k != "pipelinePath"})
     out = result["candidates"][0]
     expected_tier = "deep_review" if expected_is_stale else "actionable"
@@ -2324,6 +2371,39 @@ def test_t3_11a_staleness_matrix_behavioral(threshold, source_updated_at, as_of,
         assert "SOFT_STALE_SOURCE" in out["riskReasons"]
     else:
         assert "SOFT_STALE_SOURCE" not in out["riskReasons"]
+
+
+def test_t3_11d_missing_asof_key_precondition_and_not_stale():
+    """B1-V3 SV3-01 correction（P1-01）: 上の parametrize matrix とは独立に、
+    context に asOf key を一切構築しない状態を直接検証する。sourceUpdatedAt
+    は有効な timezone-aware ISO、staleThresholdHours も有効値とし、
+    staleness 以外の全 gate を候補が通過していることを precondition として
+    確認したうえで、asOf 欠損時に authority どおり stale と断定しない
+    ことを exact に assert する。"""
+    strong = _strong_candidate("7504", "secSV301")
+    filler = make_weak_filler(15, seed_offset=7900)
+    ctx = {
+        "pipelinePath": "normal",
+        "sourceUpdatedAt": _ST_PAST,
+        "staleThresholdHours": 48.0,
+    }
+
+    # --- preconditions ---
+    assert "asOf" not in ctx  # asOf key が本当に存在しない
+    assert datetime.fromisoformat(_ST_PAST.replace("Z", "+00:00")) is not None  # parse可能
+    assert ctx["pipelinePath"] == "normal"
+    assert isinstance(ctx["staleThresholdHours"], float) and ctx["staleThresholdHours"] == 48.0
+
+    result = build_candidate_funnel([strong] + filler, ctx)
+    out = result["candidates"][0]
+
+    # staleness 以外の gate（marketScore/tier到達可能性）が候補を支配して
+    # いないことを確認してから staleness 固有の主張へ進む。
+    assert out["marketScore"] is not None and out["marketScore"] >= 68.0
+
+    assert result["selectionObservability"]["sourceStale"] is False
+    assert out["tier"] == "actionable"  # stale tier cap（deep_review強制）が適用されていない
+    assert "SOFT_STALE_SOURCE" not in out["riskReasons"]  # stale reasonが付かない
 
 
 def test_t3_11b_naive_timestamp_treated_as_utc_tz_independent():
@@ -2442,6 +2522,8 @@ def _assert_permutation_invariant_multiset(base_population, n_perms=20, seed=101
     _random.seed(seed)
     baseline = run(copy.deepcopy(base_population))
     baseline_ms = _canonical_multiset(baseline["candidates"])
+    baseline_valid_ranks = sorted(c["marketRank"] for c in baseline["candidates"] if c["tier"] != "excluded")
+    assert baseline_valid_ranks == list(range(1, len(baseline_valid_ranks) + 1))
     tried = 0
     for _ in range(n_perms):
         shuffled = copy.deepcopy(base_population)
@@ -2453,6 +2535,15 @@ def _assert_permutation_invariant_multiset(base_population, n_perms=20, seed=101
         assert result["sectorDistribution"] == baseline["sectorDistribution"]
         assert result["scoreDistribution"] == baseline["scoreDistribution"]
         assert result["selectionObservability"] == baseline["selectionObservability"]
+        # B1-V3 P1-02 correction: degradationReasons が比較対象から漏れて
+        # いたため、入力順依存の detail 生成（SV3-02）を検出できなかった。
+        assert result["degradationReasons"] == baseline["degradationReasons"]
+        # §19.14(c) rank bijection: excluded以外の marketRank が 1..N の
+        # 連続整数であり、excluded の marketRank は None であること。
+        valid_ranks = sorted(c["marketRank"] for c in result["candidates"] if c["tier"] != "excluded")
+        assert valid_ranks == list(range(1, len(valid_ranks) + 1))
+        assert valid_ranks == baseline_valid_ranks
+        assert all(c["marketRank"] is None for c in result["candidates"] if c["tier"] == "excluded")
         tried += 1
     assert tried == n_perms
     return baseline
@@ -2491,6 +2582,102 @@ def test_t3_13c_inv03_sector_hard_max_binding_permutation_invariant_multiset():
 def test_t3_13d_inv04_multiple_non_dict_records_permutation_invariant_multiset():
     base = make_population(10, seed_offset=6900) + ["broken1", "broken2", None, 123]
     _assert_permutation_invariant_multiset(base)
+
+
+def test_t3_13e_degradation_reasons_and_rank_bijection_20_distinct_permutations():
+    """B1-V3 SV3-02 correction（P1-02）:
+    `_assert_permutation_invariant_multiset` は degradationReasons を比較
+    対象に含んでおらず、また20回の shuffle 試行が実際に相異なる入力順を
+    生んだことも証明していなかった。ここでは同一 multiset から20個の
+    pairwise-distinct permutation を明示的に構築し（先に distinctness を
+    precondition として assert）、DUPLICATE_CANDIDATE_CODE detail を含む
+    degradationReasons・root全体・candidate 全fieldの canonical identity
+    対応・rank bijection のすべてが入力順に依存しないことを検証する。"""
+    base = make_population(15, seed_offset=6800)
+    base[2]["code"] = base[9]["code"]  # 意図的な重複（DUPLICATE_CANDIDATE_CODE 発火）
+    n = len(base)
+    assert n >= 4  # 20 pairwise-distinct permutation (n! >= 20) の前提
+
+    import random as _random
+
+    _random.seed(2026)
+    orders = []
+    seen = set()
+    guard = 0
+    while len(orders) < 20:
+        guard += 1
+        assert guard < 10000
+        candidate_order = tuple(_random.sample(range(n), n))
+        if candidate_order in seen:
+            continue
+        seen.add(candidate_order)
+        orders.append(candidate_order)
+
+    # --- precondition: 20 permutation が pairwise-distinct であること
+    #     （reverseだけの繰り返しではないこと）---
+    assert len(orders) == 20
+    assert len(set(orders)) == 20
+    identity_order = tuple(range(n))
+    reversed_order = tuple(reversed(range(n)))
+    assert not all(o in (identity_order, reversed_order) for o in orders)
+
+    baseline_pop = [copy.deepcopy(base[i]) for i in identity_order]
+    baseline = run(baseline_pop)
+    baseline_root = {k: v for k, v in baseline.items() if k != "candidates"}
+    assert "DUPLICATE_CANDIDATE_CODE" in " ".join(baseline["degradationReasons"])
+    baseline_by_identity = {identity_order[pos]: out for pos, out in enumerate(baseline["candidates"])}
+    assert set(baseline_by_identity.keys()) == set(range(n))
+    baseline_valid_ranks = sorted(out["marketRank"] for out in baseline["candidates"] if out["tier"] != "excluded")
+    assert baseline_valid_ranks == list(range(1, len(baseline_valid_ranks) + 1))
+
+    candidate_fields = (
+        "code",
+        "name",
+        "sector",
+        "tier",
+        "marketScore",
+        "marketRank",
+        "dataConfidence",
+        "prescreenScore",
+        "prescreenRank",
+        "prescreenPool",
+        "selectedReasons",
+        "riskReasons",
+        "hardExclusionReasons",
+        "themes",
+        "themeStatus",
+        "scoreBreakdown",
+    )
+
+    for order in orders:
+        shuffled_pop = [copy.deepcopy(base[i]) for i in order]
+        result = run(shuffled_pop)
+
+        # --- root-level（status/counts/scoreDistribution/degradationReasons/
+        #     selectionObservability(regimeApplied等)/not_for_trading/
+        #     schema・versionフィールドを含む全root field）が permutation
+        #     不変であること。candidates は順序を含めた素の list 比較には
+        #     使わず（順序が変わるのは正しい挙動のため）、canonical identity
+        #     対応で別途比較する。---
+        root = {k: v for k, v in result.items() if k != "candidates"}
+        assert root == baseline_root
+        assert result["degradationReasons"] == baseline["degradationReasons"]
+
+        by_identity = {order[pos]: out for pos, out in enumerate(result["candidates"])}
+        assert len(result["candidates"]) == n  # レコード消失なし
+        assert set(by_identity.keys()) == set(range(n))  # dict keyed by codeへの折り畳みなし
+
+        for identity, baseline_out in baseline_by_identity.items():
+            out = by_identity[identity]
+            for field in candidate_fields:
+                assert out[field] == baseline_out[field], (
+                    f"identity={identity} field={field}: {out[field]!r} != {baseline_out[field]!r}"
+                )
+
+        valid_ranks = sorted(out["marketRank"] for out in result["candidates"] if out["tier"] != "excluded")
+        assert valid_ranks == list(range(1, len(valid_ranks) + 1))
+        assert valid_ranks == baseline_valid_ranks
+        assert all(out["marketRank"] is None for out in result["candidates"] if out["tier"] == "excluded")
 
 
 # ---------------------------------------------------------------------------
@@ -2585,12 +2772,27 @@ def test_t3_15a_regime_matrix_behavioral(regime, expected_regime_applied, expect
 
 
 def test_t3_15b_regime_missing_key_actionable_reachable():
-    # REG-08
+    # REG-08（B1-V3 P2-02 correction）: 旧版は make_weak_filler をそのまま
+    # 使っていたため filler 全体に prescreenScore が欠け、
+    # PRESCREEN_METADATA_MISSING が population 全体へ混入して
+    # degradationReasons == [] という REG-08 precondition を検証できて
+    # いなかった。prescreen-complete filler に切り替え、regime key が
+    # 本当に存在しないこと・regime=None ケース（REG-06）／unknown文字列
+    # ケース（REG-04/05）とは別ベクトルであることを明示したうえで、
+    # risk/degradation の両配列を literal に assert する。
     strong = _strong_candidate("9602", "secT315B")
-    filler = make_weak_filler(15, seed_offset=9700)
-    result = run([strong] + filler)
+    filler = _filler_with_prescreen(15, seed_offset=9700)
+    ctx = {"pipelinePath": "normal"}
+
+    # --- preconditions ---
+    assert "regime" not in ctx  # regime key が本当に存在しない（None代入や
+    # unknown文字列とは異なるベクトル）
+
+    result = build_candidate_funnel([strong] + filler, ctx)
     obs = result["selectionObservability"]
     out = result["candidates"][0]
     assert obs["regimeApplied"] is None
     assert (obs["actionableHardMaxApplied"], obs["actionableSectorCapApplied"]) == (12, 2)
     assert out["tier"] == "actionable"
+    assert out["riskReasons"] == []
+    assert result["degradationReasons"] == []
