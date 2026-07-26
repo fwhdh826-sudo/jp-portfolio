@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-07-26T10:05:22.119944+09:00",
-  "sourceUpdatedAt": "2026-07-26T00:51:09+00:00",
+  "updatedAt": "2026-07-26T16:11:40.346732+09:00",
+  "sourceUpdatedAt": "2026-07-26T06:56:26+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -171,29 +171,16 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.165,
-      "negativeCount": 1,
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
       "positiveCount": 0,
       "neutralCount": 1,
-      "sourceCount": 2,
-      "itemCount": 2,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "ECB’s Zigman Says War Fallout on Inflation Takes Time to Be Seen",
+      "topNegativeTitle": "茂木外相 日本の対ロシア政策変わらずも意思疎通は必要",
       "topPositiveTitle": "茂木外相 日本の対ロシア政策変わらずも意思疎通は必要",
       "items": [
-        {
-          "title": "ECB’s Zigman Says War Fallout on Inflation Takes Time to Be Seen",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-07-25T05:06:21+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-25/ecb-s-zigman-says-war-fallout-on-inflation-take-time-to-be-seen",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
         {
           "title": "茂木外相 日本の対ロシア政策変わらずも意思疎通は必要",
           "source": "NHK 経済",
@@ -312,29 +299,16 @@
       ]
     },
     "geopolitical": {
-      "avgSentiment": -0.083,
-      "negativeCount": 1,
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 3,
-      "sourceCount": 3,
-      "itemCount": 4,
+      "neutralCount": 2,
+      "sourceCount": 2,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "ECB’s Zigman Says War Fallout on Inflation Takes Time to Be Seen",
+      "topNegativeTitle": "Ukraine Seeks 30-Year Energy Pact With Canada, Minister Says",
       "topPositiveTitle": "Ukraine Seeks 30-Year Energy Pact With Canada, Minister Says",
       "items": [
-        {
-          "title": "ECB’s Zigman Says War Fallout on Inflation Takes Time to Be Seen",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-07-25T05:06:21+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-25/ecb-s-zigman-says-war-fallout-on-inflation-take-time-to-be-seen",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
         {
           "title": "Ukraine Seeks 30-Year Energy Pact With Canada, Minister Says",
           "source": "Bloomberg Markets",
@@ -344,18 +318,6 @@
           "url": "https://www.bloomberg.com/news/articles/2026-07-25/ukraine-seeks-30-year-energy-pact-with-canada-minister-says",
           "tags": [
             "commodity",
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "India Flags Attack on LPG Tanker in Iran Waters, Says Crew Safe",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-25T03:31:07+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-25/india-flags-attack-on-lpg-tanker-in-iran-waters-says-crew-safe",
-          "tags": [
             "geopolitical",
             "market"
           ]
@@ -385,7 +347,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 7,
+    "excludedCount": 8,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
