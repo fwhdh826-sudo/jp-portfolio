@@ -51632,3 +51632,153 @@ prescreen cache score/rank/poolをenrichment candidateへcode-joinし、candidat
 生成するbatch・quality gate・privacy smokeを実装。A2-S §25.20のB2 production-distribution
 calibration gate（P-01..P-15）を完了条件に含めること。
 ```
+
+## P5-B005-B1-R3-T2: independent degradation oracle closure
+
+### Status
+
+```text
+P5-B005-B1-R3-T2: CLOSED（このticketのscope = test-only, 唯一残存P1のみ）
+B1-V3a（先行独立監査）: FAIL — 監査report:
+  /Users/ryo/jp-portfolio-audit-reports/p5-b005-b1-v3a-limited-reaudit.md
+  production自体は5/5 mutation RED・full regression GREEN。FAIL理由は唯一のP1のみ:
+  test_t3_13e はpermutation間でdegradationReasonsが不変であることは検証するが、expected
+  detail/countをidentity-order inputのproduction出力（baseline）から取得しているため、
+  duplicate exclusion detailの"2 record(s) excluded"を"3 record(s) excluded"へ改変する
+  mutationが224/224 GREENでsurviveした（P1-01, P3findingは1件別途あるが本ticket対象外）。
+B2: NOT STARTED（BLOCKED、A2-S §25.20 P-01..P-15 gateを完了条件に含めること）
+```
+
+Base SHA: `1f5782e2ec1ad12c7e38fa0fc66a5e6d1aa72998`（B1-V3a監査時点のHEAD、
+v13.3-dev = origin/v13.3-dev、working tree clean。origin/main は data-only commit 4件先行、
+merge不要と確認済み）。
+
+参照:
+- `/Users/ryo/jp-portfolio-audit-reports/p5-b005-b1-v3a-limited-reaudit.md`（本ticketの起点、P1-01）
+- `/Users/ryo/jp-portfolio-audit-reports/p5-b005-b1-v3-independent-audit.md`
+- `/Users/ryo/jp-portfolio-audit-reports/p5-b005-a2-s2-authority-clarification.md`
+
+### Changed production files (0)
+
+```text
+data/candidate_funnel_engine.py                        変更0（SHA-256不変、下記参照）
+src/types/candidateFunnel.ts                            変更0
+src/types/candidateFunnel.contract.test.ts              変更0
+tests/fixtures/candidate_funnel_calibration_v1.json     変更0
+data/candidates_stocks.json                             変更0
+public/data/**                                          変更0
+.github/**                                               変更0
+package.json / package-lock.json                        変更0
+```
+
+Production SHA-256（mutation前後・最終ともに不変）:
+`25e12a4217ace5d807963b54fe2e9918d8613c834b06b730fff8701a4b45d710`
+
+### Changed test files
+
+```text
+tests/test_candidate_funnel_engine.py   224→225 tests（新規1 test）
+handover.md                              この節
+```
+
+### New test: test_t3_13f_duplicate_degradation_reason_uses_independent_literal_count
+
+T3-13eの役割（20 distinct permutation間の不変性・rank bijection）はそのまま維持し、新設した
+T3-13fが「degradationReasonsの絶対的な正しさ」を独立に拘束する。production を一度も呼ばずに
+input側からのみ導出したliteralとの比較のみを行う：
+
+- input: 5件のcandidate（code "1001"/"1002"/"1002"/"1003"/"1004"、duplicate codeは"1002"の
+  exact 2件、他は一意）。全件prescreenScore=0.50明示・dataStatus="ok"・sector非空。
+  pipelinePath="normal"、sourceUpdatedAt/asOf/prescreenFallbackUsedはcontextに一切設定しない
+  （pipeline/stale degradation非混入をprecondition assert）。
+- precondition: 入力総数=5、duplicate code出現数=exact 2、非duplicate codeは一意（3件）、
+  全件prescreen usable、をproduction呼び出し前にliteral assert。
+- expected（手で導出したliteral、production baselineからの取得ではない）:
+  ```python
+  result["degradationReasons"] == [
+      "DUPLICATE_CANDIDATE_CODE: 1 duplicate code(s), 2 record(s) excluded"
+  ]
+  ```
+  list長=1であることも別途assert。
+- candidate側: duplicate対象2件（sector "secT313F2"/"secT313F3"）ともtier=="excluded"・
+  marketRank is None・hardExclusionReasons==["HARD_CONTRACT_VIOLATION"]をexact assert。
+  非duplicate 3件（code "1001"/"1003"/"1004"）はhardExclusionReasons==[]。
+  出力record数（5）が入力record数と一致し、code keyed dictで折り畳まれていないことを確認。
+
+### Mutation result (2→3)
+
+`data/candidate_funnel_engine.py`のduplicate exclusion detail生成部（
+`f"DUPLICATE_CANDIDATE_CODE: ... {len(duplicate_indices)} record(s) excluded"`）へ
+`len(duplicate_indices) + 1`を一時適用。
+
+結果:
+- `test_t3_13f_duplicate_degradation_reason_uses_independent_literal_count`のみが
+  `result["degradationReasons"]`のexact literal assertionでbehavioral REDになった
+  （`"...3 record(s) excluded" != "...2 record(s) excluded"`）。
+- `test_t3_13e_degradation_reasons_and_rank_bijection_20_distinct_permutations`は
+  mutation下でもGREENのまま（baseline由来のexpectedと一致し続けるため、これはT3-13eが
+  担う別目的＝permutation不変性が正しく機能していることの確認であり、T3-13fが担う絶対値の
+  正しさを代替するものではない）。
+- unrelated failureなし（他224件はPASS、全体225中224 passed / 1 failed）。
+
+Inverse patchで復元し、SHA-256完全一致（`25e12a4217ace5d807963b54fe2e9918d8613c834b06b730fff8701a4b45d710`）・
+`git diff data/candidate_funnel_engine.py`が0行・`git status --short`もcleanであることを確認。
+
+### Mutation manifest
+
+`/Users/ryo/jp-portfolio-audit-reports/p5-b005-b1-r3-t2-mutation-manifest.md`
+
+### Test totals
+
+```text
+target:    PYTHONDONTWRITEBYTECODE=1 python3 -B -m pytest -q tests/test_candidate_funnel_engine.py
+           225 passed（224→225、新規1 test）
+
+adjacent:  target + test_build_candidates_stocks.py + test_candidates_stocks_privacy_smoke.py +
+           test_jpx_universe_provider.py + test_whole_market_universe_provider.py
+           471 passed
+
+UTC:        TZ=UTC 同上フルセット        471 passed
+Asia/Tokyo: TZ=Asia/Tokyo 同上フルセット  471 passed
+
+Vitest UTC:        candidateFunnel.contract.test.ts   43 passed
+Vitest Asia/Tokyo: candidateFunnel.contract.test.ts   43 passed
+
+Full unit UTC:        83 files / 2466 passed
+Full unit Asia/Tokyo: 83 files / 2466 passed
+
+npx tsc --noEmit    0 errors
+npm run build       PASS（129 modules, 既知の500kB chunk warningのみ）
+git diff --check    PASS（whitespace error 0件）
+```
+
+### Artifact integrity
+
+```text
+git diff --name-status 1f5782e2ec1ad12c7e38fa0fc66a5e6d1aa72998   -> tests/test_candidate_funnel_engine.py, handover.md のみ
+production/fixture/TS type/data-artifact/.github/package diff     全て空
+candidate_funnel.json / candidate-funnel.json                     repository全体で0件
+```
+
+### Residual constraints（B1-R3から不変）
+
+- production/formula/threshold/cap/reason順/regime fallback/fixture/production TypeScript type
+  はすべて不変。V2で不採用と裁定されたunknown regime fail-closed / riskReasons enum順要求は
+  引き続き実装していない。
+- B1-V3a P3findingは本ticket scope外（未対応、次サイクルで判断）。
+- prescreen metadata join・frontend統合・candidate_funnel.json生成はすべて本ticket scope外
+  （INACTIVE、B2以降）。
+
+### Next
+
+```text
+P5-B005-B1-V3b:
+このB1-R3-T2修正の限定最終確認。T3-13fが独立literal oracleとして機能し、
+2→3 mutationを検出することのみを検証すれば足りる（他は既にB1-V3aでPASS済みのため
+再検証不要）。
+
+B1-V3b通過後にのみ P5-B005-B2 着手可:
+prescreen cache score/rank/poolをenrichment candidateへcode-joinし、candidate_funnel.jsonを
+生成するbatch・quality gate・privacy smokeを実装。A2-S §25.20のB2 production-distribution
+calibration gate（P-01..P-15）を完了条件に含めること。
+```

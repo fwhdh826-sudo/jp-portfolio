@@ -2680,6 +2680,68 @@ def test_t3_13e_degradation_reasons_and_rank_bijection_20_distinct_permutations(
         assert all(out["marketRank"] is None for out in result["candidates"] if out["tier"] == "excluded")
 
 
+def test_t3_13f_duplicate_degradation_reason_uses_independent_literal_count():
+    """B1-V3a P1（唯一残存の gap）: test_t3_13e は20 permutation間で
+    degradationReasons が不変であることは検証するが、その expected を
+    production自身の最初の実行結果（baseline）から取得しているため、
+    全入力に対して一貫して誤った detail/count を返す mutation
+    （例: "2 record(s) excluded" を "3 record(s) excluded" へ改変）が
+    survive する。本 test は production を一切呼ばずに手で導出した
+    literal expected のみと比較する独立 oracle として、この gap を閉じる。
+    T3-13e の役割（permutation不変性・rank bijection）はそのまま維持し、
+    ここでは degradationReasons の絶対的な正しさのみを担当する。"""
+    candidates = [
+        make_candidate(code="1001", sector="secT313F1", prescreenScore=0.50),
+        make_candidate(code="1002", sector="secT313F2", prescreenScore=0.50),
+        make_candidate(code="1002", sector="secT313F3", prescreenScore=0.50),
+        make_candidate(code="1003", sector="secT313F4", prescreenScore=0.50),
+        make_candidate(code="1004", sector="secT313F5", prescreenScore=0.50),
+    ]
+    context = {"pipelinePath": "normal"}
+
+    # --- preconditions（production を一度も呼ばずに input のみから拘束）---
+    assert len(candidates) == 5  # 入力candidate総数
+    codes = [c["code"] for c in candidates]
+    assert codes == ["1001", "1002", "1002", "1003", "1004"]
+    assert codes.count("1002") == 2  # duplicate code出現数はexact 2
+    non_dup_codes = [c for c in codes if c != "1002"]
+    assert len(non_dup_codes) == len(set(non_dup_codes)) == 3  # duplicate以外は一意
+    for c in candidates:
+        assert isinstance(c.get("prescreenScore"), float) and math.isfinite(c["prescreenScore"])
+        assert c["dataStatus"] == "ok"
+        assert isinstance(c["sector"], str) and c["sector"] != ""
+    # prescreen metadata欠損0（全件が上のループでusableと確認済み）
+    assert context["pipelinePath"] == "normal"  # pipeline degradation 0（cache_fallbackではない）
+    assert "sourceUpdatedAt" not in context and "asOf" not in context  # stale degradation 0（判定対象外）
+    assert "prescreenFallbackUsed" not in context
+
+    result = build_candidate_funnel(candidates, context)
+
+    # --- degradationReasons: DUPLICATE_CANDIDATE_CODE のみをliteralに保持
+    #     （production baselineからの取得ではなく、手で導出したliteral）---
+    assert result["degradationReasons"] == [
+        "DUPLICATE_CANDIDATE_CODE: 1 duplicate code(s), 2 record(s) excluded"
+    ]
+    assert len(result["degradationReasons"]) == 1
+
+    # --- candidate側の独立確認 ---
+    assert len(result["candidates"]) == len(candidates) == 5  # record数保持（code keyed dictで折り畳まない）
+    dup_records = [c for c in result["candidates"] if c["code"] == "1002"]
+    assert len(dup_records) == 2  # duplicate対象は入力のexact 2件のまま出力にも残る
+    by_sector = {c["sector"]: c for c in dup_records}
+    assert set(by_sector.keys()) == {"secT313F2", "secT313F3"}
+    for dup in dup_records:
+        assert dup["tier"] == "excluded"
+        assert dup["marketRank"] is None
+        assert dup["hardExclusionReasons"] == ["HARD_CONTRACT_VIOLATION"]
+
+    non_dup_records = [c for c in result["candidates"] if c["code"] != "1002"]
+    assert len(non_dup_records) == 3
+    assert {c["code"] for c in non_dup_records} == {"1001", "1003", "1004"}
+    for c in non_dup_records:
+        assert c["hardExclusionReasons"] == []
+
+
 # ---------------------------------------------------------------------------
 # T3-14: numeric matrix 固定（1軸/2軸 invalid でも actionable 可、3軸で不可）
 # ---------------------------------------------------------------------------
