@@ -1,5 +1,9 @@
 import type { AppState, HoldingAnalysis, Holding, Trust } from '../types'
 import { MARKET_DATA_STALE_HOURS, SYSTEM_STALE_HOURS, SAFE_MODE_STALE_HOURS, CASH_ASSUMPTIONS_STALE_HOURS } from '../domain/risk/thresholds'
+import {
+  evaluateCandidateFunnelFreshness,
+  type CandidateFunnelFreshness,
+} from '../services/candidateFunnelFreshness'
 
 // ── ポートフォリオ集計 ─────────────────────────────────────────
 export const selectTotalEval = (s: AppState) =>
@@ -51,6 +55,26 @@ export const selectGlobalFundTotalEval = (s: AppState) =>
 
 // ── レジーム ───────────────────────────────────────────────────
 export const selectRegime = (s: AppState) => s.market.regime
+
+// ── P5-B005-B3-B: candidate funnel freshness（pure / observability only） ──
+export function selectCandidateFunnelFreshness(
+  state: AppState,
+  nowMs: number,
+): CandidateFunnelFreshness {
+  const status = state.system.dataSourceStatus.candidateFunnel
+  const timestamp = state.system.dataTimestamps?.candidateFunnel
+  const data = state.candidateFunnel
+
+  if (status === undefined) {
+    return data === null && timestamp == null ? 'unavailable' : 'invalid'
+  }
+  if (status === 'loaded') {
+    if (data === null || timestamp !== data._meta.generatedAt) return 'invalid'
+    return evaluateCandidateFunnelFreshness({ status, data }, nowMs)
+  }
+  if (data !== null || timestamp != null) return 'invalid'
+  return evaluateCandidateFunnelFreshness({ status, data: null }, nowMs)
+}
 
 // ── システム状態 ───────────────────────────────────────────────
 export const selectIsLoading = (s: AppState) => s.system.status === 'loading'

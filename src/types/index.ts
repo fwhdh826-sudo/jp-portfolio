@@ -307,6 +307,8 @@ export interface SystemState {
     candidatesNews?: 'loaded' | 'default'
     // P5-B002a: 新規個別株候補（observability only, officialDecision未接続）
     candidatesStocks?: 'loaded' | 'default'
+    // P5-B005-B3-B: candidate funnel artifact（observability only）
+    candidateFunnel?: 'loaded' | 'unavailable' | 'invalid'
     // P4-A9d: 5-regime live state（observability only）
     regime?: 'loaded' | 'default'
     // P4-A24: SAFE_MODE / TierA live snapshot（observability only）
@@ -328,6 +330,7 @@ export interface SystemState {
     flows: string | null
     candidatesNews?: string | null
     candidatesStocks?: string | null
+    candidateFunnel?: string | null
     regime?: string | null
     // P4-A24
     safeMode?: string | null
@@ -482,6 +485,7 @@ import type { AssetUniverse } from './universe'
 import type { CandidatesNewsData } from './news'
 import type { RegimeState } from './regime'
 import type { CandidatesStocksData } from './candidatesStocks'
+import type { CandidateFunnelArtifact } from './candidateFunnelArtifact'
 export type { MacroSnapshot, SQCalendar, MarginData, FlowData } from './macro'
 export type {
   AssetClass,
@@ -568,6 +572,8 @@ export interface AppState {
   candidatesNews: CandidatesNewsData
   // P5-B002a: 新規個別株候補（市場公開情報のみ。observability用・officialDecision未接続）
   candidatesStocks: CandidatesStocksData
+  // P5-B005-B3-B: production candidate funnel（observability用・意思決定未接続）
+  candidateFunnel: CandidateFunnelArtifact | null
   // P5-B002b-1: candidatesStocks由来のscore/headroom/gate計算済み内部候補リスト
   // （officialDecision未接続・UI未接続。B003で接続予定）
   stockCandidates: import('../domain/candidates/stockCandidates').StockCandidateItem[]
@@ -590,6 +596,17 @@ export type TabId = 'T0' | 'T1' | 'T2' | 'T3' | 'T4' | 'T5' | 'T6' | 'T7' | 'T8'
 export type AssetType = 'jp_stock' | 'jp_fund' | 'global_fund'
 
 // ── v13.3 新規型（既存型は変更しない） ──────────────────────
+export type {
+  CandidateFunnelArtifact,
+  CandidateFunnelArtifactMeta,
+  CandidateFunnelQualityGate,
+  CandidateFunnelQualityGateEntry,
+  CandidateFunnelQualityGateRequiredId,
+  CandidateFunnelQualityGateStatus,
+  CandidateFunnelJoinStats,
+  JsonValue as CandidateFunnelJsonValue,
+} from './candidateFunnelArtifact'
+
 export type {
   RegimeId,
   LlmRegimeVote,

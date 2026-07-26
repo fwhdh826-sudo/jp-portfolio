@@ -10,7 +10,7 @@
  * 常にnull。
  */
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { loadCandidateFunnel } from './loadStaticData'
+import { loadCandidateFunnel, refreshAllData } from './loadStaticData'
 import { buildValidCandidateFunnelArtifact } from './candidateFunnelArtifact.fixtures'
 
 function mockFetchOk(data: unknown) {
@@ -139,6 +139,35 @@ describe('loadCandidateFunnel', () => {
     const second = await loadCandidateFunnel()
     expect(first.status).toBe(second.status)
     expect(first.data).toEqual(second.data)
+  })
+
+  it('refreshAllData loads candidate funnel through the parser with the shared cache-bust token', async () => {
+    const artifact = buildValidCandidateFunnelArtifact()
+    const fetchMock = vi.fn(async (input: string | URL | Request, _init?: RequestInit) => {
+      const url = String(input)
+      if (url.includes('candidate_funnel.json')) {
+        return {
+          ok: true,
+          status: 200,
+          json: () => Promise.resolve(artifact),
+        }
+      }
+      return {
+        ok: false,
+        status: 404,
+        json: () => Promise.resolve({}),
+      }
+    })
+    vi.stubGlobal('fetch', fetchMock)
+
+    const result = await refreshAllData({ bustCache: true })
+
+    expect(result.candidateFunnel).toEqual({ status: 'loaded', data: artifact })
+    const candidateCall = fetchMock.mock.calls.find(([input]) =>
+      String(input).includes('candidate_funnel.json'))
+    expect(candidateCall).toBeDefined()
+    expect(String(candidateCall?.[0])).toMatch(/candidate_funnel\.json\?ts=\d+/)
+    expect(candidateCall?.[1]).toMatchObject({ cache: 'no-store' })
   })
 
 })

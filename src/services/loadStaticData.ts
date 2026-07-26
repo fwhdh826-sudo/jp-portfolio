@@ -458,7 +458,7 @@ export async function loadTierAAlerts(
 export async function refreshAllData(options: { bustCache?: boolean } = {}) {
   const loadOptions: LoadOptions = options.bustCache ? { bustToken: `${Date.now()}` } : {}
   // 並列fetch（partial updateしない — 全部揃ってからStore更新）
-  const [market, correlation, news, trust, holdingsSnapshot, macro, nikkeiVI, sq, margin, flows, candidatesNews, candidatesStocks, regimeState, safeMode, tierAViolations, tierAAlerts] = await Promise.all([
+  const [market, correlation, news, trust, holdingsSnapshot, macro, nikkeiVI, sq, margin, flows, candidatesNews, candidatesStocks, candidateFunnel, regimeState, safeMode, tierAViolations, tierAAlerts] = await Promise.all([
     loadMarket(loadOptions),
     loadCorrelation(loadOptions),
     loadNews(loadOptions),
@@ -471,10 +471,11 @@ export async function refreshAllData(options: { bustCache?: boolean } = {}) {
     loadFlows(loadOptions),
     loadCandidatesNews(loadOptions),
     loadCandidatesStocks(loadOptions),
+    loadCandidateFunnel(loadOptions),
     loadRegimeState(loadOptions),
     loadSafeMode(loadOptions),
     loadTierAViolations(loadOptions),
     loadTierAAlerts(loadOptions),
   ])
-  return { market, correlation, news, trust, holdingsSnapshot, macro, nikkeiVI, sq, margin, flows, candidatesNews, candidatesStocks, regimeState, safeMode, tierAViolations, tierAAlerts }
+  return { market, correlation, news, trust, holdingsSnapshot, macro, nikkeiVI, sq, margin, flows, candidatesNews, candidatesStocks, candidateFunnel, regimeState, safeMode, tierAViolations, tierAAlerts }
 }

@@ -937,7 +937,25 @@ function buildStateWithPublishedData(
     localStorageFreshness?: SystemState['localStorageFreshness']
   },
 ): AppState {
-  const { market, correlation, news, trust, holdingsSnapshot, macro, nikkeiVI, sq, margin, flows, candidatesNews, candidatesStocks, regimeState, safeMode, tierAViolations, tierAAlerts } = publishedData
+  const {
+    market,
+    correlation,
+    news,
+    trust,
+    holdingsSnapshot,
+    macro,
+    nikkeiVI,
+    sq,
+    margin,
+    flows,
+    candidatesNews,
+    candidatesStocks,
+    candidateFunnel = { status: 'unavailable' as const, data: null },
+    regimeState,
+    safeMode,
+    tierAViolations,
+    tierAAlerts,
+  } = publishedData
   const sourceAsOf = getSafeAuthoritativeCsvSourceAsOf(baseState.system.csvImportProvenance, options.nowMs)
   const hasCurrentGeneration = options.hasCommittedCanonicalGeneration || hasCurrentPortfolioContentEvidence(baseState)
   const nextTrust = trust.data && shouldApplyPublishedSnapshot(trust.lastUpdated, sourceAsOf, hasCurrentGeneration)
@@ -978,6 +996,7 @@ function buildStateWithPublishedData(
     flows: flows.data,
     candidatesNews: candidatesNews.data,
     candidatesStocks: candidatesStocks.data,
+    candidateFunnel: candidateFunnel.status === 'loaded' ? candidateFunnel.data : null,
     regimeState: regimeState.data,
     safeMode: safeMode.data,
     tierAViolations: tierAViolations.data,
@@ -1002,6 +1021,7 @@ function buildStateWithPublishedData(
         flows: flows.source,
         candidatesNews: candidatesNews.source,
         candidatesStocks: candidatesStocks.source,
+        candidateFunnel: candidateFunnel.status,
         regime: regimeState.source,
         safeMode: safeMode.source,
         tierAViolations: tierAViolations.source,
@@ -1020,6 +1040,9 @@ function buildStateWithPublishedData(
         flows: flows.data?.last_updated ?? null,
         candidatesNews: candidatesNews.data.updatedAt || null,
         candidatesStocks: candidatesStocks.data.updatedAt || null,
+        candidateFunnel: candidateFunnel.status === 'loaded'
+          ? candidateFunnel.data?._meta.generatedAt ?? null
+          : null,
         regime: regimeState.generatedAt,
         safeMode: safeMode.lastChecked,
         tierAViolations: tierAViolations.generatedAt,
@@ -2281,6 +2304,8 @@ const createAppStoreStateCreator = (
   candidatesNews: DEFAULT_CANDIDATES_NEWS_DATA,
   // P5-B002a: 新規個別株候補（市場公開情報のみ。observability用・officialDecision未接続）
   candidatesStocks: DEFAULT_CANDIDATES_STOCKS_DATA,
+  // P5-B005-B3-B: dummy候補へfallbackしないproduction artifact
+  candidateFunnel: null,
   // P5-B002b-1: candidatesStocks由来のscore/headroom/gate計算済み内部候補リスト（未接続）
   stockCandidates: [],
   // P4-A9d: 5-regime live state（observability用・意思決定未接続）
@@ -2315,6 +2340,7 @@ const createAppStoreStateCreator = (
       flows: 'none',
       candidatesNews: 'default',
       candidatesStocks: 'default',
+      candidateFunnel: 'unavailable',
       regime: 'default',
     },
     dataTimestamps: {
@@ -2330,6 +2356,7 @@ const createAppStoreStateCreator = (
       flows: null,
       candidatesNews: null,
       candidatesStocks: null,
+      candidateFunnel: null,
       regime: null,
     },
   },
