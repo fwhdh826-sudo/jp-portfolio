@@ -1,10 +1,12 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
+import { isValidElement, type ReactNode } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 // @ts-expect-error -- repositoryは@types/node非依存だがVitestのNode runtimeでのみ使用する
 import { readFileSync } from 'node:fs'
 import type { CandidateFunnelCandidate } from '../../types/candidateFunnel'
 import type { CandidateFunnelArtifact } from '../../types/candidateFunnelArtifact'
 import { buildValidCandidateFunnelArtifact } from '../../services/candidateFunnelArtifact.fixtures'
+import { parseCandidateFunnelArtifact } from '../../services/candidateFunnelParser'
 import { useAppStore } from '../../store/useAppStore'
 import {
   CANDIDATE_FUNNEL_INITIAL_VIEW_STATE,
@@ -13,6 +15,7 @@ import {
   candidateFunnelFilterForKey,
   candidateFunnelViewReducer,
   formatCandidateFunnelJstTimestamp,
+  indexCandidateFunnelCandidates,
   sortCandidateFunnelCandidates,
   type CandidateFunnelViewState,
 } from './CandidateFunnelPanel'
@@ -90,6 +93,70 @@ function largeScreenedArtifact(size: number): CandidateFunnelArtifact {
   return data
 }
 
+function duplicateCodeArtifact(): CandidateFunnelArtifact {
+  const data = artifact()
+  const base = candidate(data, 'actionable')
+  data.candidates = [
+    {
+      ...structuredClone(base),
+      code: '7777',
+      name: '同一コード候補A',
+      sector: '機械',
+      marketRank: 1,
+    },
+    {
+      ...structuredClone(base),
+      code: '7777',
+      name: '同一コード候補B',
+      sector: '情報・通信業',
+      marketRank: 2,
+    },
+  ]
+  data.counts = {
+    total: 2,
+    excluded: 0,
+    screened: 0,
+    deepReview: 0,
+    actionable: 2,
+  }
+  return data
+}
+
+function escapeRegExp(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+}
+
+function collectCandidateCardKeys(node: ReactNode): Array<string | null> {
+  const keys: Array<string | null> = []
+
+  const visit = (current: ReactNode) => {
+    if (Array.isArray(current)) {
+      current.forEach(visit)
+      return
+    }
+    if (!isValidElement<{ children?: ReactNode }>(current)) return
+    if (current.type === CandidateFunnelCard) keys.push(current.key)
+    visit(current.props.children)
+  }
+
+  visit(node)
+  return keys
+}
+
+function reportReactListKeyWarnings(keys: Array<string | null>) {
+  const seen = new Set<string>()
+  for (const key of keys) {
+    if (key === null) {
+      console.error('Each child in a list should have a unique "key" prop.')
+      continue
+    }
+    if (seen.has(key)) {
+      console.error('Encountered two children with the same key, `%s`.', key)
+    }
+    seen.add(key)
+  }
+}
+
 describe('P5-B005-B3-C CandidateFunnelPanel summary and hierarchy', () => {
   it('fresh loaded state displays the artifact-authoritative summary counts', () => {
     const data = artifact()
@@ -107,9 +174,9 @@ describe('P5-B005-B3-C CandidateFunnelPanel summary and hierarchy', () => {
     const html = renderPanel(data, 'fresh')
 
     expect(CANDIDATE_FUNNEL_INITIAL_VIEW_STATE.filter).toBe('actionable')
-    expect(html).toContain('candidate-funnel-card-1003')
-    expect(html).not.toContain('candidate-funnel-card-1001')
-    expect(html).not.toContain('candidate-funnel-card-1002')
+    expect(html).toContain('テスト銘柄1003')
+    expect(html).not.toContain('テスト銘柄1001')
+    expect(html).not.toContain('テスト銘柄1002')
   })
 
   it('uses marketRank ascending with artifact order as the stable tie/null fallback', () => {
@@ -141,15 +208,15 @@ describe('P5-B005-B3-C CandidateFunnelPanel summary and hierarchy', () => {
 
   it('switches the view model to deep_review', () => {
     const html = renderPanel(artifact(), 'fresh', { filter: 'deep_review', visibleCount: 10 })
-    expect(html).toContain('candidate-funnel-card-1002')
-    expect(html).not.toContain('candidate-funnel-card-1003')
+    expect(html).toContain('テスト銘柄1002')
+    expect(html).not.toContain('テスト銘柄1003')
     expect(html).toContain('aria-labelledby="candidate-funnel-tab-deep_review"')
   })
 
   it('switches the view model to screened', () => {
     const html = renderPanel(artifact(), 'fresh', { filter: 'screened', visibleCount: 10 })
-    expect(html).toContain('candidate-funnel-card-1001')
-    expect(html).not.toContain('candidate-funnel-card-1003')
+    expect(html).toContain('テスト銘柄1001')
+    expect(html).not.toContain('テスト銘柄1003')
     expect(html).toContain('data-tier="screened"')
   })
 
@@ -195,12 +262,72 @@ describe('P5-B005-B3-C CandidateFunnelPanel summary and hierarchy', () => {
     const html = renderPanel(data, 'fresh')
 
     expect(html).toContain('重点候補に該当する候補はありません')
-    expect(html).not.toContain('candidate-funnel-card-1003')
+    expect(html).not.toContain('テスト銘柄1003')
   })
 
-  it('uses candidate.code as the React key and does not create an alternate duplicate list', () => {
-    expect(panelSource).toContain('<CandidateFunnelCard key={candidate.code} candidate={candidate} />')
+  it('keeps the artifact position as record identity before filtering and sorting', () => {
+    const data = artifact()
+    const indexed = indexCandidateFunnelCandidates(data.candidates)
+
+    expect(indexed.map(entry => entry.artifactIndex)).toEqual([0, 1, 2])
+    expect(indexed.map(entry => entry.candidate)).toEqual(data.candidates)
+    expect(panelSource).toContain('key={`candidate-funnel-record-${entry.artifactIndex}`}')
+    expect(panelSource).not.toContain('key={candidate.code}')
     expect(panelSource.match(/visibleCandidates\.map/g)).toHaveLength(1)
+  })
+
+  it('renders same-code records with unique keys, headings, and self-owned ARIA labels', () => {
+    const parsed = parseCandidateFunnelArtifact(duplicateCodeArtifact())
+    expect(parsed.ok).toBe(true)
+    if (!parsed.ok) throw new Error(`duplicate-code fixture rejected: ${parsed.code}`)
+
+    let html = ''
+    let consoleErrors: unknown[][] = []
+    const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+    try {
+      const renderedTree = CandidateFunnelPanelView({
+        artifact: parsed.data,
+        freshness: 'fresh',
+        viewState: CANDIDATE_FUNNEL_INITIAL_VIEW_STATE,
+        onAction: () => {},
+      })
+      const cardKeys = collectCandidateCardKeys(renderedTree)
+      expect(cardKeys).toHaveLength(2)
+      reportReactListKeyWarnings(cardKeys)
+      html = renderPanel(parsed.data, 'fresh')
+      consoleErrors = consoleErrorSpy.mock.calls.map(call => [...call])
+    } finally {
+      consoleErrorSpy.mockRestore()
+    }
+
+    expect(consoleErrors).toEqual([])
+    expect(countCandidateCards(html)).toBe(2)
+    expect(html.match(/candidate-funnel-card__code">7777/g)).toHaveLength(2)
+    expect(html).toContain('同一コード候補A')
+    expect(html).toContain('機械')
+    expect(html).toContain('同一コード候補B')
+    expect(html).toContain('情報・通信業')
+
+    const articles = [...html.matchAll(
+      /<article class="candidate-funnel-card" aria-labelledby="([^"]+)">([\s\S]*?)<\/article>/g,
+    )]
+    expect(articles).toHaveLength(2)
+    expect(html.match(/<h3 id="[^"]+" class="candidate-funnel-card__name">/g)).toHaveLength(2)
+
+    const headingIds = articles.map(([, labelledBy, articleHtml]) => {
+      const heading = articleHtml.match(
+        /<h3 id="([^"]+)" class="candidate-funnel-card__name">[^<]+<\/h3>/,
+      )
+      expect(heading).not.toBeNull()
+      const headingId = heading?.[1] ?? ''
+      expect(headingId).not.toBe('')
+      expect(labelledBy).toBe(headingId)
+      expect(html.match(new RegExp(`id="${escapeRegExp(labelledBy)}"`, 'g'))).toHaveLength(1)
+      return headingId
+    })
+
+    expect(headingIds).toHaveLength(2)
+    expect(new Set(headingIds).size).toBe(2)
   })
 })
 
@@ -216,7 +343,7 @@ describe('P5-B005-B3-C freshness and load states', () => {
     const html = renderPanel(artifact(), 'unavailable')
     expect(html).toContain('候補データを取得できませんでした')
     expect(html).not.toContain('role="tabpanel"')
-    expect(html).not.toContain('candidate-funnel-card-1003')
+    expect(html).not.toContain('テスト銘柄1003')
   })
 
   it('does not render a candidate list for invalid', () => {
@@ -230,7 +357,7 @@ describe('P5-B005-B3-C freshness and load states', () => {
     const html = renderPanel(artifact(), 'invalid')
     expect(html).toContain('候補データを検証できませんでした')
     expect(html).not.toContain('role="tabpanel"')
-    expect(html).not.toContain('candidate-funnel-card-1003')
+    expect(html).not.toContain('テスト銘柄1003')
   })
 
   it('treats loaded plus null inconsistency as invalid display', () => {
@@ -245,7 +372,7 @@ describe('P5-B005-B3-C freshness and load states', () => {
     expect(html).toContain('データが古い可能性があります')
     expect(html).toContain('role="status"')
     expect(html).toContain('aria-live="polite"')
-    expect(html).toContain('candidate-funnel-card-1003')
+    expect(html).toContain('テスト銘柄1003')
   })
 
   it('generalizes degraded provenance and says not to use it for current purchase decisions', () => {
@@ -256,7 +383,7 @@ describe('P5-B005-B3-C freshness and load states', () => {
     expect(html).toContain('現在の購入判断には使用しないでください')
     expect(html).not.toContain('cache_fallback')
     expect(html).not.toContain('seed_fallback')
-    expect(html).toContain('candidate-funnel-card-1003')
+    expect(html).toContain('テスト銘柄1003')
   })
 
   it('displays generatedAt and sourceUpdatedAt in Japan time', () => {

@@ -52303,3 +52303,86 @@ localStorage/refresh/polling/URL変更なし。
 P5-B005-B3-C: CLOSED（全validation・commit完了後、push確認待ち）。
 次はP5-B005-B3-C-V（独立UI受入監査）を推奨。portfolioFit/
 officialDecision/BUY_NEW接続は本ticketから引き続き明確に隔離する。
+
+---
+
+## P5-B005-B3-C-R1: duplicate candidate render identity / ARIA closure
+
+B3-C-V（audited SHA `84b6ca457a61a013130f29d1dd5df04b1d56a6d7`）のverdictは
+**FAIL**。唯一のP1は、parserが同一codeの複数recordを受理する一方で、
+React list keyとcard heading DOM idが`candidate.code`単独だったため、同一tier内の
+duplicate codeでkey/idが重複し、`aria-labelledby`参照が曖昧になる欠陥だった。
+
+### 修正
+
+- `CandidateFunnelPanel.tsx`: `artifact.candidates`をfilter前に
+  `{ candidate, artifactIndex }`へ変換し、exact tier filter、marketRank sort、
+  paginationまでrecord identityを保持。React keyは
+  ``candidate-funnel-record-${artifactIndex}``とし、code/name/sector/rankの
+  一意性を仮定しない。marketRank昇順、null末尾、同順位/null同士のartifact順、
+  入力配列非破壊は維持。
+- `CandidateFunnelCard.tsx`: React `useId()`から
+  ``candidate-funnel-card-title-${generatedId.replace(/:/g, '')}``を生成。
+  codeをDOM identityに使用せず、各`article`の`aria-labelledby`は自身のheadingを
+  exactに参照する。random/時刻値は不使用。
+- parser、artifact schema、candidate型、store/selector/freshness、data/public、
+  workflow、dependency、T1/T0、portfolioFit/holdings/officialDecision/BUY_NEW、
+  click/navigationは変更していない。
+
+### 同一code behavioral test
+
+`CandidateFunnelPanel.test.tsx`へ同一code `7777`のactionable 2record
+（`同一コード候補A`/`機械`/marketRank 1、
+`同一コード候補B`/`情報・通信業`/marketRank 2）を追加。countsは
+total/actionableとも2でcandidate配列と整合し、
+`parseCandidateFunnelArtifact()`が受理することを先に確認する。
+
+SSR renderとhook-free Panel viewのReact element treeを併用し、以下を確認:
+
+- card/article 2件、heading 2件、両name/sectorが個別に存在
+- heading idは非空かつ相互に異なる
+- 各articleの`aria-labelledby`が自身のheading idと一致
+- 各参照先idはrendered markup内にexact 1件
+- 実際のPanel render pathから得たcard keyを検査し、
+  `console.error`はunrelated warningを含め0件
+
+### Mutation
+
+- M-R1-01: keyを`entry.candidate.code`へ戻すと、同一code testが
+  `Encountered two children with the same key` warningを捕捉してRED
+  （exit 1）。inverse後Panel SHA-256
+  `49012a80984d489b19698a36302abf111ec9959ae6e0115fe15849d1d8e55d3b`へ復元しGREEN。
+- M-R1-02: titleIdを`candidate.code`単独へ戻すと、
+  `aria-labelledby`参照先のDOM内出現数がexpected 1 / actual 2でRED
+  （exit 1）。inverse後Card SHA-256
+  `6259fc8ac9de4c4ab8b89071bd1d0ad813ba4b55c4d08232394db18593cabd09`へ復元しGREEN。
+- mutationは最終repository差分に残っていない。
+- 指定manifest
+  `/Users/ryo/jp-portfolio-audit-reports/p5-b005-b3-c-r1-mutation-manifest.md`
+  はrepository外pathへのsandbox write拒否により、この実行環境からは未作成。
+  mutation証拠は本sectionへ完全記録した。
+
+### Validation
+
+- Corrected targeted matrix（実在する7ファイル）:
+  UTC / Asia/Tokyoとも **7 files / 146 tests passed / skipped 0**
+  （B3-C-V baseline 145 + 新規1）。
+- Full unit: UTC / Asia/Tokyoとも
+  **89 files / 2582 tests passed / skipped 0**
+  （baseline 2581 + 新規1）。
+- `npx tsc --noEmit`: PASS、0 errors。
+- `npm run build`: PASS、136 modules。既知の500kB chunk warningのみ。
+- `git diff --check`: PASS。
+
+### Protected integrity / residual / next
+
+開始時からdata/public artifact、B1/B2 engine/batch、parser/freshness/loader、
+store/selectors、candidate types、package/lock、`.github/**`は不変。
+`data/candidate_funnel.json`と`public/data/candidate_funnel.json`はともに
+SHA-256 `afae77a42bf1dcb6bd49c2ff2c5511ec0d1e5288f307acc65316785e421938db`
+でbyte-identical。
+
+browser 320/375px実確認はB3-C-Vからの残存follow-upであり、本R1のコード修正対象外。
+B3-C-R1はproduction/test修正とvalidation完了、外部manifest writeのみ環境権限待ち。
+manifest作成後、Codex GPT-5.6 Sol / highによる**B3-C-V2限定再監査**が必要。
+portfolioFit/officialDecision/BUY_NEW等の後続機能は未着手。

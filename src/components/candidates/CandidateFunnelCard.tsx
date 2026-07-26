@@ -1,3 +1,4 @@
+import { useId } from 'react'
 import type {
   CandidateFunnelCandidate,
   CandidateFunnelTier,
@@ -71,7 +72,8 @@ export interface CandidateFunnelCardProps {
 }
 
 export function CandidateFunnelCard({ candidate }: CandidateFunnelCardProps) {
-  const titleId = `candidate-funnel-card-${candidate.code}`
+  const generatedId = useId()
+  const titleId = `candidate-funnel-card-title-${generatedId.replace(/:/g, '')}`
 
   return (
     <article className="candidate-funnel-card" aria-labelledby={titleId}>

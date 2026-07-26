@@ -18,6 +18,11 @@ export interface CandidateFunnelViewState {
   visibleCount: number
 }
 
+export interface IndexedCandidate {
+  candidate: CandidateFunnelCandidate
+  artifactIndex: number
+}
+
 export type CandidateFunnelViewAction =
   | { type: 'set_filter'; filter: CandidateFunnelFilter }
   | { type: 'show_more' }
@@ -58,8 +63,21 @@ export function candidateFunnelViewReducer(
 export function sortCandidateFunnelCandidates(
   candidates: CandidateFunnelCandidate[],
 ): CandidateFunnelCandidate[] {
+  return sortIndexedCandidateFunnelCandidates(indexCandidateFunnelCandidates(candidates))
+    .map(({ candidate }) => candidate)
+}
+
+export function indexCandidateFunnelCandidates(
+  candidates: CandidateFunnelCandidate[],
+): IndexedCandidate[] {
+  return candidates.map((candidate, artifactIndex) => ({ candidate, artifactIndex }))
+}
+
+function sortIndexedCandidateFunnelCandidates(
+  candidates: IndexedCandidate[],
+): IndexedCandidate[] {
   return candidates
-    .map((candidate, artifactIndex) => ({ candidate, artifactIndex }))
+    .slice()
     .sort((left, right) => {
       const leftRank = left.candidate.marketRank
       const rightRank = right.candidate.marketRank
@@ -70,7 +88,6 @@ export function sortCandidateFunnelCandidates(
       if (rightRank === null) return -1
       return leftRank - rightRank || left.artifactIndex - right.artifactIndex
     })
-    .map(({ candidate }) => candidate)
 }
 
 export function candidateFunnelFilterForKey(
@@ -101,10 +118,12 @@ export function formatCandidateFunnelJstTimestamp(value: string | null): string 
 }
 
 function filterCandidates(
-  candidates: CandidateFunnelCandidate[],
+  candidates: IndexedCandidate[],
   filter: CandidateFunnelFilter,
-): CandidateFunnelCandidate[] {
-  return sortCandidateFunnelCandidates(candidates.filter(candidate => candidate.tier === filter))
+): IndexedCandidate[] {
+  return sortIndexedCandidateFunnelCandidates(
+    candidates.filter(entry => entry.candidate.tier === filter),
+  )
 }
 
 function generalPipelineLabel(artifact: CandidateFunnelArtifact): string {
@@ -143,8 +162,11 @@ export function CandidateFunnelPanelView({
     document.getElementById(`candidate-funnel-tab-${next}`)?.focus()
   }
 
+  const indexedCandidates = canDisplayCandidates
+    ? indexCandidateFunnelCandidates(artifact.candidates)
+    : []
   const selectedCandidates = canDisplayCandidates
-    ? filterCandidates(artifact.candidates, viewState.filter)
+    ? filterCandidates(indexedCandidates, viewState.filter)
     : []
   const visibleCandidates = selectedCandidates.slice(0, viewState.visibleCount)
   const selectedFilterLabel =
@@ -288,8 +310,11 @@ export function CandidateFunnelPanelView({
                 {selectedFilterLabel}に該当する候補はありません
               </div>
             ) : (
-              visibleCandidates.map(candidate => (
-                <CandidateFunnelCard key={candidate.code} candidate={candidate} />
+              visibleCandidates.map(entry => (
+                <CandidateFunnelCard
+                  key={`candidate-funnel-record-${entry.artifactIndex}`}
+                  candidate={entry.candidate}
+                />
               ))
             )}
           </div>
