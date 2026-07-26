@@ -837,12 +837,26 @@ def test_69_existing_raw_artifact_unchanged():
     assert before == after
 
 
-def test_70_candidate_funnel_artifact_absent():
+def test_70_engine_run_has_no_artifact_side_effect():
+    """B1 engineの`run()`呼び出し自体はfile I/O副作用を持たない（frozen pure
+    function契約）。P5-B005-B2がcandidate_funnel_batch.py経由でこのartifactを
+    正当にpublishするようになった後は、data/candidate_funnel.jsonの存在有無
+    自体はB1の契約とは独立（既にproductionでpublish済みのbranchでは存在する
+    のが正しい状態）——ここで確認するのは`run()`呼び出し前後でこのfileの
+    存在状態が変化しないこと（test_69_existing_raw_artifact_unchangedと同じ
+    「engineはI/Oを一切行わない」という規律）。"""
     from pathlib import Path
 
     root = Path(__file__).resolve().parent.parent
-    assert not (root / "data" / "candidate_funnel.json").exists()
-    assert not (root / "public" / "data" / "candidate_funnel.json").exists()
+    data_path = root / "data" / "candidate_funnel.json"
+    public_path = root / "public" / "data" / "candidate_funnel.json"
+    before = (data_path.exists(), public_path.exists())
+
+    data = _load_real_candidates_stocks()
+    run(data["candidates"], sourceUpdatedAt=data.get("sourceUpdatedAt"), asOf=data.get("sourceUpdatedAt"))
+
+    after = (data_path.exists(), public_path.exists())
+    assert before == after
 
 
 # ===========================================================================
