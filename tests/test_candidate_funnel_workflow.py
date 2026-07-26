@@ -29,11 +29,22 @@ def test_candidate_funnel_privacy_smoke_step_present():
     assert "python3 -m data.candidate_funnel_privacy_smoke" in _TEXT
 
 
-def test_candidate_funnel_steps_are_non_blocking():
-    """他の独立したdata更新stepを止めないよう、既存規律どおり `|| true` を使う。"""
+def test_candidate_funnel_batch_step_is_non_blocking():
+    """batch step自体は他の独立したdata更新stepを止めないよう、既存規律どおり
+    `|| true` を使う（gate FAILは想定内の正常系であり、job全体を止める理由には
+    しない）。"""
     section = _update_data_section()
     assert "python3 -m data.candidate_funnel_batch || true" in section
-    assert "python3 -m data.candidate_funnel_privacy_smoke || true" in section
+
+
+def test_candidate_funnel_privacy_smoke_step_is_blocking():
+    """privacy/schema smokeはcommit直前の最終防衛線のため `|| true` を
+    付けない——batch内部の検証をすり抜けた不正artifactがあった場合、
+    git addされる前にjob failureとして検出しcommit stepへ到達させない
+    （validation前のpublic配布禁止）。"""
+    section = _update_data_section()
+    assert "python3 -m data.candidate_funnel_privacy_smoke\n" in section
+    assert "python3 -m data.candidate_funnel_privacy_smoke || true" not in section
 
 
 def test_candidate_funnel_batch_runs_after_regime_state():

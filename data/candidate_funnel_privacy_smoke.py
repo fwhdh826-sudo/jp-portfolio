@@ -181,11 +181,23 @@ def check_candidate_funnel_payload(payload: Any, label: str) -> list[str]:
 
 def check_candidate_funnel_files(paths: tuple[str, ...] = DEFAULT_PATHS) -> list[str]:
     """複数ファイルを検査し、全違反理由のlistを返す（空=全ファイルok）。
-    data/publicの両方が読める場合はbyte-identicalであることも確認する。"""
+    data/publicの両方が読める場合はbyte-identicalであることも確認する。
+
+    全fileが不在（candidate_funnel_batchがまだ一度も成功していない、
+    例えば導入直後や join率不足でgate FAILが続いている状況）はviolationと
+    しない——「まだpublishされていない」であり「不正なartifactがpublish
+    された」ではないため、commit直前の最終防衛線としては区別する必要がある。
+    一部のfileだけが存在する（data/publicの一方のみ）状態は、atomic
+    publish_artifact()のペア保証が破られていることを意味するため常に
+    violationとする。"""
     violations: list[str] = []
     texts: list[tuple[str, str]] = []
+    missing_paths: list[str] = []
     for p in paths:
         path = Path(p)
+        if not path.exists():
+            missing_paths.append(p)
+            continue
         try:
             text = path.read_text(encoding="utf-8")
         except OSError as e:
@@ -198,6 +210,12 @@ def check_candidate_funnel_files(paths: tuple[str, ...] = DEFAULT_PATHS) -> list
             continue
         texts.append((p, text))
         violations.extend(check_candidate_funnel_payload(payload, p))
+
+    if missing_paths and len(missing_paths) != len(paths):
+        violations.append(
+            f"partial publish detected: missing {missing_paths} while others exist "
+            "(data/public pair guarantee violated)"
+        )
 
     if len(texts) == len(paths) and len(texts) > 1:
         first_text = texts[0][1]

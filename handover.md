@@ -51882,7 +51882,7 @@ full_batch.yml実行（GitHub Actions、ネットワーク接続あり）での�
 場合は、`data/prescreen_metadata.json`が実際に不在のためP-02/P-08/P-10/P-14がFAILし、
 新規artifactが一切書かれないことを確認済み（fail-closedの実地確認）。
 
-### Next
+### Next（当初）
 
 ```text
 origin/v13.3-devへpush後、workflow_dispatchでfull_batch.ymlを手動実行し、実際のJPX/yfinance
@@ -51890,4 +51890,69 @@ fetchを経たprescreen_metadata.json + candidates_stocks.jsonでcandidate_funne
 P-01..P-15の実production evidence（特にP-07 IQR/range、P-10 sector breadth、P-14 Jaccard）を
 記録すること。B3（frontend/store/UI接続、officialDecision/portfolioFit接続）はP-01..P-15実測PASS
 確認後にのみ着手可。
+```
+
+### Codex GPT-5.6独立監査（commit `6522c4e`対象、read-only、repo無変更）→ B2 BLOCKED → 5件修正・再commit
+
+`codex:rescue`（GPT-5.6、Sol/high reasoning）による独立adversarial auditを実施。**Verdict: `B2 BLOCKED`**。
+6件の指摘のうち5件（#2-#6）を実装欠陥として認め即時修正、1件（#1）は環境制約として既存の開示のまま。
+
+**Codex検証済み・問題なし**: B1 engine/TS contract/calibration fixtureの3 SHA完全一致
+（`25e12a42...`/`ce448945...`/`021c8844...`）、join contract（exact string identity・fuzzy/name/sector
+join無し・candidate側duplicate維持・prescreen側duplicate除外+fail-closed）、threshold literal・
+P-14 perturbation式の一致、privacy traversal（forbidden 18key全件`missing []`）、
+`prescreenEntries`のデフォルト`()`後方互換、workflow配置順序、`git diff --stat`再現一致。
+
+**修正した指摘**:
+
+1. **[Blocking→設計修正] workflow privacy smoke stepの`|| true`除去**: batch step自体は
+   `|| true`のまま維持（gate FAILは正常系、job全体を止めない）が、直後のprivacy/schema smoke
+   step（commit直前の最終防衛線）から`|| true`を除去。batch内部検証をすり抜けた不正artifactが
+   あっても、git addされる前にjob failureとして検出しcommitへ到達させない。ただし
+   「candidate_funnel_batchがまだ一度もpublishしていない」状態（全fileが不在）はviolation扱い
+   にしない（`check_candidate_funnel_files`に区別ロジックを追加、一部fileだけ存在する状態は
+   常にviolation=atomic pair保証違反として検出）。
+2. **[Major→修正] `publish_artifact()`をペアtransactionへ**: 両方のtmp fileを先に書き切ってから
+   両方をreplaceし、2件目のreplaceが失敗したら1件目を書き換え前の内容（無ければ削除）へ
+   rollbackするよう変更。プロセスがos.replace呼び出しの間でkillされる極端なcase以外は、
+   data/publicが一方だけ更新された不整合状態を残さない。
+3. **[Major→修正] `status != "generated"`（seed_fallback等）でのpublish禁止**: 従来は
+   `overallPass=True`としてnot_generatedのartifactをpublishしていたが、これは
+   `data/build_candidates_stocks.py`のstale-fallback guard（新結果がempty相当かつ既存fileが
+   freshなら上書きしない）と矛盾する挙動だった。`overallPass=False`へ変更し、既存の正常な
+   artifactがあればそのまま保持するよう修正（gate FAILと同じfail-closed経路で扱う）。
+4. **[Major→修正] P-13を実データに対する具体的な証拠へ**: 従来は現在runがdegradedか否かの
+   条件分岐だけで、通常運用日には常にvacuousにPASSし実データへの検証になっていなかった。
+   P-14の±2% perturbation mirrorと同じ考え方で、実際のjoined候補集団に対し
+   `pipelinePath='cache_fallback'`を強制したmirror runを毎回実行し、そのactionable件数が
+   実際に0であることを直接確認するよう変更（`compute_degraded_path_actionable`追加）。
+5. **[Minor→修正] P-06の指標をA2-S §22.2の記載どおりへ**: `dataConfidence<2/3`という代理指標
+   （`belowActionableThresholdCount`）を、authorityが要求する「usableAxes<=4の件数」
+   （`atOrBelow4AxesCount`）へ置換。engine出力からは正確なusableAxesを復元できない
+   （valuationがper/pbr/dividendYieldを1つのcombined statusへ畳み込むため）ため、
+   engineへの入力そのもの（joined_candidates、engine出力と位置対応）から
+   `_usable_axes_count()`で直接再計算する（engineのscoring authorityには一切触れない、
+   報告専用の再実装）。
+
+**認めなかった指摘**: #1（実production evidence未取得）はネットワーク接続の無い開発環境の
+既知の制約であり、コード欠陥ではない。当初から開示済み（下記参照）。
+
+**修正後の再verification**: 新規/変更test（tests/test_candidate_funnel_batch.py 48件・
+tests/test_candidate_funnel_privacy_smoke.py 17件・tests/test_prescreen_metadata.py 8件・
+tests/test_candidate_funnel_workflow.py 10件、計83件）全pass。Full python suite 7255 passed/
+10 skipped（system TZ）。B004/B005関連ファイル一式 425 passed（TZ=UTC/Asia/Tokyo両方）。
+`npx tsc --noEmit` 0 errors。`git diff --check` clean。dry-run（実production
+candidates_stocks.json + 合成prescreen entries）で再実行し、P-13が
+`{"currentRunActionable": 12, "cacheFallbackMirrorActionable": 0}`、P-06が
+`atOrBelow4AxesCount: 0`（本fixtureは全候補4軸以上のためこの値は0が正しい）を返すこと、
+overallPass=True・privacy smoke 0 violations・data/public byte一致を確認。
+
+### Next
+
+```text
+origin/v13.3-devへ本修正をpush後、workflow_dispatchでfull_batch.ymlを手動実行し、実際の
+JPX/yfinance fetchを経たprescreen_metadata.json + candidates_stocks.jsonでcandidate_funnel_batch
+を走らせ、P-01..P-15の実production evidence（特にP-07 IQR/range、P-10 sector breadth、P-14
+Jaccard）を記録すること（Codex audit finding #1、唯一の残課題）。B2 CLOSED判定はこの実測PASS
+確認後。B3（frontend/store/UI接続、officialDecision/portfolioFit接続）はB2 CLOSED後にのみ着手可。
 ```

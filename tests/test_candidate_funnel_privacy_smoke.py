@@ -167,10 +167,25 @@ def test_malformed_json_file_reported(tmp_path):
     assert any("failed to parse" in v for v in violations)
 
 
-def test_missing_file_reported(tmp_path):
+def test_all_paths_missing_is_not_a_violation(tmp_path):
+    """candidate_funnel_batchがまだ一度もpublishしていない状態
+    （導入直後・join率不足でgate FAILが続いている等）は「不正publish」ではなく
+    「まだpublishされていない」であり、commit直前の最終防衛線としては
+    violationにしない。"""
     p = tmp_path / "does_not_exist.json"
     violations = smoke.check_candidate_funnel_files((str(p),))
-    assert any("failed to read" in v for v in violations)
+    assert violations == []
+
+
+def test_partial_missing_paths_is_a_violation(tmp_path):
+    """data/publicの一方だけ存在する状態は、atomic publish_artifact()の
+    ペア保証が破られていることを意味するため常にviolationとする。"""
+    payload = _valid_payload()
+    present = tmp_path / "a.json"
+    present.write_text(json.dumps(payload), encoding="utf-8")
+    missing = tmp_path / "does_not_exist.json"
+    violations = smoke.check_candidate_funnel_files((str(present), str(missing)))
+    assert any("partial publish detected" in v for v in violations)
 
 
 def test_main_exits_nonzero_on_violation(tmp_path, capsys):

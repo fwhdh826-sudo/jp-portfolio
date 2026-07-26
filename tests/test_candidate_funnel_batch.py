@@ -379,6 +379,64 @@ def test_artifact_data_public_byte_equality(tmp_path):
     assert data_path.read_bytes() == public_path.read_bytes()
 
 
+def test_publish_artifact_rolls_back_data_copy_when_public_replace_fails(tmp_path, monkeypatch):
+    """2fileをペアとして扱う: public側のreplaceが失敗したら、既にreplace済みの
+    data側を書き換え前の内容へrollbackし、data/publicが不整合な状態
+    （一方だけ新artifact）を残さないことを確認する。"""
+    from pathlib import Path
+
+    artifact, _report = _run_calibration_batch(tmp_path)
+    data_path = tmp_path / "out" / "candidate_funnel.json"
+    public_path = tmp_path / "public_out" / "candidate_funnel.json"
+    data_path.parent.mkdir(parents=True)
+    public_path.parent.mkdir(parents=True)
+    data_path.write_text('{"sentinel": "previous-good-data"}', encoding="utf-8")
+    public_path.write_text('{"sentinel": "previous-good-public"}', encoding="utf-8")
+
+    original_replace = Path.replace
+
+    def _flaky_replace(self, target):
+        if self == public_path.with_name(public_path.name + ".tmp"):
+            raise OSError("simulated failure writing public copy")
+        return original_replace(self, target)
+
+    monkeypatch.setattr(Path, "replace", _flaky_replace)
+
+    with pytest.raises(OSError):
+        batch.publish_artifact(artifact, data_path=data_path, public_path=public_path)
+
+    assert data_path.read_text(encoding="utf-8") == '{"sentinel": "previous-good-data"}'
+    assert public_path.read_text(encoding="utf-8") == '{"sentinel": "previous-good-public"}'
+    assert not data_path.with_name(data_path.name + ".tmp").exists()
+    assert not public_path.with_name(public_path.name + ".tmp").exists()
+
+
+def test_publish_artifact_first_publish_rolls_back_to_absent_on_public_failure(tmp_path, monkeypatch):
+    """既存artifactが無い（初回publish）場合、public側replace失敗時は
+    data側もrollbackしファイル自体が存在しない状態へ戻す（half-writtenな
+    data側だけが新規出現する状態を残さない）。"""
+    from pathlib import Path
+
+    artifact, _report = _run_calibration_batch(tmp_path)
+    data_path = tmp_path / "out" / "candidate_funnel.json"
+    public_path = tmp_path / "public_out" / "candidate_funnel.json"
+
+    original_replace = Path.replace
+
+    def _flaky_replace(self, target):
+        if self == public_path.with_name(public_path.name + ".tmp"):
+            raise OSError("simulated failure writing public copy")
+        return original_replace(self, target)
+
+    monkeypatch.setattr(Path, "replace", _flaky_replace)
+
+    with pytest.raises(OSError):
+        batch.publish_artifact(artifact, data_path=data_path, public_path=public_path)
+
+    assert not data_path.exists()
+    assert not public_path.exists()
+
+
 def test_artifact_deterministic_repeat(tmp_path):
     artifact1, _r1 = _run_calibration_batch(tmp_path)
     artifact2, _r2 = _run_calibration_batch(tmp_path)
@@ -616,7 +674,10 @@ def test_p15_rank_drift_vs_previous_recorded(tmp_path):
     assert gate["value"] == 1.0  # 同一artifact同士なのでdrift無し
 
 
-def test_not_generated_status_skips_p02_through_p15():
+def test_not_generated_status_skips_p02_through_p15_and_does_not_publish():
+    """not_generated（seed_fallback等）はP-02以降N/Aだが、overallPass=False
+    としpublishしない（既存の正常なartifactを空のnot_generatedで上書きしない
+    — data/build_candidates_stocks.pyのstale-fallback guardと同じ規律）。"""
     candidates = [_candidate("1")]
     cs_payload = _candidates_stocks_payload(candidates, pipeline_path="seed_fallback")
     index, dup = batch.build_prescreen_index(None)
@@ -628,6 +689,28 @@ def test_not_generated_status_skips_p02_through_p15():
         candidates_stocks_payload=cs_payload, joined_candidates=joined, join_stats=join_stats,
         prescreen_duplicate_codes=dup, engine_result=engine_result, context=context, previous_artifact=None,
     )
-    assert report["overallPass"] is True
+    assert report["overallPass"] is False
     for gate_id in ["P-02", "P-07", "P-10", "P-14"]:
         assert _gate(report, gate_id)["status"] == "N/A"
+
+
+def test_not_generated_run_batch_does_not_publish_and_preserves_existing_artifact(tmp_path):
+    data_path = tmp_path / "candidate_funnel.json"
+    public_path = tmp_path / "candidate_funnel_public.json"
+    data_path.write_text('{"sentinel": "previous-good-artifact"}', encoding="utf-8")
+    public_path.write_text('{"sentinel": "previous-good-artifact"}', encoding="utf-8")
+
+    cs_path = tmp_path / "candidates_stocks.json"
+    _write_json(cs_path, _candidates_stocks_payload([_candidate("1")], pipeline_path="seed_fallback"))
+
+    artifact, report = batch.run_batch(
+        candidates_stocks_path=cs_path,
+        prescreen_metadata_path=tmp_path / "does_not_exist.json",
+        regime_state_path=tmp_path / "does_not_exist_regime.json",
+        previous_artifact_path=data_path,
+        now=NOW,
+    )
+    assert artifact is None
+    assert report["qualityGate"]["overallPass"] is False
+    assert data_path.read_text(encoding="utf-8") == '{"sentinel": "previous-good-artifact"}'
+    assert public_path.read_text(encoding="utf-8") == '{"sentinel": "previous-good-artifact"}'

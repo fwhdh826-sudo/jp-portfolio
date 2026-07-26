@@ -346,13 +346,38 @@ def compute_market_score_stats(engine_result: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def compute_data_confidence_stats(engine_result: dict[str, Any]) -> dict[str, Any]:
+def _usable_axes_count(raw: Any) -> int:
+    """engineの_classify_numeric_fieldと同一規律（bool除外・非有限除外）で
+    per/pbr/roe/dividendYield/sigma252d/mom3mのusableAxes数を再現する
+    （報告専用。scoring authorityはengine内部のまま変更しない）。"""
+    if not isinstance(raw, dict):
+        return 0
+    count = 0
+    for field in ("per", "pbr", "roe", "dividendYield", "sigma252d", "mom3m"):
+        v = raw.get(field)
+        if isinstance(v, bool) or not isinstance(v, (int, float)):
+            continue
+        if math.isfinite(float(v)):
+            count += 1
+    return count
+
+
+def compute_data_confidence_stats(engine_result: dict[str, Any], joined_candidates: list[Any]) -> dict[str, Any]:
+    """P-06: dataConfidence分布 + usableAxes<=4件数（A2-S §22.2「4軸以下の件数」）。
+    usableAxesはengine出力からは正確に復元できない（valuationがper/pbr/dividendYield
+    3件を1つのcombined statusへ畳み込むため）ので、joined_candidates（engineへの
+    入力そのもの、engine_result['candidates']と位置対応）から直接再計算する。"""
+    non_excluded_indices = [i for i, c in enumerate(engine_result.get("candidates", [])) if c.get("tier") != "excluded"]
     vals = sorted(
-        c["dataConfidence"] for c in _non_excluded_candidates(engine_result) if isinstance(c.get("dataConfidence"), (int, float))
+        engine_result["candidates"][i]["dataConfidence"]
+        for i in non_excluded_indices
+        if isinstance(engine_result["candidates"][i].get("dataConfidence"), (int, float))
+    )
+    at_or_below_4_axes = sum(
+        1 for i in non_excluded_indices if i < len(joined_candidates) and _usable_axes_count(joined_candidates[i]) <= 4
     )
     if not vals:
-        return {"count": 0, "min": None, "p25": None, "median": None, "p75": None, "max": None, "belowActionableThresholdCount": None}
-    below = sum(1 for v in vals if v < 2.0 / 3.0)
+        return {"count": 0, "min": None, "p25": None, "median": None, "p75": None, "max": None, "atOrBelow4AxesCount": at_or_below_4_axes}
     return {
         "count": len(vals),
         "min": vals[0],
@@ -360,7 +385,7 @@ def compute_data_confidence_stats(engine_result: dict[str, Any]) -> dict[str, An
         "median": _percentile(vals, 50),
         "p75": _percentile(vals, 75),
         "max": vals[-1],
-        "belowActionableThresholdCount": below,
+        "atOrBelow4AxesCount": at_or_below_4_axes,
     }
 
 
@@ -412,6 +437,17 @@ def _jaccard(a: set[str], b: set[str]) -> float:
     if not union:
         return 1.0
     return len(a & b) / len(union)
+
+
+def compute_degraded_path_actionable(joined_candidates: list[Any], context: dict[str, Any]) -> tuple[int, dict[str, Any]]:
+    """P-13: 実際のjoined候補集団に対し、context.pipelinePathを'cache_fallback'
+    へ強制したmirror runを実行しactionable件数を確認する。P-14の±2%
+    perturbation mirrorと同じ考え方——今回のrunが偶然normalであっても、
+    実データに対する具体的な証拠を毎回得る（vacuous passを避ける）。"""
+    degraded_context = dict(context)
+    degraded_context["pipelinePath"] = "cache_fallback"
+    degraded_result = build_candidate_funnel(joined_candidates, degraded_context)
+    return degraded_result.get("counts", {}).get("actionable", 0), degraded_result
 
 
 def compute_rank_stability(
@@ -468,6 +504,11 @@ def compute_quality_report(
     if status != "generated":
         # not_generated（seed_fallback等）: engine自体がfrozen仕様どおり
         # funnelを生成しない選択をしているため、P-02以降は評価不能(N/A)。
+        # publishはしない（overallPass=False）— data/build_candidates_stocks.py
+        # のstale-fallback guard（新結果がempty相当かつ既存fileがfreshなら
+        # 上書きしない）と同じ規律: 既存の正常なartifactを"not_generated"の
+        # 空artifactで置き換えることは、honestyを損なう（B1-Vの degraded
+        # path failure policy: seed fallback → 前回良好artifactを保持）。
         for gate_id, metric in [
             ("P-02", "prescreen join率"), ("P-03", "unmatched candidate率"),
             ("P-04", "duplicate code率"), ("P-05", "missing prescreen率"),
@@ -480,9 +521,12 @@ def compute_quality_report(
             _gate(gate_id, metric, None, "N/A", "N/A", note=f"status={status}のため評価対象外")
         return {
             "gates": gates,
-            "overallPass": True,
+            "overallPass": False,
             "hardFailIds": [],
-            "notes": ["status != 'generated' のためP-02以降のproduction-distribution gateは対象外"],
+            "notes": [
+                f"status={status}（not_generated）のため新規artifactをpublishしない"
+                "（既存artifactがあればそのまま保持、frozenなdegraded path failure policy）",
+            ],
         }
 
     # P-02: prescreen join率 >= 0.95
@@ -515,7 +559,7 @@ def compute_quality_report(
     _gate("P-05", "missing prescreen率（engine出力ベース）", missing_prescreen_rate, "記録。P-02と整合", "RECORD")
 
     # P-06: dataConfidence分布（記録）
-    dc_stats = compute_data_confidence_stats(engine_result)
+    dc_stats = compute_data_confidence_stats(engine_result, joined_candidates)
     _gate("P-06", "dataConfidence分布", dc_stats, "記録", "RECORD")
 
     # P-07: marketScore分布 IQR>=10.0 かつ range>=40.0
@@ -567,11 +611,19 @@ def compute_quality_report(
     )
 
     # P-13: degraded path actionable == 0
+    # 今回のrunが実際にdegraded pathか（pipelinePath!='normal'/prescreen fallback/
+    # stale）を確認するだけでは、通常運用日には毎回vacuousにPASSしてしまい実データに
+    # 対する証拠にならない。P-14の±2% perturbation mirrorと同じ厳密さで、実際の
+    # joined候補集団に対してpipelinePath='cache_fallback'を強制したmirror runを
+    # 毎回実行し、そのactionable件数が実際に0であることを直接確認する。
     pipeline_path = context.get("pipelinePath")
     is_degraded = pipeline_path != "normal" or bool(context.get("prescreenFallbackUsed")) or bool(obs.get("sourceStale"))
-    p13_pass = (not is_degraded) or actionable_count == 0
+    degraded_mirror_actionable, _degraded_mirror_result = compute_degraded_path_actionable(joined_candidates, context)
+    p13_pass = degraded_mirror_actionable == 0 and ((not is_degraded) or actionable_count == 0)
     _gate(
-        "P-13", "degraded path actionable", actionable_count, "degraded path では == 0",
+        "P-13", "degraded path actionable",
+        {"currentRunActionable": actionable_count, "cacheFallbackMirrorActionable": degraded_mirror_actionable},
+        "現在runがdegradedならactionable==0、かつcache_fallback mirrorでactionable==0",
         "PASS" if p13_pass else "FAIL", note=f"is_degraded={is_degraded}",
     )
 
@@ -666,7 +718,8 @@ def validate_artifact_schema(artifact: dict[str, Any]) -> list[str]:
 
 def atomic_write_text(path: Path, text: str) -> None:
     """同一ディレクトリの一時fileへ書き切ってからatomic replaceする
-    （half-written JSONをpublishしない）。"""
+    （half-written JSONをpublishしない）。単一fileのみのatomicity。
+    data/public 2fileをペアとして扱う場合はpublish_artifact()を使うこと。"""
     path.parent.mkdir(parents=True, exist_ok=True)
     tmp_path = path.with_name(path.name + ".tmp")
     try:
@@ -682,11 +735,43 @@ def publish_artifact(
     data_path: Path = DATA_OUTPUT_PATH,
     public_path: Path = PUBLIC_OUTPUT_PATH,
 ) -> None:
-    """data/public両方へ同一シリアライズ結果をatomic writeする
-    （byte-for-byte一致を保証するため、シリアライズは1回だけ行う）。"""
+    """data/public両方へ同一シリアライズ結果をpairとしてatomic writeする
+    （byte-for-byte一致を保証するため、シリアライズは1回だけ行う）。
+
+    2fileをペアで扱う: 両方のtmp fileを先に書き切ってから両方をreplaceし、
+    2件目のreplaceが失敗した場合は1件目を書き換え前の内容へrollbackする
+    （プロセスがos.replace呼び出しの間でkillされる極端なcaseを除き、
+    data/publicの一方だけが更新された不整合状態を残さない）。"""
     text = json.dumps(artifact, ensure_ascii=False, indent=2)
-    atomic_write_text(data_path, text)
-    atomic_write_text(public_path, text)
+
+    data_path.parent.mkdir(parents=True, exist_ok=True)
+    public_path.parent.mkdir(parents=True, exist_ok=True)
+    data_tmp = data_path.with_name(data_path.name + ".tmp")
+    public_tmp = public_path.with_name(public_path.name + ".tmp")
+
+    try:
+        data_tmp.write_text(text, encoding="utf-8")
+        public_tmp.write_text(text, encoding="utf-8")
+    except BaseException:
+        data_tmp.unlink(missing_ok=True)
+        public_tmp.unlink(missing_ok=True)
+        raise
+
+    data_backup = data_path.read_bytes() if data_path.exists() else None
+    try:
+        data_tmp.replace(data_path)
+    except BaseException:
+        public_tmp.unlink(missing_ok=True)
+        raise
+    try:
+        public_tmp.replace(public_path)
+    except BaseException:
+        public_tmp.unlink(missing_ok=True)
+        if data_backup is None:
+            data_path.unlink(missing_ok=True)
+        else:
+            data_path.write_bytes(data_backup)
+        raise
 
 
 # ---------------------------------------------------------------------------
