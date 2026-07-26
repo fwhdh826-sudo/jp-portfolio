@@ -52217,3 +52217,89 @@ B3-B（想定）: 本ticketで実装したloader/parser/freshness helperをZusta
 storeへ接続し、UI表示（読み取り専用の観測パネル等）を追加する。
 portfolioFit/officialDecision/BUY_NEW接続はさらに後続ticketの責務として
 明確に分離すること。
+
+---
+
+## P5-B005-B3-C: candidate funnel observability UI
+
+P5-B005-B3-Aのloader/runtime parser/freshness helperと、B3-B
+（commit `01e2998`）のZustand格納・`selectCandidateFunnelFreshness`を、
+既存T1個別株一覧へ読み取り専用UIとして接続した。T0・navigation・既存
+`StockCandidateSection`は変更せず、portfolioFit/保有照合/購入判断/
+officialDecision/BUY_NEW/購入金額/注文機能へは接続していない。
+
+### 実装
+
+1. **`src/components/candidates/CandidateFunnelPanel.tsx`（新規）**:
+   `useAppStore`から`candidateFunnel`を読み、状態分類は必ず
+   `selectCandidateFunnelFreshness(state, nowMs)`を使用するcontrollerと、
+   SSR検証可能なpresentational viewを分離。summaryはartifactの
+   `counts.total/screened/deepReview/actionable`をauthorityとして
+   「市場候補→一次選別→詳細精査→重点候補」の順で表示する。
+   初期filterはactionable、deep_review/screenedへnative button tabで
+   切替可能。marketRank昇順（nullは末尾、同順位/null間はartifact順を維持）、
+   初期10件＋10件単位の「さらに表示」、filter変更時10件へreset。
+   fresh/stale/degraded/unavailable/invalid全状態をtext/icon/ARIAで区別し、
+   unavailable/invalidは候補DOMを生成しない。generatedAt/sourceUpdatedAtは
+   Asia/Tokyo固定表示。折りたたみ「データ状態」には一般化したpipeline、
+   joinRate、データ検証結果、hard fail件数、degradation件数のみ表示する。
+2. **`src/components/candidates/CandidateFunnelCard.tsx`（新規）**:
+   code/name/sector/marketScore/marketRank/dataConfidence/prescreenRank/
+   tier/themeStatus/dataStatusを表示。nullは`—`、dataConfidenceのみ表示時に
+   百分率化。score再計算なし。13種risk reasonは日本語mapping、未知codeは
+   「その他のリスク要因」へfail-safe。`themes=[]`かつ
+   `themeStatus=unavailable`は「テーマ評価未接続」。cardは`article`で
+   click handler・store access・売買buttonを持たない。
+3. **`src/components/candidates/CandidateFunnelPanel.css`（新規）**:
+   既存CSS design tokenのみ使用。mobile-first 1列、`minmax(0, 1fr)`/
+   `min-width:0`/`overflow-wrap:anywhere`、44px tap target、focus-visible、
+   600px以上でsummary/filter/metricのみ複数column化。320/375/430px固定幅・
+   horizontal scrollerなし。
+4. **`src/components/tabs/T1_Decision.tsx`**:
+   既存`StockCandidateSection`直後へ`CandidateFunnelPanel`を追加。
+   保有銘柄一覧・詳細遷移・既存候補UIはそのまま維持。
+
+常時表示文言:
+
+- 「市場公開情報による一次評価です。保有状況・資金余力・購入判断は未反映です。」
+- 「重点候補は購入を推奨するものではなく、次段階の検討候補です。」
+- 「売買利用不可（not_for_trading）— 現在の売買判断や注文には使用しないでください。」
+
+### Tests
+
+`src/components/candidates/CandidateFunnelPanel.test.tsx`を新規追加（38 tests）。
+小さい合成fixtureを使い、productionの200/148/40/12や具体銘柄をsnapshot
+固定せず、summary authority、初期actionable、3 filter、stable rank、
+10件pagination/reset、0件、全freshness/load状態、timestamp、null/theme/
+risk mapping、unknown fallback、常時注記、売買/analysis隔離、native
+keyboard/ARIA、44px/focus-visible、mobile CSS、長い日本語名、T1既存機能維持、
+T0非接続を検証した。
+
+targeted matrix（component + T1 + B3-A/B parser/loader/freshness/store/selector）:
+UTC/Asia/Tokyoとも7 files / 124 tests passed、skipped 0。
+
+### Mutation確認（12/12）
+
+以下を1件ずつ一時適用し、全件で対応test REDを確認後にexact inverse patchで
+復元した: 初期filterをdeep_review化／unavailableで旧artifact表示／invalidで
+旧artifact表示／marketRank sort逆順化／not-for-trading注記削除／actionableを
+「購入推奨」化／theme unavailableを「テーマなし」化／null metricを0化／
+pagination slice削除／filter reset削除／freshness selector迂回／card clickで
+officialDecision mutation追加。復元後、Panel/Card/T1 production 3ファイルの
+SHA-256がmutation前と一致し、targeted UTC/JSTを再度全pass確認した。
+
+### Isolation / residual
+
+`buildPortfolioAnalysisFingerprint`、`runFullAnalysis`、`computeAnalysis`、
+`buildCommitteeDecision`、store/selectors、runtime parser/freshness、types、
+data/public/workflow/dependencyは変更なし。component内fetch/loader/
+localStorage/refresh/polling/URL変更なし。
+
+実ブラウザの320/375px確認を試みたが、利用可能なbrowser sessionが0件だった
+ため未実施。SSR/CSS contractによるmobile/accessibility検証はpass。
+
+### Status / Next
+
+P5-B005-B3-C: CLOSED（全validation・commit完了後、push確認待ち）。
+次はP5-B005-B3-C-V（独立UI受入監査）を推奨。portfolioFit/
+officialDecision/BUY_NEW接続は本ticketから引き続き明確に隔離する。

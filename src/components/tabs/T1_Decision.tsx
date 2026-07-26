@@ -21,6 +21,7 @@ import { deriveDisplayDecision, type DisplayDecision } from '../../domain/analys
 import { isSellLocked, getSellableDate } from '../../domain/constraints/stockLock'
 import { TIER_A_T1_STOP_LOSS_PCT } from '../../domain/constraints/tierAT1'
 import { computeHoldingsStale } from './T0_Home'
+import { CandidateFunnelPanel } from '../candidates/CandidateFunnelPanel'
 
 // ── ユーティリティ ────────────────────────────────────────────
 
@@ -771,6 +772,9 @@ function StockList({
 
       {/* ── P5-B003: 新規個別株候補（candidates_stocks.json由来。詳細評価） ── */}
       <StockCandidateSection />
+
+      {/* ── P5-B005-B3-C: 市場全体candidate funnel（observability only） ── */}
+      <CandidateFunnelPanel />
 
     </div>
   )
