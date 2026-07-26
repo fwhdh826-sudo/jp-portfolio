@@ -1,5 +1,4 @@
 import { describe, expect, it, vi } from 'vitest'
-import { isValidElement, type ReactNode } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 // @ts-expect-error -- repositoryは@types/node非依存だがVitestのNode runtimeでのみ使用する
 import { readFileSync } from 'node:fs'
@@ -126,35 +125,184 @@ function escapeRegExp(value: string): string {
   return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 }
 
-function collectCandidateCardKeys(node: ReactNode): Array<string | null> {
-  const keys: Array<string | null> = []
+class CandidateFunnelTestNode {
+  readonly attributes: Record<string, string> = {}
+  readonly childNodes: CandidateFunnelTestNode[] = []
+  readonly namespaceURI: string | null
+  readonly style: Record<string, string> = {}
+  readonly tagName: string | undefined
+  ownerDocument: CandidateFunnelTestDocument
+  parentNode: CandidateFunnelTestNode | null = null
+  nodeValue: string | null = null
 
-  const visit = (current: ReactNode) => {
-    if (Array.isArray(current)) {
-      current.forEach(visit)
-      return
-    }
-    if (!isValidElement<{ children?: ReactNode }>(current)) return
-    if (current.type === CandidateFunnelCard) keys.push(current.key)
-    visit(current.props.children)
+  constructor(
+    readonly nodeType: number,
+    readonly nodeName: string,
+    ownerDocument: CandidateFunnelTestDocument,
+  ) {
+    this.ownerDocument = ownerDocument
+    this.tagName = nodeType === 1 ? nodeName : undefined
+    this.namespaceURI = nodeType === 1 ? 'http://www.w3.org/1999/xhtml' : null
   }
 
-  visit(node)
-  return keys
+  appendChild(child: CandidateFunnelTestNode) {
+    child.parentNode = this
+    this.childNodes.push(child)
+    return child
+  }
+
+  insertBefore(child: CandidateFunnelTestNode, before: CandidateFunnelTestNode) {
+    const index = this.childNodes.indexOf(before)
+    if (index < 0) return this.appendChild(child)
+    child.parentNode = this
+    this.childNodes.splice(index, 0, child)
+    return child
+  }
+
+  removeChild(child: CandidateFunnelTestNode) {
+    const index = this.childNodes.indexOf(child)
+    if (index >= 0) this.childNodes.splice(index, 1)
+    child.parentNode = null
+    return child
+  }
+
+  addEventListener() {}
+
+  removeEventListener() {}
+
+  setAttribute(name: string, value: unknown) {
+    this.attributes[name] = String(value)
+  }
+
+  removeAttribute(name: string) {
+    delete this.attributes[name]
+  }
+
+  set textContent(value: string) {
+    this.childNodes.length = 0
+    if (value !== '') this.appendChild(this.ownerDocument.createTextNode(value))
+  }
+
+  get textContent(): string {
+    return this.childNodes
+      .map(child => child.nodeValue ?? child.textContent)
+      .join('')
+  }
+
+  get firstChild() {
+    return this.childNodes[0] ?? null
+  }
+
+  get lastChild() {
+    return this.childNodes[this.childNodes.length - 1] ?? null
+  }
 }
 
-function reportReactListKeyWarnings(keys: Array<string | null>) {
-  const seen = new Set<string>()
-  for (const key of keys) {
-    if (key === null) {
-      console.error('Each child in a list should have a unique "key" prop.')
-      continue
-    }
-    if (seen.has(key)) {
-      console.error('Encountered two children with the same key, `%s`.', key)
-    }
-    seen.add(key)
+class CandidateFunnelTestDocument extends CandidateFunnelTestNode {
+  readonly activeElement: CandidateFunnelTestNode
+  readonly body: CandidateFunnelTestNode
+  readonly documentElement: CandidateFunnelTestNode
+  defaultView: unknown = null
+
+  constructor() {
+    // The document temporarily owns itself after super returns.
+    super(9, '#document', null as unknown as CandidateFunnelTestDocument)
+    this.ownerDocument = this
+    this.documentElement = new CandidateFunnelTestNode(1, 'HTML', this)
+    this.body = new CandidateFunnelTestNode(1, 'BODY', this)
+    this.activeElement = this.body
   }
+
+  createElement(name: string) {
+    return new CandidateFunnelTestNode(1, name.toUpperCase(), this)
+  }
+
+  createElementNS(namespaceURI: string, name: string) {
+    const element = this.createElement(name)
+    Object.defineProperty(element, 'namespaceURI', { value: namespaceURI })
+    return element
+  }
+
+  createTextNode(value: string) {
+    const node = new CandidateFunnelTestNode(3, '#text', this)
+    node.nodeValue = value
+    return node
+  }
+
+  createComment(value: string) {
+    const node = new CandidateFunnelTestNode(8, '#comment', this)
+    node.nodeValue = value
+    return node
+  }
+
+  getElementById() {
+    return null
+  }
+}
+
+async function captureReactDomConsoleErrors(
+  data: CandidateFunnelArtifact,
+): Promise<unknown[][]> {
+  const testDocument = new CandidateFunnelTestDocument()
+  class TestHtmlIFrameElement {}
+  const testWindow = {
+    document: testDocument,
+    HTMLIFrameElement: TestHtmlIFrameElement,
+    addEventListener() {},
+    removeEventListener() {},
+    getSelection() {
+      return null
+    },
+  }
+  testDocument.defaultView = testWindow
+
+  const globalDescriptors = new Map(
+    ['window', 'document', 'navigator'].map(name => [
+      name,
+      Object.getOwnPropertyDescriptor(globalThis, name),
+    ]),
+  )
+  Object.defineProperties(globalThis, {
+    window: { configurable: true, value: testWindow },
+    document: { configurable: true, value: testDocument },
+    navigator: { configurable: true, value: { userAgent: 'vitest' } },
+  })
+
+  let root: { render(node: React.ReactNode): void; unmount(): void } | null = null
+  let consoleErrors: unknown[][] = []
+  const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+  try {
+    const [{ createRoot }, { flushSync }] = await Promise.all([
+      import('react-dom/client'),
+      import('react-dom'),
+    ])
+    const container = testDocument.createElement('div')
+    root = createRoot(container as unknown as Element)
+    flushSync(() => {
+      root?.render(
+        <CandidateFunnelPanelView
+          artifact={data}
+          freshness="fresh"
+          viewState={CANDIDATE_FUNNEL_INITIAL_VIEW_STATE}
+          onAction={() => {}}
+        />,
+      )
+    })
+    consoleErrors = consoleErrorSpy.mock.calls.map(call => [...call])
+    flushSync(() => root?.unmount())
+    root = null
+  } finally {
+    root?.unmount()
+    consoleErrorSpy.mockRestore()
+    for (const [name, descriptor] of globalDescriptors) {
+      if (descriptor === undefined) {
+        Reflect.deleteProperty(globalThis, name)
+      } else {
+        Object.defineProperty(globalThis, name, descriptor)
+      }
+    }
+  }
+  return consoleErrors
 }
 
 describe('P5-B005-B3-C CandidateFunnelPanel summary and hierarchy', () => {
@@ -276,30 +424,13 @@ describe('P5-B005-B3-C CandidateFunnelPanel summary and hierarchy', () => {
     expect(panelSource.match(/visibleCandidates\.map/g)).toHaveLength(1)
   })
 
-  it('renders same-code records with unique keys, headings, and self-owned ARIA labels', () => {
+  it('renders same-code records with unique keys, headings, and self-owned ARIA labels', async () => {
     const parsed = parseCandidateFunnelArtifact(duplicateCodeArtifact())
     expect(parsed.ok).toBe(true)
     if (!parsed.ok) throw new Error(`duplicate-code fixture rejected: ${parsed.code}`)
 
-    let html = ''
-    let consoleErrors: unknown[][] = []
-    const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
-    try {
-      const renderedTree = CandidateFunnelPanelView({
-        artifact: parsed.data,
-        freshness: 'fresh',
-        viewState: CANDIDATE_FUNNEL_INITIAL_VIEW_STATE,
-        onAction: () => {},
-      })
-      const cardKeys = collectCandidateCardKeys(renderedTree)
-      expect(cardKeys).toHaveLength(2)
-      reportReactListKeyWarnings(cardKeys)
-      html = renderPanel(parsed.data, 'fresh')
-      consoleErrors = consoleErrorSpy.mock.calls.map(call => [...call])
-    } finally {
-      consoleErrorSpy.mockRestore()
-    }
-
+    const consoleErrors = await captureReactDomConsoleErrors(parsed.data)
+    const html = renderPanel(parsed.data, 'fresh')
     expect(consoleErrors).toEqual([])
     expect(countCandidateCards(html)).toBe(2)
     expect(html.match(/candidate-funnel-card__code">7777/g)).toHaveLength(2)

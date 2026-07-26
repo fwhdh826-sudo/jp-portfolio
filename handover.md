@@ -52337,14 +52337,16 @@ duplicate codeでkey/idが重複し、`aria-labelledby`参照が曖昧になる�
 total/actionableとも2でcandidate配列と整合し、
 `parseCandidateFunnelArtifact()`が受理することを先に確認する。
 
-SSR renderとhook-free Panel viewのReact element treeを併用し、以下を確認:
+SSR renderとdependency追加不要のminimal DOM上で動くReact 18
+`createRoot` reconcilerを併用し、以下を確認:
 
 - card/article 2件、heading 2件、両name/sectorが個別に存在
 - heading idは非空かつ相互に異なる
 - 各articleの`aria-labelledby`が自身のheading idと一致
 - 各参照先idはrendered markup内にexact 1件
-- 実際のPanel render pathから得たcard keyを検査し、
-  `console.error`はunrelated warningを含め0件
+- 実際のPanelをReact DOM reconcilerでrenderし、
+  React自身のduplicate key warningを`console.error`でspy。
+  unrelated warningを含め0件
 
 ### Mutation
 
