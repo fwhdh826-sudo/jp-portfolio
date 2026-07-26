@@ -52096,3 +52096,124 @@ candidates_stocks_privacy_smoke/jpx_universe_provider/whole_market_universe_prov
 471 passed（同両TZ）。`TZ=UTC npm run test:unit` / `TZ=Asia/Tokyo npm run test:unit`
 とも2466 passed。`npx tsc --noEmit` 0 errors。`npm run build` success。
 `git diff --check` clean。
+
+## P5-B005-B3-A: production candidate_funnel artifact frontend loader契約
+
+B2でproduction publish済みとなった`data/public/data/candidate_funnel.json`
+（production workflow run `30192255221` success、SHA-256
+`afae77a42bf1dcb6bd49c2ff2c5511ec0d1e5288f307acc65316785e421938db`、両者
+byte-identical）を、frontendから安全に読み込むloader/runtime parser/freshness
+helperを実装した。今回のscopeは「取得・検証・結果分類」のみ——Zustand格納、
+UI表示、portfolioFit、officialDecision、BUY_NEW、購入金額計算への接続は
+一切行っていない（次ticketの責務）。
+
+### 実装
+
+1. **`src/types/candidateFunnelArtifact.ts`（新規）**: B1 frozen scoring契約
+   （`src/types/candidateFunnel.ts`）を書き換えず、production artifact固有の
+   `_meta`（`kind`/`not_for_trading`/`generatedAt`/`asOf`/`sourceUpdatedAt`/
+   `pipelinePath`/`regimeRequested`/`join`/`qualityGate`）を表現する型を追加。
+   quality gate entry の `value` はmetricごとに形が異なる（number/object/null）
+   ため `any` へ逃げず再帰的な `JsonValue` 型で表現。P-01〜P-15の必須gate ID
+   一覧・gate status enum（`PASS`/`FAIL`/`RECORD`/`N/A`、
+   `data/candidate_funnel_batch.py`の`_gate()`実装から確認済み）もここで定義。
+   portfolio/holdings/cash/account/headroom/amount/action/officialDecision/
+   BUY_NEW/WATCH/BLOCKED/portfolioFitは一切含めない。
+2. **`src/services/candidateFunnelParser.ts`（新規）**: `unknown`から
+   `CandidateFunnelArtifact`を検証する独立runtime parser。外部validation
+   依存なし。`parseCandidateFunnelArtifact()`はthrowせず常に
+   `{ok:true,data}` / `{ok:false,code}`を返す（トップレベル`try/catch`で
+   getter-throwing object・Proxy・循環参照等の例外を一括吸収）。検証項目:
+   schemaVersion/funnelVersion/scoreVersion exact一致、not_for_trading===true
+   （top-level・`_meta`両方）、status/degradationReasons enum、counts全非負
+   整数＋候補tier実数との整合（`candidates.length===counts.total`かつ
+   tier別tallyがcounts各field と一致）、candidate各フィールド（score/rank
+   のfinite-or-null規律含む）、scoreBreakdown exact 10 component ID（欠落・
+   重複・未知IDを全てreject）、`_meta`のtimestamp妥当性（`Date.parse`）・
+   pipelinePath/regimeRequested/join enum・quality gate構造（P-01〜P-15
+   重複なく全存在、PRESCREEN_DUPLICATE等の補助gateは許容）・
+   `overallPass===true`・`hardFailIds===[]`（P-15 value=nullは初回baseline
+   無しとしてvalid、rejectしない）。禁止key
+   （portfolio/portfolioFit/holdings/cash/account/headroom/amount/sizing/
+   action/officialDecision/BUY_NEW/WATCH/BLOCKED）はpayload全階層
+   （top-level/candidate内部/`_meta`内部）を循環参照ガード付きで再帰的に
+   scanしてreject。failure結果へraw payload・例外messageを一切含めない。
+3. **`src/services/loadStaticData.ts`**: `loadCandidateFunnel()`を追加
+   （`loadCandidatesStocks`の単純castパターンは踏襲しない——candidate_funnel
+   はprivacy boundaryとquality gateを含むため独立parserを必ず経由する）。
+   fetch→`!response.ok`→`unavailable`、`response.json()`失敗→`invalid`、
+   `parseCandidateFunnelArtifact()`失敗→`invalid`、成功→`loaded`の3値
+   taxonomy（`CandidateFunnelLoadResult{status,data}`）。DEFAULTの
+   ダミー候補データは作らず、failure時は常に`data:null`。BASE_URL/
+   cache-bust/`no-store`は既存`buildJsonUrl`規律を再利用。Zustand/UI/
+   officialDecisionへの副作用なし。
+4. **`src/services/candidateFunnelFreshness.ts`（新規）**: 表示・観測専用の
+   pure helper `evaluateCandidateFunnelFreshness(result, nowMs, threshold?)`。
+   `Date.now()`を内部固定使用せず`nowMs`を注入可能。`unavailable`/`invalid`
+   （loader statusおよび`status!=='generated'`の防御的再チェック）/
+   `degraded`（`pipelinePath`が`cache_fallback`または`seed_fallback`）/
+   `stale`（`selectionObservability.sourceStale`または`generatedAt`が
+   閾値超過、デフォルト48h＝`candidates_stocks.json`のDEFAULT
+   `staleThresholdHours`と統一）/`fresh`を判定。BUY_NEW/officialDecisionは
+   生成しない。
+
+### Tests（新規3ファイル、56 tests）
+
+`src/services/candidateFunnelParser.test.ts`（37件）: 実production
+artifact（`data/candidate_funnel.json`・`public/data/candidate_funnel.json`
+両方をTS `resolveJsonModule`経由でimportしてparse成功確認、data/public
+構造一致、candidate/counts/tier整合、12 actionable/40 deepReviewの固定値
+snapshotには依存しない）+ version/privacy/quality-gate/candidate/
+scoreBreakdown/forbidden-keyの各mutation reject + malformed input
+（null/array/primitive/undefined/getter-throwing object/throwing Proxy/
+NaN・Infinity/循環参照）でthrowしないこと + failure結果への payload
+非leak。`src/services/loadCandidateFunnel.test.ts`（10件）: 404/network
+error/invalid JSON/schema不一致/quality gate不正の3-way taxonomy振り分け、
+dummy候補への fallback無し、cache-bust URL、`no-store`。
+`src/services/candidateFunnelFreshness.test.ts`（9件）: fresh/stale/
+degraded/invalid/unavailableの全5状態、`nowMs`注入、seed_fallback/
+not_generatedをactionable利用可能と判定しないこと。
+
+fixture共有用に`src/services/candidateFunnelArtifact.fixtures.ts`
+（test-support、非test）を追加。
+
+### Mutation確認（12項目、一時適用→RED確認→完全復元）
+
+schemaVersion検査削除／not_for_trading検査削除／overallPass検査削除／
+hardFailIds検査削除／P-14 gate欠落許容／duplicate gate ID許容／
+forbidden `portfolioFit`許容（top-level・candidate内部・`_meta`内部・
+BUY_NEW/WATCH/BLOCKEDの4テストとも）／scoreBreakdown component重複許容
+（inline重複チェックと最終size一致チェックの両方を無効化する必要が
+あった——size一致チェックのみでは重複を検出できてしまうため単独では
+不十分）／counts整合検査削除／freshness helperでseed_fallbackをusable
+（degraded以外）扱い／freshness helperでstatus=not_generatedをusable
+扱い／loaderでparserを迂回しcastのみにする（quality-gate-failing/
+schema-mismatchedの2 testがREDになることを確認）——全12項目でRED確認後、
+`cp`によるバックアップから完全復元（`diff`でno-opを確認）。
+
+### Validation
+
+`npm run test:unit`（TZ未指定/`TZ=UTC`/`TZ=Asia/Tokyo`の3回とも）
+86 files / 2522 tests passed。`npx tsc --noEmit` 0 errors。`npm run build`
+success。`git diff --check` clean。禁止file diff 0（`git status --short`で
+変更ファイルは`src/services/loadStaticData.ts`（既存export追加のみ）＋
+新規5ファイル（型1・parser1・freshness1・fixture1・handover.md）＋
+新規test 3ファイルのみ）。`data/candidate_funnel.json` /
+`public/data/candidate_funnel.json` / `data/candidate_funnel_engine.py` /
+`data/candidate_funnel_batch.py` のSHA-256は実装前後で完全不変
+（記録済み4値と一致）。既存Python candidate_funnel test群
+（`test_candidate_funnel_engine.py`/`test_candidate_funnel_batch.py`/
+`test_candidate_funnel_workflow.py`/`test_candidate_funnel_privacy_smoke.py`）
+311 passed（production非変更確認、無変更）。
+
+### 残課題
+
+なし（本ticketのscope内）。workflowは今回実行していない（B2で取得済みの
+production evidenceを再利用する方針のため、実行不要と判断）。
+
+### 次ticket
+
+B3-B（想定）: 本ticketで実装したloader/parser/freshness helperをZustand
+storeへ接続し、UI表示（読み取り専用の観測パネル等）を追加する。
+portfolioFit/officialDecision/BUY_NEW接続はさらに後続ticketの責務として
+明確に分離すること。

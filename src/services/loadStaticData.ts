@@ -17,6 +17,8 @@ import type {
   CandidatesStocksData,
 } from '../types'
 import { STATIC_MARKET } from '../constants/market'
+import type { CandidateFunnelArtifact } from '../types/candidateFunnelArtifact'
+import { parseCandidateFunnelArtifact } from './candidateFunnelParser'
 
 const BASE = (import.meta as { env?: { BASE_URL?: string } }).env?.BASE_URL ?? '/'
 interface LoadOptions {
@@ -266,6 +268,58 @@ export async function loadCandidatesStocks(
   } catch {
     return { data: DEFAULT_CANDIDATES_STOCKS_DATA, source: 'default' }
   }
+}
+
+// ═══════════════════════════════════════════════════════════
+// P5-B005-B3-A: candidate_funnel.json production artifact loader。
+//
+// candidates_stocks.jsonのようなshallow schema版cast(loadCandidatesStocks)
+// とは異なり、candidate_funnelはprivacy boundary（not_for_trading）と
+// quality gate（P-01〜P-15/overallPass/hardFailIds）を含むため、独立した
+// runtime parser（candidateFunnelParser.ts）を必ず経由する。TypeScriptの
+// castだけでfetch結果を信頼しない。
+//
+// invalid時にdummy/actionable候補へfail-softしない（DEFAULT無し）。
+// loaderはZustand/UI/officialDecisionへ一切の副作用を持たない。
+// ═══════════════════════════════════════════════════════════
+
+export type CandidateFunnelLoadStatus = 'loaded' | 'unavailable' | 'invalid'
+
+export interface CandidateFunnelLoadResult {
+  status: CandidateFunnelLoadStatus
+  data: CandidateFunnelArtifact | null
+}
+
+export async function loadCandidateFunnel(options: LoadOptions = {}): Promise<CandidateFunnelLoadResult> {
+  let response: Response
+  try {
+    response = await fetch(buildJsonUrl('data/candidate_funnel.json', options), {
+      cache: 'no-store',
+      headers: {
+        pragma: 'no-cache',
+        'cache-control': 'no-cache',
+      },
+    })
+  } catch {
+    return { status: 'unavailable', data: null }
+  }
+
+  if (!response.ok) {
+    return { status: 'unavailable', data: null }
+  }
+
+  let raw: unknown
+  try {
+    raw = await response.json()
+  } catch {
+    return { status: 'invalid', data: null }
+  }
+
+  const parsed = parseCandidateFunnelArtifact(raw)
+  if (!parsed.ok) {
+    return { status: 'invalid', data: null }
+  }
+  return { status: 'loaded', data: parsed.data }
 }
 
 // ═══════════════════════════════════════════════════════════
