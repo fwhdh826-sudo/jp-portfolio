@@ -167,14 +167,36 @@ def test_malformed_json_file_reported(tmp_path):
     assert any("failed to parse" in v for v in violations)
 
 
-def test_all_paths_missing_is_not_a_violation(tmp_path):
-    """candidate_funnel_batchがまだ一度もpublishしていない状態
-    （導入直後・join率不足でgate FAILが続いている等）は「不正publish」ではなく
-    「まだpublishされていない」であり、commit直前の最終防衛線としては
-    violationにしない。"""
+def test_all_paths_missing_is_a_violation_by_default(tmp_path):
+    """P5-B005-B2-R1: defaultはfail-closed。data/public両方不在は
+    「今回のrunでartifactがpublishされなかった」ことを意味し、これは
+    workflow上のcommit直前の最終防衛線としてはFAILにしなければならない
+    （batch側のhard gate FAILが `|| true` で握り潰され、artifact不在のまま
+    このsmokeがexit 0を返してcommit stepへ到達していた旧fail-open経路の
+    再発防止）。"""
     p = tmp_path / "does_not_exist.json"
     violations = smoke.check_candidate_funnel_files((str(p),))
+    assert any("all candidate_funnel.json paths missing" in v for v in violations)
+
+
+def test_all_paths_missing_allowed_with_explicit_flag(tmp_path):
+    """--allow-missing相当（allow_missing=True）はローカルの導入前検査専用の
+    明示的opt-inであり、missing-bothをviolationにしない。"""
+    p = tmp_path / "does_not_exist.json"
+    violations = smoke.check_candidate_funnel_files((str(p),), allow_missing=True)
     assert violations == []
+
+
+def test_main_exits_nonzero_on_missing_both_without_flag(tmp_path):
+    p = tmp_path / "does_not_exist.json"
+    rc = smoke.main(["--paths", str(p)])
+    assert rc == 1
+
+
+def test_main_exits_zero_on_missing_both_with_allow_missing_flag(tmp_path):
+    p = tmp_path / "does_not_exist.json"
+    rc = smoke.main(["--paths", str(p), "--allow-missing"])
+    assert rc == 0
 
 
 def test_partial_missing_paths_is_a_violation(tmp_path):
@@ -186,6 +208,49 @@ def test_partial_missing_paths_is_a_violation(tmp_path):
     missing = tmp_path / "does_not_exist.json"
     violations = smoke.check_candidate_funnel_files((str(present), str(missing)))
     assert any("partial publish detected" in v for v in violations)
+
+
+def test_partial_missing_paths_is_a_violation_even_with_allow_missing(tmp_path):
+    """--allow-missingはmissing-bothのみのopt-outであり、partial pair(片方だけ
+    存在)違反はallow_missing=Trueでも常にviolationのままとする。"""
+    payload = _valid_payload()
+    present = tmp_path / "a.json"
+    present.write_text(json.dumps(payload), encoding="utf-8")
+    missing = tmp_path / "does_not_exist.json"
+    violations = smoke.check_candidate_funnel_files((str(present), str(missing)), allow_missing=True)
+    assert any("partial publish detected" in v for v in violations)
+
+
+def test_invalid_generated_at_detected():
+    payload = _valid_payload()
+    payload["_meta"]["generatedAt"] = "not-a-timestamp"
+    violations = smoke.check_candidate_funnel_payload(payload, "test")
+    assert any("_meta.generatedAt is not a valid timestamp" in v for v in violations)
+
+
+def test_quality_gate_overall_pass_false_detected():
+    payload = _valid_payload()
+    payload["_meta"]["qualityGate"]["overallPass"] = False
+    violations = smoke.check_candidate_funnel_payload(payload, "test")
+    assert any("_meta.qualityGate.overallPass is not True" in v for v in violations)
+
+
+def test_quality_gate_nonempty_hard_fail_ids_detected():
+    payload = _valid_payload()
+    payload["_meta"]["qualityGate"]["hardFailIds"] = ["P-02"]
+    violations = smoke.check_candidate_funnel_payload(payload, "test")
+    assert any("_meta.qualityGate.hardFailIds is not empty" in v for v in violations)
+
+
+def test_quality_gate_missing_p_ids_detected():
+    """P-01..P-15のいずれかがqualityGate.gatesに存在しない場合、今回のrunで
+    そのgateが実際に評価されたことを保証できないためviolationとする。"""
+    payload = _valid_payload()
+    payload["_meta"]["qualityGate"]["gates"] = [
+        g for g in payload["_meta"]["qualityGate"]["gates"] if g.get("id") != "P-14"
+    ]
+    violations = smoke.check_candidate_funnel_payload(payload, "test")
+    assert any("missing required ids" in v and "P-14" in v for v in violations)
 
 
 def test_main_exits_nonzero_on_violation(tmp_path, capsys):

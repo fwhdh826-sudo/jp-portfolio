@@ -1,4 +1,4 @@
-"""P5-B005-B2: .github/workflows/full_batch.yml への candidate funnel batch
+"""P5-B005-B2-R1: .github/workflows/full_batch.yml への candidate funnel batch
 stage統合の回帰テスト。
 
 tests/test_full_batch_workflow.pyと同じ規律（yml本文へのtext-basedアサーション、
@@ -8,7 +8,10 @@ tests/test_full_batch_workflow.pyと同じ規律（yml本文へのtext-basedア�
   3. 生成・smokeともにregime_state生成後、Commit and pushより前に位置する
   4. `git add data/ public/data/` は既存のまま（新規artifactも自動的に対象になる）
   5. 既存のSAFE_MODE/TierA stepの順序を壊さない
-  6. failure時にjobを止めない（`|| true`、他の独立したdata更新を継続する）
+  6. batch stepはblocking（`|| true`も`continue-on-error`も無い）。
+     P-02/P-04/P-07/P-08/P-10/P-12/P-13/P-14はhard gateであり、失敗runは
+     job全体を停止しcommit/pushへ進んではならない（旧: `|| true`で
+     job全体を継続していたfail-open経路を反転する — P5-B005-B2-R1）。
   7. 新規dependency追加が無い（pip install行に変更が無い）
 """
 from pathlib import Path
@@ -21,6 +24,17 @@ def _update_data_section() -> str:
     return _TEXT.split("  update-data:")[1].split("  routines-stub:")[0]
 
 
+def _funnel_batch_step_block() -> str:
+    """「Build candidate_funnel.json」stepの見出しから次のstep見出し
+    （次の`- name:`行）までのYAML断片を取り出す（`continue-on-error`等の
+    step-level属性がこのstep自身に付いているかを確認するため）。"""
+    section = _update_data_section()
+    start = section.index("Build candidate_funnel.json (prescreen join + P-01..P-15 quality gate)")
+    rest = section[start:]
+    next_step_marker = rest.index("\n      - name:", 1)
+    return rest[:next_step_marker]
+
+
 def test_candidate_funnel_batch_step_present():
     assert "python3 -m data.candidate_funnel_batch" in _TEXT
 
@@ -29,12 +43,19 @@ def test_candidate_funnel_privacy_smoke_step_present():
     assert "python3 -m data.candidate_funnel_privacy_smoke" in _TEXT
 
 
-def test_candidate_funnel_batch_step_is_non_blocking():
-    """batch step自体は他の独立したdata更新stepを止めないよう、既存規律どおり
-    `|| true` を使う（gate FAILは想定内の正常系であり、job全体を止める理由には
-    しない）。"""
+def test_candidate_funnel_batch_step_is_blocking():
+    """batch stepは`|| true`を持たない — quality gate FAIL/schema FAIL/
+    input不正/prescreen metadata不在・不整合時のexit 1がjob failureとして
+    GitHub Actionsへ伝播し、直後のprivacy smoke・commit/push stepへ
+    到達させない（P5-B005-B2-R1: 旧fail-open経路の再発防止）。"""
     section = _update_data_section()
-    assert "python3 -m data.candidate_funnel_batch || true" in section
+    assert "python3 -m data.candidate_funnel_batch\n" in section
+    assert "python3 -m data.candidate_funnel_batch || true" not in section
+
+
+def test_candidate_funnel_batch_step_has_no_continue_on_error():
+    block = _funnel_batch_step_block()
+    assert "continue-on-error" not in block
 
 
 def test_candidate_funnel_privacy_smoke_step_is_blocking():

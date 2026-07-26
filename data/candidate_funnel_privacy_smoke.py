@@ -16,6 +16,7 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+from datetime import datetime
 from pathlib import Path
 from typing import Any
 
@@ -57,6 +58,11 @@ META_ALLOWED_KEYS = {
     "pipelinePath", "regimeRequested", "join", "qualityGate",
 }
 
+# P5-B005-B2-R1: current-run provenance検査対象のquality gate id。
+# candidate_funnel_batch.pyのcompute_quality_report()がP-01..P-15を毎回
+# 生成する（frozen — batch側の定義を唯一のauthorityとして参照する）。
+QUALITY_GATE_REQUIRED_IDS = frozenset(f"P-{i:02d}" for i in range(1, 16))
+
 # P5-B005-B2 §7/§11: recursiveに（トップレベルのみでなく全階層へ）exact-key検査
 # する禁止field。portfolio/holdings/cash/headroom/amount/officialDecision等、
 # B2が絶対に出力してはならない値。substringではなくkey名の完全一致で検査する
@@ -68,6 +74,16 @@ FORBIDDEN_KEYS = {
     "account", "accountType", "broker", "nisa", "csv", "blockedReasons",
     "normalizedPrescreenScore", "eval", "pnlPct", "purchase_date", "acquiredAt",
 }
+
+
+def _is_valid_iso_timestamp(value: str) -> bool:
+    """ISO8601形式（Python 3.11+ datetime.fromisoformatが受理する形式。
+    'Z' suffixも許容する）としてparse可能かどうかを返す。"""
+    try:
+        datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except ValueError:
+        return False
+    return True
 
 
 def _recursive_forbidden_keys(node: Any) -> set[str]:
@@ -128,6 +144,31 @@ def check_candidate_funnel_payload(payload: Any, label: str) -> list[str]:
         if meta.get("kind") != "candidate_funnel":
             violations.append(f"{label}: _meta.kind is not 'candidate_funnel'")
 
+        # P5-B005-B2-R1 current-run provenance: workflow greenが「今回のrunで
+        # 生成されたartifact」を意味することの最終防衛線。batch側は
+        # overallPass=True かつ hardFailIds=[] の場合のみpublishするが
+        # （run_batch()のfail-closed契約）、このsmokeはcommit直前の独立した
+        # 検査として同じ契約を再確認する（batch側の契約が将来壊れても
+        # smokeが単独で検出できるようにする）。
+        generated_at = meta.get("generatedAt")
+        if not isinstance(generated_at, str) or not _is_valid_iso_timestamp(generated_at):
+            violations.append(f"{label}: _meta.generatedAt is not a valid timestamp (got {generated_at!r})")
+
+        quality_gate = meta.get("qualityGate")
+        if not isinstance(quality_gate, dict):
+            violations.append(f"{label}: _meta.qualityGate is not a dict")
+        else:
+            if quality_gate.get("overallPass") is not True:
+                violations.append(f"{label}: _meta.qualityGate.overallPass is not True")
+            hard_fail_ids = quality_gate.get("hardFailIds")
+            if hard_fail_ids != []:
+                violations.append(f"{label}: _meta.qualityGate.hardFailIds is not empty (got {hard_fail_ids!r})")
+            gates = quality_gate.get("gates")
+            gate_ids = {g.get("id") for g in gates if isinstance(g, dict)} if isinstance(gates, list) else set()
+            missing_gate_ids = sorted(QUALITY_GATE_REQUIRED_IDS - gate_ids)
+            if missing_gate_ids:
+                violations.append(f"{label}: _meta.qualityGate.gates missing required ids {missing_gate_ids}")
+
     candidates = payload.get("candidates")
     if not isinstance(candidates, list):
         violations.append(f"{label}: candidates is not a list")
@@ -179,17 +220,24 @@ def check_candidate_funnel_payload(payload: Any, label: str) -> list[str]:
     return violations
 
 
-def check_candidate_funnel_files(paths: tuple[str, ...] = DEFAULT_PATHS) -> list[str]:
+def check_candidate_funnel_files(
+    paths: tuple[str, ...] = DEFAULT_PATHS, *, allow_missing: bool = False
+) -> list[str]:
     """複数ファイルを検査し、全違反理由のlistを返す（空=全ファイルok）。
     data/publicの両方が読める場合はbyte-identicalであることも確認する。
 
-    全fileが不在（candidate_funnel_batchがまだ一度も成功していない、
-    例えば導入直後や join率不足でgate FAILが続いている状況）はviolationと
-    しない——「まだpublishされていない」であり「不正なartifactがpublish
-    された」ではないため、commit直前の最終防衛線としては区別する必要がある。
-    一部のfileだけが存在する（data/publicの一方のみ）状態は、atomic
-    publish_artifact()のペア保証が破られていることを意味するため常に
-    violationとする。"""
+    default（allow_missing=False）はfail-closed: 全fileが不在の場合も
+    violationとする——workflow上でこのsmokeがexit 0を返すことは「今回の
+    runでcandidate_funnel.jsonが実際にpublishされた」ことの唯一の証明で
+    あり、これをcommit直前の最終防衛線として保証する（batch側のhard gate
+    FAILがworkflowへ伝播しない旧経路の再発防止）。ローカルでの導入前検査
+    （まだ一度もbatchが成功していない新規環境でのsmoke単体動作確認）用途
+    のみ、呼び出し元が明示的に allow_missing=True（CLIでは--allow-missing）
+    を指定できる。full_batch.ymlではこのflagを使用しない。
+
+    一部のfileだけが存在する（data/publicの一方のみ）状態は、
+    allow_missingの値に関わらず、atomic publish_artifact()のペア保証が
+    破られていることを意味するため常にviolationとする。"""
     violations: list[str] = []
     texts: list[tuple[str, str]] = []
     missing_paths: list[str] = []
@@ -216,6 +264,12 @@ def check_candidate_funnel_files(paths: tuple[str, ...] = DEFAULT_PATHS) -> list
             f"partial publish detected: missing {missing_paths} while others exist "
             "(data/public pair guarantee violated)"
         )
+    elif missing_paths and len(missing_paths) == len(paths) and not allow_missing:
+        violations.append(
+            f"all candidate_funnel.json paths missing {missing_paths} "
+            "(no artifact was published this run; pass --allow-missing only for "
+            "local pre-deployment inspection, never in full_batch.yml)"
+        )
 
     if len(texts) == len(paths) and len(texts) > 1:
         first_text = texts[0][1]
@@ -229,10 +283,19 @@ def check_candidate_funnel_files(paths: tuple[str, ...] = DEFAULT_PATHS) -> list
 def main(argv: list[str] | tuple[str, ...] = ()) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--paths", nargs="*", default=None)
+    parser.add_argument(
+        "--allow-missing",
+        action="store_true",
+        help=(
+            "data/public両方不在をfail扱いにしない。ローカルの導入前検査専用"
+            "（full_batch.ymlでは使用禁止 — 今回のrunでartifactが実際に"
+            "publishされたことを保証できなくなる）。"
+        ),
+    )
     args = parser.parse_args(argv)
 
     paths = tuple(args.paths) if args.paths else DEFAULT_PATHS
-    violations = check_candidate_funnel_files(paths)
+    violations = check_candidate_funnel_files(paths, allow_missing=args.allow_missing)
     if violations:
         for v in violations:
             print(f"FAIL candidate_funnel smoke: {v}", file=sys.stderr)

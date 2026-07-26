@@ -52002,3 +52002,97 @@ sandbox制約であり本repositoryの問題ではない）。pytestの実行・
 3. 実測PASSを確認した時点でB2 CLOSED。B3（frontend/store/UI接続、officialDecision/
    portfolioFit接続）はB2 CLOSED後にのみ着手可。
 ```
+
+## P5-B005-B2-R1: workflow fail-open closure + 実production evidence取得
+
+P5-B005-B2: REOPEN_REQUIRED → 本ticketで対応。
+
+### 発見: `full_batch.yml`のfail-open経路（未実行のP-01..P-15実測を隠蔽し得る欠陥）
+
+前ticket（P5-B005-B2, commit `c19cd37`）で予定していた「次回full_batch.yml実行後にP-01..P-15
+実production evidenceを記録する」を実施しようとしたところ、`full_batch.yml`自体に
+以下のfail-open経路が存在することが判明した:
+
+```yaml
+- name: Build candidate_funnel.json (prescreen join + P-01..P-15 quality gate)
+  run: python3 -m data.candidate_funnel_batch || true
+```
+
+`|| true`により、quality gate FAIL（P-02/P-08/P-10/P-14等のhard gate）でbatchがexit 1しても
+shell exit codeが0へ変換され、job failureとしてGitHub Actionsへ伝播しない。直後の
+`candidate_funnel_privacy_smoke.py`は、当時data/public両方のcandidate_funnel.json不在を
+「まだpublishされていない」として正常scope外の非violation扱いにしていたため、この状態でも
+exit 0を返し、そのままcommit stepへ到達可能だった。
+
+**再現・証拠固定**（ローカル環境。candidates_stocks.jsonは既存のローカルcopy、
+prescreen_metadata.jsonは未生成＝gitignore対象で本来のCI runでも生成されない場合と同じ状態）:
+
+```text
+$ python3 -m data.candidate_funnel_batch
+FAIL candidate_funnel batch: quality gate failed (['P-02', 'P-08', 'P-10', 'P-14']); ...
+EXIT_CODE=1
+
+$ (python3 -m data.candidate_funnel_batch || true); echo $?
+... (同じFAIL出力) ...
+0                                          ← || trueによりexit 0化
+
+$ ls data/candidate_funnel.json public/data/candidate_funnel.json
+No such file or directory (両方)          ← artifact不在（batch自体はfail-closedで正しくpublishしていない）
+
+$ python3 -m data.candidate_funnel_privacy_smoke
+candidate_funnel smoke ok
+$ echo $?
+0                                          ← 旧実装: artifact不在でもPASS。commit stepへ到達可能だった。
+```
+
+この経路の結果として、hard gate FAILが続いてもworkflowは「成功」として観測され、
+P-01..P-15の実production evidenceが一度も記録されないままB2が"実質REOPEN"状態で
+放置され得た。B2の完了条件（実GitHub Actions成功 + 実P-01..P-15 evidence取得）を
+機械的に保証する仕組みが無かったことが根本原因。
+
+### 修正
+
+1. **`full_batch.yml`**: `python3 -m data.candidate_funnel_batch || true` → `|| true`除去。
+   P-02/P-04/P-07/P-08/P-10/P-12/P-13/P-14のhard gate FAIL・schema violation・
+   prescreen metadata不在時のexit 1がjob failureとしてGitHub Actionsへ伝播し、
+   直後のprivacy smoke・commit/push stepへ到達しなくなる。`continue-on-error`は
+   元々未使用（他stepにも存在しないことを確認済み）。
+2. **`data/candidate_funnel_privacy_smoke.py`**: `check_candidate_funnel_files()`の
+   missing-both policyをfail-closedへ反転。default（`allow_missing=False`）は
+   data/public両方不在をviolationとする——「今回のrunでartifactが実際にpublishされた」
+   ことを保証する唯一の手段であるため。ローカルの導入前検査専用に`--allow-missing`
+   flagを追加（`full_batch.yml`では使用しない）。partial pair（片方のみ存在）は
+   従来どおり`allow_missing`の値に関わらず常にviolation。
+   合わせてcurrent-run provenance検査を追加: `_meta.generatedAt`が有効ISO8601
+   timestampであること、`_meta.qualityGate.overallPass is True`、
+   `_meta.qualityGate.hardFailIds == []`、`_meta.qualityGate.gates`にP-01..P-15
+   全idが存在すること。batch側（`run_batch()`）は元々これらを満たす場合のみ
+   publishするfail-closed契約を持つが、smoke側でも独立に再確認することで
+   batch側の契約が将来壊れた場合でも単独で検出できるようにした
+   （batch本体`candidate_funnel_batch.py`は無変更）。
+3. **`tests/test_candidate_funnel_workflow.py`**: `test_candidate_funnel_batch_step_is_non_blocking`
+   （「gate FAILはjobを止めない」契約）を削除し、`test_candidate_funnel_batch_step_is_blocking`
+   （`|| true`が無いこと）+ `test_candidate_funnel_batch_step_has_no_continue_on_error`
+   （反転した契約）へ置換。
+4. **`tests/test_candidate_funnel_privacy_smoke.py`**: `test_all_paths_missing_is_not_a_violation`
+   を`test_all_paths_missing_is_a_violation_by_default`へ反転。`--allow-missing`相当・
+   partial pairがallow_missing=Trueでも常にviolation・新規current-run provenance検査
+   （generatedAt不正/overallPass=False/hardFailIds非空/P-01..P-15一部欠落の各検出）の
+   test 9件を追加。
+
+`data/candidate_funnel_batch.py` / `data/build_candidates_stocks.py`は無変更
+（stale-fallback guard・metadata不在時exit 1・re-fetch無しの契約は既存test群
+（`test_not_generated_run_batch_does_not_publish_and_preserves_existing_artifact`等）
+で既に保証されていることを確認し、追加変更は不要と判断）。B1 engine/TS contract/
+calibration fixture/batch.py/build_candidates_stocks.pyのSHA-256は変更前後で完全一致。
+
+### Verification
+
+新規/変更test: `tests/test_candidate_funnel_privacy_smoke.py`（25件）+
+`tests/test_candidate_funnel_workflow.py`（11件）+ `tests/test_candidate_funnel_batch.py`
+（既存48件、無変更で全pass）+ `tests/test_prescreen_metadata.py`（既存8件、無変更で全pass）
+= 94 passed（TZ=UTC/Asia/Tokyo両方）。B1/B004隣接（engine/build_candidates_stocks/
+candidates_stocks_privacy_smoke/jpx_universe_provider/whole_market_universe_provider）
+471 passed（同両TZ）。`TZ=UTC npm run test:unit` / `TZ=Asia/Tokyo npm run test:unit`
+とも2466 passed。`npx tsc --noEmit` 0 errors。`npm run build` success。
+`git diff --check` clean。
