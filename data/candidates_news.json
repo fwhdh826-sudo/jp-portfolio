@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-07-26T10:05:22.119944+09:00",
-  "sourceUpdatedAt": "2026-07-26T00:51:09+00:00",
+  "updatedAt": "2026-07-26T21:36:11.160799+09:00",
+  "sourceUpdatedAt": "2026-07-26T12:33:51+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -44,29 +44,16 @@
       "items": []
     },
     "us_broad": {
-      "avgSentiment": -0.165,
-      "negativeCount": 1,
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
       "positiveCount": 0,
       "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Charting the Global Economy: Growth Picks Up, AI Boom Continues",
+      "topNegativeTitle": "Fed, Bank of England, Bank of Japan Face $100 Oil Inflation Test",
       "topPositiveTitle": "Fed, Bank of England, Bank of Japan Face $100 Oil Inflation Test",
       "items": [
-        {
-          "title": "Charting the Global Economy: Growth Picks Up, AI Boom Continues",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-07-25T09:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-25/charting-the-global-economy-growth-picks-up-ai-boom-continues",
-          "tags": [
-            "market",
-            "us_broad",
-            "us_growth"
-          ]
-        },
         {
           "title": "Fed, Bank of England, Bank of Japan Face $100 Oil Inflation Test",
           "source": "Bloomberg Economics",
@@ -84,30 +71,16 @@
       ]
     },
     "us_growth": {
-      "avgSentiment": -0.33,
-      "negativeCount": 1,
+      "avgSentiment": 0,
+      "negativeCount": 0,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Charting the Global Economy: Growth Picks Up, AI Boom Continues",
-      "topPositiveTitle": "Charting the Global Economy: Growth Picks Up, AI Boom Continues",
-      "items": [
-        {
-          "title": "Charting the Global Economy: Growth Picks Up, AI Boom Continues",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-07-25T09:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-25/charting-the-global-economy-growth-picks-up-ai-boom-continues",
-          "tags": [
-            "market",
-            "us_broad",
-            "us_growth"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "global_broad": {
       "avgSentiment": 0,
@@ -122,29 +95,16 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": 0.33,
+      "avgSentiment": 0,
       "negativeCount": 0,
-      "positiveCount": 1,
+      "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Indonesia Arrests Former Top Graft Prosecutor After Police Raids",
-      "topPositiveTitle": "Indonesia Arrests Former Top Graft Prosecutor After Police Raids",
-      "items": [
-        {
-          "title": "Indonesia Arrests Former Top Graft Prosecutor After Police Raids",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-07-25T05:21:13+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-25/indonesia-arrests-former-top-graft-prosecutor-after-police-raids",
-          "tags": [
-            "gold",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "reit": {
       "avgSentiment": 0,
@@ -171,29 +131,16 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.165,
-      "negativeCount": 1,
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 2,
+      "neutralCount": 2,
+      "sourceCount": 1,
       "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "ECB’s Zigman Says War Fallout on Inflation Takes Time to Be Seen",
+      "topNegativeTitle": "茂木外相 日本の対ロシア政策変わらずも意思疎通は必要",
       "topPositiveTitle": "茂木外相 日本の対ロシア政策変わらずも意思疎通は必要",
       "items": [
-        {
-          "title": "ECB’s Zigman Says War Fallout on Inflation Takes Time to Be Seen",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-07-25T05:06:21+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-25/ecb-s-zigman-says-war-fallout-on-inflation-take-time-to-be-seen",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
         {
           "title": "茂木外相 日本の対ロシア政策変わらずも意思疎通は必要",
           "source": "NHK 経済",
@@ -207,6 +154,19 @@
             "market"
           ],
           "titleJa": "茂木外相 日本の対ロシア政策変わらずも意思疎通は必要"
+        },
+        {
+          "title": "茂木外相 ASEAN・日中韓で未来志向の協力深化を呼びかけ",
+          "source": "NHK 経済",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-23T13:10:12+00:00",
+          "url": "https://news.web.nhk/newsweb/na/na-k10015184201000",
+          "tags": [
+            "macro_risk",
+            "market"
+          ],
+          "titleJa": "茂木外相 ASEAN・日中韓で未来志向の協力深化を呼びかけ"
         }
       ]
     },
@@ -235,28 +195,16 @@
       "items": []
     },
     "commodity": {
-      "avgSentiment": -0.066,
-      "negativeCount": 1,
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 4,
+      "neutralCount": 3,
       "sourceCount": 3,
-      "itemCount": 5,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Heat Bakes Central US, Raising Energy Demand as East Stays Cool",
+      "topNegativeTitle": "Iraq to Sign Agreement with Syria on Building of Oil Pipelines",
       "topPositiveTitle": "Iraq to Sign Agreement with Syria on Building of Oil Pipelines",
       "items": [
-        {
-          "title": "Heat Bakes Central US, Raising Energy Demand as East Stays Cool",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-07-25T11:41:32+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-25/heat-bakes-central-us-raising-energy-demand-as-east-stays-cool",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
         {
           "title": "Iraq to Sign Agreement with Syria on Building of Oil Pipelines",
           "source": "Bloomberg Markets",
@@ -284,19 +232,6 @@
           ]
         },
         {
-          "title": "Ukraine Seeks 30-Year Energy Pact With Canada, Minister Says",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-25T09:07:34+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-25/ukraine-seeks-30-year-energy-pact-with-canada-minister-says",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
           "title": "“来月の原油 去年の実績とほぼ同じ量 調達できる”赤澤経産相",
           "source": "NHK 経済",
           "sentiment": "neutral",
@@ -312,54 +247,16 @@
       ]
     },
     "geopolitical": {
-      "avgSentiment": -0.083,
-      "negativeCount": 1,
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 3,
-      "sourceCount": 3,
-      "itemCount": 4,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "ECB’s Zigman Says War Fallout on Inflation Takes Time to Be Seen",
-      "topPositiveTitle": "Ukraine Seeks 30-Year Energy Pact With Canada, Minister Says",
+      "topNegativeTitle": "茂木外相 日本の対ロシア政策変わらずも意思疎通は必要",
+      "topPositiveTitle": "茂木外相 日本の対ロシア政策変わらずも意思疎通は必要",
       "items": [
-        {
-          "title": "ECB’s Zigman Says War Fallout on Inflation Takes Time to Be Seen",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-07-25T05:06:21+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-25/ecb-s-zigman-says-war-fallout-on-inflation-take-time-to-be-seen",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Ukraine Seeks 30-Year Energy Pact With Canada, Minister Says",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-25T09:07:34+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-25/ukraine-seeks-30-year-energy-pact-with-canada-minister-says",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "India Flags Attack on LPG Tanker in Iran Waters, Says Crew Safe",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-25T03:31:07+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-25/india-flags-attack-on-lpg-tanker-in-iran-waters-says-crew-safe",
-          "tags": [
-            "geopolitical",
-            "market"
-          ]
-        },
         {
           "title": "茂木外相 日本の対ロシア政策変わらずも意思疎通は必要",
           "source": "NHK 経済",
@@ -385,7 +282,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 7,
+    "excludedCount": 11,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
