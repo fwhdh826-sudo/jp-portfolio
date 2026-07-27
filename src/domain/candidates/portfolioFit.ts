@@ -1,8 +1,10 @@
 // ═══════════════════════════════════════════════════════════
-// P5-B005-C-B1: portfolioFit categorical v1 — pure local domain engine。
+// P5-B005-C-B1(-R1): portfolioFit categorical v1 — pure local domain engine。
 //
-// Authority: /Users/ryo/jp-portfolio-audit-reports/
-//   p5-b005-c-a2-portfolio-fit-frozen-specification.md (frozen, exact)
+// Authority:
+//   /Users/ryo/jp-portfolio-audit-reports/
+//     p5-b005-c-a2-portfolio-fit-frozen-specification.md (frozen, exact)
+//     p5-b005-c-b1-v-independent-audit.md (P1-01..P1-10 repair authority)
 //
 // pure function only — Date.now/Math.random/network/localStorage/
 // mutable singleton は一切使用しない。evaluatedAt は呼び出し側が注入する。
@@ -36,6 +38,7 @@ import type {
   CandidatePortfolioFitComponentStatus,
   CandidatePortfolioFitDatasetReason,
   CandidatePortfolioFitInput,
+  CandidatePortfolioFitQualityGateId,
   CandidatePortfolioFitReason,
   CandidatePortfolioFitRecord,
   CandidatePortfolioFitResult,
@@ -76,6 +79,44 @@ export function normalizePortfolioFitCode(raw: unknown): PortfolioFitCodeNormali
 
 function isValidEvalValue(v: number): boolean {
   return Number.isFinite(v) && v >= 0
+}
+
+// ── §11 (P1-10) Strict acquiredAt — reject Date.parse's lenient/
+//    calendar-invalid acceptance. Exact accepted formats: date-only
+//    `YYYY-MM-DD`, or full ISO datetime with an explicit `Z`/offset.
+//    Bare/locale/whitespace/calendar-invalid input is never a valid lock
+//    date — it makes the holding aggregate partial instead. ──────────
+const ACQUIRED_AT_DATE_ONLY_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/
+const ACQUIRED_AT_DATETIME_PATTERN =
+  /^(\d{4})-(\d{2})-(\d{2})T\d{2}:\d{2}:\d{2}(?:\.\d{1,3})?(?:Z|[+-]\d{2}:\d{2})$/
+
+function isValidCalendarDate(year: number, month: number, day: number): boolean {
+  if (month < 1 || month > 12 || day < 1) return false
+  const isLeap = (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0
+  const daysInMonth = [31, isLeap ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+  return day <= daysInMonth[month - 1]
+}
+
+function parseStrictAcquiredAt(raw: string): number | null {
+  const dateOnly = ACQUIRED_AT_DATE_ONLY_PATTERN.exec(raw)
+  if (dateOnly) {
+    const year = Number(dateOnly[1])
+    const month = Number(dateOnly[2])
+    const day = Number(dateOnly[3])
+    if (!isValidCalendarDate(year, month, day)) return null
+    const ms = Date.parse(`${raw}T00:00:00.000Z`)
+    return Number.isFinite(ms) ? ms : null
+  }
+  const dateTime = ACQUIRED_AT_DATETIME_PATTERN.exec(raw)
+  if (dateTime) {
+    const year = Number(dateTime[1])
+    const month = Number(dateTime[2])
+    const day = Number(dateTime[3])
+    if (!isValidCalendarDate(year, month, day)) return null
+    const ms = Date.parse(raw)
+    return Number.isFinite(ms) ? ms : null
+  }
+  return null
 }
 
 // ── §6 Holding normalization / aggregation ───────────────────────────
@@ -124,8 +165,8 @@ function aggregateHoldings(holdings: readonly Holding[]): HoldingAggregationResu
     let dateMalformed = false
     for (const h of list) {
       if (h.acquiredAt === undefined || h.acquiredAt === null) continue
-      const ms = Date.parse(h.acquiredAt)
-      if (!Number.isFinite(ms)) {
+      const ms = parseStrictAcquiredAt(h.acquiredAt)
+      if (ms === null) {
         dateMalformed = true
         continue
       }
@@ -193,6 +234,11 @@ function sumValidTrustValue(trusts: readonly Trust[]): { total: number; hasParti
   return { total, hasPartial }
 }
 
+// (P1-03) sector population must match the exact same valid-code population
+// used by jpStockValidTotal — a holding whose code fails normalization is
+// excluded from both the numerator and the denominator alike. Before this
+// fix, an invalid-code holding's `eval` still leaked into the numerator
+// while jpStockValidTotal (denominator) excluded it, producing ratio>1.
 function computeSectorExposure(
   holdings: readonly Holding[],
   candidateSector: string,
@@ -200,6 +246,8 @@ function computeSectorExposure(
   let value = 0
   let degraded = false
   for (const h of holdings) {
+    const norm = normalizePortfolioFitCode(h.code)
+    if (norm.status === 'invalid') continue
     if (!isValidEvalValue(h.eval) || h.eval <= 0) continue
     const sectorOk = typeof h.sector === 'string' && h.sector !== '' && h.sector !== '未分類'
     if (!sectorOk) {
@@ -306,6 +354,17 @@ function assessPortfolioFreshness(
   return { freshness: 'fresh', reasons: [], sourceAsOf }
 }
 
+// (P1-05) Global result precedence is `invalid > unavailable > partial >
+// evaluated` (A2 §11) — the candidate axis and the portfolio axis must be
+// combined by taking the MAX severity, never by letting one axis's forced
+// label silently shadow a more severe state on the other axis.
+function portfolioFreshnessLevel(freshness: PortfolioFitInputFreshness): number {
+  if (freshness === 'invalid') return 3
+  if (freshness === 'stale' || freshness === 'unavailable') return 2
+  if (freshness === 'partial') return 1
+  return 0
+}
+
 // ── §9/§12 Capacity (dataset-level, independent of per-record fit) ───
 function computeCapacity(
   snapshot: PortfolioFitSnapshotInput | null,
@@ -313,12 +372,21 @@ function computeCapacity(
   portfolioFreshness: PortfolioFitInputFreshness,
   portfolioFreshnessReasons: readonly CandidatePortfolioFitDatasetReason[],
   jpStockValidTotal: number,
-): CandidatePortfolioCapacityAssessment {
+  holdingHasPartialValue: boolean,
+  trustCurrentValue: number,
+  trustHasPartial: boolean,
+): { capacity: CandidatePortfolioCapacityAssessment; unknownReasonDetected: boolean } {
   if (snapshot === null) {
-    return { assetClass: 'JP_STOCK', status: 'unavailable', reasons: ['PORTFOLIO_SNAPSHOT_UNAVAILABLE'] }
+    return {
+      capacity: { assetClass: 'JP_STOCK', status: 'unavailable', reasons: ['PORTFOLIO_SNAPSHOT_UNAVAILABLE'] },
+      unknownReasonDetected: false,
+    }
   }
   if (snapshot.existence === 'invalid' || portfolioFreshness === 'invalid') {
-    return { assetClass: 'JP_STOCK', status: 'unavailable', reasons: ['PORTFOLIO_SNAPSHOT_INVALID'] }
+    return {
+      capacity: { assetClass: 'JP_STOCK', status: 'unavailable', reasons: ['PORTFOLIO_SNAPSHOT_INVALID'] },
+      unknownReasonDetected: false,
+    }
   }
 
   const policy = snapshot.portfolioPolicy
@@ -328,10 +396,26 @@ function computeCapacity(
     policy.jpStockMaxRatio >= PORTFOLIO_FIT_POLICY_MIN_RATIO &&
     policy.jpStockMaxRatio <= PORTFOLIO_FIT_POLICY_MAX_RATIO
   if (!policyValid) {
-    return { assetClass: 'JP_STOCK', status: 'unavailable', reasons: ['POLICY_AUTHORITY_UNAVAILABLE'] }
+    return {
+      capacity: { assetClass: 'JP_STOCK', status: 'unavailable', reasons: ['POLICY_AUTHORITY_UNAVAILABLE'] },
+      unknownReasonDetected: false,
+    }
   }
 
-  const { total: trustCurrentValue } = sumValidTrustValue(snapshot.trusts)
+  // (P1-01) required numeric authority (holding/trust valid-value totals)
+  // must be complete. A2 §9 groups "required numeric invalid" under the
+  // `unavailable` status — the same severity tier as a missing/invalid
+  // snapshot or policy — never silently downgraded to `available`.
+  const numericReasons: CandidatePortfolioFitDatasetReason[] = []
+  if (holdingHasPartialValue) numericReasons.push('HOLDING_VALUE_PARTIAL')
+  if (trustHasPartial) numericReasons.push('TRUST_VALUE_PARTIAL')
+  if (numericReasons.length > 0) {
+    const deduped = dedupePortfolioFitLiteralsStrict(numericReasons, CANDIDATE_PORTFOLIO_FIT_DATASET_REASONS)
+    return {
+      capacity: { assetClass: 'JP_STOCK', status: 'unavailable', reasons: deduped.values },
+      unknownReasonDetected: deduped.unknownValues.length > 0,
+    }
+  }
 
   const reasons: CandidatePortfolioFitDatasetReason[] = []
   let sourceUnknown = false
@@ -363,21 +447,24 @@ function computeCapacity(
   }
 
   if (sourceUnknown || cashUnknown) {
+    const deduped = dedupePortfolioFitLiteralsStrict(reasons, CANDIDATE_PORTFOLIO_FIT_DATASET_REASONS)
     return {
-      assetClass: 'JP_STOCK',
-      status: 'unknown',
-      reasons: dedupeInOrder(reasons, CANDIDATE_PORTFOLIO_FIT_DATASET_REASONS),
+      capacity: { assetClass: 'JP_STOCK', status: 'unknown', reasons: deduped.values },
+      unknownReasonDetected: deduped.unknownValues.length > 0,
     }
   }
 
   const portfolioTotalValue = jpStockValidTotal + trustCurrentValue + cashTotal
   if (portfolioTotalValue <= 0) {
-    return { assetClass: 'JP_STOCK', status: 'unknown', reasons: ['CAPACITY_UNAVAILABLE'] }
+    return {
+      capacity: { assetClass: 'JP_STOCK', status: 'unknown', reasons: ['CAPACITY_UNAVAILABLE'] },
+      unknownReasonDetected: false,
+    }
   }
   const jpStockCap = policy!.jpStockMaxRatio * portfolioTotalValue
   const rawHeadroom = jpStockCap - jpStockValidTotal
   const status: CandidatePortfolioCapacityStatus = rawHeadroom > 0 ? 'available' : 'constrained'
-  return { assetClass: 'JP_STOCK', status, reasons: [] }
+  return { capacity: { assetClass: 'JP_STOCK', status, reasons: [] }, unknownReasonDetected: false }
 }
 
 // ── §8 Components (per record) ────────────────────────────────────────
@@ -393,10 +480,22 @@ function computeComponentsForRecord(params: {
   relationship: CandidateHoldingRelationship
   existence: 'present_empty' | 'present_nonempty'
   jpStockValidTotal: number
+  trustCurrentValue: number
+  totalValuePartial: boolean
   aggregates: Map<string, PortfolioFitHoldingAggregate>
   holdings: readonly Holding[]
 }): CandidatePortfolioFitComponent[] {
-  const { candidate, normalizedCode, relationship, existence, jpStockValidTotal, aggregates, holdings } = params
+  const {
+    candidate,
+    normalizedCode,
+    relationship,
+    existence,
+    jpStockValidTotal,
+    trustCurrentValue,
+    totalValuePartial,
+    aggregates,
+    holdings,
+  } = params
 
   const sameCodeValue = relationship === 'already_held' ? 1 : relationship === 'new_to_portfolio' ? 0 : null
   const sameCodeStatus: CandidatePortfolioFitComponentStatus =
@@ -406,18 +505,33 @@ function computeComponentsForRecord(params: {
   const sameCodeRisks: CandidatePortfolioFitRisk[] =
     relationship === 'holding_match_unknown' ? ['HOLDING_MATCH_UNKNOWN'] : []
 
+  // (P1-04) concentration denominator is the total current securities value
+  // (JP-stock + trust), not the JP-stock subtotal alone — A2 §8: "same-code
+  // aggregate / total current portfolio value".
+  // (P1-02) when any holding/trust numeric authority is partial/invalid
+  // anywhere in the snapshot, that shared denominator is unreliable for
+  // every record — concentration must reflect `partial`, never a fabricated
+  // complete ratio.
   let concentrationValue: number | null = null
   let concentrationStatus: CandidatePortfolioFitComponentStatus
   const concentrationReasons: CandidatePortfolioFitReason[] = []
   const concentrationRisks: CandidatePortfolioFitRisk[] = []
+  const totalValueForConcentration = jpStockValidTotal + trustCurrentValue
   if (existence === 'present_empty') {
     concentrationValue = 0
     concentrationStatus = 'evaluated'
     concentrationReasons.push('EXISTING_CODE_CONCENTRATION_MEASURED')
-  } else if (jpStockValidTotal > 0 && normalizedCode !== null) {
+  } else if (totalValueForConcentration <= 0) {
+    concentrationValue = null
+    concentrationStatus = 'unavailable'
+    concentrationRisks.push('EXISTING_CONCENTRATION_UNAVAILABLE')
+  } else if (totalValuePartial) {
+    concentrationValue = null
+    concentrationStatus = 'partial'
+  } else if (normalizedCode !== null) {
     const agg = aggregates.get(normalizedCode)
     const positive = agg && agg.totalCurrentValue !== null && agg.totalCurrentValue > 0 ? agg.totalCurrentValue : 0
-    concentrationValue = positive / jpStockValidTotal
+    concentrationValue = positive / totalValueForConcentration
     concentrationStatus = 'evaluated'
     concentrationReasons.push('EXISTING_CODE_CONCENTRATION_MEASURED')
   } else {
@@ -480,9 +594,29 @@ function computeComponentsForRecord(params: {
   ]
 }
 
-function dedupeInOrder<T extends string>(items: readonly T[], declarationOrder: readonly T[]): T[] {
-  const set = new Set<T>(items)
-  return declarationOrder.filter((o) => set.has(o))
+// (P1-08 / M-28) fail-closed literal dedupe — an unknown/unexpected literal
+// (e.g. a reserved `SOFT_PORTFOLIO_OVERLAP` leaking in from a corrupted
+// internal push) is NEVER silently filtered away like a plain declaration-
+// order intersection would do. It is excluded from the returned `values`
+// (the output type cannot legitimately carry it) but is also surfaced via
+// `unknownValues` so the caller can fail closed (hard-fail + invalid
+// result) instead of returning a silently-laundered `evaluated` output.
+export function dedupePortfolioFitLiteralsStrict<T extends string>(
+  items: readonly string[],
+  declarationOrder: readonly T[],
+): { values: T[]; unknownValues: string[] } {
+  const declared = new Set<string>(declarationOrder)
+  const present = new Set<T>()
+  const unknownValues: string[] = []
+  for (const item of items) {
+    if (!declared.has(item)) {
+      if (!unknownValues.includes(item)) unknownValues.push(item)
+      continue
+    }
+    present.add(item as T)
+  }
+  const values = declarationOrder.filter((o) => present.has(o))
+  return { values, unknownValues }
 }
 
 const STATUS_LEVEL: Record<CandidatePortfolioFitStatus, number> = {
@@ -493,8 +627,11 @@ const STATUS_LEVEL: Record<CandidatePortfolioFitStatus, number> = {
 }
 const LEVEL_STATUS: readonly CandidatePortfolioFitStatus[] = ['evaluated', 'partial', 'unavailable', 'invalid']
 
+// ── §11 (P1-06) Quality gate — real invariant checks, not a permanently
+//    empty stub. All hard-fail conditions force the overall result status
+//    to `invalid` (A2 §11: "All QG failures are hard for fit"). ─────────
 function buildResult(params: {
-  status: CandidatePortfolioFitStatus
+  proposedStatus: CandidatePortfolioFitStatus
   records: CandidatePortfolioFitRecord[]
   candidateGeneratedAt: string | null
   portfolioSourceAsOf: string | null
@@ -503,7 +640,43 @@ function buildResult(params: {
   evaluatedAt: string
   degradationReasons: CandidatePortfolioFitDatasetReason[]
   inputTargetCount: number
+  candidateEffective: CandidateFreshnessEffective | null
+  unknownLiteralDetected: boolean
 }): CandidatePortfolioFitResult {
+  const hardFailIds = new Set<CandidatePortfolioFitQualityGateId>()
+  const warningIds = new Set<CandidatePortfolioFitQualityGateId>()
+
+  if (params.candidateEffective === 'invalid') hardFailIds.add('PF-QG-01-CANDIDATE_CONTRACT')
+  if (params.portfolioFreshness === 'invalid') hardFailIds.add('PF-QG-02-SNAPSHOT_CONTRACT')
+  if (params.inputTargetCount !== params.records.length) hardFailIds.add('PF-QG-03-F2_COUNT_PARITY')
+
+  const seenIds = new Set<string>()
+  for (const r of params.records) {
+    if (seenIds.has(r.candidateRecordId)) hardFailIds.add('PF-QG-04-RECORD_ID_UNIQUE')
+    seenIds.add(r.candidateRecordId)
+    if (r.portfolioFitScore !== null || r.portfolioFitRank !== null) {
+      hardFailIds.add('PF-QG-07-SCORE_NULL_OR_FINITE')
+    }
+    for (const c of r.components) {
+      if (c.value !== null && !Number.isFinite(c.value)) hardFailIds.add('PF-QG-07-SCORE_NULL_OR_FINITE')
+    }
+    if (r.candidateTier !== 'deep_review' && r.candidateTier !== 'actionable') {
+      hardFailIds.add('PF-QG-12-F2_ONLY')
+    }
+  }
+
+  if (params.unknownLiteralDetected) {
+    // an unknown reason/risk/dataset-reason literal is exactly how a
+    // reserved/legacy concept (e.g. `SOFT_PORTFOLIO_OVERLAP`) or a future
+    // trade-scope concept could leak into this local-only categorical
+    // output — A2 §11 groups QG-10/QG-11 together as release-blocking
+    // privacy/scope failures, so both are raised together.
+    hardFailIds.add('PF-QG-10-PRIVACY_KEYS')
+    hardFailIds.add('PF-QG-11-TRADE_FIELDS_ABSENT')
+  }
+
+  const status: CandidatePortfolioFitStatus = hardFailIds.size > 0 ? 'invalid' : params.proposedStatus
+
   return {
     schemaVersion: CANDIDATE_PORTFOLIO_FIT_SCHEMA_VERSION,
     fitVersion: CANDIDATE_PORTFOLIO_FIT_VERSION,
@@ -516,15 +689,15 @@ function buildResult(params: {
     candidateGeneratedAt: params.candidateGeneratedAt,
     portfolioSourceAsOf: params.portfolioSourceAsOf,
     portfolioFreshness: params.portfolioFreshness,
-    status: params.status,
+    status,
     capacity: params.capacity,
     records: params.records,
     degradationReasons: params.degradationReasons,
     qualityGate: {
       inputTargetCount: params.inputTargetCount,
       outputRecordCount: params.records.length,
-      hardFailIds: [],
-      warningIds: [],
+      hardFailIds: [...hardFailIds],
+      warningIds: [...warningIds],
     },
   }
 }
@@ -537,10 +710,11 @@ export function computePortfolioFit(input: CandidatePortfolioFitInput): Candidat
 
   const degradationReasonsSet = new Set<CandidatePortfolioFitDatasetReason>()
   const addReason = (r: CandidatePortfolioFitDatasetReason) => degradationReasonsSet.add(r)
+  let unknownLiteralDetected = false
 
   if (!evaluatedAtValid) {
     return buildResult({
-      status: 'invalid',
+      proposedStatus: 'invalid',
       records: [],
       candidateGeneratedAt: null,
       portfolioSourceAsOf: null,
@@ -549,6 +723,8 @@ export function computePortfolioFit(input: CandidatePortfolioFitInput): Candidat
       evaluatedAt,
       degradationReasons: [],
       inputTargetCount: 0,
+      candidateEffective: null,
+      unknownLiteralDetected: false,
     })
   }
 
@@ -560,13 +736,22 @@ export function computePortfolioFit(input: CandidatePortfolioFitInput): Candidat
       ? aggregateHoldings(portfolioSnapshot.holdings)
       : { aggregates: new Map(), hasInvalidCode: false, hasDuplicateCode: false, jpStockValidTotal: 0, hasPartialValue: false }
 
-  const capacity = computeCapacity(
+  const { total: trustCurrentValue, hasPartial: trustHasPartial } =
+    portfolioSnapshot && portfolioSnapshot.existence !== 'invalid'
+      ? sumValidTrustValue(portfolioSnapshot.trusts)
+      : { total: 0, hasPartial: false }
+
+  const { capacity, unknownReasonDetected: capacityUnknownReasonDetected } = computeCapacity(
     portfolioSnapshot,
     evaluatedAtMs,
     portfolioAssessment.freshness,
     portfolioAssessment.reasons,
     holdingAgg.jpStockValidTotal,
+    holdingAgg.hasPartialValue,
+    trustCurrentValue,
+    trustHasPartial,
   )
+  if (capacityUnknownReasonDetected) unknownLiteralDetected = true
 
   if (candidateAssessment.reason) addReason(candidateAssessment.reason)
   portfolioAssessment.reasons.forEach(addReason)
@@ -574,31 +759,28 @@ export function computePortfolioFit(input: CandidatePortfolioFitInput): Candidat
   if (holdingAgg.hasInvalidCode) addReason('HOLDING_CODE_INVALID')
   if (holdingAgg.hasPartialValue) addReason('HOLDING_VALUE_PARTIAL')
   if (holdingAgg.hasDuplicateCode) addReason('DUPLICATE_HOLDING_CODE')
+  if (trustHasPartial) addReason('TRUST_VALUE_PARTIAL')
 
-  if (candidateAssessment.effective === 'invalid') {
+  if (candidateAssessment.effective === 'invalid' || candidateAssessment.effective === 'unavailable') {
+    // (P1-05) global max precedence — a candidate-side unavailable/invalid
+    // label must never shadow a more severe portfolio-side invalid state.
+    const candidateLevel = candidateAssessment.effective === 'invalid' ? 3 : 2
+    const portfolioLevel = portfolioFreshnessLevel(portfolioAssessment.freshness)
+    const overallLevel = Math.max(candidateLevel, portfolioLevel)
+    const degDeduped = dedupePortfolioFitLiteralsStrict([...degradationReasonsSet], CANDIDATE_PORTFOLIO_FIT_DATASET_REASONS)
+    if (degDeduped.unknownValues.length > 0) unknownLiteralDetected = true
     return buildResult({
-      status: 'invalid',
+      proposedStatus: LEVEL_STATUS[overallLevel],
       records: [],
       candidateGeneratedAt: null,
       portfolioSourceAsOf: portfolioAssessment.sourceAsOf,
       portfolioFreshness: portfolioAssessment.freshness,
       capacity,
       evaluatedAt,
-      degradationReasons: dedupeInOrder([...degradationReasonsSet], CANDIDATE_PORTFOLIO_FIT_DATASET_REASONS),
+      degradationReasons: degDeduped.values,
       inputTargetCount: 0,
-    })
-  }
-  if (candidateAssessment.effective === 'unavailable') {
-    return buildResult({
-      status: 'unavailable',
-      records: [],
-      candidateGeneratedAt: null,
-      portfolioSourceAsOf: portfolioAssessment.sourceAsOf,
-      portfolioFreshness: portfolioAssessment.freshness,
-      capacity,
-      evaluatedAt,
-      degradationReasons: dedupeInOrder([...degradationReasonsSet], CANDIDATE_PORTFOLIO_FIT_DATASET_REASONS),
-      inputTargetCount: 0,
+      candidateEffective: candidateAssessment.effective,
+      unknownLiteralDetected,
     })
   }
 
@@ -633,6 +815,8 @@ export function computePortfolioFit(input: CandidatePortfolioFitInput): Candidat
       ? (portfolioSnapshot as Extract<PortfolioFitSnapshotInput, { existence: 'present_empty' | 'present_nonempty' }>)
       : null
 
+  const totalValuePartial = holdingAgg.hasPartialValue || trustHasPartial
+
   const records: CandidatePortfolioFitRecord[] = targets.map((t, i) => {
     const normalizedCode = targetNormalized[i]
     const candidateRecordId = `artifact:${t.artifactIndex}`
@@ -646,11 +830,10 @@ export function computePortfolioFit(input: CandidatePortfolioFitInput): Candidat
       snapshotForRecords === null
 
     if (portfolioUnusable) {
-      const forcedStatus: CandidatePortfolioFitStatus = candidateForcedUnavailable
-        ? 'unavailable'
-        : portfolioAssessment.freshness === 'invalid'
-          ? 'invalid'
-          : 'unavailable'
+      // (P1-05) same global max precedence at record level.
+      const candidateLevel = candidateForcedUnavailable ? 2 : 0
+      const portfolioLevel = portfolioFreshnessLevel(portfolioAssessment.freshness)
+      const forcedStatus = LEVEL_STATUS[Math.max(candidateLevel, portfolioLevel)]
       const components: CandidatePortfolioFitComponent[] = [
         {
           id: 'same_code_relationship',
@@ -696,6 +879,8 @@ export function computePortfolioFit(input: CandidatePortfolioFitInput): Candidat
       relationship,
       existence: snapshot.existence,
       jpStockValidTotal: holdingAgg.jpStockValidTotal,
+      trustCurrentValue,
+      totalValuePartial,
       aggregates: holdingAgg.aggregates,
       holdings: snapshot.holdings,
     })
@@ -707,10 +892,16 @@ export function computePortfolioFit(input: CandidatePortfolioFitInput): Candidat
     const finalLevel = Math.max(recordLevel, datasetFloorLevel)
     const portfolioFitStatus = LEVEL_STATUS[finalLevel]
 
-    const fitReasons = dedupeInOrder(components.flatMap((c) => c.reasons), CANDIDATE_PORTFOLIO_FIT_REASONS)
+    const reasonsDeduped = dedupePortfolioFitLiteralsStrict(
+      components.flatMap((c) => c.reasons),
+      CANDIDATE_PORTFOLIO_FIT_REASONS,
+    )
     const fitRisksRaw: CandidatePortfolioFitRisk[] = components.flatMap((c) => c.risks)
     if (componentCoveragePartial) fitRisksRaw.push('COMPONENT_COVERAGE_PARTIAL')
-    const fitRisks = dedupeInOrder(fitRisksRaw, CANDIDATE_PORTFOLIO_FIT_RISKS)
+    const risksDeduped = dedupePortfolioFitLiteralsStrict(fitRisksRaw, CANDIDATE_PORTFOLIO_FIT_RISKS)
+    if (reasonsDeduped.unknownValues.length > 0 || risksDeduped.unknownValues.length > 0) {
+      unknownLiteralDetected = true
+    }
 
     if (componentCoveragePartial) addReason('COMPONENT_COVERAGE_PARTIAL')
 
@@ -726,8 +917,8 @@ export function computePortfolioFit(input: CandidatePortfolioFitInput): Candidat
       portfolioFitRank: null,
       portfolioFitStatus,
       components,
-      fitReasons,
-      fitRisks,
+      fitReasons: reasonsDeduped.values,
+      fitRisks: risksDeduped.values,
     }
   })
 
@@ -735,15 +926,20 @@ export function computePortfolioFit(input: CandidatePortfolioFitInput): Candidat
   const overallLevel = Math.max(recordWorstLevel, datasetFloorLevel)
   const status = LEVEL_STATUS[overallLevel]
 
+  const degDeduped = dedupePortfolioFitLiteralsStrict([...degradationReasonsSet], CANDIDATE_PORTFOLIO_FIT_DATASET_REASONS)
+  if (degDeduped.unknownValues.length > 0) unknownLiteralDetected = true
+
   return buildResult({
-    status,
+    proposedStatus: status,
     records,
     candidateGeneratedAt,
     portfolioSourceAsOf: portfolioAssessment.sourceAsOf,
     portfolioFreshness: portfolioAssessment.freshness,
     capacity,
     evaluatedAt,
-    degradationReasons: dedupeInOrder([...degradationReasonsSet], CANDIDATE_PORTFOLIO_FIT_DATASET_REASONS),
+    degradationReasons: degDeduped.values,
     inputTargetCount: targets.length,
+    candidateEffective: candidateAssessment.effective,
+    unknownLiteralDetected,
   })
 }

@@ -27,7 +27,12 @@ import type {
   CandidatePortfolioFitInput,
   PortfolioFitSnapshotInput,
 } from '../../types/candidatePortfolioFit'
-import { aggregatePortfolioFitHoldings, computePortfolioFit, normalizePortfolioFitCode } from './portfolioFit'
+import {
+  aggregatePortfolioFitHoldings,
+  computePortfolioFit,
+  dedupePortfolioFitLiteralsStrict,
+  normalizePortfolioFitCode,
+} from './portfolioFit'
 
 // ── 固定時刻（Date.now禁止 — 全fixtureがevaluatedAtを注入する） ──────
 const BASE = '2026-01-10T00:00:00.000Z'
@@ -805,5 +810,363 @@ describe('P5-B005-C-B1 portfolioFit — 52 frozen test groups', () => {
     expect(result.records).toHaveLength(3)
     expect(result.qualityGate.inputTargetCount).toBe(3)
     expect(result.qualityGate.outputRecordCount).toBe(3)
+  })
+})
+
+// ═══════════════════════════════════════════════════════════
+// P5-B005-C-B1-R1: independent-audit P1 repair regression tests。
+//
+// Authority: /Users/ryo/jp-portfolio-audit-reports/
+//   p5-b005-c-b1-v-independent-audit.md §19 Findings P1-01..P1-10
+//
+// これらは frozen 52 groups (T-01..T-52) に追加する regression である —
+// 既存52 groupは一切変更しない。各testはP1 findingとroot causeへの
+// 修正を直接検証する。
+// ═══════════════════════════════════════════════════════════
+describe('P5-B005-C-B1-R1 — independent audit P1 repair regressions', () => {
+  // ── P1-01: invalid/partial holdings/trust numeric authority must never
+  //    let capacity report available/constrained. ──────────────────────
+  it('R1-P1-01: trust with an invalid eval value forces capacity unavailable (never available)', () => {
+    const artifact = makeArtifact([makeCandidate()])
+    const cash: CashAssumptions = { cashDeposits: 1_000_000, standbyFunds: 0, manualOverrideEnabled: true, manualUpdatedAt: BASE }
+    const snapshot = makeSnapshot([], {
+      trusts: [makeTrust({ eval: 200_000 }), makeTrust({ id: 't2', eval: Number.NaN })],
+      cashAssumptions: cash,
+      portfolioPolicy: makePolicy({ jpStockMaxRatio: 0.3 }),
+    })
+    const result = computePortfolioFit({ candidateSource: availableSource(artifact), portfolioSnapshot: snapshot, evaluatedAt: BASE })
+    expect(result.capacity.status).toBe('unavailable')
+    expect(result.capacity.reasons).toContain('TRUST_VALUE_PARTIAL')
+    expect(result.degradationReasons).toContain('TRUST_VALUE_PARTIAL')
+  })
+
+  it('R1-P1-01: an all-invalid-eval holding forces capacity unavailable even with fresh, sufficient cash', () => {
+    const artifact = makeArtifact([makeCandidate()])
+    const cash: CashAssumptions = { cashDeposits: 1_000_000, standbyFunds: 0, manualOverrideEnabled: true, manualUpdatedAt: BASE }
+    const snapshot = makeSnapshot([makeHolding({ code: '1234', eval: Number.NaN })], {
+      cashAssumptions: cash,
+      portfolioPolicy: makePolicy({ jpStockMaxRatio: 0.3 }),
+    })
+    const result = computePortfolioFit({ candidateSource: availableSource(artifact), portfolioSnapshot: snapshot, evaluatedAt: BASE })
+    expect(result.capacity.status).toBe('unavailable')
+    expect(result.capacity.reasons).toContain('HOLDING_VALUE_PARTIAL')
+  })
+
+  // ── P1-02: a partial holding aggregate must propagate into
+  //    existing_concentration (and thence into overall status) instead of
+  //    a falsely-complete `evaluated`. ──────────────────────────────────
+  it('R1-P1-02: partial holding aggregate (mixed valid/invalid same code) makes existing_concentration partial', () => {
+    const artifact = makeArtifact([makeCandidate({ code: '7203' })])
+    const snapshot = makeSnapshot([
+      makeHolding({ code: '7203', eval: 100 }),
+      makeHolding({ code: '7203', eval: Number.NaN }),
+    ])
+    const result = computePortfolioFit({ candidateSource: availableSource(artifact), portfolioSnapshot: snapshot, evaluatedAt: BASE })
+    const concentration = result.records[0].components.find((c) => c.id === 'existing_concentration')!
+    expect(concentration.status).toBe('partial')
+    expect(concentration.value).toBeNull()
+    expect(result.records[0].portfolioFitStatus).toBe('partial')
+  })
+
+  // ── P1-03: sector numerator/denominator must share the exact same
+  //    valid-code population — an invalid-code holding must never inflate
+  //    the ratio above 1. ────────────────────────────────────────────
+  it('R1-P1-03: invalid-code holding in the same sector never inflates sector ratio above 1', () => {
+    const artifact = makeArtifact([makeCandidate({ code: '7203', sector: 'Automobiles' })])
+    const snapshot = makeSnapshot([
+      makeHolding({ code: '7203', eval: 100, sector: 'Automobiles' }),
+      makeHolding({ code: '72 03', eval: 100, sector: 'Automobiles' }), // invalid code, same sector
+    ])
+    const result = computePortfolioFit({ candidateSource: availableSource(artifact), portfolioSnapshot: snapshot, evaluatedAt: BASE })
+    const sector = result.records[0].components.find((c) => c.id === 'sector_diversification')!
+    expect(sector.status).toBe('evaluated')
+    expect(sector.value).toBe(1) // 100 (valid, matching sector) / 100 (valid population only) — not 2.0
+  })
+
+  // ── P1-04: existing_concentration denominator is total current
+  //    securities value (JP-stock + trust), not the JP-stock subtotal. ──
+  it('R1-P1-04: existing_concentration denominator includes trust value, not JP-stock subtotal alone', () => {
+    const artifact = makeArtifact([makeCandidate({ code: '7203' })])
+    const snapshot = makeSnapshot([makeHolding({ code: '7203', eval: 100 })], {
+      trusts: [makeTrust({ eval: 900 })],
+    })
+    const result = computePortfolioFit({ candidateSource: availableSource(artifact), portfolioSnapshot: snapshot, evaluatedAt: BASE })
+    const concentration = result.records[0].components.find((c) => c.id === 'existing_concentration')!
+    expect(concentration.value).toBeCloseTo(0.1, 10) // 100 / (100 + 900), not 100/100 = 1.0
+  })
+
+  // ── P1-05: global result precedence invalid>unavailable>partial>evaluated
+  //    must combine candidate-axis and portfolio-axis severity by MAX, never
+  //    let a candidate-side forced label shadow a more severe portfolio
+  //    invalid state. ──────────────────────────────────────────────────
+  it('R1-P1-05: candidate unavailable + invalid snapshot -> overall invalid (portfolio invalid dominates)', () => {
+    const invalidSnapshot: PortfolioFitSnapshotInput = { existence: 'invalid', error: 'CANONICAL_ENVELOPE_INVALID' }
+    const candidateSource: CandidatePortfolioFitCandidateSource = { status: 'unavailable', artifact: null, freshness: 'unavailable' }
+    const result = computePortfolioFit({ candidateSource, portfolioSnapshot: invalidSnapshot, evaluatedAt: BASE })
+    expect(result.status).toBe('invalid')
+    expect(result.records).toHaveLength(0)
+  })
+
+  it('R1-P1-05: candidate stale + invalid snapshot -> overall invalid at result and record level', () => {
+    const artifact = makeArtifact([makeCandidate()], { generatedAt: iso(BASE_MS - 48 * HOUR - 1) })
+    const invalidSnapshot: PortfolioFitSnapshotInput = { existence: 'invalid', error: 'CANONICAL_ENVELOPE_INVALID' }
+    const result = computePortfolioFit({
+      candidateSource: availableSource(artifact, 'fresh'),
+      portfolioSnapshot: invalidSnapshot,
+      evaluatedAt: BASE,
+    })
+    expect(result.status).toBe('invalid')
+    expect(result.records[0].portfolioFitStatus).toBe('invalid')
+  })
+
+  // ── P1-06: qualityGate must reflect real invariant checks — never a
+  //    permanently-empty hardFailIds/warningIds stub. ───────────────────
+  it('R1-P1-06: qualityGate.hardFailIds is populated on a real snapshot contract violation', () => {
+    const artifact = makeArtifact([makeCandidate({ code: '7203' })])
+    const snapshot: PortfolioFitSnapshotInput = { existence: 'invalid', error: 'CANONICAL_ENVELOPE_INVALID' }
+    const result = computePortfolioFit({ candidateSource: availableSource(artifact), portfolioSnapshot: snapshot, evaluatedAt: BASE })
+    expect(result.qualityGate.hardFailIds).toContain('PF-QG-02-SNAPSHOT_CONTRACT')
+    expect(result.qualityGate.hardFailIds.length).toBeGreaterThan(0)
+  })
+
+  it('R1-P1-06: qualityGate.hardFailIds stays empty for a clean evaluated run (no false positives)', () => {
+    const artifact = makeArtifact([makeCandidate({ code: '7203' })])
+    const snapshot = makeSnapshot([makeHolding({ code: '7203', eval: 100 })])
+    const result = computePortfolioFit({ candidateSource: availableSource(artifact), portfolioSnapshot: snapshot, evaluatedAt: BASE })
+    expect(result.qualityGate.hardFailIds).toEqual([])
+    expect(result.status).toBe('evaluated')
+  })
+
+  // ── P1-08 / M-28: the strict literal dedupe helper must never silently
+  //    drop an unknown value — it must surface it via `unknownValues`. ──
+  it('R1-P1-08/M-28: dedupePortfolioFitLiteralsStrict preserves valid literals in declared order and surfaces unknowns', () => {
+    const declared = ['A', 'B', 'C'] as const
+    const result = dedupePortfolioFitLiteralsStrict(['A', 'SOFT_PORTFOLIO_OVERLAP', 'B', 'A', 'C'], declared)
+    expect(result.values).toEqual(['A', 'B', 'C'])
+    expect(result.unknownValues).toEqual(['SOFT_PORTFOLIO_OVERLAP'])
+  })
+
+  it('R1-P1-08/M-28: unknown values are themselves deduped in unknownValues', () => {
+    const declared = ['A'] as const
+    const result = dedupePortfolioFitLiteralsStrict(['X', 'X', 'A'], declared)
+    expect(result.values).toEqual(['A'])
+    expect(result.unknownValues).toEqual(['X'])
+  })
+
+  it('R1-P1-08/M-28: an item entirely outside the declared union never appears in values', () => {
+    const declared = ['NEW_TO_PORTFOLIO', 'ALREADY_HELD'] as const
+    const result = dedupePortfolioFitLiteralsStrict(['NEW_TO_PORTFOLIO', 'SOFT_PORTFOLIO_OVERLAP'], declared)
+    expect(result.values).not.toContain('SOFT_PORTFOLIO_OVERLAP')
+    expect(result.unknownValues).toContain('SOFT_PORTFOLIO_OVERLAP')
+  })
+
+  // ── P1-09 / M-35: extended privacy/network source-contract scan —
+  //    guarded browser-only primitives must still be caught at source
+  //    level (never rely on "not executed in this environment"). ───────
+  function stripLineCommentsR1(src: string): string {
+    return src
+      .split('\n')
+      .filter((line) => !line.trim().startsWith('//'))
+      .join('\n')
+  }
+  function readEngineSourceR1(): string {
+    const { readFileSync } = require('fs') as { readFileSync: (p: string, enc: string) => string }
+    return stripLineCommentsR1(readFileSync('src/domain/candidates/portfolioFit.ts', 'utf-8'))
+  }
+
+  it('R1-P1-09/M-35: extended forbidden network/persistence/console token scan', () => {
+    const engineSrc = readEngineSourceR1()
+    const forbiddenTokens = [
+      'fetch',
+      'XMLHttpRequest',
+      'WebSocket',
+      'EventSource',
+      'sendBeacon',
+      'localStorage',
+      'sessionStorage',
+      'indexedDB',
+      'writeFile',
+      'writeFileSync',
+      'appendFile',
+      'console.log',
+      'console.debug',
+    ]
+    for (const token of forbiddenTokens) {
+      expect(engineSrc).not.toContain(token)
+    }
+  })
+
+  it('R1-P1-09/M-35: a guarded navigator.sendBeacon call would be caught by the source scan (regex, not substring)', () => {
+    const engineSrc = readEngineSourceR1()
+    // this must hold for the CURRENT (uncorrupted) source — the mutation
+    // test in the manifest applies a guarded `navigator.sendBeacon(...)`
+    // patch and re-runs this exact assertion to confirm it goes RED.
+    expect(engineSrc).not.toMatch(/navigator\s*\.\s*sendBeacon/)
+    expect(engineSrc).not.toMatch(/\bsendBeacon\s*\(/)
+  })
+
+  // ── P1-10: strict acquiredAt — Date.parse's lenient/calendar-invalid
+  //    acceptance must never make a lock date "complete". ───────────────
+  it('R1-P1-10: valid ISO UTC acquiredAt is accepted and marks the aggregate complete', () => {
+    const agg = aggregatePortfolioFitHoldings([makeHolding({ code: '7203', eval: 100, acquiredAt: '2024-05-05T00:00:00.000Z' })])
+    expect(agg.aggregates[0].dataStatus).toBe('complete')
+    expect(agg.aggregates[0].acquiredAtForLock).toBe('2024-05-05T00:00:00.000Z')
+  })
+
+  it('R1-P1-10: valid ISO datetime with an explicit offset is accepted', () => {
+    const agg = aggregatePortfolioFitHoldings([makeHolding({ code: '7203', eval: 100, acquiredAt: '2024-05-05T09:00:00+09:00' })])
+    expect(agg.aggregates[0].dataStatus).toBe('complete')
+  })
+
+  it('R1-P1-10: calendar-invalid month/day (2022-02-30) is rejected -> partial, never complete', () => {
+    const agg = aggregatePortfolioFitHoldings([makeHolding({ code: '7203', eval: 100, acquiredAt: '2022-02-30' })])
+    expect(agg.aggregates[0].dataStatus).toBe('partial')
+    expect(agg.aggregates[0].acquiredAtForLock).toBeNull()
+  })
+
+  it('R1-P1-10: locale date format (01/02/2022) is rejected', () => {
+    const agg = aggregatePortfolioFitHoldings([makeHolding({ code: '7203', eval: 100, acquiredAt: '01/02/2022' })])
+    expect(agg.aggregates[0].dataStatus).toBe('partial')
+    expect(agg.aggregates[0].acquiredAtForLock).toBeNull()
+  })
+
+  it('R1-P1-10: bare/timezone-missing datetime is rejected', () => {
+    const agg = aggregatePortfolioFitHoldings([makeHolding({ code: '7203', eval: 100, acquiredAt: '2024-05-05T00:00:00' })])
+    expect(agg.aggregates[0].dataStatus).toBe('partial')
+    expect(agg.aggregates[0].acquiredAtForLock).toBeNull()
+  })
+
+  it('R1-P1-10: whitespace-padded date is rejected', () => {
+    const agg = aggregatePortfolioFitHoldings([makeHolding({ code: '7203', eval: 100, acquiredAt: ' 2024-05-05 ' })])
+    expect(agg.aggregates[0].dataStatus).toBe('partial')
+    expect(agg.aggregates[0].acquiredAtForLock).toBeNull()
+  })
+
+  it('R1-P1-10: mixed valid/invalid acquiredAt keeps the latest VALID date and marks aggregate partial', () => {
+    const agg = aggregatePortfolioFitHoldings([
+      makeHolding({ code: '7203', eval: 100, acquiredAt: '2020-01-01' }),
+      makeHolding({ code: '7203', eval: 100, acquiredAt: '2022-02-30' }), // calendar-invalid
+      makeHolding({ code: '7203', eval: 100, acquiredAt: '2021-06-15' }),
+    ])
+    expect(agg.aggregates[0].acquiredAtForLock).toBe('2021-06-15')
+    expect(agg.aggregates[0].dataStatus).toBe('partial')
+  })
+
+  it('R1-P1-10: multiple valid acquiredAt dates -> the latest one wins', () => {
+    const agg = aggregatePortfolioFitHoldings([
+      makeHolding({ code: '7203', eval: 100, acquiredAt: '2020-01-01' }),
+      makeHolding({ code: '7203', eval: 100, acquiredAt: '2023-03-03' }),
+      makeHolding({ code: '7203', eval: 100, acquiredAt: '2021-06-15' }),
+    ])
+    expect(agg.aggregates[0].acquiredAtForLock).toBe('2023-03-03')
+    expect(agg.aggregates[0].dataStatus).toBe('complete')
+  })
+
+  // ── §14 missing fixtures — normalization ──────────────────────────────
+  it('R1-normalization: lowercase forbidden letter i/o rejected after uppercase conversion', () => {
+    expect(normalizePortfolioFitCode('720i').status).toBe('invalid')
+    expect(normalizePortfolioFitCode('720o').status).toBe('invalid')
+  })
+
+  it('R1-normalization: unsupported suffix (.JP/.HK) rejected — only a single terminal .T is stripped', () => {
+    expect(normalizePortfolioFitCode('7203.JP').status).toBe('invalid')
+    expect(normalizePortfolioFitCode('7203.HK').status).toBe('invalid')
+  })
+
+  it('R1-normalization: null/undefined/object are invalid, never coerced', () => {
+    expect(normalizePortfolioFitCode(null).status).toBe('invalid')
+    expect(normalizePortfolioFitCode(undefined).status).toBe('invalid')
+    expect(normalizePortfolioFitCode({ code: '7203' }).status).toBe('invalid')
+  })
+
+  it('R1-normalization: unsafe integer is invalid', () => {
+    expect(normalizePortfolioFitCode(Number.MAX_SAFE_INTEGER + 100).status).toBe('invalid')
+  })
+
+  it('R1-normalization: negative number is invalid', () => {
+    expect(normalizePortfolioFitCode(-7203).status).toBe('invalid')
+  })
+
+  // ── §14 missing fixtures — freshness boundaries ───────────────────────
+  it('R1-freshness: candidate 48h-1ms -> still fresh (below threshold)', () => {
+    const artifact = makeArtifact([makeCandidate()], { generatedAt: iso(BASE_MS - 48 * HOUR + 1) })
+    const result = computePortfolioFit({
+      candidateSource: availableSource(artifact, 'fresh'),
+      portfolioSnapshot: makeSnapshot([]),
+      evaluatedAt: BASE,
+    })
+    expect(result.status).not.toBe('unavailable')
+  })
+
+  it('R1-freshness: portfolio source 90d-1ms -> fresh', () => {
+    const artifact = makeArtifact([makeCandidate()])
+    const snapshot = makeSnapshot([], { provenance: makeProvenance({ sourceAsOf: iso(BASE_MS - 90 * DAY + 1) }) })
+    const result = computePortfolioFit({ candidateSource: availableSource(artifact), portfolioSnapshot: snapshot, evaluatedAt: BASE })
+    expect(result.portfolioFreshness).toBe('fresh')
+  })
+
+  it('R1-freshness: manual cash exactly 168h old -> not stale, capacity available', () => {
+    const artifact = makeArtifact([makeCandidate()])
+    const cash: CashAssumptions = {
+      cashDeposits: 1_000_000,
+      standbyFunds: 0,
+      manualOverrideEnabled: true,
+      manualUpdatedAt: iso(BASE_MS - 168 * HOUR),
+    }
+    const snapshot = makeSnapshot([], { cashAssumptions: cash, portfolioPolicy: makePolicy({ jpStockMaxRatio: 0.3 }) })
+    const result = computePortfolioFit({ candidateSource: availableSource(artifact), portfolioSnapshot: snapshot, evaluatedAt: BASE })
+    expect(result.capacity.status).toBe('available')
+  })
+
+  it('R1-freshness: manual cash 168h-1ms old -> not stale, capacity available', () => {
+    const artifact = makeArtifact([makeCandidate()])
+    const cash: CashAssumptions = {
+      cashDeposits: 1_000_000,
+      standbyFunds: 0,
+      manualOverrideEnabled: true,
+      manualUpdatedAt: iso(BASE_MS - 168 * HOUR + 1),
+    }
+    const snapshot = makeSnapshot([], { cashAssumptions: cash, portfolioPolicy: makePolicy({ jpStockMaxRatio: 0.3 }) })
+    const result = computePortfolioFit({ candidateSource: availableSource(artifact), portfolioSnapshot: snapshot, evaluatedAt: BASE })
+    expect(result.capacity.status).toBe('available')
+  })
+
+  it('R1-freshness: manual cash 168h+1ms old -> stale, capacity unknown', () => {
+    const artifact = makeArtifact([makeCandidate()])
+    const cash: CashAssumptions = {
+      cashDeposits: 1_000_000,
+      standbyFunds: 0,
+      manualOverrideEnabled: true,
+      manualUpdatedAt: iso(BASE_MS - 168 * HOUR - 1),
+    }
+    const snapshot = makeSnapshot([], { cashAssumptions: cash, portfolioPolicy: makePolicy({ jpStockMaxRatio: 0.3 }) })
+    const result = computePortfolioFit({ candidateSource: availableSource(artifact), portfolioSnapshot: snapshot, evaluatedAt: BASE })
+    expect(result.capacity.status).toBe('unknown')
+    expect(result.capacity.reasons).toContain('CASH_AUTHORITY_STALE')
+  })
+
+  it('R1-freshness: manual cash future +1ms -> rejected as stale/invalid age, capacity unknown', () => {
+    const artifact = makeArtifact([makeCandidate()])
+    const cash: CashAssumptions = {
+      cashDeposits: 1_000_000,
+      standbyFunds: 0,
+      manualOverrideEnabled: true,
+      manualUpdatedAt: iso(BASE_MS + 1),
+    }
+    const snapshot = makeSnapshot([], { cashAssumptions: cash, portfolioPolicy: makePolicy({ jpStockMaxRatio: 0.3 }) })
+    const result = computePortfolioFit({ candidateSource: availableSource(artifact), portfolioSnapshot: snapshot, evaluatedAt: BASE })
+    expect(result.capacity.status).toBe('unknown')
+    expect(result.capacity.reasons).toContain('CASH_AUTHORITY_STALE')
+  })
+
+  it('R1-freshness: invalid evaluatedAt -> whole result invalid, no records', () => {
+    const artifact = makeArtifact([makeCandidate()])
+    const result = computePortfolioFit({
+      candidateSource: availableSource(artifact),
+      portfolioSnapshot: makeSnapshot([]),
+      evaluatedAt: 'not-a-timestamp',
+    })
+    expect(result.status).toBe('invalid')
+    expect(result.records).toHaveLength(0)
   })
 })

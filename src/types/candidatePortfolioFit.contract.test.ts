@@ -43,6 +43,8 @@ import type {
   PortfolioFitSnapshotInput,
 } from './candidatePortfolioFit'
 import type { CandidateFunnelArtifact } from './candidateFunnelArtifact'
+import type { CandidateFunnelCandidate } from './candidateFunnel'
+import type { Holding } from './index'
 import { computePortfolioFit } from '../domain/candidates/portfolioFit'
 
 describe('P5-B005-C-B1 candidatePortfolioFit — exact contract', () => {
@@ -387,5 +389,325 @@ describe('P5-B005-C-B1 candidatePortfolioFit — exact contract', () => {
     })
     expect(result.capacity.assetClass).toBe('JP_STOCK')
     expect(Object.keys(result.capacity).sort()).toEqual(['assetClass', 'reasons', 'status'])
+  })
+
+  // ═══════════════════════════════════════════════════════════
+  // P5-B005-C-B1-R1: independent audit P1-07 hardening — runtime exact-key
+  // contract for component / qualityGate. Excess-property checking alone
+  // (TypeScript compile-time) does not catch `{...component,
+  // arbitraryUnknownField:true}` style corruption — this must be an
+  // Object.keys() runtime assertion (A2-audit §7/§16).
+  //
+  // Authority: /Users/ryo/jp-portfolio-audit-reports/
+  //   p5-b005-c-b1-v-independent-audit.md §19 P1-07
+  // ═══════════════════════════════════════════════════════════
+
+  function minimalCandidate(overrides: Partial<CandidateFunnelCandidate> = {}): CandidateFunnelCandidate {
+    return {
+      code: '7203',
+      name: 'Toyota',
+      sector: 'Automobiles',
+      prescreenScore: 80,
+      prescreenRank: 1,
+      prescreenPool: 'main',
+      scoreBreakdown: [],
+      rawCompositeScore: 70,
+      dataConfidence: 0.9,
+      marketScore: 70,
+      marketRank: 1,
+      tier: 'deep_review',
+      selectedReasons: ['SELECTED_DEEP_REVIEW'],
+      riskReasons: [],
+      hardExclusionReasons: [],
+      themes: [],
+      themeStatus: 'unavailable',
+      dataStatus: 'ok',
+      ...overrides,
+    }
+  }
+
+  function minimalArtifact(candidates: CandidateFunnelCandidate[]): CandidateFunnelArtifact {
+    return {
+      schemaVersion: 'candidate-funnel-1',
+      funnelVersion: 'candidate-funnel-v1',
+      scoreVersion: 'market-score-v1',
+      not_for_trading: true,
+      status: 'generated',
+      degradationReasons: [],
+      counts: {
+        total: candidates.length,
+        excluded: 0,
+        screened: 0,
+        deepReview: candidates.filter((c) => c.tier === 'deep_review').length,
+        actionable: candidates.filter((c) => c.tier === 'actionable').length,
+      },
+      candidates,
+      excludedSummary: { total: 0, byReason: {} },
+      sectorDistribution: { screened: {}, deepReview: {}, actionable: {} },
+      scoreDistribution: { count: candidates.length, min: null, max: null, mean: null, median: null },
+      selectionObservability: {
+        regimeApplied: null,
+        actionableHardMaxApplied: null,
+        actionableSectorCapApplied: null,
+        deepReviewHardMaxApplied: null,
+        deepReviewSectorCapApplied: null,
+        deepReviewSectorCapRelaxed: false,
+        actionableSectorCapRelaxed: false,
+        deepReviewSectorCapOverflow: {},
+        actionableSectorCapOverflow: {},
+        deepReviewEligibleCount: 0,
+        deepReviewSelectedCount: 0,
+        actionableEligibleCount: 0,
+        actionableSelectedCount: 0,
+        sourceStale: false,
+        fallbackProvenance: false,
+      },
+      _meta: {
+        kind: 'candidate_funnel',
+        not_for_trading: true,
+        generatedAt: '2026-01-10T00:00:00.000Z',
+        asOf: '2026-01-10T00:00:00.000Z',
+        sourceUpdatedAt: null,
+        pipelinePath: 'normal',
+        regimeRequested: null,
+        join: {
+          candidateCount: candidates.length,
+          prescreenCount: candidates.length,
+          joinedCount: candidates.length,
+          unmatchedCandidateCount: 0,
+          unmatchedPrescreenCount: 0,
+          joinRate: 1,
+          unmatchedCandidateRate: 0,
+        },
+        qualityGate: { gates: [], overallPass: true, hardFailIds: [], notes: [] },
+      },
+    }
+  }
+
+  function minimalHolding(overrides: Partial<Holding> = {}): Holding {
+    return {
+      code: '7203',
+      name: 'Toyota',
+      eval: 1000,
+      pnlPct: 0,
+      mu: 0,
+      sigma: 0.2,
+      sigmaSource: 'static',
+      beta: 1,
+      sector: 'Automobiles',
+      target: 0,
+      alert: 0,
+      lock: false,
+      mitsu: false,
+      ma: false,
+      rsi: 50,
+      macd: false,
+      vol: false,
+      mom3m: 0,
+      roe: 0,
+      per: 0,
+      pbr: 0,
+      epsG: 0,
+      cfOk: true,
+      de: 0,
+      divG: 0,
+      score: 0,
+      decision: 'HOLD',
+      ev: 0,
+      ...overrides,
+    }
+  }
+
+  // present_nonempty snapshot with a real holding — this is required to
+  // actually exercise computeComponentsForRecord's own component
+  // construction. `portfolioSnapshot: null` only exercises the hardcoded
+  // "portfolioUnusable" forced-component branch and would miss a mutation
+  // injected into computeComponentsForRecord's real component objects.
+  function minimalSnapshot(holdings: Holding[] = [minimalHolding()]): PortfolioFitSnapshotInput {
+    return {
+      existence: 'present_nonempty',
+      schemaVersion: 'csv-import-generation-5',
+      generationId: 'gen-1',
+      savedAt: 0,
+      holdings,
+      trusts: [],
+      portfolioPolicy: { jpStockMaxRatio: 0.1 },
+      cashAssumptions: null,
+      provenance: {
+        sourceAsOf: '2026-01-10T00:00:00.000Z',
+        sourceAsOfKind: 'csv_explicit',
+        sourceAsOfConfidence: 'authoritative',
+        contentFingerprint: 'fp',
+        sourceFileName: 'x.csv',
+        fileLastModified: null,
+        importedAt: '2026-01-10T00:00:00.000Z',
+      },
+      csvImportedAt: null,
+      crossTabState: 'current',
+    }
+  }
+
+  it('R1-P1-07: CandidatePortfolioFitComponent has exactly the frozen field set for every component in every record', () => {
+    const artifact = minimalArtifact([minimalCandidate(), minimalCandidate({ code: '9432', tier: 'actionable' })])
+    const result = computePortfolioFit({
+      candidateSource: { status: 'available', artifact, freshness: 'fresh' },
+      portfolioSnapshot: minimalSnapshot(),
+      evaluatedAt: '2026-01-10T00:00:00.000Z',
+    })
+    const allowedComponentKeys = ['contribution', 'id', 'reasons', 'risks', 'status', 'value']
+    expect(result.records.length).toBeGreaterThan(0)
+    for (const record of result.records) {
+      expect(record.components).toHaveLength(3)
+      for (const component of record.components) {
+        expect(Object.keys(component).sort()).toEqual(allowedComponentKeys)
+      }
+      // component id order/union is exact — a mutation renaming or adding a
+      // component id outside the frozen union must fail here.
+      expect(record.components.map((c) => c.id)).toEqual([
+        'same_code_relationship',
+        'existing_concentration',
+        'sector_diversification',
+      ])
+    }
+  })
+
+  it('R1-P1-07: CandidatePortfolioFitResult.qualityGate has exactly the frozen field set', () => {
+    const artifact = minimalArtifact([minimalCandidate()])
+    const result = computePortfolioFit({
+      candidateSource: { status: 'available', artifact, freshness: 'fresh' },
+      portfolioSnapshot: null,
+      evaluatedAt: '2026-01-10T00:00:00.000Z',
+    })
+    expect(Object.keys(result.qualityGate).sort()).toEqual([
+      'hardFailIds',
+      'inputTargetCount',
+      'outputRecordCount',
+      'warningIds',
+    ])
+    expect(Array.isArray(result.qualityGate.hardFailIds)).toBe(true)
+    expect(Array.isArray(result.qualityGate.warningIds)).toBe(true)
+  })
+
+  it('R1-P1-07: no component carries an arbitrary extra field (excess-property defense, runtime not just compile-time)', () => {
+    const artifact = minimalArtifact([minimalCandidate()])
+    const resultForced = computePortfolioFit({
+      candidateSource: { status: 'available', artifact, freshness: 'fresh' },
+      portfolioSnapshot: null,
+      evaluatedAt: '2026-01-10T00:00:00.000Z',
+    })
+    const resultComputed = computePortfolioFit({
+      candidateSource: { status: 'available', artifact, freshness: 'fresh' },
+      portfolioSnapshot: minimalSnapshot(),
+      evaluatedAt: '2026-01-10T00:00:00.000Z',
+    })
+    for (const result of [resultForced, resultComputed]) {
+      for (const record of result.records) {
+        for (const component of record.components) {
+          expect(Object.prototype.hasOwnProperty.call(component, 'arbitraryUnknownField')).toBe(false)
+          expect(Object.keys(component)).toHaveLength(6)
+        }
+      }
+    }
+  })
+
+  it('R1-P1-07/P1-08: every reason/risk in every record and component is a declared literal only (no unknown runtime value, no SOFT_PORTFOLIO_OVERLAP)', () => {
+    const artifact = minimalArtifact([minimalCandidate({ code: '7203' }), minimalCandidate({ code: '9432', tier: 'actionable' })])
+    const result = computePortfolioFit({
+      candidateSource: { status: 'available', artifact, freshness: 'fresh' },
+      portfolioSnapshot: minimalSnapshot([minimalHolding({ code: '7203' }), minimalHolding({ code: '9432', sector: '未分類' })]),
+      evaluatedAt: '2026-01-10T00:00:00.000Z',
+    })
+    const declaredReasons = new Set(CANDIDATE_PORTFOLIO_FIT_REASONS as readonly string[])
+    const declaredRisks = new Set(CANDIDATE_PORTFOLIO_FIT_RISKS as readonly string[])
+    const declaredDatasetReasons = new Set(CANDIDATE_PORTFOLIO_FIT_DATASET_REASONS as readonly string[])
+    for (const record of result.records) {
+      for (const r of record.fitReasons) expect(declaredReasons.has(r)).toBe(true)
+      for (const r of record.fitRisks) expect(declaredRisks.has(r)).toBe(true)
+      for (const c of record.components) {
+        for (const r of c.reasons) expect(declaredReasons.has(r)).toBe(true)
+        for (const r of c.risks) expect(declaredRisks.has(r)).toBe(true)
+      }
+    }
+    for (const r of result.degradationReasons) expect(declaredDatasetReasons.has(r)).toBe(true)
+    for (const r of result.capacity.reasons) expect(declaredDatasetReasons.has(r)).toBe(true)
+  })
+
+  it('R1-P1-07: recursive forbidden-key scan at every nesting level (result/record/component)', () => {
+    const artifact = minimalArtifact([minimalCandidate()])
+    const result = computePortfolioFit({
+      candidateSource: { status: 'available', artifact, freshness: 'fresh' },
+      portfolioSnapshot: null,
+      evaluatedAt: '2026-01-10T00:00:00.000Z',
+    })
+    const forbiddenKeys = [
+      'action',
+      'officialDecision',
+      'BUY_NEW',
+      'BUY_MORE',
+      'SELL',
+      'WATCH',
+      'BLOCKED',
+      'amount',
+      'quantity',
+      'shares',
+      'order',
+      'limitPrice',
+      'recommendedTrade',
+      'executable',
+      'tradeGateStatus',
+      'SOFT_PORTFOLIO_OVERLAP',
+    ]
+    const forbiddenValues = ['SOFT_PORTFOLIO_OVERLAP', 'BUY_NEW', 'BUY_MORE', 'officialDecision']
+    const seen = new Set<object>()
+    const visit = (v: unknown) => {
+      if (typeof v === 'string') {
+        expect(forbiddenValues).not.toContain(v)
+        return
+      }
+      if (v === null || typeof v !== 'object') return
+      if (seen.has(v as object)) return
+      seen.add(v as object)
+      for (const [k, val] of Object.entries(v as Record<string, unknown>)) {
+        expect(forbiddenKeys).not.toContain(k)
+        visit(val)
+      }
+    }
+    visit(result)
+  })
+
+  it('R1-P1-07: no nonfinite number anywhere in the result (component values, ranks, indices)', () => {
+    const artifact = minimalArtifact([minimalCandidate({ code: '7203' }), minimalCandidate({ code: '9432', tier: 'actionable' })])
+    const result = computePortfolioFit({
+      candidateSource: { status: 'available', artifact, freshness: 'fresh' },
+      portfolioSnapshot: null,
+      evaluatedAt: '2026-01-10T00:00:00.000Z',
+    })
+    const seen = new Set<object>()
+    const visit = (v: unknown) => {
+      if (typeof v === 'number') {
+        expect(Number.isFinite(v)).toBe(true)
+        return
+      }
+      if (v === null || typeof v !== 'object') return
+      if (seen.has(v as object)) return
+      seen.add(v as object)
+      for (const val of Object.values(v as Record<string, unknown>)) visit(val)
+    }
+    visit(result)
+  })
+
+  it('R1-P1-07: no duplicate candidateRecordId across the output', () => {
+    const artifact = minimalArtifact([
+      minimalCandidate({ code: '7203' }),
+      minimalCandidate({ code: ' 7203 ', tier: 'actionable' }), // duplicate normalized code — still unique record IDs
+    ])
+    const result = computePortfolioFit({
+      candidateSource: { status: 'available', artifact, freshness: 'fresh' },
+      portfolioSnapshot: null,
+      evaluatedAt: '2026-01-10T00:00:00.000Z',
+    })
+    const ids = result.records.map((r) => r.candidateRecordId)
+    expect(new Set(ids).size).toBe(ids.length)
+    expect(result.qualityGate.hardFailIds).not.toContain('PF-QG-04-RECORD_ID_UNIQUE')
   })
 })
