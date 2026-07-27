@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-07-27T22:52:30.267941+09:00",
-  "sourceUpdatedAt": "2026-07-27T13:32:38+00:00",
+  "updatedAt": "2026-07-28T07:36:36.776069+09:00",
+  "sourceUpdatedAt": "2026-07-27T22:08:16+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -17,26 +17,50 @@
       "items": []
     },
     "jp_semiconductor": {
-      "avgSentiment": 1.0,
-      "negativeCount": 0,
+      "avgSentiment": -0.223,
+      "negativeCount": 1,
       "positiveCount": 1,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 1,
+      "sourceCount": 2,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Nvidia Credit Risk Jumps in Swaps Market on AI Deal Talk Reports",
-      "topPositiveTitle": "Nvidia Credit Risk Jumps in Swaps Market on AI Deal Talk Reports",
+      "topNegativeTitle": "SK Hynix Slumps Below US IPO Price as Mega-Listings Turn Sour",
+      "topPositiveTitle": "S. Korea’s Consumer Confidence Hits Four-Month High on Chip Boom",
       "items": [
         {
-          "title": "Nvidia Credit Risk Jumps in Swaps Market on AI Deal Talk Reports",
+          "title": "SK Hynix Slumps Below US IPO Price as Mega-Listings Turn Sour",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-07-27T13:27:25+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-27/nvidia-credit-risk-jumps-in-swaps-market-on-ai-deal-talk-reports",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-07-27T20:12:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-27/sk-hynix-slumps-below-us-ipo-price-as-mega-listings-turn-sour",
           "tags": [
             "jp_semiconductor",
-            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "US Stocks Erase Gains as Chipmakers Extend Losses to Third Day",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-27T11:12:22+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-27/us-stocks-catch-a-bid-as-oil-tumbles-with-iran-conflict-pause",
+          "tags": [
+            "jp_semiconductor",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "S. Korea’s Consumer Confidence Hits Four-Month High on Chip Boom",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-07-27T21:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-27/s-korea-s-consumer-confidence-hits-four-month-high-on-chip-boom",
+          "tags": [
+            "jp_semiconductor",
             "market",
             "us_growth"
           ]
@@ -44,18 +68,47 @@
       ]
     },
     "us_broad": {
-      "avgSentiment": 0.454,
-      "negativeCount": 0,
+      "avgSentiment": 0.041,
+      "negativeCount": 2,
       "positiveCount": 4,
-      "neutralCount": 1,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 8,
       "isStale": false,
-      "topNegativeTitle": "Debate at State Street Is Path of Bessent Bond Metric",
-      "topPositiveTitle": "Whipsawing Oil Prices Muddy Traders’ Outlook on Fed Meeting",
+      "topNegativeTitle": "Oil Extends Decline, Asian Stocks Set for Losses: Markets Wrap",
+      "topPositiveTitle": "JPMorgan Sees S&P 500 Set to Rally as a Buy Signal Flashes",
       "items": [
         {
-          "title": "Debate at State Street Is Path of Bessent Bond Metric",
+          "title": "Oil Extends Decline, Asian Stocks Set for Losses: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-07-27T22:08:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-27/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "S&P 500 Wobbles as AI Angst Offsets Oil Decline: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-07-26T22:09:05+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-26/oil-tumbles-as-us-and-iran-pause-military-strikes-markets-wrap",
+          "tags": [
+            "commodity",
+            "macro_risk",
+            "market",
+            "us_broad",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Biggest State Street Debate Is Where Bessent Bond Gauge Goes",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
@@ -68,55 +121,25 @@
           ]
         },
         {
-          "title": "Treasury Yields Follow Oil Lower With Fed and Supply in Focus",
+          "title": "US Stocks Erase Gains as Chipmakers Extend Losses to Third Day",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-07-27T12:56:47+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-27/treasury-yields-follow-oil-lower-with-fed-and-supply-in-focus",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "US Stocks Climb as Pause in Iran Strikes Pushes Oil Price Lower",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.6,
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
           "publishedAt": "2026-07-27T11:12:22+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-07-27/us-stocks-catch-a-bid-as-oil-tumbles-with-iran-conflict-pause",
           "tags": [
-            "commodity",
-            "geopolitical",
+            "jp_semiconductor",
             "market",
             "us_broad"
           ]
         },
         {
-          "title": "Whipsawing Oil Prices Muddy Traders’ Outlook on Fed Meeting",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-07-27T10:43:31+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-07-27/whipsawing-oil-prices-muddy-traders-outlook-on-fed-meeting",
-          "tags": [
-            "commodity",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Fed Faces New Pressure to Hike Rates as Price Risks Rebound",
+          "title": "Citadel Securities Sees Warsh Delivering Surprise Fed Rate Hike",
           "source": "Bloomberg Economics",
           "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-07-26T19:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-26/fed-faces-growing-pressure-to-hike-rates-as-price-risks-rebound",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-07-27T21:42:13+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-27/citadel-securities-sees-warsh-delivering-surprise-fed-rate-hike",
           "tags": [
             "market",
             "rates",
@@ -126,36 +149,40 @@
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.25,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 3,
+      "avgSentiment": -0.068,
+      "negativeCount": 2,
+      "positiveCount": 2,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Crypto Treasury Firms Pivot to AI in Bid to Win Back Investors",
-      "topPositiveTitle": "Nvidia Credit Risk Jumps in Swaps Market on AI Deal Talk Reports",
+      "topNegativeTitle": "S&P 500 Wobbles as AI Angst Offsets Oil Decline: Markets Wrap",
+      "topPositiveTitle": "S. Korea’s Consumer Confidence Hits Four-Month High on Chip Boom",
       "items": [
         {
-          "title": "Crypto Treasury Firms Pivot to AI in Bid to Win Back Investors",
+          "title": "S&P 500 Wobbles as AI Angst Offsets Oil Decline: Markets Wrap",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-27T11:14:22+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-27/crypto-to-data-centers-treasury-model-bust-has-firms-chasing-ai",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-07-26T22:09:05+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-26/oil-tumbles-as-us-and-iran-pause-military-strikes-markets-wrap",
           "tags": [
+            "commodity",
+            "macro_risk",
             "market",
+            "us_broad",
             "us_growth"
           ]
         },
         {
-          "title": "China State Media Says Support for Open AI Models Has Limits",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-27T04:34:19+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-27/china-state-media-says-support-for-open-ai-models-has-limits",
+          "title": "BlackRock Raises $12.5 Billion of Debt for Meta Data Center",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-07-27T21:47:14+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-27/blackrock-raises-12-5-billion-of-debt-for-meta-data-center",
           "tags": [
+            "macro_risk",
             "market",
             "us_growth"
           ]
@@ -175,16 +202,28 @@
           ]
         },
         {
-          "title": "Nvidia Credit Risk Jumps in Swaps Market on AI Deal Talk Reports",
-          "source": "Bloomberg Markets",
+          "title": "S. Korea’s Consumer Confidence Hits Four-Month High on Chip Boom",
+          "source": "Bloomberg Economics",
           "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-07-27T13:27:25+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-27/nvidia-credit-risk-jumps-in-swaps-market-on-ai-deal-talk-reports",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-07-27T21:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-27/s-korea-s-consumer-confidence-hits-four-month-high-on-chip-boom",
           "tags": [
             "jp_semiconductor",
-            "macro_risk",
             "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "BlackRock Dodges AI Bond-Trading Flop After Offering Junk Yields",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-07-27T20:56:01+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-27/blackrock-dodges-ai-bond-flop-as-12-3-billion-debt-deal-rallies",
+          "tags": [
+            "market",
+            "rates",
             "us_growth"
           ]
         }
@@ -203,27 +242,26 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": 1.0,
+      "avgSentiment": 0.67,
       "negativeCount": 0,
       "positiveCount": 1,
       "neutralCount": 0,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Gold Climbs as Pause in Mideast Fighting Curbs Inflation Risk",
-      "topPositiveTitle": "Gold Climbs as Pause in Mideast Fighting Curbs Inflation Risk",
+      "topNegativeTitle": "CME’s Debut of 24/7 Gold Futures Trading Met With Strong Demand",
+      "topPositiveTitle": "CME’s Debut of 24/7 Gold Futures Trading Met With Strong Demand",
       "items": [
         {
-          "title": "Gold Climbs as Pause in Mideast Fighting Curbs Inflation Risk",
+          "title": "CME’s Debut of 24/7 Gold Futures Trading Met With Strong Demand",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-07-26T22:46:32+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-26/gold-climbs-after-pause-in-mideast-fighting-cuts-inflation-fears",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-07-27T21:18:31+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-27/cme-s-debut-of-24-7-gold-futures-trading-met-with-strong-demand",
           "tags": [
-            "commodity",
-            "geopolitical",
             "gold",
+            "macro_risk",
             "market"
           ]
         }
@@ -254,111 +292,136 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.251,
-      "negativeCount": 2,
-      "positiveCount": 3,
-      "neutralCount": 3,
+      "avgSentiment": -0.094,
+      "negativeCount": 6,
+      "positiveCount": 2,
+      "neutralCount": 6,
       "sourceCount": 2,
-      "itemCount": 8,
+      "itemCount": 14,
       "isStale": false,
-      "topNegativeTitle": "Canadians’ Pessimism About Economy Is Fading Despite Trade War, Poll Says",
-      "topPositiveTitle": "Nvidia Credit Risk Jumps in Swaps Market on AI Deal Talk Reports",
+      "topNegativeTitle": "Oil Extends Decline, Asian Stocks Set for Losses: Markets Wrap",
+      "topPositiveTitle": "Pakistan Holds Key Interest Rate as Iran War Clouds Outlook",
       "items": [
         {
-          "title": "Canadians’ Pessimism About Economy Is Fading Despite Trade War, Poll Says",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-07-27T12:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-27/canadians-pessimism-about-economy-is-fading-despite-trade-war-poll-says",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Shipping Upheaval Suggests Oil Selloff Won’t Last",
+          "title": "Oil Extends Decline, Asian Stocks Set for Losses: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-07-27T11:41:12+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-07-27/shipping-upheaval-suggests-oil-selloff-won-t-last",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-07-27T22:08:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-27/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Crisis-Level Swings Become New Normal in 2026 Stock Market",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-27T11:45:46+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-27/crisis-level-swings-become-new-normal-in-2026-stock-market",
-          "tags": [
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Chile Rates Seen on Hold as War Upends Expectations for Year End",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-27T12:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-27/chile-rates-seen-on-hold-as-war-upends-expectations-for-year-end",
-          "tags": [
-            "geopolitical",
             "macro_risk",
             "market",
-            "rates"
+            "us_broad"
           ]
         },
         {
-          "title": "Singapore Delivers Back-to-Back Tightening to Tame Price Risks",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-27T00:04:35+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-27/singapore-tightens-monetary-policy-further-on-price-pressures",
+          "title": "S&P 500 Wobbles as AI Angst Offsets Oil Decline: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-07-26T22:09:05+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-26/oil-tumbles-as-us-and-iran-pause-military-strikes-markets-wrap",
           "tags": [
+            "commodity",
+            "macro_risk",
+            "market",
+            "us_broad",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Latest Oil Market News and Analysis for July 28",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-07-27T22:02:24+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-27/latest-oil-market-news-and-analysis-for-july-28",
+          "tags": [
+            "commodity",
             "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "BlackRock Raises $12.5 Billion of Debt for Meta Data Center",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-07-27T21:47:14+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-27/blackrock-raises-12-5-billion-of-debt-for-meta-data-center",
+          "tags": [
             "macro_risk",
             "market",
             "us_growth"
+          ]
+        },
+        {
+          "title": "Muni Bonds Look Cheapest Since March After Rough Week of Returns",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-07-27T16:30:20+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-27/muni-bonds-look-cheapest-since-march-after-rough-week-of-returns",
+          "tags": [
+            "macro_risk",
+            "market"
           ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "rates": {
-      "avgSentiment": 0.278,
-      "negativeCount": 0,
-      "positiveCount": 3,
-      "neutralCount": 3,
-      "sourceCount": 2,
-      "itemCount": 6,
-      "isStale": false,
-      "topNegativeTitle": "Debate at State Street Is Path of Bessent Bond Metric",
-      "topPositiveTitle": "Whipsawing Oil Prices Muddy Traders’ Outlook on Fed Meeting",
+      "topNegativeTitle": "Southern Africa Payments Hub Eyes More Currencies to Boost Trade",
+      "topPositiveTitle": "Southern Africa Payments Hub Eyes More Currencies to Boost Trade",
       "items": [
         {
-          "title": "Debate at State Street Is Path of Bessent Bond Metric",
+          "title": "Southern Africa Payments Hub Eyes More Currencies to Boost Trade",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-27T14:57:40+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-27/southern-africa-payments-hub-eyes-more-currencies-to-boost-trade",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        }
+      ]
+    },
+    "rates": {
+      "avgSentiment": 0.249,
+      "negativeCount": 0,
+      "positiveCount": 5,
+      "neutralCount": 3,
+      "sourceCount": 2,
+      "itemCount": 8,
+      "isStale": false,
+      "topNegativeTitle": "XP Founder Urges Brazil to Fix Deficit as Election Debate Looms",
+      "topPositiveTitle": "Fed Faces New Pressure to Hike Rates as Price Risks Rebound",
+      "items": [
+        {
+          "title": "XP Founder Urges Brazil to Fix Deficit as Election Debate Looms",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-27T19:29:11+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-27/xp-founder-urges-brazil-to-fix-deficit-as-election-debate-looms",
+          "tags": [
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Biggest State Street Debate Is Where Bessent Bond Gauge Goes",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
@@ -385,69 +448,84 @@
           ]
         },
         {
-          "title": "Kazimir Says ECB Must Hike at Least Once More to Quell Inflation",
+          "title": "Citadel Securities Sees Warsh Delivering Surprise Fed Rate Hike",
           "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-27T08:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-27/kazimir-says-ecb-must-hike-at-least-once-more-to-quell-inflation",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-07-27T21:42:13+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-27/citadel-securities-sees-warsh-delivering-surprise-fed-rate-hike",
           "tags": [
             "market",
-            "rates"
+            "rates",
+            "us_broad"
           ]
         },
         {
-          "title": "Treasury Yields Follow Oil Lower With Fed and Supply in Focus",
+          "title": "BlackRock Dodges AI Bond-Trading Flop After Offering Junk Yields",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.33,
-          "publishedAt": "2026-07-27T12:56:47+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-27/treasury-yields-follow-oil-lower-with-fed-and-supply-in-focus",
+          "publishedAt": "2026-07-27T20:56:01+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-27/blackrock-dodges-ai-bond-flop-as-12-3-billion-debt-deal-rallies",
           "tags": [
-            "commodity",
-            "geopolitical",
             "market",
             "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Whipsawing Oil Prices Muddy Traders’ Outlook on Fed Meeting",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-07-27T10:43:31+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-07-27/whipsawing-oil-prices-muddy-traders-outlook-on-fed-meeting",
-          "tags": [
-            "commodity",
-            "market",
-            "rates",
-            "us_broad"
+            "us_growth"
           ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.175,
-      "negativeCount": 3,
-      "positiveCount": 6,
+      "avgSentiment": -0.222,
+      "negativeCount": 4,
+      "positiveCount": 1,
       "neutralCount": 4,
       "sourceCount": 3,
-      "itemCount": 13,
+      "itemCount": 9,
       "isStale": false,
-      "topNegativeTitle": "Soybeans Slump, Tracking Crude as US and Iran Pause Strikes",
-      "topPositiveTitle": "Gold Climbs as Pause in Mideast Fighting Curbs Inflation Risk",
+      "topNegativeTitle": "Oil Extends Decline, Asian Stocks Set for Losses: Markets Wrap",
+      "topPositiveTitle": "Treasuries Rise as Elevated Yields Attract Buyers Before Fed",
       "items": [
         {
-          "title": "Soybeans Slump, Tracking Crude as US and Iran Pause Strikes",
+          "title": "Oil Extends Decline, Asian Stocks Set for Losses: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-07-27T22:08:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-27/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "S&P 500 Wobbles as AI Angst Offsets Oil Decline: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.67,
-          "publishedAt": "2026-07-27T04:55:20+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-27/soybean-oil-drops-most-in-month-after-us-halts-strikes-on-iran",
+          "publishedAt": "2026-07-26T22:09:05+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-26/oil-tumbles-as-us-and-iran-pause-military-strikes-markets-wrap",
+          "tags": [
+            "commodity",
+            "macro_risk",
+            "market",
+            "us_broad",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Latest Oil Market News and Analysis for July 28",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-07-27T22:02:24+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-27/latest-oil-market-news-and-analysis-for-july-28",
           "tags": [
             "commodity",
             "geopolitical",
+            "macro_risk",
             "market"
           ]
         },
@@ -466,68 +544,43 @@
           ]
         },
         {
-          "title": "Shipping Upheaval Suggests Oil Selloff Won’t Last",
+          "title": "Macquarie Sees Oil Glut Risk on US-Iran Deal Before Midterms",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-07-27T11:41:12+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-07-27/shipping-upheaval-suggests-oil-selloff-won-t-last",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-27T18:32:23+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-27/macquarie-sees-oil-surplus-risk-on-us-iran-deal-before-midterms",
           "tags": [
             "commodity",
             "geopolitical",
             "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Russia’s Novorossiysk Resumed Crude Loadings After Days of Halt",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-27T10:32:36+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-27/russia-s-novorossiysk-resumed-crude-loadings-after-days-of-halt",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "Germany’s Business Outlook Improves Despite Iran Uncertainty",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-27T08:09:51+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-27/germany-s-business-outlook-improves-despite-iran-uncertainty",
-          "tags": [
-            "commodity",
-            "geopolitical",
             "market"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.234,
-      "negativeCount": 3,
-      "positiveCount": 7,
-      "neutralCount": 4,
+      "avgSentiment": 0.067,
+      "negativeCount": 2,
+      "positiveCount": 2,
+      "neutralCount": 6,
       "sourceCount": 2,
-      "itemCount": 14,
+      "itemCount": 10,
       "isStale": false,
-      "topNegativeTitle": "Soybeans Slump, Tracking Crude as US and Iran Pause Strikes",
+      "topNegativeTitle": "Latest Oil Market News and Analysis for July 28",
       "topPositiveTitle": "Pakistan Holds Key Interest Rate as Iran War Clouds Outlook",
       "items": [
         {
-          "title": "Soybeans Slump, Tracking Crude as US and Iran Pause Strikes",
+          "title": "Latest Oil Market News and Analysis for July 28",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-07-27T04:55:20+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-27/soybean-oil-drops-most-in-month-after-us-halts-strikes-on-iran",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-07-27T22:02:24+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-27/latest-oil-market-news-and-analysis-for-july-28",
           "tags": [
             "commodity",
             "geopolitical",
+            "macro_risk",
             "market"
           ]
         },
@@ -546,12 +599,12 @@
           ]
         },
         {
-          "title": "Shipping Upheaval Suggests Oil Selloff Won’t Last",
+          "title": "Macquarie Sees Oil Glut Risk on US-Iran Deal Before Midterms",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-07-27T11:41:12+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-07-27/shipping-upheaval-suggests-oil-selloff-won-t-last",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-27T18:32:23+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-27/macquarie-sees-oil-surplus-risk-on-us-iran-deal-before-midterms",
           "tags": [
             "commodity",
             "geopolitical",
@@ -560,29 +613,29 @@
           ]
         },
         {
-          "title": "Chile Rates Seen on Hold as War Upends Expectations for Year End",
+          "title": "Italy Cuts Diesel Tax and Seeks EU Fiscal Room for Energy Aid",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-27T12:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-27/chile-rates-seen-on-hold-as-war-upends-expectations-for-year-end",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Russia’s Novorossiysk Resumed Crude Loadings After Days of Halt",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-27T10:32:36+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-27/russia-s-novorossiysk-resumed-crude-loadings-after-days-of-halt",
+          "publishedAt": "2026-07-27T16:57:22+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-27/italy-cuts-diesel-tax-and-seeks-eu-fiscal-room-for-energy-aid",
           "tags": [
             "commodity",
             "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "LVMH Fashion Unit’s Return to Growth Held Back by Iran War",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-27T15:45:31+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-27/lvmh-fashion-unit-s-return-to-growth-held-back-by-iran-war",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
             "market"
           ]
         }
