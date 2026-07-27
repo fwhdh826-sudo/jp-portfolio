@@ -675,6 +675,51 @@ function buildResult(params: {
     hardFailIds.add('PF-QG-11-TRADE_FIELDS_ABSENT')
   }
 
+  // P1-06 / C-B1-R2 warning mapping. The frozen quality-gate union has
+  // invariant families rather than degradation-specific literals, so soft
+  // authority gaps reuse the matching input-contract family without turning
+  // them into hard failures:
+  //   PF-QG-01 = candidate-side soft authority/identity degradation
+  //   PF-QG-02 = portfolio/snapshot/component/capacity soft degradation
+  // Candidate is evaluated first, then portfolio, matching the frozen QG
+  // declaration order. Sets keep repeated causes deterministic and unique.
+  const degradationReasonSet = new Set(params.degradationReasons)
+  const hasCandidateWarning =
+    params.candidateEffective === 'stale_or_degraded' ||
+    degradationReasonSet.has('CANDIDATE_INPUT_STALE') ||
+    degradationReasonSet.has('CANDIDATE_INPUT_DEGRADED') ||
+    degradationReasonSet.has('DUPLICATE_CANDIDATE_CODE')
+  if (!hardFailIds.has('PF-QG-01-CANDIDATE_CONTRACT') && hasCandidateWarning) {
+    warningIds.add('PF-QG-01-CANDIDATE_CONTRACT')
+  }
+
+  const portfolioWarningReasons: readonly CandidatePortfolioFitDatasetReason[] = [
+    'PORTFOLIO_SOURCE_AS_OF_MISSING',
+    'PORTFOLIO_SOURCE_AS_OF_WEAK',
+    'HOLDING_CODE_INVALID',
+    'HOLDING_VALUE_PARTIAL',
+    'HOLDING_SECTOR_UNAVAILABLE',
+    'TRUST_VALUE_PARTIAL',
+    'CASH_AUTHORITY_UNAVAILABLE',
+    'CASH_AUTHORITY_STALE',
+    'POLICY_AUTHORITY_UNAVAILABLE',
+    'CAPACITY_UNAVAILABLE',
+    'DUPLICATE_HOLDING_CODE',
+    'COMPONENT_COVERAGE_PARTIAL',
+  ]
+  const hasSectorAuthorityWarning = params.records.some((record) =>
+    record.components.some((component) => component.risks.includes('SECTOR_AUTHORITY_PARTIAL')),
+  )
+  const hasPortfolioWarning =
+    params.portfolioFreshness === 'partial' ||
+    params.capacity.status === 'unknown' ||
+    params.capacity.status === 'unavailable' ||
+    hasSectorAuthorityWarning ||
+    portfolioWarningReasons.some((reason) => degradationReasonSet.has(reason))
+  if (!hardFailIds.has('PF-QG-02-SNAPSHOT_CONTRACT') && hasPortfolioWarning) {
+    warningIds.add('PF-QG-02-SNAPSHOT_CONTRACT')
+  }
+
   const status: CandidatePortfolioFitStatus = hardFailIds.size > 0 ? 'invalid' : params.proposedStatus
 
   return {

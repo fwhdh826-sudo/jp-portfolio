@@ -45,7 +45,7 @@ import type {
 import type { CandidateFunnelArtifact } from './candidateFunnelArtifact'
 import type { CandidateFunnelCandidate } from './candidateFunnel'
 import type { Holding } from './index'
-import { computePortfolioFit } from '../domain/candidates/portfolioFit'
+import { aggregatePortfolioFitHoldings, computePortfolioFit } from '../domain/candidates/portfolioFit'
 
 describe('P5-B005-C-B1 candidatePortfolioFit — exact contract', () => {
   it('version / model literals are exact (A2 §17)', () => {
@@ -709,5 +709,143 @@ describe('P5-B005-C-B1 candidatePortfolioFit — exact contract', () => {
     const ids = result.records.map((r) => r.candidateRecordId)
     expect(new Set(ids).size).toBe(ids.length)
     expect(result.qualityGate.hardFailIds).not.toContain('PF-QG-04-RECORD_ID_UNIQUE')
+  })
+
+  const exactRecordKeys = [
+    'artifactIndex',
+    'candidateMarketRank',
+    'candidateRecordId',
+    'candidateTier',
+    'code',
+    'components',
+    'fitReasons',
+    'fitRisks',
+    'holdingRelationship',
+    'normalizedCode',
+    'portfolioFitRank',
+    'portfolioFitScore',
+    'portfolioFitStatus',
+  ]
+  const exactComponentKeys = ['contribution', 'id', 'reasons', 'risks', 'status', 'value']
+  const exactAggregateWrapperKeys = [
+    'aggregates',
+    'hasDuplicateCode',
+    'hasInvalidCode',
+    'hasPartialValue',
+    'jpStockValidTotal',
+  ]
+  const exactAggregateElementKeys = [
+    'acquiredAtForLock',
+    'dataStatus',
+    'normalizedCode',
+    'sourceRecordCount',
+    'totalCurrentValue',
+  ]
+
+  function computedRecordResults() {
+    const artifact = minimalArtifact([
+      minimalCandidate({ code: '7203' }),
+      minimalCandidate({ code: '9432', tier: 'actionable' }),
+    ])
+    return {
+      normal: computePortfolioFit({
+        candidateSource: { status: 'available', artifact, freshness: 'fresh' },
+        portfolioSnapshot: minimalSnapshot([
+          minimalHolding({ code: '7203' }),
+          minimalHolding({ code: '9432', sector: 'Technology' }),
+        ]),
+        evaluatedAt: '2026-01-10T00:00:00.000Z',
+      }),
+      unavailable: computePortfolioFit({
+        candidateSource: { status: 'available', artifact, freshness: 'fresh' },
+        portfolioSnapshot: null,
+        evaluatedAt: '2026-01-10T00:00:00.000Z',
+      }),
+    }
+  }
+
+  it('R2-M02/P1-07: every normal and unavailable computed record has the exact frozen keys', () => {
+    const results = computedRecordResults()
+    for (const [branch, result] of Object.entries(results)) {
+      expect(result.records.length, `${branch} branch must produce records`).toBeGreaterThan(0)
+      for (const record of result.records) {
+        expect(Object.keys(record).sort(), `${branch}:${record.candidateRecordId}`).toEqual(exactRecordKeys)
+      }
+    }
+  })
+
+  it('R2-P1-07: every component in normal and unavailable computed records has the exact frozen keys', () => {
+    const results = computedRecordResults()
+    for (const [branch, result] of Object.entries(results)) {
+      for (const record of result.records) {
+        expect(record.components).toHaveLength(3)
+        for (const component of record.components) {
+          expect(Object.keys(component).sort(), `${branch}:${record.candidateRecordId}:${component.id}`).toEqual(
+            exactComponentKeys,
+          )
+        }
+      }
+    }
+  })
+
+  it('R2-M03/P1-07: the public aggregate wrapper has the exact frozen keys', () => {
+    const wrapper = aggregatePortfolioFitHoldings([minimalHolding()])
+    expect(Object.keys(wrapper).sort()).toEqual(exactAggregateWrapperKeys)
+  })
+
+  it('R2-M04/P1-07: every complete, partial, and invalid public aggregate element has exact frozen keys', () => {
+    const wrapper = aggregatePortfolioFitHoldings([
+      minimalHolding({ code: '7203', eval: 100 }),
+      minimalHolding({ code: '9432', eval: 100 }),
+      minimalHolding({ code: '9432', eval: Number.NaN }),
+      minimalHolding({ code: '1301', eval: Number.NaN }),
+    ])
+    expect(wrapper.aggregates.map((aggregate) => aggregate.dataStatus).sort()).toEqual([
+      'complete',
+      'invalid',
+      'partial',
+    ])
+    for (const aggregate of wrapper.aggregates) {
+      expect(Object.keys(aggregate).sort(), aggregate.normalizedCode).toEqual(exactAggregateElementKeys)
+    }
+  })
+
+  it('R2-P1-07: recursive forbidden-key scan covers computed results and public aggregates', () => {
+    const results = computedRecordResults()
+    const aggregateWrapper = aggregatePortfolioFitHoldings([
+      minimalHolding({ code: '7203', eval: 100 }),
+      minimalHolding({ code: '9432', eval: Number.NaN }),
+    ])
+    const forbiddenKeys = new Set([
+      'action',
+      'officialDecision',
+      'BUY_NEW',
+      'BUY_MORE',
+      'SELL',
+      'WATCH',
+      'BLOCKED',
+      'amount',
+      'quantity',
+      'shares',
+      'order',
+      'limitPrice',
+      'recommendedTrade',
+      'executable',
+      'tradeGateStatus',
+      'unexpectedField',
+      'arbitraryUnknownField',
+    ])
+    const seen = new Set<object>()
+    const visit = (value: unknown) => {
+      if (value === null || typeof value !== 'object' || seen.has(value as object)) return
+      seen.add(value as object)
+      for (const [key, nested] of Object.entries(value as Record<string, unknown>)) {
+        expect(forbiddenKeys.has(key), `forbidden runtime key: ${key}`).toBe(false)
+        visit(nested)
+      }
+    }
+    visit(results.normal)
+    visit(results.unavailable)
+    visit(aggregateWrapper)
   })
 })

@@ -1170,3 +1170,185 @@ describe('P5-B005-C-B1-R1 — independent audit P1 repair regressions', () => {
     expect(result.records).toHaveLength(0)
   })
 })
+
+// ═══════════════════════════════════════════════════════════
+// P5-B005-C-B1-R2: V2 P1-06 warning propagation regressions。
+// Candidate-side soft authority maps to PF-QG-01; portfolio-side soft
+// authority maps to PF-QG-02. Warnings never alter status/score/rank.
+// ═══════════════════════════════════════════════════════════
+describe('P5-B005-C-B1-R2 — qualityGate warning propagation', () => {
+  const completeCash: CashAssumptions = {
+    cashDeposits: 1_000,
+    standbyFunds: 0,
+    manualOverrideEnabled: true,
+    manualUpdatedAt: BASE,
+  }
+
+  it('R2-P1-06: clean complete run has no hard failures and no warnings', () => {
+    const result = computePortfolioFit({
+      candidateSource: availableSource(makeArtifact([makeCandidate()])),
+      portfolioSnapshot: makeSnapshot([makeHolding({ eval: 100 })], {
+        cashAssumptions: completeCash,
+        portfolioPolicy: makePolicy({ jpStockMaxRatio: 0.3 }),
+      }),
+      evaluatedAt: BASE,
+    })
+    expect(result.qualityGate).toMatchObject({ hardFailIds: [], warningIds: [] })
+    expect(result.status).toBe('evaluated')
+    expect(result.records[0].portfolioFitScore).toBeNull()
+    expect(result.records[0].portfolioFitRank).toBeNull()
+  })
+
+  it('R2-M01/P1-06: partial trust emits the portfolio warning without a hard failure', () => {
+    const result = computePortfolioFit({
+      candidateSource: availableSource(makeArtifact([makeCandidate()])),
+      portfolioSnapshot: makeSnapshot([makeHolding({ eval: 100 })], {
+        trusts: [makeTrust({ eval: 200 }), makeTrust({ id: 't2', eval: Number.NaN })],
+        cashAssumptions: completeCash,
+        portfolioPolicy: makePolicy({ jpStockMaxRatio: 0.3 }),
+      }),
+      evaluatedAt: BASE,
+    })
+    expect(result.degradationReasons).toContain('TRUST_VALUE_PARTIAL')
+    expect(result.qualityGate.hardFailIds).toEqual([])
+    expect(result.qualityGate.warningIds).toEqual(['PF-QG-02-SNAPSHOT_CONTRACT'])
+    expect(result.capacity.status).toBe('unavailable')
+  })
+
+  it('R2-P1-06: partial holding emits the portfolio warning', () => {
+    const result = computePortfolioFit({
+      candidateSource: availableSource(makeArtifact([makeCandidate()])),
+      portfolioSnapshot: makeSnapshot([
+        makeHolding({ eval: 100 }),
+        makeHolding({ eval: Number.NaN }),
+      ], {
+        cashAssumptions: completeCash,
+        portfolioPolicy: makePolicy({ jpStockMaxRatio: 0.3 }),
+      }),
+      evaluatedAt: BASE,
+    })
+    expect(result.degradationReasons).toContain('HOLDING_VALUE_PARTIAL')
+    expect(result.qualityGate.hardFailIds).toEqual([])
+    expect(result.qualityGate.warningIds).toEqual(['PF-QG-02-SNAPSHOT_CONTRACT'])
+  })
+
+  it('R2-P1-06: duplicate holding code emits one portfolio warning', () => {
+    const result = computePortfolioFit({
+      candidateSource: availableSource(makeArtifact([makeCandidate()])),
+      portfolioSnapshot: makeSnapshot([
+        makeHolding({ eval: 100 }),
+        makeHolding({ eval: 200 }),
+      ], {
+        cashAssumptions: completeCash,
+        portfolioPolicy: makePolicy({ jpStockMaxRatio: 0.3 }),
+      }),
+      evaluatedAt: BASE,
+    })
+    expect(result.degradationReasons).toContain('DUPLICATE_HOLDING_CODE')
+    expect(result.qualityGate.warningIds).toEqual(['PF-QG-02-SNAPSHOT_CONTRACT'])
+  })
+
+  it('R2-P1-06: duplicate candidate code emits one candidate warning while preserving both records', () => {
+    const result = computePortfolioFit({
+      candidateSource: availableSource(makeArtifact([
+        makeCandidate({ code: '7203' }),
+        makeCandidate({ code: ' 7203 ', tier: 'actionable', marketRank: 2 }),
+      ])),
+      portfolioSnapshot: makeSnapshot([], {
+        cashAssumptions: completeCash,
+        portfolioPolicy: makePolicy({ jpStockMaxRatio: 0.3 }),
+      }),
+      evaluatedAt: BASE,
+    })
+    expect(result.records).toHaveLength(2)
+    expect(result.degradationReasons).toContain('DUPLICATE_CANDIDATE_CODE')
+    expect(result.qualityGate.hardFailIds).toEqual([])
+    expect(result.qualityGate.warningIds).toEqual(['PF-QG-01-CANDIDATE_CONTRACT'])
+  })
+
+  it('R2-P1-06: holding sector partial emits the portfolio warning', () => {
+    const result = computePortfolioFit({
+      candidateSource: availableSource(makeArtifact([makeCandidate({ sector: 'Automobiles' })])),
+      portfolioSnapshot: makeSnapshot([
+        makeHolding({ code: '7203', eval: 100, sector: 'Automobiles' }),
+        makeHolding({ code: '9432', eval: 100, sector: '未分類' }),
+      ], {
+        cashAssumptions: completeCash,
+        portfolioPolicy: makePolicy({ jpStockMaxRatio: 0.3 }),
+      }),
+      evaluatedAt: BASE,
+    })
+    const sector = result.records[0].components.find((component) => component.id === 'sector_diversification')
+    expect(sector?.status).toBe('partial')
+    expect(sector?.risks).toContain('SECTOR_AUTHORITY_PARTIAL')
+    expect(result.qualityGate.warningIds).toEqual(['PF-QG-02-SNAPSHOT_CONTRACT'])
+  })
+
+  it('R2-P1-06: partial/missing source and soft capacity gaps emit a portfolio warning', () => {
+    const missingSource = computePortfolioFit({
+      candidateSource: availableSource(makeArtifact([makeCandidate()])),
+      portfolioSnapshot: makeSnapshot([], { provenance: null, cashAssumptions: completeCash }),
+      evaluatedAt: BASE,
+    })
+    expect(missingSource.portfolioFreshness).toBe('partial')
+    expect(missingSource.degradationReasons).toContain('PORTFOLIO_SOURCE_AS_OF_MISSING')
+    expect(missingSource.qualityGate.warningIds).toEqual(['PF-QG-02-SNAPSHOT_CONTRACT'])
+
+    const capacityUnknown = computePortfolioFit({
+      candidateSource: availableSource(makeArtifact([makeCandidate()])),
+      portfolioSnapshot: makeSnapshot([], { cashAssumptions: null }),
+      evaluatedAt: BASE,
+    })
+    expect(capacityUnknown.capacity.status).toBe('unknown')
+    expect(capacityUnknown.qualityGate.hardFailIds).toEqual([])
+    expect(capacityUnknown.qualityGate.warningIds).toEqual(['PF-QG-02-SNAPSHOT_CONTRACT'])
+  })
+
+  it('R2-P1-06: invalid snapshot remains a hard failure and is never warning-only', () => {
+    const invalidSnapshot: PortfolioFitSnapshotInput = { existence: 'invalid', error: 'CANONICAL_ENVELOPE_INVALID' }
+    const result = computePortfolioFit({
+      candidateSource: availableSource(makeArtifact([makeCandidate()])),
+      portfolioSnapshot: invalidSnapshot,
+      evaluatedAt: BASE,
+    })
+    expect(result.qualityGate.hardFailIds).toEqual(['PF-QG-02-SNAPSHOT_CONTRACT'])
+    expect(result.qualityGate.warningIds).toEqual([])
+    expect(result.status).toBe('invalid')
+  })
+
+  it('R2-P1-06: unknown literals retain the hard PF-QG-10/PF-QG-11 fail-closed path', () => {
+    const unknown = dedupePortfolioFitLiteralsStrict(
+      ['NEW_TO_PORTFOLIO', 'SOFT_PORTFOLIO_OVERLAP'],
+      ['NEW_TO_PORTFOLIO', 'ALREADY_HELD'] as const,
+    )
+    expect(unknown.unknownValues).toEqual(['SOFT_PORTFOLIO_OVERLAP'])
+    const { readFileSync } = require('fs') as { readFileSync: (path: string, encoding: string) => string }
+    const source = readFileSync('src/domain/candidates/portfolioFit.ts', 'utf-8')
+    expect(source).toContain("hardFailIds.add('PF-QG-10-PRIVACY_KEYS')")
+    expect(source).toContain("hardFailIds.add('PF-QG-11-TRADE_FIELDS_ABSENT')")
+  })
+
+  it('R2-P1-06: repeated causes dedupe and candidate/portfolio warnings follow declaration order', () => {
+    const result = computePortfolioFit({
+      candidateSource: availableSource(makeArtifact([
+        makeCandidate({ code: '7203' }),
+        makeCandidate({ code: '7203', tier: 'actionable', marketRank: 2 }),
+      ])),
+      portfolioSnapshot: makeSnapshot([makeHolding({ eval: 100 })], {
+        trusts: [
+          makeTrust({ id: 't1', eval: Number.NaN }),
+          makeTrust({ id: 't2', eval: Number.NaN }),
+        ],
+        cashAssumptions: completeCash,
+        portfolioPolicy: makePolicy({ jpStockMaxRatio: 0.3 }),
+      }),
+      evaluatedAt: BASE,
+    })
+    expect(result.qualityGate.hardFailIds).toEqual([])
+    expect(result.qualityGate.warningIds).toEqual([
+      'PF-QG-01-CANDIDATE_CONTRACT',
+      'PF-QG-02-SNAPSHOT_CONTRACT',
+    ])
+    expect(new Set(result.qualityGate.warningIds).size).toBe(result.qualityGate.warningIds.length)
+  })
+})
