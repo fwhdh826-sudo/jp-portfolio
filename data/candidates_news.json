@@ -1,16 +1,16 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-07-26T21:36:11.160799+09:00",
-  "sourceUpdatedAt": "2026-07-26T12:33:51+00:00",
+  "updatedAt": "2026-07-27T10:06:39.679037+09:00",
+  "sourceUpdatedAt": "2026-07-27T00:50:45+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
       "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 2,
+      "sourceCount": 2,
+      "itemCount": 2,
       "isStale": false,
       "topNegativeTitle": "Fed, Bank of England, Bank of Japan Face $100 Oil Inflation Test",
       "topPositiveTitle": "Fed, Bank of England, Bank of Japan Face $100 Oil Inflation Test",
@@ -28,22 +28,24 @@
             "market",
             "us_broad"
           ]
+        },
+        {
+          "title": "Kioxia Faces More Volatility as Leveraged ETFs Hit Japan Stocks",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-26T21:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-26/kioxia-faces-more-volatility-as-leveraged-etfs-hit-japan-stocks",
+          "tags": [
+            "jp_broad",
+            "macro_risk",
+            "market",
+            "trust"
+          ]
         }
       ]
     },
     "jp_semiconductor": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "us_broad": {
       "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
@@ -51,9 +53,64 @@
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Fed, Bank of England, Bank of Japan Face $100 Oil Inflation Test",
-      "topPositiveTitle": "Fed, Bank of England, Bank of Japan Face $100 Oil Inflation Test",
+      "topNegativeTitle": "Traders Are Getting a New Tool to Wager on the Biggest US Stocks",
+      "topPositiveTitle": "Traders Are Getting a New Tool to Wager on the Biggest US Stocks",
       "items": [
+        {
+          "title": "Traders Are Getting a New Tool to Wager on the Biggest US Stocks",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-26T14:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-26/traders-are-getting-a-new-tool-to-wager-on-the-biggest-us-stocks",
+          "tags": [
+            "jp_semiconductor",
+            "market",
+            "us_broad",
+            "us_growth"
+          ]
+        }
+      ]
+    },
+    "us_broad": {
+      "avgSentiment": 0.085,
+      "negativeCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 2,
+      "sourceCount": 2,
+      "itemCount": 4,
+      "isStale": false,
+      "topNegativeTitle": "Bond Traders on Edge as Risks of Fed Rate Hike This Week Mount",
+      "topPositiveTitle": "Fed Faces Growing Pressure to Hike Rates as Price Risks Rebound",
+      "items": [
+        {
+          "title": "Bond Traders on Edge as Risks of Fed Rate Hike This Week Mount",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-07-26T19:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-26/bond-traders-on-edge-as-risks-of-fed-rate-hike-this-week-mount",
+          "tags": [
+            "commodity",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Traders Are Getting a New Tool to Wager on the Biggest US Stocks",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-26T14:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-26/traders-are-getting-a-new-tool-to-wager-on-the-biggest-us-stocks",
+          "tags": [
+            "jp_semiconductor",
+            "market",
+            "us_broad",
+            "us_growth"
+          ]
+        },
         {
           "title": "Fed, Bank of England, Bank of Japan Face $100 Oil Inflation Test",
           "source": "Bloomberg Economics",
@@ -67,20 +124,60 @@
             "market",
             "us_broad"
           ]
+        },
+        {
+          "title": "Fed Faces Growing Pressure to Hike Rates as Price Risks Rebound",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-07-26T19:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-26/fed-faces-growing-pressure-to-hike-rates-as-price-risks-rebound",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 2,
+      "sourceCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Traders Are Getting a New Tool to Wager on the Biggest US Stocks",
+      "topPositiveTitle": "Traders Are Getting a New Tool to Wager on the Biggest US Stocks",
+      "items": [
+        {
+          "title": "Traders Are Getting a New Tool to Wager on the Biggest US Stocks",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-26T14:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-26/traders-are-getting-a-new-tool-to-wager-on-the-biggest-us-stocks",
+          "tags": [
+            "jp_semiconductor",
+            "market",
+            "us_broad",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Big Tech Earnings Slam Into a Market in Revolt Over AI Spending",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-26T13:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-26/big-tech-earnings-slam-into-a-market-in-revolt-over-ai-spending",
+          "tags": [
+            "market",
+            "us_growth"
+          ]
+        }
+      ]
     },
     "global_broad": {
       "avgSentiment": 0,
@@ -95,16 +192,31 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": 0,
+      "avgSentiment": 1.0,
       "negativeCount": 0,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Gold Climbs as Pause in Mideast Fighting Curbs Inflation Risk",
+      "topPositiveTitle": "Gold Climbs as Pause in Mideast Fighting Curbs Inflation Risk",
+      "items": [
+        {
+          "title": "Gold Climbs as Pause in Mideast Fighting Curbs Inflation Risk",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-07-26T22:46:32+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-26/gold-climbs-after-pause-in-mideast-fighting-cuts-inflation-fears",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "gold",
+            "market"
+          ]
+        }
+      ]
     },
     "reit": {
       "avgSentiment": 0,
@@ -131,16 +243,30 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
-      "positiveCount": 0,
+      "avgSentiment": 0.085,
+      "negativeCount": 1,
+      "positiveCount": 1,
       "neutralCount": 2,
-      "sourceCount": 1,
-      "itemCount": 2,
+      "sourceCount": 3,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "茂木外相 日本の対ロシア政策変わらずも意思疎通は必要",
-      "topPositiveTitle": "茂木外相 日本の対ロシア政策変わらずも意思疎通は必要",
+      "topNegativeTitle": "Oil Falls, Asian Stocks Rise as Iran Tensions Ease: Markets Wrap",
+      "topPositiveTitle": "US Presses Mexico to Mirror Its Steel Tariff Wall Aimed at China",
       "items": [
+        {
+          "title": "Oil Falls, Asian Stocks Rise as Iran Tensions Ease: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-07-26T22:09:05+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-26/oil-tumbles-as-us-and-iran-pause-military-strikes-markets-wrap",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
         {
           "title": "茂木外相 日本の対ロシア政策変わらずも意思疎通は必要",
           "source": "NHK 経済",
@@ -156,62 +282,170 @@
           "titleJa": "茂木外相 日本の対ロシア政策変わらずも意思疎通は必要"
         },
         {
-          "title": "茂木外相 ASEAN・日中韓で未来志向の協力深化を呼びかけ",
-          "source": "NHK 経済",
+          "title": "Kioxia Faces More Volatility as Leveraged ETFs Hit Japan Stocks",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-23T13:10:12+00:00",
-          "url": "https://news.web.nhk/newsweb/na/na-k10015184201000",
+          "publishedAt": "2026-07-26T21:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-26/kioxia-faces-more-volatility-as-leveraged-etfs-hit-japan-stocks",
+          "tags": [
+            "jp_broad",
+            "macro_risk",
+            "market",
+            "trust"
+          ]
+        },
+        {
+          "title": "US Presses Mexico to Mirror Its Steel Tariff Wall Aimed at China",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-07-26T14:23:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-26/us-presses-mexico-to-mirror-its-steel-tariff-wall-aimed-at-china",
           "tags": [
             "macro_risk",
             "market"
-          ],
-          "titleJa": "茂木外相 ASEAN・日中韓で未来志向の協力深化を呼びかけ"
+          ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": 0,
+      "avgSentiment": 1.0,
       "negativeCount": 0,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "rates": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "commodity": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 3,
-      "sourceCount": 3,
-      "itemCount": 3,
-      "isStale": false,
-      "topNegativeTitle": "Iraq to Sign Agreement with Syria on Building of Oil Pipelines",
-      "topPositiveTitle": "Iraq to Sign Agreement with Syria on Building of Oil Pipelines",
+      "topNegativeTitle": "Kiwi Will Outpace Euro on Widening Rate Gap, Strategists Say",
+      "topPositiveTitle": "Kiwi Will Outpace Euro on Widening Rate Gap, Strategists Say",
       "items": [
         {
-          "title": "Iraq to Sign Agreement with Syria on Building of Oil Pipelines",
+          "title": "Kiwi Will Outpace Euro on Widening Rate Gap, Strategists Say",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-07-26T21:00:39+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-26/kiwi-will-outpace-euro-on-widening-rate-gap-strategists-say",
+          "tags": [
+            "fx",
+            "market",
+            "rates"
+          ]
+        }
+      ]
+    },
+    "rates": {
+      "avgSentiment": 0.447,
+      "negativeCount": 1,
+      "positiveCount": 2,
+      "neutralCount": 0,
+      "sourceCount": 2,
+      "itemCount": 3,
+      "isStale": false,
+      "topNegativeTitle": "Bond Traders on Edge as Risks of Fed Rate Hike This Week Mount",
+      "topPositiveTitle": "Kiwi Will Outpace Euro on Widening Rate Gap, Strategists Say",
+      "items": [
+        {
+          "title": "Bond Traders on Edge as Risks of Fed Rate Hike This Week Mount",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-07-26T19:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-26/bond-traders-on-edge-as-risks-of-fed-rate-hike-this-week-mount",
+          "tags": [
+            "commodity",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Fed Faces Growing Pressure to Hike Rates as Price Risks Rebound",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-07-26T19:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-26/fed-faces-growing-pressure-to-hike-rates-as-price-risks-rebound",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Kiwi Will Outpace Euro on Widening Rate Gap, Strategists Say",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-07-26T21:00:39+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-26/kiwi-will-outpace-euro-on-widening-rate-gap-strategists-say",
+          "tags": [
+            "fx",
+            "market",
+            "rates"
+          ]
+        }
+      ]
+    },
+    "commodity": {
+      "avgSentiment": 0.126,
+      "negativeCount": 2,
+      "positiveCount": 2,
+      "neutralCount": 4,
+      "sourceCount": 3,
+      "itemCount": 8,
+      "isStale": false,
+      "topNegativeTitle": "Oil Falls, Asian Stocks Rise as Iran Tensions Ease: Markets Wrap",
+      "topPositiveTitle": "Gold Climbs as Pause in Mideast Fighting Curbs Inflation Risk",
+      "items": [
+        {
+          "title": "Oil Falls, Asian Stocks Rise as Iran Tensions Ease: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-07-26T22:09:05+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-26/oil-tumbles-as-us-and-iran-pause-military-strikes-markets-wrap",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Bond Traders on Edge as Risks of Fed Rate Hike This Week Mount",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-07-26T19:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-26/bond-traders-on-edge-as-risks-of-fed-rate-hike-this-week-mount",
+          "tags": [
+            "commodity",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Woodside’s $34 Billion Browse Named State Significant Project",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-25T23:34:54+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-25/iraq-to-sign-agreement-with-syria-on-building-of-oil-pipelines",
+          "publishedAt": "2026-07-27T00:31:49+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-27/woodside-s-34-billion-browse-named-state-significant-project",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "Singapore Delivers Back-to-Back Tightening to Tame Price Risks",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-27T00:04:35+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-27/singapore-tightens-monetary-policy-further-on-price-pressures",
           "tags": [
             "commodity",
             "market"
@@ -230,33 +464,34 @@
             "market",
             "us_broad"
           ]
-        },
-        {
-          "title": "“来月の原油 去年の実績とほぼ同じ量 調達できる”赤澤経産相",
-          "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-24T07:45:27+00:00",
-          "url": "https://news.web.nhk/newsweb/na/na-k10015185271000",
-          "tags": [
-            "commodity",
-            "market"
-          ],
-          "titleJa": "“来月の原油 去年の実績とほぼ同じ量 調達できる”赤澤経産相"
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
-      "positiveCount": 0,
+      "avgSentiment": 0.335,
+      "negativeCount": 1,
+      "positiveCount": 2,
       "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 2,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "茂木外相 日本の対ロシア政策変わらずも意思疎通は必要",
-      "topPositiveTitle": "茂木外相 日本の対ロシア政策変わらずも意思疎通は必要",
+      "topNegativeTitle": "Oil Falls, Asian Stocks Rise as Iran Tensions Ease: Markets Wrap",
+      "topPositiveTitle": "Gold Climbs as Pause in Mideast Fighting Curbs Inflation Risk",
       "items": [
+        {
+          "title": "Oil Falls, Asian Stocks Rise as Iran Tensions Ease: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-07-26T22:09:05+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-26/oil-tumbles-as-us-and-iran-pause-military-strikes-markets-wrap",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
         {
           "title": "茂木外相 日本の対ロシア政策変わらずも意思疎通は必要",
           "source": "NHK 経済",
@@ -270,6 +505,33 @@
             "market"
           ],
           "titleJa": "茂木外相 日本の対ロシア政策変わらずも意思疎通は必要"
+        },
+        {
+          "title": "Latest Oil Market News and Analysis for July 27",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-07-26T22:02:41+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-26/latest-oil-market-news-and-analysis-for-july-27",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Gold Climbs as Pause in Mideast Fighting Curbs Inflation Risk",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-07-26T22:46:32+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-26/gold-climbs-after-pause-in-mideast-fighting-cuts-inflation-fears",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "gold",
+            "market"
+          ]
         }
       ]
     }
@@ -282,7 +544,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 11,
+    "excludedCount": 7,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
