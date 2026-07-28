@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-07-28T07:36:36.776069+09:00",
-  "sourceUpdatedAt": "2026-07-27T22:08:16+00:00",
+  "updatedAt": "2026-07-28T09:54:00.741675+09:00",
+  "sourceUpdatedAt": "2026-07-28T00:44:23+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -17,16 +17,30 @@
       "items": []
     },
     "jp_semiconductor": {
-      "avgSentiment": -0.223,
-      "negativeCount": 1,
+      "avgSentiment": -0.4,
+      "negativeCount": 3,
       "positiveCount": 1,
       "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "SK Hynix Slumps Below US IPO Price as Mega-Listings Turn Sour",
+      "topNegativeTitle": "Asian Stocks Fall as Chips Slump, Oil Extends Drop: Markets Wrap",
       "topPositiveTitle": "S. Korea’s Consumer Confidence Hits Four-Month High on Chip Boom",
       "items": [
+        {
+          "title": "Asian Stocks Fall as Chips Slump, Oil Extends Drop: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-07-27T22:08:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-27/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "jp_semiconductor",
+            "macro_risk",
+            "market"
+          ]
+        },
         {
           "title": "SK Hynix Slumps Below US IPO Price as Mega-Listings Turn Sour",
           "source": "Bloomberg Markets",
@@ -36,6 +50,19 @@
           "url": "https://www.bloomberg.com/news/articles/2026-07-27/sk-hynix-slumps-below-us-ipo-price-as-mega-listings-turn-sour",
           "tags": [
             "jp_semiconductor",
+            "market"
+          ]
+        },
+        {
+          "title": "SK Hynix’s $470 Billion Selloff Shows Cracks in Memory-Chip Boom",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-07-27T23:30:04+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-27/sk-hynix-s-rebound-from-470-billion-rout-hinges-on-ai-spending",
+          "tags": [
+            "jp_semiconductor",
+            "macro_risk",
             "market"
           ]
         },
@@ -68,30 +95,16 @@
       ]
     },
     "us_broad": {
-      "avgSentiment": 0.041,
-      "negativeCount": 2,
+      "avgSentiment": 0.19,
+      "negativeCount": 1,
       "positiveCount": 4,
       "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 8,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "Oil Extends Decline, Asian Stocks Set for Losses: Markets Wrap",
+      "topNegativeTitle": "S&P 500 Wobbles as AI Angst Offsets Oil Decline: Markets Wrap",
       "topPositiveTitle": "JPMorgan Sees S&P 500 Set to Rally as a Buy Signal Flashes",
       "items": [
-        {
-          "title": "Oil Extends Decline, Asian Stocks Set for Losses: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-07-27T22:08:16+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-27/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "macro_risk",
-            "market",
-            "us_broad"
-          ]
-        },
         {
           "title": "S&P 500 Wobbles as AI Angst Offsets Oil Decline: Markets Wrap",
           "source": "Bloomberg Markets",
@@ -145,20 +158,47 @@
             "rates",
             "us_broad"
           ]
+        },
+        {
+          "title": "Treasuries Rise as Elevated Yields Attract Buyers Before Fed",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-07-27T12:56:47+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-27/treasury-yields-follow-oil-lower-with-fed-and-supply-in-focus",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market",
+            "rates",
+            "us_broad"
+          ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": -0.068,
-      "negativeCount": 2,
+      "avgSentiment": -0.223,
+      "negativeCount": 4,
       "positiveCount": 2,
-      "neutralCount": 1,
+      "neutralCount": 0,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "S&P 500 Wobbles as AI Angst Offsets Oil Decline: Markets Wrap",
+      "topNegativeTitle": "Korean Stocks Sink as Chipmakers Plunge on Deepening AI Fatigue",
       "topPositiveTitle": "S. Korea’s Consumer Confidence Hits Four-Month High on Chip Boom",
       "items": [
+        {
+          "title": "Korean Stocks Sink as Chipmakers Plunge on Deepening AI Fatigue",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-07-28T00:43:29+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-28/korean-stocks-sink-as-chipmakers-plung-on-deepening-ai-fatigue",
+          "tags": [
+            "market",
+            "us_growth"
+          ]
+        },
         {
           "title": "S&P 500 Wobbles as AI Angst Offsets Oil Decline: Markets Wrap",
           "source": "Bloomberg Markets",
@@ -171,6 +211,18 @@
             "macro_risk",
             "market",
             "us_broad",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "CXMT Listing Creates $192 Billion Windfall for Chinese Province",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-07-28T00:00:54+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-28/cxmt-listing-creates-192-billion-windfall-for-chinese-province",
+          "tags": [
+            "market",
             "us_growth"
           ]
         },
@@ -188,20 +240,6 @@
           ]
         },
         {
-          "title": "Singapore Delivers Back-to-Back Tightening to Tame Price Risks",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-27T00:04:35+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-27/singapore-tightens-monetary-policy-further-on-price-pressures",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
           "title": "S. Korea’s Consumer Confidence Hits Four-Month High on Chip Boom",
           "source": "Bloomberg Economics",
           "sentiment": "positive",
@@ -211,19 +249,6 @@
           "tags": [
             "jp_semiconductor",
             "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "BlackRock Dodges AI Bond-Trading Flop After Offering Junk Yields",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-07-27T20:56:01+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-27/blackrock-dodges-ai-bond-flop-as-12-3-billion-debt-deal-rallies",
-          "tags": [
-            "market",
-            "rates",
             "us_growth"
           ]
         }
@@ -244,14 +269,29 @@
     "gold": {
       "avgSentiment": 0.67,
       "negativeCount": 0,
-      "positiveCount": 1,
+      "positiveCount": 2,
       "neutralCount": 0,
       "sourceCount": 1,
-      "itemCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "CME’s Debut of 24/7 Gold Futures Trading Met With Strong Demand",
-      "topPositiveTitle": "CME’s Debut of 24/7 Gold Futures Trading Met With Strong Demand",
+      "topNegativeTitle": "Gold Holds Gain as Trump Sounds Optimism Over US-Iran Talks",
+      "topPositiveTitle": "Gold Holds Gain as Trump Sounds Optimism Over US-Iran Talks",
       "items": [
+        {
+          "title": "Gold Holds Gain as Trump Sounds Optimism Over US-Iran Talks",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-07-27T23:21:45+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-27/gold-holds-gain-as-trump-sounds-optimism-over-us-iran-talks",
+          "tags": [
+            "geopolitical",
+            "gold",
+            "macro_risk",
+            "market",
+            "rates"
+          ]
+        },
         {
           "title": "CME’s Debut of 24/7 Gold Futures Trading Met With Strong Demand",
           "source": "Bloomberg Markets",
@@ -292,18 +332,18 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.094,
+      "avgSentiment": -0.05,
       "negativeCount": 6,
-      "positiveCount": 2,
-      "neutralCount": 6,
+      "positiveCount": 3,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 14,
+      "itemCount": 13,
       "isStale": false,
-      "topNegativeTitle": "Oil Extends Decline, Asian Stocks Set for Losses: Markets Wrap",
+      "topNegativeTitle": "Asian Stocks Fall as Chips Slump, Oil Extends Drop: Markets Wrap",
       "topPositiveTitle": "Pakistan Holds Key Interest Rate as Iran War Clouds Outlook",
       "items": [
         {
-          "title": "Oil Extends Decline, Asian Stocks Set for Losses: Markets Wrap",
+          "title": "Asian Stocks Fall as Chips Slump, Oil Extends Drop: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -1.0,
@@ -311,9 +351,9 @@
           "url": "https://www.bloomberg.com/news/articles/2026-07-27/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
+            "jp_semiconductor",
             "macro_risk",
-            "market",
-            "us_broad"
+            "market"
           ]
         },
         {
@@ -329,6 +369,19 @@
             "market",
             "us_broad",
             "us_growth"
+          ]
+        },
+        {
+          "title": "SK Hynix’s $470 Billion Selloff Shows Cracks in Memory-Chip Boom",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-07-27T23:30:04+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-27/sk-hynix-s-rebound-from-470-billion-rout-hinges-on-ai-spending",
+          "tags": [
+            "jp_semiconductor",
+            "macro_risk",
+            "market"
           ]
         },
         {
@@ -356,18 +409,6 @@
             "macro_risk",
             "market",
             "us_growth"
-          ]
-        },
-        {
-          "title": "Muni Bonds Look Cheapest Since March After Rough Week of Returns",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-07-27T16:30:20+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-27/muni-bonds-look-cheapest-since-march-after-rough-week-of-returns",
-          "tags": [
-            "macro_risk",
-            "market"
           ]
         }
       ]
@@ -398,15 +439,15 @@
       ]
     },
     "rates": {
-      "avgSentiment": 0.249,
+      "avgSentiment": 0.296,
       "negativeCount": 0,
-      "positiveCount": 5,
+      "positiveCount": 6,
       "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 8,
+      "itemCount": 9,
       "isStale": false,
       "topNegativeTitle": "XP Founder Urges Brazil to Fix Deficit as Election Debate Looms",
-      "topPositiveTitle": "Fed Faces New Pressure to Hike Rates as Price Risks Rebound",
+      "topPositiveTitle": "Gold Holds Gain as Trump Sounds Optimism Over US-Iran Talks",
       "items": [
         {
           "title": "XP Founder Urges Brazil to Fix Deficit as Election Debate Looms",
@@ -483,11 +524,11 @@
       "sourceCount": 3,
       "itemCount": 9,
       "isStale": false,
-      "topNegativeTitle": "Oil Extends Decline, Asian Stocks Set for Losses: Markets Wrap",
+      "topNegativeTitle": "Asian Stocks Fall as Chips Slump, Oil Extends Drop: Markets Wrap",
       "topPositiveTitle": "Treasuries Rise as Elevated Yields Attract Buyers Before Fed",
       "items": [
         {
-          "title": "Oil Extends Decline, Asian Stocks Set for Losses: Markets Wrap",
+          "title": "Asian Stocks Fall as Chips Slump, Oil Extends Drop: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -1.0,
@@ -495,9 +536,9 @@
           "url": "https://www.bloomberg.com/news/articles/2026-07-27/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
+            "jp_semiconductor",
             "macro_risk",
-            "market",
-            "us_broad"
+            "market"
           ]
         },
         {
@@ -560,12 +601,12 @@
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.067,
+      "avgSentiment": 0.149,
       "negativeCount": 2,
-      "positiveCount": 2,
-      "neutralCount": 6,
+      "positiveCount": 3,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 10,
+      "itemCount": 9,
       "isStale": false,
       "topNegativeTitle": "Latest Oil Market News and Analysis for July 28",
       "topPositiveTitle": "Pakistan Holds Key Interest Rate as Iran War Clouds Outlook",
@@ -627,16 +668,17 @@
           ]
         },
         {
-          "title": "LVMH Fashion Unit’s Return to Growth Held Back by Iran War",
-          "source": "Bloomberg Markets",
+          "title": "Chile Rates Seen on Hold as War Upends Expectations for Year End",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-27T15:45:31+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-27/lvmh-fashion-unit-s-return-to-growth-held-back-by-iran-war",
+          "publishedAt": "2026-07-27T12:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-27/chile-rates-seen-on-hold-as-war-upends-expectations-for-year-end",
           "tags": [
             "geopolitical",
             "macro_risk",
-            "market"
+            "market",
+            "rates"
           ]
         }
       ]
