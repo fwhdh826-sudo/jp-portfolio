@@ -359,6 +359,7 @@ interface AppStoreRuntime {
   lastAppliedSnapshotGeneration: SnapshotGenerationCache
   testSeams: {
     portfolioGenerationPhaseObserver: PortfolioGenerationPhaseObserverForTest | null
+    candidateCompositionBeforeHook: (() => void) | null
     manualPublishBeforeApplyHook: (() => void) | null
     loadPublishBeforeApplyHook: (() => void) | null
     loadRestoreBeforeReadHook: (() => void) | null
@@ -472,6 +473,7 @@ function createAppStoreRuntime(
     lastAppliedSnapshotGeneration: null,
     testSeams: {
       portfolioGenerationPhaseObserver: null,
+      candidateCompositionBeforeHook: null,
       manualPublishBeforeApplyHook: null,
       loadPublishBeforeApplyHook: null,
       loadRestoreBeforeReadHook: null,
@@ -501,6 +503,7 @@ export function resetPortfolioGenerationLockAdapterForTest(): void {
 
 function resetRuntimeTestSeams(runtime: AppStoreRuntime): void {
   runtime.testSeams.portfolioGenerationPhaseObserver = null
+  runtime.testSeams.candidateCompositionBeforeHook = null
   runtime.testSeams.manualPublishBeforeApplyHook = null
   runtime.testSeams.loadPublishBeforeApplyHook = null
   runtime.testSeams.loadRestoreBeforeReadHook = null
@@ -777,7 +780,8 @@ function computeLocalStorageFreshness(nowMs = Date.now()): NonNullable<SystemSta
  * sequence untouched; individual helpers are never allowed to splice one field into it.
  */
 type CurrentPortfolioPersistenceResult =
-  | { status: 'persisted'; target: 'canonical' | 'legacy' }
+  | { status: 'persisted'; target: 'canonical'; receipt: CsvImportPersistenceReceipt }
+  | { status: 'persisted'; target: 'legacy' }
   | {
       status: 'blocked'
       reason: 'canonical_committed' | 'canonical_invalid' | 'canonical_changed' | 'metadata_misaligned'
@@ -848,7 +852,7 @@ function persistCurrentPortfolioGeneration(
         ? null
         : state.system.csvSyncSummary ?? canonical.payload.syncSummary
       const provenance = state.system.csvImportProvenance ?? null
-      persistCsvImportTransaction({
+      const receipt = persistCsvImportTransaction({
         holdings: state.holdings,
         trust: state.trust,
         learning: state.learning,
@@ -871,7 +875,7 @@ function persistCurrentPortfolioGeneration(
           csvImportProvenance: provenance,
         }),
       }, savedAt, knownCanonicalRaw, canonicalReplacementWriteContract(canonical.schemaVersion))
-      return { status: 'persisted', target: 'canonical' }
+      return { status: 'persisted', target: 'canonical', receipt }
     } catch (error) {
       // These historical actions are best-effort persistence. A failed full replacement leaves
       // the previous canonical envelope valid; it must not fall through to partial legacy writes.
@@ -1961,6 +1965,36 @@ export function runFullAnalysis(
 
 type FullAnalysisResult = ReturnType<typeof runFullAnalysis>
 
+type CommittedCsvImportGeneration = Extract<
+  CsvImportGenerationRestoreResult,
+  { status: 'committed' }
+>
+
+type ExactCommittedCanonicalAuthority =
+  | {
+      readonly ok: true
+      readonly raw: string
+      readonly generation: CommittedCsvImportGeneration
+    }
+  | {
+      readonly ok: false
+      readonly reason: 'invalid_committed_raw'
+    }
+
+/**
+ * Converts one transaction's receipt into the exact canonical generation it committed. This
+ * helper is deliberately pure: no storage/clock read and no fallback to ambient or prior state.
+ */
+function restoreExactCommittedCanonicalAuthority(
+  receipt: CsvImportPersistenceReceipt,
+): ExactCommittedCanonicalAuthority {
+  const raw = receipt.committedRaw
+  const generation = restoreCsvImportGenerationFromRaw(raw)
+  return generation.status === 'committed'
+    ? { ok: true, raw, generation }
+    : { ok: false, reason: 'invalid_committed_raw' }
+}
+
 /**
  * Durable C-D connection. Callers provide the exact canonical bytes only after persistence
  * succeeds and while the existing operation lock is still held. Any unavailable authority or
@@ -1969,12 +2003,11 @@ type FullAnalysisResult = ReturnType<typeof runFullAnalysis>
 function appendCommittedCandidatePortfolioRecommendations(
   stagedState: AppState,
   computed: FullAnalysisResult,
-  committedCanonicalRaw: string | null,
+  authority: Extract<ExactCommittedCanonicalAuthority, { ok: true }>,
   operationNowMs: number,
 ): FullAnalysisResult {
-  const canonicalGeneration = restoreCsvImportGenerationFromRaw(committedCanonicalRaw)
+  const canonicalGeneration = authority.generation
   if (
-    canonicalGeneration.status !== 'committed' ||
     stagedState.candidateFunnel === null ||
     computed.officialDecision === null
   ) return computed
@@ -2145,15 +2178,19 @@ const createAppStoreStateCreator = (
 
           failurePhase.current = 'persistence'
           let persistenceResult: ReturnType<PersistManualLegacy>
+          let canonicalPersistenceResult: CurrentPortfolioPersistenceResult | null = null
           try {
-            persistenceResult = alignment.canonical.status === 'committed'
-              ? persistCurrentPortfolioGeneration(
-                  finalState,
-                  alignment.canonical,
-                  alignment.canonicalRaw,
-                  operationNowMs,
-                )
-              : persistLegacy(finalState, operationNowMs)
+            if (alignment.canonical.status === 'committed') {
+              canonicalPersistenceResult = persistCurrentPortfolioGeneration(
+                finalState,
+                alignment.canonical,
+                alignment.canonicalRaw,
+                operationNowMs,
+              )
+              persistenceResult = canonicalPersistenceResult
+            } else {
+              persistenceResult = persistLegacy(finalState, operationNowMs)
+            }
           } catch {
             publishManualPersistenceError({ status: 'failed', reason: 'indeterminate' })
             return createManualMutationFailure(source, 'MANUAL_PERSISTENCE_ERROR')
@@ -2171,12 +2208,26 @@ const createAppStoreStateCreator = (
               : createManualMutationFailure(source, 'MANUAL_PERSISTENCE_ERROR')
           }
 
+          let committedReceipt: CsvImportPersistenceReceipt | null = null
           if (alignment.canonical.status === 'committed') {
-            const committedCanonicalRaw = readCsvImportCanonicalRaw()
+            if (
+              canonicalPersistenceResult?.status !== 'persisted' ||
+              canonicalPersistenceResult.target !== 'canonical'
+            ) {
+              return createManualMutationFailure(source, 'MANUAL_PERSISTENCE_ERROR')
+            }
+            committedReceipt = canonicalPersistenceResult.receipt
+            const compositionBeforeHook = runtime.testSeams.candidateCompositionBeforeHook
+            runtime.testSeams.candidateCompositionBeforeHook = null
+            compositionBeforeHook?.()
+            const authority = restoreExactCommittedCanonicalAuthority(committedReceipt)
+            if (!authority.ok) {
+              return createManualMutationFailure(source, 'MANUAL_PERSISTENCE_ERROR')
+            }
             computed = appendCommittedCandidatePortfolioRecommendations(
               candidateState,
               computed,
-              committedCanonicalRaw,
+              authority,
               operationNowMs,
             )
             finalState = { ...candidateState, ...computed }
@@ -2212,6 +2263,9 @@ const createAppStoreStateCreator = (
             const beforeApplyHook = runtime.testSeams.manualPublishBeforeApplyHook
             runtime.testSeams.manualPublishBeforeApplyHook = null
             beforeApplyHook?.()
+            if (committedReceipt !== null && !ownsCsvImportCanonicalBytes(committedReceipt)) {
+              return createPortfolioCoordinationFailure(source, 'PORTFOLIO_GENERATION_CONFLICT')
+            }
             // set() invokes synchronous subscribers before the lock callback resolves.
             set(finalState)
           } catch {
@@ -2266,12 +2320,16 @@ const createAppStoreStateCreator = (
   const publishLoadFinalState = (
     operation: PortfolioLoadOperation,
     finalState: AppState,
+    committedReceipt: CsvImportPersistenceReceipt | null,
   ): PortfolioLoadResult => {
     const stateToPublish: AppState = operation === 'initialize'
       ? { ...finalState, system: { ...finalState.system, crossTabInvalidation: undefined } }
       : finalState
     try {
       runLoadPublishBeforeApplyHookForTest(runtime)
+      if (committedReceipt !== null && !ownsCsvImportCanonicalBytes(committedReceipt)) {
+        return createPortfolioCoordinationFailure(operation, 'PORTFOLIO_GENERATION_CONFLICT')
+      }
       set(stateToPublish)
     } catch {
       const published = get()
@@ -2467,11 +2525,20 @@ const createAppStoreStateCreator = (
           if (persistenceResult.status !== 'persisted') {
             return classifyLoadPersistenceFailure(operation, persistenceResult)
           }
+          let committedReceipt: CsvImportPersistenceReceipt | null = null
           if (persistenceResult.target === 'canonical') {
+            committedReceipt = persistenceResult.receipt
+            const compositionBeforeHook = runtime.testSeams.candidateCompositionBeforeHook
+            runtime.testSeams.candidateCompositionBeforeHook = null
+            compositionBeforeHook?.()
+            const authority = restoreExactCommittedCanonicalAuthority(committedReceipt)
+            if (!authority.ok) {
+              return createPortfolioLoadFailure(operation, 'LOAD_PERSISTENCE_ERROR')
+            }
             computed = appendCommittedCandidatePortfolioRecommendations(
               stagedState,
               computed,
-              readCsvImportCanonicalRaw(),
+              authority,
               nowMs,
             )
             finalState = {
@@ -2498,7 +2565,7 @@ const createAppStoreStateCreator = (
 
           // exactly one final publication
           failurePhase.current = 'publish'
-          return publishLoadFinalState(operation, finalState)
+          return publishLoadFinalState(operation, finalState, committedReceipt)
         },
       )
       return lockResult.ok
@@ -2596,11 +2663,20 @@ const createAppStoreStateCreator = (
           if (persistenceResult.status !== 'persisted') {
             return classifyLoadPersistenceFailure(operation, persistenceResult)
           }
+          let committedReceipt: CsvImportPersistenceReceipt | null = null
           if (persistenceResult.target === 'canonical') {
+            committedReceipt = persistenceResult.receipt
+            const compositionBeforeHook = runtime.testSeams.candidateCompositionBeforeHook
+            runtime.testSeams.candidateCompositionBeforeHook = null
+            compositionBeforeHook?.()
+            const authority = restoreExactCommittedCanonicalAuthority(committedReceipt)
+            if (!authority.ok) {
+              return createPortfolioLoadFailure(operation, 'LOAD_PERSISTENCE_ERROR')
+            }
             computed = appendCommittedCandidatePortfolioRecommendations(
               stagedState,
               computed,
-              readCsvImportCanonicalRaw(),
+              authority,
               nowMs,
             )
             finalState = {
@@ -2626,7 +2702,7 @@ const createAppStoreStateCreator = (
           }
 
           failurePhase.current = 'publish'
-          return publishLoadFinalState(operation, finalState)
+          return publishLoadFinalState(operation, finalState, committedReceipt)
         },
       )
       return lockResult.ok
@@ -2968,10 +3044,22 @@ const createAppStoreStateCreator = (
         ))
       }
 
+      const compositionBeforeHook = runtime.testSeams.candidateCompositionBeforeHook
+      runtime.testSeams.candidateCompositionBeforeHook = null
+      compositionBeforeHook?.()
+      const authority = restoreExactCommittedCanonicalAuthority(persistenceReceipt)
+      if (!authority.ok) {
+        durableCommitted = false
+        return publishFailure(csvImportFailure(
+          'PERSISTENCE_ERROR',
+          '保存したcanonical世代を検証できなかったため、準備した分析結果は公開しませんでした。再読み込み後に再試行してください。',
+          'indeterminate',
+        ))
+      }
       computed = appendCommittedCandidatePortfolioRecommendations(
         stagedState,
         computed,
-        persistenceReceipt.committedRaw,
+        authority,
         transaction.analysisNow,
       )
 
@@ -3648,10 +3736,21 @@ const createAppStoreStateCreator = (
         }
       }
 
+      const compositionBeforeHook = runtime.testSeams.candidateCompositionBeforeHook
+      runtime.testSeams.candidateCompositionBeforeHook = null
+      compositionBeforeHook?.()
+      const authority = restoreExactCommittedCanonicalAuthority(receipt)
+      if (!authority.ok) {
+        return {
+          ok: false,
+          code: 'SNAPSHOT_PERSISTENCE_ERROR',
+          error: '保存したcanonical世代を検証できなかったため、snapshotの取込は公開しませんでした。再読み込み後に再試行してください。',
+        }
+      }
       computed = appendCommittedCandidatePortfolioRecommendations(
         stagedState,
         computed,
-        receipt.committedRaw,
+        authority,
         transaction.analysisNow,
       )
 
@@ -3807,6 +3906,7 @@ export interface AppStoreInstanceTestControls {
   acquirePortfolioOperation(kind: PortfolioOperationKind): PortfolioOperationTicket | null
   releasePortfolioOperation(ticket: PortfolioOperationTicket): boolean
   setPortfolioGenerationPhaseObserver(observer: PortfolioGenerationPhaseObserverForTest): void
+  setCandidateCompositionBeforeHook(hook: () => void): void
   setManualPublishBeforeApplyHook(hook: () => void): void
   setLoadPublishBeforeApplyHook(hook: () => void): void
   setLoadRestoreBeforeReadHook(hook: () => void): void
@@ -3821,6 +3921,7 @@ export interface AppStoreInstanceTestControls {
     activeGenerationPhase: CsvImportTransactionPhase | null
     hasSnapshotCache: boolean
     hasPhaseObserver: boolean
+    hasCandidateCompositionHook: boolean
     hasManualPublishHook: boolean
     hasLoadPublishHook: boolean
     hasLoadRestoreHook: boolean
@@ -3866,6 +3967,9 @@ export function createAppStoreInstanceForTest(
     setPortfolioGenerationPhaseObserver: observer => {
       runtime.testSeams.portfolioGenerationPhaseObserver = observer
     },
+    setCandidateCompositionBeforeHook: hook => {
+      runtime.testSeams.candidateCompositionBeforeHook = hook
+    },
     setManualPublishBeforeApplyHook: hook => {
       runtime.testSeams.manualPublishBeforeApplyHook = hook
     },
@@ -3890,6 +3994,7 @@ export function createAppStoreInstanceForTest(
       activeGenerationPhase: runtime.activePortfolioGenerationTransaction?.phase ?? null,
       hasSnapshotCache: runtime.lastAppliedSnapshotGeneration !== null,
       hasPhaseObserver: runtime.testSeams.portfolioGenerationPhaseObserver !== null,
+      hasCandidateCompositionHook: runtime.testSeams.candidateCompositionBeforeHook !== null,
       hasManualPublishHook: runtime.testSeams.manualPublishBeforeApplyHook !== null,
       hasLoadPublishHook: runtime.testSeams.loadPublishBeforeApplyHook !== null,
       hasInvalidationFlushCallback: runtime.portfolioGenerationInvalidation.flushPendingToStore !== null,
