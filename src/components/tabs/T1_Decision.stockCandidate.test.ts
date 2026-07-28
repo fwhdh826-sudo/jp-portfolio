@@ -2,6 +2,17 @@
 // 表示専用の純関数（formatStockMetric / sortStockCandidatesForDisplay）の回帰guard。
 import { describe, it, expect } from 'vitest'
 import { formatStockMetric, sortStockCandidatesForDisplay } from './T1_Decision'
+// @ts-expect-error -- repository intentionally has no @types/node
+import { readFileSync } from 'node:fs'
+
+const t1Source = readFileSync(
+  new URL('./T1_Decision.tsx', import.meta.url),
+  'utf8',
+)
+const panelSource = readFileSync(
+  new URL('../candidates/CandidateFunnelPanel.tsx', import.meta.url),
+  'utf8',
+)
 
 describe('formatStockMetric', () => {
   it('nullのとき「—」を返す', () => {
@@ -58,5 +69,25 @@ describe('sortStockCandidatesForDisplay', () => {
 
   it('空配列を渡すと空配列を返す', () => {
     expect(sortStockCandidatesForDisplay([])).toEqual([])
+  })
+})
+
+describe('P5-B005-C-B3 frozen T1 composition protection', () => {
+  it('C-B3-T59 keeps StockCandidateSection immediately before CandidateFunnelPanel', () => {
+    const withoutJsxComments = t1Source.replace(/\{\/\*[\s\S]*?\*\/\}/g, '')
+    expect(withoutJsxComments).toMatch(
+      /<StockCandidateSection\s*\/>\s*<CandidateFunnelPanel\s*\/>/,
+    )
+  })
+
+  it('C-B3-T60 preserves StockList, StockDetail, and market candidate ordering', () => {
+    expect(t1Source).toContain('function StockList')
+    expect(t1Source).toContain('function StockDetail')
+    expect(t1Source).toContain('sortStockCandidatesForDisplay')
+    expect(t1Source).toContain("BUY_NEW: 0")
+    expect(t1Source).toContain("WATCH: 1")
+    expect(t1Source).toContain("BLOCKED: 2")
+    expect(panelSource).not.toContain('.reverse()')
+    expect(panelSource).toContain('return leftRank - rightRank || left.artifactIndex - right.artifactIndex')
   })
 })

@@ -55,6 +55,58 @@
   color: var(--color-sell-text);
 }
 
+.candidate-funnel__portfolio-fit-state {
+  display: grid;
+  gap: var(--space-2);
+  min-width: 0;
+  margin-bottom: var(--space-3);
+  padding: var(--space-3);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-surface);
+  color: var(--color-text-second);
+  font-size: var(--font-sm);
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.candidate-funnel__portfolio-fit-state--partial,
+.candidate-funnel__portfolio-fit-state--unavailable,
+.candidate-funnel__portfolio-fit-state--pending {
+  border-color: var(--color-wait-border);
+  background: var(--color-wait-bg);
+  color: var(--color-wait-text);
+}
+
+.candidate-funnel__portfolio-fit-state--invalid {
+  border-color: var(--color-sell-border);
+  background: var(--color-sell-bg);
+  color: var(--color-sell-text);
+}
+
+.candidate-funnel__portfolio-fit-state dl {
+  display: grid;
+  gap: var(--space-1);
+  margin: 0;
+}
+
+.candidate-funnel__portfolio-fit-state dl > div {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.candidate-funnel__portfolio-fit-state dt,
+.candidate-funnel__portfolio-fit-state dd {
+  margin: 0;
+}
+
+.candidate-funnel__portfolio-fit-state dd {
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+
 .candidate-funnel__timestamps {
   display: flex;
   flex-direction: column;
@@ -188,7 +240,8 @@
 
 .candidate-funnel__filters button:focus-visible,
 .candidate-funnel__more:focus-visible,
-.candidate-funnel__data-details summary:focus-visible {
+.candidate-funnel__data-details summary:focus-visible,
+.candidate-funnel-card__portfolio-fit summary:focus-visible {
   outline: 3px solid var(--color-primary);
   outline-offset: 2px;
 }
@@ -339,6 +392,102 @@
   display: grid;
   gap: var(--space-2);
   margin: 0 0 var(--space-3);
+}
+
+.candidate-funnel-card__portfolio-fit {
+  min-width: 0;
+  margin-bottom: var(--space-3);
+  padding: var(--space-3);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-base);
+  color: var(--color-text-second);
+  font-size: var(--font-xs);
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+
+.candidate-funnel-card__portfolio-fit--partial,
+.candidate-funnel-card__portfolio-fit--missing,
+.candidate-funnel-card__portfolio-fit--unavailable,
+.candidate-funnel-card__portfolio-fit--pending {
+  border-color: var(--color-wait-border);
+  background: var(--color-wait-bg);
+}
+
+.candidate-funnel-card__portfolio-fit--invalid {
+  border-color: var(--color-sell-border);
+  background: var(--color-sell-bg);
+}
+
+.candidate-funnel-card__portfolio-fit h4,
+.candidate-funnel-card__portfolio-fit p {
+  margin: 0;
+}
+
+.candidate-funnel-card__portfolio-fit h4 {
+  margin-bottom: var(--space-2);
+  color: var(--color-text-primary);
+  font-size: var(--font-sm);
+}
+
+.candidate-funnel-card__portfolio-fit-summary {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin-bottom: var(--space-2);
+  font-weight: 700;
+}
+
+.candidate-funnel-card__portfolio-fit details {
+  min-width: 0;
+}
+
+.candidate-funnel-card__portfolio-fit summary {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--color-stock-text);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.candidate-funnel-card__portfolio-fit-components {
+  display: grid;
+  gap: var(--space-2);
+  margin: var(--space-2) 0;
+}
+
+.candidate-funnel-card__portfolio-fit-components > div {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.candidate-funnel-card__portfolio-fit-components dt {
+  color: var(--color-text-subtle);
+}
+
+.candidate-funnel-card__portfolio-fit-components dd {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: 0;
+  font-size: var(--font-xs);
+}
+
+.candidate-funnel-card__portfolio-fit-list {
+  margin-top: var(--space-2);
+}
+
+.candidate-funnel-card__portfolio-fit-list > div {
+  font-weight: 700;
+}
+
+.candidate-funnel-card__portfolio-fit-list ul {
+  margin: var(--space-1) 0 0;
+  padding-left: var(--space-4);
 }
 
 .candidate-funnel-card__reason-group {

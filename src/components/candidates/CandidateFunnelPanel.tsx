@@ -7,8 +7,14 @@ import type {
 } from '../../types/candidateFunnel'
 import type { CandidateFunnelArtifact } from '../../types/candidateFunnelArtifact'
 import type { CandidateFunnelFreshness } from '../../services/candidateFunnelFreshness'
+import { useCandidatePortfolioFit } from '../../hooks/useCandidatePortfolioFit'
 import { SectionHeader } from '../layout/SectionHeader'
 import { CandidateFunnelCard } from './CandidateFunnelCard'
+import {
+  projectCandidatePortfolioFitPresentation,
+  selectCandidatePortfolioFitCardViewModel,
+  type CandidatePortfolioFitPresentationViewModel,
+} from './candidatePortfolioFitPresentation'
 import './CandidateFunnelPanel.css'
 
 export type CandidateFunnelFilter = 'actionable' | 'deep_review' | 'screened'
@@ -137,6 +143,7 @@ function filterTierForAria(filter: CandidateFunnelFilter): CandidateFunnelTier {
 interface CandidateFunnelPanelViewProps {
   artifact: CandidateFunnelArtifact | null
   freshness: CandidateFunnelFreshness
+  portfolioFit?: CandidatePortfolioFitPresentationViewModel
   viewState: CandidateFunnelViewState
   onAction: (action: CandidateFunnelViewAction) => void
 }
@@ -144,6 +151,10 @@ interface CandidateFunnelPanelViewProps {
 export function CandidateFunnelPanelView({
   artifact,
   freshness,
+  portfolioFit = projectCandidatePortfolioFitPresentation({
+    phase: 'pending',
+    result: null,
+  }),
   viewState,
   onAction,
 }: CandidateFunnelPanelViewProps) {
@@ -180,10 +191,12 @@ export function CandidateFunnelPanelView({
       />
 
       <div className="candidate-funnel__disclaimers">
-        <p>市場公開情報による一次評価です。保有状況・資金余力・購入判断は未反映です。</p>
+        <p>市場スコア・市場順位・選別段階は市場評価です。ポートフォリオ適合は保有状況との関係を別枠で表示し、両者を合算しません。</p>
+        <p>ポートフォリオ適合はこの端末内で評価し、結果を保存・送信しません。</p>
+        <p>ポートフォリオ適合スコア・順位は未実装です。独自の総合点や順位は表示しません。</p>
         <p>重点候補は購入を推奨するものではなく、次段階の検討候補です。</p>
         <p className="candidate-funnel__not-for-trading">
-          売買利用不可（not_for_trading）— 現在の売買判断や注文には使用しないでください。
+          {portfolioFit.dataset.notForTradingText}
         </p>
       </div>
 
@@ -201,29 +214,69 @@ export function CandidateFunnelPanelView({
         </div>
       )}
 
+      {canDisplayCandidates && freshness === 'stale' && (
+        <div
+          className="candidate-funnel__state candidate-funnel__state--warning"
+          role="status"
+          aria-live="polite"
+        >
+          <span aria-hidden="true">⚠</span>
+          <span>データが古い可能性があります。更新日時を確認してください。</span>
+        </div>
+      )}
+
+      {canDisplayCandidates && freshness === 'degraded' && (
+        <div
+          className="candidate-funnel__state candidate-funnel__state--danger"
+          role="alert"
+        >
+          <span aria-hidden="true">⚠</span>
+          <span>代替データ経路を使用しています。現在の購入判断には使用しないでください。</span>
+        </div>
+      )}
+
+      <div
+        className={`candidate-funnel__portfolio-fit-state candidate-funnel__portfolio-fit-state--${portfolioFit.dataset.status}`}
+        role={portfolioFit.dataset.alertRole === 'none' ? undefined : portfolioFit.dataset.alertRole}
+        aria-live={portfolioFit.dataset.alertRole === 'status' ? 'polite' : undefined}
+      >
+        <strong>{portfolioFit.dataset.statusText}</strong>
+        {portfolioFit.dataset.hasWarning && (
+          <span>ポートフォリオ適合に確認事項があります。</span>
+        )}
+        {portfolioFit.dataset.canonicalMessage !== null && (
+          <span>{portfolioFit.dataset.canonicalMessage}</span>
+        )}
+        <dl>
+          {portfolioFit.dataset.evaluatedAtText !== null && (
+            <div>
+              <dt>評価日時:</dt>
+              <dd>{portfolioFit.dataset.evaluatedAtText} JST</dd>
+            </div>
+          )}
+          {portfolioFit.dataset.portfolioFreshnessText !== null && (
+            <div>
+              <dt>保有データ</dt>
+              <dd>{portfolioFit.dataset.portfolioFreshnessText}</dd>
+            </div>
+          )}
+          {portfolioFit.dataset.capacityText !== null && (
+            <div>
+              <dt>日本株枠</dt>
+              <dd>{portfolioFit.dataset.capacityText}</dd>
+            </div>
+          )}
+          {portfolioFit.dataset.degradationText !== null && (
+            <div>
+              <dt>品質・鮮度の確認事項</dt>
+              <dd>{portfolioFit.dataset.degradationText}</dd>
+            </div>
+          )}
+        </dl>
+      </div>
+
       {canDisplayCandidates && (
         <>
-          {freshness === 'stale' && (
-            <div
-              className="candidate-funnel__state candidate-funnel__state--warning"
-              role="status"
-              aria-live="polite"
-            >
-              <span aria-hidden="true">⚠</span>
-              <span>データが古い可能性があります。更新日時を確認してください。</span>
-            </div>
-          )}
-
-          {freshness === 'degraded' && (
-            <div
-              className="candidate-funnel__state candidate-funnel__state--danger"
-              role="alert"
-            >
-              <span aria-hidden="true">⚠</span>
-              <span>代替データ経路を使用しています。現在の購入判断には使用しないでください。</span>
-            </div>
-          )}
-
           <div className="candidate-funnel__timestamps" aria-label="候補データ更新日時">
             <span>生成: {formatCandidateFunnelJstTimestamp(artifact._meta.generatedAt)} JST</span>
             <span>ソース更新: {formatCandidateFunnelJstTimestamp(artifact._meta.sourceUpdatedAt)} JST</span>
@@ -314,6 +367,11 @@ export function CandidateFunnelPanelView({
                 <CandidateFunnelCard
                   key={`candidate-funnel-record-${entry.artifactIndex}`}
                   candidate={entry.candidate}
+                  portfolioFit={selectCandidatePortfolioFitCardViewModel(
+                    portfolioFit,
+                    entry.artifactIndex,
+                    entry.candidate.tier,
+                  )}
                 />
               ))
             )}
@@ -339,8 +397,16 @@ export function CandidateFunnelPanelView({
 }
 
 export function CandidateFunnelPanel() {
+  const portfolioFitRuntime = useCandidatePortfolioFit()
+  const portfolioFit = projectCandidatePortfolioFitPresentation(portfolioFitRuntime)
   const artifact = useAppStore(state => state.candidateFunnel)
-  const freshness = useAppStore(state => selectCandidateFunnelFreshness(state, Date.now()))
+  const evaluatedAtMs =
+    portfolioFitRuntime.phase === 'ready'
+      ? Date.parse(portfolioFitRuntime.result.evaluatedAt)
+      : Number.NaN
+  const freshness = useAppStore(
+    state => selectCandidateFunnelFreshness(state, evaluatedAtMs),
+  )
   const [viewState, dispatch] = useReducer(
     candidateFunnelViewReducer,
     CANDIDATE_FUNNEL_INITIAL_VIEW_STATE,
@@ -350,6 +416,7 @@ export function CandidateFunnelPanel() {
     <CandidateFunnelPanelView
       artifact={artifact}
       freshness={freshness}
+      portfolioFit={portfolioFit}
       viewState={viewState}
       onAction={dispatch}
     />

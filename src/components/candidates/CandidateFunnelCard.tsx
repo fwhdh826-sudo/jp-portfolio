@@ -3,6 +3,7 @@ import type {
   CandidateFunnelCandidate,
   CandidateFunnelTier,
 } from '../../types/candidateFunnel'
+import type { CandidatePortfolioFitCardViewModel } from './candidatePortfolioFitPresentation'
 
 const CANDIDATE_TIER_LABELS: Record<CandidateFunnelTier, string> = {
   excluded: '対象外',
@@ -69,11 +70,17 @@ function formatDataStatus(status: CandidateFunnelCandidate['dataStatus']): strin
 
 export interface CandidateFunnelCardProps {
   candidate: CandidateFunnelCandidate
+  portfolioFit?: CandidatePortfolioFitCardViewModel
 }
 
-export function CandidateFunnelCard({ candidate }: CandidateFunnelCardProps) {
+export function CandidateFunnelCard({
+  candidate,
+  portfolioFit,
+}: CandidateFunnelCardProps) {
   const generatedId = useId()
   const titleId = `candidate-funnel-card-title-${generatedId.replace(/:/g, '')}`
+  const portfolioFitTitleId =
+    `candidate-funnel-card-portfolio-fit-title-${generatedId.replace(/:/g, '')}`
 
   return (
     <article className="candidate-funnel-card" aria-labelledby={titleId}>
@@ -121,6 +128,63 @@ export function CandidateFunnelCard({ candidate }: CandidateFunnelCardProps) {
           <dd>{formatDataStatus(candidate.dataStatus)}</dd>
         </div>
       </dl>
+
+      {portfolioFit !== undefined && (
+        <section
+          className={`candidate-funnel-card__portfolio-fit candidate-funnel-card__portfolio-fit--${portfolioFit.state}`}
+          aria-labelledby={portfolioFitTitleId}
+        >
+          <h4 id={portfolioFitTitleId}>{portfolioFit.heading}</h4>
+          {'record' in portfolioFit ? (
+            <>
+              <div className="candidate-funnel-card__portfolio-fit-summary">
+                <span>{portfolioFit.record.relationshipText}</span>
+                <span>{portfolioFit.record.statusText}</span>
+              </div>
+              <details>
+                <summary>ポートフォリオ適合の詳細</summary>
+                <dl className="candidate-funnel-card__portfolio-fit-components">
+                  {portfolioFit.record.components.map(component => (
+                    <div key={component.id}>
+                      <dt>{component.label}</dt>
+                      <dd>
+                        <span>{component.statusText}</span>
+                        {component.valueText !== null && (
+                          <span aria-label={component.valueAriaLabel ?? undefined}>
+                            {component.valueText}
+                          </span>
+                        )}
+                      </dd>
+                    </div>
+                  ))}
+                </dl>
+                {portfolioFit.record.reasons.length > 0 && (
+                  <div className="candidate-funnel-card__portfolio-fit-list">
+                    <div>適合理由</div>
+                    <ul>
+                      {portfolioFit.record.reasons.map((reason, index) => (
+                        <li key={`${reason}-${index}`}>{reason}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+                {portfolioFit.record.risks.length > 0 && (
+                  <div className="candidate-funnel-card__portfolio-fit-list">
+                    <div>適合上の確認事項</div>
+                    <ul>
+                      {portfolioFit.record.risks.map((risk, index) => (
+                        <li key={`${risk}-${index}`}>{risk}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </details>
+            </>
+          ) : (
+            <p>{portfolioFit.statusText}</p>
+          )}
+        </section>
+      )}
 
       {candidate.selectedReasons.length > 0 && (
         <div className="candidate-funnel-card__reason-group">

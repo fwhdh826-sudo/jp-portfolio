@@ -26,6 +26,11 @@ import {
   formatCandidateTheme,
   formatCandidateTier,
 } from './CandidateFunnelCard'
+import type {
+  CandidatePortfolioFitPresentationStatus,
+  CandidatePortfolioFitPresentationViewModel,
+  CandidatePortfolioFitRecordViewModel,
+} from './candidatePortfolioFitPresentation'
 // @ts-expect-error -- Viteの?raw importはtest/build時にsource文字列へ解決される
 import panelSource from './CandidateFunnelPanel.tsx?raw'
 // @ts-expect-error -- Viteの?raw importはtest/build時にsource文字列へ解決される
@@ -57,15 +62,101 @@ function renderPanel(
   data: CandidateFunnelArtifact | null,
   freshness: 'fresh' | 'stale' | 'degraded' | 'invalid' | 'unavailable',
   viewState: CandidateFunnelViewState = CANDIDATE_FUNNEL_INITIAL_VIEW_STATE,
+  portfolioFit: CandidatePortfolioFitPresentationViewModel = fitPresentation('pending'),
 ): string {
   return renderToStaticMarkup(
     <CandidateFunnelPanelView
       artifact={data}
       freshness={freshness}
+      portfolioFit={portfolioFit}
       viewState={viewState}
       onAction={() => {}}
     />,
   )
+}
+
+function fitRecord(
+  artifactIndex: number,
+  status: CandidatePortfolioFitRecordViewModel['status'] = 'evaluated',
+): CandidatePortfolioFitRecordViewModel {
+  return {
+    artifactIndex,
+    candidateRecordId: `artifact:${artifactIndex}`,
+    status,
+    statusText: status === 'partial'
+      ? 'ポートフォリオ適合は一部のみ評価できました。'
+      : 'ポートフォリオ適合を評価しました。',
+    relationship: 'new_to_portfolio',
+    relationshipText: '新規候補（未保有）',
+    components: [
+      {
+        id: 'same_code_relationship',
+        label: '同一コード保有関係',
+        status: 'evaluated',
+        statusText: '評価済み',
+        valueText: null,
+        valueAriaLabel: null,
+      },
+      {
+        id: 'existing_concentration',
+        label: '既存ポートフォリオ内の同一コード比率',
+        status: status === 'partial' ? 'partial' : 'evaluated',
+        statusText: status === 'partial' ? '一部評価' : '評価済み',
+        valueText: status === 'partial' ? null : '25%',
+        valueAriaLabel: status === 'partial'
+          ? null
+          : '既存ポートフォリオ内の同一コード比率 25パーセント',
+      },
+      {
+        id: 'sector_diversification',
+        label: '既存日本株内の同一セクター比率',
+        status: 'evaluated',
+        statusText: '評価済み',
+        valueText: '66.7%',
+        valueAriaLabel: '既存日本株内の同一セクター比率 66.7パーセント',
+      },
+    ],
+    reasons: ['未保有として照合'],
+    risks: ['セクター情報が不完全です'],
+    hasUnknownLiteral: false,
+  }
+}
+
+function fitPresentation(
+  status: CandidatePortfolioFitPresentationStatus,
+  records: CandidatePortfolioFitRecordViewModel[] = [
+    fitRecord(1),
+    fitRecord(2),
+  ],
+): CandidatePortfolioFitPresentationViewModel {
+  const statusText = {
+    pending: 'ポートフォリオ適合を評価しています。',
+    evaluated: 'ポートフォリオ適合を評価しました。',
+    partial: 'ポートフォリオ適合は一部のみ評価できました。',
+    unavailable: 'ポートフォリオ適合を評価できません。',
+    invalid: 'ポートフォリオ適合データを検証できませんでした。',
+  }[status]
+  return {
+    dataset: {
+      status,
+      statusText,
+      alertRole: status === 'invalid'
+        ? 'alert'
+        : status === 'evaluated'
+          ? 'none'
+          : 'status',
+      evaluatedAtText: status === 'pending' ? null : '2026/07/26 17:00:00',
+      portfolioFreshnessText: status === 'pending' ? null : '保有データ鮮度: 有効',
+      capacityText: status === 'pending' ? null : '日本株枠: 余力あり',
+      degradationText: status === 'partial' ? '1件' : null,
+      canonicalMessage: null,
+      hasHardFail: status === 'invalid',
+      hasWarning: status === 'partial',
+      notForTradingText:
+        '売買利用不可（not_for_trading）— ポートフォリオ適合は売買判断や注文に使用しないでください。',
+    },
+    records: status === 'invalid' || status === 'unavailable' ? [] : records,
+  }
 }
 
 function countCandidateCards(html: string): number {
@@ -537,7 +628,8 @@ describe('P5-B005-B3-C freshness and load states', () => {
   })
 
   it('uses the store freshness selector instead of candidate existence checks', () => {
-    expect(panelSource).toContain('selectCandidateFunnelFreshness(state, Date.now())')
+    expect(panelSource).toContain('selectCandidateFunnelFreshness(state, evaluatedAtMs)')
+    expect(panelSource).not.toContain('selectCandidateFunnelFreshness(state, Date.now())')
     expect(panelSource).not.toContain("artifact ? 'fresh'")
     expect(panelSource).not.toContain("candidateFunnel ? 'fresh'")
   })
@@ -627,8 +719,8 @@ describe('P5-B005-B3-C disclaimer and analysis isolation', () => {
       [null, 'invalid'],
     ] as const) {
       const html = renderPanel(data, freshness)
-      expect(html).toContain('市場公開情報による一次評価です。保有状況・資金余力・購入判断は未反映です。')
-      expect(html).toContain('売買利用不可（not_for_trading）')
+      expect(html).toContain('市場スコア・市場順位・選別段階は市場評価です。ポートフォリオ適合は保有状況との関係を別枠で表示し、両者を合算しません。')
+      expect(html).toContain('売買利用不可（not_for_trading）— ポートフォリオ適合は売買判断や注文に使用しないでください。')
     }
   })
 
@@ -643,7 +735,7 @@ describe('P5-B005-B3-C disclaimer and analysis isolation', () => {
     expect(combinedSource).not.toContain('購入金額')
     expect(combinedSource).not.toContain('maxAmount')
     expect(combinedSource).not.toContain('officialDecision')
-    expect(combinedSource).not.toContain('portfolioFit')
+    expect(combinedSource).not.toContain('recommendedTrade')
   })
 
   it('candidate cards are non-interactive and rendering leaves officialDecision unchanged', () => {
@@ -720,5 +812,244 @@ describe('P5-B005-B3-C accessibility, keyboard, mobile, and T1 integration', () 
     expect(t1Source).toContain('function StockDetail')
     expect(t1Source).toContain('<StockCandidateSection />')
     expect(t1Source).toContain('return <StockDetail code={selectedCode}')
+  })
+})
+
+describe('P5-B005-C-B3 frozen panel, card, accessibility, and mobile contract', () => {
+  it('C-B3-T43 places the fit dataset after candidate state and before timestamps', () => {
+    const html = renderPanel(
+      artifact(),
+      'stale',
+      CANDIDATE_FUNNEL_INITIAL_VIEW_STATE,
+      fitPresentation('evaluated'),
+    )
+    expect(html.indexOf('データが古い可能性があります'))
+      .toBeLessThan(html.indexOf('candidate-funnel__portfolio-fit-state'))
+    expect(html.indexOf('candidate-funnel__portfolio-fit-state'))
+      .toBeLessThan(html.indexOf('candidate-funnel__timestamps'))
+  })
+
+  it('C-B3-T44 keeps every exact disclaimer visible for fresh, invalid, and unavailable', () => {
+    const exact = [
+      '市場スコア・市場順位・選別段階は市場評価です。ポートフォリオ適合は保有状況との関係を別枠で表示し、両者を合算しません。',
+      'ポートフォリオ適合はこの端末内で評価し、結果を保存・送信しません。',
+      '売買利用不可（not_for_trading）— ポートフォリオ適合は売買判断や注文に使用しないでください。',
+      'ポートフォリオ適合スコア・順位は未実装です。独自の総合点や順位は表示しません。',
+      '重点候補は購入を推奨するものではなく、次段階の検討候補です。',
+    ]
+    for (const [freshness, fit] of [
+      ['fresh', 'evaluated'],
+      ['invalid', 'invalid'],
+      ['unavailable', 'unavailable'],
+    ] as const) {
+      const html = renderPanel(
+        freshness === 'fresh' ? artifact() : null,
+        freshness,
+        CANDIDATE_FUNNEL_INITIAL_VIEW_STATE,
+        fitPresentation(fit),
+      )
+      exact.forEach(copy => expect(html).toContain(copy))
+    }
+  })
+
+  it('C-B3-T45 renders actionable fit after observations and before market reasons', () => {
+    const html = renderPanel(
+      artifact(),
+      'fresh',
+      CANDIDATE_FUNNEL_INITIAL_VIEW_STATE,
+      fitPresentation('evaluated'),
+    )
+    const article = html.match(/<article[\s\S]*?<\/article>/)?.[0] ?? ''
+    expect(article.indexOf('candidate-funnel-card__observations'))
+      .toBeLessThan(article.indexOf('candidate-funnel-card__portfolio-fit'))
+    expect(article.indexOf('candidate-funnel-card__portfolio-fit'))
+      .toBeLessThan(article.indexOf('candidate-funnel-card__reason-group'))
+    expect(article).toContain('新規候補（未保有）')
+  })
+
+  it('C-B3-T46 renders deep-review partial status and gates partial numeric values', () => {
+    const html = renderPanel(
+      artifact(),
+      'fresh',
+      { filter: 'deep_review', visibleCount: 10 },
+      fitPresentation('partial', [fitRecord(1, 'partial'), fitRecord(2)]),
+    )
+    expect(html).toContain('ポートフォリオ適合は一部のみ評価できました。')
+    expect(html).toContain('一部評価')
+    expect(html).not.toContain('既存ポートフォリオ内の同一コード比率 0パーセント')
+  })
+
+  it('C-B3-T47 renders no fit section for screened candidates', () => {
+    const html = renderPanel(
+      artifact(),
+      'fresh',
+      { filter: 'screened', visibleCount: 10 },
+      fitPresentation('evaluated'),
+    )
+    expect(html).toContain('data-tier="screened"')
+    expect(html).not.toContain('candidate-funnel-card__portfolio-fit')
+  })
+
+  it('C-B3-T48 renders only generic card state for invalid and unavailable fit', () => {
+    for (const status of ['invalid', 'unavailable'] as const) {
+      const html = renderPanel(
+        artifact(),
+        'fresh',
+        CANDIDATE_FUNNEL_INITIAL_VIEW_STATE,
+        fitPresentation(status),
+      )
+      expect(html).toContain(
+        status === 'invalid'
+          ? 'ポートフォリオ適合データを検証できませんでした。'
+          : 'ポートフォリオ適合を評価できません。',
+      )
+      expect(html).not.toContain('新規候補（未保有）')
+      expect(html).not.toContain('ポートフォリオ適合の詳細')
+    }
+  })
+
+  it('C-B3-T49 renders exact missing state without substituting another F2 record', () => {
+    const html = renderPanel(
+      artifact(),
+      'fresh',
+      CANDIDATE_FUNNEL_INITIAL_VIEW_STATE,
+      fitPresentation('evaluated', [fitRecord(1)]),
+    )
+    expect(html).toContain('ポートフォリオ適合レコードが見つかりません。')
+    expect(html).not.toContain('新規候補（未保有）')
+  })
+
+  it('C-B3-T50 keeps duplicate-code fit headings unique and self-owned', () => {
+    const data = duplicateCodeArtifact()
+    const second = {
+      ...fitRecord(1),
+      relationship: 'already_held' as const,
+      relationshipText: '保有あり',
+    }
+    const html = renderPanel(
+      data,
+      'fresh',
+      CANDIDATE_FUNNEL_INITIAL_VIEW_STATE,
+      fitPresentation('evaluated', [fitRecord(0), second]),
+    )
+    const articles = [...html.matchAll(
+      /<article class="candidate-funnel-card" aria-labelledby="[^"]+">([\s\S]*?)<\/article>/g,
+    )]
+    expect(articles).toHaveLength(2)
+    expect(html).toContain('新規候補（未保有）')
+    expect(html).toContain('保有あり')
+    const fitIds = articles.map(([, article]) => {
+      const section = article.match(
+        /<section class="candidate-funnel-card__portfolio-fit[^"]*" aria-labelledby="([^"]+)">[\s\S]*?<h4 id="([^"]+)">ポートフォリオ適合<\/h4>/,
+      )
+      expect(section).not.toBeNull()
+      expect(section?.[1]).toBe(section?.[2])
+      return section?.[1]
+    })
+    expect(new Set(fitIds).size).toBe(2)
+    fitIds.forEach(id => {
+      expect(html.match(new RegExp(`id="${escapeRegExp(id ?? '')}"`, 'g')))
+        .toHaveLength(1)
+    })
+  })
+
+  it('C-B3-T51 leaves fit evaluation ownership outside filter and show-more rendering', () => {
+    const presentation = fitPresentation('evaluated')
+    const before = structuredClone(presentation)
+    renderPanel(artifact(), 'fresh', { filter: 'actionable', visibleCount: 10 }, presentation)
+    renderPanel(artifact(), 'fresh', { filter: 'deep_review', visibleCount: 20 }, presentation)
+    expect(presentation).toEqual(before)
+    expect(cardSource).not.toContain('useCandidatePortfolioFit')
+    expect(panelSource.match(/useCandidatePortfolioFit\(\)/g)).toHaveLength(1)
+  })
+
+  it('C-B3-T52 renders no fit total, grade, band, badge rank, or placeholder value', () => {
+    const html = renderPanel(
+      artifact(),
+      'fresh',
+      CANDIDATE_FUNNEL_INITIAL_VIEW_STATE,
+      fitPresentation('evaluated'),
+    )
+    expect(html).not.toMatch(/ポートフォリオ適合(?:総合点|ランク|等級|グレード)/)
+    expect(html).not.toContain('portfolioFitScore')
+    expect(html).not.toContain('portfolioFitRank')
+  })
+
+  it('C-B3-T53 contains no trade, amount, quantity, order payload, or sizing field', () => {
+    const combinedSource = `${panelSource}\n${cardSource}`
+    expect(combinedSource).not.toMatch(
+      /BUY_NEW|BUY_MORE|officialDecision|maxAmount|\bamount\b|quantity|shares|recommendedTrade|sizing/,
+    )
+    const html = renderPanel(
+      artifact(),
+      'fresh',
+      CANDIDATE_FUNNEL_INITIAL_VIEW_STATE,
+      fitPresentation('evaluated'),
+    )
+    expect(html).not.toMatch(/購入金額|注文数量|発注ボタン/)
+  })
+
+  it('C-B3-T54 assigns exact roles and visible text to invalid, partial, and warning states', () => {
+    const invalid = renderPanel(
+      null,
+      'invalid',
+      CANDIDATE_FUNNEL_INITIAL_VIEW_STATE,
+      fitPresentation('invalid'),
+    )
+    expect(invalid).toContain('candidate-funnel__portfolio-fit-state--invalid" role="alert"')
+    const partial = renderPanel(
+      artifact(),
+      'fresh',
+      CANDIDATE_FUNNEL_INITIAL_VIEW_STATE,
+      fitPresentation('partial'),
+    )
+    expect(partial).toContain('role="status" aria-live="polite"')
+    expect(partial).toContain('ポートフォリオ適合に確認事項があります。')
+  })
+
+  it('C-B3-T55 renders ratio visual text and exact percentage aria-label', () => {
+    const html = renderPanel(
+      artifact(),
+      'fresh',
+      CANDIDATE_FUNNEL_INITIAL_VIEW_STATE,
+      fitPresentation('evaluated'),
+    )
+    expect(html).toContain(
+      'aria-label="既存ポートフォリオ内の同一コード比率 25パーセント">25%',
+    )
+    expect(html).toContain(
+      'aria-label="既存日本株内の同一セクター比率 66.7パーセント">66.7%',
+    )
+  })
+
+  it('C-B3-T56 uses native details and summary without a custom keyboard handler', () => {
+    const html = renderPanel(
+      artifact(),
+      'fresh',
+      CANDIDATE_FUNNEL_INITIAL_VIEW_STATE,
+      fitPresentation('evaluated'),
+    )
+    expect(html).toContain('<details><summary>ポートフォリオ適合の詳細</summary>')
+    expect(cardSource).not.toContain('onKeyDown')
+  })
+
+  it('C-B3-T57 preserves Arrow/Home/End behavior and a single filter tab stop', () => {
+    expect(candidateFunnelFilterForKey('actionable', 'ArrowRight')).toBe('deep_review')
+    expect(candidateFunnelFilterForKey('actionable', 'ArrowLeft')).toBe('screened')
+    expect(candidateFunnelFilterForKey('screened', 'Home')).toBe('actionable')
+    expect(candidateFunnelFilterForKey('actionable', 'End')).toBe('screened')
+    const html = renderPanel(artifact(), 'fresh')
+    expect(html.match(/tabindex="0"/g)).toHaveLength(1)
+    expect(html.match(/tabindex="-1"/g)).toHaveLength(2)
+  })
+
+  it('C-B3-T58 preserves one-column 320/375 layout, wrapping, DOM order, and no x-scroll', () => {
+    expect(panelCssSource).toMatch(
+      /\.candidate-funnel-card__portfolio-fit-components > div[\s\S]*?grid-template-columns:\s*minmax\(0,\s*1fr\)/,
+    )
+    expect(panelCssSource).toContain('overflow-wrap: anywhere')
+    expect(panelCssSource).not.toContain('overflow-x:')
+    expect(panelCssSource).not.toMatch(/(?:min-|max-)?width:\s*(?:320|375)px/)
+    expect(panelCssSource).not.toMatch(/^\s*order\s*:/m)
   })
 })
