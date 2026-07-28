@@ -1,6 +1,7 @@
 // @ts-expect-error -- repository intentionally has no @types/node
 import { readFileSync } from 'node:fs'
-import { act } from 'react'
+import * as ts from 'typescript'
+import { StrictMode, act } from 'react'
 import { createRoot, type Root } from 'react-dom/client'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import type {
@@ -24,6 +25,81 @@ import {
 } from './useCandidatePortfolioFit'
 
 type CommittedGeneration = Extract<CsvImportGenerationRestoreResult, { status: 'committed' }>
+
+const C_B3_ORIGINAL_FILES = [
+  'src/hooks/useCandidatePortfolioFit.ts',
+  'src/hooks/useCandidatePortfolioFit.test.tsx',
+  'src/components/candidates/candidatePortfolioFitPresentation.ts',
+  'src/components/candidates/candidatePortfolioFitPresentation.test.ts',
+  'src/components/candidates/CandidateFunnelPanel.tsx',
+  'src/components/candidates/CandidateFunnelPanel.test.tsx',
+  'src/components/candidates/CandidateFunnelPanel.css',
+  'src/components/candidates/CandidateFunnelCard.tsx',
+  'src/components/tabs/T1_Decision.stockCandidate.test.ts',
+] as const
+
+const C_B3_PRODUCTION_TS_FILES = C_B3_ORIGINAL_FILES.filter(
+  path => !path.includes('.test.') && !path.endsWith('.css'),
+)
+
+const C_B3_RESTORE_BOUNDARY_FILES = [
+  ...C_B3_PRODUCTION_TS_FILES,
+  'src/components/tabs/T1_Decision.tsx',
+  'src/store/portfolioFitSelectors.ts',
+] as const
+
+function parseProductionSource(path: string): ts.SourceFile {
+  return ts.createSourceFile(
+    path,
+    readFileSync(path, 'utf8'),
+    ts.ScriptTarget.Latest,
+    true,
+    path.endsWith('.tsx') ? ts.ScriptKind.TSX : ts.ScriptKind.TS,
+  )
+}
+
+function visitTree(node: ts.Node, visit: (current: ts.Node) => void): void {
+  visit(node)
+  ts.forEachChild(node, child => visitTree(child, visit))
+}
+
+function propertyNameText(node: ts.PropertyAccessExpression | ts.ElementAccessExpression) {
+  if (ts.isPropertyAccessExpression(node)) return node.name.text
+  return node.argumentExpression && ts.isStringLiteral(node.argumentExpression)
+    ? node.argumentExpression.text
+    : null
+}
+
+function rootIdentifier(node: ts.Expression): string | null {
+  let current = node
+  while (
+    ts.isPropertyAccessExpression(current) ||
+    ts.isElementAccessExpression(current)
+  ) {
+    current = current.expression
+  }
+  return ts.isIdentifier(current) ? current.text : null
+}
+
+function hookEffectDependencyNames(): string[] {
+  const sourceFile = parseProductionSource('src/hooks/useCandidatePortfolioFit.ts')
+  const dependencyLists: string[][] = []
+  visitTree(sourceFile, node => {
+    if (
+      ts.isCallExpression(node) &&
+      ts.isIdentifier(node.expression) &&
+      node.expression.text === 'useEffect' &&
+      node.arguments[1] &&
+      ts.isArrayLiteralExpression(node.arguments[1])
+    ) {
+      dependencyLists.push(
+        node.arguments[1].elements.map(element => element.getText(sourceFile)),
+      )
+    }
+  })
+  expect(dependencyLists).toHaveLength(1)
+  return dependencyLists[0]
+}
 
 const POLICY: PortfolioPolicy = { jpStockMaxRatio: 0.15 }
 const CASH: CashAssumptions = {
@@ -218,12 +294,17 @@ class TestDocument extends TestNode {
 interface HookMount {
   root: Root
   snapshots: CandidatePortfolioFitRuntimeSnapshot[]
-  rerender: (revision: number) => Promise<void>
+  rerender: (
+    revision: number,
+    dependencies?: CandidatePortfolioFitRuntimeDependencies,
+    beforeRender?: () => void,
+  ) => Promise<void>
   unmount: () => Promise<void>
 }
 
 async function mountHook(
   runtimeDependencies: CandidatePortfolioFitRuntimeDependencies,
+  options: { strictMode?: boolean } = {},
 ): Promise<HookMount> {
   const testDocument = new TestDocument()
   class TestHtmlIFrameElement {}
@@ -245,14 +326,33 @@ async function mountHook(
   })
 
   const snapshots: CandidatePortfolioFitRuntimeSnapshot[] = []
-  function Harness({ revision: _revision }: { revision: number }) {
-    snapshots.push(useCandidatePortfolioFit(runtimeDependencies))
+  function Harness({
+    revision: _revision,
+    dependencies: currentDependencies,
+  }: {
+    revision: number
+    dependencies: CandidatePortfolioFitRuntimeDependencies
+  }) {
+    snapshots.push(useCandidatePortfolioFit(currentDependencies))
     return null
   }
   const root = createRoot(testDocument.createElement('div') as unknown as Element)
-  const rerender = async (revision: number) => {
+  let currentDependencies = runtimeDependencies
+  const rerender = async (
+    revision: number,
+    nextDependencies = currentDependencies,
+    beforeRender?: () => void,
+  ) => {
+    currentDependencies = nextDependencies
     await act(async () => {
-      root.render(<Harness revision={revision} />)
+      beforeRender?.()
+      const harness = (
+        <Harness
+          revision={revision}
+          dependencies={currentDependencies}
+        />
+      )
+      root.render(options.strictMode ? <StrictMode>{harness}</StrictMode> : harness)
     })
   }
   await rerender(0)
@@ -508,5 +608,432 @@ describe('P5-B005-C-B3 frozen runtime bridge', () => {
     expect(source).not.toMatch(
       /fetch|setItem|officialDecision|BUY_NEW|BUY_MORE|portfolioFitResult|new Map|lastResult/,
     )
+  })
+
+  it('R1 wrapper-only identity churn with the same callbacks adds no logical cycle', async () => {
+    useAppStore.setState(runtimeState(), true)
+    const now = vi.fn(() => Date.parse('2026-07-26T08:00:00.000Z'))
+    const restore = vi.fn(() => committed())
+    activeMount = await mountHook({ now, restoreCanonicalGeneration: restore })
+
+    await activeMount.rerender(1, {
+      now,
+      restoreCanonicalGeneration: restore,
+    })
+    await activeMount.rerender(2, {
+      now,
+      restoreCanonicalGeneration: restore,
+    })
+
+    expect(now).toHaveBeenCalledTimes(1)
+    expect(restore).toHaveBeenCalledTimes(1)
+    expect(hookEffectDependencyNames()).toEqual([
+      'now',
+      'restoreCanonicalGeneration',
+      'candidateFunnel',
+      'candidateFunnelStatus',
+      'holdings',
+      'trust',
+      'portfolioPolicy',
+      'cashAssumptions',
+      'csvLastImportedAt',
+      'csvImportProvenance',
+      'csvSyncSummary',
+      'crossTabInvalidation',
+    ])
+  })
+
+  it('R1 a new now callback identity performs exactly one additional cycle', async () => {
+    useAppStore.setState(runtimeState(), true)
+    const firstNow = vi.fn(() => Date.parse('2026-07-26T08:00:00.000Z'))
+    const secondNow = vi.fn(() => Date.parse('2026-07-26T08:01:00.000Z'))
+    const restore = vi.fn(() => committed())
+    activeMount = await mountHook({
+      now: firstNow,
+      restoreCanonicalGeneration: restore,
+    })
+
+    await activeMount.rerender(1, {
+      now: secondNow,
+      restoreCanonicalGeneration: restore,
+    })
+
+    expect(firstNow).toHaveBeenCalledTimes(1)
+    expect(secondNow).toHaveBeenCalledTimes(1)
+    expect(restore).toHaveBeenCalledTimes(2)
+  })
+
+  it('R1 a new restore callback identity performs exactly one additional cycle', async () => {
+    useAppStore.setState(runtimeState(), true)
+    const now = vi.fn(() => Date.parse('2026-07-26T08:00:00.000Z'))
+    const firstRestore = vi.fn(() => committed())
+    const secondRestore = vi.fn(() => committed())
+    activeMount = await mountHook({
+      now,
+      restoreCanonicalGeneration: firstRestore,
+    })
+
+    await activeMount.rerender(1, {
+      now,
+      restoreCanonicalGeneration: secondRestore,
+    })
+
+    expect(now).toHaveBeenCalledTimes(2)
+    expect(firstRestore).toHaveBeenCalledTimes(1)
+    expect(secondRestore).toHaveBeenCalledTimes(1)
+  })
+
+  it('R1 batches wrapper replacement and a relevant store revision into one cycle', async () => {
+    useAppStore.setState(runtimeState(), true)
+    const now = vi.fn(() => Date.parse('2026-07-26T08:00:00.000Z'))
+    const restore = vi.fn(() => committed())
+    activeMount = await mountHook({ now, restoreCanonicalGeneration: restore })
+
+    await activeMount.rerender(
+      1,
+      { now, restoreCanonicalGeneration: restore },
+      () => {
+        useAppStore.setState(state => ({
+          candidateFunnel: structuredClone(state.candidateFunnel),
+        }))
+      },
+    )
+
+    expect(now).toHaveBeenCalledTimes(2)
+    expect(restore).toHaveBeenCalledTimes(2)
+  })
+
+  it('R1 StrictMode initial mount executes one logical result cycle', async () => {
+    useAppStore.setState(runtimeState(), true)
+    const now = vi.fn(() => Date.parse('2026-07-26T08:00:00.000Z'))
+    const restore = vi.fn(() => committed())
+    activeMount = await mountHook(
+      { now, restoreCanonicalGeneration: restore },
+      { strictMode: true },
+    )
+
+    const readyResults = activeMount.snapshots.flatMap(snapshot =>
+      snapshot.phase === 'ready' ? [snapshot.result] : [],
+    )
+    expect(now).toHaveBeenCalledTimes(1)
+    expect(restore).toHaveBeenCalledTimes(1)
+    expect(readyResults.length).toBeGreaterThan(0)
+    expect(new Set(readyResults).size).toBe(1)
+  })
+
+  it('R1 StrictMode relevant revision adds one logical cycle, not two', async () => {
+    useAppStore.setState(runtimeState(), true)
+    const now = vi.fn(() => Date.parse('2026-07-26T08:00:00.000Z'))
+    const restore = vi.fn(() => committed())
+    activeMount = await mountHook(
+      { now, restoreCanonicalGeneration: restore },
+      { strictMode: true },
+    )
+
+    await act(async () => {
+      useAppStore.setState(state => ({
+        candidateFunnel: structuredClone(state.candidateFunnel),
+      }))
+    })
+
+    expect(now).toHaveBeenCalledTimes(2)
+    expect(restore).toHaveBeenCalledTimes(2)
+  })
+
+  it('R1 StrictMode wrapper-only rerender adds no logical cycle', async () => {
+    useAppStore.setState(runtimeState(), true)
+    const now = vi.fn(() => Date.parse('2026-07-26T08:00:00.000Z'))
+    const restore = vi.fn(() => committed())
+    activeMount = await mountHook(
+      { now, restoreCanonicalGeneration: restore },
+      { strictMode: true },
+    )
+
+    await activeMount.rerender(1, {
+      now,
+      restoreCanonicalGeneration: restore,
+    })
+
+    expect(now).toHaveBeenCalledTimes(1)
+    expect(restore).toHaveBeenCalledTimes(1)
+  })
+
+  it('R1 real unmount/remount creates a new component-local logical cycle', async () => {
+    useAppStore.setState(runtimeState(), true)
+    const now = vi.fn(() => Date.parse('2026-07-26T08:00:00.000Z'))
+    const restore = vi.fn(() => committed())
+    const deps = { now, restoreCanonicalGeneration: restore }
+    activeMount = await mountHook(deps, { strictMode: true })
+    await activeMount.unmount()
+    activeMount = null
+
+    activeMount = await mountHook(deps, { strictMode: true })
+
+    expect(now).toHaveBeenCalledTimes(2)
+    expect(restore).toHaveBeenCalledTimes(2)
+  })
+
+  it('R1 hook mount performs no production Zustand write', async () => {
+    useAppStore.setState(runtimeState(), true)
+    const setStateSpy = vi.spyOn(useAppStore, 'setState')
+    activeMount = await mountHook(dependencies())
+
+    expect(setStateSpy).not.toHaveBeenCalled()
+  })
+})
+
+describe('P5-B005-C-B3-R1 production source-contract guards', () => {
+  it('R1 allows exactly one canonical restore import and call, both in the hook', () => {
+    const importSites: string[] = []
+    const callSites: string[] = []
+    const dynamicLoadSites: string[] = []
+
+    for (const path of C_B3_RESTORE_BOUNDARY_FILES) {
+      const sourceFile = parseProductionSource(path)
+      const restoreBindings = new Set<string>()
+
+      for (const statement of sourceFile.statements) {
+        if (
+          !ts.isImportDeclaration(statement) ||
+          !ts.isStringLiteral(statement.moduleSpecifier) ||
+          !statement.moduleSpecifier.text.endsWith('/persist')
+        ) {
+          continue
+        }
+        const bindings = statement.importClause?.namedBindings
+        if (!bindings || !ts.isNamedImports(bindings)) continue
+        for (const element of bindings.elements) {
+          const importedName = element.propertyName?.text ?? element.name.text
+          if (
+            importedName === 'restoreCsvImportGeneration' &&
+            !statement.importClause?.isTypeOnly &&
+            !element.isTypeOnly
+          ) {
+            restoreBindings.add(element.name.text)
+            importSites.push(path)
+          }
+        }
+      }
+
+      let discoveredAlias = true
+      while (discoveredAlias) {
+        discoveredAlias = false
+        visitTree(sourceFile, node => {
+          if (
+            !ts.isVariableDeclaration(node) ||
+            !ts.isIdentifier(node.name) ||
+            node.initializer === undefined
+          ) {
+            return
+          }
+          const initializer = node.initializer
+          const aliasesRestore =
+            (ts.isIdentifier(initializer) && restoreBindings.has(initializer.text)) ||
+            ((ts.isPropertyAccessExpression(initializer) ||
+              ts.isElementAccessExpression(initializer)) &&
+              propertyNameText(initializer) === 'restoreCsvImportGeneration')
+          if (aliasesRestore && !restoreBindings.has(node.name.text)) {
+            restoreBindings.add(node.name.text)
+            discoveredAlias = true
+          }
+        })
+      }
+
+      visitTree(sourceFile, node => {
+        if (!ts.isCallExpression(node)) return
+        const expression = node.expression
+        if (
+          expression.kind === ts.SyntaxKind.ImportKeyword ||
+          (ts.isIdentifier(expression) && expression.text === 'require')
+        ) {
+          dynamicLoadSites.push(path)
+        }
+        const callsRestore =
+          (ts.isIdentifier(expression) && restoreBindings.has(expression.text)) ||
+          ((ts.isPropertyAccessExpression(expression) ||
+            ts.isElementAccessExpression(expression)) &&
+            propertyNameText(expression) === 'restoreCsvImportGeneration')
+        if (callsRestore) callSites.push(path)
+      })
+    }
+
+    expect(importSites).toEqual(['src/hooks/useCandidatePortfolioFit.ts'])
+    expect(callSites).toEqual(['src/hooks/useCandidatePortfolioFit.ts'])
+    expect(dynamicLoadSites).toEqual([])
+  })
+
+  it('R1 rejects module-global mutable runtime retention while allowing immutable labels', () => {
+    const violations: string[] = []
+    const mutatingMethods = new Set([
+      'add',
+      'clear',
+      'delete',
+      'pop',
+      'push',
+      'set',
+      'shift',
+      'sort',
+      'splice',
+      'unshift',
+    ])
+
+    for (const path of C_B3_PRODUCTION_TS_FILES) {
+      const sourceFile = parseProductionSource(path)
+      const topLevelBindings = new Set<string>()
+
+      for (const statement of sourceFile.statements) {
+        if (!ts.isVariableStatement(statement)) continue
+        const declarationKind =
+          statement.declarationList.flags & ts.NodeFlags.Let
+            ? 'let'
+            : statement.declarationList.flags & ts.NodeFlags.Const
+              ? 'const'
+              : 'var'
+        if (declarationKind !== 'const') {
+          violations.push(`${path}:top-level-${declarationKind}`)
+        }
+        for (const declaration of statement.declarationList.declarations) {
+          if (!ts.isIdentifier(declaration.name)) continue
+          topLevelBindings.add(declaration.name.text)
+          const initializer = declaration.initializer
+          if (
+            initializer &&
+            ts.isNewExpression(initializer) &&
+            ts.isIdentifier(initializer.expression) &&
+            ['Array', 'Map', 'Set', 'WeakMap', 'WeakSet'].includes(
+              initializer.expression.text,
+            )
+          ) {
+            violations.push(`${path}:mutable-${initializer.expression.text}`)
+          }
+        }
+      }
+
+      visitTree(sourceFile, node => {
+        if (
+          ts.isCallExpression(node) &&
+          (ts.isPropertyAccessExpression(node.expression) ||
+            ts.isElementAccessExpression(node.expression))
+        ) {
+          const method = propertyNameText(node.expression)
+          const root = rootIdentifier(node.expression.expression)
+          if (
+            method !== null &&
+            mutatingMethods.has(method) &&
+            root !== null &&
+            topLevelBindings.has(root)
+          ) {
+            violations.push(`${path}:mutates-${root}`)
+          }
+          if (
+            method === 'assign' &&
+            node.arguments.some(argument =>
+              ts.isIdentifier(argument) &&
+              ['globalThis', 'window', 'self', 'exports'].includes(argument.text),
+            )
+          ) {
+            violations.push(`${path}:global-assign`)
+          }
+        }
+        if (
+          ts.isBinaryExpression(node) &&
+          node.operatorToken.kind >= ts.SyntaxKind.FirstAssignment &&
+          node.operatorToken.kind <= ts.SyntaxKind.LastAssignment
+        ) {
+          const root = ts.isIdentifier(node.left)
+            ? node.left.text
+            : ts.isPropertyAccessExpression(node.left) ||
+                ts.isElementAccessExpression(node.left)
+              ? rootIdentifier(node.left)
+              : null
+          if (
+            root !== null &&
+            (topLevelBindings.has(root) ||
+              ['globalThis', 'window', 'self', 'exports', 'module'].includes(root))
+          ) {
+            violations.push(`${path}:assignment-${root}`)
+          }
+        }
+      })
+    }
+
+    expect(violations).toEqual([])
+  })
+
+  it('R1 permits one read-only Zustand snapshot and rejects production writes', () => {
+    const getStateSites: string[] = []
+    const writeSites: string[] = []
+
+    for (const path of C_B3_RESTORE_BOUNDARY_FILES) {
+      const sourceFile = parseProductionSource(path)
+      visitTree(sourceFile, node => {
+        if (!ts.isCallExpression(node)) return
+        const expression = node.expression
+        if (
+          ts.isPropertyAccessExpression(expression) &&
+          expression.name.text === 'getState' &&
+          ts.isIdentifier(expression.expression) &&
+          expression.expression.text === 'useAppStore'
+        ) {
+          getStateSites.push(path)
+        }
+        if (
+          (ts.isIdentifier(expression) &&
+            (expression.text === 'setState' || expression.text === 'set')) ||
+          ((ts.isPropertyAccessExpression(expression) ||
+            ts.isElementAccessExpression(expression)) &&
+            propertyNameText(expression) === 'setState')
+        ) {
+          writeSites.push(path)
+        }
+        if (
+          (ts.isPropertyAccessExpression(expression) ||
+            ts.isElementAccessExpression(expression)) &&
+          ts.isCallExpression(expression.expression) &&
+          ts.isPropertyAccessExpression(expression.expression.expression) &&
+          expression.expression.expression.name.text === 'getState'
+        ) {
+          writeSites.push(path)
+        }
+      })
+    }
+
+    expect(getStateSites).toEqual(['src/hooks/useCandidatePortfolioFit.ts'])
+    expect(writeSites).toEqual([])
+  })
+
+  it('R1 keeps the only current-time clock in the hook default dependency', () => {
+    const dateNowSites: string[] = []
+    const otherClockSites: string[] = []
+
+    for (const path of C_B3_RESTORE_BOUNDARY_FILES) {
+      const sourceFile = parseProductionSource(path)
+      visitTree(sourceFile, node => {
+        if (
+          ts.isCallExpression(node) &&
+          ts.isPropertyAccessExpression(node.expression) &&
+          ts.isIdentifier(node.expression.expression) &&
+          node.expression.name.text === 'now'
+        ) {
+          if (node.expression.expression.text === 'Date') {
+            dateNowSites.push(path)
+          }
+          if (node.expression.expression.text === 'performance') {
+            otherClockSites.push(path)
+          }
+        }
+        if (
+          ts.isNewExpression(node) &&
+          ts.isIdentifier(node.expression) &&
+          node.expression.text === 'Date' &&
+          (node.arguments?.length ?? 0) === 0
+        ) {
+          otherClockSites.push(path)
+        }
+      })
+    }
+
+    expect(dateNowSites).toEqual(['src/hooks/useCandidatePortfolioFit.ts'])
+    expect(otherClockSites).toEqual([])
   })
 })

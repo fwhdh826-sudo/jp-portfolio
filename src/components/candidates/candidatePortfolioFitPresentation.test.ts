@@ -436,3 +436,109 @@ describe('P5-B005-C-B3 frozen presentation projection', () => {
     }
   })
 })
+
+describe('P5-B005-C-B3-R1 pending and two-leg join acceptance', () => {
+  it('R1 projects pending directly without fabricating a ready result', () => {
+    const view = projectCandidatePortfolioFitPresentation({
+      phase: 'pending',
+      result: null,
+    })
+
+    expect(view).toEqual({
+      dataset: {
+        status: 'pending',
+        statusText: 'ポートフォリオ適合を評価しています。',
+        alertRole: 'status',
+        evaluatedAtText: null,
+        portfolioFreshnessText: null,
+        capacityText: null,
+        degradationText: null,
+        canonicalMessage: null,
+        hasHardFail: false,
+        hasWarning: false,
+        notForTradingText:
+          '売買利用不可（not_for_trading）— ポートフォリオ適合は売買判断や注文に使用しないでください。',
+      },
+      records: [],
+    })
+    expect(JSON.stringify(view)).not.toContain('ポートフォリオ適合を評価しました。')
+  })
+
+  it('R1 pending card state exposes no relationship, component, score, or rank detail', () => {
+    const pending = projectCandidatePortfolioFitPresentation({
+      phase: 'pending',
+      result: null,
+    })
+
+    expect(selectCandidatePortfolioFitCardViewModel(
+      pending,
+      1,
+      'actionable',
+    )).toEqual({
+      state: 'pending',
+      heading: 'ポートフォリオ適合',
+      statusText: 'ポートフォリオ適合を評価しています。',
+    })
+  })
+
+  it('R1 requires the artifactIndex leg when recordId alone matches', () => {
+    const recordIdOnly = record(2, { candidateRecordId: 'artifact:1' })
+    const card = selectCandidatePortfolioFitCardViewModel(
+      project(result({ records: [recordIdOnly] })),
+      1,
+      'actionable',
+    )
+
+    expect(card?.state).toBe('missing')
+  })
+
+  it('R1 requires the candidateRecordId leg when artifactIndex alone matches', () => {
+    const artifactIndexOnly = record(1, { candidateRecordId: 'artifact:2' })
+    const card = selectCandidatePortfolioFitCardViewModel(
+      project(result({ records: [artifactIndexOnly] })),
+      1,
+      'actionable',
+    )
+
+    expect(card?.state).toBe('missing')
+  })
+
+  it('R1 rejects OR semantics for either asymmetric one-leg record', () => {
+    for (const mismatched of [
+      record(1, { candidateRecordId: 'artifact:2' }),
+      record(2, { candidateRecordId: 'artifact:1' }),
+    ]) {
+      expect(selectCandidatePortfolioFitCardViewModel(
+        project(result({ records: [mismatched] })),
+        1,
+        'actionable',
+      )?.state).toBe('missing')
+    }
+  })
+
+  it('R1 rejects a first-match fallback for the two-record collision fixture', () => {
+    const collision = [
+      record(1, { candidateRecordId: 'artifact:2' }),
+      record(2, { candidateRecordId: 'artifact:1' }),
+    ]
+
+    expect(selectCandidatePortfolioFitCardViewModel(
+      project(result({ records: collision })),
+      1,
+      'actionable',
+    )?.state).toBe('missing')
+  })
+
+  it('R1 keeps zero and duplicate exact matches fail-closed', () => {
+    const empty = project(result({ records: [] }))
+    const duplicates = project(result({ records: [record(1), record(1)] }))
+
+    expect(selectCandidatePortfolioFitCardViewModel(empty, 1, 'actionable')?.state)
+      .toBe('missing')
+    expect(selectCandidatePortfolioFitCardViewModel(
+      duplicates,
+      1,
+      'actionable',
+    )?.state).toBe('missing')
+  })
+})

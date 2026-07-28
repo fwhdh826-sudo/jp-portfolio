@@ -2,11 +2,13 @@ import { describe, expect, it, vi } from 'vitest'
 import { renderToStaticMarkup } from 'react-dom/server'
 // @ts-expect-error -- repositoryは@types/node非依存だがVitestのNode runtimeでのみ使用する
 import { readFileSync } from 'node:fs'
+import * as ts from 'typescript'
 import type { CandidateFunnelCandidate } from '../../types/candidateFunnel'
 import type { CandidateFunnelArtifact } from '../../types/candidateFunnelArtifact'
 import { buildValidCandidateFunnelArtifact } from '../../services/candidateFunnelArtifact.fixtures'
 import { parseCandidateFunnelArtifact } from '../../services/candidateFunnelParser'
 import { useAppStore } from '../../store/useAppStore'
+import { selectCandidateFunnelFreshness } from '../../store/selectors'
 import {
   CANDIDATE_FUNNEL_INITIAL_VIEW_STATE,
   CANDIDATE_FUNNEL_INITIAL_VISIBLE_COUNT,
@@ -1051,5 +1053,119 @@ describe('P5-B005-C-B3 frozen panel, card, accessibility, and mobile contract', 
     expect(panelCssSource).not.toContain('overflow-x:')
     expect(panelCssSource).not.toMatch(/(?:min-|max-)?width:\s*(?:320|375)px/)
     expect(panelCssSource).not.toMatch(/^\s*order\s*:/m)
+  })
+})
+
+describe('P5-B005-C-B3-R1 pending and evaluatedAt integration acceptance', () => {
+  it('R1 renders the pending dataset without evaluated state or fit record details', () => {
+    const html = renderPanel(
+      artifact(),
+      'fresh',
+      CANDIDATE_FUNNEL_INITIAL_VIEW_STATE,
+      fitPresentation('pending'),
+    )
+
+    expect(html).toContain(
+      'candidate-funnel__portfolio-fit-state--pending" role="status" aria-live="polite"',
+    )
+    expect(html).toContain('ポートフォリオ適合を評価しています。')
+    expect(html).not.toContain('candidate-funnel__portfolio-fit-state--evaluated')
+    expect(html).not.toContain('ポートフォリオ適合を評価しました。')
+    expect(html).not.toContain('新規候補（未保有）')
+    expect(html).not.toContain('ポートフォリオ適合の詳細')
+    expect(html).not.toContain('candidate-funnel-card__portfolio-fit-components')
+  })
+
+  it('R1 market freshness classification uses the runtime evaluatedAt boundary', () => {
+    const data = artifact()
+    data._meta.generatedAt = '2026-07-26T07:00:00.000Z'
+    const current = useAppStore.getState()
+    if (!current.system.dataTimestamps) {
+      throw new Error('data timestamp fixture missing')
+    }
+    const state: typeof current = {
+      ...current,
+      candidateFunnel: data,
+      system: {
+        ...current.system,
+        dataSourceStatus: {
+          ...current.system.dataSourceStatus,
+          candidateFunnel: 'loaded',
+        },
+        dataTimestamps: {
+          ...current.system.dataTimestamps,
+          candidateFunnel: data._meta.generatedAt,
+        },
+      },
+    }
+    const generatedAtMs = Date.parse(data._meta.generatedAt)
+    const runtimeResult = {
+      evaluatedAt: new Date(
+        generatedAtMs + 48 * 60 * 60 * 1000 + 1,
+      ).toISOString(),
+    }
+
+    expect(selectCandidateFunnelFreshness(
+      state,
+      Date.parse(runtimeResult.evaluatedAt),
+    )).toBe('stale')
+    expect(selectCandidateFunnelFreshness(state, generatedAtMs + 1)).toBe('fresh')
+  })
+
+  it('R1 panel passes portfolio-fit evaluatedAt to freshness and owns no clock', () => {
+    const sourceFile = ts.createSourceFile(
+      'CandidateFunnelPanel.tsx',
+      panelSource,
+      ts.ScriptTarget.Latest,
+      true,
+      ts.ScriptKind.TSX,
+    )
+    const selectorArguments: string[] = []
+    const evaluatedAtInitializers: string[] = []
+    const forbiddenClocks: string[] = []
+
+    const visit = (node: ts.Node) => {
+      if (
+        ts.isVariableDeclaration(node) &&
+        ts.isIdentifier(node.name) &&
+        node.name.text === 'evaluatedAtMs' &&
+        node.initializer
+      ) {
+        evaluatedAtInitializers.push(node.initializer.getText(sourceFile))
+      }
+      if (
+        ts.isCallExpression(node) &&
+        ts.isIdentifier(node.expression) &&
+        node.expression.text === 'selectCandidateFunnelFreshness'
+      ) {
+        selectorArguments.push(node.arguments[1]?.getText(sourceFile) ?? '')
+      }
+      if (
+        ts.isCallExpression(node) &&
+        ts.isPropertyAccessExpression(node.expression) &&
+        ts.isIdentifier(node.expression.expression) &&
+        node.expression.name.text === 'now' &&
+        ['Date', 'performance'].includes(node.expression.expression.text)
+      ) {
+        forbiddenClocks.push(node.getText(sourceFile))
+      }
+      if (
+        ts.isNewExpression(node) &&
+        ts.isIdentifier(node.expression) &&
+        node.expression.text === 'Date' &&
+        (node.arguments?.length ?? 0) === 0
+      ) {
+        forbiddenClocks.push(node.getText(sourceFile))
+      }
+      ts.forEachChild(node, visit)
+    }
+    visit(sourceFile)
+
+    expect(evaluatedAtInitializers).toHaveLength(1)
+    expect(evaluatedAtInitializers[0]).toContain(
+      'portfolioFitRuntime.result.evaluatedAt',
+    )
+    expect(selectorArguments).toEqual(['evaluatedAtMs'])
+    expect(forbiddenClocks).toEqual([])
   })
 })

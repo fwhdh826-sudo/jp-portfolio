@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { AppState } from '../types'
 import type { CandidatePortfolioFitResult } from '../types/candidatePortfolioFit'
 import {
@@ -17,9 +17,33 @@ export type CandidatePortfolioFitRuntimeSnapshot =
   | { readonly phase: 'pending'; readonly result: null }
   | { readonly phase: 'ready'; readonly result: CandidatePortfolioFitResult }
 
+type CandidatePortfolioFitLogicalCycleInput = readonly [
+  now: CandidatePortfolioFitRuntimeDependencies['now'],
+  restoreCanonicalGeneration:
+    CandidatePortfolioFitRuntimeDependencies['restoreCanonicalGeneration'],
+  candidateFunnel: AppState['candidateFunnel'],
+  candidateFunnelStatus: AppState['system']['dataSourceStatus']['candidateFunnel'],
+  holdings: AppState['holdings'],
+  trust: AppState['trust'],
+  portfolioPolicy: AppState['portfolioPolicy'],
+  cashAssumptions: AppState['cashAssumptions'],
+  csvLastImportedAt: AppState['system']['csvLastImportedAt'],
+  csvImportProvenance: AppState['system']['csvImportProvenance'],
+  csvSyncSummary: AppState['system']['csvSyncSummary'],
+  crossTabInvalidation: AppState['system']['crossTabInvalidation'],
+]
+
 const DEFAULT_RUNTIME_DEPENDENCIES: CandidatePortfolioFitRuntimeDependencies = {
   now: () => Date.now(),
   restoreCanonicalGeneration: () => restoreCsvImportGeneration(),
+}
+
+function isSameLogicalCycleInput(
+  previous: CandidatePortfolioFitLogicalCycleInput | null,
+  current: CandidatePortfolioFitLogicalCycleInput,
+): boolean {
+  return previous !== null &&
+    previous.every((value, index) => Object.is(value, current[index]))
 }
 
 export function evaluateCandidatePortfolioFitRuntime(
@@ -55,6 +79,8 @@ export function evaluateCandidatePortfolioFitRuntime(
 export function useCandidatePortfolioFit(
   dependencies: CandidatePortfolioFitRuntimeDependencies = DEFAULT_RUNTIME_DEPENDENCIES,
 ): CandidatePortfolioFitRuntimeSnapshot {
+  const now = dependencies.now
+  const restoreCanonicalGeneration = dependencies.restoreCanonicalGeneration
   const candidateFunnel = useAppStore(state => state.candidateFunnel)
   const candidateFunnelStatus = useAppStore(
     state => state.system.dataSourceStatus.candidateFunnel,
@@ -71,15 +97,42 @@ export function useCandidatePortfolioFit(
     phase: 'pending',
     result: null,
   })
+  // Component-local and instance-lifetime only: remembers the immediately preceding
+  // logical input revision so StrictMode's repeated effect setup is not a new cycle.
+  const previousLogicalCycleInputRef =
+    useRef<CandidatePortfolioFitLogicalCycleInput | null>(null)
 
   useEffect(() => {
+    const logicalCycleInput: CandidatePortfolioFitLogicalCycleInput = [
+      now,
+      restoreCanonicalGeneration,
+      candidateFunnel,
+      candidateFunnelStatus,
+      holdings,
+      trust,
+      portfolioPolicy,
+      cashAssumptions,
+      csvLastImportedAt,
+      csvImportProvenance,
+      csvSyncSummary,
+      crossTabInvalidation,
+    ]
+    if (isSameLogicalCycleInput(
+      previousLogicalCycleInputRef.current,
+      logicalCycleInput,
+    )) {
+      return
+    }
+
     const result = evaluateCandidatePortfolioFitRuntime(
       useAppStore.getState(),
-      dependencies,
+      { now, restoreCanonicalGeneration },
     )
+    previousLogicalCycleInputRef.current = logicalCycleInput
     setSnapshot({ phase: 'ready', result })
   }, [
-    dependencies,
+    now,
+    restoreCanonicalGeneration,
     candidateFunnel,
     candidateFunnelStatus,
     holdings,
