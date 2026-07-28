@@ -1,5 +1,6 @@
 // @ts-expect-error - repository intentionally has no @types/node
 import { readFileSync } from 'node:fs'
+import * as ts from 'typescript'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import type {
   CandidateFunnelArtifact,
@@ -8,6 +9,10 @@ import type {
   Holding,
   PortfolioPolicy,
 } from '../types'
+import {
+  DEFAULT_CASH_ASSUMPTIONS,
+  DEFAULT_PORTFOLIO_POLICY,
+} from '../types'
 import { INITIAL_TRUST } from '../constants/trust'
 import { STATIC_MARKET } from '../constants/market'
 import { buildValidCandidateFunnelArtifact } from '../services/candidateFunnelArtifact.fixtures'
@@ -15,6 +20,7 @@ import {
   CSV_IMPORT_GENERATION_KEY,
   CSV_IMPORT_GENERATION_SCHEMA_V5,
   persistCsvImportTransaction,
+  restoreCsvImportGenerationFromRaw,
 } from './persist'
 import { createImmediatePortfolioGenerationLockAdapterForTest } from './testing/portfolioGenerationLockTestAdapters'
 import {
@@ -24,7 +30,32 @@ import {
   type AppStoreState,
 } from './useAppStore'
 
+const selectorProbe = vi.hoisted(() => ({
+  calls: [] as Array<{
+    evaluatedAt: string
+    officialDecisionGeneratedAt: string | null
+  }>,
+  onCall: null as null | ((evaluatedAt: string, officialDecisionGeneratedAt: string | null) => void),
+}))
+
+vi.mock('./portfolioFitSelectors', async importOriginal => {
+  const actual = await importOriginal<typeof import('./portfolioFitSelectors')>()
+  return {
+    ...actual,
+    selectCandidatePortfolioFit: (
+      ...args: Parameters<typeof actual.selectCandidatePortfolioFit>
+    ): ReturnType<typeof actual.selectCandidatePortfolioFit> => {
+      const evaluatedAt = args[2]
+      const officialDecisionGeneratedAt = args[0].officialDecision?.generatedAt ?? null
+      selectorProbe.calls.push({ evaluatedAt, officialDecisionGeneratedAt })
+      selectorProbe.onCall?.(evaluatedAt, officialDecisionGeneratedAt)
+      return actual.selectCandidatePortfolioFit(...args)
+    },
+  }
+})
+
 const source = readFileSync(new URL('./useAppStore.ts', import.meta.url), 'utf8')
+const parseJson = JSON.parse.bind(JSON) as typeof JSON.parse
 
 function segment(start: string, end?: string): string {
   const from = source.indexOf(start)
@@ -45,13 +76,37 @@ function expectOrder(value: string, ordered: string[]) {
 
 const RACE_NOW_MS = Date.parse('2026-07-26T08:00:00.000Z')
 const RACE_NOW = new Date(RACE_NOW_MS).toISOString()
+const RACE_ACTION_MS = RACE_NOW_MS + 60 * 60 * 1000
+const RACE_ACTION_SOURCE = new Date(RACE_NOW_MS + 30 * 60 * 1000).toISOString()
 const storage: Record<string, string> = {}
 let throwCanonicalRead = false
+let authorityRace: {
+  ambientRaw: string
+  receiptRaw: string
+} | null = null
 
 const localStorageMock = {
   getItem(key: string): string | null {
     if (throwCanonicalRead && key === CSV_IMPORT_GENERATION_KEY) {
       throw new Error('injected ownership read failure')
+    }
+    if (authorityRace !== null && key === CSV_IMPORT_GENERATION_KEY) {
+      const stack = new Error('canonical authority probe').stack ?? ''
+      if (
+        stack.includes('readCsvImportCanonicalRaw') ||
+        stack.includes('restoreCsvImportGeneration (')
+      ) {
+        const ambientRaw = authorityRace.ambientRaw
+        storage[key] = authorityRace.receiptRaw
+        authorityRace = null
+        return ambientRaw
+      }
+      if (stack.includes('ownsCsvImportCanonicalBytes')) {
+        const receiptRaw = authorityRace.receiptRaw
+        storage[key] = receiptRaw
+        authorityRace = null
+        return receiptRaw
+      }
     }
     return storage[key] ?? null
   },
@@ -61,6 +116,34 @@ const localStorageMock = {
   removeItem(key: string): void {
     delete storage[key]
   },
+}
+
+class TestFileReader {
+  onload: ((event: { target: { result: ArrayBuffer } }) => void) | null = null
+  onerror: (() => void) | null = null
+
+  readAsArrayBuffer(file: File): void {
+    file.arrayBuffer()
+      .then(result => this.onload?.({ target: { result } }))
+      .catch(() => this.onerror?.())
+  }
+}
+
+const RACE_CSV = [
+  `データ基準日時,${RACE_ACTION_SOURCE}`,
+  '株式（現物/特定預り）',
+  '銘柄コード,銘柄名,現在値,評価額,損益（％）,前日比（％）,取得日',
+  '1001,C-D-FU1 CSV銘柄,1200,150000,8.00,0.50,2025-01-01',
+  '投資信託（金額/特定預り）',
+  'ファンド名,基準価額,評価額,損益（％）,前日比（％）,取得日',
+  `${INITIAL_TRUST[0].name},10000,200000,5.00,0.10,`,
+].join('\n')
+
+function raceCsvFile(): File {
+  return new File([RACE_CSV], 'c-d-fu1.csv', {
+    type: 'text/csv',
+    lastModified: Date.parse(RACE_ACTION_SOURCE),
+  })
 }
 
 const RACE_PROVENANCE: CsvImportProvenance = {
@@ -226,16 +309,182 @@ function installAmbientAbaRace(
   else instance.controls.setLoadPublishBeforeApplyHook(restoreReceipt)
 }
 
+function installActionAmbientAbaRace(
+  instance: TestInstance,
+  ambientRaw: string,
+): void {
+  instance.controls.setCandidateCompositionBeforeHook(() => {
+    const receiptRaw = storage[CSV_IMPORT_GENERATION_KEY]
+    storage[CSV_IMPORT_GENERATION_KEY] = ambientRaw
+    authorityRace = { ambientRaw, receiptRaw }
+  })
+}
+
+function installActionOwnershipLoss(
+  instance: TestInstance,
+  ambientRaw: string,
+  shouldThrow: boolean,
+): void {
+  instance.controls.setCandidateCompositionBeforeHook(() => {
+    if (shouldThrow) throwCanonicalRead = true
+    else storage[CSV_IMPORT_GENERATION_KEY] = ambientRaw
+  })
+}
+
+async function prepareActionTarget(
+  ownRatio: number,
+  ambientRatio: number,
+): Promise<{
+  instance: TestInstance
+  ambientRaw: string
+}> {
+  const instance = createRaceInstance()
+  const { ambientRaw } = prepareRaceGenerations(instance, ownRatio, ambientRatio)
+  expect(await instance.store.getState().initialize()).toMatchObject({
+    ok: true,
+    code: 'SUCCESS',
+  })
+  vi.setSystemTime(RACE_ACTION_MS)
+  selectorProbe.calls.length = 0
+  selectorProbe.onCall = null
+  return { instance, ambientRaw }
+}
+
+async function prepareSnapshotActionTarget(
+  ambientRatio: number,
+): Promise<{
+  instance: TestInstance
+  ambientRaw: string
+}> {
+  const instance = createRaceInstance()
+  const ambientRaw = persistRaceGeneration(instance, {
+    jpStockMaxRatio: ambientRatio,
+  })
+  expect(await instance.store.getState().initialize()).toMatchObject({
+    ok: true,
+    code: 'SUCCESS',
+  })
+  delete storage[CSV_IMPORT_GENERATION_KEY]
+  instance.store.setState(state => ({
+    ...state,
+    holdings: [],
+    trust: [],
+    portfolioPolicy: { ...DEFAULT_PORTFOLIO_POLICY },
+    cashAssumptions: { ...DEFAULT_CASH_ASSUMPTIONS },
+    candidateFunnel: raceArtifact(),
+    learning: null,
+    universe: null,
+    zeroPlan: null,
+    stockPlan: null,
+    trustPlan: null,
+    stockCandidates: [],
+    analysis: [],
+    metrics: null,
+    officialDecision: null,
+    system: {
+      ...state.system,
+      status: 'idle',
+      error: null,
+      csvLastImportedAt: null,
+      csvImportProvenance: null,
+      csvSyncSummary: null,
+    },
+  }))
+  vi.setSystemTime(RACE_ACTION_MS)
+  selectorProbe.calls.length = 0
+  selectorProbe.onCall = null
+  return { instance, ambientRaw }
+}
+
+function raceSnapshotRaw(
+  target: TestInstance,
+  ownRatio: number,
+  tag: string,
+): string {
+  const sourceInstance = createRaceInstance()
+  const targetState = target.store.getState()
+  const importedAt = new Date(RACE_NOW_MS + 40 * 60 * 1000).toISOString()
+  const provenance: CsvImportProvenance = {
+    ...RACE_PROVENANCE,
+    importedAt,
+    sourceAsOf: RACE_ACTION_SOURCE,
+    semanticIdentity: `sha256:${tag.repeat(64)}`,
+    contentFingerprint: `fnv1a32:${tag.repeat(8)}`,
+    sourceFileName: `c-d-fu1-${tag}.csv`,
+    fileLastModified: RACE_ACTION_SOURCE,
+  }
+  sourceInstance.store.setState(state => ({
+    ...state,
+    holdings: [{ ...RACE_HOLDING, eval: 125_000 }],
+    trust: targetState.trust.map(item => ({ ...item })),
+    portfolioPolicy: { jpStockMaxRatio: ownRatio },
+    cashAssumptions: { ...RACE_CASH },
+    system: {
+      ...state.system,
+      csvLastImportedAt: importedAt,
+      csvImportProvenance: provenance,
+      csvSyncSummary: null,
+    },
+  }))
+  return sourceInstance.store.getState().exportPortfolioSnapshot()
+}
+
+function subscribeGenerationPublications(instance: TestInstance): {
+  count: () => number
+  unsubscribe: () => void
+} {
+  let publications = 0
+  const unsubscribe = instance.store.subscribe((next, previous) => {
+    if (
+      next.holdings !== previous.holdings ||
+      next.trust !== previous.trust ||
+      next.portfolioPolicy !== previous.portfolioPolicy ||
+      next.cashAssumptions !== previous.cashAssumptions ||
+      next.officialDecision !== previous.officialDecision
+    ) publications += 1
+  })
+  return { count: () => publications, unsubscribe }
+}
+
+function parsedFunction(name: string): {
+  file: ts.SourceFile
+  declaration: ts.FunctionDeclaration
+} {
+  const file = ts.createSourceFile(
+    'useAppStore.ts',
+    source,
+    ts.ScriptTarget.Latest,
+    true,
+    ts.ScriptKind.TS,
+  )
+  let declaration: ts.FunctionDeclaration | undefined
+  const visit = (node: ts.Node): void => {
+    if (
+      ts.isFunctionDeclaration(node) &&
+      node.name?.text === name
+    ) declaration = node
+    if (declaration === undefined) ts.forEachChild(node, visit)
+  }
+  visit(file)
+  expect(declaration, name).toBeDefined()
+  return { file, declaration: declaration! }
+}
+
 beforeEach(() => {
   vi.useFakeTimers()
   vi.setSystemTime(RACE_NOW_MS)
+  vi.stubGlobal('FileReader', TestFileReader)
   vi.stubGlobal('localStorage', localStorageMock)
   Object.keys(storage).forEach(key => delete storage[key])
   throwCanonicalRead = false
+  authorityRace = null
+  selectorProbe.calls.length = 0
+  selectorProbe.onCall = null
   installRaceFetchRouter()
 })
 
 afterEach(() => {
+  selectorProbe.onCall = null
   vi.restoreAllMocks()
   vi.unstubAllGlobals()
   vi.useRealTimers()
@@ -533,5 +782,339 @@ describe('P5-B005-C-D-R1 source authority and ordering', () => {
       'ownsCsvImportCanonicalBytes(receipt)',
       'set(s => ({',
     ])
+  })
+})
+
+describe('P5-B005-C-D-FU1 P2-04 importCsv dynamic receipt authority', () => {
+  it.each([
+    { ownRatio: 0.05, ambientRatio: 0.30, expectedAction: 'WATCH' },
+    { ownRatio: 0.30, ambientRatio: 0.05, expectedAction: 'BUY_NEW' },
+  ])(
+    'publishes own receipt $ownRatio instead of ambient $ambientRatio',
+    async ({ ownRatio, ambientRatio, expectedAction }) => {
+      const { instance, ambientRaw } = await prepareActionTarget(ownRatio, ambientRatio)
+      installActionAmbientAbaRace(instance, ambientRaw)
+      const publications = subscribeGenerationPublications(instance)
+
+      const result = await instance.store.getState().importCsv(raceCsvFile())
+
+      publications.unsubscribe()
+      expect(result).toMatchObject({
+        ok: true,
+        code: 'SUCCESS',
+        officialDecisionCommitted: true,
+        persistence: { status: 'committed' },
+      })
+      const state = instance.store.getState()
+      expect(state.portfolioPolicy.jpStockMaxRatio).toBe(ownRatio)
+      expect(candidateAction(state)).toBe(expectedAction)
+      expect(state.officialDecision?.actions.filter(item =>
+        item.candidateSource === 'candidate_funnel' && item.code === '1003',
+      )).toHaveLength(1)
+      expect(publications.count()).toBe(1)
+      expect(authorityRace).toBeNull()
+      expect(storage[CSV_IMPORT_GENERATION_KEY]).not.toBe(ambientRaw)
+    },
+  )
+
+  it('fails closed when ambient replacement still owns canonical bytes before publish', async () => {
+    const { instance, ambientRaw } = await prepareActionTarget(0.05, 0.30)
+    const before = instance.store.getState()
+    const priorDecision = before.officialDecision
+    installActionOwnershipLoss(instance, ambientRaw, false)
+    const publications = subscribeGenerationPublications(instance)
+
+    const result = await instance.store.getState().importCsv(raceCsvFile())
+
+    publications.unsubscribe()
+    expect(result).toMatchObject({
+      ok: false,
+      code: 'IMPORT_CONFLICT',
+      analysisCommitted: false,
+      officialDecisionCommitted: false,
+      persistence: { status: 'ownership_lost' },
+    })
+    const after = instance.store.getState()
+    expect(after.holdings).toBe(before.holdings)
+    expect(after.trust).toBe(before.trust)
+    expect(after.portfolioPolicy).toBe(before.portfolioPolicy)
+    expect(after.cashAssumptions).toBe(before.cashAssumptions)
+    expect(after.officialDecision).toBe(priorDecision)
+    expect(publications.count()).toBe(0)
+    expect(storage[CSV_IMPORT_GENERATION_KEY]).toBe(ambientRaw)
+  })
+})
+
+describe('P5-B005-C-D-FU1 P2-05 snapshot dynamic receipt authority', () => {
+  it.each([
+    { ownRatio: 0.05, ambientRatio: 0.30, expectedAction: 'WATCH', tag: 'a' },
+    { ownRatio: 0.30, ambientRatio: 0.05, expectedAction: 'BUY_NEW', tag: 'b' },
+  ])(
+    'publishes own receipt $ownRatio instead of ambient $ambientRatio and preserves duplicate provenance',
+    async ({ ownRatio, ambientRatio, expectedAction, tag }) => {
+      const { instance, ambientRaw } = await prepareSnapshotActionTarget(ambientRatio)
+      const raw = raceSnapshotRaw(instance, ownRatio, tag)
+      const incoming = parseJson(raw) as {
+        csvImportProvenance: CsvImportProvenance
+        snapshotGenerationIdentity: string
+      }
+      installActionAmbientAbaRace(instance, ambientRaw)
+      const publications = subscribeGenerationPublications(instance)
+
+      const result = await instance.store.getState().importPortfolioSnapshot(raw)
+
+      expect(result).toMatchObject({ ok: true, code: 'SUCCESS' })
+      const state = instance.store.getState()
+      expect(state.portfolioPolicy.jpStockMaxRatio).toBe(ownRatio)
+      expect(candidateAction(state)).toBe(expectedAction)
+      expect(state.system.csvImportProvenance).toEqual(incoming.csvImportProvenance)
+      expect(state.officialDecision?.actions.filter(item =>
+        item.candidateSource === 'candidate_funnel' && item.code === '1003',
+      )).toHaveLength(1)
+      expect(publications.count()).toBe(1)
+      expect(authorityRace).toBeNull()
+      expect(storage[CSV_IMPORT_GENERATION_KEY]).not.toBe(ambientRaw)
+
+      const duplicate = await instance.store.getState().importPortfolioSnapshot(raw)
+      publications.unsubscribe()
+      expect(duplicate).toEqual({ ok: true, code: 'DUPLICATE_SNAPSHOT' })
+      expect(publications.count()).toBe(1)
+    },
+  )
+
+  it.each([
+    ['ownership replaced', false, 'c'],
+    ['ownership checker throws', true, 'd'],
+  ] as const)(
+    '%s after composition returns structured failure with no generation publication',
+    async (_label, shouldThrow, tag) => {
+      const { instance, ambientRaw } = await prepareSnapshotActionTarget(0.30)
+      const raw = raceSnapshotRaw(instance, 0.05, tag)
+      const before = instance.store.getState()
+      const priorDecision = before.officialDecision
+      installActionOwnershipLoss(instance, ambientRaw, shouldThrow)
+      const publications = subscribeGenerationPublications(instance)
+
+      const result = await instance.store.getState().importPortfolioSnapshot(raw)
+
+      publications.unsubscribe()
+      expect(result).toMatchObject({
+        ok: false,
+        code: 'SNAPSHOT_OWNERSHIP_LOST',
+      })
+      expect(result).not.toHaveProperty('cause')
+      expect(result).not.toHaveProperty('stack')
+      expect(instance.store.getState()).toBe(before)
+      expect(instance.store.getState().officialDecision).toBe(priorDecision)
+      expect(publications.count()).toBe(0)
+      if (shouldThrow) {
+        expect(storage[CSV_IMPORT_GENERATION_KEY]).not.toBe(ambientRaw)
+      } else {
+        expect(storage[CSV_IMPORT_GENERATION_KEY]).toBe(ambientRaw)
+      }
+    },
+  )
+})
+
+describe('P5-B005-C-D-FU1 P2-06 invalid receipt generation fail-close', () => {
+  const invalidCases: Array<{
+    name: string
+    tag: string
+    invalidRaw: (validRaw: string) => string
+  }> = [
+    {
+      name: 'malformed committedRaw',
+      tag: '1',
+      invalidRaw: () => '{',
+    },
+    {
+      name: 'valid JSON with an invalid manifest',
+      tag: '2',
+      invalidRaw: () => JSON.stringify({ manifest: {}, payload: {} }),
+    },
+    {
+      name: 'checksum mismatch',
+      tag: '3',
+      invalidRaw: validRaw => {
+        const value = parseJson(validRaw)
+        value.payload.holdings[0].eval += 1
+        return JSON.stringify(value)
+      },
+    },
+    {
+      name: 'unsupported schema',
+      tag: '4',
+      invalidRaw: validRaw => {
+        const value = parseJson(validRaw)
+        value.manifest.schemaVersion = 'csv-import-generation-999'
+        return JSON.stringify(value)
+      },
+    },
+    {
+      name: 'generation status invalid',
+      tag: '5',
+      invalidRaw: validRaw => {
+        const value = parseJson(validRaw)
+        value.manifest.committed = false
+        return JSON.stringify(value)
+      },
+    },
+  ]
+
+  it.each(invalidCases)(
+    '$name does not compose, reread ambient authority, or publish',
+    async ({ tag, invalidRaw }) => {
+      const { instance } = await prepareSnapshotActionTarget(0.30)
+      const raw = raceSnapshotRaw(instance, 0.05, tag)
+      const before = instance.store.getState()
+      const priorDecision = before.officialDecision
+      let restoreParse = (): void => {}
+      let invalidGenerationRaw = ''
+      instance.controls.setCandidateCompositionBeforeHook(() => {
+        const receiptRaw = storage[CSV_IMPORT_GENERATION_KEY]
+        invalidGenerationRaw = invalidRaw(receiptRaw)
+        const parseSpy = vi.spyOn(JSON, 'parse').mockImplementation(text => {
+          if (text === receiptRaw) return parseJson(invalidGenerationRaw)
+          return parseJson(text)
+        })
+        restoreParse = () => parseSpy.mockRestore()
+      })
+      const publications = subscribeGenerationPublications(instance)
+
+      const result = await instance.store.getState().importPortfolioSnapshot(raw)
+      restoreParse()
+
+      publications.unsubscribe()
+      expect(restoreCsvImportGenerationFromRaw(invalidGenerationRaw).status).not.toBe('committed')
+      expect(result).toMatchObject({
+        ok: false,
+        code: 'SNAPSHOT_PERSISTENCE_ERROR',
+      })
+      expect(result).not.toHaveProperty('cause')
+      expect(result).not.toHaveProperty('stack')
+      expect(instance.store.getState()).toBe(before)
+      expect(instance.store.getState().officialDecision).toBe(priorDecision)
+      expect(publications.count()).toBe(0)
+      expect(selectorProbe.calls).toHaveLength(0)
+    },
+  )
+
+  it('restore exception is absorbed as an invalid generation and returns structured failure', async () => {
+    const { instance } = await prepareSnapshotActionTarget(0.30)
+    const raw = raceSnapshotRaw(instance, 0.05, '6')
+    const before = instance.store.getState()
+    let restoreParse = (): void => {}
+    instance.controls.setCandidateCompositionBeforeHook(() => {
+      const receiptRaw = storage[CSV_IMPORT_GENERATION_KEY]
+      const parseSpy = vi.spyOn(JSON, 'parse').mockImplementation(text => {
+        if (text === receiptRaw) throw new Error('injected receipt restore exception')
+        return parseJson(text)
+      })
+      restoreParse = () => parseSpy.mockRestore()
+    })
+    const publications = subscribeGenerationPublications(instance)
+
+    const result = await instance.store.getState().importPortfolioSnapshot(raw)
+    restoreParse()
+
+    publications.unsubscribe()
+    expect(result).toMatchObject({
+      ok: false,
+      code: 'SNAPSHOT_PERSISTENCE_ERROR',
+    })
+    expect(JSON.stringify(result)).not.toContain('injected receipt restore exception')
+    expect(instance.store.getState()).toBe(before)
+    expect(publications.count()).toBe(0)
+    expect(selectorProbe.calls).toHaveLength(0)
+  })
+
+  it('private helper accepts only receipt committedRaw with committed status and has no fallback', () => {
+    const helper = segment(
+      'function restoreExactCommittedCanonicalAuthority',
+      '/**\n * Durable C-D connection',
+    )
+    expect(helper).toMatch(
+      /const raw = receipt\.committedRaw[\s\S]*const generation = restoreCsvImportGenerationFromRaw\(raw\)[\s\S]*generation\.status === 'committed'/,
+    )
+    expect(helper).toMatch(
+      /\? \{ ok: true, raw, generation \}\s*: \{ ok: false, reason: 'invalid_committed_raw' \}/,
+    )
+    expect(helper).not.toMatch(
+      /readCsvImportCanonicalRaw|restoreCsvImportGeneration\(\)|localStorage|prior|fallback/,
+    )
+  })
+})
+
+describe('P5-B005-C-D-FU1 P2-06 official decision clock authority', () => {
+  it('passes OfficialDecision.generatedAt exactly and performs no second current-time read', async () => {
+    const { instance } = await prepareSnapshotActionTarget(0.05)
+    const raw = raceSnapshotRaw(instance, 0.30, '7')
+    const fixedNow = Date.now()
+    let clockArmed = false
+    let dateNowCallsAtSelector: number | null = null
+    let dateNowCalls = 0
+    const dateNowSpy = vi.spyOn(Date, 'now').mockImplementation(() => {
+      if (clockArmed) dateNowCalls += 1
+      return fixedNow
+    })
+    instance.controls.setCandidateCompositionBeforeHook(() => {
+      clockArmed = true
+    })
+    selectorProbe.onCall = () => {
+      dateNowCallsAtSelector = dateNowCalls
+      clockArmed = false
+    }
+
+    const result = await instance.store.getState().importPortfolioSnapshot(raw)
+    dateNowSpy.mockRestore()
+
+    expect(result).toMatchObject({ ok: true, code: 'SUCCESS' })
+    expect(selectorProbe.calls).toHaveLength(1)
+    expect(dateNowCallsAtSelector).toBe(0)
+    expect(selectorProbe.calls[0].evaluatedAt).toBe(
+      selectorProbe.calls[0].officialDecisionGeneratedAt,
+    )
+    expect(selectorProbe.calls[0].evaluatedAt).toBe(
+      instance.store.getState().officialDecision?.generatedAt,
+    )
+  })
+
+  it('AST contract rejects second clocks and alternate generated/saved timestamps without comment false positives', () => {
+    const { file, declaration } = parsedFunction(
+      'appendCommittedCandidatePortfolioRecommendations',
+    )
+    const secondClocks: string[] = []
+    let selectorCall: ts.CallExpression | undefined
+    const visit = (node: ts.Node): void => {
+      if (
+        ts.isCallExpression(node) &&
+        ts.isPropertyAccessExpression(node.expression) &&
+        ts.isIdentifier(node.expression.expression) &&
+        node.expression.expression.text === 'Date' &&
+        node.expression.name.text === 'now'
+      ) secondClocks.push(node.getText(file))
+      if (
+        ts.isNewExpression(node) &&
+        ts.isIdentifier(node.expression) &&
+        node.expression.text === 'Date' &&
+        (node.arguments?.length ?? 0) === 0
+      ) secondClocks.push(node.getText(file))
+      if (
+        ts.isCallExpression(node) &&
+        ts.isIdentifier(node.expression) &&
+        node.expression.text === 'selectCandidatePortfolioFit'
+      ) selectorCall = node
+      ts.forEachChild(node, visit)
+    }
+    visit(declaration)
+
+    expect(secondClocks).toEqual([])
+    expect(selectorCall).toBeDefined()
+    expect(selectorCall?.arguments[2].getText(file)).toBe(
+      'computed.officialDecision.generatedAt',
+    )
+    expect(selectorCall?.arguments[2].getText(file)).not.toMatch(
+      /candidateFunnel|canonicalGeneration|savedAt/,
+    )
   })
 })
