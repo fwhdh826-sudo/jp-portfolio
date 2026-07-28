@@ -65,8 +65,11 @@ import { buildStockPortfolioPlan } from '../domain/optimization/stockPortfolio'
 import { buildCommitteeDecision } from '../domain/analysis/committeeDecision'
 import { selectMarketDataQuality, selectEffectiveCashAssumptions, selectEffectiveSafeModeActive, selectCashAssumptionsFreshness } from './selectors'
 import { buildCandidateUniverse, scoreCandidates, buildStockCandidatePlan, computeJpStockHeadroom } from '../domain/candidates'
-import type { CandidateItem, StockCandidateItem } from '../domain/candidates'
+import type { CandidateItem } from '../domain/candidates'
 import { computeRoleExposureByRole } from '../domain/candidates/roleExposure'
+import { selectCandidatePortfolioFit } from './portfolioFitSelectors'
+import { composeCandidatePortfolioRecommendations } from '../domain/candidates/candidatePortfolioRecommendation'
+import { appendCandidatePortfolioRecommendations } from './candidatePortfolioRecommendation'
 import {
   stageTrustExecutionFromCsvSync,
   captureTrustShortAnalysisInput,
@@ -1725,42 +1728,6 @@ function candidateToOfficialDecisionItem(candidate: CandidateItem): OfficialDeci
   }
 }
 
-// ── P5-B003: StockCandidateItem → OfficialDecisionItem 変換 ──────
-// trust専用のcandidateToOfficialDecisionItemとは別関数（sizingTierを持たない等、構造が異なるため）。
-// idはtrust候補（candidate-<id>）と衝突しない candidate-stock-<code> プレフィックスを使う。
-export function stockCandidateToOfficialDecisionItem(candidate: StockCandidateItem): OfficialDecisionItem {
-  const isBuyNew = candidate.action === 'BUY_NEW'
-  return {
-    id: `candidate-stock-${candidate.code}`,
-    assetType: 'stock',
-    code: candidate.code,
-    name: candidate.name,
-    action: candidate.action,
-    reason: candidate.reason,
-    amount: isBuyNew && candidate.maxAmount > 0 ? candidate.maxAmount : undefined,
-    candidateScore: candidate.score / 100,
-    blockedReason: candidate.blockedReasons[0],
-    source: 'candidate',
-    isCandidate: true,
-    suggestedAmount: isBuyNew && candidate.maxAmount > 0 ? candidate.maxAmount : undefined,
-    maxAmount: candidate.maxAmount > 0 ? candidate.maxAmount : undefined,
-    candidateSource: candidate.source,
-    constraintsPassed: Object.entries(candidate.constraints)
-      .filter(([, v]) => v === 'pass')
-      .map(([k]) => k),
-    constraintsBlocked: candidate.blockedReasons.length > 0 ? candidate.blockedReasons : undefined,
-  }
-}
-
-// ── P5-B003: officialDecision.actionsへ追加する株候補の選定 ──────
-// BUY_NEW/WATCHのみ、score降順で最大3件。trust候補appendとは独立した枠（互いの3件枠を侵食しない）。
-export function selectAppendableStockCandidates(candidates: StockCandidateItem[]): StockCandidateItem[] {
-  return candidates
-    .filter(c => c.action === 'BUY_NEW' || c.action === 'WATCH')
-    .sort((a, b) => b.score - a.score)
-    .slice(0, 3)
-}
-
 // ── runFullAnalysis（内部ヘルパー）───────────────────────────
 export function runFullAnalysis(
   state: AppState,
@@ -1978,15 +1945,8 @@ export function runFullAnalysis(
       now: nowMs,
     })
 
-    // P5-B003: BUY_NEW / WATCH のみ score 降順、最大3件を officialDecision.actions に追加。
-    // trust候補appendとは独立したslice(0,3)（trust候補・後述の全体最大3件枠とは別に加算される）。
-    // officialDecisionがnull（trust候補ブロックが例外で落ちた等）の場合はappendしない。
-    if (officialDecision) {
-      const appendableStock = selectAppendableStockCandidates(stockCandidates).map(stockCandidateToOfficialDecisionItem)
-      if (appendableStock.length > 0) {
-        officialDecision = { ...officialDecision, actions: [...officialDecision.actions, ...appendableStock] }
-      }
-    }
+    // P5-B005-C-D: legacy candidates_stocks decision bridge is retired.
+    // stockCandidates remains an observability value but is never appended here.
   } catch (error) {
     if (options.requireOfficialDecision) throw new OfficialDecisionGenerationError(error)
     stockCandidates = []
@@ -1997,6 +1957,54 @@ export function runFullAnalysis(
   }
 
   return { analysis, metrics, holdings, trust, universe, learning, zeroPlan, stockPlan, trustPlan, officialDecision, stockCandidates }
+}
+
+type FullAnalysisResult = ReturnType<typeof runFullAnalysis>
+
+/**
+ * Durable C-D connection. Callers provide the exact canonical bytes only after persistence
+ * succeeds and while the existing operation lock is still held. Any unavailable authority or
+ * recommendation failure preserves the already-computed base OfficialDecision.
+ */
+function appendCommittedCandidatePortfolioRecommendations(
+  stagedState: AppState,
+  computed: FullAnalysisResult,
+  committedCanonicalRaw: string | null,
+  operationNowMs: number,
+): FullAnalysisResult {
+  const canonicalGeneration = restoreCsvImportGenerationFromRaw(committedCanonicalRaw)
+  if (
+    canonicalGeneration.status !== 'committed' ||
+    stagedState.candidateFunnel === null ||
+    computed.officialDecision === null
+  ) return computed
+
+  try {
+    const compositionState: AppState = { ...stagedState, ...computed }
+    const fitResult = selectCandidatePortfolioFit(
+      compositionState,
+      canonicalGeneration,
+      computed.officialDecision.generatedAt,
+    )
+    const recommendations = composeCandidatePortfolioRecommendations({
+      artifact: stagedState.candidateFunnel,
+      fitResult,
+      gates: {
+        dataQualitySuppressed: selectMarketDataQuality(compositionState, operationNowMs).isSuppressed,
+        noTrade: checkNoTrade(compositionState).noTrade,
+        safeModeActive: selectEffectiveSafeModeActive(compositionState, operationNowMs),
+      },
+    })
+    const officialDecision = appendCandidatePortfolioRecommendations(
+      computed.officialDecision,
+      recommendations,
+    )
+    return officialDecision === computed.officialDecision
+      ? computed
+      : { ...computed, officialDecision }
+  } catch {
+    return computed
+  }
 }
 
 function reportSubscriberException(error: unknown): void {
@@ -2133,7 +2141,7 @@ const createAppStoreStateCreator = (
             try { console.error(`[useAppStore] manual portfolio analysis failed: ${source}`) } catch { /* diagnostic sink */ }
             return createManualMutationFailure(source, 'MANUAL_ANALYSIS_ERROR')
           }
-          const finalState: ManualPortfolioState = { ...candidateState, ...computed }
+          let finalState: ManualPortfolioState = { ...candidateState, ...computed }
 
           failurePhase.current = 'persistence'
           let persistenceResult: ReturnType<PersistManualLegacy>
@@ -2161,6 +2169,17 @@ const createAppStoreStateCreator = (
             return conflict
               ? createPortfolioCoordinationFailure(source, 'PORTFOLIO_GENERATION_CONFLICT')
               : createManualMutationFailure(source, 'MANUAL_PERSISTENCE_ERROR')
+          }
+
+          if (alignment.canonical.status === 'committed') {
+            const committedCanonicalRaw = readCsvImportCanonicalRaw()
+            computed = appendCommittedCandidatePortfolioRecommendations(
+              candidateState,
+              computed,
+              committedCanonicalRaw,
+              operationNowMs,
+            )
+            finalState = { ...candidateState, ...computed }
           }
 
           // Cache the durable write's own identity now, before the publish attempt below: a
@@ -2431,7 +2450,7 @@ const createAppStoreStateCreator = (
             return createPortfolioLoadFailure(operation, 'LOAD_ANALYSIS_ERROR')
           }
           const nowIso = new Date(nowMs).toISOString()
-          const finalState: AppState = {
+          let finalState: AppState = {
             ...stagedState,
             ...computed,
             system: { ...stagedState.system, status: 'success', lastUpdated: nowIso, analysisLastRunAt: nowIso, error: null },
@@ -2447,6 +2466,19 @@ const createAppStoreStateCreator = (
           }
           if (persistenceResult.status !== 'persisted') {
             return classifyLoadPersistenceFailure(operation, persistenceResult)
+          }
+          if (persistenceResult.target === 'canonical') {
+            computed = appendCommittedCandidatePortfolioRecommendations(
+              stagedState,
+              computed,
+              readCsvImportCanonicalRaw(),
+              nowMs,
+            )
+            finalState = {
+              ...stagedState,
+              ...computed,
+              system: { ...stagedState.system, status: 'success', lastUpdated: nowIso, analysisLastRunAt: nowIso, error: null },
+            }
           }
           if (persistenceResult.target === 'canonical') {
             runtime.lastLocallyPersistedLegacyLearningFingerprint = null
@@ -2540,7 +2572,7 @@ const createAppStoreStateCreator = (
             return createPortfolioLoadFailure(operation, 'LOAD_ANALYSIS_ERROR')
           }
           const nowIso = new Date(nowMs).toISOString()
-          const finalState: AppState = {
+          let finalState: AppState = {
             ...stagedState,
             ...computed,
             system: { ...stagedState.system, status: 'success', lastUpdated: nowIso, analysisLastRunAt: nowIso, error: null },
@@ -2563,6 +2595,19 @@ const createAppStoreStateCreator = (
           }
           if (persistenceResult.status !== 'persisted') {
             return classifyLoadPersistenceFailure(operation, persistenceResult)
+          }
+          if (persistenceResult.target === 'canonical') {
+            computed = appendCommittedCandidatePortfolioRecommendations(
+              stagedState,
+              computed,
+              readCsvImportCanonicalRaw(),
+              nowMs,
+            )
+            finalState = {
+              ...stagedState,
+              ...computed,
+              system: { ...stagedState.system, status: 'success', lastUpdated: nowIso, analysisLastRunAt: nowIso, error: null },
+            }
           }
           if (persistenceResult.target === 'canonical') {
             runtime.lastLocallyPersistedLegacyLearningFingerprint = null
@@ -2922,6 +2967,13 @@ const createAppStoreStateCreator = (
           'ownership_lost',
         ))
       }
+
+      computed = appendCommittedCandidatePortfolioRecommendations(
+        stagedState,
+        computed,
+        persistenceReceipt.committedRaw,
+        transaction.analysisNow,
+      )
 
       // Freshness reads are the final pre-publish operation. They can yield to a storage shim or
       // observe an external writer, so exact-byte ownership is checked again immediately before
@@ -3595,6 +3647,13 @@ const createAppStoreStateCreator = (
           error: '保存後にcanonical世代の所有権を失ったため、snapshotの取込は公開しませんでした。外部の保存世代を維持したまま再試行してください。',
         }
       }
+
+      computed = appendCommittedCandidatePortfolioRecommendations(
+        stagedState,
+        computed,
+        receipt.committedRaw,
+        transaction.analysisNow,
+      )
 
       const successResult: PortfolioSnapshotImportResult = {
         ok: true,

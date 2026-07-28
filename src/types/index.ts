@@ -462,7 +462,7 @@ export interface OfficialDecisionItem {
   maxAmount?: number
   // P4-A10-1: 購入量 tier（過大投入抑制。循環回避のため inline union）
   candidateSizingTier?: 'none' | 'min' | 'half' | 'full'
-  candidateSource?: 'trust_master' | 'stock_scores_6axis' | 'candidates_stocks' | 'manual' | 'future_pipeline'
+  candidateSource?: 'trust_master' | 'stock_scores_6axis' | 'candidates_stocks' | 'candidate_funnel' | 'manual' | 'future_pipeline'
   constraintsPassed?: string[]
   constraintsBlocked?: CandidateBlockedReason[]
 }
