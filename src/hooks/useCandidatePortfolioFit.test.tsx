@@ -17,6 +17,7 @@ import type {
 } from '../store/persist'
 import { buildValidCandidateFunnelArtifact } from '../services/candidateFunnelArtifact.fixtures'
 import { useAppStore } from '../store/useAppStore'
+import * as portfolioFitSelectors from '../store/portfolioFitSelectors'
 import {
   evaluateCandidatePortfolioFitRuntime,
   useCandidatePortfolioFit,
@@ -683,6 +684,147 @@ describe('P5-B005-C-B3 frozen runtime bridge', () => {
     expect(secondRestore).toHaveBeenCalledTimes(1)
   })
 
+  it('R2 coalesces a new now callback and candidate revision into one additional cycle', async () => {
+    useAppStore.setState(runtimeState(), true)
+    const firstNow = vi.fn(() => Date.parse('2026-07-26T08:00:00.000Z'))
+    const secondNow = vi.fn(() => Date.parse('2026-07-26T08:01:00.000Z'))
+    const restore = vi.fn(() => committed())
+    const selector = vi.spyOn(portfolioFitSelectors, 'selectCandidatePortfolioFit')
+    activeMount = await mountHook({
+      now: firstNow,
+      restoreCanonicalGeneration: restore,
+    })
+
+    await activeMount.rerender(
+      1,
+      { now: secondNow, restoreCanonicalGeneration: restore },
+      () => {
+        useAppStore.setState(state => ({
+          candidateFunnel: structuredClone(state.candidateFunnel),
+        }))
+      },
+    )
+
+    expect(firstNow).toHaveBeenCalledTimes(1)
+    expect(secondNow).toHaveBeenCalledTimes(1)
+    expect(restore).toHaveBeenCalledTimes(2)
+    expect(selector).toHaveBeenCalledTimes(2)
+  })
+
+  it('R2 coalesces a new restore callback and candidate revision into one additional cycle', async () => {
+    useAppStore.setState(runtimeState(), true)
+    const now = vi.fn(() => Date.parse('2026-07-26T08:00:00.000Z'))
+    const firstRestore = vi.fn(() => committed())
+    const secondRestore = vi.fn(() => committed())
+    const selector = vi.spyOn(portfolioFitSelectors, 'selectCandidatePortfolioFit')
+    activeMount = await mountHook({
+      now,
+      restoreCanonicalGeneration: firstRestore,
+    })
+
+    await activeMount.rerender(
+      1,
+      { now, restoreCanonicalGeneration: secondRestore },
+      () => {
+        useAppStore.setState(state => ({
+          candidateFunnel: structuredClone(state.candidateFunnel),
+        }))
+      },
+    )
+
+    expect(now).toHaveBeenCalledTimes(2)
+    expect(firstRestore).toHaveBeenCalledTimes(1)
+    expect(secondRestore).toHaveBeenCalledTimes(1)
+    expect(selector).toHaveBeenCalledTimes(2)
+  })
+
+  it('R2 coalesces a callback identity and cross-tab revision into one additional cycle', async () => {
+    useAppStore.setState(runtimeState(), true)
+    const firstNow = vi.fn(() => Date.parse('2026-07-26T08:00:00.000Z'))
+    const secondNow = vi.fn(() => Date.parse('2026-07-26T08:01:00.000Z'))
+    const restore = vi.fn(() => committed())
+    const selector = vi.spyOn(portfolioFitSelectors, 'selectCandidatePortfolioFit')
+    activeMount = await mountHook({
+      now: firstNow,
+      restoreCanonicalGeneration: restore,
+    })
+
+    await activeMount.rerender(
+      1,
+      { now: secondNow, restoreCanonicalGeneration: restore },
+      () => {
+        useAppStore.setState(state => ({
+          system: {
+            ...state.system,
+            crossTabInvalidation: { status: 'stale' },
+          },
+        }))
+      },
+    )
+
+    expect(firstNow).toHaveBeenCalledTimes(1)
+    expect(secondNow).toHaveBeenCalledTimes(1)
+    expect(restore).toHaveBeenCalledTimes(2)
+    expect(selector).toHaveBeenCalledTimes(2)
+  })
+
+  it('R2 coalesces both callbacks and a canonical-related revision into one additional cycle', async () => {
+    useAppStore.setState(runtimeState(), true)
+    const firstNow = vi.fn(() => Date.parse('2026-07-26T08:00:00.000Z'))
+    const secondNow = vi.fn(() => Date.parse('2026-07-26T08:01:00.000Z'))
+    const firstRestore = vi.fn(() => committed())
+    const secondRestore = vi.fn(() => committed())
+    const selector = vi.spyOn(portfolioFitSelectors, 'selectCandidatePortfolioFit')
+    activeMount = await mountHook({
+      now: firstNow,
+      restoreCanonicalGeneration: firstRestore,
+    })
+
+    await activeMount.rerender(
+      1,
+      { now: secondNow, restoreCanonicalGeneration: secondRestore },
+      () => {
+        useAppStore.setState(state => ({
+          system: {
+            ...state.system,
+            csvLastImportedAt: '2026-07-26T08:01:00.000Z',
+          },
+        }))
+      },
+    )
+
+    expect(firstNow).toHaveBeenCalledTimes(1)
+    expect(secondNow).toHaveBeenCalledTimes(1)
+    expect(firstRestore).toHaveBeenCalledTimes(1)
+    expect(secondRestore).toHaveBeenCalledTimes(1)
+    expect(selector).toHaveBeenCalledTimes(2)
+  })
+
+  it('R2 coalesces multiple same-act store revisions into one additional cycle', async () => {
+    useAppStore.setState(runtimeState(), true)
+    const now = vi.fn(() => Date.parse('2026-07-26T08:00:00.000Z'))
+    const restore = vi.fn(() => committed())
+    const selector = vi.spyOn(portfolioFitSelectors, 'selectCandidatePortfolioFit')
+    activeMount = await mountHook({ now, restoreCanonicalGeneration: restore })
+
+    await act(async () => {
+      useAppStore.setState(state => ({
+        candidateFunnel: structuredClone(state.candidateFunnel),
+      }))
+      useAppStore.setState(state => ({
+        system: {
+          ...state.system,
+          crossTabInvalidation: { status: 'stale' },
+          csvLastImportedAt: '2026-07-26T08:02:00.000Z',
+        },
+      }))
+    })
+
+    expect(now).toHaveBeenCalledTimes(2)
+    expect(restore).toHaveBeenCalledTimes(2)
+    expect(selector).toHaveBeenCalledTimes(2)
+  })
+
   it('R1 batches wrapper replacement and a relevant store revision into one cycle', async () => {
     useAppStore.setState(runtimeState(), true)
     const now = vi.fn(() => Date.parse('2026-07-26T08:00:00.000Z'))
@@ -780,9 +922,137 @@ describe('P5-B005-C-B3 frozen runtime bridge', () => {
 
     expect(setStateSpy).not.toHaveBeenCalled()
   })
+
+  it('R2 observes zero production Zustand writes through a combined scheduled revision', async () => {
+    useAppStore.setState(runtimeState(), true)
+    const now = vi.fn(() => Date.parse('2026-07-26T08:00:00.000Z'))
+    const nextNow = vi.fn(() => Date.parse('2026-07-26T08:01:00.000Z'))
+    const restore = vi.fn(() => committed())
+    const setStateSpy = vi.spyOn(useAppStore, 'setState')
+    const emittedStates: AppState[] = []
+    const unsubscribe = useAppStore.subscribe(state => emittedStates.push(state))
+    activeMount = await mountHook({ now, restoreCanonicalGeneration: restore })
+    expect(setStateSpy).not.toHaveBeenCalled()
+    expect(emittedStates).toEqual([])
+
+    await activeMount.rerender(
+      1,
+      { now: nextNow, restoreCanonicalGeneration: restore },
+      () => {
+        useAppStore.setState(state => ({
+          candidateFunnel: structuredClone(state.candidateFunnel),
+        }))
+      },
+    )
+    unsubscribe()
+
+    // The sole call/emission is the intentional fixture revision above. A hook-originated
+    // direct or module-captured alias write would add another store emission.
+    expect(setStateSpy).toHaveBeenCalledTimes(1)
+    expect(emittedStates).toHaveLength(1)
+    expect(now).toHaveBeenCalledTimes(1)
+    expect(nextNow).toHaveBeenCalledTimes(1)
+    expect(restore).toHaveBeenCalledTimes(2)
+  })
+
+  it('R2 ignores a stale scheduled token and evaluates only the newest input', async () => {
+    useAppStore.setState(runtimeState(), true)
+    const scheduledTasks: Array<() => void> = []
+    vi.stubGlobal('queueMicrotask', (task: () => void) => scheduledTasks.push(task))
+    const firstNow = vi.fn(() => Date.parse('2026-07-26T08:00:00.000Z'))
+    const secondNow = vi.fn(() => Date.parse('2026-07-26T08:01:00.000Z'))
+    const restore = vi.fn(() => committed())
+    const selector = vi.spyOn(portfolioFitSelectors, 'selectCandidatePortfolioFit')
+    activeMount = await mountHook({
+      now: firstNow,
+      restoreCanonicalGeneration: restore,
+    })
+    expect(scheduledTasks).toHaveLength(1)
+
+    await activeMount.rerender(1, {
+      now: secondNow,
+      restoreCanonicalGeneration: restore,
+    })
+    expect(scheduledTasks).toHaveLength(2)
+
+    await act(async () => scheduledTasks[0]())
+    expect(firstNow).not.toHaveBeenCalled()
+    expect(secondNow).not.toHaveBeenCalled()
+    expect(restore).not.toHaveBeenCalled()
+    expect(selector).not.toHaveBeenCalled()
+
+    await act(async () => scheduledTasks[1]())
+    expect(firstNow).not.toHaveBeenCalled()
+    expect(secondNow).toHaveBeenCalledTimes(1)
+    expect(restore).toHaveBeenCalledTimes(1)
+    expect(selector).toHaveBeenCalledTimes(1)
+  })
+
+  it('R2 cancels pending evaluation and publication after real unmount', async () => {
+    useAppStore.setState(runtimeState(), true)
+    const scheduledTasks: Array<() => void> = []
+    vi.stubGlobal('queueMicrotask', (task: () => void) => scheduledTasks.push(task))
+    const now = vi.fn(() => Date.parse('2026-07-26T08:00:00.000Z'))
+    const restore = vi.fn(() => committed())
+    const selector = vi.spyOn(portfolioFitSelectors, 'selectCandidatePortfolioFit')
+    activeMount = await mountHook({ now, restoreCanonicalGeneration: restore })
+    const pendingSnapshots = activeMount.snapshots.filter(
+      snapshot => snapshot.phase === 'pending',
+    )
+    expect(scheduledTasks).toHaveLength(1)
+
+    await activeMount.unmount()
+    activeMount = null
+    await act(async () => scheduledTasks[0]())
+
+    expect(now).not.toHaveBeenCalled()
+    expect(restore).not.toHaveBeenCalled()
+    expect(selector).not.toHaveBeenCalled()
+    expect(pendingSnapshots.length).toBeGreaterThan(0)
+  })
 })
 
 describe('P5-B005-C-B3-R1 production source-contract guards', () => {
+  it('R2 retains completed-input equality and latest-token guards around one microtask', () => {
+    const sourceFile = parseProductionSource('src/hooks/useCandidatePortfolioFit.ts')
+    const completedInputChecks: string[] = []
+    const scheduledMicrotasks: string[] = []
+    const latestTokenChecks: string[] = []
+
+    visitTree(sourceFile, node => {
+      if (
+        ts.isCallExpression(node) &&
+        ts.isIdentifier(node.expression) &&
+        node.expression.text === 'isSameLogicalCycleInput' &&
+        node.arguments[0]?.getText(sourceFile) ===
+          'completedLogicalCycleInputRef.current'
+      ) {
+        completedInputChecks.push(node.getText(sourceFile))
+      }
+      if (
+        ts.isCallExpression(node) &&
+        ts.isIdentifier(node.expression) &&
+        node.expression.text === 'queueMicrotask'
+      ) {
+        scheduledMicrotasks.push(node.getText(sourceFile))
+      }
+      if (
+        ts.isBinaryExpression(node) &&
+        node.operatorToken.kind === ts.SyntaxKind.ExclamationEqualsEqualsToken &&
+        node.left.getText(sourceFile) === 'scheduleGenerationRef.current' &&
+        node.right.getText(sourceFile) === 'scheduledGeneration'
+      ) {
+        latestTokenChecks.push(node.getText(sourceFile))
+      }
+    })
+
+    expect(completedInputChecks).toHaveLength(2)
+    expect(scheduledMicrotasks).toHaveLength(1)
+    expect(latestTokenChecks).toEqual([
+      'scheduleGenerationRef.current !== scheduledGeneration',
+    ])
+  })
+
   it('R1 allows exactly one canonical restore import and call, both in the hook', () => {
     const importSites: string[] = []
     const callSites: string[] = []
@@ -960,38 +1230,46 @@ describe('P5-B005-C-B3-R1 production source-contract guards', () => {
     expect(violations).toEqual([])
   })
 
-  it('R1 permits one read-only Zustand snapshot and rejects production writes', () => {
+  it('R2 permits one read-only Zustand snapshot and rejects every setState AST form', () => {
     const getStateSites: string[] = []
     const writeSites: string[] = []
 
-    for (const path of C_B3_RESTORE_BOUNDARY_FILES) {
+    for (const path of C_B3_PRODUCTION_TS_FILES) {
       const sourceFile = parseProductionSource(path)
       visitTree(sourceFile, node => {
-        if (!ts.isCallExpression(node)) return
-        const expression = node.expression
         if (
-          ts.isPropertyAccessExpression(expression) &&
-          expression.name.text === 'getState' &&
-          ts.isIdentifier(expression.expression) &&
-          expression.expression.text === 'useAppStore'
+          (ts.isPropertyAccessExpression(node) ||
+            ts.isElementAccessExpression(node)) &&
+          propertyNameText(node) === 'getState'
         ) {
           getStateSites.push(path)
         }
         if (
-          (ts.isIdentifier(expression) &&
-            (expression.text === 'setState' || expression.text === 'set')) ||
-          ((ts.isPropertyAccessExpression(expression) ||
-            ts.isElementAccessExpression(expression)) &&
-            propertyNameText(expression) === 'setState')
+          (ts.isPropertyAccessExpression(node) ||
+            ts.isElementAccessExpression(node)) &&
+          propertyNameText(node) === 'setState'
         ) {
           writeSites.push(path)
         }
         if (
-          (ts.isPropertyAccessExpression(expression) ||
-            ts.isElementAccessExpression(expression)) &&
-          ts.isCallExpression(expression.expression) &&
-          ts.isPropertyAccessExpression(expression.expression.expression) &&
-          expression.expression.expression.name.text === 'getState'
+          ts.isBindingElement(node) &&
+          ts.isObjectBindingPattern(node.parent) &&
+          (
+            (node.propertyName !== undefined &&
+              ((ts.isIdentifier(node.propertyName) ||
+                ts.isStringLiteral(node.propertyName)) &&
+                node.propertyName.text === 'setState')) ||
+            (node.propertyName === undefined &&
+              ts.isIdentifier(node.name) &&
+              node.name.text === 'setState')
+          )
+        ) {
+          writeSites.push(path)
+        }
+        if (
+          ts.isCallExpression(node) &&
+          ts.isIdentifier(node.expression) &&
+          (node.expression.text === 'setState' || node.expression.text === 'set')
         ) {
           writeSites.push(path)
         }

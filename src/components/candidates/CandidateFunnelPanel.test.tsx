@@ -1,3 +1,4 @@
+import { act } from 'react'
 import { describe, expect, it, vi } from 'vitest'
 import { renderToStaticMarkup } from 'react-dom/server'
 // @ts-expect-error -- repositoryは@types/node非依存だがVitestのNode runtimeでのみ使用する
@@ -7,11 +8,14 @@ import type { CandidateFunnelCandidate } from '../../types/candidateFunnel'
 import type { CandidateFunnelArtifact } from '../../types/candidateFunnelArtifact'
 import { buildValidCandidateFunnelArtifact } from '../../services/candidateFunnelArtifact.fixtures'
 import { parseCandidateFunnelArtifact } from '../../services/candidateFunnelParser'
+import * as persist from '../../store/persist'
+import * as portfolioFitSelectors from '../../store/portfolioFitSelectors'
 import { useAppStore } from '../../store/useAppStore'
 import { selectCandidateFunnelFreshness } from '../../store/selectors'
 import {
   CANDIDATE_FUNNEL_INITIAL_VIEW_STATE,
   CANDIDATE_FUNNEL_INITIAL_VISIBLE_COUNT,
+  CandidateFunnelPanel,
   CandidateFunnelPanelView,
   candidateFunnelFilterForKey,
   candidateFunnelViewReducer,
@@ -396,6 +400,24 @@ async function captureReactDomConsoleErrors(
     }
   }
   return consoleErrors
+}
+
+function findCandidateFunnelNodes(
+  root: CandidateFunnelTestNode,
+  predicate: (node: CandidateFunnelTestNode) => boolean,
+): CandidateFunnelTestNode[] {
+  const matches = predicate(root) ? [root] : []
+  for (const child of root.childNodes) {
+    matches.push(...findCandidateFunnelNodes(child, predicate))
+  }
+  return matches
+}
+
+function reactNodeProps(node: CandidateFunnelTestNode): Record<string, unknown> {
+  const record = node as unknown as Record<string, unknown>
+  const propsKey = Object.keys(record).find(key => key.startsWith('__reactProps$'))
+  if (propsKey === undefined) throw new Error('React props were not attached to the test node')
+  return record[propsKey] as Record<string, unknown>
 }
 
 describe('P5-B005-B3-C CandidateFunnelPanel summary and hierarchy', () => {
@@ -1167,5 +1189,123 @@ describe('P5-B005-C-B3-R1 pending and evaluatedAt integration acceptance', () =>
     )
     expect(selectorArguments).toEqual(['evaluatedAtMs'])
     expect(forbiddenClocks).toEqual([])
+  })
+
+  it('R2 actual panel filter, show-more, and unrelated rerender add no fit lifecycle cycle', async () => {
+    const originalStoreState = useAppStore.getState()
+    const data = largeScreenedArtifact(21)
+    const testDocument = new CandidateFunnelTestDocument()
+    class TestHtmlIFrameElement {}
+    const testWindow = {
+      document: testDocument,
+      HTMLIFrameElement: TestHtmlIFrameElement,
+      addEventListener() {},
+      removeEventListener() {},
+      getSelection() {
+        return null
+      },
+    }
+    testDocument.defaultView = testWindow
+    const globalDescriptors = new Map(
+      ['window', 'document', 'navigator', 'IS_REACT_ACT_ENVIRONMENT'].map(name => [
+        name,
+        Object.getOwnPropertyDescriptor(globalThis, name),
+      ]),
+    )
+    Object.defineProperties(globalThis, {
+      window: { configurable: true, value: testWindow },
+      document: { configurable: true, value: testDocument },
+      navigator: { configurable: true, value: { userAgent: 'vitest' } },
+      IS_REACT_ACT_ENVIRONMENT: { configurable: true, value: true },
+    })
+    useAppStore.setState({
+      ...originalStoreState,
+      candidateFunnel: data,
+      system: {
+        ...originalStoreState.system,
+        dataSourceStatus: {
+          ...originalStoreState.system.dataSourceStatus,
+          candidateFunnel: 'loaded',
+        },
+        dataTimestamps: {
+          ...originalStoreState.system.dataTimestamps!,
+          candidateFunnel: data._meta.generatedAt,
+        },
+      },
+    }, true)
+
+    const clock = vi.spyOn(Date, 'now').mockReturnValue(
+      Date.parse(data._meta.generatedAt) + 60 * 60 * 1000,
+    )
+    const restore = vi.spyOn(persist, 'restoreCsvImportGeneration')
+      .mockReturnValue({ status: 'none' })
+    const selector = vi.spyOn(
+      portfolioFitSelectors,
+      'selectCandidatePortfolioFit',
+    )
+    const container = testDocument.createElement('div')
+    const { createRoot } = await import('react-dom/client')
+    const root = createRoot(container as unknown as Element)
+
+    try {
+      await act(async () => root.render(<CandidateFunnelPanel />))
+      const fitState = () => findCandidateFunnelNodes(
+        container,
+        node => node.attributes.class?.includes(
+          'candidate-funnel__portfolio-fit-state',
+        ) ?? false,
+      )[0]?.textContent ?? ''
+      const cardCount = () => findCandidateFunnelNodes(
+        container,
+        node => node.attributes.class === 'candidate-funnel-card',
+      ).length
+      const initialFitResult = fitState()
+
+      expect(initialFitResult).toContain('ポートフォリオ適合を評価しました。')
+      expect(cardCount()).toBe(0)
+      expect(clock).toHaveBeenCalledTimes(1)
+      expect(restore).toHaveBeenCalledTimes(1)
+      expect(selector).toHaveBeenCalledTimes(1)
+
+      const screenedButton = findCandidateFunnelNodes(
+        container,
+        node => node.nodeName === 'BUTTON' && node.textContent.includes('一次選別'),
+      )[0]
+      await act(async () => {
+        const onClick = reactNodeProps(screenedButton).onClick as () => void
+        onClick()
+      })
+      expect(cardCount()).toBe(10)
+
+      const showMoreButton = findCandidateFunnelNodes(
+        container,
+        node => node.nodeName === 'BUTTON' && node.textContent.includes('さらに表示'),
+      )[0]
+      await act(async () => {
+        const onClick = reactNodeProps(showMoreButton).onClick as () => void
+        onClick()
+      })
+      expect(cardCount()).toBe(20)
+
+      await act(async () => root.render(<CandidateFunnelPanel />))
+      expect(cardCount()).toBe(20)
+      expect(fitState()).toBe(initialFitResult)
+      expect(clock).toHaveBeenCalledTimes(1)
+      expect(restore).toHaveBeenCalledTimes(1)
+      expect(selector).toHaveBeenCalledTimes(1)
+    } finally {
+      await act(async () => root.unmount())
+      useAppStore.setState(originalStoreState, true)
+      clock.mockRestore()
+      restore.mockRestore()
+      selector.mockRestore()
+      for (const [name, descriptor] of globalDescriptors) {
+        if (descriptor === undefined) {
+          Reflect.deleteProperty(globalThis, name)
+        } else {
+          Object.defineProperty(globalThis, name, descriptor)
+        }
+      }
+    }
   })
 })

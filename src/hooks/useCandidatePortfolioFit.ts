@@ -97,12 +97,24 @@ export function useCandidatePortfolioFit(
     phase: 'pending',
     result: null,
   })
-  // Component-local and instance-lifetime only: remembers the immediately preceding
-  // logical input revision so StrictMode's repeated effect setup is not a new cycle.
-  const previousLogicalCycleInputRef =
+  // Component-local and instance-lifetime only: remembers the last logical input
+  // whose evaluation completed, so StrictMode setup replay is not a new cycle.
+  const completedLogicalCycleInputRef =
     useRef<CandidatePortfolioFitLogicalCycleInput | null>(null)
+  // Holds only the newest scheduled logical input; it is never shared or retained
+  // as result history or a candidate/canonical cache.
+  const latestScheduledLogicalCycleInputRef =
+    useRef<CandidatePortfolioFitLogicalCycleInput | null>(null)
+  // Holds the AppState snapshot paired with the newest scheduled logical input.
+  const latestScheduledStateRef = useRef<AppState | null>(null)
+  // Monotonic component-local token invalidates stale scheduled evaluations.
+  const scheduleGenerationRef = useRef(0)
+  // Remains cancelled after real unmount; a subsequent effect setup clears it
+  // during StrictMode replay or a committed dependency revision.
+  const lifecycleCancelledRef = useRef(false)
 
   useEffect(() => {
+    lifecycleCancelledRef.current = false
     const logicalCycleInput: CandidatePortfolioFitLogicalCycleInput = [
       now,
       restoreCanonicalGeneration,
@@ -117,19 +129,63 @@ export function useCandidatePortfolioFit(
       csvSyncSummary,
       crossTabInvalidation,
     ]
-    if (isSameLogicalCycleInput(
-      previousLogicalCycleInputRef.current,
-      logicalCycleInput,
-    )) {
+    if (
+      isSameLogicalCycleInput(
+        completedLogicalCycleInputRef.current,
+        logicalCycleInput,
+      ) &&
+      latestScheduledLogicalCycleInputRef.current === null
+    ) {
       return
     }
 
-    const result = evaluateCandidatePortfolioFitRuntime(
-      useAppStore.getState(),
-      { now, restoreCanonicalGeneration },
-    )
-    previousLogicalCycleInputRef.current = logicalCycleInput
-    setSnapshot({ phase: 'ready', result })
+    latestScheduledLogicalCycleInputRef.current = logicalCycleInput
+    latestScheduledStateRef.current = useAppStore.getState()
+    const scheduledGeneration = scheduleGenerationRef.current + 1
+    scheduleGenerationRef.current = scheduledGeneration
+
+    queueMicrotask(() => {
+      if (
+        lifecycleCancelledRef.current ||
+        scheduleGenerationRef.current !== scheduledGeneration
+      ) {
+        return
+      }
+
+      const scheduledInput = latestScheduledLogicalCycleInputRef.current
+      const scheduledState = latestScheduledStateRef.current
+      if (scheduledInput === null || scheduledState === null) return
+
+      latestScheduledLogicalCycleInputRef.current = null
+      latestScheduledStateRef.current = null
+      if (
+        isSameLogicalCycleInput(
+          completedLogicalCycleInputRef.current,
+          scheduledInput,
+        )
+      ) {
+        return
+      }
+
+      const result = evaluateCandidatePortfolioFitRuntime(
+        scheduledState,
+        {
+          now: scheduledInput[0],
+          restoreCanonicalGeneration: scheduledInput[1],
+        },
+      )
+      completedLogicalCycleInputRef.current = scheduledInput
+      setSnapshot({ phase: 'ready', result })
+    })
+
+    return () => {
+      lifecycleCancelledRef.current = true
+      if (scheduleGenerationRef.current === scheduledGeneration) {
+        scheduleGenerationRef.current += 1
+        latestScheduledLogicalCycleInputRef.current = null
+        latestScheduledStateRef.current = null
+      }
+    }
   }, [
     now,
     restoreCanonicalGeneration,
