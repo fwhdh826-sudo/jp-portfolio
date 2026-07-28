@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-07-28T15:07:41.939486+09:00",
-  "sourceUpdatedAt": "2026-07-28T05:50:40+00:00",
+  "updatedAt": "2026-07-28T22:08:01.874912+09:00",
+  "sourceUpdatedAt": "2026-07-28T13:06:43+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -17,23 +17,63 @@
       "items": []
     },
     "jp_semiconductor": {
-      "avgSentiment": -0.21,
-      "negativeCount": 4,
-      "positiveCount": 2,
-      "neutralCount": 1,
+      "avgSentiment": 0.143,
+      "negativeCount": 1,
+      "positiveCount": 3,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 7,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Japanese, Korean Stocks Tumble as Chip Selloff Intensifies",
-      "topPositiveTitle": "Chip Rout Deepens on China Competition, Circular Funding Fears",
+      "topNegativeTitle": "S&P 500 Futures Muted as Semiconductors Drop, Earnings Roll In",
+      "topPositiveTitle": "AI Greed Turns Into Fear as Tech Stocks Keep Sinking",
       "items": [
         {
-          "title": "Japanese, Korean Stocks Tumble as Chip Selloff Intensifies",
+          "title": "S&P 500 Futures Muted as Semiconductors Drop, Earnings Roll In",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -1.0,
-          "publishedAt": "2026-07-28T00:49:29+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-28/japanese-korean-stocks-tumble-as-chip-selloff-intensifies",
+          "publishedAt": "2026-07-28T11:19:54+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-28/s-p-500-futures-muted-as-semiconductors-drop-earnings-roll-in",
+          "tags": [
+            "jp_semiconductor",
+            "market",
+            "us_broad",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Germany and China and supply chains and trade",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-28T11:00:01+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-07-28/germany-and-china-and-supply-chains-and-trade",
+          "tags": [
+            "jp_semiconductor",
+            "market"
+          ]
+        },
+        {
+          "title": "US Stocks Waver as Chip Slump Fuels Rotation Trade: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.2,
+          "publishedAt": "2026-07-27T22:08:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-27/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "jp_semiconductor",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Chip Rout Deepens on China Competition, Circular Funding Fears",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-07-28T00:43:29+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-28/korean-stocks-sink-as-chipmakers-plung-on-deepening-ai-fatigue",
           "tags": [
             "jp_semiconductor",
             "macro_risk",
@@ -42,120 +82,66 @@
           ]
         },
         {
-          "title": "FTSE 100 Live: Chip Selloff Rattles Stocks as Earnings Flood In",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-07-28T05:50:40+00:00",
-          "url": "https://www.bloomberg.com/news/live-blog/2026-07-28/ftse-100-live-chip-stocks-pound-gilts-barclays-gsk-unilever-hormuz-oil-prices-iran-news-what-s-moving-uk-markets-right-now-markets-today",
+          "title": "S. Korea’s Consumer Confidence Hits Four-Month High on Chip Boom",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-07-27T21:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-27/s-korea-s-consumer-confidence-hits-four-month-high-on-chip-boom",
           "tags": [
             "jp_semiconductor",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Korean Markets Hit by Turmoil as Chip Rout Forces Trading Halts",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-07-28T04:40:59+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-28/korean-markets-hit-by-turmoil-as-chip-rout-forces-trading-halts",
-          "tags": [
-            "jp_semiconductor",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "SK Hynix’s $570 Billion Selloff Shows Cracks in Memory-Chip Boom",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-07-27T23:30:04+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-27/sk-hynix-s-rebound-from-470-billion-rout-hinges-on-ai-spending",
-          "tags": [
-            "jp_semiconductor",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Stocks Slump as Chip Selloff Worsens, Bonds Rise: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": -0.14,
-          "publishedAt": "2026-07-27T22:08:16+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-27/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "jp_semiconductor",
-            "macro_risk",
             "market",
-            "us_broad"
+            "us_growth"
           ]
         }
       ]
     },
     "us_broad": {
-      "avgSentiment": 0.215,
-      "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 2,
+      "avgSentiment": -0.043,
+      "negativeCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Stocks Slump as Chip Selloff Worsens, Bonds Rise: Markets Wrap",
-      "topPositiveTitle": "Fed Faces New Pressure to Hike Rates as Price Risks Rebound",
+      "topNegativeTitle": "S&P 500 Futures Muted as Semiconductors Drop, Earnings Roll In",
+      "topPositiveTitle": "Citadel Securities Sees Warsh Delivering Surprise Fed Hike",
       "items": [
         {
-          "title": "Stocks Slump as Chip Selloff Worsens, Bonds Rise: Markets Wrap",
+          "title": "S&P 500 Futures Muted as Semiconductors Drop, Earnings Roll In",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": -0.14,
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-07-28T11:19:54+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-28/s-p-500-futures-muted-as-semiconductors-drop-earnings-roll-in",
+          "tags": [
+            "jp_semiconductor",
+            "market",
+            "us_broad",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "US Stocks Waver as Chip Slump Fuels Rotation Trade: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.2,
           "publishedAt": "2026-07-27T22:08:16+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-07-27/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
             "jp_semiconductor",
-            "macro_risk",
             "market",
             "us_broad"
           ]
         },
         {
-          "title": "Biggest State Street Debate Is Where Bessent Bond Gauge Goes",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-27T13:20:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-27/biggest-debate-at-state-street-is-where-bessent-bond-metric-goes",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Citadel Securities Sees Warsh Delivering Surprise Fed Rate Hike",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-07-27T21:42:13+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-27/citadel-securities-sees-warsh-delivering-surprise-fed-rate-hike",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Fed Faces New Pressure to Hike Rates as Price Risks Rebound",
+          "title": "Citadel Securities Sees Warsh Delivering Surprise Fed Hike",
           "source": "Bloomberg Economics",
           "sentiment": "positive",
           "sentimentScore": 0.67,
-          "publishedAt": "2026-07-26T19:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-26/fed-faces-growing-pressure-to-hike-rates-as-price-risks-rebound",
+          "publishedAt": "2026-07-27T21:42:13+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-27/citadel-securities-sees-warsh-delivering-surprise-fed-rate-hike",
           "tags": [
             "market",
             "rates",
@@ -165,52 +151,27 @@
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.073,
-      "negativeCount": 3,
+      "avgSentiment": 0.284,
+      "negativeCount": 1,
       "positiveCount": 5,
       "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 9,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "Japanese, Korean Stocks Tumble as Chip Selloff Intensifies",
-      "topPositiveTitle": "AI Boom Propels Hong Kong Exports to Strongest Growth Since 1984",
+      "topNegativeTitle": "S&P 500 Futures Muted as Semiconductors Drop, Earnings Roll In",
+      "topPositiveTitle": "AI Greed Turns Into Fear as Tech Stocks Keep Sinking",
       "items": [
         {
-          "title": "Japanese, Korean Stocks Tumble as Chip Selloff Intensifies",
+          "title": "S&P 500 Futures Muted as Semiconductors Drop, Earnings Roll In",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -1.0,
-          "publishedAt": "2026-07-28T00:49:29+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-28/japanese-korean-stocks-tumble-as-chip-selloff-intensifies",
+          "publishedAt": "2026-07-28T11:19:54+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-28/s-p-500-futures-muted-as-semiconductors-drop-earnings-roll-in",
           "tags": [
             "jp_semiconductor",
-            "macro_risk",
             "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "CXMT Listing Creates $192 Billion Windfall for Chinese Province",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-07-28T00:00:54+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-28/cxmt-listing-creates-192-billion-windfall-for-chinese-province",
-          "tags": [
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "BlackRock Raises $12.5 Billion of Debt for Meta Data Center",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-07-27T21:47:14+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-27/blackrock-raises-12-5-billion-of-debt-for-meta-data-center",
-          "tags": [
-            "macro_risk",
-            "market",
+            "us_broad",
             "us_growth"
           ]
         },
@@ -238,28 +199,68 @@
             "market",
             "us_growth"
           ]
+        },
+        {
+          "title": "Chip Rout Deepens on China Competition, Circular Funding Fears",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-07-28T00:43:29+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-28/korean-stocks-sink-as-chipmakers-plung-on-deepening-ai-fatigue",
+          "tags": [
+            "jp_semiconductor",
+            "macro_risk",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "S. Korea’s Consumer Confidence Hits Four-Month High on Chip Boom",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-07-27T21:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-27/s-korea-s-consumer-confidence-hits-four-month-high-on-chip-boom",
+          "tags": [
+            "jp_semiconductor",
+            "market",
+            "us_growth"
+          ]
         }
       ]
     },
     "global_broad": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.33,
       "negativeCount": 0,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Unilever Lifts Outlook as Emerging Markets Drive Dove and Rexona Sales Growth",
+      "topPositiveTitle": "Unilever Lifts Outlook as Emerging Markets Drive Dove and Rexona Sales Growth",
+      "items": [
+        {
+          "title": "Unilever Lifts Outlook as Emerging Markets Drive Dove and Rexona Sales Growth",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-07-28T06:14:43+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-28/unilever-sales-jump-on-emerging-market-demand-for-dove-soap",
+          "tags": [
+            "global_broad",
+            "market"
+          ]
+        }
+      ]
     },
     "gold": {
       "avgSentiment": -1.0,
-      "negativeCount": 2,
+      "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 0,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 1,
       "isStale": false,
       "topNegativeTitle": "Gold Declines as Traders Weigh Prospects for Interest-Rate Hike",
       "topPositiveTitle": "Gold Declines as Traders Weigh Prospects for Interest-Rate Hike",
@@ -276,18 +277,6 @@
             "macro_risk",
             "market",
             "rates"
-          ]
-        },
-        {
-          "title": "Laopu Gold Tumbles After Reporting Slower Revenue, Profit Growth",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-07-27T08:55:03+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-27/laopu-gold-sees-first-half-profit-slowing-amid-dropping-prices",
-          "tags": [
-            "gold",
-            "market"
           ]
         }
       ]
@@ -317,42 +306,16 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.372,
-      "negativeCount": 8,
-      "positiveCount": 1,
+      "avgSentiment": 0.143,
+      "negativeCount": 1,
+      "positiveCount": 3,
       "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 12,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "Asian Stocks Slide 10% From June Peak to Head for Correction",
-      "topPositiveTitle": "Chip Rout Deepens on China Competition, Circular Funding Fears",
+      "topNegativeTitle": "Gold Declines as Traders Weigh Prospects for Interest-Rate Hike",
+      "topPositiveTitle": "AI Greed Turns Into Fear as Tech Stocks Keep Sinking",
       "items": [
-        {
-          "title": "Asian Stocks Slide 10% From June Peak to Head for Correction",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-07-28T03:27:10+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-28/asian-stocks-slide-10-from-june-peak-to-head-for-correction",
-          "tags": [
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Japanese, Korean Stocks Tumble as Chip Selloff Intensifies",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-07-28T00:49:29+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-28/japanese-korean-stocks-tumble-as-chip-selloff-intensifies",
-          "tags": [
-            "jp_semiconductor",
-            "macro_risk",
-            "market",
-            "us_growth"
-          ]
-        },
         {
           "title": "Gold Declines as Traders Weigh Prospects for Interest-Rate Hike",
           "source": "Bloomberg Markets",
@@ -368,40 +331,68 @@
           ]
         },
         {
-          "title": "FTSE 100 Live: Chip Selloff Rattles Stocks as Earnings Flood In",
+          "title": "OPEC+ Plans Quota-Hikes Pause After September, Delegates Say",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-07-28T05:50:40+00:00",
-          "url": "https://www.bloomberg.com/news/live-blog/2026-07-28/ftse-100-live-chip-stocks-pound-gilts-barclays-gsk-unilever-hormuz-oil-prices-iran-news-what-s-moving-uk-markets-right-now-markets-today",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-28T11:33:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-28/opec-plans-to-pause-quota-hikes-after-september-delegates-say",
           "tags": [
-            "jp_semiconductor",
+            "commodity",
+            "geopolitical",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Korean Markets Hit by Turmoil as Chip Rout Forces Trading Halts",
+          "title": "German Economy Likely to Grow Despite Iran War, Bundesbank Says",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-28T10:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-28/german-economy-likely-to-grow-despite-iran-war-bundesbank-says",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "AI to Help UK Recover From Data Crisis, Says Senior Statistician",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-28T04:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-28/ai-to-help-uk-recover-from-data-crisis-says-senior-statistician",
+          "tags": [
+            "macro_risk",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Chip Rout Deepens on China Competition, Circular Funding Fears",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-07-28T04:40:59+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-28/korean-markets-hit-by-turmoil-as-chip-rout-forces-trading-halts",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-07-28T00:43:29+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-28/korean-stocks-sink-as-chipmakers-plung-on-deepening-ai-fatigue",
           "tags": [
             "jp_semiconductor",
             "macro_risk",
-            "market"
+            "market",
+            "us_growth"
           ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": -0.11,
+      "avgSentiment": -0.165,
       "negativeCount": 1,
       "positiveCount": 0,
-      "neutralCount": 2,
+      "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 3,
+      "itemCount": 2,
       "isStale": false,
       "topNegativeTitle": "USD/PHP: Philippines Intervened in Small Way to Defend Peso, BSP Governor Says",
       "topPositiveTitle": "Takaichi’s Looming Tax Cut Plan Risks Weighing on Yen, JGBs",
@@ -429,31 +420,19 @@
             "fx",
             "market"
           ]
-        },
-        {
-          "title": "Southern Africa Payments Hub Eyes More Currencies to Boost Trade",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-27T14:57:40+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-27/southern-africa-payments-hub-eyes-more-currencies-to-boost-trade",
-          "tags": [
-            "fx",
-            "market"
-          ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": 0.075,
+      "avgSentiment": -0.165,
       "negativeCount": 2,
-      "positiveCount": 4,
-      "neutralCount": 2,
+      "positiveCount": 1,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 8,
+      "itemCount": 4,
       "isStale": false,
       "topNegativeTitle": "Gold Declines as Traders Weigh Prospects for Interest-Rate Hike",
-      "topPositiveTitle": "Fed Faces New Pressure to Hike Rates as Price Risks Rebound",
+      "topPositiveTitle": "Citadel Securities Sees Warsh Delivering Surprise Fed Hike",
       "items": [
         {
           "title": "Gold Declines as Traders Weigh Prospects for Interest-Rate Hike",
@@ -471,7 +450,7 @@
         },
         {
           "title": "RBA’s Bullock Says Economy Cooling, Unsure Rates High Enough",
-          "source": "Bloomberg Markets",
+          "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.33,
           "publishedAt": "2026-07-28T03:05:00+00:00",
@@ -482,35 +461,22 @@
           ]
         },
         {
-          "title": "XP Founder Urges Brazil to Fix Deficit as Election Debate Looms",
+          "title": "Brazil Inflation Slowdown Sets Up Another Rate Cut Next Week",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-27T19:29:11+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-27/xp-founder-urges-brazil-to-fix-deficit-as-election-debate-looms",
+          "publishedAt": "2026-07-28T12:14:08+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-28/brazil-inflation-slowed-more-than-expected-ahead-of-rate-meeting",
           "tags": [
             "market",
             "rates"
           ]
         },
         {
-          "title": "Biggest State Street Debate Is Where Bessent Bond Gauge Goes",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-27T13:20:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-27/biggest-debate-at-state-street-is-where-bessent-bond-metric-goes",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Citadel Securities Sees Warsh Delivering Surprise Fed Rate Hike",
+          "title": "Citadel Securities Sees Warsh Delivering Surprise Fed Hike",
           "source": "Bloomberg Economics",
           "sentiment": "positive",
-          "sentimentScore": 0.33,
+          "sentimentScore": 0.67,
           "publishedAt": "2026-07-27T21:42:13+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-07-27/citadel-securities-sees-warsh-delivering-surprise-fed-rate-hike",
           "tags": [
@@ -522,23 +488,23 @@
       ]
     },
     "commodity": {
-      "avgSentiment": -0.028,
-      "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 3,
-      "sourceCount": 3,
-      "itemCount": 5,
+      "avgSentiment": 0.1,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 2,
+      "sourceCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Latest Oil Market News and Analysis for July 28",
-      "topPositiveTitle": "Tokyo Eyes Lifting Support for Overseas Oil Pipeline Investments",
+      "topNegativeTitle": "OPEC+ Plans Quota-Hikes Pause After September, Delegates Say",
+      "topPositiveTitle": "US Stocks Waver as Chip Slump Fuels Rotation Trade: Markets Wrap",
       "items": [
         {
-          "title": "Latest Oil Market News and Analysis for July 28",
+          "title": "OPEC+ Plans Quota-Hikes Pause After September, Delegates Say",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-07-27T22:02:24+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-27/latest-oil-market-news-and-analysis-for-july-28",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-28T11:33:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-28/opec-plans-to-pause-quota-hikes-after-september-delegates-say",
           "tags": [
             "commodity",
             "geopolitical",
@@ -547,79 +513,51 @@
           ]
         },
         {
-          "title": "Stocks Slump as Chip Selloff Worsens, Bonds Rise: Markets Wrap",
+          "title": "US Stocks Waver as Chip Slump Fuels Rotation Trade: Markets Wrap",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": -0.14,
+          "sentiment": "positive",
+          "sentimentScore": 0.2,
           "publishedAt": "2026-07-27T22:08:16+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-07-27/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
             "jp_semiconductor",
-            "macro_risk",
             "market",
             "us_broad"
-          ]
-        },
-        {
-          "title": "Italy Cuts Diesel Tax and Seeks EU Fiscal Room for Energy Aid",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-27T16:57:22+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-27/italy-cuts-diesel-tax-and-seeks-eu-fiscal-room-for-energy-aid",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "“来月の原油 去年の実績とほぼ同じ量 調達できる”赤澤経産相",
-          "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-24T07:45:27+00:00",
-          "url": "https://news.web.nhk/newsweb/na/na-k10015185271000",
-          "tags": [
-            "commodity",
-            "market"
-          ],
-          "titleJa": "“来月の原油 去年の実績とほぼ同じ量 調達できる”赤澤経産相"
-        },
-        {
-          "title": "Tokyo Eyes Lifting Support for Overseas Oil Pipeline Investments",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-07-28T03:38:14+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-28/tokyo-eyes-lifting-support-for-overseas-oil-pipeline-investments",
-          "tags": [
-            "commodity",
-            "market"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.09,
-      "negativeCount": 1,
+      "avgSentiment": 0.168,
+      "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 1,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Latest Oil Market News and Analysis for July 28",
-      "topPositiveTitle": "Taiwan Five-Year Yield Jumps to Highest Since 2008 on Rate Bets",
+      "topNegativeTitle": "Royal Caribbean (RCL) Lowers Yield Forecast as Middle East Turmoil Hits Bookings",
+      "topPositiveTitle": "French Consumer Confidence Increases to Highest Since March",
       "items": [
         {
-          "title": "Latest Oil Market News and Analysis for July 28",
+          "title": "Royal Caribbean (RCL) Lowers Yield Forecast as Middle East Turmoil Hits Bookings",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-07-27T22:02:24+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-27/latest-oil-market-news-and-analysis-for-july-28",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-28T11:58:34+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-28/royal-caribbean-rcl-lowers-yield-forecast-as-middle-east-turmoil-hits-bookings",
+          "tags": [
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "OPEC+ Plans Quota-Hikes Pause After September, Delegates Say",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-28T11:33:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-28/opec-plans-to-pause-quota-hikes-after-september-delegates-say",
           "tags": [
             "commodity",
             "geopolitical",
@@ -628,30 +566,29 @@
           ]
         },
         {
-          "title": "Italy Cuts Diesel Tax and Seeks EU Fiscal Room for Energy Aid",
+          "title": "German Economy Likely to Grow Despite Iran War, Bundesbank Says",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-27T16:57:22+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-27/italy-cuts-diesel-tax-and-seeks-eu-fiscal-room-for-energy-aid",
+          "publishedAt": "2026-07-28T10:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-28/german-economy-likely-to-grow-despite-iran-war-bundesbank-says",
           "tags": [
-            "commodity",
             "geopolitical",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Taiwan Five-Year Yield Jumps to Highest Since 2008 on Rate Bets",
-          "source": "Bloomberg Markets",
+          "title": "French Consumer Confidence Increases to Highest Since March",
+          "source": "Bloomberg Economics",
           "sentiment": "positive",
-          "sentimentScore": 0.6,
-          "publishedAt": "2026-07-28T05:41:44+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-28/taiwan-five-year-yield-jumps-to-highest-since-2008-on-rate-bets",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-07-28T06:45:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-28/french-consumer-confidence-increases-to-highest-since-march",
           "tags": [
             "geopolitical",
-            "market",
-            "rates"
+            "macro_risk",
+            "market"
           ]
         }
       ]
@@ -665,7 +602,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 7,
+    "excludedCount": 6,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
