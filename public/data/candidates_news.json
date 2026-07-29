@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-07-29T07:34:35.225809+09:00",
-  "sourceUpdatedAt": "2026-07-28T22:15:52+00:00",
+  "updatedAt": "2026-07-29T09:56:05.399626+09:00",
+  "sourceUpdatedAt": "2026-07-29T00:39:18+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -32,44 +32,15 @@
     },
     "jp_semiconductor": {
       "avgSentiment": 0.0,
-      "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 3,
-      "sourceCount": 2,
-      "itemCount": 5,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Nasdaq 100 Is Approaching a Correction as Chips Selloff Worsens",
-      "topPositiveTitle": "Equal-Weight S&P 500 Hits Record; Broad Gains Outweigh Chip Rout",
+      "topNegativeTitle": "Germany and China and supply chains and trade",
+      "topPositiveTitle": "Germany and China and supply chains and trade",
       "items": [
-        {
-          "title": "Nasdaq 100 Is Approaching a Correction as Chips Selloff Worsens",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-07-28T13:45:45+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-28/nasdaq-100-heads-for-correction-as-ai-worries-rattle-investors",
-          "tags": [
-            "jp_semiconductor",
-            "macro_risk",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Asian Stocks Eye Gains as Oil Offsets Chip Selloff: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.2,
-          "publishedAt": "2026-07-28T22:15:52+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-28/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "jp_semiconductor",
-            "macro_risk",
-            "market",
-            "us_growth"
-          ]
-        },
         {
           "title": "Germany and China and supply chains and trade",
           "source": "Bloomberg Economics",
@@ -81,57 +52,29 @@
             "jp_semiconductor",
             "market"
           ]
-        },
-        {
-          "title": "S&P 500 Rises as Oil Drop Outweighs Chip Selloff: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.2,
-          "publishedAt": "2026-07-27T22:08:16+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-27/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "jp_semiconductor",
-            "macro_risk",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Equal-Weight S&P 500 Hits Record; Broad Gains Outweigh Chip Rout",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-07-28T11:19:54+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-28/s-p-500-futures-muted-as-semiconductors-drop-earnings-roll-in",
-          "tags": [
-            "commodity",
-            "jp_semiconductor",
-            "market",
-            "us_broad"
-          ]
         }
       ]
     },
     "us_broad": {
-      "avgSentiment": 0.193,
+      "avgSentiment": 0.19,
       "negativeCount": 2,
-      "positiveCount": 4,
+      "positiveCount": 5,
       "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 8,
+      "itemCount": 9,
       "isStale": false,
-      "topNegativeTitle": "Citadel Securities’ Fed Rate Hike Call Adds to Market Angst",
-      "topPositiveTitle": "Traders Make Record Rush to Fed Futures as Doubts Shadow Market",
+      "topNegativeTitle": "Gold Holds Decline as Traders Assess Prospects for Fed Rate Hike",
+      "topPositiveTitle": "Oil Rises on Iran Attack, Korea Lifts Asian Stocks: Markets Wrap",
       "items": [
         {
-          "title": "Citadel Securities’ Fed Rate Hike Call Adds to Market Angst",
+          "title": "Gold Holds Decline as Traders Assess Prospects for Fed Rate Hike",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-07-28T19:44:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-28/citadel-securities-fed-rate-hike-call-adds-to-market-angst",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-07-28T23:19:05+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-28/gold-edges-lower-as-traders-assess-prospects-for-fed-rate-hike",
           "tags": [
+            "gold",
             "market",
             "rates",
             "us_broad"
@@ -152,6 +95,18 @@
           ]
         },
         {
+          "title": "Massive Day for Earnings as Fed Decision Looms | The Close 7/28/2026",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-28T23:29:15+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-07-28/the-close-7-28-2026-video",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
           "title": "Why Kevin Warsh Wants the Federal Reserve to Talk Less",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
@@ -164,95 +119,39 @@
           ]
         },
         {
-          "title": "S&P 500 Rises as Oil Drop Outweighs Chip Selloff: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.2,
-          "publishedAt": "2026-07-27T22:08:16+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-27/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "jp_semiconductor",
-            "macro_risk",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Ford Cashes In on Sales of High-Margin SUVs",
-          "source": "Bloomberg Markets",
+          "title": "Hike or Hold? Fed’s Warsh Has Markets Unsure: Decision-Day Guide",
+          "source": "Bloomberg Economics",
           "sentiment": "positive",
           "sentimentScore": 0.33,
-          "publishedAt": "2026-07-28T20:50:56+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-07-28/ford-cashes-in-on-sales-of-high-margin-suvs-video",
+          "publishedAt": "2026-07-28T23:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-28/hike-or-hold-fed-s-warsh-has-markets-unsure-decision-day-guide",
           "tags": [
             "market",
+            "rates",
             "us_broad"
           ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": -0.048,
-      "negativeCount": 2,
+      "avgSentiment": 0.33,
+      "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 1,
+      "neutralCount": 0,
       "sourceCount": 1,
-      "itemCount": 4,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "UPS CEO Says the Amazon Glide Down Is 'Behind Us'",
-      "topPositiveTitle": "Insurers Rally as Stocks Shift from AI Loser to Safe Haven",
+      "topNegativeTitle": "UPS CEO on Return to Growth, Global Economic Outlook",
+      "topPositiveTitle": "UPS CEO on Return to Growth, Global Economic Outlook",
       "items": [
         {
-          "title": "UPS CEO Says the Amazon Glide Down Is 'Behind Us'",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-07-28T20:20:21+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-07-28/ups-ceo-says-the-amazon-glide-down-is-behind-us-video",
-          "tags": [
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Nasdaq 100 Is Approaching a Correction as Chips Selloff Worsens",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-07-28T13:45:45+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-28/nasdaq-100-heads-for-correction-as-ai-worries-rattle-investors",
-          "tags": [
-            "jp_semiconductor",
-            "macro_risk",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Asian Stocks Eye Gains as Oil Offsets Chip Selloff: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.2,
-          "publishedAt": "2026-07-28T22:15:52+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-28/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "jp_semiconductor",
-            "macro_risk",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Insurers Rally as Stocks Shift from AI Loser to Safe Haven",
+          "title": "UPS CEO on Return to Growth, Global Economic Outlook",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-07-28T15:46:22+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-28/us-insurers-rally-as-stocks-shift-from-ai-loser-to-safe-haven",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-07-28T23:02:38+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-07-28/ups-ceo-on-return-to-growth-global-economic-outlook-video",
           "tags": [
-            "gold",
             "market",
             "us_growth"
           ]
@@ -272,56 +171,56 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": -0.165,
+      "avgSentiment": -0.67,
       "negativeCount": 1,
-      "positiveCount": 1,
+      "positiveCount": 0,
       "neutralCount": 0,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Gold Declines as Traders Weigh Prospects for Interest-Rate Hike",
-      "topPositiveTitle": "Insurers Rally as Stocks Shift from AI Loser to Safe Haven",
+      "topNegativeTitle": "Gold Holds Decline as Traders Assess Prospects for Fed Rate Hike",
+      "topPositiveTitle": "Gold Holds Decline as Traders Assess Prospects for Fed Rate Hike",
       "items": [
         {
-          "title": "Gold Declines as Traders Weigh Prospects for Interest-Rate Hike",
+          "title": "Gold Holds Decline as Traders Assess Prospects for Fed Rate Hike",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-07-27T23:21:45+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-27/gold-holds-gain-as-trump-sounds-optimism-over-us-iran-talks",
-          "tags": [
-            "gold",
-            "macro_risk",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Insurers Rally as Stocks Shift from AI Loser to Safe Haven",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-07-28T15:46:22+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-28/us-insurers-rally-as-stocks-shift-from-ai-loser-to-safe-haven",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-07-28T23:19:05+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-28/gold-edges-lower-as-traders-assess-prospects-for-fed-rate-hike",
           "tags": [
             "gold",
             "market",
-            "us_growth"
+            "rates",
+            "us_broad"
           ]
         }
       ]
     },
     "reit": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Rithm Captial CEO on Real Estate Outlook",
+      "topPositiveTitle": "Rithm Captial CEO on Real Estate Outlook",
+      "items": [
+        {
+          "title": "Rithm Captial CEO on Real Estate Outlook",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-28T23:01:00+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-07-28/rithm-captial-ceo-on-real-estate-outlook-video",
+          "tags": [
+            "market",
+            "reit"
+          ]
+        }
+      ]
     },
     "dividend": {
       "avgSentiment": 0,
@@ -336,15 +235,15 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.259,
-      "negativeCount": 4,
-      "positiveCount": 1,
-      "neutralCount": 4,
+      "avgSentiment": -0.5,
+      "negativeCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 9,
+      "itemCount": 2,
       "isStale": false,
       "topNegativeTitle": "S&P Global’s Shares Drop as Company Misses Profit Estimates",
-      "topPositiveTitle": "Latest Oil Market News and Analysis for July 29",
+      "topPositiveTitle": "UK Inflation Fears Ease Again Despite Volatile Oil Prices",
       "items": [
         {
           "title": "S&P Global’s Shares Drop as Company Misses Profit Estimates",
@@ -361,73 +260,31 @@
           ]
         },
         {
-          "title": "Gold Declines as Traders Weigh Prospects for Interest-Rate Hike",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-07-27T23:21:45+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-27/gold-holds-gain-as-trump-sounds-optimism-over-us-iran-talks",
-          "tags": [
-            "gold",
-            "macro_risk",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Nasdaq 100 Is Approaching a Correction as Chips Selloff Worsens",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-07-28T13:45:45+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-28/nasdaq-100-heads-for-correction-as-ai-worries-rattle-investors",
-          "tags": [
-            "jp_semiconductor",
-            "macro_risk",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "LVMH Fashion Unit’s Growth Held Back by Iran War",
+          "title": "UK Inflation Fears Ease Again Despite Volatile Oil Prices",
           "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-07-28T07:19:08+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-07-28/lvmh-fashion-unit-s-growth-held-back-by-iran-war-video",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-28T15:47:53+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-28/uk-inflation-fears-ease-again-despite-volatile-oil-prices",
           "tags": [
+            "commodity",
             "geopolitical",
             "macro_risk",
             "market"
-          ]
-        },
-        {
-          "title": "Asian Stocks Eye Gains as Oil Offsets Chip Selloff: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.2,
-          "publishedAt": "2026-07-28T22:15:52+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-28/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "jp_semiconductor",
-            "macro_risk",
-            "market",
-            "us_growth"
           ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": -0.335,
+      "avgSentiment": -0.113,
       "negativeCount": 1,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 3,
       "isStale": false,
       "topNegativeTitle": "Yen’s Relentless Slide to Test Ueda’s Capacity to Calm Traders",
-      "topPositiveTitle": "Argentina Snaps Dollar-Buying Streak Day After IMF Hailed Policy",
+      "topPositiveTitle": "Bank Indonesia Says It Is Enhancing Efforts to Support Rupiah",
       "items": [
         {
           "title": "Yen’s Relentless Slide to Test Ueda’s Capacity to Calm Traders",
@@ -453,42 +310,41 @@
             "fx",
             "market"
           ]
+        },
+        {
+          "title": "Bank Indonesia Says It Is Enhancing Efforts to Support Rupiah",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-07-29T00:32:24+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-29/bank-indonesia-says-it-is-enhancing-efforts-to-support-rupiah",
+          "tags": [
+            "fx",
+            "market"
+          ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": 0.002,
-      "negativeCount": 2,
-      "positiveCount": 2,
+      "avgSentiment": 0.2,
+      "negativeCount": 1,
+      "positiveCount": 3,
       "neutralCount": 1,
       "sourceCount": 2,
       "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Gold Declines as Traders Weigh Prospects for Interest-Rate Hike",
+      "topNegativeTitle": "Gold Holds Decline as Traders Assess Prospects for Fed Rate Hike",
       "topPositiveTitle": "Traders Make Record Rush to Fed Futures as Doubts Shadow Market",
       "items": [
         {
-          "title": "Gold Declines as Traders Weigh Prospects for Interest-Rate Hike",
+          "title": "Gold Holds Decline as Traders Assess Prospects for Fed Rate Hike",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-07-27T23:21:45+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-27/gold-holds-gain-as-trump-sounds-optimism-over-us-iran-talks",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-07-28T23:19:05+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-28/gold-edges-lower-as-traders-assess-prospects-for-fed-rate-hike",
           "tags": [
             "gold",
-            "macro_risk",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Citadel Securities’ Fed Rate Hike Call Adds to Market Angst",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-07-28T19:44:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-28/citadel-securities-fed-rate-hike-call-adds-to-market-angst",
-          "tags": [
             "market",
             "rates",
             "us_broad"
@@ -504,6 +360,19 @@
           "tags": [
             "market",
             "rates"
+          ]
+        },
+        {
+          "title": "Hike or Hold? Fed’s Warsh Has Markets Unsure: Decision-Day Guide",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-07-28T23:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-28/hike-or-hold-fed-s-warsh-has-markets-unsure-decision-day-guide",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
           ]
         },
         {
@@ -535,15 +404,15 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.0,
-      "negativeCount": 3,
+      "avgSentiment": 0.131,
+      "negativeCount": 2,
       "positiveCount": 3,
       "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 9,
+      "itemCount": 8,
       "isStale": false,
       "topNegativeTitle": "S&P Global’s Shares Drop as Company Misses Profit Estimates",
-      "topPositiveTitle": "Bloom Surges After Raising Guidance as Earnings Double Estimates",
+      "topPositiveTitle": "Bloom Surges on Higher Guidance as Earnings Double Estimates",
       "items": [
         {
           "title": "S&P Global’s Shares Drop as Company Misses Profit Estimates",
@@ -556,18 +425,6 @@
             "commodity",
             "geopolitical",
             "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Chile Holds Key Rate at 4.5% as Uncertainty Roars Back",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-07-28T21:59:47+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-28/chile-holds-key-rate-steady-at-4-5-as-uncertainty-roars-back",
-          "tags": [
-            "commodity",
             "market"
           ]
         },
@@ -586,18 +443,27 @@
           ]
         },
         {
-          "title": "Asian Stocks Eye Gains as Oil Offsets Chip Selloff: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.2,
-          "publishedAt": "2026-07-28T22:15:52+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-28/stock-market-today-dow-s-p-live-updates",
+          "title": "Burnham Faces £24 Billion Squeeze From UK Inflation, NIESR Says",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-28T23:01:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-28/burnham-faces-24-billion-squeeze-from-uk-inflation-niesr-says",
           "tags": [
             "commodity",
-            "jp_semiconductor",
-            "macro_risk",
-            "market",
-            "us_growth"
+            "market"
+          ]
+        },
+        {
+          "title": "Latest Oil Market News and Analysis for July 29",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-28T22:01:33+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-28/latest-oil-market-news-and-analysis-for-july-29",
+          "tags": [
+            "commodity",
+            "market"
           ]
         },
         {
@@ -617,15 +483,15 @@
       ]
     },
     "geopolitical": {
-      "avgSentiment": -0.222,
-      "negativeCount": 3,
+      "avgSentiment": -0.155,
+      "negativeCount": 2,
       "positiveCount": 1,
-      "neutralCount": 2,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 4,
       "isStale": false,
       "topNegativeTitle": "S&P Global’s Shares Drop as Company Misses Profit Estimates",
-      "topPositiveTitle": "Latest Oil Market News and Analysis for July 29",
+      "topPositiveTitle": "Oil Rises on Iran Attack, Korea Lifts Asian Stocks: Markets Wrap",
       "items": [
         {
           "title": "S&P Global’s Shares Drop as Company Misses Profit Estimates",
@@ -656,19 +522,6 @@
           ]
         },
         {
-          "title": "LVMH Fashion Unit’s Growth Held Back by Iran War",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-07-28T07:19:08+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-07-28/lvmh-fashion-unit-s-growth-held-back-by-iran-war-video",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
           "title": "UK Inflation Fears Ease Again Despite Volatile Oil Prices",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
@@ -683,16 +536,17 @@
           ]
         },
         {
-          "title": "German Economy Likely to Grow Despite Iran War, Bundesbank Says",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-28T10:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-28/german-economy-likely-to-grow-despite-iran-war-bundesbank-says",
+          "title": "Oil Rises on Iran Attack, Korea Lifts Asian Stocks: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.71,
+          "publishedAt": "2026-07-28T22:15:52+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-28/stock-market-today-dow-s-p-live-updates",
           "tags": [
+            "commodity",
             "geopolitical",
-            "macro_risk",
-            "market"
+            "market",
+            "us_broad"
           ]
         }
       ]
@@ -706,7 +560,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 7,
+    "excludedCount": 8,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
