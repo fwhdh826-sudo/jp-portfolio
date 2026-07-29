@@ -87,18 +87,23 @@ def _load_calibration_fixture():
         return json.load(f)
 
 
-def _calibration_split():
+def _calibration_split(*, canonical_p14_order=False):
     """B1 calibration fixtureをB2向けに分解する: candidates_stocks側
     （prescreenScore/prescreenRankを持たない生candidate）と、それを
     再現するprescreen entries。B1 fixtureは変更しない（読むだけ）。"""
     candidates = copy.deepcopy(_load_calibration_fixture()["candidates"])
     stripped = []
     entries = []
-    for c in candidates:
+    for index, c in enumerate(candidates):
         score = c.pop("prescreenScore", None)
         rank = c.pop("prescreenRank", None)
         stripped.append(c)
         if score is not None:
+            # synthetic calibration v2は旧raw-index perturbation用に作られた
+            # supporting fixture。artifact/publish regressionではfixture fileを
+            # 変更せず、normal producerと同じcanonical rank sequenceを与える。
+            if canonical_p14_order:
+                rank = index + 1
             entries.append({"code": c["code"], "prescreenScore": score, "prescreenRank": rank, "prescreenPool": None})
     return stripped, entries
 
@@ -319,7 +324,9 @@ _EXPECTED_ROOT_KEYS = {
 
 
 def _run_calibration_batch(tmp_path):
-    stripped_candidates, prescreen_entries = _calibration_split()
+    stripped_candidates, prescreen_entries = _calibration_split(
+        canonical_p14_order=True
+    )
     cs_payload = _candidates_stocks_payload(stripped_candidates)
     cs_path = tmp_path / "candidates_stocks.json"
     _write_json(cs_path, cs_payload)
@@ -711,7 +718,9 @@ def test_p15_no_baseline_records_none(tmp_path):
 
 
 def test_p15_rank_drift_vs_previous_recorded(tmp_path):
-    stripped_candidates, prescreen_entries = _calibration_split()
+    stripped_candidates, prescreen_entries = _calibration_split(
+        canonical_p14_order=True
+    )
     cs_payload = _candidates_stocks_payload(stripped_candidates)
     cs_path = tmp_path / "candidates_stocks.json"
     _write_json(cs_path, cs_payload)
@@ -780,3 +789,225 @@ def test_not_generated_run_batch_does_not_publish_and_preserves_existing_artifac
     assert report["qualityGate"]["overallPass"] is False
     assert data_path.read_text(encoding="utf-8") == '{"sentinel": "previous-good-artifact"}'
     assert public_path.read_text(encoding="utf-8") == '{"sentinel": "previous-good-artifact"}'
+
+
+# ===========================================================================
+# P14-O1 frozen order-invariant assignment contract
+# ===========================================================================
+
+
+def test_o1_p14_primary_order_is_valid_prescreen_rank_ascending():
+    candidates = [
+        {**_candidate("C"), "prescreenRank": 3},
+        {**_candidate("B"), "prescreenRank": 1},
+        {**_candidate("A"), "prescreenRank": 2},
+        {**_candidate("D"), "prescreenRank": 4},
+    ]
+    perturbed = batch._perturb_candidates(candidates)
+    by_code = {candidate["code"]: candidate for candidate in perturbed}
+    assert by_code["B"]["per"] == pytest.approx(10.0 * 1.02)
+    assert by_code["A"]["per"] == pytest.approx(10.0 * 0.98)
+    assert by_code["C"]["per"] == pytest.approx(10.0 * 1.02)
+    assert by_code["D"]["per"] == pytest.approx(10.0 * 0.98)
+
+
+def test_o1_p14_secondary_tie_break_is_exact_code_ascending():
+    candidates = [
+        {**_candidate("B"), "prescreenRank": 7},
+        {**_candidate("A"), "prescreenRank": 7},
+    ]
+    perturbed = batch._perturb_candidates(candidates)
+    by_code = {candidate["code"]: candidate for candidate in perturbed}
+    assert by_code["A"]["per"] == pytest.approx(10.0 * 1.02)
+    assert by_code["A"]["roe"] == pytest.approx(10.0 * 0.98)
+    assert by_code["B"]["per"] == pytest.approx(10.0 * 0.98)
+    assert by_code["B"]["roe"] == pytest.approx(10.0 * 1.02)
+
+
+def test_o1_p14_missing_prescreen_rank_sorts_last_by_code():
+    candidates = [
+        {**_candidate("z")},
+        {**_candidate("b"), "prescreenRank": 0},
+        {**_candidate("V"), "prescreenRank": 5},
+        {**_candidate("a"), "prescreenRank": True},
+        {**_candidate("c"), "prescreenRank": -1},
+    ]
+    perturbed = batch._perturb_candidates(candidates)
+    by_code = {candidate["code"]: candidate for candidate in perturbed}
+    # canonical order: V(valid), a(bool), b(zero), c(negative), z(missing)
+    assert by_code["V"]["per"] == pytest.approx(10.0 * 1.02)
+    assert by_code["a"]["per"] == pytest.approx(10.0 * 0.98)
+    assert by_code["b"]["per"] == pytest.approx(10.0 * 1.02)
+    assert by_code["c"]["per"] == pytest.approx(10.0 * 0.98)
+    assert by_code["z"]["per"] == pytest.approx(10.0 * 1.02)
+
+
+def test_o1_p14_duplicate_code_gets_no_sign_consumes_no_ordinal_and_p04_fails():
+    candidates = [
+        {**_candidate("D"), "prescreenRank": 1},
+        {**_candidate("E"), "prescreenRank": 2},
+        {**_candidate("D"), "prescreenRank": 3},
+        {**_candidate("E"), "prescreenRank": 4},
+        {**_candidate("A"), "prescreenRank": 5},
+        {**_candidate("B"), "prescreenRank": 6},
+    ]
+    perturbed = batch._perturb_candidates(candidates)
+    assert [candidate["per"] for candidate in perturbed[:4]] == [10.0] * 4
+    assert perturbed[4]["per"] == pytest.approx(10.0 * 1.02)
+    assert perturbed[5]["per"] == pytest.approx(10.0 * 0.98)
+    assert batch._p14_canonical_sign_by_code(candidates) == {"A": 1, "B": -1}
+
+    entries = [
+        _prescreen_entry(candidate["code"], rank=index + 1)
+        for index, candidate in enumerate(candidates)
+    ]
+    report, _result = _build_report_for(candidates, entries)
+    assert _gate(report, "P-04")["status"] == "FAIL"
+    assert "P-04" in report["hardFailIds"]
+
+
+def test_o1_p14_missing_or_invalid_identity_gets_no_sign_and_fails_closed():
+    missing = _candidate("placeholder")
+    missing.pop("code")
+    candidates = [
+        "malformed-record",
+        missing,
+        _candidate(""),
+        _candidate(None),
+        _candidate(1001),
+        {**_candidate("A"), "prescreenRank": 1},
+        {**_candidate("B"), "prescreenRank": 2},
+    ]
+    perturbed = batch._perturb_candidates(candidates)
+    assert perturbed[:5] == candidates[:5]
+    assert perturbed[5]["per"] == pytest.approx(10.0 * 1.02)
+    assert perturbed[6]["per"] == pytest.approx(10.0 * 0.98)
+    assert batch._p14_canonical_sign_by_code(candidates) == {"A": 1, "B": -1}
+
+    engine_result = batch.build_candidate_funnel(candidates, {"pipelinePath": "normal"})
+    assert all(
+        "HARD_CONTRACT_VIOLATION" in candidate["hardExclusionReasons"]
+        for candidate in engine_result["candidates"][:5]
+    )
+    artifact = batch.build_artifact_payload(
+        engine_result=engine_result,
+        join_stats={"candidateCount": len(candidates)},
+        context={"asOf": NOW.isoformat()},
+        quality_report={"gates": [], "overallPass": True, "hardFailIds": []},
+        now=NOW,
+    )
+    assert any(
+        "invalid exact-string code" in violation
+        for violation in batch.validate_artifact_schema(artifact)
+    )
+
+
+def test_o1_p14_numeric_code_is_not_coerced():
+    candidates = [
+        {**_candidate(1001), "prescreenRank": 1},
+        {**_candidate("1001"), "prescreenRank": 2},
+    ]
+    perturbed = batch._perturb_candidates(candidates)
+    assert perturbed[0]["per"] == 10.0
+    assert perturbed[1]["per"] == pytest.approx(10.0 * 1.02)
+    assert batch._p14_canonical_sign_by_code(candidates) == {"1001": 1}
+
+
+def test_o1_p14_input_is_not_mutated():
+    candidates = [
+        {**_candidate("B"), "prescreenRank": 2},
+        {**_candidate("A"), "prescreenRank": 1},
+    ]
+    before = copy.deepcopy(candidates)
+    perturbed = batch._perturb_candidates(candidates)
+    assert candidates == before
+    assert perturbed is not candidates
+    assert all(output is not source for output, source in zip(perturbed, candidates))
+    assert [candidate["code"] for candidate in perturbed] == ["B", "A"]
+
+
+def test_o1_p14_per_roe_simultaneous_vector_and_two_percent_are_exact():
+    candidates = [
+        {**_candidate("A", per=25.0, roe=12.5), "prescreenRank": 1},
+        {**_candidate("B", per=25.0, roe=12.5), "prescreenRank": 2},
+    ]
+    perturbed = batch._perturb_candidates(candidates)
+    assert perturbed[0]["per"] == 25.0 * 1.02
+    assert perturbed[0]["roe"] == 12.5 * 0.98
+    assert perturbed[1]["per"] == 25.0 * 0.98
+    assert perturbed[1]["roe"] == 12.5 * 1.02
+    assert batch.PERTURBATION_PCT == 0.02
+
+
+def test_o1_p14_threshold_top40_and_hard_severity_are_unchanged(
+    tmp_path, monkeypatch
+):
+    assert batch.RANK_STABILITY_JACCARD_MIN == 0.95
+    assert batch.TOP_N_STABILITY == 40
+    assert batch.PERTURBATION_PCT == 0.02
+    monkeypatch.setattr(
+        batch,
+        "compute_rank_stability",
+        lambda joined_candidates, context, engine_result: (0.94, {}),
+    )
+    artifact, report = _run_calibration_batch(tmp_path)
+    gate = _gate(report["qualityGate"], "P-14")
+    assert artifact is None
+    assert gate["threshold"] == ">= 0.95"
+    assert gate["status"] == "FAIL"
+    assert "P-14" in report["qualityGate"]["hardFailIds"]
+    assert report["qualityGate"]["overallPass"] is False
+
+
+def test_o1_p14_metadata_declares_exact_assignment_contract(tmp_path):
+    artifact, report = _run_calibration_batch(tmp_path)
+    assert artifact is not None
+    gate = _gate(report["qualityGate"], "P-14")
+    assert batch.P14_ASSIGNMENT_CONTRACT == "p14-prescreen-rank-code-v1"
+    assert gate["note"] == (
+        "assignment=p14-prescreen-rank-code-v1; identity=exact-string-code; "
+        "invalid-or-duplicate-identities-do-not-consume-ordinal"
+    )
+    artifact_gate = _gate(artifact["_meta"]["qualityGate"], "P-14")
+    assert artifact_gate["note"] == gate["note"]
+
+
+def test_o1_p01_through_p13_and_p15_outputs_are_unchanged():
+    candidates, entries = _calibration_split(canonical_p14_order=True)
+    forward_report, _forward_engine = _build_report_for(candidates, entries)
+    reversed_report, _reversed_engine = _build_report_for(
+        list(reversed(candidates)), entries
+    )
+    unchanged_ids = {
+        *(f"P-{number:02d}" for number in range(1, 14)),
+        "P-15",
+    }
+    forward = {
+        gate["id"]: gate for gate in forward_report["gates"] if gate["id"] in unchanged_ids
+    }
+    reversed_gates = {
+        gate["id"]: gate
+        for gate in reversed_report["gates"]
+        if gate["id"] in unchanged_ids
+    }
+    assert forward.keys() == unchanged_ids
+    assert reversed_gates == forward
+
+
+def test_o1_synthetic_fixture_is_separate_supporting_evidence_only():
+    real_fixture_path = (
+        Path(__file__).resolve().parent
+        / "fixtures"
+        / "candidate_funnel_order_invariance_real_v1.json"
+    )
+    real_fixture = json.loads(real_fixture_path.read_text(encoding="utf-8"))
+    synthetic_fixture = _load_calibration_fixture()
+    assert real_fixture["evidenceClass"] == "real_byte_exact_e1"
+    assert real_fixture["sourceEvidenceArchiveSha256"] == (
+        "35f55858a9dd243371de9aa4575e3816ebefbdf0526d9500213961ff74be252e"
+    )
+    assert len(real_fixture["snapshots"]) == 2
+    assert all(snapshot["synthetic"] is False for snapshot in real_fixture["snapshots"])
+    assert synthetic_fixture["fixtureVersion"] == "candidate-funnel-calibration-v2"
+    assert "sourceEvidenceArchiveSha256" not in synthetic_fixture
+    assert "snapshots" not in synthetic_fixture

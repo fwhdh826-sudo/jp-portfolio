@@ -81,6 +81,11 @@ RANK_STABILITY_JACCARD_MIN = 0.95  # P-14
 RANK_DRIFT_WARN_MAX = 0.80  # P-15（warning threshold, non-blocking）
 TOP_N_STABILITY = 40
 PERTURBATION_PCT = 0.02
+P14_ASSIGNMENT_CONTRACT = "p14-prescreen-rank-code-v1"
+P14_ASSIGNMENT_NOTE = (
+    "assignment=p14-prescreen-rank-code-v1; identity=exact-string-code; "
+    "invalid-or-duplicate-identities-do-not-consume-ordinal"
+)
 
 # A2-S §25.6: v1では構造的に発火しないはずのSOFT reason（新規/一部を除く）。
 # index対応: SOFT_DEEP_DRAWDOWN(2) / SOFT_WEAK_TREND(3) / SOFT_THEME_CROWDING(5) /
@@ -405,23 +410,63 @@ def compute_reason_code_distribution(
     return soft_counts, hard_counts, inactive_nonzero
 
 
+def _p14_canonical_sign_by_code(candidates: list[Any]) -> dict[str, int]:
+    """P-14のperturbation signをsemantic identityから決定する。
+
+    valid unique codeだけを、valid prescreenRank昇順・exact code昇順で
+    canonicalizeする。missing/invalid rankはvalid rankの後でcode昇順。
+    duplicate/invalid identityはsignを持たずordinalも消費しない。
+    """
+    code_counts: dict[str, int] = {}
+    for candidate in candidates:
+        if not isinstance(candidate, dict):
+            continue
+        code = candidate.get("code")
+        if isinstance(code, str) and code != "":
+            code_counts[code] = code_counts.get(code, 0) + 1
+
+    eligible: list[tuple[tuple[int, int, str], str]] = []
+    for candidate in candidates:
+        if not isinstance(candidate, dict):
+            continue
+        code = candidate.get("code")
+        if not isinstance(code, str) or code == "" or code_counts.get(code) != 1:
+            continue
+        rank = candidate.get("prescreenRank")
+        rank_is_valid = isinstance(rank, int) and not isinstance(rank, bool) and rank > 0
+        canonical_key = (0, rank, code) if rank_is_valid else (1, 0, code)
+        eligible.append((canonical_key, code))
+
+    eligible.sort(key=lambda item: item[0])
+    return {
+        code: (1 if canonical_ordinal % 2 == 0 else -1)
+        for canonical_ordinal, (_key, code) in enumerate(eligible)
+    }
+
+
 def _perturb_candidates(candidates: list[Any]) -> list[Any]:
     """A2-S §22.1 CAL-11/12と同一の固定perturbation vector
-    （index偶奇で±2%をper/roeへ交互適用、乱数不使用・決定的）を、
-    実データ（joined candidates）へ適用する。"""
+    （canonical ordinal偶奇で±2%をper/roeへ交互適用、乱数不使用・
+    決定的）を、実データ（joined candidates）のpresentation orderを
+    変えずに適用する。"""
+    sign_by_code = _p14_canonical_sign_by_code(candidates)
     perturbed: list[Any] = []
-    for i, c in enumerate(candidates):
+    for c in candidates:
         if not isinstance(c, dict):
             perturbed.append(c)
             continue
         nc = dict(c)
-        sign = 1 if i % 2 == 0 else -1
+        code = c.get("code")
+        sign = sign_by_code.get(code) if isinstance(code, str) else None
+        if sign is None:
+            perturbed.append(nc)
+            continue
         per = nc.get("per")
         if isinstance(per, (int, float)) and not isinstance(per, bool):
-            nc["per"] = per * (1 + sign * 0.02)
+            nc["per"] = per * (1 + sign * PERTURBATION_PCT)
         roe = nc.get("roe")
         if isinstance(roe, (int, float)) and not isinstance(roe, bool):
-            nc["roe"] = roe * (1 - sign * 0.02)
+            nc["roe"] = roe * (1 - sign * PERTURBATION_PCT)
         perturbed.append(nc)
     return perturbed
 
@@ -629,7 +674,14 @@ def compute_quality_report(
 
     # P-14: rank stability Jaccard（±2% perturbation）>= 0.95
     jaccard_14, _perturbed_result = compute_rank_stability(joined_candidates, context, engine_result)
-    _gate("P-14", "rank stability Jaccard(±2%)", jaccard_14, f">= {RANK_STABILITY_JACCARD_MIN}", "PASS" if jaccard_14 >= RANK_STABILITY_JACCARD_MIN else "FAIL")
+    _gate(
+        "P-14",
+        "rank stability Jaccard(±2%)",
+        jaccard_14,
+        f">= {RANK_STABILITY_JACCARD_MIN}",
+        "PASS" if jaccard_14 >= RANK_STABILITY_JACCARD_MIN else "FAIL",
+        note=P14_ASSIGNMENT_NOTE,
+    )
 
     # P-15: rank drift vs previous artifact（記録。< 0.80で警告のみ）
     drift_15 = compute_rank_drift_vs_previous(engine_result, previous_artifact)
@@ -696,6 +748,9 @@ def validate_artifact_schema(artifact: dict[str, Any]) -> list[str]:
         if not isinstance(c, dict):
             violations.append("candidate entry is not a dict")
             continue
+        code = c.get("code")
+        if not isinstance(code, str) or code == "":
+            violations.append(f"candidate {code!r} has invalid exact-string code")
         if c.get("tier") not in CANDIDATE_FUNNEL_TIERS:
             violations.append(f"candidate {c.get('code')!r} has invalid tier {c.get('tier')!r}")
         if c.get("prescreenPool") is not None and c.get("prescreenPool") not in CANDIDATE_FUNNEL_PRESCREEN_POOLS:

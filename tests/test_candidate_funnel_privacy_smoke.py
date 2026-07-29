@@ -54,12 +54,12 @@ def _calibration_split():
         candidates = copy.deepcopy(json.load(f)["candidates"])
     stripped = []
     entries = []
-    for c in candidates:
+    for index, c in enumerate(candidates):
         score = c.pop("prescreenScore", None)
         rank = c.pop("prescreenRank", None)
         stripped.append(c)
         if score is not None:
-            entries.append({"code": c["code"], "prescreenScore": score, "prescreenRank": rank, "prescreenPool": None})
+            entries.append({"code": c["code"], "prescreenScore": score, "prescreenRank": index + 1, "prescreenPool": None})
     return stripped, entries
 
 
