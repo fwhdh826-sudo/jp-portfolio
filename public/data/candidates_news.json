@@ -1,19 +1,19 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-07-29T09:56:05.399626+09:00",
-  "sourceUpdatedAt": "2026-07-29T00:39:18+00:00",
+  "updatedAt": "2026-07-29T15:13:24.620432+09:00",
+  "sourceUpdatedAt": "2026-07-29T05:48:44+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": -0.67,
+      "avgSentiment": 0.0,
       "negativeCount": 1,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 0,
       "sourceCount": 1,
-      "itemCount": 1,
+      "itemCount": 2,
       "isStale": false,
       "topNegativeTitle": "Yen’s Relentless Slide to Test Ueda’s Capacity to Calm Traders",
-      "topPositiveTitle": "Yen’s Relentless Slide to Test Ueda’s Capacity to Calm Traders",
+      "topPositiveTitle": "Japan Signals Steady Minimum Wage Gains, Backing BOJ’s Hike Path",
       "items": [
         {
           "title": "Yen’s Relentless Slide to Test Ueda’s Capacity to Calm Traders",
@@ -27,28 +27,41 @@
             "jp_broad",
             "market"
           ]
+        },
+        {
+          "title": "Japan Signals Steady Minimum Wage Gains, Backing BOJ’s Hike Path",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-07-29T01:30:14+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-29/japan-signals-steady-minimum-wage-gains-backing-boj-s-hike-path",
+          "tags": [
+            "jp_broad",
+            "market"
+          ]
         }
       ]
     },
     "jp_semiconductor": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0.33,
       "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 0,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Germany and China and supply chains and trade",
-      "topPositiveTitle": "Germany and China and supply chains and trade",
+      "topNegativeTitle": "Asian Stocks Drop as Chip Rout Deepens, Oil Gains: Markets Wrap",
+      "topPositiveTitle": "Asian Stocks Drop as Chip Rout Deepens, Oil Gains: Markets Wrap",
       "items": [
         {
-          "title": "Germany and China and supply chains and trade",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-28T11:00:01+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-07-28/germany-and-china-and-supply-chains-and-trade",
+          "title": "Asian Stocks Drop as Chip Rout Deepens, Oil Gains: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-07-28T22:15:52+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-28/stock-market-today-dow-s-p-live-updates",
           "tags": [
+            "commodity",
             "jp_semiconductor",
             "market"
           ]
@@ -56,56 +69,16 @@
       ]
     },
     "us_broad": {
-      "avgSentiment": 0.19,
-      "negativeCount": 2,
-      "positiveCount": 5,
-      "neutralCount": 2,
+      "avgSentiment": 0.333,
+      "negativeCount": 0,
+      "positiveCount": 3,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 9,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Gold Holds Decline as Traders Assess Prospects for Fed Rate Hike",
-      "topPositiveTitle": "Oil Rises on Iran Attack, Korea Lifts Asian Stocks: Markets Wrap",
+      "topNegativeTitle": "Why Kevin Warsh Wants the Federal Reserve to Talk Less",
+      "topPositiveTitle": "Traders Make Record Rush to Fed Futures as Doubts Shadow Market",
       "items": [
-        {
-          "title": "Gold Holds Decline as Traders Assess Prospects for Fed Rate Hike",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-07-28T23:19:05+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-28/gold-edges-lower-as-traders-assess-prospects-for-fed-rate-hike",
-          "tags": [
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Emerging Currencies Traded Mixed Amid Oil Plunge, Fed Bets",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-07-28T08:14:40+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-28/chips-drag-emerging-stocks-to-april-low-oil-shields-currencies",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Massive Day for Earnings as Fed Decision Looms | The Close 7/28/2026",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-28T23:29:15+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-07-28/the-close-7-28-2026-video",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
         {
           "title": "Why Kevin Warsh Wants the Federal Reserve to Talk Less",
           "source": "Bloomberg Economics",
@@ -114,6 +87,19 @@
           "publishedAt": "2026-07-28T17:30:09+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-07-28/why-kevin-warsh-wants-the-federal-reserve-to-talk-less",
           "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Gold Wavers as Fed Rate Decision Looms and Mideast Tensions Rise",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-07-28T23:19:05+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-28/gold-edges-lower-as-traders-assess-prospects-for-fed-rate-hike",
+          "tags": [
+            "gold",
             "market",
             "us_broad"
           ]
@@ -130,28 +116,54 @@
             "rates",
             "us_broad"
           ]
+        },
+        {
+          "title": "Traders Make Record Rush to Fed Futures as Doubts Shadow Market",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-07-28T20:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-28/traders-make-record-rush-to-fed-futures-as-doubts-shadow-market",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.33,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 0,
+      "avgSentiment": -0.5,
+      "negativeCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "UPS CEO on Return to Growth, Global Economic Outlook",
-      "topPositiveTitle": "UPS CEO on Return to Growth, Global Economic Outlook",
+      "topNegativeTitle": "Korean Stocks Plunge as Much as 13% in Burst of Retail Selling",
+      "topPositiveTitle": "SoftBank Sells Yen Bond to Institutions at Year’s Top Coupon",
       "items": [
         {
-          "title": "UPS CEO on Return to Growth, Global Economic Outlook",
+          "title": "Korean Stocks Plunge as Much as 13% in Burst of Retail Selling",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-07-28T23:02:38+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-07-28/ups-ceo-on-return-to-growth-global-economic-outlook-video",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-07-29T02:52:10+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-29/korean-stocks-tumble-a-second-day-as-sk-hynix-results-disappoint",
           "tags": [
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "SoftBank Sells Yen Bond to Institutions at Year’s Top Coupon",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-29T03:49:26+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-29/softbank-sells-yen-bond-to-institutions-at-year-s-highest-coupon",
+          "tags": [
+            "fx",
             "market",
             "us_growth"
           ]
@@ -159,6 +171,58 @@
       ]
     },
     "global_broad": {
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "Traders Weigh Renewed US-Iran Strikes, SK Hynix Earnings | The Asia Trade 7/29/2026",
+      "topPositiveTitle": "Traders Weigh Renewed US-Iran Strikes, SK Hynix Earnings | The Asia Trade 7/29/2026",
+      "items": [
+        {
+          "title": "Traders Weigh Renewed US-Iran Strikes, SK Hynix Earnings | The Asia Trade 7/29/2026",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-29T04:36:07+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-07-29/the-asia-trade-7-29-2026-video",
+          "tags": [
+            "geopolitical",
+            "global_broad",
+            "market"
+          ]
+        }
+      ]
+    },
+    "gold": {
+      "avgSentiment": 0.33,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "Gold Wavers as Fed Rate Decision Looms and Mideast Tensions Rise",
+      "topPositiveTitle": "Gold Wavers as Fed Rate Decision Looms and Mideast Tensions Rise",
+      "items": [
+        {
+          "title": "Gold Wavers as Fed Rate Decision Looms and Mideast Tensions Rise",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-07-28T23:19:05+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-28/gold-edges-lower-as-traders-assess-prospects-for-fed-rate-hike",
+          "tags": [
+            "gold",
+            "market",
+            "us_broad"
+          ]
+        }
+      ]
+    },
+    "reit": {
       "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
@@ -169,58 +233,6 @@
       "topNegativeTitle": null,
       "topPositiveTitle": null,
       "items": []
-    },
-    "gold": {
-      "avgSentiment": -0.67,
-      "negativeCount": 1,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
-      "isStale": false,
-      "topNegativeTitle": "Gold Holds Decline as Traders Assess Prospects for Fed Rate Hike",
-      "topPositiveTitle": "Gold Holds Decline as Traders Assess Prospects for Fed Rate Hike",
-      "items": [
-        {
-          "title": "Gold Holds Decline as Traders Assess Prospects for Fed Rate Hike",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-07-28T23:19:05+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-28/gold-edges-lower-as-traders-assess-prospects-for-fed-rate-hike",
-          "tags": [
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        }
-      ]
-    },
-    "reit": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
-      "isStale": false,
-      "topNegativeTitle": "Rithm Captial CEO on Real Estate Outlook",
-      "topPositiveTitle": "Rithm Captial CEO on Real Estate Outlook",
-      "items": [
-        {
-          "title": "Rithm Captial CEO on Real Estate Outlook",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-28T23:01:00+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-07-28/rithm-captial-ceo-on-real-estate-outlook-video",
-          "tags": [
-            "market",
-            "reit"
-          ]
-        }
-      ]
     },
     "dividend": {
       "avgSentiment": 0,
@@ -235,28 +247,53 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.5,
-      "negativeCount": 1,
-      "positiveCount": 0,
-      "neutralCount": 1,
+      "avgSentiment": 0.133,
+      "negativeCount": 0,
+      "positiveCount": 2,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 2,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "S&P Global’s Shares Drop as Company Misses Profit Estimates",
-      "topPositiveTitle": "UK Inflation Fears Ease Again Despite Volatile Oil Prices",
+      "topNegativeTitle": "Philippine Banks Set Aside More Loan Provisions as Inflation Surges on War",
+      "topPositiveTitle": "Latest Oil Market News and Analysis for July 29",
       "items": [
         {
-          "title": "S&P Global’s Shares Drop as Company Misses Profit Estimates",
+          "title": "Philippine Banks Set Aside More Loan Provisions as Inflation Surges on War",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-07-28T15:31:08+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-28/s-p-global-s-shares-drop-as-company-misses-profit-estimates",
+          "sentimentScore": -0.2,
+          "publishedAt": "2026-07-29T05:13:31+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-29/philippine-banks-set-aside-more-loan-provisions-as-inflation-surges-on-war",
           "tags": [
-            "commodity",
             "geopolitical",
             "macro_risk",
             "market"
+          ]
+        },
+        {
+          "title": "US Intercepts Iran Attack on Bases, Puncturing Calm",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-29T03:55:24+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-07-29/us-intercepts-iran-attack-on-bases-puncturing-calm-video",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Japan’s GPIF Boosts JGB Expertise by Employing Active Bond Funds",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-29T03:35:26+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-29/japan-s-gpif-boosts-jgb-expertise-by-employing-active-bond-funds",
+          "tags": [
+            "macro_risk",
+            "market",
+            "rates"
           ]
         },
         {
@@ -272,19 +309,31 @@
             "macro_risk",
             "market"
           ]
+        },
+        {
+          "title": "Unilever India Gets Rating Upgrades After Worst Day in Six Years",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-07-29T03:40:08+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-29/unilever-india-gets-rating-upgrades-after-worst-day-in-six-years",
+          "tags": [
+            "macro_risk",
+            "market"
+          ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": -0.113,
+      "avgSentiment": -0.085,
       "negativeCount": 1,
       "positiveCount": 1,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 3,
+      "neutralCount": 2,
+      "sourceCount": 2,
+      "itemCount": 4,
       "isStale": false,
       "topNegativeTitle": "Yen’s Relentless Slide to Test Ueda’s Capacity to Calm Traders",
-      "topPositiveTitle": "Bank Indonesia Says It Is Enhancing Efforts to Support Rupiah",
+      "topPositiveTitle": "Bank Indonesia Says It’s Boosting Efforts to Support Rupiah",
       "items": [
         {
           "title": "Yen’s Relentless Slide to Test Ueda’s Capacity to Calm Traders",
@@ -300,6 +349,19 @@
           ]
         },
         {
+          "title": "SoftBank Sells Yen Bond to Institutions at Year’s Top Coupon",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-29T03:49:26+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-29/softbank-sells-yen-bond-to-institutions-at-year-s-highest-coupon",
+          "tags": [
+            "fx",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
           "title": "Argentina Snaps Dollar-Buying Streak Day After IMF Hailed Policy",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
@@ -312,7 +374,7 @@
           ]
         },
         {
-          "title": "Bank Indonesia Says It Is Enhancing Efforts to Support Rupiah",
+          "title": "Bank Indonesia Says It’s Boosting Efforts to Support Rupiah",
           "source": "Bloomberg Economics",
           "sentiment": "positive",
           "sentimentScore": 0.33,
@@ -326,38 +388,37 @@
       ]
     },
     "rates": {
-      "avgSentiment": 0.2,
+      "avgSentiment": 0.168,
       "negativeCount": 1,
-      "positiveCount": 3,
+      "positiveCount": 2,
       "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Gold Holds Decline as Traders Assess Prospects for Fed Rate Hike",
+      "topNegativeTitle": "Australia’s Unexpectedly Soft Inflation Puts Rate Hike in Doubt",
       "topPositiveTitle": "Traders Make Record Rush to Fed Futures as Doubts Shadow Market",
       "items": [
         {
-          "title": "Gold Holds Decline as Traders Assess Prospects for Fed Rate Hike",
-          "source": "Bloomberg Markets",
+          "title": "Australia’s Unexpectedly Soft Inflation Puts Rate Hike in Doubt",
+          "source": "Bloomberg Economics",
           "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-07-28T23:19:05+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-28/gold-edges-lower-as-traders-assess-prospects-for-fed-rate-hike",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-07-29T01:31:59+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-29/australia-core-prices-cooler-than-expected-easing-rba-pressure",
           "tags": [
-            "gold",
             "market",
-            "rates",
-            "us_broad"
+            "rates"
           ]
         },
         {
-          "title": "Brazil Inflation Slowdown Sets Up Another Rate Cut Next Week",
-          "source": "Bloomberg Economics",
+          "title": "Japan’s GPIF Boosts JGB Expertise by Employing Active Bond Funds",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-28T12:14:08+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-28/brazil-inflation-slowed-more-than-expected-ahead-of-rate-meeting",
+          "publishedAt": "2026-07-29T03:35:26+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-29/japan-s-gpif-boosts-jgb-expertise-by-employing-active-bond-funds",
           "tags": [
+            "macro_risk",
             "market",
             "rates"
           ]
@@ -387,59 +448,30 @@
             "rates",
             "us_broad"
           ]
-        },
-        {
-          "title": "Citadel Securities Sees Warsh Delivering Surprise Fed Hike",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-07-27T21:42:13+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-27/citadel-securities-sees-warsh-delivering-surprise-fed-rate-hike",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.131,
-      "negativeCount": 2,
+      "avgSentiment": 0.278,
+      "negativeCount": 0,
       "positiveCount": 3,
       "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 8,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "S&P Global’s Shares Drop as Company Misses Profit Estimates",
-      "topPositiveTitle": "Bloom Surges on Higher Guidance as Earnings Double Estimates",
+      "topNegativeTitle": "UAE Presses Ahead With Persian Gulf LNG Exports Despite Tensions",
+      "topPositiveTitle": "Latest Oil Market News and Analysis for July 29",
       "items": [
         {
-          "title": "S&P Global’s Shares Drop as Company Misses Profit Estimates",
+          "title": "UAE Presses Ahead With Persian Gulf LNG Exports Despite Tensions",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-07-28T15:31:08+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-28/s-p-global-s-shares-drop-as-company-misses-profit-estimates",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-29T05:26:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-29/uae-presses-ahead-with-persian-gulf-lng-exports-despite-tensions",
           "tags": [
             "commodity",
-            "geopolitical",
-            "macro_risk",
             "market"
-          ]
-        },
-        {
-          "title": "Emerging Currencies Traded Mixed Amid Oil Plunge, Fed Bets",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-07-28T08:14:40+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-28/chips-drag-emerging-stocks-to-april-low-oil-shields-currencies",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "market",
-            "us_broad"
           ]
         },
         {
@@ -455,24 +487,39 @@
           ]
         },
         {
-          "title": "Latest Oil Market News and Analysis for July 29",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-28T22:01:33+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-28/latest-oil-market-news-and-analysis-for-july-29",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
           "title": "UK Inflation Fears Ease Again Despite Volatile Oil Prices",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
           "publishedAt": "2026-07-28T15:47:53+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-07-28/uk-inflation-fears-ease-again-despite-volatile-oil-prices",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Asian Stocks Drop as Chip Rout Deepens, Oil Gains: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-07-28T22:15:52+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-28/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "jp_semiconductor",
+            "market"
+          ]
+        },
+        {
+          "title": "Latest Oil Market News and Analysis for July 29",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-07-28T22:01:33+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-28/latest-oil-market-news-and-analysis-for-july-29",
           "tags": [
             "commodity",
             "geopolitical",
@@ -483,42 +530,53 @@
       ]
     },
     "geopolitical": {
-      "avgSentiment": -0.155,
-      "negativeCount": 2,
-      "positiveCount": 1,
-      "neutralCount": 1,
+      "avgSentiment": 0.19,
+      "negativeCount": 0,
+      "positiveCount": 2,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "S&P Global’s Shares Drop as Company Misses Profit Estimates",
-      "topPositiveTitle": "Oil Rises on Iran Attack, Korea Lifts Asian Stocks: Markets Wrap",
+      "topNegativeTitle": "Philippine Banks Set Aside More Loan Provisions as Inflation Surges on War",
+      "topPositiveTitle": "Wheat Futures Climb for Second Day as Black Sea Exports Falter",
       "items": [
         {
-          "title": "S&P Global’s Shares Drop as Company Misses Profit Estimates",
+          "title": "Philippine Banks Set Aside More Loan Provisions as Inflation Surges on War",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-07-28T15:31:08+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-28/s-p-global-s-shares-drop-as-company-misses-profit-estimates",
+          "sentimentScore": -0.2,
+          "publishedAt": "2026-07-29T05:13:31+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-29/philippine-banks-set-aside-more-loan-provisions-as-inflation-surges-on-war",
           "tags": [
-            "commodity",
             "geopolitical",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Emerging Currencies Traded Mixed Amid Oil Plunge, Fed Bets",
+          "title": "Traders Weigh Renewed US-Iran Strikes, SK Hynix Earnings | The Asia Trade 7/29/2026",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-07-28T08:14:40+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-28/chips-drag-emerging-stocks-to-april-low-oil-shields-currencies",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-29T04:36:07+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-07-29/the-asia-trade-7-29-2026-video",
           "tags": [
-            "commodity",
             "geopolitical",
-            "market",
-            "us_broad"
+            "global_broad",
+            "market"
+          ]
+        },
+        {
+          "title": "US Intercepts Iran Attack on Bases, Puncturing Calm",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-29T03:55:24+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-07-29/us-intercepts-iran-attack-on-bases-puncturing-calm-video",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
           ]
         },
         {
@@ -536,17 +594,15 @@
           ]
         },
         {
-          "title": "Oil Rises on Iran Attack, Korea Lifts Asian Stocks: Markets Wrap",
+          "title": "Wheat Futures Climb for Second Day as Black Sea Exports Falter",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.71,
-          "publishedAt": "2026-07-28T22:15:52+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-28/stock-market-today-dow-s-p-live-updates",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-07-29T03:32:48+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-29/wheat-futures-climb-for-second-day-as-black-sea-exports-falter",
           "tags": [
-            "commodity",
             "geopolitical",
-            "market",
-            "us_broad"
+            "market"
           ]
         }
       ]
@@ -560,7 +616,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 8,
+    "excludedCount": 7,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
