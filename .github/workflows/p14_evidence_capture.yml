@@ -1,0 +1,88 @@
+name: P14 Evidence Capture
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: p14-evidence-capture
+  cancel-in-progress: false
+
+jobs:
+  capture:
+    name: Same-run real snapshot evidence
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      TZ: UTC
+      PYTHONHASHSEED: "0"
+      PYTHONDONTWRITEBYTECODE: "1"
+      LC_ALL: C.UTF-8
+    steps:
+      - name: Checkout dispatched ref
+        uses: actions/checkout@v4
+
+      - name: Enforce frozen branch
+        run: |
+          test "$GITHUB_REF_TYPE" = "branch"
+          test "$GITHUB_REF" = "refs/heads/v13.3-dev"
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install public-data dependencies
+        run: pip install yfinance pandas numpy feedparser requests xlrd
+
+      - name: Create run identity
+        id: identity
+        run: |
+          echo "started_at=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> "$GITHUB_OUTPUT"
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          import uuid
+          print(f"run_token={uuid.uuid4()}")
+          PY
+
+      - name: Acquire same-run candidates and prescreen
+        run: >-
+          python3 -m data.build_candidates_stocks
+          --run-token "${{ steps.identity.outputs.run_token }}"
+
+      - name: Build same-run regime context
+        run: python3 data/update_regime_state.py
+
+      - name: Build evidence bundle
+        id: bundle
+        env:
+          P14_RUN_TOKEN: ${{ steps.identity.outputs.run_token }}
+          P14_STARTED_AT: ${{ steps.identity.outputs.started_at }}
+        run: >-
+          python3 -m data.p14_evidence_capture
+          --out "$RUNNER_TEMP/p14-evidence"
+
+      - name: Validate bundle in CI mode
+        run: >-
+          python3 -m data.p14_evidence_validate
+          --bundle "${{ steps.bundle.outputs.bundle_path }}"
+          --ci
+
+      - name: Upload evidence artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: p14-evidence-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/p14-evidence/
+          if-no-files-found: error
+          retention-days: 90
+
+      - name: Restore clean worktree
+        if: always()
+        run: |
+          git restore --worktree -- data/candidates_stocks.json data/regime_state.json public/data/regime_state.json
+          rm -f data/prescreen_metadata.json
+          git diff --quiet
+          git diff --cached --quiet
+          test -z "$(git ls-files --others --exclude-standard)"
