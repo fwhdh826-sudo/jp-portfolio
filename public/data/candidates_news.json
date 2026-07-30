@@ -1,19 +1,19 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-07-30T22:02:10.278006+09:00",
-  "sourceUpdatedAt": "2026-07-30T12:57:00+00:00",
+  "updatedAt": "2026-07-31T07:36:39.003864+09:00",
+  "sourceUpdatedAt": "2026-07-30T22:15:33+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": 0.33,
+      "avgSentiment": 0.665,
       "negativeCount": 0,
-      "positiveCount": 1,
+      "positiveCount": 2,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 2,
+      "itemCount": 2,
       "isStale": false,
       "topNegativeTitle": "今年度の経済成長率 ＋0.9％程度に下方修正 中東情勢の影響",
-      "topPositiveTitle": "今年度の経済成長率 ＋0.9％程度に下方修正 中東情勢の影響",
+      "topPositiveTitle": "Yen Surges as Nikkei Says Japan Intervened in Market Again",
       "items": [
         {
           "title": "今年度の経済成長率 ＋0.9％程度に下方修正 中東情勢の影響",
@@ -28,45 +28,92 @@
             "market"
           ],
           "titleJa": "今年度の経済成長率 ＋0.9％程度に下方修正 中東情勢の影響"
+        },
+        {
+          "title": "Yen Surges as Nikkei Says Japan Intervened in Market Again",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-07-30T13:57:33+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-30/yen-surge-spurs-speculation-japan-intervened-in-market-again",
+          "tags": [
+            "fx",
+            "jp_broad",
+            "market"
+          ]
         }
       ]
     },
     "jp_semiconductor": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.67,
       "negativeCount": 0,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "us_broad": {
-      "avgSentiment": 0.233,
-      "negativeCount": 1,
-      "positiveCount": 3,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 6,
-      "isStale": false,
-      "topNegativeTitle": "Conflict Widens in Middle East, Bonds Send Warsh Credibility Warning | The Opening Trade 7/30/2026",
-      "topPositiveTitle": "Copper Gains as Traders Weigh Fed Rate Path, Market Tightness",
+      "topNegativeTitle": "Chip Stocks Post Biggest Advance Since April 2025: Markets Wrap",
+      "topPositiveTitle": "Chip Stocks Post Biggest Advance Since April 2025: Markets Wrap",
       "items": [
         {
-          "title": "Conflict Widens in Middle East, Bonds Send Warsh Credibility Warning | The Opening Trade 7/30/2026",
+          "title": "Chip Stocks Post Biggest Advance Since April 2025: Markets Wrap",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.6,
-          "publishedAt": "2026-07-30T11:23:25+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-07-30/the-opening-trade-7-30-2026-video",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-07-29T22:11:13+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-29/stock-market-today-dow-s-p-live-updates",
           "tags": [
-            "fx",
-            "geopolitical",
-            "macro_risk",
+            "jp_semiconductor",
+            "market"
+          ]
+        }
+      ]
+    },
+    "us_broad": {
+      "avgSentiment": 0.143,
+      "negativeCount": 1,
+      "positiveCount": 3,
+      "neutralCount": 3,
+      "sourceCount": 2,
+      "itemCount": 7,
+      "isStale": false,
+      "topNegativeTitle": "Record Fed Funds Short Hedging Rate Hike Unravels After Hold",
+      "topPositiveTitle": "Gold Advances as Traders Weigh Fed Rate Path After Latest Hold",
+      "items": [
+        {
+          "title": "Record Fed Funds Short Hedging Rate Hike Unravels After Hold",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-07-30T17:47:02+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-30/wall-street-s-record-fed-funds-short-unravels-after-rates-held",
+          "tags": [
             "market",
             "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Warsh Hints at New Inflation Roadmap, Stoking Investor Angst",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-30T19:45:43+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-30/warsh-hints-at-new-inflation-roadmap-stoking-investor-angst",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "How Fed Chief Kevin Warsh Baffled Markets on Inflation",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-30T19:38:31+00:00",
+          "url": "https://www.bloomberg.com/news/features/2026-07-30/how-fed-chief-kevin-warsh-baffled-markets-on-inflation",
+          "tags": [
+            "market",
             "us_broad"
           ]
         },
@@ -84,39 +131,12 @@
           ]
         },
         {
-          "title": "Bond Yields at 19-Year High Send Warsh Credibility Warning",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-29T22:31:07+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-29/bond-rout-sends-warning-to-warsh-that-tough-talk-is-not-enough",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Bond Yields at 19-Year High After Fed Holds; Tech Earnings Lift Stocks | Bloomberg Brief 07/30/2026",
+          "title": "Reddit Projects Strong Sales, But No New AI Deals",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.33,
-          "publishedAt": "2026-07-30T11:52:24+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-07-30/bloomberg-brief-07-30-2026-video",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Stocks Get Tech Lift as Buyers Emerge After Rout: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-07-29T22:11:13+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-29/stock-market-today-dow-s-p-live-updates",
+          "publishedAt": "2026-07-30T20:10:55+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-30/reddit-projects-strong-third-quarter-sales-growth",
           "tags": [
             "market",
             "us_broad"
@@ -125,16 +145,28 @@
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.165,
+      "avgSentiment": 0.333,
       "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 1,
+      "positiveCount": 2,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 2,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Zuckerberg's Messaging Cloudy: Zino",
-      "topPositiveTitle": "Bond Yields at 19-Year High After Fed Holds; Tech Earnings Lift Stocks | Bloomberg Brief 07/30/2026",
+      "topNegativeTitle": "Amazon Tops Estimates | Closing Bell",
+      "topPositiveTitle": "Asia Stocks to Gain After US Rally, Yen Holds Jump: Markets Wrap",
       "items": [
+        {
+          "title": "Amazon Tops Estimates | Closing Bell",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-30T21:09:32+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-07-30/amazon-tops-estimates-closing-bell-video",
+          "tags": [
+            "market",
+            "us_growth"
+          ]
+        },
         {
           "title": "Zuckerberg's Messaging Cloudy: Zino",
           "source": "Bloomberg Economics",
@@ -148,16 +180,27 @@
           ]
         },
         {
-          "title": "Bond Yields at 19-Year High After Fed Holds; Tech Earnings Lift Stocks | Bloomberg Brief 07/30/2026",
+          "title": "Microsoft’s $450 Billion Jump Is Biggest in Stock Market History",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.33,
-          "publishedAt": "2026-07-30T11:52:24+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-07-30/bloomberg-brief-07-30-2026-video",
+          "publishedAt": "2026-07-30T16:55:49+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-30/microsoft-eyes-history-with-490-billion-pop-in-market-value",
           "tags": [
             "market",
-            "rates",
-            "us_broad",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Asia Stocks to Gain After US Rally, Yen Holds Jump: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-07-30T22:15:33+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-30/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "fx",
+            "market",
             "us_growth"
           ]
         }
@@ -176,16 +219,31 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.67,
       "negativeCount": 0,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Gold Advances as Traders Weigh Fed Rate Path After Latest Hold",
+      "topPositiveTitle": "Gold Advances as Traders Weigh Fed Rate Path After Latest Hold",
+      "items": [
+        {
+          "title": "Gold Advances as Traders Weigh Fed Rate Path After Latest Hold",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-07-29T23:24:57+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-29/gold-advances-after-federal-reserve-keeps-interest-rates-on-hold",
+          "tags": [
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        }
+      ]
     },
     "reit": {
       "avgSentiment": 0,
@@ -212,40 +270,40 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.026,
+      "avgSentiment": -0.073,
       "negativeCount": 3,
-      "positiveCount": 1,
-      "neutralCount": 6,
+      "positiveCount": 2,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 10,
+      "itemCount": 9,
       "isStale": false,
-      "topNegativeTitle": "Conflict Widens in Middle East, Bonds Send Warsh Credibility Warning | The Opening Trade 7/30/2026",
-      "topPositiveTitle": "BOE Holds Rates in 6-3 Vote as War Clouds Inflation Outlook",
+      "topNegativeTitle": "Weak Yen Offers Toyota an Earnings Respite From Tariffs, War",
+      "topPositiveTitle": "Fitch’s Private Credit Default Rate Hit Record in Second Quarter",
       "items": [
         {
-          "title": "Conflict Widens in Middle East, Bonds Send Warsh Credibility Warning | The Opening Trade 7/30/2026",
+          "title": "Weak Yen Offers Toyota an Earnings Respite From Tariffs, War",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.6,
-          "publishedAt": "2026-07-30T11:23:25+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-07-30/the-opening-trade-7-30-2026-video",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-07-30T20:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-30/weak-yen-offers-toyota-an-earnings-respite-from-tariffs-war",
           "tags": [
+            "commodity",
             "fx",
             "geopolitical",
             "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
+            "market"
           ]
         },
         {
-          "title": "US Launches Fresh Wave of Iran Strikes as Conflict Widens Across Middle East",
-          "source": "Bloomberg Markets",
+          "title": "Japan PM Takaichi Faces Biggest Test Yet as Yen Sinks, Approval Ratings Drop",
+          "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-07-30T11:14:01+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-07-30/us-renews-strikes-on-iran-as-conflict-widens-in-region-video",
+          "publishedAt": "2026-07-30T21:00:23+00:00",
+          "url": "https://www.bloomberg.com/news/features/2026-07-30/japan-pm-takaichi-faces-biggest-test-yet-as-yen-sinks-approval-ratings-drop",
           "tags": [
+            "fx",
             "geopolitical",
             "macro_risk",
             "market"
@@ -265,97 +323,148 @@
           ]
         },
         {
-          "title": "Big Oil Is Making Big Money During Iran War Market Turmoil",
+          "title": "Aon Keeps Margin Edge as Industry Tailwinds Fade",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-30T12:11:00+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-07-30/big-oil-is-making-big-money-during-iran-war-market-turmoil",
+          "publishedAt": "2026-07-30T20:37:12+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-07-30/aon-keeps-margin-edge-as-industry-tailwinds-fade-video",
           "tags": [
-            "commodity",
             "geopolitical",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Lighthizer and Trump tariffs",
+          "title": "The Bank of England Has a Trump Problem as Iran War Blocks Rate Cuts",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-30T11:00:01+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-07-30/lighthizer-and-trump-tariffs",
+          "publishedAt": "2026-07-30T16:27:41+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-30/the-bank-of-england-has-a-trump-problem-as-iran-war-blocks-rate-cuts",
           "tags": [
+            "geopolitical",
             "macro_risk",
-            "market"
+            "market",
+            "rates"
           ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": -0.6,
-      "negativeCount": 1,
-      "positiveCount": 0,
+      "avgSentiment": 0.167,
+      "negativeCount": 2,
+      "positiveCount": 2,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 2,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Conflict Widens in Middle East, Bonds Send Warsh Credibility Warning | The Opening Trade 7/30/2026",
-      "topPositiveTitle": "Conflict Widens in Middle East, Bonds Send Warsh Credibility Warning | The Opening Trade 7/30/2026",
+      "topNegativeTitle": "Weak Yen Offers Toyota an Earnings Respite From Tariffs, War",
+      "topPositiveTitle": "Asia Stocks to Gain After US Rally, Yen Holds Jump: Markets Wrap",
       "items": [
         {
-          "title": "Conflict Widens in Middle East, Bonds Send Warsh Credibility Warning | The Opening Trade 7/30/2026",
+          "title": "Weak Yen Offers Toyota an Earnings Respite From Tariffs, War",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.6,
-          "publishedAt": "2026-07-30T11:23:25+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-07-30/the-opening-trade-7-30-2026-video",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-07-30T20:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-30/weak-yen-offers-toyota-an-earnings-respite-from-tariffs-war",
+          "tags": [
+            "commodity",
+            "fx",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Japan PM Takaichi Faces Biggest Test Yet as Yen Sinks, Approval Ratings Drop",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-07-30T21:00:23+00:00",
+          "url": "https://www.bloomberg.com/news/features/2026-07-30/japan-pm-takaichi-faces-biggest-test-yet-as-yen-sinks-approval-ratings-drop",
           "tags": [
             "fx",
             "geopolitical",
             "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Asia Stocks to Gain After US Rally, Yen Holds Jump: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-07-30T22:15:33+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-30/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "fx",
             "market",
-            "rates",
-            "us_broad"
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Yen Surges as Nikkei Says Japan Intervened in Market Again",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-07-30T13:57:33+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-30/yen-surge-spurs-speculation-japan-intervened-in-market-again",
+          "tags": [
+            "fx",
+            "jp_broad",
+            "market"
           ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": 0.37,
-      "negativeCount": 1,
-      "positiveCount": 6,
-      "neutralCount": 4,
+      "avgSentiment": 0.21,
+      "negativeCount": 2,
+      "positiveCount": 4,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 11,
+      "itemCount": 8,
       "isStale": false,
-      "topNegativeTitle": "Conflict Widens in Middle East, Bonds Send Warsh Credibility Warning | The Opening Trade 7/30/2026",
-      "topPositiveTitle": "Bailey Says BOE Decided to Keep Rates at 3.75% in July",
+      "topNegativeTitle": "Record Fed Funds Short Hedging Rate Hike Unravels After Hold",
+      "topPositiveTitle": "Short Gilts Surge as Traders Slash Bets on BOE Hike in September",
       "items": [
         {
-          "title": "Conflict Widens in Middle East, Bonds Send Warsh Credibility Warning | The Opening Trade 7/30/2026",
-          "source": "Bloomberg Markets",
+          "title": "Record Fed Funds Short Hedging Rate Hike Unravels After Hold",
+          "source": "Bloomberg Economics",
           "sentiment": "negative",
-          "sentimentScore": -0.6,
-          "publishedAt": "2026-07-30T11:23:25+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-07-30/the-opening-trade-7-30-2026-video",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-07-30T17:47:02+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-30/wall-street-s-record-fed-funds-short-unravels-after-rates-held",
           "tags": [
-            "fx",
-            "geopolitical",
-            "macro_risk",
             "market",
             "rates",
             "us_broad"
           ]
         },
         {
-          "title": "BOE's Lombardelli Says Holding Rates Was Right Thing to Do",
-          "source": "Bloomberg Markets",
+          "title": "Bailey Plays Down Rate Hikes After Bank of England Holds",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-07-30T11:00:05+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-30/boe-holds-rates-in-split-vote-as-war-clouds-inflation-outlook",
+          "tags": [
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "The Bank of England Has a Trump Problem as Iran War Blocks Rate Cuts",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-30T12:46:15+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-07-30/boe-s-lombardelli-holding-rates-was-right-thing-to-do-video",
+          "publishedAt": "2026-07-30T16:27:41+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-30/the-bank-of-england-has-a-trump-problem-as-iran-war-blocks-rate-cuts",
           "tags": [
+            "geopolitical",
+            "macro_risk",
             "market",
             "rates"
           ]
@@ -374,25 +483,12 @@
           ]
         },
         {
-          "title": "Investors Look to Dodge Rate Risks With Short-Dated Credit",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-30T09:22:03+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-30/credit-buyers-seek-refuge-in-short-dated-debt-to-dodge-rate-risk",
-          "tags": [
-            "macro_risk",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Bond Yields at 19-Year High Send Warsh Credibility Warning",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-29T22:31:07+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-29/bond-rout-sends-warning-to-warsh-that-tough-talk-is-not-enough",
+          "title": "‘Talk Is Cheap’: Wall Street Delivers Harsh Verdict on Warsh Fed",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-07-30T15:51:20+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-30/-talk-is-cheap-wall-street-delivers-harsh-verdict-on-warsh-fed",
           "tags": [
             "market",
             "rates",
@@ -402,39 +498,28 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.148,
-      "negativeCount": 0,
+      "avgSentiment": -0.085,
+      "negativeCount": 1,
       "positiveCount": 2,
-      "neutralCount": 7,
+      "neutralCount": 1,
       "sourceCount": 3,
-      "itemCount": 9,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Big Oil Is Making Big Money During Iran War Market Turmoil",
-      "topPositiveTitle": "Latest Oil Market News and Analysis for July 30",
+      "topNegativeTitle": "Weak Yen Offers Toyota an Earnings Respite From Tariffs, War",
+      "topPositiveTitle": "Latest Oil Market News and Analysis for July 31",
       "items": [
         {
-          "title": "Big Oil Is Making Big Money During Iran War Market Turmoil",
+          "title": "Weak Yen Offers Toyota an Earnings Respite From Tariffs, War",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-30T12:11:00+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-07-30/big-oil-is-making-big-money-during-iran-war-market-turmoil",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-07-30T20:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-30/weak-yen-offers-toyota-an-earnings-respite-from-tariffs-war",
           "tags": [
             "commodity",
+            "fx",
             "geopolitical",
             "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Oil Analyst Sankey Warns of Rising Risks in Refining",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-30T12:09:12+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-07-30/oil-analyst-sankey-warns-of-rising-risks-in-refining-video",
-          "tags": [
-            "commodity",
             "market"
           ]
         },
@@ -451,12 +536,12 @@
           ]
         },
         {
-          "title": "Saudi Economy Shrinks as Gulf Reels From Iran War’s Oil Chaos",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-30T07:18:22+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-30/saudi-economy-shrinks-most-since-2020-as-war-roils-oil-exports",
+          "title": "Latest Oil Market News and Analysis for July 31",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-07-30T22:04:24+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-30/latest-oil-market-news-and-analysis-for-july-31",
           "tags": [
             "commodity",
             "geopolitical",
@@ -465,54 +550,56 @@
           ]
         },
         {
-          "title": "Japan Trims Its Economic Outlook as Oil Prices Weigh on Growth",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-30T01:21:56+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-30/japan-trims-its-economic-outlook-as-oil-prices-weigh-on-growth",
+          "title": "今年度の経済成長率 ＋0.9％程度に下方修正 中東情勢の影響",
+          "source": "NHK 経済",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-07-30T02:54:21+00:00",
+          "url": "https://news.web.nhk/newsweb/na/na-k10015190501000",
           "tags": [
             "commodity",
+            "jp_broad",
             "market"
-          ]
+          ],
+          "titleJa": "今年度の経済成長率 ＋0.9％程度に下方修正 中東情勢の影響"
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.237,
+      "avgSentiment": -0.082,
       "negativeCount": 3,
-      "positiveCount": 5,
-      "neutralCount": 5,
-      "sourceCount": 3,
-      "itemCount": 13,
+      "positiveCount": 2,
+      "neutralCount": 3,
+      "sourceCount": 2,
+      "itemCount": 8,
       "isStale": false,
-      "topNegativeTitle": "Conflict Widens in Middle East, Bonds Send Warsh Credibility Warning | The Opening Trade 7/30/2026",
-      "topPositiveTitle": "Bailey Says BOE Decided to Keep Rates at 3.75% in July",
+      "topNegativeTitle": "Weak Yen Offers Toyota an Earnings Respite From Tariffs, War",
+      "topPositiveTitle": "Ukraine Surprises With Rate Increase to Tame Price Pressures",
       "items": [
         {
-          "title": "Conflict Widens in Middle East, Bonds Send Warsh Credibility Warning | The Opening Trade 7/30/2026",
+          "title": "Weak Yen Offers Toyota an Earnings Respite From Tariffs, War",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.6,
-          "publishedAt": "2026-07-30T11:23:25+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-07-30/the-opening-trade-7-30-2026-video",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-07-30T20:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-30/weak-yen-offers-toyota-an-earnings-respite-from-tariffs-war",
           "tags": [
+            "commodity",
             "fx",
             "geopolitical",
             "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
+            "market"
           ]
         },
         {
-          "title": "US Launches Fresh Wave of Iran Strikes as Conflict Widens Across Middle East",
-          "source": "Bloomberg Markets",
+          "title": "Japan PM Takaichi Faces Biggest Test Yet as Yen Sinks, Approval Ratings Drop",
+          "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-07-30T11:14:01+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-07-30/us-renews-strikes-on-iran-as-conflict-widens-in-region-video",
+          "publishedAt": "2026-07-30T21:00:23+00:00",
+          "url": "https://www.bloomberg.com/news/features/2026-07-30/japan-pm-takaichi-faces-biggest-test-yet-as-yen-sinks-approval-ratings-drop",
           "tags": [
+            "fx",
             "geopolitical",
             "macro_risk",
             "market"
@@ -532,31 +619,30 @@
           ]
         },
         {
-          "title": "Big Oil Is Making Big Money During Iran War Market Turmoil",
+          "title": "Aon Keeps Margin Edge as Industry Tailwinds Fade",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-30T12:11:00+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-07-30/big-oil-is-making-big-money-during-iran-war-market-turmoil",
+          "publishedAt": "2026-07-30T20:37:12+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-07-30/aon-keeps-margin-edge-as-industry-tailwinds-fade-video",
           "tags": [
-            "commodity",
             "geopolitical",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Saudi Economy Shrinks as Gulf Reels From Iran War’s Oil Chaos",
+          "title": "The Bank of England Has a Trump Problem as Iran War Blocks Rate Cuts",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-30T07:18:22+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-30/saudi-economy-shrinks-most-since-2020-as-war-roils-oil-exports",
+          "publishedAt": "2026-07-30T16:27:41+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-30/the-bank-of-england-has-a-trump-problem-as-iran-war-blocks-rate-cuts",
           "tags": [
-            "commodity",
             "geopolitical",
             "macro_risk",
-            "market"
+            "market",
+            "rates"
           ]
         }
       ]
@@ -570,7 +656,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 4,
+    "excludedCount": 3,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
