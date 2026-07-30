@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-07-30T15:05:26.989381+09:00",
-  "sourceUpdatedAt": "2026-07-30T05:59:24+00:00",
+  "updatedAt": "2026-07-30T22:02:10.278006+09:00",
+  "sourceUpdatedAt": "2026-07-30T12:57:00+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -32,49 +32,51 @@
       ]
     },
     "jp_semiconductor": {
-      "avgSentiment": -0.67,
-      "negativeCount": 1,
+      "avgSentiment": 0,
+      "negativeCount": 0,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Chinese Chip Stocks Plunge as Investors Rotate Away From Tech",
-      "topPositiveTitle": "Chinese Chip Stocks Plunge as Investors Rotate Away From Tech",
-      "items": [
-        {
-          "title": "Chinese Chip Stocks Plunge as Investors Rotate Away From Tech",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-07-30T04:44:45+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-30/chinese-chip-stocks-plunge-as-investors-rotate-away-from-tech",
-          "tags": [
-            "jp_semiconductor",
-            "market",
-            "us_growth"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "us_broad": {
-      "avgSentiment": -0.013,
-      "negativeCount": 3,
-      "positiveCount": 2,
-      "neutralCount": 7,
+      "avgSentiment": 0.233,
+      "negativeCount": 1,
+      "positiveCount": 3,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 12,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Kalshi Rate Trade Misses Quadruple Payoff as Fed Stands Pat",
-      "topPositiveTitle": "Base Metals Advance as Fed Rate Pause Eases Demand Concerns",
+      "topNegativeTitle": "Conflict Widens in Middle East, Bonds Send Warsh Credibility Warning | The Opening Trade 7/30/2026",
+      "topPositiveTitle": "Copper Gains as Traders Weigh Fed Rate Path, Market Tightness",
       "items": [
         {
-          "title": "Kalshi Rate Trade Misses Quadruple Payoff as Fed Stands Pat",
-          "source": "Bloomberg Economics",
+          "title": "Conflict Widens in Middle East, Bonds Send Warsh Credibility Warning | The Opening Trade 7/30/2026",
+          "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-07-29T16:52:12+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-29/a-600-000-kalshi-trade-sets-up-for-big-payoff-if-fed-hikes",
+          "sentimentScore": -0.6,
+          "publishedAt": "2026-07-30T11:23:25+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-07-30/the-opening-trade-7-30-2026-video",
+          "tags": [
+            "fx",
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Kevin Warsh Delivers a ‘Perplexing’ Fed Briefing, and Gets a Bronx Cheer",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-30T11:07:54+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-07-30/kevin-warsh-delivers-a-perplexing-fed-briefing-and-gets-a-bronx-cheer",
           "tags": [
             "market",
             "rates",
@@ -82,12 +84,25 @@
           ]
         },
         {
-          "title": "Long Bonds Drop on Fed Pause, Nasdaq Futures Gain: Markets Wrap",
+          "title": "Bond Yields at 19-Year High Send Warsh Credibility Warning",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.5,
-          "publishedAt": "2026-07-29T22:11:13+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-29/stock-market-today-dow-s-p-live-updates",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-29T22:31:07+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-29/bond-rout-sends-warning-to-warsh-that-tough-talk-is-not-enough",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Bond Yields at 19-Year High After Fed Holds; Tech Earnings Lift Stocks | Bloomberg Brief 07/30/2026",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-07-30T11:52:24+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-07-30/bloomberg-brief-07-30-2026-video",
           "tags": [
             "market",
             "rates",
@@ -96,76 +111,49 @@
           ]
         },
         {
-          "title": "Fed’s Warsh Rebuked by Investors Craving a Real Inflation Fight",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-07-29T23:46:05+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-29/fed-s-warsh-rebuked-by-investors-craving-a-real-inflation-fight",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Fed Doubts Push Some Funds to Eye Overseas Bets Over Treasuries",
+          "title": "Stocks Get Tech Lift as Buyers Emerge After Rout: Markets Wrap",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-30T05:46:19+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-30/fed-doubts-push-some-funds-to-eye-overseas-bets-over-treasuries",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-07-29T22:11:13+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-29/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Gold Whipsaws as Traders Weigh Fed’s Rate Path After Latest Hold",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-29T23:24:57+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-29/gold-advances-after-federal-reserve-keeps-interest-rates-on-hold",
-          "tags": [
-            "gold",
-            "market",
-            "rates",
             "us_broad"
           ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": -0.585,
-      "negativeCount": 2,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 1,
+      "avgSentiment": 0.165,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 1,
+      "sourceCount": 2,
       "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Chinese Chip Stocks Plunge as Investors Rotate Away From Tech",
-      "topPositiveTitle": "Long Bonds Drop on Fed Pause, Nasdaq Futures Gain: Markets Wrap",
+      "topNegativeTitle": "Zuckerberg's Messaging Cloudy: Zino",
+      "topPositiveTitle": "Bond Yields at 19-Year High After Fed Holds; Tech Earnings Lift Stocks | Bloomberg Brief 07/30/2026",
       "items": [
         {
-          "title": "Chinese Chip Stocks Plunge as Investors Rotate Away From Tech",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-07-30T04:44:45+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-30/chinese-chip-stocks-plunge-as-investors-rotate-away-from-tech",
+          "title": "Zuckerberg's Messaging Cloudy: Zino",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-30T11:50:32+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-07-30/zuckerberg-s-messaging-cloudy-zino-video",
           "tags": [
-            "jp_semiconductor",
             "market",
             "us_growth"
           ]
         },
         {
-          "title": "Long Bonds Drop on Fed Pause, Nasdaq Futures Gain: Markets Wrap",
+          "title": "Bond Yields at 19-Year High After Fed Holds; Tech Earnings Lift Stocks | Bloomberg Brief 07/30/2026",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.5,
-          "publishedAt": "2026-07-29T22:11:13+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-29/stock-market-today-dow-s-p-live-updates",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-07-30T11:52:24+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-07-30/bloomberg-brief-07-30-2026-video",
           "tags": [
             "market",
             "rates",
@@ -188,31 +176,16 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Gold Whipsaws as Traders Weigh Fed’s Rate Path After Latest Hold",
-      "topPositiveTitle": "Gold Whipsaws as Traders Weigh Fed’s Rate Path After Latest Hold",
-      "items": [
-        {
-          "title": "Gold Whipsaws as Traders Weigh Fed’s Rate Path After Latest Hold",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-29T23:24:57+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-29/gold-advances-after-federal-reserve-keeps-interest-rates-on-hold",
-          "tags": [
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "reit": {
       "avgSentiment": 0,
@@ -239,47 +212,65 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.1,
-      "negativeCount": 1,
+      "avgSentiment": -0.026,
+      "negativeCount": 3,
       "positiveCount": 1,
-      "neutralCount": 3,
+      "neutralCount": 6,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 10,
       "isStale": false,
-      "topNegativeTitle": "South Korea’s Toolkit Comes Into Focus as Stocks Extend Selloff",
-      "topPositiveTitle": "French Economy Rebounds With 0.2% Growth in Second Quarter",
+      "topNegativeTitle": "Conflict Widens in Middle East, Bonds Send Warsh Credibility Warning | The Opening Trade 7/30/2026",
+      "topPositiveTitle": "BOE Holds Rates in 6-3 Vote as War Clouds Inflation Outlook",
       "items": [
         {
-          "title": "South Korea’s Toolkit Comes Into Focus as Stocks Extend Selloff",
+          "title": "Conflict Widens in Middle East, Bonds Send Warsh Credibility Warning | The Opening Trade 7/30/2026",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-07-30T05:38:51+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-30/south-korea-s-toolkit-comes-into-focus-as-stocks-extend-selloff",
+          "sentimentScore": -0.6,
+          "publishedAt": "2026-07-30T11:23:25+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-07-30/the-opening-trade-7-30-2026-video",
           "tags": [
+            "fx",
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "US Launches Fresh Wave of Iran Strikes as Conflict Widens Across Middle East",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-07-30T11:14:01+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-07-30/us-renews-strikes-on-iran-as-conflict-widens-in-region-video",
+          "tags": [
+            "geopolitical",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Eastspring's Wong on Opportunities Amid AI Volatility",
+          "title": "Fastest Euro-Zone Growth in Over a Year Defies Iran Pressure",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-07-30T05:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-30/french-economy-rebounds-with-0-2-growth-in-second-quarter",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Big Oil Is Making Big Money During Iran War Market Turmoil",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-30T03:48:30+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-07-30/eastspring-s-wong-on-opportunities-amid-ai-volatility-video",
-          "tags": [
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "India Sees Renewed Fiscal Risks From Middle East Impasse",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-29T14:00:52+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-29/india-sees-renewed-fiscal-risks-from-middle-east-impasse",
+          "publishedAt": "2026-07-30T12:11:00+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-07-30/big-oil-is-making-big-money-during-iran-war-market-turmoil",
           "tags": [
             "commodity",
             "geopolitical",
@@ -288,26 +279,12 @@
           ]
         },
         {
-          "title": "Singapore Upsizes Aid Package to $1.5 Billion Amid Oil Shock",
+          "title": "Lighthizer and Trump tariffs",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-29T08:34:46+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-29/singapore-adds-700-million-in-economic-support-from-oil-shock",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "French Economy Rebounds With 0.2% Growth in Second Quarter",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.5,
-          "publishedAt": "2026-07-30T05:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-30/french-economy-rebounds-with-0-2-growth-in-second-quarter",
+          "publishedAt": "2026-07-30T11:00:01+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-07-30/lighthizer-and-trump-tariffs",
           "tags": [
             "macro_risk",
             "market"
@@ -316,47 +293,80 @@
       ]
     },
     "fx": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
+      "avgSentiment": -0.6,
+      "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Conflict Widens in Middle East, Bonds Send Warsh Credibility Warning | The Opening Trade 7/30/2026",
+      "topPositiveTitle": "Conflict Widens in Middle East, Bonds Send Warsh Credibility Warning | The Opening Trade 7/30/2026",
+      "items": [
+        {
+          "title": "Conflict Widens in Middle East, Bonds Send Warsh Credibility Warning | The Opening Trade 7/30/2026",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.6,
+          "publishedAt": "2026-07-30T11:23:25+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-07-30/the-opening-trade-7-30-2026-video",
+          "tags": [
+            "fx",
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        }
+      ]
     },
     "rates": {
-      "avgSentiment": -0.075,
-      "negativeCount": 3,
-      "positiveCount": 2,
-      "neutralCount": 6,
+      "avgSentiment": 0.37,
+      "negativeCount": 1,
+      "positiveCount": 6,
+      "neutralCount": 4,
       "sourceCount": 2,
       "itemCount": 11,
       "isStale": false,
-      "topNegativeTitle": "Japan’s Two-Year Bond Sale Draws Weaker Demand on Rate Hike Bets",
-      "topPositiveTitle": "Base Metals Advance as Fed Rate Pause Eases Demand Concerns",
+      "topNegativeTitle": "Conflict Widens in Middle East, Bonds Send Warsh Credibility Warning | The Opening Trade 7/30/2026",
+      "topPositiveTitle": "Bailey Says BOE Decided to Keep Rates at 3.75% in July",
       "items": [
         {
-          "title": "Japan’s Two-Year Bond Sale Draws Weaker Demand on Rate Hike Bets",
+          "title": "Conflict Widens in Middle East, Bonds Send Warsh Credibility Warning | The Opening Trade 7/30/2026",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-07-30T03:41:06+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-30/japan-s-two-year-bond-sale-demand-weaker-than-12-month-average",
+          "sentimentScore": -0.6,
+          "publishedAt": "2026-07-30T11:23:25+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-07-30/the-opening-trade-7-30-2026-video",
+          "tags": [
+            "fx",
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "BOE's Lombardelli Says Holding Rates Was Right Thing to Do",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-30T12:46:15+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-07-30/boe-s-lombardelli-holding-rates-was-right-thing-to-do-video",
           "tags": [
             "market",
             "rates"
           ]
         },
         {
-          "title": "Kalshi Rate Trade Misses Quadruple Payoff as Fed Stands Pat",
+          "title": "Kevin Warsh Delivers a ‘Perplexing’ Fed Briefing, and Gets a Bronx Cheer",
           "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-07-29T16:52:12+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-29/a-600-000-kalshi-trade-sets-up-for-big-payoff-if-fed-hikes",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-30T11:07:54+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-07-30/kevin-warsh-delivers-a-perplexing-fed-briefing-and-gets-a-bronx-cheer",
           "tags": [
             "market",
             "rates",
@@ -364,41 +374,26 @@
           ]
         },
         {
-          "title": "Long Bonds Drop on Fed Pause, Nasdaq Futures Gain: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.5,
-          "publishedAt": "2026-07-29T22:11:13+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-29/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "BOE Expected to Hold Rates as Energy Prices Swing (Video)",
+          "title": "Investors Look to Dodge Rate Risks With Short-Dated Credit",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-30T05:08:31+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-07-30/boe-expected-to-hold-rates-as-energy-prices-swing-video",
+          "publishedAt": "2026-07-30T09:22:03+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-30/credit-buyers-seek-refuge-in-short-dated-debt-to-dodge-rate-risk",
           "tags": [
-            "commodity",
+            "macro_risk",
             "market",
             "rates"
           ]
         },
         {
-          "title": "Gold Whipsaws as Traders Weigh Fed’s Rate Path After Latest Hold",
+          "title": "Bond Yields at 19-Year High Send Warsh Credibility Warning",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-29T23:24:57+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-29/gold-advances-after-federal-reserve-keeps-interest-rates-on-hold",
+          "publishedAt": "2026-07-29T22:31:07+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-29/bond-rout-sends-warning-to-warsh-that-tough-talk-is-not-enough",
           "tags": [
-            "gold",
             "market",
             "rates",
             "us_broad"
@@ -407,27 +402,66 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.209,
+      "avgSentiment": 0.148,
       "negativeCount": 0,
-      "positiveCount": 3,
-      "neutralCount": 5,
+      "positiveCount": 2,
+      "neutralCount": 7,
       "sourceCount": 3,
-      "itemCount": 8,
+      "itemCount": 9,
       "isStale": false,
-      "topNegativeTitle": "BOE Expected to Hold Rates as Energy Prices Swing (Video)",
+      "topNegativeTitle": "Big Oil Is Making Big Money During Iran War Market Turmoil",
       "topPositiveTitle": "Latest Oil Market News and Analysis for July 30",
       "items": [
         {
-          "title": "BOE Expected to Hold Rates as Energy Prices Swing (Video)",
+          "title": "Big Oil Is Making Big Money During Iran War Market Turmoil",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-30T05:08:31+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-07-30/boe-expected-to-hold-rates-as-energy-prices-swing-video",
+          "publishedAt": "2026-07-30T12:11:00+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-07-30/big-oil-is-making-big-money-during-iran-war-market-turmoil",
           "tags": [
             "commodity",
-            "market",
-            "rates"
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Oil Analyst Sankey Warns of Rising Risks in Refining",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-30T12:09:12+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-07-30/oil-analyst-sankey-warns-of-rising-risks-in-refining-video",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "German Inflation Accelerates to Three-Month High on Energy",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-30T12:06:39+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-30/german-inflation-accelerates-to-three-month-high-on-energy",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "Saudi Economy Shrinks as Gulf Reels From Iran War’s Oil Chaos",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-30T07:18:22+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-30/saudi-economy-shrinks-most-since-2020-as-war-roils-oil-exports",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
           ]
         },
         {
@@ -441,112 +475,87 @@
             "commodity",
             "market"
           ]
-        },
-        {
-          "title": "BOE Set to Keep Powder Dry as Oil Prices Swing: Decision Guide",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-29T23:01:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-29/boe-set-to-keep-powder-dry-as-oil-prices-swing-decision-guide",
-          "tags": [
-            "commodity",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "India Sees Renewed Fiscal Risks From Middle East Impasse",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-29T14:00:52+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-29/india-sees-renewed-fiscal-risks-from-middle-east-impasse",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Singapore Upsizes Aid Package to $1.5 Billion Amid Oil Shock",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-29T08:34:46+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-29/singapore-adds-700-million-in-economic-support-from-oil-shock",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.168,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 3,
+      "avgSentiment": 0.237,
+      "negativeCount": 3,
+      "positiveCount": 5,
+      "neutralCount": 5,
       "sourceCount": 3,
-      "itemCount": 4,
+      "itemCount": 13,
       "isStale": false,
-      "topNegativeTitle": "India Sees Renewed Fiscal Risks From Middle East Impasse",
-      "topPositiveTitle": "Latest Oil Market News and Analysis for July 30",
+      "topNegativeTitle": "Conflict Widens in Middle East, Bonds Send Warsh Credibility Warning | The Opening Trade 7/30/2026",
+      "topPositiveTitle": "Bailey Says BOE Decided to Keep Rates at 3.75% in July",
       "items": [
         {
-          "title": "India Sees Renewed Fiscal Risks From Middle East Impasse",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-29T14:00:52+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-29/india-sees-renewed-fiscal-risks-from-middle-east-impasse",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Singapore Upsizes Aid Package to $1.5 Billion Amid Oil Shock",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-29T08:34:46+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-29/singapore-adds-700-million-in-economic-support-from-oil-shock",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "北方領土元島民のひ孫ら「北方墓参」再開を高市首相に要望",
-          "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-30T04:54:10+00:00",
-          "url": "https://news.web.nhk/newsweb/na/na-k10015190691000",
-          "tags": [
-            "geopolitical",
-            "market"
-          ],
-          "titleJa": "北方領土元島民のひ孫ら「北方墓参」再開を高市首相に要望"
-        },
-        {
-          "title": "Latest Oil Market News and Analysis for July 30",
+          "title": "Conflict Widens in Middle East, Bonds Send Warsh Credibility Warning | The Opening Trade 7/30/2026",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-07-29T22:01:33+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-29/latest-oil-market-news-and-analysis-for-july-30",
+          "sentiment": "negative",
+          "sentimentScore": -0.6,
+          "publishedAt": "2026-07-30T11:23:25+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-07-30/the-opening-trade-7-30-2026-video",
+          "tags": [
+            "fx",
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "US Launches Fresh Wave of Iran Strikes as Conflict Widens Across Middle East",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-07-30T11:14:01+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-07-30/us-renews-strikes-on-iran-as-conflict-widens-in-region-video",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Fastest Euro-Zone Growth in Over a Year Defies Iran Pressure",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-07-30T05:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-30/french-economy-rebounds-with-0-2-growth-in-second-quarter",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Big Oil Is Making Big Money During Iran War Market Turmoil",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-30T12:11:00+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-07-30/big-oil-is-making-big-money-during-iran-war-market-turmoil",
           "tags": [
             "commodity",
             "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Saudi Economy Shrinks as Gulf Reels From Iran War’s Oil Chaos",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-30T07:18:22+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-30/saudi-economy-shrinks-most-since-2020-as-war-roils-oil-exports",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
             "market"
           ]
         }
@@ -561,7 +570,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 5,
+    "excludedCount": 4,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }

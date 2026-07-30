@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-30T06:05:26+00:00",
+  "updatedAt": "2026-07-30T13:02:07+00:00",
   "sourceStatus": {
     "Yahoo!ファイナンス Market": "timeout",
     "Yahoo!ファイナンス News": "timeout",
@@ -18,25 +18,25 @@
     "Yahoo!ファイナンス News": null,
     "Reuters Business": null,
     "Reuters Markets": null,
-    "Bloomberg Markets": "2026-07-30T05:47:30+00:00",
-    "Bloomberg Economics": "2026-07-30T05:30:00+00:00",
-    "NHK 経済": "2026-07-30T05:59:24+00:00",
-    "reddit r/investing": "2026-07-30T05:53:20+00:00",
+    "Bloomberg Markets": "2026-07-30T12:57:00+00:00",
+    "Bloomberg Economics": "2026-07-30T12:34:00+00:00",
+    "NHK 経済": "2026-07-30T11:50:06+00:00",
+    "reddit r/investing": "2026-07-30T10:48:02+00:00",
     "reddit r/stocks": null,
     "Finnhub": null,
     "X (RSS mirror)": null
   },
   "marketNews": [
     {
-      "id": "bb36b1fee430",
+      "id": "41110bd26af3",
       "source": "Bloomberg Markets",
-      "title": "FTSE 100 Live: UK Stock Futures Fall on Busy Earnings Day",
-      "summary": "",
-      "url": "https://www.bloomberg.com/news/live-blog/2026-07-30/ftse-100-live-boe-rate-decision-updates-pound-bailey-press-conference-oil-prices-hormuz-what-s-moving-uk-markets-right-now-markets-today-ms73dl7t",
-      "publishedAt": "2026-07-30T05:47:30+00:00",
+      "title": "US GDP Grows Less-Than-Expected 1.5% in Second Quarter",
+      "summary": "The US economy grew at a weaker-than-expected pace in the second quarter as inflation-adjusted gross domestic product increased an annualized 1.5% in the period, despite a pickup in consumer spending and solid business investment. Michael M",
+      "url": "https://www.bloomberg.com/news/videos/2026-07-30/us-gdp-grows-less-than-expected-1-5-in-second-quarter-video",
+      "publishedAt": "2026-07-30T12:57:00+00:00",
       "sentiment": "negative",
-      "sentimentScore": -0.33,
-      "importance": 0.33,
+      "sentimentScore": -0.67,
+      "importance": 0.41,
       "tags": [
         "market",
         "unknown"
@@ -48,38 +48,18 @@
       "translationStatus": "pending"
     },
     {
-      "id": "7193a47b8e30",
-      "source": "Bloomberg Markets",
-      "title": "Fed Doubts Push Some Funds to Eye Overseas Bets Over Treasuries",
-      "summary": "Some global bond investors are looking to shift toward markets like Australia and Europe as doubts grow over the Federal Reserve’s ability to keep inflation under control, adding to pressure on Treasuries.",
-      "url": "https://www.bloomberg.com/news/articles/2026-07-30/fed-doubts-push-some-funds-to-eye-overseas-bets-over-treasuries",
-      "publishedAt": "2026-07-30T05:46:19+00:00",
-      "sentiment": "neutral",
-      "sentimentScore": 0.0,
-      "importance": 0.33,
+      "id": "703da8d9f68d",
+      "source": "Bloomberg Economics",
+      "title": "US GDP Grows Less-Than-Expected 1.5% Despite Strong Consumer",
+      "summary": "The US economy grew at a weaker-than-expected pace in the second quarter despite a pickup in consumer spending and solid business investment.",
+      "url": "https://www.bloomberg.com/news/articles/2026-07-30/us-economic-growth-misses-estimates-despite-robust-consumers",
+      "publishedAt": "2026-07-30T12:34:00+00:00",
+      "sentiment": "negative",
+      "sentimentScore": -0.33,
+      "importance": 0.41,
       "tags": [
         "market",
-        "us_broad"
-      ],
-      "tickers": [],
-      "impact": "neutral",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "d6f4ebfe9d82",
-      "source": "Bloomberg Markets",
-      "title": "South Korea’s Toolkit Comes Into Focus as Stocks Extend Selloff",
-      "summary": "South Korean authorities’ emergency confab Wednesday evening underscored their urgency to rein in the stock market’s dizzying volatility and recover from July’s record 33% slide.",
-      "url": "https://www.bloomberg.com/news/articles/2026-07-30/south-korea-s-toolkit-comes-into-focus-as-stocks-extend-selloff",
-      "publishedAt": "2026-07-30T05:38:51+00:00",
-      "sentiment": "negative",
-      "sentimentScore": -1.0,
-      "importance": 0.33,
-      "tags": [
-        "macro_risk",
-        "market"
+        "unknown"
       ],
       "tickers": [],
       "impact": "negative",
@@ -88,12 +68,53 @@
       "translationStatus": "pending"
     },
     {
-      "id": "ae61273aaca6",
+      "id": "65d162fd688e",
       "source": "Bloomberg Markets",
-      "title": "BMW’s Carmaking Profit Beats Expectations on Cost Cuts",
-      "summary": "BMW AG’s profit from carmaking in the second quarter was slightly better than expected after the German company reduced spending and demand for new models was strong.",
-      "url": "https://www.bloomberg.com/news/articles/2026-07-30/bmw-s-carmaking-profit-beats-expectations-on-cost-cuts",
-      "publishedAt": "2026-07-30T05:30:05+00:00",
+      "title": "BOE's Lombardelli Says Holding Rates Was Right Thing to Do",
+      "summary": "Bank of England Deputy Governor Clare Lombardelli says her vote to hold interest rates steady at 3.75% on Thursday was not a close judgment. \"I was pretty clear that holding rates at the current level was the right thing to do,\" she says at",
+      "url": "https://www.bloomberg.com/news/videos/2026-07-30/boe-s-lombardelli-holding-rates-was-right-thing-to-do-video",
+      "publishedAt": "2026-07-30T12:46:15+00:00",
+      "sentiment": "neutral",
+      "sentimentScore": 0.0,
+      "importance": 0.33,
+      "tags": [
+        "market",
+        "rates"
+      ],
+      "tickers": [],
+      "impact": "neutral",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "64e855cad555",
+      "source": "Bloomberg Markets",
+      "title": "Bailey Says BOE Decided to Keep Rates at 3.75% in July",
+      "summary": "Bank of England Governor Andrew Bailey speaks at a news conference in London following the central bank's decision to keep interest rates unchanged in July as UK officials sought to balance the threat from resurgent US-Iran tensions against",
+      "url": "https://www.bloomberg.com/news/videos/2026-07-30/bailey-says-boe-decided-to-keep-rates-at-3-75-in-july-video",
+      "publishedAt": "2026-07-30T12:22:15+00:00",
+      "sentiment": "positive",
+      "sentimentScore": 1.0,
+      "importance": 0.33,
+      "tags": [
+        "geopolitical",
+        "market",
+        "rates"
+      ],
+      "tickers": [],
+      "impact": "positive",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "8ca731dd8a2c",
+      "source": "Bloomberg Economics",
+      "title": "Mexico Economy Rebounds More Than Expected in Second Quarter",
+      "summary": "Mexico’s economy rebounded in the second quarter after exports rose to a record despite prolonged trade tensions with the US.",
+      "url": "https://www.bloomberg.com/news/articles/2026-07-30/mexico-s-economy-rebounded-more-than-expected-in-second-quarter",
+      "publishedAt": "2026-07-30T12:20:43+00:00",
       "sentiment": "positive",
       "sentimentScore": 1.0,
       "importance": 0.33,
@@ -108,18 +129,18 @@
       "translationStatus": "pending"
     },
     {
-      "id": "3853371fad27",
-      "source": "Bloomberg Economics",
-      "title": "French Economy Rebounds With 0.2% Growth in Second Quarter",
-      "summary": "France’s economy returned to growth in the second quarter, avoiding a recession as domestic demand picked up and exports rebounded.",
-      "url": "https://www.bloomberg.com/news/articles/2026-07-30/french-economy-rebounds-with-0-2-growth-in-second-quarter",
-      "publishedAt": "2026-07-30T05:30:00+00:00",
+      "id": "e70e95fd060d",
+      "source": "Bloomberg Markets",
+      "title": "LSEG CEO Wants UK Stamp Duty on Shares to 'Go Away'",
+      "summary": "London Stock Exchange Group raised its full-year guidance after reporting its strongest first half since acquiring Refinitiv. The company said demand for its AI-powered data products continues to grow. CEO David Schwimmer also said he would",
+      "url": "https://www.bloomberg.com/news/videos/2026-07-30/lseg-ceo-wants-uk-stamp-duty-on-shares-to-go-away-video",
+      "publishedAt": "2026-07-30T12:12:51+00:00",
       "sentiment": "positive",
-      "sentimentScore": 0.5,
+      "sentimentScore": 0.33,
       "importance": 0.33,
       "tags": [
-        "macro_risk",
-        "market"
+        "market",
+        "unknown"
       ],
       "tickers": [],
       "impact": "positive",
@@ -128,12 +149,12 @@
       "translationStatus": "pending"
     },
     {
-      "id": "a356eab2d43f",
+      "id": "f1da914f0c42",
       "source": "Bloomberg Markets",
-      "title": "Modi’s Rival Targets Key Minister Shah Over Student Crackdown",
-      "summary": "India’s main opposition Congress Party has sought the resignation of Home Minister Amit Shah, a close aide of Prime Minister Narendra Modi, over the police crackdown on student protesters in New Delhi last week.",
-      "url": "https://www.bloomberg.com/news/articles/2026-07-30/modi-s-rival-targets-key-minister-shah-over-student-crackdown",
-      "publishedAt": "2026-07-30T05:11:08+00:00",
+      "title": "Goldman Traders Say Stocks Lack ‘Juice’ for Meaningful Breakout",
+      "summary": "For almost two months, investors have tried — and largely failed — to deduce a signal that would break US equities’ newfangled habit of lurching around and going nowhere.",
+      "url": "https://www.bloomberg.com/news/articles/2026-07-30/goldman-traders-say-stocks-have-more-froth-to-unwind-before-run",
+      "publishedAt": "2026-07-30T12:12:24+00:00",
       "sentiment": "neutral",
       "sentimentScore": 0.0,
       "importance": 0.33,
@@ -148,17 +169,351 @@
       "translationStatus": "pending"
     },
     {
-      "id": "6dced5ab96a5",
+      "id": "dc659f520bba",
       "source": "Bloomberg Markets",
-      "title": "BOE Expected to Hold Rates as Energy Prices Swing (Video)",
-      "summary": "",
-      "url": "https://www.bloomberg.com/news/videos/2026-07-30/boe-expected-to-hold-rates-as-energy-prices-swing-video",
-      "publishedAt": "2026-07-30T05:08:31+00:00",
+      "title": "Big Oil Is Making Big Money During Iran War Market Turmoil",
+      "summary": "Dislocations have created lucrative opportunities for companies able to source, transport and process energy across markets.",
+      "url": "https://www.bloomberg.com/news/newsletters/2026-07-30/big-oil-is-making-big-money-during-iran-war-market-turmoil",
+      "publishedAt": "2026-07-30T12:11:00+00:00",
       "sentiment": "neutral",
       "sentimentScore": 0.0,
       "importance": 0.33,
       "tags": [
         "commodity",
+        "geopolitical",
+        "macro_risk",
+        "market"
+      ],
+      "tickers": [],
+      "impact": "neutral",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "69428eb874bf",
+      "source": "Bloomberg Markets",
+      "title": "Oil Analyst Sankey Warns of Rising Risks in Refining",
+      "summary": "Paul Sankey, president of Sankey Research, explains the level of tightness in the crude oil refining system, the “massive” margins between the price of barrels of oil and refined products like gasoline and jet fuel, and why he expects the U",
+      "url": "https://www.bloomberg.com/news/videos/2026-07-30/oil-analyst-sankey-warns-of-rising-risks-in-refining-video",
+      "publishedAt": "2026-07-30T12:09:12+00:00",
+      "sentiment": "neutral",
+      "sentimentScore": 0.0,
+      "importance": 0.33,
+      "tags": [
+        "commodity",
+        "market"
+      ],
+      "tickers": [],
+      "impact": "neutral",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "74bb5e088089",
+      "source": "Bloomberg Economics",
+      "title": "German Inflation Accelerates to Three-Month High on Energy",
+      "summary": "German inflation accelerated to the highest level in three months after temporary fuel-price relief expired and renewed fighting in the Middle East bolstered oil.",
+      "url": "https://www.bloomberg.com/news/articles/2026-07-30/german-inflation-accelerates-to-three-month-high-on-energy",
+      "publishedAt": "2026-07-30T12:06:39+00:00",
+      "sentiment": "neutral",
+      "sentimentScore": 0.0,
+      "importance": 0.33,
+      "tags": [
+        "commodity",
+        "market"
+      ],
+      "tickers": [],
+      "impact": "neutral",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "c044e9383960",
+      "source": "Bloomberg Markets",
+      "title": "A16z-Backed Biotech Braveheart Seeks $318.8 Million in US IPO",
+      "summary": "Braveheart Bio Inc., a clinical-stage biopharmaceutical company backed by a16z, is seeking to raise as much as $318.8 million in an initial public offering, adding to a growing pipeline of listings in the sector.",
+      "url": "https://www.bloomberg.com/news/articles/2026-07-30/a16z-backed-biotech-braveheart-seeks-318-8-million-in-us-ipo",
+      "publishedAt": "2026-07-30T12:02:53+00:00",
+      "sentiment": "neutral",
+      "sentimentScore": 0.0,
+      "importance": 0.33,
+      "tags": [
+        "market",
+        "unknown"
+      ],
+      "tickers": [],
+      "impact": "neutral",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "f3f11fc2f2dc",
+      "source": "Bloomberg Markets",
+      "title": "Bond Yields at 19-Year High After Fed Holds; Tech Earnings Lift Stocks | Bloomberg Brief 07/30/2026",
+      "summary": "30-year Treasury yields stay elevated after the Fed kept interest rates unchanged for a seventh consecutive month. US equity futures rise as Microsoft earnings reassure investors that AI spending is paying off. Andrew Hollenhorst of Citi di",
+      "url": "https://www.bloomberg.com/news/videos/2026-07-30/bloomberg-brief-07-30-2026-video",
+      "publishedAt": "2026-07-30T11:52:24+00:00",
+      "sentiment": "positive",
+      "sentimentScore": 0.33,
+      "importance": 0.33,
+      "tags": [
+        "market",
+        "rates",
+        "us_broad",
+        "us_growth"
+      ],
+      "tickers": [],
+      "impact": "positive",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "c4ff3bc6c0f5",
+      "source": "Bloomberg Economics",
+      "title": "Zuckerberg's Messaging Cloudy: Zino",
+      "summary": "Angelo Zino, CFRA Vice President of Technology, joins Vonnie Quinn on \"Bloomberg Brief\" to discuss Meta earnings after Mark Zuckerberg defended the firm's significant AI investments despite disappointing revenue forecasts. (Source: Bloomber",
+      "url": "https://www.bloomberg.com/news/videos/2026-07-30/zuckerberg-s-messaging-cloudy-zino-video",
+      "publishedAt": "2026-07-30T11:50:32+00:00",
+      "sentiment": "neutral",
+      "sentimentScore": 0.0,
+      "importance": 0.33,
+      "tags": [
+        "market",
+        "us_growth"
+      ],
+      "tickers": [],
+      "impact": "neutral",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "af85b32e72f8",
+      "source": "Bloomberg Economics",
+      "title": "Kenya Considers Debut Panda Bond to Diversify Funding Sources",
+      "summary": "Kenya is considering an inaugural yuan-denominated bond in China’s onshore debt market, according to people familiar with the plans, as the East African nation seeks to diversify its funding sources.",
+      "url": "https://www.bloomberg.com/news/articles/2026-07-30/kenya-considers-debut-panda-bond-to-diversify-funding-sources",
+      "publishedAt": "2026-07-30T11:28:11+00:00",
+      "sentiment": "neutral",
+      "sentimentScore": 0.0,
+      "importance": 0.33,
+      "tags": [
+        "market",
+        "unknown"
+      ],
+      "tickers": [],
+      "impact": "neutral",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "c0700c4f9a4d",
+      "source": "Bloomberg Markets",
+      "title": "Conflict Widens in Middle East, Bonds Send Warsh Credibility Warning | The Opening Trade 7/30/2026",
+      "summary": "The US launched a fresh wave of strikes on Iran in response to an attack on American forces in Jordan, escalating a conflict that’s now spreading across the Middle East. After the Fed kept interest rates unchanged for a seventh consecutive ",
+      "url": "https://www.bloomberg.com/news/videos/2026-07-30/the-opening-trade-7-30-2026-video",
+      "publishedAt": "2026-07-30T11:23:25+00:00",
+      "sentiment": "negative",
+      "sentimentScore": -0.6,
+      "importance": 0.33,
+      "tags": [
+        "fx",
+        "geopolitical",
+        "macro_risk",
+        "market",
+        "rates",
+        "us_broad"
+      ],
+      "tickers": [],
+      "impact": "negative",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "ded1575780d8",
+      "source": "Bloomberg Markets",
+      "title": "Uganda Opposition Chief Critically Ill After Collapsing in Court",
+      "summary": "Uganda opposition leader Kizza Besigye was in intensive care after collapsing in court during his treason trial hearing.",
+      "url": "https://www.bloomberg.com/news/articles/2026-07-30/uganda-opposition-chief-critically-ill-after-collapsing-in-court",
+      "publishedAt": "2026-07-30T11:16:39+00:00",
+      "sentiment": "neutral",
+      "sentimentScore": 0.0,
+      "importance": 0.33,
+      "tags": [
+        "market",
+        "unknown"
+      ],
+      "tickers": [],
+      "impact": "neutral",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "5731e09f5efc",
+      "source": "Bloomberg Markets",
+      "title": "US Launches Fresh Wave of Iran Strikes as Conflict Widens Across Middle East",
+      "summary": "The US hit dozens of military targets in a fresh wave of strikes on Iran in response to an attack on American forces in Jordan. Iran targeted a building in northern Kuwait while Jordan said it intercepted five missiles from the Islamic Repu",
+      "url": "https://www.bloomberg.com/news/videos/2026-07-30/us-renews-strikes-on-iran-as-conflict-widens-in-region-video",
+      "publishedAt": "2026-07-30T11:14:01+00:00",
+      "sentiment": "negative",
+      "sentimentScore": -0.33,
+      "importance": 0.33,
+      "tags": [
+        "geopolitical",
+        "macro_risk",
+        "market"
+      ],
+      "tickers": [],
+      "impact": "negative",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "9539e78c0199",
+      "source": "Bloomberg Markets",
+      "title": "Bank of England Leaves Interest Rates Unchanged",
+      "summary": "The Bank of England's Monetary Policy Committee voted six-three in favor of keeping interest rates on hold at 3.75%. UK officials sought to balance the threat from US-Iran tensions against signs that domestic price pressures are easing more",
+      "url": "https://www.bloomberg.com/news/videos/2026-07-30/bank-of-england-leaves-interest-rates-unchanged-video",
+      "publishedAt": "2026-07-30T11:12:37+00:00",
+      "sentiment": "positive",
+      "sentimentScore": 0.67,
+      "importance": 0.33,
+      "tags": [
+        "geopolitical",
+        "market",
+        "rates"
+      ],
+      "tickers": [],
+      "impact": "positive",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "1e3e20f16804",
+      "source": "Bloomberg Economics",
+      "title": "Kevin Warsh Delivers a ‘Perplexing’ Fed Briefing, and Gets a Bronx Cheer",
+      "summary": "The Fed kept interest rates unchanged, causing investors to dump 30-year Treasury bonds.",
+      "url": "https://www.bloomberg.com/news/newsletters/2026-07-30/kevin-warsh-delivers-a-perplexing-fed-briefing-and-gets-a-bronx-cheer",
+      "publishedAt": "2026-07-30T11:07:54+00:00",
+      "sentiment": "neutral",
+      "sentimentScore": 0.0,
+      "importance": 0.33,
+      "tags": [
+        "market",
+        "rates",
+        "us_broad"
+      ],
+      "tickers": [],
+      "impact": "neutral",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "488095cdded9",
+      "source": "Bloomberg Economics",
+      "title": "Ukraine Surprises With Rate Increase to Tame Price Pressures",
+      "summary": "Ukraine’s central bank unexpectedly raised interest rates for the first time since March last year, with officials saying they are prepared to tighten policy further to tame underlying price pressures.",
+      "url": "https://www.bloomberg.com/news/articles/2026-07-30/ukraine-surprises-with-rate-increase-to-combat-price-pressures",
+      "publishedAt": "2026-07-30T11:04:19+00:00",
+      "sentiment": "positive",
+      "sentimentScore": 0.67,
+      "importance": 0.33,
+      "tags": [
+        "geopolitical",
+        "market",
+        "rates"
+      ],
+      "tickers": [],
+      "impact": "positive",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "3174228a38ea",
+      "source": "Bloomberg Economics",
+      "title": "BOE Holds Rates in 6-3 Vote as War Clouds Inflation Outlook",
+      "summary": "The Bank of England kept interest rates steady at 3.75%, as UK officials sought to balance the threat from resurgent US-Iran tensions against signs that domestic price pressures are easing more quickly than predicted.",
+      "url": "https://www.bloomberg.com/news/articles/2026-07-30/boe-holds-rates-in-split-vote-as-war-clouds-inflation-outlook",
+      "publishedAt": "2026-07-30T11:00:05+00:00",
+      "sentiment": "positive",
+      "sentimentScore": 1.0,
+      "importance": 0.33,
+      "tags": [
+        "geopolitical",
+        "macro_risk",
+        "market",
+        "rates"
+      ],
+      "tickers": [],
+      "impact": "positive",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "68abd2501228",
+      "source": "Bloomberg Economics",
+      "title": "Lighthizer and Trump tariffs",
+      "summary": "In a new podcast, the architect of Trump’s first-term tariff agenda says things are progressing just fine",
+      "url": "https://www.bloomberg.com/news/newsletters/2026-07-30/lighthizer-and-trump-tariffs",
+      "publishedAt": "2026-07-30T11:00:01+00:00",
+      "sentiment": "neutral",
+      "sentimentScore": 0.0,
+      "importance": 0.33,
+      "tags": [
+        "macro_risk",
+        "market"
+      ],
+      "tickers": [],
+      "impact": "neutral",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "bce69b6e1a5b",
+      "source": "Bloomberg Economics",
+      "title": "Britain Saw Limited Non-Dom Exits Ahead of Tax Reforms Last Year",
+      "summary": "The number of wealthy foreign residents in the UK claiming preferential tax treatment on their overseas earnings declined slightly in the final fiscal year before the country ended the special regime in April 2025.",
+      "url": "https://www.bloomberg.com/news/articles/2026-07-30/britain-saw-limited-non-dom-exits-ahead-of-tax-reforms-last-year",
+      "publishedAt": "2026-07-30T10:50:03+00:00",
+      "sentiment": "negative",
+      "sentimentScore": -0.67,
+      "importance": 0.33,
+      "tags": [
+        "market",
+        "unknown"
+      ],
+      "tickers": [],
+      "impact": "negative",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "d5422c2dd96a",
+      "source": "Bloomberg Markets",
+      "title": "Investors Look to Dodge Rate Risks With Short-Dated Credit",
+      "summary": "Investors are embracing shorter-term corporate debt, locking in elevated yields while limiting their exposure to interest-rate volatility and market swings.",
+      "url": "https://www.bloomberg.com/news/articles/2026-07-30/credit-buyers-seek-refuge-in-short-dated-debt-to-dodge-rate-risk",
+      "publishedAt": "2026-07-30T09:22:03+00:00",
+      "sentiment": "neutral",
+      "sentimentScore": 0.0,
+      "importance": 0.33,
+      "tags": [
+        "macro_risk",
         "market",
         "rates"
       ],
@@ -169,55 +524,77 @@
       "translationStatus": "pending"
     },
     {
-      "id": "2361bc7accb2",
-      "source": "Bloomberg Markets",
-      "title": "Chinese Chip Stocks Plunge as Investors Rotate Away From Tech",
-      "summary": "Chinese tech stocks plunged on Thursday, led by high-flying semiconductor names, as concerns over stretched valuations and crowded positioning intensified a rotation out of one of this year’s best-performing sectors.",
-      "url": "https://www.bloomberg.com/news/articles/2026-07-30/chinese-chip-stocks-plunge-as-investors-rotate-away-from-tech",
-      "publishedAt": "2026-07-30T04:44:45+00:00",
-      "sentiment": "negative",
-      "sentimentScore": -0.67,
-      "importance": 0.33,
-      "tags": [
-        "jp_semiconductor",
-        "market",
-        "us_growth"
-      ],
-      "tickers": [],
-      "impact": "negative",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "d14067cafcb7",
-      "source": "Bloomberg Markets",
-      "title": "Zhongji Innolight Stumbles in Hong Kong Debut | The China Show | 7/30/2026",
-      "summary": "“Bloomberg: The China Show” is your definitive source for news and analysis on the world's second-biggest economy. From politics and policy to tech and trends, Yvonne Man and David Ingles give global investors unique insight, delivering in-",
-      "url": "https://www.bloomberg.com/news/videos/2026-07-30/the-china-show-7-30-2026-video",
-      "publishedAt": "2026-07-30T04:27:46+00:00",
-      "sentiment": "negative",
-      "sentimentScore": -0.67,
+      "id": "c9e1cb0083f8",
+      "source": "Bloomberg Economics",
+      "title": "Zambia’s Inflation Rate Holds Steady, Helped by Kwacha Strength",
+      "summary": "Zambia’s annual inflation rate held steady, remaining near the floor of the central bank’s 6% to 8% target range as a rally in the kwacha contained import costs.",
+      "url": "https://www.bloomberg.com/news/articles/2026-07-30/zambia-s-inflation-rate-holds-steady-helped-by-kwacha-strength",
+      "publishedAt": "2026-07-30T08:38:07+00:00",
+      "sentiment": "positive",
+      "sentimentScore": 0.67,
       "importance": 0.33,
       "tags": [
         "market",
         "unknown"
       ],
       "tickers": [],
+      "impact": "positive",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "11e3bf1da20c",
+      "source": "Bloomberg Economics",
+      "title": "Saudi Economy Shrinks as Gulf Reels From Iran War’s Oil Chaos",
+      "summary": "Saudi Arabia’s economy posted its deepest quarterly contraction since the Covid-19 pandemic, driven by a sharp downturn in its critical oil industry — a stark sign of the damage the US-Iran war is wreaking on Persian Gulf nations.",
+      "url": "https://www.bloomberg.com/news/articles/2026-07-30/saudi-economy-shrinks-most-since-2020-as-war-roils-oil-exports",
+      "publishedAt": "2026-07-30T07:18:22+00:00",
+      "sentiment": "neutral",
+      "sentimentScore": 0.0,
+      "importance": 0.33,
+      "tags": [
+        "commodity",
+        "geopolitical",
+        "macro_risk",
+        "market"
+      ],
+      "tickers": [],
+      "impact": "neutral",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "c3edc7d53153",
+      "source": "Bloomberg Economics",
+      "title": "Fastest Euro-Zone Growth in Over a Year Defies Iran Pressure",
+      "summary": "The euro-area economy expanded more than anticipated in the second quarter, demonstrating its continued ability to weather the fallout from the Iran war.",
+      "url": "https://www.bloomberg.com/news/articles/2026-07-30/french-economy-rebounds-with-0-2-growth-in-second-quarter",
+      "publishedAt": "2026-07-30T05:30:00+00:00",
+      "sentiment": "negative",
+      "sentimentScore": -0.33,
+      "importance": 0.33,
+      "tags": [
+        "geopolitical",
+        "macro_risk",
+        "market"
+      ],
+      "tickers": [],
       "impact": "negative",
       "whyImportant": "短期の地合い把握に有用なため。",
       "recommendation": "監視継続。次回更新時に再評価する。",
       "translationStatus": "pending"
     },
     {
-      "id": "6bea85c14b23",
+      "id": "3f9418d4c732",
       "source": "Bloomberg Markets",
-      "title": "Base Metals Advance as Fed Rate Pause Eases Demand Concerns",
-      "summary": "Copper, aluminum and zinc rose after the US Federal Reserve left interest rates unchanged, easing concerns over industrial demand.",
+      "title": "Copper Gains as Traders Weigh Fed Rate Path, Market Tightness",
+      "summary": "Copper gained as traders monitored signs of tight supply and clues for the future path of monetary policy after the US Federal Reserve left interest rates unchanged.",
       "url": "https://www.bloomberg.com/news/articles/2026-07-30/base-metals-advance-as-fed-rate-pause-eases-demand-concerns",
       "publishedAt": "2026-07-30T04:25:24+00:00",
       "sentiment": "positive",
-      "sentimentScore": 0.67,
+      "sentimentScore": 1.0,
       "importance": 0.33,
       "tags": [
         "market",
@@ -271,110 +648,10 @@
       "translationStatus": "pending"
     },
     {
-      "id": "e1f859d919b4",
-      "source": "Bloomberg Markets",
-      "title": "Australia, NZ Seen Switching to Next-Day Settlement by 2030",
-      "summary": "New Zealand and Australia are expected to join a global transition to next-day settlement of stock transactions within five years, once key clearing and settlement systems are ready, according to a senior banker.",
-      "url": "https://www.bloomberg.com/news/articles/2026-07-30/australia-nz-seen-switching-to-next-day-settlement-by-2030",
-      "publishedAt": "2026-07-30T03:49:10+00:00",
-      "sentiment": "neutral",
-      "sentimentScore": 0.0,
-      "importance": 0.33,
-      "tags": [
-        "market",
-        "unknown"
-      ],
-      "tickers": [],
-      "impact": "neutral",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "c7d115bdcb6b",
-      "source": "Bloomberg Markets",
-      "title": "Eastspring's Wong on Opportunities Amid AI Volatility",
-      "summary": "Ken Wong, Asian Equity Portfolio Specialist at Eastspring Investments, breaks down where investors can find opportunities amid an on-and-off selloff in AI-related equities, pointing to electronic component companies as a strong contender. (",
-      "url": "https://www.bloomberg.com/news/videos/2026-07-30/eastspring-s-wong-on-opportunities-amid-ai-volatility-video",
-      "publishedAt": "2026-07-30T03:48:30+00:00",
-      "sentiment": "neutral",
-      "sentimentScore": 0.0,
-      "importance": 0.33,
-      "tags": [
-        "macro_risk",
-        "market"
-      ],
-      "tickers": [],
-      "impact": "neutral",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "3f86bdb5f8ae",
-      "source": "Bloomberg Markets",
-      "title": "Japan’s Two-Year Bond Sale Draws Weaker Demand on Rate Hike Bets",
-      "summary": "Japan’s two-year government bond auction Thursday saw lower demand than the 12-month average amid growing expectations of central bank tightening.",
-      "url": "https://www.bloomberg.com/news/articles/2026-07-30/japan-s-two-year-bond-sale-demand-weaker-than-12-month-average",
-      "publishedAt": "2026-07-30T03:41:06+00:00",
-      "sentiment": "negative",
-      "sentimentScore": -1.0,
-      "importance": 0.33,
-      "tags": [
-        "market",
-        "rates"
-      ],
-      "tickers": [],
-      "impact": "negative",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "5725f1336f39",
-      "source": "Bloomberg Markets",
-      "title": "Chubu and Tokyo Electric Slide as High Fuel Costs Curb Profits",
-      "summary": "Chubu Electric Co. and Tokyo Electric Power Co. shares fell after the Japanese utilities said their quarterly earnings were impacted by surging fuel costs, which coincided with the end of a power supply agreement.",
-      "url": "https://www.bloomberg.com/news/articles/2026-07-30/chubu-and-tokyo-electric-slide-as-high-fuel-costs-curb-profits",
-      "publishedAt": "2026-07-30T03:39:29+00:00",
-      "sentiment": "negative",
-      "sentimentScore": -1.0,
-      "importance": 0.33,
-      "tags": [
-        "market",
-        "unknown"
-      ],
-      "tickers": [],
-      "impact": "negative",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "bcc3dd68e516",
-      "source": "Bloomberg Markets",
-      "title": "Malaysia’s Bond Market Outflow May Slow on Fiscal, Rate Outlooks",
-      "summary": "Global investors’ retreat from Malaysian debt may ease, supported by the country’s relatively healthy finances and efforts to ease inflationary pressures, market participants said.",
-      "url": "https://www.bloomberg.com/news/articles/2026-07-30/malaysia-s-bond-market-outflow-may-slow-on-fiscal-rate-outlooks",
-      "publishedAt": "2026-07-30T03:21:17+00:00",
-      "sentiment": "neutral",
-      "sentimentScore": 0.0,
-      "importance": 0.33,
-      "tags": [
-        "market",
-        "unknown"
-      ],
-      "tickers": [],
-      "impact": "neutral",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
       "id": "c558f644a963",
       "source": "Bloomberg Economics",
       "title": "Japan’s Takaichi Calls for Food Sales Tax Cut to 1% for 2 Years",
-      "summary": "Japanese Prime Minister Sanae Takaichi has decided to temporarily cut the sales tax on food and soft drinks to 1% from April next year, a top executive in the ruling party said, in a sign the premier is moving ahead with a key pledge after ",
+      "summary": "Japanese Prime Minister Sanae Takaichi formally announced a plan to temporarily cut the sales tax on food and soft drinks to 1% from April next year, while pledging to end the measure as scheduled, as she tried to appease voters and reassur",
       "url": "https://www.bloomberg.com/news/articles/2026-07-30/japan-s-takaichi-calls-for-food-sales-tax-cut-to-1-nhk-says",
       "publishedAt": "2026-07-30T03:14:23+00:00",
       "sentiment": "neutral",
@@ -454,113 +731,10 @@
       "translationStatus": "pending"
     },
     {
-      "id": "6642acf97a36",
+      "id": "b7c10c731536",
       "source": "Bloomberg Markets",
-      "title": "Korean Stocks Whipsaw After Samsung Results, New Market Measures",
-      "summary": "South Korean stocks swung between gains and losses following a two-day rout as investors digested Samsung Electronics Co.’s better-than-expected earnings and the government announced additional measures to help stabilize the market.",
-      "url": "https://www.bloomberg.com/news/articles/2026-07-30/korean-stocks-decline-after-samsung-results-new-etf-curbs",
-      "publishedAt": "2026-07-30T00:51:47+00:00",
-      "sentiment": "neutral",
-      "sentimentScore": 0.0,
-      "importance": 0.33,
-      "tags": [
-        "market",
-        "unknown"
-      ],
-      "tickers": [],
-      "impact": "neutral",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "954e3cefb529",
-      "source": "Bloomberg Economics",
-      "title": "Fed’s Warsh Rebuked by Investors Craving a Real Inflation Fight",
-      "summary": "Kevin Warsh’s bare-bones communication style has left investors doubting his commitment to curb inflation, putting more pressure on the new Federal Reserve chairman to back up his words with interest-rate hikes.",
-      "url": "https://www.bloomberg.com/news/articles/2026-07-29/fed-s-warsh-rebuked-by-investors-craving-a-real-inflation-fight",
-      "publishedAt": "2026-07-29T23:46:05+00:00",
-      "sentiment": "negative",
-      "sentimentScore": -0.33,
-      "importance": 0.33,
-      "tags": [
-        "market",
-        "us_broad"
-      ],
-      "tickers": [],
-      "impact": "negative",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "84b9aefd151c",
-      "source": "Bloomberg Markets",
-      "title": "Gold Whipsaws as Traders Weigh Fed’s Rate Path After Latest Hold",
-      "summary": "Gold whipsawed after the Federal Reserve’s decision to leave interest rates unchanged kept traders guessing as to how the US central bank will tackle persistent inflation.",
-      "url": "https://www.bloomberg.com/news/articles/2026-07-29/gold-advances-after-federal-reserve-keeps-interest-rates-on-hold",
-      "publishedAt": "2026-07-29T23:24:57+00:00",
-      "sentiment": "neutral",
-      "sentimentScore": 0.0,
-      "importance": 0.33,
-      "tags": [
-        "gold",
-        "market",
-        "rates",
-        "us_broad"
-      ],
-      "tickers": [],
-      "impact": "neutral",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "f11e793b58b1",
-      "source": "Bloomberg Economics",
-      "title": "BOE Set to Keep Powder Dry as Oil Prices Swing: Decision Guide",
-      "summary": "The Bank of England is set to leave interest rates on hold as it sticks to a wait-and-see approach to navigate the wild swings in oil and gas prices.",
-      "url": "https://www.bloomberg.com/news/articles/2026-07-29/boe-set-to-keep-powder-dry-as-oil-prices-swing-decision-guide",
-      "publishedAt": "2026-07-29T23:01:00+00:00",
-      "sentiment": "neutral",
-      "sentimentScore": 0.0,
-      "importance": 0.33,
-      "tags": [
-        "commodity",
-        "market",
-        "rates"
-      ],
-      "tickers": [],
-      "impact": "neutral",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "283a085824d1",
-      "source": "Bloomberg Markets",
-      "title": "Innolight Shares Fall After Biggest Hong Kong IPO in Seven Years",
-      "summary": "Zhongji Innolight Co. dropped in its Hong Kong trading debut after raising HK$53.4 billion ($6.8 billion) in the city’s largest listing in seven years.",
-      "url": "https://www.bloomberg.com/news/articles/2026-07-29/innolight-set-for-biggest-hong-kong-debut-in-seven-years",
-      "publishedAt": "2026-07-29T23:00:00+00:00",
-      "sentiment": "negative",
-      "sentimentScore": -1.0,
-      "importance": 0.33,
-      "tags": [
-        "market",
-        "unknown"
-      ],
-      "tickers": [],
-      "impact": "negative",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "94ef7c767100",
-      "source": "Bloomberg Markets",
-      "title": "Bond Rout Sends Warning to Warsh That Tough Talk Is Not Enough",
-      "summary": "The message from the bond market was clear: For all of Federal Reserve Chairman Kevin Warsh’s tough talk about taming inflation, he’s in no rush to use the power of the central bank to do it.",
+      "title": "Bond Yields at 19-Year High Send Warsh Credibility Warning",
+      "summary": "The message from the bond market was clear: For all of Federal Reserve Chairman Kevin Warsh’s tough talk about taming inflation, he’s not rushing fast enough to deliver.",
       "url": "https://www.bloomberg.com/news/articles/2026-07-29/bond-rout-sends-warning-to-warsh-that-tough-talk-is-not-enough",
       "publishedAt": "2026-07-29T22:31:07+00:00",
       "sentiment": "neutral",
@@ -568,6 +742,7 @@
       "importance": 0.33,
       "tags": [
         "market",
+        "rates",
         "us_broad"
       ],
       "tickers": [],
@@ -577,23 +752,21 @@
       "translationStatus": "pending"
     },
     {
-      "id": "fab194bad96b",
+      "id": "9bb9f61c5f43",
       "source": "Bloomberg Markets",
-      "title": "Long Bonds Drop on Fed Pause, Nasdaq Futures Gain: Markets Wrap",
-      "summary": "Longer-maturity Treasuries extended declines and Asian bonds followed as uncertainty over the Federal Reserve’s policy outlook pushed US 30-year yields to their highest levels in almost two decades.",
+      "title": "Stocks Get Tech Lift as Buyers Emerge After Rout: Markets Wrap",
+      "summary": "Wall Street staged a comeback as dip buyers emerged, lifting stocks as chipmakers rebounded while data signaled the economy remains in good shape, but isn’t overheating.",
       "url": "https://www.bloomberg.com/news/articles/2026-07-29/stock-market-today-dow-s-p-live-updates",
       "publishedAt": "2026-07-29T22:11:13+00:00",
-      "sentiment": "negative",
-      "sentimentScore": -0.5,
+      "sentiment": "positive",
+      "sentimentScore": 0.67,
       "importance": 0.33,
       "tags": [
         "market",
-        "rates",
-        "us_broad",
-        "us_growth"
+        "us_broad"
       ],
       "tickers": [],
-      "impact": "negative",
+      "impact": "positive",
       "whyImportant": "短期の地合い把握に有用なため。",
       "recommendation": "監視継続。次回更新時に再評価する。",
       "translationStatus": "pending"
@@ -602,11 +775,11 @@
       "id": "3fbf5891ae8b",
       "source": "Bloomberg Markets",
       "title": "Latest Oil Market News and Analysis for July 30",
-      "summary": "Oil steadied as the US wrapped up a fresh wave of strikes against Iran that focused on military targets, while stopping short of hitting bridges, power plants and civilian infrastructure in the Islamic Republic.",
+      "summary": "Oil held on to its latest surge following a fresh wave of US strikes against Iran and more attacks on ships attempting to load Kazakh crude from a key Black Sea terminal.",
       "url": "https://www.bloomberg.com/news/articles/2026-07-29/latest-oil-market-news-and-analysis-for-july-30",
       "publishedAt": "2026-07-29T22:01:33+00:00",
       "sentiment": "positive",
-      "sentimentScore": 0.67,
+      "sentimentScore": 1.0,
       "importance": 0.33,
       "tags": [
         "commodity",
@@ -620,197 +793,12 @@
       "translationStatus": "pending"
     },
     {
-      "id": "86e418439800",
-      "source": "Bloomberg Economics",
-      "title": "How the NFL's Washington Commanders Build Relationships With Advertisers",
-      "summary": "Washington Commanders President Mark Clouse talks about how the team is building relationships with its advertisers and partners. He speaks to Bloomberg's Randall Williams at a Newsmakers event in Washington. (Source: Bloomberg)",
-      "url": "https://www.bloomberg.com/news/videos/2026-07-29/how-the-commanders-build-relationships-with-advertisers-video",
-      "publishedAt": "2026-07-29T21:24:17+00:00",
-      "sentiment": "neutral",
-      "sentimentScore": 0.0,
-      "importance": 0.33,
-      "tags": [
-        "market",
-        "unknown"
-      ],
-      "tickers": [],
-      "impact": "neutral",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "089d20ac37d1",
-      "source": "Bloomberg Economics",
-      "title": "New Stadium Will Be Football First, Clouse Says",
-      "summary": "Washington Commanders President Mark Clouse says the team's new home will be the \"nation's stadium\" and it will be built for football first. He speaks to Bloomberg's Randall Williams at a Newsmakers event. (Source: Bloomberg)",
-      "url": "https://www.bloomberg.com/news/videos/2026-07-29/new-stadium-will-be-football-first-clouse-says-video",
-      "publishedAt": "2026-07-29T21:13:35+00:00",
-      "sentiment": "neutral",
-      "sentimentScore": 0.0,
-      "importance": 0.33,
-      "tags": [
-        "market",
-        "unknown"
-      ],
-      "tickers": [],
-      "impact": "neutral",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "4beb44290b31",
-      "source": "Bloomberg Economics",
-      "title": "What Traders Are Telling the Federal Reserve: Live Q&A",
-      "summary": "Bloomberg journalists answer your questions about how markets are navigating the Federal Reserve under Kevin Warsh in a Live Q&amp;A on Thursday, July 30 at 1:15 p.m. EDT",
-      "url": "https://www.bloomberg.com/sessions/2026-07-30/live-q-amp-a-what-traders-are-telling-the-fed",
-      "publishedAt": "2026-07-29T21:10:32+00:00",
-      "sentiment": "neutral",
-      "sentimentScore": 0.0,
-      "importance": 0.33,
-      "tags": [
-        "market",
-        "us_broad"
-      ],
-      "tickers": [],
-      "impact": "neutral",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "ccef94be4141",
-      "source": "Bloomberg Economics",
-      "title": "Carney Rejects Idea of Using Oil as Weapon Against US Tariffs",
-      "summary": "Prime Minister Mark Carney rejected the notion that Canada should curb the supply of vital resources to the US to retaliate against tariffs, arguing that it’s more important for the country to keep its reputation as a dependable producer.",
-      "url": "https://www.bloomberg.com/news/articles/2026-07-29/carney-rejects-idea-of-using-oil-as-weapon-against-us-tariffs",
-      "publishedAt": "2026-07-29T19:20:41+00:00",
-      "sentiment": "positive",
-      "sentimentScore": 0.67,
-      "importance": 0.33,
-      "tags": [
-        "commodity",
-        "market"
-      ],
-      "tickers": [],
-      "impact": "positive",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "26e632c94d4e",
-      "source": "Bloomberg Economics",
-      "title": "JPMorgan’s Michele Says Dissenting Fed Trio Sends Crucial Signal",
-      "summary": "JPMorgan Asset Management’s Bob Michele said the trio of dissents from Federal Reserve policymakers stood out in the central bank’s hold-the-line decision on Wednesday, signaling that pressure for higher interest rates is likely to persist.",
-      "url": "https://www.bloomberg.com/news/articles/2026-07-29/jpmorgan-s-michele-says-dissenting-fed-trio-sends-crucial-signal",
-      "publishedAt": "2026-07-29T18:53:15+00:00",
-      "sentiment": "neutral",
-      "sentimentScore": 0.0,
-      "importance": 0.33,
-      "tags": [
-        "market",
-        "rates",
-        "us_broad"
-      ],
-      "tickers": [],
-      "impact": "neutral",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "1cac9d99fad9",
-      "source": "Bloomberg Economics",
-      "title": "US 30-Year Yield Soars to Highest Since ‘07 After Fed Stands Pat",
-      "summary": "US bond traders lowered their expectations that the Federal Reserve will raise interest rates at its next meeting after officials kept their benchmark steady on Wednesday, while 30-year Treasury yields surged to their highest since 2007.",
-      "url": "https://www.bloomberg.com/news/articles/2026-07-29/treasuries-jolted-as-fed-hold-trims-september-hike-bets",
-      "publishedAt": "2026-07-29T18:15:49+00:00",
-      "sentiment": "positive",
-      "sentimentScore": 0.67,
-      "importance": 0.33,
-      "tags": [
-        "market",
-        "rates",
-        "us_broad"
-      ],
-      "tickers": [],
-      "impact": "positive",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "3ed810e6fe50",
-      "source": "Bloomberg Economics",
-      "title": "Fed Holds Rates, Three Officials Dissent Favoring a Hike",
-      "summary": "Federal Reserve Chairman Kevin Warsh insisted policymakers’ decision to leave interest rates unchanged wasn’t a sign of inertia at the central bank, which he reiterated is committed to tackling inflation.",
-      "url": "https://www.bloomberg.com/news/articles/2026-07-29/fed-holds-rates-steady-three-officials-dissent-favoring-a-hike",
-      "publishedAt": "2026-07-29T18:00:01+00:00",
-      "sentiment": "neutral",
-      "sentimentScore": 0.0,
-      "importance": 0.33,
-      "tags": [
-        "market",
-        "rates",
-        "us_broad"
-      ],
-      "tickers": [],
-      "impact": "neutral",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "b1de06cfff00",
-      "source": "Bloomberg Economics",
-      "title": "Key Takeaways From Fed Decision to Hold Rates Steady",
-      "summary": "Here are key takeaways from the Federal Reserve’s interest-rate decision on Wednesday:",
-      "url": "https://www.bloomberg.com/news/articles/2026-07-29/key-takeaways-from-fed-decision-to-hold-rates-steady",
-      "publishedAt": "2026-07-29T18:00:01+00:00",
-      "sentiment": "neutral",
-      "sentimentScore": 0.0,
-      "importance": 0.33,
-      "tags": [
-        "market",
-        "rates",
-        "us_broad"
-      ],
-      "tickers": [],
-      "impact": "neutral",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "dddf4ff65aa8",
-      "source": "Bloomberg Economics",
-      "title": "Kalshi Rate Trade Misses Quadruple Payoff as Fed Stands Pat",
-      "summary": "A $600,000 trade on Kalshi that would have delivered a roughly quadruple payout if the Federal Reserve raised interest rates on Wednesday turned into a losing wager after the US central bank stood pat.",
-      "url": "https://www.bloomberg.com/news/articles/2026-07-29/a-600-000-kalshi-trade-sets-up-for-big-payoff-if-fed-hikes",
-      "publishedAt": "2026-07-29T16:52:12+00:00",
-      "sentiment": "negative",
-      "sentimentScore": -0.67,
-      "importance": 0.33,
-      "tags": [
-        "market",
-        "rates",
-        "us_broad"
-      ],
-      "tickers": [],
-      "impact": "negative",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "6f7512f5fd6c",
-      "source": "Bloomberg Economics",
-      "title": "Bolivia, IMF Agree on New $1.9 Billion Financing Program",
-      "summary": "The International Monetary Fund and Bolivia reached a staff-level agreement on a new $1.9 billion program, the Washington-based lender said on Wednesday, providing budget support for the country.",
-      "url": "https://www.bloomberg.com/news/articles/2026-07-29/bolivia-imf-agree-on-new-1-9-billion-financing-program",
-      "publishedAt": "2026-07-29T15:10:49+00:00",
+      "id": "6eae21c832ec",
+      "source": "Bloomberg Markets",
+      "title": "CoreWeave Slaps 9%-Plus Yield on $2.6 Billion Leveraged Loan",
+      "summary": "CoreWeave Inc. has sweetened terms on a $2.6 billion leveraged loan to fund additional computing capacity for firms including Anthropic PBC, in an effort to win over investors growing wary of AI-related debt as bubble concerns mount.",
+      "url": "https://www.bloomberg.com/news/articles/2026-07-29/coreweave-boosts-yield-on-2-6-billion-loan-tied-to-anthropic",
+      "publishedAt": "2026-07-29T17:08:58+00:00",
       "sentiment": "neutral",
       "sentimentScore": 0.0,
       "importance": 0.33,
@@ -869,6 +857,138 @@
       "translationStatus": "pending"
     },
     {
+      "id": "cd9bb82059ae",
+      "source": "NHK 経済",
+      "title": "食料品消費税 来年4月から2年間 1％ 高市首相が役員会で表明",
+      "summary": "食料品の消費税減税をめぐり、高市総理大臣は自民党の臨時役員会に出席し、来年4月から2年間、税率を1％に引き下げ、あわせて中低所得の人への給付を行い実質ゼロとする方針を表明しました。その上で来月上旬まで…",
+      "url": "https://news.web.nhk/newsweb/na/na-k10015190631000",
+      "publishedAt": "2026-07-30T11:50:06+00:00",
+      "sentiment": "neutral",
+      "sentimentScore": 0.0,
+      "importance": 0.25,
+      "tags": [
+        "market",
+        "unknown"
+      ],
+      "tickers": [],
+      "impact": "neutral",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "titleJa": "食料品消費税 来年4月から2年間 1％ 高市首相が役員会で表明",
+      "summaryJa": "食料品の消費税減税をめぐり、高市総理大臣は自民党の臨時役員会に出席し、来年4月から2年間、税率を1％に引き下げ、あわせて中低所得の人への給付を行い実質ゼロとする方針を表明しました。その上で来月上旬まで…",
+      "translationStatus": "ja-original"
+    },
+    {
+      "id": "fa2efc250ced",
+      "source": "NHK 経済",
+      "title": "高市首相 食料品消費税 1％の方針「国民の理解得ていく」",
+      "summary": "食料品の消費税減税をめぐり、高市総理大臣は、来年4月から2年間、税率を1％に引き下げ、あわせて中低所得の人への給付を行い実質ゼロとする方針について、迅速な実施ができるかや先の衆議院選挙で掲げた公約の実…",
+      "url": "https://news.web.nhk/newsweb/na/na-k10015191031000",
+      "publishedAt": "2026-07-30T11:36:38+00:00",
+      "sentiment": "neutral",
+      "sentimentScore": 0.0,
+      "importance": 0.25,
+      "tags": [
+        "market",
+        "unknown"
+      ],
+      "tickers": [],
+      "impact": "neutral",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "titleJa": "高市首相 食料品消費税 1％の方針「国民の理解得ていく」",
+      "summaryJa": "食料品の消費税減税をめぐり、高市総理大臣は、来年4月から2年間、税率を1％に引き下げ、あわせて中低所得の人への給付を行い実質ゼロとする方針について、迅速な実施ができるかや先の衆議院選挙で掲げた公約の実…",
+      "translationStatus": "ja-original"
+    },
+    {
+      "id": "4fcc8b156773",
+      "source": "NHK 経済",
+      "title": "犯罪被害者の刑事手続き関与拡充について法制審の議論開始",
+      "summary": "犯罪の被害者らが裁判などの刑事手続きに関与できる仕組みの拡充について法制審議会の部会が議論を始め、ストーカー事件などを念頭に「被害者参加制度」の対象とする犯罪の検討を進めていくことを確認しました。",
+      "url": "https://news.web.nhk/newsweb/na/na-k10015190921000",
+      "publishedAt": "2026-07-30T09:20:41+00:00",
+      "sentiment": "neutral",
+      "sentimentScore": 0.0,
+      "importance": 0.25,
+      "tags": [
+        "market",
+        "unknown"
+      ],
+      "tickers": [],
+      "impact": "neutral",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "titleJa": "犯罪被害者の刑事手続き関与拡充について法制審の議論開始",
+      "summaryJa": "犯罪の被害者らが裁判などの刑事手続きに関与できる仕組みの拡充について法制審議会の部会が議論を始め、ストーカー事件などを念頭に「被害者参加制度」の対象とする犯罪の検討を進めていくことを確認しました。",
+      "translationStatus": "ja-original"
+    },
+    {
+      "id": "812cb0809d12",
+      "source": "NHK 経済",
+      "title": "中道 立民 公明 3党の合流めぐり中間整理案まとめる",
+      "summary": "中道改革連合、立憲民主党、公明党の3党は、合流をめぐる中間整理の案をまとめました。この中では、3党が新しい体制で政権に対じする必要があるとして、組織のあり方と政策、そして選挙対策の3項目について、来月…",
+      "url": "https://news.web.nhk/newsweb/na/na-k10015190901000",
+      "publishedAt": "2026-07-30T08:25:48+00:00",
+      "sentiment": "neutral",
+      "sentimentScore": 0.0,
+      "importance": 0.25,
+      "tags": [
+        "market",
+        "unknown"
+      ],
+      "tickers": [],
+      "impact": "neutral",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "titleJa": "中道 立民 公明 3党の合流めぐり中間整理案まとめる",
+      "summaryJa": "中道改革連合、立憲民主党、公明党の3党は、合流をめぐる中間整理の案をまとめました。この中では、3党が新しい体制で政権に対じする必要があるとして、組織のあり方と政策、そして選挙対策の3項目について、来月…",
+      "translationStatus": "ja-original"
+    },
+    {
+      "id": "ee198e6e79bc",
+      "source": "NHK 経済",
+      "title": "熊本地震 災害関連調査中を含め死者30人に 高市首相",
+      "summary": "高市総理大臣は今回の地震で30日午後0時半時点で、災害との関連を調査している人も含めて、死亡した人が30人にのぼっていると明らかにしました。また、被災者の熱中症対策をはじめ猛暑を踏まえた支援が重要だと…",
+      "url": "https://news.web.nhk/newsweb/na/na-k10015190721000",
+      "publishedAt": "2026-07-30T07:05:25+00:00",
+      "sentiment": "neutral",
+      "sentimentScore": 0.0,
+      "importance": 0.25,
+      "tags": [
+        "market",
+        "unknown"
+      ],
+      "tickers": [],
+      "impact": "neutral",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "titleJa": "熊本地震 災害関連調査中を含め死者30人に 高市首相",
+      "summaryJa": "高市総理大臣は今回の地震で30日午後0時半時点で、災害との関連を調査している人も含めて、死亡した人が30人にのぼっていると明らかにしました。また、被災者の熱中症対策をはじめ猛暑を踏まえた支援が重要だと…",
+      "translationStatus": "ja-original"
+    },
+    {
+      "id": "04486a257706",
+      "source": "NHK 経済",
+      "title": "概算要求の基本方針を閣議了解 新投資枠に予算要求の上限なし",
+      "summary": "来年度・2027年度の予算案の編成に向けて、政府は概算要求の基本方針を閣議了解しました。経済成長の実現に向けた新たな投資枠では、各省庁からの予算要求に上限を設けない一方、社会保障費の伸びを3900億円…",
+      "url": "https://news.web.nhk/newsweb/na/na-k10015190541000",
+      "publishedAt": "2026-07-30T06:09:57+00:00",
+      "sentiment": "positive",
+      "sentimentScore": 0.33,
+      "importance": 0.25,
+      "tags": [
+        "market",
+        "unknown"
+      ],
+      "tickers": [],
+      "impact": "positive",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "titleJa": "概算要求の基本方針を閣議了解 新投資枠に予算要求の上限なし",
+      "summaryJa": "来年度・2027年度の予算案の編成に向けて、政府は概算要求の基本方針を閣議了解しました。経済成長の実現に向けた新たな投資枠では、各省庁からの予算要求に上限を設けない一方、社会保障費の伸びを3900億円…",
+      "translationStatus": "ja-original"
+    },
+    {
       "id": "87fb6b6ba55e",
       "source": "NHK 経済",
       "title": "松本剛明元衆議院議員が死去 総務相や外相など歴任",
@@ -891,50 +1011,6 @@
       "translationStatus": "ja-original"
     },
     {
-      "id": "cd9bb82059ae",
-      "source": "NHK 経済",
-      "title": "食料品消費税 来年4月から2年間 1％ 高市首相が役員会で表明",
-      "summary": "食料品の消費税減税をめぐり、高市総理大臣は自民党の臨時役員会に出席し、来年4月から2年間、税率を1％に引き下げ、あわせて中低所得の人への給付を行い実質ゼロとする方針を表明しました。その上で来月上旬まで…",
-      "url": "https://news.web.nhk/newsweb/na/na-k10015190631000",
-      "publishedAt": "2026-07-30T05:11:31+00:00",
-      "sentiment": "neutral",
-      "sentimentScore": 0.0,
-      "importance": 0.25,
-      "tags": [
-        "market",
-        "unknown"
-      ],
-      "tickers": [],
-      "impact": "neutral",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "titleJa": "食料品消費税 来年4月から2年間 1％ 高市首相が役員会で表明",
-      "summaryJa": "食料品の消費税減税をめぐり、高市総理大臣は自民党の臨時役員会に出席し、来年4月から2年間、税率を1％に引き下げ、あわせて中低所得の人への給付を行い実質ゼロとする方針を表明しました。その上で来月上旬まで…",
-      "translationStatus": "ja-original"
-    },
-    {
-      "id": "ee198e6e79bc",
-      "source": "NHK 経済",
-      "title": "熊本地震 災害関連調査中を含め死者30人に 高市首相",
-      "summary": "高市総理大臣は政府の「非常災害対策本部」で、今回の地震で30日午後0時半時点で、災害との関連を調査している人も含めて、死亡した人が30人にのぼっていると明らかにしました。",
-      "url": "https://news.web.nhk/newsweb/na/na-k10015190721000",
-      "publishedAt": "2026-07-30T05:10:31+00:00",
-      "sentiment": "neutral",
-      "sentimentScore": 0.0,
-      "importance": 0.25,
-      "tags": [
-        "market",
-        "unknown"
-      ],
-      "tickers": [],
-      "impact": "neutral",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "titleJa": "熊本地震 災害関連調査中を含め死者30人に 高市首相",
-      "summaryJa": "高市総理大臣は政府の「非常災害対策本部」で、今回の地震で30日午後0時半時点で、災害との関連を調査している人も含めて、死亡した人が30人にのぼっていると明らかにしました。",
-      "translationStatus": "ja-original"
-    },
-    {
       "id": "56d9760d10f4",
       "source": "NHK 経済",
       "title": "北方領土元島民のひ孫ら「北方墓参」再開を高市首相に要望",
@@ -954,72 +1030,6 @@
       "recommendation": "監視継続。次回更新時に再評価する。",
       "titleJa": "北方領土元島民のひ孫ら「北方墓参」再開を高市首相に要望",
       "summaryJa": "北方領土の元島民のひ孫にあたる北海道の中学生らが、総理大臣官邸を訪れて高市総理大臣と面会し、ロシアによるウクライナ侵攻の影響で見送られている元島民による「北方墓参」の再開などを要望しました。",
-      "translationStatus": "ja-original"
-    },
-    {
-      "id": "04486a257706",
-      "source": "NHK 経済",
-      "title": "概算要求の基本方針を閣議了解 新投資枠に予算要求の上限なし",
-      "summary": "来年度・2027年度の予算案の編成に向けて、政府は概算要求の基本方針を閣議了解しました。経済成長の実現に向けた新たな投資枠では、各省庁からの予算要求に上限を設けない一方、社会保障費の伸びを3900億円…",
-      "url": "https://news.web.nhk/newsweb/na/na-k10015190541000",
-      "publishedAt": "2026-07-30T03:15:03+00:00",
-      "sentiment": "positive",
-      "sentimentScore": 0.33,
-      "importance": 0.25,
-      "tags": [
-        "market",
-        "unknown"
-      ],
-      "tickers": [],
-      "impact": "positive",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "titleJa": "概算要求の基本方針を閣議了解 新投資枠に予算要求の上限なし",
-      "summaryJa": "来年度・2027年度の予算案の編成に向けて、政府は概算要求の基本方針を閣議了解しました。経済成長の実現に向けた新たな投資枠では、各省庁からの予算要求に上限を設けない一方、社会保障費の伸びを3900億円…",
-      "translationStatus": "ja-original"
-    },
-    {
-      "id": "6438275d8a15",
-      "source": "NHK 経済",
-      "title": "高市首相動静 2026年7月29日",
-      "summary": "（高市首相動静 2026年7月29日）09:51 徒歩で公邸発09:52 官邸着09:53 報道各社のインタビュー（～09:56）10:00 政府与党政策懇談会（～10:14）13:33 非常災害対策…",
-      "url": "https://news.web.nhk/newsweb/na/na-k10015190391000",
-      "publishedAt": "2026-07-29T23:12:29+00:00",
-      "sentiment": "neutral",
-      "sentimentScore": 0.0,
-      "importance": 0.25,
-      "tags": [
-        "market",
-        "unknown"
-      ],
-      "tickers": [],
-      "impact": "neutral",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "titleJa": "高市首相動静 2026年7月29日",
-      "summaryJa": "（高市首相動静 2026年7月29日）09:51 徒歩で公邸発09:52 官邸着09:53 報道各社のインタビュー（～09:56）10:00 政府与党政策懇談会（～10:14）13:33 非常災害対策…",
-      "translationStatus": "ja-original"
-    },
-    {
-      "id": "ce978b1bfa4a",
-      "source": "NHK 経済",
-      "title": "熊本地震 熱中症対策やガソリン供給など重点的に取り組む 政府",
-      "summary": "今回の地震が厳しい暑さの中での災害となったことから、政府は、避難所での熱中症対策や被災地へのガソリン供給などを進めることで、被災者の生活支援に重点的に取り組む方針です。",
-      "url": "https://news.web.nhk/newsweb/na/na-k10015190321000",
-      "publishedAt": "2026-07-29T20:13:41+00:00",
-      "sentiment": "neutral",
-      "sentimentScore": 0.0,
-      "importance": 0.25,
-      "tags": [
-        "market",
-        "unknown"
-      ],
-      "tickers": [],
-      "impact": "neutral",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "titleJa": "熊本地震 熱中症対策やガソリン供給など重点的に取り組む 政府",
-      "summaryJa": "今回の地震が厳しい暑さの中での災害となったことから、政府は、避難所での熱中症対策や被災地へのガソリン供給などを進めることで、被災者の生活支援に重点的に取り組む方針です。",
       "translationStatus": "ja-original"
     }
   ],
@@ -1044,6 +1054,27 @@
       "impact": "positive",
       "whyImportant": "関連銘柄の前提確認に必要なため。",
       "recommendation": "分割エントリー可能か、理想PF差分と合わせて確認する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "8d8cf8ee9f4d",
+      "source": "Bloomberg Markets",
+      "title": "AI-Fueled Corgi Chases BlackRock’s ETF Crown With 500-Fund Push",
+      "summary": "Corgi Funds does not look much like a traditional asset manager. Its parent company runs 24-hour cafes in San Francisco and Atlanta, operates a bus to the Y Combinator office and grew out of an artificial-intelligence insurance startup.",
+      "url": "https://www.bloomberg.com/news/articles/2026-07-30/ai-fueled-corgi-chases-blackrock-s-etf-crown-with-500-fund-push",
+      "publishedAt": "2026-07-30T11:30:00+00:00",
+      "sentiment": "neutral",
+      "sentimentScore": 0.0,
+      "importance": 0.33,
+      "tags": [
+        "market",
+        "trust",
+        "unknown"
+      ],
+      "tickers": [],
+      "impact": "neutral",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
       "translationStatus": "pending"
     },
     {
@@ -1112,33 +1143,12 @@
       "whyImportant": "個人投資家のセンチメント変化を早期に検知するため。",
       "recommendation": "監視継続。次回更新時に再評価する。",
       "translationStatus": "pending"
-    },
-    {
-      "id": "932a69a6f831",
-      "source": "reddit r/investing",
-      "title": "Irish domiciled/US domiciled ETF's",
-      "summary": "Non US resident here , should i invest into Irish domiciled etf or US domiciled etf . I am aware that its possible to avoid US estate tax through Irish domiciled etfs. however, US domiciled etfs have lower expense ratio and greater liquidit",
-      "url": "https://www.reddit.com/r/investing/comments/1v8a8lq/irish_domiciledus_domiciled_etfs/",
-      "publishedAt": "2026-07-27T19:18:05+00:00",
-      "sentiment": "neutral",
-      "sentimentScore": 0.0,
-      "importance": 0.2,
-      "tags": [
-        "social",
-        "social_noise",
-        "trust"
-      ],
-      "tickers": [],
-      "impact": "neutral",
-      "whyImportant": "個人投資家のセンチメント変化を早期に検知するため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
     }
   ],
   "meta": {
     "totalCount": 53,
     "marketCount": 48,
     "stockCount": 5,
-    "duplicateRemoved": 2
+    "duplicateRemoved": 3
   }
 }
