@@ -1,59 +1,72 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-07-30T09:53:06.795240+09:00",
-  "sourceUpdatedAt": "2026-07-30T00:46:45+00:00",
+  "updatedAt": "2026-07-30T15:05:26.989381+09:00",
+  "sourceUpdatedAt": "2026-07-30T05:59:24+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.33,
       "negativeCount": 0,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "今年度の経済成長率 ＋0.9％程度に下方修正 中東情勢の影響",
+      "topPositiveTitle": "今年度の経済成長率 ＋0.9％程度に下方修正 中東情勢の影響",
+      "items": [
+        {
+          "title": "今年度の経済成長率 ＋0.9％程度に下方修正 中東情勢の影響",
+          "source": "NHK 経済",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-07-30T02:54:21+00:00",
+          "url": "https://news.web.nhk/newsweb/na/na-k10015190501000",
+          "tags": [
+            "commodity",
+            "jp_broad",
+            "market"
+          ],
+          "titleJa": "今年度の経済成長率 ＋0.9％程度に下方修正 中東情勢の影響"
+        }
+      ]
     },
     "jp_semiconductor": {
-      "avgSentiment": -0.43,
+      "avgSentiment": -0.67,
       "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 0,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Stocks in Asia Fluctuate, Bonds Drop After Fed: Markets Wrap",
-      "topPositiveTitle": "Stocks in Asia Fluctuate, Bonds Drop After Fed: Markets Wrap",
+      "topNegativeTitle": "Chinese Chip Stocks Plunge as Investors Rotate Away From Tech",
+      "topPositiveTitle": "Chinese Chip Stocks Plunge as Investors Rotate Away From Tech",
       "items": [
         {
-          "title": "Stocks in Asia Fluctuate, Bonds Drop After Fed: Markets Wrap",
+          "title": "Chinese Chip Stocks Plunge as Investors Rotate Away From Tech",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.43,
-          "publishedAt": "2026-07-29T22:11:13+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-29/stock-market-today-dow-s-p-live-updates",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-07-30T04:44:45+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-30/chinese-chip-stocks-plunge-as-investors-rotate-away-from-tech",
           "tags": [
             "jp_semiconductor",
-            "macro_risk",
             "market",
-            "rates",
-            "us_broad"
+            "us_growth"
           ]
         }
       ]
     },
     "us_broad": {
-      "avgSentiment": -0.005,
-      "negativeCount": 4,
+      "avgSentiment": -0.013,
+      "negativeCount": 3,
       "positiveCount": 2,
-      "neutralCount": 11,
+      "neutralCount": 7,
       "sourceCount": 2,
-      "itemCount": 17,
+      "itemCount": 12,
       "isStale": false,
       "topNegativeTitle": "Kalshi Rate Trade Misses Quadruple Payoff as Fed Stands Pat",
-      "topPositiveTitle": "Gold Advances After Federal Reserve Keeps Interest Rates on Hold",
+      "topPositiveTitle": "Base Metals Advance as Fed Rate Pause Eases Demand Concerns",
       "items": [
         {
           "title": "Kalshi Rate Trade Misses Quadruple Payoff as Fed Stands Pat",
@@ -69,23 +82,22 @@
           ]
         },
         {
-          "title": "Stocks in Asia Fluctuate, Bonds Drop After Fed: Markets Wrap",
+          "title": "Long Bonds Drop on Fed Pause, Nasdaq Futures Gain: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.43,
+          "sentimentScore": -0.5,
           "publishedAt": "2026-07-29T22:11:13+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-07-29/stock-market-today-dow-s-p-live-updates",
           "tags": [
-            "jp_semiconductor",
-            "macro_risk",
             "market",
             "rates",
-            "us_broad"
+            "us_broad",
+            "us_growth"
           ]
         },
         {
           "title": "Fed’s Warsh Rebuked by Investors Craving a Real Inflation Fight",
-          "source": "Bloomberg Markets",
+          "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.33,
           "publishedAt": "2026-07-29T23:46:05+00:00",
@@ -96,77 +108,68 @@
           ]
         },
         {
-          "title": "Warsh Stands to Make Market History If Fed Opts for a Rate Hike",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-07-29T15:57:02+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-29/warsh-stands-to-make-market-history-if-fed-opts-for-a-rate-hike",
+          "title": "Fed Doubts Push Some Funds to Eye Overseas Bets Over Treasuries",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-30T05:46:19+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-30/fed-doubts-push-some-funds-to-eye-overseas-bets-over-treasuries",
           "tags": [
             "market",
-            "rates",
             "us_broad"
           ]
         },
         {
-          "title": "RBA’s Hunter Says CPI Was ‘Touch Softer,’ Jobs Market Bit Tight",
+          "title": "Gold Whipsaws as Traders Weigh Fed’s Rate Path After Latest Hold",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-30T00:03:54+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-30/rba-s-hunter-says-cpi-was-touch-softer-jobs-market-bit-tight",
+          "publishedAt": "2026-07-29T23:24:57+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-29/gold-advances-after-federal-reserve-keeps-interest-rates-on-hold",
           "tags": [
+            "gold",
             "market",
+            "rates",
             "us_broad"
           ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
+      "avgSentiment": -0.585,
+      "negativeCount": 2,
       "positiveCount": 0,
-      "neutralCount": 3,
+      "neutralCount": 0,
       "sourceCount": 1,
-      "itemCount": 3,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Wedbush on Meta: We're Not Seeing Its Capex Pay Off",
-      "topPositiveTitle": "Wedbush on Meta: We're Not Seeing Its Capex Pay Off",
+      "topNegativeTitle": "Chinese Chip Stocks Plunge as Investors Rotate Away From Tech",
+      "topPositiveTitle": "Long Bonds Drop on Fed Pause, Nasdaq Futures Gain: Markets Wrap",
       "items": [
         {
-          "title": "Wedbush on Meta: We're Not Seeing Its Capex Pay Off",
+          "title": "Chinese Chip Stocks Plunge as Investors Rotate Away From Tech",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-29T23:29:34+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-07-29/wedbush-on-meta-we-re-not-seeing-its-capex-pay-off-video",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-07-30T04:44:45+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-30/chinese-chip-stocks-plunge-as-investors-rotate-away-from-tech",
           "tags": [
+            "jp_semiconductor",
             "market",
             "us_growth"
           ]
         },
         {
-          "title": "Goldman Co-CIO: The Market's Punishing the Hyperscalers",
+          "title": "Long Bonds Drop on Fed Pause, Nasdaq Futures Gain: Markets Wrap",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-29T23:28:16+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-07-29/goldman-co-cio-the-market-s-punishing-the-hyperscalers-video",
+          "sentiment": "negative",
+          "sentimentScore": -0.5,
+          "publishedAt": "2026-07-29T22:11:13+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-29/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "market",
+            "rates",
             "us_broad",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Innolight Set For Biggest Hong Kong Debut in Seven Years",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-29T23:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-29/innolight-set-for-biggest-hong-kong-debut-in-seven-years",
-          "tags": [
-            "market",
             "us_growth"
           ]
         }
@@ -185,27 +188,25 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": 1.0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 1,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Gold Advances After Federal Reserve Keeps Interest Rates on Hold",
-      "topPositiveTitle": "Gold Advances After Federal Reserve Keeps Interest Rates on Hold",
+      "topNegativeTitle": "Gold Whipsaws as Traders Weigh Fed’s Rate Path After Latest Hold",
+      "topPositiveTitle": "Gold Whipsaws as Traders Weigh Fed’s Rate Path After Latest Hold",
       "items": [
         {
-          "title": "Gold Advances After Federal Reserve Keeps Interest Rates on Hold",
+          "title": "Gold Whipsaws as Traders Weigh Fed’s Rate Path After Latest Hold",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
           "publishedAt": "2026-07-29T23:24:57+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-07-29/gold-advances-after-federal-reserve-keeps-interest-rates-on-hold",
           "tags": [
-            "geopolitical",
             "gold",
-            "macro_risk",
             "market",
             "rates",
             "us_broad"
@@ -238,57 +239,78 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.033,
-      "negativeCount": 2,
+      "avgSentiment": -0.1,
+      "negativeCount": 1,
       "positiveCount": 1,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 3,
+      "neutralCount": 3,
+      "sourceCount": 2,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Kioxia Share Drop Sparks Hopes of Stepped-Up Shareholder Returns",
-      "topPositiveTitle": "Gold Advances After Federal Reserve Keeps Interest Rates on Hold",
+      "topNegativeTitle": "South Korea’s Toolkit Comes Into Focus as Stocks Extend Selloff",
+      "topPositiveTitle": "French Economy Rebounds With 0.2% Growth in Second Quarter",
       "items": [
         {
-          "title": "Kioxia Share Drop Sparks Hopes of Stepped-Up Shareholder Returns",
+          "title": "South Korea’s Toolkit Comes Into Focus as Stocks Extend Selloff",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-07-29T23:55:33+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-29/kioxia-share-drop-sparks-hopes-of-stepped-up-shareholder-returns",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-07-30T05:38:51+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-30/south-korea-s-toolkit-comes-into-focus-as-stocks-extend-selloff",
           "tags": [
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Stocks in Asia Fluctuate, Bonds Drop After Fed: Markets Wrap",
+          "title": "Eastspring's Wong on Opportunities Amid AI Volatility",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.43,
-          "publishedAt": "2026-07-29T22:11:13+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-29/stock-market-today-dow-s-p-live-updates",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-30T03:48:30+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-07-30/eastspring-s-wong-on-opportunities-amid-ai-volatility-video",
           "tags": [
-            "jp_semiconductor",
             "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
+            "market"
           ]
         },
         {
-          "title": "Gold Advances After Federal Reserve Keeps Interest Rates on Hold",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-07-29T23:24:57+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-29/gold-advances-after-federal-reserve-keeps-interest-rates-on-hold",
+          "title": "India Sees Renewed Fiscal Risks From Middle East Impasse",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-29T14:00:52+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-29/india-sees-renewed-fiscal-risks-from-middle-east-impasse",
           "tags": [
+            "commodity",
             "geopolitical",
-            "gold",
             "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
+            "market"
+          ]
+        },
+        {
+          "title": "Singapore Upsizes Aid Package to $1.5 Billion Amid Oil Shock",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-29T08:34:46+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-29/singapore-adds-700-million-in-economic-support-from-oil-shock",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "French Economy Rebounds With 0.2% Growth in Second Quarter",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.5,
+          "publishedAt": "2026-07-30T05:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-30/french-economy-rebounds-with-0-2-growth-in-second-quarter",
+          "tags": [
+            "macro_risk",
+            "market"
           ]
         }
       ]
@@ -306,16 +328,28 @@
       "items": []
     },
     "rates": {
-      "avgSentiment": 0.024,
+      "avgSentiment": -0.075,
       "negativeCount": 3,
       "positiveCount": 2,
-      "neutralCount": 5,
+      "neutralCount": 6,
       "sourceCount": 2,
-      "itemCount": 10,
+      "itemCount": 11,
       "isStale": false,
-      "topNegativeTitle": "Kalshi Rate Trade Misses Quadruple Payoff as Fed Stands Pat",
-      "topPositiveTitle": "Gold Advances After Federal Reserve Keeps Interest Rates on Hold",
+      "topNegativeTitle": "Japan’s Two-Year Bond Sale Draws Weaker Demand on Rate Hike Bets",
+      "topPositiveTitle": "Base Metals Advance as Fed Rate Pause Eases Demand Concerns",
       "items": [
+        {
+          "title": "Japan’s Two-Year Bond Sale Draws Weaker Demand on Rate Hike Bets",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-07-30T03:41:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-30/japan-s-two-year-bond-sale-demand-weaker-than-12-month-average",
+          "tags": [
+            "market",
+            "rates"
+          ]
+        },
         {
           "title": "Kalshi Rate Trade Misses Quadruple Payoff as Fed Stands Pat",
           "source": "Bloomberg Economics",
@@ -330,54 +364,41 @@
           ]
         },
         {
-          "title": "Stocks in Asia Fluctuate, Bonds Drop After Fed: Markets Wrap",
+          "title": "Long Bonds Drop on Fed Pause, Nasdaq Futures Gain: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.43,
+          "sentimentScore": -0.5,
           "publishedAt": "2026-07-29T22:11:13+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-07-29/stock-market-today-dow-s-p-live-updates",
           "tags": [
-            "jp_semiconductor",
-            "macro_risk",
             "market",
             "rates",
-            "us_broad"
+            "us_broad",
+            "us_growth"
           ]
         },
         {
-          "title": "Warsh Stands to Make Market History If Fed Opts for a Rate Hike",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-07-29T15:57:02+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-29/warsh-stands-to-make-market-history-if-fed-opts-for-a-rate-hike",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Bloomberg Surveillance: The Fed Decides 7/29/2026",
+          "title": "BOE Expected to Hold Rates as Energy Prices Swing (Video)",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-29T22:39:16+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-07-29/bloomberg-surveillance-the-fed-decides-7-29-2026-video",
+          "publishedAt": "2026-07-30T05:08:31+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-07-30/boe-expected-to-hold-rates-as-energy-prices-swing-video",
           "tags": [
+            "commodity",
             "market",
-            "rates",
-            "us_broad"
+            "rates"
           ]
         },
         {
-          "title": "Stocks Fall as 30-Year Bond Yields Surge After Fed | The Close 7/29/2026",
+          "title": "Gold Whipsaws as Traders Weigh Fed’s Rate Path After Latest Hold",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-29T22:10:30+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-07-29/the-close-7-29-2026-video",
+          "publishedAt": "2026-07-29T23:24:57+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-29/gold-advances-after-federal-reserve-keeps-interest-rates-on-hold",
           "tags": [
+            "gold",
             "market",
             "rates",
             "us_broad"
@@ -386,38 +407,52 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.334,
+      "avgSentiment": 0.209,
       "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 3,
-      "sourceCount": 2,
-      "itemCount": 5,
+      "positiveCount": 3,
+      "neutralCount": 5,
+      "sourceCount": 3,
+      "itemCount": 8,
       "isStale": false,
-      "topNegativeTitle": "Qatar Sends Its First LNG Shipment Through Hormuz in Three Weeks",
+      "topNegativeTitle": "BOE Expected to Hold Rates as Energy Prices Swing (Video)",
       "topPositiveTitle": "Latest Oil Market News and Analysis for July 30",
       "items": [
         {
-          "title": "Qatar Sends Its First LNG Shipment Through Hormuz in Three Weeks",
+          "title": "BOE Expected to Hold Rates as Energy Prices Swing (Video)",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-30T00:35:42+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-30/qatar-sends-its-first-lng-shipment-through-hormuz-in-three-weeks",
+          "publishedAt": "2026-07-30T05:08:31+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-07-30/boe-expected-to-hold-rates-as-energy-prices-swing-video",
+          "tags": [
+            "commodity",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Japan Trims Its Economic Outlook as Oil Prices Weigh on Growth",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-30T01:21:56+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-30/japan-trims-its-economic-outlook-as-oil-prices-weigh-on-growth",
           "tags": [
             "commodity",
             "market"
           ]
         },
         {
-          "title": "The US Is Making the Most Fuel Since Pre-Covid. It’s Not Enough.",
-          "source": "Bloomberg Markets",
+          "title": "BOE Set to Keep Powder Dry as Oil Prices Swing: Decision Guide",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-29T17:49:55+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-29/the-us-is-making-the-most-fuel-since-pre-covid-it-s-not-enough",
+          "publishedAt": "2026-07-29T23:01:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-29/boe-set-to-keep-powder-dry-as-oil-prices-swing-decision-guide",
           "tags": [
             "commodity",
-            "market"
+            "market",
+            "rates"
           ]
         },
         {
@@ -429,68 +464,84 @@
           "url": "https://www.bloomberg.com/news/articles/2026-07-29/india-sees-renewed-fiscal-risks-from-middle-east-impasse",
           "tags": [
             "commodity",
+            "geopolitical",
+            "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Carney Rejects Idea of Using Oil as Weapon Against US Tariffs",
+          "title": "Singapore Upsizes Aid Package to $1.5 Billion Amid Oil Shock",
           "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-07-29T19:20:41+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-29/carney-rejects-idea-of-using-oil-as-weapon-against-us-tariffs",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "Latest Oil Market News and Analysis for July 30",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-07-29T22:01:33+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-29/latest-oil-market-news-and-analysis-for-july-30",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-29T08:34:46+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-29/singapore-adds-700-million-in-economic-support-from-oil-shock",
           "tags": [
             "commodity",
             "geopolitical",
+            "macro_risk",
             "market"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 1.0,
+      "avgSentiment": 0.168,
       "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 2,
+      "positiveCount": 1,
+      "neutralCount": 3,
+      "sourceCount": 3,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Gold Advances After Federal Reserve Keeps Interest Rates on Hold",
-      "topPositiveTitle": "Gold Advances After Federal Reserve Keeps Interest Rates on Hold",
+      "topNegativeTitle": "India Sees Renewed Fiscal Risks From Middle East Impasse",
+      "topPositiveTitle": "Latest Oil Market News and Analysis for July 30",
       "items": [
         {
-          "title": "Gold Advances After Federal Reserve Keeps Interest Rates on Hold",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-07-29T23:24:57+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-29/gold-advances-after-federal-reserve-keeps-interest-rates-on-hold",
+          "title": "India Sees Renewed Fiscal Risks From Middle East Impasse",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-29T14:00:52+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-29/india-sees-renewed-fiscal-risks-from-middle-east-impasse",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Singapore Upsizes Aid Package to $1.5 Billion Amid Oil Shock",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-29T08:34:46+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-29/singapore-adds-700-million-in-economic-support-from-oil-shock",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "北方領土元島民のひ孫ら「北方墓参」再開を高市首相に要望",
+          "source": "NHK 経済",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-30T04:54:10+00:00",
+          "url": "https://news.web.nhk/newsweb/na/na-k10015190691000",
           "tags": [
             "geopolitical",
-            "gold",
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
-          ]
+            "market"
+          ],
+          "titleJa": "北方領土元島民のひ孫ら「北方墓参」再開を高市首相に要望"
         },
         {
           "title": "Latest Oil Market News and Analysis for July 30",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 1.0,
+          "sentimentScore": 0.67,
           "publishedAt": "2026-07-29T22:01:33+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-07-29/latest-oil-market-news-and-analysis-for-july-30",
           "tags": [
@@ -510,7 +561,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 6,
+    "excludedCount": 5,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
