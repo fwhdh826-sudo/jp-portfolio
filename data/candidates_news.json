@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-07-30T07:32:37.860481+09:00",
-  "sourceUpdatedAt": "2026-07-29T22:11:13+00:00",
+  "updatedAt": "2026-07-30T09:53:06.795240+09:00",
+  "sourceUpdatedAt": "2026-07-30T00:46:45+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -17,41 +17,43 @@
       "items": []
     },
     "jp_semiconductor": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
+      "avgSentiment": -0.43,
+      "negativeCount": 1,
       "positiveCount": 0,
-      "neutralCount": 1,
+      "neutralCount": 0,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Nothing Nefarious With 'Circle Financing': Dorrell",
-      "topPositiveTitle": "Nothing Nefarious With 'Circle Financing': Dorrell",
+      "topNegativeTitle": "Stocks in Asia Fluctuate, Bonds Drop After Fed: Markets Wrap",
+      "topPositiveTitle": "Stocks in Asia Fluctuate, Bonds Drop After Fed: Markets Wrap",
       "items": [
         {
-          "title": "Nothing Nefarious With 'Circle Financing': Dorrell",
+          "title": "Stocks in Asia Fluctuate, Bonds Drop After Fed: Markets Wrap",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-29T21:01:30+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-07-29/nothing-nefarious-with-circle-financing-dorrell-video",
+          "sentiment": "negative",
+          "sentimentScore": -0.43,
+          "publishedAt": "2026-07-29T22:11:13+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-29/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "jp_semiconductor",
+            "macro_risk",
             "market",
-            "us_growth"
+            "rates",
+            "us_broad"
           ]
         }
       ]
     },
     "us_broad": {
-      "avgSentiment": 0.043,
+      "avgSentiment": -0.005,
       "negativeCount": 4,
-      "positiveCount": 3,
-      "neutralCount": 9,
+      "positiveCount": 2,
+      "neutralCount": 11,
       "sourceCount": 2,
-      "itemCount": 16,
+      "itemCount": 17,
       "isStale": false,
       "topNegativeTitle": "Kalshi Rate Trade Misses Quadruple Payoff as Fed Stands Pat",
-      "topPositiveTitle": "Emerging-Market Currencies Climb as Fed Holds Rates Steady",
+      "topPositiveTitle": "Gold Advances After Federal Reserve Keeps Interest Rates on Hold",
       "items": [
         {
           "title": "Kalshi Rate Trade Misses Quadruple Payoff as Fed Stands Pat",
@@ -67,28 +69,28 @@
           ]
         },
         {
-          "title": "Asian Stocks to Fall as Fed Keeps Rates on Hold: Markets Wrap",
+          "title": "Stocks in Asia Fluctuate, Bonds Drop After Fed: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
+          "sentimentScore": -0.43,
           "publishedAt": "2026-07-29T22:11:13+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-07-29/stock-market-today-dow-s-p-live-updates",
           "tags": [
+            "jp_semiconductor",
+            "macro_risk",
             "market",
             "rates",
-            "us_broad",
-            "us_growth"
+            "us_broad"
           ]
         },
         {
-          "title": "Apollo's Slok Says Warsh Silence Fuels Treasury Selloff",
+          "title": "Fed’s Warsh Rebuked by Investors Craving a Real Inflation Fight",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-07-29T20:34:12+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-07-29/apollo-s-slok-says-warsh-silence-fuels-treasury-selloff-video",
+          "publishedAt": "2026-07-29T23:46:05+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-29/fed-s-warsh-rebuked-by-investors-craving-a-real-inflation-fight",
           "tags": [
-            "macro_risk",
             "market",
             "us_broad"
           ]
@@ -107,12 +109,12 @@
           ]
         },
         {
-          "title": "What Traders Are Telling the Federal Reserve: Live Q&A",
-          "source": "Bloomberg Economics",
+          "title": "RBA’s Hunter Says CPI Was ‘Touch Softer,’ Jobs Market Bit Tight",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-29T21:10:32+00:00",
-          "url": "https://www.bloomberg.com/sessions/2026-07-30/live-q-amp-a-what-traders-are-telling-the-fed",
+          "publishedAt": "2026-07-30T00:03:54+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-30/rba-s-hunter-says-cpi-was-touch-softer-jobs-market-bit-tight",
           "tags": [
             "market",
             "us_broad"
@@ -121,50 +123,48 @@
       ]
     },
     "us_growth": {
-      "avgSentiment": -0.11,
-      "negativeCount": 1,
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 2,
+      "neutralCount": 3,
       "sourceCount": 1,
       "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Asian Stocks to Fall as Fed Keeps Rates on Hold: Markets Wrap",
-      "topPositiveTitle": "Nothing Nefarious With 'Circle Financing': Dorrell",
+      "topNegativeTitle": "Wedbush on Meta: We're Not Seeing Its Capex Pay Off",
+      "topPositiveTitle": "Wedbush on Meta: We're Not Seeing Its Capex Pay Off",
       "items": [
         {
-          "title": "Asian Stocks to Fall as Fed Keeps Rates on Hold: Markets Wrap",
+          "title": "Wedbush on Meta: We're Not Seeing Its Capex Pay Off",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-07-29T22:11:13+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-29/stock-market-today-dow-s-p-live-updates",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-29T23:29:34+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-07-29/wedbush-on-meta-we-re-not-seeing-its-capex-pay-off-video",
           "tags": [
             "market",
-            "rates",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Goldman Co-CIO: The Market's Punishing the Hyperscalers",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-29T23:28:16+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-07-29/goldman-co-cio-the-market-s-punishing-the-hyperscalers-video",
+          "tags": [
+            "market",
             "us_broad",
             "us_growth"
           ]
         },
         {
-          "title": "Nothing Nefarious With 'Circle Financing': Dorrell",
+          "title": "Innolight Set For Biggest Hong Kong Debut in Seven Years",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-29T21:01:30+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-07-29/nothing-nefarious-with-circle-financing-dorrell-video",
-          "tags": [
-            "jp_semiconductor",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Thoma Bravo Cedes to Lender Revolt on $5 Billion Proofpoint Loan",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-29T20:27:52+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-29/thoma-bravo-cedes-to-lender-revolt-on-5-billion-proofpoint-loan",
+          "publishedAt": "2026-07-29T23:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-29/innolight-set-for-biggest-hong-kong-debut-in-seven-years",
           "tags": [
             "market",
             "us_growth"
@@ -173,48 +173,35 @@
       ]
     },
     "global_broad": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Investment Committee: Consumer Brands & Spending Habits",
-      "topPositiveTitle": "Investment Committee: Consumer Brands & Spending Habits",
-      "items": [
-        {
-          "title": "Investment Committee: Consumer Brands & Spending Habits",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-29T20:40:01+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-07-29/investment-committee-consumer-brands-spending-habits-video",
-          "tags": [
-            "global_broad",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "gold": {
-      "avgSentiment": 0.67,
+      "avgSentiment": 1.0,
       "negativeCount": 0,
       "positiveCount": 1,
       "neutralCount": 0,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Gold Trims Gain as Fed Holds Rates, Signals Hike Support",
-      "topPositiveTitle": "Gold Trims Gain as Fed Holds Rates, Signals Hike Support",
+      "topNegativeTitle": "Gold Advances After Federal Reserve Keeps Interest Rates on Hold",
+      "topPositiveTitle": "Gold Advances After Federal Reserve Keeps Interest Rates on Hold",
       "items": [
         {
-          "title": "Gold Trims Gain as Fed Holds Rates, Signals Hike Support",
+          "title": "Gold Advances After Federal Reserve Keeps Interest Rates on Hold",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-07-28T23:19:05+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-28/gold-edges-lower-as-traders-assess-prospects-for-fed-rate-hike",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-07-29T23:24:57+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-29/gold-advances-after-federal-reserve-keeps-interest-rates-on-hold",
           "tags": [
             "geopolitical",
             "gold",
@@ -251,37 +238,37 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.113,
-      "negativeCount": 1,
+      "avgSentiment": -0.033,
+      "negativeCount": 2,
       "positiveCount": 1,
-      "neutralCount": 1,
+      "neutralCount": 0,
       "sourceCount": 1,
       "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Apollo's Slok Says Warsh Silence Fuels Treasury Selloff",
-      "topPositiveTitle": "Gold Trims Gain as Fed Holds Rates, Signals Hike Support",
+      "topNegativeTitle": "Kioxia Share Drop Sparks Hopes of Stepped-Up Shareholder Returns",
+      "topPositiveTitle": "Gold Advances After Federal Reserve Keeps Interest Rates on Hold",
       "items": [
         {
-          "title": "Apollo's Slok Says Warsh Silence Fuels Treasury Selloff",
+          "title": "Kioxia Share Drop Sparks Hopes of Stepped-Up Shareholder Returns",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-07-29T20:34:12+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-07-29/apollo-s-slok-says-warsh-silence-fuels-treasury-selloff-video",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-07-29T23:55:33+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-29/kioxia-share-drop-sparks-hopes-of-stepped-up-shareholder-returns",
           "tags": [
             "macro_risk",
-            "market",
-            "us_broad"
+            "market"
           ]
         },
         {
-          "title": "Apollo’s Slok Says Fed’s New Silence Fuels ‘Yo-Yo’ Bond Market",
+          "title": "Stocks in Asia Fluctuate, Bonds Drop After Fed: Markets Wrap",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-29T20:28:02+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-29/apollo-s-slok-says-fed-s-new-silence-fuels-yo-yo-bond-market",
+          "sentiment": "negative",
+          "sentimentScore": -0.43,
+          "publishedAt": "2026-07-29T22:11:13+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-29/stock-market-today-dow-s-p-live-updates",
           "tags": [
+            "jp_semiconductor",
             "macro_risk",
             "market",
             "rates",
@@ -289,12 +276,12 @@
           ]
         },
         {
-          "title": "Gold Trims Gain as Fed Holds Rates, Signals Hike Support",
+          "title": "Gold Advances After Federal Reserve Keeps Interest Rates on Hold",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-07-28T23:19:05+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-28/gold-edges-lower-as-traders-assess-prospects-for-fed-rate-hike",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-07-29T23:24:57+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-29/gold-advances-after-federal-reserve-keeps-interest-rates-on-hold",
           "tags": [
             "geopolitical",
             "gold",
@@ -307,42 +294,27 @@
       ]
     },
     "fx": {
-      "avgSentiment": 1.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
-      "positiveCount": 1,
+      "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Emerging-Market Currencies Climb as Fed Holds Rates Steady",
-      "topPositiveTitle": "Emerging-Market Currencies Climb as Fed Holds Rates Steady",
-      "items": [
-        {
-          "title": "Emerging-Market Currencies Climb as Fed Holds Rates Steady",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-07-29T08:53:32+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-29/emerging-market-stocks-sink-further-as-asian-tech-slide-deepens",
-          "tags": [
-            "fx",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "rates": {
-      "avgSentiment": 0.084,
+      "avgSentiment": 0.024,
       "negativeCount": 3,
-      "positiveCount": 3,
-      "neutralCount": 6,
+      "positiveCount": 2,
+      "neutralCount": 5,
       "sourceCount": 2,
-      "itemCount": 12,
+      "itemCount": 10,
       "isStale": false,
       "topNegativeTitle": "Kalshi Rate Trade Misses Quadruple Payoff as Fed Stands Pat",
-      "topPositiveTitle": "Emerging-Market Currencies Climb as Fed Holds Rates Steady",
+      "topPositiveTitle": "Gold Advances After Federal Reserve Keeps Interest Rates on Hold",
       "items": [
         {
           "title": "Kalshi Rate Trade Misses Quadruple Payoff as Fed Stands Pat",
@@ -358,17 +330,18 @@
           ]
         },
         {
-          "title": "Asian Stocks to Fall as Fed Keeps Rates on Hold: Markets Wrap",
+          "title": "Stocks in Asia Fluctuate, Bonds Drop After Fed: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
+          "sentimentScore": -0.43,
           "publishedAt": "2026-07-29T22:11:13+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-07-29/stock-market-today-dow-s-p-live-updates",
           "tags": [
+            "jp_semiconductor",
+            "macro_risk",
             "market",
             "rates",
-            "us_broad",
-            "us_growth"
+            "us_broad"
           ]
         },
         {
@@ -385,26 +358,25 @@
           ]
         },
         {
-          "title": "Apollo’s Slok Says Fed’s New Silence Fuels ‘Yo-Yo’ Bond Market",
+          "title": "Bloomberg Surveillance: The Fed Decides 7/29/2026",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-29T20:28:02+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-29/apollo-s-slok-says-fed-s-new-silence-fuels-yo-yo-bond-market",
+          "publishedAt": "2026-07-29T22:39:16+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-07-29/bloomberg-surveillance-the-fed-decides-7-29-2026-video",
           "tags": [
-            "macro_risk",
             "market",
             "rates",
             "us_broad"
           ]
         },
         {
-          "title": "Warsh Says Fed Won't Be Constrained by Market Prices",
+          "title": "Stocks Fall as 30-Year Bond Yields Surge After Fed | The Close 7/29/2026",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-29T20:21:04+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-07-29/warsh-says-fed-won-t-be-constrained-by-market-prices-video",
+          "publishedAt": "2026-07-29T22:10:30+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-07-29/the-close-7-29-2026-video",
           "tags": [
             "market",
             "rates",
@@ -414,38 +386,25 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.057,
-      "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 4,
+      "avgSentiment": 0.334,
+      "negativeCount": 0,
+      "positiveCount": 2,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Binance.US Wants to Join Prediction Markets Race With CFTC Stamp",
-      "topPositiveTitle": "Carney Rejects Idea of Using Oil as Weapon Against US Tariffs",
+      "topNegativeTitle": "Qatar Sends Its First LNG Shipment Through Hormuz in Three Weeks",
+      "topPositiveTitle": "Latest Oil Market News and Analysis for July 30",
       "items": [
         {
-          "title": "Binance.US Wants to Join Prediction Markets Race With CFTC Stamp",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-07-29T20:57:16+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-29/binance-us-wants-to-join-prediction-markets-race-with-cftc-stamp",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "Latest Oil Market News and Analysis for July 30",
+          "title": "Qatar Sends Its First LNG Shipment Through Hormuz in Three Weeks",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-29T22:01:33+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-29/latest-oil-market-news-and-analysis-for-july-30",
+          "publishedAt": "2026-07-30T00:35:42+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-30/qatar-sends-its-first-lng-shipment-through-hormuz-in-three-weeks",
           "tags": [
             "commodity",
-            "geopolitical",
             "market"
           ]
         },
@@ -474,37 +433,22 @@
           ]
         },
         {
-          "title": "Stocks Fall as 30-Year Bond Yields Surge After Fed: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-28T22:15:52+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-28/stock-market-today-dow-s-p-live-updates",
+          "title": "Carney Rejects Idea of Using Oil as Weapon Against US Tariffs",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-07-29T19:20:41+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-29/carney-rejects-idea-of-using-oil-as-weapon-against-us-tariffs",
           "tags": [
             "commodity",
-            "market",
-            "rates",
-            "us_broad"
+            "market"
           ]
-        }
-      ]
-    },
-    "geopolitical": {
-      "avgSentiment": 0.335,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 2,
-      "isStale": false,
-      "topNegativeTitle": "Latest Oil Market News and Analysis for July 30",
-      "topPositiveTitle": "Gold Trims Gain as Fed Holds Rates, Signals Hike Support",
-      "items": [
+        },
         {
           "title": "Latest Oil Market News and Analysis for July 30",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
           "publishedAt": "2026-07-29T22:01:33+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-07-29/latest-oil-market-news-and-analysis-for-july-30",
           "tags": [
@@ -512,14 +456,27 @@
             "geopolitical",
             "market"
           ]
-        },
+        }
+      ]
+    },
+    "geopolitical": {
+      "avgSentiment": 1.0,
+      "negativeCount": 0,
+      "positiveCount": 2,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 2,
+      "isStale": false,
+      "topNegativeTitle": "Gold Advances After Federal Reserve Keeps Interest Rates on Hold",
+      "topPositiveTitle": "Gold Advances After Federal Reserve Keeps Interest Rates on Hold",
+      "items": [
         {
-          "title": "Gold Trims Gain as Fed Holds Rates, Signals Hike Support",
+          "title": "Gold Advances After Federal Reserve Keeps Interest Rates on Hold",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-07-28T23:19:05+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-28/gold-edges-lower-as-traders-assess-prospects-for-fed-rate-hike",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-07-29T23:24:57+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-29/gold-advances-after-federal-reserve-keeps-interest-rates-on-hold",
           "tags": [
             "geopolitical",
             "gold",
@@ -527,6 +484,19 @@
             "market",
             "rates",
             "us_broad"
+          ]
+        },
+        {
+          "title": "Latest Oil Market News and Analysis for July 30",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-07-29T22:01:33+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-29/latest-oil-market-news-and-analysis-for-july-30",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
           ]
         }
       ]
@@ -540,7 +510,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 7,
+    "excludedCount": 6,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
