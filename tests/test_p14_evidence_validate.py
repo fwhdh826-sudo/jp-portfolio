@@ -126,7 +126,17 @@ def _failed(report: dict, criterion_id: str) -> bool:
 
 
 def test_market_content_hash_ignores_timestamps_and_run_token(valid_bundle):
-    """T-13."""
+    """T-13; normal capture schema excludes every legacy-only field."""
+    legacy_only = {"legacyExtension", "legacyReplayOutcome", "waivedCriteria",
+                   "waiverAuthority"}
+    status = json.loads((valid_bundle / "validation/status.json").read_text())
+    acceptance_report = json.loads(
+        (valid_bundle / "validation/acceptance-report.json").read_text()
+    )
+    manifest = json.loads((valid_bundle / "manifest.json").read_text())
+    assert legacy_only.isdisjoint(status)
+    assert legacy_only.isdisjoint(acceptance_report)
+    assert legacy_only.isdisjoint(manifest["acceptance"])
     snapshot = next((valid_bundle / "snapshots").glob("real-*"))
     candidates = json.loads((snapshot / "inputs/data/candidates_stocks.json").read_text())
     prescreen = json.loads((snapshot / "inputs/data/prescreen_metadata.json").read_text())

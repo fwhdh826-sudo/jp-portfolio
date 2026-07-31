@@ -4,6 +4,7 @@ from __future__ import annotations
 import copy
 import json
 import os
+import shutil
 import subprocess
 import tarfile
 from dataclasses import replace
@@ -23,8 +24,38 @@ def _write(path: Path, value: object) -> None:
     capture.write_json(path, value)
 
 
+def _clone_detached(path: Path, revision: str, *, child_commit: bool = False) -> Path:
+    subprocess.run(
+        ["git", "clone", "--quiet", "--no-checkout", "--local", str(REPO), str(path)],
+        check=True,
+    )
+    subprocess.run(["git", "checkout", "--quiet", "--detach", revision], cwd=path, check=True)
+    if child_commit:
+        subprocess.run(
+            ["git", "-c", "user.name=P14 Test", "-c", "user.email=p14@example.invalid",
+             "commit", "--quiet", "--allow-empty", "-m", "synthetic I2 tooling"],
+            cwd=path, check=True,
+        )
+    assert (path / ".git").is_dir()
+    assert subprocess.check_output(
+        ["git", "rev-parse", "--is-inside-work-tree"], cwd=path, text=True
+    ).strip() == "true"
+    return path
+
+
 @pytest.fixture
-def legacy_bundle(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
+def replay_repositories(tmp_path: Path) -> tuple[Path, Path]:
+    target = _clone_detached(tmp_path / "replay-target", replay.CURRENT_GIT_SHA)
+    tooling = _clone_detached(
+        tmp_path / "tooling-repo", replay.TOOLING_PARENT_SHA, child_commit=True
+    )
+    return target, tooling
+
+
+@pytest.fixture
+def legacy_bundle(tmp_path: Path, monkeypatch: pytest.MonkeyPatch,
+                  replay_repositories: tuple[Path, Path]):
+    replay_target, tooling_repo = replay_repositories
     source_id = "current-dev-committed-20260726"
     base_profile = replay.LEGACY_SOURCES[source_id]
     candidates_raw = (REPO / "data/candidates_stocks.json").read_bytes()
@@ -74,7 +105,7 @@ def legacy_bundle(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
     _write(snapshot / "inputs/configuration.json", configuration)
     generator_hashes = {}
     for relative in capture.GENERATOR_PATHS:
-        raw = (REPO / relative).read_bytes()
+        raw = (replay_target / relative).read_bytes()
         generator_hashes[relative] = capture.sha256_bytes(raw)
         copied = snapshot / "inputs/production_code/data" / Path(relative).name
         copied.parent.mkdir(parents=True, exist_ok=True)
@@ -148,7 +179,11 @@ def legacy_bundle(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
                  "regularFiles": replay.E1_ARCHIVE_REGULAR_FILES},
         "L-02": {"e1ManifestSha256": replay.E1_MANIFEST_SHA256,
                  "e1ReportSha256": replay.E1_REPORT_SHA256},
-        "L-04": [{"path": name} for name in source_files],
+        "L-04": [{
+            "archivePath": f"snapshots/{source_id}/inputs/data/{name}",
+            "replayPath": f"snapshots/reeval-{source_id}/inputs/data/{name}",
+            "sha256": capture.sha256_bytes(raw), "bytes": len(raw),
+        } for name, raw in sorted(source_files.items())],
         "L-06": {"e1DistinctInputSha256": "d" * 64,
                  "replayInputBundleHash": profile.input_bundle_hash,
                  "valuesExpectedToDiffer": True},
@@ -167,6 +202,7 @@ def legacy_bundle(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
     })
     identity = {"runId": None, "runAttempt": None, "runToken": None, "workflow": None,
                 "event": "legacy-replay", "gitSha": replay.CURRENT_GIT_SHA,
+                "executionRepositoryHead": replay.CURRENT_GIT_SHA,
                 "gitRef": replay.CURRENT_GIT_REF, "gitRefType": "branch",
                 "startedAt": "2026-07-31T00:00:00+00:00", "runnerOs": "Darwin",
                 "runnerArch": "arm64", "pythonVersion": "3.11.14", "locale": "C.UTF-8",
@@ -180,6 +216,12 @@ def legacy_bundle(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
         "frozenTests": [{"id": key, "function": value} for key, value in replay.E4_TEST_MAPPING],
         "mutations": [{"id": key, "name": value} for key, value in replay.MUTATION_MAPPING],
         "gitRef": replay.CURRENT_GIT_REF, "gitRefType": "branch", "runIdentity": identity,
+        "tooling": {
+            "toolingImplementationSha": subprocess.check_output(
+                ["git", "rev-parse", "HEAD"], cwd=tooling_repo, text=True
+            ).strip(),
+            "toolingParentSha": replay.TOOLING_PARENT_SHA,
+        },
         "assignmentContract": batch.P14_ASSIGNMENT_CONTRACT,
         "assignmentNote": batch.P14_ASSIGNMENT_NOTE,
         "p14Parameters": {"threshold": batch.RANK_STABILITY_JACCARD_MIN,
@@ -220,11 +262,23 @@ def legacy_bundle(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
         "validation": {"ciAccepted": False, "offlineRequired": True, "twoPartyRule": True},
         "acceptance": {"accepted": False, "criteriaVersion": capture.ACCEPTANCE_VERSION,
                        "failedCriteria": [], "legacyExtension": replay.LEGACY_EXTENSION,
-                       "waivedCriteria": list(replay.WAIVED_CRITERIA)},
+                       "waivedCriteria": list(replay.WAIVED_CRITERIA),
+                       "waiverAuthority": replay.WAIVER_AUTHORITY},
     }
+    pending = {
+        "accepted": False, "phase": "pending-independent-ci-validation",
+        "criteriaVersion": capture.ACCEPTANCE_VERSION,
+        "legacyExtension": replay.LEGACY_EXTENSION, "legacyReplayOutcome": None,
+        "failedCriteria": [], "waivedCriteria": list(replay.WAIVED_CRITERIA),
+        "waiverAuthority": replay.WAIVER_AUTHORITY,
+    }
+    _write(root / "validation/status.json", pending)
+    _write(root / "validation/acceptance-report.json", pending)
     _write(root / "validation/privacy-report.json", validator.scan_bundle(root))
     capture.finalize_manifest(root, manifest)
-    report = validator.validate_bundle(root, repo_root=REPO, ci=True, legacy=True)
+    report = validator.validate_bundle(
+        root, repo_root=replay_target, tooling_repo=tooling_repo, ci=True, legacy=True
+    )
     assert report["accepted"], report["failedCriteria"]
     return root, snapshot, profile, candidates_raw, prescreen_raw, regime_raw, joined
 
@@ -239,6 +293,13 @@ def _criterion_failed(report: dict, identifier: str) -> bool:
 
 def _refinalize(root: Path, manifest: dict | None = None) -> None:
     capture.finalize_manifest(root, manifest or _manifest(root))
+
+
+def _validate(root: Path) -> dict:
+    return validator.validate_bundle(
+        root, repo_root=root.parent / "replay-target",
+        tooling_repo=root.parent / "tooling-repo", ci=True, legacy=True
+    )
 
 
 def test_two_legacy_sets_are_uniquely_identified():
@@ -260,12 +321,12 @@ def test_legacy_source_bytes_are_unchanged(legacy_bundle):
     path = snapshot / "inputs/data/candidates_stocks.json"
     path.write_bytes(candidates_raw.replace(b"2026", b"2025", 1))
     _refinalize(root)
-    report = validator.validate_bundle(root, repo_root=REPO, ci=True, legacy=True)
+    report = _validate(root)
     assert _criterion_failed(report, "E4-SOURCE-BYTES")
     path.write_bytes(json.dumps(json.loads(candidates_raw), ensure_ascii=False,
                                 indent=2).encode() + b"\n")
     _refinalize(root)
-    report = validator.validate_bundle(root, repo_root=REPO, ci=True, legacy=True)
+    report = _validate(root)
     assert _criterion_failed(report, "E4-SOURCE-BYTES")
 
 
@@ -304,11 +365,14 @@ def test_e1_archive_sha256_and_file_count_unchanged(tmp_path, monkeypatch):
 def test_current_git_sha_is_fixed_and_matches_manifest(legacy_bundle):
     """E4-T-05 / M-04."""
     root, *_ = legacy_bundle
-    assert subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=REPO, text=True).strip() == replay.CURRENT_GIT_SHA
+    target = root.parent / "replay-target"
+    assert subprocess.check_output(
+        ["git", "rev-parse", "HEAD"], cwd=target, text=True
+    ).strip() == replay.CURRENT_GIT_SHA
     manifest = _manifest(root)
     manifest["gitSha"] = "0" * 40
     _refinalize(root, manifest)
-    report = validator.validate_bundle(root, repo_root=REPO, ci=True, legacy=True)
+    report = _validate(root)
     assert _criterion_failed(report, "E4-CURRENT-SHA")
 
 
@@ -321,7 +385,7 @@ def test_assignment_contract_read_from_module_constant(legacy_bundle):
     manifest = _manifest(root)
     manifest["assignmentContract"] = "obsolete-contract"
     _refinalize(root, manifest)
-    report = validator.validate_bundle(root, repo_root=REPO, ci=True, legacy=True)
+    report = _validate(root)
     assert _criterion_failed(report, "E4-ASSIGNMENT")
 
 
@@ -331,7 +395,7 @@ def test_old_assignment_output_is_not_reused(legacy_bundle):
     assert not any(b"input-index parity" in path.read_bytes() for path in root.rglob("*") if path.is_file())
     (snapshot / "metrics/old.json").write_text('{"assignmentAuthority":"input-index parity"}\n')
     _refinalize(root)
-    report = validator.validate_bundle(root, repo_root=REPO, ci=True, legacy=True)
+    report = _validate(root)
     assert _criterion_failed(report, "E4-NO-OLD-OUTPUT")
 
 
@@ -343,7 +407,7 @@ def test_five_reruns_are_hash_identical(legacy_bundle):
     rows[4]["metricsSha256"] = "d" * 64
     _write(snapshot / "reruns/five-reruns.json", rows)
     _refinalize(root)
-    assert _criterion_failed(validator.validate_bundle(root, repo_root=REPO, ci=True, legacy=True),
+    assert _criterion_failed(_validate(root),
                              "E4-FIVE-RERUNS")
 
 
@@ -363,7 +427,7 @@ def test_permutation_base_scores_are_invariant(legacy_bundle):
     rows[0]["unperturbedRankChangedCount"] = 1
     _write(snapshot / "metrics/input-order-permutations.json", rows)
     _refinalize(root)
-    assert _criterion_failed(validator.validate_bundle(root, repo_root=REPO, ci=True, legacy=True),
+    assert _criterion_failed(_validate(root),
                              "E4-EIGHT-PERMUTATIONS")
 
 
@@ -404,7 +468,7 @@ def test_privacy_scan_zero_violations(legacy_bundle):
     injected = root / "validation/injected.json"
     _write(injected, {"holdings": []})
     _refinalize(root)
-    assert _criterion_failed(validator.validate_bundle(root, repo_root=REPO, ci=True, legacy=True),
+    assert _criterion_failed(_validate(root),
                              "E4-PRIVACY")
 
 
@@ -415,8 +479,8 @@ def test_test_fixtures_are_never_bundled(legacy_bundle):
     path.parent.mkdir(parents=True)
     path.write_text("{}\n")
     _refinalize(root)
-    assert _criterion_failed(validator.validate_bundle(root, repo_root=REPO, ci=True, legacy=True),
-                             "E4-NO-OLD-OUTPUT")
+    assert _criterion_failed(_validate(root),
+                             "E4-NO-FIXTURES")
 
 
 def test_lineage_map_is_complete(legacy_bundle):
@@ -427,7 +491,7 @@ def test_lineage_map_is_complete(legacy_bundle):
     del lineage["L-05"]["C-32"]
     _write(path, lineage)
     _refinalize(root)
-    assert _criterion_failed(validator.validate_bundle(root, repo_root=REPO, ci=True, legacy=True),
+    assert _criterion_failed(_validate(root),
                              "E4-LINEAGE")
 
 
@@ -439,7 +503,7 @@ def test_missing_metadata_fails_closed(legacy_bundle):
     manifest = _manifest(root)
     manifest["runIdentity"]["runToken"] = "fabricated"
     _refinalize(root, manifest)
-    assert _criterion_failed(validator.validate_bundle(root, repo_root=REPO, ci=True, legacy=True),
+    assert _criterion_failed(_validate(root),
                              "E4-NO-FABRICATION")
 
 
@@ -451,14 +515,14 @@ def test_waived_criteria_are_exactly_ac04_ac05_ac13(legacy_bundle):
     altered["generatedAt"] = "2026-07-26T16:09:01.662779+09:00"
     prescreen_path.write_bytes(json.dumps(altered).encode())
     _refinalize(root)
-    assert _criterion_failed(validator.validate_bundle(root, repo_root=REPO, ci=True, legacy=True),
+    assert _criterion_failed(_validate(root),
                              "E4-SOURCE-BYTES")
     prescreen_path.write_bytes(prescreen_raw)
     assert _manifest(root)["acceptance"]["waivedCriteria"] == ["AC-04", "AC-05", "AC-13"]
     manifest = _manifest(root)
     manifest["acceptance"]["waivedCriteria"].append("AC-10")
     _refinalize(root, manifest)
-    assert _criterion_failed(validator.validate_bundle(root, repo_root=REPO, ci=True, legacy=True),
+    assert _criterion_failed(_validate(root),
                              "E4-WAIVER")
 
 
@@ -489,7 +553,7 @@ def test_repository_side_effects_are_zero(legacy_bundle):
     """E4-T-21."""
     before = subprocess.check_output(["git", "status", "--short"], cwd=REPO, text=True)
     root, *_ = legacy_bundle
-    validator.validate_bundle(root, repo_root=REPO, ci=True, legacy=True)
+    _validate(root)
     after = subprocess.check_output(["git", "status", "--short"], cwd=REPO, text=True)
     assert after == before
 
@@ -511,8 +575,12 @@ def test_previous_artifact_is_not_current_head_artifact(legacy_bundle):
     assert _manifest(root)["legacyDeviations"]["p15Evaluable"] is False
 
 
-def _build_synthetic_current_canonical(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Path:
+def _build_synthetic_current_canonical(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch,
+    replay_repositories: tuple[Path, Path],
+) -> Path:
     """Exercise the real builder without opening either frozen E1 archive set."""
+    replay_target, tooling_repo = replay_repositories
     source_id = "current-dev-committed-20260726"
     base_profile = replay.LEGACY_SOURCES[source_id]
     candidates_raw = (REPO / "data/candidates_stocks.json").read_bytes()
@@ -582,28 +650,369 @@ def _build_synthetic_current_canonical(tmp_path: Path, monkeypatch: pytest.Monke
     output = tmp_path / "replay-output"
     output.mkdir()
     bundle = replay.build_legacy_bundle(
-        out_parent=output, repo_root=REPO, source_root=source_root,
+        out_parent=output, repo_root=replay_target, tooling_repo=tooling_repo,
+        source_root=source_root,
         legacy_snapshot_id=source_id, replay_execution_id="r99",
         as_of=profile.replay_as_of,
         archive_info={"sha256": replay.E1_ARCHIVE_SHA256, "bytes": replay.E1_ARCHIVE_BYTES,
                       "regularFiles": replay.E1_ARCHIVE_REGULAR_FILES},
         started_at="2026-07-31T00:00:00+00:00",
     )
-    report = validator.validate_bundle(bundle, repo_root=REPO, ci=True, legacy=True)
+    report = validator.validate_bundle(
+        bundle, repo_root=replay_target, tooling_repo=tooling_repo, ci=True, legacy=True
+    )
     assert report["accepted"], report["failedCriteria"]
     return bundle
 
 
-def test_control_checks_ctl01_to_ctl07(legacy_bundle, tmp_path, monkeypatch):
+def test_control_checks_ctl01_to_ctl07(legacy_bundle, tmp_path, monkeypatch,
+                                        replay_repositories):
     """E4-T-24 / verifies the 16 frozen mutation IDs are mapped."""
     root, *_ = legacy_bundle
-    assert [key for key, _ in replay.MUTATION_MAPPING] == [f"E4-M-{n:02d}" for n in range(1, 17)]
+    assert [key for key, _ in replay.MUTATION_MAPPING[:16]] == [f"E4-M-{n:02d}" for n in range(1, 17)]
     path = root / "validation/legacy-control.json"
     controls = json.loads(path.read_text())
     assert set(controls) == {f"CTL-{n:02d}" for n in range(1, 8)}
     controls["CTL-03"]["passed"] = False
     _write(path, controls)
     _refinalize(root)
-    assert _criterion_failed(validator.validate_bundle(root, repo_root=REPO, ci=True, legacy=True),
+    assert _criterion_failed(_validate(root),
                              "E4-CONTROLS")
-    assert _build_synthetic_current_canonical(tmp_path, monkeypatch).is_dir()
+    assert _build_synthetic_current_canonical(
+        tmp_path, monkeypatch, replay_repositories
+    ).is_dir()
+
+
+
+def test_delivered_commit_uses_base_pinned_replay_repository(replay_repositories):
+    """E4-T-25 / M-17."""
+    replay_target, _ = replay_repositories
+    target_head = subprocess.check_output(
+        ["git", "rev-parse", "HEAD"], cwd=replay_target, text=True
+    ).strip()
+    tooling_head = subprocess.check_output(
+        ["git", "rev-parse", "HEAD"], cwd=REPO, text=True
+    ).strip()
+    assert target_head == replay.CURRENT_GIT_SHA
+    assert tooling_head != target_head
+    assert subprocess.check_output(
+        ["git", "branch", "--show-current"], cwd=REPO, text=True
+    ).strip() == "p14-e4-i2"
+    if not subprocess.check_output(["git", "status", "--short"], cwd=REPO, text=True):
+        assert subprocess.check_output(
+            ["git", "rev-parse", "HEAD^"], cwd=REPO, text=True
+        ).strip() == replay.TOOLING_PARENT_SHA
+
+
+def test_live_replay_target_head_check_remains_strict(legacy_bundle):
+    """E4-T-26 / M-18."""
+    root, *_ = legacy_bundle
+    report = validator.validate_bundle(
+        root, repo_root=root.parent / "tooling-repo",
+        tooling_repo=root.parent / "tooling-repo", ci=True, legacy=True,
+    )
+    assert _criterion_failed(report, "E4-CURRENT-SHA")
+
+
+def test_tooling_and_replay_sha_roles_are_distinct(legacy_bundle):
+    """E4-T-27 / M-19."""
+    root, *_ = legacy_bundle
+    manifest = _manifest(root)
+    target = root.parent / "replay-target"
+    tooling = root.parent / "tooling-repo"
+    assert manifest["gitSha"] == replay.CURRENT_GIT_SHA
+    assert manifest["runIdentity"]["gitSha"] == replay.CURRENT_GIT_SHA
+    assert manifest["runIdentity"]["executionRepositoryHead"] == replay.CURRENT_GIT_SHA
+    assert manifest["tooling"]["toolingImplementationSha"] == subprocess.check_output(
+        ["git", "rev-parse", "HEAD"], cwd=tooling, text=True
+    ).strip()
+    assert manifest["tooling"]["toolingParentSha"] == replay.TOOLING_PARENT_SHA
+    assert replay.tooling_identity(tooling) == manifest["tooling"]
+    assert subprocess.check_output(
+        ["git", "rev-parse", "HEAD"], cwd=target, text=True
+    ).strip() != manifest["tooling"]["toolingImplementationSha"]
+    assert manifest["generatorSha256"] == replay.PRODUCTION_SOURCE_HASHES
+
+
+def _count_result(rows):
+    return {"candidates": rows}
+
+
+def test_permutation_score_changed_count_is_exact():
+    """E4-T-28 / M-20."""
+    base = _count_result([
+        {"code": "A", "rawCompositeScore": 1.0, "marketScore": 10, "marketRank": 1},
+        {"code": "B", "rawCompositeScore": 2.0, "marketScore": 20, "marketRank": 2},
+        {"code": "C", "rawCompositeScore": 3.0, "marketScore": 30, "marketRank": 3},
+    ])
+    changed = copy.deepcopy(base)
+    changed["candidates"][0]["rawCompositeScore"] = 1.1
+    changed["candidates"][1]["marketScore"] = 21
+    score, rank = capture.permutation_changed_counts(base, changed)
+    assert type(score) is int and (score, rank) == (2, 0)
+
+
+def test_permutation_rank_changed_count_is_exact():
+    """E4-T-29 / M-21."""
+    base = _count_result([
+        {"code": "A", "rawCompositeScore": 1.0, "marketScore": 10, "marketRank": 1},
+        {"code": "B", "rawCompositeScore": 2.0, "marketScore": 20, "marketRank": 2},
+    ])
+    changed = copy.deepcopy(base)
+    changed["candidates"][0]["marketRank"] = 2
+    changed["candidates"][1]["marketRank"] = 1
+    score, rank = capture.permutation_changed_counts(base, changed)
+    assert type(rank) is int and (score, rank) == (0, 2)
+
+
+def test_permutation_score_and_rank_counts_are_independent():
+    """E4-T-30 / M-22."""
+    base = _count_result([
+        {"code": "A", "rawCompositeScore": 1.0, "marketScore": 10, "marketRank": 1},
+        {"code": "B", "rawCompositeScore": 2.0, "marketScore": 20, "marketRank": 2},
+        {"code": "C", "rawCompositeScore": 3.0, "marketScore": 30, "marketRank": 3},
+    ])
+    changed = copy.deepcopy(base)
+    changed["candidates"][0]["marketScore"] = 11
+    changed["candidates"][1]["marketRank"] = 3
+    changed["candidates"][2]["marketRank"] = 2
+    assert capture.permutation_changed_counts(base, changed) == (1, 2)
+    with pytest.raises(capture.CaptureError, match="population mismatch"):
+        capture.permutation_changed_counts(base, _count_result(changed["candidates"][:-1]))
+    duplicate = copy.deepcopy(base)
+    duplicate["candidates"][1]["code"] = "A"
+    with pytest.raises(capture.CaptureError, match="unique exact strings"):
+        capture.permutation_changed_counts(base, duplicate)
+
+
+def test_waiver_authority_exact_contract(legacy_bundle):
+    """E4-T-31 / M-23..27."""
+    root, *_ = legacy_bundle
+    report = _validate(root)
+    validator._write_ci_result(root, report)
+    expected = replay.WAIVER_AUTHORITY
+    assert list(replay.WAIVED_CRITERIA) == ["AC-04", "AC-05", "AC-13"]
+    assert expected == (
+        "P14-E2-A1 §8.1 real_reconstructed grandfather + P14-E4-A1 §9.6"
+    )
+    assert _manifest(root)["acceptance"]["waiverAuthority"] == expected
+    assert json.loads((root / "validation/status.json").read_text())["waiverAuthority"] == expected
+    assert json.loads(
+        (root / "validation/acceptance-report.json").read_text()
+    )["waiverAuthority"] == expected
+
+    def corrupted(name, relative, mutate):
+        case = root.parent / name
+        shutil.copytree(root, case)
+        path = case / relative
+        payload = json.loads(path.read_text())
+        mutate(payload)
+        _write(path, payload)
+        _refinalize(case)
+        return _validate(case)
+
+    cases = [
+        corrupted("waiver-short", "manifest.json", lambda x: x["acceptance"].__setitem__(
+            "waiverAuthority", "P14-E4-A1 §9.6")),
+        corrupted("waiver-arbitrary", "validation/status.json", lambda x: x.__setitem__(
+            "waiverAuthority", "arbitrary")),
+        corrupted("waiver-missing", "validation/acceptance-report.json", lambda x: x.pop(
+            "waiverAuthority")),
+        corrupted("waiver-ac01", "manifest.json", lambda x: x["acceptance"][
+            "waivedCriteria"].append("AC-01")),
+        corrupted("waiver-ac25", "validation/status.json", lambda x: x[
+            "waivedCriteria"].append("AC-25")),
+    ]
+    assert all(_criterion_failed(item, "E4-WAIVER") for item in cases)
+
+
+def test_regime_state_byte_identity_is_bound(legacy_bundle):
+    """E4-T-32 / M-28..30."""
+    root, snapshot, *_ = legacy_bundle
+    case = root.parent / "regime-reserialize"
+    shutil.copytree(root, case)
+    path = next(case.glob("snapshots/reeval-*/inputs/data/regime_state.json"))
+    raw = path.read_bytes()
+    reserialized = json.dumps(json.loads(raw), ensure_ascii=False, separators=(",", ":")).encode()
+    assert reserialized != raw
+    path.write_bytes(reserialized)
+    manifest = _manifest(case)
+    manifest["inputHashes"]["regime"] = capture.sha256_bytes(reserialized)
+    _refinalize(case, manifest)
+    assert _criterion_failed(_validate(case), "E4-REGIME-BYTES")
+
+    hash_only = root.parent / "regime-hash-only"
+    shutil.copytree(root, hash_only)
+    manifest = _manifest(hash_only)
+    manifest["inputHashes"]["regime"] = "0" * 64
+    _refinalize(hash_only, manifest)
+    assert _criterion_failed(_validate(hash_only), "E4-REGIME-BYTES")
+
+
+def test_legacy_source_bundle_hash_is_bound_to_manifest_and_lineage(legacy_bundle):
+    """E4-T-33 / M-31..34."""
+    root, *_ = legacy_bundle
+    missing = root.parent / "source-hash-missing"
+    shutil.copytree(root, missing)
+    manifest = _manifest(missing)
+    manifest["legacySource"].pop("legacySourceBundleHash")
+    _refinalize(missing, manifest)
+    assert _criterion_failed(_validate(missing), "E4-SOURCE-BUNDLE")
+
+    stale = root.parent / "source-hash-stale-lineage"
+    shutil.copytree(root, stale)
+    manifest = _manifest(stale)
+    manifest["legacySource"]["legacySourceBundleHash"] = "0" * 64
+    _refinalize(stale, manifest)
+    report = _validate(stale)
+    assert _criterion_failed(report, "E4-SOURCE-BUNDLE")
+
+    source_changed = root.parent / "source-change-manifest-only"
+    shutil.copytree(root, source_changed)
+    regime = next(source_changed.glob("snapshots/reeval-*/inputs/data/regime_state.json"))
+    regime.write_bytes(json.dumps(json.loads(regime.read_bytes()), separators=(",", ":")).encode())
+    source_id = _manifest(source_changed)["legacySource"]["legacySnapshotId"]
+    snapshot = next(source_changed.glob("snapshots/reeval-*"))
+    files = {name: (snapshot / "inputs/data" / name).read_bytes()
+             for name in replay.REUSE_INPUT_NAMES}
+    new_hash = replay._source_hash(replay.LEGACY_SOURCES[source_id], files)
+    manifest = _manifest(source_changed)
+    manifest["legacySource"]["legacySourceBundleHash"] = new_hash
+    manifest["inputHashes"]["regime"] = capture.sha256_bytes(files["regime_state.json"])
+    _refinalize(source_changed, manifest)
+    assert _criterion_failed(_validate(source_changed), "E4-SOURCE-BUNDLE")
+
+
+def test_partial_output_failure_is_atomic_and_cleaned(tmp_path):
+    """E4-T-34 / M-35, M-36."""
+    parent = tmp_path / "out"
+
+    def fail(container):
+        staged = container / "bundle"
+        staged.mkdir()
+        (staged / "partial.json").write_text("{}")
+        raise replay.LegacyReplayError("postprocess failed")
+
+    with pytest.raises(replay.LegacyReplayError, match="postprocess failed"):
+        replay._atomic_stage_and_publish(parent, "accepted-name", fail)
+    assert not (parent / "accepted-name").exists()
+    assert list(parent.iterdir()) == []
+
+
+def test_normal_status_schema_excludes_legacy_fields(tmp_path):
+    """E4-T-35 / M-37."""
+    root = tmp_path / "normal"
+    (root / "validation").mkdir(parents=True)
+    _write(root / "manifest.json", {"acceptance": {}, "validation": {}})
+    report = {"accepted": True, "failedCriteria": [], "snapshotVerdict": "accepted"}
+    validator._write_ci_result(root, report)
+    forbidden = {"legacyExtension", "legacyReplayOutcome", "waivedCriteria", "waiverAuthority"}
+    assert forbidden.isdisjoint(json.loads((root / "validation/status.json").read_text()))
+    assert forbidden.isdisjoint(json.loads(
+        (root / "validation/acceptance-report.json").read_text()))
+    assert forbidden.isdisjoint(_manifest(root)["acceptance"])
+
+
+def test_cli_argument_validation_precedes_archive_verification(tmp_path, monkeypatch):
+    """E4-T-36 / M-38."""
+    called = False
+
+    def unexpected(_path):
+        nonlocal called
+        called = True
+        raise AssertionError("archive verification ran")
+
+    monkeypatch.setattr(replay, "verify_archive", unexpected)
+    profile = next(iter(replay.LEGACY_SOURCES.values()))
+    with pytest.raises(replay.LegacyReplayError, match="contradictory --as-of"):
+        replay.build_from_archive(
+            archive=tmp_path / "missing.tar.gz", out_parent=tmp_path / "out",
+            repo_root=tmp_path / "target", tooling_repo=tmp_path / "tooling",
+            legacy_snapshot_id=profile.snapshot_id, replay_execution_id="r99",
+            as_of="2099-01-01T00:00:00+00:00",
+        )
+    assert called is False
+
+
+def test_cli_failures_use_json_error_contract(tmp_path, monkeypatch, capsys):
+    """E4-T-37 / M-39."""
+    failures = [
+        replay.PrivacyViolation("private material"),
+        subprocess.CalledProcessError(2, ["git", "rev-parse"]),
+    ]
+    for failure in failures:
+        monkeypatch.setattr(replay, "build_from_archive", lambda **_kwargs: (_ for _ in ()).throw(failure))
+        code = replay.main([
+            "--archive", str(tmp_path / "archive"), "--legacy-source",
+            next(iter(replay.LEGACY_SOURCES)), "--replay-execution-id", "r99",
+            "--as-of", next(iter(replay.LEGACY_SOURCES.values())).replay_as_of,
+            "--out", str(tmp_path / "out"), "--repo-root", str(tmp_path / "target"),
+            "--tooling-repo", str(tmp_path / "tooling"),
+        ])
+        output = capsys.readouterr().out
+        assert code == 1
+        assert json.loads(output)["accepted"] is False
+        assert "Traceback" not in output
+
+
+def test_old_output_and_fixture_criteria_are_distinct(legacy_bundle):
+    """E4-T-38 / M-40."""
+    root, snapshot, *_ = legacy_bundle
+    old = root.parent / "old-output-case"
+    shutil.copytree(root, old)
+    (next(old.glob("snapshots/reeval-*")) / "old.txt").write_text("input-index parity")
+    _refinalize(old)
+    report = _validate(old)
+    assert _criterion_failed(report, "E4-NO-OLD-OUTPUT")
+    assert not _criterion_failed(report, "E4-NO-FIXTURES")
+
+    fixtures = root.parent / "fixture-case"
+    shutil.copytree(root, fixtures)
+    path = fixtures / "tests/fixtures/forbidden.json"
+    path.parent.mkdir(parents=True)
+    path.write_text("{}")
+    _refinalize(fixtures)
+    report = _validate(fixtures)
+    assert _criterion_failed(report, "E4-NO-FIXTURES")
+    assert not _criterion_failed(report, "E4-NO-OLD-OUTPUT")
+
+
+def test_output_collision_and_cleanup_failure_fail_closed(tmp_path, monkeypatch):
+    """E4-T-39 / M-41, M-42."""
+    parent = tmp_path / "out"
+    collision = parent / "accepted-name"
+    collision.mkdir(parents=True)
+    marker = collision / "existing"
+    marker.write_text("preserve")
+    called = False
+
+    def producer(_container):
+        nonlocal called
+        called = True
+        raise AssertionError
+
+    with pytest.raises(replay.LegacyReplayError, match="already exists"):
+        replay._atomic_stage_and_publish(parent, "accepted-name", producer)
+    assert called is False and marker.read_text() == "preserve"
+
+    original_rmtree = shutil.rmtree
+
+    def fail_cleanup(_path):
+        raise OSError("cleanup denied")
+
+    monkeypatch.setattr(replay.shutil, "rmtree", fail_cleanup)
+
+    def partial(container):
+        staged = container / "bundle"
+        staged.mkdir()
+        raise replay.LegacyReplayError("postprocess failed")
+
+    with pytest.raises(replay.LegacyReplayError, match="PARTIAL_OUTPUT_SAFETY_FAILED"):
+        replay._atomic_stage_and_publish(parent, "second-name", partial)
+    assert not (parent / "second-name").exists()
+    monkeypatch.setattr(replay.shutil, "rmtree", original_rmtree)
+    for path in parent.glob(".second-name.staging-*"):
+        original_rmtree(path)
+    assert [key for key, _ in replay.MUTATION_MAPPING] == [
+        f"E4-M-{number:02d}" for number in range(1, 43)
+    ]

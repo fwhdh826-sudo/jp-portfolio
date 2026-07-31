@@ -210,10 +210,13 @@ def validate_bundle(
     ci: bool,
     corpus_index: Path | None = None,
     legacy: bool = False,
+    tooling_repo: Path | None = None,
 ) -> dict[str, Any]:
     if legacy:
-        return validate_legacy_bundle(bundle_root, repo_root=repo_root, ci=ci,
-                                      corpus_index=corpus_index)
+        return validate_legacy_bundle(
+            bundle_root, repo_root=repo_root, tooling_repo=tooling_repo, ci=ci,
+            corpus_index=corpus_index
+        )
     root = bundle_root.resolve()
     manifest_path = root / "manifest.json"
     if not manifest_path.is_file():
@@ -604,6 +607,7 @@ def validate_bundle(
 
 
 def validate_legacy_bundle(bundle_root: Path, *, repo_root: Path, ci: bool,
+                           tooling_repo: Path | None = None,
                            corpus_index: Path | None = None) -> dict[str, Any]:
     """Validate the E4 extension without weakening the normal capture path."""
     from data import p14_legacy_replay as legacy
@@ -660,17 +664,37 @@ def validate_legacy_bundle(bundle_root: Path, *, repo_root: Path, ci: bool,
                                  capture_output=True, text=True).stdout.strip()
     check("E4-CURRENT-SHA",
           manifest.get("gitSha") == actual_head == legacy.CURRENT_GIT_SHA
+          and run.get("gitSha") == legacy.CURRENT_GIT_SHA
+          and run.get("executionRepositoryHead") == legacy.CURRENT_GIT_SHA
           and manifest.get("gitRef") == legacy.CURRENT_GIT_REF
           and manifest.get("gitRefType") == "branch",
           repr(manifest.get("gitSha")))
+    tooling_root = (tooling_repo or Path(legacy.__file__).parents[1]).resolve()
+    tooling = manifest.get("tooling", {})
+    tooling_head = subprocess.run(
+        ["git", "rev-parse", "HEAD"], cwd=tooling_root, check=True, capture_output=True, text=True
+    ).stdout.strip()
+    tooling_parent = subprocess.run(
+        ["git", "rev-parse", "HEAD^"], cwd=tooling_root, check=True, capture_output=True, text=True
+    ).stdout.strip()
+    check("E4-TOOLING-SHA",
+          tooling_root != repo_root.resolve()
+          and tooling.get("toolingImplementationSha") == tooling_head
+          and tooling.get("toolingParentSha") == tooling_parent == legacy.TOOLING_PARENT_SHA
+          and tooling_head != actual_head,
+          repr(tooling))
     generator_ok = True
     for relative in GENERATOR_PATHS:
         expected = manifest.get("generatorSha256", {}).get(relative)
         copied = inputs / "production_code/data" / Path(relative).name
-        generator_ok = generator_ok and isinstance(expected, str) and copied.is_file()
+        frozen = legacy.PRODUCTION_SOURCE_HASHES.get(relative)
+        generator_ok = generator_ok and expected == frozen and copied.is_file()
         generator_ok = generator_ok and _git_blob_hash(repo_root, legacy.CURRENT_GIT_SHA,
-                                                        relative) == expected
-    check("E4-GENERATORS", generator_ok, "HEAD code and copied code hashes")
+                                                        relative) == frozen
+        tooling_path = tooling_root / relative
+        generator_ok = generator_ok and tooling_path.is_file()
+        generator_ok = generator_ok and sha256_file(tooling_path) == frozen
+    check("E4-GENERATORS", generator_ok, "target/tooling/frozen source hashes")
     environment = _read_json(root / "environment.json")
     runtime_ok = (str(environment.get("pythonVersion", "")).startswith("3.11.")
                   and environment.get("timezone") == "UTC"
@@ -720,7 +744,6 @@ def validate_legacy_bundle(bundle_root: Path, *, repo_root: Path, ci: bool,
                 manifest.get("inputBundleHash"), manifest.get("marketContentHash"),
                 manifest.get("candidatePopulationHash"), manifest.get("prescreenSemanticHash"),
             )
-            hashes_ok = hashes_ok and source.get("legacySourceBundleHash") == source_bundle_hash
     check("E4-HASH-CONTRACT", hashes_ok, "independent hash recomputation")
     evidence = _read_json(snapshot / "snapshot.json")
     check("E4-EVIDENCE-CLASS",
@@ -728,10 +751,16 @@ def validate_legacy_bundle(bundle_root: Path, *, repo_root: Path, ci: bool,
           and evidence.get("prescreenBytesReconstructed") is True,
           repr(evidence.get("evidenceClass")))
     acceptance = manifest.get("acceptance", {})
+    status_contract = _read_json(root / "validation/status.json")
+    report_contract = _read_json(root / "validation/acceptance-report.json")
+    waiver_contracts = (acceptance, status_contract, report_contract)
     check("E4-WAIVER",
-          acceptance.get("legacyExtension") == legacy.LEGACY_EXTENSION
-          and acceptance.get("waivedCriteria") == list(legacy.WAIVED_CRITERIA),
-          repr(acceptance.get("waivedCriteria")))
+          all(item.get("legacyExtension") == legacy.LEGACY_EXTENSION
+                  and item.get("waivedCriteria") == list(legacy.WAIVED_CRITERIA)
+                  and item.get("waiverAuthority") == legacy.WAIVER_AUTHORITY
+                  for item in waiver_contracts),
+          repr([(item.get("waivedCriteria"), item.get("waiverAuthority"))
+                for item in waiver_contracts]))
     reruns = _read_json(snapshot / "reruns/five-reruns.json")
     reruns_ok = isinstance(reruns, list) and len(reruns) == 5 and all(
         len({row.get(key) for row in reruns}) == 1
@@ -742,9 +771,16 @@ def validate_legacy_bundle(bundle_root: Path, *, repo_root: Path, ci: bool,
     permutations_ok = (
         isinstance(permutations, list)
         and {row.get("case") for row in permutations} == set(PERMUTATION_CASES)
-        and all(row.get("verdict") in {"PASS", "FAIL"}
-                and row.get("unperturbedScoreChangedCount") == 0
-                and row.get("unperturbedRankChangedCount") == 0 for row in permutations)
+        and all(
+            row.get("verdict") in {"PASS", "FAIL"}
+            and type(row.get("unperturbedScoreChangedCount")) is int
+            and type(row.get("unperturbedRankChangedCount")) is int
+            and 0 <= row["unperturbedScoreChangedCount"] <= manifest.get("population", -1)
+            and 0 <= row["unperturbedRankChangedCount"] <= manifest.get("population", -1)
+            and row["unperturbedScoreChangedCount"] == 0
+            and row["unperturbedRankChangedCount"] == 0
+            for row in permutations
+        )
     )
     check("E4-EIGHT-PERMUTATIONS", permutations_ok, "8 invariant permutations")
     required_outputs = [
@@ -811,7 +847,34 @@ def validate_legacy_bundle(bundle_root: Path, *, repo_root: Path, ci: bool,
                   and e1_code["build_candidates_stocks.py"]
                   == head_code.get("data/build_candidates_stocks.py"))
     source_lines = lineage.get("L-03", {}).get("sourceManifestLines", [])
+    expected_l04 = [
+        {
+            "archivePath": f"snapshots/{profile.snapshot_id}/inputs/data/{name}",
+            "replayPath": f"snapshots/reeval-{profile.snapshot_id}/inputs/data/{name}",
+            "sha256": sha256_file(path),
+            "bytes": path.stat().st_size,
+        }
+        for name, path in sorted((
+            ("candidates_stocks.json", candidates),
+            ("prescreen_metadata.json", prescreen),
+            ("regime_state.json", regime),
+        ))
+    ] if raw_ok else []
+    regime_line = (f"{sha256_file(regime)}  inputs/data/regime_state.json"
+                   if regime.is_file() else None)
+    regime_row = next((row for row in l04 if isinstance(row, dict)
+                       and row.get("archivePath", "").endswith("/regime_state.json")), None)
+    regime_binding_ok = (raw_ok and listed.get("regime") == sha256_file(regime)
+                         and regime_line in source_lines
+                         and regime_row == next(row for row in expected_l04
+                                                if row["archivePath"].endswith("/regime_state.json")))
+    check("E4-REGIME-BYTES", regime_binding_ok, "byte-exact regime manifest/lineage binding")
+    source_bundle_ok = (isinstance(source_bundle_hash, str)
+                        and source.get("legacySourceBundleHash") == source_bundle_hash
+                        and lineage.get("legacySourceBundleHash") == source_bundle_hash)
+    check("E4-SOURCE-BUNDLE", source_bundle_ok, "manifest/lineage canonical source hash")
     if lineage_ok:
+        lineage_ok = l04 == expected_l04
         for name, path in (("candidates_stocks.json", candidates),
                            ("prescreen_metadata.json", prescreen),
                            ("regime_state.json", regime)):
@@ -825,8 +888,8 @@ def validate_legacy_bundle(bundle_root: Path, *, repo_root: Path, ci: bool,
     fixture_files = list(root.glob("**/tests/fixtures/**"))
     old_output = any(b"input-index parity" in path.read_bytes()
                      for path in root.rglob("*") if path.is_file())
-    check("E4-NO-OLD-OUTPUT", not fixture_files and not old_output,
-          f"fixtures={len(fixture_files)} oldOutput={old_output}")
+    check("E4-NO-OLD-OUTPUT", not old_output, f"oldOutput={old_output}")
+    check("E4-NO-FIXTURES", not fixture_files, f"fixtures={len(fixture_files)}")
     privacy = scan_bundle(root)
     check("E4-PRIVACY", privacy["passed"], repr(privacy["violations"]))
     manifest_ok, problems = _manifest_integrity(root, manifest)
@@ -1002,6 +1065,7 @@ def validate_legacy_bundle(bundle_root: Path, *, repo_root: Path, ci: bool,
         "marketContentHash": profile.market_content_hash,
         "inputBundleHash": profile.input_bundle_hash, "criteria": criteria,
         "failedCriteria": failed, "waivedCriteria": list(legacy.WAIVED_CRITERIA),
+        "waiverAuthority": legacy.WAIVER_AUTHORITY,
     }
 
 
@@ -1014,7 +1078,14 @@ def _write_ci_result(bundle_root: Path, report: dict[str, Any]) -> None:
         "failedCriteria": report["failedCriteria"],
         "snapshotVerdict": report["snapshotVerdict"],
     }
-    status["legacyReplayOutcome"] = report.get("legacyReplayOutcome")
+    if report.get("legacy"):
+        from data import p14_legacy_replay as legacy
+        status.update({
+            "legacyExtension": legacy.LEGACY_EXTENSION,
+            "legacyReplayOutcome": report.get("legacyReplayOutcome"),
+            "waivedCriteria": list(legacy.WAIVED_CRITERIA),
+            "waiverAuthority": legacy.WAIVER_AUTHORITY,
+        })
     write_json(root / "validation" / "status.json", status)
     write_json(root / "validation" / "acceptance-report.json", report)
     manifest = _read_json(root / "manifest.json")
@@ -1032,7 +1103,7 @@ def _write_ci_result(bundle_root: Path, report: dict[str, Any]) -> None:
         from data import p14_legacy_replay as legacy
         manifest["acceptance"]["legacyExtension"] = legacy.LEGACY_EXTENSION
         manifest["acceptance"]["waivedCriteria"] = list(legacy.WAIVED_CRITERIA)
-        manifest["acceptance"]["waiverAuthority"] = "P14-E4-A1 §9.6"
+        manifest["acceptance"]["waiverAuthority"] = legacy.WAIVER_AUTHORITY
     finalize_manifest(root, manifest)
 
 
@@ -1040,6 +1111,7 @@ def main(argv: list[str] | tuple[str, ...] = ()) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--bundle", type=Path, required=True)
     parser.add_argument("--repo-root", type=Path, default=Path(__file__).parents[1])
+    parser.add_argument("--tooling-repo", type=Path, default=Path(__file__).parents[1])
     parser.add_argument("--ci", action="store_true")
     parser.add_argument("--corpus-index", type=Path)
     parser.add_argument("--legacy", action="store_true")
@@ -1055,6 +1127,7 @@ def main(argv: list[str] | tuple[str, ...] = ()) -> int:
             ci=args.ci,
             corpus_index=args.corpus_index,
             legacy=args.legacy,
+            tooling_repo=args.tooling_repo.resolve(),
         )
         if args.ci:
             _write_ci_result(args.bundle, report)
@@ -1064,6 +1137,7 @@ def main(argv: list[str] | tuple[str, ...] = ()) -> int:
                 ci=True,
                 corpus_index=None,
                 legacy=args.legacy,
+                tooling_repo=args.tooling_repo.resolve(),
             )
     except (ValidationError, OSError, ValueError, KeyError, TypeError) as exc:
         print(json.dumps({"accepted": False, "snapshotVerdict": "rejected", "error": str(exc)}))

@@ -211,6 +211,15 @@ def test_eight_frozen_permutation_cases_present_with_verdicts(evidence_bundle):
     assert {row["case"] for row in rows} == set(capture.PERMUTATION_CASES)
     assert all(row["verdict"] in {"PASS", "FAIL"} for row in rows)
     assert all(not row["assignmentMismatch"] for row in rows)
+    assert all(type(row["unperturbedScoreChangedCount"]) is int
+               and type(row["unperturbedRankChangedCount"]) is int
+               and row["unperturbedScoreChangedCount"] == 0
+               and row["unperturbedRankChangedCount"] == 0 for row in rows)
+    for row in rows:
+        stored = json.loads((snapshot / "permutations" / row["case"]
+                             / "production-p14.json").read_text())
+        assert stored["unperturbedScoreChangedCount"] == row["unperturbedScoreChangedCount"]
+        assert stored["unperturbedRankChangedCount"] == row["unperturbedRankChangedCount"]
 
 
 def test_quality_report_saved_even_when_overall_pass_false(tmp_path, monkeypatch):

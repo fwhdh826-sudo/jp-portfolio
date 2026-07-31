@@ -7,6 +7,7 @@ import json
 import os
 import platform
 import re
+import shutil
 import subprocess
 import sys
 import tarfile
@@ -18,10 +19,17 @@ from typing import Any
 
 from data import candidate_funnel_batch as batch
 from data import p14_evidence_capture as capture
-from data.p14_evidence_privacy_filter import scan_bundle
+from data.p14_evidence_privacy_filter import PrivacyViolation, scan_bundle
 
 CURRENT_GIT_SHA = "8cfa55680a643415f18c6df8eb5ff2d767a0b77f"
 CURRENT_GIT_REF = "refs/heads/v13.3-dev"
+TOOLING_PARENT_SHA = "7f0ec37a827ac036d78108d0d56b17e082da0f6a"
+WAIVER_AUTHORITY = "P14-E2-A1 §8.1 real_reconstructed grandfather + P14-E4-A1 §9.6"
+PRODUCTION_SOURCE_HASHES = {
+    "data/candidate_funnel_engine.py": "25e12a4217ace5d807963b54fe2e9918d8613c834b06b730fff8701a4b45d710",
+    "data/candidate_funnel_batch.py": "e68fff47290b3f882a5be7251cee433a89a8464fc4b6adb7460ec66e0881762c",
+    "data/build_candidates_stocks.py": "acc248fba4919f29814fcb17dcfdd6343c1c4c2488da005b4c1c56b518b97b7a",
+}
 E1_ARCHIVE_SHA256 = "35f55858a9dd243371de9aa4575e3816ebefbdf0526d9500213961ff74be252e"
 E1_ARCHIVE_BYTES = 7_517_928
 E1_ARCHIVE_REGULAR_FILES = 330
@@ -62,6 +70,21 @@ E4_TEST_MAPPING = tuple(
         "test_context_as_of_is_pinned_to_legacy_value",
         "test_previous_artifact_is_not_current_head_artifact",
         "test_control_checks_ctl01_to_ctl07",
+        "test_delivered_commit_uses_base_pinned_replay_repository",
+        "test_live_replay_target_head_check_remains_strict",
+        "test_tooling_and_replay_sha_roles_are_distinct",
+        "test_permutation_score_changed_count_is_exact",
+        "test_permutation_rank_changed_count_is_exact",
+        "test_permutation_score_and_rank_counts_are_independent",
+        "test_waiver_authority_exact_contract",
+        "test_regime_state_byte_identity_is_bound",
+        "test_legacy_source_bundle_hash_is_bound_to_manifest_and_lineage",
+        "test_partial_output_failure_is_atomic_and_cleaned",
+        "test_normal_status_schema_excludes_legacy_fields",
+        "test_cli_argument_validation_precedes_archive_verification",
+        "test_cli_failures_use_json_error_contract",
+        "test_old_output_and_fixture_criteria_are_distinct",
+        "test_output_collision_and_cleanup_failure_fail_closed",
     ), start=1)
 )
 MUTATION_MAPPING = tuple(
@@ -74,6 +97,18 @@ MUTATION_MAPPING = tuple(
         "overwrite-existing-corpus-entry", "allow-incomplete-manifest",
         "silently-normalize-source-bytes", "count-legacy-as-real-captured-same-run",
         "use-runtime-now-as-as-of",
+        "fixture-target-tooling-head", "current-sha-always-true",
+        "alias-target-and-tooling-sha", "score-count-to-bool", "rank-count-to-bool",
+        "alias-score-and-rank-counts", "shortened-waiver-authority",
+        "arbitrary-waiver-authority", "missing-waiver-authority", "allow-ac01-waiver",
+        "allow-ac25-waiver", "remove-regime-byte-predicate",
+        "accept-semantic-regime-reserialize", "trust-regime-manifest-hash-only",
+        "remove-source-bundle-hash-predicate", "accept-missing-source-bundle-hash",
+        "trust-source-change-manifest-only", "remove-manifest-lineage-hash-binding",
+        "remove-partial-output-cleanup", "publish-before-postprocess",
+        "add-normal-legacy-null-fields", "archive-before-argument-validation",
+        "remove-json-error-catches", "merge-old-output-and-fixture-criteria",
+        "overwrite-output-collision", "ignore-cleanup-failure",
     ), start=1)
 )
 
@@ -177,11 +212,33 @@ def _git(repo: Path, *args: str) -> str:
                           text=True).stdout.strip()
 
 
+def _assert_production_sources(repo: Path) -> None:
+    for relative, expected in PRODUCTION_SOURCE_HASHES.items():
+        path = repo / relative
+        if not path.is_file() or capture.sha256_file(path) != expected:
+            raise LegacyReplayError("P14_E4_R1_CURRENT_SHA_DRIFT: production source hash")
+
+
+def tooling_identity(tooling_repo: Path) -> dict[str, str]:
+    implementation_sha = _git(tooling_repo, "rev-parse", "HEAD")
+    parent_line = _git(tooling_repo, "rev-list", "--parents", "-n", "1", "HEAD").split()
+    parent_sha = _git(tooling_repo, "rev-parse", "HEAD^")
+    if len(parent_line) != 2 or parent_sha != TOOLING_PARENT_SHA:
+        raise LegacyReplayError("P14_E4_I2_BASE_SHA_DRIFT: tooling parent")
+    _assert_production_sources(tooling_repo)
+    return {
+        "toolingImplementationSha": implementation_sha,
+        "toolingParentSha": parent_sha,
+    }
+
+
 def replay_identity(repo: Path, execution_id: str, started_at: str | None = None) -> dict[str, Any]:
     if re.fullmatch(r"r[0-9]{2}", execution_id) is None:
         raise LegacyReplayError("replay execution ID must match rNN")
-    if _git(repo, "rev-parse", "HEAD") != CURRENT_GIT_SHA:
+    execution_head = _git(repo, "rev-parse", "HEAD")
+    if execution_head != CURRENT_GIT_SHA:
         raise LegacyReplayError("P14_E4_R1_CURRENT_SHA_DRIFT")
+    _assert_production_sources(repo)
     if not platform.python_version().startswith("3.11."):
         raise LegacyReplayError("P14_E4_R1_VALIDATION_FAILED: Python 3.11 required")
     if (os.environ.get("TZ") != "UTC" or os.environ.get("PYTHONHASHSEED") != "0"
@@ -195,7 +252,8 @@ def replay_identity(repo: Path, execution_id: str, started_at: str | None = None
             "runnerArch": platform.machine(), "timezone": "UTC",
             "locale": os.environ.get("LC_ALL", ""), "pythonVersion": platform.python_version(),
             "pythonHashSeed": "0", "gitRef": CURRENT_GIT_REF, "gitRefType": "branch",
-            "gitSha": CURRENT_GIT_SHA, "replayExecutionId": execution_id}
+            "gitSha": CURRENT_GIT_SHA, "executionRepositoryHead": execution_head,
+            "replayExecutionId": execution_id}
 
 
 def count_increments(outcome: str) -> dict[str, int]:
@@ -337,18 +395,14 @@ class _PinnedDateTime(datetime):
 
 
 def _postprocess(bundle: Path, source: Path, profile: LegacySourceAuthority,
-                 archive_info: dict[str, Any], identity: dict[str, Any], files: dict[str, bytes],
+                 archive_info: dict[str, Any], identity: dict[str, Any],
+                 tooling: dict[str, str], files: dict[str, bytes],
                  source_lines: list[str]) -> Path:
     old_snapshot = next((bundle / "snapshots").glob("real-*"))
     snapshot_id = f"reeval-{profile.snapshot_id}"
     snapshot = old_snapshot.with_name(snapshot_id)
     old_snapshot.rename(snapshot)
     desired_id = f"p14-legacy-replay-{profile.snapshot_id}-{CURRENT_GIT_SHA[:12]}-{identity['replayExecutionId']}"
-    desired = bundle.with_name(desired_id)
-    if desired.exists():
-        raise LegacyReplayError(f"bundle already exists: {desired_id}")
-    bundle.rename(desired)
-    bundle, snapshot = desired, desired / "snapshots" / snapshot_id
     manifest = json.loads((bundle / "manifest.json").read_text(encoding="utf-8"))
     configuration_path = snapshot / "inputs/configuration.json"
     configuration = json.loads(configuration_path.read_text(encoding="utf-8"))
@@ -393,8 +447,12 @@ def _postprocess(bundle: Path, source: Path, profile: LegacySourceAuthority,
     capture.write_json(snapshot / "metrics/production-perturbation-assignment.json", assignment)
     permutations = json.loads((snapshot / "metrics/input-order-permutations.json").read_text())
     for row in permutations:
-        row["unperturbedScoreChangedCount"] = int(bool(row["rankVectorMismatch"]))
-        row["unperturbedRankChangedCount"] = int(bool(row["rankVectorMismatch"]))
+        population = len(joined)
+        if (type(row.get("unperturbedScoreChangedCount")) is not int
+                or type(row.get("unperturbedRankChangedCount")) is not int
+                or not 0 <= row["unperturbedScoreChangedCount"] <= population
+                or not 0 <= row["unperturbedRankChangedCount"] <= population):
+            raise LegacyReplayError("P14_E4_I2_COUNT_SEMANTICS_FAILED")
         capture.write_json(snapshot / "permutations" / row["case"] / "production-p14.json", row)
     capture.write_json(snapshot / "metrics/input-order-permutations.json", permutations)
     base = json.loads((snapshot / "outputs/run-1/base-engine.json").read_text())
@@ -477,6 +535,7 @@ def _postprocess(bundle: Path, source: Path, profile: LegacySourceAuthority,
         "createdAt": replay_started.astimezone(timezone.utc).isoformat(),
         "createdAtJst": replay_started.astimezone(capture.JST).isoformat(),
         "gitRefType": "branch", "gitSha": CURRENT_GIT_SHA, "runIdentity": identity,
+        "tooling": tooling,
         "legacySource": {"legacySnapshotId": profile.snapshot_id,
                          "legacyKey": legacy_key(profile.snapshot_id, profile.market_content_hash),
                          "legacySourceBundleHash": source_hash, "e1ArchiveSha256": E1_ARCHIVE_SHA256,
@@ -499,30 +558,106 @@ def _postprocess(bundle: Path, source: Path, profile: LegacySourceAuthority,
         "acceptance": {"accepted": False, "criteriaVersion": capture.ACCEPTANCE_VERSION,
                        "legacyExtension": LEGACY_EXTENSION, "failedCriteria": [],
                        "waivedCriteria": list(WAIVED_CRITERIA),
-                       "waiverAuthority": "P14-E2-A1 §8.1 real_reconstructed grandfather + P14-E4-A1 §9.6"},
+                       "waiverAuthority": WAIVER_AUTHORITY},
     })
     privacy = scan_bundle(bundle)
     capture.write_json(bundle / "validation/privacy-report.json", privacy)
     if not privacy["passed"]:
         raise LegacyReplayError("P14_E4_R1_PRIVACY_FAILED")
-    capture.write_json(bundle / "validation/status.json",
-                       {"accepted": False, "phase": "pending-independent-ci-validation",
-                        "legacyReplayOutcome": None, "failedCriteria": []})
+    pending = {
+        "accepted": False, "phase": "pending-independent-ci-validation",
+        "criteriaVersion": capture.ACCEPTANCE_VERSION, "legacyExtension": LEGACY_EXTENSION,
+        "legacyReplayOutcome": None, "failedCriteria": [],
+        "waivedCriteria": list(WAIVED_CRITERIA), "waiverAuthority": WAIVER_AUTHORITY,
+    }
+    capture.write_json(bundle / "validation/status.json", pending)
+    capture.write_json(bundle / "validation/acceptance-report.json", pending)
     capture.finalize_manifest(bundle, manifest)
     return bundle
 
 
-def build_legacy_bundle(*, out_parent: Path, repo_root: Path, source_root: Path,
-                        legacy_snapshot_id: str, replay_execution_id: str, as_of: str,
-                        archive_info: dict[str, Any], started_at: str | None = None) -> Path:
+def _desired_bundle_id(profile: LegacySourceAuthority, execution_id: str) -> str:
+    return (f"p14-legacy-replay-{profile.snapshot_id}-{CURRENT_GIT_SHA[:12]}-"
+            f"{execution_id}")
+
+
+def _cleanup_staging(*paths: Path) -> None:
+    failures: list[str] = []
+    for path in paths:
+        if not path.exists():
+            continue
+        try:
+            if path.is_dir():
+                shutil.rmtree(path)
+            else:
+                path.unlink()
+        except OSError as exc:
+            failures.append(f"{path.name}:{type(exc).__name__}")
+    if failures:
+        raise LegacyReplayError(
+            "P14_E4_I2_PARTIAL_OUTPUT_SAFETY_FAILED: " + ",".join(failures)
+        )
+
+
+def _atomic_stage_and_publish(parent: Path, desired_id: str, producer: Any) -> Path:
+    desired = parent / desired_id
+    if desired.exists():
+        raise LegacyReplayError(f"bundle already exists: {desired_id}")
+    parent.mkdir(parents=True, exist_ok=True)
+    container = Path(tempfile.mkdtemp(prefix=f".{desired_id}.staging-", dir=parent))
+    ready = parent / f".{desired_id}.{container.name.rsplit('-', 1)[-1]}.ready"
+    try:
+        staged = producer(container)
+        if staged.parent != container or not staged.is_dir():
+            raise LegacyReplayError("invalid staging result")
+        staged.rename(ready)
+        container.rmdir()
+        if desired.exists():
+            raise LegacyReplayError(f"bundle already exists: {desired_id}")
+        ready.rename(desired)
+        return desired
+    except Exception:
+        try:
+            _cleanup_staging(ready, container)
+        except LegacyReplayError as cleanup_error:
+            raise cleanup_error
+        raise
+
+
+def _prevalidate_request(*, out_parent: Path, repo_root: Path, tooling_repo: Path,
+                         legacy_snapshot_id: str, replay_execution_id: str,
+                         as_of: str) -> tuple[LegacySourceAuthority, datetime]:
     profile = LEGACY_SOURCES.get(legacy_snapshot_id)
     if profile is None:
         raise LegacyReplayError("P14_E4_R1_SOURCE_INTEGRITY_FAILED: unknown legacy source")
     pinned = parse_replay_as_of(as_of, profile)
+    if re.fullmatch(r"r[0-9]{2}", replay_execution_id) is None:
+        raise LegacyReplayError("replay execution ID must match rNN")
+    repo, tooling, parent = repo_root.resolve(), tooling_repo.resolve(), out_parent.resolve()
+    if repo == tooling:
+        raise LegacyReplayError("replay target and tooling repositories must be distinct")
+    if parent in {repo, tooling} or repo in parent.parents or tooling in parent.parents:
+        raise LegacyReplayError("bundle output must be outside repository worktrees")
+    return profile, pinned
+
+
+def build_legacy_bundle(*, out_parent: Path, repo_root: Path, tooling_repo: Path,
+                        source_root: Path, legacy_snapshot_id: str,
+                        replay_execution_id: str, as_of: str,
+                        archive_info: dict[str, Any], started_at: str | None = None) -> Path:
+    profile, pinned = _prevalidate_request(
+        out_parent=out_parent, repo_root=repo_root, tooling_repo=tooling_repo,
+        legacy_snapshot_id=legacy_snapshot_id, replay_execution_id=replay_execution_id,
+        as_of=as_of,
+    )
     identity = replay_identity(repo_root, replay_execution_id, started_at)
+    tooling = tooling_identity(tooling_repo)
     repo, parent = repo_root.resolve(), out_parent.resolve()
-    if parent == repo or repo in parent.parents:
-        raise LegacyReplayError("bundle output must be outside repository worktree")
+    desired_id = _desired_bundle_id(profile, replay_execution_id)
+    desired = parent / desired_id
+    if desired.exists():
+        raise LegacyReplayError(f"bundle already exists: {desired_id}")
+    parent.mkdir(parents=True, exist_ok=True)
     source = source_root / "snapshots" / profile.snapshot_id
     if not (source / profile.marker_present).is_file() or (source / profile.marker_absent).exists():
         raise LegacyReplayError("P14_E4_R1_SOURCE_INTEGRITY_FAILED: source marker")
@@ -533,35 +668,42 @@ def build_legacy_bundle(*, out_parent: Path, repo_root: Path, source_root: Path,
         if source_manifest.get(f"inputs/data/{name}") != capture.sha256_bytes(raw):
             raise LegacyReplayError("P14_E4_R1_SOURCE_INTEGRITY_FAILED: source bytes")
         files[name] = raw
-    with tempfile.TemporaryDirectory(prefix="p14-e4-stage-") as staging:
+
+    def produce(container: Path) -> Path:
         _PinnedDateTime.pinned = pinned
         original_datetime = capture.datetime
         capture.datetime = _PinnedDateTime
         try:
-            staged = capture.build_bundle(out_parent=Path(staging), repo_root=repo,
-                                          run_identity=identity,
-                                          candidates_path=source / "inputs/data/candidates_stocks.json",
-                                          prescreen_path=source / "inputs/data/prescreen_metadata.json",
-                                          regime_path=source / "inputs/data/regime_state.json",
-                                          previous_path=None)
+            staged = capture.build_bundle(
+                out_parent=container, repo_root=repo, run_identity=identity,
+                candidates_path=source / "inputs/data/candidates_stocks.json",
+                prescreen_path=source / "inputs/data/prescreen_metadata.json",
+                regime_path=source / "inputs/data/regime_state.json", previous_path=None,
+            )
         finally:
             capture.datetime = original_datetime
-        target = parent / staged.name
-        if target.exists():
-            raise LegacyReplayError(f"staging target already exists: {target}")
-        staged.rename(target)
-    return _postprocess(target, source, profile, archive_info, identity, files, source_lines)
+        return _postprocess(
+            staged, source, profile, archive_info, identity, tooling, files, source_lines
+        )
 
+    return _atomic_stage_and_publish(parent, desired_id, produce)
 
 def build_from_archive(*, archive: Path, out_parent: Path, repo_root: Path,
-                       legacy_snapshot_id: str, replay_execution_id: str, as_of: str) -> Path:
+                       tooling_repo: Path, legacy_snapshot_id: str,
+                       replay_execution_id: str, as_of: str) -> Path:
+    _prevalidate_request(
+        out_parent=out_parent, repo_root=repo_root, tooling_repo=tooling_repo,
+        legacy_snapshot_id=legacy_snapshot_id, replay_execution_id=replay_execution_id,
+        as_of=as_of,
+    )
     info = verify_archive(archive)
     with tempfile.TemporaryDirectory(prefix="p14-e4-source-") as temporary:
         root = _extract(archive, Path(temporary))
-        bundle = build_legacy_bundle(out_parent=out_parent, repo_root=repo_root, source_root=root,
-                                     legacy_snapshot_id=legacy_snapshot_id,
-                                     replay_execution_id=replay_execution_id, as_of=as_of,
-                                     archive_info=info)
+        bundle = build_legacy_bundle(
+            out_parent=out_parent, repo_root=repo_root, tooling_repo=tooling_repo,
+            source_root=root, legacy_snapshot_id=legacy_snapshot_id,
+            replay_execution_id=replay_execution_id, as_of=as_of, archive_info=info,
+        )
     verify_archive(archive)
     return bundle
 
@@ -573,15 +715,18 @@ def main(argv: list[str] | tuple[str, ...] = ()) -> int:
     parser.add_argument("--replay-execution-id", required=True)
     parser.add_argument("--as-of", required=True)
     parser.add_argument("--out", type=Path, required=True)
-    parser.add_argument("--repo-root", type=Path, default=Path(__file__).parents[1])
+    parser.add_argument("--repo-root", type=Path, required=True)
+    parser.add_argument("--tooling-repo", type=Path, default=Path(__file__).parents[1])
     args = parser.parse_args(argv)
     try:
         bundle = build_from_archive(archive=args.archive.resolve(), out_parent=args.out.resolve(),
                                     repo_root=args.repo_root.resolve(),
+                                    tooling_repo=args.tooling_repo.resolve(),
                                     legacy_snapshot_id=args.legacy_source,
                                     replay_execution_id=args.replay_execution_id,
                                     as_of=args.as_of)
-    except (LegacyReplayError, OSError, ValueError, KeyError, TypeError) as exc:
+    except (LegacyReplayError, PrivacyViolation, subprocess.SubprocessError, OSError,
+            ValueError, KeyError, TypeError) as exc:
         print(json.dumps({"accepted": False, "error": str(exc)}, ensure_ascii=False))
         return 1
     print(bundle)
