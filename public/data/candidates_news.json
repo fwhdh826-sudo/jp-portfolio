@@ -1,20 +1,47 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-07-31T07:36:39.003864+09:00",
-  "sourceUpdatedAt": "2026-07-30T22:15:33+00:00",
+  "updatedAt": "2026-07-31T10:02:29.345826+09:00",
+  "sourceUpdatedAt": "2026-07-31T00:43:46+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": 0.665,
+      "avgSentiment": 0.333,
       "negativeCount": 0,
       "positiveCount": 2,
-      "neutralCount": 0,
-      "sourceCount": 2,
-      "itemCount": 2,
+      "neutralCount": 2,
+      "sourceCount": 3,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "今年度の経済成長率 ＋0.9％程度に下方修正 中東情勢の影響",
+      "topNegativeTitle": "Tokyo Inflation Quickens, Keeping BOJ on Interest Rate Hike Path",
       "topPositiveTitle": "Yen Surges as Nikkei Says Japan Intervened in Market Again",
       "items": [
+        {
+          "title": "Tokyo Inflation Quickens, Keeping BOJ on Interest Rate Hike Path",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-30T23:36:35+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-30/tokyo-inflation-quickens-keeping-boj-on-interest-rate-hike-path",
+          "tags": [
+            "jp_broad",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Japan Preempts Market With Yen Intervention Before BOJ Decision",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-30T22:52:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-30/yen-surges-after-japan-intervened-in-market-again-ahead-of-boj",
+          "tags": [
+            "fx",
+            "jp_broad",
+            "market",
+            "rates"
+          ]
+        },
         {
           "title": "今年度の経済成長率 ＋0.9％程度に下方修正 中東情勢の影響",
           "source": "NHK 経済",
@@ -70,15 +97,15 @@
       ]
     },
     "us_broad": {
-      "avgSentiment": 0.143,
+      "avgSentiment": 0.055,
       "negativeCount": 1,
-      "positiveCount": 3,
+      "positiveCount": 2,
       "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 7,
+      "itemCount": 6,
       "isStale": false,
       "topNegativeTitle": "Record Fed Funds Short Hedging Rate Hike Unravels After Hold",
-      "topPositiveTitle": "Gold Advances as Traders Weigh Fed Rate Path After Latest Hold",
+      "topPositiveTitle": "Reddit Projects Strong Sales; No New AI Deals Announced",
       "items": [
         {
           "title": "Record Fed Funds Short Hedging Rate Hike Unravels After Hold",
@@ -131,7 +158,7 @@
           ]
         },
         {
-          "title": "Reddit Projects Strong Sales, But No New AI Deals",
+          "title": "Reddit Projects Strong Sales; No New AI Deals Announced",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.33,
@@ -145,7 +172,7 @@
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.333,
+      "avgSentiment": 0.232,
       "negativeCount": 0,
       "positiveCount": 2,
       "neutralCount": 2,
@@ -153,7 +180,7 @@
       "itemCount": 4,
       "isStale": false,
       "topNegativeTitle": "Amazon Tops Estimates | Closing Bell",
-      "topPositiveTitle": "Asia Stocks to Gain After US Rally, Yen Holds Jump: Markets Wrap",
+      "topPositiveTitle": "Record Korean Rally Lifts Stocks, Yen Pares Gains: Markets Wrap",
       "items": [
         {
           "title": "Amazon Tops Estimates | Closing Bell",
@@ -180,22 +207,22 @@
           ]
         },
         {
-          "title": "Microsoft’s $450 Billion Jump Is Biggest in Stock Market History",
+          "title": "Korean Stocks Jump Record 15% on Renewed AI Trade Optimism",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-07-30T16:55:49+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-30/microsoft-eyes-history-with-490-billion-pop-in-market-value",
+          "sentimentScore": 0.43,
+          "publishedAt": "2026-07-30T23:50:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-30/sk-hynix-shares-surge-in-seoul-on-us-peer-rally-chey-purchase",
           "tags": [
             "market",
             "us_growth"
           ]
         },
         {
-          "title": "Asia Stocks to Gain After US Rally, Yen Holds Jump: Markets Wrap",
+          "title": "Record Korean Rally Lifts Stocks, Yen Pares Gains: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 1.0,
+          "sentimentScore": 0.5,
           "publishedAt": "2026-07-30T22:15:33+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-07-30/stock-market-today-dow-s-p-live-updates",
           "tags": [
@@ -207,40 +234,52 @@
       ]
     },
     "global_broad": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "gold": {
-      "avgSentiment": 0.67,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 0,
+      "neutralCount": 1,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Gold Advances as Traders Weigh Fed Rate Path After Latest Hold",
-      "topPositiveTitle": "Gold Advances as Traders Weigh Fed Rate Path After Latest Hold",
+      "topNegativeTitle": "Australia Pension Cuts Local Stocks for Global, Emerging Markets",
+      "topPositiveTitle": "Australia Pension Cuts Local Stocks for Global, Emerging Markets",
       "items": [
         {
-          "title": "Gold Advances as Traders Weigh Fed Rate Path After Latest Hold",
+          "title": "Australia Pension Cuts Local Stocks for Global, Emerging Markets",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-07-29T23:24:57+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-29/gold-advances-after-federal-reserve-keeps-interest-rates-on-hold",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-30T23:59:49+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-30/australia-pension-cuts-local-stocks-for-global-emerging-markets",
           "tags": [
+            "global_broad",
+            "market"
+          ]
+        }
+      ]
+    },
+    "gold": {
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "Gold Holds Gain as Japan Currency Intervention Weighs on Dollar",
+      "topPositiveTitle": "Gold Holds Gain as Japan Currency Intervention Weighs on Dollar",
+      "items": [
+        {
+          "title": "Gold Holds Gain as Japan Currency Intervention Weighs on Dollar",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-30T23:56:55+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-30/gold-holds-gain-as-japan-currency-intervention-weighs-on-dollar",
+          "tags": [
+            "fx",
             "gold",
-            "market",
-            "rates",
-            "us_broad"
+            "market"
           ]
         }
       ]
@@ -270,15 +309,15 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.073,
-      "negativeCount": 3,
-      "positiveCount": 2,
-      "neutralCount": 4,
+      "avgSentiment": -0.167,
+      "negativeCount": 2,
+      "positiveCount": 1,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 9,
+      "itemCount": 6,
       "isStale": false,
       "topNegativeTitle": "Weak Yen Offers Toyota an Earnings Respite From Tariffs, War",
-      "topPositiveTitle": "Fitch’s Private Credit Default Rate Hit Record in Second Quarter",
+      "topPositiveTitle": "Latest Oil Market News and Analysis for July 31",
       "items": [
         {
           "title": "Weak Yen Offers Toyota an Earnings Respite From Tariffs, War",
@@ -304,19 +343,6 @@
           "url": "https://www.bloomberg.com/news/features/2026-07-30/japan-pm-takaichi-faces-biggest-test-yet-as-yen-sinks-approval-ratings-drop",
           "tags": [
             "fx",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Fastest Euro-Zone Growth in Over a Year Defies Iran Pressure",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-07-30T05:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-30/french-economy-rebounds-with-0-2-growth-in-second-quarter",
-          "tags": [
             "geopolitical",
             "macro_risk",
             "market"
@@ -348,19 +374,32 @@
             "market",
             "rates"
           ]
+        },
+        {
+          "title": "Nigeria Central Bank Sees Transition to Inflation Target by 2028",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-30T14:34:53+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-30/nigeria-central-bank-sees-transition-to-inflation-target-by-2028",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": 0.167,
+      "avgSentiment": 0.024,
       "negativeCount": 2,
       "positiveCount": 2,
-      "neutralCount": 0,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 7,
       "isStale": false,
       "topNegativeTitle": "Weak Yen Offers Toyota an Earnings Respite From Tariffs, War",
-      "topPositiveTitle": "Asia Stocks to Gain After US Rally, Yen Holds Jump: Markets Wrap",
+      "topPositiveTitle": "Yen Surges as Nikkei Says Japan Intervened in Market Again",
       "items": [
         {
           "title": "Weak Yen Offers Toyota an Earnings Respite From Tariffs, War",
@@ -392,40 +431,53 @@
           ]
         },
         {
-          "title": "Asia Stocks to Gain After US Rally, Yen Holds Jump: Markets Wrap",
+          "title": "Hong Kong Resurrects China Bond Futures With Liquidity in Focus",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-07-30T22:15:33+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-30/stock-market-today-dow-s-p-live-updates",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-31T00:43:46+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-31/hong-kong-resurrects-china-bond-futures-with-liquidity-in-focus",
           "tags": [
             "fx",
-            "market",
-            "us_growth"
+            "market"
           ]
         },
         {
-          "title": "Yen Surges as Nikkei Says Japan Intervened in Market Again",
+          "title": "Gold Holds Gain as Japan Currency Intervention Weighs on Dollar",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-07-30T13:57:33+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-30/yen-surge-spurs-speculation-japan-intervened-in-market-again",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-30T23:56:55+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-30/gold-holds-gain-as-japan-currency-intervention-weighs-on-dollar",
+          "tags": [
+            "fx",
+            "gold",
+            "market"
+          ]
+        },
+        {
+          "title": "Japan Preempts Market With Yen Intervention Before BOJ Decision",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-30T22:52:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-30/yen-surges-after-japan-intervened-in-market-again-ahead-of-boj",
           "tags": [
             "fx",
             "jp_broad",
-            "market"
+            "market",
+            "rates"
           ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": 0.21,
+      "avgSentiment": 0.112,
       "negativeCount": 2,
-      "positiveCount": 4,
-      "neutralCount": 2,
+      "positiveCount": 3,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 8,
+      "itemCount": 9,
       "isStale": false,
       "topNegativeTitle": "Record Fed Funds Short Hedging Rate Hike Unravels After Hold",
       "topPositiveTitle": "Short Gilts Surge as Traders Slash Bets on BOE Hike in September",
@@ -456,6 +508,33 @@
           ]
         },
         {
+          "title": "Tokyo Inflation Quickens, Keeping BOJ on Interest Rate Hike Path",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-30T23:36:35+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-30/tokyo-inflation-quickens-keeping-boj-on-interest-rate-hike-path",
+          "tags": [
+            "jp_broad",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Japan Preempts Market With Yen Intervention Before BOJ Decision",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-30T22:52:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-30/yen-surges-after-japan-intervened-in-market-again-ahead-of-boj",
+          "tags": [
+            "fx",
+            "jp_broad",
+            "market",
+            "rates"
+          ]
+        },
+        {
           "title": "The Bank of England Has a Trump Problem as Iran War Blocks Rate Cuts",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
@@ -467,32 +546,6 @@
             "macro_risk",
             "market",
             "rates"
-          ]
-        },
-        {
-          "title": "Kevin Warsh Delivers a ‘Perplexing’ Fed Briefing, and Gets a Bronx Cheer",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-30T11:07:54+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-07-30/kevin-warsh-delivers-a-perplexing-fed-briefing-and-gets-a-bronx-cheer",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "‘Talk Is Cheap’: Wall Street Delivers Harsh Verdict on Warsh Fed",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-07-30T15:51:20+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-30/-talk-is-cheap-wall-street-delivers-harsh-verdict-on-warsh-fed",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
           ]
         }
       ]
@@ -566,12 +619,12 @@
       ]
     },
     "geopolitical": {
-      "avgSentiment": -0.082,
-      "negativeCount": 3,
+      "avgSentiment": -0.047,
+      "negativeCount": 2,
       "positiveCount": 2,
       "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 8,
+      "itemCount": 7,
       "isStale": false,
       "topNegativeTitle": "Weak Yen Offers Toyota an Earnings Respite From Tariffs, War",
       "topPositiveTitle": "Ukraine Surprises With Rate Increase to Tame Price Pressures",
@@ -606,19 +659,6 @@
           ]
         },
         {
-          "title": "Fastest Euro-Zone Growth in Over a Year Defies Iran Pressure",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-07-30T05:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-30/french-economy-rebounds-with-0-2-growth-in-second-quarter",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
           "title": "Aon Keeps Margin Edge as Industry Tailwinds Fade",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
@@ -644,6 +684,19 @@
             "market",
             "rates"
           ]
+        },
+        {
+          "title": "Nigeria Central Bank Sees Transition to Inflation Target by 2028",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-30T14:34:53+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-30/nigeria-central-bank-sees-transition-to-inflation-target-by-2028",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
         }
       ]
     }
@@ -656,7 +709,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 3,
+    "excludedCount": 2,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
