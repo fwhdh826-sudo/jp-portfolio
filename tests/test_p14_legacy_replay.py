@@ -687,6 +687,9 @@ def test_control_checks_ctl01_to_ctl07(legacy_bundle, tmp_path, monkeypatch,
 def test_delivered_commit_uses_base_pinned_replay_repository(replay_repositories):
     """E4-T-25 / M-17."""
     replay_target, _ = replay_repositories
+    assert subprocess.check_output(
+        ["git", "rev-parse", "--is-inside-work-tree"], cwd=REPO, text=True
+    ).strip() == "true"
     target_head = subprocess.check_output(
         ["git", "rev-parse", "HEAD"], cwd=replay_target, text=True
     ).strip()
@@ -694,14 +697,31 @@ def test_delivered_commit_uses_base_pinned_replay_repository(replay_repositories
         ["git", "rev-parse", "HEAD"], cwd=REPO, text=True
     ).strip()
     assert target_head == replay.CURRENT_GIT_SHA
+    assert tooling_head == subprocess.check_output(
+        ["git", "rev-parse", "--verify", "HEAD^{commit}"], cwd=REPO, text=True
+    ).strip()
     assert tooling_head != target_head
+    for repository in (replay_target, REPO):
+        assert {
+            path: capture.sha256_file(repository / path)
+            for path in replay.PRODUCTION_SOURCE_HASHES
+        } == replay.PRODUCTION_SOURCE_HASHES
+    parent_head = subprocess.check_output(
+        ["git", "rev-parse", "HEAD^"], cwd=REPO, text=True
+    ).strip()
+    grandparent_head = subprocess.check_output(
+        ["git", "rev-parse", "HEAD^^"], cwd=REPO, text=True
+    ).strip()
+    i2_head = "11dd69b37e0473e10933663178f25145f5b452b2"
+    if tooling_head == i2_head:
+        assert parent_head == replay.TOOLING_PARENT_SHA
+        assert grandparent_head == replay.CURRENT_GIT_SHA
+    else:
+        assert parent_head == i2_head
+        assert grandparent_head == replay.TOOLING_PARENT_SHA
     assert subprocess.check_output(
-        ["git", "branch", "--show-current"], cwd=REPO, text=True
-    ).strip() == "p14-e4-i2"
-    if not subprocess.check_output(["git", "status", "--short"], cwd=REPO, text=True):
-        assert subprocess.check_output(
-            ["git", "rev-parse", "HEAD^"], cwd=REPO, text=True
-        ).strip() == replay.TOOLING_PARENT_SHA
+        ["git", "status", "--short"], cwd=REPO, text=True
+    ).strip() == ""
 
 
 def test_live_replay_target_head_check_remains_strict(legacy_bundle):
