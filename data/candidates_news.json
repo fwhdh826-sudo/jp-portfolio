@@ -1,16 +1,16 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-08-01T10:02:37.317526+09:00",
-  "sourceUpdatedAt": "2026-07-31T23:12:55+00:00",
+  "updatedAt": "2026-08-01T21:32:32.780746+09:00",
+  "sourceUpdatedAt": "2026-08-01T12:19:24+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
       "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 2,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
       "topNegativeTitle": "短時間で急激な円高進む 政府・日銀が再び市場介入か",
       "topPositiveTitle": "短時間で急激な円高進む 政府・日銀が再び市場介入か",
@@ -28,141 +28,145 @@
             "market"
           ],
           "titleJa": "短時間で急激な円高進む 政府・日銀が再び市場介入か"
-        },
-        {
-          "title": "BOJ Data Point to Yen Intervention of Around $53 Billion",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-31T10:04:52+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-31/boj-data-suggest-japan-intervention-of-about-8-45-trillion-yen",
-          "tags": [
-            "fx",
-            "jp_broad",
-            "market"
-          ]
         }
       ]
     },
     "jp_semiconductor": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0.67,
       "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 0,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Chip War, Stanford University: Scarlet & Tom's Must-Read Books",
-      "topPositiveTitle": "Chip War, Stanford University: Scarlet & Tom's Must-Read Books",
+      "topNegativeTitle": "South Korea’s Exports Extend Momentum as Chip Boom Persists",
+      "topPositiveTitle": "South Korea’s Exports Extend Momentum as Chip Boom Persists",
       "items": [
         {
-          "title": "Chip War, Stanford University: Scarlet & Tom's Must-Read Books",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-31T22:23:43+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-07-31/chip-war-stanford-university-scarlet-tom-s-must-read-video",
+          "title": "South Korea’s Exports Extend Momentum as Chip Boom Persists",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-01T00:12:43+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-01/south-korea-s-exports-extend-momentum-as-chip-boom-drives-growth",
           "tags": [
-            "geopolitical",
             "jp_semiconductor",
-            "macro_risk",
-            "market"
+            "market",
+            "us_growth"
           ]
         }
       ]
     },
     "us_broad": {
-      "avgSentiment": 0.033,
-      "negativeCount": 1,
-      "positiveCount": 2,
-      "neutralCount": 7,
+      "avgSentiment": 0.141,
+      "negativeCount": 0,
+      "positiveCount": 3,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 10,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "New York City Spared Downgrade by Fitch and Moody’s, for Now",
-      "topPositiveTitle": "Wall Street Week | Warsh’s Waiting Game, EU Merger Rules, Robotic Surgeons",
+      "topNegativeTitle": "Furman: Warsh Should Talk Less, Act More",
+      "topPositiveTitle": "Fewer Fed Meetings Could Fuel Market Volatility",
       "items": [
         {
-          "title": "New York City Spared Downgrade by Fitch and Moody’s, for Now",
+          "title": "Furman: Warsh Should Talk Less, Act More",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-07-31T21:10:12+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-31/new-york-city-spared-downgrade-by-fitch-and-moody-s-for-now",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-01T12:03:34+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-01/furman-warsh-should-talk-less-act-more-video",
           "tags": [
             "market",
             "us_broad"
           ]
         },
         {
-          "title": "Rich Clarida's Money Splurge: Music, New Album",
+          "title": "Fed’s Credibility Test and J&J’s New Bet",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-31T21:52:19+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-07-31/rich-clarida-s-money-splurge-music-new-album-video",
+          "publishedAt": "2026-08-01T12:00:01+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-08-01/fed-s-credibility-test-and-j-j-s-new-bet",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Warsh Considering Reducing Number of Fed Meetings, NYT Reports",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-31T20:52:38+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-31/warsh-considering-reducing-number-of-fed-meetings-nyt-reports",
           "tags": [
             "market",
             "us_broad"
           ]
         },
         {
-          "title": "Branches of K-Shaped Economy Diverging Even Wider: Clarida",
-          "source": "Bloomberg Markets",
+          "title": "Federal Reserve Unveils Plan Aiming to Boost Mutual Bank Growth",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-31T21:42:04+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-07-31/branches-of-k-shaped-economy-diverging-wider-clarida-video",
+          "publishedAt": "2026-07-31T14:43:44+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-31/federal-reserve-unveils-plan-aiming-to-boost-mutual-bank-growth",
           "tags": [
             "market",
             "us_broad"
           ]
         },
         {
-          "title": "Warsh's 'Ambitious Agenda' Needs Broad Market Understanding: Clarida",
+          "title": "Fewer Fed Meetings Could Fuel Market Volatility",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-31T21:29:33+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-07-31/warsh-s-agenda-needs-broad-market-understanding-clarida-video",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-01T11:57:14+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-01/fewer-fed-meetings-could-fuel-market-volatility-video",
           "tags": [
+            "macro_risk",
             "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Warsh Reportedly Considering Reducing Number of Fed Meetings",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-31T21:19:49+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-07-31/warsh-reported-to-weigh-reducing-number-of-fed-meetings-video",
-          "tags": [
-            "market",
-            "us_broad"
+            "us_broad",
+            "us_growth"
           ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0.5,
       "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "positiveCount": 2,
+      "neutralCount": 0,
+      "sourceCount": 2,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Zitron: \"Everyone Has Been Sold a Lie\" on AI",
-      "topPositiveTitle": "Zitron: \"Everyone Has Been Sold a Lie\" on AI",
+      "topNegativeTitle": "Fewer Fed Meetings Could Fuel Market Volatility",
+      "topPositiveTitle": "South Korea’s Exports Extend Momentum as Chip Boom Persists",
       "items": [
         {
-          "title": "Zitron: \"Everyone Has Been Sold a Lie\" on AI",
+          "title": "Fewer Fed Meetings Could Fuel Market Volatility",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-31T21:42:16+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-07-31/zitron-everyone-has-been-sold-a-lie-on-ai-video",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-01T11:57:14+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-01/fewer-fed-meetings-could-fuel-market-volatility-video",
           "tags": [
+            "macro_risk",
+            "market",
+            "us_broad",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "South Korea’s Exports Extend Momentum as Chip Boom Persists",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-01T00:12:43+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-01/south-korea-s-exports-extend-momentum-as-chip-boom-drives-growth",
+          "tags": [
+            "jp_semiconductor",
             "market",
             "us_growth"
           ]
@@ -170,16 +174,30 @@
       ]
     },
     "global_broad": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
+      "avgSentiment": -0.43,
+      "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Bessent Joins Japan to Help Reverse Months of Yen Losses",
+      "topPositiveTitle": "Bessent Joins Japan to Help Reverse Months of Yen Losses",
+      "items": [
+        {
+          "title": "Bessent Joins Japan to Help Reverse Months of Yen Losses",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.43,
+          "publishedAt": "2026-08-01T06:19:28+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-01/bessent-and-the-fed-help-japan-reverse-months-of-yen-losses",
+          "tags": [
+            "fx",
+            "global_broad",
+            "market"
+          ]
+        }
+      ]
     },
     "gold": {
       "avgSentiment": 0,
@@ -194,29 +212,16 @@
       "items": []
     },
     "reit": {
-      "avgSentiment": 0.33,
+      "avgSentiment": 0,
       "negativeCount": 0,
-      "positiveCount": 1,
+      "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Luxury Real Estate Firm Serhant Expands into Texas Amid Booming Market",
-      "topPositiveTitle": "Luxury Real Estate Firm Serhant Expands into Texas Amid Booming Market",
-      "items": [
-        {
-          "title": "Luxury Real Estate Firm Serhant Expands into Texas Amid Booming Market",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-07-31T21:40:35+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-07-31/luxury-real-estate-firm-serhant-expands-into-texas-video",
-          "tags": [
-            "market",
-            "reit"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "dividend": {
       "avgSentiment": 0,
@@ -231,28 +236,43 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.112,
-      "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 4,
+      "avgSentiment": 0.222,
+      "negativeCount": 0,
+      "positiveCount": 3,
+      "neutralCount": 6,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 9,
       "isStale": false,
-      "topNegativeTitle": "Japan PM Takaichi Faces Biggest Test Yet as Yen Sinks, Approval Ratings Drop",
+      "topNegativeTitle": "Indian Oil Buys Record Spot Market Crude on Mideast Supply Hit",
       "topPositiveTitle": "US Consumer Sentiment Rises to a Five-Month High in July",
       "items": [
         {
-          "title": "Japan PM Takaichi Faces Biggest Test Yet as Yen Sinks, Approval Ratings Drop",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-07-30T21:00:23+00:00",
-          "url": "https://www.bloomberg.com/news/features/2026-07-30/japan-pm-takaichi-faces-biggest-test-yet-as-yen-sinks-approval-ratings-drop",
+          "title": "Indian Oil Buys Record Spot Market Crude on Mideast Supply Hit",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-01T09:30:37+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-01/indian-oil-buys-record-spot-market-crude-on-mideast-supply-hit",
           "tags": [
-            "fx",
+            "commodity",
             "geopolitical",
             "macro_risk",
             "market"
+          ]
+        },
+        {
+          "title": "World Economy Latest: Central Banks Hold Rates Steady",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-01T09:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-01/world-economy-latest-central-banks-hold-rates-steady",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "rates"
           ]
         },
         {
@@ -265,20 +285,6 @@
           "tags": [
             "commodity",
             "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Chip War, Stanford University: Scarlet & Tom's Must-Read Books",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-31T22:23:43+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-07-31/chip-war-stanford-university-scarlet-tom-s-must-read-video",
-          "tags": [
-            "geopolitical",
-            "jp_semiconductor",
             "macro_risk",
             "market"
           ]
@@ -313,39 +319,26 @@
       ]
     },
     "fx": {
-      "avgSentiment": 0.146,
-      "negativeCount": 2,
+      "avgSentiment": 0.249,
+      "negativeCount": 1,
       "positiveCount": 3,
       "neutralCount": 3,
       "sourceCount": 3,
-      "itemCount": 8,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "Yen at Levels When Top Gun Topped Box Office Sparks Currency Dogfight",
-      "topPositiveTitle": "Yen Gains on Intervention, Reports of Buying By Both US, Japan",
+      "topNegativeTitle": "Bessent Joins Japan to Help Reverse Months of Yen Losses",
+      "topPositiveTitle": "Yen Gains on Intervention, Reports of Buying by Both US, Japan",
       "items": [
         {
-          "title": "Yen at Levels When Top Gun Topped Box Office Sparks Currency Dogfight",
-          "source": "Bloomberg Economics",
+          "title": "Bessent Joins Japan to Help Reverse Months of Yen Losses",
+          "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-07-31T11:01:58+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-07-31/yen-at-levels-when-top-gun-topped-box-office-sparks-currency-dogfight",
+          "sentimentScore": -0.43,
+          "publishedAt": "2026-08-01T06:19:28+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-01/bessent-and-the-fed-help-japan-reverse-months-of-yen-losses",
           "tags": [
             "fx",
-            "market"
-          ]
-        },
-        {
-          "title": "Japan PM Takaichi Faces Biggest Test Yet as Yen Sinks, Approval Ratings Drop",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-07-30T21:00:23+00:00",
-          "url": "https://www.bloomberg.com/news/features/2026-07-30/japan-pm-takaichi-faces-biggest-test-yet-as-yen-sinks-approval-ratings-drop",
-          "tags": [
-            "fx",
-            "geopolitical",
-            "macro_risk",
+            "global_broad",
             "market"
           ]
         },
@@ -364,44 +357,84 @@
           "titleJa": "短時間で急激な円高進む 政府・日銀が再び市場介入か"
         },
         {
-          "title": "BOJ Data Point to Yen Intervention of Around $53 Billion",
-          "source": "Bloomberg Economics",
+          "title": "India Push for Overseas Capital Draws Over $40 Billion, RBI Says",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-31T10:04:52+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-31/boj-data-suggest-japan-intervention-of-about-8-45-trillion-yen",
+          "publishedAt": "2026-08-01T05:14:23+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-01/india-push-for-overseas-capital-draws-over-40-billion-rbi-says",
           "tags": [
+            "commodity",
             "fx",
-            "jp_broad",
             "market"
           ]
         },
         {
-          "title": "Dollar Logs Worst Week in Over Three Months Amid Fed Doubts",
+          "title": "Danantara Dollar Bond Plan Grapples With Global Volatility",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-31T09:30:55+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-31/dollar-heads-for-worst-week-in-three-months-as-fed-doubts-grow",
+          "publishedAt": "2026-07-30T09:14:25+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-30/danantara-dollar-debt-plan-grapples-with-global-bond-volatility",
           "tags": [
             "fx",
-            "market",
-            "us_broad"
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Colombia Surprises With Rate Hold But Signals Hikes Aren’t Over",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.5,
+          "publishedAt": "2026-07-31T18:43:45+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-31/colombia-unexpectedly-keeps-rates-steady-despite-price-pressures",
+          "tags": [
+            "fx",
+            "market"
           ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": 0.2,
+      "avgSentiment": 0.066,
       "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 3,
-      "sourceCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 4,
+      "sourceCount": 2,
       "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "How Is Student Debt Impacting Your Finances? Share Your Story",
-      "topPositiveTitle": "Euro-Area Inflation Strengthens as US-Iran Strikes Boost Oil",
+      "topNegativeTitle": "Fed’s Credibility Test and J&J’s New Bet",
+      "topPositiveTitle": "Fed Dissenters Say Rate Hikes Needed to Battle Inflation Threat",
       "items": [
+        {
+          "title": "Fed’s Credibility Test and J&J’s New Bet",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-01T12:00:01+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-08-01/fed-s-credibility-test-and-j-j-s-new-bet",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "World Economy Latest: Central Banks Hold Rates Steady",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-01T09:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-01/world-economy-latest-central-banks-hold-rates-steady",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "rates"
+          ]
+        },
         {
           "title": "How Is Student Debt Impacting Your Finances? Share Your Story",
           "source": "Bloomberg Economics",
@@ -413,20 +446,6 @@
             "macro_risk",
             "market",
             "rates"
-          ]
-        },
-        {
-          "title": "Treasuries Fall as Fed Dissenters Flag Risks, Oil Prices Climb",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-31T15:35:03+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-31/treasuries-fall-as-fed-dissenters-flag-risks-oil-prices-climb",
-          "tags": [
-            "commodity",
-            "market",
-            "rates",
-            "us_broad"
           ]
         },
         {
@@ -453,41 +472,63 @@
             "rates",
             "us_broad"
           ]
-        },
-        {
-          "title": "Euro-Area Inflation Strengthens as US-Iran Strikes Boost Oil",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-07-31T09:03:59+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-31/euro-area-inflation-strengthens-as-us-iran-strikes-boost-oil",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "market",
-            "rates"
-          ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.333,
-      "negativeCount": 0,
-      "positiveCount": 3,
-      "neutralCount": 3,
+      "avgSentiment": 0.074,
+      "negativeCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 7,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 9,
       "isStale": false,
-      "topNegativeTitle": "Indian Firms Plan Fresh Price Hikes, Testing Inflation Outlook",
+      "topNegativeTitle": "Europe’s Endless Heat Waves Imperil Once Reliable Power Sources",
       "topPositiveTitle": "Canada Economy Tracking 3.4% Growth as Energy Sector Booms",
       "items": [
         {
-          "title": "Indian Firms Plan Fresh Price Hikes, Testing Inflation Outlook",
+          "title": "Europe’s Endless Heat Waves Imperil Once Reliable Power Sources",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-01T09:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-01/europe-s-endless-heat-waves-imperil-once-reliable-power-sources",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "Turkey Said to Extend Iraq Oil Pipeline Deal by One Year",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-31T23:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-31/indian-firms-plan-fresh-price-hikes-testing-inflation-outlook",
+          "publishedAt": "2026-08-01T11:52:18+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-01/turkey-said-to-extend-iraq-oil-pipeline-deal-by-one-year",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "Tanker Carrying Qatari LNG Struck While Transiting Hormuz",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-01T10:25:23+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-01/tanker-carrying-qatari-lng-struck-while-transiting-hormuz",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "Indian Oil Buys Record Spot Market Crude on Mideast Supply Hit",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-01T09:30:37+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-01/indian-oil-buys-record-spot-market-crude-on-mideast-supply-hit",
           "tags": [
             "commodity",
             "geopolitical",
@@ -496,55 +537,16 @@
           ]
         },
         {
-          "title": "Treasuries Fall as Fed Dissenters Flag Risks, Oil Prices Climb",
+          "title": "World Economy Latest: Central Banks Hold Rates Steady",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-31T15:35:03+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-31/treasuries-fall-as-fed-dissenters-flag-risks-oil-prices-climb",
-          "tags": [
-            "commodity",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "BOE’s Pill Warns of Energy Price Volatility Persisting Into 2027",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-31T13:34:58+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-31/boe-s-pill-warns-of-energy-price-volatility-persisting-into-2027",
+          "publishedAt": "2026-08-01T09:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-01/world-economy-latest-central-banks-hold-rates-steady",
           "tags": [
             "commodity",
             "geopolitical",
             "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Latest Oil Market News and Analysis for July 31",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-07-30T22:04:24+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-30/latest-oil-market-news-and-analysis-for-july-31",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "Euro-Area Inflation Strengthens as US-Iran Strikes Boost Oil",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-07-31T09:03:59+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-31/euro-area-inflation-strengthens-as-us-iran-strikes-boost-oil",
-          "tags": [
-            "commodity",
-            "geopolitical",
             "market",
             "rates"
           ]
@@ -552,28 +554,43 @@
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.191,
-      "negativeCount": 1,
-      "positiveCount": 2,
+      "avgSentiment": 0.334,
+      "negativeCount": 0,
+      "positiveCount": 3,
       "neutralCount": 4,
       "sourceCount": 2,
       "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "Japan PM Takaichi Faces Biggest Test Yet as Yen Sinks, Approval Ratings Drop",
+      "topNegativeTitle": "Indian Oil Buys Record Spot Market Crude on Mideast Supply Hit",
       "topPositiveTitle": "US Consumer Sentiment Rises to a Five-Month High in July",
       "items": [
         {
-          "title": "Japan PM Takaichi Faces Biggest Test Yet as Yen Sinks, Approval Ratings Drop",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-07-30T21:00:23+00:00",
-          "url": "https://www.bloomberg.com/news/features/2026-07-30/japan-pm-takaichi-faces-biggest-test-yet-as-yen-sinks-approval-ratings-drop",
+          "title": "Indian Oil Buys Record Spot Market Crude on Mideast Supply Hit",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-01T09:30:37+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-01/indian-oil-buys-record-spot-market-crude-on-mideast-supply-hit",
           "tags": [
-            "fx",
+            "commodity",
             "geopolitical",
             "macro_risk",
             "market"
+          ]
+        },
+        {
+          "title": "World Economy Latest: Central Banks Hold Rates Steady",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-01T09:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-01/world-economy-latest-central-banks-hold-rates-steady",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "rates"
           ]
         },
         {
@@ -586,20 +603,6 @@
           "tags": [
             "commodity",
             "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Chip War, Stanford University: Scarlet & Tom's Must-Read Books",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-31T22:23:43+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-07-31/chip-war-stanford-university-scarlet-tom-s-must-read-video",
-          "tags": [
-            "geopolitical",
-            "jp_semiconductor",
             "macro_risk",
             "market"
           ]
@@ -619,12 +622,12 @@
           ]
         },
         {
-          "title": "Taiwan’s Economy Clocks Fastest First-Half Growth Since 1976",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-31T08:03:37+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-31/taiwan-s-growth-tops-forecasts-even-as-ai-buildout-worries-mount",
+          "title": "Hamas Disarmament Plan Tests Israel's Next Move",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-01T12:11:39+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-01/hamas-disarmament-plan-tests-israel-s-next-move-video",
           "tags": [
             "geopolitical",
             "market"
