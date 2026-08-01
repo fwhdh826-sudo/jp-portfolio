@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-08-01T07:35:32.089901+09:00",
-  "sourceUpdatedAt": "2026-07-31T22:23:43+00:00",
+  "updatedAt": "2026-08-01T10:02:37.317526+09:00",
+  "sourceUpdatedAt": "2026-07-31T23:12:55+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -72,7 +72,7 @@
       ]
     },
     "us_broad": {
-      "avgSentiment": 0.1,
+      "avgSentiment": 0.033,
       "negativeCount": 1,
       "positiveCount": 2,
       "neutralCount": 7,
@@ -80,7 +80,7 @@
       "itemCount": 10,
       "isStale": false,
       "topNegativeTitle": "New York City Spared Downgrade by Fitch and Moody’s, for Now",
-      "topPositiveTitle": "Yen Gains as US Banks Asked by New York Fed to Check Key Rate",
+      "topPositiveTitle": "Wall Street Week | Warsh’s Waiting Game, EU Merger Rules, Robotic Surgeons",
       "items": [
         {
           "title": "New York City Spared Downgrade by Fitch and Moody’s, for Now",
@@ -231,12 +231,12 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.134,
+      "avgSentiment": 0.112,
       "negativeCount": 1,
       "positiveCount": 1,
-      "neutralCount": 3,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 6,
       "isStale": false,
       "topNegativeTitle": "Japan PM Takaichi Faces Biggest Test Yet as Yen Sinks, Approval Ratings Drop",
       "topPositiveTitle": "US Consumer Sentiment Rises to a Five-Month High in July",
@@ -250,6 +250,20 @@
           "url": "https://www.bloomberg.com/news/features/2026-07-30/japan-pm-takaichi-faces-biggest-test-yet-as-yen-sinks-approval-ratings-drop",
           "tags": [
             "fx",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Indian Firms Plan Fresh Price Hikes, Testing Inflation Outlook",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-31T23:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-31/indian-firms-plan-fresh-price-hikes-testing-inflation-outlook",
+          "tags": [
+            "commodity",
             "geopolitical",
             "macro_risk",
             "market"
@@ -295,19 +309,6 @@
             "macro_risk",
             "market"
           ]
-        },
-        {
-          "title": "US Consumer Sentiment Rises to a Five-Month High in July",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-07-31T14:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-31/us-consumer-sentiment-rises-to-five-month-high-on-broad-pickup",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
         }
       ]
     },
@@ -320,7 +321,7 @@
       "itemCount": 8,
       "isStale": false,
       "topNegativeTitle": "Yen at Levels When Top Gun Topped Box Office Sparks Currency Dogfight",
-      "topPositiveTitle": "Yen Gains as US Banks Asked by New York Fed to Check Key Rate",
+      "topPositiveTitle": "Yen Gains on Intervention, Reports of Buying By Both US, Japan",
       "items": [
         {
           "title": "Yen at Levels When Top Gun Topped Box Office Sparks Currency Dogfight",
@@ -441,7 +442,7 @@
           ]
         },
         {
-          "title": "Fed Dissenters Say Rate Hikes Needed to Tame High Inflation",
+          "title": "Fed Dissenters Say Rate Hikes Needed to Battle Inflation Threat",
           "source": "Bloomberg Economics",
           "sentiment": "positive",
           "sentimentScore": 0.33,
@@ -470,16 +471,30 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.388,
+      "avgSentiment": 0.333,
       "negativeCount": 0,
-      "positiveCount": 4,
-      "neutralCount": 2,
+      "positiveCount": 3,
+      "neutralCount": 3,
       "sourceCount": 2,
       "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Treasuries Fall as Fed Dissenters Flag Risks, Oil Prices Climb",
+      "topNegativeTitle": "Indian Firms Plan Fresh Price Hikes, Testing Inflation Outlook",
       "topPositiveTitle": "Canada Economy Tracking 3.4% Growth as Energy Sector Booms",
       "items": [
+        {
+          "title": "Indian Firms Plan Fresh Price Hikes, Testing Inflation Outlook",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-31T23:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-31/indian-firms-plan-fresh-price-hikes-testing-inflation-outlook",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
         {
           "title": "Treasuries Fall as Fed Dissenters Flag Risks, Oil Prices Climb",
           "source": "Bloomberg Economics",
@@ -505,19 +520,6 @@
             "commodity",
             "geopolitical",
             "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Hedge Funds Add Bullish Bets on Oil at Fastest Pace Since March",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-07-31T20:59:57+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-31/hedge-funds-add-bullish-bets-on-oil-at-fastest-pace-since-march",
-          "tags": [
-            "commodity",
-            "geopolitical",
             "market"
           ]
         },
@@ -550,10 +552,10 @@
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.239,
+      "avgSentiment": 0.191,
       "negativeCount": 1,
-      "positiveCount": 3,
-      "neutralCount": 3,
+      "positiveCount": 2,
+      "neutralCount": 4,
       "sourceCount": 2,
       "itemCount": 7,
       "isStale": false,
@@ -569,6 +571,20 @@
           "url": "https://www.bloomberg.com/news/features/2026-07-30/japan-pm-takaichi-faces-biggest-test-yet-as-yen-sinks-approval-ratings-drop",
           "tags": [
             "fx",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Indian Firms Plan Fresh Price Hikes, Testing Inflation Outlook",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-31T23:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-31/indian-firms-plan-fresh-price-hikes-testing-inflation-outlook",
+          "tags": [
+            "commodity",
             "geopolitical",
             "macro_risk",
             "market"
@@ -610,19 +626,6 @@
           "publishedAt": "2026-07-31T08:03:37+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-07-31/taiwan-s-growth-tops-forecasts-even-as-ai-buildout-worries-mount",
           "tags": [
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "Hedge Funds Add Bullish Bets on Oil at Fastest Pace Since March",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-07-31T20:59:57+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-31/hedge-funds-add-bullish-bets-on-oil-at-fastest-pace-since-march",
-          "tags": [
-            "commodity",
             "geopolitical",
             "market"
           ]
