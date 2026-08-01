@@ -1,6 +1,6 @@
 import { create, type StateCreator } from 'zustand'
 import { createStore, type StoreApi } from 'zustand/vanilla'
-import type { AppState, Holding, Trust, TabId, StockScoreRecord, FundPhase7Map, OfficialDecision, OfficialDecisionItem, OfficialDecisionAction, PortfolioPolicy, CashAssumptions, CsvImportProvenance, CsvSyncSummary, SystemState } from '../types'
+import type { AppState, Holding, Trust, TabId, StockScoreRecord, FundPhase7Map, OfficialDecision, OfficialDecisionItem, OfficialDecisionAction, PortfolioPolicy, CashAssumptions, CsvImportProvenance, CsvSyncSummary, SystemState, AllocationPlanSnapshotState } from '../types'
 import { DEFAULT_PORTFOLIO_POLICY, DEFAULT_CASH_ASSUMPTIONS } from '../types'
 import { INITIAL_HOLDINGS } from '../constants/holdings'
 import { INITIAL_TRUST } from '../constants/trust'
@@ -9,6 +9,9 @@ import {
   INITIAL_CASH,
   INITIAL_CASH_RESERVE,
   INITIAL_ADD_ROOM,
+  TARGET_ALLOCATION_BEAR,
+  TARGET_ALLOCATION_BULL,
+  TARGET_ALLOCATION_NEUTRAL,
 } from '../constants/market'
 import { refreshAllData as loadPublishedData, DEFAULT_CANDIDATES_NEWS_DATA, DEFAULT_CANDIDATES_STOCKS_DATA, DEFAULT_REGIME_STATE, DEFAULT_SAFE_MODE_SNAPSHOT, DEFAULT_TIER_A_VIOLATIONS_SNAPSHOT, DEFAULT_TIER_A_ALERTS_SNAPSHOT } from '../services/loadStaticData'
 import { computeAnalysis, calcPortfolioMetrics } from '../domain/analysis/computeAnalysis'
@@ -63,7 +66,7 @@ import { buildTrustPortfolioPlan } from '../domain/optimization/trustPortfolio'
 import { buildZeroBasePlan } from '../domain/optimization/zeroBase'
 import { buildStockPortfolioPlan } from '../domain/optimization/stockPortfolio'
 import { buildCommitteeDecision } from '../domain/analysis/committeeDecision'
-import { selectMarketDataQuality, selectEffectiveCashAssumptions, selectEffectiveSafeModeActive, selectCashAssumptionsFreshness } from './selectors'
+import { selectMarketDataQuality, selectEffectiveCashAssumptions, selectEffectiveSafeModeActive, selectCashAssumptionsFreshness, selectSafeModeDataQuality } from './selectors'
 import { buildCandidateUniverse, scoreCandidates, buildStockCandidatePlan, computeJpStockHeadroom } from '../domain/candidates'
 import type { CandidateItem } from '../domain/candidates'
 import { computeRoleExposureByRole } from '../domain/candidates/roleExposure'
@@ -91,6 +94,17 @@ import {
   type PortfolioSnapshotHolding,
 } from '../utils/portfolioSnapshotTransfer'
 import { computeSnapshotGenerationIdentity } from '../utils/snapshotGenerationIdentity'
+import { sha256Utf8Hex } from '../domain/csv/csvSemanticIdentity'
+import {
+  ALLOCATION_PLAN_AUTHORITY_VERSION,
+  type AllocationPlanInput,
+  type AllocationPlanSnapshot,
+  type CandidateInput as AllocationCandidateInput,
+  type InstrumentInput as AllocationInstrumentInput,
+} from '../types/allocationPlan'
+import type { PortfolioFitInputFreshness } from '../types/candidatePortfolioFit'
+import { buildAllocationPlanSnapshot } from '../domain/allocation'
+import { projectAllocationPlanSnapshot, snapshotExecutability } from './allocationPlanSelectors'
 import {
   createManualMutationFailure,
   createManualMutationSuccess,
@@ -1732,6 +1746,236 @@ function candidateToOfficialDecisionItem(candidate: CandidateItem): OfficialDeci
   }
 }
 
+// ── HR-I2 AllocationPlanSnapshot input adapter ──────────────────────
+export interface AllocationPlanInputAdapterOptions {
+  generatedAt: string
+  holdingsFreshness?: PortfolioFitInputFreshness
+  sourceHoldingsSnapshotId?: string | null
+  sourceSettingsVersion?: string | null
+  instruments?: readonly AllocationInstrumentInput[]
+  candidates?: readonly AllocationCandidateInput[]
+  cash?: Partial<AllocationPlanInput['cash']>
+  budgets?: Partial<AllocationPlanInput['budgets']>
+  policy?: Partial<AllocationPlanInput['policy']>
+  safetyState?: Partial<AllocationPlanInput['safetyState']>
+}
+
+const PORTFOLIO_SOURCE_STALE_MS = 90 * 24 * 60 * 60 * 1000
+
+function assessAllocationHoldingsFreshness(state: AppState, nowMs: number): PortfolioFitInputFreshness {
+  if (state.system.crossTabInvalidation?.status === 'stale') return 'stale'
+  const provenance = state.system.csvImportProvenance ?? null
+  if (state.system.csvLastImportedAt === null && provenance === null) return 'unavailable'
+  if (provenance === null || provenance.sourceAsOf === null) return 'partial'
+  if (provenance.sourceAsOfConfidence !== 'authoritative') return 'partial'
+  const sourceMs = Date.parse(provenance.sourceAsOf)
+  if (!Number.isFinite(sourceMs) || sourceMs > nowMs) return 'invalid'
+  return nowMs - sourceMs > PORTFOLIO_SOURCE_STALE_MS ? 'stale' : 'fresh'
+}
+
+function collapseAllocationHoldingsFreshness(
+  freshness: PortfolioFitInputFreshness,
+): AllocationPlanInput['safetyState']['holdings'] {
+  if (freshness === 'fresh' || freshness === 'partial') return freshness
+  return 'stale'
+}
+
+function allocationAssetClassForTrust(policy: Trust['policy']): AllocationInstrumentInput['assetClass'] {
+  if (policy === 'JAPAN_SHORTTERM') return 'JP_TRUST'
+  if (policy === 'GOLD') return 'GOLD'
+  return 'OVERSEAS_TRUST'
+}
+
+function defaultAllocationInstruments(state: AppState): AllocationInstrumentInput[] {
+  return [
+    ...state.holdings.map(holding => ({
+      instrumentId: `stock:${holding.code}`,
+      assetClass: 'JP_STOCK' as const,
+      kind: 'jp_stock' as const,
+      relationship: 'already_held' as const,
+      currentAmount: holding.eval,
+      role: holding.sector,
+      reason: 'canonical holding projection',
+      priceJpy: holding.currentPrice ?? null,
+      lotSizeShares: null,
+    })),
+    ...state.trust.map(trust => ({
+      instrumentId: `trust:${trust.id}`,
+      assetClass: allocationAssetClassForTrust(trust.policy),
+      kind: trust.policy === 'JAPAN_SHORTTERM'
+        ? 'jp_trust' as const
+        : trust.policy === 'GOLD'
+          ? 'gold' as const
+          : 'global_trust' as const,
+      relationship: trust.eval > 0 ? 'already_held' as const : 'new_to_portfolio' as const,
+      currentAmount: trust.eval,
+      role: trust.policy,
+      reason: 'canonical trust projection',
+      priceJpy: null,
+      lotSizeShares: null,
+    })),
+  ]
+}
+
+/**
+ * Builds one coherent engine generation from one captured AppState object. It never calls get(),
+ * reads storage, or reconstructs numbers from presentation strings.
+ */
+export function buildAllocationPlanInput(
+  state: AppState,
+  options: AllocationPlanInputAdapterOptions,
+): AllocationPlanInput | null {
+  const nowMs = Date.parse(options.generatedAt)
+  if (!Number.isFinite(nowMs)) return null
+  try {
+    const sourceHoldingsSnapshotId = options.sourceHoldingsSnapshotId === undefined
+      ? computeSnapshotGenerationIdentity({
+          holdings: state.holdings,
+          trust: state.trust,
+          portfolioPolicy: null,
+          cashAssumptions: null,
+          csvImportedAt: state.system.csvLastImportedAt,
+          csvImportProvenance: state.system.csvImportProvenance ?? null,
+        })
+      : options.sourceHoldingsSnapshotId
+    const sourceSettingsVersion = options.sourceSettingsVersion === undefined
+      ? computeSnapshotGenerationIdentity({
+          holdings: [],
+          trust: [],
+          portfolioPolicy: state.portfolioPolicy,
+          cashAssumptions: state.cashAssumptions,
+          csvImportedAt: null,
+          csvImportProvenance: null,
+        })
+      : options.sourceSettingsVersion
+    if (!sourceHoldingsSnapshotId || !sourceSettingsVersion) return null
+
+    const effectiveCash = selectEffectiveCashAssumptions(state)
+    const cashFreshness = selectCashAssumptionsFreshness(state, nowMs)
+    const grossCash = effectiveCash.cashTotal
+    const holdingsFreshness = options.holdingsFreshness
+      ?? assessAllocationHoldingsFreshness(state, nowMs)
+    const crossTab = state.system.crossTabInvalidation?.status === 'stale' ? 'stale' : 'current'
+    const dqSuppressed = selectMarketDataQuality(state, nowMs).isSuppressed
+    const noTrade = checkNoTrade(state)
+    const safeModeQuality = selectSafeModeDataQuality(state, nowMs)
+    const safeMode = state.safeMode.safe_mode.active
+      ? 'active'
+      : safeModeQuality.level === 'unavailable'
+        ? 'unavailable'
+        : safeModeQuality.isStale ? 'stale' : 'inactive'
+    const tierA = state.tierAViolations.violations.some(item => item.triggered)
+      ? 'hard'
+      : state.tierAAlerts.alerts.some(item => item.triggered) ? 'soft' : 'normal'
+    const targetAllocation = state.market.regime === 'bull'
+      ? TARGET_ALLOCATION_BULL
+      : state.market.regime === 'bear' ? TARGET_ALLOCATION_BEAR : TARGET_ALLOCATION_NEUTRAL
+    const instruments = [...(options.instruments ?? defaultAllocationInstruments(state))]
+    const shortTermBudget = Math.min(grossCash, 5_500_000)
+    const basePolicy: AllocationPlanInput['policy'] = {
+      jpStockMaxRatio: state.portfolioPolicy.jpStockMaxRatio,
+      jpStockMaxAmountJpy: null,
+      jpStockCapRegimeMode: 'policy_only',
+      assetClassPolicies: [
+        { assetClass: 'JP_STOCK', targetRatio: state.portfolioPolicy.jpStockMaxRatio, maximumRatio: state.portfolioPolicy.jpStockMaxRatio, maximumAmountJpy: null },
+        { assetClass: 'JP_TRUST', targetRatio: targetAllocation.JP_TRUST, maximumRatio: null, maximumAmountJpy: null },
+        { assetClass: 'OVERSEAS_TRUST', targetRatio: targetAllocation.OVERSEAS_TRUST, maximumRatio: null, maximumAmountJpy: null },
+        { assetClass: 'GOLD', targetRatio: targetAllocation.GOLD, maximumRatio: null, maximumAmountJpy: null },
+      ],
+      instrumentPolicies: instruments.map(instrument => ({
+        instrumentId: instrument.instrumentId,
+        targetAmountJpy: null,
+        maxPositionAmountJpy: null,
+        sectorHeadroomJpy: null,
+        concentrationHeadroomJpy: null,
+        liquidityHeadroomJpy: null,
+        defaultMaxPositionShare: 0.25,
+        defaultMaxSectorShare: 0.35,
+        minimumPurchaseUnitJpy: 10_000,
+      })),
+      roundingPolicies: [
+        { kind: 'jp_stock', purchaseUnitJpy: 10_000 },
+        { kind: 'jp_trust', purchaseUnitJpy: 10_000 },
+        { kind: 'global_trust', purchaseUnitJpy: 10_000 },
+        { kind: 'gold', purchaseUnitJpy: 10_000 },
+      ],
+      allocationMode: 'RANK_SEQUENTIAL_SINGLE_EXECUTION',
+      buyNewBaseShare: 0.25,
+      buyMoreBaseShare: 0.5,
+      confidenceUnknownFactor: 0.5,
+      executionPriceBufferRatio: 0.03,
+    }
+    const candidateIdentity = (options.candidates ?? []).map(candidate => ({ ...candidate }))
+    const instrumentIdentity = instruments.map(instrument => ({ ...instrument }))
+    const snapshotId = `allocation-plan:${sha256Utf8Hex(JSON.stringify({
+      authorityVersion: ALLOCATION_PLAN_AUTHORITY_VERSION,
+      generatedAt: options.generatedAt,
+      sourceHoldingsSnapshotId,
+      sourceSettingsVersion,
+      candidateArtifactGeneratedAt: state.candidateFunnel?._meta.generatedAt ?? null,
+      candidateIdentity,
+      instrumentIdentity,
+    }))}`
+    const input: AllocationPlanInput = {
+      generatedAt: options.generatedAt,
+      snapshotId,
+      authorityVersion: ALLOCATION_PLAN_AUTHORITY_VERSION,
+      sourceHoldingsSnapshotId,
+      sourceSettingsVersion,
+      cash: {
+        grossCash,
+        safetyReserve: 0,
+        pendingOrderCash: null,
+        dataUncertaintyReserve: 0,
+        ...options.cash,
+      },
+      budgets: {
+        shortTermBudget,
+        longTermBudget: Math.max(0, grossCash - shortTermBudget),
+        ...options.budgets,
+      },
+      policy: { ...basePolicy, ...options.policy },
+      assetClasses: [
+        { assetClass: 'JP_STOCK', currentAmount: state.holdings.reduce((sum, item) => sum + item.eval, 0) },
+        { assetClass: 'JP_TRUST', currentAmount: state.trust.filter(item => item.policy === 'JAPAN_SHORTTERM').reduce((sum, item) => sum + item.eval, 0) },
+        { assetClass: 'OVERSEAS_TRUST', currentAmount: state.trust.filter(item => item.policy === 'OVERSEAS_LONGTERM').reduce((sum, item) => sum + item.eval, 0) },
+        { assetClass: 'GOLD', currentAmount: state.trust.filter(item => item.policy === 'GOLD').reduce((sum, item) => sum + item.eval, 0) },
+      ],
+      instruments,
+      candidates: [...(options.candidates ?? [])],
+      safetyState: {
+        safeMode,
+        marketData: dqSuppressed ? 'stale' : 'fresh',
+        holdings: collapseAllocationHoldingsFreshness(holdingsFreshness),
+        cash: effectiveCash.source !== 'manual' ? 'unknown' : cashFreshness.isStale ? 'stale' : 'known_fresh',
+        target: 'known',
+        pendingOrders: 'unknown',
+        candidateArtifact: state.candidateFunnel === null ? 'invalid' : 'fresh',
+        dqViolation: dqSuppressed,
+        tierA,
+        crossTab,
+        noTrade: noTrade.mode,
+        ...options.safetyState,
+      },
+      regime: state.market.regime,
+      marketMode: noTrade.mode,
+    }
+    return input
+  } catch {
+    return null
+  }
+}
+
+function allocationPlanStatus(
+  snapshot: AllocationPlanSnapshot | null,
+  holdingsFreshness: AllocationPlanInput['safetyState']['holdings'] | null,
+): AllocationPlanSnapshotState {
+  if (snapshot === null) return 'invalid'
+  if (holdingsFreshness === 'stale') return 'stale'
+  if (holdingsFreshness === 'partial') return 'estimate_only'
+  return snapshotExecutability(snapshot) === 'EXECUTABLE' ? 'current' : 'blocked'
+}
+
 // ── runFullAnalysis（内部ヘルパー）───────────────────────────
 export function runFullAnalysis(
   state: AppState,
@@ -1739,8 +1983,9 @@ export function runFullAnalysis(
     requireOfficialDecision?: boolean
     nowMs?: number
     trustShortInput?: TrustShortAnalysisInput
+    allocationPlanInput?: Omit<AllocationPlanInputAdapterOptions, 'generatedAt'>
   } = {},
-): Pick<AppState, 'analysis' | 'metrics' | 'holdings' | 'trust' | 'universe' | 'learning' | 'zeroPlan' | 'stockPlan' | 'trustPlan' | 'officialDecision' | 'stockCandidates'> {
+): Pick<AppState, 'analysis' | 'metrics' | 'holdings' | 'trust' | 'universe' | 'learning' | 'zeroPlan' | 'stockPlan' | 'trustPlan' | 'officialDecision' | 'stockCandidates' | 'allocationPlan' | 'allocationPlanStatus'> {
   const nowMs = options.nowMs ?? Date.now()
   const nowIso = new Date(nowMs).toISOString()
   const trustShortInput = options.trustShortInput ?? captureTrustShortAnalysisInput(nowMs)
@@ -1960,7 +2205,45 @@ export function runFullAnalysis(
     throw new OfficialDecisionGenerationError('officialDecisionが生成されませんでした')
   }
 
-  return { analysis, metrics, holdings, trust, universe, learning, zeroPlan, stockPlan, trustPlan, officialDecision, stockCandidates }
+  // HR-I2 single writer: one captured generation is adapted, calculated, validated, and
+  // returned atomically with the legacy analysis fields. No selector/action writes this field.
+  let allocationPlan: AllocationPlanSnapshot | null = null
+  let allocationPlanStatusValue: AllocationPlanSnapshotState = 'invalid'
+  const allocationState: AppState = {
+    ...state,
+    analysis,
+    metrics,
+    holdings,
+    trust,
+    universe,
+    learning,
+    zeroPlan,
+    stockPlan,
+    trustPlan,
+    officialDecision,
+    stockCandidates,
+  }
+  const allocationInput = buildAllocationPlanInput(allocationState, {
+    generatedAt: nowIso,
+    ...options.allocationPlanInput,
+  })
+  if (allocationInput !== null) {
+    try {
+      allocationPlan = projectAllocationPlanSnapshot(buildAllocationPlanSnapshot(allocationInput))
+      allocationPlanStatusValue = allocationPlanStatus(
+        allocationPlan,
+        allocationInput.safetyState.holdings,
+      )
+    } catch {
+      allocationPlan = null
+      allocationPlanStatusValue = 'invalid'
+    }
+  }
+
+  return {
+    analysis, metrics, holdings, trust, universe, learning, zeroPlan, stockPlan, trustPlan,
+    officialDecision, stockCandidates, allocationPlan, allocationPlanStatus: allocationPlanStatusValue,
+  }
 }
 
 type FullAnalysisResult = ReturnType<typeof runFullAnalysis>
@@ -2377,6 +2660,8 @@ const createAppStoreStateCreator = (
   zeroPlan: null,
   stockPlan: null,
   trustPlan: null,
+  allocationPlan: null,
+  allocationPlanStatus: 'absent',
   // P4-A9c-data-4c: role-unit candidates news（observability用・意思決定未接続）
   candidatesNews: DEFAULT_CANDIDATES_NEWS_DATA,
   // P5-B002a: 新規個別株候補（市場公開情報のみ。observability用・officialDecision未接続）
