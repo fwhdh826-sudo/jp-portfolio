@@ -6,8 +6,12 @@ import {
   type AssetClassPlan,
 } from '../types/allocationPlan'
 import {
+  BLOCKED_REASON_ORDER,
+  LIMITING_FACTOR_ORDER,
+  WARNING_REASON_ORDER,
   classFullCause,
   orderBlockedReasons,
+  orderLimitingFactors,
   orderWarningReasons,
   projectAllocationPlanSnapshot,
   snapshotExecutability,
@@ -82,6 +86,59 @@ describe('allocation plan selector authority', () => {
   it('orders and dedupes by canonical union index, independent of engine insertion order', () => {
     expect(orderBlockedReasons(['CLASS_FULL', 'CASH_AUTHORITY_STALE', 'CLASS_FULL'])).toEqual(['CASH_AUTHORITY_STALE', 'CLASS_FULL'])
     expect(orderWarningReasons(['ESTIMATE_ONLY', 'PORTFOLIO_SOURCE_PARTIAL'])).toEqual(['PORTFOLIO_SOURCE_PARTIAL', 'ESTIMATE_ONLY'])
+    expect(orderLimitingFactors(['JP_STOCK_AMOUNT_CAP', 'JP_STOCK_RATIO_CAP', 'JP_STOCK_AMOUNT_CAP']))
+      .toEqual(['JP_STOCK_RATIO_CAP', 'JP_STOCK_AMOUNT_CAP'])
+  })
+
+  it('keeps all three exhaustive order tables duplicate-free with unique ordinals', () => {
+    for (const table of [BLOCKED_REASON_ORDER, WARNING_REASON_ORDER, LIMITING_FACTOR_ORDER]) {
+      const keys = Object.keys(table)
+      const ordinals = Object.values(table)
+      expect(new Set(keys).size).toBe(keys.length)
+      expect(new Set(ordinals).size).toBe(ordinals.length)
+      expect(ordinals.every(value => Number.isInteger(value) && value >= 0)).toBe(true)
+    }
+  })
+
+  it('places each activated D1 diagnostic in exactly its authoritative category', () => {
+    for (const reason of [
+      'POLICY_AUTHORITY_UNAVAILABLE',
+      'TARGET_AUTHORITY_UNAVAILABLE',
+      'INVALID_NUMERIC_INPUT',
+    ] as const) {
+      expect(BLOCKED_REASON_ORDER).toHaveProperty(reason)
+      expect(WARNING_REASON_ORDER).not.toHaveProperty(reason)
+      expect(LIMITING_FACTOR_ORDER).not.toHaveProperty(reason)
+    }
+    for (const factor of ['JP_STOCK_RATIO_CAP', 'JP_STOCK_AMOUNT_CAP'] as const) {
+      expect(LIMITING_FACTOR_ORDER).toHaveProperty(factor)
+      expect(BLOCKED_REASON_ORDER).not.toHaveProperty(factor)
+      expect(WARNING_REASON_ORDER).not.toHaveProperty(factor)
+    }
+  })
+
+  it('returns the same canonical result for each reason set regardless of insertion order', () => {
+    expect(orderBlockedReasons([
+      'TARGET_AUTHORITY_UNAVAILABLE', 'INVALID_NUMERIC_INPUT', 'POLICY_AUTHORITY_UNAVAILABLE',
+    ])).toEqual(orderBlockedReasons([
+      'POLICY_AUTHORITY_UNAVAILABLE', 'TARGET_AUTHORITY_UNAVAILABLE', 'INVALID_NUMERIC_INPUT',
+    ]))
+    expect(orderWarningReasons([
+      'ESTIMATE_ONLY', 'MARKET_CAUTION', 'PORTFOLIO_SOURCE_PARTIAL',
+    ])).toEqual(orderWarningReasons([
+      'PORTFOLIO_SOURCE_PARTIAL', 'ESTIMATE_ONLY', 'MARKET_CAUTION',
+    ]))
+    expect(orderLimitingFactors([
+      'JP_STOCK_AMOUNT_CAP', 'CLASS_HEADROOM', 'JP_STOCK_RATIO_CAP',
+    ])).toEqual(orderLimitingFactors([
+      'JP_STOCK_RATIO_CAP', 'JP_STOCK_AMOUNT_CAP', 'CLASS_HEADROOM',
+    ]))
+  })
+
+  it('recognizes every member of every exhaustive order table', () => {
+    expect(orderBlockedReasons(Object.keys(BLOCKED_REASON_ORDER) as Array<keyof typeof BLOCKED_REASON_ORDER>)).not.toBeNull()
+    expect(orderWarningReasons(Object.keys(WARNING_REASON_ORDER) as Array<keyof typeof WARNING_REASON_ORDER>)).not.toBeNull()
+    expect(orderLimitingFactors(Object.keys(LIMITING_FACTOR_ORDER) as Array<keyof typeof LIMITING_FACTOR_ORDER>)).not.toBeNull()
   })
 
   it('never promotes one instrument blocked reason or synthesizes CLASS_FULL at class/snapshot scope', () => {
@@ -102,5 +159,13 @@ describe('allocation plan selector authority', () => {
     const projected = projectAllocationPlanSnapshot({ ...base, warnings: [...base.warnings, 'NOT_SELECTED_FOR_EXECUTION'] })
     expect(projected?.warnings).not.toContain('NOT_SELECTED_FOR_EXECUTION')
     expect(projectAllocationPlanSnapshot({ ...base, blockedReasons: ['UNKNOWN' as never] })).toBeNull()
+    expect(projectAllocationPlanSnapshot({ ...base, warnings: ['UNKNOWN' as never] })).toBeNull()
+    expect(projectAllocationPlanSnapshot({
+      ...base,
+      assetClassPlans: base.assetClassPlans.map(plan => ({
+        ...plan,
+        limitingFactors: ['UNKNOWN' as never],
+      })),
+    })).toBeNull()
   })
 })

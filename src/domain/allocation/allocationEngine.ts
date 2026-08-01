@@ -82,6 +82,7 @@ function buildAssetClassPlans(
       budgetForClass(assetInput.assetClass, shortTermBudget, longTermBudget),
     )
     let maximumAmount = policy.maximumAmountJpy
+    let domesticHeadroom: ReturnType<typeof computeDomesticStockHeadroom> | null = null
     if (policy.maximumRatio !== null && isRatio01(policy.maximumRatio)) {
       const ratioMaximum = Math.floor(totalAssets * policy.maximumRatio)
       maximumAmount = maximumAmount === null
@@ -89,7 +90,7 @@ function buildAssetClassPlans(
         : Math.min(toIntegerJpy(maximumAmount), ratioMaximum)
     }
     if (assetInput.assetClass === 'JP_STOCK') {
-      const domestic = computeDomesticStockHeadroom({
+      domesticHeadroom = computeDomesticStockHeadroom({
         totalAssets,
         currentDomesticStockAmount: assetInput.currentAmount,
         jpStockMaxRatio: input.policy.jpStockMaxRatio === null
@@ -99,10 +100,10 @@ function buildAssetClassPlans(
             : input.policy.jpStockMaxRatio,
         jpStockMaxAmountJpy: input.policy.jpStockMaxAmountJpy,
       })
-      maximumAmount = domestic.effectiveDomesticStockCap
+      maximumAmount = domesticHeadroom.effectiveDomesticStockCap
     }
 
-    return computeAssetClassHeadroom({
+    const classPlan = computeAssetClassHeadroom({
       assetClass: assetInput.assetClass,
       currentAmount: assetInput.currentAmount,
       totalAssets,
@@ -110,6 +111,18 @@ function buildAssetClassPlans(
       maximumAmount,
       availableBudget,
     })
+    if (domesticHeadroom === null) return classPlan
+    return {
+      ...classPlan,
+      blockedReasons: unique([
+        ...domesticHeadroom.blockedReasons,
+        ...classPlan.blockedReasons,
+      ]),
+      limitingFactors: unique([
+        ...domesticHeadroom.limitingFactors,
+        ...classPlan.limitingFactors,
+      ]),
+    }
   })
 }
 
