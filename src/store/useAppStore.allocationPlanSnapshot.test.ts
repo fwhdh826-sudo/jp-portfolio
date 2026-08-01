@@ -1,7 +1,7 @@
 // @ts-expect-error - repository intentionally has no @types/node
 import { readFileSync } from 'node:fs'
-import { describe, expect, it } from 'vitest'
-import type { AppState } from '../types'
+import { describe, expect, it, vi } from 'vitest'
+import type { AppState, Trust } from '../types'
 import type { AllocationPlanInput } from '../types/allocationPlan'
 import {
   buildAllocationPlanInput,
@@ -10,9 +10,28 @@ import {
   useAppStore,
   type AllocationPlanInputAdapterOptions,
 } from './useAppStore'
-import { snapshotExecutability } from './allocationPlanSelectors'
+import {
+  classFullCause,
+  selectSnapshotExecutability,
+  snapshotExecutability,
+} from './allocationPlanSelectors'
+import {
+  createPortfolioGenerationInvalidationEvent,
+  type PortfolioGenerationInvalidationTransport,
+} from './portfolioGenerationInvalidationTransport'
+import { createImmediatePortfolioGenerationLockAdapterForTest } from './testing/portfolioGenerationLockTestAdapters'
 
 const NOW = Date.parse('2026-08-01T00:00:00.000Z')
+
+const dualAuthorityTypeProbe: AllocationPlanInputAdapterOptions = {
+  generatedAt: new Date(NOW).toISOString(),
+  holdingsFreshness: 'fresh',
+  safetyState: {
+    // @ts-expect-error holdingsFreshness is the adapter's only holdings authority.
+    holdings: 'stale',
+  },
+}
+void dualAuthorityTypeProbe
 
 function cleanState(): AppState {
   const state = useAppStore.getState()
@@ -52,6 +71,153 @@ function adapter(
 
 function calculate(holdings: AllocationPlanInput['safetyState']['holdings'], identity: string, nowMs = NOW) {
   return runFullAnalysis(cleanState(), { nowMs, allocationPlanInput: adapter(holdings, identity) })
+}
+
+const TRUST_FIXTURE: Trust = {
+  id: 'fund-1', name: 'allocation authority fixture', abbr: 'AAF', account: '特定',
+  policy: 'JAPAN_SHORTTERM', eval: 0, pnlPct: 0, dayPct: 0, cost: 0,
+  mu: 0.1, sigma: 0.1, score: 50, signal: 'HOLD', ev: 0, decision: 'HOLD',
+}
+
+function stateWithTrust(currentAmount: number): AppState {
+  return {
+    ...cleanState(),
+    trust: [{ ...TRUST_FIXTURE, eval: currentAmount }],
+  }
+}
+
+function jpStockAdapter(
+  identity: string,
+  instrumentIds: readonly ('blocked-stock' | 'allocatable-stock')[],
+): Omit<AllocationPlanInputAdapterOptions, 'generatedAt'> {
+  const base = adapter('fresh', identity)
+  const policy = base.policy as AllocationPlanInput['policy']
+  const instruments = {
+    'blocked-stock': {
+      instrumentId: 'blocked-stock', assetClass: 'JP_STOCK' as const, kind: 'jp_stock' as const,
+      relationship: 'new_to_portfolio' as const, currentAmount: 0, role: 'CORE',
+      reason: 'instrument-only execution authority unavailable', priceJpy: null, lotSizeShares: null,
+    },
+    'allocatable-stock': {
+      instrumentId: 'allocatable-stock', assetClass: 'JP_STOCK' as const, kind: 'jp_stock' as const,
+      relationship: 'new_to_portfolio' as const, currentAmount: 0, role: 'CORE',
+      reason: 'allocatable sibling', priceJpy: 1_000, lotSizeShares: 100,
+    },
+  }
+  return {
+    ...base,
+    cash: { grossCash: 2_000_000, safetyReserve: 0, pendingOrderCash: 0, dataUncertaintyReserve: 0 },
+    budgets: { shortTermBudget: 1_000_000, longTermBudget: 1_000_000 },
+    instruments: instrumentIds.map(instrumentId => instruments[instrumentId]),
+    candidates: instrumentIds.map((instrumentId, artifactIndex) => ({
+      instrumentId,
+      buyKind: 'BUY_NEW' as const,
+      marketRank: artifactIndex + 1,
+      artifactIndex,
+      confidence: 1,
+    })),
+    policy: {
+      ...policy,
+      jpStockMaxRatio: 0.8,
+      assetClassPolicies: policy.assetClassPolicies.map(item => item.assetClass === 'JP_STOCK'
+        ? { assetClass: 'JP_STOCK', targetRatio: 0.5, maximumRatio: 0.8, maximumAmountJpy: null }
+        : item),
+      instrumentPolicies: instrumentIds.map(instrumentId => ({
+        instrumentId,
+        targetAmountJpy: 1_000_000,
+        maxPositionAmountJpy: 1_000_000,
+        sectorHeadroomJpy: 1_000_000,
+        concentrationHeadroomJpy: 1_000_000,
+        liquidityHeadroomJpy: 1_000_000,
+        defaultMaxPositionShare: 0.5,
+        defaultMaxSectorShare: 0.5,
+        minimumPurchaseUnitJpy: 10_000,
+      })),
+      roundingPolicies: [{ kind: 'jp_stock', purchaseUnitJpy: 10_000 }],
+    },
+  }
+}
+
+type ClassFullFixtureCause =
+  | 'AVAILABLE_BUDGET'
+  | 'CLASS_HEADROOM'
+  | 'TARGET_GAP'
+  | 'CLASS_TARGET_MISSING'
+
+function classFullFixture(cause: ClassFullFixtureCause): {
+  state: AppState
+  options: Omit<AllocationPlanInputAdapterOptions, 'generatedAt'>
+} {
+  const currentAmount = cause === 'CLASS_HEADROOM' || cause === 'TARGET_GAP' ? 1_000_000 : 0
+  const base = adapter('fresh', `class-full-${cause}`)
+  const policy = base.policy as AllocationPlanInput['policy']
+  const targetRatio = cause === 'CLASS_TARGET_MISSING'
+    ? 0
+    : cause === 'CLASS_HEADROOM' ? 0.8 : 0.5
+  const maximumAmountJpy = cause === 'CLASS_HEADROOM' ? 1_000_000 : null
+  const shortTermBudget = cause === 'AVAILABLE_BUDGET' ? 0 : 1_000_000
+  return {
+    state: stateWithTrust(currentAmount),
+    options: {
+      ...base,
+      cash: { grossCash: 1_000_000, safetyReserve: 0, pendingOrderCash: 0, dataUncertaintyReserve: 0 },
+      budgets: { shortTermBudget, longTermBudget: 0 },
+      policy: {
+        ...policy,
+        assetClassPolicies: policy.assetClassPolicies.map(item => item.assetClass === 'JP_TRUST'
+          ? { assetClass: 'JP_TRUST', targetRatio, maximumRatio: null, maximumAmountJpy }
+          : item),
+      },
+    },
+  }
+}
+
+function publishWriterOutput(
+  state: AppState,
+  allocationPlanInput: Omit<AllocationPlanInputAdapterOptions, 'generatedAt'>,
+  nowMs = NOW,
+) {
+  const created = createAppStoreInstanceForTest()
+  created.store.setState(state)
+  const computed = runFullAnalysis(created.store.getState(), { nowMs, allocationPlanInput })
+  created.store.setState(computed)
+  return created
+}
+
+function manualInvalidationTransport() {
+  let listener: ((event: ReturnType<typeof createPortfolioGenerationInvalidationEvent>) => void) | null = null
+  const transport: PortfolioGenerationInvalidationTransport = {
+    publish: () => {},
+    subscribe: next => {
+      listener = next
+      return () => { listener = null }
+    },
+    dispose: () => { listener = null },
+  }
+  return {
+    transport,
+    emit: () => {
+      if (listener === null) throw new Error('invalidation listener is not bound')
+      listener(createPortfolioGenerationInvalidationEvent({
+        senderInstanceId: 'remote-writer',
+        operation: 'setCashAssumptions',
+        committedAt: new Date(NOW).toISOString(),
+        messageId: 'hr-i2-r1-cross-tab',
+      }))
+    },
+  }
+}
+
+function memoryStorage(): Storage {
+  const values = new Map<string, string>()
+  return {
+    get length() { return values.size },
+    clear: () => values.clear(),
+    getItem: key => values.get(key) ?? null,
+    key: index => [...values.keys()][index] ?? null,
+    removeItem: key => { values.delete(key) },
+    setItem: (key, value) => { values.set(key, value) },
+  }
 }
 
 describe('AllocationPlanSnapshot store authority', () => {
@@ -148,11 +314,182 @@ describe('AllocationPlanSnapshot store authority', () => {
     expect(newer.allocationPlan?.snapshotId).not.toBe(first.allocationPlan?.snapshotId)
   })
 
-  it('runFullAnalysis is synchronous, so an older invocation cannot complete after a newer invocation', () => {
-    const older = calculate('fresh', 'older', NOW)
-    const newer = calculate('fresh', 'newer', NOW + 1)
-    expect(older).not.toBeInstanceOf(Promise)
-    expect(newer).not.toBeInstanceOf(Promise)
-    expect(newer.allocationPlan?.sourceHoldingsSnapshotId).toBe('newer')
+  it('holdingsFreshness remains the sole adapter authority while other safety overrides are retained', () => {
+    const base = adapter('partial', 'single-holdings-authority')
+    const input = buildAllocationPlanInput(cleanState(), {
+      generatedAt: new Date(NOW).toISOString(),
+      ...base,
+      safetyState: { ...base.safetyState, cash: 'stale' },
+    })
+    expect(input?.safetyState.holdings).toBe('partial')
+    expect(input?.safetyState.cash).toBe('stale')
+  })
+
+  it('real writer output keeps an instrument-only JP-stock reason out of snapshot scope', () => {
+    const created = publishWriterOutput(
+      cleanState(),
+      jpStockAdapter('real-s1-f01', ['blocked-stock']),
+    )
+    const snapshot = created.store.getState().allocationPlan
+    const instrument = snapshot?.instrumentPlans.find(plan => plan.instrumentId === 'blocked-stock')
+    expect(instrument).toMatchObject({
+      executable: false,
+      finalSuggestedAmount: 0,
+    })
+    expect(instrument?.blockedReasons).toContain('JP_STOCK_EXECUTION_DATA_UNAVAILABLE')
+    expect(snapshot?.blockedReasons).not.toContain('JP_STOCK_EXECUTION_DATA_UNAVAILABLE')
+    expect(snapshotExecutability(snapshot)).toBe('CALCULATED_NOT_EXECUTABLE')
+    created.controls.dispose()
+  })
+
+  it('real mixed JP-stock class retains its allocatable sibling and never synthesizes CLASS_FULL', () => {
+    const created = publishWriterOutput(
+      cleanState(),
+      jpStockAdapter('real-mixed-class', ['blocked-stock', 'allocatable-stock']),
+    )
+    const snapshot = created.store.getState().allocationPlan
+    const classPlan = snapshot?.assetClassPlans.find(plan => plan.assetClass === 'JP_STOCK')
+    const blocked = snapshot?.instrumentPlans.find(plan => plan.instrumentId === 'blocked-stock')
+    const allocatable = snapshot?.instrumentPlans.find(plan => plan.instrumentId === 'allocatable-stock')
+    expect(blocked?.blockedReasons).toContain('JP_STOCK_EXECUTION_DATA_UNAVAILABLE')
+    expect(allocatable).toMatchObject({ executable: true })
+    expect(allocatable?.finalSuggestedAmount).toBeGreaterThan(0)
+    expect(classPlan?.blockedReasons).not.toContain('CLASS_FULL')
+    expect(snapshot?.blockedReasons).not.toContain('CLASS_FULL')
+    expect(snapshotExecutability(snapshot)).toBe('EXECUTABLE')
+    created.controls.dispose()
+  })
+
+  it.each([
+    ['AVAILABLE_BUDGET', 'AVAILABLE_BUDGET', 'CLASS_BUDGET_EXHAUSTED'],
+    ['CLASS_HEADROOM', 'CLASS_HEADROOM', 'CLASS_HARD_CAP_REACHED'],
+    ['TARGET_GAP', 'TARGET_GAP', 'CLASS_TARGET_REACHED'],
+    ['CLASS_TARGET_MISSING', 'TARGET_GAP', 'CLASS_DATA_UNAVAILABLE'],
+  ] as const)(
+    'real writer output derives genuine CLASS_FULL from %s',
+    (cause, limitingFactor, expectedCause) => {
+      const fixture = classFullFixture(cause)
+      const created = publishWriterOutput(fixture.state, fixture.options)
+      const plan = created.store.getState().allocationPlan?.assetClassPlans
+        .find(item => item.assetClass === 'JP_TRUST')
+      expect(plan?.blockedReasons).toContain('CLASS_FULL')
+      expect(plan?.limitingFactors).toContain(limitingFactor)
+      if (cause === 'CLASS_TARGET_MISSING') {
+        expect(plan?.blockedReasons).toContain('CLASS_TARGET_MISSING')
+        expect(plan?.limitingFactors).toContain('CLASS_HEADROOM')
+      }
+      expect(plan && classFullCause(plan)).toBe(expectedCause)
+      created.controls.dispose()
+    },
+  )
+
+  it('cross-tab invalidation atomically removes the current snapshot until the next canonical writer', () => {
+    const invalidation = manualInvalidationTransport()
+    const created = createAppStoreInstanceForTest({
+      portfolioGenerationInvalidation: {
+        instanceId: 'local-writer',
+        transport: invalidation.transport,
+      },
+    })
+    const first = runFullAnalysis(cleanState(), {
+      nowMs: NOW,
+      allocationPlanInput: adapter('fresh', 'cross-tab-before'),
+    })
+    created.store.setState(first)
+    const oldId = created.store.getState().allocationPlan?.snapshotId
+    expect(oldId).toBeTruthy()
+    expect(created.store.getState().allocationPlanStatus).toBe('current')
+
+    const observations: Array<{
+      crossTab: string | undefined
+      snapshotId: string | null
+      status: AppState['allocationPlanStatus']
+      executability: ReturnType<typeof selectSnapshotExecutability>
+    }> = []
+    const unsubscribe = created.store.subscribe(state => observations.push({
+      crossTab: state.system.crossTabInvalidation?.status,
+      snapshotId: state.allocationPlan?.snapshotId ?? null,
+      status: state.allocationPlanStatus,
+      executability: selectSnapshotExecutability(state),
+    }))
+
+    invalidation.emit()
+
+    expect(observations).toEqual([{
+      crossTab: 'stale',
+      snapshotId: null,
+      status: 'stale',
+      executability: 'NOT_CALCULATED',
+    }])
+    const invalidated = created.store.getState()
+    expect(invalidated.allocationPlan).toBeNull()
+    expect(invalidated.allocationPlanStatus).toBe('stale')
+    expect(selectSnapshotExecutability(invalidated)).toBe('NOT_CALCULATED')
+
+    const alignedState: AppState = {
+      ...invalidated,
+      system: { ...invalidated.system, crossTabInvalidation: undefined },
+    }
+    const regenerated = runFullAnalysis(alignedState, {
+      nowMs: NOW + 1,
+      allocationPlanInput: adapter('fresh', 'cross-tab-after'),
+    })
+    created.store.setState({ ...regenerated, system: alignedState.system })
+    const current = created.store.getState()
+    expect(current.allocationPlan?.snapshotId).not.toBe(oldId)
+    expect(current.allocationPlan?.sourceHoldingsSnapshotId).toBe('cross-tab-after')
+    expect(current.allocationPlanStatus).toBe('current')
+    expect(selectSnapshotExecutability(current)).toBe('EXECUTABLE')
+
+    unsubscribe()
+    created.controls.dispose()
+  })
+
+  it('real rejection seam publishes only the accepted generation and cannot revive an older completion', async () => {
+    vi.stubGlobal('localStorage', memoryStorage())
+    const warning = vi.spyOn(console, 'warn').mockImplementation(() => undefined)
+    const created = createAppStoreInstanceForTest({
+      portfolioGenerationLock: createImmediatePortfolioGenerationLockAdapterForTest(),
+    })
+    try {
+      const older = calculate('fresh', 'race-older', NOW)
+      created.store.setState(older)
+      let completeOlder!: (value: typeof older) => void
+      const olderCompletion = new Promise<typeof older>(resolve => { completeOlder = resolve })
+      const ticket = created.controls.acquirePortfolioOperation('manual')
+      expect(ticket).not.toBeNull()
+
+      const observations: Array<string | null> = []
+      const unsubscribe = created.store.subscribe(state => {
+        observations.push(state.allocationPlan?.snapshotId ?? null)
+      })
+      const rejected = await created.store.getState().setCashAssumptions({
+        cashDeposits: 3_000_000,
+        standbyFunds: 500_000,
+      })
+      expect(rejected).toMatchObject({ ok: false, code: 'LOCAL_OPERATION_BUSY' })
+      expect(observations).toEqual([])
+      expect(created.controls.releasePortfolioOperation(ticket!)).toBe(true)
+
+      const accepted = await created.store.getState().setCashAssumptions({
+        cashDeposits: 4_000_000,
+        standbyFunds: 500_000,
+      })
+      expect(accepted).toMatchObject({ ok: true, code: 'SUCCESS' })
+      const acceptedId = created.store.getState().allocationPlan?.snapshotId ?? null
+      expect(acceptedId).toBeTruthy()
+      expect(acceptedId).not.toBe(older.allocationPlan?.snapshotId)
+      expect(observations).toEqual([acceptedId])
+
+      completeOlder(older)
+      await olderCompletion
+      expect(created.store.getState().allocationPlan?.snapshotId).toBe(acceptedId)
+      expect(observations).toEqual([acceptedId])
+      unsubscribe()
+    } finally {
+      created.controls.dispose()
+      warning.mockRestore()
+      vi.unstubAllGlobals()
+    }
   })
 })

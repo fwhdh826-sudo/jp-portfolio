@@ -405,8 +405,8 @@ function createDefaultTestInvalidationDependency(): PortfolioGenerationInvalidat
 
 /**
  * Runtime-local reception only: records the latest remote event and bumps the local
- * receive sequence, then asks the bound store (if any) to project it as a display-only
- * warning. Must never itself touch localStorage, request the Web Lock, or call
+ * receive sequence, then asks the bound store (if any) to project the warning and invalidate
+ * its ephemeral allocation snapshot. Must never itself touch localStorage, request the Web Lock, or call
  * transport.publish — production emission/consumption is RA-008-C/D.
  */
 function recordPendingCrossTabInvalidation(
@@ -1757,7 +1757,7 @@ export interface AllocationPlanInputAdapterOptions {
   cash?: Partial<AllocationPlanInput['cash']>
   budgets?: Partial<AllocationPlanInput['budgets']>
   policy?: Partial<AllocationPlanInput['policy']>
-  safetyState?: Partial<AllocationPlanInput['safetyState']>
+  safetyState?: Partial<Omit<AllocationPlanInput['safetyState'], 'holdings'>>
 }
 
 const PORTFOLIO_SOURCE_STALE_MS = 90 * 24 * 60 * 60 * 1000
@@ -1946,7 +1946,6 @@ export function buildAllocationPlanInput(
       safetyState: {
         safeMode,
         marketData: dqSuppressed ? 'stale' : 'fresh',
-        holdings: collapseAllocationHoldingsFreshness(holdingsFreshness),
         cash: effectiveCash.source !== 'manual' ? 'unknown' : cashFreshness.isStale ? 'stale' : 'known_fresh',
         target: 'known',
         pendingOrders: 'unknown',
@@ -1956,6 +1955,7 @@ export function buildAllocationPlanInput(
         crossTab,
         noTrade: noTrade.mode,
         ...options.safetyState,
+        holdings: collapseAllocationHoldingsFreshness(holdingsFreshness),
       },
       regime: state.market.regime,
       marketMode: noTrade.mode,
@@ -2351,7 +2351,7 @@ const createAppStoreStateCreator = (
       try { listener(state, previous) } catch (error) { reportSubscriberException(error) }
     })) as typeof api.subscribe
 
-  // RA-008-D1: bind this store's own set/get as the runtime's display-only flush callback,
+  // RA-008-D1: bind this store's own set/get as the runtime's invalidation flush callback,
   // exactly once per store instance. Deliberately calls the closured `set`/`get` (not
   // api.setState above) — same convention as every other publish in this file — and never
   // subscribes to the transport itself; reception stays recordPendingCrossTabInvalidation's job.
@@ -2368,7 +2368,11 @@ const createAppStoreStateCreator = (
     if (runtime.activePortfolioOperation !== null) return
     if (runtime.activePortfolioGenerationTransaction !== null) return
     if (get().system.crossTabInvalidation !== undefined) return
-    set(state => ({ system: { ...state.system, crossTabInvalidation: { status: 'stale' } } }))
+    set(state => ({
+      system: { ...state.system, crossTabInvalidation: { status: 'stale' } },
+      allocationPlan: null,
+      allocationPlanStatus: 'stale',
+    }))
   }
 
   type ManualPortfolioState = AppState & AppActions

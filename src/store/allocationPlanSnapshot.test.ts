@@ -53,7 +53,7 @@ describe('HR-I2 reason producer pins', () => {
     expect(reasons(mutate(baseInput()))).toContain(reason)
   })
 
-  it('removing the producer conditions removes the eight pinned unsafe reasons', () => {
+  it('removing the producer conditions removes the seven pinned unsafe reasons', () => {
     const actual = reasons(baseInput())
     for (const reason of ['CASH_AUTHORITY_STALE', 'POLICY_AUTHORITY_UNAVAILABLE', 'INSUFFICIENT_CASH', 'NO_TRADE_EMERGENCY', 'HOLDINGS_STALE', 'CASH_DATA_STALE', 'CROSS_TAB_STALE'] as const) {
       expect(actual).not.toContain(reason)
