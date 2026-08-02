@@ -66,13 +66,20 @@ import { buildTrustPortfolioPlan } from '../domain/optimization/trustPortfolio'
 import { buildZeroBasePlan } from '../domain/optimization/zeroBase'
 import { buildStockPortfolioPlan } from '../domain/optimization/stockPortfolio'
 import { buildCommitteeDecision } from '../domain/analysis/committeeDecision'
-import { selectMarketDataQuality, selectEffectiveCashAssumptions, selectEffectiveSafeModeActive, selectCashAssumptionsFreshness, selectSafeModeDataQuality } from './selectors'
+import { selectMarketDataQuality, selectEffectiveCashAssumptions, selectEffectiveSafeModeActive, selectCashAssumptionsFreshness, selectSafeModeDataQuality, selectCandidateFunnelFreshness } from './selectors'
 import { buildCandidateUniverse, scoreCandidates, buildStockCandidatePlan, computeJpStockHeadroom } from '../domain/candidates'
 import type { CandidateItem } from '../domain/candidates'
 import { computeRoleExposureByRole } from '../domain/candidates/roleExposure'
 import { selectCandidatePortfolioFit } from './portfolioFitSelectors'
-import { composeCandidatePortfolioRecommendations } from '../domain/candidates/candidatePortfolioRecommendation'
-import { appendCandidatePortfolioRecommendations } from './candidatePortfolioRecommendation'
+import {
+  buildCandidateAllocationInputs,
+  composeCandidatePortfolioRecommendations,
+  type CandidateAllocationInputAdapterResult,
+} from '../domain/candidates/candidatePortfolioRecommendation'
+import {
+  appendCandidatePortfolioRecommendations,
+  projectCandidatePortfolioRecommendations,
+} from './candidatePortfolioRecommendation'
 import {
   stageTrustExecutionFromCsvSync,
   captureTrustShortAnalysisInput,
@@ -1758,6 +1765,7 @@ export interface AllocationPlanInputAdapterOptions {
   budgets?: Partial<AllocationPlanInput['budgets']>
   policy?: Partial<AllocationPlanInput['policy']>
   safetyState?: Partial<Omit<AllocationPlanInput['safetyState'], 'holdings'>>
+  candidateCapture?: CandidateAllocationInputAdapterResult
 }
 
 const PORTFOLIO_SOURCE_STALE_MS = 90 * 24 * 60 * 60 * 1000
@@ -1817,6 +1825,20 @@ function defaultAllocationInstruments(state: AppState): AllocationInstrumentInpu
   ]
 }
 
+function mergeAllocationInstruments(
+  base: readonly AllocationInstrumentInput[],
+  candidates: readonly AllocationInstrumentInput[],
+): AllocationInstrumentInput[] | null {
+  const merged = [...base]
+  const identities = new Set(base.map(instrument => instrument.instrumentId))
+  for (const candidate of candidates) {
+    if (identities.has(candidate.instrumentId)) return null
+    identities.add(candidate.instrumentId)
+    merged.push(candidate)
+  }
+  return merged
+}
+
 /**
  * Builds one coherent engine generation from one captured AppState object. It never calls get(),
  * reads storage, or reconstructs numbers from presentation strings.
@@ -1870,7 +1892,27 @@ export function buildAllocationPlanInput(
     const targetAllocation = state.market.regime === 'bull'
       ? TARGET_ALLOCATION_BULL
       : state.market.regime === 'bear' ? TARGET_ALLOCATION_BEAR : TARGET_ALLOCATION_NEUTRAL
-    const instruments = [...(options.instruments ?? defaultAllocationInstruments(state))]
+    const candidateCapture = options.candidateCapture ?? buildCandidateAllocationInputs({
+      artifact: state.candidateFunnel,
+      holdings: state.holdings,
+    })
+    const defaultInstruments = defaultAllocationInstruments(state)
+    const instruments = options.instruments === undefined
+      ? mergeAllocationInstruments(defaultInstruments, candidateCapture.instruments)
+      : [...options.instruments]
+    if (instruments === null) return null
+    const candidates = options.candidates === undefined
+      ? [...candidateCapture.candidates]
+      : [...options.candidates]
+    const candidateFreshness = selectCandidateFunnelFreshness(state, nowMs)
+    const candidateArtifactState: AllocationPlanInput['safetyState']['candidateArtifact'] =
+      candidateCapture.status !== 'available' ||
+      candidateFreshness === 'invalid' ||
+      candidateFreshness === 'unavailable'
+        ? 'invalid'
+        : candidateFreshness === 'stale' || candidateFreshness === 'degraded'
+          ? 'stale'
+          : 'fresh'
     const shortTermBudget = Math.min(grossCash, 5_500_000)
     const basePolicy: AllocationPlanInput['policy'] = {
       jpStockMaxRatio: state.portfolioPolicy.jpStockMaxRatio,
@@ -1905,7 +1947,7 @@ export function buildAllocationPlanInput(
       confidenceUnknownFactor: 0.5,
       executionPriceBufferRatio: 0.03,
     }
-    const candidateIdentity = (options.candidates ?? []).map(candidate => ({ ...candidate }))
+    const candidateIdentity = candidates.map(candidate => ({ ...candidate }))
     const instrumentIdentity = instruments.map(instrument => ({ ...instrument }))
     const snapshotId = `allocation-plan:${sha256Utf8Hex(JSON.stringify({
       authorityVersion: ALLOCATION_PLAN_AUTHORITY_VERSION,
@@ -1942,14 +1984,14 @@ export function buildAllocationPlanInput(
         { assetClass: 'GOLD', currentAmount: state.trust.filter(item => item.policy === 'GOLD').reduce((sum, item) => sum + item.eval, 0) },
       ],
       instruments,
-      candidates: [...(options.candidates ?? [])],
+      candidates,
       safetyState: {
         safeMode,
         marketData: dqSuppressed ? 'stale' : 'fresh',
         cash: effectiveCash.source !== 'manual' ? 'unknown' : cashFreshness.isStale ? 'stale' : 'known_fresh',
         target: 'known',
         pendingOrders: 'unknown',
-        candidateArtifact: state.candidateFunnel === null ? 'invalid' : 'fresh',
+        candidateArtifact: candidateArtifactState,
         dqViolation: dqSuppressed,
         tierA,
         crossTab,
@@ -1985,7 +2027,7 @@ export function runFullAnalysis(
     trustShortInput?: TrustShortAnalysisInput
     allocationPlanInput?: Omit<AllocationPlanInputAdapterOptions, 'generatedAt'>
   } = {},
-): Pick<AppState, 'analysis' | 'metrics' | 'holdings' | 'trust' | 'universe' | 'learning' | 'zeroPlan' | 'stockPlan' | 'trustPlan' | 'officialDecision' | 'stockCandidates' | 'allocationPlan' | 'allocationPlanStatus'> {
+): Pick<AppState, 'analysis' | 'metrics' | 'holdings' | 'trust' | 'universe' | 'learning' | 'zeroPlan' | 'stockPlan' | 'trustPlan' | 'officialDecision' | 'stockCandidates' | 'allocationPlan' | 'allocationPlanStatus' | 'allocationPlanCandidateGenerationId' | 'candidatePortfolioRecommendations'> {
   const nowMs = options.nowMs ?? Date.now()
   const nowIso = new Date(nowMs).toISOString()
   const trustShortInput = options.trustShortInput ?? captureTrustShortAnalysisInput(nowMs)
@@ -2209,6 +2251,7 @@ export function runFullAnalysis(
   // returned atomically with the legacy analysis fields. No selector/action writes this field.
   let allocationPlan: AllocationPlanSnapshot | null = null
   let allocationPlanStatusValue: AllocationPlanSnapshotState = 'invalid'
+  let allocationPlanCandidateGenerationId: string | null = null
   const allocationState: AppState = {
     ...state,
     analysis,
@@ -2223,9 +2266,17 @@ export function runFullAnalysis(
     officialDecision,
     stockCandidates,
   }
+  const candidateCapture = buildCandidateAllocationInputs({
+    artifact: allocationState.candidateFunnel,
+    holdings: allocationState.holdings,
+  })
+  const hasExplicitAllocationCandidates =
+    options.allocationPlanInput?.candidates !== undefined ||
+    options.allocationPlanInput?.instruments !== undefined
   const allocationInput = buildAllocationPlanInput(allocationState, {
     generatedAt: nowIso,
     ...options.allocationPlanInput,
+    candidateCapture,
   })
   if (allocationInput !== null) {
     try {
@@ -2234,15 +2285,26 @@ export function runFullAnalysis(
         allocationPlan,
         allocationInput.safetyState.holdings,
       )
+      allocationPlanCandidateGenerationId = allocationPlan !== null &&
+        !hasExplicitAllocationCandidates &&
+        candidateCapture.status === 'available'
+        ? candidateCapture.sourceCandidateGenerationId
+        : null
     } catch {
       allocationPlan = null
       allocationPlanStatusValue = 'invalid'
+      allocationPlanCandidateGenerationId = null
     }
   }
 
   return {
     analysis, metrics, holdings, trust, universe, learning, zeroPlan, stockPlan, trustPlan,
-    officialDecision, stockCandidates, allocationPlan, allocationPlanStatus: allocationPlanStatusValue,
+    officialDecision,
+    stockCandidates,
+    allocationPlan,
+    allocationPlanStatus: allocationPlanStatusValue,
+    allocationPlanCandidateGenerationId,
+    candidatePortfolioRecommendations: [],
   }
 }
 
@@ -2311,13 +2373,29 @@ function appendCommittedCandidatePortfolioRecommendations(
         safeModeActive: selectEffectiveSafeModeActive(compositionState, operationNowMs),
       },
     })
+    const candidateFreshness = selectCandidateFunnelFreshness(compositionState, operationNowMs)
+    if (
+      candidateFreshness === 'invalid' ||
+      candidateFreshness === 'unavailable' ||
+      candidateFreshness === 'degraded'
+    ) return computed
+    const projectedRecommendations = projectCandidatePortfolioRecommendations({
+      recommendations,
+      snapshot: computed.allocationPlan,
+      snapshotStatus: computed.allocationPlanStatus,
+      snapshotCandidateGenerationId: computed.allocationPlanCandidateGenerationId,
+      sourceCandidateGenerationId: stagedState.candidateFunnel._meta.generatedAt,
+      sourceCandidateFreshness: candidateFreshness,
+    })
     const officialDecision = appendCandidatePortfolioRecommendations(
       computed.officialDecision,
-      recommendations,
+      projectedRecommendations,
     )
-    return officialDecision === computed.officialDecision
-      ? computed
-      : { ...computed, officialDecision }
+    return {
+      ...computed,
+      officialDecision,
+      candidatePortfolioRecommendations: projectedRecommendations,
+    }
   } catch {
     return computed
   }
@@ -2372,6 +2450,8 @@ const createAppStoreStateCreator = (
       system: { ...state.system, crossTabInvalidation: { status: 'stale' } },
       allocationPlan: null,
       allocationPlanStatus: 'stale',
+      allocationPlanCandidateGenerationId: null,
+      candidatePortfolioRecommendations: [],
     }))
   }
 
@@ -2666,6 +2746,8 @@ const createAppStoreStateCreator = (
   trustPlan: null,
   allocationPlan: null,
   allocationPlanStatus: 'absent',
+  allocationPlanCandidateGenerationId: null,
+  candidatePortfolioRecommendations: [],
   // P4-A9c-data-4c: role-unit candidates news（observability用・意思決定未接続）
   candidatesNews: DEFAULT_CANDIDATES_NEWS_DATA,
   // P5-B002a: 新規個別株候補（市場公開情報のみ。observability用・officialDecision未接続）

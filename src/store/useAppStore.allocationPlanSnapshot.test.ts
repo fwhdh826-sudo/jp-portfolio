@@ -395,7 +395,14 @@ describe('AllocationPlanSnapshot store authority', () => {
       nowMs: NOW,
       allocationPlanInput: adapter('fresh', 'cross-tab-before'),
     })
-    created.store.setState(first)
+    created.store.setState({
+      ...first,
+      allocationPlanCandidateGenerationId: 'old-candidate-generation',
+      candidatePortfolioRecommendations: [{
+        candidateRecordId: 'artifact:0', artifactIndex: 0, code: '1001', name: 'old candidate',
+        marketRank: 1, action: 'BUY_NEW', reason: 'old projection', allocation: null,
+      }],
+    })
     const oldId = created.store.getState().allocationPlan?.snapshotId
     expect(oldId).toBeTruthy()
     expect(created.store.getState().allocationPlanStatus).toBe('current')
@@ -424,6 +431,8 @@ describe('AllocationPlanSnapshot store authority', () => {
     const invalidated = created.store.getState()
     expect(invalidated.allocationPlan).toBeNull()
     expect(invalidated.allocationPlanStatus).toBe('stale')
+    expect(invalidated.allocationPlanCandidateGenerationId).toBeNull()
+    expect(invalidated.candidatePortfolioRecommendations).toEqual([])
     expect(selectSnapshotExecutability(invalidated)).toBe('NOT_CALCULATED')
 
     const alignedState: AppState = {

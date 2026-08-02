@@ -16,10 +16,10 @@ describe('P5-B005-C-D recommendation type contract', () => {
   it('C-C-T01 exact readonly input/output shape compiles', () => {
     const inputKeys = ['artifact', 'fitResult', 'gates'] satisfies readonly (keyof CandidatePortfolioRecommendationInput)[]
     const outputKeys = [
-      'candidateRecordId', 'artifactIndex', 'code', 'name', 'marketRank', 'action', 'reason',
+      'candidateRecordId', 'artifactIndex', 'code', 'name', 'marketRank', 'action', 'reason', 'allocation',
     ] satisfies readonly (keyof CandidatePortfolioRecommendation)[]
     expect(inputKeys).toHaveLength(3)
-    expect(outputKeys).toHaveLength(7)
+    expect(outputKeys).toHaveLength(8)
     expect(typesSource.match(/readonly /g)?.length).toBeGreaterThanOrEqual(10)
   })
 
@@ -30,11 +30,12 @@ describe('P5-B005-C-D recommendation type contract', () => {
     expect(`${domainSource}\n${adapterSource}`).not.toMatch(/BUY_MORE|BLOCKED|SELL/)
   })
 
-  it('C-C-T03 has no score/rank/amount/sizing/order surface', () => {
-    for (const forbidden of ['portfolioFitScore', 'portfolioFitRank', 'amount', 'quantity', 'shares', 'sizing', 'order', 'BUY_MORE', 'SELL']) {
+  it('C-C-T03 adds one nested allocation projection without legacy sizing/order fields', () => {
+    for (const forbidden of ['portfolioFitScore', 'portfolioFitRank', 'quantity', 'shares', 'sizing', 'order', 'BUY_MORE', 'SELL']) {
       expect(typesSource).not.toContain(forbidden)
     }
-    expect(adapterSource).not.toMatch(/candidateScore|suggestedAmount|maxAmount|candidateSizingTier|\bamount\b|\bquantity\b|\bshares\b|\bsizing\b|\border\b/)
+    expect(typesSource).toContain('readonly allocation: CandidateAllocationProjection | null')
+    expect(adapterSource).not.toMatch(/candidateScore|suggestedAmount|maxAmount|candidateSizingTier|\bquantity\b|\bshares\b|\bsizing\b|\border\b/)
     expect(typesSource).toContain('marketRank')
   })
 
@@ -44,9 +45,10 @@ describe('P5-B005-C-D recommendation type contract', () => {
     expect(candidateSource.match(/candidate_funnel/g)).toHaveLength(1)
   })
 
-  it('C-C-T05 AppState and fit contract remain unchanged', () => {
+  it('C-C-T05 AppState holds only local recommendation projection and generation identity', () => {
     const appStateBlock = indexSource.slice(indexSource.indexOf('export interface AppState'), indexSource.indexOf('export const INITIAL_STATE'))
-    expect(appStateBlock).not.toContain('candidatePortfolioRecommendation')
+    expect(appStateBlock).toContain("candidatePortfolioRecommendations: readonly import('./candidatePortfolioRecommendation').CandidatePortfolioRecommendation[]")
+    expect(appStateBlock).toContain('allocationPlanCandidateGenerationId: string | null')
     expect(appStateBlock).not.toContain('portfolioFitResult')
     expect(typesSource).not.toContain('AppState')
   })

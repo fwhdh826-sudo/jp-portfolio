@@ -545,7 +545,9 @@ describe('P5-B005-C-D postcommit atomic integration', () => {
   it('C-C-T49 recommendation failure preserves base decision', () => {
     const helper = segment('function appendCommittedCandidatePortfolioRecommendations', 'function reportSubscriberException')
     expect(helper).toMatch(/catch \{\s+return computed\s+\}/)
-    expect(helper).toContain('officialDecision === computed.officialDecision')
+    expect(helper).toContain('const officialDecision = appendCandidatePortfolioRecommendations(')
+    expect(helper).toContain('candidatePortfolioRecommendations: projectedRecommendations')
+    expect(helper).not.toMatch(/OfficialDecisionItem|suggestedAmount|maxAmount|amountText/)
   })
   it('C-C-T50 adds no extra publish, emission, storage, or precommit candidate item', () => {
     const helper = segment('function appendCommittedCandidatePortfolioRecommendations', 'function reportSubscriberException')
@@ -573,8 +575,19 @@ describe('P5-B005-C-D-R1 receipt-derived exact generation behavior', () => {
     const result = await instance.store.getState().initialize()
 
     expect(result).toMatchObject({ ok: true, code: 'SUCCESS' })
-    expect(instance.store.getState().portfolioPolicy.jpStockMaxRatio).toBe(ownRatio)
-    expect(candidateAction(instance.store.getState())).toBe(expected)
+    const state = instance.store.getState()
+    expect(state.portfolioPolicy.jpStockMaxRatio).toBe(ownRatio)
+    expect(candidateAction(state)).toBe(expected)
+    const recommendation = state.candidatePortfolioRecommendations.find(item => item.code === '1003')
+    expect(recommendation).toMatchObject({ action: expected, marketRank: 1 })
+    expect(recommendation?.allocation).toMatchObject({
+      snapshotId: state.allocationPlan?.snapshotId,
+      sourceCandidateGenerationId: state.candidateFunnel?._meta.generatedAt,
+      instrumentId: 'stock:1003',
+      finalSuggestedAmount: 0,
+      executable: false,
+      blockedReasons: expect.arrayContaining(['JP_STOCK_EXECUTION_DATA_UNAVAILABLE']),
+    })
     expect(notifications).toBe(1)
   })
 

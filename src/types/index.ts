@@ -571,6 +571,9 @@ export interface AppState {
   // HR-I2: local-only ephemeral authority; excluded from every persistence/hydration path.
   allocationPlan: import('./allocationPlan').AllocationPlanSnapshot | null
   allocationPlanStatus: AllocationPlanSnapshotState
+  // HR-I3: local-only ephemeral candidate projection. Never persisted or serialized.
+  allocationPlanCandidateGenerationId: string | null
+  candidatePortfolioRecommendations: readonly import('./candidatePortfolioRecommendation').CandidatePortfolioRecommendation[]
   // P4-A9c-data-4c: role-unit candidates news（observability用・意思決定未接続）
   candidatesNews: CandidatesNewsData
   // P5-B002a: 新規個別株候補（市場公開情報のみ。observability用・officialDecision未接続）
