@@ -7,7 +7,12 @@
 import { useMemo, useState, useEffect } from 'react'
 import { useIsMobile } from '../../hooks/useIsMobile'
 import { useAppStore } from '../../store/useAppStore'
-import { selectJpFunds, selectJpFundTotalEval, selectMarketDataQuality, selectEffectiveSafeModeActive } from '../../store/selectors'
+import { selectJpFunds, selectMarketDataQuality, selectEffectiveSafeModeActive } from '../../store/selectors'
+import {
+  selectAllocationConsumerSnapshot,
+  selectT2AllocationProjection,
+  type T2AllocationProjection,
+} from '../../store/allocationConsumerSelectors'
 import { formatJPYAuto, formatRelativeTime } from '../../utils/format'
 import {
   buildTrustPortfolioPlan,
@@ -33,6 +38,7 @@ import { colors, radius, shadow, spacing } from '../../theme/tokens'
 import { typography } from '../../theme/typography'
 import type { CSSProperties } from 'react'
 import type { Trust, AppState } from '../../types'
+import type { AllocationConsumerSnapshot } from '../../types/allocationConsumer'
 
 // ── ヘルパー ────────────────────────────────────────────────────
 
@@ -103,12 +109,123 @@ function flowLabel(flow: number): string {
   return                 `外国人売り越し ${Math.abs(flow).toFixed(0)}億円`
 }
 
+export interface T2AllocationPanelProps {
+  readonly consumerSnapshot: AllocationConsumerSnapshot
+  readonly projection: T2AllocationProjection | null
+  readonly isMobile: boolean
+}
+
+export function T2AllocationPanel({
+  consumerSnapshot,
+  projection,
+  isMobile,
+}: T2AllocationPanelProps) {
+  const unavailableCopy = consumerSnapshot.availability === 'unavailable'
+    ? consumerSnapshot.reasonKind === 'UNKNOWN_REASON_CODE'
+      ? { title: '配分プランを利用できません', detail: '不明な状態を検出しました。再計算してください。' }
+      : consumerSnapshot.status === 'stale'
+        ? { title: '配分プランの再計算が必要です', detail: '旧い金額は表示していません。' }
+        : consumerSnapshot.status === 'invalid'
+          ? { title: '配分プランを計算できません', detail: '金額を確認できる状態になるまで表示を停止しています。' }
+          : { title: '配分プランは未計算です', detail: '計算完了後に金額を表示します。' }
+    : null
+
+  if (consumerSnapshot.availability === 'unavailable' || projection === null) {
+    const copy = unavailableCopy ?? {
+      title: '国内株投信の配分プランを利用できません',
+      detail: 'JP_TRUST クラスの計算完了後に金額を表示します。',
+    }
+    return (
+      <div
+        role="status"
+        data-allocation-availability="unavailable"
+        data-allocation-status={consumerSnapshot.status}
+        style={{
+          background: colors.bgSurface,
+          border: `1px solid ${colors.borderSubtle}`,
+          borderRadius: radius.lg,
+          boxShadow: shadow.sm,
+          padding: isMobile ? spacing[4] : `${spacing[4]} ${spacing[5]}`,
+        }}
+      >
+        <div style={{ ...typography.bodySmall, color: colors.textPrimary, fontWeight: 700 }}>
+          {copy.title}
+        </div>
+        <div style={{ ...typography.caption, color: colors.textMuted, marginTop: spacing[1] }}>
+          {copy.detail}
+        </div>
+      </div>
+    )
+  }
+
+  const { snapshot, jpTrustClass } = projection
+  const statusLabel = snapshot.status === 'current'
+    ? '最新'
+    : snapshot.status === 'estimate_only'
+      ? '見積のみ（実行不可）'
+      : '実行不可'
+
+  return (
+    <div
+      data-allocation-availability="available"
+      data-allocation-status={snapshot.status}
+      data-snapshot-id={snapshot.generation.snapshotId}
+      data-snapshot-executability={snapshot.snapshotExecutability}
+      data-source-holdings-snapshot-id={snapshot.generation.sourceHoldingsSnapshotId}
+      data-source-settings-version={snapshot.generation.sourceSettingsVersion}
+      data-source-candidate-generation-id={snapshot.generation.sourceCandidateGenerationId ?? ''}
+      data-class-full-cause={jpTrustClass.classFullCause ?? ''}
+    >
+      <div style={{
+        display: 'flex',
+        alignItems: isMobile ? 'flex-start' : 'center',
+        justifyContent: 'space-between',
+        flexDirection: isMobile ? 'column' : 'row',
+        gap: spacing[1],
+        marginBottom: spacing[3],
+      }}>
+        <div style={{ ...typography.bodySmall, color: colors.textPrimary, fontWeight: 700 }}>
+          配分プラン: {statusLabel}
+        </div>
+        <div style={{ ...typography.caption, color: colors.textMuted }}>
+          実行可能性: {snapshot.snapshotExecutability} / 更新 {formatRelativeTime(snapshot.generation.generatedAt)}
+        </div>
+      </div>
+      {(snapshot.blockedReasons.length > 0 || snapshot.warnings.length > 0 ||
+        jpTrustClass.blockedReasons.length > 0 || jpTrustClass.warningReasons.length > 0 ||
+        jpTrustClass.limitingFactors.length > 0) && (
+        <div style={{ ...typography.caption, color: colors.textMuted, marginBottom: spacing[3] }}>
+          snapshot: ブロック {snapshot.blockedReasons.length}件 / 警告 {snapshot.warnings.length}件 ・
+          JP_TRUST: ブロック {jpTrustClass.blockedReasons.length}件 / 警告 {jpTrustClass.warningReasons.length}件 /
+          制約 {jpTrustClass.limitingFactors.length}件
+        </div>
+      )}
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))',
+        gap: spacing[3],
+      }}>
+        <MetricCard title="クラス評価額" value={formatJPYAuto(jpTrustClass.currentAmount)} />
+        <MetricCard title="目標額" value={formatJPYAuto(jpTrustClass.targetAmount)} />
+        <MetricCard title="目標差分（不足）" value={formatJPYAuto(jpTrustClass.targetGap)} />
+        <MetricCard title="目標超過" value={formatJPYAuto(jpTrustClass.overweightAmount)} />
+        <MetricCard title="配分済額" value={formatJPYAuto(jpTrustClass.allocatedAmount)} />
+        <MetricCard title="割当後の残余" value={formatJPYAuto(jpTrustClass.remainingHeadroom)} />
+        <MetricCard title="クラスheadroom" value={formatJPYAuto(jpTrustClass.effectiveHeadroom)} />
+        <MetricCard title="利用可能予算" value={formatJPYAuto(jpTrustClass.availableBudget)} />
+        <MetricCard title="配分候補" value={`${jpTrustClass.instrumentPlanCount}件`} />
+      </div>
+    </div>
+  )
+}
+
 // ── コンポーネント ──────────────────────────────────────────────
 
 export function T2_JpFund() {
   const isMobile       = useIsMobile()
   const jpFunds        = useAppStore(selectJpFunds)
-  const totalEval      = useAppStore(selectJpFundTotalEval)
+  const allocationConsumerSnapshot = useAppStore(selectAllocationConsumerSnapshot)
+  const allocationProjection = useAppStore(selectT2AllocationProjection)
   const market         = useAppStore(s => s.market)
   const macro          = useAppStore(s => s.macro)
   const news           = useAppStore(s => s.news)
@@ -165,7 +282,6 @@ export function T2_JpFund() {
     setTrackingStats(getTrustShortTrackingStats())
   }, [])
 
-  const classTarget = universe?.categories.find(c => c.class === 'JP_TRUST')
   const signal      = trustPlan.shortTermSignal
   const mode        = trustPlan.shortTermMode
   const checklist   = mode.checklist
@@ -409,21 +525,15 @@ export function T2_JpFund() {
         </div>
       </div>
 
-      {/* ── KPI グリッド ── */}
+      {/* ── canonical AllocationPlanSnapshot class projection ── */}
+      <T2AllocationPanel
+        consumerSnapshot={allocationConsumerSnapshot}
+        projection={allocationProjection}
+        isMobile={isMobile}
+      />
+
+      {/* ── signal / tracking KPI グリッド ── */}
       <div style={metricsGridStyle}>
-        <MetricCard title="クラス評価額" value={formatJPYAuto(totalEval)} />
-        <MetricCard
-          title="目標額"
-          value={classTarget ? formatJPYAuto(classTarget.targetValue) : '—'}
-        />
-        <MetricCard
-          title="差分（理想）"
-          value={classTarget ? formatJPYAuto(classTarget.diffValue) : '—'}
-          change={classTarget ? {
-            value:    classTarget.diffValue >= 0 ? '不足' : '過多',
-            positive: classTarget.diffValue > 0,
-          } : undefined}
-        />
         <MetricCard
           title="平均スコア"
           value={`${avgScore}`}
@@ -492,7 +602,7 @@ export function T2_JpFund() {
                       </div>
                       <div style={{ display: 'flex', gap: spacing[3], alignItems: 'center' }}>
                         <span style={{ fontSize: '12px', color: colors.textSubtle }}>
-                          スコア {row.score} / {isSuppressed ? '（参考）' : '推奨 '}{formatJPYAuto(row.suggestedAmount)}
+                          スコア {row.score} / {isSuppressed ? '（参考）' : row.action}
                         </span>
                       </div>
                     </div>
@@ -917,8 +1027,6 @@ export function T2_JpFund() {
           <div style={{ ...cardStyle, padding: `${spacing[4]} ${spacing[5]}` }}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: spacing[2] }}>
               {[
-                { label: 'コア予算',         value: formatJPYAuto(mode.recommendedCoreBudget) },
-                { label: 'サテライト予算',   value: formatJPYAuto(mode.recommendedSatelliteBudget) },
                 { label: '利確ルール',       value: mode.takeProfitRule },
                 { label: '損切ルール',       value: mode.stopLossRule },
                 { label: '最大保有期間',     value: mode.maxHoldingRule },

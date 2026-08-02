@@ -12,6 +12,7 @@ import {
   selectAllocationClassProjection,
   selectAllocationConsumerSnapshot,
   selectAllocationInstrumentProjections,
+  selectT2AllocationProjection,
 } from './allocationConsumerSelectors'
 import { projectCandidatePortfolioRecommendations } from './candidatePortfolioRecommendation'
 
@@ -468,6 +469,113 @@ describe('R3-a1 shared AllocationPlanSnapshot consumer contract', () => {
       const whole = available(selectAllocationConsumerSnapshot(source))
       expect(selectAllocationClassProjection(assetClass)(source))
         .toBe(whole.classes.find(item => item.assetClass === assetClass))
+    },
+  )
+
+  it('T2 adapter returns the JP_TRUST class and generation identities verbatim', () => {
+    const plan = structuredClone(snapshot())
+    const trust = plan.assetClassPlans.find(item => item.assetClass === 'JP_TRUST')!
+    trust.currentAmount = 901_001
+    trust.targetAmount = 702_002
+    trust.targetGap = 503_003
+    trust.allocatedAmount = 104_004
+    trust.remainingHeadroom = 305_005
+    trust.effectiveHeadroom = 406_006
+    trust.availableBudget = 607_007
+    const source = state(plan)
+    const whole = available(selectAllocationConsumerSnapshot(source))
+    const projection = selectT2AllocationProjection(source)
+    expect(projection?.snapshot).toBe(whole)
+    expect(projection?.jpTrustClass).toBe(
+      whole.classes.find(item => item.assetClass === 'JP_TRUST'),
+    )
+    expect(projection?.snapshot.generation).toEqual({
+      snapshotId: plan.snapshotId,
+      generatedAt: plan.generatedAt,
+      sourceHoldingsSnapshotId: plan.sourceHoldingsSnapshotId,
+      sourceSettingsVersion: plan.sourceSettingsVersion,
+      sourceCandidateGenerationId: CANDIDATE_GENERATION,
+    })
+    expect(projection?.jpTrustClass).toMatchObject({
+      assetClass: 'JP_TRUST',
+      currentAmount: 901_001,
+      targetAmount: 702_002,
+      targetGap: 503_003,
+      allocatedAmount: 104_004,
+      remainingHeadroom: 305_005,
+      effectiveHeadroom: 406_006,
+      availableBudget: 607_007,
+    })
+  })
+
+  it('T2 adapter is identity-based, order-independent, and reference-stable', () => {
+    const plan = structuredClone(snapshot())
+    plan.assetClassPlans.reverse()
+    const source = state(plan)
+    const first = selectT2AllocationProjection(source)
+    expect(first?.jpTrustClass.assetClass).toBe('JP_TRUST')
+    expect(selectT2AllocationProjection(source)).toBe(first)
+
+    const nextPlan = structuredClone(plan)
+    nextPlan.snapshotId = 'snapshot-r3-b-next'
+    nextPlan.instrumentPlans.forEach(item => {
+      item.calculationSnapshotId = nextPlan.snapshotId
+    })
+    const next = selectT2AllocationProjection(state(nextPlan, 'current', 'candidate-next'))
+    expect(next).not.toBe(first)
+    expect(next?.snapshot.generation.snapshotId).toBe('snapshot-r3-b-next')
+    expect(next?.snapshot.generation.sourceCandidateGenerationId).toBe('candidate-next')
+  })
+
+  it.each(['absent', 'invalid', 'stale'] as const)(
+    'T2 adapter returns null for %s without a legacy fallback',
+    status => {
+      expect(selectT2AllocationProjection(state(null, status))).toBeNull()
+      expect(selectT2AllocationProjection(state(snapshot(), status))).toBeNull()
+    },
+  )
+
+  it('T2 adapter returns null for a missing JP_TRUST class or unknown reason', () => {
+    const missingClass = structuredClone(snapshot())
+    missingClass.assetClassPlans = missingClass.assetClassPlans
+      .filter(item => item.assetClass !== 'JP_TRUST')
+    missingClass.instrumentPlans = missingClass.instrumentPlans
+      .filter(item => item.assetClass !== 'JP_TRUST')
+    expect(selectT2AllocationProjection(state(missingClass))).toBeNull()
+
+    const unknown = structuredClone(snapshot())
+    unknown.assetClassPlans.find(item => item.assetClass === 'JP_TRUST')!
+      .warningReasons = ['UNKNOWN' as never]
+    expect(selectT2AllocationProjection(state(unknown))).toBeNull()
+  })
+
+  it('T2 adapter preserves zero allocation when the JP_TRUST target is reached', () => {
+    const plan = structuredClone(snapshot())
+    const trust = plan.assetClassPlans.find(item => item.assetClass === 'JP_TRUST')!
+    trust.targetGap = 0
+    trust.effectiveHeadroom = 0
+    trust.allocatedAmount = 0
+    trust.remainingHeadroom = 0
+    trust.blockedReasons = ['CLASS_FULL']
+    trust.warningReasons = []
+    trust.limitingFactors = ['TARGET_GAP']
+    const projected = selectT2AllocationProjection(state(plan))
+    expect(projected?.jpTrustClass).toMatchObject({
+      classFullCause: 'CLASS_TARGET_REACHED',
+      targetGap: 0,
+      effectiveHeadroom: 0,
+      allocatedAmount: 0,
+      remainingHeadroom: 0,
+    })
+  })
+
+  it.each(['current', 'estimate_only', 'blocked'] as const)(
+    'T2 adapter preserves available status %s and snapshot executability',
+    status => {
+      const projection = selectT2AllocationProjection(state(snapshot(), status))
+      expect(projection?.snapshot.status).toBe(status)
+      expect(projection?.snapshot.snapshotExecutability)
+        .toBe(available(selectAllocationConsumerSnapshot(state(snapshot(), status))).snapshotExecutability)
     },
   )
 })
