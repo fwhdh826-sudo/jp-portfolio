@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-08-01T21:32:32.780746+09:00",
-  "sourceUpdatedAt": "2026-08-01T12:19:24+00:00",
+  "updatedAt": "2026-08-02T10:04:57.659241+09:00",
+  "sourceUpdatedAt": "2026-08-02T00:13:35+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -32,42 +32,42 @@
       ]
     },
     "jp_semiconductor": {
-      "avgSentiment": 0.67,
+      "avgSentiment": 0,
       "negativeCount": 0,
-      "positiveCount": 1,
+      "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "South Korea’s Exports Extend Momentum as Chip Boom Persists",
-      "topPositiveTitle": "South Korea’s Exports Extend Momentum as Chip Boom Persists",
-      "items": [
-        {
-          "title": "South Korea’s Exports Extend Momentum as Chip Boom Persists",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-01T00:12:43+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-01/south-korea-s-exports-extend-momentum-as-chip-boom-drives-growth",
-          "tags": [
-            "jp_semiconductor",
-            "market",
-            "us_growth"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "us_broad": {
-      "avgSentiment": 0.141,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
-      "positiveCount": 3,
-      "neutralCount": 4,
-      "sourceCount": 2,
-      "itemCount": 7,
+      "positiveCount": 0,
+      "neutralCount": 2,
+      "sourceCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Furman: Warsh Should Talk Less, Act More",
-      "topPositiveTitle": "Fewer Fed Meetings Could Fuel Market Volatility",
+      "topNegativeTitle": "Warsh’s Silent Treatment Has S&P Traders Bracing for Wild Swings",
+      "topPositiveTitle": "Warsh’s Silent Treatment Has S&P Traders Bracing for Wild Swings",
       "items": [
+        {
+          "title": "Warsh’s Silent Treatment Has S&P Traders Bracing for Wild Swings",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-01T13:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-01/warsh-s-silent-treatment-has-s-p-traders-bracing-for-wild-swings",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        },
         {
           "title": "Furman: Warsh Should Talk Less, Act More",
           "source": "Bloomberg Markets",
@@ -79,125 +79,32 @@
             "market",
             "us_broad"
           ]
-        },
-        {
-          "title": "Fed’s Credibility Test and J&J’s New Bet",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-01T12:00:01+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-08-01/fed-s-credibility-test-and-j-j-s-new-bet",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Warsh Considering Reducing Number of Fed Meetings, NYT Reports",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-31T20:52:38+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-31/warsh-considering-reducing-number-of-fed-meetings-nyt-reports",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Federal Reserve Unveils Plan Aiming to Boost Mutual Bank Growth",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-31T14:43:44+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-31/federal-reserve-unveils-plan-aiming-to-boost-mutual-bank-growth",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Fewer Fed Meetings Could Fuel Market Volatility",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-01T11:57:14+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-01/fewer-fed-meetings-could-fuel-market-volatility-video",
-          "tags": [
-            "macro_risk",
-            "market",
-            "us_broad",
-            "us_growth"
-          ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.5,
+      "avgSentiment": 0,
       "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 0,
-      "sourceCount": 2,
-      "itemCount": 2,
-      "isStale": false,
-      "topNegativeTitle": "Fewer Fed Meetings Could Fuel Market Volatility",
-      "topPositiveTitle": "South Korea’s Exports Extend Momentum as Chip Boom Persists",
-      "items": [
-        {
-          "title": "Fewer Fed Meetings Could Fuel Market Volatility",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-01T11:57:14+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-01/fewer-fed-meetings-could-fuel-market-volatility-video",
-          "tags": [
-            "macro_risk",
-            "market",
-            "us_broad",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "South Korea’s Exports Extend Momentum as Chip Boom Persists",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-01T00:12:43+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-01/south-korea-s-exports-extend-momentum-as-chip-boom-drives-growth",
-          "tags": [
-            "jp_semiconductor",
-            "market",
-            "us_growth"
-          ]
-        }
-      ]
-    },
-    "global_broad": {
-      "avgSentiment": -0.43,
-      "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Bessent Joins Japan to Help Reverse Months of Yen Losses",
-      "topPositiveTitle": "Bessent Joins Japan to Help Reverse Months of Yen Losses",
-      "items": [
-        {
-          "title": "Bessent Joins Japan to Help Reverse Months of Yen Losses",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.43,
-          "publishedAt": "2026-08-01T06:19:28+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-01/bessent-and-the-fed-help-japan-reverse-months-of-yen-losses",
-          "tags": [
-            "fx",
-            "global_broad",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
+    },
+    "global_broad": {
+      "avgSentiment": 0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
+      "isStale": false,
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "gold": {
       "avgSentiment": 0,
@@ -236,28 +143,54 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.222,
-      "negativeCount": 0,
-      "positiveCount": 3,
-      "neutralCount": 6,
+      "avgSentiment": 0.068,
+      "negativeCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 9,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Indian Oil Buys Record Spot Market Crude on Mideast Supply Hit",
-      "topPositiveTitle": "US Consumer Sentiment Rises to a Five-Month High in July",
+      "topNegativeTitle": "Exxon, Chevron Warn Fuel Prices to Endure as War Knocks Refining",
+      "topPositiveTitle": "Rising Fuel Prices Hit Americans Now Without Tax Refunds to Tap",
       "items": [
         {
-          "title": "Indian Oil Buys Record Spot Market Crude on Mideast Supply Hit",
+          "title": "Exxon, Chevron Warn Fuel Prices to Endure as War Knocks Refining",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-01T09:30:37+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-01/indian-oil-buys-record-spot-market-crude-on-mideast-supply-hit",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-01T13:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-01/exxon-chevron-warn-fuel-prices-to-endure-as-war-knocks-refining",
           "tags": [
             "commodity",
             "geopolitical",
             "macro_risk",
             "market"
+          ]
+        },
+        {
+          "title": "Crushed by Kospi Rout, Angry Koreans Rip Lee and Vow Not to Buy",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-02T00:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-02/crushed-by-kospi-rout-angry-koreans-rip-lee-and-vow-not-to-buy",
+          "tags": [
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Warsh’s Silent Treatment Has S&P Traders Bracing for Wild Swings",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-01T13:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-01/warsh-s-silent-treatment-has-s-p-traders-bracing-for-wild-swings",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "us_broad"
           ]
         },
         {
@@ -276,41 +209,13 @@
           ]
         },
         {
-          "title": "Indian Firms Plan Fresh Price Hikes, Testing Inflation Outlook",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-31T23:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-31/indian-firms-plan-fresh-price-hikes-testing-inflation-outlook",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "How Is Student Debt Impacting Your Finances? Share Your Story",
+          "title": "Rising Fuel Prices Hit Americans Now Without Tax Refunds to Tap",
           "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-31T16:05:12+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-31/how-is-student-debt-impacting-your-finances-share-your-story",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-01T11:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-01/rising-fuel-prices-hit-americans-now-without-tax-refunds-to-tap",
           "tags": [
-            "macro_risk",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "BOE’s Pill Warns of Energy Price Volatility Persisting Into 2027",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-31T13:34:58+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-31/boe-s-pill-warns-of-energy-price-volatility-persisting-into-2027",
-          "tags": [
-            "commodity",
             "geopolitical",
             "macro_risk",
             "market"
@@ -319,29 +224,16 @@
       ]
     },
     "fx": {
-      "avgSentiment": 0.249,
-      "negativeCount": 1,
-      "positiveCount": 3,
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
+      "positiveCount": 0,
       "neutralCount": 3,
-      "sourceCount": 3,
-      "itemCount": 7,
+      "sourceCount": 2,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Bessent Joins Japan to Help Reverse Months of Yen Losses",
-      "topPositiveTitle": "Yen Gains on Intervention, Reports of Buying by Both US, Japan",
+      "topNegativeTitle": "短時間で急激な円高進む 政府・日銀が再び市場介入か",
+      "topPositiveTitle": "短時間で急激な円高進む 政府・日銀が再び市場介入か",
       "items": [
-        {
-          "title": "Bessent Joins Japan to Help Reverse Months of Yen Losses",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.43,
-          "publishedAt": "2026-08-01T06:19:28+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-01/bessent-and-the-fed-help-japan-reverse-months-of-yen-losses",
-          "tags": [
-            "fx",
-            "global_broad",
-            "market"
-          ]
-        },
         {
           "title": "短時間で急激な円高進む 政府・日銀が再び市場介入か",
           "source": "NHK 経済",
@@ -357,38 +249,24 @@
           "titleJa": "短時間で急激な円高進む 政府・日銀が再び市場介入か"
         },
         {
-          "title": "India Push for Overseas Capital Draws Over $40 Billion, RBI Says",
+          "title": "FIFA Faces Backlash Over Investment Plan",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-01T05:14:23+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-01/india-push-for-overseas-capital-draws-over-40-billion-rbi-says",
+          "publishedAt": "2026-08-01T13:56:04+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-01/fifa-faces-backlash-over-investment-plan-video",
           "tags": [
-            "commodity",
             "fx",
             "market"
           ]
         },
         {
-          "title": "Danantara Dollar Bond Plan Grapples With Global Volatility",
+          "title": "By The Way: Headlines You May Have Missed the Week of 7/26",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-30T09:14:25+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-30/danantara-dollar-debt-plan-grapples-with-global-bond-volatility",
-          "tags": [
-            "fx",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Colombia Surprises With Rate Hold But Signals Hikes Aren’t Over",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.5,
-          "publishedAt": "2026-07-31T18:43:45+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-31/colombia-unexpectedly-keeps-rates-steady-despite-price-pressures",
+          "publishedAt": "2026-08-01T12:28:05+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-01/by-the-way-headlines-you-may-have-missed-video",
           "tags": [
             "fx",
             "market"
@@ -397,29 +275,16 @@
       ]
     },
     "rates": {
-      "avgSentiment": 0.066,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 4,
-      "sourceCount": 2,
-      "itemCount": 5,
+      "positiveCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Fed’s Credibility Test and J&J’s New Bet",
-      "topPositiveTitle": "Fed Dissenters Say Rate Hikes Needed to Battle Inflation Threat",
+      "topNegativeTitle": "World Economy Latest: Central Banks Hold Rates Steady",
+      "topPositiveTitle": "World Economy Latest: Central Banks Hold Rates Steady",
       "items": [
-        {
-          "title": "Fed’s Credibility Test and J&J’s New Bet",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-01T12:00:01+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-08-01/fed-s-credibility-test-and-j-j-s-new-bet",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
         {
           "title": "World Economy Latest: Central Banks Hold Rates Steady",
           "source": "Bloomberg Economics",
@@ -434,67 +299,31 @@
             "market",
             "rates"
           ]
-        },
-        {
-          "title": "How Is Student Debt Impacting Your Finances? Share Your Story",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-31T16:05:12+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-31/how-is-student-debt-impacting-your-finances-share-your-story",
-          "tags": [
-            "macro_risk",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Bank of England Hawks Appear Isolated as Deputies Shift Ground",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-31T14:39:02+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-31/bank-of-england-hawks-appear-isolated-as-deputies-shift-ground",
-          "tags": [
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Fed Dissenters Say Rate Hikes Needed to Battle Inflation Threat",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-07-31T12:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-31/fed-dissenters-say-hikes-needed-to-tackle-persistent-inflation",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.074,
+      "avgSentiment": -0.066,
       "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 7,
-      "sourceCount": 2,
-      "itemCount": 9,
+      "positiveCount": 0,
+      "neutralCount": 4,
+      "sourceCount": 3,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Europe’s Endless Heat Waves Imperil Once Reliable Power Sources",
-      "topPositiveTitle": "Canada Economy Tracking 3.4% Growth as Energy Sector Booms",
+      "topNegativeTitle": "Exxon, Chevron Warn Fuel Prices to Endure as War Knocks Refining",
+      "topPositiveTitle": "Turkey Said to Extend Iraq Oil Pipeline Deal by One Year",
       "items": [
         {
-          "title": "Europe’s Endless Heat Waves Imperil Once Reliable Power Sources",
+          "title": "Exxon, Chevron Warn Fuel Prices to Endure as War Knocks Refining",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-08-01T09:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-01/europe-s-endless-heat-waves-imperil-once-reliable-power-sources",
+          "publishedAt": "2026-08-01T13:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-01/exxon-chevron-warn-fuel-prices-to-endure-as-war-knocks-refining",
           "tags": [
             "commodity",
+            "geopolitical",
+            "macro_risk",
             "market"
           ]
         },
@@ -523,20 +352,6 @@
           ]
         },
         {
-          "title": "Indian Oil Buys Record Spot Market Crude on Mideast Supply Hit",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-01T09:30:37+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-01/indian-oil-buys-record-spot-market-crude-on-mideast-supply-hit",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
           "title": "World Economy Latest: Central Banks Hold Rates Steady",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
@@ -550,27 +365,40 @@
             "market",
             "rates"
           ]
+        },
+        {
+          "title": "茂木外相 メキシコなど中南米4か国を訪問へ",
+          "source": "NHK 経済",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-31T07:25:43+00:00",
+          "url": "https://news.web.nhk/newsweb/na/na-k10015192191000",
+          "tags": [
+            "commodity",
+            "market"
+          ],
+          "titleJa": "茂木外相 メキシコなど中南米4か国を訪問へ"
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.334,
-      "negativeCount": 0,
+      "avgSentiment": 0.164,
+      "negativeCount": 1,
       "positiveCount": 3,
-      "neutralCount": 4,
+      "neutralCount": 5,
       "sourceCount": 2,
-      "itemCount": 7,
+      "itemCount": 9,
       "isStale": false,
-      "topNegativeTitle": "Indian Oil Buys Record Spot Market Crude on Mideast Supply Hit",
-      "topPositiveTitle": "US Consumer Sentiment Rises to a Five-Month High in July",
+      "topNegativeTitle": "Exxon, Chevron Warn Fuel Prices to Endure as War Knocks Refining",
+      "topPositiveTitle": "Saudi Prince Concerned Over Trump’s Iran Strike Plan: Axios",
       "items": [
         {
-          "title": "Indian Oil Buys Record Spot Market Crude on Mideast Supply Hit",
+          "title": "Exxon, Chevron Warn Fuel Prices to Endure as War Knocks Refining",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-01T09:30:37+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-01/indian-oil-buys-record-spot-market-crude-on-mideast-supply-hit",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-01T13:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-01/exxon-chevron-warn-fuel-prices-to-endure-as-war-knocks-refining",
           "tags": [
             "commodity",
             "geopolitical",
@@ -579,58 +407,53 @@
           ]
         },
         {
-          "title": "World Economy Latest: Central Banks Hold Rates Steady",
+          "title": "Ukraine Gains Ground as Putin Faces Pressure",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.2,
+          "publishedAt": "2026-08-01T14:13:24+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-01/ukraine-gains-ground-as-putin-faces-pressure-video",
+          "tags": [
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "US Job Growth to Pick Up After Disappointing June",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-01T09:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-01/world-economy-latest-central-banks-hold-rates-steady",
+          "publishedAt": "2026-08-01T20:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-01/us-job-growth-to-pick-up-after-disappointing-june",
           "tags": [
-            "commodity",
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Bloomberg This Weekend 08/01/2026",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-01T16:17:44+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-01/bloomberg-this-weekend-08-01-2026-video",
+          "tags": [
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Warsh’s Silent Treatment Has S&P Traders Bracing for Wild Swings",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-01T13:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-01/warsh-s-silent-treatment-has-s-p-traders-bracing-for-wild-swings",
+          "tags": [
             "geopolitical",
             "macro_risk",
             "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Indian Firms Plan Fresh Price Hikes, Testing Inflation Outlook",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-31T23:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-31/indian-firms-plan-fresh-price-hikes-testing-inflation-outlook",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "BOE’s Pill Warns of Energy Price Volatility Persisting Into 2027",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-31T13:34:58+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-31/boe-s-pill-warns-of-energy-price-volatility-persisting-into-2027",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Hamas Disarmament Plan Tests Israel's Next Move",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-01T12:11:39+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-01/hamas-disarmament-plan-tests-israel-s-next-move-video",
-          "tags": [
-            "geopolitical",
-            "market"
+            "us_broad"
           ]
         }
       ]
@@ -644,7 +467,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 1,
+    "excludedCount": 2,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
