@@ -113,7 +113,7 @@ export function buildCandidateAllocationInputs(input: {
     if (instrumentId === null) {
       return { status: 'invalid', sourceCandidateGenerationId: input.artifact._meta.generatedAt, instruments: [], candidates: [] }
     }
-    if (Number.isFinite(holding.eval) && holding.eval > 0) heldIds.add(instrumentId)
+    heldIds.add(instrumentId)
   }
 
   const selected: Array<{

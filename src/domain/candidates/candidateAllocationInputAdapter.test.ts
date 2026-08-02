@@ -141,4 +141,21 @@ describe('HR-I3 canonical candidate allocation input adapter', () => {
     expect(buildCandidateAllocationInputs({ artifact: artifact(), holdings: [holding('bad code')] }))
       .toMatchObject({ status: 'invalid', instruments: [], candidates: [] })
   })
+  it('S-T20 excludes a normalized held identity even when eval is zero', () => {
+    const result = buildCandidateAllocationInputs({
+      artifact: artifact(),
+      holdings: [holding(' １００２.t ', 0)],
+    })
+    expect(result.status).toBe('available')
+    expect(result.candidates.map(item => item.instrumentId)).toEqual(['stock:1003'])
+  })
+
+  it('keeps the raw candidate display code while canonical identity is separate', () => {
+    const value = artifact()
+    value.candidates[1].code = ' １００２.t '
+    const raw = value.candidates[1].code
+    const result = buildCandidateAllocationInputs({ artifact: value, holdings: [] })
+    expect(value.candidates[1].code).toBe(raw)
+    expect(result.instruments.map(item => item.instrumentId)).toContain('stock:1002')
+  })
 })

@@ -15,6 +15,7 @@ import {
   selectSnapshotExecutability,
   snapshotExecutability,
 } from './allocationPlanSelectors'
+import { selectAllocationConsumerSnapshot } from './allocationConsumerSelectors'
 import {
   createPortfolioGenerationInvalidationEvent,
   type PortfolioGenerationInvalidationTransport,
@@ -406,6 +407,8 @@ describe('AllocationPlanSnapshot store authority', () => {
     const oldId = created.store.getState().allocationPlan?.snapshotId
     expect(oldId).toBeTruthy()
     expect(created.store.getState().allocationPlanStatus).toBe('current')
+    expect(selectAllocationConsumerSnapshot(created.store.getState()).availability).toBe('available')
+
 
     const observations: Array<{
       crossTab: string | undefined
@@ -432,6 +435,11 @@ describe('AllocationPlanSnapshot store authority', () => {
     expect(invalidated.allocationPlan).toBeNull()
     expect(invalidated.allocationPlanStatus).toBe('stale')
     expect(invalidated.allocationPlanCandidateGenerationId).toBeNull()
+    expect(selectAllocationConsumerSnapshot(invalidated)).toEqual({
+      availability: 'unavailable',
+      status: 'stale',
+      reasonKind: 'INVALIDATED',
+    })
     expect(invalidated.candidatePortfolioRecommendations).toEqual([])
     expect(selectSnapshotExecutability(invalidated)).toBe('NOT_CALCULATED')
 

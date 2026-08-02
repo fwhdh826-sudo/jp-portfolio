@@ -73,6 +73,7 @@ import { computeRoleExposureByRole } from '../domain/candidates/roleExposure'
 import { selectCandidatePortfolioFit } from './portfolioFitSelectors'
 import {
   buildCandidateAllocationInputs,
+  candidateAllocationInstrumentId,
   composeCandidatePortfolioRecommendations,
   type CandidateAllocationInputAdapterResult,
 } from '../domain/candidates/candidatePortfolioRecommendation'
@@ -1794,10 +1795,15 @@ function allocationAssetClassForTrust(policy: Trust['policy']): AllocationInstru
   return 'OVERSEAS_TRUST'
 }
 
-function defaultAllocationInstruments(state: AppState): AllocationInstrumentInput[] {
-  return [
-    ...state.holdings.map(holding => ({
-      instrumentId: `stock:${holding.code}`,
+function defaultAllocationInstruments(state: AppState): AllocationInstrumentInput[] | null {
+  const stockInstruments: AllocationInstrumentInput[] = []
+  const stockIds = new Set<string>()
+  for (const holding of state.holdings) {
+    const instrumentId = candidateAllocationInstrumentId(holding.code)
+    if (instrumentId === null || stockIds.has(instrumentId)) return null
+    stockIds.add(instrumentId)
+    stockInstruments.push({
+      instrumentId,
       assetClass: 'JP_STOCK' as const,
       kind: 'jp_stock' as const,
       relationship: 'already_held' as const,
@@ -1806,7 +1812,10 @@ function defaultAllocationInstruments(state: AppState): AllocationInstrumentInpu
       reason: 'canonical holding projection',
       priceJpy: holding.currentPrice ?? null,
       lotSizeShares: null,
-    })),
+    })
+  }
+  return [
+    ...stockInstruments,
     ...state.trust.map(trust => ({
       instrumentId: `trust:${trust.id}`,
       assetClass: allocationAssetClassForTrust(trust.policy),
@@ -1824,8 +1833,7 @@ function defaultAllocationInstruments(state: AppState): AllocationInstrumentInpu
     })),
   ]
 }
-
-function mergeAllocationInstruments(
+export function mergeAllocationInstruments(
   base: readonly AllocationInstrumentInput[],
   candidates: readonly AllocationInstrumentInput[],
 ): AllocationInstrumentInput[] | null {
@@ -1898,7 +1906,9 @@ export function buildAllocationPlanInput(
     })
     const defaultInstruments = defaultAllocationInstruments(state)
     const instruments = options.instruments === undefined
-      ? mergeAllocationInstruments(defaultInstruments, candidateCapture.instruments)
+      ? defaultInstruments === null
+        ? null
+        : mergeAllocationInstruments(defaultInstruments, candidateCapture.instruments)
       : [...options.instruments]
     if (instruments === null) return null
     const candidates = options.candidates === undefined

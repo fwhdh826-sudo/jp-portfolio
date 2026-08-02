@@ -81,8 +81,6 @@ export function projectCandidatePortfolioRecommendations(
     if (planById.has(plan.instrumentId)) return unavailable()
     planById.set(plan.instrumentId, plan)
   }
-  if (planById.size !== recommendationIds.size) return unavailable()
-
   const projected = input.recommendations.map(recommendation => {
     const instrumentId = recommendationIds.get(recommendation)
     const plan = instrumentId === undefined ? undefined : planById.get(instrumentId)
@@ -90,11 +88,11 @@ export function projectCandidatePortfolioRecommendations(
       plan === undefined ||
       plan.assetClass !== 'JP_STOCK' ||
       plan.calculationSnapshotId !== input.snapshot?.snapshotId
-    ) return null
+    ) return { ...recommendation, allocation: null }
     const classPlans = input.snapshot.assetClassPlans.filter(
       classPlan => classPlan.assetClass === plan.assetClass,
     )
-    if (classPlans.length !== 1) return null
+    if (classPlans.length !== 1) return { ...recommendation, allocation: null }
     const classPlan = classPlans[0]
     const classBlockedReasons = orderBlockedReasons(classPlan.blockedReasons)
     const classWarningReasons = orderWarningReasons(classPlan.warningReasons)
@@ -117,7 +115,7 @@ export function projectCandidatePortfolioRecommendations(
       !isNonNegativeInteger(plan.classHeadroom) ||
       !isNonNegativeInteger(plan.effectiveInstrumentHeadroom) ||
       !isNonNegativeInteger(classPlan.remainingHeadroom)
-    ) return null
+    ) return { ...recommendation, allocation: null }
     return {
       ...recommendation,
       allocation: {
@@ -144,9 +142,7 @@ export function projectCandidatePortfolioRecommendations(
     } satisfies CandidatePortfolioRecommendation
   })
 
-  return projected.some(recommendation => recommendation === null)
-    ? unavailable()
-    : projected as readonly CandidatePortfolioRecommendation[]
+  return projected
 }
 
 function isValidRecommendation(

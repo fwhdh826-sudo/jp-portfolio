@@ -7,6 +7,7 @@ import {
   buildAllocationPlanInput,
   runFullAnalysis,
   useAppStore,
+  mergeAllocationInstruments,
   type AllocationPlanInputAdapterOptions,
 } from './useAppStore'
 
@@ -22,11 +23,11 @@ function candidateArtifact(generatedAt = '2026-07-26T07:11:40.540540+00:00'): Ca
   return value
 }
 
-function stateWithArtifact(artifact: CandidateFunnelArtifact | null): AppState {
+function stateWithArtifact(artifact: CandidateFunnelArtifact | null, holdings: AppState['holdings'] = []): AppState {
   const state = useAppStore.getState()
   return {
     ...state,
-    holdings: [],
+    holdings,
     trust: [],
     candidateFunnel: artifact,
     system: {
@@ -74,8 +75,16 @@ function adapterOptions(): AllocationPlanInputAdapterOptions {
 describe('HR-I3 candidate allocation production path', () => {
   it('feeds canonical public candidate inputs into the existing writer input', () => {
     const artifact = candidateArtifact()
-    const input = buildAllocationPlanInput(stateWithArtifact(artifact), adapterOptions())
+    const source = stateWithArtifact(artifact)
+    source.cashAssumptions = {
+      cashDeposits: 2_000_000,
+      standbyFunds: 0,
+      manualOverrideEnabled: true,
+      manualUpdatedAt: new Date(NOW).toISOString(),
+    }
+    const input = buildAllocationPlanInput(source, adapterOptions())
     expect(input?.candidates.map(item => item.instrumentId)).toEqual(['stock:1002', 'stock:1003'])
+    expect(input?.budgets).toEqual({ shortTermBudget: 0, longTermBudget: 2_000_000 })
     expect(input?.instruments.filter(item => item.relationship === 'new_to_portfolio').map(item => ({
       instrumentId: item.instrumentId,
       priceJpy: item.priceJpy,
@@ -84,6 +93,43 @@ describe('HR-I3 candidate allocation production path', () => {
       { instrumentId: 'stock:1002', priceJpy: null, lotSizeShares: null },
       { instrumentId: 'stock:1003', priceJpy: null, lotSizeShares: null },
     ])
+  })
+  it('S-T19 fails closed when a holding identity cannot be normalized', () => {
+    const holdings = [{ code: 'bad code', eval: 0 }] as AppState['holdings']
+    expect(buildAllocationPlanInput(stateWithArtifact(candidateArtifact(), holdings), adapterOptions()))
+      .toBeNull()
+  })
+
+  it('N1 rejects duplicate normalized holding identities without silent overwrite', () => {
+    const holdings = [
+      { code: '１００２.t', eval: 0 },
+      { code: ' 1002 ', eval: 0 },
+    ] as AppState['holdings']
+    expect(buildAllocationPlanInput(stateWithArtifact(candidateArtifact(), holdings), adapterOptions()))
+      .toBeNull()
+  })
+
+  it('N1 aligns eval-zero heldIds with canonical default instruments', () => {
+    const holdings = [{ code: ' １００２.t ', eval: 0, sector: '銀行業' }] as AppState['holdings']
+    const result = buildAllocationPlanInput(stateWithArtifact(candidateArtifact(), holdings), adapterOptions())
+    expect(result).not.toBeNull()
+    expect(result?.candidates.map(item => item.instrumentId)).toEqual(['stock:1003'])
+    expect(result?.instruments.filter(item => item.instrumentId === 'stock:1002')).toHaveLength(1)
+  })
+
+  it('S-T21 keeps the duplicate merge backstop fail-closed', () => {
+    const instrument = {
+      instrumentId: 'stock:1002',
+      assetClass: 'JP_STOCK' as const,
+      kind: 'jp_stock' as const,
+      relationship: 'already_held' as const,
+      currentAmount: 0,
+      role: null,
+      reason: 'duplicate backstop fixture',
+      priceJpy: null,
+      lotSizeShares: null,
+    }
+    expect(mergeAllocationInstruments([instrument], [{ ...instrument }])).toBeNull()
   })
 
   it('captures candidate generation on the canonical run and creates exact instrument plans', () => {

@@ -1351,4 +1351,15 @@ describe('P5-B005-C-B1-R2 — qualityGate warning propagation', () => {
     ])
     expect(new Set(result.qualityGate.warningIds).size).toBe(result.qualityGate.warningIds.length)
   })
+  it('S-T27/P3-03 pins CSV and portfolio-fit canonical stock-code patterns together', () => {
+    const { readFileSync } = require('node:fs') as {
+      readFileSync(path: URL, encoding: 'utf8'): string
+    }
+    const csvSource = readFileSync(new URL('../csv/importPortfolioCsv.ts', import.meta.url), 'utf8')
+    const fitSource = readFileSync(new URL('./portfolioFit.ts', import.meta.url), 'utf8')
+    const csvPattern = /const STOCK_CODE_FULL_RE = (\/[^\n]+\/)/.exec(csvSource)?.[1]
+    const fitPattern = /const CANONICAL_CODE_PATTERN = (\/[^\n]+\/)/.exec(fitSource)?.[1]
+    expect(csvPattern).toBe('/^\\d{3}[0-9A-HJ-NP-Z]$/')
+    expect(fitPattern).toBe(csvPattern)
+  })
 })

@@ -182,8 +182,6 @@ describe('HR-I3 read-only candidate allocation projection', () => {
   })
 
   it.each([
-    ['missing plan', (snapshot: AllocationPlanSnapshot) => { snapshot.instrumentPlans = [] }],
-    ['extra plan', (snapshot: AllocationPlanSnapshot) => { snapshot.instrumentPlans.push({ ...snapshot.instrumentPlans[0], instrumentId: 'stock:9999' }) }],
     ['duplicate plan', (snapshot: AllocationPlanSnapshot) => { snapshot.instrumentPlans.push({ ...snapshot.instrumentPlans[0] }) }],
     ['asset-class mismatch', (snapshot: AllocationPlanSnapshot) => { snapshot.instrumentPlans[0].assetClass = 'JP_TRUST' }],
     ['snapshot calculation mismatch', (snapshot: AllocationPlanSnapshot) => { snapshot.instrumentPlans[0].calculationSnapshotId = 'other' }],
@@ -191,6 +189,40 @@ describe('HR-I3 read-only candidate allocation projection', () => {
     const snapshot = structuredClone(buildAllocationPlanSnapshot(allocationInput()))
     mutate(snapshot)
     expect(project([recommendation()], snapshot)[0].allocation).toBeNull()
+  })
+  it('S-T23/J1 keeps exact matches when one of three candidate plans is missing', () => {
+    const plan = structuredClone(buildAllocationPlanSnapshot(
+      allocationInput({ ids: ['stock:1001', 'stock:1002', 'stock:1003'] }),
+    ))
+    plan.instrumentPlans = plan.instrumentPlans.filter(item => item.instrumentId !== 'stock:1002')
+    const result = project([
+      recommendation('1001', 0),
+      recommendation('1002', 1),
+      recommendation('1003', 2),
+    ], plan)
+    expect(result.map(item => item.allocation?.instrumentId ?? null))
+      .toEqual(['stock:1001', null, 'stock:1003'])
+  })
+
+  it('S-T24/J1 ignores an extra JP_TRUST plan without disabling JP_STOCK matches', () => {
+    const plan = structuredClone(buildAllocationPlanSnapshot(allocationInput()))
+    plan.instrumentPlans.push({
+      ...plan.instrumentPlans[0],
+      instrumentId: 'trust:extra',
+      assetClass: 'JP_TRUST',
+      kind: 'jp_trust',
+    })
+    expect(project([recommendation()], plan)[0].allocation?.instrumentId).toBe('stock:1001')
+  })
+
+  it('J1 isolates a calculation-generation mismatch to its candidate', () => {
+    const plan = structuredClone(buildAllocationPlanSnapshot(
+      allocationInput({ ids: ['stock:1001', 'stock:1002'] }),
+    ))
+    plan.instrumentPlans[1].calculationSnapshotId = 'other-generation'
+    const result = project([recommendation('1001', 0), recommendation('1002', 1)], plan)
+    expect(result[0].allocation?.instrumentId).toBe('stock:1001')
+    expect(result[1].allocation).toBeNull()
   })
 
   it('fails closed for duplicate, missing, and ambiguous recommendation identity', () => {
