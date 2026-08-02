@@ -146,10 +146,78 @@ const CASH_OVERRIDE = 3_210_987
 const CASH_RESERVE_OVERRIDE = 2_109_876
 const LEGACY_ADD_ROOM = 987_654
 
-const UNAVAILABLE_LEGACY_TOTAL_VALUE = 9_999_999
-const UNAVAILABLE_LEGACY_FUND_EVAL = 1_234_567
-// Exact positive sentinel rendered by M-AUD-W4 for the two legacy values above.
-const UNAVAILABLE_LEGACY_FALLBACK = 265_433
+interface LegacyMonetaryFixture {
+  readonly legacyTotalValue: number
+  readonly legacyFundTotal: number
+  readonly categoryCurrentValue: number
+  readonly categoryTargetValue: number
+  readonly categoryDiffValue: number
+  readonly categoryDiffRatio: number
+  readonly cashDeposits: number
+  readonly standbyFunds: number
+  readonly addRoom: number
+}
+
+const DEFAULT_LEGACY_MONETARY_FIXTURE: LegacyMonetaryFixture = {
+  legacyTotalValue: LEGACY_TOTAL_VALUE,
+  legacyFundTotal: LEGACY_FUND_EVAL,
+  categoryCurrentValue: LEGACY_CURRENT_VALUE,
+  categoryTargetValue: LEGACY_TARGET_VALUE,
+  categoryDiffValue: -LEGACY_DIFF_VALUE,
+  categoryDiffRatio: -0.1,
+  cashDeposits: CASH_OVERRIDE,
+  standbyFunds: CASH_RESERVE_OVERRIDE,
+  addRoom: LEGACY_ADD_ROOM,
+}
+
+const UNAVAILABLE_LEGACY_VARIANTS: readonly LegacyMonetaryFixture[] = [
+  {
+    legacyTotalValue: 1_234_567,
+    legacyFundTotal: 111_111,
+    categoryCurrentValue: 101_010,
+    categoryTargetValue: 202_020,
+    categoryDiffValue: 101_010,
+    categoryDiffRatio: 0.081,
+    cashDeposits: 222_222,
+    standbyFunds: 33_333,
+    addRoom: 12_345,
+  },
+  {
+    legacyTotalValue: 98_765_432,
+    legacyFundTotal: 7_654_321,
+    categoryCurrentValue: 44_444_444,
+    categoryTargetValue: 55_555_555,
+    categoryDiffValue: 11_111_111,
+    categoryDiffRatio: 0.1125,
+    cashDeposits: 12_345_678,
+    standbyFunds: 8_765_432,
+    addRoom: 5_432_100,
+  },
+  {
+    legacyTotalValue: 20_000_000,
+    legacyFundTotal: 19_999_999,
+    categoryCurrentValue: 19_999_999,
+    categoryTargetValue: 1,
+    categoryDiffValue: -19_999_998,
+    categoryDiffRatio: -0.9999999,
+    cashDeposits: 1,
+    standbyFunds: 19_999_999,
+    addRoom: 1,
+  },
+]
+
+const ALLOCATION_MONETARY_LABELS = [
+  'クラス評価額',
+  '目標額',
+  '目標差分（不足）',
+  '目標超過',
+  '配分済額',
+  '割当後の残余',
+  'クラスheadroom',
+  '利用可能予算',
+] as const
+
+const RENDERED_YEN_AMOUNT = /(?:\d{1,3}(?:,\d{3})+|\d+(?:\.\d+)?)(?:万|億)?円/
 
 const JP_FUND_FIXTURE: Trust = {
   id: 't2-wiring-fund',
@@ -266,48 +334,46 @@ function allocationPlan(
 function productionWiringState({
   plan = allocationPlan(),
   status = 'current',
-  legacyTotalValue = LEGACY_TOTAL_VALUE,
-  legacyFundEval = LEGACY_FUND_EVAL,
+  legacy = DEFAULT_LEGACY_MONETARY_FIXTURE,
 }: {
   plan?: AllocationPlanSnapshot | null
   status?: AppState['allocationPlanStatus']
-  legacyTotalValue?: number
-  legacyFundEval?: number
+  legacy?: LegacyMonetaryFixture
 } = {}): AppState {
   return {
     ...BASE_APP_STATE,
-    trust: [{ ...JP_FUND_FIXTURE, eval: legacyFundEval }],
+    trust: [{ ...JP_FUND_FIXTURE, eval: legacy.legacyFundTotal }],
     allocationPlan: plan,
     allocationPlanStatus: status,
     allocationPlanCandidateGenerationId: 'candidates-t2-production-wiring',
-    cash: CASH_OVERRIDE,
-    cashReserve: CASH_RESERVE_OVERRIDE,
-    addRoom: LEGACY_ADD_ROOM,
+    cash: legacy.cashDeposits,
+    cashReserve: legacy.standbyFunds,
+    addRoom: legacy.addRoom,
     cashAssumptions: {
-      cashDeposits: CASH_OVERRIDE,
-      standbyFunds: CASH_RESERVE_OVERRIDE,
+      cashDeposits: legacy.cashDeposits,
+      standbyFunds: legacy.standbyFunds,
       manualOverrideEnabled: true,
       manualUpdatedAt: '2026-08-03T00:00:00.000Z',
     },
     universe: {
-      totalValue: legacyTotalValue,
+      totalValue: legacy.legacyTotalValue,
       categories: [{
         class: 'JP_TRUST',
         label: 'legacy JP trust category',
         role: 'legacy authority discriminator',
         horizon: 'ultra_short',
-        currentValue: LEGACY_CURRENT_VALUE,
+        currentValue: legacy.categoryCurrentValue,
         currentRatio: 0.5,
         targetRatio: 0.4,
-        targetValue: LEGACY_TARGET_VALUE,
-        diffValue: -LEGACY_DIFF_VALUE,
-        diffRatio: -0.1,
+        targetValue: legacy.categoryTargetValue,
+        diffValue: legacy.categoryDiffValue,
+        diffRatio: legacy.categoryDiffRatio,
         score: 50,
         lastUpdatedAt: '2026-08-03T00:00:00.000Z',
       }],
-      cash: CASH_OVERRIDE,
-      cashReserve: CASH_RESERVE_OVERRIDE,
-      addRoom: LEGACY_ADD_ROOM,
+      cash: legacy.cashDeposits,
+      cashReserve: legacy.standbyFunds,
+      addRoom: legacy.addRoom,
       lastUpdatedAt: '2026-08-03T00:00:00.000Z',
     },
   }
@@ -316,6 +382,32 @@ function productionWiringState({
 function renderProductionT2(state: AppState): string {
   mockedStore.state = state
   return renderToStaticMarkup(<T2_JpFund />)
+}
+
+function allocationRelatedMarkup(actualTabMarkup: string): string {
+  const availabilityIndex = actualTabMarkup.indexOf('data-allocation-availability=')
+  const allocationStart = actualTabMarkup.lastIndexOf('<div', availabilityIndex)
+  const nextStableSection = actualTabMarkup.indexOf('>平均スコア</p>', availabilityIndex)
+  if (availabilityIndex < 0 || allocationStart < 0 || nextStableSection < 0) {
+    throw new Error('actual T2 allocation render boundaries were not found')
+  }
+  return actualTabMarkup.slice(allocationStart, nextStableSection)
+}
+
+function allocationMonetaryRowCount(allocationMarkup: string): number {
+  return ALLOCATION_MONETARY_LABELS.reduce(
+    (count, label) => count + allocationMarkup.split(`>${label}</p>`).length - 1,
+    0,
+  )
+}
+
+function expectUnavailableAllocationStructure(allocationMarkup: string): void {
+  expect(allocationMarkup).toContain('data-allocation-availability="unavailable"')
+  expect(allocationMonetaryRowCount(allocationMarkup)).toBe(0)
+  for (const label of ALLOCATION_MONETARY_LABELS) {
+    expect(allocationMarkup).not.toContain(`>${label}</p>`)
+  }
+  expect(allocationMarkup).not.toMatch(RENDERED_YEN_AMOUNT)
 }
 
 describe('R3-b T2 shared allocation consumer component', () => {
@@ -537,15 +629,33 @@ describe('R3-b-R1 T2_JpFund production store wiring', () => {
     const html = renderProductionT2(productionWiringState({
       plan: null,
       status: 'absent',
-      legacyTotalValue: UNAVAILABLE_LEGACY_TOTAL_VALUE,
-      legacyFundEval: UNAVAILABLE_LEGACY_FUND_EVAL,
+      legacy: UNAVAILABLE_LEGACY_VARIANTS[0],
     }))
+    const allocationMarkup = allocationRelatedMarkup(html)
 
-    expect(html).toContain('data-allocation-availability="unavailable"')
-    expect(html).toContain('data-allocation-status="absent"')
-    expect(html).toContain('配分プランは未計算です')
-    expect(html).not.toContain('data-snapshot-id=')
-    expect(html).not.toContain(formatJPYAuto(UNAVAILABLE_LEGACY_FALLBACK))
+    expectUnavailableAllocationStructure(allocationMarkup)
+    expect(allocationMarkup).toContain('data-allocation-status="absent"')
+    expect(allocationMarkup).toContain('配分プランは未計算です')
+    expect(allocationMarkup).not.toContain('data-snapshot-id=')
+  })
+
+  it('keeps unavailable allocation rendering invariant across legacy monetary inputs', () => {
+    const allocationRenders = UNAVAILABLE_LEGACY_VARIANTS.map(legacy =>
+      allocationRelatedMarkup(renderProductionT2(productionWiringState({
+        plan: null,
+        status: 'absent',
+        legacy,
+      }))),
+    )
+
+    expect(allocationRenders).toHaveLength(3)
+    for (const allocationMarkup of allocationRenders) {
+      expectUnavailableAllocationStructure(allocationMarkup)
+      expect(allocationMarkup).toContain('data-allocation-status="absent"')
+      expect(allocationMarkup).toContain('配分プランは未計算です')
+    }
+    expect(allocationRenders[1]).toBe(allocationRenders[0])
+    expect(allocationRenders[2]).toBe(allocationRenders[0])
   })
 
   it('removes current shared money after a stale transition without a legacy fallback', () => {
@@ -554,31 +664,29 @@ describe('R3-b-R1 T2_JpFund production store wiring', () => {
     const staleHtml = renderProductionT2(productionWiringState({
       plan,
       status: 'stale',
-      legacyTotalValue: UNAVAILABLE_LEGACY_TOTAL_VALUE,
-      legacyFundEval: UNAVAILABLE_LEGACY_FUND_EVAL,
+      legacy: UNAVAILABLE_LEGACY_VARIANTS[0],
     }))
+    const staleAllocationMarkup = allocationRelatedMarkup(staleHtml)
 
     expect(currentHtml).toContain(formatJPYAuto(SHARED_TARGET_GAP))
-    expect(staleHtml).toContain('data-allocation-availability="unavailable"')
-    expect(staleHtml).toContain('data-allocation-status="stale"')
-    expect(staleHtml).toContain('配分プランの再計算が必要です')
-    expect(staleHtml).not.toContain(formatJPYAuto(SHARED_TARGET_GAP))
-    expect(staleHtml).not.toContain(formatJPYAuto(UNAVAILABLE_LEGACY_FALLBACK))
+    expectUnavailableAllocationStructure(staleAllocationMarkup)
+    expect(staleAllocationMarkup).toContain('data-allocation-status="stale"')
+    expect(staleAllocationMarkup).toContain('配分プランの再計算が必要です')
+    expect(staleAllocationMarkup).not.toContain(formatJPYAuto(SHARED_TARGET_GAP))
   })
 
   it('keeps invalid shared authority unavailable when the legacy universe is populated', () => {
     const html = renderProductionT2(productionWiringState({
       plan: allocationPlan(),
       status: 'invalid',
-      legacyTotalValue: UNAVAILABLE_LEGACY_TOTAL_VALUE,
-      legacyFundEval: UNAVAILABLE_LEGACY_FUND_EVAL,
+      legacy: UNAVAILABLE_LEGACY_VARIANTS[0],
     }))
+    const allocationMarkup = allocationRelatedMarkup(html)
 
-    expect(html).toContain('data-allocation-availability="unavailable"')
-    expect(html).toContain('data-allocation-status="invalid"')
-    expect(html).toContain('配分プランを計算できません')
-    expect(html).not.toContain(formatJPYAuto(SHARED_TARGET_GAP))
-    expect(html).not.toContain(formatJPYAuto(UNAVAILABLE_LEGACY_FALLBACK))
+    expectUnavailableAllocationStructure(allocationMarkup)
+    expect(allocationMarkup).toContain('data-allocation-status="invalid"')
+    expect(allocationMarkup).toContain('配分プランを計算できません')
+    expect(allocationMarkup).not.toContain(formatJPYAuto(SHARED_TARGET_GAP))
   })
 
   it('distinguishes authoritative zero from unavailable in the actual tab render', () => {
@@ -600,15 +708,20 @@ describe('R3-b-R1 T2_JpFund production store wiring', () => {
     const unavailableHtml = renderProductionT2(productionWiringState({
       plan: null,
       status: 'absent',
-      legacyTotalValue: UNAVAILABLE_LEGACY_TOTAL_VALUE,
-      legacyFundEval: UNAVAILABLE_LEGACY_FUND_EVAL,
+      legacy: UNAVAILABLE_LEGACY_VARIANTS[0],
     }))
+    const zeroAllocationMarkup = allocationRelatedMarkup(zeroHtml)
+    const unavailableAllocationMarkup = allocationRelatedMarkup(unavailableHtml)
 
-    expect(zeroHtml).toContain('data-allocation-availability="available"')
-    expect(zeroHtml).toContain('0円')
-    expect(zeroHtml).toContain('0件')
-    expect(unavailableHtml).toContain('data-allocation-availability="unavailable"')
-    expect(unavailableHtml).not.toContain('0円')
-    expect(unavailableHtml).not.toBe(zeroHtml)
+    expect(zeroAllocationMarkup).toContain('data-allocation-availability="available"')
+    expect(allocationMonetaryRowCount(zeroAllocationMarkup)).toBe(ALLOCATION_MONETARY_LABELS.length)
+    for (const label of ALLOCATION_MONETARY_LABELS) {
+      expect(zeroAllocationMarkup).toContain(`>${label}</p>`)
+    }
+    expect(zeroAllocationMarkup).toContain('0円')
+    expect(zeroAllocationMarkup).toContain('0件')
+    expectUnavailableAllocationStructure(unavailableAllocationMarkup)
+    expect(unavailableAllocationMarkup).not.toContain('0円')
+    expect(unavailableAllocationMarkup).not.toBe(zeroAllocationMarkup)
   })
 })
