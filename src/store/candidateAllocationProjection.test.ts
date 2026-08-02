@@ -273,11 +273,32 @@ describe('HR-I3 read-only candidate allocation projection', () => {
     expect(result[1].allocation).toBeNull()
   })
 
-  it.each(['', 'candidate 1001'])(
-    'fails closed for missing or ambiguous recommendation identity %j',
-    code => {
-      const snapshot = buildAllocationPlanSnapshot(allocationInput())
-      expect(project([recommendation(code)], snapshot)[0].allocation).toBeNull()
+  it.each([
+    ['empty identity in canonical order', '', false],
+    ['empty identity in reversed candidate and plan order', '', true],
+    ['non-normalizable identity in canonical order', 'candidate 6758', false],
+    ['non-normalizable identity in reversed candidate and plan order', 'candidate 6758', true],
+  ] as const)(
+    'keeps recommendation identity normalization failure globally unavailable with valid peers: %s',
+    (_name, malformedCode, reverse) => {
+      const snapshot = structuredClone(buildAllocationPlanSnapshot(
+        allocationInput({ ids: ['stock:7203', 'stock:9984'] }),
+      ))
+      const recommendations = [
+        recommendation('7203', 0),
+        recommendation(malformedCode, 1),
+        recommendation('9984', 2),
+      ]
+      if (reverse) {
+        snapshot.instrumentPlans.reverse()
+        recommendations.reverse()
+      }
+
+      const result = project(recommendations, snapshot)
+      expect(result).toHaveLength(recommendations.length)
+      expect(result.find(item => item.candidateRecordId === 'artifact:0')?.allocation).toBeNull()
+      expect(result.find(item => item.candidateRecordId === 'artifact:1')?.allocation).toBeNull()
+      expect(result.find(item => item.candidateRecordId === 'artifact:2')?.allocation).toBeNull()
     },
   )
 
