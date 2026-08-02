@@ -3,6 +3,7 @@ import { readFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
 import type { AppState, CandidateFunnelArtifact } from '../types'
 import { buildValidCandidateFunnelArtifact } from '../services/candidateFunnelArtifact.fixtures'
+import { buildAllocationPlanSnapshot } from '../domain/allocation'
 import {
   buildAllocationPlanInput,
   runFullAnalysis,
@@ -94,6 +95,48 @@ describe('HR-I3 candidate allocation production path', () => {
       { instrumentId: 'stock:1003', priceJpy: null, lotSizeShares: null },
     ])
   })
+
+  it('M-R3-09 derives the production short-term budget without an adapter budget override', () => {
+    const source = stateWithArtifact(candidateArtifact())
+    source.cashAssumptions = {
+      cashDeposits: 9_000_000,
+      standbyFunds: 0,
+      manualOverrideEnabled: true,
+      manualUpdatedAt: new Date(NOW).toISOString(),
+    }
+    const input = buildAllocationPlanInput(source, {
+      generatedAt: new Date(NOW).toISOString(),
+      holdingsFreshness: 'fresh',
+      sourceHoldingsSnapshotId: 'holdings-production-budget-fixture',
+      sourceSettingsVersion: 'settings-production-budget-fixture',
+      safetyState: {
+        safeMode: 'inactive',
+        marketData: 'fresh',
+        cash: 'known_fresh',
+        target: 'known',
+        pendingOrders: 'known',
+        dqViolation: false,
+        tierA: 'normal',
+        crossTab: 'current',
+        noTrade: 'normal',
+      },
+    })
+
+    expect(input).not.toBeNull()
+    expect(input?.cash.grossCash).toBe(9_000_000)
+    expect(input?.budgets).toEqual({
+      shortTermBudget: 5_500_000,
+      longTermBudget: 3_500_000,
+    })
+    expect(input?.budgets.shortTermBudget).not.toBe(input?.cash.grossCash)
+
+    const snapshot = buildAllocationPlanSnapshot(input!)
+    const jpTrust = snapshot.assetClassPlans.find(item => item.assetClass === 'JP_TRUST')
+    expect(snapshot.shortTermBudget).toBe(5_500_000)
+    expect(jpTrust?.availableBudget).toBe(5_500_000)
+    expect(jpTrust!.availableBudget!).toBeLessThan(input!.cash.grossCash!)
+  })
+
   it('S-T19 fails closed when a holding identity cannot be normalized', () => {
     const holdings = [{ code: 'bad code', eval: 0 }] as AppState['holdings']
     expect(buildAllocationPlanInput(stateWithArtifact(candidateArtifact(), holdings), adapterOptions()))

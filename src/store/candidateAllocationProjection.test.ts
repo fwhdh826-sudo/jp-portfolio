@@ -182,7 +182,6 @@ describe('HR-I3 read-only candidate allocation projection', () => {
   })
 
   it.each([
-    ['duplicate plan', (snapshot: AllocationPlanSnapshot) => { snapshot.instrumentPlans.push({ ...snapshot.instrumentPlans[0] }) }],
     ['asset-class mismatch', (snapshot: AllocationPlanSnapshot) => { snapshot.instrumentPlans[0].assetClass = 'JP_TRUST' }],
     ['snapshot calculation mismatch', (snapshot: AllocationPlanSnapshot) => { snapshot.instrumentPlans[0].calculationSnapshotId = 'other' }],
   ] as const)('fails closed for %s', (_name, mutate) => {
@@ -215,6 +214,55 @@ describe('HR-I3 read-only candidate allocation projection', () => {
     expect(project([recommendation()], plan)[0].allocation?.instrumentId).toBe('stock:1001')
   })
 
+  it.each([
+    ['canonical order', false],
+    ['reversed candidate and plan order', true],
+  ] as const)('S-T25 keeps duplicate plan identity globally fail-closed with valid peers: %s', (_name, reverse) => {
+    const snapshot = structuredClone(buildAllocationPlanSnapshot(
+      allocationInput({ ids: ['stock:1001', 'stock:1002', 'stock:1003'] }),
+    ))
+    const duplicate = {
+      ...snapshot.instrumentPlans.find(item => item.instrumentId === 'stock:1002')!,
+    }
+    snapshot.instrumentPlans.push(duplicate)
+    const recommendations = [
+      recommendation('1001', 0),
+      recommendation('1002', 1),
+      recommendation('1003', 2),
+    ]
+    if (reverse) {
+      snapshot.instrumentPlans.reverse()
+      recommendations.reverse()
+    }
+
+    const result = project(recommendations, snapshot)
+    expect(result).toHaveLength(3)
+    expect(result.map(item => item.allocation)).toEqual([null, null, null])
+  })
+
+  it.each([
+    ['canonical order', false],
+    ['reversed candidate and plan order', true],
+  ] as const)('S-T26 keeps duplicate recommendation identity globally fail-closed with valid peers: %s', (_name, reverse) => {
+    const snapshot = structuredClone(buildAllocationPlanSnapshot(
+      allocationInput({ ids: ['stock:1001', 'stock:1002', 'stock:1003'] }),
+    ))
+    const recommendations = [
+      recommendation('1001', 0),
+      recommendation('1002', 1),
+      recommendation(' １００２.t ', 2),
+      recommendation('1003', 3),
+    ]
+    if (reverse) {
+      snapshot.instrumentPlans.reverse()
+      recommendations.reverse()
+    }
+
+    const result = project(recommendations, snapshot)
+    expect(result).toHaveLength(4)
+    expect(result.map(item => item.allocation)).toEqual([null, null, null, null])
+  })
+
   it('J1 isolates a calculation-generation mismatch to its candidate', () => {
     const plan = structuredClone(buildAllocationPlanSnapshot(
       allocationInput({ ids: ['stock:1001', 'stock:1002'] }),
@@ -225,12 +273,13 @@ describe('HR-I3 read-only candidate allocation projection', () => {
     expect(result[1].allocation).toBeNull()
   })
 
-  it('fails closed for duplicate, missing, and ambiguous recommendation identity', () => {
-    const snapshot = buildAllocationPlanSnapshot(allocationInput())
-    expect(project([recommendation(), recommendation()], snapshot).every(item => item.allocation === null)).toBe(true)
-    expect(project([recommendation('')], snapshot)[0].allocation).toBeNull()
-    expect(project([recommendation('candidate 1001')], snapshot)[0].allocation).toBeNull()
-  })
+  it.each(['', 'candidate 1001'])(
+    'fails closed for missing or ambiguous recommendation identity %j',
+    code => {
+      const snapshot = buildAllocationPlanSnapshot(allocationInput())
+      expect(project([recommendation(code)], snapshot)[0].allocation).toBeNull()
+    },
+  )
 
   it('canonicalizes, deduplicates, and preserves reason categories', () => {
     const snapshot = structuredClone(buildAllocationPlanSnapshot(allocationInput()))
