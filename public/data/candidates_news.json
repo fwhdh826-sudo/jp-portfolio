@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-08-03T22:57:07.818877+09:00",
-  "sourceUpdatedAt": "2026-08-03T13:38:54+00:00",
+  "updatedAt": "2026-08-04T07:36:58.229039+09:00",
+  "sourceUpdatedAt": "2026-08-03T22:14:25+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -45,90 +45,63 @@
       ]
     },
     "jp_semiconductor": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 2,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "US Stocks Climb as Focus Shifts Back to Earnings; Chips Slide",
-      "topPositiveTitle": "US Stocks Climb as Focus Shifts Back to Earnings; Chips Slide",
-      "items": [
-        {
-          "title": "US Stocks Climb as Focus Shifts Back to Earnings; Chips Slide",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-03T11:49:28+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-03/us-futures-climb-as-focus-shifts-back-to-earnings-oil-slides",
-          "tags": [
-            "jp_semiconductor",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "AI and Chips Are Turning Malaysia Into Asia’s Growth Standout",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-02T23:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-02/ai-and-chips-are-turning-malaysia-into-asia-s-growth-standout",
-          "tags": [
-            "jp_semiconductor",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "us_broad": {
-      "avgSentiment": -0.074,
-      "negativeCount": 3,
-      "positiveCount": 1,
-      "neutralCount": 10,
+      "avgSentiment": 0.033,
+      "negativeCount": 1,
+      "positiveCount": 2,
+      "neutralCount": 7,
       "sourceCount": 2,
-      "itemCount": 14,
+      "itemCount": 10,
       "isStale": false,
-      "topNegativeTitle": "Dollar Drops Further as Yen Rebound Extends Fed-Driven Slide",
-      "topPositiveTitle": "Treasuries Climb to Start Week on Oil, Bessent’s Yen Pledge",
+      "topNegativeTitle": "Bessent Seen Rebuffing Wall Street on US Debt-Sale Guidance",
+      "topPositiveTitle": "Stocks Close Near Record as Amazon Tops $3 Trillion Market Cap",
       "items": [
         {
-          "title": "Dollar Drops Further as Yen Rebound Extends Fed-Driven Slide",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.71,
-          "publishedAt": "2026-08-03T11:29:24+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-03/dollar-drops-further-as-yen-rebound-extends-fed-driven-slide",
-          "tags": [
-            "fx",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "US, Japan Warn of More Yen Action If Needed; Oil Falls on US-Iran Optimism |Bloomberg Brief 08/03/26",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-03T12:09:39+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-03/bloomberg-brief-08-03-26-video",
-          "tags": [
-            "commodity",
-            "fx",
-            "geopolitical",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Bessent Seen Rebuffing Wall Street on Guidance for US Debt Sales",
+          "title": "Bessent Seen Rebuffing Wall Street on US Debt-Sale Guidance",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.33,
           "publishedAt": "2026-08-03T10:00:00+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-08-03/bessent-seen-rebuffing-wall-street-on-guidance-for-us-debt-sales",
           "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Bessent Seeks Fed Help in Defending Yen in Unusual Call",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-03T21:52:03+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-03/bessent-seeks-fed-help-in-defending-yen-in-unusual-call",
+          "tags": [
+            "fx",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Iran War Risk Still Important in Background, Says Torsten Slok",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-03T19:26:27+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-03/iran-war-risk-still-important-in-background-says-slok-video",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
             "market",
             "us_broad"
           ]
@@ -146,13 +119,14 @@
           ]
         },
         {
-          "title": "‘You Can’t Fool the Bond,’ Says BofA’s Cabana on the Fed",
-          "source": "Bloomberg Markets",
+          "title": "Bessent Plays Currency-Market Chess With Likely Eye on US Treasury Yields",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-03T11:54:49+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-03/-you-can-t-fool-the-bond-says-bofa-s-cabana-on-the-fed-video",
+          "publishedAt": "2026-08-03T11:00:01+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-08-03/bessent-plays-currency-market-chess-with-likely-eye-on-us-treasury-yields",
           "tags": [
+            "fx",
             "market",
             "rates",
             "us_broad"
@@ -161,6 +135,57 @@
       ]
     },
     "us_growth": {
+      "avgSentiment": 0.33,
+      "negativeCount": 0,
+      "positiveCount": 3,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 3,
+      "isStale": false,
+      "topNegativeTitle": "Asian Stocks Set for Muted Open, Oil Holds Losses: Markets Wrap",
+      "topPositiveTitle": "Asian Stocks Set for Muted Open, Oil Holds Losses: Markets Wrap",
+      "items": [
+        {
+          "title": "Asian Stocks Set for Muted Open, Oil Holds Losses: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-03T22:13:40+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-03/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Amazon Crosses $1T Valuation, Boeing Has Biggest Gain Since December | Closing Bell",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-03T20:29:49+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-03/boeing-has-biggest-gain-since-december-closing-bell-video",
+          "tags": [
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Stocks Close Near Record as Amazon Tops $3 Trillion Market Cap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-03T11:49:28+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-03/us-futures-climb-as-focus-shifts-back-to-earnings-oil-slides",
+          "tags": [
+            "market",
+            "us_broad",
+            "us_growth"
+          ]
+        }
+      ]
+    },
+    "global_broad": {
       "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
@@ -168,60 +193,36 @@
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Amazon Joins Elite List of Stocks to Top $3 Trillion in Value",
-      "topPositiveTitle": "Amazon Joins Elite List of Stocks to Top $3 Trillion in Value",
+      "topNegativeTitle": "TMX Australia to Prioritize Tech Transition From Cboe, CEO Says",
+      "topPositiveTitle": "TMX Australia to Prioritize Tech Transition From Cboe, CEO Says",
       "items": [
         {
-          "title": "Amazon Joins Elite List of Stocks to Top $3 Trillion in Value",
+          "title": "TMX Australia to Prioritize Tech Transition From Cboe, CEO Says",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-03T13:38:54+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-03/amazon-joins-elite-list-of-stocks-to-top-3-trillion-in-value",
+          "publishedAt": "2026-08-03T21:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-03/tmx-australia-to-prioritize-tech-transition-from-cboe-ceo-says",
           "tags": [
-            "market",
-            "us_growth"
+            "global_broad",
+            "market"
           ]
         }
       ]
-    },
-    "global_broad": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
     },
     "gold": {
       "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 2,
+      "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "China Signals New Era for Mining M&A After Zijin Gold Rethink",
-      "topPositiveTitle": "China Signals New Era for Mining M&A After Zijin Gold Rethink",
+      "topNegativeTitle": "Gold Wavers as Traders Weigh Fed Rate Outlook, US-Iran Talks",
+      "topPositiveTitle": "Gold Wavers as Traders Weigh Fed Rate Outlook, US-Iran Talks",
       "items": [
         {
-          "title": "China Signals New Era for Mining M&A After Zijin Gold Rethink",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-03T11:28:07+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-08-03/china-signals-new-era-for-mining-m-a-after-zijin-gold-rethink",
-          "tags": [
-            "gold",
-            "market"
-          ]
-        },
-        {
-          "title": "Gold Holds Gain as Signs of Hormuz Talks Ease Rate Hike Concerns",
+          "title": "Gold Wavers as Traders Weigh Fed Rate Outlook, US-Iran Talks",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
@@ -231,9 +232,8 @@
             "commodity",
             "geopolitical",
             "gold",
-            "macro_risk",
             "market",
-            "rates"
+            "us_broad"
           ]
         }
       ]
@@ -263,12 +263,12 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.11,
+      "avgSentiment": 0.047,
       "negativeCount": 1,
-      "positiveCount": 2,
-      "neutralCount": 3,
+      "positiveCount": 1,
+      "neutralCount": 5,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 7,
       "isStale": false,
       "topNegativeTitle": "South Africa Factory Sentiment Hits Seven-Month Low on War Fears",
       "topPositiveTitle": "Southeast Asia’s Factory Activity Rebounds From 11-Month Low",
@@ -287,6 +287,47 @@
           ]
         },
         {
+          "title": "Big Take: War Is Good For Big Oil's Profits",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-03T22:00:09+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-03/big-take-war-is-good-for-big-oil-s-profits",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Iran War Risk Still Important in Background, Says Torsten Slok",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-03T19:26:27+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-03/iran-war-risk-still-important-in-background-says-slok-video",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Central Banks Let Markets Do Heavy Lifting as Iran War Adds Risk",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-03T15:56:56+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-03/central-banks-let-markets-do-heavy-lifting-as-iran-war-adds-risk",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
           "title": "Euro-Zone Spending Cuts Driven by Iran Uncertainty Not Inflation, ECB Finds",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
@@ -298,89 +339,30 @@
             "macro_risk",
             "market"
           ]
-        },
-        {
-          "title": "Turkish Inflation Slows But Central Bank Wary of Oil Risks",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-03T07:02:56+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-03/turkish-inflation-eases-but-energy-costs-test-cenbank-outlook",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Gold Holds Gain as Signs of Hormuz Talks Ease Rate Hike Concerns",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-02T23:46:57+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-02/gold-gains-as-iran-talks-ease-concerns-over-interest-rate-hike",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "gold",
-            "macro_risk",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Chile Peso Bonds Face Pressure if Strait of Hormuz Stays Closed",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-03T12:32:42+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-03/chile-peso-bonds-face-pressure-if-strait-of-hormuz-stays-closed",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": -0.004,
-      "negativeCount": 3,
-      "positiveCount": 2,
-      "neutralCount": 5,
+      "avgSentiment": 0.074,
+      "negativeCount": 2,
+      "positiveCount": 3,
+      "neutralCount": 4,
       "sourceCount": 3,
-      "itemCount": 10,
+      "itemCount": 9,
       "isStale": false,
-      "topNegativeTitle": "Dollar Drops Further as Yen Rebound Extends Fed-Driven Slide",
-      "topPositiveTitle": "Yen Rises Amid Speculation of More Intervention After US Support",
+      "topNegativeTitle": "Colombian Peso Pares Stellar Rally as Central Bank Steps In",
+      "topPositiveTitle": "Yen Holds Steady in US Hours After Speculation of Intervention",
       "items": [
         {
-          "title": "Dollar Drops Further as Yen Rebound Extends Fed-Driven Slide",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.71,
-          "publishedAt": "2026-08-03T11:29:24+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-03/dollar-drops-further-as-yen-rebound-extends-fed-driven-slide",
-          "tags": [
-            "fx",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "US, Japan Warn of More Yen Action If Needed; Oil Falls on US-Iran Optimism |Bloomberg Brief 08/03/26",
-          "source": "Bloomberg Markets",
+          "title": "Colombian Peso Pares Stellar Rally as Central Bank Steps In",
+          "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-08-03T12:09:39+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-03/bloomberg-brief-08-03-26-video",
+          "publishedAt": "2026-08-03T15:30:35+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-03/colombian-peso-pares-stellar-rally-as-central-bank-steps-in",
           "tags": [
-            "commodity",
             "fx",
-            "geopolitical",
-            "market",
-            "us_broad"
+            "market"
           ]
         },
         {
@@ -410,6 +392,19 @@
           "titleJa": "短時間で急激な円高進む 政府・日銀が再び市場介入か"
         },
         {
+          "title": "Bessent Seeks Fed Help in Defending Yen in Unusual Call",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-03T21:52:03+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-03/bessent-seeks-fed-help-in-defending-yen-in-unusual-call",
+          "tags": [
+            "fx",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
           "title": "Bessent Plays Currency-Market Chess With Likely Eye on US Treasury Yields",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
@@ -426,41 +421,16 @@
       ]
     },
     "rates": {
-      "avgSentiment": -0.167,
-      "negativeCount": 1,
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 5,
-      "sourceCount": 2,
-      "itemCount": 6,
+      "neutralCount": 2,
+      "sourceCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Australia’s Housing Market Worsens With Falls Getting Steeper",
-      "topPositiveTitle": "‘You Can’t Fool the Bond,’ Says BofA’s Cabana on the Fed",
+      "topNegativeTitle": "Bessent Plays Currency-Market Chess With Likely Eye on US Treasury Yields",
+      "topPositiveTitle": "Bessent Plays Currency-Market Chess With Likely Eye on US Treasury Yields",
       "items": [
-        {
-          "title": "Australia’s Housing Market Worsens With Falls Getting Steeper",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-08-02T14:01:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-02/australia-s-housing-market-worsens-with-falls-getting-steeper",
-          "tags": [
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "‘You Can’t Fool the Bond,’ Says BofA’s Cabana on the Fed",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-03T11:54:49+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-03/-you-can-t-fool-the-bond-says-bofa-s-cabana-on-the-fed-video",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
         {
           "title": "Bessent Plays Currency-Market Chess With Likely Eye on US Treasury Yields",
           "source": "Bloomberg Economics",
@@ -487,49 +457,56 @@
             "rates",
             "us_broad"
           ]
-        },
-        {
-          "title": "Gold Holds Gain as Signs of Hormuz Talks Ease Rate Hike Concerns",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-02T23:46:57+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-02/gold-gains-as-iran-talks-ease-concerns-over-interest-rate-hike",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "gold",
-            "macro_risk",
-            "market",
-            "rates"
-          ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0.037,
       "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 4,
+      "positiveCount": 2,
+      "neutralCount": 6,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 9,
       "isStale": false,
-      "topNegativeTitle": "US, Japan Warn of More Yen Action If Needed; Oil Falls on US-Iran Optimism |Bloomberg Brief 08/03/26",
-      "topPositiveTitle": "Treasuries Climb to Start Week on Oil, Bessent’s Yen Pledge",
+      "topNegativeTitle": "Latest Oil Market News and Analysis for Aug. 4",
+      "topPositiveTitle": "Asian Stocks Set for Muted Open, Oil Holds Losses: Markets Wrap",
       "items": [
         {
-          "title": "US, Japan Warn of More Yen Action If Needed; Oil Falls on US-Iran Optimism |Bloomberg Brief 08/03/26",
+          "title": "Latest Oil Market News and Analysis for Aug. 4",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-08-03T12:09:39+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-03/bloomberg-brief-08-03-26-video",
+          "publishedAt": "2026-08-03T22:01:24+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-03/latest-oil-market-news-and-analysis-for-aug-4",
           "tags": [
             "commodity",
-            "fx",
+            "market"
+          ]
+        },
+        {
+          "title": "Big Take: War Is Good For Big Oil's Profits",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-03T22:00:09+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-03/big-take-war-is-good-for-big-oil-s-profits",
+          "tags": [
+            "commodity",
             "geopolitical",
-            "market",
-            "us_broad"
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Williams Agrees to Buy Momentum Midstream for $5.5 Billion",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-03T20:22:14+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-03/williams-agrees-to-buy-momentum-midstream-for-up-to-5-5-billion",
+          "tags": [
+            "commodity",
+            "market"
           ]
         },
         {
@@ -557,46 +534,16 @@
             "commodity",
             "market"
           ]
-        },
-        {
-          "title": "Gold Holds Gain as Signs of Hormuz Talks Ease Rate Hike Concerns",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-02T23:46:57+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-02/gold-gains-as-iran-talks-ease-concerns-over-interest-rate-hike",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "gold",
-            "macro_risk",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Stocks Join Bonds Higher as US-Iran Hopes Sink Oil: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-02T22:09:16+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-02/oil-slumps-us-futures-rise-on-iran-talks-optimism-markets-wrap",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "market",
-            "us_broad"
-          ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.041,
-      "negativeCount": 2,
+      "avgSentiment": 0.1,
+      "negativeCount": 1,
       "positiveCount": 2,
-      "neutralCount": 4,
+      "neutralCount": 7,
       "sourceCount": 2,
-      "itemCount": 8,
+      "itemCount": 10,
       "isStale": false,
       "topNegativeTitle": "South Africa Factory Sentiment Hits Seven-Month Low on War Fears",
       "topPositiveTitle": "Southeast Asia’s Factory Activity Rebounds From 11-Month Low",
@@ -615,18 +562,44 @@
           ]
         },
         {
-          "title": "US, Japan Warn of More Yen Action If Needed; Oil Falls on US-Iran Optimism |Bloomberg Brief 08/03/26",
+          "title": "Big Take: War Is Good For Big Oil's Profits",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-03T12:09:39+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-03/bloomberg-brief-08-03-26-video",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-03T22:00:09+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-03/big-take-war-is-good-for-big-oil-s-profits",
           "tags": [
             "commodity",
-            "fx",
             "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Iran War Risk Still Important in Background, Says Torsten Slok",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-03T19:26:27+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-03/iran-war-risk-still-important-in-background-says-slok-video",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
             "market",
             "us_broad"
+          ]
+        },
+        {
+          "title": "Central Banks Let Markets Do Heavy Lifting as Iran War Adds Risk",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-03T15:56:56+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-03/central-banks-let-markets-do-heavy-lifting-as-iran-war-adds-risk",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
           ]
         },
         {
@@ -640,36 +613,6 @@
             "geopolitical",
             "macro_risk",
             "market"
-          ]
-        },
-        {
-          "title": "Turkish Inflation Slows But Central Bank Wary of Oil Risks",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-03T07:02:56+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-03/turkish-inflation-eases-but-energy-costs-test-cenbank-outlook",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Gold Holds Gain as Signs of Hormuz Talks Ease Rate Hike Concerns",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-02T23:46:57+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-02/gold-gains-as-iran-talks-ease-concerns-over-interest-rate-hike",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "gold",
-            "macro_risk",
-            "market",
-            "rates"
           ]
         }
       ]
