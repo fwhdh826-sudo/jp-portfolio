@@ -78,6 +78,10 @@ import {
   type CandidateAllocationInputAdapterResult,
 } from '../domain/candidates/candidatePortfolioRecommendation'
 import {
+  buildTrustAllocationCandidates,
+  trustAllocationInstrumentId,
+} from '../domain/candidates/trustAllocationCandidates'
+import {
   appendCandidatePortfolioRecommendations,
   projectCandidatePortfolioRecommendations,
 } from './candidatePortfolioRecommendation'
@@ -1814,10 +1818,14 @@ function defaultAllocationInstruments(state: AppState): AllocationInstrumentInpu
       lotSizeShares: null,
     })
   }
-  return [
-    ...stockInstruments,
-    ...state.trust.map(trust => ({
-      instrumentId: `trust:${trust.id}`,
+  const trustInstruments: AllocationInstrumentInput[] = []
+  const trustIds = new Set<string>()
+  for (const trust of state.trust) {
+    const instrumentId = trustAllocationInstrumentId(trust)
+    if (instrumentId === null || trustIds.has(instrumentId)) return null
+    trustIds.add(instrumentId)
+    trustInstruments.push({
+      instrumentId,
       assetClass: allocationAssetClassForTrust(trust.policy),
       kind: trust.policy === 'JAPAN_SHORTTERM'
         ? 'jp_trust' as const
@@ -1830,8 +1838,9 @@ function defaultAllocationInstruments(state: AppState): AllocationInstrumentInpu
       reason: 'canonical trust projection',
       priceJpy: null,
       lotSizeShares: null,
-    })),
-  ]
+    })
+  }
+  return [...stockInstruments, ...trustInstruments]
 }
 export function mergeAllocationInstruments(
   base: readonly AllocationInstrumentInput[],
@@ -1904,6 +1913,10 @@ export function buildAllocationPlanInput(
       artifact: state.candidateFunnel,
       holdings: state.holdings,
     })
+    const trustCandidateCapture = options.candidates === undefined
+      ? buildTrustAllocationCandidates({ trust: state.trust })
+      : null
+    if (trustCandidateCapture?.status === 'invalid') return null
     const defaultInstruments = defaultAllocationInstruments(state)
     const instruments = options.instruments === undefined
       ? defaultInstruments === null
@@ -1912,7 +1925,7 @@ export function buildAllocationPlanInput(
       : [...options.instruments]
     if (instruments === null) return null
     const candidates = options.candidates === undefined
-      ? [...candidateCapture.candidates]
+      ? [...candidateCapture.candidates, ...(trustCandidateCapture?.candidates ?? [])]
       : [...options.candidates]
     const candidateFreshness = selectCandidateFunnelFreshness(state, nowMs)
     const candidateArtifactState: AllocationPlanInput['safetyState']['candidateArtifact'] =
