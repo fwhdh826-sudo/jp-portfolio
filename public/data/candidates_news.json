@@ -1,20 +1,33 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-08-02T21:33:21.778308+09:00",
-  "sourceUpdatedAt": "2026-08-02T12:20:11+00:00",
+  "updatedAt": "2026-08-03T10:04:27.180874+09:00",
+  "sourceUpdatedAt": "2026-08-03T00:53:12+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
+      "avgSentiment": -0.5,
+      "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 2,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "短時間で急激な円高進む 政府・日銀が再び市場介入か",
+      "topNegativeTitle": "Japan Stocks Drop as Exporters Fall on Yen Intervention Worries",
       "topPositiveTitle": "短時間で急激な円高進む 政府・日銀が再び市場介入か",
       "items": [
+        {
+          "title": "Japan Stocks Drop as Exporters Fall on Yen Intervention Worries",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-08-02T22:39:33+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-02/japanese-stocks-set-to-fall-on-yen-worries-kioxia-guidance-miss",
+          "tags": [
+            "fx",
+            "jp_broad",
+            "market"
+          ]
+        },
         {
           "title": "短時間で急激な円高進む 政府・日銀が再び市場介入か",
           "source": "NHK 経済",
@@ -32,39 +45,94 @@
       ]
     },
     "jp_semiconductor": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "us_broad": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "us_growth": {
       "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
+      "neutralCount": 2,
+      "sourceCount": 2,
+      "itemCount": 2,
+      "isStale": false,
+      "topNegativeTitle": "CXMT’s $1 Trillion Target Gap Flags High Stakes in Chip Battle",
+      "topPositiveTitle": "CXMT’s $1 Trillion Target Gap Flags High Stakes in Chip Battle",
+      "items": [
+        {
+          "title": "CXMT’s $1 Trillion Target Gap Flags High Stakes in Chip Battle",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-03T00:00:02+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-03/cxmt-s-1-trillion-target-gap-flags-high-stakes-in-chip-battle",
+          "tags": [
+            "jp_semiconductor",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "AI and Chips Are Turning Malaysia Into Asia’s Growth Standout",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-02T23:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-02/ai-and-chips-are-turning-malaysia-into-asia-s-growth-standout",
+          "tags": [
+            "jp_semiconductor",
+            "market"
+          ]
+        }
+      ]
+    },
+    "us_broad": {
+      "avgSentiment": -0.165,
+      "negativeCount": 1,
+      "positiveCount": 0,
       "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 2,
+      "itemCount": 2,
+      "isStale": false,
+      "topNegativeTitle": "Oil Drops on Iran Deal Optimism, Yen Strengthens: Markets Wrap",
+      "topPositiveTitle": "Warsh Raises Rethink on Fed’s Policy Meeting Frequency, Timing",
+      "items": [
+        {
+          "title": "Oil Drops on Iran Deal Optimism, Yen Strengthens: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-02T22:09:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-02/oil-slumps-us-futures-rise-on-iran-talks-optimism-markets-wrap",
+          "tags": [
+            "commodity",
+            "fx",
+            "geopolitical",
+            "gold",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Warsh Raises Rethink on Fed’s Policy Meeting Frequency, Timing",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-02T21:36:17+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-02/warsh-raises-rethink-on-fed-s-policy-meeting-frequency-timing",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        }
+      ]
+    },
+    "us_growth": {
+      "avgSentiment": 0.335,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 1,
+      "sourceCount": 2,
+      "itemCount": 2,
       "isStale": false,
       "topNegativeTitle": "AI Is Creating a Two-Speed Jobs Market in the UK, Indeed Says",
-      "topPositiveTitle": "AI Is Creating a Two-Speed Jobs Market in the UK, Indeed Says",
+      "topPositiveTitle": "Morgan Stanley Sees 36% Upside to Korean Stocks After ‘Washout’",
       "items": [
         {
           "title": "AI Is Creating a Two-Speed Jobs Market in the UK, Indeed Says",
@@ -73,6 +141,18 @@
           "sentimentScore": 0.0,
           "publishedAt": "2026-08-02T04:00:00+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-08-02/ai-is-creating-a-two-speed-jobs-market-in-the-uk-indeed-says",
+          "tags": [
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Morgan Stanley Sees 36% Upside to Korean Stocks After ‘Washout’",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-02T23:34:04+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-02/morgan-stanley-sees-36-upside-to-korean-stocks-after-washout",
           "tags": [
             "market",
             "us_growth"
@@ -93,16 +173,49 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
+      "avgSentiment": 0.135,
+      "negativeCount": 1,
+      "positiveCount": 1,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Oil Drops on Iran Deal Optimism, Yen Strengthens: Markets Wrap",
+      "topPositiveTitle": "Gold Gains as Iran Talks Ease Concerns Over Interest-Rate Hike",
+      "items": [
+        {
+          "title": "Oil Drops on Iran Deal Optimism, Yen Strengthens: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-02T22:09:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-02/oil-slumps-us-futures-rise-on-iran-talks-optimism-markets-wrap",
+          "tags": [
+            "commodity",
+            "fx",
+            "geopolitical",
+            "gold",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Gold Gains as Iran Talks Ease Concerns Over Interest-Rate Hike",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.6,
+          "publishedAt": "2026-08-02T23:46:57+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-02/gold-gains-as-iran-talks-ease-concerns-over-interest-rate-hike",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "gold",
+            "macro_risk",
+            "market",
+            "rates"
+          ]
+        }
+      ]
     },
     "reit": {
       "avgSentiment": 0,
@@ -129,55 +242,87 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.165,
-      "negativeCount": 1,
-      "positiveCount": 0,
+      "avgSentiment": 0.3,
+      "negativeCount": 0,
+      "positiveCount": 1,
       "neutralCount": 1,
       "sourceCount": 1,
       "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Exxon, Chevron Warn Fuel Prices to Endure as War Knocks Refining",
-      "topPositiveTitle": "Crushed by Kospi Rout, Angry Koreans Rip Lee and Vow Not to Buy",
+      "topNegativeTitle": "CXMT’s $1 Trillion Target Gap Flags High Stakes in Chip Battle",
+      "topPositiveTitle": "Gold Gains as Iran Talks Ease Concerns Over Interest-Rate Hike",
       "items": [
         {
-          "title": "Exxon, Chevron Warn Fuel Prices to Endure as War Knocks Refining",
+          "title": "CXMT’s $1 Trillion Target Gap Flags High Stakes in Chip Battle",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-01T13:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-01/exxon-chevron-warn-fuel-prices-to-endure-as-war-knocks-refining",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-03T00:00:02+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-03/cxmt-s-1-trillion-target-gap-flags-high-stakes-in-chip-battle",
           "tags": [
-            "commodity",
-            "geopolitical",
+            "jp_semiconductor",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Crushed by Kospi Rout, Angry Koreans Rip Lee and Vow Not to Buy",
+          "title": "Gold Gains as Iran Talks Ease Concerns Over Interest-Rate Hike",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-02T00:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-02/crushed-by-kospi-rout-angry-koreans-rip-lee-and-vow-not-to-buy",
+          "sentiment": "positive",
+          "sentimentScore": 0.6,
+          "publishedAt": "2026-08-02T23:46:57+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-02/gold-gains-as-iran-talks-ease-concerns-over-interest-rate-hike",
           "tags": [
+            "commodity",
+            "geopolitical",
+            "gold",
             "macro_risk",
-            "market"
+            "market",
+            "rates"
           ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 2,
+      "avgSentiment": 0.112,
+      "negativeCount": 2,
+      "positiveCount": 3,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 2,
+      "itemCount": 9,
       "isStale": false,
-      "topNegativeTitle": "短時間で急激な円高進む 政府・日銀が再び市場介入か",
-      "topPositiveTitle": "短時間で急激な円高進む 政府・日銀が再び市場介入か",
+      "topNegativeTitle": "Japan Stocks Drop as Exporters Fall on Yen Intervention Worries",
+      "topPositiveTitle": "Yen Traders Brace for More Intervention as Trump Backs Japan",
       "items": [
+        {
+          "title": "Japan Stocks Drop as Exporters Fall on Yen Intervention Worries",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-08-02T22:39:33+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-02/japanese-stocks-set-to-fall-on-yen-worries-kioxia-guidance-miss",
+          "tags": [
+            "fx",
+            "jp_broad",
+            "market"
+          ]
+        },
+        {
+          "title": "Oil Drops on Iran Deal Optimism, Yen Strengthens: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-02T22:09:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-02/oil-slumps-us-futures-rise-on-iran-talks-optimism-markets-wrap",
+          "tags": [
+            "commodity",
+            "fx",
+            "geopolitical",
+            "gold",
+            "market",
+            "us_broad"
+          ]
+        },
         {
           "title": "短時間で急激な円高進む 政府・日銀が再び市場介入か",
           "source": "NHK 経済",
@@ -193,12 +338,24 @@
           "titleJa": "短時間で急激な円高進む 政府・日銀が再び市場介入か"
         },
         {
-          "title": "FIFA Faces Backlash Over Investment Plan",
+          "title": "US Treasury’s Firepower for Yen Support May Be Limited, JPM Says",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-01T13:56:04+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-01/fifa-faces-backlash-over-investment-plan-video",
+          "publishedAt": "2026-08-02T23:43:15+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-02/us-treasury-s-firepower-for-yen-support-may-be-limited-jpm-says",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        },
+        {
+          "title": "Bessent Says More Steps Possible on Yen as Trump Praises Japan",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-02T22:01:33+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-02/trump-says-yen-intervention-is-signal-of-friendship-with-japan",
           "tags": [
             "fx",
             "market"
@@ -207,49 +364,117 @@
       ]
     },
     "rates": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "commodity": {
-      "avgSentiment": 0.0,
+      "avgSentiment": -0.023,
       "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 1,
+      "positiveCount": 2,
+      "neutralCount": 0,
       "sourceCount": 2,
       "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Exxon, Chevron Warn Fuel Prices to Endure as War Knocks Refining",
-      "topPositiveTitle": "Malaysia Minister Sees Stable Second-Half Growth, Bernama Says",
+      "topNegativeTitle": "Australia’s Housing Market Worsens With Falls Getting Steeper",
+      "topPositiveTitle": "Gold Gains as Iran Talks Ease Concerns Over Interest-Rate Hike",
       "items": [
         {
-          "title": "Exxon, Chevron Warn Fuel Prices to Endure as War Knocks Refining",
-          "source": "Bloomberg Markets",
+          "title": "Australia’s Housing Market Worsens With Falls Getting Steeper",
+          "source": "Bloomberg Economics",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-01T13:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-01/exxon-chevron-warn-fuel-prices-to-endure-as-war-knocks-refining",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-08-02T14:01:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-02/australia-s-housing-market-worsens-with-falls-getting-steeper",
+          "tags": [
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Rates, Housing Slump Threaten Australia’s Upbeat Profit Outlook",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-02T21:38:04+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-02/rates-housing-slump-threaten-australia-s-upbeat-profit-outlook",
+          "tags": [
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Gold Gains as Iran Talks Ease Concerns Over Interest-Rate Hike",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.6,
+          "publishedAt": "2026-08-02T23:46:57+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-02/gold-gains-as-iran-talks-ease-concerns-over-interest-rate-hike",
           "tags": [
             "commodity",
             "geopolitical",
+            "gold",
             "macro_risk",
+            "market",
+            "rates"
+          ]
+        }
+      ]
+    },
+    "commodity": {
+      "avgSentiment": 0.045,
+      "negativeCount": 2,
+      "positiveCount": 2,
+      "neutralCount": 2,
+      "sourceCount": 2,
+      "itemCount": 6,
+      "isStale": false,
+      "topNegativeTitle": "Oil Drops on Iran Deal Optimism, Yen Strengthens: Markets Wrap",
+      "topPositiveTitle": "Gold Gains as Iran Talks Ease Concerns Over Interest-Rate Hike",
+      "items": [
+        {
+          "title": "Oil Drops on Iran Deal Optimism, Yen Strengthens: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-02T22:09:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-02/oil-slumps-us-futures-rise-on-iran-talks-optimism-markets-wrap",
+          "tags": [
+            "commodity",
+            "fx",
+            "geopolitical",
+            "gold",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Latest Oil Market News and Analysis for Aug. 3",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-02T22:02:28+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-02/latest-oil-market-news-and-analysis-for-aug-3",
+          "tags": [
+            "commodity",
+            "geopolitical",
             "market"
           ]
         },
         {
-          "title": "Tanker Carrying Qatari LNG Struck While Transiting Hormuz",
+          "title": "Governors Push State Solutions on Costs",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-01T10:25:23+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-01/tanker-carrying-qatari-lng-struck-while-transiting-hormuz",
+          "publishedAt": "2026-08-02T16:20:06+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-02/governors-push-state-solutions-on-costs",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "Santos, Inpex Australian LNG Sites Face Tougher Pollution Rules",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-03T00:53:12+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-03/santos-inpex-australian-lng-sites-face-tougher-pollution-rules",
           "tags": [
             "commodity",
             "market"
@@ -270,50 +495,41 @@
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.185,
-      "negativeCount": 1,
-      "positiveCount": 3,
-      "neutralCount": 4,
+      "avgSentiment": -0.015,
+      "negativeCount": 2,
+      "positiveCount": 1,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 8,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Exxon, Chevron Warn Fuel Prices to Endure as War Knocks Refining",
-      "topPositiveTitle": "Trump Pauses Iran Strikes as Talks Resume",
+      "topNegativeTitle": "Oil Drops on Iran Deal Optimism, Yen Strengthens: Markets Wrap",
+      "topPositiveTitle": "Gold Gains as Iran Talks Ease Concerns Over Interest-Rate Hike",
       "items": [
         {
-          "title": "Exxon, Chevron Warn Fuel Prices to Endure as War Knocks Refining",
+          "title": "Oil Drops on Iran Deal Optimism, Yen Strengthens: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-08-01T13:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-01/exxon-chevron-warn-fuel-prices-to-endure-as-war-knocks-refining",
+          "publishedAt": "2026-08-02T22:09:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-02/oil-slumps-us-futures-rise-on-iran-talks-optimism-markets-wrap",
           "tags": [
             "commodity",
+            "fx",
             "geopolitical",
-            "macro_risk",
-            "market"
+            "gold",
+            "market",
+            "us_broad"
           ]
         },
         {
-          "title": "Ukraine Gains Ground as Putin Faces Pressure",
+          "title": "Latest Oil Market News and Analysis for Aug. 3",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.2,
-          "publishedAt": "2026-08-01T14:13:24+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-01/ukraine-gains-ground-as-putin-faces-pressure-video",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-02T22:02:28+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-02/latest-oil-market-news-and-analysis-for-aug-3",
           "tags": [
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "Bomb Kills Three, Injures 21 at Restaurant on Moscow’s Kudrinskaya Square",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-02T07:22:43+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-02/bomb-kills-three-injures-21-at-restaurant-on-moscow-s-kudrinskaya-square",
-          "tags": [
+            "commodity",
             "geopolitical",
             "market"
           ]
@@ -331,15 +547,19 @@
           ]
         },
         {
-          "title": "Bloomberg This Weekend 08/01/2026",
+          "title": "Gold Gains as Iran Talks Ease Concerns Over Interest-Rate Hike",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-01T16:17:44+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-01/bloomberg-this-weekend-08-01-2026-video",
+          "sentiment": "positive",
+          "sentimentScore": 0.6,
+          "publishedAt": "2026-08-02T23:46:57+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-02/gold-gains-as-iran-talks-ease-concerns-over-interest-rate-hike",
           "tags": [
+            "commodity",
             "geopolitical",
-            "market"
+            "gold",
+            "macro_risk",
+            "market",
+            "rates"
           ]
         }
       ]
