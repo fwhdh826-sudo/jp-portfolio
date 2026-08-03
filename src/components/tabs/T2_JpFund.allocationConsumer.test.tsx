@@ -12,6 +12,7 @@ import type {
 } from '../../types/allocationPlan'
 import type { T2AllocationProjection } from '../../store/allocationConsumerSelectors'
 import { createAppStoreInstanceForTest } from '../../store/useAppStore'
+import { MetricCard } from '../cards/MetricCard'
 import { T2AllocationPanel, T2_JpFund } from './T2_JpFund'
 // @ts-expect-error -- Vite resolves raw source imports during Vitest.
 import t2Source from './T2_JpFund.tsx?raw'
@@ -217,7 +218,22 @@ const ALLOCATION_MONETARY_LABELS = [
   '利用可能予算',
 ] as const
 
+const LEGACY_ALLOCATION_MONETARY_LABELS = [
+  '目標差分（参考）',
+  '総資産（参考）',
+] as const
+
+const UNAVAILABLE_ALLOCATION_MONETARY_LABELS = [
+  ...ALLOCATION_MONETARY_LABELS,
+  ...LEGACY_ALLOCATION_MONETARY_LABELS,
+] as const
+
 const RENDERED_YEN_AMOUNT = /(?:\d{1,3}(?:,\d{3})+|\d+(?:\.\d+)?)(?:万|億)?円/
+
+interface RenderedMetricCard {
+  readonly label: string
+  readonly value: string
+}
 
 const JP_FUND_FIXTURE: Trust = {
   id: 't2-wiring-fund',
@@ -384,31 +400,103 @@ function renderProductionT2(state: AppState): string {
   return renderToStaticMarkup(<T2_JpFund />)
 }
 
-function allocationRelatedMarkup(actualTabMarkup: string): string {
-  const availabilityIndex = actualTabMarkup.indexOf('data-allocation-availability=')
-  const allocationStart = actualTabMarkup.lastIndexOf('<div', availabilityIndex)
-  const nextStableSection = actualTabMarkup.indexOf('>平均スコア</p>', availabilityIndex)
-  if (availabilityIndex < 0 || allocationStart < 0 || nextStableSection < 0) {
-    throw new Error('actual T2 allocation render boundaries were not found')
-  }
-  return actualTabMarkup.slice(allocationStart, nextStableSection)
+function renderedMetricCards(fullMarkup: string): RenderedMetricCard[] {
+  const metricCardStart =
+    /<div style="display:flex;flex-direction:column;gap:[^"]+"><p style="[^"]+">([^<]*)<\/p><p style="[^"]+">([^<]*)<\/p><div style="display:flex;align-items:baseline;gap:[^"]+">/g
+  return [...fullMarkup.matchAll(metricCardStart)].map(([, label, value]) => ({ label, value }))
 }
 
-function allocationMonetaryRowCount(allocationMarkup: string): number {
-  return ALLOCATION_MONETARY_LABELS.reduce(
-    (count, label) => count + allocationMarkup.split(`>${label}</p>`).length - 1,
-    0,
-  )
+function allocationMonetaryCards(fullMarkup: string): RenderedMetricCard[] {
+  return renderedMetricCards(fullMarkup).filter(({ value }) => RENDERED_YEN_AMOUNT.test(value))
 }
 
-function expectUnavailableAllocationStructure(allocationMarkup: string): void {
-  expect(allocationMarkup).toContain('data-allocation-availability="unavailable"')
-  expect(allocationMonetaryRowCount(allocationMarkup)).toBe(0)
-  for (const label of ALLOCATION_MONETARY_LABELS) {
-    expect(allocationMarkup).not.toContain(`>${label}</p>`)
-  }
-  expect(allocationMarkup).not.toMatch(RENDERED_YEN_AMOUNT)
+function sortedCardMultiset(cards: readonly RenderedMetricCard[]): string[] {
+  return cards.map(({ label, value }) => `${label}\u0000${value}`).sort()
 }
+
+function allocationAvailabilityMarkup(fullMarkup: string): string {
+  const availabilityIndex = fullMarkup.indexOf('data-allocation-availability=')
+  const allocationStart = fullMarkup.lastIndexOf('<div', availabilityIndex)
+  if (availabilityIndex < 0 || allocationStart < 0) {
+    throw new Error('actual T2 allocation availability element was not found')
+  }
+
+  const divTags = /<\/?div\b[^>]*>/g
+  divTags.lastIndex = allocationStart
+  let depth = 0
+  for (const match of fullMarkup.matchAll(divTags)) {
+    depth += match[0].startsWith('</div') ? -1 : 1
+    if (depth === 0) return fullMarkup.slice(allocationStart, match.index + match[0].length)
+  }
+  throw new Error('actual T2 allocation availability element was not balanced')
+}
+
+function unavailableAllocationLabelHits(fullMarkup: string): string[] {
+  return UNAVAILABLE_ALLOCATION_MONETARY_LABELS.filter(label => fullMarkup.includes(label))
+}
+
+function expectUnavailableAllocationFullRender(fullMarkup: string): void {
+  expect(fullMarkup).toContain('data-allocation-availability="unavailable"')
+  for (const label of UNAVAILABLE_ALLOCATION_MONETARY_LABELS) {
+    expect(fullMarkup).not.toContain(label)
+  }
+  expect(allocationMonetaryCards(fullMarkup)).toEqual([])
+}
+
+interface RelocationCase {
+  readonly position: string
+  readonly embed: (markup: string, forbiddenBlock: string) => string
+}
+
+const RELOCATION_CASES: readonly RelocationCase[] = [
+  {
+    position: 'A: allocation availability marker直後',
+    embed: (markup, block) => markup.replace(
+      '<div data-allocation-availability="unavailable">',
+      `<div data-allocation-availability="unavailable">${block}`,
+    ),
+  },
+  {
+    position: 'B: KPI grid後',
+    embed: (markup, block) => markup.replace(
+      '<span data-kpi-grid-end="true"></span>',
+      `<span data-kpi-grid-end="true"></span>${block}`,
+    ),
+  },
+  {
+    position: 'C: allocation panel前',
+    embed: (markup, block) => markup.replace(
+      '<section data-allocation-panel="true">',
+      `${block}<section data-allocation-panel="true">`,
+    ),
+  },
+  {
+    position: 'D: root末尾',
+    embed: (markup, block) => markup.replace('</main>', `${block}</main>`),
+  },
+]
+
+describe('R3-b-R3 full-render allocation monetary helpers', () => {
+  it.each(RELOCATION_CASES)('detects a forbidden card at $position', ({ embed }) => {
+    const syntheticFullMarkup = [
+      '<main>',
+      '<div data-allocation-availability="unavailable"><p>配分プランは未計算です</p></div>',
+      '<section data-kpi-grid="true"><p>平均スコア</p></section>',
+      '<span data-kpi-grid-end="true"></span>',
+      '<section data-allocation-panel="true"></section>',
+      '</main>',
+    ].join('')
+    const forbiddenBlock = renderToStaticMarkup(
+      <MetricCard title="目標差分（参考）" value="7.4万円" />,
+    )
+    const relocatedMarkup = embed(syntheticFullMarkup, forbiddenBlock)
+
+    expect(sortedCardMultiset(allocationMonetaryCards(relocatedMarkup))).toEqual([
+      '目標差分（参考）\u00007.4万円',
+    ])
+    expect(unavailableAllocationLabelHits(relocatedMarkup)).toEqual(['目標差分（参考）'])
+  })
+})
 
 describe('R3-b T2 shared allocation consumer component', () => {
   it('passes the raw shared projection model to the component without aliases', () => {
@@ -598,7 +686,8 @@ describe('R3-b T2 shared allocation consumer component', () => {
 
 describe('R3-b-R1 T2_JpFund production store wiring', () => {
   it('renders current shared JP_TRUST sentinels through the actual tab without legacy authority', () => {
-    const html = renderProductionT2(productionWiringState())
+    const classPlan = jpTrustPlan()
+    const html = renderProductionT2(productionWiringState({ plan: allocationPlan(classPlan) }))
 
     expect(html).toContain('data-allocation-availability="available"')
     expect(html).toContain('data-allocation-status="current"')
@@ -623,39 +712,61 @@ describe('R3-b-R1 T2_JpFund production store wiring', () => {
     ]) {
       expect(html).not.toContain(formatJPYAuto(legacyAmount))
     }
+
+    expect(sortedCardMultiset(allocationMonetaryCards(html))).toEqual(sortedCardMultiset([
+      { label: 'クラス評価額', value: formatJPYAuto(classPlan.currentAmount) },
+      { label: '目標額', value: formatJPYAuto(classPlan.targetAmount) },
+      { label: '目標差分（不足）', value: formatJPYAuto(classPlan.targetGap) },
+      { label: '目標超過', value: formatJPYAuto(classPlan.overweightAmount) },
+      { label: '配分済額', value: formatJPYAuto(classPlan.allocatedAmount) },
+      { label: '割当後の残余', value: formatJPYAuto(classPlan.remainingHeadroom) },
+      { label: 'クラスheadroom', value: formatJPYAuto(classPlan.effectiveHeadroom) },
+      { label: '利用可能予算', value: formatJPYAuto(classPlan.availableBudget) },
+    ]))
   })
 
-  it('keeps unavailable shared authority fail-closed despite positive legacy amounts', () => {
-    const html = renderProductionT2(productionWiringState({
+
+  it('keeps unavailable shared authority fail-closed across the actual full tab render', () => {
+    const fullMarkup = renderProductionT2(productionWiringState({
       plan: null,
       status: 'absent',
       legacy: UNAVAILABLE_LEGACY_VARIANTS[0],
     }))
-    const allocationMarkup = allocationRelatedMarkup(html)
+    const availabilityMarkup = allocationAvailabilityMarkup(fullMarkup)
 
-    expectUnavailableAllocationStructure(allocationMarkup)
-    expect(allocationMarkup).toContain('data-allocation-status="absent"')
-    expect(allocationMarkup).toContain('配分プランは未計算です')
-    expect(allocationMarkup).not.toContain('data-snapshot-id=')
+    expectUnavailableAllocationFullRender(fullMarkup)
+    expect(availabilityMarkup).toContain('data-allocation-status="absent"')
+    expect(availabilityMarkup).toContain('配分プランは未計算です')
+    expect(fullMarkup).not.toContain('data-snapshot-id=')
   })
 
-  it('keeps unavailable allocation rendering invariant across legacy monetary inputs', () => {
-    const allocationRenders = UNAVAILABLE_LEGACY_VARIANTS.map(legacy =>
-      allocationRelatedMarkup(renderProductionT2(productionWiringState({
+  it('keeps global monetary cards absent and the availability subtree invariant across legacy inputs', () => {
+    const fullRenders = UNAVAILABLE_LEGACY_VARIANTS.map(legacy =>
+      renderProductionT2(productionWiringState({
         plan: null,
         status: 'absent',
         legacy,
-      }))),
+      })),
+    )
+    const availabilityRenders = fullRenders.map(allocationAvailabilityMarkup)
+    const monetaryCardMultisets = fullRenders.map(fullMarkup =>
+      sortedCardMultiset(allocationMonetaryCards(fullMarkup)),
     )
 
-    expect(allocationRenders).toHaveLength(3)
-    for (const allocationMarkup of allocationRenders) {
-      expectUnavailableAllocationStructure(allocationMarkup)
-      expect(allocationMarkup).toContain('data-allocation-status="absent"')
-      expect(allocationMarkup).toContain('配分プランは未計算です')
+    expect(fullRenders).toHaveLength(3)
+    for (const [index, fullMarkup] of fullRenders.entries()) {
+      expectUnavailableAllocationFullRender(fullMarkup)
+      expect(unavailableAllocationLabelHits(fullMarkup)).toEqual([])
+      expect(fullMarkup).toContain(formatJPYAuto(UNAVAILABLE_LEGACY_VARIANTS[index].legacyFundTotal))
+      expect(availabilityRenders[index]).toContain('data-allocation-status="absent"')
+      expect(availabilityRenders[index]).toContain('配分プランは未計算です')
     }
-    expect(allocationRenders[1]).toBe(allocationRenders[0])
-    expect(allocationRenders[2]).toBe(allocationRenders[0])
+    expect(fullRenders[1]).not.toBe(fullRenders[0])
+    expect(fullRenders[2]).not.toBe(fullRenders[0])
+    expect(monetaryCardMultisets[1]).toEqual(monetaryCardMultisets[0])
+    expect(monetaryCardMultisets[2]).toEqual(monetaryCardMultisets[0])
+    expect(availabilityRenders[1]).toBe(availabilityRenders[0])
+    expect(availabilityRenders[2]).toBe(availabilityRenders[0])
   })
 
   it('removes current shared money after a stale transition without a legacy fallback', () => {
@@ -666,30 +777,30 @@ describe('R3-b-R1 T2_JpFund production store wiring', () => {
       status: 'stale',
       legacy: UNAVAILABLE_LEGACY_VARIANTS[0],
     }))
-    const staleAllocationMarkup = allocationRelatedMarkup(staleHtml)
+    const staleAvailabilityMarkup = allocationAvailabilityMarkup(staleHtml)
 
     expect(currentHtml).toContain(formatJPYAuto(SHARED_TARGET_GAP))
-    expectUnavailableAllocationStructure(staleAllocationMarkup)
-    expect(staleAllocationMarkup).toContain('data-allocation-status="stale"')
-    expect(staleAllocationMarkup).toContain('配分プランの再計算が必要です')
-    expect(staleAllocationMarkup).not.toContain(formatJPYAuto(SHARED_TARGET_GAP))
+    expectUnavailableAllocationFullRender(staleHtml)
+    expect(staleAvailabilityMarkup).toContain('data-allocation-status="stale"')
+    expect(staleAvailabilityMarkup).toContain('配分プランの再計算が必要です')
+    expect(staleAvailabilityMarkup).not.toContain(formatJPYAuto(SHARED_TARGET_GAP))
   })
 
   it('keeps invalid shared authority unavailable when the legacy universe is populated', () => {
-    const html = renderProductionT2(productionWiringState({
+    const fullMarkup = renderProductionT2(productionWiringState({
       plan: allocationPlan(),
       status: 'invalid',
       legacy: UNAVAILABLE_LEGACY_VARIANTS[0],
     }))
-    const allocationMarkup = allocationRelatedMarkup(html)
+    const availabilityMarkup = allocationAvailabilityMarkup(fullMarkup)
 
-    expectUnavailableAllocationStructure(allocationMarkup)
-    expect(allocationMarkup).toContain('data-allocation-status="invalid"')
-    expect(allocationMarkup).toContain('配分プランを計算できません')
-    expect(allocationMarkup).not.toContain(formatJPYAuto(SHARED_TARGET_GAP))
+    expectUnavailableAllocationFullRender(fullMarkup)
+    expect(availabilityMarkup).toContain('data-allocation-status="invalid"')
+    expect(availabilityMarkup).toContain('配分プランを計算できません')
+    expect(availabilityMarkup).not.toContain(formatJPYAuto(SHARED_TARGET_GAP))
   })
 
-  it('distinguishes authoritative zero from unavailable in the actual tab render', () => {
+  it('distinguishes authoritative zero from unavailable in the actual full tab render', () => {
     const zeroClass = jpTrustPlan({
       currentAmount: 0,
       targetAmount: 0,
@@ -702,26 +813,23 @@ describe('R3-b-R1 T2_JpFund production store wiring', () => {
       allocatedAmount: 0,
       remainingHeadroom: 0,
     })
-    const zeroHtml = renderProductionT2(productionWiringState({
+    const validZeroMarkup = renderProductionT2(productionWiringState({
       plan: allocationPlan(zeroClass, false),
     }))
-    const unavailableHtml = renderProductionT2(productionWiringState({
+    const unavailableMarkup = renderProductionT2(productionWiringState({
       plan: null,
       status: 'absent',
       legacy: UNAVAILABLE_LEGACY_VARIANTS[0],
     }))
-    const zeroAllocationMarkup = allocationRelatedMarkup(zeroHtml)
-    const unavailableAllocationMarkup = allocationRelatedMarkup(unavailableHtml)
+    const zeroCards = allocationMonetaryCards(validZeroMarkup)
 
-    expect(zeroAllocationMarkup).toContain('data-allocation-availability="available"')
-    expect(allocationMonetaryRowCount(zeroAllocationMarkup)).toBe(ALLOCATION_MONETARY_LABELS.length)
-    for (const label of ALLOCATION_MONETARY_LABELS) {
-      expect(zeroAllocationMarkup).toContain(`>${label}</p>`)
-    }
-    expect(zeroAllocationMarkup).toContain('0円')
-    expect(zeroAllocationMarkup).toContain('0件')
-    expectUnavailableAllocationStructure(unavailableAllocationMarkup)
-    expect(unavailableAllocationMarkup).not.toContain('0円')
-    expect(unavailableAllocationMarkup).not.toBe(zeroAllocationMarkup)
+    expect(validZeroMarkup).toContain('data-allocation-availability="available"')
+    expect(zeroCards).toHaveLength(ALLOCATION_MONETARY_LABELS.length)
+    expect(zeroCards.map(({ label }) => label).sort()).toEqual([...ALLOCATION_MONETARY_LABELS].sort())
+    expect(zeroCards.every(({ value }) => value === '0円')).toBe(true)
+    expect(validZeroMarkup).toContain('0件')
+    expectUnavailableAllocationFullRender(unavailableMarkup)
+    expect(unavailableMarkup).not.toContain('0円')
+    expect(validZeroMarkup).not.toBe(unavailableMarkup)
   })
 })
