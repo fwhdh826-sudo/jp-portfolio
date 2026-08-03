@@ -146,6 +146,7 @@ const LEGACY_FUND_EVAL = 123_457
 const CASH_OVERRIDE = 3_210_987
 const CASH_RESERVE_OVERRIDE = 2_109_876
 const LEGACY_ADD_ROOM = 987_654
+const NON_ALLOCATION_FOREIGN_FLOW = 432.4
 
 interface LegacyMonetaryFixture {
   readonly legacyTotalValue: number
@@ -174,7 +175,7 @@ const DEFAULT_LEGACY_MONETARY_FIXTURE: LegacyMonetaryFixture = {
 const UNAVAILABLE_LEGACY_VARIANTS: readonly LegacyMonetaryFixture[] = [
   {
     legacyTotalValue: 1_234_567,
-    legacyFundTotal: 111_111,
+    legacyFundTotal: LEGACY_FUND_EVAL,
     categoryCurrentValue: 101_010,
     categoryTargetValue: 202_020,
     categoryDiffValue: 101_010,
@@ -185,7 +186,7 @@ const UNAVAILABLE_LEGACY_VARIANTS: readonly LegacyMonetaryFixture[] = [
   },
   {
     legacyTotalValue: 98_765_432,
-    legacyFundTotal: 7_654_321,
+    legacyFundTotal: LEGACY_FUND_EVAL,
     categoryCurrentValue: 44_444_444,
     categoryTargetValue: 55_555_555,
     categoryDiffValue: 11_111_111,
@@ -196,7 +197,7 @@ const UNAVAILABLE_LEGACY_VARIANTS: readonly LegacyMonetaryFixture[] = [
   },
   {
     legacyTotalValue: 20_000_000,
-    legacyFundTotal: 19_999_999,
+    legacyFundTotal: LEGACY_FUND_EVAL,
     categoryCurrentValue: 19_999_999,
     categoryTargetValue: 1,
     categoryDiffValue: -19_999_998,
@@ -228,7 +229,7 @@ const UNAVAILABLE_ALLOCATION_MONETARY_LABELS = [
   ...LEGACY_ALLOCATION_MONETARY_LABELS,
 ] as const
 
-const RENDERED_YEN_AMOUNT = /(?:\d{1,3}(?:,\d{3})+|\d+(?:\.\d+)?)(?:万|億)?円/
+const RENDERED_YEN_AMOUNT = /[+-]?(?:\d{1,3}(?:,\d{3})+|\d+)(?:\.\d+)?(?:万|億)?円/
 
 interface RenderedMetricCard {
   readonly label: string
@@ -371,6 +372,14 @@ function productionWiringState({
       manualOverrideEnabled: true,
       manualUpdatedAt: '2026-08-03T00:00:00.000Z',
     },
+    flows: {
+      last_updated: '2026-08-03T00:00:00.000Z',
+      weekOf: '2026-08-03',
+      foreignNet: NON_ALLOCATION_FOREIGN_FLOW,
+      individualNet: 0,
+      institutionalNet: 0,
+      trust5w: 0,
+    },
     universe: {
       totalValue: legacy.legacyTotalValue,
       categories: [{
@@ -410,6 +419,47 @@ function allocationMonetaryCards(fullMarkup: string): RenderedMetricCard[] {
   return renderedMetricCards(fullMarkup).filter(({ value }) => RENDERED_YEN_AMOUNT.test(value))
 }
 
+function decodeRenderedNumericEntities(fullMarkup: string): string {
+  return fullMarkup
+    .replace(/&#(\d+);/g, (_entity, decimal: string) =>
+      String.fromCodePoint(Number.parseInt(decimal, 10)))
+    .replace(/&#x([\da-f]+);/gi, (_entity, hexadecimal: string) =>
+      String.fromCodePoint(Number.parseInt(hexadecimal, 16)))
+    .replace(/&minus;/g, '-')
+    .replace(/&nbsp;/g, ' ')
+}
+
+function extractRenderedYenMultiset(fullMarkup: string): string[] {
+  const renderedYenAmountGlobal = new RegExp(RENDERED_YEN_AMOUNT.source, 'g')
+  return [...decodeRenderedNumericEntities(fullMarkup).matchAll(renderedYenAmountGlobal)]
+    .map(([amount]) => amount)
+    .sort()
+}
+
+function expectedUnavailableYenMultiset(legacy: LegacyMonetaryFixture): string[] {
+  return [
+    // Holding-row owner: Trust.eval -> formatJPYAuto at T2_JpFund.tsx:891.
+    formatJPYAuto(legacy.legacyFundTotal),
+    // Market-context owner: FlowData.foreignNet -> toFixed(0) + 億円 at T2_JpFund.tsx:105-109.
+    `${NON_ALLOCATION_FOREIGN_FLOW.toFixed(0)}億円`,
+  ].sort()
+}
+
+function expectedAvailableYenMultiset(classPlan: AssetClassPlan): string[] {
+  return [
+    formatJPYAuto(classPlan.currentAmount),
+    formatJPYAuto(classPlan.targetAmount),
+    formatJPYAuto(classPlan.targetGap),
+    formatJPYAuto(classPlan.overweightAmount),
+    formatJPYAuto(classPlan.allocatedAmount),
+    formatJPYAuto(classPlan.remainingHeadroom),
+    formatJPYAuto(classPlan.effectiveHeadroom),
+    formatJPYAuto(classPlan.availableBudget),
+    formatJPYAuto(LEGACY_FUND_EVAL),
+    `${NON_ALLOCATION_FOREIGN_FLOW.toFixed(0)}億円`,
+  ].sort()
+}
+
 function sortedCardMultiset(cards: readonly RenderedMetricCard[]): string[] {
   return cards.map(({ label, value }) => `${label}\u0000${value}`).sort()
 }
@@ -435,8 +485,12 @@ function unavailableAllocationLabelHits(fullMarkup: string): string[] {
   return UNAVAILABLE_ALLOCATION_MONETARY_LABELS.filter(label => fullMarkup.includes(label))
 }
 
-function expectUnavailableAllocationFullRender(fullMarkup: string): void {
+function expectUnavailableAllocationFullRender(
+  fullMarkup: string,
+  expectedYenMultiset: readonly string[],
+): void {
   expect(fullMarkup).toContain('data-allocation-availability="unavailable"')
+  expect(extractRenderedYenMultiset(fullMarkup)).toEqual([...expectedYenMultiset].sort())
   for (const label of UNAVAILABLE_ALLOCATION_MONETARY_LABELS) {
     expect(fullMarkup).not.toContain(label)
   }
@@ -495,6 +549,60 @@ describe('R3-b-R3 full-render allocation monetary helpers', () => {
       '目標差分（参考）\u00007.4万円',
     ])
     expect(unavailableAllocationLabelHits(relocatedMarkup)).toEqual(['目標差分（参考）'])
+  })
+})
+
+function syntheticFullMarkup(): string {
+  return [
+    '<main>',
+    '<div data-allocation-availability="unavailable"><p>配分プランは未計算です</p></div>',
+    '<section data-kpi-grid="true"><p>平均スコア</p></section>',
+    '<span data-kpi-grid-end="true"></span>',
+    '<section data-allocation-panel="true"></section>',
+    '</main>',
+  ].join('')
+}
+
+const YEN_MARKUP_FORMATS = [
+  { format: 'A: div / p', markup: '<div><p>配分参考値</p><p>16.0万円</p></div>' },
+  { format: 'B: span', markup: '<span>16.0万円</span>' },
+  {
+    format: 'C: unknown label / section / strong / em',
+    markup: '<section><strong>未知ラベル</strong><em>16.0万円</em></section>',
+  },
+  {
+    format: 'D: MetricCard',
+    markup: renderToStaticMarkup(<MetricCard title="配分参考値" value="16.0万円" />),
+  },
+] as const
+
+describe('R3-b-R4 full-render yen-token multiset helpers', () => {
+  it('covers the complete formatJPYAuto and existing T2 yen output space', () => {
+    const supportedAmounts = [
+      '0円',
+      '1,234円',
+      '1.2万円',
+      '16.0万円',
+      '123万円',
+      '1,234.5万円',
+      '1億円',
+      '1.2億円',
+      '-16.0万円',
+      '16.0万円',
+    ]
+    const markup = `<main><p>${supportedAmounts.join('</p><div></div><p>')}</p><span>&#49;,234円</span></main>`
+
+    expect(extractRenderedYenMultiset(markup)).toEqual([
+      ...supportedAmounts,
+      '1,234円',
+    ].sort())
+    expect(extractRenderedYenMultiset(markup).filter(amount => amount === '16.0万円')).toHaveLength(2)
+  })
+
+  it.each(YEN_MARKUP_FORMATS)('detects the same yen token in format $format at every full-render position', ({ markup }) => {
+    for (const { embed } of RELOCATION_CASES) {
+      expect(extractRenderedYenMultiset(embed(syntheticFullMarkup(), markup))).toEqual(['16.0万円'])
+    }
   })
 })
 
@@ -713,6 +821,7 @@ describe('R3-b-R1 T2_JpFund production store wiring', () => {
       expect(html).not.toContain(formatJPYAuto(legacyAmount))
     }
 
+    expect(extractRenderedYenMultiset(html)).toEqual(expectedAvailableYenMultiset(classPlan))
     expect(sortedCardMultiset(allocationMonetaryCards(html))).toEqual(sortedCardMultiset([
       { label: 'クラス評価額', value: formatJPYAuto(classPlan.currentAmount) },
       { label: '目標額', value: formatJPYAuto(classPlan.targetAmount) },
@@ -734,13 +843,16 @@ describe('R3-b-R1 T2_JpFund production store wiring', () => {
     }))
     const availabilityMarkup = allocationAvailabilityMarkup(fullMarkup)
 
-    expectUnavailableAllocationFullRender(fullMarkup)
+    expectUnavailableAllocationFullRender(
+      fullMarkup,
+      expectedUnavailableYenMultiset(UNAVAILABLE_LEGACY_VARIANTS[0]),
+    )
     expect(availabilityMarkup).toContain('data-allocation-status="absent"')
     expect(availabilityMarkup).toContain('配分プランは未計算です')
     expect(fullMarkup).not.toContain('data-snapshot-id=')
   })
 
-  it('keeps global monetary cards absent and the availability subtree invariant across legacy inputs', () => {
+  it('keeps the exact full-render yen multiset and availability subtree invariant across legacy inputs', () => {
     const fullRenders = UNAVAILABLE_LEGACY_VARIANTS.map(legacy =>
       renderProductionT2(productionWiringState({
         plan: null,
@@ -752,21 +864,27 @@ describe('R3-b-R1 T2_JpFund production store wiring', () => {
     const monetaryCardMultisets = fullRenders.map(fullMarkup =>
       sortedCardMultiset(allocationMonetaryCards(fullMarkup)),
     )
+    const yenMultisets = fullRenders.map(extractRenderedYenMultiset)
 
     expect(fullRenders).toHaveLength(3)
     for (const [index, fullMarkup] of fullRenders.entries()) {
-      expectUnavailableAllocationFullRender(fullMarkup)
+      expectUnavailableAllocationFullRender(
+        fullMarkup,
+        expectedUnavailableYenMultiset(UNAVAILABLE_LEGACY_VARIANTS[index]),
+      )
       expect(unavailableAllocationLabelHits(fullMarkup)).toEqual([])
       expect(fullMarkup).toContain(formatJPYAuto(UNAVAILABLE_LEGACY_VARIANTS[index].legacyFundTotal))
       expect(availabilityRenders[index]).toContain('data-allocation-status="absent"')
       expect(availabilityRenders[index]).toContain('配分プランは未計算です')
     }
-    expect(fullRenders[1]).not.toBe(fullRenders[0])
-    expect(fullRenders[2]).not.toBe(fullRenders[0])
+    expect(new Set(UNAVAILABLE_LEGACY_VARIANTS.map(legacy => legacy.legacyTotalValue))).toHaveLength(3)
+    expect(new Set(UNAVAILABLE_LEGACY_VARIANTS.map(legacy => legacy.categoryDiffValue))).toHaveLength(3)
     expect(monetaryCardMultisets[1]).toEqual(monetaryCardMultisets[0])
     expect(monetaryCardMultisets[2]).toEqual(monetaryCardMultisets[0])
     expect(availabilityRenders[1]).toBe(availabilityRenders[0])
     expect(availabilityRenders[2]).toBe(availabilityRenders[0])
+    expect(yenMultisets[1]).toEqual(yenMultisets[0])
+    expect(yenMultisets[2]).toEqual(yenMultisets[0])
   })
 
   it('removes current shared money after a stale transition without a legacy fallback', () => {
@@ -780,7 +898,10 @@ describe('R3-b-R1 T2_JpFund production store wiring', () => {
     const staleAvailabilityMarkup = allocationAvailabilityMarkup(staleHtml)
 
     expect(currentHtml).toContain(formatJPYAuto(SHARED_TARGET_GAP))
-    expectUnavailableAllocationFullRender(staleHtml)
+    expectUnavailableAllocationFullRender(
+      staleHtml,
+      expectedUnavailableYenMultiset(UNAVAILABLE_LEGACY_VARIANTS[0]),
+    )
     expect(staleAvailabilityMarkup).toContain('data-allocation-status="stale"')
     expect(staleAvailabilityMarkup).toContain('配分プランの再計算が必要です')
     expect(staleAvailabilityMarkup).not.toContain(formatJPYAuto(SHARED_TARGET_GAP))
@@ -794,7 +915,10 @@ describe('R3-b-R1 T2_JpFund production store wiring', () => {
     }))
     const availabilityMarkup = allocationAvailabilityMarkup(fullMarkup)
 
-    expectUnavailableAllocationFullRender(fullMarkup)
+    expectUnavailableAllocationFullRender(
+      fullMarkup,
+      expectedUnavailableYenMultiset(UNAVAILABLE_LEGACY_VARIANTS[0]),
+    )
     expect(availabilityMarkup).toContain('data-allocation-status="invalid"')
     expect(availabilityMarkup).toContain('配分プランを計算できません')
     expect(availabilityMarkup).not.toContain(formatJPYAuto(SHARED_TARGET_GAP))
@@ -822,14 +946,23 @@ describe('R3-b-R1 T2_JpFund production store wiring', () => {
       legacy: UNAVAILABLE_LEGACY_VARIANTS[0],
     }))
     const zeroCards = allocationMonetaryCards(validZeroMarkup)
+    const validZeroYenMultiset = extractRenderedYenMultiset(validZeroMarkup)
+    const unavailableYenMultiset = extractRenderedYenMultiset(unavailableMarkup)
 
     expect(validZeroMarkup).toContain('data-allocation-availability="available"')
     expect(zeroCards).toHaveLength(ALLOCATION_MONETARY_LABELS.length)
     expect(zeroCards.map(({ label }) => label).sort()).toEqual([...ALLOCATION_MONETARY_LABELS].sort())
     expect(zeroCards.every(({ value }) => value === '0円')).toBe(true)
+    expect(validZeroYenMultiset).toEqual(expectedAvailableYenMultiset(zeroClass))
+    expect(validZeroYenMultiset.filter(amount => amount === '0円')).toHaveLength(8)
     expect(validZeroMarkup).toContain('0件')
-    expectUnavailableAllocationFullRender(unavailableMarkup)
+    expectUnavailableAllocationFullRender(
+      unavailableMarkup,
+      expectedUnavailableYenMultiset(UNAVAILABLE_LEGACY_VARIANTS[0]),
+    )
+    expect(unavailableYenMultiset).toEqual(expectedUnavailableYenMultiset(UNAVAILABLE_LEGACY_VARIANTS[0]))
     expect(unavailableMarkup).not.toContain('0円')
+    expect(validZeroYenMultiset).not.toEqual(unavailableYenMultiset)
     expect(validZeroMarkup).not.toBe(unavailableMarkup)
   })
 })
