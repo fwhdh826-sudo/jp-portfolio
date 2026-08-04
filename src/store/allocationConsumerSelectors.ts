@@ -23,6 +23,7 @@ type CacheEntry = {
 const snapshotMemo = new WeakMap<AllocationPlanSnapshot, CacheEntry>()
 const instrumentListMemo = new WeakMap<object, Map<AssetClass, readonly AllocationInstrumentProjection[]>>()
 const t2ProjectionMemo = new WeakMap<object, T2AllocationProjection>()
+const t7TrustProjectionMemo = new WeakMap<object, T7TrustAllocationProjection>()
 const EMPTY_INSTRUMENTS = Object.freeze([]) as readonly AllocationInstrumentProjection[]
 
 type AvailableAllocationConsumerSnapshot = Extract<
@@ -33,6 +34,12 @@ type AvailableAllocationConsumerSnapshot = Extract<
 export interface T2AllocationProjection {
   readonly snapshot: AvailableAllocationConsumerSnapshot
   readonly jpTrustClass: AllocationClassProjection
+}
+
+export interface T7TrustAllocationProjection {
+  readonly snapshot: AvailableAllocationConsumerSnapshot
+  readonly jpTrustClass: AllocationClassProjection
+  readonly jpTrustInstruments: readonly AllocationInstrumentProjection[]
 }
 
 const ABSENT = Object.freeze({
@@ -296,5 +303,21 @@ export function selectT2AllocationProjection(state: AppState): T2AllocationProje
   if (cached !== undefined) return cached
   const value = Object.freeze({ snapshot, jpTrustClass })
   t2ProjectionMemo.set(snapshot, value)
+  return value
+}
+
+export function selectT7TrustAllocationProjections(
+  state: AppState,
+): T7TrustAllocationProjection | null {
+  const snapshot = selectAllocationConsumerSnapshot(state)
+  if (snapshot.availability === 'unavailable') return null
+  const jpTrustClass = snapshot.classes.find(plan => plan.assetClass === 'JP_TRUST')
+  if (jpTrustClass === undefined) return null
+  const cached = t7TrustProjectionMemo.get(snapshot)
+  if (cached !== undefined) return cached
+  const jpTrustInstruments = selectAllocationInstrumentProjections('JP_TRUST')(state)
+  if (jpTrustInstruments === null) return null
+  const value = Object.freeze({ snapshot, jpTrustClass, jpTrustInstruments })
+  t7TrustProjectionMemo.set(snapshot, value)
   return value
 }

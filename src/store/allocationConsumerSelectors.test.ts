@@ -13,6 +13,7 @@ import {
   selectAllocationConsumerSnapshot,
   selectAllocationInstrumentProjections,
   selectT2AllocationProjection,
+  selectT7TrustAllocationProjections,
 } from './allocationConsumerSelectors'
 import { projectCandidatePortfolioRecommendations } from './candidatePortfolioRecommendation'
 
@@ -578,4 +579,87 @@ describe('R3-a1 shared AllocationPlanSnapshot consumer contract', () => {
         .toBe(available(selectAllocationConsumerSnapshot(state(snapshot(), status))).snapshotExecutability)
     },
   )
+
+  it('C2-S01 returns null when the shared snapshot is unavailable', () => {
+    for (const status of ['absent', 'invalid', 'stale'] as const) {
+      expect(selectT7TrustAllocationProjections(state(null, status))).toBeNull()
+      expect(selectT7TrustAllocationProjections(state(snapshot(), status))).toBeNull()
+    }
+  })
+
+  it('C2-S02 returns null when the JP_TRUST class is absent', () => {
+    const plan = structuredClone(snapshot())
+    plan.assetClassPlans = plan.assetClassPlans.filter(item => item.assetClass !== 'JP_TRUST')
+    plan.instrumentPlans = plan.instrumentPlans.filter(item => item.assetClass !== 'JP_TRUST')
+    expect(selectT7TrustAllocationProjections(state(plan))).toBeNull()
+  })
+
+  it('C2-S03 returns the frozen empty list for a valid zero-instrument JP_TRUST class', () => {
+    const plan = buildAllocationPlanSnapshot({ ...input(), instruments: [], candidates: [] })
+    const projection = selectT7TrustAllocationProjections(state(plan))
+    expect(projection?.jpTrustInstruments).toEqual([])
+    expect(projection?.jpTrustInstruments).toBe(
+      selectAllocationInstrumentProjections('JP_TRUST')(state(plan)),
+    )
+  })
+
+  it('C2-S04 is reference-stable for one projected snapshot object', () => {
+    const source = state(snapshot())
+    const first = selectT7TrustAllocationProjections(source)
+    expect(first).not.toBeNull()
+    expect(selectT7TrustAllocationProjections(source)).toBe(first)
+
+    const nextPlan = structuredClone(source.allocationPlan!)
+    const next = selectT7TrustAllocationProjections(state(nextPlan))
+    expect(next).not.toBe(first)
+  })
+
+  it('C2-S05 returns only JP_TRUST instruments in snapshot order', () => {
+    const plan = snapshot()
+    const projection = selectT7TrustAllocationProjections(state(plan))
+    expect(projection?.jpTrustInstruments.length).toBeGreaterThan(0)
+    expect(projection?.jpTrustInstruments.every(item => item.assetClass === 'JP_TRUST')).toBe(true)
+    expect(projection?.jpTrustInstruments.map(item => item.instrumentId)).toEqual(
+      plan.instrumentPlans
+        .filter(item => item.assetClass === 'JP_TRUST')
+        .map(item => item.instrumentId),
+    )
+  })
+
+  it('C2-S06 copies every JP_TRUST monetary field verbatim without recomputation', () => {
+    const plan = structuredClone(snapshot())
+    const sourceClass = plan.assetClassPlans.find(item => item.assetClass === 'JP_TRUST')!
+    const sourceInstrument = plan.instrumentPlans.find(item => item.assetClass === 'JP_TRUST')!
+    sourceClass.currentAmount = 901_001
+    sourceClass.targetAmount = 702_002
+    sourceClass.targetGap = 503_003
+    sourceClass.effectiveHeadroom = 406_006
+    sourceClass.availableBudget = 607_007
+    sourceClass.allocatedAmount = 104_004
+    sourceClass.remainingHeadroom = 305_005
+    sourceInstrument.currentAmount = 111_101
+    sourceInstrument.estimatedMaximumAmount = 222_202
+    sourceInstrument.allocatedAmount = 104_004
+    sourceInstrument.finalSuggestedAmount = 104_004
+    sourceInstrument.effectiveInstrumentHeadroom = 444_404
+
+    const projection = selectT7TrustAllocationProjections(state(plan))
+    expect(projection?.jpTrustClass).toMatchObject({
+      currentAmount: sourceClass.currentAmount,
+      targetAmount: sourceClass.targetAmount,
+      targetGap: sourceClass.targetGap,
+      effectiveHeadroom: sourceClass.effectiveHeadroom,
+      availableBudget: sourceClass.availableBudget,
+      allocatedAmount: sourceClass.allocatedAmount,
+      remainingHeadroom: sourceClass.remainingHeadroom,
+    })
+    expect(projection?.jpTrustInstruments[0]).toMatchObject({
+      currentAmount: sourceInstrument.currentAmount,
+      estimatedMaximumAmount: sourceInstrument.estimatedMaximumAmount,
+      allocatedAmount: sourceInstrument.allocatedAmount,
+      finalSuggestedAmount: sourceInstrument.finalSuggestedAmount,
+      effectiveInstrumentHeadroom: sourceInstrument.effectiveInstrumentHeadroom,
+    })
+    expect(projection?.snapshot.shortTermBudget).toBe(plan.shortTermBudget)
+  })
 })

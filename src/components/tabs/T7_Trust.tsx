@@ -1,6 +1,11 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useIsMobile } from '../../hooks/useIsMobile'
 import { useAppStore } from '../../store/useAppStore'
+import {
+  selectAllocationConsumerSnapshot,
+  selectT7TrustAllocationProjections,
+  type T7TrustAllocationProjection,
+} from '../../store/allocationConsumerSelectors'
 import { selectMarketDataQuality, selectEffectiveSafeModeActive } from '../../store/selectors'
 import { formatDateTime, formatJPYAuto } from '../../utils/format'
 import {
@@ -37,6 +42,7 @@ import { colors, radius, shadow, spacing } from '../../theme/tokens'
 import { typography } from '../../theme/typography'
 import { EMBEDDED_GOLD_EXPOSURE } from '../../constants/trust'
 import type { CSSProperties } from 'react'
+import type { AllocationConsumerSnapshot } from '../../types/allocationConsumer'
 
 // ── 定数・ヘルパー ──────────────────────────────────────────────
 
@@ -72,13 +78,6 @@ function conditionLabel(status: ConditionStatus) {
   if (status === 'pass') return '達成'
   if (status === 'warn') return '境界'
   return '未達'
-}
-
-function sizingTierLabel(tier?: string): string {
-  if (tier === 'full') return '上限'
-  if (tier === 'half') return '標準'
-  if (tier === 'min') return '小口'
-  return ''
 }
 
 function actionToSignal(action: TrustSignalAction): Signal {
@@ -212,10 +211,199 @@ function Phase7FundSection({
   )
 }
 
+export interface T7TrustAllocationPanelProps {
+  readonly consumerSnapshot: AllocationConsumerSnapshot
+  readonly projection: T7TrustAllocationProjection | null
+  readonly isMobile: boolean
+}
+
+export function T7TrustAllocationPanel({
+  consumerSnapshot,
+  projection,
+  isMobile,
+}: T7TrustAllocationPanelProps) {
+  const unavailableCopy = consumerSnapshot.availability === 'unavailable'
+    ? consumerSnapshot.reasonKind === 'UNKNOWN_REASON_CODE'
+      ? { title: '配分プランを利用できません', detail: '不明な状態を検出しました。再計算してください。' }
+      : consumerSnapshot.status === 'stale'
+        ? { title: '配分プランの再計算が必要です', detail: '旧い金額は表示していません。' }
+        : consumerSnapshot.status === 'invalid'
+          ? { title: '配分プランを計算できません', detail: '金額を確認できる状態になるまで表示を停止しています。' }
+          : { title: '配分プランは未計算です', detail: '計算完了後に金額を表示します。' }
+    : null
+
+  if (consumerSnapshot.availability === 'unavailable' || projection === null) {
+    const copy = unavailableCopy ?? {
+      title: '国内株投信の配分プランを利用できません',
+      detail: 'JP_TRUST クラスの計算完了後に金額を表示します。',
+    }
+    return (
+      <div
+        role="status"
+        data-allocation-availability="unavailable"
+        data-allocation-status={consumerSnapshot.status}
+        style={{
+          background: colors.bgSurface,
+          border: `1px solid ${colors.borderSubtle}`,
+          borderRadius: radius.lg,
+          boxShadow: shadow.sm,
+          padding: isMobile ? spacing[4] : `${spacing[4]} ${spacing[5]}`,
+        }}
+      >
+        <div style={{ ...typography.bodySmall, color: colors.textPrimary, fontWeight: 700 }}>
+          {copy.title}
+        </div>
+        <div style={{ ...typography.caption, color: colors.textMuted, marginTop: spacing[1] }}>
+          {copy.detail}
+        </div>
+      </div>
+    )
+  }
+
+  const { snapshot, jpTrustClass, jpTrustInstruments } = projection
+  const isEstimateOnly = snapshot.status === 'estimate_only'
+  const isCurrent = snapshot.status === 'current'
+  const statusLabel = isCurrent
+    ? '最新'
+    : isEstimateOnly
+      ? '見積のみ（実行不可）'
+      : '実行不可'
+  const classMetrics = isEstimateOnly
+    ? [
+        { label: '目標差分（不足）', amount: jpTrustClass.targetGap },
+        { label: 'クラスheadroom', amount: jpTrustClass.effectiveHeadroom },
+        { label: '利用可能予算', amount: jpTrustClass.availableBudget },
+      ]
+    : [
+        { label: 'クラス評価額', amount: jpTrustClass.currentAmount },
+        { label: '目標額', amount: jpTrustClass.targetAmount },
+        { label: '目標差分（不足）', amount: jpTrustClass.targetGap },
+        { label: '短期予算上限', amount: snapshot.shortTermBudget },
+        { label: 'クラスheadroom', amount: jpTrustClass.effectiveHeadroom },
+        { label: '利用可能予算', amount: jpTrustClass.availableBudget },
+        { label: '配分済額', amount: jpTrustClass.allocatedAmount },
+        { label: '割当後の残余', amount: jpTrustClass.remainingHeadroom },
+      ]
+
+  return (
+    <div
+      data-allocation-availability="available"
+      data-allocation-status={snapshot.status}
+      data-snapshot-id={snapshot.generation.snapshotId}
+      data-snapshot-executability={snapshot.snapshotExecutability}
+      data-source-holdings-snapshot-id={snapshot.generation.sourceHoldingsSnapshotId}
+      data-source-settings-version={snapshot.generation.sourceSettingsVersion}
+      data-source-candidate-generation-id={snapshot.generation.sourceCandidateGenerationId ?? ''}
+      data-class-full-cause={jpTrustClass.classFullCause ?? ''}
+      data-instrument-plan-count={String(jpTrustClass.instrumentPlanCount)}
+      data-class-allocated-amount={String(jpTrustClass.allocatedAmount)}
+    >
+      <div style={{
+        display: 'flex',
+        alignItems: isMobile ? 'flex-start' : 'center',
+        justifyContent: 'space-between',
+        flexDirection: isMobile ? 'column' : 'row',
+        gap: spacing[1],
+        marginBottom: spacing[3],
+      }}>
+        <div style={{ ...typography.bodySmall, color: colors.textPrimary, fontWeight: 700 }}>
+          配分プラン: {statusLabel}
+        </div>
+        <div style={{ ...typography.caption, color: colors.textMuted }}>
+          実行可能性: {snapshot.snapshotExecutability} / 更新 {formatDateTime(snapshot.generation.generatedAt)}
+        </div>
+      </div>
+      <div style={{ ...typography.caption, color: colors.textMuted, marginBottom: spacing[3] }}>
+        snapshot: ブロック {snapshot.blockedReasons.length}件 / 警告 {snapshot.warnings.length}件 ・
+        JP_TRUST: ブロック {jpTrustClass.blockedReasons.length}件 / 警告 {jpTrustClass.warningReasons.length}件 /
+        制約 {jpTrustClass.limitingFactors.length}件
+        {isEstimateOnly && (
+          <span data-estimate-only-warning="present"> ・ 見積のみ警告あり</span>
+        )}
+      </div>
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))',
+        gap: spacing[3],
+        marginBottom: spacing[4],
+      }}>
+        {classMetrics.map(metric => (
+          <MetricCard key={metric.label} title={metric.label} value={formatJPYAuto(metric.amount)} />
+        ))}
+        <MetricCard title="配分候補" value={`${jpTrustClass.instrumentPlanCount}件`} />
+      </div>
+      {jpTrustInstruments.length === 0 ? (
+        <div style={{ ...typography.bodySmall, color: colors.textMuted }}>配分候補なし</div>
+      ) : (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: spacing[2] }}>
+          {jpTrustInstruments.map(instrument => {
+            const instrumentMetrics = isEstimateOnly
+              ? [
+                  { label: '参考上限', amount: instrument.estimatedMaximumAmount },
+                  { label: '個別headroom', amount: instrument.effectiveInstrumentHeadroom },
+                ]
+              : isCurrent
+                ? [
+                    { label: '保有額', amount: instrument.currentAmount },
+                    { label: '参考上限', amount: instrument.estimatedMaximumAmount },
+                    { label: '配分額', amount: instrument.allocatedAmount },
+                    { label: '実行選択額', amount: instrument.finalSuggestedAmount },
+                    { label: '個別headroom', amount: instrument.effectiveInstrumentHeadroom },
+                  ]
+                : [
+                    { label: '保有額', amount: instrument.currentAmount },
+                    { label: '参考上限', amount: instrument.estimatedMaximumAmount },
+                    { label: '個別headroom', amount: instrument.effectiveInstrumentHeadroom },
+                  ]
+            return (
+              <div
+                key={instrument.instrumentId}
+                data-allocation-instrument-id={instrument.instrumentId}
+                data-allocation-asset-class={instrument.assetClass}
+                data-instrument-allocated-amount={String(instrument.allocatedAmount)}
+                data-instrument-executable={String(instrument.executable)}
+                style={{
+                  padding: `${spacing[3]} ${spacing[4]}`,
+                  background: colors.bgSurface,
+                  border: `1px solid ${colors.borderSubtle}`,
+                  borderRadius: radius.md,
+                }}
+              >
+                <div style={{ display: 'flex', justifyContent: 'space-between', gap: spacing[2], flexWrap: 'wrap' }}>
+                  <strong style={{ ...typography.bodySmall, color: colors.textPrimary }}>
+                    {instrument.instrumentId}
+                  </strong>
+                  <span style={{ ...typography.caption, color: colors.textMuted }}>
+                    {instrument.role ?? '役割未設定'} / {instrument.buyKind} / {instrument.relationship} /
+                    {isCurrent && instrument.executable ? ' 実行可' : ' 実行不可'}
+                  </span>
+                </div>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: spacing[3], marginTop: spacing[2] }}>
+                  {instrumentMetrics.map(metric => (
+                    <span key={metric.label} style={{ ...typography.caption, color: colors.textSubtle }}>
+                      {metric.label} {formatJPYAuto(metric.amount)}
+                    </span>
+                  ))}
+                </div>
+                <div style={{ ...typography.caption, color: colors.textMuted, marginTop: spacing[2] }}>
+                  ブロック {instrument.blockedReasons.length}件 / 警告 {instrument.warningReasons.length}件 /
+                  制約 {instrument.limitingFactors.length}件
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      )}
+    </div>
+  )
+}
+
 // ── コンポーネント ──────────────────────────────────────────────
 
 export function T7_Trust() {
   const isMobile       = useIsMobile()
+  const allocationConsumerSnapshot = useAppStore(selectAllocationConsumerSnapshot)
+  const allocationProjection = useAppStore(selectT7TrustAllocationProjections)
   const trust          = useAppStore(state => state.trust)
   const market         = useAppStore(state => state.market)
   const macro          = useAppStore(state => state.macro)
@@ -383,7 +571,6 @@ export function T7_Trust() {
       }]
     : trustPlan.executionQueue.map(item => ({
         label:       item.title,
-        description: item.detail,
         signal:      actionToSignal(item.action),
         priority:    item.priority === 'high' ? 'HIGH' : item.priority === 'medium' ? 'MEDIUM' : 'LOW',
       }))
@@ -450,19 +637,6 @@ export function T7_Trust() {
     height:       '100%',
     background:   status === 'pass' ? colors.buy : status === 'warn' ? colors.watch : colors.sell,
     borderRadius: radius.full,
-  })
-
-  // 予算カード (fundAccent)
-  const budgetCardStyle = (_variant: 'core' | 'satellite'): CSSProperties => ({
-    display:       'flex',
-    flexDirection: 'column',
-    gap:           spacing[1],
-    padding:       `${spacing[4]} ${spacing[4]}`,
-    background:    colors.fundAccentBg,
-    border:        `1px solid ${colors.fundAccent}`,
-    borderRadius:  radius.lg,
-    flex:          1,
-    minWidth:      0,
   })
 
   // 投信ランクバッジ (fund紫)
@@ -668,9 +842,6 @@ export function T7_Trust() {
                                 <span key={r} style={{ ...typography.caption, color: colors.textSubtle }}>{r}</span>
                               ))}
                             </div>
-                            <span style={{ ...typography.metricSmall, color: colors.textSubtle, flexShrink: 0 }}>
-                              {formatJPYAuto(row.suggestedAmount)}
-                            </span>
                           </div>
                         )
                       })}
@@ -860,29 +1031,13 @@ export function T7_Trust() {
       <section>
         <SectionHeader title="資金配分提案" />
 
-        {/* 予算カード */}
-        <div style={{ display: 'flex', gap: spacing[3], marginBottom: spacing[4], flexWrap: 'wrap' }}>
-          <div style={budgetCardStyle('core')}>
-            <p style={{ ...typography.label, color: colors.fundAccentText }}>コア回転枠（上限）</p>
-            <p style={{ ...typography.metricMedium, color: colors.textPrimary }}>{formatJPYAuto(trustPlan.shortTermMode.coreBudget)}</p>
-            <p style={{ ...typography.caption, color: colors.fundAccentText }}>
-              {/* P4-A106: 抑制中は参考表示 */}
-              {isSuppressed ? '参考額（抑制中）' : '本日推奨'} {formatJPYAuto(trustPlan.shortTermMode.recommendedCoreBudget)}
-            </p>
-          </div>
-          <div style={budgetCardStyle('satellite')}>
-            <p style={{ ...typography.label, color: colors.fundAccentText }}>サテライト高確信枠（上限）</p>
-            <p style={{ ...typography.metricMedium, color: colors.textPrimary }}>{formatJPYAuto(trustPlan.shortTermMode.satelliteBudget)}</p>
-            <p style={{ ...typography.caption, color: colors.fundAccentText }}>
-              {/* P4-A106: 抑制中は参考表示 */}
-              {isSuppressed ? '参考額（抑制中）' : '本日推奨'} {formatJPYAuto(trustPlan.shortTermMode.recommendedSatelliteBudget)}
-            </p>
-          </div>
-        </div>
-
-        {/* P4-A52: 予算枠説明注記 */}
-        <p style={{ ...typography.caption, color: colors.textMuted, marginBottom: spacing[4], lineHeight: 1.6 }}>
-          上限はシステム設定の最大回転枠。本日推奨は JP_TRUST 理想差分・データ品質・市場条件・1日1エントリー制限により減額されます（0円の場合は新規買付を見送り）。
+        <T7TrustAllocationPanel
+          consumerSnapshot={allocationConsumerSnapshot}
+          projection={allocationProjection}
+          isMobile={isMobile}
+        />
+        <p style={{ ...typography.caption, color: colors.textMuted, margin: `${spacing[2]} 0 ${spacing[4]}`, lineHeight: 1.6 }}>
+          表示金額は共有配分プランの読み取り専用投影です。実行可否は構造化されたプラン状態に従います。
         </p>
 
         {/* ポリシー別配分 */}
@@ -912,13 +1067,10 @@ export function T7_Trust() {
                   </div>
                   <div style={{ display: 'flex', gap: spacing[4], flexWrap: 'wrap' }}>
                     <span style={{ ...typography.metricSmall, color: colors.textSubtle }}>
-                      現在 {(row.currentRatio * 100).toFixed(1)}% ({formatJPYAuto(row.currentValue)})
+                      現在 {(row.currentRatio * 100).toFixed(1)}%
                     </span>
                     <span style={{ ...typography.metricSmall, color: colors.textSubtle }}>
-                      目標 {(row.targetRatio * 100).toFixed(1)}% ({formatJPYAuto(row.targetValue)})
-                    </span>
-                    <span style={{ ...typography.metricSmall, color: row.diffValue >= 0 ? colors.buyText : colors.sellText }}>
-                      {row.diffValue >= 0 ? '+' : ''}{formatJPYAuto(row.diffValue)}
+                      目標 {(row.targetRatio * 100).toFixed(1)}%
                     </span>
                   </div>
                   <p style={{ ...typography.caption, color: colors.textMuted, marginTop: spacing[0.5] }}>{row.reason}</p>
@@ -947,7 +1099,6 @@ export function T7_Trust() {
             <div style={{ display: 'flex', flexDirection: 'column', gap: spacing[2] }}>
               {candidateActions.map(item => {
                 const isNew = item.action === 'BUY_NEW'
-                const tierLabel = sizingTierLabel(item.candidateSizingTier)
                 return (
                   <div
                     key={item.id}
@@ -968,18 +1119,6 @@ export function T7_Trust() {
                     <p style={{ ...typography.caption, color: colors.textMuted, marginBottom: spacing[1.5], lineHeight: '1.5' }}>
                       {item.reason}
                     </p>
-                    {isNew && item.suggestedAmount != null && item.suggestedAmount > 0 && (
-                      <div style={{ display: 'flex', alignItems: 'baseline', gap: spacing[1] }}>
-                        <span style={{ ...typography.metricSmall, color: colors.textSubtle }}>
-                          検討上限 {formatJPYAuto(item.suggestedAmount)}
-                        </span>
-                        {tierLabel && (
-                          <span style={{ ...typography.caption, color: colors.textMuted }}>
-                            ({tierLabel})
-                          </span>
-                        )}
-                      </div>
-                    )}
                   </div>
                 )
               })}
@@ -1032,9 +1171,6 @@ export function T7_Trust() {
                       </span>
                       <SignalBadge signal={sig} size="sm" />
                     </div>
-                    <span style={{ ...typography.metricSmall, color: colors.textSubtle }}>
-                      推奨 {formatJPYAuto(row.suggestedAmount)}
-                    </span>
                   </div>
                   <p style={{ ...typography.caption, color: colors.textMuted, marginBottom: spacing[1.5] }}>
                     {row.role} / スコア {row.score}%
