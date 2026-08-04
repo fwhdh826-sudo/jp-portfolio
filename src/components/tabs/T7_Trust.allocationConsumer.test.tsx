@@ -101,6 +101,121 @@ const LEGACY_CATEGORY_DIFF = 1_111_111
 const LEGACY_ADD_ROOM = 9_876_543
 const LEGACY_CASH = 6_543_219
 const OFFICIAL_SUGGESTED = 7_777_731
+const NON_ALLOCATION_FOREIGN_FLOW = 432.4
+
+const BASE_UNAVAILABLE_YEN_INVENTORY = [
+  {
+    owner: 'portfolio total evaluation',
+    fixtureSource: 'CORE_TRUST.eval + OVERSEAS_TRUST.eval = 5_123_460',
+    token: formatJPYAuto(5_123_460),
+    count: 1,
+  },
+  {
+    owner: 'portfolio unrealized profit/loss',
+    fixtureSource: 'the two 1.25% pnlPct fixtures format to +6.3万円',
+    token: `+${formatJPYAuto(63_253)}`,
+    count: 1,
+  },
+  {
+    owner: 'JAPAN_SHORTTERM group total and CORE-A holding card',
+    fixtureSource: 'CORE_TRUST.eval',
+    token: formatJPYAuto(CORE_TRUST.eval),
+    count: 2,
+  },
+  {
+    owner: 'OVERSEAS_LONGTERM group total and OVER-A holding card',
+    fixtureSource: 'OVERSEAS_TRUST.eval',
+    token: formatJPYAuto(OVERSEAS_TRUST.eval),
+    count: 2,
+  },
+  {
+    owner: 'direct, embedded, and effective GOLD reference metrics',
+    fixtureSource: 'no GOLD trust and no embedded-gold fixture ids',
+    token: formatJPYAuto(0),
+    count: 3,
+  },
+  {
+    owner: 'market-context foreign flow',
+    fixtureSource: 'flows.foreignNet',
+    token: `+${NON_ALLOCATION_FOREIGN_FLOW.toFixed(0)}億円`,
+    count: 1,
+  },
+] as const
+
+const TRUST_EVAL_ARM_TRUSTS: Trust[] = [
+  {
+    ...CORE_TRUST,
+    id: 'trust:eval-arm-a',
+    abbr: 'EVAL-A',
+    eval: 2_345_679,
+    pnlPct: 0,
+  },
+  {
+    ...CORE_TRUST,
+    id: 'trust:eval-arm-b',
+    abbr: 'EVAL-B',
+    eval: 3_210_987,
+    pnlPct: 0,
+  },
+  {
+    ...OVERSEAS_TRUST,
+    id: 'trust:eval-arm-c',
+    abbr: 'EVAL-C',
+    eval: 4_567_891,
+    pnlPct: 0,
+  },
+]
+
+const TRUST_EVAL_ARM_YEN_INVENTORY = [
+  {
+    owner: 'portfolio total evaluation',
+    fixtureSource: 'three TRUST_EVAL_ARM_TRUSTS eval fields total 10_124_557',
+    token: formatJPYAuto(10_124_557),
+    count: 1,
+  },
+  {
+    owner: 'portfolio unrealized profit/loss',
+    fixtureSource: 'all three pnlPct fields are zero',
+    token: `+${formatJPYAuto(0)}`,
+    count: 1,
+  },
+  {
+    owner: 'JAPAN_SHORTTERM group total',
+    fixtureSource: 'EVAL-A.eval + EVAL-B.eval = 5_556_666',
+    token: formatJPYAuto(5_556_666),
+    count: 1,
+  },
+  {
+    owner: 'OVERSEAS_LONGTERM group total and EVAL-C holding card',
+    fixtureSource: 'EVAL-C.eval',
+    token: formatJPYAuto(4_567_891),
+    count: 2,
+  },
+  {
+    owner: 'EVAL-A holding card',
+    fixtureSource: 'EVAL-A.eval',
+    token: formatJPYAuto(2_345_679),
+    count: 1,
+  },
+  {
+    owner: 'EVAL-B holding card',
+    fixtureSource: 'EVAL-B.eval',
+    token: formatJPYAuto(3_210_987),
+    count: 1,
+  },
+  {
+    owner: 'direct, embedded, and effective GOLD reference metrics',
+    fixtureSource: 'no GOLD trust and no embedded-gold fixture ids',
+    token: formatJPYAuto(0),
+    count: 3,
+  },
+  {
+    owner: 'market-context foreign flow',
+    fixtureSource: 'flows.foreignNet',
+    token: `+${NON_ALLOCATION_FOREIGN_FLOW.toFixed(0)}億円`,
+    count: 1,
+  },
+] as const
 
 function classPlan(
   assetClass: AssetClassPlan['assetClass'],
@@ -289,7 +404,7 @@ function appState(
     flows: {
       last_updated: '2026-08-04T00:00:00.000Z',
       weekOf: '2026-08-04',
-      foreignNet: 432.4,
+      foreignNet: NON_ALLOCATION_FOREIGN_FLOW,
       individualNet: 0,
       institutionalNet: 0,
       trust5w: 0,
@@ -340,10 +455,29 @@ function instrumentAllocatedAmounts(markup: string): number[] {
     .map(match => Number(match[1]))
 }
 
-function yenMultiset(markup: string): string[] {
-  return [...markup.matchAll(/[+-]?(?:\d{1,3}(?:,\d{3})+|\d+)(?:\.\d+)?(?:万|億)?円/g)]
-    .map(match => match[0])
+const RENDERED_YEN_AMOUNT = /[+-]?(?:\d{1,3}(?:,\d{3})+|\d+)(?:\.\d+)?(?:万|億)?円/
+
+function decodeRenderedNumericEntities(fullMarkup: string): string {
+  return fullMarkup
+    .replace(/&#(\d+);/g, (_entity, decimal: string) =>
+      String.fromCodePoint(Number.parseInt(decimal, 10)))
+    .replace(/&#x([\da-f]+);/gi, (_entity, hexadecimal: string) =>
+      String.fromCodePoint(Number.parseInt(hexadecimal, 16)))
+    .replace(/&minus;/g, '-')
+    .replace(/&nbsp;/g, ' ')
+}
+
+function extractRenderedYenMultiset(fullMarkup: string): string[] {
+  const renderedYenAmountGlobal = new RegExp(RENDERED_YEN_AMOUNT.source, 'g')
+  return [...decodeRenderedNumericEntities(fullMarkup).matchAll(renderedYenAmountGlobal)]
+    .map(([amount]) => amount)
     .sort()
+}
+
+function explicitExpectedYenMultiset(
+  inventory: readonly { readonly token: string; readonly count: number }[],
+): string[] {
+  return inventory.flatMap(({ token, count }) => Array<string>(count).fill(token)).sort()
 }
 
 function actionQueueMarkup(markup: string): string {
@@ -533,23 +667,57 @@ describe('R3-c2 T7 AllocationPlanSnapshot shared consumer wiring', () => {
       expect(markup).toContain(label)
       expect(markup).not.toContain(formatJPYAuto(SHARED_ALLOCATED))
       expect(markup).not.toContain(formatJPYAuto(LEGACY_CATEGORY_DIFF))
+      expect(extractRenderedYenMultiset(markup)).toEqual(
+        explicitExpectedYenMultiset(BASE_UNAVAILABLE_YEN_INVENTORY),
+      )
     }
 
-    const variant = appState(allocationPlan(), 'stale', {
-      cash: 99_999_991,
-      addRoom: 88_888_881,
-      universe: {
-        ...appState().universe!,
-        totalValue: 77_777_771,
-        categories: appState().universe!.categories.map(category => ({
-          ...category,
-          currentValue: 66_666_661,
-          targetValue: 55_555_551,
-          diffValue: -11_111_110,
-        })),
+    const baseUniverse = appState().universe!
+    const unavailableArms: Array<{
+      name: string
+      state: AppState
+      expected: readonly { readonly token: string; readonly count: number }[]
+    }> = [
+      {
+        name: 'Arm A: universe.addRoom sentinel',
+        state: appState(null, 'absent', {
+          universe: { ...baseUniverse, addRoom: 98_765_431 },
+        }),
+        expected: BASE_UNAVAILABLE_YEN_INVENTORY,
       },
-    })
-    expect(yenMultiset(renderT7(variant))).toEqual(yenMultiset(renderT7(appState(allocationPlan(), 'stale'))))
+      {
+        name: 'Arm B: constant-sensitive legacy fixture',
+        state: appState(null, 'absent', {
+          cash: 87_654_319,
+          addRoom: 76_543_219,
+        }),
+        expected: BASE_UNAVAILABLE_YEN_INVENTORY,
+      },
+      {
+        name: 'Arm C: multi-fund trust eval sum sentinel',
+        state: appState(null, 'absent', { trust: TRUST_EVAL_ARM_TRUSTS }),
+        expected: TRUST_EVAL_ARM_YEN_INVENTORY,
+      },
+      {
+        name: 'Arm D: nonzero legacy coreBudget fixture',
+        state: appState(null, 'absent', {
+          cashAssumptions: {
+            cashDeposits: 65_432_197,
+            standbyFunds: 54_321_097,
+            manualOverrideEnabled: true,
+            manualUpdatedAt: '2026-08-04T00:00:00.000Z',
+          },
+        }),
+        expected: BASE_UNAVAILABLE_YEN_INVENTORY,
+      },
+    ]
+
+    for (const { name, state, expected } of unavailableArms) {
+      const markup = renderT7(state)
+      expect(name).toMatch(/^Arm [A-D]:/)
+      expect(dataAttribute(markup, 'data-allocation-availability')).toBe('unavailable')
+      expect(extractRenderedYenMultiset(markup)).toEqual(explicitExpectedYenMultiset(expected))
+    }
   })
 
   it('T7-T08 distinguishes a valid zero allocation from an unavailable projection', () => {
@@ -559,14 +727,20 @@ describe('R3-c2 T7 AllocationPlanSnapshot shared consumer wiring', () => {
     trust.allocatedAmount = 0
     trust.remainingHeadroom = trust.effectiveHeadroom
     const availableMarkup = renderT7(appState(plan))
+    const validZeroYenMultiset = extractRenderedYenMultiset(availableMarkup)
     expect(dataAttribute(availableMarkup, 'data-allocation-availability')).toBe('available')
     expect(dataAttribute(availableMarkup, 'data-instrument-plan-count')).toBe('0')
     expect(availableMarkup).toContain('配分候補なし')
     expect(availableMarkup).toContain(formatJPYAuto(0))
 
     const absentMarkup = renderT7(appState(null, 'absent'))
+    const unavailableYenMultiset = extractRenderedYenMultiset(absentMarkup)
     expect(dataAttribute(absentMarkup, 'data-allocation-availability')).toBe('unavailable')
     expect(absentMarkup).not.toContain('配分済額')
+    expect(unavailableYenMultiset).toEqual(
+      explicitExpectedYenMultiset(BASE_UNAVAILABLE_YEN_INVENTORY),
+    )
+    expect(validZeroYenMultiset).not.toEqual(unavailableYenMultiset)
   })
 
   it('T7-T09 keeps estimate-only amounts out of allocated and execution fields', () => {
@@ -658,7 +832,7 @@ describe('R3-c2 T7 AllocationPlanSnapshot shared consumer wiring', () => {
     expect(legacyQueue.some(item => /\d[\d,]*円/.test(item.detail))).toBe(true)
 
     const queueMarkup = actionQueueMarkup(renderT7(state))
-    expect(yenMultiset(queueMarkup)).toEqual([])
+    expect(extractRenderedYenMultiset(queueMarkup)).toEqual([])
     expect(queueMarkup).not.toContain('description')
   })
 })
