@@ -1,86 +1,56 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-08-04T15:09:22.886272+09:00",
-  "sourceUpdatedAt": "2026-08-04T05:50:53+00:00",
+  "updatedAt": "2026-08-04T22:14:40.504631+09:00",
+  "sourceUpdatedAt": "2026-08-04T13:08:03+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 2,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Japan's Equities Risk Tactical Correction: Goldman's Moe",
-      "topPositiveTitle": "Japan's Equities Risk Tactical Correction: Goldman's Moe",
-      "items": [
-        {
-          "title": "Japan's Equities Risk Tactical Correction: Goldman's Moe",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-04T03:49:44+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-04/japan-s-equities-risk-tactical-correction-goldman-s-moe-video",
-          "tags": [
-            "fx",
-            "jp_broad",
-            "market"
-          ]
-        },
-        {
-          "title": "BOJ Data Point to $34 Billion Japan FX Intervention Friday",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-03T09:18:15+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-03/boj-data-point-to-34-billion-japanese-fx-intervention-on-friday",
-          "tags": [
-            "fx",
-            "jp_broad",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "jp_semiconductor": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "South Korea’s Leveraged ETF Trading Plummets Under New Curbs",
-      "topPositiveTitle": "South Korea’s Leveraged ETF Trading Plummets Under New Curbs",
-      "items": [
-        {
-          "title": "South Korea’s Leveraged ETF Trading Plummets Under New Curbs",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-04T02:31:45+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-04/south-korea-s-leveraged-etf-trading-plummets-under-new-curbs",
-          "tags": [
-            "jp_semiconductor",
-            "macro_risk",
-            "market",
-            "trust"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "us_broad": {
-      "avgSentiment": 0.057,
-      "negativeCount": 1,
+      "avgSentiment": 0.002,
+      "negativeCount": 2,
       "positiveCount": 1,
-      "neutralCount": 4,
+      "neutralCount": 3,
       "sourceCount": 2,
       "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Bessent Seen Rebuffing Wall Street on US Debt-Sale Guidance",
-      "topPositiveTitle": "Global Stocks Hold Near Record High, Yen Weakens: Markets Wrap",
+      "topNegativeTitle": "SpaceX’s First Earnings Offer a Chance to Reverse Stock’s Plunge",
+      "topPositiveTitle": "Trump Gives Iran 'Last Chance'; SpaceX, AMD Earnings Ahead | Bloomberg Brief 08/04/2026",
       "items": [
+        {
+          "title": "SpaceX’s First Earnings Offer a Chance to Reverse Stock’s Plunge",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-04T08:26:19+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-04/spacex-s-first-earnings-offer-a-chance-to-reverse-stock-s-plunge",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
         {
           "title": "Bessent Seen Rebuffing Wall Street on US Debt-Sale Guidance",
           "source": "Bloomberg Economics",
@@ -94,7 +64,32 @@
           ]
         },
         {
-          "title": "Bessent Seeks Fed’s Help to Defend Yen in Unusual Public Call",
+          "title": "Fed’s Paulson Keeping an ‘Open Mind’ on Interest Rates",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-04T12:14:56+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-04/fed-s-paulson-keeping-an-open-mind-on-interest-rates-video",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Eli Lilly Ripe for Stock Split After Obesity Drug-Fueled Rally",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-04T11:00:05+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-04/eli-lilly-ripe-for-stock-split-after-obesity-drug-fueled-rally",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Bessent Seeks Fed’s Aid to Defend Yen in Unusual Public Call",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
@@ -103,45 +98,6 @@
           "tags": [
             "fx",
             "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "BofA’s Cabana Sees Risk in Silent Fed: ‘You Can’t Fool the Bond’",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-03T13:18:08+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-03/treasuries-to-resume-fall-without-clear-fed-plan-bofa-s-cabana",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Bessent Plays Currency-Market Chess With Likely Eye on US Treasury Yields",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-03T11:00:01+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-08-03/bessent-plays-currency-market-chess-with-likely-eye-on-us-treasury-yields",
-          "tags": [
-            "fx",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Fed’s Williams Says Rates Are Well Positioned, Reuters Says",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-03T10:35:56+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-03/fed-s-williams-says-interest-rates-are-well-positioned-reuters",
-          "tags": [
-            "market",
-            "rates",
             "us_broad"
           ]
         }
@@ -160,46 +116,16 @@
       "items": []
     },
     "global_broad": {
-      "avgSentiment": 0.5,
+      "avgSentiment": 0,
       "negativeCount": 0,
-      "positiveCount": 2,
+      "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 2,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Yen Rally Loses Steam; Trump Threatens Iran's 'Last Chance' | The Asia Trade 8/4/2026",
-      "topPositiveTitle": "Global Stocks Hold Near Record High, Yen Weakens: Markets Wrap",
-      "items": [
-        {
-          "title": "Yen Rally Loses Steam; Trump Threatens Iran's 'Last Chance' | The Asia Trade 8/4/2026",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-04T03:05:18+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-04/the-asia-trade-8-4-2026-video",
-          "tags": [
-            "fx",
-            "geopolitical",
-            "global_broad",
-            "market"
-          ]
-        },
-        {
-          "title": "Global Stocks Hold Near Record High, Yen Weakens: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-03T22:13:40+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-03/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "fx",
-            "global_broad",
-            "macro_risk",
-            "market",
-            "us_broad"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "gold": {
       "avgSentiment": -0.33,
@@ -209,17 +135,18 @@
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Chinese Dip-Buying Bolsters Gold as Prices Find Floor at $4,000",
-      "topPositiveTitle": "Chinese Dip-Buying Bolsters Gold as Prices Find Floor at $4,000",
+      "topNegativeTitle": "Canada Posts Fourth Straight Trade Surplus on Gold Shipments",
+      "topPositiveTitle": "Canada Posts Fourth Straight Trade Surplus on Gold Shipments",
       "items": [
         {
-          "title": "Chinese Dip-Buying Bolsters Gold as Prices Find Floor at $4,000",
-          "source": "Bloomberg Markets",
+          "title": "Canada Posts Fourth Straight Trade Surplus on Gold Shipments",
+          "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-08-04T04:42:43+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-04/chinese-dip-buying-bolsters-gold-as-prices-find-floor-at-4-000",
+          "publishedAt": "2026-08-04T12:30:53+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-04/canada-posts-fourth-straight-trade-surplus-on-gold-shipments",
           "tags": [
+            "commodity",
             "gold",
             "market"
           ]
@@ -239,49 +166,37 @@
       "items": []
     },
     "dividend": {
-      "avgSentiment": 0.33,
+      "avgSentiment": 0,
       "negativeCount": 0,
-      "positiveCount": 1,
+      "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "HSBC's Elhedery on Buybacks and Vision for Bank Overhaul",
-      "topPositiveTitle": "HSBC's Elhedery on Buybacks and Vision for Bank Overhaul",
-      "items": [
-        {
-          "title": "HSBC's Elhedery on Buybacks and Vision for Bank Overhaul",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-04T05:41:21+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-04/hsbc-s-elhedery-on-buybacks-and-vision-for-bank-overhaul-video",
-          "tags": [
-            "dividend",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.037,
+      "avgSentiment": 0.183,
       "negativeCount": 2,
-      "positiveCount": 1,
+      "positiveCount": 3,
       "neutralCount": 6,
       "sourceCount": 2,
-      "itemCount": 9,
+      "itemCount": 11,
       "isStale": false,
-      "topNegativeTitle": "South Africa Factory Sentiment Hits Seven-Month Low on War Fears",
-      "topPositiveTitle": "Global Stocks Hold Near Record High, Yen Weakens: Markets Wrap",
+      "topNegativeTitle": "Oil Prices Can’t Fall Fast Enough for Asia to Keep Its Lights On",
+      "topPositiveTitle": "Trump Says Talks Are Iran’s ‘Last Chance’, Stocks Near Record Highs | The Opening Trade 8/4/2026",
       "items": [
         {
-          "title": "South Africa Factory Sentiment Hits Seven-Month Low on War Fears",
+          "title": "Oil Prices Can’t Fall Fast Enough for Asia to Keep Its Lights On",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-08-03T09:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-03/south-africa-factory-sentiment-hits-seven-month-low-on-war-fears",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-04T11:00:01+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-08-04/oil-prices-can-t-fall-fast-enough-for-asia-to-keep-its-lights-on",
           "tags": [
+            "commodity",
             "geopolitical",
             "macro_risk",
             "market"
@@ -300,39 +215,39 @@
           ]
         },
         {
-          "title": "Lufthansa Warns of Profit Risk as Jet Fuel Roils Industry",
+          "title": "Options Traders Cut Long-Term Bearish Bets on South African Rand",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-04T05:04:53+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-04/lufthansa-warns-of-profit-risk-as-jet-fuel-surge-roils-industry",
+          "publishedAt": "2026-08-04T11:55:53+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-04/options-traders-cut-long-term-bearish-bets-on-south-african-rand",
           "tags": [
+            "geopolitical",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "India RBI Seen Holding Rates as Inflation Risk Stay in Focus",
-          "source": "Bloomberg Economics",
+          "title": "EU Eyes Winter LNG Buys as Storage Hits Near Two-Decade Low",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-04T01:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-04/india-rbi-seen-holding-rates-as-inflation-risks-stay-in-focus",
+          "publishedAt": "2026-08-04T11:23:29+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-04/eu-eyes-winter-lng-buys-as-storage-hits-near-two-decade-low",
           "tags": [
             "commodity",
             "geopolitical",
             "macro_risk",
-            "market",
-            "rates"
+            "market"
           ]
         },
         {
-          "title": "Central Banks Let Markets Do Heavy Lifting as Iran War Adds Risk",
-          "source": "Bloomberg Economics",
+          "title": "NYC’s “War On Rats” Has An Unlikely Hero: Trash Bins",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-03T15:56:56+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-03/central-banks-let-markets-do-heavy-lifting-as-iran-war-adds-risk",
+          "publishedAt": "2026-08-04T11:15:04+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-04/nyc-s-war-on-rats-has-an-unlikely-hero-trash-bins",
           "tags": [
             "geopolitical",
             "macro_risk",
@@ -342,16 +257,28 @@
       ]
     },
     "fx": {
-      "avgSentiment": 0.112,
+      "avgSentiment": -0.112,
       "negativeCount": 2,
-      "positiveCount": 4,
-      "neutralCount": 6,
+      "positiveCount": 1,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 12,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Colombian Peso Pares Stellar Rally as Central Bank Steps In",
-      "topPositiveTitle": "After Historic Intervention, 155 Emerges as Yen’s Next Big Test",
+      "topNegativeTitle": "Bessent Says Yen Level Problem for Japan, Other Currencies",
+      "topPositiveTitle": "Katayama Says US Evaluates Japan’s Economic Policies Highly",
       "items": [
+        {
+          "title": "Bessent Says Yen Level Problem for Japan, Other Currencies",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-08-04T12:16:49+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-04/bessent-says-yen-level-problematic-for-japan-other-currencies",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        },
         {
           "title": "Colombian Peso Pares Stellar Rally as Central Bank Steps In",
           "source": "Bloomberg Economics",
@@ -359,18 +286,6 @@
           "sentimentScore": -0.33,
           "publishedAt": "2026-08-03T15:30:35+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-08-03/colombian-peso-pares-stellar-rally-as-central-bank-steps-in",
-          "tags": [
-            "fx",
-            "market"
-          ]
-        },
-        {
-          "title": "US and Japan and yen intervention",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-03T11:02:05+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-08-03/us-and-japan-and-yen-intervention",
           "tags": [
             "fx",
             "market"
@@ -389,19 +304,6 @@
           ]
         },
         {
-          "title": "Japan's Equities Risk Tactical Correction: Goldman's Moe",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-04T03:49:44+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-04/japan-s-equities-risk-tactical-correction-goldman-s-moe-video",
-          "tags": [
-            "fx",
-            "jp_broad",
-            "market"
-          ]
-        },
-        {
           "title": "Bessent’s Yen Rescue to Boost US Pressure on Japan Trade, Rates",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
@@ -412,31 +314,45 @@
             "fx",
             "market",
             "rates"
+          ]
+        },
+        {
+          "title": "Bessent Seeks Fed’s Aid to Defend Yen in Unusual Public Call",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-03T21:52:03+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-03/bessent-seeks-fed-help-in-defending-yen-in-unusual-call",
+          "tags": [
+            "fx",
+            "market",
+            "us_broad"
           ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": -0.2,
-      "negativeCount": 1,
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 4,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Australia’s Housing Market Worsens",
-      "topPositiveTitle": "Bessent’s Yen Rescue to Boost US Pressure on Japan Trade, Rates",
+      "topNegativeTitle": "Fed’s Paulson Keeping an ‘Open Mind’ on Interest Rates",
+      "topPositiveTitle": "Fed’s Paulson Keeping an ‘Open Mind’ on Interest Rates",
       "items": [
         {
-          "title": "Australia’s Housing Market Worsens",
+          "title": "Fed’s Paulson Keeping an ‘Open Mind’ on Interest Rates",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-08-04T03:14:36+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-04/australia-s-housing-market-worsens-video",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-04T12:14:56+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-04/fed-s-paulson-keeping-an-open-mind-on-interest-rates-video",
           "tags": [
             "market",
-            "rates"
+            "rates",
+            "us_broad"
           ]
         },
         {
@@ -453,7 +369,7 @@
           ]
         },
         {
-          "title": "India RBI Seen Holding Rates as Inflation Risk Stay in Focus",
+          "title": "RBI Seen Holding Rate as India Inflation Risks Stay in Focus",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
@@ -465,121 +381,120 @@
             "macro_risk",
             "market",
             "rates"
-          ]
-        },
-        {
-          "title": "Bessent Plays Currency-Market Chess With Likely Eye on US Treasury Yields",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-03T11:00:01+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-08-03/bessent-plays-currency-market-chess-with-likely-eye-on-us-treasury-yields",
-          "tags": [
-            "fx",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Fed’s Williams Says Rates Are Well Positioned, Reuters Says",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-03T10:35:56+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-03/fed-s-williams-says-interest-rates-are-well-positioned-reuters",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
           ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 4,
+      "avgSentiment": 0.134,
+      "negativeCount": 2,
+      "positiveCount": 3,
+      "neutralCount": 5,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 10,
       "isStale": false,
-      "topNegativeTitle": "India RBI Seen Holding Rates as Inflation Risk Stay in Focus",
-      "topPositiveTitle": "India RBI Seen Holding Rates as Inflation Risk Stay in Focus",
+      "topNegativeTitle": "Canada Posts Fourth Straight Trade Surplus on Gold Shipments",
+      "topPositiveTitle": "Latest Oil Market News and Analysis for Aug. 4",
       "items": [
         {
-          "title": "India RBI Seen Holding Rates as Inflation Risk Stay in Focus",
+          "title": "Canada Posts Fourth Straight Trade Surplus on Gold Shipments",
           "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-04T01:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-04/india-rbi-seen-holding-rates-as-inflation-risks-stay-in-focus",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-04T12:30:53+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-04/canada-posts-fourth-straight-trade-surplus-on-gold-shipments",
+          "tags": [
+            "commodity",
+            "gold",
+            "market"
+          ]
+        },
+        {
+          "title": "Oil Prices Can’t Fall Fast Enough for Asia to Keep Its Lights On",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-04T11:00:01+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-08-04/oil-prices-can-t-fall-fast-enough-for-asia-to-keep-its-lights-on",
           "tags": [
             "commodity",
             "geopolitical",
             "macro_risk",
-            "market",
-            "rates"
+            "market"
           ]
         },
         {
-          "title": "Latest Oil Market News and Analysis for Aug. 4",
+          "title": "Europe’s Hot, Dry Summer Is Straining Its Energy System",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-03T22:01:24+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-03/latest-oil-market-news-and-analysis-for-aug-4",
+          "publishedAt": "2026-08-04T11:32:26+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-08-04/europe-s-hot-dry-summer-is-straining-its-energy-system",
           "tags": [
             "commodity",
             "market"
           ]
         },
         {
-          "title": "India Eyes Up to $3.3 Billion in Insurance Giant Stake Sale",
+          "title": "EU Eyes Winter LNG Buys as Storage Hits Near Two-Decade Low",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-03T16:13:58+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-03/india-seeks-to-raise-at-least-1-3-billion-in-lic-share-sale",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "India Raises Fuel Export Tax to Build Stocks on War Concerns",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-03T15:06:39+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-03/india-raises-fuel-export-tax-to-build-buffer-as-wars-curb-supply",
+          "publishedAt": "2026-08-04T11:23:29+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-04/eu-eyes-winter-lng-buys-as-storage-hits-near-two-decade-low",
           "tags": [
             "commodity",
             "geopolitical",
             "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Nigeria Clears $4.5 Billion Oil-Backed Deal to Lift Reserves",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-04T08:28:20+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-04/nigeria-s-nnpc-takes-4-5-billion-loan-for-nation-s-priorities",
+          "tags": [
+            "commodity",
             "market"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": -0.049,
+      "avgSentiment": 0.334,
       "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 5,
+      "positiveCount": 5,
+      "neutralCount": 6,
       "sourceCount": 2,
-      "itemCount": 7,
+      "itemCount": 12,
       "isStale": false,
-      "topNegativeTitle": "South Africa Factory Sentiment Hits Seven-Month Low on War Fears",
-      "topPositiveTitle": "Yen Rally Loses Steam; Trump Threatens Iran's 'Last Chance' | The Asia Trade 8/4/2026",
+      "topNegativeTitle": "Oil Prices Can’t Fall Fast Enough for Asia to Keep Its Lights On",
+      "topPositiveTitle": "Trump Says Talks Are Iran’s ‘Last Chance’, Stocks Near Record Highs | The Opening Trade 8/4/2026",
       "items": [
         {
-          "title": "South Africa Factory Sentiment Hits Seven-Month Low on War Fears",
+          "title": "Oil Prices Can’t Fall Fast Enough for Asia to Keep Its Lights On",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-08-03T09:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-03/south-africa-factory-sentiment-hits-seven-month-low-on-war-fears",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-04T11:00:01+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-08-04/oil-prices-can-t-fall-fast-enough-for-asia-to-keep-its-lights-on",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Options Traders Cut Long-Term Bearish Bets on South African Rand",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-04T11:55:53+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-04/options-traders-cut-long-term-bearish-bets-on-south-african-rand",
           "tags": [
             "geopolitical",
             "macro_risk",
@@ -587,19 +502,34 @@
           ]
         },
         {
-          "title": "Trump Says Talks Are Iran’s ‘Last Chance’ After Threats",
+          "title": "EU Eyes Winter LNG Buys as Storage Hits Near Two-Decade Low",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-04T04:55:01+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-04/trump-says-talks-are-iran-s-last-chance-after-threats-video",
+          "publishedAt": "2026-08-04T11:23:29+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-04/eu-eyes-winter-lng-buys-as-storage-hits-near-two-decade-low",
           "tags": [
+            "commodity",
             "geopolitical",
+            "macro_risk",
             "market"
           ]
         },
         {
-          "title": "India RBI Seen Holding Rates as Inflation Risk Stay in Focus",
+          "title": "NYC’s “War On Rats” Has An Unlikely Hero: Trash Bins",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-04T11:15:04+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-04/nyc-s-war-on-rats-has-an-unlikely-hero-trash-bins",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "RBI Seen Holding Rate as India Inflation Risks Stay in Focus",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
@@ -611,33 +541,6 @@
             "macro_risk",
             "market",
             "rates"
-          ]
-        },
-        {
-          "title": "Central Banks Let Markets Do Heavy Lifting as Iran War Adds Risk",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-03T15:56:56+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-03/central-banks-let-markets-do-heavy-lifting-as-iran-war-adds-risk",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "India Raises Fuel Export Tax to Build Stocks on War Concerns",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-03T15:06:39+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-03/india-raises-fuel-export-tax-to-build-buffer-as-wars-curb-supply",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
           ]
         }
       ]
@@ -651,7 +554,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 3,
+    "excludedCount": 2,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
