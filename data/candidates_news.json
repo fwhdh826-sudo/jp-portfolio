@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-08-04T09:58:24.718767+09:00",
-  "sourceUpdatedAt": "2026-08-04T00:32:09+00:00",
+  "updatedAt": "2026-08-04T15:09:22.886272+09:00",
+  "sourceUpdatedAt": "2026-08-04T05:50:53+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -12,22 +12,21 @@
       "sourceCount": 2,
       "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "短時間で急激な円高進む 政府・日銀が再び市場介入か",
-      "topPositiveTitle": "短時間で急激な円高進む 政府・日銀が再び市場介入か",
+      "topNegativeTitle": "Japan's Equities Risk Tactical Correction: Goldman's Moe",
+      "topPositiveTitle": "Japan's Equities Risk Tactical Correction: Goldman's Moe",
       "items": [
         {
-          "title": "短時間で急激な円高進む 政府・日銀が再び市場介入か",
-          "source": "NHK 経済",
+          "title": "Japan's Equities Risk Tactical Correction: Goldman's Moe",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-31T12:01:38+00:00",
-          "url": "https://news.web.nhk/newsweb/na/na-k10015191381000",
+          "publishedAt": "2026-08-04T03:49:44+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-04/japan-s-equities-risk-tactical-correction-goldman-s-moe-video",
           "tags": [
             "fx",
             "jp_broad",
             "market"
-          ],
-          "titleJa": "短時間で急激な円高進む 政府・日銀が再び市場介入か"
+          ]
         },
         {
           "title": "BOJ Data Point to $34 Billion Japan FX Intervention Friday",
@@ -45,27 +44,42 @@
       ]
     },
     "jp_semiconductor": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "South Korea’s Leveraged ETF Trading Plummets Under New Curbs",
+      "topPositiveTitle": "South Korea’s Leveraged ETF Trading Plummets Under New Curbs",
+      "items": [
+        {
+          "title": "South Korea’s Leveraged ETF Trading Plummets Under New Curbs",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-04T02:31:45+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-04/south-korea-s-leveraged-etf-trading-plummets-under-new-curbs",
+          "tags": [
+            "jp_semiconductor",
+            "macro_risk",
+            "market",
+            "trust"
+          ]
+        }
+      ]
     },
     "us_broad": {
-      "avgSentiment": 0.111,
+      "avgSentiment": 0.057,
       "negativeCount": 1,
-      "positiveCount": 2,
-      "neutralCount": 6,
+      "positiveCount": 1,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 9,
+      "itemCount": 6,
       "isStale": false,
       "topNegativeTitle": "Bessent Seen Rebuffing Wall Street on US Debt-Sale Guidance",
-      "topPositiveTitle": "Asian Stocks Dip After US Tech Rally, Yen Steadies: Markets Wrap",
+      "topPositiveTitle": "Global Stocks Hold Near Record High, Yen Weakens: Markets Wrap",
       "items": [
         {
           "title": "Bessent Seen Rebuffing Wall Street on US Debt-Sale Guidance",
@@ -76,20 +90,6 @@
           "url": "https://www.bloomberg.com/news/articles/2026-08-03/bessent-seen-rebuffing-wall-street-on-guidance-for-us-debt-sales",
           "tags": [
             "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Gold Steady as Middle East Talks Weigh on Interest Rate Outlook",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-03T23:25:30+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-03/gold-steady-as-middle-east-talks-weigh-on-interest-rate-outlook",
-          "tags": [
-            "gold",
-            "market",
-            "rates",
             "us_broad"
           ]
         },
@@ -131,96 +131,97 @@
             "rates",
             "us_broad"
           ]
+        },
+        {
+          "title": "Fed’s Williams Says Rates Are Well Positioned, Reuters Says",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-03T10:35:56+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-03/fed-s-williams-says-interest-rates-are-well-positioned-reuters",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.665,
+      "avgSentiment": 0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
+      "isStale": false,
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
+    },
+    "global_broad": {
+      "avgSentiment": 0.5,
       "negativeCount": 0,
       "positiveCount": 2,
       "neutralCount": 0,
       "sourceCount": 1,
       "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Amazon Crosses $1T Valuation, Boeing Has Biggest Gain Since December | Closing Bell",
-      "topPositiveTitle": "Asian Stocks Dip After US Tech Rally, Yen Steadies: Markets Wrap",
+      "topNegativeTitle": "Yen Rally Loses Steam; Trump Threatens Iran's 'Last Chance' | The Asia Trade 8/4/2026",
+      "topPositiveTitle": "Global Stocks Hold Near Record High, Yen Weakens: Markets Wrap",
       "items": [
         {
-          "title": "Amazon Crosses $1T Valuation, Boeing Has Biggest Gain Since December | Closing Bell",
+          "title": "Yen Rally Loses Steam; Trump Threatens Iran's 'Last Chance' | The Asia Trade 8/4/2026",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.33,
-          "publishedAt": "2026-08-03T20:29:49+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-03/boeing-has-biggest-gain-since-december-closing-bell-video",
+          "publishedAt": "2026-08-04T03:05:18+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-04/the-asia-trade-8-4-2026-video",
           "tags": [
-            "market",
-            "us_growth"
+            "fx",
+            "geopolitical",
+            "global_broad",
+            "market"
           ]
         },
         {
-          "title": "Asian Stocks Dip After US Tech Rally, Yen Steadies: Markets Wrap",
+          "title": "Global Stocks Hold Near Record High, Yen Weakens: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 1.0,
+          "sentimentScore": 0.67,
           "publishedAt": "2026-08-03T22:13:40+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-08-03/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "fx",
-            "market",
-            "us_broad",
-            "us_growth"
-          ]
-        }
-      ]
-    },
-    "global_broad": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
-      "isStale": false,
-      "topNegativeTitle": "TMX Australia to Prioritize Tech Transition From Cboe, CEO Says",
-      "topPositiveTitle": "TMX Australia to Prioritize Tech Transition From Cboe, CEO Says",
-      "items": [
-        {
-          "title": "TMX Australia to Prioritize Tech Transition From Cboe, CEO Says",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-03T21:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-03/tmx-australia-to-prioritize-tech-transition-from-cboe-ceo-says",
-          "tags": [
             "global_broad",
-            "market"
+            "macro_risk",
+            "market",
+            "us_broad"
           ]
         }
       ]
     },
     "gold": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
+      "avgSentiment": -0.33,
+      "negativeCount": 1,
       "positiveCount": 0,
-      "neutralCount": 1,
+      "neutralCount": 0,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Gold Steady as Middle East Talks Weigh on Interest Rate Outlook",
-      "topPositiveTitle": "Gold Steady as Middle East Talks Weigh on Interest Rate Outlook",
+      "topNegativeTitle": "Chinese Dip-Buying Bolsters Gold as Prices Find Floor at $4,000",
+      "topPositiveTitle": "Chinese Dip-Buying Bolsters Gold as Prices Find Floor at $4,000",
       "items": [
         {
-          "title": "Gold Steady as Middle East Talks Weigh on Interest Rate Outlook",
+          "title": "Chinese Dip-Buying Bolsters Gold as Prices Find Floor at $4,000",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-03T23:25:30+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-03/gold-steady-as-middle-east-talks-weigh-on-interest-rate-outlook",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-04T04:42:43+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-04/chinese-dip-buying-bolsters-gold-as-prices-find-floor-at-4-000",
           "tags": [
             "gold",
-            "market",
-            "rates",
-            "us_broad"
+            "market"
           ]
         }
       ]
@@ -238,23 +239,23 @@
       "items": []
     },
     "dividend": {
-      "avgSentiment": 0.67,
+      "avgSentiment": 0.33,
       "negativeCount": 0,
       "positiveCount": 1,
       "neutralCount": 0,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "HSBC’s Record-Breaking Stock Rally Faces Test From Earnings",
-      "topPositiveTitle": "HSBC’s Record-Breaking Stock Rally Faces Test From Earnings",
+      "topNegativeTitle": "HSBC's Elhedery on Buybacks and Vision for Bank Overhaul",
+      "topPositiveTitle": "HSBC's Elhedery on Buybacks and Vision for Bank Overhaul",
       "items": [
         {
-          "title": "HSBC’s Record-Breaking Stock Rally Faces Test From Earnings",
+          "title": "HSBC's Elhedery on Buybacks and Vision for Bank Overhaul",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-03T23:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-03/hsbc-investors-seek-next-catalyst-in-earnings-after-record-rally",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-04T05:41:21+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-04/hsbc-s-elhedery-on-buybacks-and-vision-for-bank-overhaul-video",
           "tags": [
             "dividend",
             "market"
@@ -263,15 +264,15 @@
       ]
     },
     "macro_risk": {
-      "avgSentiment": 0.084,
+      "avgSentiment": -0.037,
       "negativeCount": 2,
-      "positiveCount": 2,
-      "neutralCount": 4,
+      "positiveCount": 1,
+      "neutralCount": 6,
       "sourceCount": 2,
-      "itemCount": 8,
+      "itemCount": 9,
       "isStale": false,
       "topNegativeTitle": "South Africa Factory Sentiment Hits Seven-Month Low on War Fears",
-      "topPositiveTitle": "Southeast Asia’s Factory Activity Rebounds From 11-Month Low",
+      "topPositiveTitle": "Global Stocks Hold Near Record High, Yen Weakens: Markets Wrap",
       "items": [
         {
           "title": "South Africa Factory Sentiment Hits Seven-Month Low on War Fears",
@@ -287,7 +288,7 @@
           ]
         },
         {
-          "title": "Prabowo Eyes Indonesia Central Bank Chief Aligned With His Goals",
+          "title": "Prabowo Eyes Bank Indonesia Chief Aligned With His Goals",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.33,
@@ -299,17 +300,30 @@
           ]
         },
         {
-          "title": "Big Take: War Is Good For Big Oil's Profits",
+          "title": "Lufthansa Warns of Profit Risk as Jet Fuel Roils Industry",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-03T22:00:09+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-03/big-take-war-is-good-for-big-oil-s-profits",
+          "publishedAt": "2026-08-04T05:04:53+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-04/lufthansa-warns-of-profit-risk-as-jet-fuel-surge-roils-industry",
+          "tags": [
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "India RBI Seen Holding Rates as Inflation Risk Stay in Focus",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-04T01:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-04/india-rbi-seen-holding-rates-as-inflation-risks-stay-in-focus",
           "tags": [
             "commodity",
             "geopolitical",
             "macro_risk",
-            "market"
+            "market",
+            "rates"
           ]
         },
         {
@@ -324,32 +338,19 @@
             "macro_risk",
             "market"
           ]
-        },
-        {
-          "title": "Euro-Zone Spending Cuts Driven by Iran Uncertainty Not Inflation, ECB Finds",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-03T09:14:42+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-03/euro-zone-spending-cuts-driven-by-iran-uncertainty-not-inflation-ecb-finds",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": 0.167,
+      "avgSentiment": 0.112,
       "negativeCount": 2,
       "positiveCount": 4,
-      "neutralCount": 4,
-      "sourceCount": 3,
-      "itemCount": 10,
+      "neutralCount": 6,
+      "sourceCount": 2,
+      "itemCount": 12,
       "isStale": false,
       "topNegativeTitle": "Colombian Peso Pares Stellar Rally as Central Bank Steps In",
-      "topPositiveTitle": "Asian Stocks Dip After US Tech Rally, Yen Steadies: Markets Wrap",
+      "topPositiveTitle": "After Historic Intervention, 155 Emerges as Yen’s Next Big Test",
       "items": [
         {
           "title": "Colombian Peso Pares Stellar Rally as Central Bank Steps In",
@@ -376,71 +377,94 @@
           ]
         },
         {
-          "title": "短時間で急激な円高進む 政府・日銀が再び市場介入か",
-          "source": "NHK 経済",
+          "title": "Citi Says Japan Has Yen Defense Tools Beyond Treasury Sales",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-31T12:01:38+00:00",
-          "url": "https://news.web.nhk/newsweb/na/na-k10015191381000",
+          "publishedAt": "2026-08-04T03:50:53+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-04/citi-says-japan-has-yen-defense-tools-beyond-treasury-sales",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        },
+        {
+          "title": "Japan's Equities Risk Tactical Correction: Goldman's Moe",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-04T03:49:44+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-04/japan-s-equities-risk-tactical-correction-goldman-s-moe-video",
           "tags": [
             "fx",
             "jp_broad",
             "market"
-          ],
-          "titleJa": "短時間で急激な円高進む 政府・日銀が再び市場介入か"
-        },
-        {
-          "title": "Bessent Seeks Fed’s Help to Defend Yen in Unusual Public Call",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-03T21:52:03+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-03/bessent-seeks-fed-help-in-defending-yen-in-unusual-call",
-          "tags": [
-            "fx",
-            "market",
-            "us_broad"
           ]
         },
         {
-          "title": "Bessent Plays Currency-Market Chess With Likely Eye on US Treasury Yields",
+          "title": "Bessent’s Yen Rescue to Boost US Pressure on Japan Trade, Rates",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-03T11:00:01+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-08-03/bessent-plays-currency-market-chess-with-likely-eye-on-us-treasury-yields",
+          "publishedAt": "2026-08-04T01:32:44+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-04/bessent-s-yen-rescue-to-boost-us-pressure-on-japan-trade-rates",
           "tags": [
             "fx",
             "market",
-            "rates",
-            "us_broad"
+            "rates"
           ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
+      "avgSentiment": -0.2,
+      "negativeCount": 1,
       "positiveCount": 0,
-      "neutralCount": 3,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Gold Steady as Middle East Talks Weigh on Interest Rate Outlook",
-      "topPositiveTitle": "Gold Steady as Middle East Talks Weigh on Interest Rate Outlook",
+      "topNegativeTitle": "Australia’s Housing Market Worsens",
+      "topPositiveTitle": "Bessent’s Yen Rescue to Boost US Pressure on Japan Trade, Rates",
       "items": [
         {
-          "title": "Gold Steady as Middle East Talks Weigh on Interest Rate Outlook",
+          "title": "Australia’s Housing Market Worsens",
           "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-08-04T03:14:36+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-04/australia-s-housing-market-worsens-video",
+          "tags": [
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Bessent’s Yen Rescue to Boost US Pressure on Japan Trade, Rates",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-03T23:25:30+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-03/gold-steady-as-middle-east-talks-weigh-on-interest-rate-outlook",
+          "publishedAt": "2026-08-04T01:32:44+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-04/bessent-s-yen-rescue-to-boost-us-pressure-on-japan-trade-rates",
           "tags": [
-            "gold",
+            "fx",
             "market",
-            "rates",
-            "us_broad"
+            "rates"
+          ]
+        },
+        {
+          "title": "India RBI Seen Holding Rates as Inflation Risk Stay in Focus",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-04T01:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-04/india-rbi-seen-holding-rates-as-inflation-risks-stay-in-focus",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "rates"
           ]
         },
         {
@@ -474,20 +498,35 @@
     },
     "commodity": {
       "avgSentiment": 0.0,
-      "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 5,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 7,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Latest Oil Market News and Analysis for Aug. 4",
-      "topPositiveTitle": "Treasuries Climb to Start Week on Oil, Bessent’s Yen Pledge",
+      "topNegativeTitle": "India RBI Seen Holding Rates as Inflation Risk Stay in Focus",
+      "topPositiveTitle": "India RBI Seen Holding Rates as Inflation Risk Stay in Focus",
       "items": [
+        {
+          "title": "India RBI Seen Holding Rates as Inflation Risk Stay in Focus",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-04T01:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-04/india-rbi-seen-holding-rates-as-inflation-risks-stay-in-focus",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "rates"
+          ]
+        },
         {
           "title": "Latest Oil Market News and Analysis for Aug. 4",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
           "publishedAt": "2026-08-03T22:01:24+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-08-03/latest-oil-market-news-and-analysis-for-aug-4",
           "tags": [
@@ -496,69 +535,43 @@
           ]
         },
         {
-          "title": "Big Take: War Is Good For Big Oil's Profits",
+          "title": "India Eyes Up to $3.3 Billion in Insurance Giant Stake Sale",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-03T22:00:09+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-03/big-take-war-is-good-for-big-oil-s-profits",
+          "publishedAt": "2026-08-03T16:13:58+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-03/india-seeks-to-raise-at-least-1-3-billion-in-lic-share-sale",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "India Raises Fuel Export Tax to Build Stocks on War Concerns",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-03T15:06:39+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-03/india-raises-fuel-export-tax-to-build-buffer-as-wars-curb-supply",
           "tags": [
             "commodity",
             "geopolitical",
             "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Williams Agrees to Buy Momentum Midstream for $5.5 Billion",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-03T20:22:14+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-03/williams-agrees-to-buy-momentum-midstream-for-up-to-5-5-billion",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "Turkish Inflation Slows But Central Bank Wary of Oil Risks",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-03T07:02:56+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-03/turkish-inflation-eases-but-energy-costs-test-cenbank-outlook",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Swiss Inflation Slows to Four-Month Low as SNB Seen on Hold",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-03T06:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-03/swiss-inflation-slows-to-four-month-low-as-snb-seen-on-hold",
-          "tags": [
-            "commodity",
             "market"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.186,
+      "avgSentiment": -0.049,
       "negativeCount": 1,
-      "positiveCount": 3,
+      "positiveCount": 1,
       "neutralCount": 5,
       "sourceCount": 2,
-      "itemCount": 9,
+      "itemCount": 7,
       "isStale": false,
       "topNegativeTitle": "South Africa Factory Sentiment Hits Seven-Month Low on War Fears",
-      "topPositiveTitle": "Southeast Asia’s Factory Activity Rebounds From 11-Month Low",
+      "topPositiveTitle": "Yen Rally Loses Steam; Trump Threatens Iran's 'Last Chance' | The Asia Trade 8/4/2026",
       "items": [
         {
           "title": "South Africa Factory Sentiment Hits Seven-Month Low on War Fears",
@@ -574,17 +587,30 @@
           ]
         },
         {
-          "title": "Big Take: War Is Good For Big Oil's Profits",
+          "title": "Trump Says Talks Are Iran’s ‘Last Chance’ After Threats",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-03T22:00:09+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-03/big-take-war-is-good-for-big-oil-s-profits",
+          "publishedAt": "2026-08-04T04:55:01+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-04/trump-says-talks-are-iran-s-last-chance-after-threats-video",
+          "tags": [
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "India RBI Seen Holding Rates as Inflation Risk Stay in Focus",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-04T01:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-04/india-rbi-seen-holding-rates-as-inflation-risks-stay-in-focus",
           "tags": [
             "commodity",
             "geopolitical",
             "macro_risk",
-            "market"
+            "market",
+            "rates"
           ]
         },
         {
@@ -601,25 +627,12 @@
           ]
         },
         {
-          "title": "Euro-Zone Spending Cuts Driven by Iran Uncertainty Not Inflation, ECB Finds",
-          "source": "Bloomberg Economics",
+          "title": "India Raises Fuel Export Tax to Build Stocks on War Concerns",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-03T09:14:42+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-03/euro-zone-spending-cuts-driven-by-iran-uncertainty-not-inflation-ecb-finds",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Turkish Inflation Slows But Central Bank Wary of Oil Risks",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-03T07:02:56+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-03/turkish-inflation-eases-but-energy-costs-test-cenbank-outlook",
+          "publishedAt": "2026-08-03T15:06:39+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-03/india-raises-fuel-export-tax-to-build-buffer-as-wars-curb-supply",
           "tags": [
             "commodity",
             "geopolitical",
