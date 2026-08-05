@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-08-05T09:53:12.736552+09:00",
-  "sourceUpdatedAt": "2026-08-05T00:17:13+00:00",
+  "updatedAt": "2026-08-05T15:05:49.042226+09:00",
+  "sourceUpdatedAt": "2026-08-05T05:53:22+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -31,27 +31,40 @@
       ]
     },
     "jp_semiconductor": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Rhodium: China Leads US in Key Tech Stack Areas",
+      "topPositiveTitle": "Rhodium: China Leads US in Key Tech Stack Areas",
+      "items": [
+        {
+          "title": "Rhodium: China Leads US in Key Tech Stack Areas",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-05T03:33:15+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-05/rhodium-china-leads-us-in-key-tech-stack-areas-video",
+          "tags": [
+            "jp_semiconductor",
+            "market"
+          ]
+        }
+      ]
     },
     "us_broad": {
-      "avgSentiment": 0.37,
+      "avgSentiment": 0.25,
       "negativeCount": 0,
-      "positiveCount": 4,
-      "neutralCount": 5,
+      "positiveCount": 1,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 9,
+      "itemCount": 4,
       "isStale": false,
       "topNegativeTitle": "Fed’s Schmid Says Tighter Policy Needed to Reduce Inflation",
-      "topPositiveTitle": "Prudential Tops Estimates as Revenue From Asset Manager Soars",
+      "topPositiveTitle": "Gold Jumps With Silver as Markets Track Push to Reopen Hormuz",
       "items": [
         {
           "title": "Fed’s Schmid Says Tighter Policy Needed to Reduce Inflation",
@@ -63,32 +76,6 @@
           "tags": [
             "market",
             "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Gold Holds Steady as Progress on Hormuz Trims Rate-Hike Bets",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-04T23:54:09+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-04/gold-holds-steady-as-progress-on-hormuz-trims-rate-hike-bets",
-          "tags": [
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "SpaceX exceeds revenue estimates in first earnings report since IPO",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-04T23:48:01+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-04/spacex-exceeds-revenue-estimates-in-post-ipo-earnings-video",
-          "tags": [
-            "market",
             "us_broad"
           ]
         },
@@ -117,20 +104,62 @@
             "market",
             "us_broad"
           ]
+        },
+        {
+          "title": "Gold Jumps With Silver as Markets Track Push to Reopen Hormuz",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-08-04T23:54:09+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-04/gold-holds-steady-as-progress-on-hormuz-trims-rate-hike-bets",
+          "tags": [
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.67,
+      "avgSentiment": 0.447,
       "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "positiveCount": 2,
+      "neutralCount": 1,
+      "sourceCount": 2,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Canada Data Center Push Drives Imports from US to New High",
-      "topPositiveTitle": "Canada Data Center Push Drives Imports from US to New High",
+      "topNegativeTitle": "China’s AI Agent Unicorn Lovart Is Said to Explore Hong Kong IPO",
+      "topPositiveTitle": "Stocks Rally to Record, Oil and Dollar Dip on Iran: Markets Wrap",
       "items": [
+        {
+          "title": "China’s AI Agent Unicorn Lovart Is Said to Explore Hong Kong IPO",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-05T02:47:28+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-05/china-s-ai-agent-unicorn-lovart-is-said-to-explore-hong-kong-ipo",
+          "tags": [
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Stocks Rally to Record, Oil and Dollar Dip on Iran: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-04T22:11:08+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-04/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "fx",
+            "geopolitical",
+            "global_broad",
+            "market",
+            "us_growth"
+          ]
+        },
         {
           "title": "Canada Data Center Push Drives Imports from US to New High",
           "source": "Bloomberg Economics",
@@ -146,33 +175,63 @@
       ]
     },
     "global_broad": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "gold": {
-      "avgSentiment": 0.5,
+      "avgSentiment": 0.335,
       "negativeCount": 0,
       "positiveCount": 1,
       "neutralCount": 1,
       "sourceCount": 1,
       "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Gold Holds Steady as Progress on Hormuz Trims Rate-Hike Bets",
-      "topPositiveTitle": "Gold Gains With US-Iran Deal Hopes and Fed Outlook in Focus",
+      "topNegativeTitle": "US-Iran Deal Hope Grows; SpaceX Sinks After AI Splurge | The Asia Trade 8/5/2026",
+      "topPositiveTitle": "Stocks Rally to Record, Oil and Dollar Dip on Iran: Markets Wrap",
       "items": [
         {
-          "title": "Gold Holds Steady as Progress on Hormuz Trims Rate-Hike Bets",
+          "title": "US-Iran Deal Hope Grows; SpaceX Sinks After AI Splurge | The Asia Trade 8/5/2026",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
+          "publishedAt": "2026-08-05T03:28:10+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-05/the-asia-trade-8-5-2026-video",
+          "tags": [
+            "geopolitical",
+            "global_broad",
+            "market"
+          ]
+        },
+        {
+          "title": "Stocks Rally to Record, Oil and Dollar Dip on Iran: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-04T22:11:08+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-04/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "fx",
+            "geopolitical",
+            "global_broad",
+            "market",
+            "us_growth"
+          ]
+        }
+      ]
+    },
+    "gold": {
+      "avgSentiment": 1.0,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "Gold Jumps With Silver as Markets Track Push to Reopen Hormuz",
+      "topPositiveTitle": "Gold Jumps With Silver as Markets Track Push to Reopen Hormuz",
+      "items": [
+        {
+          "title": "Gold Jumps With Silver as Markets Track Push to Reopen Hormuz",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
           "publishedAt": "2026-08-04T23:54:09+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-08-04/gold-holds-steady-as-progress-on-hormuz-trims-rate-hike-bets",
           "tags": [
@@ -181,62 +240,10 @@
             "rates",
             "us_broad"
           ]
-        },
-        {
-          "title": "Gold Gains With US-Iran Deal Hopes and Fed Outlook in Focus",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-08-03T23:25:30+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-03/gold-steady-as-middle-east-talks-weigh-on-interest-rate-outlook",
-          "tags": [
-            "geopolitical",
-            "gold",
-            "market",
-            "us_broad"
-          ]
         }
       ]
     },
     "reit": {
-      "avgSentiment": 0.335,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 2,
-      "isStale": false,
-      "topNegativeTitle": "Apollo Invests $1 Billion in Joint Venture With Starwood REIT",
-      "topPositiveTitle": "Compass Shares Jump on Cost Savings, Transaction Growth",
-      "items": [
-        {
-          "title": "Apollo Invests $1 Billion in Joint Venture With Starwood REIT",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-04T21:04:16+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-04/apollo-invests-1-billion-in-joint-venture-with-starwood-reit",
-          "tags": [
-            "market",
-            "reit",
-            "trust"
-          ]
-        },
-        {
-          "title": "Compass Shares Jump on Cost Savings, Transaction Growth",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-04T21:16:03+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-04/compass-shares-jump-on-cost-savings-transaction-growth",
-          "tags": [
-            "market",
-            "reit"
-          ]
-        }
-      ]
-    },
-    "dividend": {
       "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
@@ -248,24 +255,49 @@
       "topPositiveTitle": null,
       "items": []
     },
-    "macro_risk": {
-      "avgSentiment": 0.167,
-      "negativeCount": 1,
-      "positiveCount": 2,
-      "neutralCount": 5,
-      "sourceCount": 2,
-      "itemCount": 8,
+    "dividend": {
+      "avgSentiment": 1.0,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Oil Prices Can’t Fall Fast Enough for Asia to Keep Its Lights On",
-      "topPositiveTitle": "Australian Stocks Rise to Record on Iran Hopes, Economic Bets",
+      "topNegativeTitle": "SK Hynix Climbs as Investors Bet on Shareholder Return Plan",
+      "topPositiveTitle": "SK Hynix Climbs as Investors Bet on Shareholder Return Plan",
       "items": [
         {
-          "title": "Oil Prices Can’t Fall Fast Enough for Asia to Keep Its Lights On",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-04T11:00:01+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-08-04/oil-prices-can-t-fall-fast-enough-for-asia-to-keep-its-lights-on",
+          "title": "SK Hynix Climbs as Investors Bet on Shareholder Return Plan",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-08-05T02:37:33+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-05/sk-hynix-climbs-as-investors-bet-on-shareholder-return-plan",
+          "tags": [
+            "dividend",
+            "market"
+          ]
+        }
+      ]
+    },
+    "macro_risk": {
+      "avgSentiment": 0.167,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 5,
+      "sourceCount": 2,
+      "itemCount": 6,
+      "isStale": false,
+      "topNegativeTitle": "India's Inflation Cushion 'Thinner' Than It Seems",
+      "topPositiveTitle": "Australian Stocks Hit Record High on Iran Hopes, Economic Bets",
+      "items": [
+        {
+          "title": "India's Inflation Cushion 'Thinner' Than It Seems",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-05T05:49:08+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-05/india-s-inflation-cushion-thinner-than-it-seems-video",
           "tags": [
             "commodity",
             "geopolitical",
@@ -274,37 +306,39 @@
           ]
         },
         {
-          "title": "China’s Quant Curbs Sap Volatility and Turnover: Equity Insight",
+          "title": "US Copper Trades Near Record on Tariff Risks, Hormuz Speculation",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-05T00:10:48+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-05/china-s-quant-curbs-sap-volatility-and-turnover-equity-insight",
+          "publishedAt": "2026-08-05T04:46:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-05/us-copper-trades-near-record-on-tariff-risks-hormuz-speculation",
           "tags": [
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Booking Holdings Keeps Full-Year Outlook on Resilient Travel",
-          "source": "Bloomberg Markets",
+          "title": "RBI Holds Rates as Inflation Outlook Improves, Growth Stays Firm",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-04T22:05:34+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-04/booking-holdings-keeps-full-year-outlook-on-resilient-travel",
+          "publishedAt": "2026-08-05T04:33:23+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-05/india-keeps-key-interest-rate-on-hold-retains-neutral-stance",
           "tags": [
+            "commodity",
             "geopolitical",
             "macro_risk",
-            "market"
+            "market",
+            "rates"
           ]
         },
         {
-          "title": "Whale Rock Sank 22% as AI Selloff Crippled Hedge Fund Returns",
+          "title": "Key Options Trade Displays Abnormal Pattern With India Auction",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-04T21:26:16+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-04/whale-rock-sank-22-as-ai-selloff-crippled-hedge-fund-returns",
+          "publishedAt": "2026-08-05T04:28:17+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-05/key-options-trade-displays-abnormal-pattern-with-india-auction",
           "tags": [
             "macro_risk",
             "market"
@@ -327,29 +361,16 @@
       ]
     },
     "fx": {
-      "avgSentiment": 0.11,
+      "avgSentiment": 0.335,
       "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 2,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Bessent’s Yen Rescue to Boost US Pressure on Japan Trade, Rates",
-      "topPositiveTitle": "Yen Rally Stalls Even as Bessent Vows Support After Intervention",
+      "topNegativeTitle": "Bessent Seeks Fed’s Aid to Defend Yen in Unusual Public Call",
+      "topPositiveTitle": "Stocks Rally to Record, Oil and Dollar Dip on Iran: Markets Wrap",
       "items": [
-        {
-          "title": "Bessent’s Yen Rescue to Boost US Pressure on Japan Trade, Rates",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-04T01:32:44+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-04/bessent-s-yen-rescue-to-boost-us-pressure-on-japan-trade-rates",
-          "tags": [
-            "fx",
-            "market",
-            "rates"
-          ]
-        },
         {
           "title": "Bessent Seeks Fed’s Aid to Defend Yen in Unusual Public Call",
           "source": "Bloomberg Economics",
@@ -364,30 +385,73 @@
           ]
         },
         {
-          "title": "Yen Rally Stalls Even as Bessent Vows Support After Intervention",
+          "title": "Stocks Rally to Record, Oil and Dollar Dip on Iran: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-04T02:09:53+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-04/after-historic-intervention-155-emerges-as-yen-s-next-big-test",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-04T22:11:08+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-04/stock-market-today-dow-s-p-live-updates",
           "tags": [
+            "commodity",
             "fx",
-            "market"
+            "geopolitical",
+            "global_broad",
+            "market",
+            "us_growth"
           ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": 0.047,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 6,
+      "avgSentiment": 0.125,
+      "negativeCount": 1,
+      "positiveCount": 2,
+      "neutralCount": 5,
       "sourceCount": 2,
-      "itemCount": 7,
+      "itemCount": 8,
       "isStale": false,
-      "topNegativeTitle": "Fed’s Schmid Says Tighter Policy Needed to Reduce Inflation",
-      "topPositiveTitle": "Japan’s Nominal Wages Rise Again, Backing BOJ Rate Hike Case",
+      "topNegativeTitle": "Philippine Inflation Slows a Third Month, Easing Pressure for Rate Hike",
+      "topPositiveTitle": "Gold Jumps With Silver as Markets Track Push to Reopen Hormuz",
       "items": [
+        {
+          "title": "Philippine Inflation Slows a Third Month, Easing Pressure for Rate Hike",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-05T01:02:10+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-05/philippine-inflation-slows-a-third-month-easing-pressure-for-rate-hike",
+          "tags": [
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "RBI Holds Rates as Inflation Outlook Improves, Growth Stays Firm",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-05T04:33:23+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-05/india-keeps-key-interest-rate-on-hold-retains-neutral-stance",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Thai Inflation Eases to 1.95% in July, Slows for Third Month",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-05T03:21:13+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-05/thai-inflation-eases-to-1-95-in-july-slowing-for-third-month",
+          "tags": [
+            "market",
+            "rates"
+          ]
+        },
         {
           "title": "Fed’s Schmid Says Tighter Policy Needed to Reduce Inflation",
           "source": "Bloomberg Economics",
@@ -402,20 +466,6 @@
           ]
         },
         {
-          "title": "Gold Holds Steady as Progress on Hormuz Trims Rate-Hike Bets",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-04T23:54:09+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-04/gold-holds-steady-as-progress-on-hormuz-trims-rate-hike-bets",
-          "tags": [
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
           "title": "Madagascar Hikes Rate for First Time in Over a Year on War Risks",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
@@ -428,51 +478,54 @@
             "market",
             "rates"
           ]
-        },
-        {
-          "title": "Fed’s Paulson Says She Keeps ‘Open Mind’ on Interest Rates",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-04T12:00:30+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-04/fed-s-paulson-says-she-keeps-an-open-mind-on-interest-rates",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Bessent’s Yen Rescue to Boost US Pressure on Japan Trade, Rates",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-04T01:32:44+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-04/bessent-s-yen-rescue-to-boost-us-pressure-on-japan-trade-rates",
-          "tags": [
-            "fx",
-            "market",
-            "rates"
-          ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.239,
-      "negativeCount": 2,
-      "positiveCount": 4,
-      "neutralCount": 1,
+      "avgSentiment": 0.222,
+      "negativeCount": 0,
+      "positiveCount": 3,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 7,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Latest Oil Market News and Analysis for Aug. 5",
-      "topPositiveTitle": "S&P 500 Rises to All-Time High on Hormuz Deal Push: Markets Wrap",
+      "topNegativeTitle": "India's Inflation Cushion 'Thinner' Than It Seems",
+      "topPositiveTitle": "Stocks Rally to Record, Oil and Dollar Dip on Iran: Markets Wrap",
       "items": [
+        {
+          "title": "India's Inflation Cushion 'Thinner' Than It Seems",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-05T05:49:08+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-05/india-s-inflation-cushion-thinner-than-it-seems-video",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "RBI Holds Rates as Inflation Outlook Improves, Growth Stays Firm",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-05T04:33:23+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-05/india-keeps-key-interest-rate-on-hold-retains-neutral-stance",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "rates"
+          ]
+        },
         {
           "title": "Latest Oil Market News and Analysis for Aug. 5",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
           "publishedAt": "2026-08-04T22:01:15+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-08-04/latest-oil-market-news-and-analysis-for-aug-5",
           "tags": [
@@ -481,32 +534,16 @@
           ]
         },
         {
-          "title": "Oil Prices Can’t Fall Fast Enough for Asia to Keep Its Lights On",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-04T11:00:01+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-08-04/oil-prices-can-t-fall-fast-enough-for-asia-to-keep-its-lights-on",
+          "title": "FTSE 100 Live: UK Stocks Set to Rise as Oil Dips on Iran",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-05T05:53:22+00:00",
+          "url": "https://www.bloomberg.com/news/live-blog/2026-08-05/ftse-100-live-pound-gilts-gbp-pmi-data-iran-war-trump-oil-prices-hormuz-news-what-s-moving-uk-markets-right-now-markets-today-msfo884h",
           "tags": [
             "commodity",
             "geopolitical",
-            "macro_risk",
             "market"
-          ]
-        },
-        {
-          "title": "RBI Seen Holding Rate as India Inflation Risks Stay in Focus",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-04T01:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-04/india-rbi-seen-holding-rates-as-inflation-risks-stay-in-focus",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market",
-            "rates"
           ]
         },
         {
@@ -520,41 +557,27 @@
             "commodity",
             "market"
           ]
-        },
-        {
-          "title": "Asian Stocks Advance, Oil Extends Drop on Iran: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-04T22:11:08+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-04/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "market",
-            "us_broad"
-          ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.334,
-      "negativeCount": 1,
-      "positiveCount": 4,
-      "neutralCount": 3,
+      "avgSentiment": 0.286,
+      "negativeCount": 0,
+      "positiveCount": 3,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 8,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "Oil Prices Can’t Fall Fast Enough for Asia to Keep Its Lights On",
-      "topPositiveTitle": "Australian Stocks Rise to Record on Iran Hopes, Economic Bets",
+      "topNegativeTitle": "India's Inflation Cushion 'Thinner' Than It Seems",
+      "topPositiveTitle": "Australian Stocks Hit Record High on Iran Hopes, Economic Bets",
       "items": [
         {
-          "title": "Oil Prices Can’t Fall Fast Enough for Asia to Keep Its Lights On",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-04T11:00:01+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-08-04/oil-prices-can-t-fall-fast-enough-for-asia-to-keep-its-lights-on",
+          "title": "India's Inflation Cushion 'Thinner' Than It Seems",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-05T05:49:08+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-05/india-s-inflation-cushion-thinner-than-it-seems-video",
           "tags": [
             "commodity",
             "geopolitical",
@@ -563,15 +586,30 @@
           ]
         },
         {
-          "title": "Booking Holdings Keeps Full-Year Outlook on Resilient Travel",
+          "title": "RBI Holds Rates as Inflation Outlook Improves, Growth Stays Firm",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-05T04:33:23+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-05/india-keeps-key-interest-rate-on-hold-retains-neutral-stance",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "US-Iran Deal Hope Grows; SpaceX Sinks After AI Splurge | The Asia Trade 8/5/2026",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-04T22:05:34+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-04/booking-holdings-keeps-full-year-outlook-on-resilient-travel",
+          "publishedAt": "2026-08-05T03:28:10+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-05/the-asia-trade-8-5-2026-video",
           "tags": [
             "geopolitical",
-            "macro_risk",
+            "global_broad",
             "market"
           ]
         },
@@ -590,32 +628,16 @@
           ]
         },
         {
-          "title": "RBI Seen Holding Rate as India Inflation Risks Stay in Focus",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-04T01:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-04/india-rbi-seen-holding-rates-as-inflation-risks-stay-in-focus",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Asian Stocks Advance, Oil Extends Drop on Iran: Markets Wrap",
+          "title": "FTSE 100 Live: UK Stocks Set to Rise as Oil Dips on Iran",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.33,
-          "publishedAt": "2026-08-04T22:11:08+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-04/stock-market-today-dow-s-p-live-updates",
+          "publishedAt": "2026-08-05T05:53:22+00:00",
+          "url": "https://www.bloomberg.com/news/live-blog/2026-08-05/ftse-100-live-pound-gilts-gbp-pmi-data-iran-war-trump-oil-prices-hormuz-news-what-s-moving-uk-markets-right-now-markets-today-msfo884h",
           "tags": [
             "commodity",
             "geopolitical",
-            "market",
-            "us_broad"
+            "market"
           ]
         }
       ]
@@ -629,7 +651,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 1,
+    "excludedCount": 2,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
