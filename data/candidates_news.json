@@ -1,222 +1,22 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-08-05T15:05:49.042226+09:00",
-  "sourceUpdatedAt": "2026-08-05T05:53:22+00:00",
+  "updatedAt": "2026-08-05T22:08:57.191017+09:00",
+  "sourceUpdatedAt": "2026-08-05T13:02:02+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": 0.33,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
-      "isStale": false,
-      "topNegativeTitle": "Japan’s Nominal Wages Rise Again, Backing BOJ Rate Hike Case",
-      "topPositiveTitle": "Japan’s Nominal Wages Rise Again, Backing BOJ Rate Hike Case",
-      "items": [
-        {
-          "title": "Japan’s Nominal Wages Rise Again, Backing BOJ Rate Hike Case",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-04T23:31:22+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-04/japan-s-nominal-wages-rise-again-backing-boj-rate-hike-case",
-          "tags": [
-            "jp_broad",
-            "market",
-            "rates"
-          ]
-        }
-      ]
-    },
-    "jp_semiconductor": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Rhodium: China Leads US in Key Tech Stack Areas",
-      "topPositiveTitle": "Rhodium: China Leads US in Key Tech Stack Areas",
-      "items": [
-        {
-          "title": "Rhodium: China Leads US in Key Tech Stack Areas",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-05T03:33:15+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-05/rhodium-china-leads-us-in-key-tech-stack-areas-video",
-          "tags": [
-            "jp_semiconductor",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
-    "us_broad": {
-      "avgSentiment": 0.25,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 3,
-      "sourceCount": 2,
-      "itemCount": 4,
-      "isStale": false,
-      "topNegativeTitle": "Fed’s Schmid Says Tighter Policy Needed to Reduce Inflation",
-      "topPositiveTitle": "Gold Jumps With Silver as Markets Track Push to Reopen Hormuz",
-      "items": [
-        {
-          "title": "Fed’s Schmid Says Tighter Policy Needed to Reduce Inflation",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-05T00:15:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-05/fed-s-schmid-says-tighter-policy-needed-to-reduce-inflation",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Fed’s Paulson Says She Keeps ‘Open Mind’ on Interest Rates",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-04T12:00:30+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-04/fed-s-paulson-says-she-keeps-an-open-mind-on-interest-rates",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Bessent Seeks Fed’s Aid to Defend Yen in Unusual Public Call",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-03T21:52:03+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-03/bessent-seeks-fed-help-in-defending-yen-in-unusual-call",
-          "tags": [
-            "fx",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Gold Jumps With Silver as Markets Track Push to Reopen Hormuz",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-08-04T23:54:09+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-04/gold-holds-steady-as-progress-on-hormuz-trims-rate-hike-bets",
-          "tags": [
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        }
-      ]
-    },
-    "us_growth": {
-      "avgSentiment": 0.447,
-      "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 1,
-      "sourceCount": 2,
-      "itemCount": 3,
-      "isStale": false,
-      "topNegativeTitle": "China’s AI Agent Unicorn Lovart Is Said to Explore Hong Kong IPO",
-      "topPositiveTitle": "Stocks Rally to Record, Oil and Dollar Dip on Iran: Markets Wrap",
-      "items": [
-        {
-          "title": "China’s AI Agent Unicorn Lovart Is Said to Explore Hong Kong IPO",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-05T02:47:28+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-05/china-s-ai-agent-unicorn-lovart-is-said-to-explore-hong-kong-ipo",
-          "tags": [
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Stocks Rally to Record, Oil and Dollar Dip on Iran: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-04T22:11:08+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-04/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "fx",
-            "geopolitical",
-            "global_broad",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Canada Data Center Push Drives Imports from US to New High",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-04T12:30:53+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-04/canada-posts-fourth-straight-trade-surplus-on-gold-shipments",
-          "tags": [
-            "market",
-            "us_growth"
-          ]
-        }
-      ]
-    },
-    "global_broad": {
-      "avgSentiment": 0.335,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 2,
-      "isStale": false,
-      "topNegativeTitle": "US-Iran Deal Hope Grows; SpaceX Sinks After AI Splurge | The Asia Trade 8/5/2026",
-      "topPositiveTitle": "Stocks Rally to Record, Oil and Dollar Dip on Iran: Markets Wrap",
-      "items": [
-        {
-          "title": "US-Iran Deal Hope Grows; SpaceX Sinks After AI Splurge | The Asia Trade 8/5/2026",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-05T03:28:10+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-05/the-asia-trade-8-5-2026-video",
-          "tags": [
-            "geopolitical",
-            "global_broad",
-            "market"
-          ]
-        },
-        {
-          "title": "Stocks Rally to Record, Oil and Dollar Dip on Iran: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-04T22:11:08+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-04/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "fx",
-            "geopolitical",
-            "global_broad",
-            "market",
-            "us_growth"
-          ]
-        }
-      ]
-    },
-    "gold": {
+    "jp_semiconductor": {
       "avgSentiment": 1.0,
       "negativeCount": 0,
       "positiveCount": 1,
@@ -224,24 +24,181 @@
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Gold Jumps With Silver as Markets Track Push to Reopen Hormuz",
-      "topPositiveTitle": "Gold Jumps With Silver as Markets Track Push to Reopen Hormuz",
+      "topNegativeTitle": "S&P 500 Poised for Another Record as AI Spending Narrative Holds",
+      "topPositiveTitle": "S&P 500 Poised for Another Record as AI Spending Narrative Holds",
       "items": [
         {
-          "title": "Gold Jumps With Silver as Markets Track Push to Reopen Hormuz",
+          "title": "S&P 500 Poised for Another Record as AI Spending Narrative Holds",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 1.0,
-          "publishedAt": "2026-08-04T23:54:09+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-04/gold-holds-steady-as-progress-on-hormuz-trims-rate-hike-bets",
+          "publishedAt": "2026-08-05T11:52:30+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-05/s-p-500-poised-for-another-record-as-ai-spending-narrative-holds",
           "tags": [
-            "gold",
+            "jp_semiconductor",
+            "market",
+            "us_broad",
+            "us_growth"
+          ]
+        }
+      ]
+    },
+    "us_broad": {
+      "avgSentiment": 0.4,
+      "negativeCount": 0,
+      "positiveCount": 3,
+      "neutralCount": 2,
+      "sourceCount": 1,
+      "itemCount": 5,
+      "isStale": false,
+      "topNegativeTitle": "Sprake: Markets Punch-Drunk on AI Capex Spend",
+      "topPositiveTitle": "S&P 500 Poised for Another Record as AI Spending Narrative Holds",
+      "items": [
+        {
+          "title": "Sprake: Markets Punch-Drunk on AI Capex Spend",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-05T10:12:50+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-05/sprake-markets-punch-drunk-on-ai-capex-spend-video",
+          "tags": [
+            "commodity",
             "market",
             "rates",
             "us_broad"
           ]
+        },
+        {
+          "title": "Barclays, HSBC Say Warsh Makes Inflation-Linked Debt Appeal",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-05T09:02:19+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-05/barclays-hsbc-say-warsh-boosts-case-for-inflation-linked-bonds",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "US Companies Added Fewer Jobs Than Expected in July: ADP",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-05T12:35:20+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-05/us-companies-added-fewer-jobs-than-expected-in-july-adp-video",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Stocks Extend Gains on Strong Earnings, AI Demand: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-04T22:11:08+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-04/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "geopolitical",
+            "market",
+            "us_broad",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "S&P 500 Poised for Another Record as AI Spending Narrative Holds",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-08-05T11:52:30+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-05/s-p-500-poised-for-another-record-as-ai-spending-narrative-holds",
+          "tags": [
+            "jp_semiconductor",
+            "market",
+            "us_broad",
+            "us_growth"
+          ]
         }
       ]
+    },
+    "us_growth": {
+      "avgSentiment": 0.447,
+      "negativeCount": 1,
+      "positiveCount": 2,
+      "neutralCount": 0,
+      "sourceCount": 2,
+      "itemCount": 3,
+      "isStale": false,
+      "topNegativeTitle": "UK in Longest Jobs Slump Since Financial Crisis, PMI Shows",
+      "topPositiveTitle": "S&P 500 Poised for Another Record as AI Spending Narrative Holds",
+      "items": [
+        {
+          "title": "UK in Longest Jobs Slump Since Financial Crisis, PMI Shows",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-05T08:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-05/uk-in-longest-jobs-slump-since-financial-crisis-pmi-shows",
+          "tags": [
+            "macro_risk",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Stocks Extend Gains on Strong Earnings, AI Demand: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-04T22:11:08+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-04/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "geopolitical",
+            "market",
+            "us_broad",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "S&P 500 Poised for Another Record as AI Spending Narrative Holds",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-08-05T11:52:30+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-05/s-p-500-poised-for-another-record-as-ai-spending-narrative-holds",
+          "tags": [
+            "jp_semiconductor",
+            "market",
+            "us_broad",
+            "us_growth"
+          ]
+        }
+      ]
+    },
+    "global_broad": {
+      "avgSentiment": 0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
+      "isStale": false,
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
+    },
+    "gold": {
+      "avgSentiment": 0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
+      "isStale": false,
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "reit": {
       "avgSentiment": 0,
@@ -256,162 +213,155 @@
       "items": []
     },
     "dividend": {
-      "avgSentiment": 1.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
-      "positiveCount": 1,
+      "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "SK Hynix Climbs as Investors Bet on Shareholder Return Plan",
-      "topPositiveTitle": "SK Hynix Climbs as Investors Bet on Shareholder Return Plan",
-      "items": [
-        {
-          "title": "SK Hynix Climbs as Investors Bet on Shareholder Return Plan",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-08-05T02:37:33+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-05/sk-hynix-climbs-as-investors-bet-on-shareholder-return-plan",
-          "tags": [
-            "dividend",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.167,
-      "negativeCount": 0,
+      "avgSentiment": 0.134,
+      "negativeCount": 1,
       "positiveCount": 1,
-      "neutralCount": 5,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "India's Inflation Cushion 'Thinner' Than It Seems",
-      "topPositiveTitle": "Australian Stocks Hit Record High on Iran Hopes, Economic Bets",
+      "topNegativeTitle": "UK in Longest Jobs Slump Since Financial Crisis, PMI Shows",
+      "topPositiveTitle": "Glencore Profit Jumps on Trading Boom and Record Copper",
       "items": [
         {
-          "title": "India's Inflation Cushion 'Thinner' Than It Seems",
-          "source": "Bloomberg Markets",
+          "title": "UK in Longest Jobs Slump Since Financial Crisis, PMI Shows",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-05T08:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-05/uk-in-longest-jobs-slump-since-financial-crisis-pmi-shows",
+          "tags": [
+            "macro_risk",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Kenya Seeks $450 Million World Bank Funds to Offset Iran War Shock",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-05T05:49:08+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-05/india-s-inflation-cushion-thinner-than-it-seems-video",
+          "publishedAt": "2026-08-05T11:48:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-05/kenya-seeks-450-million-world-bank-funds-to-offset-iran-war-shock",
           "tags": [
-            "commodity",
             "geopolitical",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "US Copper Trades Near Record on Tariff Risks, Hormuz Speculation",
+          "title": "Iran War Exposes US Military Aluminum Risk Shown in Pentagon War Game",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-05T04:46:06+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-05/us-copper-trades-near-record-on-tariff-risks-hormuz-speculation",
+          "publishedAt": "2026-08-05T10:00:21+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-05/iran-war-exposes-us-military-aluminum-risk-shown-in-pentagon-war-game",
           "tags": [
+            "geopolitical",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "RBI Holds Rates as Inflation Outlook Improves, Growth Stays Firm",
+          "title": "India Central Bank’s Comfort With Inflation Signals Long Pause",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
           "publishedAt": "2026-08-05T04:33:23+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-08-05/india-keeps-key-interest-rate-on-hold-retains-neutral-stance",
           "tags": [
-            "commodity",
             "geopolitical",
-            "macro_risk",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Key Options Trade Displays Abnormal Pattern With India Auction",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-05T04:28:17+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-05/key-options-trade-displays-abnormal-pattern-with-india-auction",
-          "tags": [
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Madagascar Hikes Rate for First Time in Over a Year on War Risks",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-04T15:57:25+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-04/madagascar-hikes-rate-for-first-time-in-over-a-year-on-war-risks",
+          "title": "Glencore Profit Jumps on Trading Boom and Record Copper",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-08-05T06:07:36+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-05/glencore-profit-jumps-on-trading-boom-and-record-copper",
           "tags": [
+            "commodity",
             "geopolitical",
             "macro_risk",
-            "market",
-            "rates"
+            "market"
           ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": 0.335,
+      "avgSentiment": 0.223,
       "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 1,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 2,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Bessent Seeks Fed’s Aid to Defend Yen in Unusual Public Call",
-      "topPositiveTitle": "Stocks Rally to Record, Oil and Dollar Dip on Iran: Markets Wrap",
+      "topNegativeTitle": "ZIG/USD: Zimbabwe Won’t Rush US Dollar Phase-Out Until Inflation Stabilizes",
+      "topPositiveTitle": "Carry Trade Is Powering On as Investors Sidestep Yen’s Gains",
       "items": [
         {
-          "title": "Bessent Seeks Fed’s Aid to Defend Yen in Unusual Public Call",
+          "title": "ZIG/USD: Zimbabwe Won’t Rush US Dollar Phase-Out Until Inflation Stabilizes",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-03T21:52:03+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-03/bessent-seeks-fed-help-in-defending-yen-in-unusual-call",
+          "publishedAt": "2026-08-05T12:00:40+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-05/zig-usd-zimbabwe-won-t-rush-us-dollar-phase-out-until-inflation-stabilizes",
           "tags": [
             "fx",
-            "market",
-            "us_broad"
+            "market"
           ]
         },
         {
-          "title": "Stocks Rally to Record, Oil and Dollar Dip on Iran: Markets Wrap",
+          "title": "Katayama Cites Bessent’s Faith in Japan’s Improving Fiscal Path",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-05T10:27:14+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-05/katayama-cites-bessent-s-faith-in-japan-s-improving-fiscal-path",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        },
+        {
+          "title": "Carry Trade Is Powering On as Investors Sidestep Yen’s Gains",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.67,
-          "publishedAt": "2026-08-04T22:11:08+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-04/stock-market-today-dow-s-p-live-updates",
+          "publishedAt": "2026-08-05T11:15:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-05/carry-trade-is-powering-on-as-investors-sidestep-yen-s-gains",
           "tags": [
-            "commodity",
             "fx",
-            "geopolitical",
-            "global_broad",
-            "market",
-            "us_growth"
+            "market"
           ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": 0.125,
+      "avgSentiment": -0.066,
       "negativeCount": 1,
-      "positiveCount": 2,
-      "neutralCount": 5,
+      "positiveCount": 0,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 8,
+      "itemCount": 5,
       "isStale": false,
       "topNegativeTitle": "Philippine Inflation Slows a Third Month, Easing Pressure for Rate Hike",
-      "topPositiveTitle": "Gold Jumps With Silver as Markets Track Push to Reopen Hormuz",
+      "topPositiveTitle": "Sprake: Markets Punch-Drunk on AI Capex Spend",
       "items": [
         {
           "title": "Philippine Inflation Slows a Third Month, Easing Pressure for Rate Hike",
@@ -426,16 +376,39 @@
           ]
         },
         {
-          "title": "RBI Holds Rates as Inflation Outlook Improves, Growth Stays Firm",
+          "title": "Sprake: Markets Punch-Drunk on AI Capex Spend",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-05T10:12:50+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-05/sprake-markets-punch-drunk-on-ai-capex-spend-video",
+          "tags": [
+            "commodity",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Brazil Central Bank to Cut Interest Rate to 14%",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-05T04:33:23+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-05/india-keeps-key-interest-rate-on-hold-retains-neutral-stance",
+          "publishedAt": "2026-08-05T09:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-05/brazil-central-bank-to-cut-interest-rate-to-14",
           "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Czech Inflation Quickens With Central Bank Set to Hold Rates",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-05T07:24:04+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-05/czech-inflation-quickens-with-central-bank-set-to-hold-rates",
+          "tags": [
             "market",
             "rates"
           ]
@@ -451,193 +424,159 @@
             "market",
             "rates"
           ]
-        },
+        }
+      ]
+    },
+    "commodity": {
+      "avgSentiment": 0.292,
+      "negativeCount": 0,
+      "positiveCount": 2,
+      "neutralCount": 4,
+      "sourceCount": 2,
+      "itemCount": 6,
+      "isStale": false,
+      "topNegativeTitle": "Trump Borrows From Democrats’ Playbook With Attack on High Gas Prices",
+      "topPositiveTitle": "Glencore Profit Jumps on Trading Boom and Record Copper",
+      "items": [
         {
-          "title": "Fed’s Schmid Says Tighter Policy Needed to Reduce Inflation",
-          "source": "Bloomberg Economics",
+          "title": "Trump Borrows From Democrats’ Playbook With Attack on High Gas Prices",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-05T00:15:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-05/fed-s-schmid-says-tighter-policy-needed-to-reduce-inflation",
+          "publishedAt": "2026-08-05T11:52:07+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-08-05/trump-borrows-from-democrats-playbook-with-attack-on-high-gas-prices",
           "tags": [
+            "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "Kazakhstan Eyes Return to Panda Bonds With $500 Million Deal",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-05T10:51:17+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-05/kazakhstan-eyes-return-to-panda-bonds-with-500-million-deal",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "Sprake: Markets Punch-Drunk on AI Capex Spend",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-05T10:12:50+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-05/sprake-markets-punch-drunk-on-ai-capex-spend-video",
+          "tags": [
+            "commodity",
             "market",
             "rates",
             "us_broad"
           ]
         },
         {
-          "title": "Madagascar Hikes Rate for First Time in Over a Year on War Risks",
+          "title": "Italy Must Use EU’s Energy Leeway, Giorgetti Tells Lawmakers",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-04T15:57:25+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-04/madagascar-hikes-rate-for-first-time-in-over-a-year-on-war-risks",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market",
-            "rates"
-          ]
-        }
-      ]
-    },
-    "commodity": {
-      "avgSentiment": 0.222,
-      "negativeCount": 0,
-      "positiveCount": 3,
-      "neutralCount": 3,
-      "sourceCount": 2,
-      "itemCount": 6,
-      "isStale": false,
-      "topNegativeTitle": "India's Inflation Cushion 'Thinner' Than It Seems",
-      "topPositiveTitle": "Stocks Rally to Record, Oil and Dollar Dip on Iran: Markets Wrap",
-      "items": [
-        {
-          "title": "India's Inflation Cushion 'Thinner' Than It Seems",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-05T05:49:08+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-05/india-s-inflation-cushion-thinner-than-it-seems-video",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "RBI Holds Rates as Inflation Outlook Improves, Growth Stays Firm",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-05T04:33:23+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-05/india-keeps-key-interest-rate-on-hold-retains-neutral-stance",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Latest Oil Market News and Analysis for Aug. 5",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-04T22:01:15+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-04/latest-oil-market-news-and-analysis-for-aug-5",
+          "publishedAt": "2026-08-05T07:56:37+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-05/italy-must-use-eu-s-energy-leeway-giorgetti-tells-lawmakers",
           "tags": [
             "commodity",
             "market"
           ]
         },
         {
-          "title": "FTSE 100 Live: UK Stocks Set to Rise as Oil Dips on Iran",
+          "title": "Stocks Rally on Strong Earnings; SpaceX's AI Spending Hits Shares | Bloomberg Brief 08/05/26",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-05T05:53:22+00:00",
-          "url": "https://www.bloomberg.com/news/live-blog/2026-08-05/ftse-100-live-pound-gilts-gbp-pmi-data-iran-war-trump-oil-prices-hormuz-news-what-s-moving-uk-markets-right-now-markets-today-msfo884h",
+          "sentimentScore": 0.75,
+          "publishedAt": "2026-08-05T12:00:35+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-05/bloomberg-brief-08-05-26-video",
           "tags": [
             "commodity",
             "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "New Zealand Unemployment Reaches 11-Year High on Fuel Shock",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-04T22:47:49+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-04/new-zealand-jobless-rate-rises-as-energy-shock-drags-on-hiring",
-          "tags": [
-            "commodity",
             "market"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.286,
+      "avgSentiment": 0.441,
       "negativeCount": 0,
-      "positiveCount": 3,
-      "neutralCount": 4,
+      "positiveCount": 4,
+      "neutralCount": 3,
       "sourceCount": 2,
       "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "India's Inflation Cushion 'Thinner' Than It Seems",
-      "topPositiveTitle": "Australian Stocks Hit Record High on Iran Hopes, Economic Bets",
+      "topNegativeTitle": "Kenya Seeks $450 Million World Bank Funds to Offset Iran War Shock",
+      "topPositiveTitle": "Glencore Profit Jumps on Trading Boom and Record Copper",
       "items": [
         {
-          "title": "India's Inflation Cushion 'Thinner' Than It Seems",
-          "source": "Bloomberg Markets",
+          "title": "Kenya Seeks $450 Million World Bank Funds to Offset Iran War Shock",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-05T05:49:08+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-05/india-s-inflation-cushion-thinner-than-it-seems-video",
+          "publishedAt": "2026-08-05T11:48:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-05/kenya-seeks-450-million-world-bank-funds-to-offset-iran-war-shock",
           "tags": [
-            "commodity",
             "geopolitical",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "RBI Holds Rates as Inflation Outlook Improves, Growth Stays Firm",
+          "title": "Iran War Exposes US Military Aluminum Risk Shown in Pentagon War Game",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-05T10:00:21+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-05/iran-war-exposes-us-military-aluminum-risk-shown-in-pentagon-war-game",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "India Central Bank’s Comfort With Inflation Signals Long Pause",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
           "publishedAt": "2026-08-05T04:33:23+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-08-05/india-keeps-key-interest-rate-on-hold-retains-neutral-stance",
           "tags": [
-            "commodity",
             "geopolitical",
             "macro_risk",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "US-Iran Deal Hope Grows; SpaceX Sinks After AI Splurge | The Asia Trade 8/5/2026",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-05T03:28:10+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-05/the-asia-trade-8-5-2026-video",
-          "tags": [
-            "geopolitical",
-            "global_broad",
             "market"
           ]
         },
         {
-          "title": "Madagascar Hikes Rate for First Time in Over a Year on War Risks",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-04T15:57:25+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-04/madagascar-hikes-rate-for-first-time-in-over-a-year-on-war-risks",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "FTSE 100 Live: UK Stocks Set to Rise as Oil Dips on Iran",
+          "title": "Sutcliffe: Markets Closely Watching Oman-Iran Talks",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-05T05:53:22+00:00",
-          "url": "https://www.bloomberg.com/news/live-blog/2026-08-05/ftse-100-live-pound-gilts-gbp-pmi-data-iran-war-trump-oil-prices-hormuz-news-what-s-moving-uk-markets-right-now-markets-today-msfo884h",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-05T10:08:33+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-05/sutcliffe-markets-closely-watching-oman-iran-talks-video",
           "tags": [
-            "commodity",
             "geopolitical",
             "market"
+          ]
+        },
+        {
+          "title": "Stocks Extend Gains on Strong Earnings, AI Demand: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-04T22:11:08+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-04/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "geopolitical",
+            "market",
+            "us_broad",
+            "us_growth"
           ]
         }
       ]
