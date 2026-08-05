@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-08-05T22:08:57.191017+09:00",
-  "sourceUpdatedAt": "2026-08-05T13:02:02+00:00",
+  "updatedAt": "2026-08-06T07:36:48.733814+09:00",
+  "sourceUpdatedAt": "2026-08-05T22:06:50+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -17,26 +17,27 @@
       "items": []
     },
     "jp_semiconductor": {
-      "avgSentiment": 1.0,
+      "avgSentiment": 0.33,
       "negativeCount": 0,
       "positiveCount": 1,
       "neutralCount": 0,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "S&P 500 Poised for Another Record as AI Spending Narrative Holds",
-      "topPositiveTitle": "S&P 500 Poised for Another Record as AI Spending Narrative Holds",
+      "topNegativeTitle": "Stocks Edge Lower as Rate Hike Rumbles Offset Nvidia’s Rally",
+      "topPositiveTitle": "Stocks Edge Lower as Rate Hike Rumbles Offset Nvidia’s Rally",
       "items": [
         {
-          "title": "S&P 500 Poised for Another Record as AI Spending Narrative Holds",
+          "title": "Stocks Edge Lower as Rate Hike Rumbles Offset Nvidia’s Rally",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 1.0,
+          "sentimentScore": 0.33,
           "publishedAt": "2026-08-05T11:52:30+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-08-05/s-p-500-poised-for-another-record-as-ai-spending-narrative-holds",
           "tags": [
             "jp_semiconductor",
             "market",
+            "rates",
             "us_broad",
             "us_growth"
           ]
@@ -44,132 +45,128 @@
       ]
     },
     "us_broad": {
-      "avgSentiment": 0.4,
+      "avgSentiment": 0.314,
       "negativeCount": 0,
-      "positiveCount": 3,
-      "neutralCount": 2,
-      "sourceCount": 1,
-      "itemCount": 5,
+      "positiveCount": 5,
+      "neutralCount": 4,
+      "sourceCount": 2,
+      "itemCount": 9,
       "isStale": false,
-      "topNegativeTitle": "Sprake: Markets Punch-Drunk on AI Capex Spend",
-      "topPositiveTitle": "S&P 500 Poised for Another Record as AI Spending Narrative Holds",
+      "topNegativeTitle": "Fed's Cook 'Prepared to Act' on Rates If Inflation Doesn't Slow",
+      "topPositiveTitle": "S&P 500 Edges Lower After $3.7 Trillion Advance: Markets Wrap",
       "items": [
         {
-          "title": "Sprake: Markets Punch-Drunk on AI Capex Spend",
+          "title": "Fed's Cook 'Prepared to Act' on Rates If Inflation Doesn't Slow",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-05T10:12:50+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-05/sprake-markets-punch-drunk-on-ai-capex-spend-video",
+          "publishedAt": "2026-08-05T21:43:08+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-05/fed-s-cook-prepared-to-act-if-inflation-doesn-t-slow-video",
           "tags": [
-            "commodity",
             "market",
             "rates",
             "us_broad"
           ]
         },
         {
-          "title": "Barclays, HSBC Say Warsh Makes Inflation-Linked Debt Appeal",
-          "source": "Bloomberg Markets",
+          "title": "Japanese Yen Intervention: Why Bessent Wants Fed to Expand FIMA Backstop",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-05T09:02:19+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-05/barclays-hsbc-say-warsh-boosts-case-for-inflation-linked-bonds",
+          "publishedAt": "2026-08-05T20:21:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-05/japanese-yen-intervention-why-bessent-wants-fed-to-expand-fima-backstop",
           "tags": [
+            "fx",
             "market",
             "us_broad"
           ]
         },
         {
-          "title": "US Companies Added Fewer Jobs Than Expected in July: ADP",
+          "title": "Fed’s Cook Says Ready to Raise Rates If Inflation Doesn’t Cool",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-05T20:05:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-05/fed-s-cook-says-ready-to-raise-rates-if-inflation-doesn-t-cool",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Kashkari Says Fed Should Raise Rates Now to Tame Inflation",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-05T15:02:04+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-05/kashkari-says-fed-should-raise-rates-now-to-bring-down-inflation",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "CME, FanDuel Venture Falters as Prediction Startups Race Ahead",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.33,
-          "publishedAt": "2026-08-05T12:35:20+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-05/us-companies-added-fewer-jobs-than-expected-in-july-adp-video",
+          "publishedAt": "2026-08-05T20:47:30+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-05/cme-fanduel-venture-falters-as-prediction-startups-race-ahead",
           "tags": [
             "market",
             "us_broad"
-          ]
-        },
-        {
-          "title": "Stocks Extend Gains on Strong Earnings, AI Demand: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-04T22:11:08+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-04/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "geopolitical",
-            "market",
-            "us_broad",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "S&P 500 Poised for Another Record as AI Spending Narrative Holds",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-08-05T11:52:30+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-05/s-p-500-poised-for-another-record-as-ai-spending-narrative-holds",
-          "tags": [
-            "jp_semiconductor",
-            "market",
-            "us_broad",
-            "us_growth"
           ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.447,
-      "negativeCount": 1,
-      "positiveCount": 2,
-      "neutralCount": 0,
-      "sourceCount": 2,
+      "avgSentiment": 0.177,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 2,
+      "sourceCount": 1,
       "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "UK in Longest Jobs Slump Since Financial Crisis, PMI Shows",
-      "topPositiveTitle": "S&P 500 Poised for Another Record as AI Spending Narrative Holds",
+      "topNegativeTitle": "Celestica’s $3 Billion Deal Joins Data Center Funding Rush",
+      "topPositiveTitle": "Stocks Edge Lower as Rate Hike Rumbles Offset Nvidia’s Rally",
       "items": [
         {
-          "title": "UK in Longest Jobs Slump Since Financial Crisis, PMI Shows",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-05T08:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-05/uk-in-longest-jobs-slump-since-financial-crisis-pmi-shows",
+          "title": "Celestica’s $3 Billion Deal Joins Data Center Funding Rush",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-05T21:05:38+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-05/celestica-joins-data-center-funding-rush-with-3-billion-deal",
           "tags": [
-            "macro_risk",
             "market",
             "us_growth"
           ]
         },
         {
-          "title": "Stocks Extend Gains on Strong Earnings, AI Demand: Markets Wrap",
+          "title": "Asian Stocks Set for Declines as AI Rally Cools: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-04T22:11:08+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-04/stock-market-today-dow-s-p-live-updates",
+          "sentimentScore": 0.2,
+          "publishedAt": "2026-08-05T22:06:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-05/stock-market-today-dow-s-p-live-updates",
           "tags": [
-            "geopolitical",
             "market",
-            "us_broad",
             "us_growth"
           ]
         },
         {
-          "title": "S&P 500 Poised for Another Record as AI Spending Narrative Holds",
+          "title": "Stocks Edge Lower as Rate Hike Rumbles Offset Nvidia’s Rally",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 1.0,
+          "sentimentScore": 0.33,
           "publishedAt": "2026-08-05T11:52:30+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-08-05/s-p-500-poised-for-another-record-as-ai-spending-narrative-holds",
           "tags": [
             "jp_semiconductor",
             "market",
+            "rates",
             "us_broad",
             "us_growth"
           ]
@@ -189,16 +186,42 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.25,
       "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Big Take: The $19 Billion Menopause Economy",
+      "topPositiveTitle": "Gold Jumps Most Since February on Hormuz, Technical Breakout",
+      "items": [
+        {
+          "title": "Big Take: The $19 Billion Menopause Economy",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-05T21:07:55+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-05/big-take-the-19-billion-menopause-economy-video",
+          "tags": [
+            "gold",
+            "market"
+          ]
+        },
+        {
+          "title": "Gold Jumps Most Since February on Hormuz, Technical Breakout",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.5,
+          "publishedAt": "2026-08-04T23:54:09+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-04/gold-holds-steady-as-progress-on-hormuz-trims-rate-hike-bets",
+          "tags": [
+            "gold",
+            "market",
+            "us_broad"
+          ]
+        }
+      ]
     },
     "reit": {
       "avgSentiment": 0,
@@ -225,27 +248,26 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.134,
+      "avgSentiment": -0.5,
       "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 3,
+      "positiveCount": 0,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "UK in Longest Jobs Slump Since Financial Crisis, PMI Shows",
-      "topPositiveTitle": "Glencore Profit Jumps on Trading Boom and Record Copper",
+      "topNegativeTitle": "Hedge Funds Take Big Hit in July After Bruising AI Selloff",
+      "topPositiveTitle": "Kenya Seeks $450 Million World Bank Funds to Offset Iran War Shock",
       "items": [
         {
-          "title": "UK in Longest Jobs Slump Since Financial Crisis, PMI Shows",
-          "source": "Bloomberg Economics",
+          "title": "Hedge Funds Take Big Hit in July After Bruising AI Selloff",
+          "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-05T08:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-05/uk-in-longest-jobs-slump-since-financial-crisis-pmi-shows",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-08-05T21:50:02+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-05/hedge-funds-take-big-hit-in-july-after-bruising-ai-selloff",
           "tags": [
             "macro_risk",
-            "market",
-            "us_growth"
+            "market"
           ]
         },
         {
@@ -260,60 +282,45 @@
             "macro_risk",
             "market"
           ]
-        },
-        {
-          "title": "Iran War Exposes US Military Aluminum Risk Shown in Pentagon War Game",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-05T10:00:21+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-05/iran-war-exposes-us-military-aluminum-risk-shown-in-pentagon-war-game",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "India Central Bank’s Comfort With Inflation Signals Long Pause",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-05T04:33:23+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-05/india-keeps-key-interest-rate-on-hold-retains-neutral-stance",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Glencore Profit Jumps on Trading Boom and Record Copper",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-08-05T06:07:36+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-05/glencore-profit-jumps-on-trading-boom-and-record-copper",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": 0.223,
+      "avgSentiment": 0.278,
       "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 2,
+      "positiveCount": 2,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "ZIG/USD: Zimbabwe Won’t Rush US Dollar Phase-Out Until Inflation Stabilizes",
-      "topPositiveTitle": "Carry Trade Is Powering On as Investors Sidestep Yen’s Gains",
+      "topNegativeTitle": "Japanese Yen Intervention: Why Bessent Wants Fed to Expand FIMA Backstop",
+      "topPositiveTitle": "Yen Seen Gaining 6% Against Dollar by End of 2026, Bank of America Says",
       "items": [
+        {
+          "title": "Japanese Yen Intervention: Why Bessent Wants Fed to Expand FIMA Backstop",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-05T20:21:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-05/japanese-yen-intervention-why-bessent-wants-fed-to-expand-fima-backstop",
+          "tags": [
+            "fx",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Argentina Renews $19 Billion China Swap for Another Five Years",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-05T16:24:10+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-05/argentina-renews-19-billion-china-swap-for-another-five-years",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        },
         {
           "title": "ZIG/USD: Zimbabwe Won’t Rush US Dollar Phase-Out Until Inflation Stabilizes",
           "source": "Bloomberg Economics",
@@ -353,15 +360,15 @@
       ]
     },
     "rates": {
-      "avgSentiment": -0.066,
+      "avgSentiment": 0.0,
       "negativeCount": 1,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 6,
       "isStale": false,
       "topNegativeTitle": "Philippine Inflation Slows a Third Month, Easing Pressure for Rate Hike",
-      "topPositiveTitle": "Sprake: Markets Punch-Drunk on AI Capex Spend",
+      "topPositiveTitle": "Stocks Edge Lower as Rate Hike Rumbles Offset Nvidia’s Rally",
       "items": [
         {
           "title": "Philippine Inflation Slows a Third Month, Easing Pressure for Rate Hike",
@@ -376,104 +383,81 @@
           ]
         },
         {
-          "title": "Sprake: Markets Punch-Drunk on AI Capex Spend",
+          "title": "Fed's Cook 'Prepared to Act' on Rates If Inflation Doesn't Slow",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-05T10:12:50+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-05/sprake-markets-punch-drunk-on-ai-capex-spend-video",
+          "publishedAt": "2026-08-05T21:43:08+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-05/fed-s-cook-prepared-to-act-if-inflation-doesn-t-slow-video",
           "tags": [
-            "commodity",
             "market",
             "rates",
             "us_broad"
           ]
         },
         {
-          "title": "Brazil Central Bank to Cut Interest Rate to 14%",
+          "title": "Fed’s Cook Says Ready to Raise Rates If Inflation Doesn’t Cool",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-05T09:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-05/brazil-central-bank-to-cut-interest-rate-to-14",
+          "publishedAt": "2026-08-05T20:05:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-05/fed-s-cook-says-ready-to-raise-rates-if-inflation-doesn-t-cool",
           "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Putin’s Push to Cut Rates Piles Pressure on Bank Head Nabiullina",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-05T15:57:54+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-05/putin-s-push-to-cut-rates-piles-pressure-on-bank-head-nabiullina",
+          "tags": [
+            "geopolitical",
             "market",
             "rates"
           ]
         },
         {
-          "title": "Czech Inflation Quickens With Central Bank Set to Hold Rates",
+          "title": "Kashkari Says Fed Should Raise Rates Now to Tame Inflation",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-05T07:24:04+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-05/czech-inflation-quickens-with-central-bank-set-to-hold-rates",
+          "publishedAt": "2026-08-05T15:02:04+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-05/kashkari-says-fed-should-raise-rates-now-to-bring-down-inflation",
           "tags": [
             "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Thai Inflation Eases to 1.95% in July, Slows for Third Month",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-05T03:21:13+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-05/thai-inflation-eases-to-1-95-in-july-slowing-for-third-month",
-          "tags": [
-            "market",
-            "rates"
+            "rates",
+            "us_broad"
           ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.292,
-      "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 4,
+      "avgSentiment": -0.335,
+      "negativeCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Trump Borrows From Democrats’ Playbook With Attack on High Gas Prices",
-      "topPositiveTitle": "Glencore Profit Jumps on Trading Boom and Record Copper",
+      "topNegativeTitle": "Latest Oil Market News and Analysis for Aug. 6",
+      "topPositiveTitle": "Italy Must Use EU’s Energy Leeway, Giorgetti Tells Lawmakers",
       "items": [
         {
-          "title": "Trump Borrows From Democrats’ Playbook With Attack on High Gas Prices",
+          "title": "Latest Oil Market News and Analysis for Aug. 6",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-05T11:52:07+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-08-05/trump-borrows-from-democrats-playbook-with-attack-on-high-gas-prices",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-08-05T22:01:13+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-05/latest-oil-market-news-and-analysis-for-aug-6",
           "tags": [
             "commodity",
+            "geopolitical",
             "market"
-          ]
-        },
-        {
-          "title": "Kazakhstan Eyes Return to Panda Bonds With $500 Million Deal",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-05T10:51:17+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-05/kazakhstan-eyes-return-to-panda-bonds-with-500-million-deal",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "Sprake: Markets Punch-Drunk on AI Capex Spend",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-05T10:12:50+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-05/sprake-markets-punch-drunk-on-ai-capex-spend-video",
-          "tags": [
-            "commodity",
-            "market",
-            "rates",
-            "us_broad"
           ]
         },
         {
@@ -487,33 +471,46 @@
             "commodity",
             "market"
           ]
-        },
+        }
+      ]
+    },
+    "geopolitical": {
+      "avgSentiment": -0.223,
+      "negativeCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 2,
+      "sourceCount": 2,
+      "itemCount": 3,
+      "isStale": false,
+      "topNegativeTitle": "Latest Oil Market News and Analysis for Aug. 6",
+      "topPositiveTitle": "Putin’s Push to Cut Rates Piles Pressure on Bank Head Nabiullina",
+      "items": [
         {
-          "title": "Stocks Rally on Strong Earnings; SpaceX's AI Spending Hits Shares | Bloomberg Brief 08/05/26",
+          "title": "Latest Oil Market News and Analysis for Aug. 6",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.75,
-          "publishedAt": "2026-08-05T12:00:35+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-05/bloomberg-brief-08-05-26-video",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-08-05T22:01:13+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-05/latest-oil-market-news-and-analysis-for-aug-6",
           "tags": [
             "commodity",
             "geopolitical",
             "market"
           ]
-        }
-      ]
-    },
-    "geopolitical": {
-      "avgSentiment": 0.441,
-      "negativeCount": 0,
-      "positiveCount": 4,
-      "neutralCount": 3,
-      "sourceCount": 2,
-      "itemCount": 7,
-      "isStale": false,
-      "topNegativeTitle": "Kenya Seeks $450 Million World Bank Funds to Offset Iran War Shock",
-      "topPositiveTitle": "Glencore Profit Jumps on Trading Boom and Record Copper",
-      "items": [
+        },
+        {
+          "title": "Putin’s Push to Cut Rates Piles Pressure on Bank Head Nabiullina",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-05T15:57:54+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-05/putin-s-push-to-cut-rates-piles-pressure-on-bank-head-nabiullina",
+          "tags": [
+            "geopolitical",
+            "market",
+            "rates"
+          ]
+        },
         {
           "title": "Kenya Seeks $450 Million World Bank Funds to Offset Iran War Shock",
           "source": "Bloomberg Economics",
@@ -525,58 +522,6 @@
             "geopolitical",
             "macro_risk",
             "market"
-          ]
-        },
-        {
-          "title": "Iran War Exposes US Military Aluminum Risk Shown in Pentagon War Game",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-05T10:00:21+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-05/iran-war-exposes-us-military-aluminum-risk-shown-in-pentagon-war-game",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "India Central Bank’s Comfort With Inflation Signals Long Pause",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-05T04:33:23+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-05/india-keeps-key-interest-rate-on-hold-retains-neutral-stance",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Sutcliffe: Markets Closely Watching Oman-Iran Talks",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-05T10:08:33+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-05/sutcliffe-markets-closely-watching-oman-iran-talks-video",
-          "tags": [
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "Stocks Extend Gains on Strong Earnings, AI Demand: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-04T22:11:08+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-04/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "geopolitical",
-            "market",
-            "us_broad",
-            "us_growth"
           ]
         }
       ]
@@ -590,7 +535,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 2,
+    "excludedCount": 3,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
