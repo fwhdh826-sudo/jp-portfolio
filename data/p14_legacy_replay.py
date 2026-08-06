@@ -23,7 +23,14 @@ from data.p14_evidence_privacy_filter import PrivacyViolation, scan_bundle
 
 CURRENT_GIT_SHA = "8cfa55680a643415f18c6df8eb5ff2d767a0b77f"
 CURRENT_GIT_REF = "refs/heads/v13.3-dev"
-TOOLING_PARENT_SHA = "7f0ec37a827ac036d78108d0d56b17e082da0f6a"
+TOOLING_SOURCE_HASHES = {
+    "data/p14_evidence_validate.py":
+        "899d9db04c9913c37ae5c2cc810d5cd5f1c56ee9667088d34c70bf6f0eb4f050",
+    "data/p14_evidence_capture.py":
+        "f8a37b5c9cd3d6c5ae344aa3ecaf6e6113f51baf2a6539456ef9aea704dc4a06",
+    "data/p14_evidence_privacy_filter.py":
+        "f8740ca263b5a90cfea340d3132a1b245b4fcba63905b2f063fad3fb391d7c8d",
+}
 WAIVER_AUTHORITY = "P14-E2-A1 §8.1 real_reconstructed grandfather + P14-E4-A1 §9.6"
 PRODUCTION_SOURCE_HASHES = {
     "data/candidate_funnel_engine.py": "25e12a4217ace5d807963b54fe2e9918d8613c834b06b730fff8701a4b45d710",
@@ -85,6 +92,25 @@ E4_TEST_MAPPING = tuple(
         "test_cli_failures_use_json_error_contract",
         "test_old_output_and_fixture_criteria_are_distinct",
         "test_output_collision_and_cleanup_failure_fail_closed",
+        "test_delivered_chain_replay_starts_from_shipped_checkout",
+        "test_stale_tooling_anchor_is_rejected",
+        "test_partial_e4_stack_is_rejected",
+        "test_required_tooling_blobs_are_hash_pinned",
+        "test_topology_linear_tip",
+        "test_topology_detached_head",
+        "test_topology_arbitrary_branch",
+        "test_topology_merge_first_parent",
+        "test_topology_merge_second_parent",
+        "test_topology_same_tree_merge_commit",
+        "test_same_ancestry_changed_tooling_tree_is_rejected",
+        "test_tooling_identity_is_topology_free",
+        "test_perturbation_path_is_consumed",
+        "test_rank_order_semantic_change_is_detected",
+        "test_o2_observable_branch_detects_swap",
+        "test_real_legacy_a_is_not_false_rejected",
+        "test_real_legacy_b_is_not_false_rejected",
+        "test_noop_perturbation_is_rejected",
+        "test_wrong_stage_comparison_is_rejected",
     ), start=1)
 )
 MUTATION_MAPPING = tuple(
@@ -109,6 +135,13 @@ MUTATION_MAPPING = tuple(
         "add-normal-legacy-null-fields", "archive-before-argument-validation",
         "remove-json-error-catches", "merge-old-output-and-fixture-criteria",
         "overwrite-output-collision", "ignore-cleanup-failure",
+        "restore-tooling-parent-anchor", "anchor-tooling-blobs-to-i1",
+        "synthetic-only-delivered-chain-test", "drop-validate-module-from-required-set",
+        "blob-presence-without-hash", "reintroduce-head-caret-in-validator",
+        "first-parent-only", "drop-tooling-tree-fingerprint", "require-single-parent",
+        "perturbation-not-consumed", "ctl03-always-pass", "ctl03-wrong-stage",
+        "invert-o2-observable-branch", "pre-o2-oracle-aliases-o2",
+        "ignore-frozen-agreement-counts",
     ), start=1)
 )
 
@@ -146,6 +179,10 @@ class LegacySourceAuthority:
     joined_sha256: str
     marker_present: str
     marker_absent: str
+    o2_observable: bool
+    pre_o2_sign_agreement: int
+    perturbed_row_count: int
+    base_perturbed_rank_delta: int
 
 
 LEGACY_SOURCES = {
@@ -159,6 +196,7 @@ LEGACY_SOURCES = {
         "real_git_snapshot_reconstructed_control", "f7ecc35a-4f5b-4132-be10-24fb651d44ac",
         158.877741, "c2a259a434bb0da473cc56b2822128d35305835379bd3fabf868d99a98839b73",
         "inputs/data/candidate_funnel_source.json", "inputs/data/cheap_prescreen_cache.json",
+        False, 200, 200, 166,
     ),
     "historical-real-20260714-cache": LegacySourceAuthority(
         "historical-real-20260714-cache",
@@ -170,6 +208,7 @@ LEGACY_SOURCES = {
         "real_git_snapshot_exact_cache_lineage", None, 0.000171,
         "7913afd4e311b4e91e11e9511713e4f2e68746ea3acba3a7d2e0002b0bcd8694",
         "inputs/data/cheap_prescreen_cache.json", "inputs/data/candidate_funnel_source.json",
+        False, 200, 199, 164,
     ),
 }
 CLASSIFICATIONS = {f"C-{number:02d}": "REFERENCE_ONLY" for number in range(1, 33)}
@@ -219,16 +258,25 @@ def _assert_production_sources(repo: Path) -> None:
             raise LegacyReplayError("P14_E4_R1_CURRENT_SHA_DRIFT: production source hash")
 
 
-def tooling_identity(tooling_repo: Path) -> dict[str, str]:
+def tooling_identity(tooling_repo: Path) -> dict[str, Any]:
     implementation_sha = _git(tooling_repo, "rev-parse", "HEAD")
-    parent_line = _git(tooling_repo, "rev-list", "--parents", "-n", "1", "HEAD").split()
-    parent_sha = _git(tooling_repo, "rev-parse", "HEAD^")
-    if len(parent_line) != 2 or parent_sha != TOOLING_PARENT_SHA:
-        raise LegacyReplayError("P14_E4_I2_BASE_SHA_DRIFT: tooling parent")
+    if not (tooling_repo / "data/p14_legacy_replay.py").is_file():
+        raise LegacyReplayError(
+            "P14_E4_R2_TOOLING_SOURCE_DRIFT: data/p14_legacy_replay.py"
+        )
+    actual_hashes: dict[str, str] = {}
+    for relative, expected in TOOLING_SOURCE_HASHES.items():
+        path = tooling_repo / relative
+        if not path.is_file():
+            raise LegacyReplayError(f"P14_E4_R2_TOOLING_SOURCE_DRIFT: {relative}")
+        actual = capture.sha256_file(path)
+        if actual != expected:
+            raise LegacyReplayError(f"P14_E4_R2_TOOLING_SOURCE_DRIFT: {relative}")
+        actual_hashes[relative] = actual
     _assert_production_sources(tooling_repo)
     return {
         "toolingImplementationSha": implementation_sha,
-        "toolingParentSha": parent_sha,
+        "toolingSourceHashes": actual_hashes,
     }
 
 
@@ -368,6 +416,70 @@ def _rank_map(payload: dict[str, Any]) -> dict[str, int]:
     return {row["code"]: row["marketRank"] for row in capture._ranked(payload)}
 
 
+def _pre_o2_sign_by_code(candidates: list[Any]) -> dict[str, int]:
+    """Control oracle for the presentation-index sign contract before O2."""
+    return {
+        candidate.get("code"): (1 if index % 2 == 0 else -1)
+        for index, candidate in enumerate(candidates)
+        if isinstance(candidate, dict)
+    }
+
+
+def _correction_controls(
+    joined: list[Any], base: dict[str, Any], perturbed: dict[str, Any],
+    old_perturbed: dict[str, Any], profile: LegacySourceAuthority,
+) -> dict[str, dict[str, Any]]:
+    head_signs = batch._p14_canonical_sign_by_code(joined)
+    legacy_signs = _pre_o2_sign_by_code(joined)
+    agreement = sum(
+        head_signs.get(code) == sign for code, sign in legacy_signs.items()
+        if code in head_signs
+    )
+    rank_base = _rank_map(base)
+    rank_perturbed = _rank_map(perturbed)
+    rank_old_perturbed = _rank_map(old_perturbed)
+    rank_delta = sum(
+        rank_base.get(code) != rank_perturbed.get(code)
+        for code in rank_base.keys() | rank_perturbed.keys()
+    )
+    perturbed_inputs = batch._perturb_candidates(joined)
+    changed_rows = sum(
+        isinstance(before, dict) and isinstance(after, dict)
+        and any(before.get(field) != after.get(field) for field in ("per", "roe"))
+        for before, after in zip(joined, perturbed_inputs, strict=True)
+    )
+    base_digest = capture.sha256_bytes(capture.canonical_bytes(rank_base))
+    perturbed_digest = capture.sha256_bytes(capture.canonical_bytes(rank_perturbed))
+    ctl03_observed = rank_perturbed != rank_old_perturbed
+    return {
+        "CTL-03": {
+            "passed": ctl03_observed is profile.o2_observable,
+            "o2Observable": profile.o2_observable,
+            "rankDifferenceObserved": ctl03_observed,
+        },
+        "CTL-08": {
+            "passed": agreement == profile.pre_o2_sign_agreement
+            and (head_signs != legacy_signs) is profile.o2_observable,
+            "agreement": agreement,
+            "expectedAgreement": profile.pre_o2_sign_agreement,
+        },
+        "CTL-09": {
+            "passed": base_digest != perturbed_digest
+            and rank_delta == profile.base_perturbed_rank_delta,
+            "baseSemanticDigest": base_digest,
+            "perturbedSemanticDigest": perturbed_digest,
+            "rankDelta": rank_delta,
+            "expectedRankDelta": profile.base_perturbed_rank_delta,
+        },
+        "CTL-10": {
+            "passed": changed_rows == profile.perturbed_row_count,
+            "perturbedRepresentationConsumed": changed_rows > 0,
+            "changedRows": changed_rows,
+            "expectedChangedRows": profile.perturbed_row_count,
+        },
+    }
+
+
 def _find_distinct_hash(node: Any, snapshot_id: str) -> str | None:
     if isinstance(node, dict):
         if node.get("snapshotId") == snapshot_id:
@@ -396,7 +508,7 @@ class _PinnedDateTime(datetime):
 
 def _postprocess(bundle: Path, source: Path, profile: LegacySourceAuthority,
                  archive_info: dict[str, Any], identity: dict[str, Any],
-                 tooling: dict[str, str], files: dict[str, bytes],
+                 tooling: dict[str, Any], files: dict[str, bytes],
                  source_lines: list[str]) -> Path:
     old_snapshot = next((bundle / "snapshots").glob("real-*"))
     snapshot_id = f"reeval-{profile.snapshot_id}"
@@ -459,18 +571,31 @@ def _postprocess(bundle: Path, source: Path, profile: LegacySourceAuthority,
     perturbed = json.loads((snapshot / "outputs/run-1/perturbed-engine.json").read_text())
     old_base = json.loads((source / "outputs/run-1/base-engine.json").read_text())
     old_perturbed = json.loads((source / "outputs/run-1/perturbed-engine.json").read_text())
+    correction_controls = _correction_controls(
+        joined, base, perturbed, old_perturbed, profile
+    )
     controls = {
         "CTL-01": {"passed": joined_hash == profile.joined_sha256},
         "CTL-02": {"passed": _rank_map(base) == _rank_map(old_base)},
-        "CTL-03": {"passed": _rank_map(perturbed) != _rank_map(old_perturbed)},
+        "CTL-03": correction_controls["CTL-03"],
         "CTL-04": {"passed": assignment["assignmentAuthority"] == batch.P14_ASSIGNMENT_CONTRACT},
         "CTL-05": {"passed": len(signs) == 200 and list(signs.values()).count(1) == 100
                               and list(signs.values()).count(-1) == 100},
         "CTL-06": {"passed": hashes[1] == profile.market_content_hash},
         "CTL-07": {"passed": hashes[0] == profile.input_bundle_hash},
+        "CTL-08": correction_controls["CTL-08"],
+        "CTL-09": correction_controls["CTL-09"],
+        "CTL-10": correction_controls["CTL-10"],
     }
-    if not all(item["passed"] for item in controls.values()):
-        raise LegacyReplayError("P14_E4_R1_VALIDATION_FAILED: CTL-01..07")
+    failed = [identifier for identifier, item in controls.items() if not item["passed"]]
+    if set(failed) & {"CTL-01", "CTL-06", "CTL-07"}:
+        raise LegacyReplayError(
+            "P14_E4_R1_SOURCE_INTEGRITY_FAILED: " + ",".join(failed)
+        )
+    if "CTL-03" in failed:
+        raise LegacyReplayError("P14_E4_R1_CURRENT_SHA_DRIFT: CTL-03")
+    if failed:
+        raise LegacyReplayError("P14_E4_R1_VALIDATION_FAILED: " + ",".join(failed))
     capture.write_json(bundle / "validation/legacy-control.json", controls)
     source_hash = _source_hash(profile, files)
     prefix = f"snapshots/{profile.snapshot_id}"

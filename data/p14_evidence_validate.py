@@ -674,13 +674,16 @@ def validate_legacy_bundle(bundle_root: Path, *, repo_root: Path, ci: bool,
     tooling_head = subprocess.run(
         ["git", "rev-parse", "HEAD"], cwd=tooling_root, check=True, capture_output=True, text=True
     ).stdout.strip()
-    tooling_parent = subprocess.run(
-        ["git", "rev-parse", "HEAD^"], cwd=tooling_root, check=True, capture_output=True, text=True
-    ).stdout.strip()
+    tooling_source_hashes = {
+        relative: sha256_file(tooling_root / relative)
+        for relative in legacy.TOOLING_SOURCE_HASHES
+        if (tooling_root / relative).is_file()
+    }
     check("E4-TOOLING-SHA",
           tooling_root != repo_root.resolve()
           and tooling.get("toolingImplementationSha") == tooling_head
-          and tooling.get("toolingParentSha") == tooling_parent == legacy.TOOLING_PARENT_SHA
+          and tooling.get("toolingSourceHashes") == legacy.TOOLING_SOURCE_HASHES
+          and tooling_source_hashes == legacy.TOOLING_SOURCE_HASHES
           and tooling_head != actual_head,
           repr(tooling))
     generator_ok = True
@@ -882,9 +885,9 @@ def validate_legacy_bundle(bundle_root: Path, *, repo_root: Path, ci: bool,
                 lineage_ok = False
     check("E4-LINEAGE", lineage_ok, "L-01..08 and C-01..32")
     controls = _read_json(root / "validation/legacy-control.json")
-    controls_ok = (set(controls) == {f"CTL-{number:02d}" for number in range(1, 8)}
+    controls_ok = (set(controls) == {f"CTL-{number:02d}" for number in range(1, 11)}
                    and all(row.get("passed") is True for row in controls.values()))
-    check("E4-CONTROLS", controls_ok, "CTL-01..07")
+    check("E4-CONTROLS", controls_ok, "CTL-01..10")
     fixture_files = list(root.glob("**/tests/fixtures/**"))
     old_output = any(b"input-index parity" in path.read_bytes()
                      for path in root.rglob("*") if path.is_file())

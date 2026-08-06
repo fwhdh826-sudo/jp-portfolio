@@ -1,9 +1,13 @@
-"""Frozen P14-E4 tests E4-T-01..24 using synthetic temporary evidence only."""
+"""Frozen P14-E4 tests E4-T-01..58 using synthetic temporary evidence only."""
 from __future__ import annotations
 
 import copy
+import hashlib
+import importlib.util
+import inspect
 import json
 import os
+import re
 import shutil
 import subprocess
 import tarfile
@@ -18,6 +22,7 @@ from data import p14_evidence_validate as validator
 from data import p14_legacy_replay as replay
 
 REPO = Path(__file__).parents[1]
+EXPECTED_REPLAY_MODULE_SHA256 = "3c352bf7a604a0ac01a4ea571e220f1ac7efa7514f41173d028333cde6735aa9"
 
 
 def _write(path: Path, value: object) -> None:
@@ -43,13 +48,27 @@ def _clone_detached(path: Path, revision: str, *, child_commit: bool = False) ->
     return path
 
 
+def _perturb_with_signs(candidates: list[object], signs: dict[str, int]) -> list[object]:
+    perturbed: list[object] = []
+    for candidate in candidates:
+        if not isinstance(candidate, dict):
+            perturbed.append(candidate)
+            continue
+        row = dict(candidate)
+        sign = signs.get(row.get("code"))
+        if sign is not None:
+            for field, direction in (("per", 1), ("roe", -1)):
+                value = row.get(field)
+                if isinstance(value, (int, float)) and not isinstance(value, bool):
+                    row[field] = value * (1 + direction * sign * batch.PERTURBATION_PCT)
+        perturbed.append(row)
+    return perturbed
+
+
 @pytest.fixture
 def replay_repositories(tmp_path: Path) -> tuple[Path, Path]:
     target = _clone_detached(tmp_path / "replay-target", replay.CURRENT_GIT_SHA)
-    tooling = _clone_detached(
-        tmp_path / "tooling-repo", replay.TOOLING_PARENT_SHA, child_commit=True
-    )
-    return target, tooling
+    return target, REPO
 
 
 @pytest.fixture
@@ -198,7 +217,7 @@ def legacy_bundle(tmp_path: Path, monkeypatch: pytest.MonkeyPatch,
                  "replay": {"permutations": permutations}},
     })
     _write(root / "validation/legacy-control.json", {
-        f"CTL-{number:02d}": {"passed": True} for number in range(1, 8)
+        f"CTL-{number:02d}": {"passed": True} for number in range(1, 11)
     })
     identity = {"runId": None, "runAttempt": None, "runToken": None, "workflow": None,
                 "event": "legacy-replay", "gitSha": replay.CURRENT_GIT_SHA,
@@ -220,7 +239,7 @@ def legacy_bundle(tmp_path: Path, monkeypatch: pytest.MonkeyPatch,
             "toolingImplementationSha": subprocess.check_output(
                 ["git", "rev-parse", "HEAD"], cwd=tooling_repo, text=True
             ).strip(),
-            "toolingParentSha": replay.TOOLING_PARENT_SHA,
+            "toolingSourceHashes": dict(replay.TOOLING_SOURCE_HASHES),
         },
         "assignmentContract": batch.P14_ASSIGNMENT_CONTRACT,
         "assignmentNote": batch.P14_ASSIGNMENT_NOTE,
@@ -298,7 +317,7 @@ def _refinalize(root: Path, manifest: dict | None = None) -> None:
 def _validate(root: Path) -> dict:
     return validator.validate_bundle(
         root, repo_root=root.parent / "replay-target",
-        tooling_repo=root.parent / "tooling-repo", ci=True, legacy=True
+        tooling_repo=REPO, ci=True, legacy=True
     )
 
 
@@ -634,10 +653,9 @@ def _build_synthetic_current_canonical(
     regime_path = inputs / "regime_state.json"
     context = batch.build_context(candidates_payload, batch.read_current_regime(regime_path), pinned)
     old_base = capture.engine.build_candidate_funnel(joined, context)
-    old_perturbed = copy.deepcopy(old_base)
-    ranked = capture._ranked(old_perturbed)
-    for row in ranked:
-        row["marketRank"] = len(ranked) + 1 - row["marketRank"]
+    old_perturbed = capture.engine.build_candidate_funnel(
+        _perturb_with_signs(joined, replay._pre_o2_sign_by_code(joined)), context
+    )
     _write(source / "outputs/run-1/base-engine.json", old_base)
     _write(source / "outputs/run-1/perturbed-engine.json", old_perturbed)
     _write(source_root / "manifest.json", {
@@ -672,7 +690,7 @@ def test_control_checks_ctl01_to_ctl07(legacy_bundle, tmp_path, monkeypatch,
     assert [key for key, _ in replay.MUTATION_MAPPING[:16]] == [f"E4-M-{n:02d}" for n in range(1, 17)]
     path = root / "validation/legacy-control.json"
     controls = json.loads(path.read_text())
-    assert set(controls) == {f"CTL-{n:02d}" for n in range(1, 8)}
+    assert set(controls) == {f"CTL-{n:02d}" for n in range(1, 11)}
     controls["CTL-03"]["passed"] = False
     _write(path, controls)
     _refinalize(root)
@@ -706,30 +724,27 @@ def test_delivered_commit_uses_base_pinned_replay_repository(replay_repositories
             path: capture.sha256_file(repository / path)
             for path in replay.PRODUCTION_SOURCE_HASHES
         } == replay.PRODUCTION_SOURCE_HASHES
-    parent_head = subprocess.check_output(
-        ["git", "rev-parse", "HEAD^"], cwd=REPO, text=True
-    ).strip()
-    grandparent_head = subprocess.check_output(
-        ["git", "rev-parse", "HEAD^^"], cwd=REPO, text=True
-    ).strip()
-    i2_head = "11dd69b37e0473e10933663178f25145f5b452b2"
-    if tooling_head == i2_head:
-        assert parent_head == replay.TOOLING_PARENT_SHA
-        assert grandparent_head == replay.CURRENT_GIT_SHA
-    else:
-        assert parent_head == i2_head
-        assert grandparent_head == replay.TOOLING_PARENT_SHA
-    assert subprocess.check_output(
-        ["git", "status", "--short"], cwd=REPO, text=True
-    ).strip() == ""
+    assert {
+        path: hashlib.sha256((REPO / path).read_bytes()).hexdigest()
+        for path in replay.TOOLING_SOURCE_HASHES
+    } == replay.TOOLING_SOURCE_HASHES
+    status_paths = {
+        line[3:] for line in subprocess.check_output(
+            ["git", "status", "--short"], cwd=REPO, text=True
+        ).splitlines()
+    }
+    assert status_paths <= {
+        "data/p14_evidence_validate.py",
+        "data/p14_legacy_replay.py",
+        "tests/test_p14_legacy_replay.py",
+    }
 
 
 def test_live_replay_target_head_check_remains_strict(legacy_bundle):
     """E4-T-26 / M-18."""
     root, *_ = legacy_bundle
     report = validator.validate_bundle(
-        root, repo_root=root.parent / "tooling-repo",
-        tooling_repo=root.parent / "tooling-repo", ci=True, legacy=True,
+        root, repo_root=REPO, tooling_repo=REPO, ci=True, legacy=True,
     )
     assert _criterion_failed(report, "E4-CURRENT-SHA")
 
@@ -739,14 +754,14 @@ def test_tooling_and_replay_sha_roles_are_distinct(legacy_bundle):
     root, *_ = legacy_bundle
     manifest = _manifest(root)
     target = root.parent / "replay-target"
-    tooling = root.parent / "tooling-repo"
+    tooling = REPO
     assert manifest["gitSha"] == replay.CURRENT_GIT_SHA
     assert manifest["runIdentity"]["gitSha"] == replay.CURRENT_GIT_SHA
     assert manifest["runIdentity"]["executionRepositoryHead"] == replay.CURRENT_GIT_SHA
     assert manifest["tooling"]["toolingImplementationSha"] == subprocess.check_output(
         ["git", "rev-parse", "HEAD"], cwd=tooling, text=True
     ).strip()
-    assert manifest["tooling"]["toolingParentSha"] == replay.TOOLING_PARENT_SHA
+    assert manifest["tooling"]["toolingSourceHashes"] == replay.TOOLING_SOURCE_HASHES
     assert replay.tooling_identity(tooling) == manifest["tooling"]
     assert subprocess.check_output(
         ["git", "rev-parse", "HEAD"], cwd=target, text=True
@@ -1034,5 +1049,392 @@ def test_output_collision_and_cleanup_failure_fail_closed(tmp_path, monkeypatch)
     for path in parent.glob(".second-name.staging-*"):
         original_rmtree(path)
     assert [key for key, _ in replay.MUTATION_MAPPING] == [
-        f"E4-M-{number:02d}" for number in range(1, 43)
+        f"E4-M-{number:02d}" for number in range(1, 58)
     ]
+
+
+def _commit(repo: Path, message: str, *, allow_empty: bool = False) -> str:
+    command = [
+        "git", "-c", "user.name=P14 Test", "-c", "user.email=p14@example.invalid",
+        "commit", "--quiet", "-m", message,
+    ]
+    if allow_empty:
+        command.insert(-2, "--allow-empty")
+    subprocess.run(command, cwd=repo, check=True)
+    return subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=repo, text=True).strip()
+
+
+def _clone_approved_tooling(path: Path) -> Path:
+    clone = _clone_detached(path, subprocess.check_output(
+        ["git", "rev-parse", "HEAD"], cwd=REPO, text=True
+    ).strip())
+    for relative in (
+        "data/p14_evidence_validate.py",
+        "data/p14_evidence_capture.py",
+        "data/p14_evidence_privacy_filter.py",
+        "data/p14_legacy_replay.py",
+    ):
+        shutil.copy2(REPO / relative, clone / relative)
+    subprocess.run(["git", "add", "data"], cwd=clone, check=True)
+    _commit(clone, "approved corrected tooling", allow_empty=True)
+    assert replay.tooling_identity(clone)["toolingSourceHashes"] == replay.TOOLING_SOURCE_HASHES
+    return clone
+
+
+def _commit_tree(repo: Path, tree: str, parents: list[str], message: str) -> str:
+    command = ["git", "commit-tree", tree]
+    for parent in parents:
+        command.extend(["-p", parent])
+    return subprocess.check_output(
+        command, cwd=repo, input=message + "\n", text=True
+    ).strip()
+
+
+def _topology_repo(path: Path, topology: str) -> Path:
+    repository = _clone_approved_tooling(path)
+    approved = subprocess.check_output(
+        ["git", "rev-parse", "HEAD"], cwd=repository, text=True
+    ).strip()
+    tree = subprocess.check_output(
+        ["git", "rev-parse", "HEAD^{tree}"], cwd=repository, text=True
+    ).strip()
+    if topology == "linear":
+        _commit(repository, "linear child", allow_empty=True)
+    elif topology == "detached":
+        subprocess.run(["git", "checkout", "--quiet", "--detach", approved],
+                       cwd=repository, check=True)
+    elif topology == "branch":
+        subprocess.run(["git", "checkout", "--quiet", "-b", "arbitrary-name-xyz"],
+                       cwd=repository, check=True)
+    elif topology in {"merge-first", "merge-second", "message-only"}:
+        parents = ([approved, replay.CURRENT_GIT_SHA] if topology != "merge-second"
+                   else [replay.CURRENT_GIT_SHA, approved])
+        commit = _commit_tree(repository, tree, parents, f"{topology} topology")
+        subprocess.run(["git", "checkout", "--quiet", "--detach", commit],
+                       cwd=repository, check=True)
+    elif topology == "real-merge":
+        subprocess.run(["git", "checkout", "--quiet", "-B", "real-merge-base",
+                        replay.CURRENT_GIT_SHA], cwd=repository, check=True)
+        subprocess.run([
+            "git", "-c", "user.name=P14 Test", "-c", "user.email=p14@example.invalid",
+            "merge", "--quiet", "--no-ff", "-m", "real same-tree merge", approved,
+        ], cwd=repository, check=True)
+    else:
+        raise AssertionError(f"unknown topology: {topology}")
+    return repository
+
+
+def _frozen_control_inputs(profile: replay.LegacySourceAuthority):
+    joined = []
+    for index in range(200):
+        active = index < profile.perturbed_row_count
+        joined.append({
+            "code": f"C{index:03d}", "prescreenRank": index + 1,
+            "per": float(index + 10) if active else None,
+            "roe": float(index + 1) / 100 if active else None,
+        })
+    base_rows = [
+        {"code": row["code"], "marketRank": index + 1}
+        for index, row in enumerate(joined)
+    ]
+    delta = profile.base_perturbed_rank_delta
+    perturbed_rows = copy.deepcopy(base_rows)
+    for index in range(delta):
+        perturbed_rows[index]["marketRank"] = (index + 1) % delta + 1
+    base = {"candidates": base_rows}
+    perturbed = {"candidates": perturbed_rows}
+    return joined, base, perturbed
+
+
+def _current_joined_context():
+    candidates_payload = json.loads((REPO / "data/candidates_stocks.json").read_text())
+    funnel = json.loads((REPO / "data/candidate_funnel.json").read_text())
+    prescreen = {"entries": [
+        {key: row[key] for key in ("code", "prescreenScore", "prescreenRank", "prescreenPool")}
+        for row in funnel["candidates"]
+    ]}
+    index, duplicates = batch.build_prescreen_index(prescreen)
+    assert duplicates == []
+    joined, _ = batch.join_candidates_with_prescreen(candidates_payload["candidates"], index)
+    pinned = replay.parse_replay_as_of(
+        replay.LEGACY_SOURCES["current-dev-committed-20260726"].replay_as_of,
+        replay.LEGACY_SOURCES["current-dev-committed-20260726"],
+    )
+    context = batch.build_context(
+        candidates_payload, batch.read_current_regime(REPO / "data/regime_state.json"), pinned
+    )
+    return joined, context
+
+
+def test_delivered_chain_replay_starts_from_shipped_checkout():
+    """E4-T-40 / E4-M-43..45."""
+    test_source = (REPO / "tests/test_p14_legacy_replay.py").read_text()
+    source = test_source.split("def test_delivered_chain_replay_starts_from_shipped_checkout", 1)[1]
+    source = source.split("\ndef ", 1)[0]
+    assert "replay.tooling_identity(REPO)" in source
+    assert source.count("_clone_approved_tooling") == 1
+    identity = replay.tooling_identity(REPO)
+    assert identity["toolingSourceHashes"] == replay.TOOLING_SOURCE_HASHES
+    assert set(identity) == {"toolingImplementationSha", "toolingSourceHashes"}
+
+
+def test_stale_tooling_anchor_is_rejected(tmp_path):
+    """E4-T-41 / stale I1 tooling is not approved."""
+    stale = _clone_detached(tmp_path / "stale-i1", "7f0ec37a827ac036d78108d0d56b17e082da0f6a")
+    with pytest.raises(replay.LegacyReplayError, match=(
+        r"^P14_E4_R2_TOOLING_SOURCE_DRIFT: data/p14_evidence_validate\.py$"
+    )):
+        replay.tooling_identity(stale)
+
+
+@pytest.mark.parametrize("case", [
+    "validate-reverted-to-base",
+    "capture-reverted-to-base",
+    "privacy-guard-marker-dropped",
+])
+def test_partial_e4_stack_is_rejected(tmp_path, case):
+    """E4-T-42 / E4-M-46..47; all degradations are parse/import valid."""
+    assert replay.tooling_identity(REPO)["toolingSourceHashes"] == replay.TOOLING_SOURCE_HASHES
+    degraded = _clone_approved_tooling(tmp_path / case)
+    if case == "validate-reverted-to-base":
+        relative = "data/p14_evidence_validate.py"
+        raw = subprocess.check_output(
+            ["git", "show", f"{replay.CURRENT_GIT_SHA}:{relative}"], cwd=degraded
+        )
+        (degraded / relative).write_bytes(raw)
+    elif case == "capture-reverted-to-base":
+        relative = "data/p14_evidence_capture.py"
+        raw = subprocess.check_output(
+            ["git", "show", f"{replay.CURRENT_GIT_SHA}:{relative}"], cwd=degraded
+        )
+        (degraded / relative).write_bytes(raw)
+    else:
+        relative = "data/p14_evidence_privacy_filter.py"
+        path = degraded / relative
+        source = path.read_text()
+        assert source.count('    "CREDENTIAL",\n') == 1
+        path.write_text(source.replace('    "CREDENTIAL",\n', "", 1))
+        before_spec = importlib.util.spec_from_file_location("privacy_before", REPO / relative)
+        after_spec = importlib.util.spec_from_file_location("privacy_after", path)
+        assert before_spec and before_spec.loader and after_spec and after_spec.loader
+        before = importlib.util.module_from_spec(before_spec)
+        after = importlib.util.module_from_spec(after_spec)
+        before_spec.loader.exec_module(before)
+        after_spec.loader.exec_module(after)
+        names = {"AWS_CREDENTIAL_FILE", "MY_TOKEN"}
+        environment = {"AWS_CREDENTIAL_FILE": "x", "MY_TOKEN": "y"}
+        assert before.environment_presence(names, environment)[1] == [
+            "AWS_CREDENTIAL_FILE", "MY_TOKEN"
+        ]
+        assert after.environment_presence(names, environment)[1] == ["MY_TOKEN"]
+    compile((degraded / relative).read_text(), relative, "exec")
+    subprocess.run([
+        str(Path(os.environ.get("P14_PY311", "/private/tmp/p14-e4-r2-i1-r1-py311/bin/python"))),
+        "-c", f"import sys; sys.path.insert(0,{str(degraded)!r}); import data.{Path(relative).stem}",
+    ], cwd=degraded, check=True)
+    with pytest.raises(replay.LegacyReplayError, match=(
+        rf"^P14_E4_R2_TOOLING_SOURCE_DRIFT: {re.escape(relative)}$"
+    )):
+        replay.tooling_identity(degraded)
+
+
+def test_required_tooling_blobs_are_hash_pinned(tmp_path):
+    """E4-T-43 / independent hashlib trust anchor."""
+    assert set(replay.TOOLING_SOURCE_HASHES) == {
+        "data/p14_evidence_validate.py",
+        "data/p14_evidence_capture.py",
+        "data/p14_evidence_privacy_filter.py",
+    }
+    assert {
+        relative: hashlib.sha256((REPO / relative).read_bytes()).hexdigest()
+        for relative in replay.TOOLING_SOURCE_HASHES
+    } == replay.TOOLING_SOURCE_HASHES
+    assert hashlib.sha256((REPO / "data/p14_legacy_replay.py").read_bytes()).hexdigest() == (
+        EXPECTED_REPLAY_MODULE_SHA256
+    )
+    changed = _clone_approved_tooling(tmp_path / "one-byte-change")
+    path = changed / "data/p14_evidence_validate.py"
+    path.write_bytes(path.read_bytes() + b"\n")
+    with pytest.raises(replay.LegacyReplayError, match="p14_evidence_validate.py"):
+        replay.tooling_identity(changed)
+
+
+def test_topology_linear_tip(tmp_path):
+    """E4-T-44 / E4-M-43."""
+    assert replay.tooling_identity(_topology_repo(tmp_path / "linear", "linear"))[
+        "toolingSourceHashes"
+    ] == replay.TOOLING_SOURCE_HASHES
+
+
+def test_topology_detached_head(tmp_path):
+    """E4-T-45."""
+    repository = _topology_repo(tmp_path / "detached", "detached")
+    assert subprocess.check_output(["git", "branch", "--show-current"], cwd=repository,
+                                   text=True).strip() == ""
+    assert replay.tooling_identity(repository)["toolingSourceHashes"] == replay.TOOLING_SOURCE_HASHES
+
+
+def test_topology_arbitrary_branch(tmp_path):
+    """E4-T-46."""
+    repository = _topology_repo(tmp_path / "branch", "branch")
+    assert subprocess.check_output(["git", "branch", "--show-current"], cwd=repository,
+                                   text=True).strip() == "arbitrary-name-xyz"
+    replay.tooling_identity(repository)
+
+
+def test_topology_merge_first_parent(tmp_path):
+    """E4-T-47 / E4-M-43, M-48, M-51."""
+    replay.tooling_identity(_topology_repo(tmp_path / "merge-first", "merge-first"))
+
+
+def test_topology_merge_second_parent(tmp_path):
+    """E4-T-48 / E4-M-49."""
+    replay.tooling_identity(_topology_repo(tmp_path / "merge-second", "merge-second"))
+
+
+@pytest.mark.parametrize("variant", ["message-only", "real-merge"])
+def test_topology_same_tree_merge_commit(tmp_path, variant):
+    """E4-T-49 / E4-M-43, M-48, M-51."""
+    repository = _topology_repo(tmp_path / variant, variant)
+    parents = subprocess.check_output(
+        ["git", "rev-list", "--parents", "-n", "1", "HEAD"], cwd=repository, text=True
+    ).split()
+    assert len(parents) == 3
+    assert replay.tooling_identity(repository)["toolingSourceHashes"] == replay.TOOLING_SOURCE_HASHES
+
+
+def test_same_ancestry_changed_tooling_tree_is_rejected(tmp_path):
+    """E4-T-50 / E4-M-47, M-50."""
+    repository = _clone_approved_tooling(tmp_path / "changed-tree")
+    path = repository / "data/p14_evidence_validate.py"
+    path.write_bytes(path.read_bytes() + b"\n")
+    subprocess.run(["git", "add", str(path.relative_to(repository))], cwd=repository, check=True)
+    _commit(repository, "changed tooling tree")
+    with pytest.raises(replay.LegacyReplayError, match="p14_evidence_validate.py"):
+        replay.tooling_identity(repository)
+
+
+def test_tooling_identity_is_topology_free(tmp_path):
+    """E4-T-51 / source scan plus five topology executions."""
+    forbidden = ("HEAD^", "HEAD^^", "rev-list\", \"--parents", "merge-base")
+    runtime_source = inspect.getsource(replay.tooling_identity)
+    validator_source = inspect.getsource(validator.validate_legacy_bundle)
+    assert all(token not in runtime_source for token in forbidden)
+    assert all(token not in validator_source for token in forbidden)
+    identities = [
+        replay.tooling_identity(_topology_repo(tmp_path / topology, topology))[
+            "toolingSourceHashes"
+        ]
+        for topology in ("linear", "detached", "merge-first", "merge-second", "message-only")
+    ]
+    assert identities == [replay.TOOLING_SOURCE_HASHES] * 5
+
+
+def test_perturbation_path_is_consumed():
+    """E4-T-52 / E4-M-52, M-57."""
+    assert "perturbed_inputs = batch._perturb_candidates(joined)" in inspect.getsource(
+        capture.build_bundle
+    )
+    profile = replay.LEGACY_SOURCES["current-dev-committed-20260726"]
+    joined, base, perturbed = _frozen_control_inputs(profile)
+    control = replay._correction_controls(joined, base, perturbed, perturbed, profile)["CTL-10"]
+    assert control["passed"] is True
+    assert control["perturbedRepresentationConsumed"] is True
+    assert control["changedRows"] == 200
+
+
+def test_rank_order_semantic_change_is_detected():
+    """E4-T-53 / E4-M-56; synthetic order excites O2."""
+    joined, context = _current_joined_context()
+    ordered = list(reversed(joined))
+    head_signs = batch._p14_canonical_sign_by_code(ordered)
+    legacy_signs = replay._pre_o2_sign_by_code(ordered)
+    assert sum(head_signs.get(code) != sign for code, sign in legacy_signs.items()) == 200
+    head = capture.engine.build_candidate_funnel(_perturb_with_signs(ordered, head_signs), context)
+    legacy = capture.engine.build_candidate_funnel(
+        _perturb_with_signs(ordered, legacy_signs), context
+    )
+    assert sum(
+        replay._rank_map(head).get(code) != replay._rank_map(legacy).get(code)
+        for code in replay._rank_map(head)
+    ) == 188
+
+
+def test_o2_observable_branch_detects_swap():
+    """E4-T-54 / E4-M-53, M-55, M-56."""
+    joined, context = _current_joined_context()
+    ordered = list(reversed(joined))
+    head = capture.engine.build_candidate_funnel(batch._perturb_candidates(ordered), context)
+    legacy = capture.engine.build_candidate_funnel(
+        _perturb_with_signs(ordered, replay._pre_o2_sign_by_code(ordered)), context
+    )
+    base = capture.engine.build_candidate_funnel(ordered, context)
+    profile = replace(
+        replay.LEGACY_SOURCES["current-dev-committed-20260726"],
+        o2_observable=True, pre_o2_sign_agreement=0,
+    )
+    assert replay._correction_controls(ordered, base, head, legacy, profile)["CTL-03"][
+        "passed"
+    ] is True
+    assert replay._correction_controls(ordered, base, head, head, profile)["CTL-03"][
+        "passed"
+    ] is False
+
+
+def test_real_legacy_a_is_not_false_rejected():
+    """E4-T-55 / E4-M-55, M-57."""
+    profile = replay.LEGACY_SOURCES["current-dev-committed-20260726"]
+    assert (profile.o2_observable, profile.pre_o2_sign_agreement,
+            profile.perturbed_row_count, profile.base_perturbed_rank_delta) == (
+                False, 200, 200, 166
+            )
+    joined, base, perturbed = _frozen_control_inputs(profile)
+    controls = replay._correction_controls(joined, base, perturbed, perturbed, profile)
+    assert all(controls[key]["passed"] for key in ("CTL-03", "CTL-08", "CTL-09", "CTL-10"))
+    wrong = replace(
+        profile, pre_o2_sign_agreement=199, perturbed_row_count=199,
+        base_perturbed_rank_delta=165,
+    )
+    wrong_controls = replay._correction_controls(joined, base, perturbed, perturbed, wrong)
+    assert all(wrong_controls[key]["passed"] is False for key in ("CTL-08", "CTL-09", "CTL-10"))
+
+
+def test_real_legacy_b_is_not_false_rejected():
+    """E4-T-56 / E4-M-55, M-57."""
+    profile = replay.LEGACY_SOURCES["historical-real-20260714-cache"]
+    assert (profile.o2_observable, profile.pre_o2_sign_agreement,
+            profile.perturbed_row_count, profile.base_perturbed_rank_delta) == (
+                False, 200, 199, 164
+            )
+    joined, base, perturbed = _frozen_control_inputs(profile)
+    controls = replay._correction_controls(joined, base, perturbed, perturbed, profile)
+    assert all(controls[key]["passed"] for key in ("CTL-03", "CTL-08", "CTL-09", "CTL-10"))
+    wrong = replace(
+        profile, pre_o2_sign_agreement=199, perturbed_row_count=198,
+        base_perturbed_rank_delta=163,
+    )
+    wrong_controls = replay._correction_controls(joined, base, perturbed, perturbed, wrong)
+    assert all(wrong_controls[key]["passed"] is False for key in ("CTL-08", "CTL-09", "CTL-10"))
+
+
+def test_noop_perturbation_is_rejected():
+    """E4-T-57 / E4-M-52."""
+    profile = replay.LEGACY_SOURCES["current-dev-committed-20260726"]
+    joined, base, _ = _frozen_control_inputs(profile)
+    controls = replay._correction_controls(joined, base, base, base, profile)
+    assert controls["CTL-09"]["passed"] is False
+    assert controls["CTL-09"]["baseSemanticDigest"] == controls["CTL-09"][
+        "perturbedSemanticDigest"
+    ]
+
+
+def test_wrong_stage_comparison_is_rejected():
+    """E4-T-58 / E4-M-53, M-54."""
+    assert "ctl03_observed = rank_perturbed != rank_old_perturbed" in inspect.getsource(
+        replay._correction_controls
+    )
+    profile = replay.LEGACY_SOURCES["current-dev-committed-20260726"]
+    joined, base, perturbed = _frozen_control_inputs(profile)
+    controls = replay._correction_controls(joined, base, perturbed, base, profile)
+    assert controls["CTL-03"]["passed"] is False
+    assert controls["CTL-09"]["passed"] is True
