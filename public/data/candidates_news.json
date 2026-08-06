@@ -1,57 +1,43 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-08-06T15:10:01.350333+09:00",
-  "sourceUpdatedAt": "2026-08-06T06:00:08+00:00",
+  "updatedAt": "2026-08-06T22:08:24.703606+09:00",
+  "sourceUpdatedAt": "2026-08-06T13:04:57+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
+      "avgSentiment": 0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
+      "isStale": false,
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
+    },
+    "jp_semiconductor": {
       "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
+      "neutralCount": 2,
       "sourceCount": 1,
-      "itemCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Former Japan PM on Yen, Communication with BOJ and Markets",
-      "topPositiveTitle": "Former Japan PM on Yen, Communication with BOJ and Markets",
+      "topNegativeTitle": "How the AI Chip Boom is Reshaping South Korea’s Markets, Economy and Society",
+      "topPositiveTitle": "How the AI Chip Boom is Reshaping South Korea’s Markets, Economy and Society",
       "items": [
         {
-          "title": "Former Japan PM on Yen, Communication with BOJ and Markets",
-          "source": "Bloomberg Markets",
+          "title": "How the AI Chip Boom is Reshaping South Korea’s Markets, Economy and Society",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-06T03:59:38+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-06/fmr-japan-pm-on-yen-communication-with-boj-and-markets-video",
-          "tags": [
-            "fx",
-            "jp_broad",
-            "market"
-          ]
-        }
-      ]
-    },
-    "jp_semiconductor": {
-      "avgSentiment": 0.042,
-      "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 4,
-      "isStale": false,
-      "topNegativeTitle": "SK Hynix Hit by Another 30% Pre-Market Flash Crash on Nextrade",
-      "topPositiveTitle": "Stocks Retreat From Record on Chips, Gold Climbs: Markets Wrap",
-      "items": [
-        {
-          "title": "SK Hynix Hit by Another 30% Pre-Market Flash Crash on Nextrade",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-06T02:19:42+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-06/sk-hynix-hit-by-pre-market-flash-crash-on-nextrade-bourse-again",
+          "publishedAt": "2026-08-06T11:00:01+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-08-06/how-the-ai-chip-boom-is-reshaping-south-korea-s-markets-economy-and-society",
           "tags": [
             "jp_semiconductor",
-            "macro_risk",
-            "market"
+            "market",
+            "us_growth"
           ]
         },
         {
@@ -65,56 +51,30 @@
             "jp_semiconductor",
             "market"
           ]
-        },
-        {
-          "title": "AI-Driven Chip Boom Lifts Korean Current Account to Fresh Record",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-06T00:51:46+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-06/ai-driven-chip-boom-lifts-korean-current-account-to-fresh-record",
-          "tags": [
-            "jp_semiconductor",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Stocks Retreat From Record on Chips, Gold Climbs: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.5,
-          "publishedAt": "2026-08-05T22:06:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-05/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "global_broad",
-            "gold",
-            "jp_semiconductor",
-            "market"
-          ]
         }
       ]
     },
     "us_broad": {
-      "avgSentiment": 0.112,
+      "avgSentiment": 0.333,
       "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 5,
+      "positiveCount": 4,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "Wall Street Hedge Funds Targeted in Cyberattacks | The Asia Trade 8/6/2026",
-      "topPositiveTitle": "Gold Rallies Near $4,300 on Progress Toward Reopening Hormuz",
+      "topNegativeTitle": "Hackers Target Hedge Funds, Iran Says Deal Reached with Oman | The Opening Trade 8/6/2026",
+      "topPositiveTitle": "Wall Street Bulls Flock to S&P 500 Calls as Rally Broadens",
       "items": [
         {
-          "title": "Wall Street Hedge Funds Targeted in Cyberattacks | The Asia Trade 8/6/2026",
+          "title": "Hackers Target Hedge Funds, Iran Says Deal Reached with Oman | The Opening Trade 8/6/2026",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-06T04:24:04+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-06/the-asia-trade-8-6-2026-video",
+          "publishedAt": "2026-08-06T11:18:03+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-06/the-opening-trade-8-6-2026-video",
           "tags": [
-            "global_broad",
+            "commodity",
+            "geopolitical",
             "market",
             "us_broad"
           ]
@@ -133,64 +93,77 @@
           ]
         },
         {
-          "title": "Japanese Yen Intervention: Why Bessent Wants Fed to Expand FIMA Backstop",
-          "source": "Bloomberg Economics",
+          "title": "Sprake: Markets Punch-Drunk on AI Capex Spend",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-05T20:21:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-05/japanese-yen-intervention-why-bessent-wants-fed-to-expand-fima-backstop",
+          "publishedAt": "2026-08-05T10:12:50+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-05/sprake-markets-punch-drunk-on-ai-capex-spend-video",
           "tags": [
-            "fx",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Fed’s Cook Says Ready to Raise Rates If Inflation Doesn’t Cool",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-05T20:05:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-05/fed-s-cook-says-ready-to-raise-rates-if-inflation-doesn-t-cool",
-          "tags": [
+            "commodity",
             "market",
             "rates",
             "us_broad"
           ]
         },
         {
-          "title": "Kashkari Says Fed Should Raise Rates Now to Tame Inflation",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-05T15:02:04+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-05/kashkari-says-fed-should-raise-rates-now-to-bring-down-inflation",
+          "title": "DeepSeek Plans AI Price Hike; Google Reshuffles AI Leadership | Bloomberg Brief 08/06/26",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-06T12:33:29+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-06/bloomberg-brief-08-06-26-video",
           "tags": [
             "market",
-            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Iran Nears Strait of Hormuz Shipping Deal, Hackers Target Wall Street | The Pulse 8/6/2026",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-06T11:57:14+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-06/the-pulse-8-6-2026-video",
+          "tags": [
+            "geopolitical",
+            "market",
             "us_broad"
           ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.165,
-      "negativeCount": 0,
-      "positiveCount": 1,
+      "avgSentiment": 0.468,
+      "negativeCount": 1,
+      "positiveCount": 3,
       "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 2,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "AI-Driven Chip Boom Lifts Korean Current Account to Fresh Record",
-      "topPositiveTitle": "China’s Cheap AI Is Shifting Investors’ Focus to Internet Stocks",
+      "topNegativeTitle": "Alphabet Is Seeking Up to $25 Billion From Latest Bond Sale",
+      "topPositiveTitle": "Wall Street Bulls Flock to S&P 500 Calls as Rally Broadens",
       "items": [
         {
-          "title": "AI-Driven Chip Boom Lifts Korean Current Account to Fresh Record",
+          "title": "Alphabet Is Seeking Up to $25 Billion From Latest Bond Sale",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-06T11:55:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-06/alphabet-returns-to-bond-market-amid-ai-spending-worries",
+          "tags": [
+            "macro_risk",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "How the AI Chip Boom is Reshaping South Korea’s Markets, Economy and Society",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-06T00:51:46+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-06/ai-driven-chip-boom-lifts-korean-current-account-to-fresh-record",
+          "publishedAt": "2026-08-06T11:00:01+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-08-06/how-the-ai-chip-boom-is-reshaping-south-korea-s-markets-economy-and-society",
           "tags": [
             "jp_semiconductor",
             "market",
@@ -198,12 +171,37 @@
           ]
         },
         {
-          "title": "China’s Cheap AI Is Shifting Investors’ Focus to Internet Stocks",
+          "title": "AI Is Boosting UK Productivity and Harming Jobs, BOE Says",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-06T10:39:56+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-06/ai-is-boosting-uk-productivity-and-harming-jobs-boe-says",
+          "tags": [
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Wall Street Bulls Flock to S&P 500 Calls as Rally Broadens",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-05T23:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-05/china-s-cheap-ai-is-shifting-investors-focus-to-internet-stocks",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-08-06T12:14:43+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-06/wall-street-bulls-flock-to-s-p-500-calls-as-rally-broadens",
+          "tags": [
+            "market",
+            "us_broad",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Tech Stocks Propel Markets to Record Highs",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-08-06T12:03:38+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-06/tech-stocks-propel-markets-to-record-highs-video",
           "tags": [
             "market",
             "us_growth"
@@ -212,70 +210,28 @@
       ]
     },
     "global_broad": {
-      "avgSentiment": 0.25,
+      "avgSentiment": 0,
       "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 2,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Wall Street Hedge Funds Targeted in Cyberattacks | The Asia Trade 8/6/2026",
-      "topPositiveTitle": "Stocks Retreat From Record on Chips, Gold Climbs: Markets Wrap",
-      "items": [
-        {
-          "title": "Wall Street Hedge Funds Targeted in Cyberattacks | The Asia Trade 8/6/2026",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-06T04:24:04+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-06/the-asia-trade-8-6-2026-video",
-          "tags": [
-            "global_broad",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Stocks Retreat From Record on Chips, Gold Climbs: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.5,
-          "publishedAt": "2026-08-05T22:06:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-05/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "global_broad",
-            "gold",
-            "jp_semiconductor",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "gold": {
-      "avgSentiment": 0.585,
+      "avgSentiment": 0.67,
       "negativeCount": 0,
-      "positiveCount": 2,
+      "positiveCount": 1,
       "neutralCount": 0,
-      "sourceCount": 2,
-      "itemCount": 2,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Stocks Retreat From Record on Chips, Gold Climbs: Markets Wrap",
+      "topNegativeTitle": "Gold Rallies Near $4,300 on Progress Toward Reopening Hormuz",
       "topPositiveTitle": "Gold Rallies Near $4,300 on Progress Toward Reopening Hormuz",
       "items": [
-        {
-          "title": "Stocks Retreat From Record on Chips, Gold Climbs: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.5,
-          "publishedAt": "2026-08-05T22:06:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-05/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "global_broad",
-            "gold",
-            "jp_semiconductor",
-            "market"
-          ]
-        },
         {
           "title": "Gold Rallies Near $4,300 on Progress Toward Reopening Hormuz",
           "source": "Bloomberg Economics",
@@ -306,29 +262,16 @@
       "items": []
     },
     "dividend": {
-      "avgSentiment": 0.33,
+      "avgSentiment": 0,
       "negativeCount": 0,
-      "positiveCount": 1,
+      "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Commerzbank Unveils €1.2 Billion Buyback as UniCredit Talks Loom",
-      "topPositiveTitle": "Commerzbank Unveils €1.2 Billion Buyback as UniCredit Talks Loom",
-      "items": [
-        {
-          "title": "Commerzbank Unveils €1.2 Billion Buyback as UniCredit Talks Loom",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-06T05:10:07+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-06/commerzbank-unveils-1-2-billion-buyback-as-unicredit-talks-loom",
-          "tags": [
-            "dividend",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "macro_risk": {
       "avgSentiment": 0.17,
@@ -338,24 +281,24 @@
       "sourceCount": 2,
       "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "SK Hynix Hit by Another 30% Pre-Market Flash Crash on Nextrade",
-      "topPositiveTitle": "Russia’s War Economy Is Fueling Pay Gains Companies Can’t Afford",
+      "topNegativeTitle": "Alphabet Is Seeking Up to $25 Billion From Latest Bond Sale",
+      "topPositiveTitle": "Russia’s War Economy Fuels Pay Gains Companies Can’t Afford",
       "items": [
         {
-          "title": "SK Hynix Hit by Another 30% Pre-Market Flash Crash on Nextrade",
+          "title": "Alphabet Is Seeking Up to $25 Billion From Latest Bond Sale",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-08-06T02:19:42+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-06/sk-hynix-hit-by-pre-market-flash-crash-on-nextrade-bourse-again",
+          "publishedAt": "2026-08-06T11:55:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-06/alphabet-returns-to-bond-market-amid-ai-spending-worries",
           "tags": [
-            "jp_semiconductor",
             "macro_risk",
-            "market"
+            "market",
+            "us_growth"
           ]
         },
         {
-          "title": "Russia’s War Economy Is Fueling Pay Gains Companies Can’t Afford",
+          "title": "Russia’s War Economy Fuels Pay Gains Companies Can’t Afford",
           "source": "Bloomberg Economics",
           "sentiment": "positive",
           "sentimentScore": 0.67,
@@ -370,91 +313,40 @@
       ]
     },
     "fx": {
-      "avgSentiment": 0.143,
+      "avgSentiment": 0,
       "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 6,
-      "sourceCount": 2,
-      "itemCount": 7,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Former Japan PM on Yen, Communication with BOJ and Markets",
-      "topPositiveTitle": "KRW/USD: Korean Won Rises to Highest Since October on Exporters Dollar Sales",
-      "items": [
-        {
-          "title": "Former Japan PM on Yen, Communication with BOJ and Markets",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-06T03:59:38+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-06/fmr-japan-pm-on-yen-communication-with-boj-and-markets-video",
-          "tags": [
-            "fx",
-            "jp_broad",
-            "market"
-          ]
-        },
-        {
-          "title": "Japan 30-Year Bond Sale Brings Relief Amid Fiscal Concerns",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-06T03:41:44+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-06/japan-30-year-bond-sale-sees-firmer-demand-than-12-month-average-msgyytfd",
-          "tags": [
-            "fx",
-            "market"
-          ]
-        },
-        {
-          "title": "‘Sell America’ Debate Re-Emerges as US Policies Sow Doubts",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-05T23:42:22+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-05/us-policies-reignite-debate-over-sell-america-trade-strategy",
-          "tags": [
-            "fx",
-            "market"
-          ]
-        },
-        {
-          "title": "Japan’s Kishida Sees Growth Strategy as Game Changer for Yen",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-05T23:15:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-05/japan-s-kishida-sees-growth-strategy-as-game-changer-for-yen",
-          "tags": [
-            "fx",
-            "market"
-          ]
-        },
-        {
-          "title": "Japanese Yen Intervention: Why Bessent Wants Fed to Expand FIMA Backstop",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-05T20:21:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-05/japanese-yen-intervention-why-bessent-wants-fed-to-expand-fima-backstop",
-          "tags": [
-            "fx",
-            "market",
-            "us_broad"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "rates": {
-      "avgSentiment": 0.001,
+      "avgSentiment": -0.066,
       "negativeCount": 2,
       "positiveCount": 1,
-      "neutralCount": 5,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 8,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Czechs Set to Hold Rates as Price Pressures Signal Cautious Tone",
+      "topNegativeTitle": "Banxico to Hold Rates on Inflation and Growth Risks: Day Guide",
       "topPositiveTitle": "Gold Rallies Near $4,300 on Progress Toward Reopening Hormuz",
       "items": [
+        {
+          "title": "Banxico to Hold Rates on Inflation and Growth Risks: Day Guide",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-08-06T09:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-06/banxico-to-hold-rates-on-inflation-and-growth-risks-day-guide",
+          "tags": [
+            "market",
+            "rates"
+          ]
+        },
         {
           "title": "Czechs Set to Hold Rates as Price Pressures Signal Cautious Tone",
           "source": "Bloomberg Economics",
@@ -464,18 +356,6 @@
           "url": "https://www.bloomberg.com/news/articles/2026-08-06/czechs-set-to-hold-rates-as-price-pressures-signal-cautious-tone",
           "tags": [
             "commodity",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Traders in India Dial Back October Rate-Hike Bets After Dovish RBI Speak",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-06T02:37:08+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-08-06/traders-in-india-dial-back-october-rate-hike-bets-after-dovish-rbi-speak",
-          "tags": [
             "market",
             "rates"
           ]
@@ -494,26 +374,29 @@
           ]
         },
         {
-          "title": "Why the RBI Is Emerging as an Asian Rate Outlier in Five Charts",
-          "source": "Bloomberg Economics",
+          "title": "Sprake: Markets Punch-Drunk on AI Capex Spend",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-06T01:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-06/why-the-rbi-is-emerging-as-an-asian-rate-outlier-in-five-charts",
+          "publishedAt": "2026-08-05T10:12:50+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-05/sprake-markets-punch-drunk-on-ai-capex-spend-video",
           "tags": [
             "commodity",
             "market",
-            "rates"
+            "rates",
+            "us_broad"
           ]
         },
         {
-          "title": "Fed’s Cook Says Ready to Raise Rates If Inflation Doesn’t Cool",
+          "title": "Gold Rallies Near $4,300 on Progress Toward Reopening Hormuz",
           "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-05T20:05:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-05/fed-s-cook-says-ready-to-raise-rates-if-inflation-doesn-t-cool",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-05T23:37:37+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-05/gold-holds-gain-as-progress-on-hormuz-deal-lowers-rate-hike-odds",
           "tags": [
+            "commodity",
+            "gold",
             "market",
             "rates",
             "us_broad"
@@ -522,26 +405,25 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.041,
+      "avgSentiment": -0.055,
       "negativeCount": 2,
-      "positiveCount": 3,
-      "neutralCount": 3,
+      "positiveCount": 2,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 8,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Latest Oil Market News and Analysis for Aug. 6",
+      "topNegativeTitle": "Celsius Shares Slump as Namesake Brand Sales Tumble",
       "topPositiveTitle": "Gold Rallies Near $4,300 on Progress Toward Reopening Hormuz",
       "items": [
         {
-          "title": "Latest Oil Market News and Analysis for Aug. 6",
+          "title": "Celsius Shares Slump as Namesake Brand Sales Tumble",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-08-05T22:01:13+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-05/latest-oil-market-news-and-analysis-for-aug-6",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-08-06T10:56:12+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-06/celsius-shares-slump-as-namesake-brand-sales-tumble",
           "tags": [
             "commodity",
-            "geopolitical",
             "market"
           ]
         },
@@ -559,96 +441,86 @@
           ]
         },
         {
-          "title": "Iran Says Agreement on Hormuz Shipping Reached With Oman",
+          "title": "Hackers Target Hedge Funds, Iran Says Deal Reached with Oman | The Opening Trade 8/6/2026",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-06T03:28:08+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-06/iran-says-agreement-on-hormuz-shipping-reached-with-oman-video",
+          "publishedAt": "2026-08-06T11:18:03+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-06/the-opening-trade-8-6-2026-video",
           "tags": [
             "commodity",
             "geopolitical",
-            "market"
+            "market",
+            "us_broad"
           ]
         },
         {
-          "title": "China Steel Group Says Push for Yuan-Pricing Would Help Iron Ore",
+          "title": "Sprake: Markets Punch-Drunk on AI Capex Spend",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-06T02:58:49+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-06/china-steel-group-says-push-for-yuan-pricing-would-help-iron-ore",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "Why the RBI Is Emerging as an Asian Rate Outlier in Five Charts",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-06T01:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-06/why-the-rbi-is-emerging-as-an-asian-rate-outlier-in-five-charts",
+          "publishedAt": "2026-08-05T10:12:50+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-05/sprake-markets-punch-drunk-on-ai-capex-spend-video",
           "tags": [
             "commodity",
             "market",
-            "rates"
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Australia Posts Surprise Trade Surplus as Commodity Exports Gain",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-06T02:04:12+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-06/australia-posts-surprise-trade-surplus-as-commodity-exports-gain",
+          "tags": [
+            "commodity",
+            "market"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": -0.2,
-      "negativeCount": 2,
-      "positiveCount": 1,
+      "avgSentiment": 0.222,
+      "negativeCount": 1,
+      "positiveCount": 3,
       "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Taiwan Traders Swallow Losses After Stocks Plunge and Buy More",
-      "topPositiveTitle": "Russia’s War Economy Is Fueling Pay Gains Companies Can’t Afford",
+      "topNegativeTitle": "Stocks Waver as Traders Await Iran Deal, Jobs Data: Markets Wrap",
+      "topPositiveTitle": "Emerging Currencies Hold Near Record High as Carry Trades Revive",
       "items": [
         {
-          "title": "Taiwan Traders Swallow Losses After Stocks Plunge and Buy More",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-08-05T23:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-05/day-traders-hammered-by-stock-market-slump-double-down-in-taiwan",
-          "tags": [
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "Latest Oil Market News and Analysis for Aug. 6",
+          "title": "Stocks Waver as Traders Await Iran Deal, Jobs Data: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.67,
-          "publishedAt": "2026-08-05T22:01:13+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-05/latest-oil-market-news-and-analysis-for-aug-6",
+          "publishedAt": "2026-08-05T22:06:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-05/stock-market-today-dow-s-p-live-updates",
           "tags": [
-            "commodity",
             "geopolitical",
             "market"
           ]
         },
         {
-          "title": "Iran Says Agreement on Hormuz Shipping Reached With Oman",
+          "title": "Hackers Target Hedge Funds, Iran Says Deal Reached with Oman | The Opening Trade 8/6/2026",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-06T03:28:08+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-06/iran-says-agreement-on-hormuz-shipping-reached-with-oman-video",
+          "publishedAt": "2026-08-06T11:18:03+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-06/the-opening-trade-8-6-2026-video",
           "tags": [
             "commodity",
             "geopolitical",
-            "market"
+            "market",
+            "us_broad"
           ]
         },
         {
-          "title": "Putin’s Push to Cut Rates Piles Pressure on Bank Head Nabiullina",
+          "title": "Putin’s Rate-Cut Push Piles Pressure on Bank Head Nabiullina",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
@@ -656,12 +528,24 @@
           "url": "https://www.bloomberg.com/news/articles/2026-08-05/putin-s-push-to-cut-rates-piles-pressure-on-bank-head-nabiullina",
           "tags": [
             "geopolitical",
-            "market",
-            "rates"
+            "market"
           ]
         },
         {
-          "title": "Russia’s War Economy Is Fueling Pay Gains Companies Can’t Afford",
+          "title": "Iran Nears Strait of Hormuz Shipping Deal, Hackers Target Wall Street | The Pulse 8/6/2026",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-06T11:57:14+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-06/the-pulse-8-6-2026-video",
+          "tags": [
+            "geopolitical",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Russia’s War Economy Fuels Pay Gains Companies Can’t Afford",
           "source": "Bloomberg Economics",
           "sentiment": "positive",
           "sentimentScore": 0.67,
@@ -684,7 +568,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 3,
+    "excludedCount": 4,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
