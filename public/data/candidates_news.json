@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-08-06T07:36:48.733814+09:00",
-  "sourceUpdatedAt": "2026-08-05T22:06:50+00:00",
+  "updatedAt": "2026-08-06T09:50:07.980400+09:00",
+  "sourceUpdatedAt": "2026-08-06T00:46:51+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -17,44 +17,43 @@
       "items": []
     },
     "jp_semiconductor": {
-      "avgSentiment": 0.33,
+      "avgSentiment": 0,
       "negativeCount": 0,
-      "positiveCount": 1,
+      "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Stocks Edge Lower as Rate Hike Rumbles Offset Nvidia’s Rally",
-      "topPositiveTitle": "Stocks Edge Lower as Rate Hike Rumbles Offset Nvidia’s Rally",
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
+    },
+    "us_broad": {
+      "avgSentiment": 0.19,
+      "negativeCount": 0,
+      "positiveCount": 2,
+      "neutralCount": 5,
+      "sourceCount": 2,
+      "itemCount": 7,
+      "isStale": false,
+      "topNegativeTitle": "Asian Stocks Drop as AI Rally Pauses, Oil Dips: Markets Wrap",
+      "topPositiveTitle": "S&P 500 Edges Lower After $3.7 Trillion Advance: Markets Wrap",
       "items": [
         {
-          "title": "Stocks Edge Lower as Rate Hike Rumbles Offset Nvidia’s Rally",
+          "title": "Asian Stocks Drop as AI Rally Pauses, Oil Dips: Markets Wrap",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-05T11:52:30+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-05/s-p-500-poised-for-another-record-as-ai-spending-narrative-holds",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-05T22:06:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-05/stock-market-today-dow-s-p-live-updates",
           "tags": [
-            "jp_semiconductor",
+            "commodity",
+            "geopolitical",
             "market",
-            "rates",
             "us_broad",
             "us_growth"
           ]
-        }
-      ]
-    },
-    "us_broad": {
-      "avgSentiment": 0.314,
-      "negativeCount": 0,
-      "positiveCount": 5,
-      "neutralCount": 4,
-      "sourceCount": 2,
-      "itemCount": 9,
-      "isStale": false,
-      "topNegativeTitle": "Fed's Cook 'Prepared to Act' on Rates If Inflation Doesn't Slow",
-      "topPositiveTitle": "S&P 500 Edges Lower After $3.7 Trillion Advance: Markets Wrap",
-      "items": [
+        },
         {
           "title": "Fed's Cook 'Prepared to Act' on Rates If Inflation Doesn't Slow",
           "source": "Bloomberg Markets",
@@ -106,68 +105,44 @@
             "rates",
             "us_broad"
           ]
-        },
-        {
-          "title": "CME, FanDuel Venture Falters as Prediction Startups Race Ahead",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-05T20:47:30+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-05/cme-fanduel-venture-falters-as-prediction-startups-race-ahead",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.177,
+      "avgSentiment": 0.165,
       "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 2,
+      "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 3,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Celestica’s $3 Billion Deal Joins Data Center Funding Rush",
-      "topPositiveTitle": "Stocks Edge Lower as Rate Hike Rumbles Offset Nvidia’s Rally",
+      "topNegativeTitle": "Asian Stocks Drop as AI Rally Pauses, Oil Dips: Markets Wrap",
+      "topPositiveTitle": "China’s Cheap AI Is Shifting Investors’ Focus to Internet Stocks",
       "items": [
         {
-          "title": "Celestica’s $3 Billion Deal Joins Data Center Funding Rush",
+          "title": "Asian Stocks Drop as AI Rally Pauses, Oil Dips: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-05T21:05:38+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-05/celestica-joins-data-center-funding-rush-with-3-billion-deal",
-          "tags": [
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Asian Stocks Set for Declines as AI Rally Cools: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.2,
           "publishedAt": "2026-08-05T22:06:50+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-08-05/stock-market-today-dow-s-p-live-updates",
           "tags": [
+            "commodity",
+            "geopolitical",
             "market",
+            "us_broad",
             "us_growth"
           ]
         },
         {
-          "title": "Stocks Edge Lower as Rate Hike Rumbles Offset Nvidia’s Rally",
+          "title": "China’s Cheap AI Is Shifting Investors’ Focus to Internet Stocks",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.33,
-          "publishedAt": "2026-08-05T11:52:30+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-05/s-p-500-poised-for-another-record-as-ai-spending-narrative-holds",
+          "publishedAt": "2026-08-05T23:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-05/china-s-cheap-ai-is-shifting-investors-focus-to-internet-stocks",
           "tags": [
-            "jp_semiconductor",
             "market",
-            "rates",
-            "us_broad",
             "us_growth"
           ]
         }
@@ -186,54 +161,57 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": 0.25,
+      "avgSentiment": 0.33,
       "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 1,
+      "neutralCount": 0,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Big Take: The $19 Billion Menopause Economy",
-      "topPositiveTitle": "Gold Jumps Most Since February on Hormuz, Technical Breakout",
+      "topNegativeTitle": "Gold Extends Gain as Hormuz Deal Progress Lowers Rate-Hike Odds",
+      "topPositiveTitle": "Gold Extends Gain as Hormuz Deal Progress Lowers Rate-Hike Odds",
       "items": [
         {
-          "title": "Big Take: The $19 Billion Menopause Economy",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-05T21:07:55+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-05/big-take-the-19-billion-menopause-economy-video",
-          "tags": [
-            "gold",
-            "market"
-          ]
-        },
-        {
-          "title": "Gold Jumps Most Since February on Hormuz, Technical Breakout",
-          "source": "Bloomberg Markets",
+          "title": "Gold Extends Gain as Hormuz Deal Progress Lowers Rate-Hike Odds",
+          "source": "Bloomberg Economics",
           "sentiment": "positive",
-          "sentimentScore": 0.5,
-          "publishedAt": "2026-08-04T23:54:09+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-04/gold-holds-steady-as-progress-on-hormuz-trims-rate-hike-bets",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-05T23:37:37+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-05/gold-holds-gain-as-progress-on-hormuz-deal-lowers-rate-hike-odds",
           "tags": [
+            "commodity",
             "gold",
             "market",
+            "rates",
             "us_broad"
           ]
         }
       ]
     },
     "reit": {
-      "avgSentiment": 0,
+      "avgSentiment": 1.0,
       "negativeCount": 0,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Zillow’s Revenue Jumps as Rentals Offer ‘Bright Spot’",
+      "topPositiveTitle": "Zillow’s Revenue Jumps as Rentals Offer ‘Bright Spot’",
+      "items": [
+        {
+          "title": "Zillow’s Revenue Jumps as Rentals Offer ‘Bright Spot’",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-08-05T20:35:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-05/zillow-s-revenue-jumps-as-rentals-offer-bright-spot",
+          "tags": [
+            "market",
+            "reit"
+          ]
+        }
+      ]
     },
     "dividend": {
       "avgSentiment": 0,
@@ -286,16 +264,52 @@
       ]
     },
     "fx": {
-      "avgSentiment": 0.278,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 4,
+      "positiveCount": 0,
+      "neutralCount": 6,
       "sourceCount": 2,
       "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Japanese Yen Intervention: Why Bessent Wants Fed to Expand FIMA Backstop",
-      "topPositiveTitle": "Yen Seen Gaining 6% Against Dollar by End of 2026, Bank of America Says",
+      "topNegativeTitle": "Japan’s Kishida On Growth Strategy and Yen Intervention",
+      "topPositiveTitle": "Japan’s Kishida On Growth Strategy and Yen Intervention",
       "items": [
+        {
+          "title": "Japan’s Kishida On Growth Strategy and Yen Intervention",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-06T00:07:19+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-06/japan-s-kishida-on-growth-strategy-and-yen-intervention-video",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        },
+        {
+          "title": "‘Sell America’ Debate Re-Emerges as US Policies Sow Some Doubts",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-05T23:42:22+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-05/us-policies-reignite-debate-over-sell-america-trade-strategy",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        },
+        {
+          "title": "Japan’s Kishida Sees Growth as Game Changer for Yen",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-05T23:00:11+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-05/japan-s-kishida-sees-growth-as-game-changer-for-yen",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        },
         {
           "title": "Japanese Yen Intervention: Why Bessent Wants Fed to Expand FIMA Backstop",
           "source": "Bloomberg Economics",
@@ -320,68 +334,20 @@
             "fx",
             "market"
           ]
-        },
-        {
-          "title": "ZIG/USD: Zimbabwe Won’t Rush US Dollar Phase-Out Until Inflation Stabilizes",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-05T12:00:40+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-05/zig-usd-zimbabwe-won-t-rush-us-dollar-phase-out-until-inflation-stabilizes",
-          "tags": [
-            "fx",
-            "market"
-          ]
-        },
-        {
-          "title": "Katayama Cites Bessent’s Faith in Japan’s Improving Fiscal Path",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-05T10:27:14+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-05/katayama-cites-bessent-s-faith-in-japan-s-improving-fiscal-path",
-          "tags": [
-            "fx",
-            "market"
-          ]
-        },
-        {
-          "title": "Carry Trade Is Powering On as Investors Sidestep Yen’s Gains",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-05T11:15:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-05/carry-trade-is-powering-on-as-investors-sidestep-yen-s-gains",
-          "tags": [
-            "fx",
-            "market"
-          ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": 0.0,
-      "negativeCount": 1,
+      "avgSentiment": 0.066,
+      "negativeCount": 0,
       "positiveCount": 1,
       "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Philippine Inflation Slows a Third Month, Easing Pressure for Rate Hike",
-      "topPositiveTitle": "Stocks Edge Lower as Rate Hike Rumbles Offset Nvidia’s Rally",
+      "topNegativeTitle": "Fed's Cook 'Prepared to Act' on Rates If Inflation Doesn't Slow",
+      "topPositiveTitle": "Gold Extends Gain as Hormuz Deal Progress Lowers Rate-Hike Odds",
       "items": [
-        {
-          "title": "Philippine Inflation Slows a Third Month, Easing Pressure for Rate Hike",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-05T01:02:10+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-05/philippine-inflation-slows-a-third-month-easing-pressure-for-rate-hike",
-          "tags": [
-            "market",
-            "rates"
-          ]
-        },
         {
           "title": "Fed's Cook 'Prepared to Act' on Rates If Inflation Doesn't Slow",
           "source": "Bloomberg Markets",
@@ -433,19 +399,34 @@
             "rates",
             "us_broad"
           ]
+        },
+        {
+          "title": "Gold Extends Gain as Hormuz Deal Progress Lowers Rate-Hike Odds",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-05T23:37:37+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-05/gold-holds-gain-as-progress-on-hormuz-deal-lowers-rate-hike-odds",
+          "tags": [
+            "commodity",
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": -0.335,
+      "avgSentiment": -0.057,
       "negativeCount": 1,
-      "positiveCount": 0,
-      "neutralCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 2,
+      "itemCount": 6,
       "isStale": false,
       "topNegativeTitle": "Latest Oil Market News and Analysis for Aug. 6",
-      "topPositiveTitle": "Italy Must Use EU’s Energy Leeway, Giorgetti Tells Lawmakers",
+      "topPositiveTitle": "Gold Extends Gain as Hormuz Deal Progress Lowers Rate-Hike Odds",
       "items": [
         {
           "title": "Latest Oil Market News and Analysis for Aug. 6",
@@ -458,6 +439,46 @@
             "commodity",
             "geopolitical",
             "market"
+          ]
+        },
+        {
+          "title": "What We Know About Iran's Hormuz Agreement With Oman",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-06T00:05:35+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-06/what-we-know-about-iran-s-hormuz-agreement-with-oman-video",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Prabowo’s Radical Commodity Export Plan Faces Dueling Visions",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-06T00:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-06/prabowo-s-radical-commodity-export-plan-faces-dueling-visions",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "Asian Stocks Drop as AI Rally Pauses, Oil Dips: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-05T22:06:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-05/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market",
+            "us_broad",
+            "us_growth"
           ]
         },
         {
@@ -475,15 +496,15 @@
       ]
     },
     "geopolitical": {
-      "avgSentiment": -0.223,
+      "avgSentiment": -0.134,
       "negativeCount": 1,
       "positiveCount": 0,
-      "neutralCount": 2,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 5,
       "isStale": false,
       "topNegativeTitle": "Latest Oil Market News and Analysis for Aug. 6",
-      "topPositiveTitle": "Putin’s Push to Cut Rates Piles Pressure on Bank Head Nabiullina",
+      "topPositiveTitle": "What We Know About Iran's Hormuz Agreement With Oman",
       "items": [
         {
           "title": "Latest Oil Market News and Analysis for Aug. 6",
@@ -496,6 +517,34 @@
             "commodity",
             "geopolitical",
             "market"
+          ]
+        },
+        {
+          "title": "What We Know About Iran's Hormuz Agreement With Oman",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-06T00:05:35+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-06/what-we-know-about-iran-s-hormuz-agreement-with-oman-video",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Asian Stocks Drop as AI Rally Pauses, Oil Dips: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-05T22:06:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-05/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market",
+            "us_broad",
+            "us_growth"
           ]
         },
         {
@@ -535,7 +584,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 3,
+    "excludedCount": 4,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
