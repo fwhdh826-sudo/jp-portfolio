@@ -1,33 +1,20 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-08-07T14:12:05.602525+09:00",
-  "sourceUpdatedAt": "2026-08-07T05:06:34+00:00",
+  "updatedAt": "2026-08-07T21:06:09.888275+09:00",
+  "sourceUpdatedAt": "2026-08-07T11:57:58+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "IMF’s Katz Sees Bank of Japan Continuing to Normalize Policy",
-      "topPositiveTitle": "IMF’s Katz Sees Bank of Japan Continuing to Normalize Policy",
-      "items": [
-        {
-          "title": "IMF’s Katz Sees Bank of Japan Continuing to Normalize Policy",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-06T14:37:40+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-06/imf-s-katz-sees-bank-of-japan-continuing-to-normalize-policy",
-          "tags": [
-            "jp_broad",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "jp_semiconductor": {
       "avgSentiment": 0,
@@ -42,24 +29,61 @@
       "items": []
     },
     "us_broad": {
-      "avgSentiment": 0.447,
+      "avgSentiment": 0.333,
       "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 3,
+      "positiveCount": 3,
+      "neutralCount": 3,
+      "sourceCount": 2,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Warsh’s Faith in Markets Sidelines More Nuanced Fed Policy Tools",
-      "topPositiveTitle": "Fed’s Musalem Calls for Meaningful Restraint on Inflation",
+      "topNegativeTitle": "US Jobs Report July 2026: Live News on Employment, Payrolls",
+      "topPositiveTitle": "Trump Says Hormuz Talks ‘Moving Along’ Even as Iran Mulls US Ban | The Opening Trade 8/7/2026",
       "items": [
         {
-          "title": "Warsh’s Faith in Markets Sidelines More Nuanced Fed Policy Tools",
+          "title": "US Jobs Report July 2026: Live News on Employment, Payrolls",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-06T14:10:34+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-06/warsh-s-lean-on-markets-trades-precise-policy-tool-for-blunt-one",
+          "publishedAt": "2026-08-07T11:36:32+00:00",
+          "url": "https://www.bloomberg.com/news/live-blog/2026-08-07/us-employment-report-for-july-live-updates",
           "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Jobs Data Won't Move Fed's Thinking: Natixus' Hodge",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-07T11:14:15+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-07/jobs-data-won-t-move-fed-s-thinking-natixus-hodge-video",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "This Job Reports Has High Stakes for Investors",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-07T10:25:58+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-08-07/this-job-reports-has-high-stakes-for-investors",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Stocks Gain as Oil Dips Ahead of Key US Jobs Data: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-06T22:10:21+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-06/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
             "market",
             "us_broad"
           ]
@@ -75,51 +99,22 @@
             "market",
             "us_broad"
           ]
-        },
-        {
-          "title": "Gold Slips as Traders Weigh Fed Path After Renewed War Tensions",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-05T23:37:37+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-05/gold-holds-gain-as-progress-on-hormuz-deal-lowers-rate-hike-odds",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "gold",
-            "macro_risk",
-            "market",
-            "us_broad"
-          ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": -0.335,
-      "negativeCount": 1,
-      "positiveCount": 0,
+      "avgSentiment": 0.165,
+      "negativeCount": 0,
+      "positiveCount": 1,
       "neutralCount": 1,
       "sourceCount": 2,
       "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Asia Pacific Share Sales Overcome Volatility to Shatter Records",
-      "topPositiveTitle": "China’s Trade Boom Survives Extreme Rains as AI Race Lifts Sales",
+      "topNegativeTitle": "China’s Trade Boom Survives Extreme Rains as AI Lifts Demand",
+      "topPositiveTitle": "Big Tech Stocks Storm Back as AI Fears Fade and Euphoria Resumes",
       "items": [
         {
-          "title": "Asia Pacific Share Sales Overcome Volatility to Shatter Records",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-08-07T04:00:17+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-07/asia-pacific-share-sales-overcome-volatility-to-shatter-records",
-          "tags": [
-            "macro_risk",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "China’s Trade Boom Survives Extreme Rains as AI Race Lifts Sales",
+          "title": "China’s Trade Boom Survives Extreme Rains as AI Lifts Demand",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
@@ -129,60 +124,58 @@
             "market",
             "us_growth"
           ]
-        }
-      ]
-    },
-    "global_broad": {
-      "avgSentiment": -0.33,
-      "negativeCount": 1,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
-      "isStale": false,
-      "topNegativeTitle": "Iran Strikes 'Hostile Targets'; Yen Weakens Past 158 | The Asia Trade 8/7/2026",
-      "topPositiveTitle": "Iran Strikes 'Hostile Targets'; Yen Weakens Past 158 | The Asia Trade 8/7/2026",
-      "items": [
+        },
         {
-          "title": "Iran Strikes 'Hostile Targets'; Yen Weakens Past 158 | The Asia Trade 8/7/2026",
+          "title": "Big Tech Stocks Storm Back as AI Fears Fade and Euphoria Resumes",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-07T04:02:55+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-07/the-asia-trade-8-7-2026-video",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-07T10:30:01+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-07/big-tech-stocks-storm-back-as-ai-fears-fade-and-euphoria-resumes",
           "tags": [
-            "fx",
-            "geopolitical",
-            "global_broad",
-            "market"
+            "market",
+            "us_growth"
           ]
         }
       ]
     },
+    "global_broad": {
+      "avgSentiment": 0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
+      "isStale": false,
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
+    },
     "gold": {
-      "avgSentiment": 0.67,
+      "avgSentiment": 1.0,
       "negativeCount": 0,
       "positiveCount": 1,
       "neutralCount": 0,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Gold Slips as Traders Weigh Fed Path After Renewed War Tensions",
-      "topPositiveTitle": "Gold Slips as Traders Weigh Fed Path After Renewed War Tensions",
+      "topNegativeTitle": "Trump Says Hormuz Talks ‘Moving Along’ Even as Iran Mulls US Ban | The Opening Trade 8/7/2026",
+      "topPositiveTitle": "Trump Says Hormuz Talks ‘Moving Along’ Even as Iran Mulls US Ban | The Opening Trade 8/7/2026",
       "items": [
         {
-          "title": "Gold Slips as Traders Weigh Fed Path After Renewed War Tensions",
-          "source": "Bloomberg Economics",
+          "title": "Trump Says Hormuz Talks ‘Moving Along’ Even as Iran Mulls US Ban | The Opening Trade 8/7/2026",
+          "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-05T23:37:37+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-05/gold-holds-gain-as-progress-on-hormuz-deal-lowers-rate-hike-odds",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-08-07T09:59:50+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-07/the-opening-trade-8-7-2026-video",
           "tags": [
             "commodity",
+            "fx",
             "geopolitical",
             "gold",
-            "macro_risk",
             "market",
+            "rates",
             "us_broad"
           ]
         }
@@ -213,29 +206,16 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.054,
-      "negativeCount": 2,
+      "avgSentiment": 0.214,
+      "negativeCount": 1,
       "positiveCount": 2,
-      "neutralCount": 1,
+      "neutralCount": 2,
       "sourceCount": 2,
       "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Asia Pacific Share Sales Overcome Volatility to Shatter Records",
-      "topPositiveTitle": "Gold Slips as Traders Weigh Fed Path After Renewed War Tensions",
+      "topNegativeTitle": "Philippine Growth Unexpectedly Slumps to 2.3% as War, Graft Sap Demand",
+      "topPositiveTitle": "Hindalco Profit Tops Estimates as Metal Prices Surge",
       "items": [
-        {
-          "title": "Asia Pacific Share Sales Overcome Volatility to Shatter Records",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-08-07T04:00:17+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-07/asia-pacific-share-sales-overcome-volatility-to-shatter-records",
-          "tags": [
-            "macro_risk",
-            "market",
-            "us_growth"
-          ]
-        },
         {
           "title": "Philippine Growth Unexpectedly Slumps to 2.3% as War, Graft Sap Demand",
           "source": "Bloomberg Economics",
@@ -250,107 +230,83 @@
           ]
         },
         {
-          "title": "Pacific Basin CEO Says Industry Faces Shift After Iran Conflict",
+          "title": "US Selling Euros for Yen Spurs Geopolitical Risk, BlackRock Says",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-07T03:55:42+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-07/pacific-basin-ceo-on-industry-shift-after-iran-conflict-video",
+          "publishedAt": "2026-08-07T10:04:22+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-07/us-selling-euros-for-yen-spurs-geopolitical-risk-blackrock-says",
           "tags": [
+            "fx",
             "geopolitical",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Banxico Keeps Rate at 6.5%, Signals No Change Going Forward",
+          "title": "Iran War Takes Heavy Toll on Australia, New Zealand as Oil Soars",
           "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-06T19:00:27+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-06/banxico-keeps-key-rate-at-6-5-as-inflation-risks-cloud-outlook",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Gold Slips as Traders Weigh Fed Path After Renewed War Tensions",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-05T23:37:37+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-05/gold-holds-gain-as-progress-on-hormuz-deal-lowers-rate-hike-odds",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-07T06:51:36+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-07/iran-war-takes-heavy-toll-on-australia-new-zealand-as-oil-soars",
           "tags": [
             "commodity",
             "geopolitical",
-            "gold",
             "macro_risk",
-            "market",
-            "us_broad"
+            "market"
+          ]
+        },
+        {
+          "title": "German Industrial Production Rises for Third Month on Cars",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-07T06:15:08+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-07/german-industrial-production-increases-for-third-month-on-cars",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Hindalco Profit Tops Estimates as Metal Prices Surge",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-08-07T09:35:33+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-07/hindalco-profit-tops-estimates-as-metal-prices-surge",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
           ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": 0.168,
-      "negativeCount": 1,
-      "positiveCount": 3,
-      "neutralCount": 4,
+      "avgSentiment": 0.5,
+      "negativeCount": 0,
+      "positiveCount": 4,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 8,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Iran Strikes 'Hostile Targets'; Yen Weakens Past 158 | The Asia Trade 8/7/2026",
-      "topPositiveTitle": "Why the Yen Is Surrendering Intervention Gains",
+      "topNegativeTitle": "US Selling Euros for Yen Spurs Geopolitical Risk, BlackRock Says",
+      "topPositiveTitle": "Bloomberg News Now",
       "items": [
         {
-          "title": "Iran Strikes 'Hostile Targets'; Yen Weakens Past 158 | The Asia Trade 8/7/2026",
+          "title": "US Selling Euros for Yen Spurs Geopolitical Risk, BlackRock Says",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-07T04:02:55+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-07/the-asia-trade-8-7-2026-video",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-07T10:04:22+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-07/us-selling-euros-for-yen-spurs-geopolitical-risk-blackrock-says",
           "tags": [
             "fx",
             "geopolitical",
-            "global_broad",
-            "market"
-          ]
-        },
-        {
-          "title": "Goldman Skeptical of Dollar-Dominance Threats After Yen Support",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-07T04:18:57+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-07/goldman-skeptical-of-dollar-dominance-threats-after-yen-support",
-          "tags": [
-            "fx",
-            "market"
-          ]
-        },
-        {
-          "title": "Zimbabwe’s VFEX Plans $5 Billion Market Value, Venture Board for Mining",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-07T04:15:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-07/zimbabwe-s-vfex-plans-5-billion-market-value-venture-board-for-mining",
-          "tags": [
-            "fx",
-            "market"
-          ]
-        },
-        {
-          "title": "Japan Confirms Three-Day Yen Intervention in Spring to Lift Yen",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-06T23:55:08+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-06/japan-confirms-intervention-on-three-days-in-spring-to-buoy-yen",
-          "tags": [
-            "fx",
+            "macro_risk",
             "market"
           ]
         },
@@ -365,66 +321,107 @@
             "fx",
             "market"
           ]
+        },
+        {
+          "title": "Japan’s Carmakers Forecast Yen Staying Weak Despite US Intervention",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-06T21:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-06/japan-s-carmakers-forecast-yen-staying-weak-despite-us-intervention",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        },
+        {
+          "title": "Yen Surrenders Nearly Half Its Gains From US-Japan Intervention",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-07T00:04:31+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-07/yen-surrenders-nearly-half-its-gains-from-us-japan-intervention",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        },
+        {
+          "title": "Bloomberg News Now",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-08-07T10:17:40+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-07/bloomberg-news-now-video",
+          "tags": [
+            "commodity",
+            "fx",
+            "geopolitical",
+            "market"
+          ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": 0.2,
+      "avgSentiment": 1.0,
       "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 0,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Oil Gains on Iran, Bonds Drop Before US Jobs Data: Markets Wrap",
-      "topPositiveTitle": "Oil Gains on Iran, Bonds Drop Before US Jobs Data: Markets Wrap",
+      "topNegativeTitle": "Trump Says Hormuz Talks ‘Moving Along’ Even as Iran Mulls US Ban | The Opening Trade 8/7/2026",
+      "topPositiveTitle": "Trump Says Hormuz Talks ‘Moving Along’ Even as Iran Mulls US Ban | The Opening Trade 8/7/2026",
       "items": [
         {
-          "title": "Oil Gains on Iran, Bonds Drop Before US Jobs Data: Markets Wrap",
+          "title": "Trump Says Hormuz Talks ‘Moving Along’ Even as Iran Mulls US Ban | The Opening Trade 8/7/2026",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.2,
-          "publishedAt": "2026-08-06T22:10:21+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-06/stock-market-today-dow-s-p-live-updates",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-08-07T09:59:50+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-07/the-opening-trade-8-7-2026-video",
           "tags": [
             "commodity",
+            "fx",
             "geopolitical",
+            "gold",
             "market",
-            "rates"
+            "rates",
+            "us_broad"
           ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.513,
+      "avgSentiment": 0.466,
       "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 1,
+      "positiveCount": 3,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Oil Gains on Iran, Bonds Drop Before US Jobs Data: Markets Wrap",
-      "topPositiveTitle": "Latest Oil Market News and Analysis for Aug. 7",
+      "topNegativeTitle": "Iran War Takes Heavy Toll on Australia, New Zealand as Oil Soars",
+      "topPositiveTitle": "Bloomberg News Now",
       "items": [
         {
-          "title": "Oil Gains on Iran, Bonds Drop Before US Jobs Data: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.2,
-          "publishedAt": "2026-08-06T22:10:21+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-06/stock-market-today-dow-s-p-live-updates",
+          "title": "Iran War Takes Heavy Toll on Australia, New Zealand as Oil Soars",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-07T06:51:36+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-07/iran-war-takes-heavy-toll-on-australia-new-zealand-as-oil-soars",
           "tags": [
             "commodity",
             "geopolitical",
-            "market",
-            "rates"
+            "macro_risk",
+            "market"
           ]
         },
         {
           "title": "Latest Oil Market News and Analysis for Aug. 7",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
           "publishedAt": "2026-08-06T22:01:46+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-08-06/latest-oil-market-news-and-analysis-for-aug-7",
           "tags": [
@@ -434,33 +431,61 @@
           ]
         },
         {
-          "title": "Gold Slips as Traders Weigh Fed Path After Renewed War Tensions",
-          "source": "Bloomberg Economics",
+          "title": "Stocks Gain as Oil Dips Ahead of Key US Jobs Data: Markets Wrap",
+          "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-05T23:37:37+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-05/gold-holds-gain-as-progress-on-hormuz-deal-lowers-rate-hike-odds",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-06T22:10:21+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-06/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Bloomberg News Now",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-08-07T10:17:40+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-07/bloomberg-news-now-video",
+          "tags": [
+            "commodity",
+            "fx",
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Trump Says Hormuz Talks ‘Moving Along’ Even as Iran Mulls US Ban | The Opening Trade 8/7/2026",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-08-07T09:59:50+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-07/the-opening-trade-8-7-2026-video",
+          "tags": [
+            "commodity",
+            "fx",
             "geopolitical",
             "gold",
-            "macro_risk",
             "market",
+            "rates",
             "us_broad"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.061,
-      "negativeCount": 3,
-      "positiveCount": 3,
-      "neutralCount": 4,
+      "avgSentiment": 0.378,
+      "negativeCount": 1,
+      "positiveCount": 5,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 10,
+      "itemCount": 9,
       "isStale": false,
       "topNegativeTitle": "Philippine Growth Unexpectedly Slumps to 2.3% as War, Graft Sap Demand",
-      "topPositiveTitle": "Latest Oil Market News and Analysis for Aug. 7",
+      "topPositiveTitle": "Bloomberg News Now",
       "items": [
         {
           "title": "Philippine Growth Unexpectedly Slumps to 2.3% as War, Graft Sap Demand",
@@ -476,53 +501,55 @@
           ]
         },
         {
-          "title": "Iran Strikes 'Hostile Targets'; Yen Weakens Past 158 | The Asia Trade 8/7/2026",
+          "title": "US Selling Euros for Yen Spurs Geopolitical Risk, BlackRock Says",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-07T04:02:55+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-07/the-asia-trade-8-7-2026-video",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-07T10:04:22+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-07/us-selling-euros-for-yen-spurs-geopolitical-risk-blackrock-says",
           "tags": [
             "fx",
             "geopolitical",
-            "global_broad",
+            "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Emerging Market Assets Dip as Hormuz Deal Risks Raising Tensions",
+          "title": "Iran War Takes Heavy Toll on Australia, New Zealand as Oil Soars",
           "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-06T11:55:15+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-06/emerging-currencies-hold-near-record-high-as-carry-trades-revive",
-          "tags": [
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "Iran Wants to Bar US, Israeli Ships From Hormuz in Deal",
-          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-07T04:04:06+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-07/iran-wants-to-bar-us-israeli-ships-from-hormuz-in-deal-video",
+          "publishedAt": "2026-08-07T06:51:36+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-07/iran-war-takes-heavy-toll-on-australia-new-zealand-as-oil-soars",
           "tags": [
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "Pacific Basin CEO Says Industry Faces Shift After Iran Conflict",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-07T03:55:42+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-07/pacific-basin-ceo-on-industry-shift-after-iran-conflict-video",
-          "tags": [
+            "commodity",
             "geopolitical",
             "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Latest Oil Market News and Analysis for Aug. 7",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-06T22:01:46+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-06/latest-oil-market-news-and-analysis-for-aug-7",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Iran Seeks to Bar US, Israeli Ships from Hormuz; OpenAI's Doughnut-Like Device | The Pulse 8/7/2026",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-07T10:09:18+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-07/the-pulse-8-7-2026-video",
+          "tags": [
+            "geopolitical",
             "market"
           ]
         }
