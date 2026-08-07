@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-08-07T10:06:27.651868+09:00",
-  "sourceUpdatedAt": "2026-08-07T00:46:25+00:00",
+  "updatedAt": "2026-08-07T10:51:01.970132+09:00",
+  "sourceUpdatedAt": "2026-08-07T01:21:56+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -68,12 +68,12 @@
       ]
     },
     "us_broad": {
-      "avgSentiment": 0.276,
+      "avgSentiment": 0.287,
       "negativeCount": 0,
       "positiveCount": 3,
-      "neutralCount": 5,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 8,
+      "itemCount": 7,
       "isStale": false,
       "topNegativeTitle": "Gold Steady as Traders Assess Impact of Hormuz Flare-Up on Rates",
       "topPositiveTitle": "Fed's Musalem Sees Need for 'Meaningful Restraint' on Inflation",
@@ -131,14 +131,13 @@
           ]
         },
         {
-          "title": "Oil Gains, Treasuries Hold Losses Before Jobs Data: Markets Wrap",
+          "title": "Fed's Musalem Sees Need for 'Meaningful Restraint' on Inflation",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.2,
-          "publishedAt": "2026-08-06T22:10:21+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-06/stock-market-today-dow-s-p-live-updates",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-06T23:00:48+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-06/musalem-calls-for-meaningful-restraint-on-inflation-video",
           "tags": [
-            "commodity",
             "market",
             "us_broad"
           ]
@@ -184,16 +183,28 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": 0.335,
+      "avgSentiment": 0.223,
       "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 1,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 2,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Gold Steady as Traders Assess Impact of Hormuz Flare-Up on Rates",
+      "topNegativeTitle": "China Central Bank Adds Gold in Hong Kong to Support Trading Hub",
       "topPositiveTitle": "Gold Slips as Traders Weigh Fed Path After Renewed War Tensions",
       "items": [
+        {
+          "title": "China Central Bank Adds Gold in Hong Kong to Support Trading Hub",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-07T01:01:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-07/china-central-bank-adds-gold-in-hong-kong-to-support-trading-hub",
+          "tags": [
+            "gold",
+            "market"
+          ]
+        },
         {
           "title": "Gold Steady as Traders Assess Impact of Hormuz Flare-Up on Rates",
           "source": "Bloomberg Markets",
@@ -313,7 +324,7 @@
       "itemCount": 4,
       "isStale": false,
       "topNegativeTitle": "Chinese Banks Expand Direct Settlement to Aid Yuan’s Global Role",
-      "topPositiveTitle": "Yen Surrenders Nearly Half Its Gains from US-Japan Intervention",
+      "topPositiveTitle": "Yen Surrenders Nearly Half Its Gains From US-Japan Intervention",
       "items": [
         {
           "title": "Chinese Banks Expand Direct Settlement to Aid Yuan’s Global Role",
@@ -353,7 +364,7 @@
           ]
         },
         {
-          "title": "Yen Surrenders Nearly Half Its Gains from US-Japan Intervention",
+          "title": "Yen Surrenders Nearly Half Its Gains From US-Japan Intervention",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.67,
@@ -367,15 +378,15 @@
       ]
     },
     "rates": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0.067,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 2,
+      "neutralCount": 3,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 3,
       "isStale": false,
       "topNegativeTitle": "Gold Steady as Traders Assess Impact of Hormuz Flare-Up on Rates",
-      "topPositiveTitle": "Gold Steady as Traders Assess Impact of Hormuz Flare-Up on Rates",
+      "topPositiveTitle": "Oil Gains on Iran, Bonds Drop Before US Jobs Data: Markets Wrap",
       "items": [
         {
           "title": "Gold Steady as Traders Assess Impact of Hormuz Flare-Up on Rates",
@@ -403,6 +414,20 @@
             "rates",
             "us_broad"
           ]
+        },
+        {
+          "title": "Oil Gains on Iran, Bonds Drop Before US Jobs Data: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.2,
+          "publishedAt": "2026-08-06T22:10:21+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-06/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market",
+            "rates"
+          ]
         }
       ]
     },
@@ -414,11 +439,11 @@
       "sourceCount": 2,
       "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Oil Gains, Treasuries Hold Losses Before Jobs Data: Markets Wrap",
+      "topNegativeTitle": "Oil Gains on Iran, Bonds Drop Before US Jobs Data: Markets Wrap",
       "topPositiveTitle": "Latest Oil Market News and Analysis for Aug. 7",
       "items": [
         {
-          "title": "Oil Gains, Treasuries Hold Losses Before Jobs Data: Markets Wrap",
+          "title": "Oil Gains on Iran, Bonds Drop Before US Jobs Data: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.2,
@@ -426,8 +451,9 @@
           "url": "https://www.bloomberg.com/news/articles/2026-08-06/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
+            "geopolitical",
             "market",
-            "us_broad"
+            "rates"
           ]
         },
         {
@@ -462,12 +488,12 @@
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.24,
+      "avgSentiment": 0.235,
       "negativeCount": 2,
       "positiveCount": 4,
-      "neutralCount": 1,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 7,
+      "itemCount": 8,
       "isStale": false,
       "topNegativeTitle": "Singapore's DBS CEO Sees AI Costs Falling in ‘Token Paradox’",
       "topPositiveTitle": "Iran Seeks to Bar US Ships as Deal With Oman Advances",
@@ -509,6 +535,20 @@
           ]
         },
         {
+          "title": "Oil Gains on Iran, Bonds Drop Before US Jobs Data: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.2,
+          "publishedAt": "2026-08-06T22:10:21+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-06/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market",
+            "rates"
+          ]
+        },
+        {
           "title": "Banxico Keeps Rate at 6.5%, Signals No Change Going Forward",
           "source": "Bloomberg Economics",
           "sentiment": "positive",
@@ -518,18 +558,6 @@
           "tags": [
             "geopolitical",
             "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Iran Seeks to Bar US Ships as Deal With Oman Advances",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-07T00:25:14+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-07/iran-seeks-to-bar-us-ships-as-deal-with-oman-advances-video",
-          "tags": [
-            "geopolitical",
             "market"
           ]
         }
