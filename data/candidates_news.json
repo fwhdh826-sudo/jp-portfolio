@@ -1,32 +1,20 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-08-07T10:51:01.970132+09:00",
-  "sourceUpdatedAt": "2026-08-07T01:21:56+00:00",
+  "updatedAt": "2026-08-07T14:12:05.602525+09:00",
+  "sourceUpdatedAt": "2026-08-07T05:06:34+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
       "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 2,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Japan Small Caps Face Survival Race as Topix Cull Looms",
-      "topPositiveTitle": "Japan Small Caps Face Survival Race as Topix Cull Looms",
+      "topNegativeTitle": "IMF’s Katz Sees Bank of Japan Continuing to Normalize Policy",
+      "topPositiveTitle": "IMF’s Katz Sees Bank of Japan Continuing to Normalize Policy",
       "items": [
-        {
-          "title": "Japan Small Caps Face Survival Race as Topix Cull Looms",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-06T22:30:03+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-06/japan-small-caps-face-survival-race-as-topix-cull-looms",
-          "tags": [
-            "jp_broad",
-            "market"
-          ]
-        },
         {
           "title": "IMF’s Katz Sees Bank of Japan Continuing to Normalize Policy",
           "source": "Bloomberg Economics",
@@ -42,82 +30,28 @@
       ]
     },
     "jp_semiconductor": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "How the AI Chip Boom is Reshaping South Korea’s Markets, Economy and Society",
-      "topPositiveTitle": "How the AI Chip Boom is Reshaping South Korea’s Markets, Economy and Society",
-      "items": [
-        {
-          "title": "How the AI Chip Boom is Reshaping South Korea’s Markets, Economy and Society",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-06T11:00:01+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-08-06/how-the-ai-chip-boom-is-reshaping-south-korea-s-markets-economy-and-society",
-          "tags": [
-            "jp_semiconductor",
-            "market",
-            "us_growth"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "us_broad": {
-      "avgSentiment": 0.287,
+      "avgSentiment": 0.447,
       "negativeCount": 0,
-      "positiveCount": 3,
-      "neutralCount": 4,
-      "sourceCount": 2,
-      "itemCount": 7,
+      "positiveCount": 2,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Gold Steady as Traders Assess Impact of Hormuz Flare-Up on Rates",
-      "topPositiveTitle": "Fed's Musalem Sees Need for 'Meaningful Restraint' on Inflation",
+      "topNegativeTitle": "Warsh’s Faith in Markets Sidelines More Nuanced Fed Policy Tools",
+      "topPositiveTitle": "Fed’s Musalem Calls for Meaningful Restraint on Inflation",
       "items": [
-        {
-          "title": "Gold Steady as Traders Assess Impact of Hormuz Flare-Up on Rates",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-06T23:43:38+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-06/gold-steady-as-traders-assess-impact-of-hormuz-flare-up-on-rates",
-          "tags": [
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Fed's Musalem Expresses Preference to Raise Rates",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-06T23:11:44+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-06/fed-s-musalem-expresses-preference-to-raise-rates-video",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Fed’s Fima Repo Facility Went Unused for 8th Straight Week",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-06T20:44:17+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-06/fed-s-fima-repo-facility-went-unused-for-8th-straight-week",
-          "tags": [
-            "fx",
-            "market",
-            "us_broad"
-          ]
-        },
         {
           "title": "Warsh’s Faith in Markets Sidelines More Nuanced Fed Policy Tools",
           "source": "Bloomberg Economics",
@@ -131,13 +65,29 @@
           ]
         },
         {
-          "title": "Fed's Musalem Sees Need for 'Meaningful Restraint' on Inflation",
-          "source": "Bloomberg Markets",
+          "title": "Fed’s Musalem Calls for Meaningful Restraint on Inflation",
+          "source": "Bloomberg Economics",
           "sentiment": "positive",
           "sentimentScore": 0.67,
-          "publishedAt": "2026-08-06T23:00:48+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-06/musalem-calls-for-meaningful-restraint-on-inflation-video",
+          "publishedAt": "2026-08-06T21:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-06/fed-s-musalem-calls-for-meaningful-restraint-on-inflation",
           "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Gold Slips as Traders Weigh Fed Path After Renewed War Tensions",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-05T23:37:37+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-05/gold-holds-gain-as-progress-on-hormuz-deal-lowers-rate-hike-odds",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "gold",
+            "macro_risk",
             "market",
             "us_broad"
           ]
@@ -145,25 +95,37 @@
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
+      "avgSentiment": -0.335,
+      "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 2,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "How the AI Chip Boom is Reshaping South Korea’s Markets, Economy and Society",
-      "topPositiveTitle": "How the AI Chip Boom is Reshaping South Korea’s Markets, Economy and Society",
+      "topNegativeTitle": "Asia Pacific Share Sales Overcome Volatility to Shatter Records",
+      "topPositiveTitle": "China’s Trade Boom Survives Extreme Rains as AI Race Lifts Sales",
       "items": [
         {
-          "title": "How the AI Chip Boom is Reshaping South Korea’s Markets, Economy and Society",
+          "title": "Asia Pacific Share Sales Overcome Volatility to Shatter Records",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-08-07T04:00:17+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-07/asia-pacific-share-sales-overcome-volatility-to-shatter-records",
+          "tags": [
+            "macro_risk",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "China’s Trade Boom Survives Extreme Rains as AI Race Lifts Sales",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-06T11:00:01+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-08-06/how-the-ai-chip-boom-is-reshaping-south-korea-s-markets-economy-and-society",
+          "publishedAt": "2026-08-07T02:37:19+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-07/china-exports-imports-post-double-digit-gains-but-growth-slows",
           "tags": [
-            "jp_semiconductor",
             "market",
             "us_growth"
           ]
@@ -171,54 +133,43 @@
       ]
     },
     "global_broad": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
+      "avgSentiment": -0.33,
+      "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "gold": {
-      "avgSentiment": 0.223,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 3,
-      "isStale": false,
-      "topNegativeTitle": "China Central Bank Adds Gold in Hong Kong to Support Trading Hub",
-      "topPositiveTitle": "Gold Slips as Traders Weigh Fed Path After Renewed War Tensions",
+      "topNegativeTitle": "Iran Strikes 'Hostile Targets'; Yen Weakens Past 158 | The Asia Trade 8/7/2026",
+      "topPositiveTitle": "Iran Strikes 'Hostile Targets'; Yen Weakens Past 158 | The Asia Trade 8/7/2026",
       "items": [
         {
-          "title": "China Central Bank Adds Gold in Hong Kong to Support Trading Hub",
+          "title": "Iran Strikes 'Hostile Targets'; Yen Weakens Past 158 | The Asia Trade 8/7/2026",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-07T01:01:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-07/china-central-bank-adds-gold-in-hong-kong-to-support-trading-hub",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-07T04:02:55+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-07/the-asia-trade-8-7-2026-video",
           "tags": [
-            "gold",
+            "fx",
+            "geopolitical",
+            "global_broad",
             "market"
           ]
-        },
-        {
-          "title": "Gold Steady as Traders Assess Impact of Hormuz Flare-Up on Rates",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-06T23:43:38+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-06/gold-steady-as-traders-assess-impact-of-hormuz-flare-up-on-rates",
-          "tags": [
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
+        }
+      ]
+    },
+    "gold": {
+      "avgSentiment": 0.67,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "Gold Slips as Traders Weigh Fed Path After Renewed War Tensions",
+      "topPositiveTitle": "Gold Slips as Traders Weigh Fed Path After Renewed War Tensions",
+      "items": [
         {
           "title": "Gold Slips as Traders Weigh Fed Path After Renewed War Tensions",
           "source": "Bloomberg Economics",
@@ -262,24 +213,51 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.333,
-      "negativeCount": 0,
+      "avgSentiment": -0.054,
+      "negativeCount": 2,
       "positiveCount": 2,
       "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 3,
+      "sourceCount": 2,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Germany Confronts Rhine Threat to Economy After Crisis Talks",
+      "topNegativeTitle": "Asia Pacific Share Sales Overcome Volatility to Shatter Records",
       "topPositiveTitle": "Gold Slips as Traders Weigh Fed Path After Renewed War Tensions",
       "items": [
         {
-          "title": "Germany Confronts Rhine Threat to Economy After Crisis Talks",
+          "title": "Asia Pacific Share Sales Overcome Volatility to Shatter Records",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-08-07T04:00:17+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-07/asia-pacific-share-sales-overcome-volatility-to-shatter-records",
+          "tags": [
+            "macro_risk",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Philippine Growth Unexpectedly Slumps to 2.3% as War, Graft Sap Demand",
           "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.6,
+          "publishedAt": "2026-08-07T02:02:57+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-07/philippine-gdp-growth-unexpectedly-slows-to-2-3-on-oil-shock",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Pacific Basin CEO Says Industry Faces Shift After Iran Conflict",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-06T13:46:57+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-06/germany-confronts-rhine-threat-to-economy-after-crisis-talks",
+          "publishedAt": "2026-08-07T03:55:42+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-07/pacific-basin-ceo-on-industry-shift-after-iran-conflict-video",
           "tags": [
+            "geopolitical",
             "macro_risk",
             "market"
           ]
@@ -316,60 +294,73 @@
       ]
     },
     "fx": {
-      "avgSentiment": 0.25,
-      "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 2,
+      "avgSentiment": 0.168,
+      "negativeCount": 1,
+      "positiveCount": 3,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 8,
       "isStale": false,
-      "topNegativeTitle": "Chinese Banks Expand Direct Settlement to Aid Yuan’s Global Role",
-      "topPositiveTitle": "Yen Surrenders Nearly Half Its Gains From US-Japan Intervention",
+      "topNegativeTitle": "Iran Strikes 'Hostile Targets'; Yen Weakens Past 158 | The Asia Trade 8/7/2026",
+      "topPositiveTitle": "Why the Yen Is Surrendering Intervention Gains",
       "items": [
         {
-          "title": "Chinese Banks Expand Direct Settlement to Aid Yuan’s Global Role",
+          "title": "Iran Strikes 'Hostile Targets'; Yen Weakens Past 158 | The Asia Trade 8/7/2026",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-07T04:02:55+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-07/the-asia-trade-8-7-2026-video",
+          "tags": [
+            "fx",
+            "geopolitical",
+            "global_broad",
+            "market"
+          ]
+        },
+        {
+          "title": "Goldman Skeptical of Dollar-Dominance Threats After Yen Support",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-06T23:00:07+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-06/chinese-banks-expand-direct-settlement-to-aid-yuan-s-global-role",
+          "publishedAt": "2026-08-07T04:18:57+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-07/goldman-skeptical-of-dollar-dominance-threats-after-yen-support",
           "tags": [
             "fx",
             "market"
           ]
         },
         {
-          "title": "Fed’s Fima Repo Facility Went Unused for 8th Straight Week",
+          "title": "Zimbabwe’s VFEX Plans $5 Billion Market Value, Venture Board for Mining",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-06T20:44:17+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-06/fed-s-fima-repo-facility-went-unused-for-8th-straight-week",
+          "publishedAt": "2026-08-07T04:15:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-07/zimbabwe-s-vfex-plans-5-billion-market-value-venture-board-for-mining",
           "tags": [
             "fx",
-            "market",
-            "us_broad"
+            "market"
           ]
         },
         {
-          "title": "Japan’s Carmakers Forecast Yen Staying Weak Despite US Intervention",
+          "title": "Japan Confirms Three-Day Yen Intervention in Spring to Lift Yen",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-06T23:55:08+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-06/japan-confirms-intervention-on-three-days-in-spring-to-buoy-yen",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        },
+        {
+          "title": "Japan’s Kishida Sees Growth Strategy as Game Changer for Yen",
           "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-06T21:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-06/japan-s-carmakers-forecast-yen-staying-weak-despite-us-intervention",
-          "tags": [
-            "fx",
-            "market"
-          ]
-        },
-        {
-          "title": "Yen Surrenders Nearly Half Its Gains From US-Japan Intervention",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-07T00:04:31+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-07/yen-surrenders-nearly-half-its-gains-from-us-japan-intervention",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-05T23:15:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-05/japan-s-kishida-sees-growth-strategy-as-game-changer-for-yen",
           "tags": [
             "fx",
             "market"
@@ -378,43 +369,16 @@
       ]
     },
     "rates": {
-      "avgSentiment": 0.067,
+      "avgSentiment": 0.2,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 3,
+      "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 3,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Gold Steady as Traders Assess Impact of Hormuz Flare-Up on Rates",
+      "topNegativeTitle": "Oil Gains on Iran, Bonds Drop Before US Jobs Data: Markets Wrap",
       "topPositiveTitle": "Oil Gains on Iran, Bonds Drop Before US Jobs Data: Markets Wrap",
       "items": [
-        {
-          "title": "Gold Steady as Traders Assess Impact of Hormuz Flare-Up on Rates",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-06T23:43:38+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-06/gold-steady-as-traders-assess-impact-of-hormuz-flare-up-on-rates",
-          "tags": [
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Fed's Musalem Expresses Preference to Raise Rates",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-06T23:11:44+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-06/fed-s-musalem-expresses-preference-to-raise-rates-video",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
         {
           "title": "Oil Gains on Iran, Bonds Drop Before US Jobs Data: Markets Wrap",
           "source": "Bloomberg Markets",
@@ -488,25 +452,40 @@
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.235,
-      "negativeCount": 2,
-      "positiveCount": 4,
-      "neutralCount": 2,
+      "avgSentiment": 0.061,
+      "negativeCount": 3,
+      "positiveCount": 3,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 8,
+      "itemCount": 10,
       "isStale": false,
-      "topNegativeTitle": "Singapore's DBS CEO Sees AI Costs Falling in ‘Token Paradox’",
-      "topPositiveTitle": "Iran Seeks to Bar US Ships as Deal With Oman Advances",
+      "topNegativeTitle": "Philippine Growth Unexpectedly Slumps to 2.3% as War, Graft Sap Demand",
+      "topPositiveTitle": "Latest Oil Market News and Analysis for Aug. 7",
       "items": [
         {
-          "title": "Singapore's DBS CEO Sees AI Costs Falling in ‘Token Paradox’",
+          "title": "Philippine Growth Unexpectedly Slumps to 2.3% as War, Graft Sap Demand",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.6,
+          "publishedAt": "2026-08-07T02:02:57+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-07/philippine-gdp-growth-unexpectedly-slows-to-2-3-on-oil-shock",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Iran Strikes 'Hostile Targets'; Yen Weakens Past 158 | The Asia Trade 8/7/2026",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-08-06T23:50:43+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-06/singapore-s-dbs-ceo-sees-ai-costs-falling-video",
+          "publishedAt": "2026-08-07T04:02:55+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-07/the-asia-trade-8-7-2026-video",
           "tags": [
+            "fx",
             "geopolitical",
+            "global_broad",
             "market"
           ]
         },
@@ -523,38 +502,24 @@
           ]
         },
         {
-          "title": "Putin’s Rate-Cut Push Piles Pressure on Bank Head Nabiullina",
-          "source": "Bloomberg Economics",
+          "title": "Iran Wants to Bar US, Israeli Ships From Hormuz in Deal",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-05T15:57:54+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-05/putin-s-push-to-cut-rates-piles-pressure-on-bank-head-nabiullina",
+          "publishedAt": "2026-08-07T04:04:06+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-07/iran-wants-to-bar-us-israeli-ships-from-hormuz-in-deal-video",
           "tags": [
             "geopolitical",
             "market"
           ]
         },
         {
-          "title": "Oil Gains on Iran, Bonds Drop Before US Jobs Data: Markets Wrap",
+          "title": "Pacific Basin CEO Says Industry Faces Shift After Iran Conflict",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.2,
-          "publishedAt": "2026-08-06T22:10:21+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-06/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Banxico Keeps Rate at 6.5%, Signals No Change Going Forward",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-06T19:00:27+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-06/banxico-keeps-key-rate-at-6-5-as-inflation-risks-cloud-outlook",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-07T03:55:42+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-07/pacific-basin-ceo-on-industry-shift-after-iran-conflict-video",
           "tags": [
             "geopolitical",
             "macro_risk",
@@ -572,7 +537,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 4,
+    "excludedCount": 5,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
