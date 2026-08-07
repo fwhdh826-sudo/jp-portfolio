@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-08-08T07:06:28.442640+09:00",
-  "sourceUpdatedAt": "2026-08-07T21:18:53+00:00",
+  "updatedAt": "2026-08-08T08:56:47.201475+09:00",
+  "sourceUpdatedAt": "2026-08-07T23:51:18+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -156,29 +156,16 @@
       ]
     },
     "gold": {
-      "avgSentiment": 0.33,
+      "avgSentiment": 0,
       "negativeCount": 0,
-      "positiveCount": 1,
+      "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Gold Jumps as Weak US Jobs Data Adds Fuel to Bullion’s Rebound",
-      "topPositiveTitle": "Gold Jumps as Weak US Jobs Data Adds Fuel to Bullion’s Rebound",
-      "items": [
-        {
-          "title": "Gold Jumps as Weak US Jobs Data Adds Fuel to Bullion’s Rebound",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-06T23:43:38+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-06/gold-steady-as-traders-assess-impact-of-hormuz-flare-up-on-rates",
-          "tags": [
-            "gold",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "reit": {
       "avgSentiment": 0,
@@ -374,16 +361,28 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
+      "avgSentiment": -0.083,
+      "negativeCount": 1,
       "positiveCount": 0,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 2,
+      "neutralCount": 3,
+      "sourceCount": 3,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Iran War Takes Heavy Toll on Australia, New Zealand as Oil Soars",
+      "topNegativeTitle": "CFTC Warns Prediction Markets on American-Style Casino Odds",
       "topPositiveTitle": "Iran War Takes Heavy Toll on Australia, New Zealand as Oil Soars",
       "items": [
+        {
+          "title": "CFTC Warns Prediction Markets on American-Style Casino Odds",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-07T15:13:29+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-07/cftc-warns-prediction-markets-against-american-style-casino-odds",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
         {
           "title": "Iran War Takes Heavy Toll on Australia, New Zealand as Oil Soars",
           "source": "Bloomberg Economics",
@@ -410,6 +409,19 @@
             "geopolitical",
             "market"
           ]
+        },
+        {
+          "title": "カリブ海のトリニダード・トバゴと協力推進で一致 茂木外相",
+          "source": "NHK 経済",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-07T22:48:27+00:00",
+          "url": "https://news.web.nhk/newsweb/na/na-k10015199761000",
+          "tags": [
+            "commodity",
+            "market"
+          ],
+          "titleJa": "カリブ海のトリニダード・トバゴと協力推進で一致 茂木外相"
         }
       ]
     },

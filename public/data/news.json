@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-07T22:04:04+00:00",
+  "updatedAt": "2026-08-07T23:56:43+00:00",
   "sourceStatus": {
     "Yahoo!ファイナンス Market": "timeout",
     "Yahoo!ファイナンス News": "timeout",
@@ -18,15 +18,35 @@
     "Yahoo!ファイナンス News": null,
     "Reuters Business": null,
     "Reuters Markets": null,
-    "Bloomberg Markets": "2026-08-07T21:00:20+00:00",
+    "Bloomberg Markets": "2026-08-07T22:58:03+00:00",
     "Bloomberg Economics": "2026-08-07T19:27:06+00:00",
-    "NHK 経済": "2026-08-07T20:34:47+00:00",
-    "reddit r/investing": "2026-08-07T21:18:53+00:00",
+    "NHK 経済": "2026-08-07T22:48:27+00:00",
+    "reddit r/investing": "2026-08-07T23:51:18+00:00",
     "reddit r/stocks": null,
     "Finnhub": null,
     "X (RSS mirror)": null
   },
   "marketNews": [
+    {
+      "id": "73bad206a801",
+      "source": "Bloomberg Markets",
+      "title": "SEC Drops Insider-Trading Suit Against Executive Trump Pardoned",
+      "summary": "The US Securities and Exchange Commission said it is dropping an insider-trading lawsuit against a former healthcare executive who was convicted in a related criminal case and then pardoned by President Donald Trump.",
+      "url": "https://www.bloomberg.com/news/articles/2026-08-07/sec-drops-insider-trading-suit-against-executive-trump-pardoned",
+      "publishedAt": "2026-08-07T22:58:03+00:00",
+      "sentiment": "negative",
+      "sentimentScore": -0.2,
+      "importance": 0.33,
+      "tags": [
+        "market",
+        "unknown"
+      ],
+      "tickers": [],
+      "impact": "neutral",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
     {
       "id": "6b99cb1bcd19",
       "source": "Bloomberg Markets",
@@ -248,26 +268,6 @@
       "translationStatus": "pending"
     },
     {
-      "id": "8d61fa11729d",
-      "source": "Bloomberg Markets",
-      "title": "Investing View is Glass 'More Than Half-Full': Kelly",
-      "summary": "David Kelly, Chief Global Strategist at JPMorgan Asset Management, joins Scarlet Fu and Tom Keene on \"Bloomberg Money.\" They discuss how biased information influences investor behavior. (Source: Bloomberg)",
-      "url": "https://www.bloomberg.com/news/videos/2026-08-07/investing-view-is-glass-more-than-half-full-kelly-video",
-      "publishedAt": "2026-08-07T19:29:52+00:00",
-      "sentiment": "neutral",
-      "sentimentScore": 0.0,
-      "importance": 0.33,
-      "tags": [
-        "market",
-        "unknown"
-      ],
-      "tickers": [],
-      "impact": "neutral",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
       "id": "e7d178a9bca6",
       "source": "Bloomberg Economics",
       "title": "Fed Split on Rate Hikes Deepens as High Inflation Tests Patience",
@@ -321,6 +321,26 @@
       "tags": [
         "market",
         "us_broad"
+      ],
+      "tickers": [],
+      "impact": "negative",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "be758a5abdde",
+      "source": "Bloomberg Markets",
+      "title": "CFTC Warns Prediction Markets on American-Style Casino Odds",
+      "summary": "The Commodity Futures Trading Commission told prediction markets to avoid using American-style gambling odds as the US regulator fends off legal challenges alleging the platforms are illicit sports betting operations.",
+      "url": "https://www.bloomberg.com/news/articles/2026-08-07/cftc-warns-prediction-markets-against-american-style-casino-odds",
+      "publishedAt": "2026-08-07T15:13:29+00:00",
+      "sentiment": "negative",
+      "sentimentScore": -0.33,
+      "importance": 0.33,
+      "tags": [
+        "commodity",
+        "market"
       ],
       "tickers": [],
       "impact": "negative",
@@ -757,26 +777,6 @@
       "translationStatus": "pending"
     },
     {
-      "id": "dcb536f8e158",
-      "source": "Bloomberg Markets",
-      "title": "Gold Jumps as Weak US Jobs Data Adds Fuel to Bullion’s Rebound",
-      "summary": "Gold jumped more than 3% after an unexpected contraction in the US jobs market, extending a rebound from its slump below $4,000 an ounce.",
-      "url": "https://www.bloomberg.com/news/articles/2026-08-06/gold-steady-as-traders-assess-impact-of-hormuz-flare-up-on-rates",
-      "publishedAt": "2026-08-06T23:43:38+00:00",
-      "sentiment": "positive",
-      "sentimentScore": 0.33,
-      "importance": 0.33,
-      "tags": [
-        "gold",
-        "market"
-      ],
-      "tickers": [],
-      "impact": "positive",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
       "id": "92087a020508",
       "source": "Bloomberg Markets",
       "title": "S&P 500 Has Best Week Since April After Jobs Data: Markets Wrap",
@@ -877,6 +877,28 @@
       "whyImportant": "個人投資家のセンチメント変化を早期に検知するため。",
       "recommendation": "監視継続。次回更新時に再評価する。",
       "translationStatus": "pending"
+    },
+    {
+      "id": "f0a4084436bc",
+      "source": "NHK 経済",
+      "title": "カリブ海のトリニダード・トバゴと協力推進で一致 茂木外相",
+      "summary": "中南米を歴訪中の茂木外務大臣は、カリブ海のトリニダード・トバゴでソバース外相と会談し、エネルギー分野を含む幅広い分野で協力を推進していくことで一致しました。",
+      "url": "https://news.web.nhk/newsweb/na/na-k10015199761000",
+      "publishedAt": "2026-08-07T22:48:27+00:00",
+      "sentiment": "neutral",
+      "sentimentScore": 0.0,
+      "importance": 0.25,
+      "tags": [
+        "commodity",
+        "market"
+      ],
+      "tickers": [],
+      "impact": "neutral",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "titleJa": "カリブ海のトリニダード・トバゴと協力推進で一致 茂木外相",
+      "summaryJa": "中南米を歴訪中の茂木外務大臣は、カリブ海のトリニダード・トバゴでソバース外相と会談し、エネルギー分野を含む幅広い分野で協力を推進していくことで一致しました。",
+      "translationStatus": "ja-original"
     },
     {
       "id": "e64c3129e25d",
@@ -986,28 +1008,6 @@
       "recommendation": "監視継続。次回更新時に再評価する。",
       "titleJa": "国家公務員の月給 2年連続で3％超の引き上げを勧告 人事院",
       "summaryJa": "今年度の国家公務員の給与について、人事院は月給を3.51％引き上げるよう内閣と国会に勧告しました。3％を超える引き上げ率は2年連続で、若手職員に加えて中堅以上の処遇改善も求める内容となっています。",
-      "translationStatus": "ja-original"
-    },
-    {
-      "id": "155ac550793f",
-      "source": "NHK 経済",
-      "title": "声も権利保護の対象に 法務省の有識者検討会の報告書まとまる",
-      "summary": "生成AIが普及する中、法務省の有識者検討会は、著名人の名前や写真などを無断で使われない権利「パブリシティ権」について、声も保護の対象に含まれるなどとした報告書をまとめました。",
-      "url": "https://news.web.nhk/newsweb/na/na-k10015199061000",
-      "publishedAt": "2026-08-07T11:06:35+00:00",
-      "sentiment": "neutral",
-      "sentimentScore": 0.0,
-      "importance": 0.25,
-      "tags": [
-        "market",
-        "unknown"
-      ],
-      "tickers": [],
-      "impact": "neutral",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "titleJa": "声も権利保護の対象に 法務省の有識者検討会の報告書まとまる",
-      "summaryJa": "生成AIが普及する中、法務省の有識者検討会は、著名人の名前や写真などを無断で使われない権利「パブリシティ権」について、声も保護の対象に含まれるなどとした報告書をまとめました。",
       "translationStatus": "ja-original"
     }
   ],
