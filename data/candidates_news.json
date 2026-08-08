@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-08-08T20:52:11.375384+09:00",
-  "sourceUpdatedAt": "2026-08-08T11:37:30+00:00",
+  "updatedAt": "2026-08-09T08:53:24.758199+09:00",
+  "sourceUpdatedAt": "2026-08-08T20:00:00+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -42,28 +42,16 @@
       ]
     },
     "us_broad": {
-      "avgSentiment": -0.261,
-      "negativeCount": 6,
-      "positiveCount": 1,
-      "neutralCount": 1,
+      "avgSentiment": -0.397,
+      "negativeCount": 4,
+      "positiveCount": 0,
+      "neutralCount": 0,
       "sourceCount": 2,
-      "itemCount": 8,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Labor Market Concerns Raised Despite Low Unemployment Rate",
-      "topPositiveTitle": "Yen Jumps on US Data as Traders Watch for Intervention Clues",
+      "topNegativeTitle": "World Economy Latest: US Employment Declines Unexpectedly",
+      "topPositiveTitle": "US CPI to Show Inflationary Pressures Cooling Some",
       "items": [
-        {
-          "title": "Labor Market Concerns Raised Despite Low Unemployment Rate",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-08-07T18:40:52+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-07/labor-concerns-raised-despite-low-unemployment-rate-video",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
         {
           "title": "World Economy Latest: US Employment Declines Unexpectedly",
           "source": "Bloomberg Economics",
@@ -79,41 +67,41 @@
           ]
         },
         {
-          "title": "Fed Split on Rate Hikes Deepens as High Inflation Tests Patience",
+          "title": "US CPI to Show Inflationary Pressures Cooling Some",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-08-07T19:27:06+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-07/fed-split-on-rate-hikes-deepens-as-high-inflation-tests-patience",
+          "publishedAt": "2026-08-08T20:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-08/us-cpi-to-show-inflationary-pressures-cooling-some",
           "tags": [
+            "geopolitical",
+            "macro_risk",
             "market",
-            "rates",
             "us_broad"
           ]
         },
         {
-          "title": "Dollar Ends Week at Lowest Since May as Rate-Hike Bets Fade",
+          "title": "AI Buildout Keeps Quinlan Bullish on US Stocks",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-08-07T15:12:58+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-07/dollar-falls-to-lowest-level-since-may-as-rate-hike-in-doubt",
+          "publishedAt": "2026-08-08T12:47:53+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-08/ai-buildout-keeps-quinlan-bullish-on-us-stocks-video",
           "tags": [
-            "fx",
             "market",
-            "rates",
             "us_broad"
           ]
         },
         {
-          "title": "Fed’s Barkin Says Labor in ‘Weak Balance,’ Not Fueling Prices",
-          "source": "Bloomberg Economics",
+          "title": "Weak Jobs Data Masked by Falling Unemployment",
+          "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-08-07T15:07:41+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-07/fed-s-barkin-says-labor-in-weak-balance-not-fueling-prices",
+          "publishedAt": "2026-08-08T12:12:02+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-08/weak-jobs-data-masked-by-falling-unemployment-video",
           "tags": [
             "market",
+            "rates",
             "us_broad"
           ]
         }
@@ -132,23 +120,23 @@
       "items": []
     },
     "global_broad": {
-      "avgSentiment": 0.33,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 1,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Brazil Treasury Seeks to Calm Fears of Foreign Bond Sales Surge",
-      "topPositiveTitle": "Brazil Treasury Seeks to Calm Fears of Foreign Bond Sales Surge",
+      "topNegativeTitle": "China’s AI Push Reshapes Its Economic Future",
+      "topPositiveTitle": "China’s AI Push Reshapes Its Economic Future",
       "items": [
         {
-          "title": "Brazil Treasury Seeks to Calm Fears of Foreign Bond Sales Surge",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-07T18:46:53+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-07/brazil-treasury-seeks-to-calm-fears-of-foreign-bond-sales-surge",
+          "title": "China’s AI Push Reshapes Its Economic Future",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-08T14:32:07+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-08/china-s-ai-push-reshapes-its-economic-future-video",
           "tags": [
             "global_broad",
             "market"
@@ -206,9 +194,9 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.247,
-      "negativeCount": 1,
-      "positiveCount": 2,
+      "avgSentiment": -0.087,
+      "negativeCount": 2,
+      "positiveCount": 1,
       "neutralCount": 0,
       "sourceCount": 2,
       "itemCount": 3,
@@ -231,6 +219,20 @@
           ]
         },
         {
+          "title": "US CPI to Show Inflationary Pressures Cooling Some",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-08T20:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-08/us-cpi-to-show-inflationary-pressures-cooling-some",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
           "title": "War Brings Winter of Discontent for the World’s Workhorse Fuel",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
@@ -242,81 +244,39 @@
             "macro_risk",
             "market"
           ]
-        },
-        {
-          "title": "New Zealand Slaps New Sanctions Against Russia After US Move",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-08T00:58:38+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-08/new-zealand-slaps-new-sanctions-against-russia-after-us-move",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": 0.085,
-      "negativeCount": 1,
-      "positiveCount": 1,
+      "avgSentiment": 0,
+      "negativeCount": 0,
+      "positiveCount": 0,
       "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
+      "isStale": false,
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
+    },
+    "rates": {
+      "avgSentiment": -0.165,
+      "negativeCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 1,
       "sourceCount": 1,
       "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Dollar Ends Week at Lowest Since May as Rate-Hike Bets Fade",
-      "topPositiveTitle": "Yen Jumps on US Data as Traders Watch for Intervention Clues",
+      "topNegativeTitle": "Weak Jobs Data Masked by Falling Unemployment",
+      "topPositiveTitle": "Private Credit Squeezed By Bank Refinancings: Credit Weekly",
       "items": [
         {
-          "title": "Dollar Ends Week at Lowest Since May as Rate-Hike Bets Fade",
+          "title": "Weak Jobs Data Masked by Falling Unemployment",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-08-07T15:12:58+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-07/dollar-falls-to-lowest-level-since-may-as-rate-hike-in-doubt",
-          "tags": [
-            "fx",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Yen Jumps on US Data as Traders Watch for Intervention Clues",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.5,
-          "publishedAt": "2026-08-07T00:04:31+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-07/yen-surrenders-nearly-half-its-gains-from-us-japan-intervention",
-          "tags": [
-            "fx",
-            "market",
-            "us_broad"
-          ]
-        }
-      ]
-    },
-    "rates": {
-      "avgSentiment": -0.247,
-      "negativeCount": 3,
-      "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 2,
-      "itemCount": 4,
-      "isStale": false,
-      "topNegativeTitle": "Fed Split on Rate Hikes Deepens as High Inflation Tests Patience",
-      "topPositiveTitle": "Mexico’s Inflation Slows in July as Banxico Remains Cautious",
-      "items": [
-        {
-          "title": "Fed Split on Rate Hikes Deepens as High Inflation Tests Patience",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-07T19:27:06+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-07/fed-split-on-rate-hikes-deepens-as-high-inflation-tests-patience",
+          "publishedAt": "2026-08-08T12:12:02+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-08/weak-jobs-data-masked-by-falling-unemployment-video",
           "tags": [
             "market",
             "rates",
@@ -324,39 +284,12 @@
           ]
         },
         {
-          "title": "Dollar Ends Week at Lowest Since May as Rate-Hike Bets Fade",
+          "title": "Private Credit Squeezed By Bank Refinancings: Credit Weekly",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-07T15:12:58+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-07/dollar-falls-to-lowest-level-since-may-as-rate-hike-in-doubt",
-          "tags": [
-            "fx",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "S&P 500 Has Best Week Since April After Jobs Data: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-06T22:10:21+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-06/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Mexico’s Inflation Slows in July as Banxico Remains Cautious",
-          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-07T12:17:09+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-07/mexico-s-inflation-slows-in-july-as-banxico-remains-cautious",
+          "publishedAt": "2026-08-08T15:03:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-08/private-credit-squeezed-by-bank-refinancings-credit-weekly",
           "tags": [
             "market",
             "rates"
@@ -365,15 +298,15 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.003,
-      "negativeCount": 2,
-      "positiveCount": 1,
+      "avgSentiment": -0.165,
+      "negativeCount": 1,
+      "positiveCount": 0,
       "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 2,
       "isStale": false,
       "topNegativeTitle": "Kyiv Struck as Ukraine Targets Two Russian Oil Refineries",
-      "topPositiveTitle": "New Zealand Slaps New Sanctions Against Russia After US Move",
+      "topPositiveTitle": "カリブ海のトリニダード・トバゴと協力推進で一致 茂木外相",
       "items": [
         {
           "title": "Kyiv Struck as Ukraine Targets Two Russian Oil Refineries",
@@ -389,18 +322,6 @@
           ]
         },
         {
-          "title": "CFTC Warns Prediction Markets on American-Style Casino Odds",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-07T15:13:29+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-07/cftc-warns-prediction-markets-against-american-style-casino-odds",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
           "title": "カリブ海のトリニダード・トバゴと協力推進で一致 茂木外相",
           "source": "NHK 経済",
           "sentiment": "neutral",
@@ -412,30 +333,16 @@
             "market"
           ],
           "titleJa": "カリブ海のトリニダード・トバゴと協力推進で一致 茂木外相"
-        },
-        {
-          "title": "New Zealand Slaps New Sanctions Against Russia After US Move",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-08T00:58:38+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-08/new-zealand-slaps-new-sanctions-against-russia-after-us-move",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.082,
-      "negativeCount": 2,
-      "positiveCount": 2,
-      "neutralCount": 1,
+      "avgSentiment": -0.098,
+      "negativeCount": 3,
+      "positiveCount": 1,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 6,
       "isStale": false,
       "topNegativeTitle": "World Economy Latest: US Employment Declines Unexpectedly",
       "topPositiveTitle": "War Brings Winter of Discontent for the World’s Workhorse Fuel",
@@ -455,6 +362,20 @@
           ]
         },
         {
+          "title": "US CPI to Show Inflationary Pressures Cooling Some",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-08T20:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-08/us-cpi-to-show-inflationary-pressures-cooling-some",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
           "title": "Kyiv Struck as Ukraine Targets Two Russian Oil Refineries",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
@@ -468,7 +389,19 @@
           ]
         },
         {
-          "title": "Zelenskyy Makes Debut Trip to Serbia as Russian Influence Wanes",
+          "title": "US Munitions Strain Complicates Iran Strategy",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-08T14:01:29+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-08/us-munitions-strain-complicates-iran-strategy-video",
+          "tags": [
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Zelenskyy Wins Serbian Pledges as Russian Influence Wanes",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
@@ -476,33 +409,6 @@
           "url": "https://www.bloomberg.com/news/articles/2026-08-08/zelenskyy-makes-debut-trip-to-serbia-as-russian-influence-wanes",
           "tags": [
             "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "War Brings Winter of Discontent for the World’s Workhorse Fuel",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-08T04:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-08/war-brings-winter-of-discontent-for-the-world-s-workhorse-fuel",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "New Zealand Slaps New Sanctions Against Russia After US Move",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-08T00:58:38+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-08/new-zealand-slaps-new-sanctions-against-russia-after-us-move",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
             "market"
           ]
         }
@@ -517,7 +423,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 3,
+    "excludedCount": 4,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
