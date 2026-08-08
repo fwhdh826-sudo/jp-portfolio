@@ -1,10 +1,14 @@
 """E4-CORPUS-T-01..20: frozen formal corpus registry contract."""
 from __future__ import annotations
 
+import ast
+import builtins
 import copy
 import hashlib
 import json
+import os
 import re
+import subprocess
 import sys
 from pathlib import Path
 
@@ -31,12 +35,105 @@ def _digest(value: bytes) -> str:
     return hashlib.sha256(value).hexdigest()
 
 
+def _tree_state(root: Path) -> dict[str, tuple[bytes, int]]:
+    return {
+        path.relative_to(root).as_posix(): (path.read_bytes(), path.stat().st_mtime_ns)
+        for path in sorted(root.rglob("*"))
+        if path.is_file()
+    }
+
+
+def _is_sys_executable(node: ast.AST) -> bool:
+    return (
+        isinstance(node, ast.Attribute)
+        and isinstance(node.value, ast.Name)
+        and node.value.id == "sys"
+        and node.attr == "executable"
+    )
+
+
+def _is_portable_interpreter_default(node: ast.AST) -> bool:
+    if _is_sys_executable(node):
+        return True
+    if not isinstance(node, ast.BoolOp) or not isinstance(node.op, ast.Or):
+        return False
+    if len(node.values) < 2 or not _is_sys_executable(node.values[-1]):
+        return False
+    for value in node.values[:-1]:
+        if not (
+            isinstance(value, ast.Call)
+            and isinstance(value.func, ast.Attribute)
+            and isinstance(value.func.value, ast.Name)
+            and value.func.value.id == "shutil"
+            and value.func.attr == "which"
+            and len(value.args) == 1
+            and isinstance(value.args[0], ast.Constant)
+            and isinstance(value.args[0].value, str)
+            and not Path(value.args[0].value).is_absolute()
+        ):
+            return False
+    return True
+
+
+def _is_p14_python_env_get(node: ast.AST) -> bool:
+    return (
+        isinstance(node, ast.Call)
+        and isinstance(node.func, ast.Attribute)
+        and node.func.attr == "get"
+        and isinstance(node.func.value, ast.Attribute)
+        and node.func.value.attr == "environ"
+        and isinstance(node.func.value.value, ast.Name)
+        and node.func.value.value.id == "os"
+        and bool(node.args)
+        and isinstance(node.args[0], ast.Constant)
+        and node.args[0].value == "P14_PY311"
+    )
+
+
+def _p14_python_default(node: ast.Call) -> ast.AST | None:
+    if len(node.args) >= 2:
+        return node.args[1]
+    return next((item.value for item in node.keywords if item.arg == "default"), None)
+
+
+def _is_absolute_interpreter_literal(value: str) -> bool:
+    if not Path(value).is_absolute():
+        return False
+    interpreter = re.compile(r"(?:python(?:\d+(?:\.\d+)*)?|pypy\d*)", re.IGNORECASE)
+    parts = Path(value).parts
+    if any(interpreter.fullmatch(part) for part in parts):
+        return True
+    return Path(value).name == "bin" and re.search(r"py(?:thon)?\d", value, re.IGNORECASE) is not None
+
+
+class _MidWriteFailure:
+    def __init__(self, handle: object, faulted_paths: list[Path]) -> None:
+        self._handle = handle
+        self._faulted_paths = faulted_paths
+
+    def __enter__(self) -> "_MidWriteFailure":
+        self._handle.__enter__()
+        return self
+
+    def __exit__(self, *args: object) -> object:
+        return self._handle.__exit__(*args)
+
+    def __getattr__(self, name: str) -> object:
+        return getattr(self._handle, name)
+
+    def write(self, payload: bytes) -> int:
+        midpoint = max(1, len(payload) // 2)
+        self._handle.write(payload[:midpoint])
+        self._handle.flush()
+        self._faulted_paths.append(Path(self._handle.name))
+        raise OSError("injected mid-write failure")
+
+
 def _make_environment(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> dict[str, object]:
     audit_root = tmp_path / "audit"
     corpus_root = audit_root / "p14-e2-snapshots"
     corpus_root.mkdir(parents=True)
-    report_names = {member_id: f"reports/{index}.md"
-                    for index, member_id in enumerate(registry.EXPECTED_MEMBER_IDS, 1)}
+    report_names = dict(registry.ACCEPTANCE_REPORTS)
     monkeypatch.setattr(registry, "ACCEPTANCE_REPORTS", report_names)
     evidence: list[registry.MemberEvidence] = []
     rows: list[dict[str, object]] = []
@@ -310,7 +407,7 @@ def test_registration_is_idempotent(formal_corpus: dict[str, object]) -> None:
 
 
 def test_stale_index_is_rejected(formal_corpus: dict[str, object]) -> None:
-    """E4-CORPUS-T-13."""
+    """E4-CORPUS-T-13: function and CLI verification are read-only."""
     payload = formal_corpus["payload"]
     assert payload["schemaVersion"] == registry.SCHEMA_VERSION
     mutated = copy.deepcopy(payload)
@@ -321,6 +418,42 @@ def test_stale_index_is_rejected(formal_corpus: dict[str, object]) -> None:
     registry.verify_index(formal_corpus["index"], corpus_root=formal_corpus["corpus_root"],
                           audit_root=formal_corpus["audit_root"])
     assert formal_corpus["index"].read_bytes() == before
+    index = formal_corpus["index"]
+    corpus_root = formal_corpus["corpus_root"]
+    audit_root = formal_corpus["audit_root"]
+    before_bytes = index.read_bytes()
+    before_sha256 = _digest(before_bytes)
+    before_mtime_ns = index.stat().st_mtime_ns
+    before_semantic = json.loads(before_bytes)
+    before_tree = _tree_state(corpus_root)
+    checkout_root = Path(__file__).resolve().parents[1]
+    environment = os.environ.copy()
+    environment["PYTHONPATH"] = os.pathsep.join(
+        item for item in (str(checkout_root), environment.get("PYTHONPATH")) if item
+    )
+    completed = subprocess.run(
+        [
+            sys.executable,
+            "data/p14_corpus_register.py",
+            "--corpus-index", str(index),
+            "--corpus-root", str(corpus_root),
+            "--audit-root", str(audit_root),
+            "--verify",
+        ],
+        cwd=checkout_root,
+        env=environment,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    assert completed.returncode == 0, completed.stderr
+    assert json.loads(completed.stdout)["verified"] is True
+    after_bytes = index.read_bytes()
+    assert after_bytes == before_bytes
+    assert _digest(after_bytes) == before_sha256
+    assert index.stat().st_mtime_ns == before_mtime_ns
+    assert json.loads(after_bytes) == before_semantic
+    assert _tree_state(corpus_root) == before_tree
 
 
 def test_privacy_of_index_and_members(formal_corpus: dict[str, object]) -> None:
@@ -348,14 +481,44 @@ def test_registration_is_checkout_independent(
 
 
 def test_no_machine_local_interpreter_path_in_p14_tests() -> None:
-    """E4-CORPUS-T-16: P3-01 recurrence guard."""
-    fragments = ("/private/" + "tmp/", "/" + "Users/", "/opt/" + "homebrew/")
-    interpreter = re.compile(r"(?:python(?:3(?:\.11)?)?|pypy3)(?:[\"'])")
-    offenders = []
+    """E4-CORPUS-T-16: P3-01 semantic recurrence guard."""
+    rejected_defaults = {
+        "R2": '"/tmp/p14-corpus-py311/bin/python"',
+        "R3": '"/var/folders/example/T/p14-py311/bin/python3.11"',
+        "R4": '"/usr/local/opt/python@3.11/bin/python3.11"',
+        "R6": '"/private/tmp/py312/bin/python3.12"',
+        "R7": 'Path("/private/tmp/p14-py311/bin") / "python3.11"',
+    }
+    for probe_id, expression in rejected_defaults.items():
+        node = ast.parse(expression, mode="eval").body
+        assert not _is_portable_interpreter_default(node), probe_id
+    legitimate_defaults = {
+        "L1": "sys.executable",
+        "L2": 'os.environ.get("P14_PY311", sys.executable)',
+        "L3": 'shutil.which("python3.11") or sys.executable',
+    }
+    for probe_id, expression in legitimate_defaults.items():
+        node = ast.parse(expression, mode="eval").body
+        if _is_p14_python_env_get(node):
+            default = _p14_python_default(node)
+            assert default is not None
+            node = default
+        assert _is_portable_interpreter_default(node), probe_id
+
+    offenders: list[str] = []
     for path in sorted(Path(__file__).parent.glob("test_p14_*.py")):
-        for number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
-            if any(fragment in line for fragment in fragments) and interpreter.search(line):
-                offenders.append(f"{path.name}:{number}")
+        tree = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
+        for node in ast.walk(tree):
+            if _is_p14_python_env_get(node):
+                default = _p14_python_default(node)
+                if default is None or not _is_portable_interpreter_default(default):
+                    offenders.append(f"{path.name}:{node.lineno}:P14_PY311-default")
+            if (
+                isinstance(node, ast.Constant)
+                and isinstance(node.value, str)
+                and _is_absolute_interpreter_literal(node.value)
+            ):
+                offenders.append(f"{path.name}:{node.lineno}:absolute-interpreter")
     assert offenders == []
 
 
@@ -369,16 +532,53 @@ def test_append_only_is_preserved(formal_corpus: dict[str, object]) -> None:
 def test_partial_registration_leaves_index_untouched(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    """E4-CORPUS-T-18."""
+    """E4-CORPUS-T-18: a mid-write fault cannot alter the destination."""
     environment = _make_environment(tmp_path, monkeypatch)
-    before = environment["index"].read_bytes()
-    def fail_before_replace(_payload: dict[str, object]) -> None:
-        raise RuntimeError("injected third-append failure")
-    with pytest.raises(RuntimeError, match="injected"):
+    index = environment["index"]
+    before = index.read_bytes()
+    before_semantic = json.loads(before)
+    before_stat = index.stat()
+    temporary_pattern = f".{index.name}.*.tmp"
+    temporary_before = {path.name for path in index.parent.glob(temporary_pattern)}
+    faulted_paths: list[Path] = []
+    original_named_temporary_file = registry.tempfile.NamedTemporaryFile
+    original_path_open = Path.open
+    original_builtin_open = builtins.open
+
+    def faulting_named_temporary_file(*args: object, **kwargs: object) -> _MidWriteFailure:
+        return _MidWriteFailure(original_named_temporary_file(*args, **kwargs), faulted_paths)
+
+    def faulting_path_open(
+        path: Path, mode: str = "r", buffering: int = -1, encoding: str | None = None,
+        errors: str | None = None, newline: str | None = None,
+    ) -> object:
+        handle = original_path_open(path, mode, buffering, encoding, errors, newline)
+        if path == index and "w" in mode and "b" in mode:
+            return _MidWriteFailure(handle, faulted_paths)
+        return handle
+
+    def faulting_builtin_open(file: object, mode: str = "r", *args: object, **kwargs: object) -> object:
+        handle = original_builtin_open(file, mode, *args, **kwargs)
+        try:
+            is_destination = Path(file) == index
+        except TypeError:
+            is_destination = False
+        if is_destination and "w" in mode and "b" in mode:
+            return _MidWriteFailure(handle, faulted_paths)
+        return handle
+
+    monkeypatch.setattr(registry.tempfile, "NamedTemporaryFile", faulting_named_temporary_file)
+    monkeypatch.setattr(Path, "open", faulting_path_open)
+    monkeypatch.setattr(builtins, "open", faulting_builtin_open)
+    with pytest.raises(OSError, match="injected mid-write failure"):
         registry.register(corpus_index=environment["index"], evidence=environment["evidence"],
-                          corpus_root=environment["corpus_root"], audit_root=environment["audit_root"],
-                          before_replace=fail_before_replace)
-    assert environment["index"].read_bytes() == before
+                          corpus_root=environment["corpus_root"], audit_root=environment["audit_root"])
+    after = index.read_bytes()
+    assert faulted_paths and faulted_paths[0] != index
+    assert after == before
+    assert json.loads(after) == before_semantic
+    assert index.stat().st_ino == before_stat.st_ino
+    assert {path.name for path in index.parent.glob(temporary_pattern)} == temporary_before == set()
 
 
 def test_registrar_does_not_import_e1_output_summaries() -> None:
