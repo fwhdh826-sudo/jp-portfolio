@@ -10,6 +10,7 @@ import os
 import re
 import shutil
 import subprocess
+import sys
 import tarfile
 from dataclasses import replace
 from pathlib import Path
@@ -1229,7 +1230,7 @@ def test_partial_e4_stack_is_rejected(tmp_path, case):
         assert after.environment_presence(names, environment)[1] == ["MY_TOKEN"]
     compile((degraded / relative).read_text(), relative, "exec")
     subprocess.run([
-        str(Path(os.environ.get("P14_PY311", "/private/tmp/p14-e4-r2-i1-r1-py311/bin/python"))),
+        str(Path(os.environ.get("P14_PY311", sys.executable))),
         "-c", f"import sys; sys.path.insert(0,{str(degraded)!r}); import data.{Path(relative).stem}",
     ], cwd=degraded, check=True)
     with pytest.raises(replay.LegacyReplayError, match=(
