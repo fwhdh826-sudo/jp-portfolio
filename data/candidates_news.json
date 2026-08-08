@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-08-08T08:56:47.201475+09:00",
-  "sourceUpdatedAt": "2026-08-07T23:51:18+00:00",
+  "updatedAt": "2026-08-08T20:52:11.375384+09:00",
+  "sourceUpdatedAt": "2026-08-08T11:37:30+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -17,27 +17,40 @@
       "items": []
     },
     "jp_semiconductor": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Situational Awareness’s Mystery Investment Was to Source Foundry",
+      "topPositiveTitle": "Situational Awareness’s Mystery Investment Was to Source Foundry",
+      "items": [
+        {
+          "title": "Situational Awareness’s Mystery Investment Was to Source Foundry",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-08T03:26:57+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-08/situational-awareness-s-mystery-investment-was-to-source-foundry",
+          "tags": [
+            "jp_semiconductor",
+            "market"
+          ]
+        }
+      ]
     },
     "us_broad": {
-      "avgSentiment": -0.026,
-      "negativeCount": 5,
-      "positiveCount": 3,
-      "neutralCount": 3,
+      "avgSentiment": -0.261,
+      "negativeCount": 6,
+      "positiveCount": 1,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 11,
+      "itemCount": 8,
       "isStale": false,
       "topNegativeTitle": "Labor Market Concerns Raised Despite Low Unemployment Rate",
-      "topPositiveTitle": "Wall Street Risk Complex Surges Anew Amid Deluge of Fresh Cash",
+      "topPositiveTitle": "Yen Jumps on US Data as Traders Watch for Intervention Clues",
       "items": [
         {
           "title": "Labor Market Concerns Raised Despite Low Unemployment Rate",
@@ -47,6 +60,20 @@
           "publishedAt": "2026-08-07T18:40:52+00:00",
           "url": "https://www.bloomberg.com/news/videos/2026-08-07/labor-concerns-raised-despite-low-unemployment-rate-video",
           "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "World Economy Latest: US Employment Declines Unexpectedly",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.6,
+          "publishedAt": "2026-08-08T09:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-08/world-economy-latest-us-employment-declines-unexpectedly",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
             "market",
             "us_broad"
           ]
@@ -89,46 +116,20 @@
             "market",
             "us_broad"
           ]
-        },
-        {
-          "title": "S&P 500 Has Best Week Since April After Jobs Data: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-06T22:10:21+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-06/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "China’s Trade Boom Survives Extreme Rains as AI Lifts Demand",
-      "topPositiveTitle": "China’s Trade Boom Survives Extreme Rains as AI Lifts Demand",
-      "items": [
-        {
-          "title": "China’s Trade Boom Survives Extreme Rains as AI Lifts Demand",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-07T02:37:19+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-07/china-exports-imports-post-double-digit-gains-but-growth-slows",
-          "tags": [
-            "market",
-            "us_growth"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "global_broad": {
       "avgSentiment": 0.33,
@@ -156,16 +157,29 @@
       ]
     },
     "gold": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Zimbabwe to Cap Gold-Buying Support at $300 Million This Year",
+      "topPositiveTitle": "Zimbabwe to Cap Gold-Buying Support at $300 Million This Year",
+      "items": [
+        {
+          "title": "Zimbabwe to Cap Gold-Buying Support at $300 Million This Year",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-08T08:28:08+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-08/zimbabwe-to-cap-gold-buying-support-at-300-million-this-year",
+          "tags": [
+            "gold",
+            "market"
+          ]
+        }
+      ]
     },
     "reit": {
       "avgSentiment": 0,
@@ -192,50 +206,52 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.223,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 2,
+      "avgSentiment": 0.247,
+      "negativeCount": 1,
+      "positiveCount": 2,
+      "neutralCount": 0,
       "sourceCount": 2,
       "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Innovation Doesn't Happen Without Crisis: Rolapp",
-      "topPositiveTitle": "German Industrial Production Rises for Third Month on Cars",
+      "topNegativeTitle": "World Economy Latest: US Employment Declines Unexpectedly",
+      "topPositiveTitle": "War Brings Winter of Discontent for the World’s Workhorse Fuel",
       "items": [
         {
-          "title": "Innovation Doesn't Happen Without Crisis: Rolapp",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-07T19:34:44+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-07/innovation-doesn-t-happen-without-crisis-rolapp-video",
+          "title": "World Economy Latest: US Employment Declines Unexpectedly",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.6,
+          "publishedAt": "2026-08-08T09:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-08/world-economy-latest-us-employment-declines-unexpectedly",
           "tags": [
+            "geopolitical",
             "macro_risk",
-            "market"
+            "market",
+            "us_broad"
           ]
         },
         {
-          "title": "Iran War Takes Heavy Toll on Australia, New Zealand as Oil Soars",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-07T06:51:36+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-07/iran-war-takes-heavy-toll-on-australia-new-zealand-as-oil-soars",
+          "title": "War Brings Winter of Discontent for the World’s Workhorse Fuel",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-08T04:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-08/war-brings-winter-of-discontent-for-the-world-s-workhorse-fuel",
           "tags": [
-            "commodity",
             "geopolitical",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "German Industrial Production Rises for Third Month on Cars",
-          "source": "Bloomberg Economics",
+          "title": "New Zealand Slaps New Sanctions Against Russia After US Move",
+          "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.67,
-          "publishedAt": "2026-08-07T06:15:08+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-07/german-industrial-production-increases-for-third-month-on-cars",
+          "publishedAt": "2026-08-08T00:58:38+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-08/new-zealand-slaps-new-sanctions-against-russia-after-us-move",
           "tags": [
+            "commodity",
             "geopolitical",
             "macro_risk",
             "market"
@@ -244,12 +260,12 @@
       ]
     },
     "fx": {
-      "avgSentiment": 0.057,
+      "avgSentiment": 0.085,
       "negativeCount": 1,
       "positiveCount": 1,
-      "neutralCount": 1,
+      "neutralCount": 0,
       "sourceCount": 1,
-      "itemCount": 3,
+      "itemCount": 2,
       "isStale": false,
       "topNegativeTitle": "Dollar Ends Week at Lowest Since May as Rate-Hike Bets Fade",
       "topPositiveTitle": "Yen Jumps on US Data as Traders Watch for Intervention Clues",
@@ -266,18 +282,6 @@
             "market",
             "rates",
             "us_broad"
-          ]
-        },
-        {
-          "title": "Hedge Funds Slashed Yen Short Bets After US-Japan Joint Efforts",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-07T20:01:45+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-07/hedge-funds-slashed-yen-short-bets-after-us-japan-joint-efforts",
-          "tags": [
-            "fx",
-            "market"
           ]
         },
         {
@@ -361,16 +365,29 @@
       ]
     },
     "commodity": {
-      "avgSentiment": -0.083,
-      "negativeCount": 1,
-      "positiveCount": 0,
-      "neutralCount": 3,
-      "sourceCount": 3,
+      "avgSentiment": 0.003,
+      "negativeCount": 2,
+      "positiveCount": 1,
+      "neutralCount": 1,
+      "sourceCount": 2,
       "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "CFTC Warns Prediction Markets on American-Style Casino Odds",
-      "topPositiveTitle": "Iran War Takes Heavy Toll on Australia, New Zealand as Oil Soars",
+      "topNegativeTitle": "Kyiv Struck as Ukraine Targets Two Russian Oil Refineries",
+      "topPositiveTitle": "New Zealand Slaps New Sanctions Against Russia After US Move",
       "items": [
+        {
+          "title": "Kyiv Struck as Ukraine Targets Two Russian Oil Refineries",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-08T05:54:20+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-08/ukraine-drone-strike-sparks-fire-at-russia-s-ilsky-refinery",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
+          ]
+        },
         {
           "title": "CFTC Warns Prediction Markets on American-Style Casino Odds",
           "source": "Bloomberg Markets",
@@ -380,33 +397,6 @@
           "url": "https://www.bloomberg.com/news/articles/2026-08-07/cftc-warns-prediction-markets-against-american-style-casino-odds",
           "tags": [
             "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "Iran War Takes Heavy Toll on Australia, New Zealand as Oil Soars",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-07T06:51:36+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-07/iran-war-takes-heavy-toll-on-australia-new-zealand-as-oil-soars",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Latest Oil Market News and Analysis for Aug. 7",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-06T22:01:46+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-06/latest-oil-market-news-and-analysis-for-aug-7",
-          "tags": [
-            "commodity",
-            "geopolitical",
             "market"
           ]
         },
@@ -422,41 +412,55 @@
             "market"
           ],
           "titleJa": "カリブ海のトリニダード・トバゴと協力推進で一致 茂木外相"
-        }
-      ]
-    },
-    "geopolitical": {
-      "avgSentiment": 0.223,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 3,
-      "isStale": false,
-      "topNegativeTitle": "Iran War Takes Heavy Toll on Australia, New Zealand as Oil Soars",
-      "topPositiveTitle": "German Industrial Production Rises for Third Month on Cars",
-      "items": [
+        },
         {
-          "title": "Iran War Takes Heavy Toll on Australia, New Zealand as Oil Soars",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-07T06:51:36+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-07/iran-war-takes-heavy-toll-on-australia-new-zealand-as-oil-soars",
+          "title": "New Zealand Slaps New Sanctions Against Russia After US Move",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-08T00:58:38+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-08/new-zealand-slaps-new-sanctions-against-russia-after-us-move",
           "tags": [
             "commodity",
             "geopolitical",
             "macro_risk",
             "market"
           ]
+        }
+      ]
+    },
+    "geopolitical": {
+      "avgSentiment": 0.082,
+      "negativeCount": 2,
+      "positiveCount": 2,
+      "neutralCount": 1,
+      "sourceCount": 2,
+      "itemCount": 5,
+      "isStale": false,
+      "topNegativeTitle": "World Economy Latest: US Employment Declines Unexpectedly",
+      "topPositiveTitle": "War Brings Winter of Discontent for the World’s Workhorse Fuel",
+      "items": [
+        {
+          "title": "World Economy Latest: US Employment Declines Unexpectedly",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.6,
+          "publishedAt": "2026-08-08T09:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-08/world-economy-latest-us-employment-declines-unexpectedly",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "us_broad"
+          ]
         },
         {
-          "title": "Latest Oil Market News and Analysis for Aug. 7",
+          "title": "Kyiv Struck as Ukraine Targets Two Russian Oil Refineries",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-06T22:01:46+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-06/latest-oil-market-news-and-analysis-for-aug-7",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-08T05:54:20+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-08/ukraine-drone-strike-sparks-fire-at-russia-s-ilsky-refinery",
           "tags": [
             "commodity",
             "geopolitical",
@@ -464,13 +468,39 @@
           ]
         },
         {
-          "title": "German Industrial Production Rises for Third Month on Cars",
-          "source": "Bloomberg Economics",
+          "title": "Zelenskyy Makes Debut Trip to Serbia as Russian Influence Wanes",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-08T06:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-08/zelenskyy-makes-debut-trip-to-serbia-as-russian-influence-wanes",
+          "tags": [
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "War Brings Winter of Discontent for the World’s Workhorse Fuel",
+          "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.67,
-          "publishedAt": "2026-08-07T06:15:08+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-07/german-industrial-production-increases-for-third-month-on-cars",
+          "publishedAt": "2026-08-08T04:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-08/war-brings-winter-of-discontent-for-the-world-s-workhorse-fuel",
           "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "New Zealand Slaps New Sanctions Against Russia After US Move",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-08T00:58:38+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-08/new-zealand-slaps-new-sanctions-against-russia-after-us-move",
+          "tags": [
+            "commodity",
             "geopolitical",
             "macro_risk",
             "market"
@@ -487,7 +517,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 4,
+    "excludedCount": 3,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
