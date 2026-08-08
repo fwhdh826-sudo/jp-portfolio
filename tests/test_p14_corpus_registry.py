@@ -106,6 +106,32 @@ def _is_absolute_interpreter_literal(value: str) -> bool:
     return Path(value).name == "bin" and re.search(r"py(?:thon)?\d", value, re.IGNORECASE) is not None
 
 
+def _semantic_interpreter_offenders(tree: ast.AST) -> list[tuple[int, str]]:
+    offenders: list[tuple[int, str]] = []
+    for node in ast.walk(tree):
+        if _is_p14_python_env_get(node):
+            default = _p14_python_default(node)
+            if default is None or not _is_portable_interpreter_default(default):
+                offenders.append((node.lineno, "P14_PY311-default"))
+        if (
+            isinstance(node, ast.Constant)
+            and isinstance(node.value, str)
+            and _is_absolute_interpreter_literal(node.value)
+        ):
+            offenders.append((node.lineno, "absolute-interpreter"))
+    return offenders
+
+
+def _structural_interpreter_offenders(source: str) -> list[int]:
+    fragments = ("/private/" + "tmp/", "/" + "Users/", "/opt/" + "homebrew/")
+    interpreter = re.compile(r"(?:python(?:3(?:\.11)?)?|pypy3)(?:[\"'])")
+    return [
+        number
+        for number, line in enumerate(source.splitlines(), 1)
+        if any(fragment in line for fragment in fragments) and interpreter.search(line)
+    ]
+
+
 class _MidWriteFailure:
     def __init__(self, handle: object, faulted_paths: list[Path]) -> None:
         self._handle = handle
@@ -481,45 +507,55 @@ def test_registration_is_checkout_independent(
 
 
 def test_no_machine_local_interpreter_path_in_p14_tests() -> None:
-    """E4-CORPUS-T-16: P3-01 semantic recurrence guard."""
+    """E4-CORPUS-T-16: semantic and split-representation recurrence guards."""
+    private_tmp = "/private/" + "tmp/"
     rejected_defaults = {
-        "R2": '"/tmp/p14-corpus-py311/bin/python"',
-        "R3": '"/var/folders/example/T/p14-py311/bin/python3.11"',
-        "R4": '"/usr/local/opt/python@3.11/bin/python3.11"',
-        "R6": '"/private/tmp/py312/bin/python3.12"',
-        "R7": 'Path("/private/tmp/p14-py311/bin") / "python3.11"',
+        "R2": '"/' + 'tmp/p14-corpus-py311/bin/python"',
+        "R3": '"/var/' + 'folders/example/T/p14-py311/bin/python3.11"',
+        "R4": '"/usr/' + 'local/opt/python@3.11/bin/python3.11"',
+        "R6": f'"{private_tmp}py312/bin/python3.12"',
+        "R7": f'Path("{private_tmp}p14-py311/bin") / "python3.11"',
     }
     for probe_id, expression in rejected_defaults.items():
-        node = ast.parse(expression, mode="eval").body
-        assert not _is_portable_interpreter_default(node), probe_id
+        tree = ast.parse(expression, mode="eval")
+        assert _semantic_interpreter_offenders(tree), probe_id
+
+    split_rejected = {
+        "SPLIT-01": f'Path("{private_tmp}p14-py311") / "bin" / "python3.11"',
+        "SPLIT-02": f'Path("{private_tmp}p14-e4-r2-i1-r1-py311") / "bin/python"',
+        "SPLIT-03": f'Path("{private_tmp}p14-py311") / "bin/python3.11"',
+        "SPLIT-04": f'Path("{private_tmp}") / "p14-py311" / "bin/python3.11"',
+    }
+    for probe_id, expression in split_rejected.items():
+        tree = ast.parse(expression, mode="eval")
+        assert _semantic_interpreter_offenders(tree) == [], probe_id
+        assert _structural_interpreter_offenders(expression), probe_id
+
     legitimate_defaults = {
         "L1": "sys.executable",
         "L2": 'os.environ.get("P14_PY311", sys.executable)',
         "L3": 'shutil.which("python3.11") or sys.executable',
     }
     for probe_id, expression in legitimate_defaults.items():
-        node = ast.parse(expression, mode="eval").body
-        if _is_p14_python_env_get(node):
-            default = _p14_python_default(node)
-            assert default is not None
-            node = default
-        assert _is_portable_interpreter_default(node), probe_id
+        tree = ast.parse(expression, mode="eval")
+        assert _semantic_interpreter_offenders(tree) == [], probe_id
+        assert _structural_interpreter_offenders(expression) == [], probe_id
 
-    offenders: list[str] = []
+    semantic_offenders: list[str] = []
+    structural_offenders: list[str] = []
     for path in sorted(Path(__file__).parent.glob("test_p14_*.py")):
-        tree = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
-        for node in ast.walk(tree):
-            if _is_p14_python_env_get(node):
-                default = _p14_python_default(node)
-                if default is None or not _is_portable_interpreter_default(default):
-                    offenders.append(f"{path.name}:{node.lineno}:P14_PY311-default")
-            if (
-                isinstance(node, ast.Constant)
-                and isinstance(node.value, str)
-                and _is_absolute_interpreter_literal(node.value)
-            ):
-                offenders.append(f"{path.name}:{node.lineno}:absolute-interpreter")
-    assert offenders == []
+        source = path.read_text(encoding="utf-8")
+        tree = ast.parse(source, filename=str(path))
+        semantic_offenders.extend(
+            f"{path.name}:{number}:{kind}"
+            for number, kind in _semantic_interpreter_offenders(tree)
+        )
+        structural_offenders.extend(
+            f"{path.name}:{number}:split-interpreter"
+            for number in _structural_interpreter_offenders(source)
+        )
+    assert semantic_offenders == []
+    assert structural_offenders == []
 
 
 def test_append_only_is_preserved(formal_corpus: dict[str, object]) -> None:
