@@ -10,7 +10,7 @@ import os
 import re
 import subprocess
 import sys
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 
 import pytest
 
@@ -96,28 +96,115 @@ def _p14_python_default(node: ast.Call) -> ast.AST | None:
     return next((item.value for item in node.keywords if item.arg == "default"), None)
 
 
+def _static_string(node: ast.AST) -> str | None:
+    if isinstance(node, ast.Constant) and isinstance(node.value, str):
+        return node.value
+    if isinstance(node, ast.BinOp) and isinstance(node.op, ast.Add):
+        left = _static_string(node.left)
+        right = _static_string(node.right)
+        if left is not None and right is not None:
+            return left + right
+    return None
+
+
+def _is_path_constructor(node: ast.AST) -> bool:
+    return (
+        isinstance(node, ast.Name) and node.id == "Path"
+        or isinstance(node, ast.Attribute) and node.attr == "Path"
+    )
+
+
+def _static_path(node: ast.AST) -> str | None:
+    """Reconstruct a constant-only POSIX path expression without evaluating code."""
+    static_string = _static_string(node)
+    if static_string is not None:
+        return static_string
+    if (
+        isinstance(node, ast.Call)
+        and _is_path_constructor(node.func)
+        and len(node.args) == 1
+        and not node.keywords
+    ):
+        return _static_path(node.args[0])
+    if isinstance(node, ast.BinOp) and isinstance(node.op, ast.Div):
+        left = _static_path(node.left)
+        right = _static_string(node.right)
+        if left is not None and right is not None:
+            return str(PurePosixPath(left) / right)
+    return None
+
+
 def _is_absolute_interpreter_literal(value: str) -> bool:
-    if not Path(value).is_absolute():
+    path = PurePosixPath(value)
+    if not path.is_absolute():
         return False
-    interpreter = re.compile(r"(?:python(?:\d+(?:\.\d+)*)?|pypy\d*)", re.IGNORECASE)
-    parts = Path(value).parts
-    if any(interpreter.fullmatch(part) for part in parts):
-        return True
-    return Path(value).name == "bin" and re.search(r"py(?:thon)?\d", value, re.IGNORECASE) is not None
+    interpreter = re.compile(r"(?:python(?:3(?:\.\d+)?)?|pypy3)", re.IGNORECASE)
+    return interpreter.fullmatch(path.name) is not None
+
+
+def _qualified_name(node: ast.AST) -> str | None:
+    if isinstance(node, ast.Name):
+        return node.id
+    if isinstance(node, ast.Attribute):
+        owner = _qualified_name(node.value)
+        return f"{owner}.{node.attr}" if owner else None
+    return None
+
+
+def _assigned_names(node: ast.AST) -> list[str]:
+    if isinstance(node, ast.Name):
+        return [node.id]
+    if isinstance(node, (ast.Tuple, ast.List)):
+        return [name for item in node.elts for name in _assigned_names(item)]
+    return []
+
+
+def _looks_like_interpreter_binding(name: str) -> bool:
+    if re.search(r"(?:sample|example|document)", name, re.IGNORECASE):
+        return False
+    return re.search(r"(?:python|py\d{2,}|interpreter|executable)", name, re.IGNORECASE) is not None
+
+
+def _is_execution_bound(node: ast.AST, parents: dict[ast.AST, ast.AST]) -> bool:
+    current = node
+    while current in parents:
+        parent = parents[current]
+        if isinstance(parent, ast.Assign) and current is parent.value:
+            names = [name for target in parent.targets for name in _assigned_names(target)]
+            return any(_looks_like_interpreter_binding(name) for name in names)
+        if isinstance(parent, ast.AnnAssign) and current is parent.value:
+            return any(_looks_like_interpreter_binding(name) for name in _assigned_names(parent.target))
+        if isinstance(parent, ast.NamedExpr) and current is parent.value:
+            return any(_looks_like_interpreter_binding(name) for name in _assigned_names(parent.target))
+        if isinstance(parent, ast.Expr):
+            return not isinstance(node, ast.Constant)
+        if isinstance(parent, ast.Call):
+            call_name = _qualified_name(parent.func) or ""
+            return call_name in {
+                "subprocess.run", "subprocess.Popen", "subprocess.call",
+                "subprocess.check_call", "subprocess.check_output",
+            } or call_name.startswith("os.exec")
+        if isinstance(parent, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef, ast.Module)):
+            return False
+        current = parent
+    return False
 
 
 def _semantic_interpreter_offenders(tree: ast.AST) -> list[tuple[int, str]]:
     offenders: list[tuple[int, str]] = []
+    parents = {child: parent for parent in ast.walk(tree) for child in ast.iter_child_nodes(parent)}
     for node in ast.walk(tree):
         if _is_p14_python_env_get(node):
             default = _p14_python_default(node)
-            if default is None or not _is_portable_interpreter_default(default):
+            if default is not None and not _is_portable_interpreter_default(default):
                 offenders.append((node.lineno, "P14_PY311-default"))
-        if (
-            isinstance(node, ast.Constant)
-            and isinstance(node.value, str)
-            and _is_absolute_interpreter_literal(node.value)
-        ):
+        static_path = _static_path(node)
+        if static_path is None or not _is_absolute_interpreter_literal(static_path):
+            continue
+        parent = parents.get(node)
+        if parent is not None and _static_path(parent) is not None:
+            continue
+        if not isinstance(node, ast.Constant) or _is_execution_bound(node, parents):
             offenders.append((node.lineno, "absolute-interpreter"))
     return offenders
 
@@ -507,37 +594,111 @@ def test_registration_is_checkout_independent(
 
 
 def test_no_machine_local_interpreter_path_in_p14_tests() -> None:
-    """E4-CORPUS-T-16: semantic and split-representation recurrence guards."""
+    """E4-CORPUS-T-16: normalized semantic contract plus text defense-in-depth."""
     private_tmp = "/private/" + "tmp/"
-    rejected_defaults = {
+    historical_rejected = {
         "R2": '"/' + 'tmp/p14-corpus-py311/bin/python"',
         "R3": '"/var/' + 'folders/example/T/p14-py311/bin/python3.11"',
         "R4": '"/usr/' + 'local/opt/python@3.11/bin/python3.11"',
         "R6": f'"{private_tmp}py312/bin/python3.12"',
         "R7": f'Path("{private_tmp}p14-py311/bin") / "python3.11"',
+        "R1V-SPLIT-01": f'Path("{private_tmp}p14-py311") / "bin" / "python3.11"',
+        "R1V-SPLIT-02": f'Path("{private_tmp}p14-e4-r2-i1-r1-py311") / "bin/python"',
+        "R1V-SPLIT-03": f'Path("{private_tmp}p14-py311") / "bin/python3.11"',
+        "R1V-SPLIT-04": f'Path("{private_tmp}") / "p14-py311" / "bin/python3.11"',
+        "R2V-IND-05": 'Path("/' + 'tmp/p14-py311") / "bin" / "python3.11"',
+        "R2V-IND-06": 'Path("/var/' + 'folders/zz/T/p14-py311") / "bin" / "python3.11"',
+        "R2V-IND-07": f'Path("{private_tmp}py312") / "bin" / "python3.12"',
+        "R2V-IND-08": (
+            "Path(\n"
+            f'    "{private_tmp}p14-py311"\n'
+            ") / (\n"
+            '    "bin/python3.11"\n'
+            ")"
+        ),
     }
-    for probe_id, expression in rejected_defaults.items():
-        tree = ast.parse(expression, mode="eval")
+    for probe_id, expression in historical_rejected.items():
+        tree = ast.parse(f"_PYTHON = {expression}")
         assert _semantic_interpreter_offenders(tree), probe_id
+    for probe_id in (
+        "R1V-SPLIT-01", "R1V-SPLIT-02", "R1V-SPLIT-03", "R1V-SPLIT-04"
+    ):
+        assert _structural_interpreter_offenders(historical_rejected[probe_id]), probe_id
 
-    split_rejected = {
-        "SPLIT-01": f'Path("{private_tmp}p14-py311") / "bin" / "python3.11"',
-        "SPLIT-02": f'Path("{private_tmp}p14-e4-r2-i1-r1-py311") / "bin/python"',
-        "SPLIT-03": f'Path("{private_tmp}p14-py311") / "bin/python3.11"',
-        "SPLIT-04": f'Path("{private_tmp}") / "p14-py311" / "bin/python3.11"',
-    }
-    for probe_id, expression in split_rejected.items():
-        tree = ast.parse(expression, mode="eval")
-        assert _semantic_interpreter_offenders(tree) == [], probe_id
-        assert _structural_interpreter_offenders(expression), probe_id
+    prefixes = (
+        private_tmp.rstrip("/"),
+        "/" + "tmp",
+        "/var/" + "folders/zz/T",
+        "/" + "Users/example/.cache",
+        "/opt/" + "homebrew",
+        "/usr/" + "local",
+    )
+    interpreters = ("python", "python3", "python3.11", "python3.12", "python3.13", "pypy3")
+
+    def constructions(prefix: str, executable: str) -> tuple[str, ...]:
+        full = f"{prefix}/bin/{executable}"
+        return (
+            repr(full),
+            f"Path({full!r})",
+            f"Path({prefix!r}) / 'bin' / {executable!r}",
+            f"Path({prefix!r} + '/bin') / {executable!r}",
+            f"Path({prefix!r}) / ('bin/' + {executable!r})",
+            f"Path(\n    {prefix!r}\n) / (\n    'bin'\n) / (\n    {executable!r}\n)",
+        )
+
+    cross_product_count = 0
+    for prefix in prefixes:
+        for executable in interpreters:
+            expected = f"{prefix}/bin/{executable}"
+            for construction_index, expression in enumerate(constructions(prefix, executable), 1):
+                tree = ast.parse(f"_PYTHON = {expression}")
+                assignment = tree.body[0]
+                assert isinstance(assignment, ast.Assign)
+                assert _static_path(assignment.value) == expected
+                assert _semantic_interpreter_offenders(tree), (
+                    prefix, executable, construction_index
+                )
+                default_tree = ast.parse(
+                    f'_PYTHON = os.environ.get("P14_PY311", {expression})'
+                )
+                assert any(
+                    kind == "P14_PY311-default"
+                    for _line, kind in _semantic_interpreter_offenders(default_tree)
+                ), (prefix, executable, construction_index)
+                cross_product_count += 1
+    assert cross_product_count == 6 * 6 * 6
+
+    independent_rejected = (
+        "Path('/Library/Caches/p14') / 'bin' / 'python3.17'",
+        "Path('/srv/p14/bin') / ('python3.' + '27')",
+        "Path('/Volumes/local-p14') / ('bin/' + 'pypy3')",
+        "Path(\n    '/System/Volumes/Data/private-cache'\n) / 'bin' / (\n    'python3.14'\n)",
+    )
+    for index, expression in enumerate(independent_rejected, 1):
+        assert _semantic_interpreter_offenders(ast.parse(f"_PYTHON = {expression}")), index
 
     legitimate_defaults = {
         "L1": "sys.executable",
         "L2": 'os.environ.get("P14_PY311", sys.executable)',
         "L3": 'shutil.which("python3.11") or sys.executable',
+        "L4": (
+            'os.environ.get("P14_PY311") or shutil.which("python3.11") '
+            "or sys.executable"
+        ),
+        "L5": (
+            'shutil.which("python3") or shutil.which("python3.11") '
+            "or sys.executable"
+        ),
+        "L6": (
+            'os.environ.get("P14_PY311", shutil.which("python3.11") '
+            "or sys.executable)"
+        ),
+        "ENV-OVERRIDE": 'os.environ.get("P14_PY311")',
+        "DOC-SAMPLE": '"/' + 'tmp/documentation/bin/python3.12"',
     }
     for probe_id, expression in legitimate_defaults.items():
-        tree = ast.parse(expression, mode="eval")
+        binding = "DOCUMENTED_PATH" if probe_id == "DOC-SAMPLE" else "_PYTHON"
+        tree = ast.parse(f"{binding} = {expression}")
         assert _semantic_interpreter_offenders(tree) == [], probe_id
         assert _structural_interpreter_offenders(expression) == [], probe_id
 
