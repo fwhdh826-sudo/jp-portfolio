@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-08-09T08:53:24.758199+09:00",
-  "sourceUpdatedAt": "2026-08-08T20:00:00+00:00",
+  "updatedAt": "2026-08-09T20:53:17.207300+09:00",
+  "sourceUpdatedAt": "2026-08-09T11:00:00+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -17,55 +17,28 @@
       "items": []
     },
     "jp_semiconductor": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Situational Awareness’s Mystery Investment Was to Source Foundry",
-      "topPositiveTitle": "Situational Awareness’s Mystery Investment Was to Source Foundry",
-      "items": [
-        {
-          "title": "Situational Awareness’s Mystery Investment Was to Source Foundry",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-08T03:26:57+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-08/situational-awareness-s-mystery-investment-was-to-source-foundry",
-          "tags": [
-            "jp_semiconductor",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "us_broad": {
-      "avgSentiment": -0.397,
-      "negativeCount": 4,
+      "avgSentiment": -0.33,
+      "negativeCount": 2,
       "positiveCount": 0,
       "neutralCount": 0,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "World Economy Latest: US Employment Declines Unexpectedly",
+      "topNegativeTitle": "US CPI to Show Inflationary Pressures Cooling Some",
       "topPositiveTitle": "US CPI to Show Inflationary Pressures Cooling Some",
       "items": [
-        {
-          "title": "World Economy Latest: US Employment Declines Unexpectedly",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.6,
-          "publishedAt": "2026-08-08T09:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-08/world-economy-latest-us-employment-declines-unexpectedly",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market",
-            "us_broad"
-          ]
-        },
         {
           "title": "US CPI to Show Inflationary Pressures Cooling Some",
           "source": "Bloomberg Economics",
@@ -89,19 +62,6 @@
           "url": "https://www.bloomberg.com/news/videos/2026-08-08/ai-buildout-keeps-quinlan-bullish-on-us-stocks-video",
           "tags": [
             "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Weak Jobs Data Masked by Falling Unemployment",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-08T12:12:02+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-08/weak-jobs-data-masked-by-falling-unemployment-video",
-          "tags": [
-            "market",
-            "rates",
             "us_broad"
           ]
         }
@@ -145,29 +105,16 @@
       ]
     },
     "gold": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Zimbabwe to Cap Gold-Buying Support at $300 Million This Year",
-      "topPositiveTitle": "Zimbabwe to Cap Gold-Buying Support at $300 Million This Year",
-      "items": [
-        {
-          "title": "Zimbabwe to Cap Gold-Buying Support at $300 Million This Year",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-08T08:28:08+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-08/zimbabwe-to-cap-gold-buying-support-at-300-million-this-year",
-          "tags": [
-            "gold",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "reit": {
       "avgSentiment": 0,
@@ -194,30 +141,16 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.087,
+      "avgSentiment": -0.22,
       "negativeCount": 2,
-      "positiveCount": 1,
-      "neutralCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 1,
       "sourceCount": 2,
       "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "World Economy Latest: US Employment Declines Unexpectedly",
-      "topPositiveTitle": "War Brings Winter of Discontent for the World’s Workhorse Fuel",
+      "topNegativeTitle": "US CPI to Show Inflationary Pressures Cooling Some",
+      "topPositiveTitle": "China’s Inflation Cools as Iran War Oil Shock Starts to Ease",
       "items": [
-        {
-          "title": "World Economy Latest: US Employment Declines Unexpectedly",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.6,
-          "publishedAt": "2026-08-08T09:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-08/world-economy-latest-us-employment-declines-unexpectedly",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market",
-            "us_broad"
-          ]
-        },
         {
           "title": "US CPI to Show Inflationary Pressures Cooling Some",
           "source": "Bloomberg Economics",
@@ -233,13 +166,26 @@
           ]
         },
         {
-          "title": "War Brings Winter of Discontent for the World’s Workhorse Fuel",
+          "title": "Korea Volatility Spike Ebbs as Leveraged Trades Are Flushed Out",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-08T04:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-08/war-brings-winter-of-discontent-for-the-world-s-workhorse-fuel",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-09T00:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-09/korea-volatility-spike-ebbs-as-leveraged-trades-are-flushed-out",
           "tags": [
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "China’s Inflation Cools as Iran War Oil Shock Starts to Ease",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-09T01:46:29+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-09/china-s-inflation-cools-as-oil-shock-of-iran-war-starts-to-ease",
+          "tags": [
+            "commodity",
             "geopolitical",
             "macro_risk",
             "market"
@@ -248,39 +194,53 @@
       ]
     },
     "fx": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "rates": {
-      "avgSentiment": -0.165,
-      "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Weak Jobs Data Masked by Falling Unemployment",
-      "topPositiveTitle": "Private Credit Squeezed By Bank Refinancings: Credit Weekly",
+      "topNegativeTitle": "Currency Defense Gets Makeover as Emerging Asia Guards Reserves",
+      "topPositiveTitle": "Currency Defense Gets Makeover as Emerging Asia Guards Reserves",
       "items": [
         {
-          "title": "Weak Jobs Data Masked by Falling Unemployment",
+          "title": "Currency Defense Gets Makeover as Emerging Asia Guards Reserves",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-08T12:12:02+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-08/weak-jobs-data-masked-by-falling-unemployment-video",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-09T10:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-09/currency-defense-gets-makeover-as-emerging-asia-guards-reserves",
           "tags": [
+            "fx",
             "market",
-            "rates",
-            "us_broad"
+            "rates"
+          ]
+        }
+      ]
+    },
+    "rates": {
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 2,
+      "sourceCount": 1,
+      "itemCount": 2,
+      "isStale": false,
+      "topNegativeTitle": "Currency Defense Gets Makeover as Emerging Asia Guards Reserves",
+      "topPositiveTitle": "Currency Defense Gets Makeover as Emerging Asia Guards Reserves",
+      "items": [
+        {
+          "title": "Currency Defense Gets Makeover as Emerging Asia Guards Reserves",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-09T10:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-09/currency-defense-gets-makeover-as-emerging-asia-guards-reserves",
+          "tags": [
+            "fx",
+            "market",
+            "rates"
           ]
         },
         {
@@ -298,69 +258,56 @@
       ]
     },
     "commodity": {
-      "avgSentiment": -0.165,
-      "negativeCount": 1,
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
+      "neutralCount": 2,
       "sourceCount": 2,
       "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Kyiv Struck as Ukraine Targets Two Russian Oil Refineries",
-      "topPositiveTitle": "カリブ海のトリニダード・トバゴと協力推進で一致 茂木外相",
+      "topNegativeTitle": "China’s Inflation Cools as Iran War Oil Shock Starts to Ease",
+      "topPositiveTitle": "China’s Inflation Cools as Iran War Oil Shock Starts to Ease",
       "items": [
         {
-          "title": "Kyiv Struck as Ukraine Targets Two Russian Oil Refineries",
+          "title": "China’s Inflation Cools as Iran War Oil Shock Starts to Ease",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-08T05:54:20+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-08/ukraine-drone-strike-sparks-fire-at-russia-s-ilsky-refinery",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-09T01:46:29+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-09/china-s-inflation-cools-as-oil-shock-of-iran-war-starts-to-ease",
           "tags": [
             "commodity",
             "geopolitical",
+            "macro_risk",
             "market"
           ]
         },
         {
-          "title": "カリブ海のトリニダード・トバゴと協力推進で一致 茂木外相",
+          "title": "熊本地震 赤間防災相“資源投じて 被災者ニーズに応えていく”",
           "source": "NHK 経済",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-07T22:48:27+00:00",
-          "url": "https://news.web.nhk/newsweb/na/na-k10015199761000",
+          "publishedAt": "2026-08-09T03:45:13+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20260809de42951",
           "tags": [
             "commodity",
             "market"
           ],
-          "titleJa": "カリブ海のトリニダード・トバゴと協力推進で一致 茂木外相"
+          "titleJa": "熊本地震 赤間防災相“資源投じて 被災者ニーズに応えていく”"
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": -0.098,
-      "negativeCount": 3,
-      "positiveCount": 1,
-      "neutralCount": 2,
+      "avgSentiment": -0.083,
+      "negativeCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "World Economy Latest: US Employment Declines Unexpectedly",
-      "topPositiveTitle": "War Brings Winter of Discontent for the World’s Workhorse Fuel",
+      "topNegativeTitle": "US CPI to Show Inflationary Pressures Cooling Some",
+      "topPositiveTitle": "China’s Inflation Cools as Iran War Oil Shock Starts to Ease",
       "items": [
-        {
-          "title": "World Economy Latest: US Employment Declines Unexpectedly",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.6,
-          "publishedAt": "2026-08-08T09:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-08/world-economy-latest-us-employment-declines-unexpectedly",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market",
-            "us_broad"
-          ]
-        },
         {
           "title": "US CPI to Show Inflationary Pressures Cooling Some",
           "source": "Bloomberg Economics",
@@ -376,15 +323,16 @@
           ]
         },
         {
-          "title": "Kyiv Struck as Ukraine Targets Two Russian Oil Refineries",
+          "title": "China’s Inflation Cools as Iran War Oil Shock Starts to Ease",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-08T05:54:20+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-08/ukraine-drone-strike-sparks-fire-at-russia-s-ilsky-refinery",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-09T01:46:29+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-09/china-s-inflation-cools-as-oil-shock-of-iran-war-starts-to-ease",
           "tags": [
             "commodity",
             "geopolitical",
+            "macro_risk",
             "market"
           ]
         },
@@ -423,7 +371,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 4,
+    "excludedCount": 23,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
