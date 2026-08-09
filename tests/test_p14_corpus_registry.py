@@ -190,6 +190,73 @@ def _is_execution_bound(node: ast.AST, parents: dict[ast.AST, ast.AST]) -> bool:
     return False
 
 
+def _is_documentation_interpreter_literal(value: str) -> bool:
+    """Recognize an explicit documentation namespace, never a name heuristic."""
+    parts = tuple(part.casefold() for part in PurePosixPath(value).parts if part != "/")
+    markers = {"doc", "docs", "documentation", "sample", "samples", "example", "examples"}
+    if not markers.intersection(parts):
+        return False
+    if parts[:2] in {("var", "folders"), ("private", "tmp")} or parts[:1] == ("users",):
+        return False
+    if parts[:1] == ("tmp",):
+        return len(parts) > 1 and parts[1] == "documentation"
+    return True
+
+
+def _is_execution_call(node: ast.Call) -> bool:
+    call_name = _qualified_name(node.func) or ""
+    return call_name in {
+        "subprocess.run", "subprocess.Popen", "subprocess.call",
+        "subprocess.check_call", "subprocess.check_output",
+    } or call_name.startswith("os.exec")
+
+
+def _is_explicit_executable_or_default_use(
+    node: ast.AST, tree: ast.AST, parents: dict[ast.AST, ast.AST]
+) -> bool:
+    """Let proven execution/default use override the documentation carve-out."""
+    current = node
+    assigned_names: set[str] = set()
+    while current in parents:
+        parent = parents[current]
+        if isinstance(parent, ast.Assign) and current is parent.value:
+            assigned_names.update(
+                name for target in parent.targets for name in _assigned_names(target)
+            )
+        elif isinstance(parent, ast.AnnAssign) and current is parent.value:
+            assigned_names.update(_assigned_names(parent.target))
+        elif isinstance(parent, ast.NamedExpr) and current is parent.value:
+            assigned_names.update(_assigned_names(parent.target))
+        if isinstance(parent, ast.Call):
+            if _is_execution_call(parent):
+                return True
+            if (
+                isinstance(parent.func, ast.Attribute)
+                and parent.func.attr == "get"
+                and current in parent.args[1:]
+            ):
+                return True
+        if isinstance(parent, (ast.FunctionDef, ast.AsyncFunctionDef)):
+            defaults = (*parent.args.defaults, *parent.args.kw_defaults)
+            if any(default is not None and node in ast.walk(default) for default in defaults):
+                return True
+        current = parent
+    if not assigned_names:
+        return False
+    for candidate in ast.walk(tree):
+        if not isinstance(candidate, ast.Call) or not _is_execution_call(candidate):
+            continue
+        call_names = {
+            item.id
+            for argument in (*candidate.args, *(keyword.value for keyword in candidate.keywords))
+            for item in ast.walk(argument)
+            if isinstance(item, ast.Name) and isinstance(item.ctx, ast.Load)
+        }
+        if assigned_names.intersection(call_names):
+            return True
+    return False
+
+
 def _semantic_interpreter_offenders(tree: ast.AST) -> list[tuple[int, str]]:
     offenders: list[tuple[int, str]] = []
     parents = {child: parent for parent in ast.walk(tree) for child in ast.iter_child_nodes(parent)}
@@ -204,8 +271,12 @@ def _semantic_interpreter_offenders(tree: ast.AST) -> list[tuple[int, str]]:
         parent = parents.get(node)
         if parent is not None and _static_path(parent) is not None:
             continue
-        if not isinstance(node, ast.Constant) or _is_execution_bound(node, parents):
-            offenders.append((node.lineno, "absolute-interpreter"))
+        if (
+            _is_documentation_interpreter_literal(static_path)
+            and not _is_explicit_executable_or_default_use(node, tree, parents)
+        ):
+            continue
+        offenders.append((node.lineno, "absolute-interpreter"))
     return offenders
 
 
@@ -677,6 +748,180 @@ def test_no_machine_local_interpreter_path_in_p14_tests() -> None:
     for index, expression in enumerate(independent_rejected, 1):
         assert _semantic_interpreter_offenders(ast.parse(f"_PYTHON = {expression}")), index
 
+    context_path = str(
+        PurePosixPath("/var") / "folders" / "zz" / "T" / "p14-r4-venv" / "bin" /
+        "python3.11"
+    )
+    historical_binding_names = (
+        "_PY", "PY", "PY_311", "_PY_311", "EXE", "_INTERP", "INTERP", "CMD",
+        "BIN", "RUNNER", "TOOL", "P14_BIN", "REPLAY_BIN", "VENV_BIN", "DEFAULT_BIN",
+        "CHILD", "PROC", "_default", "py_path", "PATH_TO_PY", "_PYTHON", "PYTHON",
+        "INTERPRETER", "_interpreter", "PY311", "EXECUTABLE", "TEST_PYTHON",
+        "python_path",
+    )
+    assert len(historical_binding_names) == 28
+
+    def context_sources(binding: str) -> dict[str, str]:
+        literal = repr(context_path)
+        return {
+            "assignment": f"{binding} = {literal}",
+            "function-default": (
+                f"def _p14_context({binding}={literal}):\n    return {binding}"
+            ),
+            "list-element": f"{binding} = [{literal}]",
+            "tuple-element": f"{binding} = ({literal},)",
+            "dict-value": f"{binding} = {{'python': {literal}}}",
+            "call-argument": f"{binding} = os.environ.get('P14_ALT_PY', {literal})",
+            "returned-static-container": (
+                f"def _p14_container():\n    {binding} = ({{'runner': {literal}}},)\n"
+                f"    return {binding}"
+            ),
+            "command-passed-to-subprocess": (
+                f"{binding} = [{literal}, '-c', 'pass']\nsubprocess.run({binding})"
+            ),
+        }
+
+    context_cross_product = 0
+    for binding in historical_binding_names:
+        contexts = context_sources(binding)
+        assert len(contexts) == 8
+        for context_id, source in contexts.items():
+            assert _semantic_interpreter_offenders(ast.parse(source)), (binding, context_id)
+            context_cross_product += 1
+    assert context_cross_product == 8 * 28
+
+    supplemental_binding_names = (
+        "python", "exe", "cmd", "interpreter", "tool", "binary", "x", "value", "candidate"
+    )
+    for binding in supplemental_binding_names:
+        assert _semantic_interpreter_offenders(
+            ast.parse(f"{binding} = {context_path!r}")
+        ), binding
+
+    exact_r3v_forms = {
+        "function-default": (
+            f"def _p14_run(\n    python={context_path!r}\n):\n    return python"
+        ),
+        "command-list": (
+            f"CMD = [\n    {context_path!r},\n    '-c',\n    'pass',\n]\n"
+            "subprocess.run(CMD)"
+        ),
+    }
+    for probe_id, source in exact_r3v_forms.items():
+        assert _semantic_interpreter_offenders(ast.parse(source)), probe_id
+
+    out_of_sample_contexts = {
+        "unseen-binding": f"_launcher_spec = {context_path!r}",
+        "unseen-parameter": (
+            f"def _launch(runtime_image={context_path!r}):\n    return runtime_image"
+        ),
+        "nested-static-container": (
+            f"payload = ({{'commands': [[{context_path!r}]]}},)"
+        ),
+        "different-command-variable": (
+            f"PROCESS_VECTOR = [{context_path!r}]\nsubprocess.Popen(PROCESS_VECTOR)"
+        ),
+        "different-subprocess-container": (
+            f"subprocess.check_call(({context_path!r}, '-c', 'pass'))"
+        ),
+        "multiline-default": (
+            "def _multiline(\n"
+            f"    runtime_candidate=(\n        {context_path!r}\n    ),\n"
+            "):\n    return runtime_candidate"
+        ),
+        "nested-return": (
+            f"def _nested_return():\n    return ({{'tool': ({context_path!r},)}},)"
+        ),
+    }
+    for probe_id, source in out_of_sample_contexts.items():
+        assert _semantic_interpreter_offenders(ast.parse(source)), probe_id
+
+    heuristic_tree = ast.parse(f"x = {context_path!r}")
+    heuristic_parents = {
+        child: parent
+        for parent in ast.walk(heuristic_tree)
+        for child in ast.iter_child_nodes(parent)
+    }
+    heuristic_literal = next(
+        node
+        for node in ast.walk(heuristic_tree)
+        if isinstance(node, ast.Constant) and node.value == context_path
+    )
+    assert _is_execution_bound(heuristic_literal, heuristic_parents) is False
+    execution_tree = ast.parse(f"subprocess.run([{context_path!r}])")
+    execution_parents = {
+        child: parent
+        for parent in ast.walk(execution_tree)
+        for child in ast.iter_child_nodes(parent)
+    }
+    execution_literal = next(
+        node
+        for node in ast.walk(execution_tree)
+        if isinstance(node, ast.Constant) and node.value == context_path
+    )
+    assert _is_execution_bound(execution_literal, execution_parents) is True
+    assert _looks_like_interpreter_binding("_PYTHON") is True
+    assert _looks_like_interpreter_binding("CMD") is False
+    assert "_is_execution_bound" not in _semantic_interpreter_offenders.__code__.co_names
+    assert _semantic_interpreter_offenders(heuristic_tree)
+
+    documentation_path = str(
+        PurePosixPath("/tmp") / "documentation" / "p14" / "bin" / "python3.12"
+    )
+    documentation_legitimate = {
+        "legacy-doc-sample": f"DOCUMENTED_PATH = {documentation_path!r}",
+        "docs-namespace": (
+            "REFERENCE = "
+            + repr(str(PurePosixPath("/srv") / "docs" / "p14" / "bin" / "python3.14"))
+        ),
+        "examples-namespace": (
+            "REFERENCE = Path('/usr/share/examples/p14/bin') / 'pypy3'"
+        ),
+        "documentation-path-construction": (
+            "REFERENCE = Path('/Library/documentation/p14') / 'bin' / 'python3.15'"
+        ),
+    }
+    for probe_id, source in documentation_legitimate.items():
+        assert _semantic_interpreter_offenders(ast.parse(source)) == [], probe_id
+
+    documentation_execution = {
+        "function-default": (
+            f"def _documented_default(runner={documentation_path!r}):\n    return runner"
+        ),
+        "direct-execution": f"subprocess.run([{documentation_path!r}])",
+        "bound-command-execution": (
+            f"REFERENCE = [{documentation_path!r}]\nsubprocess.run(REFERENCE)"
+        ),
+        "P14-default": (
+            f"PY = os.environ.get('P14_PY311', {documentation_path!r})"
+        ),
+        "machine-local-sample": "REFERENCE = " + repr(
+            str(PurePosixPath("/tmp") / "sample" / "p14" / "bin" / "python3.11")
+        ),
+        "machine-local-example": "REFERENCE = " + repr(
+            str(
+                PurePosixPath("/var") / "folders" / "zz" / "T" / "example" /
+                "p14" / "bin" / "python3.11"
+            )
+        ),
+    }
+    for probe_id, source in documentation_execution.items():
+        assert _semantic_interpreter_offenders(ast.parse(source)), probe_id
+
+    illegal_p14_defaults = {
+        "absolute-string": repr(context_path),
+        "Path-default": f"Path({context_path!r})",
+        "relative-string": repr("python3.11"),
+        "variable-default": "SOME_INTERPRETER",
+        "exec-prefix-default": "sys.exec_prefix",
+        "empty-default": repr(""),
+    }
+    for probe_id, expression in illegal_p14_defaults.items():
+        offenders = _semantic_interpreter_offenders(
+            ast.parse(f"PY = os.environ.get('P14_PY311', {expression})")
+        )
+        assert any(kind == "P14_PY311-default" for _line, kind in offenders), probe_id
+
     legitimate_defaults = {
         "L1": "sys.executable",
         "L2": 'os.environ.get("P14_PY311", sys.executable)',
@@ -699,6 +944,20 @@ def test_no_machine_local_interpreter_path_in_p14_tests() -> None:
     for probe_id, expression in legitimate_defaults.items():
         binding = "DOCUMENTED_PATH" if probe_id == "DOC-SAMPLE" else "_PYTHON"
         tree = ast.parse(f"{binding} = {expression}")
+        assert _semantic_interpreter_offenders(tree) == [], probe_id
+        assert _structural_interpreter_offenders(expression) == [], probe_id
+
+    independent_legitimate = {
+        "L8": 'os.environ.get("P14_PY311", default=sys.executable)',
+        "L9": 'shutil.which("pypy3") or sys.executable',
+        "L10": "Path(sys.executable)",
+        "U1": repr("/Users/ryo/jp-portfolio-audit-reports/p14-e2-snapshots"),
+        "U2": repr("/opt/homebrew/share/doc/readme.txt"),
+        "U4": repr("/var/folders/zz/T/fixtures/index.json"),
+        "U5": repr("/usr/local/p14/bin"),
+    }
+    for probe_id, expression in independent_legitimate.items():
+        tree = ast.parse(f"REFERENCE = {expression}")
         assert _semantic_interpreter_offenders(tree) == [], probe_id
         assert _structural_interpreter_offenders(expression) == [], probe_id
 
