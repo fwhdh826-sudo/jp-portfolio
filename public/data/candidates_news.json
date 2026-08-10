@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-08-10T14:05:07.529230+09:00",
-  "sourceUpdatedAt": "2026-08-10T05:00:40+00:00",
+  "updatedAt": "2026-08-10T21:06:26.846835+09:00",
+  "sourceUpdatedAt": "2026-08-10T11:50:41+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -30,52 +30,63 @@
       ]
     },
     "jp_semiconductor": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.33,
       "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "us_broad": {
-      "avgSentiment": 0.097,
-      "negativeCount": 1,
       "positiveCount": 1,
-      "neutralCount": 4,
-      "sourceCount": 2,
-      "itemCount": 6,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "US CPI to Show Inflationary Pressures Cooling Some",
-      "topPositiveTitle": "Global Stock Rally Extends, Oil Advances on Iran: Markets Wrap",
+      "topNegativeTitle": "South Korea Growth Seen Accelerating to 3.3% on Chip Boom",
+      "topPositiveTitle": "South Korea Growth Seen Accelerating to 3.3% on Chip Boom",
       "items": [
         {
-          "title": "US CPI to Show Inflationary Pressures Cooling Some",
+          "title": "South Korea Growth Seen Accelerating to 3.3% on Chip Boom",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-10T07:03:17+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-10/south-korea-growth-seen-accelerating-to-3-3-on-chip-boom",
+          "tags": [
+            "jp_semiconductor",
+            "market"
+          ]
+        }
+      ]
+    },
+    "us_broad": {
+      "avgSentiment": -0.04,
+      "negativeCount": 2,
+      "positiveCount": 1,
+      "neutralCount": 1,
+      "sourceCount": 2,
+      "itemCount": 4,
+      "isStale": false,
+      "topNegativeTitle": "US Job Market Signals a Third Straight Cruel Summer",
+      "topPositiveTitle": "Stocks Waver Near Record Highs, Crude Oil Advances: Markets Wrap",
+      "items": [
+        {
+          "title": "US Job Market Signals a Third Straight Cruel Summer",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-08-08T20:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-08/us-cpi-to-show-inflationary-pressures-cooling-some",
+          "publishedAt": "2026-08-10T11:00:02+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-08-10/us-job-market-signals-a-third-straight-cruel-summer",
           "tags": [
-            "geopolitical",
-            "macro_risk",
             "market",
             "us_broad"
           ]
         },
         {
-          "title": "Hormuz Deal Elusive; Wall Street Sees Bond-Market Angst | The Asia Trade 8/10/2026",
+          "title": "Fed Rate Hike in December Is Possible, Macquarie's Wizman Says",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-10T03:31:26+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-10/the-asia-trade-8-10-2026-video",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-10T10:22:39+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-10/fed-rate-hike-in-december-is-possible-macquarie-says-video",
           "tags": [
-            "global_broad",
             "market",
+            "rates",
             "us_broad"
           ]
         },
@@ -93,25 +104,14 @@
           ]
         },
         {
-          "title": "Jobs Data Won't Move Fed's Thinking: Natixis' Hodge",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-07T11:14:15+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-07/jobs-data-won-t-move-fed-s-thinking-natixus-hodge-video",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Emerging-Market Stocks, Currencies Gain After Soft US Jobs Data",
+          "title": "Stocks Waver Near Record Highs, Crude Oil Advances: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.2,
-          "publishedAt": "2026-08-10T04:25:49+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-10/emerging-market-stocks-currencies-gain-after-soft-us-jobs-data",
+          "sentimentScore": 0.5,
+          "publishedAt": "2026-08-09T22:11:01+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-09/stock-market-today-dow-s-p-live-updates",
           "tags": [
+            "commodity",
             "market",
             "us_broad"
           ]
@@ -131,57 +131,27 @@
       "items": []
     },
     "global_broad": {
-      "avgSentiment": 0.355,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 2,
-      "isStale": false,
-      "topNegativeTitle": "Hormuz Deal Elusive; Wall Street Sees Bond-Market Angst | The Asia Trade 8/10/2026",
-      "topPositiveTitle": "Global Stock Rally Extends, Oil Advances on Iran: Markets Wrap",
-      "items": [
-        {
-          "title": "Hormuz Deal Elusive; Wall Street Sees Bond-Market Angst | The Asia Trade 8/10/2026",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-10T03:31:26+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-10/the-asia-trade-8-10-2026-video",
-          "tags": [
-            "global_broad",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Global Stock Rally Extends, Oil Advances on Iran: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.71,
-          "publishedAt": "2026-08-09T22:11:01+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-09/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "global_broad",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        }
-      ]
-    },
-    "gold": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
+      "isStale": false,
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
+    },
+    "gold": {
+      "avgSentiment": 0.223,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 2,
       "sourceCount": 1,
-      "itemCount": 1,
+      "itemCount": 3,
       "isStale": false,
       "topNegativeTitle": "Gold Holds Above $4,300 as Soft Jobs Data Trims Rate-Hike Bets",
-      "topPositiveTitle": "Gold Holds Above $4,300 as Soft Jobs Data Trims Rate-Hike Bets",
+      "topPositiveTitle": "Gold Is Rallying Again Thanks to Some Deep-Pocketed Buyers",
       "items": [
         {
           "title": "Gold Holds Above $4,300 as Soft Jobs Data Trims Rate-Hike Bets",
@@ -194,6 +164,31 @@
             "gold",
             "market",
             "rates"
+          ]
+        },
+        {
+          "title": "Barrick Chairman's Planned Overhaul Meets Investor Backlash",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-09T12:01:32+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-09/goldman-veteran-s-plan-to-split-barrick-runs-into-opposition",
+          "tags": [
+            "gold",
+            "market"
+          ]
+        },
+        {
+          "title": "Gold Is Rallying Again Thanks to Some Deep-Pocketed Buyers",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-10T10:20:18+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-08-10/gold-is-rallying-again-thanks-to-some-deep-pocketed-buyers",
+          "tags": [
+            "gold",
+            "market",
+            "trust"
           ]
         }
       ]
@@ -224,29 +219,15 @@
     },
     "macro_risk": {
       "avgSentiment": 0.057,
-      "negativeCount": 2,
-      "positiveCount": 2,
-      "neutralCount": 2,
+      "negativeCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 4,
       "sourceCount": 2,
       "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "US CPI to Show Inflationary Pressures Cooling Some",
+      "topNegativeTitle": "UK Hiring Turns a Corner After Longest Slump on Record, REC Says",
       "topPositiveTitle": "China’s Slower-Than-Expected Price Gains Revive Deflation Risk",
       "items": [
-        {
-          "title": "US CPI to Show Inflationary Pressures Cooling Some",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-08T20:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-08/us-cpi-to-show-inflationary-pressures-cooling-some",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market",
-            "us_broad"
-          ]
-        },
         {
           "title": "UK Hiring Turns a Corner After Longest Slump on Record, REC Says",
           "source": "Bloomberg Economics",
@@ -255,6 +236,32 @@
           "publishedAt": "2026-08-09T23:01:00+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-08-09/uk-hiring-turns-a-corner-after-longest-slump-on-record-rec-says",
           "tags": [
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Italy Fines Utility €5 Million on 2022 Power Market Manipulation",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-10T10:55:59+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-10/italy-fines-utility-5-million-on-2022-power-market-manipulation",
+          "tags": [
+            "commodity",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Egypt Headline Inflation Quickens for the First Time Since March",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-10T06:17:26+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-10/egypt-headline-inflation-quickens-for-the-first-time-since-march",
+          "tags": [
+            "geopolitical",
             "macro_risk",
             "market"
           ]
@@ -284,34 +291,32 @@
             "market",
             "rates"
           ]
-        },
-        {
-          "title": "Australian Scandium Miner Soars After $400 Million US Investment",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-10T01:12:43+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-10/australian-scandium-miner-soars-after-400-million-us-investment",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0.168,
       "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 3,
+      "sourceCount": 2,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Yen Underperforms G-10 Peers as Intervention Boost Fades",
-      "topPositiveTitle": "Yen Underperforms G-10 Peers as Intervention Boost Fades",
+      "topNegativeTitle": "Japan’s Growth Minister on Proactive Fiscal Policy, Yen",
+      "topPositiveTitle": "Japan’s Growth Minister Says Investment Plan Will Boost Yen",
       "items": [
+        {
+          "title": "Japan’s Growth Minister on Proactive Fiscal Policy, Yen",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-10T11:01:45+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-10/japan-s-growth-minister-on-proactive-fiscal-policy-yen-video",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        },
         {
           "title": "Yen Underperforms G-10 Peers as Intervention Boost Fades",
           "source": "Bloomberg Markets",
@@ -323,20 +328,82 @@
             "fx",
             "market"
           ]
+        },
+        {
+          "title": "Currency Defense Gets Makeover as Emerging Asia Guards Reserves",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-09T10:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-09/currency-defense-gets-makeover-as-emerging-asia-guards-reserves",
+          "tags": [
+            "fx",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Japan’s Growth Minister Says Investment Plan Will Boost Yen",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-10T11:01:08+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-10/japan-s-growth-minister-says-investment-plan-will-boost-yen",
+          "tags": [
+            "fx",
+            "market"
+          ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": 0.208,
-      "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 3,
+      "avgSentiment": -0.041,
+      "negativeCount": 2,
+      "positiveCount": 1,
+      "neutralCount": 5,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 8,
       "isStale": false,
-      "topNegativeTitle": "Romania Set to Keep Rates at 6.5%, EU’s Highest, on Political Turmoil",
-      "topPositiveTitle": "Global Stock Rally Extends, Oil Advances on Iran: Markets Wrap",
+      "topNegativeTitle": "Philippine Central Bank Keeps Rate Hike on Table Despite Weak GDP Growth",
+      "topPositiveTitle": "RBA Set for Hawkish Hold and Alert to Persistent Price Pressures",
       "items": [
+        {
+          "title": "Philippine Central Bank Keeps Rate Hike on Table Despite Weak GDP Growth",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-10T05:54:24+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-10/philippine-central-bank-keeps-rate-hike-on-table-despite-weak-gdp-growth",
+          "tags": [
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Fed Rate Hike in December Is Possible, Macquarie's Wizman Says",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-10T10:22:39+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-10/fed-rate-hike-in-december-is-possible-macquarie-says-video",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Norway Core Inflation Surprise Tempers Bets on Rate Hike",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-10T06:30:39+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-10/norway-core-inflation-surprise-tempers-bets-on-rate-hike",
+          "tags": [
+            "market",
+            "rates"
+          ]
+        },
         {
           "title": "Romania Set to Keep Rates at 6.5%, EU’s Highest, on Political Turmoil",
           "source": "Bloomberg Economics",
@@ -362,179 +429,132 @@
             "rates",
             "us_broad"
           ]
-        },
-        {
-          "title": "Gold Holds Above $4,300 as Soft Jobs Data Trims Rate-Hike Bets",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-09T23:30:12+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-09/gold-holds-gain-after-soft-us-jobs-data-eases-rate-hike-concerns",
-          "tags": [
-            "gold",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "RBA Set for Hawkish Hold and Alert to Persistent Price Pressures",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-09T21:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-09/rba-set-for-hawkish-hold-and-alert-to-persistent-price-pressures",
-          "tags": [
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Global Stock Rally Extends, Oil Advances on Iran: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.71,
-          "publishedAt": "2026-08-09T22:11:01+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-09/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "global_broad",
-            "market",
-            "rates",
-            "us_broad"
-          ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.476,
+      "avgSentiment": 0.307,
       "negativeCount": 0,
-      "positiveCount": 4,
-      "neutralCount": 1,
+      "positiveCount": 3,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "熊本地震 赤間防災相“資源投じて 被災者ニーズに応えていく”",
-      "topPositiveTitle": "Global Stock Rally Extends, Oil Advances on Iran: Markets Wrap",
+      "topNegativeTitle": "Trump’s Low-Key Pivot Leaves Hormuz Oil in Limbo",
+      "topPositiveTitle": "Iran Security Shake-up; China Attempts to Close AI Gap with US | The Pulse 8/10/2026",
       "items": [
         {
-          "title": "熊本地震 赤間防災相“資源投じて 被災者ニーズに応えていく”",
-          "source": "NHK 経済",
+          "title": "Trump’s Low-Key Pivot Leaves Hormuz Oil in Limbo",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-09T03:45:13+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20260809de42951",
-          "tags": [
-            "commodity",
-            "market"
-          ],
-          "titleJa": "熊本地震 赤間防災相“資源投じて 被災者ニーズに応えていく”"
-        },
-        {
-          "title": "Australian Scandium Miner Soars After $400 Million US Investment",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-10T01:12:43+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-10/australian-scandium-miner-soars-after-400-million-us-investment",
+          "publishedAt": "2026-08-10T11:34:24+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-08-10/trump-s-low-key-pivot-leaves-hormuz-oil-in-limbo",
           "tags": [
             "commodity",
             "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Duke Energy Seeks $1.75 Billion in Equity Units Offering",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-10T11:22:28+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-10/duke-energy-plans-to-raise-1-75-million-from-equity-units-sale",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "Italy Fines Utility €5 Million on 2022 Power Market Manipulation",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-10T10:55:59+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-10/italy-fines-utility-5-million-on-2022-power-market-manipulation",
+          "tags": [
+            "commodity",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Latest Oil Market News and Analysis for Aug. 10",
+          "title": "Stocks Waver Near Record Highs, Crude Oil Advances: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-09T22:02:45+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-09/latest-oil-market-news-and-analysis-for-aug-10",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "China’s Slower-Than-Expected Price Gains Revive Deflation Risk",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-09T01:46:29+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-09/china-s-inflation-cools-as-oil-shock-of-iran-war-starts-to-ease",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Global Stock Rally Extends, Oil Advances on Iran: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.71,
+          "sentimentScore": 0.5,
           "publishedAt": "2026-08-09T22:11:01+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-08-09/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
-            "geopolitical",
-            "global_broad",
             "market",
-            "rates",
             "us_broad"
+          ]
+        },
+        {
+          "title": "Iran Security Shake-up; China Attempts to Close AI Gap with US | The Pulse 8/10/2026",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-10T10:46:18+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-10/the-pulse-08-10-2026-video",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.256,
-      "negativeCount": 1,
-      "positiveCount": 4,
-      "neutralCount": 3,
-      "sourceCount": 2,
-      "itemCount": 8,
+      "avgSentiment": 0.239,
+      "negativeCount": 0,
+      "positiveCount": 3,
+      "neutralCount": 4,
+      "sourceCount": 3,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "US CPI to Show Inflationary Pressures Cooling Some",
-      "topPositiveTitle": "Global Stock Rally Extends, Oil Advances on Iran: Markets Wrap",
+      "topNegativeTitle": "Trump’s Low-Key Pivot Leaves Hormuz Oil in Limbo",
+      "topPositiveTitle": "Iran Security Shake-up; China Attempts to Close AI Gap with US | The Pulse 8/10/2026",
       "items": [
         {
-          "title": "US CPI to Show Inflationary Pressures Cooling Some",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-08T20:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-08/us-cpi-to-show-inflationary-pressures-cooling-some",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Iran Shakes Up Security Team Claiming Oman Deal ‘Close’",
+          "title": "Trump’s Low-Key Pivot Leaves Hormuz Oil in Limbo",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-10T05:00:40+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-10/iran-shakes-up-security-team-claiming-oman-deal-close-video",
+          "publishedAt": "2026-08-10T11:34:24+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-08-10/trump-s-low-key-pivot-leaves-hormuz-oil-in-limbo",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Bank of Russia Urges Lenders Aid Firms Hurt by Warehouse Strikes",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-10T10:07:05+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-10/bank-of-russia-urges-lenders-aid-firms-hurt-by-warehouse-strikes",
           "tags": [
             "geopolitical",
             "market"
           ]
         },
         {
-          "title": "Netanyahu Rejects US-Backed Hamas Disarmament Proposal",
-          "source": "Bloomberg Markets",
+          "title": "Egypt Headline Inflation Quickens for the First Time Since March",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-10T04:54:49+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-10/netanyahu-rejects-us-backed-hamas-disarmament-proposal-video",
+          "publishedAt": "2026-08-10T06:17:26+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-10/egypt-headline-inflation-quickens-for-the-first-time-since-march",
           "tags": [
             "geopolitical",
+            "macro_risk",
             "market"
           ]
         },
@@ -552,18 +572,17 @@
           ]
         },
         {
-          "title": "Australian Scandium Miner Soars After $400 Million US Investment",
-          "source": "Bloomberg Markets",
+          "title": "高市首相 オマーン国王と電話会談“国際社会とも協議を”",
+          "source": "NHK 経済",
           "sentiment": "positive",
           "sentimentScore": 0.33,
-          "publishedAt": "2026-08-10T01:12:43+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-10/australian-scandium-miner-soars-after-400-million-us-investment",
+          "publishedAt": "2026-08-10T11:26:40+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20260810de43179",
           "tags": [
-            "commodity",
             "geopolitical",
-            "macro_risk",
             "market"
-          ]
+          ],
+          "titleJa": "高市首相 オマーン国王と電話会談“国際社会とも協議を”"
         }
       ]
     }
@@ -576,7 +595,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 13,
+    "excludedCount": 2,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
