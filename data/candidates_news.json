@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-08-11T07:09:44.718481+09:00",
-  "sourceUpdatedAt": "2026-08-10T21:45:03+00:00",
+  "updatedAt": "2026-08-11T08:58:47.488914+09:00",
+  "sourceUpdatedAt": "2026-08-10T23:33:50+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -55,28 +55,16 @@
       ]
     },
     "us_broad": {
-      "avgSentiment": -0.055,
-      "negativeCount": 2,
-      "positiveCount": 1,
-      "neutralCount": 3,
+      "avgSentiment": 0.066,
+      "negativeCount": 1,
+      "positiveCount": 2,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Hoenig: Upcoming Data Will Be Deciding Factor for Fed",
+      "topNegativeTitle": "US Job Market Signals a Third Straight Cruel Summer",
       "topPositiveTitle": "US Stocks End Mixed as Chipmaker Earnings, CPI Due to Set Pace",
       "items": [
-        {
-          "title": "Hoenig: Upcoming Data Will Be Deciding Factor for Fed",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-10T20:19:51+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-10/hoenig-upcoming-data-will-be-deciding-factor-for-fed-video",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
         {
           "title": "US Job Market Signals a Third Straight Cruel Summer",
           "source": "Bloomberg Economics",
@@ -114,13 +102,29 @@
           ]
         },
         {
-          "title": "Westpac Economist: Fed Likely to Hold After Jobs Report",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-10T00:45:40+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-10/westpac-economist-fed-likely-to-hold-after-jobs-report-video",
+          "title": "US Stocks End Mixed as Chipmaker Earnings, CPI Due to Set Pace",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-10T13:28:32+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-10/us-futures-drop-as-focus-turns-on-chipmaker-earnings-inflation",
           "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Gold Touches $4,400 as Traders Turn Focus to US Inflation Data",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-10T23:33:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-10/gold-touches-4-400-as-traders-turn-focus-to-us-inflation-data",
+          "tags": [
+            "gold",
             "market",
             "rates",
             "us_broad"
@@ -155,14 +159,28 @@
     "gold": {
       "avgSentiment": 0.33,
       "negativeCount": 0,
-      "positiveCount": 1,
+      "positiveCount": 2,
       "neutralCount": 0,
       "sourceCount": 1,
-      "itemCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Gold Nears $4,400 as Traders Weigh Hormuz Standoff, Inflation",
-      "topPositiveTitle": "Gold Nears $4,400 as Traders Weigh Hormuz Standoff, Inflation",
+      "topNegativeTitle": "Gold Touches $4,400 as Traders Turn Focus to US Inflation Data",
+      "topPositiveTitle": "Gold Touches $4,400 as Traders Turn Focus to US Inflation Data",
       "items": [
+        {
+          "title": "Gold Touches $4,400 as Traders Turn Focus to US Inflation Data",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-10T23:33:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-10/gold-touches-4-400-as-traders-turn-focus-to-us-inflation-data",
+          "tags": [
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
         {
           "title": "Gold Nears $4,400 as Traders Weigh Hormuz Standoff, Inflation",
           "source": "Bloomberg Markets",
@@ -283,28 +301,16 @@
       ]
     },
     "fx": {
-      "avgSentiment": 0.082,
-      "negativeCount": 1,
-      "positiveCount": 2,
+      "avgSentiment": 0.332,
+      "negativeCount": 0,
+      "positiveCount": 5,
       "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Yen Weakens as Intervention Efforts Proving to Be Short-Lived",
+      "topNegativeTitle": "Bessent’s Whatever-It-Takes Yen Pledge Masks Limited Firepower",
       "topPositiveTitle": "Japan’s Growth Minister Says Investment Plan Will Boost Yen",
       "items": [
-        {
-          "title": "Yen Weakens as Intervention Efforts Proving to Be Short-Lived",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-08-10T03:26:41+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-10/yen-underperforms-g-10-peers-as-intervention-boost-fades",
-          "tags": [
-            "fx",
-            "market"
-          ]
-        },
         {
           "title": "Bessent’s Whatever-It-Takes Yen Pledge Masks Limited Firepower",
           "source": "Bloomberg Economics",
@@ -313,6 +319,32 @@
           "publishedAt": "2026-08-10T20:29:58+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-08-10/bessent-s-whatever-it-takes-yen-pledge-masks-limited-firepower",
           "tags": [
+            "fx",
+            "market"
+          ]
+        },
+        {
+          "title": "Traders Are Piling Into Taiwan Dollar Options to Bet on Rebound",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-10T23:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-10/traders-are-piling-into-taiwan-dollar-options-to-bet-on-rebound",
+          "tags": [
+            "fx",
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Oil Holds Gains, Yen in Focus After Weakening: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-10T22:08:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-10/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
             "fx",
             "market"
           ]
@@ -332,12 +364,12 @@
           ]
         },
         {
-          "title": "Japan’s Growth Minister Says Investment Plan Will Boost Yen",
-          "source": "Bloomberg Economics",
+          "title": "Yen Erases Half of Intervention Gains as Traders Test Bessent",
+          "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-10T11:01:08+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-10/japan-s-growth-minister-says-investment-plan-will-boost-yen",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-10T03:26:41+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-10/yen-underperforms-g-10-peers-as-intervention-boost-fades",
           "tags": [
             "fx",
             "market"
@@ -346,15 +378,15 @@
       ]
     },
     "rates": {
-      "avgSentiment": 0.143,
+      "avgSentiment": 0.055,
       "negativeCount": 1,
       "positiveCount": 2,
-      "neutralCount": 4,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 7,
+      "itemCount": 6,
       "isStale": false,
       "topNegativeTitle": "Philippine Central Bank Keeps Rate Hike on Table Despite Weak GDP Growth",
-      "topPositiveTitle": "Stocks Churn as Hormuz Standoff Spurs Rally in Oil: Markets Wrap",
+      "topPositiveTitle": "US Stocks End Mixed as Chipmaker Earnings, CPI Due to Set Pace",
       "items": [
         {
           "title": "Philippine Central Bank Keeps Rate Hike on Table Despite Weak GDP Growth",
@@ -406,13 +438,15 @@
           ]
         },
         {
-          "title": "Westpac Economist: Fed Likely to Hold After Jobs Report",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-10T00:45:40+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-10/westpac-economist-fed-likely-to-hold-after-jobs-report-video",
+          "title": "US Stocks End Mixed as Chipmaker Earnings, CPI Due to Set Pace",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-10T13:28:32+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-10/us-futures-drop-as-focus-turns-on-chipmaker-earnings-inflation",
           "tags": [
+            "geopolitical",
+            "macro_risk",
             "market",
             "rates",
             "us_broad"
@@ -421,16 +455,42 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.734,
+      "avgSentiment": 0.466,
       "negativeCount": 0,
       "positiveCount": 5,
       "neutralCount": 0,
       "sourceCount": 2,
       "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Emerging Currencies Weaken as US-Iran Standoff Lifts Dollar",
-      "topPositiveTitle": "Stocks Churn as Hormuz Standoff Spurs Rally in Oil: Markets Wrap",
+      "topNegativeTitle": "Oil Holds Gains, Yen in Focus After Weakening: Markets Wrap",
+      "topPositiveTitle": "Oil Jumps as Markets Await Middle East Clarity | Closing Bell",
       "items": [
+        {
+          "title": "Oil Holds Gains, Yen in Focus After Weakening: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-10T22:08:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-10/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "fx",
+            "market"
+          ]
+        },
+        {
+          "title": "Latest Oil Market News and Analysis for Aug. 11",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-10T22:02:35+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-10/latest-oil-market-news-and-analysis-for-aug-11",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
+          ]
+        },
         {
           "title": "Emerging Currencies Weaken as US-Iran Standoff Lifts Dollar",
           "source": "Bloomberg Markets",
@@ -470,45 +530,19 @@
             "macro_risk",
             "market"
           ]
-        },
-        {
-          "title": "Stocks Churn as Hormuz Standoff Spurs Rally in Oil: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-08-09T22:11:01+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-09/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Latest Oil Market News and Analysis for Aug. 10",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-08-09T22:02:45+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-09/latest-oil-market-news-and-analysis-for-aug-10",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "market"
-          ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.333,
+      "avgSentiment": 0.258,
       "negativeCount": 0,
-      "positiveCount": 5,
+      "positiveCount": 6,
       "neutralCount": 3,
       "sourceCount": 3,
-      "itemCount": 8,
+      "itemCount": 9,
       "isStale": false,
       "topNegativeTitle": "Bank of Russia Urges Lenders Aid Firms Hurt by Warehouse Strikes",
-      "topPositiveTitle": "Latest Oil Market News and Analysis for Aug. 10",
+      "topPositiveTitle": "China’s Slower-Than-Expected Price Gains Revive Deflation Risk",
       "items": [
         {
           "title": "Bank of Russia Urges Lenders Aid Firms Hurt by Warehouse Strikes",
@@ -564,14 +598,13 @@
           ]
         },
         {
-          "title": "Emerging Currencies Weaken as US-Iran Standoff Lifts Dollar",
+          "title": "Traders Are Piling Into Taiwan Dollar Options to Bet on Rebound",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.33,
-          "publishedAt": "2026-08-10T04:25:49+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-10/emerging-market-stocks-currencies-gain-after-soft-us-jobs-data",
+          "publishedAt": "2026-08-10T23:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-10/traders-are-piling-into-taiwan-dollar-options-to-bet-on-rebound",
           "tags": [
-            "commodity",
             "fx",
             "geopolitical",
             "market"
@@ -588,7 +621,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 3,
+    "excludedCount": 2,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
