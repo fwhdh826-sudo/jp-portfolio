@@ -1,10 +1,35 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-08-10T08:56:27.577637+09:00",
-  "sourceUpdatedAt": "2026-08-09T23:45:49+00:00",
+  "updatedAt": "2026-08-10T14:05:07.529230+09:00",
+  "sourceUpdatedAt": "2026-08-10T05:00:40+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
+      "avgSentiment": -0.33,
+      "negativeCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "BOJ Flags Upside Price Risks and Possible Faster Rate Hikes",
+      "topPositiveTitle": "BOJ Flags Upside Price Risks and Possible Faster Rate Hikes",
+      "items": [
+        {
+          "title": "BOJ Flags Upside Price Risks and Possible Faster Rate Hikes",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-10T00:39:46+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-10/boj-summary-flags-upside-price-risks-possible-faster-hike-pace",
+          "tags": [
+            "jp_broad",
+            "market"
+          ]
+        }
+      ]
+    },
+    "jp_semiconductor": {
       "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
@@ -16,42 +41,16 @@
       "topPositiveTitle": null,
       "items": []
     },
-    "jp_semiconductor": {
-      "avgSentiment": 0.67,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
-      "isStale": false,
-      "topNegativeTitle": "China Bets on AI Stocks as It Races Against US for Chip, Tech Dominance",
-      "topPositiveTitle": "China Bets on AI Stocks as It Races Against US for Chip, Tech Dominance",
-      "items": [
-        {
-          "title": "China Bets on AI Stocks as It Races Against US for Chip, Tech Dominance",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-09T21:00:19+00:00",
-          "url": "https://www.bloomberg.com/news/features/2026-08-09/china-bets-on-ai-stocks-as-it-races-against-us-for-chip-tech-dominance",
-          "tags": [
-            "jp_semiconductor",
-            "market",
-            "us_growth"
-          ]
-        }
-      ]
-    },
     "us_broad": {
-      "avgSentiment": -0.165,
-      "negativeCount": 2,
-      "positiveCount": 0,
-      "neutralCount": 2,
+      "avgSentiment": 0.097,
+      "negativeCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 6,
       "isStale": false,
       "topNegativeTitle": "US CPI to Show Inflationary Pressures Cooling Some",
-      "topPositiveTitle": "Behind Bessent Moves, Wall Street Sees Sign of Bond-Market Angst",
+      "topPositiveTitle": "Global Stock Rally Extends, Oil Advances on Iran: Markets Wrap",
       "items": [
         {
           "title": "US CPI to Show Inflationary Pressures Cooling Some",
@@ -68,12 +67,25 @@
           ]
         },
         {
-          "title": "Inflation Data Keeps Fed Rate Hike in Play",
+          "title": "Hormuz Deal Elusive; Wall Street Sees Bond-Market Angst | The Asia Trade 8/10/2026",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-09T14:32:27+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-09/inflation-data-keeps-fed-rate-hike-in-play-video",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-10T03:31:26+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-10/the-asia-trade-8-10-2026-video",
+          "tags": [
+            "global_broad",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Westpac Economist: Fed Likely to Hold After Jobs Report",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-10T00:45:40+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-10/westpac-economist-fed-likely-to-hold-after-jobs-report-video",
           "tags": [
             "market",
             "rates",
@@ -81,99 +93,110 @@
           ]
         },
         {
-          "title": "Behind Bessent Moves, Wall Street Sees Sign of Bond-Market Angst",
+          "title": "Jobs Data Won't Move Fed's Thinking: Natixis' Hodge",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-09T13:36:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-09/behind-bessent-moves-wall-street-sees-sign-of-bond-market-angst",
+          "publishedAt": "2026-08-07T11:14:15+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-07/jobs-data-won-t-move-fed-s-thinking-natixus-hodge-video",
           "tags": [
             "market",
-            "rates",
             "us_broad"
           ]
         },
         {
-          "title": "Leveraged ETF Boom Amps Up Wall Street Intraday Momentum Plays",
+          "title": "Emerging-Market Stocks, Currencies Gain After Soft US Jobs Data",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-09T13:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-09/leveraged-etf-boom-amps-up-wall-street-intraday-momentum-plays",
+          "sentiment": "positive",
+          "sentimentScore": 0.2,
+          "publishedAt": "2026-08-10T04:25:49+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-10/emerging-market-stocks-currencies-gain-after-soft-us-jobs-data",
           "tags": [
-            "macro_risk",
             "market",
-            "trust",
-            "us_broad",
-            "us_growth"
+            "us_broad"
           ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.335,
+      "avgSentiment": 0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
+      "isStale": false,
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
+    },
+    "global_broad": {
+      "avgSentiment": 0.355,
       "negativeCount": 0,
       "positiveCount": 1,
       "neutralCount": 1,
       "sourceCount": 1,
       "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Leveraged ETF Boom Amps Up Wall Street Intraday Momentum Plays",
-      "topPositiveTitle": "China Bets on AI Stocks as It Races Against US for Chip, Tech Dominance",
+      "topNegativeTitle": "Hormuz Deal Elusive; Wall Street Sees Bond-Market Angst | The Asia Trade 8/10/2026",
+      "topPositiveTitle": "Global Stock Rally Extends, Oil Advances on Iran: Markets Wrap",
       "items": [
         {
-          "title": "Leveraged ETF Boom Amps Up Wall Street Intraday Momentum Plays",
+          "title": "Hormuz Deal Elusive; Wall Street Sees Bond-Market Angst | The Asia Trade 8/10/2026",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-09T13:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-09/leveraged-etf-boom-amps-up-wall-street-intraday-momentum-plays",
+          "publishedAt": "2026-08-10T03:31:26+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-10/the-asia-trade-8-10-2026-video",
           "tags": [
-            "macro_risk",
+            "global_broad",
             "market",
-            "trust",
-            "us_broad",
-            "us_growth"
+            "us_broad"
           ]
         },
         {
-          "title": "China Bets on AI Stocks as It Races Against US for Chip, Tech Dominance",
+          "title": "Global Stock Rally Extends, Oil Advances on Iran: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-09T21:00:19+00:00",
-          "url": "https://www.bloomberg.com/news/features/2026-08-09/china-bets-on-ai-stocks-as-it-races-against-us-for-chip-tech-dominance",
+          "sentimentScore": 0.71,
+          "publishedAt": "2026-08-09T22:11:01+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-09/stock-market-today-dow-s-p-live-updates",
           "tags": [
-            "jp_semiconductor",
+            "commodity",
+            "geopolitical",
+            "global_broad",
             "market",
-            "us_growth"
+            "rates",
+            "us_broad"
           ]
         }
       ]
     },
-    "global_broad": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
     "gold": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Gold Holds Above $4,300 as Soft Jobs Data Trims Rate-Hike Bets",
+      "topPositiveTitle": "Gold Holds Above $4,300 as Soft Jobs Data Trims Rate-Hike Bets",
+      "items": [
+        {
+          "title": "Gold Holds Above $4,300 as Soft Jobs Data Trims Rate-Hike Bets",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-09T23:30:12+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-09/gold-holds-gain-after-soft-us-jobs-data-eases-rate-hike-concerns",
+          "tags": [
+            "gold",
+            "market",
+            "rates"
+          ]
+        }
+      ]
     },
     "reit": {
       "avgSentiment": 0,
@@ -200,15 +223,15 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.198,
-      "negativeCount": 3,
-      "positiveCount": 0,
+      "avgSentiment": 0.057,
+      "negativeCount": 2,
+      "positiveCount": 2,
       "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 6,
       "isStale": false,
       "topNegativeTitle": "US CPI to Show Inflationary Pressures Cooling Some",
-      "topPositiveTitle": "US Weapons Crunch Raises Risks Beyond Iran",
+      "topPositiveTitle": "China’s Slower-Than-Expected Price Gains Revive Deflation Risk",
       "items": [
         {
           "title": "US CPI to Show Inflationary Pressures Cooling Some",
@@ -237,24 +260,12 @@
           ]
         },
         {
-          "title": "Puerto Rico Rations Water as Drought Deepens",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-09T12:23:27+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-09/puerto-rico-rations-water-as-drought-deepens-video",
-          "tags": [
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "US Weapons Crunch Raises Risks Beyond Iran",
-          "source": "Bloomberg Markets",
+          "title": "Euro Zone Set for Firmer Growth After Bumper Second Quarter",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-09T12:52:22+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-09/us-weapons-crunch-raises-risks-beyond-iran-video",
+          "publishedAt": "2026-08-10T04:15:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-10/euro-zone-set-for-firmer-growth-after-bumper-second-quarter",
           "tags": [
             "geopolitical",
             "macro_risk",
@@ -262,40 +273,52 @@
           ]
         },
         {
-          "title": "Leveraged ETF Boom Amps Up Wall Street Intraday Momentum Plays",
-          "source": "Bloomberg Markets",
+          "title": "Romania Set to Keep Rates at 6.5%, EU’s Highest, on Political Turmoil",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-09T13:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-09/leveraged-etf-boom-amps-up-wall-street-intraday-momentum-plays",
+          "publishedAt": "2026-08-10T04:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-10/romania-set-to-keep-rates-at-6-5-eu-s-highest-on-political-turmoil",
           "tags": [
             "macro_risk",
             "market",
-            "trust",
-            "us_broad",
-            "us_growth"
+            "rates"
+          ]
+        },
+        {
+          "title": "Australian Scandium Miner Soars After $400 Million US Investment",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-10T01:12:43+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-10/australian-scandium-miner-soars-after-400-million-us-investment",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
           ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": 1.0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 1,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Aussie-Yen Is Set to Approach Three-Decade High, Analysts Say",
-      "topPositiveTitle": "Aussie-Yen Is Set to Approach Three-Decade High, Analysts Say",
+      "topNegativeTitle": "Yen Underperforms G-10 Peers as Intervention Boost Fades",
+      "topPositiveTitle": "Yen Underperforms G-10 Peers as Intervention Boost Fades",
       "items": [
         {
-          "title": "Aussie-Yen Is Set to Approach Three-Decade High, Analysts Say",
+          "title": "Yen Underperforms G-10 Peers as Intervention Boost Fades",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-08-09T21:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-09/aussie-yen-is-set-to-approach-three-decade-high-analysts-say",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-10T03:26:41+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-10/yen-underperforms-g-10-peers-as-intervention-boost-fades",
           "tags": [
             "fx",
             "market"
@@ -304,23 +327,36 @@
       ]
     },
     "rates": {
-      "avgSentiment": 0.0,
-      "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 1,
+      "avgSentiment": 0.208,
+      "negativeCount": 0,
+      "positiveCount": 2,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Inflation Data Keeps Fed Rate Hike in Play",
-      "topPositiveTitle": "RBA Set for Hawkish Hold and Alert to Persistent Price Pressures",
+      "topNegativeTitle": "Romania Set to Keep Rates at 6.5%, EU’s Highest, on Political Turmoil",
+      "topPositiveTitle": "Global Stock Rally Extends, Oil Advances on Iran: Markets Wrap",
       "items": [
         {
-          "title": "Inflation Data Keeps Fed Rate Hike in Play",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-09T14:32:27+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-09/inflation-data-keeps-fed-rate-hike-in-play-video",
+          "title": "Romania Set to Keep Rates at 6.5%, EU’s Highest, on Political Turmoil",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-10T04:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-10/romania-set-to-keep-rates-at-6-5-eu-s-highest-on-political-turmoil",
+          "tags": [
+            "macro_risk",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Westpac Economist: Fed Likely to Hold After Jobs Report",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-10T00:45:40+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-10/westpac-economist-fed-likely-to-hold-after-jobs-report-video",
           "tags": [
             "market",
             "rates",
@@ -328,16 +364,16 @@
           ]
         },
         {
-          "title": "Behind Bessent Moves, Wall Street Sees Sign of Bond-Market Angst",
+          "title": "Gold Holds Above $4,300 as Soft Jobs Data Trims Rate-Hike Bets",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-09T13:36:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-09/behind-bessent-moves-wall-street-sees-sign-of-bond-market-angst",
+          "publishedAt": "2026-08-09T23:30:12+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-09/gold-holds-gain-after-soft-us-jobs-data-eases-rate-hike-concerns",
           "tags": [
+            "gold",
             "market",
-            "rates",
-            "us_broad"
+            "rates"
           ]
         },
         {
@@ -351,33 +387,36 @@
             "market",
             "rates"
           ]
+        },
+        {
+          "title": "Global Stock Rally Extends, Oil Advances on Iran: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.71,
+          "publishedAt": "2026-08-09T22:11:01+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-09/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "global_broad",
+            "market",
+            "rates",
+            "us_broad"
+          ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.417,
+      "avgSentiment": 0.476,
       "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 2,
+      "positiveCount": 4,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Iran Talks Offer Little Relief for Hormuz Shipping",
-      "topPositiveTitle": "Oil Gains as Iran Deal Eludes, Stocks Set to Rise: Markets Wrap",
+      "topNegativeTitle": "熊本地震 赤間防災相“資源投じて 被災者ニーズに応えていく”",
+      "topPositiveTitle": "Global Stock Rally Extends, Oil Advances on Iran: Markets Wrap",
       "items": [
-        {
-          "title": "Iran Talks Offer Little Relief for Hormuz Shipping",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-09T12:08:57+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-09/iran-talks-offer-little-relief-for-hormuz-shipping-video",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "market"
-          ]
-        },
         {
           "title": "熊本地震 赤間防災相“資源投じて 被災者ニーズに応えていく”",
           "source": "NHK 経済",
@@ -390,6 +429,20 @@
             "market"
           ],
           "titleJa": "熊本地震 赤間防災相“資源投じて 被災者ニーズに応えていく”"
+        },
+        {
+          "title": "Australian Scandium Miner Soars After $400 Million US Investment",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-10T01:12:43+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-10/australian-scandium-miner-soars-after-400-million-us-investment",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
         },
         {
           "title": "Latest Oil Market News and Analysis for Aug. 10",
@@ -405,30 +458,47 @@
           ]
         },
         {
-          "title": "Oil Gains as Iran Deal Eludes, Stocks Set to Rise: Markets Wrap",
+          "title": "China’s Slower-Than-Expected Price Gains Revive Deflation Risk",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 1.0,
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-09T01:46:29+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-09/china-s-inflation-cools-as-oil-shock-of-iran-war-starts-to-ease",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Global Stock Rally Extends, Oil Advances on Iran: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.71,
           "publishedAt": "2026-08-09T22:11:01+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-08-09/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
             "geopolitical",
-            "market"
+            "global_broad",
+            "market",
+            "rates",
+            "us_broad"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.268,
+      "avgSentiment": 0.256,
       "negativeCount": 1,
-      "positiveCount": 2,
-      "neutralCount": 2,
+      "positiveCount": 4,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 8,
       "isStale": false,
       "topNegativeTitle": "US CPI to Show Inflationary Pressures Cooling Some",
-      "topPositiveTitle": "Oil Gains as Iran Deal Eludes, Stocks Set to Rise: Markets Wrap",
+      "topPositiveTitle": "Global Stock Rally Extends, Oil Advances on Iran: Markets Wrap",
       "items": [
         {
           "title": "US CPI to Show Inflationary Pressures Cooling Some",
@@ -445,12 +515,36 @@
           ]
         },
         {
-          "title": "US Weapons Crunch Raises Risks Beyond Iran",
+          "title": "Iran Shakes Up Security Team Claiming Oman Deal ‘Close’",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-09T12:52:22+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-09/us-weapons-crunch-raises-risks-beyond-iran-video",
+          "publishedAt": "2026-08-10T05:00:40+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-10/iran-shakes-up-security-team-claiming-oman-deal-close-video",
+          "tags": [
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Netanyahu Rejects US-Backed Hamas Disarmament Proposal",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-10T04:54:49+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-10/netanyahu-rejects-us-backed-hamas-disarmament-proposal-video",
+          "tags": [
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Euro Zone Set for Firmer Growth After Bumper Second Quarter",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-10T04:15:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-10/euro-zone-set-for-firmer-growth-after-bumper-second-quarter",
           "tags": [
             "geopolitical",
             "macro_risk",
@@ -458,41 +552,16 @@
           ]
         },
         {
-          "title": "Iran Talks Offer Little Relief for Hormuz Shipping",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-09T12:08:57+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-09/iran-talks-offer-little-relief-for-hormuz-shipping-video",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "Latest Oil Market News and Analysis for Aug. 10",
+          "title": "Australian Scandium Miner Soars After $400 Million US Investment",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-09T22:02:45+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-09/latest-oil-market-news-and-analysis-for-aug-10",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-10T01:12:43+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-10/australian-scandium-miner-soars-after-400-million-us-investment",
           "tags": [
             "commodity",
             "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "Oil Gains as Iran Deal Eludes, Stocks Set to Rise: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-08-09T22:11:01+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-09/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "geopolitical",
+            "macro_risk",
             "market"
           ]
         }
@@ -507,7 +576,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 20,
+    "excludedCount": 13,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
