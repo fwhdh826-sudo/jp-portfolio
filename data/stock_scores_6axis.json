@@ -3,11 +3,11 @@
     "version": "v13.3",
     "kind": "stock_scores_6axis",
     "source": "scoring_orchestrator + data/fundamentals.json + public/data/returns.json",
-    "generated_at": "2026-05-20T00:52:09.699894+00:00",
+    "generated_at": "2026-08-11T12:06:05.246364+00:00",
     "not_for_trading": true,
     "note": "partial-real hybrid / not full real / not full generated / volatility_252d derived from returns.json / momentum and passthrough technical-deferred neutral / financial-sector bounded distortion documented"
   },
-  "last_updated": "2026-05-20T00:52:09.699894+00:00",
+  "last_updated": "2026-08-11T12:06:05.246364+00:00",
   "tickers": [
     "6098.T",
     "8306.T",
@@ -103,9 +103,9 @@
             {
               "name": "volatility_252d",
               "weight": 0.15,
-              "raw_value": 0.47759355562206834,
-              "normalized": 4.48128887558633,
-              "description": "ボラティリティ 0.48 — 高ボラ（スコア4）"
+              "raw_value": 0.5282802920649764,
+              "normalized": 0.0,
+              "description": "ボラティリティ 0.53 — 高ボラ（スコア0）"
             },
             {
               "name": "beta_inverse",
@@ -367,9 +367,9 @@
             {
               "name": "volatility_252d",
               "weight": 0.15,
-              "raw_value": 0.30480313076834553,
-              "normalized": 39.039373846330896,
-              "description": "ボラティリティ 0.30 — 標準水準（スコア39）"
+              "raw_value": 0.3160867591086864,
+              "normalized": 36.782648178262725,
+              "description": "ボラティリティ 0.32 — 標準水準（スコア37）"
             },
             {
               "name": "beta_inverse",
@@ -605,7 +605,7 @@
         "safety": {
           "axis": "safety",
           "name_ja": "安全性",
-          "total": 84,
+          "total": 83,
           "components": [
             {
               "name": "equity_ratio",
@@ -631,9 +631,9 @@
             {
               "name": "volatility_252d",
               "weight": 0.15,
-              "raw_value": 0.39054616987016566,
-              "normalized": 21.89076602596687,
-              "description": "ボラティリティ 0.39 — 高ボラ（スコア22）"
+              "raw_value": 0.44862781620992803,
+              "normalized": 10.274436758014389,
+              "description": "ボラティリティ 0.45 — 高ボラ（スコア10）"
             },
             {
               "name": "beta_inverse",
@@ -643,7 +643,7 @@
               "description": "ベータ逆数 0.49 — 低ベータ（スコア100）"
             }
           ],
-          "explanation": "安全性スコア 84 — 自己資本比率が高評価、ボラティリティが相対的に低評価（安全水準）"
+          "explanation": "安全性スコア 83 — 自己資本比率が高評価、ボラティリティが相対的に低評価（安全水準）"
         },
         "shareholder_return": {
           "axis": "shareholder_return",
@@ -869,7 +869,7 @@
         "safety": {
           "axis": "safety",
           "name_ja": "安全性",
-          "total": 86,
+          "total": 85,
           "components": [
             {
               "name": "equity_ratio",
@@ -895,9 +895,9 @@
             {
               "name": "volatility_252d",
               "weight": 0.15,
-              "raw_value": 0.29546571078780925,
-              "normalized": 40.90685784243815,
-              "description": "ボラティリティ 0.30 — 標準水準（スコア41）"
+              "raw_value": 0.33394444341183543,
+              "normalized": 33.21111131763291,
+              "description": "ボラティリティ 0.33 — 標準水準（スコア33）"
             },
             {
               "name": "beta_inverse",
@@ -907,7 +907,7 @@
               "description": "ベータ逆数 0.30 — 低ベータ（スコア100）"
             }
           ],
-          "explanation": "安全性スコア 86 — 自己資本比率が高評価、ボラティリティが相対的に低評価（安全水準）"
+          "explanation": "安全性スコア 85 — 自己資本比率が高評価、ボラティリティが相対的に低評価（安全水準）"
         },
         "shareholder_return": {
           "axis": "shareholder_return",
@@ -1133,7 +1133,7 @@
         "safety": {
           "axis": "safety",
           "name_ja": "安全性",
-          "total": 46,
+          "total": 45,
           "components": [
             {
               "name": "equity_ratio",
@@ -1159,9 +1159,9 @@
             {
               "name": "volatility_252d",
               "weight": 0.15,
-              "raw_value": 0.19227432238790795,
-              "normalized": 61.54513552241841,
-              "description": "ボラティリティ 0.19 — 標準水準（スコア62）"
+              "raw_value": 0.21211486889639097,
+              "normalized": 57.577026220721805,
+              "description": "ボラティリティ 0.21 — 標準水準（スコア58）"
             },
             {
               "name": "beta_inverse",
@@ -1171,7 +1171,7 @@
               "description": "ベータ逆数 0.22 — 低ベータ（スコア100）"
             }
           ],
-          "explanation": "安全性スコア 46 — インタレストカバレッジが高評価、D/Eレシオが相対的に低評価（標準水準）"
+          "explanation": "安全性スコア 45 — インタレストカバレッジが高評価、D/Eレシオが相対的に低評価（標準水準）"
         },
         "shareholder_return": {
           "axis": "shareholder_return",
@@ -1423,9 +1423,9 @@
             {
               "name": "volatility_252d",
               "weight": 0.15,
-              "raw_value": 0.3210973175359256,
-              "normalized": 35.78053649281489,
-              "description": "ボラティリティ 0.32 — 標準水準（スコア36）"
+              "raw_value": 0.33744291295039475,
+              "normalized": 32.51141740992105,
+              "description": "ボラティリティ 0.34 — 標準水準（スコア33）"
             },
             {
               "name": "beta_inverse",
@@ -1661,7 +1661,7 @@
         "safety": {
           "axis": "safety",
           "name_ja": "安全性",
-          "total": 41,
+          "total": 40,
           "components": [
             {
               "name": "equity_ratio",
@@ -1687,9 +1687,9 @@
             {
               "name": "volatility_252d",
               "weight": 0.15,
-              "raw_value": 0.4626876109797989,
-              "normalized": 7.462477804040219,
-              "description": "ボラティリティ 0.46 — 高ボラ（スコア7）"
+              "raw_value": 0.5398517814506443,
+              "normalized": 0.0,
+              "description": "ボラティリティ 0.54 — 高ボラ（スコア0）"
             },
             {
               "name": "beta_inverse",
@@ -1699,7 +1699,7 @@
               "description": "ベータ逆数 0.78 — 低ベータ（スコア72）"
             }
           ],
-          "explanation": "安全性スコア 41 — インタレストカバレッジが高評価、D/Eレシオが相対的に低評価（標準水準）"
+          "explanation": "安全性スコア 40 — インタレストカバレッジが高評価、ボラティリティが相対的に低評価（標準水準）"
         },
         "shareholder_return": {
           "axis": "shareholder_return",
@@ -1925,7 +1925,7 @@
         "safety": {
           "axis": "safety",
           "name_ja": "安全性",
-          "total": 81,
+          "total": 80,
           "components": [
             {
               "name": "equity_ratio",
@@ -1951,9 +1951,9 @@
             {
               "name": "volatility_252d",
               "weight": 0.15,
-              "raw_value": 0.3613129388719425,
-              "normalized": 27.737412225611507,
-              "description": "ボラティリティ 0.36 — 高ボラ（スコア28）"
+              "raw_value": 0.3804083280016802,
+              "normalized": 23.918334399663962,
+              "description": "ボラティリティ 0.38 — 高ボラ（スコア24）"
             },
             {
               "name": "beta_inverse",
@@ -1963,7 +1963,7 @@
               "description": "ベータ逆数 -0.15 — 低ベータ（スコア100）"
             }
           ],
-          "explanation": "安全性スコア 81 — インタレストカバレッジが高評価、ボラティリティが相対的に低評価（安全水準）"
+          "explanation": "安全性スコア 80 — インタレストカバレッジが高評価、ボラティリティが相対的に低評価（安全水準）"
         },
         "shareholder_return": {
           "axis": "shareholder_return",
@@ -2215,9 +2215,9 @@
             {
               "name": "volatility_252d",
               "weight": 0.15,
-              "raw_value": 0.6723457291536524,
+              "raw_value": 0.7930338073935739,
               "normalized": 0.0,
-              "description": "ボラティリティ 0.67 — 高ボラ（スコア0）"
+              "description": "ボラティリティ 0.79 — 高ボラ（スコア0）"
             },
             {
               "name": "beta_inverse",
@@ -2479,9 +2479,9 @@
             {
               "name": "volatility_252d",
               "weight": 0.15,
-              "raw_value": 0.31671031501442315,
-              "normalized": 36.65793699711537,
-              "description": "ボラティリティ 0.32 — 標準水準（スコア37）"
+              "raw_value": 0.3321576111203601,
+              "normalized": 33.56847777592799,
+              "description": "ボラティリティ 0.33 — 標準水準（スコア34）"
             },
             {
               "name": "beta_inverse",
@@ -2717,7 +2717,7 @@
         "safety": {
           "axis": "safety",
           "name_ja": "安全性",
-          "total": 61,
+          "total": 62,
           "components": [
             {
               "name": "equity_ratio",
@@ -2743,9 +2743,9 @@
             {
               "name": "volatility_252d",
               "weight": 0.15,
-              "raw_value": 0.25394906278608226,
-              "normalized": 49.21018744278355,
-              "description": "ボラティリティ 0.25 — 標準水準（スコア49）"
+              "raw_value": 0.2427171821607699,
+              "normalized": 51.45656356784602,
+              "description": "ボラティリティ 0.24 — 標準水準（スコア51）"
             },
             {
               "name": "beta_inverse",
@@ -2755,7 +2755,7 @@
               "description": "ベータ逆数 0.75 — 低ベータ（スコア75）"
             }
           ],
-          "explanation": "安全性スコア 61 — インタレストカバレッジが高評価、D/Eレシオが相対的に低評価（標準水準）"
+          "explanation": "安全性スコア 62 — インタレストカバレッジが高評価、D/Eレシオが相対的に低評価（標準水準）"
         },
         "shareholder_return": {
           "axis": "shareholder_return",
@@ -3007,9 +3007,9 @@
             {
               "name": "volatility_252d",
               "weight": 0.15,
-              "raw_value": 0.19434616649156344,
-              "normalized": 61.130766701687314,
-              "description": "ボラティリティ 0.19 — 標準水準（スコア61）"
+              "raw_value": 0.1968519621989025,
+              "normalized": 60.6296075602195,
+              "description": "ボラティリティ 0.20 — 標準水準（スコア61）"
             },
             {
               "name": "beta_inverse",
@@ -3271,9 +3271,9 @@
             {
               "name": "volatility_252d",
               "weight": 0.15,
-              "raw_value": 0.4282157485311254,
-              "normalized": 14.356850293774926,
-              "description": "ボラティリティ 0.43 — 高ボラ（スコア14）"
+              "raw_value": 0.4331710989589128,
+              "normalized": 13.365780208217444,
+              "description": "ボラティリティ 0.43 — 高ボラ（スコア13）"
             },
             {
               "name": "beta_inverse",
@@ -3535,9 +3535,9 @@
             {
               "name": "volatility_252d",
               "weight": 0.15,
-              "raw_value": 0.373388213733107,
-              "normalized": 25.3223572533786,
-              "description": "ボラティリティ 0.37 — 高ボラ（スコア25）"
+              "raw_value": 0.3862243065376344,
+              "normalized": 22.755138692473125,
+              "description": "ボラティリティ 0.39 — 高ボラ（スコア23）"
             },
             {
               "name": "beta_inverse",
@@ -3773,7 +3773,7 @@
         "safety": {
           "axis": "safety",
           "name_ja": "安全性",
-          "total": 55,
+          "total": 54,
           "components": [
             {
               "name": "equity_ratio",
@@ -3799,9 +3799,9 @@
             {
               "name": "volatility_252d",
               "weight": 0.15,
-              "raw_value": 0.21682237868548143,
-              "normalized": 56.635524262903715,
-              "description": "ボラティリティ 0.22 — 標準水準（スコア57）"
+              "raw_value": 0.23878710982121584,
+              "normalized": 52.24257803575683,
+              "description": "ボラティリティ 0.24 — 標準水準（スコア52）"
             },
             {
               "name": "beta_inverse",
@@ -3811,7 +3811,7 @@
               "description": "ベータ逆数 -0.08 — 低ベータ（スコア100）"
             }
           ],
-          "explanation": "安全性スコア 55 — インタレストカバレッジが高評価、D/Eレシオが相対的に低評価（標準水準）"
+          "explanation": "安全性スコア 54 — インタレストカバレッジが高評価、D/Eレシオが相対的に低評価（標準水準）"
         },
         "shareholder_return": {
           "axis": "shareholder_return",
@@ -4063,9 +4063,9 @@
             {
               "name": "volatility_252d",
               "weight": 0.15,
-              "raw_value": 0.516881065634131,
+              "raw_value": 0.5508447946275226,
               "normalized": 0.0,
-              "description": "ボラティリティ 0.52 — 高ボラ（スコア0）"
+              "description": "ボラティリティ 0.55 — 高ボラ（スコア0）"
             },
             {
               "name": "beta_inverse",
@@ -4259,7 +4259,7 @@
     "observation: momentum components and 4 passthrough (moat_score / earnings_stab / guidance / tam_expansion) are technical-deferred → scorer MISSING_RAW_VALUES neutral",
     "observation: financial-sector tickers may show bounded de_ratio/fcf_yield/equity_ratio distortion (documented hybrid limitation)",
     "observation: fundamentals snapshot generated_at=2026-05-19T16:52:29.781230+00:00",
-    "observation: returns snapshot generated_at=2026-05-18T08:59:10.003947"
+    "observation: returns snapshot generated_at=2026-08-11T12:06:04.100772"
   ],
   "status": "ok"
 }

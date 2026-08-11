@@ -1,37 +1,10 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-07-26T21:36:11.160799+09:00",
-  "sourceUpdatedAt": "2026-07-26T12:33:51+00:00",
+  "updatedAt": "2026-08-11T21:06:04.994240+09:00",
+  "sourceUpdatedAt": "2026-08-11T11:56:39+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
-      "isStale": false,
-      "topNegativeTitle": "Fed, Bank of England, Bank of Japan Face $100 Oil Inflation Test",
-      "topPositiveTitle": "Fed, Bank of England, Bank of Japan Face $100 Oil Inflation Test",
-      "items": [
-        {
-          "title": "Fed, Bank of England, Bank of Japan Face $100 Oil Inflation Test",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-25T20:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-25/fed-bank-of-england-bank-of-japan-face-100-oil-inflation-test",
-          "tags": [
-            "commodity",
-            "jp_broad",
-            "market",
-            "us_broad"
-          ]
-        }
-      ]
-    },
-    "jp_semiconductor": {
       "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
@@ -43,7 +16,7 @@
       "topPositiveTitle": null,
       "items": []
     },
-    "us_broad": {
+    "jp_semiconductor": {
       "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
@@ -51,19 +24,102 @@
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Fed, Bank of England, Bank of Japan Face $100 Oil Inflation Test",
-      "topPositiveTitle": "Fed, Bank of England, Bank of Japan Face $100 Oil Inflation Test",
+      "topNegativeTitle": "Trump Hardens Stance on Iran, Nvidia Taps Wall Street for $500B | The Opening Trade 8/11/2026",
+      "topPositiveTitle": "Trump Hardens Stance on Iran, Nvidia Taps Wall Street for $500B | The Opening Trade 8/11/2026",
       "items": [
         {
-          "title": "Fed, Bank of England, Bank of Japan Face $100 Oil Inflation Test",
+          "title": "Trump Hardens Stance on Iran, Nvidia Taps Wall Street for $500B | The Opening Trade 8/11/2026",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-11T09:50:52+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-11/the-opening-trade-8-11-2026-video",
+          "tags": [
+            "geopolitical",
+            "jp_semiconductor",
+            "macro_risk",
+            "market",
+            "us_broad",
+            "us_growth"
+          ]
+        }
+      ]
+    },
+    "us_broad": {
+      "avgSentiment": -0.023,
+      "negativeCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 4,
+      "sourceCount": 2,
+      "itemCount": 6,
+      "isStale": false,
+      "topNegativeTitle": "Gold Pulls Back From Two-Month High as Focus Shifts to Inflation",
+      "topPositiveTitle": "Fed to Take Wait-and-See Stance on Rates: Laura Cooper",
+      "items": [
+        {
+          "title": "Gold Pulls Back From Two-Month High as Focus Shifts to Inflation",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-08-10T23:33:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-10/gold-touches-4-400-as-traders-turn-focus-to-us-inflation-data",
+          "tags": [
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Trump Hardens Stance on Iran, Nvidia Taps Wall Street for $500B | The Opening Trade 8/11/2026",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-11T09:50:52+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-11/the-opening-trade-8-11-2026-video",
+          "tags": [
+            "geopolitical",
+            "jp_semiconductor",
+            "macro_risk",
+            "market",
+            "us_broad",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Trump Downplays Talks With Warsh Amid Fed Independence Doubts",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-25T20:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-25/fed-bank-of-england-bank-of-japan-face-100-oil-inflation-test",
+          "publishedAt": "2026-08-10T20:01:29+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-10/trump-downplays-talks-with-warsh-amid-fed-independence-doubts",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Warsh Says He Sold All Promised Stakes, Agency Filing Shows",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-10T14:28:05+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-10/warsh-says-he-sold-all-promised-stakes-agency-filing-shows",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Stocks Climb as Oil Retreats on Iran Deal Hopes: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.2,
+          "publishedAt": "2026-08-10T22:08:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-10/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
-            "jp_broad",
+            "geopolitical",
             "market",
             "us_broad"
           ]
@@ -71,16 +127,45 @@
       ]
     },
     "us_growth": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.335,
       "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 1,
+      "sourceCount": 2,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Trump Hardens Stance on Iran, Nvidia Taps Wall Street for $500B | The Opening Trade 8/11/2026",
+      "topPositiveTitle": "AI Boom Set to Drive Singapore Growth as High as 5.5% This Year",
+      "items": [
+        {
+          "title": "Trump Hardens Stance on Iran, Nvidia Taps Wall Street for $500B | The Opening Trade 8/11/2026",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-11T09:50:52+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-11/the-opening-trade-8-11-2026-video",
+          "tags": [
+            "geopolitical",
+            "jp_semiconductor",
+            "macro_risk",
+            "market",
+            "us_broad",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "AI Boom Set to Drive Singapore Growth as High as 5.5% This Year",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-11T00:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-11/ai-boom-set-to-drive-singapore-growth-as-high-as-5-5-this-year",
+          "tags": [
+            "market",
+            "us_growth"
+          ]
+        }
+      ]
     },
     "global_broad": {
       "avgSentiment": 0,
@@ -95,16 +180,31 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
+      "avgSentiment": -0.67,
+      "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Gold Pulls Back From Two-Month High as Focus Shifts to Inflation",
+      "topPositiveTitle": "Gold Pulls Back From Two-Month High as Focus Shifts to Inflation",
+      "items": [
+        {
+          "title": "Gold Pulls Back From Two-Month High as Focus Shifts to Inflation",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-08-10T23:33:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-10/gold-touches-4-400-as-traders-turn-focus-to-us-inflation-data",
+          "tags": [
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        }
+      ]
     },
     "reit": {
       "avgSentiment": 0,
@@ -131,145 +231,359 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 2,
-      "sourceCount": 1,
-      "itemCount": 2,
+      "avgSentiment": -0.037,
+      "negativeCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 6,
+      "sourceCount": 2,
+      "itemCount": 8,
       "isStale": false,
-      "topNegativeTitle": "茂木外相 日本の対ロシア政策変わらずも意思疎通は必要",
-      "topPositiveTitle": "茂木外相 日本の対ロシア政策変わらずも意思疎通は必要",
+      "topNegativeTitle": "Spinneys Retail Traffic Up After Initial Iran War Hit",
+      "topPositiveTitle": "South African Unemployment Rate Jumps to Four-Year High of 33.6%",
       "items": [
         {
-          "title": "茂木外相 日本の対ロシア政策変わらずも意思疎通は必要",
-          "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-24T07:27:40+00:00",
-          "url": "https://news.web.nhk/newsweb/na/na-k10015185281000",
+          "title": "Spinneys Retail Traffic Up After Initial Iran War Hit",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-08-11T08:04:39+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-11/retail-footfall-fell-on-lower-tourism-says-spinneys-ceo-video",
           "tags": [
             "geopolitical",
             "macro_risk",
             "market"
-          ],
-          "titleJa": "茂木外相 日本の対ロシア政策変わらずも意思疎通は必要"
+          ]
         },
         {
-          "title": "茂木外相 ASEAN・日中韓で未来志向の協力深化を呼びかけ",
-          "source": "NHK 経済",
+          "title": "Strait of Hormuz: What Have Iran, US Said as Efforts to Restore Traffic Stall",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-23T13:10:12+00:00",
-          "url": "https://news.web.nhk/newsweb/na/na-k10015184201000",
+          "publishedAt": "2026-08-11T11:09:13+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-11/strait-of-hormuz-what-have-iran-us-said-as-efforts-to-restore-traffic-stall",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Trump Hardens Stance on Iran, Nvidia Taps Wall Street for $500B | The Opening Trade 8/11/2026",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-11T09:50:52+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-11/the-opening-trade-8-11-2026-video",
+          "tags": [
+            "geopolitical",
+            "jp_semiconductor",
+            "macro_risk",
+            "market",
+            "us_broad",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Europe's Extreme Heat Wave Crisis Is Getting Worse",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-11T09:20:54+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-11/europe-s-extreme-heat-wave-crisis-is-getting-worse-video",
           "tags": [
             "macro_risk",
             "market"
-          ],
-          "titleJa": "茂木外相 ASEAN・日中韓で未来志向の協力深化を呼びかけ"
+          ]
+        },
+        {
+          "title": "Resilient Europe Turns Into a Winning Bet for Money Managers",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-11T07:31:14+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-11/resilient-europe-turns-into-a-winning-bet-for-money-managers",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "rates": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "commodity": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 3,
-      "sourceCount": 3,
+      "avgSentiment": -0.033,
+      "negativeCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 1,
+      "sourceCount": 2,
       "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Iraq to Sign Agreement with Syria on Building of Oil Pipelines",
-      "topPositiveTitle": "Iraq to Sign Agreement with Syria on Building of Oil Pipelines",
+      "topNegativeTitle": "Yen Slides Toward 160 per Dollar, Raising Intervention Concerns",
+      "topPositiveTitle": "BOK Deputy Governor Signals More Rate Hikes on Inflation Risk",
       "items": [
         {
-          "title": "Iraq to Sign Agreement with Syria on Building of Oil Pipelines",
+          "title": "Yen Slides Toward 160 per Dollar, Raising Intervention Concerns",
           "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.43,
+          "publishedAt": "2026-08-11T10:03:19+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-11/yen-slides-toward-160-per-dollar-raising-intervention-concerns",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        },
+        {
+          "title": "Bessent’s Whatever-It-Takes Yen Vow Masks Limited Firepower",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-25T23:34:54+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-25/iraq-to-sign-agreement-with-syria-on-building-of-oil-pipelines",
+          "publishedAt": "2026-08-10T20:29:58+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-10/bessent-s-whatever-it-takes-yen-pledge-masks-limited-firepower",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        },
+        {
+          "title": "BOK Deputy Governor Signals More Rate Hikes on Inflation Risk",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-11T06:00:25+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-11/bok-deputy-governor-signals-more-rate-hikes-on-inflation-risk",
+          "tags": [
+            "fx",
+            "market",
+            "rates"
+          ]
+        }
+      ]
+    },
+    "rates": {
+      "avgSentiment": -0.003,
+      "negativeCount": 1,
+      "positiveCount": 2,
+      "neutralCount": 1,
+      "sourceCount": 2,
+      "itemCount": 4,
+      "isStale": false,
+      "topNegativeTitle": "Gold Pulls Back From Two-Month High as Focus Shifts to Inflation",
+      "topPositiveTitle": "Fed to Take Wait-and-See Stance on Rates: Laura Cooper",
+      "items": [
+        {
+          "title": "Gold Pulls Back From Two-Month High as Focus Shifts to Inflation",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-08-10T23:33:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-10/gold-touches-4-400-as-traders-turn-focus-to-us-inflation-data",
+          "tags": [
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "RBA Governor Adopts Hawkish Tone After Holding Rates Unchanged",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-11T04:32:33+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-11/australia-holds-key-rate-to-counter-elevated-inflation-pressures",
+          "tags": [
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Fed to Take Wait-and-See Stance on Rates: Laura Cooper",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-11T11:56:39+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-11/fed-to-take-wait-and-see-stance-on-rates-laura-cooper-video",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "BOK Deputy Governor Signals More Rate Hikes on Inflation Risk",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-11T06:00:25+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-11/bok-deputy-governor-signals-more-rate-hikes-on-inflation-risk",
+          "tags": [
+            "fx",
+            "market",
+            "rates"
+          ]
+        }
+      ]
+    },
+    "commodity": {
+      "avgSentiment": 0.214,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 4,
+      "sourceCount": 2,
+      "itemCount": 5,
+      "isStale": false,
+      "topNegativeTitle": "Strait of Hormuz: What Have Iran, US Said as Efforts to Restore Traffic Stall",
+      "topPositiveTitle": "Latest Oil Market News and Analysis for Aug. 11",
+      "items": [
+        {
+          "title": "Strait of Hormuz: What Have Iran, US Said as Efforts to Restore Traffic Stall",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-11T11:09:13+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-11/strait-of-hormuz-what-have-iran-us-said-as-efforts-to-restore-traffic-stall",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Aerospace Engineer Puts Islamist-Led State Atop Budget Ranking",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-11T07:19:28+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-11/aerospace-engineer-puts-islamist-led-state-atop-budget-ranking",
           "tags": [
             "commodity",
             "market"
           ]
         },
         {
-          "title": "Fed, Bank of England, Bank of Japan Face $100 Oil Inflation Test",
+          "title": "Australian Business Confidence Drops on Middle East Uncertainty",
           "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-25T20:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-25/fed-bank-of-england-bank-of-japan-face-100-oil-inflation-test",
+          "sentiment": "positive",
+          "sentimentScore": 0.2,
+          "publishedAt": "2026-08-11T01:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-11/australian-business-confidence-drops-on-middle-east-uncertainty",
           "tags": [
             "commodity",
-            "jp_broad",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Stocks Climb as Oil Retreats on Iran Deal Hopes: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.2,
+          "publishedAt": "2026-08-10T22:08:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-10/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "geopolitical",
             "market",
             "us_broad"
           ]
         },
         {
-          "title": "“来月の原油 去年の実績とほぼ同じ量 調達できる”赤澤経産相",
-          "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-24T07:45:27+00:00",
-          "url": "https://news.web.nhk/newsweb/na/na-k10015185271000",
+          "title": "Latest Oil Market News and Analysis for Aug. 11",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-10T22:02:35+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-10/latest-oil-market-news-and-analysis-for-aug-11",
           "tags": [
             "commodity",
+            "geopolitical",
             "market"
-          ],
-          "titleJa": "“来月の原油 去年の実績とほぼ同じ量 調達できる”赤澤経産相"
+          ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "avgSentiment": 0.082,
+      "negativeCount": 1,
+      "positiveCount": 3,
+      "neutralCount": 7,
+      "sourceCount": 3,
+      "itemCount": 11,
       "isStale": false,
-      "topNegativeTitle": "茂木外相 日本の対ロシア政策変わらずも意思疎通は必要",
-      "topPositiveTitle": "茂木外相 日本の対ロシア政策変わらずも意思疎通は必要",
+      "topNegativeTitle": "Spinneys Retail Traffic Up After Initial Iran War Hit",
+      "topPositiveTitle": "Latest Oil Market News and Analysis for Aug. 11",
       "items": [
         {
-          "title": "茂木外相 日本の対ロシア政策変わらずも意思疎通は必要",
-          "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-07-24T07:27:40+00:00",
-          "url": "https://news.web.nhk/newsweb/na/na-k10015185281000",
+          "title": "Spinneys Retail Traffic Up After Initial Iran War Hit",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-08-11T08:04:39+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-11/retail-footfall-fell-on-lower-tourism-says-spinneys-ceo-video",
           "tags": [
             "geopolitical",
             "macro_risk",
             "market"
-          ],
-          "titleJa": "茂木外相 日本の対ロシア政策変わらずも意思疎通は必要"
+          ]
+        },
+        {
+          "title": "The Pulse 8/11/2026",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-11T11:16:54+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-11/the-pulse-8-11-2026-video",
+          "tags": [
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Strait of Hormuz: What Have Iran, US Said as Efforts to Restore Traffic Stall",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-11T11:09:13+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-11/strait-of-hormuz-what-have-iran-us-said-as-efforts-to-restore-traffic-stall",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Trump Hardens Stance on Iran, Nvidia Taps Wall Street for $500B | The Opening Trade 8/11/2026",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-11T09:50:52+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-11/the-opening-trade-8-11-2026-video",
+          "tags": [
+            "geopolitical",
+            "jp_semiconductor",
+            "macro_risk",
+            "market",
+            "us_broad",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Resilient Europe Turns Into a Winning Bet for Money Managers",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-11T07:31:14+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-11/resilient-europe-turns-into-a-winning-bet-for-money-managers",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
         }
       ]
     }
@@ -282,7 +596,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 11,
+    "excludedCount": 2,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
