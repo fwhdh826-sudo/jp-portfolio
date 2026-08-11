@@ -12,23 +12,42 @@ from data import p14_evidence_capture as capture
 from data import p14_evidence_validate as validator
 
 REPO = Path(__file__).parents[1]
+TEMPORAL_DIVERGENCE_CODE = "9999"
 
 
-def _sources(tmp: Path) -> tuple[Path, Path, Path]:
-    candidates = json.loads((REPO / "data/candidates_stocks.json").read_text())
-    candidates["_meta"]["runToken"] = "cc139a4e-e3b8-4515-843e-cf5b73612237"
-    funnel = json.loads((REPO / "data/candidate_funnel.json").read_text())
-    by_code = {row["code"]: row for row in funnel["candidates"]}
-    entries = [
+def _same_observation_prescreen_entries(candidates: dict) -> list[dict]:
+    """Build prescreen metadata from the candidate population of this observation."""
+    rows = sorted(candidates["candidates"], key=lambda row: row["code"])
+    population = len(rows)
+    return [
         {
             "code": row["code"],
-            "prescreenScore": by_code[row["code"]]["prescreenScore"],
-            "prescreenRank": by_code[row["code"]]["prescreenRank"],
-            "prescreenPool": by_code[row["code"]]["prescreenPool"],
+            "prescreenScore": (population - rank + 1) / population,
+            "prescreenRank": rank,
+            "prescreenPool": "main",
         }
-        for row in candidates["candidates"]
+        for rank, row in enumerate(rows, start=1)
     ]
-    entries.sort(key=lambda row: (row["prescreenRank"], row["code"]))
+
+
+def _sources(
+    tmp: Path, *, later_candidate_code: str | None = None
+) -> tuple[Path, Path, Path]:
+    candidates = json.loads((REPO / "data/candidates_stocks.json").read_text())
+    candidates["_meta"]["runToken"] = "cc139a4e-e3b8-4515-843e-cf5b73612237"
+    if later_candidate_code is not None:
+        assert all(
+            row["code"] != later_candidate_code for row in candidates["candidates"]
+        )
+        later_candidate = dict(candidates["candidates"][0])
+        later_candidate.update(
+            {"code": later_candidate_code, "name": "Temporal Divergence Fixture"}
+        )
+        candidates["candidates"].append(later_candidate)
+        population = len(candidates["candidates"])
+        candidates["_meta"]["counts"]["universeCount"] = population
+        candidates["_meta"]["counts"]["publishedCount"] = population
+    entries = _same_observation_prescreen_entries(candidates)
     prescreen = {
         "schemaVersion": "prescreen-metadata-1",
         "generatedAt": candidates["updatedAt"],
@@ -215,7 +234,38 @@ def test_prescreen_generated_at_not_equal_candidates_updated_at_is_rejected(
     payload["generatedAt"] = "2099-01-01T00:00:00+09:00"
     path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n")
     report = validator.validate_bundle(bundle, repo_root=REPO, ci=True)
+    assert report["accepted"] is False
     assert _failed(report, "AC-05")
+
+
+def test_later_candidate_need_not_exist_in_retained_previous_funnel(
+    tmp_path, monkeypatch
+):
+    """Architecture B keeps an older funnel while later candidate sets evolve."""
+    previous = json.loads((REPO / "data/candidate_funnel.json").read_text())
+    assert TEMPORAL_DIVERGENCE_CODE not in {
+        row["code"] for row in previous["candidates"]
+    }
+    cp, pp, rp = _sources(
+        tmp_path, later_candidate_code=TEMPORAL_DIVERGENCE_CODE
+    )
+    monkeypatch.setattr(capture, "_environment", _environment)
+    bundle = capture.build_bundle(
+        out_parent=tmp_path / "out",
+        repo_root=REPO,
+        run_identity=_identity(),
+        candidates_path=cp,
+        prescreen_path=pp,
+        regime_path=rp,
+        previous_path=REPO / "data/candidate_funnel.json",
+    )
+    report = validator.validate_bundle(bundle, repo_root=REPO, ci=True)
+    assert report["accepted"] is True, report
+    snapshot = next((bundle / "snapshots").glob("real-*"))
+    joined = json.loads(
+        (snapshot / "inputs/joined_candidates.json").read_text()
+    )["candidates"]
+    assert TEMPORAL_DIVERGENCE_CODE in {row["code"] for row in joined}
 
 
 def test_incomplete_bundle_missing_any_required_path_is_rejected(valid_bundle, tmp_path):

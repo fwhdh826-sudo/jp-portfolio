@@ -18,21 +18,29 @@ def _sha(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def _same_observation_prescreen_entries(candidates: dict) -> list[dict]:
+    """Build deterministic prescreen metadata for this candidate observation.
+
+    The committed candidate funnel is an older P-15 baseline under Architecture B,
+    not the prescreen authority for a later candidate population.
+    """
+    rows = sorted(candidates["candidates"], key=lambda row: row["code"])
+    population = len(rows)
+    return [
+        {
+            "code": row["code"],
+            "prescreenScore": (population - rank + 1) / population,
+            "prescreenRank": rank,
+            "prescreenPool": "main",
+        }
+        for rank, row in enumerate(rows, start=1)
+    ]
+
+
 def _write_sources(tmp_path: Path) -> tuple[Path, Path, Path]:
     candidates = json.loads((REPO / "data/candidates_stocks.json").read_text())
     candidates["_meta"]["runToken"] = "7f1a076e-2a44-4d92-968d-f9c69c1f83b1"
-    funnel = json.loads((REPO / "data/candidate_funnel.json").read_text())
-    by_code = {row["code"]: row for row in funnel["candidates"]}
-    entries = [
-        {
-            "code": row["code"],
-            "prescreenScore": by_code[row["code"]]["prescreenScore"],
-            "prescreenRank": by_code[row["code"]]["prescreenRank"],
-            "prescreenPool": by_code[row["code"]]["prescreenPool"],
-        }
-        for row in candidates["candidates"]
-    ]
-    entries.sort(key=lambda row: (row["prescreenRank"], row["code"]))
+    entries = _same_observation_prescreen_entries(candidates)
     prescreen = {
         "schemaVersion": "prescreen-metadata-1",
         "generatedAt": candidates["updatedAt"],
