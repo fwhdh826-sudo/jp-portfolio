@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-08-11T13:48:05.262507+09:00",
-  "sourceUpdatedAt": "2026-08-11T04:42:49+00:00",
+  "updatedAt": "2026-08-11T21:06:04.994240+09:00",
+  "sourceUpdatedAt": "2026-08-11T11:56:39+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -17,79 +17,85 @@
       "items": []
     },
     "jp_semiconductor": {
-      "avgSentiment": 0.165,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
-      "positiveCount": 1,
+      "positiveCount": 0,
       "neutralCount": 1,
-      "sourceCount": 2,
-      "itemCount": 2,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Hedgeye's Wang on Nvidia's $5 billion Funding Plan",
-      "topPositiveTitle": "South Korea Growth Seen Accelerating to 3.3% on Chip Boom",
+      "topNegativeTitle": "Trump Hardens Stance on Iran, Nvidia Taps Wall Street for $500B | The Opening Trade 8/11/2026",
+      "topPositiveTitle": "Trump Hardens Stance on Iran, Nvidia Taps Wall Street for $500B | The Opening Trade 8/11/2026",
       "items": [
         {
-          "title": "Hedgeye's Wang on Nvidia's $5 billion Funding Plan",
+          "title": "Trump Hardens Stance on Iran, Nvidia Taps Wall Street for $500B | The Opening Trade 8/11/2026",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-11T04:42:49+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-11/hedgeye-s-wang-on-nvidia-s-5-billion-funding-plan-video",
+          "publishedAt": "2026-08-11T09:50:52+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-11/the-opening-trade-8-11-2026-video",
           "tags": [
+            "geopolitical",
             "jp_semiconductor",
+            "macro_risk",
             "market",
             "us_broad",
             "us_growth"
-          ]
-        },
-        {
-          "title": "South Korea Growth Seen Accelerating to 3.3% on Chip Boom",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-10T07:03:17+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-10/south-korea-growth-seen-accelerating-to-3-3-on-chip-boom",
-          "tags": [
-            "jp_semiconductor",
-            "market"
           ]
         }
       ]
     },
     "us_broad": {
-      "avgSentiment": 0.128,
+      "avgSentiment": -0.023,
       "negativeCount": 1,
-      "positiveCount": 2,
-      "neutralCount": 3,
+      "positiveCount": 1,
+      "neutralCount": 4,
       "sourceCount": 2,
       "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "US Job Market Signals a Third Straight Cruel Summer",
-      "topPositiveTitle": "Gold Climbs Above $4,400 as Traders Turn Focus to US Inflation",
+      "topNegativeTitle": "Gold Pulls Back From Two-Month High as Focus Shifts to Inflation",
+      "topPositiveTitle": "Fed to Take Wait-and-See Stance on Rates: Laura Cooper",
       "items": [
         {
-          "title": "US Job Market Signals a Third Straight Cruel Summer",
-          "source": "Bloomberg Economics",
+          "title": "Gold Pulls Back From Two-Month High as Focus Shifts to Inflation",
+          "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-10T11:00:02+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-08-10/us-job-market-signals-a-third-straight-cruel-summer",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-08-10T23:33:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-10/gold-touches-4-400-as-traders-turn-focus-to-us-inflation-data",
           "tags": [
+            "gold",
             "market",
+            "rates",
             "us_broad"
           ]
         },
         {
-          "title": "Hedgeye's Wang on Nvidia's $5 billion Funding Plan",
+          "title": "Trump Hardens Stance on Iran, Nvidia Taps Wall Street for $500B | The Opening Trade 8/11/2026",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-11T04:42:49+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-11/hedgeye-s-wang-on-nvidia-s-5-billion-funding-plan-video",
+          "publishedAt": "2026-08-11T09:50:52+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-11/the-opening-trade-8-11-2026-video",
           "tags": [
+            "geopolitical",
             "jp_semiconductor",
+            "macro_risk",
             "market",
             "us_broad",
             "us_growth"
+          ]
+        },
+        {
+          "title": "Trump Downplays Talks With Warsh Amid Fed Independence Doubts",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-10T20:01:29+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-10/trump-downplays-talks-with-warsh-amid-fed-independence-doubts",
+          "tags": [
+            "market",
+            "us_broad"
           ]
         },
         {
@@ -105,27 +111,15 @@
           ]
         },
         {
-          "title": "Hassett Hopes Cook Innocent, Rules Out Taking Her Place at Fed",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-10T12:21:51+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-10/hassett-hopes-cook-innocent-rules-out-taking-her-place-at-fed",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Bonds Fall on Inflation Concern, Gold Tops $4,400: Markets Wrap",
+          "title": "Stocks Climb as Oil Retreats on Iran Deal Hopes: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.5,
+          "sentimentScore": 0.2,
           "publishedAt": "2026-08-10T22:08:16+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-08-10/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
-            "gold",
+            "geopolitical",
             "market",
             "us_broad"
           ]
@@ -133,49 +127,39 @@
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.223,
+      "avgSentiment": 0.335,
       "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 2,
-      "sourceCount": 1,
-      "itemCount": 3,
+      "neutralCount": 1,
+      "sourceCount": 2,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Hedgeye's Wang on Nvidia's $5 billion Funding Plan",
-      "topPositiveTitle": "Hong Kong Tech Index Set for Overhaul With More Firms, AI Focus",
+      "topNegativeTitle": "Trump Hardens Stance on Iran, Nvidia Taps Wall Street for $500B | The Opening Trade 8/11/2026",
+      "topPositiveTitle": "AI Boom Set to Drive Singapore Growth as High as 5.5% This Year",
       "items": [
         {
-          "title": "Hedgeye's Wang on Nvidia's $5 billion Funding Plan",
+          "title": "Trump Hardens Stance on Iran, Nvidia Taps Wall Street for $500B | The Opening Trade 8/11/2026",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-11T04:42:49+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-11/hedgeye-s-wang-on-nvidia-s-5-billion-funding-plan-video",
+          "publishedAt": "2026-08-11T09:50:52+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-11/the-opening-trade-8-11-2026-video",
           "tags": [
+            "geopolitical",
             "jp_semiconductor",
+            "macro_risk",
             "market",
             "us_broad",
             "us_growth"
           ]
         },
         {
-          "title": "Tencent’s WorkBuddy Sparks AI Turnaround Hopes After Stock Rout",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-11T00:11:10+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-11/tencent-s-workbuddy-sparks-ai-turnaround-hopes-after-stock-rout",
-          "tags": [
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Hong Kong Tech Index Set for Overhaul With More Firms, AI Focus",
-          "source": "Bloomberg Markets",
+          "title": "AI Boom Set to Drive Singapore Growth as High as 5.5% This Year",
+          "source": "Bloomberg Economics",
           "sentiment": "positive",
           "sentimentScore": 0.67,
-          "publishedAt": "2026-08-11T03:35:06+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-11/hong-kong-tech-index-set-for-overhaul-with-more-firms-ai-focus",
+          "publishedAt": "2026-08-11T00:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-11/ai-boom-set-to-drive-singapore-growth-as-high-as-5-5-this-year",
           "tags": [
             "market",
             "us_growth"
@@ -196,35 +180,21 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": 0.55,
-      "negativeCount": 0,
-      "positiveCount": 2,
+      "avgSentiment": -0.67,
+      "negativeCount": 1,
+      "positiveCount": 0,
       "neutralCount": 0,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Bonds Fall on Inflation Concern, Gold Tops $4,400: Markets Wrap",
-      "topPositiveTitle": "Gold Climbs Above $4,400 as Traders Turn Focus to US Inflation",
+      "topNegativeTitle": "Gold Pulls Back From Two-Month High as Focus Shifts to Inflation",
+      "topPositiveTitle": "Gold Pulls Back From Two-Month High as Focus Shifts to Inflation",
       "items": [
         {
-          "title": "Bonds Fall on Inflation Concern, Gold Tops $4,400: Markets Wrap",
+          "title": "Gold Pulls Back From Two-Month High as Focus Shifts to Inflation",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.5,
-          "publishedAt": "2026-08-10T22:08:16+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-10/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "gold",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Gold Climbs Above $4,400 as Traders Turn Focus to US Inflation",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.6,
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
           "publishedAt": "2026-08-10T23:33:50+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-08-10/gold-touches-4-400-as-traders-turn-focus-to-us-inflation-data",
           "tags": [
@@ -261,36 +231,36 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.29,
-      "negativeCount": 0,
+      "avgSentiment": -0.037,
+      "negativeCount": 1,
       "positiveCount": 1,
-      "neutralCount": 2,
-      "sourceCount": 1,
-      "itemCount": 3,
+      "neutralCount": 6,
+      "sourceCount": 2,
+      "itemCount": 8,
       "isStale": false,
-      "topNegativeTitle": "Egypt Headline Inflation Quickens for the First Time Since March",
-      "topPositiveTitle": "China’s Slower-Than-Expected Price Gains Revive Deflation Risk",
+      "topNegativeTitle": "Spinneys Retail Traffic Up After Initial Iran War Hit",
+      "topPositiveTitle": "South African Unemployment Rate Jumps to Four-Year High of 33.6%",
       "items": [
         {
-          "title": "Egypt Headline Inflation Quickens for the First Time Since March",
+          "title": "Spinneys Retail Traffic Up After Initial Iran War Hit",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-08-11T08:04:39+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-11/retail-footfall-fell-on-lower-tourism-says-spinneys-ceo-video",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Strait of Hormuz: What Have Iran, US Said as Efforts to Restore Traffic Stall",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-10T06:17:26+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-10/egypt-headline-inflation-quickens-for-the-first-time-since-march",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Australian Business Confidence Drops on Middle East Uncertainty",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.2,
-          "publishedAt": "2026-08-11T01:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-11/australian-business-confidence-drops-on-middle-east-uncertainty",
+          "publishedAt": "2026-08-11T11:09:13+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-11/strait-of-hormuz-what-have-iran-us-said-as-efforts-to-restore-traffic-stall",
           "tags": [
             "commodity",
             "geopolitical",
@@ -299,14 +269,41 @@
           ]
         },
         {
-          "title": "China’s Slower-Than-Expected Price Gains Revive Deflation Risk",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-09T01:46:29+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-09/china-s-inflation-cools-as-oil-shock-of-iran-war-starts-to-ease",
+          "title": "Trump Hardens Stance on Iran, Nvidia Taps Wall Street for $500B | The Opening Trade 8/11/2026",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-11T09:50:52+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-11/the-opening-trade-8-11-2026-video",
           "tags": [
-            "commodity",
+            "geopolitical",
+            "jp_semiconductor",
+            "macro_risk",
+            "market",
+            "us_broad",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Europe's Extreme Heat Wave Crisis Is Getting Worse",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-11T09:20:54+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-11/europe-s-extreme-heat-wave-crisis-is-getting-worse-video",
+          "tags": [
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Resilient Europe Turns Into a Winning Bet for Money Managers",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-11T07:31:14+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-11/resilient-europe-turns-into-a-winning-bet-for-money-managers",
+          "tags": [
             "geopolitical",
             "macro_risk",
             "market"
@@ -315,23 +312,23 @@
       ]
     },
     "fx": {
-      "avgSentiment": 0.24,
-      "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 3,
+      "avgSentiment": -0.033,
+      "negativeCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Yuan’s Recent Calm May End on Seasonal Factors, Analysts Say",
-      "topPositiveTitle": "Japan’s Growth Minister Says Investment Plan Will Boost Yen",
+      "topNegativeTitle": "Yen Slides Toward 160 per Dollar, Raising Intervention Concerns",
+      "topPositiveTitle": "BOK Deputy Governor Signals More Rate Hikes on Inflation Risk",
       "items": [
         {
-          "title": "Yuan’s Recent Calm May End on Seasonal Factors, Analysts Say",
+          "title": "Yen Slides Toward 160 per Dollar, Raising Intervention Concerns",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-11T03:51:42+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-11/yuan-s-recent-calm-may-end-on-seasonal-factors-analysts-say",
+          "sentiment": "negative",
+          "sentimentScore": -0.43,
+          "publishedAt": "2026-08-11T10:03:19+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-11/yen-slides-toward-160-per-dollar-raising-intervention-concerns",
           "tags": [
             "fx",
             "market"
@@ -350,108 +347,36 @@
           ]
         },
         {
-          "title": "Why Is the Yen Losing Gains From Intervention?",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.2,
-          "publishedAt": "2026-08-11T04:27:54+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-11/why-is-the-yen-losing-gains-from-intervention-video",
-          "tags": [
-            "fx",
-            "market"
-          ]
-        },
-        {
-          "title": "Traders Are Piling Into Taiwan Dollar Options to Bet on Rebound",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-10T23:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-10/traders-are-piling-into-taiwan-dollar-options-to-bet-on-rebound",
-          "tags": [
-            "fx",
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "Japan’s Growth Minister Says Investment Plan Will Boost Yen",
+          "title": "BOK Deputy Governor Signals More Rate Hikes on Inflation Risk",
           "source": "Bloomberg Economics",
           "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-10T11:01:08+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-10/japan-s-growth-minister-says-investment-plan-will-boost-yen",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-11T06:00:25+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-11/bok-deputy-governor-signals-more-rate-hikes-on-inflation-risk",
           "tags": [
             "fx",
-            "market"
+            "market",
+            "rates"
           ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": 0.12,
+      "avgSentiment": -0.003,
       "negativeCount": 1,
       "positiveCount": 2,
-      "neutralCount": 2,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Philippine Central Bank Keeps Rate Hike on Table Despite Weak GDP Growth",
-      "topPositiveTitle": "Gold Climbs Above $4,400 as Traders Turn Focus to US Inflation",
+      "topNegativeTitle": "Gold Pulls Back From Two-Month High as Focus Shifts to Inflation",
+      "topPositiveTitle": "Fed to Take Wait-and-See Stance on Rates: Laura Cooper",
       "items": [
         {
-          "title": "Philippine Central Bank Keeps Rate Hike on Table Despite Weak GDP Growth",
-          "source": "Bloomberg Economics",
+          "title": "Gold Pulls Back From Two-Month High as Focus Shifts to Inflation",
+          "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-10T05:54:24+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-10/philippine-central-bank-keeps-rate-hike-on-table-despite-weak-gdp-growth",
-          "tags": [
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Romania Keeps EU’s Highest Rates as Political Woes Cloud Outlook",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-10T12:01:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-10/romania-keeps-eu-s-highest-rates-as-political-woes-cloud-outlook",
-          "tags": [
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Norway Core Inflation Surprise Tempers Bets on Rate Hike",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-10T06:30:39+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-10/norway-core-inflation-surprise-tempers-bets-on-rate-hike",
-          "tags": [
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Colombia Inflation Unexpectedly Slows, Easing Pressure on Rates",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-10T23:47:11+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-10/colombia-inflation-unexpectedly-slows-easing-pressure-on-rates",
-          "tags": [
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Gold Climbs Above $4,400 as Traders Turn Focus to US Inflation",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.6,
+          "sentimentScore": -0.67,
           "publishedAt": "2026-08-10T23:33:50+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-08-10/gold-touches-4-400-as-traders-turn-focus-to-us-inflation-data",
           "tags": [
@@ -460,30 +385,81 @@
             "rates",
             "us_broad"
           ]
+        },
+        {
+          "title": "RBA Governor Adopts Hawkish Tone After Holding Rates Unchanged",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-11T04:32:33+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-11/australia-holds-key-rate-to-counter-elevated-inflation-pressures",
+          "tags": [
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Fed to Take Wait-and-See Stance on Rates: Laura Cooper",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-11T11:56:39+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-11/fed-to-take-wait-and-see-stance-on-rates-laura-cooper-video",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "BOK Deputy Governor Signals More Rate Hikes on Inflation Risk",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-11T06:00:25+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-11/bok-deputy-governor-signals-more-rate-hikes-on-inflation-risk",
+          "tags": [
+            "fx",
+            "market",
+            "rates"
+          ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.338,
+      "avgSentiment": 0.214,
       "negativeCount": 0,
-      "positiveCount": 4,
-      "neutralCount": 2,
+      "positiveCount": 1,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "China’s Teapots May Boost Iran Oil Buying as Stockpiles Dwindle",
-      "topPositiveTitle": "China’s Slower-Than-Expected Price Gains Revive Deflation Risk",
+      "topNegativeTitle": "Strait of Hormuz: What Have Iran, US Said as Efforts to Restore Traffic Stall",
+      "topPositiveTitle": "Latest Oil Market News and Analysis for Aug. 11",
       "items": [
         {
-          "title": "China’s Teapots May Boost Iran Oil Buying as Stockpiles Dwindle",
-          "source": "Bloomberg Markets",
+          "title": "Strait of Hormuz: What Have Iran, US Said as Efforts to Restore Traffic Stall",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-11T01:39:54+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-11/china-s-teapots-may-boost-iran-oil-buying-as-stockpiles-dwindle",
+          "publishedAt": "2026-08-11T11:09:13+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-11/strait-of-hormuz-what-have-iran-us-said-as-efforts-to-restore-traffic-stall",
           "tags": [
             "commodity",
             "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Aerospace Engineer Puts Islamist-Led State Atop Budget Ranking",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-11T07:19:28+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-11/aerospace-engineer-puts-islamist-led-state-atop-budget-ranking",
+          "tags": [
+            "commodity",
             "market"
           ]
         },
@@ -502,22 +478,24 @@
           ]
         },
         {
-          "title": "Australian Scandium Miner Soars After $400M US Investment",
+          "title": "Stocks Climb as Oil Retreats on Iran Deal Hopes: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-11T04:32:39+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-11/081126-australia-ahead-video",
+          "sentimentScore": 0.2,
+          "publishedAt": "2026-08-10T22:08:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-10/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
-            "market"
+            "geopolitical",
+            "market",
+            "us_broad"
           ]
         },
         {
           "title": "Latest Oil Market News and Analysis for Aug. 11",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.33,
+          "sentimentScore": 0.67,
           "publishedAt": "2026-08-10T22:02:35+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-08-10/latest-oil-market-news-and-analysis-for-aug-11",
           "tags": [
@@ -525,78 +503,27 @@
             "geopolitical",
             "market"
           ]
-        },
-        {
-          "title": "Bonds Fall on Inflation Concern, Gold Tops $4,400: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.5,
-          "publishedAt": "2026-08-10T22:08:16+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-10/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "gold",
-            "market",
-            "us_broad"
-          ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.207,
-      "negativeCount": 0,
-      "positiveCount": 4,
-      "neutralCount": 5,
+      "avgSentiment": 0.082,
+      "negativeCount": 1,
+      "positiveCount": 3,
+      "neutralCount": 7,
       "sourceCount": 3,
-      "itemCount": 9,
+      "itemCount": 11,
       "isStale": false,
-      "topNegativeTitle": "Trump Makes New Demands on Iran as Deal Hopes Dim",
-      "topPositiveTitle": "China’s Slower-Than-Expected Price Gains Revive Deflation Risk",
+      "topNegativeTitle": "Spinneys Retail Traffic Up After Initial Iran War Hit",
+      "topPositiveTitle": "Latest Oil Market News and Analysis for Aug. 11",
       "items": [
         {
-          "title": "Trump Makes New Demands on Iran as Deal Hopes Dim",
+          "title": "Spinneys Retail Traffic Up After Initial Iran War Hit",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-11T04:34:59+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-11/trump-makes-new-demands-on-iran-as-deal-hopes-dim-video",
-          "tags": [
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "China’s Teapots May Boost Iran Oil Buying as Stockpiles Dwindle",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-11T01:39:54+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-11/china-s-teapots-may-boost-iran-oil-buying-as-stockpiles-dwindle",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "Bank of Russia Urges Lenders Aid Firms Hurt by Warehouse Strikes",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-10T10:07:05+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-10/bank-of-russia-urges-lenders-aid-firms-hurt-by-warehouse-strikes",
-          "tags": [
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "Egypt Headline Inflation Quickens for the First Time Since March",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-10T06:17:26+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-10/egypt-headline-inflation-quickens-for-the-first-time-since-march",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-08-11T08:04:39+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-11/retail-footfall-fell-on-lower-tourism-says-spinneys-ceo-video",
           "tags": [
             "geopolitical",
             "macro_risk",
@@ -604,14 +531,55 @@
           ]
         },
         {
-          "title": "Australian Business Confidence Drops on Middle East Uncertainty",
+          "title": "The Pulse 8/11/2026",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-11T11:16:54+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-11/the-pulse-8-11-2026-video",
+          "tags": [
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Strait of Hormuz: What Have Iran, US Said as Efforts to Restore Traffic Stall",
           "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.2,
-          "publishedAt": "2026-08-11T01:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-11/australian-business-confidence-drops-on-middle-east-uncertainty",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-11T11:09:13+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-11/strait-of-hormuz-what-have-iran-us-said-as-efforts-to-restore-traffic-stall",
           "tags": [
             "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Trump Hardens Stance on Iran, Nvidia Taps Wall Street for $500B | The Opening Trade 8/11/2026",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-11T09:50:52+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-11/the-opening-trade-8-11-2026-video",
+          "tags": [
+            "geopolitical",
+            "jp_semiconductor",
+            "macro_risk",
+            "market",
+            "us_broad",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Resilient Europe Turns Into a Winning Bet for Money Managers",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-11T07:31:14+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-11/resilient-europe-turns-into-a-winning-bet-for-money-managers",
+          "tags": [
             "geopolitical",
             "macro_risk",
             "market"
