@@ -9,6 +9,7 @@ P5-B004e-3: pull/rebase and push target the validated workflow branch, fail-clos
 """
 import os
 from pathlib import Path
+import shutil
 import subprocess
 
 import pytest
@@ -144,6 +145,22 @@ def _commit_and_push_script() -> str:
     return "\n".join(lines) + "\n"
 
 
+def _workflow_step_script(step_name: str) -> str:
+    """Return a literal ``run: |`` shell body from an update-data step."""
+    marker = f"      - name: {step_name}\n"
+    step = _update_data_section().split(marker, 1)[1]
+    body = step.split("        run: |\n", 1)[1]
+    lines = []
+    for line in body.splitlines():
+        if line.startswith("          "):
+            lines.append(line[10:])
+        elif not line.strip():
+            lines.append("")
+        else:
+            break
+    return "\n".join(lines) + "\n"
+
+
 def _git(cwd: Path, *args: str, check: bool = True) -> subprocess.CompletedProcess:
     return subprocess.run(
         ["git", *args],
@@ -152,6 +169,71 @@ def _git(cwd: Path, *args: str, check: bool = True) -> subprocess.CompletedProce
         text=True,
         capture_output=True,
     )
+
+
+def _make_funnel_simulation_repo(tmp_path: Path) -> tuple[Path, Path]:
+    repo = tmp_path / "funnel-worktree"
+    repo.mkdir()
+    _git(repo, "init", "-b", "v13.3-dev")
+    _git(repo, "config", "user.name", "Test User")
+    _git(repo, "config", "user.email", "test@example.com")
+    (repo / "data").mkdir()
+    (repo / "public" / "data").mkdir(parents=True)
+    for path in (
+        repo / "data" / "candidate_funnel.json",
+        repo / "public" / "data" / "candidate_funnel.json",
+    ):
+        path.write_text('{"version":"committed"}\n')
+    (repo / "data" / "unrelated.json").write_text('{"version":"old"}\n')
+    _git(repo, "add", "data/", "public/data/")
+    _git(repo, "commit", "-m", "baseline")
+
+    bin_dir = tmp_path / "bin"
+    bin_dir.mkdir()
+    fake_python = bin_dir / "python3"
+    fake_python.write_text(
+        """#!/usr/bin/env bash
+set -euo pipefail
+if [[ "$*" == *"data.candidate_funnel_batch"* ]]; then
+  if [ "${BATCH_WRITES:-1}" = "1" ]; then
+    printf '%s\\n' '{"version":"new"}' > data/candidate_funnel.json
+    printf '%s\\n' '{"version":"new"}' > public/data/candidate_funnel.json
+  fi
+  exit "${BATCH_EXIT:-0}"
+fi
+if [[ "$*" == *"data.candidate_funnel_privacy_smoke"* ]]; then
+  exit "${SMOKE_EXIT:-0}"
+fi
+exit 97
+"""
+    )
+    fake_python.chmod(0o755)
+    return repo, bin_dir
+
+
+def _run_workflow_step(
+    repo: Path,
+    bin_dir: Path,
+    step_name: str,
+    output_path: Path,
+    **overrides: str,
+) -> subprocess.CompletedProcess:
+    env = os.environ.copy()
+    env.update(overrides)
+    env["GITHUB_OUTPUT"] = str(output_path)
+    env["PATH"] = f"{bin_dir}{os.pathsep}{env['PATH']}"
+    return subprocess.run(
+        ["bash", "-c", _workflow_step_script(step_name)],
+        cwd=repo,
+        env=env,
+        text=True,
+        capture_output=True,
+    )
+
+
+def _step_output(path: Path, key: str) -> str:
+    values = dict(line.split("=", 1) for line in path.read_text().splitlines())
+    return values[key]
 
 
 def _make_remote_with_release_branches(tmp_path: Path) -> Path:
@@ -432,3 +514,204 @@ def test_candidates_production_gate_runs_after_copy():
     copy_pos = update_data_section.index("Copy JSON to public/data")
     gate_pos = update_data_section.index("data.candidates_stocks_privacy_smoke --production")
     assert copy_pos < gate_pos
+
+
+# ── P2-01: candidate funnel publication isolation ───────────────────────────
+
+_FUNNEL_BUILD_STEP = (
+    "Build candidate_funnel.json (prescreen join + P-01..P-15 quality gate)"
+)
+_FUNNEL_SMOKE_STEP = "Privacy/schema smoke test candidate_funnel.json"
+_FUNNEL_ENFORCEMENT_STEP = "Enforce candidate funnel publication status"
+
+
+def _assert_committed_funnel(repo: Path) -> None:
+    for path in (
+        "data/candidate_funnel.json",
+        "public/data/candidate_funnel.json",
+    ):
+        assert (repo / path).read_text() == '{"version":"committed"}\n'
+        assert _git(repo, "diff", "--quiet", "HEAD", "--", path, check=False).returncode == 0
+
+
+def test_funnel_batch_failure_restores_twins_and_allows_unrelated_staging(tmp_path):
+    """AC-P2-01-1/2/5: contained failure reaches unrelated staging, then fails terminally."""
+    repo, bin_dir = _make_funnel_simulation_repo(tmp_path)
+    build_output = tmp_path / "build-output"
+
+    build = _run_workflow_step(
+        repo,
+        bin_dir,
+        _FUNNEL_BUILD_STEP,
+        build_output,
+        BATCH_EXIT="23",
+        BATCH_WRITES="1",
+    )
+
+    assert build.returncode == 0, build.stderr
+    assert _step_output(build_output, "publication_status") == "batch_failed"
+    _assert_committed_funnel(repo)
+
+    # Structurally equivalent to the reachable SAFE_MODE/TierA writes followed by
+    # the shared directory-scoped staging command.
+    (repo / "data" / "safe_mode.json").write_text('{"safe":true}\n')
+    (repo / "public" / "data" / "tier_a_alerts.json").write_text('{"alerts":[]}\n')
+    _git(repo, "add", "data/", "public/data/")
+    staged = _git(repo, "diff", "--cached", "--name-only").stdout.splitlines()
+    assert staged == ["data/safe_mode.json", "public/data/tier_a_alerts.json"]
+
+    enforcement = _run_workflow_step(
+        repo,
+        bin_dir,
+        _FUNNEL_ENFORCEMENT_STEP,
+        tmp_path / "enforcement-output",
+        CANDIDATE_FUNNEL_BATCH_STATUS="batch_failed",
+        CANDIDATE_FUNNEL_SMOKE_STATUS="",
+    )
+    assert enforcement.returncode != 0
+    assert "P-01..P-15 batch gate" in enforcement.stderr
+
+
+def test_funnel_batch_failure_with_unchanged_twins_continues_safely(tmp_path):
+    """The batch module's no-publication guarantee is mechanically verified."""
+    repo, bin_dir = _make_funnel_simulation_repo(tmp_path)
+    output = tmp_path / "build-output"
+
+    result = _run_workflow_step(
+        repo,
+        bin_dir,
+        _FUNNEL_BUILD_STEP,
+        output,
+        BATCH_EXIT="1",
+        BATCH_WRITES="0",
+    )
+
+    assert result.returncode == 0, result.stderr
+    assert _step_output(output, "publication_status") == "batch_failed"
+    assert "committed twins remain unchanged" in result.stderr
+    _assert_committed_funnel(repo)
+
+
+def test_funnel_smoke_failure_restores_generated_twins_before_staging(tmp_path):
+    """AC-P2-01-3: post-generation privacy/schema failure excludes both new twins."""
+    repo, bin_dir = _make_funnel_simulation_repo(tmp_path)
+    build_output = tmp_path / "build-output"
+    smoke_output = tmp_path / "smoke-output"
+
+    build = _run_workflow_step(
+        repo, bin_dir, _FUNNEL_BUILD_STEP, build_output, BATCH_EXIT="0"
+    )
+    assert build.returncode == 0, build.stderr
+    assert _step_output(build_output, "publication_status") == "batch_passed"
+    assert (repo / "data" / "candidate_funnel.json").read_text() == '{"version":"new"}\n'
+
+    smoke = _run_workflow_step(
+        repo,
+        bin_dir,
+        _FUNNEL_SMOKE_STEP,
+        smoke_output,
+        SMOKE_EXIT="7",
+    )
+
+    assert smoke.returncode == 0, smoke.stderr
+    assert _step_output(smoke_output, "publication_status") == "smoke_failed"
+    _assert_committed_funnel(repo)
+    _git(repo, "add", "data/", "public/data/")
+    assert _git(repo, "diff", "--cached", "--name-only").stdout == ""
+
+    enforcement = _run_workflow_step(
+        repo,
+        bin_dir,
+        _FUNNEL_ENFORCEMENT_STEP,
+        tmp_path / "enforcement-output",
+        CANDIDATE_FUNNEL_BATCH_STATUS="batch_passed",
+        CANDIDATE_FUNNEL_SMOKE_STATUS="smoke_failed",
+    )
+    assert enforcement.returncode != 0
+    assert "privacy/schema gate" in enforcement.stderr
+
+
+def test_funnel_pass_keeps_new_twins_eligible_and_terminal_status_passes(tmp_path):
+    """AC-P2-01-4/5: passing twins stay in shared staging and enforcement succeeds."""
+    repo, bin_dir = _make_funnel_simulation_repo(tmp_path)
+    build_output = tmp_path / "build-output"
+    smoke_output = tmp_path / "smoke-output"
+
+    build = _run_workflow_step(
+        repo, bin_dir, _FUNNEL_BUILD_STEP, build_output, BATCH_EXIT="0"
+    )
+    smoke = _run_workflow_step(
+        repo, bin_dir, _FUNNEL_SMOKE_STEP, smoke_output, SMOKE_EXIT="0"
+    )
+    assert build.returncode == 0, build.stderr
+    assert smoke.returncode == 0, smoke.stderr
+    assert _step_output(build_output, "publication_status") == "batch_passed"
+    assert _step_output(smoke_output, "publication_status") == "smoke_passed"
+
+    _git(repo, "add", "data/", "public/data/")
+    staged = _git(repo, "diff", "--cached", "--name-only").stdout.splitlines()
+    assert staged == [
+        "data/candidate_funnel.json",
+        "public/data/candidate_funnel.json",
+    ]
+
+    enforcement = _run_workflow_step(
+        repo,
+        bin_dir,
+        _FUNNEL_ENFORCEMENT_STEP,
+        tmp_path / "enforcement-output",
+        CANDIDATE_FUNNEL_BATCH_STATUS="batch_passed",
+        CANDIDATE_FUNNEL_SMOKE_STATUS="smoke_passed",
+    )
+    assert enforcement.returncode == 0, enforcement.stderr
+
+
+def test_funnel_rollback_failure_hard_fails_before_shared_commit(tmp_path):
+    """AC-P2-01-6: an unprovable rollback cannot reach Commit and push."""
+    repo, bin_dir = _make_funnel_simulation_repo(tmp_path)
+    head_before = _git(repo, "rev-parse", "HEAD").stdout.strip()
+    real_git = shutil.which("git")
+    assert real_git is not None
+    fake_git = bin_dir / "git"
+    fake_git.write_text(
+        f"""#!/usr/bin/env bash
+if [ "$1" = "restore" ]; then
+  exit 91
+fi
+exec {real_git} "$@"
+"""
+    )
+    fake_git.chmod(0o755)
+
+    result = _run_workflow_step(
+        repo,
+        bin_dir,
+        _FUNNEL_BUILD_STEP,
+        tmp_path / "build-output",
+        BATCH_EXIT="1",
+        BATCH_WRITES="1",
+    )
+
+    assert result.returncode != 0
+    assert "rollback verification failed" in result.stderr
+    assert _git(repo, "diff", "--cached", "--name-only").stdout == ""
+    assert _git(repo, "rev-parse", "HEAD").stdout.strip() == head_before
+
+
+def test_funnel_terminal_enforcement_is_after_shared_commit_push():
+    """AC-P2-01-5: failure enforcement runs only after publication had its chance."""
+    section = _update_data_section()
+    commit_pos = section.index("      - name: Commit and push")
+    enforcement_pos = section.index(f"      - name: {_FUNNEL_ENFORCEMENT_STEP}")
+    assert commit_pos < enforcement_pos
+    enforcement_block = section[enforcement_pos:]
+    assert "always() && !cancelled()" in enforcement_block
+
+
+def test_funnel_containment_does_not_suppress_unrelated_real_write_gates():
+    """AC-P2-01-7: only funnel commands capture status; other hard gates stay direct."""
+    section = _update_data_section()
+    assert "python3 data/update_safe_mode.py || true" not in section
+    assert "tier_a_snapshot_writer --output-dir public/data/ || true" not in section
+    assert "tier_a_snapshot_writer --output-dir data/ || true" not in section
+    assert "data.candidates_stocks_privacy_smoke --production" in section

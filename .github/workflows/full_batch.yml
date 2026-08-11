@@ -197,19 +197,108 @@ jobs:
       # data/candidates_stocks.json (candidates) + data/prescreen_metadata.json
       # (同一runでBuild candidates_stocks.jsonが書いたjoin用metadata、
       # gitignore対象) + public/data/regime_state.json (regime) を入力とする。
-      # quality gate FAILやschema/privacy違反時はexit 1でfail-closedし、
-      # data/public いずれの candidate_funnel.json も新規publishしない
-      # （既存artifactがあればそのまま保持）。P-02/P-04/P-07/P-08/P-10/P-12/
-      # P-13/P-14はhard gateであり、失敗runはjobを止めcommit/pushへ進んでは
-      # ならない（他のdata更新stepとは異なりblockingとする——`|| true`は
-      # このstepでは使わない）。直後のprivacy/schema smokeはcommit直前の
-      # 最終防衛線として、batch内部の検証をすり抜けた不正artifactを
-      # git addされる前にjob failureとして検出する。
+      # quality gate FAILやschema/privacy違反時は、candidate funnel twinsだけを
+      # committed baselineへfail-closedに戻して後続のunrelated data生成を継続する。
+      # P-02/P-04/P-07/P-08/P-10/P-12/P-13/P-14はpublication hard gateのまま。
+      # rollbackをexact twin pathsについてmechanicalに証明できない場合は、この場で
+      # hard failする。捕捉したpublication failureはshared commit/push後の最終stepで
+      # 再enforceし、workflowの失敗を可視化する。
       - name: Build candidate_funnel.json (prescreen join + P-01..P-15 quality gate)
-        run: python3 -m data.candidate_funnel_batch
+        id: candidate-funnel-build
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          funnel_paths=(
+            data/candidate_funnel.json
+            public/data/candidate_funnel.json
+          )
+
+          verify_committed_funnel() {
+            local path
+            for path in "${funnel_paths[@]}"; do
+              git cat-file -e "HEAD:$path" || return 1
+              [ -f "$path" ] || return 1
+              [ "$(git rev-parse "HEAD:$path")" = "$(git hash-object "$path")" ] || return 1
+            done
+            cmp -s "${funnel_paths[0]}" "${funnel_paths[1]}"
+          }
+
+          restore_committed_funnel() {
+            git restore --source=HEAD --worktree -- "${funnel_paths[@]}" || return 1
+            verify_committed_funnel || return 1
+            git diff --quiet HEAD -- "${funnel_paths[@]}" || return 1
+            git diff --cached --quiet HEAD -- "${funnel_paths[@]}"
+          }
+
+          if ! verify_committed_funnel; then
+            echo "::error::Candidate funnel committed baseline is missing, dirty, or not a byte-identical pair" >&2
+            exit 1
+          fi
+
+          set +e
+          python3 -m data.candidate_funnel_batch
+          batch_status=$?
+          set -e
+
+          if [ "$batch_status" -ne 0 ]; then
+            echo "publication_status=batch_failed" >> "$GITHUB_OUTPUT"
+            if verify_committed_funnel; then
+              echo "::error::Candidate funnel publication gate failed; committed twins remain unchanged" >&2
+              exit 0
+            fi
+            echo "::warning::Candidate funnel gate changed twins; restoring exact committed paths" >&2
+            if ! restore_committed_funnel; then
+              echo "::error::Candidate funnel rollback verification failed; refusing unrelated data commit" >&2
+              exit 1
+            fi
+            echo "::error::Candidate funnel publication gate failed; changed twins were safely rolled back" >&2
+            exit 0
+          fi
+
+          echo "publication_status=batch_passed" >> "$GITHUB_OUTPUT"
 
       - name: Privacy/schema smoke test candidate_funnel.json
-        run: python3 -m data.candidate_funnel_privacy_smoke
+        id: candidate-funnel-smoke
+        if: ${{ steps.candidate-funnel-build.outputs.publication_status == 'batch_passed' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          funnel_paths=(
+            data/candidate_funnel.json
+            public/data/candidate_funnel.json
+          )
+
+          restore_committed_funnel() {
+            git restore --source=HEAD --worktree -- "${funnel_paths[@]}" || return 1
+            local path
+            for path in "${funnel_paths[@]}"; do
+              git cat-file -e "HEAD:$path" || return 1
+              [ -f "$path" ] || return 1
+              [ "$(git rev-parse "HEAD:$path")" = "$(git hash-object "$path")" ] || return 1
+            done
+            cmp -s "${funnel_paths[0]}" "${funnel_paths[1]}" || return 1
+            git diff --quiet HEAD -- "${funnel_paths[@]}" || return 1
+            git diff --cached --quiet HEAD -- "${funnel_paths[@]}"
+          }
+
+          set +e
+          python3 -m data.candidate_funnel_privacy_smoke
+          smoke_status=$?
+          set -e
+
+          if [ "$smoke_status" -ne 0 ]; then
+            echo "publication_status=smoke_failed" >> "$GITHUB_OUTPUT"
+            if ! restore_committed_funnel; then
+              echo "::error::Candidate funnel privacy/schema rollback verification failed; refusing unrelated data commit" >&2
+              exit 1
+            fi
+            echo "::error::Candidate funnel privacy/schema gate failed; new twins were safely rolled back" >&2
+            exit 0
+          fi
+
+          echo "publication_status=smoke_passed" >> "$GITHUB_OUTPUT"
 
       # ── P4-A28: SAFE_MODE snapshot ────────────────────────────────────
       # regime_state.json が確定した後に実行する（crisis_regime 判定に使用）
@@ -314,6 +403,33 @@ jobs:
           git diff --staged --quiet || git commit -m "chore: full-batch data update $(date +'%Y-%m-%d %H:%M JST')"
           git pull --rebase origin "$target_ref"
           git push origin "HEAD:$target_ref"
+
+      - name: Enforce candidate funnel publication status
+        if: ${{ always() && !cancelled() }}
+        env:
+          CANDIDATE_FUNNEL_BATCH_STATUS: ${{ steps.candidate-funnel-build.outputs.publication_status }}
+          CANDIDATE_FUNNEL_SMOKE_STATUS: ${{ steps.candidate-funnel-smoke.outputs.publication_status }}
+        run: |
+          set -euo pipefail
+
+          if [ "$CANDIDATE_FUNNEL_BATCH_STATUS" = "batch_failed" ]; then
+            echo "::error::Candidate funnel publication failed at the P-01..P-15 batch gate" >&2
+            exit 1
+          fi
+          if [ "$CANDIDATE_FUNNEL_BATCH_STATUS" != "batch_passed" ]; then
+            echo "::error::Candidate funnel batch status is unavailable or unsafe" >&2
+            exit 1
+          fi
+          if [ "$CANDIDATE_FUNNEL_SMOKE_STATUS" = "smoke_failed" ]; then
+            echo "::error::Candidate funnel publication failed at the privacy/schema gate" >&2
+            exit 1
+          fi
+          if [ "$CANDIDATE_FUNNEL_SMOKE_STATUS" != "smoke_passed" ]; then
+            echo "::error::Candidate funnel privacy/schema status is unavailable or unsafe" >&2
+            exit 1
+          fi
+
+          echo "Candidate funnel publication gates passed"
 
   # ── Job 3: Routines (stub) ────────────────────────────────────────────────
   # STUB: Card 2-5 (R1-R3) / Card 2-6 (R4-R6) / Card 2-7 (R7-R10) で実装予定
