@@ -1,58 +1,72 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-08-12T09:05:50.688005+09:00",
-  "sourceUpdatedAt": "2026-08-12T00:00:17+00:00",
+  "updatedAt": "2026-08-12T14:12:38.630747+09:00",
+  "sourceUpdatedAt": "2026-08-12T05:04:20+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.33,
       "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "jp_semiconductor": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "us_broad": {
-      "avgSentiment": 0.002,
-      "negativeCount": 2,
       "positiveCount": 1,
-      "neutralCount": 3,
-      "sourceCount": 2,
-      "itemCount": 6,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "US Stocks End Down as Hormuz Deadlock Sends Oil Up Ahead of CPI",
-      "topPositiveTitle": "Trend-Chasing Funds’ Big Bond Short Raises Stakes for CPI",
+      "topNegativeTitle": "Bessent-Takaichi Split on BOJ Risks Undermining Joint Yen Rescue",
+      "topPositiveTitle": "Bessent-Takaichi Split on BOJ Risks Undermining Joint Yen Rescue",
       "items": [
         {
-          "title": "US Stocks End Down as Hormuz Deadlock Sends Oil Up Ahead of CPI",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-11T12:10:15+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-11/us-stock-futures-rise-as-oil-erases-gains-on-iran-optimism",
+          "title": "Bessent-Takaichi Split on BOJ Risks Undermining Joint Yen Rescue",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-12T02:51:13+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-12/bessent-takaichi-split-on-boj-risks-undermining-joint-yen-rescue",
           "tags": [
-            "commodity",
-            "geopolitical",
-            "market",
-            "us_broad"
+            "fx",
+            "jp_broad",
+            "market"
           ]
-        },
+        }
+      ]
+    },
+    "jp_semiconductor": {
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "Nvidia’s Show of Financial Force Soothes Credit Markets",
+      "topPositiveTitle": "Nvidia’s Show of Financial Force Soothes Credit Markets",
+      "items": [
+        {
+          "title": "Nvidia’s Show of Financial Force Soothes Credit Markets",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-11T20:38:08+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-11/nvidia-s-show-of-financial-force-soothes-jittery-credit-markets",
+          "tags": [
+            "jp_semiconductor",
+            "market",
+            "us_growth"
+          ]
+        }
+      ]
+    },
+    "us_broad": {
+      "avgSentiment": 0.167,
+      "negativeCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 2,
+      "sourceCount": 2,
+      "itemCount": 4,
+      "isStale": false,
+      "topNegativeTitle": "US Household Delinquencies Improve: NY Fed Quarterly Report",
+      "topPositiveTitle": "Gold Advances as Traders Watch US Inflation for Rate-Hike Clues",
+      "items": [
         {
           "title": "US Household Delinquencies Improve: NY Fed Quarterly Report",
           "source": "Bloomberg Economics",
@@ -66,14 +80,14 @@
           ]
         },
         {
-          "title": "Gold Steadies as Traders Watch US Inflation for Rate-Hike Clues",
+          "title": "Markets Brace for US CPI; AI Firms Crush Earnings | The Asia Trade 8/12/2026",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-11T23:35:34+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-11/gold-steadies-as-traders-watch-us-inflation-for-rate-hike-clues",
+          "publishedAt": "2026-08-12T04:23:24+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-12/the-asia-trade-8-12-2026-video",
           "tags": [
-            "gold",
+            "global_broad",
             "market",
             "us_broad"
           ]
@@ -91,14 +105,14 @@
           ]
         },
         {
-          "title": "S&P 500 Falls as Oil Climbs Before Inflation Data: Markets Wrap",
+          "title": "Gold Advances as Traders Watch US Inflation for Rate-Hike Clues",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-10T22:08:16+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-10/stock-market-today-dow-s-p-live-updates",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-08-11T23:35:34+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-11/gold-steadies-as-traders-watch-us-inflation-for-rate-hike-clues",
           "tags": [
-            "commodity",
+            "gold",
             "market",
             "us_broad"
           ]
@@ -106,30 +120,45 @@
       ]
     },
     "us_growth": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.5,
       "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Nvidia’s Show of Financial Force Soothes Credit Markets",
+      "topPositiveTitle": "Stocks Rise on CoreWeave Results, Oil Extends Gain: Markets Wrap",
+      "items": [
+        {
+          "title": "Nvidia’s Show of Financial Force Soothes Credit Markets",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-11T20:38:08+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-11/nvidia-s-show-of-financial-force-soothes-jittery-credit-markets",
+          "tags": [
+            "jp_semiconductor",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Stocks Rise on CoreWeave Results, Oil Extends Gain: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-08-11T22:07:25+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-11/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "market",
+            "us_growth"
+          ]
+        }
+      ]
     },
     "global_broad": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "gold": {
       "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
@@ -137,14 +166,40 @@
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Gold Steadies as Traders Watch US Inflation for Rate-Hike Clues",
-      "topPositiveTitle": "Gold Steadies as Traders Watch US Inflation for Rate-Hike Clues",
+      "topNegativeTitle": "Markets Brace for US CPI; AI Firms Crush Earnings | The Asia Trade 8/12/2026",
+      "topPositiveTitle": "Markets Brace for US CPI; AI Firms Crush Earnings | The Asia Trade 8/12/2026",
       "items": [
         {
-          "title": "Gold Steadies as Traders Watch US Inflation for Rate-Hike Clues",
+          "title": "Markets Brace for US CPI; AI Firms Crush Earnings | The Asia Trade 8/12/2026",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
+          "publishedAt": "2026-08-12T04:23:24+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-12/the-asia-trade-8-12-2026-video",
+          "tags": [
+            "global_broad",
+            "market",
+            "us_broad"
+          ]
+        }
+      ]
+    },
+    "gold": {
+      "avgSentiment": 1.0,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "Gold Advances as Traders Watch US Inflation for Rate-Hike Clues",
+      "topPositiveTitle": "Gold Advances as Traders Watch US Inflation for Rate-Hike Clues",
+      "items": [
+        {
+          "title": "Gold Advances as Traders Watch US Inflation for Rate-Hike Clues",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
           "publishedAt": "2026-08-11T23:35:34+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-08-11/gold-steadies-as-traders-watch-us-inflation-for-rate-hike-clues",
           "tags": [
@@ -156,29 +211,16 @@
       ]
     },
     "reit": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "China's Real Estate Market Races to Defuse a $148 Billion Time Bomb",
-      "topPositiveTitle": "China's Real Estate Market Races to Defuse a $148 Billion Time Bomb",
-      "items": [
-        {
-          "title": "China's Real Estate Market Races to Defuse a $148 Billion Time Bomb",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-11T23:00:17+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-11/china-s-real-estate-market-races-to-defuse-a-148-billion-time-bomb",
-          "tags": [
-            "market",
-            "reit"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "dividend": {
       "avgSentiment": 0,
@@ -197,11 +239,11 @@
       "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 3,
-      "sourceCount": 2,
+      "sourceCount": 1,
       "itemCount": 4,
       "isStale": false,
       "topNegativeTitle": "Russia Budget Gap Spikes Despite Oil Windfall Driven by Iran War",
-      "topPositiveTitle": "Global Investors Favor Taiwan Over Korea Stocks After AI Selloff",
+      "topPositiveTitle": "Qatar National Bank Tests Investor Appetite for $2 Billion Loan",
       "items": [
         {
           "title": "Russia Budget Gap Spikes Despite Oil Windfall Driven by Iran War",
@@ -218,12 +260,12 @@
           ]
         },
         {
-          "title": "Global Investors Favor Taiwan Over Korea Stocks After AI Selloff",
-          "source": "Bloomberg Markets",
+          "title": "Qatar National Bank Tests Investor Appetite for $2 Billion Loan",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-11T23:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-11/global-investors-favor-taiwan-over-korea-stocks-after-ai-selloff",
+          "publishedAt": "2026-08-12T04:13:52+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-12/qatar-national-bank-tests-investor-appetite-for-2-billion-loan",
           "tags": [
             "geopolitical",
             "macro_risk",
@@ -260,27 +302,50 @@
       ]
     },
     "fx": {
-      "avgSentiment": 0.28,
-      "negativeCount": 1,
+      "avgSentiment": 0.208,
+      "negativeCount": 0,
       "positiveCount": 2,
-      "neutralCount": 0,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "EM Assets Retreat as Iran Deal Doubts Push Oil Prices Higher",
-      "topPositiveTitle": "Yen Inches Toward 160 Per Dollar, Raising Intervention Concerns",
+      "topNegativeTitle": "China Taps Deutsche Bank as First Foreign Yuan Clearer in Europe",
+      "topPositiveTitle": "US-Japan Intervention Sets Stage for a Yen Rally, Eurizon Says",
       "items": [
         {
-          "title": "EM Assets Retreat as Iran Deal Doubts Push Oil Prices Higher",
+          "title": "China Taps Deutsche Bank as First Foreign Yuan Clearer in Europe",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-11T08:49:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-11/emerging-assets-pressured-as-higher-oil-stokes-inflation-worries",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-12T03:16:43+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-12/china-taps-deutsche-bank-as-first-foreign-yuan-clearer-in-europe",
           "tags": [
-            "commodity",
             "fx",
-            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Yen Traders Use Options for ‘Flexibility’ Into US Inflation Data",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-12T02:30:14+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-12/yen-traders-use-options-for-flexibility-into-us-inflation-data",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        },
+        {
+          "title": "Bessent-Takaichi Split on BOJ Risks Undermining Joint Yen Rescue",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-12T02:51:13+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-12/bessent-takaichi-split-on-boj-risks-undermining-joint-yen-rescue",
+          "tags": [
+            "fx",
+            "jp_broad",
             "market"
           ]
         },
@@ -295,28 +360,16 @@
             "fx",
             "market"
           ]
-        },
-        {
-          "title": "Yen Inches Toward 160 Per Dollar, Raising Intervention Concerns",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-11T10:03:19+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-11/yen-slides-toward-160-per-dollar-raising-intervention-concerns",
-          "tags": [
-            "fx",
-            "market"
-          ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": -0.335,
+      "avgSentiment": -0.29,
       "negativeCount": 1,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 2,
+      "neutralCount": 2,
+      "sourceCount": 2,
+      "itemCount": 3,
       "isStale": false,
       "topNegativeTitle": "US Previously Owned Home Sales Decline to Three-Month Low",
       "topPositiveTitle": "RBI Chief Says Inflation in Check, Bolstering Rate Hold Bets",
@@ -329,6 +382,19 @@
           "publishedAt": "2026-08-11T14:00:00+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-08-11/us-sales-of-previously-owned-homes-decline-to-three-month-low",
           "tags": [
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Korea’s 30-Year Bond Yield Hits Record on Oil, Rate Hike Bets",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.2,
+          "publishedAt": "2026-08-12T02:55:48+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-12/korea-s-30-year-bond-yield-hits-record-on-oil-rate-hike-bets",
+          "tags": [
+            "commodity",
             "market",
             "rates"
           ]
@@ -348,30 +414,16 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.042,
-      "negativeCount": 3,
-      "positiveCount": 2,
+      "avgSentiment": 0.353,
+      "negativeCount": 1,
+      "positiveCount": 3,
       "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 8,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "US Stocks End Down as Hormuz Deadlock Sends Oil Up Ahead of CPI",
-      "topPositiveTitle": "Oil Gains With Iran in Focus, CoreWeave Rallies: Markets Wrap",
+      "topNegativeTitle": "Russia Budget Gap Spikes Despite Oil Windfall Driven by Iran War",
+      "topPositiveTitle": "AGL Jumps Most in Six Months on Strong Battery Performance",
       "items": [
-        {
-          "title": "US Stocks End Down as Hormuz Deadlock Sends Oil Up Ahead of CPI",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-11T12:10:15+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-11/us-stock-futures-rise-as-oil-erases-gains-on-iran-optimism",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "market",
-            "us_broad"
-          ]
-        },
         {
           "title": "Russia Budget Gap Spikes Despite Oil Windfall Driven by Iran War",
           "source": "Bloomberg Economics",
@@ -387,17 +439,16 @@
           ]
         },
         {
-          "title": "EM Assets Retreat as Iran Deal Doubts Push Oil Prices Higher",
+          "title": "Korea’s 30-Year Bond Yield Hits Record on Oil, Rate Hike Bets",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-11T08:49:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-11/emerging-assets-pressured-as-higher-oil-stokes-inflation-worries",
+          "sentimentScore": -0.2,
+          "publishedAt": "2026-08-12T02:55:48+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-12/korea-s-30-year-bond-yield-hits-record-on-oil-rate-hike-bets",
           "tags": [
             "commodity",
-            "fx",
-            "geopolitical",
-            "market"
+            "market",
+            "rates"
           ]
         },
         {
@@ -425,46 +476,32 @@
             "macro_risk",
             "market"
           ]
+        },
+        {
+          "title": "AGL Jumps Most in Six Months on Strong Battery Performance",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-08-12T04:46:32+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-12/agl-jumps-most-in-six-months-on-strong-battery-performance",
+          "tags": [
+            "commodity",
+            "market"
+          ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.001,
-      "negativeCount": 4,
-      "positiveCount": 2,
-      "neutralCount": 4,
+      "avgSentiment": 0.0,
+      "negativeCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 5,
       "sourceCount": 3,
-      "itemCount": 10,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "US Stocks End Down as Hormuz Deadlock Sends Oil Up Ahead of CPI",
-      "topPositiveTitle": "Oil Gains With Iran in Focus, CoreWeave Rallies: Markets Wrap",
+      "topNegativeTitle": "Russia Budget Gap Spikes Despite Oil Windfall Driven by Iran War",
+      "topPositiveTitle": "高市首相 オマーン国王と電話会談“国際社会とも協議を”",
       "items": [
-        {
-          "title": "US Stocks End Down as Hormuz Deadlock Sends Oil Up Ahead of CPI",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-11T12:10:15+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-11/us-stock-futures-rise-as-oil-erases-gains-on-iran-optimism",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Pakistan Says Deal Is Close Even as Iran, US Harden Stances",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-11T21:34:44+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-11/iran-hormuz-strait-to-remain-shut-until-conditions-met-video",
-          "tags": [
-            "geopolitical",
-            "market"
-          ]
-        },
         {
           "title": "Russia Budget Gap Spikes Despite Oil Windfall Driven by Iran War",
           "source": "Bloomberg Economics",
@@ -480,27 +517,52 @@
           ]
         },
         {
-          "title": "EM Assets Retreat as Iran Deal Doubts Push Oil Prices Higher",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-11T08:49:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-11/emerging-assets-pressured-as-higher-oil-stokes-inflation-worries",
+          "title": "Qatar National Bank Tests Investor Appetite for $2 Billion Loan",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-12T04:13:52+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-12/qatar-national-bank-tests-investor-appetite-for-2-billion-loan",
           "tags": [
-            "commodity",
-            "fx",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Iran, US Harden Stances as Pakistan Says Deal Is Near",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-12T04:05:40+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-12/iran-us-harden-stances-as-pakistan-says-deal-is-near-video",
+          "tags": [
             "geopolitical",
             "market"
           ]
         },
         {
-          "title": "Global Investors Favor Taiwan Over Korea Stocks After AI Selloff",
-          "source": "Bloomberg Markets",
+          "title": "Kenya Joins Peers in Holding Key Interest Rate on Iran War",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-11T23:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-11/global-investors-favor-taiwan-over-korea-stocks-after-ai-selloff",
+          "publishedAt": "2026-08-11T14:47:48+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-11/kenya-joins-peers-in-leaving-interest-rates-on-hold-on-iran-war",
           "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Strait of Hormuz: What Have Iran, US Said as Efforts to Restore Traffic Stall",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-11T11:09:13+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-11/strait-of-hormuz-what-have-iran-us-said-as-efforts-to-restore-traffic-stall",
+          "tags": [
+            "commodity",
             "geopolitical",
             "macro_risk",
             "market"
