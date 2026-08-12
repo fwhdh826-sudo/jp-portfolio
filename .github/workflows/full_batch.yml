@@ -4,9 +4,9 @@ name: v13.3 Full Batch
 # On v13.3-dev, use workflow_dispatch for manual verification only.
 on:
   schedule:
-    # 毎週月〜金 06:30 JST (= 21:30 UTC 前日)
+    # 毎週月〜金 06:30 JST (= 日〜木 21:30 UTC)
     # 市場開場 (09:00 JST) の 2.5 時間前に完了させる
-    - cron: '30 21 * * 1-5'
+    - cron: '30 21 * * 0-4'
   workflow_dispatch:
 
 permissions:

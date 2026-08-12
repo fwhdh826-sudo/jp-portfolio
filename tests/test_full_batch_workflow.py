@@ -7,10 +7,13 @@ P4-A28: real write steps for safe_mode.json and TierA snapshots are wired in Job
         (update-data), covered by the existing "git add data/ public/data/" commit step.
 P5-B004e-3: pull/rebase and push target the validated workflow branch, fail-closed.
 """
+from datetime import datetime, timedelta, timezone
 import os
 from pathlib import Path
+import re
 import shutil
 import subprocess
+from zoneinfo import ZoneInfo
 
 import pytest
 
@@ -20,6 +23,34 @@ _TEXT = _WORKFLOW.read_text()
 
 def test_workflow_file_exists():
     assert _WORKFLOW.exists()
+
+
+def test_schedule_is_monday_to_friday_at_0630_jst():
+    """The GitHub UTC cron must map to the intended local trading weekdays."""
+    cron_entries = re.findall(
+        r"^\s*-\s*cron:\s*['\"]([^'\"]+)['\"]\s*$", _TEXT, re.MULTILINE
+    )
+    assert cron_entries == ["30 21 * * 0-4"]
+
+    minute, hour, day_of_month, month, day_of_week = cron_entries[0].split()
+    assert day_of_month == month == "*"
+    start_day, end_day = (int(value) for value in day_of_week.split("-", 1))
+
+    # 2024-01-07 is a Sunday, matching GitHub cron weekday 0.
+    utc_sunday = datetime(2024, 1, 7, tzinfo=timezone.utc)
+    jst = ZoneInfo("Asia/Tokyo")
+    local_runs = set()
+    for weekday in range(start_day, end_day + 1):
+        local_run = (
+            utc_sunday
+            + timedelta(days=weekday, hours=int(hour), minutes=int(minute))
+        ).astimezone(jst)
+        local_runs.add((local_run.weekday(), local_run.hour, local_run.minute))
+
+    monday_to_friday_0630 = {(weekday, 6, 30) for weekday in range(5)}
+    tuesday_to_saturday_0630 = {(weekday, 6, 30) for weekday in range(1, 6)}
+    assert local_runs == monday_to_friday_0630
+    assert local_runs != tuesday_to_saturday_0630
 
 
 def test_r4_pre_trade_dry_run_present():

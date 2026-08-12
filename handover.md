@@ -1386,7 +1386,7 @@ Phase 2 Operation Layer の第3 Card。GitHub Actions ワークフロー2本を�
 
 | Workflow | cron (UTC) | JST | 曜日 |
 |---|---|---|---|
-| `full_batch.yml` | `30 21 * * 1-5` | 06:30 | 月〜金 |
+| `full_batch.yml` | `30 21 * * 0-4`（日〜木） | 06:30 | 月〜金 |
 | `intraday_patch.yml` | `30 3 * * 1-5` | 12:30 | 月〜金 |
 
 **注**: schedule は main ブランチマージ後を想定。v13.3-dev では `workflow_dispatch` による手動検証を主用途とする。各ワークフロー冒頭に `# schedule is intended for main after merge.` を明記済み。
@@ -36000,7 +36000,7 @@ full_batch.yml / update-data.yml / intraday_patch.yml / deploy.yml + tests/test_
 
 **update-data.yml に pull --rebase がない:**
 - 設計上の簡略化（scheduleは8:30/20:30 JSTの2回のみ）
-- full_batchと競合するリスクは低い（full_batchは平日朝21:30 UTC）
+- full_batchと競合するリスクは低い（full_batchはJST平日朝06:30 = 日〜木21:30 UTC）
 - 現状でpush failureは発生していない → 現在は許容範囲
 
 **intraday_patch.yml の `git pull --rebase` に origin指定なし:**
@@ -42022,7 +42022,7 @@ fail-closed（新規BUY抑制に効く安全側）に倒す。あわせてUI上�
 
 - `data/safe_mode.json`の生成は`full_batch.yml`の`update-data`ジョブ内
   `Build SAFE_MODE snapshot`ステップ（`python3 data/update_safe_mode.py`）が担っている。
-  同workflowは平日06:30 JST（`cron: '30 21 * * 1-5'`）に実行される想定であり、
+  同workflowは平日06:30 JST（`cron: '30 21 * * 0-4'`、日〜木21:30 UTC）に実行される想定であり、
   今回の閾値96時間（4日）は通常の平日実行間隔・三連休を跨いでも十分な余裕を持つ。
 - ただし、`loadSafeMode()`はスキーマの形だけを検証しており、`last_checked`の値そのものが
   古い場合（例: workflowが数日間連続failureしていた場合）でも`source: 'loaded'`のまま
