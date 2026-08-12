@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-08-12T07:15:15.938855+09:00",
-  "sourceUpdatedAt": "2026-08-11T22:00:04+00:00",
+  "updatedAt": "2026-08-12T09:05:50.688005+09:00",
+  "sourceUpdatedAt": "2026-08-12T00:00:17+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -17,57 +17,28 @@
       "items": []
     },
     "jp_semiconductor": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Nvidia’s Show of Financial Force Soothes Jittery Credit Markets",
-      "topPositiveTitle": "Nvidia’s Show of Financial Force Soothes Jittery Credit Markets",
-      "items": [
-        {
-          "title": "Nvidia’s Show of Financial Force Soothes Jittery Credit Markets",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-11T20:38:08+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-11/nvidia-s-show-of-financial-force-soothes-jittery-credit-markets",
-          "tags": [
-            "jp_semiconductor",
-            "market",
-            "us_growth"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "us_broad": {
-      "avgSentiment": 0.001,
-      "negativeCount": 3,
-      "positiveCount": 2,
-      "neutralCount": 2,
+      "avgSentiment": 0.002,
+      "negativeCount": 2,
+      "positiveCount": 1,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 7,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Gold Slips From Two-Month High as Focus Shifts to Inflation",
-      "topPositiveTitle": "July CPI Crucial as Inflation Rebound Concerns Rise",
+      "topNegativeTitle": "US Stocks End Down as Hormuz Deadlock Sends Oil Up Ahead of CPI",
+      "topPositiveTitle": "Trend-Chasing Funds’ Big Bond Short Raises Stakes for CPI",
       "items": [
-        {
-          "title": "Gold Slips From Two-Month High as Focus Shifts to Inflation",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-08-10T23:33:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-10/gold-touches-4-400-as-traders-turn-focus-to-us-inflation-data",
-          "tags": [
-            "geopolitical",
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
         {
           "title": "US Stocks End Down as Hormuz Deadlock Sends Oil Up Ahead of CPI",
           "source": "Bloomberg Markets",
@@ -90,6 +61,19 @@
           "publishedAt": "2026-08-11T15:02:43+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-08-11/us-household-delinquencies-improve-in-ny-fed-quarterly-report",
           "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Gold Steadies as Traders Watch US Inflation for Rate-Hike Clues",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-11T23:35:34+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-11/gold-steadies-as-traders-watch-us-inflation-for-rate-hike-clues",
+          "tags": [
+            "gold",
             "market",
             "us_broad"
           ]
@@ -122,30 +106,16 @@
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Nvidia’s Show of Financial Force Soothes Jittery Credit Markets",
-      "topPositiveTitle": "Nvidia’s Show of Financial Force Soothes Jittery Credit Markets",
-      "items": [
-        {
-          "title": "Nvidia’s Show of Financial Force Soothes Jittery Credit Markets",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-11T20:38:08+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-11/nvidia-s-show-of-financial-force-soothes-jittery-credit-markets",
-          "tags": [
-            "jp_semiconductor",
-            "market",
-            "us_growth"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "global_broad": {
       "avgSentiment": 0,
@@ -160,44 +130,55 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": -1.0,
-      "negativeCount": 1,
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
+      "neutralCount": 1,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Gold Slips From Two-Month High as Focus Shifts to Inflation",
-      "topPositiveTitle": "Gold Slips From Two-Month High as Focus Shifts to Inflation",
+      "topNegativeTitle": "Gold Steadies as Traders Watch US Inflation for Rate-Hike Clues",
+      "topPositiveTitle": "Gold Steadies as Traders Watch US Inflation for Rate-Hike Clues",
       "items": [
         {
-          "title": "Gold Slips From Two-Month High as Focus Shifts to Inflation",
+          "title": "Gold Steadies as Traders Watch US Inflation for Rate-Hike Clues",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-08-10T23:33:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-10/gold-touches-4-400-as-traders-turn-focus-to-us-inflation-data",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-11T23:35:34+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-11/gold-steadies-as-traders-watch-us-inflation-for-rate-hike-clues",
           "tags": [
-            "geopolitical",
             "gold",
             "market",
-            "rates",
             "us_broad"
           ]
         }
       ]
     },
     "reit": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "China's Real Estate Market Races to Defuse a $148 Billion Time Bomb",
+      "topPositiveTitle": "China's Real Estate Market Races to Defuse a $148 Billion Time Bomb",
+      "items": [
+        {
+          "title": "China's Real Estate Market Races to Defuse a $148 Billion Time Bomb",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-11T23:00:17+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-11/china-s-real-estate-market-races-to-defuse-a-148-billion-time-bomb",
+          "tags": [
+            "market",
+            "reit"
+          ]
+        }
+      ]
     },
     "dividend": {
       "avgSentiment": 0,
@@ -216,11 +197,11 @@
       "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 3,
-      "sourceCount": 1,
+      "sourceCount": 2,
       "itemCount": 4,
       "isStale": false,
       "topNegativeTitle": "Russia Budget Gap Spikes Despite Oil Windfall Driven by Iran War",
-      "topPositiveTitle": "Kenya Joins Peers in Holding Key Interest Rate on Iran War",
+      "topPositiveTitle": "Global Investors Favor Taiwan Over Korea Stocks After AI Selloff",
       "items": [
         {
           "title": "Russia Budget Gap Spikes Despite Oil Windfall Driven by Iran War",
@@ -231,6 +212,19 @@
           "url": "https://www.bloomberg.com/news/articles/2026-08-11/russia-budget-gap-spikes-despite-oil-windfall-driven-by-iran-war",
           "tags": [
             "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Global Investors Favor Taiwan Over Korea Stocks After AI Selloff",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-11T23:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-11/global-investors-favor-taiwan-over-korea-stocks-after-ai-selloff",
+          "tags": [
             "geopolitical",
             "macro_risk",
             "market"
@@ -262,32 +256,19 @@
             "macro_risk",
             "market"
           ]
-        },
-        {
-          "title": "Philippines Plans to Borrow $54 Billion in 2027 to Revive Growth",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-11T05:08:41+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-11/philippines-plans-borrow-54-billion-2027-revive-growth",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": 0.377,
+      "avgSentiment": 0.28,
       "negativeCount": 1,
-      "positiveCount": 3,
+      "positiveCount": 2,
       "neutralCount": 0,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 3,
       "isStale": false,
       "topNegativeTitle": "EM Assets Retreat as Iran Deal Doubts Push Oil Prices Higher",
-      "topPositiveTitle": "Omers Returns 4.8% in 2026, Fueled by Stocks and US Dollar",
+      "topPositiveTitle": "Yen Inches Toward 160 Per Dollar, Raising Intervention Concerns",
       "items": [
         {
           "title": "EM Assets Retreat as Iran Deal Doubts Push Oil Prices Higher",
@@ -316,18 +297,6 @@
           ]
         },
         {
-          "title": "Omers Returns 4.8% in 2026, Fueled by Stocks and US Dollar",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-11T19:20:23+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-11/omers-returns-4-8-in-first-half-fueled-by-stocks-and-us-dollar",
-          "tags": [
-            "fx",
-            "market"
-          ]
-        },
-        {
           "title": "Yen Inches Toward 160 Per Dollar, Raising Intervention Concerns",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
@@ -342,31 +311,16 @@
       ]
     },
     "rates": {
-      "avgSentiment": -0.557,
-      "negativeCount": 2,
+      "avgSentiment": -0.335,
+      "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 1,
-      "sourceCount": 2,
-      "itemCount": 3,
+      "sourceCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Gold Slips From Two-Month High as Focus Shifts to Inflation",
+      "topNegativeTitle": "US Previously Owned Home Sales Decline to Three-Month Low",
       "topPositiveTitle": "RBI Chief Says Inflation in Check, Bolstering Rate Hold Bets",
       "items": [
-        {
-          "title": "Gold Slips From Two-Month High as Focus Shifts to Inflation",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-08-10T23:33:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-10/gold-touches-4-400-as-traders-turn-focus-to-us-inflation-data",
-          "tags": [
-            "geopolitical",
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
         {
           "title": "US Previously Owned Home Sales Decline to Three-Month Low",
           "source": "Bloomberg Economics",
@@ -394,15 +348,15 @@
       ]
     },
     "commodity": {
-      "avgSentiment": -0.141,
+      "avgSentiment": 0.042,
       "negativeCount": 3,
-      "positiveCount": 0,
-      "neutralCount": 4,
+      "positiveCount": 2,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 7,
+      "itemCount": 8,
       "isStale": false,
       "topNegativeTitle": "US Stocks End Down as Hormuz Deadlock Sends Oil Up Ahead of CPI",
-      "topPositiveTitle": "Nigeria Boosts Tax Breaks to Lure $50 Billion in Deepwater Oil",
+      "topPositiveTitle": "Oil Gains With Iran in Focus, CoreWeave Rallies: Markets Wrap",
       "items": [
         {
           "title": "US Stocks End Down as Hormuz Deadlock Sends Oil Up Ahead of CPI",
@@ -475,31 +429,16 @@
       ]
     },
     "geopolitical": {
-      "avgSentiment": -0.199,
-      "negativeCount": 5,
-      "positiveCount": 1,
+      "avgSentiment": 0.001,
+      "negativeCount": 4,
+      "positiveCount": 2,
       "neutralCount": 4,
       "sourceCount": 3,
       "itemCount": 10,
       "isStale": false,
-      "topNegativeTitle": "Gold Slips From Two-Month High as Focus Shifts to Inflation",
-      "topPositiveTitle": "高市首相 オマーン国王と電話会談“国際社会とも協議を”",
+      "topNegativeTitle": "US Stocks End Down as Hormuz Deadlock Sends Oil Up Ahead of CPI",
+      "topPositiveTitle": "Oil Gains With Iran in Focus, CoreWeave Rallies: Markets Wrap",
       "items": [
-        {
-          "title": "Gold Slips From Two-Month High as Focus Shifts to Inflation",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-08-10T23:33:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-10/gold-touches-4-400-as-traders-turn-focus-to-us-inflation-data",
-          "tags": [
-            "geopolitical",
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
         {
           "title": "US Stocks End Down as Hormuz Deadlock Sends Oil Up Ahead of CPI",
           "source": "Bloomberg Markets",
@@ -551,6 +490,19 @@
             "commodity",
             "fx",
             "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Global Investors Favor Taiwan Over Korea Stocks After AI Selloff",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-11T23:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-11/global-investors-favor-taiwan-over-korea-stocks-after-ai-selloff",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
             "market"
           ]
         }
