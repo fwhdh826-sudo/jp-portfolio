@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-08-12T21:06:00.436993+09:00",
-  "sourceUpdatedAt": "2026-08-12T11:58:47+00:00",
+  "updatedAt": "2026-08-13T07:12:09.792739+09:00",
+  "sourceUpdatedAt": "2026-08-12T21:42:51+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -31,35 +31,75 @@
       ]
     },
     "jp_semiconductor": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "us_broad": {
-      "avgSentiment": 0.167,
-      "negativeCount": 2,
-      "positiveCount": 3,
-      "neutralCount": 3,
-      "sourceCount": 2,
-      "itemCount": 8,
-      "isStale": false,
-      "topNegativeTitle": "Strategist Weighs September Fed Hike Amid Mixed Data",
-      "topPositiveTitle": "Emerging Stocks Rise on Tech as Currency Traders Await US CPI",
+      "topNegativeTitle": "AI Cloud Provider Lambda Prices Loan for Nvidia-Tied Chip Deal",
+      "topPositiveTitle": "AI Cloud Provider Lambda Prices Loan for Nvidia-Tied Chip Deal",
       "items": [
         {
-          "title": "Strategist Weighs September Fed Hike Amid Mixed Data",
+          "title": "AI Cloud Provider Lambda Prices Loan for Nvidia-Tied Chip Deal",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-12T20:36:56+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-12/ai-cloud-provider-lambda-prices-loan-for-nvidia-tied-chip-deal",
+          "tags": [
+            "jp_semiconductor",
+            "market",
+            "us_growth"
+          ]
+        }
+      ]
+    },
+    "us_broad": {
+      "avgSentiment": 0.12,
+      "negativeCount": 1,
+      "positiveCount": 2,
+      "neutralCount": 4,
+      "sourceCount": 2,
+      "itemCount": 7,
+      "isStale": false,
+      "topNegativeTitle": "EM Currencies Trade Mixed as Inflation Fails to Shift Fed Bets",
+      "topPositiveTitle": "S&P 500 Closes Near Record High on Tame Inflation: Markets Wrap",
+      "items": [
+        {
+          "title": "EM Currencies Trade Mixed as Inflation Fails to Shift Fed Bets",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-08-11T19:25:34+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-11/strategist-weighs-september-fed-hike-amid-mixed-data-video",
+          "publishedAt": "2026-08-12T10:25:47+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-12/emerging-stocks-rise-on-tech-as-currency-traders-await-us-cpi",
+          "tags": [
+            "fx",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "US CPI Report July 2026: Key Takeaways on Inflation, Consumer Price Index",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-12T13:21:47+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-12/us-cpi-report-july-2026-key-takeaways-on-inflation-consumer-price-index",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "US Core Inflation Comes in Subdued, Easing Pressure on Fed",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-12T12:31:43+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-12/us-core-inflation-was-subdued-in-july-easing-pressure-on-fed",
           "tags": [
             "market",
             "rates",
@@ -67,38 +107,13 @@
           ]
         },
         {
-          "title": "US Household Delinquencies Improve: NY Fed Quarterly Report",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-11T15:02:43+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-11/us-household-delinquencies-improve-in-ny-fed-quarterly-report",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "US CPI Report July 2026: Live News on Inflation, Consumer Price Index",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-12T11:33:20+00:00",
-          "url": "https://www.bloomberg.com/news/live-blog/2026-08-12/us-cpi-report-for-july-live-updates",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Trump Claims Hormuz Control, US CPI Data on Deck | The Opening Trade 8/12/2026",
+          "title": "US Stocks Rise on AI Trade as Market Awaits More Inflation Data",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-12T11:06:00+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-12/the-opening-trade-8-12-2026-video",
+          "publishedAt": "2026-08-12T12:15:30+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-12/us-stock-futures-rise-as-tech-rally-resumes-before-key-cpi-data",
           "tags": [
-            "commodity",
             "market",
             "rates",
             "us_broad"
@@ -120,50 +135,25 @@
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.777,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
-      "positiveCount": 3,
-      "neutralCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 3,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Market’s Momentum Darlings Resurface as Optical Stocks Take Off",
-      "topPositiveTitle": "Emerging Stocks Rise on Tech as Currency Traders Await US CPI",
+      "topNegativeTitle": "AI Cloud Provider Lambda Prices Loan for Nvidia-Tied Chip Deal",
+      "topPositiveTitle": "AI Cloud Provider Lambda Prices Loan for Nvidia-Tied Chip Deal",
       "items": [
         {
-          "title": "Market’s Momentum Darlings Resurface as Optical Stocks Take Off",
+          "title": "AI Cloud Provider Lambda Prices Loan for Nvidia-Tied Chip Deal",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-12T10:45:01+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-12/market-s-momentum-darlings-resurface-as-optical-stocks-take-off",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-12T20:36:56+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-12/ai-cloud-provider-lambda-prices-loan-for-nvidia-tied-chip-deal",
           "tags": [
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Emerging Stocks Rise on Tech as Currency Traders Await US CPI",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-08-12T10:25:47+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-12/emerging-stocks-rise-on-tech-as-currency-traders-await-us-cpi",
-          "tags": [
-            "fx",
-            "market",
-            "us_broad",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "US Stock Futures Climb Before Key Inflation Data: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-08-11T22:07:25+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-11/stock-market-today-dow-s-p-live-updates",
-          "tags": [
+            "jp_semiconductor",
             "market",
             "us_growth"
           ]
@@ -183,16 +173,43 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.415,
       "negativeCount": 0,
-      "positiveCount": 0,
+      "positiveCount": 2,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Behind CME’s Plan for 24/7 Silver Futures To Draw Retail",
+      "topPositiveTitle": "Gold Rallies as Tame US Inflation Report Calms Rate Hike Fears",
+      "items": [
+        {
+          "title": "Behind CME’s Plan for 24/7 Silver Futures To Draw Retail",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-12T20:51:29+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-12/behind-cme-s-plan-for-24-7-silver-futures-to-draw-retail-video",
+          "tags": [
+            "gold",
+            "market"
+          ]
+        },
+        {
+          "title": "Gold Rallies as Tame US Inflation Report Calms Rate Hike Fears",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.5,
+          "publishedAt": "2026-08-11T23:35:34+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-11/gold-steadies-as-traders-watch-us-inflation-for-rate-hike-clues",
+          "tags": [
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        }
+      ]
     },
     "reit": {
       "avgSentiment": 0,
@@ -219,15 +236,15 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.047,
-      "negativeCount": 2,
-      "positiveCount": 1,
-      "neutralCount": 4,
-      "sourceCount": 2,
-      "itemCount": 7,
+      "avgSentiment": -0.165,
+      "negativeCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 2,
       "isStale": false,
       "topNegativeTitle": "Internal UK Forecasts Raise Risk of Growth Downgrade Due to War",
-      "topPositiveTitle": "Norway's Sovereign Wealth Fund CEO Eyes Future Risks",
+      "topPositiveTitle": "Qatar National Bank Tests Investor Appetite for $2 Billion Loan",
       "items": [
         {
           "title": "Internal UK Forecasts Raise Risk of Growth Downgrade Due to War",
@@ -236,45 +253,6 @@
           "sentimentScore": -0.33,
           "publishedAt": "2026-08-12T10:23:31+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-08-12/internal-uk-forecasts-raise-risk-of-growth-downgrade-due-to-war",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Russia Budget Gap Spikes Despite Oil Windfall Driven by Iran War",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-11T15:06:51+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-11/russia-budget-gap-spikes-despite-oil-windfall-driven-by-iran-war",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Tata Group Erases $4.5 Billion in Value as Chairman Plans Exit",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-12T11:45:08+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-12/tata-group-erases-4-5-billion-in-value-as-chairman-plans-exit",
-          "tags": [
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Lloyds Metals Can Ready Restart of Giant PNG Copper Mine",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-12T08:53:34+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-12/lloyds-metals-allowed-to-ready-restart-of-giant-png-copper-mine",
           "tags": [
             "geopolitical",
             "macro_risk",
@@ -297,16 +275,54 @@
       ]
     },
     "fx": {
-      "avgSentiment": 0.625,
-      "negativeCount": 0,
-      "positiveCount": 4,
-      "neutralCount": 0,
+      "avgSentiment": 0.0,
+      "negativeCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 2,
       "sourceCount": 2,
       "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Bessent-Takaichi Divide on Optimal BOJ Path Threatens Yen Rescue",
-      "topPositiveTitle": "Emerging Stocks Rise on Tech as Currency Traders Await US CPI",
+      "topNegativeTitle": "EM Currencies Trade Mixed as Inflation Fails to Shift Fed Bets",
+      "topPositiveTitle": "Bessent-Takaichi Divide on Optimal BOJ Path Threatens Yen Rescue",
       "items": [
+        {
+          "title": "EM Currencies Trade Mixed as Inflation Fails to Shift Fed Bets",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-12T10:25:47+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-12/emerging-stocks-rise-on-tech-as-currency-traders-await-us-cpi",
+          "tags": [
+            "fx",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Record Lakers Deal, Bezos Eyes Liverpool: Business of Sports",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-12T19:59:59+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-12/lakers-deal-bezos-eyes-liverpool-business-of-sports-video",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        },
+        {
+          "title": "Yen Trades Near 160 Level as Traders Watch for Intervention",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-12T15:10:30+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-12/yen-trades-near-160-level-keeping-traders-on-intervention-watch",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        },
         {
           "title": "Bessent-Takaichi Divide on Optimal BOJ Path Threatens Yen Rescue",
           "source": "Bloomberg Economics",
@@ -319,79 +335,41 @@
             "jp_broad",
             "market"
           ]
-        },
+        }
+      ]
+    },
+    "rates": {
+      "avgSentiment": 0.034,
+      "negativeCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 3,
+      "sourceCount": 2,
+      "itemCount": 5,
+      "isStale": false,
+      "topNegativeTitle": "EM Currencies Trade Mixed as Inflation Fails to Shift Fed Bets",
+      "topPositiveTitle": "Gold Rallies as Tame US Inflation Report Calms Rate Hike Fears",
+      "items": [
         {
-          "title": "US-Japan Intervention Sets Stage for a Yen Rally, Eurizon Says",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.5,
-          "publishedAt": "2026-08-11T17:47:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-11/us-japan-intervention-sets-stage-for-a-yen-rally-eurizon-says",
-          "tags": [
-            "fx",
-            "market"
-          ]
-        },
-        {
-          "title": "CPI Day and What Katsu Curry Says About the Level of the Yen",
+          "title": "EM Currencies Trade Mixed as Inflation Fails to Shift Fed Bets",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-12T10:21:48+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-08-12/cpi-day-and-what-katsu-curry-says-about-the-level-of-the-yen",
-          "tags": [
-            "fx",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Emerging Stocks Rise on Tech as Currency Traders Await US CPI",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
           "publishedAt": "2026-08-12T10:25:47+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-08-12/emerging-stocks-rise-on-tech-as-currency-traders-await-us-cpi",
           "tags": [
             "fx",
             "market",
-            "us_broad",
-            "us_growth"
+            "rates",
+            "us_broad"
           ]
-        }
-      ]
-    },
-    "rates": {
-      "avgSentiment": -0.055,
-      "negativeCount": 2,
-      "positiveCount": 1,
-      "neutralCount": 3,
-      "sourceCount": 2,
-      "itemCount": 6,
-      "isStale": false,
-      "topNegativeTitle": "US Previously Owned Home Sales Decline to Three-Month Low",
-      "topPositiveTitle": "CPI Day and What Katsu Curry Says About the Level of the Yen",
-      "items": [
+        },
         {
-          "title": "US Previously Owned Home Sales Decline to Three-Month Low",
+          "title": "US Core Inflation Comes in Subdued, Easing Pressure on Fed",
           "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-08-11T14:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-11/us-sales-of-previously-owned-homes-decline-to-three-month-low",
-          "tags": [
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Strategist Weighs September Fed Hike Amid Mixed Data",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-11T19:25:34+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-11/strategist-weighs-september-fed-hike-amid-mixed-data-video",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-12T12:31:43+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-12/us-core-inflation-was-subdued-in-july-easing-pressure-on-fed",
           "tags": [
             "market",
             "rates",
@@ -399,29 +377,16 @@
           ]
         },
         {
-          "title": "Trump Claims Hormuz Control, US CPI Data on Deck | The Opening Trade 8/12/2026",
+          "title": "US Stocks Rise on AI Trade as Market Awaits More Inflation Data",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-12T11:06:00+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-12/the-opening-trade-8-12-2026-video",
+          "publishedAt": "2026-08-12T12:15:30+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-12/us-stock-futures-rise-as-tech-rally-resumes-before-key-cpi-data",
           "tags": [
-            "commodity",
             "market",
             "rates",
             "us_broad"
-          ]
-        },
-        {
-          "title": "India Inflation Stays Within Target Band, Backs RBI Pause",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-12T10:32:29+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-12/india-inflation-stays-within-target-band-supporting-rbi-pause",
-          "tags": [
-            "market",
-            "rates"
           ]
         },
         {
@@ -436,79 +401,53 @@
             "rates",
             "us_broad"
           ]
-        }
-      ]
-    },
-    "commodity": {
-      "avgSentiment": -0.222,
-      "negativeCount": 3,
-      "positiveCount": 0,
-      "neutralCount": 3,
-      "sourceCount": 2,
-      "itemCount": 6,
-      "isStale": false,
-      "topNegativeTitle": "IEA Says Oil Markets Are Facing a Wider Shortfall",
-      "topPositiveTitle": "Trump Claims Hormuz Control, US CPI Data on Deck | The Opening Trade 8/12/2026",
-      "items": [
-        {
-          "title": "IEA Says Oil Markets Are Facing a Wider Shortfall",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-08-12T10:25:28+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-12/iea-says-oil-markets-are-facing-a-wider-shortfall-video",
-          "tags": [
-            "commodity",
-            "market"
-          ]
         },
         {
-          "title": "China’s Stubborn Commodity Markets Defy Economic Rulebook",
+          "title": "Gold Rallies as Tame US Inflation Report Calms Rate Hike Fears",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-12T11:04:31+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-08-12/china-s-stubborn-commodity-markets-defy-economic-rulebook",
+          "sentiment": "positive",
+          "sentimentScore": 0.5,
+          "publishedAt": "2026-08-11T23:35:34+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-11/gold-steadies-as-traders-watch-us-inflation-for-rate-hike-clues",
           "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "Russia Budget Gap Spikes Despite Oil Windfall Driven by Iran War",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-11T15:06:51+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-11/russia-budget-gap-spikes-despite-oil-windfall-driven-by-iran-war",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Trump Claims Hormuz Control, US CPI Data on Deck | The Opening Trade 8/12/2026",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-12T11:06:00+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-12/the-opening-trade-8-12-2026-video",
-          "tags": [
-            "commodity",
+            "gold",
             "market",
             "rates",
             "us_broad"
           ]
-        },
+        }
+      ]
+    },
+    "commodity": {
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 2,
+      "sourceCount": 2,
+      "itemCount": 2,
+      "isStale": false,
+      "topNegativeTitle": "Rio Tinto Aluminum Smelter Gets $1.8 Billion Australian Bailout",
+      "topPositiveTitle": "Rio Tinto Aluminum Smelter Gets $1.8 Billion Australian Bailout",
+      "items": [
         {
-          "title": "Latest Oil Market News and Analysis for Aug. 12",
+          "title": "Rio Tinto Aluminum Smelter Gets $1.8 Billion Australian Bailout",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-11T22:04:46+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-11/latest-oil-market-news-and-analysis-for-aug-12",
+          "publishedAt": "2026-08-12T21:21:39+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-12/rio-tinto-aluminum-smelter-gets-1-8-billion-australian-bailout",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "Nigeria Targets $50 Billion in Deepwater Oil Investment With Tax Credits",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-11T19:11:55+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-11/nigeria-boosts-tax-breaks-to-lure-50-billion-in-deepwater-oil",
           "tags": [
             "commodity",
             "market"
@@ -518,14 +457,14 @@
     },
     "geopolitical": {
       "avgSentiment": 0.0,
-      "negativeCount": 2,
-      "positiveCount": 2,
-      "neutralCount": 5,
-      "sourceCount": 3,
-      "itemCount": 9,
+      "negativeCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 3,
+      "sourceCount": 2,
+      "itemCount": 5,
       "isStale": false,
       "topNegativeTitle": "Internal UK Forecasts Raise Risk of Growth Downgrade Due to War",
-      "topPositiveTitle": "Norway's Sovereign Wealth Fund CEO Eyes Future Risks",
+      "topPositiveTitle": "高市首相 オマーン国王と電話会談“国際社会とも協議を”",
       "items": [
         {
           "title": "Internal UK Forecasts Raise Risk of Growth Downgrade Due to War",
@@ -541,34 +480,7 @@
           ]
         },
         {
-          "title": "Russia Budget Gap Spikes Despite Oil Windfall Driven by Iran War",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-11T15:06:51+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-11/russia-budget-gap-spikes-despite-oil-windfall-driven-by-iran-war",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Lloyds Metals Can Ready Restart of Giant PNG Copper Mine",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-12T08:53:34+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-12/lloyds-metals-allowed-to-ready-restart-of-giant-png-copper-mine",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Russian Economy Poised to Resume Growth Despite Drone Strikes",
+          "title": "Russian Economy Returns to Growth Despite Ukraine Drone Strikes",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
@@ -591,6 +503,32 @@
             "macro_risk",
             "market"
           ]
+        },
+        {
+          "title": "高市首相 イラン大統領と電話会談“ホルムズ自由で安全 重要”",
+          "source": "NHK 経済",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-12T13:09:47+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20260812de43492",
+          "tags": [
+            "geopolitical",
+            "market"
+          ],
+          "titleJa": "高市首相 イラン大統領と電話会談“ホルムズ自由で安全 重要”"
+        },
+        {
+          "title": "高市首相 オマーン国王と電話会談“国際社会とも協議を”",
+          "source": "NHK 経済",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-10T11:26:40+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20260810de43179",
+          "tags": [
+            "geopolitical",
+            "market"
+          ],
+          "titleJa": "高市首相 オマーン国王と電話会談“国際社会とも協議を”"
         }
       ]
     }
@@ -603,7 +541,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 4,
+    "excludedCount": 6,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
