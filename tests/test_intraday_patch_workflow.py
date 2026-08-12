@@ -117,7 +117,7 @@ def test_unstaged_change_guard_before_pull_rebase():
     # after commit, an explicit guard must fail the step if unstaged tracked
     # changes remain, instead of letting `git pull --rebase` fail with the
     # ambiguous "You have unstaged changes" / exit 128 error.
-    commit_pos = _TEXT.index("|| git commit")
+    commit_pos = _TEXT.index('git commit -m "chore: intraday-patch')
     rebase_pos = _TEXT.index("git pull --rebase")
     guard_pos = _TEXT.index("git diff --quiet")
     assert commit_pos < guard_pos < rebase_pos, (
@@ -172,19 +172,19 @@ def test_commit_before_pull_rebase():
     # git commit must come before pull --rebase: commit local Tier 1
     # changes first so the working tree is clean when rebase runs
     # (avoids "You have unstaged changes" pull --rebase failures).
-    # Use "|| git commit" (actual run command) to avoid matching the
+    # Use the actual commit command to avoid matching the
     # "── git push ──" section comment.
-    commit_pos = _TEXT.index("|| git commit")
+    commit_pos = _TEXT.index('git commit -m "chore: intraday-patch')
     rebase_pos = _TEXT.index("git pull --rebase")
     assert commit_pos < rebase_pos, "git commit must come before git pull --rebase"
 
 
 def test_commit_before_push():
     # git commit must come before the final git push command.
-    # Use "|| git commit" (actual run command) and rindex("git push") (last occurrence
+    # Use the actual commit command and rindex("git push") (last occurrence
     # = actual push command, not the "── git push ──" section comment) to avoid
     # matching the section header comment that names this step.
-    commit_pos = _TEXT.index("|| git commit")
+    commit_pos = _TEXT.index('git commit -m "chore: intraday-patch')
     push_pos = _TEXT.rindex("git push")
     assert commit_pos < push_pos, "git commit must come before git push"
 

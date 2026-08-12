@@ -58,7 +58,7 @@ def test_git_add_before_pull_rebase():
 
 
 def test_git_commit_before_pull_rebase():
-    commit_pos = _TEXT.index("git diff --staged --quiet || git commit")
+    commit_pos = _TEXT.index('git commit -m "chore: full-batch data update')
     rebase_pos = _TEXT.index('git pull --rebase origin "$target_ref"')
     assert commit_pos < rebase_pos, "git commit must come before git pull --rebase"
 
@@ -260,12 +260,17 @@ def _clone_branch(remote: Path, destination: Path, branch: str) -> None:
     _git(destination.parent, "clone", "--branch", branch, str(remote), str(destination))
 
 
-def _run_commit_push(worktree: Path, branch: str) -> subprocess.CompletedProcess:
+def _run_commit_push(
+    worktree: Path, branch: str, output_path: Path | None = None
+) -> subprocess.CompletedProcess:
     env = os.environ.copy()
+    if output_path is None:
+        output_path = worktree / "github-output"
     env.update(
         GITHUB_REF_NAME=branch,
         GITHUB_REF=f"refs/heads/{branch}",
         GITHUB_REF_TYPE="branch",
+        GITHUB_OUTPUT=str(output_path),
     )
     return subprocess.run(
         ["bash", "-c", _commit_and_push_script()],
@@ -560,6 +565,50 @@ def test_funnel_batch_failure_restores_twins_and_allows_unrelated_staging(tmp_pa
     staged = _git(repo, "diff", "--cached", "--name-only").stdout.splitlines()
     assert staged == ["data/safe_mode.json", "public/data/tier_a_alerts.json"]
 
+    # Production-observed branch: the unrelated data commit is pushed and exposes
+    # its exact SHA before the intentionally failing terminal funnel enforcement.
+    remote = tmp_path / "funnel-remote.git"
+    _git(repo, "branch", "-M", "main")
+    _git(tmp_path, "init", "--bare", "-b", "main", str(remote))
+    _git(repo, "remote", "add", "origin", str(remote))
+    _git(repo, "push", "-u", "origin", "main")
+    commit_output = tmp_path / "commit-output"
+    commit_push = _run_commit_push(repo, "main", commit_output)
+    assert commit_push.returncode == 0, commit_push.stderr
+    commit_values = dict(
+        line.split("=", 1) for line in commit_output.read_text().splitlines()
+    )
+    assert commit_values["data_changed"] == "true"
+    assert commit_values["pushed_sha"] == _git(repo, "rev-parse", "HEAD").stdout.strip()
+
+    fake_gh = bin_dir / "gh"
+    dispatch_log = tmp_path / "dispatch-log"
+    fake_gh.write_text(
+        "#!/usr/bin/env bash\n"
+        "printf '%s\\n' \"$*\" >> \"$DISPATCH_LOG\"\n"
+    )
+    fake_gh.chmod(0o755)
+    dispatch_env = os.environ.copy()
+    dispatch_env.update(
+        GITHUB_REF="refs/heads/main",
+        GITHUB_REPOSITORY="example/jp-portfolio",
+        PUSHED_SHA=commit_values["pushed_sha"],
+        DISPATCH_LOG=str(dispatch_log),
+        PATH=f"{bin_dir}{os.pathsep}{dispatch_env['PATH']}",
+    )
+    dispatch = subprocess.run(
+        ["bash", "-c", _workflow_step_script("Dispatch Pages for pushed data")],
+        cwd=repo,
+        env=dispatch_env,
+        text=True,
+        capture_output=True,
+    )
+    assert dispatch.returncode == 0, dispatch.stderr
+    assert dispatch_log.read_text().splitlines() == [
+        f"workflow run deploy.yml --repo example/jp-portfolio --ref main "
+        f"-f deploy_sha={commit_values['pushed_sha']}"
+    ]
+
     enforcement = _run_workflow_step(
         repo,
         bin_dir,
@@ -570,6 +619,14 @@ def test_funnel_batch_failure_restores_twins_and_allows_unrelated_staging(tmp_pa
     )
     assert enforcement.returncode != 0
     assert "P-01..P-15 batch gate" in enforcement.stderr
+
+    update_data = _update_data_section()
+    dispatch_pos = update_data.index("Dispatch Pages for pushed data")
+    enforcement_pos = update_data.index(_FUNNEL_ENFORCEMENT_STEP)
+    assert dispatch_pos < enforcement_pos
+    dispatch_condition = update_data[dispatch_pos:enforcement_pos]
+    assert "steps.commit-push.outputs.data_changed == 'true'" in dispatch_condition
+    assert "github.ref == 'refs/heads/main'" in dispatch_condition
 
 
 def test_funnel_batch_failure_with_unchanged_twins_continues_safely(tmp_path):

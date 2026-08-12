@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 import re
-import subprocess
 from pathlib import Path
 
 REPO = Path(__file__).parents[1]
@@ -59,12 +58,11 @@ def test_validate_step_is_blocking_no_or_true():
     assert "if:" not in block
 
 
-def test_full_batch_yml_is_unmodified_by_this_feature():
-    """T-34."""
-    result = subprocess.run(
-        ["git", "diff", "--exit-code", "--", ".github/workflows/full_batch.yml"],
-        cwd=REPO,
-        capture_output=True,
-        text=True,
+def test_full_batch_has_no_p14_evidence_capture_responsibility():
+    """T-34: the isolated evidence workflow must not leak into full_batch."""
+    full_batch = (REPO / ".github/workflows/full_batch.yml").read_text(
+        encoding="utf-8"
     )
-    assert result.returncode == 0, result.stdout + result.stderr
+    assert "p14_evidence_capture" not in full_batch
+    assert "data.p14_evidence" not in full_batch
+    assert "Upload evidence artifact" not in full_batch

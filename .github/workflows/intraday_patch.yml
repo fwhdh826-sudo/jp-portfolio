@@ -11,6 +11,7 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 concurrency:
   group: intraday-patch
@@ -57,11 +58,18 @@ jobs:
 
       # ── git push ──────────────────────────────────────────────────────
       - name: Commit and push
+        id: commit-push
         run: |
+          echo "data_changed=false" >> "$GITHUB_OUTPUT"
+
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data/market.json data/news.json data/candidates_news.json public/data/market.json public/data/news.json public/data/candidates_news.json
-          git diff --staged --quiet || git commit -m "chore: intraday-patch $(date +'%Y-%m-%d %H:%M JST')"
+          data_changed=false
+          if ! git diff --staged --quiet; then
+            git commit -m "chore: intraday-patch $(date +'%Y-%m-%d %H:%M JST')"
+            data_changed=true
+          fi
           git diff --quiet || {
             echo "::error::Unstaged tracked changes remain after intraday staging"
             git status --short
@@ -69,6 +77,34 @@ jobs:
           }
           git pull --rebase
           git push
+
+          if [ "$data_changed" = "true" ]; then
+            pushed_sha="$(git rev-parse HEAD)"
+            echo "data_changed=true" >> "$GITHUB_OUTPUT"
+            echo "pushed_sha=$pushed_sha" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Dispatch Pages for pushed data
+        if: ${{ steps.commit-push.outputs.data_changed == 'true' && github.ref == 'refs/heads/main' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PUSHED_SHA: ${{ steps.commit-push.outputs.pushed_sha }}
+        run: |
+          set -euo pipefail
+
+          if [ "${GITHUB_REF:?GITHUB_REF is required}" != "refs/heads/main" ]; then
+            echo "::error::Refusing production Pages dispatch outside main" >&2
+            exit 1
+          fi
+          if [[ ! "$PUSHED_SHA" =~ ^[0-9a-f]{40}$ ]]; then
+            echo "::error::Refusing Pages dispatch without an exact pushed SHA" >&2
+            exit 1
+          fi
+
+          gh workflow run deploy.yml \
+            --repo "${GITHUB_REPOSITORY:?GITHUB_REPOSITORY is required}" \
+            --ref main \
+            -f "deploy_sha=$PUSHED_SHA"
 
       # NOTE: pytest は実行しない（軽量更新優先）。health gate は full_batch.yml の責務。
       # NOTE: Discord 通知は Card 2-4 の責務。ここでは実装しない。

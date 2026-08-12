@@ -11,6 +11,7 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 concurrency:
   group: full-batch
@@ -369,8 +370,11 @@ jobs:
 
       # ── git push ──────────────────────────────────────────────────────
       - name: Commit and push
+        id: commit-push
         run: |
           set -euo pipefail
+
+          echo "data_changed=false" >> "$GITHUB_OUTPUT"
 
           target_branch="${GITHUB_REF_NAME:?GITHUB_REF_NAME is required}"
           target_ref="${GITHUB_REF:?GITHUB_REF is required}"
@@ -400,9 +404,41 @@ jobs:
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data/ public/data/
-          git diff --staged --quiet || git commit -m "chore: full-batch data update $(date +'%Y-%m-%d %H:%M JST')"
+          data_changed=false
+          if ! git diff --staged --quiet; then
+            git commit -m "chore: full-batch data update $(date +'%Y-%m-%d %H:%M JST')"
+            data_changed=true
+          fi
           git pull --rebase origin "$target_ref"
           git push origin "HEAD:$target_ref"
+
+          if [ "$data_changed" = "true" ]; then
+            pushed_sha="$(git rev-parse HEAD)"
+            echo "data_changed=true" >> "$GITHUB_OUTPUT"
+            echo "pushed_sha=$pushed_sha" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Dispatch Pages for pushed data
+        if: ${{ steps.commit-push.outputs.data_changed == 'true' && github.ref == 'refs/heads/main' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PUSHED_SHA: ${{ steps.commit-push.outputs.pushed_sha }}
+        run: |
+          set -euo pipefail
+
+          if [ "${GITHUB_REF:?GITHUB_REF is required}" != "refs/heads/main" ]; then
+            echo "::error::Refusing production Pages dispatch outside main" >&2
+            exit 1
+          fi
+          if [[ ! "$PUSHED_SHA" =~ ^[0-9a-f]{40}$ ]]; then
+            echo "::error::Refusing Pages dispatch without an exact pushed SHA" >&2
+            exit 1
+          fi
+
+          gh workflow run deploy.yml \
+            --repo "${GITHUB_REPOSITORY:?GITHUB_REPOSITORY is required}" \
+            --ref main \
+            -f "deploy_sha=$PUSHED_SHA"
 
       - name: Enforce candidate funnel publication status
         if: ${{ always() && !cancelled() }}

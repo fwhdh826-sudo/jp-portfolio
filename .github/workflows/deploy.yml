@@ -4,6 +4,11 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      deploy_sha:
+        description: Exact 40-character commit SHA to deploy
+        required: true
+        type: string
 
 permissions:
   contents: read
@@ -18,7 +23,38 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Resolve deployment SHA
+        id: deploy-target
+        shell: bash
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          PUSH_SHA: ${{ github.sha }}
+          DISPATCH_SHA: ${{ inputs.deploy_sha }}
+        run: |
+          set -euo pipefail
+
+          case "$EVENT_NAME" in
+            push)
+              deploy_sha="$PUSH_SHA"
+              ;;
+            workflow_dispatch)
+              if [[ ! "$DISPATCH_SHA" =~ ^[0-9a-fA-F]{40}$ ]]; then
+                echo "::error::workflow_dispatch requires an exact 40-character deploy_sha" >&2
+                exit 1
+              fi
+              deploy_sha="$(printf '%s' "$DISPATCH_SHA" | tr 'A-F' 'a-f')"
+              ;;
+            *)
+              echo "::error::Unsupported deployment event: $EVENT_NAME" >&2
+              exit 1
+              ;;
+          esac
+
+          echo "deploy_sha=$deploy_sha" >> "$GITHUB_OUTPUT"
+
       - uses: actions/checkout@v6
+        with:
+          ref: ${{ steps.deploy-target.outputs.deploy_sha }}
 
       - uses: actions/setup-node@v6
         with:
