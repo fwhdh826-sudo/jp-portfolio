@@ -35,6 +35,7 @@ function recommendation(overrides: Partial<CandidatePortfolioRecommendation> = {
     marketRank: 1,
     action: 'BUY_NEW',
     reason: '市場候補ファネルの重点候補で、未保有照合と日本株枠の余力を確認しました。売買執行・金額算定は未実施です。',
+    allocation: null,
     ...overrides,
   }
 }

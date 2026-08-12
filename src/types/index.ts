@@ -568,6 +568,12 @@ export interface AppState {
   zeroPlan: import('../domain/optimization/zeroBase').ZeroBasePlan | null
   stockPlan: import('../domain/optimization/stockPortfolio').StockPortfolioPlan | null
   trustPlan: import('../domain/optimization/trustPortfolio').TrustPortfolioPlan | null
+  // HR-I2: local-only ephemeral authority; excluded from every persistence/hydration path.
+  allocationPlan: import('./allocationPlan').AllocationPlanSnapshot | null
+  allocationPlanStatus: AllocationPlanSnapshotState
+  // HR-I3: local-only ephemeral candidate projection. Never persisted or serialized.
+  allocationPlanCandidateGenerationId: string | null
+  candidatePortfolioRecommendations: readonly import('./candidatePortfolioRecommendation').CandidatePortfolioRecommendation[]
   // P4-A9c-data-4c: role-unit candidates news（observability用・意思決定未接続）
   candidatesNews: CandidatesNewsData
   // P5-B002a: 新規個別株候補（市場公開情報のみ。observability用・officialDecision未接続）
@@ -588,6 +594,14 @@ export interface AppState {
   // P4.5-A002: 資金前提の手動override（現金・待機資金）
   cashAssumptions: CashAssumptions
 }
+
+export type AllocationPlanSnapshotState =
+  | 'absent'
+  | 'current'
+  | 'estimate_only'
+  | 'blocked'
+  | 'invalid'
+  | 'stale'
 
 // V10: T0=ホーム T1=個別株 T2=国内株投信 T3=海外投信 T4=理想PF T5=ニュース T6=AI委員会 T7=実行プラン T8=学習/検証 T9=設定
 export type TabId = 'T0' | 'T1' | 'T2' | 'T3' | 'T4' | 'T5' | 'T6' | 'T7' | 'T8' | 'T9'
@@ -717,3 +731,13 @@ export type {
   StockCandidateItem,
   CandidatesStocksData,
 } from './candidatesStocks'
+
+export type {
+  AllocationPlanInput,
+  AllocationPlanSnapshot,
+  AssetClassPlan as AllocationAssetClassPlan,
+  InstrumentPlan as AllocationInstrumentPlan,
+  BlockedReason as AllocationBlockedReason,
+  WarningReason as AllocationWarningReason,
+  LimitingFactor as AllocationLimitingFactor,
+} from './allocationPlan'
