@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, it, expect, vi } from 'vitest'
-import type { Trust } from '../types'
+import type { CashAssumptions, Trust } from '../types'
 import {
   resetPortfolioGenerationLockAdapterForTest,
   runFullAnalysis,
@@ -7,6 +7,13 @@ import {
   useAppStore,
 } from './useAppStore'
 import { createImmediatePortfolioGenerationLockAdapterForTest } from './testing/portfolioGenerationLockTestAdapters'
+import {
+  CASH_AUTHORITY_TTL_MS,
+  CASH_AUTHORITY_APPROACHING_EXPIRY_MS,
+  NO_CASH_AUTHORITY,
+} from '../domain/cash/cashAuthority'
+import { selectCashAssumptionsFreshness } from './selectors'
+import { computeCandidateActionsForDisplay } from '../components/tabs/T0_Home'
 
 // P4.5-A013-T5:
 // public/data/trust_master.json はP4.5-A010-1aで恒久的に配信停止された（今後
@@ -61,6 +68,24 @@ function makeGoldCandidate(overrides: Partial<Trust> = {}): Trust {
   })
 }
 
+// CASH-AUTH-1 R1: score>=75 だが sigma∈[VOL_SOFT_LIMIT(0.25), VOL_HARD_LIMIT(0.30)) のため
+// BUY_NEWからWATCHへ降格される候補（policy=GOLDでrole重複gate対象外、hard volブロックも回避）。
+// suggestedAmount/maxAmountはBUY_NEWと同じ計算式を通るため、WATCHでも金額が付き得ることの
+// 固定用フィクスチャ。
+function makeWatchGoldCandidate(overrides: Partial<Trust> = {}): Trust {
+  return makeTrust({
+    id: 'watch_gold_candidate',
+    name: '金インデックスファンド（WATCH想定）',
+    abbr: 'ゴールドW',
+    policy: 'GOLD',
+    eval: 0,
+    cost: 0.3,
+    mu: 0.10,
+    sigma: 0.27,
+    ...overrides,
+  })
+}
+
 // P0-PRIVACY-DEPLOY-RECOVERY: 固定の過去日時だと、selectMarketDataQuality /
 // computeSafeModeDataQuality が実行時のDate.now()と比較してMARKET_DATA_STALE_HOURS
 // (24h) / SAFE_MODE_STALE_HOURS (96h) を超過した時点でfail-closedに倒れ、
@@ -68,6 +93,8 @@ function makeGoldCandidate(overrides: Partial<Trust> = {}): Trust {
 // stockLock.test.tsのdaysAgo()と同様に、実行時刻基準の動的な値にして
 // 常にfreshと評価されるようにする。
 const NOW = new Date().toISOString()
+const NOW_MS = Date.parse(NOW)
+const HOUR_MS = 60 * 60 * 1000
 
 function buildPermissiveState(overrides: {
   trust?: Trust[]
@@ -75,6 +102,7 @@ function buildPermissiveState(overrides: {
   marketFresh?: boolean
   safeModeActive?: boolean
   safeModeFresh?: boolean
+  cashAssumptions?: CashAssumptions
 }) {
   const base = useAppStore.getState()
   const marketFresh = overrides.marketFresh ?? true
@@ -91,7 +119,7 @@ function buildPermissiveState(overrides: {
     // あり、legacy な state.cash から金額を推測することはもう無い。
     cash: 5_000_000,
     cashReserve: 0,
-    cashAssumptions: {
+    cashAssumptions: overrides.cashAssumptions ?? {
       source: 'MANUAL' as const,
       grossCash: 5_000_000,
       safetyReserve: 0,
@@ -122,6 +150,13 @@ function buildPermissiveState(overrides: {
 
 function goldCandidateAction(officialDecision: ReturnType<typeof runFullAnalysis>['officialDecision']) {
   return officialDecision?.actions.find(a => a.isCandidate && a.assetType === 'gold')
+}
+
+function candidateActionById(
+  officialDecision: ReturnType<typeof runFullAnalysis>['officialDecision'],
+  trustId: string,
+) {
+  return officialDecision?.actions.find(a => a.id === `candidate-${trustId}`)
 }
 
 describe('runFullAnalysis: 投信候補パイプラインとtrust_master公開停止の分離（P4.5-A013-T5）', () => {
@@ -197,6 +232,187 @@ describe('runFullAnalysis: 投信候補パイプラインとtrust_master公開�
     // 候補パイプラインが止まっていてもcommitteeベースのofficialDecision自体は生成される
     expect(result.officialDecision).not.toBeNull()
     expect(result.officialDecision?.source).toBe('committee')
+  })
+})
+
+// ── CASH-AUTH-1 R1: legacy trust候補パイプラインの stale/unknown cash 金額 fail-closed 化 ──
+// NEXT-2 acceptance audit（P3-1）で確認された欠落: state.effectiveCash.grossCash は生の
+// MANUAL値であり、availableCash（→ suggestedAmount/maxAmount/amount）は cash 権限の
+// 168h TTL / unknown 状態を一切見ていなかった。stale/unknown でも BUY_NEW/WATCH の
+// 金額付き候補が officialDecision.actions に出得た。ここでは runFullAnalysis を直接
+// 呼び出す実パイプラインで、その経路が閉じたことを固定する。
+// AllocationPlanSnapshot（deriveCashModel/headroom/purchaseAmount/T2/T7共有projection）は
+// このR1では一切変更していない — 元々正しく fail-closed だったため対象外。
+describe('runFullAnalysis: CASH-AUTH-1 R1 現金権限のTTL/unknown/confirmed-zeroとtrust候補金額', () => {
+  it('#2 stale（168h+1ms）はBUY_NEW候補金額を抑制する（候補自体が現れない）', () => {
+    const state = buildPermissiveState({
+      cashAssumptions: {
+        source: 'MANUAL',
+        grossCash: 5_000_000,
+        safetyReserve: 0,
+        pendingOrderCash: null,
+        updatedAt: new Date(NOW_MS - CASH_AUTHORITY_TTL_MS - 1).toISOString(),
+      },
+    })
+    expect(selectCashAssumptionsFreshness(state, NOW_MS).state).toBe('stale')
+    const result = runFullAnalysis(state, { nowMs: NOW_MS })
+    expect(goldCandidateAction(result.officialDecision)).toBeUndefined()
+  })
+
+  it('#3 staleはWATCH候補のmaxAmount（検討上限）も抑制する（fresh下でWATCH+正のmaxAmountになる候補が、staleでは0/undefinedになる）', () => {
+    // 注: resolveSizingTierはaction!=='BUY_NEW'なら常にsuggestedAmount=0にするため
+    // （scoreCandidates.ts既存仕様・本R1では変更していない）、WATCHでR1が実際に
+    // 閉じるべき金額フィールドはmaxAmount（検討上限の参考値）である。
+    const freshState = buildPermissiveState({
+      trust: [makeWatchGoldCandidate()],
+      cashAssumptions: {
+        source: 'MANUAL',
+        grossCash: 5_000_000,
+        safetyReserve: 0,
+        pendingOrderCash: null,
+        updatedAt: new Date(NOW_MS - HOUR_MS).toISOString(),
+      },
+    })
+    const freshResult = runFullAnalysis(freshState, { nowMs: NOW_MS })
+    const freshCandidate = candidateActionById(freshResult.officialDecision, 'watch_gold_candidate')
+    // 陽性対照: fresh cashのもとではWATCH+正のmaxAmountで現れることを先に確認する
+    expect(freshCandidate).toBeDefined()
+    expect(freshCandidate?.action).toBe('WATCH')
+    expect(freshCandidate?.amount ?? 0).toBe(0) // WATCHはsuggestedAmount/amount自体は元々常に0（既存仕様）
+    expect(freshCandidate?.maxAmount ?? 0).toBeGreaterThan(0)
+
+    const staleState = buildPermissiveState({
+      trust: [makeWatchGoldCandidate()],
+      cashAssumptions: {
+        source: 'MANUAL',
+        grossCash: 5_000_000,
+        safetyReserve: 0,
+        pendingOrderCash: null,
+        updatedAt: new Date(NOW_MS - CASH_AUTHORITY_TTL_MS - 1).toISOString(),
+      },
+    })
+    const staleResult = runFullAnalysis(staleState, { nowMs: NOW_MS })
+    const staleCandidate = candidateActionById(staleResult.officialDecision, 'watch_gold_candidate')
+    // stale側: 候補自体が現れないか、現れても金額系フィールドは無い（どちらでも frozen invariant を満たす）
+    if (staleCandidate !== undefined) {
+      expect(staleCandidate.amount ?? 0).toBe(0)
+      expect(staleCandidate.suggestedAmount ?? 0).toBe(0)
+      expect(staleCandidate.maxAmount ?? 0).toBe(0)
+    }
+  })
+
+  it('#4 unknown（権限未設定 DEFAULT）は新規BUY金額を一切生成しない', () => {
+    const state = buildPermissiveState({ cashAssumptions: { ...NO_CASH_AUTHORITY } })
+    expect(selectCashAssumptionsFreshness(state, NOW_MS).state).toBe('unknown')
+    const result = runFullAnalysis(state, { nowMs: NOW_MS })
+    expect(goldCandidateAction(result.officialDecision)).toBeUndefined()
+  })
+
+  it('#5 confirmed zero（grossCash=0・fresh）は known_fresh のまま金額だけ0になる（unknownとは区別される）', () => {
+    const state = buildPermissiveState({
+      cashAssumptions: {
+        source: 'MANUAL',
+        grossCash: 0,
+        safetyReserve: 0,
+        pendingOrderCash: null,
+        updatedAt: new Date(NOW_MS - HOUR_MS).toISOString(),
+      },
+    })
+    // confirmed zero は unknown と異なり known_fresh のまま
+    expect(selectCashAssumptionsFreshness(state, NOW_MS).state).toBe('known_fresh')
+    const result = runFullAnalysis(state, { nowMs: NOW_MS })
+    expect(goldCandidateAction(result.officialDecision)).toBeUndefined()
+  })
+
+  it('#6 168hちょうどはまだ fresh — 新規BUY金額付き候補が生成される（正の境界）', () => {
+    const state = buildPermissiveState({
+      cashAssumptions: {
+        source: 'MANUAL',
+        grossCash: 5_000_000,
+        safetyReserve: 0,
+        pendingOrderCash: null,
+        updatedAt: new Date(NOW_MS - CASH_AUTHORITY_TTL_MS).toISOString(),
+      },
+    })
+    expect(selectCashAssumptionsFreshness(state, NOW_MS).state).toBe('known_fresh')
+    const result = runFullAnalysis(state, { nowMs: NOW_MS })
+    const candidate = goldCandidateAction(result.officialDecision)
+    expect(candidate).toBeDefined()
+    expect(candidate?.action).toBe('BUY_NEW')
+    expect(candidate?.amount ?? 0).toBeGreaterThan(0)
+  })
+
+  it('#7 144hちょうど（まもなく失効の警告境界）でも fresh のまま新規BUY金額が生成される', () => {
+    const state = buildPermissiveState({
+      cashAssumptions: {
+        source: 'MANUAL',
+        grossCash: 5_000_000,
+        safetyReserve: 0,
+        pendingOrderCash: null,
+        updatedAt: new Date(NOW_MS - CASH_AUTHORITY_APPROACHING_EXPIRY_MS).toISOString(),
+      },
+    })
+    const freshness = selectCashAssumptionsFreshness(state, NOW_MS)
+    expect(freshness.state).toBe('known_fresh')
+    expect(freshness.approachingExpiry).toBe(true)
+    const result = runFullAnalysis(state, { nowMs: NOW_MS })
+    const candidate = goldCandidateAction(result.officialDecision)
+    expect(candidate).toBeDefined()
+    expect(candidate?.action).toBe('BUY_NEW')
+    expect(candidate?.amount ?? 0).toBeGreaterThan(0)
+  })
+
+  it('#8 fresh positive control（1時間前更新）は既存のBUY_NEW金額生成挙動を維持する', () => {
+    const state = buildPermissiveState({})
+    const result = runFullAnalysis(state, { nowMs: NOW_MS })
+    const candidate = goldCandidateAction(result.officialDecision)
+    expect(candidate).toBeDefined()
+    expect(candidate?.action).toBe('BUY_NEW')
+    expect(candidate?.amount ?? 0).toBeGreaterThan(0)
+  })
+
+  it('#10 officialDecision全体の網羅invariant: staleでは isCandidate 項目のどれも正の金額を持たない', () => {
+    const state = buildPermissiveState({
+      trust: [makeGoldCandidate(), makeWatchGoldCandidate()],
+      cashAssumptions: {
+        source: 'MANUAL',
+        grossCash: 5_000_000,
+        safetyReserve: 0,
+        pendingOrderCash: null,
+        updatedAt: new Date(NOW_MS - CASH_AUTHORITY_TTL_MS - 1).toISOString(),
+      },
+    })
+    const result = runFullAnalysis(state, { nowMs: NOW_MS })
+    const candidateActions = result.officialDecision?.actions.filter(a => a.isCandidate) ?? []
+    for (const action of candidateActions) {
+      expect(action.action).not.toBe('BUY_NEW')
+      expect(action.amount ?? 0).toBe(0)
+      expect(action.suggestedAmount ?? 0).toBe(0)
+      expect(action.maxAmount ?? 0).toBe(0)
+    }
+  })
+
+  it('#11 T0表示選択（computeCandidateActionsForDisplay）はstale由来の項目にBUY_NEW金額を表示しない', () => {
+    const staleState = buildPermissiveState({
+      cashAssumptions: {
+        source: 'MANUAL',
+        grossCash: 5_000_000,
+        safetyReserve: 0,
+        pendingOrderCash: null,
+        updatedAt: new Date(NOW_MS - CASH_AUTHORITY_TTL_MS - 1).toISOString(),
+      },
+    })
+    const staleResult = runFullAnalysis(staleState, { nowMs: NOW_MS })
+    const staleDisplay = computeCandidateActionsForDisplay(staleResult.officialDecision, false, false)
+    expect(staleDisplay.some(a => a.action === 'BUY_NEW')).toBe(false)
+
+    // 陽性対照: freshでは同じ表示関数がBUY_NEW+正の金額を選択する（表示経路自体は生きている）
+    const freshState = buildPermissiveState({})
+    const freshResult = runFullAnalysis(freshState, { nowMs: NOW_MS })
+    const freshDisplay = computeCandidateActionsForDisplay(freshResult.officialDecision, false, false)
+    const freshBuyNew = freshDisplay.find(a => a.action === 'BUY_NEW')
+    expect(freshBuyNew).toBeDefined()
+    expect(freshBuyNew?.suggestedAmount ?? 0).toBeGreaterThan(0)
   })
 })
 

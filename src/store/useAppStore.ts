@@ -2143,6 +2143,14 @@ export function runFullAnalysis(
   const legacyCashDisplay = Math.max(0, effectiveCash.grossCash - effectiveCash.safetyReserve)
   const legacyCashReserveDisplay = Math.min(effectiveCash.safetyReserve, effectiveCash.grossCash)
 
+  // CASH-AUTH-1 R1: 単一の decision-time cash usability gate。凍結TTL判定
+  // （selectCashAssumptionsFreshness = 168h / source=MANUAL）はここで一度だけ行い、
+  // legacy な zeroBase / trust候補 / stock候補 の新規BUY金額経路は全てこの値を
+  // 共有する（168h判定の重複実装・source単独判定は禁止）。stale/unknown では
+  // 新規BUY/BUY_NEW/WATCHの金額を一切生成しない。AllocationPlanSnapshot側の
+  // 権威（deriveCashModel/safetyState.cash）はこの変更と独立して既に正しい。
+  const cashAssumptionsUsable = selectCashAssumptionsFreshness(state, nowMs).state === 'known_fresh'
+
   // ゼロベース理想PF構築（metrics計算後に呼ぶ）
   const stateWithComputed: AppState = {
     ...state, holdings, trust, metrics, analysis,
@@ -2187,6 +2195,7 @@ export function runFullAnalysis(
       jpStockMaxRatio:  state.portfolioPolicy.jpStockMaxRatio,
       safeModeActive,
       dqSuppressed,
+      cashAuthorityUsable: cashAssumptionsUsable,
       nowMs,
     })
     stockPlan = buildStockPortfolioPlan(holdings, analysis, {
@@ -2236,13 +2245,18 @@ export function runFullAnalysis(
       const MIN_CASH_FLOOR = 1_000_000
       // CASH-AUTH-1: 総現金から安全余力・未約定買付を一度だけ差し引いた額を基準にする。
       // addRoom の上乗せは撤廃した。
-      const availableCash = Math.max(
-        0,
-        effectiveCash.grossCash
-          - effectiveCash.safetyReserve
-          - (effectiveCash.pendingOrderCash ?? 0)
-          - MIN_CASH_FLOOR,
-      )
+      // CASH-AUTH-1 R1: 権限が stale/unknown（cashAssumptionsUsable=false）のときは
+      // 新規BUY_NEW/WATCHの元手を0にする — 生の grossCash を使わない
+      // （既存のGate6 INSUFFICIENT_CASHが自然にBUY_NEWを塞ぎ、suggestedAmount/maxAmountも0になる）。
+      const availableCash = cashAssumptionsUsable
+        ? Math.max(
+            0,
+            effectiveCash.grossCash
+              - effectiveCash.safetyReserve
+              - (effectiveCash.pendingOrderCash ?? 0)
+              - MIN_CASH_FLOOR,
+          )
+        : 0
       const roleExposureByRole = computeRoleExposureByRole(trust)
       const totalTrustValue = trust.reduce((sum, fund) => sum + Math.max(0, fund.eval), 0)
       const getClassCtx = (cls: string) => {
@@ -2281,10 +2295,10 @@ export function runFullAnalysis(
     const dqSuppressedForStock = selectMarketDataQuality(state, nowMs).isSuppressed
     const safeModeActiveForStock = selectEffectiveSafeModeActive(state, nowMs)
     const effectiveCashForStock = selectEffectiveCashAssumptions(state)
-    const cashFreshness = selectCashAssumptionsFreshness(state, nowMs)
     // P5-B002b-1 / CASH-AUTH-1: 現金権限が未設定（unknown）または失効（stale）の
     // 場合、BUY_NEW候補は出さない（gate内でDATA_STALEとして扱う）。
-    const cashAssumptionsUsable = cashFreshness.state === 'known_fresh'
+    // CASH-AUTH-1 R1: 168h TTL判定はこの関数内の cashAssumptionsUsable（冒頭で一度だけ
+    // 計算済み）を共有する。ここでは重複計算しない。
     // universe（totalValue）はこの関数上部で既に同じeffectiveCashを使って計算済みのため再利用する。
     const jpStockHeadroom = computeJpStockHeadroom(
       holdings,

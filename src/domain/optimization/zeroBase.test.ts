@@ -310,3 +310,86 @@ describe('buildZeroBasePlan: P4-A148 SAFE_MODE / DQ抑制によるBUY提案停�
     expect(waitProposal).toBeDefined()
   })
 })
+
+// ── CASH-AUTH-1 R1: stale/unknown cash 権限で新規BUY金額を生成しない ─────────
+// stale/unknown 時でも input.cash（legacy display値）は参考値としてそのまま渡り得るが、
+// cashAuthorityUsable===false のときは buyBudget を計算前に0にする — SELL/WAITには影響しない。
+
+describe('buildZeroBasePlan: CASH-AUTH-1 R1 cashAuthorityUsable による新規BUY金額の fail-closed 化', () => {
+  const makeBuyableInput = (overrides: Partial<ZeroBaseInput> = {}) => {
+    const existingStock = makeHolding({ code: 'EXIST', eval: 1_100_000, score: 30, decision: 'SELL' as const })
+    const candidateStock = makeHolding({ code: '7777', eval: 100_000, score: 85, decision: 'BUY' as const })
+    const candidateAnalysis = makeAnalysis({ code: '7777', totalScore: 85, ev: 0.12, decision: 'BUY' as const, confidence: 0.9 })
+
+    return makeInput({
+      holdings: [existingStock, candidateStock],
+      analysis: [candidateAnalysis],
+      market: makeMarket({ regime: 'neutral' }),
+      cash: 1_500_000,
+      cashReserve: 7_300_000,
+      jpStockMaxRatio: 0.15,
+      ...overrides,
+    })
+  }
+
+  it('cashAuthorityUsable=false（stale/unknown 168h+1ms相当）ではBUY proposalsが0件になる', () => {
+    const plan = buildZeroBasePlan(makeBuyableInput({ cashAuthorityUsable: false }))
+    const buyProposals = plan.proposals.filter(p => p.action === 'BUY')
+    expect(buyProposals).toHaveLength(0)
+  })
+
+  it('cashAuthorityUsable=false でも input.cash に高額な参考値が入っていてもBUYは生成されない', () => {
+    // stale な参考値として巨額の cash が渡っても、usable=false なら予算計算前に0扱いになる
+    const plan = buildZeroBasePlan(makeBuyableInput({ cashAuthorityUsable: false, cash: 50_000_000 }))
+    const buyProposals = plan.proposals.filter(p => p.action === 'BUY')
+    expect(buyProposals).toHaveLength(0)
+  })
+
+  it('cashAuthorityUsable=true（168hちょうど相当）は既存のBUY生成挙動を維持する', () => {
+    const plan = buildZeroBasePlan(makeBuyableInput({ cashAuthorityUsable: true }))
+    const buyProposals = plan.proposals.filter(p => p.action === 'BUY')
+    expect(buyProposals.length).toBeGreaterThan(0)
+  })
+
+  it('cashAuthorityUsable省略時（現行互換）は既存のBUY生成挙動を維持する', () => {
+    const plan = buildZeroBasePlan(makeBuyableInput())
+    const buyProposals = plan.proposals.filter(p => p.action === 'BUY')
+    expect(buyProposals.length).toBeGreaterThan(0)
+  })
+
+  it('cashAuthorityUsable=false でも、SELL提案（buildSellProposals由来）は維持される', () => {
+    const acquired = new Date()
+    acquired.setDate(acquired.getDate() - 91)
+    const acquiredAt = acquired.toISOString().slice(0, 10)
+    const holding = makeHolding({ code: '9998', acquiredAt })
+    const analysis = makeAnalysis({ code: '9998', decision: 'SELL', totalScore: 25 })
+
+    const input = makeInput({
+      holdings: [holding],
+      trust: [makeTrust()],
+      analysis: [analysis],
+      cashAuthorityUsable: false,
+    })
+
+    const plan = buildZeroBasePlan(input)
+    const sellProposal = plan.proposals.find(p => p.code === '9998' && p.action === 'SELL')
+    expect(sellProposal).toBeDefined()
+  })
+
+  it('cashAuthorityUsable=false でも、ロック中銘柄のWAIT提案（監視系）は維持される', () => {
+    const today = new Date().toISOString().slice(0, 10)
+    const holding = makeHolding({ code: '9999', acquiredAt: today })
+    const analysis = makeAnalysis({ code: '9999', decision: 'SELL', totalScore: 25 })
+
+    const input = makeInput({
+      holdings: [holding],
+      trust: [makeTrust()],
+      analysis: [analysis],
+      cashAuthorityUsable: false,
+    })
+
+    const plan = buildZeroBasePlan(input)
+    const waitProposal = plan.proposals.find(p => p.code === '9999' && p.action === 'WAIT')
+    expect(waitProposal).toBeDefined()
+  })
+})

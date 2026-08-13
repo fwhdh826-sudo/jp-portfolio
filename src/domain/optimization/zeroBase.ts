@@ -74,6 +74,12 @@ export interface ZeroBaseInput {
   safeModeActive?: boolean
   /** P4-A148: データ品質抑制中は個別株BUY提案を生成しない。省略時はfalse（現行互換） */
   dqSuppressed?: boolean
+  /**
+   * CASH-AUTH-1 R1: 現金権限が stale/unknown のとき false。false のときは
+   * `cash` の値に関わらず新規BUY予算を0にする（frozen deployableCash=0契約と一致）。
+   * 省略時は true（現行互換）。
+   */
+  cashAuthorityUsable?: boolean
   /** Logical analysis clock used for lock and generatedAt calculations. */
   nowMs?: number
 }
@@ -419,7 +425,11 @@ export function buildZeroBasePlan(input: ZeroBaseInput): ZeroBasePlan {
     mode === 'normal' ? 1_000_000 : mode === 'caution' ? 2_000_000 : 3_000_000
   // CASH-AUTH-1: 総現金から安全余力を除いた部分（input.cash）だけが投資可能。
   // addRoom の上乗せは撤廃した — 現金の裏付けがない金額を予算に足さない。
-  const deployableCash = Math.max(0, input.cash - variableBuffer)
+  // CASH-AUTH-1 R1: cashAuthorityUsable===false（stale/unknown）のときは input.cash が
+  // 参考値であっても投資可能現金を0にする — 新規BUYの元手にしない。
+  const deployableCash = input.cashAuthorityUsable === false
+    ? 0
+    : Math.max(0, input.cash - variableBuffer)
   const rawBudget = deployableCash
   const buyBudget = mode === 'normal' ? rawBudget : mode === 'caution' ? rawBudget * 0.5 : 0
 
