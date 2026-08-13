@@ -1,67 +1,79 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-08-13T09:05:47.394941+09:00",
-  "sourceUpdatedAt": "2026-08-12T23:43:46+00:00",
+  "updatedAt": "2026-08-13T14:16:51.999516+09:00",
+  "sourceUpdatedAt": "2026-08-13T04:45:30+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": 0.33,
+      "avgSentiment": -0.33,
+      "negativeCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "Japan’s Government Is Said to Support Faster BOJ Rate Hike",
+      "topPositiveTitle": "Japan’s Government Is Said to Support Faster BOJ Rate Hike",
+      "items": [
+        {
+          "title": "Japan’s Government Is Said to Support Faster BOJ Rate Hike",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-13T04:45:30+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-13/japan-s-government-is-said-to-support-faster-boj-rate-hike",
+          "tags": [
+            "jp_broad",
+            "market",
+            "rates"
+          ]
+        }
+      ]
+    },
+    "jp_semiconductor": {
+      "avgSentiment": 1.0,
       "negativeCount": 0,
       "positiveCount": 1,
       "neutralCount": 0,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Bessent-Takaichi Divide on Optimal BOJ Path Threatens Yen Rescue",
-      "topPositiveTitle": "Bessent-Takaichi Divide on Optimal BOJ Path Threatens Yen Rescue",
+      "topNegativeTitle": "Korean Stocks Rise as Chip Rally Regains Steam",
+      "topPositiveTitle": "Korean Stocks Rise as Chip Rally Regains Steam",
       "items": [
         {
-          "title": "Bessent-Takaichi Divide on Optimal BOJ Path Threatens Yen Rescue",
-          "source": "Bloomberg Economics",
+          "title": "Korean Stocks Rise as Chip Rally Regains Steam",
+          "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-12T02:51:13+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-12/bessent-takaichi-split-on-boj-risks-undermining-joint-yen-rescue",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-08-13T03:38:27+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-13/korean-stocks-rise-as-chip-rally-regains-steam-video",
           "tags": [
-            "fx",
-            "jp_broad",
+            "jp_semiconductor",
             "market"
           ]
         }
       ]
     },
-    "jp_semiconductor": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
     "us_broad": {
-      "avgSentiment": 0.146,
+      "avgSentiment": 0.063,
       "negativeCount": 1,
-      "positiveCount": 3,
+      "positiveCount": 1,
       "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 8,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "EM Currencies Trade Mixed as Inflation Fails to Shift Fed Bets",
-      "topPositiveTitle": "S&P 500 Closes Near Record High on Tame Inflation: Markets Wrap",
+      "topNegativeTitle": "Why the Fed Is Likely to Hold Rates: TD Strategist",
+      "topPositiveTitle": "Stocks and Bonds Rise as Fed Rate-Hike Bets Ease: Markets Wrap",
       "items": [
         {
-          "title": "EM Currencies Trade Mixed as Inflation Fails to Shift Fed Bets",
-          "source": "Bloomberg Markets",
+          "title": "Why the Fed Is Likely to Hold Rates: TD Strategist",
+          "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-08-12T10:25:47+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-12/emerging-stocks-rise-on-tech-as-currency-traders-await-us-cpi",
+          "publishedAt": "2026-08-13T00:50:45+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-13/why-the-fed-is-likely-to-hold-rates-td-strategist-video",
           "tags": [
-            "fx",
             "market",
             "rates",
             "us_broad"
@@ -80,7 +92,7 @@
           ]
         },
         {
-          "title": "Gold Steadies After Tame US Inflation Data Eases Rate-Hike Bets",
+          "title": "Gold Holds Near $4,400 as Tame US Inflation Eases Rate-Hike Bets",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
@@ -94,25 +106,26 @@
           ]
         },
         {
-          "title": "US Core Inflation Comes in Subdued, Easing Pressure on Fed",
-          "source": "Bloomberg Economics",
+          "title": "US Sells 10-Year Debt at Highest Yields Since Financial Crisis",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-12T12:31:43+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-12/us-core-inflation-was-subdued-in-july-easing-pressure-on-fed",
+          "publishedAt": "2026-08-12T12:58:03+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-12/bond-traders-keep-cointoss-wager-on-september-fed-hike-post-cpi",
           "tags": [
+            "macro_risk",
             "market",
             "rates",
             "us_broad"
           ]
         },
         {
-          "title": "Divided Wall Street Seeks Fed Clues in Pivotal Inflation Report",
+          "title": "US Core Inflation Comes in Subdued, Easing Pressure on Fed",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-12T08:00:56+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-12/traders-brace-for-pivotal-cpi-as-fed-hike-hangs-in-balance",
+          "publishedAt": "2026-08-12T12:31:43+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-12/us-core-inflation-was-subdued-in-july-easing-pressure-on-fed",
           "tags": [
             "market",
             "rates",
@@ -134,30 +147,46 @@
       "items": []
     },
     "global_broad": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.71,
       "negativeCount": 0,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Stocks and Bonds Rise as Fed Rate-Hike Bets Ease: Markets Wrap",
+      "topPositiveTitle": "Stocks and Bonds Rise as Fed Rate-Hike Bets Ease: Markets Wrap",
+      "items": [
+        {
+          "title": "Stocks and Bonds Rise as Fed Rate-Hike Bets Ease: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.71,
+          "publishedAt": "2026-08-12T22:08:18+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-12/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "global_broad",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        }
+      ]
     },
     "gold": {
-      "avgSentiment": 0.25,
+      "avgSentiment": 0.335,
       "negativeCount": 0,
       "positiveCount": 1,
       "neutralCount": 1,
-      "sourceCount": 1,
+      "sourceCount": 2,
       "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Gold Steadies After Tame US Inflation Data Eases Rate-Hike Bets",
-      "topPositiveTitle": "Gold Rallies as Tame US Inflation Report Calms Rate Hike Fears",
+      "topNegativeTitle": "Gold Holds Near $4,400 as Tame US Inflation Eases Rate-Hike Bets",
+      "topPositiveTitle": "Bank of Korea Makes First Gold-Linked Investment in 13 Years",
       "items": [
         {
-          "title": "Gold Steadies After Tame US Inflation Data Eases Rate-Hike Bets",
+          "title": "Gold Holds Near $4,400 as Tame US Inflation Eases Rate-Hike Bets",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
@@ -171,45 +200,31 @@
           ]
         },
         {
-          "title": "Gold Rallies as Tame US Inflation Report Calms Rate Hike Fears",
-          "source": "Bloomberg Markets",
+          "title": "Bank of Korea Makes First Gold-Linked Investment in 13 Years",
+          "source": "Bloomberg Economics",
           "sentiment": "positive",
-          "sentimentScore": 0.5,
-          "publishedAt": "2026-08-11T23:35:34+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-11/gold-steadies-as-traders-watch-us-inflation-for-rate-hike-clues",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-13T04:39:13+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-13/bank-of-korea-makes-first-gold-linked-investment-in-13-years",
           "tags": [
+            "geopolitical",
             "gold",
-            "market",
-            "rates",
-            "us_broad"
+            "market"
           ]
         }
       ]
     },
     "reit": {
-      "avgSentiment": 0.33,
+      "avgSentiment": 0,
       "negativeCount": 0,
-      "positiveCount": 1,
+      "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Singapore’s CapitaLand Sees Profit Recovery Due to Fee Increases",
-      "topPositiveTitle": "Singapore’s CapitaLand Sees Profit Recovery Due to Fee Increases",
-      "items": [
-        {
-          "title": "Singapore’s CapitaLand Sees Profit Recovery Due to Fee Increases",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-12T23:36:07+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-12/singapore-s-capitaland-sees-profit-recovery-due-to-fee-increases",
-          "tags": [
-            "market",
-            "reit"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "dividend": {
       "avgSentiment": 0,
@@ -224,36 +239,63 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.165,
-      "negativeCount": 1,
-      "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 2,
+      "avgSentiment": 0.168,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 3,
+      "sourceCount": 2,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Internal UK Forecasts Raise Risk of Growth Downgrade Due to War",
-      "topPositiveTitle": "Qatar National Bank Tests Investor Appetite for $2 Billion Loan",
+      "topNegativeTitle": "Why Leadership Turmoil at Tata Sons Is Deepening",
+      "topPositiveTitle": "India’s RBI Turns Upbeat as Worst of Iran War Shock Recedes",
       "items": [
         {
-          "title": "Internal UK Forecasts Raise Risk of Growth Downgrade Due to War",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-12T10:23:31+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-12/internal-uk-forecasts-raise-risk-of-growth-downgrade-due-to-war",
+          "title": "Why Leadership Turmoil at Tata Sons Is Deepening",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-13T04:28:01+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-13/why-leadership-turmoil-at-tata-sons-is-deepening-video",
           "tags": [
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "China’s Coal-to-Chemicals Push Pays Off With Record Profits",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-13T01:31:23+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-13/china-s-coal-to-chemicals-push-pays-off-with-record-profits",
+          "tags": [
+            "commodity",
             "geopolitical",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Qatar National Bank Tests Investor Appetite for $2 Billion Loan",
-          "source": "Bloomberg Economics",
+          "title": "US Sells 10-Year Debt at Highest Yields Since Financial Crisis",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-12T04:13:52+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-12/qatar-national-bank-tests-investor-appetite-for-2-billion-loan",
+          "publishedAt": "2026-08-12T12:58:03+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-12/bond-traders-keep-cointoss-wager-on-september-fed-hike-post-cpi",
+          "tags": [
+            "macro_risk",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "India’s RBI Turns Upbeat as Worst of Iran War Shock Recedes",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-13T04:32:29+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-13/india-s-rbi-turns-upbeat-as-worst-of-iran-war-shock-recedes",
           "tags": [
             "geopolitical",
             "macro_risk",
@@ -263,72 +305,56 @@
       ]
     },
     "fx": {
-      "avgSentiment": 0.0,
-      "negativeCount": 1,
-      "positiveCount": 1,
+      "avgSentiment": 0,
+      "negativeCount": 0,
+      "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 2,
-      "itemCount": 2,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "EM Currencies Trade Mixed as Inflation Fails to Shift Fed Bets",
-      "topPositiveTitle": "Bessent-Takaichi Divide on Optimal BOJ Path Threatens Yen Rescue",
-      "items": [
-        {
-          "title": "EM Currencies Trade Mixed as Inflation Fails to Shift Fed Bets",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-12T10:25:47+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-12/emerging-stocks-rise-on-tech-as-currency-traders-await-us-cpi",
-          "tags": [
-            "fx",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Bessent-Takaichi Divide on Optimal BOJ Path Threatens Yen Rescue",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-12T02:51:13+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-12/bessent-takaichi-split-on-boj-risks-undermining-joint-yen-rescue",
-          "tags": [
-            "fx",
-            "jp_broad",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "rates": {
-      "avgSentiment": 0.034,
-      "negativeCount": 1,
+      "avgSentiment": 0.007,
+      "negativeCount": 2,
       "positiveCount": 1,
-      "neutralCount": 3,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "EM Currencies Trade Mixed as Inflation Fails to Shift Fed Bets",
-      "topPositiveTitle": "Gold Rallies as Tame US Inflation Report Calms Rate Hike Fears",
+      "topNegativeTitle": "Why the Fed Is Likely to Hold Rates: TD Strategist",
+      "topPositiveTitle": "Stocks and Bonds Rise as Fed Rate-Hike Bets Ease: Markets Wrap",
       "items": [
         {
-          "title": "EM Currencies Trade Mixed as Inflation Fails to Shift Fed Bets",
-          "source": "Bloomberg Markets",
+          "title": "Why the Fed Is Likely to Hold Rates: TD Strategist",
+          "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-08-12T10:25:47+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-12/emerging-stocks-rise-on-tech-as-currency-traders-await-us-cpi",
+          "publishedAt": "2026-08-13T00:50:45+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-13/why-the-fed-is-likely-to-hold-rates-td-strategist-video",
           "tags": [
-            "fx",
             "market",
             "rates",
             "us_broad"
           ]
         },
         {
-          "title": "Gold Steadies After Tame US Inflation Data Eases Rate-Hike Bets",
+          "title": "Japan’s Government Is Said to Support Faster BOJ Rate Hike",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-13T04:45:30+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-13/japan-s-government-is-said-to-support-faster-boj-rate-hike",
+          "tags": [
+            "jp_broad",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Gold Holds Near $4,400 as Tame US Inflation Eases Rate-Hike Bets",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
@@ -342,40 +368,26 @@
           ]
         },
         {
-          "title": "US Core Inflation Comes in Subdued, Easing Pressure on Fed",
+          "title": "RBI Proposes New Rules to Standardize Loan Rates for Borrowers",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-12T12:31:43+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-12/us-core-inflation-was-subdued-in-july-easing-pressure-on-fed",
+          "publishedAt": "2026-08-12T14:07:51+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-12/rbi-proposes-new-rules-to-standardize-loan-rates-for-borrowers",
           "tags": [
             "market",
-            "rates",
-            "us_broad"
+            "rates"
           ]
         },
         {
-          "title": "Divided Wall Street Seeks Fed Clues in Pivotal Inflation Report",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-12T08:00:56+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-12/traders-brace-for-pivotal-cpi-as-fed-hike-hangs-in-balance",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Gold Rallies as Tame US Inflation Report Calms Rate Hike Fears",
+          "title": "US Sells 10-Year Debt at Highest Yields Since Financial Crisis",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.5,
-          "publishedAt": "2026-08-11T23:35:34+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-11/gold-steadies-as-traders-watch-us-inflation-for-rate-hike-clues",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-12T12:58:03+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-12/bond-traders-keep-cointoss-wager-on-september-fed-hike-post-cpi",
           "tags": [
-            "gold",
+            "macro_risk",
             "market",
             "rates",
             "us_broad"
@@ -384,51 +396,28 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.266,
+      "avgSentiment": 0.542,
       "negativeCount": 0,
-      "positiveCount": 3,
-      "neutralCount": 2,
-      "sourceCount": 2,
+      "positiveCount": 4,
+      "neutralCount": 1,
+      "sourceCount": 1,
       "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Rio Tinto Aluminum Smelter Receives $1.8 Billion Bailout",
-      "topPositiveTitle": "Origin Profit Beats Estimates on Australian EV, Battery Uptake",
+      "topNegativeTitle": "China’s Coal-to-Chemicals Push Pays Off With Record Profits",
+      "topPositiveTitle": "Origin Shares Rise Most in Six Months as Earnings Beat Estimates",
       "items": [
         {
-          "title": "Rio Tinto Aluminum Smelter Receives $1.8 Billion Bailout",
+          "title": "China’s Coal-to-Chemicals Push Pays Off With Record Profits",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-12T21:21:39+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-12/rio-tinto-aluminum-smelter-gets-1-8-billion-australian-bailout",
+          "publishedAt": "2026-08-13T01:31:23+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-13/china-s-coal-to-chemicals-push-pays-off-with-record-profits",
           "tags": [
             "commodity",
+            "geopolitical",
+            "macro_risk",
             "market"
-          ]
-        },
-        {
-          "title": "Nigeria Targets $50 Billion in Deepwater Oil Investment With Tax Credits",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-11T19:11:55+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-11/nigeria-boosts-tax-breaks-to-lure-50-billion-in-deepwater-oil",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "Asian Stocks Poised to Gain on Benign US Inflation: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-12T22:08:18+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-12/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "market",
-            "us_broad"
           ]
         },
         {
@@ -444,10 +433,38 @@
           ]
         },
         {
-          "title": "Origin Profit Beats Estimates on Australian EV, Battery Uptake",
+          "title": "Trump Reverts to Economic Squeeze of Iranian Regime",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.67,
+          "publishedAt": "2026-08-13T04:36:19+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-13/trump-reverts-to-economic-squeeze-of-iranian-regime-video",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Stocks and Bonds Rise as Fed Rate-Hike Bets Ease: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.71,
+          "publishedAt": "2026-08-12T22:08:18+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-12/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "global_broad",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Origin Shares Rise Most in Six Months as Earnings Beat Estimates",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
           "publishedAt": "2026-08-12T23:19:04+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-08-12/origin-profit-beats-estimates-on-australian-ev-battery-uptake",
           "tags": [
@@ -458,24 +475,25 @@
       ]
     },
     "geopolitical": {
-      "avgSentiment": -0.083,
-      "negativeCount": 1,
-      "positiveCount": 0,
+      "avgSentiment": 0.334,
+      "negativeCount": 0,
+      "positiveCount": 4,
       "neutralCount": 3,
-      "sourceCount": 2,
-      "itemCount": 4,
+      "sourceCount": 3,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "Internal UK Forecasts Raise Risk of Growth Downgrade Due to War",
-      "topPositiveTitle": "Russian Economy Returns to Growth Despite Ukraine Drone Strikes",
+      "topNegativeTitle": "China’s Coal-to-Chemicals Push Pays Off With Record Profits",
+      "topPositiveTitle": "Bank of Korea Makes First Gold-Linked Investment in 13 Years",
       "items": [
         {
-          "title": "Internal UK Forecasts Raise Risk of Growth Downgrade Due to War",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-12T10:23:31+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-12/internal-uk-forecasts-raise-risk-of-growth-downgrade-due-to-war",
+          "title": "China’s Coal-to-Chemicals Push Pays Off With Record Profits",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-13T01:31:23+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-13/china-s-coal-to-chemicals-push-pays-off-with-record-profits",
           "tags": [
+            "commodity",
             "geopolitical",
             "macro_risk",
             "market"
@@ -494,19 +512,6 @@
           ]
         },
         {
-          "title": "Qatar National Bank Tests Investor Appetite for $2 Billion Loan",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-12T04:13:52+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-12/qatar-national-bank-tests-investor-appetite-for-2-billion-loan",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
           "title": "高市首相 イラン大統領と電話会談“ホルムズ自由で安全 重要”",
           "source": "NHK 経済",
           "sentiment": "neutral",
@@ -518,6 +523,32 @@
             "market"
           ],
           "titleJa": "高市首相 イラン大統領と電話会談“ホルムズ自由で安全 重要”"
+        },
+        {
+          "title": "高市首相 オマーン国王と電話会談“国際社会とも協議を”",
+          "source": "NHK 経済",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-10T11:26:40+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20260810de43179",
+          "tags": [
+            "geopolitical",
+            "market"
+          ],
+          "titleJa": "高市首相 オマーン国王と電話会談“国際社会とも協議を”"
+        },
+        {
+          "title": "Bank of Korea Makes First Gold-Linked Investment in 13 Years",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-13T04:39:13+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-13/bank-of-korea-makes-first-gold-linked-investment-in-13-years",
+          "tags": [
+            "geopolitical",
+            "gold",
+            "market"
+          ]
         }
       ]
     }
