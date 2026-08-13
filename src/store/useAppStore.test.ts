@@ -357,7 +357,7 @@ describe('useAppStore: cashAssumptions（現金権限）', () => {
     expect(state.cashAssumptions.source).toBe('MANUAL')
     expect(selectCashAssumptionsFreshness(state).state).toBe('known_fresh')
     expect(selectCashAuthorityView(state).confirmedZero).toBe(true)
-    expect(selectCashAuthorityView(state).deployableCash).toBe(0)
+    expect(selectCashAuthorityView(state).cashBaseLimit).toBe(0)
   })
 
   it('権限と legacy な state.cash は加算されない（置き換えのみ）', async () => {

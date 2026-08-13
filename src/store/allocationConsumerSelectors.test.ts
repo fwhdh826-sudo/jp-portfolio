@@ -12,6 +12,7 @@ import {
   selectAllocationClassProjection,
   selectAllocationConsumerSnapshot,
   selectAllocationInstrumentProjections,
+  selectExecutableDeployableCash,
   selectT2AllocationProjection,
   selectT7TrustAllocationProjections,
 } from './allocationConsumerSelectors'
@@ -661,5 +662,114 @@ describe('R3-a1 shared AllocationPlanSnapshot consumer contract', () => {
       effectiveInstrumentHeadroom: sourceInstrument.effectiveInstrumentHeadroom,
     })
     expect(projection?.snapshot.shortTermBudget).toBe(plan.shortTermBudget)
+  })
+})
+
+// CASH-AUTH-1 R2: DISPLAY_DEPLOYABLE_CASH_DIVERGES_FROM_ENGINE_UNCERTAINTY の
+// deterministic contradiction tests。全ケースで buildAllocationPlanSnapshot（実際の
+// deriveCashModel を含む本物の engine）から得た snapshot を経由する — UI/selector 側
+// で holdings/crossTab/staleness を再計算しないことを、実測値の一致で証明する。
+describe('CASH-AUTH-1 R2: selectExecutableDeployableCash は canonical AllocationPlanSnapshot のみを読む', () => {
+  function customSnapshot(overrides: {
+    cash?: Partial<AllocationPlanInput['cash']>
+    safetyState?: Partial<AllocationPlanInput['safetyState']>
+  } = {}): AllocationPlanSnapshot {
+    const base = input()
+    return buildAllocationPlanSnapshot({
+      ...base,
+      cash: { ...base.cash, ...overrides.cash },
+      safetyState: { ...base.safetyState, ...overrides.safetyState },
+    })
+  }
+
+  it('#1 fresh cash + holdings stale → engine deployableCash=0、selectorはそれと完全一致', () => {
+    const snap = customSnapshot({
+      cash: { grossCash: 5_000_000, safetyReserve: 0, pendingOrderCash: 0 },
+      safetyState: { holdings: 'stale' },
+    })
+    expect(snap.deployableCash).toBe(0)
+    expect(selectExecutableDeployableCash(state(snap, 'current'))).toEqual({
+      available: true,
+      amount: 0,
+      unavailableStatus: null,
+    })
+  })
+
+  it('#2 fresh cash + crossTab stale → engine deployableCash=0、selectorはそれと完全一致', () => {
+    const snap = customSnapshot({
+      cash: { grossCash: 5_000_000, safetyReserve: 0, pendingOrderCash: 0 },
+      safetyState: { crossTab: 'stale' },
+    })
+    expect(snap.deployableCash).toBe(0)
+    expect(selectExecutableDeployableCash(state(snap, 'current'))).toEqual({
+      available: true,
+      amount: 0,
+      unavailableStatus: null,
+    })
+  })
+
+  it('#3 全て fresh → selector は canonical CashModel.deployableCash（正の値）と一致する', () => {
+    const snap = customSnapshot({
+      cash: { grossCash: 5_000_000, safetyReserve: 0, pendingOrderCash: 0 },
+    })
+    expect(snap.deployableCash).toBeGreaterThan(0)
+    expect(selectExecutableDeployableCash(state(snap, 'current'))).toEqual({
+      available: true,
+      amount: snap.deployableCash,
+      unavailableStatus: null,
+    })
+  })
+
+  it('#4 cash stale → 参照現金が正でも engine deployableCash=0、selectorも0', () => {
+    const snap = customSnapshot({
+      cash: { grossCash: 5_000_000, safetyReserve: 0, pendingOrderCash: 0 },
+      safetyState: { cash: 'stale' },
+    })
+    expect(snap.deployableCash).toBe(0)
+    expect(snap.blockedReasons).toContain('CASH_AUTHORITY_STALE')
+    expect(selectExecutableDeployableCash(state(snap, 'current')).amount).toBe(0)
+  })
+
+  it('#5 confirmed zero（grossCash=0・fresh）→ deployableCash=0 だが unknown/stale とは別の blockedReasons', () => {
+    const snap = customSnapshot({
+      cash: { grossCash: 0, safetyReserve: 0, pendingOrderCash: 0 },
+    })
+    expect(snap.deployableCash).toBe(0)
+    expect(snap.blockedReasons).not.toContain('CASH_AUTHORITY_UNAVAILABLE')
+    expect(snap.blockedReasons).not.toContain('CASH_AUTHORITY_STALE')
+    expect(selectExecutableDeployableCash(state(snap, 'current'))).toEqual({
+      available: true,
+      amount: 0,
+      unavailableStatus: null,
+    })
+  })
+
+  it('§13 snapshot unavailable（absent/stale/invalid）→ 現金のみの正の値へ楽観的フォールバックせず必ず0', () => {
+    expect(selectExecutableDeployableCash(state(null, 'absent'))).toEqual({
+      available: false,
+      amount: 0,
+      unavailableStatus: 'absent',
+    })
+    const snap = customSnapshot({ cash: { grossCash: 5_000_000, safetyReserve: 0, pendingOrderCash: 0 } })
+    expect(selectExecutableDeployableCash(state(snap, 'stale'))).toEqual({
+      available: false,
+      amount: 0,
+      unavailableStatus: 'stale',
+    })
+    expect(selectExecutableDeployableCash(state(null, 'invalid'))).toEqual({
+      available: false,
+      amount: 0,
+      unavailableStatus: 'invalid',
+    })
+  })
+
+  it('estimate_only（available だが未実行）でも holdings/crossTab を独自再計算せず snapshot の値をそのまま返す', () => {
+    const snap = customSnapshot({
+      cash: { grossCash: 9_999_999, safetyReserve: 0, pendingOrderCash: 0 },
+      safetyState: { holdings: 'stale', crossTab: 'stale' },
+    })
+    const result = selectExecutableDeployableCash(state(snap, 'estimate_only'))
+    expect(result.available).toBe(true)
+    expect(result.amount).toBe(snap.deployableCash)
   })
 })

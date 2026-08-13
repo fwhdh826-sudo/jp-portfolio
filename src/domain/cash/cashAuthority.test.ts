@@ -134,19 +134,19 @@ describe('evaluateCashAuthorityFreshness — 凍結TTL 168h / 警告 144h', () =
   })
 })
 
-describe('deriveCashAuthorityView — 凍結式', () => {
-  it('deployableCash = max(0, gross - safetyReserve - pendingOrderCash)', () => {
+describe('deriveCashAuthorityView — 凍結式（cashBaseLimit）', () => {
+  it('cashBaseLimit = max(0, gross - safetyReserve - pendingOrderCash)', () => {
     const view = deriveCashAuthorityView(manual({
       grossCash: 5_000_000, safetyReserve: 1_000_000, pendingOrderCash: 500_000,
     }), NOW)
-    expect(view.deployableCash).toBe(3_500_000)
+    expect(view.cashBaseLimit).toBe(3_500_000)
   })
 
   it('pendingOrderCash=null（不明）は差し引かないが警告対象として残る', () => {
     const view = deriveCashAuthorityView(manual({
       grossCash: 5_000_000, safetyReserve: 1_000_000, pendingOrderCash: null,
     }), NOW)
-    expect(view.deployableCash).toBe(4_000_000)
+    expect(view.cashBaseLimit).toBe(4_000_000)
     expect(view.pendingOrderCash).toBeNull()
   })
 
@@ -158,10 +158,10 @@ describe('deriveCashAuthorityView — 凍結式', () => {
   it('正の pendingOrderCash はちょうど1回だけ差し引かれる', () => {
     const base = deriveCashAuthorityView(manual({
       grossCash: 1_000_000, safetyReserve: 0, pendingOrderCash: 0,
-    }), NOW).deployableCash
+    }), NOW).cashBaseLimit
     const withPending = deriveCashAuthorityView(manual({
       grossCash: 1_000_000, safetyReserve: 0, pendingOrderCash: 300_000,
-    }), NOW).deployableCash
+    }), NOW).cashBaseLimit
     expect(base - withPending).toBe(300_000)
   })
 
@@ -169,12 +169,12 @@ describe('deriveCashAuthorityView — 凍結式', () => {
     const view = deriveCashAuthorityView(manual({
       grossCash: 1_000_000, safetyReserve: 1_000_000, pendingOrderCash: null,
     }), NOW)
-    expect(view.deployableCash).toBe(0)
+    expect(view.cashBaseLimit).toBe(0)
   })
 
   it('stale では金額を参考値として保持したまま deployable が 0 になる', () => {
     const view = deriveCashAuthorityView(manual({ updatedAt: ago(200 * HOUR) }), NOW)
-    expect(view.deployableCash).toBe(0)
+    expect(view.cashBaseLimit).toBe(0)
     expect(view.freshness.state).toBe('stale')
     // 権威値は 0 に落ちるが、表示用の参考値は消えない
     expect(view.grossCash).toBe(0)
@@ -191,7 +191,7 @@ describe('deriveCashAuthorityView — 凍結式', () => {
 
   it('unknown（未設定）でも deployable は 0', () => {
     const view = deriveCashAuthorityView(NO_CASH_AUTHORITY, NOW)
-    expect(view.deployableCash).toBe(0)
+    expect(view.cashBaseLimit).toBe(0)
     expect(view.confirmedZero).toBe(false)
   })
 
@@ -201,7 +201,7 @@ describe('deriveCashAuthorityView — 凍結式', () => {
     }), NOW)
     expect(view.freshness.state).toBe('known_fresh')
     expect(view.confirmedZero).toBe(true)
-    expect(view.deployableCash).toBe(0)
+    expect(view.cashBaseLimit).toBe(0)
   })
 })
 

@@ -270,6 +270,28 @@ export function selectAllocationConsumerSnapshot(state: AppState): AllocationCon
   return value
 }
 
+// CASH-AUTH-1 R2: T0/T9 が「今いくら投資可能か」を表示するための唯一の読み取り
+// 経路。CashAuthorityView.cashBaseLimit（現金のみの上限）を実行可能額として扱う
+// 表示バグを閉じるため、canonical AllocationPlanSnapshot（selectAllocationConsumerSnapshot
+// が既に memo 化・検証済み）の deployableCash をそのまま読むだけで、ここでは
+// holdings/crossTab/staleness を一切再計算しない（second engine を作らない）。
+export interface ExecutableDeployableCash {
+  /** canonical snapshot が現在 available か */
+  readonly available: boolean
+  /** 実行可能現金。snapshot 利用不可時は必ず 0（楽観的フォールバックはしない） */
+  readonly amount: number
+  /** available=false のときの理由。available=true のときは null */
+  readonly unavailableStatus: AllocationPlanSnapshotState | null
+}
+
+export function selectExecutableDeployableCash(state: AppState): ExecutableDeployableCash {
+  const snapshot = selectAllocationConsumerSnapshot(state)
+  if (snapshot.availability === 'unavailable') {
+    return { available: false, amount: 0, unavailableStatus: snapshot.status }
+  }
+  return { available: true, amount: snapshot.deployableCash, unavailableStatus: null }
+}
+
 export const selectAllocationClassProjection = (assetClass: AssetClass) =>
   (state: AppState): AllocationClassProjection | null => {
     const snapshot = selectAllocationConsumerSnapshot(state)

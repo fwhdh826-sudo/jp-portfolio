@@ -508,8 +508,10 @@ function CsvSyncSummaryPanel({ summary }: { summary: CsvSyncSummary | null | und
 const DRAFT_PREVIEW_TIMESTAMP = '2000-01-01T00:00:00.000Z'
 
 // ── CASH-AUTH-1: 現金権限（T9 = 唯一の primary editor） ──────────
-// 「OSが現在いくらを投資可能現金として認識しているか」「その元データはいつ更新したか」
-// 「何円を安全余力として除外しているか」を1画面で確定できるようにする。
+// 「総現金・生活安全余力・未約定買付をどう入力したか」「その元データはいつ更新したか」
+// 「保存後の現金側の上限（cashBaseLimit）はいくらか」を1画面で確定できるようにする。
+// CASH-AUTH-1 R2: 実際に「今いくら投資可能か」（canonical AllocationPlanSnapshot の
+// deployableCash）は T0 のサマリーカードでのみ表示する — T9 は現金のみの上限を扱う。
 // T0 は読み取り専用サマリー、T1 にはエディタを置かない。
 function CashAssumptionsSection({ sectionTitleStyle }: { sectionTitleStyle: CSSProperties }) {
   const cashAssumptions = useAppStore(s => s.cashAssumptions)
@@ -569,7 +571,11 @@ function CashAssumptionsSection({ sectionTitleStyle }: { sectionTitleStyle: CSSP
   const draftErrors = draftValidation.ok ? [] : draftValidation.errors
   const draftErrorFor = (field: 'grossCash' | 'safetyReserve' | 'pendingOrderCash') =>
     draftErrors.find(e => e.field === field)?.message ?? null
-  const deployablePreview = draftValidation.ok
+  // CASH-AUTH-1 R2: 下書きは grossCash/safetyReserve/pendingOrderCash だけを反映した
+  // 現金側の上限（cashBaseLimit）であり、保存後の実際の投資可能額（canonical
+  // AllocationPlanSnapshot の deployableCash）を先取りして約束するものではない
+  // （データ鮮度・dataUncertaintyReserve・allocation制約は下書きの時点では未確定）。
+  const cashBaseLimitPreview = draftValidation.ok
     ? Math.max(
         0,
         draftValidation.record.grossCash
@@ -839,17 +845,18 @@ function CashAssumptionsSection({ sectionTitleStyle }: { sectionTitleStyle: CSSP
         </div>
 
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <span style={{ ...typography.bodySmall, fontWeight: 700 }}>保存後の投資可能現金</span>
+          <span style={{ ...typography.bodySmall, fontWeight: 700 }}>保存後の現金ベース上限</span>
           <span
             data-testid="cash-authority-deployable-preview"
             style={{ ...typography.body, fontWeight: 700, color: colors.textPrimary }}
           >
-            {deployablePreview === null ? '—' : formatJPYAuto(deployablePreview)}
+            {cashBaseLimitPreview === null ? '—' : formatJPYAuto(cashBaseLimitPreview)}
           </span>
         </div>
         <div style={{ ...typography.caption, color: colors.textMuted }}>
-          総現金から生活・安全余力と未約定の買付注文を差し引いた上限額です。
-          実際の買付額はここからさらに各資産クラス・銘柄の上限で絞られます。
+          総現金から生活・安全余力と未約定の買付注文だけを差し引いた、現金側の上限です。
+          保存後の実際の投資可能額は、データ鮮度や各資産クラス・銘柄の上限によって
+          これよりさらに小さく、あるいは0円になることがあります。
         </div>
 
         <div style={{ display: 'flex', gap: spacing[2], flexWrap: 'wrap' }}>

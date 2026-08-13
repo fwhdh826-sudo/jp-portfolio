@@ -21,6 +21,7 @@ import {
   selectEffectiveSafeModeActive,
   selectSafeModeDataQuality,
 } from '../../store/selectors'
+import { selectExecutableDeployableCash } from '../../store/allocationConsumerSelectors'
 import { formatJPYAuto, formatDateTime, formatRelativeTime } from '../../utils/format'
 import { resolveNewsDisplayText, NEWS_DISPLAY_LIMITS } from '../../utils/newsDisplay'
 import { selectIsStale, selectMarketDataQuality } from '../../store/selectors'
@@ -1043,10 +1044,20 @@ function AssetSnapshotMini() {
 // ─────────────────────────────────────────────────────────────
 function CashAuthoritySummaryCard() {
   const authority = useAppStore(selectCashAuthorityView)
+  // CASH-AUTH-1 R2: 「投資可能現金」は canonical AllocationPlanSnapshot（deriveCashModel）
+  // からのみ読む — cashBaseLimit（現金のみの上限）を実行可能額として表示しない。
+  // holdings/crossTab の safety state はここでは一切再計算しない。
+  const executable = useAppStore(selectExecutableDeployableCash)
   const setTab = useAppStore(s => s.setTab)
 
   const unavailable = authority.source !== 'MANUAL'
   const stale = !unavailable && authority.freshness.state === 'stale'
+  // 現金権限自体は fresh で参照現金も正なのに、canonical snapshot が
+  // 利用できない（未計算・stale・invalid）ため 0 として扱われているケース。
+  // grossCash=0（confirmed zero）はここに含めない — その 0 は現金側の事実であり、
+  // 配分計算の制限による 0 ではないため。
+  const allocationRestricted =
+    !unavailable && !stale && !executable.available && authority.referenceGrossCash > 0
 
   return (
     <div className="card" data-testid="t0-cash-authority-summary">
@@ -1062,7 +1073,7 @@ function CashAuthoritySummaryCard() {
       <div className="home-info-row">
         <span className="home-info-row__label">投資可能現金</span>
         <span className="home-info-row__total" data-testid="t0-cash-authority-deployable">
-          {formatJPYAuto(authority.deployableCash)}
+          {formatJPYAuto(executable.amount)}
         </span>
       </div>
 
@@ -1074,6 +1085,11 @@ function CashAuthoritySummaryCard() {
         ) : stale ? (
           <span data-testid="t0-cash-authority-state" style={{ color: colors.waitText, fontWeight: 600 }}>
             ⚠ 期限切れ（168時間超）— 表示金額は参考値で、買付の提案は行われません
+          </span>
+        ) : allocationRestricted ? (
+          <span data-testid="t0-cash-authority-state" style={{ color: colors.waitText, fontWeight: 600 }}>
+            ⚠ 配分計算が未反映のため投資可能現金は0円として扱われます
+            {executable.unavailableStatus === 'absent' ? '（未計算）' : '（再計算が必要）'}
           </span>
         ) : authority.freshness.approachingExpiry ? (
           <span data-testid="t0-cash-authority-state" style={{ color: colors.waitText, fontWeight: 600 }}>

@@ -178,8 +178,20 @@ export interface CashAuthorityView {
   referenceGrossCash: number
   referenceSafetyReserve: number
   referencePendingOrderCash: number | null
-  /** 凍結式による投資可能現金。unknown / stale / invalid では必ず 0 */
-  deployableCash: number
+  /**
+   * CASH-AUTH-1 R2: 現金権限のみから求めた上限（grossCash - safetyReserve -
+   * pendingOrderCash）。unknown / stale / invalid では必ず 0。
+   *
+   * これは authority-input の upper bound に過ぎず、dataUncertaintyReserve /
+   * allocation cap / headroom を一切含まない — このモジュールは holdings や
+   * crossTab の safety state を知らないため、それらを織り込むことができない
+   * （知らない状態を織り込んだふりをしない）。
+   *
+   * 実際に「今いくら投資可能か」を表示する UI は、この値ではなく canonical
+   * AllocationPlanSnapshot（`deriveCashModel` が算出する `deployableCash`）を
+   * 読むこと。この値を実行可能額として user-visible に扱ってはならない。
+   */
+  cashBaseLimit: number
   freshness: CashAuthorityFreshness
   /** 有効な権限のもとで grossCash=0 が確認済み（unknown とは別） */
   confirmedZero: boolean
@@ -187,8 +199,14 @@ export interface CashAuthorityView {
 }
 
 /**
- * 凍結式そのままの表示用ビュー。allocation engine（deriveCashModel）と同じ式を
- * 使うが、engine 側の headroom / budget 制約は含まない上限値である。
+ * 凍結式そのままの表示用ビュー。allocation engine（deriveCashModel）と同じ現金側の
+ * 式を使うが、dataUncertaintyReserve / engine 側の headroom・budget 制約は含まない
+ * 上限値（cashBaseLimit）である — 実行可能額（executable deployable cash）ではない。
+ *
+ * CASH-AUTH-1 R2: このビューは holdings / crossTab の safety state を持たないため、
+ * それらに由来する dataUncertaintyReserve を計算できない。実行可能額の表示は
+ * canonical AllocationPlanSnapshot（deriveCashModel）を読むこと（このモジュールを
+ * 2つ目の engine にしない）。
  */
 export function deriveCashAuthorityView(
   record: CashAssumptions,
@@ -199,7 +217,7 @@ export function deriveCashAuthorityView(
   const grossCash = usable ? record.grossCash : 0
   const safetyReserve = usable ? record.safetyReserve : 0
   const pendingOrderCash = usable ? record.pendingOrderCash : null
-  const deployableCash = usable
+  const cashBaseLimit = usable
     ? Math.max(0, grossCash - safetyReserve - (pendingOrderCash ?? 0))
     : 0
   const isManual = record.source === 'MANUAL'
@@ -213,7 +231,7 @@ export function deriveCashAuthorityView(
     referencePendingOrderCash: isManual && isIntegerJpy(record.pendingOrderCash)
       ? record.pendingOrderCash
       : null,
-    deployableCash,
+    cashBaseLimit,
     freshness,
     confirmedZero: usable && record.grossCash === 0,
     updatedAt: isManual ? record.updatedAt : null,
