@@ -13,6 +13,10 @@ import { buildValidCandidateFunnelArtifact } from './candidateFunnelArtifact.fix
 import dataArtifact from '../../data/candidate_funnel.json'
 import publicArtifact from '../../public/data/candidate_funnel.json'
 
+function requiredGate(artifact: ReturnType<typeof buildValidCandidateFunnelArtifact>, id: string) {
+  return artifact._meta.qualityGate.gates.find((gate: { id: string }) => gate.id === id)!
+}
+
 describe('parseCandidateFunnelArtifact — real production artifact', () => {
   it('parses data/candidate_funnel.json successfully', () => {
     const result = parseCandidateFunnelArtifact(dataArtifact)
@@ -59,10 +63,48 @@ describe('parseCandidateFunnelArtifact — valid fixture baseline', () => {
 
   it('accepts P-15 value=null (no prior baseline)', () => {
     const artifact = buildValidCandidateFunnelArtifact()
-    const p15 = artifact._meta.qualityGate.gates.find((g: { id: string }) => g.id === 'P-15')!
+    const p15 = requiredGate(artifact, 'P-15')
     p15.value = null
     const result = parseCandidateFunnelArtifact(artifact)
     expect(result.ok).toBe(true)
+  })
+
+  it('accepts P-15 WARN', () => {
+    const artifact = buildValidCandidateFunnelArtifact()
+    const p15 = requiredGate(artifact, 'P-15')
+    p15.value = 0.25
+    p15.status = 'WARN'
+    expect(parseCandidateFunnelArtifact(artifact).ok).toBe(true)
+  })
+
+  it('keeps P-15 WARN nonblocking when overallPass=true and hardFailIds=[]', () => {
+    const artifact = buildValidCandidateFunnelArtifact()
+    requiredGate(artifact, 'P-15').status = 'WARN'
+    artifact._meta.qualityGate.overallPass = true
+    artifact._meta.qualityGate.hardFailIds = []
+    const result = parseCandidateFunnelArtifact(artifact)
+    expect(result.ok).toBe(true)
+    if (!result.ok) throw new Error('expected ok')
+    expect(result.data._meta.qualityGate.overallPass).toBe(true)
+    expect(result.data._meta.qualityGate.hardFailIds).toEqual([])
+  })
+
+  it('accepts P-15 RECORD', () => {
+    const artifact = buildValidCandidateFunnelArtifact()
+    requiredGate(artifact, 'P-15').status = 'RECORD'
+    expect(parseCandidateFunnelArtifact(artifact).ok).toBe(true)
+  })
+
+  it('preserves P-15 N/A parsing semantics', () => {
+    const artifact = buildValidCandidateFunnelArtifact()
+    requiredGate(artifact, 'P-15').status = 'N/A'
+    expect(parseCandidateFunnelArtifact(artifact).ok).toBe(true)
+  })
+
+  it.each(['P-03', 'P-09'])('accepts backend-authorized nonblocking WARN for %s', (id) => {
+    const artifact = buildValidCandidateFunnelArtifact()
+    requiredGate(artifact, id).status = 'WARN'
+    expect(parseCandidateFunnelArtifact(artifact).ok).toBe(true)
   })
 
   it('accepts auxiliary gates such as PRESCREEN_DUPLICATE alongside P-01..P-15', () => {
@@ -112,14 +154,35 @@ describe('parseCandidateFunnelArtifact — privacy / provenance rejection', () =
 })
 
 describe('parseCandidateFunnelArtifact — quality gate rejection', () => {
+  it('rejects P-14 WARN', () => {
+    const artifact = buildValidCandidateFunnelArtifact()
+    requiredGate(artifact, 'P-14').status = 'WARN'
+    expect(parseCandidateFunnelArtifact(artifact).ok).toBe(false)
+  })
+
+  it('rejects WARN on an arbitrary required gate', () => {
+    const artifact = buildValidCandidateFunnelArtifact()
+    requiredGate(artifact, 'P-01').status = 'WARN'
+    expect(parseCandidateFunnelArtifact(artifact).ok).toBe(false)
+  })
+
+  it('rejects WARN on an unknown auxiliary gate', () => {
+    const artifact = buildValidCandidateFunnelArtifact()
+    const auxiliary = artifact._meta.qualityGate.gates.find((gate: { id: string }) => gate.id === 'PRESCREEN_DUPLICATE')!
+    auxiliary.status = 'WARN'
+    expect(parseCandidateFunnelArtifact(artifact).ok).toBe(false)
+  })
+
   it('rejects overallPass=false', () => {
     const artifact = buildValidCandidateFunnelArtifact()
+    requiredGate(artifact, 'P-15').status = 'WARN'
     artifact._meta.qualityGate.overallPass = false
     expect(parseCandidateFunnelArtifact(artifact).ok).toBe(false)
   })
 
   it('rejects non-empty hardFailIds', () => {
     const artifact = buildValidCandidateFunnelArtifact()
+    requiredGate(artifact, 'P-15').status = 'WARN'
     artifact._meta.qualityGate.hardFailIds = ['P-14']
     expect(parseCandidateFunnelArtifact(artifact).ok).toBe(false)
   })
@@ -132,7 +195,7 @@ describe('parseCandidateFunnelArtifact — quality gate rejection', () => {
 
   it('rejects a duplicated gate id in P-01..P-15', () => {
     const artifact = buildValidCandidateFunnelArtifact()
-    const p14 = artifact._meta.qualityGate.gates.find((g: { id: string }) => g.id === 'P-14')!
+    const p14 = requiredGate(artifact, 'P-14')
     artifact._meta.qualityGate.gates.push({ ...p14 })
     expect(parseCandidateFunnelArtifact(artifact).ok).toBe(false)
   })

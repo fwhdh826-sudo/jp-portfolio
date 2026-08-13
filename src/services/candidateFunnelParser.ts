@@ -59,6 +59,15 @@ const FORBIDDEN_KEYS: ReadonlySet<string> = new Set([
   'BLOCKED',
 ])
 
+// production backend authority（data/candidate_funnel_batch.py）がWARNを
+// 非blockingで出力するrequired gateだけを列挙する。WARNをstatus enumへ追加
+// しただけで、他のrequired/auxiliary gateへ許可範囲を広げない。
+const CANDIDATE_FUNNEL_QUALITY_GATE_WARN_ALLOWED_IDS: ReadonlySet<string> = new Set([
+  'P-03',
+  'P-09',
+  'P-15',
+])
+
 export type CandidateFunnelLoadFailureCode =
   | 'malformed_root'
   | 'forbidden_key'
@@ -271,6 +280,7 @@ function validateQualityGateEntry(value: unknown): boolean {
     isJsonValue(value.value) &&
     typeof value.threshold === 'string' &&
     isEnumValue(value.status, CANDIDATE_FUNNEL_QUALITY_GATE_STATUSES) &&
+    (value.status !== 'WARN' || CANDIDATE_FUNNEL_QUALITY_GATE_WARN_ALLOWED_IDS.has(value.id)) &&
     typeof value.note === 'string'
   )
 }
