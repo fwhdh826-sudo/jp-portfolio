@@ -38,8 +38,9 @@ export const CANDIDATE_FUNNEL_QUALITY_GATE_REQUIRED_IDS = [
 ] as const
 export type CandidateFunnelQualityGateRequiredId = (typeof CANDIDATE_FUNNEL_QUALITY_GATE_REQUIRED_IDS)[number]
 
-// ── gate自体のstatus（data/candidate_funnel_batch.py _gate()の実装 exact） ──
-export const CANDIDATE_FUNNEL_QUALITY_GATE_STATUSES = ['PASS', 'FAIL', 'RECORD', 'N/A'] as const
+// ── gate自体のstatus（production batchが出力し得る全status）。WARNの許可
+//    gateはruntime parserでbackend authorityに合わせて限定する。 ─────────
+export const CANDIDATE_FUNNEL_QUALITY_GATE_STATUSES = ['PASS', 'FAIL', 'RECORD', 'WARN', 'N/A'] as const
 export type CandidateFunnelQualityGateStatus = (typeof CANDIDATE_FUNNEL_QUALITY_GATE_STATUSES)[number]
 
 export interface CandidateFunnelQualityGateEntry {
