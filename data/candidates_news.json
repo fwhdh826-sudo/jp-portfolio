@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-08-13T07:12:09.792739+09:00",
-  "sourceUpdatedAt": "2026-08-12T21:42:51+00:00",
+  "updatedAt": "2026-08-13T09:05:47.394941+09:00",
+  "sourceUpdatedAt": "2026-08-12T23:43:46+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -31,38 +31,24 @@
       ]
     },
     "jp_semiconductor": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "AI Cloud Provider Lambda Prices Loan for Nvidia-Tied Chip Deal",
-      "topPositiveTitle": "AI Cloud Provider Lambda Prices Loan for Nvidia-Tied Chip Deal",
-      "items": [
-        {
-          "title": "AI Cloud Provider Lambda Prices Loan for Nvidia-Tied Chip Deal",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-12T20:36:56+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-12/ai-cloud-provider-lambda-prices-loan-for-nvidia-tied-chip-deal",
-          "tags": [
-            "jp_semiconductor",
-            "market",
-            "us_growth"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "us_broad": {
-      "avgSentiment": 0.12,
+      "avgSentiment": 0.146,
       "negativeCount": 1,
-      "positiveCount": 2,
+      "positiveCount": 3,
       "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 7,
+      "itemCount": 8,
       "isStale": false,
       "topNegativeTitle": "EM Currencies Trade Mixed as Inflation Fails to Shift Fed Bets",
       "topPositiveTitle": "S&P 500 Closes Near Record High on Tame Inflation: Markets Wrap",
@@ -94,25 +80,26 @@
           ]
         },
         {
-          "title": "US Core Inflation Comes in Subdued, Easing Pressure on Fed",
-          "source": "Bloomberg Economics",
+          "title": "Gold Steadies After Tame US Inflation Data Eases Rate-Hike Bets",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-12T12:31:43+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-12/us-core-inflation-was-subdued-in-july-easing-pressure-on-fed",
+          "publishedAt": "2026-08-12T23:14:51+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-12/gold-steadies-after-tame-us-inflation-data-eases-rate-hike-bets",
           "tags": [
+            "gold",
             "market",
             "rates",
             "us_broad"
           ]
         },
         {
-          "title": "US Stocks Rise on AI Trade as Market Awaits More Inflation Data",
-          "source": "Bloomberg Markets",
+          "title": "US Core Inflation Comes in Subdued, Easing Pressure on Fed",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-12T12:15:30+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-12/us-stock-futures-rise-as-tech-rally-resumes-before-key-cpi-data",
+          "publishedAt": "2026-08-12T12:31:43+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-12/us-core-inflation-was-subdued-in-july-easing-pressure-on-fed",
           "tags": [
             "market",
             "rates",
@@ -135,30 +122,16 @@
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "AI Cloud Provider Lambda Prices Loan for Nvidia-Tied Chip Deal",
-      "topPositiveTitle": "AI Cloud Provider Lambda Prices Loan for Nvidia-Tied Chip Deal",
-      "items": [
-        {
-          "title": "AI Cloud Provider Lambda Prices Loan for Nvidia-Tied Chip Deal",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-12T20:36:56+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-12/ai-cloud-provider-lambda-prices-loan-for-nvidia-tied-chip-deal",
-          "tags": [
-            "jp_semiconductor",
-            "market",
-            "us_growth"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "global_broad": {
       "avgSentiment": 0,
@@ -173,26 +146,28 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": 0.415,
+      "avgSentiment": 0.25,
       "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 1,
       "sourceCount": 1,
       "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Behind CME’s Plan for 24/7 Silver Futures To Draw Retail",
+      "topNegativeTitle": "Gold Steadies After Tame US Inflation Data Eases Rate-Hike Bets",
       "topPositiveTitle": "Gold Rallies as Tame US Inflation Report Calms Rate Hike Fears",
       "items": [
         {
-          "title": "Behind CME’s Plan for 24/7 Silver Futures To Draw Retail",
+          "title": "Gold Steadies After Tame US Inflation Data Eases Rate-Hike Bets",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-12T20:51:29+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-12/behind-cme-s-plan-for-24-7-silver-futures-to-draw-retail-video",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-12T23:14:51+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-12/gold-steadies-after-tame-us-inflation-data-eases-rate-hike-bets",
           "tags": [
             "gold",
-            "market"
+            "market",
+            "rates",
+            "us_broad"
           ]
         },
         {
@@ -212,16 +187,29 @@
       ]
     },
     "reit": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.33,
       "negativeCount": 0,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Singapore’s CapitaLand Sees Profit Recovery Due to Fee Increases",
+      "topPositiveTitle": "Singapore’s CapitaLand Sees Profit Recovery Due to Fee Increases",
+      "items": [
+        {
+          "title": "Singapore’s CapitaLand Sees Profit Recovery Due to Fee Increases",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-12T23:36:07+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-12/singapore-s-capitaland-sees-profit-recovery-due-to-fee-increases",
+          "tags": [
+            "market",
+            "reit"
+          ]
+        }
+      ]
     },
     "dividend": {
       "avgSentiment": 0,
@@ -278,9 +266,9 @@
       "avgSentiment": 0.0,
       "negativeCount": 1,
       "positiveCount": 1,
-      "neutralCount": 2,
+      "neutralCount": 0,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 2,
       "isStale": false,
       "topNegativeTitle": "EM Currencies Trade Mixed as Inflation Fails to Shift Fed Bets",
       "topPositiveTitle": "Bessent-Takaichi Divide on Optimal BOJ Path Threatens Yen Rescue",
@@ -297,30 +285,6 @@
             "market",
             "rates",
             "us_broad"
-          ]
-        },
-        {
-          "title": "Record Lakers Deal, Bezos Eyes Liverpool: Business of Sports",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-12T19:59:59+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-12/lakers-deal-bezos-eyes-liverpool-business-of-sports-video",
-          "tags": [
-            "fx",
-            "market"
-          ]
-        },
-        {
-          "title": "Yen Trades Near 160 Level as Traders Watch for Intervention",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-12T15:10:30+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-12/yen-trades-near-160-level-keeping-traders-on-intervention-watch",
-          "tags": [
-            "fx",
-            "market"
           ]
         },
         {
@@ -364,25 +328,26 @@
           ]
         },
         {
-          "title": "US Core Inflation Comes in Subdued, Easing Pressure on Fed",
-          "source": "Bloomberg Economics",
+          "title": "Gold Steadies After Tame US Inflation Data Eases Rate-Hike Bets",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-12T12:31:43+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-12/us-core-inflation-was-subdued-in-july-easing-pressure-on-fed",
+          "publishedAt": "2026-08-12T23:14:51+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-12/gold-steadies-after-tame-us-inflation-data-eases-rate-hike-bets",
           "tags": [
+            "gold",
             "market",
             "rates",
             "us_broad"
           ]
         },
         {
-          "title": "US Stocks Rise on AI Trade as Market Awaits More Inflation Data",
-          "source": "Bloomberg Markets",
+          "title": "US Core Inflation Comes in Subdued, Easing Pressure on Fed",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-12T12:15:30+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-12/us-stock-futures-rise-as-tech-rally-resumes-before-key-cpi-data",
+          "publishedAt": "2026-08-12T12:31:43+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-12/us-core-inflation-was-subdued-in-july-easing-pressure-on-fed",
           "tags": [
             "market",
             "rates",
@@ -419,18 +384,18 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0.266,
       "negativeCount": 0,
-      "positiveCount": 0,
+      "positiveCount": 3,
       "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 2,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Rio Tinto Aluminum Smelter Gets $1.8 Billion Australian Bailout",
-      "topPositiveTitle": "Rio Tinto Aluminum Smelter Gets $1.8 Billion Australian Bailout",
+      "topNegativeTitle": "Rio Tinto Aluminum Smelter Receives $1.8 Billion Bailout",
+      "topPositiveTitle": "Origin Profit Beats Estimates on Australian EV, Battery Uptake",
       "items": [
         {
-          "title": "Rio Tinto Aluminum Smelter Gets $1.8 Billion Australian Bailout",
+          "title": "Rio Tinto Aluminum Smelter Receives $1.8 Billion Bailout",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
@@ -452,19 +417,56 @@
             "commodity",
             "market"
           ]
+        },
+        {
+          "title": "Asian Stocks Poised to Gain on Benign US Inflation: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-12T22:08:18+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-12/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Latest Oil Market News and Analysis for Aug. 13",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-12T22:02:05+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-12/latest-oil-market-news-and-analysis-for-aug-13",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "Origin Profit Beats Estimates on Australian EV, Battery Uptake",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-12T23:19:04+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-12/origin-profit-beats-estimates-on-australian-ev-battery-uptake",
+          "tags": [
+            "commodity",
+            "market"
+          ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.0,
+      "avgSentiment": -0.083,
       "negativeCount": 1,
-      "positiveCount": 1,
+      "positiveCount": 0,
       "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 4,
       "isStale": false,
       "topNegativeTitle": "Internal UK Forecasts Raise Risk of Growth Downgrade Due to War",
-      "topPositiveTitle": "高市首相 オマーン国王と電話会談“国際社会とも協議を”",
+      "topPositiveTitle": "Russian Economy Returns to Growth Despite Ukraine Drone Strikes",
       "items": [
         {
           "title": "Internal UK Forecasts Raise Risk of Growth Downgrade Due to War",
@@ -516,19 +518,6 @@
             "market"
           ],
           "titleJa": "高市首相 イラン大統領と電話会談“ホルムズ自由で安全 重要”"
-        },
-        {
-          "title": "高市首相 オマーン国王と電話会談“国際社会とも協議を”",
-          "source": "NHK 経済",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-10T11:26:40+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20260810de43179",
-          "tags": [
-            "geopolitical",
-            "market"
-          ],
-          "titleJa": "高市首相 オマーン国王と電話会談“国際社会とも協議を”"
         }
       ]
     }
