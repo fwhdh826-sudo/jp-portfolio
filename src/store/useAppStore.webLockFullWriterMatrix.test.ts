@@ -1,3 +1,4 @@
+import type { CashAssumptions } from '../types'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 const loadProbe = vi.hoisted(() => ({
@@ -73,9 +74,12 @@ const BASELINE_TRUST: Trust = {
   decision: 'HOLD',
 }
 
-const BASELINE_CASH_ASSUMPTIONS = {
-  cashDeposits: 1_000_000, standbyFunds: 200_000,
-  manualOverrideEnabled: true, manualUpdatedAt: NOW_ISO,
+const BASELINE_CASH_ASSUMPTIONS: CashAssumptions = {
+  source: 'MANUAL',
+  grossCash: 1_200_000,
+  safetyReserve: 0,
+  pendingOrderCash: null,
+  updatedAt: NOW_ISO,
 }
 
 class CountingFileReader {
@@ -298,11 +302,16 @@ const FIRST_TRIGGERS: Record<WriterKey, (instance: Instance) => Promise<unknown>
   ),
   setPortfolioPolicy: instance => instance.store.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.25 }),
   setCashAssumptions: instance => instance.store.getState().setCashAssumptions({
-    cashDeposits: 4_444_444, standbyFunds: 555_555,
+    grossCash: 4_999_999,
+    safetyReserve: 0,
+    pendingOrderCash: null,
   }),
   clearCashAssumptionsOverride: instance => instance.store.getState().clearCashAssumptionsOverride(),
   importCashAssumptions: instance => instance.store.getState().importCashAssumptions({
-    cashDeposits: 6_000_000, standbyFunds: 700_000, manualUpdatedAt: NOW_ISO,
+    grossCash: 6_700_000,
+    safetyReserve: 0,
+    pendingOrderCash: null,
+    updatedAt: NOW_ISO,
   }),
 }
 
@@ -322,11 +331,16 @@ const SECOND_TRIGGERS: Record<WriterKey, (instance: Instance) => Promise<unknown
   ),
   setPortfolioPolicy: instance => instance.store.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.22 }),
   setCashAssumptions: instance => instance.store.getState().setCashAssumptions({
-    cashDeposits: 1, standbyFunds: 1,
+    grossCash: 2,
+    safetyReserve: 0,
+    pendingOrderCash: null,
   }),
   clearCashAssumptionsOverride: instance => instance.store.getState().clearCashAssumptionsOverride(),
   importCashAssumptions: instance => instance.store.getState().importCashAssumptions({
-    cashDeposits: 2, standbyFunds: 2, manualUpdatedAt: NOW_ISO,
+    grossCash: 4,
+    safetyReserve: 0,
+    pendingOrderCash: null,
+    updatedAt: NOW_ISO,
   }),
 }
 
@@ -355,11 +369,20 @@ const BOOTSTRAP_CHECKS: Record<WriterKey, (b: Instance) => void> = {
   ).toBe(BASELINE_TRUST.eval + 111),
   setPortfolioPolicy: b => expect(b.store.getState().portfolioPolicy.jpStockMaxRatio).toBe(0.25),
   setCashAssumptions: b => expect(b.store.getState().cashAssumptions).toMatchObject({
-    cashDeposits: 4_444_444, standbyFunds: 555_555,
+    source: 'MANUAL',
+    grossCash: 4_999_999,
+    safetyReserve: 0,
+    pendingOrderCash: null,
+    updatedAt: expect.any(String),
   }),
-  clearCashAssumptionsOverride: b => expect(b.store.getState().cashAssumptions.manualOverrideEnabled).toBe(false),
+  clearCashAssumptionsOverride: b => expect(b.store.getState().cashAssumptions.source).toBe('DEFAULT'),
   importCashAssumptions: b => expect(b.store.getState().cashAssumptions).toMatchObject({
-    cashDeposits: 6_000_000, standbyFunds: 700_000,
+    source: 'MANUAL',
+    grossCash: 6_700_000,
+    safetyReserve: 0,
+    pendingOrderCash: null,
+    // CASH-AUTH-1: import は取り込み元の時刻をそのまま引き継ぐ（現在時刻で上書きしない）
+    updatedAt: NOW_ISO,
   }),
 }
 

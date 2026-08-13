@@ -5,9 +5,10 @@
  */
 import { useRef, useState, useCallback, useEffect, type DragEvent, type CSSProperties } from 'react'
 import { useAppStore } from '../../store/useAppStore'
-import { selectIsStale, selectEffectiveCashAssumptions, selectCashAssumptionsFreshness } from '../../store/selectors'
+import { selectIsStale, selectCashAuthorityView, selectCashAssumptionsFreshness } from '../../store/selectors'
 import { formatDateTime, formatRelativeTime, formatJPYAuto } from '../../utils/format'
 import { serializeCashAssumptionsExport, parseCashAssumptionsImport, buildExportableCashAssumptions } from '../../utils/cashAssumptionsTransfer'
+import { validateCashAuthorityDraft } from '../../domain/cash/cashAuthority'
 import { colors, radius, spacing } from '../../theme/tokens'
 import { typography } from '../../theme/typography'
 import type { CsvImportProvenance, CsvSyncSummary } from '../../types'
@@ -27,6 +28,7 @@ export type PendingPortfolioOperation =
   | 'setPortfolioPolicy'
   | 'setCashAssumptions'
   | 'clearCashAssumptionsOverride'
+  | 'reconfirmCashAssumptions'
   | 'importCashAssumptions'
   | null
 
@@ -501,18 +503,35 @@ function CsvSyncSummaryPanel({ summary }: { summary: CsvSyncSummary | null | und
   )
 }
 
-// ── P4.5-A002: 資金前提（現金・預貯金 / 待機・追加資金）手動入力エリア ──────
-// 手動入力値は「CSV外追加分」ではなく「資金前提の総額」として扱う（CSV/既定値とは加算しない）。
+// CASH-AUTH-1: 下書き検証用の固定プレースホルダ時刻。数値契約だけを確かめるための
+// 定数であり、権限の updatedAt には決してならない（実際の時刻は保存操作時に確定する）。
+const DRAFT_PREVIEW_TIMESTAMP = '2000-01-01T00:00:00.000Z'
+
+// ── CASH-AUTH-1: 現金権限（T9 = 唯一の primary editor） ──────────
+// 「OSが現在いくらを投資可能現金として認識しているか」「その元データはいつ更新したか」
+// 「何円を安全余力として除外しているか」を1画面で確定できるようにする。
+// T0 は読み取り専用サマリー、T1 にはエディタを置かない。
 function CashAssumptionsSection({ sectionTitleStyle }: { sectionTitleStyle: CSSProperties }) {
   const cashAssumptions = useAppStore(s => s.cashAssumptions)
-  const effective        = useAppStore(selectEffectiveCashAssumptions)
-  const freshness         = useAppStore(selectCashAssumptionsFreshness)
+  const authority = useAppStore(selectCashAuthorityView)
+  const freshness = useAppStore(selectCashAssumptionsFreshness)
   const setCashAssumptions = useAppStore(s => s.setCashAssumptions)
   const clearOverride      = useAppStore(s => s.clearCashAssumptionsOverride)
+  const reconfirmAuthority = useAppStore(s => s.reconfirmCashAssumptions)
   const importCashAssumptionsAction = useAppStore(s => s.importCashAssumptions)
 
-  const [cashDepositsInput, setCashDepositsInput] = useState(String(effective.cash))
-  const [standbyFundsInput, setStandbyFundsInput] = useState(String(effective.cashReserve))
+  const hasAuthority = cashAssumptions.source === 'MANUAL'
+  const [grossCashInput, setGrossCashInput] = useState(
+    hasAuthority ? String(cashAssumptions.grossCash) : '',
+  )
+  const [safetyReserveInput, setSafetyReserveInput] = useState(
+    hasAuthority ? String(cashAssumptions.safetyReserve) : '0',
+  )
+  const [pendingOrderCashInput, setPendingOrderCashInput] = useState(
+    hasAuthority && cashAssumptions.pendingOrderCash !== null
+      ? String(cashAssumptions.pendingOrderCash)
+      : '',
+  )
 
   // P4.5-A009: 他端末との手動同期（export/import）
   const [exportText, setExportText] = useState<string | null>(null)
@@ -524,16 +543,40 @@ function CashAssumptionsSection({ sectionTitleStyle }: { sectionTitleStyle: CSSP
   const [pendingOperation, setPendingOperation] = useState<PendingPortfolioOperation>(null)
   const singleFlightRef = useRef(createPortfolioOperationSingleFlight())
 
-  // ストア側の実効値が変わったとき（初期化復元・他タブでの解除操作等）に入力欄も追従させる
+  // ストア側の権限が変わったとき（初期化復元・他タブでの解除操作等）に入力欄も追従させる。
+  // これは描画時に権限へ書き戻す動作ではない — TTLは決して延長されない。
   useEffect(() => {
-    setCashDepositsInput(String(effective.cash))
-    setStandbyFundsInput(String(effective.cashReserve))
+    const manual = cashAssumptions.source === 'MANUAL'
+    setGrossCashInput(manual ? String(cashAssumptions.grossCash) : '')
+    setSafetyReserveInput(manual ? String(cashAssumptions.safetyReserve) : '0')
+    setPendingOrderCashInput(
+      manual && cashAssumptions.pendingOrderCash !== null
+        ? String(cashAssumptions.pendingOrderCash)
+        : '',
+    )
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cashAssumptions.manualOverrideEnabled, cashAssumptions.manualUpdatedAt])
+  }, [cashAssumptions.source, cashAssumptions.updatedAt])
 
-  const parsedDeposits = Math.max(0, Math.round(Number(cashDepositsInput) || 0))
-  const parsedStandby  = Math.max(0, Math.round(Number(standbyFundsInput) || 0))
-  const cashTotalPreview = parsedDeposits + parsedStandby
+  // 下書きの検証はレコード全体で行う。1項目でも不正なら保存ボタンを無効化し、
+  // state / 永続化 / AllocationPlanSnapshot を一切変更しない。
+  const draftValidation = validateCashAuthorityDraft({
+    grossCash: grossCashInput,
+    safetyReserve: safetyReserveInput,
+    pendingOrderCash: pendingOrderCashInput,
+    // 検証時点のプレビュー用。実際の保存時刻は store 側の操作時刻で確定する。
+    updatedAt: DRAFT_PREVIEW_TIMESTAMP,
+  })
+  const draftErrors = draftValidation.ok ? [] : draftValidation.errors
+  const draftErrorFor = (field: 'grossCash' | 'safetyReserve' | 'pendingOrderCash') =>
+    draftErrors.find(e => e.field === field)?.message ?? null
+  const deployablePreview = draftValidation.ok
+    ? Math.max(
+        0,
+        draftValidation.record.grossCash
+          - draftValidation.record.safetyReserve
+          - (draftValidation.record.pendingOrderCash ?? 0),
+      )
+    : null
 
   const runManualAction = async (
     operation: Exclude<PendingPortfolioOperation, 'refreshAllData' | 'importPortfolioSnapshot' | null>,
@@ -550,9 +593,14 @@ function CashAssumptionsSection({ sectionTitleStyle }: { sectionTitleStyle: CSSP
   }
 
   const handleSave = async () => {
+    if (!draftValidation.ok) return
     await runManualAction(
       'setCashAssumptions',
-      () => setCashAssumptions({ cashDeposits: parsedDeposits, standbyFunds: parsedStandby }),
+      () => setCashAssumptions({
+        grossCash: grossCashInput,
+        safetyReserve: safetyReserveInput,
+        pendingOrderCash: pendingOrderCashInput,
+      }),
     )
   }
 
@@ -560,14 +608,16 @@ function CashAssumptionsSection({ sectionTitleStyle }: { sectionTitleStyle: CSSP
     await runManualAction('clearCashAssumptionsOverride', clearOverride)
   }
 
-  // P4.5-A009: エクスポート（保存はしない。表示用の文字列を生成するのみ）
-  // P4.5-A009 ミニ監査: rawのcashAssumptionsではなく実効値（effective）をexportする。
-  // manualOverrideEnabled=falseの場合、rawのcashDeposits/standbyFundsは初回起動時0/0の
-  // ままだったり、解除前の古い値が残っていたりして「実際に使われている値」と一致しない
-  // ため、buildExportableCashAssumptionsでeffective（既定値含む）ベースに変換してから
-  // exportする（import時にmanualOverrideEnabled=trueへ強制する仕様と整合させる）。
+  // CASH-AUTH-1: 「同じ金額で再確認」— 明示的なユーザー操作のときのみ TTL を更新する。
+  const handleReconfirm = async () => {
+    await runManualAction('reconfirmCashAssumptions', reconfirmAuthority)
+  }
+
+  // P4.5-A009: エクスポート（保存はしない。表示用の文字列を生成するのみ）。
+  // CASH-AUTH-1: 権限は state.cashAssumptions ただ一つなので、実効値と保存値が
+  // 乖離することはない。未設定はそのまま未設定として書き出す。
   const handleExport = () => {
-    setExportText(serializeCashAssumptionsExport(buildExportableCashAssumptions(effective)))
+    setExportText(serializeCashAssumptionsExport(buildExportableCashAssumptions(cashAssumptions)))
     setCopyFeedback(null)
   }
 
@@ -612,126 +662,239 @@ function CashAssumptionsSection({ sectionTitleStyle }: { sectionTitleStyle: CSSP
 
   return (
     <div className="settings-section">
-      <div style={sectionTitleStyle}>資金前提（現金・待機資金）</div>
-      <div style={{
-        background: 'var(--color-surface)',
-        border: `1px solid var(--color-border-default)`,
-        borderRadius: radius.lg,
-        padding: `${spacing[3]} ${spacing[4]}`,
-        display: 'flex',
-        flexDirection: 'column',
-        gap: spacing[3],
-      }}>
+      <div style={sectionTitleStyle}>現金権限</div>
+      <div
+        data-testid="cash-authority-editor"
+        style={{
+          background: 'var(--color-surface)',
+          border: `1px solid var(--color-border-default)`,
+          borderRadius: radius.lg,
+          padding: `${spacing[3]} ${spacing[4]}`,
+          display: 'flex',
+          flexDirection: 'column',
+          gap: spacing[3],
+        }}
+      >
         <div style={{ display: 'flex', alignItems: 'center', gap: spacing[2], flexWrap: 'wrap' }}>
-          <span style={{
-            ...typography.badge,
-            padding: `${spacing[0.5]} ${spacing[1.5]}`,
-            borderRadius: radius.full,
-            background: cashAssumptions.manualOverrideEnabled ? 'var(--color-buy-bg)' : 'var(--color-bg-wash)',
-            color: cashAssumptions.manualOverrideEnabled ? 'var(--color-buy-text)' : colors.textMuted,
-            border: `1px solid ${cashAssumptions.manualOverrideEnabled ? 'var(--color-buy-border)' : 'var(--color-border-default)'}`,
-          }}>
-            {cashAssumptions.manualOverrideEnabled ? '手動入力値を使用中' : '既定値を使用中'}
+          <span
+            data-testid="cash-authority-state-badge"
+            style={{
+              ...typography.badge,
+              padding: `${spacing[0.5]} ${spacing[1.5]}`,
+              borderRadius: radius.full,
+              background: !hasAuthority
+                ? 'var(--color-bg-wash)'
+                : freshness.state === 'known_fresh' ? 'var(--color-buy-bg)' : 'var(--color-wait-bg)',
+              color: !hasAuthority
+                ? colors.textMuted
+                : freshness.state === 'known_fresh' ? 'var(--color-buy-text)' : 'var(--color-wait-text)',
+              border: `1px solid ${!hasAuthority
+                ? 'var(--color-border-default)'
+                : freshness.state === 'known_fresh' ? 'var(--color-buy-border)' : 'var(--color-wait-border)'}`,
+            }}
+          >
+            {!hasAuthority
+              ? '現金未設定'
+              : freshness.state === 'known_fresh'
+                ? (authority.confirmedZero ? '0円を確認済み' : '手動入力を使用中')
+                : '期限切れ（参考値）'}
           </span>
-          {cashAssumptions.manualOverrideEnabled && cashAssumptions.manualUpdatedAt && (
+          {hasAuthority && cashAssumptions.updatedAt && (
             <span style={{ ...typography.caption, color: colors.textMuted }}>
-              最終更新: {formatRelativeTime(cashAssumptions.manualUpdatedAt)}
+              最終更新: {formatRelativeTime(cashAssumptions.updatedAt)}
             </span>
           )}
         </div>
 
-        {/* P4.5-A010: 既定値がpublic repo内のサンプル値であることを明示し、
-            実際の運用にはT9での入力を促す（値は変更せず表示のみ） */}
-        {!cashAssumptions.manualOverrideEnabled && (
-          <div style={{
-            ...typography.caption,
-            color: colors.textMuted,
-            background: 'var(--color-bg-wash)',
-            border: `1px solid var(--color-border-default)`,
-            borderRadius: radius.md,
-            padding: `${spacing[1.5]} ${spacing[2.5]}`,
-          }}>
-            ℹ️ 既定値はコード内蔵のサンプル値です。実際の判断には下記フォームにご自身の現金・待機資金額を入力してください。
+        {/* NO_AUTHORITY: 0円を確認済み（confirmed zero）とは別状態であることを明示する */}
+        {!hasAuthority && (
+          <div
+            data-testid="cash-authority-unavailable-notice"
+            style={{
+              ...typography.caption,
+              color: colors.textMuted,
+              background: 'var(--color-bg-wash)',
+              border: `1px solid var(--color-border-default)`,
+              borderRadius: radius.md,
+              padding: `${spacing[1.5]} ${spacing[2.5]}`,
+            }}
+          >
+            ℹ️ 現金がまだ設定されていません（0円と確認済みの状態とは異なります）。
+            設定されるまで投資可能現金は0円として扱われ、買付の提案は行われません。
           </div>
         )}
 
-        {/* P4.5-A008: 資金前提のstale警告（値は維持したまま確認を促すのみ。BUY/SELL判断ではない） */}
-        {freshness.isStale && (
-          <div style={{
-            ...typography.caption,
-            color: 'var(--color-wait-text)',
-            background: 'var(--color-wait-bg)',
-            border: `1px solid var(--color-wait-border)`,
-            borderRadius: radius.md,
-            padding: `${spacing[1.5]} ${spacing[2.5]}`,
-          }}>
-            ⚠ 資金前提が7日以上更新されていません。最新の現金・待機資金を確認してください。
+        {/* 失効: 金額は参考値として保持し、実行可能額のみ0に落とす */}
+        {hasAuthority && freshness.state === 'stale' && (
+          <div
+            data-testid="cash-authority-stale-notice"
+            style={{
+              ...typography.caption,
+              color: 'var(--color-wait-text)',
+              background: 'var(--color-wait-bg)',
+              border: `1px solid var(--color-wait-border)`,
+              borderRadius: radius.md,
+              padding: `${spacing[1.5]} ${spacing[2.5]}`,
+            }}
+          >
+            ⚠ 現金情報の有効期限（168時間）が切れています。表示中の金額は参考値で、
+            投資可能現金は0円として扱われます。金額を更新するか「同じ金額で再確認」を押してください。
+          </div>
+        )}
+
+        {/* まもなく失効（144h〜168h）: まだ実行可能 */}
+        {hasAuthority && freshness.state === 'known_fresh' && freshness.approachingExpiry && (
+          <div
+            data-testid="cash-authority-approaching-expiry-notice"
+            style={{
+              ...typography.caption,
+              color: 'var(--color-wait-text)',
+              background: 'var(--color-wait-bg)',
+              border: `1px solid var(--color-wait-border)`,
+              borderRadius: radius.md,
+              padding: `${spacing[1.5]} ${spacing[2.5]}`,
+            }}
+          >
+            ⚠ 現金情報はまもなく有効期限（168時間）を迎えます。今のうちに確認しておくと安全です。
           </div>
         )}
 
         <div>
           <label style={{ ...typography.bodySmall, fontWeight: 700, display: 'block', marginBottom: spacing[1] }}>
-            現金・預貯金
+            総現金
           </label>
+          <div style={{ ...typography.caption, color: colors.textMuted, marginBottom: spacing[1] }}>
+            今この時点で決済が済んでいる円建て現金の合計です。株式・投資信託の評価額、
+            未受渡の売却代金、これから入金予定のお金、クレジット枠は含めません。
+          </div>
           <input
             type="number"
             min={0}
             step={1}
             inputMode="numeric"
-            value={cashDepositsInput}
-            onChange={e => setCashDepositsInput(e.target.value)}
+            aria-label="総現金"
+            data-testid="cash-authority-gross-input"
+            value={grossCashInput}
+            onChange={e => setGrossCashInput(e.target.value)}
             style={inputStyle}
           />
+          {draftErrorFor('grossCash') && (
+            <div style={{ ...typography.caption, color: 'var(--color-sell-text)', marginTop: spacing[1] }}>
+              ✗ {draftErrorFor('grossCash')}
+            </div>
+          )}
         </div>
 
         <div>
           <label style={{ ...typography.bodySmall, fontWeight: 700, display: 'block', marginBottom: spacing[1] }}>
-            待機・追加資金
+            生活・安全余力
           </label>
+          <div style={{ ...typography.caption, color: colors.textMuted, marginBottom: spacing[1] }}>
+            総現金のうち、生活費・緊急時・納税など投資に回さない分です。総現金の内訳であり、
+            別枠の追加現金ではありません。
+          </div>
           <input
             type="number"
             min={0}
             step={1}
             inputMode="numeric"
-            value={standbyFundsInput}
-            onChange={e => setStandbyFundsInput(e.target.value)}
+            aria-label="生活・安全余力"
+            data-testid="cash-authority-safety-reserve-input"
+            value={safetyReserveInput}
+            onChange={e => setSafetyReserveInput(e.target.value)}
             style={inputStyle}
           />
+          {draftErrorFor('safetyReserve') && (
+            <div style={{ ...typography.caption, color: 'var(--color-sell-text)', marginTop: spacing[1] }}>
+              ✗ {draftErrorFor('safetyReserve')}
+            </div>
+          )}
+        </div>
+
+        <div>
+          <label style={{ ...typography.bodySmall, fontWeight: 700, display: 'block', marginBottom: spacing[1] }}>
+            未約定の買付注文に確保済み
+          </label>
+          <div style={{ ...typography.caption, color: colors.textMuted, marginBottom: spacing[1] }}>
+            総現金のうち、すでに出した買付注文で押さえられている分です。
+            空欄のままなら「不明」として扱い、警告を表示し続けます。無い場合は 0 と入力してください。
+          </div>
+          <input
+            type="number"
+            min={0}
+            step={1}
+            inputMode="numeric"
+            aria-label="未約定の買付注文に確保済み"
+            data-testid="cash-authority-pending-order-input"
+            placeholder="不明な場合は空欄"
+            value={pendingOrderCashInput}
+            onChange={e => setPendingOrderCashInput(e.target.value)}
+            style={inputStyle}
+          />
+          {draftErrorFor('pendingOrderCash') && (
+            <div style={{ ...typography.caption, color: 'var(--color-sell-text)', marginTop: spacing[1] }}>
+              ✗ {draftErrorFor('pendingOrderCash')}
+            </div>
+          )}
         </div>
 
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <span style={{ ...typography.bodySmall, fontWeight: 700 }}>現金等合計</span>
-          <span style={{ ...typography.body, fontWeight: 700, color: colors.textPrimary }}>
-            {formatJPYAuto(cashTotalPreview)}
+          <span style={{ ...typography.bodySmall, fontWeight: 700 }}>保存後の投資可能現金</span>
+          <span
+            data-testid="cash-authority-deployable-preview"
+            style={{ ...typography.body, fontWeight: 700, color: colors.textPrimary }}
+          >
+            {deployablePreview === null ? '—' : formatJPYAuto(deployablePreview)}
           </span>
+        </div>
+        <div style={{ ...typography.caption, color: colors.textMuted }}>
+          総現金から生活・安全余力と未約定の買付注文を差し引いた上限額です。
+          実際の買付額はここからさらに各資産クラス・銘柄の上限で絞られます。
         </div>
 
         <div style={{ display: 'flex', gap: spacing[2], flexWrap: 'wrap' }}>
           <button
             className="refresh-btn"
             onClick={handleSave}
-            disabled={pendingOperation !== null}
+            data-testid="cash-authority-save"
+            disabled={!draftValidation.ok || pendingOperation !== null}
             style={{ flex: '1 1 auto', justifyContent: 'center' }}
           >
             {pendingOperation === 'setCashAssumptions' ? '保存中…' : '保存'}
           </button>
           <button
-            onClick={handleClear}
-            disabled={!cashAssumptions.manualOverrideEnabled || pendingOperation !== null}
+            onClick={handleReconfirm}
+            data-testid="cash-authority-reconfirm"
+            disabled={!hasAuthority || pendingOperation !== null}
             style={{
               ...typography.bodySmall,
               padding: `${spacing[1.5]} ${spacing[3]}`,
               borderRadius: radius.md,
               border: `1px solid var(--color-border-default)`,
               background: 'var(--color-surface)',
-              color: cashAssumptions.manualOverrideEnabled ? colors.textPrimary : colors.textMuted,
-              cursor: cashAssumptions.manualOverrideEnabled && pendingOperation === null ? 'pointer' : 'default',
+              color: hasAuthority ? colors.textPrimary : colors.textMuted,
+              cursor: hasAuthority && pendingOperation === null ? 'pointer' : 'default',
               flex: '1 1 auto',
             }}
           >
-            {pendingOperation === 'clearCashAssumptionsOverride'
-              ? '解除中…'
-              : '手動入力を解除（既定値に戻す）'}
+            {pendingOperation === 'reconfirmCashAssumptions' ? '再確認中…' : '同じ金額で再確認'}
+          </button>
+          <button
+            onClick={handleClear}
+            data-testid="cash-authority-clear"
+            disabled={!hasAuthority || pendingOperation !== null}
+            style={{
+              ...typography.bodySmall,
+              padding: `${spacing[1.5]} ${spacing[3]}`,
+              borderRadius: radius.md,
+              border: `1px solid var(--color-border-default)`,
+              background: 'var(--color-surface)',
+              color: hasAuthority ? colors.textPrimary : colors.textMuted,
+              cursor: hasAuthority && pendingOperation === null ? 'pointer' : 'default',
+              flex: '1 1 auto',
+            }}
+          >
+            {pendingOperation === 'clearCashAssumptionsOverride' ? '削除中…' : '現金情報を削除'}
           </button>
         </div>
 
@@ -749,9 +912,9 @@ function CashAssumptionsSection({ sectionTitleStyle }: { sectionTitleStyle: CSSP
         )}
 
         <div style={{ ...typography.caption, color: colors.textMuted, display: 'flex', flexDirection: 'column', gap: spacing[1] }}>
-          <span>CSVに含まれない他金融機関の資産を反映できます。</span>
-          <span>この端末に保存されます。PC/スマホ間の自動共有は未実装です。</span>
-          <span>次回自動データ更新前、目安08:25までに手動更新してください。</span>
+          <span>CSVに含まれない他金融機関の現金もここに合算して入力してください。</span>
+          <span>この端末にのみ保存されます。公開データ・GitHub・外部サーバーへは一切送信しません。</span>
+          <span>有効期限は最終更新から168時間です。期限が切れると投資可能現金は0円になります。</span>
         </div>
 
         {/* P4.5-A009: 他端末との手動同期（export/import）— 自動共有ではなく、
@@ -760,7 +923,7 @@ function CashAssumptionsSection({ sectionTitleStyle }: { sectionTitleStyle: CSSP
           <div style={{ ...typography.bodySmall, fontWeight: 700 }}>他端末との同期（手動）</div>
 
           <div style={{ ...typography.caption, color: colors.textMuted, display: 'flex', flexDirection: 'column', gap: spacing[0.5] }}>
-            <span>⚠ 資金前提は金額を含むセンシティブな情報です。</span>
+            <span>⚠ 現金権限は金額を含むセンシティブな情報です。</span>
             <span>SNS・掲示板・公開リポジトリ等、公開の場所には貼り付けないでください。</span>
             <span>コピー内容がクリップボード同期やクラウド履歴に残る場合があります。ご利用の環境にご注意ください。</span>
             <span>この機能はPC/スマホ間の自動共有ではなく、コピー/貼り付けによる手動同期です。</span>
@@ -778,7 +941,7 @@ function CashAssumptionsSection({ sectionTitleStyle }: { sectionTitleStyle: CSSP
               cursor: 'pointer',
             }}
           >
-            この端末の資金前提をエクスポート
+            この端末の現金権限をエクスポート
           </button>
 
           {exportText && (
@@ -867,7 +1030,7 @@ function CashAssumptionsSection({ sectionTitleStyle }: { sectionTitleStyle: CSSP
             )}
             {importSuccess && (
               <div style={{ ...typography.caption, color: 'var(--color-buy-text)' }}>
-                ✓ インポートしました。資金前提を手動入力値に反映しました。
+                ✓ インポートしました。現金権限を反映しました。
               </div>
             )}
           </div>

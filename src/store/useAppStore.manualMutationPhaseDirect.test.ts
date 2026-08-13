@@ -169,11 +169,12 @@ function resetStore(options: { empty?: boolean } = {}): void {
     cashAssumptions: options.empty
       ? { ...DEFAULT_CASH_ASSUMPTIONS }
       : {
-          cashDeposits: 10,
-          standbyFunds: 20,
-          manualOverrideEnabled: true,
-          manualUpdatedAt: '2026-07-18T00:00:00.000Z',
-        },
+        source: 'MANUAL',
+        grossCash: 30,
+        safetyReserve: 0,
+        pendingOrderCash: null,
+        updatedAt: '2026-07-18T00:00:00.000Z',
+      },
     analysis: [],
     metrics: null,
     learning: null,
@@ -212,12 +213,13 @@ function invokeAllManualActions(): ManualResultPromise[] {
     state.updateHolding(HOLDING_CODE, { eval: 999_001 }),
     state.updateTrust(TRUST_ID, { eval: 999_002 }),
     state.setPortfolioPolicy({ jpStockMaxRatio: 0.17 }),
-    state.setCashAssumptions({ cashDeposits: 999_003, standbyFunds: 999_004 }),
+    state.setCashAssumptions({ grossCash: 1_998_007, safetyReserve: 0, pendingOrderCash: null }),
     state.clearCashAssumptionsOverride(),
     state.importCashAssumptions({
-      cashDeposits: 999_005,
-      standbyFunds: 999_006,
-      manualUpdatedAt: '2026-07-19T01:00:00.000Z',
+      grossCash: 1_998_011,
+      safetyReserve: 0,
+      pendingOrderCash: null,
+      updatedAt: '2026-07-19T01:00:00.000Z',
     }),
   ]
 }

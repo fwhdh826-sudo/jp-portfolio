@@ -45,14 +45,29 @@ export interface SnapshotGenerationInput {
   holdings: SnapshotGenerationHolding[]
   trust: SnapshotGenerationTrust[]
   portfolioPolicy: { jpStockMaxRatio: number } | null
-  cashAssumptions: {
-    cashDeposits: number
-    standbyFunds: number
-    manualOverrideEnabled: boolean
-    manualUpdatedAt: string | null
-  } | null
+  /**
+   * CASH-AUTH-1: 現行スキーマ（source/grossCash/...）と、まだ移行されていない
+   * legacy スキーマ（cashDeposits/standbyFunds/...）の両方を受け付ける。
+   * legacy 形は移行前に保存された canonical payload の identity をそのまま
+   * 再現できるよう、従来と同一のバイト列で canonical 化する。
+   */
+  cashAssumptions: CashAssumptions | LegacyCashAssumptionsIdentityShape | null
   csvImportedAt: string | null
   csvImportProvenance: CsvImportProvenance | null
+}
+
+/** CASH-AUTH-1 以前の永続化形。identity 再現のためだけに保持する */
+export interface LegacyCashAssumptionsIdentityShape {
+  cashDeposits: number
+  standbyFunds: number
+  manualOverrideEnabled: boolean
+  manualUpdatedAt: string | null
+}
+
+export function isLegacyCashAssumptionsIdentityShape(
+  value: CashAssumptions | LegacyCashAssumptionsIdentityShape,
+): value is LegacyCashAssumptionsIdentityShape {
+  return typeof (value as LegacyCashAssumptionsIdentityShape).manualOverrideEnabled === 'boolean'
 }
 
 export interface CanonicalPortfolioGenerationIdentityInput {
@@ -147,12 +162,24 @@ export function serializeSnapshotGeneration(input: SnapshotGenerationInput): str
       : [canonicalNumber(input.portfolioPolicy.jpStockMaxRatio)],
     cashAssumptions: cash === null
       ? null
-      : [
-          canonicalNumber(cash.cashDeposits),
-          canonicalNumber(cash.standbyFunds),
-          cash.manualOverrideEnabled,
-          canonicalTimestamp(cash.manualUpdatedAt),
-        ],
+      // CASH-AUTH-1: legacy 形は従来と同一の4要素で canonical 化し、既存の
+      // 保存済み identity を壊さない。現行スキーマは別の5要素になるため、
+      // 現金権限の変更（金額・安全余力・未約定・更新時刻）は必ず
+      // sourceSettingsVersion を変化させ、古い AllocationPlanSnapshot を無効化する。
+      : isLegacyCashAssumptionsIdentityShape(cash)
+        ? [
+            canonicalNumber(cash.cashDeposits),
+            canonicalNumber(cash.standbyFunds),
+            cash.manualOverrideEnabled,
+            canonicalTimestamp(cash.manualUpdatedAt),
+          ]
+        : [
+            cash.source,
+            canonicalNumber(cash.grossCash),
+            canonicalNumber(cash.safetyReserve),
+            cash.pendingOrderCash === null ? null : canonicalNumber(cash.pendingOrderCash),
+            canonicalTimestamp(cash.updatedAt),
+          ],
     csvImportedAt: canonicalTimestamp(input.csvImportedAt),
     csvImportProvenance: canonicalProvenance(input.csvImportProvenance),
   })

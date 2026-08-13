@@ -124,16 +124,24 @@ describe('CashAssumptions persist/restore', () => {
   afterEach(() => { vi.unstubAllGlobals() })
 
   it('保存と復元で往復する（manualOverrideEnabled=true）', () => {
-    persistCashAssumptions({ cashDeposits: 1_000_000, standbyFunds: 2_000_000, manualOverrideEnabled: true, manualUpdatedAt: '2026-07-04T00:00:00.000Z' })
+    persistCashAssumptions({ source: 'MANUAL', grossCash: 3_000_000, safetyReserve: 0, pendingOrderCash: null, updatedAt: '2026-07-04T00:00:00.000Z' })
     expect(restoreCashAssumptions()).toEqual({
-      cashDeposits: 1_000_000, standbyFunds: 2_000_000, manualOverrideEnabled: true, manualUpdatedAt: '2026-07-04T00:00:00.000Z',
+      source: 'MANUAL',
+      grossCash: 3_000_000,
+      safetyReserve: 0,
+      pendingOrderCash: null,
+      updatedAt: '2026-07-04T00:00:00.000Z',
     })
   })
 
   it('保存と復元で往復する（manualOverrideEnabled=false, manualUpdatedAt=null）', () => {
-    persistCashAssumptions({ cashDeposits: 0, standbyFunds: 0, manualOverrideEnabled: false, manualUpdatedAt: null })
+    persistCashAssumptions({ source: 'DEFAULT', grossCash: 0, safetyReserve: 0, pendingOrderCash: null, updatedAt: null })
     expect(restoreCashAssumptions()).toEqual({
-      cashDeposits: 0, standbyFunds: 0, manualOverrideEnabled: false, manualUpdatedAt: null,
+      source: 'DEFAULT',
+      grossCash: 0,
+      safetyReserve: 0,
+      pendingOrderCash: null,
+      updatedAt: null,
     })
   })
 
@@ -142,22 +150,22 @@ describe('CashAssumptions persist/restore', () => {
     expect(restoreCashAssumptions()).toBeNull()
   })
 
-  it('cashDepositsが負の場合はnull', () => {
-    store[CASH_ASSUMPTIONS_KEY] = JSON.stringify({ data: { cashDeposits: -1, standbyFunds: 0, manualOverrideEnabled: true, manualUpdatedAt: null }, savedAt: Date.now() })
+  it('grossCashが負の場合はnull', () => {
+    store[CASH_ASSUMPTIONS_KEY] = JSON.stringify({ data: { source: 'MANUAL', grossCash: 100, safetyReserve: -1, pendingOrderCash: null, updatedAt: '2026-06-01T00:00:00.000Z' }, savedAt: Date.now() })
     expect(restoreCashAssumptions()).toBeNull()
   })
 
-  it('standbyFundsが負の場合はnull', () => {
-    store[CASH_ASSUMPTIONS_KEY] = JSON.stringify({ data: { cashDeposits: 0, standbyFunds: -1, manualOverrideEnabled: true, manualUpdatedAt: null }, savedAt: Date.now() })
+  it('safetyReserveが不正な場合はnull', () => {
+    store[CASH_ASSUMPTIONS_KEY] = JSON.stringify({ data: { source: 'MANUAL', grossCash: -1, safetyReserve: 0, pendingOrderCash: null, updatedAt: null }, savedAt: Date.now() })
     expect(restoreCashAssumptions()).toBeNull()
   })
 
-  it('cashDepositsが数値でない場合はnull', () => {
-    store[CASH_ASSUMPTIONS_KEY] = JSON.stringify({ data: { cashDeposits: '1000', standbyFunds: 0, manualOverrideEnabled: true, manualUpdatedAt: null }, savedAt: Date.now() })
+  it('grossCashが数値でない場合はnull', () => {
+    store[CASH_ASSUMPTIONS_KEY] = JSON.stringify({ data: { source: 'MANUAL', grossCash: '1000', safetyReserve: 0, pendingOrderCash: null, updatedAt: null }, savedAt: Date.now() })
     expect(restoreCashAssumptions()).toBeNull()
   })
 
-  it('manualOverrideEnabledがbooleanでない場合はnull', () => {
+  it('legacy manualOverrideEnabledがbooleanでない場合はnull', () => {
     store[CASH_ASSUMPTIONS_KEY] = JSON.stringify({ data: { cashDeposits: 0, standbyFunds: 0, manualOverrideEnabled: 'true', manualUpdatedAt: null }, savedAt: Date.now() })
     expect(restoreCashAssumptions()).toBeNull()
   })
@@ -166,11 +174,15 @@ describe('CashAssumptions persist/restore', () => {
   // 有効なデータである限り復元する（鮮度警告はselectCashAssumptionsFreshnessが別途担う）。
   it('savedAtが7日超過（旧TTL相当）でも有効なcashAssumptionsは復元される', () => {
     store[CASH_ASSUMPTIONS_KEY] = JSON.stringify({
-      data: { cashDeposits: 1_234_000, standbyFunds: 5_678_000, manualOverrideEnabled: true, manualUpdatedAt: '2026-06-01T00:00:00.000Z' },
+      data: { source: 'MANUAL', grossCash: 6_912_000, safetyReserve: 0, pendingOrderCash: null, updatedAt: '2026-06-01T00:00:00.000Z' },
       savedAt: Date.now() - TTL_7D - 1,
     })
     expect(restoreCashAssumptions()).toEqual({
-      cashDeposits: 1_234_000, standbyFunds: 5_678_000, manualOverrideEnabled: true, manualUpdatedAt: '2026-06-01T00:00:00.000Z',
+      source: 'MANUAL',
+      grossCash: 6_912_000,
+      safetyReserve: 0,
+      pendingOrderCash: null,
+      updatedAt: '2026-06-01T00:00:00.000Z',
     })
     expect(store[CASH_ASSUMPTIONS_KEY]).toBeDefined()
   })
@@ -178,12 +190,94 @@ describe('CashAssumptions persist/restore', () => {
   it('savedAtが1年超過でも有効なcashAssumptionsは復元される（TTL撤廃の確認）', () => {
     const oneYearMs = 365 * 24 * 60 * 60 * 1000
     store[CASH_ASSUMPTIONS_KEY] = JSON.stringify({
-      data: { cashDeposits: 100, standbyFunds: 200, manualOverrideEnabled: true, manualUpdatedAt: null },
+      data: { source: 'MANUAL', grossCash: 300, safetyReserve: 0, pendingOrderCash: null, updatedAt: '2026-06-01T00:00:00.000Z' },
       savedAt: Date.now() - oneYearMs,
     })
     expect(restoreCashAssumptions()).toEqual({
-      cashDeposits: 100, standbyFunds: 200, manualOverrideEnabled: true, manualUpdatedAt: null,
+      source: 'MANUAL',
+      grossCash: 300,
+      safetyReserve: 0,
+      pendingOrderCash: null,
+      updatedAt: '2026-06-01T00:00:00.000Z',
     })
+  })
+
+  // CASH-AUTH-1: 保存済みレコードの数値契約・時刻契約を restore 側でも fail closed する
+  it('CASH-AUTH-1: updatedAt欠損のMANUALレコードはnull（無警告でfreshにしない）', () => {
+    store[CASH_ASSUMPTIONS_KEY] = JSON.stringify({
+      data: { source: 'MANUAL', grossCash: 300, safetyReserve: 0, pendingOrderCash: null, updatedAt: null },
+      savedAt: Date.now(),
+    })
+    expect(restoreCashAssumptions()).toBeNull()
+  })
+
+  it('CASH-AUTH-1: 準備金合計が総現金を超える保存値はnull（1円の二重確保を許さない）', () => {
+    store[CASH_ASSUMPTIONS_KEY] = JSON.stringify({
+      data: {
+        source: 'MANUAL', grossCash: 1_000_000, safetyReserve: 800_000,
+        pendingOrderCash: 300_000, updatedAt: '2026-06-01T00:00:00.000Z',
+      },
+      savedAt: Date.now(),
+    })
+    expect(restoreCashAssumptions()).toBeNull()
+  })
+
+  it('CASH-AUTH-1: legacy スキーマは一度だけ合算して現行スキーマへ移行される', () => {
+    store[CASH_ASSUMPTIONS_KEY] = JSON.stringify({
+      data: {
+        cashDeposits: 1_000_000, standbyFunds: 2_000_000,
+        manualOverrideEnabled: true, manualUpdatedAt: '2026-06-01T00:00:00.000Z',
+      },
+      savedAt: Date.now(),
+    })
+    const restored = restoreCashAssumptions()
+    expect(restored).toEqual({
+      source: 'MANUAL',
+      grossCash: 3_000_000,
+      safetyReserve: 0,
+      pendingOrderCash: null,
+      updatedAt: '2026-06-01T00:00:00.000Z',
+    })
+    // 冪等: 移行結果を保存し直しても金額は変わらない
+    store[CASH_ASSUMPTIONS_KEY] = JSON.stringify({ data: restored, savedAt: Date.now() })
+    expect(restoreCashAssumptions()).toEqual(restored)
+  })
+
+  it('CASH-AUTH-1: legacy manualOverrideEnabled=false は権限なしへ移行する', () => {
+    store[CASH_ASSUMPTIONS_KEY] = JSON.stringify({
+      data: {
+        cashDeposits: 1_000_000, standbyFunds: 2_000_000,
+        manualOverrideEnabled: false, manualUpdatedAt: null,
+      },
+      savedAt: Date.now(),
+    })
+    expect(restoreCashAssumptions()).toEqual({
+      source: 'DEFAULT', grossCash: 0, safetyReserve: 0, pendingOrderCash: null, updatedAt: null,
+    })
+  })
+
+  it('CASH-AUTH-1: legacy manualUpdatedAt欠損は現在時刻を捏造せず権限なしへ倒す', () => {
+    store[CASH_ASSUMPTIONS_KEY] = JSON.stringify({
+      data: {
+        cashDeposits: 1_000_000, standbyFunds: 2_000_000,
+        manualOverrideEnabled: true, manualUpdatedAt: null,
+      },
+      savedAt: Date.now(),
+    })
+    expect(restoreCashAssumptions()).toEqual({
+      source: 'DEFAULT', grossCash: 0, safetyReserve: 0, pendingOrderCash: null, updatedAt: null,
+    })
+  })
+
+  it('CASH-AUTH-1: legacy addRoom は移行されず grossCash にも加算されない', () => {
+    store[CASH_ASSUMPTIONS_KEY] = JSON.stringify({
+      data: {
+        cashDeposits: 1_000_000, standbyFunds: 2_000_000, addRoom: 5_000_000,
+        manualOverrideEnabled: true, manualUpdatedAt: '2026-06-01T00:00:00.000Z',
+      },
+      savedAt: Date.now(),
+    })
+    expect(restoreCashAssumptions()?.grossCash).toBe(3_000_000)
   })
 
   it('keyなしはnull', () => {

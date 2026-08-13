@@ -9,6 +9,11 @@ import {
   type CsvImportProvenance,
   type CsvSyncSummary,
 } from '../types'
+import {
+  NO_CASH_AUTHORITY,
+  isIntegerJpy,
+  normalizeCashAuthorityRecord,
+} from '../domain/cash/cashAuthority'
 import { sanitizeLearningState } from '../domain/learning/performanceTracker'
 import type { TrustShortPortfolioSnapshot } from '../domain/learning/trustShortTracker'
 import { isStrictTimestamp, parseStrictTimestamp } from '../utils/strictTimestamp'
@@ -305,7 +310,31 @@ function isPortfolioPolicy(value: unknown): value is PortfolioPolicy {
     value.jpStockMaxRatio >= 0.05 && value.jpStockMaxRatio <= 0.30
 }
 
-function isCashAssumptions(value: unknown): value is CashAssumptions {
+/**
+ * CASH-AUTH-1: 現行スキーマ。source/grossCash/safetyReserve/pendingOrderCash/updatedAt。
+ * 準備金の合計が総現金を超えるレコードは保存値として不正（1円の二重確保を禁止）。
+ */
+function isCurrentCashAssumptions(value: unknown): value is CashAssumptions {
+  if (!isRecord(value) || !hasExactKeys(value, [
+    'source', 'grossCash', 'safetyReserve', 'pendingOrderCash', 'updatedAt',
+  ])) return false
+  if (value.source === 'DEFAULT') {
+    return value.grossCash === 0 && value.safetyReserve === 0 &&
+      value.pendingOrderCash === null && value.updatedAt === null
+  }
+  if (value.source !== 'MANUAL') return false
+  if (!isIntegerJpy(value.grossCash) || !isIntegerJpy(value.safetyReserve)) return false
+  if (value.pendingOrderCash !== null && !isIntegerJpy(value.pendingOrderCash)) return false
+  if (value.safetyReserve + (value.pendingOrderCash ?? 0) > value.grossCash) return false
+  return isTimestamp(value.updatedAt, false)
+}
+
+/**
+ * CASH-AUTH-1 以前の永続化形。既存の canonical generation を壊さないため、
+ * validation では引き続き受理する。store へ載せる際に一度だけ移行する
+ * （restore 側の normalizeCashAuthorityRecord）。
+ */
+function isLegacyCashAssumptions(value: unknown): boolean {
   return isRecord(value) && hasExactKeys(value, [
     'cashDeposits', 'standbyFunds', 'manualOverrideEnabled', 'manualUpdatedAt',
   ]) &&
@@ -313,6 +342,10 @@ function isCashAssumptions(value: unknown): value is CashAssumptions {
     isNonNegativeNumber(value.standbyFunds) &&
     typeof value.manualOverrideEnabled === 'boolean' &&
     (value.manualUpdatedAt === null || isTimestamp(value.manualUpdatedAt, false))
+}
+
+function isCashAssumptions(value: unknown): value is CashAssumptions {
+  return isCurrentCashAssumptions(value) || isLegacyCashAssumptions(value)
 }
 
 function isCsvImportPayload(value: unknown, schemaVersion: string): value is CsvImportPersistencePayload {
@@ -1167,8 +1200,10 @@ export function restorePortfolioPolicy(): PortfolioPolicy | null {
   } catch { return null }
 }
 
-// ── P4.5-A002: 資金前提（現金・待機資金）手動override 永続化（TTL: 7日） ──
-// この端末（ブラウザ）にのみ保存される。PC/スマホ間の自動共有は未実装（次チケットで検討）。
+// ── CASH-AUTH-1: 現金権限の永続化 ──────────────────────────
+// この端末（ブラウザ）の same-origin localStorage にのみ保存される。
+// data/ · public/data/ · GitHub · workflow artifact · ネットワークへは一切書き出さない。
+// PC/スマホ間の共有は T9 の明示的なコピー/貼り付けのみ。
 const CASH_ASSUMPTIONS_KEY = 'v13_cash_assumptions'
 
 export function persistCashAssumptions(assumptions: CashAssumptions): LegacyPersistenceResult {
@@ -1180,28 +1215,21 @@ export function restoreCashAssumptions(): CashAssumptions | null {
   try {
     const generation = restoreCsvImportGeneration()
     if (generation.status === 'committed') {
+      // CASH-AUTH-1: canonical payload は legacy スキーマのまま保存されている
+      // 可能性がある。store へ載せる直前に一度だけ決定的・冪等に移行する。
+      // 壊れた値は権限なし（NO_AUTHORITY）へ fail closed する。
       return generation.payload.cashAssumptions
-        ? { ...generation.payload.cashAssumptions }
+        ? normalizeCashAuthorityRecord(generation.payload.cashAssumptions) ?? { ...NO_CASH_AUTHORITY }
         : null
     }
     if (generation.status === 'invalid') return null
     const raw = localStorage.getItem(CASH_ASSUMPTIONS_KEY)
     if (!raw) return null
-    const snap = JSON.parse(raw) as Snapshot<CashAssumptions>
-    // P4.5-A008: 資金前提はTTL失効による無警告revertを廃止する（手動値が黙って既定値へ
-    // 戻ると、総資産分母・headroom・P5買付余力が気づかれずに変わってしまうため）。
-    // 鮮度はmanualUpdatedAt基準のstale警告（selectCashAssumptionsFreshness）で表示専用に扱う。
-    const d = snap.data
-    if (
-      typeof d?.cashDeposits !== 'number' || !Number.isFinite(d.cashDeposits) || d.cashDeposits < 0 ||
-      typeof d?.standbyFunds !== 'number' || !Number.isFinite(d.standbyFunds) || d.standbyFunds < 0 ||
-      typeof d?.manualOverrideEnabled !== 'boolean'
-    ) return null
-    return {
-      cashDeposits: d.cashDeposits,
-      standbyFunds: d.standbyFunds,
-      manualOverrideEnabled: d.manualOverrideEnabled,
-      manualUpdatedAt: typeof d.manualUpdatedAt === 'string' ? d.manualUpdatedAt : null,
-    }
+    const snap = JSON.parse(raw) as Snapshot<unknown>
+    // P4.5-A008: 現金権限はTTL失効による無警告revertを行わない（手動値が黙って
+    // 消えると、総資産分母・headroom・買付余力が気づかれずに変わってしまうため）。
+    // 鮮度は updatedAt 基準の 168h 判定（selectCashAssumptionsFreshness）で扱い、
+    // 失効時は値を保持したまま実行可能性のみを 0 に落とす。
+    return normalizeCashAuthorityRecord(snap?.data)
   } catch { return null }
 }

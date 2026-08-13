@@ -43,6 +43,7 @@ const PORTFOLIO_GENERATION_OPERATION_MEMBERSHIP: Record<PortfolioGenerationOpera
   setPortfolioPolicy: true,
   setCashAssumptions: true,
   clearCashAssumptionsOverride: true,
+  reconfirmCashAssumptions: true,
   importCashAssumptions: true,
 }
 

@@ -69,9 +69,10 @@ export interface AssetCategorySummary {
 export interface AssetUniverse {
   totalValue: number                        // 総資産（円）
   categories: AssetCategorySummary[]        // 資産クラス別集計
-  cash: number                              // 全現金（通常 + 待機）
-  cashReserve: number                       // 暴落待機資金
-  addRoom: number                           // 日本株追加枠
+  // CASH-AUTH-1: 現金権限の派生表示値。cash + cashReserve = grossCash（二重計上なし）。
+  // addRoom（日本株追加枠）は CASH-AUTH-1 で撤廃した。
+  cash: number                              // 総現金のうち安全余力を除いた部分
+  cashReserve: number                       // 生活・安全余力（総現金の部分集合）
   lastUpdatedAt: string                     // 最終更新日時
 }
 

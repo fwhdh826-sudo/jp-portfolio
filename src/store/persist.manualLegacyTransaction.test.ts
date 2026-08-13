@@ -113,10 +113,11 @@ describe('RA-006-AUDIT-F001 legacy portfolio generation transaction', () => {
   it.each([
     ['policy', { portfolioPolicy: { jpStockMaxRatio: 0.17 } }, POLICY_KEY],
     ['cash', { cashAssumptions: {
-      cashDeposits: 1,
-      standbyFunds: 2,
-      manualOverrideEnabled: true,
-      manualUpdatedAt: '2026-07-19T00:00:00.000Z',
+      source: 'MANUAL',
+      grossCash: 3,
+      safetyReserve: 0,
+      pendingOrderCash: null,
+      updatedAt: '2026-07-19T00:00:00.000Z',
     } }, CASH_KEY],
   ] as const)('%s selects only its explicitly requested key', (_label, input, expectedKey) => {
     storage[PORTFOLIO_KEY] = 'portfolio-before'

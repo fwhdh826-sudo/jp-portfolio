@@ -207,7 +207,12 @@ describe('T9-A004-R3d: canonical storage evidence / present-invalid writer polic
 
   describe('valid committed canonicalはstore emptyでもcurrent generation evidence', () => {
     it('R3d-1: store empty + canonical valid + complete snapshot identity一致だけがDUPLICATE_SNAPSHOT（side effect 0）', async () => {
-      const matchingCash = { ...DEFAULT_CASH_ASSUMPTIONS, manualOverrideEnabled: true }
+      const matchingCash = {
+        ...DEFAULT_CASH_ASSUMPTIONS,
+        source: 'MANUAL' as const,
+        grossCash: 1_000_000,
+        updatedAt: '2026-07-09T00:00:00.000Z',
+      }
       const seededRaw = seedCommittedCanonical('0', '2026-07-10T00:00:00.000Z', {
         portfolioPolicy: DEFAULT_PORTFOLIO_POLICY,
         cashAssumptions: matchingCash,
@@ -276,7 +281,12 @@ describe('T9-A004-R3d: canonical storage evidence / present-invalid writer polic
       ['csv-import-generation-4', 1],
       [CSV_IMPORT_GENERATION_SCHEMA_V5, 2],
     ] as const)('R4-A004c: valid %s canonical + complete identity match is a byte-exact duplicate no-migration (identity v%s)', async (schemaVersion, identityVersion) => {
-      const matchingCash = { ...DEFAULT_CASH_ASSUMPTIONS, manualOverrideEnabled: true }
+      const matchingCash = {
+        ...DEFAULT_CASH_ASSUMPTIONS,
+        source: 'MANUAL' as const,
+        grossCash: 1_000_000,
+        updatedAt: '2026-07-09T00:00:00.000Z',
+      }
       const seededRaw = seedCommittedCanonical('4', '2026-07-10T00:00:00.000Z', {
         portfolioPolicy: DEFAULT_PORTFOLIO_POLICY,
         cashAssumptions: matchingCash,
@@ -465,8 +475,9 @@ describe('T9-A004-R3d: canonical storage evidence / present-invalid writer polic
         portfolioPolicy: { jpStockMaxRatio: 0.15 },
         cashAssumptions: {
           ...DEFAULT_CASH_ASSUMPTIONS,
-          cashDeposits: 123,
-          manualOverrideEnabled: true,
+          source: 'MANUAL' as const,
+          grossCash: 123,
+          updatedAt: '2026-07-09T00:00:00.000Z',
         },
       })
       const before = useAppStore.getState()

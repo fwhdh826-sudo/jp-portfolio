@@ -29,6 +29,7 @@ const OPERATIONS = [
   'setPortfolioPolicy',
   'setCashAssumptions',
   'clearCashAssumptionsOverride',
+  'reconfirmCashAssumptions',
   'importCashAssumptions',
 ] as const satisfies readonly PortfolioGenerationOperation[]
 
@@ -59,10 +60,10 @@ const MANUAL_FAILURE_CODES = [
 ] as const satisfies readonly ManualMutationFailureCode[]
 
 describe('portfolio operation coordination taxonomy', () => {
-  it('defines exactly the ten portfolio generation operations', () => {
+  it('defines exactly the eleven portfolio generation operations', () => {
     expectTypeOf<PortfolioGenerationOperation>()
       .toEqualTypeOf<(typeof OPERATIONS)[number]>()
-    expect(OPERATIONS).toHaveLength(10)
+    expect(OPERATIONS).toHaveLength(11)
   })
 
   it('defines exactly the seven coordination error codes without WEB_LOCK_BUSY', () => {
@@ -109,14 +110,14 @@ describe('portfolio operation coordination taxonomy', () => {
     expect(failure).not.toHaveProperty('cause')
   })
 
-  it('defines the exact six manual operations and fixed result codes', () => {
+  it('defines the exact seven manual operations and fixed result codes', () => {
     expectTypeOf<ManualPortfolioMutationOperation>()
       .toEqualTypeOf<(typeof MANUAL_OPERATIONS)[number]>()
     expectTypeOf<ManualMutationSuccessCode>()
       .toEqualTypeOf<(typeof MANUAL_SUCCESS_CODES)[number]>()
     expectTypeOf<ManualMutationFailureCode>()
       .toEqualTypeOf<(typeof MANUAL_FAILURE_CODES)[number]>()
-    expect(MANUAL_OPERATIONS).toHaveLength(6)
+    expect(MANUAL_OPERATIONS).toHaveLength(7)
     expect(MANUAL_SUCCESS_CODES).toEqual(['SUCCESS', 'NO_CHANGE'])
     expect(MANUAL_FAILURE_CODES).toEqual([
       'MANUAL_ANALYSIS_ERROR',

@@ -14,6 +14,9 @@
 
 import type { CandidateFunnelCandidate } from '../../types/candidateFunnel'
 import type { Holding, Trust } from '../../types/index'
+// CASH-AUTH-1: 現金権限の鮮度/数値契約は純ドメイン関数として共有する
+// （store/selectors には依存しない）。
+import { evaluateCashAuthorityFreshness } from '../cash/cashAuthority'
 import {
   CANDIDATE_PORTFOLIO_FIT_DATASET_REASONS,
   CANDIDATE_PORTFOLIO_FIT_REASONS,
@@ -24,7 +27,6 @@ import {
   CANDIDATE_PORTFOLIO_FIT_VERSION,
   PORTFOLIO_FIT_CANDIDATE_STALE_THRESHOLD_MS,
   PORTFOLIO_FIT_FUTURE_TOLERANCE_MS,
-  PORTFOLIO_FIT_MANUAL_CASH_STALE_THRESHOLD_MS,
   PORTFOLIO_FIT_POLICY_MAX_RATIO,
   PORTFOLIO_FIT_POLICY_MIN_RATIO,
   PORTFOLIO_FIT_SOURCE_STALE_THRESHOLD_MS,
@@ -424,25 +426,23 @@ function computeCapacity(
     reasons.push(...portfolioFreshnessReasons)
   }
 
+  // CASH-AUTH-1: 現金権限の鮮度・数値契約は cashAuthority に一元化されている。
+  // ここは同じ判定結果を読むだけで、独自のTTL/数値検証は持たない。
+  // 総資産分母には総現金（grossCash）を一度だけ加算する — safetyReserve /
+  // pendingOrderCash は総現金の部分集合であり、加算も減算もしない。
   const cash = snapshot.cashAssumptions
   let cashTotal = 0
   let cashUnknown = false
-  if (cash == null || !cash.manualOverrideEnabled || cash.manualUpdatedAt == null) {
+  if (cash == null || cash.source !== 'MANUAL') {
     cashUnknown = true
     reasons.push('CASH_AUTHORITY_UNAVAILABLE')
   } else {
-    const updatedMs = Date.parse(cash.manualUpdatedAt)
-    const ageMs = evaluatedAtMs - updatedMs
-    const cashValuesValid =
-      Number.isFinite(cash.cashDeposits) &&
-      cash.cashDeposits >= 0 &&
-      Number.isFinite(cash.standbyFunds) &&
-      cash.standbyFunds >= 0
-    if (!Number.isFinite(updatedMs) || ageMs < 0 || ageMs > PORTFOLIO_FIT_MANUAL_CASH_STALE_THRESHOLD_MS || !cashValuesValid) {
+    const freshness = evaluateCashAuthorityFreshness(cash, evaluatedAtMs)
+    if (freshness.state !== 'known_fresh') {
       cashUnknown = true
       reasons.push('CASH_AUTHORITY_STALE')
     } else {
-      cashTotal = cash.cashDeposits + cash.standbyFunds
+      cashTotal = cash.grossCash
     }
   }
 

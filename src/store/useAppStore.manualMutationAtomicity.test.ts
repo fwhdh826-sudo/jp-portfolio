@@ -126,11 +126,15 @@ describe('RA-006 manual mutation coordinator and atomic publish', () => {
     },
     {
       name: 'setCashAssumptions',
-      invoke: () => useAppStore.getState().setCashAssumptions({ cashDeposits: 1234.6, standbyFunds: -1 }),
+      // CASH-AUTH-1: 保存は有効なレコード全体でのみ成立する（丸め・切り詰めはしない）。
+      // updatedAt は保存操作時刻で確定するため、値ではなく「入っていること」を固定する。
+      invoke: () => useAppStore.getState().setCashAssumptions({ grossCash: 1_234_000, safetyReserve: 234_000, pendingOrderCash: 0 }),
       assertInput: state => expect(state.cashAssumptions).toMatchObject({
-        cashDeposits: 1_235,
-        standbyFunds: 0,
-        manualOverrideEnabled: true,
+        source: 'MANUAL',
+        grossCash: 1_234_000,
+        safetyReserve: 234_000,
+        pendingOrderCash: 0,
+        updatedAt: expect.any(String),
       }),
       legacyKeys: ['v13_cash_assumptions'],
     },
@@ -138,25 +142,28 @@ describe('RA-006 manual mutation coordinator and atomic publish', () => {
       name: 'clearCashAssumptionsOverride',
       invoke: () => useAppStore.getState().clearCashAssumptionsOverride(),
       assertInput: state => expect(state.cashAssumptions).toEqual({
-        cashDeposits: 333,
-        standbyFunds: 444,
-        manualOverrideEnabled: false,
-        manualUpdatedAt: null,
+        source: 'DEFAULT',
+        grossCash: 0,
+        safetyReserve: 0,
+        pendingOrderCash: null,
+        updatedAt: null,
       }),
       legacyKeys: ['v13_cash_assumptions'],
     },
     {
       name: 'importCashAssumptions',
       invoke: () => useAppStore.getState().importCashAssumptions({
-        cashDeposits: 5555.4,
-        standbyFunds: Number.NaN,
-        manualUpdatedAt: '2026-07-01T00:00:00.000Z',
+        grossCash: 5_555_000,
+        safetyReserve: 0,
+        pendingOrderCash: null,
+        updatedAt: '2026-07-01T00:00:00.000Z',
       }),
       assertInput: state => expect(state.cashAssumptions).toEqual({
-        cashDeposits: 5_555,
-        standbyFunds: 0,
-        manualOverrideEnabled: true,
-        manualUpdatedAt: '2026-07-01T00:00:00.000Z',
+        source: 'MANUAL',
+        grossCash: 5_555_000,
+        safetyReserve: 0,
+        pendingOrderCash: null,
+        updatedAt: '2026-07-01T00:00:00.000Z',
       }),
       legacyKeys: ['v13_cash_assumptions'],
     },
@@ -193,10 +200,11 @@ describe('RA-006 manual mutation coordinator and atomic publish', () => {
       stockCandidates: [],
       portfolioPolicy: { ...DEFAULT_PORTFOLIO_POLICY },
       cashAssumptions: {
-        cashDeposits: 333,
-        standbyFunds: 444,
-        manualOverrideEnabled: true,
-        manualUpdatedAt: '2026-07-17T00:00:00.000Z',
+        source: 'MANUAL',
+        grossCash: 777,
+        safetyReserve: 0,
+        pendingOrderCash: null,
+        updatedAt: '2026-07-17T00:00:00.000Z',
       },
       system: {
         ...state.system,
@@ -255,9 +263,10 @@ describe('RA-006 manual mutation coordinator and atomic publish', () => {
     } },
     { name: 'same policy', invoke: () => useAppStore.getState().setPortfolioPolicy({ jpStockMaxRatio: DEFAULT_PORTFOLIO_POLICY.jpStockMaxRatio }) },
     { name: 'identical imported cash assumptions', invoke: () => useAppStore.getState().importCashAssumptions({
-      cashDeposits: 333,
-      standbyFunds: 444,
-      manualUpdatedAt: '2026-07-17T00:00:00.000Z',
+      grossCash: 777,
+      safetyReserve: 0,
+      pendingOrderCash: null,
+      updatedAt: '2026-07-17T00:00:00.000Z',
     }) },
   ]
 
@@ -932,7 +941,7 @@ describe('RA-006 manual mutation coordinator and atomic publish', () => {
   it.each([
     ['holding/trust', () => useAppStore.getState().updateHolding(HOLDING_CODE, { eval: 222_222 })],
     ['policy', () => useAppStore.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.17 })],
-    ['cash', () => useAppStore.getState().setCashAssumptions({ cashDeposits: 222_222, standbyFunds: 333_333 })],
+    ['cash', () => useAppStore.getState().setCashAssumptions({ grossCash: 555_555, safetyReserve: 0, pendingOrderCash: null })],
   ] as const)('%s analysis failure has zero persistence/portfolio publication and a valid retry succeeds', async (_category, invoke) => {
     let analysisReads = 0
     const throwingMarket = new Proxy(STATIC_MARKET, {
@@ -1096,7 +1105,7 @@ describe('RA-006 manual mutation coordinator and atomic publish', () => {
       return calls === 1 ? operationNowMs : operationNowMs - calls
     })
 
-    await useAppStore.getState().setCashAssumptions({ cashDeposits: 123_456, standbyFunds: 654_321 })
+    await useAppStore.getState().setCashAssumptions({ grossCash: 777_777, safetyReserve: 0, pendingOrderCash: null })
 
     const expectedTimestamp = new Date(operationNowMs).toISOString()
     const published = useAppStore.getState()
@@ -1107,8 +1116,8 @@ describe('RA-006 manual mutation coordinator and atomic publish', () => {
     // call below is the transport's own publish-time future-skew self-validation, unrelated to
     // any candidate/canonical/published timestamp.
     expect(calls).toBe(2)
-    expect(published.cashAssumptions.manualUpdatedAt).toBe(expectedTimestamp)
-    expect(generation.payload.cashAssumptions?.manualUpdatedAt).toBe(expectedTimestamp)
+    expect(published.cashAssumptions.updatedAt).toBe(expectedTimestamp)
+    expect(generation.payload.cashAssumptions?.updatedAt).toBe(expectedTimestamp)
     expect(JSON.parse(storage[CSV_IMPORT_GENERATION_KEY]).manifest.savedAt).toBe(operationNowMs)
     nowSpy.mockRestore()
   })

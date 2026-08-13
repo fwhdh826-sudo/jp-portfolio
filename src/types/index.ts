@@ -505,37 +505,55 @@ export const DEFAULT_PORTFOLIO_POLICY: PortfolioPolicy = {
   jpStockMaxRatio: 0.10,
 }
 
-// P4.5-A002: 資金前提の手動override（CSV/既定値より優先できる、加算ではなく置き換え）
+// CASH-AUTH-1: 現金権限（cash authority）。P4.5-A002の
+// `cashDeposits + standbyFunds` という2本の独立した金額入力を廃止し、
+// 「総現金 - 控除」という単一の権限へ置き換える。
+//
+//   DEFAULT: 権限なし（未設定）。常に unknown で、fresh にはならない。
+//   MANUAL : ローカル手動入力（手動importも transport にすぎず MANUAL のまま）。
+//
+// ブローカー連携（IMPORTED）は存在しない。追加してはならない。
+// 検証・移行・鮮度判定は src/domain/cash/cashAuthority.ts に集約する。
+export type CashAuthoritySource = 'DEFAULT' | 'MANUAL'
+
 export interface CashAssumptions {
-  /** 現金・預貯金（手動入力値）。manualOverrideEnabled=trueのときのみ実効値として使われる */
-  cashDeposits: number
-  /** 待機・追加資金（手動入力値）。manualOverrideEnabled=trueのときのみ実効値として使われる */
-  standbyFunds: number
-  /** true: 手動入力値を実効値として使用。false: 既定値（constants/market.ts）を使用 */
-  manualOverrideEnabled: boolean
-  /** 手動値を最後に保存したISO時刻。manualOverrideEnabled=falseの場合はnull */
-  manualUpdatedAt: string | null
+  /** 権限の出所。DEFAULT は「未設定」であり confirmed zero ではない */
+  source: CashAuthoritySource
+  /** 総現金（円・整数）。updatedAt時点で決済済みの総円現金。
+   *  証券評価額・未受渡金・将来入金・与信・addRoom は含まない */
+  grossCash: number
+  /** 生活・安全余力（円・整数）。総現金の部分集合であり追加現金ではない */
+  safetyReserve: number
+  /** 未約定買付に確保済みの現金（円・整数）。
+   *  null = 権限不明（警告のみ）/ 0 = 「無し」を確認済み / 正数 = 1回だけ差引 */
+  pendingOrderCash: number | null
+  /** 権限を最後に確定したISO時刻。source=DEFAULTのときはnull */
+  updatedAt: string | null
 }
 
 export const DEFAULT_CASH_ASSUMPTIONS: CashAssumptions = {
-  cashDeposits: 0,
-  standbyFunds: 0,
-  manualOverrideEnabled: false,
-  manualUpdatedAt: null,
+  source: 'DEFAULT',
+  grossCash: 0,
+  safetyReserve: 0,
+  pendingOrderCash: null,
+  updatedAt: null,
 }
 
-// P4.5-A009: 資金前提のPC/スマホ間「手動」同期用export/importペイロード。
+// P4.5-A009 / CASH-AUTH-1: 現金権限のPC/スマホ間「手動」同期用export/importペイロード。
 // JSON文字列としてユーザーがコピー/貼り付けするためだけの形。
 // public repo / public data JSON / workflow / backend には一切書き出さない。
-export const CASH_ASSUMPTIONS_EXPORT_SCHEMA_VERSION = 'cash-assumptions-export-1' as const
+export const CASH_ASSUMPTIONS_EXPORT_SCHEMA_VERSION = 'cash-assumptions-export-2' as const
+/** CASH-AUTH-1以前のペイロード。import時のみ受理し、同じ移行規則で変換する */
+export const CASH_ASSUMPTIONS_EXPORT_SCHEMA_VERSION_V1 = 'cash-assumptions-export-1' as const
 
 export interface CashAssumptionsExportPayload {
   schemaVersion: typeof CASH_ASSUMPTIONS_EXPORT_SCHEMA_VERSION
   exportedAt: string
-  cashDeposits: number
-  standbyFunds: number
-  manualOverrideEnabled: boolean
-  manualUpdatedAt: string | null
+  source: CashAuthoritySource
+  grossCash: number
+  safetyReserve: number
+  pendingOrderCash: number | null
+  updatedAt: string | null
 }
 
 export interface AppState {
@@ -555,10 +573,13 @@ export interface AppState {
   flows: FlowData | null
   universe: AssetUniverse | null
   learning: LearningState | null
-  // 現金・待機資金・追加枠（運用方針に基づく）
+  // CASH-AUTH-1: 表示・legacy互換用の派生値のみ。金額権限ではない
+  // （権限は cashAssumptions ただ一つ）。runFullAnalysis が
+  // 現金権限から `cash = grossCash - safetyReserve` / `cashReserve = safetyReserve`
+  // を注入するため、合計は常に grossCash と一致し二重計上されない。
+  // addRoom は CASH-AUTH-1 で撤廃（DEPRECATE）— 金額権限から完全に除去済み。
   cash: number
   cashReserve: number
-  addRoom: number
   // Phase 7 — 計算観察値（Card 7-10/7-11）calculation-only
   stockScores6Axis: import('./scoring').StockScoreRecord[] | null
   fundPhase7: import('./scoring').FundPhase7Map | null

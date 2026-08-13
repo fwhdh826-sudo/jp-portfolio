@@ -81,9 +81,11 @@ export function T4_IdealPf() {
   const metrics    = useAppStore(s => s.metrics)
   const analysis   = useAppStore(s => s.analysis)
   const effectiveCash = useAppStore(selectEffectiveCashAssumptions)
-  const cash       = effectiveCash.cash
-  const cashReserve = effectiveCash.cashReserve
-  const addRoom    = useAppStore(s => s.addRoom)
+  // CASH-AUTH-1: 総現金を「安全余力」とそれ以外に割った派生表示値。
+  // cash + cashReserve は常に grossCash と等しく二重計上されない。
+  // addRoom は撤廃済みで金額には一切寄与しない。
+  const cash       = Math.max(0, effectiveCash.grossCash - effectiveCash.safetyReserve)
+  const cashReserve = Math.min(effectiveCash.safetyReserve, effectiveCash.grossCash)
   const macro      = useAppStore(s => s.macro)
   const sqCalendar = useAppStore(s => s.sqCalendar)
   // P4.5-A011: T9のjpStockMaxRatio設定をT4のbuildAssetUniverse計算にも反映する
@@ -98,13 +100,13 @@ export function T4_IdealPf() {
   // AppState-like for buildIdealPfPlan
   const partialState = useMemo(() => ({
     holdings, trust, market, metrics, analysis,
-    cash, cashReserve, addRoom, macro, sqCalendar, portfolioPolicy,
+    cash, cashReserve, macro, sqCalendar, portfolioPolicy,
     // non-required for this plan:
     correlation: null, news: null, system: null as unknown as import('../../types').SystemState,
     activeTab: 'T4' as import('../../types').TabId,
     universe: null, learning: null,
     flows: null, margin: null,
-  }), [holdings, trust, market, metrics, analysis, cash, cashReserve, addRoom, macro, sqCalendar, portfolioPolicy])
+  }), [holdings, trust, market, metrics, analysis, cash, cashReserve, macro, sqCalendar, portfolioPolicy])
 
   const plan = useMemo(
     () => buildIdealPfPlan(partialState as import('../../types').AppState),

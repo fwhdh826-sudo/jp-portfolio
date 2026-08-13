@@ -158,10 +158,11 @@ const RACE_PROVENANCE: CsvImportProvenance = {
 }
 
 const RACE_CASH: CashAssumptions = {
-  cashDeposits: 1_000_000,
-  standbyFunds: 0,
-  manualOverrideEnabled: true,
-  manualUpdatedAt: RACE_NOW,
+  source: 'MANUAL',
+  grossCash: 1_000_000,
+  safetyReserve: 0,
+  pendingOrderCash: null,
+  updatedAt: RACE_NOW,
 }
 
 const RACE_HOLDING: Holding = {
@@ -634,24 +635,25 @@ describe('P5-B005-C-D-R1 receipt-derived exact generation behavior', () => {
     {
       name: 'setCashAssumptions',
       initialRatio: 0.05,
-      invoke: state => state.setCashAssumptions({ cashDeposits: 900_000, standbyFunds: 0 }),
-      assertDraft: state => expect(state.cashAssumptions.cashDeposits).toBe(900_000),
+      invoke: state => state.setCashAssumptions({ grossCash: 900_000, safetyReserve: 0, pendingOrderCash: null }),
+      assertDraft: state => expect(state.cashAssumptions.grossCash).toBe(900_000),
     },
     {
       name: 'clearCashAssumptionsOverride',
       initialRatio: 0.05,
       invoke: state => state.clearCashAssumptionsOverride(),
-      assertDraft: state => expect(state.cashAssumptions.manualOverrideEnabled).toBe(false),
+      assertDraft: state => expect(state.cashAssumptions.source).toBe('DEFAULT'),
     },
     {
       name: 'importCashAssumptions',
       initialRatio: 0.05,
       invoke: state => state.importCashAssumptions({
-        cashDeposits: 800_000,
-        standbyFunds: 0,
-        manualUpdatedAt: RACE_NOW,
+        grossCash: 800_000,
+        safetyReserve: 0,
+        pendingOrderCash: null,
+        updatedAt: RACE_NOW,
       }),
-      assertDraft: state => expect(state.cashAssumptions.cashDeposits).toBe(800_000),
+      assertDraft: state => expect(state.cashAssumptions.grossCash).toBe(800_000),
     },
   ]
 

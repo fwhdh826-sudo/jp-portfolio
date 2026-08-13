@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { DEFAULT_CASH_ASSUMPTIONS } from '../types'
 import { createImmediatePortfolioGenerationLockAdapterForTest } from './testing/portfolioGenerationLockTestAdapters'
 import { resetPortfolioGenerationLockAdapterForTest, setPortfolioGenerationLockAdapterForTest } from './useAppStore'
 
@@ -95,7 +96,11 @@ describe('T9-A004-R2: portfolio snapshot provenance action contract', () => {
       trust: [],
       portfolioPolicy: { jpStockMaxRatio: 0.1 },
       cashAssumptions: {
-        cashDeposits: 0, standbyFunds: 0, manualOverrideEnabled: false, manualUpdatedAt: null,
+        source: 'DEFAULT',
+        grossCash: 0,
+        safetyReserve: 0,
+        pendingOrderCash: null,
+        updatedAt: null,
       },
       system: {
         ...state.system,
@@ -245,7 +250,9 @@ describe('T9-A004-R2: portfolio snapshot provenance action contract', () => {
     useAppStore.setState(state => ({
       cashAssumptions: {
         ...state.cashAssumptions,
-        manualOverrideEnabled: true,
+        source: 'MANUAL' as const,
+        grossCash: 0,
+        updatedAt: '2026-07-15T09:00:00.000Z',
       },
     }))
     const incoming = provenance()
@@ -256,7 +263,11 @@ describe('T9-A004-R2: portfolio snapshot provenance action contract', () => {
       }],
       portfolioPolicy: { jpStockMaxRatio: 0.1 },
       cashAssumptions: {
-        cashDeposits: 0, standbyFunds: 0, manualOverrideEnabled: true, manualUpdatedAt: null,
+        source: 'MANUAL',
+        grossCash: 0,
+        safetyReserve: 0,
+        pendingOrderCash: null,
+        updatedAt: '2026-07-15T09:00:00.000Z',
       },
     })
     const before = useAppStore.getState()
@@ -396,7 +407,7 @@ describe('T9-A004-R2: portfolio snapshot provenance action contract', () => {
     useAppStore.setState(state => ({
       holdings: [],
       trust: [],
-      cashAssumptions: { ...state.cashAssumptions, manualOverrideEnabled: false },
+      cashAssumptions: { ...DEFAULT_CASH_ASSUMPTIONS },
       system: { ...state.system, csvLastImportedAt: null, csvImportProvenance: null },
     }))
 
@@ -414,7 +425,11 @@ describe('T9-A004-R2: portfolio snapshot provenance action contract', () => {
       trust: [],
       portfolioPolicy: { jpStockMaxRatio: 0.1 },
       cashAssumptions: {
-        cashDeposits: 0, standbyFunds: 0, manualOverrideEnabled: false, manualUpdatedAt: null,
+        source: 'DEFAULT',
+        grossCash: 0,
+        safetyReserve: 0,
+        pendingOrderCash: null,
+        updatedAt: null,
       },
       system: { ...state.system, csvLastImportedAt: null, csvImportProvenance: null },
     }))
@@ -427,8 +442,11 @@ describe('T9-A004-R2: portfolio snapshot provenance action contract', () => {
       holdings: [{ code: 'NEW', name: '新規 📈', eval: 123_456, pnlPct: 1.5 }],
       portfolioPolicy: { jpStockMaxRatio: 0.12 },
       cashAssumptions: {
-        cashDeposits: 500_000, standbyFunds: 200_000,
-        manualOverrideEnabled: true, manualUpdatedAt: '2026-07-15T10:30:00.000Z',
+        source: 'MANUAL',
+        grossCash: 700_000,
+        safetyReserve: 0,
+        pendingOrderCash: null,
+        updatedAt: '2026-07-15T10:30:00.000Z',
       },
     })
 

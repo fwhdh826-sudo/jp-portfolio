@@ -509,14 +509,14 @@ describe('RA-007-D2 initialize bootstrap semantics', () => {
     baselineStore(a.store)
     storage.v81_portfolio = JSON.stringify({ data: [{ ...TEST_HOLDING, code: 'LEGACY-OK' }], savedAt: NOW_MS })
     storage.v13_cash_assumptions = JSON.stringify({
-      data: { cashDeposits: 7_000_000, standbyFunds: 1_000_000, manualOverrideEnabled: true, manualUpdatedAt: NOW_ISO },
+      data: { source: 'MANUAL', grossCash: 8_000_000, safetyReserve: 0, pendingOrderCash: null, updatedAt: NOW_ISO },
       savedAt: NOW_MS,
     })
     const pending = a.store.getState().initialize()
     const result = await grant(manager, pending)
     expect(result).toMatchObject({ ok: true, code: 'SUCCESS' })
     expect(a.store.getState().holdings.map(h => h.code)).toEqual(['LEGACY-OK'])
-    expect(a.store.getState().cashAssumptions.cashDeposits).toBe(7_000_000)
+    expect(a.store.getState().cashAssumptions.grossCash).toBe(8_000_000)
   })
 
   it('durable evidence absent bootstraps from the initial default state', async () => {

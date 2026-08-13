@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import type { CashAssumptions } from '../types'
 
 const analysisProbe = vi.hoisted(() => ({ calls: 0, fail: false }))
 const loadProbe = vi.hoisted(() => ({
@@ -77,9 +78,12 @@ const BASELINE_TRUST: Trust = {
   decision: 'HOLD',
 }
 
-const BASELINE_CASH_ASSUMPTIONS = {
-  cashDeposits: 1_000_000, standbyFunds: 200_000,
-  manualOverrideEnabled: true, manualUpdatedAt: NOW_ISO,
+const BASELINE_CASH_ASSUMPTIONS: CashAssumptions = {
+  source: 'MANUAL',
+  grossCash: 1_200_000,
+  safetyReserve: 0,
+  pendingOrderCash: null,
+  updatedAt: NOW_ISO,
 }
 
 class CountingFileReader {
@@ -269,11 +273,16 @@ const WRITER_TRIGGERS: Record<WriterKey, (instance: Instance) => Promise<unknown
   ),
   setPortfolioPolicy: instance => instance.store.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.22 }),
   setCashAssumptions: instance => instance.store.getState().setCashAssumptions({
-    cashDeposits: 1, standbyFunds: 1,
+    grossCash: 2,
+    safetyReserve: 0,
+    pendingOrderCash: null,
   }),
   clearCashAssumptionsOverride: instance => instance.store.getState().clearCashAssumptionsOverride(),
   importCashAssumptions: instance => instance.store.getState().importCashAssumptions({
-    cashDeposits: 2, standbyFunds: 2, manualUpdatedAt: NOW_ISO,
+    grossCash: 4,
+    safetyReserve: 0,
+    pendingOrderCash: null,
+    updatedAt: NOW_ISO,
   }),
 }
 
@@ -414,7 +423,9 @@ describe('RA-007-E manual mutation NO_CHANGE leaves durable state untouched', ()
     resetCounts()
 
     const pending = a.store.getState().setCashAssumptions({
-      cashDeposits: BASELINE_CASH_ASSUMPTIONS.cashDeposits, standbyFunds: BASELINE_CASH_ASSUMPTIONS.standbyFunds,
+      grossCash: BASELINE_CASH_ASSUMPTIONS.grossCash,
+      safetyReserve: 0,
+      pendingOrderCash: null,
     })
     const result = await grant(manager, pending)
     expect(result).toMatchObject({ ok: true, code: 'SUCCESS' })

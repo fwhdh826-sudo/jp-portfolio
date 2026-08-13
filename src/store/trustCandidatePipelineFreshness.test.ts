@@ -85,11 +85,19 @@ function buildPermissiveState(overrides: {
     ...base,
     holdings: [],
     trust: overrides.trust ?? [makeTrust(), makeGoldCandidate()],
-    // P0-PRIVACY-HOTFIX: INITIAL_CASH/INITIAL_CASH_RESERVEが0になったため、
-    // BUY_NEW候補のavailableCash gate（INSUFFICIENT_CASH）を通過させるには
-    // このテスト用の"permissive"状態として明示的に十分な現金を与える必要がある。
+    // P0-PRIVACY-HOTFIX / CASH-AUTH-1: BUY_NEW候補のavailableCash gate
+    // （INSUFFICIENT_CASH）を通過させるには、このテスト用の"permissive"状態として
+    // 有効な現金権限を明示的に与える必要がある。権限なし（DEFAULT）は unknown で
+    // あり、legacy な state.cash から金額を推測することはもう無い。
     cash: 5_000_000,
     cashReserve: 0,
+    cashAssumptions: {
+      source: 'MANUAL' as const,
+      grossCash: 5_000_000,
+      safetyReserve: 0,
+      pendingOrderCash: null,
+      updatedAt: NOW,
+    },
     safeMode: {
       ...base.safeMode,
       safe_mode: { ...base.safeMode.safe_mode, active: safeModeActive },

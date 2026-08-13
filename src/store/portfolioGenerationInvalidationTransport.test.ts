@@ -111,6 +111,7 @@ describe('constants', () => {
       'setPortfolioPolicy',
       'setCashAssumptions',
       'clearCashAssumptionsOverride',
+      'reconfirmCashAssumptions',
       'importCashAssumptions',
     ]
     expect([...PORTFOLIO_GENERATION_OPERATIONS].sort()).toEqual([...expectedOperations].sort())

@@ -1,76 +1,75 @@
 // ═══════════════════════════════════════════════════════════
-// P4.5-A009: 資金前提（現金・待機資金）のexport/import — 表示専用のシリアライズ/検証のみ。
+// P4.5-A009 / CASH-AUTH-1: 現金権限のexport/import — 表示専用のシリアライズ/検証のみ。
 // PC/スマホ間の同期はユーザーがJSON文字列を手動でコピー/貼り付けする方式に限定する。
 // public repo / public data JSON / workflow / backend への書き出しは一切行わない。
+//
+// import は transport であって第3の権限ソースではない。取り込んだ結果は常に
+// source=MANUAL となり、updatedAt は取り込み元の値を引き継ぐ（現在時刻で
+// 上書きして「新鮮」に見せかけない）。
 // ═══════════════════════════════════════════════════════════
 import type { CashAssumptions, CashAssumptionsExportPayload } from '../types'
-import { CASH_ASSUMPTIONS_EXPORT_SCHEMA_VERSION } from '../types'
+import {
+  CASH_ASSUMPTIONS_EXPORT_SCHEMA_VERSION,
+  CASH_ASSUMPTIONS_EXPORT_SCHEMA_VERSION_V1,
+} from '../types'
+import {
+  CASH_AUTHORITY_MAX_JPY,
+  NO_CASH_AUTHORITY,
+  isIntegerJpy,
+  migrateLegacyCashAssumptions,
+  parseAuthorityTimestampMs,
+} from '../domain/cash/cashAuthority'
 
 /**
- * cashAssumptionsをexport用JSON文字列に変換する（表示・コピー用）。
+ * 現金権限をexport用JSON文字列に変換する（表示・コピー用）。
  * どこにも保存しない — 呼び出し側がUIに表示し、ユーザー自身がコピーする。
- * 注意: rawのCashAssumptionsをそのまま渡すと、manualOverrideEnabled=falseのとき
- * cashDeposits/standbyFundsが「実際に使われている値」と一致しない（初回起動時は0/0、
- * override解除後は解除前の古い値が残る）。呼び出し側は必ず
- * buildExportableCashAssumptions()で実効値ベースに変換してから渡すこと。
  */
 export function serializeCashAssumptionsExport(cashAssumptions: CashAssumptions): string {
   const payload: CashAssumptionsExportPayload = {
     schemaVersion: CASH_ASSUMPTIONS_EXPORT_SCHEMA_VERSION,
     exportedAt: new Date().toISOString(),
-    cashDeposits: cashAssumptions.cashDeposits,
-    standbyFunds: cashAssumptions.standbyFunds,
-    manualOverrideEnabled: cashAssumptions.manualOverrideEnabled,
-    manualUpdatedAt: cashAssumptions.manualUpdatedAt,
+    source: cashAssumptions.source,
+    grossCash: cashAssumptions.grossCash,
+    safetyReserve: cashAssumptions.safetyReserve,
+    pendingOrderCash: cashAssumptions.pendingOrderCash,
+    updatedAt: cashAssumptions.updatedAt,
   }
   return JSON.stringify(payload, null, 2)
 }
 
 /**
- * P4.5-A009 ミニ監査: 実効値（selectEffectiveCashAssumptionsの結果）からexport可能な
- * CashAssumptions形のオブジェクトを構築する。manualOverrideEnabled=falseの場合でも
- * 「実際に使われている値」（既定値含む）を正しくexportするための変換。
- * manualOverrideEnabledは常にtrueにする — importは常に手動override扱いになる仕様
- * （useAppStore.importCashAssumptions）と整合させるため。
- * manualUpdatedAtはeffective側にあればそれを、無ければ（既定値使用中）現在時刻を使う
- * （既定値には「最終更新日時」の概念がないため、export実行時刻を代わりに使う）。
+ * CASH-AUTH-1: export 対象は state.cashAssumptions そのもの（権限は1つしかなく、
+ * 実効値と保存値が乖離しない）。権限未設定（DEFAULT）はそのまま DEFAULT として
+ * export し、受け取り側でも「未設定」のままにする — 0円を confirmed zero に
+ * 昇格させない。
  */
-export function buildExportableCashAssumptions(
-  effective: { cash: number; cashReserve: number; manualUpdatedAt: string | null },
-): CashAssumptions {
-  return {
-    cashDeposits: effective.cash,
-    standbyFunds: effective.cashReserve,
-    manualOverrideEnabled: true,
-    manualUpdatedAt: effective.manualUpdatedAt ?? new Date().toISOString(),
-  }
+export function buildExportableCashAssumptions(record: CashAssumptions): CashAssumptions {
+  return record.source === 'MANUAL' ? { ...record } : { ...NO_CASH_AUTHORITY }
 }
 
 export interface CashAssumptionsImportData {
-  cashDeposits: number
-  standbyFunds: number
+  grossCash: number
+  safetyReserve: number
+  pendingOrderCash: number | null
   /**
-   * import元のmanualUpdatedAtをそのまま引き継ぐ。欠損・不正な日時文字列の場合はnullにする
-   * （加算・現在時刻への差し替えはしない）。nullはP4.5-A008のcomputeCashAssumptionsFreshnessで
-   * isStale=true（要更新の警告）として扱われるため、「不正/欠損時はstale扱いになる」設計を採用した。
+   * import元のupdatedAtをそのまま引き継ぐ。欠損・不正な日時文字列の場合はnullにする
+   * （現在時刻への差し替えはしない）。nullは鮮度判定でstale扱いになるため、
+   * 「不正/欠損時は無警告でfreshにならない」設計を維持する。
    */
-  manualUpdatedAt: string | null
+  updatedAt: string | null
 }
 
 export type CashAssumptionsImportResult =
   | { ok: true; data: CashAssumptionsImportData }
   | { ok: false; error: string }
 
-// 異常に大きすぎる値のガード（現実的な資産規模を大きく超える上限。1兆円）
-const MAX_REASONABLE_AMOUNT = 1_000_000_000_000
-
 function isValidAmount(v: unknown): v is number {
-  return typeof v === 'number' && Number.isFinite(v) && v >= 0 && v <= MAX_REASONABLE_AMOUNT
+  return typeof v === 'number' && Number.isFinite(v) && v >= 0 && v <= CASH_AUTHORITY_MAX_JPY
 }
 
 /**
  * 貼り付けられたJSON文字列を検証し、有効な場合のみimport可能な値を返す。
- * 不正な入力は全てreject（ok: false）とし、呼び出し側は既存のcashAssumptionsを
+ * 不正な入力は全てreject（ok: false）とし、呼び出し側は既存の現金権限を
  * 一切変更してはならない。
  */
 export function parseCashAssumptionsImport(raw: string): CashAssumptionsImportResult {
@@ -92,29 +91,71 @@ export function parseCashAssumptionsImport(raw: string): CashAssumptionsImportRe
 
   const p = parsed as Record<string, unknown>
 
+  // CASH-AUTH-1 以前のペイロードは同じ移行規則（gross = 現金 + 待機資金、
+  // 安全余力 0、未約定 null）で変換する。addRoom は存在せず加算もしない。
+  if (p.schemaVersion === CASH_ASSUMPTIONS_EXPORT_SCHEMA_VERSION_V1) {
+    if (!isValidAmount(p.cashDeposits)) {
+      return { ok: false, error: '現金・預貯金の値が不正です（0以上の数値である必要があります）。' }
+    }
+    if (!isValidAmount(p.standbyFunds)) {
+      return { ok: false, error: '待機・追加資金の値が不正です（0以上の数値である必要があります）。' }
+    }
+    const migrated = migrateLegacyCashAssumptions({
+      cashDeposits: Math.round(p.cashDeposits),
+      standbyFunds: Math.round(p.standbyFunds),
+      manualOverrideEnabled: true,
+      manualUpdatedAt: typeof p.manualUpdatedAt === 'string' ? p.manualUpdatedAt : null,
+    })
+    if (migrated === null || migrated.source !== 'MANUAL') {
+      return {
+        ok: false,
+        error: '取り込めるデータがありませんでした（更新時刻が欠損しているか、金額が不正です）。',
+      }
+    }
+    return {
+      ok: true,
+      data: {
+        grossCash: migrated.grossCash,
+        safetyReserve: migrated.safetyReserve,
+        pendingOrderCash: migrated.pendingOrderCash,
+        updatedAt: migrated.updatedAt,
+      },
+    }
+  }
+
   if (p.schemaVersion !== CASH_ASSUMPTIONS_EXPORT_SCHEMA_VERSION) {
     return { ok: false, error: 'このアプリからエクスポートされたデータではないようです（schemaVersion不一致）。' }
   }
 
-  if (!isValidAmount(p.cashDeposits)) {
-    return { ok: false, error: '現金・預貯金の値が不正です（0以上の数値である必要があります）。' }
+  if (p.source !== 'MANUAL') {
+    return { ok: false, error: '取り込み元で現金権限が未設定です。先に相手側の端末で現金を設定してください。' }
   }
-  if (!isValidAmount(p.standbyFunds)) {
-    return { ok: false, error: '待機・追加資金の値が不正です（0以上の数値である必要があります）。' }
+  if (!isIntegerJpy(p.grossCash)) {
+    return { ok: false, error: '総現金の値が不正です（0以上1兆円以下の整数である必要があります）。' }
+  }
+  if (!isIntegerJpy(p.safetyReserve)) {
+    return { ok: false, error: '生活・安全余力の値が不正です（0以上1兆円以下の整数である必要があります）。' }
+  }
+  if (p.pendingOrderCash !== null && !isIntegerJpy(p.pendingOrderCash)) {
+    return { ok: false, error: '未約定の買付注文額が不正です（0以上1兆円以下の整数、または未指定である必要があります）。' }
+  }
+  const pendingOrderCash = p.pendingOrderCash === null ? null : (p.pendingOrderCash as number)
+  if ((p.safetyReserve as number) + (pendingOrderCash ?? 0) > (p.grossCash as number)) {
+    return { ok: false, error: '安全余力と未約定買付の合計が総現金を超えています。' }
   }
 
-  const rawUpdatedAt = p.manualUpdatedAt
-  const manualUpdatedAt =
-    typeof rawUpdatedAt === 'string' && !Number.isNaN(new Date(rawUpdatedAt).getTime())
-      ? rawUpdatedAt
+  const updatedAt =
+    typeof p.updatedAt === 'string' && parseAuthorityTimestampMs(p.updatedAt) !== null
+      ? p.updatedAt
       : null
 
   return {
     ok: true,
     data: {
-      cashDeposits: Math.round(p.cashDeposits),
-      standbyFunds: Math.round(p.standbyFunds),
-      manualUpdatedAt,
+      grossCash: p.grossCash as number,
+      safetyReserve: p.safetyReserve as number,
+      pendingOrderCash,
+      updatedAt,
     },
   }
 }

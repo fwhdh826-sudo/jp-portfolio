@@ -29,7 +29,6 @@ function makeUniverse(categories: AssetCategorySummary[]): AssetUniverse {
     categories,
     cash: 1_000_000,
     cashReserve: 5_000_000,
-    addRoom: 0,
     lastUpdatedAt: '',
   }
 }

@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { useAppStore, runFullAnalysis } from './useAppStore'
 import { INITIAL_HOLDINGS } from '../constants/holdings'
 import { INITIAL_TRUST } from '../constants/trust'
-import { INITIAL_CASH, INITIAL_CASH_RESERVE, INITIAL_ADD_ROOM } from '../constants/market'
+import { INITIAL_CASH, INITIAL_CASH_RESERVE } from '../constants/market'
 
 // P0-PRIVACY-HOTFIX 実施4:
 // localStorageなし・csvLastImportedAt=null・portfolio snapshotなしの真の初回起動状態で、
@@ -16,7 +16,6 @@ describe('P0-PRIVACY-HOTFIX: 真の初回未取込状態の安全性', () => {
       trust: INITIAL_TRUST,
       cash: INITIAL_CASH,
       cashReserve: INITIAL_CASH_RESERVE,
-      addRoom: INITIAL_ADD_ROOM,
       system: {
         ...base.system,
         csvLastImportedAt: null,

@@ -50,7 +50,7 @@ describe('T9-A004-R2-F1 snapshot generation identity', () => {
       holdings: [{ code: 'A', name: '株式', eval: 1, pnlPct: 2 }, { code: 'B', name: '📊', eval: 3, pnlPct: 4 }],
       trust: [{ id: 'T', eval: 5, pnlPct: 6, dayPct: 7, account: '特定' }],
       portfolioPolicy: { jpStockMaxRatio: 0.12 },
-      cashAssumptions: { cashDeposits: 8, standbyFunds: 9, manualOverrideEnabled: true, manualUpdatedAt: authoritative.importedAt },
+      cashAssumptions: { source: 'MANUAL', grossCash: 17, safetyReserve: 0, pendingOrderCash: null, updatedAt: authoritative.importedAt },
       csvImportedAt: authoritative.importedAt,
       csvImportProvenance: authoritative,
     })],
@@ -116,6 +116,9 @@ describe('T9-A004-R3-FIX-A canonical generation identity', () => {
     trust: [],
     learning: null,
     portfolioPolicy: { jpStockMaxRatio: 0.1 },
+    // CASH-AUTH-1: この fixture は「移行前に保存された世代」の identity 安定性を
+    // 固定するためのもの。legacy スキーマのまま維持し、下の固定ハッシュが
+    // CASH-AUTH-1 の前後で変化しないことを証明する。
     cashAssumptions: {
       cashDeposits: 0,
       standbyFunds: 0,

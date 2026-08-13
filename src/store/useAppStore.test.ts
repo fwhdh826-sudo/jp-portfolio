@@ -12,7 +12,7 @@ import type { CsvImportProvenance, Holding, Trust } from '../types'
 import { DEFAULT_CASH_ASSUMPTIONS, DEFAULT_PORTFOLIO_POLICY } from '../types'
 import type { CommitteeDecision } from '../domain/analysis/committeeDecision'
 import { committeeToOfficialDecision, buildCsvSyncSummary, useAppStore } from './useAppStore'
-import { selectEffectiveCashAssumptions, selectCashAssumptionsFreshness } from './selectors'
+import { selectEffectiveCashAssumptions, selectCashAssumptionsFreshness, selectCashAuthorityView } from './selectors'
 import {
   computeCanonicalPortfolioGenerationIdentity,
   computeCanonicalPortfolioGenerationIdentityV2,
@@ -264,8 +264,8 @@ describe('committeeToOfficialDecision: P4-A148 SAFE_MODE中のBUY抑制', () => 
   })
 })
 
-// P4.5-A002: 資金前提の手動override（setCashAssumptions / clearCashAssumptionsOverride）
-describe('useAppStore: cashAssumptions（資金前提の手動override）', () => {
+// CASH-AUTH-1: 現金権限（setCashAssumptions / reconfirm / clear / import）
+describe('useAppStore: cashAssumptions（現金権限）', () => {
   const store: Record<string, string> = {}
   const lsMock = {
     getItem:    (k: string) => store[k] ?? null,
@@ -276,119 +276,175 @@ describe('useAppStore: cashAssumptions（資金前提の手動override）', () =
   beforeEach(() => {
     vi.stubGlobal('localStorage', lsMock)
     for (const k in store) delete store[k]
-    // 各テストの前提を揃えるため、既定値（未override状態）にリセットする
-    useAppStore.setState({
-      cashAssumptions: { cashDeposits: 0, standbyFunds: 0, manualOverrideEnabled: false, manualUpdatedAt: null },
-    })
+    // 各テストの前提を揃えるため、権限なし（未設定）にリセットする
+    useAppStore.setState({ cashAssumptions: { ...DEFAULT_CASH_ASSUMPTIONS } })
   })
   afterEach(() => { vi.unstubAllGlobals() })
 
-  it('初期状態（manualOverrideEnabled=false）では既定値が実効値になる', () => {
+  it('初期状態（権限なし）では unknown / 実効値0 になる', () => {
     const eff = selectEffectiveCashAssumptions(useAppStore.getState())
     expect(eff.source).toBe('default')
+    expect(eff.grossCash).toBe(0)
+    expect(selectCashAssumptionsFreshness(useAppStore.getState()).state).toBe('unknown')
   })
 
-  it('setCashAssumptionsで手動値が実効値になり、cashTotalが自動計算される', async () => {
-    await useAppStore.getState().setCashAssumptions({ cashDeposits: 1_000_000, standbyFunds: 2_000_000 })
+  it('setCashAssumptionsで権限が確定し、実効値と更新時刻が入る', async () => {
+    const result = await useAppStore.getState().setCashAssumptions({
+      grossCash: 3_000_000, safetyReserve: 500_000, pendingOrderCash: 200_000,
+    })
+    expect(result).toMatchObject({ ok: true })
     const state = useAppStore.getState()
-    expect(state.cashAssumptions.manualOverrideEnabled).toBe(true)
-    expect(state.cashAssumptions.cashDeposits).toBe(1_000_000)
-    expect(state.cashAssumptions.standbyFunds).toBe(2_000_000)
-    expect(state.cashAssumptions.manualUpdatedAt).not.toBeNull()
+    expect(state.cashAssumptions.source).toBe('MANUAL')
+    expect(state.cashAssumptions.grossCash).toBe(3_000_000)
+    expect(state.cashAssumptions.safetyReserve).toBe(500_000)
+    expect(state.cashAssumptions.pendingOrderCash).toBe(200_000)
+    expect(state.cashAssumptions.updatedAt).not.toBeNull()
 
     const eff = selectEffectiveCashAssumptions(state)
-    expect(eff.cash).toBe(1_000_000)
-    expect(eff.cashReserve).toBe(2_000_000)
+    expect(eff.grossCash).toBe(3_000_000)
     expect(eff.cashTotal).toBe(3_000_000)
     expect(eff.source).toBe('manual')
   })
 
-  it('setCashAssumptionsの入力は0以上の整数に丸められる（負数・小数のガード）', async () => {
-    await useAppStore.getState().setCashAssumptions({ cashDeposits: -500, standbyFunds: 1234.6 })
-    const state = useAppStore.getState()
-    expect(state.cashAssumptions.cashDeposits).toBe(0)
-    expect(state.cashAssumptions.standbyFunds).toBe(1235)
+  it('負数・小数・非有限値は丸めずに reject し、権限を一切変更しない', async () => {
+    const before = useAppStore.getState().cashAssumptions
+    for (const bad of [-500, 1234.6, Number.NaN, Number.POSITIVE_INFINITY]) {
+      const result = await useAppStore.getState().setCashAssumptions({
+        grossCash: bad, safetyReserve: 0, pendingOrderCash: null,
+      })
+      expect(result).toMatchObject({ ok: false })
+      expect(useAppStore.getState().cashAssumptions).toEqual(before)
+    }
   })
 
-  it('保存するとlocalStorage（persist.ts経由）に反映される', async () => {
-    await useAppStore.getState().setCashAssumptions({ cashDeposits: 500_000, standbyFunds: 700_000 })
+  it('安全余力と未約定の合計が総現金を超える入力は reject される（1円の二重確保禁止）', async () => {
+    const before = useAppStore.getState().cashAssumptions
+    const result = await useAppStore.getState().setCashAssumptions({
+      grossCash: 1_000_000, safetyReserve: 800_000, pendingOrderCash: 300_000,
+    })
+    expect(result).toMatchObject({ ok: false })
+    expect(useAppStore.getState().cashAssumptions).toEqual(before)
+  })
+
+  it('保存するとlocalStorage（persist.ts経由）に現行スキーマで反映される', async () => {
+    await useAppStore.getState().setCashAssumptions({
+      grossCash: 1_200_000, safetyReserve: 200_000, pendingOrderCash: 0,
+    })
     const raw = store['v13_cash_assumptions']
     expect(raw).toBeDefined()
     const saved = JSON.parse(raw)
-    expect(saved.data.cashDeposits).toBe(500_000)
-    expect(saved.data.standbyFunds).toBe(700_000)
-    expect(saved.data.manualOverrideEnabled).toBe(true)
+    expect(saved.data.source).toBe('MANUAL')
+    expect(saved.data.grossCash).toBe(1_200_000)
+    expect(saved.data.safetyReserve).toBe(200_000)
+    expect(saved.data.pendingOrderCash).toBe(0)
+    expect(saved.data).not.toHaveProperty('cashDeposits')
+    expect(saved.data).not.toHaveProperty('standbyFunds')
   })
 
-  it('clearCashAssumptionsOverrideで既定値に戻る', async () => {
-    await useAppStore.getState().setCashAssumptions({ cashDeposits: 1_000_000, standbyFunds: 2_000_000 })
+  it('clearCashAssumptionsOverrideは権限なし（未設定）へ戻す — 0円確認済みではない', async () => {
+    await useAppStore.getState().setCashAssumptions({ grossCash: 3_000_000, safetyReserve: 0, pendingOrderCash: null })
     expect(selectEffectiveCashAssumptions(useAppStore.getState()).source).toBe('manual')
 
     await useAppStore.getState().clearCashAssumptionsOverride()
     const state = useAppStore.getState()
-    expect(state.cashAssumptions.manualOverrideEnabled).toBe(false)
-    expect(state.cashAssumptions.manualUpdatedAt).toBeNull()
-    expect(selectEffectiveCashAssumptions(state).source).toBe('default')
+    expect(state.cashAssumptions).toEqual(DEFAULT_CASH_ASSUMPTIONS)
+    expect(selectCashAssumptionsFreshness(state).state).toBe('unknown')
   })
 
-  it('手動値と既定値のcashフィールドは加算されない（置き換えのみ）', async () => {
-    // P0-PRIVACY-HOTFIX: INITIAL_CASHが0になったため、加算されていないことを
-    // 検証するにはdefaultCashが非ゼロであることをテスト側で明示する必要がある。
+  it('confirmed zero（0円を確認済み）は unknown と区別される', async () => {
+    await useAppStore.getState().setCashAssumptions({ grossCash: 0, safetyReserve: 0, pendingOrderCash: 0 })
+    const state = useAppStore.getState()
+    expect(state.cashAssumptions.source).toBe('MANUAL')
+    expect(selectCashAssumptionsFreshness(state).state).toBe('known_fresh')
+    expect(selectCashAuthorityView(state).confirmedZero).toBe(true)
+    expect(selectCashAuthorityView(state).deployableCash).toBe(0)
+  })
+
+  it('権限と legacy な state.cash は加算されない（置き換えのみ）', async () => {
     useAppStore.setState({ cash: 100 })
-    const defaultCash = useAppStore.getState().cash
-    await useAppStore.getState().setCashAssumptions({ cashDeposits: 10, standbyFunds: 20 })
+    await useAppStore.getState().setCashAssumptions({ grossCash: 30, safetyReserve: 0, pendingOrderCash: null })
     const eff = selectEffectiveCashAssumptions(useAppStore.getState())
-    expect(eff.cash).toBe(10)
-    expect(eff.cash).not.toBe(defaultCash + 10)
+    expect(eff.grossCash).toBe(30)
+    expect(eff.cashTotal).toBe(30)
   })
 
-  it('P4.5-A008: clearCashAssumptionsOverride後はstale警告（isStale）も消える', async () => {
-    const staleUpdatedAt = new Date(Date.now() - 8 * 24 * 60 * 60 * 1000).toISOString()
+  it('reconfirmCashAssumptionsは金額を変えずに更新時刻だけを進める（明示操作のみ）', async () => {
+    const staleUpdatedAt = new Date(Date.now() - 200 * 60 * 60 * 1000).toISOString()
     useAppStore.setState({
-      cashAssumptions: { cashDeposits: 1, standbyFunds: 2, manualOverrideEnabled: true, manualUpdatedAt: staleUpdatedAt },
+      cashAssumptions: { source: 'MANUAL', grossCash: 900_000, safetyReserve: 100_000, pendingOrderCash: null, updatedAt: staleUpdatedAt },
+    })
+    expect(selectCashAssumptionsFreshness(useAppStore.getState()).state).toBe('stale')
+
+    await useAppStore.getState().reconfirmCashAssumptions()
+    const state = useAppStore.getState()
+    expect(state.cashAssumptions.grossCash).toBe(900_000)
+    expect(state.cashAssumptions.safetyReserve).toBe(100_000)
+    expect(state.cashAssumptions.updatedAt).not.toBe(staleUpdatedAt)
+    expect(selectCashAssumptionsFreshness(state).state).toBe('known_fresh')
+  })
+
+  it('reconfirmCashAssumptionsは権限が無いときに時刻を捏造しない', async () => {
+    const result = await useAppStore.getState().reconfirmCashAssumptions()
+    expect(result).toMatchObject({ ok: true, code: 'NO_CHANGE' })
+    expect(useAppStore.getState().cashAssumptions).toEqual(DEFAULT_CASH_ASSUMPTIONS)
+  })
+
+  it('clearCashAssumptionsOverride後はstale警告も消える（unknownへ遷移する）', async () => {
+    const staleUpdatedAt = new Date(Date.now() - 200 * 60 * 60 * 1000).toISOString()
+    useAppStore.setState({
+      cashAssumptions: { source: 'MANUAL', grossCash: 3, safetyReserve: 0, pendingOrderCash: null, updatedAt: staleUpdatedAt },
     })
     expect(selectCashAssumptionsFreshness(useAppStore.getState()).isStale).toBe(true)
 
     await useAppStore.getState().clearCashAssumptionsOverride()
     expect(selectCashAssumptionsFreshness(useAppStore.getState()).isStale).toBe(false)
+    expect(selectCashAssumptionsFreshness(useAppStore.getState()).state).toBe('unknown')
   })
 
-  it('P4.5-A009: importCashAssumptionsでmanualOverrideEnabled=trueになり、既存値が置き換わる', async () => {
-    await useAppStore.getState().setCashAssumptions({ cashDeposits: 111, standbyFunds: 222 })
-    expect(useAppStore.getState().cashAssumptions.cashDeposits).toBe(111)
+  it('importCashAssumptionsは既存の権限を置き換える', async () => {
+    await useAppStore.getState().setCashAssumptions({ grossCash: 333, safetyReserve: 0, pendingOrderCash: null })
+    expect(useAppStore.getState().cashAssumptions.grossCash).toBe(333)
 
-    await useAppStore.getState().importCashAssumptions({ cashDeposits: 3_000_000, standbyFunds: 7_000_000, manualUpdatedAt: '2026-06-20T00:00:00.000Z' })
+    await useAppStore.getState().importCashAssumptions({
+      grossCash: 10_000_000, safetyReserve: 1_000_000, pendingOrderCash: null, updatedAt: '2026-06-20T00:00:00.000Z',
+    })
     const state = useAppStore.getState()
-    expect(state.cashAssumptions.manualOverrideEnabled).toBe(true)
-    expect(state.cashAssumptions.cashDeposits).toBe(3_000_000)
-    expect(state.cashAssumptions.standbyFunds).toBe(7_000_000)
+    expect(state.cashAssumptions.source).toBe('MANUAL')
+    expect(state.cashAssumptions.grossCash).toBe(10_000_000)
+    expect(state.cashAssumptions.safetyReserve).toBe(1_000_000)
 
     const eff = selectEffectiveCashAssumptions(state)
-    expect(eff.cash).toBe(3_000_000)
-    expect(eff.cashReserve).toBe(7_000_000)
+    expect(eff.grossCash).toBe(10_000_000)
     expect(eff.source).toBe('manual')
   })
 
-  it('P4.5-A009: importCashAssumptionsはmanualUpdatedAtを現在時刻で上書きせず、渡された値をそのまま使う', async () => {
-    await useAppStore.getState().importCashAssumptions({ cashDeposits: 1, standbyFunds: 2, manualUpdatedAt: '2020-01-01T00:00:00.000Z' })
-    expect(useAppStore.getState().cashAssumptions.manualUpdatedAt).toBe('2020-01-01T00:00:00.000Z')
+  it('importCashAssumptionsはupdatedAtを現在時刻で上書きせず、渡された値をそのまま使う', async () => {
+    await useAppStore.getState().importCashAssumptions({
+      grossCash: 3, safetyReserve: 0, pendingOrderCash: null, updatedAt: '2020-01-01T00:00:00.000Z',
+    })
+    expect(useAppStore.getState().cashAssumptions.updatedAt).toBe('2020-01-01T00:00:00.000Z')
+    expect(selectCashAssumptionsFreshness(useAppStore.getState()).isStale).toBe(true)
   })
 
-  it('P4.5-A009: importCashAssumptionsにmanualUpdatedAt=nullを渡すとstale扱いになる', async () => {
-    await useAppStore.getState().importCashAssumptions({ cashDeposits: 1, standbyFunds: 2, manualUpdatedAt: null })
-    const state = useAppStore.getState()
-    expect(state.cashAssumptions.manualUpdatedAt).toBeNull()
-    expect(selectCashAssumptionsFreshness(state).isStale).toBe(true)
+  it('importCashAssumptionsにupdatedAt=nullを渡すと reject され、権限は変わらない', async () => {
+    const before = useAppStore.getState().cashAssumptions
+    const result = await useAppStore.getState().importCashAssumptions({
+      grossCash: 3, safetyReserve: 0, pendingOrderCash: null, updatedAt: null,
+    })
+    expect(result).toMatchObject({ ok: false })
+    expect(useAppStore.getState().cashAssumptions).toEqual(before)
   })
 
-  it('P4.5-A009: localStorageに反映される（persist.ts経由）', async () => {
-    await useAppStore.getState().importCashAssumptions({ cashDeposits: 500_000, standbyFunds: 600_000, manualUpdatedAt: '2026-07-01T00:00:00.000Z' })
+  it('importでもlocalStorageに現行スキーマで反映される', async () => {
+    await useAppStore.getState().importCashAssumptions({
+      grossCash: 1_100_000, safetyReserve: 0, pendingOrderCash: null, updatedAt: '2026-07-01T00:00:00.000Z',
+    })
     const raw = store['v13_cash_assumptions']
     expect(raw).toBeDefined()
     const saved = JSON.parse(raw)
-    expect(saved.data.cashDeposits).toBe(500_000)
-    expect(saved.data.standbyFunds).toBe(600_000)
-    expect(saved.data.manualOverrideEnabled).toBe(true)
+    expect(saved.data.source).toBe('MANUAL')
+    expect(saved.data.grossCash).toBe(1_100_000)
+    expect(saved.data.updatedAt).toBe('2026-07-01T00:00:00.000Z')
   })
 })
 
@@ -427,7 +483,7 @@ describe('useAppStore: portfolio snapshot（P4.5-A012b）', () => {
       holdings: [testHoldingA, testHoldingB],
       trust: [testTrust],
       portfolioPolicy: { jpStockMaxRatio: 0.10 },
-      cashAssumptions: { cashDeposits: 0, standbyFunds: 0, manualOverrideEnabled: false, manualUpdatedAt: null },
+      cashAssumptions: { source: 'DEFAULT', grossCash: 0, safetyReserve: 0, pendingOrderCash: null, updatedAt: null },
       system: {
         ...s.system,
         csvLastImportedAt: '2026-07-01T00:00:00.000Z',
@@ -464,13 +520,24 @@ describe('useAppStore: portfolio snapshot（P4.5-A012b）', () => {
     expect(json).not.toContain('zeroPlan')
   })
 
-  it('exportPortfolioSnapshotはcashAssumptions実効値を使う（既定値使用中でも実効値がexportされる）', () => {
+  it('CASH-AUTH-1: exportPortfolioSnapshotは現金権限をそのまま書き出す（未設定は未設定のまま）', () => {
     const json = useAppStore.getState().exportPortfolioSnapshot()
     const parsed = JSON.parse(json)
     expect(parsed.cashAssumptions).not.toBeNull()
-    // buildExportableCashAssumptionsによりmanualOverrideEnabledは常にtrueとしてexportされる
-    expect(parsed.cashAssumptions.manualOverrideEnabled).toBe(true)
-    expect(typeof parsed.cashAssumptions.cashDeposits).toBe('number')
+    // 権限は state.cashAssumptions ただ一つ。未設定を MANUAL へ昇格させない。
+    expect(parsed.cashAssumptions.source).toBe('DEFAULT')
+    expect(parsed.cashAssumptions.grossCash).toBe(0)
+    expect(parsed.cashAssumptions.updatedAt).toBeNull()
+  })
+
+  it('CASH-AUTH-1: 権限が設定済みならその値がそのままexportされる', async () => {
+    await useAppStore.getState().setCashAssumptions({
+      grossCash: 4_000_000, safetyReserve: 400_000, pendingOrderCash: 0,
+    })
+    const parsed = JSON.parse(useAppStore.getState().exportPortfolioSnapshot())
+    expect(parsed.cashAssumptions).toMatchObject({
+      source: 'MANUAL', grossCash: 4_000_000, safetyReserve: 400_000, pendingOrderCash: 0,
+    })
   })
 
   it('RA-005: actual export→empty-target import keeps stale CSV metadata stale despite a new manifest savedAt', async () => {
@@ -588,7 +655,7 @@ describe('useAppStore: portfolio snapshot（P4.5-A012b）', () => {
     useAppStore.setState(s => ({
       holdings: [],
       trust: [{ ...testTrust, eval: 0 }],
-      cashAssumptions: { cashDeposits: 0, standbyFunds: 0, manualOverrideEnabled: false, manualUpdatedAt: null },
+      cashAssumptions: { source: 'DEFAULT', grossCash: 0, safetyReserve: 0, pendingOrderCash: null, updatedAt: null },
       system: { ...s.system, csvLastImportedAt: null, csvImportProvenance: null },
     }))
     const snapshotJson = boundV3Snapshot({
@@ -606,8 +673,11 @@ describe('useAppStore: portfolio snapshot（P4.5-A012b）', () => {
       ],
       portfolioPolicy: { jpStockMaxRatio: 0.12 },
       cashAssumptions: {
-        cashDeposits: 5_000_000, standbyFunds: 3_000_000,
-        manualOverrideEnabled: true, manualUpdatedAt: '2026-07-05T00:00:00.000Z',
+        source: 'MANUAL',
+        grossCash: 8_000_000,
+        safetyReserve: 0,
+        pendingOrderCash: null,
+        updatedAt: '2026-07-05T00:00:00.000Z',
       },
     })
 
@@ -638,8 +708,8 @@ describe('useAppStore: portfolio snapshot（P4.5-A012b）', () => {
     expect(updatedTrust?.abbr).toBe('TA')
 
     expect(state.portfolioPolicy.jpStockMaxRatio).toBe(0.12)
-    expect(state.cashAssumptions.cashDeposits).toBe(5_000_000)
-    expect(state.cashAssumptions.manualUpdatedAt).toBe('2026-07-05T00:00:00.000Z')
+    expect(state.cashAssumptions.grossCash).toBe(8_000_000)
+    expect(state.cashAssumptions.updatedAt).toBe('2026-07-05T00:00:00.000Z')
     expect(state.system.csvLastImportedAt).toBe('2026-07-05T23:00:00.000Z')
     expect(state.system.status).toBe('success')
     expect(state.system.analysisLastRunAt).not.toBe(before)
@@ -708,7 +778,7 @@ describe('useAppStore: portfolio snapshot（P4.5-A012b）', () => {
     useAppStore.setState(s => ({
       holdings: [],
       trust: [{ ...testTrust, eval: 0 }],
-      cashAssumptions: { cashDeposits: 0, standbyFunds: 0, manualOverrideEnabled: false, manualUpdatedAt: null },
+      cashAssumptions: { source: 'DEFAULT', grossCash: 0, safetyReserve: 0, pendingOrderCash: null, updatedAt: null },
       system: { ...s.system, csvLastImportedAt: null, csvImportProvenance: null },
     }))
     const snapshotJson = boundV3Snapshot({
@@ -724,8 +794,11 @@ describe('useAppStore: portfolio snapshot（P4.5-A012b）', () => {
       trust: [{ id: 'trust-a', eval: 600_000, pnlPct: 4 }],
       portfolioPolicy: { jpStockMaxRatio: 0.12 },
       cashAssumptions: {
-        cashDeposits: 5_000_000, standbyFunds: 3_000_000,
-        manualOverrideEnabled: true, manualUpdatedAt: '2026-07-05T00:00:00.000Z',
+        source: 'MANUAL',
+        grossCash: 8_000_000,
+        safetyReserve: 0,
+        pendingOrderCash: null,
+        updatedAt: '2026-07-05T00:00:00.000Z',
       },
     })
     const result = await useAppStore.getState().importPortfolioSnapshot(snapshotJson)
@@ -738,7 +811,7 @@ describe('useAppStore: portfolio snapshot（P4.5-A012b）', () => {
         holdings: [{ code: 'TEST-A' }, { code: 'TEST-B' }],
         trust: [{ id: 'trust-a', eval: 600_000 }],
         portfolioPolicy: { jpStockMaxRatio: 0.12 },
-        cashAssumptions: { cashDeposits: 5_000_000, standbyFunds: 3_000_000 },
+        cashAssumptions: { source: 'MANUAL', grossCash: 8_000_000, safetyReserve: 0, pendingOrderCash: null, updatedAt: '2026-07-05T00:00:00.000Z' },
         origin: 'snapshot',
       },
     })
@@ -790,7 +863,7 @@ describe('useAppStore: portfolio snapshot（P4.5-A012b）', () => {
     useAppStore.setState(s => ({
       holdings: [],
       trust: [{ ...testTrust, eval: 0 }],
-      cashAssumptions: { cashDeposits: 0, standbyFunds: 0, manualOverrideEnabled: false, manualUpdatedAt: null },
+      cashAssumptions: { source: 'DEFAULT', grossCash: 0, safetyReserve: 0, pendingOrderCash: null, updatedAt: null },
       system: { ...s.system, csvSyncSummary: null, csvLastImportedAt: null, csvImportProvenance: null },
     }))
     const snapshotJson = boundV3Snapshot({
@@ -942,7 +1015,7 @@ describe('T9-A004-R3-FIX-C: present-invalid canonical manual persistence policy 
     const before = seedInvalidWithLegacy()
 
     await useAppStore.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.12 })
-    await useAppStore.getState().setCashAssumptions({ cashDeposits: 123, standbyFunds: 456 })
+    await useAppStore.getState().setCashAssumptions({ grossCash: 579, safetyReserve: 0, pendingOrderCash: null })
 
     expect(writes).toEqual([])
     expect(storage).toEqual(before)
@@ -968,7 +1041,7 @@ describe('T9-A004-R3-FIX-C: present-invalid canonical manual persistence policy 
     const holdingResult = await useAppStore.getState().updateHolding('7777', { eval: 130_000 })
     expect(holdingResult).toMatchObject({ ok: true, code: 'SUCCESS' })
     await useAppStore.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.12 })
-    await useAppStore.getState().setCashAssumptions({ cashDeposits: 500, standbyFunds: 600 })
+    await useAppStore.getState().setCashAssumptions({ grossCash: 1100, safetyReserve: 0, pendingOrderCash: null })
     expect(writes).toEqual(expect.arrayContaining([
       'v81_portfolio',
       'v81_trust',
@@ -1023,11 +1096,13 @@ describe('R4-A002: policy/cash persistence result visibility', () => {
     {
       name: 'setCashAssumptions',
       legacyKey: 'v13_cash_assumptions',
-      invoke: () => useAppStore.getState().setCashAssumptions({ cashDeposits: 1_111, standbyFunds: 2_222 }),
+      invoke: () => useAppStore.getState().setCashAssumptions({ grossCash: 3333, safetyReserve: 0, pendingOrderCash: null }),
       assertInMemory: () => expect(useAppStore.getState().cashAssumptions).toMatchObject({
-        cashDeposits: 1_111,
-        standbyFunds: 2_222,
-        manualOverrideEnabled: true,
+        source: 'MANUAL',
+        grossCash: 3333,
+        safetyReserve: 0,
+        pendingOrderCash: null,
+        updatedAt: expect.any(String),
       }),
     },
     {
@@ -1035,25 +1110,28 @@ describe('R4-A002: policy/cash persistence result visibility', () => {
       legacyKey: 'v13_cash_assumptions',
       invoke: () => useAppStore.getState().clearCashAssumptionsOverride(),
       assertInMemory: () => expect(useAppStore.getState().cashAssumptions).toEqual({
-        cashDeposits: 333,
-        standbyFunds: 444,
-        manualOverrideEnabled: false,
-        manualUpdatedAt: null,
+        source: 'DEFAULT',
+        grossCash: 0,
+        safetyReserve: 0,
+        pendingOrderCash: null,
+        updatedAt: null,
       }),
     },
     {
       name: 'importCashAssumptions',
       legacyKey: 'v13_cash_assumptions',
       invoke: () => useAppStore.getState().importCashAssumptions({
-        cashDeposits: 5_555,
-        standbyFunds: 6_666,
-        manualUpdatedAt: '2026-07-18T00:00:00.000Z',
+        grossCash: 12_221,
+        safetyReserve: 0,
+        pendingOrderCash: null,
+        updatedAt: '2026-07-18T00:00:00.000Z',
       }),
       assertInMemory: () => expect(useAppStore.getState().cashAssumptions).toEqual({
-        cashDeposits: 5_555,
-        standbyFunds: 6_666,
-        manualOverrideEnabled: true,
-        manualUpdatedAt: '2026-07-18T00:00:00.000Z',
+        source: 'MANUAL',
+        grossCash: 12_221,
+        safetyReserve: 0,
+        pendingOrderCash: null,
+        updatedAt: '2026-07-18T00:00:00.000Z',
       }),
     },
   ]
@@ -1076,10 +1154,11 @@ describe('R4-A002: policy/cash persistence result visibility', () => {
       universe: null,
       portfolioPolicy: { ...DEFAULT_PORTFOLIO_POLICY },
       cashAssumptions: {
-        cashDeposits: 333,
-        standbyFunds: 444,
-        manualOverrideEnabled: true,
-        manualUpdatedAt: '2026-07-17T00:00:00.000Z',
+        source: 'MANUAL',
+        grossCash: 777,
+        safetyReserve: 0,
+        pendingOrderCash: null,
+        updatedAt: '2026-07-17T00:00:00.000Z',
       },
       system: {
         ...state.system,
@@ -1266,7 +1345,7 @@ describe('R4-A002: policy/cash persistence result visibility', () => {
 
   it.each([
     ['policy', () => useAppStore.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.18 })],
-    ['cash', () => useAppStore.getState().setCashAssumptions({ cashDeposits: 7_777, standbyFunds: 8_888 })],
+    ['cash', () => useAppStore.getState().setCashAssumptions({ grossCash: 16_665, safetyReserve: 0, pendingOrderCash: null })],
   ])('R4-A004b: canonical v5 survives a nonbaseline %s replacement with identity v2 and baseline unchanged', async (_name, invoke) => {
     const state = useAppStore.getState()
     const baseline = { date: '2026-07-19', total: 0, evalById: {} }
@@ -1307,11 +1386,11 @@ describe('R4-A002: policy/cash persistence result visibility', () => {
 
   it.each([
     ['csv-import-generation-4', 1, 'policy', () => useAppStore.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.18 })],
-    ['csv-import-generation-4', 1, 'cash', () => useAppStore.getState().setCashAssumptions({ cashDeposits: 7_777, standbyFunds: 8_888 })],
+    ['csv-import-generation-4', 1, 'cash', () => useAppStore.getState().setCashAssumptions({ grossCash: 16_665, safetyReserve: 0, pendingOrderCash: null })],
     ['csv-import-generation-4', 1, 'holding', () => useAppStore.getState().updateHolding('7777', { eval: 123_456 })],
     ['csv-import-generation-4', 1, 'trust', () => useAppStore.getState().updateTrust('test_fund', { eval: 654_321 })],
     [CSV_IMPORT_GENERATION_SCHEMA_V5, 2, 'policy', () => useAppStore.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.18 })],
-    [CSV_IMPORT_GENERATION_SCHEMA_V5, 2, 'cash', () => useAppStore.getState().setCashAssumptions({ cashDeposits: 7_777, standbyFunds: 8_888 })],
+    [CSV_IMPORT_GENERATION_SCHEMA_V5, 2, 'cash', () => useAppStore.getState().setCashAssumptions({ grossCash: 16_665, safetyReserve: 0, pendingOrderCash: null })],
     [CSV_IMPORT_GENERATION_SCHEMA_V5, 2, 'holding', () => useAppStore.getState().updateHolding('7777', { eval: 123_456 })],
     [CSV_IMPORT_GENERATION_SCHEMA_V5, 2, 'trust', () => useAppStore.getState().updateTrust('test_fund', { eval: 654_321 })],
   ] as const)('R4-A004c: current %s nonbaseline %s replacement preserves schema/identity v%s and baseline', async (schemaVersion, identityVersion, _action, invoke) => {
@@ -1391,10 +1470,11 @@ describe('R4-A004c: initialize/refresh preserve canonical v4/v5 semantics', () =
       learning: null,
       portfolioPolicy: { jpStockMaxRatio: 0.13 },
       cashAssumptions: {
-        cashDeposits: 123_000,
-        standbyFunds: 456_000,
-        manualOverrideEnabled: true,
-        manualUpdatedAt: '2026-07-18T00:00:00.000Z',
+        source: 'MANUAL',
+        grossCash: 579_000,
+        safetyReserve: 0,
+        pendingOrderCash: null,
+        updatedAt: '2026-07-18T00:00:00.000Z',
       },
       system: {
         ...state.system,
@@ -1839,7 +1919,7 @@ describe('useAppStore: localStorageFreshness即時更新（P4.5-A013-T6a）', ()
     useAppStore.setState(s => ({
       holdings: [],
       trust: oldTrust.map(fund => ({ ...fund, eval: 0 })),
-      cashAssumptions: { cashDeposits: 0, standbyFunds: 0, manualOverrideEnabled: false, manualUpdatedAt: null },
+      cashAssumptions: { source: 'DEFAULT', grossCash: 0, safetyReserve: 0, pendingOrderCash: null, updatedAt: null },
       system: { ...s.system, csvLastImportedAt: null, csvImportProvenance: null },
     }))
     const snapshotJson = boundV3Snapshot({
@@ -1969,7 +2049,7 @@ describe('useAppStore: importPortfolioSnapshot v2 full-sync（P4.5-A013-T7）', 
       holdings: [],
       trust,
       portfolioPolicy: { jpStockMaxRatio: 0.10 },
-      cashAssumptions: { cashDeposits: 0, standbyFunds: 0, manualOverrideEnabled: false, manualUpdatedAt: null },
+      cashAssumptions: { source: 'DEFAULT', grossCash: 0, safetyReserve: 0, pendingOrderCash: null, updatedAt: null },
       system: {
         ...s.system,
         csvLastImportedAt: null,
@@ -2191,15 +2271,18 @@ describe('useAppStore: importPortfolioSnapshot v2 full-sync（P4.5-A013-T7）', 
     const snapshot = makeV2Snapshot({
       portfolioPolicy: { jpStockMaxRatio: 0.15 },
       cashAssumptions: {
-        cashDeposits: 1_000_000, standbyFunds: 500_000,
-        manualOverrideEnabled: true, manualUpdatedAt: '2026-07-09T00:00:00.000Z',
+        source: 'MANUAL',
+        grossCash: 1_500_000,
+        safetyReserve: 0,
+        pendingOrderCash: null,
+        updatedAt: '2026-07-09T00:00:00.000Z',
       },
     })
     const result = await useAppStore.getState().importPortfolioSnapshot(snapshot)
     expect(result.ok).toBe(true)
     const state = useAppStore.getState()
     expect(state.portfolioPolicy.jpStockMaxRatio).toBe(0.15)
-    expect(state.cashAssumptions.cashDeposits).toBe(1_000_000)
-    expect(state.cashAssumptions.standbyFunds).toBe(500_000)
+    expect(state.cashAssumptions.grossCash).toBe(1_500_000)
+    expect(state.cashAssumptions.safetyReserve).toBe(0)
   })
 })

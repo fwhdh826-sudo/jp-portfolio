@@ -8,6 +8,7 @@ export type PortfolioGenerationOperation =
   | 'setPortfolioPolicy'
   | 'setCashAssumptions'
   | 'clearCashAssumptionsOverride'
+  | 'reconfirmCashAssumptions'
   | 'importCashAssumptions'
 
 export type PortfolioCoordinationErrorCode =
@@ -33,6 +34,7 @@ export type ManualPortfolioMutationOperation = Extract<
   | 'setPortfolioPolicy'
   | 'setCashAssumptions'
   | 'clearCashAssumptionsOverride'
+  | 'reconfirmCashAssumptions'
   | 'importCashAssumptions'
 >
 

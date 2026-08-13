@@ -379,11 +379,16 @@ describe('eight writer success', () => {
     updateTrust: store => store.getState().updateTrust(TRUST.id, { eval: TRUST.eval + 111 }),
     setPortfolioPolicy: store => store.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.25 }),
     setCashAssumptions: store => store.getState().setCashAssumptions({
-      cashDeposits: 4_444_444, standbyFunds: 555_555,
+      grossCash: 4_999_999,
+      safetyReserve: 0,
+      pendingOrderCash: null,
     }),
     clearCashAssumptionsOverride: store => store.getState().clearCashAssumptionsOverride(),
     importCashAssumptions: store => store.getState().importCashAssumptions({
-      cashDeposits: 6_000_000, standbyFunds: 700_000, manualUpdatedAt: NOW_ISO,
+      grossCash: 6_700_000,
+      safetyReserve: 0,
+      pendingOrderCash: null,
+      updatedAt: NOW_ISO,
     }),
   }
 
@@ -394,7 +399,7 @@ describe('eight writer success', () => {
     const { instance: b } = makeInstance(bcHub, storageHub, `receiver-${writer}`)
 
     seedManualBaseline(a.store, writer === 'clearCashAssumptionsOverride'
-      ? { cashDeposits: 0, standbyFunds: 0, manualOverrideEnabled: true, manualUpdatedAt: NOW_ISO }
+      ? { source: 'MANUAL', grossCash: 0, safetyReserve: 0, pendingOrderCash: null, updatedAt: NOW_ISO }
       : { ...DEFAULT_CASH_ASSUMPTIONS })
 
     const result = await MANUAL_SUCCESS_INVOCATIONS[writer](a.store)
@@ -577,11 +582,14 @@ describe('manual NO_CHANGE emits 0', () => {
     const storageHub = new FakeStorageEventHub()
     const { instance: a, events } = makeInstance(bcHub, storageHub, 'sender-cash-p3')
     seedManualBaseline(a.store, {
-      cashDeposits: 4_000_000, standbyFunds: 500_000,
-      manualOverrideEnabled: true, manualUpdatedAt: '2026-07-01T00:00:00.000Z',
+      source: 'MANUAL',
+      grossCash: 4_500_000,
+      safetyReserve: 0,
+      pendingOrderCash: null,
+      updatedAt: '2026-07-01T00:00:00.000Z',
     })
 
-    const result = await a.store.getState().setCashAssumptions({ cashDeposits: 4_000_000, standbyFunds: 500_000 })
+    const result = await a.store.getState().setCashAssumptions({ grossCash: 4_500_000, safetyReserve: 0, pendingOrderCash: null })
 
     expect(result).toMatchObject({ ok: true, code: 'SUCCESS' })
     expect(events).toHaveLength(1)

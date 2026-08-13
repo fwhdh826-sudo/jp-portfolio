@@ -1,11 +1,18 @@
 // ═══════════════════════════════════════════════════════════
 
 import { isStrictTimestamp } from './strictTimestamp'
-import type { CsvImportProvenance } from '../types'
+import type { CashAssumptions, CsvImportProvenance } from '../types'
 import { isCsvImportProvenance } from '../domain/csv/csvProvenance'
 import {
+  NO_CASH_AUTHORITY,
+  isIntegerJpy,
+  normalizeCashAuthorityRecord,
+} from '../domain/cash/cashAuthority'
+import {
   computeSnapshotGenerationIdentity,
+  isLegacyCashAssumptionsIdentityShape,
   isSnapshotGenerationIdentity,
+  type LegacyCashAssumptionsIdentityShape,
 } from './snapshotGenerationIdentity'
 // P4.5-A012a: 保有株・投信・現金前提・portfolioPolicyのportfolio snapshot
 // export/import — 表示専用のシリアライズ/検証のみ。
@@ -62,12 +69,15 @@ export interface PortfolioSnapshotPortfolioPolicy {
   jpStockMaxRatio: number
 }
 
-export interface PortfolioSnapshotCashAssumptions {
-  cashDeposits: number
-  standbyFunds: number
-  manualOverrideEnabled: boolean
-  manualUpdatedAt: string | null
-}
+/**
+ * CASH-AUTH-1: snapshot 上の現金権限。export は常に現行スキーマで書き出すが、
+ * import は CASH-AUTH-1 以前に出力された legacy スキーマも受理する
+ * （generation identity は出力時のバイト列で検証してから移行する）。
+ */
+export type PortfolioSnapshotCashAssumptions = CashAssumptions
+export type PortfolioSnapshotCashAssumptionsWire =
+  | CashAssumptions
+  | LegacyCashAssumptionsIdentityShape
 
 export interface PortfolioSnapshotExportPayload {
   schemaVersion: PortfolioSnapshotSchemaVersion
@@ -177,13 +187,15 @@ export function serializePortfolioSnapshotExport(args: {
     ? { jpStockMaxRatio: args.portfolioPolicy.jpStockMaxRatio }
     : null
 
+  // CASH-AUTH-1: 権限は state.cashAssumptions ただ一つ。丸めや再構成をせず
+  // そのまま書き出す（数値契約は保存時点で既に検証済み）。
   const cashAssumptions: PortfolioSnapshotCashAssumptions | null = args.cashAssumptions
     ? {
-        // Match the parser/store representation so the exported binding covers applied values.
-        cashDeposits: Math.round(args.cashAssumptions.cashDeposits),
-        standbyFunds: Math.round(args.cashAssumptions.standbyFunds),
-        manualOverrideEnabled: args.cashAssumptions.manualOverrideEnabled,
-        manualUpdatedAt: args.cashAssumptions.manualUpdatedAt,
+        source: args.cashAssumptions.source,
+        grossCash: args.cashAssumptions.grossCash,
+        safetyReserve: args.cashAssumptions.safetyReserve,
+        pendingOrderCash: args.cashAssumptions.pendingOrderCash,
+        updatedAt: args.cashAssumptions.updatedAt,
       }
     : null
 
@@ -331,11 +343,49 @@ function validatePortfolioPolicy(v: unknown): { ok: true; value: PortfolioSnapsh
   return { ok: true, value: { jpStockMaxRatio: p.jpStockMaxRatio } }
 }
 
-function validateCashAssumptions(v: unknown): { ok: true; value: PortfolioSnapshotCashAssumptions } | { ok: false; error: string } {
+function validateCashAssumptions(
+  v: unknown,
+): { ok: true; value: PortfolioSnapshotCashAssumptionsWire } | { ok: false; error: string } {
   if (typeof v !== 'object' || v === null) {
     return { ok: false, error: 'cashAssumptionsの形式が不正です。' }
   }
   const c = v as Record<string, unknown>
+
+  // CASH-AUTH-1 現行スキーマ
+  if (c.source === 'DEFAULT' || c.source === 'MANUAL') {
+    if (c.source === 'DEFAULT') {
+      return { ok: true, value: { ...NO_CASH_AUTHORITY } }
+    }
+    if (!isIntegerJpy(c.grossCash)) {
+      return { ok: false, error: '総現金の値が不正です（0以上1兆円以下の整数である必要があります）。' }
+    }
+    if (!isIntegerJpy(c.safetyReserve)) {
+      return { ok: false, error: '生活・安全余力の値が不正です（0以上1兆円以下の整数である必要があります）。' }
+    }
+    if (c.pendingOrderCash !== null && !isIntegerJpy(c.pendingOrderCash)) {
+      return { ok: false, error: '未約定の買付注文額が不正です（0以上1兆円以下の整数、または未指定である必要があります）。' }
+    }
+    const pendingOrderCash = c.pendingOrderCash === null ? null : (c.pendingOrderCash as number)
+    if ((c.safetyReserve as number) + (pendingOrderCash ?? 0) > (c.grossCash as number)) {
+      return { ok: false, error: '安全余力と未約定買付の合計が総現金を超えています。' }
+    }
+    const updatedAt = c.updatedAt
+    if (typeof updatedAt !== 'string' || !isValidIsoDateString(updatedAt)) {
+      return { ok: false, error: 'cashAssumptions.updatedAtの日時形式が不正です。' }
+    }
+    return {
+      ok: true,
+      value: {
+        source: 'MANUAL',
+        grossCash: c.grossCash as number,
+        safetyReserve: c.safetyReserve as number,
+        pendingOrderCash,
+        updatedAt,
+      },
+    }
+  }
+
+  // CASH-AUTH-1 以前の legacy スキーマ（identity 検証のため原形のまま返す）
   if (!isValidAmount(c.cashDeposits)) {
     return { ok: false, error: '現金・預貯金の値が不正です（0以上の数値である必要があります）。' }
   }
@@ -424,13 +474,17 @@ export function parsePortfolioSnapshotImport(raw: string): PortfolioSnapshotPars
     portfolioPolicy = result.value
   }
 
-  let cashAssumptions: PortfolioSnapshotCashAssumptions | null = null
+  // CASH-AUTH-1: generation identity は「出力されたバイト列」に対して検証する
+  // 必要があるため、legacy スキーマはここでは移行せず原形（wire）で保持する。
+  let cashAssumptionsWire: PortfolioSnapshotCashAssumptionsWire | null = null
   if (p.cashAssumptions !== null && p.cashAssumptions !== undefined) {
     const result = validateCashAssumptions(p.cashAssumptions)
     if (!result.ok) return { ok: false, error: result.error }
-    cashAssumptions = schemaVersion === PORTFOLIO_SNAPSHOT_SCHEMA_VERSION_V3
-      ? { ...result.value, manualOverrideEnabled: true }
-      : result.value
+    cashAssumptionsWire =
+      schemaVersion === PORTFOLIO_SNAPSHOT_SCHEMA_VERSION_V3 &&
+      isLegacyCashAssumptionsIdentityShape(result.value)
+        ? { ...result.value, manualOverrideEnabled: true }
+        : result.value
   }
 
   if (p.csvImportedAt !== null && !isValidIsoDateString(p.csvImportedAt)) {
@@ -466,7 +520,7 @@ export function parsePortfolioSnapshotImport(raw: string): PortfolioSnapshotPars
       holdings,
       trust,
       portfolioPolicy,
-      cashAssumptions,
+      cashAssumptions: cashAssumptionsWire,
       csvImportedAt,
       csvImportProvenance,
     })
@@ -476,6 +530,13 @@ export function parsePortfolioSnapshotImport(raw: string): PortfolioSnapshotPars
   } else if (Object.prototype.hasOwnProperty.call(p, 'csvImportProvenance')) {
     return { ok: false, code: 'INVALID_SNAPSHOT_PROVENANCE', error: 'legacy snapshotに未対応のprovenanceが含まれています。' }
   }
+
+  // identity 検証後に一度だけ現行スキーマへ移行する（決定的・冪等）。
+  // legacy の addRoom 相当は存在せず、cashDeposits + standbyFunds を一度だけ合算する。
+  const cashAssumptions: PortfolioSnapshotCashAssumptions | null =
+    cashAssumptionsWire === null
+      ? null
+      : normalizeCashAuthorityRecord(cashAssumptionsWire) ?? { ...NO_CASH_AUTHORITY }
 
   return {
     ok: true,

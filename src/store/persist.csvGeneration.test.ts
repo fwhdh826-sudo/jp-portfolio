@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import type { CsvImportProvenance, CsvSyncSummary, Holding, LearningState, Trust } from '../types'
+import type { CashAssumptions, CsvImportProvenance, CsvSyncSummary, Holding, LearningState, Trust } from '../types'
 import { DEFAULT_CASH_ASSUMPTIONS, DEFAULT_PORTFOLIO_POLICY } from '../types'
 import {
   computeCanonicalPortfolioGenerationIdentity,
@@ -154,10 +154,11 @@ function v3Payload(label: string, origin: 'csv' | 'snapshot' = 'csv'): CsvImport
     ...payload(label),
     portfolioPolicy: { jpStockMaxRatio: 0.12 },
     cashAssumptions: {
-      cashDeposits: 1_000_000,
-      standbyFunds: 250_000,
-      manualOverrideEnabled: true,
-      manualUpdatedAt: '2026-07-15T01:00:00.000Z',
+      source: 'MANUAL',
+      grossCash: 1_250_000,
+      safetyReserve: 0,
+      pendingOrderCash: null,
+      updatedAt: '2026-07-15T01:00:00.000Z',
     },
     origin,
   }
@@ -333,10 +334,11 @@ describe('T9-A003: committed CSV generation durability and recovery', () => {
     next.provenance = provenance(next.importedAt!)
     next.portfolioPolicy = { jpStockMaxRatio: 0.12 }
     next.cashAssumptions = {
-      cashDeposits: 1_000_000,
-      standbyFunds: 250_000,
-      manualOverrideEnabled: true,
-      manualUpdatedAt: '2026-07-15T01:00:00.000Z',
+      source: 'MANUAL',
+      grossCash: 1_250_000,
+      safetyReserve: 0,
+      pendingOrderCash: null,
+      updatedAt: '2026-07-15T01:00:00.000Z',
     }
     next.origin = 'snapshot'
     next.syncSummary = null
@@ -576,10 +578,11 @@ describe('T9-A003: committed CSV generation durability and recovery', () => {
     const next = v4Payload('new')
     next.portfolioPolicy = { jpStockMaxRatio: 0.15 }
     next.cashAssumptions = {
-      cashDeposits: 9,
-      standbyFunds: 8,
-      manualOverrideEnabled: true,
-      manualUpdatedAt: '2026-07-18T00:00:00.000Z',
+      source: 'MANUAL',
+      grossCash: 17,
+      safetyReserve: 0,
+      pendingOrderCash: null,
+      updatedAt: '2026-07-18T00:00:00.000Z',
     }
     const receipt = persistCsvImportTransaction(next)
     const physical = JSON.parse(receipt.committedRaw)
@@ -724,9 +727,9 @@ describe('T9-A003: committed CSV generation durability and recovery', () => {
     ['invalid origin', (value: any) => { value.origin = 'manual' }],
     ['malformed policy range', (value: any) => { value.portfolioPolicy.jpStockMaxRatio = 0.31 }],
     ['extra policy key', (value: any) => { value.portfolioPolicy.unexpected = true }],
-    ['malformed cash scalar', (value: any) => { value.cashAssumptions.cashDeposits = '100' }],
-    ['malformed cash timestamp', (value: any) => { value.cashAssumptions.manualUpdatedAt = '2026-02-30' }],
-    ['missing nested cash key', (value: any) => { delete value.cashAssumptions.standbyFunds }],
+    ['malformed cash scalar', (value: any) => { value.cashAssumptions.grossCash = '100' }],
+    ['malformed cash timestamp', (value: any) => { value.cashAssumptions.updatedAt = '2026-02-30' }],
+    ['missing nested cash key', (value: any) => { delete value.cashAssumptions.safetyReserve }],
     ['extra cash key', (value: any) => { value.cashAssumptions.unexpected = true }],
     ['extra payload key', (value: any) => { value.unexpected = true }],
   ])('T9-A004-R3b: checksum-valid malformed v3 payload (%s) fails closed', (_label, mutate) => {
@@ -746,10 +749,11 @@ describe('T9-A003: committed CSV generation durability and recovery', () => {
     persistCsvImportTransaction(canonical)
     persistPortfolioPolicy({ jpStockMaxRatio: 0.15 })
     persistCashAssumptions({
-      cashDeposits: 9,
-      standbyFunds: 8,
-      manualOverrideEnabled: true,
-      manualUpdatedAt: '2026-07-10T00:00:00.000Z',
+      source: 'MANUAL',
+      grossCash: 17,
+      safetyReserve: 0,
+      pendingOrderCash: null,
+      updatedAt: '2026-07-10T00:00:00.000Z',
     })
 
     expect(restorePortfolioPolicy()).toEqual(canonical.portfolioPolicy)
@@ -758,11 +762,12 @@ describe('T9-A003: committed CSV generation durability and recovery', () => {
 
   it('T9-A004-R3b: legacy policy/cash are used only when canonical is absent', () => {
     const legacyPolicy = { jpStockMaxRatio: 0.15 }
-    const legacyCash = {
-      cashDeposits: 9,
-      standbyFunds: 8,
-      manualOverrideEnabled: true,
-      manualUpdatedAt: '2026-07-10T00:00:00.000Z',
+    const legacyCash: CashAssumptions = {
+      source: 'MANUAL',
+      grossCash: 17,
+      safetyReserve: 0,
+      pendingOrderCash: null,
+      updatedAt: '2026-07-10T00:00:00.000Z',
     }
     persistPortfolioPolicy(legacyPolicy)
     persistCashAssumptions(legacyCash)
@@ -782,10 +787,11 @@ describe('T9-A003: committed CSV generation durability and recovery', () => {
       const originalRaw = writeCanonical(store, schemaVersion, legacyPayload)
       persistPortfolioPolicy({ jpStockMaxRatio: 0.15 })
       persistCashAssumptions({
-        cashDeposits: 9,
-        standbyFunds: 8,
-        manualOverrideEnabled: true,
-        manualUpdatedAt: '2026-07-10T00:00:00.000Z',
+        source: 'MANUAL',
+        grossCash: 17,
+        safetyReserve: 0,
+        pendingOrderCash: null,
+        updatedAt: '2026-07-10T00:00:00.000Z',
       })
 
       expect(restoreCsvImportGeneration()).toMatchObject({ status: 'committed' })
@@ -1400,10 +1406,11 @@ describe('T9-A003: committed CSV generation durability and recovery', () => {
     ['persistCsvSyncSummary', () => persistCsvSyncSummary(payload('new').syncSummary!)],
     ['persistPortfolioPolicy', () => persistPortfolioPolicy({ jpStockMaxRatio: 0.15 })],
     ['persistCashAssumptions', () => persistCashAssumptions({
-      cashDeposits: 9,
-      standbyFunds: 8,
-      manualOverrideEnabled: true,
-      manualUpdatedAt: '2026-07-15T01:00:00.000Z',
+      source: 'MANUAL',
+      grossCash: 17,
+      safetyReserve: 0,
+      pendingOrderCash: null,
+      updatedAt: '2026-07-15T01:00:00.000Z',
     })],
   ])('R3-FIX-C RA-004: %s performs no legacy write while canonical is present-invalid', (_label, persistLegacy) => {
     store[CSV_IMPORT_GENERATION_KEY] = '{present-invalid'

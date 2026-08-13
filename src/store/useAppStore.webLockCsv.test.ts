@@ -442,7 +442,12 @@ describe('RA-007-D1 durable alignment classifications', () => {
     ['holdings', (state: AppStoreState) => ({ holdings: [{ ...state.holdings[0]!, eval: 999_000 }] })],
     ['trust', (state: AppStoreState) => ({ trust: [{ ...state.trust[0]!, eval: 999_000 }] })],
     ['portfolioPolicy', (_state: AppStoreState) => ({ portfolioPolicy: { jpStockMaxRatio: 0.15 } })],
-    ['cashAssumptions', (state: AppStoreState) => ({ cashAssumptions: { ...state.cashAssumptions, cashDeposits: 999_000 } })],
+    ['cashAssumptions', (state: AppStoreState) => ({ cashAssumptions: {
+      ...state.cashAssumptions,
+      source: 'MANUAL' as const,
+      grossCash: 999_000,
+      updatedAt: '2026-07-10T00:00:00.000Z',
+    } })],
   ] as const)('detects stale %s projection before FileReader or write', async (_field, mutate) => {
     const instance = instanceWith(immediateAdapter())
     seedCanonical(instance.store.getState(), mutate(instance.store.getState()))

@@ -78,10 +78,11 @@ describe('HR-I3 candidate allocation production path', () => {
     const artifact = candidateArtifact()
     const source = stateWithArtifact(artifact)
     source.cashAssumptions = {
-      cashDeposits: 2_000_000,
-      standbyFunds: 0,
-      manualOverrideEnabled: true,
-      manualUpdatedAt: new Date(NOW).toISOString(),
+      source: 'MANUAL',
+      grossCash: 2_000_000,
+      safetyReserve: 0,
+      pendingOrderCash: null,
+      updatedAt: new Date(NOW).toISOString(),
     }
     const input = buildAllocationPlanInput(source, adapterOptions())
     expect(input?.candidates.map(item => item.instrumentId)).toEqual(['stock:1002', 'stock:1003'])
@@ -99,10 +100,11 @@ describe('HR-I3 candidate allocation production path', () => {
   it('M-R3-09 derives the production short-term budget without an adapter budget override', () => {
     const source = stateWithArtifact(candidateArtifact())
     source.cashAssumptions = {
-      cashDeposits: 9_000_000,
-      standbyFunds: 0,
-      manualOverrideEnabled: true,
-      manualUpdatedAt: new Date(NOW).toISOString(),
+      source: 'MANUAL',
+      grossCash: 9_000_000,
+      safetyReserve: 0,
+      pendingOrderCash: null,
+      updatedAt: new Date(NOW).toISOString(),
     }
     const input = buildAllocationPlanInput(source, {
       generatedAt: new Date(NOW).toISOString(),

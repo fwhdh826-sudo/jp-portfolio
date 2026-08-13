@@ -9,7 +9,9 @@ import {
   PORTFOLIO_SNAPSHOT_SCHEMA_VERSION_V3,
 } from './portfolioSnapshotTransfer'
 
-function makeExportArgs(overrides: Partial<Parameters<typeof serializePortfolioSnapshotExport>[0]> = {}) {
+function makeExportArgs(
+  overrides: Partial<Parameters<typeof serializePortfolioSnapshotExport>[0]> = {},
+): Parameters<typeof serializePortfolioSnapshotExport>[0] {
   return {
     holdings: [
       { code: '1101', name: 'テスト商事', eval: 892_000, pnlPct: 4.94, currentPrice: 8920, acquiredAt: '2024-01-10' },
@@ -21,10 +23,11 @@ function makeExportArgs(overrides: Partial<Parameters<typeof serializePortfolioS
     ],
     portfolioPolicy: { jpStockMaxRatio: 0.12 },
     cashAssumptions: {
-      cashDeposits: 4_000_000,
-      standbyFunds: 9_000_000,
-      manualOverrideEnabled: true,
-      manualUpdatedAt: '2026-07-01T00:00:00.000Z',
+      source: 'MANUAL',
+      grossCash: 13_000_000,
+      safetyReserve: 0,
+      pendingOrderCash: null,
+      updatedAt: '2026-07-01T00:00:00.000Z',
     },
     csvImportedAt: '2026-07-06T09:00:00.000Z',
     csvImportProvenance: {
@@ -63,10 +66,11 @@ describe('serializePortfolioSnapshotExport / parsePortfolioSnapshotImport 往復
       ])
       expect(result.data.portfolioPolicy).toEqual({ jpStockMaxRatio: 0.12 })
       expect(result.data.cashAssumptions).toEqual({
-        cashDeposits: 4_000_000,
-        standbyFunds: 9_000_000,
-        manualOverrideEnabled: true,
-        manualUpdatedAt: '2026-07-01T00:00:00.000Z',
+        source: 'MANUAL',
+        grossCash: 13_000_000,
+        safetyReserve: 0,
+        pendingOrderCash: null,
+        updatedAt: '2026-07-01T00:00:00.000Z',
       })
     }
   })
@@ -140,7 +144,7 @@ describe('serializePortfolioSnapshotExport / parsePortfolioSnapshotImport 往復
     ['provenance sourceFileName', (payload: any) => { payload.csvImportProvenance.sourceFileName = 'other.csv' }, 'INVALID_SNAPSHOT_GENERATION'],
     ['provenance fileLastModified', (payload: any) => { payload.csvImportProvenance.fileLastModified = '2026-07-06T08:30:01.000Z' }, 'INVALID_SNAPSHOT_GENERATION'],
     ['portfolio policy', (payload: any) => { payload.portfolioPolicy.jpStockMaxRatio = 0.15 }, 'INVALID_SNAPSHOT_GENERATION'],
-    ['cash assumptions', (payload: any) => { payload.cashAssumptions.cashDeposits += 1 }, 'INVALID_SNAPSHOT_GENERATION'],
+    ['cash assumptions', (payload: any) => { payload.cashAssumptions.grossCash += 1 }, 'INVALID_SNAPSHOT_GENERATION'],
   ])('R2-F1: stale generation identity rejects changed %s', (_label, mutate, code) => {
     const payload = JSON.parse(serializePortfolioSnapshotExport(makeExportArgs()))
     payload.snapshotGenerationIdentity = `sha256:${'f'.repeat(64)}`
@@ -284,8 +288,11 @@ describe('parsePortfolioSnapshotImport のvalidation（v1 payload・後方互換
     trust: [{ id: 'nk225_sbi', eval: 1_605_730, pnlPct: 7.04 }],
     portfolioPolicy: { jpStockMaxRatio: 0.10 },
     cashAssumptions: {
-      cashDeposits: 4_000_000, standbyFunds: 9_000_000,
-      manualOverrideEnabled: true, manualUpdatedAt: '2026-07-01T00:00:00.000Z',
+      source: 'MANUAL',
+      grossCash: 13_000_000,
+      safetyReserve: 0,
+      pendingOrderCash: null,
+      updatedAt: '2026-07-01T00:00:00.000Z',
     },
   })
 
@@ -386,21 +393,63 @@ describe('parsePortfolioSnapshotImport のvalidation（v1 payload・後方互換
 
   it('cashAssumptions.cashDepositsが負数はreject', () => {
     const payload = JSON.parse(validPayload())
-    payload.cashAssumptions.cashDeposits = -1
+    payload.cashAssumptions.grossCash = -1
     const result = parsePortfolioSnapshotImport(JSON.stringify(payload))
     expect(result.ok).toBe(false)
   })
 
-  it('cashAssumptions.manualOverrideEnabledが非booleanはreject', () => {
+  // CASH-AUTH-1: legacy スキーマ（cashDeposits/standbyFunds）の v1 payload も
+  // 引き続き受理し、identity 検証後に一度だけ現行スキーマへ移行する。
+  const legacyCashPayload = (cash: Record<string, unknown>) => {
     const payload = JSON.parse(validPayload())
-    payload.cashAssumptions.manualOverrideEnabled = 'true'
-    const result = parsePortfolioSnapshotImport(JSON.stringify(payload))
+    payload.cashAssumptions = cash
+    return JSON.stringify(payload)
+  }
+
+  it('legacy cashAssumptions は cashDeposits + standbyFunds を一度だけ合算して移行される', () => {
+    const result = parsePortfolioSnapshotImport(legacyCashPayload({
+      cashDeposits: 1_000_000,
+      standbyFunds: 2_000_000,
+      manualOverrideEnabled: true,
+      manualUpdatedAt: '2026-07-01T00:00:00.000Z',
+    }))
+    expect(result.ok).toBe(true)
+    if (result.ok) {
+      expect(result.data.cashAssumptions).toEqual({
+        source: 'MANUAL',
+        grossCash: 3_000_000,
+        safetyReserve: 0,
+        pendingOrderCash: null,
+        updatedAt: '2026-07-01T00:00:00.000Z',
+      })
+    }
+  })
+
+  it('legacy cashAssumptions に addRoom があっても grossCash には加算されない', () => {
+    const result = parsePortfolioSnapshotImport(legacyCashPayload({
+      cashDeposits: 1_000_000,
+      standbyFunds: 2_000_000,
+      addRoom: 9_000_000,
+      manualOverrideEnabled: true,
+      manualUpdatedAt: '2026-07-01T00:00:00.000Z',
+    }))
+    expect(result.ok).toBe(true)
+    if (result.ok) expect(result.data.cashAssumptions?.grossCash).toBe(3_000_000)
+  })
+
+  it('legacy cashAssumptions.manualOverrideEnabledが非booleanはreject', () => {
+    const result = parsePortfolioSnapshotImport(legacyCashPayload({
+      cashDeposits: 1_000_000,
+      standbyFunds: 2_000_000,
+      manualOverrideEnabled: 'true',
+      manualUpdatedAt: '2026-07-01T00:00:00.000Z',
+    }))
     expect(result.ok).toBe(false)
   })
 
   it('cashAssumptions.standbyFundsが上限超過はreject', () => {
     const payload = JSON.parse(validPayload())
-    payload.cashAssumptions.standbyFunds = 2_000_000_000_000
+    payload.cashAssumptions.safetyReserve = 2_000_000_000_000
     const result = parsePortfolioSnapshotImport(JSON.stringify(payload))
     expect(result.ok).toBe(false)
   })

@@ -5,6 +5,7 @@
  */
 import { useEffect, useRef, useState } from 'react'
 import { useAppStore } from './store/useAppStore'
+import { startCashAuthorityExpiryGuard } from './store/cashAuthorityLifecycle'
 import { StatusBar } from './components/StatusBar'
 import { TabNav } from './components/TabNav'
 import { BottomDockNav } from './components/BottomDockNav'
@@ -192,6 +193,11 @@ export function App() {
       active = false
     }
   }, [initialize])
+
+  // CASH-AUTH-1: 現金権限 TTL のローカルガード。開いたままのタブが168hの境界を
+  // 越えても実行可能な AllocationPlanSnapshot を持ち続けないようにする。
+  // ネットワークは使わず、権限の値や updatedAt も一切書き換えない。
+  useEffect(() => startCashAuthorityExpiryGuard(useAppStore), [])
 
   // タブ切替時にコンテンツエリアをトップへ
   useEffect(() => {

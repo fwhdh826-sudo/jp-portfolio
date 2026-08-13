@@ -17,10 +17,11 @@ import {
   selectGlobalFundTotalEval,
   selectEffectiveCashAssumptions,
   selectCashAssumptionsFreshness,
+  selectCashAuthorityView,
   selectEffectiveSafeModeActive,
   selectSafeModeDataQuality,
 } from '../../store/selectors'
-import { formatJPYAuto, formatDateTime } from '../../utils/format'
+import { formatJPYAuto, formatDateTime, formatRelativeTime } from '../../utils/format'
 import { resolveNewsDisplayText, NEWS_DISPLAY_LIMITS } from '../../utils/newsDisplay'
 import { selectIsStale, selectMarketDataQuality } from '../../store/selectors'
 import { Phase8SummaryCard } from '../phase8/Phase8SummaryCard'
@@ -1016,9 +1017,9 @@ function AssetSnapshotMini() {
   const totalPnl    = useAppStore(selectTotalPnl)
   const trustTotal  = useAppStore(selectTrustTotalEval)
   const effectiveCash = useAppStore(selectEffectiveCashAssumptions)
-  const addRoom     = useAppStore(s => s.addRoom)
 
-  const total = totalEval + trustTotal + effectiveCash.cashTotal + addRoom
+  // CASH-AUTH-1: 総現金を一度だけ加算する（addRoom は撤廃済み）
+  const total = totalEval + trustTotal + effectiveCash.cashTotal
   if (total <= 0) return null
 
   return (
@@ -1034,12 +1035,85 @@ function AssetSnapshotMini() {
   )
 }
 
+// ─────────────────────────────────────────────────────────────
+// CASH-AUTH-1: 現金権限の読み取り専用サマリー（T0）。
+// 編集はできない — 変更は T9「現金権限」でのみ行う。
+// 「OSが今いくらを投資可能現金として見ているか / その元データはいつ更新したか /
+//  何円を安全余力として除外しているか」を1枚で確認できるようにする。
+// ─────────────────────────────────────────────────────────────
+function CashAuthoritySummaryCard() {
+  const authority = useAppStore(selectCashAuthorityView)
+  const setTab = useAppStore(s => s.setTab)
+
+  const unavailable = authority.source !== 'MANUAL'
+  const stale = !unavailable && authority.freshness.state === 'stale'
+
+  return (
+    <div className="card" data-testid="t0-cash-authority-summary">
+      <SectionTitle icon="💴" title="現金権限" />
+
+      <div className="home-info-row">
+        <span className="home-info-row__label">総現金{stale ? '（参考値）' : ''}</span>
+        <span className="home-info-row__total" data-testid="t0-cash-authority-gross">
+          {unavailable ? '未設定' : formatJPYAuto(authority.referenceGrossCash)}
+        </span>
+      </div>
+
+      <div className="home-info-row">
+        <span className="home-info-row__label">投資可能現金</span>
+        <span className="home-info-row__total" data-testid="t0-cash-authority-deployable">
+          {formatJPYAuto(authority.deployableCash)}
+        </span>
+      </div>
+
+      <div style={{ ...typography.caption, color: colors.textMuted, marginTop: spacing[1] }}>
+        {unavailable ? (
+          <span data-testid="t0-cash-authority-state">
+            現金未設定（0円と確認済みの状態とは異なります）— 買付の提案は行われません
+          </span>
+        ) : stale ? (
+          <span data-testid="t0-cash-authority-state" style={{ color: colors.waitText, fontWeight: 600 }}>
+            ⚠ 期限切れ（168時間超）— 表示金額は参考値で、買付の提案は行われません
+          </span>
+        ) : authority.freshness.approachingExpiry ? (
+          <span data-testid="t0-cash-authority-state" style={{ color: colors.waitText, fontWeight: 600 }}>
+            ⚠ まもなく有効期限（168時間）— 最終更新 {formatRelativeTime(authority.updatedAt ?? '')}
+          </span>
+        ) : (
+          <span data-testid="t0-cash-authority-state">
+            {authority.confirmedZero ? '0円を確認済み' : '最新'}
+            {authority.updatedAt ? ` — 最終更新 ${formatRelativeTime(authority.updatedAt)}` : ''}
+          </span>
+        )}
+      </div>
+
+      {!unavailable && (
+        <div style={{ ...typography.caption, color: colors.textMuted, marginTop: spacing[1] }}>
+          生活・安全余力として除外: {formatJPYAuto(authority.referenceSafetyReserve)}
+          {authority.referencePendingOrderCash === null
+            ? '／未約定の買付注文は不明'
+            : `／未約定の買付注文に確保済み: ${formatJPYAuto(authority.referencePendingOrderCash)}`}
+        </div>
+      )}
+
+      <button
+        className="home-nav-cta__btn"
+        type="button"
+        data-testid="t0-cash-authority-edit-link"
+        onClick={() => setTab('T9')}
+        style={{ marginTop: spacing[2] }}
+      >
+        {unavailable ? '現金を設定' : '設定で現金権限を編集'}
+      </button>
+    </div>
+  )
+}
+
 function AssetSummaryCard() {
   const holdings     = useAppStore(s => s.holdings)
   const trust        = useAppStore(s => s.trust)
   const effectiveCash = useAppStore(selectEffectiveCashAssumptions)
   const cashFreshness = useAppStore(selectCashAssumptionsFreshness)
-  const addRoom      = useAppStore(s => s.addRoom)
   const totalEval    = useAppStore(selectTotalEval)
   const totalPnl     = useAppStore(selectTotalPnl)
   const trustTotal   = useAppStore(selectTrustTotalEval)
@@ -1051,7 +1125,8 @@ function AssetSummaryCard() {
   const jpTrustEval = jpTrust.reduce((sum, t) => sum + t.eval, 0)
   const overseasEval = overseasTrust.reduce((sum, t) => sum + t.eval, 0)
   const goldEval = goldTrust.reduce((sum, t) => sum + t.eval, 0)
-  const totalCash = effectiveCash.cashTotal + addRoom
+  // CASH-AUTH-1: 総現金のみを一度だけ計上する（addRoom は撤廃済み）
+  const totalCash = effectiveCash.cashTotal
 
   const total = totalEval + trustTotal + totalCash
 
@@ -1089,7 +1164,7 @@ function AssetSummaryCard() {
 
         <div className="asset-summary__item asset-summary__item--cash">
           <div className="asset-summary__label">
-            💴 現金・待機資金
+            💴 現金
             {effectiveCash.source === 'manual' && (
               <span style={{ ...typography.caption, color: colors.textMuted, marginLeft: spacing[1] }}>
                 （手動入力値）
@@ -1098,18 +1173,20 @@ function AssetSummaryCard() {
           </div>
           <div className="asset-summary__value">{formatJPYAuto(totalCash)}</div>
           <div className="asset-summary__sub">
-            現金・預貯金: {formatJPYAuto(effectiveCash.cash)}
+            総現金: {formatJPYAuto(effectiveCash.grossCash)}{ratio(totalCash)}
           </div>
           <div className="asset-summary__sub">
-            待機・追加資金: {formatJPYAuto(effectiveCash.cashReserve)}{ratio(totalCash)}
+            うち生活・安全余力: {formatJPYAuto(effectiveCash.safetyReserve)}
           </div>
-          {addRoom > 0 && (
-            <div className="asset-summary__sub">追加余力: {formatJPYAuto(addRoom)}</div>
+          {/* CASH-AUTH-1: 未設定（unknown）と失効（stale）を区別して表示する */}
+          {effectiveCash.source !== 'manual' && (
+            <div className="asset-summary__sub" style={{ color: colors.textMuted, fontWeight: 600 }}>
+              現金未設定
+            </div>
           )}
-          {/* P4.5-A008: 資金前提のstale警告（値は維持したまま確認を促すのみ） */}
-          {cashFreshness.isStale && (
+          {effectiveCash.source === 'manual' && cashFreshness.isStale && (
             <div className="asset-summary__sub" style={{ color: colors.waitText, fontWeight: 600 }}>
-              ⚠ 資金前提が古い可能性
+              ⚠ 現金情報が期限切れ（参考値）
             </div>
           )}
         </div>
@@ -1133,12 +1210,12 @@ function PortfolioDonutCard() {
   const holdings    = useAppStore(s => s.holdings)
   const trust       = useAppStore(s => s.trust)
   const effectiveCash = useAppStore(selectEffectiveCashAssumptions)
-  const addRoom     = useAppStore(s => s.addRoom)
   const stockEval   = useAppStore(selectTotalEval)
   const jpEval      = useAppStore(selectJpFundTotalEval)
   const globalEval  = useAppStore(selectGlobalFundTotalEval)
   const totalPnl    = useAppStore(selectTotalPnl)
-  const totalCash   = effectiveCash.cashTotal + addRoom
+  // CASH-AUTH-1: 総現金のみ（addRoom は撤廃済み）
+  const totalCash   = effectiveCash.cashTotal
   const total       = stockEval + jpEval + globalEval + totalCash
 
   if (total <= 0) return null
@@ -1677,6 +1754,9 @@ export function T0_Home() {
         <PortfolioDonutCard />
         <AssetSummaryCard />
       </div>
+
+      {/* [5a] CASH-AUTH-1: 現金権限の読み取り専用サマリー（編集はT9のみ） */}
+      <CashAuthoritySummaryCard />
 
       {/* [5b] 保有銘柄 / 投信プレビュー（UI-9-3 new） */}
       <div className="page-grid page-grid--2col">

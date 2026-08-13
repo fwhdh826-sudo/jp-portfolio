@@ -879,14 +879,17 @@ describe('T9-A001/A002: structured CSV result and atomic store commit', () => {
     expect(afterPolicy.payload.cashAssumptions).toEqual(before.payload.cashAssumptions)
     expect(afterPolicy.payload.origin).toBe('csv')
 
-    await useAppStore.getState().setCashAssumptions({ cashDeposits: 1_234_567, standbyFunds: 765_432 })
+    await useAppStore.getState().setCashAssumptions({ grossCash: 1_999_999, safetyReserve: 0, pendingOrderCash: null })
     const afterCash = restoreCsvImportGeneration()
     if (afterCash.status !== 'committed') throw new Error('expected committed generation')
     expect(afterCash.payload.portfolioPolicy).toEqual({ jpStockMaxRatio: 0.12 })
     expect(afterCash.payload.cashAssumptions).toMatchObject({
-      cashDeposits: 1_234_567,
-      standbyFunds: 765_432,
-      manualOverrideEnabled: true,
+      source: 'MANUAL',
+      grossCash: 1_999_999,
+      safetyReserve: 0,
+      pendingOrderCash: null,
+      // CASH-AUTH-1: updatedAt は保存操作時刻で確定する
+      updatedAt: expect.any(String),
     })
     expect(afterCash.payload.origin).toBe('csv')
   })
@@ -1137,7 +1140,7 @@ describe('T9-A001/A002: structured CSV result and atomic store commit', () => {
     const first = useAppStore.getState().importCsv(pendingFile)
     await Promise.resolve()
     const duringReading = useAppStore.getState()
-    await useAppStore.getState().setCashAssumptions({ cashDeposits: 9_000_000, standbyFunds: 8_000_000 })
+    await useAppStore.getState().setCashAssumptions({ grossCash: 17_000_000, safetyReserve: 0, pendingOrderCash: null })
     expect(useAppStore.getState()).toBe(duringReading)
     release(new TextEncoder().encode(VALID_CSV).buffer)
 
@@ -1186,7 +1189,7 @@ describe('T9-A001/A002: structured CSV result and atomic store commit', () => {
   })
 
   it.each([
-    ['standby cash manual action', true, () => useAppStore.getState().setCashAssumptions({ cashDeposits: 1_000_000, standbyFunds: 7_000_000 })],
+    ['standby cash manual action', true, () => useAppStore.getState().setCashAssumptions({ grossCash: 8_000_000, safetyReserve: 0, pendingOrderCash: null })],
     ['portfolio policy manual action', true, () => useAppStore.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.15 })],
     ['market external dependency', false, () => useAppStore.setState(state => ({ market: { ...state.market, nikkeiChgPct: state.market.nikkeiChgPct + 0.01 } }))],
     ['SAFE_MODE external dependency', false, () => useAppStore.setState(state => ({
@@ -1222,7 +1225,7 @@ describe('T9-A001/A002: structured CSV result and atomic store commit', () => {
 
   it.each([
     ['cash', () => useAppStore.setState(state => ({
-      cashAssumptions: { ...state.cashAssumptions, cashDeposits: state.cashAssumptions.cashDeposits + 123_456 },
+      cashAssumptions: { ...state.cashAssumptions, cashDeposits: state.cashAssumptions.grossCash + 123_456 },
     }))],
     ['market', () => useAppStore.setState(state => ({
       market: { ...state.market, nikkeiChgPct: state.market.nikkeiChgPct + 3.25 },
@@ -1261,7 +1264,7 @@ describe('T9-A001/A002: structured CSV result and atomic store commit', () => {
     let manualResults: Array<ReturnType<ReturnType<typeof useAppStore.getState>['setPortfolioPolicy']>> = []
     storageReentry = () => {
       manualResults = [
-        useAppStore.getState().setCashAssumptions({ cashDeposits: 9_000_000, standbyFunds: 8_000_000 }),
+        useAppStore.getState().setCashAssumptions({ grossCash: 17_000_000, safetyReserve: 0, pendingOrderCash: null }),
         useAppStore.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.2 }),
       ]
       useAppStore.setState(state => ({ market: { ...state.market, nikkeiChgPct: 99 } }))
@@ -1547,10 +1550,11 @@ describe('T9-A001/A002: structured CSV result and atomic store commit', () => {
     })
     useAppStore.setState(state => ({
       cashAssumptions: {
-        cashDeposits: 4_000_000,
-        standbyFunds: 1_000_000,
-        manualOverrideEnabled: true,
-        manualUpdatedAt: new Date(analysisNow - 167 * 60 * 60 * 1000).toISOString(),
+        source: 'MANUAL',
+        grossCash: 5_000_000,
+        safetyReserve: 0,
+        pendingOrderCash: null,
+        updatedAt: new Date(analysisNow - 167 * 60 * 60 * 1000).toISOString(),
       },
       system: {
         ...state.system,

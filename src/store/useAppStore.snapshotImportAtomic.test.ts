@@ -374,10 +374,11 @@ describe('T9-A004-R3-RED: snapshot import transaction failure counterexamples', 
       const raw = v3Snapshot(incomingProvenance('8'), {
         holdings: [{ code: 'R3-CASE8', name: 'R3-8銘柄', eval: 888_000, pnlPct: 0 }],
         cashAssumptions: {
-          cashDeposits: 640_000,
-          standbyFunds: 160_000,
-          manualOverrideEnabled: true,
-          manualUpdatedAt: '2026-07-15T10:30:00.000Z',
+          source: 'MANUAL',
+          grossCash: 800_000,
+          safetyReserve: 0,
+          pendingOrderCash: null,
+          updatedAt: '2026-07-15T10:30:00.000Z',
         },
       })
 
@@ -524,18 +525,20 @@ describe('T9-A004-R3-RED: snapshot import transaction failure counterexamples', 
       const seededRaw = seedCommittedCanonical()
       persistPortfolioPolicy({ jpStockMaxRatio: 0.15 })
       persistCashAssumptions({
-        cashDeposits: 111,
-        standbyFunds: 222,
-        manualOverrideEnabled: true,
-        manualUpdatedAt: '2026-07-10T00:00:00.000Z',
+        source: 'MANUAL',
+        grossCash: 333,
+        safetyReserve: 0,
+        pendingOrderCash: null,
+        updatedAt: '2026-07-10T00:00:00.000Z',
       })
       failKeys.add('v13_portfolio_policy')
       failKeys.add('v13_cash_assumptions')
       const snapshotCash = {
-        cashDeposits: 900_000,
-        standbyFunds: 90_000,
-        manualOverrideEnabled: true,
-        manualUpdatedAt: '2026-07-15T10:30:00.000Z',
+        source: 'MANUAL',
+        grossCash: 990_000,
+        safetyReserve: 0,
+        pendingOrderCash: null,
+        updatedAt: '2026-07-15T10:30:00.000Z',
       }
       const raw = v3Snapshot(incomingProvenance('9'), {
         holdings: [{ code: 'R3-CASE9', name: 'R3-9銘柄', eval: 309_000, pnlPct: 0 }],

@@ -168,10 +168,11 @@ describe('T9-A004-R3a: 共有portfolio-generation transaction guard', () => {
 
   it('R3-7 GREEN: 第1通知中のreentrant setCashAssumptionsはtransaction guardで拒否される', async () => {
     const snapshotCash = {
-      cashDeposits: 500_000,
-      standbyFunds: 200_000,
-      manualOverrideEnabled: true,
-      manualUpdatedAt: '2026-07-15T10:30:00.000Z',
+      source: 'MANUAL',
+      grossCash: 700_000,
+      safetyReserve: 0,
+      pendingOrderCash: null,
+      updatedAt: '2026-07-15T10:30:00.000Z',
     }
     const raw = v3Snapshot(incomingProvenance('7'), {
       holdings: [{ code: 'R3-CASE7', name: 'R3-7銘柄', eval: 777_000, pnlPct: 0 }],
@@ -182,7 +183,7 @@ describe('T9-A004-R3a: 共有portfolio-generation transaction guard', () => {
     const unsubscribe = useAppStore.subscribe(() => {
       if (fired) return
       fired = true
-      nestedResult = useAppStore.getState().setCashAssumptions({ cashDeposits: 9_000_000, standbyFunds: 8_000_000 })
+      nestedResult = useAppStore.getState().setCashAssumptions({ grossCash: 17_000_000, safetyReserve: 0, pendingOrderCash: null })
     })
 
     const result = await useAppStore.getState().importPortfolioSnapshot(raw)
@@ -191,12 +192,13 @@ describe('T9-A004-R3a: 共有portfolio-generation transaction guard', () => {
     const state = useAppStore.getState()
     expect({
       resultCode: result.code,
-      cashDeposits: state.cashAssumptions.cashDeposits,
-      standbyFunds: state.cashAssumptions.standbyFunds,
+      // CASH-AUTH-1: snapshot の現金権限は総現金へ一度だけ移行される
+      grossCash: state.cashAssumptions.grossCash,
+      safetyReserve: state.cashAssumptions.safetyReserve,
     }).toEqual({
       resultCode: 'SUCCESS',
-      cashDeposits: 500_000,
-      standbyFunds: 200_000,
+      grossCash: 700_000,
+      safetyReserve: 0,
     })
     await expect(nestedResult).resolves.toMatchObject({ ok: false, code: 'LOCAL_OPERATION_BUSY' })
   })

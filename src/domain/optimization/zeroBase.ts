@@ -63,9 +63,11 @@ export interface ZeroBaseInput {
   sqCalendar: SQCalendar | null
   metrics: PortfolioMetrics | null
   universe: AssetUniverse | null
+  // CASH-AUTH-1: 現金権限の派生値。cash + cashReserve = grossCash（総現金）。
+  // cashReserve は生活・安全余力（総現金の部分集合）であり、投資可能額から差し引く。
+  // addRoom は撤廃済み — 予算にも総資産にも一切寄与しない。
   cash: number
   cashReserve: number
-  addRoom: number
   /** P4-A47: JP_STOCK上限比率（PortfolioPolicy由来）。省略時は 0.10 */
   jpStockMaxRatio?: number
   /** P4-A148: SAFE_MODE発動中は個別株BUY提案を生成しない。省略時はfalse（現行互換） */
@@ -124,7 +126,7 @@ function fallbackUniverse(input: ZeroBaseInput): AssetCategorySummary[] {
   const jpTrustValue = input.trust.filter(f => f.policy === 'JAPAN_SHORTTERM').reduce((s, f) => s + f.eval, 0)
   const ovTrustValue = input.trust.filter(f => f.policy === 'OVERSEAS_LONGTERM').reduce((s, f) => s + f.eval, 0)
   const goldValue = input.trust.filter(f => f.policy === 'GOLD').reduce((s, f) => s + f.eval, 0)
-  const total = jpStockValue + jpTrustValue + ovTrustValue + goldValue + input.cash + input.cashReserve + input.addRoom
+  const total = jpStockValue + jpTrustValue + ovTrustValue + goldValue + input.cash + input.cashReserve
 
   const pack = (
     cls: AssetCategorySummary['class'],
@@ -207,7 +209,7 @@ function buildBuyProposals(
   const totalAssets = (input.universe?.totalValue ?? 0) ||
     input.holdings.reduce((s, h) => s + h.eval, 0) +
     input.trust.reduce((s, f) => s + f.eval, 0) +
-    input.cash + input.cashReserve + input.addRoom
+    input.cash + input.cashReserve
 
   // JP_STOCK headroom gate: no new BUY proposals when class cap is reached.
   // Use totalAssets * jpStockMaxRatio directly — universe.categories.JP_STOCK.targetValue equals
@@ -415,8 +417,10 @@ export function buildZeroBasePlan(input: ZeroBaseInput): ZeroBasePlan {
   // 追加分は市場モードで可変バッファとして管理する。
   const variableBuffer =
     mode === 'normal' ? 1_000_000 : mode === 'caution' ? 2_000_000 : 3_000_000
+  // CASH-AUTH-1: 総現金から安全余力を除いた部分（input.cash）だけが投資可能。
+  // addRoom の上乗せは撤廃した — 現金の裏付けがない金額を予算に足さない。
   const deployableCash = Math.max(0, input.cash - variableBuffer)
-  const rawBudget = input.addRoom + deployableCash
+  const rawBudget = deployableCash
   const buyBudget = mode === 'normal' ? rawBudget : mode === 'caution' ? rawBudget * 0.5 : 0
 
   const buyProposals = buildBuyProposals(input, mode, buyBudget)

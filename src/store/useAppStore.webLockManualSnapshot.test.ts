@@ -546,7 +546,7 @@ describe('RA-007-C stale projection', () => {
     ['holdings', (state: AppStoreState) => ({ holdings: state.holdings.map((h, index) => index === 0 ? { ...h, eval: h.eval + 1 } : h) })],
     ['trust', (state: AppStoreState) => ({ trust: state.trust.map((f, index) => index === 0 ? { ...f, eval: f.eval + 1 } : f) })],
     ['portfolioPolicy', (_state: AppStoreState) => ({ portfolioPolicy: { jpStockMaxRatio: 0.12 } })],
-    ['cashAssumptions', (state: AppStoreState) => ({ cashAssumptions: { ...state.cashAssumptions, cashDeposits: state.cashAssumptions.cashDeposits + 1 } })],
+    ['cashAssumptions', (state: AppStoreState) => ({ cashAssumptions: { ...state.cashAssumptions, cashDeposits: state.cashAssumptions.grossCash + 1 } })],
     ['csvLastImportedAt', (state: AppStoreState) => ({ system: { ...state.system, csvLastImportedAt: null } })],
     ['provenance', (state: AppStoreState) => ({ system: { ...state.system, csvImportProvenance: null } })],
     ['sync summary', (state: AppStoreState) => ({ system: { ...state.system, csvSyncSummary: null } })],

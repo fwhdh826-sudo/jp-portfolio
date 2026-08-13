@@ -218,10 +218,11 @@ describe('useAppStore.initialize / refreshAllData: published snapshot優先順�
       },
       portfolioPolicy: { jpStockMaxRatio: 0.12 },
       cashAssumptions: {
-        cashDeposits: 1_250_000,
-        standbyFunds: 350_000,
-        manualOverrideEnabled: true,
-        manualUpdatedAt: '2026-07-14T12:00:00.000Z',
+        source: 'MANUAL',
+        grossCash: 1_600_000,
+        safetyReserve: 0,
+        pendingOrderCash: null,
+        updatedAt: '2026-07-14T12:00:00.000Z',
       },
       origin: 'csv',
     })
@@ -231,10 +232,11 @@ describe('useAppStore.initialize / refreshAllData: published snapshot優先順�
     })
     store.v13_cash_assumptions = JSON.stringify({
       data: {
-        cashDeposits: 9,
-        standbyFunds: 8,
-        manualOverrideEnabled: true,
-        manualUpdatedAt: '2099-07-01T00:00:00.000Z',
+        source: 'MANUAL',
+        grossCash: 17,
+        safetyReserve: 0,
+        pendingOrderCash: null,
+        updatedAt: '2099-07-01T00:00:00.000Z',
       },
       savedAt: Date.now(),
     })
@@ -249,10 +251,11 @@ describe('useAppStore.initialize / refreshAllData: published snapshot優先順�
     expect(useAppStore.getState().system.csvImportProvenance?.sourceAsOf).toBe('2026-07-14T00:00:00.000Z')
     expect(useAppStore.getState().portfolioPolicy).toEqual({ jpStockMaxRatio: 0.12 })
     expect(useAppStore.getState().cashAssumptions).toEqual({
-      cashDeposits: 1_250_000,
-      standbyFunds: 350_000,
-      manualOverrideEnabled: true,
-      manualUpdatedAt: '2026-07-14T12:00:00.000Z',
+      source: 'MANUAL',
+      grossCash: 1_600_000,
+      safetyReserve: 0,
+      pendingOrderCash: null,
+      updatedAt: '2026-07-14T12:00:00.000Z',
     })
   })
 
@@ -287,10 +290,11 @@ describe('useAppStore.initialize / refreshAllData: published snapshot優先順�
       },
       portfolioPolicy: { jpStockMaxRatio: 0.12 },
       cashAssumptions: {
-        cashDeposits: 1_250_000,
-        standbyFunds: 350_000,
-        manualOverrideEnabled: true,
-        manualUpdatedAt: '2026-07-18T00:00:00.000Z',
+        source: 'MANUAL',
+        grossCash: 1_600_000,
+        safetyReserve: 0,
+        pendingOrderCash: null,
+        updatedAt: '2026-07-18T00:00:00.000Z',
       },
       origin: 'csv',
     }, nowMs)
@@ -350,8 +354,11 @@ describe('useAppStore.initialize / refreshAllData: published snapshot優先順�
       },
       portfolioPolicy: { jpStockMaxRatio: 0.12 },
       cashAssumptions: {
-        cashDeposits: 0, standbyFunds: 0,
-        manualOverrideEnabled: false, manualUpdatedAt: null,
+        source: 'DEFAULT',
+        grossCash: 0,
+        safetyReserve: 0,
+        pendingOrderCash: null,
+        updatedAt: null,
       },
       origin: 'csv',
     }, nowMs)
@@ -364,8 +371,11 @@ describe('useAppStore.initialize / refreshAllData: published snapshot優先順�
       // before ever reaching the sanitize/merge/persist steps this test exercises.
       portfolioPolicy: { jpStockMaxRatio: 0.12 },
       cashAssumptions: {
-        cashDeposits: 0, standbyFunds: 0,
-        manualOverrideEnabled: false, manualUpdatedAt: null,
+        source: 'DEFAULT',
+        grossCash: 0,
+        safetyReserve: 0,
+        pendingOrderCash: null,
+        updatedAt: null,
       },
       system: {
         ...state.system,
@@ -431,10 +441,11 @@ describe('useAppStore.initialize / refreshAllData: published snapshot優先順�
       trust: [makeTrust({ id: 'sp500_sbi', eval: 0 })],
       portfolioPolicy: { jpStockMaxRatio: 0.10 },
       cashAssumptions: {
-        cashDeposits: 0,
-        standbyFunds: 0,
-        manualOverrideEnabled: false,
-        manualUpdatedAt: null,
+        source: 'DEFAULT',
+        grossCash: 0,
+        safetyReserve: 0,
+        pendingOrderCash: null,
+        updatedAt: null,
       },
       system: {
         ...state.system,
@@ -606,10 +617,11 @@ describe('useAppStore.initialize / refreshAllData: published snapshot優先順�
       trust: [makeTrust({ id: 'sp500_sbi', eval: 0 })],
       portfolioPolicy: { jpStockMaxRatio: 0.10 },
       cashAssumptions: {
-        cashDeposits: 0,
-        standbyFunds: 0,
-        manualOverrideEnabled: false,
-        manualUpdatedAt: null,
+        source: 'DEFAULT',
+        grossCash: 0,
+        safetyReserve: 0,
+        pendingOrderCash: null,
+        updatedAt: null,
       },
       system: {
         ...state.system,

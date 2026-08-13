@@ -46,10 +46,11 @@ function stateWithTrust(
     trust: trust.map(item => ({ ...item })),
     candidateFunnel,
     cashAssumptions: {
-      cashDeposits: 10_000_000,
-      standbyFunds: 0,
-      manualOverrideEnabled: true,
-      manualUpdatedAt: NOW_ISO,
+      source: 'MANUAL',
+      grossCash: 10_000_000,
+      safetyReserve: 0,
+      pendingOrderCash: null,
+      updatedAt: NOW_ISO,
     },
     system: {
       ...state.system,
@@ -188,7 +189,7 @@ describe('R3-c1 JP_TRUST production writer input', () => {
   it('J-T10/Test D does not transfer long-term or JP_STOCK residual into JP_TRUST', () => {
     const overseas = INITIAL_TRUST.find(trust => trust.policy === 'OVERSEAS_LONGTERM')!
     const state = stateWithTrust([...jpTrustRegistry(), { ...overseas, eval: 50_000_000 }])
-    state.cashAssumptions = { ...state.cashAssumptions, cashDeposits: 9_000_000 }
+    state.cashAssumptions = { ...state.cashAssumptions, source: 'MANUAL', grossCash: 9_000_000, updatedAt: NOW_ISO }
     const input = buildAllocationPlanInput(state, {
       generatedAt: NOW_ISO,
       holdingsFreshness: 'fresh',

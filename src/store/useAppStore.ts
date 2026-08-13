@@ -8,7 +8,6 @@ import {
   STATIC_MARKET,
   INITIAL_CASH,
   INITIAL_CASH_RESERVE,
-  INITIAL_ADD_ROOM,
   TARGET_ALLOCATION_BEAR,
   TARGET_ALLOCATION_BULL,
   TARGET_ALLOCATION_NEUTRAL,
@@ -100,6 +99,12 @@ import {
 } from '../domain/learning/trustShortTracker'
 import { buildExportableCashAssumptions } from '../utils/cashAssumptionsTransfer'
 import {
+  NO_CASH_AUTHORITY,
+  isValidCashAuthorityRecord,
+  normalizeCashAuthorityRecord,
+  validateCashAuthorityDraft,
+} from '../domain/cash/cashAuthority'
+import {
   serializePortfolioSnapshotExport,
   parsePortfolioSnapshotImport,
   PORTFOLIO_SNAPSHOT_SCHEMA_VERSION,
@@ -189,11 +194,29 @@ interface AppActions {
   // P4-A47: PortfolioPolicy更新（localStorage永続化込み）
   setPortfolioPolicy: (policy: PortfolioPolicy) => Promise<ManualMutationResult>
   // P4.5-A002: 資金前提の手動入力を保存（総額として置き換え、CSV/既定値とは加算しない）
-  setCashAssumptions: (input: { cashDeposits: number; standbyFunds: number }) => Promise<ManualMutationResult>
+  setCashAssumptions: (input: {
+    grossCash: unknown
+    safetyReserve: unknown
+    pendingOrderCash: unknown
+  }) => Promise<ManualMutationResult>
+  /** CASH-AUTH-1: 同じ金額を現時点でも正しいと明示的に再確認する（意図的な操作のみ） */
+  reconfirmCashAssumptions: () => Promise<ManualMutationResult>
+  /**
+   * CASH-AUTH-1: 現金権限のTTL失効を検査し、失効していれば実行可能な
+   * AllocationPlanSnapshot を無効化して blocked な世代へ作り直す。
+   * 権限が有効なら何もしない（TTLは決して延長されない）。
+   * @returns 再検証によって状態を変更したか
+   */
+  revalidateCashAuthorityExpiry: (nowMs?: number) => boolean
   // P4.5-A002: 手動overrideを解除し、既定値（CSV/JSON由来があればそれ、無ければconstants）へ戻す
   clearCashAssumptionsOverride: () => Promise<ManualMutationResult>
   // P4.5-A009: export/importで検証済みの値をimportする（manualUpdatedAtはimport元をそのまま引き継ぐ）
-  importCashAssumptions: (input: { cashDeposits: number; standbyFunds: number; manualUpdatedAt: string | null }) => Promise<ManualMutationResult>
+  importCashAssumptions: (input: {
+    grossCash: number
+    safetyReserve: number
+    pendingOrderCash: number | null
+    updatedAt: string | null
+  }) => Promise<ManualMutationResult>
   // P4.5-A012b: 保有株・投信・現金前提・portfolioPolicyのportfolio snapshotをexport（表示専用の文字列を返すだけ。保存・public出力はしない）
   exportPortfolioSnapshot: () => string
   // P4.5-A012b: 他端末でexportしたportfolio snapshotをimportする（未知のholding code/trust idが含まれる場合は全体rejectしstore/localStorageを変更しない）
@@ -681,7 +704,6 @@ export function buildPortfolioAnalysisFingerprint(
     serialize('flows', state.flows),
     serialize('cash', state.cash),
     serialize('cashReserve', state.cashReserve),
-    serialize('addRoom', state.addRoom),
     serialize('cashAssumptions', state.cashAssumptions),
     serialize('portfolioPolicy', state.portfolioPolicy),
     serialize('candidatesNews', state.candidatesNews),
@@ -1121,8 +1143,12 @@ function buildInitializeRestoredState(baseState: AppState, nowMs: number): Initi
   const savedPolicy = csvGeneration.status === 'committed'
     ? csvGeneration.payload.portfolioPolicy ?? DEFAULT_PORTFOLIO_POLICY
     : useLegacy ? restorePortfolioPolicy() ?? DEFAULT_PORTFOLIO_POLICY : DEFAULT_PORTFOLIO_POLICY
+  // CASH-AUTH-1: canonical payload には未移行の legacy スキーマが残りうる。
+  // store へ載せる直前に決定的・冪等に移行し、壊れた値は権限なしへ fail closed する。
   const savedCashAssumptions = csvGeneration.status === 'committed'
-    ? csvGeneration.payload.cashAssumptions ?? DEFAULT_CASH_ASSUMPTIONS
+    ? (csvGeneration.payload.cashAssumptions
+        ? normalizeCashAuthorityRecord(csvGeneration.payload.cashAssumptions) ?? { ...NO_CASH_AUTHORITY }
+        : DEFAULT_CASH_ASSUMPTIONS)
     : useLegacy ? restoreCashAssumptions() ?? DEFAULT_CASH_ASSUMPTIONS : DEFAULT_CASH_ASSUMPTIONS
 
   const state: AppState = {
@@ -1281,7 +1307,8 @@ function hasCurrentPortfolioContentEvidence(state: AppState): boolean {
   return state.holdings.length > 0 ||
     state.trust.some(fund => fund.eval > 0) ||
     state.portfolioPolicy.jpStockMaxRatio !== DEFAULT_PORTFOLIO_POLICY.jpStockMaxRatio ||
-    state.cashAssumptions.manualOverrideEnabled
+    // CASH-AUTH-1: 現金権限が設定済み（MANUAL）であること自体がユーザー入力の証跡
+    state.cashAssumptions.source === 'MANUAL'
 }
 
 function computeCurrentSnapshotStateIdentity(state: AppState): string | null {
@@ -1404,7 +1431,11 @@ function buildCanonicalPortfolioGenerationProjection(
     holdings: payload.holdings,
     trust: payload.trust,
     portfolioPolicy: payload.portfolioPolicy ?? { ...DEFAULT_PORTFOLIO_POLICY },
-    cashAssumptions: payload.cashAssumptions ?? { ...DEFAULT_CASH_ASSUMPTIONS },
+    // CASH-AUTH-1: 比較の両辺を同じ現行スキーマへ正規化する。未移行の canonical
+    // 世代を「他タブが書き換えた」と誤検知して手動操作を止めないための同値化。
+    cashAssumptions: payload.cashAssumptions
+      ? normalizeCashAuthorityRecord(payload.cashAssumptions) ?? { ...NO_CASH_AUTHORITY }
+      : { ...DEFAULT_CASH_ASSUMPTIONS },
     ...normalizeCsvMetadataProjection(
       getCsvImportPayloadCsvImportedAt(payload),
       payload.provenance ?? null,
@@ -1889,9 +1920,11 @@ export function buildAllocationPlanInput(
       : options.sourceSettingsVersion
     if (!sourceHoldingsSnapshotId || !sourceSettingsVersion) return null
 
+    // CASH-AUTH-1: 現金権限を検証済みの source authority として engine へ渡す。
+    // engine（deriveCashModel）の fail-closed 挙動・headroom・cap は一切変更しない。
     const effectiveCash = selectEffectiveCashAssumptions(state)
     const cashFreshness = selectCashAssumptionsFreshness(state, nowMs)
-    const grossCash = effectiveCash.cashTotal
+    const grossCash = effectiveCash.grossCash
     const holdingsFreshness = options.holdingsFreshness
       ?? assessAllocationHoldingsFreshness(state, nowMs)
     const crossTab = state.system.crossTabInvalidation?.status === 'stale' ? 'stale' : 'current'
@@ -1989,8 +2022,10 @@ export function buildAllocationPlanInput(
       sourceSettingsVersion,
       cash: {
         grossCash,
-        safetyReserve: 0,
-        pendingOrderCash: null,
+        // CASH-AUTH-1: 生活・安全余力と未約定買付確保額はユーザーが確定した
+        // 権限そのもの。engine 側で一度だけ差し引かれる（重複控除はしない）。
+        safetyReserve: effectiveCash.safetyReserve,
+        pendingOrderCash: effectiveCash.pendingOrderCash,
         dataUncertaintyReserve: 0,
         ...options.cash,
       },
@@ -2011,9 +2046,12 @@ export function buildAllocationPlanInput(
       safetyState: {
         safeMode,
         marketData: dqSuppressed ? 'stale' : 'fresh',
-        cash: effectiveCash.source !== 'manual' ? 'unknown' : cashFreshness.isStale ? 'stale' : 'known_fresh',
+        // CASH-AUTH-1: unknown（権限なし）と stale（失効）を区別したまま engine へ渡す。
+        // どちらも executable deployable cash は 0 になる。
+        cash: cashFreshness.state,
         target: 'known',
-        pendingOrders: 'unknown',
+        // null = 未約定買付の権限が不明（警告のみ）/ 数値 = ユーザーが確定済み
+        pendingOrders: effectiveCash.pendingOrderCash === null ? 'unknown' : 'known',
         candidateArtifact: candidateArtifactState,
         dqViolation: dqSuppressed,
         tierA,
@@ -2097,15 +2135,19 @@ export function runFullAnalysis(
     return { ...f, ev, score: Math.round(score), decision }
   })
 
-  // P4.5-A002: 資金前提の実効値（手動override > 既定値）。buildAssetUniverse/zeroBaseの
-  // 買付余力計算はこの実効値を使う。手動値と既定値は加算しない（優先順位のみ）。
+  // CASH-AUTH-1: 現金権限は state.cashAssumptions ただ一つ。legacy な
+  // buildAssetUniverse / zeroBase へは「総現金を安全余力とそれ以外に割った」
+  // 派生値として注入する — cash + cashReserve は常に grossCash と等しく、
+  // 1円たりとも二重計上されない。addRoom は撤廃済みで一切加算しない。
   const effectiveCash = selectEffectiveCashAssumptions(state)
+  const legacyCashDisplay = Math.max(0, effectiveCash.grossCash - effectiveCash.safetyReserve)
+  const legacyCashReserveDisplay = Math.min(effectiveCash.safetyReserve, effectiveCash.grossCash)
 
   // ゼロベース理想PF構築（metrics計算後に呼ぶ）
   const stateWithComputed: AppState = {
     ...state, holdings, trust, metrics, analysis,
-    cash: effectiveCash.cash,
-    cashReserve: effectiveCash.cashReserve,
+    cash: legacyCashDisplay,
+    cashReserve: legacyCashReserveDisplay,
   }
   const universe = buildAssetUniverse(stateWithComputed, nowMs)
   const noTradeResult = checkNoTrade(stateWithComputed)
@@ -2140,9 +2182,8 @@ export function runFullAnalysis(
       sqCalendar:       state.sqCalendar,
       metrics,
       universe,
-      cash:             effectiveCash.cash,
-      cashReserve:      effectiveCash.cashReserve,
-      addRoom:          state.addRoom,
+      cash:             legacyCashDisplay,
+      cashReserve:      legacyCashReserveDisplay,
       jpStockMaxRatio:  state.portfolioPolicy.jpStockMaxRatio,
       safeModeActive,
       dqSuppressed,
@@ -2193,7 +2234,15 @@ export function runFullAnalysis(
       : []
     if (rawCandidates.length > 0) {
       const MIN_CASH_FLOOR = 1_000_000
-      const availableCash = Math.max(0, effectiveCash.cash - MIN_CASH_FLOOR) + state.addRoom
+      // CASH-AUTH-1: 総現金から安全余力・未約定買付を一度だけ差し引いた額を基準にする。
+      // addRoom の上乗せは撤廃した。
+      const availableCash = Math.max(
+        0,
+        effectiveCash.grossCash
+          - effectiveCash.safetyReserve
+          - (effectiveCash.pendingOrderCash ?? 0)
+          - MIN_CASH_FLOOR,
+      )
       const roleExposureByRole = computeRoleExposureByRole(trust)
       const totalTrustValue = trust.reduce((sum, fund) => sum + Math.max(0, fund.eval), 0)
       const getClassCtx = (cls: string) => {
@@ -2233,9 +2282,9 @@ export function runFullAnalysis(
     const safeModeActiveForStock = selectEffectiveSafeModeActive(state, nowMs)
     const effectiveCashForStock = selectEffectiveCashAssumptions(state)
     const cashFreshness = selectCashAssumptionsFreshness(state, nowMs)
-    // P5-B002b-1: 資金前提が既定値運用中（手動override無効）または鮮度切れの場合、
-    // BUY_NEW候補は出さない（gate内でDATA_STALEとして扱う）。
-    const cashAssumptionsUsable = effectiveCashForStock.source === 'manual' && !cashFreshness.isStale
+    // P5-B002b-1 / CASH-AUTH-1: 現金権限が未設定（unknown）または失効（stale）の
+    // 場合、BUY_NEW候補は出さない（gate内でDATA_STALEとして扱う）。
+    const cashAssumptionsUsable = cashFreshness.state === 'known_fresh'
     // universe（totalValue）はこの関数上部で既に同じeffectiveCashを使って計算済みのため再利用する。
     const jpStockHeadroom = computeJpStockHeadroom(
       holdings,
@@ -2243,7 +2292,14 @@ export function runFullAnalysis(
       universe?.totalValue ?? 0,
     )
     const STOCK_MIN_CASH_FLOOR = 1_000_000
-    const availableCashForStock = Math.max(0, effectiveCashForStock.cash - STOCK_MIN_CASH_FLOOR) + state.addRoom
+    // CASH-AUTH-1: addRoom の上乗せは撤廃。控除は一度だけ。
+    const availableCashForStock = Math.max(
+      0,
+      effectiveCashForStock.grossCash
+        - effectiveCashForStock.safetyReserve
+        - (effectiveCashForStock.pendingOrderCash ?? 0)
+        - STOCK_MIN_CASH_FLOOR,
+    )
 
     stockCandidates = buildStockCandidatePlan({
       holdings,
@@ -2758,7 +2814,6 @@ const createAppStoreStateCreator = (
   learning: null,
   cash: INITIAL_CASH,
   cashReserve: INITIAL_CASH_RESERVE,
-  addRoom: INITIAL_ADD_ROOM,
   // Phase 7 — 計算観察値 (Card 7-10/7-11)
   stockScores6Axis: null as StockScoreRecord[] | null,
   fundPhase7: null as FundPhase7Map | null,
@@ -3615,6 +3670,47 @@ const createAppStoreStateCreator = (
 
   setTab: (tab) => set({ activeTab: tab }),
 
+  /**
+   * CASH-AUTH-1: 開いたままのタブが 168h の境界を越えても実行可能な
+   * AllocationPlanSnapshot を持ち続けないようにする、ローカル限定のTTLガード。
+   *
+   * 1. 現金権限がまだ有効なら何もしない（描画やTTL延長は一切行わない）。
+   * 2. 失効していれば、まず現在の実行可能性を無効化する。
+   * 3. そのうえで権限経路（runFullAnalysis）を通して stale-cash として
+   *    blocked な snapshot を作り直す。金額欄を直接書き換えることはしない。
+   *
+   * 永続化は変更しない — 失効は時間の経過であってユーザーの入力ではないため、
+   * 保存済みの金額は参考値としてそのまま残す。ネットワークも一切使わない。
+   */
+  revalidateCashAuthorityExpiry: (nowMs = Date.now()) => {
+    if (isPortfolioGenerationCriticalSection(runtime)) return false
+    if (runtime.activePortfolioOperation !== null) return false
+    if (runtime.activePortfolioGenerationTransaction !== null) return false
+    const state = get()
+    if (selectCashAssumptionsFreshness(state, nowMs).state !== 'stale') return false
+    if (state.allocationPlan === null && state.allocationPlanStatus === 'stale') return false
+
+    // (2) 実行可能性を先に落としてから (3) 再構築する
+    set({
+      allocationPlan: null,
+      allocationPlanStatus: 'stale',
+      allocationPlanCandidateGenerationId: null,
+      candidatePortfolioRecommendations: [],
+    })
+    try {
+      const computed = runFullAnalysis(get(), { nowMs })
+      set({
+        allocationPlan: computed.allocationPlan,
+        allocationPlanStatus: computed.allocationPlanStatus,
+        allocationPlanCandidateGenerationId: computed.allocationPlanCandidateGenerationId,
+        candidatePortfolioRecommendations: computed.candidatePortfolioRecommendations,
+      })
+    } catch {
+      // 再構築に失敗しても fail-closed のまま（実行可能な snapshot は残らない）
+    }
+    return true
+  },
+
   updateHolding: (code, patch) => {
     return runManualPortfolioMutation(
       'updateHolding',
@@ -3670,20 +3766,22 @@ const createAppStoreStateCreator = (
     )
   },
 
-  // P4.5-A002: 資金前提の手動入力を保存する。入力値は総額として置き換わる
-  // （CSV/既定値への加算は行わない）。0以上の整数円に丸めてから保存する。
-  setCashAssumptions: ({ cashDeposits, standbyFunds }) => {
+  // CASH-AUTH-1: 現金権限を保存する。レコード全体を検証してからのみ確定し、
+  // 1項目でも不正なら state / 永続化 / snapshot を一切変更しない（0への丸めもしない）。
+  // 保存成功時は updatedAt を更新 → sourceSettingsVersion が変化 →
+  // 既存 AllocationPlanSnapshot は非権威となり、同一トランザクション内で再構築される。
+  setCashAssumptions: ({ grossCash, safetyReserve, pendingOrderCash }) => {
     return runManualPortfolioMutation(
       'setCashAssumptions',
       (baseState, operationNowMs) => {
-        const sanitize = (value: number) => Math.max(0, Math.round(Number.isFinite(value) ? value : 0))
-        const next: CashAssumptions = {
-          cashDeposits: sanitize(cashDeposits),
-          standbyFunds: sanitize(standbyFunds),
-          manualOverrideEnabled: true,
-          manualUpdatedAt: new Date(operationNowMs).toISOString(),
-        }
-        return { ...baseState, cashAssumptions: next }
+        const validation = validateCashAuthorityDraft({
+          grossCash,
+          safetyReserve,
+          pendingOrderCash,
+          updatedAt: new Date(operationNowMs).toISOString(),
+        })
+        if (!validation.ok) throw new Error('CASH_AUTHORITY_INVALID')
+        return { ...baseState, cashAssumptions: validation.record }
       },
       (finalState, operationNowMs) => persistLegacyPortfolioGenerationTransaction({
         cashAssumptions: finalState.cashAssumptions,
@@ -3691,21 +3789,15 @@ const createAppStoreStateCreator = (
     )
   },
 
-  // P4.5-A002: 手動overrideを解除し、既定値（constants/market.ts由来）へ戻す
+  // CASH-AUTH-1: 現金権限を削除して「未設定」へ戻す。
+  // これは confirmed zero（0円を確認済み）ではなく NO_AUTHORITY であり、
+  // 以後 allocation は CASH_AUTHORITY_UNAVAILABLE で fail-closed する。
   clearCashAssumptionsOverride: () => {
     return runManualPortfolioMutation(
       'clearCashAssumptionsOverride',
       baseState => {
-        if (!baseState.cashAssumptions.manualOverrideEnabled &&
-            baseState.cashAssumptions.manualUpdatedAt === null) return null
-        return {
-          ...baseState,
-          cashAssumptions: {
-            ...baseState.cashAssumptions,
-            manualOverrideEnabled: false,
-            manualUpdatedAt: null,
-          },
-        }
+        if (baseState.cashAssumptions.source === 'DEFAULT') return null
+        return { ...baseState, cashAssumptions: { ...NO_CASH_AUTHORITY } }
       },
       (finalState, operationNowMs) => persistLegacyPortfolioGenerationTransaction({
         cashAssumptions: finalState.cashAssumptions,
@@ -3713,26 +3805,54 @@ const createAppStoreStateCreator = (
     )
   },
 
-  // P4.5-A009: export/importで既に検証済みの値をimportする。setCashAssumptionsと異なり、
-  // manualUpdatedAtは現在時刻で上書きせずimport元の値をそのまま引き継ぐ（呼び出し側の
-  // parseCashAssumptionsImportが不正/欠損時にnullへfallback済み — nullはA008の
-  // freshness判定でstale扱いになるため、無警告で「最新」扱いにはならない）。
-  importCashAssumptions: ({ cashDeposits, standbyFunds, manualUpdatedAt }) => {
+  // CASH-AUTH-1: 同じ金額を「現時点でも正しい」と明示的に再確認する。
+  // updatedAt のみを更新して TTL を延長する意図的なユーザー操作であり、
+  // ページ読み込みや再描画では決して呼ばれない。
+  // 権限が未設定のときは何もしない（時刻だけ作って権限を捏造しない）。
+  reconfirmCashAssumptions: () => {
+    return runManualPortfolioMutation(
+      'reconfirmCashAssumptions',
+      (baseState, operationNowMs) => {
+        const current = baseState.cashAssumptions
+        if (current.source !== 'MANUAL') return null
+        const validation = validateCashAuthorityDraft({
+          grossCash: current.grossCash,
+          safetyReserve: current.safetyReserve,
+          pendingOrderCash: current.pendingOrderCash,
+          updatedAt: new Date(operationNowMs).toISOString(),
+        })
+        if (!validation.ok) throw new Error('CASH_AUTHORITY_INVALID')
+        return { ...baseState, cashAssumptions: validation.record }
+      },
+      (finalState, operationNowMs) => persistLegacyPortfolioGenerationTransaction({
+        cashAssumptions: finalState.cashAssumptions,
+      }, operationNowMs),
+    )
+  },
+
+  // P4.5-A009 / CASH-AUTH-1: export/importで既に検証済みの値をimportする。
+  // setCashAssumptionsと異なり、updatedAtは現在時刻で上書きせずimport元の値を
+  // そのまま引き継ぐ（呼び出し側の parseCashAssumptionsImport が不正/欠損時に
+  // null へ fallback 済み — null は stale 扱いになるため、無警告で「最新」に
+  // 昇格することはない）。import は transport であって第3の権限ソースではない。
+  importCashAssumptions: ({ grossCash, safetyReserve, pendingOrderCash, updatedAt }) => {
     return runManualPortfolioMutation(
       'importCashAssumptions',
       baseState => {
-        const sanitize = (value: number) => Math.max(0, Math.round(Number.isFinite(value) ? value : 0))
         const next: CashAssumptions = {
-          cashDeposits: sanitize(cashDeposits),
-          standbyFunds: sanitize(standbyFunds),
-          manualOverrideEnabled: true,
-          manualUpdatedAt,
+          source: 'MANUAL',
+          grossCash,
+          safetyReserve,
+          pendingOrderCash,
+          updatedAt,
         }
+        if (!isValidCashAuthorityRecord(next)) throw new Error('CASH_AUTHORITY_INVALID')
         const current = baseState.cashAssumptions
-        if (current.cashDeposits === next.cashDeposits &&
-            current.standbyFunds === next.standbyFunds &&
-            current.manualOverrideEnabled === next.manualOverrideEnabled &&
-            current.manualUpdatedAt === next.manualUpdatedAt) return null
+        if (current.source === next.source &&
+            current.grossCash === next.grossCash &&
+            current.safetyReserve === next.safetyReserve &&
+            current.pendingOrderCash === next.pendingOrderCash &&
+            current.updatedAt === next.updatedAt) return null
         return { ...baseState, cashAssumptions: next }
       },
       (finalState, operationNowMs) => persistLegacyPortfolioGenerationTransaction({
@@ -3741,16 +3861,13 @@ const createAppStoreStateCreator = (
     )
   },
 
-  // P4.5-A012b: 保有株・投信・現金前提・portfolioPolicyのportfolio snapshotをexportする。
-  // どこにも保存しない — 呼び出し側（UIはA012cで追加）がユーザーに表示し、ユーザー自身がコピーする。
-  // cashAssumptionsはrawのstate.cashAssumptionsではなく実効値（selectEffectiveCashAssumptions）を
-  // buildExportableCashAssumptionsで変換してexportする（P4.5-A009の既存方針と同一。
-  // manualOverrideEnabled=falseの場合、rawのcashDeposits/standbyFundsは実際に使われている値と
-  // 一致しないため）。
+  // P4.5-A012b: 保有株・投信・現金権限・portfolioPolicyのportfolio snapshotをexportする。
+  // どこにも保存しない — 呼び出し側がユーザーに表示し、ユーザー自身がコピーする。
+  // CASH-AUTH-1: 権限は state.cashAssumptions ただ一つなので、実効値と保存値が
+  // 乖離することはない。未設定（DEFAULT）は未設定のまま書き出す。
   exportPortfolioSnapshot: () => {
     const state = get()
-    const effective = selectEffectiveCashAssumptions(state)
-    const exportableCash = buildExportableCashAssumptions(effective)
+    const exportableCash = buildExportableCashAssumptions(state.cashAssumptions)
     return serializePortfolioSnapshotExport({
       holdings: state.holdings,
       trust: state.trust,
@@ -4011,15 +4128,11 @@ const createAppStoreStateCreator = (
         ? { jpStockMaxRatio: snapshot.portfolioPolicy.jpStockMaxRatio }
         : state.portfolioPolicy
 
-      // cashAssumptionsはimportCashAssumptionsと同じ思想: manualOverrideEnabledは常にtrue、
-      // manualUpdatedAtは現在時刻へ差し替えずimport元をそのまま引き継ぐ。
+      // CASH-AUTH-1: importCashAssumptionsと同じ思想 — updatedAtは現在時刻へ
+      // 差し替えずimport元をそのまま引き継ぐ（古い権限が無警告でfreshにならない）。
+      // parsePortfolioSnapshotImport が identity 検証後に現行スキーマへ移行済み。
       const nextCashAssumptions: CashAssumptions = snapshot.cashAssumptions
-        ? {
-            cashDeposits: snapshot.cashAssumptions.cashDeposits,
-            standbyFunds: snapshot.cashAssumptions.standbyFunds,
-            manualOverrideEnabled: true,
-            manualUpdatedAt: snapshot.cashAssumptions.manualUpdatedAt,
-          }
+        ? { ...snapshot.cashAssumptions }
         : state.cashAssumptions
 
       // T9-A004-R3c: 新世代のcandidate contentをメモリ上でstageし、analysis・decision・

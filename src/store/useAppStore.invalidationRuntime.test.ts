@@ -889,11 +889,16 @@ describe('writer emission (all 10 writers, fixed-harness baseline)', () => {
     updateTrust: instance => instance.store.getState().updateTrust(TRUST.id, { eval: TRUST.eval + 111 }),
     setPortfolioPolicy: instance => instance.store.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.25 }),
     setCashAssumptions: instance => instance.store.getState().setCashAssumptions({
-      cashDeposits: 4_444_444, standbyFunds: 555_555,
+      grossCash: 4_999_999,
+      safetyReserve: 0,
+      pendingOrderCash: null,
     }),
     clearCashAssumptionsOverride: instance => instance.store.getState().clearCashAssumptionsOverride(),
     importCashAssumptions: instance => instance.store.getState().importCashAssumptions({
-      cashDeposits: 6_000_000, standbyFunds: 700_000, manualUpdatedAt: NOW_ISO,
+      grossCash: 6_700_000,
+      safetyReserve: 0,
+      pendingOrderCash: null,
+      updatedAt: NOW_ISO,
     }),
   }
 

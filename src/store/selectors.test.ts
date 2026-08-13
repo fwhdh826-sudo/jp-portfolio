@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { selectMarketDataQuality, computeSafeModeDataQuality, selectEffectiveCashAssumptions, computeCashAssumptionsFreshness, selectEffectiveSafeModeActive } from './selectors'
 import type { AppState, CashAssumptions } from '../types'
+import { DEFAULT_CASH_ASSUMPTIONS } from '../types'
 
 // selectMarketDataQuality が参照するフィールドのみを持つ最小state
 function makeState(
@@ -157,96 +158,144 @@ describe('computeSafeModeDataQuality', () => {
   })
 })
 
-// ── P4.5-A002: selectEffectiveCashAssumptions（資金前提の手動override） ──
+// ── CASH-AUTH-1: selectEffectiveCashAssumptions（現金権限の実効値） ──
 describe('selectEffectiveCashAssumptions', () => {
   function makeCashState(cashAssumptions: CashAssumptions, cash = 4_000_000, cashReserve = 9_000_000): AppState {
     return { cashAssumptions, cash, cashReserve } as AppState
   }
 
-  it('manualOverrideEnabled=false: 既定値（state.cash/state.cashReserve）を維持する', () => {
-    const s = makeCashState({ cashDeposits: 999, standbyFunds: 999, manualOverrideEnabled: false, manualUpdatedAt: null })
+  it('DEFAULT（権限なし）は既定値もCSVも参照せず0を返す（金額を捏造しない）', () => {
+    const s = makeCashState({ source: 'DEFAULT', grossCash: 0, safetyReserve: 0, pendingOrderCash: null, updatedAt: null })
     const eff = selectEffectiveCashAssumptions(s)
-    expect(eff.cash).toBe(4_000_000)
-    expect(eff.cashReserve).toBe(9_000_000)
-    expect(eff.cashTotal).toBe(13_000_000)
+    expect(eff.grossCash).toBe(0)
+    expect(eff.safetyReserve).toBe(0)
+    expect(eff.pendingOrderCash).toBeNull()
+    expect(eff.cashTotal).toBe(0)
     expect(eff.source).toBe('default')
-    expect(eff.manualUpdatedAt).toBeNull()
+    expect(eff.updatedAt).toBeNull()
   })
 
-  it('manualOverrideEnabled=true: 手動値が実効値になる（既定値は無視される）', () => {
-    const s = makeCashState({ cashDeposits: 1_000_000, standbyFunds: 2_000_000, manualOverrideEnabled: true, manualUpdatedAt: '2026-07-04T00:00:00.000Z' })
+  it('MANUAL: 権限の値がそのまま実効値になる（legacyのstate.cash/cashReserveは無視される）', () => {
+    const s = makeCashState({
+      source: 'MANUAL',
+      grossCash: 3_000_000,
+      safetyReserve: 500_000,
+      pendingOrderCash: 200_000,
+      updatedAt: '2026-07-04T00:00:00.000Z',
+    })
     const eff = selectEffectiveCashAssumptions(s)
-    expect(eff.cash).toBe(1_000_000)
-    expect(eff.cashReserve).toBe(2_000_000)
+    expect(eff.grossCash).toBe(3_000_000)
+    expect(eff.safetyReserve).toBe(500_000)
+    expect(eff.pendingOrderCash).toBe(200_000)
     expect(eff.source).toBe('manual')
-    expect(eff.manualUpdatedAt).toBe('2026-07-04T00:00:00.000Z')
+    expect(eff.updatedAt).toBe('2026-07-04T00:00:00.000Z')
   })
 
-  it('cashTotalはcashDeposits + standbyFundsで計算される（既定値の合算ではない）', () => {
-    const s = makeCashState({ cashDeposits: 3_000_000, standbyFunds: 5_500_000, manualOverrideEnabled: true, manualUpdatedAt: null })
+  it('cashTotalは常にgrossCashと等しい（安全余力・未約定は部分集合であり加算しない）', () => {
+    const s = makeCashState({
+      source: 'MANUAL',
+      grossCash: 8_500_000,
+      safetyReserve: 1_000_000,
+      pendingOrderCash: 500_000,
+      updatedAt: '2026-07-04T00:00:00.000Z',
+    })
     const eff = selectEffectiveCashAssumptions(s)
     expect(eff.cashTotal).toBe(8_500_000)
   })
 
-  it('手動値と既定値は加算されない（手動override中は既定値のstate.cash/cashReserveを一切参照しない）', () => {
+  it('権限と既定値は加算されない（MANUAL中はstate.cash/cashReserveを一切参照しない）', () => {
     const s = makeCashState(
-      { cashDeposits: 100, standbyFunds: 200, manualOverrideEnabled: true, manualUpdatedAt: null },
+      { source: 'MANUAL', grossCash: 300, safetyReserve: 0, pendingOrderCash: null, updatedAt: '2026-07-04T00:00:00.000Z' },
       4_000_000, 9_000_000,
     )
     const eff = selectEffectiveCashAssumptions(s)
-    expect(eff.cash).toBe(100)
-    expect(eff.cashReserve).toBe(200)
+    expect(eff.grossCash).toBe(300)
     expect(eff.cashTotal).toBe(300)
   })
 
-  it('手動override解除（manualOverrideEnabled=false）で既定値に戻る', () => {
-    const overridden = makeCashState({ cashDeposits: 1, standbyFunds: 2, manualOverrideEnabled: true, manualUpdatedAt: '2026-07-01T00:00:00.000Z' })
-    const cleared = { ...overridden, cashAssumptions: { ...overridden.cashAssumptions, manualOverrideEnabled: false, manualUpdatedAt: null } }
+  it('権限を削除するとDEFAULT（未設定）に戻り、既定値へは落ちない', () => {
+    const overridden = makeCashState({ source: 'MANUAL', grossCash: 3, safetyReserve: 0, pendingOrderCash: null, updatedAt: '2026-07-01T00:00:00.000Z' })
+    const cleared = { ...overridden, cashAssumptions: { ...DEFAULT_CASH_ASSUMPTIONS } }
     const eff = selectEffectiveCashAssumptions(cleared)
-    expect(eff.cash).toBe(4_000_000)
-    expect(eff.cashReserve).toBe(9_000_000)
+    expect(eff.grossCash).toBe(0)
+    expect(eff.cashTotal).toBe(0)
     expect(eff.source).toBe('default')
   })
 })
 
-// ── P4.5-A008: computeCashAssumptionsFreshness（資金前提のstale警告・値は維持したまま） ──
+// ── CASH-AUTH-1: computeCashAssumptionsFreshness（168h TTL / 144h 事前警告） ──
 describe('computeCashAssumptionsFreshness', () => {
   const NOW = Date.parse('2026-07-05T00:00:00+00:00')
-  const daysAgo = (days: number) => new Date(NOW - days * 24 * 60 * 60 * 1000).toISOString()
+  const HOUR = 60 * 60 * 1000
+  const hoursAgo = (hours: number) => new Date(NOW - hours * HOUR).toISOString()
+  const manual = (updatedAt: string | null): CashAssumptions => ({
+    source: 'MANUAL',
+    grossCash: 1_000_000,
+    safetyReserve: 0,
+    pendingOrderCash: null,
+    updatedAt,
+  })
 
-  it('manualOverrideEnabled=true かつ manualUpdatedAtが8日前 → isStale=true', () => {
-    const f = computeCashAssumptionsFreshness(true, daysAgo(8), NOW)
+  it('168hを1msでも超えると stale', () => {
+    const f = computeCashAssumptionsFreshness(manual(new Date(NOW - (168 * HOUR + 1)).toISOString()), NOW)
+    expect(f.state).toBe('stale')
     expect(f.isStale).toBe(true)
+    expect(f.reason).toBe('EXPIRED')
   })
 
-  it('manualOverrideEnabled=true かつ manualUpdatedAtが6日前 → isStale=false', () => {
-    const f = computeCashAssumptionsFreshness(true, daysAgo(6), NOW)
+  it('ちょうど168hはまだ fresh（`>` 境界を維持する）', () => {
+    const f = computeCashAssumptionsFreshness(manual(hoursAgo(168)), NOW)
+    expect(f.state).toBe('known_fresh')
     expect(f.isStale).toBe(false)
+    expect(f.approachingExpiry).toBe(true)
   })
 
-  it('境界値: ちょうど7日前は閾値内（isStale=false）', () => {
-    const f = computeCashAssumptionsFreshness(true, daysAgo(7), NOW)
+  it('144h経過で approachingExpiry になるが、まだ fresh のまま', () => {
+    const f = computeCashAssumptionsFreshness(manual(hoursAgo(144)), NOW)
+    expect(f.state).toBe('known_fresh')
+    expect(f.approachingExpiry).toBe(true)
+  })
+
+  it('143h59mではまだ approachingExpiry にならない', () => {
+    const f = computeCashAssumptionsFreshness(manual(new Date(NOW - (144 * HOUR - 60_000)).toISOString()), NOW)
+    expect(f.state).toBe('known_fresh')
+    expect(f.approachingExpiry).toBe(false)
+  })
+
+  it('updatedAt が未来なら known_fresh にはならない', () => {
+    const f = computeCashAssumptionsFreshness(manual(new Date(NOW + HOUR).toISOString()), NOW)
+    expect(f.state).toBe('stale')
+    expect(f.reason).toBe('FUTURE_TIMESTAMP')
+  })
+
+  it('updatedAt が欠損なら stale', () => {
+    const f = computeCashAssumptionsFreshness(manual(null), NOW)
+    expect(f.state).toBe('stale')
+    expect(f.reason).toBe('MISSING_TIMESTAMP')
+  })
+
+  it('updatedAt が不正文字列なら stale', () => {
+    const f = computeCashAssumptionsFreshness(manual('not-a-date'), NOW)
+    expect(f.state).toBe('stale')
+    expect(f.reason).toBe('INVALID_TIMESTAMP')
+  })
+
+  it('DEFAULT（権限なし）は unknown であり、stale でも fresh でもない', () => {
+    const f = computeCashAssumptionsFreshness({ ...DEFAULT_CASH_ASSUMPTIONS }, NOW)
+    expect(f.state).toBe('unknown')
     expect(f.isStale).toBe(false)
+    expect(f.reason).toBe('NO_AUTHORITY')
   })
 
-  it('manualOverrideEnabled=true かつ manualUpdatedAt=null → isStale=true', () => {
-    const f = computeCashAssumptionsFreshness(true, null, NOW)
-    expect(f.isStale).toBe(true)
-  })
-
-  it('manualOverrideEnabled=true かつ manualUpdatedAtが不正文字列 → isStale=true', () => {
-    const f = computeCashAssumptionsFreshness(true, 'not-a-date', NOW)
-    expect(f.isStale).toBe(true)
-  })
-
-  it('manualOverrideEnabled=false ならmanualUpdatedAtが古くてもisStale=false（既定値使用中は警告対象外）', () => {
-    const f = computeCashAssumptionsFreshness(false, daysAgo(365), NOW)
-    expect(f.isStale).toBe(false)
-  })
-
-  it('manualOverrideEnabled=false かつ manualUpdatedAt=null でもisStale=false', () => {
-    const f = computeCashAssumptionsFreshness(false, null, NOW)
-    expect(f.isStale).toBe(false)
+  it('confirmed zero（0円・有効な時刻）は known_fresh であり unknown ではない', () => {
+    const f = computeCashAssumptionsFreshness({
+      source: 'MANUAL',
+      grossCash: 0,
+      safetyReserve: 0,
+      pendingOrderCash: null,
+      updatedAt: hoursAgo(1),
+    }, NOW)
+    expect(f.state).toBe('known_fresh')
   })
 })
 

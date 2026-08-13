@@ -1,3 +1,4 @@
+import type { CashAssumptions } from '../types'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 const loadProbe = vi.hoisted(() => ({
@@ -72,9 +73,12 @@ const BASELINE_TRUST: Trust = {
   decision: 'HOLD',
 }
 
-const BASELINE_CASH_ASSUMPTIONS = {
-  cashDeposits: 1_000_000, standbyFunds: 200_000,
-  manualOverrideEnabled: true, manualUpdatedAt: NOW_ISO,
+const BASELINE_CASH_ASSUMPTIONS: CashAssumptions = {
+  source: 'MANUAL',
+  grossCash: 1_200_000,
+  safetyReserve: 0,
+  pendingOrderCash: null,
+  updatedAt: NOW_ISO,
 }
 
 class CountingFileReader {
@@ -361,7 +365,7 @@ describe('RA-007-E two-store FIFO grant order', () => {
 
   it('cash mutation -> policy mutation: B is stale relative to A durable cash commit', async () => {
     const { aResult, bResult } = await assertFifoGrantOrder(
-      a => a.store.getState().setCashAssumptions({ cashDeposits: 5_000_000, standbyFunds: 600_000 }),
+      a => a.store.getState().setCashAssumptions({ grossCash: 5_600_000, safetyReserve: 0, pendingOrderCash: null }),
       b => b.store.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.22 }),
     )
     expect(aResult).toMatchObject({ ok: true, code: 'SUCCESS' })

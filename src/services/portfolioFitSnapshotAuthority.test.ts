@@ -32,10 +32,11 @@ const TRUST = {
 
 const POLICY: PortfolioPolicy = { jpStockMaxRatio: 0.15 }
 const CASH: CashAssumptions = {
-  cashDeposits: 400_000,
-  standbyFunds: 100_000,
-  manualOverrideEnabled: true,
-  manualUpdatedAt: '2026-07-26T07:00:00.000Z',
+  source: 'MANUAL',
+  grossCash: 500_000,
+  safetyReserve: 0,
+  pendingOrderCash: null,
+  updatedAt: '2026-07-26T07:00:00.000Z',
 }
 const PROVENANCE: CsvImportProvenance = {
   sourceAsOf: '2026-07-26T07:00:00.000Z',

@@ -511,7 +511,7 @@ describe('P5-B005-C-B1 portfolioFit — 52 frozen test groups', () => {
 
   it('T-31: fresh manual cash, delta>0 -> capacity available', () => {
     const artifact = makeArtifact([makeCandidate()])
-    const cash: CashAssumptions = { cashDeposits: 1_000_000, standbyFunds: 0, manualOverrideEnabled: true, manualUpdatedAt: BASE }
+    const cash: CashAssumptions = { source: 'MANUAL', grossCash: 1_000_000, safetyReserve: 0, pendingOrderCash: null, updatedAt: BASE }
     const snapshot = makeSnapshot([], {
       trusts: [makeTrust({ eval: 200_000 })],
       cashAssumptions: cash,
@@ -523,7 +523,7 @@ describe('P5-B005-C-B1 portfolioFit — 52 frozen test groups', () => {
 
   it('T-32: fresh inputs, delta<=0 -> constrained', () => {
     const artifact = makeArtifact([makeCandidate()])
-    const cash: CashAssumptions = { cashDeposits: 100, standbyFunds: 0, manualOverrideEnabled: true, manualUpdatedAt: BASE }
+    const cash: CashAssumptions = { source: 'MANUAL', grossCash: 100, safetyReserve: 0, pendingOrderCash: null, updatedAt: BASE }
     const snapshot = makeSnapshot([makeHolding({ code: '1234', eval: 100_000 })], {
       cashAssumptions: cash,
       portfolioPolicy: makePolicy({ jpStockMaxRatio: 0.05 }),
@@ -534,7 +534,7 @@ describe('P5-B005-C-B1 portfolioFit — 52 frozen test groups', () => {
 
   it('T-33: disabled/default cash -> capacity unknown', () => {
     const artifact = makeArtifact([makeCandidate()])
-    const cash: CashAssumptions = { cashDeposits: 0, standbyFunds: 0, manualOverrideEnabled: false, manualUpdatedAt: null }
+    const cash: CashAssumptions = { source: 'DEFAULT', grossCash: 0, safetyReserve: 0, pendingOrderCash: null, updatedAt: null }
     const snapshot = makeSnapshot([makeHolding({ code: '1234', eval: 1000 })], { cashAssumptions: cash })
     const result = computePortfolioFit({ candidateSource: availableSource(artifact), portfolioSnapshot: snapshot, evaluatedAt: BASE })
     expect(result.capacity.status).toBe('unknown')
@@ -546,7 +546,7 @@ describe('P5-B005-C-B1 portfolioFit — 52 frozen test groups', () => {
     const holdings = [makeHolding({ code: '1234', eval: 1000 })]
     const missingCashSnapshot = makeSnapshot(holdings, { cashAssumptions: null })
     const manualZeroSnapshot = makeSnapshot(holdings, {
-      cashAssumptions: { cashDeposits: 0, standbyFunds: 0, manualOverrideEnabled: true, manualUpdatedAt: BASE },
+      cashAssumptions: { source: 'MANUAL', grossCash: 0, safetyReserve: 0, pendingOrderCash: null, updatedAt: BASE },
       portfolioPolicy: makePolicy({ jpStockMaxRatio: 0.3 }),
     })
     const missingResult = computePortfolioFit({ candidateSource: availableSource(artifact), portfolioSnapshot: missingCashSnapshot, evaluatedAt: BASE })
@@ -567,7 +567,7 @@ describe('P5-B005-C-B1 portfolioFit — 52 frozen test groups', () => {
   it('T-36: capacity delta positive/zero/negative -> fit records deep-equal', () => {
     const artifact = makeArtifact([makeCandidate({ code: '7203' })])
     const holdings = [makeHolding({ code: '7203', eval: 1000 })]
-    const base = makeSnapshot(holdings, { cashAssumptions: { cashDeposits: 9000, standbyFunds: 0, manualOverrideEnabled: true, manualUpdatedAt: BASE } })
+    const base = makeSnapshot(holdings, { cashAssumptions: { source: 'MANUAL', grossCash: 9000, safetyReserve: 0, pendingOrderCash: null, updatedAt: BASE } })
     const withHeadroom = { ...base, portfolioPolicy: makePolicy({ jpStockMaxRatio: 0.3 }) }
     const constrained = { ...base, portfolioPolicy: makePolicy({ jpStockMaxRatio: 0.05 }) }
     const r1 = computePortfolioFit({ candidateSource: availableSource(artifact), portfolioSnapshot: withHeadroom, evaluatedAt: BASE })
@@ -625,7 +625,7 @@ describe('P5-B005-C-B1 portfolioFit — 52 frozen test groups', () => {
     // headroom<=0 (constrained capacity) must never degrade score/rank into a
     // dummy numeric value either — capacity and fit score are independent.
     const constrainedSnapshot = makeSnapshot([makeHolding({ code: '1234', eval: 100_000 })], {
-      cashAssumptions: { cashDeposits: 0, standbyFunds: 0, manualOverrideEnabled: true, manualUpdatedAt: BASE },
+      cashAssumptions: { source: 'MANUAL', grossCash: 0, safetyReserve: 0, pendingOrderCash: null, updatedAt: BASE },
       portfolioPolicy: makePolicy({ jpStockMaxRatio: 0.05 }),
     })
     const constrainedResult = computePortfolioFit({
@@ -828,7 +828,7 @@ describe('P5-B005-C-B1-R1 — independent audit P1 repair regressions', () => {
   //    let capacity report available/constrained. ──────────────────────
   it('R1-P1-01: trust with an invalid eval value forces capacity unavailable (never available)', () => {
     const artifact = makeArtifact([makeCandidate()])
-    const cash: CashAssumptions = { cashDeposits: 1_000_000, standbyFunds: 0, manualOverrideEnabled: true, manualUpdatedAt: BASE }
+    const cash: CashAssumptions = { source: 'MANUAL', grossCash: 1_000_000, safetyReserve: 0, pendingOrderCash: null, updatedAt: BASE }
     const snapshot = makeSnapshot([], {
       trusts: [makeTrust({ eval: 200_000 }), makeTrust({ id: 't2', eval: Number.NaN })],
       cashAssumptions: cash,
@@ -842,7 +842,7 @@ describe('P5-B005-C-B1-R1 — independent audit P1 repair regressions', () => {
 
   it('R1-P1-01: an all-invalid-eval holding forces capacity unavailable even with fresh, sufficient cash', () => {
     const artifact = makeArtifact([makeCandidate()])
-    const cash: CashAssumptions = { cashDeposits: 1_000_000, standbyFunds: 0, manualOverrideEnabled: true, manualUpdatedAt: BASE }
+    const cash: CashAssumptions = { source: 'MANUAL', grossCash: 1_000_000, safetyReserve: 0, pendingOrderCash: null, updatedAt: BASE }
     const snapshot = makeSnapshot([makeHolding({ code: '1234', eval: Number.NaN })], {
       cashAssumptions: cash,
       portfolioPolicy: makePolicy({ jpStockMaxRatio: 0.3 }),
@@ -1108,10 +1108,11 @@ describe('P5-B005-C-B1-R1 — independent audit P1 repair regressions', () => {
   it('R1-freshness: manual cash exactly 168h old -> not stale, capacity available', () => {
     const artifact = makeArtifact([makeCandidate()])
     const cash: CashAssumptions = {
-      cashDeposits: 1_000_000,
-      standbyFunds: 0,
-      manualOverrideEnabled: true,
-      manualUpdatedAt: iso(BASE_MS - 168 * HOUR),
+      source: 'MANUAL',
+      grossCash: 1_000_000,
+      safetyReserve: 0,
+      pendingOrderCash: null,
+      updatedAt: iso(BASE_MS - 168 * HOUR),
     }
     const snapshot = makeSnapshot([], { cashAssumptions: cash, portfolioPolicy: makePolicy({ jpStockMaxRatio: 0.3 }) })
     const result = computePortfolioFit({ candidateSource: availableSource(artifact), portfolioSnapshot: snapshot, evaluatedAt: BASE })
@@ -1121,10 +1122,11 @@ describe('P5-B005-C-B1-R1 — independent audit P1 repair regressions', () => {
   it('R1-freshness: manual cash 168h-1ms old -> not stale, capacity available', () => {
     const artifact = makeArtifact([makeCandidate()])
     const cash: CashAssumptions = {
-      cashDeposits: 1_000_000,
-      standbyFunds: 0,
-      manualOverrideEnabled: true,
-      manualUpdatedAt: iso(BASE_MS - 168 * HOUR + 1),
+      source: 'MANUAL',
+      grossCash: 1_000_000,
+      safetyReserve: 0,
+      pendingOrderCash: null,
+      updatedAt: iso(BASE_MS - 168 * HOUR + 1),
     }
     const snapshot = makeSnapshot([], { cashAssumptions: cash, portfolioPolicy: makePolicy({ jpStockMaxRatio: 0.3 }) })
     const result = computePortfolioFit({ candidateSource: availableSource(artifact), portfolioSnapshot: snapshot, evaluatedAt: BASE })
@@ -1134,10 +1136,11 @@ describe('P5-B005-C-B1-R1 — independent audit P1 repair regressions', () => {
   it('R1-freshness: manual cash 168h+1ms old -> stale, capacity unknown', () => {
     const artifact = makeArtifact([makeCandidate()])
     const cash: CashAssumptions = {
-      cashDeposits: 1_000_000,
-      standbyFunds: 0,
-      manualOverrideEnabled: true,
-      manualUpdatedAt: iso(BASE_MS - 168 * HOUR - 1),
+      source: 'MANUAL',
+      grossCash: 1_000_000,
+      safetyReserve: 0,
+      pendingOrderCash: null,
+      updatedAt: iso(BASE_MS - 168 * HOUR - 1),
     }
     const snapshot = makeSnapshot([], { cashAssumptions: cash, portfolioPolicy: makePolicy({ jpStockMaxRatio: 0.3 }) })
     const result = computePortfolioFit({ candidateSource: availableSource(artifact), portfolioSnapshot: snapshot, evaluatedAt: BASE })
@@ -1148,10 +1151,11 @@ describe('P5-B005-C-B1-R1 — independent audit P1 repair regressions', () => {
   it('R1-freshness: manual cash future +1ms -> rejected as stale/invalid age, capacity unknown', () => {
     const artifact = makeArtifact([makeCandidate()])
     const cash: CashAssumptions = {
-      cashDeposits: 1_000_000,
-      standbyFunds: 0,
-      manualOverrideEnabled: true,
-      manualUpdatedAt: iso(BASE_MS + 1),
+      source: 'MANUAL',
+      grossCash: 1_000_000,
+      safetyReserve: 0,
+      pendingOrderCash: null,
+      updatedAt: iso(BASE_MS + 1),
     }
     const snapshot = makeSnapshot([], { cashAssumptions: cash, portfolioPolicy: makePolicy({ jpStockMaxRatio: 0.3 }) })
     const result = computePortfolioFit({ candidateSource: availableSource(artifact), portfolioSnapshot: snapshot, evaluatedAt: BASE })
@@ -1178,10 +1182,11 @@ describe('P5-B005-C-B1-R1 — independent audit P1 repair regressions', () => {
 // ═══════════════════════════════════════════════════════════
 describe('P5-B005-C-B1-R2 — qualityGate warning propagation', () => {
   const completeCash: CashAssumptions = {
-    cashDeposits: 1_000,
-    standbyFunds: 0,
-    manualOverrideEnabled: true,
-    manualUpdatedAt: BASE,
+    source: 'MANUAL',
+    grossCash: 1000,
+    safetyReserve: 0,
+    pendingOrderCash: null,
+    updatedAt: BASE,
   }
 
   it('R2-P1-06: clean complete run has no hard failures and no warnings', () => {

@@ -33,7 +33,6 @@ function makeState(overrides: {
       : [],
     cash,
     cashReserve,
-    addRoom: 0,
     market: { regime, vix: 15, last_updated: '' } as any,
     macro: null as any,
     metrics: null,

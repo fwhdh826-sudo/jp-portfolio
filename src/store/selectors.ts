@@ -1,5 +1,12 @@
-import type { AppState, HoldingAnalysis, Holding, Trust } from '../types'
-import { MARKET_DATA_STALE_HOURS, SYSTEM_STALE_HOURS, SAFE_MODE_STALE_HOURS, CASH_ASSUMPTIONS_STALE_HOURS } from '../domain/risk/thresholds'
+import type { AppState, CashAssumptions, HoldingAnalysis, Holding, Trust } from '../types'
+import { MARKET_DATA_STALE_HOURS, SYSTEM_STALE_HOURS, SAFE_MODE_STALE_HOURS } from '../domain/risk/thresholds'
+import {
+  deriveCashAuthorityView,
+  evaluateCashAuthorityFreshness,
+  type CashAuthorityFreshness,
+  type CashAuthorityState,
+  type CashAuthorityView,
+} from '../domain/cash/cashAuthority'
 import {
   evaluateCandidateFunnelFreshness,
   type CandidateFunnelFreshness,
@@ -229,76 +236,96 @@ export const selectSafeModeDataQuality = (s: AppState, now: number = Date.now())
 export const selectEffectiveSafeModeActive = (s: AppState, now: number = Date.now()): boolean =>
   s.safeMode.safe_mode.active || selectSafeModeDataQuality(s, now).isStale
 
-// ── P4.5-A002: 資金前提（現金・待機資金）の実効値 ─────────────
-// 手動override中は手動値を総額として使う（CSV/既定値との加算は行わない）。
-// 手動override無効時は既定値（constants/market.ts由来のstate.cash/cashReserve）を使う。
-// 将来CSV/JSON由来の値が供給されるようになった場合も、この関数のfallback先を
-// 差し替えるだけで優先順位（手動 > CSV/JSON > 既定値）を維持できる。
+// ── CASH-AUTH-1: 現金権限の実効値 ─────────────────────────────
+// 権限は state.cashAssumptions ただ一つ。DEFAULT（未設定）は「不明」であり、
+// 既定値やCSVから金額を推測しない — 実行可能金額を捏造しないための fail-closed。
+// 判定ロジックは src/domain/cash/cashAuthority.ts に集約しており、ここは
+// store 向けの薄い読み出し層にすぎない（parallel authority を作らない）。
 export type CashAssumptionsSource = 'manual' | 'default'
 
 export interface EffectiveCashAssumptions {
-  cash: number
-  cashReserve: number
+  /** 総現金。MANUAL のときのみ実値、DEFAULT は 0 */
+  grossCash: number
+  /** 生活・安全余力（総現金の部分集合） */
+  safetyReserve: number
+  /** 未約定買付確保額。null = 不明 */
+  pendingOrderCash: number | null
+  /**
+   * 総資産計上に使う現金合計。CASH-AUTH-1 では常に grossCash と等しい
+   * （safetyReserve / pendingOrderCash は部分集合であり加算しない）。
+   */
   cashTotal: number
   source: CashAssumptionsSource
-  manualUpdatedAt: string | null
+  updatedAt: string | null
 }
 
 export function selectEffectiveCashAssumptions(s: AppState): EffectiveCashAssumptions {
   const a = s.cashAssumptions
-  if (a.manualOverrideEnabled) {
+  if (a.source === 'MANUAL') {
     return {
-      cash: a.cashDeposits,
-      cashReserve: a.standbyFunds,
-      cashTotal: a.cashDeposits + a.standbyFunds,
+      grossCash: a.grossCash,
+      safetyReserve: a.safetyReserve,
+      pendingOrderCash: a.pendingOrderCash,
+      cashTotal: a.grossCash,
       source: 'manual',
-      manualUpdatedAt: a.manualUpdatedAt,
+      updatedAt: a.updatedAt,
     }
   }
   return {
-    cash: s.cash,
-    cashReserve: s.cashReserve,
-    cashTotal: s.cash + s.cashReserve,
+    grossCash: 0,
+    safetyReserve: 0,
+    pendingOrderCash: null,
+    cashTotal: 0,
     source: 'default',
-    manualUpdatedAt: null,
+    updatedAt: null,
   }
 }
 
-// ── P4.5-A008: 資金前提の鮮度（表示専用のstale警告。値そのものは変更しない） ──
-// TTL失効による無警告revertを廃止した代わりに、manualUpdatedAtが古い場合は
-// 「値は維持したまま」stale扱いにしてUIで警告する。既定値使用中（override無効）は
-// 常にfalse — 既定値には「更新」という概念がないため警告対象外。
+// ── CASH-AUTH-1: 現金権限の鮮度（凍結TTL 168h / 警告 144h） ──
+// 値そのものは失効しても保持し（参考値として表示）、実行可能性のみを落とす。
+// 既定値（権限なし）は unknown であり、fresh にも stale にもならない。
 export interface CashAssumptionsFreshness {
+  /** 権限として使用できない（unknown / stale）ことを示す既存互換フラグ */
   isStale: boolean
   ageHours: number | null
+  /** allocation engine の safetyState.cash に渡す状態 */
+  state: CashAuthorityState
+  /** 144h <= age <= 168h。fresh のまま表示する「まもなく失効」警告 */
+  approachingExpiry: boolean
+  /** updatedAt + 168h。ローカルTTLガードのスケジュールに使う */
+  expiresAtMs: number | null
+  reason: CashAuthorityFreshness['reason']
 }
 
 export function computeCashAssumptionsFreshness(
-  manualOverrideEnabled: boolean,
-  manualUpdatedAt: string | null | undefined,
+  cashAssumptions: CashAssumptions,
   now: number = Date.now(),
 ): CashAssumptionsFreshness {
-  if (!manualOverrideEnabled) {
-    return { isStale: false, ageHours: null }
+  const freshness = evaluateCashAuthorityFreshness(cashAssumptions, now)
+  return {
+    isStale: freshness.state === 'stale',
+    ageHours: freshness.ageHours,
+    state: freshness.state,
+    approachingExpiry: freshness.approachingExpiry,
+    expiresAtMs: freshness.expiresAtMs,
+    reason: freshness.reason,
   }
-  if (!manualUpdatedAt) {
-    return { isStale: true, ageHours: null }
-  }
-  const tsMs = new Date(manualUpdatedAt).getTime()
-  if (Number.isNaN(tsMs)) {
-    return { isStale: true, ageHours: null }
-  }
-  const ageHours = (now - tsMs) / (60 * 60 * 1000)
-  return { isStale: ageHours > CASH_ASSUMPTIONS_STALE_HOURS, ageHours }
 }
 
 export function selectCashAssumptionsFreshness(
   s: AppState,
   now: number = Date.now(),
 ): CashAssumptionsFreshness {
-  return computeCashAssumptionsFreshness(
-    s.cashAssumptions.manualOverrideEnabled,
-    s.cashAssumptions.manualUpdatedAt,
-    now,
-  )
+  return computeCashAssumptionsFreshness(s.cashAssumptions, now)
+}
+
+/**
+ * CASH-AUTH-1: T0/T9 の読み取り専用サマリー用ビュー。凍結式そのままの
+ * 投資可能現金（engine の headroom 制約を含まない上限）と鮮度を返す。
+ */
+export function selectCashAuthorityView(
+  s: AppState,
+  now: number = Date.now(),
+): CashAuthorityView {
+  return deriveCashAuthorityView(s.cashAssumptions, now)
 }

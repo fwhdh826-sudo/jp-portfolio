@@ -20,7 +20,7 @@ import type { AssetClass } from '../../types/universe'
 import { isSellLocked, getSellLockRemainingDays, getSellableDate } from '../constraints/stockLock'
 
 export function buildAssetUniverse(state: AppState, nowMs = Date.now()): AssetUniverse {
-  const { holdings, trust, cash, cashReserve, addRoom, market, metrics } = state
+  const { holdings, trust, cash, cashReserve, market, metrics } = state
 
   // ── 現在の各資産クラス評価額 ──────────────────────────────────
   const jpStockValue  = holdings.reduce((s, h) => s + h.eval, 0)
@@ -28,8 +28,9 @@ export function buildAssetUniverse(state: AppState, nowMs = Date.now()): AssetUn
   const overseasValue = trust.filter(f => f.policy === 'OVERSEAS_LONGTERM').reduce((s, f) => s + f.eval, 0)
   const goldValue     = trust.filter(f => f.policy === 'GOLD').reduce((s, f) => s + f.eval, 0)
 
-  // 総資産（addRoom = 未デプロイ追加枠 も含めてベース計算）
-  const totalValue = jpStockValue + jpTrustValue + overseasValue + goldValue + cash + cashReserve + addRoom
+  // 総資産。CASH-AUTH-1: 現金は総現金（cash + cashReserve = grossCash）を一度だけ加算する。
+  // addRoom は撤廃済みで、金額権限には一切寄与しない。
+  const totalValue = jpStockValue + jpTrustValue + overseasValue + goldValue + cash + cashReserve
 
   // ── レジーム別目標配分 ──────────────────────────────────────
   const regime = market.regime
@@ -91,7 +92,6 @@ export function buildAssetUniverse(state: AppState, nowMs = Date.now()): AssetUn
     categories,
     cash,
     cashReserve,
-    addRoom,
     lastUpdatedAt: new Date(nowMs).toISOString(),
   }
 }

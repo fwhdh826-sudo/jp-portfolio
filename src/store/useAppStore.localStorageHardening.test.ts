@@ -235,7 +235,7 @@ describe('RA-009-B1: canonical persistence error reason propagation', () => {
     const durableBefore = storage[CSV_IMPORT_GENERATION_KEY]
     persistFault.csv = () => new CsvImportCanonicalConflictError('injected canonical conflict')
 
-    const result = await store.getState().setCashAssumptions({ cashDeposits: 500_000, standbyFunds: 100_000 })
+    const result = await store.getState().setCashAssumptions({ grossCash: 600_000, safetyReserve: 0, pendingOrderCash: null })
 
     expect(result).toMatchObject({ ok: false, operation: 'setCashAssumptions', code: 'PORTFOLIO_GENERATION_CONFLICT', retryable: false })
     // local publication happens (system.status/error is set for user feedback) but the
@@ -265,7 +265,7 @@ describe('RA-009-B1: canonical persistence error reason propagation', () => {
     const before = store.getState()
     persistFault.csv = buildError
 
-    const result = await store.getState().setCashAssumptions({ cashDeposits: 500_000, standbyFunds: 100_000 })
+    const result = await store.getState().setCashAssumptions({ grossCash: 600_000, safetyReserve: 0, pendingOrderCash: null })
 
     expect(result).toMatchObject({ ok: false, operation: 'setCashAssumptions', code: 'MANUAL_PERSISTENCE_ERROR', retryable: true })
     expect(store.getState().holdings).toBe(before.holdings)
@@ -372,7 +372,7 @@ describe('RA-009-B1: legacy learning generation change detection', () => {
     // Direct, non-cooperative mutation of the legacy learning key while canonical governs.
     storage.v91_learning = '{completely-corrupt-and-irrelevant'
 
-    const result = await store.getState().setCashAssumptions({ cashDeposits: 250_000, standbyFunds: 50_000 })
+    const result = await store.getState().setCashAssumptions({ grossCash: 300_000, safetyReserve: 0, pendingOrderCash: null })
 
     expect(result).toMatchObject({ ok: true, operation: 'setCashAssumptions', code: 'SUCCESS' })
     controls.dispose()
@@ -384,13 +384,13 @@ describe('RA-009-B1: legacy learning generation change detection', () => {
     persistTrust(store.getState().trust)
     store.setState({ learning: validLearning({ lastUpdated: '2026-07-19T00:00:00.000Z' }) })
 
-    const first = await store.getState().setCashAssumptions({ cashDeposits: 111_111, standbyFunds: 0 })
+    const first = await store.getState().setCashAssumptions({ grossCash: 111_111, safetyReserve: 0, pendingOrderCash: null })
     expect(first).toMatchObject({ ok: true, code: 'SUCCESS' })
     // The manual mutation's own analysis pass recomputes `learning` fresh (a new lastUpdated),
     // and that fresh value is what gets durably persisted alongside holdings/trust.
     expect(store.getState().learning).not.toBeNull()
 
-    const second = await store.getState().setCashAssumptions({ cashDeposits: 222_222, standbyFunds: 0 })
+    const second = await store.getState().setCashAssumptions({ grossCash: 222_222, safetyReserve: 0, pendingOrderCash: null })
 
     expect(second).toMatchObject({ ok: true, operation: 'setCashAssumptions', code: 'SUCCESS' })
     controls.dispose()
@@ -428,7 +428,7 @@ describe('RA-009-B1: legacy learning generation change detection', () => {
     // Primes runtime.lastLocallyPersistedLegacyProjection / …LegacyLearningFingerprint via a
     // real successful writer — this is the "local runtimeの既存alignment shortcutが存在" baseline
     // precondition from RA-009-B1 section 8, not merely an unset/never-written cache.
-    const primed = await store.getState().setCashAssumptions({ cashDeposits: 111_111, standbyFunds: 0 })
+    const primed = await store.getState().setCashAssumptions({ grossCash: 111_111, safetyReserve: 0, pendingOrderCash: null })
     expect(primed).toMatchObject({ ok: true, code: 'SUCCESS' })
     const before = store.getState()
 
@@ -452,7 +452,7 @@ describe('RA-009-B1: legacy learning generation change detection', () => {
     a.store.setState({ learning: sharedLearning })
     b.store.setState({ learning: sharedLearning })
 
-    const aResult = await a.store.getState().setCashAssumptions({ cashDeposits: 111_111, standbyFunds: 0 })
+    const aResult = await a.store.getState().setCashAssumptions({ grossCash: 111_111, safetyReserve: 0, pendingOrderCash: null })
     expect(aResult).toMatchObject({ ok: true, code: 'SUCCESS' })
 
     // B never observed A's write; from B's own runtime the disk now looks externally changed.
@@ -469,7 +469,7 @@ describe('RA-009-B1: legacy learning generation change detection', () => {
     persistTrust(store.getState().trust)
     store.setState({ learning: validLearning({ lastUpdated: '2026-07-19T00:00:00.000Z' }) })
 
-    const first = await store.getState().setCashAssumptions({ cashDeposits: 111_111, standbyFunds: 0 })
+    const first = await store.getState().setCashAssumptions({ grossCash: 111_111, safetyReserve: 0, pendingOrderCash: null })
     expect(first).toMatchObject({ ok: true, code: 'SUCCESS' })
 
     controls.reset()

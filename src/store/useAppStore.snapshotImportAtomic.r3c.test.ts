@@ -261,7 +261,7 @@ describe('T9-A004-R3c: snapshot import atomic commit contract', () => {
       holdings: [],
       trust: [],
       portfolioPolicy: DEFAULT_PORTFOLIO_POLICY,
-      cashAssumptions: { ...DEFAULT_CASH_ASSUMPTIONS, manualOverrideEnabled: false },
+      cashAssumptions: { ...DEFAULT_CASH_ASSUMPTIONS },
       system: { csvLastImportedAt: null, csvImportProvenance: null },
     })
     let notifications = 0
@@ -513,10 +513,11 @@ describe('T9-A004-R3c: snapshot import atomic commit contract', () => {
       holdings: [{ code: 'R3C-CASE5', name: 'R3C-5銘柄', eval: 555_000, pnlPct: 0 }],
       portfolioPolicy: { jpStockMaxRatio: 0.12 },
       cashAssumptions: {
-        cashDeposits: 640_000,
-        standbyFunds: 160_000,
-        manualOverrideEnabled: true,
-        manualUpdatedAt: '2026-07-15T10:30:00.000Z',
+        source: 'MANUAL',
+        grossCash: 800_000,
+        safetyReserve: 0,
+        pendingOrderCash: null,
+        updatedAt: '2026-07-15T10:30:00.000Z',
       },
     })
 

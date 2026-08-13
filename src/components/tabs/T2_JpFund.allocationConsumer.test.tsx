@@ -145,7 +145,6 @@ const LEGACY_CURRENT_VALUE = 4_444_444
 const LEGACY_FUND_EVAL = 123_457
 const CASH_OVERRIDE = 3_210_987
 const CASH_RESERVE_OVERRIDE = 2_109_876
-const LEGACY_ADD_ROOM = 987_654
 const NON_ALLOCATION_FOREIGN_FLOW = 432.4
 
 interface LegacyMonetaryFixture {
@@ -157,7 +156,6 @@ interface LegacyMonetaryFixture {
   readonly categoryDiffRatio: number
   readonly cashDeposits: number
   readonly standbyFunds: number
-  readonly addRoom: number
 }
 
 const DEFAULT_LEGACY_MONETARY_FIXTURE: LegacyMonetaryFixture = {
@@ -169,7 +167,6 @@ const DEFAULT_LEGACY_MONETARY_FIXTURE: LegacyMonetaryFixture = {
   categoryDiffRatio: -0.1,
   cashDeposits: CASH_OVERRIDE,
   standbyFunds: CASH_RESERVE_OVERRIDE,
-  addRoom: LEGACY_ADD_ROOM,
 }
 
 const UNAVAILABLE_LEGACY_VARIANTS: readonly LegacyMonetaryFixture[] = [
@@ -182,7 +179,6 @@ const UNAVAILABLE_LEGACY_VARIANTS: readonly LegacyMonetaryFixture[] = [
     categoryDiffRatio: 0.081,
     cashDeposits: 222_222,
     standbyFunds: 33_333,
-    addRoom: 12_345,
   },
   {
     legacyTotalValue: 98_765_432,
@@ -193,7 +189,6 @@ const UNAVAILABLE_LEGACY_VARIANTS: readonly LegacyMonetaryFixture[] = [
     categoryDiffRatio: 0.1125,
     cashDeposits: 12_345_678,
     standbyFunds: 8_765_432,
-    addRoom: 5_432_100,
   },
   {
     legacyTotalValue: 20_000_000,
@@ -204,7 +199,6 @@ const UNAVAILABLE_LEGACY_VARIANTS: readonly LegacyMonetaryFixture[] = [
     categoryDiffRatio: -0.9999999,
     cashDeposits: 1,
     standbyFunds: 19_999_999,
-    addRoom: 1,
   },
 ]
 
@@ -365,12 +359,12 @@ function productionWiringState({
     allocationPlanCandidateGenerationId: 'candidates-t2-production-wiring',
     cash: legacy.cashDeposits,
     cashReserve: legacy.standbyFunds,
-    addRoom: legacy.addRoom,
     cashAssumptions: {
-      cashDeposits: legacy.cashDeposits,
-      standbyFunds: legacy.standbyFunds,
-      manualOverrideEnabled: true,
-      manualUpdatedAt: '2026-08-03T00:00:00.000Z',
+      source: 'MANUAL',
+      grossCash: (legacy.cashDeposits) + (legacy.standbyFunds),
+      safetyReserve: 0,
+      pendingOrderCash: null,
+      updatedAt: '2026-08-03T00:00:00.000Z',
     },
     flows: {
       last_updated: '2026-08-03T00:00:00.000Z',
@@ -398,7 +392,6 @@ function productionWiringState({
       }],
       cash: legacy.cashDeposits,
       cashReserve: legacy.standbyFunds,
-      addRoom: legacy.addRoom,
       lastUpdatedAt: '2026-08-03T00:00:00.000Z',
     },
   }
@@ -816,7 +809,6 @@ describe('R3-b-R1 T2_JpFund production store wiring', () => {
       LEGACY_DIFF_VALUE,
       CASH_OVERRIDE,
       CASH_RESERVE_OVERRIDE,
-      LEGACY_ADD_ROOM,
     ]) {
       expect(html).not.toContain(formatJPYAuto(legacyAmount))
     }

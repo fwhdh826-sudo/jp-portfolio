@@ -393,12 +393,12 @@ function appState(
     allocationPlanCandidateGenerationId: 'candidate-generation-r3-c2',
     cash: LEGACY_CASH,
     cashReserve: 2_345_679,
-    addRoom: LEGACY_ADD_ROOM,
     cashAssumptions: {
-      cashDeposits: LEGACY_CASH,
-      standbyFunds: 2_345_679,
-      manualOverrideEnabled: true,
-      manualUpdatedAt: '2026-08-04T00:00:00.000Z',
+      source: 'MANUAL',
+      grossCash: (LEGACY_CASH) + (2_345_679),
+      safetyReserve: 0,
+      pendingOrderCash: null,
+      updatedAt: '2026-08-04T00:00:00.000Z',
     },
     officialDecision: officialDecision(),
     flows: {
@@ -427,7 +427,6 @@ function appState(
       }],
       cash: LEGACY_CASH,
       cashReserve: 2_345_679,
-      addRoom: LEGACY_ADD_ROOM,
       lastUpdatedAt: '2026-08-04T00:00:00.000Z',
     },
     ...overrides,
@@ -681,7 +680,7 @@ describe('R3-c2 T7 AllocationPlanSnapshot shared consumer wiring', () => {
       {
         name: 'Arm A: universe.addRoom sentinel',
         state: appState(null, 'absent', {
-          universe: { ...baseUniverse, addRoom: 98_765_431 },
+          universe: { ...baseUniverse },
         }),
         expected: BASE_UNAVAILABLE_YEN_INVENTORY,
       },
@@ -689,7 +688,6 @@ describe('R3-c2 T7 AllocationPlanSnapshot shared consumer wiring', () => {
         name: 'Arm B: constant-sensitive legacy fixture',
         state: appState(null, 'absent', {
           cash: 87_654_319,
-          addRoom: 76_543_219,
         }),
         expected: BASE_UNAVAILABLE_YEN_INVENTORY,
       },
@@ -702,10 +700,11 @@ describe('R3-c2 T7 AllocationPlanSnapshot shared consumer wiring', () => {
         name: 'Arm D: nonzero legacy coreBudget fixture',
         state: appState(null, 'absent', {
           cashAssumptions: {
-            cashDeposits: 65_432_197,
-            standbyFunds: 54_321_097,
-            manualOverrideEnabled: true,
-            manualUpdatedAt: '2026-08-04T00:00:00.000Z',
+            source: 'MANUAL',
+            grossCash: 119_753_294,
+            safetyReserve: 0,
+            pendingOrderCash: null,
+            updatedAt: '2026-08-04T00:00:00.000Z',
           },
         }),
         expected: BASE_UNAVAILABLE_YEN_INVENTORY,

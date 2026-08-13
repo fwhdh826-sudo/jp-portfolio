@@ -63,4 +63,12 @@ export const SAFE_MODE_STALE_HOURS = 96
 // as stale (P4.5-A008). Display-only warning — the manual value itself is
 // NOT discarded or reverted to the default; this only surfaces "please
 // re-check your funding assumption" in the UI.
+// CASH-AUTH-1: this is now the authoritative manual cash TTL. `age <= 168h`
+// stays fresh (exactly 168h is still fresh); `age > 168h` is stale and forces
+// executable deployable cash to 0 through deriveCashModel's fail-closed path.
 export const CASH_ASSUMPTIONS_STALE_HOURS = 24 * 7
+
+// CASH-AUTH-1: presentation-only "approaching expiry" boundary. Between 144h
+// and the 168h TTL the authority is still fresh and executable — the UI only
+// prompts the user to re-confirm before it expires.
+export const CASH_ASSUMPTIONS_APPROACHING_EXPIRY_HOURS = 144

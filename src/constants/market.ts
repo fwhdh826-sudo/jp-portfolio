@@ -56,7 +56,6 @@ export const INST_WEIGHTS = {
 // よう0とし、実際の運用判断はT9で自身の現金・待機資金を入力する前提とする。
 export const INITIAL_CASH = 0          // 現金・預貯金
 export const INITIAL_CASH_RESERVE = 0  // 待機・追加資金
-export const INITIAL_ADD_ROOM = 0      // 追加余力枠（現時点なし）
 
 /** 日本株個別の上限（運用方針） */
 export const JP_STOCK_MAX_VALUE = 8_000_000

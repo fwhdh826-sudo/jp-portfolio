@@ -133,7 +133,6 @@ function makeInput(overrides: Partial<ZeroBaseInput> = {}): ZeroBaseInput {
     universe: null,
     cash: 500_000,
     cashReserve: 9_000_000,
-    addRoom: 0,
     ...overrides,
   }
 }

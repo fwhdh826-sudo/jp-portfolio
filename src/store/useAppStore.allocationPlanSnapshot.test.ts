@@ -481,16 +481,18 @@ describe('AllocationPlanSnapshot store authority', () => {
         observations.push(state.allocationPlan?.snapshotId ?? null)
       })
       const rejected = await created.store.getState().setCashAssumptions({
-        cashDeposits: 3_000_000,
-        standbyFunds: 500_000,
+        grossCash: 3_500_000,
+        safetyReserve: 0,
+        pendingOrderCash: null,
       })
       expect(rejected).toMatchObject({ ok: false, code: 'LOCAL_OPERATION_BUSY' })
       expect(observations).toEqual([])
       expect(created.controls.releasePortfolioOperation(ticket!)).toBe(true)
 
       const accepted = await created.store.getState().setCashAssumptions({
-        cashDeposits: 4_000_000,
-        standbyFunds: 500_000,
+        grossCash: 4_500_000,
+        safetyReserve: 0,
+        pendingOrderCash: null,
       })
       expect(accepted).toMatchObject({ ok: true, code: 'SUCCESS' })
       const acceptedId = created.store.getState().allocationPlan?.snapshotId ?? null
