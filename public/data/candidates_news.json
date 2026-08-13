@@ -1,19 +1,19 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-08-13T14:16:51.999516+09:00",
-  "sourceUpdatedAt": "2026-08-13T04:45:30+00:00",
+  "updatedAt": "2026-08-13T21:06:12.766217+09:00",
+  "sourceUpdatedAt": "2026-08-13T11:52:42+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": -0.33,
+      "avgSentiment": 0.0,
       "negativeCount": 1,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 2,
+      "itemCount": 2,
       "isStale": false,
       "topNegativeTitle": "Japan’s Government Is Said to Support Faster BOJ Rate Hike",
-      "topPositiveTitle": "Japan’s Government Is Said to Support Faster BOJ Rate Hike",
+      "topPositiveTitle": "Yen Remains on 160 Watch Despite Takaichi’s Support for BOJ Hike",
       "items": [
         {
           "title": "Japan’s Government Is Said to Support Faster BOJ Rate Hike",
@@ -27,44 +27,45 @@
             "market",
             "rates"
           ]
-        }
-      ]
-    },
-    "jp_semiconductor": {
-      "avgSentiment": 1.0,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
-      "isStale": false,
-      "topNegativeTitle": "Korean Stocks Rise as Chip Rally Regains Steam",
-      "topPositiveTitle": "Korean Stocks Rise as Chip Rally Regains Steam",
-      "items": [
+        },
         {
-          "title": "Korean Stocks Rise as Chip Rally Regains Steam",
+          "title": "Yen Remains on 160 Watch Despite Takaichi’s Support for BOJ Hike",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-08-13T03:38:27+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-13/korean-stocks-rise-as-chip-rally-regains-steam-video",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-13T09:29:56+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-13/yen-remains-on-160-watch-despite-takaichi-s-support-for-boj-hike",
           "tags": [
-            "jp_semiconductor",
-            "market"
+            "fx",
+            "jp_broad",
+            "market",
+            "rates"
           ]
         }
       ]
     },
+    "jp_semiconductor": {
+      "avgSentiment": 0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
+      "isStale": false,
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
+    },
     "us_broad": {
-      "avgSentiment": 0.063,
+      "avgSentiment": 0.21,
       "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 4,
+      "positiveCount": 2,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 4,
       "isStale": false,
       "topNegativeTitle": "Why the Fed Is Likely to Hold Rates: TD Strategist",
-      "topPositiveTitle": "Stocks and Bonds Rise as Fed Rate-Hike Bets Ease: Markets Wrap",
+      "topPositiveTitle": "Gold Wavers Near $4,400 as Tame Inflation Eases Rate-Hike Bets",
       "items": [
         {
           "title": "Why the Fed Is Likely to Hold Rates: TD Strategist",
@@ -80,22 +81,37 @@
           ]
         },
         {
-          "title": "US CPI Report July 2026: Key Takeaways on Inflation, Consumer Price Index",
-          "source": "Bloomberg Economics",
+          "title": "Kaplan Says Fed Right Not to Raise Rates in July",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-12T13:21:47+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-12/us-cpi-report-july-2026-key-takeaways-on-inflation-consumer-price-index",
+          "publishedAt": "2026-08-13T11:46:23+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-13/kaplan-says-fed-right-not-to-raise-rates-in-july-video",
           "tags": [
             "market",
+            "rates",
             "us_broad"
           ]
         },
         {
-          "title": "Gold Holds Near $4,400 as Tame US Inflation Eases Rate-Hike Bets",
+          "title": "Stocks Trade Near Record Before Producer Prices: Markets Wrap",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
+          "sentiment": "positive",
+          "sentimentScore": 0.5,
+          "publishedAt": "2026-08-12T22:08:18+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-12/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Gold Wavers Near $4,400 as Tame Inflation Eases Rate-Hike Bets",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
           "publishedAt": "2026-08-12T23:14:51+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-08-12/gold-steadies-after-tame-us-inflation-data-eases-rate-hike-bets",
           "tags": [
@@ -104,37 +120,49 @@
             "rates",
             "us_broad"
           ]
-        },
-        {
-          "title": "US Sells 10-Year Debt at Highest Yields Since Financial Crisis",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-12T12:58:03+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-12/bond-traders-keep-cointoss-wager-on-september-fed-hike-post-cpi",
-          "tags": [
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "US Core Inflation Comes in Subdued, Easing Pressure on Fed",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-12T12:31:43+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-12/us-core-inflation-was-subdued-in-july-easing-pressure-on-fed",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
         }
       ]
     },
     "us_growth": {
+      "avgSentiment": 0.0,
+      "negativeCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 2,
+      "isStale": false,
+      "topNegativeTitle": "US Tech Earnings Shock Would Ripple Through UK, BOE Says",
+      "topPositiveTitle": "AI Boom and Energy Shift Drive Strong Demand for Freight Firms",
+      "items": [
+        {
+          "title": "US Tech Earnings Shock Would Ripple Through UK, BOE Says",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-13T11:20:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-13/us-tech-earnings-shock-would-ripple-through-uk-boe-says",
+          "tags": [
+            "market",
+            "rates",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "AI Boom and Energy Shift Drive Strong Demand for Freight Firms",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-13T08:46:44+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-13/-very-very-strong-demand-fuels-global-trade-amid-supply-shocks",
+          "tags": [
+            "commodity",
+            "market",
+            "us_growth"
+          ]
+        }
+      ]
+    },
+    "global_broad": {
       "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
@@ -146,59 +174,17 @@
       "topPositiveTitle": null,
       "items": []
     },
-    "global_broad": {
-      "avgSentiment": 0.71,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
-      "isStale": false,
-      "topNegativeTitle": "Stocks and Bonds Rise as Fed Rate-Hike Bets Ease: Markets Wrap",
-      "topPositiveTitle": "Stocks and Bonds Rise as Fed Rate-Hike Bets Ease: Markets Wrap",
-      "items": [
-        {
-          "title": "Stocks and Bonds Rise as Fed Rate-Hike Bets Ease: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.71,
-          "publishedAt": "2026-08-12T22:08:18+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-12/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "global_broad",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        }
-      ]
-    },
     "gold": {
-      "avgSentiment": 0.335,
+      "avgSentiment": 0.67,
       "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 1,
+      "positiveCount": 2,
+      "neutralCount": 0,
       "sourceCount": 2,
       "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Gold Holds Near $4,400 as Tame US Inflation Eases Rate-Hike Bets",
+      "topNegativeTitle": "Bank of Korea Makes First Gold-Linked Investment in 13 Years",
       "topPositiveTitle": "Bank of Korea Makes First Gold-Linked Investment in 13 Years",
       "items": [
-        {
-          "title": "Gold Holds Near $4,400 as Tame US Inflation Eases Rate-Hike Bets",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-12T23:14:51+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-12/gold-steadies-after-tame-us-inflation-data-eases-rate-hike-bets",
-          "tags": [
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
         {
           "title": "Bank of Korea Makes First Gold-Linked Investment in 13 Years",
           "source": "Bloomberg Economics",
@@ -211,20 +197,48 @@
             "gold",
             "market"
           ]
+        },
+        {
+          "title": "Gold Wavers Near $4,400 as Tame Inflation Eases Rate-Hike Bets",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-12T23:14:51+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-12/gold-steadies-after-tame-us-inflation-data-eases-rate-hike-bets",
+          "tags": [
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
         }
       ]
     },
     "reit": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Thai Hotel Giant Minor International Delays $1 Billion REIT Plan",
+      "topPositiveTitle": "Thai Hotel Giant Minor International Delays $1 Billion REIT Plan",
+      "items": [
+        {
+          "title": "Thai Hotel Giant Minor International Delays $1 Billion REIT Plan",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-13T10:17:05+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-13/thai-hotel-giant-minor-international-delays-1-billion-reit-plan",
+          "tags": [
+            "market",
+            "reit",
+            "trust"
+          ]
+        }
+      ]
     },
     "dividend": {
       "avgSentiment": 0,
@@ -239,54 +253,52 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.168,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 3,
+      "avgSentiment": 0.202,
+      "negativeCount": 1,
+      "positiveCount": 2,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Why Leadership Turmoil at Tata Sons Is Deepening",
+      "topNegativeTitle": "US Set to Pay Most for 30-Year Debt in Quarter of a Century",
       "topPositiveTitle": "India’s RBI Turns Upbeat as Worst of Iran War Shock Recedes",
       "items": [
         {
-          "title": "Why Leadership Turmoil at Tata Sons Is Deepening",
+          "title": "US Set to Pay Most for 30-Year Debt in Quarter of a Century",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-13T04:28:01+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-13/why-leadership-turmoil-at-tata-sons-is-deepening-video",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-13T08:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-13/us-braces-for-30-year-bond-auction-at-highest-yield-since-2001",
           "tags": [
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "China’s Coal-to-Chemicals Push Pays Off With Record Profits",
-          "source": "Bloomberg Markets",
+          "title": "UK Economy Shrugs Off Iran War Shock for Now",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-13T01:31:23+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-13/china-s-coal-to-chemicals-push-pays-off-with-record-profits",
+          "publishedAt": "2026-08-13T11:00:01+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-08-13/uk-economy-shrugs-off-iran-war-shock-for-now",
           "tags": [
-            "commodity",
             "geopolitical",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "US Sells 10-Year Debt at Highest Yields Since Financial Crisis",
-          "source": "Bloomberg Markets",
+          "title": "UK Economy Grows 0.4% in Second Quarter Despite Iran War Disruptions",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-12T12:58:03+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-12/bond-traders-keep-cointoss-wager-on-september-fed-hike-post-cpi",
+          "publishedAt": "2026-08-13T06:05:26+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-13/uk-economy-weathers-early-months-of-iran-war-with-0-4-growth",
           "tags": [
+            "geopolitical",
             "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
+            "market"
           ]
         },
         {
@@ -301,31 +313,72 @@
             "macro_risk",
             "market"
           ]
+        },
+        {
+          "title": "Latest Oil Market News and Analysis for Aug. 13",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-12T22:02:05+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-12/latest-oil-market-news-and-analysis-for-aug-13",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.165,
       "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Africa’s Top Insurer Returns to Zimbabwe Market After Six Years",
+      "topPositiveTitle": "Yen Remains on 160 Watch Despite Takaichi’s Support for BOJ Hike",
+      "items": [
+        {
+          "title": "Africa’s Top Insurer Returns to Zimbabwe Market After Six Years",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-13T10:43:40+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-13/africa-s-top-insurer-returns-to-zimbabwe-market-after-six-years",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        },
+        {
+          "title": "Yen Remains on 160 Watch Despite Takaichi’s Support for BOJ Hike",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-13T09:29:56+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-13/yen-remains-on-160-watch-despite-takaichi-s-support-for-boj-hike",
+          "tags": [
+            "fx",
+            "jp_broad",
+            "market",
+            "rates"
+          ]
+        }
+      ]
     },
     "rates": {
-      "avgSentiment": 0.007,
-      "negativeCount": 2,
-      "positiveCount": 1,
-      "neutralCount": 4,
+      "avgSentiment": 0.057,
+      "negativeCount": 3,
+      "positiveCount": 3,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 7,
+      "itemCount": 9,
       "isStale": false,
       "topNegativeTitle": "Why the Fed Is Likely to Hold Rates: TD Strategist",
-      "topPositiveTitle": "Stocks and Bonds Rise as Fed Rate-Hike Bets Ease: Markets Wrap",
+      "topPositiveTitle": "Gold Wavers Near $4,400 as Tame Inflation Eases Rate-Hike Bets",
       "items": [
         {
           "title": "Why the Fed Is Likely to Hold Rates: TD Strategist",
@@ -338,6 +391,19 @@
             "market",
             "rates",
             "us_broad"
+          ]
+        },
+        {
+          "title": "US Tech Earnings Shock Would Ripple Through UK, BOE Says",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-13T11:20:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-13/us-tech-earnings-shock-would-ripple-through-uk-boe-says",
+          "tags": [
+            "market",
+            "rates",
+            "us_growth"
           ]
         },
         {
@@ -354,162 +420,160 @@
           ]
         },
         {
-          "title": "Gold Holds Near $4,400 as Tame US Inflation Eases Rate-Hike Bets",
+          "title": "Kaplan Says Fed Right Not to Raise Rates in July",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-12T23:14:51+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-12/gold-steadies-after-tame-us-inflation-data-eases-rate-hike-bets",
+          "publishedAt": "2026-08-13T11:46:23+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-13/kaplan-says-fed-right-not-to-raise-rates-in-july-video",
           "tags": [
-            "gold",
             "market",
             "rates",
             "us_broad"
           ]
         },
         {
-          "title": "RBI Proposes New Rules to Standardize Loan Rates for Borrowers",
-          "source": "Bloomberg Economics",
+          "title": "Maersk CEO Clerc on Profit Lift as Global Bottlenecks Drive Up Freight Rates",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-12T14:07:51+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-12/rbi-proposes-new-rules-to-standardize-loan-rates-for-borrowers",
+          "publishedAt": "2026-08-13T11:45:33+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-13/maersk-ceo-clerc-on-profit-lift-amid-global-bottlenecks-video",
           "tags": [
             "market",
             "rates"
-          ]
-        },
-        {
-          "title": "US Sells 10-Year Debt at Highest Yields Since Financial Crisis",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-12T12:58:03+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-12/bond-traders-keep-cointoss-wager-on-september-fed-hike-post-cpi",
-          "tags": [
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
           ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.542,
+      "avgSentiment": 0.375,
       "negativeCount": 0,
-      "positiveCount": 4,
+      "positiveCount": 3,
       "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 5,
+      "sourceCount": 2,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "China’s Coal-to-Chemicals Push Pays Off With Record Profits",
-      "topPositiveTitle": "Origin Shares Rise Most in Six Months as Earnings Beat Estimates",
+      "topNegativeTitle": "Serbia Holds Rates With Election Spending",
+      "topPositiveTitle": "Latest Oil Market News and Analysis for Aug. 13",
       "items": [
         {
-          "title": "China’s Coal-to-Chemicals Push Pays Off With Record Profits",
-          "source": "Bloomberg Markets",
+          "title": "Serbia Holds Rates With Election Spending",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-13T01:31:23+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-13/china-s-coal-to-chemicals-push-pays-off-with-record-profits",
+          "publishedAt": "2026-08-13T10:00:31+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-13/serbia-holds-rates-with-election-spending",
           "tags": [
             "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "AI Boom and Energy Shift Drive Strong Demand for Freight Firms",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-13T08:46:44+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-13/-very-very-strong-demand-fuels-global-trade-amid-supply-shocks",
+          "tags": [
+            "commodity",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Stocks Trade Near Record Before Producer Prices: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.5,
+          "publishedAt": "2026-08-12T22:08:18+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-12/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "market",
+            "rates",
+            "us_broad"
           ]
         },
         {
           "title": "Latest Oil Market News and Analysis for Aug. 13",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.33,
+          "sentimentScore": 0.67,
           "publishedAt": "2026-08-12T22:02:05+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-08-12/latest-oil-market-news-and-analysis-for-aug-13",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "Trump Reverts to Economic Squeeze of Iranian Regime",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-13T04:36:19+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-13/trump-reverts-to-economic-squeeze-of-iranian-regime-video",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "Stocks and Bonds Rise as Fed Rate-Hike Bets Ease: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.71,
-          "publishedAt": "2026-08-12T22:08:18+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-12/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "global_broad",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Origin Shares Rise Most in Six Months as Earnings Beat Estimates",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-08-12T23:19:04+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-12/origin-profit-beats-estimates-on-australian-ev-battery-uptake",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        }
-      ]
-    },
-    "geopolitical": {
-      "avgSentiment": 0.334,
-      "negativeCount": 0,
-      "positiveCount": 4,
-      "neutralCount": 3,
-      "sourceCount": 3,
-      "itemCount": 7,
-      "isStale": false,
-      "topNegativeTitle": "China’s Coal-to-Chemicals Push Pays Off With Record Profits",
-      "topPositiveTitle": "Bank of Korea Makes First Gold-Linked Investment in 13 Years",
-      "items": [
-        {
-          "title": "China’s Coal-to-Chemicals Push Pays Off With Record Profits",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-13T01:31:23+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-13/china-s-coal-to-chemicals-push-pays-off-with-record-profits",
           "tags": [
             "commodity",
             "geopolitical",
             "macro_risk",
             "market"
           ]
-        },
+        }
+      ]
+    },
+    "geopolitical": {
+      "avgSentiment": 0.251,
+      "negativeCount": 0,
+      "positiveCount": 3,
+      "neutralCount": 5,
+      "sourceCount": 3,
+      "itemCount": 8,
+      "isStale": false,
+      "topNegativeTitle": "US Fuel Prices Will Likely Stay High for a While",
+      "topPositiveTitle": "Bank of Korea Makes First Gold-Linked Investment in 13 Years",
+      "items": [
         {
-          "title": "Russian Economy Returns to Growth Despite Ukraine Drone Strikes",
-          "source": "Bloomberg Economics",
+          "title": "US Fuel Prices Will Likely Stay High for a While",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-12T07:15:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-12/russian-economy-poised-to-resume-growth-despite-drone-strikes",
+          "publishedAt": "2026-08-13T11:52:42+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-08-13/us-fuel-prices-will-likely-stay-high-for-a-while",
           "tags": [
             "geopolitical",
             "market"
           ]
+        },
+        {
+          "title": "UK Economy Shrugs Off Iran War Shock for Now",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-13T11:00:01+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-08-13/uk-economy-shrugs-off-iran-war-shock-for-now",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "UK Economy Grows 0.4% in Second Quarter Despite Iran War Disruptions",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-13T06:05:26+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-13/uk-economy-weathers-early-months-of-iran-war-with-0-4-growth",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "高市首相「断じて許容できず」プーチン大統領の北方領土訪問に",
+          "source": "NHK 経済",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-13T10:09:01+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20260813de43689",
+          "tags": [
+            "geopolitical",
+            "market"
+          ],
+          "titleJa": "高市首相「断じて許容できず」プーチン大統領の北方領土訪問に"
         },
         {
           "title": "高市首相 イラン大統領と電話会談“ホルムズ自由で安全 重要”",
@@ -523,32 +587,6 @@
             "market"
           ],
           "titleJa": "高市首相 イラン大統領と電話会談“ホルムズ自由で安全 重要”"
-        },
-        {
-          "title": "高市首相 オマーン国王と電話会談“国際社会とも協議を”",
-          "source": "NHK 経済",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-10T11:26:40+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20260810de43179",
-          "tags": [
-            "geopolitical",
-            "market"
-          ],
-          "titleJa": "高市首相 オマーン国王と電話会談“国際社会とも協議を”"
-        },
-        {
-          "title": "Bank of Korea Makes First Gold-Linked Investment in 13 Years",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-13T04:39:13+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-13/bank-of-korea-makes-first-gold-linked-investment-in-13-years",
-          "tags": [
-            "geopolitical",
-            "gold",
-            "market"
-          ]
         }
       ]
     }
