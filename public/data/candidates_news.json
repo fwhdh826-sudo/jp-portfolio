@@ -1,35 +1,20 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-08-14T09:06:33.973285+09:00",
-  "sourceUpdatedAt": "2026-08-13T23:24:16+00:00",
+  "updatedAt": "2026-08-14T14:13:31.251531+09:00",
+  "sourceUpdatedAt": "2026-08-14T05:01:24+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": 0.33,
+      "avgSentiment": 0,
       "negativeCount": 0,
-      "positiveCount": 1,
+      "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Yen Edges Toward 160 Despite Takaichi’s Support for BOJ Hike",
-      "topPositiveTitle": "Yen Edges Toward 160 Despite Takaichi’s Support for BOJ Hike",
-      "items": [
-        {
-          "title": "Yen Edges Toward 160 Despite Takaichi’s Support for BOJ Hike",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-13T09:29:56+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-13/yen-remains-on-160-watch-despite-takaichi-s-support-for-boj-hike",
-          "tags": [
-            "fx",
-            "jp_broad",
-            "market",
-            "rates"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "jp_semiconductor": {
       "avgSentiment": 0,
@@ -44,23 +29,23 @@
       "items": []
     },
     "us_broad": {
-      "avgSentiment": -0.125,
+      "avgSentiment": 0.057,
       "negativeCount": 3,
       "positiveCount": 2,
-      "neutralCount": 3,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 8,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Gold Declines as Sliding Inflation Reinforces Fed Hold Bets",
-      "topPositiveTitle": "Asian Stocks Poised to Gain, Crude Holds Decline: Markets Wrap",
+      "topNegativeTitle": "Gold Retreats Toward $4,300 as Traders Weigh Fed Rate-Hike Path",
+      "topPositiveTitle": "EM Assets Buoyed by Easing US Rate Worries, Gains in AI Leaders",
       "items": [
         {
-          "title": "Gold Declines as Sliding Inflation Reinforces Fed Hold Bets",
+          "title": "Gold Retreats Toward $4,300 as Traders Weigh Fed Rate-Hike Path",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-08-12T23:14:51+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-12/gold-steadies-after-tame-us-inflation-data-eases-rate-hike-bets",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-08-13T23:24:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-13/gold-steadies-as-traders-weigh-fed-rate-path-and-mideast-tension",
           "tags": [
             "gold",
             "market",
@@ -97,42 +82,45 @@
           ]
         },
         {
-          "title": "Gold Steadies as Traders Weigh Fed Rate Path and Mideast Tension",
-          "source": "Bloomberg Markets",
+          "title": "Fed’s Hammack Questions Whether US Inflation Will Keep Slowing",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-13T23:24:16+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-13/gold-steadies-as-traders-weigh-fed-rate-path-and-mideast-tension",
+          "publishedAt": "2026-08-13T13:18:39+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-13/fed-s-hammack-questions-whether-us-inflation-will-keep-slowing",
           "tags": [
-            "gold",
             "market",
+            "rates",
             "us_broad"
           ]
         },
         {
-          "title": "S&P 500 Hits Record as Inflation Cools | Closing Bell",
+          "title": "Global Stocks Rally on Tech as Fed Hike Bets Ease: Markets Wrap",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-13T20:52:48+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-13/s-p-500-hits-record-as-inflation-cools-closing-bell-video",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-13T22:10:41+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-13/asian-stocks-set-for-gains-as-us-inflation-cools-markets-wrap",
           "tags": [
+            "global_broad",
             "market",
-            "us_broad"
+            "rates",
+            "us_broad",
+            "us_growth"
           ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0.447,
       "negativeCount": 1,
-      "positiveCount": 1,
+      "positiveCount": 2,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 2,
+      "sourceCount": 2,
+      "itemCount": 3,
       "isStale": false,
       "topNegativeTitle": "US Tech Earnings Shock Would Ripple Through UK, BOE Says",
-      "topPositiveTitle": "AI Boom and Energy Shift Drive Strong Demand for Freight Firms",
+      "topPositiveTitle": "Malaysia Revises Up Second-Quarter Growth to 6% With Central Bank Upbeat",
       "items": [
         {
           "title": "US Tech Earnings Shock Would Ripple Through UK, BOE Says",
@@ -148,14 +136,30 @@
           ]
         },
         {
-          "title": "AI Boom and Energy Shift Drive Strong Demand for Freight Firms",
+          "title": "Global Stocks Rally on Tech as Fed Hike Bets Ease: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-13T22:10:41+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-13/asian-stocks-set-for-gains-as-us-inflation-cools-markets-wrap",
+          "tags": [
+            "global_broad",
+            "market",
+            "rates",
+            "us_broad",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Malaysia Revises Up Second-Quarter Growth to 6% With Central Bank Upbeat",
           "source": "Bloomberg Economics",
           "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-13T08:46:44+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-13/-very-very-strong-demand-fuels-global-trade-amid-supply-shocks",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-08-14T04:00:11+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-14/malaysia-revises-up-second-quarter-growth-to-6-with-central-bank-upbeat",
           "tags": [
-            "commodity",
+            "geopolitical",
+            "macro_risk",
             "market",
             "us_growth"
           ]
@@ -163,52 +167,67 @@
       ]
     },
     "global_broad": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.335,
       "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "gold": {
-      "avgSentiment": -0.5,
-      "negativeCount": 1,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 1,
       "sourceCount": 1,
       "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Gold Declines as Sliding Inflation Reinforces Fed Hold Bets",
-      "topPositiveTitle": "Gold Steadies as Traders Weigh Fed Rate Path and Mideast Tension",
+      "topNegativeTitle": "OpenAI’s Revenue Run Rate Tops $40B | The Asia Trade 8/14/2026",
+      "topPositiveTitle": "Global Stocks Rally on Tech as Fed Hike Bets Ease: Markets Wrap",
       "items": [
         {
-          "title": "Gold Declines as Sliding Inflation Reinforces Fed Hold Bets",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-08-12T23:14:51+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-12/gold-steadies-after-tame-us-inflation-data-eases-rate-hike-bets",
-          "tags": [
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Gold Steadies as Traders Weigh Fed Rate Path and Mideast Tension",
+          "title": "OpenAI’s Revenue Run Rate Tops $40B | The Asia Trade 8/14/2026",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
+          "publishedAt": "2026-08-14T04:43:26+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-14/the-asia-trade-8-14-2026-video",
+          "tags": [
+            "global_broad",
+            "market"
+          ]
+        },
+        {
+          "title": "Global Stocks Rally on Tech as Fed Hike Bets Ease: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-13T22:10:41+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-13/asian-stocks-set-for-gains-as-us-inflation-cools-markets-wrap",
+          "tags": [
+            "global_broad",
+            "market",
+            "rates",
+            "us_broad",
+            "us_growth"
+          ]
+        }
+      ]
+    },
+    "gold": {
+      "avgSentiment": -0.67,
+      "negativeCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "Gold Retreats Toward $4,300 as Traders Weigh Fed Rate-Hike Path",
+      "topPositiveTitle": "Gold Retreats Toward $4,300 as Traders Weigh Fed Rate-Hike Path",
+      "items": [
+        {
+          "title": "Gold Retreats Toward $4,300 as Traders Weigh Fed Rate-Hike Path",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
           "publishedAt": "2026-08-13T23:24:16+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-08-13/gold-steadies-as-traders-weigh-fed-rate-path-and-mideast-tension",
           "tags": [
             "gold",
             "market",
+            "rates",
             "us_broad"
           ]
         }
@@ -239,15 +258,15 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.083,
+      "avgSentiment": 0.134,
       "negativeCount": 1,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 3,
-      "sourceCount": 2,
-      "itemCount": 4,
+      "sourceCount": 3,
+      "itemCount": 5,
       "isStale": false,
       "topNegativeTitle": "US Wholesale Inflation Cools as War-Driven Energy Shock Fades",
-      "topPositiveTitle": "UK Economy Shrugs Off Iran War Shock for Now",
+      "topPositiveTitle": "Malaysia Revises Up Second-Quarter Growth to 6% With Central Bank Upbeat",
       "items": [
         {
           "title": "US Wholesale Inflation Cools as War-Driven Energy Shock Fades",
@@ -265,25 +284,24 @@
           ]
         },
         {
+          "title": "Easing India Rupee Volatility May Help Attract More Foreign Money",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-14T02:41:45+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-08-14/easing-india-rupee-volatility-may-help-attract-more-foreign-money",
+          "tags": [
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
           "title": "UK Economy Shrugs Off Iran War Shock for Now",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
           "publishedAt": "2026-08-13T11:00:01+00:00",
           "url": "https://www.bloomberg.com/news/newsletters/2026-08-13/uk-economy-shrugs-off-iran-war-shock-for-now",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "UK Economy Grows 0.4% in Second Quarter Despite Iran War Disruptions",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-13T06:05:26+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-13/uk-economy-weathers-early-months-of-iran-war-with-0-4-growth",
           "tags": [
             "geopolitical",
             "macro_risk",
@@ -303,41 +321,54 @@
             "market"
           ],
           "titleJa": "政府 ロシアへの対抗措置を検討 プーチン氏の北方領土訪問受け"
+        },
+        {
+          "title": "Malaysia Revises Up Second-Quarter Growth to 6% With Central Bank Upbeat",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-08-14T04:00:11+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-14/malaysia-revises-up-second-quarter-growth-to-6-with-central-bank-upbeat",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "us_growth"
+          ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": 0.5,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 0,
-      "sourceCount": 2,
+      "positiveCount": 0,
+      "neutralCount": 2,
+      "sourceCount": 1,
       "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Yen Edges Toward 160 Despite Takaichi’s Support for BOJ Hike",
-      "topPositiveTitle": "Cloudy Yen Outlook Raises the Bar for Japan’s Earnings Beats",
+      "topNegativeTitle": "Africa’s Domestic Debt Outshines EM Peers as High-Yield Chase Intensifies",
+      "topPositiveTitle": "Africa’s Domestic Debt Outshines EM Peers as High-Yield Chase Intensifies",
       "items": [
         {
-          "title": "Yen Edges Toward 160 Despite Takaichi’s Support for BOJ Hike",
+          "title": "Africa’s Domestic Debt Outshines EM Peers as High-Yield Chase Intensifies",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-13T09:29:56+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-13/yen-remains-on-160-watch-despite-takaichi-s-support-for-boj-hike",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-14T05:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-14/africa-s-domestic-debt-outshines-em-peers-as-high-yield-chase-intensifies",
           "tags": [
             "fx",
-            "jp_broad",
             "market",
             "rates"
           ]
         },
         {
-          "title": "Cloudy Yen Outlook Raises the Bar for Japan’s Earnings Beats",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-13T22:32:34+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-13/cloudy-yen-outlook-raises-the-bar-for-japan-s-earnings-beats",
+          "title": "ICICI Joins Indian Banks Chasing Dollar Loans, Swelling Demand",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-14T04:45:58+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-14/icici-joins-indian-banks-chasing-dollar-loans-swelling-demand",
           "tags": [
             "fx",
             "market"
@@ -346,23 +377,23 @@
       ]
     },
     "rates": {
-      "avgSentiment": -0.143,
+      "avgSentiment": 0.101,
       "negativeCount": 3,
-      "positiveCount": 2,
-      "neutralCount": 2,
+      "positiveCount": 3,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 7,
+      "itemCount": 10,
       "isStale": false,
-      "topNegativeTitle": "Gold Declines as Sliding Inflation Reinforces Fed Hold Bets",
-      "topPositiveTitle": "Asian Stocks Poised to Gain, Crude Holds Decline: Markets Wrap",
+      "topNegativeTitle": "Gold Retreats Toward $4,300 as Traders Weigh Fed Rate-Hike Path",
+      "topPositiveTitle": "EM Assets Buoyed by Easing US Rate Worries, Gains in AI Leaders",
       "items": [
         {
-          "title": "Gold Declines as Sliding Inflation Reinforces Fed Hold Bets",
+          "title": "Gold Retreats Toward $4,300 as Traders Weigh Fed Rate-Hike Path",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-08-12T23:14:51+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-12/gold-steadies-after-tame-us-inflation-data-eases-rate-hike-bets",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-08-13T23:24:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-13/gold-steadies-as-traders-weigh-fed-rate-path-and-mideast-tension",
           "tags": [
             "gold",
             "market",
@@ -397,27 +428,26 @@
           ]
         },
         {
-          "title": "Fed’s Hammack Questions Whether US Inflation Will Keep Slowing",
-          "source": "Bloomberg Economics",
+          "title": "Africa’s Domestic Debt Outshines EM Peers as High-Yield Chase Intensifies",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-13T13:18:39+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-13/fed-s-hammack-questions-whether-us-inflation-will-keep-slowing",
+          "publishedAt": "2026-08-14T05:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-14/africa-s-domestic-debt-outshines-em-peers-as-high-yield-chase-intensifies",
           "tags": [
+            "fx",
             "market",
-            "rates",
-            "us_broad"
+            "rates"
           ]
         },
         {
-          "title": "Serbia Holds Rates With Election Spending",
-          "source": "Bloomberg Economics",
+          "title": "Why a Costly US Bond Sale Is a Warning to Bessent",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-13T10:00:31+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-13/serbia-holds-rates-with-election-spending",
+          "publishedAt": "2026-08-14T04:02:44+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-14/why-a-costly-us-bond-sale-is-a-warning-to-bessent-video",
           "tags": [
-            "commodity",
             "market",
             "rates"
           ]
@@ -425,15 +455,15 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.0,
+      "avgSentiment": -0.083,
       "negativeCount": 2,
-      "positiveCount": 2,
-      "neutralCount": 2,
+      "positiveCount": 1,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 4,
       "isStale": false,
       "topNegativeTitle": "Latest Oil Market News and Analysis for Aug. 14",
-      "topPositiveTitle": "Asian Stocks Poised to Gain, Crude Holds Decline: Markets Wrap",
+      "topPositiveTitle": "Russian Regions Report New Fuel Crunch As Kyiv Hits Refineries",
       "items": [
         {
           "title": "Latest Oil Market News and Analysis for Aug. 14",
@@ -444,6 +474,7 @@
           "url": "https://www.bloomberg.com/news/articles/2026-08-13/latest-oil-market-news-and-analysis-for-aug-14",
           "tags": [
             "commodity",
+            "geopolitical",
             "market"
           ]
         },
@@ -463,18 +494,6 @@
           ]
         },
         {
-          "title": "UAE, Qatari Firms Debut in Venezuela Through BP-Led Gas Deal",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-13T20:26:54+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-13/uae-qatari-firms-debut-in-venezuela-through-bp-led-gas-deal",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
           "title": "Serbia Holds Rates With Election Spending",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
@@ -488,32 +507,44 @@
           ]
         },
         {
-          "title": "Asian Stocks Poised to Gain, Crude Holds Decline: Markets Wrap",
+          "title": "Russian Regions Report New Fuel Crunch As Kyiv Hits Refineries",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.33,
-          "publishedAt": "2026-08-13T22:10:41+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-13/asian-stocks-set-for-gains-as-us-inflation-cools-markets-wrap",
+          "publishedAt": "2026-08-14T04:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-14/russian-regions-report-new-fuel-crunch-as-kyiv-hits-refineries",
           "tags": [
             "commodity",
-            "market",
-            "rates",
-            "us_broad"
+            "geopolitical",
+            "market"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": -0.055,
-      "negativeCount": 1,
-      "positiveCount": 0,
-      "neutralCount": 5,
-      "sourceCount": 2,
-      "itemCount": 6,
+      "avgSentiment": 0.167,
+      "negativeCount": 2,
+      "positiveCount": 3,
+      "neutralCount": 3,
+      "sourceCount": 3,
+      "itemCount": 8,
       "isStale": false,
-      "topNegativeTitle": "US Wholesale Inflation Cools as War-Driven Energy Shock Fades",
-      "topPositiveTitle": "UK Economy Shrugs Off Iran War Shock for Now",
+      "topNegativeTitle": "Latest Oil Market News and Analysis for Aug. 14",
+      "topPositiveTitle": "Malaysia Revises Up Second-Quarter Growth to 6% With Central Bank Upbeat",
       "items": [
+        {
+          "title": "Latest Oil Market News and Analysis for Aug. 14",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-13T22:04:53+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-13/latest-oil-market-news-and-analysis-for-aug-14",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
+          ]
+        },
         {
           "title": "US Wholesale Inflation Cools as War-Driven Energy Shock Fades",
           "source": "Bloomberg Economics",
@@ -536,19 +567,6 @@
           "sentimentScore": 0.0,
           "publishedAt": "2026-08-13T11:00:01+00:00",
           "url": "https://www.bloomberg.com/news/newsletters/2026-08-13/uk-economy-shrugs-off-iran-war-shock-for-now",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "UK Economy Grows 0.4% in Second Quarter Despite Iran War Disruptions",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-13T06:05:26+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-13/uk-economy-weathers-early-months-of-iran-war-with-0-4-growth",
           "tags": [
             "geopolitical",
             "macro_risk",
@@ -593,7 +611,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 7,
+    "excludedCount": 6,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
