@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-08-14T21:05:13.946514+09:00",
-  "sourceUpdatedAt": "2026-08-14T11:48:56+00:00",
+  "updatedAt": "2026-08-15T08:45:57.813537+09:00",
+  "sourceUpdatedAt": "2026-08-14T23:14:24+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -43,23 +43,61 @@
       ]
     },
     "us_broad": {
-      "avgSentiment": 0.057,
+      "avgSentiment": 0.335,
       "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 1,
+      "positiveCount": 3,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Goldman’s Kaplan Backs ‘Kick-the-Can’ Fed Caution on Rate Hikes",
-      "topPositiveTitle": "Stocks Hold Near Record as Tech Appetite Returns: Markets Wrap",
+      "topNegativeTitle": "Fed’s Goolsbee Wants to See More Evidence of Cooling Inflation",
+      "topPositiveTitle": "US Stocks End Off Record Highs to Mark Third Week of Gains",
       "items": [
         {
-          "title": "Goldman’s Kaplan Backs ‘Kick-the-Can’ Fed Caution on Rate Hikes",
+          "title": "Fed’s Goolsbee Wants to See More Evidence of Cooling Inflation",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-08-13T14:19:41+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-13/goldman-s-kaplan-backs-kick-the-can-fed-caution-on-rate-hikes",
+          "publishedAt": "2026-08-14T16:32:49+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-14/fed-s-goolsbee-wants-to-see-more-evidence-of-cooling-inflation",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Former Boston Fed Pres.: Investment spend a catalyst",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-14T22:11:25+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-14/former-boston-fed-pres-investment-spend-a-catalyst-video",
+          "tags": [
+            "commodity",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Gold Nears $4,400 as Traders Weigh Fed Interest-Rate Path",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-13T23:24:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-13/gold-steadies-as-traders-weigh-fed-rate-path-and-mideast-tension",
+          "tags": [
+            "gold",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Wall Street Week | Rerouting Global Trade, Private Equity Tested, Realizing Cuba’s Potential",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-14T23:14:24+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-14/wall-street-week-rerouting-trade-private-equity-test-video",
           "tags": [
             "market",
             "rates",
@@ -67,44 +105,42 @@
           ]
         },
         {
-          "title": "Boeing Analysts Turn Most Bullish Since 2022 on ‘Momentum Shift’",
+          "title": "Stocks Halt Rally After Signs of Consumer Slowdown | The Close 8/14/2026",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-14T10:30:01+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-14/boeing-analysts-turn-most-bullish-since-2022-on-momentum-shift",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-14T22:23:19+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-14/the-close-8-14-2026-video",
           "tags": [
             "market",
             "us_broad"
-          ]
-        },
-        {
-          "title": "Stocks Hold Near Record as Tech Appetite Returns: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.5,
-          "publishedAt": "2026-08-13T22:10:41+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-13/asian-stocks-set-for-gains-as-us-inflation-cools-markets-wrap",
-          "tags": [
-            "commodity",
-            "market",
-            "us_broad",
-            "us_growth"
           ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.61,
+      "avgSentiment": 0.443,
       "negativeCount": 0,
-      "positiveCount": 3,
-      "neutralCount": 0,
+      "positiveCount": 2,
+      "neutralCount": 1,
       "sourceCount": 2,
       "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Amazon, Michaels Benefit as More Americans Spend on Crafts And Hobbies",
-      "topPositiveTitle": "Malaysia Revises Up Second-Quarter Growth to 6% With Central Bank Upbeat",
+      "topNegativeTitle": "Berkshire Pads Delta, Alphabet Stakes as Abel Taps Cash Pile",
+      "topPositiveTitle": "EM Currencies Cap Best Streak Since 2024, Stocks Rebound on AI",
       "items": [
+        {
+          "title": "Berkshire Pads Delta, Alphabet Stakes as Abel Taps Cash Pile",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-14T20:37:45+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-14/berkshire-boosts-delta-alphabet-stakes-as-abel-taps-cash-pile",
+          "tags": [
+            "market",
+            "us_growth"
+          ]
+        },
         {
           "title": "Amazon, Michaels Benefit as More Americans Spend on Crafts And Hobbies",
           "source": "Bloomberg Economics",
@@ -118,29 +154,13 @@
           ]
         },
         {
-          "title": "Stocks Hold Near Record as Tech Appetite Returns: Markets Wrap",
+          "title": "EM Currencies Cap Best Streak Since 2024, Stocks Rebound on AI",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.5,
-          "publishedAt": "2026-08-13T22:10:41+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-13/asian-stocks-set-for-gains-as-us-inflation-cools-markets-wrap",
-          "tags": [
-            "commodity",
-            "market",
-            "us_broad",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Malaysia Revises Up Second-Quarter Growth to 6% With Central Bank Upbeat",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
           "sentimentScore": 1.0,
-          "publishedAt": "2026-08-14T04:00:11+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-14/malaysia-revises-up-second-quarter-growth-to-6-with-central-bank-upbeat",
+          "publishedAt": "2026-08-14T04:04:27+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-14/em-assets-buoyed-by-easing-us-rate-worries-gains-in-ai-leaders",
           "tags": [
-            "geopolitical",
-            "macro_risk",
             "market",
             "us_growth"
           ]
@@ -160,16 +180,30 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Gold Nears $4,400 as Traders Weigh Fed Interest-Rate Path",
+      "topPositiveTitle": "Gold Nears $4,400 as Traders Weigh Fed Interest-Rate Path",
+      "items": [
+        {
+          "title": "Gold Nears $4,400 as Traders Weigh Fed Interest-Rate Path",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-13T23:24:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-13/gold-steadies-as-traders-weigh-fed-rate-path-and-mideast-tension",
+          "tags": [
+            "gold",
+            "market",
+            "us_broad"
+          ]
+        }
+      ]
     },
     "reit": {
       "avgSentiment": 0,
@@ -196,30 +230,16 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.278,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 4,
-      "sourceCount": 3,
-      "itemCount": 6,
+      "positiveCount": 0,
+      "neutralCount": 2,
+      "sourceCount": 2,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Oil Spills Show Cost of Keeping Middle East Barrels Flowing",
-      "topPositiveTitle": "Malaysia Revises Up Second-Quarter Growth to 6% With Central Bank Upbeat",
+      "topNegativeTitle": "Rupee Swings Fizzle Out as India’s Central Bank Tightens Grip",
+      "topPositiveTitle": "Rupee Swings Fizzle Out as India’s Central Bank Tightens Grip",
       "items": [
-        {
-          "title": "Oil Spills Show Cost of Keeping Middle East Barrels Flowing",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-14T11:20:34+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-08-14/oil-spills-show-cost-of-keeping-middle-east-barrels-flowing",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
         {
           "title": "Rupee Swings Fizzle Out as India’s Central Bank Tightens Grip",
           "source": "Bloomberg Economics",
@@ -227,19 +247,6 @@
           "sentimentScore": 0.0,
           "publishedAt": "2026-08-14T08:08:29+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-08-14/rupee-swings-fizzle-out-as-india-s-central-bank-tightens-grip",
-          "tags": [
-            "fx",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Court Lets Trump Halt Tariff Exemption for Low-Cost Goods",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-13T19:10:35+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-13/us-court-says-trump-can-halt-tariff-exemption-for-low-cost-goods",
           "tags": [
             "fx",
             "macro_risk",
@@ -259,40 +266,39 @@
             "market"
           ],
           "titleJa": "政府 ロシアへの対抗措置を検討 プーチン氏の北方領土訪問受け"
-        },
-        {
-          "title": "Petrochemicals Maker Braskem Beats Estimates Amid Cash Woes",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-14T10:18:57+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-14/petrochemicals-maker-braskem-beats-estimates-amid-cash-woes",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0.134,
       "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 5,
+      "positiveCount": 1,
+      "neutralCount": 4,
       "sourceCount": 2,
       "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Humanoids Market Worth $200BN By 2035: Barclays' Todorova",
-      "topPositiveTitle": "Humanoids Market Worth $200BN By 2035: Barclays' Todorova",
+      "topNegativeTitle": "Bessent Asked to Justify Yen Intervention in Letter from Warren",
+      "topPositiveTitle": "Hedge Funds Halved Short Bets on Yen Since Joint Intervention",
       "items": [
         {
-          "title": "Humanoids Market Worth $200BN By 2035: Barclays' Todorova",
-          "source": "Bloomberg Markets",
+          "title": "Bessent Asked to Justify Yen Intervention in Letter from Warren",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-14T10:22:14+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-14/humanoids-market-worth-200b-by-2035-barclays-todorova-video",
+          "publishedAt": "2026-08-14T13:39:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-14/bessent-asked-to-justify-yen-intervention-in-letter-from-warren",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        },
+        {
+          "title": "India Raises $50 Billion From Diaspora, Ends Swap Facility Early",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-14T12:37:27+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-14/india-raises-50-billion-of-diaspora-dollars-ends-swap-facility",
           "tags": [
             "fx",
             "market"
@@ -324,50 +330,37 @@
           ]
         },
         {
-          "title": "Carry Traders Are Exploiting Intervention to Rebuild Yen Shorts",
+          "title": "Hedge Funds Halved Short Bets on Yen Since Joint Intervention",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-14T00:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-14/carry-traders-are-exploiting-intervention-to-rebuild-yen-shorts",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-14T20:34:41+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-14/hedge-funds-halved-short-bets-on-yen-since-joint-intervention",
           "tags": [
             "fx",
-            "market"
-          ]
-        },
-        {
-          "title": "Court Lets Trump Halt Tariff Exemption for Low-Cost Goods",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-13T19:10:35+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-13/us-court-says-trump-can-halt-tariff-exemption-for-low-cost-goods",
-          "tags": [
-            "fx",
-            "macro_risk",
             "market"
           ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": -0.33,
-      "negativeCount": 1,
-      "positiveCount": 0,
+      "avgSentiment": 0.67,
+      "negativeCount": 0,
+      "positiveCount": 1,
       "neutralCount": 0,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Goldman’s Kaplan Backs ‘Kick-the-Can’ Fed Caution on Rate Hikes",
-      "topPositiveTitle": "Goldman’s Kaplan Backs ‘Kick-the-Can’ Fed Caution on Rate Hikes",
+      "topNegativeTitle": "Wall Street Week | Rerouting Global Trade, Private Equity Tested, Realizing Cuba’s Potential",
+      "topPositiveTitle": "Wall Street Week | Rerouting Global Trade, Private Equity Tested, Realizing Cuba’s Potential",
       "items": [
         {
-          "title": "Goldman’s Kaplan Backs ‘Kick-the-Can’ Fed Caution on Rate Hikes",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-13T14:19:41+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-13/goldman-s-kaplan-backs-kick-the-can-fed-caution-on-rate-hikes",
+          "title": "Wall Street Week | Rerouting Global Trade, Private Equity Tested, Realizing Cuba’s Potential",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-14T23:14:24+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-14/wall-street-week-rerouting-trade-private-equity-test-video",
           "tags": [
             "market",
             "rates",
@@ -377,70 +370,31 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.434,
+      "avgSentiment": 0.5,
       "negativeCount": 0,
-      "positiveCount": 3,
-      "neutralCount": 2,
+      "positiveCount": 1,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Oil Spills Show Cost of Keeping Middle East Barrels Flowing",
-      "topPositiveTitle": "Swiss Growth Surges Far More Than Forecast, Led by Pharma",
+      "topNegativeTitle": "Former Boston Fed Pres.: Investment spend a catalyst",
+      "topPositiveTitle": "Swiss Growth Rises More Than Forecast, Led by Pharma",
       "items": [
         {
-          "title": "Oil Spills Show Cost of Keeping Middle East Barrels Flowing",
+          "title": "Former Boston Fed Pres.: Investment spend a catalyst",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-14T11:20:34+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-08-14/oil-spills-show-cost-of-keeping-middle-east-barrels-flowing",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Prabowo Plans Indonesian Commodity Exchange to Control Prices",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-14T09:16:54+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-14/prabowo-plans-indonesian-commodity-exchange-to-control-prices",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "Stocks Hold Near Record as Tech Appetite Returns: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.5,
-          "publishedAt": "2026-08-13T22:10:41+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-13/asian-stocks-set-for-gains-as-us-inflation-cools-markets-wrap",
+          "publishedAt": "2026-08-14T22:11:25+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-14/former-boston-fed-pres-investment-spend-a-catalyst-video",
           "tags": [
             "commodity",
             "market",
-            "us_broad",
-            "us_growth"
+            "us_broad"
           ]
         },
         {
-          "title": "Indonesia’s 2027 Budget Positions Miners, EV Makers as Winners",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-14T11:33:18+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-14/indonesia-s-2027-budget-positions-miners-ev-makers-as-winners",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "Swiss Growth Surges Far More Than Forecast, Led by Pharma",
+          "title": "Swiss Growth Rises More Than Forecast, Led by Pharma",
           "source": "Bloomberg Economics",
           "sentiment": "positive",
           "sentimentScore": 1.0,
@@ -454,15 +408,15 @@
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.278,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 4,
-      "sourceCount": 3,
-      "itemCount": 6,
+      "positiveCount": 0,
+      "neutralCount": 3,
+      "sourceCount": 2,
+      "itemCount": 3,
       "isStale": false,
       "topNegativeTitle": "Taiwan Predicts First Year of Double-Digit GDP Growth Since 2010",
-      "topPositiveTitle": "Malaysia Revises Up Second-Quarter Growth to 6% With Central Bank Upbeat",
+      "topPositiveTitle": "Taiwan Predicts First Year of Double-Digit GDP Growth Since 2010",
       "items": [
         {
           "title": "Taiwan Predicts First Year of Double-Digit GDP Growth Since 2010",
@@ -474,20 +428,6 @@
           "tags": [
             "geopolitical",
             "jp_semiconductor",
-            "market"
-          ]
-        },
-        {
-          "title": "Oil Spills Show Cost of Keeping Middle East Barrels Flowing",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-14T11:20:34+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-08-14/oil-spills-show-cost-of-keeping-middle-east-barrels-flowing",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
             "market"
           ]
         },
@@ -516,19 +456,6 @@
             "market"
           ],
           "titleJa": "政府 ロシアへの対抗措置を検討 プーチン氏の北方領土訪問受け"
-        },
-        {
-          "title": "Petrochemicals Maker Braskem Beats Estimates Amid Cash Woes",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-14T10:18:57+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-14/petrochemicals-maker-braskem-beats-estimates-amid-cash-woes",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
         }
       ]
     }
