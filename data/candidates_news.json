@@ -1,33 +1,20 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-08-14T07:14:38.185072+09:00",
-  "sourceUpdatedAt": "2026-08-13T21:53:17+00:00",
+  "updatedAt": "2026-08-14T09:06:33.973285+09:00",
+  "sourceUpdatedAt": "2026-08-13T23:24:16+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": 0.0,
-      "negativeCount": 1,
+      "avgSentiment": 0.33,
+      "negativeCount": 0,
       "positiveCount": 1,
       "neutralCount": 0,
-      "sourceCount": 2,
-      "itemCount": 2,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Japan’s Government Is Said to Support Faster BOJ Rate Hike",
+      "topNegativeTitle": "Yen Edges Toward 160 Despite Takaichi’s Support for BOJ Hike",
       "topPositiveTitle": "Yen Edges Toward 160 Despite Takaichi’s Support for BOJ Hike",
       "items": [
-        {
-          "title": "Japan’s Government Is Said to Support Faster BOJ Rate Hike",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-13T04:45:30+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-13/japan-s-government-is-said-to-support-faster-boj-rate-hike",
-          "tags": [
-            "jp_broad",
-            "market",
-            "rates"
-          ]
-        },
         {
           "title": "Yen Edges Toward 160 Despite Takaichi’s Support for BOJ Hike",
           "source": "Bloomberg Markets",
@@ -57,15 +44,15 @@
       "items": []
     },
     "us_broad": {
-      "avgSentiment": -0.332,
-      "negativeCount": 4,
-      "positiveCount": 0,
-      "neutralCount": 2,
+      "avgSentiment": -0.125,
+      "negativeCount": 3,
+      "positiveCount": 2,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 8,
       "isStale": false,
       "topNegativeTitle": "Gold Declines as Sliding Inflation Reinforces Fed Hold Bets",
-      "topPositiveTitle": "S&P 500 Hits Record as Inflation Cools | Closing Bell",
+      "topPositiveTitle": "Asian Stocks Poised to Gain, Crude Holds Decline: Markets Wrap",
       "items": [
         {
           "title": "Gold Declines as Sliding Inflation Reinforces Fed Hold Bets",
@@ -110,15 +97,15 @@
           ]
         },
         {
-          "title": "S&P 500 Hits All-Time High on Inflation Cooldown: Markets Wrap",
+          "title": "Gold Steadies as Traders Weigh Fed Rate Path and Mideast Tension",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-12T22:08:18+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-12/stock-market-today-dow-s-p-live-updates",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-13T23:24:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-13/gold-steadies-as-traders-weigh-fed-rate-path-and-mideast-tension",
           "tags": [
+            "gold",
             "market",
-            "rates",
             "us_broad"
           ]
         },
@@ -137,29 +124,16 @@
       ]
     },
     "us_growth": {
-      "avgSentiment": -0.11,
-      "negativeCount": 2,
+      "avgSentiment": 0.0,
+      "negativeCount": 1,
       "positiveCount": 1,
       "neutralCount": 0,
-      "sourceCount": 2,
-      "itemCount": 3,
+      "sourceCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "‘SaaSpocalypse’ Risk From AI Reaches Beyond Private Equity",
+      "topNegativeTitle": "US Tech Earnings Shock Would Ripple Through UK, BOE Says",
       "topPositiveTitle": "AI Boom and Energy Shift Drive Strong Demand for Freight Firms",
       "items": [
-        {
-          "title": "‘SaaSpocalypse’ Risk From AI Reaches Beyond Private Equity",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-13T20:10:23+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-13/-saaspocalypse-risk-from-ai-reaches-past-private-equity-video",
-          "tags": [
-            "macro_risk",
-            "market",
-            "us_growth"
-          ]
-        },
         {
           "title": "US Tech Earnings Shock Would Ripple Through UK, BOE Says",
           "source": "Bloomberg Economics",
@@ -201,15 +175,15 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": -1.0,
+      "avgSentiment": -0.5,
       "negativeCount": 1,
       "positiveCount": 0,
-      "neutralCount": 0,
+      "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 1,
+      "itemCount": 2,
       "isStale": false,
       "topNegativeTitle": "Gold Declines as Sliding Inflation Reinforces Fed Hold Bets",
-      "topPositiveTitle": "Gold Declines as Sliding Inflation Reinforces Fed Hold Bets",
+      "topPositiveTitle": "Gold Steadies as Traders Weigh Fed Rate Path and Mideast Tension",
       "items": [
         {
           "title": "Gold Declines as Sliding Inflation Reinforces Fed Hold Bets",
@@ -222,6 +196,19 @@
             "gold",
             "market",
             "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Gold Steadies as Traders Weigh Fed Rate Path and Mideast Tension",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-13T23:24:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-13/gold-steadies-as-traders-weigh-fed-rate-path-and-mideast-tension",
+          "tags": [
+            "gold",
+            "market",
             "us_broad"
           ]
         }
@@ -252,29 +239,16 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.132,
-      "negativeCount": 2,
+      "avgSentiment": -0.083,
+      "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 3,
-      "sourceCount": 3,
-      "itemCount": 5,
+      "sourceCount": 2,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "‘SaaSpocalypse’ Risk From AI Reaches Beyond Private Equity",
+      "topNegativeTitle": "US Wholesale Inflation Cools as War-Driven Energy Shock Fades",
       "topPositiveTitle": "UK Economy Shrugs Off Iran War Shock for Now",
       "items": [
-        {
-          "title": "‘SaaSpocalypse’ Risk From AI Reaches Beyond Private Equity",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-13T20:10:23+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-13/-saaspocalypse-risk-from-ai-reaches-past-private-equity-video",
-          "tags": [
-            "macro_risk",
-            "market",
-            "us_growth"
-          ]
-        },
         {
           "title": "US Wholesale Inflation Cools as War-Driven Energy Shock Fades",
           "source": "Bloomberg Economics",
@@ -333,15 +307,15 @@
       ]
     },
     "fx": {
-      "avgSentiment": 0.33,
+      "avgSentiment": 0.5,
       "negativeCount": 0,
-      "positiveCount": 1,
+      "positiveCount": 2,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 2,
+      "itemCount": 2,
       "isStale": false,
       "topNegativeTitle": "Yen Edges Toward 160 Despite Takaichi’s Support for BOJ Hike",
-      "topPositiveTitle": "Yen Edges Toward 160 Despite Takaichi’s Support for BOJ Hike",
+      "topPositiveTitle": "Cloudy Yen Outlook Raises the Bar for Japan’s Earnings Beats",
       "items": [
         {
           "title": "Yen Edges Toward 160 Despite Takaichi’s Support for BOJ Hike",
@@ -356,19 +330,31 @@
             "market",
             "rates"
           ]
+        },
+        {
+          "title": "Cloudy Yen Outlook Raises the Bar for Japan’s Earnings Beats",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-13T22:32:34+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-13/cloudy-yen-outlook-raises-the-bar-for-japan-s-earnings-beats",
+          "tags": [
+            "fx",
+            "market"
+          ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": -0.221,
-      "negativeCount": 5,
-      "positiveCount": 1,
-      "neutralCount": 3,
+      "avgSentiment": -0.143,
+      "negativeCount": 3,
+      "positiveCount": 2,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 9,
+      "itemCount": 7,
       "isStale": false,
       "topNegativeTitle": "Gold Declines as Sliding Inflation Reinforces Fed Hold Bets",
-      "topPositiveTitle": "Yen Edges Toward 160 Despite Takaichi’s Support for BOJ Hike",
+      "topPositiveTitle": "Asian Stocks Poised to Gain, Crude Holds Decline: Markets Wrap",
       "items": [
         {
           "title": "Gold Declines as Sliding Inflation Reinforces Fed Hold Bets",
@@ -411,44 +397,56 @@
           ]
         },
         {
-          "title": "Japan’s Government Is Said to Support Faster BOJ Rate Hike",
+          "title": "Fed’s Hammack Questions Whether US Inflation Will Keep Slowing",
           "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-13T04:45:30+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-13/japan-s-government-is-said-to-support-faster-boj-rate-hike",
-          "tags": [
-            "jp_broad",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "S&P 500 Hits All-Time High on Inflation Cooldown: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-12T22:08:18+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-12/stock-market-today-dow-s-p-live-updates",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-13T13:18:39+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-13/fed-s-hammack-questions-whether-us-inflation-will-keep-slowing",
           "tags": [
             "market",
             "rates",
             "us_broad"
           ]
+        },
+        {
+          "title": "Serbia Holds Rates With Election Spending",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-13T10:00:31+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-13/serbia-holds-rates-with-election-spending",
+          "tags": [
+            "commodity",
+            "market",
+            "rates"
+          ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.134,
-      "negativeCount": 1,
+      "avgSentiment": 0.0,
+      "negativeCount": 2,
       "positiveCount": 2,
       "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "US Wholesale Inflation Cools as War-Driven Energy Shock Fades",
-      "topPositiveTitle": "Diversified Said to Near Deal for Elliott-Backed Birch",
+      "topNegativeTitle": "Latest Oil Market News and Analysis for Aug. 14",
+      "topPositiveTitle": "Asian Stocks Poised to Gain, Crude Holds Decline: Markets Wrap",
       "items": [
+        {
+          "title": "Latest Oil Market News and Analysis for Aug. 14",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-13T22:04:53+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-13/latest-oil-market-news-and-analysis-for-aug-14",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
         {
           "title": "US Wholesale Inflation Cools as War-Driven Energy Shock Fades",
           "source": "Bloomberg Economics",
@@ -490,28 +488,17 @@
           ]
         },
         {
-          "title": "AI Boom and Energy Shift Drive Strong Demand for Freight Firms",
-          "source": "Bloomberg Economics",
+          "title": "Asian Stocks Poised to Gain, Crude Holds Decline: Markets Wrap",
+          "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.33,
-          "publishedAt": "2026-08-13T08:46:44+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-13/-very-very-strong-demand-fuels-global-trade-amid-supply-shocks",
+          "publishedAt": "2026-08-13T22:10:41+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-13/asian-stocks-set-for-gains-as-us-inflation-cools-markets-wrap",
           "tags": [
             "commodity",
             "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Diversified Said to Near Deal for Elliott-Backed Birch",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-13T19:55:12+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-13/diversified-said-to-near-deal-for-elliott-backed-birch",
-          "tags": [
-            "commodity",
-            "market"
+            "rates",
+            "us_broad"
           ]
         }
       ]
@@ -606,7 +593,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 6,
+    "excludedCount": 7,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
