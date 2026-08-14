@@ -762,3 +762,30 @@ export type {
   WarningReason as AllocationWarningReason,
   LimitingFactor as AllocationLimitingFactor,
 } from './allocationPlan'
+export type {
+  SynthesisAction,
+  CandidateSynthesisAssetClass,
+  CandidateSynthesisRelationship,
+  CandidateSynthesisNamespace,
+  CandidateSynthesisFreshness,
+  SynthesisReasonCode,
+  SynthesisDatasetReason,
+  CandidateDecisionSynthesisProvenance,
+  CandidateDecisionSynthesisEntry,
+  CandidateDecisionSynthesisSnapshot,
+  CandidateSynthesisClassNeed,
+  CandidateSynthesisCanonicalAllocation,
+  CandidateDecisionSynthesisCandidateInput,
+  CandidateDecisionSynthesisInput,
+  CandidateDecisionSynthesisInvariantId,
+  CandidateDecisionSynthesisInvariantResult,
+  CandidateDecisionSynthesisInvariantContext,
+} from './candidateDecisionSynthesis'
+export {
+  CANDIDATE_DECISION_SYNTHESIS_SCHEMA_VERSION,
+  CANDIDATE_DECISION_SYNTHESIS_AUTHORITY_VERSION,
+  CANDIDATE_DECISION_SYNTHESIS_DECISION_LIMIT,
+  CANDIDATE_DECISION_SYNTHESIS_WATCH_LIMIT,
+  SYNTHESIS_REASON_CODES,
+  SYNTHESIS_DATASET_REASONS,
+} from './candidateDecisionSynthesis'

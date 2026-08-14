@@ -4,6 +4,16 @@ export type { ConstraintContext, ConstraintResult } from './applyCandidateConstr
 export { buildCandidateUniverse } from './buildCandidateUniverse'
 export { applyCandidateConstraints } from './applyCandidateConstraints'
 export { scoreCandidates } from './scoreCandidates'
+export {
+  JP_DOMESTIC_LOT_SIZE_SHARES,
+  assertCandidateDecisionSynthesisInvariants,
+  buildCandidateDecisionSynthesis,
+  buildHoldingAllocationCandidates,
+  candidateSynthesisActionRank,
+  compareCandidateClassNeed,
+  normalizeCandidateExecutionReferencePrice,
+} from './candidateDecisionSynthesis'
+export type { HoldingAllocationCandidateAdapterResult } from './candidateDecisionSynthesis'
 
 // P5-B002b-1: 新規個別株候補（candidates_stocks.json由来。officialDecision未接続）
 export type {
