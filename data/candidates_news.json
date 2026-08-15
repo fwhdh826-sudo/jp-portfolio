@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-08-15T08:45:57.813537+09:00",
-  "sourceUpdatedAt": "2026-08-14T23:14:24+00:00",
+  "updatedAt": "2026-08-15T20:42:11.211809+09:00",
+  "sourceUpdatedAt": "2026-08-15T10:45:01+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -17,42 +17,43 @@
       "items": []
     },
     "jp_semiconductor": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Taiwan Predicts First Year of Double-Digit GDP Growth Since 2010",
-      "topPositiveTitle": "Taiwan Predicts First Year of Double-Digit GDP Growth Since 2010",
-      "items": [
-        {
-          "title": "Taiwan Predicts First Year of Double-Digit GDP Growth Since 2010",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-14T08:18:46+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-14/taiwan-predicts-first-year-of-double-digit-growth-since-2010",
-          "tags": [
-            "geopolitical",
-            "jp_semiconductor",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "us_broad": {
-      "avgSentiment": 0.335,
-      "negativeCount": 1,
-      "positiveCount": 3,
-      "neutralCount": 2,
+      "avgSentiment": 0.136,
+      "negativeCount": 2,
+      "positiveCount": 2,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Fed’s Goolsbee Wants to See More Evidence of Cooling Inflation",
-      "topPositiveTitle": "US Stocks End Off Record Highs to Mark Third Week of Gains",
+      "topNegativeTitle": "World Economy Latest: US CPI Softens, UK Economy Expands",
+      "topPositiveTitle": "Wall Street Week | Rerouting Global Trade, Private Equity Tested, Realizing Cuba’s Potential",
       "items": [
+        {
+          "title": "World Economy Latest: US CPI Softens, UK Economy Expands",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-15T09:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-15/world-economy-latest-us-cpi-softens-uk-economy-expands",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        },
         {
           "title": "Fed’s Goolsbee Wants to See More Evidence of Cooling Inflation",
           "source": "Bloomberg Economics",
@@ -74,19 +75,6 @@
           "url": "https://www.bloomberg.com/news/videos/2026-08-14/former-boston-fed-pres-investment-spend-a-catalyst-video",
           "tags": [
             "commodity",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Gold Nears $4,400 as Traders Weigh Fed Interest-Rate Path",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-13T23:24:16+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-13/gold-steadies-as-traders-weigh-fed-rate-path-and-mideast-tension",
-          "tags": [
-            "gold",
             "market",
             "us_broad"
           ]
@@ -119,28 +107,16 @@
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.443,
+      "avgSentiment": 0.33,
       "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 1,
-      "sourceCount": 2,
-      "itemCount": 3,
+      "positiveCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Berkshire Pads Delta, Alphabet Stakes as Abel Taps Cash Pile",
-      "topPositiveTitle": "EM Currencies Cap Best Streak Since 2024, Stocks Rebound on AI",
+      "topNegativeTitle": "Amazon, Michaels Benefit as More Americans Spend on Crafts And Hobbies",
+      "topPositiveTitle": "Amazon, Michaels Benefit as More Americans Spend on Crafts And Hobbies",
       "items": [
-        {
-          "title": "Berkshire Pads Delta, Alphabet Stakes as Abel Taps Cash Pile",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-14T20:37:45+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-14/berkshire-boosts-delta-alphabet-stakes-as-abel-taps-cash-pile",
-          "tags": [
-            "market",
-            "us_growth"
-          ]
-        },
         {
           "title": "Amazon, Michaels Benefit as More Americans Spend on Crafts And Hobbies",
           "source": "Bloomberg Economics",
@@ -148,18 +124,6 @@
           "sentimentScore": 0.33,
           "publishedAt": "2026-08-14T09:30:19+00:00",
           "url": "https://www.bloomberg.com/news/features/2026-08-14/amazon-michaels-benefit-as-more-americans-spend-on-crafts-and-hobbies",
-          "tags": [
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "EM Currencies Cap Best Streak Since 2024, Stocks Rebound on AI",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-08-14T04:04:27+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-14/em-assets-buoyed-by-easing-us-rate-worries-gains-in-ai-leaders",
           "tags": [
             "market",
             "us_growth"
@@ -180,30 +144,16 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Gold Nears $4,400 as Traders Weigh Fed Interest-Rate Path",
-      "topPositiveTitle": "Gold Nears $4,400 as Traders Weigh Fed Interest-Rate Path",
-      "items": [
-        {
-          "title": "Gold Nears $4,400 as Traders Weigh Fed Interest-Rate Path",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-13T23:24:16+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-13/gold-steadies-as-traders-weigh-fed-rate-path-and-mideast-tension",
-          "tags": [
-            "gold",
-            "market",
-            "us_broad"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "reit": {
       "avgSentiment": 0,
@@ -218,40 +168,97 @@
       "items": []
     },
     "dividend": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "macro_risk": {
       "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 2,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Rupee Swings Fizzle Out as India’s Central Bank Tightens Grip",
-      "topPositiveTitle": "Rupee Swings Fizzle Out as India’s Central Bank Tightens Grip",
+      "topNegativeTitle": "Singapore Stocks’ Record Run Gets ‘Goldilocks’ Boost From Growth",
+      "topPositiveTitle": "Singapore Stocks’ Record Run Gets ‘Goldilocks’ Boost From Growth",
       "items": [
         {
-          "title": "Rupee Swings Fizzle Out as India’s Central Bank Tightens Grip",
-          "source": "Bloomberg Economics",
+          "title": "Singapore Stocks’ Record Run Gets ‘Goldilocks’ Boost From Growth",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-14T08:08:29+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-14/rupee-swings-fizzle-out-as-india-s-central-bank-tightens-grip",
+          "publishedAt": "2026-08-15T00:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-15/singapore-stocks-record-run-gets-goldilocks-boost-from-growth",
           "tags": [
-            "fx",
+            "dividend",
+            "market",
+            "rates"
+          ]
+        }
+      ]
+    },
+    "macro_risk": {
+      "avgSentiment": -0.066,
+      "negativeCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 4,
+      "sourceCount": 3,
+      "itemCount": 5,
+      "isStale": false,
+      "topNegativeTitle": "World Economy Latest: US CPI Softens, UK Economy Expands",
+      "topPositiveTitle": "China Protests Japan PM, Defense Minister’s Yasukuni Actions",
+      "items": [
+        {
+          "title": "World Economy Latest: US CPI Softens, UK Economy Expands",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-15T09:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-15/world-economy-latest-us-cpi-softens-uk-economy-expands",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "China Protests Japan PM, Defense Minister’s Yasukuni Actions",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-15T04:01:34+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-15/china-protests-japan-pm-defense-minister-s-yasukuni-actions",
+          "tags": [
+            "geopolitical",
             "macro_risk",
             "market"
           ]
+        },
+        {
+          "title": "公明 竹谷代表「非核三原則堅持し核兵器廃絶へ取り組みを」",
+          "source": "NHK 経済",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-15T04:58:53+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20260815de44260",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ],
+          "titleJa": "公明 竹谷代表「非核三原則堅持し核兵器廃絶へ取り組みを」"
+        },
+        {
+          "title": "高市首相 千鳥ヶ淵戦没者墓苑で献花 「全国戦没者追悼式」前に",
+          "source": "NHK 経済",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-15T02:27:00+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20260815de44236",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ],
+          "titleJa": "高市首相 千鳥ヶ淵戦没者墓苑で献花 「全国戦没者追悼式」前に"
         },
         {
           "title": "政府 ロシアへの対抗措置を検討 プーチン氏の北方領土訪問受け",
@@ -270,15 +277,15 @@
       ]
     },
     "fx": {
-      "avgSentiment": 0.134,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 4,
-      "sourceCount": 2,
-      "itemCount": 5,
+      "positiveCount": 0,
+      "neutralCount": 3,
+      "sourceCount": 1,
+      "itemCount": 3,
       "isStale": false,
       "topNegativeTitle": "Bessent Asked to Justify Yen Intervention in Letter from Warren",
-      "topPositiveTitle": "Hedge Funds Halved Short Bets on Yen Since Joint Intervention",
+      "topPositiveTitle": "Bessent Asked to Justify Yen Intervention in Letter from Warren",
       "items": [
         {
           "title": "Bessent Asked to Justify Yen Intervention in Letter from Warren",
@@ -315,45 +322,33 @@
             "fx",
             "market"
           ]
-        },
-        {
-          "title": "Rupee Swings Fizzle Out as India’s Central Bank Tightens Grip",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-14T08:08:29+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-14/rupee-swings-fizzle-out-as-india-s-central-bank-tightens-grip",
-          "tags": [
-            "fx",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Hedge Funds Halved Short Bets on Yen Since Joint Intervention",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-14T20:34:41+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-14/hedge-funds-halved-short-bets-on-yen-since-joint-intervention",
-          "tags": [
-            "fx",
-            "market"
-          ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": 0.67,
+      "avgSentiment": 0.335,
       "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 0,
+      "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Wall Street Week | Rerouting Global Trade, Private Equity Tested, Realizing Cuba’s Potential",
+      "topNegativeTitle": "Singapore Stocks’ Record Run Gets ‘Goldilocks’ Boost From Growth",
       "topPositiveTitle": "Wall Street Week | Rerouting Global Trade, Private Equity Tested, Realizing Cuba’s Potential",
       "items": [
+        {
+          "title": "Singapore Stocks’ Record Run Gets ‘Goldilocks’ Boost From Growth",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-15T00:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-15/singapore-stocks-record-run-gets-goldilocks-boost-from-growth",
+          "tags": [
+            "dividend",
+            "market",
+            "rates"
+          ]
+        },
         {
           "title": "Wall Street Week | Rerouting Global Trade, Private Equity Tested, Realizing Cuba’s Potential",
           "source": "Bloomberg Markets",
@@ -370,16 +365,31 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.5,
-      "negativeCount": 0,
-      "positiveCount": 1,
+      "avgSentiment": -0.165,
+      "negativeCount": 1,
+      "positiveCount": 0,
       "neutralCount": 1,
       "sourceCount": 2,
       "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Former Boston Fed Pres.: Investment spend a catalyst",
-      "topPositiveTitle": "Swiss Growth Rises More Than Forecast, Led by Pharma",
+      "topNegativeTitle": "World Economy Latest: US CPI Softens, UK Economy Expands",
+      "topPositiveTitle": "Former Boston Fed Pres.: Investment spend a catalyst",
       "items": [
+        {
+          "title": "World Economy Latest: US CPI Softens, UK Economy Expands",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-15T09:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-15/world-economy-latest-us-cpi-softens-uk-economy-expands",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        },
         {
           "title": "Former Boston Fed Pres.: Investment spend a catalyst",
           "source": "Bloomberg Markets",
@@ -392,56 +402,75 @@
             "market",
             "us_broad"
           ]
-        },
-        {
-          "title": "Swiss Growth Rises More Than Forecast, Led by Pharma",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-08-14T07:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-14/swiss-growth-at-highest-in-five-years-unfazed-by-energy-prices",
-          "tags": [
-            "commodity",
-            "market"
-          ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
+      "avgSentiment": -0.066,
+      "negativeCount": 1,
       "positiveCount": 0,
-      "neutralCount": 3,
-      "sourceCount": 2,
-      "itemCount": 3,
+      "neutralCount": 4,
+      "sourceCount": 3,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Taiwan Predicts First Year of Double-Digit GDP Growth Since 2010",
-      "topPositiveTitle": "Taiwan Predicts First Year of Double-Digit GDP Growth Since 2010",
+      "topNegativeTitle": "World Economy Latest: US CPI Softens, UK Economy Expands",
+      "topPositiveTitle": "China Protests Japan PM, Defense Minister’s Yasukuni Actions",
       "items": [
         {
-          "title": "Taiwan Predicts First Year of Double-Digit GDP Growth Since 2010",
+          "title": "World Economy Latest: US CPI Softens, UK Economy Expands",
           "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-15T09:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-15/world-economy-latest-us-cpi-softens-uk-economy-expands",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "China Protests Japan PM, Defense Minister’s Yasukuni Actions",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-14T08:18:46+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-14/taiwan-predicts-first-year-of-double-digit-growth-since-2010",
+          "publishedAt": "2026-08-15T04:01:34+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-15/china-protests-japan-pm-defense-minister-s-yasukuni-actions",
           "tags": [
             "geopolitical",
-            "jp_semiconductor",
+            "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Ukraine Says Black Sea Port Closures May Halve Farm Exports",
-          "source": "Bloomberg Economics",
+          "title": "公明 竹谷代表「非核三原則堅持し核兵器廃絶へ取り組みを」",
+          "source": "NHK 経済",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-14T10:51:27+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-14/ukraine-says-black-sea-port-closures-may-halve-farm-exports",
+          "publishedAt": "2026-08-15T04:58:53+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20260815de44260",
           "tags": [
             "geopolitical",
+            "macro_risk",
             "market"
-          ]
+          ],
+          "titleJa": "公明 竹谷代表「非核三原則堅持し核兵器廃絶へ取り組みを」"
+        },
+        {
+          "title": "高市首相 千鳥ヶ淵戦没者墓苑で献花 「全国戦没者追悼式」前に",
+          "source": "NHK 経済",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-15T02:27:00+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20260815de44236",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ],
+          "titleJa": "高市首相 千鳥ヶ淵戦没者墓苑で献花 「全国戦没者追悼式」前に"
         },
         {
           "title": "政府 ロシアへの対抗措置を検討 プーチン氏の北方領土訪問受け",
@@ -468,7 +497,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 5,
+    "excludedCount": 4,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
