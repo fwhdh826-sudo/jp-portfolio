@@ -32,6 +32,10 @@ import {
   CANDIDATE_PORTFOLIO_FIT_RISKS,
 } from '../../types/candidatePortfolioFit'
 import {
+  allocationClassNeedTier,
+  compareAllocationClassNeed,
+} from '../allocation/executionPriority'
+import {
   compareUtf16CodeUnits,
   sha256Utf8Hex,
   stableSerializeCsvSemanticContent,
@@ -245,27 +249,19 @@ function invalidSnapshot(
   })
 }
 
-function classNeedTier(value: CandidateSynthesisClassNeed): 0 | 1 {
-  return (
-    value.blockedReasons.includes('CLASS_TARGET_MISSING') ||
-    !isNonNegativeInteger(value.targetGap) ||
-    !isNonNegativeInteger(value.targetAmount) ||
-    value.targetAmount <= 0
-  ) ? 1 : 0
-}
+/**
+ * CAND-SYN-1C: class need tier/ordering is the AllocationPlan engine's frozen
+ * authority (DDR-R1 §5.3). Synthesis delegates rather than re-implementing it,
+ * so presentation order and execution order can never drift apart.
+ */
+const classNeedTier = allocationClassNeedTier
 
 /** R1 integer-exact targetGap/targetAmount comparison; higher need sorts first. */
 export function compareCandidateClassNeed(
   left: CandidateSynthesisClassNeed,
   right: CandidateSynthesisClassNeed,
 ): number {
-  const leftTier = classNeedTier(left)
-  const rightTier = classNeedTier(right)
-  if (leftTier !== rightTier) return leftTier - rightTier
-  if (leftTier === 1) return 0
-  const leftCross = BigInt(left.targetGap as number) * BigInt(right.targetAmount as number)
-  const rightCross = BigInt(right.targetGap as number) * BigInt(left.targetAmount as number)
-  return leftCross > rightCross ? -1 : leftCross < rightCross ? 1 : 0
+  return compareAllocationClassNeed(left, right)
 }
 
 export function candidateSynthesisActionRank(action: SynthesisAction): 0 | 1 | 2 {
@@ -529,6 +525,23 @@ export function assertCandidateDecisionSynthesisInvariants(
   if (context.usesCandidatesStocksExecutionPrice && snapshot.provenance.candidatesStocksUpdatedAt === null) {
     violated.push('I-SYN-7')
   }
+  // I-SYN-EXEC-1 (DDR-R1 §7): at most one executable decision, and when one
+  // exists it must be the canonical AllocationPlan winner — same instrument,
+  // same yen, same snapshot. Synthesis may demote the winner to WATCH/BLOCKED
+  // (D7 layer 15 allows demotion only), but it may never promote a different
+  // instrument into the canonical execution slot.
+  const executableEntries = snapshot.decisions
+    .concat(snapshot.watchList)
+    .filter(entry => entry.money.kind === 'EXECUTABLE')
+  if (executableEntries.length > 1) violated.push('I-SYN-EXEC-1')
+  else if (executableEntries.length === 1) {
+    const entry = executableEntries[0]
+    if (
+      context.canonicalExecution.instrumentId === null ||
+      entry.instrumentId !== context.canonicalExecution.instrumentId ||
+      entry.money.executableAmountJpy !== context.canonicalExecution.executableAmountJpy
+    ) violated.push('I-SYN-EXEC-1')
+  }
   return deepFreeze({ ok: violated.length === 0, violated })
 }
 
@@ -550,6 +563,18 @@ export function buildCandidateDecisionSynthesis(
     }
     if (input.allocationPlanCandidateGenerationId !== input.provenance.candidateGenerationId) {
       return invalidSnapshot(input.generatedAt, input.provenance, ['ALLOCATION_CANDIDATE_GENERATION_MISMATCH'])
+    }
+    // The canonical execution authority must be supplied and well-formed; an
+    // absent or malformed one is not silently treated as "no winner".
+    const canonicalExecution = input.canonicalExecution
+    if (
+      !isRecord(canonicalExecution) ||
+      !(canonicalExecution.instrumentId === null ||
+        (typeof canonicalExecution.instrumentId === 'string' && canonicalExecution.instrumentId.length > 0)) ||
+      !isNonNegativeInteger(canonicalExecution.executableAmountJpy) ||
+      (canonicalExecution.instrumentId === null && canonicalExecution.executableAmountJpy !== 0)
+    ) {
+      return invalidSnapshot(input.generatedAt, input.provenance, ['EXECUTION_AUTHORITY_MISMATCH'])
     }
     if (['absent', 'invalid', 'stale'].includes(input.provenance.allocationSnapshotStatus)) {
       return invalidSnapshot(input.generatedAt, input.provenance, ['ALLOCATION_SNAPSHOT_UNAVAILABLE'])
@@ -622,10 +647,16 @@ export function buildCandidateDecisionSynthesis(
       allocationPlanCandidateGenerationId: input.allocationPlanCandidateGenerationId,
       usesCandidatesStocksExecutionPrice: ordered.some(item => item.usesCandidatesStocksExecutionPrice),
       expectedSynthesisId: synthesisId,
+      canonicalExecution,
     })
-    return invariantResult.ok
-      ? deepFreeze(snapshot)
-      : invalidSnapshot(input.generatedAt, input.provenance, ['SYNTHESIS_INPUT_INVALID'])
+    if (invariantResult.ok) return deepFreeze(snapshot)
+    // I-SYN-EXEC-1(c): a synthesis that disagrees with the canonical execution
+    // authority is invalidated whole — never partially adopted.
+    return invalidSnapshot(input.generatedAt, input.provenance, [
+      invariantResult.violated.includes('I-SYN-EXEC-1')
+        ? 'EXECUTION_AUTHORITY_MISMATCH'
+        : 'SYNTHESIS_INPUT_INVALID',
+    ])
   } catch {
     return invalidSnapshot(input?.generatedAt, input?.provenance, ['SYNTHESIS_INPUT_INVALID'])
   }

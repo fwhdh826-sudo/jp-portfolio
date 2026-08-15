@@ -159,15 +159,22 @@ function candidateActionById(
   return officialDecision?.actions.find(a => a.id === `candidate-${trustId}`)
 }
 
+// ── CAND-SYN-1C: L1 legacy候補writerの退役 ──────────────────────────────
+// 本ファイルの元の陽性対照は「legacy trust候補が officialDecision.actions に
+// 金額付きでappendされる」ことを前提にしていた。CAND-SYN-1C（design-audit
+// D2/D14/D16）はその append 自体を撤去し、officialDecision の候補writerを
+// projectSynthesisToOfficialDecision 1本に統合した。したがって runFullAnalysis
+// 単体は候補項目を一切生成しない（synthesis世代が確定した committed path での
+// み投影される = fail closed）。以下は「陽性対照が消えた」のではなく
+// 「legacy writer が停止したこと」を固定する guard に置換したものである。
 describe('runFullAnalysis: 投信候補パイプラインとtrust_master公開停止の分離（P4.5-A013-T5）', () => {
-  it('trust timestamp null + 最新CSV + fresh market → 候補パイプラインが不必要に停止せずBUY_NEW候補が出る', () => {
+  it('CAND-SYN-1C: legacy trust候補は runFullAnalysis から officialDecision へ一切appendされない', () => {
     const state = buildPermissiveState({})
     const result = runFullAnalysis(state)
 
     expect(state.system.dataTimestamps.trust).toBeNull() // 前提: public trust_masterは404
-    const candidate = goldCandidateAction(result.officialDecision)
-    expect(candidate).toBeDefined()
-    expect(candidate?.action).toBe('BUY_NEW')
+    expect(goldCandidateAction(result.officialDecision)).toBeUndefined()
+    expect(result.officialDecision?.actions.filter(a => a.isCandidate) ?? []).toEqual([])
   })
 
   it('trust timestamp null + stale market（DQ抑制） → BUY抑制が維持される（候補は出るがBLOCKED）', () => {
@@ -259,10 +266,10 @@ describe('runFullAnalysis: CASH-AUTH-1 R1 現金権限のTTL/unknown/confirmed-z
     expect(goldCandidateAction(result.officialDecision)).toBeUndefined()
   })
 
-  it('#3 staleはWATCH候補のmaxAmount（検討上限）も抑制する（fresh下でWATCH+正のmaxAmountになる候補が、staleでは0/undefinedになる）', () => {
-    // 注: resolveSizingTierはaction!=='BUY_NEW'なら常にsuggestedAmount=0にするため
-    // （scoreCandidates.ts既存仕様・本R1では変更していない）、WATCHでR1が実際に
-    // 閉じるべき金額フィールドはmaxAmount（検討上限の参考値）である。
+  it('#3 CAND-SYN-1C: WATCH候補のmaxAmount（検討上限）経路は fresh/stale いずれでも消滅した', () => {
+    // R1当時は fresh cash で WATCH + 正の maxAmount が出るのが陽性対照だった。
+    // 1C の writer 停止により、legacy 経路は cash 権限の状態に関わらず
+    // officialDecision へ何も書かない（金額の有無以前に項目が存在しない）。
     const freshState = buildPermissiveState({
       trust: [makeWatchGoldCandidate()],
       cashAssumptions: {
@@ -274,12 +281,7 @@ describe('runFullAnalysis: CASH-AUTH-1 R1 現金権限のTTL/unknown/confirmed-z
       },
     })
     const freshResult = runFullAnalysis(freshState, { nowMs: NOW_MS })
-    const freshCandidate = candidateActionById(freshResult.officialDecision, 'watch_gold_candidate')
-    // 陽性対照: fresh cashのもとではWATCH+正のmaxAmountで現れることを先に確認する
-    expect(freshCandidate).toBeDefined()
-    expect(freshCandidate?.action).toBe('WATCH')
-    expect(freshCandidate?.amount ?? 0).toBe(0) // WATCHはsuggestedAmount/amount自体は元々常に0（既存仕様）
-    expect(freshCandidate?.maxAmount ?? 0).toBeGreaterThan(0)
+    expect(candidateActionById(freshResult.officialDecision, 'watch_gold_candidate')).toBeUndefined()
 
     const staleState = buildPermissiveState({
       trust: [makeWatchGoldCandidate()],
@@ -292,13 +294,7 @@ describe('runFullAnalysis: CASH-AUTH-1 R1 現金権限のTTL/unknown/confirmed-z
       },
     })
     const staleResult = runFullAnalysis(staleState, { nowMs: NOW_MS })
-    const staleCandidate = candidateActionById(staleResult.officialDecision, 'watch_gold_candidate')
-    // stale側: 候補自体が現れないか、現れても金額系フィールドは無い（どちらでも frozen invariant を満たす）
-    if (staleCandidate !== undefined) {
-      expect(staleCandidate.amount ?? 0).toBe(0)
-      expect(staleCandidate.suggestedAmount ?? 0).toBe(0)
-      expect(staleCandidate.maxAmount ?? 0).toBe(0)
-    }
+    expect(candidateActionById(staleResult.officialDecision, 'watch_gold_candidate')).toBeUndefined()
   })
 
   it('#4 unknown（権限未設定 DEFAULT）は新規BUY金額を一切生成しない', () => {
@@ -324,7 +320,7 @@ describe('runFullAnalysis: CASH-AUTH-1 R1 現金権限のTTL/unknown/confirmed-z
     expect(goldCandidateAction(result.officialDecision)).toBeUndefined()
   })
 
-  it('#6 168hちょうどはまだ fresh — 新規BUY金額付き候補が生成される（正の境界）', () => {
+  it('#6 168hちょうどはまだ fresh（境界判定は不変）— ただし legacy候補金額は生成されない', () => {
     const state = buildPermissiveState({
       cashAssumptions: {
         source: 'MANUAL',
@@ -336,13 +332,10 @@ describe('runFullAnalysis: CASH-AUTH-1 R1 現金権限のTTL/unknown/confirmed-z
     })
     expect(selectCashAssumptionsFreshness(state, NOW_MS).state).toBe('known_fresh')
     const result = runFullAnalysis(state, { nowMs: NOW_MS })
-    const candidate = goldCandidateAction(result.officialDecision)
-    expect(candidate).toBeDefined()
-    expect(candidate?.action).toBe('BUY_NEW')
-    expect(candidate?.amount ?? 0).toBeGreaterThan(0)
+    expect(goldCandidateAction(result.officialDecision)).toBeUndefined()
   })
 
-  it('#7 144hちょうど（まもなく失効の警告境界）でも fresh のまま新規BUY金額が生成される', () => {
+  it('#7 144hちょうど（まもなく失効の警告境界）でも境界判定は不変 — legacy候補金額は生成されない', () => {
     const state = buildPermissiveState({
       cashAssumptions: {
         source: 'MANUAL',
@@ -356,19 +349,14 @@ describe('runFullAnalysis: CASH-AUTH-1 R1 現金権限のTTL/unknown/confirmed-z
     expect(freshness.state).toBe('known_fresh')
     expect(freshness.approachingExpiry).toBe(true)
     const result = runFullAnalysis(state, { nowMs: NOW_MS })
-    const candidate = goldCandidateAction(result.officialDecision)
-    expect(candidate).toBeDefined()
-    expect(candidate?.action).toBe('BUY_NEW')
-    expect(candidate?.amount ?? 0).toBeGreaterThan(0)
+    expect(goldCandidateAction(result.officialDecision)).toBeUndefined()
   })
 
-  it('#8 fresh positive control（1時間前更新）は既存のBUY_NEW金額生成挙動を維持する', () => {
+  it('#8 fresh cash でも legacy 経路は BUY_NEW も金額も生成しない（writer停止の全条件guard）', () => {
     const state = buildPermissiveState({})
     const result = runFullAnalysis(state, { nowMs: NOW_MS })
-    const candidate = goldCandidateAction(result.officialDecision)
-    expect(candidate).toBeDefined()
-    expect(candidate?.action).toBe('BUY_NEW')
-    expect(candidate?.amount ?? 0).toBeGreaterThan(0)
+    const candidateActions = result.officialDecision?.actions.filter(a => a.isCandidate) ?? []
+    expect(candidateActions).toEqual([])
   })
 
   it('#10 officialDecision全体の網羅invariant: staleでは isCandidate 項目のどれも正の金額を持たない', () => {
@@ -392,27 +380,24 @@ describe('runFullAnalysis: CASH-AUTH-1 R1 現金権限のTTL/unknown/confirmed-z
     }
   })
 
-  it('#11 T0表示選択（computeCandidateActionsForDisplay）はstale由来の項目にBUY_NEW金額を表示しない', () => {
-    const staleState = buildPermissiveState({
-      cashAssumptions: {
-        source: 'MANUAL',
-        grossCash: 5_000_000,
-        safetyReserve: 0,
-        pendingOrderCash: null,
-        updatedAt: new Date(NOW_MS - CASH_AUTHORITY_TTL_MS - 1).toISOString(),
-      },
-    })
-    const staleResult = runFullAnalysis(staleState, { nowMs: NOW_MS })
-    const staleDisplay = computeCandidateActionsForDisplay(staleResult.officialDecision, false, false)
-    expect(staleDisplay.some(a => a.action === 'BUY_NEW')).toBe(false)
-
-    // 陽性対照: freshでは同じ表示関数がBUY_NEW+正の金額を選択する（表示経路自体は生きている）
-    const freshState = buildPermissiveState({})
-    const freshResult = runFullAnalysis(freshState, { nowMs: NOW_MS })
-    const freshDisplay = computeCandidateActionsForDisplay(freshResult.officialDecision, false, false)
-    const freshBuyNew = freshDisplay.find(a => a.action === 'BUY_NEW')
-    expect(freshBuyNew).toBeDefined()
-    expect(freshBuyNew?.suggestedAmount ?? 0).toBeGreaterThan(0)
+  it('#11 T0表示選択（computeCandidateActionsForDisplay）は legacy 由来のBUY_NEWを一切選ばない', () => {
+    for (const updatedAt of [
+      new Date(NOW_MS - CASH_AUTHORITY_TTL_MS - 1).toISOString(), // stale
+      new Date(NOW_MS - HOUR_MS).toISOString(),                   // fresh
+    ]) {
+      const state = buildPermissiveState({
+        cashAssumptions: {
+          source: 'MANUAL',
+          grossCash: 5_000_000,
+          safetyReserve: 0,
+          pendingOrderCash: null,
+          updatedAt,
+        },
+      })
+      const result = runFullAnalysis(state, { nowMs: NOW_MS })
+      const display = computeCandidateActionsForDisplay(result.officialDecision, false, false)
+      expect(display).toEqual([])
+    }
   })
 })
 
@@ -484,7 +469,11 @@ describe('useAppStore.importCsv: 初回CSV取込でも同一ターンでtrust ca
     })
   }
 
-  it('csvLastImportedAt=nullの初期状態から正常な初回CSV取込を行うと、同一ターンでBUY_NEW候補がofficialDecisionへ反映される（refresh不要）', async () => {
+  it('CAND-SYN-1C: 初回CSV取込は成功しつつ、legacy候補は officialDecision に載らない', async () => {
+    // F1 が固定していたのは「初回取込ターンでも候補パイプラインが動く」こと。
+    // 1C 以降、候補の officialDecision への露出は canonical synthesis 世代
+    // （committed path）のみが担う。ここでは取込トランザクション自体が成功し、
+    // かつ legacy 由来の候補項目が 0 件であることを固定する。
     resetToPermissiveFirstImportState()
     expect(useAppStore.getState().system.csvLastImportedAt).toBeNull()
 
@@ -493,9 +482,8 @@ describe('useAppStore.importCsv: 初回CSV取込でも同一ターンでtrust ca
     const state = useAppStore.getState()
     expect(state.system.status).toBe('success')
     expect(state.system.csvLastImportedAt).not.toBeNull()
-    const candidate = goldCandidateAction(state.officialDecision)
-    expect(candidate).toBeDefined()
-    expect(candidate?.action).toBe('BUY_NEW')
+    expect(goldCandidateAction(state.officialDecision)).toBeUndefined()
+    expect(state.officialDecision?.actions.filter(a => a.isCandidate) ?? []).toEqual([])
   })
 
   it('stale market（DQ抑制）: 初回CSV取込後もF1修正後の候補抑制は維持される', async () => {
@@ -520,12 +508,13 @@ describe('useAppStore.importCsv: 初回CSV取込でも同一ターンでtrust ca
     expect(candidate).toBeUndefined()
   })
 
-  it('DQ/SAFE_MODE/noTradeいずれも該当しない通常時は、CSV取込のたびに候補が壊れず継続して出る（2回目以降の回帰なし）', async () => {
+  it('CAND-SYN-1C: 連続CSV取込でも legacy候補writer は再活性化しない（2回目以降の回帰guard）', async () => {
     resetToPermissiveFirstImportState()
     await useAppStore.getState().importCsv(makeCsvFile(STOCK_ONLY_CSV))
     await useAppStore.getState().importCsv(makeCsvFile(STOCK_ONLY_CSV))
-    const candidate = goldCandidateAction(useAppStore.getState().officialDecision)
-    expect(candidate).toBeDefined()
-    expect(candidate?.action).toBe('BUY_NEW')
+    const state = useAppStore.getState()
+    expect(state.system.status).toBe('success')
+    expect(goldCandidateAction(state.officialDecision)).toBeUndefined()
+    expect(state.officialDecision?.actions.filter(a => a.isCandidate) ?? []).toEqual([])
   })
 })

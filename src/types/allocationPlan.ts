@@ -206,6 +206,15 @@ export interface PurchaseAmountResult {
 
 export interface InstrumentPlan extends InstrumentInput, PurchaseAmountResult {
   buyKind: BuyKind
+  /**
+   * CAND-SYN-1C / I-19: the candidate's own executability before the single
+   * RANK_SEQUENTIAL_SINGLE_EXECUTION slot is awarded. `executable` records who
+   * won the slot; this records who was eligible to compete for it.
+   */
+  independentlyExecutable: boolean
+  /** Execution-priority terms K4/K5, copied verbatim from the CandidateInput. */
+  marketRank: number | null
+  artifactIndex: number
   targetAmount: number | null
   classHeadroom: number
   instrumentTargetGap: number | null

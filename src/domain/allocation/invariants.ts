@@ -1,10 +1,16 @@
 import type {
   AllocationPlanSnapshot,
   AssetClass,
+  InstrumentPlan,
   InvariantResult,
 } from '../../types/allocationPlan'
 import { isNonNegativeInteger } from './numeric'
 import { summarizeJpTrust } from './allocationEngine'
+import {
+  compareExecutionPriority,
+  type ExecutionPriorityCandidate,
+  type ExecutionPriorityClassNeed,
+} from './executionPriority'
 
 function add(violated: Array<`I-${string}`>, id: `I-${string}`, condition: boolean): void {
   if (!condition) violated.push(id)
@@ -155,6 +161,41 @@ export function assertAllocationPlanInvariants(
     snapshot.persistence === 'none'
       && snapshot.privacyMode === 'local_only'
       && snapshot.not_for_trading === true,
+  )
+
+  // I-19 (DDR-R1 §7): when at least one candidate is eligible, exactly one
+  // instrumentPlan is executable and it is the minimum of the eligible set under
+  // the frozen canonical execution priority. I-12 only bounds the count; it does
+  // not constrain *which* instrument receives the canonical yen amount, which is
+  // precisely the defect DDR-R1 confirmed.
+  const classNeedByAssetClass = new Map<AssetClass, ExecutionPriorityClassNeed>(
+    snapshot.assetClassPlans.map((plan) => [plan.assetClass, {
+      targetGap: plan.targetGap,
+      targetAmount: plan.targetAmount,
+      blockedReasons: plan.blockedReasons,
+    }]),
+  )
+  const priorityOf = (plan: InstrumentPlan): ExecutionPriorityCandidate => ({
+    instrumentId: plan.instrumentId,
+    buyKind: plan.buyKind,
+    assetClass: plan.assetClass,
+    marketRank: plan.marketRank,
+    artifactIndex: plan.artifactIndex,
+    classNeed: classNeedByAssetClass.get(plan.assetClass) ?? null,
+  })
+  const eligible = snapshot.instrumentPlans.filter(
+    (plan) => plan.independentlyExecutable && plan.simultaneouslyExecutableAmount > 0,
+  )
+  const executablePlans = snapshot.instrumentPlans.filter(({ executable }) => executable)
+  add(
+    violated,
+    'I-19',
+    eligible.length === 0
+      ? executablePlans.length === 0
+      : executablePlans.length === 1
+        && eligible.includes(executablePlans[0])
+        && eligible.every((plan) =>
+          compareExecutionPriority(priorityOf(executablePlans[0]), priorityOf(plan)) <= 0),
   )
   return { ok: violated.length === 0, violated }
 }

@@ -83,9 +83,12 @@ import {
   trustAllocationInstrumentId,
 } from '../domain/candidates/trustAllocationCandidates'
 import {
-  appendCandidatePortfolioRecommendations,
-  projectCandidatePortfolioRecommendations,
-} from './candidatePortfolioRecommendation'
+  applyCandidateExecutionPriceReferences,
+  captureCandidateExecutionPriceReferences,
+  resolveHoldingExecutionMetadata,
+} from '../domain/candidates/candidateExecutionPriceReference'
+import { projectCandidatePortfolioRecommendations } from './candidatePortfolioRecommendation'
+import { projectSynthesisToOfficialDecision } from './synthesisOfficialDecisionProjection'
 import {
   stageTrustExecutionFromCsvSync,
   captureTrustShortAnalysisInput,
@@ -1768,21 +1771,23 @@ export function shouldApplyPublishedSnapshot(
 }
 
 // ── P1-G: CandidateItem → OfficialDecisionItem 変換 ──────────
-function candidateToOfficialDecisionItem(candidate: CandidateItem): OfficialDecisionItem {
+// CAND-SYN-1C / D14 (P2-1 writer stop): the monetary fields are no longer set.
+// `amount` / `suggestedAmount` / `maxAmount` / `candidateSizingTier` came from
+// applyCandidateConstraints + SIZING_TIER_LIMIT — a parallel yen authority that
+// contradicted AllocationPlan. This converter is retained for legacy structural
+// compatibility only; the production candidate writer is
+// projectSynthesisToOfficialDecision, which is the sole append path.
+export function candidateToOfficialDecisionItem(candidate: CandidateItem): OfficialDecisionItem {
   return {
     id: `candidate-${candidate.id}`,
     assetType: candidate.assetType,
     name: candidate.name,
     action: candidate.action,
     reason: candidate.reason,
-    amount: candidate.suggestedAmount > 0 ? candidate.suggestedAmount : undefined,
     candidateScore: candidate.score / 100,
     blockedReason: candidate.blockedReasons[0],
     source: 'candidate',
     isCandidate: true,
-    suggestedAmount: candidate.suggestedAmount > 0 ? candidate.suggestedAmount : undefined,
-    maxAmount: candidate.maxAmount > 0 ? candidate.maxAmount : undefined,
-    candidateSizingTier: candidate.sizingTier,
     candidateSource: candidate.source,
     constraintsPassed: Object.entries(candidate.constraints)
       .filter(([, v]) => v === 'pass')
@@ -1839,6 +1844,11 @@ function defaultAllocationInstruments(state: AppState): AllocationInstrumentInpu
     const instrumentId = candidateAllocationInstrumentId(holding.code)
     if (instrumentId === null || stockIds.has(instrumentId)) return null
     stockIds.add(instrumentId)
+    // CAND-SYN-1C / DDR-1 §7.2: population A (held JP_STOCK) execution metadata.
+    // holding.currentPrice is the only accepted authority and is normalized with
+    // the same Math.ceil rule as new stocks; missing/invalid price keeps both
+    // fields null and the engine fail-closes to a non-executable ADD.
+    const execution = resolveHoldingExecutionMetadata(holding.currentPrice)
     stockInstruments.push({
       instrumentId,
       assetClass: 'JP_STOCK' as const,
@@ -1847,8 +1857,8 @@ function defaultAllocationInstruments(state: AppState): AllocationInstrumentInpu
       currentAmount: holding.eval,
       role: holding.sector,
       reason: 'canonical holding projection',
-      priceJpy: holding.currentPrice ?? null,
-      lotSizeShares: null,
+      priceJpy: execution.priceJpy,
+      lotSizeShares: execution.lotSizeShares,
     })
   }
   const trustInstruments: AllocationInstrumentInput[] = []
@@ -1958,11 +1968,35 @@ export function buildAllocationPlanInput(
       ? buildHoldingAllocationCandidates({ holdings: state.holdings })
       : null
     if (holdingCandidateCapture?.status === 'invalid') return null
+    // CAND-SYN-1C / DDR-1 §3.4-§3.9: population B (new JP_STOCK) execution
+    // metadata. The join always starts from the authorized funnel candidate's
+    // own code — never from candidates_stocks — and only an AVAILABLE reference
+    // (fresh dataset, single exact normalized match, dataStatus ok, finite
+    // positive price) activates priceJpy = ceil(raw) and lotSizeShares = 100.
+    // Candidate eligibility, tier, marketRank and portfolioFit are untouched.
+    const candidateExecutionPrices = captureCandidateExecutionPriceReferences({
+      candidatesStocks: state.candidatesStocks,
+      candidatesStocksSource: state.system.dataSourceStatus.candidatesStocks ?? 'default',
+      now: nowMs,
+      candidates: candidateCapture.candidates.flatMap(candidate => {
+        const raw = state.candidateFunnel?.candidates[candidate.artifactIndex]
+        return raw !== undefined
+          && candidateAllocationInstrumentId(raw.code) === candidate.instrumentId
+          ? [{ instrumentId: candidate.instrumentId, code: raw.code }]
+          : []
+      }),
+    }).references
     const defaultInstruments = defaultAllocationInstruments(state)
     const instruments = options.instruments === undefined
       ? defaultInstruments === null
         ? null
-        : mergeAllocationInstruments(defaultInstruments, candidateCapture.instruments)
+        : mergeAllocationInstruments(
+            defaultInstruments,
+            applyCandidateExecutionPriceReferences(
+              candidateCapture.instruments,
+              candidateExecutionPrices,
+            ),
+          )
       : [...options.instruments]
     if (instruments === null) return null
     const candidates = options.candidates === undefined
@@ -2287,15 +2321,12 @@ export function runFullAnalysis(
         ...scoreCandidates(rawCandidates.filter(c => c.assetType === 'global_trust'), { ...baseCtx, ...getClassCtx('OVERSEAS_TRUST') }),
         ...scoreCandidates(rawCandidates.filter(c => c.assetType === 'gold'),         { ...baseCtx, ...getClassCtx('GOLD') }),
       ]
-      // BUY_NEW / WATCH のみ score 降順、最大3件を officialDecision.actions に追加
-      const appendable = scored
-        .filter(c => c.action === 'BUY_NEW' || c.action === 'WATCH')
-        .sort((a, b) => b.score - a.score)
-        .slice(0, 3)
-        .map(candidateToOfficialDecisionItem)
-      if (appendable.length > 0) {
-        officialDecision = { ...officialDecision, actions: [...officialDecision.actions, ...appendable] }
-      }
+      // CAND-SYN-1C / D2 + D14: the L1 legacy append to officialDecision.actions
+      // is retired here. `scored` is kept as eligibility/observability only
+      // (D14 "ADAPT"); it no longer authorizes a candidate decision or a yen
+      // amount. The single candidate writer is projectSynthesisToOfficialDecision,
+      // applied once the canonical synthesis generation exists.
+      void scored
     }
   } catch (error) {
     if (options.requireOfficialDecision) throw new OfficialDecisionGenerationError(error)
@@ -2509,11 +2540,23 @@ function appendCommittedCandidatePortfolioRecommendations(
           })
         : null
 
+    // CAND-SYN-1C: officialDecision's candidate component is now projected from
+    // the canonical synthesis generation, and from nothing else. This runs
+    // regardless of the legacy early-return below, because D24 keeps
+    // populations A/C/D alive on a `degraded` funnel while the legacy
+    // recommendation projection drops everything.
+    const officialDecision = projectSynthesisToOfficialDecision(
+      computed.officialDecision,
+      candidateDecisionSynthesis,
+    )
+
     if (
       candidateFreshness === 'invalid' ||
       candidateFreshness === 'unavailable' ||
       candidateFreshness === 'degraded'
-    ) return { ...computed, candidateDecisionSynthesis }
+    ) return { ...computed, candidateDecisionSynthesis, officialDecision }
+    // candidatePortfolioRecommendations is retained as a 1D-compatibility
+    // structure only: it is no longer written into officialDecision.
     const projectedRecommendations = projectCandidatePortfolioRecommendations({
       recommendations,
       snapshot: computed.allocationPlan,
@@ -2522,10 +2565,6 @@ function appendCommittedCandidatePortfolioRecommendations(
       sourceCandidateGenerationId: stagedState.candidateFunnel._meta.generatedAt,
       sourceCandidateFreshness: candidateFreshness,
     })
-    const officialDecision = appendCandidatePortfolioRecommendations(
-      computed.officialDecision,
-      projectedRecommendations,
-    )
     return {
       ...computed,
       candidateDecisionSynthesis,

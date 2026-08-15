@@ -195,6 +195,12 @@ export function buildCandidateDecisionSynthesisFromState(
           fitResult.qualityGate.hardFailIds.length === 0 &&
           fitResult.privacyMode === 'local_only' &&
           fitResult.persistence === 'none'
+        // CAND-SYN-1C / I-SYN-7: a new JP_STOCK can only obtain priceJpy from
+        // the candidates_stocks execution-reference join, so the canonical plan
+        // itself records whether that price generation was used. No second join
+        // is performed here.
+        const plan = instrumentPlanById.get(c.instrumentId)
+        const usesExecutionPrice = plan?.kind === 'jp_stock' && plan.priceJpy !== null
         candidates.push({
           instrumentId: c.instrumentId,
           assetClass: 'JP_STOCK',
@@ -220,8 +226,13 @@ export function buildCandidateDecisionSynthesisFromState(
           },
           canonicalAllocation: allocation,
           whyThis: [],
-          whyNotExecutable: candidateFreshness === 'stale' ? ['CANDIDATE_INPUT_STALE'] : [],
-          usesCandidatesStocksExecutionPrice: false,
+          whyNotExecutable: [
+            ...(candidateFreshness === 'stale' ? (['CANDIDATE_INPUT_STALE'] as const) : []),
+            // DDR-1 §3.5: no usable execution reference price -> the entry
+            // stays (evidence preserved) but can never carry an amount.
+            ...(usesExecutionPrice ? [] : (['EXECUTION_PRICE_UNAVAILABLE'] as const)),
+          ],
+          usesCandidatesStocksExecutionPrice: usesExecutionPrice,
         })
       }
     }
@@ -285,10 +296,19 @@ export function buildCandidateDecisionSynthesisFromState(
     candidatesStocksRunToken: priceDatasetProvenance.runToken,
   }
 
+  // I-SYN-EXEC-1: the canonical single-execution result is read straight off the
+  // AllocationPlan snapshot. Synthesis compares against it and never re-ranks to
+  // choose a different money winner.
+  const canonicalWinner = allocationPlan.instrumentPlans.find(plan => plan.executable) ?? null
+
   return buildCandidateDecisionSynthesis({
     generatedAt: evaluatedAt,
     provenance,
     allocationPlanCandidateGenerationId: allocationPlanCandidateGenerationId ?? '',
+    canonicalExecution: {
+      instrumentId: canonicalWinner?.instrumentId ?? null,
+      executableAmountJpy: canonicalWinner?.finalSuggestedAmount ?? 0,
+    },
     candidates,
     datasetReasons: [...datasetReasons],
   })

@@ -58,6 +58,7 @@ export const SYNTHESIS_DATASET_REASONS = [
   'INVALID_ACTION_RELATIONSHIP',
   'EXECUTION_PRICE_PROVENANCE_MISSING',
   'MISSING_INSTRUMENT_MAPPING',
+  'EXECUTION_AUTHORITY_MISMATCH',
 ] as const
 export type SynthesisDatasetReason = (typeof SYNTHESIS_DATASET_REASONS)[number]
 
@@ -180,10 +181,21 @@ export interface CandidateDecisionSynthesisCandidateInput {
   readonly usesCandidatesStocksExecutionPrice: boolean
 }
 
+/**
+ * The canonical AllocationPlan single-execution result, supplied verbatim.
+ * I-SYN-EXEC-1 compares synthesis against it; synthesis never elects a
+ * different money winner and never recomputes the amount.
+ */
+export interface CandidateDecisionSynthesisCanonicalExecution {
+  readonly instrumentId: string | null
+  readonly executableAmountJpy: number
+}
+
 export interface CandidateDecisionSynthesisInput {
   readonly generatedAt: string
   readonly provenance: CandidateDecisionSynthesisProvenance
   readonly allocationPlanCandidateGenerationId: string
+  readonly canonicalExecution: CandidateDecisionSynthesisCanonicalExecution
   readonly candidates: readonly CandidateDecisionSynthesisCandidateInput[]
   readonly datasetReasons: readonly SynthesisDatasetReason[]
 }
@@ -191,6 +203,7 @@ export interface CandidateDecisionSynthesisInput {
 export type CandidateDecisionSynthesisInvariantId =
   | 'I-SYN-1' | 'I-SYN-2' | 'I-SYN-3' | 'I-SYN-4'
   | 'I-SYN-5' | 'I-SYN-6' | 'I-SYN-7' | 'I-SYN-8'
+  | 'I-SYN-EXEC-1'
 
 export interface CandidateDecisionSynthesisInvariantResult {
   readonly ok: boolean
@@ -201,4 +214,5 @@ export interface CandidateDecisionSynthesisInvariantContext {
   readonly allocationPlanCandidateGenerationId: string
   readonly usesCandidatesStocksExecutionPrice: boolean
   readonly expectedSynthesisId: string
+  readonly canonicalExecution: CandidateDecisionSynthesisCanonicalExecution
 }

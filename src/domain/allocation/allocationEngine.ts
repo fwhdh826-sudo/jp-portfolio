@@ -17,20 +17,44 @@ import {
   computeDomesticStockHeadroom,
   computeInstrumentHeadroom,
 } from './headroom'
+import {
+  compareExecutionPriority,
+  toExecutionPriorityCandidate,
+  type ExecutionPriorityClassNeed,
+} from './executionPriority'
 import { allValidMoney, isRatio01, roundDownToUnit, toIntegerJpy, unique } from './numeric'
 import { computePurchaseAmount } from './purchaseAmount'
 import { evaluateSafetyBehavior } from './safety'
 
 const LONG_TERM_CLASSES = new Set<AssetClass>(['JP_STOCK', 'OVERSEAS_TRUST', 'GOLD'])
 
-function rankCandidates(candidates: readonly CandidateInput[]): CandidateInput[] {
-  return [...candidates].sort((left, right) => {
-    const leftRank = left.marketRank ?? Number.MAX_SAFE_INTEGER
-    const rightRank = right.marketRank ?? Number.MAX_SAFE_INTEGER
-    return leftRank - rightRank
-      || left.artifactIndex - right.artifactIndex
-      || (left.instrumentId < right.instrumentId ? -1 : left.instrumentId > right.instrumentId ? 1 : 0)
-  })
+/**
+ * CAND-SYN-1C / DDR-R1 §5.5-§5.6: allocation traversal order IS the execution
+ * selection order. `assetClassPlans` and the instrument map are already built
+ * before this call, so the comparator reads canonical class need directly —
+ * no refactor of the build order and no second target-gap calculation.
+ */
+function rankCandidates(
+  candidates: readonly CandidateInput[],
+  assetClassPlans: readonly AssetClassPlan[],
+  instruments: ReadonlyMap<string, InstrumentInput>,
+): CandidateInput[] {
+  const classNeedByAssetClass = new Map<AssetClass, ExecutionPriorityClassNeed>(
+    assetClassPlans.map((plan) => [plan.assetClass, {
+      targetGap: plan.targetGap,
+      targetAmount: plan.targetAmount,
+      blockedReasons: plan.blockedReasons,
+    }]),
+  )
+  const resolve = (candidate: CandidateInput) => {
+    const assetClass = instruments.get(candidate.instrumentId)?.assetClass ?? null
+    return toExecutionPriorityCandidate(
+      candidate,
+      assetClass,
+      assetClass === null ? null : classNeedByAssetClass.get(assetClass) ?? null,
+    )
+  }
+  return [...candidates].sort((left, right) => compareExecutionPriority(resolve(left), resolve(right)))
 }
 
 function budgetForClass(
@@ -191,7 +215,7 @@ export function buildAllocationPlanSnapshot(
   const instrumentPlans: InstrumentPlan[] = []
   const instruments = new Map(input.instruments.map((item) => [item.instrumentId, item]))
 
-  for (const candidate of rankCandidates(input.candidates)) {
+  for (const candidate of rankCandidates(input.candidates, assetClassPlans, instruments)) {
     const instrument = instruments.get(candidate.instrumentId)
     if (!instrument) {
       snapshotBlocked.push('CANDIDATE_INPUT_INVALID')
@@ -299,6 +323,13 @@ export function buildAllocationPlanSnapshot(
       ...independent,
       finalSuggestedAmount,
       executable: selected,
+      // I-19 support: the K0 eligibility terms, recorded by the only layer that
+      // can observe them. `executable` above is the single-slot selection result,
+      // so the invariant checker would otherwise be unable to tell "lost the slot"
+      // from "was never eligible".
+      independentlyExecutable: independent.executable,
+      marketRank: candidate.marketRank,
+      artifactIndex: candidate.artifactIndex,
       independentMaximum: independent.estimatedMaximumAmount,
       simultaneouslyExecutableAmount: roundedSimultaneous,
       allocatedAmount: roundedSimultaneous,

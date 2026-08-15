@@ -293,6 +293,15 @@ function candidateAction(state: AppStoreState, code = '1003'): string | undefine
     item.candidateSource === 'candidate_funnel' && item.code === code)?.action
 }
 
+// CAND-SYN-1C: officialDecision の候補 action は canonical
+// CandidateDecisionSynthesis 由来になったため、AllocationPlan が blocked な
+// fixture では必ず BLOCKED になる（そちらが canonical に正しい答え）。
+// 「receipt 自身の世代が採用されたか」という P5-B005-C-D-R1 の識別は、1D まで
+// 残す legacy compatibility 構造 candidatePortfolioRecommendations 側で固定する。
+function recommendationAction(state: AppStoreState, code = '1003'): string | undefined {
+  return state.candidatePortfolioRecommendations.find(item => item.code === code)?.action
+}
+
 function installAmbientAbaRace(
   instance: TestInstance,
   ambientRaw: string,
@@ -546,7 +555,10 @@ describe('P5-B005-C-D postcommit atomic integration', () => {
   it('C-C-T49 recommendation failure preserves base decision', () => {
     const helper = segment('function appendCommittedCandidatePortfolioRecommendations', 'function reportSubscriberException')
     expect(helper).toMatch(/catch \{\s+return computed\s+\}/)
-    expect(helper).toContain('const officialDecision = appendCandidatePortfolioRecommendations(')
+    // CAND-SYN-1C / N1+N3: the funnel append is retired; the single candidate
+    // writer is the synthesis compatibility projection.
+    expect(helper).toContain('const officialDecision = projectSynthesisToOfficialDecision(')
+    expect(helper).not.toContain('appendCandidatePortfolioRecommendations(')
     expect(helper).toContain('candidatePortfolioRecommendations: projectedRecommendations')
     expect(helper).not.toMatch(/OfficialDecisionItem|suggestedAmount|maxAmount|amountText/)
   })
@@ -578,7 +590,8 @@ describe('P5-B005-C-D-R1 receipt-derived exact generation behavior', () => {
     expect(result).toMatchObject({ ok: true, code: 'SUCCESS' })
     const state = instance.store.getState()
     expect(state.portfolioPolicy.jpStockMaxRatio).toBe(ownRatio)
-    expect(candidateAction(state)).toBe(expected)
+    expect(candidateAction(state)).toBe('BLOCKED')
+    expect(recommendationAction(state)).toBe(expected)
     const recommendation = state.candidatePortfolioRecommendations.find(item => item.code === '1003')
     expect(recommendation).toMatchObject({ action: expected, marketRank: 1 })
     expect(recommendation?.allocation).toMatchObject({
@@ -604,7 +617,8 @@ describe('P5-B005-C-D-R1 receipt-derived exact generation behavior', () => {
 
     expect(result).toMatchObject({ ok: true, code: 'SUCCESS' })
     expect(instance.store.getState().portfolioPolicy.jpStockMaxRatio).toBe(0.05)
-    expect(candidateAction(instance.store.getState())).toBe('WATCH')
+    expect(candidateAction(instance.store.getState())).toBe('BLOCKED')
+    expect(recommendationAction(instance.store.getState())).toBe('WATCH')
     expect(notifications).toBe(1)
   })
 
@@ -674,7 +688,8 @@ describe('P5-B005-C-D-R1 receipt-derived exact generation behavior', () => {
     expect(result).toMatchObject({ ok: true, code: 'SUCCESS' })
     assertDraft(instance.store.getState())
     expect(instance.store.getState().portfolioPolicy.jpStockMaxRatio).toBe(0.05)
-    expect(candidateAction(instance.store.getState())).toBe('WATCH')
+    expect(candidateAction(instance.store.getState())).toBe('BLOCKED')
+    expect(recommendationAction(instance.store.getState())).toBe('WATCH')
     expect(notifications).toBe(1)
   })
 
@@ -688,7 +703,8 @@ describe('P5-B005-C-D-R1 receipt-derived exact generation behavior', () => {
 
     expect(result).toMatchObject({ ok: true, code: 'SUCCESS' })
     expect(instance.store.getState().portfolioPolicy.jpStockMaxRatio).toBe(0.30)
-    expect(candidateAction(instance.store.getState())).toBe('BUY_NEW')
+    expect(candidateAction(instance.store.getState())).toBe('BLOCKED')
+    expect(recommendationAction(instance.store.getState())).toBe('BUY_NEW')
   })
 })
 
@@ -822,7 +838,8 @@ describe('P5-B005-C-D-FU1 P2-04 importCsv dynamic receipt authority', () => {
       })
       const state = instance.store.getState()
       expect(state.portfolioPolicy.jpStockMaxRatio).toBe(ownRatio)
-      expect(candidateAction(state)).toBe(expectedAction)
+      expect(candidateAction(state)).toBe('BLOCKED')
+      expect(recommendationAction(state)).toBe(expectedAction)
       expect(state.officialDecision?.actions.filter(item =>
         item.candidateSource === 'candidate_funnel' && item.code === '1003',
       )).toHaveLength(1)
@@ -881,7 +898,8 @@ describe('P5-B005-C-D-FU1 P2-05 snapshot dynamic receipt authority', () => {
       expect(result).toMatchObject({ ok: true, code: 'SUCCESS' })
       const state = instance.store.getState()
       expect(state.portfolioPolicy.jpStockMaxRatio).toBe(ownRatio)
-      expect(candidateAction(state)).toBe(expectedAction)
+      expect(candidateAction(state)).toBe('BLOCKED')
+      expect(recommendationAction(state)).toBe(expectedAction)
       expect(state.system.csvImportProvenance).toEqual(incoming.csvImportProvenance)
       expect(state.officialDecision?.actions.filter(item =>
         item.candidateSource === 'candidate_funnel' && item.code === '1003',

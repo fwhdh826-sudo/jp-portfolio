@@ -7,6 +7,7 @@ import type {
   CandidateDecisionSynthesisCandidateInput,
   CandidateDecisionSynthesisInput,
   CandidateDecisionSynthesisProvenance,
+  CandidateDecisionSynthesisSnapshot,
   CandidateSynthesisClassNeed,
 } from '../../types/candidateDecisionSynthesis'
 import {
@@ -24,6 +25,13 @@ const ALLOCATION_ID = 'allocation:snapshot:1'
 const CANDIDATE_GENERATION = '2026-08-13T22:14:38.374Z'
 const shortTermTrust = INITIAL_TRUST.find(trust => trust.policy === 'JAPAN_SHORTTERM')!
 const sourceText = readFileSync(new URL('./candidateDecisionSynthesis.ts', import.meta.url), 'utf8')
+// CAND-SYN-1C: class-need ordering moved to the engine-owned comparator so
+// presentation order and execution order cannot drift; the integer-exact
+// guarantee is now asserted against that single authority.
+const executionPrioritySourceText = readFileSync(
+  new URL('../allocation/executionPriority.ts', import.meta.url),
+  'utf8',
+)
 const typeText = readFileSync(new URL('../../types/candidateDecisionSynthesis.ts', import.meta.url), 'utf8')
 
 function provenance(overrides: Partial<CandidateDecisionSynthesisProvenance> = {}): CandidateDecisionSynthesisProvenance {
@@ -135,6 +143,35 @@ function candidate(options: CandidateOptions = {}): CandidateDecisionSynthesisCa
   }
 }
 
+/**
+ * CAND-SYN-1C: unless a case overrides it, the canonical execution authority
+ * mirrors whichever supplied candidate the AllocationPlan marked executable —
+ * i.e. the fixtures state the same winner the engine would have produced, so
+ * I-SYN-EXEC-1 exercises agreement rather than fixture drift.
+ */
+function canonicalExecutionFor(
+  candidates: readonly CandidateDecisionSynthesisCandidateInput[],
+): CandidateDecisionSynthesisInput['canonicalExecution'] {
+  const winner = candidates.find(item => item.canonicalAllocation.executable) ?? null
+  return {
+    instrumentId: winner?.instrumentId ?? null,
+    executableAmountJpy: winner?.canonicalAllocation.finalSuggestedAmount ?? 0,
+  }
+}
+
+/** Reads back the winner an already-built snapshot published, for context assembly. */
+function canonicalExecutionOf(
+  snapshot: CandidateDecisionSynthesisSnapshot,
+): CandidateDecisionSynthesisInput['canonicalExecution'] {
+  const entry = snapshot.decisions
+    .concat(snapshot.watchList)
+    .find(item => item.money.kind === 'EXECUTABLE') ?? null
+  return {
+    instrumentId: entry?.instrumentId ?? null,
+    executableAmountJpy: entry?.money.executableAmountJpy ?? 0,
+  }
+}
+
 function input(
   candidates: readonly CandidateDecisionSynthesisCandidateInput[],
   overrides: Partial<CandidateDecisionSynthesisInput> = {},
@@ -143,6 +180,7 @@ function input(
     generatedAt: GENERATED_AT,
     provenance: provenance(),
     allocationPlanCandidateGenerationId: CANDIDATE_GENERATION,
+    canonicalExecution: canonicalExecutionFor(candidates),
     candidates,
     datasetReasons: [],
     ...overrides,
@@ -380,8 +418,13 @@ describe('CAND-SYN-1A deterministic ordering and limits (C)', () => {
     expect(compareCandidateClassNeed(sixtyPercent, tenPercent)).toBeLessThan(0)
     expect(compareCandidateClassNeed(tenPercent, zero)).toBeLessThan(0)
     expect(compareCandidateClassNeed(zero, invalid)).toBeLessThan(0)
-    expect(sourceText).toContain('BigInt(left.targetGap as number) * BigInt(right.targetAmount as number)')
+    expect(executionPrioritySourceText).toContain(
+      'BigInt(left.targetGap as number) * BigInt(right.targetAmount as number)',
+    )
+    expect(executionPrioritySourceText).not.toMatch(/epsilon|Number\.EPSILON/)
     expect(sourceText).not.toMatch(/epsilon|Number\.EPSILON/)
+    // synthesis holds no second class-need implementation of its own
+    expect(sourceText).not.toContain('BigInt(')
   })
 
   it('orders EXECUTABLE before non-executable regardless of class need', () => {
@@ -598,6 +641,7 @@ describe('CAND-SYN-1A provenance, invariants, failure, and immutability', () => 
         allocationPlanCandidateGenerationId: MICROSECOND_GENERATION_ID,
         usesCandidatesStocksExecutionPrice: false,
         expectedSynthesisId: snapshot.synthesisId,
+        canonicalExecution: canonicalExecutionOf(snapshot),
       })
       expect(invariants.ok).toBe(true)
       expect(invariants.violated).toEqual([])
@@ -606,6 +650,7 @@ describe('CAND-SYN-1A provenance, invariants, failure, and immutability', () => 
         allocationPlanCandidateGenerationId: '2026-08-13T22:14:38.374260+00:00',
         usesCandidatesStocksExecutionPrice: false,
         expectedSynthesisId: snapshot.synthesisId,
+        canonicalExecution: canonicalExecutionOf(snapshot),
       })
       expect(mismatched.violated).toContain('I-SYN-1')
     })
@@ -672,6 +717,7 @@ describe('CAND-SYN-1A provenance, invariants, failure, and immutability', () => 
       allocationPlanCandidateGenerationId: 'wrong',
       usesCandidatesStocksExecutionPrice: true,
       expectedSynthesisId: 'wrong',
+      canonicalExecution: canonicalExecutionOf(result),
     })
     expect(invariants.ok).toBe(false)
     expect(invariants.violated).toEqual(['I-SYN-1', 'I-SYN-6', 'I-SYN-8'])
