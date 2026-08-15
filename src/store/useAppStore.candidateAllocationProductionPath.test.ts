@@ -158,7 +158,12 @@ describe('HR-I3 candidate allocation production path', () => {
     const holdings = [{ code: ' １００２.t ', eval: 0, sector: '銀行業' }] as AppState['holdings']
     const result = buildAllocationPlanInput(stateWithArtifact(candidateArtifact(), holdings), adapterOptions())
     expect(result).not.toBeNull()
-    expect(result?.candidates.map(item => item.instrumentId)).toEqual(['stock:1003'])
+    // stock:1002 is held, so it is excluded from BUY_NEW funnel candidates but is
+    // injected as a BUY_MORE Population A candidate (CAND-SYN-1B-R1).
+    expect(result?.candidates.map(item => ({ instrumentId: item.instrumentId, buyKind: item.buyKind }))).toEqual([
+      { instrumentId: 'stock:1002', buyKind: 'BUY_MORE' },
+      { instrumentId: 'stock:1003', buyKind: 'BUY_NEW' },
+    ])
     expect(result?.instruments.filter(item => item.instrumentId === 'stock:1002')).toHaveLength(1)
   })
 

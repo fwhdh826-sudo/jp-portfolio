@@ -66,7 +66,7 @@ import { buildZeroBasePlan } from '../domain/optimization/zeroBase'
 import { buildStockPortfolioPlan } from '../domain/optimization/stockPortfolio'
 import { buildCommitteeDecision } from '../domain/analysis/committeeDecision'
 import { selectMarketDataQuality, selectEffectiveCashAssumptions, selectEffectiveSafeModeActive, selectCashAssumptionsFreshness, selectSafeModeDataQuality, selectCandidateFunnelFreshness } from './selectors'
-import { buildCandidateUniverse, scoreCandidates, buildStockCandidatePlan, computeJpStockHeadroom } from '../domain/candidates'
+import { buildCandidateUniverse, scoreCandidates, buildStockCandidatePlan, computeJpStockHeadroom, buildHoldingAllocationCandidates } from '../domain/candidates'
 import type { CandidateItem } from '../domain/candidates'
 import { buildCandidateDecisionSynthesisFromState } from './candidateDecisionSynthesisComposer'
 import type { CandidateDecisionSynthesisSnapshot } from '../types/candidateDecisionSynthesis'
@@ -1952,6 +1952,12 @@ export function buildAllocationPlanInput(
       ? buildTrustAllocationCandidates({ trust: state.trust })
       : null
     if (trustCandidateCapture?.status === 'invalid') return null
+    // CAND-SYN-1B-R1: Population A（既存保有JP_STOCK）を BUY_MORE candidate として
+    // 注入する。金額執行（lot/price activation）は 1C まで NOT_ACTIVE のまま。
+    const holdingCandidateCapture = options.candidates === undefined
+      ? buildHoldingAllocationCandidates({ holdings: state.holdings })
+      : null
+    if (holdingCandidateCapture?.status === 'invalid') return null
     const defaultInstruments = defaultAllocationInstruments(state)
     const instruments = options.instruments === undefined
       ? defaultInstruments === null
@@ -1960,8 +1966,18 @@ export function buildAllocationPlanInput(
       : [...options.instruments]
     if (instruments === null) return null
     const candidates = options.candidates === undefined
-      ? [...candidateCapture.candidates, ...(trustCandidateCapture?.candidates ?? [])]
+      ? [
+          ...(holdingCandidateCapture?.candidates ?? []),
+          ...candidateCapture.candidates,
+          ...(trustCandidateCapture?.candidates ?? []),
+        ]
       : [...options.candidates]
+    const candidateBuyKindByInstrument = new Map<string, AllocationCandidateInput['buyKind']>()
+    for (const candidate of candidates) {
+      const existingBuyKind = candidateBuyKindByInstrument.get(candidate.instrumentId)
+      if (existingBuyKind !== undefined && existingBuyKind !== candidate.buyKind) return null
+      candidateBuyKindByInstrument.set(candidate.instrumentId, candidate.buyKind)
+    }
     const candidateFreshness = selectCandidateFunnelFreshness(state, nowMs)
     const candidateArtifactState: AllocationPlanInput['safetyState']['candidateArtifact'] =
       candidateCapture.status !== 'available' ||

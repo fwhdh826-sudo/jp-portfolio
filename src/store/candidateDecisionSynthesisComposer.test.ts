@@ -354,7 +354,7 @@ describe('CAND-SYN-1B buildCandidateDecisionSynthesisFromState', () => {
     expect(ids.some(id => id.startsWith('trust:'))).toBe(true)
   })
 
-  it('A/C existing holdings currently have no matching instrumentPlan and are dropped with MISSING_INSTRUMENT_MAPPING (1B does not yet feed holding candidates to the engine)', () => {
+  it('A existing JP_STOCK holding now maps to a canonical instrumentPlan (CAND-SYN-1B-R1); MISSING_INSTRUMENT_MAPPING no longer fires solely for Population A', () => {
     const state = baseState({ holdings: [holding('1004')] })
     const plan = planFor(state)
     const result = buildCandidateDecisionSynthesisFromState({
@@ -363,9 +363,12 @@ describe('CAND-SYN-1B buildCandidateDecisionSynthesisFromState', () => {
       fitResult: defaultFitResult(), candidateFreshness: 'fresh', evaluatedAt: NOW_ISO, nowMs: NOW,
     })
     expect(result?.status).toBe('available')
-    const ids = [...(result?.decisions ?? []), ...(result?.watchList ?? [])].map(e => e.instrumentId)
-    expect(ids).not.toContain('stock:1004')
-    expect(result?.datasetReasons).toContain('MISSING_INSTRUMENT_MAPPING')
+    const all = [...(result?.decisions ?? []), ...(result?.watchList ?? [])]
+    const entry = all.find(e => e.instrumentId === 'stock:1004')
+    expect(entry).toMatchObject({ relationship: 'already_held', action: 'BLOCKED' })
+    expect(entry?.money).toMatchObject({ kind: 'NOT_EXECUTABLE' })
+    expect(entry?.blockingReasons).toContain('JP_STOCK_EXECUTION_DATA_UNAVAILABLE')
+    expect(result?.datasetReasons).not.toContain('MISSING_INSTRUMENT_MAPPING')
   })
 
   it('fails closed on duplicate holding identity (§21) before assembling any candidates', () => {

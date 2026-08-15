@@ -8,11 +8,12 @@
 // (verbatim). Instruments without a matching instrumentPlan are dropped
 // individually with MISSING_INSTRUMENT_MAPPING recorded — the frozen
 // fail-closed answer (design-audit §29) for candidates the canonical
-// engine was never asked to price, which in 1B is every population-A
-// (held JP_STOCK) instrument: 1B does not feed holding candidates into
-// the engine (that activation is out of 1B scope — DDR-1 §7.3), so
-// population A is represented but always dropped here until a later
-// tranche wires it into AllocationPlanInput.candidates.
+// engine was never asked to price. As of CAND-SYN-1B-R1,
+// buildAllocationPlanInput injects population-A (held JP_STOCK) as
+// BUY_MORE CandidateInput, so the engine produces a (possibly blocked,
+// non-executable) instrumentPlan for every valid held stock and this
+// path no longer fires for population A solely due to the mapping gap.
+// Monetary execution (lot/price activation) remains a later tranche.
 // ═══════════════════════════════════════════════════════════
 import type { AppState } from '../types'
 import type { AllocationPlanSnapshotState } from '../types'
