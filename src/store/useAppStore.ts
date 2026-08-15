@@ -88,7 +88,10 @@ import {
   resolveHoldingExecutionMetadata,
 } from '../domain/candidates/candidateExecutionPriceReference'
 import { projectCandidatePortfolioRecommendations } from './candidatePortfolioRecommendation'
-import { projectSynthesisToOfficialDecision } from './synthesisOfficialDecisionProjection'
+import {
+  projectSynthesisToOfficialDecision,
+  stripCandidateComponentFromOfficialDecision,
+} from './synthesisOfficialDecisionProjection'
 import {
   stageTrustExecutionFromCsvSync,
   captureTrustShortAnalysisInput,
@@ -2628,6 +2631,11 @@ const createAppStoreStateCreator = (
       allocationPlanCandidateGenerationId: null,
       candidatePortfolioRecommendations: [],
       candidateDecisionSynthesis: null,
+      // R1: the candidate compatibility component is owned only by the
+      // synthesis generation that just went stale above — strip it in the
+      // same atomic set so no observer can see synthesis=null coexist with
+      // a candidate officialDecision action from the old generation.
+      officialDecision: stripCandidateComponentFromOfficialDecision(state.officialDecision),
     }))
   }
 
@@ -3789,12 +3797,16 @@ const createAppStoreStateCreator = (
     if (state.allocationPlan === null && state.allocationPlanStatus === 'stale') return false
 
     // (2) 実行可能性を先に落としてから (3) 再構築する
+    // R1: candidateDecisionSynthesis がこの世代限りで無効化される同一フェーズで、
+    // officialDecision の candidate compatibility component も除去する。
+    // stale generation の candidate を延命させない（generation atomicity）。
     set({
       allocationPlan: null,
       allocationPlanStatus: 'stale',
       allocationPlanCandidateGenerationId: null,
       candidatePortfolioRecommendations: [],
       candidateDecisionSynthesis: null,
+      officialDecision: stripCandidateComponentFromOfficialDecision(state.officialDecision),
     })
     try {
       // CAND-SYN-1B: runFullAnalysis alone always returns candidateDecisionSynthesis: null

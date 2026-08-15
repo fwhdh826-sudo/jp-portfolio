@@ -69,28 +69,59 @@ function toOfficialDecisionItem(entry: CandidateDecisionSynthesisEntry): Officia
 }
 
 /**
- * Appends the candidate component of one already-authorized synthesis
- * generation. An absent, unavailable or invalid synthesis appends nothing:
- * fail-closed is the same answer the retired appends gave for an unusable
- * candidate generation.
+ * Identity predicate for the candidate compatibility component. Both markers
+ * are set together by toOfficialDecisionItem above and by no other writer
+ * (see synthesisOfficialDecisionProjection.test.ts N1/N3), so this is the
+ * narrowest correct identity for "belongs to a CandidateDecisionSynthesis
+ * generation" — never the action enum alone (BUY_NEW/BLOCKED are also valid
+ * holding-committee actions).
+ */
+function isCandidateComponentAction(action: OfficialDecisionItem): boolean {
+  return action.isCandidate === true && action.source === 'candidate'
+}
+
+/**
+ * Removes the candidate compatibility component from an OfficialDecision,
+ * regardless of which synthesis generation produced it. Pure, no money
+ * calculation, no re-ranking; preserves every non-candidate action exactly
+ * and in order. Idempotent: stripping twice equals stripping once.
+ */
+export function stripCandidateComponentFromOfficialDecision(
+  decision: OfficialDecision | null,
+): OfficialDecision | null {
+  if (decision === null) return null
+  const actions = decision.actions.filter(action => !isCandidateComponentAction(action))
+  if (actions.length === decision.actions.length) return decision
+  return { ...decision, actions }
+}
+
+/**
+ * Replaces the candidate component of one already-authorized synthesis
+ * generation: any previous candidate component (from an older generation) is
+ * removed first, then exactly the current generation's projection is
+ * appended once. An absent, unavailable or invalid synthesis leaves the
+ * candidate component absent — fail-closed is the same answer the retired
+ * appends gave for an unusable candidate generation, and generation
+ * atomicity forbids retaining a stale generation's candidates.
  */
 export function projectSynthesisToOfficialDecision(
   baseDecision: OfficialDecision | null,
   synthesis: CandidateDecisionSynthesisSnapshot | null,
 ): OfficialDecision | null {
   if (baseDecision === null) return null
-  if (synthesis === null || synthesis.status !== 'available') return baseDecision
+  const stripped = stripCandidateComponentFromOfficialDecision(baseDecision)!
+  if (synthesis === null || synthesis.status !== 'available') return stripped
 
   const entries = [...synthesis.decisions, ...synthesis.watchList]
-  if (entries.length === 0) return baseDecision
+  if (entries.length === 0) return stripped
 
   const seen = new Set<string>()
   const items: OfficialDecisionItem[] = []
   for (const entry of entries) {
-    if (seen.has(entry.entryId)) return baseDecision // fail closed on duplicate identity
+    if (seen.has(entry.entryId)) return stripped // fail closed on duplicate identity
     seen.add(entry.entryId)
     items.push(toOfficialDecisionItem(entry))
   }
 
-  return { ...baseDecision, actions: [...baseDecision.actions, ...items] }
+  return { ...stripped, actions: [...stripped.actions, ...items] }
 }

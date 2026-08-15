@@ -19,7 +19,10 @@ import type {
 } from '../types/candidateDecisionSynthesis'
 import type { OfficialDecision } from '../types'
 import { candidateToOfficialDecisionItem } from './useAppStore'
-import { projectSynthesisToOfficialDecision } from './synthesisOfficialDecisionProjection'
+import {
+  projectSynthesisToOfficialDecision,
+  stripCandidateComponentFromOfficialDecision,
+} from './synthesisOfficialDecisionProjection'
 
 const storeSource = readFileSync(new URL('./useAppStore.ts', import.meta.url), 'utf8')
 const projectionSource = readFileSync(
@@ -293,5 +296,132 @@ describe('CAND-SYN-1C S9 / I-SYN-EXEC-1: synthesis agrees with the canonical win
     expect(snapshot.decisions).toEqual([])
     expect(snapshot.watchList[0]).toMatchObject({ action: 'WATCH' })
     expect(snapshot.watchList[0].money).toMatchObject({ kind: 'NOT_EXECUTABLE', executableAmountJpy: 0 })
+  })
+})
+
+describe('NEXT_3_CAND_SYN_1C_R1: candidate component replacement/invalidation semantics', () => {
+  it('R1-E stripCandidateComponentFromOfficialDecision(null) is null', () => {
+    expect(stripCandidateComponentFromOfficialDecision(null)).toBeNull()
+  })
+
+  it('R1-E stripCandidateComponentFromOfficialDecision preserves non-candidate actions exactly and in order', () => {
+    const withCandidate = projectSynthesisToOfficialDecision(
+      baseDecision(),
+      synthesis([stockCandidate({ code: '1003', executable: true, amount: 580_000 })]),
+    )!
+    const stripped = stripCandidateComponentFromOfficialDecision(withCandidate)!
+    expect(stripped.actions).toEqual(baseDecision().actions)
+    expect(stripped.actions.some(a => a.isCandidate)).toBe(false)
+  })
+
+  it('R1-E stripCandidateComponentFromOfficialDecision is idempotent', () => {
+    const withCandidate = projectSynthesisToOfficialDecision(
+      baseDecision(),
+      synthesis([stockCandidate({ code: '1003', executable: true, amount: 580_000 })]),
+    )!
+    const once = stripCandidateComponentFromOfficialDecision(withCandidate)
+    const twice = stripCandidateComponentFromOfficialDecision(once)
+    expect(twice).toEqual(once)
+  })
+
+  it('R1-A projection removes an old candidate generation before appending the new one', () => {
+    const oldGeneration = projectSynthesisToOfficialDecision(
+      baseDecision(),
+      synthesis([stockCandidate({ code: '1003', executable: true, amount: 580_000 })]),
+    )!
+    expect(oldGeneration.actions.filter(a => a.isCandidate)).toHaveLength(1)
+    expect(oldGeneration.actions.find(a => a.isCandidate)?.code).toBe('1003')
+
+    // A new synthesis generation, disjoint entryId/instrument from the old one.
+    const newSnapshot = synthesis([stockCandidate({ code: '2002', executable: true, amount: 120_000 })])
+    const replaced = projectSynthesisToOfficialDecision(oldGeneration, newSnapshot)!
+
+    const candidateActions = replaced.actions.filter(a => a.isCandidate)
+    expect(candidateActions).toHaveLength(1)
+    expect(candidateActions[0].code).toBe('2002')
+    // old generation's candidate is gone, not merely appended-alongside
+    expect(candidateActions.some(a => a.code === '1003')).toBe(false)
+    // holding action untouched
+    expect(replaced.actions.find(a => a.id === 'holding-1')).toMatchObject({ action: 'HOLD' })
+  })
+
+  it('R1-B projection with synthesis=null removes an old candidate component', () => {
+    const oldGeneration = projectSynthesisToOfficialDecision(
+      baseDecision(),
+      synthesis([stockCandidate({ code: '1003', executable: true, amount: 580_000 })]),
+    )!
+    expect(oldGeneration.actions.some(a => a.isCandidate)).toBe(true)
+
+    const invalidated = projectSynthesisToOfficialDecision(oldGeneration, null)!
+    expect(invalidated.actions.some(a => a.isCandidate)).toBe(false)
+    expect(invalidated.actions).toEqual(baseDecision().actions)
+  })
+
+  it('R1-C projection with an unavailable/invalid synthesis removes an old candidate component', () => {
+    const oldGeneration = projectSynthesisToOfficialDecision(
+      baseDecision(),
+      synthesis([stockCandidate({ code: '1003', executable: true, amount: 580_000 })]),
+    )!
+    const invalid = synthesis(
+      [stockCandidate({ code: '2002', executable: true, amount: 120_000 })],
+      { instrumentId: 'trust:other', executableAmountJpy: 1 },
+    )
+    expect(invalid.status).toBe('invalid')
+
+    const invalidated = projectSynthesisToOfficialDecision(oldGeneration, invalid)!
+    expect(invalidated.actions.some(a => a.isCandidate)).toBe(false)
+  })
+
+  it('R1-D projection is idempotent: applying the same synthesis twice produces no duplicates', () => {
+    const snapshot = synthesis([stockCandidate({ code: '1003', executable: true, amount: 580_000 })])
+    const once = projectSynthesisToOfficialDecision(baseDecision(), snapshot)!
+    const twice = projectSynthesisToOfficialDecision(once, snapshot)!
+    expect(twice.actions.filter(a => a.isCandidate)).toHaveLength(1)
+    expect(twice).toEqual(once)
+  })
+
+  it('R1-L an old and a new candidate generation never coexist after replacement', () => {
+    const gen1 = projectSynthesisToOfficialDecision(
+      baseDecision(),
+      synthesis([stockCandidate({ code: '1003', executable: true, amount: 580_000 })]),
+    )!
+    const gen2 = projectSynthesisToOfficialDecision(
+      gen1,
+      synthesis([stockCandidate({ code: '2002', executable: true, amount: 120_000 })]),
+    )!
+    const codes = gen2.actions.filter(a => a.isCandidate).map(a => a.code)
+    expect(codes).toEqual(['2002'])
+  })
+
+  it('R1-K a normal rebuild after invalidation can publish a new candidate component again', () => {
+    const invalidated = stripCandidateComponentFromOfficialDecision(
+      projectSynthesisToOfficialDecision(
+        baseDecision(),
+        synthesis([stockCandidate({ code: '1003', executable: true, amount: 580_000 })]),
+      ),
+    )!
+    expect(invalidated.actions.some(a => a.isCandidate)).toBe(false)
+
+    const republished = projectSynthesisToOfficialDecision(
+      invalidated,
+      synthesis([stockCandidate({ code: '1003', executable: true, amount: 580_000 })]),
+    )!
+    expect(republished.actions.filter(a => a.isCandidate)).toHaveLength(1)
+  })
+
+  it('R1-M officialDecision candidate money fields remain absent after replacement', () => {
+    const gen1 = projectSynthesisToOfficialDecision(
+      baseDecision(),
+      synthesis([stockCandidate({ code: '1003', executable: true, amount: 580_000 })]),
+    )!
+    const gen2 = projectSynthesisToOfficialDecision(
+      gen1,
+      synthesis([stockCandidate({ code: '2002', executable: true, amount: 120_000 })]),
+    )!
+    for (const action of gen2.actions.filter(a => a.isCandidate)) {
+      expect(action.amount).toBeUndefined()
+      expect(action.suggestedAmount).toBeUndefined()
+      expect(action.maxAmount).toBeUndefined()
+    }
   })
 })
