@@ -531,6 +531,86 @@ describe('CAND-SYN-1A provenance, invariants, failure, and immutability', () => 
     expect(second.synthesisId).toBe(first.synthesisId)
   })
 
+  describe('R1 candidateGenerationId is an opaque exact upstream identity', () => {
+    const MICROSECOND_GENERATION_ID = '2026-08-13T22:14:38.374259+00:00'
+
+    function withGenerationId(generationId: string) {
+      return input([candidate()], {
+        provenance: provenance({ candidateGenerationId: generationId }),
+        allocationPlanCandidateGenerationId: generationId,
+      })
+    }
+
+    it('A/D accepts a real production microsecond-precision generation id verbatim', () => {
+      const result = buildCandidateDecisionSynthesis(withGenerationId(MICROSECOND_GENERATION_ID))
+      expect(result.status).toBe('available')
+      expect(result.provenance.candidateGenerationId).toBe(MICROSECOND_GENERATION_ID)
+    })
+
+    it('A repeats the same microsecond generation id input to the same synthesisId', () => {
+      const first = buildCandidateDecisionSynthesis(withGenerationId(MICROSECOND_GENERATION_ID))
+      const second = buildCandidateDecisionSynthesis(withGenerationId(MICROSECOND_GENERATION_ID))
+      expect(second.synthesisId).toBe(first.synthesisId)
+    })
+
+    it('B changes synthesisId when only candidateGenerationId changes, precision preserved', () => {
+      const base = buildCandidateDecisionSynthesis(withGenerationId(MICROSECOND_GENERATION_ID))
+      const changed = buildCandidateDecisionSynthesis(withGenerationId('2026-08-13T22:14:38.374260+00:00'))
+      expect(changed.status).toBe('available')
+      expect(changed.synthesisId).not.toBe(base.synthesisId)
+    })
+
+    it('C changing only the generatedAt display timestamp leaves frozen semantic behavior unchanged', () => {
+      const first = buildCandidateDecisionSynthesis(withGenerationId(MICROSECOND_GENERATION_ID))
+      const second = buildCandidateDecisionSynthesis({
+        ...withGenerationId(MICROSECOND_GENERATION_ID),
+        generatedAt: '2026-08-14T01:00:01.000Z',
+      })
+      expect(second.synthesisId).toBe(first.synthesisId)
+      expect(second.status).toBe('available')
+    })
+
+    it('E fails closed for an empty candidateGenerationId', () => {
+      const result = buildCandidateDecisionSynthesis(withGenerationId(''))
+      expect(result.status).toBe('invalid')
+      expect(result.datasetReasons).toContain('MISSING_REQUIRED_PROVENANCE')
+    })
+
+    it('F fails closed when allocationPlanCandidateGenerationId differs by one character', () => {
+      const value = input([candidate()], {
+        provenance: provenance({ candidateGenerationId: MICROSECOND_GENERATION_ID }),
+        allocationPlanCandidateGenerationId: '2026-08-13T22:14:38.374250+00:00',
+      })
+      const result = buildCandidateDecisionSynthesis(value)
+      expect(result.status).toBe('invalid')
+      expect(result.datasetReasons).toContain('ALLOCATION_CANDIDATE_GENERATION_MISMATCH')
+    })
+
+    it('never truncates, rounds, or Date-converts the generation id in output provenance', () => {
+      const result = buildCandidateDecisionSynthesis(withGenerationId(MICROSECOND_GENERATION_ID))
+      expect(result.provenance.candidateGenerationId).toBe(MICROSECOND_GENERATION_ID)
+      expect(result.provenance.candidateGenerationId).not.toBe(new Date(MICROSECOND_GENERATION_ID).toISOString())
+    })
+
+    it('I-SYN-1 stays exact-equality based for the microsecond identity', () => {
+      const snapshot = buildCandidateDecisionSynthesis(withGenerationId(MICROSECOND_GENERATION_ID))
+      const invariants = assertCandidateDecisionSynthesisInvariants(snapshot, {
+        allocationPlanCandidateGenerationId: MICROSECOND_GENERATION_ID,
+        usesCandidatesStocksExecutionPrice: false,
+        expectedSynthesisId: snapshot.synthesisId,
+      })
+      expect(invariants.ok).toBe(true)
+      expect(invariants.violated).toEqual([])
+
+      const mismatched = assertCandidateDecisionSynthesisInvariants(snapshot, {
+        allocationPlanCandidateGenerationId: '2026-08-13T22:14:38.374260+00:00',
+        usesCandidatesStocksExecutionPrice: false,
+        expectedSynthesisId: snapshot.synthesisId,
+      })
+      expect(mismatched.violated).toContain('I-SYN-1')
+    })
+  })
+
   it.each([
     ['missing holdings generation', { sourceHoldingsSnapshotId: '' }],
     ['missing settings generation', { sourceSettingsVersion: '' }],

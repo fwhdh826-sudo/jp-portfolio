@@ -169,10 +169,20 @@ function emptyProvenance(value: unknown): CandidateDecisionSynthesisProvenance {
   }
 }
 
+/**
+ * candidateGenerationId is an opaque exact upstream generation identity, not a
+ * timestamp-arithmetic field. It must be preserved verbatim (including
+ * sub-millisecond precision some upstream generations emit) and compared by
+ * exact string equality, so it is validated as a non-empty string only.
+ */
+function isCandidateGenerationIdentity(value: unknown): value is string {
+  return typeof value === 'string' && value.length > 0
+}
+
 function validProvenance(value: unknown): value is CandidateDecisionSynthesisProvenance {
   if (!isRecord(value)) return false
   return (
-    isStrictTimestamp(value.candidateGenerationId) &&
+    isCandidateGenerationIdentity(value.candidateGenerationId) &&
     value.candidatePublicationState === 'published_pass' &&
     isOneOf(value.candidateFreshness, CANDIDATE_FRESHNESS) &&
     typeof value.allocationSnapshotId === 'string' && value.allocationSnapshotId.length > 0 &&
