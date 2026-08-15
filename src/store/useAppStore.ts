@@ -68,6 +68,8 @@ import { buildCommitteeDecision } from '../domain/analysis/committeeDecision'
 import { selectMarketDataQuality, selectEffectiveCashAssumptions, selectEffectiveSafeModeActive, selectCashAssumptionsFreshness, selectSafeModeDataQuality, selectCandidateFunnelFreshness } from './selectors'
 import { buildCandidateUniverse, scoreCandidates, buildStockCandidatePlan, computeJpStockHeadroom } from '../domain/candidates'
 import type { CandidateItem } from '../domain/candidates'
+import { buildCandidateDecisionSynthesisFromState } from './candidateDecisionSynthesisComposer'
+import type { CandidateDecisionSynthesisSnapshot } from '../types/candidateDecisionSynthesis'
 import { computeRoleExposureByRole } from '../domain/candidates/roleExposure'
 import { selectCandidatePortfolioFit } from './portfolioFitSelectors'
 import {
@@ -2088,7 +2090,7 @@ export function runFullAnalysis(
     trustShortInput?: TrustShortAnalysisInput
     allocationPlanInput?: Omit<AllocationPlanInputAdapterOptions, 'generatedAt'>
   } = {},
-): Pick<AppState, 'analysis' | 'metrics' | 'holdings' | 'trust' | 'universe' | 'learning' | 'zeroPlan' | 'stockPlan' | 'trustPlan' | 'officialDecision' | 'stockCandidates' | 'allocationPlan' | 'allocationPlanStatus' | 'allocationPlanCandidateGenerationId' | 'candidatePortfolioRecommendations'> {
+): Pick<AppState, 'analysis' | 'metrics' | 'holdings' | 'trust' | 'universe' | 'learning' | 'zeroPlan' | 'stockPlan' | 'trustPlan' | 'officialDecision' | 'stockCandidates' | 'allocationPlan' | 'allocationPlanStatus' | 'allocationPlanCandidateGenerationId' | 'candidatePortfolioRecommendations' | 'candidateDecisionSynthesis'> {
   const nowMs = options.nowMs ?? Date.now()
   const nowIso = new Date(nowMs).toISOString()
   const trustShortInput = options.trustShortInput ?? captureTrustShortAnalysisInput(nowMs)
@@ -2398,6 +2400,11 @@ export function runFullAnalysis(
     allocationPlanStatus: allocationPlanStatusValue,
     allocationPlanCandidateGenerationId,
     candidatePortfolioRecommendations: [],
+    // CAND-SYN-1B single writer: filled only by appendCommittedCandidatePortfolioRecommendations,
+    // after the same canonical CSV generation authority legacy candidatePortfolioRecommendations
+    // uses is durably committed (fitResult needs that authority). Every other caller of
+    // runFullAnalysis (cash TTL revalidation, tests) intentionally gets null — fail closed.
+    candidateDecisionSynthesis: null,
   }
 }
 
@@ -2467,11 +2474,30 @@ function appendCommittedCandidatePortfolioRecommendations(
       },
     })
     const candidateFreshness = selectCandidateFunnelFreshness(compositionState, operationNowMs)
+
+    // CAND-SYN-1B: single production writer for candidateDecisionSynthesis. Computed
+    // independently of the legacy early-return below — D24 keeps population A/C/D on a
+    // `degraded` candidate funnel (only population B is dropped), unlike the legacy
+    // recommendation projection, which drops everything for invalid/unavailable/degraded.
+    const candidateDecisionSynthesis: CandidateDecisionSynthesisSnapshot | null =
+      computed.allocationPlan !== null
+        ? buildCandidateDecisionSynthesisFromState({
+            state: compositionState,
+            allocationPlan: computed.allocationPlan,
+            allocationPlanStatus: computed.allocationPlanStatus,
+            allocationPlanCandidateGenerationId: computed.allocationPlanCandidateGenerationId,
+            fitResult,
+            candidateFreshness,
+            evaluatedAt: computed.officialDecision.generatedAt,
+            nowMs: operationNowMs,
+          })
+        : null
+
     if (
       candidateFreshness === 'invalid' ||
       candidateFreshness === 'unavailable' ||
       candidateFreshness === 'degraded'
-    ) return computed
+    ) return { ...computed, candidateDecisionSynthesis }
     const projectedRecommendations = projectCandidatePortfolioRecommendations({
       recommendations,
       snapshot: computed.allocationPlan,
@@ -2486,6 +2512,7 @@ function appendCommittedCandidatePortfolioRecommendations(
     )
     return {
       ...computed,
+      candidateDecisionSynthesis,
       officialDecision,
       candidatePortfolioRecommendations: projectedRecommendations,
     }
@@ -2545,6 +2572,7 @@ const createAppStoreStateCreator = (
       allocationPlanStatus: 'stale',
       allocationPlanCandidateGenerationId: null,
       candidatePortfolioRecommendations: [],
+      candidateDecisionSynthesis: null,
     }))
   }
 
@@ -2840,6 +2868,7 @@ const createAppStoreStateCreator = (
   allocationPlanStatus: 'absent',
   allocationPlanCandidateGenerationId: null,
   candidatePortfolioRecommendations: [],
+  candidateDecisionSynthesis: null,
   // P4-A9c-data-4c: role-unit candidates news（observability用・意思決定未接続）
   candidatesNews: DEFAULT_CANDIDATES_NEWS_DATA,
   // P5-B002a: 新規個別株候補（市場公開情報のみ。observability用・officialDecision未接続）
@@ -3710,14 +3739,19 @@ const createAppStoreStateCreator = (
       allocationPlanStatus: 'stale',
       allocationPlanCandidateGenerationId: null,
       candidatePortfolioRecommendations: [],
+      candidateDecisionSynthesis: null,
     })
     try {
+      // CAND-SYN-1B: runFullAnalysis alone always returns candidateDecisionSynthesis: null
+      // (only appendCommittedCandidatePortfolioRecommendations — not called on this path —
+      // ever populates it), so a stale executable synthesis can never survive TTL expiry.
       const computed = runFullAnalysis(get(), { nowMs })
       set({
         allocationPlan: computed.allocationPlan,
         allocationPlanStatus: computed.allocationPlanStatus,
         allocationPlanCandidateGenerationId: computed.allocationPlanCandidateGenerationId,
         candidatePortfolioRecommendations: computed.candidatePortfolioRecommendations,
+        candidateDecisionSynthesis: computed.candidateDecisionSynthesis,
       })
     } catch {
       // 再構築に失敗しても fail-closed のまま（実行可能な snapshot は残らない）

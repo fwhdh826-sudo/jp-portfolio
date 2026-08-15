@@ -14,6 +14,17 @@ export {
   normalizeCandidateExecutionReferencePrice,
 } from './candidateDecisionSynthesis'
 export type { HoldingAllocationCandidateAdapterResult } from './candidateDecisionSynthesis'
+export {
+  CANDIDATE_EXECUTION_PRICE_REFERENCE_STATUSES,
+  captureCandidateExecutionPriceDatasetProvenance,
+  captureCandidateExecutionPriceReferences,
+} from './candidateExecutionPriceReference'
+export type {
+  CandidateExecutionPriceDatasetProvenance,
+  CandidateExecutionPriceReference,
+  CandidateExecutionPriceReferenceCaptureResult,
+  CandidateExecutionPriceReferenceStatus,
+} from './candidateExecutionPriceReference'
 
 // P5-B002b-1: 新規個別株候補（candidates_stocks.json由来。officialDecision未接続）
 export type {

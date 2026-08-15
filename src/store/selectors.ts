@@ -83,6 +83,11 @@ export function selectCandidateFunnelFreshness(
   return evaluateCandidateFunnelFreshness({ status, data: null }, nowMs)
 }
 
+// ── CAND-SYN-1B: read-only accessor for the canonical local-only synthesis. Must not
+// recompute money/ranking/action or fall back to legacy candidatePortfolioRecommendations
+// — buildCandidateDecisionSynthesisFromState (store writer) is the only producer.
+export const selectCandidateDecisionSynthesis = (s: AppState) => s.candidateDecisionSynthesis
+
 // ── システム状態 ───────────────────────────────────────────────
 export const selectIsLoading = (s: AppState) => s.system.status === 'loading'
 export const selectStatusColor = (s: AppState) => {
