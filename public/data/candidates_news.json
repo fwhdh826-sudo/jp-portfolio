@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-08-14T21:05:13.946514+09:00",
-  "sourceUpdatedAt": "2026-08-14T11:48:56+00:00",
+  "updatedAt": "2026-08-16T08:42:33.956790+09:00",
+  "sourceUpdatedAt": "2026-08-15T22:41:45+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -20,22 +20,48 @@
       "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 3,
+      "sourceCount": 2,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Taiwan Predicts First Year of Double-Digit GDP Growth Since 2010",
-      "topPositiveTitle": "Taiwan Predicts First Year of Double-Digit GDP Growth Since 2010",
+      "topNegativeTitle": "AI ‘Chipflation’ Washes Ashore in the UK Economy",
+      "topPositiveTitle": "AI ‘Chipflation’ Washes Ashore in the UK Economy",
       "items": [
         {
-          "title": "Taiwan Predicts First Year of Double-Digit GDP Growth Since 2010",
+          "title": "AI ‘Chipflation’ Washes Ashore in the UK Economy",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-14T08:18:46+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-14/taiwan-predicts-first-year-of-double-digit-growth-since-2010",
+          "publishedAt": "2026-08-15T20:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-15/ai-chipflation-washes-ashore-in-the-uk-economy",
           "tags": [
-            "geopolitical",
+            "commodity",
+            "jp_semiconductor",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Bond Traders Agonize Over AI Companies’ $70 Billion of Shadow Credit Backstops",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-15T19:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-15/bond-traders-agonize-over-ai-companies-70-billion-of-shadow-credit-backstops",
+          "tags": [
+            "jp_semiconductor",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Modi Puts Chips, Nuclear Power at Heart of India Push",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-15T12:21:43+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-15/modi-puts-chips-nuclear-power-at-heart-of-india-push",
+          "tags": [
             "jp_semiconductor",
             "market"
           ]
@@ -43,23 +69,38 @@
       ]
     },
     "us_broad": {
-      "avgSentiment": 0.057,
+      "avgSentiment": 0.083,
       "negativeCount": 1,
-      "positiveCount": 1,
+      "positiveCount": 2,
       "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Goldman’s Kaplan Backs ‘Kick-the-Can’ Fed Caution on Rate Hikes",
-      "topPositiveTitle": "Stocks Hold Near Record as Tech Appetite Returns: Markets Wrap",
+      "topNegativeTitle": "World Economy Latest: US CPI Softens, UK Economy Expands",
+      "topPositiveTitle": "Strong Earnings Keep PNC’s Agati Bullish on Stocks",
       "items": [
         {
-          "title": "Goldman’s Kaplan Backs ‘Kick-the-Can’ Fed Caution on Rate Hikes",
+          "title": "World Economy Latest: US CPI Softens, UK Economy Expands",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-08-13T14:19:41+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-13/goldman-s-kaplan-backs-kick-the-can-fed-caution-on-rate-hikes",
+          "publishedAt": "2026-08-15T09:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-15/world-economy-latest-us-cpi-softens-uk-economy-expands",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Inflation Is Cooling. But is 2% Out of Reach?",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-15T12:02:46+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-15/inflation-is-cooling-but-is-2-out-of-reach-video",
           "tags": [
             "market",
             "rates",
@@ -67,80 +108,67 @@
           ]
         },
         {
-          "title": "Boeing Analysts Turn Most Bullish Since 2022 on ‘Momentum Shift’",
+          "title": "Strong Earnings Keep PNC’s Agati Bullish on Stocks",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-14T10:30:01+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-14/boeing-analysts-turn-most-bullish-since-2022-on-momentum-shift",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-15T13:48:44+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-15/strong-earnings-keep-pnc-s-agati-bullish-on-stocks-video",
           "tags": [
+            "macro_risk",
             "market",
+            "rates",
             "us_broad"
           ]
         },
         {
-          "title": "Stocks Hold Near Record as Tech Appetite Returns: Markets Wrap",
+          "title": "‘Outlier’ S&P 500 Earnings Strength Cheers Wall Street’s Bulls",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.5,
-          "publishedAt": "2026-08-13T22:10:41+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-13/asian-stocks-set-for-gains-as-us-inflation-cools-markets-wrap",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-15T13:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-15/-outlier-s-p-500-earnings-strength-cheers-wall-street-s-bulls",
           "tags": [
-            "commodity",
             "market",
-            "us_broad",
-            "us_growth"
+            "us_broad"
           ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.61,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
-      "positiveCount": 3,
-      "neutralCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Amazon, Michaels Benefit as More Americans Spend on Crafts And Hobbies",
-      "topPositiveTitle": "Malaysia Revises Up Second-Quarter Growth to 6% With Central Bank Upbeat",
+      "topNegativeTitle": "AI ‘Chipflation’ Washes Ashore in the UK Economy",
+      "topPositiveTitle": "AI ‘Chipflation’ Washes Ashore in the UK Economy",
       "items": [
         {
-          "title": "Amazon, Michaels Benefit as More Americans Spend on Crafts And Hobbies",
+          "title": "AI ‘Chipflation’ Washes Ashore in the UK Economy",
           "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-14T09:30:19+00:00",
-          "url": "https://www.bloomberg.com/news/features/2026-08-14/amazon-michaels-benefit-as-more-americans-spend-on-crafts-and-hobbies",
-          "tags": [
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Stocks Hold Near Record as Tech Appetite Returns: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.5,
-          "publishedAt": "2026-08-13T22:10:41+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-13/asian-stocks-set-for-gains-as-us-inflation-cools-markets-wrap",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-15T20:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-15/ai-chipflation-washes-ashore-in-the-uk-economy",
           "tags": [
             "commodity",
+            "jp_semiconductor",
             "market",
-            "us_broad",
             "us_growth"
           ]
         },
         {
-          "title": "Malaysia Revises Up Second-Quarter Growth to 6% With Central Bank Upbeat",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-08-14T04:00:11+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-14/malaysia-revises-up-second-quarter-growth-to-6-with-central-bank-upbeat",
+          "title": "Bond Traders Agonize Over AI Companies’ $70 Billion of Shadow Credit Backstops",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-15T19:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-15/bond-traders-agonize-over-ai-companies-70-billion-of-shadow-credit-backstops",
           "tags": [
-            "geopolitical",
-            "macro_risk",
+            "jp_semiconductor",
             "market",
             "us_growth"
           ]
@@ -196,82 +224,83 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.278,
-      "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 4,
+      "avgSentiment": -0.041,
+      "negativeCount": 2,
+      "positiveCount": 1,
+      "neutralCount": 5,
       "sourceCount": 3,
-      "itemCount": 6,
+      "itemCount": 8,
       "isStale": false,
-      "topNegativeTitle": "Oil Spills Show Cost of Keeping Middle East Barrels Flowing",
-      "topPositiveTitle": "Malaysia Revises Up Second-Quarter Growth to 6% With Central Bank Upbeat",
+      "topNegativeTitle": "World Economy Latest: US CPI Softens, UK Economy Expands",
+      "topPositiveTitle": "Strong Earnings Keep PNC’s Agati Bullish on Stocks",
       "items": [
         {
-          "title": "Oil Spills Show Cost of Keeping Middle East Barrels Flowing",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-14T11:20:34+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-08-14/oil-spills-show-cost-of-keeping-middle-east-barrels-flowing",
+          "title": "World Economy Latest: US CPI Softens, UK Economy Expands",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-15T09:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-15/world-economy-latest-us-cpi-softens-uk-economy-expands",
           "tags": [
             "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Trump's ‘Golden Age’ Pitch Meets Affordability Frustration",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-15T13:00:06+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-15/trump-golden-age-pitch-meets-affordability-frustration-video",
+          "tags": [
             "geopolitical",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Rupee Swings Fizzle Out as India’s Central Bank Tightens Grip",
-          "source": "Bloomberg Economics",
+          "title": "US-Iran War Risks Repeated Cycles of Fighting",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-14T08:08:29+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-14/rupee-swings-fizzle-out-as-india-s-central-bank-tightens-grip",
+          "publishedAt": "2026-08-15T13:37:42+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-15/us-iran-war-risks-repeated-cycles-of-fighting-video",
           "tags": [
-            "fx",
+            "geopolitical",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Court Lets Trump Halt Tariff Exemption for Low-Cost Goods",
-          "source": "Bloomberg Economics",
+          "title": "China Protests Japan PM, Defense Minister’s Yasukuni Actions",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-13T19:10:35+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-13/us-court-says-trump-can-halt-tariff-exemption-for-low-cost-goods",
+          "publishedAt": "2026-08-15T04:01:34+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-15/china-protests-japan-pm-defense-minister-s-yasukuni-actions",
           "tags": [
-            "fx",
+            "geopolitical",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "政府 ロシアへの対抗措置を検討 プーチン氏の北方領土訪問受け",
+          "title": "公明 竹谷代表「非核三原則堅持し核兵器廃絶へ取り組みを」",
           "source": "NHK 経済",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-14T07:45:54+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20260814de43919",
+          "publishedAt": "2026-08-15T04:58:53+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20260815de44260",
           "tags": [
             "geopolitical",
             "macro_risk",
             "market"
           ],
-          "titleJa": "政府 ロシアへの対抗措置を検討 プーチン氏の北方領土訪問受け"
-        },
-        {
-          "title": "Petrochemicals Maker Braskem Beats Estimates Amid Cash Woes",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-14T10:18:57+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-14/petrochemicals-maker-braskem-beats-estimates-amid-cash-woes",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
+          "titleJa": "公明 竹谷代表「非核三原則堅持し核兵器廃絶へ取り組みを」"
         }
       ]
     },
@@ -279,96 +308,60 @@
       "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 5,
-      "sourceCount": 2,
-      "itemCount": 5,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Humanoids Market Worth $200BN By 2035: Barclays' Todorova",
-      "topPositiveTitle": "Humanoids Market Worth $200BN By 2035: Barclays' Todorova",
+      "topNegativeTitle": "India Raises $50 Billion From Diaspora, Ends Swap Facility Early",
+      "topPositiveTitle": "India Raises $50 Billion From Diaspora, Ends Swap Facility Early",
       "items": [
         {
-          "title": "Humanoids Market Worth $200BN By 2035: Barclays' Todorova",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-14T10:22:14+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-14/humanoids-market-worth-200b-by-2035-barclays-todorova-video",
-          "tags": [
-            "fx",
-            "market"
-          ]
-        },
-        {
-          "title": "Iranians Struggle to Afford Groceries as Trump Squeezes Economy",
+          "title": "India Raises $50 Billion From Diaspora, Ends Swap Facility Early",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-14T09:59:23+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-14/iranians-struggle-to-afford-groceries-as-trump-squeezes-economy",
+          "publishedAt": "2026-08-14T12:37:27+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-14/india-raises-50-billion-of-diaspora-dollars-ends-swap-facility",
           "tags": [
             "fx",
-            "market"
-          ]
-        },
-        {
-          "title": "Rupee Swings Fizzle Out as India’s Central Bank Tightens Grip",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-14T08:08:29+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-14/rupee-swings-fizzle-out-as-india-s-central-bank-tightens-grip",
-          "tags": [
-            "fx",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Carry Traders Are Exploiting Intervention to Rebuild Yen Shorts",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-14T00:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-14/carry-traders-are-exploiting-intervention-to-rebuild-yen-shorts",
-          "tags": [
-            "fx",
-            "market"
-          ]
-        },
-        {
-          "title": "Court Lets Trump Halt Tariff Exemption for Low-Cost Goods",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-13T19:10:35+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-13/us-court-says-trump-can-halt-tariff-exemption-for-low-cost-goods",
-          "tags": [
-            "fx",
-            "macro_risk",
             "market"
           ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": -0.33,
-      "negativeCount": 1,
-      "positiveCount": 0,
-      "neutralCount": 0,
+      "avgSentiment": 0.165,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Goldman’s Kaplan Backs ‘Kick-the-Can’ Fed Caution on Rate Hikes",
-      "topPositiveTitle": "Goldman’s Kaplan Backs ‘Kick-the-Can’ Fed Caution on Rate Hikes",
+      "topNegativeTitle": "Inflation Is Cooling. But is 2% Out of Reach?",
+      "topPositiveTitle": "Strong Earnings Keep PNC’s Agati Bullish on Stocks",
       "items": [
         {
-          "title": "Goldman’s Kaplan Backs ‘Kick-the-Can’ Fed Caution on Rate Hikes",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-13T14:19:41+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-13/goldman-s-kaplan-backs-kick-the-can-fed-caution-on-rate-hikes",
+          "title": "Inflation Is Cooling. But is 2% Out of Reach?",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-15T12:02:46+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-15/inflation-is-cooling-but-is-2-out-of-reach-video",
           "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Strong Earnings Keep PNC’s Agati Bullish on Stocks",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-15T13:48:44+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-15/strong-earnings-keep-pnc-s-agati-bullish-on-stocks-video",
+          "tags": [
+            "macro_risk",
             "market",
             "rates",
             "us_broad"
@@ -377,153 +370,132 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.434,
-      "negativeCount": 0,
-      "positiveCount": 3,
+      "avgSentiment": -0.11,
+      "negativeCount": 1,
+      "positiveCount": 0,
       "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Oil Spills Show Cost of Keeping Middle East Barrels Flowing",
-      "topPositiveTitle": "Swiss Growth Surges Far More Than Forecast, Led by Pharma",
+      "topNegativeTitle": "World Economy Latest: US CPI Softens, UK Economy Expands",
+      "topPositiveTitle": "AI ‘Chipflation’ Washes Ashore in the UK Economy",
       "items": [
         {
-          "title": "Oil Spills Show Cost of Keeping Middle East Barrels Flowing",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-14T11:20:34+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-08-14/oil-spills-show-cost-of-keeping-middle-east-barrels-flowing",
+          "title": "World Economy Latest: US CPI Softens, UK Economy Expands",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-15T09:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-15/world-economy-latest-us-cpi-softens-uk-economy-expands",
           "tags": [
             "commodity",
             "geopolitical",
             "macro_risk",
-            "market"
+            "market",
+            "us_broad"
           ]
         },
         {
-          "title": "Prabowo Plans Indonesian Commodity Exchange to Control Prices",
-          "source": "Bloomberg Markets",
+          "title": "AI ‘Chipflation’ Washes Ashore in the UK Economy",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-14T09:16:54+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-14/prabowo-plans-indonesian-commodity-exchange-to-control-prices",
+          "publishedAt": "2026-08-15T20:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-15/ai-chipflation-washes-ashore-in-the-uk-economy",
           "tags": [
             "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "Stocks Hold Near Record as Tech Appetite Returns: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.5,
-          "publishedAt": "2026-08-13T22:10:41+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-13/asian-stocks-set-for-gains-as-us-inflation-cools-markets-wrap",
-          "tags": [
-            "commodity",
+            "jp_semiconductor",
             "market",
-            "us_broad",
             "us_growth"
           ]
         },
         {
-          "title": "Indonesia’s 2027 Budget Positions Miners, EV Makers as Winners",
+          "title": "Iran Sanctions Could Put China Oil Trade in Focus",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-14T11:33:18+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-14/indonesia-s-2027-budget-positions-miners-ev-makers-as-winners",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-15T11:49:09+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-15/iran-sanctions-could-put-china-oil-trade-in-focus-video",
           "tags": [
             "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "Swiss Growth Surges Far More Than Forecast, Led by Pharma",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-08-14T07:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-14/swiss-growth-at-highest-in-five-years-unfazed-by-energy-prices",
-          "tags": [
-            "commodity",
+            "geopolitical",
             "market"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.278,
-      "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 4,
+      "avgSentiment": -0.083,
+      "negativeCount": 2,
+      "positiveCount": 0,
+      "neutralCount": 6,
       "sourceCount": 3,
-      "itemCount": 6,
+      "itemCount": 8,
       "isStale": false,
-      "topNegativeTitle": "Taiwan Predicts First Year of Double-Digit GDP Growth Since 2010",
-      "topPositiveTitle": "Malaysia Revises Up Second-Quarter Growth to 6% With Central Bank Upbeat",
+      "topNegativeTitle": "World Economy Latest: US CPI Softens, UK Economy Expands",
+      "topPositiveTitle": "US-Iran War Risks Repeated Cycles of Fighting",
       "items": [
         {
-          "title": "Taiwan Predicts First Year of Double-Digit GDP Growth Since 2010",
+          "title": "World Economy Latest: US CPI Softens, UK Economy Expands",
           "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-14T08:18:46+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-14/taiwan-predicts-first-year-of-double-digit-growth-since-2010",
-          "tags": [
-            "geopolitical",
-            "jp_semiconductor",
-            "market"
-          ]
-        },
-        {
-          "title": "Oil Spills Show Cost of Keeping Middle East Barrels Flowing",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-14T11:20:34+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-08-14/oil-spills-show-cost-of-keeping-middle-east-barrels-flowing",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-15T09:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-15/world-economy-latest-us-cpi-softens-uk-economy-expands",
           "tags": [
             "commodity",
             "geopolitical",
             "macro_risk",
-            "market"
+            "market",
+            "us_broad"
           ]
         },
         {
-          "title": "Ukraine Says Black Sea Port Closures May Halve Farm Exports",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-14T10:51:27+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-14/ukraine-says-black-sea-port-closures-may-halve-farm-exports",
-          "tags": [
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "政府 ロシアへの対抗措置を検討 プーチン氏の北方領土訪問受け",
-          "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-14T07:45:54+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20260814de43919",
+          "title": "Trump's ‘Golden Age’ Pitch Meets Affordability Frustration",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-15T13:00:06+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-15/trump-golden-age-pitch-meets-affordability-frustration-video",
           "tags": [
             "geopolitical",
             "macro_risk",
             "market"
-          ],
-          "titleJa": "政府 ロシアへの対抗措置を検討 プーチン氏の北方領土訪問受け"
+          ]
         },
         {
-          "title": "Petrochemicals Maker Braskem Beats Estimates Amid Cash Woes",
+          "title": "US-Iran War Risks Repeated Cycles of Fighting",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-14T10:18:57+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-14/petrochemicals-maker-braskem-beats-estimates-amid-cash-woes",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-15T13:37:42+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-15/us-iran-war-risks-repeated-cycles-of-fighting-video",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Iran Sanctions Could Put China Oil Trade in Focus",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-15T11:49:09+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-15/iran-sanctions-could-put-china-oil-trade-in-focus-video",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "China Protests Japan PM, Defense Minister’s Yasukuni Actions",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-15T04:01:34+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-15/china-protests-japan-pm-defense-minister-s-yasukuni-actions",
           "tags": [
             "geopolitical",
             "macro_risk",
@@ -541,7 +513,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 5,
+    "excludedCount": 4,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
