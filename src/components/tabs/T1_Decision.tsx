@@ -36,7 +36,7 @@ import type { CandidateDecisionSynthesisEntry, SynthesisAction } from '../../typ
 // ── ユーティリティ ────────────────────────────────────────────
 
 function rankColors(rank: string) {
-  if (rank === 'S') return { bg: '#fef9c3', text: '#854d0e', border: '#fde047' }
+  if (rank === 'S') return { bg: colors.goldBg,        text: colors.gold,          border: colors.goldBorder }
   if (rank === 'A') return { bg: colors.buyBg,         text: colors.buyText,       border: colors.buyBorder }
   if (rank === 'B') return { bg: colors.stockAccentBg,  text: colors.stockAccentText, border: '#93c5fd' }
   if (rank === 'C') return { bg: colors.holdBg,         text: colors.holdText,      border: colors.holdBorder }
@@ -463,11 +463,11 @@ function StockList({
       {dq.isSuppressed && (
         <div style={{
           padding: `${spacing[2]} ${spacing[4]}`,
-          background: 'var(--color-wait-bg, rgba(255,165,0,0.08))',
-          border: '1px solid var(--color-wait-border, rgba(255,165,0,0.3))',
+          background: colors.waitBg,
+          border: `1px solid ${colors.waitBorder}`,
           borderRadius: '6px',
           fontSize: '12px',
-          color: 'var(--color-wait-text, #c8a84a)',
+          color: colors.waitText,
           display: 'flex', alignItems: 'center', gap: spacing[2],
         }}>
           <span>📡</span>
@@ -479,11 +479,11 @@ function StockList({
       {holdingsStale && (
         <div style={{
           padding: `${spacing[2]} ${spacing[4]}`,
-          background: 'var(--color-wait-bg, rgba(255,165,0,0.08))',
-          border: '1px solid var(--color-wait-border, rgba(255,165,0,0.3))',
+          background: colors.waitBg,
+          border: `1px solid ${colors.waitBorder}`,
           borderRadius: '6px',
           fontSize: '12px',
-          color: 'var(--color-wait-text, #c8a84a)',
+          color: colors.waitText,
           display: 'flex', alignItems: 'center', gap: spacing[2],
         }}>
           <span>📦</span>
@@ -642,7 +642,7 @@ function StockList({
         }
         function rankCell(rank: string | null): { bg: string; text: string } {
           if (!rank)                   return { bg: 'transparent',      text: colors.textMuted      }
-          if (rank === 'S')            return { bg: '#fef9c3',          text: '#854d0e'             }
+          if (rank === 'S')            return { bg: colors.goldBg,      text: colors.gold           }
           if (rank === 'A')            return { bg: colors.buyBg,       text: colors.buyText        }
           if (rank === 'B')            return { bg: colors.stockAccentBg, text: colors.stockAccentText }
           if (rank === 'C')            return { bg: 'transparent',      text: colors.textSubtle     }
@@ -932,7 +932,7 @@ function CandidateDecisionSection() {
       )}
 
       {isUnavailable && (
-        <EmptyState message="候補データを確認中です" detail="しばらくしてから再度確認してください" />
+        <EmptyState message={synthesis?.status === 'invalid' ? '候補データの再計算が必要です' : '候補データ更新待ちです'} detail="次回のデータ更新後に表示されます" />
       )}
       {!isUnavailable && decisions.length === 0 && watchList.length === 0 && (
         <EmptyState message="現在は候補がありません" />

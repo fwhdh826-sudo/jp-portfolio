@@ -69,6 +69,17 @@ export function computeSynthesisDecisionsForDisplay(
   return synthesis.decisions
 }
 
+// UI-9: synthesis.status を使って「データ更新待ち」と「再計算が必要」を
+// 文言レベルで区別する（表示専用。status===undefinedの判定ロジック自体は変更しない）。
+export function candidateSynthesisUnavailableText(
+  synthesis: CandidateDecisionSynthesisSnapshot | null,
+): string {
+  if (synthesis !== null && synthesis.status === 'invalid') {
+    return '候補データの再計算が必要です。次回のデータ更新をお待ちください。'
+  }
+  return '候補データ更新待ちです。次回のデータ更新後に表示されます。'
+}
+
 // P5-PRE-1: TopCandidatesCard本体とuseHasCandidateSectionContentが同じ表示対象を
 // 参照するよう、topBuy/topSellの算出を純関数へ抽出する。BUY抑制時のtopBuyゼロ化、
 // isSellLockedによるtopSell除外、slice件数はTopCandidatesCardの既存実装と完全一致させている。
@@ -256,7 +267,7 @@ function TodayJudgmentCard() {
   const displayBuyCount  = isBuySuppressed ? 0 : buyList.length
 
   return (
-    <div className={`card market-mode-banner ${displayRegimeCls}`}>
+    <div className={`card home-hero-card market-mode-banner ${displayRegimeCls}`}>
       {/* タイトル行 */}
       <div className="market-mode-banner__header">
         <span className="market-mode-banner__icon">
@@ -306,7 +317,7 @@ function TodayJudgmentCard() {
 
       {/* データ品質ゲートバナー（新規BUY抑制中） */}
       {isDqSuppressed && (
-        <div className="no-trade-banner" style={{ background: 'var(--color-wait-bg, #1e2a1e)', borderColor: 'var(--color-wait-border, #4a6a4a)' }}>
+        <div className="no-trade-banner" style={{ background: colors.waitBg, borderColor: colors.waitBorder }}>
           <span>📡</span>
           <span>データ品質低下 — {dq.reason}</span>
         </div>
@@ -715,7 +726,7 @@ function CandidateCard() {
       </div>
 
       {isUnavailable && (
-        <div className="home-card-empty">候補データを確認中です。しばらくしてから再度確認してください。</div>
+        <div className="home-card-empty">{candidateSynthesisUnavailableText(synthesis)}</div>
       )}
       {!isUnavailable && decisions.length === 0 && (
         <div className="home-card-empty">現在は実行可能な候補はありません。</div>
