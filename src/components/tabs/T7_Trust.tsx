@@ -347,6 +347,23 @@ export function T7TrustAllocationPanel({
           <span data-estimate-only-warning="present"> ・ 見積のみ警告あり</span>
         )}
       </div>
+      {/* UI-9: 現在額/目標額の視覚的比較（表示専用。金額テキストは重複表示せず、下のクラス評価額/目標額カードのみに委ねる） */}
+      {!isEstimateOnly && (
+        <div style={{ marginBottom: spacing[3] }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', ...typography.caption, color: colors.textMuted, marginBottom: spacing[1] }}>
+            <span>現在 → 目標</span>
+            <span>{jpTrustClass.targetAmount > 0 ? `${Math.round((jpTrustClass.currentAmount / jpTrustClass.targetAmount) * 100)}%` : '—'}</span>
+          </div>
+          <div style={{ height: 8, borderRadius: radius.full, background: colors.bgElevated, overflow: 'hidden' }}>
+            <div style={{
+              height: '100%',
+              width: `${Math.round(Math.min(1, Math.max(0, jpTrustClass.targetAmount > 0 ? jpTrustClass.currentAmount / jpTrustClass.targetAmount : 0)) * 100)}%`,
+              background: jpTrustClass.currentAmount > jpTrustClass.targetAmount ? colors.waitText : colors.stockAccent,
+              borderRadius: radius.full,
+            }} />
+          </div>
+        </div>
+      )}
       <div style={{
         display: 'grid',
         gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))',
@@ -1115,7 +1132,21 @@ export function T7_Trust() {
       {/* ━━━ 未保有投信候補（BUY_NEW / WATCH） — CAND-SYN authority ━━━━━ */}
       {(() => {
         const candidateEntries = computeTrustSynthesisCandidatesForDisplay(candidateDecisionSynthesis)
-        if (candidateEntries.length === 0) return null
+        // UI-9: synthesis自体がnull/unavailable/invalidの場合は従来通りセクション非表示
+        // （CAND-SYN-1E frozen authority: E1-E3）。availableかつ0件のみ「該当なし」を明示する。
+        const isSynthesisAvailable = candidateDecisionSynthesis !== null && candidateDecisionSynthesis.status === 'available'
+        if (candidateEntries.length === 0 && !isSynthesisAvailable) return null
+        if (candidateEntries.length === 0) {
+          return (
+            <section>
+              <SectionHeader title="未保有投信候補" />
+              <p style={{ ...typography.caption, color: colors.textMuted, marginBottom: spacing[3] }}>
+                未保有の投資アイデア — 採用前に枠・方針・集中度の確認が必要
+              </p>
+              <EmptyState message="本日は該当する未保有投信候補はありません" />
+            </section>
+          )
+        }
         return (
           <section>
             <SectionHeader title="未保有投信候補" caption={`${candidateEntries.length}件`} />
@@ -1159,11 +1190,11 @@ export function T7_Trust() {
           <SectionHeader title="日本株投信 — 超短期実行候補" />
           <div style={{
             padding:      `${spacing[3]} ${spacing[4]}`,
-            background:   'var(--color-wait-bg, rgba(255,165,0,0.08))',
-            border:       '1px solid var(--color-wait-border, rgba(255,165,0,0.3))',
+            background:   colors.waitBg,
+            border:       `1px solid ${colors.waitBorder}`,
             borderRadius: radius.md,
             fontSize:     '13px',
-            color:        'var(--color-wait-text, #c8a84a)',
+            color:        colors.waitText,
             display:      'flex',
             alignItems:   'center',
             gap:          spacing[2],

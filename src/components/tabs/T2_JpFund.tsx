@@ -200,6 +200,21 @@ export function T2AllocationPanel({
           制約 {jpTrustClass.limitingFactors.length}件
         </div>
       )}
+      {/* UI-9: 現在額/目標額の視覚的比較（表示専用。金額テキストは重複表示せず、下のクラス評価額/目標額カードのみに委ねる） */}
+      <div style={{ marginBottom: spacing[3] }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', ...typography.caption, color: colors.textMuted, marginBottom: spacing[1] }}>
+          <span>現在 → 目標</span>
+          <span>{jpTrustClass.targetAmount > 0 ? `${Math.round((jpTrustClass.currentAmount / jpTrustClass.targetAmount) * 100)}%` : '—'}</span>
+        </div>
+        <div style={{ height: 8, borderRadius: radius.full, background: colors.bgElevated, overflow: 'hidden' }}>
+          <div style={{
+            height: '100%',
+            width: `${Math.round(Math.min(1, Math.max(0, jpTrustClass.targetAmount > 0 ? jpTrustClass.currentAmount / jpTrustClass.targetAmount : 0)) * 100)}%`,
+            background: jpTrustClass.currentAmount > jpTrustClass.targetAmount ? colors.waitText : colors.stockAccent,
+            borderRadius: radius.full,
+          }} />
+        </div>
+      </div>
       <div style={{
         display: 'grid',
         gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))',
