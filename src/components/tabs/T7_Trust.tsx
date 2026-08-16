@@ -6,7 +6,13 @@ import {
   selectT7TrustAllocationProjections,
   type T7TrustAllocationProjection,
 } from '../../store/allocationConsumerSelectors'
-import { selectMarketDataQuality, selectEffectiveSafeModeActive } from '../../store/selectors'
+import { selectMarketDataQuality, selectEffectiveSafeModeActive, selectCandidateDecisionSynthesis } from '../../store/selectors'
+import {
+  SYNTHESIS_ACTION_LABEL,
+  labelSynthesisReasons,
+  synthesisNonExecutableReasonText,
+} from '../candidates/candidateDecisionSynthesisPresentation'
+import type { CandidateDecisionSynthesisEntry, CandidateDecisionSynthesisSnapshot } from '../../types/candidateDecisionSynthesis'
 import { formatDateTime, formatJPYAuto } from '../../utils/format'
 import {
   buildTrustPortfolioPlan,
@@ -21,7 +27,7 @@ import {
   getTrustShortTrackingStats,
   recordTrustShortDecision,
 } from '../../domain/learning/trustShortTracker'
-import type { Trust, FundPhase7Map, AppState, OfficialDecision, OfficialDecisionItem } from '../../types'
+import type { Trust, FundPhase7Map, AppState } from '../../types'
 
 // New component system
 import { MobileBottomActionBar } from '../mobile/MobileBottomActionBar'
@@ -46,14 +52,34 @@ import type { AllocationConsumerSnapshot } from '../../types/allocationConsumer'
 
 // ── 定数・ヘルパー ──────────────────────────────────────────────
 
-// P5-B003: T7は投信専用表示。株候補（assetType==='stock'）はT0/T1側で扱うためここでは除外する
-// （officialDecision.actionsに株候補がappendされてもT7に混入させない）。
-export function computeTrustCandidateActionsForDisplay(
-  officialDecision: OfficialDecision | null,
-): OfficialDecisionItem[] {
-  return officialDecision?.actions
-    .filter(a => a.isCandidate && a.assetType !== 'stock' && (a.action === 'BUY_NEW' || a.action === 'WATCH'))
-    .slice(0, 3) ?? []
+// CAND-SYN-1E: T7「未保有投信候補」の唯一の候補UI authority。
+// candidateDecisionSynthesis.decisions/watchList（canonical order のまま、
+// 各配列内の並びを保持し decisions→watchList の順で連結）のみを読み、
+// JP_TRUST × new_to_portfolio × (BUY_NEW|WATCH) のみを抽出する。
+// null/unavailable/invalid synthesis は空配列にfail-closedし、
+// officialDecision/candidatePortfolioRecommendationsへのフォールバックはしない。
+// sort/rank/score/marketRank/money計算は一切行わない。
+export function computeTrustSynthesisCandidatesForDisplay(
+  synthesis: CandidateDecisionSynthesisSnapshot | null,
+): readonly CandidateDecisionSynthesisEntry[] {
+  if (synthesis === null || synthesis.status !== 'available') return []
+  const isUnheldTrustCandidate = (entry: CandidateDecisionSynthesisEntry) =>
+    entry.assetClass === 'JP_TRUST' &&
+    entry.relationship === 'new_to_portfolio' &&
+    (entry.action === 'BUY_NEW' || entry.action === 'WATCH')
+  return [...synthesis.decisions, ...synthesis.watchList].filter(isUnheldTrustCandidate).slice(0, 3)
+}
+
+// CAND-SYN-1E / D26: WATCHは既存の非実行理由プロジェクタをそのまま使う。
+// BUY_NEWはcanonical whyThisエビデンスがあればその先頭を、なければ
+// officialDecision.reasonに由来しない中立固定文言を表示する（金額は導入しない）。
+export function trustSynthesisCandidateReasonText(entry: CandidateDecisionSynthesisEntry): string {
+  if (entry.action === 'WATCH') {
+    return synthesisNonExecutableReasonText(entry) ?? '実行条件を満たしていません'
+  }
+  const whyThis = labelSynthesisReasons(entry.whyThis)
+  if (whyThis.length > 0) return whyThis[0]
+  return '新規保有の検討候補です'
 }
 
 const POLICY_LABEL: Record<Trust['policy'], string> = {
@@ -413,7 +439,7 @@ export function T7_Trust() {
   const margin         = useAppStore(state => state.margin)
   const flows          = useAppStore(state => state.flows)
   const universe       = useAppStore(state => state.universe)
-  const officialDecision = useAppStore(s => s.officialDecision)
+  const candidateDecisionSynthesis = useAppStore(selectCandidateDecisionSynthesis)
   const safeMode       = useAppStore(s => s.safeMode)
   const tierAViolations = useAppStore(s => s.tierAViolations)
   const tierAAlerts    = useAppStore(s => s.tierAAlerts)
@@ -1086,22 +1112,22 @@ export function T7_Trust() {
         </div>
       </section>
 
-      {/* ━━━ 未保有投信候補（BUY_NEW / WATCH） ━━━━━━━━━━━━━━━━━━━━━ */}
+      {/* ━━━ 未保有投信候補（BUY_NEW / WATCH） — CAND-SYN authority ━━━━━ */}
       {(() => {
-        const candidateActions = computeTrustCandidateActionsForDisplay(officialDecision)
-        if (candidateActions.length === 0) return null
+        const candidateEntries = computeTrustSynthesisCandidatesForDisplay(candidateDecisionSynthesis)
+        if (candidateEntries.length === 0) return null
         return (
           <section>
-            <SectionHeader title="未保有投信候補" caption={`${candidateActions.length}件`} />
+            <SectionHeader title="未保有投信候補" caption={`${candidateEntries.length}件`} />
             <p style={{ ...typography.caption, color: colors.textMuted, marginBottom: spacing[3] }}>
               未保有の投資アイデア — 採用前に枠・方針・集中度の確認が必要
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: spacing[2] }}>
-              {candidateActions.map(item => {
-                const isNew = item.action === 'BUY_NEW'
+              {candidateEntries.map(entry => {
+                const isNew = entry.action === 'BUY_NEW'
                 return (
                   <div
-                    key={item.id}
+                    key={entry.entryId}
                     style={{
                       padding:      `${spacing[3]} ${spacing[4]}`,
                       background:   colors.bgSurface,
@@ -1112,12 +1138,12 @@ export function T7_Trust() {
                   >
                     <div style={{ display: 'flex', alignItems: 'center', gap: spacing[2], marginBottom: spacing[1.5], flexWrap: 'wrap' }}>
                       <span style={{ ...typography.badge, color: colors.fundAccentText, background: colors.fundAccentBg, padding: `${spacing[0.5]} ${spacing[1.5]}`, borderRadius: radius.sm, flexShrink: 0 }}>
-                        {isNew ? '新規検討' : '監視'}
+                        {SYNTHESIS_ACTION_LABEL[entry.action]}
                       </span>
-                      <span style={{ ...typography.bodySmall, color: colors.textPrimary, fontWeight: 700 }}>{item.name}</span>
+                      <span style={{ ...typography.bodySmall, color: colors.textPrimary, fontWeight: 700 }}>{entry.displayName}</span>
                     </div>
                     <p style={{ ...typography.caption, color: colors.textMuted, marginBottom: spacing[1.5], lineHeight: '1.5' }}>
-                      {item.reason}
+                      {trustSynthesisCandidateReasonText(entry)}
                     </p>
                   </div>
                 )

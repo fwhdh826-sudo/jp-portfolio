@@ -22,9 +22,13 @@ import type {
 import { createAppStoreInstanceForTest } from '../../store/useAppStore'
 import { selectT7TrustAllocationProjections } from '../../store/allocationConsumerSelectors'
 import { T2_JpFund } from './T2_JpFund'
-import { T7_Trust } from './T7_Trust'
+import { T7_Trust, computeTrustSynthesisCandidatesForDisplay } from './T7_Trust'
 // @ts-expect-error -- Vite resolves raw source imports during Vitest.
 import t7Source from './T7_Trust.tsx?raw'
+import type {
+  CandidateDecisionSynthesisEntry,
+  CandidateDecisionSynthesisSnapshot,
+} from '../../types/candidateDecisionSynthesis'
 
 declare global {
   interface ImportMeta {
@@ -770,10 +774,10 @@ describe('R3-c2 T7 AllocationPlanSnapshot shared consumer wiring', () => {
     expect(markup).not.toContain('実行選択額')
   })
 
-  it('T7-T10 removes OfficialDecision suggestedAmount but preserves candidate prose', () => {
+  it('T7-T10 CAND-SYN-1E: no candidateDecisionSynthesis means OfficialDecision candidate prose/amount never renders', () => {
     const markup = renderT7(appState())
-    expect(markup).toContain('未保有テスト投信')
-    expect(markup).toContain('候補理由は維持')
+    expect(markup).not.toContain('未保有テスト投信')
+    expect(markup).not.toContain('候補理由は維持')
     expect(markup).not.toContain(formatJPYAuto(OFFICIAL_SUGGESTED))
   })
 
@@ -836,5 +840,236 @@ describe('R3-c2 T7 AllocationPlanSnapshot shared consumer wiring', () => {
     const queueMarkup = actionQueueMarkup(renderT7(state))
     expect(extractRenderedYenMultiset(queueMarkup)).toEqual([])
     expect(queueMarkup).not.toContain('description')
+  })
+})
+
+// ── CAND-SYN-1E: T7「未保有投信候補」authority cutover (E1-E18) ─────────
+// computeTrustSynthesisCandidatesForDisplay(candidateDecisionSynthesis) is
+// now the sole read authority for this section. officialDecision.actions is
+// no longer consulted here (see the updated T7-T10 above). These tests lock
+// the null/invalid/unavailable fail-closed behavior, the JP_TRUST ×
+// new_to_portfolio × (BUY_NEW|WATCH) eligibility gate, canonical ordering,
+// the <=3 display cap, and the absence of any legacy money/ranking leak.
+
+function makeSynthesisEntry(
+  overrides: Partial<CandidateDecisionSynthesisEntry> = {},
+): CandidateDecisionSynthesisEntry {
+  return {
+    entryId: 'JP_TRUST:trust:synthesis-a',
+    instrumentId: 'trust:synthesis-a',
+    assetClass: 'JP_TRUST',
+    displayName: 'CAND_SYN_DEFAULT_TRUST_CANDIDATE',
+    code: null,
+    action: 'BUY_NEW',
+    rank: 1,
+    relationship: 'new_to_portfolio',
+    candidateQuality: {
+      source: 'trust_registry',
+      marketRank: null,
+      marketScore: null,
+      tier: null,
+      dataConfidence: null,
+      selectedReasons: [],
+      riskReasons: [],
+    },
+    portfolioFit: { status: 'not_evaluated', relationship: null, reasons: [], risks: [], hardGatePassed: true },
+    allocationRole: { assetClassTargetGap: 0, assetClassTargetRatio: 0, classHeadroom: 0, instrumentHeadroom: 0 },
+    money: { kind: 'NOT_EXECUTABLE', executableAmountJpy: 0 },
+    blockingReasons: [],
+    warnings: [],
+    limitingFactors: [],
+    whyThis: [],
+    whyNotExecutable: [],
+    ...overrides,
+  }
+}
+
+function makeSynthesisSnapshot(
+  decisions: CandidateDecisionSynthesisEntry[],
+  watchList: CandidateDecisionSynthesisEntry[] = [],
+  overrides: Partial<CandidateDecisionSynthesisSnapshot> = {},
+): CandidateDecisionSynthesisSnapshot {
+  return {
+    schemaVersion: 'candidate-decision-synthesis-1',
+    authorityVersion: 'cand-syn-v1',
+    synthesisId: 'candidate-decision-synthesis:t7-test',
+    generatedAt: '2026-01-01T00:00:00Z',
+    status: 'available',
+    provenance: {} as CandidateDecisionSynthesisSnapshot['provenance'],
+    decisions,
+    watchList,
+    datasetReasons: [],
+    privacyMode: 'local_only',
+    persistence: 'none',
+    not_for_trading: true,
+    ...overrides,
+  }
+}
+
+function candidateSectionMarkup(markup: string): string {
+  const start = markup.indexOf('未保有投信候補')
+  if (start < 0) return ''
+  const nextMarkers = ['超短期実行候補', '当日実行候補', '資金配分提案']
+  const nextIdx = nextMarkers
+    .map(marker => markup.indexOf(marker, start))
+    .filter(idx => idx > start)
+    .sort((a, b) => a - b)[0] ?? markup.length
+  return markup.slice(start, nextIdx)
+}
+
+describe('CAND-SYN-1E: T7 candidate authority cutover (E1-E18)', () => {
+  it('E1 synthesis=null + stale officialDecision candidate: stale name/reason absent', () => {
+    const state = appState(allocationPlan(), 'current', {
+      officialDecision: officialDecision(),
+      candidateDecisionSynthesis: null,
+    })
+    const markup = renderT7(state)
+    expect(markup).not.toContain('未保有テスト投信')
+    expect(markup).not.toContain('候補理由は維持')
+  })
+
+  it('E2 synthesis invalid: candidate section absent', () => {
+    const synthesis = makeSynthesisSnapshot([makeSynthesisEntry()], [], { status: 'invalid' })
+    const state = appState(allocationPlan(), 'current', { candidateDecisionSynthesis: synthesis })
+    const markup = renderT7(state)
+    expect(markup).not.toContain('未保有投信候補')
+    expect(markup).not.toContain('CAND_SYN_DEFAULT_TRUST_CANDIDATE')
+  })
+
+  it('E3 synthesis unavailable: candidate section absent', () => {
+    const synthesis = makeSynthesisSnapshot([makeSynthesisEntry()], [], { status: 'unavailable' })
+    const state = appState(allocationPlan(), 'current', { candidateDecisionSynthesis: synthesis })
+    const markup = renderT7(state)
+    expect(markup).not.toContain('未保有投信候補')
+    expect(markup).not.toContain('CAND_SYN_DEFAULT_TRUST_CANDIDATE')
+  })
+
+  it('E4 available JP_TRUST BUY_NEW new_to_portfolio is rendered', () => {
+    const entry = makeSynthesisEntry({ entryId: 'e4', displayName: 'CAND_SYN_BUY_NEW_TRUST', action: 'BUY_NEW' })
+    const state = appState(allocationPlan(), 'current', { candidateDecisionSynthesis: makeSynthesisSnapshot([entry]) })
+    expect(renderT7(state)).toContain('CAND_SYN_BUY_NEW_TRUST')
+  })
+
+  it('E5 available JP_TRUST WATCH new_to_portfolio is rendered', () => {
+    const entry = makeSynthesisEntry({ entryId: 'e5', displayName: 'CAND_SYN_WATCH_TRUST', action: 'WATCH' })
+    const state = appState(allocationPlan(), 'current', { candidateDecisionSynthesis: makeSynthesisSnapshot([], [entry]) })
+    expect(renderT7(state)).toContain('CAND_SYN_WATCH_TRUST')
+  })
+
+  it('E6 JP_TRUST ADD already_held is NOT rendered in 未保有投信候補', () => {
+    const entry = makeSynthesisEntry({
+      entryId: 'e6', displayName: 'CAND_SYN_ADD_ALREADY_HELD', action: 'ADD', relationship: 'already_held',
+    })
+    const state = appState(allocationPlan(), 'current', { candidateDecisionSynthesis: makeSynthesisSnapshot([entry]) })
+    expect(renderT7(state)).not.toContain('CAND_SYN_ADD_ALREADY_HELD')
+  })
+
+  it('E7 JP_TRUST WATCH already_held is NOT rendered', () => {
+    const entry = makeSynthesisEntry({
+      entryId: 'e7', displayName: 'CAND_SYN_WATCH_ALREADY_HELD', action: 'WATCH', relationship: 'already_held',
+    })
+    const state = appState(allocationPlan(), 'current', { candidateDecisionSynthesis: makeSynthesisSnapshot([], [entry]) })
+    expect(renderT7(state)).not.toContain('CAND_SYN_WATCH_ALREADY_HELD')
+  })
+
+  it('E8 JP_STOCK BUY_NEW is NOT rendered in the T7 candidate section', () => {
+    const entry = makeSynthesisEntry({
+      entryId: 'e8', instrumentId: 'stock:e8', displayName: 'CAND_SYN_STOCK_CANDIDATE',
+      assetClass: 'JP_STOCK', action: 'BUY_NEW',
+    })
+    const state = appState(allocationPlan(), 'current', { candidateDecisionSynthesis: makeSynthesisSnapshot([entry]) })
+    expect(renderT7(state)).not.toContain('CAND_SYN_STOCK_CANDIDATE')
+  })
+
+  it('E9 BLOCKED JP_TRUST new_to_portfolio is NOT rendered (frozen T7 contract: BUY_NEW/WATCH only)', () => {
+    const entry = makeSynthesisEntry({ entryId: 'e9', displayName: 'CAND_SYN_BLOCKED_TRUST', action: 'BLOCKED' })
+    const state = appState(allocationPlan(), 'current', { candidateDecisionSynthesis: makeSynthesisSnapshot([entry]) })
+    expect(renderT7(state)).not.toContain('CAND_SYN_BLOCKED_TRUST')
+  })
+
+  it('E10 stale officialDecision candidate + current synthesis candidate: only the synthesis candidate is shown', () => {
+    const entry = makeSynthesisEntry({ entryId: 'e10', displayName: 'CAND_SYN_CURRENT_TRUST', action: 'BUY_NEW' })
+    const state = appState(allocationPlan(), 'current', {
+      officialDecision: officialDecision(),
+      candidateDecisionSynthesis: makeSynthesisSnapshot([entry]),
+    })
+    const markup = renderT7(state)
+    expect(markup).toContain('CAND_SYN_CURRENT_TRUST')
+    expect(markup).not.toContain('未保有テスト投信')
+    expect(markup).not.toContain('候補理由は維持')
+  })
+
+  it('E11 canonical order preserved: decisions before watchList, each array order intact', () => {
+    const d1 = makeSynthesisEntry({ entryId: 'd1', instrumentId: 'trust:d1', displayName: 'ORDER_D1', action: 'BUY_NEW' })
+    const d2 = makeSynthesisEntry({ entryId: 'd2', instrumentId: 'trust:d2', displayName: 'ORDER_D2', action: 'BUY_NEW' })
+    const w1 = makeSynthesisEntry({ entryId: 'w1', instrumentId: 'trust:w1', displayName: 'ORDER_W1', action: 'WATCH' })
+    const state = appState(allocationPlan(), 'current', {
+      candidateDecisionSynthesis: makeSynthesisSnapshot([d1, d2], [w1]),
+    })
+    const markup = renderT7(state)
+    const positions = ['ORDER_D1', 'ORDER_D2', 'ORDER_W1'].map(token => markup.indexOf(token))
+    expect(positions.every(pos => pos >= 0)).toBe(true)
+    expect(positions[0]).toBeLessThan(positions[1])
+    expect(positions[1]).toBeLessThan(positions[2])
+  })
+
+  it('E12 display cap: at most 3 candidate entries render even with more eligible entries', () => {
+    const ids = ['c1', 'c2', 'c3', 'c4', 'c5']
+    const entries = ids.map(id => makeSynthesisEntry({ entryId: id, instrumentId: `trust:${id}`, displayName: `CAP_${id}` }))
+    const pure = computeTrustSynthesisCandidatesForDisplay(makeSynthesisSnapshot(entries))
+    expect(pure.length).toBe(3)
+
+    const state = appState(allocationPlan(), 'current', { candidateDecisionSynthesis: makeSynthesisSnapshot(entries) })
+    const markup = renderT7(state)
+    const renderedCount = ids.filter(id => markup.includes(`CAP_${id}`)).length
+    expect(renderedCount).toBe(3)
+  })
+
+  it('E13 no sort/rank/score calculation in the T7 synthesis candidate helper', () => {
+    const helperStart = t7Source.indexOf('export function computeTrustSynthesisCandidatesForDisplay')
+    const helperEnd = t7Source.indexOf('export function trustSynthesisCandidateReasonText')
+    const helperSection = t7Source.slice(helperStart, helperEnd)
+    expect(helperStart).toBeGreaterThan(-1)
+    expect(helperSection).not.toMatch(/\.sort\(/)
+    expect(helperSection).not.toMatch(/marketRank/)
+    expect(helperSection).not.toMatch(/\.score\b/)
+  })
+
+  it('E14 candidate section never reads OfficialDecisionItem.reason / officialDecision', () => {
+    const sectionStart = t7Source.indexOf('未保有投信候補（BUY_NEW / WATCH）')
+    const sectionEnd = t7Source.indexOf('SAFE_MODE / DQ抑制中 — 新規買い判断停止中。最新データ確認後に再判定。')
+    expect(sectionStart).toBeGreaterThan(-1)
+    expect(sectionEnd).toBeGreaterThan(sectionStart)
+    const section = t7Source.slice(sectionStart, sectionEnd)
+    expect(section).not.toContain('officialDecision')
+    expect(section).not.toContain('item.reason')
+  })
+
+  it('E15 WATCH entry renders zero positive yen amounts in the candidate section', () => {
+    const entry = makeSynthesisEntry({ entryId: 'e15', displayName: 'CAND_SYN_WATCH_MONEY_CHECK', action: 'WATCH' })
+    const state = appState(allocationPlan(), 'current', { candidateDecisionSynthesis: makeSynthesisSnapshot([], [entry]) })
+    const section = candidateSectionMarkup(renderT7(state))
+    expect(section).toContain('CAND_SYN_WATCH_MONEY_CHECK')
+    expect(extractRenderedYenMultiset(section)).toEqual([])
+  })
+
+  it('E16 T7_Trust.tsx never reads state.candidatePortfolioRecommendations', () => {
+    expect(t7Source).not.toMatch(/\.candidatePortfolioRecommendations\b/)
+  })
+
+  it('E17 candidate list is keyed by entry.entryId, not array index', () => {
+    expect(t7Source).toContain('key={entry.entryId}')
+  })
+
+  it('E18 adding candidateDecisionSynthesis data does not change trustPlan.shortTermRows rendering', () => {
+    const marker = '当日実行候補'
+    const withoutSynthesis = renderT7(appState(allocationPlan(), 'current', { candidateDecisionSynthesis: null }))
+    const entry = makeSynthesisEntry({ entryId: 'e18', displayName: 'CAND_SYN_SHORTTERM_UNCHANGED_CHECK' })
+    const withSynthesis = renderT7(appState(allocationPlan(), 'current', {
+      candidateDecisionSynthesis: makeSynthesisSnapshot([entry]),
+    }))
+    const sliceFrom = (markup: string) =>
+      markup.includes(marker) ? markup.slice(markup.indexOf(marker)) : ''
+    expect(sliceFrom(withSynthesis)).toBe(sliceFrom(withoutSynthesis))
   })
 })
