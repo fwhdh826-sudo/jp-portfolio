@@ -5,6 +5,7 @@
  */
 import { useEffect, useRef, useState } from 'react'
 import { useAppStore } from './store/useAppStore'
+import { colors, v13Colors } from './theme/tokens'
 import { startCashAuthorityExpiryGuard } from './store/cashAuthorityLifecycle'
 import { StatusBar } from './components/StatusBar'
 import { TabNav } from './components/TabNav'
@@ -39,10 +40,10 @@ function HeaderRight() {
   const dow  = ['日', '月', '火', '水', '木', '金', '土'][now.getDay()]
 
   const dotColor =
-    status === 'success' ? '#34d399' :
-    status === 'loading' ? '#fbbf24' :
-    status === 'error'   ? '#f87171' :
-    '#6b7e96'
+    status === 'success' ? v13Colors.success :
+    status === 'loading' ? v13Colors.warning :
+    status === 'error'   ? v13Colors.danger :
+    colors.neutral
 
   return (
     <div className="app-header__meta">
