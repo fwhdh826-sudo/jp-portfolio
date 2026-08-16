@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-08-17T06:46:29.934071+09:00",
-  "sourceUpdatedAt": "2026-08-16T21:08:35+00:00",
+  "updatedAt": "2026-08-17T08:41:59.032062+09:00",
+  "sourceUpdatedAt": "2026-08-16T23:00:00+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -44,15 +44,15 @@
       ]
     },
     "us_broad": {
-      "avgSentiment": 0.333,
+      "avgSentiment": 0.165,
       "negativeCount": 0,
-      "positiveCount": 2,
+      "positiveCount": 1,
       "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 3,
+      "itemCount": 2,
       "isStale": false,
       "topNegativeTitle": "Fed’s Internal Rate Debate Faces New Scrutiny",
-      "topPositiveTitle": "At AI-Fueled Market Party, Wall Street Eyes the Rates Punch Bowl",
+      "topPositiveTitle": "Bonds Face a Bigger Threat Than the Fed as Global Rates Climb",
       "items": [
         {
           "title": "Fed’s Internal Rate Debate Faces New Scrutiny",
@@ -78,33 +78,19 @@
             "rates",
             "us_broad"
           ]
-        },
-        {
-          "title": "At AI-Fueled Market Party, Wall Street Eyes the Rates Punch Bowl",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-16T12:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-16/at-ai-fueled-market-party-wall-street-eyes-the-rates-punch-bowl",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad",
-            "us_growth"
-          ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.223,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
-      "positiveCount": 1,
+      "positiveCount": 0,
       "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 2,
       "isStale": false,
       "topNegativeTitle": "Bloomberg This Weekend | Meta on Trial, the Race To Replace Gov. DeSantis, and Pet Longevity",
-      "topPositiveTitle": "At AI-Fueled Market Party, Wall Street Eyes the Rates Punch Bowl",
+      "topPositiveTitle": "Bloomberg This Weekend | Meta on Trial, the Race To Replace Gov. DeSantis, and Pet Longevity",
       "items": [
         {
           "title": "Bloomberg This Weekend | Meta on Trial, the Race To Replace Gov. DeSantis, and Pet Longevity",
@@ -129,20 +115,6 @@
             "commodity",
             "jp_semiconductor",
             "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "At AI-Fueled Market Party, Wall Street Eyes the Rates Punch Bowl",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-16T12:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-16/at-ai-fueled-market-party-wall-street-eyes-the-rates-punch-bowl",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad",
             "us_growth"
           ]
         }
@@ -197,23 +169,37 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.134,
+      "avgSentiment": 0.112,
       "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 4,
+      "neutralCount": 5,
       "sourceCount": 3,
-      "itemCount": 5,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "India Readies Big LPG Output Boost as Hormuz Uncertainty Lingers",
+      "topNegativeTitle": "Latest Oil Market News and Analysis for June 17",
       "topPositiveTitle": "Israeli Economy Rebounds After Slump Sparked By Iran War",
       "items": [
         {
-          "title": "India Readies Big LPG Output Boost as Hormuz Uncertainty Lingers",
+          "title": "Latest Oil Market News and Analysis for June 17",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-16T07:13:57+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-16/india-readies-big-lpg-output-boost-as-hormuz-uncertainty-lingers",
+          "publishedAt": "2026-08-16T22:02:21+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-16/latest-oil-market-news-and-analysis-for-june-17",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Trump Says Asked Pentagon to Cut Military Drills With S. Korea",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-16T21:10:24+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-16/trump-says-asked-pentagon-to-cut-military-drills-with-s-korea",
           "tags": [
             "geopolitical",
             "macro_risk",
@@ -261,57 +247,31 @@
             "market"
           ],
           "titleJa": "政府 ロシアへの対抗措置を検討 プーチン氏の北方領土訪問受け"
-        },
-        {
-          "title": "Israeli Economy Rebounds After Slump Sparked By Iran War",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-16T10:08:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-16/israel-economy-rebounds-after-contraction-sparked-by-iran-war",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
+      "isStale": false,
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
+    },
+    "rates": {
+      "avgSentiment": 0.33,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 0,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Traders Get Pickier After Big Run in $886 Billion EM Debt Market",
-      "topPositiveTitle": "Traders Get Pickier After Big Run in $886 Billion EM Debt Market",
-      "items": [
-        {
-          "title": "Traders Get Pickier After Big Run in $886 Billion EM Debt Market",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-16T12:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-16/traders-get-pickier-after-big-run-in-886-billion-em-debt-market",
-          "tags": [
-            "fx",
-            "market"
-          ]
-        }
-      ]
-    },
-    "rates": {
-      "avgSentiment": 0.557,
-      "negativeCount": 0,
-      "positiveCount": 3,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 3,
-      "isStale": false,
       "topNegativeTitle": "Bonds Face a Bigger Threat Than the Fed as Global Rates Climb",
-      "topPositiveTitle": "At AI-Fueled Market Party, Wall Street Eyes the Rates Punch Bowl",
+      "topPositiveTitle": "Bonds Face a Bigger Threat Than the Fed as Global Rates Climb",
       "items": [
         {
           "title": "Bonds Face a Bigger Threat Than the Fed as Global Rates Climb",
@@ -325,32 +285,6 @@
             "rates",
             "us_broad"
           ]
-        },
-        {
-          "title": "At AI-Fueled Market Party, Wall Street Eyes the Rates Punch Bowl",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-16T12:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-16/at-ai-fueled-market-party-wall-street-eyes-the-rates-punch-bowl",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Why Private Equity’s Playbook Is Losing to Public Markets",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-16T12:03:47+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-16/private-equity-s-playbook-is-losing-to-public-markets-video",
-          "tags": [
-            "market",
-            "rates"
-          ]
         }
       ]
     },
@@ -358,13 +292,40 @@
       "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 3,
+      "sourceCount": 2,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "AI ‘Chipflation’ Washes Ashore in the UK Economy",
-      "topPositiveTitle": "AI ‘Chipflation’ Washes Ashore in the UK Economy",
+      "topNegativeTitle": "Oil Edges Higher as Middle East Tensions Linger: Markets Wrap",
+      "topPositiveTitle": "Oil Edges Higher as Middle East Tensions Linger: Markets Wrap",
       "items": [
+        {
+          "title": "Oil Edges Higher as Middle East Tensions Linger: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-16T22:14:58+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-16/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Latest Oil Market News and Analysis for June 17",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-16T22:02:21+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-16/latest-oil-market-news-and-analysis-for-june-17",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
         {
           "title": "AI ‘Chipflation’ Washes Ashore in the UK Economy",
           "source": "Bloomberg Economics",
@@ -382,12 +343,12 @@
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.101,
+      "avgSentiment": 0.122,
       "negativeCount": 1,
-      "positiveCount": 2,
+      "positiveCount": 3,
       "neutralCount": 7,
       "sourceCount": 3,
-      "itemCount": 10,
+      "itemCount": 11,
       "isStale": false,
       "topNegativeTitle": "Iran Pressure Campaign Lacks Clear Off Ramp",
       "topPositiveTitle": "Donalds Looks to Build on DeSantis Legacy",
@@ -405,24 +366,39 @@
           ]
         },
         {
-          "title": "Iran MOU Expires With Diplomacy Still in Play",
+          "title": "Oil Edges Higher as Middle East Tensions Linger: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-16T12:13:02+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-16/iran-mou-expires-with-diplomacy-still-in-play-video",
+          "publishedAt": "2026-08-16T22:14:58+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-16/stock-market-today-dow-s-p-live-updates",
           "tags": [
+            "commodity",
             "geopolitical",
             "market"
           ]
         },
         {
-          "title": "India Readies Big LPG Output Boost as Hormuz Uncertainty Lingers",
+          "title": "Latest Oil Market News and Analysis for June 17",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-16T07:13:57+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-16/india-readies-big-lpg-output-boost-as-hormuz-uncertainty-lingers",
+          "publishedAt": "2026-08-16T22:02:21+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-16/latest-oil-market-news-and-analysis-for-june-17",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Trump Says Asked Pentagon to Cut Military Drills With S. Korea",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-16T21:10:24+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-16/trump-says-asked-pentagon-to-cut-military-drills-with-s-korea",
           "tags": [
             "geopolitical",
             "macro_risk",
@@ -442,20 +418,6 @@
             "market"
           ],
           "titleJa": "公明 竹谷代表「非核三原則堅持し核兵器廃絶へ取り組みを」"
-        },
-        {
-          "title": "高市首相 千鳥ヶ淵戦没者墓苑で献花 「全国戦没者追悼式」前に",
-          "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-15T02:27:00+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20260815de44236",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ],
-          "titleJa": "高市首相 千鳥ヶ淵戦没者墓苑で献花 「全国戦没者追悼式」前に"
         }
       ]
     }
@@ -468,7 +430,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 2,
+    "excludedCount": 3,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
