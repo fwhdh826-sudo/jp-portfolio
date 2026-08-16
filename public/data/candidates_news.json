@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-08-16T08:42:33.956790+09:00",
-  "sourceUpdatedAt": "2026-08-15T22:41:45+00:00",
+  "updatedAt": "2026-08-16T20:42:18.795346+09:00",
+  "sourceUpdatedAt": "2026-08-16T11:09:10+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -69,44 +69,16 @@
       ]
     },
     "us_broad": {
-      "avgSentiment": 0.083,
-      "negativeCount": 1,
+      "avgSentiment": 0.33,
+      "negativeCount": 0,
       "positiveCount": 2,
-      "neutralCount": 1,
-      "sourceCount": 2,
-      "itemCount": 4,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "World Economy Latest: US CPI Softens, UK Economy Expands",
+      "topNegativeTitle": "Strong Earnings Keep PNC’s Agati Bullish on Stocks",
       "topPositiveTitle": "Strong Earnings Keep PNC’s Agati Bullish on Stocks",
       "items": [
-        {
-          "title": "World Economy Latest: US CPI Softens, UK Economy Expands",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-15T09:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-15/world-economy-latest-us-cpi-softens-uk-economy-expands",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Inflation Is Cooling. But is 2% Out of Reach?",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-15T12:02:46+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-15/inflation-is-cooling-but-is-2-out-of-reach-video",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
         {
           "title": "Strong Earnings Keep PNC’s Agati Bullish on Stocks",
           "source": "Bloomberg Markets",
@@ -224,31 +196,16 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.041,
-      "negativeCount": 2,
-      "positiveCount": 1,
+      "avgSentiment": 0.125,
+      "negativeCount": 1,
+      "positiveCount": 2,
       "neutralCount": 5,
       "sourceCount": 3,
       "itemCount": 8,
       "isStale": false,
-      "topNegativeTitle": "World Economy Latest: US CPI Softens, UK Economy Expands",
-      "topPositiveTitle": "Strong Earnings Keep PNC’s Agati Bullish on Stocks",
+      "topNegativeTitle": "Trump's ‘Golden Age’ Pitch Meets Affordability Frustration",
+      "topPositiveTitle": "Israel Economy Rebounds After Contraction Sparked By Iran War",
       "items": [
-        {
-          "title": "World Economy Latest: US CPI Softens, UK Economy Expands",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-15T09:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-15/world-economy-latest-us-cpi-softens-uk-economy-expands",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market",
-            "us_broad"
-          ]
-        },
         {
           "title": "Trump's ‘Golden Age’ Pitch Meets Affordability Frustration",
           "source": "Bloomberg Markets",
@@ -263,12 +220,12 @@
           ]
         },
         {
-          "title": "US-Iran War Risks Repeated Cycles of Fighting",
+          "title": "India Readies Big LPG Output Boost as Hormuz Uncertainty Lingers",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-15T13:37:42+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-15/us-iran-war-risks-repeated-cycles-of-fighting-video",
+          "publishedAt": "2026-08-16T07:13:57+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-16/india-readies-big-lpg-output-boost-as-hormuz-uncertainty-lingers",
           "tags": [
             "geopolitical",
             "macro_risk",
@@ -276,12 +233,12 @@
           ]
         },
         {
-          "title": "China Protests Japan PM, Defense Minister’s Yasukuni Actions",
+          "title": "US-Iran War Risks Repeated Cycles of Fighting",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-15T04:01:34+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-15/china-protests-japan-pm-defense-minister-s-yasukuni-actions",
+          "publishedAt": "2026-08-15T13:37:42+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-15/us-iran-war-risks-repeated-cycles-of-fighting-video",
           "tags": [
             "geopolitical",
             "macro_risk",
@@ -301,58 +258,46 @@
             "market"
           ],
           "titleJa": "公明 竹谷代表「非核三原則堅持し核兵器廃絶へ取り組みを」"
+        },
+        {
+          "title": "高市首相 千鳥ヶ淵戦没者墓苑で献花 「全国戦没者追悼式」前に",
+          "source": "NHK 経済",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-15T02:27:00+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20260815de44236",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ],
+          "titleJa": "高市首相 千鳥ヶ淵戦没者墓苑で献花 「全国戦没者追悼式」前に"
         }
       ]
     },
     "fx": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
+      "isStale": false,
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
+    },
+    "rates": {
+      "avgSentiment": 0.33,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 0,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "India Raises $50 Billion From Diaspora, Ends Swap Facility Early",
-      "topPositiveTitle": "India Raises $50 Billion From Diaspora, Ends Swap Facility Early",
-      "items": [
-        {
-          "title": "India Raises $50 Billion From Diaspora, Ends Swap Facility Early",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-14T12:37:27+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-14/india-raises-50-billion-of-diaspora-dollars-ends-swap-facility",
-          "tags": [
-            "fx",
-            "market"
-          ]
-        }
-      ]
-    },
-    "rates": {
-      "avgSentiment": 0.165,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 2,
-      "isStale": false,
-      "topNegativeTitle": "Inflation Is Cooling. But is 2% Out of Reach?",
+      "topNegativeTitle": "Strong Earnings Keep PNC’s Agati Bullish on Stocks",
       "topPositiveTitle": "Strong Earnings Keep PNC’s Agati Bullish on Stocks",
       "items": [
-        {
-          "title": "Inflation Is Cooling. But is 2% Out of Reach?",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-15T12:02:46+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-15/inflation-is-cooling-but-is-2-out-of-reach-video",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
         {
           "title": "Strong Earnings Keep PNC’s Agati Bullish on Stocks",
           "source": "Bloomberg Markets",
@@ -370,29 +315,26 @@
       ]
     },
     "commodity": {
-      "avgSentiment": -0.11,
-      "negativeCount": 1,
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
       "positiveCount": 0,
       "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "World Economy Latest: US CPI Softens, UK Economy Expands",
-      "topPositiveTitle": "AI ‘Chipflation’ Washes Ashore in the UK Economy",
+      "topNegativeTitle": "China Plans to Speed Up New Energy Recycling, Waste Rules: CCTV",
+      "topPositiveTitle": "China Plans to Speed Up New Energy Recycling, Waste Rules: CCTV",
       "items": [
         {
-          "title": "World Economy Latest: US CPI Softens, UK Economy Expands",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-15T09:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-15/world-economy-latest-us-cpi-softens-uk-economy-expands",
+          "title": "China Plans to Speed Up New Energy Recycling, Waste Rules: CCTV",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-16T04:28:04+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-16/china-plans-to-speed-up-new-energy-recycling-waste-rules-cctv",
           "tags": [
             "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market",
-            "us_broad"
+            "market"
           ]
         },
         {
@@ -408,48 +350,20 @@
             "market",
             "us_growth"
           ]
-        },
-        {
-          "title": "Iran Sanctions Could Put China Oil Trade in Focus",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-15T11:49:09+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-15/iran-sanctions-could-put-china-oil-trade-in-focus-video",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "market"
-          ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": -0.083,
-      "negativeCount": 2,
-      "positiveCount": 0,
+      "avgSentiment": 0.084,
+      "negativeCount": 1,
+      "positiveCount": 1,
       "neutralCount": 6,
       "sourceCount": 3,
       "itemCount": 8,
       "isStale": false,
-      "topNegativeTitle": "World Economy Latest: US CPI Softens, UK Economy Expands",
-      "topPositiveTitle": "US-Iran War Risks Repeated Cycles of Fighting",
+      "topNegativeTitle": "Trump's ‘Golden Age’ Pitch Meets Affordability Frustration",
+      "topPositiveTitle": "Israel Economy Rebounds After Contraction Sparked By Iran War",
       "items": [
-        {
-          "title": "World Economy Latest: US CPI Softens, UK Economy Expands",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-15T09:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-15/world-economy-latest-us-cpi-softens-uk-economy-expands",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market",
-            "us_broad"
-          ]
-        },
         {
           "title": "Trump's ‘Golden Age’ Pitch Meets Affordability Frustration",
           "source": "Bloomberg Markets",
@@ -457,6 +371,19 @@
           "sentimentScore": -0.33,
           "publishedAt": "2026-08-15T13:00:06+00:00",
           "url": "https://www.bloomberg.com/news/videos/2026-08-15/trump-golden-age-pitch-meets-affordability-frustration-video",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "India Readies Big LPG Output Boost as Hormuz Uncertainty Lingers",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-16T07:13:57+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-16/india-readies-big-lpg-output-boost-as-hormuz-uncertainty-lingers",
           "tags": [
             "geopolitical",
             "macro_risk",
@@ -477,30 +404,32 @@
           ]
         },
         {
-          "title": "Iran Sanctions Could Put China Oil Trade in Focus",
-          "source": "Bloomberg Markets",
+          "title": "公明 竹谷代表「非核三原則堅持し核兵器廃絶へ取り組みを」",
+          "source": "NHK 経済",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-15T11:49:09+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-15/iran-sanctions-could-put-china-oil-trade-in-focus-video",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "China Protests Japan PM, Defense Minister’s Yasukuni Actions",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-15T04:01:34+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-15/china-protests-japan-pm-defense-minister-s-yasukuni-actions",
+          "publishedAt": "2026-08-15T04:58:53+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20260815de44260",
           "tags": [
             "geopolitical",
             "macro_risk",
             "market"
-          ]
+          ],
+          "titleJa": "公明 竹谷代表「非核三原則堅持し核兵器廃絶へ取り組みを」"
+        },
+        {
+          "title": "高市首相 千鳥ヶ淵戦没者墓苑で献花 「全国戦没者追悼式」前に",
+          "source": "NHK 経済",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-15T02:27:00+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20260815de44236",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ],
+          "titleJa": "高市首相 千鳥ヶ淵戦没者墓苑で献花 「全国戦没者追悼式」前に"
         }
       ]
     }
@@ -513,7 +442,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 4,
+    "excludedCount": 3,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
