@@ -1,7 +1,9 @@
-// P5-B003: T1の新規個別株候補詳細セクション（StockCandidateSection）が使う
-// 表示専用の純関数（formatStockMetric / sortStockCandidatesForDisplay）の回帰guard。
+// CAND-SYN-1D: T1の候補判断セクション（CandidateDecisionSection）が使う
+// 表示専用の純関数（formatStockMetric）の回帰guard、および T0/T1 が
+// candidateDecisionSynthesis の canonical order（再ソート禁止・D13）のまま
+// 描画することの構成guard。
 import { describe, it, expect } from 'vitest'
-import { formatStockMetric, sortStockCandidatesForDisplay } from './T1_Decision'
+import { formatStockMetric } from './T1_Decision'
 // @ts-expect-error -- repository intentionally has no @types/node
 import { readFileSync } from 'node:fs'
 
@@ -36,58 +38,43 @@ describe('formatStockMetric', () => {
   })
 })
 
-describe('sortStockCandidatesForDisplay', () => {
-  it('BUY_NEW → WATCH → BLOCKED の順にグループ化する', () => {
-    const candidates = [
-      { action: 'BLOCKED', score: 90, code: 'a' },
-      { action: 'BUY_NEW', score: 50, code: 'b' },
-      { action: 'WATCH', score: 70, code: 'c' },
-    ]
-    const result = sortStockCandidatesForDisplay(candidates)
-    expect(result.map(c => c.code)).toEqual(['b', 'c', 'a'])
-  })
-
-  it('同一action内はscore降順', () => {
-    const candidates = [
-      { action: 'WATCH', score: 50, code: 'low' },
-      { action: 'WATCH', score: 90, code: 'high' },
-      { action: 'WATCH', score: 70, code: 'mid' },
-    ]
-    const result = sortStockCandidatesForDisplay(candidates)
-    expect(result.map(c => c.code)).toEqual(['high', 'mid', 'low'])
-  })
-
-  it('元配列を破壊しない（非破壊ソート）', () => {
-    const candidates = [
-      { action: 'WATCH', score: 50, code: 'a' },
-      { action: 'BUY_NEW', score: 90, code: 'b' },
-    ]
-    const original = [...candidates]
-    sortStockCandidatesForDisplay(candidates)
-    expect(candidates).toEqual(original)
-  })
-
-  it('空配列を渡すと空配列を返す', () => {
-    expect(sortStockCandidatesForDisplay([])).toEqual([])
-  })
-})
-
-describe('P5-B005-C-B3 frozen T1 composition protection', () => {
-  it('C-B3-T59 keeps StockCandidateSection immediately before CandidateFunnelPanel', () => {
+describe('CAND-SYN-1D frozen T1 composition protection', () => {
+  it('D13/T61 keeps CandidateDecisionSection immediately before CandidateFunnelPanel', () => {
     const withoutJsxComments = t1Source.replace(/\{\/\*[\s\S]*?\*\/\}/g, '')
     expect(withoutJsxComments).toMatch(
-      /<StockCandidateSection\s*\/>\s*<CandidateFunnelPanel\s*\/>/,
+      /<CandidateDecisionSection\s*\/>\s*<CandidateFunnelPanel\s*\/>/,
     )
   })
 
-  it('C-B3-T60 preserves StockList, StockDetail, and market candidate ordering', () => {
+  it('D13/T62 preserves StockList/StockDetail (holding views, unrelated to candidate synthesis)', () => {
     expect(t1Source).toContain('function StockList')
     expect(t1Source).toContain('function StockDetail')
-    expect(t1Source).toContain('sortStockCandidatesForDisplay')
-    expect(t1Source).toContain("BUY_NEW: 0")
-    expect(t1Source).toContain("WATCH: 1")
-    expect(t1Source).toContain("BLOCKED: 2")
     expect(panelSource).not.toContain('.reverse()')
     expect(panelSource).toContain('return leftRank - rightRank || left.artifactIndex - right.artifactIndex')
+  })
+
+  it('D13/T63 no second ranking: legacy stockCandidates score-sort helper is retired', () => {
+    expect(t1Source).not.toContain('sortStockCandidatesForDisplay')
+    expect(t1Source).not.toContain('STOCK_ACTION_ORDER')
+  })
+
+  it('D13/T64 CandidateDecisionSection renders synthesis.decisions before synthesis.watchList, concatenated only (no re-sort)', () => {
+    const section = t1Source.slice(
+      t1Source.indexOf('function CandidateDecisionSection'),
+      t1Source.indexOf('function CandidateDecisionSection') + 2000,
+    )
+    expect(section).toContain('decisions.map(entry =>')
+    expect(section).toContain('watchList.map(entry =>')
+    expect(section.indexOf('decisions.map(entry =>')).toBeLessThan(section.indexOf('watchList.map(entry =>'))
+    expect(section).not.toMatch(/\.sort\(/)
+  })
+
+  it('D13/T65 no legacy money field (maxAmount/検討上限) appears in the candidate section', () => {
+    const section = t1Source.slice(
+      t1Source.indexOf('function CandidateDecisionSection'),
+      t1Source.indexOf('function CandidateDecisionSection') + 2000,
+    )
+    expect(section).not.toContain('maxAmount')
+    expect(section).not.toContain('検討上限')
   })
 })

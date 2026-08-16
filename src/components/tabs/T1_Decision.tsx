@@ -7,7 +7,7 @@
 import { useState } from 'react'
 import { useIsMobile } from '../../hooks/useIsMobile'
 import { useAppStore } from '../../store/useAppStore'
-import { selectMarketDataQuality, selectEffectiveSafeModeActive } from '../../store/selectors'
+import { selectMarketDataQuality, selectEffectiveSafeModeActive, selectCandidateDecisionSynthesis } from '../../store/selectors'
 import { formatJPYAuto } from '../../utils/format'
 import { SectionHeader } from '../layout/SectionHeader'
 import { EmptyState } from '../shared/EmptyState'
@@ -15,6 +15,7 @@ import { colors, radius, shadow, spacing } from '../../theme/tokens'
 import { typography } from '../../theme/typography'
 import type { CSSProperties } from 'react'
 import type { Holding, HoldingAnalysis, StockScoreRecord, ScoreAxisId, OfficialDecisionItem } from '../../types'
+import type { StockCandidateItem } from '../../types/candidatesStocks'
 import { SixAxisRadar, CANONICAL_AXES_ORDER, AXIS_LABEL, AXIS_COLOR } from '../charts/SixAxisRadar'
 import { CircularGauge } from '../charts/CircularGauge'
 import { deriveDisplayDecision, type DisplayDecision } from '../../domain/analysis/displayDecision'
@@ -22,6 +23,15 @@ import { isSellLocked, getSellableDate } from '../../domain/constraints/stockLoc
 import { TIER_A_T1_STOP_LOSS_PCT } from '../../domain/constraints/tierAT1'
 import { computeHoldingsStale } from './T0_Home'
 import { CandidateFunnelPanel } from '../candidates/CandidateFunnelPanel'
+import { AssetTypeBadge } from '../badges/AssetTypeBadge'
+import {
+  SYNTHESIS_ACTION_LABEL,
+  labelBlockedReasons,
+  labelWarnings,
+  labelLimitingFactors,
+  synthesisNonExecutableReasonText,
+} from '../candidates/candidateDecisionSynthesisPresentation'
+import type { CandidateDecisionSynthesisEntry, SynthesisAction } from '../../types/candidateDecisionSynthesis'
 
 // ── ユーティリティ ────────────────────────────────────────────
 
@@ -770,8 +780,8 @@ function StockList({
         )
       })()}
 
-      {/* ── P5-B003: 新規個別株候補（candidates_stocks.json由来。詳細評価） ── */}
-      <StockCandidateSection />
+      {/* ── CAND-SYN-1D: 候補判断（CandidateDecisionSynthesis由来。唯一の候補UI authority） ── */}
+      <CandidateDecisionSection />
 
       {/* ── P5-B005-B3-C: 市場全体candidate funnel（observability only） ── */}
       <CandidateFunnelPanel />
@@ -780,51 +790,24 @@ function StockList({
   )
 }
 
-// ── P5-B003: 新規個別株候補 詳細セクション ─────────────────────
-// state.stockCandidates（B002b-1でscore/headroom/gate計算済み）を全件（BLOCKEDも含む）表示する。
-// T0は要約（BUY_NEW/WATCH最大3件）だが、T1は監査目的の詳細ビューのため件数を絞らない。
-const STOCK_CONSTRAINT_LABEL: Record<string, string> = {
-  dqGate:                'データ品質',
-  noTradeGate:            'ノートレード',
-  safeMode:               'SAFE_MODE',
-  headroomGate:           '日本株枠',
-  cashAssumptionsFresh:   '資金前提鮮度',
-  cashBudget:             '現金予算',
-  volatility:             'ボラティリティ',
-}
-
-const STOCK_BLOCKED_REASON_LABEL: Record<string, string> = {
-  DQ_SUPPRESSED:      'データ品質抑制中',
-  NO_TRADE_EMERGENCY: '緊急ノートレード',
-  SAFE_MODE_ACTIVE:   'SAFE_MODE発動中',
-  JP_STOCK_CAP:       '日本株上限',
-  DATA_STALE:         'データ陳腐化',
-  INSUFFICIENT_CASH:  '現金不足',
-  VOL_TOO_HIGH:       'ボラティリティ過大',
-  SCORE_TOO_LOW:      'スコア不足',
-}
-
+// ── CAND-SYN-1D / D13: 候補詳細セクション ────────────────────────
+// candidateDecisionSynthesis.decisions（≤3）+ watchList（≤10）のみを唯一の
+// 候補UI authorityとして読む。順序は synthesis が既に確定した canonical order
+// のままとし（D13「UI側で独立filter/slice/抑制判定を持たない」）、再ソート・
+// 再フィルタ・第二の金額計算は一切行わない。legacy state.stockCandidates /
+// applyStockCandidateGates.maxAmount は候補UI authorityとして参照しない
+// （P2-2退役）。PER/PBR/ROE等はstate.candidatesStocksの生データをevidenceとして
+// 表示するのみで、金額・順位には一切使わない。
 export function formatStockMetric(value: number | null | undefined, suffix = ''): string {
   return value === null || value === undefined ? '—' : `${value}${suffix}`
 }
 
-// P5-B003: T1は監査目的の詳細ビューのため全件表示する（BLOCKEDも含む）。
-// 表示順: BUY_NEW → WATCH → BLOCKED、各グループ内はscore降順。
-const STOCK_ACTION_ORDER: Record<string, number> = { BUY_NEW: 0, WATCH: 1, BLOCKED: 2 }
-export function sortStockCandidatesForDisplay<T extends { action: string; score: number }>(candidates: T[]): T[] {
-  return [...candidates].sort((a, b) => {
-    const ao = STOCK_ACTION_ORDER[a.action] ?? 1
-    const bo = STOCK_ACTION_ORDER[b.action] ?? 1
-    if (ao !== bo) return ao - bo
-    return b.score - a.score
-  })
-}
-
-function StockCandidateActionBadge({ action }: { action: string }) {
+function CandidateSynthesisActionBadge({ action }: { action: SynthesisAction }) {
   const cfg =
-    action === 'BUY_NEW' ? { bg: colors.buyBg,  text: colors.buyText,  label: '新規検討' } :
-    action === 'WATCH'   ? { bg: colors.waitBg, text: colors.waitText, label: '監視' } :
-                            { bg: colors.sellBg, text: colors.sellText, label: '除外' }
+    action === 'ADD'     ? { bg: colors.buyBg,  text: colors.buyText,  label: SYNTHESIS_ACTION_LABEL.ADD } :
+    action === 'BUY_NEW' ? { bg: colors.buyBg,  text: colors.buyText,  label: SYNTHESIS_ACTION_LABEL.BUY_NEW } :
+    action === 'WATCH'   ? { bg: colors.waitBg, text: colors.waitText, label: SYNTHESIS_ACTION_LABEL.WATCH } :
+                            { bg: colors.sellBg, text: colors.sellText, label: SYNTHESIS_ACTION_LABEL.BLOCKED }
   return (
     <span style={{ fontSize: '10px', fontWeight: 700, padding: `2px ${spacing[1.5]}`, borderRadius: radius.sm, background: cfg.bg, color: cfg.text }}>
       {cfg.label}
@@ -832,29 +815,111 @@ function StockCandidateActionBadge({ action }: { action: string }) {
   )
 }
 
-function StockCandidateSection() {
-  const stockCandidates     = useAppStore(s => s.stockCandidates)
+function CandidateSynthesisEntryCard({
+  entry,
+  rawByCode,
+}: {
+  entry: CandidateDecisionSynthesisEntry
+  rawByCode: Map<string, StockCandidateItem>
+}) {
+  const raw = entry.code !== null ? rawByCode.get(entry.code) : undefined
+  const nonExecutableReason = synthesisNonExecutableReasonText(entry)
+  const warnings = labelWarnings(entry.warnings)
+  const limitingFactors = labelLimitingFactors(entry.limitingFactors)
+
+  return (
+    <div
+      style={{
+        padding: `${spacing[3]} ${spacing[4]}`,
+        background: colors.bgSurface,
+        border: `1px solid ${colors.borderSubtle}`,
+        borderRadius: radius.lg,
+      }}
+    >
+      <div style={{ display: 'flex', alignItems: 'center', gap: spacing[2], flexWrap: 'wrap', marginBottom: spacing[1.5] }}>
+        {entry.code && <span style={{ fontSize: '13px', fontWeight: 700, color: colors.textPrimary }}>{entry.code}</span>}
+        <span style={{ fontSize: '13px', color: colors.textPrimary }}>{entry.displayName}</span>
+        <AssetTypeBadge type={entry.assetClass === 'JP_STOCK' ? 'stock' : 'fund'} size="sm" />
+        <CandidateSynthesisActionBadge action={entry.action} />
+        {typeof entry.candidateQuality.marketScore === 'number' && (
+          <span style={{ fontSize: '11px', color: colors.textMuted, marginLeft: 'auto' }}>
+            スコア {entry.candidateQuality.marketScore.toFixed(1)}
+          </span>
+        )}
+      </div>
+
+      {raw && (
+        <div style={{
+          display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(70px, 1fr))',
+          gap: spacing[1], fontSize: '11px', color: colors.textSubtle, marginBottom: spacing[2],
+        }}>
+          <div>PER {formatStockMetric(raw.per)}</div>
+          <div>PBR {formatStockMetric(raw.pbr)}</div>
+          <div>ROE {formatStockMetric(raw.roe, '%')}</div>
+          <div>配当 {formatStockMetric(raw.dividendYield, '%')}</div>
+          <div>σ252d {formatStockMetric(raw.sigma252d)}</div>
+          <div>3M {formatStockMetric(raw.mom3m, '%')}</div>
+        </div>
+      )}
+
+      {entry.money.kind === 'EXECUTABLE' && (
+        <div style={{ fontSize: '13px', fontWeight: 700, color: colors.buyText, marginBottom: spacing[1] }}>
+          実行可能額 {formatJPYAuto(entry.money.executableAmountJpy)}（AllocationPlan認可）
+        </div>
+      )}
+      {entry.money.kind !== 'EXECUTABLE' && nonExecutableReason !== null && (
+        <div style={{ fontSize: '12px', color: colors.textSubtle, marginBottom: spacing[1] }}>
+          {nonExecutableReason}
+        </div>
+      )}
+
+      {entry.blockingReasons.length > 0 && (
+        <div style={{ fontSize: '11px', color: colors.sellText, marginBottom: spacing[1.5] }}>
+          除外理由: {labelBlockedReasons(entry.blockingReasons).join('・')}
+        </div>
+      )}
+      {warnings.length > 0 && (
+        <div style={{ fontSize: '11px', color: colors.waitText, marginBottom: spacing[1.5] }}>
+          注意: {warnings.join('・')}
+        </div>
+      )}
+      {limitingFactors.length > 0 && (
+        <div style={{ display: 'flex', gap: spacing[1], flexWrap: 'wrap' }}>
+          {limitingFactors.map(f => (
+            <span
+              key={f}
+              style={{
+                fontSize: '10px', padding: `1px ${spacing[1]}`, borderRadius: radius.sm,
+                background: colors.holdBg, color: colors.holdText,
+              }}
+            >
+              {f}
+            </span>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
+function CandidateDecisionSection() {
+  const synthesis           = useAppStore(selectCandidateDecisionSynthesis)
   const rawCandidatesStocks = useAppStore(s => s.candidatesStocks)
   const system              = useAppStore(s => s.system)
 
-  if (stockCandidates.length === 0) return null
-
   const rawByCode = new Map(rawCandidatesStocks.candidates.map(c => [c.code, c]))
-  // P5-B003: 判断ロジックには一切影響しない表示専用の警告（P4.5-A012整合）。
+  // P5-B003由来: 判断ロジックには一切影響しない表示専用の警告（P4.5-A012整合）。
   const portfolioStale = system.localStorageFreshness?.portfolio.isStale ?? false
 
-  const sorted = sortStockCandidatesForDisplay(stockCandidates)
-
-  const dataSourceLabel = system.dataSourceStatus.candidatesStocks === 'loaded' ? 'ライブ' : '既定値'
-  const updatedAtLabel = rawCandidatesStocks.updatedAt
-    ? new Date(rawCandidatesStocks.updatedAt).toLocaleString('ja-JP')
-    : '未取得'
+  const isUnavailable = synthesis === null || synthesis.status !== 'available'
+  const decisions = isUnavailable ? [] : synthesis.decisions
+  const watchList = isUnavailable ? [] : synthesis.watchList
 
   return (
     <div>
-      <SectionHeader title="新規個別株候補" caption={`${sorted.length}件（市場公開情報のみ）`} />
+      <SectionHeader title="候補（AllocationPlan認可）" caption={isUnavailable ? undefined : `${decisions.length + watchList.length}件`} />
       <div style={{ ...typography.caption, color: colors.textMuted, margin: `${spacing[1]} 0 ${spacing[2]}` }}>
-        調査候補であり、投資判断ではありません。売買はご自身の判断で行ってください。
+        調査候補であり、投資判断ではありません。実行可能額はAllocationPlanが唯一の権限です。売買はご自身の判断で行ってください。
       </div>
       {portfolioStale && (
         <div style={{
@@ -865,76 +930,19 @@ function StockCandidateSection() {
           ⚠ 保有データが古い可能性があります。スマホからのportfolio snapshot同期を推奨します。
         </div>
       )}
-      <div style={{ fontSize: '11px', color: colors.textMuted, marginBottom: spacing[3] }}>
-        候補データ更新: {updatedAtLabel}（{dataSourceLabel}）
-      </div>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: spacing[2] }}>
-        {sorted.map(c => {
-          const raw = rawByCode.get(c.code)
-          return (
-            <div
-              key={c.code}
-              style={{
-                padding: `${spacing[3]} ${spacing[4]}`,
-                background: colors.bgSurface,
-                border: `1px solid ${colors.borderSubtle}`,
-                borderRadius: radius.lg,
-              }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', gap: spacing[2], flexWrap: 'wrap', marginBottom: spacing[1.5] }}>
-                <span style={{ fontSize: '13px', fontWeight: 700, color: colors.textPrimary }}>{c.code}</span>
-                <span style={{ fontSize: '13px', color: colors.textPrimary }}>{c.name}</span>
-                <span style={{ fontSize: '11px', color: colors.textMuted }}>{c.sector}</span>
-                <StockCandidateActionBadge action={c.action} />
-                <span style={{ fontSize: '11px', color: colors.textMuted, marginLeft: 'auto' }}>スコア {c.score.toFixed(0)}</span>
-              </div>
 
-              <div style={{
-                display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(70px, 1fr))',
-                gap: spacing[1], fontSize: '11px', color: colors.textSubtle, marginBottom: spacing[2],
-              }}>
-                <div>PER {formatStockMetric(raw?.per)}</div>
-                <div>PBR {formatStockMetric(raw?.pbr)}</div>
-                <div>ROE {formatStockMetric(raw?.roe, '%')}</div>
-                <div>配当 {formatStockMetric(raw?.dividendYield, '%')}</div>
-                <div>σ252d {formatStockMetric(raw?.sigma252d)}</div>
-                <div>3M {formatStockMetric(raw?.mom3m, '%')}</div>
-              </div>
-
-              {c.action === 'BUY_NEW' && c.maxAmount > 0 && (
-                <div style={{ fontSize: '12px', color: colors.textSubtle, marginBottom: spacing[1] }}>
-                  検討上限 {formatJPYAuto(c.maxAmount)}
-                </div>
-              )}
-
-              <div style={{ fontSize: '11px', color: colors.textMuted, marginBottom: spacing[1.5], lineHeight: '1.5' }}>
-                {c.reason}
-              </div>
-
-              {c.action === 'BLOCKED' && c.blockedReasons.length > 0 && (
-                <div style={{ fontSize: '11px', color: colors.sellText, marginBottom: spacing[1.5] }}>
-                  除外理由: {c.blockedReasons.map(r => STOCK_BLOCKED_REASON_LABEL[r] ?? r).join('・')}
-                </div>
-              )}
-
-              <div style={{ display: 'flex', gap: spacing[1], flexWrap: 'wrap' }}>
-                {Object.entries(c.constraints).map(([key, v]) => (
-                  <span
-                    key={key}
-                    style={{
-                      fontSize: '10px', padding: `1px ${spacing[1]}`, borderRadius: radius.sm,
-                      background: v === 'fail' ? colors.sellBg : colors.buyBg,
-                      color:      v === 'fail' ? colors.sellText : colors.buyText,
-                    }}
-                  >
-                    {STOCK_CONSTRAINT_LABEL[key] ?? key}
-                  </span>
-                ))}
-              </div>
-            </div>
-          )
-        })}
-      </div>
+      {isUnavailable && (
+        <EmptyState message="候補データを確認中です" detail="しばらくしてから再度確認してください" />
+      )}
+      {!isUnavailable && decisions.length === 0 && watchList.length === 0 && (
+        <EmptyState message="現在は候補がありません" />
+      )}
+      {(decisions.length > 0 || watchList.length > 0) && (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: spacing[2] }}>
+          {decisions.map(entry => <CandidateSynthesisEntryCard key={entry.entryId} entry={entry} rawByCode={rawByCode} />)}
+          {watchList.map(entry => <CandidateSynthesisEntryCard key={entry.entryId} entry={entry} rawByCode={rawByCode} />)}
+        </div>
+      )}
     </div>
   )
 }

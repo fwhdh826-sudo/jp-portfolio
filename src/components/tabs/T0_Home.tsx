@@ -20,6 +20,7 @@ import {
   selectCashAuthorityView,
   selectEffectiveSafeModeActive,
   selectSafeModeDataQuality,
+  selectCandidateDecisionSynthesis,
 } from '../../store/selectors'
 import { selectExecutableDeployableCash } from '../../store/allocationConsumerSelectors'
 import { formatJPYAuto, formatDateTime, formatRelativeTime } from '../../utils/format'
@@ -32,7 +33,12 @@ import { typography } from '../../theme/typography'
 import { isSellLocked, getSellableDate } from '../../domain/constraints/stockLock'
 import { checkTierAT1Violations } from '../../domain/constraints/tierAT1'
 import { AssetTypeBadge } from '../badges/AssetTypeBadge'
-import type { OfficialDecision, OfficialDecisionItem, HoldingAnalysis, Holding } from '../../types'
+import {
+  SYNTHESIS_ACTION_LABEL,
+  synthesisNonExecutableReasonText,
+} from '../candidates/candidateDecisionSynthesisPresentation'
+import type { CandidateDecisionSynthesisEntry, CandidateDecisionSynthesisSnapshot } from '../../types/candidateDecisionSynthesis'
+import type { HoldingAnalysis, Holding } from '../../types'
 
 // ─────────────────────────────────────────────────────────────
 // 型ヘルパー
@@ -49,46 +55,18 @@ function computeBuyDisplaySuppressed(
   return safeModeActive || dataQualitySuppressed || dqIsSuppressed
 }
 
-// P5-PRE-1: CandidateCard本体とuseHasCandidateSectionContent（候補SectionKickerの
-// 表示判定）が同じ表示対象を参照するよう、CandidateCardの表示対象算出を純関数へ抽出する。
-// isCandidate境界・BUY_NEW除外・computeBuyDisplaySuppressedの扱い・slice件数は
-// CandidateCardの既存実装と完全一致させており、動作は変更していない。
-// P5-B003: assetType==='stock'（新規個別株候補）はここでは除外し、
-// computeStockCandidateActionsForDisplay側の別枠で扱う（投信候補の3件枠を株候補が侵食しないため）。
-export function computeCandidateActionsForDisplay(
-  officialDecision: OfficialDecision | null,
-  dqIsSuppressed: boolean,
-  safeModeActive: boolean,
-): OfficialDecisionItem[] {
-  if (officialDecision == null) return []
-
-  const isBuyDisplaySuppressed = computeBuyDisplaySuppressed(
-    officialDecision.dataQualitySuppressed, dqIsSuppressed, safeModeActive
-  )
-
-  return officialDecision.actions
-    .filter(a => a.isCandidate && a.assetType !== 'stock' && (a.action === 'BUY_NEW' || a.action === 'WATCH'))
-    .filter(a => !isBuyDisplaySuppressed || a.action !== 'BUY_NEW')
-    .slice(0, 3)
-}
-
-// P5-B003: 新規個別株候補（assetType==='stock'）専用。投信候補（computeCandidateActionsForDisplay）
-// とは独立した表示枠（最大3件）。BUY_NEW抑制条件（SAFE_MODE/DQ）は投信候補と同一のcomputeBuyDisplaySuppressedを使う。
-export function computeStockCandidateActionsForDisplay(
-  officialDecision: OfficialDecision | null,
-  dqIsSuppressed: boolean,
-  safeModeActive: boolean,
-): OfficialDecisionItem[] {
-  if (officialDecision == null) return []
-
-  const isBuyDisplaySuppressed = computeBuyDisplaySuppressed(
-    officialDecision.dataQualitySuppressed, dqIsSuppressed, safeModeActive
-  )
-
-  return officialDecision.actions
-    .filter(a => a.isCandidate && a.assetType === 'stock' && (a.action === 'BUY_NEW' || a.action === 'WATCH'))
-    .filter(a => !isBuyDisplaySuppressed || a.action !== 'BUY_NEW')
-    .slice(0, 3)
+// CAND-SYN-1D / D13: T0's candidate surface reads CandidateDecisionSynthesis
+// exclusively. `decisions` is already the canonical, ordered, <=3 ADD/BUY_NEW
+// shortlist (CANDIDATE_DECISION_SYNTHESIS_DECISION_LIMIT) — this helper does
+// not filter, re-slice, re-rank, or apply SAFE_MODE/DQ suppression again
+// (those are already folded into the synthesis action/BLOCKED demotion).
+// null/unavailable/invalid synthesis fails closed to an empty list; there is
+// no fallback to legacy candidatePortfolioRecommendations or officialDecision.
+export function computeSynthesisDecisionsForDisplay(
+  synthesis: CandidateDecisionSynthesisSnapshot | null,
+): readonly CandidateDecisionSynthesisEntry[] {
+  if (synthesis === null || synthesis.status !== 'available') return []
+  return synthesis.decisions
 }
 
 // P5-PRE-1: TopCandidatesCard本体とuseHasCandidateSectionContentが同じ表示対象を
@@ -636,21 +614,6 @@ function SystemStatusBar() {
 // B'. 新規候補カード（未保有投信の発掘候補）P2-A / P2-E安全化
 // ─────────────────────────────────────────────────────────────
 
-function candidateScoreLabel(confidence?: number): '高' | '中' | '低' {
-  if (typeof confidence !== 'number') return '中'
-  if (confidence >= 0.85) return '高'
-  if (confidence >= 0.65) return '中'
-  return '低'
-}
-
-// P4-A10-2: 購入量 tier のラベル（過大投入抑制。強推奨表現は使わない）
-function sizingTierLabel(tier?: string): string {
-  if (tier === 'full') return '上限'
-  if (tier === 'half') return '標準'
-  if (tier === 'min') return '小口'
-  return ''
-}
-
 // P5-B003: portfolio(holdings) localStorageの鮮度が古い場合、株候補の
 // headroom/保有除外が古いデータに基づいている可能性を表示専用で警告する。
 // 判定ロジック（gate/score/headroom）自体は一切変更しない — 表示専用の注記。
@@ -675,10 +638,14 @@ export function candidateCardFooterText(assetKind: 'fund' | 'stock'): string {
     : '詳細評価はT7（投信管理）で確認してください'
 }
 
-function CandidateListItem({ item }: { item: OfficialDecisionItem }) {
-  const isNew = item.action === 'BUY_NEW'
-  const hasMetrics = typeof item.candidateScore === 'number' ||
-    (item.suggestedAmount != null && item.suggestedAmount > 0)
+// CAND-SYN-1D / D13, D26: renders one canonical synthesis decision entry.
+// The only amount ever shown is entry.money.executableAmountJpy, and only
+// when money.kind === 'EXECUTABLE' (verbatim AllocationPlan value, no
+// recalculation). Non-executable entries show a reason, never a legacy
+// suggestedAmount/maxAmount/sizingTier figure.
+function CandidateListItem({ entry }: { entry: CandidateDecisionSynthesisEntry }) {
+  const nonExecutableReason = synthesisNonExecutableReasonText(entry)
+  const heroScore = entry.candidateQuality.marketScore
   return (
     <div
       style={{
@@ -692,97 +659,68 @@ function CandidateListItem({ item }: { item: OfficialDecisionItem }) {
       {/* 行1: バッジ + アセット種別 + 銘柄/ファンド名（折り返し許可） */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px', flexWrap: 'wrap' }}>
         <span className="badge badge--wait">
-          {isNew ? '新規検討' : '監視'}
+          {SYNTHESIS_ACTION_LABEL[entry.action]}
         </span>
-        <AssetTypeBadge type={item.assetType === 'stock' ? 'stock' : 'fund'} size="sm" />
+        <AssetTypeBadge type={entry.assetClass === 'JP_STOCK' ? 'stock' : 'fund'} size="sm" />
         <span style={{ fontSize: '13px', fontWeight: 700, lineHeight: '1.3' }}>
-          {item.code ? `${item.code} ` : ''}{item.name}
+          {entry.code ? `${entry.code} ` : ''}{entry.displayName}
         </span>
       </div>
 
-      {/* 行2: 理由（全幅） */}
-      <div style={{ fontSize: '12px', color: 'var(--color-text-subtle)', lineHeight: '1.4', marginBottom: hasMetrics ? '6px' : 0 }}>
-        {item.reason}
+      {/* 行2: 参考スコア hero数字 + 実行可能額（あれば） / 非実行理由 */}
+      <div style={{ display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap', marginTop: '2px' }}>
+        {typeof heroScore === 'number' && (
+          <div style={{ textAlign: 'center', minWidth: 52 }}>
+            <div style={{ fontSize: 26, fontWeight: 800, color: colors.waitText, lineHeight: 1 }}>
+              {Math.round(heroScore)}
+            </div>
+            <div style={{ fontSize: 9, color: colors.textMuted }}>参考スコア</div>
+          </div>
+        )}
+        {entry.money.kind === 'EXECUTABLE' && (
+          <div>
+            <div style={{ fontSize: '18px', fontWeight: 700, color: colors.waitText, lineHeight: 1 }}>
+              {formatJPYAuto(entry.money.executableAmountJpy)}
+            </div>
+            <div style={{ fontSize: '10px', color: 'var(--color-text-muted)' }}>
+              実行可能額（AllocationPlan認可）
+            </div>
+          </div>
+        )}
+        {entry.money.kind !== 'EXECUTABLE' && nonExecutableReason !== null && (
+          <div style={{ fontSize: '12px', color: 'var(--color-text-subtle)', lineHeight: '1.4' }}>
+            {nonExecutableReason}
+          </div>
+        )}
       </div>
-
-      {/* 行3: 参考スコア hero数字 + 検討上限（あれば）P4-A123 */}
-      {hasMetrics && (
-        <div style={{ display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap', marginTop: '2px' }}>
-          {typeof item.candidateScore === 'number' && (
-            <div style={{ textAlign: 'center', minWidth: 52 }}>
-              <div style={{ fontSize: 26, fontWeight: 800, color: colors.waitText, lineHeight: 1 }}>
-                {Math.round(item.candidateScore * 100)}
-              </div>
-              <div style={{ fontSize: 9, color: colors.textMuted }}>スコア</div>
-              <div style={{ fontSize: 10, fontWeight: 600, color: colors.waitText }}>
-                {candidateScoreLabel(item.candidateScore)}
-              </div>
-            </div>
-          )}
-          {isNew && item.suggestedAmount != null && item.suggestedAmount > 0 && (
-            <div>
-              <div style={{ fontSize: '18px', fontWeight: 700, color: colors.waitText, lineHeight: 1 }}>
-                {formatJPYAuto(item.suggestedAmount)}
-              </div>
-              <div style={{ fontSize: '10px', color: 'var(--color-text-muted)' }}>
-                検討上限{sizingTierLabel(item.candidateSizingTier) ? `（${sizingTierLabel(item.candidateSizingTier)}）` : ''}
-              </div>
-            </div>
-          )}
-        </div>
-      )}
     </div>
   )
 }
 
+// CAND-SYN-1D / D13: T0 reads candidateDecisionSynthesis.decisions only —
+// never candidatePortfolioRecommendations, never officialDecision's candidate
+// compatibility component, never legacy CandidateItem/StockCandidateGateResult
+// money fields. synthesis===null/unavailable/invalid fails closed (no legacy
+// fallback); decisions.length===0 shows a no-action state, never nothing.
 function CandidateCard() {
-  const officialDecision = useAppStore(s => s.officialDecision)
-  const dq       = useAppStore(selectMarketDataQuality)
-  // P4.5-A011: raw active値だけでなく、safe_mode.jsonの鮮度によるfail-closedも含めて判定する
-  const safeModeActive = useAppStore(selectEffectiveSafeModeActive)
-  const system   = useAppStore(s => s.system)
-
-  if (!officialDecision) return null
-
-  // P5-PRE-1: 表示対象の算出はcomputeCandidateActionsForDisplayに一元化（useHasCandidateSectionContent
-  // と共有）。isCandidate境界・BUY_NEW除外・computeBuyDisplaySuppressedの扱いは従来と同一。
-  const fundCandidates  = computeCandidateActionsForDisplay(officialDecision, dq.isSuppressed, safeModeActive)
-  // P5-B003: 新規個別株候補は投信候補と別枠（最大3件）で表示する。
-  const stockCandidates = computeStockCandidateActionsForDisplay(officialDecision, dq.isSuppressed, safeModeActive)
-
-  if (fundCandidates.length === 0 && stockCandidates.length === 0) return null
-
-  const portfolioStale = isPortfolioSnapshotStale(system)
+  const synthesis = useAppStore(selectCandidateDecisionSynthesis)
+  const decisions = computeSynthesisDecisionsForDisplay(synthesis)
+  const isUnavailable = synthesis === null || synthesis.status !== 'available'
 
   return (
     <div className="card">
-      <SectionTitle icon="☆" title="新規採用候補（未保有）" />
+      <SectionTitle icon="☆" title="候補（AllocationPlan認可）" />
       <div style={{ fontSize: '12px', color: 'var(--color-text-subtle)', marginBottom: '12px' }}>
-        未保有資産の調査候補です。購入可否はSAFE_MODE/DQ/noTrade/headroom確認後の参考表示です。
+        本日の実行判断候補です。実行可能額はAllocationPlanが唯一の権限です。
       </div>
 
-      {fundCandidates.length > 0 && (
-        <>
-          {fundCandidates.map(item => <CandidateListItem key={item.id} item={item} />)}
-          <div style={{ fontSize: '11px', color: 'var(--color-text-muted)', margin: '4px 0 12px', textAlign: 'center' }}>
-            {candidateCardFooterText('fund')}
-          </div>
-        </>
+      {isUnavailable && (
+        <div className="home-card-empty">候補データを確認中です。しばらくしてから再度確認してください。</div>
       )}
-
-      {stockCandidates.length > 0 && (
-        <>
-          {portfolioStale && (
-            <div style={{ fontSize: '11px', color: colors.waitText, marginBottom: '8px', padding: '6px 8px', background: 'var(--color-wait-bg)', borderRadius: '4px' }}>
-              ⚠ 保有データが古い可能性があります。スマホからのportfolio snapshot同期を推奨します。
-            </div>
-          )}
-          {stockCandidates.map(item => <CandidateListItem key={item.id} item={item} />)}
-          <div style={{ fontSize: '11px', color: 'var(--color-text-muted)', marginTop: '4px', textAlign: 'center' }}>
-            {candidateCardFooterText('stock')}
-          </div>
-        </>
+      {!isUnavailable && decisions.length === 0 && (
+        <div className="home-card-empty">現在は実行可能な候補はありません。</div>
       )}
+      {decisions.map(entry => <CandidateListItem key={entry.entryId} entry={entry} />)}
     </div>
   )
 }
@@ -1703,28 +1641,12 @@ function TopCandidatesCard() {
   )
 }
 
-// T0-CC-4-1 / P5-PRE-1: 「候補」SectionKickerの孤立表示防止用の表示専用判定。
-// CandidateCard/TopCandidatesCardと同じ純関数（computeCandidateActionsForDisplay /
-// computeTopCandidateSignalsForDisplay）を参照することで、表示条件の手動コピーによる
-// 二重管理（P5で候補種別が増えた際の条件ずれリスク）を解消する。
-// isCandidate境界・computeBuyDisplaySuppressed呼び出し・isSellLocked除外・件数は
-// 各カード本体と完全に同一の関数を通すため、常に一致する。
+// T0-CC-4-1 / CAND-SYN-1D: 「候補」SectionKickerの表示判定。CandidateCardは
+// CAND-SYN-1Dで常に何らかの状態（decisions/no-action/unavailable）を表示する
+// ようになったため（TodoCardの「今日のアクション」kickerと同様）、孤立非表示の
+// 判定はもう不要 — 候補セクションは常に表示する。
 function useHasCandidateSectionContent(): boolean {
-  const officialDecision = useAppStore(s => s.officialDecision)
-  const dq               = useAppStore(selectMarketDataQuality)
-  const safeModeActive   = useAppStore(selectEffectiveSafeModeActive)
-  const buyList          = useAppStore(selectBuyList)
-  const sellList         = useAppStore(selectSellList)
-  const holdings         = useAppStore(s => s.holdings)
-
-  const candidateActions = computeCandidateActionsForDisplay(officialDecision, dq.isSuppressed, safeModeActive)
-  // P5-B003: 株候補のみが存在するケースでも「候補」SectionKickerが孤立非表示にならないようにする。
-  const stockCandidateActions = computeStockCandidateActionsForDisplay(officialDecision, dq.isSuppressed, safeModeActive)
-  const { topBuy, topSell } = computeTopCandidateSignalsForDisplay(
-    buyList, sellList, holdings, officialDecision?.dataQualitySuppressed ?? false, dq.isSuppressed, safeModeActive
-  )
-
-  return candidateActions.length > 0 || stockCandidateActions.length > 0 || topBuy.length > 0 || topSell.length > 0
+  return true
 }
 
 // ─────────────────────────────────────────────────────────────

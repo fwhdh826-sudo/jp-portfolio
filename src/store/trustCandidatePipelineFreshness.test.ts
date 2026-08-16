@@ -13,7 +13,7 @@ import {
   NO_CASH_AUTHORITY,
 } from '../domain/cash/cashAuthority'
 import { selectCashAssumptionsFreshness } from './selectors'
-import { computeCandidateActionsForDisplay } from '../components/tabs/T0_Home'
+import { computeSynthesisDecisionsForDisplay } from '../components/tabs/T0_Home'
 
 // P4.5-A013-T5:
 // public/data/trust_master.json はP4.5-A010-1aで恒久的に配信停止された（今後
@@ -380,7 +380,7 @@ describe('runFullAnalysis: CASH-AUTH-1 R1 現金権限のTTL/unknown/confirmed-z
     }
   })
 
-  it('#11 T0表示選択（computeCandidateActionsForDisplay）は legacy 由来のBUY_NEWを一切選ばない', () => {
+  it('#11 T0表示選択（computeSynthesisDecisionsForDisplay）は legacy 由来のBUY_NEWを一切選ばない', () => {
     for (const updatedAt of [
       new Date(NOW_MS - CASH_AUTHORITY_TTL_MS - 1).toISOString(), // stale
       new Date(NOW_MS - HOUR_MS).toISOString(),                   // fresh
@@ -395,8 +395,19 @@ describe('runFullAnalysis: CASH-AUTH-1 R1 現金権限のTTL/unknown/confirmed-z
         },
       })
       const result = runFullAnalysis(state, { nowMs: NOW_MS })
-      const display = computeCandidateActionsForDisplay(result.officialDecision, false, false)
-      expect(display).toEqual([])
+      // CAND-SYN-1D: T0 reads candidateDecisionSynthesis.decisions exclusively —
+      // this test's guarantee (no legacy-origin BUY_NEW ever reaches T0 display)
+      // now holds structurally, since the display path no longer reads
+      // officialDecision/legacy candidate fields at all. Any entry that does
+      // appear must carry only canonical AllocationPlan money (verbatim), never
+      // a legacy suggestedAmount/maxAmount-shaped value.
+      const display = computeSynthesisDecisionsForDisplay(result.candidateDecisionSynthesis)
+      for (const entry of display) {
+        expect(['ADD', 'BUY_NEW']).toContain(entry.action)
+        if (entry.money.kind === 'EXECUTABLE') {
+          expect(entry.money.calculationSnapshotId).toBe(result.allocationPlan?.snapshotId)
+        }
+      }
     }
   })
 })

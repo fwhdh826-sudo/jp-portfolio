@@ -823,18 +823,20 @@ describe('P5-B005-B3-C accessibility, keyboard, mobile, and T1 integration', () 
     expect(panelCssSource).toMatch(/candidate-funnel-card__name[\s\S]*?overflow-wrap:\s*anywhere/)
   })
 
-  it('adds the independent panel after the existing StockCandidateSection only in T1', () => {
-    expect(t1Source).toContain('<StockCandidateSection />')
+  it('adds the independent panel after the existing CandidateDecisionSection only in T1', () => {
+    // CAND-SYN-1D: StockCandidateSection (legacy applyStockCandidateGates display)
+    // was cut over to CandidateDecisionSection (candidateDecisionSynthesis authority).
+    expect(t1Source).toContain('<CandidateDecisionSection />')
     expect(t1Source).toContain('<CandidateFunnelPanel />')
     expect(t1Source.indexOf('<CandidateFunnelPanel />'))
-      .toBeGreaterThan(t1Source.indexOf('<StockCandidateSection />'))
+      .toBeGreaterThan(t1Source.indexOf('<CandidateDecisionSection />'))
     expect(t0Source).not.toContain('CandidateFunnelPanel')
   })
 
-  it('preserves the existing T1 holding list, detail path, and existing candidate UI', () => {
+  it('preserves the existing T1 holding list, detail path, and candidate synthesis UI', () => {
     expect(t1Source).toContain('function StockList')
     expect(t1Source).toContain('function StockDetail')
-    expect(t1Source).toContain('<StockCandidateSection />')
+    expect(t1Source).toContain('<CandidateDecisionSection />')
     expect(t1Source).toContain('return <StockDetail code={selectedCode}')
   })
 })

@@ -1,11 +1,14 @@
-// P5-PRE-1: CandidateCard/TopCandidatesCard/useHasCandidateSectionContentが共有する
-// 表示対象算出の純関数に対する回帰guard。P5で候補種別が増えた際も、この3箇所が
-// 常に同じ結果を返すことをこのテストで担保する。
+// CAND-SYN-1D: CandidateCard/useHasCandidateSectionContentが共有する
+// 表示対象算出の純関数に対する回帰guard。T0はcandidateDecisionSynthesis.decisions
+// のみを読み、再フィルタ・再スライス・再ランクは行わない（D13）。
 import { describe, it, expect } from 'vitest'
-import type { OfficialDecision, OfficialDecisionItem, HoldingAnalysis, Holding } from '../../types'
+import type { HoldingAnalysis, Holding } from '../../types'
+import type {
+  CandidateDecisionSynthesisEntry,
+  CandidateDecisionSynthesisSnapshot,
+} from '../../types/candidateDecisionSynthesis'
 import {
-  computeCandidateActionsForDisplay,
-  computeStockCandidateActionsForDisplay,
+  computeSynthesisDecisionsForDisplay,
   computeTopCandidateSignalsForDisplay,
   isPortfolioSnapshotStale,
   candidateCardFooterText,
@@ -13,160 +16,80 @@ import {
   computeSystemStatusNotices,
 } from './T0_Home'
 
-function makeAction(overrides: Partial<OfficialDecisionItem> = {}): OfficialDecisionItem {
+function makeEntry(overrides: Partial<CandidateDecisionSynthesisEntry> = {}): CandidateDecisionSynthesisEntry {
   return {
-    id: overrides.id ?? 'a1',
-    assetType: 'jp_trust',
-    name: 'テストファンド',
+    entryId: overrides.entryId ?? 'JP_TRUST:trust:held_overseas',
+    instrumentId: 'trust:held_overseas',
+    assetClass: 'JP_TRUST',
+    displayName: 'テストファンド',
+    code: null,
     action: 'BUY_NEW',
-    reason: 'テスト理由',
-    source: 'candidate',
-    isCandidate: true,
+    rank: 1,
+    relationship: 'new_to_portfolio',
+    candidateQuality: {
+      source: 'trust_registry',
+      marketRank: null,
+      marketScore: null,
+      tier: null,
+      dataConfidence: null,
+      selectedReasons: [],
+      riskReasons: [],
+    },
+    portfolioFit: { status: 'not_evaluated', relationship: null, reasons: [], risks: [], hardGatePassed: true },
+    allocationRole: { assetClassTargetGap: 0, assetClassTargetRatio: 0.1, classHeadroom: 0, instrumentHeadroom: 0 },
+    money: { kind: 'NOT_EXECUTABLE', executableAmountJpy: 0 },
+    blockingReasons: [],
+    warnings: [],
+    limitingFactors: [],
+    whyThis: [],
+    whyNotExecutable: [],
     ...overrides,
   }
 }
 
-function makeOfficialDecision(actions: OfficialDecisionItem[], dataQualitySuppressed = false): OfficialDecision {
+function makeSnapshot(
+  decisions: CandidateDecisionSynthesisEntry[],
+  overrides: Partial<CandidateDecisionSynthesisSnapshot> = {},
+): CandidateDecisionSynthesisSnapshot {
   return {
+    schemaVersion: 'candidate-decision-synthesis-1',
+    authorityVersion: 'cand-syn-v1',
+    synthesisId: 'candidate-decision-synthesis:test',
     generatedAt: '2026-01-01T00:00:00Z',
-    source: 'candidate',
-    headline: 'test',
-    stance: 'neutral',
-    noTrade: false,
-    dataQualitySuppressed,
-    actions,
-    risks: [],
-  } as unknown as OfficialDecision
+    status: 'available',
+    provenance: {} as CandidateDecisionSynthesisSnapshot['provenance'],
+    decisions,
+    watchList: [],
+    datasetReasons: [],
+    privacyMode: 'local_only',
+    persistence: 'none',
+    not_for_trading: true,
+    ...overrides,
+  }
 }
 
-describe('computeCandidateActionsForDisplay', () => {
-  it('officialDecisionがnullのとき空配列を返す', () => {
-    expect(computeCandidateActionsForDisplay(null, false, false)).toEqual([])
+describe('computeSynthesisDecisionsForDisplay', () => {
+  it('synthesisがnullのとき空配列を返す（fail-closed、legacyフォールバックなし）', () => {
+    expect(computeSynthesisDecisionsForDisplay(null)).toEqual([])
   })
 
-  it('isCandidate=falseのactionは含めない', () => {
-    const decision = makeOfficialDecision([
-      makeAction({ id: 'buy-existing', isCandidate: false, action: 'BUY' }),
-      makeAction({ id: 'new', isCandidate: true, action: 'BUY_NEW' }),
-    ])
-    const result = computeCandidateActionsForDisplay(decision, false, false)
-    expect(result.map(a => a.id)).toEqual(['new'])
+  it('status !== available のとき空配列を返す', () => {
+    expect(computeSynthesisDecisionsForDisplay(makeSnapshot([], { status: 'invalid' }))).toEqual([])
+    expect(computeSynthesisDecisionsForDisplay(makeSnapshot([], { status: 'unavailable' }))).toEqual([])
   })
 
-  it('BUY_NEW/WATCH以外のisCandidateアクションは含めない', () => {
-    const decision = makeOfficialDecision([
-      makeAction({ id: 'sell-candidate', isCandidate: true, action: 'SELL' }),
-      makeAction({ id: 'watch', isCandidate: true, action: 'WATCH' }),
-    ])
-    const result = computeCandidateActionsForDisplay(decision, false, false)
-    expect(result.map(a => a.id)).toEqual(['watch'])
+  it('status===available のとき synthesis.decisions をそのまま返す（再フィルタ・再スライスしない）', () => {
+    const decisions = [
+      makeEntry({ entryId: 'a' }),
+      makeEntry({ entryId: 'b' }),
+      makeEntry({ entryId: 'c' }),
+    ]
+    const result = computeSynthesisDecisionsForDisplay(makeSnapshot(decisions))
+    expect(result).toBe(decisions) // 同一参照 — UI側でコピー・再ソートしない
   })
 
-  it('BUY抑制中はBUY_NEWを除外するがWATCHは維持する', () => {
-    const decision = makeOfficialDecision([
-      makeAction({ id: 'new', isCandidate: true, action: 'BUY_NEW' }),
-      makeAction({ id: 'watch', isCandidate: true, action: 'WATCH' }),
-    ], true) // dataQualitySuppressed = true
-    const result = computeCandidateActionsForDisplay(decision, false, false)
-    expect(result.map(a => a.id)).toEqual(['watch'])
-  })
-
-  it('safeModeActive時もBUY_NEWを除外する', () => {
-    const decision = makeOfficialDecision([
-      makeAction({ id: 'new', isCandidate: true, action: 'BUY_NEW' }),
-      makeAction({ id: 'watch', isCandidate: true, action: 'WATCH' }),
-    ])
-    const result = computeCandidateActionsForDisplay(decision, false, true) // safeModeActive = true
-    expect(result.map(a => a.id)).toEqual(['watch'])
-  })
-
-  it('4件以上あっても先頭3件までに絞る', () => {
-    const decision = makeOfficialDecision([
-      makeAction({ id: 'w1', isCandidate: true, action: 'WATCH' }),
-      makeAction({ id: 'w2', isCandidate: true, action: 'WATCH' }),
-      makeAction({ id: 'w3', isCandidate: true, action: 'WATCH' }),
-      makeAction({ id: 'w4', isCandidate: true, action: 'WATCH' }),
-    ])
-    const result = computeCandidateActionsForDisplay(decision, false, false)
-    expect(result).toHaveLength(3)
-  })
-
-  // P5-B003: 株候補（assetType==='stock'）は投信候補枠から除外される
-  it('assetType===stock の候補は含めない（株候補枠を侵食しない）', () => {
-    const decision = makeOfficialDecision([
-      makeAction({ id: 'stock-1', assetType: 'stock', code: '7203', action: 'BUY_NEW' }),
-      makeAction({ id: 'trust-1', assetType: 'jp_trust', action: 'BUY_NEW' }),
-    ])
-    const result = computeCandidateActionsForDisplay(decision, false, false)
-    expect(result.map(a => a.id)).toEqual(['trust-1'])
-  })
-})
-
-// P5-B003: computeStockCandidateActionsForDisplay — computeCandidateActionsForDisplayと
-// 対称のロジックで、assetType==='stock' の候補だけを最大3件返す。
-describe('computeStockCandidateActionsForDisplay', () => {
-  it('officialDecisionがnullのとき空配列を返す', () => {
-    expect(computeStockCandidateActionsForDisplay(null, false, false)).toEqual([])
-  })
-
-  it('assetType===jp_trust等の投信候補は含めない', () => {
-    const decision = makeOfficialDecision([
-      makeAction({ id: 'trust-1', assetType: 'jp_trust', action: 'BUY_NEW' }),
-      makeAction({ id: 'stock-1', assetType: 'stock', code: '7203', action: 'BUY_NEW' }),
-    ])
-    const result = computeStockCandidateActionsForDisplay(decision, false, false)
-    expect(result.map(a => a.id)).toEqual(['stock-1'])
-  })
-
-  it('isCandidate=falseのstock actionは含めない', () => {
-    const decision = makeOfficialDecision([
-      makeAction({ id: 'stock-buy', assetType: 'stock', code: '7203', isCandidate: false, action: 'BUY' }),
-      makeAction({ id: 'stock-new', assetType: 'stock', code: '9984', isCandidate: true, action: 'BUY_NEW' }),
-    ])
-    const result = computeStockCandidateActionsForDisplay(decision, false, false)
-    expect(result.map(a => a.id)).toEqual(['stock-new'])
-  })
-
-  it('BUY抑制中はBUY_NEWを除外するがWATCHは維持する', () => {
-    const decision = makeOfficialDecision([
-      makeAction({ id: 'stock-new', assetType: 'stock', code: '7203', action: 'BUY_NEW' }),
-      makeAction({ id: 'stock-watch', assetType: 'stock', code: '9984', action: 'WATCH' }),
-    ], true)
-    const result = computeStockCandidateActionsForDisplay(decision, false, false)
-    expect(result.map(a => a.id)).toEqual(['stock-watch'])
-  })
-
-  it('safeModeActive時もBUY_NEWを除外する', () => {
-    const decision = makeOfficialDecision([
-      makeAction({ id: 'stock-new', assetType: 'stock', code: '7203', action: 'BUY_NEW' }),
-      makeAction({ id: 'stock-watch', assetType: 'stock', code: '9984', action: 'WATCH' }),
-    ])
-    const result = computeStockCandidateActionsForDisplay(decision, false, true)
-    expect(result.map(a => a.id)).toEqual(['stock-watch'])
-  })
-
-  it('4件以上あっても先頭3件までに絞る', () => {
-    const decision = makeOfficialDecision([
-      makeAction({ id: 's1', assetType: 'stock', code: '1', action: 'WATCH' }),
-      makeAction({ id: 's2', assetType: 'stock', code: '2', action: 'WATCH' }),
-      makeAction({ id: 's3', assetType: 'stock', code: '3', action: 'WATCH' }),
-      makeAction({ id: 's4', assetType: 'stock', code: '4', action: 'WATCH' }),
-    ])
-    const result = computeStockCandidateActionsForDisplay(decision, false, false)
-    expect(result).toHaveLength(3)
-  })
-
-  it('投信候補・株候補が混在していても互いの枠を侵食しない', () => {
-    const decision = makeOfficialDecision([
-      makeAction({ id: 'trust-1', assetType: 'jp_trust', action: 'BUY_NEW' }),
-      makeAction({ id: 'trust-2', assetType: 'global_trust', action: 'WATCH' }),
-      makeAction({ id: 'stock-1', assetType: 'stock', code: '7203', action: 'BUY_NEW' }),
-      makeAction({ id: 'stock-2', assetType: 'stock', code: '9984', action: 'WATCH' }),
-    ])
-    const fundResult  = computeCandidateActionsForDisplay(decision, false, false)
-    const stockResult = computeStockCandidateActionsForDisplay(decision, false, false)
-    expect(fundResult.map(a => a.id)).toEqual(['trust-1', 'trust-2'])
-    expect(stockResult.map(a => a.id)).toEqual(['stock-1', 'stock-2'])
+  it('decisions が空のとき空配列を返す（候補なし状態）', () => {
+    expect(computeSynthesisDecisionsForDisplay(makeSnapshot([]))).toEqual([])
   })
 })
 
