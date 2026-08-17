@@ -186,16 +186,33 @@ export interface CsvImportFeedback {
   ok: boolean
   message: string
   tone?: 'info'
+  details?: string[]
 }
 
 export function csvImportFeedback(result: CsvImportResult): CsvImportFeedback {
   if (!result.ok && 'operation' in result) {
     return { ok: false, message: coordinationFailureMessage(result.code) }
   }
+  const diagnostics = result.diagnostics
+  const details = diagnostics
+    ? [
+        `今回の取込試行: 株式${diagnostics.recognizedStockRows}件 / 投信${diagnostics.recognizedTrustRows}件を認識`,
+        `投信: ${diagnostics.matchedTrustRows}一致 / ${diagnostics.unknownTrustRows}未照合 / ${diagnostics.ambiguousTrustRows}競合`,
+        ...(diagnostics.unknownTrustNames.length > 0
+          ? [`未照合商品: ${diagnostics.unknownTrustNames.slice(0, 5).join('、')}`]
+          : []),
+        ...(diagnostics.ambiguousFundIds.length > 0
+          ? [`競合した登録ID: ${diagnostics.ambiguousFundIds.slice(0, 5).join('、')}`]
+          : []),
+        ...(diagnostics.failedGuard ? ['安全性ガードにより取込を中止'] : []),
+        diagnostics.committed ? '反映: 完了' : '反映件数: 0',
+      ]
+    : undefined
   return {
     ok: result.ok,
     message: result.message,
     ...(result.ok && result.code === 'DUPLICATE_CSV' ? { tone: 'info' as const } : {}),
+    ...(details ? { details } : {}),
   }
 }
 
@@ -346,7 +363,14 @@ function CsvDropArea({
             ? 'var(--color-wait-border)'
             : lastResult.ok ? 'var(--color-buy-border)' : 'var(--color-sell-border)'}`,
         }}>
-          {lastResult.tone === 'info' ? `ℹ ${lastResult.message}` : lastResult.ok ? `✓ ${lastResult.message}` : `✗ ${lastResult.message}`}
+          <div>
+            {lastResult.tone === 'info' ? `ℹ ${lastResult.message}` : lastResult.ok ? `✓ ${lastResult.message}` : `✗ ${lastResult.message}`}
+          </div>
+          {lastResult.details?.map(detail => (
+            <div key={detail} style={{ marginTop: spacing[1] }}>
+              {detail}
+            </div>
+          ))}
         </div>
       )}
 
@@ -467,7 +491,7 @@ function CsvSyncSummaryPanel({ summary }: { summary: CsvSyncSummary | null | und
       gap: spacing[1.5],
     }}>
       <div style={{ ...typography.caption, fontWeight: 700, color: colors.textPrimary }}>
-        最終CSV取込結果: {display.importedAtLabel}
+        前回成功したCSV取込結果: {display.importedAtLabel}
       </div>
       <div style={{ ...typography.caption, color: colors.textMuted }}>
         {display.stockLine}
