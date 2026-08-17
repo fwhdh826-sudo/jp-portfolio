@@ -10,6 +10,7 @@ import {
   computeCanonicalPortfolioGenerationIdentityV2,
 } from '../utils/snapshotGenerationIdentity'
 import { runFullAnalysis, useAppStore } from './useAppStore'
+import { csvImportFeedback } from '../components/tabs/T9_Settings'
 import {
   CSV_IMPORT_GENERATION_KEY,
   CSV_IMPORT_GENERATION_SCHEMA_V5,
@@ -250,6 +251,15 @@ describe('T9-A001/A002: structured CSV result and atomic store commit', () => {
     })
     if (!result.ok) throw new Error('expected successful import')
     expect(result.imported.stock.updated).toBe(1)
+    expect(result.diagnostics).toMatchObject({
+      recognizedStockRows: 1,
+      recognizedTrustRows: 1,
+      matchedTrustRows: 1,
+      unknownTrustRows: 0,
+      ambiguousTrustRows: 0,
+      failedGuard: null,
+      committed: true,
+    })
     expect(useAppStore.getState().holdings[0].eval).toBe(150_000)
     expect(useAppStore.getState().trust[0].eval).toBe(250_000)
     expect(useAppStore.getState().analysis.length).toBeGreaterThan(0)
@@ -272,6 +282,7 @@ describe('T9-A001/A002: structured CSV result and atomic store commit', () => {
     )
     expect(restored.payload.holdings).toEqual(state.holdings)
     expect(restored.payload.trust).toEqual(state.trust)
+    expect(restored.payload).not.toHaveProperty('diagnostics')
     expect(restored.payload.learning).toEqual(state.learning)
     expect(restored.payload.csvImportedAt).toBe(state.system.csvLastImportedAt)
     expect(restored.payload.syncSummary?.importedAt).toBe(restored.payload.csvImportedAt)
@@ -909,7 +920,58 @@ describe('T9-A001/A002: structured CSV result and atomic store commit', () => {
     const guardedCsv = VALID_CSV.replace('1001,銘柄1001', '9999,別銘柄')
     const result = await useAppStore.getState().importCsv(csvFile(guardedCsv))
 
-    expect(result).toMatchObject({ ok: false, code: 'FULL_SYNC_GUARD_REJECTED' })
+    expect(result).toMatchObject({
+      ok: false,
+      code: 'FULL_SYNC_GUARD_REJECTED',
+      diagnostics: {
+        recognizedStockRows: 1,
+        recognizedTrustRows: 1,
+        matchedTrustRows: 1,
+        unknownTrustRows: 0,
+        ambiguousTrustRows: 0,
+        failedGuard: 'STOCK_REMOVAL_LIMIT',
+        committed: false,
+      },
+    })
+    expect(csvImportFeedback(result).details).toEqual([
+      '今回の取込試行: 株式1件 / 投信1件を認識',
+      '投信: 1一致 / 0未照合 / 0競合',
+      '安全性ガードにより取込を中止',
+      '反映件数: 0',
+    ])
+    expect(relevantState()).toEqual(before)
+    expect(storage).toEqual({})
+  })
+
+  it('trust unknown guard returns current-attempt matching diagnostics and atomically leaves parsed stock uncommitted', async () => {
+    const before = relevantState()
+    const unknownRows = ['未知投信A', '未知投信B', '未知投信C', '未知投信D', '未知投信E', '未知投信F']
+      .map((name, index) => `${name},10000,${50_000 + index},1.00,0.10,`)
+    const guardedCsv = [VALID_CSV, ...unknownRows].join('\n')
+
+    const result = await useAppStore.getState().importCsv(csvFile(guardedCsv))
+
+    expect(result).toMatchObject({
+      ok: false,
+      code: 'FULL_SYNC_GUARD_REJECTED',
+      diagnostics: {
+        recognizedStockRows: 1,
+        recognizedTrustRows: 7,
+        matchedTrustRows: 1,
+        unknownTrustRows: 6,
+        ambiguousTrustRows: 0,
+        unknownTrustNames: unknownRows.map(row => row.split(',')[0]),
+        failedGuard: 'TRUST_UNKNOWN_LIMIT',
+        committed: false,
+      },
+    })
+    expect(csvImportFeedback(result).details).toEqual([
+      '今回の取込試行: 株式1件 / 投信7件を認識',
+      '投信: 1一致 / 6未照合 / 0競合',
+      '未照合商品: 未知投信A、未知投信B、未知投信C、未知投信D、未知投信E',
+      '安全性ガードにより取込を中止',
+      '反映件数: 0',
+    ])
     expect(relevantState()).toEqual(before)
     expect(storage).toEqual({})
   })

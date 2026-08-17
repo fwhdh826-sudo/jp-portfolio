@@ -19,6 +19,8 @@ import {
   buildNewHoldingFromCsvRow,
   STOCK_REMOVAL_RATIO_THRESHOLD,
   STOCK_REMOVAL_ABSOLUTE_CAP,
+  CsvFullSyncGuardError,
+  type CsvImportDiagnostics,
   type TrustSyncReport,
 } from '../domain/csv/importPortfolioCsv'
 import {
@@ -276,6 +278,7 @@ export type CsvImportResult =
       persistence: { status: 'committed' | 'not_attempted' }
       importedAt: string
       provenance: CsvImportProvenance
+      diagnostics?: CsvImportDiagnostics
     }
   | {
       ok: false
@@ -285,6 +288,7 @@ export type CsvImportResult =
       analysisCommitted: false
       officialDecisionCommitted: false
       persistence: { status: 'not_attempted' | 'rolled_back' | 'rollback_failed' | 'ownership_lost' | 'indeterminate' }
+      diagnostics?: CsvImportDiagnostics
     }
   | (PortfolioCoordinationFailure & { operation: 'importCsv' })
 
@@ -299,6 +303,7 @@ function csvImportFailure(
   code: CsvImportErrorCode,
   message: string,
   persistence: 'not_attempted' | 'rolled_back' | 'rollback_failed' | 'ownership_lost' | 'indeterminate' = 'not_attempted',
+  diagnostics?: CsvImportDiagnostics,
 ): CsvImportResult {
   return {
     ok: false,
@@ -308,10 +313,19 @@ function csvImportFailure(
     analysisCommitted: false,
     officialDecisionCommitted: false,
     persistence: { status: persistence },
+    ...(diagnostics ? { diagnostics } : {}),
   }
 }
 
 function classifyCsvParseFailure(error: unknown): CsvImportResult {
+  if (error instanceof CsvFullSyncGuardError) {
+    return csvImportFailure(
+      'FULL_SYNC_GUARD_REJECTED',
+      error.message,
+      'not_attempted',
+      error.diagnostics,
+    )
+  }
   if (error instanceof InvalidCsvSourceTimestampError) {
     return csvImportFailure(
       'INVALID_CSV_SOURCE_TIMESTAMP',
@@ -3324,6 +3338,7 @@ const createAppStoreStateCreator = (
     // scopeで保持する。
     let persistenceReceipt: CsvImportPersistenceReceipt | null = null
     let committedTransferIdentity: string | null = null
+    let attemptDiagnostics: CsvImportDiagnostics | undefined
     // RA-008-C2: transaction-scoped exactly-once invalidation guard. `let` (not module/runtime
     // global) so a retried transaction always gets a fresh flag. `generationCommittedAt` is
     // declared here (rather than as a `const` at its point of use) so the catch block below —
@@ -3341,10 +3356,13 @@ const createAppStoreStateCreator = (
     }
     const publishFailure = (failure: CsvImportResult): CsvImportResult => {
       if (failure.ok || 'operation' in failure) return failure
+      const failureWithDiagnostics: CsvImportResult = failure.diagnostics || !attemptDiagnostics
+        ? failure
+        : { ...failure, diagnostics: { ...attemptDiagnostics, committed: false } }
       if (runtime.activePortfolioGenerationTransaction?.token === transaction.token) {
-        set(s => ({ system: { ...s.system, status: 'error', error: failure.message } }))
+        set(s => ({ system: { ...s.system, status: 'error', error: failureWithDiagnostics.message } }))
       }
-      return failure
+      return failureWithDiagnostics
     }
 
     try {
@@ -3369,6 +3387,7 @@ const createAppStoreStateCreator = (
       } catch (error) {
         return publishFailure(classifyCsvParseFailure(error))
       }
+      attemptDiagnostics = parsed.diagnostics
 
       // The monotonicity decision must be based on the exact canonical bytes captured at the
       // transaction boundary. If ownership already changed while FileReader was pending, report
@@ -3418,6 +3437,7 @@ const createAppStoreStateCreator = (
           persistence: { status: 'not_attempted' },
           importedAt: currentProvenance.importedAt,
           provenance: currentProvenance,
+          diagnostics: { ...parsed.diagnostics, committed: false },
         }
       }
       if (monotonicity.decision === 'REJECT_STALE') {
@@ -3517,6 +3537,7 @@ const createAppStoreStateCreator = (
         persistence: { status: 'committed' },
         importedAt: now,
         provenance: incomingProvenance,
+        diagnostics: { ...parsed.diagnostics, committed: true },
       }
 
       generationCommittedAt = Date.now()

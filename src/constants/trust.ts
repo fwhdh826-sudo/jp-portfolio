@@ -11,6 +11,37 @@ export const EMBEDDED_GOLD_EXPOSURE: Readonly<Record<string, { navGoldExposure: 
   nq100gp: { navGoldExposure: 1.0, grossGoldShare: 0.5 },
 }
 
+/**
+ * SBIの保有証券CSVに表示される公開上の商品正式名称。
+ *
+ * `Trust.abbr` はUI表示・検索補助であり、保有資産の金銭的identityには使わない。
+ * aliasは同一商品が複数口座に存在する場合は各idへ同じ名称を登録し、CSV sectionの
+ * accountHintとの組み合わせで一意に解決する。Trust本体へ混ぜないのは、runtime-onlyの
+ * import metadataをcanonical persistence payloadへ流入させないため。
+ */
+export const TRUST_SBI_CSV_ALIASES: Readonly<Record<string, readonly string[]>> = {
+  nk225_sbi: ['SBI・iシェアーズ・日経225インデックス・ファンド'],
+  jpndiv: ['SMT 日本株配当貴族インデックス・オープン'],
+  sp500_sbi: ['SBI・V・S&P500インデックス・ファンド'],
+  sp500_nisa: ['SBI・V・S&P500インデックス・ファンド'],
+  sp500_tsumi: ['SBI・V・S&P500インデックス・ファンド'],
+  fang_toku: ['iFreeNEXT FANG+インデックス'],
+  fang_nisa_g: ['iFreeNEXT FANG+インデックス'],
+  fang_tsumi: ['iFreeNEXT FANG+インデックス'],
+  sp500gp: ['Tracers S&P500ゴールドプラス'],
+  nq100gp: ['Tracers NASDAQ100ゴールドプラス'],
+  us_reit: ['eMAXIS Slim 先進国リートインデックス（除く日本）'],
+  usdiv: ['Tracers S&P500配当貴族インデックス（米国株式）'],
+  usdiv_nisa: ['Tracers S&P500配当貴族インデックス（米国株式）'],
+  gold_mufg: ['三菱UFJ 純金ファンド'],
+  acwi: ['eMAXIS Slim 全世界株式（オール・カントリー）'],
+  acwi_tsumi: ['eMAXIS Slim 全世界株式（オール・カントリー）'],
+  mega10: ['ニッセイ・S米国グロース株式メガ10インデックスファンド＜購入・換金手数料なし＞'],
+  gold_sbi: ['SBI・iシェアーズ・ゴールドファンド（為替ヘッジなし）'],
+  nq100_nisa: ['SBI NASDAQ100インデックス・ファンド'],
+  nikkei_semi: ['eMAXIS 日経半導体株インデックス'],
+}
+
 // P0-PRIVACY-HOTFIX: eval/pnlPct/dayPct（個人の実保有状態）はCSV full-sync /
 // localStorage / snapshotがsource of truthであり、静的fallbackとして具体的な
 // 評価額・損益率を持たせない（未取込端末では一律0）。id/name/abbr/account/policy/

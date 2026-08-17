@@ -1,4 +1,5 @@
 import type { CsvSourceProvenance, Holding, Trust } from '../../types'
+import { TRUST_SBI_CSV_ALIASES } from '../../constants/trust'
 import {
   buildCsvSourceProvenance,
   extractExplicitSourceTimestamp,
@@ -113,7 +114,7 @@ const TRUST_UNSYNCED_ABSOLUTE_CAP = 5
 // 「新規購入したがまだmaster登録していない」運用頻度を超える規模。別ポート
 // フォリオ/別人のCSVを取り違えた可能性を疑うべき閾値として5件を採用。
 const TRUST_UNKNOWN_ABSOLUTE_CAP = 5
-const TRUST_MATCH_SCORE_THRESHOLD = 40
+const TRUST_MATCH_SCORE_THRESHOLD = 100
 
 /** SBI証券CSVパーサー（ブラウザ側）
  *  - 従来形式（銘柄コード列あり）と新形式（銘柄（コード）/ファンド名）の両対応
@@ -156,11 +157,46 @@ export interface TrustSyncReport {
   ambiguousFundIds: string[]
 }
 
+export type CsvFullSyncGuard =
+  | 'STOCK_ROWS_MISSING'
+  | 'STOCK_REMOVAL_LIMIT'
+  | 'TRUST_UNSYNCED_LIMIT'
+  | 'TRUST_UNKNOWN_LIMIT'
+
+/** Local-only import attempt diagnostics. Monetary values and raw CSV content are excluded. */
+export interface CsvImportDiagnostics {
+  recognizedStockRows: number
+  recognizedTrustRows: number
+  matchedTrustRows: number
+  unknownTrustRows: number
+  ambiguousTrustRows: number
+  unknownTrustNames: string[]
+  ambiguousFundIds: string[]
+  failedGuard: CsvFullSyncGuard | null
+  committed: boolean
+}
+
+export class CsvFullSyncGuardError extends Error {
+  readonly diagnostics: CsvImportDiagnostics
+
+  constructor(message: string, diagnostics: CsvImportDiagnostics) {
+    super(message)
+    this.name = 'CsvFullSyncGuardError'
+    this.diagnostics = diagnostics
+  }
+}
+
 export async function importPortfolioCsv(
   file: File,
   holdings: Holding[],
   trust: Trust[],
-): Promise<{ holdings: Holding[]; trust: Trust[]; trustSync: TrustSyncReport; sourceProvenance: CsvSourceProvenance }> {
+): Promise<{
+  holdings: Holding[]
+  trust: Trust[]
+  trustSync: TrustSyncReport
+  sourceProvenance: CsvSourceProvenance
+  diagnostics: CsvImportDiagnostics
+}> {
   const text = await readFileAsText(file)
   const explicitSourceTimestamp = extractExplicitSourceTimestamp(text)
   if (explicitSourceTimestamp.status === 'invalid') {
@@ -171,12 +207,35 @@ export async function importPortfolioCsv(
 
   const stockRows = rows.filter((row): row is ParsedRow & { code: string } => row.assetType === 'stock' && STOCK_CODE_FULL_RE.test(row.code))
   const trustRows = rows.filter(row => row.assetType === 'trust')
+  const trustMatch: TrustMatchOutcome = trustSectionSeen
+    ? matchTrustHoldings(trust, trustRows)
+    : {
+        matchedByFundId: new Map<string, ParsedRow>(),
+        ambiguousFundIds: new Set<string>(),
+        ambiguousRows: new Set<ParsedRow>(),
+        unknownRows: [],
+      }
+  const diagnostics: CsvImportDiagnostics = {
+    recognizedStockRows: stockRows.length,
+    recognizedTrustRows: trustRows.length,
+    matchedTrustRows: trustMatch.matchedByFundId.size,
+    unknownTrustRows: trustMatch.unknownRows.length,
+    ambiguousTrustRows: trustMatch.ambiguousRows.size,
+    unknownTrustNames: trustMatch.unknownRows.map(row => row.name),
+    ambiguousFundIds: [...trustMatch.ambiguousFundIds],
+    failedGuard: null,
+    committed: false,
+  }
+  const rejectFullSync = (failedGuard: CsvFullSyncGuard, message: string): never => {
+    throw new CsvFullSyncGuardError(message, { ...diagnostics, failedGuard })
+  }
 
   // fail-closedガード1: 個別株セクションが検出できないCSVでは、
   // 既存保有を全消去してしまう危険があるため取込全体を中断する
   // （投信のみのCSV等、個別株セクションを含まない部分取込は現状未対応）。
   if (stockRows.length === 0) {
-    throw new Error(
+    rejectFullSync(
+      'STOCK_ROWS_MISSING',
       'CSVに個別株の保有行が見つかりませんでした。取込を中断しました（保有株・投信は変更されていません）。' +
       'SBI証券の「ポートフォリオ一覧」CSV（個別株セクションを含む全体エクスポート）か確認してください。',
     )
@@ -194,7 +253,8 @@ export async function importPortfolioCsv(
     const ratioExceeded = removalRatio > STOCK_REMOVAL_RATIO_THRESHOLD
     const absoluteExceeded = removedCount > STOCK_REMOVAL_ABSOLUTE_CAP
     if (ratioExceeded || absoluteExceeded) {
-      throw new Error(
+      rejectFullSync(
+        'STOCK_REMOVAL_LIMIT',
         `既存保有銘柄${holdings.length}件中${removedCount}件がCSVに見つかりませんでした` +
         `（消滅率${Math.round(removalRatio * 100)}%）。部分CSVや別のCSVの可能性があるため、` +
         '取込を中断しました（保有株・投信は変更されていません）。',
@@ -231,7 +291,7 @@ export async function importPortfolioCsv(
   let trustSync: TrustSyncReport = { trustSectionSeen: false, unknownFunds: [], zeroedFundIds: [], ambiguousFundIds: [] }
 
   if (trustSectionSeen) {
-    const { matchedByFundId, ambiguousFundIds, unknownRows } = matchTrustHoldings(trust, trustRows)
+    const { matchedByFundId, ambiguousFundIds, unknownRows } = trustMatch
 
     // fail-closedガード3: 現在保有中(eval>0)の登録済み投信のうち、CSVで一意に
     // 照合できなかった（eval=0化 or 口座あいまいで更新停止）割合・件数が
@@ -244,7 +304,8 @@ export async function importPortfolioCsv(
       const ratioExceeded = unsyncedRatio > TRUST_UNSYNCED_RATIO_THRESHOLD
       const absoluteExceeded = unsyncedCount > TRUST_UNSYNCED_ABSOLUTE_CAP
       if (ratioExceeded || absoluteExceeded) {
-        throw new Error(
+        rejectFullSync(
+          'TRUST_UNSYNCED_LIMIT',
           `既存保有投信${currentlyHeldTrust.length}件中${unsyncedCount}件がCSVで一意に照合できませんでした` +
           `（未照合率${Math.round(unsyncedRatio * 100)}%）。投信セクションの解析不良・口座情報欠落・` +
           '部分/別CSVの可能性があるため、取込を中断しました（保有株・投信は変更されていません）。',
@@ -256,7 +317,8 @@ export async function importPortfolioCsv(
     // 一度のCSVで大量に出た場合、別ポートフォリオ/別人のCSVを取り違えている
     // 可能性があるため、取込全体を中断する（根拠は上部の定数コメント参照）。
     if (unknownRows.length > TRUST_UNKNOWN_ABSOLUTE_CAP) {
-      throw new Error(
+      rejectFullSync(
+        'TRUST_UNKNOWN_LIMIT',
         `trust masterに登録されていない投信がCSV中に${unknownRows.length}件見つかりました。` +
         '件数が多く別のポートフォリオ/別人のCSVを取り違えている可能性があるため、' +
         '取込を中断しました（保有株・投信は変更されていません。該当投信をtrust masterへ登録してから再取込してください）。',
@@ -311,7 +373,7 @@ export async function importPortfolioCsv(
     semanticContent: { trustSectionSeen, rows: semanticRows },
   })
 
-  return { holdings: updatedHoldings, trust: updatedTrust, trustSync, sourceProvenance }
+  return { holdings: updatedHoldings, trust: updatedTrust, trustSync, sourceProvenance, diagnostics }
 }
 
 // P4.5-A013-T2: CSVにしか存在しない新規銘柄のHolding生成。
@@ -457,6 +519,18 @@ function parseRows(text: string): {
     const normalizedCols = cols.map(normalizeCell)
     const first = normalizedCols[0] ?? ''
 
+    // SBIのcurrent layoutは各holding sectionの後に、例えば
+    // 「投資信託(金額/特定預り)合計」→集計header→数値行、という独立した
+    // total blockを出力する。section label自体は通常sectionと同じ語を含むため、
+    // detectSectionより先にsemantic boundaryとして終了しないと、集計値を商品名・
+    // 銘柄コードとして誤認する。row位置や金額には依存せず、公開section labelの
+    // 意味だけで以後の集計blockをholding parserから隔離する。
+    if (isTotalBoundaryRow(first)) {
+      section = null
+      header = null
+      continue
+    }
+
     const nextSection = detectSection(first)
     if (nextSection) {
       section = nextSection
@@ -494,6 +568,14 @@ function parseRows(text: string): {
   }
 
   return { rows: aggregateRows(parsedRows), semanticRows: parsedRows, trustSectionSeen }
+}
+
+function isTotalBoundaryRow(firstCellRaw: string) {
+  const first = normalizeCell(firstCellRaw).replace(/\s/g, '')
+  if (!first) return false
+  if (first === '合計' || first.startsWith('総合計')) return true
+  if (!first.endsWith('合計') || !first.includes('預り')) return false
+  return first.includes('株式') || first.includes('投資信託')
 }
 
 function detectSection(firstCellRaw: string): SectionContext | null {
@@ -688,6 +770,8 @@ interface TrustMatchOutcome {
   matchedByFundId: Map<string, ParsedRow>
   /** 口座を一意に確定できず、更新を停止した登録済み投信id */
   ambiguousFundIds: Set<string>
+  /** 一意性を失ったCSV行（同点候補または同一master idへのcollision参加行） */
+  ambiguousRows: Set<ParsedRow>
   /** trust masterのどの登録済み投信にも一致しなかったCSV行 */
   unknownRows: ParsedRow[]
 }
@@ -696,13 +780,14 @@ interface TrustMatchOutcome {
 // 行driven（各CSV行についてベストマッチのfundを探す）にすることで、
 // 「どのfundにも一致しないCSV行＝unknown fund」を自然に検出できる
 // （旧findMatchingTrustRowはfund-drivenでこの検出ができなかった）。
-// accountHintが判明している行はaccount一致に大きなボーナスを与えて
+// accountHintが判明している行はaccount不一致候補をhard rejectして
 // 同名複数口座を一意に解決し、accountHintが失われている（もしくは
 // 複数fundが同点1位になる）場合はambiguousとして更新自体を止める
 // （推測で合算値を両方へ書き込むP4.5-A013-T2aの既知バグを再発させない）。
 function matchTrustHoldings(trust: Trust[], trustRows: ParsedRow[]): TrustMatchOutcome {
   const matchedByFundId = new Map<string, ParsedRow>()
   const ambiguousFundIds = new Set<string>()
+  const ambiguousRows = new Set<ParsedRow>()
   const unknownRows: ParsedRow[] = []
 
   trustRows.forEach(row => {
@@ -722,12 +807,16 @@ function matchTrustHoldings(trust: Trust[], trustRows: ParsedRow[]): TrustMatchO
     if (topGroup.length > 1) {
       // 同点1位が複数 → accountHint喪失等で口座を一意に決められない
       topGroup.forEach(entry => ambiguousFundIds.add(entry.fund.id))
+      ambiguousRows.add(row)
       return
     }
 
     const fundId = topGroup[0].fund.id
     if (matchedByFundId.has(fundId) || ambiguousFundIds.has(fundId)) {
       // 既に別のCSV行がこのfundへ一意マッチ済み → 一意性が崩れるため両方止める
+      const previousRow = matchedByFundId.get(fundId)
+      if (previousRow) ambiguousRows.add(previousRow)
+      ambiguousRows.add(row)
       matchedByFundId.delete(fundId)
       ambiguousFundIds.add(fundId)
       return
@@ -736,37 +825,28 @@ function matchTrustHoldings(trust: Trust[], trustRows: ParsedRow[]): TrustMatchO
     matchedByFundId.set(fundId, row)
   })
 
-  return { matchedByFundId, ambiguousFundIds, unknownRows }
+  return { matchedByFundId, ambiguousFundIds, ambiguousRows, unknownRows }
 }
 
 function scoreTrustMatch(fund: Trust, row: ParsedRow): number {
+  const fundAccount = normalizeAccountLabel(fund.account)
+  // CSV sectionから口座が判明している場合、同一商品名でも別口座のholdingは
+  // 別canonical identity。bonusではなく候補から完全除外する。
+  if (row.accountHint !== '' && fundAccount !== row.accountHint) return 0
+
   const idKey = normalizeForMatch(fund.id)
   const nameKey = normalizeForMatch(fund.name)
-  const abbrKey = normalizeForMatch(fund.abbr)
+  const aliasKeys = (TRUST_SBI_CSV_ALIASES[fund.id] ?? []).map(normalizeForMatch)
   const rowCode = normalizeForMatch(row.code)
   const rowName = normalizeForMatch(row.name)
 
-  let baseScore = 0
-  if (rowCode && rowCode === idKey) baseScore += 200
-  if (rowName === nameKey) baseScore += 150
-  if (abbrKey && rowName.includes(abbrKey)) baseScore += 80
-  if (abbrKey && abbrKey.includes(rowName)) baseScore += 70
-  if (rowName && nameKey.includes(rowName)) baseScore += Math.min(60, rowName.length)
-  if (rowName && rowName.includes(nameKey)) baseScore += Math.min(60, nameKey.length)
+  if (rowCode && rowCode === idKey) return 300
+  if (rowName && aliasKeys.includes(rowName)) return 200
+  if (rowName && rowName === nameKey) return 150
 
-  // コード/名前による根拠が一切無いfundは、accountHintが一致するというだけで
-  // マッチさせない（unknown fundの行がaccountだけを頼りに無関係なfundへ
-  // 誤マッチするのを防ぐ）。accountボーナスは、既に名前根拠のある候補同士の
-  // 同点（同名複数口座）を解消するためだけに使う。
-  if (baseScore === 0) return 0
-
-  let score = baseScore
-  const fundAccount = normalizeAccountLabel(fund.account)
-  if (row.accountHint !== '' && fundAccount !== '' && row.accountHint === fundAccount) {
-    score += 500
-  }
-
-  return score
+  // abbrや部分文字列は表示・検索補助には使えても、金銭的holding identityを
+  // 確定する根拠にはしない。未知商品は既存商品へfuzzy attachせずfail-closed。
+  return 0
 }
 
 function normalizeAccountLabel(account: string): AccountHint {

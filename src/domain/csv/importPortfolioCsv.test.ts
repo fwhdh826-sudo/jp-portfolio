@@ -3,6 +3,7 @@ import type { Holding, Trust } from '../../types'
 import { importPortfolioCsv } from './importPortfolioCsv'
 import { computeAnalysis } from '../analysis/computeAnalysis'
 import { STATIC_MARKET } from '../../constants/market'
+import { INITIAL_TRUST } from '../../constants/trust'
 import { buildCsvSyncSummary } from '../../store/useAppStore'
 
 // P4.5-A013-T1: このファイルは元々「あるべき仕様」ではなく、P4.5-A013-AUDITで確認した
@@ -118,6 +119,94 @@ function makeTrust(overrides: Partial<Trust> = {}): Trust {
 // 実際のSBI CSVヘッダー形式（全角（％）表記）。以後の全テストでこの実物形式を使う。
 const STOCK_HEADER = '銘柄コード,銘柄名,現在値,評価額,損益（％）,前日比（％）,取得日'
 const TRUST_HEADER = 'ファンド名,基準価額,評価額,損益（％）,前日比（％）,取得日'
+
+const SANITIZED_CURRENT_LAYOUT_TRUST_IDS = [
+  'usdiv',
+  'nq100gp',
+  'sp500gp',
+  'nikkei_semi',
+  'us_reit',
+  'fang_toku',
+  'sp500_sbi',
+  'nk225_sbi',
+  'jpndiv',
+  'usdiv_nisa',
+  'gold_mufg',
+  'acwi',
+  'sp500_nisa',
+  'mega10',
+  'fang_nisa_g',
+  'nq100_nisa',
+  'gold_sbi',
+  'sp500_tsumi',
+  'fang_tsumi',
+  'acwi_tsumi',
+] as const
+
+function makeSanitizedCurrentSbiLayoutFixture(): string {
+  const trustRow = (name: string, evalValue: number) => [
+    `"${evalValue.toLocaleString('en-US')}"`,
+    `"${name}"`,
+    '0.10',
+    '12,345',
+    '1.00',
+    '--',
+  ].join(',')
+
+  return `\uFEFF${[
+    'SBI証券 保有証券一覧（sanitized regression fixture）',
+    'fixture-note,----/--/--',
+    'fixture-placeholder,--',
+    '株式（現物/特定預り）',
+    '評価額,銘柄名,前日比（％）,銘柄コード,損益（％）,取得日,現在値',
+    '"101,000",サンプル銘柄A,0.10,1000,1.00,2026-01-01,"1,010"',
+    '"202,000",サンプル銘柄B,0.20,1001,2.00,----/--/--,"2,020"',
+    '"303,000",サンプル銘柄C,0.30,1002,3.00,--,"3,030"',
+    '株式（現物/特定預り）合計',
+    '評価額,含み損益,含み損益（％）,前日比,前日比（％）,',
+    '606000,6060,1.00,600,0.10,',
+    '先物・オプション（fixture追加section）',
+    '対象,数量,評価額',
+    'サンプル,0,0',
+    '投資信託（金額/特定預り）',
+    '評価額,ファンド名,前日比（％）,基準価額,損益（％）,取得日',
+    trustRow('Tracers S&P500配当貴族インデックス(米国株式)', 200_001),
+    trustRow('Tracers NASDAQ100ゴールドプラス', 200_002),
+    trustRow('Tracers S&P500ゴールドプラス', 200_003),
+    trustRow('eMAXIS 日経半導体株インデックス', 200_004),
+    trustRow('eMAXIS Slim 先進国リートインデックス(除く日本)', 200_005),
+    trustRow('iFreeNEXT FANG+インデックス', 200_006),
+    trustRow('SBI･V･S&P500インデックス･ファンド', 200_007),
+    trustRow('SBI･iシェアーズ･日経225インデックス･ファンド', 200_008),
+    trustRow('SMT 日本株配当貴族インデックス･オープン', 200_009),
+    '投資信託（金額/特定預り）合計',
+    '評価額,含み損益,含み損益（％）,前日比,前日比（％）,',
+    '"1,800,045","18,000",1.00,"1,800",0.10,',
+    '投資信託（金額/NISA預り（成長投資枠））',
+    '評価額,ファンド名,前日比（％）,基準価額,損益（％）,取得日',
+    trustRow('Tracers S&P500配当貴族インデックス（米国株式）', 200_010),
+    trustRow('三菱UFJ 純金ファンド', 200_011),
+    trustRow('eMAXIS Slim 全世界株式(オール･カントリー)', 200_012),
+    trustRow('SBI・V・S&P500インデックス・ファンド', 200_013),
+    trustRow('ニッセイ･S米国グロース株式メガ10インデックスファンド<購入･換金手数料なし>', 200_014),
+    trustRow('iFreeNEXT FANG+インデックス', 200_015),
+    trustRow('SBI NASDAQ100インデックス･ファンド', 200_016),
+    trustRow('SBI･iシェアーズ･ゴールドファンド(為替ヘッジなし)', 200_017),
+    '投資信託（金額/NISA預り（成長投資枠））合計',
+    '評価額,含み損益,含み損益（％）,前日比,前日比（％）,',
+    '"1,600,108","16,000",1.00,"1,600",0.10,',
+    '投資信託（金額/NISA預り(つみたて投資枠)）',
+    '評価額,ファンド名,前日比（％）,基準価額,損益（％）,取得日',
+    trustRow('SBI・V・S&P500インデックス・ファンド', 200_018),
+    trustRow('iFreeNEXT FANG+インデックス', 200_019),
+    trustRow('eMAXIS Slim 全世界株式（オール・カントリー）', 200_020),
+    '投資信託（金額/NISA預り(つみたて投資枠)）合計',
+    '評価額,含み損益,含み損益（％）,前日比,前日比（％）,',
+    '"600,057","6,000",1.00,"600",0.10,',
+    '総合計',
+    '"4,606,210","46,060",1.00,"4,600",0.10,',
+  ].join('\r\n')}`
+}
 
 // 投信専用テストで「有効株式行0件→エラー」ガードを満たすための無害なスタブ
 // （holdings=[]で呼ぶ限り、6501は新規追加されるだけで各テストのtrust断言に影響しない）。
@@ -517,6 +606,152 @@ describe('importPortfolioCsv: 英字入りJPX証券コード（P4.5-A013-HARDENI
 // 投信
 // ═══════════════════════════════════════════════════════════
 describe('importPortfolioCsv: 投信 — P4.5-A013-T3 full-sync挙動の固定', () => {
+  describe('CSV-INGEST-R1: canonical monetary identity safety', () => {
+    it('Tracers S&P500配当貴族インデックス（米国株式）はgeneric S&P500 abbreviationだけでsp500_sbiにmatchしない', async () => {
+      const trust = [
+        makeTrust({
+          id: 'sp500_sbi',
+          name: 'SBI V S&P500',
+          abbr: 'S&P500',
+          account: '特定',
+          eval: 0,
+        }),
+      ]
+      const csv = [
+        STOCK_STUB_CSV,
+        '投資信託（金額/特定預り）',
+        TRUST_HEADER,
+        'Tracers S&P500配当貴族インデックス（米国株式）,12000,123456,1.00,0.10,',
+      ].join('\n')
+
+      const result = await importPortfolioCsv(makeCsvFile(csv), [], trust)
+
+      expect(result.trust.find(fund => fund.id === 'sp500_sbi')!.eval).toBe(0)
+      expect(result.trustSync.unknownFunds.map(fund => fund.name)).toEqual([
+        'Tracers S&P500配当貴族インデックス（米国株式）',
+      ])
+    })
+
+    it.each([
+      ['NISA成長', '投資信託（金額/NISA預り（成長投資枠））'],
+      ['NISA積立', '投資信託（金額/NISA預り（つみたて投資枠））'],
+    ] as const)(
+      'known accountHint=%s はaccount不一致の特定sp500_sbiをhard rejectする',
+      async (_accountHint, sectionLabel) => {
+        const trust = [
+          makeTrust({
+            id: 'sp500_sbi',
+            name: 'SBI・V・S&P500インデックス・ファンド',
+            abbr: 'S&P500',
+            account: '特定',
+            eval: 0,
+          }),
+        ]
+        const csv = [
+          STOCK_STUB_CSV,
+          sectionLabel,
+          TRUST_HEADER,
+          'SBI・V・S&P500インデックス・ファンド,26000,234567,2.00,0.20,',
+        ].join('\n')
+
+        const result = await importPortfolioCsv(makeCsvFile(csv), [], trust)
+
+        expect(result.trust.find(fund => fund.id === 'sp500_sbi')!.eval).toBe(0)
+        expect(result.trustSync.unknownFunds.map(fund => fund.name)).toEqual([
+          'SBI・V・S&P500インデックス・ファンド',
+        ])
+      },
+    )
+
+    it('accountHint不明で同じcanonical aliasが複数accountに存在する場合はambiguousとしてfail-closedする', async () => {
+      const trust = INITIAL_TRUST
+        .filter(fund => ['sp500_sbi', 'sp500_nisa', 'sp500_tsumi'].includes(fund.id))
+        .map(fund => ({ ...fund }))
+      const csv = [
+        STOCK_STUB_CSV,
+        '投資信託（金額/一般預り）',
+        TRUST_HEADER,
+        'SBI・V・S&P500インデックス・ファンド,26000,345678,3.00,0.30,',
+      ].join('\n')
+
+      const result = await importPortfolioCsv(makeCsvFile(csv), [], trust)
+
+      expect(result.trust.every(fund => fund.eval === 0)).toBe(true)
+      expect(result.trustSync.unknownFunds).toEqual([])
+      expect(result.trustSync.ambiguousFundIds.sort()).toEqual([
+        'sp500_nisa',
+        'sp500_sbi',
+        'sp500_tsumi',
+      ])
+      expect(result.diagnostics).toMatchObject({
+        recognizedTrustRows: 1,
+        matchedTrustRows: 0,
+        unknownTrustRows: 0,
+        ambiguousTrustRows: 1,
+      })
+    })
+
+    it('別表記2行が同じmaster idへ衝突した場合は両CSV行をcollisionとして数え、値を採用しない', async () => {
+      const trust = [
+        makeTrust({ id: 'sp500_sbi', name: 'SBI V S&P500', account: '特定', eval: 0 }),
+      ]
+      const csv = [
+        STOCK_STUB_CSV,
+        '投資信託（金額/特定預り）',
+        TRUST_HEADER,
+        'SBI V S&P500,26000,111111,1.00,0.10,',
+        'SBI・V・S&P500インデックス・ファンド,26000,222222,2.00,0.20,',
+      ].join('\n')
+
+      const result = await importPortfolioCsv(makeCsvFile(csv), [], trust)
+
+      expect(result.trust[0].eval).toBe(0)
+      expect(result.trustSync.ambiguousFundIds).toEqual(['sp500_sbi'])
+      expect(result.diagnostics).toMatchObject({
+        recognizedTrustRows: 2,
+        matchedTrustRows: 0,
+        unknownTrustRows: 0,
+        ambiguousTrustRows: 2,
+      })
+    })
+  })
+
+  it('sanitized current SBI multi-section layoutは全stock/trust positionを認識しknown trustを20/20でaccount-aware matchする', async () => {
+    const result = await importPortfolioCsv(
+      makeCsvFile(makeSanitizedCurrentSbiLayoutFixture(), 'sanitized-current-sbi-layout.csv'),
+      [],
+      INITIAL_TRUST.map(fund => ({ ...fund })),
+    )
+
+    expect(result.holdings.map(holding => holding.code)).toEqual(['1000', '1001', '1002'])
+    expect(result.holdings).toHaveLength(3)
+    expect(result.trust.filter(fund => fund.eval > 0).map(fund => fund.id).sort()).toEqual(
+      [...SANITIZED_CURRENT_LAYOUT_TRUST_IDS].sort(),
+    )
+    expect(result.trustSync.unknownFunds).toEqual([])
+    expect(result.trustSync.ambiguousFundIds).toEqual([])
+    expect(result.diagnostics).toEqual({
+      recognizedStockRows: 3,
+      recognizedTrustRows: 20,
+      matchedTrustRows: 20,
+      unknownTrustRows: 0,
+      ambiguousTrustRows: 0,
+      unknownTrustNames: [],
+      ambiguousFundIds: [],
+      failedGuard: null,
+      committed: false,
+    })
+
+    expect(result.trust.find(fund => fund.id === 'sp500_sbi')!.eval).toBe(200_007)
+    expect(result.trust.find(fund => fund.id === 'sp500_nisa')!.eval).toBe(200_013)
+    expect(result.trust.find(fund => fund.id === 'sp500_tsumi')!.eval).toBe(200_018)
+    expect(result.trust.find(fund => fund.id === 'fang_toku')!.eval).toBe(200_006)
+    expect(result.trust.find(fund => fund.id === 'fang_nisa_g')!.eval).toBe(200_015)
+    expect(result.trust.find(fund => fund.id === 'fang_tsumi')!.eval).toBe(200_019)
+    expect(result.trust.find(fund => fund.id === 'acwi')!.eval).toBe(200_012)
+    expect(result.trust.find(fund => fund.id === 'acwi_tsumi')!.eval).toBe(200_020)
+  })
+
   it('existing + in CSV: eval / pnlPct / dayPct が更新される', async () => {
     const trust = [
       makeTrust({ id: 'sp500_sbi', name: 'SBI・V・S&P500', account: '特定', eval: 4_000_000, pnlPct: 90, dayPct: 0 }),
