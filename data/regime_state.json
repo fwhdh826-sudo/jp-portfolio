@@ -3,11 +3,11 @@
     "schemaVersion": "regime-state-1",
     "kind": "live_regime_state",
     "not_for_trading": false,
-    "generatedAt": "2026-08-16T23:41:59.118295+00:00",
+    "generatedAt": "2026-08-17T11:47:56.277237+00:00",
     "source": "public/data/market_intel.json"
   },
   "regime_state": {
-    "timestamp": "2026-08-16T23:41:59.140316+00:00",
+    "timestamp": "2026-08-17T11:47:56.299204+00:00",
     "current_regime": "bull_calm",
     "consensus": 0.6666666666666666,
     "raw_consensus": 0.6666666666666666,
@@ -18,7 +18,7 @@
       "rule_based": "bull_calm",
       "hmm": [
         "bull_calm",
-        0.9998299473549153
+        0.999925040768819
       ],
       "llm": {
         "regime": "uncertain",
@@ -56,13 +56,13 @@
     "hmm_is_surrogate": true,
     "llm_is_stub": true,
     "market_data_snapshot": {
-      "vix": 14.25,
-      "nikkei_5d_return": 0.046139,
-      "nikkei_60ma": 66651.6,
-      "nikkei_200ma": 57539.2,
+      "vix": 14.91,
+      "nikkei_5d_return": 0.055079,
+      "nikkei_60ma": 67036.1,
+      "nikkei_200ma": 57905.2,
       "sp500_dd_30d": -0.001696
     },
-    "run_date": "2026-08-16",
+    "run_date": "2026-08-17",
     "regime_changed_at": null,
     "previous_regime": null,
     "duration_hours": null

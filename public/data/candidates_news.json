@@ -1,16 +1,16 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-08-17T13:10:39.747777+09:00",
-  "sourceUpdatedAt": "2026-08-17T03:57:20+00:00",
+  "updatedAt": "2026-08-17T20:47:56.193021+09:00",
+  "sourceUpdatedAt": "2026-08-17T11:46:44+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": -0.11,
+      "avgSentiment": -0.165,
       "negativeCount": 1,
       "positiveCount": 0,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 3,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 2,
       "isStale": false,
       "topNegativeTitle": "Japan’s Slower Growth Complicates BOJ’s Messaging on Rate Hike",
       "topPositiveTitle": "BOJ Should Raise Rates at Every Meeting, Ex-Currency Chief Says",
@@ -41,76 +41,60 @@
             "market",
             "rates"
           ]
-        },
-        {
-          "title": "Japan’s Bond Yields Climb on BOJ Hike Bets, Fiscal Concerns",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-17T03:10:44+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-17/japan-s-bond-yields-climb-on-boj-hike-bets-fiscal-concerns",
-          "tags": [
-            "jp_broad",
-            "market",
-            "rates"
-          ]
         }
       ]
     },
     "jp_semiconductor": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "AI ‘Chipflation’ Washes Ashore in the UK Economy",
-      "topPositiveTitle": "AI ‘Chipflation’ Washes Ashore in the UK Economy",
-      "items": [
-        {
-          "title": "AI ‘Chipflation’ Washes Ashore in the UK Economy",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-15T20:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-15/ai-chipflation-washes-ashore-in-the-uk-economy",
-          "tags": [
-            "commodity",
-            "jp_semiconductor",
-            "market",
-            "us_growth"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "us_broad": {
-      "avgSentiment": 0.065,
-      "negativeCount": 0,
-      "positiveCount": 1,
+      "avgSentiment": 0.1,
+      "negativeCount": 1,
+      "positiveCount": 3,
       "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Dollar Weakens as Traders Pare Fed Rate-Hike Bets: Markets Wrap",
-      "topPositiveTitle": "Bonds Face a Bigger Threat Than the Fed as Global Rates Climb",
+      "topNegativeTitle": "Dollar Extends Slide as Traders Scale Back Fed Tightening Bets",
+      "topPositiveTitle": "Bloomberg News Now",
       "items": [
         {
-          "title": "Dollar Weakens as Traders Pare Fed Rate-Hike Bets: Markets Wrap",
+          "title": "Dollar Extends Slide as Traders Scale Back Fed Tightening Bets",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.2,
-          "publishedAt": "2026-08-16T22:14:58+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-16/stock-market-today-dow-s-p-live-updates",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-08-17T09:20:21+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-17/dollar-extends-slide-as-traders-scale-back-fed-tightening-bets",
           "tags": [
             "fx",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "AI Debt Sales Are Keeping US Treasury Yields High",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-17T10:19:01+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-08-17/ai-debt-sales-are-keeping-us-treasury-yields-high",
+          "tags": [
             "market",
             "rates",
             "us_broad"
           ]
         },
         {
-          "title": "Bonds Face a Bigger Threat Than the Fed as Global Rates Climb",
+          "title": "Bonds Face Bigger Threat Than the Fed as Global Rates Climb",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.33,
@@ -121,43 +105,95 @@
             "rates",
             "us_broad"
           ]
+        },
+        {
+          "title": "Emerging Currencies Rise to Fresh Record on Fading Fed Hike Bets",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.5,
+          "publishedAt": "2026-08-17T05:40:17+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-17/emerging-currencies-rise-to-record-high-as-fed-hike-bets-ease",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Bloomberg News Now",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-17T10:04:26+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-17/bloomberg-news-now-video",
+          "tags": [
+            "geopolitical",
+            "market",
+            "rates",
+            "us_broad"
+          ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 2,
+      "avgSentiment": 0.168,
+      "negativeCount": 1,
+      "positiveCount": 2,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 2,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Korea Eximbank to Lend $1 Billion to Glencore for Copper Supply",
-      "topPositiveTitle": "Korea Eximbank to Lend $1 Billion to Glencore for Copper Supply",
+      "topNegativeTitle": "The Leadership Skills That Matter Most in the Age of AI",
+      "topPositiveTitle": "Stock Futures Rise as Anthropic Fuels AI Optimism: Markets Wrap",
       "items": [
         {
-          "title": "Korea Eximbank to Lend $1 Billion to Glencore for Copper Supply",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-17T03:36:38+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-17/korea-eximbank-to-lend-1-billion-to-glencore-for-copper-supply",
+          "title": "The Leadership Skills That Matter Most in the Age of AI",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-17T05:00:06+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-17/the-ceo-skills-that-matter-most-in-the-age-of-ai-video",
           "tags": [
-            "commodity",
+            "geopolitical",
+            "macro_risk",
             "market",
             "us_growth"
           ]
         },
         {
-          "title": "AI ‘Chipflation’ Washes Ashore in the UK Economy",
-          "source": "Bloomberg Economics",
+          "title": "Technology Stocks Lift Equities, Mideast Peace Prospects Wane | The Opening Trade 8/17/2026",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-15T20:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-15/ai-chipflation-washes-ashore-in-the-uk-economy",
+          "publishedAt": "2026-08-17T10:31:15+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-17/the-opening-trade-8-17-2026-video",
           "tags": [
-            "commodity",
-            "jp_semiconductor",
+            "geopolitical",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "AI Rally Set to Trigger Stock-Market Correction, ECB Blog Says",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-17T10:38:43+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-17/ai-rally-set-to-trigger-stock-market-correction-ecb-blog-says",
+          "tags": [
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Stock Futures Rise as Anthropic Fuels AI Optimism: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-16T22:14:58+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-16/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "fx",
             "market",
             "us_growth"
           ]
@@ -177,30 +213,16 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": 0.2,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Gold Rises to Near $4,400 as Weak Retail Data Weighs on Dollar",
-      "topPositiveTitle": "Gold Rises to Near $4,400 as Weak Retail Data Weighs on Dollar",
-      "items": [
-        {
-          "title": "Gold Rises to Near $4,400 as Weak Retail Data Weighs on Dollar",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.2,
-          "publishedAt": "2026-08-16T23:36:14+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-16/gold-steady-near-4-400-as-traders-weigh-us-data-and-rate-path",
-          "tags": [
-            "fx",
-            "gold",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "reit": {
       "avgSentiment": 0,
@@ -227,24 +249,64 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.167,
-      "negativeCount": 0,
-      "positiveCount": 2,
+      "avgSentiment": 0.057,
+      "negativeCount": 1,
+      "positiveCount": 1,
       "neutralCount": 4,
       "sourceCount": 3,
       "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Trump Says Asked Pentagon to Cut Military Drills With S. Korea",
+      "topNegativeTitle": "The Leadership Skills That Matter Most in the Age of AI",
       "topPositiveTitle": "Israeli Economy Rebounds After Slump Sparked By Iran War",
       "items": [
         {
-          "title": "Trump Says Asked Pentagon to Cut Military Drills With S. Korea",
+          "title": "The Leadership Skills That Matter Most in the Age of AI",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-17T05:00:06+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-17/the-ceo-skills-that-matter-most-in-the-age-of-ai-video",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "US Ends Solar Tariff Dodge, But Boosting Local Industry Looks Tough",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-16T21:10:24+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-16/trump-says-asked-pentagon-to-cut-military-drills-with-s-korea",
+          "publishedAt": "2026-08-17T11:46:44+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-08-17/us-ends-solar-tariff-dodge-but-boosting-local-industry-looks-tough",
           "tags": [
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Trump Seeks to ‘Substantially Reduce’ US-South Korea Drills",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-17T11:15:26+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-17/trump-seeks-to-substantially-reduce-south-korea-drills-video",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Latest Oil Market News and Analysis for June 17",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-16T22:02:21+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-16/latest-oil-market-news-and-analysis-for-june-17",
+          "tags": [
+            "commodity",
             "geopolitical",
             "macro_risk",
             "market"
@@ -263,73 +325,30 @@
             "market"
           ],
           "titleJa": "公明 竹谷代表「非核三原則堅持し核兵器廃絶へ取り組みを」"
-        },
-        {
-          "title": "高市首相 千鳥ヶ淵戦没者墓苑で献花 「全国戦没者追悼式」前に",
-          "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-15T02:27:00+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20260815de44236",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ],
-          "titleJa": "高市首相 千鳥ヶ淵戦没者墓苑で献花 「全国戦没者追悼式」前に"
-        },
-        {
-          "title": "政府 ロシアへの対抗措置を検討 プーチン氏の北方領土訪問受け",
-          "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-14T07:45:54+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20260814de43919",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ],
-          "titleJa": "政府 ロシアへの対抗措置を検討 プーチン氏の北方領土訪問受け"
-        },
-        {
-          "title": "Latest Oil Market News and Analysis for June 17",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-16T22:02:21+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-16/latest-oil-market-news-and-analysis-for-june-17",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": 0.083,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 3,
+      "avgSentiment": 0.085,
+      "negativeCount": 1,
+      "positiveCount": 2,
+      "neutralCount": 1,
       "sourceCount": 2,
       "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Dollar Weakens as Traders Pare Fed Rate-Hike Bets: Markets Wrap",
-      "topPositiveTitle": "Indonesian Developer Modernland Seeks Bond Restructuring Again",
+      "topNegativeTitle": "Dollar Extends Slide as Traders Scale Back Fed Tightening Bets",
+      "topPositiveTitle": "Bonds Sell Off After India Closes Window for Dollar Swaps Early",
       "items": [
         {
-          "title": "Dollar Weakens as Traders Pare Fed Rate-Hike Bets: Markets Wrap",
+          "title": "Dollar Extends Slide as Traders Scale Back Fed Tightening Bets",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.2,
-          "publishedAt": "2026-08-16T22:14:58+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-16/stock-market-today-dow-s-p-live-updates",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-08-17T09:20:21+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-17/dollar-extends-slide-as-traders-scale-back-fed-tightening-bets",
           "tags": [
             "fx",
             "market",
-            "rates",
             "us_broad"
           ]
         },
@@ -348,42 +367,43 @@
           ]
         },
         {
-          "title": "Gold Rises to Near $4,400 as Weak Retail Data Weighs on Dollar",
+          "title": "Bonds Sell Off After India Closes Window for Dollar Swaps Early",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.2,
-          "publishedAt": "2026-08-16T23:36:14+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-16/gold-steady-near-4-400-as-traders-weigh-us-data-and-rate-path",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-17T04:55:42+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-17/india-short-tenor-bond-yields-climb-on-early-dollar-window-close",
           "tags": [
             "fx",
-            "gold",
-            "market"
+            "market",
+            "rates"
           ]
         },
         {
-          "title": "Indonesian Developer Modernland Seeks Bond Restructuring Again",
+          "title": "Stock Futures Rise as Anthropic Fuels AI Optimism: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-17T03:17:01+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-17/indonesian-developer-modernland-seeks-bond-restructuring-again",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-16T22:14:58+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-16/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "fx",
-            "market"
+            "market",
+            "us_growth"
           ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": -0.04,
+      "avgSentiment": 0.263,
       "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 3,
+      "positiveCount": 4,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 7,
       "isStale": false,
       "topNegativeTitle": "Japan’s Slower Growth Complicates BOJ’s Messaging on Rate Hike",
-      "topPositiveTitle": "Bonds Face a Bigger Threat Than the Fed as Global Rates Climb",
+      "topPositiveTitle": "Bloomberg News Now",
       "items": [
         {
           "title": "Japan’s Slower Growth Complicates BOJ’s Messaging on Rate Hike",
@@ -399,14 +419,13 @@
           ]
         },
         {
-          "title": "Dollar Weakens as Traders Pare Fed Rate-Hike Bets: Markets Wrap",
+          "title": "AI Debt Sales Are Keeping US Treasury Yields High",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.2,
-          "publishedAt": "2026-08-16T22:14:58+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-16/stock-market-today-dow-s-p-live-updates",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-17T10:19:01+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-08-17/ai-debt-sales-are-keeping-us-treasury-yields-high",
           "tags": [
-            "fx",
             "market",
             "rates",
             "us_broad"
@@ -427,20 +446,7 @@
           ]
         },
         {
-          "title": "Japan’s Bond Yields Climb on BOJ Hike Bets, Fiscal Concerns",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-17T03:10:44+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-17/japan-s-bond-yields-climb-on-boj-hike-bets-fiscal-concerns",
-          "tags": [
-            "jp_broad",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Bonds Face a Bigger Threat Than the Fed as Global Rates Climb",
+          "title": "Bonds Face Bigger Threat Than the Fed as Global Rates Climb",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.33,
@@ -451,66 +457,52 @@
             "rates",
             "us_broad"
           ]
+        },
+        {
+          "title": "Emerging Currencies Rise to Fresh Record on Fading Fed Hike Bets",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.5,
+          "publishedAt": "2026-08-17T05:40:17+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-17/emerging-currencies-rise-to-record-high-as-fed-hike-bets-ease",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.222,
-      "negativeCount": 0,
-      "positiveCount": 3,
-      "neutralCount": 3,
+      "avgSentiment": -0.082,
+      "negativeCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Korea Eximbank to Lend $1 Billion to Glencore for Copper Supply",
+      "topNegativeTitle": "Philippines’ First Gen Slumps After Parent Rejects KKR Offer",
       "topPositiveTitle": "Thai Growth Slows to 1.9% as Energy Prices Counter Stimulus",
       "items": [
         {
-          "title": "Korea Eximbank to Lend $1 Billion to Glencore for Copper Supply",
+          "title": "Philippines’ First Gen Slumps After Parent Rejects KKR Offer",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-17T03:36:38+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-17/korea-eximbank-to-lend-1-billion-to-glencore-for-copper-supply",
-          "tags": [
-            "commodity",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Hong Kong Court Orders Unit of SDIC Commodities to Liquidate",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-17T02:16:29+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-17/chinese-trader-s-unit-ordered-to-liquidate-by-hong-kong-court",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-08-17T04:32:05+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-17/first-gen-falls-by-record-19-after-parent-rejected-kkr-offer",
           "tags": [
             "commodity",
             "market"
           ]
         },
         {
-          "title": "AI ‘Chipflation’ Washes Ashore in the UK Economy",
-          "source": "Bloomberg Economics",
+          "title": "MCX Plans India Coal, Mineral Exchanges to Boost Price Discovery",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-15T20:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-15/ai-chipflation-washes-ashore-in-the-uk-economy",
-          "tags": [
-            "commodity",
-            "jp_semiconductor",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Thai Baht Rally May Fade on Dovish Central Bank, Analysts Say",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-17T00:04:23+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-17/thai-baht-rally-may-fade-on-dovish-central-bank-analysts-say",
+          "publishedAt": "2026-08-17T10:37:04+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-17/mcx-plans-india-coal-mineral-exchanges-to-boost-price-discovery",
           "tags": [
             "commodity",
             "market"
@@ -519,8 +511,8 @@
         {
           "title": "Latest Oil Market News and Analysis for June 17",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
           "publishedAt": "2026-08-16T22:02:21+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-08-16/latest-oil-market-news-and-analysis-for-june-17",
           "tags": [
@@ -529,27 +521,65 @@
             "macro_risk",
             "market"
           ]
+        },
+        {
+          "title": "Thai Growth Slows to 1.9% as Energy Prices Counter Stimulus",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-17T02:33:29+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-17/thai-growth-slows-to-1-9-as-energy-prices-counter-stimulus",
+          "tags": [
+            "commodity",
+            "market"
+          ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.167,
-      "negativeCount": 0,
+      "avgSentiment": 0.126,
+      "negativeCount": 1,
       "positiveCount": 2,
-      "neutralCount": 4,
+      "neutralCount": 5,
       "sourceCount": 3,
-      "itemCount": 6,
+      "itemCount": 8,
       "isStale": false,
-      "topNegativeTitle": "Trump Says Asked Pentagon to Cut Military Drills With S. Korea",
-      "topPositiveTitle": "Israeli Economy Rebounds After Slump Sparked By Iran War",
+      "topNegativeTitle": "The Leadership Skills That Matter Most in the Age of AI",
+      "topPositiveTitle": "Bloomberg News Now",
       "items": [
         {
-          "title": "Trump Says Asked Pentagon to Cut Military Drills With S. Korea",
+          "title": "The Leadership Skills That Matter Most in the Age of AI",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-17T05:00:06+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-17/the-ceo-skills-that-matter-most-in-the-age-of-ai-video",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Trump Issues Threat to Oman as US-Iran MOU Expires",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-16T21:10:24+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-16/trump-says-asked-pentagon-to-cut-military-drills-with-s-korea",
+          "publishedAt": "2026-08-17T11:42:26+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-17/trump-issues-threat-to-oman-as-us-iran-mou-expires-video",
+          "tags": [
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Trump Seeks to ‘Substantially Reduce’ US-South Korea Drills",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-17T11:15:26+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-17/trump-seeks-to-substantially-reduce-south-korea-drills-video",
           "tags": [
             "geopolitical",
             "macro_risk",
@@ -557,52 +587,23 @@
           ]
         },
         {
-          "title": "公明 竹谷代表「非核三原則堅持し核兵器廃絶へ取り組みを」",
-          "source": "NHK 経済",
+          "title": "Technology Stocks Lift Equities, Mideast Peace Prospects Wane | The Opening Trade 8/17/2026",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-15T04:58:53+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20260815de44260",
+          "publishedAt": "2026-08-17T10:31:15+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-17/the-opening-trade-8-17-2026-video",
           "tags": [
             "geopolitical",
-            "macro_risk",
-            "market"
-          ],
-          "titleJa": "公明 竹谷代表「非核三原則堅持し核兵器廃絶へ取り組みを」"
-        },
-        {
-          "title": "高市首相 千鳥ヶ淵戦没者墓苑で献花 「全国戦没者追悼式」前に",
-          "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-15T02:27:00+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20260815de44236",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ],
-          "titleJa": "高市首相 千鳥ヶ淵戦没者墓苑で献花 「全国戦没者追悼式」前に"
-        },
-        {
-          "title": "政府 ロシアへの対抗措置を検討 プーチン氏の北方領土訪問受け",
-          "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-14T07:45:54+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20260814de43919",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ],
-          "titleJa": "政府 ロシアへの対抗措置を検討 プーチン氏の北方領土訪問受け"
+            "market",
+            "us_growth"
+          ]
         },
         {
           "title": "Latest Oil Market News and Analysis for June 17",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
           "publishedAt": "2026-08-16T22:02:21+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-08-16/latest-oil-market-news-and-analysis-for-june-17",
           "tags": [
