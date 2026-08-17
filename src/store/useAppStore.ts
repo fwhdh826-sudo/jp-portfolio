@@ -1133,6 +1133,42 @@ type InitializeRestoreOutcome =
   | { kind: 'invalid' }
   | { kind: 'restored'; state: AppState; hasCommittedCanonicalGeneration: boolean }
 
+type TrustRegistryReconcileOutcome =
+  | { kind: 'invalid' }
+  | { kind: 'reconciled'; trust: Trust[] }
+
+/**
+ * Durable `trust[]` contains both user state and the registry snapshot from the version that
+ * wrote it. A canonical generation may therefore predate newly added INITIAL_TRUST ids. Keep
+ * every persisted record byte-for-byte at the field level (all Trust fields are mutable through
+ * updateTrust), preserve legacy-only ids, and only append missing current registry entries as
+ * explicitly unheld records. Duplicate persisted ids are not safe to collapse because choosing
+ * either monetary record would destroy authority, so initialize fails closed instead.
+ */
+function reconcileRestoredTrustRegistry(savedTrust: Trust[]): TrustRegistryReconcileOutcome {
+  const currentIds = new Set<string>()
+  for (const fund of INITIAL_TRUST) {
+    if (currentIds.has(fund.id)) return { kind: 'invalid' }
+    currentIds.add(fund.id)
+  }
+
+  const savedIds = new Set<string>()
+  for (const fund of savedTrust) {
+    if (savedIds.has(fund.id)) return { kind: 'invalid' }
+    savedIds.add(fund.id)
+  }
+
+  const missing = INITIAL_TRUST.filter(fund => !savedIds.has(fund.id))
+  if (missing.length === 0) return { kind: 'reconciled', trust: savedTrust }
+  return {
+    kind: 'reconciled',
+    trust: [
+      ...savedTrust,
+      ...missing.map(fund => ({ ...fund, eval: 0, pnlPct: 0, dayPct: 0 })),
+    ],
+  }
+}
+
 /**
  * Bootstrap restore for initialize: the latest durable canonical/legacy generation is always the
  * base, regardless of whatever the just-created local Zustand state currently holds. A present
@@ -1149,6 +1185,10 @@ function buildInitializeRestoredState(baseState: AppState, nowMs: number): Initi
   const savedTrust = csvGeneration.status === 'committed'
     ? csvGeneration.payload.trust
     : useLegacy ? restoreTrust() : null
+  const reconciledTrust = savedTrust === null
+    ? null
+    : reconcileRestoredTrustRegistry(savedTrust)
+  if (reconciledTrust?.kind === 'invalid') return { kind: 'invalid' }
   const savedLearning = csvGeneration.status === 'committed' || useLegacy
     ? restoreLearning()
     : null
@@ -1176,7 +1216,7 @@ function buildInitializeRestoredState(baseState: AppState, nowMs: number): Initi
   const state: AppState = {
     ...baseState,
     ...(savedPortfolio ? { holdings: savedPortfolio } : {}),
-    ...(savedTrust ? { trust: savedTrust } : {}),
+    ...(reconciledTrust ? { trust: reconciledTrust.trust } : {}),
     ...(savedLearning ? { learning: savedLearning } : {}),
     portfolioPolicy: savedPolicy,
     cashAssumptions: savedCashAssumptions,

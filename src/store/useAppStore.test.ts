@@ -10,6 +10,7 @@ beforeEach(() => setPortfolioGenerationLockAdapterForTest(createImmediatePortfol
 afterEach(() => resetPortfolioGenerationLockAdapterForTest())
 import type { CsvImportProvenance, Holding, Trust } from '../types'
 import { DEFAULT_CASH_ASSUMPTIONS, DEFAULT_PORTFOLIO_POLICY } from '../types'
+import { INITIAL_TRUST, TRUST_SBI_CSV_ALIASES } from '../constants/trust'
 import type { CommitteeDecision } from '../domain/analysis/committeeDecision'
 import { committeeToOfficialDecision, buildCsvSyncSummary, useAppStore } from './useAppStore'
 import { selectEffectiveCashAssumptions, selectCashAssumptionsFreshness, selectCashAuthorityView } from './selectors'
@@ -1488,6 +1489,219 @@ describe('R4-A004c: initialize/refresh preserve canonical v4/v5 semantics', () =
   })
 
   afterEach(() => vi.unstubAllGlobals())
+
+  const accessibleCurrentTrustIds = [
+    'usdiv', 'nq100gp', 'sp500gp', 'us_reit', 'fang_toku', 'sp500_sbi',
+    'nk225_sbi', '4x3bull', 'jpndiv', 'usdiv_nisa', 'gold_mufg', 'acwi',
+    'sp500_nisa', 'mega10', 'fang_nisa_g', 'gold_sbi', 'sp500_tsumi', 'fang_tsumi',
+  ] as const
+
+  function sanitizedAccessibleCurrentCsv(): string {
+    const accountSections = [
+      ['特定', '投資信託（金額/特定預り）'],
+      ['NISA成長', '投資信託（金額/NISA預り（成長投資枠））'],
+      ['NISA積立', '投資信託（金額/NISA預り(つみたて投資枠)）'],
+    ] as const
+    const funds = accessibleCurrentTrustIds.map(id => {
+      const fund = INITIAL_TRUST.find(item => item.id === id)
+      if (!fund) throw new Error(`missing current trust fixture id: ${id}`)
+      return fund
+    })
+    const trustSections = accountSections.flatMap(([account, heading]) => [
+      heading,
+      'ファンド名,基準価額,評価額,損益（％）,前日比（％）,取得日',
+      ...funds
+        .filter(fund => fund.account === account)
+        .map((fund, index) => {
+          const officialName = TRUST_SBI_CSV_ALIASES[fund.id]?.[0] ?? fund.name
+          return `${officialName},10000,${200_000 + index},1.00,0.10,`
+        }),
+    ])
+    return [
+      '株式（現物/特定預り）',
+      '銘柄コード,銘柄名,現在値,評価額,損益（％）,前日比（％）,取得日',
+      '7777,テスト銘柄,1000,700000,1.00,0.10,2026-01-01',
+      ...trustSections,
+    ].join('\n')
+  }
+
+  function seedCanonicalTrustRegistry(trust: Trust[]): void {
+    const state = useAppStore.getState()
+    persistCsvImportTransaction({
+      holdings: [makeHolding({ code: '7777', eval: 700_000 })],
+      trust,
+      learning: null,
+      csvImportedAt: null,
+      provenance: null,
+      syncSummary: null,
+      trustShortSnapshot: {
+        date: '2026-07-18',
+        total: trust.reduce((sum, fund) => sum + fund.eval, 0),
+        evalById: Object.fromEntries(trust.map(fund => [fund.id, fund.eval])),
+      },
+      portfolioPolicy: state.portfolioPolicy,
+      cashAssumptions: state.cashAssumptions,
+      origin: 'snapshot',
+    }, Date.parse('2026-07-18T00:00:00.000Z'), undefined, {
+      schemaVersion: CSV_IMPORT_GENERATION_SCHEMA_V5,
+    })
+    setItem.mockClear()
+    removeItem.mockClear()
+  }
+
+  function trustUserRegistryProjection(fund: Trust) {
+    return {
+      id: fund.id,
+      name: fund.name,
+      abbr: fund.abbr,
+      account: fund.account,
+      policy: fund.policy,
+      eval: fund.eval,
+      pnlPct: fund.pnlPct,
+      dayPct: fund.dayPct,
+      cost: fund.cost,
+      mu: fund.mu,
+      sigma: fund.sigma,
+      notForTrading: fund.notForTrading,
+    }
+  }
+
+  it('CSV-INGEST-R2: stale canonical registry is additively reconciled, persisted, idempotent, and imports the accessible 18 trusts', async () => {
+    const accessibleIds = new Set<string>(accessibleCurrentTrustIds)
+    const retained = INITIAL_TRUST
+      .filter(fund => accessibleIds.has(fund.id))
+      .slice(0, 7)
+      .map((fund, index) => ({
+        ...fund,
+        eval: 100_000 + index,
+        pnlPct: 10 + index,
+        dayPct: 0.1 + index,
+        cost: fund.cost + 0.001,
+      }))
+    const legacyOnly: Trust = {
+      ...INITIAL_TRUST[0],
+      id: 'legacy_only_fund',
+      name: '旧世代限定ファンド',
+      abbr: '旧世代',
+      eval: 50_000,
+      pnlPct: 2,
+      dayPct: 0.2,
+      cost: 0.321,
+    }
+    const staleCanonicalTrust = [...retained, legacyOnly]
+    seedCanonicalTrustRegistry(staleCanonicalTrust)
+
+    expect(await useAppStore.getState().initialize()).toMatchObject({ ok: true, code: 'SUCCESS' })
+    const hydrated = useAppStore.getState()
+    const expectedCount = INITIAL_TRUST.length + 1
+    expect(hydrated.trust).toHaveLength(expectedCount)
+    expect(hydrated.trust.map(fund => fund.id)).toEqual([
+      ...staleCanonicalTrust.map(fund => fund.id),
+      ...INITIAL_TRUST.filter(fund => !staleCanonicalTrust.some(saved => saved.id === fund.id)).map(fund => fund.id),
+    ])
+    for (const saved of staleCanonicalTrust) {
+      expect(trustUserRegistryProjection(hydrated.trust.find(fund => fund.id === saved.id)!))
+        .toEqual(trustUserRegistryProjection(saved))
+    }
+    for (const added of INITIAL_TRUST.filter(fund => !staleCanonicalTrust.some(saved => saved.id === fund.id))) {
+      expect(hydrated.trust.find(fund => fund.id === added.id)).toMatchObject({
+        id: added.id,
+        account: added.account,
+        policy: added.policy,
+        eval: 0,
+        pnlPct: 0,
+        dayPct: 0,
+      })
+    }
+    expect(new Set(hydrated.trust.map(fund => fund.id)).size).toBe(expectedCount)
+    expect(new Set(hydrated.trust.map(fund => `${fund.id}:${fund.account}`)).size).toBe(expectedCount)
+
+    const firstDurable = restoreCsvImportGeneration()
+    expect(firstDurable.status).toBe('committed')
+    if (firstDurable.status !== 'committed') throw new Error('expected reconciled canonical generation')
+    expect(firstDurable.payload.trust.map(fund => fund.id)).toEqual(hydrated.trust.map(fund => fund.id))
+
+    expect(await useAppStore.getState().initialize()).toMatchObject({ ok: true, code: 'SUCCESS' })
+    expect(useAppStore.getState().trust.map(fund => fund.id)).toEqual(hydrated.trust.map(fund => fund.id))
+    expect(new Set(useAppStore.getState().trust.map(fund => fund.id)).size).toBe(expectedCount)
+
+    const imported = await useAppStore.getState().importCsv(
+      makeCsvFile(sanitizedAccessibleCurrentCsv(), 'sanitized-accessible-current.csv'),
+      { confirmUnknownProvenance: true },
+    )
+    expect(imported).toMatchObject({
+      ok: true,
+      code: 'SUCCESS',
+      persistence: { status: 'committed' },
+      diagnostics: {
+        recognizedStockRows: 1,
+        recognizedTrustRows: 18,
+        matchedTrustRows: 18,
+        unknownTrustRows: 0,
+        ambiguousTrustRows: 0,
+        failedGuard: null,
+        committed: true,
+      },
+    })
+    const importedState = useAppStore.getState()
+    expect(importedState.trust).toHaveLength(expectedCount)
+    expect(importedState.trustPlan).not.toBeNull()
+    expect(importedState.system.csvSyncSummary).toMatchObject({
+      trust: { unknownFunds: [], ambiguousFundIds: [] },
+    })
+    expect(importedState.universe).not.toBeNull()
+    const policyToClass = [
+      ['JAPAN_SHORTTERM', 'JP_TRUST'],
+      ['OVERSEAS_LONGTERM', 'OVERSEAS_TRUST'],
+      ['GOLD', 'GOLD'],
+    ] as const
+    for (const [policy, assetClass] of policyToClass) {
+      const trustTotal = importedState.trust
+        .filter(fund => fund.policy === policy)
+        .reduce((sum, fund) => sum + fund.eval, 0)
+      expect(importedState.universe?.categories.find(category => category.class === assetClass)?.currentValue)
+        .toBeCloseTo(trustTotal, 6)
+    }
+    expect(importedState.universe?.categories.find(category => category.class === 'JP_STOCK')?.currentValue)
+      .toBeCloseTo(importedState.holdings.reduce((sum, holding) => sum + holding.eval, 0), 6)
+
+    expect(await useAppStore.getState().initialize()).toMatchObject({ ok: true, code: 'SUCCESS' })
+    const reloaded = useAppStore.getState()
+    expect(reloaded.trust).toHaveLength(expectedCount)
+    expect(new Set(reloaded.trust.map(fund => fund.id)).size).toBe(expectedCount)
+    expect(reloaded.system.csvImportProvenance).toEqual(imported.ok ? imported.provenance : null)
+    const reloadedCanonical = restoreCsvImportGeneration()
+    expect(reloadedCanonical.status).toBe('committed')
+    if (reloadedCanonical.status !== 'committed') throw new Error('expected reloaded canonical generation')
+    expect(reloadedCanonical.payload.trust.map(fund => fund.id)).toEqual(reloaded.trust.map(fund => fund.id))
+  })
+
+  it('CSV-INGEST-R2: a current complete registry is not replaced or metadata-normalized during initialize', async () => {
+    const current = INITIAL_TRUST.map((fund, index) => index === 0
+      ? { ...fund, eval: 123_456, pnlPct: 7.5, dayPct: -0.5, cost: fund.cost + 0.001 }
+      : { ...fund })
+    seedCanonicalTrustRegistry(current)
+
+    expect(await useAppStore.getState().initialize()).toMatchObject({ ok: true, code: 'SUCCESS' })
+    expect(useAppStore.getState().trust.map(trustUserRegistryProjection))
+      .toEqual(current.map(trustUserRegistryProjection))
+  })
+
+  it('CSV-INGEST-R2: duplicate persisted trust ids fail closed without rewriting canonical authority', async () => {
+    const duplicate = { ...INITIAL_TRUST[0], eval: 1 }
+    seedCanonicalTrustRegistry([duplicate, { ...duplicate, eval: 2 }])
+    const canonicalBefore = storage[CSV_IMPORT_GENERATION_KEY]
+    const stateBefore = useAppStore.getState()
+
+    expect(await useAppStore.getState().initialize()).toMatchObject({
+      ok: false,
+      code: 'LOAD_RESTORE_ERROR',
+    })
+    expect(useAppStore.getState()).toBe(stateBefore)
+    expect(storage[CSV_IMPORT_GENERATION_KEY]).toBe(canonicalBefore)
+    expect(setItem).not.toHaveBeenCalled()
+    expect(removeItem).not.toHaveBeenCalled()
+  })
 
   it.each([
     ['initialize', 'csv-import-generation-4', 1],

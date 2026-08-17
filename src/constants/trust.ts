@@ -21,6 +21,7 @@ export const EMBEDDED_GOLD_EXPOSURE: Readonly<Record<string, { navGoldExposure: 
  */
 export const TRUST_SBI_CSV_ALIASES: Readonly<Record<string, readonly string[]>> = {
   nk225_sbi: ['SBI・iシェアーズ・日経225インデックス・ファンド'],
+  '4x3bull': ['SBI 日本株4.3ブル'],
   jpndiv: ['SMT 日本株配当貴族インデックス・オープン'],
   sp500_sbi: ['SBI・V・S&P500インデックス・ファンド'],
   sp500_nisa: ['SBI・V・S&P500インデックス・ファンド'],
