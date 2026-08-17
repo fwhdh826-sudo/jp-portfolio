@@ -1,20 +1,61 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-08-17T08:41:59.032062+09:00",
-  "sourceUpdatedAt": "2026-08-16T23:00:00+00:00",
+  "updatedAt": "2026-08-17T13:10:39.747777+09:00",
+  "sourceUpdatedAt": "2026-08-17T03:57:20+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
+      "avgSentiment": -0.11,
+      "negativeCount": 1,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 2,
+      "sourceCount": 2,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Japan’s Slower Growth Complicates BOJ’s Messaging on Rate Hike",
+      "topPositiveTitle": "BOJ Should Raise Rates at Every Meeting, Ex-Currency Chief Says",
+      "items": [
+        {
+          "title": "Japan’s Slower Growth Complicates BOJ’s Messaging on Rate Hike",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-16T23:56:38+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-16/japan-s-economic-growth-slows-as-mideast-conflict-clouds-outlook",
+          "tags": [
+            "jp_broad",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "BOJ Should Raise Rates at Every Meeting, Ex-Currency Chief Says",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-17T03:57:20+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-17/boj-should-raise-rates-at-every-meeting-ex-currency-chief-says",
+          "tags": [
+            "fx",
+            "jp_broad",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Japan’s Bond Yields Climb on BOJ Hike Bets, Fiscal Concerns",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-17T03:10:44+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-17/japan-s-bond-yields-climb-on-boj-hike-bets-fiscal-concerns",
+          "tags": [
+            "jp_broad",
+            "market",
+            "rates"
+          ]
+        }
+      ]
     },
     "jp_semiconductor": {
       "avgSentiment": 0.0,
@@ -44,25 +85,27 @@
       ]
     },
     "us_broad": {
-      "avgSentiment": 0.165,
+      "avgSentiment": 0.065,
       "negativeCount": 0,
       "positiveCount": 1,
       "neutralCount": 1,
       "sourceCount": 1,
       "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Fed’s Internal Rate Debate Faces New Scrutiny",
+      "topNegativeTitle": "Dollar Weakens as Traders Pare Fed Rate-Hike Bets: Markets Wrap",
       "topPositiveTitle": "Bonds Face a Bigger Threat Than the Fed as Global Rates Climb",
       "items": [
         {
-          "title": "Fed’s Internal Rate Debate Faces New Scrutiny",
+          "title": "Dollar Weakens as Traders Pare Fed Rate-Hike Bets: Markets Wrap",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-16T15:34:42+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-16/fed-s-internal-rate-debate-faces-new-scrutiny-video",
+          "sentiment": "negative",
+          "sentimentScore": -0.2,
+          "publishedAt": "2026-08-16T22:14:58+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-16/stock-market-today-dow-s-p-live-updates",
           "tags": [
+            "fx",
             "market",
+            "rates",
             "us_broad"
           ]
         },
@@ -89,17 +132,18 @@
       "sourceCount": 2,
       "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Bloomberg This Weekend | Meta on Trial, the Race To Replace Gov. DeSantis, and Pet Longevity",
-      "topPositiveTitle": "Bloomberg This Weekend | Meta on Trial, the Race To Replace Gov. DeSantis, and Pet Longevity",
+      "topNegativeTitle": "Korea Eximbank to Lend $1 Billion to Glencore for Copper Supply",
+      "topPositiveTitle": "Korea Eximbank to Lend $1 Billion to Glencore for Copper Supply",
       "items": [
         {
-          "title": "Bloomberg This Weekend | Meta on Trial, the Race To Replace Gov. DeSantis, and Pet Longevity",
+          "title": "Korea Eximbank to Lend $1 Billion to Glencore for Copper Supply",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-16T16:34:39+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-16/bloomberg-this-weekend-8-16-2026-video",
+          "publishedAt": "2026-08-17T03:36:38+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-17/korea-eximbank-to-lend-1-billion-to-glencore-for-copper-supply",
           "tags": [
+            "commodity",
             "market",
             "us_growth"
           ]
@@ -133,16 +177,30 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.2,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Gold Rises to Near $4,400 as Weak Retail Data Weighs on Dollar",
+      "topPositiveTitle": "Gold Rises to Near $4,400 as Weak Retail Data Weighs on Dollar",
+      "items": [
+        {
+          "title": "Gold Rises to Near $4,400 as Weak Retail Data Weighs on Dollar",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.2,
+          "publishedAt": "2026-08-16T23:36:14+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-16/gold-steady-near-4-400-as-traders-weigh-us-data-and-rate-path",
+          "tags": [
+            "fx",
+            "gold",
+            "market"
+          ]
+        }
+      ]
     },
     "reit": {
       "avgSentiment": 0,
@@ -169,30 +227,16 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.112,
+      "avgSentiment": 0.167,
       "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 5,
+      "positiveCount": 2,
+      "neutralCount": 4,
       "sourceCount": 3,
       "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Latest Oil Market News and Analysis for June 17",
+      "topNegativeTitle": "Trump Says Asked Pentagon to Cut Military Drills With S. Korea",
       "topPositiveTitle": "Israeli Economy Rebounds After Slump Sparked By Iran War",
       "items": [
-        {
-          "title": "Latest Oil Market News and Analysis for June 17",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-16T22:02:21+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-16/latest-oil-market-news-and-analysis-for-june-17",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
         {
           "title": "Trump Says Asked Pentagon to Cut Military Drills With S. Korea",
           "source": "Bloomberg Markets",
@@ -247,32 +291,154 @@
             "market"
           ],
           "titleJa": "政府 ロシアへの対抗措置を検討 プーチン氏の北方領土訪問受け"
+        },
+        {
+          "title": "Latest Oil Market News and Analysis for June 17",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-16T22:02:21+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-16/latest-oil-market-news-and-analysis-for-june-17",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "rates": {
-      "avgSentiment": 0.33,
+      "avgSentiment": 0.083,
       "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 3,
+      "sourceCount": 2,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Bonds Face a Bigger Threat Than the Fed as Global Rates Climb",
+      "topNegativeTitle": "Dollar Weakens as Traders Pare Fed Rate-Hike Bets: Markets Wrap",
+      "topPositiveTitle": "Indonesian Developer Modernland Seeks Bond Restructuring Again",
+      "items": [
+        {
+          "title": "Dollar Weakens as Traders Pare Fed Rate-Hike Bets: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.2,
+          "publishedAt": "2026-08-16T22:14:58+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-16/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "fx",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "BOJ Should Raise Rates at Every Meeting, Ex-Currency Chief Says",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-17T03:57:20+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-17/boj-should-raise-rates-at-every-meeting-ex-currency-chief-says",
+          "tags": [
+            "fx",
+            "jp_broad",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Gold Rises to Near $4,400 as Weak Retail Data Weighs on Dollar",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.2,
+          "publishedAt": "2026-08-16T23:36:14+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-16/gold-steady-near-4-400-as-traders-weigh-us-data-and-rate-path",
+          "tags": [
+            "fx",
+            "gold",
+            "market"
+          ]
+        },
+        {
+          "title": "Indonesian Developer Modernland Seeks Bond Restructuring Again",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-17T03:17:01+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-17/indonesian-developer-modernland-seeks-bond-restructuring-again",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        }
+      ]
+    },
+    "rates": {
+      "avgSentiment": -0.04,
+      "negativeCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 3,
+      "sourceCount": 2,
+      "itemCount": 5,
+      "isStale": false,
+      "topNegativeTitle": "Japan’s Slower Growth Complicates BOJ’s Messaging on Rate Hike",
       "topPositiveTitle": "Bonds Face a Bigger Threat Than the Fed as Global Rates Climb",
       "items": [
+        {
+          "title": "Japan’s Slower Growth Complicates BOJ’s Messaging on Rate Hike",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-16T23:56:38+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-16/japan-s-economic-growth-slows-as-mideast-conflict-clouds-outlook",
+          "tags": [
+            "jp_broad",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Dollar Weakens as Traders Pare Fed Rate-Hike Bets: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.2,
+          "publishedAt": "2026-08-16T22:14:58+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-16/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "fx",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "BOJ Should Raise Rates at Every Meeting, Ex-Currency Chief Says",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-17T03:57:20+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-17/boj-should-raise-rates-at-every-meeting-ex-currency-chief-says",
+          "tags": [
+            "fx",
+            "jp_broad",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Japan’s Bond Yields Climb on BOJ Hike Bets, Fiscal Concerns",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-17T03:10:44+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-17/japan-s-bond-yields-climb-on-boj-hike-bets-fiscal-concerns",
+          "tags": [
+            "jp_broad",
+            "market",
+            "rates"
+          ]
+        },
         {
           "title": "Bonds Face a Bigger Threat Than the Fed as Global Rates Climb",
           "source": "Bloomberg Markets",
@@ -289,40 +455,38 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0.222,
       "negativeCount": 0,
-      "positiveCount": 0,
+      "positiveCount": 3,
       "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Oil Edges Higher as Middle East Tensions Linger: Markets Wrap",
-      "topPositiveTitle": "Oil Edges Higher as Middle East Tensions Linger: Markets Wrap",
+      "topNegativeTitle": "Korea Eximbank to Lend $1 Billion to Glencore for Copper Supply",
+      "topPositiveTitle": "Thai Growth Slows to 1.9% as Energy Prices Counter Stimulus",
       "items": [
         {
-          "title": "Oil Edges Higher as Middle East Tensions Linger: Markets Wrap",
+          "title": "Korea Eximbank to Lend $1 Billion to Glencore for Copper Supply",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-16T22:14:58+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-16/stock-market-today-dow-s-p-live-updates",
+          "publishedAt": "2026-08-17T03:36:38+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-17/korea-eximbank-to-lend-1-billion-to-glencore-for-copper-supply",
           "tags": [
             "commodity",
-            "geopolitical",
-            "market"
+            "market",
+            "us_growth"
           ]
         },
         {
-          "title": "Latest Oil Market News and Analysis for June 17",
+          "title": "Hong Kong Court Orders Unit of SDIC Commodities to Liquidate",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-16T22:02:21+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-16/latest-oil-market-news-and-analysis-for-june-17",
+          "publishedAt": "2026-08-17T02:16:29+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-17/chinese-trader-s-unit-ordered-to-liquidate-by-hong-kong-court",
           "tags": [
             "commodity",
-            "geopolitical",
-            "macro_risk",
             "market"
           ]
         },
@@ -339,50 +503,24 @@
             "market",
             "us_growth"
           ]
-        }
-      ]
-    },
-    "geopolitical": {
-      "avgSentiment": 0.122,
-      "negativeCount": 1,
-      "positiveCount": 3,
-      "neutralCount": 7,
-      "sourceCount": 3,
-      "itemCount": 11,
-      "isStale": false,
-      "topNegativeTitle": "Iran Pressure Campaign Lacks Clear Off Ramp",
-      "topPositiveTitle": "Donalds Looks to Build on DeSantis Legacy",
-      "items": [
-        {
-          "title": "Iran Pressure Campaign Lacks Clear Off Ramp",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-16T13:01:24+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-16/iran-pressure-campaign-lacks-clear-off-ramp",
-          "tags": [
-            "geopolitical",
-            "market"
-          ]
         },
         {
-          "title": "Oil Edges Higher as Middle East Tensions Linger: Markets Wrap",
+          "title": "Thai Baht Rally May Fade on Dovish Central Bank, Analysts Say",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-16T22:14:58+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-16/stock-market-today-dow-s-p-live-updates",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-17T00:04:23+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-17/thai-baht-rally-may-fade-on-dovish-central-bank-analysts-say",
           "tags": [
             "commodity",
-            "geopolitical",
             "market"
           ]
         },
         {
           "title": "Latest Oil Market News and Analysis for June 17",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
           "publishedAt": "2026-08-16T22:02:21+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-08-16/latest-oil-market-news-and-analysis-for-june-17",
           "tags": [
@@ -391,7 +529,20 @@
             "macro_risk",
             "market"
           ]
-        },
+        }
+      ]
+    },
+    "geopolitical": {
+      "avgSentiment": 0.167,
+      "negativeCount": 0,
+      "positiveCount": 2,
+      "neutralCount": 4,
+      "sourceCount": 3,
+      "itemCount": 6,
+      "isStale": false,
+      "topNegativeTitle": "Trump Says Asked Pentagon to Cut Military Drills With S. Korea",
+      "topPositiveTitle": "Israeli Economy Rebounds After Slump Sparked By Iran War",
+      "items": [
         {
           "title": "Trump Says Asked Pentagon to Cut Military Drills With S. Korea",
           "source": "Bloomberg Markets",
@@ -418,6 +569,48 @@
             "market"
           ],
           "titleJa": "公明 竹谷代表「非核三原則堅持し核兵器廃絶へ取り組みを」"
+        },
+        {
+          "title": "高市首相 千鳥ヶ淵戦没者墓苑で献花 「全国戦没者追悼式」前に",
+          "source": "NHK 経済",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-15T02:27:00+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20260815de44236",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ],
+          "titleJa": "高市首相 千鳥ヶ淵戦没者墓苑で献花 「全国戦没者追悼式」前に"
+        },
+        {
+          "title": "政府 ロシアへの対抗措置を検討 プーチン氏の北方領土訪問受け",
+          "source": "NHK 経済",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-14T07:45:54+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20260814de43919",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ],
+          "titleJa": "政府 ロシアへの対抗措置を検討 プーチン氏の北方領土訪問受け"
+        },
+        {
+          "title": "Latest Oil Market News and Analysis for June 17",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-16T22:02:21+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-16/latest-oil-market-news-and-analysis-for-june-17",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
         }
       ]
     }
@@ -430,7 +623,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 3,
+    "excludedCount": 4,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
