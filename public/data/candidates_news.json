@@ -1,35 +1,20 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-08-18T08:44:27.641190+09:00",
-  "sourceUpdatedAt": "2026-08-17T23:32:35+00:00",
+  "updatedAt": "2026-08-18T13:06:06.273356+09:00",
+  "sourceUpdatedAt": "2026-08-18T03:54:22+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "BOJ Should Raise Rates at Every Meeting, Ex-Currency Chief Says",
-      "topPositiveTitle": "BOJ Should Raise Rates at Every Meeting, Ex-Currency Chief Says",
-      "items": [
-        {
-          "title": "BOJ Should Raise Rates at Every Meeting, Ex-Currency Chief Says",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-17T03:57:20+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-17/boj-should-raise-rates-at-every-meeting-ex-currency-chief-says",
-          "tags": [
-            "fx",
-            "jp_broad",
-            "market",
-            "rates"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "jp_semiconductor": {
       "avgSentiment": 0,
@@ -44,15 +29,15 @@
       "items": []
     },
     "us_broad": {
-      "avgSentiment": 0.096,
+      "avgSentiment": -0.443,
       "negativeCount": 2,
-      "positiveCount": 3,
-      "neutralCount": 2,
+      "positiveCount": 0,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 7,
+      "itemCount": 3,
       "isStale": false,
       "topNegativeTitle": "Foreign Holdings of Treasuries Fell in June, Led by Japan Drop",
-      "topPositiveTitle": "Oil Advances on Middle East, Treasuries Sell Off: Markets Wrap",
+      "topPositiveTitle": "Asian Bonds Follow Treasuries Lower, Oil Gains: Markets Wrap",
       "items": [
         {
           "title": "Foreign Holdings of Treasuries Fell in June, Led by Japan Drop",
@@ -67,24 +52,10 @@
           ]
         },
         {
-          "title": "US Bond Selloff Drives 30-Year Yields to Highest Since 2007",
+          "title": "Gold Steadies Near $4,400 on Reduced Expectations for Rate Hike",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-08-17T16:44:44+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-17/us-bond-selloff-drives-30-year-yields-to-the-highest-since-2007",
-          "tags": [
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Gold Holds Two-Day Gain on Reduced Rate-Hike Expectations",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
           "publishedAt": "2026-08-17T23:20:40+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-08-17/gold-holds-two-day-gain-on-reduced-rate-hike-expectations",
           "tags": [
@@ -96,32 +67,15 @@
           ]
         },
         {
-          "title": "Anthropic Revenue Boom Boosts AI Stocks | Bloomberg Businessweek Daily 8/17/2026",
+          "title": "Asian Bonds Follow Treasuries Lower, Oil Gains: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-17T20:24:47+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-17/bloomberg-businessweek-daily-8-17-2026-video",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market",
-            "us_broad",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Stocks Slip as Oil and Treasury Yields Rise | Closing Bell",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-17T20:27:01+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-17/stocks-slip-as-oil-treasury-yields-rise-closing-bell-video",
+          "publishedAt": "2026-08-17T22:07:13+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-17/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
             "market",
-            "rates",
             "us_broad"
           ]
         }
@@ -131,9 +85,9 @@
       "avgSentiment": 0.0,
       "negativeCount": 1,
       "positiveCount": 1,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 4,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 3,
       "isStale": false,
       "topNegativeTitle": "The Leadership Skills That Matter Most in the Age of AI",
       "topPositiveTitle": "AI Rally Set to Trigger Stock-Market Correction, ECB Blog Says",
@@ -165,22 +119,6 @@
           ]
         },
         {
-          "title": "Anthropic Revenue Boom Boosts AI Stocks | Bloomberg Businessweek Daily 8/17/2026",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-17T20:24:47+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-17/bloomberg-businessweek-daily-8-17-2026-video",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market",
-            "us_broad",
-            "us_growth"
-          ]
-        },
-        {
           "title": "AI Rally Set to Trigger Stock-Market Correction, ECB Blog Says",
           "source": "Bloomberg Economics",
           "sentiment": "positive",
@@ -207,21 +145,21 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
+      "avgSentiment": -0.33,
+      "negativeCount": 1,
       "positiveCount": 0,
-      "neutralCount": 1,
+      "neutralCount": 0,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Gold Holds Two-Day Gain on Reduced Rate-Hike Expectations",
-      "topPositiveTitle": "Gold Holds Two-Day Gain on Reduced Rate-Hike Expectations",
+      "topNegativeTitle": "Gold Steadies Near $4,400 on Reduced Expectations for Rate Hike",
+      "topPositiveTitle": "Gold Steadies Near $4,400 on Reduced Expectations for Rate Hike",
       "items": [
         {
-          "title": "Gold Holds Two-Day Gain on Reduced Rate-Hike Expectations",
+          "title": "Gold Steadies Near $4,400 on Reduced Expectations for Rate Hike",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
           "publishedAt": "2026-08-17T23:20:40+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-08-17/gold-holds-two-day-gain-on-reduced-rate-hike-expectations",
           "tags": [
@@ -259,43 +197,16 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.002,
-      "negativeCount": 3,
+      "avgSentiment": 0.223,
+      "negativeCount": 1,
       "positiveCount": 2,
-      "neutralCount": 1,
+      "neutralCount": 0,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "US-Iran Prospects Dim as Trump Seems in No Hurry to Reach Deal",
+      "topNegativeTitle": "The Leadership Skills That Matter Most in the Age of AI",
       "topPositiveTitle": "Latest Oil Market News and Analysis for Aug. 18",
       "items": [
-        {
-          "title": "US-Iran Prospects Dim as Trump Seems in No Hurry to Reach Deal",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-17T22:00:16+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-17/trump-likes-the-idea-of-declaring-hormuz-a-territory-video",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "US Bond Selloff Drives 30-Year Yields to Highest Since 2007",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-17T16:44:44+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-17/us-bond-selloff-drives-30-year-yields-to-the-highest-since-2007",
-          "tags": [
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
         {
           "title": "The Leadership Skills That Matter Most in the Age of AI",
           "source": "Bloomberg Economics",
@@ -311,22 +222,6 @@
           ]
         },
         {
-          "title": "Anthropic Revenue Boom Boosts AI Stocks | Bloomberg Businessweek Daily 8/17/2026",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-17T20:24:47+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-17/bloomberg-businessweek-daily-8-17-2026-video",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market",
-            "us_broad",
-            "us_growth"
-          ]
-        },
-        {
           "title": "Gasoline Price Rebound Pushes Canada Inflation Rate to 3%",
           "source": "Bloomberg Economics",
           "sentiment": "positive",
@@ -338,25 +233,51 @@
             "macro_risk",
             "market"
           ]
+        },
+        {
+          "title": "Latest Oil Market News and Analysis for Aug. 18",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-17T22:01:31+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-17/latest-oil-market-news-and-analysis-for-aug-18",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": 0.223,
-      "negativeCount": 0,
+      "avgSentiment": 0.003,
+      "negativeCount": 2,
       "positiveCount": 1,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 3,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Gold Holds Two-Day Gain on Reduced Rate-Hike Expectations",
-      "topPositiveTitle": "EM Currencies Rise on Softer Dollar and Stronger Risk Appetite",
+      "topNegativeTitle": "Chinese Companies Slow FX Sales in July as Yuan Support Fades",
+      "topPositiveTitle": "Indian Rupee, Bond Bets Retreat as Dollar Swap Window Ends Early",
       "items": [
         {
-          "title": "Gold Holds Two-Day Gain on Reduced Rate-Hike Expectations",
+          "title": "Chinese Companies Slow FX Sales in July as Yuan Support Fades",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-18T03:48:01+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-18/chinese-companies-slow-fx-sales-in-july-as-yuan-support-fades",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        },
+        {
+          "title": "Gold Steadies Near $4,400 on Reduced Expectations for Rate Hike",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
           "publishedAt": "2026-08-17T23:20:40+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-08-17/gold-holds-two-day-gain-on-reduced-rate-hike-expectations",
           "tags": [
@@ -368,45 +289,41 @@
           ]
         },
         {
-          "title": "BOJ Should Raise Rates at Every Meeting, Ex-Currency Chief Says",
-          "source": "Bloomberg Economics",
+          "title": "Indian Lenders’ Dollar Bond Sales Hit Record Near $9 Billion",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-17T03:57:20+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-17/boj-should-raise-rates-at-every-meeting-ex-currency-chief-says",
+          "publishedAt": "2026-08-17T06:26:04+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-17/indian-lenders-set-record-with-8-billion-in-dollar-bond-sales",
           "tags": [
             "fx",
-            "jp_broad",
-            "market",
-            "rates"
+            "market"
           ]
         },
         {
-          "title": "EM Currencies Rise on Softer Dollar and Stronger Risk Appetite",
+          "title": "Indian Rupee, Bond Bets Retreat as Dollar Swap Window Ends Early",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.67,
-          "publishedAt": "2026-08-17T05:40:17+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-17/emerging-currencies-rise-to-record-high-as-fed-hike-bets-ease",
+          "publishedAt": "2026-08-18T03:32:55+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-18/indian-rupee-bond-bets-retreat-as-dollar-swap-window-ends-early",
           "tags": [
             "fx",
-            "market",
-            "rates",
-            "us_broad"
+            "market"
           ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": -0.041,
+      "avgSentiment": -0.2,
       "negativeCount": 3,
-      "positiveCount": 2,
-      "neutralCount": 3,
+      "positiveCount": 1,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 8,
+      "itemCount": 5,
       "isStale": false,
       "topNegativeTitle": "Brazil Economic Activity Suffers Biggest Drop in Over a Year",
-      "topPositiveTitle": "EM Currencies Rise on Softer Dollar and Stronger Risk Appetite",
+      "topPositiveTitle": "Japan Five-Year Bond Sale Draws Strongest Demand Since June 2025",
       "items": [
         {
           "title": "Brazil Economic Activity Suffers Biggest Drop in Over a Year",
@@ -421,14 +338,15 @@
           ]
         },
         {
-          "title": "US Bond Selloff Drives 30-Year Yields to Highest Since 2007",
+          "title": "Gold Steadies Near $4,400 on Reduced Expectations for Rate Hike",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-08-17T16:44:44+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-17/us-bond-selloff-drives-30-year-yields-to-the-highest-since-2007",
+          "publishedAt": "2026-08-17T23:20:40+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-17/gold-holds-two-day-gain-on-reduced-rate-hike-expectations",
           "tags": [
-            "macro_risk",
+            "fx",
+            "gold",
             "market",
             "rates",
             "us_broad"
@@ -447,27 +365,24 @@
           ]
         },
         {
-          "title": "Gold Holds Two-Day Gain on Reduced Rate-Hike Expectations",
+          "title": "Prabowo’s ‘Pragmatic’ Speech Calms Weary Indonesia Investors",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-17T23:20:40+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-17/gold-holds-two-day-gain-on-reduced-rate-hike-expectations",
+          "publishedAt": "2026-08-18T01:02:26+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-18/prabowo-s-pragmatic-speech-comforts-weary-indonesia-investors",
           "tags": [
-            "fx",
-            "gold",
             "market",
-            "rates",
-            "us_broad"
+            "rates"
           ]
         },
         {
-          "title": "Casas Bahia Files for Bankruptcy on High Rates, Tight Credit",
+          "title": "Japan Five-Year Bond Sale Draws Strongest Demand Since June 2025",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-17T14:57:22+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-17/casas-bahia-files-for-bankruptcy-on-high-rates-tight-credit",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-18T03:40:20+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-18/japan-five-year-bond-sale-draws-strongest-demand-since-june-2025",
           "tags": [
             "market",
             "rates"
@@ -476,56 +391,39 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.445,
+      "avgSentiment": 0.223,
       "negativeCount": 0,
-      "positiveCount": 4,
+      "positiveCount": 1,
       "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 6,
+      "sourceCount": 1,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Anthropic Revenue Boom Boosts AI Stocks | Bloomberg Businessweek Daily 8/17/2026",
-      "topPositiveTitle": "Oil Advances on Middle East, Treasuries Sell Off: Markets Wrap",
+      "topNegativeTitle": "Asian Bonds Follow Treasuries Lower, Oil Gains: Markets Wrap",
+      "topPositiveTitle": "Latest Oil Market News and Analysis for Aug. 18",
       "items": [
         {
-          "title": "Anthropic Revenue Boom Boosts AI Stocks | Bloomberg Businessweek Daily 8/17/2026",
+          "title": "Asian Bonds Follow Treasuries Lower, Oil Gains: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-17T20:24:47+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-17/bloomberg-businessweek-daily-8-17-2026-video",
+          "publishedAt": "2026-08-17T22:07:13+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-17/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
-            "geopolitical",
-            "macro_risk",
             "market",
-            "us_broad",
-            "us_growth"
+            "us_broad"
           ]
         },
         {
-          "title": "Hydro-Quebec Inks $36 Billion Energy Deal With Newfoundland",
+          "title": "Saudis Offer Oil Near Oman in Possible Sign of Shuttling",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-17T16:24:56+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-17/hydro-quebec-reaches-36-billion-energy-deal-with-newfoundland",
+          "publishedAt": "2026-08-17T13:38:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-17/saudis-offer-oil-from-near-oman-in-possible-sign-of-shuttling",
           "tags": [
             "commodity",
             "market"
-          ]
-        },
-        {
-          "title": "Stocks Slip as Oil and Treasury Yields Rise | Closing Bell",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-17T20:27:01+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-17/stocks-slip-as-oil-treasury-yields-rise-closing-bell-video",
-          "tags": [
-            "commodity",
-            "market",
-            "rates",
-            "us_broad"
           ]
         },
         {
@@ -541,45 +439,20 @@
             "macro_risk",
             "market"
           ]
-        },
-        {
-          "title": "Thai Growth Slows to 1.9% as Energy Prices Counter Stimulus",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-17T02:33:29+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-17/thai-growth-slows-to-1-9-as-energy-prices-counter-stimulus",
-          "tags": [
-            "commodity",
-            "market"
-          ]
         }
       ]
     },
     "geopolitical": {
       "avgSentiment": 0.223,
-      "negativeCount": 2,
-      "positiveCount": 3,
-      "neutralCount": 1,
+      "negativeCount": 1,
+      "positiveCount": 2,
+      "neutralCount": 0,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "US-Iran Prospects Dim as Trump Seems in No Hurry to Reach Deal",
-      "topPositiveTitle": "Oil Advances on Middle East, Treasuries Sell Off: Markets Wrap",
+      "topNegativeTitle": "The Leadership Skills That Matter Most in the Age of AI",
+      "topPositiveTitle": "Latest Oil Market News and Analysis for Aug. 18",
       "items": [
-        {
-          "title": "US-Iran Prospects Dim as Trump Seems in No Hurry to Reach Deal",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-17T22:00:16+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-17/trump-likes-the-idea-of-declaring-hormuz-a-territory-video",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
         {
           "title": "The Leadership Skills That Matter Most in the Age of AI",
           "source": "Bloomberg Economics",
@@ -591,22 +464,6 @@
             "geopolitical",
             "macro_risk",
             "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Anthropic Revenue Boom Boosts AI Stocks | Bloomberg Businessweek Daily 8/17/2026",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-17T20:24:47+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-17/bloomberg-businessweek-daily-8-17-2026-video",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market",
-            "us_broad",
             "us_growth"
           ]
         },
