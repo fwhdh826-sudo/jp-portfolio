@@ -1,56 +1,74 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-08-18T20:48:01.658781+09:00",
-  "sourceUpdatedAt": "2026-08-18T11:36:38+00:00",
+  "updatedAt": "2026-08-19T06:50:58.686685+09:00",
+  "sourceUpdatedAt": "2026-08-18T21:40:20+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
+      "avgSentiment": -0.67,
+      "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "jp_semiconductor": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "us_broad": {
-      "avgSentiment": -0.447,
-      "negativeCount": 2,
-      "positiveCount": 1,
-      "neutralCount": 0,
-      "sourceCount": 2,
-      "itemCount": 3,
-      "isStale": false,
-      "topNegativeTitle": "Foreign Holdings of Treasuries Fell in June, Led by Japan Drop",
-      "topPositiveTitle": "BlackRock’s Koesterich Sees Energy Stocks as Best Portfolio Diversifier",
+      "topNegativeTitle": "Mizuho Markets Head Expects BOJ to Raise Rates Soon, More Often",
+      "topPositiveTitle": "Mizuho Markets Head Expects BOJ to Raise Rates Soon, More Often",
       "items": [
         {
-          "title": "Foreign Holdings of Treasuries Fell in June, Led by Japan Drop",
+          "title": "Mizuho Markets Head Expects BOJ to Raise Rates Soon, More Often",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-08-17T21:48:30+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-17/foreign-holdings-of-treasuries-fell-in-june-led-by-japan-drop",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-08-18T21:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-18/mizuho-markets-head-expects-boj-to-raise-rates-soon-more-often",
           "tags": [
+            "fx",
+            "jp_broad",
             "market",
-            "us_broad"
+            "rates"
           ]
-        },
+        }
+      ]
+    },
+    "jp_semiconductor": {
+      "avgSentiment": -0.67,
+      "negativeCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "Chip Rout Pulls Stocks Down as Bond Angst Lingers: Markets Wrap",
+      "topPositiveTitle": "Chip Rout Pulls Stocks Down as Bond Angst Lingers: Markets Wrap",
+      "items": [
+        {
+          "title": "Chip Rout Pulls Stocks Down as Bond Angst Lingers: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-08-17T22:07:13+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-17/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "jp_semiconductor",
+            "macro_risk",
+            "market",
+            "rates"
+          ]
+        }
+      ]
+    },
+    "us_broad": {
+      "avgSentiment": -0.04,
+      "negativeCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 3,
+      "sourceCount": 2,
+      "itemCount": 5,
+      "isStale": false,
+      "topNegativeTitle": "UK Payrolls Fall, Vacancies at 5-Year Low in Weak Job Market",
+      "topPositiveTitle": "EM Rally Stalls Amid Surge in Treasury Yields, Mideast Tensions",
+      "items": [
         {
           "title": "UK Payrolls Fall, Vacancies at 5-Year Low in Weak Job Market",
           "source": "Bloomberg Economics",
@@ -64,14 +82,53 @@
           ]
         },
         {
-          "title": "BlackRock’s Koesterich Sees Energy Stocks as Best Portfolio Diversifier",
+          "title": "US Stocks Drop, Led by Tech, as Bond-Yield Spike Sparks Angst",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-18T11:01:37+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-18/energy-stocks-are-best-portfolio-diversifier-koesterich-video",
+          "sentiment": "negative",
+          "sentimentScore": -0.2,
+          "publishedAt": "2026-08-18T06:51:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-18/us-stock-index-futures-drop-as-bond-yields-oil-prices-rise",
           "tags": [
             "commodity",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Bond Traders Are Hedging Risk Fed Pivots to Rate Cuts in 2027",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-18T20:30:04+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-18/bond-traders-are-hedging-risk-fed-pivots-to-rate-cuts-in-2027",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Long-Term Debt Costs Soar to Highest in Decades as Bonds Slump",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-18T20:18:17+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-18/long-term-debt-costs-soar-to-highest-in-decades-video",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "EM Rally Stalls Amid Surge in Treasury Yields, Mideast Tensions",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-18T10:34:33+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-18/emerging-assets-halt-rally-on-higher-oil-prices-bond-selloff",
+          "tags": [
             "market",
             "rates",
             "us_broad"
@@ -80,59 +137,23 @@
       ]
     },
     "us_growth": {
-      "avgSentiment": -0.055,
-      "negativeCount": 1,
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 5,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Staffing Stocks Defy Gravity After Analysts Warned of AI Demise",
-      "topPositiveTitle": "US Shale’s Metamorphosis Is a Lesson for Big Tech",
+      "topNegativeTitle": "Bond Traders Bite at Microsoft-Tied Data Center Junk-Like Yields",
+      "topPositiveTitle": "Bond Traders Bite at Microsoft-Tied Data Center Junk-Like Yields",
       "items": [
         {
-          "title": "Staffing Stocks Defy Gravity After Analysts Warned of AI Demise",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-18T11:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-18/staffing-stocks-defy-gravity-after-analysts-warned-of-ai-demise",
-          "tags": [
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "US Shale’s Metamorphosis Is a Lesson for Big Tech",
+          "title": "Bond Traders Bite at Microsoft-Tied Data Center Junk-Like Yields",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-18T11:36:38+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-08-18/us-shale-s-metamorphosis-is-a-lesson-for-big-tech",
-          "tags": [
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Alibaba-Backed AI Video Platform ShengShu Mulls HK IPO",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-18T11:30:16+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-18/alibaba-backed-ai-video-platform-shengshu-mulls-hk-ipo",
-          "tags": [
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Bond Yields Are Hitting Multidecade Highs Around the World",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-18T10:23:21+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-08-18/bond-yields-are-hitting-multidecade-highs-around-the-world",
+          "publishedAt": "2026-08-18T14:06:18+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-18/blackstone-backed-qts-kicks-off-data-center-bond-at-hefty-cost",
           "tags": [
             "market",
             "rates",
@@ -166,21 +187,21 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": 0.33,
-      "negativeCount": 0,
-      "positiveCount": 1,
+      "avgSentiment": -1.0,
+      "negativeCount": 1,
+      "positiveCount": 0,
       "neutralCount": 0,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Gold Edges Below $4,400 as Traders Eye Slump in Long-Dated Bonds",
-      "topPositiveTitle": "Gold Edges Below $4,400 as Traders Eye Slump in Long-Dated Bonds",
+      "topNegativeTitle": "Gold Falls as Traders Weigh US Inflation, Rates Amid Bond Rout",
+      "topPositiveTitle": "Gold Falls as Traders Weigh US Inflation, Rates Amid Bond Rout",
       "items": [
         {
-          "title": "Gold Edges Below $4,400 as Traders Eye Slump in Long-Dated Bonds",
+          "title": "Gold Falls as Traders Weigh US Inflation, Rates Amid Bond Rout",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
           "publishedAt": "2026-08-17T23:20:40+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-08-17/gold-holds-two-day-gain-on-reduced-rate-hike-expectations",
           "tags": [
@@ -192,16 +213,29 @@
       ]
     },
     "reit": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "KKR Real Estate Lender’s Woes Attract Distressed Investor Mavik",
+      "topPositiveTitle": "KKR Real Estate Lender’s Woes Attract Distressed Investor Mavik",
+      "items": [
+        {
+          "title": "KKR Real Estate Lender’s Woes Attract Distressed Investor Mavik",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-18T20:08:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-18/kkr-real-estate-lender-s-woes-attract-distressed-investor-mavik",
+          "tags": [
+            "market",
+            "reit"
+          ]
+        }
+      ]
     },
     "dividend": {
       "avgSentiment": 0,
@@ -216,28 +250,41 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.109,
+      "avgSentiment": 0.0,
       "negativeCount": 1,
-      "positiveCount": 3,
+      "positiveCount": 1,
       "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 7,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Stocks Fall as Bond Selloff Saps Risk Appetite: Markets Wrap",
-      "topPositiveTitle": "Emerging Assets Halt Rally on Higher Oil Prices, Bond Selloff",
+      "topNegativeTitle": "Chip Rout Pulls Stocks Down as Bond Angst Lingers: Markets Wrap",
+      "topPositiveTitle": "Energy Stocks Hit Record as Oil Rises on Fading Deal Hopes",
       "items": [
         {
-          "title": "Stocks Fall as Bond Selloff Saps Risk Appetite: Markets Wrap",
+          "title": "Chip Rout Pulls Stocks Down as Bond Angst Lingers: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.6,
+          "sentimentScore": -0.67,
           "publishedAt": "2026-08-17T22:07:13+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-08-17/stock-market-today-dow-s-p-live-updates",
           "tags": [
-            "commodity",
+            "jp_semiconductor",
             "macro_risk",
             "market",
             "rates"
+          ]
+        },
+        {
+          "title": "Port of LA Has Near-Record July as Importers Navigate Trade War",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-18T17:01:02+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-18/port-of-la-has-near-record-july-as-importers-navigate-trade-war",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
           ]
         },
         {
@@ -267,28 +314,14 @@
           ]
         },
         {
-          "title": "Bond Selloff Drives Risk Aversion, US-Iran Peace Prospects Dim | The Opening Trade 8/18/2026",
+          "title": "Energy Stocks Hit Record as Oil Rises on Fading Deal Hopes",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.2,
-          "publishedAt": "2026-08-18T11:05:29+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-18/the-opening-trade-8-18-2026-video",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-18T13:59:04+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-18/energy-stocks-soar-to-record-as-oil-rises-on-trump-s-hard-line",
           "tags": [
             "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Iran War: Trump Not Interested in Truce Extension | The Pulse 8/18/2026",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-18T10:49:52+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-18/the-pulse-8-18-2026-video",
-          "tags": [
             "geopolitical",
             "macro_risk",
             "market"
@@ -297,16 +330,30 @@
       ]
     },
     "fx": {
-      "avgSentiment": 0.167,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 3,
+      "avgSentiment": -0.335,
+      "negativeCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Bessent’s Japan Yen Move Echoes Past US Currency Interventions",
-      "topPositiveTitle": "Emerging Assets Halt Rally on Higher Oil Prices, Bond Selloff",
+      "topNegativeTitle": "Mizuho Markets Head Expects BOJ to Raise Rates Soon, More Often",
+      "topPositiveTitle": "Bessent’s Japan Yen Move Echoes Past US Currency Interventions",
       "items": [
+        {
+          "title": "Mizuho Markets Head Expects BOJ to Raise Rates Soon, More Often",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-08-18T21:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-18/mizuho-markets-head-expects-boj-to-raise-rates-soon-more-often",
+          "tags": [
+            "fx",
+            "jp_broad",
+            "market",
+            "rates"
+          ]
+        },
         {
           "title": "Bessent’s Japan Yen Move Echoes Past US Currency Interventions",
           "source": "Bloomberg Economics",
@@ -318,161 +365,107 @@
             "fx",
             "market"
           ]
-        },
-        {
-          "title": "RBI’s Forex Deposit U-Turn Exposes Wider Communication Gap",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-18T10:19:37+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-18/rbi-s-forex-deposit-u-turn-exposes-wider-communication-gap",
-          "tags": [
-            "fx",
-            "market"
-          ]
-        },
-        {
-          "title": "Emerging Assets Halt Rally on Higher Oil Prices, Bond Selloff",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.5,
-          "publishedAt": "2026-08-18T10:34:33+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-18/emerging-assets-halt-rally-on-higher-oil-prices-bond-selloff",
-          "tags": [
-            "commodity",
-            "fx",
-            "macro_risk",
-            "market"
-          ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": -0.106,
-      "negativeCount": 3,
-      "positiveCount": 2,
-      "neutralCount": 2,
+      "avgSentiment": -0.22,
+      "negativeCount": 4,
+      "positiveCount": 1,
+      "neutralCount": 5,
       "sourceCount": 2,
-      "itemCount": 7,
+      "itemCount": 10,
       "isStale": false,
-      "topNegativeTitle": "Brazil Economic Activity Suffers Biggest Drop in Over a Year",
-      "topPositiveTitle": "BlackRock’s Koesterich Sees Energy Stocks as Best Portfolio Diversifier",
+      "topNegativeTitle": "Gold Falls as Traders Weigh US Inflation, Rates Amid Bond Rout",
+      "topPositiveTitle": "EM Rally Stalls Amid Surge in Treasury Yields, Mideast Tensions",
       "items": [
         {
-          "title": "Brazil Economic Activity Suffers Biggest Drop in Over a Year",
+          "title": "Gold Falls as Traders Weigh US Inflation, Rates Amid Bond Rout",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-08-17T23:20:40+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-17/gold-holds-two-day-gain-on-reduced-rate-hike-expectations",
+          "tags": [
+            "gold",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Mizuho Markets Head Expects BOJ to Raise Rates Soon, More Often",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.67,
-          "publishedAt": "2026-08-17T12:18:14+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-17/brazil-economic-activity-suffers-biggest-drop-in-over-a-year",
+          "publishedAt": "2026-08-18T21:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-18/mizuho-markets-head-expects-boj-to-raise-rates-soon-more-often",
           "tags": [
+            "fx",
+            "jp_broad",
             "market",
             "rates"
           ]
         },
         {
-          "title": "Stocks Fall as Bond Selloff Saps Risk Appetite: Markets Wrap",
+          "title": "Chip Rout Pulls Stocks Down as Bond Angst Lingers: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.6,
+          "sentimentScore": -0.67,
           "publishedAt": "2026-08-17T22:07:13+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-08-17/stock-market-today-dow-s-p-live-updates",
           "tags": [
-            "commodity",
+            "jp_semiconductor",
             "macro_risk",
             "market",
             "rates"
           ]
         },
         {
-          "title": "Nigeria Inflation Eases in July, Boosting Case for Rate Cut",
-          "source": "Bloomberg Economics",
+          "title": "Stocks Fall As Global Bond Yields Stay Elevated | Closing Bell",
+          "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-08-17T12:18:04+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-17/nigerian-inflation-edges-lower-in-july-boosting-rate-cut-case",
+          "publishedAt": "2026-08-18T20:18:59+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-18/stocks-fall-as-global-bonds-stay-elevated-closing-bell-video",
           "tags": [
             "market",
             "rates"
           ]
         },
         {
-          "title": "Bond Yields Are Hitting Multidecade Highs Around the World",
+          "title": "US Stocks Drop, Led by Tech, as Bond-Yield Spike Sparks Angst",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-18T10:23:21+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-08-18/bond-yields-are-hitting-multidecade-highs-around-the-world",
-          "tags": [
-            "market",
-            "rates",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Bond Selloff Drives Risk Aversion, US-Iran Peace Prospects Dim | The Opening Trade 8/18/2026",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.2,
-          "publishedAt": "2026-08-18T11:05:29+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-18/the-opening-trade-8-18-2026-video",
+          "sentiment": "negative",
+          "sentimentScore": -0.2,
+          "publishedAt": "2026-08-18T06:51:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-18/us-stock-index-futures-drop-as-bond-yields-oil-prices-rise",
           "tags": [
             "commodity",
-            "geopolitical",
-            "macro_risk",
             "market",
-            "rates"
+            "rates",
+            "us_broad"
           ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.108,
-      "negativeCount": 1,
-      "positiveCount": 2,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 4,
+      "avgSentiment": 0.157,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 2,
+      "sourceCount": 2,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Stocks Fall as Bond Selloff Saps Risk Appetite: Markets Wrap",
-      "topPositiveTitle": "Emerging Assets Halt Rally on Higher Oil Prices, Bond Selloff",
+      "topNegativeTitle": "US Stocks Drop, Led by Tech, as Bond-Yield Spike Sparks Angst",
+      "topPositiveTitle": "Energy Stocks Hit Record as Oil Rises on Fading Deal Hopes",
       "items": [
         {
-          "title": "Stocks Fall as Bond Selloff Saps Risk Appetite: Markets Wrap",
+          "title": "US Stocks Drop, Led by Tech, as Bond-Yield Spike Sparks Angst",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.6,
-          "publishedAt": "2026-08-17T22:07:13+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-17/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "macro_risk",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Bond Selloff Drives Risk Aversion, US-Iran Peace Prospects Dim | The Opening Trade 8/18/2026",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.2,
-          "publishedAt": "2026-08-18T11:05:29+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-18/the-opening-trade-8-18-2026-video",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "BlackRock’s Koesterich Sees Energy Stocks as Best Portfolio Diversifier",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-18T11:01:37+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-18/energy-stocks-are-best-portfolio-diversifier-koesterich-video",
+          "sentimentScore": -0.2,
+          "publishedAt": "2026-08-18T06:51:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-18/us-stock-index-futures-drop-as-bond-yields-oil-prices-rise",
           "tags": [
             "commodity",
             "market",
@@ -481,15 +474,28 @@
           ]
         },
         {
-          "title": "Emerging Assets Halt Rally on Higher Oil Prices, Bond Selloff",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.5,
-          "publishedAt": "2026-08-18T10:34:33+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-18/emerging-assets-halt-rally-on-higher-oil-prices-bond-selloff",
+          "title": "茂木外相 イエメン和平の重要性訴え \"国家元首”と会談",
+          "source": "NHK 経済",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-18T21:19:05+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20260819de44918",
           "tags": [
             "commodity",
-            "fx",
+            "market"
+          ],
+          "titleJa": "茂木外相 イエメン和平の重要性訴え \"国家元首”と会談"
+        },
+        {
+          "title": "Energy Stocks Hit Record as Oil Rises on Fading Deal Hopes",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-18T13:59:04+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-18/energy-stocks-soar-to-record-as-oil-rises-on-trump-s-hard-line",
+          "tags": [
+            "commodity",
+            "geopolitical",
             "macro_risk",
             "market"
           ]
@@ -497,16 +503,41 @@
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.123,
+      "avgSentiment": 0.112,
       "negativeCount": 0,
-      "positiveCount": 2,
+      "positiveCount": 1,
       "neutralCount": 5,
       "sourceCount": 3,
-      "itemCount": 7,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "South African Business Confidence Edges Higher Amid War Headwind",
-      "topPositiveTitle": "Iran War: Trump Not Interested in Truce Extension | The Pulse 8/18/2026",
+      "topNegativeTitle": "Israel’s Central Bank Chief Says Next Rate Decision Is ‘Live’",
+      "topPositiveTitle": "Energy Stocks Hit Record as Oil Rises on Fading Deal Hopes",
       "items": [
+        {
+          "title": "Israel’s Central Bank Chief Says Next Rate Decision Is ‘Live’",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-18T17:02:51+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-18/israel-s-central-bank-chief-says-next-rate-decision-is-live",
+          "tags": [
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Port of LA Has Near-Record July as Importers Navigate Trade War",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-18T17:01:02+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-18/port-of-la-has-near-record-july-as-importers-navigate-trade-war",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
         {
           "title": "South African Business Confidence Edges Higher Amid War Headwind",
           "source": "Bloomberg Economics",
@@ -531,19 +562,6 @@
             "geopolitical",
             "macro_risk",
             "market"
-          ]
-        },
-        {
-          "title": "Technology Stocks Lift Equities, Mideast Peace Prospects Wane | The Opening Trade 8/17/2026",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-17T10:31:15+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-17/the-opening-trade-8-17-2026-video",
-          "tags": [
-            "geopolitical",
-            "market",
-            "us_growth"
           ]
         },
         {
@@ -558,21 +576,6 @@
             "market"
           ],
           "titleJa": "ロシア外務省が日本大使に抗議 日本大使館「立場 適切に説明」"
-        },
-        {
-          "title": "Bond Selloff Drives Risk Aversion, US-Iran Peace Prospects Dim | The Opening Trade 8/18/2026",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.2,
-          "publishedAt": "2026-08-18T11:05:29+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-18/the-opening-trade-8-18-2026-video",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market",
-            "rates"
-          ]
         }
       ]
     }
@@ -585,7 +588,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 4,
+    "excludedCount": 2,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
