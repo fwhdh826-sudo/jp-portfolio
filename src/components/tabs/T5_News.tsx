@@ -4,6 +4,7 @@
  * 表示順: 市場概況 → 情報源優先順位 → ニュース一覧
  */
 import { useMemo, useState, useEffect, useRef } from 'react'
+import { colors } from '../../theme/tokens'
 import { useAppStore } from '../../store/useAppStore'
 import { selectBuyList, selectIsLoading } from '../../store/selectors'
 import { formatRelativeTime, formatDateTime } from '../../utils/format'
@@ -374,7 +375,7 @@ function NewsCard({ item, categoryLabel }: { item: NewsItem; categoryLabel: stri
             }} />
           </span>
           <span className={`importance-bar__fill--${impBarCls}`}
-            style={{ fontSize: '10px', fontWeight: 700, color: item.importance >= 0.75 ? '#d97706' : item.importance >= 0.45 ? '#2563eb' : 'var(--color-text-muted)' }}>
+            style={{ fontSize: '10px', fontWeight: 700, color: item.importance >= 0.75 ? colors.wait : item.importance >= 0.45 ? '#2563eb' : 'var(--color-text-muted)' }}>
             {impText}
           </span>
         </span>

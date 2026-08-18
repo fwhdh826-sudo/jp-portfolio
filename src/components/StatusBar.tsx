@@ -308,7 +308,7 @@ export function StatusBar() {
             <div className="status-bar__item">
               <span className="status-bar__label">先物</span>
               <span className="status-bar__value"
-                style={{ color: (sqCalendar?.nextSQ?.dayUntil ?? 99) <= 3 ? '#f07575' : 'inherit' }}>
+                style={{ color: (sqCalendar?.nextSQ?.dayUntil ?? 99) <= 3 ? '#f07575' : undefined }}>
                 {sqLabel}
               </span>
             </div>

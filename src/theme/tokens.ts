@@ -33,26 +33,29 @@ export const colors = {
   // ── Text ────────────────────────────────────────────────────
   textPrimary:  '#0f2340', // 主要テキスト（ダークネイビー）
   textSecond:   '#2d4a6e', // 副テキスト
-  textSubtle:   '#6b7e96', // 補助テキスト
-  textMuted:    '#9aacbf', // 最弱テキスト
+  // UI-9B: WCAG AA 4.5:1未達だったためbgBase(#eef1f6)基準で最小限darken（意味・階調順序は不変）
+  textSubtle:   '#5e6f84', // 補助テキスト
+  textMuted:    '#58708b', // 最弱テキスト
   textOnNavy:   '#e8f0f8', // ネイビー上の白系テキスト
   textOnNavySub:'#8eaac8', // ネイビー上の補助テキスト
 
   // ── Status（意味固定・変更禁止）────────────────────────────
   // BUY / 強気 / 改善 → 青緑（teal）
-  buy:       '#0d8f70',
+  // UI-9B: buy/bull/success（下記v13Colors）はテキストとして使われる箇所でAA未達だったため
+  // 同一hueのまま最小限darken。buyBg/buyBorder/buyTextは変更なし。
+  buy:       '#0c8569',
   buyBg:     '#e6f7f3',
   buyBorder: '#9de0ce',
   buyText:   '#0a6e56',
 
-  // HOLD / 中立 / 様子見 → グレー
-  hold:      '#6b7e96',
+  // HOLD / 中立 / 様子見 → グレー（UI-9B: 同様にdarken。holdBg/holdBorder/holdTextは変更なし）
+  hold:      '#65778f',
   holdBg:    '#f0f2f5',
   holdBorder:'#c8d0da',
   holdText:  '#4a5a70',
 
-  // WAIT / 警戒 / 注意 → オレンジ
-  wait:      '#d97706',
+  // WAIT / 警戒 / 注意 → オレンジ（UI-9B: 同様にdarken。waitBg/waitBorder/waitTextは変更なし）
+  wait:      '#b26105',
   waitBg:    '#fff7ed',
   waitBorder:'#fed7aa',
   waitText:  '#b45309',
@@ -85,7 +88,8 @@ export const colors = {
   primaryLight: '#eff6ff',
 
   // ── Neutral ─────────────────────────────────────────────────
-  neutral:    '#6b7e96',
+  // UI-9B: hold/neutral2/v13Colors.neutralと同一hueで揃えてdarken（AA未達対応）
+  neutral:    '#65778f',
   neutralBg:  '#f0f2f5',
   neutralLight:'#f8fafc',
 
@@ -94,17 +98,17 @@ export const colors = {
   goldBg:     '#fffbeb',
   goldBorder: '#fde68a',
 
-  // 市場モード
-  bull:       '#0d8f70', // 強気相場
+  // 市場モード（UI-9B: bull/neutral2はbuy/holdと同一hueで揃えてdarken。bearは変更なし）
+  bull:       '#0c8569', // 強気相場
   bullBg:     '#e6f7f3',
   bear:       '#dc2626', // 弱気相場
   bearBg:     '#fef2f2',
-  neutral2:   '#6b7e96', // 中立相場
+  neutral2:   '#65778f', // 中立相場
   neutral2Bg: '#f0f2f5',
 
   // ── 後方互換エイリアス（Phase 2-7 で legacy コンポーネントを置き換えるまで維持） ──
-  // wait → watch（旧名）
-  watch:     '#d97706',
+  // wait → watch（旧名）（UI-9B: waitと同一hueで揃えてdarken）
+  watch:     '#b26105',
   watchBg:   '#fff7ed',
   watchText: '#b45309',
   // jpFundAccent → fundAccent（旧名）
@@ -126,10 +130,11 @@ export const colors = {
 export const v13Colors = {
   // ── Regime / Tier A ステータスカラー ─────────────────────
   // CLAUDE_DESIGN_BRIEF.md Section 1 に対応する CSS 変数の実体値
-  success:      '#0d8f70', // bull_calm — var(--color-success)
+  // UI-9B: success/warning/neutralはcolors.buy/wait/holdと同一hueで揃えてdarken（AA未達対応）
+  success:      '#0c8569', // bull_calm — var(--color-success)
   successBg:    '#e6f7f3',
   successText:  '#0a6e56',
-  warning:      '#d97706', // bull_volatile — var(--color-warning)
+  warning:      '#b26105', // bull_volatile — var(--color-warning)
   warningBg:    '#fff7ed',
   warningText:  '#b45309',
   danger:       '#dc2626', // bear — var(--color-danger)
@@ -138,7 +143,7 @@ export const v13Colors = {
   critical:     '#991b1b', // crisis / SAFE_MODE — var(--color-critical)
   criticalBg:   '#fef2f2',
   criticalText: '#7f1d1d',
-  neutral:      '#6b7e96', // uncertain — var(--color-neutral)
+  neutral:      '#65778f', // uncertain — var(--color-neutral)
   neutralBg:    '#f0f2f5',
   neutralText:  '#4a5a70',
 
