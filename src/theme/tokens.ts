@@ -390,6 +390,24 @@ export function generateCssVars(): Record<string, string> {
     '--font-xl':     font.xl,
     '--font-2xl':    font['2xl'],
     '--font-3xl':    font['3xl'],
+
+    // ── UI-9A: unresolved var(--*) alias map ────────────────────
+    // src/** が参照するがこれまで generateCssVars() 未出力だった13変数。
+    // 新規色・数値は発明せず、既存 canonical token（上記 colors/v13Colors）を
+    // そのまま指す alias として解決する。
+    '--color-background':     colors.bgSurface,
+    '--color-bg-card':        colors.bgSurface,
+    '--color-bg-subtle':      colors.neutralBg,
+    '--color-bg-wash':        colors.neutralBg,
+    '--color-border':         colors.borderDefault,
+    '--color-brand':          colors.primary,
+    '--color-brand-bg-faint': colors.primaryLight,
+    '--color-stale-text':     colors.gold,
+    '--color-stock-accent':   colors.stockAccent,
+    '--color-stock-bg-faint': colors.stockAccentBg,
+    '--color-surface':        colors.bgSurface,
+    '--color-text':           colors.textPrimary,
+    '--color-text-secondary': colors.textSecond,
   }
 }
 
