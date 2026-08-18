@@ -3,7 +3,7 @@
  * ネイビーヘッダー + StatusBar + TabNav + コンテンツエリア
  * mobile: Bottom Dock / tablet: TabNav / desktop(≥1024px): 左サイドバー
  */
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useAppStore } from './store/useAppStore'
 import { colors, v13Colors } from './theme/tokens'
 import { startCashAuthorityExpiryGuard } from './store/cashAuthorityLifecycle'
@@ -159,6 +159,14 @@ export async function executeAppInitializeUiFlow(
   }
 }
 
+// P0-4: activeTab切替時にactual scroll owner(window)をtopへ戻す。
+// RCA実測: .main-content は flex:1 のみで高さが確定せず常に scrollHeight===clientHeight
+// となるため内部スクロールが発生しない。実際のscroll ownerはdesktop/mobile共にwindow側。
+// html { scroll-behavior: smooth } の影響を受けないよう behavior:'instant' で明示上書きする。
+export function resetScrollOwnerToTop(target: { scrollTo: (options: ScrollToOptions) => void }): void {
+  target.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+}
+
 function ActiveTabPanel() {
   const activeTab = useAppStore(s => s.activeTab)
 
@@ -182,7 +190,6 @@ function ActiveTabPanel() {
 export function App() {
   const initialize = useAppStore(s => s.initialize)
   const activeTab  = useAppStore(s => s.activeTab)
-  const mainRef    = useRef<HTMLElement | null>(null)
   const [initializeFeedback, setInitializeFeedback] = useState<PortfolioLoadFeedback | null>(null)
 
   useEffect(() => {
@@ -202,7 +209,7 @@ export function App() {
 
   // タブ切替時にコンテンツエリアをトップへ
   useEffect(() => {
-    mainRef.current?.scrollTo({ top: 0, behavior: 'auto' })
+    resetScrollOwnerToTop(window)
   }, [activeTab])
 
   return (
@@ -240,10 +247,7 @@ export function App() {
         <TabNav />
 
         {/* メインコンテンツ */}
-        <main
-          className="main-content"
-          ref={node => { mainRef.current = node }}
-        >
+        <main className="main-content">
           <ActiveTabPanel />
         </main>
       </div>
