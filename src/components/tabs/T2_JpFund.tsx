@@ -420,7 +420,7 @@ export function T2_JpFund() {
           <DecisionCard
             decision={displayDecision}
             title={displayTitle}
-            score={Math.round(mode.confidence * 100)}
+            score={mode.confidence}
             reasons={[
               ...(isSuppressed ? ['⚠ SAFE_MODE / DQ抑制中 — 新規買い判断停止中'] : []),
               ...decisionReasons,
@@ -442,7 +442,7 @@ export function T2_JpFund() {
         }}>
           <div style={{ fontSize: '11px', fontWeight: 600, color: colors.textMuted }}>本日の投信スタンス</div>
           <CircularGauge
-            value={Math.round(mode.confidence * 100)}
+            value={mode.confidence}
             size={88}
             strokeWidth={9}
             tone={signal === 'BULL' ? 'buy' : signal === 'BEAR' ? 'sell' : 'hold'}
