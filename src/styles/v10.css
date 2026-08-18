@@ -1072,13 +1072,13 @@ button:focus-visible, a:focus-visible {
 
 .macro-signal-badge--positive {
   background: rgba(5, 150, 105, 0.12);
-  color: var(--color-success);
+  color: var(--color-success-text);
   border-color: rgba(5, 150, 105, 0.25);
 }
 
 .macro-signal-badge--negative {
   background: rgba(220, 38, 38, 0.1);
-  color: var(--color-sell);
+  color: var(--color-sell-text);
   border-color: rgba(220, 38, 38, 0.2);
 }
 
@@ -1098,10 +1098,10 @@ button:focus-visible, a:focus-visible {
   font-weight: 700;
 }
 
-.risk-level-badge--low    { background: rgba(5, 150, 105, 0.12); color: var(--color-success); }
+.risk-level-badge--low    { background: rgba(5, 150, 105, 0.12); color: var(--color-success-text); }
 .risk-level-badge--medium { background: rgba(234, 179, 8, 0.15); color: var(--color-wait-text); }
-.risk-level-badge--high   { background: rgba(234, 88, 12, 0.15); color: #c2410c; }
-.risk-level-badge--crisis { background: rgba(220, 38, 38, 0.15); color: var(--color-sell); }
+.risk-level-badge--high   { background: rgba(234, 88, 12, 0.15); color: #bd3f0c; }
+.risk-level-badge--crisis { background: rgba(220, 38, 38, 0.15); color: var(--color-sell-text); }
 
 /* SourceStatusRow ─────────────────────────────────────────── */
 .source-status-row {
@@ -1140,8 +1140,8 @@ button:focus-visible, a:focus-visible {
   font-weight: 600;
 }
 
-.news-v13-sentiment--positive { background: rgba(5, 150, 105, 0.12); color: var(--color-success); }
-.news-v13-sentiment--negative { background: rgba(220, 38, 38, 0.1); color: var(--color-sell); }
+.news-v13-sentiment--positive { background: rgba(5, 150, 105, 0.12); color: var(--color-success-text); }
+.news-v13-sentiment--negative { background: rgba(220, 38, 38, 0.1); color: var(--color-sell-text); }
 .news-v13-sentiment--neutral  { background: rgba(100, 116, 139, 0.1); color: var(--color-text-secondary); }
 
 .news-v13-importance {
@@ -1928,10 +1928,11 @@ button:focus-visible, a:focus-visible {
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.02em;
-  color: rgba(255, 255, 255, 0.85);
+  /* UI-9B: rgba(255,255,255,0.85)はAA未達（濃色背景と合成後4.05〜4.16:1）だったため不透明白に統一 */
+  color: #fff;
 }
-.verdict-box--buy  { background: var(--color-buy,  #0d8f70); }
-.verdict-box--hold { background: var(--color-hold, #6b7e96); }
+.verdict-box--buy  { background: var(--color-buy,  #0c8569); }
+.verdict-box--hold { background: var(--color-hold, #65778f); }
 .verdict-box--sell { background: var(--color-sell, #dc2626); }
 @media (max-width: 380px) {
   .verdict-box__count { font-size: 28px; }
