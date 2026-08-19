@@ -1,12 +1,12 @@
 {
-  "fetched_at": "2026-08-18T23:44:41Z",
+  "fetched_at": "2026-08-19T11:47:58Z",
   "source": "yfinance_hybrid",
-  "vix": 15.84,
-  "nikkei_5d_return": 0.055079,
-  "nikkei_60ma": 67036.1,
-  "nikkei_200ma": 57905.2,
+  "vix": 15.77,
+  "nikkei_5d_return": -0.032546,
+  "nikkei_60ma": 66998.8,
+  "nikkei_200ma": 57831.5,
   "sp500_dd_30d": -0.013749,
-  "usdjpy": 159.59,
+  "usdjpy": 159.11,
   "risk_level": "low",
   "signals": [
     {
@@ -15,25 +15,25 @@
       "direction": "positive"
     },
     {
-      "tag": "短期急騰",
+      "tag": "短期急落",
       "strength": "moderate",
-      "direction": "positive"
+      "direction": "negative"
     }
   ],
   "narrative": {
-    "headline": "リスクレベル: 低リスク — VIX 15.8 / USD/JPY 159.6円",
+    "headline": "リスクレベル: 低リスク — VIX 15.8 / USD/JPY 159.1円",
     "body_lines": [
-      "VIX 15.8 / 日経5日 +5.5% / USD/JPY 159.6",
+      "VIX 15.8 / 日経5日 -3.3% / USD/JPY 159.1",
       "リスクレベル: 低リスク",
       "↑ 円安（moderate）",
-      "↑ 短期急騰（moderate）"
+      "↓ 短期急落（moderate）"
     ],
     "keywords_summary": [
       "円安",
-      "短期急騰"
+      "短期急落"
     ],
-    "sentiment_label": "bullish",
-    "sentiment_score": 66.0,
+    "sentiment_label": "neutral",
+    "sentiment_score": 50.0,
     "method": "rule_based"
   },
   "sources_status": {
