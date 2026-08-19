@@ -587,7 +587,7 @@ export function T3_GlobalFund() {
                 padding: `${spacing[2]} ${spacing[3]}`,
                 background: colors.buyBg, border: `1px solid ${colors.buyBorder}`, borderRadius: radius.md,
               }}>
-                <span style={{ color: colors.buy, fontSize: '14px', flexShrink: 0 }}>✓</span>
+                <span style={{ color: colors.buyText, fontSize: '14px', flexShrink: 0 }}>✓</span>
                 <span style={{ fontSize: '12px', color: colors.buyText }}>
                   集中リスクなし — 最大 {(maxWeight * 100).toFixed(0)}% で適切に分散されています
                 </span>
@@ -612,7 +612,7 @@ export function T3_GlobalFund() {
                 padding: `${spacing[2]} ${spacing[3]}`,
                 background: colors.buyBg, border: `1px solid ${colors.buyBorder}`, borderRadius: radius.md,
               }}>
-                <span style={{ color: colors.buy, fontSize: '14px', flexShrink: 0 }}>✓</span>
+                <span style={{ color: colors.buyText, fontSize: '14px', flexShrink: 0 }}>✓</span>
                 <span style={{ fontSize: '12px', color: colors.buyText }}>
                   海外株ファンド1件 — 重複なし
                 </span>
