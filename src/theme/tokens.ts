@@ -34,8 +34,12 @@ export const colors = {
   textPrimary:  '#0f2340', // 主要テキスト（ダークネイビー）
   textSecond:   '#2d4a6e', // 副テキスト
   // UI-9B: WCAG AA 4.5:1未達だったためbgBase(#eef1f6)基準で最小限darken（意味・階調順序は不変）
-  textSubtle:   '#5e6f84', // 補助テキスト
-  textMuted:    '#58708b', // 最弱テキスト
+  // UI-9B-R1: bgElevated(#e8edf4)面で両者ともAA未達（4.37/4.35）かつsubtle/mutedの
+  // 視覚差がほぼ消失していたためhue/saturationは維持したまま再調整。
+  // muted（最弱＝階層最下位）はbgElevatedでAAをわずかに上回る最小限darkenに留め、
+  // subtle（補助＝mutedより一段階上）はより明確なdarkenでhierarchyを回復。
+  textSubtle:   '#4c5a6b', // 補助テキスト（bgElevated 5.99:1 / bgBase 6.22:1）
+  textMuted:    '#556c86', // 最弱テキスト（bgElevated 4.61:1 / bgBase 4.79:1）
   textOnNavy:   '#e8f0f8', // ネイビー上の白系テキスト
   textOnNavySub:'#8eaac8', // ネイビー上の補助テキスト
 
