@@ -238,6 +238,9 @@ function SentimentBar({ score }: { score: number }) {
   const pct = Math.abs(clampedScore) * 50 // 50%が最大幅
 
   const barColor = clampedScore > 0.25 ? '#38bdf8' : clampedScore < -0.25 ? '#f59e0b' : 'var(--color-border-default, #cbd5e1)'
+  // barColorは6px幅の装飾バー用（非text、AA対象外）。ラベル文字はAA 4.5:1を満たす別のtext-safe色を使う
+  // （同一ファイルのImpactBadge positive/negativeと同じ色を再利用し新規色は発明しない）。
+  const labelColor = clampedScore > 0.25 ? '#0369a1' : clampedScore < -0.25 ? '#92400e' : colors.textSubtle
   const trackStyle: React.CSSProperties = {
     display: 'flex', alignItems: 'center', gap: '4px', flexShrink: 0,
   }
@@ -264,7 +267,7 @@ function SentimentBar({ score }: { score: number }) {
         <span style={centerLineStyle} />
         <span style={fillStyle} />
       </span>
-      <span style={{ fontSize: '10px', color: barColor, fontWeight: 700, flexShrink: 0, minWidth: '20px' }}>{label}</span>
+      <span style={{ fontSize: '10px', color: labelColor, fontWeight: 700, flexShrink: 0, minWidth: '20px' }}>{label}</span>
     </span>
   )
 }
@@ -306,7 +309,7 @@ function NewsCard({ item, categoryLabel }: { item: NewsItem; categoryLabel: stri
   const holdings = useAppStore(s => s.holdings)
   const impCls   = getImpactCls(item)
   const impLabel = getImpactLabel(impCls)
-  const { text: impText, cls: impBarCls } = getImportanceLabel(item.importance)
+  const { text: impText } = getImportanceLabel(item.importance)
   const layer    = getSourceLayer(item.source)
   const layerInfo = LAYER_LABELS[layer]
 
@@ -374,7 +377,7 @@ function NewsCard({ item, categoryLabel }: { item: NewsItem; categoryLabel: stri
               borderRadius: '3px',
             }} />
           </span>
-          <span className={`importance-bar__fill--${impBarCls}`}
+          <span
             style={{ fontSize: '10px', fontWeight: 700, color: item.importance >= 0.75 ? colors.wait : item.importance >= 0.45 ? '#2563eb' : 'var(--color-text-muted)' }}>
             {impText}
           </span>
@@ -677,7 +680,7 @@ export function T5_News() {
               <span>
                 {market.regime === 'bull' ? '↑ 強気相場' : market.regime === 'bear' ? '↓ 弱気相場' : '→ 中立相場'}
               </span>
-              <span style={{ fontSize: '11px', fontWeight: 500, color: '#64748b' }}>
+              <span style={{ fontSize: '11px', fontWeight: 500, color: 'var(--color-text-on-navy-sub)' }}>
                 RSI {market.rsi14.toFixed(0)}&nbsp;
                 MACD {market.macd === 'golden' ? 'G' : 'D'}&nbsp;
                 BOJ {market.boj}

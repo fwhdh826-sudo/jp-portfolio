@@ -40,7 +40,7 @@ export function SourceStatusRow({ sourcesStatus }: Props) {
             aria-hidden="true"
           />
           <span>{SOURCE_LABELS[id] ?? id}</span>
-          <span style={{ opacity: 0.6 }}>{STATUS_LABEL[status]}</span>
+          <span>{STATUS_LABEL[status]}</span>
         </span>
       ))}
     </div>

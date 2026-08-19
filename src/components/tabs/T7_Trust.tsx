@@ -1256,7 +1256,8 @@ export function T7_Trust() {
               style={{
                 ...typography.label,
                 padding:       `${spacing[2]} ${spacing[4]}`,
-                background:    colors.fundAccent,
+                // 白文字とのAA 4.5:1を満たすためraw fundAccentでなくfundAccentTextを使用
+                background:    colors.fundAccentText,
                 color:         '#fff',
                 border:        'none',
                 borderRadius:  radius.md,
