@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-08-20T06:52:57.338505+09:00",
-  "sourceUpdatedAt": "2026-08-19T21:47:22+00:00",
+  "updatedAt": "2026-08-20T08:45:06.819611+09:00",
+  "sourceUpdatedAt": "2026-08-19T23:34:15+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -69,30 +69,16 @@
       ]
     },
     "us_growth": {
-      "avgSentiment": -0.33,
-      "negativeCount": 1,
+      "avgSentiment": 0,
+      "negativeCount": 0,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "CFTC Considers AI Compute Futures as ICE, CME Eye New Market",
-      "topPositiveTitle": "CFTC Considers AI Compute Futures as ICE, CME Eye New Market",
-      "items": [
-        {
-          "title": "CFTC Considers AI Compute Futures as ICE, CME Eye New Market",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-19T19:57:07+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-19/cftc-considers-ai-compute-futures-as-ice-cme-eye-new-market",
-          "tags": [
-            "commodity",
-            "market",
-            "us_growth"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "global_broad": {
       "avgSentiment": 0,
@@ -107,16 +93,31 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.67,
       "negativeCount": 0,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Gold Holds Near $4,500 as US Treasury Buyback Sends Yields Lower",
+      "topPositiveTitle": "Gold Holds Near $4,500 as US Treasury Buyback Sends Yields Lower",
+      "items": [
+        {
+          "title": "Gold Holds Near $4,500 as US Treasury Buyback Sends Yields Lower",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-19T23:34:15+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-19/gold-holds-near-4-500-as-us-treasury-buyback-sends-yields-lower",
+          "tags": [
+            "dividend",
+            "gold",
+            "market",
+            "rates"
+          ]
+        }
+      ]
     },
     "reit": {
       "avgSentiment": 0,
@@ -131,30 +132,16 @@
       "items": []
     },
     "dividend": {
-      "avgSentiment": -0.167,
-      "negativeCount": 2,
-      "positiveCount": 2,
+      "avgSentiment": 0.25,
+      "negativeCount": 1,
+      "positiveCount": 3,
       "neutralCount": 0,
       "sourceCount": 2,
       "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Dollar Tumbles to Weakest in Three Months on Treasury Buyback",
-      "topPositiveTitle": "Stocks Rise as Treasury Steps In to Support Bonds: Markets Wrap",
+      "topNegativeTitle": "AI Job Losses: A Guide to the Proposals for Helping Workers",
+      "topPositiveTitle": "Gold Holds Near $4,500 as US Treasury Buyback Sends Yields Lower",
       "items": [
-        {
-          "title": "Dollar Tumbles to Weakest in Three Months on Treasury Buyback",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-08-19T14:00:43+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-19/dollar-tumbles-as-treasury-buyback-unleashes-bond-market-rally",
-          "tags": [
-            "dividend",
-            "fx",
-            "market",
-            "rates"
-          ]
-        },
         {
           "title": "AI Job Losses: A Guide to the Proposals for Helping Workers",
           "source": "Bloomberg Economics",
@@ -182,6 +169,20 @@
           ]
         },
         {
+          "title": "Gold Holds Near $4,500 as US Treasury Buyback Sends Yields Lower",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-19T23:34:15+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-19/gold-holds-near-4-500-as-us-treasury-buyback-sends-yields-lower",
+          "tags": [
+            "dividend",
+            "gold",
+            "market",
+            "rates"
+          ]
+        },
+        {
           "title": "Stocks Rise as Treasury Steps In to Support Bonds: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
@@ -198,28 +199,16 @@
       ]
     },
     "macro_risk": {
-      "avgSentiment": -0.534,
+      "avgSentiment": -0.333,
       "negativeCount": 4,
       "positiveCount": 0,
-      "neutralCount": 1,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Carvana Up as Report on Walter’s Pledged Stake Allays Fear",
-      "topPositiveTitle": "South African Inflation Surprise Builds Case for Holding Rates",
+      "topNegativeTitle": "UK House Prices Post First Fall This Year, Official Data Show",
+      "topPositiveTitle": "Japan’s 20-Year Bond Auction Faces Test as Global Yields Surge",
       "items": [
-        {
-          "title": "Carvana Up as Report on Walter’s Pledged Stake Allays Fear",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-08-19T16:14:21+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-19/carvana-rebounds-as-report-on-walter-s-pledged-stake-allays-fear",
-          "tags": [
-            "macro_risk",
-            "market"
-          ]
-        },
         {
           "title": "UK House Prices Post First Fall This Year, Official Data Show",
           "source": "Bloomberg Economics",
@@ -246,6 +235,18 @@
           ]
         },
         {
+          "title": "Behind the Bond Market Rollercoaster and Bessent’s Treasury Intervention",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-19T22:46:18+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-19/behind-the-bond-market-rollercoaster-and-bessent-s-treasury-intervention",
+          "tags": [
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
           "title": "Sweden Is Set to Keep 2026 Rate Hike on Table: Decision Guide",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
@@ -260,14 +261,13 @@
           ]
         },
         {
-          "title": "South African Inflation Surprise Builds Case for Holding Rates",
-          "source": "Bloomberg Economics",
+          "title": "Japan’s 20-Year Bond Auction Faces Test as Global Yields Surge",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-19T08:05:13+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-19/south-africa-inflation-cools-making-case-to-keep-rates-on-hold",
+          "publishedAt": "2026-08-19T23:01:10+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-19/japan-s-20-year-bond-auction-faces-test-as-global-yields-surge",
           "tags": [
-            "geopolitical",
             "macro_risk",
             "market",
             "rates"
@@ -276,57 +276,41 @@
       ]
     },
     "fx": {
-      "avgSentiment": -1.0,
-      "negativeCount": 1,
-      "positiveCount": 0,
+      "avgSentiment": 0.33,
+      "negativeCount": 0,
+      "positiveCount": 1,
       "neutralCount": 0,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Dollar Tumbles to Weakest in Three Months on Treasury Buyback",
-      "topPositiveTitle": "Dollar Tumbles to Weakest in Three Months on Treasury Buyback",
+      "topNegativeTitle": "Asian Stocks to Gain as US Treasury Supports Bonds: Markets Wrap",
+      "topPositiveTitle": "Asian Stocks to Gain as US Treasury Supports Bonds: Markets Wrap",
       "items": [
         {
-          "title": "Dollar Tumbles to Weakest in Three Months on Treasury Buyback",
+          "title": "Asian Stocks to Gain as US Treasury Supports Bonds: Markets Wrap",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-08-19T14:00:43+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-19/dollar-tumbles-as-treasury-buyback-unleashes-bond-market-rally",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-19T22:12:30+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-19/stock-market-today-dow-s-p-live-updates",
           "tags": [
-            "dividend",
             "fx",
-            "market",
-            "rates"
+            "market"
           ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": -0.03,
-      "negativeCount": 4,
-      "positiveCount": 3,
+      "avgSentiment": 0.122,
+      "negativeCount": 3,
+      "positiveCount": 4,
       "neutralCount": 4,
       "sourceCount": 2,
       "itemCount": 11,
       "isStale": false,
-      "topNegativeTitle": "Dollar Tumbles to Weakest in Three Months on Treasury Buyback",
+      "topNegativeTitle": "Fed Minutes Show Many Officials Said Rate Hikes May Be Needed",
       "topPositiveTitle": "Moderna Surges as Stocks Rise & Long-Term Yields Retreat | Closing Bell",
       "items": [
-        {
-          "title": "Dollar Tumbles to Weakest in Three Months on Treasury Buyback",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-08-19T14:00:43+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-19/dollar-tumbles-as-treasury-buyback-unleashes-bond-market-rally",
-          "tags": [
-            "dividend",
-            "fx",
-            "market",
-            "rates"
-          ]
-        },
         {
           "title": "Fed Minutes Show Many Officials Said Rate Hikes May Be Needed",
           "source": "Bloomberg Economics",
@@ -367,6 +351,19 @@
           ]
         },
         {
+          "title": "Japan’s 20-Year Bond Auction Faces Test as Global Yields Surge",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-19T23:01:10+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-19/japan-s-20-year-bond-auction-faces-test-as-global-yields-surge",
+          "tags": [
+            "macro_risk",
+            "market",
+            "rates"
+          ]
+        },
+        {
           "title": "Trump Says Interest Rate System Doesn't Make Sense",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
@@ -381,29 +378,16 @@
       ]
     },
     "commodity": {
-      "avgSentiment": -0.11,
-      "negativeCount": 1,
-      "positiveCount": 0,
+      "avgSentiment": 0.223,
+      "negativeCount": 0,
+      "positiveCount": 1,
       "neutralCount": 2,
       "sourceCount": 2,
       "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "CFTC Considers AI Compute Futures as ICE, CME Eye New Market",
-      "topPositiveTitle": "茂木外相 イエメン和平の重要性訴え \"国家元首”と会談",
+      "topNegativeTitle": "茂木外相 イエメン和平の重要性訴え \"国家元首”と会談",
+      "topPositiveTitle": "Latest Oil Market News and Analysis for Aug. 19",
       "items": [
-        {
-          "title": "CFTC Considers AI Compute Futures as ICE, CME Eye New Market",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-19T19:57:07+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-19/cftc-considers-ai-compute-futures-as-ice-cme-eye-new-market",
-          "tags": [
-            "commodity",
-            "market",
-            "us_growth"
-          ]
-        },
         {
           "title": "茂木外相 イエメン和平の重要性訴え \"国家元首”と会談",
           "source": "NHK 経済",
@@ -430,19 +414,32 @@
             "market"
           ],
           "titleJa": "茂木外相 サウジアラビアなど湾岸諸国の経済強じん化を支援"
+        },
+        {
+          "title": "Latest Oil Market News and Analysis for Aug. 19",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-19T22:03:53+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-19/latest-oil-market-news-and-analysis-for-aug-19",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
+          ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": -0.167,
+      "avgSentiment": -0.047,
       "negativeCount": 2,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 4,
-      "sourceCount": 2,
-      "itemCount": 6,
+      "sourceCount": 3,
+      "itemCount": 7,
       "isStale": false,
       "topNegativeTitle": "UK House Prices Post First Fall This Year, Official Data Show",
-      "topPositiveTitle": "South African Inflation Surprise Builds Case for Holding Rates",
+      "topPositiveTitle": "Latest Oil Market News and Analysis for Aug. 19",
       "items": [
         {
           "title": "UK House Prices Post First Fall This Year, Official Data Show",
