@@ -198,12 +198,24 @@ describe('UI-9B-R2: T5_News SentimentBar / importance label 構造回帰防止�
     const before = src.slice(Math.max(0, idx - 300), idx)
     expect(before).not.toMatch(/className=\{`importance-bar__fill--/)
 
-    // 回帰時に何が起きるかを具体的に固定する: 元バグでは低重要度でfg===bgとなり contrast=1.0 だった
+    // 低重要度時のinline text colorを実sourceから抽出し、実際のnews-card背景に対する
+    // AA contrastを検証する（同一literalの二重代入によるtautologyを避け、実装/token両方を読む）。
+    const lowColorMatch = before.match(/'var\(--color-text-muted\)'\s*\}\}/)
+    expect(lowColorMatch, `low-importance inline color literal not found in: ${before}`).not.toBeNull()
     const vars = generateCssVars()
-    const lowBg = vars['--color-text-muted']       // .importance-bar__fill--low の background
-    const lowFg = vars['--color-text-muted']       // impText='低' 時のinline color
-    expect(contrast(lowFg, lowBg)).toBeCloseTo(1, 5) // このcollision自体は既知の破綻値として固定（回帰時の症状特定用）
-    // 現在のJSXがこの背景を全く適用しないことは上のclassName非存在チェックで保証されている
+    const lowFg  = vars['--color-text-muted']
+    const cardBg = vars['--color-background']
+    expect(cardBg, '--color-background is unresolved').toMatch(/^#[0-9a-fA-F]{6}$/)
+    const c = contrast(lowFg, cardBg)
+    expect(c, `低重要度inline color(${lowFg}) on news-card background(${cardBg}) = ${c.toFixed(2)}`).toBeGreaterThanOrEqual(AA_NORMAL)
+
+    // 回帰時に何が起きるかを実CSSから直接検証する: className再導入時の実背景tokenが
+    // text色と同一tokenを参照している限り、collision(fg===bg, contrast=1.0)が再現する
+    // ことをv10.cssの実ルールから確認する（tokens.ts値のハードコード二重比較ではない）。
+    const v10Css = readSrc('styles/v10.css')
+    const bgRuleMatch = v10Css.match(/\.importance-bar__fill--low\s*\{\s*background:\s*var\((--[\w-]+)\)/)
+    expect(bgRuleMatch, 'importance-bar__fill--low background rule not found in v10.css').not.toBeNull()
+    expect(bgRuleMatch![1]).toBe('--color-text-muted')
   })
 })
 

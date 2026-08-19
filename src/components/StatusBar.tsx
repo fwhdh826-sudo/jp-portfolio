@@ -68,6 +68,15 @@ export function reloadBrowserPage(): void {
 }
 
 /**
+ * F-1: SQ残日数表示のinline color分岐を導出するpure predicate。判定条件・警告色は
+ * ここ一箇所のみに存在する（非危険時は必ずundefinedを返し、CSSクラス側のtextOnNavy
+ * ≈12.95:1へ委ねる。'inherit'等の明示的overrideを返してはならない）。
+ */
+export function statusBarSqValueColor(dayUntil: number | undefined): string | undefined {
+  return (dayUntil ?? 99) <= 3 ? '#f07575' : undefined
+}
+
+/**
  * RA-008-D2: system.crossTabInvalidationからstale判定を導出するpure predicate。
  * 判定条件はここ一箇所のみに存在する。
  */
@@ -308,7 +317,7 @@ export function StatusBar() {
             <div className="status-bar__item">
               <span className="status-bar__label">先物</span>
               <span className="status-bar__value"
-                style={{ color: (sqCalendar?.nextSQ?.dayUntil ?? 99) <= 3 ? '#f07575' : undefined }}>
+                style={{ color: statusBarSqValueColor(sqCalendar?.nextSQ?.dayUntil) }}>
                 {sqLabel}
               </span>
             </div>

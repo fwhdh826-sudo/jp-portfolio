@@ -29,7 +29,7 @@ export interface MobileBottomActionBarProps {
   }
 }
 
-const signalButtonColor: Partial<Record<Signal, string>> = {
+export const signalButtonColor: Partial<Record<Signal, string>> = {
   BUY:   colors.buy,
   SELL:  colors.sell,
   HOLD:  colors.hold,
