@@ -844,7 +844,7 @@ export function Phase8SummaryCard() {
       <details>
         <summary style={{ cursor: 'pointer', fontSize: '12px', color: 'var(--color-text-muted, #64748B)', padding: '6px 0', userSelect: 'none', listStyle: 'none' }}>
           ▸ 参考観察を表示（weights / drift / scenario / diagnostics）
-          <span style={{ fontSize: '10px', marginLeft: '8px', opacity: 0.65 }}>
+          <span style={{ fontSize: '10px', marginLeft: '8px' }}>
             ※ 実行判断ではありません
           </span>
         </summary>

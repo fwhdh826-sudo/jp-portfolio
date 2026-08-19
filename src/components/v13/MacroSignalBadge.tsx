@@ -30,7 +30,7 @@ export function MacroSignalBadge({ signal }: Props) {
     <span className={`macro-signal-badge ${dirCls}`} title={`${signal.tag} / ${signal.strength}`}>
       <span aria-hidden="true">{icon}</span>
       {signal.tag}
-      <span style={{ opacity: 0.7, fontSize: 9 }}>{str}</span>
+      <span style={{ fontSize: 9 }}>{str}</span>
     </span>
   )
 }

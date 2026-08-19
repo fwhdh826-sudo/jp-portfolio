@@ -68,7 +68,8 @@ export function MobileBottomActionBar({
     gap:             spacing[2],
     padding:         `${spacing[3]} ${spacing[4]}`,
     background:      primaryAction.disabled ? colors.borderSubtle : primaryColor,
-    color:           primaryAction.disabled ? colors.textMuted : colors.textPrimary,
+    // BUY/SELL/HOLD/WATCHの背景色はいずれも白文字でAA 4.5:1以上（textPrimaryではdark-on-darkでAA未達）
+    color:           primaryAction.disabled ? colors.textMuted : '#ffffff',
     border:          'none',
     borderRadius:    radius.lg,
     cursor:          primaryAction.disabled ? 'not-allowed' : 'pointer',

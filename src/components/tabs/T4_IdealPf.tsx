@@ -52,13 +52,15 @@ const CLASS_ORDER: AssetClass[] = [
   'JP_STOCK', 'JP_TRUST', 'OVERSEAS_TRUST', 'GOLD', 'CASH', 'CASH_RESERVE',
 ]
 
-const CLASS_ACCENT: Partial<Record<AssetClass, { accent: string; accentBg: string }>> = {
-  JP_STOCK:       { accent: colors.stockAccent,      accentBg: colors.stockAccentBg },
-  JP_TRUST:       { accent: colors.jpFundAccent,     accentBg: colors.jpFundAccentBg },
-  OVERSEAS_TRUST: { accent: colors.globalFundAccent, accentBg: colors.globalFundAccentBg },
-  GOLD:           { accent: colors.gold,             accentBg: colors.goldBg },
-  CASH:           { accent: colors.neutral,          accentBg: colors.neutralBg },
-  CASH_RESERVE:   { accent: colors.neutral,          accentBg: colors.neutralBg },
+// accent/accentBgは装飾用途（ドット・ドーナツ・バー背景、非text）専用。
+// accentTextはテキスト色専用のAA 4.5:1達成済みvariant（raw accentをtext流用しない）。
+const CLASS_ACCENT: Partial<Record<AssetClass, { accent: string; accentBg: string; accentText: string }>> = {
+  JP_STOCK:       { accent: colors.stockAccent,      accentBg: colors.stockAccentBg,      accentText: colors.stockAccentText },
+  JP_TRUST:       { accent: colors.jpFundAccent,     accentBg: colors.jpFundAccentBg,     accentText: colors.jpFundAccentText },
+  OVERSEAS_TRUST: { accent: colors.globalFundAccent, accentBg: colors.globalFundAccentBg, accentText: colors.globalFundAccentText },
+  GOLD:           { accent: colors.gold,             accentBg: colors.goldBg,             accentText: colors.gold },
+  CASH:           { accent: colors.neutral,          accentBg: colors.neutralBg,          accentText: colors.holdText },
+  CASH_RESERVE:   { accent: colors.neutral,          accentBg: colors.neutralBg,          accentText: colors.holdText },
 }
 
 function actionTypeMeta(text: string) {
@@ -197,7 +199,7 @@ export function T4_IdealPf() {
   }
 
   function AllocRow({ cat }: { cat: typeof orderedCats[0] }) {
-    const accent  = CLASS_ACCENT[cat.class] ?? { accent: colors.neutral, accentBg: colors.neutralBg }
+    const accent  = CLASS_ACCENT[cat.class] ?? { accent: colors.neutral, accentBg: colors.neutralBg, accentText: colors.holdText }
     const isOver  = cat.currentRatio > cat.targetRatio + 0.01
     const isUnder = cat.currentRatio < cat.targetRatio - 0.01
     // 現在/目標の大きい方を100%として正規化（T3パターン）
@@ -229,7 +231,7 @@ export function T4_IdealPf() {
           <div style={{ display: 'flex', alignItems: 'center', gap: spacing[2] }}>
             <span style={{
               ...typography.caption, fontWeight: 700,
-              color: isOver ? colors.waitText : isUnder ? barAccent : colors.textMuted,
+              color: isOver ? colors.waitText : isUnder ? accent.accentText : colors.textMuted,
             }}>
               {ptDiffStr}
             </span>
