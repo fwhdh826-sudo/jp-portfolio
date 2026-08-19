@@ -1,119 +1,93 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-08-19T20:47:58.701103+09:00",
-  "sourceUpdatedAt": "2026-08-19T11:25:09+00:00",
+  "updatedAt": "2026-08-20T06:52:57.338505+09:00",
+  "sourceUpdatedAt": "2026-08-19T21:47:22+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": -0.67,
-      "negativeCount": 1,
+      "avgSentiment": 0,
+      "negativeCount": 0,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Mizuho Markets Head Expects BOJ to Raise Rates More Often",
-      "topPositiveTitle": "Mizuho Markets Head Expects BOJ to Raise Rates More Often",
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
+    },
+    "jp_semiconductor": {
+      "avgSentiment": 0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
+      "isStale": false,
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
+    },
+    "us_broad": {
+      "avgSentiment": 0.0,
+      "negativeCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 2,
+      "itemCount": 2,
+      "isStale": false,
+      "topNegativeTitle": "Fed Minutes Show Many Officials Said Rate Hikes May Be Needed",
+      "topPositiveTitle": "Stocks Rise as Treasury Steps In to Support Bonds: Markets Wrap",
       "items": [
         {
-          "title": "Mizuho Markets Head Expects BOJ to Raise Rates More Often",
+          "title": "Fed Minutes Show Many Officials Said Rate Hikes May Be Needed",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.67,
-          "publishedAt": "2026-08-18T21:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-18/mizuho-markets-head-expects-boj-to-raise-rates-soon-more-often",
+          "publishedAt": "2026-08-19T18:00:01+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-19/fed-minutes-show-many-officials-said-rate-hikes-may-be-needed",
           "tags": [
-            "fx",
-            "jp_broad",
             "market",
-            "rates"
+            "rates",
+            "us_broad"
           ]
-        }
-      ]
-    },
-    "jp_semiconductor": {
-      "avgSentiment": 0.67,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
-      "isStale": false,
-      "topNegativeTitle": "South Korea Think Tank Raises Growth Outlook Above Government’s",
-      "topPositiveTitle": "South Korea Think Tank Raises Growth Outlook Above Government’s",
-      "items": [
+        },
         {
-          "title": "South Korea Think Tank Raises Growth Outlook Above Government’s",
-          "source": "Bloomberg Economics",
+          "title": "Stocks Rise as Treasury Steps In to Support Bonds: Markets Wrap",
+          "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.67,
-          "publishedAt": "2026-08-19T03:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-19/south-korea-think-tank-raises-growth-outlook-above-government-s",
+          "publishedAt": "2026-08-18T22:11:07+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-18/stock-market-today-dow-s-p-live-updates",
           "tags": [
-            "jp_semiconductor",
+            "dividend",
             "market",
-            "us_growth"
-          ]
-        }
-      ]
-    },
-    "us_broad": {
-      "avgSentiment": -1.0,
-      "negativeCount": 1,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
-      "isStale": false,
-      "topNegativeTitle": "Lowe’s Cuts Outlook as Soft Housing Market Curbs Demand",
-      "topPositiveTitle": "Lowe’s Cuts Outlook as Soft Housing Market Curbs Demand",
-      "items": [
-        {
-          "title": "Lowe’s Cuts Outlook as Soft Housing Market Curbs Demand",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-08-19T10:16:12+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-19/lowe-s-cuts-outlook-as-soft-housing-market-curbs-demand",
-          "tags": [
-            "market",
+            "rates",
             "us_broad"
           ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.17,
+      "avgSentiment": -0.33,
       "negativeCount": 1,
-      "positiveCount": 1,
+      "positiveCount": 0,
       "neutralCount": 0,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Lagarde Says Europe Can’t Afford to Miss Out on AI Revolution",
-      "topPositiveTitle": "South Korea Think Tank Raises Growth Outlook Above Government’s",
+      "topNegativeTitle": "CFTC Considers AI Compute Futures as ICE, CME Eye New Market",
+      "topPositiveTitle": "CFTC Considers AI Compute Futures as ICE, CME Eye New Market",
       "items": [
         {
-          "title": "Lagarde Says Europe Can’t Afford to Miss Out on AI Revolution",
-          "source": "Bloomberg Economics",
+          "title": "CFTC Considers AI Compute Futures as ICE, CME Eye New Market",
+          "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-08-19T07:19:10+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-19/lagarde-says-europe-can-t-afford-to-miss-out-on-ai-revolution",
+          "publishedAt": "2026-08-19T19:57:07+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-19/cftc-considers-ai-compute-futures-as-ice-cme-eye-new-market",
           "tags": [
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "South Korea Think Tank Raises Growth Outlook Above Government’s",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-19T03:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-19/south-korea-think-tank-raises-growth-outlook-above-government-s",
-          "tags": [
-            "jp_semiconductor",
+            "commodity",
             "market",
             "us_growth"
           ]
@@ -133,31 +107,16 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": -0.33,
-      "negativeCount": 1,
+      "avgSentiment": 0,
+      "negativeCount": 0,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Gold Edges Higher as Dollar Slips and US Bonds Stabilize",
-      "topPositiveTitle": "Gold Edges Higher as Dollar Slips and US Bonds Stabilize",
-      "items": [
-        {
-          "title": "Gold Edges Higher as Dollar Slips and US Bonds Stabilize",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-18T23:42:24+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-18/gold-holds-losses-as-bond-selloff-hormuz-limbo-weigh-on-outlook",
-          "tags": [
-            "fx",
-            "gold",
-            "macro_risk",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "reit": {
       "avgSentiment": 0,
@@ -172,16 +131,30 @@
       "items": []
     },
     "dividend": {
-      "avgSentiment": -0.67,
-      "negativeCount": 1,
-      "positiveCount": 0,
+      "avgSentiment": -0.167,
+      "negativeCount": 2,
+      "positiveCount": 2,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 2,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "AI Job Losses: A Guide to the Proposals for Helping Workers",
-      "topPositiveTitle": "AI Job Losses: A Guide to the Proposals for Helping Workers",
+      "topNegativeTitle": "Dollar Tumbles to Weakest in Three Months on Treasury Buyback",
+      "topPositiveTitle": "Stocks Rise as Treasury Steps In to Support Bonds: Markets Wrap",
       "items": [
+        {
+          "title": "Dollar Tumbles to Weakest in Three Months on Treasury Buyback",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-08-19T14:00:43+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-19/dollar-tumbles-as-treasury-buyback-unleashes-bond-market-rally",
+          "tags": [
+            "dividend",
+            "fx",
+            "market",
+            "rates"
+          ]
+        },
         {
           "title": "AI Job Losses: A Guide to the Proposals for Helping Workers",
           "source": "Bloomberg Economics",
@@ -193,20 +166,60 @@
             "dividend",
             "market"
           ]
+        },
+        {
+          "title": "Bets on Long-Bond ETF Spiked a Day Before US Announced Buyback",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-19T21:29:46+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-19/bets-on-long-bond-etf-spiked-a-day-before-us-announced-buyback",
+          "tags": [
+            "dividend",
+            "market",
+            "rates",
+            "trust"
+          ]
+        },
+        {
+          "title": "Stocks Rise as Treasury Steps In to Support Bonds: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-18T22:11:07+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-18/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "dividend",
+            "market",
+            "rates",
+            "us_broad"
+          ]
         }
       ]
     },
     "macro_risk": {
-      "avgSentiment": -0.2,
-      "negativeCount": 5,
-      "positiveCount": 1,
-      "neutralCount": 4,
+      "avgSentiment": -0.534,
+      "negativeCount": 4,
+      "positiveCount": 0,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 10,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "UK House Prices Post First Fall This Year, Official Data Show",
-      "topPositiveTitle": "Latest Oil Market News and Analysis for Aug. 19",
+      "topNegativeTitle": "Carvana Up as Report on Walter’s Pledged Stake Allays Fear",
+      "topPositiveTitle": "South African Inflation Surprise Builds Case for Holding Rates",
       "items": [
+        {
+          "title": "Carvana Up as Report on Walter’s Pledged Stake Allays Fear",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-08-19T16:14:21+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-19/carvana-rebounds-as-report-on-walter-s-pledged-stake-allays-fear",
+          "tags": [
+            "macro_risk",
+            "market"
+          ]
+        },
         {
           "title": "UK House Prices Post First Fall This Year, Official Data Show",
           "source": "Bloomberg Economics",
@@ -247,111 +260,84 @@
           ]
         },
         {
-          "title": "Ethiopia’s Birr Sinks as Central Bank Burns Through Dollars",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-19T06:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-19/ethiopia-s-currency-sinks-as-central-bank-burns-through-dollars",
+          "title": "South African Inflation Surprise Builds Case for Holding Rates",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-19T08:05:13+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-19/south-africa-inflation-cools-making-case-to-keep-rates-on-hold",
           "tags": [
-            "fx",
+            "geopolitical",
             "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Gold Edges Higher as Dollar Slips and US Bonds Stabilize",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-18T23:42:24+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-18/gold-holds-losses-as-bond-selloff-hormuz-limbo-weigh-on-outlook",
-          "tags": [
-            "fx",
-            "gold",
-            "macro_risk",
-            "market"
+            "market",
+            "rates"
           ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": -0.443,
-      "negativeCount": 3,
+      "avgSentiment": -1.0,
+      "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 2,
-      "itemCount": 3,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Mizuho Markets Head Expects BOJ to Raise Rates More Often",
-      "topPositiveTitle": "Ethiopia’s Birr Sinks as Central Bank Burns Through Dollars",
+      "topNegativeTitle": "Dollar Tumbles to Weakest in Three Months on Treasury Buyback",
+      "topPositiveTitle": "Dollar Tumbles to Weakest in Three Months on Treasury Buyback",
       "items": [
         {
-          "title": "Mizuho Markets Head Expects BOJ to Raise Rates More Often",
-          "source": "Bloomberg Economics",
+          "title": "Dollar Tumbles to Weakest in Three Months on Treasury Buyback",
+          "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-08-18T21:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-18/mizuho-markets-head-expects-boj-to-raise-rates-soon-more-often",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-08-19T14:00:43+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-19/dollar-tumbles-as-treasury-buyback-unleashes-bond-market-rally",
           "tags": [
+            "dividend",
             "fx",
-            "jp_broad",
             "market",
             "rates"
-          ]
-        },
-        {
-          "title": "Ethiopia’s Birr Sinks as Central Bank Burns Through Dollars",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-19T06:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-19/ethiopia-s-currency-sinks-as-central-bank-burns-through-dollars",
-          "tags": [
-            "fx",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Gold Edges Higher as Dollar Slips and US Bonds Stabilize",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-18T23:42:24+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-18/gold-holds-losses-as-bond-selloff-hormuz-limbo-weigh-on-outlook",
-          "tags": [
-            "fx",
-            "gold",
-            "macro_risk",
-            "market"
           ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": 0.0,
-      "negativeCount": 2,
-      "positiveCount": 2,
-      "neutralCount": 2,
+      "avgSentiment": -0.03,
+      "negativeCount": 4,
+      "positiveCount": 3,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 11,
       "isStale": false,
-      "topNegativeTitle": "Mizuho Markets Head Expects BOJ to Raise Rates More Often",
-      "topPositiveTitle": "RBA’s Hauser Says Rates Will Need to Rise If Prices Fail to Ease",
+      "topNegativeTitle": "Dollar Tumbles to Weakest in Three Months on Treasury Buyback",
+      "topPositiveTitle": "Moderna Surges as Stocks Rise & Long-Term Yields Retreat | Closing Bell",
       "items": [
         {
-          "title": "Mizuho Markets Head Expects BOJ to Raise Rates More Often",
+          "title": "Dollar Tumbles to Weakest in Three Months on Treasury Buyback",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-08-19T14:00:43+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-19/dollar-tumbles-as-treasury-buyback-unleashes-bond-market-rally",
+          "tags": [
+            "dividend",
+            "fx",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Fed Minutes Show Many Officials Said Rate Hikes May Be Needed",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.67,
-          "publishedAt": "2026-08-18T21:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-18/mizuho-markets-head-expects-boj-to-raise-rates-soon-more-often",
+          "publishedAt": "2026-08-19T18:00:01+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-19/fed-minutes-show-many-officials-said-rate-hikes-may-be-needed",
           "tags": [
-            "fx",
-            "jp_broad",
             "market",
-            "rates"
+            "rates",
+            "us_broad"
           ]
         },
         {
@@ -369,41 +355,25 @@
           ]
         },
         {
-          "title": "South African Inflation Surprise Builds Case for Holding Rates",
+          "title": "Iceland Hikes Key Rate to 8% to Lower Risk of Price Spiral",
           "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-19T08:05:13+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-19/south-africa-inflation-cools-making-case-to-keep-rates-on-hold",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-19T08:37:41+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-19/iceland-hikes-key-rate-to-8-to-lower-risk-of-prices-spiraling",
           "tags": [
-            "geopolitical",
-            "macro_risk",
             "market",
             "rates"
           ]
         },
         {
-          "title": "Stocks Waver as Oil Keeps Bonds Under Pressure: Markets Wrap",
+          "title": "Trump Says Interest Rate System Doesn't Make Sense",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-18T22:11:07+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-18/stock-market-today-dow-s-p-live-updates",
+          "publishedAt": "2026-08-19T20:11:42+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-19/trump-says-interest-rate-system-doesn-t-make-sense-video",
           "tags": [
-            "commodity",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Deutsche Bank’s Uleer Says Stocks Can Power Through Rate Rise",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-19T10:13:18+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-19/deutsche-bank-s-uleer-says-stocks-can-power-through-rate-rise",
-          "tags": [
-            "commodity",
             "market",
             "rates"
           ]
@@ -411,51 +381,27 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.237,
-      "negativeCount": 0,
-      "positiveCount": 3,
-      "neutralCount": 4,
-      "sourceCount": 3,
-      "itemCount": 7,
+      "avgSentiment": -0.11,
+      "negativeCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 2,
+      "sourceCount": 2,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Saudis Give Full Oil Allocations to at Least Three Europe Buyers",
-      "topPositiveTitle": "UK Inflation Climbs to Four-Month High as Energy Bills Rise",
+      "topNegativeTitle": "CFTC Considers AI Compute Futures as ICE, CME Eye New Market",
+      "topPositiveTitle": "茂木外相 イエメン和平の重要性訴え \"国家元首”と会談",
       "items": [
         {
-          "title": "Saudis Give Full Oil Allocations to at Least Three Europe Buyers",
+          "title": "CFTC Considers AI Compute Futures as ICE, CME Eye New Market",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-19T10:38:29+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-19/saudis-give-full-oil-allocations-to-at-least-three-europe-buyers",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "Shell Trader Mansfield Resigns After 26 Years at Oil Major",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-19T09:16:52+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-19/shell-trader-mansfield-resigns-after-26-years-at-oil-major",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "Stocks Waver as Oil Keeps Bonds Under Pressure: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-18T22:11:07+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-18/stock-market-today-dow-s-p-live-updates",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-19T19:57:07+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-19/cftc-considers-ai-compute-futures-as-ice-cme-eye-new-market",
           "tags": [
             "commodity",
             "market",
-            "rates"
+            "us_growth"
           ]
         },
         {
@@ -472,30 +418,31 @@
           "titleJa": "茂木外相 イエメン和平の重要性訴え \"国家元首”と会談"
         },
         {
-          "title": "Deutsche Bank’s Uleer Says Stocks Can Power Through Rate Rise",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-19T10:13:18+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-19/deutsche-bank-s-uleer-says-stocks-can-power-through-rate-rise",
+          "title": "茂木外相 サウジアラビアなど湾岸諸国の経済強じん化を支援",
+          "source": "NHK 経済",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-19T16:37:36+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20260820de45176",
           "tags": [
             "commodity",
-            "market",
-            "rates"
-          ]
+            "geopolitical",
+            "market"
+          ],
+          "titleJa": "茂木外相 サウジアラビアなど湾岸諸国の経済強じん化を支援"
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.0,
+      "avgSentiment": -0.167,
       "negativeCount": 2,
-      "positiveCount": 2,
+      "positiveCount": 0,
       "neutralCount": 4,
-      "sourceCount": 3,
-      "itemCount": 8,
+      "sourceCount": 2,
+      "itemCount": 6,
       "isStale": false,
       "topNegativeTitle": "UK House Prices Post First Fall This Year, Official Data Show",
-      "topPositiveTitle": "Anwar’s Taiwan Remarks Draw Praise From China, Taipei Rebuke",
+      "topPositiveTitle": "South African Inflation Surprise Builds Case for Holding Rates",
       "items": [
         {
           "title": "UK House Prices Post First Fall This Year, Official Data Show",
@@ -525,32 +472,6 @@
           ]
         },
         {
-          "title": "What Is Iran’s Ability to Target US Bases in Europe?",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-19T11:25:09+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-19/what-is-iran-s-ability-to-target-us-bases-in-europe-video",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Iceland Hikes Key Rate to 8% to Lower Risk of Prices Spiraling",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-19T08:37:41+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-19/iceland-hikes-key-rate-to-8-to-lower-risk-of-prices-spiraling",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
           "title": "South African Inflation Surprise Builds Case for Holding Rates",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
@@ -563,6 +484,33 @@
             "market",
             "rates"
           ]
+        },
+        {
+          "title": "茂木外相 サウジアラビアなど湾岸諸国の経済強じん化を支援",
+          "source": "NHK 経済",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-19T16:37:36+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20260820de45176",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
+          ],
+          "titleJa": "茂木外相 サウジアラビアなど湾岸諸国の経済強じん化を支援"
+        },
+        {
+          "title": "高市首相 トルコ大統領と電話会談 ホルムズ海峡の安全航行を",
+          "source": "NHK 経済",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-19T11:59:00+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20260819de45142",
+          "tags": [
+            "geopolitical",
+            "market"
+          ],
+          "titleJa": "高市首相 トルコ大統領と電話会談 ホルムズ海峡の安全航行を"
         }
       ]
     }

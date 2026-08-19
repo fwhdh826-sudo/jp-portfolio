@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-stocks-1",
-  "updatedAt": "2026-08-19T06:46:41.639811+09:00",
-  "sourceUpdatedAt": "2026-08-19T06:46:41.639811+09:00",
+  "updatedAt": "2026-08-20T06:50:01.797534+09:00",
+  "sourceUpdatedAt": "2026-08-20T06:50:01.797534+09:00",
   "staleThresholdHours": 48,
   "_meta": {
     "kind": "candidates_stocks",
@@ -15,7 +15,7 @@
       "truncatedCount": 0,
       "failedTotalCount": 0
     },
-    "runToken": "86e595e7-73c9-4795-8158-df546e7f7d39",
+    "runToken": "ad2583ee-dfab-4410-8077-cf0284901b4a",
     "universeProvenance": {
       "pipelinePath": "normal",
       "jpxSource": "jpx_data_j_xls",
@@ -35,17 +35,18 @@
   },
   "candidates": [
     {
-      "code": "8410",
-      "name": "セブン銀行",
-      "sector": "銀行業",
-      "price": 342.1,
-      "per": 28.16,
-      "pbr": 1.42,
-      "roe": 6.2,
-      "dividendYield": 3.28,
-      "sigma252d": 0.1965,
-      "mom3m": 25.86,
+      "code": "9101",
+      "name": "日本郵船",
+      "sector": "海運業",
+      "price": 6733.0,
+      "per": 13.34,
+      "pbr": 0.87,
+      "roe": 7.7,
+      "dividendYield": 3.54,
+      "sigma252d": 0.261,
+      "mom3m": 22.46,
       "screenReasons": [
+        "低PER",
         "高配当"
       ],
       "dataStatus": "ok"
@@ -54,31 +55,30 @@
       "code": "5108",
       "name": "ブリヂストン",
       "sector": "ゴム製品",
-      "price": 4074.0,
-      "per": 20.63,
-      "pbr": 1.34,
+      "price": 4011.0,
+      "per": 20.34,
+      "pbr": 1.32,
       "roe": 11.27,
       "dividendYield": null,
-      "sigma252d": 0.2382,
-      "mom3m": 24.91,
+      "sigma252d": 0.2388,
+      "mom3m": 22.69,
       "screenReasons": [
         "高ROE"
       ],
       "dataStatus": "ok"
     },
     {
-      "code": "9101",
-      "name": "日本郵船",
+      "code": "9107",
+      "name": "川崎汽船",
       "sector": "海運業",
-      "price": 6784.0,
-      "per": 13.44,
-      "pbr": 0.88,
-      "roe": 7.7,
-      "dividendYield": 3.7,
-      "sigma252d": 0.2609,
-      "mom3m": 20.93,
+      "price": 3157.0,
+      "per": 15.0,
+      "pbr": 1.1,
+      "roe": 7.56,
+      "dividendYield": 3.82,
+      "sigma252d": 0.2925,
+      "mom3m": 24.81,
       "screenReasons": [
-        "低PER",
         "高配当"
       ],
       "dataStatus": "ok"
@@ -87,62 +87,156 @@
       "code": "8304",
       "name": "あおぞら銀行",
       "sector": "銀行業",
-      "price": 3388.0,
-      "per": 18.27,
-      "pbr": 0.94,
+      "price": 3342.0,
+      "per": 18.03,
+      "pbr": 0.93,
       "roe": 6.56,
-      "dividendYield": 2.74,
-      "sigma252d": 0.2858,
-      "mom3m": 24.86,
+      "dividendYield": 2.77,
+      "sigma252d": 0.2863,
+      "mom3m": 20.96,
       "screenReasons": [],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "8309",
-      "name": "三井住友トラストグループ",
-      "sector": "銀行業",
-      "price": 1734.0,
-      "per": 13.13,
-      "pbr": 1.3,
-      "roe": 10.78,
-      "dividendYield": null,
-      "sigma252d": 0.2713,
-      "mom3m": 22.91,
-      "screenReasons": [
-        "低PER",
-        "高ROE"
-      ],
       "dataStatus": "ok"
     },
     {
       "code": "6448",
       "name": "ブラザー工業",
       "sector": "電気機器",
-      "price": 4587.0,
-      "per": 18.53,
-      "pbr": 1.41,
+      "price": 4509.0,
+      "per": 18.2,
+      "pbr": 1.39,
       "roe": 12.39,
       "dividendYield": null,
-      "sigma252d": 0.292,
-      "mom3m": 31.09,
+      "sigma252d": 0.2927,
+      "mom3m": 30.51,
       "screenReasons": [
         "高ROE"
       ],
       "dataStatus": "ok"
     },
     {
-      "code": "4118",
-      "name": "カネカ",
-      "sector": "化学",
-      "price": 6295.0,
-      "per": 12.6,
-      "pbr": 0.75,
-      "roe": 7.36,
-      "dividendYield": null,
-      "sigma252d": 0.2196,
-      "mom3m": 20.29,
+      "code": "8410",
+      "name": "セブン銀行",
+      "sector": "銀行業",
+      "price": 331.0,
+      "per": 27.27,
+      "pbr": 1.38,
+      "roe": 6.2,
+      "dividendYield": 3.22,
+      "sigma252d": 0.1991,
+      "mom3m": 20.36,
       "screenReasons": [
-        "低PER"
+        "高配当"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "5401",
+      "name": "日本製鉄",
+      "sector": "鉄鋼",
+      "price": 677.9,
+      "per": 207.94,
+      "pbr": 0.63,
+      "roe": 5.5,
+      "dividendYield": 3.46,
+      "sigma252d": 0.2723,
+      "mom3m": 24.16,
+      "screenReasons": [
+        "高配当"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "4206",
+      "name": "アイカ工業",
+      "sector": "化学",
+      "price": 4037.0,
+      "per": 14.64,
+      "pbr": 1.32,
+      "roe": 10.35,
+      "dividendYield": 3.55,
+      "sigma252d": 0.1795,
+      "mom3m": 17.39,
+      "screenReasons": [
+        "低PER",
+        "高ROE",
+        "高配当"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "2914",
+      "name": "日本たばこ産業",
+      "sector": "食料品",
+      "price": 6914.0,
+      "per": 20.61,
+      "pbr": 2.79,
+      "roe": 13.97,
+      "dividendYield": 3.92,
+      "sigma252d": 0.2326,
+      "mom3m": 13.47,
+      "screenReasons": [
+        "高ROE",
+        "高配当"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "2801",
+      "name": "キッコーマン",
+      "sector": "食料品",
+      "price": 1794.0,
+      "per": 27.17,
+      "pbr": 2.89,
+      "roe": 12.09,
+      "dividendYield": null,
+      "sigma252d": 0.3216,
+      "mom3m": 27.37,
+      "screenReasons": [
+        "高ROE"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "4502",
+      "name": "武田薬品工業",
+      "sector": "医薬品",
+      "price": 5769.0,
+      "per": null,
+      "pbr": 1.21,
+      "roe": -2.26,
+      "dividendYield": null,
+      "sigma252d": 0.2223,
+      "mom3m": 11.37,
+      "screenReasons": [],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "2269",
+      "name": "明治ホールディングス",
+      "sector": "食料品",
+      "price": 4270.0,
+      "per": 32.99,
+      "pbr": 1.5,
+      "roe": 5.53,
+      "dividendYield": null,
+      "sigma252d": 0.2283,
+      "mom3m": 15.0,
+      "screenReasons": [],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "2222",
+      "name": "寿スピリッツ",
+      "sector": "食料品",
+      "price": 2701.5,
+      "per": 33.25,
+      "pbr": 9.21,
+      "roe": 31.39,
+      "dividendYield": null,
+      "sigma252d": 0.3059,
+      "mom3m": 35.08,
+      "screenReasons": [
+        "高ROE"
       ],
       "dataStatus": "ok"
     },
@@ -150,29 +244,29 @@
       "code": "4114",
       "name": "日本触媒",
       "sector": "化学",
-      "price": 2696.5,
-      "per": 24.07,
-      "pbr": 0.99,
+      "price": 2597.0,
+      "per": 23.15,
+      "pbr": 0.96,
       "roe": 5.9,
-      "dividendYield": 5.25,
-      "sigma252d": 0.2296,
-      "mom3m": 33.33,
+      "dividendYield": 5.19,
+      "sigma252d": 0.2329,
+      "mom3m": 27.59,
       "screenReasons": [
         "高配当"
       ],
       "dataStatus": "ok"
     },
     {
-      "code": "8725",
-      "name": "ＭＳ＆ＡＤインシュアランスグループホールディングス",
-      "sector": "保険業",
-      "price": 4985.0,
-      "per": 14.54,
-      "pbr": 1.08,
-      "roe": 16.09,
-      "dividendYield": 2.84,
-      "sigma252d": 0.2604,
-      "mom3m": 12.78,
+      "code": "8309",
+      "name": "三井住友トラストグループ",
+      "sector": "銀行業",
+      "price": 1688.5,
+      "per": 12.8,
+      "pbr": 1.27,
+      "roe": 10.78,
+      "dividendYield": null,
+      "sigma252d": 0.2727,
+      "mom3m": 18.43,
       "screenReasons": [
         "低PER",
         "高ROE"
@@ -180,30 +274,49 @@
       "dataStatus": "ok"
     },
     {
-      "code": "8306",
-      "name": "三菱ＵＦＪフィナンシャル・グループ",
-      "sector": "銀行業",
-      "price": 3654.0,
-      "per": 17.21,
-      "pbr": 1.81,
-      "roe": 9.46,
-      "dividendYield": 2.63,
-      "sigma252d": 0.3111,
-      "mom3m": 20.59,
-      "screenReasons": [],
+      "code": "8725",
+      "name": "ＭＳ＆ＡＤインシュアランスグループホールディングス",
+      "sector": "保険業",
+      "price": 4860.0,
+      "per": 14.17,
+      "pbr": 1.05,
+      "roe": 16.09,
+      "dividendYield": 2.81,
+      "sigma252d": 0.2617,
+      "mom3m": 11.72,
+      "screenReasons": [
+        "低PER",
+        "高ROE"
+      ],
       "dataStatus": "ok"
     },
     {
-      "code": "9107",
-      "name": "川崎汽船",
-      "sector": "海運業",
-      "price": 3141.0,
-      "per": 14.93,
-      "pbr": 1.09,
-      "roe": 7.56,
-      "dividendYield": 3.91,
-      "sigma252d": 0.2927,
-      "mom3m": 21.96,
+      "code": "7272",
+      "name": "ヤマハ発動機",
+      "sector": "輸送用機器",
+      "price": 1874.0,
+      "per": 8.39,
+      "pbr": 1.45,
+      "roe": 7.72,
+      "dividendYield": 2.61,
+      "sigma252d": 0.3962,
+      "mom3m": 51.32,
+      "screenReasons": [
+        "低PER"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "9506",
+      "name": "東北電力",
+      "sector": "電気・ガス業",
+      "price": 1283.5,
+      "per": 7.55,
+      "pbr": 0.56,
+      "roe": 7.69,
+      "dividendYield": 3.06,
+      "sigma252d": 0.2791,
+      "mom3m": 25.28,
       "screenReasons": [
         "低PER",
         "高配当"
@@ -214,219 +327,47 @@
       "code": "4613",
       "name": "関西ペイント",
       "sector": "化学",
-      "price": 2896.5,
-      "per": 19.5,
-      "pbr": 1.71,
+      "price": 2854.5,
+      "per": 19.25,
+      "pbr": 1.68,
       "roe": 9.26,
-      "dividendYield": 3.97,
-      "sigma252d": 0.2157,
-      "mom3m": 25.42,
+      "dividendYield": 4.0,
+      "sigma252d": 0.2153,
+      "mom3m": 21.91,
       "screenReasons": [
         "高配当"
       ],
       "dataStatus": "ok"
     },
     {
-      "code": "7267",
-      "name": "本田技研工業",
-      "sector": "輸送用機器",
-      "price": 1713.0,
-      "per": null,
-      "pbr": 0.54,
-      "roe": -0.76,
-      "dividendYield": 4.15,
-      "sigma252d": 0.3066,
-      "mom3m": 27.55,
-      "screenReasons": [
-        "高配当"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "4206",
-      "name": "アイカ工業",
-      "sector": "化学",
-      "price": 4060.0,
-      "per": 14.73,
-      "pbr": 1.33,
-      "roe": 10.35,
-      "dividendYield": 3.54,
-      "sigma252d": 0.1794,
-      "mom3m": 17.95,
-      "screenReasons": [
-        "低PER",
-        "高ROE",
-        "高配当"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "7272",
-      "name": "ヤマハ発動機",
-      "sector": "輸送用機器",
-      "price": 1918.5,
-      "per": 8.59,
-      "pbr": 1.49,
-      "roe": 7.72,
-      "dividendYield": 2.58,
-      "sigma252d": 0.3954,
-      "mom3m": 60.24,
-      "screenReasons": [
-        "低PER"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "5401",
-      "name": "日本製鉄",
-      "sector": "鉄鋼",
-      "price": 693.6,
-      "per": 211.46,
-      "pbr": 0.64,
-      "roe": 5.5,
-      "dividendYield": 3.58,
-      "sigma252d": 0.2713,
-      "mom3m": 28.28,
-      "screenReasons": [
-        "高配当"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "7167",
-      "name": "めぶきフィナンシャルグループ",
-      "sector": "銀行業",
-      "price": 1691.5,
-      "per": 18.99,
-      "pbr": 1.42,
-      "roe": 9.24,
-      "dividendYield": 2.63,
-      "sigma252d": 0.3318,
-      "mom3m": 22.09,
-      "screenReasons": [],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "3946",
-      "name": "トーモク",
-      "sector": "パルプ・紙",
-      "price": 4720.0,
-      "per": 10.57,
-      "pbr": 0.76,
-      "roe": 7.86,
-      "dividendYield": 3.61,
-      "sigma252d": 0.2335,
-      "mom3m": 24.05,
-      "screenReasons": [
-        "低PER",
-        "高配当"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "9506",
-      "name": "東北電力",
-      "sector": "電気・ガス業",
-      "price": 1306.0,
-      "per": 7.69,
-      "pbr": 0.57,
-      "roe": 7.69,
-      "dividendYield": 3.18,
-      "sigma252d": 0.279,
-      "mom3m": 29.82,
-      "screenReasons": [
-        "低PER",
-        "高配当"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "8388",
-      "name": "阿波銀行",
-      "sector": "銀行業",
-      "price": 9460.0,
-      "per": 23.82,
-      "pbr": 0.89,
-      "roe": 4.66,
-      "dividendYield": 1.92,
-      "sigma252d": 0.3353,
-      "mom3m": 39.32,
-      "screenReasons": [],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "9147",
-      "name": "ＮＩＰＰＯＮ　ＥＸＰＲＥＳＳホールディングス",
-      "sector": "陸運業",
-      "price": 5636.0,
-      "per": 72.23,
-      "pbr": 1.61,
-      "roe": 2.46,
-      "dividendYield": 1.78,
-      "sigma252d": 0.2578,
-      "mom3m": 18.15,
-      "screenReasons": [],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "2222",
-      "name": "寿スピリッツ",
-      "sector": "食料品",
-      "price": 2682.0,
-      "per": 32.95,
-      "pbr": 9.15,
-      "roe": 31.39,
+      "code": "9744",
+      "name": "メイテックグループホールディングス",
+      "sector": "サービス業",
+      "price": 3320.0,
+      "per": 17.02,
+      "pbr": 5.81,
+      "roe": 34.87,
       "dividendYield": null,
-      "sigma252d": 0.3059,
-      "mom3m": 31.02,
+      "sigma252d": 0.14,
+      "mom3m": 11.58,
       "screenReasons": [
         "高ROE"
       ],
       "dataStatus": "ok"
     },
     {
-      "code": "8358",
-      "name": "スルガ銀行",
-      "sector": "銀行業",
-      "price": 2943.0,
-      "per": 14.82,
-      "pbr": 1.55,
-      "roe": 13.71,
-      "dividendYield": 2.07,
-      "sigma252d": 0.3231,
-      "mom3m": 25.82,
+      "code": "9432",
+      "name": "ＮＴＴ",
+      "sector": "情報・通信業",
+      "price": 159.4,
+      "per": 12.64,
+      "pbr": 1.32,
+      "roe": 10.71,
+      "dividendYield": 3.37,
+      "sigma252d": 0.1544,
+      "mom3m": 3.71,
       "screenReasons": [
         "低PER",
-        "高ROE"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "7327",
-      "name": "第四北越フィナンシャルグループ",
-      "sector": "銀行業",
-      "price": 2555.0,
-      "per": 15.9,
-      "pbr": 1.12,
-      "roe": 8.62,
-      "dividendYield": null,
-      "sigma252d": 0.3258,
-      "mom3m": 21.03,
-      "screenReasons": [],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "2914",
-      "name": "日本たばこ産業",
-      "sector": "食料品",
-      "price": 6932.0,
-      "per": 20.64,
-      "pbr": 2.8,
-      "roe": 13.97,
-      "dividendYield": 3.83,
-      "sigma252d": 0.2327,
-      "mom3m": 11.74,
-      "screenReasons": [
         "高ROE",
         "高配当"
       ],
@@ -436,13 +377,13 @@
       "code": "4452",
       "name": "花王",
       "sector": "化学",
-      "price": 3505.0,
-      "per": 21.4,
-      "pbr": 2.83,
+      "price": 3483.0,
+      "per": 21.23,
+      "pbr": 2.82,
       "roe": 12.32,
       "dividendYield": null,
-      "sigma252d": 0.2401,
-      "mom3m": 19.86,
+      "sigma252d": 0.24,
+      "mom3m": 18.81,
       "screenReasons": [
         "高ROE"
       ],
@@ -452,814 +393,15 @@
       "code": "7832",
       "name": "バンダイナムコホールディングス",
       "sector": "その他製品",
-      "price": 5342.0,
-      "per": 24.56,
-      "pbr": 3.87,
+      "price": 5359.0,
+      "per": 24.65,
+      "pbr": 3.88,
       "roe": 18.31,
       "dividendYield": 0.9,
-      "sigma252d": 0.3114,
-      "mom3m": 38.39,
+      "sigma252d": 0.3102,
+      "mom3m": 42.98,
       "screenReasons": [
         "高ROE"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "2801",
-      "name": "キッコーマン",
-      "sector": "食料品",
-      "price": 1770.0,
-      "per": 26.85,
-      "pbr": 2.86,
-      "roe": 12.09,
-      "dividendYield": null,
-      "sigma252d": 0.3214,
-      "mom3m": 23.13,
-      "screenReasons": [
-        "高ROE"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "8601",
-      "name": "大和証券グループ本社",
-      "sector": "証券、商品先物取引業",
-      "price": 1771.0,
-      "per": 14.27,
-      "pbr": 1.36,
-      "roe": 10.96,
-      "dividendYield": null,
-      "sigma252d": 0.2951,
-      "mom3m": 20.27,
-      "screenReasons": [
-        "低PER",
-        "高ROE"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "9507",
-      "name": "四国電力",
-      "sector": "電気・ガス業",
-      "price": 1840.5,
-      "per": 7.44,
-      "pbr": 0.77,
-      "roe": 11.83,
-      "dividendYield": 3.04,
-      "sigma252d": 0.2701,
-      "mom3m": 21.77,
-      "screenReasons": [
-        "低PER",
-        "高ROE",
-        "高配当"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "8334",
-      "name": "群馬銀行",
-      "sector": "銀行業",
-      "price": 2800.5,
-      "per": 18.08,
-      "pbr": 1.68,
-      "roe": 10.3,
-      "dividendYield": null,
-      "sigma252d": 0.3668,
-      "mom3m": 21.29,
-      "screenReasons": [
-        "高ROE"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "6952",
-      "name": "カシオ計算機",
-      "sector": "電気機器",
-      "price": 2353.0,
-      "per": 29.36,
-      "pbr": 2.21,
-      "roe": 10.54,
-      "dividendYield": 1.88,
-      "sigma252d": 0.4058,
-      "mom3m": 52.84,
-      "screenReasons": [
-        "高ROE"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "8308",
-      "name": "りそなホールディングス",
-      "sector": "銀行業",
-      "price": 2500.0,
-      "per": 21.95,
-      "pbr": 1.86,
-      "roe": 9.23,
-      "dividendYield": 1.49,
-      "sigma252d": 0.3945,
-      "mom3m": 23.24,
-      "screenReasons": [],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "8377",
-      "name": "ほくほくフィナンシャルグループ",
-      "sector": "銀行業",
-      "price": 8432.0,
-      "per": 17.46,
-      "pbr": 1.34,
-      "roe": 9.72,
-      "dividendYield": 0.17,
-      "sigma252d": 0.4066,
-      "mom3m": 29.44,
-      "screenReasons": [],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "8343",
-      "name": "秋田銀行",
-      "sector": "銀行業",
-      "price": 8940.0,
-      "per": 20.64,
-      "pbr": 0.85,
-      "roe": 4.99,
-      "dividendYield": 2.28,
-      "sigma252d": 0.3538,
-      "mom3m": 49.5,
-      "screenReasons": [],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "6412",
-      "name": "平和",
-      "sector": "機械",
-      "price": 2209.0,
-      "per": 18.65,
-      "pbr": 0.86,
-      "roe": 4.57,
-      "dividendYield": null,
-      "sigma252d": 0.1585,
-      "mom3m": 13.69,
-      "screenReasons": [],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "8084",
-      "name": "ＲＹＯＤＥＮ",
-      "sector": "卸売業",
-      "price": 4815.0,
-      "per": 19.73,
-      "pbr": 1.09,
-      "roe": 6.23,
-      "dividendYield": 2.7,
-      "sigma252d": 0.2332,
-      "mom3m": 36.79,
-      "screenReasons": [],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "7550",
-      "name": "ゼンショーホールディングス",
-      "sector": "小売業",
-      "price": 11700.0,
-      "per": 42.38,
-      "pbr": 5.16,
-      "roe": 17.91,
-      "dividendYield": null,
-      "sigma252d": 0.3436,
-      "mom3m": 47.19,
-      "screenReasons": [
-        "高ROE"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "8341",
-      "name": "七十七銀行",
-      "sector": "銀行業",
-      "price": 3912.0,
-      "per": 16.15,
-      "pbr": 1.15,
-      "roe": 9.39,
-      "dividendYield": 2.68,
-      "sigma252d": 0.3532,
-      "mom3m": 21.26,
-      "screenReasons": [],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "7951",
-      "name": "ヤマハ",
-      "sector": "その他製品",
-      "price": 1303.5,
-      "per": 24.76,
-      "pbr": 1.16,
-      "roe": 6.84,
-      "dividendYield": 1.96,
-      "sigma252d": 0.2643,
-      "mom3m": 17.27,
-      "screenReasons": [],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "4680",
-      "name": "ラウンドワン",
-      "sector": "サービス業",
-      "price": 1328.0,
-      "per": 20.99,
-      "pbr": 4.07,
-      "roe": 21.53,
-      "dividendYield": null,
-      "sigma252d": 0.4356,
-      "mom3m": 51.51,
-      "screenReasons": [
-        "高ROE"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "3402",
-      "name": "東レ",
-      "sector": "繊維製品",
-      "price": 1344.0,
-      "per": 25.4,
-      "pbr": 1.08,
-      "roe": 5.61,
-      "dividendYield": null,
-      "sigma252d": 0.3287,
-      "mom3m": 24.85,
-      "screenReasons": [],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "2269",
-      "name": "明治ホールディングス",
-      "sector": "食料品",
-      "price": 4244.0,
-      "per": 32.74,
-      "pbr": 1.49,
-      "roe": 5.53,
-      "dividendYield": null,
-      "sigma252d": 0.2286,
-      "mom3m": 11.3,
-      "screenReasons": [],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "9432",
-      "name": "ＮＴＴ",
-      "sector": "情報・通信業",
-      "price": 160.4,
-      "per": 12.72,
-      "pbr": 1.32,
-      "roe": 10.71,
-      "dividendYield": 3.34,
-      "sigma252d": 0.1544,
-      "mom3m": 2.49,
-      "screenReasons": [
-        "低PER",
-        "高ROE",
-        "高配当"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "8616",
-      "name": "東海東京フィナンシャル・ホールディングス",
-      "sector": "証券、商品先物取引業",
-      "price": 834.0,
-      "per": 12.74,
-      "pbr": 1.08,
-      "roe": 12.92,
-      "dividendYield": 4.8,
-      "sigma252d": 0.2443,
-      "mom3m": 20.35,
-      "screenReasons": [
-        "低PER",
-        "高ROE",
-        "高配当"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "8628",
-      "name": "松井証券",
-      "sector": "証券、商品先物取引業",
-      "price": 1106.0,
-      "per": 18.45,
-      "pbr": 3.15,
-      "roe": null,
-      "dividendYield": 4.56,
-      "sigma252d": 0.2043,
-      "mom3m": 14.02,
-      "screenReasons": [
-        "高配当"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "3091",
-      "name": "ブロンコビリー",
-      "sector": "小売業",
-      "price": 2705.0,
-      "per": 33.4,
-      "pbr": 3.53,
-      "roe": 11.08,
-      "dividendYield": 0.75,
-      "sigma252d": 0.2192,
-      "mom3m": 26.97,
-      "screenReasons": [
-        "高ROE"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "9076",
-      "name": "セイノーホールディングス",
-      "sector": "陸運業",
-      "price": 2827.0,
-      "per": 19.46,
-      "pbr": 1.0,
-      "roe": 6.25,
-      "dividendYield": 4.36,
-      "sigma252d": 0.1615,
-      "mom3m": 9.43,
-      "screenReasons": [
-        "高配当"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "6178",
-      "name": "日本郵政",
-      "sector": "サービス業",
-      "price": 2403.0,
-      "per": 18.62,
-      "pbr": 0.67,
-      "roe": 5.12,
-      "dividendYield": null,
-      "sigma252d": 0.2788,
-      "mom3m": 13.89,
-      "screenReasons": [],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "4634",
-      "name": "ａｒｔｉｅｎｃｅ",
-      "sector": "化学",
-      "price": 5060.0,
-      "per": 12.86,
-      "pbr": 6.59,
-      "roe": 7.41,
-      "dividendYield": 2.37,
-      "sigma252d": 0.2616,
-      "mom3m": 27.03,
-      "screenReasons": [
-        "低PER"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "9831",
-      "name": "ヤマダホールディングス",
-      "sector": "小売業",
-      "price": 707.7,
-      "per": 32.48,
-      "pbr": 0.74,
-      "roe": 2.61,
-      "dividendYield": 2.48,
-      "sigma252d": 0.2179,
-      "mom3m": 18.07,
-      "screenReasons": [],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "4208",
-      "name": "ＵＢＥ",
-      "sector": "化学",
-      "price": 3669.0,
-      "per": 14.92,
-      "pbr": 0.81,
-      "roe": 5.56,
-      "dividendYield": null,
-      "sigma252d": 0.3413,
-      "mom3m": 26.93,
-      "screenReasons": [
-        "低PER"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "6340",
-      "name": "澁谷工業",
-      "sector": "機械",
-      "price": 5300.0,
-      "per": 14.33,
-      "pbr": 1.3,
-      "roe": 9.01,
-      "dividendYield": null,
-      "sigma252d": 0.3309,
-      "mom3m": 51.08,
-      "screenReasons": [
-        "低PER"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "8524",
-      "name": "北洋銀行",
-      "sector": "銀行業",
-      "price": 1324.0,
-      "per": 19.46,
-      "pbr": 1.26,
-      "roe": 7.03,
-      "dividendYield": 2.44,
-      "sigma252d": 0.3887,
-      "mom3m": 34.56,
-      "screenReasons": [],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "8316",
-      "name": "三井住友フィナンシャルグループ",
-      "sector": "銀行業",
-      "price": 6900.0,
-      "per": 16.76,
-      "pbr": 1.63,
-      "roe": 8.57,
-      "dividendYield": 1.95,
-      "sigma252d": 0.3323,
-      "mom3m": 17.31,
-      "screenReasons": [],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "8381",
-      "name": "山陰合同銀行",
-      "sector": "銀行業",
-      "price": 2640.0,
-      "per": 17.61,
-      "pbr": 1.22,
-      "roe": 8.11,
-      "dividendYield": 2.58,
-      "sigma252d": 0.3159,
-      "mom3m": 31.08,
-      "screenReasons": [],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "5830",
-      "name": "いよぎんホールディングス",
-      "sector": "銀行業",
-      "price": 4039.0,
-      "per": 15.91,
-      "pbr": 1.26,
-      "roe": 7.83,
-      "dividendYield": 2.0,
-      "sigma252d": 0.3915,
-      "mom3m": 29.66,
-      "screenReasons": [],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "9744",
-      "name": "メイテックグループホールディングス",
-      "sector": "サービス業",
-      "price": 3307.0,
-      "per": 16.96,
-      "pbr": 5.79,
-      "roe": 34.87,
-      "dividendYield": null,
-      "sigma252d": 0.1408,
-      "mom3m": 9.87,
-      "screenReasons": [
-        "高ROE"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "2503",
-      "name": "キリンホールディングス",
-      "sector": "食料品",
-      "price": 3000.0,
-      "per": 12.33,
-      "pbr": 1.76,
-      "roe": 15.14,
-      "dividendYield": 2.53,
-      "sigma252d": 0.2579,
-      "mom3m": 11.15,
-      "screenReasons": [
-        "低PER",
-        "高ROE"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "7296",
-      "name": "エフ・シー・シー",
-      "sector": "輸送用機器",
-      "price": 4180.0,
-      "per": 10.79,
-      "pbr": 0.97,
-      "roe": 10.19,
-      "dividendYield": null,
-      "sigma252d": 0.2523,
-      "mom3m": 26.86,
-      "screenReasons": [
-        "低PER",
-        "高ROE"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "6971",
-      "name": "京セラ",
-      "sector": "電気機器",
-      "price": 3799.0,
-      "per": 37.02,
-      "pbr": 1.5,
-      "roe": 5.06,
-      "dividendYield": 1.45,
-      "sigma252d": 0.3406,
-      "mom3m": 30.06,
-      "screenReasons": [],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "8604",
-      "name": "野村ホールディングス",
-      "sector": "証券、商品先物取引業",
-      "price": 1554.0,
-      "per": 11.66,
-      "pbr": 1.18,
-      "roe": 11.16,
-      "dividendYield": 3.27,
-      "sigma252d": 0.3503,
-      "mom3m": 24.27,
-      "screenReasons": [
-        "低PER",
-        "高ROE",
-        "高配当"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "5076",
-      "name": "インフロニア・ホールディングス",
-      "sector": "建設業",
-      "price": 2785.5,
-      "per": 10.79,
-      "pbr": 1.07,
-      "roe": 23.75,
-      "dividendYield": 4.68,
-      "sigma252d": 0.324,
-      "mom3m": 19.11,
-      "screenReasons": [
-        "低PER",
-        "高ROE",
-        "高配当"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "9009",
-      "name": "京成電鉄",
-      "sector": "陸運業",
-      "price": 1289.5,
-      "per": 12.95,
-      "pbr": 1.11,
-      "roe": 9.42,
-      "dividendYield": 1.72,
-      "sigma252d": 0.2581,
-      "mom3m": 20.23,
-      "screenReasons": [
-        "低PER"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "5844",
-      "name": "京都フィナンシャルグループ",
-      "sector": "銀行業",
-      "price": 5022.0,
-      "per": 14.83,
-      "pbr": 1.02,
-      "roe": 7.95,
-      "dividendYield": 2.16,
-      "sigma252d": 0.342,
-      "mom3m": 14.53,
-      "screenReasons": [
-        "低PER"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "7956",
-      "name": "ピジョン",
-      "sector": "その他製品",
-      "price": 2115.0,
-      "per": 27.57,
-      "pbr": 2.96,
-      "roe": 11.2,
-      "dividendYield": null,
-      "sigma252d": 0.2496,
-      "mom3m": 17.32,
-      "screenReasons": [
-        "高ROE"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "7337",
-      "name": "ひろぎんホールディングス",
-      "sector": "銀行業",
-      "price": 2394.5,
-      "per": 16.42,
-      "pbr": 1.18,
-      "roe": 8.19,
-      "dividendYield": 2.97,
-      "sigma252d": 0.2854,
-      "mom3m": 15.79,
-      "screenReasons": [],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "8331",
-      "name": "千葉銀行",
-      "sector": "銀行業",
-      "price": 2837.5,
-      "per": 19.41,
-      "pbr": 1.52,
-      "roe": 8.3,
-      "dividendYield": null,
-      "sigma252d": 0.348,
-      "mom3m": 20.28,
-      "screenReasons": [],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "8366",
-      "name": "滋賀銀行",
-      "sector": "銀行業",
-      "price": 2763.0,
-      "per": 29.92,
-      "pbr": 0.98,
-      "roe": 4.44,
-      "dividendYield": 1.81,
-      "sigma252d": 0.401,
-      "mom3m": 32.52,
-      "screenReasons": [],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "4912",
-      "name": "ライオン",
-      "sector": "化学",
-      "price": 1833.0,
-      "per": 17.6,
-      "pbr": 1.57,
-      "roe": 9.65,
-      "dividendYield": 1.8,
-      "sigma252d": 0.2527,
-      "mom3m": 17.39,
-      "screenReasons": [],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "9508",
-      "name": "九州電力",
-      "sector": "電気・ガス業",
-      "price": 1912.0,
-      "per": 6.08,
-      "pbr": 0.73,
-      "roe": 14.63,
-      "dividendYield": 2.7,
-      "sigma252d": 0.2758,
-      "mom3m": 12.84,
-      "screenReasons": [
-        "低PER",
-        "高ROE"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "8600",
-      "name": "トモニホールディングス",
-      "sector": "銀行業",
-      "price": 1130.0,
-      "per": 13.67,
-      "pbr": 0.72,
-      "roe": 5.92,
-      "dividendYield": null,
-      "sigma252d": 0.3295,
-      "mom3m": 31.86,
-      "screenReasons": [
-        "低PER"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "8359",
-      "name": "八十二長野銀行",
-      "sector": "銀行業",
-      "price": 2730.0,
-      "per": 19.37,
-      "pbr": 1.03,
-      "roe": 6.51,
-      "dividendYield": null,
-      "sigma252d": 0.3657,
-      "mom3m": 18.67,
-      "screenReasons": [],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "4689",
-      "name": "ＬＩＮＥヤフー",
-      "sector": "情報・通信業",
-      "price": 497.9,
-      "per": 17.88,
-      "pbr": 1.14,
-      "roe": 8.32,
-      "dividendYield": null,
-      "sigma252d": 0.2886,
-      "mom3m": 18.21,
-      "screenReasons": [],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "2124",
-      "name": "ジェイエイシーリクルートメント",
-      "sector": "サービス業",
-      "price": 1027.0,
-      "per": 18.07,
-      "pbr": 7.48,
-      "roe": 44.76,
-      "dividendYield": null,
-      "sigma252d": 0.2553,
-      "mom3m": 21.14,
-      "screenReasons": [
-        "高ROE"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "6592",
-      "name": "マブチモーター",
-      "sector": "電気機器",
-      "price": 1774.0,
-      "per": 14.54,
-      "pbr": 1.24,
-      "roe": 9.28,
-      "dividendYield": 3.92,
-      "sigma252d": 0.2668,
-      "mom3m": 17.64,
-      "screenReasons": [
-        "低PER",
-        "高配当"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "5831",
-      "name": "しずおかフィナンシャルグループ",
-      "sector": "銀行業",
-      "price": 3566.0,
-      "per": 21.29,
-      "pbr": 1.48,
-      "roe": 8.2,
-      "dividendYield": null,
-      "sigma252d": 0.3366,
-      "mom3m": 19.99,
-      "screenReasons": [],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "3002",
-      "name": "グンゼ",
-      "sector": "繊維製品",
-      "price": 4240.0,
-      "per": 270.24,
-      "pbr": 1.23,
-      "roe": 4.23,
-      "dividendYield": null,
-      "sigma252d": 0.2024,
-      "mom3m": 16.16,
-      "screenReasons": [],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "4204",
-      "name": "積水化学工業",
-      "sector": "化学",
-      "price": 2656.0,
-      "per": 14.53,
-      "pbr": 1.26,
-      "roe": 9.02,
-      "dividendYield": null,
-      "sigma252d": 0.2362,
-      "mom3m": 17.5,
-      "screenReasons": [
-        "低PER"
       ],
       "dataStatus": "ok"
     },
@@ -1271,9 +413,9 @@
       "per": 19.42,
       "pbr": 3.14,
       "roe": 16.99,
-      "dividendYield": 3.05,
+      "dividendYield": 3.07,
       "sigma252d": 0.2748,
-      "mom3m": 16.37,
+      "mom3m": 19.94,
       "screenReasons": [
         "高ROE",
         "高配当"
@@ -1281,16 +423,591 @@
       "dataStatus": "ok"
     },
     {
-      "code": "6287",
-      "name": "サトー",
-      "sector": "機械",
-      "price": 2783.0,
-      "per": 17.76,
-      "pbr": 1.06,
-      "roe": 7.54,
+      "code": "9009",
+      "name": "京成電鉄",
+      "sector": "陸運業",
+      "price": 1303.0,
+      "per": 13.09,
+      "pbr": 1.12,
+      "roe": 9.42,
+      "dividendYield": 1.71,
+      "sigma252d": 0.2581,
+      "mom3m": 21.89,
+      "screenReasons": [
+        "低PER"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "4118",
+      "name": "カネカ",
+      "sector": "化学",
+      "price": 6085.0,
+      "per": 12.19,
+      "pbr": 0.72,
+      "roe": 7.36,
       "dividendYield": null,
-      "sigma252d": 0.2585,
-      "mom3m": 27.72,
+      "sigma252d": 0.2225,
+      "mom3m": 11.88,
+      "screenReasons": [
+        "低PER"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "4927",
+      "name": "ポーラ・オルビスホールディングス",
+      "sector": "化学",
+      "price": 1399.5,
+      "per": 27.26,
+      "pbr": 1.91,
+      "roe": 6.98,
+      "dividendYield": 3.77,
+      "sigma252d": 0.1739,
+      "mom3m": 11.87,
+      "screenReasons": [
+        "高配当"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "3091",
+      "name": "ブロンコビリー",
+      "sector": "小売業",
+      "price": 2745.0,
+      "per": 33.83,
+      "pbr": 3.58,
+      "roe": 11.08,
+      "dividendYield": 0.74,
+      "sigma252d": 0.2196,
+      "mom3m": 26.77,
+      "screenReasons": [
+        "高ROE"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "9147",
+      "name": "ＮＩＰＰＯＮ　ＥＸＰＲＥＳＳホールディングス",
+      "sector": "陸運業",
+      "price": 5516.0,
+      "per": 70.92,
+      "pbr": 1.58,
+      "roe": 2.46,
+      "dividendYield": 1.77,
+      "sigma252d": 0.2589,
+      "mom3m": 13.98,
+      "screenReasons": [],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "2809",
+      "name": "キユーピー",
+      "sector": "食料品",
+      "price": 4736.0,
+      "per": 26.15,
+      "pbr": 1.99,
+      "roe": 8.18,
+      "dividendYield": null,
+      "sigma252d": 0.2486,
+      "mom3m": 14.49,
+      "screenReasons": [],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "4732",
+      "name": "ユー・エス・エス",
+      "sector": "サービス業",
+      "price": 1972.0,
+      "per": 22.3,
+      "pbr": 4.79,
+      "roe": 22.41,
+      "dividendYield": 2.86,
+      "sigma252d": 0.1856,
+      "mom3m": 11.44,
+      "screenReasons": [
+        "高ROE"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "7267",
+      "name": "本田技研工業",
+      "sector": "輸送用機器",
+      "price": 1662.0,
+      "per": null,
+      "pbr": 0.52,
+      "roe": -0.76,
+      "dividendYield": 4.21,
+      "sigma252d": 0.3081,
+      "mom3m": 20.09,
+      "screenReasons": [
+        "高配当"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "4680",
+      "name": "ラウンドワン",
+      "sector": "サービス業",
+      "price": 1323.0,
+      "per": 20.93,
+      "pbr": 4.05,
+      "roe": 21.53,
+      "dividendYield": null,
+      "sigma252d": 0.4346,
+      "mom3m": 55.08,
+      "screenReasons": [
+        "高ROE"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "9507",
+      "name": "四国電力",
+      "sector": "電気・ガス業",
+      "price": 1801.5,
+      "per": 7.29,
+      "pbr": 0.75,
+      "roe": 11.83,
+      "dividendYield": 2.99,
+      "sigma252d": 0.2708,
+      "mom3m": 18.99,
+      "screenReasons": [
+        "低PER",
+        "高ROE"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "7550",
+      "name": "ゼンショーホールディングス",
+      "sector": "小売業",
+      "price": 11485.0,
+      "per": 41.59,
+      "pbr": 5.07,
+      "roe": 17.91,
+      "dividendYield": null,
+      "sigma252d": 0.3434,
+      "mom3m": 49.49,
+      "screenReasons": [
+        "高ROE"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "3946",
+      "name": "トーモク",
+      "sector": "パルプ・紙",
+      "price": 4630.0,
+      "per": 10.37,
+      "pbr": 0.75,
+      "roe": 7.86,
+      "dividendYield": 3.6,
+      "sigma252d": 0.2345,
+      "mom3m": 17.36,
+      "screenReasons": [
+        "低PER",
+        "高配当"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "4689",
+      "name": "ＬＩＮＥヤフー",
+      "sector": "情報・通信業",
+      "price": 494.2,
+      "per": 17.76,
+      "pbr": 1.13,
+      "roe": 8.32,
+      "dividendYield": null,
+      "sigma252d": 0.2881,
+      "mom3m": 20.04,
+      "screenReasons": [],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "2181",
+      "name": "パーソルホールディングス",
+      "sector": "サービス業",
+      "price": 287.4,
+      "per": 14.98,
+      "pbr": 2.9,
+      "roe": 20.68,
+      "dividendYield": 4.57,
+      "sigma252d": 0.2485,
+      "mom3m": 19.75,
+      "screenReasons": [
+        "低PER",
+        "高ROE",
+        "高配当"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "7167",
+      "name": "めぶきフィナンシャルグループ",
+      "sector": "銀行業",
+      "price": 1628.5,
+      "per": 18.3,
+      "pbr": 1.37,
+      "roe": 9.24,
+      "dividendYield": 2.6,
+      "sigma252d": 0.3339,
+      "mom3m": 15.54,
+      "screenReasons": [],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "6952",
+      "name": "カシオ計算機",
+      "sector": "電気機器",
+      "price": 2280.0,
+      "per": 28.5,
+      "pbr": 2.14,
+      "roe": 10.54,
+      "dividendYield": 1.91,
+      "sigma252d": 0.4073,
+      "mom3m": 47.29,
+      "screenReasons": [
+        "高ROE"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "2503",
+      "name": "キリンホールディングス",
+      "sector": "食料品",
+      "price": 2998.5,
+      "per": 12.32,
+      "pbr": 1.75,
+      "roe": 15.14,
+      "dividendYield": 2.53,
+      "sigma252d": 0.2573,
+      "mom3m": 9.67,
+      "screenReasons": [
+        "低PER",
+        "高ROE"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "9831",
+      "name": "ヤマダホールディングス",
+      "sector": "小売業",
+      "price": 701.6,
+      "per": 32.18,
+      "pbr": 0.73,
+      "roe": 2.61,
+      "dividendYield": 2.4,
+      "sigma252d": 0.218,
+      "mom3m": 16.93,
+      "screenReasons": [],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "2602",
+      "name": "日清オイリオグループ",
+      "sector": "食料品",
+      "price": 2012.0,
+      "per": 7.91,
+      "pbr": 0.87,
+      "roe": 5.15,
+      "dividendYield": null,
+      "sigma252d": 0.1713,
+      "mom3m": 13.16,
+      "screenReasons": [
+        "低PER"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "8343",
+      "name": "秋田銀行",
+      "sector": "銀行業",
+      "price": 8510.0,
+      "per": 19.67,
+      "pbr": 0.81,
+      "roe": 4.99,
+      "dividendYield": 2.35,
+      "sigma252d": 0.3571,
+      "mom3m": 39.74,
+      "screenReasons": [],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "8628",
+      "name": "松井証券",
+      "sector": "証券、商品先物取引業",
+      "price": 1097.0,
+      "per": 18.3,
+      "pbr": 3.13,
+      "roe": null,
+      "dividendYield": 4.52,
+      "sigma252d": 0.2045,
+      "mom3m": 12.74,
+      "screenReasons": [
+        "高配当"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "4912",
+      "name": "ライオン",
+      "sector": "化学",
+      "price": 1845.0,
+      "per": 17.72,
+      "pbr": 1.53,
+      "roe": 9.65,
+      "dividendYield": 1.85,
+      "sigma252d": 0.2527,
+      "mom3m": 15.7,
+      "screenReasons": [],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "8388",
+      "name": "阿波銀行",
+      "sector": "銀行業",
+      "price": 8980.0,
+      "per": 22.66,
+      "pbr": 0.84,
+      "roe": 4.66,
+      "dividendYield": 1.9,
+      "sigma252d": 0.3392,
+      "mom3m": 29.58,
+      "screenReasons": [],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "9861",
+      "name": "吉野家ホールディングス",
+      "sector": "小売業",
+      "price": 3766.0,
+      "per": 52.23,
+      "pbr": 3.51,
+      "roe": 8.6,
+      "dividendYield": 0.59,
+      "sigma252d": 0.2272,
+      "mom3m": 17.03,
+      "screenReasons": [],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "8358",
+      "name": "スルガ銀行",
+      "sector": "銀行業",
+      "price": 2829.0,
+      "per": 14.24,
+      "pbr": 1.46,
+      "roe": 13.71,
+      "dividendYield": 2.04,
+      "sigma252d": 0.3248,
+      "mom3m": 18.82,
+      "screenReasons": [
+        "低PER",
+        "高ROE"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "9104",
+      "name": "商船三井",
+      "sector": "海運業",
+      "price": 6966.0,
+      "per": 11.24,
+      "pbr": 0.8,
+      "roe": 7.89,
+      "dividendYield": 2.98,
+      "sigma252d": 0.2989,
+      "mom3m": 22.02,
+      "screenReasons": [
+        "低PER"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "6412",
+      "name": "平和",
+      "sector": "機械",
+      "price": 2187.0,
+      "per": 18.47,
+      "pbr": 0.85,
+      "roe": 4.57,
+      "dividendYield": null,
+      "sigma252d": 0.1587,
+      "mom3m": 10.62,
+      "screenReasons": [],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "7956",
+      "name": "ピジョン",
+      "sector": "その他製品",
+      "price": 2099.0,
+      "per": 27.42,
+      "pbr": 2.93,
+      "roe": 11.2,
+      "dividendYield": null,
+      "sigma252d": 0.2486,
+      "mom3m": 16.18,
+      "screenReasons": [
+        "高ROE"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "8084",
+      "name": "ＲＹＯＤＥＮ",
+      "sector": "卸売業",
+      "price": 4670.0,
+      "per": 19.13,
+      "pbr": 1.05,
+      "roe": 6.23,
+      "dividendYield": 2.65,
+      "sigma252d": 0.2354,
+      "mom3m": 29.18,
+      "screenReasons": [],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "8616",
+      "name": "東海東京フィナンシャル・ホールディングス",
+      "sector": "証券、商品先物取引業",
+      "price": 826.0,
+      "per": 12.62,
+      "pbr": 1.07,
+      "roe": 12.92,
+      "dividendYield": 4.8,
+      "sigma252d": 0.2445,
+      "mom3m": 17.33,
+      "screenReasons": [
+        "低PER",
+        "高ROE",
+        "高配当"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "8601",
+      "name": "大和証券グループ本社",
+      "sector": "証券、商品先物取引業",
+      "price": 1735.0,
+      "per": 13.98,
+      "pbr": 1.34,
+      "roe": 10.96,
+      "dividendYield": null,
+      "sigma252d": 0.2959,
+      "mom3m": 14.98,
+      "screenReasons": [
+        "低PER",
+        "高ROE"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "8306",
+      "name": "三菱ＵＦＪフィナンシャル・グループ",
+      "sector": "銀行業",
+      "price": 3495.0,
+      "per": 16.46,
+      "pbr": 1.73,
+      "roe": 9.46,
+      "dividendYield": 2.63,
+      "sigma252d": 0.3132,
+      "mom3m": 13.96,
+      "screenReasons": [],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "8613",
+      "name": "丸三証券",
+      "sector": "証券、商品先物取引業",
+      "price": 1230.0,
+      "per": 16.29,
+      "pbr": 1.59,
+      "roe": 9.98,
+      "dividendYield": 3.78,
+      "sigma252d": 0.1948,
+      "mom3m": 18.38,
+      "screenReasons": [
+        "高配当"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "9076",
+      "name": "セイノーホールディングス",
+      "sector": "陸運業",
+      "price": 2790.0,
+      "per": 19.2,
+      "pbr": 0.99,
+      "roe": 6.25,
+      "dividendYield": 4.32,
+      "sigma252d": 0.1621,
+      "mom3m": 7.56,
+      "screenReasons": [
+        "高配当"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "7951",
+      "name": "ヤマハ",
+      "sector": "その他製品",
+      "price": 1282.0,
+      "per": 24.34,
+      "pbr": 1.14,
+      "roe": 6.84,
+      "dividendYield": 1.99,
+      "sigma252d": 0.2644,
+      "mom3m": 15.13,
+      "screenReasons": [],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "9434",
+      "name": "ソフトバンク",
+      "sector": "情報・通信業",
+      "price": 232.4,
+      "per": 20.6,
+      "pbr": 3.82,
+      "roe": 16.71,
+      "dividendYield": null,
+      "sigma252d": 0.1732,
+      "mom3m": 3.52,
+      "screenReasons": [
+        "高ROE"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "4919",
+      "name": "ミルボン",
+      "sector": "化学",
+      "price": 3175.0,
+      "per": 18.74,
+      "pbr": 2.01,
+      "roe": 11.13,
+      "dividendYield": null,
+      "sigma252d": 0.2417,
+      "mom3m": 21.2,
+      "screenReasons": [
+        "高ROE"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "2212",
+      "name": "山崎製パン",
+      "sector": "食料品",
+      "price": 3566.0,
+      "per": 16.7,
+      "pbr": 1.49,
+      "roe": 8.94,
+      "dividendYield": 1.73,
+      "sigma252d": 0.2677,
+      "mom3m": 12.31,
       "screenReasons": [],
       "dataStatus": "ok"
     },
@@ -1298,27 +1015,45 @@
       "code": "2664",
       "name": "カワチ薬品",
       "sector": "小売業",
-      "price": 3850.0,
-      "per": 26.87,
-      "pbr": 0.75,
+      "price": 3800.0,
+      "per": 26.53,
+      "pbr": 0.74,
       "roe": 2.85,
-      "dividendYield": 2.62,
-      "sigma252d": 0.1942,
-      "mom3m": 26.23,
+      "dividendYield": 2.6,
+      "sigma252d": 0.1948,
+      "mom3m": 24.18,
       "screenReasons": [],
       "dataStatus": "ok"
     },
     {
-      "code": "9934",
-      "name": "因幡電機産業",
-      "sector": "卸売業",
-      "price": 3049.0,
-      "per": 14.8,
-      "pbr": 1.65,
-      "roe": 14.02,
+      "code": "7751",
+      "name": "キヤノン",
+      "sector": "電気機器",
+      "price": 4475.0,
+      "per": 11.31,
+      "pbr": 1.09,
+      "roe": 10.37,
+      "dividendYield": 3.56,
+      "sigma252d": 0.2343,
+      "mom3m": 10.43,
+      "screenReasons": [
+        "低PER",
+        "高ROE",
+        "高配当"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "7296",
+      "name": "エフ・シー・シー",
+      "sector": "輸送用機器",
+      "price": 4085.0,
+      "per": 10.54,
+      "pbr": 0.95,
+      "roe": 10.19,
       "dividendYield": null,
-      "sigma252d": 0.2173,
-      "mom3m": 12.07,
+      "sigma252d": 0.2533,
+      "mom3m": 21.94,
       "screenReasons": [
         "低PER",
         "高ROE"
@@ -1335,411 +1070,10 @@
       "roe": 19.89,
       "dividendYield": 2.67,
       "sigma252d": 0.3066,
-      "mom3m": 70.13,
+      "mom3m": 70.65,
       "screenReasons": [
         "高ROE"
       ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "6737",
-      "name": "ＥＩＺＯ",
-      "sector": "電気機器",
-      "price": 3045.0,
-      "per": 16.86,
-      "pbr": 0.6,
-      "roe": 5.11,
-      "dividendYield": null,
-      "sigma252d": 0.2515,
-      "mom3m": 25.98,
-      "screenReasons": [],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "8173",
-      "name": "Ｊｏｓｈｉｎ",
-      "sector": "小売業",
-      "price": 4250.0,
-      "per": 33.49,
-      "pbr": 1.03,
-      "roe": 4.91,
-      "dividendYield": 2.45,
-      "sigma252d": 0.2511,
-      "mom3m": 40.96,
-      "screenReasons": [],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "3405",
-      "name": "クラレ",
-      "sector": "化学",
-      "price": 1846.5,
-      "per": 68.34,
-      "pbr": 0.74,
-      "roe": 0.82,
-      "dividendYield": null,
-      "sigma252d": 0.247,
-      "mom3m": 18.94,
-      "screenReasons": [],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "5192",
-      "name": "三ツ星ベルト",
-      "sector": "ゴム製品",
-      "price": 4485.0,
-      "per": 17.04,
-      "pbr": 1.23,
-      "roe": 8.13,
-      "dividendYield": 4.33,
-      "sigma252d": 0.1918,
-      "mom3m": 15.3,
-      "screenReasons": [
-        "高配当"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "6523",
-      "name": "ＰＨＣホールディングス",
-      "sector": "電気機器",
-      "price": 1446.0,
-      "per": 369.82,
-      "pbr": 1.09,
-      "roe": 5.88,
-      "dividendYield": 3.01,
-      "sigma252d": 0.3514,
-      "mom3m": 40.94,
-      "screenReasons": [
-        "高配当"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "7912",
-      "name": "大日本印刷",
-      "sector": "その他製品",
-      "price": 3307.0,
-      "per": 14.05,
-      "pbr": 1.16,
-      "roe": 6.92,
-      "dividendYield": 1.24,
-      "sigma252d": 0.3134,
-      "mom3m": 20.8,
-      "screenReasons": [
-        "低PER"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "2181",
-      "name": "パーソルホールディングス",
-      "sector": "サービス業",
-      "price": 284.5,
-      "per": 14.85,
-      "pbr": 2.87,
-      "roe": 20.68,
-      "dividendYield": 4.58,
-      "sigma252d": 0.2489,
-      "mom3m": 18.05,
-      "screenReasons": [
-        "低PER",
-        "高ROE",
-        "高配当"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "4732",
-      "name": "ユー・エス・エス",
-      "sector": "サービス業",
-      "price": 1974.0,
-      "per": 22.27,
-      "pbr": 4.8,
-      "roe": 22.41,
-      "dividendYield": 2.83,
-      "sigma252d": 0.1857,
-      "mom3m": 9.94,
-      "screenReasons": [
-        "高ROE"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "6457",
-      "name": "グローリー",
-      "sector": "機械",
-      "price": 4822.0,
-      "per": 17.49,
-      "pbr": 1.18,
-      "roe": 8.01,
-      "dividendYield": 3.16,
-      "sigma252d": 0.2899,
-      "mom3m": 15.36,
-      "screenReasons": [
-        "高配当"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "6381",
-      "name": "アネスト岩田",
-      "sector": "機械",
-      "price": 1935.0,
-      "per": 14.23,
-      "pbr": 1.51,
-      "roe": 12.19,
-      "dividendYield": 4.55,
-      "sigma252d": 0.196,
-      "mom3m": 19.22,
-      "screenReasons": [
-        "低PER",
-        "高ROE",
-        "高配当"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "2602",
-      "name": "日清オイリオグループ",
-      "sector": "食料品",
-      "price": 1995.0,
-      "per": 7.84,
-      "pbr": 0.86,
-      "roe": 5.15,
-      "dividendYield": null,
-      "sigma252d": 0.1714,
-      "mom3m": 12.78,
-      "screenReasons": [
-        "低PER"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "166A",
-      "name": "タスキホールディングス",
-      "sector": "不動産業",
-      "price": 1152.0,
-      "per": 12.62,
-      "pbr": 2.2,
-      "roe": 24.56,
-      "dividendYield": 3.36,
-      "sigma252d": 0.3648,
-      "mom3m": 35.69,
-      "screenReasons": [
-        "低PER",
-        "高ROE",
-        "高配当"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "9434",
-      "name": "ソフトバンク",
-      "sector": "情報・通信業",
-      "price": 234.0,
-      "per": 20.74,
-      "pbr": 3.84,
-      "roe": 16.71,
-      "dividendYield": null,
-      "sigma252d": 0.1733,
-      "mom3m": 3.36,
-      "screenReasons": [
-        "高ROE"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "9104",
-      "name": "商船三井",
-      "sector": "海運業",
-      "price": 6881.0,
-      "per": 11.1,
-      "pbr": 0.79,
-      "roe": 7.89,
-      "dividendYield": 3.09,
-      "sigma252d": 0.2987,
-      "mom3m": 18.74,
-      "screenReasons": [
-        "低PER",
-        "高配当"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "7433",
-      "name": "伯東",
-      "sector": "卸売業",
-      "price": 5190.0,
-      "per": 19.49,
-      "pbr": 1.41,
-      "roe": 8.74,
-      "dividendYield": null,
-      "sigma252d": 0.2408,
-      "mom3m": 17.42,
-      "screenReasons": [],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "8613",
-      "name": "丸三証券",
-      "sector": "証券、商品先物取引業",
-      "price": 1218.0,
-      "per": 16.12,
-      "pbr": 1.57,
-      "roe": 9.98,
-      "dividendYield": 3.8,
-      "sigma252d": 0.1946,
-      "mom3m": 17.91,
-      "screenReasons": [
-        "高配当"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "4578",
-      "name": "大塚ホールディングス",
-      "sector": "医薬品",
-      "price": 12040.0,
-      "per": 15.68,
-      "pbr": 1.95,
-      "roe": 13.42,
-      "dividendYield": 1.66,
-      "sigma252d": 0.3169,
-      "mom3m": 6.55,
-      "screenReasons": [
-        "高ROE"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "8154",
-      "name": "加賀電子",
-      "sector": "卸売業",
-      "price": 5040.0,
-      "per": 8.03,
-      "pbr": 1.26,
-      "roe": 18.7,
-      "dividendYield": null,
-      "sigma252d": 0.2867,
-      "mom3m": 24.29,
-      "screenReasons": [
-        "低PER",
-        "高ROE"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "7846",
-      "name": "パイロットコーポレーション",
-      "sector": "その他製品",
-      "price": 1933.0,
-      "per": 14.25,
-      "pbr": 1.4,
-      "roe": 10.2,
-      "dividendYield": 2.47,
-      "sigma252d": 0.2245,
-      "mom3m": 20.58,
-      "screenReasons": [
-        "低PER",
-        "高ROE"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "6135",
-      "name": "牧野フライス製作所",
-      "sector": "機械",
-      "price": 16170.0,
-      "per": 18.03,
-      "pbr": 1.41,
-      "roe": 10.32,
-      "dividendYield": 0.44,
-      "sigma252d": 0.3041,
-      "mom3m": 22.59,
-      "screenReasons": [
-        "高ROE"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "5970",
-      "name": "ジーテクト",
-      "sector": "金属製品",
-      "price": 2382.0,
-      "per": 7.58,
-      "pbr": 0.45,
-      "roe": 7.14,
-      "dividendYield": null,
-      "sigma252d": 0.2282,
-      "mom3m": 18.21,
-      "screenReasons": [
-        "低PER"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "9962",
-      "name": "ミスミグループ本社",
-      "sector": "卸売業",
-      "price": 3894.0,
-      "per": 26.16,
-      "pbr": 2.66,
-      "roe": 12.25,
-      "dividendYield": 1.45,
-      "sigma252d": 0.4307,
-      "mom3m": 24.45,
-      "screenReasons": [
-        "高ROE"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "8043",
-      "name": "スターゼン",
-      "sector": "卸売業",
-      "price": 1529.0,
-      "per": 10.48,
-      "pbr": 0.91,
-      "roe": 9.04,
-      "dividendYield": 3.47,
-      "sigma252d": 0.2199,
-      "mom3m": 35.91,
-      "screenReasons": [
-        "低PER",
-        "高配当"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "8037",
-      "name": "カメイ",
-      "sector": "卸売業",
-      "price": 4420.0,
-      "per": 11.37,
-      "pbr": 0.75,
-      "roe": 8.12,
-      "dividendYield": 3.13,
-      "sigma252d": 0.2611,
-      "mom3m": 27.19,
-      "screenReasons": [
-        "低PER",
-        "高配当"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "6752",
-      "name": "パナソニック　ホールディングス",
-      "sector": "電気機器",
-      "price": 4552.0,
-      "per": 55.92,
-      "pbr": 1.97,
-      "roe": 5.25,
-      "dividendYield": null,
-      "sigma252d": 0.5011,
-      "mom3m": 41.94,
-      "screenReasons": [],
       "dataStatus": "ok"
     },
     {
@@ -1750,9 +1084,9 @@
       "per": 17.37,
       "pbr": 4.19,
       "roe": 26.67,
-      "dividendYield": 3.41,
-      "sigma252d": 0.2419,
-      "mom3m": 12.84,
+      "dividendYield": 3.4,
+      "sigma252d": 0.2413,
+      "mom3m": 11.92,
       "screenReasons": [
         "高ROE",
         "高配当"
@@ -1760,48 +1094,130 @@
       "dataStatus": "ok"
     },
     {
-      "code": "2146",
-      "name": "ＵＴグループ",
-      "sector": "サービス業",
-      "price": 226.0,
-      "per": 19.38,
-      "pbr": 4.21,
-      "roe": 24.46,
+      "code": "6340",
+      "name": "澁谷工業",
+      "sector": "機械",
+      "price": 5070.0,
+      "per": 13.72,
+      "pbr": 1.18,
+      "roe": 9.01,
       "dividendYield": null,
-      "sigma252d": 0.3174,
-      "mom3m": 31.27,
-      "screenReasons": [
-        "高ROE"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "4205",
-      "name": "日本ゼオン",
-      "sector": "化学",
-      "price": 2454.0,
-      "per": 13.16,
-      "pbr": 1.19,
-      "roe": null,
-      "dividendYield": null,
-      "sigma252d": 0.3091,
-      "mom3m": 19.24,
+      "sigma252d": 0.3338,
+      "mom3m": 38.66,
       "screenReasons": [
         "低PER"
       ],
       "dataStatus": "ok"
     },
     {
-      "code": "4919",
-      "name": "ミルボン",
-      "sector": "化学",
-      "price": 3160.0,
-      "per": 18.67,
-      "pbr": 2.05,
-      "roe": 11.13,
+      "code": "8130",
+      "name": "サンゲツ",
+      "sector": "卸売業",
+      "price": 3165.0,
+      "per": 12.71,
+      "pbr": 1.53,
+      "roe": 14.12,
       "dividendYield": null,
-      "sigma252d": 0.242,
-      "mom3m": 19.5,
+      "sigma252d": 0.1309,
+      "mom3m": 7.29,
+      "screenReasons": [
+        "低PER",
+        "高ROE"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "8630",
+      "name": "ＳＯＭＰＯホールディングス",
+      "sector": "保険業",
+      "price": 6588.0,
+      "per": 26.28,
+      "pbr": 1.11,
+      "roe": 14.43,
+      "dividendYield": 3.04,
+      "sigma252d": 0.3227,
+      "mom3m": 18.32,
+      "screenReasons": [
+        "高ROE",
+        "高配当"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "4928",
+      "name": "ノエビアホールディングス",
+      "sector": "化学",
+      "price": 4790.0,
+      "per": 20.17,
+      "pbr": 3.21,
+      "roe": 16.14,
+      "dividendYield": 4.83,
+      "sigma252d": 0.1509,
+      "mom3m": 10.37,
+      "screenReasons": [
+        "高ROE",
+        "高配当"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "9508",
+      "name": "九州電力",
+      "sector": "電気・ガス業",
+      "price": 1873.5,
+      "per": 5.95,
+      "pbr": 0.71,
+      "roe": 14.63,
+      "dividendYield": 2.62,
+      "sigma252d": 0.276,
+      "mom3m": 10.79,
+      "screenReasons": [
+        "低PER",
+        "高ROE"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "6287",
+      "name": "サトー",
+      "sector": "機械",
+      "price": 2756.0,
+      "per": 17.59,
+      "pbr": 1.01,
+      "roe": 7.54,
+      "dividendYield": null,
+      "sigma252d": 0.2587,
+      "mom3m": 24.93,
+      "screenReasons": [],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "7912",
+      "name": "大日本印刷",
+      "sector": "その他製品",
+      "price": 3243.0,
+      "per": 13.77,
+      "pbr": 1.14,
+      "roe": 6.92,
+      "dividendYield": 1.24,
+      "sigma252d": 0.3141,
+      "mom3m": 18.42,
+      "screenReasons": [
+        "低PER"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "4578",
+      "name": "大塚ホールディングス",
+      "sector": "医薬品",
+      "price": 12055.0,
+      "per": 15.69,
+      "pbr": 1.95,
+      "roe": 13.42,
+      "dividendYield": 1.66,
+      "sigma252d": 0.3157,
+      "mom3m": 4.08,
       "screenReasons": [
         "高ROE"
       ],
@@ -1811,13 +1227,13 @@
       "code": "4848",
       "name": "フルキャストホールディングス",
       "sector": "サービス業",
-      "price": 1832.0,
-      "per": 13.74,
-      "pbr": 1.97,
+      "price": 1863.0,
+      "per": 13.97,
+      "pbr": 2.01,
       "roe": 15.05,
-      "dividendYield": 3.47,
-      "sigma252d": 0.1911,
-      "mom3m": 24.35,
+      "dividendYield": 3.49,
+      "sigma252d": 0.1918,
+      "mom3m": 24.46,
       "screenReasons": [
         "低PER",
         "高ROE",
@@ -1826,184 +1242,108 @@
       "dataStatus": "ok"
     },
     {
-      "code": "4189",
-      "name": "ＫＨネオケム",
+      "code": "7846",
+      "name": "パイロットコーポレーション",
+      "sector": "その他製品",
+      "price": 1922.0,
+      "per": 14.16,
+      "pbr": 1.39,
+      "roe": 10.2,
+      "dividendYield": 2.48,
+      "sigma252d": 0.2243,
+      "mom3m": 18.99,
+      "screenReasons": [
+        "低PER",
+        "高ROE"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "3405",
+      "name": "クラレ",
       "sector": "化学",
-      "price": 3350.0,
-      "per": 12.85,
-      "pbr": 1.57,
-      "roe": 12.58,
-      "dividendYield": 4.42,
-      "sigma252d": 0.297,
-      "mom3m": 30.66,
-      "screenReasons": [
-        "低PER",
-        "高ROE",
-        "高配当"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "7278",
-      "name": "エクセディ",
-      "sector": "輸送用機器",
-      "price": 6240.0,
-      "per": 20.53,
-      "pbr": 1.18,
-      "roe": 8.32,
-      "dividendYield": 5.65,
-      "sigma252d": 0.2101,
-      "mom3m": 7.22,
-      "screenReasons": [
-        "高配当"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "9069",
-      "name": "センコーグループホールディングス",
-      "sector": "陸運業",
-      "price": 2342.5,
-      "per": 20.7,
-      "pbr": 1.7,
-      "roe": 8.9,
-      "dividendYield": 2.42,
-      "sigma252d": 0.2611,
-      "mom3m": 16.43,
+      "price": 1815.0,
+      "per": 66.88,
+      "pbr": 0.72,
+      "roe": 0.82,
+      "dividendYield": null,
+      "sigma252d": 0.2477,
+      "mom3m": 15.42,
       "screenReasons": [],
       "dataStatus": "ok"
     },
     {
-      "code": "4023",
-      "name": "クレハ",
-      "sector": "化学",
-      "price": 4570.0,
-      "per": null,
-      "pbr": 1.03,
-      "roe": -4.83,
-      "dividendYield": 4.78,
-      "sigma252d": 0.2725,
-      "mom3m": 23.18,
-      "screenReasons": [
-        "高配当"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "1518",
-      "name": "三井松島ホールディングス",
-      "sector": "その他製品",
-      "price": 2293.0,
-      "per": 15.46,
-      "pbr": 1.48,
-      "roe": 11.57,
-      "dividendYield": 5.63,
-      "sigma252d": 0.4282,
-      "mom3m": 64.73,
-      "screenReasons": [
-        "高ROE",
-        "高配当"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "4631",
-      "name": "ＤＩＣ",
-      "sector": "化学",
-      "price": 5495.0,
-      "per": 9.22,
-      "pbr": 1.02,
-      "roe": 12.26,
-      "dividendYield": 2.87,
-      "sigma252d": 0.3447,
-      "mom3m": 25.03,
-      "screenReasons": [
-        "低PER",
-        "高ROE"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "8750",
-      "name": "第一ライフグループ",
-      "sector": "保険業",
-      "price": 1841.5,
-      "per": 15.2,
-      "pbr": 1.45,
-      "roe": 13.58,
+      "code": "3002",
+      "name": "グンゼ",
+      "sector": "繊維製品",
+      "price": 4175.0,
+      "per": 266.09,
+      "pbr": 1.21,
+      "roe": 4.23,
       "dividendYield": null,
-      "sigma252d": 0.2976,
-      "mom3m": 11.2,
+      "sigma252d": 0.2028,
+      "mom3m": 12.99,
+      "screenReasons": [],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "2146",
+      "name": "ＵＴグループ",
+      "sector": "サービス業",
+      "price": 225.0,
+      "per": 19.3,
+      "pbr": 4.19,
+      "roe": 24.46,
+      "dividendYield": null,
+      "sigma252d": 0.3174,
+      "mom3m": 30.69,
       "screenReasons": [
         "高ROE"
       ],
       "dataStatus": "ok"
     },
     {
-      "code": "9619",
-      "name": "イチネンホールディングス",
-      "sector": "サービス業",
-      "price": 2686.0,
-      "per": 8.3,
-      "pbr": 0.81,
-      "roe": 17.37,
-      "dividendYield": 3.44,
-      "sigma252d": 0.2109,
-      "mom3m": 27.24,
+      "code": "3402",
+      "name": "東レ",
+      "sector": "繊維製品",
+      "price": 1279.0,
+      "per": 24.21,
+      "pbr": 1.03,
+      "roe": 5.61,
+      "dividendYield": null,
+      "sigma252d": 0.3325,
+      "mom3m": 17.83,
+      "screenReasons": [],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "8163",
+      "name": "ＳＲＳホールディングス",
+      "sector": "小売業",
+      "price": 1499.0,
+      "per": 40.79,
+      "pbr": 3.51,
+      "roe": null,
+      "dividendYield": 0.67,
+      "sigma252d": 0.1875,
+      "mom3m": 27.14,
+      "screenReasons": [],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "6381",
+      "name": "アネスト岩田",
+      "sector": "機械",
+      "price": 1908.0,
+      "per": 14.03,
+      "pbr": 1.49,
+      "roe": 12.19,
+      "dividendYield": 4.55,
+      "sigma252d": 0.1966,
+      "mom3m": 17.42,
       "screenReasons": [
         "低PER",
         "高ROE",
-        "高配当"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "7751",
-      "name": "キヤノン",
-      "sector": "電気機器",
-      "price": 4500.0,
-      "per": 11.38,
-      "pbr": 1.1,
-      "roe": 10.37,
-      "dividendYield": 3.51,
-      "sigma252d": 0.2342,
-      "mom3m": 9.95,
-      "screenReasons": [
-        "低PER",
-        "高ROE",
-        "高配当"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "7947",
-      "name": "エフピコ",
-      "sector": "化学",
-      "price": 2747.0,
-      "per": 14.94,
-      "pbr": 1.35,
-      "roe": 9.43,
-      "dividendYield": 2.71,
-      "sigma252d": 0.2434,
-      "mom3m": 18.87,
-      "screenReasons": [
-        "低PER"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "8098",
-      "name": "稲畑産業",
-      "sector": "卸売業",
-      "price": 4235.0,
-      "per": 11.0,
-      "pbr": 0.94,
-      "roe": 9.49,
-      "dividendYield": 3.43,
-      "sigma252d": 0.1849,
-      "mom3m": 8.59,
-      "screenReasons": [
-        "低PER",
         "高配当"
       ],
       "dataStatus": "ok"
@@ -2012,71 +1352,105 @@
       "code": "7752",
       "name": "リコー",
       "sector": "電気機器",
-      "price": 1596.0,
-      "per": 16.35,
+      "price": 1588.5,
+      "per": 16.26,
       "pbr": 0.76,
       "roe": 7.45,
-      "dividendYield": 2.69,
-      "sigma252d": 0.2741,
-      "mom3m": 10.45,
+      "dividendYield": 2.76,
+      "sigma252d": 0.274,
+      "mom3m": 10.08,
       "screenReasons": [],
       "dataStatus": "ok"
     },
     {
-      "code": "6103",
-      "name": "オークマ",
-      "sector": "機械",
-      "price": 5330.0,
-      "per": 25.64,
-      "pbr": 1.24,
-      "roe": 6.46,
-      "dividendYield": 2.19,
-      "sigma252d": 0.4092,
-      "mom3m": 31.44,
-      "screenReasons": [],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "2809",
-      "name": "キユーピー",
-      "sector": "食料品",
-      "price": 4632.0,
-      "per": 25.53,
-      "pbr": 1.94,
-      "roe": 8.18,
+      "code": "7947",
+      "name": "エフピコ",
+      "sector": "化学",
+      "price": 2743.0,
+      "per": 14.93,
+      "pbr": 1.35,
+      "roe": 9.43,
       "dividendYield": null,
-      "sigma252d": 0.2476,
-      "mom3m": 12.71,
-      "screenReasons": [],
+      "sigma252d": 0.2434,
+      "mom3m": 17.47,
+      "screenReasons": [
+        "低PER"
+      ],
       "dataStatus": "ok"
     },
     {
-      "code": "7747",
-      "name": "朝日インテック",
-      "sector": "精密機器",
-      "price": 4100.0,
-      "per": 33.99,
-      "pbr": 6.54,
-      "roe": 19.74,
-      "dividendYield": 1.22,
-      "sigma252d": 0.355,
-      "mom3m": 12.73,
+      "code": "8707",
+      "name": "岩井コスモホールディングス",
+      "sector": "証券、商品先物取引業",
+      "price": 4420.0,
+      "per": 9.94,
+      "pbr": 1.39,
+      "roe": 16.56,
+      "dividendYield": 5.18,
+      "sigma252d": 0.2861,
+      "mom3m": 19.62,
+      "screenReasons": [
+        "低PER",
+        "高ROE",
+        "高配当"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "2124",
+      "name": "ジェイエイシーリクルートメント",
+      "sector": "サービス業",
+      "price": 990.0,
+      "per": 17.43,
+      "pbr": 7.21,
+      "roe": 44.76,
+      "dividendYield": null,
+      "sigma252d": 0.2528,
+      "mom3m": 17.87,
       "screenReasons": [
         "高ROE"
       ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "6523",
+      "name": "ＰＨＣホールディングス",
+      "sector": "電気機器",
+      "price": 1406.0,
+      "per": 360.51,
+      "pbr": 1.06,
+      "roe": 5.88,
+      "dividendYield": 2.99,
+      "sigma252d": 0.3526,
+      "mom3m": 34.67,
+      "screenReasons": [],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "8524",
+      "name": "北洋銀行",
+      "sector": "銀行業",
+      "price": 1267.0,
+      "per": 18.62,
+      "pbr": 1.2,
+      "roe": 7.03,
+      "dividendYield": 2.42,
+      "sigma252d": 0.3909,
+      "mom3m": 25.97,
+      "screenReasons": [],
       "dataStatus": "ok"
     },
     {
       "code": "8242",
       "name": "エイチ・ツー・オー　リテイリング",
       "sector": "小売業",
-      "price": 2869.0,
-      "per": 11.39,
+      "price": 2864.5,
+      "per": 11.36,
       "pbr": 1.07,
       "roe": 11.7,
-      "dividendYield": 1.69,
-      "sigma252d": 0.2753,
-      "mom3m": 13.65,
+      "dividendYield": 1.67,
+      "sigma252d": 0.275,
+      "mom3m": 12.11,
       "screenReasons": [
         "低PER",
         "高ROE"
@@ -2084,94 +1458,58 @@
       "dataStatus": "ok"
     },
     {
-      "code": "4471",
-      "name": "三洋化成工業",
-      "sector": "化学",
-      "price": 6330.0,
-      "per": 8.95,
-      "pbr": 0.86,
-      "roe": 7.86,
-      "dividendYield": 1.97,
-      "sigma252d": 0.3165,
-      "mom3m": 25.84,
-      "screenReasons": [
-        "低PER"
-      ],
+      "code": "8173",
+      "name": "Ｊｏｓｈｉｎ",
+      "sector": "小売業",
+      "price": 4130.0,
+      "per": 32.61,
+      "pbr": 1.0,
+      "roe": 4.91,
+      "dividendYield": 2.35,
+      "sigma252d": 0.253,
+      "mom3m": 35.63,
+      "screenReasons": [],
       "dataStatus": "ok"
     },
     {
-      "code": "6306",
-      "name": "日工",
-      "sector": "機械",
-      "price": 1026.0,
-      "per": 15.58,
+      "code": "7327",
+      "name": "第四北越フィナンシャルグループ",
+      "sector": "銀行業",
+      "price": 2427.0,
+      "per": 15.1,
       "pbr": 1.07,
-      "roe": 7.91,
-      "dividendYield": 4.09,
-      "sigma252d": 0.1937,
-      "mom3m": 24.67,
-      "screenReasons": [
-        "高配当"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "5411",
-      "name": "ＪＦＥホールディングス",
-      "sector": "鉄鋼",
-      "price": 1831.5,
-      "per": 17.37,
-      "pbr": 0.44,
-      "roe": 3.77,
-      "dividendYield": 4.49,
-      "sigma252d": 0.2467,
-      "mom3m": 11.92,
-      "screenReasons": [
-        "高配当"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "6988",
-      "name": "日東電工",
-      "sector": "化学",
-      "price": 3464.0,
-      "per": 17.58,
-      "pbr": 2.01,
-      "roe": 12.55,
+      "roe": 8.62,
       "dividendYield": null,
-      "sigma252d": 0.3234,
-      "mom3m": 15.95,
-      "screenReasons": [
-        "高ROE"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "8163",
-      "name": "ＳＲＳホールディングス",
-      "sector": "小売業",
-      "price": 1494.0,
-      "per": 40.63,
-      "pbr": 3.49,
-      "roe": null,
-      "dividendYield": 0.68,
-      "sigma252d": 0.1877,
-      "mom3m": 24.81,
+      "sigma252d": 0.3297,
+      "mom3m": 12.78,
       "screenReasons": [],
       "dataStatus": "ok"
     },
     {
-      "code": "9201",
-      "name": "日本航空",
-      "sector": "空運業",
-      "price": 2996.0,
-      "per": 9.76,
-      "pbr": 0.89,
-      "roe": 9.07,
-      "dividendYield": 3.17,
-      "sigma252d": 0.2748,
-      "mom3m": 18.98,
+      "code": "9602",
+      "name": "東宝",
+      "sector": "情報・通信業",
+      "price": 1535.0,
+      "per": 25.11,
+      "pbr": 2.55,
+      "roe": 9.71,
+      "dividendYield": null,
+      "sigma252d": 0.3156,
+      "mom3m": 23.59,
+      "screenReasons": [],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "8043",
+      "name": "スターゼン",
+      "sector": "卸売業",
+      "price": 1520.0,
+      "per": 10.42,
+      "pbr": 0.91,
+      "roe": 9.04,
+      "dividendYield": 3.4,
+      "sigma252d": 0.2199,
+      "mom3m": 34.63,
       "screenReasons": [
         "低PER",
         "高配当"
@@ -2179,94 +1517,62 @@
       "dataStatus": "ok"
     },
     {
-      "code": "167A",
-      "name": "リョーサン菱洋ホールディングス",
-      "sector": "卸売業",
-      "price": 3195.0,
-      "per": 17.23,
-      "pbr": 0.93,
-      "roe": 5.85,
-      "dividendYield": 4.33,
-      "sigma252d": 0.2599,
-      "mom3m": 21.25,
-      "screenReasons": [
-        "高配当"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "5186",
-      "name": "ニッタ",
-      "sector": "ゴム製品",
-      "price": 6790.0,
-      "per": 13.84,
-      "pbr": 1.11,
-      "roe": 9.32,
+      "code": "8600",
+      "name": "トモニホールディングス",
+      "sector": "銀行業",
+      "price": 1090.0,
+      "per": 13.2,
+      "pbr": 0.69,
+      "roe": 5.92,
       "dividendYield": null,
-      "sigma252d": 0.2509,
-      "mom3m": 21.68,
+      "sigma252d": 0.3314,
+      "mom3m": 23.86,
       "screenReasons": [
         "低PER"
       ],
       "dataStatus": "ok"
     },
     {
-      "code": "6501",
-      "name": "日立製作所",
-      "sector": "電気機器",
-      "price": 5514.0,
-      "per": 31.22,
-      "pbr": 3.76,
-      "roe": null,
-      "dividendYield": 0.99,
-      "sigma252d": 0.4077,
-      "mom3m": 12.35,
+      "code": "8381",
+      "name": "山陰合同銀行",
+      "sector": "銀行業",
+      "price": 2544.0,
+      "per": 16.97,
+      "pbr": 1.17,
+      "roe": 8.11,
+      "dividendYield": 2.58,
+      "sigma252d": 0.3179,
+      "mom3m": 22.13,
       "screenReasons": [],
       "dataStatus": "ok"
     },
     {
-      "code": "4722",
-      "name": "フューチャー",
-      "sector": "情報・通信業",
-      "price": 2445.0,
-      "per": 17.61,
-      "pbr": 3.27,
-      "roe": 19.64,
-      "dividendYield": 1.92,
-      "sigma252d": 0.3115,
-      "mom3m": 59.48,
+      "code": "4911",
+      "name": "資生堂",
+      "sector": "化学",
+      "price": 3503.0,
+      "per": null,
+      "pbr": 2.2,
+      "roe": -3.08,
+      "dividendYield": 1.75,
+      "sigma252d": 0.442,
+      "mom3m": 27.84,
+      "screenReasons": [],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "7839",
+      "name": "ＳＨＯＥＩ",
+      "sector": "その他製品",
+      "price": 2040.0,
+      "per": 16.61,
+      "pbr": 3.22,
+      "roe": 22.01,
+      "dividendYield": 2.93,
+      "sigma252d": 0.2552,
+      "mom3m": 19.16,
       "screenReasons": [
         "高ROE"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "9861",
-      "name": "吉野家ホールディングス",
-      "sector": "小売業",
-      "price": 3717.0,
-      "per": 51.59,
-      "pbr": 3.47,
-      "roe": 8.6,
-      "dividendYield": 0.59,
-      "sigma252d": 0.2269,
-      "mom3m": 14.26,
-      "screenReasons": [],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "4045",
-      "name": "東亞合成",
-      "sector": "化学",
-      "price": 1865.0,
-      "per": 15.32,
-      "pbr": 0.9,
-      "roe": 6.11,
-      "dividendYield": 3.85,
-      "sigma252d": 0.1935,
-      "mom3m": 12.93,
-      "screenReasons": [
-        "高配当"
       ],
       "dataStatus": "ok"
     },
@@ -2274,13 +1580,13 @@
       "code": "9743",
       "name": "丹青社",
       "sector": "サービス業",
-      "price": 1478.0,
-      "per": 11.65,
-      "pbr": 1.86,
+      "price": 1475.0,
+      "per": 11.62,
+      "pbr": 1.85,
       "roe": 12.48,
       "dividendYield": null,
-      "sigma252d": 0.2367,
-      "mom3m": 9.69,
+      "sigma252d": 0.2364,
+      "mom3m": 9.31,
       "screenReasons": [
         "低PER",
         "高ROE"
@@ -2288,321 +1594,93 @@
       "dataStatus": "ok"
     },
     {
-      "code": "4927",
-      "name": "ポーラ・オルビスホールディングス",
-      "sector": "化学",
-      "price": 1380.0,
-      "per": 26.93,
-      "pbr": 1.89,
-      "roe": 6.98,
-      "dividendYield": 3.77,
-      "sigma252d": 0.1739,
-      "mom3m": 9.58,
-      "screenReasons": [
-        "高配当"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "8130",
-      "name": "サンゲツ",
-      "sector": "卸売業",
-      "price": 3165.0,
-      "per": 12.7,
-      "pbr": 1.53,
-      "roe": 14.12,
-      "dividendYield": null,
-      "sigma252d": 0.1309,
-      "mom3m": 6.96,
-      "screenReasons": [
-        "低PER",
-        "高ROE"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "7839",
-      "name": "ＳＨＯＥＩ",
-      "sector": "その他製品",
-      "price": 2047.0,
-      "per": 16.65,
-      "pbr": 3.23,
-      "roe": 22.01,
-      "dividendYield": 2.94,
-      "sigma252d": 0.2554,
-      "mom3m": 19.01,
-      "screenReasons": [
-        "高ROE"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "2207",
-      "name": "ｍｅｉｔｏ",
-      "sector": "食料品",
-      "price": 3710.0,
-      "per": 20.25,
-      "pbr": 0.93,
-      "roe": 5.1,
-      "dividendYield": 2.19,
-      "sigma252d": 0.2187,
-      "mom3m": 21.04,
+      "code": "9069",
+      "name": "センコーグループホールディングス",
+      "sector": "陸運業",
+      "price": 2317.0,
+      "per": 20.48,
+      "pbr": 1.68,
+      "roe": 8.9,
+      "dividendYield": 2.39,
+      "sigma252d": 0.2613,
+      "mom3m": 14.03,
       "screenReasons": [],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "7613",
-      "name": "シークス",
-      "sector": "卸売業",
-      "price": 1661.0,
-      "per": 19.98,
-      "pbr": 0.71,
-      "roe": 3.79,
-      "dividendYield": 2.98,
-      "sigma252d": 0.2838,
-      "mom3m": 25.73,
-      "screenReasons": [],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "4116",
-      "name": "大日精化工業",
-      "sector": "化学",
-      "price": 1341.0,
-      "per": 11.34,
-      "pbr": 0.65,
-      "roe": 6.39,
-      "dividendYield": null,
-      "sigma252d": 0.2615,
-      "mom3m": 28.45,
-      "screenReasons": [
-        "低PER"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "7504",
-      "name": "高速",
-      "sector": "卸売業",
-      "price": 4870.0,
-      "per": 25.26,
-      "pbr": 2.24,
-      "roe": 10.05,
-      "dividendYield": null,
-      "sigma252d": 0.2822,
-      "mom3m": 71.66,
-      "screenReasons": [
-        "高ROE"
-      ],
       "dataStatus": "ok"
     },
     {
       "code": "7974",
       "name": "任天堂",
       "sector": "その他製品",
-      "price": 8760.0,
-      "per": 24.04,
-      "pbr": 3.46,
+      "price": 8577.0,
+      "per": 23.54,
+      "pbr": 3.39,
       "roe": null,
       "dividendYield": 2.5,
-      "sigma252d": 0.3929,
-      "mom3m": 16.8,
+      "sigma252d": 0.3926,
+      "mom3m": 17.91,
       "screenReasons": [],
       "dataStatus": "ok"
     },
     {
-      "code": "7269",
-      "name": "スズキ",
-      "sector": "輸送用機器",
-      "price": 2081.0,
-      "per": 9.14,
-      "pbr": 1.13,
-      "roe": 15.32,
-      "dividendYield": null,
-      "sigma252d": 0.3259,
-      "mom3m": 18.71,
-      "screenReasons": [
-        "低PER",
-        "高ROE"
-      ],
+      "code": "4661",
+      "name": "オリエンタルランド",
+      "sector": "サービス業",
+      "price": 2897.5,
+      "per": 38.98,
+      "pbr": 4.21,
+      "roe": null,
+      "dividendYield": 0.55,
+      "sigma252d": 0.3312,
+      "mom3m": 35.3,
+      "screenReasons": [],
       "dataStatus": "ok"
     },
     {
-      "code": "5976",
-      "name": "高周波熱錬",
-      "sector": "金属製品",
-      "price": 1515.0,
-      "per": 38.15,
-      "pbr": 0.85,
-      "roe": 3.57,
-      "dividendYield": 4.79,
-      "sigma252d": 0.1878,
-      "mom3m": 20.62,
-      "screenReasons": [
-        "高配当"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "5185",
-      "name": "フコク",
+      "code": "5192",
+      "name": "三ツ星ベルト",
       "sector": "ゴム製品",
-      "price": 2088.0,
-      "per": 28.3,
-      "pbr": 0.72,
-      "roe": 4.4,
-      "dividendYield": null,
-      "sigma252d": 0.1922,
-      "mom3m": 19.79,
-      "screenReasons": [],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "8795",
-      "name": "Ｔ＆Ｄホールディングス",
-      "sector": "保険業",
-      "price": 4929.0,
-      "per": 17.64,
-      "pbr": 1.41,
-      "roe": 9.34,
-      "dividendYield": 3.32,
-      "sigma252d": 0.3189,
-      "mom3m": 19.06,
+      "price": 4370.0,
+      "per": 16.6,
+      "pbr": 1.2,
+      "roe": 8.13,
+      "dividendYield": 4.3,
+      "sigma252d": 0.1936,
+      "mom3m": 11.34,
       "screenReasons": [
         "高配当"
       ],
       "dataStatus": "ok"
     },
     {
-      "code": "4220",
-      "name": "リケンテクノス",
-      "sector": "化学",
-      "price": 2719.0,
-      "per": 17.7,
-      "pbr": 1.87,
-      "roe": 14.12,
-      "dividendYield": 3.13,
-      "sigma252d": 0.4287,
-      "mom3m": 72.53,
+      "code": "9619",
+      "name": "イチネンホールディングス",
+      "sector": "サービス業",
+      "price": 2682.0,
+      "per": 8.29,
+      "pbr": 0.81,
+      "roe": 17.37,
+      "dividendYield": 3.35,
+      "sigma252d": 0.211,
+      "mom3m": 26.99,
       "screenReasons": [
+        "低PER",
         "高ROE",
         "高配当"
       ],
       "dataStatus": "ok"
     },
     {
-      "code": "5975",
-      "name": "東プレ",
-      "sector": "金属製品",
-      "price": 3220.0,
-      "per": 8.6,
-      "pbr": 0.63,
-      "roe": 9.89,
-      "dividendYield": 3.13,
-      "sigma252d": 0.2884,
-      "mom3m": 25.19,
+      "code": "4523",
+      "name": "エーザイ",
+      "sector": "医薬品",
+      "price": 4837.0,
+      "per": 35.39,
+      "pbr": 1.5,
+      "roe": 4.96,
+      "dividendYield": 3.31,
+      "sigma252d": 0.3087,
+      "mom3m": 14.0,
       "screenReasons": [
-        "低PER",
-        "高配当"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "3176",
-      "name": "三洋貿易",
-      "sector": "卸売業",
-      "price": 1148.0,
-      "per": 15.07,
-      "pbr": 1.19,
-      "roe": 10.26,
-      "dividendYield": null,
-      "sigma252d": 0.3061,
-      "mom3m": 46.9,
-      "screenReasons": [
-        "高ROE"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "7128",
-      "name": "ユニソルホールディングス",
-      "sector": "卸売業",
-      "price": 2946.0,
-      "per": 37.32,
-      "pbr": 0.97,
-      "roe": 2.61,
-      "dividendYield": 3.42,
-      "sigma252d": 0.2256,
-      "mom3m": 46.18,
-      "screenReasons": [
-        "高配当"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "5406",
-      "name": "神戸製鋼所",
-      "sector": "鉄鋼",
-      "price": 2050.0,
-      "per": 8.62,
-      "pbr": 0.64,
-      "roe": 5.68,
-      "dividendYield": 4.0,
-      "sigma252d": 0.2509,
-      "mom3m": 8.96,
-      "screenReasons": [
-        "低PER",
-        "高配当"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "8075",
-      "name": "神鋼商事",
-      "sector": "卸売業",
-      "price": 3125.0,
-      "per": 9.96,
-      "pbr": 0.83,
-      "roe": 9.0,
-      "dividendYield": 3.7,
-      "sigma252d": 0.2479,
-      "mom3m": 32.81,
-      "screenReasons": [
-        "低PER",
-        "高配当"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "4928",
-      "name": "ノエビアホールディングス",
-      "sector": "化学",
-      "price": 4760.0,
-      "per": 20.04,
-      "pbr": 3.19,
-      "roe": 16.14,
-      "dividendYield": 4.85,
-      "sigma252d": 0.151,
-      "mom3m": 10.06,
-      "screenReasons": [
-        "高ROE",
-        "高配当"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "8253",
-      "name": "クレディセゾン",
-      "sector": "その他金融業",
-      "price": 4643.0,
-      "per": 10.94,
-      "pbr": 0.88,
-      "roe": 9.31,
-      "dividendYield": 3.4,
-      "sigma252d": 0.2965,
-      "mom3m": 11.37,
-      "screenReasons": [
-        "低PER",
         "高配当"
       ],
       "dataStatus": "ok"
@@ -2611,65 +1689,98 @@
       "code": "8008",
       "name": "ヨンドシーホールディングス",
       "sector": "小売業",
-      "price": 2133.0,
-      "per": 25.53,
+      "price": 2139.0,
+      "per": 25.65,
       "pbr": 1.14,
       "roe": 5.45,
-      "dividendYield": 4.06,
+      "dividendYield": 3.98,
       "sigma252d": 0.1598,
-      "mom3m": 18.11,
+      "mom3m": 17.92,
       "screenReasons": [
         "高配当"
       ],
       "dataStatus": "ok"
     },
     {
-      "code": "9110",
-      "name": "ＮＳユナイテッド海運",
-      "sector": "海運業",
-      "price": 10450.0,
-      "per": 10.22,
-      "pbr": 1.3,
-      "roe": 13.71,
-      "dividendYield": 2.97,
-      "sigma252d": 0.3974,
-      "mom3m": 33.29,
+      "code": "6306",
+      "name": "日工",
+      "sector": "機械",
+      "price": 1018.0,
+      "per": 15.45,
+      "pbr": 1.06,
+      "roe": 7.91,
+      "dividendYield": 4.09,
+      "sigma252d": 0.1939,
+      "mom3m": 22.5,
+      "screenReasons": [
+        "高配当"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "8253",
+      "name": "クレディセゾン",
+      "sector": "その他金融業",
+      "price": 4648.0,
+      "per": 10.94,
+      "pbr": 0.88,
+      "roe": 9.31,
+      "dividendYield": 3.45,
+      "sigma252d": 0.2939,
+      "mom3m": 10.12,
       "screenReasons": [
         "低PER",
-        "高ROE"
+        "高配当"
       ],
       "dataStatus": "ok"
     },
     {
-      "code": "7979",
-      "name": "松風",
-      "sector": "精密機器",
-      "price": 2379.0,
-      "per": 17.37,
-      "pbr": 1.66,
-      "roe": 13.17,
-      "dividendYield": 2.36,
-      "sigma252d": 0.2541,
-      "mom3m": 34.63,
+      "code": "3197",
+      "name": "すかいらーくホールディングス",
+      "sector": "小売業",
+      "price": 3255.0,
+      "per": 38.89,
+      "pbr": 3.8,
+      "roe": 10.2,
+      "dividendYield": 0.85,
+      "sigma252d": 0.2854,
+      "mom3m": 13.92,
       "screenReasons": [
         "高ROE"
       ],
       "dataStatus": "ok"
     },
     {
-      "code": "4041",
-      "name": "日本曹達",
+      "code": "8604",
+      "name": "野村ホールディングス",
+      "sector": "証券、商品先物取引業",
+      "price": 1509.5,
+      "per": 11.32,
+      "pbr": 1.15,
+      "roe": 11.16,
+      "dividendYield": 3.28,
+      "sigma252d": 0.3514,
+      "mom3m": 16.97,
+      "screenReasons": [
+        "低PER",
+        "高ROE",
+        "高配当"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "4634",
+      "name": "ａｒｔｉｅｎｃｅ",
       "sector": "化学",
-      "price": 3965.0,
-      "per": 11.78,
-      "pbr": 1.01,
-      "roe": 9.2,
-      "dividendYield": 4.06,
-      "sigma252d": 0.2141,
-      "mom3m": 12.64,
+      "price": 4820.0,
+      "per": 12.24,
+      "pbr": 6.28,
+      "roe": 7.41,
+      "dividendYield": 2.37,
+      "sigma252d": 0.2665,
+      "mom3m": 19.38,
       "screenReasons": [
-        "低PER",
-        "高配当"
+        "低PER"
       ],
       "dataStatus": "ok"
     },
@@ -2677,27 +1788,27 @@
       "code": "9843",
       "name": "ニトリホールディングス",
       "sector": "小売業",
-      "price": 2903.5,
-      "per": 18.38,
+      "price": 2907.0,
+      "per": 18.4,
       "pbr": 1.63,
       "roe": 9.22,
       "dividendYield": 1.1,
-      "sigma252d": 0.3872,
-      "mom3m": 16.49,
+      "sigma252d": 0.3864,
+      "mom3m": 17.5,
       "screenReasons": [],
       "dataStatus": "ok"
     },
     {
-      "code": "8897",
-      "name": "ＭＩＲＡＲＴＨホールディングス",
-      "sector": "不動産業",
-      "price": 453.0,
-      "per": 13.05,
-      "pbr": 0.73,
-      "roe": 8.57,
-      "dividendYield": 5.01,
-      "sigma252d": 0.2111,
-      "mom3m": 9.69,
+      "code": "2004",
+      "name": "昭和産業",
+      "sector": "食料品",
+      "price": 3670.0,
+      "per": 11.24,
+      "pbr": 0.78,
+      "roe": 7.27,
+      "dividendYield": 3.81,
+      "sigma252d": 0.1825,
+      "mom3m": 14.33,
       "screenReasons": [
         "低PER",
         "高配当"
@@ -2705,99 +1816,19 @@
       "dataStatus": "ok"
     },
     {
-      "code": "6645",
-      "name": "オムロン",
+      "code": "6592",
+      "name": "マブチモーター",
       "sector": "電気機器",
-      "price": 6850.0,
-      "per": 39.38,
-      "pbr": 1.62,
-      "roe": 5.13,
-      "dividendYield": null,
-      "sigma252d": 0.4617,
-      "mom3m": 27.54,
-      "screenReasons": [],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "2121",
-      "name": "ＭＩＸＩ",
-      "sector": "情報・通信業",
-      "price": 3430.0,
-      "per": 13.29,
-      "pbr": 1.18,
-      "roe": 10.92,
-      "dividendYield": 5.75,
-      "sigma252d": 0.268,
-      "mom3m": 28.03,
-      "screenReasons": [
-        "低PER",
-        "高ROE",
-        "高配当"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "6861",
-      "name": "キーエンス",
-      "sector": "電気機器",
-      "price": 84130.0,
-      "per": 45.75,
-      "pbr": 5.75,
-      "roe": null,
-      "dividendYield": null,
-      "sigma252d": 0.4039,
-      "mom3m": 15.39,
-      "screenReasons": [],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "7914",
-      "name": "共同印刷",
-      "sector": "その他製品",
-      "price": 1760.0,
-      "per": 12.47,
-      "pbr": 0.7,
-      "roe": 6.54,
-      "dividendYield": 4.59,
-      "sigma252d": 0.2017,
-      "mom3m": 17.02,
+      "price": 1721.5,
+      "per": 14.13,
+      "pbr": 1.21,
+      "roe": 9.28,
+      "dividendYield": 3.95,
+      "sigma252d": 0.2686,
+      "mom3m": 13.21,
       "screenReasons": [
         "低PER",
         "高配当"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "5021",
-      "name": "コスモエネルギーホールディングス",
-      "sector": "石油・石炭製品",
-      "price": 4250.0,
-      "per": 9.38,
-      "pbr": 1.0,
-      "roe": 22.76,
-      "dividendYield": 3.98,
-      "sigma252d": 0.2937,
-      "mom3m": 13.67,
-      "screenReasons": [
-        "低PER",
-        "高ROE",
-        "高配当"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "3659",
-      "name": "ネクソン",
-      "sector": "情報・通信業",
-      "price": 3002.0,
-      "per": 17.57,
-      "pbr": 2.19,
-      "roe": 12.52,
-      "dividendYield": null,
-      "sigma252d": 0.4445,
-      "mom3m": 31.78,
-      "screenReasons": [
-        "高ROE"
       ],
       "dataStatus": "ok"
     },
@@ -2805,13 +1836,13 @@
       "code": "3612",
       "name": "ワールド",
       "sector": "繊維製品",
-      "price": 1649.0,
-      "per": 9.63,
-      "pbr": 1.27,
+      "price": 1645.0,
+      "per": 9.6,
+      "pbr": 1.26,
       "roe": 13.57,
       "dividendYield": null,
-      "sigma252d": 0.2095,
-      "mom3m": 9.64,
+      "sigma252d": 0.2092,
+      "mom3m": 9.08,
       "screenReasons": [
         "低PER",
         "高ROE"
@@ -2819,32 +1850,120 @@
       "dataStatus": "ok"
     },
     {
-      "code": "7936",
-      "name": "アシックス",
-      "sector": "その他製品",
-      "price": 4897.0,
-      "per": 27.41,
-      "pbr": 10.97,
-      "roe": 42.22,
-      "dividendYield": 0.93,
-      "sigma252d": 0.3786,
-      "mom3m": 12.56,
+      "code": "4204",
+      "name": "積水化学工業",
+      "sector": "化学",
+      "price": 2585.5,
+      "per": 14.15,
+      "pbr": 1.23,
+      "roe": 9.02,
+      "dividendYield": null,
+      "sigma252d": 0.2373,
+      "mom3m": 12.88,
+      "screenReasons": [
+        "低PER"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "8541",
+      "name": "愛媛銀行",
+      "sector": "銀行業",
+      "price": 3190.0,
+      "per": 17.28,
+      "pbr": 0.86,
+      "roe": 5.1,
+      "dividendYield": 1.45,
+      "sigma252d": 0.3741,
+      "mom3m": 59.82,
+      "screenReasons": [],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "4722",
+      "name": "フューチャー",
+      "sector": "情報・通信業",
+      "price": 2446.0,
+      "per": 17.61,
+      "pbr": 3.27,
+      "roe": 19.64,
+      "dividendYield": 1.92,
+      "sigma252d": 0.3115,
+      "mom3m": 58.23,
       "screenReasons": [
         "高ROE"
       ],
       "dataStatus": "ok"
     },
     {
-      "code": "7246",
-      "name": "プレス工業",
+      "code": "2587",
+      "name": "サントリービバレッジ＆フード",
+      "sector": "食料品",
+      "price": 4547.0,
+      "per": 15.68,
+      "pbr": 1.04,
+      "roe": 7.99,
+      "dividendYield": null,
+      "sigma252d": 0.2171,
+      "mom3m": 10.51,
+      "screenReasons": [],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "7309",
+      "name": "シマノ",
       "sector": "輸送用機器",
-      "price": 989.0,
-      "per": 11.52,
-      "pbr": 0.8,
-      "roe": 8.86,
-      "dividendYield": 5.1,
-      "sigma252d": 0.2782,
-      "mom3m": 27.12,
+      "price": 19435.0,
+      "per": 29.08,
+      "pbr": 1.89,
+      "roe": 6.85,
+      "dividendYield": 1.87,
+      "sigma252d": 0.2993,
+      "mom3m": 15.37,
+      "screenReasons": [],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "8344",
+      "name": "山形銀行",
+      "sector": "銀行業",
+      "price": 4455.0,
+      "per": 21.44,
+      "pbr": 0.89,
+      "roe": 5.05,
+      "dividendYield": 2.09,
+      "sigma252d": 0.4012,
+      "mom3m": 46.79,
+      "screenReasons": [],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "5970",
+      "name": "ジーテクト",
+      "sector": "金属製品",
+      "price": 2325.0,
+      "per": 7.39,
+      "pbr": 0.44,
+      "roe": 7.14,
+      "dividendYield": null,
+      "sigma252d": 0.2295,
+      "mom3m": 14.14,
+      "screenReasons": [
+        "低PER"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "9201",
+      "name": "日本航空",
+      "sector": "空運業",
+      "price": 2983.5,
+      "per": 9.72,
+      "pbr": 0.89,
+      "roe": 9.07,
+      "dividendYield": 3.2,
+      "sigma252d": 0.2747,
+      "mom3m": 16.0,
       "screenReasons": [
         "低PER",
         "高配当"
@@ -2852,20 +1971,31 @@
       "dataStatus": "ok"
     },
     {
-      "code": "5902",
-      "name": "ホッカンホールディングス",
-      "sector": "金属製品",
-      "price": 2714.0,
-      "per": 10.2,
-      "pbr": 0.54,
-      "roe": 5.88,
-      "dividendYield": 5.4,
-      "sigma252d": 0.2129,
-      "mom3m": 21.76,
-      "screenReasons": [
-        "低PER",
-        "高配当"
-      ],
+      "code": "2207",
+      "name": "ｍｅｉｔｏ",
+      "sector": "食料品",
+      "price": 3625.0,
+      "per": 19.78,
+      "pbr": 0.91,
+      "roe": 5.1,
+      "dividendYield": 2.16,
+      "sigma252d": 0.22,
+      "mom3m": 20.91,
+      "screenReasons": [],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "3087",
+      "name": "ドトール・日レスホールディングス",
+      "sector": "小売業",
+      "price": 3230.0,
+      "per": 18.92,
+      "pbr": 1.27,
+      "roe": 7.6,
+      "dividendYield": 1.88,
+      "sigma252d": 0.1973,
+      "mom3m": 13.1,
+      "screenReasons": [],
       "dataStatus": "ok"
     },
     {
@@ -2877,59 +2007,344 @@
       "pbr": 0.72,
       "roe": 5.06,
       "dividendYield": 2.55,
-      "sigma252d": 0.1709,
-      "mom3m": 17.96,
+      "sigma252d": 0.1708,
+      "mom3m": 19.38,
       "screenReasons": [
         "低PER"
       ],
       "dataStatus": "ok"
     },
     {
-      "code": "7701",
-      "name": "島津製作所",
-      "sector": "精密機器",
-      "price": 4092.0,
-      "per": 19.54,
-      "pbr": 2.06,
-      "roe": 12.34,
-      "dividendYield": 2.07,
-      "sigma252d": 0.2688,
-      "mom3m": 14.3,
+      "code": "166A",
+      "name": "タスキホールディングス",
+      "sector": "不動産業",
+      "price": 1141.0,
+      "per": 12.49,
+      "pbr": 2.18,
+      "roe": 24.56,
+      "dividendYield": 3.47,
+      "sigma252d": 0.365,
+      "mom3m": 32.37,
       "screenReasons": [
-        "高ROE"
+        "低PER",
+        "高ROE",
+        "高配当"
       ],
       "dataStatus": "ok"
     },
     {
-      "code": "7011",
-      "name": "三菱重工業",
+      "code": "5830",
+      "name": "いよぎんホールディングス",
+      "sector": "銀行業",
+      "price": 3820.0,
+      "per": 15.04,
+      "pbr": 1.19,
+      "roe": 7.83,
+      "dividendYield": 1.98,
+      "sigma252d": 0.3957,
+      "mom3m": 20.62,
+      "screenReasons": [],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "6457",
+      "name": "グローリー",
       "sector": "機械",
-      "price": 4370.0,
-      "per": 62.39,
-      "pbr": 4.63,
-      "roe": 14.75,
-      "dividendYield": 0.69,
-      "sigma252d": 0.4294,
-      "mom3m": 8.6,
+      "price": 4688.0,
+      "per": 17.0,
+      "pbr": 1.14,
+      "roe": 8.01,
+      "dividendYield": 3.19,
+      "sigma252d": 0.2914,
+      "mom3m": 13.1,
       "screenReasons": [
-        "高ROE"
+        "高配当"
       ],
       "dataStatus": "ok"
     },
     {
-      "code": "5480",
-      "name": "日本冶金工業",
-      "sector": "鉄鋼",
-      "price": 5500.0,
-      "per": 10.58,
-      "pbr": 0.74,
-      "roe": 8.02,
-      "dividendYield": 4.01,
-      "sigma252d": 0.2853,
-      "mom3m": 26.73,
+      "code": "8037",
+      "name": "カメイ",
+      "sector": "卸売業",
+      "price": 4265.0,
+      "per": 10.97,
+      "pbr": 0.73,
+      "roe": 8.12,
+      "dividendYield": 3.19,
+      "sigma252d": 0.2634,
+      "mom3m": 20.48,
       "screenReasons": [
         "低PER",
         "高配当"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "6971",
+      "name": "京セラ",
+      "sector": "電気機器",
+      "price": 3641.0,
+      "per": 35.5,
+      "pbr": 1.44,
+      "roe": 5.06,
+      "dividendYield": 1.47,
+      "sigma252d": 0.3437,
+      "mom3m": 23.84,
+      "screenReasons": [],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "4208",
+      "name": "ＵＢＥ",
+      "sector": "化学",
+      "price": 3539.0,
+      "per": 14.4,
+      "pbr": 0.78,
+      "roe": 5.56,
+      "dividendYield": null,
+      "sigma252d": 0.3434,
+      "mom3m": 16.19,
+      "screenReasons": [
+        "低PER"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "2121",
+      "name": "ＭＩＸＩ",
+      "sector": "情報・通信業",
+      "price": 3440.0,
+      "per": 13.34,
+      "pbr": 1.19,
+      "roe": 10.92,
+      "dividendYield": 5.54,
+      "sigma252d": 0.268,
+      "mom3m": 28.79,
+      "screenReasons": [
+        "低PER",
+        "高ROE",
+        "高配当"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "9110",
+      "name": "ＮＳユナイテッド海運",
+      "sector": "海運業",
+      "price": 10440.0,
+      "per": 10.22,
+      "pbr": 1.3,
+      "roe": 13.71,
+      "dividendYield": 2.97,
+      "sigma252d": 0.3969,
+      "mom3m": 32.66,
+      "screenReasons": [
+        "低PER",
+        "高ROE"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "2170",
+      "name": "リンクアンドモチベーション",
+      "sector": "サービス業",
+      "price": 687.0,
+      "per": 46.14,
+      "pbr": 5.96,
+      "roe": 13.52,
+      "dividendYield": 2.39,
+      "sigma252d": 0.318,
+      "mom3m": 27.74,
+      "screenReasons": [
+        "高ROE"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "4385",
+      "name": "メルカリ",
+      "sector": "情報・通信業",
+      "price": 4750.0,
+      "per": 22.74,
+      "pbr": 5.73,
+      "roe": 29.88,
+      "dividendYield": null,
+      "sigma252d": 0.4951,
+      "mom3m": 16.48,
+      "screenReasons": [
+        "高ROE"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "8334",
+      "name": "群馬銀行",
+      "sector": "銀行業",
+      "price": 2649.0,
+      "per": 17.1,
+      "pbr": 1.59,
+      "roe": 10.3,
+      "dividendYield": null,
+      "sigma252d": 0.3706,
+      "mom3m": 12.92,
+      "screenReasons": [
+        "高ROE"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "5976",
+      "name": "高周波熱錬",
+      "sector": "金属製品",
+      "price": 1495.0,
+      "per": 37.67,
+      "pbr": 0.84,
+      "roe": 3.57,
+      "dividendYield": 4.75,
+      "sigma252d": 0.1883,
+      "mom3m": 18.18,
+      "screenReasons": [
+        "高配当"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "6417",
+      "name": "ＳＡＮＫＹＯ",
+      "sector": "機械",
+      "price": 1926.5,
+      "per": 8.57,
+      "pbr": 1.53,
+      "roe": 14.41,
+      "dividendYield": null,
+      "sigma252d": 0.2458,
+      "mom3m": 11.68,
+      "screenReasons": [
+        "低PER",
+        "高ROE"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "7747",
+      "name": "朝日インテック",
+      "sector": "精密機器",
+      "price": 3972.0,
+      "per": 32.95,
+      "pbr": 6.34,
+      "roe": 19.74,
+      "dividendYield": 1.22,
+      "sigma252d": 0.3564,
+      "mom3m": 9.63,
+      "screenReasons": [
+        "高ROE"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "4676",
+      "name": "フジ・メディア・ホールディングス",
+      "sector": "情報・通信業",
+      "price": 4163.0,
+      "per": 126.69,
+      "pbr": 1.1,
+      "roe": 2.36,
+      "dividendYield": null,
+      "sigma252d": 0.3467,
+      "mom3m": 9.32,
+      "screenReasons": [],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "6178",
+      "name": "日本郵政",
+      "sector": "サービス業",
+      "price": 2307.0,
+      "per": 17.88,
+      "pbr": 0.65,
+      "roe": 5.12,
+      "dividendYield": null,
+      "sigma252d": 0.282,
+      "mom3m": 8.11,
+      "screenReasons": [],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "8331",
+      "name": "千葉銀行",
+      "sector": "銀行業",
+      "price": 2723.5,
+      "per": 18.64,
+      "pbr": 1.46,
+      "roe": 8.3,
+      "dividendYield": null,
+      "sigma252d": 0.3498,
+      "mom3m": 15.48,
+      "screenReasons": [],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "9616",
+      "name": "共立メンテナンス",
+      "sector": "サービス業",
+      "price": 3268.0,
+      "per": 15.89,
+      "pbr": 2.02,
+      "roe": 14.65,
+      "dividendYield": 1.41,
+      "sigma252d": 0.2884,
+      "mom3m": 30.25,
+      "screenReasons": [
+        "高ROE"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "3861",
+      "name": "王子ホールディングス",
+      "sector": "パルプ・紙",
+      "price": 854.5,
+      "per": 13.99,
+      "pbr": 0.67,
+      "roe": 6.01,
+      "dividendYield": 4.16,
+      "sigma252d": 0.1943,
+      "mom3m": 7.73,
+      "screenReasons": [
+        "低PER",
+        "高配当"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "3659",
+      "name": "ネクソン",
+      "sector": "情報・通信業",
+      "price": 2992.5,
+      "per": 17.52,
+      "pbr": 2.18,
+      "roe": 12.52,
+      "dividendYield": null,
+      "sigma252d": 0.4445,
+      "mom3m": 34.18,
+      "screenReasons": [
+        "高ROE"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "7504",
+      "name": "高速",
+      "sector": "卸売業",
+      "price": 4835.0,
+      "per": 25.07,
+      "pbr": 2.22,
+      "roe": 10.05,
+      "dividendYield": null,
+      "sigma252d": 0.2823,
+      "mom3m": 72.06,
+      "screenReasons": [
+        "高ROE"
       ],
       "dataStatus": "ok"
     },
@@ -2937,13 +2352,13 @@
       "code": "2154",
       "name": "オープンアップグループ",
       "sector": "サービス業",
-      "price": 2027.0,
-      "per": 14.61,
-      "pbr": 2.15,
+      "price": 2013.0,
+      "per": 14.5,
+      "pbr": 2.13,
       "roe": 14.89,
-      "dividendYield": 4.94,
-      "sigma252d": 0.2052,
-      "mom3m": 11.6,
+      "dividendYield": 4.93,
+      "sigma252d": 0.2053,
+      "mom3m": 10.95,
       "screenReasons": [
         "低PER",
         "高ROE",
@@ -2952,174 +2367,232 @@
       "dataStatus": "ok"
     },
     {
-      "code": "4502",
-      "name": "武田薬品工業",
-      "sector": "医薬品",
-      "price": 5702.0,
-      "per": null,
-      "pbr": 1.19,
-      "roe": -2.26,
-      "dividendYield": null,
-      "sigma252d": 0.2221,
-      "mom3m": 8.51,
-      "screenReasons": [],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "7309",
-      "name": "シマノ",
-      "sector": "輸送用機器",
-      "price": 19370.0,
-      "per": 28.92,
-      "pbr": 1.88,
-      "roe": 6.85,
-      "dividendYield": 1.86,
-      "sigma252d": 0.2995,
-      "mom3m": 15.87,
-      "screenReasons": [],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "7240",
-      "name": "ＮＯＫ",
-      "sector": "輸送用機器",
-      "price": 3073.0,
-      "per": 10.79,
-      "pbr": 0.77,
-      "roe": 8.45,
-      "dividendYield": 4.55,
-      "sigma252d": 0.2321,
-      "mom3m": 8.68,
-      "screenReasons": [
-        "低PER",
-        "高配当"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "9678",
-      "name": "カナモト",
-      "sector": "サービス業",
-      "price": 5450.0,
-      "per": 14.83,
-      "pbr": 1.22,
-      "roe": 8.6,
-      "dividendYield": null,
-      "sigma252d": 0.2578,
-      "mom3m": 14.02,
-      "screenReasons": [
-        "低PER"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "8707",
-      "name": "岩井コスモホールディングス",
-      "sector": "証券、商品先物取引業",
-      "price": 4345.0,
-      "per": 9.78,
-      "pbr": 1.37,
-      "roe": 16.56,
-      "dividendYield": 5.18,
-      "sigma252d": 0.2857,
-      "mom3m": 19.37,
-      "screenReasons": [
-        "低PER",
-        "高ROE",
-        "高配当"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "5301",
-      "name": "東海カーボン",
-      "sector": "ガラス・土石製品",
-      "price": 1846.0,
-      "per": 20.76,
-      "pbr": 1.16,
-      "roe": 6.84,
-      "dividendYield": 2.23,
-      "sigma252d": 0.3883,
-      "mom3m": 20.41,
-      "screenReasons": [],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "8159",
-      "name": "立花エレテック",
+      "code": "8154",
+      "name": "加賀電子",
       "sector": "卸売業",
-      "price": 4245.0,
-      "per": 12.88,
-      "pbr": 0.85,
-      "roe": 8.41,
-      "dividendYield": 2.81,
-      "sigma252d": 0.2871,
-      "mom3m": 44.09,
+      "price": 4885.0,
+      "per": 7.79,
+      "pbr": 1.22,
+      "roe": 18.7,
+      "dividendYield": null,
+      "sigma252d": 0.2886,
+      "mom3m": 18.0,
       "screenReasons": [
-        "低PER"
-      ],
-      "dataStatus": "ok"
-    },
-    {
-      "code": "9616",
-      "name": "共立メンテナンス",
-      "sector": "サービス業",
-      "price": 3274.0,
-      "per": 15.93,
-      "pbr": 2.03,
-      "roe": 14.65,
-      "dividendYield": 1.43,
-      "sigma252d": 0.2885,
-      "mom3m": 30.54,
-      "screenReasons": [
+        "低PER",
         "高ROE"
       ],
       "dataStatus": "ok"
     },
     {
-      "code": "6923",
-      "name": "スタンレー電気",
-      "sector": "電気機器",
-      "price": 3666.0,
-      "per": 15.24,
+      "code": "9757",
+      "name": "船井総研ホールディングス",
+      "sector": "サービス業",
+      "price": 1147.0,
+      "per": 13.16,
+      "pbr": 3.84,
+      "roe": 31.05,
+      "dividendYield": 4.18,
+      "sigma252d": 0.1968,
+      "mom3m": 8.61,
+      "screenReasons": [
+        "低PER",
+        "高ROE",
+        "高配当"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "4220",
+      "name": "リケンテクノス",
+      "sector": "化学",
+      "price": 2634.0,
+      "per": 17.15,
+      "pbr": 1.81,
+      "roe": 14.12,
+      "dividendYield": 3.13,
+      "sigma252d": 0.4301,
+      "mom3m": 68.2,
+      "screenReasons": [
+        "高ROE",
+        "高配当"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "5021",
+      "name": "コスモエネルギーホールディングス",
+      "sector": "石油・石炭製品",
+      "price": 4166.0,
+      "per": 9.2,
       "pbr": 0.98,
-      "roe": 7.18,
-      "dividendYield": null,
-      "sigma252d": 0.2381,
-      "mom3m": 7.1,
+      "roe": 22.76,
+      "dividendYield": 3.88,
+      "sigma252d": 0.2944,
+      "mom3m": 12.59,
+      "screenReasons": [
+        "低PER",
+        "高ROE",
+        "高配当"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "8341",
+      "name": "七十七銀行",
+      "sector": "銀行業",
+      "price": 3694.0,
+      "per": 15.26,
+      "pbr": 1.09,
+      "roe": 9.39,
+      "dividendYield": 2.66,
+      "sigma252d": 0.3578,
+      "mom3m": 13.7,
       "screenReasons": [],
       "dataStatus": "ok"
     },
     {
-      "code": "7593",
-      "name": "ＶＴホールディングス",
-      "sector": "小売業",
-      "price": 535.0,
-      "per": 12.89,
-      "pbr": 0.88,
-      "roe": 8.49,
-      "dividendYield": null,
-      "sigma252d": 0.1842,
-      "mom3m": 17.84,
+      "code": "8897",
+      "name": "ＭＩＲＡＲＴＨホールディングス",
+      "sector": "不動産業",
+      "price": 453.0,
+      "per": 13.05,
+      "pbr": 0.73,
+      "roe": 8.57,
+      "dividendYield": 5.08,
+      "sigma252d": 0.2108,
+      "mom3m": 7.6,
+      "screenReasons": [
+        "低PER",
+        "高配当"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "4471",
+      "name": "三洋化成工業",
+      "sector": "化学",
+      "price": 6110.0,
+      "per": 8.64,
+      "pbr": 0.83,
+      "roe": 7.86,
+      "dividendYield": 1.97,
+      "sigma252d": 0.3188,
+      "mom3m": 20.51,
       "screenReasons": [
         "低PER"
       ],
       "dataStatus": "ok"
     },
     {
-      "code": "3076",
-      "name": "あい　ホールディングス",
+      "code": "3176",
+      "name": "三洋貿易",
       "sector": "卸売業",
-      "price": 2936.0,
-      "per": 11.87,
-      "pbr": 1.37,
-      "roe": 12.39,
-      "dividendYield": 4.75,
-      "sigma252d": 0.2067,
-      "mom3m": 8.15,
+      "price": 1111.0,
+      "per": 14.57,
+      "pbr": 1.15,
+      "roe": 10.26,
+      "dividendYield": null,
+      "sigma252d": 0.3081,
+      "mom3m": 39.05,
       "screenReasons": [
         "低PER",
-        "高ROE",
+        "高ROE"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "8366",
+      "name": "滋賀銀行",
+      "sector": "銀行業",
+      "price": 2638.0,
+      "per": 28.59,
+      "pbr": 0.94,
+      "roe": 4.44,
+      "dividendYield": 1.81,
+      "sigma252d": 0.4015,
+      "mom3m": 22.24,
+      "screenReasons": [],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "1928",
+      "name": "積水ハウス",
+      "sector": "建設業",
+      "price": 3374.0,
+      "per": 8.5,
+      "pbr": 1.01,
+      "roe": 12.64,
+      "dividendYield": null,
+      "sigma252d": 0.1958,
+      "mom3m": 3.43,
+      "screenReasons": [
+        "低PER",
+        "高ROE"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "9746",
+      "name": "ＴＫＣ",
+      "sector": "情報・通信業",
+      "price": 4010.0,
+      "per": 14.9,
+      "pbr": 1.8,
+      "roe": 13.2,
+      "dividendYield": 2.74,
+      "sigma252d": 0.1991,
+      "mom3m": 15.73,
+      "screenReasons": [
+        "低PER",
+        "高ROE"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "4997",
+      "name": "日本農薬",
+      "sector": "化学",
+      "price": 1171.0,
+      "per": 12.68,
+      "pbr": 1.63,
+      "roe": 3.28,
+      "dividendYield": 4.03,
+      "sigma252d": 0.2824,
+      "mom3m": 19.37,
+      "screenReasons": [
+        "低PER",
+        "高配当"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "4526",
+      "name": "理研ビタミン",
+      "sector": "食料品",
+      "price": 3280.0,
+      "per": 13.78,
+      "pbr": 1.13,
+      "roe": null,
+      "dividendYield": null,
+      "sigma252d": 0.1828,
+      "mom3m": 17.86,
+      "screenReasons": [
+        "低PER"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "2613",
+      "name": "Ｊ－オイルミルズ",
+      "sector": "食料品",
+      "price": 2190.0,
+      "per": 15.26,
+      "pbr": 0.66,
+      "roe": 4.86,
+      "dividendYield": 3.68,
+      "sigma252d": 0.1456,
+      "mom3m": 9.39,
+      "screenReasons": [
         "高配当"
       ],
       "dataStatus": "ok"
@@ -3132,7 +2605,7 @@
       "per": 13.93,
       "pbr": 0.82,
       "roe": 6.26,
-      "dividendYield": 5.15,
+      "dividendYield": 5.17,
       "sigma252d": 0.2956,
       "mom3m": 31.56,
       "screenReasons": [
@@ -3142,16 +2615,202 @@
       "dataStatus": "ok"
     },
     {
-      "code": "9304",
-      "name": "澁澤倉庫",
-      "sector": "倉庫・運輸関連業",
-      "price": 2023.0,
-      "per": 18.11,
-      "pbr": 1.6,
-      "roe": 11.04,
-      "dividendYield": 4.06,
-      "sigma252d": 0.3188,
-      "mom3m": 46.17,
+      "code": "8511",
+      "name": "日本証券金融",
+      "sector": "その他金融業",
+      "price": 2483.0,
+      "per": 19.16,
+      "pbr": 1.43,
+      "roe": 8.93,
+      "dividendYield": 3.83,
+      "sigma252d": 0.2314,
+      "mom3m": 8.14,
+      "screenReasons": [
+        "高配当"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "2108",
+      "name": "日本甜菜製糖",
+      "sector": "食料品",
+      "price": 5490.0,
+      "per": 13.36,
+      "pbr": 0.86,
+      "roe": 6.96,
+      "dividendYield": 4.79,
+      "sigma252d": 0.324,
+      "mom3m": 30.56,
+      "screenReasons": [
+        "低PER",
+        "高配当"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "7979",
+      "name": "松風",
+      "sector": "精密機器",
+      "price": 2345.0,
+      "per": 17.11,
+      "pbr": 1.64,
+      "roe": 13.17,
+      "dividendYield": 2.31,
+      "sigma252d": 0.2545,
+      "mom3m": 30.5,
+      "screenReasons": [
+        "高ROE"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "7593",
+      "name": "ＶＴホールディングス",
+      "sector": "小売業",
+      "price": 531.0,
+      "per": 12.79,
+      "pbr": 0.87,
+      "roe": 8.49,
+      "dividendYield": null,
+      "sigma252d": 0.184,
+      "mom3m": 18.0,
+      "screenReasons": [
+        "低PER"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "8399",
+      "name": "琉球銀行",
+      "sector": "銀行業",
+      "price": 3180.0,
+      "per": 14.36,
+      "pbr": 0.9,
+      "roe": 6.54,
+      "dividendYield": 2.91,
+      "sigma252d": 0.367,
+      "mom3m": 21.93,
+      "screenReasons": [
+        "低PER"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "9433",
+      "name": "ＫＤＤＩ",
+      "sector": "情報・通信業",
+      "price": 2840.5,
+      "per": 15.48,
+      "pbr": 2.11,
+      "roe": 14.59,
+      "dividendYield": 2.94,
+      "sigma252d": 0.2374,
+      "mom3m": 4.51,
+      "screenReasons": [
+        "高ROE"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "4733",
+      "name": "オービックビジネスコンサルタント",
+      "sector": "情報・通信業",
+      "price": 8131.0,
+      "per": 33.73,
+      "pbr": 3.62,
+      "roe": 11.52,
+      "dividendYield": 1.61,
+      "sigma252d": 0.3405,
+      "mom3m": 33.27,
+      "screenReasons": [
+        "高ROE"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "7164",
+      "name": "全国保証",
+      "sector": "その他金融業",
+      "price": 3172.0,
+      "per": 13.01,
+      "pbr": 1.73,
+      "roe": 14.05,
+      "dividendYield": null,
+      "sigma252d": 0.1713,
+      "mom3m": 4.79,
+      "screenReasons": [
+        "低PER",
+        "高ROE"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "8377",
+      "name": "ほくほくフィナンシャルグループ",
+      "sector": "銀行業",
+      "price": 7962.0,
+      "per": 16.48,
+      "pbr": 1.26,
+      "roe": 9.72,
+      "dividendYield": 0.18,
+      "sigma252d": 0.4103,
+      "mom3m": 17.07,
+      "screenReasons": [],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "8362",
+      "name": "福井銀行",
+      "sector": "銀行業",
+      "price": 6630.0,
+      "per": 18.25,
+      "pbr": 0.97,
+      "roe": 7.48,
+      "dividendYield": 2.14,
+      "sigma252d": 0.4243,
+      "mom3m": 41.97,
+      "screenReasons": [],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "7433",
+      "name": "伯東",
+      "sector": "卸売業",
+      "price": 5060.0,
+      "per": 19.0,
+      "pbr": 1.38,
+      "roe": 8.74,
+      "dividendYield": null,
+      "sigma252d": 0.2421,
+      "mom3m": 12.2,
+      "screenReasons": [],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "6869",
+      "name": "シスメックス",
+      "sector": "電気機器",
+      "price": 1897.5,
+      "per": 33.39,
+      "pbr": 2.36,
+      "roe": 8.33,
+      "dividendYield": null,
+      "sigma252d": 0.4172,
+      "mom3m": 38.2,
+      "screenReasons": [],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "1518",
+      "name": "三井松島ホールディングス",
+      "sector": "その他製品",
+      "price": 2248.0,
+      "per": 15.15,
+      "pbr": 1.45,
+      "roe": 11.57,
+      "dividendYield": 5.78,
+      "sigma252d": 0.4287,
+      "mom3m": 59.09,
       "screenReasons": [
         "高ROE",
         "高配当"
@@ -3159,32 +2818,362 @@
       "dataStatus": "ok"
     },
     {
-      "code": "1377",
-      "name": "サカタのタネ",
-      "sector": "水産・農林業",
-      "price": 4460.0,
-      "per": 15.69,
-      "pbr": 1.06,
-      "roe": 7.16,
-      "dividendYield": 2.28,
-      "sigma252d": 0.229,
-      "mom3m": 8.11,
+      "code": "4665",
+      "name": "ダスキン",
+      "sector": "サービス業",
+      "price": 4562.0,
+      "per": 23.38,
+      "pbr": 1.37,
+      "roe": 6.68,
+      "dividendYield": 3.3,
+      "sigma252d": 0.1958,
+      "mom3m": 9.16,
+      "screenReasons": [
+        "高配当"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "8697",
+      "name": "日本取引所グループ",
+      "sector": "その他金融業",
+      "price": 2193.0,
+      "per": 37.34,
+      "pbr": 6.97,
+      "roe": null,
+      "dividendYield": 3.56,
+      "sigma252d": 0.3572,
+      "mom3m": 16.84,
+      "screenReasons": [
+        "高配当"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "4432",
+      "name": "ウイングアーク１ｓｔ",
+      "sector": "情報・通信業",
+      "price": 3230.0,
+      "per": 17.3,
+      "pbr": 2.46,
+      "roe": null,
+      "dividendYield": 3.34,
+      "sigma252d": 0.3319,
+      "mom3m": 26.92,
+      "screenReasons": [
+        "高配当"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "2767",
+      "name": "円谷フィールズホールディングス",
+      "sector": "卸売業",
+      "price": 2401.0,
+      "per": 11.48,
+      "pbr": 2.44,
+      "roe": 20.09,
+      "dividendYield": null,
+      "sigma252d": 0.4762,
+      "mom3m": 69.68,
+      "screenReasons": [
+        "低PER",
+        "高ROE"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "8075",
+      "name": "神鋼商事",
+      "sector": "卸売業",
+      "price": 3005.0,
+      "per": 9.58,
+      "pbr": 0.8,
+      "roe": 9.0,
+      "dividendYield": 3.58,
+      "sigma252d": 0.2512,
+      "mom3m": 26.26,
+      "screenReasons": [
+        "低PER",
+        "高配当"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "4290",
+      "name": "プレステージ・インターナショナル",
+      "sector": "サービス業",
+      "price": 725.0,
+      "per": 15.48,
+      "pbr": 1.85,
+      "roe": 13.59,
+      "dividendYield": null,
+      "sigma252d": 0.2298,
+      "mom3m": 12.23,
+      "screenReasons": [
+        "高ROE"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "5185",
+      "name": "フコク",
+      "sector": "ゴム製品",
+      "price": 2040.0,
+      "per": 27.68,
+      "pbr": 0.7,
+      "roe": 4.4,
+      "dividendYield": null,
+      "sigma252d": 0.1937,
+      "mom3m": 15.97,
       "screenReasons": [],
       "dataStatus": "ok"
     },
     {
-      "code": "5851",
-      "name": "リョービ",
-      "sector": "非鉄金属",
-      "price": 2834.0,
-      "per": 8.44,
-      "pbr": 0.48,
-      "roe": 5.91,
+      "code": "4045",
+      "name": "東亞合成",
+      "sector": "化学",
+      "price": 1825.0,
+      "per": 14.99,
+      "pbr": 0.88,
+      "roe": 6.11,
+      "dividendYield": 3.86,
+      "sigma252d": 0.1947,
+      "mom3m": 9.31,
+      "screenReasons": [
+        "低PER",
+        "高配当"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "8706",
+      "name": "極東証券",
+      "sector": "証券、商品先物取引業",
+      "price": 1848.0,
+      "per": 12.29,
+      "pbr": 1.11,
+      "roe": 10.41,
       "dividendYield": null,
-      "sigma252d": 0.3041,
-      "mom3m": 16.35,
+      "sigma252d": 0.2459,
+      "mom3m": 18.16,
+      "screenReasons": [
+        "低PER",
+        "高ROE"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "8167",
+      "name": "リテールパートナーズ",
+      "sector": "小売業",
+      "price": 1486.0,
+      "per": 12.41,
+      "pbr": 0.7,
+      "roe": 5.42,
+      "dividendYield": 2.73,
+      "sigma252d": 0.2326,
+      "mom3m": 14.84,
       "screenReasons": [
         "低PER"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "7762",
+      "name": "シチズン時計",
+      "sector": "精密機器",
+      "price": 2545.0,
+      "per": 19.98,
+      "pbr": 2.08,
+      "roe": 10.87,
+      "dividendYield": 2.04,
+      "sigma252d": 0.4129,
+      "mom3m": 20.1,
+      "screenReasons": [
+        "高ROE"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "8255",
+      "name": "アクシアル　リテイリング",
+      "sector": "小売業",
+      "price": 1259.0,
+      "per": 12.68,
+      "pbr": 1.17,
+      "roe": 9.39,
+      "dividendYield": 2.37,
+      "sigma252d": 0.2233,
+      "mom3m": 23.07,
+      "screenReasons": [
+        "低PER"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "3291",
+      "name": "飯田グループホールディングス",
+      "sector": "不動産業",
+      "price": 2293.5,
+      "per": 10.01,
+      "pbr": 0.62,
+      "roe": 6.9,
+      "dividendYield": 4.0,
+      "sigma252d": 0.2099,
+      "mom3m": 8.88,
+      "screenReasons": [
+        "低PER",
+        "高配当"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "8795",
+      "name": "Ｔ＆Ｄホールディングス",
+      "sector": "保険業",
+      "price": 4738.0,
+      "per": 16.95,
+      "pbr": 1.36,
+      "roe": 9.34,
+      "dividendYield": 3.33,
+      "sigma252d": 0.3211,
+      "mom3m": 16.27,
+      "screenReasons": [
+        "高配当"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "4725",
+      "name": "ＣＡＣ　Ｈｏｌｄｉｎｇｓ",
+      "sector": "情報・通信業",
+      "price": 1943.0,
+      "per": 9.16,
+      "pbr": 0.92,
+      "roe": 10.7,
+      "dividendYield": null,
+      "sigma252d": 0.1466,
+      "mom3m": 11.76,
+      "screenReasons": [
+        "低PER",
+        "高ROE"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "8551",
+      "name": "北日本銀行",
+      "sector": "銀行業",
+      "price": 7330.0,
+      "per": 13.88,
+      "pbr": 0.62,
+      "roe": 5.46,
+      "dividendYield": 0.84,
+      "sigma252d": 0.3696,
+      "mom3m": 35.24,
+      "screenReasons": [
+        "低PER"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "8022",
+      "name": "美津濃",
+      "sector": "その他製品",
+      "price": 3980.0,
+      "per": 16.61,
+      "pbr": 1.7,
+      "roe": 11.74,
+      "dividendYield": 1.67,
+      "sigma252d": 0.3615,
+      "mom3m": 22.84,
+      "screenReasons": [
+        "高ROE"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "7350",
+      "name": "おきなわフィナンシャルグループ",
+      "sector": "銀行業",
+      "price": 7710.0,
+      "per": 14.59,
+      "pbr": 1.0,
+      "roe": 7.67,
+      "dividendYield": 2.46,
+      "sigma252d": 0.3571,
+      "mom3m": 22.58,
+      "screenReasons": [
+        "低PER"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "5121",
+      "name": "藤倉コンポジット",
+      "sector": "ゴム製品",
+      "price": 2780.0,
+      "per": 13.33,
+      "pbr": 1.3,
+      "roe": 10.99,
+      "dividendYield": 3.1,
+      "sigma252d": 0.3031,
+      "mom3m": 17.25,
+      "screenReasons": [
+        "低PER",
+        "高ROE",
+        "高配当"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "9304",
+      "name": "澁澤倉庫",
+      "sector": "倉庫・運輸関連業",
+      "price": 2004.0,
+      "per": 17.95,
+      "pbr": 1.58,
+      "roe": 11.04,
+      "dividendYield": 3.95,
+      "sigma252d": 0.3189,
+      "mom3m": 43.04,
+      "screenReasons": [
+        "高ROE",
+        "高配当"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "1379",
+      "name": "ホクト",
+      "sector": "水産・農林業",
+      "price": 2051.0,
+      "per": 10.69,
+      "pbr": 1.0,
+      "roe": 9.98,
+      "dividendYield": null,
+      "sigma252d": 0.1671,
+      "mom3m": 8.46,
+      "screenReasons": [
+        "低PER"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "5302",
+      "name": "日本カーボン",
+      "sector": "ガラス・土石製品",
+      "price": 4915.0,
+      "per": 13.92,
+      "pbr": 0.97,
+      "roe": 6.97,
+      "dividendYield": 3.95,
+      "sigma252d": 0.1878,
+      "mom3m": 6.14,
+      "screenReasons": [
+        "低PER",
+        "高配当"
       ],
       "dataStatus": "ok"
     },
@@ -3192,15 +3181,32 @@
       "code": "1605",
       "name": "ＩＮＰＥＸ",
       "sector": "鉱業",
-      "price": 3900.0,
-      "per": 10.53,
-      "pbr": 0.89,
+      "price": 3860.0,
+      "per": 10.43,
+      "pbr": 0.88,
       "roe": 9.27,
-      "dividendYield": 2.97,
-      "sigma252d": 0.3813,
-      "mom3m": -0.59,
+      "dividendYield": 2.87,
+      "sigma252d": 0.3815,
+      "mom3m": 1.05,
       "screenReasons": [
         "低PER"
+      ],
+      "dataStatus": "ok"
+    },
+    {
+      "code": "5703",
+      "name": "日本軽金属ホールディングス",
+      "sector": "非鉄金属",
+      "price": 2992.0,
+      "per": 11.81,
+      "pbr": 0.73,
+      "roe": 8.58,
+      "dividendYield": 3.57,
+      "sigma252d": 0.3406,
+      "mom3m": -2.38,
+      "screenReasons": [
+        "低PER",
+        "高配当"
       ],
       "dataStatus": "ok"
     }
