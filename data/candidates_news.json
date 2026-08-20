@@ -1,39 +1,66 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-08-21T06:57:13.914696+09:00",
-  "sourceUpdatedAt": "2026-08-20T21:45:42+00:00",
+  "updatedAt": "2026-08-21T08:48:41.611540+09:00",
+  "sourceUpdatedAt": "2026-08-20T23:37:42+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
+      "avgSentiment": -0.33,
+      "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Japan’s Inflation Accelerates, Backing BOJ’s Case for Rate Hike",
+      "topPositiveTitle": "Japan’s Inflation Accelerates, Backing BOJ’s Case for Rate Hike",
+      "items": [
+        {
+          "title": "Japan’s Inflation Accelerates, Backing BOJ’s Case for Rate Hike",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-20T23:37:23+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-20/japan-s-inflation-accelerates-backing-boj-s-case-for-rate-hike",
+          "tags": [
+            "jp_broad",
+            "market",
+            "rates"
+          ]
+        }
+      ]
     },
     "jp_semiconductor": {
       "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
+      "neutralCount": 2,
       "sourceCount": 1,
-      "itemCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Broadcom Seeks More Than $60 Billion in Latest AI Debt Deal",
-      "topPositiveTitle": "Broadcom Seeks More Than $60 Billion in Latest AI Debt Deal",
+      "topNegativeTitle": "Hua Hong, Kingboard, Zijin Gold May Join Hong Kong’s Stock Index",
+      "topPositiveTitle": "Hua Hong, Kingboard, Zijin Gold May Join Hong Kong’s Stock Index",
       "items": [
         {
-          "title": "Broadcom Seeks More Than $60 Billion in Latest AI Debt Deal",
+          "title": "Hua Hong, Kingboard, Zijin Gold May Join Hong Kong’s Stock Index",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-20T20:08:40+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-20/broadcom-seeks-more-than-60-billion-in-latest-ai-debt-deal",
+          "publishedAt": "2026-08-20T23:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-20/hua-hong-kingboard-zijin-gold-may-join-hong-kong-s-stock-index",
+          "tags": [
+            "gold",
+            "jp_semiconductor",
+            "market"
+          ]
+        },
+        {
+          "title": "Broadcom Seeking $60B in AI Debt Deal",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-20T22:02:29+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-20/broadcom-seeking-60b-in-ai-debt-deal-video",
           "tags": [
             "jp_semiconductor",
             "market"
@@ -49,9 +76,21 @@
       "sourceCount": 2,
       "itemCount": 8,
       "isStale": false,
-      "topNegativeTitle": "Risk Of Treasuries Selloff Is Growing: Robson",
+      "topNegativeTitle": "Asian Stocks Set to Fall as Bonds Resume Decline: Markets Wrap",
       "topPositiveTitle": "Bill Dudley Warns That US Stocks Are in Bubble Territory",
       "items": [
+        {
+          "title": "Asian Stocks Set to Fall as Bonds Resume Decline: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-20T22:05:51+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-20/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
         {
           "title": "Risk Of Treasuries Selloff Is Growing: Robson",
           "source": "Bloomberg Markets",
@@ -79,20 +118,6 @@
             "market",
             "us_broad",
             "us_growth"
-          ]
-        },
-        {
-          "title": "US Stocks Fall as Oil, Yields Climb While Walmart Slumps",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-20T12:13:11+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-20/us-stock-futures-fall-as-oil-yields-climb-while-walmart-slumps",
-          "tags": [
-            "commodity",
-            "market",
-            "rates",
-            "us_broad"
           ]
         },
         {
@@ -192,13 +217,26 @@
       "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 2,
+      "sourceCount": 2,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Russian Sales Bring Gold Reserves to Their Lowest Since 2020",
-      "topPositiveTitle": "Russian Sales Bring Gold Reserves to Their Lowest Since 2020",
+      "topNegativeTitle": "Hua Hong, Kingboard, Zijin Gold May Join Hong Kong’s Stock Index",
+      "topPositiveTitle": "Hua Hong, Kingboard, Zijin Gold May Join Hong Kong’s Stock Index",
       "items": [
+        {
+          "title": "Hua Hong, Kingboard, Zijin Gold May Join Hong Kong’s Stock Index",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-20T23:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-20/hua-hong-kingboard-zijin-gold-may-join-hong-kong-s-stock-index",
+          "tags": [
+            "gold",
+            "jp_semiconductor",
+            "market"
+          ]
+        },
         {
           "title": "Russian Sales Bring Gold Reserves to Their Lowest Since 2020",
           "source": "Bloomberg Economics",
@@ -349,10 +387,10 @@
     "fx": {
       "avgSentiment": 0.33,
       "negativeCount": 0,
-      "positiveCount": 2,
+      "positiveCount": 1,
       "neutralCount": 0,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 1,
       "isStale": false,
       "topNegativeTitle": "EM Currencies Mixed as Treasury Buyback Lift Proves Short-Lived",
       "topPositiveTitle": "EM Currencies Mixed as Treasury Buyback Lift Proves Short-Lived",
@@ -369,33 +407,45 @@
             "fx",
             "market"
           ]
-        },
-        {
-          "title": "Dollar Seen Paying the Price for Treasury Bid to Tame Yields",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-20T05:50:51+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-20/dollar-risks-becoming-biggest-loser-from-bessent-s-bond-buying",
-          "tags": [
-            "fx",
-            "market",
-            "rates"
-          ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": 0.0,
-      "negativeCount": 2,
-      "positiveCount": 2,
+      "avgSentiment": -0.132,
+      "negativeCount": 3,
+      "positiveCount": 1,
       "neutralCount": 1,
       "sourceCount": 2,
       "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Risk Of Treasuries Selloff Is Growing: Robson",
+      "topNegativeTitle": "Japan’s Inflation Accelerates, Backing BOJ’s Case for Rate Hike",
       "topPositiveTitle": "Bill Dudley Warns That US Stocks Are in Bubble Territory",
       "items": [
+        {
+          "title": "Japan’s Inflation Accelerates, Backing BOJ’s Case for Rate Hike",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-20T23:37:23+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-20/japan-s-inflation-accelerates-backing-boj-s-case-for-rate-hike",
+          "tags": [
+            "jp_broad",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Housing Slump Winners, Losers Emerge From Australia’s Earnings",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-20T21:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-20/housing-slump-winners-losers-emerge-from-australia-s-earnings",
+          "tags": [
+            "market",
+            "rates"
+          ]
+        },
         {
           "title": "Risk Of Treasuries Selloff Is Growing: Robson",
           "source": "Bloomberg Markets",
@@ -406,20 +456,6 @@
           "tags": [
             "dividend",
             "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "US Stocks Fall as Oil, Yields Climb While Walmart Slumps",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-20T12:13:11+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-20/us-stock-futures-fall-as-oil-yields-climb-while-walmart-slumps",
-          "tags": [
-            "commodity",
             "market",
             "rates",
             "us_broad"
@@ -450,45 +486,30 @@
             "rates",
             "us_broad"
           ]
-        },
-        {
-          "title": "Dollar Seen Paying the Price for Treasury Bid to Tame Yields",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-20T05:50:51+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-20/dollar-risks-becoming-biggest-loser-from-bessent-s-bond-buying",
-          "tags": [
-            "fx",
-            "market",
-            "rates"
-          ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": -0.165,
+      "avgSentiment": 0.0,
       "negativeCount": 1,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 2,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "US Stocks Fall as Oil, Yields Climb While Walmart Slumps",
-      "topPositiveTitle": "茂木外相 イエメン和平の重要性訴え \"国家元首”と会談",
+      "topNegativeTitle": "Exxon Warns Kazakhstan’s Top Oil Field to Peak Within Years",
+      "topPositiveTitle": "Latest Oil Market News and Analysis for Aug. 21",
       "items": [
         {
-          "title": "US Stocks Fall as Oil, Yields Climb While Walmart Slumps",
+          "title": "Exxon Warns Kazakhstan’s Top Oil Field to Peak Within Years",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-08-20T12:13:11+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-20/us-stock-futures-fall-as-oil-yields-climb-while-walmart-slumps",
+          "publishedAt": "2026-08-20T10:33:09+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-20/exxon-warns-kazakhstan-s-top-oil-field-to-peak-within-years",
           "tags": [
             "commodity",
-            "market",
-            "rates",
-            "us_broad"
+            "market"
           ]
         },
         {
@@ -503,19 +524,32 @@
             "market"
           ],
           "titleJa": "茂木外相 イエメン和平の重要性訴え \"国家元首”と会談"
+        },
+        {
+          "title": "Latest Oil Market News and Analysis for Aug. 21",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-20T22:02:51+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-20/latest-oil-market-news-and-analysis-for-aug-21",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
+          ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0.083,
       "negativeCount": 0,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 3,
-      "sourceCount": 2,
-      "itemCount": 3,
+      "sourceCount": 3,
+      "itemCount": 4,
       "isStale": false,
       "topNegativeTitle": "Russian Sales Bring Gold Reserves to Their Lowest Since 2020",
-      "topPositiveTitle": "Russian Sales Bring Gold Reserves to Their Lowest Since 2020",
+      "topPositiveTitle": "Latest Oil Market News and Analysis for Aug. 21",
       "items": [
         {
           "title": "Russian Sales Bring Gold Reserves to Their Lowest Since 2020",
@@ -555,6 +589,19 @@
             "market"
           ],
           "titleJa": "日オマーン外相 “ホルムズ海峡 国際社会で議論が不可欠”"
+        },
+        {
+          "title": "Latest Oil Market News and Analysis for Aug. 21",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-20T22:02:51+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-20/latest-oil-market-news-and-analysis-for-aug-21",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
+          ]
         }
       ]
     }
@@ -567,7 +614,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 3,
+    "excludedCount": 4,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
