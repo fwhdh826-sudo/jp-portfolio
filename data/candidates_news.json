@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-08-20T13:06:15.158780+09:00",
-  "sourceUpdatedAt": "2026-08-20T03:41:16+00:00",
+  "updatedAt": "2026-08-20T20:50:18.782620+09:00",
+  "sourceUpdatedAt": "2026-08-20T11:47:26+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -17,15 +17,15 @@
       "items": []
     },
     "jp_semiconductor": {
-      "avgSentiment": -0.33,
+      "avgSentiment": -0.165,
       "negativeCount": 1,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 1,
+      "sourceCount": 2,
+      "itemCount": 2,
       "isStale": false,
       "topNegativeTitle": "Japan’s Exports Grow at Fastest Pace Since 2022 on Chips",
-      "topPositiveTitle": "Japan’s Exports Grow at Fastest Pace Since 2022 on Chips",
+      "topPositiveTitle": "KKR Data Center Chief Vaults to Prominence With Nvidia Pact",
       "items": [
         {
           "title": "Japan’s Exports Grow at Fastest Pace Since 2022 on Chips",
@@ -39,27 +39,41 @@
             "jp_semiconductor",
             "market"
           ]
+        },
+        {
+          "title": "KKR Data Center Chief Vaults to Prominence With Nvidia Pact",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-20T11:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-20/kkr-data-center-chief-vaults-to-prominence-with-nvidia-pact",
+          "tags": [
+            "jp_semiconductor",
+            "market",
+            "us_broad",
+            "us_growth"
+          ]
         }
       ]
     },
     "us_broad": {
-      "avgSentiment": -0.035,
-      "negativeCount": 1,
+      "avgSentiment": 0.12,
+      "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 0,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 2,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Fed Minutes Show Many Officials Said Rate Hikes May Be Needed",
-      "topPositiveTitle": "Asian Bonds and Stocks Rise After Treasuries Rally: Markets Wrap",
+      "topNegativeTitle": "Treasury Action Not a Fed Game Changer for September, Says Evercore’s Guha",
+      "topPositiveTitle": "Stocks Slip and Treasury Rally Fades as Oil Climbs: Markets Wrap",
       "items": [
         {
-          "title": "Fed Minutes Show Many Officials Said Rate Hikes May Be Needed",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-08-19T18:00:01+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-19/fed-minutes-show-many-officials-said-rate-hikes-may-be-needed",
+          "title": "Treasury Action Not a Fed Game Changer for September, Says Evercore’s Guha",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-20T11:30:45+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-20/treasury-move-not-a-fed-game-changer-for-september-guha-video",
           "tags": [
             "market",
             "rates",
@@ -67,14 +81,53 @@
           ]
         },
         {
-          "title": "Asian Bonds and Stocks Rise After Treasuries Rally: Markets Wrap",
+          "title": "KKR Data Center Chief Vaults to Prominence With Nvidia Pact",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-20T11:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-20/kkr-data-center-chief-vaults-to-prominence-with-nvidia-pact",
+          "tags": [
+            "jp_semiconductor",
+            "market",
+            "us_broad",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Fed’s Warsh Needs to Launch Operation Twist, Academy’s Tchir Says",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-20T10:39:57+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-20/fed-s-warsh-needs-to-launch-operation-twist-tchir-says-video",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Democratic Lawmakers Urge Fed’s Warsh to Disclose Trump Calls",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-20T01:12:10+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-20/democratic-lawmakers-urge-fed-s-warsh-to-disclose-trump-calls",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Stocks Slip and Treasury Rally Fades as Oil Climbs: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.6,
           "publishedAt": "2026-08-19T22:12:30+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-08-19/stock-market-today-dow-s-p-live-updates",
           "tags": [
-            "fx",
+            "commodity",
             "market",
             "us_broad"
           ]
@@ -85,22 +138,37 @@
       "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
+      "neutralCount": 2,
       "sourceCount": 1,
-      "itemCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "China’s AI Boom Is Making Star 50 the Stock Index That Matters",
-      "topPositiveTitle": "China’s AI Boom Is Making Star 50 the Stock Index That Matters",
+      "topNegativeTitle": "Meta’s Trial Adds a Trillion-Dollar Risk to Its Struggling Stock",
+      "topPositiveTitle": "Meta’s Trial Adds a Trillion-Dollar Risk to Its Struggling Stock",
       "items": [
         {
-          "title": "China’s AI Boom Is Making Star 50 the Stock Index That Matters",
+          "title": "Meta’s Trial Adds a Trillion-Dollar Risk to Its Struggling Stock",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-20T02:55:15+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-20/china-s-ai-boom-is-making-the-star-50-the-index-that-matters",
+          "publishedAt": "2026-08-20T11:30:31+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-20/meta-s-trial-adds-a-trillion-dollar-risk-to-its-struggling-stock",
           "tags": [
+            "fx",
             "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "KKR Data Center Chief Vaults to Prominence With Nvidia Pact",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-20T11:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-20/kkr-data-center-chief-vaults-to-prominence-with-nvidia-pact",
+          "tags": [
+            "jp_semiconductor",
+            "market",
+            "us_broad",
             "us_growth"
           ]
         }
@@ -126,21 +194,19 @@
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Gold Holds Near $4,500 as US Treasury Buyback Sends Yields Lower",
-      "topPositiveTitle": "Gold Holds Near $4,500 as US Treasury Buyback Sends Yields Lower",
+      "topNegativeTitle": "Gold Trades Near $4,500 After US Treasury’s Surprise Bond Move",
+      "topPositiveTitle": "Gold Trades Near $4,500 After US Treasury’s Surprise Bond Move",
       "items": [
         {
-          "title": "Gold Holds Near $4,500 as US Treasury Buyback Sends Yields Lower",
+          "title": "Gold Trades Near $4,500 After US Treasury’s Surprise Bond Move",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.67,
           "publishedAt": "2026-08-19T23:34:15+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-08-19/gold-holds-near-4-500-as-us-treasury-buyback-sends-yields-lower",
           "tags": [
-            "dividend",
             "gold",
-            "market",
-            "rates"
+            "market"
           ]
         }
       ]
@@ -158,170 +224,81 @@
       "items": []
     },
     "dividend": {
-      "avgSentiment": 0.082,
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "Bessent Plan May Be Short-Lived Remedy for Bond Slump",
+      "topPositiveTitle": "Bessent Plan May Be Short-Lived Remedy for Bond Slump",
+      "items": [
+        {
+          "title": "Bessent Plan May Be Short-Lived Remedy for Bond Slump",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-20T09:23:46+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-20/bessent-s-plan-at-best-circuit-breaker-for-global-bond-slump",
+          "tags": [
+            "dividend",
+            "market"
+          ]
+        }
+      ]
+    },
+    "macro_risk": {
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 2,
+      "sourceCount": 1,
+      "itemCount": 2,
+      "isStale": false,
+      "topNegativeTitle": "Bundesbank Sees No Second-Round Effects From Iran War via Wages",
+      "topPositiveTitle": "Bundesbank Sees No Second-Round Effects From Iran War via Wages",
+      "items": [
+        {
+          "title": "Bundesbank Sees No Second-Round Effects From Iran War via Wages",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-20T10:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-20/bundesbank-sees-no-second-round-effects-from-iran-war-via-wages",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Riksbank Holds Rate and Restates Chance of Hike This Year",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-20T07:37:05+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-20/riksbank-holds-rate-and-restates-chance-of-hike-this-year",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        }
+      ]
+    },
+    "fx": {
+      "avgSentiment": 0.15,
       "negativeCount": 1,
       "positiveCount": 2,
       "neutralCount": 1,
       "sourceCount": 2,
       "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "AI Job Losses: A Guide to the Proposals for Helping Workers",
-      "topPositiveTitle": "Gold Holds Near $4,500 as US Treasury Buyback Sends Yields Lower",
+      "topNegativeTitle": "Japan’s Exports Grow at Fastest Pace Since 2022 on Chips",
+      "topPositiveTitle": "Emerging FX Gains as ‘Bessent Put’ Burnishes Carry Trade Appeal",
       "items": [
-        {
-          "title": "AI Job Losses: A Guide to the Proposals for Helping Workers",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-08-19T09:30:01+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-19/ai-job-losses-a-guide-to-the-proposals-for-helping-workers",
-          "tags": [
-            "dividend",
-            "market"
-          ]
-        },
-        {
-          "title": "SK Hynix May Add Another $130 Billion to Returns, JPMorgan Says",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-20T02:47:41+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-20/sk-hynix-may-add-another-130-billion-to-returns-jpmorgan-says",
-          "tags": [
-            "dividend",
-            "market"
-          ]
-        },
-        {
-          "title": "JPMorgan Team Sees Credibility Risk in Treasury’s Buybacks",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-20T00:59:09+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-20/jpmorgan-team-sees-credibility-risk-in-treasury-s-bond-buybacks",
-          "tags": [
-            "dividend",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Gold Holds Near $4,500 as US Treasury Buyback Sends Yields Lower",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-19T23:34:15+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-19/gold-holds-near-4-500-as-us-treasury-buyback-sends-yields-lower",
-          "tags": [
-            "dividend",
-            "gold",
-            "market",
-            "rates"
-          ]
-        }
-      ]
-    },
-    "macro_risk": {
-      "avgSentiment": -0.334,
-      "negativeCount": 3,
-      "positiveCount": 0,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 5,
-      "isStale": false,
-      "topNegativeTitle": "UK House Prices Post First Fall This Year, Official Data Show",
-      "topPositiveTitle": "Hong Kong’s Student Housing Crisis Spurs Bank Lending Boom",
-      "items": [
-        {
-          "title": "UK House Prices Post First Fall This Year, Official Data Show",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-08-19T10:09:35+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-19/uk-house-prices-post-first-fall-this-year-official-data-show",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Argentina Job Losses, Unemployment Are Milei’s Big Political Risk",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-08-19T09:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-19/argentina-job-losses-unemployment-are-milei-s-big-political-risk",
-          "tags": [
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Sweden Is Set to Keep 2026 Rate Hike on Table: Decision Guide",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-19T10:15:01+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-19/sweden-is-set-to-keep-2026-rate-hike-on-table-decision-guide",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Hong Kong’s Student Housing Crisis Spurs Bank Lending Boom",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-19T22:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-19/hong-kong-banks-turn-to-student-housing-as-property-bright-spot",
-          "tags": [
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "South African Inflation Surprise Builds Case for Holding Rates",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-19T08:05:13+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-19/south-africa-inflation-cools-making-case-to-keep-rates-on-hold",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market",
-            "rates"
-          ]
-        }
-      ]
-    },
-    "fx": {
-      "avgSentiment": -0.014,
-      "negativeCount": 2,
-      "positiveCount": 2,
-      "neutralCount": 1,
-      "sourceCount": 2,
-      "itemCount": 5,
-      "isStale": false,
-      "topNegativeTitle": "Japan Medium-Term Bonds See Largest Foreign Outflow Since 2006",
-      "topPositiveTitle": "Asian Bonds and Stocks Rise After Treasuries Rally: Markets Wrap",
-      "items": [
-        {
-          "title": "Japan Medium-Term Bonds See Largest Foreign Outflow Since 2006",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-08-20T02:55:53+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-20/japan-medium-term-bonds-see-largest-foreign-outflow-since-2006",
-          "tags": [
-            "fx",
-            "market"
-          ]
-        },
         {
           "title": "Japan’s Exports Grow at Fastest Pace Since 2022 on Chips",
           "source": "Bloomberg Economics",
@@ -336,62 +313,76 @@
           ]
         },
         {
-          "title": "RBI’s Net Short Dollar Position ‘Very Manageable,’ Malhotra Says",
+          "title": "Meta’s Trial Adds a Trillion-Dollar Risk to Its Struggling Stock",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-20T01:55:54+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-20/rbi-s-net-short-dollar-position-very-manageable-malhotra-says",
-          "tags": [
-            "fx",
-            "market"
-          ]
-        },
-        {
-          "title": "Carry Trade Allure Puts Hong Kong Dollar Back on 7.85 Watch",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-20T03:28:15+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-20/carry-trade-allure-puts-hong-kong-dollar-back-on-7-85-watch",
-          "tags": [
-            "fx",
-            "market"
-          ]
-        },
-        {
-          "title": "Asian Bonds and Stocks Rise After Treasuries Rally: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.6,
-          "publishedAt": "2026-08-19T22:12:30+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-19/stock-market-today-dow-s-p-live-updates",
+          "publishedAt": "2026-08-20T11:30:31+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-20/meta-s-trial-adds-a-trillion-dollar-risk-to-its-struggling-stock",
           "tags": [
             "fx",
             "market",
-            "us_broad"
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Dollar Seen Paying the Price for Treasury Bid to Tame Yields",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-20T05:50:51+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-20/dollar-risks-becoming-biggest-loser-from-bessent-s-bond-buying",
+          "tags": [
+            "fx",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Emerging FX Gains as ‘Bessent Put’ Burnishes Carry Trade Appeal",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.6,
+          "publishedAt": "2026-08-20T10:47:34+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-20/emerging-fx-gains-as-bessent-put-burnishes-carry-trade-appeal",
+          "tags": [
+            "commodity",
+            "fx",
+            "market"
           ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": 0.042,
-      "negativeCount": 3,
-      "positiveCount": 3,
+      "avgSentiment": 0.0,
+      "negativeCount": 1,
+      "positiveCount": 1,
       "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 8,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Fed Minutes Show Many Officials Said Rate Hikes May Be Needed",
-      "topPositiveTitle": "Japan 20-Year Bond Sale Sees Firmer Demand Than 12-Month Average",
+      "topNegativeTitle": "RBI’s Hawkish Minutes Rattle Bonds, Put Rate Hikes in Play",
+      "topPositiveTitle": "Dollar Seen Paying the Price for Treasury Bid to Tame Yields",
       "items": [
         {
-          "title": "Fed Minutes Show Many Officials Said Rate Hikes May Be Needed",
+          "title": "RBI’s Hawkish Minutes Rattle Bonds, Put Rate Hikes in Play",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-08-19T18:00:01+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-19/fed-minutes-show-many-officials-said-rate-hikes-may-be-needed",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-20T06:23:05+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-20/rbi-s-hawkish-minutes-rattle-bond-market-put-rate-hikes-in-play",
+          "tags": [
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Treasury Action Not a Fed Game Changer for September, Says Evercore’s Guha",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-20T11:30:45+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-20/treasury-move-not-a-fed-game-changer-for-september-guha-video",
           "tags": [
             "market",
             "rates",
@@ -399,53 +390,27 @@
           ]
         },
         {
-          "title": "Sweden Is Set to Keep 2026 Rate Hike on Table: Decision Guide",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-19T10:15:01+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-19/sweden-is-set-to-keep-2026-rate-hike-on-table-decision-guide",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Iceland Hikes Key Rate to 8% to Lower Risk of Price Spiral",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-19T08:37:41+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-19/iceland-hikes-key-rate-to-8-to-lower-risk-of-prices-spiraling",
-          "tags": [
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "RBI Panel Watches Inflation as One Member Eyes Hike This Year",
-          "source": "Bloomberg Economics",
+          "title": "Fed’s Warsh Needs to Launch Operation Twist, Academy’s Tchir Says",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-19T13:51:15+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-19/rbi-panel-watches-inflation-as-one-member-eyes-hike-this-year",
+          "publishedAt": "2026-08-20T10:39:57+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-20/fed-s-warsh-needs-to-launch-operation-twist-tchir-says-video",
           "tags": [
             "market",
-            "rates"
+            "rates",
+            "us_broad"
           ]
         },
         {
-          "title": "South African Inflation Surprise Builds Case for Holding Rates",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-19T08:05:13+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-19/south-africa-inflation-cools-making-case-to-keep-rates-on-hold",
+          "title": "Dollar Seen Paying the Price for Treasury Bid to Tame Yields",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-20T05:50:51+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-20/dollar-risks-becoming-biggest-loser-from-bessent-s-bond-buying",
           "tags": [
-            "geopolitical",
-            "macro_risk",
+            "fx",
             "market",
             "rates"
           ]
@@ -453,25 +418,39 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.334,
-      "negativeCount": 0,
+      "avgSentiment": 0.145,
+      "negativeCount": 1,
       "positiveCount": 2,
       "neutralCount": 3,
-      "sourceCount": 2,
-      "itemCount": 5,
+      "sourceCount": 3,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Chinese Refiners Snap Up Iraqi Oil as More Supplies Exit Hormuz",
-      "topPositiveTitle": "Palm Oil Hits Highest Since 2024 as Biofuels, El Niño Cut Supply",
+      "topNegativeTitle": "Exxon Warns Kazakhstan’s Top Oil Field to Peak Within Years",
+      "topPositiveTitle": "Emerging FX Gains as ‘Bessent Put’ Burnishes Carry Trade Appeal",
       "items": [
         {
-          "title": "Chinese Refiners Snap Up Iraqi Oil as More Supplies Exit Hormuz",
+          "title": "Exxon Warns Kazakhstan’s Top Oil Field to Peak Within Years",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-20T02:50:20+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-20/chinese-refiners-snap-up-iraqi-oil-as-more-supplies-exit-hormuz",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-20T10:33:09+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-20/exxon-warns-kazakhstan-s-top-oil-field-to-peak-within-years",
           "tags": [
             "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "Bundesbank Sees No Second-Round Effects From Iran War via Wages",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-20T10:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-20/bundesbank-sees-no-second-round-effects-from-iran-war-via-wages",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
             "market"
           ]
         },
@@ -503,50 +482,52 @@
           "titleJa": "茂木外相 サウジアラビアなど湾岸諸国の経済強じん化を支援"
         },
         {
-          "title": "Latest Oil Market News and Analysis for Aug. 19",
+          "title": "Emerging FX Gains as ‘Bessent Put’ Burnishes Carry Trade Appeal",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-19T22:03:53+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-19/latest-oil-market-news-and-analysis-for-aug-19",
+          "sentimentScore": 0.6,
+          "publishedAt": "2026-08-20T10:47:34+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-20/emerging-fx-gains-as-bessent-put-burnishes-carry-trade-appeal",
           "tags": [
             "commodity",
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "Palm Oil Hits Highest Since 2024 as Biofuels, El Niño Cut Supply",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-08-20T03:33:27+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-20/palm-oil-hits-highest-since-2024-as-biofuels-el-nino-cut-supply",
-          "tags": [
-            "commodity",
+            "fx",
             "market"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": -0.055,
-      "negativeCount": 2,
+      "avgSentiment": 0.134,
+      "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 3,
-      "sourceCount": 3,
-      "itemCount": 6,
+      "neutralCount": 4,
+      "sourceCount": 2,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "UK House Prices Post First Fall This Year, Official Data Show",
-      "topPositiveTitle": "Latest Oil Market News and Analysis for Aug. 19",
+      "topNegativeTitle": "Bundesbank Sees No Second-Round Effects From Iran War via Wages",
+      "topPositiveTitle": "US Starts ‘Economic Warfare’ Operation Against Iran",
       "items": [
         {
-          "title": "UK House Prices Post First Fall This Year, Official Data Show",
+          "title": "Bundesbank Sees No Second-Round Effects From Iran War via Wages",
           "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-08-19T10:09:35+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-19/uk-house-prices-post-first-fall-this-year-official-data-show",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-20T10:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-20/bundesbank-sees-no-second-round-effects-from-iran-war-via-wages",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Riksbank Holds Rate and Restates Chance of Hike This Year",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-20T07:37:05+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-20/riksbank-holds-rate-and-restates-chance-of-hike-this-year",
           "tags": [
             "geopolitical",
             "macro_risk",
@@ -554,32 +535,17 @@
           ]
         },
         {
-          "title": "Sweden Is Set to Keep 2026 Rate Hike on Table: Decision Guide",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-19T10:15:01+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-19/sweden-is-set-to-keep-2026-rate-hike-on-table-decision-guide",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "South African Inflation Surprise Builds Case for Holding Rates",
-          "source": "Bloomberg Economics",
+          "title": "北方領土めぐる日本の立場は高市首相らが明確に 木原官房長官",
+          "source": "NHK 経済",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-19T08:05:13+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-19/south-africa-inflation-cools-making-case-to-keep-rates-on-hold",
+          "publishedAt": "2026-08-20T10:05:19+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20260820de45362",
           "tags": [
             "geopolitical",
-            "macro_risk",
-            "market",
-            "rates"
-          ]
+            "market"
+          ],
+          "titleJa": "北方領土めぐる日本の立場は高市首相らが明確に 木原官房長官"
         },
         {
           "title": "茂木外相 サウジアラビアなど湾岸諸国の経済強じん化を支援",
@@ -596,17 +562,16 @@
           "titleJa": "茂木外相 サウジアラビアなど湾岸諸国の経済強じん化を支援"
         },
         {
-          "title": "高市首相 トルコ大統領と電話会談 ホルムズ海峡の安全航行を",
-          "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-19T11:59:00+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20260819de45142",
+          "title": "US Starts ‘Economic Warfare’ Operation Against Iran",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-20T05:28:24+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-20/us-starts-economic-warfare-operation-against-iran-video",
           "tags": [
             "geopolitical",
             "market"
-          ],
-          "titleJa": "高市首相 トルコ大統領と電話会談 ホルムズ海峡の安全航行を"
+          ]
         }
       ]
     }
@@ -619,7 +584,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 2,
+    "excludedCount": 3,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
