@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-08-20T08:45:06.819611+09:00",
-  "sourceUpdatedAt": "2026-08-19T23:34:15+00:00",
+  "updatedAt": "2026-08-20T13:06:15.158780+09:00",
+  "sourceUpdatedAt": "2026-08-20T03:41:16+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -17,19 +17,33 @@
       "items": []
     },
     "jp_semiconductor": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
+      "avgSentiment": -0.33,
+      "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Japan’s Exports Grow at Fastest Pace Since 2022 on Chips",
+      "topPositiveTitle": "Japan’s Exports Grow at Fastest Pace Since 2022 on Chips",
+      "items": [
+        {
+          "title": "Japan’s Exports Grow at Fastest Pace Since 2022 on Chips",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-20T00:01:38+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-20/japan-s-exports-grow-at-fastest-pace-since-2022-on-cars-chips",
+          "tags": [
+            "fx",
+            "jp_semiconductor",
+            "market"
+          ]
+        }
+      ]
     },
     "us_broad": {
-      "avgSentiment": 0.0,
+      "avgSentiment": -0.035,
       "negativeCount": 1,
       "positiveCount": 1,
       "neutralCount": 0,
@@ -37,7 +51,7 @@
       "itemCount": 2,
       "isStale": false,
       "topNegativeTitle": "Fed Minutes Show Many Officials Said Rate Hikes May Be Needed",
-      "topPositiveTitle": "Stocks Rise as Treasury Steps In to Support Bonds: Markets Wrap",
+      "topPositiveTitle": "Asian Bonds and Stocks Rise After Treasuries Rally: Markets Wrap",
       "items": [
         {
           "title": "Fed Minutes Show Many Officials Said Rate Hikes May Be Needed",
@@ -53,32 +67,44 @@
           ]
         },
         {
-          "title": "Stocks Rise as Treasury Steps In to Support Bonds: Markets Wrap",
+          "title": "Asian Bonds and Stocks Rise After Treasuries Rally: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-18T22:11:07+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-18/stock-market-today-dow-s-p-live-updates",
+          "sentimentScore": 0.6,
+          "publishedAt": "2026-08-19T22:12:30+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-19/stock-market-today-dow-s-p-live-updates",
           "tags": [
-            "dividend",
+            "fx",
             "market",
-            "rates",
             "us_broad"
           ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "China’s AI Boom Is Making Star 50 the Stock Index That Matters",
+      "topPositiveTitle": "China’s AI Boom Is Making Star 50 the Stock Index That Matters",
+      "items": [
+        {
+          "title": "China’s AI Boom Is Making Star 50 the Stock Index That Matters",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-20T02:55:15+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-20/china-s-ai-boom-is-making-the-star-50-the-index-that-matters",
+          "tags": [
+            "market",
+            "us_growth"
+          ]
+        }
+      ]
     },
     "global_broad": {
       "avgSentiment": 0,
@@ -132,10 +158,10 @@
       "items": []
     },
     "dividend": {
-      "avgSentiment": 0.25,
+      "avgSentiment": 0.082,
       "negativeCount": 1,
-      "positiveCount": 3,
-      "neutralCount": 0,
+      "positiveCount": 2,
+      "neutralCount": 1,
       "sourceCount": 2,
       "itemCount": 4,
       "isStale": false,
@@ -155,17 +181,28 @@
           ]
         },
         {
-          "title": "Bets on Long-Bond ETF Spiked a Day Before US Announced Buyback",
+          "title": "SK Hynix May Add Another $130 Billion to Returns, JPMorgan Says",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-20T02:47:41+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-20/sk-hynix-may-add-another-130-billion-to-returns-jpmorgan-says",
+          "tags": [
+            "dividend",
+            "market"
+          ]
+        },
+        {
+          "title": "JPMorgan Team Sees Credibility Risk in Treasury’s Buybacks",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.33,
-          "publishedAt": "2026-08-19T21:29:46+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-19/bets-on-long-bond-etf-spiked-a-day-before-us-announced-buyback",
+          "publishedAt": "2026-08-20T00:59:09+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-20/jpmorgan-team-sees-credibility-risk-in-treasury-s-bond-buybacks",
           "tags": [
             "dividend",
             "market",
-            "rates",
-            "trust"
+            "rates"
           ]
         },
         {
@@ -181,33 +218,19 @@
             "market",
             "rates"
           ]
-        },
-        {
-          "title": "Stocks Rise as Treasury Steps In to Support Bonds: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-18T22:11:07+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-18/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "dividend",
-            "market",
-            "rates",
-            "us_broad"
-          ]
         }
       ]
     },
     "macro_risk": {
-      "avgSentiment": -0.333,
-      "negativeCount": 4,
+      "avgSentiment": -0.334,
+      "negativeCount": 3,
       "positiveCount": 0,
       "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 5,
       "isStale": false,
       "topNegativeTitle": "UK House Prices Post First Fall This Year, Official Data Show",
-      "topPositiveTitle": "Japan’s 20-Year Bond Auction Faces Test as Global Yields Surge",
+      "topPositiveTitle": "Hong Kong’s Student Housing Crisis Spurs Bank Lending Boom",
       "items": [
         {
           "title": "UK House Prices Post First Fall This Year, Official Data Show",
@@ -235,18 +258,6 @@
           ]
         },
         {
-          "title": "Behind the Bond Market Rollercoaster and Bessent’s Treasury Intervention",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-19T22:46:18+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-19/behind-the-bond-market-rollercoaster-and-bessent-s-treasury-intervention",
-          "tags": [
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
           "title": "Sweden Is Set to Keep 2026 Rate Hike on Table: Decision Guide",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
@@ -261,13 +272,26 @@
           ]
         },
         {
-          "title": "Japan’s 20-Year Bond Auction Faces Test as Global Yields Surge",
+          "title": "Hong Kong’s Student Housing Crisis Spurs Bank Lending Boom",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-19T23:01:10+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-19/japan-s-20-year-bond-auction-faces-test-as-global-yields-surge",
+          "publishedAt": "2026-08-19T22:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-19/hong-kong-banks-turn-to-student-housing-as-property-bright-spot",
           "tags": [
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "South African Inflation Surprise Builds Case for Holding Rates",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-19T08:05:13+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-19/south-africa-inflation-cools-making-case-to-keep-rates-on-hold",
+          "tags": [
+            "geopolitical",
             "macro_risk",
             "market",
             "rates"
@@ -276,40 +300,90 @@
       ]
     },
     "fx": {
-      "avgSentiment": 0.33,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "avgSentiment": -0.014,
+      "negativeCount": 2,
+      "positiveCount": 2,
+      "neutralCount": 1,
+      "sourceCount": 2,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Asian Stocks to Gain as US Treasury Supports Bonds: Markets Wrap",
-      "topPositiveTitle": "Asian Stocks to Gain as US Treasury Supports Bonds: Markets Wrap",
+      "topNegativeTitle": "Japan Medium-Term Bonds See Largest Foreign Outflow Since 2006",
+      "topPositiveTitle": "Asian Bonds and Stocks Rise After Treasuries Rally: Markets Wrap",
       "items": [
         {
-          "title": "Asian Stocks to Gain as US Treasury Supports Bonds: Markets Wrap",
+          "title": "Japan Medium-Term Bonds See Largest Foreign Outflow Since 2006",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-08-20T02:55:53+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-20/japan-medium-term-bonds-see-largest-foreign-outflow-since-2006",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        },
+        {
+          "title": "Japan’s Exports Grow at Fastest Pace Since 2022 on Chips",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-20T00:01:38+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-20/japan-s-exports-grow-at-fastest-pace-since-2022-on-cars-chips",
+          "tags": [
+            "fx",
+            "jp_semiconductor",
+            "market"
+          ]
+        },
+        {
+          "title": "RBI’s Net Short Dollar Position ‘Very Manageable,’ Malhotra Says",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-20T01:55:54+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-20/rbi-s-net-short-dollar-position-very-manageable-malhotra-says",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        },
+        {
+          "title": "Carry Trade Allure Puts Hong Kong Dollar Back on 7.85 Watch",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.33,
+          "publishedAt": "2026-08-20T03:28:15+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-20/carry-trade-allure-puts-hong-kong-dollar-back-on-7-85-watch",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        },
+        {
+          "title": "Asian Bonds and Stocks Rise After Treasuries Rally: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.6,
           "publishedAt": "2026-08-19T22:12:30+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-08-19/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "fx",
-            "market"
+            "market",
+            "us_broad"
           ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": 0.122,
+      "avgSentiment": 0.042,
       "negativeCount": 3,
-      "positiveCount": 4,
-      "neutralCount": 4,
+      "positiveCount": 3,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 11,
+      "itemCount": 8,
       "isStale": false,
       "topNegativeTitle": "Fed Minutes Show Many Officials Said Rate Hikes May Be Needed",
-      "topPositiveTitle": "Moderna Surges as Stocks Rise & Long-Term Yields Retreat | Closing Bell",
+      "topPositiveTitle": "Japan 20-Year Bond Sale Sees Firmer Demand Than 12-Month Average",
       "items": [
         {
           "title": "Fed Minutes Show Many Officials Said Rate Hikes May Be Needed",
@@ -351,26 +425,27 @@
           ]
         },
         {
-          "title": "Japan’s 20-Year Bond Auction Faces Test as Global Yields Surge",
-          "source": "Bloomberg Markets",
+          "title": "RBI Panel Watches Inflation as One Member Eyes Hike This Year",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-19T23:01:10+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-19/japan-s-20-year-bond-auction-faces-test-as-global-yields-surge",
+          "publishedAt": "2026-08-19T13:51:15+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-19/rbi-panel-watches-inflation-as-one-member-eyes-hike-this-year",
           "tags": [
-            "macro_risk",
             "market",
             "rates"
           ]
         },
         {
-          "title": "Trump Says Interest Rate System Doesn't Make Sense",
-          "source": "Bloomberg Markets",
+          "title": "South African Inflation Surprise Builds Case for Holding Rates",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-19T20:11:42+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-19/trump-says-interest-rate-system-doesn-t-make-sense-video",
+          "publishedAt": "2026-08-19T08:05:13+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-19/south-africa-inflation-cools-making-case-to-keep-rates-on-hold",
           "tags": [
+            "geopolitical",
+            "macro_risk",
             "market",
             "rates"
           ]
@@ -378,16 +453,28 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.223,
+      "avgSentiment": 0.334,
       "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 2,
+      "positiveCount": 2,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "茂木外相 イエメン和平の重要性訴え \"国家元首”と会談",
-      "topPositiveTitle": "Latest Oil Market News and Analysis for Aug. 19",
+      "topNegativeTitle": "Chinese Refiners Snap Up Iraqi Oil as More Supplies Exit Hormuz",
+      "topPositiveTitle": "Palm Oil Hits Highest Since 2024 as Biofuels, El Niño Cut Supply",
       "items": [
+        {
+          "title": "Chinese Refiners Snap Up Iraqi Oil as More Supplies Exit Hormuz",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-20T02:50:20+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-20/chinese-refiners-snap-up-iraqi-oil-as-more-supplies-exit-hormuz",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
         {
           "title": "茂木外相 イエメン和平の重要性訴え \"国家元首”と会談",
           "source": "NHK 経済",
@@ -427,16 +514,28 @@
             "geopolitical",
             "market"
           ]
+        },
+        {
+          "title": "Palm Oil Hits Highest Since 2024 as Biofuels, El Niño Cut Supply",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-08-20T03:33:27+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-20/palm-oil-hits-highest-since-2024-as-biofuels-el-nino-cut-supply",
+          "tags": [
+            "commodity",
+            "market"
+          ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": -0.047,
+      "avgSentiment": -0.055,
       "negativeCount": 2,
       "positiveCount": 1,
-      "neutralCount": 4,
+      "neutralCount": 3,
       "sourceCount": 3,
-      "itemCount": 7,
+      "itemCount": 6,
       "isStale": false,
       "topNegativeTitle": "UK House Prices Post First Fall This Year, Official Data Show",
       "topPositiveTitle": "Latest Oil Market News and Analysis for Aug. 19",
@@ -520,7 +619,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 1,
+    "excludedCount": 2,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
