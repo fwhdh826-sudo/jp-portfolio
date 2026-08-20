@@ -68,7 +68,7 @@ const SIDEBAR_SECTIONS: { label: string; ids: string[] }[] = [
   { label: 'SYSTEM',    ids: ['T7', 'T8', 'T9'] },
 ]
 
-function DesktopSidebarNav() {
+export function DesktopSidebarNav() {
   const activeTab    = useAppStore(s => s.activeTab)
   const setTab       = useAppStore(s => s.setTab)
   const [isCollapsed, setIsCollapsed] = useState(false)
@@ -98,7 +98,7 @@ function DesktopSidebarNav() {
                   className={`app-sidebar__item${activeTab === tab.id ? ' active' : ''}`}
                   onClick={() => setTab(tab.id)}
                   type="button"
-                  aria-selected={activeTab === tab.id}
+                  aria-current={activeTab === tab.id ? 'page' : undefined}
                   title={tab.title}
                 >
                   <span className="app-sidebar__icon" aria-hidden="true">{tab.icon}</span>

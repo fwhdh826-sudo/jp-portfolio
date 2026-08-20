@@ -30,7 +30,6 @@ import {
 import type { Trust, FundPhase7Map, AppState } from '../../types'
 
 // New component system
-import { MobileBottomActionBar } from '../mobile/MobileBottomActionBar'
 import { DecisionCard }   from '../cards/DecisionCard'
 import { InsightCard }    from '../cards/InsightCard'
 import { MetricCard }     from '../cards/MetricCard'
@@ -1366,16 +1365,6 @@ export function T7_Trust() {
           phase7Map={fundPhase7}
         />
       )}
-
-      {/* ━━━ モバイル下部固定CTA ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
-      <MobileBottomActionBar
-        primaryAction={{
-          label:    isSuppressed ? 'SAFE_MODE / DQ抑制中（シグナル停止中）' : todayEntryCount >= 1 ? '本日実行済み' : trustPlan.shortTermMode.decision === 'BULL' ? 'ブル エントリー済み' : trustPlan.shortTermMode.decision === 'BEAR' ? 'ベア エントリー済み' : '待機（実行なし）',
-          signal:   portfolioSignal,
-          onClick:  handleMarkExecuted,
-          disabled: isSuppressed || todayEntryCount >= 1 || trustPlan.shortTermMode.candidateDirection === 'WAIT',
-        }}
-      />
 
     </div>
   )

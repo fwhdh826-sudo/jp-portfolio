@@ -13,7 +13,7 @@ export function TabNav() {
           className={`tab-nav__item${active === tab.id ? ' active' : ''}`}
           onClick={() => setTab(tab.id)}
           type="button"
-          aria-selected={active === tab.id}
+          aria-current={active === tab.id ? 'page' : undefined}
           title={tab.title}
         >
           <span className="tab-nav__icon" aria-hidden="true">{tab.icon}</span>

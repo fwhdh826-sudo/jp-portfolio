@@ -6,6 +6,18 @@ import type { TabId } from '../types'
 const PRIMARY_DOCK_IDS: TabId[] = ['T0', 'T5', 'T1', 'T7']
 const FOCUSABLE_SELECTOR = 'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
 
+// Tab トラップ境界判定: 現在のfocus indexが境界（Shift+Tabで先頭 / Tabで末尾）にある
+// 場合のみ、折り返し先indexを返す。境界でなければnull（ブラウザ既定のTab移動に委ねる）。
+export function computeDockTabTrapTarget(
+  focusableCount: number,
+  activeIndex: number,
+  shiftKey: boolean,
+): number | null {
+  if (focusableCount === 0) return null
+  if (shiftKey) return activeIndex === 0 ? focusableCount - 1 : null
+  return activeIndex === focusableCount - 1 ? 0 : null
+}
+
 export function BottomDockNav() {
   const activeTab     = useAppStore(s => s.activeTab)
   const setTab        = useAppStore(s => s.setTab)
@@ -38,28 +50,17 @@ export function BottomDockNav() {
       }
       if (e.key !== 'Tab') return
       const focusables = getFocusables()
-      if (focusables.length === 0) return
-      const first = focusables[0]
-      const last  = focusables[focusables.length - 1]
-      if (e.shiftKey) {
-        if (document.activeElement === first) {
-          e.preventDefault()
-          last.focus()
-        }
-      } else {
-        if (document.activeElement === last) {
-          e.preventDefault()
-          first.focus()
-        }
+      const activeIndex = focusables.indexOf(document.activeElement as HTMLElement)
+      const target = computeDockTabTrapTarget(focusables.length, activeIndex, e.shiftKey)
+      if (target !== null) {
+        e.preventDefault()
+        focusables[target]?.focus()
       }
     }
 
     document.addEventListener('keydown', handleKeyDown)
     return () => document.removeEventListener('keydown', handleKeyDown)
   }, [moreOpen, closeSheet])
-
-  // T7では既存MobileBottomActionBarを優先 — Dockを非表示
-  if (activeTab === 'T7') return null
 
   const primaryTabs = TAB_META.filter(t => PRIMARY_DOCK_IDS.includes(t.id))
 
@@ -106,7 +107,7 @@ export function BottomDockNav() {
                 className={`bottom-dock__more-item${activeTab === tab.id ? ' active' : ''}`}
                 onClick={() => handleTabSelect(tab.id)}
                 type="button"
-                aria-selected={activeTab === tab.id}
+                aria-current={activeTab === tab.id ? 'page' : undefined}
               >
                 <span className="bottom-dock__more-icon" aria-hidden="true">{tab.icon}</span>
                 <span className="bottom-dock__more-label">{tab.label}</span>
@@ -124,7 +125,7 @@ export function BottomDockNav() {
             className={`bottom-dock__item${activeTab === tab.id ? ' active' : ''}`}
             onClick={() => handleTabSelect(tab.id)}
             type="button"
-            aria-selected={activeTab === tab.id}
+            aria-current={activeTab === tab.id ? 'page' : undefined}
             title={tab.title}
           >
             <span className="bottom-dock__icon" aria-hidden="true">{tab.icon}</span>

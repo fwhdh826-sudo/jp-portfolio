@@ -1219,7 +1219,7 @@ button:focus-visible, a:focus-visible {
 /* ═══════════════════════════════════════════════════════════
    UI-7-4: Bottom Dock Nav（モバイル専用ナビゲーション）
    <840px で表示 / >=840px では非表示
-   T7 では BottomDockNav を React 側で非表示（既存 MobileBottomActionBar 優先）
+   T9C: 案D固定 — T7でも常にBottomDockを表示する（単一nav系統を維持）
    ═══════════════════════════════════════════════════════════ */
 
 /* ── Dock 本体 ────────────────────────────────────────────── */
@@ -1262,9 +1262,11 @@ button:focus-visible, a:focus-visible {
   border-radius: 0;
 }
 
+/* P1: 色だけに依存しない — font-weightで非色の視覚indicatorを追加 */
 .bottom-dock__item.active {
   color: var(--color-primary, #1d4ed8);
   background: var(--color-primary-tint);
+  font-weight: 700;
 }
 
 .bottom-dock__item:active {
@@ -1318,6 +1320,11 @@ button:focus-visible, a:focus-visible {
 }
 
 .bottom-dock__more-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
   background: none;
   border: none;
   cursor: pointer;
@@ -1358,6 +1365,7 @@ button:focus-visible, a:focus-visible {
 .bottom-dock__more-item.active {
   background: var(--color-primary-tint);
   color: var(--color-primary, #1d4ed8);
+  font-weight: 700;
 }
 
 .bottom-dock__more-icon {
@@ -1379,46 +1387,25 @@ button:focus-visible, a:focus-visible {
 }
 
 /* ── UI-7-5: モバイルでの上部TabNav非表示（Bottom Dockに一本化） ── */
-/* T7のみ例外: Bottom DockがnullになるためTabNavを戻り導線として維持 */
 @media (max-width: 839px) {
   .tab-nav {
     display: none;
   }
-
-  .app-shell[data-tab="T7"] .tab-nav {
-    display: flex;
-  }
 }
 
-/* ── UI-8-2: T7遷移 polish — BottomDock・TabNav フェードイン ── */
-/* display:none↔flex / Reactアンマウントはtransition不可のため、mount時animationで入場のみ緩和 */
-
+/* ── UI-8-2: BottomDock マウント時フェードイン ── */
 @keyframes bottom-dock-enter {
   from { opacity: 0; transform: translateY(8px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes tab-nav-enter {
-  from { opacity: 0; transform: translateY(-4px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-/* T7 → 他タブ: BottomDock マウント時フェードイン */
 .bottom-dock {
   animation: bottom-dock-enter 0.15s ease;
 }
 
-/* 他タブ → T7: TabNav フェードイン（mobile only） */
-@media (max-width: 839px) {
-  .app-shell[data-tab="T7"] .tab-nav {
-    animation: tab-nav-enter 0.15s ease;
-  }
-}
-
 /* prefers-reduced-motion: アニメーション無効化 */
 @media (prefers-reduced-motion: reduce) {
-  .bottom-dock,
-  .app-shell[data-tab="T7"] .tab-nav {
+  .bottom-dock {
     animation: none;
   }
 }
@@ -2132,7 +2119,6 @@ button:focus-visible, a:focus-visible {
 @media (min-width: 1024px) {
   .app-shell-body {
     flex-direction: row;
-    overflow: hidden;
   }
 
   /* 上部TabNavをdesktopで非表示 — sidebarに置き換え */
@@ -2140,24 +2126,29 @@ button:focus-visible, a:focus-visible {
     display: none;
   }
 
-  /* main-content をsidebarと横並びに */
+  /* main-content をsidebarと横並びに。P0-1: overflow-yは新設しない
+     — windowをactual scroll ownerとして維持（main-content/sidebarの
+     nested scrollを作らない）。 */
   .app-shell-body .main-content {
     flex: 1;
     min-width: 0;
-    overflow-y: auto;
     overflow-x: hidden;
   }
 
   /* ── sidebar 本体 ─────────────────────────────────────── */
+  /* P0-1: position:sticky + align-self:flex-start でwindow scroll追従。
+     sidebar独自のoverflow-yは新設しない（nested scroll禁止）。
+     top:56pxはapp-headerの固定高さ(56px)に一致させ重なりを回避。 */
   .app-sidebar {
     display: flex;
     flex-direction: column;
     width: 220px;
     flex-shrink: 0;
+    position: sticky;
+    top: 56px;
+    align-self: flex-start;
     background: var(--color-bg-surface, #fff);
     border-right: 1px solid var(--color-border-subtle, #e8ecf2);
-    overflow-y: auto;
-    overflow-x: hidden;
     padding: 10px 8px 12px;
     transition: width 0.18s ease;
   }
@@ -2190,11 +2181,12 @@ button:focus-visible, a:focus-visible {
   }
 
   /* ── nav item ────────────────────────────────────────────── */
+  /* P1: padding13pxでタッチターゲット高44px以上を確保 */
   .app-sidebar__item {
     display: flex;
     align-items: center;
     gap: 9px;
-    padding: 8px 12px;
+    padding: 13px 12px;
     border: none;
     background: none;
     border-radius: 7px;
@@ -2319,7 +2311,7 @@ button:focus-visible, a:focus-visible {
 
   .app-sidebar--collapsed .app-sidebar__item {
     justify-content: center;
-    padding: 8px 0;
+    padding: 15px 0;
   }
 
   .app-sidebar--collapsed .app-sidebar__footer {
