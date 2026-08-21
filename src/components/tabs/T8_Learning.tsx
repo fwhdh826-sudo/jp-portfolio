@@ -8,6 +8,7 @@ import { useAppStore } from '../../store/useAppStore'
 import { formatDateTime, formatRelativeTime, findHoldingName } from '../../utils/format'
 import type { LearningOutcome } from '../../types'
 import { SparklineChart } from '../charts/SparklineChart'
+import { PageHeader } from '../layout/PageHeader'
 import { colors, radius, spacing } from '../../theme/tokens'
 import { typography } from '../../theme/typography'
 
@@ -324,19 +325,10 @@ export function T8_Learning() {
 
   return (
     <div style={panelStyle}>
+      <PageHeader tabId="T8" />
 
-      {/* ── ヘッダー ── */}
+      {/* ── ヘッダー（P1-5: page titleはPageHeaderへ集約したためpillは削除） ── */}
       <div style={{ display: 'flex', alignItems: 'center', gap: spacing[3], flexWrap: 'wrap' }}>
-        <div style={{
-          padding: `${spacing[1]} ${spacing[3]}`,
-          background: 'var(--color-bg-navy-light, #1a3558)',
-          color: '#e8f0f8',
-          borderRadius: radius.full,
-          ...typography.label,
-          fontWeight: 700,
-        }}>
-          学習 / 検証
-        </div>
         <div style={{ ...typography.caption, color: colors.textSubtle }}>
           予測 vs 実績 · 戦略劣化検知 · 代理別精度
         </div>
@@ -423,9 +415,9 @@ export function T8_Learning() {
             const pnlValues    = learning.outcomes.map(o => o.deltaPnlPct)
             return (
               <div style={{ display: 'flex', flexDirection: 'column', gap: spacing[3], padding: `${spacing[3]} ${spacing[4]}`, background: colors.bgSurface, border: `1px solid ${colors.borderSubtle}`, borderRadius: radius.lg }}>
-                <p style={{ ...typography.label, color: colors.textSubtle }}>
+                <h2 className="section-heading" style={{ color: colors.textSubtle }}>
                   エクイティカーブ（予測報酬推移）
-                </p>
+                </h2>
                 <SparklineChart
                   values={rewardValues}
                   width={300}
@@ -455,9 +447,9 @@ export function T8_Learning() {
 
           {/* ── 戦略劣化シグナル ── */}
           <div>
-            <div style={{ ...typography.label, fontWeight: 700, marginBottom: spacing[2] }}>
+            <h2 className="section-heading" style={{ marginBottom: spacing[2] }}>
               戦略劣化シグナル / 改善候補
-            </div>
+            </h2>
             {learning.summary.driftSignals.length === 0 ? (
               <div style={{ ...typography.caption, color: colors.textMuted }}>
                 現時点では劣化シグナルはありません
@@ -477,18 +469,18 @@ export function T8_Learning() {
 
           {/* ── 代理別（判定別）精度 ── */}
           <div>
-            <div style={{ ...typography.label, fontWeight: 700, marginBottom: spacing[2] }}>
+            <h2 className="section-heading" style={{ marginBottom: spacing[2] }}>
               代理別精度 — 判定タイプ別ヒット率
-            </div>
+            </h2>
             <DecisionAccuracySection byDecision={learning.summary.byDecision} />
           </div>
 
           {/* ── 重み自動微調整の提案 ── */}
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: spacing[2], marginBottom: spacing[2] }}>
-              <span style={{ ...typography.label, fontWeight: 700 }}>
+              <h2 className="section-heading">
                 スコア軸の重み提案
-              </span>
+              </h2>
               {learning.summary.total >= 20 ? (
                 <span style={{
                   ...typography.caption,
@@ -517,9 +509,9 @@ export function T8_Learning() {
 
           {/* ── レジーム別有効性 ── */}
           <div>
-            <div style={{ ...typography.label, fontWeight: 700, marginBottom: spacing[2] }}>
+            <h2 className="section-heading" style={{ marginBottom: spacing[2] }}>
               レジーム別有効性
-            </div>
+            </h2>
             {regimeHasData ? (
               <RegimeEffectivenessSection outcomes={learning.outcomes} />
             ) : (
@@ -531,9 +523,9 @@ export function T8_Learning() {
 
           {/* ── 予測 vs 実績ログ ── */}
           <div>
-            <div style={{ ...typography.label, fontWeight: 700, marginBottom: spacing[2] }}>
+            <h2 className="section-heading" style={{ marginBottom: spacing[2] }}>
               予測 vs 実績ログ（直近30件）
-            </div>
+            </h2>
             <OutcomeLogSection outcomes={learning.outcomes} />
           </div>
 

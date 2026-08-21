@@ -10,6 +10,8 @@ import { formatDateTime } from '../../utils/format'
 import type { HoldingAnalysis, Holding, AgentScore } from '../../types'
 import { CircularGauge } from '../charts/CircularGauge'
 import { colors } from '../../theme/tokens'
+import { SectionHeader } from '../layout/SectionHeader'
+import { PageHeader } from '../layout/PageHeader'
 
 // ─────────────────────────────────────────────────────────────
 // サブコンポーネント
@@ -586,6 +588,7 @@ export function T6_Committee() {
   if (analysis.length === 0) {
     return (
       <div className="tab-panel">
+        <PageHeader tabId="T6" />
         <div className="card">
           <div style={{ textAlign: 'center', padding: '32px 0', color: 'var(--color-text-subtle)', fontSize: 13 }}>
             保有銘柄データを取込み後にAI討論ログが表示されます
@@ -597,6 +600,8 @@ export function T6_Committee() {
 
   return (
     <div className="tab-panel">
+      <PageHeader tabId="T6" />
+
       {/* Supporting Evidence 注記 */}
       <div style={{
         padding: '8px 12px',
@@ -612,17 +617,19 @@ export function T6_Committee() {
         ここに表示されるスコア・参考アクション・リスクゲート参考判定は、正式判断ではなく、根拠確認・反対意見確認・リスク観察のための補助情報です。
       </div>
 
-      {/* ── ヘッダー情報 ── */}
+      {/* ── ヘッダー情報（P0-1/D-18: 未定義の.section-heading-rowを廃止しSectionHeaderへ統一） ── */}
       <article className="card">
-        <div className="section-heading-row">
-          <div>
-            <div className="section-kicker">AI Debate Log / Supporting Evidence</div>
-            <h2 className="section-heading">AI討論ログ</h2>
-          </div>
-          <div style={{ fontSize: 11, color: 'var(--color-text-muted)', textAlign: 'right' }}>
-            <div>8代理討論</div>
-            <div>{system.analysisLastRunAt ? formatDateTime(system.analysisLastRunAt) : '未実行'}</div>
-          </div>
+        <div>
+          <div className="section-kicker">AI Debate Log / Supporting Evidence</div>
+          <SectionHeader
+            title="AI討論ログ"
+            action={
+              <div style={{ fontSize: 11, color: 'var(--color-text-muted)', textAlign: 'right' }}>
+                <div>8代理討論</div>
+                <div>{system.analysisLastRunAt ? formatDateTime(system.analysisLastRunAt) : '未実行'}</div>
+              </div>
+            }
+          />
         </div>
 
         <div style={{ marginTop: 12 }}>
@@ -655,15 +662,15 @@ export function T6_Committee() {
         <>
           {/* [1] 参考見解（結論） */}
           <article className="card" style={{ marginTop: 12 }}>
-            <div className="section-kicker" style={{ marginBottom: 10 }}>
+            <h2 className="section-heading" style={{ marginBottom: 10 }}>
               1 / 参考見解 — {selectedH.code} {selectedH.name}
-            </div>
+            </h2>
             <HeroVerdictPanel a={selected} h={selectedH} isBuySuppressed={isBuySuppressed} />
           </article>
 
           {/* [2] 8代理討論 */}
           <article className="card" style={{ marginTop: 12 }}>
-            <div className="section-kicker" style={{ marginBottom: 12 }}>2 / AI討論ログ — 8代理スコア</div>
+            <h2 className="section-heading" style={{ marginBottom: 12 }}>2 / AI討論ログ — 8代理スコア</h2>
             <div className="agent-grid">
               {selected.debate.agents.map(agent => (
                 <AgentCard key={agent.agent} agent={agent} />
@@ -673,19 +680,19 @@ export function T6_Committee() {
 
           {/* [3] 判断根拠 — Bull / Bear / Action（統合） */}
           <article className="card" style={{ marginTop: 12 }}>
-            <div className="section-kicker" style={{ marginBottom: 12 }}>3 / 判断根拠 — Bull / Bear / Action</div>
+            <h2 className="section-heading" style={{ marginBottom: 12 }}>3 / 判断根拠 — Bull / Bear / Action</h2>
             <ConvictionPanel a={selected} />
           </article>
 
           {/* [4] 条件管理（利確/損切/前提崩れ） */}
           <article className="card" style={{ marginTop: 12 }}>
-            <div className="section-kicker" style={{ marginBottom: 12 }}>4 / 条件管理 — 利確 / 損切 / 前提崩れ</div>
+            <h2 className="section-heading" style={{ marginBottom: 12 }}>4 / 条件管理 — 利確 / 損切 / 前提崩れ</h2>
             <ConditionPanel a={selected} />
           </article>
 
           {/* [5] 7軸スコア */}
           <article className="card" style={{ marginTop: 12 }}>
-            <div className="section-kicker" style={{ marginBottom: 12 }}>5 / 7軸スコア</div>
+            <h2 className="section-heading" style={{ marginBottom: 12 }}>5 / 7軸スコア</h2>
             <SevenAxis a={selected} />
           </article>
         </>

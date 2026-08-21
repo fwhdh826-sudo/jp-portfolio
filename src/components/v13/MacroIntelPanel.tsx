@@ -374,7 +374,7 @@ export function MacroIntelPanel() {
 
       {/* ── ソース稼働状況 ── */}
       <div style={{ borderTop: '1px solid var(--color-border-default, #d0d7e3)', paddingTop: '8px' }}>
-        <div style={{ fontSize: '9px', color: 'var(--color-text-subtle)', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.04em', fontWeight: 600 }}>
+        <div style={{ fontSize: '11px', color: 'var(--color-text-subtle)', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.04em', fontWeight: 600 }}>
           ソース稼働状況
         </div>
         <SourceStatusRow sourcesStatus={sources_status} />

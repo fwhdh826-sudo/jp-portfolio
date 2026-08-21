@@ -19,6 +19,7 @@ import type { AssetClass } from '../../types/universe'
 
 import { MetricCard }    from '../cards/MetricCard'
 import { SectionHeader } from '../layout/SectionHeader'
+import { PageHeader }    from '../layout/PageHeader'
 import { SignalBadge }   from '../badges/SignalBadge'
 import type { Signal }   from '../badges/SignalBadge'
 
@@ -407,8 +408,13 @@ export function T4_IdealPf() {
         opacity:        row.locked ? 0.7 : 1,
       }}>
         <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: spacing[2] }}>
-            <span style={{ ...typography.bodySmall, color: colors.textPrimary, fontWeight: 600 }}>
+          {/* P0-4: 390px以下で銘柄名が1文字縦列化する崩壊を修正。
+              minWidth:0 で行を縮小可能にし、名前はnowrap+ellipsisで通常の横書きを維持する */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: spacing[2], minWidth: 0 }}>
+            <span style={{
+              ...typography.bodySmall, color: colors.textPrimary, fontWeight: 600,
+              minWidth: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
+            }}>
               {row.name}
             </span>
             <SignalBadge signal={recSignal} size="sm" />
@@ -549,15 +555,8 @@ export function T4_IdealPf() {
   return (
     <div style={panelStyle}>
 
-      {/* ── ページタイトル ── */}
-      <div>
-        <div style={{ ...typography.pageTitle, color: colors.textPrimary }}>
-          理想ポートフォリオ / 差分
-        </div>
-        <div style={{ ...typography.caption, color: colors.textSubtle, marginTop: spacing[1] }}>
-          ゼロベース最適配分 vs 現在保有 — 制約込み差分算出
-        </div>
-      </div>
+      {/* ── ページタイトル（P1-5: TAB_META再利用のPageHeaderへ統一） ── */}
+      <PageHeader tabId="T4" />
 
       {/* ── 抑制中参考表示バナー ── */}
       <SuppressedReferenceNotice />

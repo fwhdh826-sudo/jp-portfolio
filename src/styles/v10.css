@@ -286,6 +286,25 @@ small { font-size: var(--font-xs, 11px); }
   border-color: var(--color-sell-border, #fca5a5);
 }
 
+/* ── UI-9D P0-1: セクション内の小見出し（カード内サブラベル。真のセクション見出しはSectionHeaderへ昇格済み） ── */
+.section-kicker {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--color-text-subtle);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* ── UI-9D P0-1/P1-9: T6のカード見出し（SectionHeaderと同じL3トークンで統一） ── */
+.section-heading {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  margin: 0;
+}
+
 /* ── Section Headers（T0-CC-4: T0専用。他タブは stock-detail__section-header を使用） ── */
 .section-header {
   display: flex;
@@ -688,7 +707,7 @@ button:focus-visible, a:focus-visible {
 .indicator-tile--up   { border-top: 3px solid var(--color-buy-border, #34d399); }
 .indicator-tile--down { border-top: 3px solid var(--color-sell-border, #fca5a5); }
 .indicator-tile--flat { border-top: 3px solid var(--color-border-default, #d0d7e3); }
-.indicator-tile__name  { font-size: 9px; font-weight: 600; color: var(--color-text-subtle); text-transform: uppercase; letter-spacing: 0.05em; white-space: nowrap; }
+.indicator-tile__name  { font-size: 11px; font-weight: 600; color: var(--color-text-subtle); text-transform: uppercase; letter-spacing: 0.05em; white-space: nowrap; }
 .indicator-tile__value { font-size: 14px; font-weight: 800; color: var(--color-text-primary); margin: 2px 0 1px; letter-spacing: -0.02em; line-height: 1; }
 .indicator-tile__chg   { font-size: 10px; font-weight: 600; }
 .indicator-tile__chg--up   { color: var(--color-buy-text, #0a6e56); }
@@ -977,7 +996,7 @@ button:focus-visible, a:focus-visible {
 
 /* ── Phase 9: T9 Settings Tab ────────────────────────────────── */
 .settings-section { margin-bottom: 20px; }
-.settings-section__title { font-size: 13px; font-weight: 700; color: var(--color-text-primary); margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--color-border-default); }
+.settings-section__title { font-size: 13px; font-weight: 700; color: var(--color-text-primary); margin: 0 0 10px; padding-bottom: 6px; border-bottom: 1px solid var(--color-border-default); }
 
 .data-source-table { width: 100%; border-collapse: collapse; font-size: 12px; }
 .data-source-table th { text-align: left; font-size: 10px; font-weight: 600; color: var(--color-text-muted); text-transform: uppercase; padding: 4px 8px; border-bottom: 1px solid var(--color-border-default); }
@@ -2035,7 +2054,7 @@ button:focus-visible, a:focus-visible {
   display: flex; flex-direction: column; gap: 5px;
 }
 .mcc-suggest-card__kicker {
-  font-size: 9px; font-weight: 700; text-transform: uppercase;
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
   letter-spacing: 0.08em; color: var(--color-text-muted);
   border-left: 2px solid var(--color-border-default); padding-left: 6px;
 }

@@ -76,10 +76,14 @@ export function DecisionCard({
     minWidth:      0,
   }
 
+  // L2 hero見出し（22/17/14/13/11スケール）。cardTitleはL4用途のため、
+  // ここでは意味的に強いhero表示を弱体化させないよう独自にfontSize/fontWeightを指定する。
   const titleStyle: CSSProperties = {
     ...typography.cardTitle,
-    color:  colors.textPrimary,
-    margin: 0,
+    fontSize:   '17px',
+    fontWeight: 700,
+    color:      colors.textPrimary,
+    margin:     0,
   }
 
   const badgeRowStyle: CSSProperties = {
@@ -152,7 +156,8 @@ export function DecisionCard({
     <div style={cardStyle} role="region" aria-label={`判定: ${decision}`}>
       <div style={headerStyle}>
         <div style={titleGroupStyle}>
-          <p style={titleStyle}>{title}</p>
+          {/* L2: 各タブのhero判定タイトル（T2/T3/T7） */}
+          <h2 style={titleStyle}>{title}</h2>
           <div style={badgeRowStyle}>
             <SignalBadge signal={decision} size="lg" />
             {riskLevel && <RiskBadge level={riskLevel} />}

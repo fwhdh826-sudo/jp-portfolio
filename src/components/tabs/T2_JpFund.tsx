@@ -28,6 +28,7 @@ import {
 import { DecisionCard }  from '../cards/DecisionCard'
 import { MetricCard }    from '../cards/MetricCard'
 import { SectionHeader } from '../layout/SectionHeader'
+import { PageHeader }    from '../layout/PageHeader'
 import { CircularGauge } from '../charts/CircularGauge'
 import { SignalBadge }   from '../badges/SignalBadge'
 import { EmptyState }    from '../shared/EmptyState'
@@ -377,6 +378,7 @@ export function T2_JpFund() {
   if (jpFunds.length === 0) {
     return (
       <div style={panelStyle}>
+        <PageHeader tabId="T2" />
         <EmptyState
           message="国内株投信なし"
           detail="JAPAN_SHORTTERM ポリシーの投信が登録されていません。"
@@ -387,20 +389,10 @@ export function T2_JpFund() {
 
   return (
     <div style={panelStyle}>
+      <PageHeader tabId="T2" />
 
-      {/* ── 資産クラスヘッダー ── */}
+      {/* ── 資産クラスヘッダー（P1-5: page titleはPageHeaderへ集約したためpillは削除、更新時刻のみ残す） ── */}
       <div style={{ display: 'flex', alignItems: 'center', gap: spacing[3], flexWrap: 'wrap' }}>
-        <div style={{
-          padding:      `${spacing[1]} ${spacing[3]}`,
-          background:   colors.jpFundAccentBg,
-          color:        colors.jpFundAccentText,
-          border:       `1px solid ${colors.jpFundAccent}`,
-          borderRadius: radius.full,
-          ...typography.label,
-          fontWeight:   700,
-        }}>
-          国内株投信
-        </div>
         <div style={{ ...typography.caption, color: colors.textSubtle }}>
           超短期回転 — VI・SQ・先物シグナル連動
         </div>

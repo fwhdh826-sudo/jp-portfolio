@@ -35,6 +35,7 @@ import { InsightCard }    from '../cards/InsightCard'
 import { MetricCard }     from '../cards/MetricCard'
 import { ActionPanel }    from '../cards/ActionPanel'
 import { SectionHeader }  from '../layout/SectionHeader'
+import { PageHeader }     from '../layout/PageHeader'
 import { AssetTypeBadge } from '../badges/AssetTypeBadge'
 import { SignalBadge }    from '../badges/SignalBadge'
 import { EmptyState }     from '../shared/EmptyState'
@@ -715,6 +716,7 @@ export function T7_Trust() {
 
   return (
     <div style={panelStyle}>
+      <PageHeader tabId="T7" />
 
       {/* ━━━ 1. Today Decision Hero ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
       <DecisionCard
