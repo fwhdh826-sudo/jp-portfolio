@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-08-21T08:48:41.611540+09:00",
-  "sourceUpdatedAt": "2026-08-20T23:37:42+00:00",
+  "updatedAt": "2026-08-21T13:08:27.089828+09:00",
+  "sourceUpdatedAt": "2026-08-21T04:00:52+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -12,11 +12,11 @@
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Japan’s Inflation Accelerates, Backing BOJ’s Case for Rate Hike",
-      "topPositiveTitle": "Japan’s Inflation Accelerates, Backing BOJ’s Case for Rate Hike",
+      "topNegativeTitle": "Japan’s Inflation Picks Up, Backing BOJ’s Case for Rate Hike",
+      "topPositiveTitle": "Japan’s Inflation Picks Up, Backing BOJ’s Case for Rate Hike",
       "items": [
         {
-          "title": "Japan’s Inflation Accelerates, Backing BOJ’s Case for Rate Hike",
+          "title": "Japan’s Inflation Picks Up, Backing BOJ’s Case for Rate Hike",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.33,
@@ -70,42 +70,15 @@
     },
     "us_broad": {
       "avgSentiment": -0.083,
-      "negativeCount": 3,
-      "positiveCount": 1,
-      "neutralCount": 4,
+      "negativeCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 8,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Asian Stocks Set to Fall as Bonds Resume Decline: Markets Wrap",
-      "topPositiveTitle": "Bill Dudley Warns That US Stocks Are in Bubble Territory",
+      "topNegativeTitle": "Musalem Says Bond Market Pain Not Due to Fed Credibility Concern",
+      "topPositiveTitle": "Asian Bonds Follow Treasuries Lower, Stocks Rise: Markets Wrap",
       "items": [
-        {
-          "title": "Asian Stocks Set to Fall as Bonds Resume Decline: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-20T22:05:51+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-20/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Risk Of Treasuries Selloff Is Growing: Robson",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-20T20:25:00+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-20/risk-of-treasuries-selloff-is-growing-robson-video",
-          "tags": [
-            "dividend",
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
         {
           "title": "Musalem Says Bond Market Pain Not Due to Fed Credibility Concern",
           "source": "Bloomberg Economics",
@@ -121,16 +94,17 @@
           ]
         },
         {
-          "title": "Anthropic Set to Add Citigroup to Top IPO Banks on Mega-Listing",
+          "title": "Asian Bonds Follow Treasuries Lower, Stocks Rise: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-20T21:29:58+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-20/anthropic-set-to-add-citigroup-to-top-ipo-banks-on-mega-listing",
+          "publishedAt": "2026-08-20T22:05:51+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-20/stock-market-today-dow-s-p-live-updates",
           "tags": [
+            "dividend",
+            "fx",
             "market",
-            "us_broad",
-            "us_growth"
+            "us_broad"
           ]
         },
         {
@@ -145,19 +119,31 @@
             "rates",
             "us_broad"
           ]
+        },
+        {
+          "title": "Daly Says Bond Market Showing Trust in Fed’s Policy Stance",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-20T13:05:54+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-20/daly-says-bond-market-showing-trust-in-fed-s-policy-positioning",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": -0.11,
+      "avgSentiment": 0.057,
       "negativeCount": 1,
-      "positiveCount": 0,
-      "neutralCount": 2,
+      "positiveCount": 1,
+      "neutralCount": 1,
       "sourceCount": 2,
       "itemCount": 3,
       "isStale": false,
       "topNegativeTitle": "Musalem Says Bond Market Pain Not Due to Fed Credibility Concern",
-      "topPositiveTitle": "Anthropic Set to Add Citigroup to Top IPO Banks on Mega-Listing",
+      "topPositiveTitle": "Korea Early Exports Extend Gains, Supporting Rate Hike Case",
       "items": [
         {
           "title": "Musalem Says Bond Market Pain Not Due to Fed Credibility Concern",
@@ -174,28 +160,27 @@
           ]
         },
         {
-          "title": "Anthropic Set to Add Citigroup to Top IPO Banks on Mega-Listing",
+          "title": "What Are Kangaroo Bonds? Why Alphabet Is Borrowing Billions in Australia",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-20T21:29:58+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-20/anthropic-set-to-add-citigroup-to-top-ipo-banks-on-mega-listing",
+          "publishedAt": "2026-08-21T03:03:17+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-21/what-are-kangaroo-bonds-why-alphabet-is-borrowing-billions-in-australia",
           "tags": [
             "market",
-            "us_broad",
             "us_growth"
           ]
         },
         {
-          "title": "AI Has Infiltrated the Fed, at Least in Policy Meeting Debates",
+          "title": "Korea Early Exports Extend Gains, Supporting Rate Hike Case",
           "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-20T11:47:34+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-20/ai-has-infiltrated-the-fed-at-least-in-policy-meeting-debates",
+          "sentiment": "positive",
+          "sentimentScore": 0.5,
+          "publishedAt": "2026-08-21T00:00:13+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-21/korea-early-exports-extend-gains-supporting-case-for-more-hikes",
           "tags": [
             "market",
-            "us_broad",
+            "rates",
             "us_growth"
           ]
         }
@@ -214,15 +199,15 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0.208,
       "negativeCount": 0,
-      "positiveCount": 0,
+      "positiveCount": 2,
       "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 2,
+      "itemCount": 4,
       "isStale": false,
       "topNegativeTitle": "Hua Hong, Kingboard, Zijin Gold May Join Hong Kong’s Stock Index",
-      "topPositiveTitle": "Hua Hong, Kingboard, Zijin Gold May Join Hong Kong’s Stock Index",
+      "topPositiveTitle": "China Materials Stocks Emerge From Slump as New Market Leaders",
       "items": [
         {
           "title": "Hua Hong, Kingboard, Zijin Gold May Join Hong Kong’s Stock Index",
@@ -249,6 +234,31 @@
             "gold",
             "market"
           ]
+        },
+        {
+          "title": "Gold Set for Third Weekly Gain on US Treasury Buyback Plans",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-21T00:13:04+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-21/gold-set-for-third-weekly-gain-on-us-treasury-buyback-plans",
+          "tags": [
+            "dividend",
+            "gold",
+            "market"
+          ]
+        },
+        {
+          "title": "China Materials Stocks Emerge From Slump as New Market Leaders",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.5,
+          "publishedAt": "2026-08-21T02:15:44+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-21/china-materials-stocks-emerge-from-slump-as-new-market-leaders",
+          "tags": [
+            "gold",
+            "market"
+          ]
         }
       ]
     },
@@ -265,28 +275,27 @@
       "items": []
     },
     "dividend": {
-      "avgSentiment": 0.0,
-      "negativeCount": 1,
+      "avgSentiment": 0.11,
+      "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 1,
+      "neutralCount": 2,
       "sourceCount": 2,
       "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Risk Of Treasuries Selloff Is Growing: Robson",
-      "topPositiveTitle": "EM Currencies Mixed as Treasury Buyback Lift Proves Short-Lived",
+      "topNegativeTitle": "Asian Bonds Follow Treasuries Lower, Stocks Rise: Markets Wrap",
+      "topPositiveTitle": "Gold Set for Third Weekly Gain on US Treasury Buyback Plans",
       "items": [
         {
-          "title": "Risk Of Treasuries Selloff Is Growing: Robson",
+          "title": "Asian Bonds Follow Treasuries Lower, Stocks Rise: Markets Wrap",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-20T20:25:00+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-20/risk-of-treasuries-selloff-is-growing-robson-video",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-20T22:05:51+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-20/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "dividend",
-            "macro_risk",
+            "fx",
             "market",
-            "rates",
             "us_broad"
           ]
         },
@@ -303,56 +312,42 @@
           ]
         },
         {
-          "title": "EM Currencies Mixed as Treasury Buyback Lift Proves Short-Lived",
+          "title": "Gold Set for Third Weekly Gain on US Treasury Buyback Plans",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.33,
-          "publishedAt": "2026-08-20T10:47:34+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-20/emerging-fx-gains-as-bessent-put-burnishes-carry-trade-appeal",
+          "publishedAt": "2026-08-21T00:13:04+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-21/gold-set-for-third-weekly-gain-on-us-treasury-buyback-plans",
           "tags": [
             "dividend",
-            "fx",
+            "gold",
             "market"
           ]
         }
       ]
     },
     "macro_risk": {
-      "avgSentiment": -0.247,
-      "negativeCount": 3,
+      "avgSentiment": -0.5,
+      "negativeCount": 2,
       "positiveCount": 0,
-      "neutralCount": 1,
+      "neutralCount": 0,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Big Take: Riding The Bond Market Rollercoaster",
-      "topPositiveTitle": "Riksbank Holds Rate and Restates Chance of Hike This Year",
+      "topNegativeTitle": "Inghams Shares Drop as Higher Feed and Fuel Costs Hit Outlook",
+      "topPositiveTitle": "Musalem Says Bond Market Pain Not Due to Fed Credibility Concern",
       "items": [
         {
-          "title": "Big Take: Riding The Bond Market Rollercoaster",
+          "title": "Inghams Shares Drop as Higher Feed and Fuel Costs Hit Outlook",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-20T21:07:36+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-20/big-take-riding-the-bond-market-rollercoaster-video",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-08-21T01:26:26+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-21/inghams-shares-drop-as-higher-feed-and-fuel-costs-hit-outlook",
           "tags": [
+            "geopolitical",
             "macro_risk",
             "market"
-          ]
-        },
-        {
-          "title": "Risk Of Treasuries Selloff Is Growing: Robson",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-20T20:25:00+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-20/risk-of-treasuries-selloff-is-growing-robson-video",
-          "tags": [
-            "dividend",
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
           ]
         },
         {
@@ -368,42 +363,78 @@
             "us_broad",
             "us_growth"
           ]
-        },
-        {
-          "title": "Riksbank Holds Rate and Restates Chance of Hike This Year",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-20T07:37:05+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-20/riksbank-holds-rate-and-restates-chance-of-hike-this-year",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": 0.33,
-      "negativeCount": 0,
+      "avgSentiment": -0.094,
+      "negativeCount": 3,
       "positiveCount": 1,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 3,
+      "sourceCount": 2,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "EM Currencies Mixed as Treasury Buyback Lift Proves Short-Lived",
-      "topPositiveTitle": "EM Currencies Mixed as Treasury Buyback Lift Proves Short-Lived",
+      "topNegativeTitle": "CME CEO Spars With CFTC Chair About Prediction Market Oversight",
+      "topPositiveTitle": "New Bank Indonesia Chief’s Shift From High Yields to Test Rupiah",
       "items": [
         {
-          "title": "EM Currencies Mixed as Treasury Buyback Lift Proves Short-Lived",
+          "title": "CME CEO Spars With CFTC Chair About Prediction Market Oversight",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-20T10:47:34+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-20/emerging-fx-gains-as-bessent-put-burnishes-carry-trade-appeal",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-21T02:15:27+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-21/cme-ceo-spars-with-cftc-chair-about-prediction-market-oversight",
           "tags": [
-            "dividend",
+            "commodity",
+            "fx",
+            "market"
+          ]
+        },
+        {
+          "title": "India’s Mazumdar-Shaw Is On A Mission to Save Lives",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-21T00:06:00+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-21/mazumdar-shaw-s-mission-to-expand-access-to-medicines-video",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        },
+        {
+          "title": "India’s ‘Biotech Queen’ Doubles Down on Drug Access",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-21T00:01:37+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-21/mazumdar-shaw-s-mission-to-expand-access-to-vital-drugs-video",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        },
+        {
+          "title": "India Bond Traders Left Reeling After Surprisingly Hawkish RBI Minutes",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-21T02:34:42+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-08-21/india-bond-traders-left-reeling-after-surprisingly-hawkish-rbi-minutes",
+          "tags": [
+            "fx",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Evergrande Creditors Owed $45 Billion Now Face More Complex Path",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-21T01:25:12+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-21/evergrande-creditors-owed-45-billion-now-face-more-complex-path",
+          "tags": [
             "fx",
             "market"
           ]
@@ -411,18 +442,18 @@
       ]
     },
     "rates": {
-      "avgSentiment": -0.132,
-      "negativeCount": 3,
-      "positiveCount": 1,
-      "neutralCount": 1,
+      "avgSentiment": 0.1,
+      "negativeCount": 1,
+      "positiveCount": 2,
+      "neutralCount": 2,
       "sourceCount": 2,
       "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Japan’s Inflation Accelerates, Backing BOJ’s Case for Rate Hike",
-      "topPositiveTitle": "Bill Dudley Warns That US Stocks Are in Bubble Territory",
+      "topNegativeTitle": "Japan’s Inflation Picks Up, Backing BOJ’s Case for Rate Hike",
+      "topPositiveTitle": "Korea Early Exports Extend Gains, Supporting Rate Hike Case",
       "items": [
         {
-          "title": "Japan’s Inflation Accelerates, Backing BOJ’s Case for Rate Hike",
+          "title": "Japan’s Inflation Picks Up, Backing BOJ’s Case for Rate Hike",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.33,
@@ -435,30 +466,16 @@
           ]
         },
         {
-          "title": "Housing Slump Winners, Losers Emerge From Australia’s Earnings",
+          "title": "India Bond Traders Left Reeling After Surprisingly Hawkish RBI Minutes",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-20T21:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-20/housing-slump-winners-losers-emerge-from-australia-s-earnings",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-21T02:34:42+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-08-21/india-bond-traders-left-reeling-after-surprisingly-hawkish-rbi-minutes",
           "tags": [
+            "fx",
             "market",
             "rates"
-          ]
-        },
-        {
-          "title": "Risk Of Treasuries Selloff Is Growing: Robson",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-20T20:25:00+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-20/risk-of-treasuries-selloff-is-growing-robson-video",
-          "tags": [
-            "dividend",
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
           ]
         },
         {
@@ -475,31 +492,57 @@
           ]
         },
         {
-          "title": "Bill Dudley Warns That US Stocks Are in Bubble Territory",
-          "source": "Bloomberg Markets",
+          "title": "New Bank Indonesia Chief’s Shift From High Yields to Test Rupiah",
+          "source": "Bloomberg Economics",
           "sentiment": "positive",
           "sentimentScore": 0.33,
-          "publishedAt": "2026-08-20T20:55:25+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-20/bill-dudley-warns-that-us-stocks-are-in-bubble-territory-video",
+          "publishedAt": "2026-08-21T01:11:52+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-21/new-bank-indonesia-chief-s-shift-from-high-yields-to-test-rupiah",
+          "tags": [
+            "fx",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Korea Early Exports Extend Gains, Supporting Rate Hike Case",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.5,
+          "publishedAt": "2026-08-21T00:00:13+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-21/korea-early-exports-extend-gains-supporting-case-for-more-hikes",
           "tags": [
             "market",
             "rates",
-            "us_broad"
+            "us_growth"
           ]
         }
       ]
     },
     "commodity": {
       "avgSentiment": 0.0,
-      "negativeCount": 1,
-      "positiveCount": 1,
+      "negativeCount": 2,
+      "positiveCount": 2,
       "neutralCount": 1,
-      "sourceCount": 2,
-      "itemCount": 3,
+      "sourceCount": 3,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Exxon Warns Kazakhstan’s Top Oil Field to Peak Within Years",
-      "topPositiveTitle": "Latest Oil Market News and Analysis for Aug. 21",
+      "topNegativeTitle": "CME CEO Spars With CFTC Chair About Prediction Market Oversight",
+      "topPositiveTitle": "New Zealand Trade Gap Balloons as Fuel Drives Imports to Record",
       "items": [
+        {
+          "title": "CME CEO Spars With CFTC Chair About Prediction Market Oversight",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-21T02:15:27+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-21/cme-ceo-spars-with-cftc-chair-about-prediction-market-oversight",
+          "tags": [
+            "commodity",
+            "fx",
+            "market"
+          ]
+        },
         {
           "title": "Exxon Warns Kazakhstan’s Top Oil Field to Peak Within Years",
           "source": "Bloomberg Markets",
@@ -526,6 +569,18 @@
           "titleJa": "茂木外相 イエメン和平の重要性訴え \"国家元首”と会談"
         },
         {
+          "title": "New Zealand Trade Gap Balloons as Fuel Drives Imports to Record",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-20T23:52:09+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-20/new-zealand-trade-gap-balloons-as-fuel-drives-imports-to-record",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
+        {
           "title": "Latest Oil Market News and Analysis for Aug. 21",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
@@ -541,16 +596,29 @@
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.083,
-      "negativeCount": 0,
+      "avgSentiment": -0.085,
+      "negativeCount": 1,
       "positiveCount": 1,
-      "neutralCount": 3,
+      "neutralCount": 2,
       "sourceCount": 3,
       "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Russian Sales Bring Gold Reserves to Their Lowest Since 2020",
+      "topNegativeTitle": "Inghams Shares Drop as Higher Feed and Fuel Costs Hit Outlook",
       "topPositiveTitle": "Latest Oil Market News and Analysis for Aug. 21",
       "items": [
+        {
+          "title": "Inghams Shares Drop as Higher Feed and Fuel Costs Hit Outlook",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-08-21T01:26:26+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-21/inghams-shares-drop-as-higher-feed-and-fuel-costs-hit-outlook",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
         {
           "title": "Russian Sales Bring Gold Reserves to Their Lowest Since 2020",
           "source": "Bloomberg Economics",
@@ -561,19 +629,6 @@
           "tags": [
             "geopolitical",
             "gold",
-            "market"
-          ]
-        },
-        {
-          "title": "Riksbank Holds Rate and Restates Chance of Hike This Year",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-20T07:37:05+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-20/riksbank-holds-rate-and-restates-chance-of-hike-this-year",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
             "market"
           ]
         },
@@ -614,7 +669,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 4,
+    "excludedCount": 5,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
