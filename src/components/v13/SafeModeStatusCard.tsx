@@ -1,6 +1,7 @@
 import type { SafeModeSnapshot, TierAViolationsSnapshot, TierAAlertsSnapshot } from '../../types'
 import type { TierAT1Violation } from '../../domain/constraints/tierAT1'
 import { computeSafeModeDataQuality } from '../../store/selectors'
+import { formatSignedPct } from '../../utils/format'
 import { colors, radius, spacing } from '../../theme/tokens'
 import { typography } from '../../theme/typography'
 import type { CSSProperties } from 'react'
@@ -232,7 +233,7 @@ export function SafeModeStatusCard({ safeMode, safeModeSource, safeModeLastCheck
                 style={violationTagStyle}
                 title={v.locked ? 'ロック中でも警告表示（自動売却なし）' : undefined}
               >
-                {v.name}（{v.code}） {v.pnlPct.toFixed(1)}%{v.locked ? ' 🔒' : ''}
+                {v.name}（{v.code}） {formatSignedPct(v.pnlPct)}{v.locked ? ' 🔒' : ''}
               </span>
             ))}
           </div>

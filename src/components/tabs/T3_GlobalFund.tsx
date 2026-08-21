@@ -8,7 +8,7 @@ import { useMemo } from 'react'
 import { useIsMobile } from '../../hooks/useIsMobile'
 import { useAppStore } from '../../store/useAppStore'
 import { selectGlobalFunds, selectGlobalFundTotalEval, selectMarketDataQuality, selectEffectiveSafeModeActive } from '../../store/selectors'
-import { formatJPYAuto, formatRelativeTime } from '../../utils/format'
+import { formatJPYAuto, formatRelativeTime, formatPt, formatSignedJPY, formatSignedPct } from '../../utils/format'
 
 import { DecisionCard }  from '../cards/DecisionCard'
 import { MetricCard }    from '../cards/MetricCard'
@@ -198,6 +198,8 @@ export function T3_GlobalFund() {
     targetValue,
     currentRatio,
     targetRatio,
+    diffValue,
+    diffRatio,
     accentColor = colors.globalFundAccent,
   }: {
     label: string
@@ -205,14 +207,15 @@ export function T3_GlobalFund() {
     targetValue: number
     currentRatio: number
     targetRatio: number
+    diffValue: number
+    diffRatio: number
     accentColor?: string
   }) {
-    const diff     = targetValue - currentValue
     const maxRatio = Math.max(currentRatio, targetRatio, 0.01)
     const currentPct = (currentRatio / maxRatio) * 100
     const targetPct  = (targetRatio  / maxRatio) * 100
     const isOver     = currentRatio > targetRatio + 0.01
-    const ptDiff     = (currentRatio - targetRatio) * 100
+    const ptDiff     = diffRatio * 100
 
     return (
       <div style={{ padding: `${spacing[3]} ${spacing[5]}`, borderBottom: `1px solid ${colors.borderSubtle}` }}>
@@ -225,14 +228,14 @@ export function T3_GlobalFund() {
               color: isOver ? colors.waitText : Math.abs(ptDiff) < 1 ? colors.textMuted : colors.buyText,
               fontWeight: 700,
             }}>
-              {ptDiff >= 0 ? '+' : ''}{ptDiff.toFixed(1)}pt
+              {formatPt(ptDiff)}
             </span>
             <span style={{
               ...typography.caption,
-              color:      diff > 0 ? colors.buy : diff < 0 ? colors.sell : colors.textSubtle,
+              color:      diffValue > 0 ? colors.buy : diffValue < 0 ? colors.sell : colors.textSubtle,
               fontWeight: 600,
             }}>
-              {diff >= 0 ? '+' : ''}{formatJPYAuto(diff)}
+              {formatSignedJPY(diffValue)}
             </span>
           </div>
         </div>
@@ -319,7 +322,7 @@ export function T3_GlobalFund() {
             {fund.name}
           </div>
           <div style={{ ...typography.caption, color: colors.textMuted, marginTop: spacing[0.5] }}>
-            口座: {fund.account} / 信託報酬: {fund.cost.toFixed(4)}% / 構成比: {weight.toFixed(1)}%
+            口座: {fund.account} / 信託報酬: {fund.cost.toFixed(3)}% / 構成比: {weight.toFixed(1)}%
           </div>
         </div>
 
@@ -332,8 +335,8 @@ export function T3_GlobalFund() {
         }}>
           {[
             { label: '評価額',   val: formatJPYAuto(fund.eval),                                         col: colors.textPrimary },
-            { label: '損益率',   val: `${fund.pnlPct >= 0 ? '+' : ''}${fund.pnlPct.toFixed(2)}%`,       col: pnlColor(fund.pnlPct) },
-            { label: '当日',     val: `${fund.dayPct >= 0 ? '+' : ''}${fund.dayPct.toFixed(2)}%`,        col: pnlColor(fund.dayPct) },
+            { label: '損益率',   val: formatSignedPct(fund.pnlPct),       col: pnlColor(fund.pnlPct) },
+            { label: '当日',     val: formatSignedPct(fund.dayPct),        col: pnlColor(fund.dayPct) },
             { label: 'スコア',   val: `${fund.score}`,
               col: fund.score >= 60 ? colors.buy : fund.score >= 40 ? colors.wait : colors.sell },
           ].map(({ label, val, col }) => (
@@ -482,7 +485,7 @@ export function T3_GlobalFund() {
           title="目標額（海外）"
           value={classTarget ? formatJPYAuto(classTarget.targetValue) : '—'}
           change={classTarget ? {
-            value:    formatJPYAuto(classTarget.diffValue),
+            value:    formatSignedJPY(classTarget.diffValue),
             positive: classTarget.diffValue > 0,
           } : undefined}
         />
@@ -490,7 +493,7 @@ export function T3_GlobalFund() {
           title="目標額（ゴールド）"
           value={goldTarget ? formatJPYAuto(goldTarget.targetValue) : '—'}
           change={goldTarget ? {
-            value:    formatJPYAuto(goldTarget.diffValue),
+            value:    formatSignedJPY(goldTarget.diffValue),
             positive: goldTarget.diffValue > 0,
           } : undefined}
         />
@@ -514,6 +517,8 @@ export function T3_GlobalFund() {
                 targetValue={classTarget.targetValue}
                 currentRatio={classTarget.currentRatio}
                 targetRatio={classTarget.targetRatio}
+                diffValue={classTarget.diffValue}
+                diffRatio={classTarget.diffRatio}
                 accentColor={colors.globalFundAccent}
               />
             )}
@@ -524,6 +529,8 @@ export function T3_GlobalFund() {
                 targetValue={goldTarget.targetValue}
                 currentRatio={goldTarget.currentRatio}
                 targetRatio={goldTarget.targetRatio}
+                diffValue={goldTarget.diffValue}
+                diffRatio={goldTarget.diffRatio}
                 accentColor={colors.gold}
               />
             )}
@@ -678,7 +685,7 @@ export function T3_GlobalFund() {
                     <div style={{ textAlign: 'right' }}>
                       <div style={{ ...typography.caption, color: colors.textMuted }}>損益率</div>
                       <div style={{ ...typography.bodySmall, color: pnlColor(fund.pnlPct), fontWeight: 700 }}>
-                        {fund.pnlPct >= 0 ? '+' : ''}{fund.pnlPct.toFixed(2)}%
+                        {formatSignedPct(fund.pnlPct)}
                       </div>
                     </div>
                     <div style={{ textAlign: 'right' }}>

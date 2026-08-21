@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { useAppStore } from '../store/useAppStore'
 import { selectIsLoading, selectTotalEval, selectTotalPnl } from '../store/selectors'
-import { formatDateTime, formatJPYAuto } from '../utils/format'
+import { formatDateTime, formatJPYAuto, formatPt, formatSignedJPY, formatSignedPct } from '../utils/format'
 import {
   createPortfolioLoadSingleFlight,
   executePortfolioLoadUiFlow,
@@ -10,10 +10,6 @@ import {
   type PortfolioLoadFeedback,
 } from './portfolioLoadUi'
 import type { PortfolioLoadResult } from '../store/portfolioOperationResult'
-
-function pct(v: number, digits = 2) {
-  return `${v >= 0 ? '+' : ''}${v.toFixed(digits)}%`
-}
 
 export async function executeStatusBarRefreshFlow(
   refresh: () => Promise<PortfolioLoadResult>,
@@ -259,25 +255,25 @@ export function StatusBar() {
     {
       label: '日経平均',
       value: market.nikkei.toLocaleString('ja-JP'),
-      delta: pct(market.nikkeiChgPct),
+      delta: formatSignedPct(market.nikkeiChgPct),
       up: market.nikkeiChgPct >= 0,
     },
     {
       label: 'VIX',
       value: market.vix.toFixed(1),
-      delta: macro ? pct(macro.vixChg, 2) : '—',
+      delta: macro ? formatPt(macro.vixChg, 2) : '—',
       up: market.vix < 20,
     },
     {
       label: 'ドル円',
-      value: macro ? macro.usdjpy.toFixed(2) : '—',
-      delta: macro ? pct(macro.usdjpyChgPct) : '—',
+      value: macro ? `${macro.usdjpy.toFixed(2)}円` : '—',
+      delta: macro ? formatSignedPct(macro.usdjpyChgPct) : '—',
       up: true,
     },
     {
       label: '評価額',
       value: formatJPYAuto(totalEval),
-      delta: `${totalPnl >= 0 ? '+' : ''}${formatJPYAuto(totalPnl)}`,
+      delta: formatSignedJPY(totalPnl),
       up: totalPnl >= 0,
     },
   ]

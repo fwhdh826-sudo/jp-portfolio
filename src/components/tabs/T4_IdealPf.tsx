@@ -6,7 +6,7 @@
 import { useMemo } from 'react'
 import { useIsMobile } from '../../hooks/useIsMobile'
 import { useAppStore } from '../../store/useAppStore'
-import { formatJPYAuto } from '../../utils/format'
+import { formatJPYAuto, formatPt, formatSignedJPY, formatSignedPct } from '../../utils/format'
 import { selectMarketDataQuality, selectEffectiveCashAssumptions, selectEffectiveSafeModeActive } from '../../store/selectors'
 import {
   buildIdealPfPlan,
@@ -207,8 +207,8 @@ export function T4_IdealPf() {
     const maxRatio   = Math.max(cat.currentRatio, cat.targetRatio, 0.01)
     const currentPct = Math.min(100, Math.round((cat.currentRatio / maxRatio) * 100))
     const targetPct  = Math.min(100, Math.round((cat.targetRatio  / maxRatio) * 100))
-    const ptDiff     = (cat.currentRatio - cat.targetRatio) * 100 // %pt差分（表示専用）
-    const ptDiffStr  = `${ptDiff >= 0 ? '+' : ''}${ptDiff.toFixed(1)}pt`
+    const ptDiff     = cat.diffRatio * 100 // %pt差分（authority=idealAllocation.diffRatio準拠）
+    const ptDiffStr  = formatPt(ptDiff)
     const barAccent  = isOver ? colors.wait : accent.accent
 
     return (
@@ -287,7 +287,7 @@ export function T4_IdealPf() {
               ...typography.caption, fontWeight: 700, color: colors.textSubtle,
               width: '44px', textAlign: 'right', flexShrink: 0,
             }}>
-              {(cat.targetRatio * 100).toFixed(0)}%
+              {(cat.targetRatio * 100).toFixed(1)}%
             </span>
           </div>
         </div>
@@ -311,7 +311,7 @@ export function T4_IdealPf() {
             color:      diffColor(cat.diffValue),
             fontWeight: 700,
           }}>
-            {cat.diffValue >= 0 ? '+' : ''}{formatJPYAuto(cat.diffValue)}
+            {formatSignedJPY(cat.diffValue)}
           </span>
         </div>
       </div>
@@ -356,7 +356,7 @@ export function T4_IdealPf() {
             <SignalBadge signal={recSignal} size="sm" />
           </div>
           <div style={{ ...typography.caption, color: colors.textSubtle, marginLeft: spacing[4], marginTop: spacing[0.5] }}>
-            スコア {row.score} / EV {row.ev.toFixed(3)}
+            スコア {row.score} / EV {formatSignedPct(row.ev * 100, 1)}
             {isBuySuppressed && (
               <span style={{ color: colors.waitText, fontWeight: 600 }}> — SAFE_MODE/DQ抑制中: 買付は参考停止</span>
             )}
@@ -374,7 +374,7 @@ export function T4_IdealPf() {
           {[
             { label: '現在',  val: formatJPYAuto(row.currentValue), col: colors.textPrimary },
             { label: '目標',  val: formatJPYAuto(row.targetValue),  col: colors.textPrimary },
-            { label: '差分',  val: `${row.diffValue >= 0 ? '+' : ''}${formatJPYAuto(row.diffValue)}`,
+            { label: '差分',  val: formatSignedJPY(row.diffValue),
               col: diffColor(row.diffValue) },
           ].map(({ label, val, col }) => (
             <div key={label} style={{ textAlign: 'right' }}>
@@ -441,7 +441,7 @@ export function T4_IdealPf() {
           {[
             { label: '現在',  val: formatJPYAuto(row.currentValue), col: colors.textPrimary },
             { label: '目標',  val: formatJPYAuto(row.targetValue),  col: colors.textPrimary },
-            { label: '差分',  val: `${row.diffValue >= 0 ? '+' : ''}${formatJPYAuto(row.diffValue)}`,
+            { label: '差分',  val: formatSignedJPY(row.diffValue),
               col: diffColor(row.diffValue) },
           ].map(({ label, val, col }) => (
             <div key={label} style={{ textAlign: 'right' }}>
@@ -540,7 +540,7 @@ export function T4_IdealPf() {
         <DiffCol
           label="減らす" items={toSell}
           colorText={colors.sellText} colorBg={colors.sellBg} colorBorder={colors.sellBorder}
-          sign="−"
+          sign="-"
         />
         <DiffCol
           label="維持/許容" items={toHold}
@@ -589,10 +589,10 @@ export function T4_IdealPf() {
                   <span className="t4-hero-legend__name">{CLASS_LABEL[cat.class]}</span>
                   <span className="t4-hero-legend__pct">{(cat.currentRatio * 100).toFixed(1)}%</span>
                   <span className="t4-hero-legend__arrow">→</span>
-                  <span className="t4-hero-legend__target">{(cat.targetRatio * 100).toFixed(0)}%</span>
+                  <span className="t4-hero-legend__target">{(cat.targetRatio * 100).toFixed(1)}%</span>
                   {diff !== 0 && (
                     <span className="t4-hero-legend__diff" style={{ color: diffColor(diff) }}>
-                      {diff > 0 ? '+' : ''}{formatJPYAuto(diff)}
+                      {formatSignedJPY(diff)}
                     </span>
                   )}
                 </div>
@@ -606,12 +606,12 @@ export function T4_IdealPf() {
       <div className="t4-diff-row">
         <div className="t4-diff-cell t4-diff-cell--buy">
           <div className="t4-diff-cell__label">要追加</div>
-          <div className="t4-diff-cell__value">+{formatJPYAuto(totalToBuy)}</div>
+          <div className="t4-diff-cell__value">{formatSignedJPY(totalToBuy)}</div>
           <div className="t4-diff-cell__sub">BUY 対象資産クラス</div>
         </div>
         <div className="t4-diff-cell t4-diff-cell--sell">
           <div className="t4-diff-cell__label">要削減</div>
-          <div className="t4-diff-cell__value">−{formatJPYAuto(totalToSell)}</div>
+          <div className="t4-diff-cell__value">{formatSignedJPY(-totalToSell)}</div>
           <div className="t4-diff-cell__sub">SELL 対象資産クラス</div>
         </div>
       </div>
