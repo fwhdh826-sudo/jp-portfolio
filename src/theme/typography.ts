@@ -11,7 +11,7 @@
  *
  * Example (inline style):
  *   <h1 style={typography.pageTitle}>...</h1>
- *   <span style={typography.metricLarge}>¥1,234,567</span>
+ *   <span style={typography.metricLarge}>1,234,567円</span>
  */
 
 import type { CSSProperties } from 'react'

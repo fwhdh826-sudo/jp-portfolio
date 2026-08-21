@@ -8,7 +8,7 @@ import { useState } from 'react'
 import { useIsMobile } from '../../hooks/useIsMobile'
 import { useAppStore } from '../../store/useAppStore'
 import { selectMarketDataQuality, selectEffectiveSafeModeActive, selectCandidateDecisionSynthesis } from '../../store/selectors'
-import { formatJPYAuto } from '../../utils/format'
+import { formatJPYAuto, formatSignedPct } from '../../utils/format'
 import { SectionHeader } from '../layout/SectionHeader'
 import { PageHeader } from '../layout/PageHeader'
 import { EmptyState } from '../shared/EmptyState'
@@ -590,7 +590,7 @@ function StockList({
                       fontSize: '13px', fontWeight: 700,
                       color: h.pnlPct > 0 ? colors.buy : h.pnlPct < 0 ? colors.sell : colors.textSubtle,
                     }}>
-                      {h.pnlPct >= 0 ? '+' : ''}{h.pnlPct.toFixed(1)}%
+                      {formatSignedPct(h.pnlPct)}
                     </div>
                   </div>
                   <div style={{ textAlign: 'right' }}>
@@ -739,7 +739,7 @@ function StockList({
                     <div style={{ ...cellBase, background: sc.bg, color: sc.text }}>{rowScore}</div>
                     {/* 損益 */}
                     <div style={{ ...cellBase, background: pnl.bg, color: pnl.text }}>
-                      {row.pnlPct >= 0 ? '+' : ''}{row.pnlPct.toFixed(1)}%
+                      {formatSignedPct(row.pnlPct)}
                     </div>
                     {/* RSI */}
                     <div style={{ ...cellBase, background: rs.bg, color: rs.text }}>{row.rsi.toFixed(0)}</div>
@@ -1058,7 +1058,7 @@ function StockDetail({ code, onBack }: { code: string; onBack: () => void }) {
     },
     {
       label: '安全性 — D/Eレシオ',
-      value: h.de.toFixed(1),
+      value: `${h.de.toFixed(1)}倍`,
       evalLabel: h.de <= 0.5 ? '無借金' : h.de <= 1.0 ? '健全' : h.de <= 3.0 ? '標準' : '高レバ',
       reason: h.de <= 0.5 ? '財務体質が非常に堅固' : h.de <= 1.0 ? '健全な財務バランスを維持' : h.de <= 3.0 ? '業種平均的な負債水準' : '高負債比率、金利上昇リスクあり',
       tone: (h.de <= 1.0 ? 'positive' : h.de > 3.0 ? 'negative' : 'neutral') as 'positive' | 'neutral' | 'negative',
@@ -1118,9 +1118,9 @@ function StockDetail({ code, onBack }: { code: string; onBack: () => void }) {
     },
     {
       label: 'サポート / レジスタンス',
-      state: h.currentPrice ? `現値 ${h.currentPrice.toLocaleString()}円` : `評価額 ${formatJPYAuto(h.eval)}`,
-      evalStr: `目標 ${h.target.toLocaleString()}円`,
-      reason: `アラートライン ${h.alert.toLocaleString()}円。このラインを下回ったら損切り検討`,
+      state: h.currentPrice ? `現値 ${h.currentPrice.toLocaleString('ja-JP')}円` : `評価額 ${formatJPYAuto(h.eval)}`,
+      evalStr: `目標 ${h.target.toLocaleString('ja-JP')}円`,
+      reason: `アラートライン ${h.alert.toLocaleString('ja-JP')}円。このラインを下回ったら損切り検討`,
       signal: 'neutral' as const,
     },
     {
@@ -1132,7 +1132,7 @@ function StockDetail({ code, onBack }: { code: string; onBack: () => void }) {
     },
     {
       label: '需給',
-      state: `含み損益 ${h.pnlPct >= 0 ? '+' : ''}${h.pnlPct.toFixed(1)}%`,
+      state: `含み損益 ${formatSignedPct(h.pnlPct)}`,
       evalStr: h.vol && h.pnlPct > 5 ? '良好' : h.pnlPct < -10 ? '悪化' : '中立',
       reason: h.pnlPct > 20 ? '大きな含み益あり。一部利確の検討も' : h.pnlPct < -15 ? '含み損拡大。損切りラインを要確認' : '需給は比較的安定',
       signal: (h.vol && h.pnlPct > 5 ? 'bull' : h.pnlPct < -10 ? 'bear' : 'neutral') as 'bull' | 'bear' | 'neutral',
@@ -1186,7 +1186,7 @@ function StockDetail({ code, onBack }: { code: string; onBack: () => void }) {
             )}
             {h.pnlPct <= TIER_A_T1_STOP_LOSS_PCT && (
               <span style={{ display: 'inline-block', fontSize: '11px', fontWeight: 700, marginTop: '6px', marginLeft: locked ? spacing[1.5] : 0, padding: `${spacing[1]} ${spacing[2]}`, background: colors.sellBg, color: colors.sellText, border: `1px solid ${colors.sellBorder}`, borderRadius: radius.sm }}>
-                🔴 TierA T1警告 — 含み損{h.pnlPct.toFixed(1)}%
+                🔴 TierA T1警告 — 含み損{formatSignedPct(h.pnlPct)}
               </span>
             )}
           </div>
@@ -1204,7 +1204,7 @@ function StockDetail({ code, onBack }: { code: string; onBack: () => void }) {
               <div className="stock-detail__meta-item">
                 <div className="stock-detail__meta-label">株価（現在値）</div>
                 <div className="stock-detail__meta-value stock-detail__meta-price">
-                  {h.currentPrice.toLocaleString()}
+                  {h.currentPrice.toLocaleString('ja-JP')}
                 </div>
               </div>
             )}
@@ -1226,9 +1226,9 @@ function StockDetail({ code, onBack }: { code: string; onBack: () => void }) {
         <div style={{ display: 'flex', gap: spacing[5], flexWrap: 'wrap', marginTop: spacing[3], paddingTop: spacing[3], borderTop: `1px solid ${colors.borderSubtle}` }}>
           {[
             { label: '評価額',     val: formatJPYAuto(h.eval),     col: undefined },
-            { label: '損益率',     val: `${h.pnlPct >= 0 ? '+' : ''}${h.pnlPct.toFixed(2)}%`, col: h.pnlPct > 0 ? colors.buy : h.pnlPct < 0 ? colors.sell : undefined },
+            { label: '損益率',     val: formatSignedPct(h.pnlPct), col: h.pnlPct > 0 ? colors.buy : h.pnlPct < 0 ? colors.sell : undefined },
             { label: '3Mモメンタム', val: `${h.mom3m >= 0 ? '+' : ''}${h.mom3m.toFixed(1)}%`, col: h.mom3m > 0 ? colors.buy : colors.sell },
-            { label: 'EV',         val: h.ev.toFixed(3),            col: h.ev > 0 ? colors.buy : colors.sell },
+            { label: 'EV',         val: formatSignedPct(h.ev * 100, 1), col: h.ev > 0 ? colors.buy : colors.sell },
             { label: '信頼度',     val: a ? `${(a.confidence * 100).toFixed(0)}%` : '—', col: undefined },
           ].map(({ label, val, col }) => (
             <div key={label}>
@@ -1255,7 +1255,7 @@ function StockDetail({ code, onBack }: { code: string; onBack: () => void }) {
         {h.pnlPct <= TIER_A_T1_STOP_LOSS_PCT && (
           <div style={{ marginTop: spacing[3], padding: `${spacing[2]} ${spacing[3]}`, background: colors.sellBg, border: `1px solid ${colors.sellBorder}`, borderRadius: radius.md }}>
             <div style={{ fontSize: '12px', fontWeight: 700, color: colors.sellText, marginBottom: spacing[1] }}>
-              🔴 TierA T1警告 — 含み損 {h.pnlPct.toFixed(1)}%（-40%以下）
+              🔴 TierA T1警告 — 含み損 {formatSignedPct(h.pnlPct)}（-40%以下）
             </div>
             <div style={{ fontSize: '12px', color: colors.sellText }}>
               強制売却ルール対象。ただし最終判断は人間が行う（自動売却は行いません）。
@@ -1367,7 +1367,7 @@ function StockDetail({ code, onBack }: { code: string; onBack: () => void }) {
             { label: 'PBR',     value: h.pbr > 0 ? `${h.pbr.toFixed(2)}倍` : '—', eval: h.pbr > 0 && h.pbr < 1 ? '割安' : h.pbr <= 1.5 ? '低PBR' : h.pbr <= 3 ? '標準' : '割高', tone: h.pbr > 0 && h.pbr < 1.5 ? 'positive' : h.pbr > 4 ? 'negative' : 'neutral' },
             { label: 'ROE',     value: `${h.roe}%`,  eval: h.roe >= 15 ? '高収益' : h.roe >= 8 ? '標準' : '低収益', tone: h.roe >= 15 ? 'positive' : h.roe >= 8 ? 'neutral' : 'negative' },
             { label: 'EPS成長',  value: `${h.epsG >= 0 ? '+' : ''}${h.epsG}%`, eval: h.epsG >= 15 ? '高成長' : h.epsG >= 5 ? '増益' : h.epsG >= 0 ? '横ばい' : '減益', tone: h.epsG >= 5 ? 'positive' : h.epsG >= 0 ? 'neutral' : 'negative' },
-            { label: 'D/Eレシオ', value: h.de.toFixed(1), eval: h.de <= 0.5 ? '無借金' : h.de <= 1.0 ? '健全' : h.de <= 3.0 ? '標準' : '高レバ', tone: h.de <= 1.0 ? 'positive' : h.de > 3.0 ? 'negative' : 'neutral' },
+            { label: 'D/Eレシオ', value: `${h.de.toFixed(1)}倍`, eval: h.de <= 0.5 ? '無借金' : h.de <= 1.0 ? '健全' : h.de <= 3.0 ? '標準' : '高レバ', tone: h.de <= 1.0 ? 'positive' : h.de > 3.0 ? 'negative' : 'neutral' },
             { label: '配当成長',  value: `${h.divG >= 0 ? '+' : ''}${h.divG}%`, eval: h.divG >= 8 ? '高成長還元' : h.divG >= 3 ? '安定成長' : h.divG >= 0 ? '横ばい' : '減配', tone: h.divG >= 3 ? 'positive' : h.divG < 0 ? 'negative' : 'neutral' },
           ].map(({ label, value, eval: evalLabel, tone }) => {
             const toneColor = tone === 'positive' ? colors.buy : tone === 'negative' ? colors.sell : colors.textMuted
@@ -1390,7 +1390,7 @@ function StockDetail({ code, onBack }: { code: string; onBack: () => void }) {
             <div className="price-summary-item">
               <div className="price-summary-item__label">株価（現在値）</div>
               <div className="price-summary-item__value">
-                {h.currentPrice.toLocaleString()}
+                {h.currentPrice.toLocaleString('ja-JP')}
                 <span style={{ fontSize: '11px', fontWeight: 500, marginLeft: '3px' }}>円</span>
               </div>
             </div>
@@ -1402,7 +1402,7 @@ function StockDetail({ code, onBack }: { code: string; onBack: () => void }) {
           <div className="price-summary-item">
             <div className="price-summary-item__label">損益率</div>
             <div className="price-summary-item__value" style={{ fontSize: '16px', color: h.pnlPct > 0 ? colors.buy : h.pnlPct < 0 ? colors.sell : colors.textPrimary }}>
-              {h.pnlPct >= 0 ? '+' : ''}{h.pnlPct.toFixed(2)}%
+              {formatSignedPct(h.pnlPct)}
             </div>
           </div>
           <div className="price-summary-item">
@@ -1437,7 +1437,7 @@ function StockDetail({ code, onBack }: { code: string; onBack: () => void }) {
           <div>
             <div className="action-plan-item__label">目標株価</div>
             <div className="action-plan-item__value" style={{ color: colors.buy }}>
-              {h.target.toLocaleString()}
+              {h.target.toLocaleString('ja-JP')}
               <span style={{ fontSize: '12px', fontWeight: 500, marginLeft: '3px' }}>円</span>
             </div>
             {h.currentPrice != null && h.currentPrice > 0 && (
@@ -1449,7 +1449,7 @@ function StockDetail({ code, onBack }: { code: string; onBack: () => void }) {
           <div>
             <div className="action-plan-item__label">損切ライン（アラート）</div>
             <div className="action-plan-item__value" style={{ color: colors.sell }}>
-              {h.alert.toLocaleString()}
+              {h.alert.toLocaleString('ja-JP')}
               <span style={{ fontSize: '12px', fontWeight: 500, marginLeft: '3px' }}>円</span>
             </div>
             {h.currentPrice != null && h.currentPrice > 0 && (
@@ -1699,7 +1699,7 @@ function StockDetail({ code, onBack }: { code: string; onBack: () => void }) {
           <SectionHeader title="現在PFでの位置づけ" />
           <div style={{ ...cardStyle, padding: `${spacing[3]} ${spacing[4]}` }}>
             <div style={{ fontSize: '12px', color: colors.textPrimary, lineHeight: '1.6' }}>
-              評価額 {formatJPYAuto(h.eval)} / 損益 {h.pnlPct >= 0 ? '+' : ''}{h.pnlPct.toFixed(1)}%
+              評価額 {formatJPYAuto(h.eval)} / 損益 {formatSignedPct(h.pnlPct)}
             </div>
             <div style={{ fontSize: '12px', color: colors.textSubtle, marginTop: spacing[1], lineHeight: '1.6' }}>
               {displayDecision === 'BUY'

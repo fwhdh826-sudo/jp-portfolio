@@ -23,7 +23,7 @@ import {
   selectCandidateDecisionSynthesis,
 } from '../../store/selectors'
 import { selectExecutableDeployableCash } from '../../store/allocationConsumerSelectors'
-import { formatJPYAuto, formatDateTime, formatRelativeTime } from '../../utils/format'
+import { formatJPYAuto, formatDateTime, formatRelativeTime, formatPt, formatSignedPct, formatSignedJPY } from '../../utils/format'
 import { resolveNewsDisplayText, NEWS_DISPLAY_LIMITS } from '../../utils/newsDisplay'
 import { selectIsStale, selectMarketDataQuality } from '../../store/selectors'
 import { Phase8SummaryCard } from '../phase8/Phase8SummaryCard'
@@ -748,46 +748,42 @@ function MarketCard() {
   const macro  = useAppStore(s => s.macro)
   const sqCalendar = useAppStore(s => s.sqCalendar)
 
-  function delta(v: number, digits = 2) {
-    return `${v >= 0 ? '+' : ''}${v.toFixed(digits)}`
-  }
-
   const items = [
     {
       label: '日経平均',
       value: market.nikkei.toLocaleString('ja-JP'),
-      sub:   `${delta(market.nikkeiChgPct)}%`,
+      sub:   formatSignedPct(market.nikkeiChgPct),
       up:    market.nikkeiChgPct >= 0,
     },
     {
       label: 'VIX（恐怖指数）',
       value: market.vix.toFixed(1),
-      sub:   macro ? `${delta(macro.vixChg)}pt` : '—',
+      sub:   macro ? formatPt(macro.vixChg, 2) : '—',
       up:    market.vix < 20,
       warn:  market.vix >= 25,
     },
     {
       label: 'ドル円',
       value: macro ? `${macro.usdjpy.toFixed(2)}円` : '—',
-      sub:   macro ? `${delta(macro.usdjpyChgPct)}%` : '—',
+      sub:   macro ? formatSignedPct(macro.usdjpyChgPct) : '—',
       up:    macro ? macro.usdjpyChgPct >= 0 : true,
     },
     {
       label: 'S&P500',
       value: macro ? macro.sp500.toLocaleString('ja-JP') : '—',
-      sub:   macro ? `${delta(macro.sp500ChgPct)}%` : '—',
+      sub:   macro ? formatSignedPct(macro.sp500ChgPct) : '—',
       up:    macro ? macro.sp500ChgPct >= 0 : true,
     },
     {
       label: 'NASDAQ',
       value: macro ? macro.nasdaq.toLocaleString('ja-JP') : '—',
-      sub:   macro ? `${delta(macro.nasdaqChgPct)}%` : '—',
+      sub:   macro ? formatSignedPct(macro.nasdaqChgPct) : '—',
       up:    macro ? macro.nasdaqChgPct >= 0 : true,
     },
     {
       label: '日経225 VI',
       value: macro ? macro.nikkeiVI.toFixed(1) : '—',
-      sub:   macro ? `${delta(macro.nikkeiVIChg)}pt` : '—',
+      sub:   macro ? formatPt(macro.nikkeiVIChg, 2) : '—',
       up:    macro ? macro.nikkeiVI < 20 : true,
       warn:  macro ? macro.nikkeiVI >= 25 : false,
     },
@@ -800,13 +796,13 @@ function MarketCard() {
     {
       label: '金（ゴールド）',
       value: macro ? `$${macro.gold.toLocaleString('ja-JP')}/oz` : '—',
-      sub:   macro ? `${delta(macro.goldChgPct)}%` : '—',
+      sub:   macro ? formatSignedPct(macro.goldChgPct) : '—',
       up:    macro ? macro.goldChgPct >= 0 : true,
     },
     {
       label: 'NY原油',
-      value: macro ? `$${macro.nyCrude.toFixed(1)}` : '—',
-      sub:   macro ? `${delta(macro.nyCrudeChgPct)}%` : '—',
+      value: macro ? `$${macro.nyCrude.toFixed(1)}/bbl` : '—',
+      sub:   macro ? formatSignedPct(macro.nyCrudeChgPct) : '—',
       up:    macro ? macro.nyCrudeChgPct >= 0 : true,
     },
   ]
@@ -912,8 +908,7 @@ function AllocationGapStrip() {
   )
 
   const isShort   = maxGap.diffRatio > 0  // 不足（現在 < 目標）
-  const ptDiff    = (maxGap.diffRatio * 100).toFixed(1)
-  const sign      = isShort ? '+' : ''
+  const ptDiffStr = formatPt(maxGap.diffRatio * 100)
   const direction = isShort ? '不足' : '過剰'
   const mainColor = isShort ? colors.buyText   : colors.waitText
   const bgColor   = isShort ? colors.buyBg     : colors.waitBg
@@ -940,9 +935,9 @@ function AllocationGapStrip() {
     >
       <span style={{ color: colors.textSubtle, flexShrink: 0 }}>最大乖離</span>
       <span style={{ fontWeight: 700, color: colors.textPrimary, flexShrink: 0 }}>{maxGap.label}</span>
-      <span style={{ fontWeight: 700, color: mainColor, flexShrink: 0 }}>{sign}{ptDiff}pt</span>
+      <span style={{ fontWeight: 700, color: mainColor, flexShrink: 0 }}>{ptDiffStr}</span>
       <span style={{ color: colors.textMuted, flexShrink: 0 }}>
-        現在{(maxGap.currentRatio * 100).toFixed(1)}% → 目標{(maxGap.targetRatio * 100).toFixed(0)}%
+        現在{(maxGap.currentRatio * 100).toFixed(1)}% → 目標{(maxGap.targetRatio * 100).toFixed(1)}%
       </span>
       <span style={{ marginLeft: 'auto', flexShrink: 0 }}>
         <span style={{
@@ -982,7 +977,7 @@ function AssetSnapshotMini() {
       <span className="asset-snapshot-bar__sep">·</span>
       <span className="asset-snapshot-bar__label">含み損益</span>
       <span className={`asset-snapshot-bar__pnl ${totalPnl >= 0 ? 'up' : 'down'}`}>
-        {totalPnl >= 0 ? '+' : ''}{formatJPYAuto(totalPnl)}
+        {formatSignedJPY(totalPnl)}
       </span>
     </div>
   )
@@ -1111,7 +1106,7 @@ function AssetSummaryCard() {
           <div className="asset-summary__label">📈 個別株</div>
           <div className="asset-summary__value">{formatJPYAuto(totalEval)}</div>
           <div className="asset-summary__sub">
-            含み{totalPnl >= 0 ? '+' : ''}{formatJPYAuto(totalPnl)}{ratio(totalEval)}
+            含み{formatSignedJPY(totalPnl)}{ratio(totalEval)}
           </div>
           <div className="asset-summary__sub">{holdings.length}銘柄保有</div>
         </div>
@@ -1204,7 +1199,7 @@ function PortfolioDonutCard() {
         <div className="dash-total-label">合計評価額（内訳）</div>
         <div className="dash-total-value">{formatJPYAuto(total)}</div>
         <div className="dash-total-sub">
-          含み損益 {totalPnl >= 0 ? '+' : ''}{formatJPYAuto(totalPnl)}
+          含み損益 {formatSignedJPY(totalPnl)}
           &nbsp;·&nbsp;{holdings.length}銘柄 + 投信{trust.length}本
         </div>
       </div>
@@ -1260,7 +1255,7 @@ function HoldingPreviewCard() {
             <div className="dash-preview-item__name">{h.name}</div>
             <div className="dash-preview-item__eval">{formatJPYAuto(h.eval)}</div>
             <div className={`dash-preview-item__pnl dash-preview-item__pnl--${h.pnlPct >= 0 ? 'pos' : 'neg'}`}>
-              {h.pnlPct >= 0 ? '+' : ''}{h.pnlPct.toFixed(2)}%
+              {formatSignedPct(h.pnlPct)}
             </div>
             {/* P4-A134: SELL+ロック中はロックバッジを優先表示（3ヶ月制約中に「売り」指示と誤認させない） */}
             {h.decision === 'SELL' && isSellLocked(h)
@@ -1304,7 +1299,7 @@ function FundPreviewCard() {
             <div className="dash-preview-spacer" />
             <div className="dash-preview-item__eval">{formatJPYAuto(t.eval)}</div>
             <div className={`dash-preview-item__pnl dash-preview-item__pnl--${t.dayPct >= 0 ? 'pos' : 'neg'}`}>
-              {t.dayPct >= 0 ? '+' : ''}{t.dayPct.toFixed(2)}%
+              {formatSignedPct(t.dayPct)}
             </div>
             <SignBadge decision={suppressBuyDecision(t.decision, isBuySuppressed)} />
           </div>
@@ -1387,7 +1382,7 @@ function IdealPfCard() {
           const isOver     = c.diff < -1  // 現在 > 目標（過剰）
           const accentColor = CLASS_BAR_COLOR[c.name] ?? '#94a3b8'
           const barColor    = isOver ? colors.wait : accentColor
-          const ptDiffStr   = `${c.diff >= 0 ? '+' : ''}${c.diff.toFixed(1)}pt`
+          const ptDiffStr   = formatPt(c.diff)
           const ptColor     = c.diff > 3 ? colors.buyText : c.diff < -3 ? colors.waitText : colors.textMuted
 
           return (
@@ -1402,7 +1397,7 @@ function IdealPfCard() {
                   <span style={{ fontSize: '11px', fontWeight: 700, color: ptColor }}>{ptDiffStr}</span>
                   {Math.abs(c.diffValue) >= 10000 && (
                     <span style={{ fontSize: '10px', color: c.diffValue > 0 ? colors.buyText : colors.waitText }}>
-                      {c.diffValue > 0 ? '+' : ''}{formatJPYAuto(c.diffValue)}
+                      {formatSignedJPY(c.diffValue)}
                     </span>
                   )}
                 </div>
@@ -1424,7 +1419,7 @@ function IdealPfCard() {
                   <div style={{ height: '100%', width: `${targetPct}%`, background: `${accentColor}55`, borderRadius: radius.full, border: `1px solid ${accentColor}77` }} />
                 </div>
                 <span style={{ fontSize: '10px', color: colors.textSubtle, width: '36px', textAlign: 'right', flexShrink: 0 }}>
-                  {c.targetRatio.toFixed(0)}%
+                  {c.targetRatio.toFixed(1)}%
                 </span>
               </div>
             </div>
@@ -1439,7 +1434,7 @@ function IdealPfCard() {
             ? <div className="home-pf-col__empty">なし</div>
             : addCandidates.map(c => (
               <div key={c.name} className="home-pf-col__item">
-                {c.label} (+{c.diff.toFixed(1)}%)
+                {c.label} ({formatPt(c.diff)})
               </div>
             ))
           }
@@ -1456,7 +1451,7 @@ function IdealPfCard() {
             ? <div className="home-pf-col__empty">なし</div>
             : reduceCandidates.map(c => (
               <div key={c.name} className="home-pf-col__item">
-                {c.label} ({c.diff.toFixed(1)}%)
+                {c.label} ({formatPt(c.diff)})
               </div>
             ))
           }
@@ -1603,9 +1598,9 @@ function TopCandidatesCard() {
                   <span style={{ color: colors.textMuted }}>
                     確信度 <span style={{ fontWeight: 800, color: colors.buyText }}>{Math.round(a.confidence * 100)}%</span>
                   </span>
-                  {a.ev > 0 && (
+                  {a.ev >= 0 && (
                     <span style={{ color: colors.textMuted }}>
-                      EV <span style={{ fontWeight: 700, color: colors.buyText }}>+{(a.ev * 100).toFixed(1)}%</span>
+                      EV <span style={{ fontWeight: 700, color: colors.buyText }}>{formatSignedPct(a.ev * 100, 1)}</span>
                     </span>
                   )}
                 </div>
@@ -1640,9 +1635,9 @@ function TopCandidatesCard() {
                   <span style={{ color: colors.textMuted }}>
                     確信度 <span style={{ fontWeight: 800, color: colors.sellText }}>{Math.round(a.confidence * 100)}%</span>
                   </span>
-                  {a.ev < 0 && (
+                  {a.ev <= 0 && (
                     <span style={{ color: colors.textMuted }}>
-                      EV <span style={{ fontWeight: 700, color: colors.sellText }}>{(a.ev * 100).toFixed(1)}%</span>
+                      EV <span style={{ fontWeight: 700, color: colors.sellText }}>{formatSignedPct(a.ev * 100, 1)}</span>
                     </span>
                   )}
                 </div>

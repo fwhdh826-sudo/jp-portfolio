@@ -7,7 +7,7 @@ import { useMemo, useState, useEffect, useRef } from 'react'
 import { colors } from '../../theme/tokens'
 import { useAppStore } from '../../store/useAppStore'
 import { selectBuyList, selectIsLoading } from '../../store/selectors'
-import { formatRelativeTime, formatDateTime } from '../../utils/format'
+import { formatRelativeTime, formatDateTime, formatSignedPct, formatPt } from '../../utils/format'
 import { resolveNewsDisplayText, limitNewsPerTicker, NEWS_DISPLAY_LIMITS } from '../../utils/newsDisplay'
 import type { NewsItem } from '../../types'
 import type { MarketNewsItemV13 } from '../../types/news'
@@ -123,9 +123,9 @@ function IndicatorTile({
 
   const fmt = (n: number) => n.toLocaleString('ja-JP', { minimumFractionDigits: decimals, maximumFractionDigits: decimals })
   const chgStr = chgPct !== null && chgPct !== undefined
-    ? `${chgPct >= 0 ? '+' : ''}${chgPct.toFixed(2)}%`
+    ? formatSignedPct(chgPct)
     : chg !== null && chg !== undefined
-      ? `${chg >= 0 ? '+' : ''}${chg.toFixed(2)}`
+      ? formatPt(chg, 2)
       : ''
 
   return (
@@ -186,9 +186,9 @@ function MarketIndexCard({
   const fmt    = (n: number) =>
     n.toLocaleString('ja-JP', { minimumFractionDigits: decimals, maximumFractionDigits: decimals })
   const chgStr = chgPct !== null && chgPct !== undefined
-    ? `${chgPct >= 0 ? '+' : ''}${chgPct.toFixed(2)}%`
+    ? formatSignedPct(chgPct)
     : chgAbs !== null && chgAbs !== undefined
-      ? `${chgAbs >= 0 ? '+' : ''}${chgAbs.toFixed(2)}`
+      ? formatPt(chgAbs, 2)
       : null
   const badge = isUp ? '↑ 上昇' : isDown ? '↓ 下落' : '→ 横ばい'
   return (
@@ -582,9 +582,9 @@ export function T5_News() {
   // ── UI-9-2: 今日の観察（観察・示唆のみ、売買推奨なし）──
   const observations = useMemo(() => {
     const vixLv = market.vix < 15 ? '低リスク水準' : market.vix < 20 ? '通常水準' : market.vix < 25 ? '警戒水準' : '高リスク水準'
-    const nkChgStr = `${market.nikkeiChgPct >= 0 ? '+' : ''}${market.nikkeiChgPct.toFixed(2)}%`
+    const nkChgStr = formatSignedPct(market.nikkeiChgPct)
     const sp5Str = macro?.sp500ChgPct !== undefined
-      ? `S&P500 ${macro.sp500ChgPct >= 0 ? '+' : ''}${macro.sp500ChgPct.toFixed(2)}%`
+      ? `S&P500 ${formatSignedPct(macro.sp500ChgPct)}`
       : null
     const rsiLv = market.rsi14 > 70 ? '過熱圏に接近' : market.rsi14 > 60 ? '上昇継続' : market.rsi14 > 50 ? 'トレンド圏' : '調整圏の可能性'
     const macdLv = market.macd === 'golden' ? 'MACD陽転（短期上昇モメンタム）' : 'MACD陰転（短期下降モメンタム）'

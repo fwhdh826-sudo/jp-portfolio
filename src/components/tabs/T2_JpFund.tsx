@@ -13,7 +13,7 @@ import {
   selectT2AllocationProjection,
   type T2AllocationProjection,
 } from '../../store/allocationConsumerSelectors'
-import { formatJPYAuto, formatRelativeTime } from '../../utils/format'
+import { formatJPYAuto, formatRelativeTime, formatSignedPct, formatPt } from '../../utils/format'
 import {
   buildTrustPortfolioPlan,
   type ConditionStatus,
@@ -104,10 +104,12 @@ function sqLabel(days: number): { label: string; color: string } {
 
 // フロー方向
 function flowLabel(flow: number): string {
-  if (flow > 500)  return `外国人買い越し ${flow.toFixed(0)}億円`
-  if (flow > 0)    return `外国人小幅買い ${flow.toFixed(0)}億円`
-  if (flow > -500) return `外国人小幅売り ${Math.abs(flow).toFixed(0)}億円`
-  return                 `外国人売り越し ${Math.abs(flow).toFixed(0)}億円`
+  const sign   = flow > 0 ? '+' : flow < 0 ? '-' : ''
+  const amount = `${sign}${Math.abs(flow).toFixed(0)}億円`
+  if (flow > 500)  return `外国人買い越し ${amount}`
+  if (flow > 0)    return `外国人小幅買い ${amount}`
+  if (flow > -500) return `外国人小幅売り ${amount}`
+  return                 `外国人売り越し ${amount}`
 }
 
 export interface T2AllocationPanelProps {
@@ -557,7 +559,7 @@ export function T2_JpFund() {
           title="勝率(30d)"
           value={
             trackingStats.trackedDays > 0
-              ? `${(trackingStats.winRate * 100).toFixed(0)}%`
+              ? `${(trackingStats.winRate * 100).toFixed(1)}%`
               : '—'
           }
           change={
@@ -831,8 +833,10 @@ export function T2_JpFund() {
               color: ctx.nikkeiDirection > 0 ? colors.buy : ctx.nikkeiDirection < 0 ? colors.sell : colors.textSubtle },
             { label: '先物方向性',       value: ctx.nikkeiFuturesDirection > 0 ? '先物買い優勢' : ctx.nikkeiFuturesDirection < 0 ? '先物売り優勢' : '中立',
               color: ctx.nikkeiFuturesDirection > 0 ? colors.buy : ctx.nikkeiFuturesDirection < 0 ? colors.sell : colors.textSubtle },
-            { label: 'ボラ乖離(vs昨日)', value: ctx.volatilitySpreadChg > 0 ? `+${ctx.volatilitySpreadChg.toFixed(2)} 上昇` : `${ctx.volatilitySpreadChg.toFixed(2)} 低下`,
-              color: ctx.volatilitySpreadChg > 0 ? colors.sell : colors.buy },
+            { label: 'ボラ乖離(vs昨日)', value: ctx.volatilitySpreadChg > 0 ? `${formatPt(ctx.volatilitySpreadChg, 2)} 上昇`
+                : ctx.volatilitySpreadChg < 0 ? `${formatPt(ctx.volatilitySpreadChg, 2)} 低下`
+                : `${formatPt(ctx.volatilitySpreadChg, 2)} 変化なし`,
+              color: ctx.volatilitySpreadChg > 0 ? colors.sell : ctx.volatilitySpreadChg < 0 ? colors.buy : colors.textSubtle },
             { label: '本日執行数',       value: `${ctx.todayEntryCount} 回 / 上限 ${mode.entryLimitPerDay} 回`,
               color: ctx.todayEntryCount >= mode.entryLimitPerDay ? colors.sell : colors.textPrimary },
           ].map(({ label, value, color }) => (
@@ -896,8 +900,8 @@ export function T2_JpFund() {
               }}>
                 {[
                   { label: '評価額',   val: formatJPYAuto(fund.eval),                                         col: colors.textPrimary },
-                  { label: '損益率',   val: `${fund.pnlPct >= 0 ? '+' : ''}${fund.pnlPct.toFixed(2)}%`,       col: pnlColor(fund.pnlPct) },
-                  { label: '当日騰落', val: `${fund.dayPct >= 0 ? '+' : ''}${fund.dayPct.toFixed(2)}%`,        col: pnlColor(fund.dayPct) },
+                  { label: '損益率',   val: formatSignedPct(fund.pnlPct),       col: pnlColor(fund.pnlPct) },
+                  { label: '当日騰落', val: formatSignedPct(fund.dayPct),        col: pnlColor(fund.dayPct) },
                   { label: 'スコア',   val: `${fund.score}`,
                     col: fund.score >= 60 ? colors.buy : fund.score >= 40 ? colors.wait : colors.sell },
                 ].map(({ label, val, col }) => (
@@ -989,11 +993,11 @@ export function T2_JpFund() {
                     <div style={{ ...cellBase, background: sc.bg, color: sc.text }}>{fund.score}</div>
                     {/* 損益率 */}
                     <div style={{ ...cellBase, background: pnl.bg, color: pnl.text }}>
-                      {fund.pnlPct >= 0 ? '+' : ''}{fund.pnlPct.toFixed(1)}%
+                      {formatSignedPct(fund.pnlPct)}
                     </div>
                     {/* 当日 */}
                     <div style={{ ...cellBase, background: day.bg, color: day.text }}>
-                      {fund.dayPct >= 0 ? '+' : ''}{fund.dayPct.toFixed(2)}%
+                      {formatSignedPct(fund.dayPct)}
                     </div>
                     {/* 費用 */}
                     <div style={{ ...cellBase, background: ct.bg, color: ct.text }}>

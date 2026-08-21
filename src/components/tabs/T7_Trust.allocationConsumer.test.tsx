@@ -179,8 +179,8 @@ const TRUST_EVAL_ARM_YEN_INVENTORY = [
   },
   {
     owner: 'portfolio unrealized profit/loss',
-    fixtureSource: 'all three pnlPct fields are zero',
-    token: `+${formatJPYAuto(0)}`,
+    fixtureSource: 'all three pnlPct fields are zero（UI-9E: 0は符号なし, R2.4）',
+    token: formatJPYAuto(0),
     count: 1,
   },
   {

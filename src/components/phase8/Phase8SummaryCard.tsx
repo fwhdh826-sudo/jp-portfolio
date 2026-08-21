@@ -69,7 +69,7 @@ function formatDrift(v: number): string {
   if (!Number.isFinite(v)) return '—'
   const abs = Math.abs(v).toFixed(4)
   if (v > 0) return `+${abs}`
-  if (v < 0) return `−${abs}`
+  if (v < 0) return `-${abs}`
   return abs
 }
 
@@ -790,7 +790,7 @@ export function Phase8SummaryCard() {
                 ? formatDrift(oppConstraintReturnGap)
                 : '—'}
             </span>
-            <span style={metricCardNoteStyle}>年率推定・ideal − constrained</span>
+            <span style={metricCardNoteStyle}>年率推定・ideal - constrained</span>
           </div>
           <div style={metricCardStyle}>
             <span style={metricCardLabelStyle}>drift_return_gap</span>
@@ -803,7 +803,7 @@ export function Phase8SummaryCard() {
                 ? formatDrift(oppDriftReturnGap)
                 : '—'}
             </span>
-            <span style={metricCardNoteStyle}>年率推定・frontier − current</span>
+            <span style={metricCardNoteStyle}>年率推定・frontier - current</span>
           </div>
           <div style={metricCardStyle}>
             <span style={metricCardLabelStyle}>weighted_expected_return</span>

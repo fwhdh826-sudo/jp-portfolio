@@ -5,7 +5,7 @@
  */
 import { useMemo } from 'react'
 import { useAppStore } from '../../store/useAppStore'
-import { formatDateTime, formatRelativeTime, findHoldingName } from '../../utils/format'
+import { formatDateTime, formatRelativeTime, findHoldingName, formatPt } from '../../utils/format'
 import type { LearningOutcome } from '../../types'
 import { SparklineChart } from '../charts/SparklineChart'
 import { PageHeader } from '../layout/PageHeader'
@@ -140,9 +140,7 @@ function WeightSuggestionSection({
         const base = BASE_WEIGHTS[key]
         const sugg = suggested[key] ?? base
         const delta = sugg - base
-        const deltaStr = delta === 0 ? '±0'
-          : delta > 0 ? `+${(delta * 100).toFixed(1)}pt`
-          : `${(delta * 100).toFixed(1)}pt`
+        const deltaStr = formatPt(delta * 100)
         const deltaClass = delta > 0.005 ? 'weight-row__delta--up'
           : delta < -0.005 ? 'weight-row__delta--down'
           : 'weight-row__delta--flat'
@@ -260,7 +258,7 @@ function OutcomeLogSection({ outcomes }: { outcomes: LearningOutcome[] }) {
         const resultCls = o.result === 'win' ? 'outcome-row__result--win' : o.result === 'loss' ? 'outcome-row__result--loss' : 'outcome-row__result--flat'
         const resultLabel = o.result === 'win' ? '◎' : o.result === 'loss' ? '✗' : '△'
         const regimeLabel = o.regime === 'bull' ? '強気' : o.regime === 'bear' ? '弱気' : o.regime === 'neutral' ? '中立' : '—'
-        const deltaStr = o.deltaPnlPct >= 0 ? `+${o.deltaPnlPct.toFixed(2)}%` : `${o.deltaPnlPct.toFixed(2)}%`
+        const deltaStr = formatPt(o.deltaPnlPct, 2)
 
         const holdingName = findHoldingName(o.code, holdings)
 
@@ -433,10 +431,10 @@ export function T8_Learning() {
                   width={300}
                   height={56}
                   tone={learning.summary.avgReward > 0 ? 'buy' : 'sell'}
-                  label="損益変化率（%）"
+                  label="損益変化率（pt）"
                   showZeroLine
                   showLastValue
-                  formatValue={v => `${v >= 0 ? '+' : ''}${v.toFixed(2)}%`}
+                  formatValue={v => formatPt(v, 2)}
                 />
                 <p style={{ ...typography.caption, color: colors.textMuted }}>
                   直近{learning.outcomes.length}件の予測vs実績ログから生成。時系列は予測順。

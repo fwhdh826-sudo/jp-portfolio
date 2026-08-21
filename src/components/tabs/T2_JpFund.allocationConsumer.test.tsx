@@ -436,8 +436,8 @@ function expectedUnavailableYenMultiset(legacy: LegacyMonetaryFixture): string[]
   return [
     // Holding-row owner: Trust.eval -> formatJPYAuto at T2_JpFund.tsx:891.
     formatJPYAuto(legacy.legacyFundTotal),
-    // Market-context owner: FlowData.foreignNet -> toFixed(0) + 億円 at T2_JpFund.tsx:105-109.
-    `${NON_ALLOCATION_FOREIGN_FLOW.toFixed(0)}億円`,
+    // Market-context owner: FlowData.foreignNet -> flowLabel()（UI-9E: 記号符号付与, R2.5）at T2_JpFund.tsx.
+    `+${NON_ALLOCATION_FOREIGN_FLOW.toFixed(0)}億円`,
   ].sort()
 }
 
@@ -452,7 +452,7 @@ function expectedAvailableYenMultiset(classPlan: AssetClassPlan): string[] {
     formatJPYAuto(classPlan.effectiveHeadroom),
     formatJPYAuto(classPlan.availableBudget),
     formatJPYAuto(LEGACY_FUND_EVAL),
-    `${NON_ALLOCATION_FOREIGN_FLOW.toFixed(0)}億円`,
+    `+${NON_ALLOCATION_FOREIGN_FLOW.toFixed(0)}億円`,
   ].sort()
 }
 

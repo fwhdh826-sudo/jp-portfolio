@@ -13,7 +13,7 @@ import {
   synthesisNonExecutableReasonText,
 } from '../candidates/candidateDecisionSynthesisPresentation'
 import type { CandidateDecisionSynthesisEntry, CandidateDecisionSynthesisSnapshot } from '../../types/candidateDecisionSynthesis'
-import { formatDateTime, formatJPYAuto } from '../../utils/format'
+import { formatDateTime, formatJPYAuto, formatSignedJPY, formatSignedPct, formatPt } from '../../utils/format'
 import {
   buildTrustPortfolioPlan,
   type ConditionStatus,
@@ -210,7 +210,7 @@ function Phase7FundSection({
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: spacing[0.5] }}>
                 <span style={{ ...typography.caption, color: colors.textMuted }}>サイズ上限観察値</span>
                 <span style={{ fontSize: '10px', color: colors.jpFundAccentText, fontWeight: 700 }}>
-                  {(p7!.sizing_multiplier_cap * 100).toFixed(0)}%
+                  ×{p7!.sizing_multiplier_cap.toFixed(2)}
                 </span>
               </div>
               <div style={{ height: '4px', background: colors.bgElevated, borderRadius: '99px', overflow: 'hidden' }}>
@@ -763,7 +763,7 @@ export function T7_Trust() {
           />
           <MetricCard
             title="含み損益"
-            value={`${totalPnl >= 0 ? '+' : ''}${formatJPYAuto(totalPnl)}`}
+            value={formatSignedJPY(totalPnl)}
             change={{ value: totalPnl >= 0 ? '含み益' : '含み損', positive: totalPnl >= 0 }}
           />
           <MetricCard
@@ -829,9 +829,9 @@ export function T7_Trust() {
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: `${spacing[1]} ${spacing[3]}` }}>
                           {[
                             { label: '評価額',   value: formatJPYAuto(item.eval) },
-                            { label: '損益率',   value: `${item.pnlPct >= 0 ? '+' : ''}${item.pnlPct.toFixed(2)}%`,  color: item.pnlPct >= 0 ? colors.buyText : colors.sellText },
-                            { label: '当日',     value: `${item.dayPct >= 0 ? '+' : ''}${item.dayPct.toFixed(2)}%`,  color: item.dayPct >= 0 ? colors.buyText : colors.sellText },
-                            { label: '費用',     value: `${item.cost.toFixed(2)}%` },
+                            { label: '損益率',   value: formatSignedPct(item.pnlPct),  color: item.pnlPct >= 0 ? colors.buyText : colors.sellText },
+                            { label: '当日',     value: formatSignedPct(item.dayPct),  color: item.dayPct >= 0 ? colors.buyText : colors.sellText },
+                            { label: '費用',     value: `${item.cost.toFixed(3)}%` },
                             { label: '期待収益', value: `${(item.mu * 100).toFixed(1)}%` },
                             { label: 'スコア',   value: String(item.score) },
                           ].map(m => (
@@ -954,12 +954,12 @@ export function T7_Trust() {
           />
           <MetricCard
             title="外国人フロー"
-            value={`${trustPlan.marketContext.foreignFlow >= 0 ? '+' : ''}${trustPlan.marketContext.foreignFlow.toFixed(0)}億円`}
+            value={`${trustPlan.marketContext.foreignFlow > 0 ? '+' : ''}${trustPlan.marketContext.foreignFlow.toFixed(0)}億円`}
             change={{ value: trustPlan.marketContext.foreignFlow >= 0 ? '流入' : '流出', positive: trustPlan.marketContext.foreignFlow >= 0 }}
           />
           <MetricCard
             title="日経先物"
-            value={`${trustPlan.marketContext.nikkeiFuturesDirection >= 0 ? '+' : ''}${trustPlan.marketContext.nikkeiFuturesDirection.toFixed(2)}%`}
+            value={formatSignedPct(trustPlan.marketContext.nikkeiFuturesDirection)}
             change={{ value: trustPlan.marketContext.nikkeiFuturesDirection >= 0 ? '上昇' : '下落', positive: trustPlan.marketContext.nikkeiFuturesDirection >= 0 }}
           />
         </div>
@@ -1007,7 +1007,7 @@ export function T7_Trust() {
               title="VolSpread"
               value={trustPlan.marketContext.volatilitySpread.toFixed(2)}
               change={{
-                value: `変化 ${trustPlan.marketContext.volatilitySpreadChg >= 0 ? '+' : ''}${trustPlan.marketContext.volatilitySpreadChg.toFixed(2)}`,
+                value: `変化 ${formatPt(trustPlan.marketContext.volatilitySpreadChg, 2)}`,
                 positive: trustPlan.marketContext.volatilitySpreadChg <= 0,
               }}
             />

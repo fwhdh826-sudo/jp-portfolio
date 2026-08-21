@@ -3,10 +3,10 @@
  * タイトル・主要数値・変化量・補助テキストを1枚に収める。
  *
  * Usage:
- *   <MetricCard title="評価額" value="¥1,234,567" />
+ *   <MetricCard title="評価額" value="1,234,567円" />
  *   <MetricCard
  *     title="含み損益"
- *     value="+¥123,456"
+ *     value="+123,456円"
  *     change={{ value: "+10.2%", positive: true }}
  *     subtext="前日比"
  *     assetType="stock"

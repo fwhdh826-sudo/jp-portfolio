@@ -298,7 +298,7 @@ export function MacroIntelPanel() {
           </div>
           <div style={metricTileStyle}>
             <span style={metricLabelStyle}>USD/JPY</span>
-            <span style={metricValueStyle}>{data.usdjpy.toFixed(1)}</span>
+            <span style={metricValueStyle}>{data.usdjpy.toFixed(2)}円</span>
           </div>
           <div style={metricTileStyle}>
             <span style={metricLabelStyle}>Nikkei 5d</span>
