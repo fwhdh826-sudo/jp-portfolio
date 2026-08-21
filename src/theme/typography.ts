@@ -53,6 +53,17 @@ export const typography = {
   } satisfies TypographyStyle,
 
   /**
+   * ページサブタイトル — pageTitle 直下の1行説明
+   * 例: TAB_META.description
+   */
+  pageSubtitle: {
+    fontFamily:  FONT_BODY,
+    fontSize:    '13px',
+    fontWeight:  400,
+    lineHeight:  '1.5',
+  } satisfies TypographyStyle,
+
+  /**
    * セクション見出し — カード内・セクション冒頭の見出し
    * 例: "ポジション一覧", "リスク評価"
    */
@@ -71,7 +82,7 @@ export const typography = {
    */
   cardTitle: {
     fontFamily:  FONT_BODY,
-    fontSize:    '15px',
+    fontSize:    '13px',
     fontWeight:  600,
     lineHeight:  '1.35',
     letterSpacing:'0em',

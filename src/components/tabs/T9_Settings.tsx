@@ -11,6 +11,7 @@ import { serializeCashAssumptionsExport, parseCashAssumptionsImport, buildExport
 import { validateCashAuthorityDraft } from '../../domain/cash/cashAuthority'
 import { colors, radius, spacing } from '../../theme/tokens'
 import { typography } from '../../theme/typography'
+import { PageHeader } from '../layout/PageHeader'
 import type { CsvImportProvenance, CsvSyncSummary } from '../../types'
 import type { CsvImportOptions, CsvImportResult, PortfolioSnapshotImportResult } from '../../store/useAppStore'
 import type { ManualMutationResult } from '../../store/portfolioOperationResult'
@@ -537,7 +538,7 @@ const DRAFT_PREVIEW_TIMESTAMP = '2000-01-01T00:00:00.000Z'
 // CASH-AUTH-1 R2: 実際に「今いくら投資可能か」（canonical AllocationPlanSnapshot の
 // deployableCash）は T0 のサマリーカードでのみ表示する — T9 は現金のみの上限を扱う。
 // T0 は読み取り専用サマリー、T1 にはエディタを置かない。
-function CashAssumptionsSection({ sectionTitleStyle }: { sectionTitleStyle: CSSProperties }) {
+function CashAssumptionsSection() {
   const cashAssumptions = useAppStore(s => s.cashAssumptions)
   const authority = useAppStore(selectCashAuthorityView)
   const freshness = useAppStore(selectCashAssumptionsFreshness)
@@ -692,7 +693,7 @@ function CashAssumptionsSection({ sectionTitleStyle }: { sectionTitleStyle: CSSP
 
   return (
     <div className="settings-section">
-      <div style={sectionTitleStyle}>現金権限</div>
+      <h2 className="settings-section__title">現金権限</h2>
       <div
         data-testid="cash-authority-editor"
         style={{
@@ -1075,7 +1076,7 @@ function CashAssumptionsSection({ sectionTitleStyle }: { sectionTitleStyle: CSSP
 // CashAssumptionsSectionのexport/import/copy UIパターンをそのまま踏襲する。
 // P4.5-A012a/A012bで実装済みのexportPortfolioSnapshot/importPortfolioSnapshotを
 // 呼び出すだけで、validation方針・store action仕様には一切触れない。
-function PortfolioSnapshotSyncSection({ sectionTitleStyle }: { sectionTitleStyle: CSSProperties }) {
+function PortfolioSnapshotSyncSection() {
   const exportPortfolioSnapshot = useAppStore(s => s.exportPortfolioSnapshot)
   const importPortfolioSnapshot = useAppStore(s => s.importPortfolioSnapshot)
   const csvLastImportedAt = useAppStore(s => s.system.csvLastImportedAt)
@@ -1147,7 +1148,7 @@ function PortfolioSnapshotSyncSection({ sectionTitleStyle }: { sectionTitleStyle
 
   return (
     <div className="settings-section">
-      <div style={sectionTitleStyle}>保有株・投信の同期（手動）</div>
+      <h2 className="settings-section__title">保有株・投信の同期（手動）</h2>
       <div style={{
         background: 'var(--color-surface)',
         border: `1px solid var(--color-border-default)`,
@@ -1364,30 +1365,12 @@ export function T9_Settings() {
     maxWidth: '100%',
   }
 
-  const sectionTitleStyle = {
-    ...typography.bodySmall,
-    fontWeight: 700 as const,
-    color: colors.textPrimary,
-    marginBottom: spacing[3],
-    paddingBottom: spacing[2],
-    borderBottom: `1px solid var(--color-border-default)`,
-  }
-
   return (
     <div style={panelStyle}>
+      <PageHeader tabId="T9" />
 
-      {/* ── ヘッダー ── */}
+      {/* ── ヘッダー（P1-5: page titleはPageHeaderへ集約したためpillは削除） ── */}
       <div style={{ display: 'flex', alignItems: 'center', gap: spacing[3], flexWrap: 'wrap' }}>
-        <div style={{
-          padding: `${spacing[1]} ${spacing[3]}`,
-          background: 'var(--color-bg-navy-light, #1a3558)',
-          color: '#e8f0f8',
-          borderRadius: radius.full,
-          ...typography.label,
-          fontWeight: 700,
-        }}>
-          設定 / データ更新
-        </div>
         <div style={{ ...typography.caption, color: colors.textSubtle }}>
           CSV取込 · データ更新 · ソース状態
         </div>
@@ -1409,7 +1392,7 @@ export function T9_Settings() {
 
       {/* ── Section 0: ポートフォリオ方針 ── */}
       <div className="settings-section">
-        <div style={sectionTitleStyle}>ポートフォリオ方針</div>
+        <h2 className="settings-section__title">ポートフォリオ方針</h2>
         <div style={{
           background: 'var(--color-surface)',
           border: `1px solid var(--color-border-default)`,
@@ -1465,14 +1448,14 @@ export function T9_Settings() {
       </div>
 
       {/* ── Section 0.5: 資金前提（現金・待機資金） P4.5-A002 ── */}
-      <CashAssumptionsSection sectionTitleStyle={sectionTitleStyle} />
+      <CashAssumptionsSection />
 
       {/* ── Section 0.6: 保有株・投信の同期（手動） P4.5-A012c ── */}
-      <PortfolioSnapshotSyncSection sectionTitleStyle={sectionTitleStyle} />
+      <PortfolioSnapshotSyncSection />
 
       {/* ── Section 1: データ更新 ── */}
       <div className="settings-section">
-        <div style={sectionTitleStyle}>データ更新</div>
+        <h2 className="settings-section__title">データ更新</h2>
 
         {/* 最終更新情報 */}
         <div style={{
@@ -1530,14 +1513,14 @@ export function T9_Settings() {
 
       {/* ── Section 2: CSV取込 ── */}
       <div className="settings-section">
-        <div style={sectionTitleStyle}>
+        <h2 className="settings-section__title">
           SBI証券 CSV 取込
           {system.csvLastImportedAt && (
             <span style={{ ...typography.caption, color: colors.textMuted, fontWeight: 400, marginLeft: spacing[2] }}>
               最終: {formatRelativeTime(system.csvLastImportedAt)}
             </span>
           )}
-        </div>
+        </h2>
         <CsvDropArea onFile={handleImportCsv} isLoading={isLoading} />
         {system.csvImportProvenance && (
           <div style={{ ...typography.caption, color: colors.textMuted, marginTop: spacing[2] }}>
@@ -1549,7 +1532,7 @@ export function T9_Settings() {
 
       {/* ── Section 3: データソース状態 ── */}
       <div className="settings-section">
-        <div style={sectionTitleStyle}>データソース状態</div>
+        <h2 className="settings-section__title">データソース状態</h2>
         <div style={{
           border: `1px solid var(--color-border-default)`,
           borderRadius: radius.lg,
@@ -1590,7 +1573,7 @@ export function T9_Settings() {
 
       {/* ── Section 4: 永続化状態 ── */}
       <div className="settings-section">
-        <div style={sectionTitleStyle}>ローカルデータ保存状態</div>
+        <h2 className="settings-section__title">ローカルデータ保存状態</h2>
         <div style={{
           background: 'var(--color-bg-wash)',
           border: `1px solid var(--color-border-default)`,

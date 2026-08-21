@@ -28,6 +28,7 @@ import { resolveNewsDisplayText, NEWS_DISPLAY_LIMITS } from '../../utils/newsDis
 import { selectIsStale, selectMarketDataQuality } from '../../store/selectors'
 import { Phase8SummaryCard } from '../phase8/Phase8SummaryCard'
 import { SafeModeStatusCard } from '../v13/SafeModeStatusCard'
+import { PageHeader } from '../layout/PageHeader'
 import { colors, radius, spacing } from '../../theme/tokens'
 import { typography } from '../../theme/typography'
 import { isSellLocked, getSellableDate } from '../../domain/constraints/stockLock'
@@ -127,14 +128,16 @@ function SectionTitle({ icon, title }: { icon: string; title: string }) {
   return (
     <div className="section-header">
       <span className="section-header__icon">{icon}</span>
-      <span className="section-header__title">{title}</span>
+      {/* P1-7: L4カードタイトル。L3(SectionKicker)より弱くするため cardTitle と揃えて13px */}
+      <h3 className="section-header__title" style={{ fontSize: 13, margin: 0 }}>{title}</h3>
     </div>
   )
 }
 
 // セクション間の小見出し（カードグループの区切り）
 function SectionKicker({ label }: { label: string }) {
-  return <div className="home-section-kicker">{label}</div>
+  // P1-7: L3見出し。L4(SectionTitle)より弱くならないよう14pxへ引き上げ（.home-section-kicker自体は不変）
+  return <h2 className="home-section-kicker" style={{ fontSize: 14 }}>{label}</h2>
 }
 
 // 優先度バッジ（高優先/中優先/低）
@@ -1668,14 +1671,16 @@ export function T0_Home() {
   const hasCandidateSectionContent = useHasCandidateSectionContent()
   return (
     <div className="tab-panel">
-      {/* [0] SAFE_MODE / TierA 状態（P4-A86: 最上部へ移動。有事のみ表示） */}
+      <PageHeader tabId="T0" />
+
+      {/* [1] Hero: 今日の総合判断（UI-9-3: large verdict）— P1-11: 結論先出しのため警告バナーより前に配置 */}
+      <TodayJudgmentCard />
+
+      {/* [0] SAFE_MODE / TierA 状態（結論の直後。有事のみ表示） */}
       <SafeModeCard />
 
-      {/* [0b] システム状態バー（T0-CC-1: 判断前に1行で確認。表示専用） */}
+      {/* [0b] システム状態バー（T0-CC-1: 判断直後に1行で確認。表示専用） */}
       <SystemStatusBar />
-
-      {/* [1] Hero: 今日の総合判断（UI-9-3: large verdict） */}
-      <TodayJudgmentCard />
 
       {/* [1b] 総資産スナップショット（P4-A96: ファーストビュー近くに軽量表示） */}
       <AssetSnapshotMini />

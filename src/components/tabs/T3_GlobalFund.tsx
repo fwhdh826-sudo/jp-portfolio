@@ -13,6 +13,7 @@ import { formatJPYAuto, formatRelativeTime } from '../../utils/format'
 import { DecisionCard }  from '../cards/DecisionCard'
 import { MetricCard }    from '../cards/MetricCard'
 import { SectionHeader } from '../layout/SectionHeader'
+import { PageHeader }    from '../layout/PageHeader'
 import { SignalBadge }   from '../badges/SignalBadge'
 import { EmptyState }    from '../shared/EmptyState'
 import type { Signal }   from '../badges/SignalBadge'
@@ -351,6 +352,7 @@ export function T3_GlobalFund() {
   if (globalFunds.length === 0) {
     return (
       <div style={panelStyle}>
+        <PageHeader tabId="T3" />
         <EmptyState
           message="海外投信なし"
           detail="OVERSEAS_LONGTERM / GOLD ポリシーの投信が登録されていません。"
@@ -361,20 +363,10 @@ export function T3_GlobalFund() {
 
   return (
     <div style={panelStyle}>
+      <PageHeader tabId="T3" />
 
-      {/* ── 資産クラスヘッダー ── */}
+      {/* ── 資産クラスヘッダー（P1-5: page titleはPageHeaderへ集約したためpillは削除、更新時刻のみ残す） ── */}
       <div style={{ display: 'flex', alignItems: 'center', gap: spacing[3], flexWrap: 'wrap' }}>
-        <div style={{
-          padding:      `${spacing[1]} ${spacing[3]}`,
-          background:   colors.globalFundAccentBg,
-          color:        colors.globalFundAccentText,
-          border:       `1px solid ${colors.globalFundAccent}`,
-          borderRadius: radius.full,
-          ...typography.label,
-          fontWeight:   700,
-        }}>
-          海外投信
-        </div>
         <div style={{ ...typography.caption, color: colors.textSubtle }}>
           中長期配分 — 積立・リバランス専用（短期売買禁止）
         </div>

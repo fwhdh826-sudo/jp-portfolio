@@ -13,6 +13,8 @@ import type { NewsItem } from '../../types'
 import type { MarketNewsItemV13 } from '../../types/news'
 import type { MarketIntelData } from '../../types/market_intel'
 import { MacroIntelPanel, NewsCardV13, EarningsCalendarCard } from '../v13'
+import { SectionHeader } from '../layout/SectionHeader'
+import { PageHeader } from '../layout/PageHeader'
 import {
   createPortfolioLoadSingleFlight,
   executePortfolioLoadUiFlow,
@@ -653,6 +655,8 @@ export function T5_News() {
 
   return (
     <div className="tab-panel">
+      <PageHeader tabId="T5" />
+
       {/* ════════════════════════════════════════
           [0] Markets Intelligence — AI Narrator
           ════════════════════════════════════════ */}
@@ -748,12 +752,14 @@ export function T5_News() {
           [1b] 今日の観察 — 3ブロック示唆カード
           ════════════════════════════════════════ */}
       <article className="card">
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
-          <div className="section-kicker">今日の市場観察</div>
-          <div style={{ fontSize: '10px', color: 'var(--color-text-subtle)', fontStyle: 'italic' }}>
-            ※ 観察・示唆のみ
-          </div>
-        </div>
+        <SectionHeader
+          title="今日の市場観察"
+          action={
+            <div style={{ fontSize: '10px', color: 'var(--color-text-subtle)', fontStyle: 'italic' }}>
+              ※ 観察・示唆のみ
+            </div>
+          }
+        />
         <div className="mcc-suggest-grid">
           {observations.map(obs => (
             <div key={obs.kicker} className="mcc-suggest-card">
@@ -770,7 +776,7 @@ export function T5_News() {
           ════════════════════════════════════════ */}
       {marketNews.length > 0 && (
         <article className="card">
-          <div className="section-kicker" style={{ marginBottom: 12 }}>今日のニュース — 重要度上位</div>
+          <SectionHeader title="今日のニュース — 重要度上位" />
           <div className="mcc-news-list">
             {marketNews.slice(0, NEWS_DISPLAY_LIMITS.T0_HOME).map(item => {
               const impCls    = getImpactCls(item)
@@ -823,7 +829,7 @@ export function T5_News() {
           ════════════════════════════════════════ */}
       {keywords.length > 0 && (
         <article className="card">
-          <div className="section-kicker" style={{ marginBottom: 10 }}>マーケットキーワード</div>
+          <SectionHeader title="マーケットキーワード" />
           <div className="mcc-keyword-wrap">
             {keywords.map(kw => (
               <span key={kw} className="mcc-keyword-chip">{kw}</span>
@@ -849,12 +855,14 @@ export function T5_News() {
           [3] カテゴリタブ + ニュースフィード
           ════════════════════════════════════════ */}
       <article className="card">
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12, flexWrap: 'wrap' as const, gap: 4 }}>
-          <div className="section-kicker">ニュースフィード</div>
-          <div style={{ fontSize: '10px', color: 'var(--color-text-muted)' }}>
-            第1層: 一次 · 第2層: 報道 · 第3層: 参考のみ
-          </div>
-        </div>
+        <SectionHeader
+          title="ニュースフィード"
+          action={
+            <div style={{ fontSize: '10px', color: 'var(--color-text-muted)' }}>
+              第1層: 一次 · 第2層: 報道 · 第3層: 参考のみ
+            </div>
+          }
+        />
 
         {/* カテゴリタブ */}
         <div className="news-cat-tabs" style={{ marginBottom: 16 }}>

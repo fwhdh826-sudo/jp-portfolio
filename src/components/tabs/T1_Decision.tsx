@@ -10,6 +10,7 @@ import { useAppStore } from '../../store/useAppStore'
 import { selectMarketDataQuality, selectEffectiveSafeModeActive, selectCandidateDecisionSynthesis } from '../../store/selectors'
 import { formatJPYAuto } from '../../utils/format'
 import { SectionHeader } from '../layout/SectionHeader'
+import { PageHeader } from '../layout/PageHeader'
 import { EmptyState } from '../shared/EmptyState'
 import { colors, radius, shadow, spacing } from '../../theme/tokens'
 import { typography } from '../../theme/typography'
@@ -458,6 +459,7 @@ function StockList({
 
   return (
     <div style={panelStyle}>
+      <PageHeader tabId="T1" />
 
       {/* P0-5: データ品質ゲートバナー */}
       {dq.isSuppressed && (
@@ -491,19 +493,11 @@ function StockList({
         </div>
       )}
 
-      {/* ヘッダー */}
+      {/* ヘッダー（P1-5: page titleはPageHeaderへ集約したためpillは削除、件数情報のみ残す） */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: spacing[2] }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: spacing[3] }}>
-          <div style={{
-            padding: `${spacing[1]} ${spacing[3]}`,
-            background: colors.stockAccentBg, color: colors.stockAccentText,
-            border: `1px solid ${colors.stockAccent}`, borderRadius: radius.full,
-            fontSize: '12px', fontWeight: 700,
-          }}>個別株</div>
-          <span style={{ fontSize: '12px', color: colors.textSubtle }}>
-            {holdings.length} 銘柄 — BUY {buyCount} / ロック {lockCount}
-          </span>
-        </div>
+        <span style={{ fontSize: '12px', color: colors.textSubtle }}>
+          {holdings.length} 銘柄 — BUY {buyCount} / ロック {lockCount}
+        </span>
         {system.analysisLastRunAt && (
           <span style={{ fontSize: '11px', color: colors.textMuted }}>
             分析 {new Date(system.analysisLastRunAt).toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' })}
@@ -1167,6 +1161,7 @@ function StockDetail({ code, onBack }: { code: string; onBack: () => void }) {
 
   return (
     <div style={panelStyle}>
+      <PageHeader tabId="T1" />
 
       {/* ── 戻るボタン ── */}
       <button type="button" onClick={onBack} className="stock-detail__back-btn">
@@ -1179,7 +1174,8 @@ function StockDetail({ code, onBack }: { code: string; onBack: () => void }) {
           {/* 左: コード・銘柄名・セクター */}
           <div>
             <div className="stock-detail__code-kicker">{h.code}</div>
-            <h1 className="stock-detail__name">{h.name}</h1>
+            {/* P0-3: page h1はPageHeaderが担うため、個別銘柄名はh2（このdrill-down viewの主見出し） */}
+            <h2 className="stock-detail__name">{h.name}</h2>
             <div className="stock-detail__sector">
               {h.sector}{h.mitsu ? ' / 三菱G' : ''} / β {h.beta.toFixed(2)}
             </div>
