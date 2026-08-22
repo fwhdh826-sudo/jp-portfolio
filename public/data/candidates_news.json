@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-08-22T20:42:45.384227+09:00",
-  "sourceUpdatedAt": "2026-08-22T11:14:42+00:00",
+  "updatedAt": "2026-08-23T08:43:47.641249+09:00",
+  "sourceUpdatedAt": "2026-08-22T23:29:03+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -17,15 +17,15 @@
       "items": []
     },
     "jp_semiconductor": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0.165,
       "negativeCount": 0,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 2,
+      "itemCount": 2,
       "isStale": false,
       "topNegativeTitle": "経産省 ラピダス出資に1500億円要求へ 来年度予算の概算要求で",
-      "topPositiveTitle": "経産省 ラピダス出資に1500億円要求へ 来年度予算の概算要求で",
+      "topPositiveTitle": "The AI Spending Spree Comes With a Catch",
       "items": [
         {
           "title": "経産省 ラピダス出資に1500億円要求へ 来年度予算の概算要求で",
@@ -39,29 +39,66 @@
             "market"
           ],
           "titleJa": "経産省 ラピダス出資に1500億円要求へ 来年度予算の概算要求で"
+        },
+        {
+          "title": "The AI Spending Spree Comes With a Catch",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-22T12:03:21+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-22/the-ai-spending-spree-comes-with-a-catch-video",
+          "tags": [
+            "commodity",
+            "jp_semiconductor",
+            "market",
+            "us_growth"
+          ]
         }
       ]
     },
     "us_broad": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
+      "avgSentiment": -0.223,
+      "negativeCount": 1,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 2,
+      "sourceCount": 2,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Wall Street Week | AI Hits Wages, USMCA Under Pressure, Colorado River Crisis",
-      "topPositiveTitle": "Wall Street Week | AI Hits Wages, USMCA Under Pressure, Colorado River Crisis",
+      "topNegativeTitle": "Study Shows AI Hitting Paychecks, Not Payrolls",
+      "topPositiveTitle": "Kevin Warsh to Make First Jackson Hole Speech as Fed Chair",
       "items": [
         {
-          "title": "Wall Street Week | AI Hits Wages, USMCA Under Pressure, Colorado River Crisis",
+          "title": "Study Shows AI Hitting Paychecks, Not Payrolls",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-08-22T14:00:11+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-22/study-shows-ai-hitting-paychecks-not-payrolls",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Kevin Warsh to Make First Jackson Hole Speech as Fed Chair",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-22T20:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-22/kevin-warsh-to-make-first-jackson-hole-speech-as-fed-chair",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Bloomberg Previews Jackson Hole Symposium",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-21T23:12:20+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-21/wall-street-week-ai-hits-wages-colorado-river-crisis-video",
+          "publishedAt": "2026-08-22T19:40:52+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-22/bloomberg-previews-jackson-hole-symposium-video",
           "tags": [
-            "macro_risk",
             "market",
             "us_broad"
           ]
@@ -69,16 +106,31 @@
       ]
     },
     "us_growth": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.33,
       "negativeCount": 0,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "The AI Spending Spree Comes With a Catch",
+      "topPositiveTitle": "The AI Spending Spree Comes With a Catch",
+      "items": [
+        {
+          "title": "The AI Spending Spree Comes With a Catch",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-22T12:03:21+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-22/the-ai-spending-spree-comes-with-a-catch-video",
+          "tags": [
+            "commodity",
+            "jp_semiconductor",
+            "market",
+            "us_growth"
+          ]
+        }
+      ]
     },
     "global_broad": {
       "avgSentiment": 0,
@@ -129,15 +181,15 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.0,
+      "avgSentiment": -0.33,
       "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 2,
+      "positiveCount": 0,
+      "neutralCount": 0,
       "sourceCount": 1,
-      "itemCount": 4,
+      "itemCount": 1,
       "isStale": false,
       "topNegativeTitle": "India’s Foreign Minister to Visit Russia Amid US Tariff Threat",
-      "topPositiveTitle": "Mexico Optimistic it Can Achieve Lower US Tariffs on Cars, Steel",
+      "topPositiveTitle": "India’s Foreign Minister to Visit Russia Amid US Tariff Threat",
       "items": [
         {
           "title": "India’s Foreign Minister to Visit Russia Amid US Tariff Threat",
@@ -148,43 +200,6 @@
           "url": "https://www.bloomberg.com/news/articles/2026-08-22/india-s-foreign-minister-to-visit-russia-amid-us-tariff-threat",
           "tags": [
             "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Wall Street Week | AI Hits Wages, USMCA Under Pressure, Colorado River Crisis",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-21T23:12:20+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-21/wall-street-week-ai-hits-wages-colorado-river-crisis-video",
-          "tags": [
-            "macro_risk",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Trump Allows Tariff Relief for Some Ground Beef Imports",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-21T21:32:56+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-21/trump-allows-tariff-relief-for-some-ground-beef-imports-video",
-          "tags": [
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Mexico Optimistic it Can Achieve Lower US Tariffs on Cars, Steel",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-22T00:16:57+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-22/mexico-optimistic-it-can-achieve-lower-us-tariffs-on-cars-steel",
-          "tags": [
             "macro_risk",
             "market"
           ]
@@ -199,16 +214,16 @@
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "India’s Central Bank Says Forex Deposit Inflows at $65.4 Billion",
-      "topPositiveTitle": "India’s Central Bank Says Forex Deposit Inflows at $65.4 Billion",
+      "topNegativeTitle": "Canada Pushes Back as US Trade Talks Collapse",
+      "topPositiveTitle": "Canada Pushes Back as US Trade Talks Collapse",
       "items": [
         {
-          "title": "India’s Central Bank Says Forex Deposit Inflows at $65.4 Billion",
+          "title": "Canada Pushes Back as US Trade Talks Collapse",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.33,
-          "publishedAt": "2026-08-22T09:58:03+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-22/india-s-central-bank-says-forex-deposit-inflows-at-65-4-billion",
+          "publishedAt": "2026-08-22T13:22:41+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-22/canada-pushes-back-as-us-trade-talks-collapse-video",
           "tags": [
             "fx",
             "market"
@@ -217,23 +232,35 @@
       ]
     },
     "rates": {
-      "avgSentiment": 0.165,
+      "avgSentiment": 0.11,
       "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 1,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 2,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "SNB Would Cut Rates Below Zero If Needed, Tschudin Tells FuW",
+      "topNegativeTitle": "Juicy Yields Draw Junk Bond Buyers to Investment-Grade AI Debt",
       "topPositiveTitle": "国債利払い費の想定金利は3.8％調整 国債費も膨張へ 概算要求",
       "items": [
         {
-          "title": "SNB Would Cut Rates Below Zero If Needed, Tschudin Tells FuW",
-          "source": "Bloomberg Economics",
+          "title": "Juicy Yields Draw Junk Bond Buyers to Investment-Grade AI Debt",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-21T15:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-21/snb-would-cut-rates-below-zero-if-needed-tschudin-tells-fuw",
+          "publishedAt": "2026-08-22T19:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-22/juicy-yields-draw-junk-bond-buyers-to-investment-grade-ai-debt",
+          "tags": [
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Bond Market Tests Limits of Treasury Intervention",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-22T13:11:59+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-22/bond-market-tests-limits-of-treasury-intervention-video",
           "tags": [
             "market",
             "rates"
@@ -255,15 +282,15 @@
       ]
     },
     "commodity": {
-      "avgSentiment": -0.5,
+      "avgSentiment": -0.223,
       "negativeCount": 1,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 2,
+      "itemCount": 3,
       "isStale": false,
       "topNegativeTitle": "World Economy Latest: UK Employment Declines While Price Pressures Mount",
-      "topPositiveTitle": "Goldman's Struyven: Hedge Crude's Swings with Diesel",
+      "topPositiveTitle": "The AI Spending Spree Comes With a Catch",
       "items": [
         {
           "title": "World Economy Latest: UK Employment Declines While Price Pressures Mount",
@@ -278,30 +305,44 @@
           ]
         },
         {
-          "title": "Goldman's Struyven: Hedge Crude's Swings with Diesel",
+          "title": "Russia’s Rosatom Returns Workers to Iran’s Bushehr Nuclear Plant",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-21T20:50:31+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-21/goldman-s-struyven-hedge-crude-s-swings-with-diesel-video",
+          "publishedAt": "2026-08-22T13:15:26+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-22/russia-s-rosatom-returns-workers-to-iran-s-bushehr-nuclear-plant",
           "tags": [
             "commodity",
             "geopolitical",
             "market"
           ]
+        },
+        {
+          "title": "The AI Spending Spree Comes With a Catch",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-22T12:03:21+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-22/the-ai-spending-spree-comes-with-a-catch-video",
+          "tags": [
+            "commodity",
+            "jp_semiconductor",
+            "market",
+            "us_growth"
+          ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": -0.11,
+      "avgSentiment": -0.083,
       "negativeCount": 1,
       "positiveCount": 0,
-      "neutralCount": 2,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 4,
       "isStale": false,
       "topNegativeTitle": "India’s Foreign Minister to Visit Russia Amid US Tariff Threat",
-      "topPositiveTitle": "Goldman's Struyven: Hedge Crude's Swings with Diesel",
+      "topPositiveTitle": "Sanctions Target Iran’s Weakened Regional Network",
       "items": [
         {
           "title": "India’s Foreign Minister to Visit Russia Amid US Tariff Threat",
@@ -317,12 +358,24 @@
           ]
         },
         {
-          "title": "Goldman's Struyven: Hedge Crude's Swings with Diesel",
+          "title": "Sanctions Target Iran’s Weakened Regional Network",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-21T20:50:31+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-21/goldman-s-struyven-hedge-crude-s-swings-with-diesel-video",
+          "publishedAt": "2026-08-22T14:23:13+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-22/sanctions-target-iran-s-weakened-regional-network-video",
+          "tags": [
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Russia’s Rosatom Returns Workers to Iran’s Bushehr Nuclear Plant",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-22T13:15:26+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-22/russia-s-rosatom-returns-workers-to-iran-s-bushehr-nuclear-plant",
           "tags": [
             "commodity",
             "geopolitical",
