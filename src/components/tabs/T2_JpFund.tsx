@@ -32,6 +32,7 @@ import { PageHeader }    from '../layout/PageHeader'
 import { CircularGauge } from '../charts/CircularGauge'
 import { SignalBadge }   from '../badges/SignalBadge'
 import { EmptyState }    from '../shared/EmptyState'
+import { suppressBuySignal } from '../shared/verdict'
 import type { Signal }   from '../badges/SignalBadge'
 import type { RiskLevel } from '../badges/RiskBadge'
 
@@ -60,12 +61,6 @@ function decisionToSignal(d: Trust['decision']): Signal {
   if (d === 'SELL') return 'SELL'
   if (d === 'WAIT') return 'WATCH'
   return 'HOLD'
-}
-
-// P4-A157: SAFE_MODE/DQ抑制中はBUY表示のみWATCHに変換する（表示専用）。
-// SELL/HOLD/WATCH等はそのまま維持し、防御・監視表示を弱めない。fund.decision自体は変更しない。
-function suppressBuySignal(signal: Signal, isSuppressed: boolean): Signal {
-  return isSuppressed && signal === 'BUY' ? 'WATCH' : signal
 }
 
 function conditionStatusColor(status: ConditionStatus) {

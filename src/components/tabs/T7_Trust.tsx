@@ -39,6 +39,7 @@ import { PageHeader }     from '../layout/PageHeader'
 import { AssetTypeBadge } from '../badges/AssetTypeBadge'
 import { SignalBadge }    from '../badges/SignalBadge'
 import { EmptyState }     from '../shared/EmptyState'
+import { suppressBuySignal } from '../shared/verdict'
 import { SafeModeStatusCard } from '../v13/SafeModeStatusCard'
 import type { Signal }    from '../badges/SignalBadge'
 import type { ActionItem } from '../cards/ActionPanel'
@@ -111,13 +112,6 @@ function actionToSignal(action: TrustSignalAction): Signal {
   if (action === 'EXIT' || action === 'TRIM' || action === 'BEAR') return 'SELL'
   if (action === 'WAIT') return 'WATCH'
   return 'HOLD'
-}
-
-// P4-A156: SAFE_MODE/DQ抑制中はBUY表示のみWATCHに変換する（表示専用）。
-// SELL/TRIM/EXIT/HOLD等はそのまま維持し、防御・監視表示を弱めない。
-// item.decision/row.recommendation自体やbuildTrustPortfolioPlanの結果は変更しない。
-function suppressBuySignal(signal: Signal, isSuppressed: boolean): Signal {
-  return isSuppressed && signal === 'BUY' ? 'WATCH' : signal
 }
 
 function isShortTermCandidate(item: Trust) {

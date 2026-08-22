@@ -21,6 +21,7 @@ import { MetricCard }    from '../cards/MetricCard'
 import { SectionHeader } from '../layout/SectionHeader'
 import { PageHeader }    from '../layout/PageHeader'
 import { SignalBadge }   from '../badges/SignalBadge'
+import { suppressBuySignal } from '../shared/verdict'
 import type { Signal }   from '../badges/SignalBadge'
 
 import { colors, radius, shadow, spacing } from '../../theme/tokens'
@@ -40,13 +41,6 @@ function diffColor(diff: number, threshold = 200_000) {
   if (diff > threshold)  return colors.buy
   if (diff < -threshold) return colors.sell
   return colors.textSubtle
-}
-
-// P4-A152: SAFE_MODE/DQ抑制中はBUYバッジのみWATCH表示に変換する（表示専用）。
-// SELL/TRIM/HOLD等の防御・監視シグナルは変換しない。stockPlan/jpFundRows/globalFundRows
-// の元データ（row.recommendation）自体は変更しない。
-function suppressBuySignal(signal: Signal, isSuppressed: boolean): Signal {
-  return isSuppressed && signal === 'BUY' ? 'WATCH' : signal
 }
 
 const CLASS_ORDER: AssetClass[] = [
