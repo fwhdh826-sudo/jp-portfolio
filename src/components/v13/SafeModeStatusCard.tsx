@@ -15,6 +15,9 @@ interface Props {
   tierAAlerts: TierAAlertsSnapshot
   /** P4-A150: 省略可能。渡された場合のみTierA T1（含み損-40%以下）警告を表示する */
   tierAT1Violations?: TierAT1Violation[]
+  /** F-A-P1-1: 起動未完了（system.status==='initializing'）中はsafe_mode.jsonの取得試行が
+   * まだ完了していない。「取得できない」と断定せず「起動中」の中立文言に置き換える。 */
+  isInitializing?: boolean
 }
 
 const VIOLATION_LABEL: Record<string, string> = {
@@ -74,7 +77,7 @@ export function isSafeModeDataStale(
   return dataQuality.isStale && !isDefault
 }
 
-export function SafeModeStatusCard({ safeMode, safeModeSource, safeModeLastChecked, tierAViolations, tierAAlerts, tierAT1Violations }: Props) {
+export function SafeModeStatusCard({ safeMode, safeModeSource, safeModeLastChecked, tierAViolations, tierAAlerts, tierAT1Violations, isInitializing }: Props) {
   const active = safeMode.safe_mode.active
   const isDefault = safeModeSource === 'default' || safeModeSource == null
 
@@ -145,10 +148,10 @@ export function SafeModeStatusCard({ safeMode, safeModeSource, safeModeLastCheck
       {active && (
         <div style={{ display: 'flex', alignItems: 'center', gap: spacing[2], flexWrap: 'wrap', marginBottom: spacing[2] }}>
           <span style={tagStyle}>
-            {isRealSafeMode ? '🔴 SAFE_MODE発動中' : '🟡 安全側停止（データ未取得）'}
+            {isRealSafeMode ? '🔴 SAFE_MODE発動中' : isInitializing ? '⏳ 安全側停止（起動中）' : '🟡 安全側停止（データ未取得）'}
           </span>
           <span style={{ ...typography.bodySmall, color: titleColor, fontWeight: 600 }}>
-            {isRealSafeMode ? 'SAFE_MODE発動 — 新規買付全停止中' : 'safe_mode.json 未取得 — フォールバック停止中'}
+            {isRealSafeMode ? 'SAFE_MODE発動 — 新規買付全停止中' : isInitializing ? 'データ取得中です — 完了まで安全側停止中' : 'safe_mode.json 未取得 — フォールバック停止中'}
           </span>
         </div>
       )}
@@ -158,7 +161,9 @@ export function SafeModeStatusCard({ safeMode, safeModeSource, safeModeLastCheck
         <p style={{ ...typography.caption, color: isRealSafeMode ? colors.sellText : colors.waitText, marginBottom: (triggeredViolations.length > 0 || triggeredAlerts.length > 0) ? spacing[2] : 0 }}>
           {isRealSafeMode
             ? `BUY候補はSAFE_MODE_ACTIVEでブロックされています。${safeMode.safe_mode.trigger_reason ? `原因: ${safeMode.safe_mode.trigger_reason}` : ''}`
-            : 'safe_mode.json が取得できないため、安全側のデフォルト（新規買付停止）が適用されています。データ取得後に自動解除されます。'
+            : isInitializing
+              ? 'safe_mode.json を取得中です。取得完了まで安全側のデフォルト（新規買付停止）が適用されています。'
+              : 'safe_mode.json が取得できないため、安全側のデフォルト（新規買付停止）が適用されています。データ取得後に自動解除されます。'
           }
         </p>
       )}

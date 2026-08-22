@@ -40,6 +40,26 @@ import {
 import { FakeLockManager } from './testing/fakeLockManager'
 import { createAppStoreInstanceForTest } from './useAppStore'
 
+// F-A-P0-2: importCsvはFileReader経由でCSVを読み込むため、node環境用の最小polyfillを用意する
+// （domain/csv/importPortfolioCsv.test.tsと同じ方式）。
+if (typeof globalThis.FileReader === 'undefined') {
+  class NodeFileReaderPolyfill {
+    onload: ((event: { target: { result: ArrayBuffer } }) => void) | null = null
+    onerror: (() => void) | null = null
+    result: ArrayBuffer | null = null
+    readAsArrayBuffer(file: File) {
+      file.arrayBuffer().then(buf => {
+        this.result = buf
+        this.onload?.({ target: { result: buf } })
+      }).catch(() => {
+        this.onerror?.()
+      })
+    }
+  }
+  // @ts-expect-error Node環境専用の最小FileReader polyfill
+  globalThis.FileReader = NodeFileReaderPolyfill
+}
+
 const NOW_MS = Date.parse('2026-08-22T05:00:00.000Z')
 const PRIOR_LAST_UPDATED = '2026-08-20T00:00:00.000Z'
 
@@ -136,6 +156,42 @@ function allFallbackPublishedData() {
   }
 }
 
+function baseMacro() {
+  return {
+    last_updated: '2026-08-22 05:00', jgb10y: 1.45, ust10y: 4.7, usdjpy: 159.3, usdjpyChgPct: -0.1,
+    sp500: 7785.8, sp500ChgPct: -0.2, nasdaq: 26729.2, nasdaqChgPct: -0.3, vix: 14.9, vixChg: 0.7,
+    nikkeiVI: 14.16, nikkeiVIChg: 0.6, gold: 4460.1, goldChgPct: 1.8, nyCrude: 82.4, nyCrudeChgPct: 0.1,
+  }
+}
+
+/**
+ * F-A-P0-1: 本番の正常デプロイに一致するfixture。trust/holdings/nikkei_vi.jsonの3ソースは
+ * 恒久的に配信されない（trust/holdingsはprivacy方針でリポジトリに一度もコミットされない、
+ * nikkei_vi.jsonはgenerator不在のdead legacy source — macro.jsonが自前のnikkeiVIを持つ）。
+ * 残り14ソースは全て取得成功しているという「正常な本番」を表す。
+ */
+function normalProductionPublishedData() {
+  return {
+    market: { data: baseMarket(), source: 'loaded' },
+    correlation: { data: null, source: 'loaded' },
+    news: { data: null, source: 'loaded' },
+    trust: { data: null, source: 'static', lastUpdated: null }, // privacy: public/data/trust_master.jsonは常に存在しない
+    holdingsSnapshot: { data: null, source: 'none', lastUpdated: null }, // privacy: public/data/holdings.jsonは常に存在しない
+    macro: { data: baseMacro(), source: 'loaded' },
+    nikkeiVI: { data: null, source: 'none' }, // legacy: public/data/nikkei_vi.jsonはgenerator不在で常に存在しない
+    sq: { data: null, source: 'loaded' },
+    margin: { data: null, source: 'loaded' },
+    flows: { data: null, source: 'loaded' },
+    candidatesNews: { data: DEFAULT_CANDIDATES_NEWS_DATA, source: 'loaded' },
+    candidatesStocks: { data: DEFAULT_CANDIDATES_STOCKS_DATA, source: 'loaded' },
+    candidateFunnel: { status: 'loaded' as const, data: candidateFunnelArtifact() },
+    regimeState: { data: DEFAULT_REGIME_STATE, source: 'loaded', generatedAt: null },
+    safeMode: { data: DEFAULT_SAFE_MODE_SNAPSHOT, source: 'loaded', lastChecked: null },
+    tierAViolations: { data: DEFAULT_TIER_A_VIOLATIONS_SNAPSHOT, source: 'loaded', generatedAt: null },
+    tierAAlerts: { data: DEFAULT_TIER_A_ALERTS_SNAPSHOT, source: 'loaded', generatedAt: null },
+  }
+}
+
 beforeEach(() => {
   vi.useFakeTimers()
   vi.setSystemTime(NOW_MS)
@@ -175,7 +231,7 @@ describe('B: 全loaderが成功した場合のみsuccess', () => {
 })
 
 describe('C: 1 loaderがHTTP500相当でfallbackした場合', () => {
-  it('statusはsuccessにならない／lastUpdatedを偽更新しない事はないが（他が成功のため進む）／error到達可能', async () => {
+  it('statusはsuccessにならない／F-A-P1-3: partialではlastUpdatedを進めず前回値を維持する／error到達可能', async () => {
     const manager = new FakeLockManager()
     const a = instance(manager, PRIOR_LAST_UPDATED)
     loadProbe.implementation = async () => ({
@@ -187,7 +243,10 @@ describe('C: 1 loaderがHTTP500相当でfallbackした場合', () => {
     const system = a.store.getState().system
     expect(system.status).not.toBe('success')
     expect(system.status).toBe('partial')
-    expect(system.dataSourceOutcome).toEqual({ loaded: 16, total: 17 })
+    // F-A-P0-1: required source denominatorは14件（trust/holdings/nikkeiVIを除く）。
+    expect(system.dataSourceOutcome).toEqual({ loaded: 13, total: 14 })
+    // F-A-P1-3: partialではlastUpdatedは「試行時刻」ではなく前回値のまま据え置く。
+    expect(system.lastUpdated).toBe(PRIOR_LAST_UPDATED)
   })
 
   it('全loaderがHTTP500でfallbackした場合、statusはsuccessにならずlastUpdatedも偽更新されない', async () => {
@@ -310,5 +369,174 @@ describe('refreshAllDataでも同一の集計ロジックが適用される', ()
     const system = a.store.getState().system
     expect(system.status).toBe('failed')
     expect(system.lastUpdated).toBe(afterInitializeLastUpdated)
+  })
+})
+
+// UI-9F-A-R1-RUNTIME-STATE-REMEDIATION — F-A-P0-1 required tests.
+// trust/holdings/nikkei_vi.jsonの3ソースは本番で恒久的に取得不能（privacy方針 + generator不在）
+// であり、これを分母に含めると正常な本番でもstatusが永久にpartialになる（独立監査 F-A-P0-1）。
+// required-source denominator（14件）だけでsuccess/partial/failedが決まることを実測する。
+describe('F-A-P0-1: required-source policy — privacy/local/legacyソースは分母から除外される', () => {
+  it('本番の正常デプロイ（trust/holdings/nikkeiVIが恒久欠落）でもstatus=successに到達する', async () => {
+    const manager = new FakeLockManager()
+    const a = instance(manager, PRIOR_LAST_UPDATED)
+    loadProbe.implementation = async () => normalProductionPublishedData()
+    const result = await grant(manager, a.store.getState().initialize())
+    expect(result).toMatchObject({ ok: true, code: 'SUCCESS' })
+    const system = a.store.getState().system
+    expect(system.status).toBe('success')
+    expect(system.dataSourceOutcome).toEqual({ loaded: 14, total: 14 })
+    expect(system.lastUpdated).toBe(new Date(NOW_MS).toISOString())
+  })
+
+  it('required 1件（market）が500相当でfallbackするとpartial。trust/holdings/nikkeiVI欠落は影響しない', async () => {
+    const manager = new FakeLockManager()
+    const a = instance(manager, PRIOR_LAST_UPDATED)
+    loadProbe.implementation = async () => ({
+      ...normalProductionPublishedData(),
+      market: { data: baseMarket(), source: 'static' },
+    })
+    const result = await grant(manager, a.store.getState().initialize())
+    expect(result).toMatchObject({ ok: true, code: 'SUCCESS' })
+    const system = a.store.getState().system
+    expect(system.status).toBe('partial')
+    expect(system.dataSourceOutcome).toEqual({ loaded: 13, total: 14 })
+    // F-A-P1-3: partialではlastUpdatedを進めない。
+    expect(system.lastUpdated).toBe(PRIOR_LAST_UPDATED)
+  })
+
+  it('required 14件が全滅するとfailed（trust/holdings/nikkeiVIは元々分母に含まれないため無関係）', async () => {
+    const manager = new FakeLockManager()
+    const a = instance(manager, PRIOR_LAST_UPDATED)
+    loadProbe.implementation = async () => ({
+      ...normalProductionPublishedData(),
+      market: { data: baseMarket(), source: 'static' },
+      correlation: { data: null, source: 'static' },
+      news: { data: null, source: 'error' },
+      macro: { data: null, source: 'none' },
+      sq: { data: null, source: 'none' },
+      margin: { data: null, source: 'none' },
+      flows: { data: null, source: 'none' },
+      candidatesNews: { data: DEFAULT_CANDIDATES_NEWS_DATA, source: 'default' },
+      candidatesStocks: { data: DEFAULT_CANDIDATES_STOCKS_DATA, source: 'default' },
+      candidateFunnel: { status: 'unavailable' as const, data: null },
+      regimeState: { data: DEFAULT_REGIME_STATE, source: 'default', generatedAt: null },
+      safeMode: { data: DEFAULT_SAFE_MODE_SNAPSHOT, source: 'default', lastChecked: null },
+      tierAViolations: { data: DEFAULT_TIER_A_VIOLATIONS_SNAPSHOT, source: 'default', generatedAt: null },
+      tierAAlerts: { data: DEFAULT_TIER_A_ALERTS_SNAPSHOT, source: 'default', generatedAt: null },
+    })
+    const result = await grant(manager, a.store.getState().initialize())
+    expect(result).toMatchObject({ ok: true, code: 'SUCCESS' })
+    const system = a.store.getState().system
+    expect(system.status).toBe('failed')
+    expect(system.dataSourceOutcome).toEqual({ loaded: 0, total: 14 })
+    expect(system.lastUpdated).toBe(PRIOR_LAST_UPDATED)
+  })
+
+  it('required source（candidateFunnel）がinvalid JSON相当でも degraded（successにならない）', async () => {
+    const manager = new FakeLockManager()
+    const a = instance(manager, PRIOR_LAST_UPDATED)
+    loadProbe.implementation = async () => ({
+      ...normalProductionPublishedData(),
+      candidateFunnel: { status: 'invalid' as const, data: null },
+    })
+    await grant(manager, a.store.getState().initialize())
+    const system = a.store.getState().system
+    expect(system.status).not.toBe('success')
+    expect(system.status).toBe('partial')
+    expect(system.dataSourceOutcome).toEqual({ loaded: 13, total: 14 })
+  })
+
+  // F-A-P0-1 mutation probe: この分離を戻す（=17ソース全件を分母に含める）とREDになることの
+  // 固定用。旧ロジック（classifyDataSourceOutcomesがtrust/holdings/nikkeiVIも分母に含める）へ
+  // 戻すと、本番相当fixtureでもstatusが恒久的にpartialになりこのテストはREDになる。
+  it('[mutation guard] 本番相当（trust/holdings/nikkeiVI欠落）でstatus!==successなら回帰', async () => {
+    const manager = new FakeLockManager()
+    const a = instance(manager, PRIOR_LAST_UPDATED)
+    loadProbe.implementation = async () => normalProductionPublishedData()
+    await grant(manager, a.store.getState().initialize())
+    expect(a.store.getState().system.status).toBe('success')
+  })
+})
+
+// UI-9F-A-R1-RUNTIME-STATE-REMEDIATION — F-A-P0-2 required tests.
+// CSV / portfolio-snapshot importはportfolio generationのauthorityであってdata-source fetchの
+// authorityではない。取込成功時にsystem.statusを無条件'success'へ上書きすると、取得できていない
+// データソースがあるにもかかわらず「更新成功」を偽装する（独立監査 F-A-P0-2）。取込前のdata-source
+// health（dataSourceOutcome由来のstatus）が取込後も維持されることを実測する。
+describe('F-A-P0-2: CSV/snapshot importはdata-source truth(system.status)を上書きしない', () => {
+  const STOCK_CSV = [
+    '株式（現物/特定預り）',
+    '銘柄コード,銘柄名,現在値,評価額,損益（％）,前日比（％）,取得日',
+    '6501,日立製作所,8500,900000,15.20,1.10,2025-06-01',
+  ].join('\n')
+
+  function makeCsvFile(content: string): File {
+    return new File([content], 'portfolio.csv')
+  }
+
+  function seed(created: ReturnType<typeof createAppStoreInstanceForTest>, priorStatus: 'success' | 'partial' | 'failed', dataSourceOutcome: { loaded: number; total: number }) {
+    created.store.setState(s => ({
+      holdings: [],
+      trust: [],
+      portfolioPolicy: { ...DEFAULT_PORTFOLIO_POLICY },
+      cashAssumptions: { ...DEFAULT_CASH_ASSUMPTIONS },
+      system: {
+        ...s.system,
+        status: priorStatus,
+        error: null,
+        csvLastImportedAt: null,
+        csvImportProvenance: null,
+        csvSyncSummary: null,
+        lastUpdated: PRIOR_LAST_UPDATED,
+        dataSourceOutcome,
+      },
+    }))
+  }
+
+  it('partial → CSV取込 → partial（dataSourceOutcomeは改変されない）', async () => {
+    const manager = new FakeLockManager()
+    const created = createAppStoreInstanceForTest({ portfolioGenerationLock: adapter(manager) })
+    seed(created, 'partial', { loaded: 13, total: 14 })
+    const result = await grant(manager, created.store.getState().importCsv(makeCsvFile(STOCK_CSV)))
+    expect(result.ok).toBe(true)
+    const system = created.store.getState().system
+    expect(system.status).toBe('partial')
+    expect(system.dataSourceOutcome).toEqual({ loaded: 13, total: 14 })
+  })
+
+  it('failed → portfolio snapshot取込 → failed（dataSourceOutcomeは改変されない）', async () => {
+    const manager = new FakeLockManager()
+    const created = createAppStoreInstanceForTest({ portfolioGenerationLock: adapter(manager) })
+    seed(created, 'failed', { loaded: 0, total: 14 })
+    // 自分自身の現状態をexportし、そのまま同一内容をimportする（roundtrip）。
+    // このtestの目的はsnapshotの内容そのものではなく、取込成功後のstatus保存/復元。
+    const snapshotJson = created.store.getState().exportPortfolioSnapshot()
+    const result = await grant(manager, created.store.getState().importPortfolioSnapshot(snapshotJson))
+    expect(result.ok).toBe(true)
+    const system = created.store.getState().system
+    expect(system.status).toBe('failed')
+    expect(system.dataSourceOutcome).toEqual({ loaded: 0, total: 14 })
+  })
+
+  it('success → CSV取込 → success（回帰防止。取込成功自体は引き続き反映される）', async () => {
+    const manager = new FakeLockManager()
+    const created = createAppStoreInstanceForTest({ portfolioGenerationLock: adapter(manager) })
+    seed(created, 'success', { loaded: 14, total: 14 })
+    const result = await grant(manager, created.store.getState().importCsv(makeCsvFile(STOCK_CSV)))
+    expect(result.ok).toBe(true)
+    const system = created.store.getState().system
+    expect(system.status).toBe('success')
+    expect(system.dataSourceOutcome).toEqual({ loaded: 14, total: 14 })
+  })
+
+  // F-A-P0-2 mutation probe: この保存/復元ロジックを戻す（=status:'success'を無条件上書き）と
+  // REDになることの固定用。
+  it('[mutation guard] partial状態でCSV取込してもsuccessへ僭称されない', async () => {
+    const manager = new FakeLockManager()
+    const created = createAppStoreInstanceForTest({ portfolioGenerationLock: adapter(manager) })
+    seed(created, 'partial', { loaded: 13, total: 14 })
+    await grant(manager, created.store.getState().importCsv(makeCsvFile(STOCK_CSV)))
+    expect(created.store.getState().system.status).not.toBe('success')
   })
 })

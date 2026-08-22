@@ -657,7 +657,10 @@ describe('useAppStore: portfolio snapshot（P4.5-A012b）', () => {
       holdings: [],
       trust: [{ ...testTrust, eval: 0 }],
       cashAssumptions: { source: 'DEFAULT', grossCash: 0, safetyReserve: 0, pendingOrderCash: null, updatedAt: null },
-      system: { ...s.system, csvLastImportedAt: null, csvImportProvenance: null },
+      // F-A-P0-2: snapshot importはdataSourceOutcomeを保存・復元するだけなので、この
+      // happy pathでは事前のdata-source healthをsuccess相当にしておく（先行testのfailed
+      // 状態を引き継がせない）。
+      system: { ...s.system, csvLastImportedAt: null, csvImportProvenance: null, dataSourceOutcome: { loaded: 14, total: 14 } },
     }))
     const snapshotJson = boundV3Snapshot({
       schemaVersion: 'portfolio-snapshot-3',
@@ -2105,6 +2108,10 @@ describe('useAppStore: localStorageFreshness即時更新（P4.5-A013-T6a）', ()
         status: 'idle',
         error: null,
         localStorageFreshness: STALE_FRESHNESS,
+        // F-A-P0-2: CSV importはdataSourceOutcomeを保存・復元するだけなので、この
+        // happy pathでは事前のdata-source healthをsuccess相当にしておく（先行testの
+        // failed状態を引き継がせない）。
+        dataSourceOutcome: { loaded: 14, total: 14 },
       },
     }))
   })
