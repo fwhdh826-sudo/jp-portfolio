@@ -176,7 +176,9 @@ describe('RA-007-D2 single final publication — success', () => {
     await grant(manager, a.store.getState().initialize())
     expect(seenSnapshots).toHaveLength(1)
     const seen = seenSnapshots[0]
-    expect(seen.system.status).toBe('success')
+    // F-P0-2: このsuiteのfetchはbeforeEachで常にok:false(404)なので、全ソースがfallback
+    // となりstatusは'failed'が正しい（旧仕様は誤って'success'を返していた）。
+    expect(seen.system.status).toBe('failed')
     expect(seen.metrics).not.toBeNull()
     expect(seen.system.analysisLastRunAt).not.toBeNull()
     expect(seen.holdings.length).toBeGreaterThan(0)
@@ -194,7 +196,8 @@ describe('RA-007-D2 single final publication — success', () => {
     await grant(manager, a.store.getState().initialize())
     // Only one notification ever fires, so there is no window in which a partial (restore-only,
     // published-data-only, macro-only, Phase-7-only) state could have been observed.
-    expect(statusesSeen).toEqual(['success'])
+    // F-P0-2: fetch always 404s in this suite, so the single published status is 'failed'.
+    expect(statusesSeen).toEqual(['failed'])
     expect(holdingsRefsSeen).toHaveLength(1)
   })
 
@@ -257,7 +260,8 @@ describe('RA-007-D2 single final publication — success', () => {
     // The live store after the single publish must match exactly what analysis produced,
     // proving persistence used the same complete final object that got published.
     const state = a.store.getState()
-    expect(state.system.status).toBe('success')
+    // F-P0-2: fetch always 404s in this suite, so the truthful status is 'failed'.
+    expect(state.system.status).toBe('failed')
     expect(state.metrics).not.toBeNull()
   })
 
@@ -280,11 +284,12 @@ describe('RA-007-D2 single final publication — success', () => {
     expect(statuses).not.toContain('loading')
   })
 
-  it('success system.status is exactly "success"', async () => {
+  it('terminal system.status reflects the actual fetch outcome, not an unconditional "success"', async () => {
     const manager = new FakeLockManager()
     const a = instance(manager)
     await grant(manager, a.store.getState().initialize())
-    expect(a.store.getState().system.status).toBe('success')
+    // F-P0-2: fetch always 404s in this suite, so the truthful status is 'failed'.
+    expect(a.store.getState().system.status).toBe('failed')
   })
 })
 

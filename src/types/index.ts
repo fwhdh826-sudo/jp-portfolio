@@ -274,7 +274,10 @@ export interface LearningState {
 }
 
 // ── System ────────────────────────────────────────────────────
-export type SystemStatus = 'idle' | 'loading' | 'success' | 'error'
+// F-P0-3: 'initializing' はブート中（initialize未完了）の表示専用状態。
+// F-P0-2: 'partial'/'failed' はrefreshAllData/initializeのデータソース取得結果を反映する。
+// 既存の 'idle'/'loading'/'error' の意味・使用箇所は変更しない。
+export type SystemStatus = 'idle' | 'loading' | 'initializing' | 'success' | 'partial' | 'failed' | 'error'
 
 export interface DataSourceInfo {
   status: 'loaded' | 'static' | 'none' | 'error'
@@ -347,6 +350,9 @@ export interface SystemState {
   // P4.5-A013-T6: 直近CSV取込結果の集計（表示専用）。importPortfolioCsv成功時のみ更新し、
   // 失敗時・portfolio snapshot importでは変更しない（虚偽の成功表示を避けるため）。
   csvSyncSummary?: CsvSyncSummary | null
+  // F-P0-2: 直近のinitialize/refreshAllDataでdataSourceStatusが'loaded'だったソース数の内訳。
+  // GlobalErrorBannerのpartial表示件数（N/M）にのみ使う表示専用値。
+  dataSourceOutcome?: { loaded: number; total: number }
   /**
    * RA-008-D1: 別タブでdurable portfolio generationが更新された可能性を示す表示専用状態。
    * portfolio dataのauthorityではなく、投資判断ロジックや永続化には使用しない。

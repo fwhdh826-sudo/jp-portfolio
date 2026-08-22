@@ -40,9 +40,12 @@ function HeaderRight() {
   const dow  = ['日', '月', '火', '水', '木', '金', '土'][now.getDay()]
 
   const dotColor =
-    status === 'success' ? v13Colors.success :
-    status === 'loading' ? v13Colors.warning :
-    status === 'error'   ? v13Colors.danger :
+    status === 'success'      ? v13Colors.success :
+    status === 'partial'      ? v13Colors.warning :
+    status === 'failed'       ? v13Colors.danger :
+    status === 'loading'      ? v13Colors.warning :
+    status === 'initializing' ? colors.neutral :
+    status === 'error'        ? v13Colors.danger :
     colors.neutral
 
   return (
@@ -117,28 +120,68 @@ export function DesktopSidebarNav() {
 }
 
 // ── Phase 8: グローバルエラーバナー ──────────────────────────
-function GlobalErrorBanner() {
-  const error  = useAppStore(s => s.system.error)
-  const status = useAppStore(s => s.system.status)
+// F-P0-2: CSV系('error')に加え、initialize/refreshAllDataのデータソース取得結果
+// ('failed'='partial'=1件以上fallback)でも到達可能なerror stateを作る。
+export function GlobalErrorBanner() {
+  const error            = useAppStore(s => s.system.error)
+  const status            = useAppStore(s => s.system.status)
+  const dataSourceOutcome = useAppStore(s => s.system.dataSourceOutcome)
+  const refreshAllData    = useAppStore(s => s.refreshAllData)
   const [dismissed, setDismissed] = useState(false)
+  const [retryPending, setRetryPending] = useState(false)
 
-  // エラーが新しくなったら再表示
+  // 状態が新しくなったら再表示
   useEffect(() => {
-    if (status === 'error') setDismissed(false)
-  }, [error, status])
+    if (status === 'error' || status === 'failed' || status === 'partial') setDismissed(false)
+  }, [status, error])
 
-  if (status !== 'error' || !error || dismissed) return null
-  return (
-    <div className="global-error-banner">
-      <span className="global-error-banner__icon">⚠️</span>
-      <span className="global-error-banner__text">データ取得エラー: {error}</span>
-      <button
-        className="global-error-banner__dismiss"
-        onClick={() => setDismissed(true)}
-        aria-label="閉じる"
-      >×</button>
-    </div>
-  )
+  if (dismissed) return null
+
+  if (status === 'error' && error) {
+    return (
+      <div className="global-error-banner" role="alert">
+        <span className="global-error-banner__icon">⚠️</span>
+        <span className="global-error-banner__text">データ取得エラー: {error}</span>
+        <button
+          className="global-error-banner__dismiss"
+          onClick={() => setDismissed(true)}
+          aria-label="閉じる"
+        >×</button>
+      </div>
+    )
+  }
+
+  if (status === 'failed' || status === 'partial') {
+    const handleRetry = () => {
+      setRetryPending(true)
+      void refreshAllData().finally(() => setRetryPending(false))
+    }
+    const missing = dataSourceOutcome ? dataSourceOutcome.total - dataSourceOutcome.loaded : null
+    const text = status === 'failed'
+      ? '最新データを取得できませんでした。表示中の値はビルド同梱の初期値です。'
+      : `一部データを取得できませんでした（${missing ?? '?'}/${dataSourceOutcome?.total ?? '?'}）。T9（設定）でデータソース状態を確認できます。`
+    return (
+      <div
+        className="global-error-banner"
+        role="alert"
+        style={status === 'partial'
+          ? { background: 'var(--color-warning-bg)', color: 'var(--color-warning-text)', borderBottomColor: 'var(--color-warning)' }
+          : undefined}
+      >
+        <span className="global-error-banner__icon">⚠️</span>
+        <span className="global-error-banner__text">{text}</span>
+        <button
+          className="global-error-banner__dismiss"
+          onClick={handleRetry}
+          disabled={retryPending}
+          aria-label="再試行"
+          style={{ width: 'auto', minWidth: '44px', minHeight: '44px', fontSize: '12px' }}
+        >{retryPending ? '再試行中…' : '再試行'}</button>
+      </div>
+    )
+  }
+
+  return null
 }
 
 export async function executeAppInitializeUiFlow(

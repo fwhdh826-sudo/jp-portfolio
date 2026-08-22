@@ -321,7 +321,9 @@ describe('RA-006-REAUDIT-F004 actual operation phase matrix', () => {
     gate.resolve(publishedData())
     await outer
     expect(settled).toBe(true)
-    expect(useAppStore.getState().system).toMatchObject({ status: 'success', error: null })
+    // F-P0-2: publishedData() fixture has every source falling back (data:null/source
+    // static|none|default), so the truthful terminal status is 'failed', not 'success'.
+    expect(useAppStore.getState().system).toMatchObject({ status: 'failed', error: null })
     expect(analysisProbe.calls).toBeGreaterThan(0)
     await expectOwnerReleasedAndManualRetrySucceeds()
   })

@@ -404,7 +404,9 @@ async function expectDirectLoadAction(operation: LoadOperation) {
     operation: operation === 'initialize' ? 'initialize' : 'refreshAllData',
     code: 'SUCCESS',
   })
-  expect(useAppStore.getState().system).toMatchObject({ status: 'success', error: null })
+  // F-P0-2: publishedData() fixture has every source falling back, so the publish itself
+  // still succeeds (code: 'SUCCESS') but the truthful data status is 'failed', not 'success'.
+  expect(useAppStore.getState().system).toMatchObject({ status: 'failed', error: null })
   expect(warningCalls).toBe(0)
 }
 
