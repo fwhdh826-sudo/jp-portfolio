@@ -1057,10 +1057,17 @@ function classifyDataSourceOutcomes(publishedData: PublishedLoadData): {
 // dataSourceOutcome is never touched by CSV/snapshot import, so it still reflects the last
 // initialize()/refreshAllData() result; re-derive status from it with the identical
 // success/partial/failed rule used by classifyDataSourceOutcomes above.
+// R1-P1-1 (independent re-audit finding): dataSourceOutcome is undefined until the first
+// initialize()/refreshAllData() publish ever completes, and stays undefined forever if that
+// publish never lands (e.g. LOAD_RESTORE_ERROR). Defaulting an unknown outcome to 'success' would
+// let a CSV/snapshot import publish a false success with zero sources ever fetched — exactly the
+// defect this ticket exists to remove. When the outcome is unknown, preserve whatever status is
+// already there instead of asserting success.
 function deriveStatusFromDataSourceOutcome(
   outcome: { loaded: number; total: number } | undefined,
-): 'success' | 'partial' | 'failed' {
-  if (!outcome || outcome.total === 0) return 'success'
+  currentStatus: SystemState['status'],
+): SystemState['status'] {
+  if (!outcome || outcome.total === 0) return currentStatus
   if (outcome.loaded === outcome.total) return 'success'
   if (outcome.loaded === 0) return 'failed'
   return 'partial'
@@ -3585,7 +3592,7 @@ const createAppStoreStateCreator = (
             '現在のCSV世代のprovenanceを確認できないため、同一内容として確定できませんでした。状態は変更されていません。',
           ))
         }
-        set(s => ({ system: { ...s.system, status: deriveStatusFromDataSourceOutcome(s.system.dataSourceOutcome), error: null } }))
+        set(s => ({ system: { ...s.system, status: deriveStatusFromDataSourceOutcome(s.system.dataSourceOutcome, s.system.status), error: null } }))
         return {
           ok: true,
           code: 'DUPLICATE_CSV',
@@ -3823,7 +3830,7 @@ const createAppStoreStateCreator = (
         ...computed,
         system: {
           ...baseState.system,
-          status: deriveStatusFromDataSourceOutcome(baseState.system.dataSourceOutcome),
+          status: deriveStatusFromDataSourceOutcome(baseState.system.dataSourceOutcome, baseState.system.status),
           csvLastImportedAt: now,
           csvImportProvenance: incomingProvenance,
           csvSyncSummary: syncSummary,
@@ -4649,7 +4656,7 @@ const createAppStoreStateCreator = (
           cashAssumptions: nextCashAssumptions,
           system: {
             ...s.system,
-            status: deriveStatusFromDataSourceOutcome(s.system.dataSourceOutcome),
+            status: deriveStatusFromDataSourceOutcome(s.system.dataSourceOutcome, s.system.status),
             csvLastImportedAt: snapshot.csvImportedAt,
             csvImportProvenance: snapshot.csvImportProvenance,
             csvSyncSummary: null,

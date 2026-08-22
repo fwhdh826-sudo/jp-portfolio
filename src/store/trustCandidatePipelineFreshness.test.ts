@@ -476,7 +476,10 @@ describe('useAppStore.importCsv: 初回CSV取込でも同一ターンでtrust ca
       // ここで明示的に平常値へ戻す（テスト間のstate leak防止）。
       market: { ...permissive.market, vix: 19.9 },
       holdings: [],
-      system: { ...permissive.system, status: 'idle', error: null, csvSyncSummary: null },
+      // R1-P1-1: CSV importはdataSourceOutcomeが既知のときだけ'success'を主張する
+      // （undefinedのままなら直前のstatusを保つ）。このtestは「取込自体はsuccessになる」
+      // ことを前提にしているため、既に正常初期化済みの体でdataSourceOutcomeを明示する。
+      system: { ...permissive.system, status: 'idle', error: null, csvSyncSummary: null, dataSourceOutcome: { loaded: 14, total: 14 } },
     })
   }
 

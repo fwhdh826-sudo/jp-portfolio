@@ -156,6 +156,9 @@ describe('T9-A004-R3a: 共有portfolio-generation transaction guard', () => {
         csvLastImportedAt: null,
         csvImportProvenance: null,
         csvSyncSummary: null,
+        // R1-P1-1: CSV importはdataSourceOutcome既知のときだけ'success'を主張する。
+        // このsuiteは「取込自体はsuccessになる」ことを前提にしているため明示する。
+        dataSourceOutcome: { loaded: 14, total: 14 },
       },
     }))
   })
