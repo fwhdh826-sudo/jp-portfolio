@@ -665,6 +665,9 @@ function StockList({
           fontWeight:   700,
           minWidth:     '44px',
         }
+        const pnlCellBase: CSSProperties = isMobile
+          ? { ...cellBase, padding: `${spacing[1.5]} ${spacing[0.5]}`, fontSize: '10px', minWidth: 0, whiteSpace: 'nowrap' }
+          : cellBase
 
         return (
           <div>
@@ -738,7 +741,7 @@ function StockList({
                     {/* スコア */}
                     <div style={{ ...cellBase, background: sc.bg, color: sc.text }}>{rowScore}</div>
                     {/* 損益 */}
-                    <div style={{ ...cellBase, background: pnl.bg, color: pnl.text }}>
+                    <div style={{ ...pnlCellBase, background: pnl.bg, color: pnl.text }}>
                       {formatSignedPct(row.pnlPct)}
                     </div>
                     {/* RSI */}

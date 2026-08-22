@@ -80,8 +80,9 @@ export function formatPctRaw(n: number | null | undefined, decimals = 2): string
  */
 export function formatSignedPct(n: number | null | undefined, decimals = 2): string {
   if (n == null || !isFinite(n)) return '—'
-  const sign = n > 0 ? '+' : ''
-  return `${sign}${stripNegativeZero(n.toFixed(decimals))}%`
+  const displayValue = stripNegativeZero(n.toFixed(decimals))
+  const sign = Number(displayValue) > 0 ? '+' : ''
+  return `${sign}${displayValue}%`
 }
 
 /**
@@ -90,8 +91,9 @@ export function formatSignedPct(n: number | null | undefined, decimals = 2): str
  */
 export function formatPt(n: number | null | undefined, decimals = 1): string {
   if (n == null || !isFinite(n)) return '—'
-  const sign = n > 0 ? '+' : ''
-  return `${sign}${stripNegativeZero(n.toFixed(decimals))}pt`
+  const displayValue = stripNegativeZero(n.toFixed(decimals))
+  const sign = Number(displayValue) > 0 ? '+' : ''
+  return `${sign}${displayValue}pt`
 }
 
 /**
@@ -100,8 +102,9 @@ export function formatPt(n: number | null | undefined, decimals = 1): string {
  */
 export function formatSignedJPY(n: number | null | undefined): string {
   if (n == null || !isFinite(n)) return '—'
-  const sign = n > 0 ? '+' : ''
-  return `${sign}${formatJPYAuto(n)}`
+  const displayValue = formatJPYAuto(n)
+  const sign = displayValue === '0円' ? '' : n > 0 ? '+' : ''
+  return `${sign}${displayValue}`
 }
 
 /**

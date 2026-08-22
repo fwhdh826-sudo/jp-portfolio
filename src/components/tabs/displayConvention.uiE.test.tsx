@@ -10,9 +10,12 @@ import { buildAssetUniverse } from '../../domain/optimization/idealAllocation'
 import { createAppStoreInstanceForTest } from '../../store/useAppStore'
 import { SafeModeStatusCard } from '../v13/SafeModeStatusCard'
 import type { TierAT1Violation } from '../../domain/constraints/tierAT1'
+import { formatPt, formatSignedJPY } from '../../utils/format'
+import { CLASS_LABEL, type AssetClass } from '../../types/universe'
 
 const mockedStore = vi.hoisted(() => ({
   state: null as AppState | null,
+  isMobile: false,
 }))
 
 vi.mock('../../store/useAppStore', async importOriginal => {
@@ -26,9 +29,14 @@ vi.mock('../../store/useAppStore', async importOriginal => {
   }
 })
 
+vi.mock('../../hooks/useIsMobile', () => ({
+  useIsMobile: () => mockedStore.isMobile,
+}))
+
 // mock後にimportすることでvi.mockされたuseAppStoreを使わせる
 const { StatusBar } = await import('../StatusBar')
 const { T0_Home } = await import('./T0_Home')
+const { T1_Decision } = await import('./T1_Decision')
 const { T2_JpFund, T2AllocationPanel } = await import('./T2_JpFund')
 const { T3_GlobalFund } = await import('./T3_GlobalFund')
 const { T4_IdealPf } = await import('./T4_IdealPf')
@@ -64,12 +72,162 @@ function renderWith(state: AppState, Component: () => JSX.Element): string {
   return renderToStaticMarkup(<Component />)
 }
 
+function renderWithViewport(state: AppState, Component: () => JSX.Element, isMobile: boolean): string {
+  mockedStore.state = state
+  mockedStore.isMobile = isMobile
+  try {
+    return renderToStaticMarkup(<Component />)
+  } finally {
+    mockedStore.isMobile = false
+  }
+}
+
 // resultから資産カテゴリ「海外株投信」に紐づくptバッジ相当の符号を粗くsniffするための
 // 共通ヘルパー: 与えたラベルの近傍で最初に出現する符号付きpt/JPYトークンを拾う
 function firstSignedToken(html: string, pattern: RegExp): string | null {
   const m = html.match(pattern)
   return m ? m[0] : null
 }
+
+const ALL_ASSET_CLASSES: AssetClass[] = [
+  'JP_STOCK', 'JP_TRUST', 'OVERSEAS_TRUST', 'GOLD', 'CASH', 'CASH_RESERVE',
+]
+
+function authorityFixtureState(): AppState {
+  const trust = BASE_APP_STATE.trust.map(f => ({
+    ...f,
+    eval:
+      f.id === 'nk225_sbi' ? 500_000
+      : f.id === 'sp500_sbi' ? 4_000_000
+      : f.id === 'gold_mufg' ? 1_000_000
+      : 0,
+  }))
+  const holdings: AppState['holdings'] = [{
+    code: '7203', name: 'authority fixture', eval: 2_000_000, pnlPct: 0,
+    mu: 0.1, sigma: 0.2, sigmaSource: 'static', beta: 1, sector: '輸送用機器',
+    target: 3_000, alert: 2_000, lock: false, mitsu: false,
+    ma: true, rsi: 50, macd: true, vol: false, mom3m: 0,
+    roe: 10, per: 12, pbr: 1, epsG: 5, cfOk: true, de: 0.5, divG: 2,
+    score: 60, decision: 'HOLD', ev: 0,
+  }]
+  const base: AppState = {
+    ...BASE_APP_STATE,
+    holdings,
+    trust,
+    cash: 2_000_000,
+    cashReserve: 500_000,
+    cashAssumptions: {
+      source: 'MANUAL', grossCash: 2_500_000, safetyReserve: 500_000,
+      pendingOrderCash: 0, updatedAt: '2026-08-21T00:00:00Z',
+    },
+    portfolioPolicy: { ...BASE_APP_STATE.portfolioPolicy, jpStockMaxRatio: 0.1 },
+    market: { ...BASE_APP_STATE.market, regime: 'neutral' },
+  }
+  return { ...base, universe: buildAssetUniverse(base, Date.parse('2026-08-21T00:00:00Z')) }
+}
+
+function assetRenderBlock(
+  html: string,
+  sectionTitle: string,
+  assetClass: AssetClass,
+  renderedClasses: readonly AssetClass[],
+): string {
+  const sectionStart = html.indexOf(sectionTitle)
+  if (sectionStart < 0) throw new Error(`section not rendered: ${sectionTitle}`)
+  const label = CLASS_LABEL[assetClass]
+  const blockStart = html.indexOf(`>${label}<`, sectionStart)
+  if (blockStart < 0) throw new Error(`asset class not rendered: ${assetClass}`)
+  const classIndex = renderedClasses.indexOf(assetClass)
+  const nextClass = renderedClasses[classIndex + 1]
+  const blockEnd = nextClass === undefined
+    ? html.length
+    : html.indexOf(`>${CLASS_LABEL[nextClass]}<`, blockStart + label.length)
+  return html.slice(blockStart, blockEnd < 0 ? html.length : blockEnd)
+}
+
+function expectAuthorityDiffs(
+  html: string,
+  sectionTitle: string,
+  state: AppState,
+  renderedClasses: readonly AssetClass[],
+): void {
+  for (const assetClass of renderedClasses) {
+    const authority = state.universe!.categories.find(c => c.class === assetClass)!
+    const block = assetRenderBlock(html, sectionTitle, assetClass, renderedClasses)
+    const ratioToken = `>${formatPt(authority.diffRatio * 100)}<`
+    const valueToken = `>${formatSignedJPY(authority.diffValue)}<`
+    expect(block.split(ratioToken).length - 1, `${assetClass} diffRatio exact count`).toBe(1)
+    expect(block.split(valueToken).length - 1, `${assetClass} diffValue exact count`).toBe(1)
+  }
+}
+
+describe('TE1: T0/T3/T4は各asset classのauthority diffRatio/diffValueを個別exact描画する', () => {
+  const state = authorityFixtureState()
+
+  it('fixtureは全asset classで非ゼロ、正負混在、非対称のauthority差分を持つ', () => {
+    const ratios: number[] = []
+    const values: number[] = []
+    for (const assetClass of ALL_ASSET_CLASSES) {
+      const authority = state.universe!.categories.find(c => c.class === assetClass)!
+      expect(authority.diffRatio, `${assetClass} diffRatio`).not.toBe(0)
+      expect(authority.diffValue, `${assetClass} diffValue`).not.toBe(0)
+      ratios.push(authority.diffRatio)
+      values.push(authority.diffValue)
+    }
+    expect(ratios.some(v => v > 0) && ratios.some(v => v < 0)).toBe(true)
+    expect(values.some(v => v > 0) && values.some(v => v < 0)).toBe(true)
+    expect(new Set(ratios.map(v => Math.abs(v).toFixed(8))).size).toBeGreaterThan(2)
+    expect(new Set(values.map(v => Math.abs(v).toFixed(2))).size).toBeGreaterThan(2)
+  })
+
+  it('T0: 全6 asset class', () => {
+    expectAuthorityDiffs(renderWith(state, T0_Home), '理想PF / 配分サマリー', state, ALL_ASSET_CLASSES)
+  })
+
+  it('T3: OVERSEAS_TRUST / GOLD', () => {
+    const renderedClasses: AssetClass[] = ['OVERSEAS_TRUST', 'GOLD']
+    expectAuthorityDiffs(renderWith(state, T3_GlobalFund), '理想配分 / 現在配分との差分', state, renderedClasses)
+  })
+
+  it('T4: 全6 asset class', () => {
+    expectAuthorityDiffs(renderWith(state, T4_IdealPf), '資産クラス配分', state, ALL_ASSET_CLASSES)
+  })
+})
+
+describe('F2: T1 mobile score matrixの損益cellは2桁精度を維持して縮退する', () => {
+  it('mobile renderで対象cellだけが10px/min-width:0/nowrapとなり値を省略しない', () => {
+    const source = authorityFixtureState().holdings[0]
+    const state: AppState = {
+      ...authorityFixtureState(),
+      holdings: [
+        { ...source, code: '1001', name: '正22.90', pnlPct: 22.9 },
+        { ...source, code: '1002', name: '正12.40', pnlPct: 12.4 },
+        { ...source, code: '1003', name: '負12.40', pnlPct: -12.4 },
+      ],
+      analysis: [],
+    }
+    const html = renderWithViewport(state, T1_Decision, true)
+    const matrixStart = html.indexOf('銘柄スコア比較')
+    const matrixEnd = html.indexOf('候補判断', matrixStart)
+    expect(matrixStart).toBeGreaterThanOrEqual(0)
+    const matrixHtml = html.slice(matrixStart, matrixEnd < 0 ? html.length : matrixEnd)
+    for (const expected of ['+22.90%', '+12.40%', '-12.40%']) {
+      const escaped = expected.replace(/[+.%]/g, '\\$&')
+      const match = matrixHtml.match(new RegExp(`<div style="([^"]*)">${escaped}</div>`))
+      expect(match, `${expected} cell`).not.toBeNull()
+      const style = match![1]
+      expect(style).toContain('padding:6px 2px')
+      expect(style).toContain('font-size:10px')
+      expect(style).toContain('min-width:0')
+      expect(style).toContain('white-space:nowrap')
+    }
+    expect(matrixHtml).toContain('grid-template-columns:64px repeat(5, 1fr)')
+    expect(matrixHtml).toContain('overflow-x:auto')
+    expect(matrixHtml).not.toContain('+22.9%')
+    expect(matrixHtml).not.toContain('+12.4%')
+    expect(matrixHtml).not.toContain('-12.4%')
+  })
+})
 
 describe('T-6: diffRatio由来のptがT0/T3/T4で同符号（過大配分=海外株投信fixture）', () => {
   const state = overAllocatedOverseasState()
