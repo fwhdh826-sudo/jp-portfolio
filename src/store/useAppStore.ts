@@ -992,6 +992,49 @@ function settlePrework<T>(promise: Promise<T>): Promise<SettledPrework<T>> {
 
 type PublishedLoadData = Awaited<ReturnType<typeof loadPublishedData>>
 
+/**
+ * F-P0-2: 「データ値のfallback」と「取得成功status」を分離するための集計のみ。各loaderの
+ * fetch/parse/catchロジック自体は一切変更しない。ほとんどのloaderは成功時のみ`source:'loaded'`
+ * を返すためそれで判定できるが、loadTrustMaster/loadHoldingsSnapshotは成功時も'static'/'csv'
+ * を返す（'loaded'は不使用）ため、catch経路でのみnullになる`data`の有無で判定する。
+ */
+type DataSourceOutcome = 'loaded' | 'fallback'
+
+function classifyDataSourceOutcomes(publishedData: PublishedLoadData): {
+  outcomes: Record<string, DataSourceOutcome>
+  loaded: number
+  total: number
+  status: 'success' | 'partial' | 'failed'
+} {
+  const bySource = (source: string): DataSourceOutcome => source === 'loaded' ? 'loaded' : 'fallback'
+  const byData = (data: unknown): DataSourceOutcome => data !== null ? 'loaded' : 'fallback'
+  const candidateFunnel = publishedData.candidateFunnel ?? { status: 'unavailable' as const, data: null }
+  const outcomes: Record<string, DataSourceOutcome> = {
+    market: bySource(publishedData.market.source),
+    correlation: bySource(publishedData.correlation.source),
+    news: bySource(publishedData.news.source),
+    trust: byData(publishedData.trust.data),
+    holdings: byData(publishedData.holdingsSnapshot.data),
+    macro: bySource(publishedData.macro.source),
+    nikkeiVI: bySource(publishedData.nikkeiVI.source),
+    sq: bySource(publishedData.sq.source),
+    margin: bySource(publishedData.margin.source),
+    flows: bySource(publishedData.flows.source),
+    candidatesNews: bySource(publishedData.candidatesNews.source),
+    candidatesStocks: bySource(publishedData.candidatesStocks.source),
+    candidateFunnel: candidateFunnel.status === 'loaded' ? 'loaded' : 'fallback',
+    regimeState: bySource(publishedData.regimeState.source),
+    safeMode: bySource(publishedData.safeMode.source),
+    tierAViolations: bySource(publishedData.tierAViolations.source),
+    tierAAlerts: bySource(publishedData.tierAAlerts.source),
+  }
+  const values = Object.values(outcomes)
+  const loaded = values.filter(v => v === 'loaded').length
+  const total = values.length
+  const status = loaded === total ? 'success' : loaded === 0 ? 'failed' : 'partial'
+  return { outcomes, loaded, total, status }
+}
+
 interface Phase7StockRaw {
   _meta?: { kind?: string }
   stock_scores_6axis?: StockScoreRecord[]
@@ -3006,7 +3049,11 @@ const createAppStoreStateCreator = (
   cashAssumptions: DEFAULT_CASH_ASSUMPTIONS,
   system: {
     version: '10.0',
-    status: 'idle',
+    // F-P0-3: initialize()完了までの間、ブート中を表すsentinel。single-final-publish
+    // 契約（RA-007-D2）を壊さないため、initialize()内で追加のset()は行わない —
+    // この初期値そのものが「起動中」を表現し、initialize/refreshAllDataの唯一の
+    // publishが完了した時点でsuccess/partial/failedへ一度だけ遷移する。
+    status: 'initializing',
     lastUpdated: null,
     csvLastImportedAt: null,
     csvImportProvenance: null,
@@ -3108,6 +3155,12 @@ const createAppStoreStateCreator = (
             phase7StockRaw,
           })
 
+          // F-P0-2: 取得結果の集計（全loaderが握り潰した失敗を独立に集約する。
+          // 個々のfetch/parseロジックは一切変更しない）。1件以上loadedのときのみ
+          // lastUpdatedを進める — 全てfallbackなら「試行時刻」ではなく前回値を維持する。
+          const sourceOutcome = classifyDataSourceOutcomes(publishedData)
+          const nextLastUpdated = sourceOutcome.loaded > 0 ? new Date(nowMs).toISOString() : stagedState.system.lastUpdated
+
           // 全再計算（未publishのstaged stateに対して実行する）
           failurePhase.current = 'analysis'
           let computed: ReturnType<typeof runFullAnalysis>
@@ -3120,7 +3173,14 @@ const createAppStoreStateCreator = (
           let finalState: AppState = {
             ...stagedState,
             ...computed,
-            system: { ...stagedState.system, status: 'success', lastUpdated: nowIso, analysisLastRunAt: nowIso, error: null },
+            system: {
+              ...stagedState.system,
+              status: sourceOutcome.status,
+              lastUpdated: nextLastUpdated,
+              analysisLastRunAt: nowIso,
+              error: null,
+              dataSourceOutcome: { loaded: sourceOutcome.loaded, total: sourceOutcome.total },
+            },
           }
 
           // 永続化（persist-before-publish）
@@ -3153,7 +3213,14 @@ const createAppStoreStateCreator = (
             finalState = {
               ...stagedState,
               ...computed,
-              system: { ...stagedState.system, status: 'success', lastUpdated: nowIso, analysisLastRunAt: nowIso, error: null },
+              system: {
+                ...stagedState.system,
+                status: sourceOutcome.status,
+                lastUpdated: nextLastUpdated,
+                analysisLastRunAt: nowIso,
+                error: null,
+                dataSourceOutcome: { loaded: sourceOutcome.loaded, total: sourceOutcome.total },
+              },
             }
           }
           if (persistenceResult.target === 'canonical') {
@@ -3240,6 +3307,10 @@ const createAppStoreStateCreator = (
             hasCommittedCanonicalGeneration: alignment.canonical.status === 'committed',
           })
 
+          // F-P0-2: initializeと同じ集計。全fallbackならlastUpdatedを進めない。
+          const sourceOutcome = classifyDataSourceOutcomes(preworkResult.value)
+          const nextLastUpdated = sourceOutcome.loaded > 0 ? new Date(nowMs).toISOString() : stagedState.system.lastUpdated
+
           failurePhase.current = 'analysis'
           let computed: ReturnType<typeof runFullAnalysis>
           try {
@@ -3251,7 +3322,14 @@ const createAppStoreStateCreator = (
           let finalState: AppState = {
             ...stagedState,
             ...computed,
-            system: { ...stagedState.system, status: 'success', lastUpdated: nowIso, analysisLastRunAt: nowIso, error: null },
+            system: {
+              ...stagedState.system,
+              status: sourceOutcome.status,
+              lastUpdated: nextLastUpdated,
+              analysisLastRunAt: nowIso,
+              error: null,
+              dataSourceOutcome: { loaded: sourceOutcome.loaded, total: sourceOutcome.total },
+            },
           }
 
           // Deliberately re-reads canonical rather than threading alignment.canonical/canonicalRaw
@@ -3291,7 +3369,14 @@ const createAppStoreStateCreator = (
             finalState = {
               ...stagedState,
               ...computed,
-              system: { ...stagedState.system, status: 'success', lastUpdated: nowIso, analysisLastRunAt: nowIso, error: null },
+              system: {
+                ...stagedState.system,
+                status: sourceOutcome.status,
+                lastUpdated: nextLastUpdated,
+                analysisLastRunAt: nowIso,
+                error: null,
+                dataSourceOutcome: { loaded: sourceOutcome.loaded, total: sourceOutcome.total },
+              },
             }
           }
           if (persistenceResult.target === 'canonical') {

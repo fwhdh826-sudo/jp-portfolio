@@ -358,6 +358,26 @@ function TodoCard() {
   const officialDecision = useAppStore(s => s.officialDecision)
   // P4.5-A011: raw active値だけでなく、safe_mode.jsonの鮮度によるfail-closedも含めて判定する
   const safeModeActive   = useAppStore(selectEffectiveSafeModeActive)
+  const safeModeRaw      = useAppStore(s => s.safeMode.safe_mode.active)
+  const system           = useAppStore(s => s.system)
+  // T0-CC-5(F2): 「ほかN件」を展開/折りたたみできるようにする表示専用トグル。
+  // フックの呼び出し順を安定させるため、initializing早期returnより前に呼ぶ。
+  const [isExpanded, setIsExpanded] = useState(false)
+
+  // F-P0-3: 起動未完了(initializing)中はSAFE_MODE/DQ由来のToDo文言を一切出さず、
+  // 「起動中」の単一メッセージに置換する。
+  if (system.status === 'initializing') {
+    return (
+      <div className="card">
+        <SectionTitle icon="✅" title="今日のToDo" />
+        <div className="todo-list">
+          <div className="home-card-empty">⏳ 起動中 — データ取得中です</div>
+        </div>
+      </div>
+    )
+  }
+
+  const isRealSafeMode = safeModeRaw && system.dataSourceStatus.safeMode === 'loaded'
 
   const todos: TodoItem[] = []
 
@@ -428,11 +448,12 @@ function TodoCard() {
     }
 
     // P4-A157: safeModeActive単独でも「買い候補確認」ToDoが漏れないよう、DQ抑制と同列でゲートする
+    // F-P0-3: real(active && source==='loaded') / fallback(未取得・stale)を区別して表示する。
     if (safeModeActive) {
       todos.push({
         priority: 'medium',
-        text: 'SAFE_MODE発動中 — 新規買付停止中',
-        cond: 'SAFE_MODE解除後に判断する',
+        text: isRealSafeMode ? 'SAFE_MODE発動中 — 新規買付停止中' : '安全側停止（データ未取得）— 新規買付停止中',
+        cond: isRealSafeMode ? 'SAFE_MODE解除後に判断する' : 'SAFE_MODEデータ取得後に判断する',
       })
     } else if (dq.isSuppressed) {
       todos.push({
@@ -471,10 +492,6 @@ function TodoCard() {
   const FIRST_VIEW_VISIBLE_COUNT = 2
   const collapsedTodos = displayTodos.slice(0, FIRST_VIEW_VISIBLE_COUNT)
   const hiddenCount    = displayTodos.length - collapsedTodos.length
-
-  // T0-CC-5(F2): 「ほかN件」を展開/折りたたみできるようにする表示専用トグル。
-  // todos生成・優先度・順序には一切影響しない。
-  const [isExpanded, setIsExpanded] = useState(false)
   const visibleTodos = isExpanded ? displayTodos : collapsedTodos
 
   return (
@@ -545,7 +562,7 @@ function SafeModeCard() {
 // の読み取り結果を並べるだけで、gateや判定ロジックは新設しない。
 
 export interface SystemStatusInput {
-  safeModeRaw: boolean
+  isRealSafeMode: boolean
   safeModeDataStale: boolean
   safeModeActive: boolean
   dqSuppressed: boolean
@@ -562,9 +579,13 @@ export interface SystemStatusResult {
 
 // P4.5-A013-T6a: SystemStatusBarのnotices/hasWarning/isSevere算出を純関数として抽出。
 // componentレンダリングなしで直接テストできるようにするだけで、条件式自体は変更しない。
+// F-P0-3: safeModeRaw（生値。DEFAULT_SAFE_MODE_SNAPSHOTはfail-closedでactive:trueなので
+// 未取得時も常にtrue）ではなく、SafeModeStatusCardと同じisRealSafeMode（active かつ
+// source==='loaded'）で real/fallback を区別する。real以外はfallback文言のみ表示する。
 export function computeSystemStatusNotices(input: SystemStatusInput): SystemStatusResult {
   const notices: string[] = []
-  if (input.safeModeRaw)       notices.push('🛑 SAFE_MODE中 — 新規買付停止')
+  if (input.isRealSafeMode)      notices.push('🛑 SAFE_MODE発動中 — 新規買付停止')
+  else if (input.safeModeActive) notices.push('🟡 安全側停止（データ未取得）— 新規買付停止')
   if (input.safeModeDataStale) notices.push('⚠ SAFE_MODEデータ古い — 安全側停止中')
   if (input.dqSuppressed)      notices.push('📡 データ品質低下 — 新規買い停止中')
   if (input.noTrade)           notices.push('⚠ ノートレード推奨')
@@ -592,8 +613,24 @@ function SystemStatusBar() {
   // P4.5-A012dの方針を変更せず、staleでも値は捨てず警告のみ追加する。
   const holdingsStale   = computeHoldingsStale(system)
 
+  // F-P0-3: 起動未完了(initializing)中はSAFE_MODE/DQ/リスク等の個別通知を一切出さず、
+  // 「起動中」の単一メッセージに置換する（hasWarning分岐より手前で早期return）。
+  // BUY系の表示は既存のfail-closedゲート（safeModeActive/dq.isSuppressed）で
+  // 起動中も引き続き全抑制される — ここでは表示のみを変更する。
+  if (system.status === 'initializing') {
+    return (
+      <div className="card" style={{ padding: '8px 12px', background: colors.neutralBg, border: `1px solid ${colors.borderSubtle}` }}>
+        <span style={{ fontSize: '12px', fontWeight: 600, color: colors.textSubtle }}>
+          ⏳ 起動中 — データ取得中です
+        </span>
+      </div>
+    )
+  }
+
+  const isRealSafeMode = safeModeRaw && system.dataSourceStatus.safeMode === 'loaded'
+
   const { notices, hasWarning, isSevere } = computeSystemStatusNotices({
-    safeModeRaw,
+    isRealSafeMode,
     safeModeDataStale: safeModeDq.isStale,
     safeModeActive,
     dqSuppressed: dq.isSuppressed,
@@ -1488,6 +1525,22 @@ function RiskWarningCard() {
   interface RiskItem {
     level: 'high' | 'medium' | 'low'
     text: string
+  }
+
+  // F-P0-3: 起動未完了(initializing)中は「重大なリスク要因は検出されていません」という
+  // 誤った安全宣言を出さず、「起動中」の単一メッセージに置換する。
+  if (system.status === 'initializing') {
+    return (
+      <div className="card">
+        <SectionTitle icon="⚠️" title="リスク警告" />
+        <div className="risk-list">
+          <div className="risk-item">
+            <span>⏳</span>
+            <span>起動中 — データ取得中です</span>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   const risks: RiskItem[] = []

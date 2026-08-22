@@ -139,7 +139,12 @@ export const selectMarketDataQuality = (s: AppState, now: number = Date.now()): 
   }
 
   if (source === 'static') {
-    return { isSuppressed: true, level: 'static', reason: 'データ更新失敗 — 最新データ取得まで新規買いを停止しています' }
+    // F-P0-3: 起動未完了(initializing)中は「更新失敗」ではなく「取得中」と表示する。
+    // isSuppressed/levelは変更しない — 表示文字列のみの読み替え。
+    const reason = s.system.status === 'initializing'
+      ? 'データ取得中 — 新規買いを停止しています'
+      : 'データ更新失敗 — 最新データ取得まで新規買いを停止しています'
+    return { isSuppressed: true, level: 'static', reason }
   }
 
   // dataTimestamps.market または market.last_updated で鮮度チェック

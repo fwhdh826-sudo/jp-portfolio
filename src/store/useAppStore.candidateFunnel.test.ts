@@ -104,7 +104,9 @@ describe('P5-B005-B3-B candidate funnel store wiring', () => {
     expect(snapshots[0].system.dataSourceStatus.candidateFunnel).toBe('loaded')
     expect(snapshots[0].system.dataTimestamps?.candidateFunnel)
       .toBe(currentArtifact._meta.generatedAt)
-    expect(snapshots[0].system.status).toBe('success')
+    // F-P0-2: candidate_funnel.json以外は全てfetch mockで404のため、他ソースはfallback。
+    // candidateFunnelのみloadedなので集計上はpartial（全滅ではないのでsuccessでもない）。
+    expect(snapshots[0].system.status).toBe('partial')
   })
 
   it('refresh atomically stores a valid artifact without increasing the one-publication contract', async () => {

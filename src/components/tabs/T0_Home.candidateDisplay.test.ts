@@ -216,7 +216,7 @@ describe('computeHoldingsStale（T0/T1共通の保有データstale判定）', (
 
 describe('computeSystemStatusNotices（T0 SystemStatusBarの表示内容・回帰guard）', () => {
   const baseInput = {
-    safeModeRaw: false,
+    isRealSafeMode: false,
     safeModeDataStale: false,
     safeModeActive: false,
     dqSuppressed: false,
