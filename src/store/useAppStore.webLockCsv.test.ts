@@ -101,6 +101,9 @@ function baseline(store: ReturnType<typeof createAppStoreInstanceForTest>['store
       ...state.system,
       status: 'idle', error: null, csvLastImportedAt: null,
       csvImportProvenance: null, csvSyncSummary: null,
+      // R1-P1-1: CSV/snapshot importはdataSourceOutcome既知のときだけ'success'を主張する。
+      // このsuiteは「取込自体はsuccessになる」ことを前提にしているため明示する。
+      dataSourceOutcome: { loaded: 14, total: 14 },
     },
   }))
 }
@@ -148,6 +151,7 @@ function emptyStore(store: ReturnType<typeof createAppStoreInstanceForTest>['sto
     system: {
       ...state.system, status: 'idle', error: null, csvLastImportedAt: null,
       csvImportProvenance: null, csvSyncSummary: null,
+      dataSourceOutcome: { loaded: 14, total: 14 },
     },
   }))
 }

@@ -231,6 +231,9 @@ describe('T9-A001/A002: structured CSV result and atomic store commit', () => {
         csvLastImportedAt: '2026-07-01T00:00:00.000Z',
         csvImportProvenance: null,
         csvSyncSummary: null,
+        // R1-P1-1: CSV importはdataSourceOutcome既知のときだけ'success'を主張する。
+        // このsuiteは「取込自体はsuccessになる」ことを前提にしているため明示する。
+        dataSourceOutcome: { loaded: 14, total: 14 },
       },
     }))
   })
@@ -1796,6 +1799,9 @@ function seedCsvImportBaselineState() {
       csvLastImportedAt: '2026-07-01T00:00:00.000Z',
       csvImportProvenance: null,
       csvSyncSummary: null,
+      // R1-P1-1: CSV importはdataSourceOutcome既知のときだけ'success'を主張する。
+      // このsuiteは「取込自体はsuccessになる」ことを前提にしているため明示する。
+      dataSourceOutcome: { loaded: 14, total: 14 },
     },
   }))
 }

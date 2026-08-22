@@ -539,4 +539,85 @@ describe('F-A-P0-2: CSV/snapshot importはdata-source truth(system.status)を上
     await grant(manager, created.store.getState().importCsv(makeCsvFile(STOCK_CSV)))
     expect(created.store.getState().system.status).not.toBe('success')
   })
+
+  // R1-P2-1（独立再監査ui-9f-a-r1-independent-reaudit.md指摘）: DUPLICATE_CSV経路
+  // （useAppStore.ts:3595）専用のテストが無く、この経路だけstatus:'success'に戻しても
+  // 全テストがGREENのままだった。同一内容CSVを2回取込みDUPLICATE_CSV分岐を実際に踏む。
+  it('DUPLICATE_CSV（同一内容の再取込）でもpartialのままsuccessへ僭称されない', async () => {
+    const manager = new FakeLockManager()
+    const created = createAppStoreInstanceForTest({ portfolioGenerationLock: adapter(manager) })
+    seed(created, 'partial', { loaded: 13, total: 14 })
+    const csv = `データ基準日時,2026-08-21T09:00:00+09:00\n${STOCK_CSV}`
+
+    const first = await grant(manager, created.store.getState().importCsv(makeCsvFile(csv)))
+    expect(first).toMatchObject({ ok: true, code: 'SUCCESS' })
+    expect(created.store.getState().system.status).toBe('partial')
+
+    const second = await grant(manager, created.store.getState().importCsv(makeCsvFile(csv)))
+    expect(second).toMatchObject({ ok: true, code: 'DUPLICATE_CSV' })
+    const system = created.store.getState().system
+    expect(system.status).toBe('partial')
+    expect(system.dataSourceOutcome).toEqual({ loaded: 13, total: 14 })
+  })
+
+  // R1-P1-1（独立再監査 指摘・HIGH）: dataSourceOutcomeはinitialize()/refreshAllData()の
+  // publishが一度も成功していない間はundefinedのまま（新規storeの初期値、またはLOAD_RESTORE_ERROR
+  // 等でinitialize()がset()に到達しなかった場合は恒久的にundefined）。この状態でCSV/snapshot
+  // importが成功すると、0ソースしか取得していないのにstatus:'success'を僭称しうる —
+  // これは本チケットが除去したはずの欠陥の再発である。outcome未知の間はsuccessを主張せず、
+  // 直前のstatusを維持しなければならない。
+  it('[R1-P1-1] dataSourceOutcomeがundefinedのままCSV取込してもsuccessへ僭称しない（現状status維持）', async () => {
+    const manager = new FakeLockManager()
+    const created = createAppStoreInstanceForTest({ portfolioGenerationLock: adapter(manager) })
+    created.store.setState(s => ({
+      holdings: [],
+      trust: [],
+      portfolioPolicy: { ...DEFAULT_PORTFOLIO_POLICY },
+      cashAssumptions: { ...DEFAULT_CASH_ASSUMPTIONS },
+      system: {
+        ...s.system,
+        status: 'initializing',
+        error: null,
+        csvLastImportedAt: null,
+        csvImportProvenance: null,
+        csvSyncSummary: null,
+        lastUpdated: null,
+        dataSourceOutcome: undefined,
+      },
+    }))
+    const result = await grant(manager, created.store.getState().importCsv(makeCsvFile(STOCK_CSV)))
+    expect(result.ok).toBe(true)
+    const system = created.store.getState().system
+    expect(system.status).not.toBe('success')
+    expect(system.status).toBe('initializing')
+    expect(system.dataSourceOutcome).toBeUndefined()
+  })
+
+  it('[R1-P1-1] dataSourceOutcomeがundefinedのままsnapshot取込してもsuccessへ僭称しない（現状status維持）', async () => {
+    const manager = new FakeLockManager()
+    const created = createAppStoreInstanceForTest({ portfolioGenerationLock: adapter(manager) })
+    created.store.setState(s => ({
+      holdings: [],
+      trust: [],
+      portfolioPolicy: { ...DEFAULT_PORTFOLIO_POLICY },
+      cashAssumptions: { ...DEFAULT_CASH_ASSUMPTIONS },
+      system: {
+        ...s.system,
+        status: 'initializing',
+        error: null,
+        csvLastImportedAt: null,
+        csvImportProvenance: null,
+        csvSyncSummary: null,
+        lastUpdated: null,
+        dataSourceOutcome: undefined,
+      },
+    }))
+    const snapshotJson = created.store.getState().exportPortfolioSnapshot()
+    const result = await grant(manager, created.store.getState().importPortfolioSnapshot(snapshotJson))
+    expect(result.ok).toBe(true)
+    const system = created.store.getState().system
+    expect(system.status).not.toBe('success')
+    expect(system.status).toBe('initializing')
+    expect(system.dataSourceOutcome).toBeUndefined()
+  })
 })
