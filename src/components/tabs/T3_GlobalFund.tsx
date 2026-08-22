@@ -16,6 +16,8 @@ import { SectionHeader } from '../layout/SectionHeader'
 import { PageHeader }    from '../layout/PageHeader'
 import { SignalBadge }   from '../badges/SignalBadge'
 import { EmptyState }    from '../shared/EmptyState'
+import { StateBanner }   from '../shared/StateBanner'
+import { suppressBuySignal } from '../shared/verdict'
 import type { Signal }   from '../badges/SignalBadge'
 import type { RiskLevel } from '../badges/RiskBadge'
 
@@ -107,6 +109,10 @@ export function T3_GlobalFund() {
     buyCount > sellCount ? 'BUY' :
     sellCount > buyCount ? 'SELL' : 'HOLD'
 
+  // F-P0-1: 表示専用。overallSignal の算出式・buyCount/sellCount は変更しない。
+  // 抑制中は hero の verdict badge を BUY のまま出さない（T2:325 と同一の変換）。
+  const displayOverallSignal = suppressBuySignal(overallSignal, isSuppressed)
+
   const overallRisk: RiskLevel =
     market.regime === 'bear' ? 'HIGH' :
     market.regime === 'neutral' ? 'MEDIUM' : 'LOW'
@@ -140,8 +146,12 @@ export function T3_GlobalFund() {
     .slice(0, 3)
 
   // 積立継続判断
-  const continuationJudgment =
-    market.regime === 'bear' && market.vix >= 30
+  // F-P0-1: SAFE_MODE / DQ 抑制中は buyCount を根拠にした追加投資示唆を出さない。
+  // 既存3分岐は不変で、抑制分岐を先頭に足すだけ（新しい投資判断ロジックは持たない）。
+  const continuationJudgment = isSuppressed
+    ? { label: '追加投資判断 停止中', color: colors.waitText, bg: colors.waitBg, border: colors.waitBorder,
+        reason: 'SAFE_MODE / DQ抑制中 — 新規の追加投資判断は停止しています。積立の継続可否はご自身で判断してください。'}
+    : market.regime === 'bear' && market.vix >= 30
       ? { label: '積立継続・追加禁止', color: colors.waitText, bg: colors.waitBg, border: colors.waitBorder,
           reason: 'VIX高・弱気相場。ドルコスト積立は継続するが、一括追加投資は禁止。'}
       : market.regime === 'bear'
@@ -308,7 +318,8 @@ export function T3_GlobalFund() {
             }}>
               {POLICY_SUBLABEL[fund.policy]}
             </span>
-            <SignalBadge signal={decisionToSignal(fund.decision)} size="sm" />
+            {/* F-P0-1: 抑制中はBUYバッジをWATCH表示に変換（表示専用。fund.decisionは不変） */}
+            <SignalBadge signal={suppressBuySignal(decisionToSignal(fund.decision), isSuppressed)} size="sm" />
             {isConc && (
               <span style={{
                 ...typography.caption,
@@ -385,7 +396,7 @@ export function T3_GlobalFund() {
       {/* ── 中長期スタンス カード ── */}
       {/* P4-A119: isSuppressed時はタイトルで抑制中を明示。overallSignal/スコア/生成ロジック変更なし */}
       <DecisionCard
-        decision={overallSignal}
+        decision={displayOverallSignal}
         title={isSuppressed ? `中長期スタンス（抑制中・参考）: ${regimeLabel}` : `中長期スタンス: ${regimeLabel}`}
         score={avgScore}
         reasons={decisionReasons}
@@ -393,21 +404,31 @@ export function T3_GlobalFund() {
       />
 
       {/* ── 積立継続判断 ── */}
-      <div style={{
-        background:   continuationJudgment.bg,
-        border:       `1px solid ${continuationJudgment.border}`,
-        borderRadius: radius.lg,
-        padding:      `${spacing[4]} ${spacing[5]}`,
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: spacing[3], marginBottom: spacing[2] }}>
-          <span style={{ fontSize: '14px', fontWeight: 700, color: continuationJudgment.color }}>
-            積立継続判断: {continuationJudgment.label}
-          </span>
+      {/* F-P0-1: 抑制中は共通の StateBanner（warning）で「停止中」を告知する。
+          非抑制時は既存カードのまま（UI-9B/C/D/E の見た目を変えない）。 */}
+      {isSuppressed ? (
+        <StateBanner
+          tone="warning"
+          label={`積立継続判断: ${continuationJudgment.label}`}
+          message={continuationJudgment.reason}
+        />
+      ) : (
+        <div style={{
+          background:   continuationJudgment.bg,
+          border:       `1px solid ${continuationJudgment.border}`,
+          borderRadius: radius.lg,
+          padding:      `${spacing[4]} ${spacing[5]}`,
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: spacing[3], marginBottom: spacing[2] }}>
+            <span style={{ fontSize: '14px', fontWeight: 700, color: continuationJudgment.color }}>
+              積立継続判断: {continuationJudgment.label}
+            </span>
+          </div>
+          <div style={{ fontSize: '13px', color: continuationJudgment.color, lineHeight: '1.6' }}>
+            {continuationJudgment.reason}
+          </div>
         </div>
-        <div style={{ fontSize: '13px', color: continuationJudgment.color, lineHeight: '1.6' }}>
-          {continuationJudgment.reason}
-        </div>
-      </div>
+      )}
 
       {/* ── 外部要因影響 ── */}
       <div>
@@ -434,9 +455,13 @@ export function T3_GlobalFund() {
             }}>
               {vi.label}
             </div>
-            <div style={{ ...typography.caption, color: colors.textMuted, marginTop: spacing[1], lineHeight: '1.4' }}>
-              {vi.desc}
-            </div>
+            {/* F-P0-1: vi.desc は「余裕資金で追加検討も可」等の買付示唆を含むため、
+                抑制中は表示しない（VIX値・圏区分は不変）。 */}
+            {!isSuppressed && (
+              <div style={{ ...typography.caption, color: colors.textMuted, marginTop: spacing[1], lineHeight: '1.4' }}>
+                {vi.desc}
+              </div>
+            )}
           </div>
 
           {/* 米株・金利影響 */}

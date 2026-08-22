@@ -11,6 +11,7 @@ import { StatusBar } from './components/StatusBar'
 import { TabNav } from './components/TabNav'
 import { BottomDockNav } from './components/BottomDockNav'
 import { TAB_META } from './constants/tabs'
+import { AppErrorBoundary } from './components/shared/AppErrorBoundary'
 import { T0_Home }       from './components/tabs/T0_Home'
 import { T1_Decision }   from './components/tabs/T1_Decision'
 import { T2_JpFund }     from './components/tabs/T2_JpFund'     // Phase 2: 国内株投信
@@ -290,8 +291,13 @@ export function App() {
         <TabNav />
 
         {/* メインコンテンツ */}
+        {/* F-P0-4: tab panel の描画例外で app-shell（header / StatusBar / nav）まで
+            unmount されないよう、main-content の内側に境界を1段置く。
+            key={activeTab} によりタブ切替が復旧導線になる。 */}
         <main className="main-content">
-          <ActiveTabPanel />
+          <AppErrorBoundary key={activeTab}>
+            <ActiveTabPanel />
+          </AppErrorBoundary>
         </main>
       </div>
 
