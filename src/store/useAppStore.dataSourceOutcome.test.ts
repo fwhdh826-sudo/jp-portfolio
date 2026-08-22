@@ -565,8 +565,8 @@ describe('F-A-P0-2: CSV/snapshot importはdata-source truth(system.status)を上
   // 等でinitialize()がset()に到達しなかった場合は恒久的にundefined）。この状態でCSV/snapshot
   // importが成功すると、0ソースしか取得していないのにstatus:'success'を僭称しうる —
   // これは本チケットが除去したはずの欠陥の再発である。outcome未知の間はsuccessを主張せず、
-  // 直前のstatusを維持しなければならない。
-  it('[R1-P1-1] dataSourceOutcomeがundefinedのままCSV取込してもsuccessへ僭称しない（現状status維持）', async () => {
+  // data-source取得が未完了であることを表すinitializingへsettleしなければならない。
+  it('[R1-P1-1] dataSourceOutcomeがundefinedのままCSV取込してもsuccessへ僭称しない', async () => {
     const manager = new FakeLockManager()
     const created = createAppStoreInstanceForTest({ portfolioGenerationLock: adapter(manager) })
     created.store.setState(s => ({
@@ -593,7 +593,7 @@ describe('F-A-P0-2: CSV/snapshot importはdata-source truth(system.status)を上
     expect(system.dataSourceOutcome).toBeUndefined()
   })
 
-  it('[R1-P1-1] dataSourceOutcomeがundefinedのままsnapshot取込してもsuccessへ僭称しない（現状status維持）', async () => {
+  it('[R1-P1-1] dataSourceOutcomeがundefinedのままsnapshot取込してもsuccessへ僭称しない', async () => {
     const manager = new FakeLockManager()
     const created = createAppStoreInstanceForTest({ portfolioGenerationLock: adapter(manager) })
     created.store.setState(s => ({
@@ -619,5 +619,52 @@ describe('F-A-P0-2: CSV/snapshot importはdata-source truth(system.status)を上
     expect(system.status).not.toBe('success')
     expect(system.status).toBe('initializing')
     expect(system.dataSourceOutcome).toBeUndefined()
+  })
+
+  it('[R3-A] undefined outcome: CSV errorから正常CSV retry後はstale errorを消し、hidden errorにもfalse successにもならない', async () => {
+    const manager = new FakeLockManager()
+    const created = createAppStoreInstanceForTest({ portfolioGenerationLock: adapter(manager) })
+
+    const failed = await grant(manager, created.store.getState().importCsv(makeCsvFile('not,a,portfolio,csv')))
+    expect(failed).toMatchObject({ ok: false })
+    const failedSystem = created.store.getState().system
+    expect(failedSystem.status).toBe('error')
+    expect(failedSystem.error).toEqual(expect.any(String))
+    expect(failedSystem.error).not.toBe('')
+    const staleCsvError = failedSystem.error
+
+    const recovered = await grant(manager, created.store.getState().importCsv(makeCsvFile(STOCK_CSV)))
+    expect(recovered).toMatchObject({ ok: true, code: 'SUCCESS' })
+    const recoveredSystem = created.store.getState().system
+    expect(recoveredSystem.dataSourceOutcome).toBeUndefined()
+    expect(recoveredSystem.status).toBe('initializing')
+    expect(recoveredSystem.status).not.toBe('success')
+    expect(recoveredSystem.status === 'error' && recoveredSystem.error === null).toBe(false)
+    expect(recoveredSystem.error).toBeNull()
+    expect(recoveredSystem.error).not.toBe(staleCsvError)
+  })
+
+  it('[R3-B] undefined outcome: CSV errorから正常snapshot retry後もstale errorを消し、状態整合性を保つ', async () => {
+    const manager = new FakeLockManager()
+    const created = createAppStoreInstanceForTest({ portfolioGenerationLock: adapter(manager) })
+    const snapshotJson = created.store.getState().exportPortfolioSnapshot()
+
+    const failed = await grant(manager, created.store.getState().importCsv(makeCsvFile('not,a,portfolio,csv')))
+    expect(failed).toMatchObject({ ok: false })
+    const failedSystem = created.store.getState().system
+    expect(failedSystem.status).toBe('error')
+    expect(failedSystem.error).toEqual(expect.any(String))
+    expect(failedSystem.error).not.toBe('')
+    const staleCsvError = failedSystem.error
+
+    const recovered = await grant(manager, created.store.getState().importPortfolioSnapshot(snapshotJson))
+    expect(recovered).toMatchObject({ ok: true, code: 'SUCCESS' })
+    const recoveredSystem = created.store.getState().system
+    expect(recoveredSystem.dataSourceOutcome).toBeUndefined()
+    expect(recoveredSystem.status).toBe('initializing')
+    expect(recoveredSystem.status).not.toBe('success')
+    expect(recoveredSystem.status === 'error' && recoveredSystem.error === null).toBe(false)
+    expect(recoveredSystem.error).toBeNull()
+    expect(recoveredSystem.error).not.toBe(staleCsvError)
   })
 })
