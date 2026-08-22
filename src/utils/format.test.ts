@@ -111,6 +111,27 @@ describe('formatSignedJPY（delta専用・符号付き、R2.3/R2.4）', () => {
     expect(formatSignedJPY(0)).toBe('0円')
     expect(formatSignedJPY(0)).not.toMatch(/^\+/)
   })
+  it.each([
+    [0, '0円'], [-0, '0円'],
+    [0.3, '0円'], [-0.3, '0円'],
+    [0.49, '0円'], [-0.49, '0円'],
+    [0.5, '+1円'], [-0.5, '0円'],
+  ] as const)('rounded-zero境界: %s → %s', (input, expected) => {
+    const actual = formatSignedJPY(input)
+    expect(actual).toBe(expected)
+    expectNoU2212(actual)
+    if (/^[-+]?0(?:[.,]0+)?円$/.test(actual)) expect(actual).not.toMatch(/^[-+]/)
+  })
+  it.each([
+    [9_999.49, '+9,999円'], [9_999.5, '+10,000円'], [10_000, '+1.0万円'],
+    [-9_999.49, '-9,999円'], [-9_999.5, '-9,999円'], [-10_000, '-1.0万円'],
+    [99_999_999.49, '+10,000.0万円'], [99_999_999.5, '+10,000.0万円'], [100_000_000, '+1.00億円'],
+    [-99_999_999.49, '-10,000.0万円'], [-99_999_999.5, '-10,000.0万円'], [-100_000_000, '-1.00億円'],
+  ] as const)('単位切替境界: %s → %s', (input, expected) => {
+    const actual = formatSignedJPY(input)
+    expect(actual).toBe(expected)
+    expectNoU2212(actual)
+  })
   it('null/undefined: —', () => {
     expect(formatSignedJPY(null)).toBe('—')
     expect(formatSignedJPY(undefined)).toBe('—')
@@ -172,6 +193,16 @@ describe('formatSignedPct（delta専用・既に%スケール・符号付き, R2
   it('0: 符号なし（+0/±0を生成しない）', () => {
     expect(formatSignedPct(0)).toBe('0.00%')
   })
+  it.each([
+    [0, 0, '0%'], [-0, 0, '0%'], [0.004, 0, '0%'], [-0.004, 0, '0%'], [0.005, 0, '0%'], [-0.005, 0, '0%'], [0.009, 0, '0%'], [-0.009, 0, '0%'],
+    [0, 1, '0.0%'], [-0, 1, '0.0%'], [0.004, 1, '0.0%'], [-0.004, 1, '0.0%'], [0.005, 1, '0.0%'], [-0.005, 1, '0.0%'], [0.009, 1, '0.0%'], [-0.009, 1, '0.0%'],
+    [0, 2, '0.00%'], [-0, 2, '0.00%'], [0.004, 2, '0.00%'], [-0.004, 2, '0.00%'], [0.005, 2, '+0.01%'], [-0.005, 2, '-0.01%'], [0.009, 2, '+0.01%'], [-0.009, 2, '-0.01%'],
+  ] as const)('rounded-zero境界: value=%s decimals=%s → %s', (input, decimals, expected) => {
+    const actual = formatSignedPct(input, decimals)
+    expect(actual).toBe(expected)
+    expectNoU2212(actual)
+    if (/^[-+]?0(?:\.0+)?%$/.test(actual)) expect(actual).not.toMatch(/^[-+]/)
+  })
   it('null/undefined: —', () => {
     expect(formatSignedPct(null)).toBe('—')
     expect(formatSignedPct(undefined)).toBe('—')
@@ -193,6 +224,16 @@ describe('formatPt（percentage-point・常にdelta・符号付き, R5）', () =
   })
   it('0: 符号なし（+0pt/±0ptを生成しない）', () => {
     expect(formatPt(0)).toBe('0.0pt')
+  })
+  it.each([
+    [0.04, 0, '0pt'], [-0.04, 0, '0pt'], [0.05, 0, '0pt'], [-0.05, 0, '0pt'], [0.09, 0, '0pt'], [-0.09, 0, '0pt'],
+    [0.04, 1, '0.0pt'], [-0.04, 1, '0.0pt'], [0.05, 1, '+0.1pt'], [-0.05, 1, '-0.1pt'], [0.09, 1, '+0.1pt'], [-0.09, 1, '-0.1pt'],
+    [0.04, 2, '+0.04pt'], [-0.04, 2, '-0.04pt'], [0.05, 2, '+0.05pt'], [-0.05, 2, '-0.05pt'], [0.09, 2, '+0.09pt'], [-0.09, 2, '-0.09pt'],
+  ] as const)('rounded-zero境界: value=%s decimals=%s → %s', (input, decimals, expected) => {
+    const actual = formatPt(input, decimals)
+    expect(actual).toBe(expected)
+    expectNoU2212(actual)
+    if (/^[-+]?0(?:\.0+)?pt$/.test(actual)) expect(actual).not.toMatch(/^[-+]/)
   })
   it('null/undefined: —', () => {
     expect(formatPt(null)).toBe('—')
