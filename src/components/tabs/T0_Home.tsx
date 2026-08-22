@@ -551,6 +551,7 @@ function SafeModeCard() {
       tierAViolations={tierAViolations}
       tierAAlerts={tierAAlerts}
       tierAT1Violations={tierAT1Violations}
+      isInitializing={system.status === 'initializing'}
     />
   )
 }
@@ -1547,6 +1548,15 @@ function RiskWarningCard() {
 
   if (system.status === 'error') {
     risks.push({ level: 'high', text: `データ更新エラー: ${system.error ?? '詳細不明'}` })
+  }
+  // F-A-P1-2: partial/failed中は取得できていないソースがある以上、他のリスク項目が
+  // 0件でも「重大なリスク要因は検出されていません」という誤った安全宣言を出してはならない。
+  if (system.status === 'failed') {
+    risks.push({ level: 'high', text: 'データを取得できませんでした。表示中の値はビルド同梱の初期値であり、リスク判定は行えません。' })
+  } else if (system.status === 'partial') {
+    const outcome = system.dataSourceOutcome
+    const missing = outcome ? `${outcome.total - outcome.loaded}/${outcome.total}` : '一部'
+    risks.push({ level: 'medium', text: `一部データソースを取得できませんでした（${missing}）。リスク判定は不完全な可能性があります。` })
   }
   if (market.vix >= 28) {
     risks.push({ level: 'high', text: `VIX ${market.vix.toFixed(1)} — 極端なボラティリティ警戒` })

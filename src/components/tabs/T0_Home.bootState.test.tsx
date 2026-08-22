@@ -67,6 +67,20 @@ describe('F-P0-3: T0は起動中(initializing)にfalseなerror/SAFE_MODE/安全�
     const html = renderWith(BASE_APP_STATE)
     expect(html).toContain('起動中 — データ取得中です')
   })
+
+  // F-A-P1-1: SafeModeStatusCardはinitializing中、safe_mode.jsonの取得試行がまだ完了していないにも
+  // 関わらず「safe_mode.json 未取得」「取得できないため」と断定していた（独立監査で指摘）。
+  // 起動中は中立的な「起動中/取得中」文言に置き換わっていることを確認する。
+  it('F-A-P1-1: SafeModeStatusCardが起動中に「未取得」「取得できない」と断定しない', () => {
+    const html = renderWith(BASE_APP_STATE)
+    expect(html).not.toContain('safe_mode.json 未取得')
+    expect(html).not.toContain('safe_mode.json が取得できないため')
+  })
+
+  it('F-A-P1-1: SafeModeStatusCardは起動中「起動中」を含む中立文言を表示する', () => {
+    const html = renderWith(BASE_APP_STATE)
+    expect(html).toContain('安全側停止（起動中）')
+  })
 })
 
 describe('F-P0-3: 起動完了後(success)は通常表示に戻る（回帰防止）', () => {
@@ -137,5 +151,61 @@ describe('F-P0-3: SAFE_MODE real(取得済みactive) と fallback(未取得のfa
     const html = renderWith(baseSuccessState())
     expect(html).not.toContain('SAFE_MODE発動中')
     expect(html).toContain('安全側停止（データ未取得）')
+  })
+})
+
+// F-A-P1-2: RiskWarningCardはsystem.status==='error'しか見ておらず、partial/failedでは
+// リスクが0件の場合に「重大なリスク要因は検出されていません」という誤った安全宣言を出していた
+// （独立監査で全17ソース取得失敗時に実測）。partial/failedでは常にこの文言が出ないことを固定する。
+describe('F-A-P1-2: RiskWarningCardはpartial/failed中に誤った安全宣言を出さない', () => {
+  function partialState(): AppState {
+    return {
+      ...BASE_APP_STATE,
+      system: {
+        ...BASE_APP_STATE.system,
+        status: 'partial',
+        lastUpdated: '2026-08-20T00:00:00.000Z',
+        dataSourceOutcome: { loaded: 13, total: 14 },
+      },
+    }
+  }
+
+  function failedState(): AppState {
+    return {
+      ...BASE_APP_STATE,
+      system: {
+        ...BASE_APP_STATE.system,
+        status: 'failed',
+        lastUpdated: '2026-08-20T00:00:00.000Z',
+        dataSourceOutcome: { loaded: 0, total: 14 },
+      },
+    }
+  }
+
+  it('partialでは「重大なリスク要因は検出されていません」を表示しない', () => {
+    const html = renderWith(partialState())
+    expect(html).not.toContain('重大なリスク要因は検出されていません')
+  })
+
+  it('partialでは一部データ未取得を示すリスク項目を表示する', () => {
+    const html = renderWith(partialState())
+    expect(html).toContain('一部データソースを取得できませんでした')
+  })
+
+  it('failedでは「重大なリスク要因は検出されていません」を表示しない', () => {
+    const html = renderWith(failedState())
+    expect(html).not.toContain('重大なリスク要因は検出されていません')
+  })
+
+  it('failedではデータ取得失敗を示すリスク項目を表示する', () => {
+    const html = renderWith(failedState())
+    expect(html).toContain('データを取得できませんでした')
+  })
+
+  // F-A-P1-2 mutation probe: この抑制を戻す（=partial/failedでもrisks配列が空なら
+  // 「重大なリスク要因は検出されていません」を出す）とREDになることの固定用。
+  it('[mutation guard] partial/failedのいずれでも安全宣言が出ない', () => {
+    expect(renderWith(partialState())).not.toContain('重大なリスク要因は検出されていません')
+    expect(renderWith(failedState())).not.toContain('重大なリスク要因は検出されていません')
   })
 })

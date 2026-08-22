@@ -1000,6 +1000,18 @@ type PublishedLoadData = Awaited<ReturnType<typeof loadPublishedData>>
  */
 type DataSourceOutcome = 'loaded' | 'fallback'
 
+// F-A-P0-1: production-required sources only. `trust` / `holdings` are privacy/local authority
+// (handover.md P4.5-A010-1a — never remotely published, see .gitignore:10-11) and `nikkeiVI` has
+// no repo generator (public/data/nikkei_vi.json is never produced; macro.json already carries its
+// own nikkeiVI field — see the merge below). Counting these three toward the success/partial/failed
+// denominator makes a normal production boot permanently 'partial'; excluding them keeps 'success'
+// reachable while still treating a genuinely failed required source as degraded.
+const REQUIRED_DATA_SOURCE_KEYS = [
+  'market', 'correlation', 'news', 'macro', 'sq', 'margin', 'flows',
+  'candidatesNews', 'candidatesStocks', 'candidateFunnel', 'regimeState',
+  'safeMode', 'tierAViolations', 'tierAAlerts',
+] as const
+
 function classifyDataSourceOutcomes(publishedData: PublishedLoadData): {
   outcomes: Record<string, DataSourceOutcome>
   loaded: number
@@ -1009,6 +1021,10 @@ function classifyDataSourceOutcomes(publishedData: PublishedLoadData): {
   const bySource = (source: string): DataSourceOutcome => source === 'loaded' ? 'loaded' : 'fallback'
   const byData = (data: unknown): DataSourceOutcome => data !== null ? 'loaded' : 'fallback'
   const candidateFunnel = publishedData.candidateFunnel ?? { status: 'unavailable' as const, data: null }
+  // F-A-P0-1: nikkei_vi.json is a dead legacy source; macro.json's own nikkeiVI field is the
+  // canonical authority (see mergedMacro below), so nikkeiVI counts as available whenever either
+  // the dedicated fetch or the macro payload actually carried a value.
+  const nikkeiVIAvailable = publishedData.nikkeiVI.data !== null || publishedData.macro.data?.nikkeiVI != null
   const outcomes: Record<string, DataSourceOutcome> = {
     market: bySource(publishedData.market.source),
     correlation: bySource(publishedData.correlation.source),
@@ -1016,7 +1032,7 @@ function classifyDataSourceOutcomes(publishedData: PublishedLoadData): {
     trust: byData(publishedData.trust.data),
     holdings: byData(publishedData.holdingsSnapshot.data),
     macro: bySource(publishedData.macro.source),
-    nikkeiVI: bySource(publishedData.nikkeiVI.source),
+    nikkeiVI: nikkeiVIAvailable ? 'loaded' : 'fallback',
     sq: bySource(publishedData.sq.source),
     margin: bySource(publishedData.margin.source),
     flows: bySource(publishedData.flows.source),
@@ -1028,11 +1044,26 @@ function classifyDataSourceOutcomes(publishedData: PublishedLoadData): {
     tierAViolations: bySource(publishedData.tierAViolations.source),
     tierAAlerts: bySource(publishedData.tierAAlerts.source),
   }
-  const values = Object.values(outcomes)
-  const loaded = values.filter(v => v === 'loaded').length
-  const total = values.length
+  const requiredValues = REQUIRED_DATA_SOURCE_KEYS.map(key => outcomes[key])
+  const loaded = requiredValues.filter(v => v === 'loaded').length
+  const total = requiredValues.length
   const status = loaded === total ? 'success' : loaded === 0 ? 'failed' : 'partial'
   return { outcomes, loaded, total, status }
+}
+
+// F-A-P0-2: CSV / portfolio-snapshot import mutate portfolio generation, not data-source fetch
+// truth. They must not blindly overwrite system.status to 'success' — that would hide a genuine
+// partial/failed data-source state behind a successful CSV commit (a false "update succeeded").
+// dataSourceOutcome is never touched by CSV/snapshot import, so it still reflects the last
+// initialize()/refreshAllData() result; re-derive status from it with the identical
+// success/partial/failed rule used by classifyDataSourceOutcomes above.
+function deriveStatusFromDataSourceOutcome(
+  outcome: { loaded: number; total: number } | undefined,
+): 'success' | 'partial' | 'failed' {
+  if (!outcome || outcome.total === 0) return 'success'
+  if (outcome.loaded === outcome.total) return 'success'
+  if (outcome.loaded === 0) return 'failed'
+  return 'partial'
 }
 
 interface Phase7StockRaw {
@@ -3156,10 +3187,13 @@ const createAppStoreStateCreator = (
           })
 
           // F-P0-2: 取得結果の集計（全loaderが握り潰した失敗を独立に集約する。
-          // 個々のfetch/parseロジックは一切変更しない）。1件以上loadedのときのみ
-          // lastUpdatedを進める — 全てfallbackなら「試行時刻」ではなく前回値を維持する。
+          // 個々のfetch/parseロジックは一切変更しない）。
           const sourceOutcome = classifyDataSourceOutcomes(publishedData)
-          const nextLastUpdated = sourceOutcome.loaded > 0 ? new Date(nowMs).toISOString() : stagedState.system.lastUpdated
+          // F-A-P1-3: lastUpdated is the last full-success refresh time. Updating it on any partial
+          // progress (loaded > 0) lets a single failed required source still claim "最終更新=たった今"
+          // while other sources are stale; per-source freshness has its own authority in
+          // dataTimestamps, so lastUpdated only advances on a clean success.
+          const nextLastUpdated = sourceOutcome.status === 'success' ? new Date(nowMs).toISOString() : stagedState.system.lastUpdated
 
           // 全再計算（未publishのstaged stateに対して実行する）
           failurePhase.current = 'analysis'
@@ -3309,7 +3343,11 @@ const createAppStoreStateCreator = (
 
           // F-P0-2: initializeと同じ集計。全fallbackならlastUpdatedを進めない。
           const sourceOutcome = classifyDataSourceOutcomes(preworkResult.value)
-          const nextLastUpdated = sourceOutcome.loaded > 0 ? new Date(nowMs).toISOString() : stagedState.system.lastUpdated
+          // F-A-P1-3: lastUpdated is the last full-success refresh time. Updating it on any partial
+          // progress (loaded > 0) lets a single failed required source still claim "最終更新=たった今"
+          // while other sources are stale; per-source freshness has its own authority in
+          // dataTimestamps, so lastUpdated only advances on a clean success.
+          const nextLastUpdated = sourceOutcome.status === 'success' ? new Date(nowMs).toISOString() : stagedState.system.lastUpdated
 
           failurePhase.current = 'analysis'
           let computed: ReturnType<typeof runFullAnalysis>
@@ -3547,7 +3585,7 @@ const createAppStoreStateCreator = (
             '現在のCSV世代のprovenanceを確認できないため、同一内容として確定できませんでした。状態は変更されていません。',
           ))
         }
-        set(s => ({ system: { ...s.system, status: 'success', error: null } }))
+        set(s => ({ system: { ...s.system, status: deriveStatusFromDataSourceOutcome(s.system.dataSourceOutcome), error: null } }))
         return {
           ok: true,
           code: 'DUPLICATE_CSV',
@@ -3785,7 +3823,7 @@ const createAppStoreStateCreator = (
         ...computed,
         system: {
           ...baseState.system,
-          status: 'success',
+          status: deriveStatusFromDataSourceOutcome(baseState.system.dataSourceOutcome),
           csvLastImportedAt: now,
           csvImportProvenance: incomingProvenance,
           csvSyncSummary: syncSummary,
@@ -4611,7 +4649,7 @@ const createAppStoreStateCreator = (
           cashAssumptions: nextCashAssumptions,
           system: {
             ...s.system,
-            status: 'success',
+            status: deriveStatusFromDataSourceOutcome(s.system.dataSourceOutcome),
             csvLastImportedAt: snapshot.csvImportedAt,
             csvImportProvenance: snapshot.csvImportProvenance,
             csvSyncSummary: null,
