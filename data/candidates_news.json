@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-08-22T08:46:27.570881+09:00",
-  "sourceUpdatedAt": "2026-08-21T23:42:51+00:00",
+  "updatedAt": "2026-08-22T20:42:45.384227+09:00",
+  "sourceUpdatedAt": "2026-08-22T11:14:42+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -69,29 +69,16 @@
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Economists Boost US Growth Forecasts for Third Quarter",
-      "topPositiveTitle": "Economists Boost US Growth Forecasts for Third Quarter",
-      "items": [
-        {
-          "title": "Economists Boost US Growth Forecasts for Third Quarter",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-21T10:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-21/economists-boost-us-growth-forecasts-for-third-quarter",
-          "tags": [
-            "market",
-            "us_growth"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "global_broad": {
       "avgSentiment": 0,
@@ -143,15 +130,28 @@
     },
     "macro_risk": {
       "avgSentiment": 0.0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 4,
-      "sourceCount": 2,
+      "negativeCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 2,
+      "sourceCount": 1,
       "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Wall Street Week | AI Hits Wages, USMCA Under Pressure, Colorado River Crisis",
-      "topPositiveTitle": "Wall Street Week | AI Hits Wages, USMCA Under Pressure, Colorado River Crisis",
+      "topNegativeTitle": "India’s Foreign Minister to Visit Russia Amid US Tariff Threat",
+      "topPositiveTitle": "Mexico Optimistic it Can Achieve Lower US Tariffs on Cars, Steel",
       "items": [
+        {
+          "title": "India’s Foreign Minister to Visit Russia Amid US Tariff Threat",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-22T10:20:05+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-22/india-s-foreign-minister-to-visit-russia-amid-us-tariff-threat",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
         {
           "title": "Wall Street Week | AI Hits Wages, USMCA Under Pressure, Colorado River Crisis",
           "source": "Bloomberg Markets",
@@ -178,27 +178,13 @@
           ]
         },
         {
-          "title": "Euro-Area Pay Growth Eased in Second Quarter, ECB Says",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-21T09:06:55+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-21/euro-area-pay-growth-held-stead-in-second-quarter-ecb-says",
+          "title": "Mexico Optimistic it Can Achieve Lower US Tariffs on Cars, Steel",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-22T00:16:57+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-22/mexico-optimistic-it-can-achieve-lower-us-tariffs-on-cars-steel",
           "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "ECB Says Consumers’ Inflation Expectations Edged Down in July",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-21T08:04:36+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-21/ecb-says-consumers-inflation-expectations-edged-down-in-july",
-          "tags": [
-            "geopolitical",
             "macro_risk",
             "market"
           ]
@@ -206,36 +192,23 @@
       ]
     },
     "fx": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0.33,
       "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 2,
+      "positiveCount": 1,
+      "neutralCount": 0,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Why ‘Sell America’ Is a Real Risk for US Markets and the Dollar",
-      "topPositiveTitle": "Why ‘Sell America’ Is a Real Risk for US Markets and the Dollar",
+      "topNegativeTitle": "India’s Central Bank Says Forex Deposit Inflows at $65.4 Billion",
+      "topPositiveTitle": "India’s Central Bank Says Forex Deposit Inflows at $65.4 Billion",
       "items": [
         {
-          "title": "Why ‘Sell America’ Is a Real Risk for US Markets and the Dollar",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-21T11:00:01+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-08-21/why-sell-america-is-a-real-risk-for-us-markets-and-the-dollar",
-          "tags": [
-            "fx",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "South Korea, Japan FX Officials Vow to Deepen Cooperation",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-21T09:01:55+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-21/south-korea-japan-fx-officials-vow-to-deepen-cooperation",
+          "title": "India’s Central Bank Says Forex Deposit Inflows at $65.4 Billion",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-22T09:58:03+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-22/india-s-central-bank-says-forex-deposit-inflows-at-65-4-billion",
           "tags": [
             "fx",
             "market"
@@ -244,28 +217,16 @@
       ]
     },
     "rates": {
-      "avgSentiment": 0.083,
+      "avgSentiment": 0.165,
       "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 3,
-      "sourceCount": 3,
-      "itemCount": 4,
+      "neutralCount": 1,
+      "sourceCount": 2,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Bond Market Swings Affect Your Savings, Investments",
+      "topNegativeTitle": "SNB Would Cut Rates Below Zero If Needed, Tschudin Tells FuW",
       "topPositiveTitle": "国債利払い費の想定金利は3.8％調整 国債費も膨張へ 概算要求",
       "items": [
-        {
-          "title": "Bond Market Swings Affect Your Savings, Investments",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-21T20:27:34+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-21/bond-market-swings-affect-your-savings-investments-video",
-          "tags": [
-            "market",
-            "rates"
-          ]
-        },
         {
           "title": "SNB Would Cut Rates Below Zero If Needed, Tschudin Tells FuW",
           "source": "Bloomberg Economics",
@@ -274,19 +235,6 @@
           "publishedAt": "2026-08-21T15:00:00+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-08-21/snb-would-cut-rates-below-zero-if-needed-tschudin-tells-fuw",
           "tags": [
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Why ‘Sell America’ Is a Real Risk for US Markets and the Dollar",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-21T11:00:01+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-08-21/why-sell-america-is-a-real-risk-for-us-markets-and-the-dollar",
-          "tags": [
-            "fx",
             "market",
             "rates"
           ]
@@ -307,16 +255,28 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
+      "avgSentiment": -0.5,
+      "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 2,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Goldman's Struyven: Hedge Crude's Swings with Diesel",
+      "topNegativeTitle": "World Economy Latest: UK Employment Declines While Price Pressures Mount",
       "topPositiveTitle": "Goldman's Struyven: Hedge Crude's Swings with Diesel",
       "items": [
+        {
+          "title": "World Economy Latest: UK Employment Declines While Price Pressures Mount",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-08-22T09:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-22/world-economy-latest-uk-employment-declines-while-price-pressures-mount",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
         {
           "title": "Goldman's Struyven: Hedge Crude's Swings with Diesel",
           "source": "Bloomberg Markets",
@@ -333,16 +293,29 @@
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
+      "avgSentiment": -0.11,
+      "negativeCount": 1,
       "positiveCount": 0,
-      "neutralCount": 3,
+      "neutralCount": 2,
       "sourceCount": 2,
       "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Goldman's Struyven: Hedge Crude's Swings with Diesel",
+      "topNegativeTitle": "India’s Foreign Minister to Visit Russia Amid US Tariff Threat",
       "topPositiveTitle": "Goldman's Struyven: Hedge Crude's Swings with Diesel",
       "items": [
+        {
+          "title": "India’s Foreign Minister to Visit Russia Amid US Tariff Threat",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-22T10:20:05+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-22/india-s-foreign-minister-to-visit-russia-amid-us-tariff-threat",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
         {
           "title": "Goldman's Struyven: Hedge Crude's Swings with Diesel",
           "source": "Bloomberg Markets",
@@ -357,30 +330,17 @@
           ]
         },
         {
-          "title": "Euro-Area Pay Growth Eased in Second Quarter, ECB Says",
-          "source": "Bloomberg Economics",
+          "title": "自民 プーチン氏北方領土訪問容認できず 対話求める声も",
+          "source": "NHK 経済",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-21T09:06:55+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-21/euro-area-pay-growth-held-stead-in-second-quarter-ecb-says",
+          "publishedAt": "2026-08-21T06:50:11+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20260821de45520",
           "tags": [
             "geopolitical",
-            "macro_risk",
             "market"
-          ]
-        },
-        {
-          "title": "ECB Says Consumers’ Inflation Expectations Edged Down in July",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-21T08:04:36+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-21/ecb-says-consumers-inflation-expectations-edged-down-in-july",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
+          ],
+          "titleJa": "自民 プーチン氏北方領土訪問容認できず 対話求める声も"
         }
       ]
     }
@@ -393,7 +353,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 6,
+    "excludedCount": 5,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
