@@ -221,7 +221,7 @@ describe('F2: T1 mobile score matrixの損益cellは2桁精度を維持して縮
       expect(style).toContain('min-width:0')
       expect(style).toContain('white-space:nowrap')
     }
-    expect(matrixHtml).toContain('grid-template-columns:64px repeat(5, 1fr)')
+    expect(matrixHtml).toContain('grid-template-columns:minmax(64px, 1.2fr) repeat(5, 1fr)')
     expect(matrixHtml).toContain('overflow-x:auto')
     expect(matrixHtml).not.toContain('+22.9%')
     expect(matrixHtml).not.toContain('+12.4%')
