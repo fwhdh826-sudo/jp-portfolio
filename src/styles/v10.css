@@ -744,6 +744,7 @@ button:focus-visible, a:focus-visible {
 .news-cat-tabs::-webkit-scrollbar { display: none; }
 .news-cat-tabs__item {
   flex-shrink: 0; padding: 6px 14px; border-radius: var(--radius-lg);
+  min-height: 44px;
   border: 1px solid var(--color-border-default); background: transparent;
   font-size: 12px; font-weight: 600; color: var(--color-text-subtle);
   cursor: pointer; display: flex; align-items: center; gap: 5px; transition: all 0.15s;
@@ -801,6 +802,7 @@ button:focus-visible, a:focus-visible {
 .stock-selector::-webkit-scrollbar { display: none; }
 .stock-selector__item {
   flex-shrink: 0; padding: 6px 12px; border-radius: var(--radius-lg);
+  min-height: 44px;
   border: 1px solid var(--color-border-default); background: transparent;
   font-size: 12px; font-weight: 600; color: var(--color-text-subtle);
   cursor: pointer; transition: all 0.15s; display: flex; align-items: center; gap: 5px;
@@ -1038,9 +1040,16 @@ button:focus-visible, a:focus-visible {
 .csv-drop-area__sub   { font-size: 11px; color: var(--color-text-muted); }
 .csv-drop-area__input { display: none; }
 
+[data-testid="cash-authority-gross-input"],
+[data-testid="cash-authority-safety-reserve-input"],
+[data-testid="cash-authority-pending-order-input"] {
+  min-height: 44px;
+}
+
 .refresh-btn {
   display: inline-flex;
   align-items: center;
+  min-height: 44px;
   gap: 6px;
   background: var(--color-brand, #2563eb);
   color: #fff;
@@ -1459,6 +1468,7 @@ button:focus-visible, a:focus-visible {
 
 .home-nav-cta__btn {
   display: inline-flex; align-items: center; gap: 5px;
+  min-height: 44px;
   padding: 7px 14px;
   background: var(--color-bg-surface);
   border: 1px solid var(--color-border-default);
