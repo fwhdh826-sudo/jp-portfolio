@@ -59,6 +59,62 @@ function renderT4(): string {
   return renderToStaticMarkup(<T4_IdealPf />)
 }
 
+const SIMILAR_LONG_NAMES = [
+  ['8306', '三菱UFJフィナンシャル・グループ'],
+  ['8058', '三菱商事'],
+  ['7011', '三菱重工業'],
+  ['6098', '株式会社リクルートホールディングス'],
+] as const
+
+function renderLongNamePortfolio(): string {
+  const holdings = SIMILAR_LONG_NAMES.map(([code, name], index): Holding => ({
+    ...HOLDING,
+    code,
+    name,
+    eval: 400_000 + index * 100_000,
+    sector: `合成セクター${index + 1}`,
+    mitsu: code.startsWith('8') || code.startsWith('7'),
+  }))
+  const analysis = SIMILAR_LONG_NAMES.map(([code], index): HoldingAnalysis => ({
+    ...ANALYSIS,
+    code,
+    totalScore: ANALYSIS.totalScore + index,
+    debate: { ...ANALYSIS.debate, debateScore: ANALYSIS.debate.debateScore + index },
+  }))
+  mockedStore.state = { ...BASE_APP_STATE, activeTab: 'T4', holdings, analysis }
+  return renderToStaticMarkup(<T4_IdealPf />)
+}
+
+function extractStockRowStyles(html: string, name: string) {
+  const escapedName = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  const match = html.match(new RegExp(
+    `<div style="([^"]*)"><div style="([^"]*)"><span style="([^"]*)">${escapedName}</span>`,
+  ))
+  expect(match, `rendered StockRow styles for ${name}`).toBeTruthy()
+  return { nameRegion: match![1], nameLine: match![2], name: match![3] }
+}
+
+function parseFlexBasisPx(style: string): number {
+  const shorthand = style.match(/(?:^|;)flex:([^;]+)/)?.[1]
+  if (!shorthand) throw new Error(`flex shorthand missing: ${style}`)
+  if (shorthand === '1') return 0
+  const basis = shorthand.match(/^\S+\s+\S+\s+(\d+)px$/)?.[1]
+  if (!basis) throw new Error(`unsupported flex shorthand: ${shorthand}`)
+  return Number(basis)
+}
+
+// StockRowの2 flex itemに対する最小数値モデル。右側3列はaudited min-content幅を保持し、
+// basis合計が行幅を超えれば既存flex-wrapにより名前領域が単独行へ移る。
+function resolveMobileNameRegionWidth(rowContentWidth: number, nameBasis: number) {
+  const valueRegionMinWidth = 196
+  const interRegionGap = 12
+  const wrapped = nameBasis + interRegionGap + valueRegionMinWidth > rowContentWidth
+  return {
+    wrapped,
+    width: wrapped ? rowContentWidth : rowContentWidth - interRegionGap - valueRegionMinWidth,
+  }
+}
+
 describe('T4 StockRow — P0-4: 390px銘柄名1文字縦列化の回帰防止', () => {
   it('個別株差分ランキングに対象銘柄が実際にレンダリングされる（前提確認）', () => {
     const html = renderT4()
@@ -87,5 +143,38 @@ describe('T4 StockRow — P0-4: 390px銘柄名1文字縦列化の回帰防止', 
     const innerFlexRow = stockRowSection.slice(0, stockRowSection.indexOf('SignalBadge'))
     expect(innerFlexRow).toContain('minWidth: 0')
     expect(innerFlexRow).toContain('whiteSpace: \'nowrap\'')
+  })
+
+  it('390/430pxで名前領域が1文字相当へ縮退しない数値layout契約を持つ', () => {
+    const html = renderLongNamePortfolio()
+    const styles = extractStockRowStyles(html, '三菱UFJフィナンシャル・グループ')
+    const basis = parseFlexBasisPx(styles.nameRegion)
+
+    // viewport - panel horizontal padding(24) - card borders(2) - row padding(40)
+    for (const viewport of [390, 430]) {
+      const layout = resolveMobileNameRegionWidth(viewport - 66, basis)
+      expect(layout.wrapped, `${viewport}px must wrap before crushing the name region`).toBe(true)
+      expect(layout.width, `${viewport}px resolved name-region width`).toBeGreaterThanOrEqual(160)
+    }
+  })
+
+  it('長い類似名でも既存ellipsis契約を維持する', () => {
+    const html = renderLongNamePortfolio()
+    for (const [, name] of SIMILAR_LONG_NAMES) {
+      expect(html).toContain(name)
+      const styles = extractStockRowStyles(html, name)
+      expect(styles.name).toContain('white-space:nowrap')
+      expect(styles.name).toContain('overflow:hidden')
+      expect(styles.name).toContain('text-overflow:ellipsis')
+    }
+  })
+
+  it('名前幅を確保してもvalue・badge・action表示契約を維持する', () => {
+    const html = renderLongNamePortfolio()
+    expect(html).toContain('aria-label="シグナル:')
+    expect(html).toContain('>現在</div>')
+    expect(html).toContain('>目標</div>')
+    expect(html).toContain('>差分</div>')
+    expect((html.match(/aria-label="シグナル:/g) ?? []).length).toBeGreaterThanOrEqual(SIMILAR_LONG_NAMES.length)
   })
 })
