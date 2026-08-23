@@ -656,6 +656,9 @@ function StockList({
           { key: 'rsi',      label: 'RSI' },
           { key: 'rank',     label: 'ランク' },
         ]
+        const scoreMatrixGridTemplateColumns = isMobile
+          ? `minmax(64px, 1.2fr) repeat(${COLS.length}, 1fr)`
+          : `minmax(120px, 2fr) repeat(${COLS.length}, 1fr)`
 
         const cellBase: CSSProperties = {
           padding:      `${spacing[1.5]} ${spacing[2]}`,
@@ -682,7 +685,7 @@ function StockList({
               {/* ヘッダー行 */}
               <div style={{
                 display:             'grid',
-                gridTemplateColumns: isMobile ? `64px repeat(${COLS.length}, 1fr)` : `80px repeat(${COLS.length}, 1fr)`,
+                gridTemplateColumns: scoreMatrixGridTemplateColumns,
                 gap:                 spacing[1],
                 padding:             `${spacing[2]} ${spacing[3]}`,
                 background:          colors.bgElevated,
@@ -713,7 +716,7 @@ function StockList({
                 return (
                   <div key={row.code} style={{
                     display:             'grid',
-                    gridTemplateColumns: isMobile ? `64px repeat(${COLS.length}, 1fr)` : `80px repeat(${COLS.length}, 1fr)`,
+                    gridTemplateColumns: scoreMatrixGridTemplateColumns,
                     gap:                 spacing[1],
                     padding:             `${spacing[2]} ${spacing[3]}`,
                     borderBottom:        i < sorted.length - 1 ? `1px solid ${colors.borderSubtle}` : 'none',
