@@ -234,7 +234,7 @@ export const zIndex = {
 
 export const breakpoints = {
   sm:  430,  // iPhone系
-  md:  768,  // タブレット
+  md:  840,  // タブレット（UI-9G-G7: CSS mobile shell境界 max-width:839px と統一）
   lg: 1200,  // デスクトップ
 } as const
 
