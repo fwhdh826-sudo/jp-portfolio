@@ -166,6 +166,18 @@ small { font-size: var(--font-xs, 11px); }
   flex-shrink: 0;
 }
 
+/* UI-9G G-5: mobileでitemが横スクロールに隠れ続けるのを防ぐため折返す */
+@media (max-width: 839px) {
+  .status-bar {
+    flex-wrap: wrap;
+    overflow-x: visible;
+    row-gap: 4px;
+  }
+  .status-bar__divider {
+    display: none;
+  }
+}
+
 /* ── Tab Navigation ───────────────────────────────────────── */
 .tab-nav {
   background: var(--color-bg-surface, #fff);
