@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-08-23T20:43:03.717333+09:00",
-  "sourceUpdatedAt": "2026-08-23T11:19:34+00:00",
+  "updatedAt": "2026-08-24T06:48:14.902522+09:00",
+  "sourceUpdatedAt": "2026-08-23T20:22:31+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -43,24 +43,39 @@
       ]
     },
     "us_broad": {
-      "avgSentiment": -0.223,
+      "avgSentiment": 0.066,
       "negativeCount": 1,
-      "positiveCount": 0,
+      "positiveCount": 2,
       "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Study Shows AI Hitting Paychecks, Not Payrolls",
-      "topPositiveTitle": "Kevin Warsh to Make First Jackson Hole Speech as Fed Chair",
+      "topNegativeTitle": "US Long Bonds Risk Deeper Selloff Without Clear Warsh Guidance",
+      "topPositiveTitle": "Fed’s Kashkari Says Treasury Market Still Working ‘As It Should’",
       "items": [
         {
-          "title": "Study Shows AI Hitting Paychecks, Not Payrolls",
+          "title": "US Long Bonds Risk Deeper Selloff Without Clear Warsh Guidance",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-08-22T14:00:11+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-22/study-shows-ai-hitting-paychecks-not-payrolls",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-23T19:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-23/us-long-bonds-risk-deeper-selloff-without-clear-warsh-guidance",
           "tags": [
+            "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Fed Faces High Stakes Test at Jackson Hole",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-23T14:47:34+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-23/fed-faces-high-stakes-test-at-jackson-hole-video",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
             "market",
             "us_broad"
           ]
@@ -78,30 +93,58 @@
           ]
         },
         {
-          "title": "Bloomberg Previews Jackson Hole Symposium",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-22T19:40:52+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-22/bloomberg-previews-jackson-hole-symposium-video",
+          "title": "Fed’s Kashkari Says Treasury Market Still Working ‘As It Should’",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-23T15:23:22+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-23/fed-s-kashkari-says-treasury-market-still-working-as-it-should",
           "tags": [
             "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Treasury Buybacks Fail to Calm Bond Market",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-23T13:26:19+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-23/treasury-buybacks-fail-to-calm-bond-market-video",
+          "tags": [
+            "dividend",
+            "market",
+            "rates",
             "us_broad"
           ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.67,
       "negativeCount": 0,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Rep. McCormick Warns Against Slowing AI Buildout",
+      "topPositiveTitle": "Rep. McCormick Warns Against Slowing AI Buildout",
+      "items": [
+        {
+          "title": "Rep. McCormick Warns Against Slowing AI Buildout",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-23T14:29:34+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-23/rep-mccormick-warns-against-slowing-ai-buildout-video",
+          "tags": [
+            "market",
+            "us_growth"
+          ]
+        }
+      ]
     },
     "global_broad": {
       "avgSentiment": 0,
@@ -140,43 +183,6 @@
       "items": []
     },
     "dividend": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "macro_risk": {
-      "avgSentiment": -0.33,
-      "negativeCount": 1,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
-      "isStale": false,
-      "topNegativeTitle": "Korean Traders Chase 40% Coupons as Risk Appetite Survives Rout",
-      "topPositiveTitle": "Korean Traders Chase 40% Coupons as Risk Appetite Survives Rout",
-      "items": [
-        {
-          "title": "Korean Traders Chase 40% Coupons as Risk Appetite Survives Rout",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-23T00:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-23/korean-traders-chase-40-coupons-as-risk-appetite-survives-rout",
-          "tags": [
-            "macro_risk",
-            "market"
-          ]
-        }
-      ]
-    },
-    "fx": {
       "avgSentiment": 0.33,
       "negativeCount": 0,
       "positiveCount": 1,
@@ -184,16 +190,108 @@
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Canada Pushes Back as US Trade Talks Collapse",
-      "topPositiveTitle": "Canada Pushes Back as US Trade Talks Collapse",
+      "topNegativeTitle": "Treasury Buybacks Fail to Calm Bond Market",
+      "topPositiveTitle": "Treasury Buybacks Fail to Calm Bond Market",
       "items": [
         {
-          "title": "Canada Pushes Back as US Trade Talks Collapse",
+          "title": "Treasury Buybacks Fail to Calm Bond Market",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.33,
-          "publishedAt": "2026-08-22T13:22:41+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-22/canada-pushes-back-as-us-trade-talks-collapse-video",
+          "publishedAt": "2026-08-23T13:26:19+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-23/treasury-buybacks-fail-to-calm-bond-market-video",
+          "tags": [
+            "dividend",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        }
+      ]
+    },
+    "macro_risk": {
+      "avgSentiment": -0.333,
+      "negativeCount": 3,
+      "positiveCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 2,
+      "itemCount": 4,
+      "isStale": false,
+      "topNegativeTitle": "How Water Scarcity Is Changing the Economics of the Southwest",
+      "topPositiveTitle": "Fed Faces High Stakes Test at Jackson Hole",
+      "items": [
+        {
+          "title": "How Water Scarcity Is Changing the Economics of the Southwest",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-08-23T14:02:57+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-23/the-water-crisis-reshaping-the-american-west-video",
+          "tags": [
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "US Long Bonds Risk Deeper Selloff Without Clear Warsh Guidance",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-23T19:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-23/us-long-bonds-risk-deeper-selloff-without-clear-warsh-guidance",
+          "tags": [
+            "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Turkey’s Central Bank Shifts Funding Back to 37% Policy Rate",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-23T17:03:34+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-23/turkey-central-bank-to-shift-funding-back-to-37-policy-rate",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Fed Faces High Stakes Test at Jackson Hole",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-23T14:47:34+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-23/fed-faces-high-stakes-test-at-jackson-hole-video",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        }
+      ]
+    },
+    "fx": {
+      "avgSentiment": 0.67,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "Canada Digs In as US Trade Fight Escalates",
+      "topPositiveTitle": "Canada Digs In as US Trade Fight Escalates",
+      "items": [
+        {
+          "title": "Canada Digs In as US Trade Fight Escalates",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-23T14:01:31+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-23/canada-digs-in-as-us-trade-fight-escalates-video",
           "tags": [
             "fx",
             "market"
@@ -202,26 +300,53 @@
       ]
     },
     "rates": {
-      "avgSentiment": 0.165,
+      "avgSentiment": 0.247,
       "negativeCount": 0,
-      "positiveCount": 1,
+      "positiveCount": 3,
       "neutralCount": 1,
-      "sourceCount": 2,
-      "itemCount": 2,
+      "sourceCount": 3,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Juicy Yields Draw Junk Bond Buyers to Investment-Grade AI Debt",
-      "topPositiveTitle": "国債利払い費の想定金利は3.8％調整 国債費も膨張へ 概算要求",
+      "topNegativeTitle": "Bessent Has No Easy Fix for What’s Really Driving Bond Yields Up",
+      "topPositiveTitle": "Fed’s Kashkari Says Treasury Market Still Working ‘As It Should’",
       "items": [
         {
-          "title": "Juicy Yields Draw Junk Bond Buyers to Investment-Grade AI Debt",
+          "title": "Bessent Has No Easy Fix for What’s Really Driving Bond Yields Up",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-22T19:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-22/juicy-yields-draw-junk-bond-buyers-to-investment-grade-ai-debt",
+          "publishedAt": "2026-08-23T13:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-23/bessent-has-no-easy-fix-for-what-s-really-driving-bond-yields-up",
           "tags": [
             "market",
             "rates"
+          ]
+        },
+        {
+          "title": "Fed’s Kashkari Says Treasury Market Still Working ‘As It Should’",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-23T15:23:22+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-23/fed-s-kashkari-says-treasury-market-still-working-as-it-should",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Treasury Buybacks Fail to Calm Bond Market",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-23T13:26:19+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-23/treasury-buybacks-fail-to-calm-bond-market-video",
+          "tags": [
+            "dividend",
+            "market",
+            "rates",
+            "us_broad"
           ]
         },
         {
@@ -240,36 +365,90 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "geopolitical": {
       "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 2,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Sanctions Target Iran’s Weakened Regional Network",
-      "topPositiveTitle": "Sanctions Target Iran’s Weakened Regional Network",
+      "topNegativeTitle": "US Push to Isolate Iran Runs Into China",
+      "topPositiveTitle": "US Push to Isolate Iran Runs Into China",
       "items": [
         {
-          "title": "Sanctions Target Iran’s Weakened Regional Network",
+          "title": "US Push to Isolate Iran Runs Into China",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-22T14:23:13+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-22/sanctions-target-iran-s-weakened-regional-network-video",
+          "publishedAt": "2026-08-23T12:30:34+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-23/us-push-to-isolate-iran-runs-into-china-video",
           "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
+          ]
+        }
+      ]
+    },
+    "geopolitical": {
+      "avgSentiment": -0.132,
+      "negativeCount": 2,
+      "positiveCount": 0,
+      "neutralCount": 3,
+      "sourceCount": 3,
+      "itemCount": 5,
+      "isStale": false,
+      "topNegativeTitle": "Turkey’s Central Bank Shifts Funding Back to 37% Policy Rate",
+      "topPositiveTitle": "Fed Faces High Stakes Test at Jackson Hole",
+      "items": [
+        {
+          "title": "Turkey’s Central Bank Shifts Funding Back to 37% Policy Rate",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-23T17:03:34+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-23/turkey-central-bank-to-shift-funding-back-to-37-policy-rate",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Alliance Tested as Trump Pulls Out of South Korea Drill",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-23T13:48:27+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-23/alliance-tested-as-trump-pulls-out-of-south-korea-drill-video",
+          "tags": [
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Fed Faces High Stakes Test at Jackson Hole",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-23T14:47:34+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-23/fed-faces-high-stakes-test-at-jackson-hole-video",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "US Push to Isolate Iran Runs Into China",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-23T12:30:34+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-23/us-push-to-isolate-iran-runs-into-china-video",
+          "tags": [
+            "commodity",
             "geopolitical",
             "market"
           ]
