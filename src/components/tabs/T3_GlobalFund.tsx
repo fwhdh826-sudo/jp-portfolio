@@ -303,7 +303,7 @@ export function T3_GlobalFund() {
         ...fundRowStyle,
         borderBottom: isLast ? 'none' : `1px solid ${colors.borderSubtle}`,
       }}>
-        <div style={{ minWidth: 0, flex: 1 }}>
+        <div style={{ flex: '1 1 160px', minWidth: 0 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: spacing[2], flexWrap: 'wrap' }}>
             <span style={{ ...typography.bodySmall, color: colors.textPrimary, fontWeight: 700 }}>
               {fund.abbr}
@@ -694,7 +694,7 @@ export function T3_GlobalFund() {
                   borderBottom: i < addCandidates.length - 1 ? `1px solid ${colors.borderSubtle}` : 'none',
                   flexWrap: 'wrap', gap: spacing[2],
                 }}>
-                  <div>
+                  <div style={{ flex: '1 1 160px', minWidth: 0 }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: spacing[2] }}>
                       <span style={{ fontSize: '13px', fontWeight: 700, color: colors.textPrimary }}>{fund.abbr}</span>
                       <span style={{

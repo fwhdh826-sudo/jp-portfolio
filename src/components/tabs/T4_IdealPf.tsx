@@ -336,7 +336,7 @@ export function T4_IdealPf() {
         gap:            spacing[3],
         flexWrap:       'wrap',
       }}>
-        <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{ flex: '1 1 160px', minWidth: 0 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: spacing[2] }}>
             <div style={{
               width: '6px', height: '6px',
