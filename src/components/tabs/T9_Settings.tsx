@@ -901,6 +901,7 @@ function CashAssumptionsSection() {
             style={{
               ...typography.bodySmall,
               padding: `${spacing[1.5]} ${spacing[3]}`,
+              minHeight: '44px',
               borderRadius: radius.md,
               border: `1px solid var(--color-border-default)`,
               background: 'var(--color-surface)',
@@ -918,6 +919,7 @@ function CashAssumptionsSection() {
             style={{
               ...typography.bodySmall,
               padding: `${spacing[1.5]} ${spacing[3]}`,
+              minHeight: '44px',
               borderRadius: radius.md,
               border: `1px solid var(--color-border-default)`,
               background: 'var(--color-surface)',

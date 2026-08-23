@@ -10,6 +10,7 @@ const HERE = dirname(fileURLToPath(import.meta.url))
 const css = readFileSync(resolve(HERE, 'v10.css'), 'utf8')
 const statusBar = readFileSync(resolve(HERE, '../components/StatusBar.tsx'), 'utf8')
 const t9Settings = readFileSync(resolve(HERE, '../components/tabs/T9_Settings.tsx'), 'utf8')
+const t0Home = readFileSync(resolve(HERE, '../components/tabs/T0_Home.tsx'), 'utf8')
 
 function escapeRegExp(value: string): string {
   return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
@@ -41,6 +42,16 @@ function precedingStyleBlock(source: string, marker: string): string {
   expect(styleStart, `style block preceding ${marker} must exist`).toBeGreaterThan(-1)
   const closeIdx = source.indexOf('}}', styleStart)
   return source.slice(styleStart, closeIdx + 2)
+}
+
+// marker 直前の `<button` から marker までを切り出し、semantics（onClick / disabled / type / testid）が
+// 不変であることを検証するために使う。
+function precedingButtonSource(source: string, marker: string): string {
+  const idx = source.indexOf(marker)
+  expect(idx, `${marker} must exist`).toBeGreaterThan(-1)
+  const start = source.lastIndexOf('<button', idx)
+  expect(start, `<button preceding ${marker} must exist`).toBeGreaterThan(-1)
+  return source.slice(start, idx)
 }
 
 describe('UI-9G G-6: scoped 44px touch targets', () => {
@@ -84,6 +95,44 @@ describe('UI-9G G-6: scoped 44px touch targets', () => {
     expect(precedingStyleBlock(t9Settings, "pendingOperation === 'importCashAssumptions'")).toContain("minHeight: '44px'")
     expect(precedingStyleBlock(t9Settings, 'この端末の保有株・投信・現金前提をエクスポート')).toContain("minHeight: '44px'")
     expect(precedingStyleBlock(t9Settings, "pendingOperation === 'importPortfolioSnapshot'")).toContain("minHeight: '44px'")
+  })
+
+  it('UI-9G G-6-R2 residual closure: T9 再確認/削除 と T0 ToDoトグルが44px下限を持つ（semantics・表示logicは不変）', () => {
+    // ui-9g-p1-touch-residual-reaudit.md §2.4 R-1 / R-1b / R-2。
+    // R-1  「現金情報を削除」= width<=393px の全域で 34.14px（cash authority 有効時 enabled・hit-test済み）
+    // R-1b 「同じ金額で再確認」= 44px だが隣接 .refresh-btn の flex stretch に依存した偶然（minHeight 未宣言）
+    // R-2  T0「ほか{n}件を表示 ▾ / 折りたたむ ▴」= 測定した全幅 320–1440 で 34px
+    const reconfirm = precedingStyleBlock(t9Settings, "pendingOperation === 'reconfirmCashAssumptions'")
+    const clear = precedingStyleBlock(t9Settings, "pendingOperation === 'clearCashAssumptionsOverride'")
+    for (const block of [reconfirm, clear]) {
+      expect(block).toContain("minHeight: '44px'")
+      // 既存の視覚トークン（font / padding / flex）は据置き＝ G-6-R1 の 4件と同一 idiom
+      expect(block).toContain('...typography.bodySmall')
+      expect(block).toMatch(/padding:\s*`\$\{spacing\[1\.5\]\} \$\{spacing\[3\]\}`/)
+      expect(block).toContain("flex: '1 1 auto'")
+    }
+    // click / disabled / testid semantics 不変
+    const reconfirmBtn = precedingButtonSource(t9Settings, "pendingOperation === 'reconfirmCashAssumptions'")
+    expect(reconfirmBtn).toContain('onClick={handleReconfirm}')
+    expect(reconfirmBtn).toContain('data-testid="cash-authority-reconfirm"')
+    expect(reconfirmBtn).toContain('disabled={!hasAuthority || pendingOperation !== null}')
+    const clearBtn = precedingButtonSource(t9Settings, "pendingOperation === 'clearCashAssumptionsOverride'")
+    expect(clearBtn).toContain('onClick={handleClear}')
+    expect(clearBtn).toContain('data-testid="cash-authority-clear"')
+    expect(clearBtn).toContain('disabled={!hasAuthority || pendingOperation !== null}')
+
+    const t0Toggle = precedingStyleBlock(t0Home, '折りたたむ ▴')
+    expect(t0Toggle).toContain("minHeight: '44px'")
+    expect(t0Toggle).toContain("padding: '8px 0'")
+    expect(t0Toggle).toContain("fontSize: '12px'")
+    expect(t0Toggle).toContain("textAlign: 'center'")
+    const t0ToggleBtn = precedingButtonSource(t0Home, '折りたたむ ▴')
+    expect(t0ToggleBtn).toContain('type="button"')
+    expect(t0ToggleBtn).toContain('onClick={() => setIsExpanded(v => !v)}')
+    // 表示件数・展開logicは touch target 修正の対象外（不変であること）
+    expect(t0Home).toContain('const FIRST_VIEW_VISIBLE_COUNT = 2')
+    expect(t0Home).toContain('const hiddenCount    = displayTodos.length - collapsedTodos.length')
+    expect(t0Home).toContain('{hiddenCount > 0 && (')
   })
 
   it('B secondary controls get only the scoped minimum hit height', () => {
@@ -139,6 +188,9 @@ describe('UI-9G G-6: scoped 44px touch targets', () => {
       "pendingOperation === 'importCashAssumptions'",
       'この端末の保有株・投信・現金前提をエクスポート',
       "pendingOperation === 'importPortfolioSnapshot'",
+      // G-6-R2 追加（reaudit §2.4 R-1 / R-1b。intrinsic は上記5件と同一 idiom のため 34.1）
+      "pendingOperation === 'reconfirmCashAssumptions'",
+      "pendingOperation === 'clearCashAssumptionsOverride'",
     ]
     for (const marker of t9Markers) {
       const block = precedingStyleBlock(t9Settings, marker)
@@ -146,5 +198,14 @@ describe('UI-9G G-6: scoped 44px touch targets', () => {
       expect(Math.max(auditedT9IntrinsicHeight, hasMinHeight44 ? 44 : 0), marker).toBeGreaterThanOrEqual(44)
       expect(auditedT9IntrinsicHeight, `${marker} old-size mutation`).toBeLessThan(44)
     }
+
+    // G-6-R2 追加（reaudit §2.4 R-2）: T0 ToDoトグルの監査実測は 320–1440 の全幅で 34px。
+    const auditedT0ToggleIntrinsicHeight = 34
+    const t0ToggleBlock = precedingStyleBlock(t0Home, '折りたたむ ▴')
+    const t0HasMinHeight44 = /minHeight:\s*'44px'/.test(t0ToggleBlock)
+    expect(
+      Math.max(auditedT0ToggleIntrinsicHeight, t0HasMinHeight44 ? 44 : 0),
+      'T0 ToDo expand/collapse toggle',
+    ).toBeGreaterThanOrEqual(44)
   })
 })
