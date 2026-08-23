@@ -403,16 +403,16 @@ small { font-size: var(--font-xs, 11px); }
 /* ── Page Section Grid ────────────────────────────────────── */
 .page-grid {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: minmax(0, 1fr);
   gap: 16px;
 }
 
 @media (min-width: 768px) {
   .page-grid--2col {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   }
   .page-grid--3col {
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
