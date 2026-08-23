@@ -966,6 +966,7 @@ function CashAssumptionsSection() {
             style={{
               ...typography.bodySmall,
               padding: `${spacing[1.5]} ${spacing[3]}`,
+              minHeight: '44px',
               borderRadius: radius.md,
               border: `1px solid var(--color-border-default)`,
               background: 'var(--color-surface)',
@@ -1046,6 +1047,7 @@ function CashAssumptionsSection() {
               style={{
                 ...typography.bodySmall,
                 padding: `${spacing[1.5]} ${spacing[3]}`,
+                minHeight: '44px',
                 borderRadius: radius.md,
                 border: `1px solid var(--color-border-default)`,
                 background: 'var(--color-surface)',
@@ -1173,6 +1175,7 @@ function PortfolioSnapshotSyncSection() {
           style={{
             ...typography.bodySmall,
             padding: `${spacing[1.5]} ${spacing[3]}`,
+            minHeight: '44px',
             borderRadius: radius.md,
             border: `1px solid var(--color-border-default)`,
             background: 'var(--color-surface)',
@@ -1253,6 +1256,7 @@ function PortfolioSnapshotSyncSection() {
             style={{
               ...typography.bodySmall,
               padding: `${spacing[1.5]} ${spacing[3]}`,
+              minHeight: '44px',
               borderRadius: radius.md,
               border: `1px solid var(--color-border-default)`,
               background: 'var(--color-surface)',
@@ -1411,6 +1415,7 @@ export function T9_Settings() {
                 style={{
                   ...typography.bodySmall,
                   padding:       `${spacing[1.5]} ${spacing[3]}`,
+                  minHeight:     '44px',
                   borderRadius:  radius.md,
                   border:        `1px solid ${portfolioPolicy.jpStockMaxRatio === opt.value ? 'var(--color-buy-border)' : 'var(--color-border-default)'}`,
                   background:    portfolioPolicy.jpStockMaxRatio === opt.value ? 'var(--color-buy-bg)' : 'var(--color-surface)',
