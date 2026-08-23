@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-08-23T08:43:47.641249+09:00",
-  "sourceUpdatedAt": "2026-08-22T23:29:03+00:00",
+  "updatedAt": "2026-08-23T20:43:03.717333+09:00",
+  "sourceUpdatedAt": "2026-08-23T11:19:34+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -17,15 +17,15 @@
       "items": []
     },
     "jp_semiconductor": {
-      "avgSentiment": 0.165,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
-      "positiveCount": 1,
+      "positiveCount": 0,
       "neutralCount": 1,
-      "sourceCount": 2,
-      "itemCount": 2,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
       "topNegativeTitle": "経産省 ラピダス出資に1500億円要求へ 来年度予算の概算要求で",
-      "topPositiveTitle": "The AI Spending Spree Comes With a Catch",
+      "topPositiveTitle": "経産省 ラピダス出資に1500億円要求へ 来年度予算の概算要求で",
       "items": [
         {
           "title": "経産省 ラピダス出資に1500億円要求へ 来年度予算の概算要求で",
@@ -39,20 +39,6 @@
             "market"
           ],
           "titleJa": "経産省 ラピダス出資に1500億円要求へ 来年度予算の概算要求で"
-        },
-        {
-          "title": "The AI Spending Spree Comes With a Catch",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-22T12:03:21+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-22/the-ai-spending-spree-comes-with-a-catch-video",
-          "tags": [
-            "commodity",
-            "jp_semiconductor",
-            "market",
-            "us_growth"
-          ]
         }
       ]
     },
@@ -106,31 +92,16 @@
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.33,
+      "avgSentiment": 0,
       "negativeCount": 0,
-      "positiveCount": 1,
+      "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "The AI Spending Spree Comes With a Catch",
-      "topPositiveTitle": "The AI Spending Spree Comes With a Catch",
-      "items": [
-        {
-          "title": "The AI Spending Spree Comes With a Catch",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-22T12:03:21+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-22/the-ai-spending-spree-comes-with-a-catch-video",
-          "tags": [
-            "commodity",
-            "jp_semiconductor",
-            "market",
-            "us_growth"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "global_broad": {
       "avgSentiment": 0,
@@ -188,18 +159,17 @@
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "India’s Foreign Minister to Visit Russia Amid US Tariff Threat",
-      "topPositiveTitle": "India’s Foreign Minister to Visit Russia Amid US Tariff Threat",
+      "topNegativeTitle": "Korean Traders Chase 40% Coupons as Risk Appetite Survives Rout",
+      "topPositiveTitle": "Korean Traders Chase 40% Coupons as Risk Appetite Survives Rout",
       "items": [
         {
-          "title": "India’s Foreign Minister to Visit Russia Amid US Tariff Threat",
+          "title": "Korean Traders Chase 40% Coupons as Risk Appetite Survives Rout",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-08-22T10:20:05+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-22/india-s-foreign-minister-to-visit-russia-amid-us-tariff-threat",
+          "publishedAt": "2026-08-23T00:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-23/korean-traders-chase-40-coupons-as-risk-appetite-survives-rout",
           "tags": [
-            "geopolitical",
             "macro_risk",
             "market"
           ]
@@ -232,12 +202,12 @@
       ]
     },
     "rates": {
-      "avgSentiment": 0.11,
+      "avgSentiment": 0.165,
       "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 2,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 2,
       "isStale": false,
       "topNegativeTitle": "Juicy Yields Draw Junk Bond Buyers to Investment-Grade AI Debt",
       "topPositiveTitle": "国債利払い費の想定金利は3.8％調整 国債費も膨張へ 概算要求",
@@ -249,18 +219,6 @@
           "sentimentScore": 0.0,
           "publishedAt": "2026-08-22T19:00:00+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-08-22/juicy-yields-draw-junk-bond-buyers-to-investment-grade-ai-debt",
-          "tags": [
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Bond Market Tests Limits of Treasury Intervention",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-22T13:11:59+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-22/bond-market-tests-limits-of-treasury-intervention-video",
           "tags": [
             "market",
             "rates"
@@ -282,81 +240,28 @@
       ]
     },
     "commodity": {
-      "avgSentiment": -0.223,
-      "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 1,
-      "sourceCount": 2,
-      "itemCount": 3,
+      "avgSentiment": 0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "World Economy Latest: UK Employment Declines While Price Pressures Mount",
-      "topPositiveTitle": "The AI Spending Spree Comes With a Catch",
-      "items": [
-        {
-          "title": "World Economy Latest: UK Employment Declines While Price Pressures Mount",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-08-22T09:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-22/world-economy-latest-uk-employment-declines-while-price-pressures-mount",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "Russia’s Rosatom Returns Workers to Iran’s Bushehr Nuclear Plant",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-22T13:15:26+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-22/russia-s-rosatom-returns-workers-to-iran-s-bushehr-nuclear-plant",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "The AI Spending Spree Comes With a Catch",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-22T12:03:21+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-22/the-ai-spending-spree-comes-with-a-catch-video",
-          "tags": [
-            "commodity",
-            "jp_semiconductor",
-            "market",
-            "us_growth"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "geopolitical": {
-      "avgSentiment": -0.083,
-      "negativeCount": 1,
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 3,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "India’s Foreign Minister to Visit Russia Amid US Tariff Threat",
+      "topNegativeTitle": "Sanctions Target Iran’s Weakened Regional Network",
       "topPositiveTitle": "Sanctions Target Iran’s Weakened Regional Network",
       "items": [
-        {
-          "title": "India’s Foreign Minister to Visit Russia Amid US Tariff Threat",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-22T10:20:05+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-22/india-s-foreign-minister-to-visit-russia-amid-us-tariff-threat",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
         {
           "title": "Sanctions Target Iran’s Weakened Regional Network",
           "source": "Bloomberg Markets",
@@ -365,19 +270,6 @@
           "publishedAt": "2026-08-22T14:23:13+00:00",
           "url": "https://www.bloomberg.com/news/videos/2026-08-22/sanctions-target-iran-s-weakened-regional-network-video",
           "tags": [
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "Russia’s Rosatom Returns Workers to Iran’s Bushehr Nuclear Plant",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-22T13:15:26+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-22/russia-s-rosatom-returns-workers-to-iran-s-bushehr-nuclear-plant",
-          "tags": [
-            "commodity",
             "geopolitical",
             "market"
           ]
@@ -406,7 +298,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 5,
+    "excludedCount": 3,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
