@@ -179,6 +179,7 @@ export function CrossTabInvalidationWarning(props: {
         disabled={viewModel.reloadDisabled}
         style={{
           flexShrink: 0,
+          minHeight: '44px',
           fontSize: '10px',
           padding: '3px 10px',
           background: viewModel.reloadDisabled ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.2)',
@@ -337,6 +338,8 @@ export function StatusBar() {
           type="button"
           style={{
             flexShrink: 0,
+            minWidth: '44px',
+            minHeight: '44px',
             fontSize: '10px',
             padding: '3px 10px',
             background: refreshDisabled ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.15)',
