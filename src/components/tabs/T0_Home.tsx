@@ -515,7 +515,7 @@ function TodoCard() {
               display: 'block', width: '100%',
               fontSize: '12px', fontWeight: 600, color: 'var(--color-text-muted)',
               background: 'transparent', border: 'none', cursor: 'pointer',
-              textAlign: 'center', padding: '8px 0',
+              textAlign: 'center', padding: '8px 0', minHeight: '44px',
             }}
           >
             {isExpanded ? '折りたたむ ▴' : `ほか${hiddenCount}件を表示 ▾`}
