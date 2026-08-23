@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-08-24T06:48:14.902522+09:00",
-  "sourceUpdatedAt": "2026-08-23T20:22:31+00:00",
+  "updatedAt": "2026-08-24T08:43:30.983488+09:00",
+  "sourceUpdatedAt": "2026-08-23T23:03:18+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -43,12 +43,12 @@
       ]
     },
     "us_broad": {
-      "avgSentiment": 0.066,
+      "avgSentiment": 0.055,
       "negativeCount": 1,
       "positiveCount": 2,
-      "neutralCount": 2,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 6,
       "isStale": false,
       "topNegativeTitle": "US Long Bonds Risk Deeper Selloff Without Clear Warsh Guidance",
       "topPositiveTitle": "Fed’s Kashkari Says Treasury Market Still Working ‘As It Should’",
@@ -62,6 +62,20 @@
           "url": "https://www.bloomberg.com/news/articles/2026-08-23/us-long-bonds-risk-deeper-selloff-without-clear-warsh-guidance",
           "tags": [
             "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Oil Dips, Alibaba Funding Plan Keeps AI in Focus: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-23T22:10:35+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-23/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "geopolitical",
             "market",
             "us_broad"
           ]
@@ -100,20 +114,6 @@
           "publishedAt": "2026-08-23T15:23:22+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-08-23/fed-s-kashkari-says-treasury-market-still-working-as-it-should",
           "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Treasury Buybacks Fail to Calm Bond Market",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-23T13:26:19+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-23/treasury-buybacks-fail-to-calm-bond-market-video",
-          "tags": [
-            "dividend",
             "market",
             "rates",
             "us_broad"
@@ -210,15 +210,15 @@
       ]
     },
     "macro_risk": {
-      "avgSentiment": -0.333,
+      "avgSentiment": -0.222,
       "negativeCount": 3,
       "positiveCount": 0,
-      "neutralCount": 1,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 6,
       "isStale": false,
       "topNegativeTitle": "How Water Scarcity Is Changing the Economics of the Southwest",
-      "topPositiveTitle": "Fed Faces High Stakes Test at Jackson Hole",
+      "topPositiveTitle": "Burnham Enters World Stage With Debut Foreign Trip to Ukraine",
       "items": [
         {
           "title": "How Water Scarcity Is Changing the Economics of the Southwest",
@@ -259,31 +259,43 @@
           ]
         },
         {
-          "title": "Fed Faces High Stakes Test at Jackson Hole",
+          "title": "Burnham Enters World Stage With Debut Foreign Trip to Ukraine",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-23T14:47:34+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-23/fed-faces-high-stakes-test-at-jackson-hole-video",
+          "publishedAt": "2026-08-23T23:01:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-23/burnham-enters-world-stage-with-debut-foreign-trip-to-ukraine",
           "tags": [
             "geopolitical",
             "macro_risk",
-            "market",
-            "us_broad"
+            "market"
+          ]
+        },
+        {
+          "title": "Canada Turned Down a US Tariff Deal. Now Comes the Economic Cost",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-23T23:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-23/canada-turned-down-a-us-tariff-deal-now-comes-the-economic-cost",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
           ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": 0.67,
+      "avgSentiment": 0.835,
       "negativeCount": 0,
-      "positiveCount": 1,
+      "positiveCount": 2,
       "neutralCount": 0,
       "sourceCount": 1,
-      "itemCount": 1,
+      "itemCount": 2,
       "isStale": false,
       "topNegativeTitle": "Canada Digs In as US Trade Fight Escalates",
-      "topPositiveTitle": "Canada Digs In as US Trade Fight Escalates",
+      "topPositiveTitle": "Taiwan Dollar’s August Rebound Is Looking Fragile, Analysts Say",
       "items": [
         {
           "title": "Canada Digs In as US Trade Fight Escalates",
@@ -294,6 +306,19 @@
           "url": "https://www.bloomberg.com/news/videos/2026-08-23/canada-digs-in-as-us-trade-fight-escalates-video",
           "tags": [
             "fx",
+            "market"
+          ]
+        },
+        {
+          "title": "Taiwan Dollar’s August Rebound Is Looking Fragile, Analysts Say",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-08-23T23:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-23/taiwan-dollar-s-august-rebound-is-looking-fragile-analysts-say",
+          "tags": [
+            "fx",
+            "geopolitical",
             "market"
           ]
         }
@@ -307,11 +332,11 @@
       "sourceCount": 3,
       "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Bessent Has No Easy Fix for What’s Really Driving Bond Yields Up",
+      "topNegativeTitle": "Bessent Has No Easy Fix for What’s Really Driving Yields Up",
       "topPositiveTitle": "Fed’s Kashkari Says Treasury Market Still Working ‘As It Should’",
       "items": [
         {
-          "title": "Bessent Has No Easy Fix for What’s Really Driving Bond Yields Up",
+          "title": "Bessent Has No Easy Fix for What’s Really Driving Yields Up",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
@@ -372,34 +397,35 @@
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "US Push to Isolate Iran Runs Into China",
-      "topPositiveTitle": "US Push to Isolate Iran Runs Into China",
+      "topNegativeTitle": "Oil Dips, Alibaba Funding Plan Keeps AI in Focus: Markets Wrap",
+      "topPositiveTitle": "Oil Dips, Alibaba Funding Plan Keeps AI in Focus: Markets Wrap",
       "items": [
         {
-          "title": "US Push to Isolate Iran Runs Into China",
+          "title": "Oil Dips, Alibaba Funding Plan Keeps AI in Focus: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-23T12:30:34+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-23/us-push-to-isolate-iran-runs-into-china-video",
+          "publishedAt": "2026-08-23T22:10:35+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-23/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
             "geopolitical",
-            "market"
+            "market",
+            "us_broad"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": -0.132,
+      "avgSentiment": 0.042,
       "negativeCount": 2,
-      "positiveCount": 0,
-      "neutralCount": 3,
+      "positiveCount": 1,
+      "neutralCount": 5,
       "sourceCount": 3,
-      "itemCount": 5,
+      "itemCount": 8,
       "isStale": false,
       "topNegativeTitle": "Turkey’s Central Bank Shifts Funding Back to 37% Policy Rate",
-      "topPositiveTitle": "Fed Faces High Stakes Test at Jackson Hole",
+      "topPositiveTitle": "Taiwan Dollar’s August Rebound Is Looking Fragile, Analysts Say",
       "items": [
         {
           "title": "Turkey’s Central Bank Shifts Funding Back to 37% Policy Rate",
@@ -427,44 +453,44 @@
           ]
         },
         {
-          "title": "Fed Faces High Stakes Test at Jackson Hole",
+          "title": "Burnham Enters World Stage With Debut Foreign Trip to Ukraine",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-23T14:47:34+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-23/fed-faces-high-stakes-test-at-jackson-hole-video",
+          "publishedAt": "2026-08-23T23:01:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-23/burnham-enters-world-stage-with-debut-foreign-trip-to-ukraine",
           "tags": [
             "geopolitical",
             "macro_risk",
-            "market",
-            "us_broad"
+            "market"
           ]
         },
         {
-          "title": "US Push to Isolate Iran Runs Into China",
+          "title": "Canada Turned Down a US Tariff Deal. Now Comes the Economic Cost",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-23T23:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-23/canada-turned-down-a-us-tariff-deal-now-comes-the-economic-cost",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Oil Dips, Alibaba Funding Plan Keeps AI in Focus: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-23T12:30:34+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-23/us-push-to-isolate-iran-runs-into-china-video",
+          "publishedAt": "2026-08-23T22:10:35+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-23/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
             "geopolitical",
-            "market"
+            "market",
+            "us_broad"
           ]
-        },
-        {
-          "title": "自民 プーチン氏北方領土訪問容認できず 対話求める声も",
-          "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-21T06:50:11+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20260821de45520",
-          "tags": [
-            "geopolitical",
-            "market"
-          ],
-          "titleJa": "自民 プーチン氏北方領土訪問容認できず 対話求める声も"
         }
       ]
     }
