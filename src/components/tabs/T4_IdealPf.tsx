@@ -401,7 +401,7 @@ export function T4_IdealPf() {
         flexWrap:       'wrap',
         opacity:        row.locked ? 0.7 : 1,
       }}>
-        <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{ flex: '1 1 160px', minWidth: 0 }}>
           {/* P0-4: 390px以下で銘柄名が1文字縦列化する崩壊を修正。
               minWidth:0 で行を縮小可能にし、名前はnowrap+ellipsisで通常の横書きを維持する */}
           <div style={{ display: 'flex', alignItems: 'center', gap: spacing[2], minWidth: 0 }}>
