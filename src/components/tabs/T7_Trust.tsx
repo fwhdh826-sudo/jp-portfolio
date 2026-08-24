@@ -39,7 +39,7 @@ import { PageHeader }     from '../layout/PageHeader'
 import { AssetTypeBadge } from '../badges/AssetTypeBadge'
 import { SignalBadge }    from '../badges/SignalBadge'
 import { EmptyState }     from '../shared/EmptyState'
-import { suppressBuySignal } from '../shared/verdict'
+import { suppressBuySignal, SUPPRESSED_VERDICT } from '../shared/verdict'
 import { SafeModeStatusCard } from '../v13/SafeModeStatusCard'
 import type { Signal }    from '../badges/SignalBadge'
 import type { ActionItem } from '../cards/ActionPanel'
@@ -583,7 +583,8 @@ export function T7_Trust() {
   // ── 判定・InsightCard データ ───────────────────────────────
 
   // P4-A106: 表示専用 — signal算出ロジック変更なし
-  const portfolioSignal: Signal = isSuppressed ? 'WATCH' : signalToSignal(trustPlan.shortTermSignal)
+  // UI-9H H-P0-2: 抑制中は「真のWATCH（監視）」ではなく専用トークンで表示する
+  const portfolioSignal: Signal = isSuppressed ? SUPPRESSED_VERDICT : signalToSignal(trustPlan.shortTermSignal)
 
   const passedConditions = trustPlan.shortTermMode.checklist
     .filter(c => c.status === 'pass')
@@ -603,7 +604,7 @@ export function T7_Trust() {
     ? [{
         label:       'SAFE_MODE / DQ抑制中',
         description: 'SAFE_MODE または DQ低下のため短期投信シグナルを停止中。最新データ確認後に再判定。',
-        signal:      'WATCH' as Signal,
+        signal:      SUPPRESSED_VERDICT,
         priority:    'HIGH',
       }]
     : trustPlan.executionQueue.map(item => ({
@@ -795,7 +796,10 @@ export function T7_Trust() {
                 {/* 保有ファンドカードグリッド */}
                 <div style={fundGridStyle}>
                   {group.items.map(item => {
-                    // P4-A156: SAFE_MODE/DQ抑制中はBUYバッジのみWATCHへ変換（表示専用。item.decisionは変更しない）
+                    // P4-A156: SAFE_MODE/DQ抑制中はBUYバッジのみSUPPRESSEDへ変換（表示専用。item.decisionは変更しない）
+                    // UI-9H H-P0-2: 'WATCH'固定判定のままだとfSigがSUPPRESSEDに変わった後
+                    // ここがfalseになりitem.decision（生の'BUY'）へフォールバックし、
+                    // 抑制中にBUYが表示へ漏れ戻る回帰になるため、SUPPRESSED_VERDICTで判定する
                     const fSig = suppressBuySignal(
                       actionToSignal(
                         item.decision === 'SELL' ? 'TRIM' :
@@ -803,7 +807,7 @@ export function T7_Trust() {
                       ),
                       isSuppressed,
                     )
-                    const fundBadgeLabel = fSig === 'WATCH' ? 'WATCH' : item.decision
+                    const fundBadgeLabel = fSig === SUPPRESSED_VERDICT ? SUPPRESSED_VERDICT : item.decision
                     return (
                       <div key={item.id} style={fundCardStyle(fSig)}>
                         <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: spacing[2] }}>

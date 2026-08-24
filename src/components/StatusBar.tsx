@@ -280,7 +280,7 @@ export function StatusBar() {
   ]
 
   const sqLabel = sqCalendar?.nextSQ
-    ? `SQ残${sqCalendar.nextSQ.dayUntil}日`
+    ? `SQ残${sqCalendar.nextSQ.dayUntil}営業日`
     : null
 
   return (

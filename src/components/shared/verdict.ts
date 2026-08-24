@@ -12,8 +12,13 @@
 
 import type { Signal } from '../badges/SignalBadge'
 
-/** 抑制時に BUY の代わりに表示する verdict token。 */
-export const SUPPRESSED_VERDICT: Signal = 'WATCH'
+/**
+ * 抑制時に BUY の代わりに表示する verdict token。
+ * UI-9H H-P0-2: 旧 'WATCH' は「真の監視」「条件未達WAIT」と同一グリフに
+ * 潰れており3義が区別不能だった。専用の 'SUPPRESSED' トークンへ分離する
+ * （表示専用。domain の decision には触れない）。
+ */
+export const SUPPRESSED_VERDICT: Signal = 'SUPPRESSED'
 
 /**
  * 抑制中は BUY 表示のみ WATCH に変換する（表示専用）。

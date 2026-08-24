@@ -124,6 +124,15 @@ export const colors = {
   bgDarkPanel: '#1E293B',                 // T5/Phase8 ダークパネルヘッダー（slate-800）
   primaryTint: 'rgba(29, 78, 216, 0.05)', // primary の微薄背景（active状態）
   overlayBg:   'rgba(0, 0, 0, 0.45)',    // モーダルバックドロップ
+
+  // ── SUPPRESSED（UI-9H H-P0-2 追加）─────────────────────────
+  // SAFE_MODE/DQ抑制でBUY表示を止めた状態専用。真のWATCH（監視・グレー系）
+  // と条件未達WAIT（オレンジ系＝wait/watch token）のいずれとも視覚的に
+  // 衝突しないよう、既存Status colorsとは別系統のニュートラルslateを使う。
+  suppressed:      '#7c8595',
+  suppressedBg:    '#f4f5f7',
+  suppressedBorder:'#d3d7de',
+  suppressedText:  '#5b6472',
 } as const
 
 // ---------------------------------------------------------------------------

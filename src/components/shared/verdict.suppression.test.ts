@@ -4,12 +4,18 @@ import { describe, expect, it } from 'vitest'
 import { SUPPRESSED_VERDICT, suppressBuySignal } from './verdict'
 import type { Signal } from '../badges/SignalBadge'
 
-const ALL: Signal[] = ['BUY', 'SELL', 'HOLD', 'WATCH']
+const ALL: Signal[] = ['BUY', 'SELL', 'HOLD', 'WATCH', 'SUPPRESSED']
 
 describe('suppressBuySignal', () => {
-  it('抑制中はBUYのみSUPPRESSED_VERDICT(WATCH)へ変換する', () => {
+  it('抑制中はBUYのみSUPPRESSED_VERDICT(SUPPRESSED)へ変換する', () => {
     expect(suppressBuySignal('BUY', true)).toBe(SUPPRESSED_VERDICT)
-    expect(SUPPRESSED_VERDICT).toBe('WATCH')
+    expect(SUPPRESSED_VERDICT).toBe('SUPPRESSED')
+  })
+
+  // UI-9H H-P0-2: 抑制トークンは「真のWATCH（監視）」と区別できる別グリフでなければ
+  // ならない。WATCHへ統合する方向のmutationが起きたらここでRED化する。
+  it('SUPPRESSED_VERDICTはWATCHと異なるtokenである（3義統合の回帰guard）', () => {
+    expect(SUPPRESSED_VERDICT).not.toBe('WATCH')
   })
 
   it('抑制中でもSELL/HOLD/WATCHは変換しない（防御・監視表示を弱めない）', () => {

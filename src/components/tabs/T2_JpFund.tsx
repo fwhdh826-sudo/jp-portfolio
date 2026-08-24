@@ -32,7 +32,7 @@ import { PageHeader }    from '../layout/PageHeader'
 import { CircularGauge } from '../charts/CircularGauge'
 import { SignalBadge }   from '../badges/SignalBadge'
 import { EmptyState }    from '../shared/EmptyState'
-import { suppressBuySignal } from '../shared/verdict'
+import { suppressBuySignal, SUPPRESSED_VERDICT } from '../shared/verdict'
 import type { Signal }   from '../badges/SignalBadge'
 import type { RiskLevel } from '../badges/RiskBadge'
 
@@ -91,10 +91,10 @@ function viLabel(vi: number): { label: string; color: string; bg: string } {
 
 // SQ 警戒評価
 function sqLabel(days: number): { label: string; color: string } {
-  if (days <= 3)  return { label: `SQ ${days}日前 — 極度警戒`, color: colors.sellText }
-  if (days <= 7)  return { label: `SQ ${days}日前 — 警戒`,     color: colors.waitText }
-  if (days <= 14) return { label: `SQ ${days}日前 — 注意`,     color: colors.waitText }
-  return               { label: `SQ ${days}日後`,              color: colors.textSubtle }
+  if (days <= 3)  return { label: `SQ ${days}営業日前 — 極度警戒`, color: colors.sellText }
+  if (days <= 7)  return { label: `SQ ${days}営業日前 — 警戒`,     color: colors.waitText }
+  if (days <= 14) return { label: `SQ ${days}営業日前 — 注意`,     color: colors.waitText }
+  return               { label: `SQ ${days}営業日後`,              color: colors.textSubtle }
 }
 
 // フロー方向
@@ -317,7 +317,8 @@ export function T2_JpFund() {
     signal === 'BEAR' ? 'ベア（売りシグナル）' : '待機推奨'
 
   // P4-A104: 表示専用変数 — signal算出ロジックは変更しない
-  const displayDecision = isSuppressed ? 'WATCH' as const : signalFromShortTerm(signal)
+  // UI-9H H-P0-2: 抑制中は「真のWATCH（監視）」ではなく専用トークンで表示する
+  const displayDecision = isSuppressed ? SUPPRESSED_VERDICT : signalFromShortTerm(signal)
   const displayTitle    = isSuppressed ? '今日のスタンス: 抑制中（参考）' : `今日のスタンス: ${signalLabel}`
 
   const decisionReasons = [

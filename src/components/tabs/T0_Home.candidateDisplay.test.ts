@@ -15,6 +15,7 @@ import {
   computeHoldingsStale,
   computeSystemStatusNotices,
 } from './T0_Home'
+import { TAB_META_BY_ID } from '../../constants/tabs'
 
 function makeEntry(overrides: Partial<CandidateDecisionSynthesisEntry> = {}): CandidateDecisionSynthesisEntry {
   return {
@@ -156,9 +157,21 @@ describe('candidateCardFooterText', () => {
 
   it('stock指定でT1誘導文言を返す（投信固定文言は使わない）', () => {
     const text = candidateCardFooterText('stock')
-    expect(text).toBe('詳細はT1（今日の判断）で確認してください')
+    expect(text).toBe('詳細はT1（個別株）で確認してください')
     expect(text).not.toContain('投信')
     expect(text).not.toContain('T7')
+  })
+
+  // H-P0-1: T0自身のtitleが「今日の判断」であり、T1への誘導文にT0の名前を
+  // 誤って付けていた（UI-9H P0）。tabs.ts（TAB_META）のT1正典labelとの一致を
+  // 固定し、再発（誤称への回帰）をRED化する。
+  it('stock指定の誘導文言はtabs.ts（TAB_META）のT1正典labelと一致する（誤称回帰guard）', () => {
+    const t1Label = TAB_META_BY_ID['T1'].label
+    expect(t1Label).toBe('個別株')
+    const text = candidateCardFooterText('stock')
+    expect(text).toBe(`詳細はT1（${t1Label}）で確認してください`)
+    // T0自身のtitle「今日の判断」を参照先タブの名前として使ってはならない
+    expect(text).not.toContain('今日の判断')
   })
 })
 

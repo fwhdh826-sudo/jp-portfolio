@@ -34,10 +34,11 @@ export interface DecisionCardProps {
 }
 
 const decisionAccent: Record<Signal, string> = {
-  BUY:   colors.buy,
-  SELL:  colors.sell,
-  HOLD:  colors.hold,
-  WATCH: colors.watch,
+  BUY:        colors.buy,
+  SELL:       colors.sell,
+  HOLD:       colors.hold,
+  WATCH:      colors.watch,
+  SUPPRESSED: colors.suppressed,
 }
 
 export function DecisionCard({

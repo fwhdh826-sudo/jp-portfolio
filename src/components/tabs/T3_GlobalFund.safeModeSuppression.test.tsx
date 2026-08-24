@@ -175,9 +175,12 @@ describe('F-P0-1 real SAFE_MODE: T3 は BUY badge を1件も出さない', () =>
     expect(html).not.toContain('aria-label="判定: BUY"')
   })
 
-  it('BUY 判定ファンドのバッジは WATCH（抑制 token）に変換される', () => {
+  // UI-9H H-P0-2: 抑制トークンは WATCH から SUPPRESSED へ分離した。
+  // 「真の監視」と「抑制されたBUY」が同一グリフに潰れないことを固定する。
+  it('BUY 判定ファンドのバッジは SUPPRESSED（抑制 token、WATCH とは別）に変換される', () => {
     const badges = verdictBadges(renderWith(realSafeModeState()))
-    expect(badges.filter(b => b === 'WATCH').length).toBeGreaterThanOrEqual(5)
+    expect(badges.filter(b => b === 'SUPPRESSED').length).toBeGreaterThanOrEqual(5)
+    expect(badges.filter(b => b === 'WATCH')).toHaveLength(0)
   })
 })
 
