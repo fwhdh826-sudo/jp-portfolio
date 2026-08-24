@@ -1,31 +1,30 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-08-25T06:58:15.948622+09:00",
-  "sourceUpdatedAt": "2026-08-24T21:52:08+00:00",
+  "updatedAt": "2026-08-25T08:44:32.531816+09:00",
+  "sourceUpdatedAt": "2026-08-24T23:18:20+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": 0.0,
-      "negativeCount": 1,
+      "avgSentiment": 0.165,
+      "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 0,
+      "neutralCount": 1,
       "sourceCount": 1,
       "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Groundwork Is Set for BOJ Rate Hike Next Month, Ex-Official Says",
+      "topNegativeTitle": "‘Boxed In’ BOJ Set to Hike Next Month, Former Board Member Says",
       "topPositiveTitle": "BOJ Set to Offer Clues as Markets Bet Heavily on September Hike",
       "items": [
         {
-          "title": "Groundwork Is Set for BOJ Rate Hike Next Month, Ex-Official Says",
+          "title": "‘Boxed In’ BOJ Set to Hike Next Month, Former Board Member Says",
           "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
           "publishedAt": "2026-08-24T21:00:00+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-08-24/groundwork-is-set-for-boj-rate-hike-next-month-ex-official-says",
           "tags": [
             "jp_broad",
-            "market",
-            "rates"
+            "market"
           ]
         },
         {
@@ -100,16 +99,30 @@
       ]
     },
     "us_broad": {
-      "avgSentiment": -0.415,
-      "negativeCount": 3,
-      "positiveCount": 0,
+      "avgSentiment": -0.277,
+      "negativeCount": 4,
+      "positiveCount": 1,
       "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 4,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Stocks Fall as Chip Rout Overshadows Drop in Oil: Markets Wrap",
-      "topPositiveTitle": "Treasury Buybacks Are a 'Cloud' Over Markets, Apollo's Slok Says",
+      "topNegativeTitle": "Asian Stocks Under Pressure After US Tech Selloff: Markets Wrap",
+      "topPositiveTitle": "Bond Investor Ed Al-Hussainy on Bessent's Treasury Twist",
       "items": [
+        {
+          "title": "Asian Stocks Under Pressure After US Tech Selloff: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-08-24T22:09:52+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-24/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        },
         {
           "title": "Stocks Fall as Chip Rout Overshadows Drop in Oil: Markets Wrap",
           "source": "Bloomberg Markets",
@@ -285,16 +298,30 @@
       ]
     },
     "macro_risk": {
-      "avgSentiment": 0.106,
-      "negativeCount": 1,
+      "avgSentiment": 0.021,
+      "negativeCount": 2,
       "positiveCount": 3,
       "neutralCount": 8,
       "sourceCount": 3,
-      "itemCount": 12,
+      "itemCount": 13,
       "isStale": false,
-      "topNegativeTitle": "Stocks Fall as Chip Rout Overshadows Drop in Oil: Markets Wrap",
+      "topNegativeTitle": "Asian Stocks Under Pressure After US Tech Selloff: Markets Wrap",
       "topPositiveTitle": "Canadian Stocks Rise Despite Breakdown in US Trade Talks",
       "items": [
+        {
+          "title": "Asian Stocks Under Pressure After US Tech Selloff: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-08-24T22:09:52+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-24/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        },
         {
           "title": "Stocks Fall as Chip Rout Overshadows Drop in Oil: Markets Wrap",
           "source": "Bloomberg Markets",
@@ -348,19 +375,6 @@
             "macro_risk",
             "market"
           ]
-        },
-        {
-          "title": "Canada Sees Long Trade War With US That May Last Beyond Midterms",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-23T23:59:52+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-23/canada-sees-long-trade-war-with-us-that-may-last-beyond-midterms",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
         }
       ]
     },
@@ -373,7 +387,7 @@
       "itemCount": 2,
       "isStale": false,
       "topNegativeTitle": "Trump's Family Seeking National Bank Charter",
-      "topPositiveTitle": "Dollar Gains as US Plan to Cut Off Iran Spurs Haven Demand",
+      "topPositiveTitle": "Bond Investor Ed Al-Hussainy on Bessent's Treasury Twist",
       "items": [
         {
           "title": "Trump's Family Seeking National Bank Charter",
@@ -388,56 +402,32 @@
           ]
         },
         {
-          "title": "Dollar Gains as US Plan to Cut Off Iran Spurs Haven Demand",
+          "title": "Bond Investor Ed Al-Hussainy on Bessent's Treasury Twist",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 1.0,
-          "publishedAt": "2026-08-24T20:04:12+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-24/dollar-gains-as-us-plan-to-cut-off-iran-spurs-haven-demand",
+          "publishedAt": "2026-08-24T21:52:07+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-24/bond-investor-ed-al-hussainy-on-bessent-s-treasury-twist-video",
           "tags": [
             "fx",
-            "geopolitical",
-            "market"
+            "market",
+            "rates",
+            "us_broad"
           ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": 0.0,
-      "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 2,
+      "avgSentiment": 0.443,
+      "negativeCount": 0,
+      "positiveCount": 2,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Groundwork Is Set for BOJ Rate Hike Next Month, Ex-Official Says",
-      "topPositiveTitle": "BOJ Set to Offer Clues as Markets Bet Heavily on September Hike",
+      "topNegativeTitle": "Mexico Economy and Inflation Pick Up, Backing Rate Hold Bets",
+      "topPositiveTitle": "Bond Investor Ed Al-Hussainy on Bessent's Treasury Twist",
       "items": [
-        {
-          "title": "Groundwork Is Set for BOJ Rate Hike Next Month, Ex-Official Says",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-24T21:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-24/groundwork-is-set-for-boj-rate-hike-next-month-ex-official-says",
-          "tags": [
-            "jp_broad",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Who Is Buying America’s Debt These Days?",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-24T20:18:35+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-24/who-is-buying-america-s-debt-these-days-video",
-          "tags": [
-            "market",
-            "rates"
-          ]
-        },
         {
           "title": "Mexico Economy and Inflation Pick Up, Backing Rate Hold Bets",
           "source": "Bloomberg Economics",
@@ -462,20 +452,48 @@
             "market",
             "rates"
           ]
+        },
+        {
+          "title": "Bond Investor Ed Al-Hussainy on Bessent's Treasury Twist",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-08-24T21:52:07+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-24/bond-investor-ed-al-hussainy-on-bessent-s-treasury-twist-video",
+          "tags": [
+            "fx",
+            "market",
+            "rates",
+            "us_broad"
+          ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": -0.068,
-      "negativeCount": 2,
-      "positiveCount": 2,
+      "avgSentiment": -0.333,
+      "negativeCount": 4,
+      "positiveCount": 1,
       "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Stocks Fall as Chip Rout Overshadows Drop in Oil: Markets Wrap",
+      "topNegativeTitle": "Asian Stocks Under Pressure After US Tech Selloff: Markets Wrap",
       "topPositiveTitle": "Singapore’s Core Inflation Surges to Near Two-Year High",
       "items": [
+        {
+          "title": "Asian Stocks Under Pressure After US Tech Selloff: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-08-24T22:09:52+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-24/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        },
         {
           "title": "Stocks Fall as Chip Rout Overshadows Drop in Oil: Markets Wrap",
           "source": "Bloomberg Markets",
@@ -499,6 +517,19 @@
           "sentimentScore": -0.67,
           "publishedAt": "2026-08-24T21:39:12+00:00",
           "url": "https://www.bloomberg.com/news/videos/2026-08-24/hartree-s-morse-3-things-define-hormuz-strait-s-future-video",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Latest Oil Market News and Analysis for Aug. 25",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-24T22:02:31+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-24/latest-oil-market-news-and-analysis-for-aug-25",
           "tags": [
             "commodity",
             "geopolitical",
@@ -517,43 +548,19 @@
             "macro_risk",
             "market"
           ]
-        },
-        {
-          "title": "Asia Buyers Snap Up American Crude, Add Stress to Tight Market",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-24T20:11:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-24/asia-buyers-snap-up-american-crude-add-stress-to-tight-market",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "Singapore’s Core Inflation Surges to Near Two-Year High",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-08-24T05:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-24/singapore-core-inflation-surges-to-near-two-year-high-on-energy",
-          "tags": [
-            "commodity",
-            "market"
-          ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.145,
-      "negativeCount": 2,
-      "positiveCount": 4,
+      "avgSentiment": 0.025,
+      "negativeCount": 3,
+      "positiveCount": 3,
       "neutralCount": 5,
       "sourceCount": 3,
       "itemCount": 11,
       "isStale": false,
       "topNegativeTitle": "Stocks Fall as Chip Rout Overshadows Drop in Oil: Markets Wrap",
-      "topPositiveTitle": "Dollar Gains as US Plan to Cut Off Iran Spurs Haven Demand",
+      "topPositiveTitle": "Canadian Stocks Rise Despite Breakdown in US Trade Talks",
       "items": [
         {
           "title": "Stocks Fall as Chip Rout Overshadows Drop in Oil: Markets Wrap",
@@ -578,6 +585,19 @@
           "sentimentScore": -0.67,
           "publishedAt": "2026-08-24T21:39:12+00:00",
           "url": "https://www.bloomberg.com/news/videos/2026-08-24/hartree-s-morse-3-things-define-hormuz-strait-s-future-video",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Latest Oil Market News and Analysis for Aug. 25",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-24T22:02:31+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-24/latest-oil-market-news-and-analysis-for-aug-25",
           "tags": [
             "commodity",
             "geopolitical",
@@ -604,19 +624,6 @@
           "sentimentScore": 0.0,
           "publishedAt": "2026-08-23T23:59:52+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-08-23/canada-sees-long-trade-war-with-us-that-may-last-beyond-midterms",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Canadians Brace for Economic Pain as 50% US Tariffs Take Effect",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-23T23:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-23/canada-turned-down-a-us-tariff-deal-now-comes-the-economic-cost",
           "tags": [
             "geopolitical",
             "macro_risk",
