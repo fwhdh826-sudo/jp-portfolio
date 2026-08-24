@@ -1,20 +1,34 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-08-24T08:43:30.983488+09:00",
-  "sourceUpdatedAt": "2026-08-23T23:03:18+00:00",
+  "updatedAt": "2026-08-24T13:13:12.160693+09:00",
+  "sourceUpdatedAt": "2026-08-24T03:45:36+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.33,
       "negativeCount": 0,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "BOJ Set to Offer Clues as Markets Bet Heavily on September Hike",
+      "topPositiveTitle": "BOJ Set to Offer Clues as Markets Bet Heavily on September Hike",
+      "items": [
+        {
+          "title": "BOJ Set to Offer Clues as Markets Bet Heavily on September Hike",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-23T23:50:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-23/boj-set-to-offer-clues-as-markets-bet-heavily-on-september-hike",
+          "tags": [
+            "jp_broad",
+            "market",
+            "rates"
+          ]
+        }
+      ]
     },
     "jp_semiconductor": {
       "avgSentiment": 0.0,
@@ -43,31 +57,44 @@
       ]
     },
     "us_broad": {
-      "avgSentiment": 0.055,
-      "negativeCount": 1,
-      "positiveCount": 2,
-      "neutralCount": 3,
+      "avgSentiment": 0.066,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "US Long Bonds Risk Deeper Selloff Without Clear Warsh Guidance",
+      "topNegativeTitle": "Why the Fed's Warsh Has 'No Good Options'",
       "topPositiveTitle": "Fed’s Kashkari Says Treasury Market Still Working ‘As It Should’",
       "items": [
         {
-          "title": "US Long Bonds Risk Deeper Selloff Without Clear Warsh Guidance",
+          "title": "Why the Fed's Warsh Has 'No Good Options'",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-23T19:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-23/us-long-bonds-risk-deeper-selloff-without-clear-warsh-guidance",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-24T03:04:15+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-24/why-the-fed-s-warsh-has-no-good-options-video",
           "tags": [
-            "macro_risk",
             "market",
+            "rates",
             "us_broad"
           ]
         },
         {
-          "title": "Oil Dips, Alibaba Funding Plan Keeps AI in Focus: Markets Wrap",
+          "title": "Treasury Market Still Functioning, Fed's Kashkari Says",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-24T00:31:04+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-24/treasury-market-still-functioning-fed-s-kashkari-says-video",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Stocks Drop With Tech in Focus, Treasuries Rise: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
@@ -75,23 +102,9 @@
           "url": "https://www.bloomberg.com/news/articles/2026-08-23/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
-            "geopolitical",
             "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Fed Faces High Stakes Test at Jackson Hole",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-23T14:47:34+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-23/fed-faces-high-stakes-test-at-jackson-hole-video",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market",
-            "us_broad"
+            "us_broad",
+            "us_growth"
           ]
         },
         {
@@ -122,25 +135,27 @@
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.67,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 1,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Rep. McCormick Warns Against Slowing AI Buildout",
-      "topPositiveTitle": "Rep. McCormick Warns Against Slowing AI Buildout",
+      "topNegativeTitle": "Stocks Drop With Tech in Focus, Treasuries Rise: Markets Wrap",
+      "topPositiveTitle": "Stocks Drop With Tech in Focus, Treasuries Rise: Markets Wrap",
       "items": [
         {
-          "title": "Rep. McCormick Warns Against Slowing AI Buildout",
+          "title": "Stocks Drop With Tech in Focus, Treasuries Rise: Markets Wrap",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-23T14:29:34+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-23/rep-mccormick-warns-against-slowing-ai-buildout-video",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-23T22:10:35+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-23/stock-market-today-dow-s-p-live-updates",
           "tags": [
+            "commodity",
             "market",
+            "us_broad",
             "us_growth"
           ]
         }
@@ -159,16 +174,30 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.33,
       "negativeCount": 0,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Gold Advances to Three-Month High as Debasement Trade Returns",
+      "topPositiveTitle": "Gold Advances to Three-Month High as Debasement Trade Returns",
+      "items": [
+        {
+          "title": "Gold Advances to Three-Month High as Debasement Trade Returns",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-23T23:29:29+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-23/gold-holds-near-three-month-high-as-debasement-trade-returns",
+          "tags": [
+            "fx",
+            "gold",
+            "market"
+          ]
+        }
+      ]
     },
     "reit": {
       "avgSentiment": 0,
@@ -183,68 +212,28 @@
       "items": []
     },
     "dividend": {
-      "avgSentiment": 0.33,
+      "avgSentiment": 0,
       "negativeCount": 0,
-      "positiveCount": 1,
+      "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Treasury Buybacks Fail to Calm Bond Market",
-      "topPositiveTitle": "Treasury Buybacks Fail to Calm Bond Market",
-      "items": [
-        {
-          "title": "Treasury Buybacks Fail to Calm Bond Market",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-23T13:26:19+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-23/treasury-buybacks-fail-to-calm-bond-market-video",
-          "tags": [
-            "dividend",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.222,
-      "negativeCount": 3,
+      "avgSentiment": -0.11,
+      "negativeCount": 1,
       "positiveCount": 0,
-      "neutralCount": 3,
-      "sourceCount": 2,
-      "itemCount": 6,
+      "neutralCount": 2,
+      "sourceCount": 1,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "How Water Scarcity Is Changing the Economics of the Southwest",
-      "topPositiveTitle": "Burnham Enters World Stage With Debut Foreign Trip to Ukraine",
+      "topNegativeTitle": "Turkey’s Central Bank Shifts Funding Back to 37% Policy Rate",
+      "topPositiveTitle": "Canada Sees Long Trade War With US That May Last Beyond Midterms",
       "items": [
-        {
-          "title": "How Water Scarcity Is Changing the Economics of the Southwest",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-08-23T14:02:57+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-23/the-water-crisis-reshaping-the-american-west-video",
-          "tags": [
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "US Long Bonds Risk Deeper Selloff Without Clear Warsh Guidance",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-23T19:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-23/us-long-bonds-risk-deeper-selloff-without-clear-warsh-guidance",
-          "tags": [
-            "macro_risk",
-            "market",
-            "us_broad"
-          ]
-        },
         {
           "title": "Turkey’s Central Bank Shifts Funding Back to 37% Policy Rate",
           "source": "Bloomberg Economics",
@@ -259,12 +248,12 @@
           ]
         },
         {
-          "title": "Burnham Enters World Stage With Debut Foreign Trip to Ukraine",
-          "source": "Bloomberg Markets",
+          "title": "Canada Sees Long Trade War With US That May Last Beyond Midterms",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-23T23:01:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-23/burnham-enters-world-stage-with-debut-foreign-trip-to-ukraine",
+          "publishedAt": "2026-08-23T23:59:52+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-23/canada-sees-long-trade-war-with-us-that-may-last-beyond-midterms",
           "tags": [
             "geopolitical",
             "macro_risk",
@@ -272,7 +261,7 @@
           ]
         },
         {
-          "title": "Canada Turned Down a US Tariff Deal. Now Comes the Economic Cost",
+          "title": "Canada Rejected US Tariff Deal. Now Comes the Economic Cost",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
@@ -287,62 +276,113 @@
       ]
     },
     "fx": {
-      "avgSentiment": 0.835,
+      "avgSentiment": 0.11,
       "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 2,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Canada Digs In as US Trade Fight Escalates",
-      "topPositiveTitle": "Taiwan Dollar’s August Rebound Is Looking Fragile, Analysts Say",
+      "topNegativeTitle": "Citi and Axis Team Up on Leveraged India Dollar Deposit Boom",
+      "topPositiveTitle": "Gold Advances to Three-Month High as Debasement Trade Returns",
       "items": [
         {
-          "title": "Canada Digs In as US Trade Fight Escalates",
+          "title": "Citi and Axis Team Up on Leveraged India Dollar Deposit Boom",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-23T14:01:31+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-23/canada-digs-in-as-us-trade-fight-escalates-video",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-24T02:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-24/citi-axis-bank-team-up-on-leveraged-india-dollar-deposit-boom",
           "tags": [
             "fx",
             "market"
           ]
         },
         {
-          "title": "Taiwan Dollar’s August Rebound Is Looking Fragile, Analysts Say",
+          "title": "Hedge Funds Ramp Up Dollar Shorts Into Bessent’s Fiscal Plan",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-08-23T23:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-23/taiwan-dollar-s-august-rebound-is-looking-fragile-analysts-say",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-24T01:40:46+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-24/hedge-funds-ramp-up-dollar-shorts-ahead-of-bessent-s-fiscal-plan",
           "tags": [
             "fx",
-            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Gold Advances to Three-Month High as Debasement Trade Returns",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-23T23:29:29+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-23/gold-holds-near-three-month-high-as-debasement-trade-returns",
+          "tags": [
+            "fx",
+            "gold",
             "market"
           ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": 0.247,
+      "avgSentiment": 0.165,
       "negativeCount": 0,
       "positiveCount": 3,
-      "neutralCount": 1,
+      "neutralCount": 3,
       "sourceCount": 3,
-      "itemCount": 4,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Bessent Has No Easy Fix for What’s Really Driving Yields Up",
-      "topPositiveTitle": "Fed’s Kashkari Says Treasury Market Still Working ‘As It Should’",
+      "topNegativeTitle": "Why the Fed's Warsh Has 'No Good Options'",
+      "topPositiveTitle": "BOJ Set to Offer Clues as Markets Bet Heavily on September Hike",
       "items": [
         {
-          "title": "Bessent Has No Easy Fix for What’s Really Driving Yields Up",
+          "title": "Why the Fed's Warsh Has 'No Good Options'",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-23T13:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-23/bessent-has-no-easy-fix-for-what-s-really-driving-bond-yields-up",
+          "publishedAt": "2026-08-24T03:04:15+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-24/why-the-fed-s-warsh-has-no-good-options-video",
           "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Pimco Expects Elevated Term Premium, Says Bonds Are Attractive",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-24T01:50:47+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-24/pimco-expects-elevated-term-premium-says-bonds-are-attractive",
+          "tags": [
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Treasury Market Still Functioning, Fed's Kashkari Says",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-24T00:31:04+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-24/treasury-market-still-functioning-fed-s-kashkari-says-video",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "BOJ Set to Offer Clues as Markets Bet Heavily on September Hike",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-23T23:50:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-23/boj-set-to-offer-clues-as-markets-bet-heavily-on-september-hike",
+          "tags": [
+            "jp_broad",
             "market",
             "rates"
           ]
@@ -359,33 +399,6 @@
             "rates",
             "us_broad"
           ]
-        },
-        {
-          "title": "Treasury Buybacks Fail to Calm Bond Market",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-23T13:26:19+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-23/treasury-buybacks-fail-to-calm-bond-market-video",
-          "tags": [
-            "dividend",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "国債利払い費の想定金利は3.8％調整 国債費も膨張へ 概算要求",
-          "source": "NHK 経済",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-21T11:10:01+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20260821de45549",
-          "tags": [
-            "market",
-            "rates"
-          ],
-          "titleJa": "国債利払い費の想定金利は3.8％調整 国債費も膨張へ 概算要求"
         }
       ]
     },
@@ -397,11 +410,11 @@
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Oil Dips, Alibaba Funding Plan Keeps AI in Focus: Markets Wrap",
-      "topPositiveTitle": "Oil Dips, Alibaba Funding Plan Keeps AI in Focus: Markets Wrap",
+      "topNegativeTitle": "Stocks Drop With Tech in Focus, Treasuries Rise: Markets Wrap",
+      "topPositiveTitle": "Stocks Drop With Tech in Focus, Treasuries Rise: Markets Wrap",
       "items": [
         {
-          "title": "Oil Dips, Alibaba Funding Plan Keeps AI in Focus: Markets Wrap",
+          "title": "Stocks Drop With Tech in Focus, Treasuries Rise: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
@@ -409,23 +422,23 @@
           "url": "https://www.bloomberg.com/news/articles/2026-08-23/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
-            "geopolitical",
             "market",
-            "us_broad"
+            "us_broad",
+            "us_growth"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.042,
-      "negativeCount": 2,
-      "positiveCount": 1,
-      "neutralCount": 5,
-      "sourceCount": 3,
-      "itemCount": 8,
+      "avgSentiment": -0.11,
+      "negativeCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 2,
+      "sourceCount": 1,
+      "itemCount": 3,
       "isStale": false,
       "topNegativeTitle": "Turkey’s Central Bank Shifts Funding Back to 37% Policy Rate",
-      "topPositiveTitle": "Taiwan Dollar’s August Rebound Is Looking Fragile, Analysts Say",
+      "topPositiveTitle": "Canada Sees Long Trade War With US That May Last Beyond Midterms",
       "items": [
         {
           "title": "Turkey’s Central Bank Shifts Funding Back to 37% Policy Rate",
@@ -441,24 +454,12 @@
           ]
         },
         {
-          "title": "Alliance Tested as Trump Pulls Out of South Korea Drill",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-23T13:48:27+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-23/alliance-tested-as-trump-pulls-out-of-south-korea-drill-video",
-          "tags": [
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "Burnham Enters World Stage With Debut Foreign Trip to Ukraine",
-          "source": "Bloomberg Markets",
+          "title": "Canada Sees Long Trade War With US That May Last Beyond Midterms",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-23T23:01:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-23/burnham-enters-world-stage-with-debut-foreign-trip-to-ukraine",
+          "publishedAt": "2026-08-23T23:59:52+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-23/canada-sees-long-trade-war-with-us-that-may-last-beyond-midterms",
           "tags": [
             "geopolitical",
             "macro_risk",
@@ -466,7 +467,7 @@
           ]
         },
         {
-          "title": "Canada Turned Down a US Tariff Deal. Now Comes the Economic Cost",
+          "title": "Canada Rejected US Tariff Deal. Now Comes the Economic Cost",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
@@ -476,20 +477,6 @@
             "geopolitical",
             "macro_risk",
             "market"
-          ]
-        },
-        {
-          "title": "Oil Dips, Alibaba Funding Plan Keeps AI in Focus: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-23T22:10:35+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-23/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "market",
-            "us_broad"
           ]
         }
       ]
