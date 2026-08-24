@@ -1,20 +1,33 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-08-24T20:51:01.590939+09:00",
-  "sourceUpdatedAt": "2026-08-24T11:36:43+00:00",
+  "updatedAt": "2026-08-25T06:58:15.948622+09:00",
+  "sourceUpdatedAt": "2026-08-24T21:52:08+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": 0.33,
-      "negativeCount": 0,
+      "avgSentiment": 0.0,
+      "negativeCount": 1,
       "positiveCount": 1,
       "neutralCount": 0,
       "sourceCount": 1,
-      "itemCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "BOJ Set to Offer Clues as Markets Bet Heavily on September Hike",
+      "topNegativeTitle": "Groundwork Is Set for BOJ Rate Hike Next Month, Ex-Official Says",
       "topPositiveTitle": "BOJ Set to Offer Clues as Markets Bet Heavily on September Hike",
       "items": [
+        {
+          "title": "Groundwork Is Set for BOJ Rate Hike Next Month, Ex-Official Says",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-24T21:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-24/groundwork-is-set-for-boj-rate-hike-next-month-ex-official-says",
+          "tags": [
+            "jp_broad",
+            "market",
+            "rates"
+          ]
+        },
         {
           "title": "BOJ Set to Offer Clues as Markets Bet Heavily on September Hike",
           "source": "Bloomberg Economics",
@@ -31,92 +44,168 @@
       ]
     },
     "jp_semiconductor": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
+      "avgSentiment": -0.777,
+      "negativeCount": 3,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "us_broad": {
-      "avgSentiment": 0.0,
-      "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 4,
-      "isStale": false,
-      "topNegativeTitle": "Carry Trades Are Riding High on Wall Street",
-      "topPositiveTitle": "Fed’s Kashkari Says Treasury Market Still Working ‘As It Should’",
+      "topNegativeTitle": "Nvidia Slides Ahead of Earnings as Tech Stocks Retreat | Closing Bell",
+      "topPositiveTitle": "Tech Leads US Stocks Lower as Nvidia Earnings, Jackson Hole Loom",
       "items": [
         {
-          "title": "Carry Trades Are Riding High on Wall Street",
+          "title": "Nvidia Slides Ahead of Earnings as Tech Stocks Retreat | Closing Bell",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-08-24T20:22:04+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-24/nvidia-slides-ahead-of-earnings-closing-bell-video",
+          "tags": [
+            "jp_semiconductor",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Stocks Fall as Chip Rout Overshadows Drop in Oil: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-08-23T22:10:35+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-23/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "jp_semiconductor",
+            "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Tech Leads US Stocks Lower as Nvidia Earnings, Jackson Hole Loom",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-08-24T10:20:35+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-08-24/carry-trades-are-riding-high-on-wall-street",
+          "publishedAt": "2026-08-24T12:23:19+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-24/us-futures-drop-as-investors-prep-for-busy-week-nvidia-earnings",
           "tags": [
-            "fx",
+            "jp_semiconductor",
+            "market",
+            "us_broad",
+            "us_growth"
+          ]
+        }
+      ]
+    },
+    "us_broad": {
+      "avgSentiment": -0.415,
+      "negativeCount": 3,
+      "positiveCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 4,
+      "isStale": false,
+      "topNegativeTitle": "Stocks Fall as Chip Rout Overshadows Drop in Oil: Markets Wrap",
+      "topPositiveTitle": "Treasury Buybacks Are a 'Cloud' Over Markets, Apollo's Slok Says",
+      "items": [
+        {
+          "title": "Stocks Fall as Chip Rout Overshadows Drop in Oil: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-08-23T22:10:35+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-23/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "jp_semiconductor",
+            "macro_risk",
             "market",
             "us_broad"
           ]
         },
         {
-          "title": "Fed, Treasury Credibility Questioned by Markets, Says Rabobank’s Foley",
+          "title": "Copy Trading Offers Alternative to Traditional Investing",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-24T21:36:08+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-24/copy-trading-offers-alternative-to-traditional-investing-video",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Tech Leads US Stocks Lower as Nvidia Earnings, Jackson Hole Loom",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-24T12:23:19+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-24/us-futures-drop-as-investors-prep-for-busy-week-nvidia-earnings",
+          "tags": [
+            "jp_semiconductor",
+            "market",
+            "us_broad",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Treasury Buybacks Are a 'Cloud' Over Markets, Apollo's Slok Says",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-24T10:05:07+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-24/fed-treasury-credibility-questioned-by-markets-foley-video",
+          "publishedAt": "2026-08-24T20:35:05+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-24/digi-torsten-slok-video",
           "tags": [
-            "fx",
+            "dividend",
             "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Kevin Warsh to Make First Jackson Hole Speech as Fed Chair",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-22T20:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-22/kevin-warsh-to-make-first-jackson-hole-speech-as-fed-chair",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Fed’s Kashkari Says Treasury Market Still Working ‘As It Should’",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-23T15:23:22+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-23/fed-s-kashkari-says-treasury-market-still-working-as-it-should",
-          "tags": [
-            "market",
-            "rates",
             "us_broad"
           ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
+      "avgSentiment": -0.665,
+      "negativeCount": 2,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Nvidia Slides Ahead of Earnings as Tech Stocks Retreat | Closing Bell",
+      "topPositiveTitle": "Tech Leads US Stocks Lower as Nvidia Earnings, Jackson Hole Loom",
+      "items": [
+        {
+          "title": "Nvidia Slides Ahead of Earnings as Tech Stocks Retreat | Closing Bell",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-08-24T20:22:04+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-24/nvidia-slides-ahead-of-earnings-closing-bell-video",
+          "tags": [
+            "jp_semiconductor",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Tech Leads US Stocks Lower as Nvidia Earnings, Jackson Hole Loom",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-24T12:23:19+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-24/us-futures-drop-as-investors-prep-for-busy-week-nvidia-earnings",
+          "tags": [
+            "jp_semiconductor",
+            "market",
+            "us_broad",
+            "us_growth"
+          ]
+        }
+      ]
     },
     "global_broad": {
       "avgSentiment": 0,
@@ -138,19 +227,20 @@
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Gold Advances to Three-Month High as Debasement Trade Returns",
-      "topPositiveTitle": "Gold Advances to Three-Month High as Debasement Trade Returns",
+      "topNegativeTitle": "Canadian Stocks Rise Despite Breakdown in US Trade Talks",
+      "topPositiveTitle": "Canadian Stocks Rise Despite Breakdown in US Trade Talks",
       "items": [
         {
-          "title": "Gold Advances to Three-Month High as Debasement Trade Returns",
+          "title": "Canadian Stocks Rise Despite Breakdown in US Trade Talks",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 1.0,
-          "publishedAt": "2026-08-23T23:29:29+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-23/gold-holds-near-three-month-high-as-debasement-trade-returns",
+          "publishedAt": "2026-08-24T14:20:51+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-24/canadian-stocks-whipsaw-after-us-trade-talks-break-down",
           "tags": [
-            "fx",
+            "geopolitical",
             "gold",
+            "macro_risk",
             "market"
           ]
         }
@@ -169,30 +259,44 @@
       "items": []
     },
     "dividend": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "macro_risk": {
-      "avgSentiment": -0.006,
-      "negativeCount": 2,
-      "positiveCount": 2,
-      "neutralCount": 6,
-      "sourceCount": 3,
-      "itemCount": 10,
-      "isStale": false,
-      "topNegativeTitle": "Stocks Fall as Tech Slides Ahead of Big Week: Markets Wrap",
-      "topPositiveTitle": "US-Canada trade war",
+      "topNegativeTitle": "Treasury Buybacks Are a 'Cloud' Over Markets, Apollo's Slok Says",
+      "topPositiveTitle": "Treasury Buybacks Are a 'Cloud' Over Markets, Apollo's Slok Says",
       "items": [
         {
-          "title": "Stocks Fall as Tech Slides Ahead of Big Week: Markets Wrap",
+          "title": "Treasury Buybacks Are a 'Cloud' Over Markets, Apollo's Slok Says",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-24T20:35:05+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-24/digi-torsten-slok-video",
+          "tags": [
+            "dividend",
+            "market",
+            "us_broad"
+          ]
+        }
+      ]
+    },
+    "macro_risk": {
+      "avgSentiment": 0.106,
+      "negativeCount": 1,
+      "positiveCount": 3,
+      "neutralCount": 8,
+      "sourceCount": 3,
+      "itemCount": 12,
+      "isStale": false,
+      "topNegativeTitle": "Stocks Fall as Chip Rout Overshadows Drop in Oil: Markets Wrap",
+      "topPositiveTitle": "Canadian Stocks Rise Despite Breakdown in US Trade Talks",
+      "items": [
+        {
+          "title": "Stocks Fall as Chip Rout Overshadows Drop in Oil: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -1.0,
@@ -200,19 +304,35 @@
           "url": "https://www.bloomberg.com/news/articles/2026-08-23/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
+            "geopolitical",
+            "jp_semiconductor",
+            "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Ontario's Ford Says Standing Up to Trump Won't Be Easy",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-24T21:28:24+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-24/ontario-s-ford-says-standing-up-to-trump-won-t-be-easy-video",
+          "tags": [
+            "geopolitical",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Turkey’s Central Bank Shifts Funding Back to 37% Policy Rate",
+          "title": "Drought and Energy Crunch Curb Hungary’s Budget Deficit Cuts",
           "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-23T17:03:34+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-23/turkey-central-bank-to-shift-funding-back-to-37-policy-rate",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-24T14:03:51+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-24/drought-and-energy-crunch-curb-hungary-s-budget-deficit-cuts",
           "tags": [
-            "geopolitical",
+            "commodity",
             "macro_risk",
             "market"
           ]
@@ -225,19 +345,6 @@
           "publishedAt": "2026-08-24T11:00:01+00:00",
           "url": "https://www.bloomberg.com/news/newsletters/2026-08-24/trump-tariff-latest-new-trade-tensions-could-reverberate-back-to-us-prices",
           "tags": [
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "India Lifts Wheat Export Ban in Boost to War-Hit World Trade",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-24T09:08:09+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-24/india-lifts-wheat-export-ban-in-boost-to-war-hit-global-supply",
-          "tags": [
-            "geopolitical",
             "macro_risk",
             "market"
           ]
@@ -258,99 +365,86 @@
       ]
     },
     "fx": {
-      "avgSentiment": 0.167,
-      "negativeCount": 1,
+      "avgSentiment": 0.5,
+      "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 2,
+      "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 4,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Carry Trades Are Riding High on Wall Street",
-      "topPositiveTitle": "Gold Advances to Three-Month High as Debasement Trade Returns",
+      "topNegativeTitle": "Trump's Family Seeking National Bank Charter",
+      "topPositiveTitle": "Dollar Gains as US Plan to Cut Off Iran Spurs Haven Demand",
       "items": [
         {
-          "title": "Carry Trades Are Riding High on Wall Street",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-24T10:20:35+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-08-24/carry-trades-are-riding-high-on-wall-street",
-          "tags": [
-            "fx",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Canadian Dollar Tumbles as Trade Rift Threatens Growth Outlook",
+          "title": "Trump's Family Seeking National Bank Charter",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-24T10:57:33+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-24/canadian-dollar-tumbles-as-trade-rift-threatens-growth-outlook",
+          "publishedAt": "2026-08-24T21:44:29+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-24/trump-s-family-seeking-national-bank-charter-video",
           "tags": [
             "fx",
             "market"
           ]
         },
         {
-          "title": "Fed, Treasury Credibility Questioned by Markets, Says Rabobank’s Foley",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-24T10:05:07+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-24/fed-treasury-credibility-questioned-by-markets-foley-video",
-          "tags": [
-            "fx",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Gold Advances to Three-Month High as Debasement Trade Returns",
+          "title": "Dollar Gains as US Plan to Cut Off Iran Spurs Haven Demand",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 1.0,
-          "publishedAt": "2026-08-23T23:29:29+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-23/gold-holds-near-three-month-high-as-debasement-trade-returns",
+          "publishedAt": "2026-08-24T20:04:12+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-24/dollar-gains-as-us-plan-to-cut-off-iran-spurs-haven-demand",
           "tags": [
             "fx",
-            "gold",
+            "geopolitical",
             "market"
           ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": 0.165,
-      "negativeCount": 0,
-      "positiveCount": 2,
+      "avgSentiment": 0.0,
+      "negativeCount": 1,
+      "positiveCount": 1,
       "neutralCount": 2,
       "sourceCount": 2,
       "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Pimco Expects Elevated Term Premium, Says Bonds Attractive",
+      "topNegativeTitle": "Groundwork Is Set for BOJ Rate Hike Next Month, Ex-Official Says",
       "topPositiveTitle": "BOJ Set to Offer Clues as Markets Bet Heavily on September Hike",
       "items": [
         {
-          "title": "Pimco Expects Elevated Term Premium, Says Bonds Attractive",
+          "title": "Groundwork Is Set for BOJ Rate Hike Next Month, Ex-Official Says",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-24T21:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-24/groundwork-is-set-for-boj-rate-hike-next-month-ex-official-says",
+          "tags": [
+            "jp_broad",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Who Is Buying America’s Debt These Days?",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-24T01:50:47+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-24/pimco-expects-elevated-term-premium-says-bonds-are-attractive",
+          "publishedAt": "2026-08-24T20:18:35+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-24/who-is-buying-america-s-debt-these-days-video",
           "tags": [
             "market",
             "rates"
           ]
         },
         {
-          "title": "Bessent Has No Easy Fix for What’s Really Driving Yields Up",
-          "source": "Bloomberg Markets",
+          "title": "Mexico Economy and Inflation Pick Up, Backing Rate Hold Bets",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-23T13:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-23/bessent-has-no-easy-fix-for-what-s-really-driving-bond-yields-up",
+          "publishedAt": "2026-08-24T12:28:04+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-24/mexico-gdp-bounces-back-in-second-quarter-despite-trade-stress",
           "tags": [
             "market",
             "rates"
@@ -368,35 +462,22 @@
             "market",
             "rates"
           ]
-        },
-        {
-          "title": "Fed’s Kashkari Says Treasury Market Still Working ‘As It Should’",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-23T15:23:22+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-23/fed-s-kashkari-says-treasury-market-still-working-as-it-should",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.066,
-      "negativeCount": 1,
+      "avgSentiment": -0.068,
+      "negativeCount": 2,
       "positiveCount": 2,
-      "neutralCount": 2,
+      "neutralCount": 1,
       "sourceCount": 2,
       "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Stocks Fall as Tech Slides Ahead of Big Week: Markets Wrap",
+      "topNegativeTitle": "Stocks Fall as Chip Rout Overshadows Drop in Oil: Markets Wrap",
       "topPositiveTitle": "Singapore’s Core Inflation Surges to Near Two-Year High",
       "items": [
         {
-          "title": "Stocks Fall as Tech Slides Ahead of Big Week: Markets Wrap",
+          "title": "Stocks Fall as Chip Rout Overshadows Drop in Oil: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -1.0,
@@ -404,29 +485,20 @@
           "url": "https://www.bloomberg.com/news/articles/2026-08-23/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
+            "geopolitical",
+            "jp_semiconductor",
             "macro_risk",
-            "market"
+            "market",
+            "us_broad"
           ]
         },
         {
-          "title": "Total CEO Says Market Is Bearish for Crude, Bullish for Products",
+          "title": "Hartree's Morse: 3 Things Define Hormuz Strait's Future",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-24T11:26:26+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-24/total-ceo-says-market-is-bearish-for-crude-bullish-for-products-mt75hra8",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "Latest Oil Market News and Analysis for Aug. 24",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-23T22:03:24+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-23/latest-oil-market-news-and-analysis-for-aug-24",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-08-24T21:39:12+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-24/hartree-s-morse-3-things-define-hormuz-strait-s-future-video",
           "tags": [
             "commodity",
             "geopolitical",
@@ -434,12 +506,25 @@
           ]
         },
         {
-          "title": "Indonesian Commodity Oversight Plan to Include Ship-Tracking",
+          "title": "Drought and Energy Crunch Curb Hungary’s Budget Deficit Cuts",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-24T14:03:51+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-24/drought-and-energy-crunch-curb-hungary-s-budget-deficit-cuts",
+          "tags": [
+            "commodity",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Asia Buyers Snap Up American Crude, Add Stress to Tight Market",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.33,
-          "publishedAt": "2026-08-24T11:24:42+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-24/indonesian-commodity-oversight-plan-to-include-ship-tracking",
+          "publishedAt": "2026-08-24T20:11:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-24/asia-buyers-snap-up-american-crude-add-stress-to-tight-market",
           "tags": [
             "commodity",
             "market"
@@ -460,60 +545,52 @@
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.115,
-      "negativeCount": 1,
-      "positiveCount": 3,
-      "neutralCount": 7,
+      "avgSentiment": 0.145,
+      "negativeCount": 2,
+      "positiveCount": 4,
+      "neutralCount": 5,
       "sourceCount": 3,
       "itemCount": 11,
       "isStale": false,
-      "topNegativeTitle": "Turkey’s Central Bank Shifts Funding Back to 37% Policy Rate",
-      "topPositiveTitle": "US-Canada trade war",
+      "topNegativeTitle": "Stocks Fall as Chip Rout Overshadows Drop in Oil: Markets Wrap",
+      "topPositiveTitle": "Dollar Gains as US Plan to Cut Off Iran Spurs Haven Demand",
       "items": [
         {
-          "title": "Turkey’s Central Bank Shifts Funding Back to 37% Policy Rate",
-          "source": "Bloomberg Economics",
+          "title": "Stocks Fall as Chip Rout Overshadows Drop in Oil: Markets Wrap",
+          "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-23T17:03:34+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-23/turkey-central-bank-to-shift-funding-back-to-37-policy-rate",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-08-23T22:10:35+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-23/stock-market-today-dow-s-p-live-updates",
           "tags": [
+            "commodity",
             "geopolitical",
+            "jp_semiconductor",
             "macro_risk",
-            "market"
+            "market",
+            "us_broad"
           ]
         },
         {
-          "title": "Treasury’s Bessent to Detail US Plan to Economically Isolate Iran",
+          "title": "Hartree's Morse: 3 Things Define Hormuz Strait's Future",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-24T11:34:30+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-24/bessent-to-detail-us-plan-to-economically-isolate-iran-video",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-08-24T21:39:12+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-24/hartree-s-morse-3-things-define-hormuz-strait-s-future-video",
           "tags": [
+            "commodity",
             "geopolitical",
             "market"
           ]
         },
         {
-          "title": "Ukraine Tycoon Murder Plot Confounds Monaco Authorities",
+          "title": "Ontario's Ford Says Standing Up to Trump Won't Be Easy",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-24T10:08:32+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-24/ukraine-tycoon-murder-plot-confounds-monaco-authorities-video",
-          "tags": [
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "India Lifts Wheat Export Ban in Boost to War-Hit World Trade",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-24T09:08:09+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-24/india-lifts-wheat-export-ban-in-boost-to-war-hit-global-supply",
+          "publishedAt": "2026-08-24T21:28:24+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-24/ontario-s-ford-says-standing-up-to-trump-won-t-be-easy-video",
           "tags": [
             "geopolitical",
             "macro_risk",
@@ -532,6 +609,19 @@
             "macro_risk",
             "market"
           ]
+        },
+        {
+          "title": "Canadians Brace for Economic Pain as 50% US Tariffs Take Effect",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-23T23:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-23/canada-turned-down-a-us-tariff-deal-now-comes-the-economic-cost",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
         }
       ]
     }
@@ -544,7 +634,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 3,
+    "excludedCount": 2,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
