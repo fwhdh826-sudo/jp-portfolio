@@ -28,10 +28,11 @@ import type { Trust } from '../../types'
 
 // ── ヘルパー ────────────────────────────────────────────────────
 
-function decisionToSignal(d: Trust['decision']): Signal {
+export function decisionToSignal(d: Trust['decision']): Signal {
   if (d === 'BUY')  return 'BUY'
   if (d === 'SELL') return 'SELL'
-  if (d === 'WAIT') return 'WATCH'
+  // UI-9H H-P0-2 R1: 条件未達WAITは真の監視（WATCH）と別トークン
+  if (d === 'WAIT') return 'WAIT'
   return 'HOLD'
 }
 
