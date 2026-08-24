@@ -10,21 +10,24 @@ import { colors, radius, spacing } from '../../theme/tokens'
 import { typography } from '../../theme/typography'
 import type { CSSProperties } from 'react'
 
-export type Signal = 'BUY' | 'SELL' | 'HOLD' | 'WATCH' | 'SUPPRESSED'
+export type Signal = 'BUY' | 'SELL' | 'HOLD' | 'WATCH' | 'WAIT' | 'SUPPRESSED'
 
 export interface SignalBadgeProps {
   signal: Signal
   size?: 'sm' | 'md' | 'lg'
 }
 
-// UI-9H H-P0-2: WATCH は「監視」専用に維持する。SAFE_MODE/DQ抑制でBUY表示を
-// 止めた状態は 'SUPPRESSED'（aria-label「抑制中」）として別トークンに分離し、
-// 同一画面上で「監視」と「抑制」が同じ WATCH バッジに潰れないようにする。
+// UI-9H H-P0-2: 可視トークン WATCH が持っていた3義を分離する。
+// ① 真の監視 = WATCH（aria-label「監視」）
+// ② 条件未達WAIT = WAIT（aria-label「待機」。旧実装ではWATCHへ潰れていた）
+// ③ SAFE_MODE/DQ抑制されたBUY = SUPPRESSED（aria-label「抑制中」）
+// WAIT は既存の wait 系カラートークン（colors.wait系）を再利用し新色は追加しない。
 const signalConfig: Record<Signal, { bg: string; text: string; border: string; label: string }> = {
   BUY:        { bg: colors.buyBg,        text: colors.buyText,        border: colors.buy,        label: '買い' },
   SELL:       { bg: colors.sellBg,       text: colors.sellText,       border: colors.sell,       label: '売り' },
   HOLD:       { bg: colors.holdBg,       text: colors.holdText,       border: colors.hold,       label: '保有' },
   WATCH:      { bg: colors.watchBg,      text: colors.watchText,      border: colors.watch,      label: '監視' },
+  WAIT:       { bg: colors.waitBg,       text: colors.waitText,       border: colors.wait,       label: '待機' },
   SUPPRESSED: { bg: colors.suppressedBg, text: colors.suppressedText, border: colors.suppressed, label: '抑制中' },
 }
 

@@ -4,7 +4,7 @@ import { describe, expect, it } from 'vitest'
 import { SUPPRESSED_VERDICT, suppressBuySignal } from './verdict'
 import type { Signal } from '../badges/SignalBadge'
 
-const ALL: Signal[] = ['BUY', 'SELL', 'HOLD', 'WATCH', 'SUPPRESSED']
+const ALL: Signal[] = ['BUY', 'SELL', 'HOLD', 'WATCH', 'WAIT', 'SUPPRESSED']
 
 describe('suppressBuySignal', () => {
   it('抑制中はBUYのみSUPPRESSED_VERDICT(SUPPRESSED)へ変換する', () => {
@@ -18,10 +18,18 @@ describe('suppressBuySignal', () => {
     expect(SUPPRESSED_VERDICT).not.toBe('WATCH')
   })
 
-  it('抑制中でもSELL/HOLD/WATCHは変換しない（防御・監視表示を弱めない）', () => {
+  it('抑制中でもSELL/HOLD/WATCH/WAITは変換しない（防御・監視・待機表示を弱めない）', () => {
     expect(suppressBuySignal('SELL', true)).toBe('SELL')
     expect(suppressBuySignal('HOLD', true)).toBe('HOLD')
     expect(suppressBuySignal('WATCH', true)).toBe('WATCH')
+    expect(suppressBuySignal('WAIT', true)).toBe('WAIT')
+  })
+
+  // UI-9H-H1-R1: 条件未達WAITは真の監視（WATCH）とも抑制（SUPPRESSED）とも
+  // 異なるtokenである（3義分離の回帰guard）。
+  it('WAITはWATCHともSUPPRESSEDとも異なるtokenである', () => {
+    expect('WAIT').not.toBe('WATCH')
+    expect('WAIT' as Signal).not.toBe(SUPPRESSED_VERDICT)
   })
 
   it('非抑制時は全tokenを素通しする', () => {

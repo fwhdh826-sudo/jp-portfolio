@@ -38,6 +38,7 @@ const decisionAccent: Record<Signal, string> = {
   SELL:       colors.sell,
   HOLD:       colors.hold,
   WATCH:      colors.watch,
+  WAIT:       colors.wait,
   SUPPRESSED: colors.suppressed,
 }
 

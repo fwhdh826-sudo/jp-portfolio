@@ -44,10 +44,11 @@ import type { AllocationConsumerSnapshot } from '../../types/allocationConsumer'
 
 // ── ヘルパー ────────────────────────────────────────────────────
 
-function signalFromShortTerm(s: 'BULL' | 'BEAR' | 'WAIT'): Signal {
+export function signalFromShortTerm(s: 'BULL' | 'BEAR' | 'WAIT'): Signal {
   if (s === 'BULL') return 'BUY'
   if (s === 'BEAR') return 'SELL'
-  return 'WATCH'
+  // UI-9H H-P0-2 R1: 条件未達WAITは真の監視（WATCH）と別トークン
+  return 'WAIT'
 }
 
 function riskFromShortTerm(s: 'BULL' | 'BEAR' | 'WAIT'): RiskLevel {
@@ -56,10 +57,11 @@ function riskFromShortTerm(s: 'BULL' | 'BEAR' | 'WAIT'): RiskLevel {
   return 'LOW'
 }
 
-function decisionToSignal(d: Trust['decision']): Signal {
+export function decisionToSignal(d: Trust['decision']): Signal {
   if (d === 'BUY')  return 'BUY'
   if (d === 'SELL') return 'SELL'
-  if (d === 'WAIT') return 'WATCH'
+  // UI-9H H-P0-2 R1: 条件未達WAITは真の監視（WATCH）と別トークン
+  if (d === 'WAIT') return 'WAIT'
   return 'HOLD'
 }
 

@@ -95,10 +95,11 @@ const HORIZON_LABEL: Record<Trust['policy'], string> = {
   GOLD:             '中長期',
 }
 
-function signalToSignal(s: 'BULL' | 'BEAR' | 'WAIT'): Signal {
+export function signalToSignal(s: 'BULL' | 'BEAR' | 'WAIT'): Signal {
   if (s === 'BULL') return 'BUY'
   if (s === 'BEAR') return 'SELL'
-  return 'WATCH'
+  // UI-9H H-P0-2 R1: 条件未達WAITは真の監視（WATCH）と別トークン
+  return 'WAIT'
 }
 
 function conditionLabel(status: ConditionStatus) {
@@ -107,10 +108,11 @@ function conditionLabel(status: ConditionStatus) {
   return '未達'
 }
 
-function actionToSignal(action: TrustSignalAction): Signal {
+export function actionToSignal(action: TrustSignalAction): Signal {
   if (action === 'BUY' || action === 'BULL') return 'BUY'
   if (action === 'EXIT' || action === 'TRIM' || action === 'BEAR') return 'SELL'
-  if (action === 'WAIT') return 'WATCH'
+  // UI-9H H-P0-2 R1: 条件未達WAITは真の監視（WATCH）と別トークン
+  if (action === 'WAIT') return 'WAIT'
   return 'HOLD'
 }
 
