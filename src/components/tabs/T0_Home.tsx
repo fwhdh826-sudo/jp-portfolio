@@ -686,7 +686,7 @@ export function computeHoldingsStale(system: {
 // 「投信候補」固定文言を株候補セクションに使わないための分岐。
 export function candidateCardFooterText(assetKind: 'fund' | 'stock'): string {
   return assetKind === 'stock'
-    ? '詳細はT1（今日の判断）で確認してください'
+    ? '詳細はT1（個別株）で確認してください'
     : '詳細評価はT7（投信管理）で確認してください'
 }
 
