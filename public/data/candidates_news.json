@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-08-24T13:13:12.160693+09:00",
-  "sourceUpdatedAt": "2026-08-24T03:45:36+00:00",
+  "updatedAt": "2026-08-24T20:51:01.590939+09:00",
+  "sourceUpdatedAt": "2026-08-24T11:36:43+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -31,80 +31,52 @@
       ]
     },
     "jp_semiconductor": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "経産省 ラピダス出資に1500億円要求へ 来年度予算の概算要求で",
-      "topPositiveTitle": "経産省 ラピダス出資に1500億円要求へ 来年度予算の概算要求で",
-      "items": [
-        {
-          "title": "経産省 ラピダス出資に1500億円要求へ 来年度予算の概算要求で",
-          "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-21T13:18:25+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20260821de45596",
-          "tags": [
-            "jp_semiconductor",
-            "market"
-          ],
-          "titleJa": "経産省 ラピダス出資に1500億円要求へ 来年度予算の概算要求で"
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "us_broad": {
-      "avgSentiment": 0.066,
-      "negativeCount": 0,
+      "avgSentiment": 0.0,
+      "negativeCount": 1,
       "positiveCount": 1,
-      "neutralCount": 4,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Why the Fed's Warsh Has 'No Good Options'",
+      "topNegativeTitle": "Carry Trades Are Riding High on Wall Street",
       "topPositiveTitle": "Fed’s Kashkari Says Treasury Market Still Working ‘As It Should’",
       "items": [
         {
-          "title": "Why the Fed's Warsh Has 'No Good Options'",
+          "title": "Carry Trades Are Riding High on Wall Street",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-24T03:04:15+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-24/why-the-fed-s-warsh-has-no-good-options-video",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-24T10:20:35+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-08-24/carry-trades-are-riding-high-on-wall-street",
           "tags": [
+            "fx",
             "market",
-            "rates",
             "us_broad"
           ]
         },
         {
-          "title": "Treasury Market Still Functioning, Fed's Kashkari Says",
+          "title": "Fed, Treasury Credibility Questioned by Markets, Says Rabobank’s Foley",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-24T00:31:04+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-24/treasury-market-still-functioning-fed-s-kashkari-says-video",
+          "publishedAt": "2026-08-24T10:05:07+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-24/fed-treasury-credibility-questioned-by-markets-foley-video",
           "tags": [
+            "fx",
             "market",
-            "rates",
             "us_broad"
-          ]
-        },
-        {
-          "title": "Stocks Drop With Tech in Focus, Treasuries Rise: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-23T22:10:35+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-23/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "market",
-            "us_broad",
-            "us_growth"
           ]
         },
         {
@@ -135,31 +107,16 @@
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Stocks Drop With Tech in Focus, Treasuries Rise: Markets Wrap",
-      "topPositiveTitle": "Stocks Drop With Tech in Focus, Treasuries Rise: Markets Wrap",
-      "items": [
-        {
-          "title": "Stocks Drop With Tech in Focus, Treasuries Rise: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-23T22:10:35+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-23/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "market",
-            "us_broad",
-            "us_growth"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "global_broad": {
       "avgSentiment": 0,
@@ -174,7 +131,7 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": 0.33,
+      "avgSentiment": 1.0,
       "negativeCount": 0,
       "positiveCount": 1,
       "neutralCount": 0,
@@ -188,7 +145,7 @@
           "title": "Gold Advances to Three-Month High as Debasement Trade Returns",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.33,
+          "sentimentScore": 1.0,
           "publishedAt": "2026-08-23T23:29:29+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-08-23/gold-holds-near-three-month-high-as-debasement-trade-returns",
           "tags": [
@@ -224,16 +181,29 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.11,
-      "negativeCount": 1,
-      "positiveCount": 0,
-      "neutralCount": 2,
-      "sourceCount": 1,
-      "itemCount": 3,
+      "avgSentiment": -0.006,
+      "negativeCount": 2,
+      "positiveCount": 2,
+      "neutralCount": 6,
+      "sourceCount": 3,
+      "itemCount": 10,
       "isStale": false,
-      "topNegativeTitle": "Turkey’s Central Bank Shifts Funding Back to 37% Policy Rate",
-      "topPositiveTitle": "Canada Sees Long Trade War With US That May Last Beyond Midterms",
+      "topNegativeTitle": "Stocks Fall as Tech Slides Ahead of Big Week: Markets Wrap",
+      "topPositiveTitle": "US-Canada trade war",
       "items": [
+        {
+          "title": "Stocks Fall as Tech Slides Ahead of Big Week: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-08-23T22:10:35+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-23/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "macro_risk",
+            "market"
+          ]
+        },
         {
           "title": "Turkey’s Central Bank Shifts Funding Back to 37% Policy Rate",
           "source": "Bloomberg Economics",
@@ -241,6 +211,31 @@
           "sentimentScore": -0.33,
           "publishedAt": "2026-08-23T17:03:34+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-08-23/turkey-central-bank-to-shift-funding-back-to-37-policy-rate",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Trump Tariff Latest: New Trade Tensions Could Reverberate Back to US Prices",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-24T11:00:01+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-08-24/trump-tariff-latest-new-trade-tensions-could-reverberate-back-to-us-prices",
+          "tags": [
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "India Lifts Wheat Export Ban in Boost to War-Hit World Trade",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-24T09:08:09+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-24/india-lifts-wheat-export-ban-in-boost-to-war-hit-global-supply",
           "tags": [
             "geopolitical",
             "macro_risk",
@@ -259,62 +254,63 @@
             "macro_risk",
             "market"
           ]
-        },
-        {
-          "title": "Canada Rejected US Tariff Deal. Now Comes the Economic Cost",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-23T23:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-23/canada-turned-down-a-us-tariff-deal-now-comes-the-economic-cost",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": 0.11,
-      "negativeCount": 0,
+      "avgSentiment": 0.167,
+      "negativeCount": 1,
       "positiveCount": 1,
       "neutralCount": 2,
       "sourceCount": 1,
-      "itemCount": 3,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Citi and Axis Team Up on Leveraged India Dollar Deposit Boom",
+      "topNegativeTitle": "Carry Trades Are Riding High on Wall Street",
       "topPositiveTitle": "Gold Advances to Three-Month High as Debasement Trade Returns",
       "items": [
         {
-          "title": "Citi and Axis Team Up on Leveraged India Dollar Deposit Boom",
+          "title": "Carry Trades Are Riding High on Wall Street",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-24T10:20:35+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-08-24/carry-trades-are-riding-high-on-wall-street",
+          "tags": [
+            "fx",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Canadian Dollar Tumbles as Trade Rift Threatens Growth Outlook",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-24T02:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-24/citi-axis-bank-team-up-on-leveraged-india-dollar-deposit-boom",
+          "publishedAt": "2026-08-24T10:57:33+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-24/canadian-dollar-tumbles-as-trade-rift-threatens-growth-outlook",
           "tags": [
             "fx",
             "market"
           ]
         },
         {
-          "title": "Hedge Funds Ramp Up Dollar Shorts Into Bessent’s Fiscal Plan",
+          "title": "Fed, Treasury Credibility Questioned by Markets, Says Rabobank’s Foley",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-24T01:40:46+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-24/hedge-funds-ramp-up-dollar-shorts-ahead-of-bessent-s-fiscal-plan",
+          "publishedAt": "2026-08-24T10:05:07+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-24/fed-treasury-credibility-questioned-by-markets-foley-video",
           "tags": [
             "fx",
-            "market"
+            "market",
+            "us_broad"
           ]
         },
         {
           "title": "Gold Advances to Three-Month High as Debasement Trade Returns",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.33,
+          "sentimentScore": 1.0,
           "publishedAt": "2026-08-23T23:29:29+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-08-23/gold-holds-near-three-month-high-as-debasement-trade-returns",
           "tags": [
@@ -328,29 +324,16 @@
     "rates": {
       "avgSentiment": 0.165,
       "negativeCount": 0,
-      "positiveCount": 3,
-      "neutralCount": 3,
-      "sourceCount": 3,
-      "itemCount": 6,
+      "positiveCount": 2,
+      "neutralCount": 2,
+      "sourceCount": 2,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Why the Fed's Warsh Has 'No Good Options'",
+      "topNegativeTitle": "Pimco Expects Elevated Term Premium, Says Bonds Attractive",
       "topPositiveTitle": "BOJ Set to Offer Clues as Markets Bet Heavily on September Hike",
       "items": [
         {
-          "title": "Why the Fed's Warsh Has 'No Good Options'",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-24T03:04:15+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-24/why-the-fed-s-warsh-has-no-good-options-video",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Pimco Expects Elevated Term Premium, Says Bonds Are Attractive",
+          "title": "Pimco Expects Elevated Term Premium, Says Bonds Attractive",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
@@ -362,16 +345,15 @@
           ]
         },
         {
-          "title": "Treasury Market Still Functioning, Fed's Kashkari Says",
+          "title": "Bessent Has No Easy Fix for What’s Really Driving Yields Up",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-24T00:31:04+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-24/treasury-market-still-functioning-fed-s-kashkari-says-video",
+          "publishedAt": "2026-08-23T13:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-23/bessent-has-no-easy-fix-for-what-s-really-driving-bond-yields-up",
           "tags": [
             "market",
-            "rates",
-            "us_broad"
+            "rates"
           ]
         },
         {
@@ -403,42 +385,90 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "avgSentiment": 0.066,
+      "negativeCount": 1,
+      "positiveCount": 2,
+      "neutralCount": 2,
+      "sourceCount": 2,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Stocks Drop With Tech in Focus, Treasuries Rise: Markets Wrap",
-      "topPositiveTitle": "Stocks Drop With Tech in Focus, Treasuries Rise: Markets Wrap",
+      "topNegativeTitle": "Stocks Fall as Tech Slides Ahead of Big Week: Markets Wrap",
+      "topPositiveTitle": "Singapore’s Core Inflation Surges to Near Two-Year High",
       "items": [
         {
-          "title": "Stocks Drop With Tech in Focus, Treasuries Rise: Markets Wrap",
+          "title": "Stocks Fall as Tech Slides Ahead of Big Week: Markets Wrap",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
           "publishedAt": "2026-08-23T22:10:35+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-08-23/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
-            "market",
-            "us_broad",
-            "us_growth"
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Total CEO Says Market Is Bearish for Crude, Bullish for Products",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-24T11:26:26+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-24/total-ceo-says-market-is-bearish-for-crude-bullish-for-products-mt75hra8",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "Latest Oil Market News and Analysis for Aug. 24",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-23T22:03:24+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-23/latest-oil-market-news-and-analysis-for-aug-24",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Indonesian Commodity Oversight Plan to Include Ship-Tracking",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-24T11:24:42+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-24/indonesian-commodity-oversight-plan-to-include-ship-tracking",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "Singapore’s Core Inflation Surges to Near Two-Year High",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-08-24T05:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-24/singapore-core-inflation-surges-to-near-two-year-high-on-energy",
+          "tags": [
+            "commodity",
+            "market"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": -0.11,
+      "avgSentiment": 0.115,
       "negativeCount": 1,
-      "positiveCount": 0,
-      "neutralCount": 2,
-      "sourceCount": 1,
-      "itemCount": 3,
+      "positiveCount": 3,
+      "neutralCount": 7,
+      "sourceCount": 3,
+      "itemCount": 11,
       "isStale": false,
       "topNegativeTitle": "Turkey’s Central Bank Shifts Funding Back to 37% Policy Rate",
-      "topPositiveTitle": "Canada Sees Long Trade War With US That May Last Beyond Midterms",
+      "topPositiveTitle": "US-Canada trade war",
       "items": [
         {
           "title": "Turkey’s Central Bank Shifts Funding Back to 37% Policy Rate",
@@ -454,12 +484,36 @@
           ]
         },
         {
-          "title": "Canada Sees Long Trade War With US That May Last Beyond Midterms",
-          "source": "Bloomberg Economics",
+          "title": "Treasury’s Bessent to Detail US Plan to Economically Isolate Iran",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-23T23:59:52+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-23/canada-sees-long-trade-war-with-us-that-may-last-beyond-midterms",
+          "publishedAt": "2026-08-24T11:34:30+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-24/bessent-to-detail-us-plan-to-economically-isolate-iran-video",
+          "tags": [
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Ukraine Tycoon Murder Plot Confounds Monaco Authorities",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-24T10:08:32+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-24/ukraine-tycoon-murder-plot-confounds-monaco-authorities-video",
+          "tags": [
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "India Lifts Wheat Export Ban in Boost to War-Hit World Trade",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-24T09:08:09+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-24/india-lifts-wheat-export-ban-in-boost-to-war-hit-global-supply",
           "tags": [
             "geopolitical",
             "macro_risk",
@@ -467,12 +521,12 @@
           ]
         },
         {
-          "title": "Canada Rejected US Tariff Deal. Now Comes the Economic Cost",
+          "title": "Canada Sees Long Trade War With US That May Last Beyond Midterms",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-23T23:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-23/canada-turned-down-a-us-tariff-deal-now-comes-the-economic-cost",
+          "publishedAt": "2026-08-23T23:59:52+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-23/canada-sees-long-trade-war-with-us-that-may-last-beyond-midterms",
           "tags": [
             "geopolitical",
             "macro_risk",
