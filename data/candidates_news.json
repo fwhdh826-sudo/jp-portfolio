@@ -1,48 +1,10 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-08-25T20:51:58.436102+09:00",
-  "sourceUpdatedAt": "2026-08-25T11:49:10+00:00",
+  "updatedAt": "2026-08-26T06:57:14.983750+09:00",
+  "sourceUpdatedAt": "2026-08-25T21:28:48+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": -0.165,
-      "negativeCount": 1,
-      "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 2,
-      "isStale": false,
-      "topNegativeTitle": "BOJ’s Price Gauge Stays Above 2% Amid Rate Hike Speculation",
-      "topPositiveTitle": "‘Boxed In’ BOJ Set to Hike Next Month, Former Board Member Says",
-      "items": [
-        {
-          "title": "BOJ’s Price Gauge Stays Above 2% Amid Rate Hike Speculation",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-25T05:15:26+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-25/boj-s-price-gauge-stays-above-target-amid-rate-hike-speculation",
-          "tags": [
-            "jp_broad",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "‘Boxed In’ BOJ Set to Hike Next Month, Former Board Member Says",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-24T21:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-24/groundwork-is-set-for-boj-rate-hike-next-month-ex-official-says",
-          "tags": [
-            "jp_broad",
-            "market"
-          ]
-        }
-      ]
-    },
-    "jp_semiconductor": {
       "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
@@ -54,50 +16,117 @@
       "topPositiveTitle": null,
       "items": []
     },
-    "us_broad": {
-      "avgSentiment": 0.11,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 2,
+    "jp_semiconductor": {
+      "avgSentiment": -0.165,
+      "negativeCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 3,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Market Looking For Powell-Type Guidance: Henry Allen",
-      "topPositiveTitle": "Dollar Debasement Frees EM Currencies From Treasuries’ Weight",
+      "topNegativeTitle": "Intuit Sinks 11% on Weak Outlook as Nvidia Earnings Loom | Closing Bell",
+      "topPositiveTitle": "Stocks Rise Before Nvidia as Oil Drop Lifts Bonds: Markets Wrap",
       "items": [
         {
-          "title": "Market Looking For Powell-Type Guidance: Henry Allen",
+          "title": "Intuit Sinks 11% on Weak Outlook as Nvidia Earnings Loom | Closing Bell",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-25T20:24:04+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-25/intuit-sinks-11-on-weak-outlook-closing-bell-video",
+          "tags": [
+            "jp_semiconductor",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Stocks Rise Before Nvidia as Oil Drop Lifts Bonds: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-25T11:16:54+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-25/market-looking-for-powell-type-guidance-henry-allen-video",
+          "publishedAt": "2026-08-24T22:09:52+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-24/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "jp_semiconductor",
+            "market",
+            "rates",
+            "us_growth"
+          ]
+        }
+      ]
+    },
+    "us_broad": {
+      "avgSentiment": -0.088,
+      "negativeCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 5,
+      "sourceCount": 2,
+      "itemCount": 6,
+      "isStale": false,
+      "topNegativeTitle": "Copy Trading Offers Alternative to Traditional Investing",
+      "topPositiveTitle": "Consumers Are Signaling an Uneven Economy, Abby Joseph Cohen Says",
+      "items": [
+        {
+          "title": "Copy Trading Offers Alternative to Traditional Investing",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-24T21:36:08+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-24/copy-trading-offers-alternative-to-traditional-investing-video",
           "tags": [
             "market",
             "us_broad"
           ]
         },
         {
-          "title": "Jackson Hole Offers Warsh High Profile Slot to Rebut His Critics",
+          "title": "Treasuries Gain as Oil Drop Eases Pressure on Inflation, Bessent",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.2,
+          "publishedAt": "2026-08-25T13:30:37+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-25/treasuries-gain-as-oil-drop-eases-pressure-on-inflation-bessent",
+          "tags": [
+            "commodity",
+            "macro_risk",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Consumers Are Signaling an Uneven Economy, Abby Joseph Cohen Says",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-25T10:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-25/jackson-hole-offers-warsh-high-profile-slot-to-rebut-his-critics",
+          "publishedAt": "2026-08-25T19:52:55+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-25/consumer-data-signal-uneven-economy-abby-joseph-cohen-video",
           "tags": [
             "market",
             "us_broad"
           ]
         },
         {
-          "title": "Dollar Debasement Frees EM Currencies From Treasuries’ Weight",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-25T09:38:22+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-25/dollar-debasement-frees-em-currencies-from-treasuries-weight",
+          "title": "Warsh de Fed enfrenta prueba de comunicación en Jackson Hole",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-25T15:55:25+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-25/warsh-de-fed-enfrenta-prueba-de-comunicacion-en-jackson-hole",
           "tags": [
-            "fx",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Fed’s Collins Says Holding Rates Hangs on Inflation Progress",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-25T14:54:04+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-25/fed-s-collins-says-holding-rates-hangs-on-inflation-progress",
+          "tags": [
             "market",
             "rates",
             "us_broad"
@@ -106,6 +135,47 @@
       ]
     },
     "us_growth": {
+      "avgSentiment": -0.165,
+      "negativeCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 2,
+      "isStale": false,
+      "topNegativeTitle": "Intuit Sinks 11% on Weak Outlook as Nvidia Earnings Loom | Closing Bell",
+      "topPositiveTitle": "Stocks Rise Before Nvidia as Oil Drop Lifts Bonds: Markets Wrap",
+      "items": [
+        {
+          "title": "Intuit Sinks 11% on Weak Outlook as Nvidia Earnings Loom | Closing Bell",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-25T20:24:04+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-25/intuit-sinks-11-on-weak-outlook-closing-bell-video",
+          "tags": [
+            "jp_semiconductor",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Stocks Rise Before Nvidia as Oil Drop Lifts Bonds: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-24T22:09:52+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-24/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "jp_semiconductor",
+            "market",
+            "rates",
+            "us_growth"
+          ]
+        }
+      ]
+    },
+    "global_broad": {
       "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
@@ -116,46 +186,6 @@
       "topNegativeTitle": null,
       "topPositiveTitle": null,
       "items": []
-    },
-    "global_broad": {
-      "avgSentiment": 0.665,
-      "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 2,
-      "isStale": false,
-      "topNegativeTitle": "Stocks Climb as Brent Below $90 Gives Bonds a Lift: Markets Wrap",
-      "topPositiveTitle": "European Stocks Rise as Pullback in Oil Lifts Investor Sentiment",
-      "items": [
-        {
-          "title": "Stocks Climb as Brent Below $90 Gives Bonds a Lift: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-24T22:09:52+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-24/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "global_broad",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "European Stocks Rise as Pullback in Oil Lifts Investor Sentiment",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-08-25T07:18:28+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-25/european-stocks-advance-as-oil-prices-drop-siemens-energy-up",
-          "tags": [
-            "commodity",
-            "global_broad",
-            "market"
-          ]
-        }
-      ]
     },
     "gold": {
       "avgSentiment": 0.2,
@@ -165,11 +195,11 @@
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Gold Steadies After Four-Day Gain as Traders Eye Treasury Moves",
-      "topPositiveTitle": "Gold Steadies After Four-Day Gain as Traders Eye Treasury Moves",
+      "topNegativeTitle": "Gold Edges Up After Four-Day Gain as Traders Eye Treasury Moves",
+      "topPositiveTitle": "Gold Edges Up After Four-Day Gain as Traders Eye Treasury Moves",
       "items": [
         {
-          "title": "Gold Steadies After Four-Day Gain as Traders Eye Treasury Moves",
+          "title": "Gold Edges Up After Four-Day Gain as Traders Eye Treasury Moves",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.2,
@@ -184,40 +214,120 @@
       ]
     },
     "reit": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "The Mormon Church Is Putting Its Real Estate Empire to Work",
+      "topPositiveTitle": "The Mormon Church Is Putting Its Real Estate Empire to Work",
+      "items": [
+        {
+          "title": "The Mormon Church Is Putting Its Real Estate Empire to Work",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-25T21:00:07+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-25/the-mormon-church-is-putting-its-real-estate-empire-to-work",
+          "tags": [
+            "market",
+            "reit"
+          ]
+        }
+      ]
     },
     "dividend": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "macro_risk": {
-      "avgSentiment": 0.167,
+      "avgSentiment": 0.33,
       "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 5,
-      "sourceCount": 2,
-      "itemCount": 6,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "US-Canada Trade War Escalates",
+      "topNegativeTitle": "Short Squeeze in US Long Bonds Shows ‘Bessent Put’ at Work",
+      "topPositiveTitle": "Short Squeeze in US Long Bonds Shows ‘Bessent Put’ at Work",
+      "items": [
+        {
+          "title": "Short Squeeze in US Long Bonds Shows ‘Bessent Put’ at Work",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-25T18:35:27+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-25/short-squeeze-in-us-swaps-options-shows-bessent-put-at-work",
+          "tags": [
+            "dividend",
+            "market"
+          ]
+        }
+      ]
+    },
+    "macro_risk": {
+      "avgSentiment": 0.1,
+      "negativeCount": 1,
+      "positiveCount": 2,
+      "neutralCount": 5,
+      "sourceCount": 3,
+      "itemCount": 8,
+      "isStale": false,
+      "topNegativeTitle": "Oil Falls on Fresh Iran War Diplomacy, Talks on Hormuz",
       "topPositiveTitle": "German Economic Revival Gathers Pace as Business Optimism Jumps",
       "items": [
+        {
+          "title": "Oil Falls on Fresh Iran War Diplomacy, Talks on Hormuz",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.6,
+          "publishedAt": "2026-08-24T22:02:31+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-24/latest-oil-market-news-and-analysis-for-aug-25",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Treasuries Gain as Oil Drop Eases Pressure on Inflation, Bessent",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.2,
+          "publishedAt": "2026-08-25T13:30:37+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-25/treasuries-gain-as-oil-drop-eases-pressure-on-inflation-bessent",
+          "tags": [
+            "commodity",
+            "macro_risk",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "US-Canada Cosmetic Tariffs Threaten the $10 Beauty Impulse Buy",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-25T19:38:31+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-25/us-canada-cosmetic-tariffs-threaten-the-10-beauty-impulse-buy",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Braskem’s $11 Billion Debt Rework Puts Spotlight on Petrobras",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-25T19:05:08+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-25/braskem-s-11-billion-debt-rework-puts-spotlight-on-petrobras",
+          "tags": [
+            "macro_risk",
+            "market"
+          ]
+        },
         {
           "title": "US-Canada Trade War Escalates",
           "source": "Bloomberg Economics",
@@ -230,98 +340,34 @@
             "macro_risk",
             "market"
           ]
-        },
-        {
-          "title": "German Outlook Improves as Public Spending Boost Bolsters Growth",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-25T08:03:20+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-25/german-outlook-improves-as-public-spending-boost-bolsters-growth",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Drought and Energy Crunch Curb Hungary’s Budget Deficit Cuts",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-24T14:03:51+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-24/drought-and-energy-crunch-curb-hungary-s-budget-deficit-cuts",
-          "tags": [
-            "commodity",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "自民 拉致問題対策本部“北朝鮮制裁 安易に緩和すべきでない”",
-          "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-25T10:29:17+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20260825de46288",
-          "tags": [
-            "macro_risk",
-            "market"
-          ],
-          "titleJa": "自民 拉致問題対策本部“北朝鮮制裁 安易に緩和すべきでない”"
-        },
-        {
-          "title": "茂木外相「米国ICC制裁は日本の立場と相いれない」",
-          "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-25T08:10:00+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20260825de46243",
-          "tags": [
-            "macro_risk",
-            "market"
-          ],
-          "titleJa": "茂木外相「米国ICC制裁は日本の立場と相いれない」"
         }
       ]
     },
     "fx": {
-      "avgSentiment": -0.035,
-      "negativeCount": 1,
-      "positiveCount": 1,
+      "avgSentiment": 0.1,
+      "negativeCount": 0,
+      "positiveCount": 0,
       "neutralCount": 2,
-      "sourceCount": 1,
-      "itemCount": 4,
+      "sourceCount": 2,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Treasury Move Just Another Way to a Weaker Dollar, Says SocGen’s Juckes",
-      "topPositiveTitle": "Dollar Debasement Frees EM Currencies From Treasuries’ Weight",
+      "topNegativeTitle": "(USD: ZWG) Citigroup Sees Zimbabwe Economy Turnaround in Break With Past",
+      "topPositiveTitle": "Gold Edges Up After Four-Day Gain as Traders Eye Treasury Moves",
       "items": [
         {
-          "title": "Treasury Move Just Another Way to a Weaker Dollar, Says SocGen’s Juckes",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-08-25T11:49:10+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-25/treasury-move-is-another-way-to-a-weaker-dollar-juckes-video",
-          "tags": [
-            "fx",
-            "market"
-          ]
-        },
-        {
-          "title": "HSBC Buys at Least $3 Billion of Indian Debt on Deposit Rush",
-          "source": "Bloomberg Markets",
+          "title": "(USD: ZWG) Citigroup Sees Zimbabwe Economy Turnaround in Break With Past",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-25T06:14:48+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-25/hsbc-buys-at-least-3-billion-india-bonds-after-fx-deposit-boost",
+          "publishedAt": "2026-08-25T13:20:38+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-25/-usd-zwg-citigroup-sees-zimbabwe-economy-turnaround-in-break-with-past",
           "tags": [
             "fx",
             "market"
           ]
         },
         {
-          "title": "Gold Steadies After Four-Day Gain as Traders Eye Treasury Moves",
+          "title": "Gold Edges Up After Four-Day Gain as Traders Eye Treasury Moves",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.2,
@@ -332,54 +378,55 @@
             "gold",
             "market"
           ]
-        },
-        {
-          "title": "Dollar Debasement Frees EM Currencies From Treasuries’ Weight",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-25T09:38:22+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-25/dollar-debasement-frees-em-currencies-from-treasuries-weight",
-          "tags": [
-            "fx",
-            "market",
-            "rates",
-            "us_broad"
-          ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": 0.0,
-      "negativeCount": 2,
-      "positiveCount": 2,
-      "neutralCount": 2,
+      "avgSentiment": 0.078,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 5,
       "sourceCount": 2,
       "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "BOJ’s Price Gauge Stays Above 2% Amid Rate Hike Speculation",
-      "topPositiveTitle": "Dollar Debasement Frees EM Currencies From Treasuries’ Weight",
+      "topNegativeTitle": "Treasuries Gain as Oil Drop Eases Pressure on Inflation, Bessent",
+      "topPositiveTitle": "BOK to Weigh Back-to-Back Hike as Growth, Inflation Remain Firm",
       "items": [
         {
-          "title": "BOJ’s Price Gauge Stays Above 2% Amid Rate Hike Speculation",
-          "source": "Bloomberg Economics",
+          "title": "Treasuries Gain as Oil Drop Eases Pressure on Inflation, Bessent",
+          "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-25T05:15:26+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-25/boj-s-price-gauge-stays-above-target-amid-rate-hike-speculation",
+          "sentimentScore": -0.2,
+          "publishedAt": "2026-08-25T13:30:37+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-25/treasuries-gain-as-oil-drop-eases-pressure-on-inflation-bessent",
           "tags": [
-            "jp_broad",
+            "commodity",
+            "macro_risk",
             "market",
-            "rates"
+            "rates",
+            "us_broad"
           ]
         },
         {
-          "title": "Hungary Heads for Third Rate Cut With Inflation at Decade-Low",
+          "title": "Fed’s Collins Says Holding Rates Hangs on Inflation Progress",
           "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-25T04:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-25/hungary-heads-for-third-rate-cut-with-inflation-at-decade-low",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-25T14:54:04+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-25/fed-s-collins-says-holding-rates-hangs-on-inflation-progress",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Hungary Cuts Key Interest Rate, Reviews Inflation Goal",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-25T12:00:14+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-25/hungary-cuts-interest-rate-again-with-inflation-at-decade-low",
           "tags": [
             "market",
             "rates"
@@ -398,140 +445,160 @@
           ]
         },
         {
-          "title": "Mexico Economy and Inflation Pick Up, Backing Rate Hold Bets",
-          "source": "Bloomberg Economics",
+          "title": "Stocks Rise Before Nvidia as Oil Drop Lifts Bonds: Markets Wrap",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-24T12:28:04+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-24/mexico-gdp-bounces-back-in-second-quarter-despite-trade-stress",
+          "publishedAt": "2026-08-24T22:09:52+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-24/stock-market-today-dow-s-p-live-updates",
           "tags": [
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Dollar Debasement Frees EM Currencies From Treasuries’ Weight",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-25T09:38:22+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-25/dollar-debasement-frees-em-currencies-from-treasuries-weight",
-          "tags": [
-            "fx",
+            "commodity",
+            "jp_semiconductor",
             "market",
             "rates",
-            "us_broad"
+            "us_growth"
           ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.333,
-      "negativeCount": 0,
+      "avgSentiment": -0.1,
+      "negativeCount": 2,
       "positiveCount": 2,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 4,
+      "neutralCount": 4,
+      "sourceCount": 3,
+      "itemCount": 8,
       "isStale": false,
-      "topNegativeTitle": "Mexico Bonds Trade Like Junk After $130 Billion Bailout of Pemex",
-      "topPositiveTitle": "European Stocks Rise as Pullback in Oil Lifts Investor Sentiment",
+      "topNegativeTitle": "US Natural Gas Falls as Iran Pressure Plan Pulls Down Energy",
+      "topPositiveTitle": "Hungary Sticks to Meeting Euro Criteria by 2030 Despite Deficit",
       "items": [
         {
-          "title": "Mexico Bonds Trade Like Junk After $130 Billion Bailout of Pemex",
+          "title": "US Natural Gas Falls as Iran Pressure Plan Pulls Down Energy",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-25T10:30:06+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-25/mexico-bonds-trade-like-junk-after-130-billion-bailout-of-pemex-mt8ix5iw",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-08-25T13:48:51+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-25/us-natural-gas-drops-with-oil-on-effects-of-iran-pressure-plan",
           "tags": [
             "commodity",
+            "geopolitical",
             "market"
           ]
         },
         {
-          "title": "Drought and Energy Crunch Curb Hungary’s Budget Deficit Cuts",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-24T14:03:51+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-24/drought-and-energy-crunch-curb-hungary-s-budget-deficit-cuts",
+          "title": "Oil Falls on Fresh Iran War Diplomacy, Talks on Hormuz",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.6,
+          "publishedAt": "2026-08-24T22:02:31+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-24/latest-oil-market-news-and-analysis-for-aug-25",
           "tags": [
             "commodity",
+            "geopolitical",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Stocks Climb as Brent Below $90 Gives Bonds a Lift: Markets Wrap",
+          "title": "Treasuries Gain as Oil Drop Eases Pressure on Inflation, Bessent",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-24T22:09:52+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-24/stock-market-today-dow-s-p-live-updates",
+          "sentiment": "negative",
+          "sentimentScore": -0.2,
+          "publishedAt": "2026-08-25T13:30:37+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-25/treasuries-gain-as-oil-drop-eases-pressure-on-inflation-bessent",
           "tags": [
             "commodity",
-            "global_broad",
+            "macro_risk",
             "market",
-            "rates"
+            "rates",
+            "us_broad"
           ]
         },
         {
-          "title": "European Stocks Rise as Pullback in Oil Lifts Investor Sentiment",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-08-25T07:18:28+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-25/european-stocks-advance-as-oil-prices-drop-siemens-energy-up",
+          "title": "政府 エネルギー安定確保で新計画 代替パイプライン建設支援",
+          "source": "NHK 経済",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-25T20:06:00+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20260826de46331",
           "tags": [
             "commodity",
-            "global_broad",
+            "market"
+          ],
+          "titleJa": "政府 エネルギー安定確保で新計画 代替パイプライン建設支援"
+        },
+        {
+          "title": "India Exports Face Little Risk From Tougher US Sanctions on Iran",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-25T15:49:25+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-25/india-exports-face-little-risk-from-tougher-us-sanctions-on-iran",
+          "tags": [
+            "commodity",
+            "geopolitical",
             "market"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.278,
-      "negativeCount": 0,
+      "avgSentiment": 0.0,
+      "negativeCount": 2,
       "positiveCount": 2,
       "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 8,
       "isStale": false,
-      "topNegativeTitle": "Russia Eyes Grain Duty Pause Through Year End on Ukraine Strikes",
+      "topNegativeTitle": "US Natural Gas Falls as Iran Pressure Plan Pulls Down Energy",
       "topPositiveTitle": "German Economic Revival Gathers Pace as Business Optimism Jumps",
       "items": [
         {
-          "title": "Russia Eyes Grain Duty Pause Through Year End on Ukraine Strikes",
+          "title": "US Natural Gas Falls as Iran Pressure Plan Pulls Down Energy",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-08-25T13:48:51+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-25/us-natural-gas-drops-with-oil-on-effects-of-iran-pressure-plan",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Oil Falls on Fresh Iran War Diplomacy, Talks on Hormuz",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.6,
+          "publishedAt": "2026-08-24T22:02:31+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-24/latest-oil-market-news-and-analysis-for-aug-25",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Northrop CEO on Defense Spending, Golden Dome System",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-25T11:16:09+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-25/russia-eyes-grain-duty-pause-through-year-end-on-ukraine-strikes",
+          "publishedAt": "2026-08-25T21:17:47+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-25/northrop-ceo-on-defense-spending-golden-dome-system-video",
           "tags": [
             "geopolitical",
             "market"
           ]
         },
         {
-          "title": "The US‘s Economic `D-Day’ for Iran Doesn’t Live Up to Bessent’s Hype",
+          "title": "US-Canada Cosmetic Tariffs Threaten the $10 Beauty Impulse Buy",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-25T11:15:01+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-08-25/the-us-s-economic-d-day-for-iran-doesn-t-live-up-to-bessent-s-hype",
-          "tags": [
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "US-Canada Trade War Escalates",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-25T11:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-08-25/us-canada-trade-war-escalates",
+          "publishedAt": "2026-08-25T19:38:31+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-25/us-canada-cosmetic-tariffs-threaten-the-10-beauty-impulse-buy",
           "tags": [
             "geopolitical",
             "macro_risk",
@@ -539,26 +606,14 @@
           ]
         },
         {
-          "title": "German Outlook Improves as Public Spending Boost Bolsters Growth",
+          "title": "India Exports Face Little Risk From Tougher US Sanctions on Iran",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-25T08:03:20+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-25/german-outlook-improves-as-public-spending-boost-bolsters-growth",
+          "publishedAt": "2026-08-25T15:49:25+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-25/india-exports-face-little-risk-from-tougher-us-sanctions-on-iran",
           "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "China Defends Cooperation With Iran Amid US Warnings | Opening Trade 8/25/2026",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-25T10:08:22+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-25/the-opening-trade-8-25-2026-video",
-          "tags": [
+            "commodity",
             "geopolitical",
             "market"
           ]
