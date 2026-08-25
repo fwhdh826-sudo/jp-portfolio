@@ -14,6 +14,7 @@ import {
   type T2AllocationProjection,
 } from '../../store/allocationConsumerSelectors'
 import { formatJPYAuto, formatRelativeTime, formatSignedPct, formatPt } from '../../utils/format'
+import { SUPPRESSION_BANNER_PREFIX, suppressionBannerText } from '../shared/suppressionBanner'
 import {
   buildTrustPortfolioPlan,
   type ConditionStatus,
@@ -414,7 +415,7 @@ export function T2_JpFund() {
             title={displayTitle}
             score={mode.confidence}
             reasons={[
-              ...(isSuppressed ? ['⚠ SAFE_MODE / DQ抑制中 — 新規買い判断停止中'] : []),
+              ...(isSuppressed ? [suppressionBannerText('新規買い判断')] : []),
               ...decisionReasons,
             ]}
             riskLevel={riskFromShortTerm(signal)}
@@ -1064,10 +1065,10 @@ export function T2_JpFund() {
           padding:      `${spacing[3]} ${spacing[4]}`,
         }}>
           <div style={{ ...typography.bodySmall, color: colors.waitText, fontWeight: 700, marginBottom: spacing[1] }}>
-            ⚠ SAFE_MODE / DQ抑制中
+            ⚠ {SUPPRESSION_BANNER_PREFIX}
           </div>
           <div style={{ ...typography.caption, color: colors.waitText }}>
-            SAFE_MODE / DQ抑制中のため、国内投信候補と理想PF差分は参考表示です。新規買い判断は停止中です。
+            {SUPPRESSION_BANNER_PREFIX}のため、国内投信候補と理想PF差分は参考表示です。新規買い判断は停止中です。
           </div>
         </div>
       )}

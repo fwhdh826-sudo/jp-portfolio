@@ -40,6 +40,7 @@ import { AssetTypeBadge } from '../badges/AssetTypeBadge'
 import { SignalBadge }    from '../badges/SignalBadge'
 import { EmptyState }     from '../shared/EmptyState'
 import { suppressBuySignal, SUPPRESSED_VERDICT } from '../shared/verdict'
+import { SUPPRESSION_BANNER_PREFIX, suppressionBannerText } from '../shared/suppressionBanner'
 import { SafeModeStatusCard } from '../v13/SafeModeStatusCard'
 import type { Signal }    from '../badges/SignalBadge'
 import type { ActionItem } from '../cards/ActionPanel'
@@ -598,13 +599,13 @@ export function T7_Trust() {
   ].filter(Boolean).slice(0, 4)
 
   const actionText = isSuppressed
-    ? 'SAFE_MODE / DQ抑制中 — 新規買い判断停止中。シグナルは参考値のみ。'
+    ? `${SUPPRESSION_BANNER_PREFIX} — 新規買い判断停止中。シグナルは参考値のみ。`
     : `${trustPlan.shortTermMode.decision === 'BULL' ? 'ブル推奨' : trustPlan.shortTermMode.decision === 'BEAR' ? 'ベア推奨' : '待機推奨'} — ${trustPlan.shortTermMode.takeProfitRule} / 損切: ${trustPlan.shortTermMode.stopLossRule}`
 
   // ActionPanel 用: 投信アクションキュー
   const actionItems: ActionItem[] = isSuppressed
     ? [{
-        label:       'SAFE_MODE / DQ抑制中',
+        label:       SUPPRESSION_BANNER_PREFIX,
         description: 'SAFE_MODE または DQ低下のため短期投信シグナルを停止中。最新データ確認後に再判定。',
         signal:      SUPPRESSED_VERDICT,
         priority:    'HIGH',
@@ -721,7 +722,7 @@ export function T7_Trust() {
         title="投信 当日実行判断（短期戦術）"
         score={trustPlan.shortTermMode.confidence}
         reasons={isSuppressed ? [
-          '⚠ SAFE_MODE / DQ抑制中 — 新規買い判断停止中',
+          suppressionBannerText('新規買い判断'),
           '短期シグナルは参考値のみ',
           `1日上限 ${todayEntryCount}/1 ${todayEntryCount >= 1 ? '— 本日執行済み' : '— 未執行'}`,
         ] : [
@@ -1059,7 +1060,7 @@ export function T7_Trust() {
       {/* P4-A115: 当日実行判断画面として「何を実行するか」→「いくら配分するか」の順に変更 */}
       <section>
         {/* P4-A111: 当日実行窓口として明確化 — executionQueue生成変更なし */}
-        <SectionHeader title="投信アクションキュー（当日実行）" caption={isSuppressed ? 'SAFE_MODE / DQ抑制中' : `${trustPlan.executionQueue.length}件`} />
+        <SectionHeader title="投信アクションキュー（当日実行）" caption={isSuppressed ? SUPPRESSION_BANNER_PREFIX : `${trustPlan.executionQueue.length}件`} />
         {!isSuppressed && (
           <p style={{ fontSize: '11px', color: colors.textMuted, marginBottom: spacing[2] }}>
             「国内投信」タブの参考候補を踏まえ、当日実行可否はこのキューで確認します。
@@ -1120,7 +1121,7 @@ export function T7_Trust() {
                   <p style={{ ...typography.caption, color: colors.textMuted, marginTop: spacing[0.5] }}>{row.reason}</p>
                   {isRowBuySuppressed && (
                     <p style={{ ...typography.caption, color: colors.waitText, fontWeight: 600, marginTop: spacing[0.5] }}>
-                      SAFE_MODE/DQ抑制中 — 配分調整は参考停止。解除後に再判定されます。
+                      {SUPPRESSION_BANNER_PREFIX} — 配分調整は参考停止。解除後に再判定されます。
                     </p>
                   )}
                 </div>
@@ -1201,7 +1202,7 @@ export function T7_Trust() {
             gap:          spacing[2],
           }}>
             <span>⚠</span>
-            <span>SAFE_MODE / DQ抑制中 — 新規買い判断停止中。最新データ確認後に再判定。</span>
+            <span>{SUPPRESSION_BANNER_PREFIX} — 新規買い判断停止中。最新データ確認後に再判定。</span>
           </div>
         </section>
       )}

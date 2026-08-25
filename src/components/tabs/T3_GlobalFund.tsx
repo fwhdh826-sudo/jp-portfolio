@@ -18,6 +18,7 @@ import { SignalBadge }   from '../badges/SignalBadge'
 import { EmptyState }    from '../shared/EmptyState'
 import { StateBanner }   from '../shared/StateBanner'
 import { suppressBuySignal } from '../shared/verdict'
+import { SUPPRESSION_BANNER_PREFIX, suppressionBannerText } from '../shared/suppressionBanner'
 import type { Signal }   from '../badges/SignalBadge'
 import type { RiskLevel } from '../badges/RiskBadge'
 
@@ -128,7 +129,7 @@ export function T3_GlobalFund() {
     `BUY ${buyCount}件 / SELL ${sellCount}件 / 平均スコア ${avgScore}`,
     market.regime === 'bear' ? '弱気相場 — ドルコスト積立は継続、一括追加は抑制' : '',
     // P4-A119: isSuppressed時は注記を追加
-    isSuppressed ? '⚠ SAFE_MODE / DQ抑制中 — 追加投資判断停止中' : '',
+    isSuppressed ? suppressionBannerText('追加投資判断') : '',
   ].filter(Boolean)
 
   // VIX 評価
@@ -154,7 +155,7 @@ export function T3_GlobalFund() {
   // hasOverlapブランチ等（overseasFunds.length等）とは異なる意味領域のため区別する。
   const continuationJudgment = isSuppressed
     ? { label: '追加投資判断 停止中', color: colors.waitText, bg: colors.waitBg, border: colors.waitBorder,
-        reason: 'SAFE_MODE / DQ抑制中 — 新規の追加投資判断は停止しています。積立の継続可否はご自身で判断してください。'}
+        reason: `${SUPPRESSION_BANNER_PREFIX} — 新規の追加投資判断は停止しています。積立の継続可否はご自身で判断してください。`}
     : market.regime === 'bear' && market.vix >= 30
       ? { label: '積立継続・追加禁止', color: colors.waitText, bg: colors.waitBg, border: colors.waitBorder,
           reason: 'VIX高・弱気相場。ドルコスト積立は継続するが、一括追加投資は禁止。'}
@@ -681,7 +682,7 @@ export function T3_GlobalFund() {
           {/* P4-A119: isSuppressed時はタイトル・キャプションで参考表示を明確化。addCandidates生成変更なし */}
           <SectionHeader
             title={isSuppressed ? '追加投資候補（参考）' : '追加投資候補'}
-            caption={isSuppressed ? 'SAFE_MODE / DQ抑制中 — 実行判断停止中' : `BUY判定 ${addCandidates.length}件`}
+            caption={isSuppressed ? suppressionBannerText('実行判断') : `BUY判定 ${addCandidates.length}件`}
           />
           {isSuppressed && (
             <p style={{ fontSize: '11px', color: colors.textMuted, marginBottom: spacing[2] }}>

@@ -83,11 +83,11 @@ describe('DesktopSidebarNav — navigation semantics（F/G/H）', () => {
     expect(html).not.toContain('aria-selected')
   })
 
-  it('activeなitemはaria-current="page"かつ実行プランのラベルを含む（T7）', () => {
+  it('activeなitemはaria-current="page"かつ投信管理のラベルを含む（T7）', () => {
     const html = renderSidebar('T7')
     const activeButton = html.match(/<button class="app-sidebar__item active"[\s\S]*?<\/button>/)
     expect(activeButton).toBeTruthy()
     expect(activeButton![0]).toContain('aria-current="page"')
-    expect(activeButton![0]).toContain('実行プラン')
+    expect(activeButton![0]).toContain('投信管理')
   })
 })
