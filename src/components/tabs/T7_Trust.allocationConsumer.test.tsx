@@ -582,7 +582,7 @@ describe('R3-c2 T7 AllocationPlanSnapshot shared consumer wiring', () => {
     const markup = renderT7(appState())
     const total = instrumentAllocatedAmounts(markup).reduce((sum, amount) => sum + amount, 0)
     expect(total).toBeLessThanOrEqual(SHARED_HEADROOM)
-    expect(markup).toContain('クラスheadroom')
+    expect(markup).toContain('資産クラス余力')
     expect(markup).toContain(formatJPYAuto(SHARED_HEADROOM))
   })
 

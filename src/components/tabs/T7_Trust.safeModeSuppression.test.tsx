@@ -91,7 +91,9 @@ function renderWith(state: AppState): string {
 describe('UI-9H H-P0-2: T7 運用方針別ファンドカードの抑制表示（fundBadgeLabel回帰guard）', () => {
   it('非抑制時はBUYファンドがBUYバッジで表示される（vacuous回避）', () => {
     const html = renderWith(normalState())
-    expect(html).toContain('>BUY<')
+    // UI-9H P1 H-P1-6: 可視グリフは日本語cfg.labelへ変更されたため、旧英語tokenは
+    // data-signal属性で検証する（P0のtoken分離自体は不変）。
+    expect(html).toContain('data-signal="BUY"')
   })
 
   it('SAFE_MODE中はBUY判定ファンドのバッジがSUPPRESSEDへ変換され、生のBUYは1件も残らない', () => {
@@ -99,7 +101,7 @@ describe('UI-9H H-P0-2: T7 運用方針別ファンドカードの抑制表示�
     // fundBadgeLabel が fSig==='WATCH' 比較のまま残っていると、SUPPRESSED_VERDICT
     // が 'SUPPRESSED' に変わった時点でこの分岐が false になり item.decision
     // （生の 'BUY'）が描画されてしまう。この assertion がその回帰を検知する。
-    expect(html).not.toContain('>BUY<')
-    expect(html).toContain('>SUPPRESSED<')
+    expect(html).not.toContain('data-signal="BUY"')
+    expect(html).toContain('data-signal="SUPPRESSED"')
   })
 })

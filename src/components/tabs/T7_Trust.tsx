@@ -294,7 +294,7 @@ export function T7TrustAllocationPanel({
   const classMetrics = isEstimateOnly
     ? [
         { label: '目標差分（不足）', amount: jpTrustClass.targetGap },
-        { label: 'クラスheadroom', amount: jpTrustClass.effectiveHeadroom },
+        { label: '資産クラス余力', amount: jpTrustClass.effectiveHeadroom },
         { label: '利用可能予算', amount: jpTrustClass.availableBudget },
       ]
     : [
@@ -302,7 +302,7 @@ export function T7TrustAllocationPanel({
         { label: '目標額', amount: jpTrustClass.targetAmount },
         { label: '目標差分（不足）', amount: jpTrustClass.targetGap },
         { label: '短期予算上限', amount: snapshot.shortTermBudget },
-        { label: 'クラスheadroom', amount: jpTrustClass.effectiveHeadroom },
+        { label: '資産クラス余力', amount: jpTrustClass.effectiveHeadroom },
         { label: '利用可能予算', amount: jpTrustClass.availableBudget },
         { label: '配分済額', amount: jpTrustClass.allocatedAmount },
         { label: '割当後の残余', amount: jpTrustClass.remainingHeadroom },
@@ -380,7 +380,7 @@ export function T7TrustAllocationPanel({
             const instrumentMetrics = isEstimateOnly
               ? [
                   { label: '参考上限', amount: instrument.estimatedMaximumAmount },
-                  { label: '個別headroom', amount: instrument.effectiveInstrumentHeadroom },
+                  { label: '銘柄別余力', amount: instrument.effectiveInstrumentHeadroom },
                 ]
               : isCurrent
                 ? [
@@ -388,12 +388,12 @@ export function T7TrustAllocationPanel({
                     { label: '参考上限', amount: instrument.estimatedMaximumAmount },
                     { label: '配分額', amount: instrument.allocatedAmount },
                     { label: '実行選択額', amount: instrument.finalSuggestedAmount },
-                    { label: '個別headroom', amount: instrument.effectiveInstrumentHeadroom },
+                    { label: '銘柄別余力', amount: instrument.effectiveInstrumentHeadroom },
                   ]
                 : [
                     { label: '保有額', amount: instrument.currentAmount },
                     { label: '参考上限', amount: instrument.estimatedMaximumAmount },
-                    { label: '個別headroom', amount: instrument.effectiveInstrumentHeadroom },
+                    { label: '銘柄別余力', amount: instrument.effectiveInstrumentHeadroom },
                   ]
             return (
               <div

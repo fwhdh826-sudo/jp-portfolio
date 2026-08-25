@@ -209,7 +209,7 @@ const ALLOCATION_MONETARY_LABELS = [
   '目標超過',
   '配分済額',
   '割当後の残余',
-  'クラスheadroom',
+  '資産クラス余力',
   '利用可能予算',
 ] as const
 
@@ -824,7 +824,7 @@ describe('R3-b-R1 T2_JpFund production store wiring', () => {
       { label: '目標超過', value: formatJPYAuto(classPlan.overweightAmount) },
       { label: '配分済額', value: formatJPYAuto(classPlan.allocatedAmount) },
       { label: '割当後の残余', value: formatJPYAuto(classPlan.remainingHeadroom) },
-      { label: 'クラスheadroom', value: formatJPYAuto(classPlan.effectiveHeadroom) },
+      { label: '資産クラス余力', value: formatJPYAuto(classPlan.effectiveHeadroom) },
       { label: '利用可能予算', value: formatJPYAuto(classPlan.availableBudget) },
     ]))
   })

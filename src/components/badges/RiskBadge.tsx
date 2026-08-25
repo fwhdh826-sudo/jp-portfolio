@@ -52,8 +52,8 @@ export function RiskBadge({ level, size = 'md' }: RiskBadgeProps) {
   }
 
   return (
-    <span style={style} aria-label={cfg.label}>
-      {level}
+    <span style={style} data-risk={level} aria-label={cfg.label}>
+      {cfg.label}
     </span>
   )
 }

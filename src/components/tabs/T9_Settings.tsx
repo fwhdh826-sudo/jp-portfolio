@@ -879,6 +879,9 @@ function CashAssumptionsSection() {
             {cashBaseLimitPreview === null ? '—' : formatJPYAuto(cashBaseLimitPreview)}
           </span>
         </div>
+        {/* UI-9H P1 H-P1-11: 「投資可能額」はcashBaseLimitPreviewの事後変動を説明する文脈語であり、
+            上のdeployable-previewラベル（保存後の現金ベース上限）とは指示対象が異なるため
+            用語統一（投資可能現金への置換）の対象外とする（plan既定の除外推奨に従う） */}
         <div style={{ ...typography.caption, color: colors.textMuted }}>
           総現金から生活・安全余力と未約定の買付注文だけを差し引いた、現金側の上限です。
           保存後の実際の投資可能額は、データ鮮度や各資産クラス・銘柄の上限によって

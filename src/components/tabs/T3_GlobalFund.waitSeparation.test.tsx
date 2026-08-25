@@ -87,8 +87,10 @@ function renderWith(state: AppState): string {
 }
 
 /** SignalBadge が実際に描画した verdict token とその aria-label を数える。 */
+// UI-9H P1 H-P1-6: 可視グリフは日本語cfg.labelへ変更されたため、SignalBadgeが
+// data-signal属性に保持する旧英語tokenとaria-labelから抽出する。
 function verdictBadges(html: string): { token: string; ariaLabel: string }[] {
-  return [...html.matchAll(/aria-label="(シグナル: [^"]*)">([A-Z]+)</g)].map(([, ariaLabel, token]) => ({ token, ariaLabel }))
+  return [...html.matchAll(/data-signal="([A-Z]+)" aria-label="(シグナル: [^"]*)"/g)].map(([, token, ariaLabel]) => ({ token, ariaLabel }))
 }
 
 describe('UI-9H-H1-R1: T3 個別ファンドバッジ — 条件未達WAITとWATCHの分離', () => {
