@@ -1,20 +1,33 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-08-25T13:07:43.459790+09:00",
-  "sourceUpdatedAt": "2026-08-25T04:00:00+00:00",
+  "updatedAt": "2026-08-25T20:51:58.436102+09:00",
+  "sourceUpdatedAt": "2026-08-25T11:49:10+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
+      "avgSentiment": -0.165,
+      "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "‘Boxed In’ BOJ Set to Hike Next Month, Former Board Member Says",
+      "topNegativeTitle": "BOJ’s Price Gauge Stays Above 2% Amid Rate Hike Speculation",
       "topPositiveTitle": "‘Boxed In’ BOJ Set to Hike Next Month, Former Board Member Says",
       "items": [
+        {
+          "title": "BOJ’s Price Gauge Stays Above 2% Amid Rate Hike Speculation",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-25T05:15:26+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-25/boj-s-price-gauge-stays-above-target-amid-rate-hike-speculation",
+          "tags": [
+            "jp_broad",
+            "market",
+            "rates"
+          ]
+        },
         {
           "title": "‘Boxed In’ BOJ Set to Hike Next Month, Former Board Member Says",
           "source": "Bloomberg Economics",
@@ -30,99 +43,6 @@
       ]
     },
     "jp_semiconductor": {
-      "avgSentiment": 0.5,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
-      "isStale": false,
-      "topNegativeTitle": "Global Chip Stock Selloff Extends, Bitcoin Rallies: Markets Wrap",
-      "topPositiveTitle": "Global Chip Stock Selloff Extends, Bitcoin Rallies: Markets Wrap",
-      "items": [
-        {
-          "title": "Global Chip Stock Selloff Extends, Bitcoin Rallies: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.5,
-          "publishedAt": "2026-08-24T22:09:52+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-24/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "jp_semiconductor",
-            "macro_risk",
-            "market",
-            "us_growth"
-          ]
-        }
-      ]
-    },
-    "us_broad": {
-      "avgSentiment": 0.335,
-      "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 2,
-      "isStale": false,
-      "topNegativeTitle": "Copy Trading Offers Alternative to Traditional Investing",
-      "topPositiveTitle": "Bond Investor Ed Al-Hussainy on Bessent's Treasury Twist",
-      "items": [
-        {
-          "title": "Copy Trading Offers Alternative to Traditional Investing",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-24T21:36:08+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-24/copy-trading-offers-alternative-to-traditional-investing-video",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Bond Investor Ed Al-Hussainy on Bessent's Treasury Twist",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-08-24T21:52:07+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-24/bond-investor-ed-al-hussainy-on-bessent-s-treasury-twist-video",
-          "tags": [
-            "fx",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        }
-      ]
-    },
-    "us_growth": {
-      "avgSentiment": 0.5,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
-      "isStale": false,
-      "topNegativeTitle": "Global Chip Stock Selloff Extends, Bitcoin Rallies: Markets Wrap",
-      "topPositiveTitle": "Global Chip Stock Selloff Extends, Bitcoin Rallies: Markets Wrap",
-      "items": [
-        {
-          "title": "Global Chip Stock Selloff Extends, Bitcoin Rallies: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.5,
-          "publishedAt": "2026-08-24T22:09:52+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-24/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "jp_semiconductor",
-            "macro_risk",
-            "market",
-            "us_growth"
-          ]
-        }
-      ]
-    },
-    "global_broad": {
       "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
@@ -133,6 +53,109 @@
       "topNegativeTitle": null,
       "topPositiveTitle": null,
       "items": []
+    },
+    "us_broad": {
+      "avgSentiment": 0.11,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 2,
+      "sourceCount": 1,
+      "itemCount": 3,
+      "isStale": false,
+      "topNegativeTitle": "Market Looking For Powell-Type Guidance: Henry Allen",
+      "topPositiveTitle": "Dollar Debasement Frees EM Currencies From Treasuries’ Weight",
+      "items": [
+        {
+          "title": "Market Looking For Powell-Type Guidance: Henry Allen",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-25T11:16:54+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-25/market-looking-for-powell-type-guidance-henry-allen-video",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Jackson Hole Offers Warsh High Profile Slot to Rebut His Critics",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-25T10:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-25/jackson-hole-offers-warsh-high-profile-slot-to-rebut-his-critics",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Dollar Debasement Frees EM Currencies From Treasuries’ Weight",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-25T09:38:22+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-25/dollar-debasement-frees-em-currencies-from-treasuries-weight",
+          "tags": [
+            "fx",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        }
+      ]
+    },
+    "us_growth": {
+      "avgSentiment": 0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
+      "isStale": false,
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
+    },
+    "global_broad": {
+      "avgSentiment": 0.665,
+      "negativeCount": 0,
+      "positiveCount": 2,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 2,
+      "isStale": false,
+      "topNegativeTitle": "Stocks Climb as Brent Below $90 Gives Bonds a Lift: Markets Wrap",
+      "topPositiveTitle": "European Stocks Rise as Pullback in Oil Lifts Investor Sentiment",
+      "items": [
+        {
+          "title": "Stocks Climb as Brent Below $90 Gives Bonds a Lift: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-24T22:09:52+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-24/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "global_broad",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "European Stocks Rise as Pullback in Oil Lifts Investor Sentiment",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-08-25T07:18:28+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-25/european-stocks-advance-as-oil-prices-drop-siemens-energy-up",
+          "tags": [
+            "commodity",
+            "global_broad",
+            "market"
+          ]
+        }
+      ]
     },
     "gold": {
       "avgSentiment": 0.2,
@@ -173,41 +196,54 @@
       "items": []
     },
     "dividend": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Bessent Defends Buyback Plan, Stops Short of New Bond Measures",
-      "topPositiveTitle": "Bessent Defends Buyback Plan, Stops Short of New Bond Measures",
-      "items": [
-        {
-          "title": "Bessent Defends Buyback Plan, Stops Short of New Bond Measures",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-25T00:21:56+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-25/bessent-defends-buyback-plan-stops-short-of-new-signals-video",
-          "tags": [
-            "dividend",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.221,
+      "avgSentiment": 0.167,
       "negativeCount": 0,
-      "positiveCount": 3,
+      "positiveCount": 1,
       "neutralCount": 5,
-      "sourceCount": 3,
-      "itemCount": 8,
+      "sourceCount": 2,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Drought and Energy Crunch Curb Hungary’s Budget Deficit Cuts",
-      "topPositiveTitle": "US-Canada trade war",
+      "topNegativeTitle": "US-Canada Trade War Escalates",
+      "topPositiveTitle": "German Economic Revival Gathers Pace as Business Optimism Jumps",
       "items": [
+        {
+          "title": "US-Canada Trade War Escalates",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-25T11:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-08-25/us-canada-trade-war-escalates",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "German Outlook Improves as Public Spending Boost Bolsters Growth",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-25T08:03:20+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-25/german-outlook-improves-as-public-spending-boost-bolsters-growth",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
         {
           "title": "Drought and Energy Crunch Curb Hungary’s Budget Deficit Cuts",
           "source": "Bloomberg Economics",
@@ -222,77 +258,63 @@
           ]
         },
         {
-          "title": "Trump Tariff Latest: New Trade Tensions Could Reverberate Back to US Prices",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-24T11:00:01+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-08-24/trump-tariff-latest-new-trade-tensions-could-reverberate-back-to-us-prices",
-          "tags": [
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Canadians Brace for Economic Pain as 50% US Tariffs Take Effect",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-23T23:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-23/canada-turned-down-a-us-tariff-deal-now-comes-the-economic-cost",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "高市首相 ウクライナ支援首脳会合に参加“対ロ制裁取り組む”",
+          "title": "自民 拉致問題対策本部“北朝鮮制裁 安易に緩和すべきでない”",
           "source": "NHK 経済",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-24T21:52:08+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20260825de46100",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ],
-          "titleJa": "高市首相 ウクライナ支援首脳会合に参加“対ロ制裁取り組む”"
-        },
-        {
-          "title": "超党派議連 ICC制裁で非難声明「明確な抗議と制裁の撤回を」",
-          "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-24T11:00:19+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20260824de46043",
+          "publishedAt": "2026-08-25T10:29:17+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20260825de46288",
           "tags": [
             "macro_risk",
             "market"
           ],
-          "titleJa": "超党派議連 ICC制裁で非難声明「明確な抗議と制裁の撤回を」"
+          "titleJa": "自民 拉致問題対策本部“北朝鮮制裁 安易に緩和すべきでない”"
+        },
+        {
+          "title": "茂木外相「米国ICC制裁は日本の立場と相いれない」",
+          "source": "NHK 経済",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-25T08:10:00+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20260825de46243",
+          "tags": [
+            "macro_risk",
+            "market"
+          ],
+          "titleJa": "茂木外相「米国ICC制裁は日本の立場と相いれない」"
         }
       ]
     },
     "fx": {
-      "avgSentiment": 0.4,
-      "negativeCount": 0,
+      "avgSentiment": -0.035,
+      "negativeCount": 1,
       "positiveCount": 1,
       "neutralCount": 2,
       "sourceCount": 1,
-      "itemCount": 3,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Trump's Family Seeking National Bank Charter",
-      "topPositiveTitle": "Bond Investor Ed Al-Hussainy on Bessent's Treasury Twist",
+      "topNegativeTitle": "Treasury Move Just Another Way to a Weaker Dollar, Says SocGen’s Juckes",
+      "topPositiveTitle": "Dollar Debasement Frees EM Currencies From Treasuries’ Weight",
       "items": [
         {
-          "title": "Trump's Family Seeking National Bank Charter",
+          "title": "Treasury Move Just Another Way to a Weaker Dollar, Says SocGen’s Juckes",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-08-25T11:49:10+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-25/treasury-move-is-another-way-to-a-weaker-dollar-juckes-video",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        },
+        {
+          "title": "HSBC Buys at Least $3 Billion of Indian Debt on Deposit Rush",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-24T21:44:29+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-24/trump-s-family-seeking-national-bank-charter-video",
+          "publishedAt": "2026-08-25T06:14:48+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-25/hsbc-buys-at-least-3-billion-india-bonds-after-fx-deposit-boost",
           "tags": [
             "fx",
             "market"
@@ -312,12 +334,12 @@
           ]
         },
         {
-          "title": "Bond Investor Ed Al-Hussainy on Bessent's Treasury Twist",
+          "title": "Dollar Debasement Frees EM Currencies From Treasuries’ Weight",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-08-24T21:52:07+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-24/bond-investor-ed-al-hussainy-on-bessent-s-treasury-twist-video",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-25T09:38:22+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-25/dollar-debasement-frees-em-currencies-from-treasuries-weight",
           "tags": [
             "fx",
             "market",
@@ -328,16 +350,29 @@
       ]
     },
     "rates": {
-      "avgSentiment": 0.223,
-      "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 1,
+      "avgSentiment": 0.0,
+      "negativeCount": 2,
+      "positiveCount": 2,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Hungary Heads for Third Rate Cut With Inflation at Decade-Low",
-      "topPositiveTitle": "Bond Investor Ed Al-Hussainy on Bessent's Treasury Twist",
+      "topNegativeTitle": "BOJ’s Price Gauge Stays Above 2% Amid Rate Hike Speculation",
+      "topPositiveTitle": "Dollar Debasement Frees EM Currencies From Treasuries’ Weight",
       "items": [
+        {
+          "title": "BOJ’s Price Gauge Stays Above 2% Amid Rate Hike Speculation",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-25T05:15:26+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-25/boj-s-price-gauge-stays-above-target-amid-rate-hike-speculation",
+          "tags": [
+            "jp_broad",
+            "market",
+            "rates"
+          ]
+        },
         {
           "title": "Hungary Heads for Third Rate Cut With Inflation at Decade-Low",
           "source": "Bloomberg Economics",
@@ -345,6 +380,18 @@
           "sentimentScore": -0.33,
           "publishedAt": "2026-08-25T04:00:00+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-08-25/hungary-heads-for-third-rate-cut-with-inflation-at-decade-low",
+          "tags": [
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Japan Debt-Servicing Costs to Hit $230 Billion Record Next Year",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-25T10:17:01+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-25/japan-debt-servicing-costs-to-hit-230-billion-record-next-year",
           "tags": [
             "market",
             "rates"
@@ -363,12 +410,12 @@
           ]
         },
         {
-          "title": "Bond Investor Ed Al-Hussainy on Bessent's Treasury Twist",
+          "title": "Dollar Debasement Frees EM Currencies From Treasuries’ Weight",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-08-24T21:52:07+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-24/bond-investor-ed-al-hussainy-on-bessent-s-treasury-twist-video",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-25T09:38:22+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-25/dollar-debasement-frees-em-currencies-from-treasuries-weight",
           "tags": [
             "fx",
             "market",
@@ -379,39 +426,25 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.132,
-      "negativeCount": 1,
+      "avgSentiment": 0.333,
+      "negativeCount": 0,
       "positiveCount": 2,
       "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Hartree's Morse: 3 Things Define Hormuz Strait's Future",
-      "topPositiveTitle": "Singapore’s Core Inflation Surges to Near Two-Year High",
+      "topNegativeTitle": "Mexico Bonds Trade Like Junk After $130 Billion Bailout of Pemex",
+      "topPositiveTitle": "European Stocks Rise as Pullback in Oil Lifts Investor Sentiment",
       "items": [
         {
-          "title": "Hartree's Morse: 3 Things Define Hormuz Strait's Future",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-08-24T21:39:12+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-24/hartree-s-morse-3-things-define-hormuz-strait-s-future-video",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "Latest Oil Market News and Analysis for Aug. 25",
+          "title": "Mexico Bonds Trade Like Junk After $130 Billion Bailout of Pemex",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-24T22:02:31+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-24/latest-oil-market-news-and-analysis-for-aug-25",
+          "publishedAt": "2026-08-25T10:30:06+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-25/mexico-bonds-trade-like-junk-after-130-billion-bailout-of-pemex-mt8ix5iw",
           "tags": [
             "commodity",
-            "geopolitical",
             "market"
           ]
         },
@@ -429,75 +462,76 @@
           ]
         },
         {
-          "title": "Asian Buyers Snap Up US Crude, Adding Stress to Tight Market",
+          "title": "Stocks Climb as Brent Below $90 Gives Bonds a Lift: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.33,
-          "publishedAt": "2026-08-24T20:11:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-24/asia-buyers-snap-up-american-crude-add-stress-to-tight-market",
+          "publishedAt": "2026-08-24T22:09:52+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-24/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
-            "market"
+            "global_broad",
+            "market",
+            "rates"
           ]
         },
         {
-          "title": "Singapore’s Core Inflation Surges to Near Two-Year High",
-          "source": "Bloomberg Economics",
+          "title": "European Stocks Rise as Pullback in Oil Lifts Investor Sentiment",
+          "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 1.0,
-          "publishedAt": "2026-08-24T05:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-24/singapore-core-inflation-surges-to-near-two-year-high-on-energy",
+          "publishedAt": "2026-08-25T07:18:28+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-25/european-stocks-advance-as-oil-prices-drop-siemens-energy-up",
           "tags": [
             "commodity",
+            "global_broad",
             "market"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.181,
-      "negativeCount": 1,
-      "positiveCount": 3,
-      "neutralCount": 3,
-      "sourceCount": 3,
-      "itemCount": 7,
+      "avgSentiment": 0.278,
+      "negativeCount": 0,
+      "positiveCount": 2,
+      "neutralCount": 4,
+      "sourceCount": 2,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Hartree's Morse: 3 Things Define Hormuz Strait's Future",
-      "topPositiveTitle": "Bessent’s Iran D-Day Threat Clouds Outlook for India’s Rupee, Stocks",
+      "topNegativeTitle": "Russia Eyes Grain Duty Pause Through Year End on Ukraine Strikes",
+      "topPositiveTitle": "German Economic Revival Gathers Pace as Business Optimism Jumps",
       "items": [
         {
-          "title": "Hartree's Morse: 3 Things Define Hormuz Strait's Future",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-08-24T21:39:12+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-24/hartree-s-morse-3-things-define-hormuz-strait-s-future-video",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "Latest Oil Market News and Analysis for Aug. 25",
+          "title": "Russia Eyes Grain Duty Pause Through Year End on Ukraine Strikes",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-24T22:02:31+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-24/latest-oil-market-news-and-analysis-for-aug-25",
+          "publishedAt": "2026-08-25T11:16:09+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-25/russia-eyes-grain-duty-pause-through-year-end-on-ukraine-strikes",
           "tags": [
-            "commodity",
             "geopolitical",
             "market"
           ]
         },
         {
-          "title": "Canadians Brace for Economic Pain as 50% US Tariffs Take Effect",
+          "title": "The US‘s Economic `D-Day’ for Iran Doesn’t Live Up to Bessent’s Hype",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-25T11:15:01+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-08-25/the-us-s-economic-d-day-for-iran-doesn-t-live-up-to-bessent-s-hype",
+          "tags": [
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "US-Canada Trade War Escalates",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-23T23:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-23/canada-turned-down-a-us-tariff-deal-now-comes-the-economic-cost",
+          "publishedAt": "2026-08-25T11:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-08-25/us-canada-trade-war-escalates",
           "tags": [
             "geopolitical",
             "macro_risk",
@@ -505,29 +539,27 @@
           ]
         },
         {
-          "title": "高市首相 ウクライナ支援首脳会合に参加“対ロ制裁取り組む”",
-          "source": "NHK 経済",
+          "title": "German Outlook Improves as Public Spending Boost Bolsters Growth",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-24T21:52:08+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20260825de46100",
+          "publishedAt": "2026-08-25T08:03:20+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-25/german-outlook-improves-as-public-spending-boost-bolsters-growth",
           "tags": [
             "geopolitical",
             "macro_risk",
             "market"
-          ],
-          "titleJa": "高市首相 ウクライナ支援首脳会合に参加“対ロ制裁取り組む”"
+          ]
         },
         {
-          "title": "Molavi: Focus on Applying Iran Sanctions on Trade Allies",
-          "source": "Bloomberg Economics",
+          "title": "China Defends Cooperation With Iran Amid US Warnings | Opening Trade 8/25/2026",
+          "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.6,
-          "publishedAt": "2026-08-24T05:39:16+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-24/molavi-focus-on-applying-iran-sanctions-on-trade-allies-video",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-25T10:08:22+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-25/the-opening-trade-8-25-2026-video",
           "tags": [
             "geopolitical",
-            "macro_risk",
             "market"
           ]
         }
