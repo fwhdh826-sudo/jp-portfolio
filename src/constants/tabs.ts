@@ -89,10 +89,10 @@ export const TAB_META: TabMeta[] = [
   {
     id: 'T7',
     short: '07',
-    label: '実行プラン',
-    title: '実行プラン / 売買設計',
-    description: 'エントリー根拠・利確条件・損切条件・分割執行案を管理します。',
-    icon: '📋',
+    label: '投信管理',
+    title: '投信管理 / 当日実行判断',
+    description: '投信ポートフォリオ状態・短期シグナル・当日実行キュー・資金配分提案を確認します。',
+    icon: '🏦',
     phase: 'legacy',
   },
   {

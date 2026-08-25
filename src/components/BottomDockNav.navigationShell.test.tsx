@@ -38,7 +38,7 @@ describe('BottomDockNav — UI-9C T7案D: 常時表示（A）', () => {
     expect(html).toContain('class="bottom-dock"')
     const activeButton = html.match(/<button class="bottom-dock__item active"[\s\S]*?<\/button>/)
     expect(activeButton).toBeTruthy()
-    expect(activeButton![0]).toContain('実行プラン')
+    expect(activeButton![0]).toContain('投信管理')
   })
 
   it('T7でも他タブ同様にprimary dock item 4件 + Moreボタンがrenderされる', () => {

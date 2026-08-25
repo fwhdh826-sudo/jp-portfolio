@@ -285,9 +285,9 @@ export function StatusBar() {
       <CrossTabInvalidationWarning viewModel={crossTabViewModel} onReload={handleCrossTabReload} />
 
       <div className="status-bar" role="status" aria-label="市場概況">
-        {/* 市場モード */}
+        {/* 市況 */}
         <div className="status-bar__item">
-          <span className="status-bar__label">市場モード</span>
+          <span className="status-bar__label">市況</span>
           <span className={`status-bar__value regime-${regimeCls}`}>{regimeLabel}</span>
         </div>
 

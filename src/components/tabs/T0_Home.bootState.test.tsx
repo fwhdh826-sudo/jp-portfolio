@@ -7,6 +7,7 @@ import { describe, expect, it, vi } from 'vitest'
 import { renderToStaticMarkup } from 'react-dom/server'
 import type { AppState } from '../../types'
 import { createAppStoreInstanceForTest } from '../../store/useAppStore'
+import { TAB_META_BY_ID } from '../../constants/tabs'
 
 const mockedStore = vi.hoisted(() => ({ state: null as AppState | null }))
 
@@ -207,5 +208,21 @@ describe('F-A-P1-2: RiskWarningCardはpartial/failed中に誤った安全宣言�
   it('[mutation guard] partial/failedのいずれでも安全宣言が出ない', () => {
     expect(renderWith(partialState())).not.toContain('重大なリスク要因は検出されていません')
     expect(renderWith(failedState())).not.toContain('重大なリスク要因は検出されていません')
+  })
+})
+
+// H-P1-4/5: T0のNavCtaRowはT1/T7のlabel/iconをconstants/tabs.tsのTAB_META_BY_IDから
+// 参照する（ハードコード値ではなく2つの参照元が同一であることを直接importで検証する）。
+describe('H-P1-4/5: NavCtaRowはTAB_META_BY_IDのT1/T7とidentityが一致する', () => {
+  it('T1/T7のnav pillがTAB_META_BY_ID.T1/.T7のicon+labelとbit-identicalにrenderされる', () => {
+    const html = renderWith(BASE_APP_STATE)
+    expect(html).toContain(`<span>${TAB_META_BY_ID.T1.icon}</span><span>${TAB_META_BY_ID.T1.label}</span>`)
+    expect(html).toContain(`<span>${TAB_META_BY_ID.T7.icon}</span><span>${TAB_META_BY_ID.T7.label}</span>`)
+  })
+
+  it('[mutation guard] 旧T1/T7 identity（銘柄分析/実行プラン）が残存していない', () => {
+    const html = renderWith(BASE_APP_STATE)
+    expect(html).not.toContain('銘柄分析')
+    expect(html).not.toContain('実行プラン')
   })
 })

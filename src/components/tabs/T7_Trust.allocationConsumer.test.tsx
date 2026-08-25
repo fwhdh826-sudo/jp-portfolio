@@ -1037,7 +1037,7 @@ describe('CAND-SYN-1E: T7 candidate authority cutover (E1-E18)', () => {
 
   it('E14 candidate section never reads OfficialDecisionItem.reason / officialDecision', () => {
     const sectionStart = t7Source.indexOf('未保有投信候補（BUY_NEW / WATCH）')
-    const sectionEnd = t7Source.indexOf('SAFE_MODE / DQ抑制中 — 新規買い判断停止中。最新データ確認後に再判定。')
+    const sectionEnd = t7Source.indexOf('{SUPPRESSION_BANNER_PREFIX} — 新規買い判断停止中。最新データ確認後に再判定。')
     expect(sectionStart).toBeGreaterThan(-1)
     expect(sectionEnd).toBeGreaterThan(sectionStart)
     const section = t7Source.slice(sectionStart, sectionEnd)

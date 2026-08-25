@@ -22,6 +22,7 @@ import { SectionHeader } from '../layout/SectionHeader'
 import { PageHeader }    from '../layout/PageHeader'
 import { SignalBadge }   from '../badges/SignalBadge'
 import { suppressBuySignal } from '../shared/verdict'
+import { SUPPRESSION_BANNER_PREFIX } from '../shared/suppressionBanner'
 import type { Signal }   from '../badges/SignalBadge'
 
 import { colors, radius, shadow, spacing } from '../../theme/tokens'
@@ -352,7 +353,7 @@ export function T4_IdealPf() {
           <div style={{ ...typography.caption, color: colors.textSubtle, marginLeft: spacing[4], marginTop: spacing[0.5] }}>
             スコア {row.score} / EV {formatSignedPct(row.ev * 100, 1)}
             {isBuySuppressed && (
-              <span style={{ color: colors.waitText, fontWeight: 600 }}> — SAFE_MODE/DQ抑制中: 買付は参考停止</span>
+              <span style={{ color: colors.waitText, fontWeight: 600 }}> — {SUPPRESSION_BANNER_PREFIX}: 買付は参考停止</span>
             )}
           </div>
           {EMBEDDED_GOLD_EXPOSURE[row.id] && (() => {
@@ -427,7 +428,7 @@ export function T4_IdealPf() {
           <div style={{ ...typography.caption, color: colors.textSubtle, marginTop: spacing[0.5] }}>
             {row.reason} / スコア {row.score}
             {isBuySuppressed && (
-              <span style={{ color: colors.waitText, fontWeight: 600 }}> — SAFE_MODE/DQ抑制中: 買付は参考停止</span>
+              <span style={{ color: colors.waitText, fontWeight: 600 }}> — {SUPPRESSION_BANNER_PREFIX}: 買付は参考停止</span>
             )}
           </div>
         </div>
@@ -450,7 +451,7 @@ export function T4_IdealPf() {
 
   function SuppressedReferenceNotice() {
     if (!isSuppressed) return null
-    const reason = safeModeActive ? 'SAFE_MODE有効' : 'データ品質抑制中'
+    const reason = safeModeActive ? SUPPRESSION_BANNER_PREFIX : 'データ品質抑制中'
     return (
       <div style={{
         background: colors.waitBg, border: `1px solid ${colors.waitBorder}`,

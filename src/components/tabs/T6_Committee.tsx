@@ -12,6 +12,7 @@ import { CircularGauge } from '../charts/CircularGauge'
 import { colors } from '../../theme/tokens'
 import { SectionHeader } from '../layout/SectionHeader'
 import { PageHeader } from '../layout/PageHeader'
+import { SUPPRESSION_BANNER_PREFIX } from '../shared/suppressionBanner'
 
 // ─────────────────────────────────────────────────────────────
 // サブコンポーネント
@@ -74,7 +75,7 @@ function ConsensusMeter({ analysis, isBuySuppressed }: { analysis: HoldingAnalys
         <span style={{ color: colors.hold,     fontWeight: 600 }}>待機 {holdCount}銘柄</span>
         <span style={{ color: colors.sellText, fontWeight: 600 }}>SELL {sellCount}銘柄</span>
         {isBuySuppressed && (
-          <span style={{ color: colors.hold, fontWeight: 600 }}>SAFE_MODE/DQ抑制中 — 買付は参考停止</span>
+          <span style={{ color: colors.hold, fontWeight: 600 }}>{SUPPRESSION_BANNER_PREFIX} — 買付は参考停止</span>
         )}
       </div>
     </div>
@@ -132,7 +133,7 @@ function HeroVerdictPanel({ a, h, isBuySuppressed }: { a: HoldingAnalysis; h: Ho
   const tone: 'buy' | 'hold' | 'wait' = debate.confidence >= 0.65 ? 'buy'
     : debate.confidence >= 0.45 ? 'hold' : 'wait'
 
-  const decHeadline = dec === 'WAIT' ? 'SAFE_MODE/DQ抑制中 — 買付は参考停止'
+  const decHeadline = dec === 'WAIT' ? `${SUPPRESSION_BANNER_PREFIX} — 買付は参考停止`
     : dec === 'BUY'  ? '新規・買増しを参考推奨'
     : dec === 'SELL' ? '売却を参考検討'
     : '維持 / 様子見 — ポジション継続'
@@ -171,7 +172,7 @@ function HeroVerdictPanel({ a, h, isBuySuppressed }: { a: HoldingAnalysis; h: Ho
           {/* P4-A154: 抑制中はdebate.recommendedAction（AI討論の生の実行指示文言）をSAFE_MODE/DQ文言で上書きする */}
           {isBuySuppressed && rawDec === 'BUY' ? (
             <div style={{ fontSize: 12, color: 'var(--color-text-subtle)', lineHeight: 1.5 }}>
-              SAFE_MODE/DQ抑制中のため、新規・買増しの参考推奨は停止しています。
+              {SUPPRESSION_BANNER_PREFIX}のため、新規・買増しの参考推奨は停止しています。
             </div>
           ) : debate.recommendedAction && (
             <div style={{ fontSize: 12, color: 'var(--color-text-subtle)', lineHeight: 1.5 }}>

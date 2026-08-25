@@ -6,6 +6,7 @@
  */
 import { useState } from 'react'
 import { useAppStore } from '../../store/useAppStore'
+import { TAB_META_BY_ID } from '../../constants/tabs'
 import {
   selectBuyList,
   selectHoldList,
@@ -164,9 +165,9 @@ function NavCtaRow() {
   const setTab = useAppStore(s => s.setTab)
   const items = [
     { id: 'T5' as const, icon: '📰', label: 'ニュース' },
-    { id: 'T1' as const, icon: '📊', label: '銘柄分析' },
+    { id: 'T1' as const, icon: TAB_META_BY_ID.T1.icon, label: TAB_META_BY_ID.T1.label },
     { id: 'T4' as const, icon: '⚖️', label: '理想PF' },
-    { id: 'T7' as const, icon: '🏦', label: '投信管理' },
+    { id: 'T7' as const, icon: TAB_META_BY_ID.T7.icon, label: TAB_META_BY_ID.T7.label },
     { id: 'T6' as const, icon: '🤖', label: 'AI委員会' },
   ]
   return (
