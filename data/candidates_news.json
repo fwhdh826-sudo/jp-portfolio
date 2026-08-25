@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-08-26T06:57:14.983750+09:00",
-  "sourceUpdatedAt": "2026-08-25T21:28:48+00:00",
+  "updatedAt": "2026-08-26T08:47:00.671820+09:00",
+  "sourceUpdatedAt": "2026-08-25T23:38:16+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -17,12 +17,12 @@
       "items": []
     },
     "jp_semiconductor": {
-      "avgSentiment": -0.165,
+      "avgSentiment": -0.177,
       "negativeCount": 1,
       "positiveCount": 0,
-      "neutralCount": 1,
+      "neutralCount": 2,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 3,
       "isStale": false,
       "topNegativeTitle": "Intuit Sinks 11% on Weak Outlook as Nvidia Earnings Loom | Closing Bell",
       "topPositiveTitle": "Stocks Rise Before Nvidia as Oil Drop Lifts Bonds: Markets Wrap",
@@ -37,6 +37,21 @@
           "tags": [
             "jp_semiconductor",
             "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Asian Stocks Set to Gain as Oil Extends Declines: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.2,
+          "publishedAt": "2026-08-25T22:08:45+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-25/asian-stocks-set-to-gain-as-oil-extends-declines-markets-wrap",
+          "tags": [
+            "commodity",
+            "jp_semiconductor",
+            "market",
+            "rates",
             "us_growth"
           ]
         },
@@ -58,28 +73,16 @@
       ]
     },
     "us_broad": {
-      "avgSentiment": -0.088,
-      "negativeCount": 1,
-      "positiveCount": 0,
+      "avgSentiment": 0.022,
+      "negativeCount": 0,
+      "positiveCount": 1,
       "neutralCount": 5,
       "sourceCount": 2,
       "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Copy Trading Offers Alternative to Traditional Investing",
-      "topPositiveTitle": "Consumers Are Signaling an Uneven Economy, Abby Joseph Cohen Says",
+      "topNegativeTitle": "Treasuries Gain as Oil Drop Eases Pressure on Inflation, Bessent",
+      "topPositiveTitle": "Fed’s Barkin Says Rising US Debt Will Lead to Eventual Reckoning",
       "items": [
-        {
-          "title": "Copy Trading Offers Alternative to Traditional Investing",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-24T21:36:08+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-24/copy-trading-offers-alternative-to-traditional-investing-video",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
         {
           "title": "Treasuries Gain as Oil Drop Eases Pressure on Inflation, Bessent",
           "source": "Bloomberg Markets",
@@ -131,16 +134,28 @@
             "rates",
             "us_broad"
           ]
+        },
+        {
+          "title": "Jackson Hole Offers Warsh a Prime Stage to Rebut His Critics",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-25T10:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-25/jackson-hole-offers-warsh-high-profile-slot-to-rebut-his-critics",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": -0.165,
+      "avgSentiment": -0.177,
       "negativeCount": 1,
       "positiveCount": 0,
-      "neutralCount": 1,
+      "neutralCount": 2,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 3,
       "isStale": false,
       "topNegativeTitle": "Intuit Sinks 11% on Weak Outlook as Nvidia Earnings Loom | Closing Bell",
       "topPositiveTitle": "Stocks Rise Before Nvidia as Oil Drop Lifts Bonds: Markets Wrap",
@@ -155,6 +170,21 @@
           "tags": [
             "jp_semiconductor",
             "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Asian Stocks Set to Gain as Oil Extends Declines: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.2,
+          "publishedAt": "2026-08-25T22:08:45+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-25/asian-stocks-set-to-gain-as-oil-extends-declines-markets-wrap",
+          "tags": [
+            "commodity",
+            "jp_semiconductor",
+            "market",
+            "rates",
             "us_growth"
           ]
         },
@@ -264,15 +294,15 @@
       ]
     },
     "macro_risk": {
-      "avgSentiment": 0.1,
+      "avgSentiment": -0.033,
       "negativeCount": 1,
-      "positiveCount": 2,
-      "neutralCount": 5,
+      "positiveCount": 1,
+      "neutralCount": 4,
       "sourceCount": 3,
-      "itemCount": 8,
+      "itemCount": 6,
       "isStale": false,
       "topNegativeTitle": "Oil Falls on Fresh Iran War Diplomacy, Talks on Hormuz",
-      "topPositiveTitle": "German Economic Revival Gathers Pace as Business Optimism Jumps",
+      "topPositiveTitle": "UK Household Inflation Worries Pick Up Again in August",
       "items": [
         {
           "title": "Oil Falls on Fresh Iran War Diplomacy, Talks on Hormuz",
@@ -317,18 +347,6 @@
           ]
         },
         {
-          "title": "Braskem’s $11 Billion Debt Rework Puts Spotlight on Petrobras",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-25T19:05:08+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-25/braskem-s-11-billion-debt-rework-puts-spotlight-on-petrobras",
-          "tags": [
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
           "title": "US-Canada Trade War Escalates",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
@@ -340,6 +358,19 @@
             "macro_risk",
             "market"
           ]
+        },
+        {
+          "title": "自民 拉致問題対策本部“北朝鮮制裁 安易に緩和すべきでない”",
+          "source": "NHK 経済",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-25T10:29:17+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20260825de46288",
+          "tags": [
+            "macro_risk",
+            "market"
+          ],
+          "titleJa": "自民 拉致問題対策本部“北朝鮮制裁 安易に緩和すべきでない”"
         }
       ]
     },
@@ -382,16 +413,31 @@
       ]
     },
     "rates": {
-      "avgSentiment": 0.078,
+      "avgSentiment": 0.039,
       "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 5,
+      "neutralCount": 6,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "Treasuries Gain as Oil Drop Eases Pressure on Inflation, Bessent",
+      "topNegativeTitle": "Asian Stocks Set to Gain as Oil Extends Declines: Markets Wrap",
       "topPositiveTitle": "BOK to Weigh Back-to-Back Hike as Growth, Inflation Remain Firm",
       "items": [
+        {
+          "title": "Asian Stocks Set to Gain as Oil Extends Declines: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.2,
+          "publishedAt": "2026-08-25T22:08:45+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-25/asian-stocks-set-to-gain-as-oil-extends-declines-markets-wrap",
+          "tags": [
+            "commodity",
+            "jp_semiconductor",
+            "market",
+            "rates",
+            "us_growth"
+          ]
+        },
         {
           "title": "Treasuries Gain as Oil Drop Eases Pressure on Inflation, Bessent",
           "source": "Bloomberg Markets",
@@ -443,42 +489,27 @@
             "market",
             "rates"
           ]
-        },
-        {
-          "title": "Stocks Rise Before Nvidia as Oil Drop Lifts Bonds: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-24T22:09:52+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-24/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "jp_semiconductor",
-            "market",
-            "rates",
-            "us_growth"
-          ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": -0.1,
+      "avgSentiment": -0.111,
       "negativeCount": 2,
-      "positiveCount": 2,
-      "neutralCount": 4,
+      "positiveCount": 1,
+      "neutralCount": 6,
       "sourceCount": 3,
-      "itemCount": 8,
+      "itemCount": 9,
       "isStale": false,
-      "topNegativeTitle": "US Natural Gas Falls as Iran Pressure Plan Pulls Down Energy",
+      "topNegativeTitle": "Latest Oil Market News and Analysis for Aug. 26",
       "topPositiveTitle": "Hungary Sticks to Meeting Euro Criteria by 2030 Despite Deficit",
       "items": [
         {
-          "title": "US Natural Gas Falls as Iran Pressure Plan Pulls Down Energy",
+          "title": "Latest Oil Market News and Analysis for Aug. 26",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-08-25T13:48:51+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-25/us-natural-gas-drops-with-oil-on-effects-of-iran-pressure-plan",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-08-25T22:06:21+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-25/latest-oil-market-news-and-analysis-for-aug-26",
           "tags": [
             "commodity",
             "geopolitical",
@@ -500,6 +531,21 @@
           ]
         },
         {
+          "title": "Asian Stocks Set to Gain as Oil Extends Declines: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.2,
+          "publishedAt": "2026-08-25T22:08:45+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-25/asian-stocks-set-to-gain-as-oil-extends-declines-markets-wrap",
+          "tags": [
+            "commodity",
+            "jp_semiconductor",
+            "market",
+            "rates",
+            "us_growth"
+          ]
+        },
+        {
           "title": "Treasuries Gain as Oil Drop Eases Pressure on Inflation, Bessent",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
@@ -515,51 +561,37 @@
           ]
         },
         {
-          "title": "政府 エネルギー安定確保で新計画 代替パイプライン建設支援",
-          "source": "NHK 経済",
+          "title": "Fusion Firm Gets Major Monetary Boost",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-25T20:06:00+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20260826de46331",
+          "publishedAt": "2026-08-25T21:51:58+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-25/fusion-firm-gets-major-monetary-boost-video",
           "tags": [
             "commodity",
-            "market"
-          ],
-          "titleJa": "政府 エネルギー安定確保で新計画 代替パイプライン建設支援"
-        },
-        {
-          "title": "India Exports Face Little Risk From Tougher US Sanctions on Iran",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-25T15:49:25+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-25/india-exports-face-little-risk-from-tougher-us-sanctions-on-iran",
-          "tags": [
-            "commodity",
-            "geopolitical",
             "market"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.0,
+      "avgSentiment": -0.096,
       "negativeCount": 2,
-      "positiveCount": 2,
+      "positiveCount": 1,
       "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 8,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "US Natural Gas Falls as Iran Pressure Plan Pulls Down Energy",
-      "topPositiveTitle": "German Economic Revival Gathers Pace as Business Optimism Jumps",
+      "topNegativeTitle": "Latest Oil Market News and Analysis for Aug. 26",
+      "topPositiveTitle": "UK Household Inflation Worries Pick Up Again in August",
       "items": [
         {
-          "title": "US Natural Gas Falls as Iran Pressure Plan Pulls Down Energy",
+          "title": "Latest Oil Market News and Analysis for Aug. 26",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-08-25T13:48:51+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-25/us-natural-gas-drops-with-oil-on-effects-of-iran-pressure-plan",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-08-25T22:06:21+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-25/latest-oil-market-news-and-analysis-for-aug-26",
           "tags": [
             "commodity",
             "geopolitical",
