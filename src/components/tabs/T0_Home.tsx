@@ -1343,7 +1343,7 @@ function FundPreviewCard() {
           </div>
         ))}
         {trust.length > 5 && (
-          <div className="dash-preview-more">他 {trust.length - 5} 本</div>
+          <div className="dash-preview-more">他 {trust.length - 5}本</div>
         )}
       </div>
     </div>
