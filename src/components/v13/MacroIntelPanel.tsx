@@ -11,6 +11,7 @@ import type { CSSProperties } from 'react'
 import type { MarketIntelData, MarketIntelRiskLevel } from '../../types/market_intel'
 import { MacroSignalBadge } from './MacroSignalBadge'
 import { SourceStatusRow  } from './SourceStatusRow'
+import { formatSignedPct } from '../../utils/format'
 
 // ── 定数 ─────────────────────────────────────────────────────
 
@@ -65,6 +66,15 @@ function safeBodyLine(line: unknown): string | null {
     if (line.includes(tok)) return null
   }
   return line
+}
+
+// ── nikkei 5d 騰落率 formatter（UI-9H H-P1-8 / [F-1]是正） ──────
+// runtime guardはJSON fetch由来の型不整合に対する防御であり、formatSignedPct自体のfallbackとは別目的で維持する。
+// テストからvalue-level assertionできるよう module-level export とする（self-fetchコンポーネントのためDOM renderでのfixture注入不可）。
+export function formatNikkei5dReturn(nk5d: unknown): string {
+  return typeof nk5d === 'number' && Number.isFinite(nk5d)
+    ? formatSignedPct(nk5d * 100, 1)
+    : '—'
 }
 
 // ── freshness helpers ─────────────────────────────────────────
@@ -254,10 +264,7 @@ export function MacroIntelPanel() {
   const { label: freshnessLabel, stale: freshnessStale } = computeFreshnessBadge(data.fetched_at)
 
   // nikkei 5d 騰落率フォーマット
-  const nk5d = data.nikkei_5d_return
-  const nk5dStr = typeof nk5d === 'number' && Number.isFinite(nk5d)
-    ? `${nk5d >= 0 ? '+' : ''}${(nk5d * 100).toFixed(1)}%`
-    : '—'
+  const nk5dStr = formatNikkei5dReturn(data.nikkei_5d_return)
 
   // 追加 metric tile（値存在時のみ）
   const hasNikkei60ma  = typeof data.nikkei_60ma  === 'number' && Number.isFinite(data.nikkei_60ma)  && data.nikkei_60ma  > 0

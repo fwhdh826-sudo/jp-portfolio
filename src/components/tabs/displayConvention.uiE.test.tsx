@@ -9,6 +9,7 @@ import type { FundPhase7Map } from '../../types/scoring'
 import { buildAssetUniverse } from '../../domain/optimization/idealAllocation'
 import { createAppStoreInstanceForTest } from '../../store/useAppStore'
 import { SafeModeStatusCard } from '../v13/SafeModeStatusCard'
+import { formatNikkei5dReturn } from '../v13/MacroIntelPanel'
 import type { TierAT1Violation } from '../../domain/constraints/tierAT1'
 import { formatPt, formatSignedJPY } from '../../utils/format'
 import { CLASS_LABEL, type AssetClass } from '../../types/universe'
@@ -433,6 +434,19 @@ describe('T-11: pnlPctが2桁+符号（0は符号なし）で描画される。S
   })
 })
 
+describe('UI-9H H-P1-8: MacroIntelPanel nikkei_5d_return が符号付き%で描画される（[F-1]/[F-6]是正）', () => {
+  // MacroIntelPanelは自己フェッチコンポーネント（useEffect+fetch）でありrenderToStaticMarkupは
+  // effectを実行しないため、本fileのrenderWith(state, Component)方式ではfixtureを注入できない。
+  // production render bodyが実際に呼ぶformatNikkei5dReturnへ直接fixture値を渡し、
+  // 「nikkei_5d_return=0 → 0.0%（+0.0%/-0.0%を生成しない）」をvalue-levelで固定する。
+  it('nikkei_5d_return: 0 fixture → "0.0%"（+0.0%/-0.0%を生成しない）', () => {
+    const s = formatNikkei5dReturn(0)
+    expect(s).toBe('0.0%')
+    expect(s).not.toContain('+0.0%')
+    expect(s).not.toContain('-0.0%')
+  })
+})
+
 describe('T-12: targetRatioがT0/T3/T4/T7で同一精度（1桁）で描画される（E-P1-5）', () => {
   const state = overAllocatedOverseasState()
   const overseas = state.universe!.categories.find(c => c.class === 'OVERSEAS_TRUST')!
@@ -515,11 +529,38 @@ describe('UI-9H H-P1-13: 投信本数の助数詞は「本」・数値-助数詞
     expect(block).not.toContain(`${jpFundCount} 件`)
   })
 
+  it('T0: 保有投信プレビューの残数captionが `他{n}本`（スペースなし, [F-2]是正）で描画される', () => {
+    const html = renderWith(BASE_APP_STATE, T0_Home)
+    const titleIdx = html.indexOf('dash-preview-more')
+    expect(titleIdx).toBeGreaterThan(-1)
+    const block = html.slice(titleIdx, titleIdx + 100)
+    const remainingCount = BASE_APP_STATE.trust.length - 5
+    expect(block).toContain(`他 ${remainingCount}本`)
+    // mutation guard: 旧「N 本」（数値-助数詞間スペース残存）へ戻すとRED
+    expect(block).not.toMatch(/[0-9] 本/)
+  })
+
   it('T3: 海外株ファンド数/ゴールドファンド数captionが `{n}本`（スペースなし）で描画される', () => {
     const html = renderWith(BASE_APP_STATE, T3_GlobalFund)
     expect(html).toContain(`${overseasFundCount}本`)
     expect(html).toContain(`${goldFundCount}本`)
     expect(html).toContain(`海外投信 ${globalFundCount}本`)
+  })
+
+  it('T3: hasOverlap=true branch → `N本`で描画される（[F-2b]是正）', () => {
+    expect(overseasFundCount).toBeGreaterThanOrEqual(2)
+    const html = renderWith(BASE_APP_STATE, T3_GlobalFund)
+    expect(html).toContain(`海外株ファンドが ${overseasFundCount}本あります`)
+    expect(html).not.toContain('海外株ファンド1件')
+  })
+
+  it('T3: hasOverlap=false branch → `1本`で描画される（[F-2b]是正、旧`1件`との助数詞不整合を解消）', () => {
+    const singleOverseasTrust = BASE_APP_STATE.trust.filter(t => t.policy !== 'OVERSEAS_LONGTERM' || t.id === 'sp500_sbi')
+    const state: AppState = { ...BASE_APP_STATE, trust: singleOverseasTrust }
+    const html = renderWith(state, T3_GlobalFund)
+    expect(html).toContain('海外株ファンド1本 — 重複なし')
+    // mutation guard: 旧「1件」（hasOverlapブランチ間の助数詞不整合）へ戻すとRED
+    expect(html).not.toContain('海外株ファンド1件')
   })
 
   it('T3: 「保有本数」ラベルへ改称されている（旧: 保有銘柄数）', () => {

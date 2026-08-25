@@ -149,6 +149,9 @@ export function T3_GlobalFund() {
   // 積立継続判断
   // F-P0-1: SAFE_MODE / DQ 抑制中は buyCount を根拠にした追加投資示唆を出さない。
   // 既存3分岐は不変で、抑制分岐を先頭に足すだけ（新しい投資判断ロジックは持たない）。
+  // UI-9H [F-2b] 裁定: buyCount/sellCount（本関数および:128）は「BUY/SELL判定件数」であり
+  // H-P1-13 の投信本数canonical「本」の対象外（`件`のまま維持）。ファンド個体の本数を数える
+  // hasOverlapブランチ等（overseasFunds.length等）とは異なる意味領域のため区別する。
   const continuationJudgment = isSuppressed
     ? { label: '追加投資判断 停止中', color: colors.waitText, bg: colors.waitBg, border: colors.waitBorder,
         reason: 'SAFE_MODE / DQ抑制中 — 新規の追加投資判断は停止しています。積立の継続可否はご自身で判断してください。'}
@@ -639,7 +642,7 @@ export function T3_GlobalFund() {
               }}>
                 <span style={{ color: colors.buyText, fontSize: '14px', flexShrink: 0 }}>✓</span>
                 <span style={{ fontSize: '12px', color: colors.buyText }}>
-                  海外株ファンド1件 — 重複なし
+                  海外株ファンド1本 — 重複なし
                 </span>
               </div>
             )}
