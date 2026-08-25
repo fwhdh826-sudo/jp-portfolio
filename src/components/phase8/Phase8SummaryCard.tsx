@@ -538,7 +538,7 @@ export function Phase8SummaryCard() {
     return (
       <div style={cardStyle}>
         <div style={titleStyle}>Phase 8 観察値（partial-real / hybrid）</div>
-        <div style={subtleStyle}>読み込み中...</div>
+        <div style={subtleStyle}>読込中…</div>
       </div>
     )
   }

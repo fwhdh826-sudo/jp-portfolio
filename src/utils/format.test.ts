@@ -8,6 +8,7 @@ import {
   formatJPY,
   formatJPYAuto,
   formatJPYMan,
+  formatLastUpdated,
   formatPct,
   formatPctRaw,
   formatPrice,
@@ -341,6 +342,53 @@ describe('formatDateTime（JST固定, R6.1/R6.2/R6.3）', () => {
 
   it('不正な文字列はそのまま返す（例外を投げない）', () => {
     expect(formatDateTime('not-a-date')).toBe('not-a-date')
+  })
+})
+
+// ─────────────────────────────────────────────────────────────
+// UI-9H H-P1-9: formatLastUpdated — 「最終更新」表示の正典形式
+// 既定＝絶対（相対）の併記。{ relative: true } で相対のみへ縮退。
+// ─────────────────────────────────────────────────────────────
+
+describe('formatLastUpdated（UI-9H H-P1-9正典契約）', () => {
+  afterEach(() => {
+    vi.useRealTimers()
+  })
+
+  it('既定は "絶対（相対）" 併記形式を返す（T9正典）', () => {
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date('2026-08-21T12:05:00Z'))
+    expect(formatLastUpdated('2026-08-21T12:00:00Z')).toBe('2026-08-21 21:00 JST（5分前）')
+  })
+
+  it('{ relative: true } は相対のみを返す（絶対時刻を含まない・幅制約箇所の縮退形式）', () => {
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date('2026-08-21T12:05:00Z'))
+    const s = formatLastUpdated('2026-08-21T12:00:00Z', { relative: true })
+    expect(s).toBe('5分前')
+    expect(s).not.toContain('JST')
+    expect(s).not.toContain('（')
+  })
+
+  it('null/undefined: —', () => {
+    expect(formatLastUpdated(null)).toBe('—')
+    expect(formatLastUpdated(undefined)).toBe('—')
+    expect(formatLastUpdated(null, { relative: true })).toBe('—')
+  })
+
+  it('旧手書きフォーマット（絶対のみ・後置ラベル・括弧なし相対のみ）のいずれとも一致しない', () => {
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date('2026-08-21T12:05:00Z'))
+    const full = formatLastUpdated('2026-08-21T12:00:00Z')
+    // 旧StatusBar形式（絶対のみ、相対なし）
+    expect(full).not.toBe(formatDateTime('2026-08-21T12:00:00Z'))
+    // 旧T2/T3形式（相対のみ、括弧なし）
+    expect(full).not.toBe(formatRelativeTime('2026-08-21T12:00:00Z'))
+    // 括弧は全角（半角括弧を使わない）
+    expect(full).toContain('（')
+    expect(full).toContain('）')
+    expect(full).not.toContain('(')
+    expect(full).not.toContain(')')
   })
 })
 

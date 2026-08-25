@@ -6,7 +6,7 @@
 import { useRef, useState, useCallback, useEffect, type DragEvent, type CSSProperties } from 'react'
 import { useAppStore } from '../../store/useAppStore'
 import { selectIsStale, selectCashAuthorityView, selectCashAssumptionsFreshness } from '../../store/selectors'
-import { formatDateTime, formatRelativeTime, formatJPYAuto } from '../../utils/format'
+import { formatDateTime, formatRelativeTime, formatJPYAuto, formatLastUpdated } from '../../utils/format'
 import { serializeCashAssumptionsExport, parseCashAssumptionsImport, buildExportableCashAssumptions } from '../../utils/cashAssumptionsTransfer'
 import { validateCashAuthorityDraft } from '../../domain/cash/cashAuthority'
 import { colors, radius, spacing } from '../../theme/tokens'
@@ -20,6 +20,7 @@ import {
   createPortfolioLoadSingleFlight,
   executePortfolioLoadUiFlow,
   portfolioLoadButtonState,
+  REFRESH_BUTTON_LABELS,
   type PortfolioLoadFeedback,
 } from '../portfolioLoadUi'
 
@@ -331,7 +332,7 @@ function CsvDropArea({
           {pending ? '⏳' : '📂'}
         </div>
         <div className="csv-drop-area__main">
-          {pending ? '取込中...' : 'CSVをドロップ / タップして選択'}
+          {pending ? '取込中…' : 'CSVをドロップ / タップして選択'}
         </div>
         <div className="csv-drop-area__sub">
           SBI証券「保有証券一覧」CSV（UTF-8・Shift-JIS 両対応）
@@ -1333,9 +1334,9 @@ export function T9_Settings() {
 
   const isLoading = system.status === 'loading'
   const refreshButton = portfolioLoadButtonState(isLoading, pendingOperation !== null, {
+    ...REFRESH_BUTTON_LABELS,
     idle: '今すぐ更新',
-    globallyLoading: '⏳ 読込中...',
-    locallyPending: pendingOperation === 'refreshAllData' ? '⏳ 更新中...' : '別の処理を実行中...',
+    locallyPending: pendingOperation === 'refreshAllData' ? REFRESH_BUTTON_LABELS.locallyPending : '別の処理を実行中…',
   })
 
   const handleImportCsv = useCallback(
@@ -1483,7 +1484,7 @@ export function T9_Settings() {
           </div>
           <div style={{ ...typography.body, fontWeight: 700, color: colors.textPrimary }}>
             {system.lastUpdated
-              ? `${formatDateTime(system.lastUpdated)}（${formatRelativeTime(system.lastUpdated)}）`
+              ? formatLastUpdated(system.lastUpdated)
               : '—'
             }
           </div>

@@ -1,6 +1,8 @@
 import { describe, expect, it, vi } from 'vitest'
-import { createPortfolioLoadSingleFlight, type PortfolioLoadFeedback } from './portfolioLoadUi'
+import { createPortfolioLoadSingleFlight, REFRESH_BUTTON_LABELS, type PortfolioLoadFeedback } from './portfolioLoadUi'
 import { executeStatusBarRefreshClickFlow, executeStatusBarRefreshFlow } from './StatusBar'
+// @ts-expect-error -- resolved at build/test time by Vite's `?raw` import convention
+import statusBarSource from './StatusBar.tsx?raw'
 
 describe('RA-007-B2 StatusBar refresh caller', () => {
   it('single-flights duplicate refresh, holds pending, and clears it after failure', async () => {
@@ -57,5 +59,19 @@ describe('RA-007-B2 StatusBar refresh caller', () => {
 
     await executeStatusBarRefreshClickFlow(false, action, singleFlight, v => pending.push(v), v => feedback.push(v))
     expect(action).toHaveBeenCalledTimes(1)
+  })
+})
+
+describe('UI-9H H-P1-2: StatusBar refreshButton は REFRESH_BUTTON_LABELS を参照する', () => {
+  it('portfolioLoadButtonState の呼出しが共有定数 REFRESH_BUTTON_LABELS をそのまま渡している（手書きlabelオブジェクトを持たない）', () => {
+    expect(statusBarSource).toContain('portfolioLoadButtonState(isLoading, refreshPending, REFRESH_BUTTON_LABELS)')
+  })
+  it('旧mutation（手書きlabelオブジェクトへ戻す）が再現しないことをsource上で保証する', () => {
+    expect(statusBarSource).not.toMatch(/globallyLoading:\s*['"`]読込中\.\.\.['"`]/)
+    expect(statusBarSource).not.toContain("globallyLoading: '読込中…',\n    locallyPending: '更新中…',")
+  })
+  it('REFRESH_BUTTON_LABELS は正典表記を保持する（参照先の定数自体の回帰guard）', () => {
+    expect(REFRESH_BUTTON_LABELS.globallyLoading).toBe('読込中…')
+    expect(REFRESH_BUTTON_LABELS.locallyPending).toBe('更新中…')
   })
 })

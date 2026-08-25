@@ -7,6 +7,7 @@ import {
   portfolioLoadFeedback,
   CROSS_TAB_STATE_STALE_MESSAGE,
   PORTFOLIO_LOAD_REJECTION_FEEDBACK,
+  REFRESH_BUTTON_LABELS,
   type PortfolioLoadFeedback,
 } from './portfolioLoadUi'
 
@@ -31,6 +32,27 @@ const FAILURE_CASES: Array<[PortfolioLoadResult, string]> = [
   [{ ok: false, operation: 'refreshAllData', code: 'LOAD_PERSISTENCE_ERROR', retryable: true }, '保存'],
   [{ ok: false, operation: 'refreshAllData', code: 'LOAD_PUBLISH_ERROR', retryable: false }, '画面へ反映'],
 ]
+
+describe('UI-9H H-P1-2: REFRESH_BUTTON_LABELS 正典契約', () => {
+  it('idle/globallyLoading/locallyPending が正典表記（ellipsisはU+2026・⏳は含まない）', () => {
+    expect(REFRESH_BUTTON_LABELS).toEqual({
+      idle: '更新',
+      globallyLoading: '読込中…',
+      locallyPending: '更新中…',
+    })
+  })
+  it('旧表記（"..." ASCII三点リーダ、⏳付き）を含まない', () => {
+    for (const label of Object.values(REFRESH_BUTTON_LABELS)) {
+      expect(label).not.toContain('...')
+      expect(label).not.toContain('⏳')
+    }
+  })
+  it('portfolioLoadButtonStateへ直接渡せば正典labelが出力される', () => {
+    expect(portfolioLoadButtonState(true, false, REFRESH_BUTTON_LABELS).label).toBe('読込中…')
+    expect(portfolioLoadButtonState(false, true, REFRESH_BUTTON_LABELS).label).toBe('更新中…')
+    expect(portfolioLoadButtonState(false, false, REFRESH_BUTTON_LABELS).label).toBe('更新')
+  })
+})
 
 describe('RA-007-B2 portfolio load UI contract', () => {
   it('derives disabled, aria-busy, and pending labels from global and local loading state', () => {

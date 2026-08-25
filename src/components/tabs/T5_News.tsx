@@ -19,6 +19,7 @@ import {
   createPortfolioLoadSingleFlight,
   executePortfolioLoadUiFlow,
   portfolioLoadButtonState,
+  REFRESH_BUTTON_LABELS,
   type PortfolioLoadFeedback,
 } from '../portfolioLoadUi'
 import type { PortfolioLoadResult } from '../../store/portfolioOperationResult'
@@ -482,11 +483,7 @@ export function T5_News() {
   const [refreshPending, setRefreshPending] = useState(false)
   const [refreshFeedback, setRefreshFeedback] = useState<PortfolioLoadFeedback | null>(null)
   const refreshSingleFlightRef = useRef(createPortfolioLoadSingleFlight())
-  const refreshButton = portfolioLoadButtonState(isLoading, refreshPending, {
-    idle: '更新',
-    globallyLoading: '読込中...',
-    locallyPending: '更新中...',
-  })
+  const refreshButton = portfolioLoadButtonState(isLoading, refreshPending, REFRESH_BUTTON_LABELS)
 
   const handleRefresh = async () => {
     await executeNewsRefreshFlow(
@@ -890,7 +887,7 @@ export function T5_News() {
             </div>
           ) : (
             <div style={{ textAlign: 'center', padding: '32px 0', color: 'var(--color-text-subtle)', fontSize: 13 }}>
-              news_v13.json を読み込み中...
+              news_v13.json を読込中…
             </div>
           )
         ) : activeItems.length > 0 ? (

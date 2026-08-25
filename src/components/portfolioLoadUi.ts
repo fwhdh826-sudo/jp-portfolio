@@ -14,6 +14,16 @@ export interface PortfolioLoadButtonState {
   label: string
 }
 
+/**
+ * 更新ボタンlabelの正典形式（UI-9H H-P1-2）。
+ * StatusBar/T5_News/T9_Settingsの3呼出しが同一定数を参照する。
+ */
+export const REFRESH_BUTTON_LABELS = {
+  idle: '更新',
+  globallyLoading: '読込中…',
+  locallyPending: '更新中…',
+} as const
+
 export function portfolioLoadButtonState(
   globallyLoading: boolean,
   locallyPending: boolean,
