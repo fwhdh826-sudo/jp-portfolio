@@ -137,9 +137,11 @@ function renderWith(state: AppState): string {
   return renderToStaticMarkup(<T3_GlobalFund />)
 }
 
-/** SignalBadge が実際に描画した verdict token だけを数える（本文中の "BUY" 文字列は数えない）。 */
+// UI-9H P1 H-P1-6: 可視グリフは日本語cfg.labelへ変更されたため、SignalBadgeが
+// data-signal属性に保持する旧英語tokenから抽出する（本文中の "BUY" 文字列は数えない）。
+/** SignalBadge が実際に描画した verdict token だけを数える。 */
 function verdictBadges(html: string): string[] {
-  return [...html.matchAll(/aria-label="シグナル: [^"]*">([A-Z]+)</g)].map(m => m[1])
+  return [...html.matchAll(/data-signal="([A-Z]+)"/g)].map(m => m[1])
 }
 
 // ── vacuous 回避: fix 前の挙動（= 抑制なし）が実際に BUY を出すことを先に固定する ──

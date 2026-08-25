@@ -61,8 +61,8 @@ export function SignalBadge({ signal, size = 'md' }: SignalBadgeProps) {
   }
 
   return (
-    <span style={style} aria-label={`シグナル: ${cfg.label}`}>
-      {signal}
+    <span style={style} data-signal={signal} aria-label={`シグナル: ${cfg.label}`}>
+      {cfg.label}
     </span>
   )
 }

@@ -18,19 +18,27 @@ function glyphOf(html: string): string | null {
   return m ? m[1] : null
 }
 
+function dataSignalOf(html: string): string | null {
+  const m = html.match(/data-signal="([^"]*)"/)
+  return m ? m[1] : null
+}
+
 describe('UI-9H H-P0-2: WATCH（監視）と SUPPRESSED（抑制）は別トークンである', () => {
-  it('WATCH の可視グリフと aria-label は「監視」を示す', () => {
+  it('WATCH の可視グリフは「監視」・aria-labelは「シグナル: 監視」・data-signalはWATCHを示す', () => {
     const html = renderToStaticMarkup(<SignalBadge signal="WATCH" />)
-    expect(glyphOf(html)).toBe('WATCH')
+    expect(glyphOf(html)).toBe('監視')
     expect(ariaLabelOf(html)).toBe('シグナル: 監視')
+    expect(dataSignalOf(html)).toBe('WATCH')
   })
 
-  it('SUPPRESSED_VERDICT（抑制トークン）の可視グリフと aria-label は WATCH/監視と異なる', () => {
+  it('SUPPRESSED_VERDICT（抑制トークン）の可視グリフ・aria-label・data-signal は WATCH/監視と異なる', () => {
     const html = renderToStaticMarkup(<SignalBadge signal={SUPPRESSED_VERDICT} />)
-    expect(glyphOf(html)).toBe('SUPPRESSED')
-    expect(glyphOf(html)).not.toBe('WATCH')
+    expect(glyphOf(html)).toBe('抑制中')
+    expect(glyphOf(html)).not.toBe('監視')
     expect(ariaLabelOf(html)).toBe('シグナル: 抑制中')
     expect(ariaLabelOf(html)).not.toBe('シグナル: 監視')
+    expect(dataSignalOf(html)).toBe('SUPPRESSED')
+    expect(dataSignalOf(html)).not.toBe('WATCH')
   })
 
   it('suppressBuySignal(BUY, true) が生成するトークンは WATCH ではない（③抑制の分離）', () => {

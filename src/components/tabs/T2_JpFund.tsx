@@ -227,7 +227,7 @@ export function T2AllocationPanel({
         <MetricCard title="目標超過" value={formatJPYAuto(jpTrustClass.overweightAmount)} />
         <MetricCard title="配分済額" value={formatJPYAuto(jpTrustClass.allocatedAmount)} />
         <MetricCard title="割当後の残余" value={formatJPYAuto(jpTrustClass.remainingHeadroom)} />
-        <MetricCard title="クラスheadroom" value={formatJPYAuto(jpTrustClass.effectiveHeadroom)} />
+        <MetricCard title="資産クラス余力" value={formatJPYAuto(jpTrustClass.effectiveHeadroom)} />
         <MetricCard title="利用可能予算" value={formatJPYAuto(jpTrustClass.availableBudget)} />
         <MetricCard title="配分候補" value={`${jpTrustClass.instrumentPlanCount}件`} />
       </div>

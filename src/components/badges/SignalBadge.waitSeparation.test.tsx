@@ -19,23 +19,33 @@ function glyphOf(html: string): string | null {
   return m ? m[1] : null
 }
 
+// UI-9H P1 H-P1-6: 可視グリフは英語token→日本語cfg.labelへ変更。旧英語tokenは
+// data-signal属性に保持される（P0のtoken分離自体は不変）。
+function dataSignalOf(html: string): string | null {
+  const m = html.match(/data-signal="([^"]*)"/)
+  return m ? m[1] : null
+}
+
 describe('UI9-H-H1-R1: WATCH完成contract — A監視/B待機/C抑制中の3義分離', () => {
-  it('A: 真の監視 = WATCH は可視グリフ WATCH・aria-label「シグナル: 監視」を持つ', () => {
+  it('A: 真の監視 = WATCH は可視グリフ「監視」・aria-label「シグナル: 監視」・data-signal WATCH を持つ', () => {
     const html = renderToStaticMarkup(<SignalBadge signal="WATCH" />)
-    expect(glyphOf(html)).toBe('WATCH')
+    expect(glyphOf(html)).toBe('監視')
     expect(ariaLabelOf(html)).toBe('シグナル: 監視')
+    expect(dataSignalOf(html)).toBe('WATCH')
   })
 
-  it('B: 条件未達WAIT = WAIT は可視グリフ WAIT・aria-label「シグナル: 待機」を持つ', () => {
+  it('B: 条件未達WAIT = WAIT は可視グリフ「待機」・aria-label「シグナル: 待機」・data-signal WAIT を持つ', () => {
     const html = renderToStaticMarkup(<SignalBadge signal="WAIT" />)
-    expect(glyphOf(html)).toBe('WAIT')
+    expect(glyphOf(html)).toBe('待機')
     expect(ariaLabelOf(html)).toBe('シグナル: 待機')
+    expect(dataSignalOf(html)).toBe('WAIT')
   })
 
-  it('C: BUY抑制 = SUPPRESSED は可視グリフ SUPPRESSED・aria-label「シグナル: 抑制中」を持つ', () => {
+  it('C: BUY抑制 = SUPPRESSED は可視グリフ「抑制中」・aria-label「シグナル: 抑制中」・data-signal SUPPRESSED を持つ', () => {
     const html = renderToStaticMarkup(<SignalBadge signal={SUPPRESSED_VERDICT} />)
-    expect(glyphOf(html)).toBe('SUPPRESSED')
+    expect(glyphOf(html)).toBe('抑制中')
     expect(ariaLabelOf(html)).toBe('シグナル: 抑制中')
+    expect(dataSignalOf(html)).toBe('SUPPRESSED')
   })
 
   it('A/B/C の3トークンは互いに異なるaria-labelを持つ', () => {
@@ -50,6 +60,13 @@ describe('UI9-H-H1-R1: WATCH完成contract — A監視/B待機/C抑制中の3義
       s => glyphOf(renderToStaticMarkup(<SignalBadge signal={s} />)),
     )
     expect(new Set(glyphs).size).toBe(3)
+  })
+
+  it('A/B/C の3トークンは互いに異なるdata-signal（旧英語token）を持つ', () => {
+    const tokens = (['WATCH', 'WAIT', 'SUPPRESSED'] as Signal[]).map(
+      s => dataSignalOf(renderToStaticMarkup(<SignalBadge signal={s} />)),
+    )
+    expect(tokens).toEqual(['WATCH', 'WAIT', 'SUPPRESSED'])
   })
 
   it('suppressBuySignal(BUY, true) が生成するCトークンはBUYへ漏れない', () => {

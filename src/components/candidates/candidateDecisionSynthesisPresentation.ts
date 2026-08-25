@@ -87,7 +87,7 @@ export const WARNING_REASON_LABEL: Record<WarningReason, string> = {
 }
 
 export const LIMITING_FACTOR_LABEL: Record<LimitingFactor, string> = {
-  DEPLOYABLE_CASH: '投資可能資金',
+  DEPLOYABLE_CASH: '投資可能現金',
   CLASS_HEADROOM: '資産クラス余力',
   INSTRUMENT_HEADROOM: '銘柄別余力',
   TARGET_GAP: '目標乖離額',
