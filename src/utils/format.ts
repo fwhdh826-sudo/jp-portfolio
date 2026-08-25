@@ -86,6 +86,17 @@ export function formatSignedPct(n: number | null | undefined, decimals = 2): str
 }
 
 /**
+ * 「最終更新」表示の正典形式（UI-9H H-P1-9）。
+ * 既定は絶対（相対）の併記形式。幅制約箇所は { relative: true } で相対のみへ縮退可。
+ * ラベル語「最終更新」は呼出側で付与する（本関数は値部分のみを返す）。
+ */
+export function formatLastUpdated(iso: string | null | undefined, opts?: { relative?: boolean }): string {
+  if (iso == null) return '—'
+  if (opts?.relative) return formatRelativeTime(iso)
+  return `${formatDateTime(iso)}（${formatRelativeTime(iso)}）`
+}
+
+/**
  * percentage-point表示（常にdelta・符号付き。呼び出し側で%スケール済みの値を渡す）
  * 例: 3.0 → "+3.0pt" / -3.0 → "-3.0pt" / 0 → "0.0pt"
  */

@@ -23,7 +23,7 @@ import {
   selectCandidateDecisionSynthesis,
 } from '../../store/selectors'
 import { selectExecutableDeployableCash } from '../../store/allocationConsumerSelectors'
-import { formatJPYAuto, formatDateTime, formatRelativeTime, formatPt, formatSignedPct, formatSignedJPY } from '../../utils/format'
+import { formatJPYAuto, formatDateTime, formatRelativeTime, formatLastUpdated, formatPt, formatSignedPct, formatSignedJPY } from '../../utils/format'
 import { resolveNewsDisplayText, NEWS_DISPLAY_LIMITS } from '../../utils/newsDisplay'
 import { selectIsStale, selectMarketDataQuality } from '../../store/selectors'
 import { Phase8SummaryCard } from '../phase8/Phase8SummaryCard'
@@ -284,7 +284,7 @@ function TodayJudgmentCard() {
           <span className="normal-safety-badge">✓ 監視中</span>
         )}
         <span className="market-mode-banner__date">
-          {formatDateTime(system.lastUpdated)} 更新
+          最終更新 {formatLastUpdated(system.lastUpdated)}
         </span>
       </div>
 

@@ -6,7 +6,7 @@
 import { useState } from 'react'
 import { useAppStore } from '../../store/useAppStore'
 import { selectMarketDataQuality, selectEffectiveSafeModeActive } from '../../store/selectors'
-import { formatDateTime } from '../../utils/format'
+import { formatDateTime, formatSignedPct } from '../../utils/format'
 import type { HoldingAnalysis, Holding, AgentScore } from '../../types'
 import { CircularGauge } from '../charts/CircularGauge'
 import { colors } from '../../theme/tokens'
@@ -214,7 +214,7 @@ function HeroVerdictPanel({ a, h, isBuySuppressed }: { a: HoldingAnalysis; h: Ho
             fontSize: 14, fontWeight: 700, lineHeight: 1,
             color: a.ev > 0 ? 'var(--color-buy-text)' : 'var(--color-sell-text)',
           }}>
-            {a.ev > 0 ? '+' : ''}{(a.ev * 100).toFixed(1)}%
+            {formatSignedPct(a.ev * 100, 1)}
           </div>
         </div>
         <div style={{ textAlign: 'center' }}>

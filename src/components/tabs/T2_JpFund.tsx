@@ -399,7 +399,7 @@ export function T2_JpFund() {
         {/* Phase 8: 更新時刻表示 */}
         <div style={{ ...typography.caption, color: colors.textMuted, marginLeft: 'auto' }}>
           {system.lastUpdated
-            ? `更新 ${formatRelativeTime(system.lastUpdated)}`
+            ? `最終更新 ${formatRelativeTime(system.lastUpdated)}`
             : 'データ未取得'
           }
         </div>
@@ -850,7 +850,7 @@ export function T2_JpFund() {
       <div>
         <SectionHeader
           title="保有ファンド"
-          caption={`${jpFunds.length} 件`}
+          caption={`${jpFunds.length}本`}
         />
         <div style={cardStyle}>
           {jpFunds.map((fund, i) => (
@@ -1028,11 +1028,11 @@ export function T2_JpFund() {
         )
       })()}
 
-      {/* ── 執行ガイドライン ── */}
-      {/* P4-A104: SAFE_MODE/DQ抑制中は執行ガイドライン（金額）を非表示 */}
+      {/* ── 実行ガイドライン ── */}
+      {/* P4-A104: SAFE_MODE/DQ抑制中は実行ガイドライン（金額）を非表示 */}
       {mode.canEnter && !isSuppressed && (
         <div>
-          <SectionHeader title="執行ガイドライン" />
+          <SectionHeader title="実行ガイドライン" />
           <div style={{ ...cardStyle, padding: `${spacing[4]} ${spacing[5]}` }}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: spacing[2] }}>
               {[

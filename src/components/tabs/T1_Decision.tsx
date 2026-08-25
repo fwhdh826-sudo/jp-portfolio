@@ -1110,7 +1110,7 @@ function StockDetail({ code, onBack }: { code: string; onBack: () => void }) {
     },
     {
       label: 'モメンタム — 3M',
-      state: `${h.mom3m >= 0 ? '+' : ''}${h.mom3m.toFixed(1)}%`,
+      state: formatSignedPct(h.mom3m, 1),
       evalStr: h.mom3m > 8 ? '強い上昇' : h.mom3m > 0 ? 'プラス圏' : h.mom3m > -5 ? '弱含み' : '下降圧力',
       reason: h.mom3m > 8 ? '直近3ヶ月で強い上昇モメンタム。トレンドフォロー有利' : h.mom3m < -5 ? '3ヶ月下落継続。底打ち確認まで慎重' : '緩やかな値動き',
       signal: (h.mom3m > 0 ? 'bull' : h.mom3m < -5 ? 'bear' : 'neutral') as 'bull' | 'bear' | 'neutral',
@@ -1233,7 +1233,7 @@ function StockDetail({ code, onBack }: { code: string; onBack: () => void }) {
           {[
             { label: '評価額',     val: formatJPYAuto(h.eval),     col: undefined },
             { label: '損益率',     val: formatSignedPct(h.pnlPct), col: h.pnlPct > 0 ? colors.buy : h.pnlPct < 0 ? colors.sell : undefined },
-            { label: '3Mモメンタム', val: `${h.mom3m >= 0 ? '+' : ''}${h.mom3m.toFixed(1)}%`, col: h.mom3m > 0 ? colors.buy : colors.sell },
+            { label: '3Mモメンタム', val: formatSignedPct(h.mom3m, 1), col: h.mom3m > 0 ? colors.buy : colors.sell },
             { label: 'EV',         val: formatSignedPct(h.ev * 100, 1), col: h.ev > 0 ? colors.buy : colors.sell },
             { label: '信頼度',     val: a ? `${(a.confidence * 100).toFixed(0)}%` : '—', col: undefined },
           ].map(({ label, val, col }) => (
@@ -1414,7 +1414,7 @@ function StockDetail({ code, onBack }: { code: string; onBack: () => void }) {
           <div className="price-summary-item">
             <div className="price-summary-item__label">3Mモメンタム</div>
             <div className="price-summary-item__value" style={{ fontSize: '16px', color: h.mom3m > 0 ? colors.buy : colors.sell }}>
-              {h.mom3m >= 0 ? '+' : ''}{h.mom3m.toFixed(1)}%
+              {formatSignedPct(h.mom3m, 1)}
             </div>
           </div>
           <div className="price-summary-item">
@@ -1470,7 +1470,7 @@ function StockDetail({ code, onBack }: { code: string; onBack: () => void }) {
               {debate?.riskGatePass ? '✓ 通過' : '✗ 非通過'}
             </div>
             <div className="action-plan-item__sub">
-              {debate?.riskGatePass ? '執行条件を充足' : '追加リスク確認が必要'}
+              {debate?.riskGatePass ? '実行条件を充足' : '追加リスク確認が必要'}
             </div>
           </div>
         </div>
@@ -1535,7 +1535,7 @@ function StockDetail({ code, onBack }: { code: string; onBack: () => void }) {
               <div>
                 <div style={{ fontSize: '10px', color: colors.textMuted }}>リスクゲート</div>
                 <div style={{ fontSize: '13px', fontWeight: 700, color: debate?.riskGatePass ? colors.buy : colors.sell, marginTop: '2px' }}>
-                  {debate?.riskGatePass ? '通過 — 執行可' : '非通過 — 執行抑制'}
+                  {debate?.riskGatePass ? '通過 — 実行可' : '非通過 — 実行抑制'}
                 </div>
               </div>
               {/* P4-A121: AI確信度を円形ゲージ表示 */}
@@ -1634,10 +1634,10 @@ function StockDetail({ code, onBack }: { code: string; onBack: () => void }) {
         </div>
       )}
 
-      {/* ━━━ 7. 執行条件 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
+      {/* ━━━ 7. 実行条件 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
       {debate && (
         <div>
-          <SectionHeader title="執行条件" caption="エントリー / 利確 / 損切" />
+          <SectionHeader title="実行条件" caption="エントリー / 利確 / 損切" />
           <div style={cardStyle}>
             {debate.buyReasons.filter(Boolean).length > 0 && (
               <div style={{ padding: `${spacing[3]} ${spacing[4]}`, borderBottom: `1px solid ${colors.borderSubtle}` }}>

@@ -189,10 +189,10 @@ function Phase7FundSection({
             {/* 観察値グリッド */}
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: `${spacing[1]} ${spacing[3]}`, marginBottom: spacing[2] }}>
               {([
-                { label: '行動スコア (観察)', value: `${p7!.behavioral_score.toFixed(1)}` },
-                { label: '信頼度 (観察)', value: `${(p7!.committee_confidence * 100).toFixed(0)}%` },
-                { label: 'サイズ上限 (観察)', value: `×${p7!.sizing_multiplier_cap.toFixed(2)}` },
-                { label: '調整サイズ (観察)', value: `${(p7!.adjusted_size * 100).toFixed(1)}%` },
+                { label: '行動スコア（観察）', value: `${p7!.behavioral_score.toFixed(1)}` },
+                { label: '信頼度（観察）', value: `${(p7!.committee_confidence * 100).toFixed(0)}%` },
+                { label: 'サイズ上限（観察）', value: `×${p7!.sizing_multiplier_cap.toFixed(2)}` },
+                { label: '調整サイズ（観察）', value: `${(p7!.adjusted_size * 100).toFixed(1)}%` },
               ] as Array<{ label: string; value: string }>).map(m => (
                 <div key={m.label} style={{ display: 'flex', flexDirection: 'column', gap: spacing[0.5] }}>
                   <span style={{ ...typography.caption, color: colors.textMuted }}>{m.label}</span>
@@ -770,7 +770,7 @@ export function T7_Trust() {
           />
           <MetricCard
             title="日本株投信"
-            value={`${japanShortTermTrust.length} 本`}
+            value={`${japanShortTermTrust.length}本`}
             subtext="超短期対象"
             assetType="fund"
           />

@@ -124,7 +124,7 @@ export function T3_GlobalFund() {
     '中立相場 — 通常通り積立継続'
 
   const decisionReasons = [
-    `海外投信 ${globalFunds.length} 件 / 評価額 ${formatJPYAuto(totalEval)}`,
+    `海外投信 ${globalFunds.length}本 / 評価額 ${formatJPYAuto(totalEval)}`,
     `BUY ${buyCount}件 / SELL ${sellCount}件 / 平均スコア ${avgScore}`,
     market.regime === 'bear' ? '弱気相場 — ドルコスト積立は継続、一括追加は抑制' : '',
     // P4-A119: isSuppressed時は注記を追加
@@ -388,7 +388,7 @@ export function T3_GlobalFund() {
         {/* Phase 8: 更新時刻表示 */}
         <div style={{ ...typography.caption, color: colors.textMuted, marginLeft: 'auto' }}>
           {system.lastUpdated
-            ? `更新 ${formatRelativeTime(system.lastUpdated)}`
+            ? `最終更新 ${formatRelativeTime(system.lastUpdated)}`
             : 'データ未取得'
           }
         </div>
@@ -528,7 +528,7 @@ export function T3_GlobalFund() {
           value={`${avgScore}`}
           change={{ value: avgScore >= 60 ? '良好' : '標準', positive: avgScore >= 60 }}
         />
-        <MetricCard title="保有銘柄数" value={`${globalFunds.length}`} />
+        <MetricCard title="保有本数" value={`${globalFunds.length}`} />
       </div>
 
       {/* ── 理想配分・現在配分との差分 ── */}
@@ -575,13 +575,13 @@ export function T3_GlobalFund() {
             <div>
               <div style={{ ...typography.caption, color: colors.textMuted }}>海外株ファンド数</div>
               <div style={{ fontSize: '18px', fontWeight: 700, color: colors.globalFundAccentText, marginTop: spacing[1] }}>
-                {overseasFunds.length} 件
+                {overseasFunds.length}本
               </div>
             </div>
             <div>
               <div style={{ ...typography.caption, color: colors.textMuted }}>ゴールドファンド数</div>
               <div style={{ fontSize: '18px', fontWeight: 700, color: colors.gold, marginTop: spacing[1] }}>
-                {goldFunds.length} 件
+                {goldFunds.length}本
               </div>
             </div>
             <div>
@@ -628,7 +628,7 @@ export function T3_GlobalFund() {
               }}>
                 <span style={{ color: colors.textSubtle, fontSize: '14px', flexShrink: 0 }}>ℹ</span>
                 <span style={{ fontSize: '12px', color: colors.textSubtle }}>
-                  海外株ファンドが {overseasFunds.length} 件あります。銘柄の重複（全世界株と先進国株など）に注意してください
+                  海外株ファンドが {overseasFunds.length}本あります。銘柄の重複（全世界株と先進国株など）に注意してください
                 </span>
               </div>
             ) : (
@@ -664,7 +664,7 @@ export function T3_GlobalFund() {
               }}>
                 <span style={{ color: colors.gold, fontSize: '14px', flexShrink: 0 }}>◆</span>
                 <span style={{ fontSize: '12px', color: colors.gold }}>
-                  ゴールド {goldFunds.length} 件保有 — インフレ・地政学ヘッジとして機能
+                  ゴールド {goldFunds.length}本保有 — インフレ・地政学ヘッジとして機能
                 </span>
               </div>
             )}
@@ -731,7 +731,7 @@ export function T3_GlobalFund() {
         <div>
           <SectionHeader
             title="海外株ファンド"
-            caption={`${overseasFunds.length} 件 / ${formatJPYAuto(overseasEval)}`}
+            caption={`${overseasFunds.length}本 / ${formatJPYAuto(overseasEval)}`}
           />
           <div style={cardStyle}>
             {overseasFunds.map((fund, i) => (
@@ -746,7 +746,7 @@ export function T3_GlobalFund() {
         <div>
           <SectionHeader
             title="ゴールドファンド"
-            caption={`${goldFunds.length} 件 / ${formatJPYAuto(goldEval)}`}
+            caption={`${goldFunds.length}本 / ${formatJPYAuto(goldEval)}`}
           />
           <div style={{ ...cardStyle, border: `1px solid ${colors.goldBorder}` }}>
             {goldFunds.map((fund, i) => (

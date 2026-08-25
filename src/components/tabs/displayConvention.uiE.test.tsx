@@ -2,7 +2,7 @@
 // 監査レポート ~/jp-portfolio-audit-reports/ui-9e-display-convention-audit.md の
 // required tests T-6〜T-16 を実コンポーネントのrender/value assertionで検証する。
 // source正規表現のみのassertionは行わない（render結果の文字列に対して検証する）。
-import { describe, expect, it, vi } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import { renderToStaticMarkup } from 'react-dom/server'
 import type { AppState, Trust } from '../../types'
 import type { FundPhase7Map } from '../../types/scoring'
@@ -327,6 +327,43 @@ describe('T-9: sizing_multiplier_capがT7内で%表記されない（×表記の
   })
 })
 
+describe('UI-9H H-P1-10: T7 Phase7観察値グリッドの括弧は全角（日本語+半角括弧+日本語の解消）', () => {
+  const phase7Map: FundPhase7Map = {
+    nk225_sbi: {
+      fund_id: 'nk225_sbi',
+      fund_name: 'SBI 日経225',
+      domain: 'domestic_fund',
+      behavioral_score: 65,
+      sizing_multiplier_cap: 1.2,
+      committee_confidence: 0.8,
+      adjusted_size: 0.15,
+      diagnostics: [],
+    },
+  }
+  const state: AppState = {
+    ...BASE_APP_STATE,
+    trust: withTrustOverride('nk225_sbi', { eval: 500_000 }),
+    fundPhase7: phase7Map,
+  }
+
+  it('4ラベルすべてが全角括弧（観察）で描画される', () => {
+    const html = renderWith(state, T7_Trust)
+    expect(html).toContain('行動スコア（観察）')
+    expect(html).toContain('信頼度（観察）')
+    expect(html).toContain('サイズ上限（観察）')
+    expect(html).toContain('調整サイズ（観察）')
+  })
+
+  // mutation guard: 半角括弧へ戻す（＝旧表記への回帰）と RED になる
+  it('旧表記（半角括弧 (観察)）が残存しない', () => {
+    const html = renderWith(state, T7_Trust)
+    expect(html).not.toContain('行動スコア (観察)')
+    expect(html).not.toContain('信頼度 (観察)')
+    expect(html).not.toContain('サイズ上限 (観察)')
+    expect(html).not.toContain('調整サイズ (観察)')
+  })
+})
+
 describe('T-10: Trust.costがT2/T3/T7で同一精度（3桁）で描画される（E-P1-4）', () => {
   // 0.1234 は 2桁"0.12%"/3桁"0.123%"/4桁"0.1234%" が全て異なる文字列になり精度差を可視化できる
   const COST = 0.1234
@@ -459,6 +496,81 @@ describe('T-15: signed値の符号グリフが値と同一テキストノード�
     expect(html).not.toMatch(/>\+<\/[a-z]+><[a-z]+[^>]*>[\d,]/)
     // 実際に単一ノードとして「-」+数字が連結された文字列が存在することを積極的に確認
     expect(html).toMatch(/>-[\d,]+(\.\d+)?(万円|億円|円)</)
+  })
+})
+
+describe('UI-9H H-P1-13: 投信本数の助数詞は「本」・数値-助数詞間スペースなしに統一', () => {
+  const jpFundCount = BASE_APP_STATE.trust.filter(f => f.policy === 'JAPAN_SHORTTERM').length
+  const overseasFundCount = BASE_APP_STATE.trust.filter(f => f.policy === 'OVERSEAS_LONGTERM').length
+  const goldFundCount = BASE_APP_STATE.trust.filter(f => f.policy === 'GOLD').length
+  const globalFundCount = overseasFundCount + goldFundCount
+
+  it('T2: 保有ファンドcaptionが `{n}本`（スペースなし）で描画される', () => {
+    const html = renderWith(BASE_APP_STATE, T2_JpFund)
+    const titleIdx = html.indexOf('保有ファンド')
+    expect(titleIdx).toBeGreaterThan(-1)
+    const block = html.slice(titleIdx, titleIdx + 400)
+    expect(block).toContain(`${jpFundCount}本`)
+    // mutation guard: 旧「N 件」（fund countに限った空白+件）へ戻すとRED
+    expect(block).not.toContain(`${jpFundCount} 件`)
+  })
+
+  it('T3: 海外株ファンド数/ゴールドファンド数captionが `{n}本`（スペースなし）で描画される', () => {
+    const html = renderWith(BASE_APP_STATE, T3_GlobalFund)
+    expect(html).toContain(`${overseasFundCount}本`)
+    expect(html).toContain(`${goldFundCount}本`)
+    expect(html).toContain(`海外投信 ${globalFundCount}本`)
+  })
+
+  it('T3: 「保有本数」ラベルへ改称されている（旧: 保有銘柄数）', () => {
+    const html = renderWith(BASE_APP_STATE, T3_GlobalFund)
+    expect(html).toContain('保有本数')
+    expect(html).not.toContain('保有銘柄数')
+  })
+
+  it('T7: 日本株投信MetricCardが `{n}本`（スペースなし）で描画される', () => {
+    const state: AppState = { ...BASE_APP_STATE, trust: withTrustOverride('nk225_sbi', { eval: 500_000 }) }
+    const shortTermCount = state.trust.filter(f => f.policy === 'JAPAN_SHORTTERM' && f.eval > 0).length
+    const html = renderWith(state, T7_Trust)
+    expect(html).toContain(`${shortTermCount}本`)
+    expect(html).not.toContain(`${shortTermCount} 本`)
+  })
+})
+
+describe('UI-9H H-P1-9: 「最終更新」表示ラベルの統一', () => {
+  afterEach(() => {
+    vi.useRealTimers()
+  })
+
+  it('T0: 後置「更新」ラベルではなく前置「最終更新」ラベルで描画される', () => {
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date('2026-08-21T12:05:00Z'))
+    const state: AppState = { ...BASE_APP_STATE, system: { ...BASE_APP_STATE.system, lastUpdated: '2026-08-21T12:00:00Z' } }
+    const html = renderWith(state, T0_Home)
+    expect(html).toContain('最終更新 ')
+    expect(html).not.toMatch(/JST\s*更新/)
+  })
+
+  it('T2/T3: 「更新」単独ラベルではなく「最終更新」ラベルで描画される（値は相対のみ維持）', () => {
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date('2026-08-21T12:05:00Z'))
+    const state: AppState = { ...BASE_APP_STATE, system: { ...BASE_APP_STATE.system, lastUpdated: '2026-08-21T12:00:00Z' } }
+    const htmlT2 = renderWith(state, T2_JpFund)
+    const htmlT3 = renderWith(state, T3_GlobalFund)
+    expect(htmlT2).toContain('最終更新 5分前')
+    expect(htmlT3).toContain('最終更新 5分前')
+    // mutation guard: 旧「更新 {相対}」（最終なし）へ戻すと以下がRED
+    expect(htmlT2).not.toMatch(/>更新 5分前</)
+    expect(htmlT3).not.toMatch(/>更新 5分前</)
+  })
+
+  it('StatusBar: 幅制約箇所として相対のみへ縮退した canonical 表示になる（ラベルは最終更新のまま）', () => {
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date('2026-08-21T12:05:00Z'))
+    const state: AppState = { ...BASE_APP_STATE, system: { ...BASE_APP_STATE.system, lastUpdated: '2026-08-21T12:00:00Z' } }
+    const html = renderWith(state, StatusBar)
+    expect(html).toContain('最終更新')
+    expect(html).toContain('5分前')
   })
 })
 

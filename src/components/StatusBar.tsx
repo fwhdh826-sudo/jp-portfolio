@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState } from 'react'
 import { useAppStore } from '../store/useAppStore'
 import { selectIsLoading, selectTotalEval, selectTotalPnl } from '../store/selectors'
-import { formatDateTime, formatJPYAuto, formatPt, formatSignedJPY, formatSignedPct } from '../utils/format'
+import { formatJPYAuto, formatLastUpdated, formatPt, formatSignedJPY, formatSignedPct } from '../utils/format'
 import {
   createPortfolioLoadSingleFlight,
   executePortfolioLoadUiFlow,
   portfolioLoadButtonState,
   CROSS_TAB_STATE_STALE_MESSAGE,
+  REFRESH_BUTTON_LABELS,
   type PortfolioLoadFeedback,
 } from './portfolioLoadUi'
 import type { PortfolioLoadResult } from '../store/portfolioOperationResult'
@@ -231,11 +232,7 @@ export function StatusBar() {
     executeStatusBarCrossTabReloadFlow(reloadBrowserPage, reloadRequested, setReloadRequested, setReloadFailure)
   }
 
-  const refreshButton = portfolioLoadButtonState(isLoading, refreshPending, {
-    idle: '更新',
-    globallyLoading: '読込中…',
-    locallyPending: '更新中…',
-  })
+  const refreshButton = portfolioLoadButtonState(isLoading, refreshPending, REFRESH_BUTTON_LABELS)
   const refreshDisabled = statusBarRefreshButtonDisabled(refreshButton.disabled, stale)
 
   const handleRefresh = async () => {
@@ -327,7 +324,7 @@ export function StatusBar() {
         <div className="status-bar__item" style={{ marginLeft: 'auto' }}>
           <span className="status-bar__label">最終更新</span>
           <span className="status-bar__value" style={{ fontSize: '10px' }}>
-            {system.lastUpdated ? formatDateTime(system.lastUpdated) : '未更新'}
+            {system.lastUpdated ? formatLastUpdated(system.lastUpdated, { relative: true }) : '未更新'}
           </span>
         </div>
 
