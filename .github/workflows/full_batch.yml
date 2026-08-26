@@ -204,6 +204,17 @@ jobs:
       # rollbackをexact twin pathsについてmechanicalに証明できない場合は、この場で
       # hard failする。捕捉したpublication failureはshared commit/push後の最終stepで
       # 再enforceし、workflowの失敗を可視化する。
+      # ── OPS-P14-2: same-run evidence input保全（P14 threshold/metric/gate/
+      #    publishロジックには一切触れない、独立の運用store）。committed
+      #    baseline（＝実runがP-15比較に用いたprevious artifactと同一）を、
+      #    後続stepの上書き・rollbackより前に退避しておく。
+      - name: Snapshot previous candidate_funnel artifact for evidence
+        run: |
+          mkdir -p "$RUNNER_TEMP/candidate-funnel-evidence"
+          if [ -f data/candidate_funnel.json ]; then
+            cp data/candidate_funnel.json "$RUNNER_TEMP/candidate-funnel-evidence/previous-artifact.json"
+          fi
+
       - name: Build candidate_funnel.json (prescreen join + P-01..P-15 quality gate)
         id: candidate-funnel-build
         shell: bash
@@ -300,6 +311,37 @@ jobs:
           fi
 
           echo "publication_status=smoke_passed" >> "$GITHUB_OUTPUT"
+
+      # ── OPS-P14-2: same-run evidence capture（P14 PASS/FAILを問わず、
+      #    このrunで実際に使用した入力/output/gate結果をNEXT-5用negative
+      #    control corpus構築に備え保全する。診断§6.7の最小action）。
+      #    P-14の判定・threshold・publish/fail-closed経路は一切変更しない
+      #    ——既存のpure functionをread-onlyで再度呼ぶだけ。ここから2step
+      #    は本stepの失敗が production pipeline（このjobの以降のstep・
+      #    publish判定）に一切影響しないよう常にnon-blockingで走る。
+      - name: Capture candidate funnel run evidence
+        id: candidate-funnel-evidence
+        if: always()
+        continue-on-error: true
+        env:
+          CANDIDATE_FUNNEL_BATCH_STATUS: ${{ steps.candidate-funnel-build.outputs.publication_status }}
+          CANDIDATE_FUNNEL_SMOKE_STATUS: ${{ steps.candidate-funnel-smoke.outputs.publication_status }}
+        run: >-
+          python3 -m data.candidate_funnel_run_evidence
+          --out "$RUNNER_TEMP/candidate-funnel-evidence/bundle"
+          --previous "$RUNNER_TEMP/candidate-funnel-evidence/previous-artifact.json"
+          --batch-status "$CANDIDATE_FUNNEL_BATCH_STATUS"
+          --smoke-status "$CANDIDATE_FUNNEL_SMOKE_STATUS"
+
+      - name: Upload candidate funnel run evidence
+        if: always()
+        continue-on-error: true
+        uses: actions/upload-artifact@v4
+        with:
+          name: candidate-funnel-evidence-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/candidate-funnel-evidence/bundle/
+          if-no-files-found: warn
+          retention-days: 90
 
       # ── P4-A28: SAFE_MODE snapshot ────────────────────────────────────
       # regime_state.json が確定した後に実行する（crisis_regime 判定に使用）
