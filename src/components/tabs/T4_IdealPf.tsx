@@ -659,11 +659,11 @@ export function T4_IdealPf() {
         <MetricCard title="暴落待機資金"   value={formatJPYAuto(universe.cashReserve)} />
         <MetricCard
           title="個別株ロック"
-          value={`${stockPlan.lockCount} 件`}
+          value={`${stockPlan.lockCount}件`}
           change={stockPlan.lockCount > 0 ? { value: '売却制約あり', positive: false } : undefined}
         />
         <MetricCard title="制約件数"      value={`${constraints.length}`} />
-        <MetricCard title="アクション候補" value={`${actionSummary.length} 件`} />
+        <MetricCard title="アクション候補" value={`${actionSummary.length}件`} />
       </div>
 
       {/* ── 今週のアクションサマリー ── */}
@@ -759,7 +759,7 @@ export function T4_IdealPf() {
         <div>
           <SectionHeader
             title="個別株 差分ランキング"
-            caption={`ロック ${stockPlan.lockCount} 件`}
+            caption={`ロック${stockPlan.lockCount}件`}
           />
           <div style={cardStyle}>
             {stockPlan.rebalanceTop.slice(0, 8).map((row, i) => (
@@ -801,7 +801,7 @@ export function T4_IdealPf() {
       {/* ── ロック制約一覧 ── */}
       {infoConstraints.length > 0 && (
         <div>
-          <SectionHeader title="売却制約（3ヶ月ロック）" caption={`${infoConstraints.length} 件`} />
+          <SectionHeader title="売却制約（3ヶ月ロック）" caption={`${infoConstraints.length}件`} />
           <div style={cardStyle}>
             {infoConstraints.map((c, i) => (
               <div key={i} style={{

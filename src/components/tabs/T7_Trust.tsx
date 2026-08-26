@@ -724,11 +724,11 @@ export function T7_Trust() {
         reasons={isSuppressed ? [
           suppressionBannerText('新規買い判断'),
           '短期シグナルは参考値のみ',
-          `1日上限 ${todayEntryCount}/1 ${todayEntryCount >= 1 ? '— 本日執行済み' : '— 未執行'}`,
+          `1日上限 ${todayEntryCount}/1 ${todayEntryCount >= 1 ? '— 本日実行済み' : '— 未実行'}`,
         ] : [
           trustPlan.shortTermSummary,
           `条件一致 ${trustPlan.shortTermMode.conditionsPassed}/${trustPlan.shortTermMode.checklist.length}`,
-          `1日上限 ${todayEntryCount}/1 ${todayEntryCount >= 1 ? '— 本日執行済み' : '— 未執行'}`,
+          `1日上限 ${todayEntryCount}/1 ${todayEntryCount >= 1 ? '— 本日実行済み' : '— 未実行'}`,
         ]}
         riskLevel={
           trustPlan.shortTermSignal === 'BEAR' ? 'HIGH' :
@@ -1068,7 +1068,7 @@ export function T7_Trust() {
         )}
         {actionItems.length > 0
           ? <ActionPanel actions={actionItems} title="" />
-          : <EmptyState message="現在執行キューは空です" />
+          : <EmptyState message="現在実行キューは空です" />
         }
       </section>
 

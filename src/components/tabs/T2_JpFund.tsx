@@ -551,7 +551,7 @@ export function T2_JpFund() {
           }}
         />
         <MetricCard
-          title="今日の執行数"
+          title="今日の実行数"
           value={`${todayEntryCount} / ${mode.entryLimitPerDay}`}
         />
         <MetricCard
@@ -563,7 +563,7 @@ export function T2_JpFund() {
           }
           change={
             trackingStats.trackedDays > 0
-              ? { value: `${trackingStats.executions}回執行`, positive: trackingStats.winRate >= 0.5 }
+              ? { value: `${trackingStats.executions}回実行`, positive: trackingStats.winRate >= 0.5 }
               : undefined
           }
         />
@@ -832,11 +832,11 @@ export function T2_JpFund() {
               color: ctx.nikkeiDirection > 0 ? colors.buy : ctx.nikkeiDirection < 0 ? colors.sell : colors.textSubtle },
             { label: '先物方向性',       value: ctx.nikkeiFuturesDirection > 0 ? '先物買い優勢' : ctx.nikkeiFuturesDirection < 0 ? '先物売り優勢' : '中立',
               color: ctx.nikkeiFuturesDirection > 0 ? colors.buy : ctx.nikkeiFuturesDirection < 0 ? colors.sell : colors.textSubtle },
-            { label: 'ボラ乖離(vs昨日)', value: ctx.volatilitySpreadChg > 0 ? `${formatPt(ctx.volatilitySpreadChg, 2)} 上昇`
+            { label: 'ボラ乖離（vs昨日）', value: ctx.volatilitySpreadChg > 0 ? `${formatPt(ctx.volatilitySpreadChg, 2)} 上昇`
                 : ctx.volatilitySpreadChg < 0 ? `${formatPt(ctx.volatilitySpreadChg, 2)} 低下`
                 : `${formatPt(ctx.volatilitySpreadChg, 2)} 変化なし`,
               color: ctx.volatilitySpreadChg > 0 ? colors.sell : ctx.volatilitySpreadChg < 0 ? colors.buy : colors.textSubtle },
-            { label: '本日執行数',       value: `${ctx.todayEntryCount} 回 / 上限 ${mode.entryLimitPerDay} 回`,
+            { label: '本日実行数',       value: `${ctx.todayEntryCount} 回 / 上限 ${mode.entryLimitPerDay} 回`,
               color: ctx.todayEntryCount >= mode.entryLimitPerDay ? colors.sell : colors.textPrimary },
           ].map(({ label, value, color }) => (
             <div key={label} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
