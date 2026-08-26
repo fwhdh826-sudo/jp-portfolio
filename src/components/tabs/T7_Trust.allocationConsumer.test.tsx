@@ -461,6 +461,11 @@ function instrumentAllocatedAmounts(markup: string): number[] {
     .map(match => Number(match[1]))
 }
 
+function instrumentAllocationCards(markup: string): string[] {
+  return [...markup.matchAll(/<div data-allocation-instrument-id="[^"]+"[\s\S]*?(?=<div data-allocation-instrument-id=|<\/section>)/g)]
+    .map(match => match[0])
+}
+
 const RENDERED_YEN_AMOUNT = /[+-]?(?:\d{1,3}(?:,\d{3})+|\d+)(?:\.\d+)?(?:万|億)?円/
 
 function decodeRenderedNumericEntities(fullMarkup: string): string {
@@ -584,6 +589,41 @@ describe('R3-c2 T7 AllocationPlanSnapshot shared consumer wiring', () => {
     expect(total).toBeLessThanOrEqual(SHARED_HEADROOM)
     expect(markup).toContain('資産クラス余力')
     expect(markup).toContain(formatJPYAuto(SHARED_HEADROOM))
+  })
+
+  it.each([
+    ['current', 'current'],
+    ['estimate_only', 'estimate_only'],
+    ['blocked', 'blocked'],
+  ] as const)('G-1: %s branchの全instrument行に銘柄別余力を表示する', (_name, status) => {
+    const plan = allocationPlan()
+    if (status === 'estimate_only') {
+      plan.warnings = ['ESTIMATE_ONLY']
+      plan.assetClassPlans.find(item => item.assetClass === 'JP_TRUST')!.warningReasons = ['ESTIMATE_ONLY']
+      plan.instrumentPlans.filter(item => item.assetClass === 'JP_TRUST').forEach(item => {
+        item.allocatedAmount = 0
+        item.finalSuggestedAmount = 0
+        item.simultaneouslyExecutableAmount = 0
+        item.executable = false
+        item.warningReasons = ['ESTIMATE_ONLY']
+      })
+    } else if (status === 'blocked') {
+      plan.assetClassPlans.find(item => item.assetClass === 'JP_TRUST')!.blockedReasons = ['SAFE_MODE_ACTIVE']
+      plan.instrumentPlans.filter(item => item.assetClass === 'JP_TRUST').forEach(item => {
+        item.allocatedAmount = 0
+        item.finalSuggestedAmount = 0
+        item.simultaneouslyExecutableAmount = 0
+        item.executable = false
+        item.blockedReasons = ['SAFE_MODE_ACTIVE']
+      })
+    }
+
+    const cards = instrumentAllocationCards(renderT7(appState(plan, status)))
+    expect(cards).toHaveLength(3)
+    for (const card of cards) {
+      expect(card).toContain('銘柄別余力')
+      expect(card).toContain(formatJPYAuto(230_000))
+    }
   })
 
   it('T7-T05 preserves legacy signal rank, score, rationale, and execution rules', () => {

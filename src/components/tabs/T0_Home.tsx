@@ -426,7 +426,7 @@ function TodoCard() {
         todos.push({
           priority: 'high',
           text: `売却確認: ${top.code} — スコア${top.totalScore}でSELLシグナル`,
-          cond: '損切ライン・利確条件を再確認してから執行する',
+          cond: '損切ライン・利確条件を再確認してから実行する',
         })
       }
     }
@@ -1133,7 +1133,7 @@ function AssetSummaryCard() {
   const total = totalEval + trustTotal + totalCash
 
   function ratio(v: number) {
-    return total > 0 ? ` (${((v / total) * 100).toFixed(1)}%)` : ''
+    return total > 0 ? `（${((v / total) * 100).toFixed(1)}%）` : ''
   }
 
   return (

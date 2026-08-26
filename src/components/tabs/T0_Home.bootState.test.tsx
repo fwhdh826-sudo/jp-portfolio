@@ -214,6 +214,16 @@ describe('F-A-P1-2: RiskWarningCardはpartial/failed中に誤った安全宣言�
 // H-P1-4/5: T0のNavCtaRowはT1/T7のlabel/iconをconstants/tabs.tsのTAB_META_BY_IDから
 // 参照する（ハードコード値ではなく2つの参照元が同一であることを直接importで検証する）。
 describe('H-P1-4/5: NavCtaRowはTAB_META_BY_IDのT1/T7とidentityが一致する', () => {
+  it('G-2a: T7 icon authorityは🏦である', () => {
+    expect(TAB_META_BY_ID.T7.icon).toBe('🏦')
+    expect(renderWith(BASE_APP_STATE)).toContain(`<span>🏦</span><span>${TAB_META_BY_ID.T7.label}</span>`)
+  })
+
+  it('G-2b: T1 icon authorityは📈である', () => {
+    expect(TAB_META_BY_ID.T1.icon).toBe('📈')
+    expect(renderWith(BASE_APP_STATE)).toContain(`<span>📈</span><span>${TAB_META_BY_ID.T1.label}</span>`)
+  })
+
   it('T1/T7のnav pillがTAB_META_BY_ID.T1/.T7のicon+labelとbit-identicalにrenderされる', () => {
     const html = renderWith(BASE_APP_STATE)
     expect(html).toContain(`<span>${TAB_META_BY_ID.T1.icon}</span><span>${TAB_META_BY_ID.T1.label}</span>`)
