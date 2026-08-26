@@ -1,10 +1,50 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-08-26T08:47:00.671820+09:00",
-  "sourceUpdatedAt": "2026-08-25T23:38:16+00:00",
+  "updatedAt": "2026-08-26T13:09:09.322160+09:00",
+  "sourceUpdatedAt": "2026-08-26T04:00:00+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
+      "avgSentiment": 0.335,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 1,
+      "sourceCount": 2,
+      "itemCount": 2,
+      "isStale": false,
+      "topNegativeTitle": "Australia’s Second-Largest Pension Makes Big Bet on Yen Strength",
+      "topPositiveTitle": "Japan Business Service Prices Accelerate, Backing BOJ Hike Case",
+      "items": [
+        {
+          "title": "Australia’s Second-Largest Pension Makes Big Bet on Yen Strength",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-26T01:16:39+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-26/australia-s-pension-giant-makes-its-biggest-yen-bet-in-years",
+          "tags": [
+            "fx",
+            "jp_broad",
+            "market"
+          ]
+        },
+        {
+          "title": "Japan Business Service Prices Accelerate, Backing BOJ Hike Case",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-26T01:48:13+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-26/japan-business-service-prices-accelerate-backing-boj-hike-case",
+          "tags": [
+            "geopolitical",
+            "jp_broad",
+            "macro_risk",
+            "market"
+          ]
+        }
+      ]
+    },
+    "jp_semiconductor": {
       "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
@@ -16,100 +56,17 @@
       "topPositiveTitle": null,
       "items": []
     },
-    "jp_semiconductor": {
-      "avgSentiment": -0.177,
-      "negativeCount": 1,
-      "positiveCount": 0,
-      "neutralCount": 2,
-      "sourceCount": 1,
-      "itemCount": 3,
-      "isStale": false,
-      "topNegativeTitle": "Intuit Sinks 11% on Weak Outlook as Nvidia Earnings Loom | Closing Bell",
-      "topPositiveTitle": "Stocks Rise Before Nvidia as Oil Drop Lifts Bonds: Markets Wrap",
-      "items": [
-        {
-          "title": "Intuit Sinks 11% on Weak Outlook as Nvidia Earnings Loom | Closing Bell",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-25T20:24:04+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-25/intuit-sinks-11-on-weak-outlook-closing-bell-video",
-          "tags": [
-            "jp_semiconductor",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Asian Stocks Set to Gain as Oil Extends Declines: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.2,
-          "publishedAt": "2026-08-25T22:08:45+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-25/asian-stocks-set-to-gain-as-oil-extends-declines-markets-wrap",
-          "tags": [
-            "commodity",
-            "jp_semiconductor",
-            "market",
-            "rates",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Stocks Rise Before Nvidia as Oil Drop Lifts Bonds: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-24T22:09:52+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-24/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "jp_semiconductor",
-            "market",
-            "rates",
-            "us_growth"
-          ]
-        }
-      ]
-    },
     "us_broad": {
-      "avgSentiment": 0.022,
+      "avgSentiment": 0.2,
       "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 5,
+      "positiveCount": 2,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Treasuries Gain as Oil Drop Eases Pressure on Inflation, Bessent",
-      "topPositiveTitle": "Fed’s Barkin Says Rising US Debt Will Lead to Eventual Reckoning",
+      "topNegativeTitle": "Warsh de Fed enfrenta prueba de comunicación en Jackson Hole",
+      "topPositiveTitle": "Gold Holds Five-Day Gain as Traders Turn Focus to Fed Rate Path",
       "items": [
-        {
-          "title": "Treasuries Gain as Oil Drop Eases Pressure on Inflation, Bessent",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.2,
-          "publishedAt": "2026-08-25T13:30:37+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-25/treasuries-gain-as-oil-drop-eases-pressure-on-inflation-bessent",
-          "tags": [
-            "commodity",
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Consumers Are Signaling an Uneven Economy, Abby Joseph Cohen Says",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-25T19:52:55+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-25/consumer-data-signal-uneven-economy-abby-joseph-cohen-video",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
         {
           "title": "Warsh de Fed enfrenta prueba de comunicación en Jackson Hole",
           "source": "Bloomberg Economics",
@@ -146,64 +103,45 @@
             "market",
             "us_broad"
           ]
+        },
+        {
+          "title": "Fed’s Barkin Says Rising US Debt Will Lead to Eventual Reckoning",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-25T22:22:07+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-25/fed-s-barkin-says-rising-us-debt-will-lead-to-eventual-reckoning",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Gold Holds Five-Day Gain as Traders Turn Focus to Fed Rate Path",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-25T23:52:39+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-25/gold-holds-five-day-gain-as-oil-drop-eases-inflation-concerns",
+          "tags": [
+            "gold",
+            "market",
+            "us_broad"
+          ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": -0.177,
-      "negativeCount": 1,
+      "avgSentiment": 0,
+      "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 2,
-      "sourceCount": 1,
-      "itemCount": 3,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Intuit Sinks 11% on Weak Outlook as Nvidia Earnings Loom | Closing Bell",
-      "topPositiveTitle": "Stocks Rise Before Nvidia as Oil Drop Lifts Bonds: Markets Wrap",
-      "items": [
-        {
-          "title": "Intuit Sinks 11% on Weak Outlook as Nvidia Earnings Loom | Closing Bell",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-25T20:24:04+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-25/intuit-sinks-11-on-weak-outlook-closing-bell-video",
-          "tags": [
-            "jp_semiconductor",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Asian Stocks Set to Gain as Oil Extends Declines: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.2,
-          "publishedAt": "2026-08-25T22:08:45+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-25/asian-stocks-set-to-gain-as-oil-extends-declines-markets-wrap",
-          "tags": [
-            "commodity",
-            "jp_semiconductor",
-            "market",
-            "rates",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Stocks Rise Before Nvidia as Oil Drop Lifts Bonds: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-24T22:09:52+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-24/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "jp_semiconductor",
-            "market",
-            "rates",
-            "us_growth"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "global_broad": {
       "avgSentiment": 0,
@@ -218,15 +156,15 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": 0.2,
+      "avgSentiment": 0.435,
       "negativeCount": 0,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 1,
+      "itemCount": 2,
       "isStale": false,
       "topNegativeTitle": "Gold Edges Up After Four-Day Gain as Traders Eye Treasury Moves",
-      "topPositiveTitle": "Gold Edges Up After Four-Day Gain as Traders Eye Treasury Moves",
+      "topPositiveTitle": "Gold Holds Five-Day Gain as Traders Turn Focus to Fed Rate Path",
       "items": [
         {
           "title": "Gold Edges Up After Four-Day Gain as Traders Eye Treasury Moves",
@@ -240,33 +178,33 @@
             "gold",
             "market"
           ]
+        },
+        {
+          "title": "Gold Holds Five-Day Gain as Traders Turn Focus to Fed Rate Path",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-25T23:52:39+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-25/gold-holds-five-day-gain-as-oil-drop-eases-inflation-concerns",
+          "tags": [
+            "gold",
+            "market",
+            "us_broad"
+          ]
         }
       ]
     },
     "reit": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "The Mormon Church Is Putting Its Real Estate Empire to Work",
-      "topPositiveTitle": "The Mormon Church Is Putting Its Real Estate Empire to Work",
-      "items": [
-        {
-          "title": "The Mormon Church Is Putting Its Real Estate Empire to Work",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-25T21:00:07+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-25/the-mormon-church-is-putting-its-real-estate-empire-to-work",
-          "tags": [
-            "market",
-            "reit"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "dividend": {
       "avgSentiment": 0.33,
@@ -294,65 +232,51 @@
       ]
     },
     "macro_risk": {
-      "avgSentiment": -0.033,
+      "avgSentiment": 0.157,
       "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 4,
+      "positiveCount": 2,
+      "neutralCount": 3,
       "sourceCount": 3,
       "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Oil Falls on Fresh Iran War Diplomacy, Talks on Hormuz",
-      "topPositiveTitle": "UK Household Inflation Worries Pick Up Again in August",
+      "topNegativeTitle": "Bank of Thailand Seen Extending Rate Pause After Slump in Second-Quarter Growth",
+      "topPositiveTitle": "Japan Business Service Prices Accelerate, Backing BOJ Hike Case",
       "items": [
         {
-          "title": "Oil Falls on Fresh Iran War Diplomacy, Talks on Hormuz",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.6,
-          "publishedAt": "2026-08-24T22:02:31+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-24/latest-oil-market-news-and-analysis-for-aug-25",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Treasuries Gain as Oil Drop Eases Pressure on Inflation, Bessent",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.2,
-          "publishedAt": "2026-08-25T13:30:37+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-25/treasuries-gain-as-oil-drop-eases-pressure-on-inflation-bessent",
-          "tags": [
-            "commodity",
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "US-Canada Cosmetic Tariffs Threaten the $10 Beauty Impulse Buy",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-25T19:38:31+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-25/us-canada-cosmetic-tariffs-threaten-the-10-beauty-impulse-buy",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "US-Canada Trade War Escalates",
+          "title": "Bank of Thailand Seen Extending Rate Pause After Slump in Second-Quarter Growth",
           "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-26T00:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-26/bank-of-thailand-seen-extending-rate-pause-after-slump-in-second-quarter-growth",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Why China Is Defiant Even as US Threatens Iran Sanctions",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-25T11:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-08-25/us-canada-trade-war-escalates",
+          "publishedAt": "2026-08-26T03:34:29+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-26/why-china-is-defiant-even-as-us-threatens-iran-sanctions-video",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Xi Signals Defiance as US Threatens Sanctions Over Iran",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-26T00:17:43+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-26/xi-signals-defiance-as-us-threatens-sanctions-over-iran-video",
           "tags": [
             "geopolitical",
             "macro_risk",
@@ -371,20 +295,46 @@
             "market"
           ],
           "titleJa": "自民 拉致問題対策本部“北朝鮮制裁 安易に緩和すべきでない”"
+        },
+        {
+          "title": "UK Household Inflation Worries Pick Up Again in August",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.6,
+          "publishedAt": "2026-08-25T16:25:29+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-25/uk-household-inflation-worries-pick-up-again-in-august",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": 0.1,
+      "avgSentiment": 0.067,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 2,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 2,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "(USD: ZWG) Citigroup Sees Zimbabwe Economy Turnaround in Break With Past",
+      "topNegativeTitle": "Australia’s Second-Largest Pension Makes Big Bet on Yen Strength",
       "topPositiveTitle": "Gold Edges Up After Four-Day Gain as Traders Eye Treasury Moves",
       "items": [
+        {
+          "title": "Australia’s Second-Largest Pension Makes Big Bet on Yen Strength",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-26T01:16:39+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-26/australia-s-pension-giant-makes-its-biggest-yen-bet-in-years",
+          "tags": [
+            "fx",
+            "jp_broad",
+            "market"
+          ]
+        },
         {
           "title": "(USD: ZWG) Citigroup Sees Zimbabwe Economy Turnaround in Break With Past",
           "source": "Bloomberg Economics",
@@ -413,46 +363,16 @@
       ]
     },
     "rates": {
-      "avgSentiment": 0.039,
+      "avgSentiment": 0.223,
       "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 6,
-      "sourceCount": 2,
-      "itemCount": 7,
+      "neutralCount": 2,
+      "sourceCount": 1,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Asian Stocks Set to Gain as Oil Extends Declines: Markets Wrap",
+      "topNegativeTitle": "Fed’s Collins Says Holding Rates Hangs on Inflation Progress",
       "topPositiveTitle": "BOK to Weigh Back-to-Back Hike as Growth, Inflation Remain Firm",
       "items": [
-        {
-          "title": "Asian Stocks Set to Gain as Oil Extends Declines: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.2,
-          "publishedAt": "2026-08-25T22:08:45+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-25/asian-stocks-set-to-gain-as-oil-extends-declines-markets-wrap",
-          "tags": [
-            "commodity",
-            "jp_semiconductor",
-            "market",
-            "rates",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Treasuries Gain as Oil Drop Eases Pressure on Inflation, Bessent",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.2,
-          "publishedAt": "2026-08-25T13:30:37+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-25/treasuries-gain-as-oil-drop-eases-pressure-on-inflation-bessent",
-          "tags": [
-            "commodity",
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
         {
           "title": "Fed’s Collins Says Holding Rates Hangs on Inflation Progress",
           "source": "Bloomberg Economics",
@@ -479,12 +399,12 @@
           ]
         },
         {
-          "title": "Japan Debt-Servicing Costs to Hit $230 Billion Record Next Year",
+          "title": "BOK to Weigh Back-to-Back Hike as Growth, Inflation Remain Firm",
           "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-25T10:17:01+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-25/japan-debt-servicing-costs-to-hit-230-billion-record-next-year",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-25T21:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-25/bok-to-weigh-back-to-back-hike-as-growth-inflation-remain-firm",
           "tags": [
             "market",
             "rates"
@@ -493,21 +413,35 @@
       ]
     },
     "commodity": {
-      "avgSentiment": -0.111,
+      "avgSentiment": 0.049,
       "negativeCount": 2,
-      "positiveCount": 1,
-      "neutralCount": 6,
+      "positiveCount": 2,
+      "neutralCount": 3,
       "sourceCount": 3,
-      "itemCount": 9,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "Latest Oil Market News and Analysis for Aug. 26",
+      "topNegativeTitle": "Bank of Thailand Seen Extending Rate Pause After Slump in Second-Quarter Growth",
       "topPositiveTitle": "Hungary Sticks to Meeting Euro Criteria by 2030 Despite Deficit",
       "items": [
+        {
+          "title": "Bank of Thailand Seen Extending Rate Pause After Slump in Second-Quarter Growth",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-26T00:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-26/bank-of-thailand-seen-extending-rate-pause-after-slump-in-second-quarter-growth",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
         {
           "title": "Latest Oil Market News and Analysis for Aug. 26",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.67,
+          "sentimentScore": -0.33,
           "publishedAt": "2026-08-25T22:06:21+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-08-25/latest-oil-market-news-and-analysis-for-aug-26",
           "tags": [
@@ -517,47 +451,17 @@
           ]
         },
         {
-          "title": "Oil Falls on Fresh Iran War Diplomacy, Talks on Hormuz",
+          "title": "Why China Is Defiant Even as US Threatens Iran Sanctions",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.6,
-          "publishedAt": "2026-08-24T22:02:31+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-24/latest-oil-market-news-and-analysis-for-aug-25",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-26T03:34:29+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-26/why-china-is-defiant-even-as-us-threatens-iran-sanctions-video",
           "tags": [
             "commodity",
             "geopolitical",
             "macro_risk",
             "market"
-          ]
-        },
-        {
-          "title": "Asian Stocks Set to Gain as Oil Extends Declines: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.2,
-          "publishedAt": "2026-08-25T22:08:45+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-25/asian-stocks-set-to-gain-as-oil-extends-declines-markets-wrap",
-          "tags": [
-            "commodity",
-            "jp_semiconductor",
-            "market",
-            "rates",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Treasuries Gain as Oil Drop Eases Pressure on Inflation, Bessent",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.2,
-          "publishedAt": "2026-08-25T13:30:37+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-25/treasuries-gain-as-oil-drop-eases-pressure-on-inflation-bessent",
-          "tags": [
-            "commodity",
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
           ]
         },
         {
@@ -571,25 +475,52 @@
             "commodity",
             "market"
           ]
+        },
+        {
+          "title": "政府 エネルギー安定確保で新計画 代替パイプライン建設支援",
+          "source": "NHK 経済",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-25T20:06:00+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20260826de46331",
+          "tags": [
+            "commodity",
+            "market"
+          ],
+          "titleJa": "政府 エネルギー安定確保で新計画 代替パイプライン建設支援"
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": -0.096,
+      "avgSentiment": 0.087,
       "negativeCount": 2,
-      "positiveCount": 1,
-      "neutralCount": 4,
+      "positiveCount": 2,
+      "neutralCount": 3,
       "sourceCount": 2,
       "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "Latest Oil Market News and Analysis for Aug. 26",
-      "topPositiveTitle": "UK Household Inflation Worries Pick Up Again in August",
+      "topNegativeTitle": "Bank of Thailand Seen Extending Rate Pause After Slump in Second-Quarter Growth",
+      "topPositiveTitle": "Japan Business Service Prices Accelerate, Backing BOJ Hike Case",
       "items": [
+        {
+          "title": "Bank of Thailand Seen Extending Rate Pause After Slump in Second-Quarter Growth",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-26T00:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-26/bank-of-thailand-seen-extending-rate-pause-after-slump-in-second-quarter-growth",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
         {
           "title": "Latest Oil Market News and Analysis for Aug. 26",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.67,
+          "sentimentScore": -0.33,
           "publishedAt": "2026-08-25T22:06:21+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-08-25/latest-oil-market-news-and-analysis-for-aug-26",
           "tags": [
@@ -599,12 +530,12 @@
           ]
         },
         {
-          "title": "Oil Falls on Fresh Iran War Diplomacy, Talks on Hormuz",
+          "title": "Why China Is Defiant Even as US Threatens Iran Sanctions",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.6,
-          "publishedAt": "2026-08-24T22:02:31+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-24/latest-oil-market-news-and-analysis-for-aug-25",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-26T03:34:29+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-26/why-china-is-defiant-even-as-us-threatens-iran-sanctions-video",
           "tags": [
             "commodity",
             "geopolitical",
@@ -613,24 +544,12 @@
           ]
         },
         {
-          "title": "Northrop CEO on Defense Spending, Golden Dome System",
+          "title": "Xi Signals Defiance as US Threatens Sanctions Over Iran",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-25T21:17:47+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-25/northrop-ceo-on-defense-spending-golden-dome-system-video",
-          "tags": [
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "US-Canada Cosmetic Tariffs Threaten the $10 Beauty Impulse Buy",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-25T19:38:31+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-25/us-canada-cosmetic-tariffs-threaten-the-10-beauty-impulse-buy",
+          "publishedAt": "2026-08-26T00:17:43+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-26/xi-signals-defiance-as-us-threatens-sanctions-over-iran-video",
           "tags": [
             "geopolitical",
             "macro_risk",
@@ -638,14 +557,13 @@
           ]
         },
         {
-          "title": "India Exports Face Little Risk From Tougher US Sanctions on Iran",
+          "title": "India Rice Exporters See Iran Demand Defying Sanctions Risk",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
           "publishedAt": "2026-08-25T15:49:25+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-08-25/india-exports-face-little-risk-from-tougher-us-sanctions-on-iran",
           "tags": [
-            "commodity",
             "geopolitical",
             "market"
           ]
