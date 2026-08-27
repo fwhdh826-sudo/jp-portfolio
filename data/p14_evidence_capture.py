@@ -163,6 +163,45 @@ def _ranked(result: dict[str, Any]) -> list[dict[str, Any]]:
     return sorted(rows, key=lambda row: (row["marketRank"], row.get("code", "")))
 
 
+def permutation_changed_counts(
+    base: dict[str, Any], permutation: dict[str, Any]
+) -> tuple[int, int]:
+    """Return exact changed code-row counts for stored scores and ranks."""
+
+    def values(result: dict[str, Any]) -> dict[str, tuple[Any, Any, Any]]:
+        candidates = result.get("candidates")
+        if not isinstance(candidates, list):
+            raise CaptureError("permutation result candidates must be a list")
+        mapped: dict[str, tuple[Any, Any, Any]] = {}
+        for candidate in candidates:
+            if not isinstance(candidate, dict):
+                raise CaptureError("permutation candidate must be an object")
+            code = candidate.get("code")
+            if not isinstance(code, str) or not code or code in mapped:
+                raise CaptureError("permutation codes must be unique exact strings")
+            mapped[code] = (
+                candidate.get("rawCompositeScore"),
+                candidate.get("marketScore"),
+                candidate.get("marketRank"),
+            )
+        return mapped
+
+    base_values = values(base)
+    permutation_values = values(permutation)
+    if set(base_values) != set(permutation_values):
+        raise CaptureError("permutation population mismatch")
+    score_changed = sum(
+        base_values[code][:2] != permutation_values[code][:2] for code in base_values
+    )
+    rank_changed = sum(
+        base_values[code][2] != permutation_values[code][2] for code in base_values
+    )
+    population = len(base_values)
+    if not (0 <= score_changed <= population and 0 <= rank_changed <= population):
+        raise CaptureError("permutation changed count outside population")
+    return score_changed, rank_changed
+
+
 def _top_codes(result: dict[str, Any], k: int) -> list[str]:
     return [row["code"] for row in _ranked(result)[:k]]
 
@@ -745,6 +784,9 @@ def build_bundle(
                 if metrics["jaccard"] >= batch.RANK_STABILITY_JACCARD_MIN
                 else "FAIL"
             )
+            score_changed_count, rank_changed_count = permutation_changed_counts(
+                base_first, perm_base
+            )
             row = {
                 "case": name,
                 "definition": definition,
@@ -757,6 +799,8 @@ def build_bundle(
                     for candidate in _ranked(perm_base)
                 }
                 != base_rank_map,
+                "unperturbedScoreChangedCount": score_changed_count,
+                "unperturbedRankChangedCount": rank_changed_count,
                 "top40Mismatch": set(_top_codes(perm_base, 40))
                 != set(_top_codes(base_first, 40)),
                 "jaccardMismatch": metrics["jaccard"] != production_metrics["jaccard"],
