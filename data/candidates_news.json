@@ -1,93 +1,81 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-08-26T20:54:24.165955+09:00",
-  "sourceUpdatedAt": "2026-08-26T11:33:49+00:00",
+  "updatedAt": "2026-08-27T10:00:08.223197+09:00",
+  "sourceUpdatedAt": "2026-08-27T00:24:11+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": 0.67,
+      "avgSentiment": 0,
       "negativeCount": 0,
-      "positiveCount": 1,
+      "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Japan Business Service Prices Accelerate, Backing BOJ Hike Case",
-      "topPositiveTitle": "Japan Business Service Prices Accelerate, Backing BOJ Hike Case",
-      "items": [
-        {
-          "title": "Japan Business Service Prices Accelerate, Backing BOJ Hike Case",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-26T01:48:13+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-26/japan-business-service-prices-accelerate-backing-boj-hike-case",
-          "tags": [
-            "geopolitical",
-            "jp_broad",
-            "macro_risk",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "jp_semiconductor": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
+      "avgSentiment": -0.235,
+      "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "US Stocks and Treasuries Slip as Nvidia, PCE Loom: Markets Wrap",
-      "topPositiveTitle": "US Stocks and Treasuries Slip as Nvidia, PCE Loom: Markets Wrap",
+      "topNegativeTitle": "Stocks Churn in Late Hours After Nvidia’s Results: Markets Wrap",
+      "topPositiveTitle": "Stocks, Futures Rise on Nvidia Outlook; Oil Drops: Markets Wrap",
       "items": [
         {
-          "title": "US Stocks and Treasuries Slip as Nvidia, PCE Loom: Markets Wrap",
+          "title": "Stocks Churn in Late Hours After Nvidia’s Results: Markets Wrap",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
           "publishedAt": "2026-08-25T22:08:45+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-08-25/asian-stocks-set-to-gain-as-oil-extends-declines-markets-wrap",
           "tags": [
             "jp_semiconductor",
             "market",
+            "rates",
             "us_broad",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Stocks, Futures Rise on Nvidia Outlook; Oil Drops: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": -0.14,
+          "publishedAt": "2026-08-26T22:10:37+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-26/nasdaq-futures-rise-on-bullish-nvidia-sales-growth-markets-wrap",
+          "tags": [
+            "commodity",
+            "jp_semiconductor",
+            "market",
             "us_growth"
           ]
         }
       ]
     },
     "us_broad": {
-      "avgSentiment": 0.132,
-      "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 3,
+      "avgSentiment": 0.002,
+      "negativeCount": 2,
+      "positiveCount": 1,
+      "neutralCount": 2,
       "sourceCount": 2,
       "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Capital Economics' MacAdam on ECB, Kevin Warsh, Bessent",
-      "topPositiveTitle": "Gold Rally Eases as Traders Turn Focus to Fed Interest Rate Path",
+      "topNegativeTitle": "Economists See RBA Rate Hike as Early as September After Hot CPI",
+      "topPositiveTitle": "Key US Inflation Gauge Posts Muted Advance, Spending Stalls",
       "items": [
         {
-          "title": "Capital Economics' MacAdam on ECB, Kevin Warsh, Bessent",
+          "title": "Economists See RBA Rate Hike as Early as September After Hot CPI",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-26T10:38:07+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-26/capital-economics-macadam-on-ecb-kevin-warsh-bessent-video",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Treasuries Edge Lower Before PCE Data With Fed Risks in Focus",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-26T10:08:42+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-26/treasuries-edge-lower-before-pce-data-with-fed-risks-in-focus",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-26T23:50:08+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-26/economists-see-rba-rate-hike-as-early-as-september-after-hot-cpi",
           "tags": [
             "market",
             "rates",
@@ -95,26 +83,27 @@
           ]
         },
         {
-          "title": "US Stocks and Treasuries Slip as Nvidia, PCE Loom: Markets Wrap",
+          "title": "Stocks Churn in Late Hours After Nvidia’s Results: Markets Wrap",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
           "publishedAt": "2026-08-25T22:08:45+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-08-25/asian-stocks-set-to-gain-as-oil-extends-declines-markets-wrap",
           "tags": [
             "jp_semiconductor",
             "market",
+            "rates",
             "us_broad",
             "us_growth"
           ]
         },
         {
-          "title": "Gold Rally Eases as Traders Turn Focus to Fed Interest Rate Path",
+          "title": "Gold Consolidates Above $4,600 as Investors Weigh Fed Rate Path",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-25T23:52:39+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-25/gold-holds-five-day-gain-as-oil-drop-eases-inflation-concerns",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-26T23:48:19+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-26/gold-consolidates-above-4-600-as-investors-weigh-fed-rate-path",
           "tags": [
             "gold",
             "market",
@@ -122,30 +111,72 @@
           ]
         },
         {
-          "title": "Fed’s Barkin Says Rising US Debt Will Lead to Eventual Reckoning",
+          "title": "Uzbek Central Bank Seeks Goldman, Blackrock Input on Reserves",
           "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-25T22:22:07+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-25/fed-s-barkin-says-rising-us-debt-will-lead-to-eventual-reckoning",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-26T12:50:28+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-26/uzbek-central-bank-seeks-goldman-blackrock-input-on-reserves",
           "tags": [
             "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Key US Inflation Gauge Posts Muted Advance, Spending Stalls",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-26T12:32:20+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-26/key-us-inflation-gauge-posts-muted-advance-spending-stalls",
+          "tags": [
+            "market",
+            "rates",
             "us_broad"
           ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
+      "avgSentiment": -0.157,
+      "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 2,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Artificial Intelligence Investment Now Competes With Governments for Capital",
+      "topNegativeTitle": "Stocks Churn in Late Hours After Nvidia’s Results: Markets Wrap",
       "topPositiveTitle": "Artificial Intelligence Investment Now Competes With Governments for Capital",
       "items": [
+        {
+          "title": "Stocks Churn in Late Hours After Nvidia’s Results: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-25T22:08:45+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-25/asian-stocks-set-to-gain-as-oil-extends-declines-markets-wrap",
+          "tags": [
+            "jp_semiconductor",
+            "market",
+            "rates",
+            "us_broad",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Stocks, Futures Rise on Nvidia Outlook; Oil Drops: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": -0.14,
+          "publishedAt": "2026-08-26T22:10:37+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-26/nasdaq-futures-rise-on-bullish-nvidia-sales-growth-markets-wrap",
+          "tags": [
+            "commodity",
+            "jp_semiconductor",
+            "market",
+            "us_growth"
+          ]
+        },
         {
           "title": "Artificial Intelligence Investment Now Competes With Governments for Capital",
           "source": "Bloomberg Economics",
@@ -155,20 +186,6 @@
           "url": "https://www.bloomberg.com/news/newsletters/2026-08-26/artificial-intelligence-investment-now-competes-with-governments-for-capital",
           "tags": [
             "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "US Stocks and Treasuries Slip as Nvidia, PCE Loom: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-25T22:08:45+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-25/asian-stocks-set-to-gain-as-oil-extends-declines-markets-wrap",
-          "tags": [
-            "jp_semiconductor",
-            "market",
-            "us_broad",
             "us_growth"
           ]
         }
@@ -187,23 +204,23 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": 0.33,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 1,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Gold Rally Eases as Traders Turn Focus to Fed Interest Rate Path",
-      "topPositiveTitle": "Gold Rally Eases as Traders Turn Focus to Fed Interest Rate Path",
+      "topNegativeTitle": "Gold Consolidates Above $4,600 as Investors Weigh Fed Rate Path",
+      "topPositiveTitle": "Gold Consolidates Above $4,600 as Investors Weigh Fed Rate Path",
       "items": [
         {
-          "title": "Gold Rally Eases as Traders Turn Focus to Fed Interest Rate Path",
+          "title": "Gold Consolidates Above $4,600 as Investors Weigh Fed Rate Path",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-25T23:52:39+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-25/gold-holds-five-day-gain-as-oil-drop-eases-inflation-concerns",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-26T23:48:19+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-26/gold-consolidates-above-4-600-as-investors-weigh-fed-rate-path",
           "tags": [
             "gold",
             "market",
@@ -225,107 +242,52 @@
       "items": []
     },
     "dividend": {
-      "avgSentiment": 0.67,
+      "avgSentiment": 0,
       "negativeCount": 0,
-      "positiveCount": 1,
+      "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Morgan Stanley’s Khanduja Cuts Long-Bond Bets on Bessent Buyback Move",
-      "topPositiveTitle": "Morgan Stanley’s Khanduja Cuts Long-Bond Bets on Bessent Buyback Move",
-      "items": [
-        {
-          "title": "Morgan Stanley’s Khanduja Cuts Long-Bond Bets on Bessent Buyback Move",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-26T10:34:27+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-26/morgan-stanley-s-khanduja-cuts-long-bond-bets-on-bessent-buyback-move",
-          "tags": [
-            "dividend",
-            "market",
-            "rates"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.334,
-      "negativeCount": 1,
-      "positiveCount": 4,
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
+      "positiveCount": 0,
       "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 7,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Bank of Thailand Seen Extending Rate Pause After Slump in Second-Quarter Growth",
-      "topPositiveTitle": "Cnooc’s 1H Profit Rises After Iran War Boosted Oil Prices",
+      "topNegativeTitle": "Mexico Touts CDS Levels as Bonds Trade as Speculative Grade",
+      "topPositiveTitle": "Mexico Touts CDS Levels as Bonds Trade as Speculative Grade",
       "items": [
         {
-          "title": "Bank of Thailand Seen Extending Rate Pause After Slump in Second-Quarter Growth",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-26T00:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-26/bank-of-thailand-seen-extending-rate-pause-after-slump-in-second-quarter-growth",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Pimco’s Balls Points to Low Volatility in ‘Healthy’ Bond Market",
+          "title": "Mexico Touts CDS Levels as Bonds Trade as Speculative Grade",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-26T11:31:16+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-26/pimco-points-to-low-volatility-in-healthy-bond-market-video",
+          "publishedAt": "2026-08-26T18:10:14+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-26/mexico-touts-improving-cds-as-bonds-trade-as-speculative-grade",
           "tags": [
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Thailand Keeps Rate ‘Accommodative’ With Room to Cut in a Crisis",
-          "source": "Bloomberg Economics",
+          "title": "政府 官邸連絡室を設置 大雨特別警報受け",
+          "source": "NHK 経済",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-26T07:00:33+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-26/thailand-holds-rate-unchanged-for-third-meeting-to-revive-growth",
+          "publishedAt": "2026-08-26T23:02:03+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20260827de46604",
           "tags": [
             "macro_risk",
             "market"
-          ]
-        },
-        {
-          "title": "UK Energy Price Cap Will Rise By 4% From October, Ofgem Said",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-26T06:13:07+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-26/uk-households-face-highest-winter-bills-since-january-2024",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "ECB’s Schnabel Says Rates Must Rise More on Strong Economy",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-26T05:15:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-26/ecb-s-schnabel-says-rates-must-rise-more-on-resilient-economy",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market",
-            "rates"
-          ]
+          ],
+          "titleJa": "政府 官邸連絡室を設置 大雨特別警報受け"
         }
       ]
     },
@@ -337,16 +299,16 @@
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "PwC International Can’t Exit Evergrande Case, HK Court Rules",
-      "topPositiveTitle": "PwC International Can’t Exit Evergrande Case, HK Court Rules",
+      "topNegativeTitle": "How Microdramas Became A Billion-Dollar Industry",
+      "topPositiveTitle": "How Microdramas Became A Billion-Dollar Industry",
       "items": [
         {
-          "title": "PwC International Can’t Exit Evergrande Case, HK Court Rules",
+          "title": "How Microdramas Became A Billion-Dollar Industry",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-26T07:06:48+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-26/pwc-international-can-t-exit-evergrande-case-hk-court-rules",
+          "publishedAt": "2026-08-26T22:00:06+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-26/how-microdramas-became-a-billion-dollar-industry",
           "tags": [
             "fx",
             "market"
@@ -355,23 +317,23 @@
       ]
     },
     "rates": {
-      "avgSentiment": 0.503,
-      "negativeCount": 0,
-      "positiveCount": 3,
+      "avgSentiment": 0.003,
+      "negativeCount": 2,
+      "positiveCount": 1,
       "neutralCount": 1,
       "sourceCount": 2,
       "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Treasuries Edge Lower Before PCE Data With Fed Risks in Focus",
-      "topPositiveTitle": "Morgan Stanley’s Khanduja Cuts Long-Bond Bets on Bessent Buyback Move",
+      "topNegativeTitle": "Economists See RBA Rate Hike as Early as September After Hot CPI",
+      "topPositiveTitle": "Key US Inflation Gauge Posts Muted Advance, Spending Stalls",
       "items": [
         {
-          "title": "Treasuries Edge Lower Before PCE Data With Fed Risks in Focus",
+          "title": "Economists See RBA Rate Hike as Early as September After Hot CPI",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-26T10:08:42+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-26/treasuries-edge-lower-before-pce-data-with-fed-risks-in-focus",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-26T23:50:08+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-26/economists-see-rba-rate-hike-as-early-as-september-after-hot-cpi",
           "tags": [
             "market",
             "rates",
@@ -379,81 +341,81 @@
           ]
         },
         {
-          "title": "Morgan Stanley’s Khanduja Cuts Long-Bond Bets on Bessent Buyback Move",
+          "title": "Stocks Churn in Late Hours After Nvidia’s Results: Markets Wrap",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-26T10:34:27+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-26/morgan-stanley-s-khanduja-cuts-long-bond-bets-on-bessent-buyback-move",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-25T22:08:45+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-25/asian-stocks-set-to-gain-as-oil-extends-declines-markets-wrap",
           "tags": [
-            "dividend",
+            "jp_semiconductor",
+            "market",
+            "rates",
+            "us_broad",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Uzbekistan Central Bank Chief Sees Chance of Rate Cut This Year",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-26T12:32:39+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-26/uzbekistan-central-bank-chief-sees-chance-of-rate-cut-this-year",
+          "tags": [
             "market",
             "rates"
           ]
         },
         {
-          "title": "ECB’s Schnabel Says Rates Must Rise More on Strong Economy",
+          "title": "Key US Inflation Gauge Posts Muted Advance, Spending Stalls",
           "source": "Bloomberg Economics",
           "sentiment": "positive",
           "sentimentScore": 0.67,
-          "publishedAt": "2026-08-26T05:15:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-26/ecb-s-schnabel-says-rates-must-rise-more-on-resilient-economy",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "BOK to Weigh Back-to-Back Hike as Growth, Inflation Remain Firm",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-25T21:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-25/bok-to-weigh-back-to-back-hike-as-growth-inflation-remain-firm",
+          "publishedAt": "2026-08-26T12:32:20+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-26/key-us-inflation-gauge-posts-muted-advance-spending-stalls",
           "tags": [
             "market",
-            "rates"
+            "rates",
+            "us_broad"
           ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.134,
-      "negativeCount": 2,
-      "positiveCount": 2,
-      "neutralCount": 1,
-      "sourceCount": 3,
-      "itemCount": 5,
+      "avgSentiment": 0.133,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 3,
+      "sourceCount": 2,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Bank of Thailand Seen Extending Rate Pause After Slump in Second-Quarter Growth",
-      "topPositiveTitle": "Cnooc’s 1H Profit Rises After Iran War Boosted Oil Prices",
+      "topNegativeTitle": "Stocks, Futures Rise on Nvidia Outlook; Oil Drops: Markets Wrap",
+      "topPositiveTitle": "Latest Oil Market News and Analysis for Aug. 27",
       "items": [
         {
-          "title": "Bank of Thailand Seen Extending Rate Pause After Slump in Second-Quarter Growth",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-26T00:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-26/bank-of-thailand-seen-extending-rate-pause-after-slump-in-second-quarter-growth",
+          "title": "Stocks, Futures Rise on Nvidia Outlook; Oil Drops: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": -0.14,
+          "publishedAt": "2026-08-26T22:10:37+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-26/nasdaq-futures-rise-on-bullish-nvidia-sales-growth-markets-wrap",
           "tags": [
             "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
+            "jp_semiconductor",
+            "market",
+            "us_growth"
           ]
         },
         {
-          "title": "Latest Oil Market News and Analysis for Aug. 26",
+          "title": "Permian Basin Set to Become Top US Gas Producer, Citi Says",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-25T22:06:21+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-25/latest-oil-market-news-and-analysis-for-aug-26",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-26T21:00:47+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-26/permian-basin-set-to-become-top-us-gas-producer-citi-says",
           "tags": [
             "commodity",
-            "geopolitical",
             "market"
           ]
         },
@@ -471,111 +433,42 @@
           "titleJa": "政府 エネルギー安定確保で新計画 代替パイプライン建設支援"
         },
         {
-          "title": "UK Energy Price Cap Will Rise By 4% From October, Ofgem Said",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-26T06:13:07+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-26/uk-households-face-highest-winter-bills-since-january-2024",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Cnooc’s 1H Profit Rises After Iran War Boosted Oil Prices",
+          "title": "Latest Oil Market News and Analysis for Aug. 27",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-08-26T08:50:20+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-26/cnooc-first-half-profit-rises-after-iran-war-boosted-oil-prices",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-26T22:02:04+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-26/latest-oil-market-news-and-analysis-for-aug-27",
           "tags": [
             "commodity",
             "geopolitical",
-            "macro_risk",
             "market"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.287,
-      "negativeCount": 2,
-      "positiveCount": 4,
-      "neutralCount": 1,
-      "sourceCount": 2,
-      "itemCount": 7,
+      "avgSentiment": 0.67,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Bank of Thailand Seen Extending Rate Pause After Slump in Second-Quarter Growth",
-      "topPositiveTitle": "Cnooc’s 1H Profit Rises After Iran War Boosted Oil Prices",
+      "topNegativeTitle": "Latest Oil Market News and Analysis for Aug. 27",
+      "topPositiveTitle": "Latest Oil Market News and Analysis for Aug. 27",
       "items": [
         {
-          "title": "Bank of Thailand Seen Extending Rate Pause After Slump in Second-Quarter Growth",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-26T00:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-26/bank-of-thailand-seen-extending-rate-pause-after-slump-in-second-quarter-growth",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Latest Oil Market News and Analysis for Aug. 26",
+          "title": "Latest Oil Market News and Analysis for Aug. 27",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-25T22:06:21+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-25/latest-oil-market-news-and-analysis-for-aug-26",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "India Rice Exporters See Iran Demand Defying Sanctions Risk",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-25T15:49:25+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-25/india-exports-face-little-risk-from-tougher-us-sanctions-on-iran",
-          "tags": [
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "UK Energy Price Cap Will Rise By 4% From October, Ofgem Said",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-26T06:13:07+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-26/uk-households-face-highest-winter-bills-since-january-2024",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "ECB’s Schnabel Says Rates Must Rise More on Strong Economy",
-          "source": "Bloomberg Economics",
           "sentiment": "positive",
           "sentimentScore": 0.67,
-          "publishedAt": "2026-08-26T05:15:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-26/ecb-s-schnabel-says-rates-must-rise-more-on-resilient-economy",
+          "publishedAt": "2026-08-26T22:02:04+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-26/latest-oil-market-news-and-analysis-for-aug-27",
           "tags": [
+            "commodity",
             "geopolitical",
-            "macro_risk",
-            "market",
-            "rates"
+            "market"
           ]
         }
       ]
@@ -589,7 +482,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 1,
+    "excludedCount": 2,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
