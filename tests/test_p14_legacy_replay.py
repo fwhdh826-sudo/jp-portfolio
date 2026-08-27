@@ -25,7 +25,78 @@ from data import p14_legacy_replay as replay
 
 REPO = Path(__file__).parents[1]
 EXPECTED_REPLAY_MODULE_SHA256 = "3c352bf7a604a0ac01a4ea571e220f1ac7efa7514f41173d028333cde6735aa9"
-_E1_ARCHIVE_PATH = Path("/Users/ryo/jp-portfolio-audit-reports/p5-b005-c-p14-e1-evidence.tar.gz")
+_E1_ARCHIVE_ENV = "P14_E1_ARCHIVE"
+_E1_ARCHIVE_NAME = "p5-b005-c-p14-e1-evidence.tar.gz"
+_CANONICAL_AUDIT_ROOT_CANDIDATES = (
+    REPO.parent / "jp-portfolio-audit-reports",
+    Path.home() / "jp-portfolio-audit-reports",
+)
+
+
+def _archive_sha256(path: Path) -> str:
+    return capture.sha256_file(path)
+
+
+def _resolve_e1_archive_path(
+    *,
+    environ: dict[str, str] | os._Environ[str] | None = None,
+    audit_roots: tuple[Path, ...] | None = None,
+) -> Path:
+    """Resolve exactly one byte-verified E1 archive without a machine-local path pin."""
+    environment = os.environ if environ is None else environ
+    explicit = environment.get(_E1_ARCHIVE_ENV)
+    if explicit is not None:
+        if not explicit.strip():
+            raise AssertionError(f"{_E1_ARCHIVE_ENV} is set but empty")
+        candidate = Path(explicit).expanduser().resolve()
+        if not candidate.is_file():
+            raise AssertionError(
+                f"P14 E1 archive from {_E1_ARCHIVE_ENV} is missing: {candidate}"
+            )
+        actual = _archive_sha256(candidate)
+        if actual != replay.E1_ARCHIVE_SHA256:
+            raise AssertionError(
+                f"P14 E1 archive SHA256 mismatch for {_E1_ARCHIVE_ENV}: {candidate}; "
+                f"expected {replay.E1_ARCHIVE_SHA256}, actual {actual}"
+            )
+        return candidate
+
+    roots = _CANONICAL_AUDIT_ROOT_CANDIDATES if audit_roots is None else audit_roots
+    candidates: list[Path] = []
+    seen: set[Path] = set()
+    for root in roots:
+        candidate = (root.expanduser() / _E1_ARCHIVE_NAME).resolve()
+        if candidate not in seen:
+            seen.add(candidate)
+            candidates.append(candidate)
+
+    existing = [candidate for candidate in candidates if candidate.is_file()]
+    if not existing:
+        searched = ", ".join(str(candidate) for candidate in candidates) or "<none>"
+        raise AssertionError(
+            f"P14 E1 archive missing; set {_E1_ARCHIVE_ENV} or place the archive at "
+            f"exactly one canonical candidate: {searched}"
+        )
+
+    valid: list[Path] = []
+    mismatches: list[tuple[Path, str]] = []
+    for candidate in existing:
+        actual = _archive_sha256(candidate)
+        if actual == replay.E1_ARCHIVE_SHA256:
+            valid.append(candidate)
+        else:
+            mismatches.append((candidate, actual))
+    if mismatches:
+        details = ", ".join(f"{path} (actual {actual})" for path, actual in mismatches)
+        raise AssertionError(
+            f"P14 E1 archive SHA256 mismatch; expected {replay.E1_ARCHIVE_SHA256}: {details}"
+        )
+    if len(valid) > 1:
+        raise AssertionError(
+            "P14 E1 archive resolution is ambiguous; multiple valid canonical candidates: "
+            + ", ".join(str(path) for path in valid)
+        )
+    return valid[0]
 
 
 def _historical_snapshot_files(snapshot_id: str) -> dict[str, bytes]:
@@ -38,10 +109,10 @@ def _historical_snapshot_files(snapshot_id: str) -> dict[str, bytes]:
     bytes from here so live REPO/data updates can never change a historical
     test's result.
     """
-    assert _E1_ARCHIVE_PATH.is_file(), f"P14 E1 archive missing: {_E1_ARCHIVE_PATH}"
-    replay.verify_archive(_E1_ARCHIVE_PATH)
+    archive_path = _resolve_e1_archive_path()
+    replay.verify_archive(archive_path)
     with tempfile.TemporaryDirectory(prefix="p14-e4-historical-source-") as scratch:
-        root = replay._extract(_E1_ARCHIVE_PATH, Path(scratch))
+        root = replay._extract(archive_path, Path(scratch))
         source = root / "snapshots" / snapshot_id
         _, source_manifest = replay._source_manifest(source / "source-manifest.sha256")
         files = {}
@@ -379,6 +450,86 @@ def test_source_hashes_match_archive_source_manifest(tmp_path):
     _, parsed = replay._source_manifest(manifest)
     assert parsed["inputs/data/candidates_stocks.json"] == digest
     assert parsed["inputs/data/candidates_stocks.json"] != capture.sha256_bytes(raw + b" ")
+
+
+def test_legacy_source_hashes_match_e1_archive():
+    """The frozen hash oracle must be semantically derivable from E1 raw bytes."""
+    source_id = "current-dev-committed-20260726"
+    profile = replay.LEGACY_SOURCES[source_id]
+    historical = _historical_snapshot_files(source_id)
+    candidates_raw = historical["candidates_stocks.json"]
+    prescreen_raw = historical["prescreen_metadata.json"]
+    regime_raw = historical["regime_state.json"]
+    candidates = json.loads(candidates_raw)["candidates"]
+    prescreen_index, duplicates = batch.build_prescreen_index(json.loads(prescreen_raw))
+    assert duplicates == []
+    joined, _ = batch.join_candidates_with_prescreen(candidates, prescreen_index)
+    input_bundle_hash, market_content_hash, population_hash, prescreen_hash = (
+        capture.compute_input_hashes(candidates_raw, prescreen_raw, regime_raw, joined)
+    )
+    joined_sha256 = capture.sha256_bytes(
+        capture.canonical_bytes({"candidates": joined})
+    )
+    assert {
+        "market_content_hash": market_content_hash,
+        "input_bundle_hash": input_bundle_hash,
+        "population_hash": population_hash,
+        "prescreen_hash": prescreen_hash,
+        "joined_sha256": joined_sha256,
+    } == {
+        "market_content_hash": profile.market_content_hash,
+        "input_bundle_hash": profile.input_bundle_hash,
+        "population_hash": profile.population_hash,
+        "prescreen_hash": profile.prescreen_hash,
+        "joined_sha256": profile.joined_sha256,
+    }
+
+
+def test_e1_archive_explicit_env_has_priority(tmp_path):
+    source = _resolve_e1_archive_path()
+    explicit = tmp_path / "explicit.tar.gz"
+    shutil.copyfile(source, explicit)
+    canonical_root = tmp_path / "canonical"
+    canonical_root.mkdir()
+    (canonical_root / _E1_ARCHIVE_NAME).write_bytes(b"wrong canonical bytes")
+    assert _resolve_e1_archive_path(
+        environ={_E1_ARCHIVE_ENV: str(explicit)}, audit_roots=(canonical_root,)
+    ) == explicit.resolve()
+
+
+def test_e1_archive_resolves_one_valid_canonical_candidate(tmp_path):
+    source = _resolve_e1_archive_path()
+    canonical_root = tmp_path / "canonical"
+    canonical_root.mkdir()
+    expected = canonical_root / _E1_ARCHIVE_NAME
+    shutil.copyfile(source, expected)
+    assert _resolve_e1_archive_path(environ={}, audit_roots=(canonical_root,)) == expected
+
+
+def test_e1_archive_wrong_hash_fails_closed(tmp_path):
+    canonical_root = tmp_path / "canonical"
+    canonical_root.mkdir()
+    wrong = canonical_root / _E1_ARCHIVE_NAME
+    wrong.write_bytes(b"not the frozen E1 archive")
+    with pytest.raises(AssertionError, match="P14 E1 archive SHA256 mismatch"):
+        _resolve_e1_archive_path(environ={}, audit_roots=(canonical_root,))
+
+
+def test_e1_archive_missing_fails_with_resolution_guidance(tmp_path):
+    with pytest.raises(AssertionError, match=(
+        rf"P14 E1 archive missing; set {_E1_ARCHIVE_ENV} or place the archive"
+    )):
+        _resolve_e1_archive_path(environ={}, audit_roots=(tmp_path / "missing",))
+
+
+def test_e1_archive_multiple_valid_candidates_are_ambiguous(tmp_path):
+    source = _resolve_e1_archive_path()
+    roots = (tmp_path / "audit-one", tmp_path / "audit-two")
+    for root in roots:
+        root.mkdir()
+        shutil.copyfile(source, root / _E1_ARCHIVE_NAME)
+    with pytest.raises(AssertionError, match="multiple valid canonical candidates"):
+        _resolve_e1_archive_path(environ={}, audit_roots=roots)
 
 
 def test_e1_archive_sha256_and_file_count_unchanged(tmp_path, monkeypatch):
