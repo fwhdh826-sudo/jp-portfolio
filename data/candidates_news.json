@@ -1,111 +1,92 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-08-27T10:00:08.223197+09:00",
-  "sourceUpdatedAt": "2026-08-27T00:24:11+00:00",
+  "updatedAt": "2026-08-27T13:36:34.404576+09:00",
+  "sourceUpdatedAt": "2026-08-27T04:29:11+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.33,
       "negativeCount": 0,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "jp_semiconductor": {
-      "avgSentiment": -0.235,
-      "negativeCount": 1,
-      "positiveCount": 0,
-      "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Stocks Churn in Late Hours After Nvidia’s Results: Markets Wrap",
-      "topPositiveTitle": "Stocks, Futures Rise on Nvidia Outlook; Oil Drops: Markets Wrap",
+      "topNegativeTitle": "Deputy Chief Keeps BOJ on Track for Expected September Hike",
+      "topPositiveTitle": "Deputy Chief Keeps BOJ on Track for Expected September Hike",
       "items": [
         {
-          "title": "Stocks Churn in Late Hours After Nvidia’s Results: Markets Wrap",
+          "title": "Deputy Chief Keeps BOJ on Track for Expected September Hike",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-27T01:55:17+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-27/boj-deputy-chief-keeps-door-open-to-september-rate-increase",
+          "tags": [
+            "jp_broad",
+            "market"
+          ]
+        }
+      ]
+    },
+    "jp_semiconductor": {
+      "avgSentiment": 0.6,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 1,
+      "sourceCount": 2,
+      "itemCount": 2,
+      "isStale": false,
+      "topNegativeTitle": "Stocks Rise With Nasdaq Futures on Nvidia Outlook: Markets Wrap",
+      "topPositiveTitle": "BOK Delivers Back-to-Back Hike to Preempt Inflation Risks",
+      "items": [
+        {
+          "title": "Stocks Rise With Nasdaq Futures on Nvidia Outlook: Markets Wrap",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-25T22:08:45+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-25/asian-stocks-set-to-gain-as-oil-extends-declines-markets-wrap",
+          "sentiment": "positive",
+          "sentimentScore": 0.2,
+          "publishedAt": "2026-08-26T22:10:37+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-26/nasdaq-futures-rise-on-bullish-nvidia-sales-growth-markets-wrap",
           "tags": [
             "jp_semiconductor",
             "market",
-            "rates",
             "us_broad",
             "us_growth"
           ]
         },
         {
-          "title": "Stocks, Futures Rise on Nvidia Outlook; Oil Drops: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": -0.14,
-          "publishedAt": "2026-08-26T22:10:37+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-26/nasdaq-futures-rise-on-bullish-nvidia-sales-growth-markets-wrap",
+          "title": "BOK Delivers Back-to-Back Hike to Preempt Inflation Risks",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-08-27T00:52:23+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-27/bok-delivers-back-to-back-rate-hike-to-curb-inflation-risks",
           "tags": [
-            "commodity",
             "jp_semiconductor",
-            "market",
-            "us_growth"
+            "market"
           ]
         }
       ]
     },
     "us_broad": {
-      "avgSentiment": 0.002,
-      "negativeCount": 2,
-      "positiveCount": 1,
-      "neutralCount": 2,
+      "avgSentiment": 0.367,
+      "negativeCount": 0,
+      "positiveCount": 3,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Economists See RBA Rate Hike as Early as September After Hot CPI",
-      "topPositiveTitle": "Key US Inflation Gauge Posts Muted Advance, Spending Stalls",
+      "topNegativeTitle": "Economists See RBA Hike as Early as September After Hot CPI",
+      "topPositiveTitle": "Gold Climbs Back Above $4,600 as Investors Weigh Fed Rate Path",
       "items": [
         {
-          "title": "Economists See RBA Rate Hike as Early as September After Hot CPI",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-26T23:50:08+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-26/economists-see-rba-rate-hike-as-early-as-september-after-hot-cpi",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Stocks Churn in Late Hours After Nvidia’s Results: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-25T22:08:45+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-25/asian-stocks-set-to-gain-as-oil-extends-declines-markets-wrap",
-          "tags": [
-            "jp_semiconductor",
-            "market",
-            "rates",
-            "us_broad",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Gold Consolidates Above $4,600 as Investors Weigh Fed Rate Path",
+          "title": "Economists See RBA Hike as Early as September After Hot CPI",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-26T23:48:19+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-26/gold-consolidates-above-4-600-as-investors-weigh-fed-rate-path",
+          "publishedAt": "2026-08-26T23:50:08+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-26/economists-see-rba-rate-hike-as-early-as-september-after-hot-cpi",
           "tags": [
-            "gold",
             "market",
             "us_broad"
           ]
@@ -117,6 +98,32 @@
           "sentimentScore": 0.0,
           "publishedAt": "2026-08-26T12:50:28+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-08-26/uzbek-central-bank-seeks-goldman-blackrock-input-on-reserves",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Stocks Rise With Nasdaq Futures on Nvidia Outlook: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.2,
+          "publishedAt": "2026-08-26T22:10:37+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-26/nasdaq-futures-rise-on-bullish-nvidia-sales-growth-markets-wrap",
+          "tags": [
+            "jp_semiconductor",
+            "market",
+            "us_broad",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Fed’s Cook Denies Wrongdoing as Trump Renews Bid to Fire Her",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-26T23:04:39+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-26/fed-s-cook-denies-wrongdoing-as-trump-revives-push-to-fire-her",
           "tags": [
             "market",
             "us_broad"
@@ -138,45 +145,16 @@
       ]
     },
     "us_growth": {
-      "avgSentiment": -0.157,
-      "negativeCount": 1,
+      "avgSentiment": 0.1,
+      "negativeCount": 0,
       "positiveCount": 0,
       "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Stocks Churn in Late Hours After Nvidia’s Results: Markets Wrap",
-      "topPositiveTitle": "Artificial Intelligence Investment Now Competes With Governments for Capital",
+      "topNegativeTitle": "Artificial Intelligence Investment Now Competes With Governments for Capital",
+      "topPositiveTitle": "Stocks Rise With Nasdaq Futures on Nvidia Outlook: Markets Wrap",
       "items": [
-        {
-          "title": "Stocks Churn in Late Hours After Nvidia’s Results: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-25T22:08:45+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-25/asian-stocks-set-to-gain-as-oil-extends-declines-markets-wrap",
-          "tags": [
-            "jp_semiconductor",
-            "market",
-            "rates",
-            "us_broad",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Stocks, Futures Rise on Nvidia Outlook; Oil Drops: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": -0.14,
-          "publishedAt": "2026-08-26T22:10:37+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-26/nasdaq-futures-rise-on-bullish-nvidia-sales-growth-markets-wrap",
-          "tags": [
-            "commodity",
-            "jp_semiconductor",
-            "market",
-            "us_growth"
-          ]
-        },
         {
           "title": "Artificial Intelligence Investment Now Competes With Governments for Capital",
           "source": "Bloomberg Economics",
@@ -186,6 +164,20 @@
           "url": "https://www.bloomberg.com/news/newsletters/2026-08-26/artificial-intelligence-investment-now-competes-with-governments-for-capital",
           "tags": [
             "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Stocks Rise With Nasdaq Futures on Nvidia Outlook: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.2,
+          "publishedAt": "2026-08-26T22:10:37+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-26/nasdaq-futures-rise-on-bullish-nvidia-sales-growth-markets-wrap",
+          "tags": [
+            "jp_semiconductor",
+            "market",
+            "us_broad",
             "us_growth"
           ]
         }
@@ -204,21 +196,21 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 1.0,
       "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 0,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Gold Consolidates Above $4,600 as Investors Weigh Fed Rate Path",
-      "topPositiveTitle": "Gold Consolidates Above $4,600 as Investors Weigh Fed Rate Path",
+      "topNegativeTitle": "Gold Climbs Back Above $4,600 as Investors Weigh Fed Rate Path",
+      "topPositiveTitle": "Gold Climbs Back Above $4,600 as Investors Weigh Fed Rate Path",
       "items": [
         {
-          "title": "Gold Consolidates Above $4,600 as Investors Weigh Fed Rate Path",
+          "title": "Gold Climbs Back Above $4,600 as Investors Weigh Fed Rate Path",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
           "publishedAt": "2026-08-26T23:48:19+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-08-26/gold-consolidates-above-4-600-as-investors-weigh-fed-rate-path",
           "tags": [
@@ -254,24 +246,25 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0.11,
       "negativeCount": 0,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 2,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Mexico Touts CDS Levels as Bonds Trade as Speculative Grade",
-      "topPositiveTitle": "Mexico Touts CDS Levels as Bonds Trade as Speculative Grade",
+      "topNegativeTitle": "Putin Moves to Escalate War in Ukraine",
+      "topPositiveTitle": "Wheat Hits Three-Year High as Russia Prepares to Escalate War",
       "items": [
         {
-          "title": "Mexico Touts CDS Levels as Bonds Trade as Speculative Grade",
+          "title": "Putin Moves to Escalate War in Ukraine",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-26T18:10:14+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-26/mexico-touts-improving-cds-as-bonds-trade-as-speculative-grade",
+          "publishedAt": "2026-08-27T03:23:58+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-27/putin-moves-to-escalate-war-in-ukraine-video",
           "tags": [
+            "geopolitical",
             "macro_risk",
             "market"
           ]
@@ -288,73 +281,45 @@
             "market"
           ],
           "titleJa": "政府 官邸連絡室を設置 大雨特別警報受け"
-        }
-      ]
-    },
-    "fx": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
-      "isStale": false,
-      "topNegativeTitle": "How Microdramas Became A Billion-Dollar Industry",
-      "topPositiveTitle": "How Microdramas Became A Billion-Dollar Industry",
-      "items": [
+        },
         {
-          "title": "How Microdramas Became A Billion-Dollar Industry",
+          "title": "Wheat Hits Three-Year High as Russia Prepares to Escalate War",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-26T22:00:06+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-26/how-microdramas-became-a-billion-dollar-industry",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-27T03:24:13+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-27/wheat-hits-three-year-high-as-russia-prepares-to-escalate-war",
           "tags": [
-            "fx",
+            "geopolitical",
+            "macro_risk",
             "market"
           ]
         }
       ]
     },
+    "fx": {
+      "avgSentiment": 0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
+      "isStale": false,
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
+    },
     "rates": {
-      "avgSentiment": 0.003,
-      "negativeCount": 2,
+      "avgSentiment": 0.335,
+      "negativeCount": 0,
       "positiveCount": 1,
       "neutralCount": 1,
-      "sourceCount": 2,
-      "itemCount": 4,
+      "sourceCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Economists See RBA Rate Hike as Early as September After Hot CPI",
+      "topNegativeTitle": "Uzbekistan Central Bank Chief Sees Chance of Rate Cut This Year",
       "topPositiveTitle": "Key US Inflation Gauge Posts Muted Advance, Spending Stalls",
       "items": [
-        {
-          "title": "Economists See RBA Rate Hike as Early as September After Hot CPI",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-26T23:50:08+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-26/economists-see-rba-rate-hike-as-early-as-september-after-hot-cpi",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Stocks Churn in Late Hours After Nvidia’s Results: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-25T22:08:45+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-25/asian-stocks-set-to-gain-as-oil-extends-declines-markets-wrap",
-          "tags": [
-            "jp_semiconductor",
-            "market",
-            "rates",
-            "us_broad",
-            "us_growth"
-          ]
-        },
         {
           "title": "Uzbekistan Central Bank Chief Sees Chance of Rate Cut This Year",
           "source": "Bloomberg Economics",
@@ -383,37 +348,23 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.133,
+      "avgSentiment": 0.11,
       "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 3,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Stocks, Futures Rise on Nvidia Outlook; Oil Drops: Markets Wrap",
+      "topNegativeTitle": "RBI Is Intervening Whenever the Rupee Weakens in Strategy Shift",
       "topPositiveTitle": "Latest Oil Market News and Analysis for Aug. 27",
       "items": [
         {
-          "title": "Stocks, Futures Rise on Nvidia Outlook; Oil Drops: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": -0.14,
-          "publishedAt": "2026-08-26T22:10:37+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-26/nasdaq-futures-rise-on-bullish-nvidia-sales-growth-markets-wrap",
-          "tags": [
-            "commodity",
-            "jp_semiconductor",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Permian Basin Set to Become Top US Gas Producer, Citi Says",
+          "title": "RBI Is Intervening Whenever the Rupee Weakens in Strategy Shift",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-26T21:00:47+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-26/permian-basin-set-to-become-top-us-gas-producer-citi-says",
+          "publishedAt": "2026-08-27T01:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-27/rbi-is-showing-up-whenever-rupee-weakens-in-intervention-shift",
           "tags": [
             "commodity",
             "market"
@@ -436,7 +387,7 @@
           "title": "Latest Oil Market News and Analysis for Aug. 27",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.67,
+          "sentimentScore": 0.33,
           "publishedAt": "2026-08-26T22:02:04+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-08-26/latest-oil-market-news-and-analysis-for-aug-27",
           "tags": [
@@ -448,21 +399,47 @@
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.67,
+      "avgSentiment": 0.22,
       "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 0,
+      "positiveCount": 2,
+      "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 1,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Latest Oil Market News and Analysis for Aug. 27",
-      "topPositiveTitle": "Latest Oil Market News and Analysis for Aug. 27",
+      "topNegativeTitle": "Putin Moves to Escalate War in Ukraine",
+      "topPositiveTitle": "Wheat Hits Three-Year High as Russia Prepares to Escalate War",
       "items": [
+        {
+          "title": "Putin Moves to Escalate War in Ukraine",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-27T03:23:58+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-27/putin-moves-to-escalate-war-in-ukraine-video",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Wheat Hits Three-Year High as Russia Prepares to Escalate War",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-27T03:24:13+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-27/wheat-hits-three-year-high-as-russia-prepares-to-escalate-war",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
         {
           "title": "Latest Oil Market News and Analysis for Aug. 27",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.67,
+          "sentimentScore": 0.33,
           "publishedAt": "2026-08-26T22:02:04+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-08-26/latest-oil-market-news-and-analysis-for-aug-27",
           "tags": [
