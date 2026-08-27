@@ -1,52 +1,53 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-08-27T13:36:34.404576+09:00",
-  "sourceUpdatedAt": "2026-08-27T04:29:11+00:00",
+  "updatedAt": "2026-08-27T23:25:02.664501+09:00",
+  "sourceUpdatedAt": "2026-08-27T14:03:16+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": 0.33,
+      "avgSentiment": 0,
       "negativeCount": 0,
-      "positiveCount": 1,
+      "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Deputy Chief Keeps BOJ on Track for Expected September Hike",
-      "topPositiveTitle": "Deputy Chief Keeps BOJ on Track for Expected September Hike",
-      "items": [
-        {
-          "title": "Deputy Chief Keeps BOJ on Track for Expected September Hike",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-27T01:55:17+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-27/boj-deputy-chief-keeps-door-open-to-september-rate-increase",
-          "tags": [
-            "jp_broad",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "jp_semiconductor": {
-      "avgSentiment": 0.6,
+      "avgSentiment": 0.67,
       "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 1,
-      "sourceCount": 2,
-      "itemCount": 2,
+      "positiveCount": 3,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Stocks Rise With Nasdaq Futures on Nvidia Outlook: Markets Wrap",
-      "topPositiveTitle": "BOK Delivers Back-to-Back Hike to Preempt Inflation Risks",
+      "topNegativeTitle": "Nvidia Fuels AI Optimism; Jackson Hole Kicks Off | Bloomberg Brief 08/27/2026",
+      "topPositiveTitle": "Nvidia Fuels AI Optimism; Jackson Hole Kicks Off | Bloomberg Brief 08/27/2026",
       "items": [
         {
-          "title": "Stocks Rise With Nasdaq Futures on Nvidia Outlook: Markets Wrap",
+          "title": "Nvidia Fuels AI Optimism; Jackson Hole Kicks Off | Bloomberg Brief 08/27/2026",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.2,
-          "publishedAt": "2026-08-26T22:10:37+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-26/nasdaq-futures-rise-on-bullish-nvidia-sales-growth-markets-wrap",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-27T12:36:07+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-27/bloomberg-brief-08-27-2026-video",
+          "tags": [
+            "geopolitical",
+            "jp_semiconductor",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "US Tech Stocks Lift S&P 500, Nasdaq After Nvidia’s Outlook Beat",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-27T12:22:28+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-27/us-stock-futures-climb-as-nvidia-s-outlook-lifts-tech-sector",
           "tags": [
             "jp_semiconductor",
             "market",
@@ -55,87 +56,87 @@
           ]
         },
         {
-          "title": "BOK Delivers Back-to-Back Hike to Preempt Inflation Risks",
-          "source": "Bloomberg Economics",
+          "title": "Tech Stocks Rise as Nvidia’s Outlook Fuels AI Bets: Markets Wrap",
+          "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-08-27T00:52:23+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-27/bok-delivers-back-to-back-rate-hike-to-curb-inflation-risks",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-26T22:10:37+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-26/nasdaq-futures-rise-on-bullish-nvidia-sales-growth-markets-wrap",
           "tags": [
             "jp_semiconductor",
-            "market"
+            "market",
+            "us_growth"
           ]
         }
       ]
     },
     "us_broad": {
-      "avgSentiment": 0.367,
+      "avgSentiment": 0.167,
       "negativeCount": 0,
-      "positiveCount": 3,
-      "neutralCount": 3,
+      "positiveCount": 2,
+      "neutralCount": 4,
       "sourceCount": 2,
       "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Economists See RBA Hike as Early as September After Hot CPI",
-      "topPositiveTitle": "Gold Climbs Back Above $4,600 as Investors Weigh Fed Rate Path",
+      "topNegativeTitle": "The Kansas City Fed President on the First Jackson Hole of the Warsh Era",
+      "topPositiveTitle": "US Tech Stocks Lift S&P 500, Nasdaq After Nvidia’s Outlook Beat",
       "items": [
         {
-          "title": "Economists See RBA Hike as Early as September After Hot CPI",
+          "title": "The Kansas City Fed President on the First Jackson Hole of the Warsh Era",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-26T23:50:08+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-26/economists-see-rba-rate-hike-as-early-as-september-after-hot-cpi",
+          "publishedAt": "2026-08-27T11:35:57+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-27/kc-fed-president-on-first-jackson-hole-of-the-warsh-era-video",
           "tags": [
             "market",
+            "rates",
             "us_broad"
           ]
         },
         {
-          "title": "Uzbek Central Bank Seeks Goldman, Blackrock Input on Reserves",
+          "title": "KC Fed's Jeff Schmid on First Jackson Hole of Kevin Warsh Era",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-26T12:50:28+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-26/uzbek-central-bank-seeks-goldman-blackrock-input-on-reserves",
+          "publishedAt": "2026-08-27T11:30:04+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-27/kc-fed-s-jeff-schmid-on-first-jackson-hole-of-kevin-warsh-era",
           "tags": [
             "market",
             "us_broad"
           ]
         },
         {
-          "title": "Stocks Rise With Nasdaq Futures on Nvidia Outlook: Markets Wrap",
+          "title": "Odd Lots: Fed’s Schmid on Warsh’s First Jackson Hole (Podcast)",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.2,
-          "publishedAt": "2026-08-26T22:10:37+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-26/nasdaq-futures-rise-on-bullish-nvidia-sales-growth-markets-wrap",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-27T11:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/audio/2026-08-27/odd-lots-fed-s-schmid-on-warsh-s-first-jackson-hole-podcast",
           "tags": [
-            "jp_semiconductor",
             "market",
-            "us_broad",
-            "us_growth"
+            "us_broad"
           ]
         },
         {
-          "title": "Fed’s Cook Denies Wrongdoing as Trump Renews Bid to Fire Her",
+          "title": "Fed’s Schmid Says Policy Isn’t in Restrictive Territory",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-27T11:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-27/fed-s-schmid-says-policy-isn-t-in-restrictive-territory",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Treasury Yields Rise as Investors Shift Focus to Jackson Hole",
           "source": "Bloomberg Economics",
           "sentiment": "positive",
           "sentimentScore": 0.33,
-          "publishedAt": "2026-08-26T23:04:39+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-26/fed-s-cook-denies-wrongdoing-as-trump-revives-push-to-fire-her",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Key US Inflation Gauge Posts Muted Advance, Spending Stalls",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-26T12:32:20+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-26/key-us-inflation-gauge-posts-muted-advance-spending-stalls",
+          "publishedAt": "2026-08-27T14:02:34+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-27/treasury-yields-rise-as-investors-shift-focus-to-jackson-hole",
           "tags": [
             "market",
             "rates",
@@ -145,39 +146,66 @@
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.1,
+      "avgSentiment": 0.67,
       "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 2,
+      "positiveCount": 4,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Artificial Intelligence Investment Now Competes With Governments for Capital",
-      "topPositiveTitle": "Stocks Rise With Nasdaq Futures on Nvidia Outlook: Markets Wrap",
+      "topNegativeTitle": "Nvidia Fuels AI Optimism; Jackson Hole Kicks Off | Bloomberg Brief 08/27/2026",
+      "topPositiveTitle": "Nvidia Fuels AI Optimism; Jackson Hole Kicks Off | Bloomberg Brief 08/27/2026",
       "items": [
         {
-          "title": "Artificial Intelligence Investment Now Competes With Governments for Capital",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-26T11:00:01+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-08-26/artificial-intelligence-investment-now-competes-with-governments-for-capital",
+          "title": "Nvidia Fuels AI Optimism; Jackson Hole Kicks Off | Bloomberg Brief 08/27/2026",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-27T12:36:07+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-27/bloomberg-brief-08-27-2026-video",
+          "tags": [
+            "geopolitical",
+            "jp_semiconductor",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Alphabet Loses $700 Billion in Market Value as AI Questions Rise",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-27T12:31:58+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-27/alphabet-loses-692-billion-in-market-value-as-ai-questions-rise",
           "tags": [
             "market",
             "us_growth"
           ]
         },
         {
-          "title": "Stocks Rise With Nasdaq Futures on Nvidia Outlook: Markets Wrap",
+          "title": "US Tech Stocks Lift S&P 500, Nasdaq After Nvidia’s Outlook Beat",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.2,
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-27T12:22:28+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-27/us-stock-futures-climb-as-nvidia-s-outlook-lifts-tech-sector",
+          "tags": [
+            "jp_semiconductor",
+            "market",
+            "us_broad",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Tech Stocks Rise as Nvidia’s Outlook Fuels AI Bets: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
           "publishedAt": "2026-08-26T22:10:37+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-08-26/nasdaq-futures-rise-on-bullish-nvidia-sales-growth-markets-wrap",
           "tags": [
             "jp_semiconductor",
             "market",
-            "us_broad",
             "us_growth"
           ]
         }
@@ -196,27 +224,38 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": 1.0,
+      "avgSentiment": 0.25,
       "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 0,
+      "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Gold Climbs Back Above $4,600 as Investors Weigh Fed Rate Path",
-      "topPositiveTitle": "Gold Climbs Back Above $4,600 as Investors Weigh Fed Rate Path",
+      "topNegativeTitle": "Gold’s Niche Status Means Big Upside If Investors Pile In",
+      "topPositiveTitle": "South African Miners Are Rallying Again, Set for Best Month Ever",
       "items": [
         {
-          "title": "Gold Climbs Back Above $4,600 as Investors Weigh Fed Rate Path",
+          "title": "Gold’s Niche Status Means Big Upside If Investors Pile In",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-08-26T23:48:19+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-26/gold-consolidates-above-4-600-as-investors-weigh-fed-rate-path",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-27T11:58:16+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-08-27/gold-s-niche-status-means-big-upside-if-investors-pile-in",
           "tags": [
             "gold",
-            "market",
-            "us_broad"
+            "market"
+          ]
+        },
+        {
+          "title": "South African Miners Are Rallying Again, Set for Best Month Ever",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.5,
+          "publishedAt": "2026-08-27T11:26:02+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-27/south-african-miners-are-rallying-again-set-for-best-month-ever",
+          "tags": [
+            "gold",
+            "market"
           ]
         }
       ]
@@ -246,23 +285,35 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.11,
+      "avgSentiment": 0.134,
       "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 3,
+      "neutralCount": 4,
+      "sourceCount": 3,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Putin Moves to Escalate War in Ukraine",
-      "topPositiveTitle": "Wheat Hits Three-Year High as Russia Prepares to Escalate War",
+      "topNegativeTitle": "Number of Young Brits Not in Work or Education Dips Slightly",
+      "topPositiveTitle": "Oil Exports Drive Canada’s Largest Current Account Surplus Since 2005",
       "items": [
         {
-          "title": "Putin Moves to Escalate War in Ukraine",
-          "source": "Bloomberg Markets",
+          "title": "Number of Young Brits Not in Work or Education Dips Slightly",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-27T03:23:58+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-27/putin-moves-to-escalate-war-in-ukraine-video",
+          "publishedAt": "2026-08-27T08:41:38+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-27/young-brits-classified-as-neet-dip-from-historically-high-levels",
+          "tags": [
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "India Budget Math Improves With Asset Sales Target in Sight",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-27T07:08:52+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-27/india-s-budget-math-brightens-with-asset-sales-target-in-sight",
           "tags": [
             "geopolitical",
             "macro_risk",
@@ -270,23 +321,10 @@
           ]
         },
         {
-          "title": "政府 官邸連絡室を設置 大雨特別警報受け",
-          "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-26T23:02:03+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20260827de46604",
-          "tags": [
-            "macro_risk",
-            "market"
-          ],
-          "titleJa": "政府 官邸連絡室を設置 大雨特別警報受け"
-        },
-        {
           "title": "Wheat Hits Three-Year High as Russia Prepares to Escalate War",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
           "publishedAt": "2026-08-27T03:24:13+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-08-27/wheat-hits-three-year-high-as-russia-prepares-to-escalate-war",
           "tags": [
@@ -294,51 +332,104 @@
             "macro_risk",
             "market"
           ]
+        },
+        {
+          "title": "障害者らが高市首相に平和への願い込めた手紙を手渡す",
+          "source": "NHK 経済",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-27T12:19:38+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20260827de46807",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ],
+          "titleJa": "障害者らが高市首相に平和への願い込めた手紙を手渡す"
+        },
+        {
+          "title": "Oil Exports Drive Canada’s Largest Current Account Surplus Since 2005",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-27T13:41:18+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-27/canada-current-account-surplus-hits-highest-since-2005-on-oil-surge",
+          "tags": [
+            "commodity",
+            "macro_risk",
+            "market"
+          ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "rates": {
-      "avgSentiment": 0.335,
-      "negativeCount": 0,
-      "positiveCount": 1,
       "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Uzbekistan Central Bank Chief Sees Chance of Rate Cut This Year",
-      "topPositiveTitle": "Key US Inflation Gauge Posts Muted Advance, Spending Stalls",
+      "topNegativeTitle": "Zambia Inflation Cools to 8-Year Low, Aided by Strong Kwacha",
+      "topPositiveTitle": "Zambia Inflation Cools to 8-Year Low, Aided by Strong Kwacha",
       "items": [
         {
-          "title": "Uzbekistan Central Bank Chief Sees Chance of Rate Cut This Year",
+          "title": "Zambia Inflation Cools to 8-Year Low, Aided by Strong Kwacha",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-26T12:32:39+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-26/uzbekistan-central-bank-chief-sees-chance-of-rate-cut-this-year",
+          "publishedAt": "2026-08-27T08:19:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-27/zambia-inflation-cools-to-eight-year-low-aided-by-strong-kwacha",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        }
+      ]
+    },
+    "rates": {
+      "avgSentiment": -0.223,
+      "negativeCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 1,
+      "sourceCount": 2,
+      "itemCount": 3,
+      "isStale": false,
+      "topNegativeTitle": "Philippine Central Bank Hikes Key Rate a Third Time as Inflation Runs Hot",
+      "topPositiveTitle": "Treasury Yields Rise as Investors Shift Focus to Jackson Hole",
+      "items": [
+        {
+          "title": "Philippine Central Bank Hikes Key Rate a Third Time as Inflation Runs Hot",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-08-27T06:30:23+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-27/philippine-central-bank-hikes-key-rate-a-third-time-as-inflation-runs-hot",
           "tags": [
             "market",
             "rates"
           ]
         },
         {
-          "title": "Key US Inflation Gauge Posts Muted Advance, Spending Stalls",
+          "title": "The Kansas City Fed President on the First Jackson Hole of the Warsh Era",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-27T11:35:57+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-27/kc-fed-president-on-first-jackson-hole-of-the-warsh-era-video",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Treasury Yields Rise as Investors Shift Focus to Jackson Hole",
           "source": "Bloomberg Economics",
           "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-26T12:32:20+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-26/key-us-inflation-gauge-posts-muted-advance-spending-stalls",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-27T14:02:34+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-27/treasury-yields-rise-as-investors-shift-focus-to-jackson-hole",
           "tags": [
             "market",
             "rates",
@@ -348,25 +439,26 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.11,
+      "avgSentiment": 0.335,
       "negativeCount": 0,
-      "positiveCount": 1,
+      "positiveCount": 2,
       "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 3,
+      "sourceCount": 3,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "RBI Is Intervening Whenever the Rupee Weakens in Strategy Shift",
-      "topPositiveTitle": "Latest Oil Market News and Analysis for Aug. 27",
+      "topNegativeTitle": "Hormuz Oil Flows Rising as Gulf Giants’ Ramp Up Accelerates",
+      "topPositiveTitle": "Oil Exports Drive Canada’s Largest Current Account Surplus Since 2005",
       "items": [
         {
-          "title": "RBI Is Intervening Whenever the Rupee Weakens in Strategy Shift",
+          "title": "Hormuz Oil Flows Rising as Gulf Giants’ Ramp Up Accelerates",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-27T01:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-27/rbi-is-showing-up-whenever-rupee-weakens-in-intervention-shift",
+          "publishedAt": "2026-08-27T13:09:20+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-27/hormuz-oil-flows-rising-as-gulf-giants-ramp-up-accelerates",
           "tags": [
             "commodity",
+            "geopolitical",
             "market"
           ]
         },
@@ -375,7 +467,7 @@
           "source": "NHK 経済",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-26T09:09:00+00:00",
+          "publishedAt": "2026-08-26T16:44:00+00:00",
           "url": "https://news.web.nhk/newsweb/na/nd-20260826de46478",
           "tags": [
             "commodity",
@@ -384,38 +476,63 @@
           "titleJa": "政府 エネルギー安定確保で新計画 代替パイプライン建設支援"
         },
         {
+          "title": "Oil Exports Drive Canada’s Largest Current Account Surplus Since 2005",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-27T13:41:18+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-27/canada-current-account-surplus-hits-highest-since-2005-on-oil-surge",
+          "tags": [
+            "commodity",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
           "title": "Latest Oil Market News and Analysis for Aug. 27",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.33,
+          "sentimentScore": 0.67,
           "publishedAt": "2026-08-26T22:02:04+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-08-26/latest-oil-market-news-and-analysis-for-aug-27",
           "tags": [
             "commodity",
-            "geopolitical",
             "market"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.22,
+      "avgSentiment": 0.143,
       "negativeCount": 0,
       "positiveCount": 2,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 3,
+      "neutralCount": 5,
+      "sourceCount": 3,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "Putin Moves to Escalate War in Ukraine",
-      "topPositiveTitle": "Wheat Hits Three-Year High as Russia Prepares to Escalate War",
+      "topNegativeTitle": "Hormuz Oil Flows Rising as Gulf Giants’ Ramp Up Accelerates",
+      "topPositiveTitle": "Nvidia Fuels AI Optimism; Jackson Hole Kicks Off | Bloomberg Brief 08/27/2026",
       "items": [
         {
-          "title": "Putin Moves to Escalate War in Ukraine",
+          "title": "Hormuz Oil Flows Rising as Gulf Giants’ Ramp Up Accelerates",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-27T03:23:58+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-27/putin-moves-to-escalate-war-in-ukraine-video",
+          "publishedAt": "2026-08-27T13:09:20+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-27/hormuz-oil-flows-rising-as-gulf-giants-ramp-up-accelerates",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "India Budget Math Improves With Asset Sales Target in Sight",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-27T07:08:52+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-27/india-s-budget-math-brightens-with-asset-sales-target-in-sight",
           "tags": [
             "geopolitical",
             "macro_risk",
@@ -425,8 +542,8 @@
         {
           "title": "Wheat Hits Three-Year High as Russia Prepares to Escalate War",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
           "publishedAt": "2026-08-27T03:24:13+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-08-27/wheat-hits-three-year-high-as-russia-prepares-to-escalate-war",
           "tags": [
@@ -436,17 +553,31 @@
           ]
         },
         {
-          "title": "Latest Oil Market News and Analysis for Aug. 27",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-26T22:02:04+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-26/latest-oil-market-news-and-analysis-for-aug-27",
+          "title": "障害者らが高市首相に平和への願い込めた手紙を手渡す",
+          "source": "NHK 経済",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-27T12:19:38+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20260827de46807",
           "tags": [
-            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ],
+          "titleJa": "障害者らが高市首相に平和への願い込めた手紙を手渡す"
+        },
+        {
+          "title": "茂木外相 ウクライナ支援継続の方針伝える 独外相と電話会談",
+          "source": "NHK 経済",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-27T12:12:32+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20260827de46804",
+          "tags": [
             "geopolitical",
             "market"
-          ]
+          ],
+          "titleJa": "茂木外相 ウクライナ支援継続の方針伝える 独外相と電話会談"
         }
       ]
     }
@@ -459,7 +590,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 2,
+    "excludedCount": 3,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
