@@ -22,6 +22,11 @@ jobs:
         with:
           python-version: '3.11'
 
+      - name: Evaluate scheduled safe-start admission
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python3 -m backend.engine.operation.late_run_guard --workflow update
+
       - name: Install Python deps
         run: pip install yfinance pandas numpy feedparser
 
