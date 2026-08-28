@@ -1,129 +1,93 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-08-28T06:04:41.391532+09:00",
-  "sourceUpdatedAt": "2026-08-27T21:00:07+00:00",
+  "updatedAt": "2026-08-28T14:34:27.522458+09:00",
+  "sourceUpdatedAt": "2026-08-28T05:22:13+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
+      "avgSentiment": -0.665,
+      "negativeCount": 2,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 2,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "jp_semiconductor": {
-      "avgSentiment": 0.266,
-      "negativeCount": 1,
-      "positiveCount": 3,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 5,
-      "isStale": false,
-      "topNegativeTitle": "Radiant World Leaves Top Banks, Glencore Probing Fake Invoices",
-      "topPositiveTitle": "Tech Stocks Rally as Nvidia Fuels Bets on AI Trade: Markets Wrap",
+      "topNegativeTitle": "Japan Two-Year Bond Sale Sees Weak Demand on Rate Hike Risk",
+      "topPositiveTitle": "Faster Tokyo Inflation Supports Near-Term BOJ Rate Hike Case",
       "items": [
         {
-          "title": "Radiant World Leaves Top Banks, Glencore Probing Fake Invoices",
+          "title": "Japan Two-Year Bond Sale Sees Weak Demand on Rate Hike Risk",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-08-27T20:15:14+00:00",
-          "url": "https://www.bloomberg.com/news/features/2026-08-27/radiant-world-leaves-top-banks-glencore-probing-fake-invoices",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-08-28T03:44:11+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-28/japan-s-two-year-government-bond-auction-shows-weaker-demand",
           "tags": [
-            "jp_semiconductor",
-            "market"
-          ]
-        },
-        {
-          "title": "S&P 500 Advances as Nvidia, Tech Outweigh Broad Weakness",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-27T12:22:28+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-27/us-stock-futures-climb-as-nvidia-s-outlook-lifts-tech-sector",
-          "tags": [
-            "jp_semiconductor",
+            "jp_broad",
             "market",
-            "us_broad",
-            "us_growth"
+            "rates"
           ]
         },
         {
-          "title": "Nvidia Fuels a Tech-Led Rally as Market Breadth Narrows | Closing Bell",
+          "title": "Faster Tokyo Inflation Supports Near-Term BOJ Rate Hike Case",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-27T23:35:05+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-27/tokyo-inflation-ticks-up-backing-boj-s-case-for-rate-hike",
+          "tags": [
+            "commodity",
+            "jp_broad",
+            "market",
+            "rates"
+          ]
+        }
+      ]
+    },
+    "jp_semiconductor": {
+      "avgSentiment": 0.33,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "Gold Miners Are Having a Better Month Than Chips Did in Years",
+      "topPositiveTitle": "Gold Miners Are Having a Better Month Than Chips Did in Years",
+      "items": [
+        {
+          "title": "Gold Miners Are Having a Better Month Than Chips Did in Years",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.33,
-          "publishedAt": "2026-08-27T20:23:05+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-27/nvidia-fuels-a-tech-led-rally-closing-bell-video",
+          "publishedAt": "2026-08-28T03:38:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-28/gold-miners-are-having-a-better-month-than-chips-did-in-years",
           "tags": [
+            "gold",
             "jp_semiconductor",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Nvidia Adds $442 Billion in Second Biggest Ever Stock Surge",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-27T20:28:30+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-27/nvidia-adds-442-billion-in-second-biggest-ever-stock-surge",
-          "tags": [
-            "jp_semiconductor",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Tech Stocks Rally as Nvidia Fuels Bets on AI Trade: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-08-26T22:10:37+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-26/nasdaq-futures-rise-on-bullish-nvidia-sales-growth-markets-wrap",
-          "tags": [
-            "jp_semiconductor",
-            "market",
-            "us_growth"
+            "market"
           ]
         }
       ]
     },
     "us_broad": {
-      "avgSentiment": 0.027,
-      "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 10,
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 11,
       "sourceCount": 2,
-      "itemCount": 12,
+      "itemCount": 11,
       "isStale": false,
-      "topNegativeTitle": "US Treasuries Decline as Traders Turn Focus to Jackson Hole",
-      "topPositiveTitle": "Traders Hedge for Bigger Dollar Rebound on Warsh’s Speech",
+      "topNegativeTitle": "Ex-RBI Chief Rajan Says Fed Should Raise Rates",
+      "topPositiveTitle": "Ex-RBI Chief Rajan Says Fed Should Raise Rates",
       "items": [
         {
-          "title": "US Treasuries Decline as Traders Turn Focus to Jackson Hole",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-08-27T14:02:34+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-27/treasury-yields-rise-as-investors-shift-focus-to-jackson-hole",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Investors Looking For Rate Clarity From Warsh Likely Disappointed, Says Jack Manley",
+          "title": "Ex-RBI Chief Rajan Says Fed Should Raise Rates",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-27T20:48:17+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-27/not-expecting-rate-clarity-from-jackson-hole-manley-video",
+          "publishedAt": "2026-08-28T04:28:25+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-28/ex-rbi-chief-rajan-says-fed-should-raise-rates-video",
           "tags": [
             "market",
             "rates",
@@ -131,36 +95,50 @@
           ]
         },
         {
-          "title": "Market Will Be Disappointed By Warsh: Gerrity",
+          "title": "Traders Focus on Jackson Hole, Fed Outlook | The Asia Trade 8/28/2026",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-27T19:43:52+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-27/market-will-be-disappointed-by-warsh-gerrity-video",
+          "publishedAt": "2026-08-28T04:20:16+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-28/the-asia-trade-8-28-2026-video",
+          "tags": [
+            "global_broad",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Ex-RBI Chief Rajan Urges Fed to Hike Rates, Relaxed on Rupee",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-28T03:50:38+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-28/ex-rbi-chief-rajan-says-fed-should-raise-rates-to-curb-inflation",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Fed’s Jackson Hole Conference Is Underway: Here’s What to Expect",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-28T00:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-28/fed-s-jackson-hole-conference-is-underway-here-s-what-to-expect",
           "tags": [
             "market",
             "us_broad"
           ]
         },
         {
-          "title": "Fed Chair Warsh's Jackson Hole Speech: How Can He Soothe Markets?",
+          "title": "Fed Officials Remain Divided on Inflation Ahead of Warsh Speech",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-27T18:40:16+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-27/fed-chair-warsh-s-jackson-hole-speech-how-can-he-soothe-markets",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Fed’s Collins Says Interest Rates Are Still Mildly Restrictive",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-27T18:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-27/fed-s-collins-says-interest-rates-are-still-mildly-restrictive",
+          "publishedAt": "2026-08-27T23:10:26+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-27/fed-officials-remain-divided-on-inflation-ahead-of-warsh-speech",
           "tags": [
             "market",
             "rates",
@@ -170,72 +148,6 @@
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.5,
-      "negativeCount": 0,
-      "positiveCount": 3,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 4,
-      "isStale": false,
-      "topNegativeTitle": "S&P 500 Advances as Nvidia, Tech Outweigh Broad Weakness",
-      "topPositiveTitle": "Tech Stocks Rally as Nvidia Fuels Bets on AI Trade: Markets Wrap",
-      "items": [
-        {
-          "title": "S&P 500 Advances as Nvidia, Tech Outweigh Broad Weakness",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-27T12:22:28+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-27/us-stock-futures-climb-as-nvidia-s-outlook-lifts-tech-sector",
-          "tags": [
-            "jp_semiconductor",
-            "market",
-            "us_broad",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Nvidia Fuels a Tech-Led Rally as Market Breadth Narrows | Closing Bell",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-27T20:23:05+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-27/nvidia-fuels-a-tech-led-rally-closing-bell-video",
-          "tags": [
-            "jp_semiconductor",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Nvidia Adds $442 Billion in Second Biggest Ever Stock Surge",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-27T20:28:30+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-27/nvidia-adds-442-billion-in-second-biggest-ever-stock-surge",
-          "tags": [
-            "jp_semiconductor",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Tech Stocks Rally as Nvidia Fuels Bets on AI Trade: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-08-26T22:10:37+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-26/nasdaq-futures-rise-on-bullish-nvidia-sales-growth-markets-wrap",
-          "tags": [
-            "jp_semiconductor",
-            "market",
-            "us_growth"
-          ]
-        }
-      ]
-    },
-    "global_broad": {
       "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
@@ -247,7 +159,7 @@
       "topPositiveTitle": null,
       "items": []
     },
-    "gold": {
+    "global_broad": {
       "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
@@ -255,48 +167,86 @@
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Gold Tops $4,600 as Investors Weigh Fed Path Before Jackson Hole",
-      "topPositiveTitle": "Gold Tops $4,600 as Investors Weigh Fed Path Before Jackson Hole",
+      "topNegativeTitle": "Traders Focus on Jackson Hole, Fed Outlook | The Asia Trade 8/28/2026",
+      "topPositiveTitle": "Traders Focus on Jackson Hole, Fed Outlook | The Asia Trade 8/28/2026",
       "items": [
         {
-          "title": "Gold Tops $4,600 as Investors Weigh Fed Path Before Jackson Hole",
+          "title": "Traders Focus on Jackson Hole, Fed Outlook | The Asia Trade 8/28/2026",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-26T23:48:19+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-26/gold-consolidates-above-4-600-as-investors-weigh-fed-rate-path",
+          "publishedAt": "2026-08-28T04:20:16+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-28/the-asia-trade-8-28-2026-video",
           "tags": [
-            "gold",
+            "global_broad",
             "market",
             "us_broad"
           ]
         }
       ]
     },
-    "reit": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+    "gold": {
+      "avgSentiment": -0.11,
+      "negativeCount": 2,
+      "positiveCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 2,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Grading Value of High Ed Real Estate: Kleinman",
-      "topPositiveTitle": "Grading Value of High Ed Real Estate: Kleinman",
+      "topNegativeTitle": "Wolf: Currency Weakness, Intervention Lift Gold Flows",
+      "topPositiveTitle": "Gold Miners Are Having a Better Month Than Chips Did in Years",
       "items": [
         {
-          "title": "Grading Value of High Ed Real Estate: Kleinman",
+          "title": "Wolf: Currency Weakness, Intervention Lift Gold Flows",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-27T20:29:02+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-27/grading-value-of-high-ed-real-estate-kleinman-video",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-28T05:22:13+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-28/wolf-currency-weakness-intervention-lift-gold-flows-video",
           "tags": [
-            "market",
-            "reit"
+            "fx",
+            "gold",
+            "market"
+          ]
+        },
+        {
+          "title": "Thai Central Bank Says Gold Curbs Working, May Tighten If Necessary",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-28T02:58:28+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-28/thai-central-bank-says-gold-curbs-working-may-tighten-if-necessary",
+          "tags": [
+            "gold",
+            "market"
+          ]
+        },
+        {
+          "title": "Gold Miners Are Having a Better Month Than Chips Did in Years",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-28T03:38:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-28/gold-miners-are-having-a-better-month-than-chips-did-in-years",
+          "tags": [
+            "gold",
+            "jp_semiconductor",
+            "market"
           ]
         }
       ]
+    },
+    "reit": {
+      "avgSentiment": 0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
+      "isStale": false,
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "dividend": {
       "avgSentiment": 0,
@@ -311,28 +261,16 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.049,
-      "negativeCount": 1,
+      "avgSentiment": 0.134,
+      "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 5,
-      "sourceCount": 3,
-      "itemCount": 7,
+      "neutralCount": 4,
+      "sourceCount": 2,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "LIV Golf: From Disruptor to Distressed Asset",
+      "topNegativeTitle": "Canada Can Weather Latest Trump Tariffs, Economists Tell Carney Finance Minister",
       "topPositiveTitle": "Oil Exports Drive Canada’s Largest Current Account Surplus Since 2005",
       "items": [
-        {
-          "title": "LIV Golf: From Disruptor to Distressed Asset",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-27T21:00:07+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-27/liv-golf-from-disruptor-to-distressed-asset-video",
-          "tags": [
-            "macro_risk",
-            "market"
-          ]
-        },
         {
           "title": "Canada Can Weather Latest Trump Tariffs, Economists Tell Carney Finance Minister",
           "source": "Bloomberg Economics",
@@ -372,14 +310,28 @@
           ]
         },
         {
-          "title": "India Budget Math Improves With Asset Sales Target in Sight",
-          "source": "Bloomberg Economics",
+          "title": "障害者らが高市首相に平和への願い込めた手紙を手渡す",
+          "source": "NHK 経済",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-27T07:08:52+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-27/india-s-budget-math-brightens-with-asset-sales-target-in-sight",
+          "publishedAt": "2026-08-27T12:19:38+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20260827de46807",
           "tags": [
             "geopolitical",
+            "macro_risk",
+            "market"
+          ],
+          "titleJa": "障害者らが高市首相に平和への願い込めた手紙を手渡す"
+        },
+        {
+          "title": "Oil Exports Drive Canada’s Largest Current Account Surplus Since 2005",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-27T13:41:18+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-27/canada-current-account-surplus-hits-highest-since-2005-on-oil-surge",
+          "tags": [
+            "commodity",
             "macro_risk",
             "market"
           ]
@@ -387,74 +339,89 @@
       ]
     },
     "fx": {
-      "avgSentiment": 1.0,
-      "negativeCount": 0,
-      "positiveCount": 1,
+      "avgSentiment": -0.665,
+      "negativeCount": 2,
+      "positiveCount": 0,
       "neutralCount": 0,
       "sourceCount": 1,
-      "itemCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Traders Hedge for Bigger Dollar Rebound on Warsh’s Speech",
-      "topPositiveTitle": "Traders Hedge for Bigger Dollar Rebound on Warsh’s Speech",
+      "topNegativeTitle": "PHP/USD: Philippine Peso Falls Past 62 Per Dollar on Elevated Oil Prices",
+      "topPositiveTitle": "Wolf: Currency Weakness, Intervention Lift Gold Flows",
       "items": [
         {
-          "title": "Traders Hedge for Bigger Dollar Rebound on Warsh’s Speech",
+          "title": "PHP/USD: Philippine Peso Falls Past 62 Per Dollar on Elevated Oil Prices",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-08-27T10:36:03+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-27/traders-hedge-for-bigger-dollar-rebound-on-warsh-s-speech",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-08-28T01:48:09+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-28/php-usd-philippine-peso-falls-past-62-per-dollar-on-elevated-oil-prices",
+          "tags": [
+            "commodity",
+            "fx",
+            "market"
+          ]
+        },
+        {
+          "title": "Wolf: Currency Weakness, Intervention Lift Gold Flows",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-28T05:22:13+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-28/wolf-currency-weakness-intervention-lift-gold-flows-video",
           "tags": [
             "fx",
-            "market",
-            "us_broad"
+            "gold",
+            "market"
           ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
+      "avgSentiment": -0.133,
+      "negativeCount": 2,
       "positiveCount": 0,
-      "neutralCount": 5,
+      "neutralCount": 8,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 10,
       "isStale": false,
-      "topNegativeTitle": "Investors Looking For Rate Clarity From Warsh Likely Disappointed, Says Jack Manley",
-      "topPositiveTitle": "Investors Looking For Rate Clarity From Warsh Likely Disappointed, Says Jack Manley",
+      "topNegativeTitle": "Japan Two-Year Bond Sale Sees Weak Demand on Rate Hike Risk",
+      "topPositiveTitle": "Ex-RBI Chief Rajan Says Fed Should Raise Rates",
       "items": [
         {
-          "title": "Investors Looking For Rate Clarity From Warsh Likely Disappointed, Says Jack Manley",
+          "title": "Japan Two-Year Bond Sale Sees Weak Demand on Rate Hike Risk",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-27T20:48:17+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-27/not-expecting-rate-clarity-from-jackson-hole-manley-video",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-08-28T03:44:11+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-28/japan-s-two-year-government-bond-auction-shows-weaker-demand",
           "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Rates At This Level Are Reasonably Priced: Wise",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-27T20:02:52+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-27/rates-at-this-level-are-reasonably-priced-wise-video",
-          "tags": [
+            "jp_broad",
             "market",
             "rates"
           ]
         },
         {
-          "title": "Fed’s Collins Says Interest Rates Are Still Mildly Restrictive",
+          "title": "Faster Tokyo Inflation Supports Near-Term BOJ Rate Hike Case",
           "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-27T23:35:05+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-27/tokyo-inflation-ticks-up-backing-boj-s-case-for-rate-hike",
+          "tags": [
+            "commodity",
+            "jp_broad",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Ex-RBI Chief Rajan Says Fed Should Raise Rates",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-27T18:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-27/fed-s-collins-says-interest-rates-are-still-mildly-restrictive",
+          "publishedAt": "2026-08-28T04:28:25+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-28/ex-rbi-chief-rajan-says-fed-should-raise-rates-video",
           "tags": [
             "market",
             "rates",
@@ -462,12 +429,12 @@
           ]
         },
         {
-          "title": "Fed’s Hammack Says Rates Not Restrictive, Time to Act Is Now",
+          "title": "Ex-RBI Chief Rajan Urges Fed to Hike Rates, Relaxed on Rupee",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-27T14:36:38+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-27/fed-s-hammack-says-rates-not-restrictive-time-to-act-is-now",
+          "publishedAt": "2026-08-28T03:50:38+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-28/ex-rbi-chief-rajan-says-fed-should-raise-rates-to-curb-inflation",
           "tags": [
             "market",
             "rates",
@@ -475,31 +442,57 @@
           ]
         },
         {
-          "title": "Two Fed Officials Say Rates Aren’t Restraining Economy",
+          "title": "Thailand Central Bank Chief Who Takes On Problems Rates Can’t Fix",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-27T11:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-27/fed-s-schmid-says-policy-isn-t-in-restrictive-territory",
+          "publishedAt": "2026-08-28T00:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-28/thailand-central-bank-chief-who-takes-on-problems-rates-can-t-fix",
           "tags": [
             "market",
-            "rates",
-            "us_broad"
+            "rates"
           ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.333,
-      "negativeCount": 0,
-      "positiveCount": 2,
+      "avgSentiment": -0.165,
+      "negativeCount": 2,
+      "positiveCount": 1,
       "neutralCount": 1,
       "sourceCount": 3,
-      "itemCount": 3,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "政府 エネルギー安定確保で新計画 代替パイプライン建設支援",
+      "topNegativeTitle": "PHP/USD: Philippine Peso Falls Past 62 Per Dollar on Elevated Oil Prices",
       "topPositiveTitle": "Oil Exports Drive Canada’s Largest Current Account Surplus Since 2005",
       "items": [
+        {
+          "title": "PHP/USD: Philippine Peso Falls Past 62 Per Dollar on Elevated Oil Prices",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-08-28T01:48:09+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-28/php-usd-philippine-peso-falls-past-62-per-dollar-on-elevated-oil-prices",
+          "tags": [
+            "commodity",
+            "fx",
+            "market"
+          ]
+        },
+        {
+          "title": "Faster Tokyo Inflation Supports Near-Term BOJ Rate Hike Case",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-27T23:35:05+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-27/tokyo-inflation-ticks-up-backing-boj-s-case-for-rate-hike",
+          "tags": [
+            "commodity",
+            "jp_broad",
+            "market",
+            "rates"
+          ]
+        },
         {
           "title": "政府 エネルギー安定確保で新計画 代替パイプライン建設支援",
           "source": "NHK 経済",
@@ -512,18 +505,6 @@
             "market"
           ],
           "titleJa": "政府 エネルギー安定確保で新計画 代替パイプライン建設支援"
-        },
-        {
-          "title": "Latest Oil Market News and Analysis for Aug. 27",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-26T22:02:04+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-26/latest-oil-market-news-and-analysis-for-aug-27",
-          "tags": [
-            "commodity",
-            "market"
-          ]
         },
         {
           "title": "Oil Exports Drive Canada’s Largest Current Account Surplus Since 2005",
@@ -541,15 +522,15 @@
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.055,
+      "avgSentiment": 0.2,
       "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 5,
-      "sourceCount": 2,
-      "itemCount": 6,
+      "positiveCount": 2,
+      "neutralCount": 3,
+      "sourceCount": 3,
+      "itemCount": 5,
       "isStale": false,
       "topNegativeTitle": "Canada Can Weather Latest Trump Tariffs, Economists Tell Carney Finance Minister",
-      "topPositiveTitle": "中道と公明の国会議員 中国共産党関係者と会談 交流再開を提案",
+      "topPositiveTitle": "BYD’s $20 Billion Stock Comeback May Extend on Export Success",
       "items": [
         {
           "title": "Canada Can Weather Latest Trump Tariffs, Economists Tell Carney Finance Minister",
@@ -578,19 +559,6 @@
           ]
         },
         {
-          "title": "India Budget Math Improves With Asset Sales Target in Sight",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-27T07:08:52+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-27/india-s-budget-math-brightens-with-asset-sales-target-in-sight",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
           "title": "障害者らが高市首相に平和への願い込めた手紙を手渡す",
           "source": "NHK 経済",
           "sentiment": "neutral",
@@ -605,17 +573,29 @@
           "titleJa": "障害者らが高市首相に平和への願い込めた手紙を手渡す"
         },
         {
-          "title": "茂木外相 ウクライナ支援継続の方針伝える 独外相と電話会談",
+          "title": "中道と公明の国会議員 中国共産党関係者と会談 交流再開を提案",
           "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-27T12:12:32+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20260827de46804",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-27T12:37:06+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20260827de46743",
           "tags": [
             "geopolitical",
             "market"
           ],
-          "titleJa": "茂木外相 ウクライナ支援継続の方針伝える 独外相と電話会談"
+          "titleJa": "中道と公明の国会議員 中国共産党関係者と会談 交流再開を提案"
+        },
+        {
+          "title": "BYD’s $20 Billion Stock Comeback May Extend on Export Success",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-27T23:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-27/byd-needs-ev-success-overseas-to-sustain-20-billion-stock-rally",
+          "tags": [
+            "geopolitical",
+            "market"
+          ]
         }
       ]
     }
