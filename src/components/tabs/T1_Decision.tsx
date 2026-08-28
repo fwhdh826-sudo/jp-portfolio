@@ -20,6 +20,7 @@ import type { StockCandidateItem } from '../../types/candidatesStocks'
 import { SixAxisRadar, CANONICAL_AXES_ORDER, AXIS_LABEL, AXIS_COLOR } from '../charts/SixAxisRadar'
 import { CircularGauge } from '../charts/CircularGauge'
 import { deriveDisplayDecision, type DisplayDecision } from '../../domain/analysis/displayDecision'
+import { REGIME_DISPLAY_META, type RegimeId } from '../../types/regime'
 import { isSellLocked, getSellableDate } from '../../domain/constraints/stockLock'
 import { TIER_A_T1_STOP_LOSS_PCT } from '../../domain/constraints/tierAT1'
 import { computeHoldingsStale } from './T0_Home'
@@ -54,11 +55,15 @@ function decisionColors(d: string) {
 // ── displayDecisionLabel ──────────────────────────────────────
 // deriveDisplayDecision は ../../domain/analysis/displayDecision からインポート
 
-function displayDecisionLabel(d: DisplayDecision): string {
-  if (d === 'BUY')                      return 'BUY'
-  if (d === 'SELL')                     return 'SELL'
-  if (d === 'WAIT' || d === 'DATA_WAIT') return 'WAIT'
-  return 'HOLD'
+export function displayDecisionLabel(d: DisplayDecision): string {
+  if (d === 'BUY')                       return '買い'
+  if (d === 'SELL')                      return '売却'
+  if (d === 'WAIT' || d === 'DATA_WAIT') return '待機'
+  return '保有継続'
+}
+
+export function stockRegimeDisplayLabel(regime: RegimeId): string {
+  return REGIME_DISPLAY_META[regime].label
 }
 
 // ── EightAxisRadar (UI-9-1b: 8軸 SVG レーダー) ───────────────
@@ -245,8 +250,8 @@ function Phase7StockScoreSection({
                 <span style={{ fontSize: '12px', fontWeight: 700, color: colors.stockAccentText }}>
                   総合スコア {dynamic_total.total} ({dynamic_total.rating})
                 </span>
-                <span style={{ fontSize: '11px', color: colors.textMuted }}>
-                  レジーム: {dynamic_total.regime_used}
+                <span data-regime={dynamic_total.regime_used} style={{ fontSize: '11px', color: colors.textMuted }}>
+                  レジーム: {stockRegimeDisplayLabel(dynamic_total.regime_used)}
                 </span>
               </>
             ) : (
@@ -473,7 +478,7 @@ function StockList({
           display: 'flex', alignItems: 'center', gap: spacing[2],
         }}>
           <span>📡</span>
-          <span>データ品質低下 — {dq.reason}。BUYシグナルは参考値です（実行推奨停止）。</span>
+          <span>データ品質低下 — {dq.reason}。買いシグナルは参考値です（実行推奨停止）。</span>
         </div>
       )}
 
@@ -496,7 +501,7 @@ function StockList({
       {/* ヘッダー（P1-5: page titleはPageHeaderへ集約したためpillは削除、件数情報のみ残す） */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: spacing[2] }}>
         <span style={{ fontSize: '12px', color: colors.textSubtle }}>
-          {holdings.length} 銘柄 — BUY {buyCount} / ロック {lockCount}
+          {holdings.length} 銘柄 — 買い {buyCount} / ロック {lockCount}
         </span>
         {system.analysisLastRunAt && (
           <span style={{ fontSize: '11px', color: colors.textMuted }}>
@@ -600,7 +605,7 @@ function StockList({
                       color: score >= 60 ? colors.buy : score >= 40 ? colors.wait : colors.sell,
                     }}>{score}</div>
                   </div>
-                  <div style={{
+                  <div data-decision={displayDecision} style={{
                     padding: `${spacing[1]} ${spacing[2]}`,
                     background: dc.bg, color: dc.text,
                     border: `1px solid ${dc.border}`,
@@ -738,7 +743,7 @@ function StockList({
                       )}
                     </div>
                     {/* 判断 */}
-                    <div style={{ ...cellBase, background: dc2.bg, color: dc2.text }}>
+                    <div data-decision={rowDec} style={{ ...cellBase, background: dc2.bg, color: dc2.text }}>
                       {displayDecisionLabel(rowDec)}
                     </div>
                     {/* スコア */}
@@ -1222,7 +1227,7 @@ function StockDetail({ code, onBack }: { code: string; onBack: () => void }) {
                 </div>
               </div>
             )}
-            <div className="stock-detail__decision-badge" style={{ background: dc.bg, color: dc.text, border: `1px solid ${dc.border}` }}>
+            <div data-decision={displayDecision} className="stock-detail__decision-badge" style={{ background: dc.bg, color: dc.text, border: `1px solid ${dc.border}` }}>
               {displayDecisionLabel(displayDecision)}
               {rank && rc && <span style={{ marginLeft: '6px', fontSize: '11px' }}>{rank}</span>}
             </div>
@@ -1291,20 +1296,20 @@ function StockDetail({ code, onBack }: { code: string; onBack: () => void }) {
             {displayDecision === 'DATA_WAIT'
               ? 'データ更新待ち — データ品質低下のため新規買いを抑制中。シグナルは参考値のみです。'
               : safeModeActive && h.decision === 'BUY'
-                ? (officialAction?.blockedReason ?? `${h.name} はSAFE_MODE発動中のためBUY抑制中（WAIT）。解除後に再判定されます。`)
+                ? (officialAction?.blockedReason ?? `${h.name} はSAFE_MODE発動中のため新規買付停止中（待機）。解除後に再判定されます。`)
                 : debate?.recommendedAction
                 ? debate.recommendedAction
                 : displayDecision === 'BUY'
-                  ? `${h.name} はBUYシグナルです。投資妙味・リスク条件を確認してください。`
+                  ? `${h.name} は買いシグナルです。投資妙味・リスク条件を確認してください。`
                   : displayDecision === 'SELL'
-                    ? `${h.name} はSELLシグナルです。損切・利確条件を確認してください。`
+                    ? `${h.name} は売却シグナルです。損切・利確条件を確認してください。`
                     : displayDecision === 'WAIT'
                       ? jpStockCapExceeded && h.decision === 'BUY'
-                        ? `${h.name} は国内個別株上限超過のためBUY抑制中（WAIT）。上限が解消されると再判定されます。必要ならT9で方針比率を見直せます。`
+                        ? `${h.name} は国内個別株上限超過のため新規買付停止中（待機）。上限が解消されると再判定されます。必要ならT9で方針比率を見直せます。`
                         : locked
-                          ? `${h.name} は3ヶ月売却ロック中のためSELL不可（WAIT）。${unlockDate ? `${unlockDate}以降に再判定します。` : '解除後に再判定します。'}`
-                          : `${h.name} はWAIT判定です。条件未達のため次のシグナルを待ちます。`
-                      : `${h.name} はHOLDシグナルです。継続監視をお勧めします。`
+                          ? `${h.name} は3ヶ月売却ロック中のため売却不可（待機）。${unlockDate ? `${unlockDate}以降に再判定します。` : '解除後に再判定します。'}`
+                          : `${h.name} は待機判定です。条件未達のため次のシグナルを待ちます。`
+                      : `${h.name} は保有継続シグナルです。継続監視をお勧めします。`
             }
           </div>
           {((debate?.bullReasons?.length ?? 0) > 0 || (debate?.bearReasons?.length ?? 0) > 0) && (
@@ -1718,7 +1723,7 @@ function StockDetail({ code, onBack }: { code: string; onBack: () => void }) {
                       ? safeModeActive && h.decision === 'BUY'
                         ? 'SAFE_MODE発動中 — 新規買付停止。解除後に再判定されます。'
                         : jpStockCapExceeded && h.decision === 'BUY'
-                        ? '国内個別株上限超過のためBUY抑制（WAIT）。上限超過が解消されると再判定されます。必要ならT9で方針比率を見直せます。'
+                        ? '国内個別株上限超過のため新規買付停止（待機）。上限超過が解消されると再判定されます。必要ならT9で方針比率を見直せます。'
                         : '待機。ロック制約または条件未達のため、次のシグナルを待ちます。'
                       : '現状維持。次のシグナルを待つ。'}
             </div>
@@ -1796,6 +1801,7 @@ function StockDetail({ code, onBack }: { code: string; onBack: () => void }) {
         <div className="stock-sticky-cta__content">
           <span
             className="stock-sticky-cta__decision"
+            data-decision={displayDecision}
             style={{
               background: displayDecision === 'BUY'  ? colors.buy
                         : displayDecision === 'SELL' ? colors.sell

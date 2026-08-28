@@ -23,7 +23,9 @@ vi.mock('../../hooks/useIsMobile', () => ({
   useIsMobile: () => mockedStore.isMobile,
 }))
 
-const { T1_Decision } = await import('./T1_Decision')
+const { T1_Decision, displayDecisionLabel, stockRegimeDisplayLabel } = await import('./T1_Decision')
+// @ts-expect-error -- Vite resolves raw source imports during Vitest.
+import t1Source from './T1_Decision.tsx?raw'
 
 const isolatedStore = createAppStoreInstanceForTest()
 const BASE_APP_STATE: AppState = isolatedStore.store.getState()
@@ -63,6 +65,15 @@ function renderMatrix(isMobile: boolean): string {
   }
 }
 
+function renderDecisionPage(): string {
+  mockedStore.state = {
+    ...BASE_APP_STATE,
+    holdings: MATRIX_HOLDINGS,
+    analysis: [],
+  }
+  return renderToStaticMarkup(<T1_Decision />)
+}
+
 function gridContracts(matrixHtml: string): string[] {
   return [...matrixHtml.matchAll(/grid-template-columns:([^;"]+)/g)].map(match => match[1])
 }
@@ -97,5 +108,38 @@ describe('T1 score matrix responsive first-column contract', () => {
     }
     expect(html).toContain('white-space:nowrap;overflow:hidden;text-overflow:ellipsis')
     expect(html).toContain('overflow-x:auto')
+  })
+})
+
+describe('UI-P2-1 I-1/I-4: T1表示ラベルとdomain tokenの分離', () => {
+  it('判定enumを変えず、可視ラベルだけを正典の日本語へ変換する', () => {
+    const decisions = ['BUY', 'HOLD', 'SELL', 'WAIT', 'DATA_WAIT'] as const
+    expect(decisions.map(displayDecisionLabel)).toEqual(['買い', '保有継続', '売却', '待機', '待機'])
+    expect(decisions).toEqual(['BUY', 'HOLD', 'SELL', 'WAIT', 'DATA_WAIT'])
+  })
+
+  it('4つの判定render siteはunderlying enumをdata-decisionに保持する', () => {
+    expect(t1Source.match(/data-decision=/g)).toHaveLength(4)
+    expect(t1Source).toContain('deriveDisplayDecision({')
+    const html = renderMatrix(true)
+    expect(html).toContain('data-decision="HOLD"')
+    expect(html).toContain('>保有継続</div>')
+    expect(html).not.toMatch(/>(BUY|HOLD|SELL|WAIT)</)
+  })
+
+  it('件数・DQ・詳細説明の可視文言に英語verdict tokenを残さない', () => {
+    const html = renderDecisionPage()
+    expect(html).toContain('2 銘柄 — 買い 0 / ロック 0')
+    for (const oldText of ['BUYシグナル', 'SELLシグナル', 'WAIT判定', 'HOLDシグナル', 'BUY抑制']) {
+      expect(t1Source).not.toContain(oldText)
+    }
+  })
+
+  it('5レジームenumを変えず、既存authorityの日本語表示へ変換する', () => {
+    const regimes = ['bull_calm', 'bull_volatile', 'bear', 'crisis', 'uncertain'] as const
+    expect(regimes.map(stockRegimeDisplayLabel)).toEqual([
+      '強気・低ボラ', '強気・高ボラ', '弱気', '危機', '不確実',
+    ])
+    expect(regimes).toEqual(['bull_calm', 'bull_volatile', 'bear', 'crisis', 'uncertain'])
   })
 })

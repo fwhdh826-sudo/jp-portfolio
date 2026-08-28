@@ -54,6 +54,15 @@ import type { AllocationConsumerSnapshot } from '../../types/allocationConsumer'
 
 // ── 定数・ヘルパー ──────────────────────────────────────────────
 
+export function fundDecisionLabel(signal: Signal): string {
+  if (signal === 'BUY') return '買い'
+  if (signal === 'SELL') return '売却'
+  if (signal === 'WATCH') return '監視'
+  if (signal === 'WAIT') return '待機'
+  if (signal === SUPPRESSED_VERDICT) return '新規買付停止'
+  return '保有継続'
+}
+
 // CAND-SYN-1E: T7「未保有投信候補」の唯一の候補UI authority。
 // candidateDecisionSynthesis.decisions/watchList（canonical order のまま、
 // 各配列内の並びを保持し decisions→watchList の順で連結）のみを読み、
@@ -810,7 +819,7 @@ export function T7_Trust() {
                       ),
                       isSuppressed,
                     )
-                    const fundBadgeLabel = fSig === SUPPRESSED_VERDICT ? SUPPRESSED_VERDICT : item.decision
+                    const fundBadgeLabel = fundDecisionLabel(fSig)
                     return (
                       <div key={item.id} style={fundCardStyle(fSig)}>
                         <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: spacing[2] }}>
@@ -825,7 +834,13 @@ export function T7_Trust() {
                             </div>
                             <p style={{ ...typography.bodySmall, color: colors.textPrimary, fontWeight: 600 }}>{item.name}</p>
                           </div>
-                          <span style={fundBadgeStyle(fSig)}>{fundBadgeLabel}</span>
+                          <span
+                            style={fundBadgeStyle(fSig)}
+                            data-signal={fSig}
+                            aria-label={`シグナル: ${fundBadgeLabel}`}
+                          >
+                            {fundBadgeLabel}
+                          </span>
                         </div>
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: `${spacing[1]} ${spacing[3]}` }}>
                           {[
@@ -842,11 +857,6 @@ export function T7_Trust() {
                             </div>
                           ))}
                         </div>
-                        {item.signal && (
-                          <p style={{ ...typography.caption, color: colors.fundAccentText, borderTop: `1px solid ${colors.borderSubtle}`, paddingTop: spacing[1.5] }}>
-                            {item.signal}
-                          </p>
-                        )}
                         {EMBEDDED_GOLD_EXPOSURE[item.id] && (() => {
                           const ex = EMBEDDED_GOLD_EXPOSURE[item.id]
                           return (
@@ -1258,6 +1268,10 @@ export function T7_Trust() {
               style={{
                 ...typography.label,
                 padding:       `${spacing[2]} ${spacing[4]}`,
+                minHeight:     '44px',
+                display:       'inline-flex',
+                alignItems:    'center',
+                justifyContent: 'center',
                 // 白文字とのAA 4.5:1を満たすためraw fundAccentでなくfundAccentTextを使用
                 background:    colors.fundAccentText,
                 color:         '#fff',

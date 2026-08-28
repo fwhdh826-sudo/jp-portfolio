@@ -102,6 +102,23 @@ describe('T7_Trust — 実行CTA authority（C/D）', () => {
     expect(html).toContain('本日エントリー済みにする')
   })
 
+  it('I-7: 実行CTAはaccessible nameと既存interactionを維持し44px touch targetを持つ', () => {
+    const html = renderT7({ ...notSuppressedOverrides(), trust: [CORE_TRUST] })
+    const button = html.match(/<button[^>]*>(?:\s*)本日エントリー済みにする(?:\s*)<\/button>/)?.[0]
+    expect(button).toBeTruthy()
+    expect(button).toContain('min-height:44px')
+    expect(button).toContain('display:inline-flex')
+    expect(button).toContain('align-items:center')
+    expect(button).toContain('justify-content:center')
+
+    const buttonSource = t7Source.slice(
+      t7Source.lastIndexOf('<button', t7Source.indexOf('本日エントリー済みにする')),
+      t7Source.indexOf('</button>', t7Source.indexOf('本日エントリー済みにする')),
+    )
+    expect(buttonSource).toContain('onClick={handleMarkExecuted}')
+    expect(buttonSource).toContain("disabled={todayEntryCount >= 1 || trustPlan.shortTermMode.candidateDirection === 'WAIT'}")
+  })
+
   it('D否定側: SAFE_MODE active時はrows>0でも実行CTAを表示しない', () => {
     const html = renderT7({
       ...notSuppressedOverrides(),
