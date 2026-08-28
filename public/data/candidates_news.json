@@ -1,35 +1,20 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-08-28T15:59:13.987881+09:00",
-  "sourceUpdatedAt": "2026-08-28T06:49:42+00:00",
+  "updatedAt": "2026-08-29T00:33:32.038145+09:00",
+  "sourceUpdatedAt": "2026-08-28T15:10:51+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": -0.33,
-      "negativeCount": 1,
+      "avgSentiment": 0,
+      "negativeCount": 0,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Faster Tokyo Inflation Supports Near-Term BOJ Rate Hike Case",
-      "topPositiveTitle": "Faster Tokyo Inflation Supports Near-Term BOJ Rate Hike Case",
-      "items": [
-        {
-          "title": "Faster Tokyo Inflation Supports Near-Term BOJ Rate Hike Case",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-27T23:35:05+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-27/tokyo-inflation-ticks-up-backing-boj-s-case-for-rate-hike",
-          "tags": [
-            "commodity",
-            "jp_broad",
-            "market",
-            "rates"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "jp_semiconductor": {
       "avgSentiment": 0,
@@ -44,35 +29,49 @@
       "items": []
     },
     "us_broad": {
-      "avgSentiment": 0.03,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 10,
+      "avgSentiment": 0.059,
+      "negativeCount": 2,
+      "positiveCount": 3,
+      "neutralCount": 12,
       "sourceCount": 2,
-      "itemCount": 11,
+      "itemCount": 17,
       "isStale": false,
-      "topNegativeTitle": "A Guide to Wall Street’s Hot Debates, From Carry Trades to Treasury Twists",
-      "topPositiveTitle": "Warsh Speech on Inflation May Lift US 30-Year Bonds, Investors Say",
+      "topNegativeTitle": "Gold Declines After Fed’s Warsh Comments on Inflation Trend",
+      "topPositiveTitle": "European Stocks Eye Fifth Monthly Gain as Warsh Speaks on Policy",
       "items": [
         {
-          "title": "A Guide to Wall Street’s Hot Debates, From Carry Trades to Treasury Twists",
+          "title": "Gold Declines After Fed’s Warsh Comments on Inflation Trend",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-08-27T23:34:18+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-27/gold-holds-near-4-600-as-investors-focus-on-fed-rate-hike-path",
+          "tags": [
+            "gold",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Fed's Hammack Backs Rate Hike to Rein in Inflation",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-28T14:22:49+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-28/fed-s-hammack-backs-rate-hike-to-rein-in-inflation-video",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "The Kansas City Fed President on the First Jackson Hole of the Warsh Era",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-28T06:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-28/a-guide-to-wall-street-s-hot-debates-from-carry-trades-to-treasury-twists",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Ex-RBI Chief Rajan Urges Fed to Hike Rates, Relaxed on Rupee",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-28T03:50:38+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-28/ex-rbi-chief-rajan-says-fed-should-raise-rates-to-curb-inflation",
+          "publishedAt": "2026-08-27T11:35:57+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-27/kc-fed-president-on-first-jackson-hole-of-the-warsh-era-video",
           "tags": [
             "market",
             "rates",
@@ -80,116 +79,130 @@
           ]
         },
         {
-          "title": "Fed’s Jackson Hole Conference Is Underway: Here’s What to Expect",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-28T00:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-28/fed-s-jackson-hole-conference-is-underway-here-s-what-to-expect",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Fed Officials Remain Divided on Inflation Ahead of Warsh Speech",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-27T23:10:26+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-27/fed-officials-remain-divided-on-inflation-ahead-of-warsh-speech",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "US Stock Futures Slip Before Warsh, Bonds Steady: Markets Wrap",
+          "title": "Every Fed Meeting Is Now 'Live,' Pimco's Clarida Says",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-27T22:08:04+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-27/stock-market-today-dow-s-p-live-updates",
+          "publishedAt": "2026-08-28T15:10:51+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-28/every-fed-meeting-is-now-live-pimco-s-clarida-says-video",
           "tags": [
             "market",
-            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "'We Got What We Needed From This Speech,' Says Kate Moore",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-28T15:08:11+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-28/-we-got-what-we-needed-from-this-speech-says-moore-video",
+          "tags": [
+            "market",
             "us_broad"
           ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 2,
+      "sourceCount": 2,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "El auge del oro impulsa la minería ilegal y la deforestación en la Amazonía de Perú",
+      "topPositiveTitle": "El auge del oro impulsa la minería ilegal y la deforestación en la Amazonía de Perú",
+      "items": [
+        {
+          "title": "El auge del oro impulsa la minería ilegal y la deforestación en la Amazonía de Perú",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-28T14:35:52+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-28/el-auge-del-oro-impulsa-la-mineria-ilegal-y-la-deforestacion-en-la-amazonia-de-peru",
+          "tags": [
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Inside Peru's Fight Against Illegal Gold Mining in Amazon Rainforests",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-28T10:30:04+00:00",
+          "url": "https://www.bloomberg.com/news/features/2026-08-28/inside-peru-s-fight-against-illegal-gold-mining-in-amazon-rainforests",
+          "tags": [
+            "gold",
+            "market",
+            "us_growth"
+          ]
+        }
+      ]
     },
     "global_broad": {
-      "avgSentiment": 0.33,
+      "avgSentiment": 1.0,
       "negativeCount": 0,
       "positiveCount": 1,
       "neutralCount": 0,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "European Stocks Face Seasonal Risks After Five-Month Rally",
-      "topPositiveTitle": "European Stocks Face Seasonal Risks After Five-Month Rally",
+      "topNegativeTitle": "European Stocks Eye Fifth Monthly Gain as Warsh Speaks on Policy",
+      "topPositiveTitle": "European Stocks Eye Fifth Monthly Gain as Warsh Speaks on Policy",
       "items": [
         {
-          "title": "European Stocks Face Seasonal Risks After Five-Month Rally",
+          "title": "European Stocks Eye Fifth Monthly Gain as Warsh Speaks on Policy",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-28T06:15:51+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-28/european-stocks-face-seasonal-risks-after-five-month-rally",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-08-28T07:17:35+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-28/european-stocks-set-for-fifth-monthly-gain-before-warsh-speech",
           "tags": [
             "global_broad",
-            "market"
+            "market",
+            "us_broad"
           ]
         }
       ]
     },
     "gold": {
-      "avgSentiment": -0.33,
-      "negativeCount": 2,
+      "avgSentiment": -0.335,
+      "negativeCount": 1,
       "positiveCount": 0,
-      "neutralCount": 0,
+      "neutralCount": 1,
       "sourceCount": 2,
       "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Wolf: Currency Weakness, Intervention Lift Gold Flows",
-      "topPositiveTitle": "Wolf: Currency Weakness, Intervention Lift Gold Flows",
+      "topNegativeTitle": "Gold Declines After Fed’s Warsh Comments on Inflation Trend",
+      "topPositiveTitle": "Inside Peru's Fight Against Illegal Gold Mining in Amazon Rainforests",
       "items": [
         {
-          "title": "Wolf: Currency Weakness, Intervention Lift Gold Flows",
+          "title": "Gold Declines After Fed’s Warsh Comments on Inflation Trend",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-28T05:22:13+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-28/wolf-currency-weakness-intervention-lift-gold-flows-video",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-08-27T23:34:18+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-27/gold-holds-near-4-600-as-investors-focus-on-fed-rate-hike-path",
           "tags": [
-            "fx",
             "gold",
-            "market"
+            "market",
+            "us_broad"
           ]
         },
         {
-          "title": "Thai Central Bank Says Gold Curbs Working, May Tighten If Necessary",
+          "title": "Inside Peru's Fight Against Illegal Gold Mining in Amazon Rainforests",
           "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-28T02:58:28+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-28/thai-central-bank-says-gold-curbs-working-may-tighten-if-necessary",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-28T10:30:04+00:00",
+          "url": "https://www.bloomberg.com/news/features/2026-08-28/inside-peru-s-fight-against-illegal-gold-mining-in-amazon-rainforests",
           "tags": [
             "gold",
-            "market"
+            "market",
+            "us_growth"
           ]
         }
       ]
@@ -219,18 +232,18 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.11,
+      "avgSentiment": 0.144,
       "negativeCount": 1,
-      "positiveCount": 0,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 3,
+      "positiveCount": 2,
+      "neutralCount": 4,
+      "sourceCount": 3,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "French Economy Just Dodges Recession After Growth Revised Down",
-      "topPositiveTitle": "Persian Gulf Oil Exports Recover, Centcom Says Hormuz Is Mine Free",
+      "topNegativeTitle": "French Economy Just Dodges Recession as Growth Revised Down",
+      "topPositiveTitle": "US Moves Against Egyptian Bank’s UAE Branches Over Iran Ties",
       "items": [
         {
-          "title": "French Economy Just Dodges Recession After Growth Revised Down",
+          "title": "French Economy Just Dodges Recession as Growth Revised Down",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.33,
@@ -242,12 +255,25 @@
           ]
         },
         {
-          "title": "Persian Gulf Oil Exports Recover, Centcom Says Hormuz Is Mine Free",
+          "title": "Everybody’s Business: Inside the US and Canada “Bar Fight”",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-28T05:42:15+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-28/oil-exports-recover-centcom-says-hormuz-is-mine-free-video",
+          "publishedAt": "2026-08-28T14:54:57+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-28/everybody-s-business-inside-the-us-and-canada-bar-fight",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Oil Tankers Make Fortunes During War as Sinokor Dominates",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-28T13:07:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-28/gulf-oil-tankers-near-650-000-a-day-as-iran-war-disrupts-flows",
           "tags": [
             "commodity",
             "geopolitical",
@@ -256,78 +282,76 @@
           ]
         },
         {
-          "title": "Canada Can Weather Latest Trump Tariffs, Economists Tell Carney Finance Minister",
+          "title": "Russia Was Forced to Cut Spending After Running Out of Cash",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-27T20:18:51+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-27/canada-can-weather-latest-trump-tariffs-economists-tell-carney-finance-minister",
+          "publishedAt": "2026-08-27T15:03:08+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-27/russia-was-forced-to-cut-spending-after-running-out-of-cash",
           "tags": [
             "geopolitical",
             "macro_risk",
             "market"
           ]
+        },
+        {
+          "title": "茂木外相 ICC赤根所長と電話会談 米国制裁めぐり意見交換か",
+          "source": "NHK 経済",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-28T10:30:06+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20260828de47073",
+          "tags": [
+            "macro_risk",
+            "market"
+          ],
+          "titleJa": "茂木外相 ICC赤根所長と電話会談 米国制裁めぐり意見交換か"
         }
       ]
     },
     "fx": {
-      "avgSentiment": -0.33,
+      "avgSentiment": -0.67,
       "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 0,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Wolf: Currency Weakness, Intervention Lift Gold Flows",
-      "topPositiveTitle": "Wolf: Currency Weakness, Intervention Lift Gold Flows",
+      "topNegativeTitle": "Japan Yen Intervention Hits Record $96 Billion in Past Month",
+      "topPositiveTitle": "Japan Yen Intervention Hits Record $96 Billion in Past Month",
       "items": [
         {
-          "title": "Wolf: Currency Weakness, Intervention Lift Gold Flows",
-          "source": "Bloomberg Markets",
+          "title": "Japan Yen Intervention Hits Record $96 Billion in Past Month",
+          "source": "Bloomberg Economics",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-28T05:22:13+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-28/wolf-currency-weakness-intervention-lift-gold-flows-video",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-08-28T10:05:54+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-28/japan-s-yen-intervention-hits-record-96-billion-in-past-month",
           "tags": [
             "fx",
-            "gold",
             "market"
           ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0.201,
       "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 7,
+      "positiveCount": 3,
+      "neutralCount": 6,
       "sourceCount": 2,
-      "itemCount": 9,
+      "itemCount": 10,
       "isStale": false,
-      "topNegativeTitle": "Faster Tokyo Inflation Supports Near-Term BOJ Rate Hike Case",
-      "topPositiveTitle": "French Inflation Quickens to Highest Level Since May on Energy",
+      "topNegativeTitle": "Fed's Hammack Backs Rate Hike to Rein in Inflation",
+      "topPositiveTitle": "Spanish Inflation Surges Beyond 4% as France’s Also Quickens",
       "items": [
         {
-          "title": "Faster Tokyo Inflation Supports Near-Term BOJ Rate Hike Case",
-          "source": "Bloomberg Economics",
+          "title": "Fed's Hammack Backs Rate Hike to Rein in Inflation",
+          "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-08-27T23:35:05+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-27/tokyo-inflation-ticks-up-backing-boj-s-case-for-rate-hike",
-          "tags": [
-            "commodity",
-            "jp_broad",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Ex-RBI Chief Rajan Urges Fed to Hike Rates, Relaxed on Rupee",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-28T03:50:38+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-28/ex-rbi-chief-rajan-says-fed-should-raise-rates-to-curb-inflation",
+          "publishedAt": "2026-08-28T14:22:49+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-28/fed-s-hammack-backs-rate-hike-to-rein-in-inflation-video",
           "tags": [
             "market",
             "rates",
@@ -335,37 +359,50 @@
           ]
         },
         {
-          "title": "Thailand Central Bank Chief Who Takes On Problems Rates Can’t Fix",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-28T00:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-28/thailand-central-bank-chief-who-takes-on-problems-rates-can-t-fix",
-          "tags": [
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Fed Officials Remain Divided on Inflation Ahead of Warsh Speech",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-27T23:10:26+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-27/fed-officials-remain-divided-on-inflation-ahead-of-warsh-speech",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "US Stock Futures Slip Before Warsh, Bonds Steady: Markets Wrap",
+          "title": "The Kansas City Fed President on the First Jackson Hole of the Warsh Era",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-27T22:08:04+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-27/stock-market-today-dow-s-p-live-updates",
+          "publishedAt": "2026-08-27T11:35:57+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-27/kc-fed-president-on-first-jackson-hole-of-the-warsh-era-video",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "ECB’s Dolenc Sees Good Case to Hike Interest Rates in September",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-28T15:09:21+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-28/ecb-s-dolenc-sees-good-case-to-hike-interest-rates-in-september",
+          "tags": [
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Fed's Hammack Calls for Raising Rates Amid Inflation Pressures",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-28T14:34:37+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-28/fed-s-hammack-calls-for-raising-interest-rates-video",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "US Job Growth Marked Down in Preliminary Benchmark Estimate",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-28T14:01:56+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-28/us-job-growth-marked-down-79-000-in-preliminary-estimate",
           "tags": [
             "market",
             "rates",
@@ -376,100 +413,86 @@
     },
     "commodity": {
       "avgSentiment": 0.0,
-      "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 4,
-      "sourceCount": 3,
-      "itemCount": 6,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 2,
+      "sourceCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Faster Tokyo Inflation Supports Near-Term BOJ Rate Hike Case",
-      "topPositiveTitle": "French Inflation Quickens to Highest Level Since May on Energy",
+      "topNegativeTitle": "Chevron Is Nearing a Deal to Expand Oil Operations in Venezuela",
+      "topPositiveTitle": "Chevron Is Nearing a Deal to Expand Oil Operations in Venezuela",
       "items": [
         {
-          "title": "Faster Tokyo Inflation Supports Near-Term BOJ Rate Hike Case",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-27T23:35:05+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-27/tokyo-inflation-ticks-up-backing-boj-s-case-for-rate-hike",
-          "tags": [
-            "commodity",
-            "jp_broad",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Venezuela Considers Leaving OPEC in Blow to Oil Cartel",
+          "title": "Chevron Is Nearing a Deal to Expand Oil Operations in Venezuela",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-28T05:53:36+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-28/venezuela-considers-leaving-opec-in-blow-to-oil-cartel-video",
+          "publishedAt": "2026-08-28T13:52:12+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-28/chevron-nears-deal-to-expand-in-venezuela-wsj-says",
           "tags": [
             "commodity",
             "market"
           ]
         },
         {
-          "title": "El Niño to Crimp Indonesian Palm Oil Output, Producer Group Says",
+          "title": "Oil Tankers Make Fortunes During War as Sinokor Dominates",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-28T05:42:27+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-28/el-nino-to-crimp-indonesian-palm-oil-output-producer-group-says",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "Persian Gulf Oil Exports Recover, Centcom Says Hormuz Is Mine Free",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-28T05:42:15+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-28/oil-exports-recover-centcom-says-hormuz-is-mine-free-video",
+          "publishedAt": "2026-08-28T13:07:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-28/gulf-oil-tankers-near-650-000-a-day-as-iran-war-disrupts-flows",
           "tags": [
             "commodity",
             "geopolitical",
             "macro_risk",
             "market"
           ]
-        },
-        {
-          "title": "政府 エネルギー安定確保で新計画 代替パイプライン建設支援",
-          "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-26T16:44:00+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20260826de46478",
-          "tags": [
-            "commodity",
-            "market"
-          ],
-          "titleJa": "政府 エネルギー安定確保で新計画 代替パイプライン建設支援"
         }
       ]
     },
     "geopolitical": {
       "avgSentiment": 0.0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 2,
+      "negativeCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 2,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Persian Gulf Oil Exports Recover, Centcom Says Hormuz Is Mine Free",
-      "topPositiveTitle": "Persian Gulf Oil Exports Recover, Centcom Says Hormuz Is Mine Free",
+      "topNegativeTitle": "Taiwan Warns Population Could Plunge Almost Half to 12 Million People by 2075",
+      "topPositiveTitle": "US Moves Against Egyptian Bank’s UAE Branches Over Iran Ties",
       "items": [
         {
-          "title": "Persian Gulf Oil Exports Recover, Centcom Says Hormuz Is Mine Free",
+          "title": "Taiwan Warns Population Could Plunge Almost Half to 12 Million People by 2075",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-08-28T09:02:56+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-28/taiwan-warns-population-could-plunge-almost-half-to-12-million-people-by-2075",
+          "tags": [
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Everybody’s Business: Inside the US and Canada “Bar Fight”",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-28T05:42:15+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-28/oil-exports-recover-centcom-says-hormuz-is-mine-free-video",
+          "publishedAt": "2026-08-28T14:54:57+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-28/everybody-s-business-inside-the-us-and-canada-bar-fight",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Oil Tankers Make Fortunes During War as Sinokor Dominates",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-28T13:07:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-28/gulf-oil-tankers-near-650-000-a-day-as-iran-war-disrupts-flows",
           "tags": [
             "commodity",
             "geopolitical",
@@ -478,12 +501,25 @@
           ]
         },
         {
-          "title": "Canada Can Weather Latest Trump Tariffs, Economists Tell Carney Finance Minister",
+          "title": "Russia Was Forced to Cut Spending After Running Out of Cash",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-27T20:18:51+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-27/canada-can-weather-latest-trump-tariffs-economists-tell-carney-finance-minister",
+          "publishedAt": "2026-08-27T15:03:08+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-27/russia-was-forced-to-cut-spending-after-running-out-of-cash",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "US Moves Against Egyptian Bank’s UAE Branches Over Iran Ties",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-28T14:48:55+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-28/us-moves-against-egyptian-bank-s-uae-branches-over-iran-ties",
           "tags": [
             "geopolitical",
             "macro_risk",
@@ -501,7 +537,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 4,
+    "excludedCount": 3,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
