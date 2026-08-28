@@ -21,7 +21,7 @@ vi.mock('../../store/useAppStore', async importOriginal => {
   }
 })
 
-import { T4_IdealPf } from './T4_IdealPf'
+import { T4_IdealPf, marketRegimeDisplayLabel } from './T4_IdealPf'
 // @ts-expect-error -- Vite resolves raw source imports during Vitest.
 import t4Source from './T4_IdealPf.tsx?raw'
 
@@ -55,7 +55,13 @@ const ANALYSIS: HoldingAnalysis = {
 }
 
 function renderT4(): string {
-  mockedStore.state = { ...BASE_APP_STATE, activeTab: 'T4', holdings: [HOLDING], analysis: [ANALYSIS] }
+  mockedStore.state = {
+    ...BASE_APP_STATE,
+    activeTab: 'T4',
+    holdings: [HOLDING],
+    analysis: [ANALYSIS],
+    market: { ...BASE_APP_STATE.market, regime: 'neutral' },
+  }
   return renderToStaticMarkup(<T4_IdealPf />)
 }
 
@@ -176,5 +182,26 @@ describe('T4 StockRow — P0-4: 390px銘柄名1文字縦列化の回帰防止', 
     expect(html).toContain('>目標</div>')
     expect(html).toContain('>差分</div>')
     expect((html.match(/aria-label="シグナル:/g) ?? []).length).toBeGreaterThanOrEqual(SIMILAR_LONG_NAMES.length)
+  })
+})
+
+describe('UI-P2-1 I-3/I-4: T4表示文言の日本語統一', () => {
+  it('market regime値を変えず、可視ラベルだけを日本語化する', () => {
+    const regimes = ['bull', 'neutral', 'bear'] as const
+    expect(regimes.map(marketRegimeDisplayLabel)).toEqual(['強気相場', '中立相場', '弱気相場'])
+    expect(regimes).toEqual(['bull', 'neutral', 'bear'])
+
+    const html = renderT4()
+    expect(html).toContain('data-regime="neutral"')
+    expect(html).toContain('レジーム: 中立相場')
+    expect(html).not.toContain('レジーム: NEUTRAL')
+  })
+
+  it('差分サブラベルを方向の意味を保った日本語で表示する', () => {
+    const html = renderT4()
+    expect(html).toContain('増額対象の資産クラス')
+    expect(html).toContain('減額対象の資産クラス')
+    expect(html).not.toContain('BUY 対象資産クラス')
+    expect(html).not.toContain('SELL 対象資産クラス')
   })
 })

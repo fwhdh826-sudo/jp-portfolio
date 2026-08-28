@@ -44,6 +44,12 @@ function diffColor(diff: number, threshold = 200_000) {
   return colors.textSubtle
 }
 
+export function marketRegimeDisplayLabel(regime: 'bull' | 'neutral' | 'bear'): string {
+  if (regime === 'bull') return '強気相場'
+  if (regime === 'bear') return '弱気相場'
+  return '中立相場'
+}
+
 const CLASS_ORDER: AssetClass[] = [
   'JP_STOCK', 'JP_TRUST', 'OVERSEAS_TRUST', 'GOLD', 'CASH', 'CASH_RESERVE',
 ]
@@ -568,8 +574,8 @@ export function T4_IdealPf() {
           <div style={{ fontSize: '28px', fontWeight: 800, letterSpacing: '-0.04em', color: colors.textPrimary, lineHeight: 1.2 }}>
             {formatJPYAuto(universe.totalValue)}
           </div>
-          <div style={{ ...typography.caption, color: colors.textSubtle, marginTop: spacing[1] }}>
-            レジーム: {market.regime.toUpperCase()} — 目標乖離合計: {formatJPYAuto(totalToBuy - totalToSell)}
+          <div data-regime={market.regime} style={{ ...typography.caption, color: colors.textSubtle, marginTop: spacing[1] }}>
+            レジーム: {marketRegimeDisplayLabel(market.regime)} — 目標乖離合計: {formatJPYAuto(totalToBuy - totalToSell)}
           </div>
         </div>
         <div className="t4-hero-body">
@@ -602,12 +608,12 @@ export function T4_IdealPf() {
         <div className="t4-diff-cell t4-diff-cell--buy">
           <div className="t4-diff-cell__label">要追加</div>
           <div className="t4-diff-cell__value">{formatSignedJPY(totalToBuy)}</div>
-          <div className="t4-diff-cell__sub">BUY 対象資産クラス</div>
+          <div className="t4-diff-cell__sub">増額対象の資産クラス</div>
         </div>
         <div className="t4-diff-cell t4-diff-cell--sell">
           <div className="t4-diff-cell__label">要削減</div>
           <div className="t4-diff-cell__value">{formatSignedJPY(-totalToSell)}</div>
-          <div className="t4-diff-cell__sub">SELL 対象資産クラス</div>
+          <div className="t4-diff-cell__sub">減額対象の資産クラス</div>
         </div>
       </div>
 
@@ -741,7 +747,7 @@ export function T4_IdealPf() {
       <div>
         <SectionHeader
           title="資産クラス配分"
-          caption={`総資産 ${formatJPYAuto(universe.totalValue)} / レジーム: ${market.regime.toUpperCase()}`}
+          caption={`総資産 ${formatJPYAuto(universe.totalValue)} / レジーム: ${marketRegimeDisplayLabel(market.regime)}`}
         />
         <div style={cardStyle}>
           {orderedCats.map((cat, i) => (

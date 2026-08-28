@@ -2018,9 +2018,9 @@ button:focus-visible, a:focus-visible {
 
 /* UI-12-2: Large Index Card Grid */
 .mcc-index-grid {
-  display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px;
 }
-@media (min-width: 520px) { .mcc-index-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 520px) { .mcc-index-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 
 /* UI-12-2: Large Index Card */
 .mcc-index-card {
@@ -2051,7 +2051,7 @@ button:focus-visible, a:focus-visible {
   text-transform: uppercase; letter-spacing: 0.06em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .mcc-index-card__value {
-  font-size: 26px; font-weight: 800; color: var(--color-text-primary);
+  font-size: clamp(18px, 5.6vw, 26px); font-weight: 800; color: var(--color-text-primary);
   line-height: 1.05; letter-spacing: -0.03em; font-variant-numeric: tabular-nums;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
