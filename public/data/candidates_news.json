@@ -1,33 +1,20 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-08-28T14:34:27.522458+09:00",
-  "sourceUpdatedAt": "2026-08-28T05:22:13+00:00",
+  "updatedAt": "2026-08-28T15:59:13.987881+09:00",
+  "sourceUpdatedAt": "2026-08-28T06:49:42+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": -0.665,
-      "negativeCount": 2,
+      "avgSentiment": -0.33,
+      "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 2,
-      "itemCount": 2,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Japan Two-Year Bond Sale Sees Weak Demand on Rate Hike Risk",
+      "topNegativeTitle": "Faster Tokyo Inflation Supports Near-Term BOJ Rate Hike Case",
       "topPositiveTitle": "Faster Tokyo Inflation Supports Near-Term BOJ Rate Hike Case",
       "items": [
-        {
-          "title": "Japan Two-Year Bond Sale Sees Weak Demand on Rate Hike Risk",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-08-28T03:44:11+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-28/japan-s-two-year-government-bond-auction-shows-weaker-demand",
-          "tags": [
-            "jp_broad",
-            "market",
-            "rates"
-          ]
-        },
         {
           "title": "Faster Tokyo Inflation Supports Near-Term BOJ Rate Hike Case",
           "source": "Bloomberg Economics",
@@ -45,64 +32,36 @@
       ]
     },
     "jp_semiconductor": {
-      "avgSentiment": 0.33,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
-      "isStale": false,
-      "topNegativeTitle": "Gold Miners Are Having a Better Month Than Chips Did in Years",
-      "topPositiveTitle": "Gold Miners Are Having a Better Month Than Chips Did in Years",
-      "items": [
-        {
-          "title": "Gold Miners Are Having a Better Month Than Chips Did in Years",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-28T03:38:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-28/gold-miners-are-having-a-better-month-than-chips-did-in-years",
-          "tags": [
-            "gold",
-            "jp_semiconductor",
-            "market"
-          ]
-        }
-      ]
-    },
-    "us_broad": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 11,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
+      "isStale": false,
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
+    },
+    "us_broad": {
+      "avgSentiment": 0.03,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 10,
       "sourceCount": 2,
       "itemCount": 11,
       "isStale": false,
-      "topNegativeTitle": "Ex-RBI Chief Rajan Says Fed Should Raise Rates",
-      "topPositiveTitle": "Ex-RBI Chief Rajan Says Fed Should Raise Rates",
+      "topNegativeTitle": "A Guide to Wall Street’s Hot Debates, From Carry Trades to Treasury Twists",
+      "topPositiveTitle": "Warsh Speech on Inflation May Lift US 30-Year Bonds, Investors Say",
       "items": [
         {
-          "title": "Ex-RBI Chief Rajan Says Fed Should Raise Rates",
+          "title": "A Guide to Wall Street’s Hot Debates, From Carry Trades to Treasury Twists",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-28T04:28:25+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-28/ex-rbi-chief-rajan-says-fed-should-raise-rates-video",
+          "publishedAt": "2026-08-28T06:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-28/a-guide-to-wall-street-s-hot-debates-from-carry-trades-to-treasury-twists",
           "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Traders Focus on Jackson Hole, Fed Outlook | The Asia Trade 8/28/2026",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-28T04:20:16+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-28/the-asia-trade-8-28-2026-video",
-          "tags": [
-            "global_broad",
             "market",
             "us_broad"
           ]
@@ -144,6 +103,19 @@
             "rates",
             "us_broad"
           ]
+        },
+        {
+          "title": "US Stock Futures Slip Before Warsh, Bonds Steady: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-27T22:08:04+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-27/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
         }
       ]
     },
@@ -160,41 +132,40 @@
       "items": []
     },
     "global_broad": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0.33,
       "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 0,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Traders Focus on Jackson Hole, Fed Outlook | The Asia Trade 8/28/2026",
-      "topPositiveTitle": "Traders Focus on Jackson Hole, Fed Outlook | The Asia Trade 8/28/2026",
+      "topNegativeTitle": "European Stocks Face Seasonal Risks After Five-Month Rally",
+      "topPositiveTitle": "European Stocks Face Seasonal Risks After Five-Month Rally",
       "items": [
         {
-          "title": "Traders Focus on Jackson Hole, Fed Outlook | The Asia Trade 8/28/2026",
+          "title": "European Stocks Face Seasonal Risks After Five-Month Rally",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-28T04:20:16+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-28/the-asia-trade-8-28-2026-video",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-28T06:15:51+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-28/european-stocks-face-seasonal-risks-after-five-month-rally",
           "tags": [
             "global_broad",
-            "market",
-            "us_broad"
+            "market"
           ]
         }
       ]
     },
     "gold": {
-      "avgSentiment": -0.11,
+      "avgSentiment": -0.33,
       "negativeCount": 2,
-      "positiveCount": 1,
+      "positiveCount": 0,
       "neutralCount": 0,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 2,
       "isStale": false,
       "topNegativeTitle": "Wolf: Currency Weakness, Intervention Lift Gold Flows",
-      "topPositiveTitle": "Gold Miners Are Having a Better Month Than Chips Did in Years",
+      "topPositiveTitle": "Wolf: Currency Weakness, Intervention Lift Gold Flows",
       "items": [
         {
           "title": "Wolf: Currency Weakness, Intervention Lift Gold Flows",
@@ -218,19 +189,6 @@
           "url": "https://www.bloomberg.com/news/articles/2026-08-28/thai-central-bank-says-gold-curbs-working-may-tighten-if-necessary",
           "tags": [
             "gold",
-            "market"
-          ]
-        },
-        {
-          "title": "Gold Miners Are Having a Better Month Than Chips Did in Years",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-28T03:38:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-28/gold-miners-are-having-a-better-month-than-chips-did-in-years",
-          "tags": [
-            "gold",
-            "jp_semiconductor",
             "market"
           ]
         }
@@ -261,16 +219,42 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.134,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 4,
+      "avgSentiment": -0.11,
+      "negativeCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Canada Can Weather Latest Trump Tariffs, Economists Tell Carney Finance Minister",
-      "topPositiveTitle": "Oil Exports Drive Canada’s Largest Current Account Surplus Since 2005",
+      "topNegativeTitle": "French Economy Just Dodges Recession After Growth Revised Down",
+      "topPositiveTitle": "Persian Gulf Oil Exports Recover, Centcom Says Hormuz Is Mine Free",
       "items": [
+        {
+          "title": "French Economy Just Dodges Recession After Growth Revised Down",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-28T06:45:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-28/french-economy-just-dodges-recession-after-growth-revised-down",
+          "tags": [
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Persian Gulf Oil Exports Recover, Centcom Says Hormuz Is Mine Free",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-28T05:42:15+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-28/oil-exports-recover-centcom-says-hormuz-is-mine-free-video",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
         {
           "title": "Canada Can Weather Latest Trump Tariffs, Economists Tell Carney Finance Minister",
           "source": "Bloomberg Economics",
@@ -283,85 +267,20 @@
             "macro_risk",
             "market"
           ]
-        },
-        {
-          "title": "Russia Was Forced to Cut Spending After Running Out of Cash",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-27T15:03:08+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-27/russia-was-forced-to-cut-spending-after-running-out-of-cash",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Number of Young Brits Not in Work or Education Dips Slightly",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-27T08:41:38+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-27/young-brits-classified-as-neet-dip-from-historically-high-levels",
-          "tags": [
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "障害者らが高市首相に平和への願い込めた手紙を手渡す",
-          "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-27T12:19:38+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20260827de46807",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ],
-          "titleJa": "障害者らが高市首相に平和への願い込めた手紙を手渡す"
-        },
-        {
-          "title": "Oil Exports Drive Canada’s Largest Current Account Surplus Since 2005",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-27T13:41:18+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-27/canada-current-account-surplus-hits-highest-since-2005-on-oil-surge",
-          "tags": [
-            "commodity",
-            "macro_risk",
-            "market"
-          ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": -0.665,
-      "negativeCount": 2,
+      "avgSentiment": -0.33,
+      "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 0,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "PHP/USD: Philippine Peso Falls Past 62 Per Dollar on Elevated Oil Prices",
+      "topNegativeTitle": "Wolf: Currency Weakness, Intervention Lift Gold Flows",
       "topPositiveTitle": "Wolf: Currency Weakness, Intervention Lift Gold Flows",
       "items": [
-        {
-          "title": "PHP/USD: Philippine Peso Falls Past 62 Per Dollar on Elevated Oil Prices",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-08-28T01:48:09+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-28/php-usd-philippine-peso-falls-past-62-per-dollar-on-elevated-oil-prices",
-          "tags": [
-            "commodity",
-            "fx",
-            "market"
-          ]
-        },
         {
           "title": "Wolf: Currency Weakness, Intervention Lift Gold Flows",
           "source": "Bloomberg Markets",
@@ -378,29 +297,16 @@
       ]
     },
     "rates": {
-      "avgSentiment": -0.133,
-      "negativeCount": 2,
-      "positiveCount": 0,
-      "neutralCount": 8,
+      "avgSentiment": 0.0,
+      "negativeCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 7,
       "sourceCount": 2,
-      "itemCount": 10,
+      "itemCount": 9,
       "isStale": false,
-      "topNegativeTitle": "Japan Two-Year Bond Sale Sees Weak Demand on Rate Hike Risk",
-      "topPositiveTitle": "Ex-RBI Chief Rajan Says Fed Should Raise Rates",
+      "topNegativeTitle": "Faster Tokyo Inflation Supports Near-Term BOJ Rate Hike Case",
+      "topPositiveTitle": "French Inflation Quickens to Highest Level Since May on Energy",
       "items": [
-        {
-          "title": "Japan Two-Year Bond Sale Sees Weak Demand on Rate Hike Risk",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-08-28T03:44:11+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-28/japan-s-two-year-government-bond-auction-shows-weaker-demand",
-          "tags": [
-            "jp_broad",
-            "market",
-            "rates"
-          ]
-        },
         {
           "title": "Faster Tokyo Inflation Supports Near-Term BOJ Rate Hike Case",
           "source": "Bloomberg Economics",
@@ -413,19 +319,6 @@
             "jp_broad",
             "market",
             "rates"
-          ]
-        },
-        {
-          "title": "Ex-RBI Chief Rajan Says Fed Should Raise Rates",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-28T04:28:25+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-28/ex-rbi-chief-rajan-says-fed-should-raise-rates-video",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
           ]
         },
         {
@@ -452,33 +345,46 @@
             "market",
             "rates"
           ]
+        },
+        {
+          "title": "Fed Officials Remain Divided on Inflation Ahead of Warsh Speech",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-27T23:10:26+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-27/fed-officials-remain-divided-on-inflation-ahead-of-warsh-speech",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "US Stock Futures Slip Before Warsh, Bonds Steady: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-27T22:08:04+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-27/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": -0.165,
-      "negativeCount": 2,
+      "avgSentiment": 0.0,
+      "negativeCount": 1,
       "positiveCount": 1,
-      "neutralCount": 1,
+      "neutralCount": 4,
       "sourceCount": 3,
-      "itemCount": 4,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "PHP/USD: Philippine Peso Falls Past 62 Per Dollar on Elevated Oil Prices",
-      "topPositiveTitle": "Oil Exports Drive Canada’s Largest Current Account Surplus Since 2005",
+      "topNegativeTitle": "Faster Tokyo Inflation Supports Near-Term BOJ Rate Hike Case",
+      "topPositiveTitle": "French Inflation Quickens to Highest Level Since May on Energy",
       "items": [
-        {
-          "title": "PHP/USD: Philippine Peso Falls Past 62 Per Dollar on Elevated Oil Prices",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-08-28T01:48:09+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-28/php-usd-philippine-peso-falls-past-62-per-dollar-on-elevated-oil-prices",
-          "tags": [
-            "commodity",
-            "fx",
-            "market"
-          ]
-        },
         {
           "title": "Faster Tokyo Inflation Supports Near-Term BOJ Rate Hike Case",
           "source": "Bloomberg Economics",
@@ -494,6 +400,44 @@
           ]
         },
         {
+          "title": "Venezuela Considers Leaving OPEC in Blow to Oil Cartel",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-28T05:53:36+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-28/venezuela-considers-leaving-opec-in-blow-to-oil-cartel-video",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "El Niño to Crimp Indonesian Palm Oil Output, Producer Group Says",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-28T05:42:27+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-28/el-nino-to-crimp-indonesian-palm-oil-output-producer-group-says",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "Persian Gulf Oil Exports Recover, Centcom Says Hormuz Is Mine Free",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-28T05:42:15+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-28/oil-exports-recover-centcom-says-hormuz-is-mine-free-video",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
           "title": "政府 エネルギー安定確保で新計画 代替パイプライン建設支援",
           "source": "NHK 経済",
           "sentiment": "neutral",
@@ -505,33 +449,34 @@
             "market"
           ],
           "titleJa": "政府 エネルギー安定確保で新計画 代替パイプライン建設支援"
-        },
-        {
-          "title": "Oil Exports Drive Canada’s Largest Current Account Surplus Since 2005",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-27T13:41:18+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-27/canada-current-account-surplus-hits-highest-since-2005-on-oil-surge",
-          "tags": [
-            "commodity",
-            "macro_risk",
-            "market"
-          ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.2,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 3,
-      "sourceCount": 3,
-      "itemCount": 5,
+      "positiveCount": 0,
+      "neutralCount": 2,
+      "sourceCount": 2,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Canada Can Weather Latest Trump Tariffs, Economists Tell Carney Finance Minister",
-      "topPositiveTitle": "BYD’s $20 Billion Stock Comeback May Extend on Export Success",
+      "topNegativeTitle": "Persian Gulf Oil Exports Recover, Centcom Says Hormuz Is Mine Free",
+      "topPositiveTitle": "Persian Gulf Oil Exports Recover, Centcom Says Hormuz Is Mine Free",
       "items": [
+        {
+          "title": "Persian Gulf Oil Exports Recover, Centcom Says Hormuz Is Mine Free",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-28T05:42:15+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-28/oil-exports-recover-centcom-says-hormuz-is-mine-free-video",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
         {
           "title": "Canada Can Weather Latest Trump Tariffs, Economists Tell Carney Finance Minister",
           "source": "Bloomberg Economics",
@@ -542,58 +487,6 @@
           "tags": [
             "geopolitical",
             "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Russia Was Forced to Cut Spending After Running Out of Cash",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-27T15:03:08+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-27/russia-was-forced-to-cut-spending-after-running-out-of-cash",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "障害者らが高市首相に平和への願い込めた手紙を手渡す",
-          "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-27T12:19:38+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20260827de46807",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ],
-          "titleJa": "障害者らが高市首相に平和への願い込めた手紙を手渡す"
-        },
-        {
-          "title": "中道と公明の国会議員 中国共産党関係者と会談 交流再開を提案",
-          "source": "NHK 経済",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-27T12:37:06+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20260827de46743",
-          "tags": [
-            "geopolitical",
-            "market"
-          ],
-          "titleJa": "中道と公明の国会議員 中国共産党関係者と会談 交流再開を提案"
-        },
-        {
-          "title": "BYD’s $20 Billion Stock Comeback May Extend on Export Success",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-27T23:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-27/byd-needs-ev-success-overseas-to-sustain-20-billion-stock-rally",
-          "tags": [
-            "geopolitical",
             "market"
           ]
         }
