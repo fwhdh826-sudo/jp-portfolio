@@ -67,6 +67,21 @@ jobs:
             fi
           done
 
+      - name: Validate market JSON twins strictly
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          def reject_constant(value):
+              raise ValueError(f"non-standard JSON constant: {value}")
+
+          for path in (Path("data/market.json"), Path("public/data/market.json")):
+              with path.open(encoding="utf-8") as source:
+                  json.load(source, parse_constant=reject_constant)
+              print(f"strict JSON ok: {path}")
+          PY
+
       - name: Build candidates news summary
         run: python3 data/build_candidates_news.py
 

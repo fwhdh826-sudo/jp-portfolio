@@ -4,11 +4,17 @@ JP株OS — 市場データ自動生成スクリプト
 使用: python3 data/update_market.py
 出力: data/market.json (日経225・VIX・テクニカル指標)
 """
-import yfinance as yf
-import pandas as pd
-import json, numpy as np, sys
+import json
+import math
+import os
+import sys
+import tempfile
 from pathlib import Path
 from datetime import datetime, timezone
+
+import numpy as np
+import pandas as pd
+import yfinance as yf
 
 OUTPUT_PATH = Path(__file__).parent / 'market.json'
 
@@ -22,7 +28,43 @@ def fetch_price_pack(symbol, period='6mo'):
     prev = float(close.iloc[-2])
     chg = price - prev
     chg_pct = (chg / prev) * 100 if prev else 0.0
+    values = {"price": price, "prev": prev, "chg": chg, "chg_pct": chg_pct}
+    non_finite = [name for name, value in values.items() if not math.isfinite(value)]
+    if non_finite:
+        raise ValueError(
+            f"{symbol} returned non-finite price data: {', '.join(non_finite)}"
+        )
     return price, chg, chg_pct, hist
+
+
+def write_market_json(output, output_path=None):
+    """Strictly serialize and atomically replace the market snapshot."""
+    output_path = Path(OUTPUT_PATH if output_path is None else output_path)
+    serialized = json.dumps(
+        output,
+        ensure_ascii=False,
+        indent=2,
+        allow_nan=False,
+    )
+
+    temp_path = None
+    try:
+        with tempfile.NamedTemporaryFile(
+            mode='w',
+            encoding='utf-8',
+            dir=output_path.parent,
+            prefix=f'.{output_path.name}.',
+            suffix='.tmp',
+            delete=False,
+        ) as temp_file:
+            temp_path = Path(temp_file.name)
+            temp_file.write(serialized)
+            temp_file.flush()
+            os.fsync(temp_file.fileno())
+        os.replace(temp_path, output_path)
+    finally:
+        if temp_path is not None:
+            temp_path.unlink(missing_ok=True)
 
 def calc_rsi(series, period=14):
     delta = series.diff()
@@ -108,7 +150,10 @@ def main():
             vix = yf.Ticker('^VIX')
             vix_hist = vix.history(period='5d')
             if not vix_hist.empty:
-                vix_val = round(float(vix_hist['Close'].iloc[-1]), 1)
+                vix_candidate = float(vix_hist['Close'].iloc[-1])
+                if not math.isfinite(vix_candidate):
+                    raise ValueError("^VIX returned non-finite price data")
+                vix_val = round(vix_candidate, 1)
             print(f"  ✓ VIX: {vix_val}")
         except Exception as e:
             print(f"  ⚠ VIX取得失敗: {e} → {vix_val} を使用")
@@ -136,8 +181,7 @@ def main():
             "vix":          vix_val
         }
 
-        with open(OUTPUT_PATH, 'w', encoding='utf-8') as f:
-            json.dump(output, f, ensure_ascii=False, indent=2)
+        write_market_json(output)
 
         print(f"  ✓ {OUTPUT_PATH} 生成完了")
         return True
