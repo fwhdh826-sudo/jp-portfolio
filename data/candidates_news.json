@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-08-29T13:15:38.254528+09:00",
-  "sourceUpdatedAt": "2026-08-29T02:59:09+00:00",
+  "updatedAt": "2026-08-30T00:42:44.611009+09:00",
+  "sourceUpdatedAt": "2026-08-29T14:56:16+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -29,16 +29,28 @@
       "items": []
     },
     "us_broad": {
-      "avgSentiment": 0.052,
+      "avgSentiment": 0.091,
       "negativeCount": 2,
-      "positiveCount": 3,
-      "neutralCount": 8,
+      "positiveCount": 4,
+      "neutralCount": 5,
       "sourceCount": 2,
-      "itemCount": 13,
+      "itemCount": 11,
       "isStale": false,
-      "topNegativeTitle": "Warsh’s Inflation Warning Sets Up September Showdown for the Fed",
-      "topPositiveTitle": "Two-Year Yields Jump as Warsh Vows to Pull Down Inflation",
+      "topNegativeTitle": "Warsh Sets the Tone for Fed’s Road Ahead",
+      "topPositiveTitle": "Can the US Defy Fiscal Gravity?",
       "items": [
+        {
+          "title": "Warsh Sets the Tone for Fed’s Road Ahead",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-29T14:33:53+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-29/warsh-sets-the-tone-for-fed-s-road-ahead-video",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
         {
           "title": "Warsh’s Inflation Warning Sets Up September Showdown for the Fed",
           "source": "Bloomberg Economics",
@@ -52,49 +64,36 @@
           ]
         },
         {
-          "title": "Threat of a Fed Rate Hike Is Changing the Leadership in Markets, Slimmon Says",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-28T20:40:33+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-28/threat-of-rate-hike-is-changing-markets-slimmon-says-video",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "IMF's Georgieva on Warsh's Speech, 'Stubborn' Inflation",
-          "source": "Bloomberg Markets",
+          "title": "World Economy Latest: US Inflation Stays Stubborn, Spending Stalls",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-28T21:32:33+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-28/imf-s-georgieva-on-warsh-s-speech-stubborn-inflation-video",
+          "publishedAt": "2026-08-29T09:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-29/world-economy-latest-us-inflation-stays-stubborn-spending-stalls",
           "tags": [
             "market",
             "us_broad"
           ]
         },
         {
-          "title": "Odd Lots: What’s Behind the Classic Jackson Hole Photo Op?",
-          "source": "Bloomberg Markets",
+          "title": "Wall Street Piles On Rate-Hike Bets as Warsh Renews Hawkish Tone",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-28T21:10:16+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-28/odd-lots-behind-the-classic-jackson-hole-photo-op-video",
+          "publishedAt": "2026-08-28T20:16:21+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-28/wall-street-piles-on-rate-hike-bets-as-warsh-renews-hawkish-tone",
           "tags": [
             "market",
             "us_broad"
           ]
         },
         {
-          "title": "US Stocks Close Lower After Warsh Speech | Closing Bell",
-          "source": "Bloomberg Markets",
+          "title": "Chicago Fed's Austan Goolsbee Is Still Worried About Inflation, Overheating",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-28T20:24:08+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-28/us-stocks-close-lower-after-warsh-speech-closing-bell-video",
+          "publishedAt": "2026-08-28T17:28:48+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-28/chicago-fed-s-austan-goolsbee-is-still-worried-about-inflation-overheating",
           "tags": [
             "market",
             "us_broad"
@@ -127,16 +126,32 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.67,
       "negativeCount": 0,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Can the US Defy Fiscal Gravity?",
+      "topPositiveTitle": "Can the US Defy Fiscal Gravity?",
+      "items": [
+        {
+          "title": "Can the US Defy Fiscal Gravity?",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-29T14:13:00+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-29/can-the-us-defy-fiscal-gravity-video",
+          "tags": [
+            "fx",
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        }
+      ]
     },
     "reit": {
       "avgSentiment": 0,
@@ -171,7 +186,7 @@
       "itemCount": 8,
       "isStale": false,
       "topNegativeTitle": "Moody’s Downgrades Senegal as Power Rift Amplifies Debt Risks",
-      "topPositiveTitle": "Finance Chief Says Colombia Must Slash Spending or Face ‘Abyss’",
+      "topPositiveTitle": "Iran War Exposes Limits of US Military Endurance",
       "items": [
         {
           "title": "Moody’s Downgrades Senegal as Power Rift Amplifies Debt Risks",
@@ -186,15 +201,40 @@
           ]
         },
         {
-          "title": "Funds Add Bullish Gasoline Bets at Fastest Pace in Six Months",
-          "source": "Bloomberg Markets",
+          "title": "Where the US-Canada Trade War Stands After Talks Fell Apart",
+          "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-08-28T20:33:46+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-28/funds-add-bullish-gasoline-bets-at-fastest-pace-in-six-months",
+          "publishedAt": "2026-08-29T11:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-29/where-the-us-canada-trade-war-stands-after-talks-fell-apart",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Iran War Exposes Limits of US Military Endurance",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-29T12:22:14+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-29/iran-war-exposes-limits-of-us-military-endurance-video",
           "tags": [
             "commodity",
             "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Vietnam Restates Readiness for ‘Constructive’ US Trade Talks",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-29T05:14:36+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-29/vietnam-restates-readiness-for-constructive-us-trade-talks",
+          "tags": [
             "macro_risk",
             "market"
           ]
@@ -210,45 +250,19 @@
             "macro_risk",
             "market"
           ]
-        },
-        {
-          "title": "Iran War Hits 6 Month Mark",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-28T21:23:26+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-28/iran-war-hits-6-month-mark-video",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Tariffs Could Bring Canada Auto \"To Its Knees\"",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-28T21:17:55+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-28/tariffs-could-bring-canada-auto-to-its-knees-video",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": -0.177,
+      "avgSentiment": 0.113,
       "negativeCount": 1,
-      "positiveCount": 0,
-      "neutralCount": 2,
+      "positiveCount": 1,
+      "neutralCount": 1,
       "sourceCount": 2,
       "itemCount": 3,
       "isStale": false,
       "topNegativeTitle": "India’s Mazumdar-Shaw Is On A Mission to Save Lives",
-      "topPositiveTitle": "Bessent Says a ‘Disorderly Yen’ Would Risk Higher US Rates",
+      "topPositiveTitle": "Can the US Defy Fiscal Gravity?",
       "items": [
         {
           "title": "India’s Mazumdar-Shaw Is On A Mission to Save Lives",
@@ -263,18 +277,6 @@
           ]
         },
         {
-          "title": "Yen Passes 160 Per Dollar to Hit Weakest Level in a Month",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.2,
-          "publishedAt": "2026-08-28T15:54:43+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-28/yen-weakens-past-160-per-dollar-eroding-intervention-gain",
-          "tags": [
-            "fx",
-            "market"
-          ]
-        },
-        {
           "title": "Bessent Says a ‘Disorderly Yen’ Would Risk Higher US Rates",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
@@ -286,32 +288,46 @@
             "macro_risk",
             "market",
             "rates"
+          ]
+        },
+        {
+          "title": "Can the US Defy Fiscal Gravity?",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-29T14:13:00+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-29/can-the-us-defy-fiscal-gravity-video",
+          "tags": [
+            "fx",
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
           ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": 0.291,
-      "negativeCount": 1,
-      "positiveCount": 6,
-      "neutralCount": 1,
+      "avgSentiment": 0.284,
+      "negativeCount": 0,
+      "positiveCount": 5,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 8,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "Threat of a Fed Rate Hike Is Changing the Leadership in Markets, Slimmon Says",
-      "topPositiveTitle": "Euro Zone’s Inflation Rate Is Set to Reach Highest Since 2023",
+      "topNegativeTitle": "Focus on the Long Bond in This Summer of Rising Yields",
+      "topPositiveTitle": "Can the US Defy Fiscal Gravity?",
       "items": [
         {
-          "title": "Threat of a Fed Rate Hike Is Changing the Leadership in Markets, Slimmon Says",
+          "title": "Focus on the Long Bond in This Summer of Rising Yields",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-28T20:40:33+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-28/threat-of-rate-hike-is-changing-markets-slimmon-says-video",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-29T12:00:01+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-08-29/focus-on-the-long-bond-in-this-summer-of-rising-yields",
           "tags": [
             "market",
-            "rates",
-            "us_broad"
+            "rates"
           ]
         },
         {
@@ -326,6 +342,19 @@
             "macro_risk",
             "market",
             "rates"
+          ]
+        },
+        {
+          "title": "Warsh Says Fed Must Act if Inflation Stays High",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-29T12:05:49+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-29/warsh-says-fed-must-act-if-inflation-stays-high-video",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
           ]
         },
         {
@@ -352,90 +381,67 @@
             "market",
             "rates"
           ]
-        },
-        {
-          "title": "Mexico Sells Samurai Bond for First Time in Two Years",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-28T03:19:07+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-28/mexico-sells-samurai-bond-for-first-time-in-two-years",
-          "tags": [
-            "market",
-            "rates"
-          ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": -0.11,
-      "negativeCount": 1,
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 2,
+      "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 3,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Funds Add Bullish Gasoline Bets at Fastest Pace in Six Months",
-      "topPositiveTitle": "Australian Minister Denies Softer Stance on Data Center Power",
+      "topNegativeTitle": "Iran War Exposes Limits of US Military Endurance",
+      "topPositiveTitle": "Iran War Exposes Limits of US Military Endurance",
       "items": [
         {
-          "title": "Funds Add Bullish Gasoline Bets at Fastest Pace in Six Months",
+          "title": "Iran War Exposes Limits of US Military Endurance",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-28T20:33:46+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-28/funds-add-bullish-gasoline-bets-at-fastest-pace-in-six-months",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-29T12:22:14+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-29/iran-war-exposes-limits-of-us-military-endurance-video",
           "tags": [
             "commodity",
             "geopolitical",
             "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Australian Minister Denies Softer Stance on Data Center Power",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-29T02:59:09+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-29/australian-minister-denies-softer-stance-on-data-center-power",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "Billionaire Gilinski, GeoPark Said to Be Near Venezuela Oil Deal",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-28T21:19:42+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-28/billionaire-gilinski-geopark-said-to-be-near-venezuela-oil-deal",
-          "tags": [
-            "commodity",
             "market"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": -0.11,
+      "avgSentiment": 0.0,
       "negativeCount": 1,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 2,
-      "sourceCount": 1,
-      "itemCount": 3,
+      "sourceCount": 2,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Funds Add Bullish Gasoline Bets at Fastest Pace in Six Months",
-      "topPositiveTitle": "Iran War Hits 6 Month Mark",
+      "topNegativeTitle": "Where the US-Canada Trade War Stands After Talks Fell Apart",
+      "topPositiveTitle": "Russia Tests Ukraine and NATO With Escalation",
       "items": [
         {
-          "title": "Funds Add Bullish Gasoline Bets at Fastest Pace in Six Months",
-          "source": "Bloomberg Markets",
+          "title": "Where the US-Canada Trade War Stands After Talks Fell Apart",
+          "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-08-28T20:33:46+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-28/funds-add-bullish-gasoline-bets-at-fastest-pace-in-six-months",
+          "publishedAt": "2026-08-29T11:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-29/where-the-us-canada-trade-war-stands-after-talks-fell-apart",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Iran War Exposes Limits of US Military Endurance",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-29T12:22:14+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-29/iran-war-exposes-limits-of-us-military-endurance-video",
           "tags": [
             "commodity",
             "geopolitical",
@@ -444,28 +450,26 @@
           ]
         },
         {
-          "title": "Iran War Hits 6 Month Mark",
+          "title": "Russia Extends Diesel-Export Ban as Ukraine Ramps Up Attacks",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-28T21:23:26+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-28/iran-war-hits-6-month-mark-video",
+          "publishedAt": "2026-08-29T11:16:40+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-29/russia-extends-diesel-export-ban-as-ukraine-ramps-up-attacks",
           "tags": [
             "geopolitical",
-            "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Tariffs Could Bring Canada Auto \"To Its Knees\"",
+          "title": "Russia Tests Ukraine and NATO With Escalation",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-28T21:17:55+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-28/tariffs-could-bring-canada-auto-to-its-knees-video",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-29T13:41:58+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-29/russia-tests-ukraine-and-nato-with-escalation-video",
           "tags": [
             "geopolitical",
-            "macro_risk",
             "market"
           ]
         }
