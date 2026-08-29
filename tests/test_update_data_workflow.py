@@ -17,9 +17,27 @@ Non-goals:
   - Workflow execution
 """
 from pathlib import Path
+import subprocess
+
+import pytest
 
 _WORKFLOW = Path(__file__).parents[1] / ".github" / "workflows" / "update-data.yml"
 _TEXT = _WORKFLOW.read_text()
+
+
+def _step_script(step_name):
+    marker = f"      - name: {step_name}\n"
+    step = _TEXT.split(marker, 1)[1]
+    body = step.split("        run: |\n", 1)[1]
+    lines = []
+    for line in body.splitlines():
+        if line.startswith("          "):
+            lines.append(line[10:])
+        elif not line.strip():
+            lines.append("")
+        else:
+            break
+    return "\n".join(lines) + "\n"
 
 
 # ── existence ─────────────────────────────────────────────────────────────────
@@ -64,6 +82,60 @@ def test_market_in_copy_list():
     # market must be in the copy loop to produce public/data/market.json
     copy_section = _TEXT.split("Copy JSON to public/data")[1].split("Build candidates")[0]
     assert "market" in copy_section
+
+
+# ── strict market JSON publication gate ───────────────────────────────────────
+
+def _write_market_twins(root, content):
+    for relative in ("data/market.json", "public/data/market.json"):
+        path = root / relative
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(content)
+
+
+def test_market_strict_gate_accepts_valid_json(tmp_path):
+    _write_market_twins(tmp_path, '{"price": 123.45}\n')
+
+    result = subprocess.run(
+        ["bash", "-e", "-o", "pipefail", "-c", _step_script(
+            "Validate market JSON twins strictly"
+        )],
+        cwd=tmp_path,
+        text=True,
+        capture_output=True,
+    )
+
+    assert result.returncode == 0, result.stderr
+
+
+@pytest.mark.parametrize(
+    "invalid_twin", ["data/market.json", "public/data/market.json"]
+)
+def test_market_strict_gate_rejects_nan_in_either_twin(tmp_path, invalid_twin):
+    _write_market_twins(tmp_path, '{"price": 123.45}\n')
+    (tmp_path / invalid_twin).write_text('{"price": NaN}\n')
+
+    result = subprocess.run(
+        ["bash", "-e", "-o", "pipefail", "-c", _step_script(
+            "Validate market JSON twins strictly"
+        )],
+        cwd=tmp_path,
+        text=True,
+        capture_output=True,
+    )
+
+    assert result.returncode != 0
+    assert "non-standard JSON constant: NaN" in result.stderr
+
+
+def test_market_strict_gate_runs_after_copy_and_before_commit():
+    copy_position = _TEXT.index("      - name: Copy JSON to public/data")
+    gate_position = _TEXT.index(
+        "      - name: Validate market JSON twins strictly"
+    )
+    commit_position = _TEXT.index("      - name: Commit and push")
+
+    assert copy_position < gate_position < commit_position
 
 
 # ── regime_state + candidates_news ────────────────────────────────────────────
