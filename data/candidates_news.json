@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-08-29T06:27:52.777249+09:00",
-  "sourceUpdatedAt": "2026-08-28T21:19:42+00:00",
+  "updatedAt": "2026-08-29T13:15:38.254528+09:00",
+  "sourceUpdatedAt": "2026-08-29T02:59:09+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -29,16 +29,28 @@
       "items": []
     },
     "us_broad": {
-      "avgSentiment": 0.128,
-      "negativeCount": 1,
+      "avgSentiment": 0.052,
+      "negativeCount": 2,
       "positiveCount": 3,
-      "neutralCount": 9,
+      "neutralCount": 8,
       "sourceCount": 2,
       "itemCount": 13,
       "isStale": false,
-      "topNegativeTitle": "Threat of a Fed Rate Hike Is Changing the Leadership in Markets, Slimmon Says",
-      "topPositiveTitle": "European Stocks Set for Fifth Monthly Gains in a Row",
+      "topNegativeTitle": "Warsh’s Inflation Warning Sets Up September Showdown for the Fed",
+      "topPositiveTitle": "Two-Year Yields Jump as Warsh Vows to Pull Down Inflation",
       "items": [
+        {
+          "title": "Warsh’s Inflation Warning Sets Up September Showdown for the Fed",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-28T21:41:40+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-28/warsh-s-inflation-warning-sets-up-september-showdown-for-the-fed",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
         {
           "title": "Threat of a Fed Rate Hike Is Changing the Leadership in Markets, Slimmon Says",
           "source": "Bloomberg Markets",
@@ -49,6 +61,18 @@
           "tags": [
             "market",
             "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "IMF's Georgieva on Warsh's Speech, 'Stubborn' Inflation",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-28T21:32:33+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-28/imf-s-georgieva-on-warsh-s-speech-stubborn-inflation-video",
+          "tags": [
+            "market",
             "us_broad"
           ]
         },
@@ -75,30 +99,6 @@
             "market",
             "us_broad"
           ]
-        },
-        {
-          "title": "Wall Street Piles On Rate-Hike Bets as Warsh Renews Hawkish Tone",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-28T20:16:21+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-28/wall-street-piles-on-rate-hike-bets-as-warsh-renews-hawkish-tone",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Wall Street Bets, Personal Finance Is Broken: Must-Read Books",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-28T19:25:46+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-28/tom-scarlet-and-zijia-pick-their-must-read-books-video",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
         }
       ]
     },
@@ -115,30 +115,16 @@
       "items": []
     },
     "global_broad": {
-      "avgSentiment": 1.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
-      "positiveCount": 1,
+      "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "European Stocks Set for Fifth Monthly Gains in a Row",
-      "topPositiveTitle": "European Stocks Set for Fifth Monthly Gains in a Row",
-      "items": [
-        {
-          "title": "European Stocks Set for Fifth Monthly Gains in a Row",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-08-28T07:17:35+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-28/european-stocks-set-for-fifth-monthly-gain-before-warsh-speech",
-          "tags": [
-            "global_broad",
-            "market",
-            "us_broad"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "gold": {
       "avgSentiment": 0,
@@ -177,15 +163,15 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.167,
+      "avgSentiment": -0.125,
       "negativeCount": 2,
       "positiveCount": 0,
-      "neutralCount": 4,
+      "neutralCount": 6,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 8,
       "isStale": false,
       "topNegativeTitle": "Moody’s Downgrades Senegal as Power Rift Amplifies Debt Risks",
-      "topPositiveTitle": "Tariffs Could Bring Canada Auto \"To Its Knees\"",
+      "topPositiveTitle": "Finance Chief Says Colombia Must Slash Spending or Face ‘Abyss’",
       "items": [
         {
           "title": "Moody’s Downgrades Senegal as Power Rift Amplifies Debt Risks",
@@ -214,6 +200,31 @@
           ]
         },
         {
+          "title": "Finance Chief Says Colombia Must Slash Spending or Face ‘Abyss’",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-28T23:59:21+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-28/finance-chief-says-colombia-must-slash-spending-or-face-abyss",
+          "tags": [
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Iran War Hits 6 Month Mark",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-28T21:23:26+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-28/iran-war-hits-6-month-mark-video",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
           "title": "Tariffs Could Bring Canada Auto \"To Its Knees\"",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
@@ -225,46 +236,32 @@
             "macro_risk",
             "market"
           ]
-        },
-        {
-          "title": "Harvard’s Rogoff Says US Needs ‘Shock’ to Trigger Action on Debt",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-28T17:39:53+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-28/harvard-s-rogoff-says-us-needs-shock-to-trigger-action-on-debt",
-          "tags": [
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Bessent Says a ‘Disorderly Yen’ Would Risk Higher US Rates",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-28T17:25:54+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-28/bessent-says-a-disorderly-yen-could-ultimately-raise-us-rates",
-          "tags": [
-            "fx",
-            "macro_risk",
-            "market",
-            "rates"
-          ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": -0.1,
-      "negativeCount": 0,
+      "avgSentiment": -0.177,
+      "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 2,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Yen Passes 160 Per Dollar to Hit Weakest Level in a Month",
+      "topNegativeTitle": "India’s Mazumdar-Shaw Is On A Mission to Save Lives",
       "topPositiveTitle": "Bessent Says a ‘Disorderly Yen’ Would Risk Higher US Rates",
       "items": [
+        {
+          "title": "India’s Mazumdar-Shaw Is On A Mission to Save Lives",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-21T00:06:00+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-21/mazumdar-shaw-s-mission-to-expand-access-to-medicines-video",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        },
         {
           "title": "Yen Passes 160 Per Dollar to Hit Weakest Level in a Month",
           "source": "Bloomberg Markets",
@@ -294,10 +291,10 @@
       ]
     },
     "rates": {
-      "avgSentiment": 0.25,
+      "avgSentiment": 0.291,
       "negativeCount": 1,
-      "positiveCount": 5,
-      "neutralCount": 2,
+      "positiveCount": 6,
+      "neutralCount": 1,
       "sourceCount": 2,
       "itemCount": 8,
       "isStale": false,
@@ -332,15 +329,16 @@
           ]
         },
         {
-          "title": "ECB’s Dolenc Sees Good Case to Hike Interest Rates in September",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-28T15:09:21+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-28/ecb-s-dolenc-sees-good-case-to-hike-interest-rates-in-september",
+          "title": "Wall Street Week | Debt & Consequences, Defying Fiscal Gravity, Hollywood Gets Democratized",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-28T23:12:33+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-28/wall-street-week-defying-fiscal-gravity-video",
           "tags": [
             "market",
-            "rates"
+            "rates",
+            "us_broad"
           ]
         },
         {
@@ -370,15 +368,15 @@
       ]
     },
     "commodity": {
-      "avgSentiment": -0.165,
+      "avgSentiment": -0.11,
       "negativeCount": 1,
       "positiveCount": 0,
-      "neutralCount": 1,
+      "neutralCount": 2,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 3,
       "isStale": false,
       "topNegativeTitle": "Funds Add Bullish Gasoline Bets at Fastest Pace in Six Months",
-      "topPositiveTitle": "Billionaire Gilinski, GeoPark Said to be Near Venezuela Oil Deal",
+      "topPositiveTitle": "Australian Minister Denies Softer Stance on Data Center Power",
       "items": [
         {
           "title": "Funds Add Bullish Gasoline Bets at Fastest Pace in Six Months",
@@ -395,7 +393,19 @@
           ]
         },
         {
-          "title": "Billionaire Gilinski, GeoPark Said to be Near Venezuela Oil Deal",
+          "title": "Australian Minister Denies Softer Stance on Data Center Power",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-29T02:59:09+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-29/australian-minister-denies-softer-stance-on-data-center-power",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "Billionaire Gilinski, GeoPark Said to Be Near Venezuela Oil Deal",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
@@ -409,15 +419,15 @@
       ]
     },
     "geopolitical": {
-      "avgSentiment": -0.165,
+      "avgSentiment": -0.11,
       "negativeCount": 1,
       "positiveCount": 0,
-      "neutralCount": 1,
+      "neutralCount": 2,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 3,
       "isStale": false,
       "topNegativeTitle": "Funds Add Bullish Gasoline Bets at Fastest Pace in Six Months",
-      "topPositiveTitle": "Tariffs Could Bring Canada Auto \"To Its Knees\"",
+      "topPositiveTitle": "Iran War Hits 6 Month Mark",
       "items": [
         {
           "title": "Funds Add Bullish Gasoline Bets at Fastest Pace in Six Months",
@@ -428,6 +438,19 @@
           "url": "https://www.bloomberg.com/news/articles/2026-08-28/funds-add-bullish-gasoline-bets-at-fastest-pace-in-six-months",
           "tags": [
             "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Iran War Hits 6 Month Mark",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-28T21:23:26+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-28/iran-war-hits-6-month-mark-video",
+          "tags": [
             "geopolitical",
             "macro_risk",
             "market"
