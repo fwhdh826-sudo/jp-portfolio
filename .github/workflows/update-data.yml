@@ -30,7 +30,10 @@ jobs:
       - name: Evaluate scheduled safe-start admission
         env:
           GITHUB_TOKEN: ${{ github.token }}
-        run: python3 -m backend.engine.operation.late_run_guard --workflow update
+        run: |
+          python3 -m backend.engine.operation.late_run_guard --workflow update
+          # Re-anchor to latest remote tip only after OPS-R2 admission succeeds.
+          python3 -m backend.engine.operation.ref_reanchor_gate
 
       - name: Evaluate mutation admission (pre_fetch)
         env:
