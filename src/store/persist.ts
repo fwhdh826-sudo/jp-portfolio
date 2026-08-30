@@ -193,7 +193,7 @@ function isHolding(value: unknown): value is Holding {
     'code', 'name', 'eval', 'pnlPct', 'mu', 'sigma', 'sigmaSource', 'beta', 'sector',
     'target', 'alert', 'lock', 'mitsu', 'ma', 'rsi', 'macd', 'vol', 'mom3m', 'roe',
     'per', 'pbr', 'epsG', 'cfOk', 'de', 'divG', 'score', 'decision', 'ev',
-  ], ['currentPrice', 'acquiredAt'])) return false
+  ], ['currentPrice', 'acquiredAt', 'metadataStatus'])) return false
 
   const finiteFields = [
     'eval', 'pnlPct', 'mu', 'sigma', 'beta', 'target', 'alert', 'rsi', 'mom3m',
@@ -205,7 +205,14 @@ function isHolding(value: unknown): value is Holding {
     isNonNegativeNumber(value.eval) && isNonNegativeNumber(value.sigma) &&
     booleanFields.every(field => typeof value[field] === 'boolean') &&
     (value.sigmaSource === 'yfinance' || value.sigmaSource === 'static') &&
-    (value.decision === 'BUY' || value.decision === 'HOLD' || value.decision === 'SELL') &&
+    (value.decision === 'BUY' || value.decision === 'HOLD' || value.decision === 'SELL' ||
+      value.decision === 'INSUFFICIENT_EVIDENCE') &&
+    (value.metadataStatus === undefined || (
+      isRecord(value.metadataStatus) &&
+      hasExactKeys(value.metadataStatus, ['fundamentals', 'technicals']) &&
+      (value.metadataStatus.fundamentals === 'known' || value.metadataStatus.fundamentals === 'unknown') &&
+      (value.metadataStatus.technicals === 'known' || value.metadataStatus.technicals === 'unknown')
+    )) &&
     (value.currentPrice === undefined || isFiniteNumber(value.currentPrice)) &&
     (value.acquiredAt === undefined || isTimestamp(value.acquiredAt))
 }

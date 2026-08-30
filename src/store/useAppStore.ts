@@ -1383,6 +1383,7 @@ function buildNewHoldingFromSnapshotRow(row: PortfolioSnapshotHolding): Holding 
     sigma: row.sigma ?? base.sigma,
     sigmaSource: row.sigmaSource ?? base.sigmaSource,
     beta: row.beta ?? base.beta,
+    metadataStatus: row.metadataStatus ?? base.metadataStatus,
   }
 }
 

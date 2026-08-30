@@ -6,7 +6,7 @@ import {
   isSellLocked,
 } from '../constraints/stockLock'
 
-export type StockRecommendation = 'BUY' | 'HOLD' | 'SELL' | 'WAIT_LOCK'
+export type StockRecommendation = 'BUY' | 'HOLD' | 'SELL' | 'WAIT_LOCK' | 'INSUFFICIENT_EVIDENCE'
 
 export interface StockPortfolioRow {
   code: string
@@ -148,6 +148,7 @@ function determineRecommendation(
   analysis: HoldingAnalysis,
   locked: boolean,
 ): StockRecommendation {
+  if (analysis.decision === 'INSUFFICIENT_EVIDENCE') return 'INSUFFICIENT_EVIDENCE'
   if (diffValue >= 150_000 && analysis.decision !== 'SELL') return 'BUY'
   if (diffValue <= -150_000 && locked) return 'WAIT_LOCK'
   if (diffValue <= -150_000) {
@@ -164,6 +165,7 @@ function determineStance(row: {
   recommendation: StockRecommendation
 }): StockPortfolioRow['stance'] {
   if (row.recommendation === 'SELL' || row.recommendation === 'WAIT_LOCK') return 'reduce'
+  if (row.recommendation === 'INSUFFICIENT_EVIDENCE') return 'watch'
   if (row.targetWeight >= 0.12) return 'core'
   if (row.targetWeight >= 0.065) return 'satellite'
   if (row.diffValue > 120_000) return 'satellite'
@@ -179,6 +181,9 @@ function resolveReason(input: {
   sellableAt: string | null
 }): string {
   const target = (input.targetWeight * 100).toFixed(1)
+  if (input.recommendation === 'INSUFFICIENT_EVIDENCE') {
+    return '分析データ不足。ファンダメンタル・テクニカル取得後に再評価。'
+  }
   if (input.recommendation === 'BUY') {
     return `ゼロベース配分で目標比率${target}%。スコア${input.zeroBaseScore.toFixed(1)}で追加候補。`
   }
@@ -206,6 +211,7 @@ function resolveHoldingStyle(
   locked: boolean,
 ): string {
   if (recommendation === 'SELL' || recommendation === 'WAIT_LOCK') return '段階縮小（ロック中は解除待ち）'
+  if (recommendation === 'INSUFFICIENT_EVIDENCE') return '分析データ取得待ち'
   if (analysis.decision === 'BUY') return '分割エントリー（2〜3回）'
   if (locked) return '解除日まで監視'
   return '維持監視（週次見直し）'
@@ -274,9 +280,13 @@ export function buildStockPortfolioPlan(
   const rows = holdings
     .map((holding, index) => {
       const item = analysisByCode.get(holding.code)
-      const targetWeight = adjustedWeights[index] ?? 0
-      const targetValue = roundToTenThousand(targetTotalValue * targetWeight)
       const currentWeight = totalStockValue > 0 ? holding.eval / totalStockValue : 0
+      const computedTargetWeight = adjustedWeights[index] ?? 0
+      const computedTargetValue = roundToTenThousand(targetTotalValue * computedTargetWeight)
+      const insufficientEvidence = item?.decision === 'INSUFFICIENT_EVIDENCE'
+      // Abstention rows carry no executable rebalance amount.
+      const targetWeight = insufficientEvidence ? currentWeight : computedTargetWeight
+      const targetValue = insufficientEvidence ? holding.eval : computedTargetValue
       const diffValue = targetValue - holding.eval
       const locked = isSellLocked(holding, now)
       const lockRemainingDays = getSellLockRemainingDays(holding, now)
@@ -325,7 +335,9 @@ export function buildStockPortfolioPlan(
 
   const lockCount = rows.filter(row => row.locked).length
   const sellableCount = rows.length - lockCount
-  const rebalanceTop = rows.slice(0, 10)
+  const rebalanceTop = rows
+    .filter(row => row.recommendation !== 'INSUFFICIENT_EVIDENCE')
+    .slice(0, 10)
   const swapIdeas = buildSwapIdeas(rows)
 
   return {

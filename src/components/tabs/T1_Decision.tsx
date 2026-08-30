@@ -56,6 +56,7 @@ function decisionColors(d: string) {
 // deriveDisplayDecision は ../../domain/analysis/displayDecision からインポート
 
 export function displayDecisionLabel(d: DisplayDecision): string {
+  if (d === 'INSUFFICIENT_EVIDENCE')     return '分析データ不足'
   if (d === 'BUY')                       return '買い'
   if (d === 'SELL')                      return '売却'
   if (d === 'WAIT' || d === 'DATA_WAIT') return '待機'
@@ -1293,7 +1294,9 @@ function StockDetail({ code, onBack }: { code: string; onBack: () => void }) {
             <span>総合評価コメント</span>
           </div>
           <div className="comment-card__action">
-            {displayDecision === 'DATA_WAIT'
+            {displayDecision === 'INSUFFICIENT_EVIDENCE'
+              ? '分析データ不足 — ファンダメンタル・テクニカル取得後に再評価します。'
+              : displayDecision === 'DATA_WAIT'
               ? 'データ更新待ち — データ品質低下のため新規買いを抑制中。シグナルは参考値のみです。'
               : safeModeActive && h.decision === 'BUY'
                 ? (officialAction?.blockedReason ?? `${h.name} はSAFE_MODE発動中のため新規買付停止中（待機）。解除後に再判定されます。`)
@@ -1514,7 +1517,9 @@ function StockDetail({ code, onBack }: { code: string; onBack: () => void }) {
               <div>
                 <div style={{ fontSize: '10px', color: colors.textMuted }}>現在スタンス</div>
                 <div style={{ fontSize: '14px', fontWeight: 700, color: dc.text, marginTop: '2px' }}>
-                  {displayDecision === 'BUY'
+                  {displayDecision === 'INSUFFICIENT_EVIDENCE'
+                    ? '分析データ不足 / 再評価待ち'
+                    : displayDecision === 'BUY'
                     ? '積極保有 / 追加検討'
                     : displayDecision === 'SELL'
                       ? '売却推奨 / 条件確認'
@@ -1528,7 +1533,9 @@ function StockDetail({ code, onBack }: { code: string; onBack: () => void }) {
               <div>
                 <div style={{ fontSize: '10px', color: colors.textMuted }}>推奨アクション</div>
                 <div style={{ fontSize: '13px', fontWeight: 600, color: colors.textPrimary, marginTop: '2px' }}>
-                  {(officialDecision?.dataQualitySuppressed ?? dq.isSuppressed) && h.decision === 'BUY'
+                  {displayDecision === 'INSUFFICIENT_EVIDENCE'
+                    ? '分析データ不足 — 売買判断を行わず、データ取得後に再評価。'
+                    : (officialDecision?.dataQualitySuppressed ?? dq.isSuppressed) && h.decision === 'BUY'
                     ? 'データ更新待ち — データ品質低下のため新規買いを抑制中。シグナルは参考値のみ。'
                     : officialAction != null
                       ? officialActionText(officialAction)
@@ -1715,7 +1722,9 @@ function StockDetail({ code, onBack }: { code: string; onBack: () => void }) {
             <div style={{ fontSize: '12px', color: colors.textSubtle, marginTop: spacing[1], lineHeight: '1.6' }}>
               {displayDecision === 'BUY'
                 ? '積極的に保有継続。追加余地あり。'
-                : displayDecision === 'DATA_WAIT'
+                : displayDecision === 'INSUFFICIENT_EVIDENCE'
+                  ? '分析データ不足。売買判断は行わず、取得後に再評価してください。'
+                  : displayDecision === 'DATA_WAIT'
                   ? '最新データ取得後に再判定してください。'
                   : displayDecision === 'SELL'
                     ? '売却を検討してください。損切・利確条件を確認してください。'
@@ -1758,7 +1767,9 @@ function StockDetail({ code, onBack }: { code: string; onBack: () => void }) {
             <div className="conclusion-card__item-title" style={{ color: dc.text }}>
               {displayDecision === 'BUY'
                 ? '中長期で有望'
-                : displayDecision === 'SELL'
+                : displayDecision === 'INSUFFICIENT_EVIDENCE'
+                  ? '分析データ不足'
+                  : displayDecision === 'SELL'
                   ? '売却を検討'
                   : displayDecision === 'DATA_WAIT'
                     ? 'データ更新待ち'
@@ -1767,7 +1778,9 @@ function StockDetail({ code, onBack }: { code: string; onBack: () => void }) {
                       : '現状維持'}
             </div>
             <div className="conclusion-card__item-text">
-              {displayDecision === 'DATA_WAIT'
+              {displayDecision === 'INSUFFICIENT_EVIDENCE'
+                ? 'ファンダメンタル・テクニカル取得後に再評価してください。'
+                : displayDecision === 'DATA_WAIT'
                 ? 'データ品質低下のためシグナルは参考値のみです。最新データ取得後に再判定してください。'
                 : debate?.buyReasons?.[0] ?? (
                     displayDecision === 'BUY'

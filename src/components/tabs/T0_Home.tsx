@@ -108,18 +108,19 @@ export function computeTopCandidateSignalsForDisplay(
 // P4-A153: SAFE_MODE/DQ抑制中はBUY表示のみWAITに変換する（表示専用）。
 // SELL/HOLD/WAIT等はそのまま維持し、防御・監視表示を弱めない。decision自体（h.decision/t.decision）は変更しない。
 function suppressBuyDecision(
-  decision: 'BUY' | 'HOLD' | 'SELL' | 'WAIT',
+  decision: 'BUY' | 'HOLD' | 'SELL' | 'WAIT' | 'INSUFFICIENT_EVIDENCE',
   isBuySuppressed: boolean,
-): 'BUY' | 'HOLD' | 'SELL' | 'WAIT' {
+): 'BUY' | 'HOLD' | 'SELL' | 'WAIT' | 'INSUFFICIENT_EVIDENCE' {
   return isBuySuppressed && decision === 'BUY' ? 'WAIT' : decision
 }
 
-function SignBadge({ decision }: { decision: 'BUY' | 'HOLD' | 'SELL' | 'WAIT' }) {
+function SignBadge({ decision }: { decision: 'BUY' | 'HOLD' | 'SELL' | 'WAIT' | 'INSUFFICIENT_EVIDENCE' }) {
   const map = {
     BUY:  { cls: 'badge--buy',  label: '買い' },
     HOLD: { cls: 'badge--hold', label: '様子見' },
     SELL: { cls: 'badge--sell', label: '売り' },
     WAIT: { cls: 'badge--wait', label: '待機' },
+    INSUFFICIENT_EVIDENCE: { cls: 'badge--wait', label: '分析データ不足' },
   }
   const { cls, label } = map[decision]
   return <span className={`badge ${cls}`}>{label}</span>

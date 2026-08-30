@@ -417,6 +417,10 @@ export function buildNewHoldingFromCsvRow(row: ParsedRow & { code: string }): Ho
     cfOk: false,
     de: 1.5,
     divG: 0,
+    metadataStatus: {
+      fundamentals: 'unknown',
+      technicals: 'unknown',
+    },
     score: 0,
     decision: 'HOLD',
     ev: 0,

@@ -55,6 +55,10 @@ export interface PortfolioSnapshotHolding {
   sigma?: number
   sigmaSource?: 'yfinance' | 'static'
   beta?: number
+  metadataStatus?: {
+    fundamentals: 'known' | 'unknown'
+    technicals: 'known' | 'unknown'
+  }
 }
 
 export interface PortfolioSnapshotTrust {
@@ -157,6 +161,10 @@ export function serializePortfolioSnapshotExport(args: {
     sigma?: number
     sigmaSource?: 'yfinance' | 'static'
     beta?: number
+    metadataStatus?: {
+      fundamentals: 'known' | 'unknown'
+      technicals: 'known' | 'unknown'
+    }
   }>
   trust: Array<{ id: string; eval: number; pnlPct: number; dayPct?: number; account?: string | null }>
   portfolioPolicy: PortfolioSnapshotPortfolioPolicy | null
@@ -173,6 +181,7 @@ export function serializePortfolioSnapshotExport(args: {
     if (h.sigma !== undefined) picked.sigma = h.sigma
     if (h.sigmaSource !== undefined) picked.sigmaSource = h.sigmaSource
     if (h.beta !== undefined) picked.beta = h.beta
+    if (h.metadataStatus !== undefined) picked.metadataStatus = { ...h.metadataStatus }
     return picked
   })
 
@@ -301,6 +310,22 @@ function validateHoldingEntry(
       return { ok: false, error: `保有株(${h.code})のbetaが不正です。` }
     }
     value.beta = h.beta
+  }
+  if (h.metadataStatus !== undefined) {
+    if (typeof h.metadataStatus !== 'object' || h.metadataStatus === null ||
+        !('fundamentals' in h.metadataStatus) || !('technicals' in h.metadataStatus)) {
+      return { ok: false, error: `保有株(${h.code})のmetadataStatusが不正です。` }
+    }
+    const status = h.metadataStatus as Record<string, unknown>
+    if ((status.fundamentals !== 'known' && status.fundamentals !== 'unknown') ||
+        (status.technicals !== 'known' && status.technicals !== 'unknown') ||
+        Object.keys(status).some(key => key !== 'fundamentals' && key !== 'technicals')) {
+      return { ok: false, error: `保有株(${h.code})のmetadataStatusが不正です。` }
+    }
+    value.metadataStatus = {
+      fundamentals: status.fundamentals,
+      technicals: status.technicals,
+    }
   }
 
   return { ok: true, value }
