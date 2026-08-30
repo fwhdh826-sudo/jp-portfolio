@@ -103,6 +103,9 @@ jobs:
         with:
           python-version: '3.11'
 
+      - name: Re-anchor to latest remote tip
+        run: python3 -m backend.engine.operation.ref_reanchor_gate
+
       - name: Install Python deps
         # P5-B004d: data/jpx_universe_provider.py (JPX data_j.xls source
         # adapter) + data/jpx_cheap_prescreen.py (bulk OHLCV pre-screen) の
