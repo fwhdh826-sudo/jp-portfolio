@@ -49,12 +49,10 @@ def test_three_mutating_jobs_share_job_level_non_cancelling_mutex(workflow):
     parsed = document(workflow)
     job = parsed["jobs"][JOBS[workflow]]
 
-    assert "concurrency" not in {
-        key: value for key, value in parsed.items() if key != "jobs"
-    }
     assert job["concurrency"] == {
         "group": LOCK_GROUP,
         "cancel-in-progress": False,
+        "queue": "max",
     }
 
 
@@ -66,11 +64,27 @@ def test_queue_max_contract_has_no_cancellation_or_unlocked_mutator():
             if job.get("concurrency", {}).get("group") == LOCK_GROUP:
                 mutators.append((workflow, job_name))
                 assert job["concurrency"]["cancel-in-progress"] is False
+                assert job["concurrency"]["queue"] == "max"
     assert mutators == [
         ("full", "update-data"),
         ("update", "update"),
         ("intraday", "patch-tier1"),
     ]
+    assert document("full")["concurrency"] == {
+        "group": "full-batch",
+        "cancel-in-progress": False,
+    }
+    assert document("intraday")["concurrency"] == {
+        "group": "intraday-patch",
+        "cancel-in-progress": True,
+    }
+    assert "concurrency" not in document("update")
+    for workflow in ("full", "intraday"):
+        current = source(workflow).split("concurrency:\n", 1)[1].split("\njobs:", 1)[0]
+        original = baseline(WORKFLOWS[workflow]).split("concurrency:\n", 1)[1].split(
+            "\njobs:", 1
+        )[0]
+        assert current == original
 
 
 @pytest.mark.parametrize(

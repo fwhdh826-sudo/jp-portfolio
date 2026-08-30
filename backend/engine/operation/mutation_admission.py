@@ -267,10 +267,10 @@ def _evaluate(cache: NominalCache, checkpoint: str, now: datetime) -> AdmissionR
     )
     if now < cache.effective_deadline:
         decision = "RUN"
-        reason = "before_effective_deadline"
+        reason = "admitted_before_effective_deadline"
     else:
         decision = "SKIP"
-        reason = "at_or_after_effective_deadline"
+        reason = "mutation_deadline_exceeded"
     return AdmissionResult(
         workflow=cache.workflow,
         run_id=cache.run_id,
@@ -322,7 +322,7 @@ def run_from_environment(
             remaining_minutes=None,
             lock_wait_minutes=None,
             decision="RUN",
-            reason="manual_dispatch_deadline_bypass",
+            reason="manual_dispatch_bypass",
         )
     if event != SCHEDULED_EVENT:
         raise GuardError(f"unsupported GitHub event: {event}")
@@ -422,7 +422,7 @@ def _error_payload(
         "lockGroup": LOCK_GROUP,
         "lockWaitMinutes": None,
         "decision": "ERROR",
-        "reason": f"metadata_api_cache_error: {reason}",
+        "reason": f"metadata_config_clock_error: {reason}",
     }
 
 
