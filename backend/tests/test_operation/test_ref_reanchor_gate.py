@@ -73,6 +73,22 @@ def push_file(writer: Path, relative: str, content: str) -> str:
     return sha
 
 
+def push_rename(writer: Path, source: str, destination: str) -> str:
+    destination_path = writer / destination
+    destination_path.parent.mkdir(parents=True, exist_ok=True)
+    git(writer, "mv", source, destination)
+    git(writer, "commit", "-m", f"rename {source} to {destination}")
+    sha = git(writer, "rev-parse", "HEAD")
+    git(writer, "push", "origin", BRANCH)
+    return sha
+
+
+def establish_file(writer: Path, checkout: Path, relative: str) -> str:
+    push_file(writer, relative, '{"value":1}\n')
+    git(checkout, "pull", "--ff-only", "origin", BRANCH)
+    return git(checkout, "rev-parse", "HEAD")
+
+
 def test_no_drift_continues_at_remote_tip(repositories):
     _, checkout, _ = repositories
 
@@ -108,6 +124,55 @@ def test_public_data_only_drift_is_allowed(repositories):
 
     assert result.reason == "data_only_drift_fast_forwarded"
     assert git(checkout, "rev-parse", "HEAD") == remote_tip
+
+
+@pytest.mark.parametrize(
+    ("source", "destination"),
+    [
+        ("src/foo.py", "data/foo.py"),
+        ("src/foo.py", "public/data/foo.py"),
+        ("data/foo.json", "src/foo.json"),
+    ],
+)
+def test_rename_crossing_data_allowlist_is_source_drift(
+    repositories, source, destination
+):
+    writer, checkout, _ = repositories
+    old_head = establish_file(writer, checkout, source)
+    remote_tip = push_rename(writer, source, destination)
+
+    result = gate.evaluate(env=environment(checkout), cwd=checkout)
+
+    assert result.exit_code == 2
+    assert result.reason == "source_drift_detected"
+    assert result.remote_tip == remote_tip
+    assert set(result.drift_paths) == {source, destination}
+    assert git(checkout, "rev-parse", "HEAD") == old_head
+    assert git(checkout, "status", "--porcelain") == ""
+
+
+@pytest.mark.parametrize(
+    ("source", "destination"),
+    [
+        ("data/a.json", "data/b.json"),
+        ("public/data/a.json", "data/a.json"),
+    ],
+)
+def test_rename_within_data_allowlist_is_fast_forwarded(
+    repositories, source, destination
+):
+    writer, checkout, _ = repositories
+    establish_file(writer, checkout, source)
+    remote_tip = push_rename(writer, source, destination)
+
+    result = gate.evaluate(env=environment(checkout), cwd=checkout)
+
+    assert result.exit_code == 0
+    assert result.reason == "data_only_drift_fast_forwarded"
+    assert result.remote_tip == remote_tip
+    assert set(result.drift_paths) == {source, destination}
+    assert git(checkout, "rev-parse", "HEAD") == remote_tip
+    assert git(checkout, "status", "--porcelain") == ""
 
 
 def test_empty_commit_drift_is_fast_forwarded(repositories):
