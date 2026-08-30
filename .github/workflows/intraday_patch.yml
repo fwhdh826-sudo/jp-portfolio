@@ -13,16 +13,15 @@ permissions:
   contents: write
   actions: write
 
-concurrency:
-  group: intraday-patch
-  cancel-in-progress: true  # 昼間は最新実行を優先。古い実行はキャンセル可
-
 jobs:
   # ── Tier 1 軽量更新（市場 + ニュースのみ）────────────────────────────────
   # pytest は実行しない（速度優先、Tier 1 更新のみ）
   patch-tier1:
     name: Patch Tier 1 Data (market + news)
     runs-on: ubuntu-latest
+    concurrency:
+      group: jp-portfolio-production-data-mutation
+      cancel-in-progress: false
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
@@ -35,6 +34,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: python3 -m backend.engine.operation.late_run_guard --workflow intraday
+
+      - name: Evaluate mutation admission (pre_fetch)
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: >-
+          python3 -m backend.engine.operation.mutation_admission
+          --workflow intraday --checkpoint pre_fetch
 
       - name: Install Python deps
         run: pip install yfinance pandas numpy feedparser
@@ -60,6 +66,13 @@ jobs:
 
       - name: Build candidates news summary
         run: python3 data/build_candidates_news.py || true
+
+      - name: Evaluate mutation admission (pre_publish)
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: >-
+          python3 -m backend.engine.operation.mutation_admission
+          --workflow intraday --checkpoint pre_publish
 
       # ── git push ──────────────────────────────────────────────────────
       - name: Commit and push

@@ -15,6 +15,10 @@ permissions:
 jobs:
   update:
     runs-on: ubuntu-latest
+    concurrency:
+      group: jp-portfolio-production-data-mutation
+      cancel-in-progress: false
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
 
@@ -26,6 +30,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: python3 -m backend.engine.operation.late_run_guard --workflow update
+
+      - name: Evaluate mutation admission (pre_fetch)
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: >-
+          python3 -m backend.engine.operation.mutation_admission
+          --workflow update --checkpoint pre_fetch
 
       - name: Install Python deps
         run: pip install yfinance pandas numpy feedparser
@@ -138,6 +149,13 @@ jobs:
             mkdir -p public/data/scoring
             cp data/stock_scores_6axis.json public/data/scoring/stock_scores_6axis.json
           fi
+
+      - name: Evaluate mutation admission (pre_publish)
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: >-
+          python3 -m backend.engine.operation.mutation_admission
+          --workflow update --checkpoint pre_publish
 
       - name: Commit and push
         id: commit-push
