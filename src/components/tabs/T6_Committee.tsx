@@ -25,9 +25,9 @@ function BarClass(score: number) {
 // P4-A154: SAFE_MODE/DQ抑制中はBUY表示のみWAITに変換する（表示専用）。
 // SELL/HOLD等はそのまま維持し、防御・監視表示を弱めない。analysisのdecision自体は変更しない。
 function suppressBuyDisplayDecision(
-  decision: 'BUY' | 'HOLD' | 'SELL',
+  decision: 'BUY' | 'HOLD' | 'SELL' | 'INSUFFICIENT_EVIDENCE',
   isBuySuppressed: boolean,
-): 'BUY' | 'HOLD' | 'SELL' | 'WAIT' {
+): 'BUY' | 'HOLD' | 'SELL' | 'WAIT' | 'INSUFFICIENT_EVIDENCE' {
   return isBuySuppressed && decision === 'BUY' ? 'WAIT' : decision
 }
 
@@ -112,7 +112,9 @@ function StockSelector({
             onClick={() => onSelect(a.code)}
             type="button"
           >
-            <span className={`badge badge--${dec.toLowerCase()}`} style={{ fontSize: 9 }}>{dec}</span>
+            <span className={`badge badge--${dec === 'INSUFFICIENT_EVIDENCE' ? 'wait' : dec.toLowerCase()}`} style={{ fontSize: 9 }}>
+              {dec === 'INSUFFICIENT_EVIDENCE' ? '分析データ不足' : dec}
+            </span>
             <span>{h.name.length > 6 ? h.name.slice(0, 6) + '…' : h.name}</span>
             <span style={{ fontSize: 10, opacity: 0.75 }}>{a.debate.debateScore}</span>
           </button>
@@ -133,7 +135,8 @@ function HeroVerdictPanel({ a, h, isBuySuppressed }: { a: HoldingAnalysis; h: Ho
   const tone: 'buy' | 'hold' | 'wait' = debate.confidence >= 0.65 ? 'buy'
     : debate.confidence >= 0.45 ? 'hold' : 'wait'
 
-  const decHeadline = dec === 'WAIT' ? `${SUPPRESSION_BANNER_PREFIX} — 買付は参考停止`
+  const decHeadline = dec === 'INSUFFICIENT_EVIDENCE' ? '分析データ不足 — 取得後に再評価'
+    : dec === 'WAIT' ? `${SUPPRESSION_BANNER_PREFIX} — 買付は参考停止`
     : dec === 'BUY'  ? '新規・買増しを参考推奨'
     : dec === 'SELL' ? '売却を参考検討'
     : '維持 / 様子見 — ポジション継続'

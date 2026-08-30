@@ -1506,6 +1506,9 @@ describe('T9-A001/A002: structured CSV result and atomic store commit', () => {
     useAppStore.setState(state => ({
       holdings: [{
         ...holding(),
+        // C2 exercises the lock clock, not legacy provenance. Mark these
+        // deliberately supplied low indicators as authoritative known data.
+        metadataStatus: { fundamentals: 'known', technicals: 'known' },
         mu: -0.2,
         sigma: 0.5,
         beta: 1.5,

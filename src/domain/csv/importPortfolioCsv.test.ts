@@ -314,12 +314,13 @@ describe('importPortfolioCsv: 個別株 — full-sync挙動の固定', () => {
     expect(nec.per).toBe(0)
     expect(nec.pbr).toBe(0)
     expect(nec.cfOk).toBe(false)
+    expect(nec.metadataStatus).toEqual({ fundamentals: 'unknown', technicals: 'unknown' })
     expect(nec.score).toBe(0)
     expect(nec.decision).toBe('HOLD')
     expect(nec.ev).toBe(0)
   })
 
-  it('metadata安全性: 新規追加銘柄はcomputeAnalysisでBUY判定にならない（mu=RFによるEVゲート）', async () => {
+  it('metadata安全性: 新規追加銘柄はunknown provenanceにより分析データ不足となる', async () => {
     const csv = [
       '株式（現物/特定預り）',
       STOCK_HEADER,
@@ -331,9 +332,9 @@ describe('importPortfolioCsv: 個別株 — full-sync挙動の固定', () => {
 
     const analysis = computeAnalysis([nec], STATIC_MARKET, null, null)
     const a = analysis.find(x => x.code === '6701')!
-    // totalScoreの値に関わらず、ev<=0のためdecisionは絶対にBUYにならない
+    // UNKNOWN DATA is an abstention, not a weak BUY assertion or a synthetic SELL.
     expect(a.ev).toBeLessThanOrEqual(0)
-    expect(a.decision).not.toBe('BUY')
+    expect(a.decision).toBe('INSUFFICIENT_EVIDENCE')
   })
 
   it('同一コード複数行: eval集約・pnlPct/price加重平均・acquiredAt最新日付採用', async () => {

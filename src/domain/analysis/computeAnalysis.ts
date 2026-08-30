@@ -8,6 +8,7 @@ import type {
   AgentDebate,
   StrategyRank,
   AdaptiveWeights,
+  StockDecision,
 } from '../../types'
 import { RF, INST_WEIGHTS, SECTOR_GROUPS } from '../../constants/market'
 import { VIX_WARNING, VIX_PANIC, VIX_HIGH_CAUTION } from '../risk/thresholds'
@@ -60,7 +61,8 @@ export function calcPortfolioMetrics(holdings: Holding[], corrData: CorrelationD
 }
 
 // ── ファンダメンタルスコア (0-30 GS準拠) ────────────────────────
-function calcFundamentalScore(h: Holding): number {
+function calcFundamentalScore(h: Holding, fundamentalsKnown: boolean): number {
+  if (!fundamentalsKnown) return 15
   let s = 0
   if (h.roe >= 15) s += 8; else if (h.roe >= 8) s += 5; else s -= 3
   if (h.epsG >= 15) s += 7; else if (h.epsG >= 5) s += 4; else if (h.epsG < 0) s -= 5
@@ -74,7 +76,8 @@ function calcFundamentalScore(h: Holding): number {
 }
 
 // ── テクニカルスコア (0-20 MS準拠) ──────────────────────────────
-function calcTechnicalScore(h: Holding): number {
+function calcTechnicalScore(h: Holding, technicalsKnown: boolean): number {
+  if (!technicalsKnown) return 10
   let s = 0
   if (h.ma && h.macd) s += 8; else if (h.ma || h.macd) s += 4; else s -= 4
   if (h.rsi >= 40 && h.rsi <= 65) s += 5; else if (h.rsi < 30) s += 3; else if (h.rsi > 75) s -= 4
@@ -111,7 +114,8 @@ function calcNewsScore(h: Holding, news: NewsData | null): number {
 }
 
 // ── 品質スコア (0-10) ────────────────────────────────────────────
-function calcQualityScore(h: Holding): number {
+function calcQualityScore(h: Holding, fundamentalsKnown: boolean): number {
+  if (!fundamentalsKnown) return 5
   let s = 5
   if (h.cfOk) s += 2
   if (h.de <= 0.5) s += 2; else if (h.de > 5) s -= 2
@@ -153,11 +157,15 @@ function runAIDebate(
   news: NewsData | null,
   market: Market,
   now: Date,
+  fundamentalsKnown: boolean,
+  technicalsKnown: boolean,
 ): AgentDebate {
   const weights = INST_WEIGHTS.JAPAN_STOCK
 
   // ルネッサンス補正係数（モメンタム × ボラ）
-  const momentumF = h.mom3m > 0 ? Math.min(1.2, 1 + h.mom3m / 100) : Math.max(0.8, 1 + h.mom3m / 100)
+  const momentumF = technicalsKnown
+    ? h.mom3m > 0 ? Math.min(1.2, 1 + h.mom3m / 100) : Math.max(0.8, 1 + h.mom3m / 100)
+    : 1
   const volF = h.sigma <= 0.15 ? 1.1 : h.sigma >= 0.35 ? 0.9 : 1.0
   const rnFactor = momentumF * volF
 
@@ -195,6 +203,7 @@ function runAIDebate(
     'ファンダ代理', 'GS Fundamental',
     fundamentalScore / 30 * 100,
     () => {
+      if (!fundamentalsKnown) return ['ファンダメンタルデータ未取得']
       const pts: string[] = []
       if (h.roe >= 15)               pts.push(`ROE ${h.roe}% — 高収益`)
       if (h.epsG >= 10)              pts.push(`EPS成長 ${h.epsG}% — 増益継続`)
@@ -204,6 +213,7 @@ function runAIDebate(
       return pts.length ? pts : [`ファンダ総合 ${fundamentalScore}/30点`]
     },
     () => {
+      if (!fundamentalsKnown) return []
       const pts: string[] = []
       if (h.epsG < 0)               pts.push(`EPS成長 ${h.epsG}% — 減益`)
       if (h.per > 40 && h.per > 0)  pts.push(`PER ${h.per.toFixed(1)}倍 — 割高`)
@@ -213,19 +223,19 @@ function runAIDebate(
     },
     {
       genBuy:  () => [
-        h.roe >= 15 ? `ROE ${h.roe}% & EPS+${h.epsG}% 確認 — バリュー買い条件充足` : '',
-        h.cfOk && h.de <= 1.0 ? '財務健全・CF良好 — 今期業績支持' : '',
+        fundamentalsKnown && h.roe >= 15 ? `ROE ${h.roe}% & EPS+${h.epsG}% 確認 — バリュー買い条件充足` : '',
+        fundamentalsKnown && h.cfOk && h.de <= 1.0 ? '財務健全・CF良好 — 今期業績支持' : '',
       ].filter(Boolean),
       genWait: () => [
-        h.per > 25 ? `PER ${h.per.toFixed(1)}倍 — 割高修正を待ちたい` : '',
-        h.epsG < 5 ? `EPS成長 ${h.epsG}% — 次決算の増益確認後に判断` : '',
+        fundamentalsKnown && h.per > 25 ? `PER ${h.per.toFixed(1)}倍 — 割高修正を待ちたい` : '',
+        fundamentalsKnown && h.epsG < 5 ? `EPS成長 ${h.epsG}% — 次決算の増益確認後に判断` : '',
       ].filter(Boolean),
       genSell: () => [
-        h.epsG < 0  ? `EPS減益転落 (${h.epsG}%) — 前提崩れ・売り検討` : '',
-        h.roe < 5   ? `ROE ${h.roe}% — 収益力低下で保有意義なし` : '',
+        fundamentalsKnown && h.epsG < 0  ? `EPS減益転落 (${h.epsG}%) — 前提崩れ・売り検討` : '',
+        fundamentalsKnown && h.roe < 5   ? `ROE ${h.roe}% — 収益力低下で保有意義なし` : '',
       ].filter(Boolean),
-      genPremise:      () => [`EPS成長継続（現 ${h.epsG}%）`, `ROE ${h.roe}% 維持`, h.cfOk ? 'CF良好継続' : ''],
-      genPremiseBreak: () => [`EPS成長がマイナス転落`, `ROE 8% 割れ`, `D/E ${h.de.toFixed(1)} → 3超え`],
+      genPremise:      () => fundamentalsKnown ? [`EPS成長継続（現 ${h.epsG}%）`, `ROE ${h.roe}% 維持`, h.cfOk ? 'CF良好継続' : ''] : [],
+      genPremiseBreak: () => fundamentalsKnown ? [`EPS成長がマイナス転落`, `ROE 8% 割れ`, `D/E ${h.de.toFixed(1)} → 3超え`] : [],
     },
   )
 
@@ -234,6 +244,7 @@ function runAIDebate(
     'テクニカル代理', 'MS Technical',
     technicalScore / 20 * 100,
     () => {
+      if (!technicalsKnown) return ['テクニカルデータ未取得']
       const pts: string[] = []
       if (h.ma && h.macd)               pts.push('MA上位 + MACD陽転 — テクニカル良好')
       else if (h.ma)                     pts.push('MA上位 — トレンド順行')
@@ -243,6 +254,7 @@ function runAIDebate(
       return pts.length ? pts : [`テクニカル ${technicalScore}/20点`]
     },
     () => {
+      if (!technicalsKnown) return []
       const pts: string[] = []
       if (!h.ma && !h.macd)  pts.push('MA下位 + MACD陰転 — テクニカル悪化')
       if (h.rsi > 75)        pts.push(`RSI ${h.rsi.toFixed(0)} — 買われすぎ`)
@@ -251,21 +263,21 @@ function runAIDebate(
     },
     {
       genBuy:  () => [
-        h.ma && h.macd ? 'MA上位 + MACD陽転 — エントリーシグナル点灯' : '',
-        h.rsi >= 40 && h.rsi <= 60 ? `RSI ${h.rsi.toFixed(0)} — 買い過熱なし` : '',
-        h.vol ? '出来高急増 — 機関投資家参入の可能性' : '',
+        technicalsKnown && h.ma && h.macd ? 'MA上位 + MACD陽転 — エントリーシグナル点灯' : '',
+        technicalsKnown && h.rsi >= 40 && h.rsi <= 60 ? `RSI ${h.rsi.toFixed(0)} — 買い過熱なし` : '',
+        technicalsKnown && h.vol ? '出来高急増 — 機関投資家参入の可能性' : '',
       ].filter(Boolean),
       genWait: () => [
-        !h.macd ? 'MACD陽転待ち — トレンド確認後にエントリー' : '',
-        h.rsi > 65 ? `RSI ${h.rsi.toFixed(0)} — 少し冷めてから参入` : '',
+        technicalsKnown && !h.macd ? 'MACD陽転待ち — トレンド確認後にエントリー' : '',
+        technicalsKnown && h.rsi > 65 ? `RSI ${h.rsi.toFixed(0)} — 少し冷めてから参入` : '',
       ].filter(Boolean),
       genSell: () => [
-        !h.ma && !h.macd ? 'MA + MACD 両方陰転 — トレンド崩壊' : '',
-        h.rsi > 78 ? `RSI ${h.rsi.toFixed(0)} 過熱 — 利確推奨` : '',
-        h.mom3m < -8 ? `3M下落 ${h.mom3m.toFixed(1)}% — 下降ピッチ加速` : '',
+        technicalsKnown && !h.ma && !h.macd ? 'MA + MACD 両方陰転 — トレンド崩壊' : '',
+        technicalsKnown && h.rsi > 78 ? `RSI ${h.rsi.toFixed(0)} 過熱 — 利確推奨` : '',
+        technicalsKnown && h.mom3m < -8 ? `3M下落 ${h.mom3m.toFixed(1)}% — 下降ピッチ加速` : '',
       ].filter(Boolean),
-      genPremise:      () => [`MA上位維持`, `MACD ${h.macd ? '陽転中' : '— 転換待ち'}`, `RSI ${h.rsi.toFixed(0)} 適正圏`],
-      genPremiseBreak: () => [`MACD デッドクロス確定`, `株価がMA25 を下抜け`, `RSI 80 超え → 急落リスク`],
+      genPremise:      () => technicalsKnown ? [`MA上位維持`, `MACD ${h.macd ? '陽転中' : '— 転換待ち'}`, `RSI ${h.rsi.toFixed(0)} 適正圏`] : [],
+      genPremiseBreak: () => technicalsKnown ? [`MACD デッドクロス確定`, `株価がMA25 を下抜け`, `RSI 80 超え → 急落リスク`] : [],
     },
   )
 
@@ -411,12 +423,14 @@ function runAIDebate(
     'PF統合代理', 'Portfolio Integrator',
     pfScore,
     () => {
+      if (!fundamentalsKnown) return ['ファンダメンタルデータ未取得']
       const pts: string[] = []
       if (h.cfOk && h.de <= 1.0) pts.push('CF + 財務健全 — 長期保有適性あり')
       if (h.divG >= 3)           pts.push(`配当成長 ${h.divG}% — インカム貢献`)
       return pts.length ? pts : [`PF貢献度 良 (品質${qualityScore}/10)`]
     },
     () => {
+      if (!fundamentalsKnown) return []
       const pts: string[] = []
       if (!h.cfOk) pts.push('CF懸念 — ビジネスモデル要確認')
       if (h.de > 5) pts.push(`高D/E ${h.de.toFixed(1)} — 財務リスク`)
@@ -424,15 +438,15 @@ function runAIDebate(
     },
     {
       genBuy:  () => [
-        h.cfOk && h.de <= 1.0 ? 'CF良好 + 財務健全 — PF全体の安定柱として追加価値あり' : '',
-        h.divG >= 3 ? `配当成長 ${h.divG}% — インカム源として長期保有適性` : '',
+        fundamentalsKnown && h.cfOk && h.de <= 1.0 ? 'CF良好 + 財務健全 — PF全体の安定柱として追加価値あり' : '',
+        fundamentalsKnown && h.divG >= 3 ? `配当成長 ${h.divG}% — インカム源として長期保有適性` : '',
       ].filter(Boolean),
-      genWait: () => [!h.cfOk ? 'CF状況を確認してから追加判断' : ''].filter(Boolean),
+      genWait: () => [fundamentalsKnown && !h.cfOk ? 'CF状況を確認してから追加判断' : ''].filter(Boolean),
       genSell: () => [
-        !h.cfOk && h.de > 3 ? 'CF懸念 + 高レバ — PF全体のリスク源' : '',
+        fundamentalsKnown && !h.cfOk && h.de > 3 ? 'CF懸念 + 高レバ — PF全体のリスク源' : '',
       ].filter(Boolean),
-      genPremise:      () => [h.cfOk ? 'CF良好継続' : 'CF改善期待', `D/E ${h.de.toFixed(1)} 管理可能水準`],
-      genPremiseBreak: () => ['CF がマイナス転落', `D/E ${h.de.toFixed(1)} → 5 超え`, '配当カット・無配転落'],
+      genPremise:      () => fundamentalsKnown ? [h.cfOk ? 'CF良好継続' : 'CF改善期待', `D/E ${h.de.toFixed(1)} 管理可能水準`] : [],
+      genPremiseBreak: () => fundamentalsKnown ? ['CF がマイナス転落', `D/E ${h.de.toFixed(1)} → 5 超え`, '配当カット・無配転落'] : [],
     },
   )
 
@@ -501,7 +515,10 @@ function runAIDebate(
 
   const variance = agents.reduce((s, a) => s + (a.score - debateScore) ** 2, 0) / agents.length
   const confidence = Math.max(0.3, Math.min(1.0, 1 - Math.sqrt(variance) / 100))
-  const finalView: 'BUY' | 'HOLD' | 'SELL' = debateScore >= 72 ? 'BUY' : debateScore >= 48 ? 'HOLD' : 'SELL'
+  const actionableEvidence = fundamentalsKnown && technicalsKnown
+  const finalView: StockDecision = !actionableEvidence
+    ? 'INSUFFICIENT_EVIDENCE'
+    : debateScore >= 72 ? 'BUY' : debateScore >= 48 ? 'HOLD' : 'SELL'
 
   // 統合強気・弱気理由（全エージェントから上位を集約）
   const bullReasons = agents.flatMap(a => a.bullPoints).slice(0, 4)
@@ -516,6 +533,7 @@ function runAIDebate(
 
   // リスク承認ゲート（全代理が合意する最低条件）
   const riskGatePass =
+    actionableEvidence &&
     market.vix < VIX_HIGH_CAUTION &&
     market.regime !== 'bear' &&
     riskPenalty < 10 &&
@@ -524,14 +542,17 @@ function runAIDebate(
 
   // 行動理由を統合（全代理から集約・重複排除）
   // ロック中銘柄はSELL実行理由を非表示にする
-  const buyReasons   = uniqueTop(agents.flatMap(a => a.buyReasons),   4)
+  const buyReasons   = actionableEvidence ? uniqueTop(agents.flatMap(a => a.buyReasons), 4) : []
   const waitReasons  = uniqueTop(agents.flatMap(a => a.waitReasons),  3)
-  const sellReasons  = isLocked
+  const sellReasons  = !actionableEvidence || isLocked
     ? []
     : uniqueTop(agents.flatMap(a => a.sellReasons), 3)
 
   // 推奨アクション（ロック中は実行系SELL文言を一切出さない）
   const recommendedAction = (() => {
+    if (!actionableEvidence) {
+      return '分析データ不足 — ファンダメンタル・テクニカル取得後に再評価'
+    }
     if (isLocked) {
       return `売却不可期間中（解除予定: ${lockDateLabel}）— 監視強化・新規買い停止・ロック解除後に削減候補`
     }
@@ -557,7 +578,7 @@ function runAIDebate(
   })()
 
   // 利確条件
-  const takeProfitConditions = uniqueTop([
+  const takeProfitConditions = actionableEvidence ? uniqueTop([
     h.target > 0 && h.currentPrice
       ? `目標株価 ${h.target.toLocaleString('ja-JP')}円 到達時（現在 ${h.currentPrice.toLocaleString('ja-JP')}円）`
       : '',
@@ -565,10 +586,12 @@ function runAIDebate(
     h.mom3m > 20 ? `3Mモメンタム +${h.mom3m.toFixed(1)}% — 急騰後の利益確定` : `3Mモメンタム +20% 超で一部確定`,
     h.pnlPct > 25 ? `含み益 +${h.pnlPct.toFixed(1)}% 超過 — 利確水準` : '取得価格比 +25% で段階利確',
     'MACDデッドクロス確定時に50%を利確',
-  ].filter(Boolean), 4)
+  ].filter(Boolean), 4) : []
 
   // 損切条件（ロック中は実行系損切文言を出さず、監視・ヘッジ対応のみ）
-  const stopLossConditions = isLocked
+  const stopLossConditions = !actionableEvidence
+    ? []
+    : isLocked
     ? [
         `ロック期間中（解除予定: ${lockDateLabel}）— 売却・損切は不可`,
         `前提崩れ（EPS急落・格下げ等）時はアラートのみ — ヘッジまたは現金維持を優先`,
@@ -588,9 +611,9 @@ function runAIDebate(
   ], 5)
 
   const sevenAxis = {
-    growth:    Math.round(h.epsG >= 15 ? 85 : h.epsG >= 5 ? 65 : 35),
-    valuation: Math.round(h.per <= 15 ? 80 : h.per <= 25 ? 60 : 30),
-    momentum:  Math.round(h.mom3m > 8 ? 80 : h.mom3m > 0 ? 60 : 35),
+    growth:    fundamentalsKnown ? Math.round(h.epsG >= 15 ? 85 : h.epsG >= 5 ? 65 : 35) : 50,
+    valuation: fundamentalsKnown ? Math.round(h.per <= 15 ? 80 : h.per <= 25 ? 60 : 30) : 50,
+    momentum:  technicalsKnown ? Math.round(h.mom3m > 8 ? 80 : h.mom3m > 0 ? 60 : 35) : 50,
     macro:     Math.round(marketScore / 20 * 100),
     quality:   Math.round(qualityScore / 10 * 100),
     risk:      Math.round(100 - riskPenalty * 5),
@@ -675,11 +698,15 @@ export function computeAnalysis(
   const w = resolveWeights(adaptiveWeights)
 
   return holdings.map(h => {
-    const fundamentalScore = calcFundamentalScore(h)
-    const technicalScore   = calcTechnicalScore(h)
+    // Provenance is authoritative. Legacy absence fails closed to unknown; values
+    // (including sentinel-looking values) never upgrade a group to known.
+    const fundamentalsKnown = h.metadataStatus?.fundamentals === 'known'
+    const technicalsKnown = h.metadataStatus?.technicals === 'known'
+    const fundamentalScore = calcFundamentalScore(h, fundamentalsKnown)
+    const technicalScore   = calcTechnicalScore(h, technicalsKnown)
     const marketScore      = calcMarketScore(h, market)
     const newsScore        = calcNewsScore(h, news)
-    const qualityScore     = calcQualityScore(h)
+    const qualityScore     = calcQualityScore(h, fundamentalsKnown)
     const riskPenalty      = calcRiskPenalty(h, mitsuW, market)
 
     const fN = fundamentalScore / 30 * 100
@@ -699,13 +726,15 @@ export function computeAnalysis(
     )
 
     const ev = calcEV(h, market)
-    const decision: 'BUY' | 'HOLD' | 'SELL' =
-      totalScore >= 75 && ev > 0 ? 'BUY' :
-      totalScore >= 50 ? 'HOLD' : 'SELL'
+    const decision: StockDecision = !fundamentalsKnown || !technicalsKnown
+      ? 'INSUFFICIENT_EVIDENCE'
+      : totalScore >= 75 && ev > 0 ? 'BUY'
+      : totalScore >= 50 ? 'HOLD' : 'SELL'
 
     const debate = runAIDebate(
       h, fundamentalScore, technicalScore, marketScore,
       newsScore, qualityScore, riskPenalty, news, market, new Date(nowMs),
+      fundamentalsKnown, technicalsKnown,
     )
 
     const capped = Math.max(0, Math.min(100, totalScore))

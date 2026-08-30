@@ -1,4 +1,13 @@
 // ── Holding (日本株 個別銘柄) ──────────────────────────────────
+export type MetadataProvenance = 'known' | 'unknown'
+
+export interface HoldingMetadataStatus {
+  fundamentals: MetadataProvenance
+  technicals: MetadataProvenance
+}
+
+export type StockDecision = 'BUY' | 'HOLD' | 'SELL' | 'INSUFFICIENT_EVIDENCE'
+
 export interface Holding {
   code: string
   name: string
@@ -29,9 +38,11 @@ export interface Holding {
   cfOk: boolean       // CF良好
   de: number          // D/Eレシオ
   divG: number        // 配当成長率（%）
+  // optional for persisted-schema compatibility; absence is authoritative unknown
+  metadataStatus?: HoldingMetadataStatus
   // 計算結果（Storeで付与）
   score: number
-  decision: 'BUY' | 'HOLD' | 'SELL'
+  decision: StockDecision
   ev: number          // Expected Value
 }
 
@@ -155,7 +166,7 @@ export interface HoldingAnalysis {
   riskPenalty: number        // 0-15
   totalScore: number         // 0-100
   ev: number
-  decision: 'BUY' | 'HOLD' | 'SELL'
+  decision: StockDecision
   confidence: number         // 0-1
   strategyRank: StrategyRank // S/A/B/C/D/E 総合ランク
   // AI討論
@@ -181,7 +192,7 @@ export interface AgentDebate {
   agents: AgentScore[]      // Phase 4: 8代理
   debateScore: number
   confidence: number
-  finalView: 'BUY' | 'HOLD' | 'SELL'
+  finalView: StockDecision
   // v9.1: 統合強気・弱気理由（全エージェントから集約）
   bullReasons: string[]
   bearReasons: string[]

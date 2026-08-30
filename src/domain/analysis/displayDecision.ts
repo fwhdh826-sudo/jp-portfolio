@@ -1,6 +1,6 @@
 import type { Holding, OfficialDecisionItem } from '../../types'
 
-export type DisplayDecision = 'BUY' | 'HOLD' | 'SELL' | 'WAIT' | 'DATA_WAIT'
+export type DisplayDecision = 'BUY' | 'HOLD' | 'SELL' | 'WAIT' | 'DATA_WAIT' | 'INSUFFICIENT_EVIDENCE'
 
 /**
  * P1-4B / P4-A37 / P4-A149: officialAction・DQ gate・SAFE_MODE・ロック・jpStockMaxRatio上限を統合した表示専用判定
@@ -27,6 +27,9 @@ export function deriveDisplayDecision(params: {
   safeModeActive?: boolean
 }): DisplayDecision {
   const { hDecision, officialAction, dqSuppressed, locked, capExceeded, safeModeActive } = params
+
+  // Evidence abstention outranks any stale/downstream official SELL action.
+  if (hDecision === 'INSUFFICIENT_EVIDENCE') return 'INSUFFICIENT_EVIDENCE'
 
   // DQ抑制 + BUY → 新規買い停止（最高優先度）
   if (dqSuppressed && hDecision === 'BUY') return 'DATA_WAIT'

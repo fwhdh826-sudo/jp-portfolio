@@ -67,6 +67,7 @@ function buildBaseline(
 ): BaselineItem[] {
   return analysis
     .map((a): BaselineItem | null => {
+      if (a.decision === 'INSUFFICIENT_EVIDENCE') return null
       const h = holdings.find(x => x.code === a.code)
       if (!h) return null
       return {

@@ -31,6 +31,10 @@ export interface SnapshotGenerationHolding {
   sigma?: number
   sigmaSource?: 'yfinance' | 'static'
   beta?: number
+  metadataStatus?: {
+    fundamentals: 'known' | 'unknown'
+    technicals: 'known' | 'unknown'
+  }
 }
 
 export interface SnapshotGenerationTrust {
@@ -107,7 +111,7 @@ function sortCanonicalRows(rows: CanonicalRow[]): CanonicalRow[] {
 }
 
 function canonicalHolding(row: SnapshotGenerationHolding): CanonicalRow {
-  return [
+  const canonical: CanonicalRow = [
     row.code,
     row.name ?? null,
     canonicalNumber(row.eval),
@@ -120,6 +124,12 @@ function canonicalHolding(row: SnapshotGenerationHolding): CanonicalRow {
     row.sigmaSource ?? null,
     row.beta === undefined ? null : canonicalNumber(row.beta),
   ]
+  // Additive compatibility: legacy snapshots omitted metadataStatus and retain
+  // their exact historical digest input; new snapshots bind explicit provenance.
+  if (row.metadataStatus !== undefined) {
+    canonical.push(row.metadataStatus.fundamentals, row.metadataStatus.technicals)
+  }
+  return canonical
 }
 
 function canonicalTrust(row: SnapshotGenerationTrust): CanonicalRow {

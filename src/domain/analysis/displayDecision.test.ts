@@ -14,6 +14,15 @@ function makeAction(action: OfficialDecisionItem['action']): OfficialDecisionIte
 }
 
 describe('deriveDisplayDecision', () => {
+  it('INSUFFICIENT_EVIDENCE outranks official SELL', () => {
+    expect(deriveDisplayDecision({
+      hDecision: 'INSUFFICIENT_EVIDENCE',
+      officialAction: makeAction('SELL'),
+      dqSuppressed: false,
+      locked: false,
+    })).toBe('INSUFFICIENT_EVIDENCE')
+  })
+
   describe('capExceeded=false / undefined — 既存挙動を維持', () => {
     it('BUY → BUY', () => {
       expect(deriveDisplayDecision({ hDecision: 'BUY', dqSuppressed: false, locked: false })).toBe('BUY')
