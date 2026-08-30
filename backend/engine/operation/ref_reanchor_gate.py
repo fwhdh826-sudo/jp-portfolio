@@ -191,7 +191,7 @@ def evaluate(
         )
 
     diff = _git(
-        ["diff", "--name-only", "-z", current_head, remote_tip],
+        ["diff", "--no-renames", "--name-only", "-z", current_head, remote_tip],
         cwd=repository,
         text=False,
     )
