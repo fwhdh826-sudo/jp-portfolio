@@ -13,6 +13,10 @@ permissions:
   contents: write
   actions: write
 
+concurrency:
+  group: intraday-patch
+  cancel-in-progress: true  # 昼間は最新実行を優先。古い実行はキャンセル可
+
 jobs:
   # ── Tier 1 軽量更新（市場 + ニュースのみ）────────────────────────────────
   # pytest は実行しない（速度優先、Tier 1 更新のみ）
@@ -22,6 +26,7 @@ jobs:
     concurrency:
       group: jp-portfolio-production-data-mutation
       cancel-in-progress: false
+      queue: max
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4

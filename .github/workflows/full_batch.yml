@@ -13,6 +13,10 @@ permissions:
   contents: write
   actions: write
 
+concurrency:
+  group: full-batch
+  cancel-in-progress: false  # 処理途中のキャンセルで中途半端な状態を残さない
+
 jobs:
   # Safe-start admission runs independently so a late/duplicate/error outcome
   # prevents every downstream mutation job, including always() evidence steps.
@@ -90,6 +94,7 @@ jobs:
     concurrency:
       group: jp-portfolio-production-data-mutation
       cancel-in-progress: false
+      queue: max
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4

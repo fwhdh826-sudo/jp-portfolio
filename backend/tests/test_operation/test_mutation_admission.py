@@ -69,8 +69,17 @@ def scheduled_env(tmp_path, *, run_id: int = 100, run_attempt: int = 1):
 @pytest.mark.parametrize(
     ("now", "decision", "reason", "exit_code"),
     [
-        ("2026-08-28T02:54:59Z", "RUN", "before_effective_deadline", 0),
-        ("2026-08-28T02:55:00Z", "SKIP", "at_or_after_effective_deadline", 78),
+        (
+            "2026-08-28T02:54:59Z",
+            "RUN",
+            "admitted_before_effective_deadline",
+            0,
+        ),
+        ("2026-08-28T02:55:00Z", "SKIP", "mutation_deadline_exceeded", 78),
+    ],
+    ids=[
+        "2026-08-28T02:54:59Z-RUN-before_effective_deadline-0",
+        "2026-08-28T02:55:00Z-SKIP-at_or_after_effective_deadline-78",
     ],
 )
 def test_boundary_is_inclusive_at_deadline_minus_five_minutes(
@@ -108,7 +117,7 @@ def test_manual_dispatch_bypasses_deadline_and_api_but_keeps_lock_contract():
     )
 
     assert result.decision == "RUN"
-    assert result.reason == "manual_dispatch_deadline_bypass"
+    assert result.reason == "manual_dispatch_bypass"
     assert result.deadline is None
     assert result.effective_deadline is None
     assert result.as_dict()["lockGroup"] == admission.LOCK_GROUP
@@ -297,6 +306,12 @@ def test_main_exit_codes_are_zero_78_and_two(
     assert admission.main(["--workflow", "update", "--checkpoint", checkpoint]) == expected
     payload = json.loads(capsys.readouterr().out)
     assert payload["decision"] == {0: "RUN", 78: "SKIP", 2: "ERROR"}[expected]
+    if expected == 0:
+        assert payload["reason"] == "manual_dispatch_bypass"
+    elif expected == 78:
+        assert payload["reason"] == "mutation_deadline_exceeded"
+    else:
+        assert payload["reason"].startswith("metadata_config_clock_error: ")
 
 
 class FixedDateTime:
