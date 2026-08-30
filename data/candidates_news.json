@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-08-30T00:42:44.611009+09:00",
-  "sourceUpdatedAt": "2026-08-29T14:56:16+00:00",
+  "updatedAt": "2026-08-30T10:25:18.584615+09:00",
+  "sourceUpdatedAt": "2026-08-30T00:00:00+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -17,24 +17,38 @@
       "items": []
     },
     "jp_semiconductor": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Day Traders Are Abandoning Korean Chip Leveraged ETFs in Droves",
+      "topPositiveTitle": "Day Traders Are Abandoning Korean Chip Leveraged ETFs in Droves",
+      "items": [
+        {
+          "title": "Day Traders Are Abandoning Korean Chip Leveraged ETFs in Droves",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-30T00:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-30/day-traders-are-abandoning-korean-chip-leveraged-etfs-in-droves",
+          "tags": [
+            "jp_semiconductor",
+            "market",
+            "trust"
+          ]
+        }
+      ]
     },
     "us_broad": {
-      "avgSentiment": 0.091,
-      "negativeCount": 2,
-      "positiveCount": 4,
-      "neutralCount": 5,
+      "avgSentiment": 0.112,
+      "negativeCount": 1,
+      "positiveCount": 2,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 11,
+      "itemCount": 6,
       "isStale": false,
       "topNegativeTitle": "Warsh Sets the Tone for Fed’s Road Ahead",
       "topPositiveTitle": "Can the US Defy Fiscal Gravity?",
@@ -52,12 +66,24 @@
           ]
         },
         {
-          "title": "Warsh’s Inflation Warning Sets Up September Showdown for the Fed",
+          "title": "US Jobs Report Seen Backing Warsh View of Labor Market",
           "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-28T21:41:40+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-28/warsh-s-inflation-warning-sets-up-september-showdown-for-the-fed",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-29T20:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-29/us-jobs-report-seen-backing-warsh-view-of-labor-market",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Key Takeaways From the Fed’s Annual Jackson Hole Conference",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-29T18:27:02+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-29/key-takeaways-from-the-fed-s-annual-jackson-hole-conference",
           "tags": [
             "market",
             "us_broad"
@@ -76,26 +102,15 @@
           ]
         },
         {
-          "title": "Wall Street Piles On Rate-Hike Bets as Warsh Renews Hawkish Tone",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-28T20:16:21+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-28/wall-street-piles-on-rate-hike-bets-as-warsh-renews-hawkish-tone",
+          "title": "Warsh Says Fed Must Act if Inflation Stays High",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-29T12:05:49+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-29/warsh-says-fed-must-act-if-inflation-stays-high-video",
           "tags": [
             "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Chicago Fed's Austan Goolsbee Is Still Worried About Inflation, Overheating",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-28T17:28:48+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-28/chicago-fed-s-austan-goolsbee-is-still-worried-about-inflation-overheating",
-          "tags": [
-            "market",
+            "rates",
             "us_broad"
           ]
         }
@@ -178,28 +193,16 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.125,
-      "negativeCount": 2,
+      "avgSentiment": -0.066,
+      "negativeCount": 1,
       "positiveCount": 0,
-      "neutralCount": 6,
-      "sourceCount": 2,
-      "itemCount": 8,
+      "neutralCount": 4,
+      "sourceCount": 3,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Moody’s Downgrades Senegal as Power Rift Amplifies Debt Risks",
+      "topNegativeTitle": "Where the US-Canada Trade War Stands After Talks Fell Apart",
       "topPositiveTitle": "Iran War Exposes Limits of US Military Endurance",
       "items": [
-        {
-          "title": "Moody’s Downgrades Senegal as Power Rift Amplifies Debt Risks",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-08-28T20:51:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-28/moody-s-downgrades-senegal-as-power-rift-amplifies-debt-risks",
-          "tags": [
-            "macro_risk",
-            "market"
-          ]
-        },
         {
           "title": "Where the US-Canada Trade War Stands After Talks Fell Apart",
           "source": "Bloomberg Economics",
@@ -240,56 +243,45 @@
           ]
         },
         {
-          "title": "Finance Chief Says Colombia Must Slash Spending or Face ‘Abyss’",
-          "source": "Bloomberg Economics",
+          "title": "茂木外相 ICC赤根所長と電話会談 米国制裁めぐり意見交換か",
+          "source": "NHK 経済",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-28T23:59:21+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-28/finance-chief-says-colombia-must-slash-spending-or-face-abyss",
+          "publishedAt": "2026-08-28T10:30:06+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20260828de47073",
           "tags": [
             "macro_risk",
             "market"
-          ]
+          ],
+          "titleJa": "茂木外相 ICC赤根所長と電話会談 米国制裁めぐり意見交換か"
+        },
+        {
+          "title": "障害者らが高市首相に平和への願い込めた手紙を手渡す",
+          "source": "NHK 経済",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-27T12:19:38+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20260827de46807",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ],
+          "titleJa": "障害者らが高市首相に平和への願い込めた手紙を手渡す"
         }
       ]
     },
     "fx": {
-      "avgSentiment": 0.113,
-      "negativeCount": 1,
+      "avgSentiment": 0.67,
+      "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 1,
-      "sourceCount": 2,
-      "itemCount": 3,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "India’s Mazumdar-Shaw Is On A Mission to Save Lives",
+      "topNegativeTitle": "Can the US Defy Fiscal Gravity?",
       "topPositiveTitle": "Can the US Defy Fiscal Gravity?",
       "items": [
-        {
-          "title": "India’s Mazumdar-Shaw Is On A Mission to Save Lives",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-21T00:06:00+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-21/mazumdar-shaw-s-mission-to-expand-access-to-medicines-video",
-          "tags": [
-            "fx",
-            "market"
-          ]
-        },
-        {
-          "title": "Bessent Says a ‘Disorderly Yen’ Would Risk Higher US Rates",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-28T17:25:54+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-28/bessent-says-a-disorderly-yen-could-ultimately-raise-us-rates",
-          "tags": [
-            "fx",
-            "macro_risk",
-            "market",
-            "rates"
-          ]
-        },
         {
           "title": "Can the US Defy Fiscal Gravity?",
           "source": "Bloomberg Markets",
@@ -308,12 +300,12 @@
       ]
     },
     "rates": {
-      "avgSentiment": 0.284,
+      "avgSentiment": 0.333,
       "negativeCount": 0,
-      "positiveCount": 5,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 7,
+      "positiveCount": 2,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 3,
       "isStale": false,
       "topNegativeTitle": "Focus on the Long Bond in This Summer of Rising Yields",
       "topPositiveTitle": "Can the US Defy Fiscal Gravity?",
@@ -326,20 +318,6 @@
           "publishedAt": "2026-08-29T12:00:01+00:00",
           "url": "https://www.bloomberg.com/news/newsletters/2026-08-29/focus-on-the-long-bond-in-this-summer-of-rising-yields",
           "tags": [
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Bessent Says a ‘Disorderly Yen’ Would Risk Higher US Rates",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-28T17:25:54+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-28/bessent-says-a-disorderly-yen-could-ultimately-raise-us-rates",
-          "tags": [
-            "fx",
-            "macro_risk",
             "market",
             "rates"
           ]
@@ -358,28 +336,18 @@
           ]
         },
         {
-          "title": "Wall Street Week | Debt & Consequences, Defying Fiscal Gravity, Hollywood Gets Democratized",
+          "title": "Can the US Defy Fiscal Gravity?",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-28T23:12:33+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-28/wall-street-week-defying-fiscal-gravity-video",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-29T14:13:00+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-29/can-the-us-defy-fiscal-gravity-video",
           "tags": [
+            "fx",
+            "gold",
             "market",
             "rates",
             "us_broad"
-          ]
-        },
-        {
-          "title": "ECB’s Kocher Says Europe’s Economy Is Gaining More Momentum",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-28T17:35:51+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-28/ecb-s-kocher-says-europe-s-economy-is-gaining-more-momentum",
-          "tags": [
-            "market",
-            "rates"
           ]
         }
       ]
@@ -412,12 +380,12 @@
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0.055,
       "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 4,
+      "positiveCount": 2,
+      "neutralCount": 3,
+      "sourceCount": 3,
+      "itemCount": 6,
       "isStale": false,
       "topNegativeTitle": "Where the US-Canada Trade War Stands After Talks Fell Apart",
       "topPositiveTitle": "Russia Tests Ukraine and NATO With Escalation",
@@ -462,6 +430,20 @@
           ]
         },
         {
+          "title": "障害者らが高市首相に平和への願い込めた手紙を手渡す",
+          "source": "NHK 経済",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-27T12:19:38+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20260827de46807",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ],
+          "titleJa": "障害者らが高市首相に平和への願い込めた手紙を手渡す"
+        },
+        {
           "title": "Russia Tests Ukraine and NATO With Escalation",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
@@ -484,7 +466,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 3,
+    "excludedCount": 4,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
