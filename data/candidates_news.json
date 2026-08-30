@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-08-30T10:25:18.584615+09:00",
-  "sourceUpdatedAt": "2026-08-30T00:00:00+00:00",
+  "updatedAt": "2026-08-31T00:24:26.416405+09:00",
+  "sourceUpdatedAt": "2026-08-30T14:41:06+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -43,28 +43,16 @@
       ]
     },
     "us_broad": {
-      "avgSentiment": 0.112,
-      "negativeCount": 1,
-      "positiveCount": 2,
-      "neutralCount": 3,
-      "sourceCount": 2,
-      "itemCount": 6,
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 2,
+      "sourceCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Warsh Sets the Tone for Fed’s Road Ahead",
-      "topPositiveTitle": "Can the US Defy Fiscal Gravity?",
+      "topNegativeTitle": "US Jobs Report Seen Backing Warsh View of Labor Market",
+      "topPositiveTitle": "US Jobs Report Seen Backing Warsh View of Labor Market",
       "items": [
-        {
-          "title": "Warsh Sets the Tone for Fed’s Road Ahead",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-29T14:33:53+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-29/warsh-sets-the-tone-for-fed-s-road-ahead-video",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
         {
           "title": "US Jobs Report Seen Backing Warsh View of Labor Market",
           "source": "Bloomberg Economics",
@@ -86,31 +74,6 @@
           "url": "https://www.bloomberg.com/news/articles/2026-08-29/key-takeaways-from-the-fed-s-annual-jackson-hole-conference",
           "tags": [
             "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "World Economy Latest: US Inflation Stays Stubborn, Spending Stalls",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-29T09:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-29/world-economy-latest-us-inflation-stays-stubborn-spending-stalls",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Warsh Says Fed Must Act if Inflation Stays High",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-29T12:05:49+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-29/warsh-says-fed-must-act-if-inflation-stays-high-video",
-          "tags": [
-            "market",
-            "rates",
             "us_broad"
           ]
         }
@@ -141,29 +104,26 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": 0.67,
+      "avgSentiment": 0.33,
       "negativeCount": 0,
       "positiveCount": 1,
       "neutralCount": 0,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Can the US Defy Fiscal Gravity?",
-      "topPositiveTitle": "Can the US Defy Fiscal Gravity?",
+      "topNegativeTitle": "Gold Bulls Turn to Exotic Options, Spreads in ‘Orderly’ Rally",
+      "topPositiveTitle": "Gold Bulls Turn to Exotic Options, Spreads in ‘Orderly’ Rally",
       "items": [
         {
-          "title": "Can the US Defy Fiscal Gravity?",
+          "title": "Gold Bulls Turn to Exotic Options, Spreads in ‘Orderly’ Rally",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-29T14:13:00+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-29/can-the-us-defy-fiscal-gravity-video",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-30T13:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-30/gold-bulls-turn-to-exotic-options-spreads-in-orderly-rally",
           "tags": [
-            "fx",
             "gold",
-            "market",
-            "rates",
-            "us_broad"
+            "market"
           ]
         }
       ]
@@ -193,51 +153,25 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.066,
-      "negativeCount": 1,
-      "positiveCount": 0,
-      "neutralCount": 4,
+      "avgSentiment": 0.2,
+      "negativeCount": 0,
+      "positiveCount": 2,
+      "neutralCount": 3,
       "sourceCount": 3,
       "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Where the US-Canada Trade War Stands After Talks Fell Apart",
-      "topPositiveTitle": "Iran War Exposes Limits of US Military Endurance",
+      "topNegativeTitle": "German Finance Minister to Press G20 on Iran War, Trade Fights",
+      "topPositiveTitle": "World Mostly Shrugs Off Bessent’s ‘D-Day’ Iran Sanctions Threat",
       "items": [
         {
-          "title": "Where the US-Canada Trade War Stands After Talks Fell Apart",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-29T11:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-29/where-the-us-canada-trade-war-stands-after-talks-fell-apart",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Iran War Exposes Limits of US Military Endurance",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-29T12:22:14+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-29/iran-war-exposes-limits-of-us-military-endurance-video",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Vietnam Restates Readiness for ‘Constructive’ US Trade Talks",
+          "title": "German Finance Minister to Press G20 on Iran War, Trade Fights",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-29T05:14:36+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-29/vietnam-restates-readiness-for-constructive-us-trade-talks",
+          "publishedAt": "2026-08-30T10:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-30/german-finance-minister-to-press-g20-on-iran-war-trade-fights",
           "tags": [
+            "geopolitical",
             "macro_risk",
             "market"
           ]
@@ -268,91 +202,37 @@
             "market"
           ],
           "titleJa": "障害者らが高市首相に平和への願い込めた手紙を手渡す"
+        },
+        {
+          "title": "Rep. Krishnamoorthi Warns Iran War Weakens US in Asia",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-30T14:41:06+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-30/rep-krishnamoorthi-warns-iran-war-weakens-us-in-asia-video",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "World Mostly Shrugs Off Bessent’s ‘D-Day’ Iran Sanctions Threat",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-30T12:50:43+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-30/world-mostly-shrugs-off-bessent-s-d-day-iran-sanctions-threat",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": 0.67,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
-      "isStale": false,
-      "topNegativeTitle": "Can the US Defy Fiscal Gravity?",
-      "topPositiveTitle": "Can the US Defy Fiscal Gravity?",
-      "items": [
-        {
-          "title": "Can the US Defy Fiscal Gravity?",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-29T14:13:00+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-29/can-the-us-defy-fiscal-gravity-video",
-          "tags": [
-            "fx",
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        }
-      ]
-    },
-    "rates": {
-      "avgSentiment": 0.333,
-      "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 3,
-      "isStale": false,
-      "topNegativeTitle": "Focus on the Long Bond in This Summer of Rising Yields",
-      "topPositiveTitle": "Can the US Defy Fiscal Gravity?",
-      "items": [
-        {
-          "title": "Focus on the Long Bond in This Summer of Rising Yields",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-29T12:00:01+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-08-29/focus-on-the-long-bond-in-this-summer-of-rising-yields",
-          "tags": [
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Warsh Says Fed Must Act if Inflation Stays High",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-29T12:05:49+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-29/warsh-says-fed-must-act-if-inflation-stays-high-video",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Can the US Defy Fiscal Gravity?",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-08-29T14:13:00+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-29/can-the-us-defy-fiscal-gravity-video",
-          "tags": [
-            "fx",
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        }
-      ]
-    },
-    "commodity": {
       "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
@@ -360,16 +240,102 @@
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Iran War Exposes Limits of US Military Endurance",
-      "topPositiveTitle": "Iran War Exposes Limits of US Military Endurance",
+      "topNegativeTitle": "Dollar Debasement Backs Bull Case for Emerging Bonds, Funds Say",
+      "topPositiveTitle": "Dollar Debasement Backs Bull Case for Emerging Bonds, Funds Say",
       "items": [
         {
-          "title": "Iran War Exposes Limits of US Military Endurance",
+          "title": "Dollar Debasement Backs Bull Case for Emerging Bonds, Funds Say",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-29T12:22:14+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-29/iran-war-exposes-limits-of-us-military-endurance-video",
+          "publishedAt": "2026-08-30T12:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-30/dollar-debasement-backs-bull-case-for-emerging-bonds-funds-say",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        }
+      ]
+    },
+    "rates": {
+      "avgSentiment": 0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
+      "isStale": false,
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
+    },
+    "commodity": {
+      "avgSentiment": -0.066,
+      "negativeCount": 2,
+      "positiveCount": 1,
+      "neutralCount": 2,
+      "sourceCount": 2,
+      "itemCount": 5,
+      "isStale": false,
+      "topNegativeTitle": "NASA’s Roman Telescope Takes Aim at Cosmic Mysteries",
+      "topPositiveTitle": "Rep. Krishnamoorthi Warns Iran War Weakens US in Asia",
+      "items": [
+        {
+          "title": "NASA’s Roman Telescope Takes Aim at Cosmic Mysteries",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-30T12:28:56+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-30/nasa-s-roman-telescope-takes-aim-at-cosmic-mysteries-video",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "Chinese Solar Giant Longi Reports Deeper Net Loss in First Half",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-30T08:48:01+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-30/chinese-solar-giant-longi-reports-deeper-net-loss-in-first-half",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "Venezuela Oil Deal Raises Questions Over US Role",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-30T13:08:09+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-30/venezuela-oil-deal-raises-questions-over-us-role-video",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "日トルクメニスタン外相会談 資源・エネルギー分野の協力推進",
+          "source": "NHK 経済",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-30T12:08:03+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20260830de47312",
+          "tags": [
+            "commodity",
+            "market"
+          ],
+          "titleJa": "日トルクメニスタン外相会談 資源・エネルギー分野の協力推進"
+        },
+        {
+          "title": "Rep. Krishnamoorthi Warns Iran War Weakens US in Asia",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-30T14:41:06+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-30/rep-krishnamoorthi-warns-iran-war-weakens-us-in-asia-video",
           "tags": [
             "commodity",
             "geopolitical",
@@ -380,23 +346,35 @@
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.055,
+      "avgSentiment": 0.124,
       "negativeCount": 1,
-      "positiveCount": 2,
+      "positiveCount": 4,
       "neutralCount": 3,
       "sourceCount": 3,
-      "itemCount": 6,
+      "itemCount": 8,
       "isStale": false,
-      "topNegativeTitle": "Where the US-Canada Trade War Stands After Talks Fell Apart",
-      "topPositiveTitle": "Russia Tests Ukraine and NATO With Escalation",
+      "topNegativeTitle": "Shein’s $100 Billion Valuation Falls to $26 Billion",
+      "topPositiveTitle": "World Mostly Shrugs Off Bessent’s ‘D-Day’ Iran Sanctions Threat",
       "items": [
         {
-          "title": "Where the US-Canada Trade War Stands After Talks Fell Apart",
-          "source": "Bloomberg Economics",
+          "title": "Shein’s $100 Billion Valuation Falls to $26 Billion",
+          "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-29T11:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-29/where-the-us-canada-trade-war-stands-after-talks-fell-apart",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-08-30T14:04:51+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-30/shein-s-100-billion-valuation-falls-to-26-billion-video",
+          "tags": [
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "German Finance Minister to Press G20 on Iran War, Trade Fights",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-30T10:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-30/german-finance-minister-to-press-g20-on-iran-war-trade-fights",
           "tags": [
             "geopolitical",
             "macro_risk",
@@ -404,30 +382,17 @@
           ]
         },
         {
-          "title": "Iran War Exposes Limits of US Military Endurance",
-          "source": "Bloomberg Markets",
+          "title": "黄川田担当相 北方領土洋上慰霊に参加 「墓参を早期に実現」",
+          "source": "NHK 経済",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-29T12:22:14+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-29/iran-war-exposes-limits-of-us-military-endurance-video",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Russia Extends Diesel-Export Ban as Ukraine Ramps Up Attacks",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-29T11:16:40+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-29/russia-extends-diesel-export-ban-as-ukraine-ramps-up-attacks",
+          "publishedAt": "2026-08-30T08:18:00+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20260830de47263",
           "tags": [
             "geopolitical",
             "market"
-          ]
+          ],
+          "titleJa": "黄川田担当相 北方領土洋上慰霊に参加 「墓参を早期に実現」"
         },
         {
           "title": "障害者らが高市首相に平和への願い込めた手紙を手渡す",
@@ -444,14 +409,16 @@
           "titleJa": "障害者らが高市首相に平和への願い込めた手紙を手渡す"
         },
         {
-          "title": "Russia Tests Ukraine and NATO With Escalation",
+          "title": "Rep. Krishnamoorthi Warns Iran War Weakens US in Asia",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.33,
-          "publishedAt": "2026-08-29T13:41:58+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-29/russia-tests-ukraine-and-nato-with-escalation-video",
+          "publishedAt": "2026-08-30T14:41:06+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-30/rep-krishnamoorthi-warns-iran-war-weakens-us-in-asia-video",
           "tags": [
+            "commodity",
             "geopolitical",
+            "macro_risk",
             "market"
           ]
         }
@@ -466,7 +433,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 4,
+    "excludedCount": 3,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
