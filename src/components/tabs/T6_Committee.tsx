@@ -129,6 +129,7 @@ function HeroVerdictPanel({ a, h, isBuySuppressed }: { a: HoldingAnalysis; h: Ho
   // P4-A154: SAFE_MODE/DQ抑制中はBUY表示のみWAITへ変換（表示専用。a.decisionは変更しない）
   const rawDec = a.decision
   const dec    = suppressBuyDisplayDecision(rawDec, isBuySuppressed)
+  const decLabel = dec === 'INSUFFICIENT_EVIDENCE' ? '分析データ不足' : dec
   const debate = a.debate
   const cls    = dec === 'BUY' ? 'buy' : dec === 'SELL' ? 'sell' : dec === 'WAIT' ? 'wait' : 'hold'
   const confidencePct = Math.round(debate.confidence * 100)
@@ -163,7 +164,7 @@ function HeroVerdictPanel({ a, h, isBuySuppressed }: { a: HoldingAnalysis; h: Ho
             <span style={{ fontSize: 13, fontWeight: 700, color: `var(--color-${cls}-text)` }}>
               {h.code} {h.name}
             </span>
-            <span className={`badge badge--${cls}`}>{dec}</span>
+            <span className={`badge badge--${cls}`}>{decLabel}</span>
           </div>
           <div style={{
             fontSize: 20, fontWeight: 800,
