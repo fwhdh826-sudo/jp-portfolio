@@ -391,11 +391,14 @@ export function T4_IdealPf() {
   function StockRow({ row, isLast, isSuppressed }: { row: typeof stockPlan.rows[0]; isLast: boolean; isSuppressed: boolean }) {
     // P4-A152: SAFE_MODE/DQ抑制中はBUYバッジのみWATCHへ変換（表示専用。row.recommendationは変更しない）
     const isBuySuppressed = isSuppressed && row.recommendation === 'BUY'
-    const recSignal: Signal = suppressBuySignal(
-      row.recommendation === 'BUY'  ? 'BUY'  :
-      row.recommendation === 'SELL' ? 'SELL' : 'HOLD',
-      isSuppressed,
-    )
+    const isInsufficientEvidence = row.recommendation === 'INSUFFICIENT_EVIDENCE'
+    const recSignal: Signal | null = isInsufficientEvidence
+      ? null
+      : suppressBuySignal(
+          row.recommendation === 'BUY'  ? 'BUY'  :
+          row.recommendation === 'SELL' ? 'SELL' : 'HOLD',
+          isSuppressed,
+        )
 
     return (
       <div style={{
@@ -418,7 +421,26 @@ export function T4_IdealPf() {
             }}>
               {row.name}
             </span>
-            <SignalBadge signal={recSignal} size="sm" />
+            {isInsufficientEvidence ? (
+              <span
+                aria-label="シグナル: 分析データ不足"
+                style={{
+                  display: 'inline-flex', alignItems: 'center',
+                  padding: `${spacing[0.5]} ${spacing[1.5]}`,
+                  background: colors.waitBg, color: colors.waitText,
+                  border: `1px solid ${colors.waitBorder}`,
+                  borderRadius: radius.full,
+                  fontSize: '9px', fontWeight: typography.badge.fontWeight,
+                  fontFamily: typography.badge.fontFamily,
+                  letterSpacing: typography.badge.letterSpacing,
+                  lineHeight: '1', whiteSpace: 'nowrap', userSelect: 'none',
+                }}
+              >
+                分析データ不足
+              </span>
+            ) : recSignal ? (
+              <SignalBadge signal={recSignal} size="sm" />
+            ) : null}
             {row.locked && (
               <span style={{
                 ...typography.caption,
