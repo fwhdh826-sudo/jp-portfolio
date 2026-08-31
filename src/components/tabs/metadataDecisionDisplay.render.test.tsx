@@ -1,13 +1,11 @@
 import { describe, expect, it, vi } from 'vitest'
 import { renderToStaticMarkup } from 'react-dom/server'
 import type { AppState, Holding, HoldingAnalysis, StockDecision } from '../../types'
-import type { StockRecommendation } from '../../domain/optimization/stockPortfolio'
+import { buildStockPortfolioPlan } from '../../domain/optimization/stockPortfolio'
 import { createAppStoreInstanceForTest } from '../../store/useAppStore'
 
 const fixtures = vi.hoisted(() => ({
   state: null as AppState | null,
-  recommendation: 'HOLD' as StockRecommendation,
-  reason: '現状維持で監視。',
 }))
 
 vi.mock('../../store/useAppStore', async importOriginal => {
@@ -17,27 +15,6 @@ vi.mock('../../store/useAppStore', async importOriginal => {
     useAppStore: <Selected,>(selector: (state: AppState) => Selected): Selected => {
       if (fixtures.state === null) throw new Error('display fixture is not initialized')
       return selector(fixtures.state)
-    },
-  }
-})
-
-vi.mock('../../domain/optimization/stockPortfolio', async importOriginal => {
-  const actual = await importOriginal<typeof import('../../domain/optimization/stockPortfolio')>()
-  return {
-    ...actual,
-    buildStockPortfolioPlan: () => {
-      const row = {
-        code: '7203', name: '表示契約テスト銘柄', currentValue: 500_000, currentWeight: 1,
-        targetValue: 500_000, targetWeight: 1, diffValue: 0,
-        recommendation: fixtures.recommendation,
-        stance: fixtures.recommendation === 'SELL' ? 'reduce' as const : 'watch' as const,
-        locked: false, lockRemainingDays: 0, sellableAt: null,
-        reason: fixtures.reason, holdingStyle: '表示契約テスト', confidence: 0.6, score: 70,
-      }
-      return {
-        generatedAt: '2026-08-31T00:00:00.000Z', totalStockValue: 500_000,
-        lockCount: 0, sellableCount: 1, rows: [row], rebalanceTop: [row], swapIdeas: [],
-      }
     },
   }
 })
@@ -76,13 +53,33 @@ function makeAnalysis(decision: StockDecision): HoldingAnalysis {
   }
 }
 
-function setState(decision: StockDecision, suppressed = false) {
-  const analysis = makeAnalysis(decision)
+function setState(
+  decision: StockDecision,
+  suppressed = false,
+  holdingOverrides: Partial<Holding> = {},
+) {
+  const holding = { ...HOLDING, decision, ...holdingOverrides }
+  const analysis = { ...makeAnalysis(decision), code: holding.code }
+  setPortfolioState([holding], [analysis], suppressed)
+}
+
+function setPortfolioState(
+  holdings: Holding[],
+  analysis: HoldingAnalysis[],
+  suppressed = false,
+  grossCash = 0,
+) {
   fixtures.state = {
     ...BASE_APP_STATE,
     activeTab: 'T4',
-    holdings: [{ ...HOLDING, decision }],
-    analysis: [analysis],
+    holdings,
+    analysis,
+    cashAssumptions: grossCash > 0
+      ? {
+          source: 'MANUAL', grossCash, safetyReserve: 0, pendingOrderCash: 0,
+          updatedAt: NOW_ISO,
+        }
+      : BASE_APP_STATE.cashAssumptions,
     market: { ...BASE_APP_STATE.market, last_updated: NOW_ISO },
     system: {
       ...BASE_APP_STATE.system,
@@ -111,18 +108,51 @@ function renderT6Hero(decision: StockDecision, suppressed = false): string {
   return visibleText(html.slice(start, end))
 }
 
-function renderT4StockRow(recommendation: StockRecommendation, suppressed = false): { markup: string; text: string } {
-  fixtures.recommendation = recommendation
-  fixtures.reason = recommendation === 'INSUFFICIENT_EVIDENCE'
-    ? '分析データ不足。ファンダメンタル・テクニカル取得後に再評価。'
-    : '現状維持で監視。'
-  setState(recommendation === 'INSUFFICIENT_EVIDENCE' ? 'INSUFFICIENT_EVIDENCE' : recommendation === 'SELL' ? 'SELL' : 'HOLD', suppressed)
+function renderT4StockRow(
+  decision: StockDecision,
+  suppressed = false,
+  holdingOverrides: Partial<Holding> = {},
+): { html: string; markup: string; text: string } {
+  setState(decision, suppressed, holdingOverrides)
   const html = renderToStaticMarkup(<T4_IdealPf />)
-  const start = html.indexOf('表示契約テスト銘柄')
-  const end = html.indexOf(`${fixtures.reason} / スコア`, start)
+  const name = holdingOverrides.name ?? HOLDING.name
+  const start = html.indexOf(name)
+  const end = html.indexOf('/ スコア', start)
   expect(start).toBeGreaterThanOrEqual(0)
   expect(end).toBeGreaterThan(start)
-  const markup = html.slice(start, end + fixtures.reason.length)
+  const markup = html.slice(start, end)
+  return { html, markup, text: visibleText(markup) }
+}
+
+function renderT4SuppressedBuyRow(): { markup: string; text: string } {
+  const buyHolding: Holding = {
+    ...HOLDING, code: '7203', name: '既知BUYテスト銘柄', eval: 100_000,
+    sector: 'BUYテスト', decision: 'BUY',
+  }
+  const otherHolding: Holding = {
+    ...HOLDING, code: '9999', name: '配分比較銘柄', eval: 900_000,
+    sector: '比較テスト', decision: 'SELL',
+  }
+  const buyAnalysis: HoldingAnalysis = {
+    ...makeAnalysis('BUY'), code: buyHolding.code, totalScore: 95,
+  }
+  const otherAnalysis: HoldingAnalysis = {
+    ...makeAnalysis('SELL'), code: otherHolding.code,
+    fundamentalScore: 0, marketScore: 0, technicalScore: 0,
+    newsScore: 0, qualityScore: 0, totalScore: 10, confidence: 0, ev: 0,
+  }
+  setPortfolioState(
+    [buyHolding, otherHolding],
+    [buyAnalysis, otherAnalysis],
+    true,
+    9_000_000,
+  )
+  const html = renderToStaticMarkup(<T4_IdealPf />)
+  const start = html.indexOf(buyHolding.name)
+  const end = html.indexOf('/ スコア', start)
+  expect(start).toBeGreaterThanOrEqual(0)
+  expect(end).toBeGreaterThan(start)
+  const markup = html.slice(start, end)
   return { markup, text: visibleText(markup) }
 }
 
@@ -148,22 +178,40 @@ describe('T6 HeroVerdictPanel metadata display', () => {
 })
 
 describe('T4 StockRow metadata display', () => {
-  it('INSUFFICIENT_EVIDENCEを独立表示し、HOLD/BUY/SELL badgeへ渡さない', () => {
-    const { markup, text } = renderT4StockRow('INSUFFICIENT_EVIDENCE')
+  it('実runtimeのrowsからINSUFFICIENT_EVIDENCEを分析待ちsectionへ表示し、action badgeへ渡さない', () => {
+    const { html, markup, text } = renderT4StockRow('INSUFFICIENT_EVIDENCE', true)
+    expect(html).toContain('個別株 分析待ち')
+    expect(html).toContain('ファンダメンタル・テクニカル取得後に再評価')
+    expect(html).not.toContain('個別株 差分ランキング')
     expect(text).toContain('分析データ不足')
+    expect(text).toContain('表示契約テスト銘柄')
     expect(text).toContain('取得後に再評価')
     expect(markup.match(/aria-label="シグナル: 保有"/g) ?? []).toHaveLength(0)
     expect(markup.match(/aria-label="シグナル: 買い"/g) ?? []).toHaveLength(0)
     expect(markup.match(/aria-label="シグナル: 売り"/g) ?? []).toHaveLength(0)
+    expect(markup.match(/aria-label="シグナル: 抑制中"/g) ?? []).toHaveLength(0)
+
+    const plan = buildStockPortfolioPlan(
+      [{ ...HOLDING, decision: 'INSUFFICIENT_EVIDENCE' }],
+      [makeAnalysis('INSUFFICIENT_EVIDENCE')],
+      { targetTotalValue: 50_000 },
+    )
+    expect(plan.rows[0].recommendation).toBe('INSUFFICIENT_EVIDENCE')
+    expect(plan.rebalanceTop.some(row => row.code === HOLDING.code)).toBe(false)
   })
 
   it('既知のHOLDとSELLは従来のSignalBadgeを維持する', () => {
-    expect(renderT4StockRow('HOLD').markup).toContain('aria-label="シグナル: 保有"')
-    expect(renderT4StockRow('SELL').markup).toContain('aria-label="シグナル: 売り"')
+    const hold = renderT4StockRow('HOLD', false, { eval: 100_000 })
+    expect(hold.html).toContain('個別株 差分ランキング')
+    expect(hold.markup).toContain('aria-label="シグナル: 保有"')
+
+    const sell = renderT4StockRow('SELL', false, { eval: 500_000 })
+    expect(sell.html).toContain('個別株 差分ランキング')
+    expect(sell.markup).toContain('aria-label="シグナル: 売り"')
   })
 
-  it('抑制されたBUYは従来どおりSUPPRESSED badgeになる', () => {
-    const { markup, text } = renderT4StockRow('BUY', true)
+  it('実runtimeで抑制されたBUYは従来どおりSUPPRESSED badgeになる', () => {
+    const { markup, text } = renderT4SuppressedBuyRow()
     expect(markup).toContain('aria-label="シグナル: 抑制中"')
     expect(markup).not.toContain('aria-label="シグナル: 買い"')
     expect(text).toContain('抑制中')

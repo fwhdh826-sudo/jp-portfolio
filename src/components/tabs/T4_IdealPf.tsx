@@ -123,6 +123,9 @@ export function T4_IdealPf() {
     }),
     [holdings, analysis, plan.universe],
   )
+  const insufficientEvidenceRows = stockPlan.rows.filter(
+    row => row.recommendation === 'INSUFFICIENT_EVIDENCE',
+  )
 
   const { universe, constraints, jpFundRows, globalFundRows, actionSummary } = plan
 
@@ -795,6 +798,26 @@ export function T4_IdealPf() {
                 key={row.code}
                 row={row}
                 isLast={i === Math.min(stockPlan.rebalanceTop.length, 8) - 1}
+                isSuppressed={isSuppressed}
+              />
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* ── 個別株 分析待ち（非actionable） ── */}
+      {insufficientEvidenceRows.length > 0 && (
+        <div>
+          <SectionHeader
+            title="個別株 分析待ち"
+            caption="ファンダメンタル・テクニカル取得後に再評価"
+          />
+          <div style={cardStyle}>
+            {insufficientEvidenceRows.map((row, i) => (
+              <StockRow
+                key={row.code}
+                row={row}
+                isLast={i === insufficientEvidenceRows.length - 1}
                 isSuppressed={isSuppressed}
               />
             ))}
