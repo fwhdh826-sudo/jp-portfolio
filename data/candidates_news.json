@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-08-31T10:26:20.149148+09:00",
-  "sourceUpdatedAt": "2026-08-31T01:00:01+00:00",
+  "updatedAt": "2026-08-31T18:58:49.252387+09:00",
+  "sourceUpdatedAt": "2026-08-31T09:42:55+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -12,11 +12,11 @@
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Bessent Expects BOJ to ‘Do the Right Thing’ on Monetary Policy",
-      "topPositiveTitle": "Bessent Expects BOJ to ‘Do the Right Thing’ on Monetary Policy",
+      "topNegativeTitle": "Bessent Expects BOJ to ‘Do the Right Thing’ on Policy",
+      "topPositiveTitle": "Bessent Expects BOJ to ‘Do the Right Thing’ on Policy",
       "items": [
         {
-          "title": "Bessent Expects BOJ to ‘Do the Right Thing’ on Monetary Policy",
+          "title": "Bessent Expects BOJ to ‘Do the Right Thing’ on Policy",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
@@ -30,33 +30,46 @@
       ]
     },
     "jp_semiconductor": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Japan’s Industry Ministry Seeks Unprecedented $49 Billion Budget",
+      "topPositiveTitle": "Japan’s Industry Ministry Seeks Unprecedented $49 Billion Budget",
+      "items": [
+        {
+          "title": "Japan’s Industry Ministry Seeks Unprecedented $49 Billion Budget",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-31T06:34:24+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-31/japan-s-industry-ministry-seeks-unprecedented-49-billion-budget",
+          "tags": [
+            "jp_semiconductor",
+            "market"
+          ]
+        }
+      ]
     },
     "us_broad": {
-      "avgSentiment": -0.016,
-      "negativeCount": 1,
+      "avgSentiment": -0.083,
+      "negativeCount": 4,
       "positiveCount": 1,
       "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 8,
       "isStale": false,
-      "topNegativeTitle": "Gold Steadies After Tumbling as Warsh Spurs Fed Rate-Hike Bets",
-      "topPositiveTitle": "Asian Stocks Drop on Hawkish Warsh Tone, Oil Gains: Markets Wrap",
+      "topNegativeTitle": "Gold Extends Decline as Warsh Speech Raises Fed Rate-Hike Bets",
+      "topPositiveTitle": "Treasury Yields Dip, Stocks Steady as Oil Rises: Markets Wrap",
       "items": [
         {
-          "title": "Gold Steadies After Tumbling as Warsh Spurs Fed Rate-Hike Bets",
+          "title": "Gold Extends Decline as Warsh Speech Raises Fed Rate-Hike Bets",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
+          "sentimentScore": -0.67,
           "publishedAt": "2026-08-30T23:58:57+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-08-30/gold-steadies-after-tumbling-as-warsh-spurs-fed-rate-hike-bets",
           "tags": [
@@ -67,26 +80,38 @@
           ]
         },
         {
-          "title": "US Treasury Bars Reporters From Some Outlets From G20 Summit",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-30T21:37:13+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-30/us-treasury-bars-reporters-from-several-outlets-from-g20-meeting",
+          "title": "Warsh Speech Doesn't Change View: Von Rotberg",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-31T08:18:19+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-31/warsh-speech-doesn-t-change-view-von-rotberg-video",
           "tags": [
-            "geopolitical",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Richmond Fed’s Tom Barkin on the Surprisingly Resilient Real Economy",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-31T08:17:09+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-31/tom-barkin-on-the-surprisingly-resilient-real-economy-video",
+          "tags": [
             "macro_risk",
             "market",
+            "rates",
             "us_broad"
           ]
         },
         {
-          "title": "Bond Investors Wary After Warsh Speech Fuels Rate-Hike Wagers",
+          "title": "Odd Lots: Tom Barkin on the Resilient Real Economy (Podcast)",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-30T19:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-30/bond-investors-wary-after-warsh-fans-wagers-fed-poised-to-hike",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-31T08:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/audio/2026-08-31/odd-lots-tom-barkin-on-the-resilient-real-economy-podcast",
           "tags": [
             "market",
             "rates",
@@ -94,29 +119,14 @@
           ]
         },
         {
-          "title": "US Jobs Report Seen Backing Warsh View of Labor Market",
-          "source": "Bloomberg Economics",
+          "title": "Warsh Restores Some Fed Credibility: 3-Minutes MLIV",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-29T20:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-29/us-jobs-report-seen-backing-warsh-view-of-labor-market",
+          "publishedAt": "2026-08-31T08:01:38+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-31/warsh-restores-some-fed-credibility-3-minutes-mliv-video",
           "tags": [
             "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Asian Stocks Drop on Hawkish Warsh Tone, Oil Gains: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.25,
-          "publishedAt": "2026-08-30T22:13:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-30/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "fx",
-            "market",
-            "rates",
             "us_broad"
           ]
         }
@@ -135,33 +145,46 @@
       "items": []
     },
     "global_broad": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "gold": {
-      "avgSentiment": 0.0,
-      "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 0,
+      "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Gold Steadies After Tumbling as Warsh Spurs Fed Rate-Hike Bets",
-      "topPositiveTitle": "Gold Bulls Turn to Exotic Options, Spreads in ‘Orderly’ Rally",
+      "topNegativeTitle": "Horizons Middle East & Africa 8/31/2026",
+      "topPositiveTitle": "Horizons Middle East & Africa 8/31/2026",
       "items": [
         {
-          "title": "Gold Steadies After Tumbling as Warsh Spurs Fed Rate-Hike Bets",
+          "title": "Horizons Middle East & Africa 8/31/2026",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-31T07:21:20+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-31/horizons-middle-east-africa-8-31-2026-video",
+          "tags": [
+            "global_broad",
+            "market"
+          ]
+        }
+      ]
+    },
+    "gold": {
+      "avgSentiment": -0.67,
+      "negativeCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "Gold Extends Decline as Warsh Speech Raises Fed Rate-Hike Bets",
+      "topPositiveTitle": "Gold Extends Decline as Warsh Speech Raises Fed Rate-Hike Bets",
+      "items": [
+        {
+          "title": "Gold Extends Decline as Warsh Speech Raises Fed Rate-Hike Bets",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
+          "sentimentScore": -0.67,
           "publishedAt": "2026-08-30T23:58:57+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-08-30/gold-steadies-after-tumbling-as-warsh-spurs-fed-rate-hike-bets",
           "tags": [
@@ -169,18 +192,6 @@
             "market",
             "rates",
             "us_broad"
-          ]
-        },
-        {
-          "title": "Gold Bulls Turn to Exotic Options, Spreads in ‘Orderly’ Rally",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-30T13:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-30/gold-bulls-turn-to-exotic-options-spreads-in-orderly-rally",
-          "tags": [
-            "gold",
-            "market"
           ]
         }
       ]
@@ -198,49 +209,76 @@
       "items": []
     },
     "dividend": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
+      "avgSentiment": -0.33,
+      "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "China Dividend Stocks Reach 11-Year High at Expense of Weak Tech",
+      "topPositiveTitle": "China Dividend Stocks Reach 11-Year High at Expense of Weak Tech",
+      "items": [
+        {
+          "title": "China Dividend Stocks Reach 11-Year High at Expense of Weak Tech",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-31T09:00:51+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-31/china-dividend-stocks-reach-11-year-high-at-expense-of-weak-tech",
+          "tags": [
+            "dividend",
+            "macro_risk",
+            "market"
+          ]
+        }
+      ]
     },
     "macro_risk": {
-      "avgSentiment": 0.25,
-      "negativeCount": 0,
-      "positiveCount": 4,
-      "neutralCount": 4,
-      "sourceCount": 3,
-      "itemCount": 8,
+      "avgSentiment": -0.064,
+      "negativeCount": 3,
+      "positiveCount": 1,
+      "neutralCount": 1,
+      "sourceCount": 2,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "US Treasury Bars Reporters From Some Outlets From G20 Summit",
+      "topNegativeTitle": "China Dividend Stocks Reach 11-Year High at Expense of Weak Tech",
       "topPositiveTitle": "Japan’s Factory Output Edges Up Despite Mideast Headwinds",
       "items": [
         {
-          "title": "US Treasury Bars Reporters From Some Outlets From G20 Summit",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-30T21:37:13+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-30/us-treasury-bars-reporters-from-several-outlets-from-g20-meeting",
+          "title": "China Dividend Stocks Reach 11-Year High at Expense of Weak Tech",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-31T09:00:51+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-31/china-dividend-stocks-reach-11-year-high-at-expense-of-weak-tech",
           "tags": [
-            "geopolitical",
+            "dividend",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Richmond Fed’s Tom Barkin on the Surprisingly Resilient Real Economy",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-31T08:17:09+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-31/tom-barkin-on-the-surprisingly-resilient-real-economy-video",
+          "tags": [
             "macro_risk",
             "market",
+            "rates",
             "us_broad"
           ]
         },
         {
-          "title": "Japan’s NYK CEO on Alternative Routes Amid Iran War",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-30T21:00:06+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-30/japan-s-nyk-ceo-on-alternative-routes-amid-iran-war-video",
+          "title": "Turkey Growth Quickens in Second Quarter Despite War Stress",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-31T07:04:03+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-31/turkey-economy-quickens-in-second-quarter-despite-war-pressures",
           "tags": [
             "geopolitical",
             "macro_risk",
@@ -261,27 +299,13 @@
           ]
         },
         {
-          "title": "茂木外相 ICC赤根所長と電話会談 米国制裁めぐり意見交換か",
-          "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-28T10:30:06+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20260828de47073",
-          "tags": [
-            "macro_risk",
-            "market"
-          ],
-          "titleJa": "茂木外相 ICC赤根所長と電話会談 米国制裁めぐり意見交換か"
-        },
-        {
-          "title": "Latest Oil Market News and Analysis for Aug. 31",
-          "source": "Bloomberg Markets",
+          "title": "Japan’s Factory Output Edges Up Despite Mideast Headwinds",
+          "source": "Bloomberg Economics",
           "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-30T22:06:01+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-30/latest-oil-market-news-and-analysis-for-aug-31",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-30T23:59:23+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-30/japan-factory-output-edges-up-for-fourth-month-despite-mideast",
           "tags": [
-            "commodity",
             "geopolitical",
             "macro_risk",
             "market"
@@ -290,75 +314,59 @@
       ]
     },
     "fx": {
-      "avgSentiment": 0.083,
-      "negativeCount": 0,
+      "avgSentiment": 0.085,
+      "negativeCount": 1,
       "positiveCount": 1,
-      "neutralCount": 2,
+      "neutralCount": 0,
       "sourceCount": 1,
-      "itemCount": 3,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Taiwan’s Top Regulator Wants to Wean Taiwan’s Insurers Off US Dollar Dependence",
-      "topPositiveTitle": "Asian Stocks Drop on Hawkish Warsh Tone, Oil Gains: Markets Wrap",
+      "topNegativeTitle": "Yen’s Breach of 160 Level Puts Market on Intervention Watch",
+      "topPositiveTitle": "Emerging-Market Stocks Set for Best August in Two Decades",
       "items": [
         {
-          "title": "Taiwan’s Top Regulator Wants to Wean Taiwan’s Insurers Off US Dollar Dependence",
+          "title": "Yen’s Breach of 160 Level Puts Market on Intervention Watch",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-30T23:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-30/taiwan-s-top-regulator-wants-to-wean-taiwan-s-insurers-off-us-dollar-dependence",
+          "sentiment": "negative",
+          "sentimentScore": -0.5,
+          "publishedAt": "2026-08-31T03:00:51+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-31/yen-s-breach-of-160-to-dollar-puts-traders-on-intervention-watch",
           "tags": [
             "fx",
-            "geopolitical",
             "market"
           ]
         },
         {
-          "title": "Australian Dollar’s Top Forecasters Say Winning Run Likely Over",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-30T21:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-30/australian-dollar-s-top-forecasters-say-winning-run-likely-over",
-          "tags": [
-            "fx",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Asian Stocks Drop on Hawkish Warsh Tone, Oil Gains: Markets Wrap",
+          "title": "Emerging-Market Stocks Set for Best August in Two Decades",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.25,
-          "publishedAt": "2026-08-30T22:13:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-30/stock-market-today-dow-s-p-live-updates",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-31T05:28:37+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-31/emerging-market-stocks-fall-as-warsh-stokes-fed-rate-hike-bets",
           "tags": [
             "commodity",
             "fx",
-            "market",
-            "rates",
-            "us_broad"
+            "market"
           ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": -0.02,
-      "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 2,
+      "avgSentiment": 0.057,
+      "negativeCount": 3,
+      "positiveCount": 2,
+      "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 4,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Gold Steadies After Tumbling as Warsh Spurs Fed Rate-Hike Bets",
-      "topPositiveTitle": "Asian Stocks Drop on Hawkish Warsh Tone, Oil Gains: Markets Wrap",
+      "topNegativeTitle": "Gold Extends Decline as Warsh Speech Raises Fed Rate-Hike Bets",
+      "topPositiveTitle": "Treasury Yields Dip, Stocks Steady as Oil Rises: Markets Wrap",
       "items": [
         {
-          "title": "Gold Steadies After Tumbling as Warsh Spurs Fed Rate-Hike Bets",
+          "title": "Gold Extends Decline as Warsh Speech Raises Fed Rate-Hike Bets",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
+          "sentimentScore": -0.67,
           "publishedAt": "2026-08-30T23:58:57+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-08-30/gold-steadies-after-tumbling-as-warsh-spurs-fed-rate-hike-bets",
           "tags": [
@@ -369,20 +377,34 @@
           ]
         },
         {
-          "title": "Australian Dollar’s Top Forecasters Say Winning Run Likely Over",
+          "title": "Richmond Fed’s Tom Barkin on the Surprisingly Resilient Real Economy",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-30T21:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-30/australian-dollar-s-top-forecasters-say-winning-run-likely-over",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-31T08:17:09+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-08-31/tom-barkin-on-the-surprisingly-resilient-real-economy-video",
           "tags": [
-            "fx",
+            "macro_risk",
             "market",
-            "rates"
+            "rates",
+            "us_broad"
           ]
         },
         {
-          "title": "Bond Investors Wary After Warsh Speech Fuels Rate-Hike Wagers",
+          "title": "Odd Lots: Tom Barkin on the Resilient Real Economy (Podcast)",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-31T08:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/audio/2026-08-31/odd-lots-tom-barkin-on-the-resilient-real-economy-podcast",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Bond Investors Wary After Warsh Speech Fuels Rate-Hike Bets",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
@@ -395,45 +417,30 @@
           ]
         },
         {
-          "title": "Asian Stocks Drop on Hawkish Warsh Tone, Oil Gains: Markets Wrap",
+          "title": "GPIF Would Be Justified in Buying More Japan Debt: Analysts",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.25,
-          "publishedAt": "2026-08-30T22:13:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-30/stock-market-today-dow-s-p-live-updates",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-31T02:15:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-31/gpif-would-be-justified-in-buying-more-japan-bonds-say-analysts",
           "tags": [
-            "commodity",
-            "fx",
             "market",
-            "rates",
-            "us_broad"
+            "rates"
           ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.182,
+      "avgSentiment": 0.5,
       "negativeCount": 0,
       "positiveCount": 3,
-      "neutralCount": 2,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Venezuela Oil Deal Raises Questions Over US Role",
-      "topPositiveTitle": "Latest Oil Market News and Analysis for Aug. 31",
+      "topNegativeTitle": "日トルクメニスタン外相会談 資源・エネルギー分野の協力推進",
+      "topPositiveTitle": "Treasury Yields Dip, Stocks Steady as Oil Rises: Markets Wrap",
       "items": [
-        {
-          "title": "Venezuela Oil Deal Raises Questions Over US Role",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-30T13:08:09+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-30/venezuela-oil-deal-raises-questions-over-us-role-video",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
         {
           "title": "日トルクメニスタン外相会談 資源・エネルギー分野の協力推進",
           "source": "NHK 経済",
@@ -448,21 +455,6 @@
           "titleJa": "日トルクメニスタン外相会談 資源・エネルギー分野の協力推進"
         },
         {
-          "title": "Asian Stocks Drop on Hawkish Warsh Tone, Oil Gains: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.25,
-          "publishedAt": "2026-08-30T22:13:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-30/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "fx",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
           "title": "Latest Oil Market News and Analysis for Aug. 31",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
@@ -472,83 +464,56 @@
           "tags": [
             "commodity",
             "geopolitical",
-            "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Rep. Krishnamoorthi Warns Iran War Weakens US in Asia",
+          "title": "Emerging-Market Stocks Set for Best August in Two Decades",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-30T14:41:06+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-30/rep-krishnamoorthi-warns-iran-war-weakens-us-in-asia-video",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-31T05:28:37+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-31/emerging-market-stocks-fall-as-warsh-stokes-fed-rate-hike-bets",
           "tags": [
             "commodity",
-            "geopolitical",
-            "macro_risk",
+            "fx",
             "market"
+          ]
+        },
+        {
+          "title": "Treasury Yields Dip, Stocks Steady as Oil Rises: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-08-30T22:13:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-30/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "market",
+            "rates",
+            "us_broad"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.133,
+      "avgSentiment": 0.168,
       "negativeCount": 1,
-      "positiveCount": 4,
-      "neutralCount": 5,
-      "sourceCount": 3,
-      "itemCount": 10,
+      "positiveCount": 2,
+      "neutralCount": 1,
+      "sourceCount": 2,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Shein’s $100 Billion Valuation Falls to $26 Billion",
+      "topNegativeTitle": "Turkey Growth Quickens in Second Quarter Despite War Stress",
       "topPositiveTitle": "Japan’s Factory Output Edges Up Despite Mideast Headwinds",
       "items": [
         {
-          "title": "Shein’s $100 Billion Valuation Falls to $26 Billion",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-08-30T14:04:51+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-30/shein-s-100-billion-valuation-falls-to-26-billion-video",
-          "tags": [
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "Taiwan’s Top Regulator Wants to Wean Taiwan’s Insurers Off US Dollar Dependence",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-30T23:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-30/taiwan-s-top-regulator-wants-to-wean-taiwan-s-insurers-off-us-dollar-dependence",
-          "tags": [
-            "fx",
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "US Treasury Bars Reporters From Some Outlets From G20 Summit",
+          "title": "Turkey Growth Quickens in Second Quarter Despite War Stress",
           "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-30T21:37:13+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-30/us-treasury-bars-reporters-from-several-outlets-from-g20-meeting",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Japan’s NYK CEO on Alternative Routes Amid Iran War",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-30T21:00:06+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-30/japan-s-nyk-ceo-on-alternative-routes-amid-iran-war-video",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-08-31T07:04:03+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-31/turkey-economy-quickens-in-second-quarter-despite-war-pressures",
           "tags": [
             "geopolitical",
             "macro_risk",
@@ -562,6 +527,32 @@
           "sentimentScore": 0.0,
           "publishedAt": "2026-08-30T10:30:00+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-08-30/german-finance-minister-to-press-g20-on-iran-war-trade-fights",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Latest Oil Market News and Analysis for Aug. 31",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-08-30T22:06:01+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-30/latest-oil-market-news-and-analysis-for-aug-31",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Japan’s Factory Output Edges Up Despite Mideast Headwinds",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-08-30T23:59:23+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-30/japan-factory-output-edges-up-for-fourth-month-despite-mideast",
           "tags": [
             "geopolitical",
             "macro_risk",
