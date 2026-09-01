@@ -15,7 +15,7 @@ permissions:
 
 concurrency:
   group: intraday-patch
-  cancel-in-progress: true  # 昼間は最新実行を優先。古い実行はキャンセル可
+  cancel-in-progress: false  # 実行中の更新を後続 run から保護する
 
 jobs:
   # ── Tier 1 軽量更新（市場 + ニュースのみ）────────────────────────────────

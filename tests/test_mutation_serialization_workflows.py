@@ -76,15 +76,26 @@ def test_queue_max_contract_has_no_cancellation_or_unlocked_mutator():
     }
     assert document("intraday")["concurrency"] == {
         "group": "intraday-patch",
-        "cancel-in-progress": True,
+        "cancel-in-progress": False,
     }
     assert "concurrency" not in document("update")
-    for workflow in ("full", "intraday"):
-        current = source(workflow).split("concurrency:\n", 1)[1].split("\njobs:", 1)[0]
-        original = baseline(WORKFLOWS[workflow]).split("concurrency:\n", 1)[1].split(
-            "\njobs:", 1
-        )[0]
-        assert current == original
+    current = source("full").split("concurrency:\n", 1)[1].split("\njobs:", 1)[0]
+    original = baseline(WORKFLOWS["full"]).split("concurrency:\n", 1)[1].split(
+        "\njobs:", 1
+    )[0]
+    assert current == original
+
+
+def test_intraday_manual_and_scheduled_runs_share_non_cancelling_top_level_group():
+    parsed = document("intraday")
+
+    # PyYAML 1.1 parses the unquoted workflow key ``on`` as boolean true.
+    triggers = parsed.get("on", parsed.get(True))
+    assert set(triggers) == {"schedule", "workflow_dispatch"}
+    assert parsed["concurrency"] == {
+        "group": "intraday-patch",
+        "cancel-in-progress": False,
+    }
 
 
 @pytest.mark.parametrize(
@@ -188,7 +199,9 @@ def test_no_source_or_production_data_drift_outside_exact_scope():
         ".github/workflows/update-data.yml",
         ".github/workflows/intraday_patch.yml",
         "backend/engine/operation/mutation_admission.py",
+        "backend/engine/operation/ref_reanchor_gate.py",
         "backend/tests/test_operation/test_mutation_admission.py",
+        "backend/tests/test_operation/test_ref_reanchor_gate.py",
         "tests/test_mutation_serialization_workflows.py",
     }
     changed = subprocess.run(
