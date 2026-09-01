@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-09-01T10:56:30.917066+09:00",
-  "sourceUpdatedAt": "2026-09-01T01:34:57+00:00",
+  "updatedAt": "2026-09-01T17:49:27.864983+09:00",
+  "sourceUpdatedAt": "2026-09-01T08:46:52+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -12,17 +12,18 @@
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Bessent Tells Japan Officials Rate Hikes Needed, NHK Says",
-      "topPositiveTitle": "Bessent Tells Japan Officials Rate Hikes Needed, NHK Says",
+      "topNegativeTitle": "Japan’s Finance Chief Plays Down Bessent’s BOJ Rate Hike Push",
+      "topPositiveTitle": "Japan’s Finance Chief Plays Down Bessent’s BOJ Rate Hike Push",
       "items": [
         {
-          "title": "Bessent Tells Japan Officials Rate Hikes Needed, NHK Says",
-          "source": "Bloomberg Markets",
+          "title": "Japan’s Finance Chief Plays Down Bessent’s BOJ Rate Hike Push",
+          "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-08-31T23:00:38+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-31/bessent-tells-japan-officials-rate-hikes-are-needed-nhk-says-mthudgie",
+          "publishedAt": "2026-09-01T02:53:46+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-01/japan-s-finance-chief-plays-down-bessent-s-boj-rate-hike-push",
           "tags": [
+            "fx",
             "jp_broad",
             "market",
             "rates"
@@ -31,16 +32,28 @@
       ]
     },
     "jp_semiconductor": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
+      "avgSentiment": -0.165,
+      "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "South Korea’s Exports Gather Pace as Chip Boom Powers Ahead",
+      "topNegativeTitle": "Chip Tax Windfall Spurs South Korea’s Record Budget Expansion",
       "topPositiveTitle": "South Korea’s Exports Gather Pace as Chip Boom Powers Ahead",
       "items": [
+        {
+          "title": "Chip Tax Windfall Spurs South Korea’s Record Budget Expansion",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-01T03:01:54+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-01/chip-tax-windfall-spurs-south-korea-s-record-budget-expansion",
+          "tags": [
+            "jp_semiconductor",
+            "market"
+          ]
+        },
         {
           "title": "South Korea’s Exports Gather Pace as Chip Boom Powers Ahead",
           "source": "Bloomberg Economics",
@@ -56,70 +69,49 @@
       ]
     },
     "us_broad": {
-      "avgSentiment": -0.053,
-      "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 5,
+      "avgSentiment": -0.165,
+      "negativeCount": 2,
+      "positiveCount": 0,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 7,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Gold Holds Decline as Mideast Flare-Up Raises Fed Rate-Hike Bets",
-      "topPositiveTitle": "Stocks Fall as US-Iran Strikes Spur Rally in Oil: Markets Wrap",
+      "topNegativeTitle": "Adam Posen Thinks Things Could Get 'Messy' for the Fed",
+      "topPositiveTitle": "Adam Posen on Jackson Hole and Fed Chair Kevin Warsh's Speech",
       "items": [
         {
-          "title": "Gold Holds Decline as Mideast Flare-Up Raises Fed Rate-Hike Bets",
+          "title": "Adam Posen Thinks Things Could Get 'Messy' for the Fed",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-08-31T23:55:53+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-31/gold-holds-decline-as-mideast-flare-up-raises-fed-rate-hike-bets",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-01T08:13:49+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-01/adam-posen-thinks-things-could-get-messy-for-the-fed-video",
           "tags": [
-            "commodity",
-            "geopolitical",
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Treasuries, Asian Bonds Drop After Oil Advances: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.2,
-          "publishedAt": "2026-08-31T22:06:14+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-31/asian-stocks-to-fall-as-iran-flare-up-boosts-oil-markets-wrap",
-          "tags": [
-            "commodity",
-            "geopolitical",
             "market",
             "us_broad"
           ]
         },
         {
-          "title": "US 30-Year Bond Enters September on Its Worst Stretch Since 2006",
+          "title": "Odd Lots: Adam Posen on How It Could Get Messy for Fed (Podcast)",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-01T08:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/audio/2026-09-01/odd-lots-adam-posen-on-how-it-could-get-messy-for-fed-podcast",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Adam Posen on Jackson Hole and Fed Chair Kevin Warsh's Speech",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-01T01:06:47+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-01/us-30-year-bond-enters-september-on-its-worst-stretch-since-2006",
+          "publishedAt": "2026-09-01T08:00:01+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-01/adam-posen-on-jackson-hole-and-fed-chair-kevin-warsh-s-speech",
           "tags": [
             "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "How the Oil Price Is Pressuring Treasuries",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-01T01:02:42+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-01/how-the-oil-price-is-pressuring-treasuries-video",
-          "tags": [
-            "commodity",
-            "market",
-            "rates",
             "us_broad"
           ]
         },
@@ -138,23 +130,23 @@
       ]
     },
     "us_growth": {
-      "avgSentiment": -0.33,
-      "negativeCount": 1,
-      "positiveCount": 0,
+      "avgSentiment": 0.33,
+      "negativeCount": 0,
+      "positiveCount": 1,
       "neutralCount": 0,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Apple’s Ternus Takes the CEO Reins",
-      "topPositiveTitle": "Apple’s Ternus Takes the CEO Reins",
+      "topNegativeTitle": "Apple’s 2,275% Gain Under Cook Is Tough Act for Ternus to Follow",
+      "topPositiveTitle": "Apple’s 2,275% Gain Under Cook Is Tough Act for Ternus to Follow",
       "items": [
         {
-          "title": "Apple’s Ternus Takes the CEO Reins",
+          "title": "Apple’s 2,275% Gain Under Cook Is Tough Act for Ternus to Follow",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-31T22:10:47+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-31/apple-s-ternus-takes-the-ceo-reins-video",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-01T07:43:43+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-01/apple-s-2-275-gain-under-cook-is-tough-act-for-ternus-to-follow",
           "tags": [
             "market",
             "us_growth"
@@ -182,53 +174,24 @@
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Gold Holds Decline as Mideast Flare-Up Raises Fed Rate-Hike Bets",
-      "topPositiveTitle": "Gold Holds Decline as Mideast Flare-Up Raises Fed Rate-Hike Bets",
+      "topNegativeTitle": "Modi Urges Indians to Curb Gold Buying in Self-Reliance Push",
+      "topPositiveTitle": "Modi Urges Indians to Curb Gold Buying in Self-Reliance Push",
       "items": [
         {
-          "title": "Gold Holds Decline as Mideast Flare-Up Raises Fed Rate-Hike Bets",
-          "source": "Bloomberg Markets",
+          "title": "Modi Urges Indians to Curb Gold Buying in Self-Reliance Push",
+          "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.67,
-          "publishedAt": "2026-08-31T23:55:53+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-31/gold-holds-decline-as-mideast-flare-up-raises-fed-rate-hike-bets",
+          "publishedAt": "2026-09-01T07:05:39+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-01/modi-urges-indians-to-curb-gold-buying-in-self-reliance-push",
           "tags": [
-            "commodity",
-            "geopolitical",
             "gold",
-            "market",
-            "rates",
-            "us_broad"
+            "market"
           ]
         }
       ]
     },
     "reit": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
-      "isStale": false,
-      "topNegativeTitle": "Ares Raises $3.8 Billion for Japan-Focused Logistics Fund",
-      "topPositiveTitle": "Ares Raises $3.8 Billion for Japan-Focused Logistics Fund",
-      "items": [
-        {
-          "title": "Ares Raises $3.8 Billion for Japan-Focused Logistics Fund",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-31T22:12:29+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-31/ares-raises-3-8-billion-for-japan-focused-logistics-fund",
-          "tags": [
-            "market",
-            "reit"
-          ]
-        }
-      ]
-    },
-    "dividend": {
       "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
@@ -240,25 +203,91 @@
       "topPositiveTitle": null,
       "items": []
     },
-    "macro_risk": {
-      "avgSentiment": 0.291,
+    "dividend": {
+      "avgSentiment": 0.33,
       "negativeCount": 0,
-      "positiveCount": 5,
-      "neutralCount": 3,
-      "sourceCount": 2,
-      "itemCount": 8,
+      "positiveCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "US Funds Alcoa Gallium Plant in Australia to Cut China Reliance",
+      "topNegativeTitle": "Chinese Banks Extend Record-Breaking Rally on Earnings, Dividend",
+      "topPositiveTitle": "Chinese Banks Extend Record-Breaking Rally on Earnings, Dividend",
+      "items": [
+        {
+          "title": "Chinese Banks Extend Record-Breaking Rally on Earnings, Dividend",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-01T08:07:10+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-01/chinese-banks-extend-record-breaking-rally-on-earnings-dividend",
+          "tags": [
+            "dividend",
+            "market"
+          ]
+        }
+      ]
+    },
+    "macro_risk": {
+      "avgSentiment": 0.096,
+      "negativeCount": 1,
+      "positiveCount": 2,
+      "neutralCount": 4,
+      "sourceCount": 2,
+      "itemCount": 7,
+      "isStale": false,
+      "topNegativeTitle": "What Could Stop the Bond Market Selloff?: 3-Minutes MLIV",
       "topPositiveTitle": "Canada’s Carney Tariff Retaliation Will Hurt Most Industries, Study Warns",
       "items": [
         {
-          "title": "US Funds Alcoa Gallium Plant in Australia to Cut China Reliance",
+          "title": "What Could Stop the Bond Market Selloff?: 3-Minutes MLIV",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-01T07:50:51+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-01/what-could-stop-the-bond-market-selloff-3-minutes-mliv-video",
+          "tags": [
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "India’s Economy Grows Faster Than Expected at 7.8%",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-01T08:20:49+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-01/india-s-economy-grows-faster-than-expected-at-7-8-video",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Israel Faces Rate Dilemma as War Settles and Elections Loom",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-01T07:42:24+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-01/israel-faces-rate-dilemma-as-war-settles-and-elections-loom",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Europe at Risk of Gas Supply Shortage, Saxo Bank Says",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-31T23:16:35+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-31/us-funds-alcoa-gallium-plant-in-australia-to-cut-china-reliance",
+          "publishedAt": "2026-09-01T07:10:07+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-01/europe-at-risk-of-gas-supply-shortage-saxo-bank-says-video",
           "tags": [
+            "commodity",
             "geopolitical",
             "macro_risk",
             "market"
@@ -266,53 +295,11 @@
         },
         {
           "title": "UK Shop Price Inflation Hits Two-Year High After Energy Spike",
-          "source": "Bloomberg Markets",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
           "publishedAt": "2026-08-31T23:01:00+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-08-31/uk-shop-price-inflation-hits-two-year-high-after-energy-spike",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Nigeria Economy Grows at Fastest Pace in Five Years on Oil Boom",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-31T12:54:23+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-31/nigeria-economy-grows-at-fastest-pace-in-five-years-on-oil-boom",
-          "tags": [
-            "commodity",
-            "fx",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Japan’s Companies Boost Capital Investment as Profits Surge",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-01T00:05:47+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-01/japan-s-companies-boost-capital-investment-as-profits-surge",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Bessent Faces G20 Credibility Test Amid Interventions",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-08-31T22:57:17+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-08-31/bessent-faces-g20-credibility-test-amid-interventions-video",
           "tags": [
             "commodity",
             "geopolitical",
@@ -323,118 +310,126 @@
       ]
     },
     "fx": {
-      "avgSentiment": -0.335,
-      "negativeCount": 1,
-      "positiveCount": 0,
-      "neutralCount": 1,
+      "avgSentiment": -0.0,
+      "negativeCount": 2,
+      "positiveCount": 1,
+      "neutralCount": 0,
       "sourceCount": 2,
-      "itemCount": 2,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Mercedes China Dealer’s Dollar Bond Slumps, Trades Like Junk",
-      "topPositiveTitle": "Nigeria Economy Grows at Fastest Pace in Five Years on Oil Boom",
+      "topNegativeTitle": "HDFC Bank’s Bonds Fall to Record Low After CEO’s Shock Exit",
+      "topPositiveTitle": "RBI’s Short Dollar Book Surges to Record on Diaspora Deposits",
       "items": [
         {
-          "title": "Mercedes China Dealer’s Dollar Bond Slumps, Trades Like Junk",
+          "title": "HDFC Bank’s Bonds Fall to Record Low After CEO’s Shock Exit",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.67,
-          "publishedAt": "2026-09-01T01:34:57+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-01/mercedes-china-dealer-s-dollar-bond-slumps-trades-like-junk",
+          "publishedAt": "2026-09-01T07:19:10+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-01/hdfc-bank-s-bonds-fall-to-record-low-after-ceo-s-shock-exit",
           "tags": [
             "fx",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Nigeria Economy Grows at Fastest Pace in Five Years on Oil Boom",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-31T12:54:23+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-31/nigeria-economy-grows-at-fastest-pace-in-five-years-on-oil-boom",
-          "tags": [
-            "commodity",
-            "fx",
-            "geopolitical",
-            "macro_risk",
             "market"
           ]
-        }
-      ]
-    },
-    "rates": {
-      "avgSentiment": -0.106,
-      "negativeCount": 5,
-      "positiveCount": 3,
-      "neutralCount": 3,
-      "sourceCount": 2,
-      "itemCount": 11,
-      "isStale": false,
-      "topNegativeTitle": "Mercedes China Dealer’s Dollar Bond Slumps, Trades Like Junk",
-      "topPositiveTitle": "Stocks Fall as US-Iran Strikes Spur Rally in Oil: Markets Wrap",
-      "items": [
+        },
         {
-          "title": "Mercedes China Dealer’s Dollar Bond Slumps, Trades Like Junk",
-          "source": "Bloomberg Markets",
+          "title": "Japan’s Finance Chief Plays Down Bessent’s BOJ Rate Hike Push",
+          "source": "Bloomberg Economics",
           "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-09-01T01:34:57+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-01/mercedes-china-dealer-s-dollar-bond-slumps-trades-like-junk",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-01T02:53:46+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-01/japan-s-finance-chief-plays-down-bessent-s-boj-rate-hike-push",
           "tags": [
             "fx",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Gold Holds Decline as Mideast Flare-Up Raises Fed Rate-Hike Bets",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-08-31T23:55:53+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-31/gold-holds-decline-as-mideast-flare-up-raises-fed-rate-hike-bets",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Malaysia Bonds Lag Peers in August on Supply, Rate-Hike Concerns",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-31T23:49:48+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-31/malaysia-bonds-lag-peers-in-august-on-supply-rate-hike-concerns",
-          "tags": [
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Bessent Tells Japan Officials Rate Hikes Needed, NHK Says",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-08-31T23:00:38+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-31/bessent-tells-japan-officials-rate-hikes-are-needed-nhk-says-mthudgie",
-          "tags": [
             "jp_broad",
             "market",
             "rates"
           ]
         },
         {
-          "title": "Japan Bonds Face Test at 10-Year Sale as Yield Approaches 3%",
-          "source": "Bloomberg Markets",
+          "title": "RBI’s Short Dollar Book Surges to Record on Diaspora Deposits",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-09-01T05:38:39+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-01/rbi-s-short-dollar-book-surges-to-record-on-diaspora-deposits",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        }
+      ]
+    },
+    "rates": {
+      "avgSentiment": 0.055,
+      "negativeCount": 1,
+      "positiveCount": 2,
+      "neutralCount": 3,
+      "sourceCount": 2,
+      "itemCount": 6,
+      "isStale": false,
+      "topNegativeTitle": "Japan’s Finance Chief Plays Down Bessent’s BOJ Rate Hike Push",
+      "topPositiveTitle": "Rise in Real Yields Has Further to Run, Nuveen Says (Video)",
+      "items": [
+        {
+          "title": "Japan’s Finance Chief Plays Down Bessent’s BOJ Rate Hike Push",
+          "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-08-31T22:00:12+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-31/japan-bonds-face-test-at-10-year-sale-as-yield-approaches-3",
+          "publishedAt": "2026-09-01T02:53:46+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-01/japan-s-finance-chief-plays-down-bessent-s-boj-rate-hike-push",
+          "tags": [
+            "fx",
+            "jp_broad",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Israel Faces Rate Dilemma as War Settles and Elections Loom",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-01T07:42:24+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-01/israel-faces-rate-dilemma-as-war-settles-and-elections-loom",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Japan Ministries Seek Record Budget as Yields Hit 30-Year High",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-01T01:33:10+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-01/japan-s-kiuchi-says-record-budget-requests-need-broad-comparison",
+          "tags": [
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Stocks Waver as Yields Climb on Rate Hike Bets: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-08-31T22:06:14+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-31/asian-stocks-to-fall-as-iran-flare-up-boosts-oil-markets-wrap",
+          "tags": [
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Rise in Real Yields Has Further to Run, Nuveen Says (Video)",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-01T08:46:52+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-01/rise-in-real-yields-has-further-to-run-nuveen-says-video",
           "tags": [
             "market",
             "rates"
@@ -443,63 +438,59 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.036,
-      "negativeCount": 1,
-      "positiveCount": 3,
+      "avgSentiment": 0.134,
+      "negativeCount": 0,
+      "positiveCount": 1,
       "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 8,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Gold Holds Decline as Mideast Flare-Up Raises Fed Rate-Hike Bets",
-      "topPositiveTitle": "Stocks Fall as US-Iran Strikes Spur Rally in Oil: Markets Wrap",
+      "topNegativeTitle": "India’s Economy Grows Faster Than Expected at 7.8%",
+      "topPositiveTitle": "LNG WRAP: Asian LNG Climbs to Five-Month High on Hormuz Concerns",
       "items": [
         {
-          "title": "Gold Holds Decline as Mideast Flare-Up Raises Fed Rate-Hike Bets",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-08-31T23:55:53+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-31/gold-holds-decline-as-mideast-flare-up-raises-fed-rate-hike-bets",
+          "title": "India’s Economy Grows Faster Than Expected at 7.8%",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-01T08:20:49+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-01/india-s-economy-grows-faster-than-expected-at-7-8-video",
           "tags": [
             "commodity",
             "geopolitical",
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
+            "macro_risk",
+            "market"
           ]
         },
         {
-          "title": "Treasuries, Asian Bonds Drop After Oil Advances: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.2,
-          "publishedAt": "2026-08-31T22:06:14+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-31/asian-stocks-to-fall-as-iran-flare-up-boosts-oil-markets-wrap",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "How the Oil Price Is Pressuring Treasuries",
+          "title": "Two Oil Supertankers Hit by Projectiles in Hormuz, Marisks Says",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-01T01:02:42+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-01/how-the-oil-price-is-pressuring-treasuries-video",
+          "publishedAt": "2026-09-01T08:06:09+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-01/two-oil-supertankers-hit-by-projectiles-in-hormuz-marisks-says",
           "tags": [
             "commodity",
-            "market",
-            "rates",
-            "us_broad"
+            "market"
+          ]
+        },
+        {
+          "title": "Europe at Risk of Gas Supply Shortage, Saxo Bank Says",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-01T07:10:07+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-01/europe-at-risk-of-gas-supply-shortage-saxo-bank-says-video",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
           ]
         },
         {
           "title": "UK Shop Price Inflation Hits Two-Year High After Energy Spike",
-          "source": "Bloomberg Markets",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
           "publishedAt": "2026-08-31T23:01:00+00:00",
@@ -512,71 +503,67 @@
           ]
         },
         {
-          "title": "Nigeria Economy Grows at Fastest Pace in Five Years on Oil Boom",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-31T12:54:23+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-31/nigeria-economy-grows-at-fastest-pace-in-five-years-on-oil-boom",
+          "title": "LNG WRAP: Asian LNG Climbs to Five-Month High on Hormuz Concerns",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-09-01T08:00:58+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-01/lng-wrap-asian-lng-climbs-to-five-month-high-on-hormuz-concerns",
           "tags": [
             "commodity",
-            "fx",
-            "geopolitical",
-            "macro_risk",
             "market"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.107,
-      "negativeCount": 1,
-      "positiveCount": 5,
-      "neutralCount": 6,
+      "avgSentiment": 0.055,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 5,
       "sourceCount": 3,
-      "itemCount": 12,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Gold Holds Decline as Mideast Flare-Up Raises Fed Rate-Hike Bets",
-      "topPositiveTitle": "Kenyan Inflation Rate Rises Faster Than Expectations in August",
+      "topNegativeTitle": "India’s Economy Grows Faster Than Expected at 7.8%",
+      "topPositiveTitle": "UK House Prices Edged Back Up in August, Nationwide Says",
       "items": [
         {
-          "title": "Gold Holds Decline as Mideast Flare-Up Raises Fed Rate-Hike Bets",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-08-31T23:55:53+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-31/gold-holds-decline-as-mideast-flare-up-raises-fed-rate-hike-bets",
+          "title": "India’s Economy Grows Faster Than Expected at 7.8%",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-01T08:20:49+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-01/india-s-economy-grows-faster-than-expected-at-7-8-video",
           "tags": [
             "commodity",
             "geopolitical",
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
+            "macro_risk",
+            "market"
           ]
         },
         {
-          "title": "Treasuries, Asian Bonds Drop After Oil Advances: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.2,
-          "publishedAt": "2026-08-31T22:06:14+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-31/asian-stocks-to-fall-as-iran-flare-up-boosts-oil-markets-wrap",
+          "title": "Israel Faces Rate Dilemma as War Settles and Elections Loom",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-01T07:42:24+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-01/israel-faces-rate-dilemma-as-war-settles-and-elections-loom",
           "tags": [
-            "commodity",
             "geopolitical",
+            "macro_risk",
             "market",
-            "us_broad"
+            "rates"
           ]
         },
         {
-          "title": "US Funds Alcoa Gallium Plant in Australia to Cut China Reliance",
+          "title": "Europe at Risk of Gas Supply Shortage, Saxo Bank Says",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-31T23:16:35+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-31/us-funds-alcoa-gallium-plant-in-australia-to-cut-china-reliance",
+          "publishedAt": "2026-09-01T07:10:07+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-01/europe-at-risk-of-gas-supply-shortage-saxo-bank-says-video",
           "tags": [
+            "commodity",
             "geopolitical",
             "macro_risk",
             "market"
@@ -584,7 +571,7 @@
         },
         {
           "title": "UK Shop Price Inflation Hits Two-Year High After Energy Spike",
-          "source": "Bloomberg Markets",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
           "publishedAt": "2026-08-31T23:01:00+00:00",
@@ -597,19 +584,17 @@
           ]
         },
         {
-          "title": "Nigeria Economy Grows at Fastest Pace in Five Years on Oil Boom",
-          "source": "Bloomberg Economics",
+          "title": "茂木外相がポーランド外相と会談 ウクライナ復興推進へ連携",
+          "source": "NHK 経済",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-08-31T12:54:23+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-31/nigeria-economy-grows-at-fastest-pace-in-five-years-on-oil-boom",
+          "publishedAt": "2026-09-01T00:02:00+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20260901de47545",
           "tags": [
-            "commodity",
-            "fx",
             "geopolitical",
-            "macro_risk",
             "market"
-          ]
+          ],
+          "titleJa": "茂木外相がポーランド外相と会談 ウクライナ復興推進へ連携"
         }
       ]
     }
