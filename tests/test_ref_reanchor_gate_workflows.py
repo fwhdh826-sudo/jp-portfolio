@@ -1,7 +1,7 @@
 """OPS-ROUTINES-3-R2 workflow placement and frozen-byte tests."""
 
+import hashlib
 from pathlib import Path
-import subprocess
 
 import pytest
 import yaml
@@ -10,12 +10,29 @@ from backend.engine.operation import mutation_admission
 
 
 ROOT = Path(__file__).parents[1]
-BASE = "0726ea9577ac72ff4d9c13534ebef36cd2b049db"
 COMMAND = "python3 -m backend.engine.operation.ref_reanchor_gate"
 WORKFLOWS = {
     "full": ROOT / ".github/workflows/full_batch.yml",
     "update": ROOT / ".github/workflows/update-data.yml",
     "intraday": ROOT / ".github/workflows/intraday_patch.yml",
+}
+EXPECTED_TRIGGER_BLOCK_SHA256 = {
+    "full": "a75d60af45bee4950e1ea65183b762ff8879cc51ba41824b56e150550168e2df",
+    "update": "75c248bccacfb3f4413c70e126a868d5483c571b6b5e80f2a758e8422a2d758b",
+    "intraday": "bb70ed647bf1f04dd285d15be52231c087ad53bc9ad0f88fddbda69a01bc0936",
+}
+EXPECTED_COMMIT_AND_PAGES_BLOCK_SHA256 = {
+    ("full", "Commit and push"): "8bf450a78161c1db43c031ad3054262b0bc7899501c4944ab71fbe2e9a5ce7b6",
+    ("full", "Dispatch Pages for pushed data"): "12ad918d41af46a7e455d24975651c124692b3ce08186cf69dfe2a04cbb23339",
+    ("update", "Commit and push"): "6f678dfdffb605c0ab16a18a1de0146ff8870baec8906a92ade1e2272dff6a7a",
+    ("update", "Dispatch Pages for pushed data"): "12ad918d41af46a7e455d24975651c124692b3ce08186cf69dfe2a04cbb23339",
+    ("intraday", "Commit and push"): "47d183813f118d13fc371bd7eb9fc81b22fae8c35fdb0726a0b2bbbef7ab51b6",
+    ("intraday", "Dispatch Pages for pushed data"): "68a52f52e2127dfd32c479dc38a6649417044c0100d67e2a003c467e474b9371",
+}
+EXPECTED_PRE_FETCH_BLOCK_SHA256 = {
+    "full": "e4c97c9ffa279156567bee9349ccfb33a316723fceafb67c30a3857b49939358",
+    "update": "daaec2170311666c3514be134c8933f1b04a8cfa634b32685c6eb8c455d3d3de",
+    "intraday": "8cf7b4d2e4e0ef7091a19c02b33e688ee81bb9582d6740fb6c3e18bd5fd9601a",
 }
 
 
@@ -23,15 +40,8 @@ def source(workflow: str) -> str:
     return WORKFLOWS[workflow].read_text(encoding="utf-8")
 
 
-def baseline(path: Path) -> str:
-    relative = path.relative_to(ROOT).as_posix()
-    return subprocess.run(
-        ["git", "show", f"{BASE}:{relative}"],
-        cwd=ROOT,
-        check=True,
-        capture_output=True,
-        text=True,
-    ).stdout
+def frozen_sha256(text: str) -> str:
+    return hashlib.sha256(text.encode()).hexdigest()
 
 
 def step_block(text: str, name: str) -> str:
@@ -139,10 +149,7 @@ def test_manual_dispatch_trigger_is_frozen_and_cannot_skip_reanchor(workflow):
     current_trigger = source(workflow).split("on:\n", 1)[1].split(
         "\npermissions:", 1
     )[0]
-    original_trigger = baseline(WORKFLOWS[workflow]).split("on:\n", 1)[1].split(
-        "\npermissions:", 1
-    )[0]
-    assert current_trigger == original_trigger
+    assert frozen_sha256(current_trigger) == EXPECTED_TRIGGER_BLOCK_SHA256[workflow]
     assert "workflow_dispatch:" in current_trigger
     step_name = (
         "Re-anchor to latest remote tip"
@@ -161,17 +168,17 @@ def test_manual_dispatch_trigger_is_frozen_and_cannot_skip_reanchor(workflow):
 def test_existing_commit_push_and_dispatch_pages_bytes_are_frozen(
     workflow, step_name
 ):
-    assert step_block(source(workflow), step_name) == step_block(
-        baseline(WORKFLOWS[workflow]), step_name
+    assert frozen_sha256(step_block(source(workflow), step_name)) == (
+        EXPECTED_COMMIT_AND_PAGES_BLOCK_SHA256[(workflow, step_name)]
     )
 
 
 @pytest.mark.parametrize("workflow", WORKFLOWS)
 def test_existing_p1_step_bytes_are_frozen(workflow):
-    assert step_block(
-        source(workflow), "Evaluate mutation admission (pre_fetch)"
-    ) == step_block(
-        baseline(WORKFLOWS[workflow]), "Evaluate mutation admission (pre_fetch)"
+    assert frozen_sha256(
+        step_block(source(workflow), "Evaluate mutation admission (pre_fetch)")
+    ) == (
+        EXPECTED_PRE_FETCH_BLOCK_SHA256[workflow]
     )
 
 
