@@ -105,8 +105,19 @@ def _target_branch(ref: str | None, *, cwd: Path) -> str | None:
     return branch
 
 
-def _is_data_path(path: str) -> bool:
-    return path.startswith("data/") or path.startswith("public/data/")
+def _is_generated_data_path(path: str) -> bool:
+    """Return whether *path* is a production-generated JSON artifact.
+
+    Production workflows write JSON beneath ``data/`` and ``public/data/``.
+    Those directories also contain executable source and contract documentation,
+    so directory membership alone is not sufficient to permit a re-anchor.
+    Unknown extensions deliberately fail closed.
+    """
+
+    in_generated_tree = path.startswith("data/") or path.startswith(
+        "public/data/"
+    )
+    return in_generated_tree and path.endswith(".json")
 
 
 def evaluate(
@@ -207,7 +218,7 @@ def evaluate(
         for entry in diff.stdout.split(b"\0")
         if entry
     )
-    if any(not _is_data_path(path) for path in drift_paths):
+    if any(not _is_generated_data_path(path) for path in drift_paths):
         return _reject(
             "source_drift_detected",
             event_sha=event_sha,

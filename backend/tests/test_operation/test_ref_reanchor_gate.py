@@ -83,6 +83,14 @@ def push_rename(writer: Path, source: str, destination: str) -> str:
     return sha
 
 
+def push_delete(writer: Path, relative: str) -> str:
+    git(writer, "rm", relative)
+    git(writer, "commit", "-m", f"delete {relative}")
+    sha = git(writer, "rev-parse", "HEAD")
+    git(writer, "push", "origin", BRANCH)
+    return sha
+
+
 def establish_file(writer: Path, checkout: Path, relative: str) -> str:
     push_file(writer, relative, '{"value":1}\n')
     git(checkout, "pull", "--ff-only", "origin", BRANCH)
@@ -127,11 +135,65 @@ def test_public_data_only_drift_is_allowed(repositories):
 
 
 @pytest.mark.parametrize(
+    "relative",
+    [
+        "data/update_market.py",
+        "data/candidate_funnel_batch.py",
+        "public/data/tool.py",
+        "data/tool.ts",
+        "data/tool.tsx",
+        "data/tool.js",
+        "data/tool.mjs",
+        "data/tool.cjs",
+        "data/tool.sh",
+        "data/config.yml",
+        "data/config.yaml",
+        "data/unknown.generated",
+        "public/data/contracts/README.md",
+    ],
+)
+def test_source_like_or_unknown_data_path_is_rejected(repositories, relative):
+    writer, checkout, _ = repositories
+    old_head = git(checkout, "rev-parse", "HEAD")
+    remote_tip = push_file(writer, relative, "source or config\n")
+
+    result = gate.evaluate(env=environment(checkout), cwd=checkout)
+
+    assert result.exit_code == 2
+    assert result.reason == "source_drift_detected"
+    assert result.remote_tip == remote_tip
+    assert result.drift_paths == (relative,)
+    assert git(checkout, "rev-parse", "HEAD") == old_head
+
+
+def test_json_plus_python_drift_rejects_entire_advance(repositories):
+    writer, checkout, _ = repositories
+    old_head = git(checkout, "rev-parse", "HEAD")
+    commit_file(writer, "data/example.json", "{}\n")
+    remote_tip = commit_file(writer, "data/update_market.py", "source\n")
+    git(writer, "push", "origin", BRANCH)
+
+    result = gate.evaluate(env=environment(checkout), cwd=checkout)
+
+    assert result.exit_code == 2
+    assert result.reason == "source_drift_detected"
+    assert result.remote_tip == remote_tip
+    assert set(result.drift_paths) == {
+        "data/example.json",
+        "data/update_market.py",
+    }
+    assert git(checkout, "rev-parse", "HEAD") == old_head
+
+
+@pytest.mark.parametrize(
     ("source", "destination"),
     [
         ("src/foo.py", "data/foo.py"),
         ("src/foo.py", "public/data/foo.py"),
         ("data/foo.json", "src/foo.json"),
+        ("data/foo.py", "data/bar.py"),
+        ("data/foo.json", "data/foo.py"),
+        ("data/foo.py", "data/foo.json"),
     ],
 )
 def test_rename_crossing_data_allowlist_is_source_drift(
@@ -173,6 +235,32 @@ def test_rename_within_data_allowlist_is_fast_forwarded(
     assert set(result.drift_paths) == {source, destination}
     assert git(checkout, "rev-parse", "HEAD") == remote_tip
     assert git(checkout, "status", "--porcelain") == ""
+
+
+@pytest.mark.parametrize(
+    ("relative", "allowed"),
+    [
+        ("data/deleted.py", False),
+        ("public/data/deleted.yml", False),
+        ("data/deleted.json", True),
+        ("public/data/deleted.json", True),
+    ],
+)
+def test_delete_uses_generated_json_allowlist(repositories, relative, allowed):
+    writer, checkout, _ = repositories
+    old_head = establish_file(writer, checkout, relative)
+    remote_tip = push_delete(writer, relative)
+
+    result = gate.evaluate(env=environment(checkout), cwd=checkout)
+
+    assert result.exit_code == (0 if allowed else 2)
+    assert result.reason == (
+        "data_only_drift_fast_forwarded" if allowed else "source_drift_detected"
+    )
+    assert result.drift_paths == (relative,)
+    assert git(checkout, "rev-parse", "HEAD") == (
+        remote_tip if allowed else old_head
+    )
 
 
 def test_empty_commit_drift_is_fast_forwarded(repositories):
