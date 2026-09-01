@@ -3,22 +3,22 @@
     "schemaVersion": "regime-state-1",
     "kind": "live_regime_state",
     "not_for_trading": false,
-    "generatedAt": "2026-09-01T01:56:30.993092+00:00",
+    "generatedAt": "2026-09-01T15:30:05.459143+00:00",
     "source": "public/data/market_intel.json"
   },
   "regime_state": {
-    "timestamp": "2026-09-01T01:56:31.014738+00:00",
-    "current_regime": "bull_calm",
+    "timestamp": "2026-09-01T15:30:05.481313+00:00",
+    "current_regime": "uncertain",
     "consensus": 0.6666666666666666,
     "raw_consensus": 0.6666666666666666,
-    "confidence": 1.0,
+    "confidence": 0.2,
     "is_override": false,
     "is_crisis": false,
     "votes": {
       "rule_based": "bull_calm",
       "hmm": [
-        "bull_calm",
-        0.7441603241992447
+        "uncertain",
+        0.616691985970365
       ],
       "llm": {
         "regime": "uncertain",
@@ -50,17 +50,17 @@
     "vote_count": 2,
     "is_fallback": false,
     "disagree_layers": [
-      "llm"
+      "rule_based"
     ],
     "hmm_confirmed": false,
     "hmm_is_surrogate": true,
     "llm_is_stub": true,
     "market_data_snapshot": {
-      "vix": 14.92,
-      "nikkei_5d_return": 0.01038,
-      "nikkei_60ma": 67075.4,
-      "nikkei_200ma": 58693.1,
-      "sp500_dd_30d": -0.01447
+      "vix": 15.42,
+      "nikkei_5d_return": 0.004477,
+      "nikkei_60ma": 67094.9,
+      "nikkei_200ma": 58619.1,
+      "sp500_dd_30d": -0.018696
     },
     "run_date": "2026-09-01",
     "regime_changed_at": null,
