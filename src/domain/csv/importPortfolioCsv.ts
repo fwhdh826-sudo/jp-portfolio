@@ -42,7 +42,7 @@ interface SectionContext {
 // 「I」「O」の2文字は割当対象から除外されているため、4桁目は数字10種+英字24種の34種。
 // 先頭3桁は従来通り数字のみ（業種割当の名残）。stockRowsのフィルタ（fail-closedの
 // 安全網）とextractStockCode（CSVセルからの抽出）で同一の形式を共有する。
-const STOCK_CODE_FULL_RE = /^\d{3}[0-9A-HJ-NP-Z]$/
+export const STOCK_CODE_FULL_RE = /^\d{3}[0-9A-HJ-NP-Z]$/
 const STOCK_CODE_SEARCH_RE = /\d{3}[0-9A-HJ-NP-Z]/
 
 interface AggregatedState {

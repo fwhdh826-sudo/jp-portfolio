@@ -1,3 +1,5 @@
+import type { HoldingAnalysisEvidence } from './holdingEvidence'
+
 // ── Holding (日本株 個別銘柄) ──────────────────────────────────
 export type MetadataProvenance = 'known' | 'unknown'
 
@@ -171,6 +173,10 @@ export interface HoldingAnalysis {
   strategyRank: StrategyRank // S/A/B/C/D/E 総合ランク
   // AI討論
   debate: AgentDebate
+  // HOLDING-EVIDENCE-1: analysis 実行時に導出された effective evidence 状態。
+  // runFullAnalysis 経由でのみ付与される（computeAnalysis 単体呼び出しでは undefined）。
+  // authoritative vs provisional の区別に使う。Holding へは永続化しない。
+  evidence?: HoldingAnalysisEvidence
 }
 
 // ── AI討論 ────────────────────────────────────────────────────
@@ -323,6 +329,9 @@ export interface SystemState {
     candidatesStocks?: 'loaded' | 'default'
     // P5-B005-B3-B: candidate funnel artifact（observability only）
     candidateFunnel?: 'loaded' | 'unavailable' | 'invalid'
+    // HOLDING-EVIDENCE-1: holding_evidence artifact（analysis join 済み・observability）
+    // HOLDING-EVIDENCE-2 の generator 未実装のため本番では常に 'unavailable'（fail-soft）
+    holdingEvidence?: 'loaded' | 'unavailable' | 'invalid' | 'stale'
     // P4-A9d: 5-regime live state（observability only）
     regime?: 'loaded' | 'default'
     // P4-A24: SAFE_MODE / TierA live snapshot（observability only）
@@ -345,6 +354,8 @@ export interface SystemState {
     candidatesNews?: string | null
     candidatesStocks?: string | null
     candidateFunnel?: string | null
+    // HOLDING-EVIDENCE-1: pipeline generatedAt（PIPELINE_TTL 判定・表示用）
+    holdingEvidence?: string | null
     regime?: string | null
     // P4-A24
     safeMode?: string | null
@@ -503,6 +514,7 @@ import type { CandidatesNewsData } from './news'
 import type { RegimeState } from './regime'
 import type { CandidatesStocksData } from './candidatesStocks'
 import type { CandidateFunnelArtifact } from './candidateFunnelArtifact'
+import type { HoldingEvidenceArtifact } from './holdingEvidence'
 export type { MacroSnapshot, SQCalendar, MarginData, FlowData } from './macro'
 export type {
   AssetClass,
@@ -621,6 +633,11 @@ export interface AppState {
   candidatesStocks: CandidatesStocksData
   // P5-B005-B3-B: production candidate funnel（observability用・意思決定未接続）
   candidateFunnel: CandidateFunnelArtifact | null
+  // HOLDING-EVIDENCE-1: published holding_evidence artifact。analysis 実行時に
+  // joinHoldingEvidence で ephemeral enrich するためだけに保持する。
+  // 永続化・snapshot export には一切含めない（candidateFunnel と同じ扱い）。
+  // HOLDING-EVIDENCE-2 の generator publish までは本番で常に null。
+  holdingEvidence: HoldingEvidenceArtifact | null
   // P5-B002b-1: candidatesStocks由来のscore/headroom/gate計算済み内部候補リスト
   // （officialDecision未接続・UI未接続。B003で接続予定）
   stockCandidates: import('../domain/candidates/stockCandidates').StockCandidateItem[]
@@ -661,6 +678,36 @@ export type {
   CandidateFunnelJoinStats,
   JsonValue as CandidateFunnelJsonValue,
 } from './candidateFunnelArtifact'
+
+export type {
+  HoldingEvidenceArtifact,
+  HoldingEvidenceArtifactMeta,
+  HoldingEvidenceEntry,
+  HoldingEvidenceField,
+  HoldingEvidenceFieldStatus,
+  HoldingEvidenceFundamentalsGroup,
+  HoldingEvidenceTechnicalsGroup,
+  HoldingEvidenceFundamentalsField,
+  HoldingEvidenceTechnicalsField,
+  HoldingEvidenceReason,
+  HoldingEvidenceSource,
+  HoldingEvidenceGroupResolution,
+  HoldingEvidenceJoinState,
+  HoldingAnalysisEvidence,
+} from './holdingEvidence'
+export {
+  HOLDING_EVIDENCE_SCHEMA_VERSION,
+  HOLDING_EVIDENCE_KIND,
+  HOLDING_EVIDENCE_MARKET,
+  HOLDING_EVIDENCE_PIPELINE_TTL_MS,
+  HOLDING_EVIDENCE_FUNDAMENTALS_TTL_MS,
+  HOLDING_EVIDENCE_TECHNICALS_TTL_MS,
+  HOLDING_EVIDENCE_MIN_TECHNICAL_BARS,
+  HOLDING_EVIDENCE_NEUTRAL_DE,
+  HOLDING_EVIDENCE_FUNDAMENTALS_FIELDS,
+  HOLDING_EVIDENCE_TECHNICALS_FIELDS,
+  HOLDING_EVIDENCE_NOT_APPLICABLE_FIELDS,
+} from './holdingEvidence'
 
 export type {
   RegimeId,
