@@ -1,22 +1,35 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-09-02T10:11:07.115255+09:00",
-  "sourceUpdatedAt": "2026-09-02T00:57:28+00:00",
+  "updatedAt": "2026-09-02T17:02:31.762205+09:00",
+  "sourceUpdatedAt": "2026-09-02T08:00:17+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": -0.165,
-      "negativeCount": 1,
-      "positiveCount": 0,
+      "avgSentiment": 0.085,
+      "negativeCount": 2,
+      "positiveCount": 1,
       "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 2,
+      "sourceCount": 2,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "BOJ’s Ueda to Decide on Rate With Upside Price Risks in Mind",
-      "topPositiveTitle": "Bessent Suggests Backing for BOJ Action in Meeting With Ueda",
+      "topNegativeTitle": "BOJ Board Hawk Takata Leaves Door Open for Outsized Rate Hike",
+      "topPositiveTitle": "Yen Gains After BOJ Hawk Leaves Door Open for Outsized Hike",
       "items": [
         {
-          "title": "BOJ’s Ueda to Decide on Rate With Upside Price Risks in Mind",
+          "title": "BOJ Board Hawk Takata Leaves Door Open for Outsized Rate Hike",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-02T01:49:58+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-02/boj-board-hawk-calls-for-nimble-hikes-to-prevent-price-risks",
+          "tags": [
+            "jp_broad",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "BOJ’s Ueda Hints at September Rate Hike as Bets on Move Mount",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.33,
@@ -40,6 +53,19 @@
             "jp_broad",
             "market",
             "rates"
+          ]
+        },
+        {
+          "title": "Yen Gains After BOJ Hawk Leaves Door Open for Outsized Hike",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-09-02T06:28:29+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-02/yen-gains-after-boj-hawk-leaves-door-open-for-outsized-hike",
+          "tags": [
+            "fx",
+            "jp_broad",
+            "market"
           ]
         }
       ]
@@ -57,197 +83,67 @@
       "items": []
     },
     "us_broad": {
-      "avgSentiment": -0.138,
-      "negativeCount": 3,
-      "positiveCount": 2,
-      "neutralCount": 1,
-      "sourceCount": 2,
-      "itemCount": 6,
-      "isStale": false,
-      "topNegativeTitle": "Gold Holds Drop as Higher Oil, Bond Selloff Raise Rate-Hike Bets",
-      "topPositiveTitle": "Bessent’s Bond Gains Wiped Out as Treasury Yields Jump Again",
-      "items": [
-        {
-          "title": "Gold Holds Drop as Higher Oil, Bond Selloff Raise Rate-Hike Bets",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-09-01T23:40:28+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-01/gold-holds-drop-as-higher-oil-bond-selloff-raise-rate-hike-bets",
-          "tags": [
-            "commodity",
-            "gold",
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Bond Slide Spreads to Emerging Markets on Fed Rate Hike Bets",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-09-01T09:19:38+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-01/bond-slide-grips-emerging-markets-as-fed-risk-drags-sentiment",
-          "tags": [
-            "global_broad",
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Fed’s Barr Says Higher Rates Needed If Inflation Doesn’t Cool",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-01T13:05:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-01/fed-s-barr-says-higher-rates-needed-if-inflation-doesn-t-cool",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Nasdaq 100 Sees Worst Day in Weeks as Iran War Weighs on Traders",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-01T13:12:59+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-01/us-stock-futures-drop-as-rising-oil-prices-stoke-inflation-fears",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Stocks, Bonds Fall as Oil Jumps on US-Iran Jitters: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.5,
-          "publishedAt": "2026-08-31T22:06:14+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-31/asian-stocks-to-fall-as-iran-flare-up-boosts-oil-markets-wrap",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "global_broad",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        }
-      ]
-    },
-    "us_growth": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
+      "isStale": false,
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
+    },
+    "us_growth": {
+      "avgSentiment": 0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
+      "isStale": false,
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
+    },
+    "global_broad": {
+      "avgSentiment": -0.33,
+      "negativeCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 0,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Nasdaq 100 Sees Worst Day in Weeks as Iran War Weighs on Traders",
-      "topPositiveTitle": "Nasdaq 100 Sees Worst Day in Weeks as Iran War Weighs on Traders",
+      "topNegativeTitle": "US, Iran Escalate Attacks; Global Bond Selloff Deepens | The Asia Trade 9/2/2026",
+      "topPositiveTitle": "US, Iran Escalate Attacks; Global Bond Selloff Deepens | The Asia Trade 9/2/2026",
       "items": [
         {
-          "title": "Nasdaq 100 Sees Worst Day in Weeks as Iran War Weighs on Traders",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-01T13:12:59+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-01/us-stock-futures-drop-as-rising-oil-prices-stoke-inflation-fears",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad",
-            "us_growth"
-          ]
-        }
-      ]
-    },
-    "global_broad": {
-      "avgSentiment": -0.25,
-      "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 2,
-      "isStale": false,
-      "topNegativeTitle": "Bond Slide Spreads to Emerging Markets on Fed Rate Hike Bets",
-      "topPositiveTitle": "Stocks, Bonds Fall as Oil Jumps on US-Iran Jitters: Markets Wrap",
-      "items": [
-        {
-          "title": "Bond Slide Spreads to Emerging Markets on Fed Rate Hike Bets",
+          "title": "US, Iran Escalate Attacks; Global Bond Selloff Deepens | The Asia Trade 9/2/2026",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-09-01T09:19:38+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-01/bond-slide-grips-emerging-markets-as-fed-risk-drags-sentiment",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-02T05:25:56+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-02/the-asia-trade-9-2-2026-video",
           "tags": [
-            "global_broad",
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Stocks, Bonds Fall as Oil Jumps on US-Iran Jitters: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.5,
-          "publishedAt": "2026-08-31T22:06:14+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-31/asian-stocks-to-fall-as-iran-flare-up-boosts-oil-markets-wrap",
-          "tags": [
-            "commodity",
             "geopolitical",
             "global_broad",
-            "market",
-            "rates",
-            "us_broad"
+            "macro_risk",
+            "market"
           ]
         }
       ]
     },
     "gold": {
-      "avgSentiment": -1.0,
-      "negativeCount": 1,
+      "avgSentiment": 0,
+      "negativeCount": 0,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Gold Holds Drop as Higher Oil, Bond Selloff Raise Rate-Hike Bets",
-      "topPositiveTitle": "Gold Holds Drop as Higher Oil, Bond Selloff Raise Rate-Hike Bets",
-      "items": [
-        {
-          "title": "Gold Holds Drop as Higher Oil, Bond Selloff Raise Rate-Hike Bets",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-09-01T23:40:28+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-01/gold-holds-drop-as-higher-oil-bond-selloff-raise-rate-hike-bets",
-          "tags": [
-            "commodity",
-            "gold",
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "reit": {
       "avgSentiment": 0,
@@ -262,139 +158,139 @@
       "items": []
     },
     "dividend": {
-      "avgSentiment": 0.5,
+      "avgSentiment": 0.67,
       "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 1,
+      "neutralCount": 0,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Vanguard, BlackRock ETF Shuffle Lets Foreign Investors Duck US Tax",
-      "topPositiveTitle": "Bessent’s Bond Gains Wiped Out as Treasury Yields Jump Again",
+      "topNegativeTitle": "Biggest Thai Fund Sees More Gains for Banks, Data-Center Plays",
+      "topPositiveTitle": "Biggest Thai Fund Sees More Gains for Banks, Data-Center Plays",
       "items": [
         {
-          "title": "Vanguard, BlackRock ETF Shuffle Lets Foreign Investors Duck US Tax",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-01T21:00:01+00:00",
-          "url": "https://www.bloomberg.com/graphics/2026-etf-foreign-investors-tax-dodge/",
-          "tags": [
-            "dividend",
-            "market",
-            "trust"
-          ]
-        },
-        {
-          "title": "Bessent’s Bond Gains Wiped Out as Treasury Yields Jump Again",
-          "source": "Bloomberg Markets",
+          "title": "Biggest Thai Fund Sees More Gains for Banks, Data-Center Plays",
+          "source": "Bloomberg Economics",
           "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-09-01T21:03:35+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-01/bessent-s-bond-gains-wiped-out-as-30-year-yields-jump-once-again",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-09-02T04:07:25+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-02/biggest-thai-fund-sees-more-gains-for-banks-data-center-plays",
           "tags": [
             "dividend",
-            "market",
-            "rates",
-            "us_broad"
+            "market"
           ]
         }
       ]
     },
     "macro_risk": {
-      "avgSentiment": -0.267,
-      "negativeCount": 4,
-      "positiveCount": 2,
-      "neutralCount": 4,
+      "avgSentiment": -0.222,
+      "negativeCount": 3,
+      "positiveCount": 1,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 10,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Gold Holds Drop as Higher Oil, Bond Selloff Raise Rate-Hike Bets",
+      "topNegativeTitle": "Global Bonds Are Slumping But It’s Nothing Like the 2022 Wipeout",
       "topPositiveTitle": "Canada Can Ride Out Global Bond Rout, Finance Minister Says",
       "items": [
         {
-          "title": "Gold Holds Drop as Higher Oil, Bond Selloff Raise Rate-Hike Bets",
+          "title": "Global Bonds Are Slumping But It’s Nothing Like the 2022 Wipeout",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -1.0,
-          "publishedAt": "2026-09-01T23:40:28+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-01/gold-holds-drop-as-higher-oil-bond-selloff-raise-rate-hike-bets",
+          "publishedAt": "2026-09-02T06:15:39+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-02/global-bonds-are-slumping-but-it-s-nothing-like-the-2022-wipeout",
           "tags": [
-            "commodity",
-            "gold",
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Canada’s TSX Tumbles Most Since June; Tech, Banks Drop",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-09-01T20:24:28+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-01/canadian-stocks-erase-a-month-of-gain-as-tech-banks-gold-slide",
-          "tags": [
-            "geopolitical",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Bond Slide Spreads to Emerging Markets on Fed Rate Hike Bets",
+          "title": "Major: Treasury Market Is Functioning Normally",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-09-01T09:19:38+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-01/bond-slide-grips-emerging-markets-as-fed-risk-drags-sentiment",
-          "tags": [
-            "global_broad",
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Africa Faces El Niño With Less Room to Weather Shock, IIF Says",
-          "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-09-01T10:47:48+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-01/africa-faces-el-nino-with-less-room-to-weather-shock-iif-says",
+          "publishedAt": "2026-09-02T07:39:11+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-02/major-treasury-market-is-functioning-normally-video",
           "tags": [
+            "commodity",
+            "fx",
             "geopolitical",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Bessent Says Hormuz Route Will Be Bypassed In the Future",
+          "title": "US, Iran Escalate Attacks; Global Bond Selloff Deepens | The Asia Trade 9/2/2026",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-02T05:25:56+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-02/the-asia-trade-9-2-2026-video",
+          "tags": [
+            "geopolitical",
+            "global_broad",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "BlackRock: $2.1T in GCC Capex By End of Decade",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-02T00:57:28+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-02/bessent-says-hormuz-route-will-be-bypassed-in-the-future-video",
+          "publishedAt": "2026-09-02T07:40:14+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-02/blackrock-2-1t-in-gcc-capex-by-end-of-decade-video",
           "tags": [
+            "commodity",
             "geopolitical",
             "macro_risk",
             "market"
+          ]
+        },
+        {
+          "title": "Stocks, Bonds Extend Losses as Oil Gains on Iran: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-01T22:07:33+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-01/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "rates"
           ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": 0.165,
-      "negativeCount": 0,
-      "positiveCount": 1,
+      "avgSentiment": 0.266,
+      "negativeCount": 1,
+      "positiveCount": 3,
       "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 2,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Bessent Suggests Backing for BOJ Action in Meeting With Ueda",
-      "topPositiveTitle": "Saudi Arabia Sells $3.25 Billion of Debt as Hormuz Tensions Rise",
+      "topNegativeTitle": "Major: Treasury Market Is Functioning Normally",
+      "topPositiveTitle": "Yen Gains After BOJ Hawk Leaves Door Open for Outsized Hike",
       "items": [
+        {
+          "title": "Major: Treasury Market Is Functioning Normally",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-02T07:39:11+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-02/major-treasury-market-is-functioning-normally-video",
+          "tags": [
+            "commodity",
+            "fx",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
         {
           "title": "Bessent Suggests Backing for BOJ Action in Meeting With Ueda",
           "source": "Bloomberg Economics",
@@ -410,65 +306,70 @@
           ]
         },
         {
-          "title": "Saudi Arabia Sells $3.25 Billion of Debt as Hormuz Tensions Rise",
+          "title": "Shadow Lenders in India Line Up Over $1 Billion in Rupee Bonds",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.33,
-          "publishedAt": "2026-09-01T10:52:10+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-01/saudi-arabia-returns-to-markets-with-dollar-bond-offering",
+          "publishedAt": "2026-09-02T07:11:27+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-02/shadow-lenders-in-india-line-up-over-1-billion-in-rupee-bonds",
           "tags": [
             "fx",
-            "geopolitical",
-            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Turkey’s $75 Billion Hot-Money Boom Creates Policymaker Dilemma",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-02T07:10:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-02/turkey-s-75-billion-hot-money-boom-creates-policymaker-dilemma",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        },
+        {
+          "title": "Yen Gains After BOJ Hawk Leaves Door Open for Outsized Hike",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-09-02T06:28:29+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-02/yen-gains-after-boj-hawk-leaves-door-open-for-outsized-hike",
+          "tags": [
+            "fx",
+            "jp_broad",
             "market"
           ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": -0.038,
-      "negativeCount": 4,
-      "positiveCount": 3,
-      "neutralCount": 6,
+      "avgSentiment": 0.038,
+      "negativeCount": 2,
+      "positiveCount": 2,
+      "neutralCount": 5,
       "sourceCount": 2,
-      "itemCount": 13,
+      "itemCount": 9,
       "isStale": false,
-      "topNegativeTitle": "Gold Holds Drop as Higher Oil, Bond Selloff Raise Rate-Hike Bets",
-      "topPositiveTitle": "Bessent’s Bond Gains Wiped Out as Treasury Yields Jump Again",
+      "topNegativeTitle": "BOJ Board Hawk Takata Leaves Door Open for Outsized Rate Hike",
+      "topPositiveTitle": "Australia’s Faster Economic Growth Bolsters Rate-Hike Case",
       "items": [
         {
-          "title": "Gold Holds Drop as Higher Oil, Bond Selloff Raise Rate-Hike Bets",
-          "source": "Bloomberg Markets",
+          "title": "BOJ Board Hawk Takata Leaves Door Open for Outsized Rate Hike",
+          "source": "Bloomberg Economics",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-09-01T23:40:28+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-01/gold-holds-drop-as-higher-oil-bond-selloff-raise-rate-hike-bets",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-02T01:49:58+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-02/boj-board-hawk-calls-for-nimble-hikes-to-prevent-price-risks",
           "tags": [
-            "commodity",
-            "gold",
-            "macro_risk",
+            "jp_broad",
             "market",
-            "rates",
-            "us_broad"
+            "rates"
           ]
         },
         {
-          "title": "Bond Slide Spreads to Emerging Markets on Fed Rate Hike Bets",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-09-01T09:19:38+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-01/bond-slide-grips-emerging-markets-as-fed-risk-drags-sentiment",
-          "tags": [
-            "global_broad",
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "BOJ’s Ueda to Decide on Rate With Upside Price Risks in Mind",
+          "title": "BOJ’s Ueda Hints at September Rate Hike as Bets on Move Mount",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.33,
@@ -481,61 +382,20 @@
           ]
         },
         {
-          "title": "Fed’s Barr Says Higher Rates Needed If Inflation Doesn’t Cool",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-01T13:05:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-01/fed-s-barr-says-higher-rates-needed-if-inflation-doesn-t-cool",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Why High Yields on Government Bonds Are Causing Alarm",
+          "title": "Energy Angst to Keep Pushing Yields Higher: 3-Minutes MLIV",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-01T23:39:37+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-01/why-high-yields-on-government-bonds-are-causing-alarm-video",
+          "publishedAt": "2026-09-02T07:24:15+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-02/energy-angst-to-keep-pushing-yields-higher-mliv-video",
           "tags": [
+            "commodity",
             "market",
             "rates"
           ]
-        }
-      ]
-    },
-    "commodity": {
-      "avgSentiment": 0.034,
-      "negativeCount": 1,
-      "positiveCount": 2,
-      "neutralCount": 2,
-      "sourceCount": 1,
-      "itemCount": 5,
-      "isStale": false,
-      "topNegativeTitle": "Gold Holds Drop as Higher Oil, Bond Selloff Raise Rate-Hike Bets",
-      "topPositiveTitle": "Latest Oil Market News and Analysis for Sept. 2",
-      "items": [
-        {
-          "title": "Gold Holds Drop as Higher Oil, Bond Selloff Raise Rate-Hike Bets",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-09-01T23:40:28+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-01/gold-holds-drop-as-higher-oil-bond-selloff-raise-rate-hike-bets",
-          "tags": [
-            "commodity",
-            "gold",
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
-          ]
         },
         {
-          "title": "Asian Stocks, Bonds Decline as Crude Oil Advances: Markets Wrap",
+          "title": "Stocks, Bonds Extend Losses as Oil Gains on Iran: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
@@ -543,134 +403,187 @@
           "url": "https://www.bloomberg.com/news/articles/2026-09-01/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Bessent Suggests Backing for BOJ Action in Meeting With Ueda",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-01T16:51:42+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-01/bessent-suggests-backing-for-boj-action-in-meeting-with-ueda",
+          "tags": [
+            "fx",
+            "jp_broad",
+            "market",
+            "rates"
+          ]
+        }
+      ]
+    },
+    "commodity": {
+      "avgSentiment": 0.334,
+      "negativeCount": 1,
+      "positiveCount": 5,
+      "neutralCount": 3,
+      "sourceCount": 2,
+      "itemCount": 9,
+      "isStale": false,
+      "topNegativeTitle": "Major: Treasury Market Is Functioning Normally",
+      "topPositiveTitle": "European Gas Rises Again on Mideast Supply Risks",
+      "items": [
+        {
+          "title": "Major: Treasury Market Is Functioning Normally",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-02T07:39:11+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-02/major-treasury-market-is-functioning-normally-video",
+          "tags": [
+            "commodity",
+            "fx",
+            "geopolitical",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Nasdaq 100 Sees Worst Day in Weeks as Iran War Weighs on Traders",
+          "title": "BlackRock: $2.1T in GCC Capex By End of Decade",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-01T13:12:59+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-01/us-stock-futures-drop-as-rising-oil-prices-stoke-inflation-fears",
+          "publishedAt": "2026-09-02T07:40:14+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-02/blackrock-2-1t-in-gcc-capex-by-end-of-decade-video",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Energy Angst to Keep Pushing Yields Higher: 3-Minutes MLIV",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-02T07:24:15+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-02/energy-angst-to-keep-pushing-yields-higher-mliv-video",
+          "tags": [
+            "commodity",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Stocks, Bonds Extend Losses as Oil Gains on Iran: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-01T22:07:33+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-01/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
             "geopolitical",
             "macro_risk",
             "market",
-            "rates",
-            "us_broad",
-            "us_growth"
+            "rates"
           ]
         },
         {
-          "title": "Stocks, Bonds Fall as Oil Jumps on US-Iran Jitters: Markets Wrap",
+          "title": "FTSE 100 Live: European Bonds Fall Again as Oil Continues Climb",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.5,
-          "publishedAt": "2026-08-31T22:06:14+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-31/asian-stocks-to-fall-as-iran-flare-up-boosts-oil-markets-wrap",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-02T05:47:14+00:00",
+          "url": "https://www.bloomberg.com/news/live-blog/2026-09-02/ftse-100-live-updates-pound-gilts-bonds-gdp-iran-us-war-trump-oil-prices-hormuz-what-s-moving-uk-markets-right-now-markets-today-mtjoc77i",
           "tags": [
             "commodity",
-            "geopolitical",
-            "global_broad",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Latest Oil Market News and Analysis for Sept. 2",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-09-01T22:04:01+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-01/latest-oil-market-news-and-analysis-for-sept-2",
-          "tags": [
-            "commodity",
-            "geopolitical",
             "market"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.021,
+      "avgSentiment": 0.275,
       "negativeCount": 2,
-      "positiveCount": 3,
-      "neutralCount": 3,
+      "positiveCount": 5,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 8,
+      "itemCount": 11,
       "isStale": false,
-      "topNegativeTitle": "Canada’s TSX Tumbles Most Since June; Tech, Banks Drop",
-      "topPositiveTitle": "Latest Oil Market News and Analysis for Sept. 2",
+      "topNegativeTitle": "Major: Treasury Market Is Functioning Normally",
+      "topPositiveTitle": "European Gas Rises Again on Mideast Supply Risks",
       "items": [
         {
-          "title": "Canada’s TSX Tumbles Most Since June; Tech, Banks Drop",
+          "title": "Major: Treasury Market Is Functioning Normally",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-09-01T20:24:28+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-01/canadian-stocks-erase-a-month-of-gain-as-tech-banks-gold-slide",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Africa Faces El Niño With Less Room to Weather Shock, IIF Says",
-          "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-09-01T10:47:48+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-01/africa-faces-el-nino-with-less-room-to-weather-shock-iif-says",
+          "publishedAt": "2026-09-02T07:39:11+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-02/major-treasury-market-is-functioning-normally-video",
           "tags": [
+            "commodity",
+            "fx",
             "geopolitical",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Bessent Says Hormuz Route Will Be Bypassed In the Future",
+          "title": "US, Iran Escalate Attacks; Global Bond Selloff Deepens | The Asia Trade 9/2/2026",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-02T00:57:28+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-02/bessent-says-hormuz-route-will-be-bypassed-in-the-future-video",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-02T05:25:56+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-02/the-asia-trade-9-2-2026-video",
           "tags": [
             "geopolitical",
+            "global_broad",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Nasdaq 100 Sees Worst Day in Weeks as Iran War Weighs on Traders",
+          "title": "BlackRock: $2.1T in GCC Capex By End of Decade",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-01T13:12:59+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-01/us-stock-futures-drop-as-rising-oil-prices-stoke-inflation-fears",
+          "publishedAt": "2026-09-02T07:40:14+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-02/blackrock-2-1t-in-gcc-capex-by-end-of-decade-video",
           "tags": [
             "commodity",
             "geopolitical",
             "macro_risk",
-            "market",
-            "rates",
-            "us_broad",
-            "us_growth"
+            "market"
           ]
         },
         {
-          "title": "Israel Cuts Interest Rates for Third Consecutive Meeting",
-          "source": "Bloomberg Economics",
+          "title": "US-China Tensions Simmer at G20 Meeting | The China Show | 9/2/2026",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-01T13:11:24+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-01/israel-slashes-interest-rates-for-third-consecutive-meeting",
+          "publishedAt": "2026-09-02T06:31:21+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-02/the-china-show-9-2-2026-video",
           "tags": [
             "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Stocks, Bonds Extend Losses as Oil Gains on Iran: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-01T22:07:33+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-01/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
             "market",
             "rates"
           ]
