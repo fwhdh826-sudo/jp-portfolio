@@ -334,11 +334,31 @@ describe('acceptance matrix A–N', () => {
 
 // ── regression: both sides of the frozen contract ────────────
 describe('regression: unknown evidence never authorizes SELL/HOLD; valid known can SELL', () => {
-  it.each([32, 48, 52])('unknown evidence + persisted safe defaults yielding score ~%d still abstains', () => {
-    // safe default holding, no artifact → INSUFFICIENT_EVIDENCE regardless of numeric fallback score
-    const { analysis } = analyze(makeHolding(), null)
+  // 以前は it.each([32, 48, 52]) だったが、その数値パラメータは callback で
+  // 未使用の飾りで、32/48/52 という score を実際に instantiate も assert も
+  // していなかった（監査指摘 §7）。computeAnalysis の内部 total score は多数の
+  // fallback フィールド由来で決め打ちできないため、契約そのもの —「evidence が
+  // unknown なら fallback score が SELL/HOLD 域でも decision は
+  // INSUFFICIENT_EVIDENCE」— を各 evidence 失敗シナリオで実際に検証する。
+  it.each([
+    { label: 'artifact absent', build: () => null },
+    {
+      label: 'stale pipeline',
+      build: () => makeArtifact(
+        [makeEntry({ fundamentals: weakFundamentals(), technicals: weakTechnicals() })],
+        NOW_MS - 80 * HOUR,
+      ),
+    },
+    { label: 'identity mismatch', build: () => makeArtifact([makeEntry({ ticker: '6098.OS' })]) },
+    { label: 'ambiguous entry', build: () => makeArtifact([makeEntry(), makeEntry()]) },
+  ])('persisted known/known + $label → INSUFFICIENT_EVIDENCE, never SELL', ({ build }) => {
+    const persistedKnown = makeHolding({ metadataStatus: { fundamentals: 'known', technicals: 'known' } })
+    const { analysis, enriched } = analyze(persistedKnown, build())
     expect(analysis.decision).toBe('INSUFFICIENT_EVIDENCE')
-    expect(analysis.debate.finalView).toBe('INSUFFICIENT_EVIDENCE')
+    expect(analysis.debate.sellReasons).toEqual([])
+    // effective（ephemeral）metadata は unknown へ倒れる。persisted は不変。
+    expect(enriched.metadataStatus).toEqual({ fundamentals: 'unknown', technicals: 'unknown' })
+    expect(persistedKnown.metadataStatus).toEqual({ fundamentals: 'known', technicals: 'known' })
   })
 
   it('valid known/known with legitimate weak score CAN SELL', () => {
@@ -359,5 +379,220 @@ describe('regression: unknown evidence never authorizes SELL/HOLD; valid known c
     const bad = makeHolding({ code: 'ABCD' })
     const badJoin = joinHoldingEvidence([bad], makeArtifact([makeEntry({ code: 'ABCD', ticker: 'ABCD.T' })]), NOW_MS)
     expect(badJoin.states.get('ABCD')!.fundamentals.reason).toBe('identity_mismatch')
+  })
+})
+
+// ═══════════════════════════════════════════════════════════
+// R1 fail-closed blocker matrix（監査指摘 §8）
+// persisted metadataStatus = known/known が現在の evidence 契約 unknown を
+// 上書きして runtime authority として生存し、SELL を emit することが無いのを固定する。
+// ═══════════════════════════════════════════════════════════
+describe('R1: persisted known/known must never leak through an evidence failure', () => {
+  const persistedKnown = () =>
+    makeHolding({ metadataStatus: { fundamentals: 'known', technicals: 'known' } })
+
+  function expectAbstain(
+    holding: Holding,
+    artifact: HoldingEvidenceArtifact | null,
+    expected: { f: 'known' | 'unknown'; t: 'known' | 'unknown' },
+  ) {
+    const before = structuredClone(holding)
+    const { analysis, enriched, state } = analyze(holding, artifact)
+    expect(analysis.decision).toBe('INSUFFICIENT_EVIDENCE')
+    expect(analysis.debate.sellReasons).toEqual([])
+    expect(enriched.metadataStatus).toEqual({ fundamentals: expected.f, technicals: expected.t })
+    // persisted holding オブジェクトは一切 mutate されない
+    expect(holding).toEqual(before)
+    return { state, enriched }
+  }
+
+  it('R1-A: known/known + artifact absent → effective unknown/unknown, INSUFFICIENT_EVIDENCE', () => {
+    const { state } = expectAbstain(persistedKnown(), null, { f: 'unknown', t: 'unknown' })
+    expect(state.source).toBe('persisted')
+    expect(state.fundamentals.reason).toBe('no_artifact')
+  })
+
+  it('R1-A2: known/known + parser-invalid artifact (store holds null) → INSUFFICIENT_EVIDENCE', () => {
+    const bad = makeArtifact([makeEntry()])
+    ;(bad._meta as { kind: string }).kind = 'not_holding_evidence'
+    expect(parseHoldingEvidenceArtifact(bad).ok).toBe(false)
+    // loader が invalid → store は holdingEvidence=null → join(null)
+    expectAbstain(persistedKnown(), null, { f: 'unknown', t: 'unknown' })
+  })
+
+  it('R1-B: known/known + stale pipeline → INSUFFICIENT_EVIDENCE', () => {
+    const stale = makeArtifact([makeEntry()], NOW_MS - 80 * HOUR)
+    const { state } = expectAbstain(persistedKnown(), stale, { f: 'unknown', t: 'unknown' })
+    expect(state.fundamentals.reason).toBe('stale_pipeline')
+    expect(state.technicals.reason).toBe('stale_pipeline')
+  })
+
+  it('R1-C: known/known + future pipeline → INSUFFICIENT_EVIDENCE', () => {
+    const future = makeArtifact([makeEntry()], NOW_MS + 5 * HOUR)
+    const { state } = expectAbstain(persistedKnown(), future, { f: 'unknown', t: 'unknown' })
+    expect(state.fundamentals.reason).toBe('future_pipeline')
+  })
+
+  it('R1-D: known/known + identity mismatch → INSUFFICIENT_EVIDENCE', () => {
+    const mismatch = makeArtifact([makeEntry({ ticker: '6098.OS' })])
+    const { state } = expectAbstain(persistedKnown(), mismatch, { f: 'unknown', t: 'unknown' })
+    expect(state.fundamentals.reason).toBe('identity_mismatch')
+  })
+
+  it('R1-E: known/known + ambiguous duplicate entry → INSUFFICIENT_EVIDENCE', () => {
+    const dup = makeArtifact([makeEntry(), makeEntry()])
+    const { state } = expectAbstain(persistedKnown(), dup, { f: 'unknown', t: 'unknown' })
+    expect(state.fundamentals.reason).toBe('ambiguous_entry')
+  })
+
+  it('R1-F: known/known + stale fundamentals group → effective fundamentals unknown, technicals known', () => {
+    const entry = makeEntry({ fundamentals: strongFundamentals(NOW_MS - 50 * DAY) })
+    const { state } = expectAbstain(persistedKnown(), makeArtifact([entry]), { f: 'unknown', t: 'known' })
+    expect(state.fundamentals.reason).toBe('stale_group')
+    expect(state.technicals.status).toBe('known')
+  })
+
+  it('R1-G: known/known + stale technicals group → effective technicals unknown, fundamentals known', () => {
+    const entry = makeEntry({ technicals: strongTechnicals(NOW_MS - 10 * DAY) })
+    const { state } = expectAbstain(persistedKnown(), makeArtifact([entry]), { f: 'known', t: 'unknown' })
+    expect(state.technicals.reason).toBe('stale_group')
+    expect(state.fundamentals.status).toBe('known')
+  })
+
+  it('R1-H (positive control): known/known + valid fresh weak evidence → SELL still works', () => {
+    const persisted = persistedKnown()
+    const before = structuredClone(persisted)
+    const entry = makeEntry({ fundamentals: weakFundamentals(), technicals: weakTechnicals() })
+    const { analysis, enriched, state } = analyze(persisted, makeArtifact([entry]))
+    expect(state.authoritative).toBe(true)
+    expect(analysis.totalScore).toBeLessThan(50)
+    expect(analysis.decision).toBe('SELL')
+    // evidence 由来の effective known は analysis 入力のみ。persisted は不変。
+    expect(enriched.metadataStatus).toEqual({ fundamentals: 'known', technicals: 'known' })
+    expect(persisted).toEqual(before)
+  })
+})
+
+// ═══════════════════════════════════════════════════════════
+// strict timestamp 検証（監査指摘 §P1-B / §9）
+// ═══════════════════════════════════════════════════════════
+describe('strict evidence timestamp validation', () => {
+  const withGeneratedAt = (raw: string) => {
+    const a = makeArtifact([makeEntry()])
+    ;(a._meta as { generatedAt: string }).generatedAt = raw
+    return a
+  }
+  const withFundamentalsAsOf = (raw: string) => {
+    const entry = makeEntry()
+    ;(entry.fundamentals as { asOf: string }).asOf = raw
+    return makeArtifact([entry])
+  }
+
+  it.each([
+    '2026-02-30T00:00:00.000Z',   // 不可能な暦日
+    '2026-13-01T00:00:00.000Z',   // 不正な月
+    '2026-03-02T00:00:00',         // timezone 無し
+    '2026-03-02',                  // date-only
+    '2026-03-02T12:00Z',           // 秒欠落
+    'not-a-timestamp',
+    '',
+  ])('parser rejects generatedAt = %j', (raw) => {
+    expect(parseHoldingEvidenceArtifact(withGeneratedAt(raw)).ok).toBe(false)
+  })
+
+  it.each([
+    '2026-02-30T00:00:00.000Z',
+    '2026-03-02T00:00:00',
+    '2026-03-02',
+  ])('parser rejects fundamentals.asOf = %j', (raw) => {
+    expect(parseHoldingEvidenceArtifact(withFundamentalsAsOf(raw)).ok).toBe(false)
+  })
+
+  it.each([
+    '2026-09-01T00:00:00.000Z',
+    '2026-09-01T09:00:00+09:00',
+    '2026-09-01T00:00:00Z',
+  ])('parser accepts canonical timezone-qualified timestamp %j', (raw) => {
+    expect(parseHoldingEvidenceArtifact(withGeneratedAt(raw)).ok).toBe(true)
+  })
+
+  it('a non-canonical asOf that slips past parsing still resolves to stale_group in the join', () => {
+    // join を直接叩く（parser を経由しない hostile artifact）
+    const entry = makeEntry()
+    ;(entry.fundamentals as { asOf: string }).asOf = '2026-03-02T00:00:00'
+    const { states } = joinHoldingEvidence([makeHolding()], makeArtifact([entry]), NOW_MS)
+    expect(states.get('6098')!.fundamentals.reason).toBe('stale_group')
+  })
+})
+
+// ═══════════════════════════════════════════════════════════
+// TTL / bars 境界（監査指摘 §10）— 明示 nowMs、Date.now() 非依存
+// ═══════════════════════════════════════════════════════════
+describe('freshness / bars boundaries', () => {
+  const PIPELINE_TTL = 72 * HOUR
+  const FUNDAMENTALS_TTL = 45 * DAY
+  const TECHNICALS_TTL = 7 * DAY
+
+  it('pipeline: exactly 72h → fresh; 72h + 1ms → stale', () => {
+    const atLimit = analyze(makeHolding(), makeArtifact([makeEntry()], NOW_MS - PIPELINE_TTL))
+    expect(atLimit.state.authoritative).toBe(true)
+    const overLimit = analyze(makeHolding(), makeArtifact([makeEntry()], NOW_MS - PIPELINE_TTL - 1))
+    expect(overLimit.analysis.decision).toBe('INSUFFICIENT_EVIDENCE')
+    expect(overLimit.state.fundamentals.reason).toBe('stale_pipeline')
+  })
+
+  it('fundamentals asOf: exactly 45d → known; 45d + 1ms → stale_group', () => {
+    const atLimit = analyze(makeHolding(), makeArtifact([makeEntry({ fundamentals: strongFundamentals(NOW_MS - FUNDAMENTALS_TTL) })]))
+    expect(atLimit.state.fundamentals.status).toBe('known')
+    const overLimit = analyze(makeHolding(), makeArtifact([makeEntry({ fundamentals: strongFundamentals(NOW_MS - FUNDAMENTALS_TTL - 1) })]))
+    expect(overLimit.state.fundamentals.status).toBe('unknown')
+    expect(overLimit.state.fundamentals.reason).toBe('stale_group')
+  })
+
+  it('technicals asOf: exactly 7d → known; 7d + 1ms → stale_group', () => {
+    const atLimit = analyze(makeHolding(), makeArtifact([makeEntry({ technicals: strongTechnicals(NOW_MS - TECHNICALS_TTL) })]))
+    expect(atLimit.state.technicals.status).toBe('known')
+    const overLimit = analyze(makeHolding(), makeArtifact([makeEntry({ technicals: strongTechnicals(NOW_MS - TECHNICALS_TTL - 1) })]))
+    expect(overLimit.state.technicals.status).toBe('unknown')
+    expect(overLimit.state.technicals.reason).toBe('stale_group')
+  })
+
+  it('technicals bars: 75 → sufficient; 74 → insufficient_bars', () => {
+    const ok = analyze(makeHolding(), makeArtifact([makeEntry({ technicals: strongTechnicals(NOW_MS - HOUR, 75) })]))
+    expect(ok.state.technicals.status).toBe('known')
+    const short = analyze(makeHolding(), makeArtifact([makeEntry({ technicals: strongTechnicals(NOW_MS - HOUR, 74) })]))
+    expect(short.state.technicals.status).toBe('unknown')
+    expect(short.state.technicals.reason).toBe('insufficient_bars')
+  })
+
+  it('parser rejects fractional / negative bars but the join owns the >=75 rule', () => {
+    expect(parseHoldingEvidenceArtifact(makeArtifact([makeEntry({ technicals: strongTechnicals(NOW_MS - HOUR, 74.5) })])).ok).toBe(false)
+    expect(parseHoldingEvidenceArtifact(makeArtifact([makeEntry({ technicals: strongTechnicals(NOW_MS - HOUR, -1) })])).ok).toBe(false)
+    // 74（整数）は構造的には valid、join が insufficient と判定する
+    expect(parseHoldingEvidenceArtifact(makeArtifact([makeEntry({ technicals: strongTechnicals(NOW_MS - HOUR, 74) })])).ok).toBe(true)
+  })
+})
+
+// ═══════════════════════════════════════════════════════════
+// parser hardening（監査指摘 §P2）
+// ═══════════════════════════════════════════════════════════
+describe('parser hardening: entry code / source', () => {
+  it('rejects a non-canonical entry.code', () => {
+    expect(parseHoldingEvidenceArtifact(makeArtifact([makeEntry({ code: '609', ticker: '609.T' })])).ok).toBe(false)
+    expect(parseHoldingEvidenceArtifact(makeArtifact([makeEntry({ code: 'ABCD', ticker: 'ABCD.T' })])).ok).toBe(false)
+    expect(parseHoldingEvidenceArtifact(makeArtifact([makeEntry({ code: '60980', ticker: '60980.T' })])).ok).toBe(false)
+  })
+
+  it('accepts a canonical alphanumeric entry.code (130A)', () => {
+    expect(parseHoldingEvidenceArtifact(makeArtifact([makeEntry({ code: '130A', ticker: '130A.T' })])).ok).toBe(true)
+  })
+
+  it('rejects an empty fundamentals/technicals source', () => {
+    const emptyF = makeEntry()
+    ;(emptyF.fundamentals as { source: string }).source = ''
+    expect(parseHoldingEvidenceArtifact(makeArtifact([emptyF])).ok).toBe(false)
+    const emptyT = makeEntry()
+    ;(emptyT.technicals as { source: string }).source = ''
+    expect(parseHoldingEvidenceArtifact(makeArtifact([emptyT])).ok).toBe(false)
   })
 })
