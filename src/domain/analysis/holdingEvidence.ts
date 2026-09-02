@@ -20,6 +20,7 @@
 
 import type { Holding, MetadataProvenance } from '../../types'
 import { STOCK_CODE_FULL_RE } from '../csv/importPortfolioCsv'
+import { parseStrictTimestamp } from '../../utils/strictTimestamp'
 import {
   HOLDING_EVIDENCE_FUNDAMENTALS_FIELDS,
   HOLDING_EVIDENCE_FUNDAMENTALS_TTL_MS,
@@ -39,9 +40,9 @@ import type {
   HoldingEvidenceEntry,
   HoldingEvidenceField,
   HoldingEvidenceFundamentalsGroup,
-  HoldingEvidenceGroupResolution,
   HoldingEvidenceJoinState,
   HoldingEvidenceReason,
+  HoldingEvidenceSource,
   HoldingEvidenceTechnicalsGroup,
 } from '../../types/holdingEvidence'
 
@@ -59,7 +60,11 @@ function isNonEmptyString(value: unknown): value is string {
 }
 
 function isValidTimestamp(value: unknown): value is string {
-  return typeof value === 'string' && value.length > 0 && Number.isFinite(Date.parse(value))
+  // evidence の authoritative timestamp は canonical・timezone 明示の date-time のみ。
+  // permissive な Date.parse は不可能な暦日（例 2026-02-30T00:00:00.000Z）や
+  // timezone 無し（例 2026-03-02T00:00:00）を通してしまうため使わない（§P1-B）。
+  // date-only（allowDateOnly 既定 false）も authoritative たり得ない。
+  return parseStrictTimestamp(value) !== null
 }
 
 function isFieldStatus(value: unknown): value is HoldingEvidenceField['status'] {
@@ -101,7 +106,7 @@ function validateFundamentalsGroup(value: unknown): boolean {
   if (!isPlainObject(value)) return false
   return (
     isValidTimestamp(value.asOf) &&
-    typeof value.source === 'string' &&
+    isNonEmptyString(value.source) &&
     validateFieldMap(value.fields, HOLDING_EVIDENCE_FUNDAMENTALS_FIELDS)
   )
 }
@@ -110,8 +115,11 @@ function validateTechnicalsGroup(value: unknown): boolean {
   if (!isPlainObject(value)) return false
   return (
     isValidTimestamp(value.asOf) &&
-    typeof value.source === 'string' &&
-    isFiniteNumber(value.bars) &&
+    isNonEmptyString(value.source) &&
+    // bars は有限の非負整数。小数（74.5 等）は構造的に不正（§P2）。
+    // bars >= 75 の completeness 判定は join の責務であり parser では課さない。
+    typeof value.bars === 'number' &&
+    Number.isInteger(value.bars) &&
     value.bars >= 0 &&
     validateFieldMap(value.fields, HOLDING_EVIDENCE_TECHNICALS_FIELDS)
   )
@@ -120,7 +128,9 @@ function validateTechnicalsGroup(value: unknown): boolean {
 function validateEntry(value: unknown): value is HoldingEvidenceEntry {
   if (!isPlainObject(value)) return false
   return (
+    // code は repository canonical JP stock-code（数字3桁 + 数字/英字1桁）。§P2
     isNonEmptyString(value.code) &&
+    STOCK_CODE_FULL_RE.test(value.code) &&
     isNonEmptyString(value.ticker) &&
     value.market === HOLDING_EVIDENCE_MARKET &&
     validateFundamentalsGroup(value.fundamentals) &&
@@ -161,8 +171,9 @@ export function evaluateHoldingEvidencePipelineFreshness(
   artifact: HoldingEvidenceArtifact,
   nowMs: number,
 ): HoldingEvidencePipelineFreshness {
-  const generatedMs = Date.parse(artifact._meta.generatedAt)
-  if (!Number.isFinite(generatedMs)) return 'stale'
+  const generated = parseStrictTimestamp(artifact._meta.generatedAt)
+  if (!generated) return 'stale'
+  const generatedMs = generated.epochMs
   if (generatedMs > nowMs) return 'future'
   if (nowMs - generatedMs > HOLDING_EVIDENCE_PIPELINE_TTL_MS) return 'stale'
   return 'fresh'
@@ -188,8 +199,9 @@ function unknownGroup(reason: HoldingEvidenceReason): GroupResolution {
 }
 
 function resolveGroupAsOf(asOf: string, nowMs: number, ttlMs: number): HoldingEvidenceReason | null {
-  const asOfMs = Date.parse(asOf)
-  if (!Number.isFinite(asOfMs)) return 'stale_group'
+  const parsed = parseStrictTimestamp(asOf)
+  if (!parsed) return 'stale_group'
+  const asOfMs = parsed.epochMs
   if (asOfMs > nowMs) return 'future_asof'
   if (nowMs - asOfMs > ttlMs) return 'stale_group'
   return null
@@ -249,23 +261,125 @@ export interface JoinHoldingEvidenceResult {
   states: Map<string, HoldingEvidenceJoinState>
 }
 
-function persistedResolution(h: Holding, group: 'fundamentals' | 'technicals'): HoldingEvidenceGroupResolution {
+/** 両 group が同一理由で NO EVIDENCE（unknown）になる fail-closed resolution ペア。 */
+function failClosedPair(reason: HoldingEvidenceReason): {
+  fundamentals: GroupResolution
+  technicals: GroupResolution
+} {
+  return { fundamentals: unknownGroup(reason), technicals: unknownGroup(reason) }
+}
+
+interface HoldingEvidenceResolution {
+  fundamentals: GroupResolution
+  technicals: GroupResolution
+  source: HoldingEvidenceSource
+}
+
+/**
+ * 1 holding 分の effective evidence resolution を pure に導出する（§4）。
+ *
+ * 早期 return で original Holding を素通しさせない。missing / stale / future /
+ * identity mismatch / ambiguous / partial はすべて NO EVIDENCE = unknown であり、
+ * NEGATIVE EVIDENCE ではない。呼び出し側はここで得た GroupResolution を
+ * buildEffectiveHolding へ渡し、effective metadata を必ず適用する。
+ */
+function resolveHoldingEvidence(
+  h: Holding,
+  artifact: HoldingEvidenceArtifact,
+  pipelineFreshness: HoldingEvidencePipelineFreshness,
+  nowMs: number,
+): HoldingEvidenceResolution {
+  const matches = artifact.entries.filter((e) => e.code === h.code)
+
+  // このコードを扱う entry が無い → NO EVIDENCE。
+  if (matches.length === 0) return { ...failClosedPair('no_entry'), source: 'persisted' }
+
+  // 同一コードの entry が複数 → 曖昧。fail-closed で unknown。
+  if (matches.length > 1) return { ...failClosedPair('ambiguous_entry'), source: 'artifact' }
+
+  const entry = matches[0]
+
+  // identity 厳密一致（§7-4）: canonical JP code / ticker=`${code}.T` / market=TSE
+  const identityOk =
+    STOCK_CODE_FULL_RE.test(h.code) &&
+    entry.ticker === `${h.code}.T` &&
+    entry.market === HOLDING_EVIDENCE_MARKET
+  if (!identityOk) return { ...failClosedPair('identity_mismatch'), source: 'artifact' }
+
+  // pipeline TTL（§7-3）
+  if (pipelineFreshness !== 'fresh') {
+    const reason: HoldingEvidenceReason = pipelineFreshness === 'future' ? 'future_pipeline' : 'stale_pipeline'
+    return { ...failClosedPair(reason), source: 'artifact' }
+  }
+
   return {
-    status: h.metadataStatus?.[group] === 'known' ? 'known' : 'unknown',
-    reason: 'no_artifact',
+    fundamentals: resolveFundamentals(entry.fundamentals, nowMs),
+    technicals: resolveTechnicals(entry.technicals, nowMs),
+    source: 'artifact',
   }
 }
 
-function persistedState(h: Holding, reason: HoldingEvidenceReason): HoldingEvidenceJoinState {
-  const fundamentals: HoldingEvidenceGroupResolution = { ...persistedResolution(h, 'fundamentals'), reason }
-  const technicals: HoldingEvidenceGroupResolution = { ...persistedResolution(h, 'technicals'), reason }
-  return { code: h.code, source: 'persisted', fundamentals, technicals, authoritative: false }
+/**
+ * effective metadata を適用した analysis 入力専用 Holding を構築する（§3 / §4）。
+ *
+ *  - published evidence が唯一の runtime authority。persisted metadataStatus=known は
+ *    現在の evidence 契約が unknown を返す限り runtime authority として生存させない
+ *    （fail-closed / unknown floor）。
+ *  - EPHEMERAL override のみ。state.holdings も persisted Holding も mutate しない。
+ *  - persisted と effective が完全一致し書き込む値も無い場合のみ同一参照を返す
+ *    （legacy = metadataStatus 不在 + evidence 不在 の素通しを保つ）。
+ */
+function buildEffectiveHolding(
+  h: Holding,
+  fRes: GroupResolution,
+  tRes: GroupResolution,
+): Holding {
+  const currentF: MetadataProvenance = h.metadataStatus?.fundamentals === 'known' ? 'known' : 'unknown'
+  const currentT: MetadataProvenance = h.metadataStatus?.technicals === 'known' ? 'known' : 'unknown'
+  const hasValues = fRes.values !== null || tRes.values !== null
+
+  if (currentF === fRes.status && currentT === tRes.status && !hasValues) return h
+
+  let enriched: Holding = {
+    ...h,
+    metadataStatus: { fundamentals: fRes.status, technicals: tRes.status },
+  }
+  if (fRes.values) {
+    const v = fRes.values
+    enriched = {
+      ...enriched,
+      roe: v.roe as number,
+      per: v.per as number,
+      pbr: v.pbr as number,
+      epsG: v.epsG as number,
+      cfOk: v.cfOk as boolean,
+      de: v.de as number,
+      divG: v.divG as number,
+    }
+  }
+  if (tRes.values) {
+    const v = tRes.values
+    enriched = {
+      ...enriched,
+      ma: v.ma as boolean,
+      rsi: v.rsi as number,
+      macd: v.macd as boolean,
+      vol: v.vol as boolean,
+      mom3m: v.mom3m as number,
+    }
+  }
+  return enriched
 }
 
 /**
  * state.holdings と holding_evidence artifact を pure に join する。
  * origin 非依存: legacy v81 / canonical CSV / snapshot 復元 / 将来 schema の
  * いずれの Holding でも同一の runtime enrichment logic を通す。
+ *
+ * artifact 不在 / null / entry 不在 / 曖昧 / identity mismatch / pipeline stale /
+ * group stale / partial / insufficient bars など、あらゆる evidence-authority 失敗で
+ * effective metadataStatus は unknown（該当 group）へ倒れる。persisted known は
+ * runtime authority として決して生存しない（§2 / §3 fail-closed invariant）。
  */
 export function joinHoldingEvidence(
   holdings: Holding[],
@@ -274,101 +388,25 @@ export function joinHoldingEvidence(
 ): JoinHoldingEvidenceResult {
   const states = new Map<string, HoldingEvidenceJoinState>()
 
-  // artifact 不在 / null → 全 holding は自身の persisted metadataStatus のまま。
-  if (!artifact) {
-    const out = holdings.map((h) => {
-      states.set(h.code, persistedState(h, 'no_artifact'))
-      return h
-    })
-    return { holdings: out, states }
-  }
-
-  const pipelineFreshness = evaluateHoldingEvidencePipelineFreshness(artifact, nowMs)
+  const pipelineFreshness = artifact
+    ? evaluateHoldingEvidencePipelineFreshness(artifact, nowMs)
+    : null
 
   const out = holdings.map((h) => {
-    const matches = artifact.entries.filter((e) => e.code === h.code)
+    const resolution: HoldingEvidenceResolution =
+      artifact && pipelineFreshness
+        ? resolveHoldingEvidence(h, artifact, pipelineFreshness, nowMs)
+        : { ...failClosedPair('no_artifact'), source: 'persisted' }
 
-    // このコードを扱う entry が無い → NO EVIDENCE。persisted のまま。
-    if (matches.length === 0) {
-      states.set(h.code, persistedState(h, 'no_entry'))
-      return h
-    }
-
-    // 同一コードの entry が複数 → 曖昧。fail-closed で unknown。
-    if (matches.length > 1) {
-      const res: HoldingEvidenceGroupResolution = { status: 'unknown', reason: 'ambiguous_entry' }
-      states.set(h.code, {
-        code: h.code, source: 'artifact',
-        fundamentals: res, technicals: { ...res }, authoritative: false,
-      })
-      return h
-    }
-
-    const entry = matches[0]
-
-    // identity 厳密一致（§7-4）: canonical JP code / ticker=`${code}.T` / market=TSE
-    const identityOk =
-      STOCK_CODE_FULL_RE.test(h.code) &&
-      entry.ticker === `${h.code}.T` &&
-      entry.market === HOLDING_EVIDENCE_MARKET
-    if (!identityOk) {
-      const res: HoldingEvidenceGroupResolution = { status: 'unknown', reason: 'identity_mismatch' }
-      states.set(h.code, {
-        code: h.code, source: 'artifact',
-        fundamentals: res, technicals: { ...res }, authoritative: false,
-      })
-      return h
-    }
-
-    // pipeline TTL（§7-3）
-    if (pipelineFreshness !== 'fresh') {
-      const reason: HoldingEvidenceReason = pipelineFreshness === 'future' ? 'future_pipeline' : 'stale_pipeline'
-      const res: HoldingEvidenceGroupResolution = { status: 'unknown', reason }
-      states.set(h.code, {
-        code: h.code, source: 'artifact',
-        fundamentals: res, technicals: { ...res }, authoritative: false,
-      })
-      return h
-    }
-
-    const fRes = resolveFundamentals(entry.fundamentals, nowMs)
-    const tRes = resolveTechnicals(entry.technicals, nowMs)
-
-    let enriched: Holding = {
-      ...h,
-      metadataStatus: { fundamentals: fRes.status, technicals: tRes.status },
-    }
-    if (fRes.values) {
-      const v = fRes.values
-      enriched = {
-        ...enriched,
-        roe: v.roe as number,
-        per: v.per as number,
-        pbr: v.pbr as number,
-        epsG: v.epsG as number,
-        cfOk: v.cfOk as boolean,
-        de: v.de as number,
-        divG: v.divG as number,
-      }
-    }
-    if (tRes.values) {
-      const v = tRes.values
-      enriched = {
-        ...enriched,
-        ma: v.ma as boolean,
-        rsi: v.rsi as number,
-        macd: v.macd as boolean,
-        vol: v.vol as boolean,
-        mom3m: v.mom3m as number,
-      }
-    }
+    const { fundamentals: fRes, technicals: tRes, source } = resolution
+    const enriched = buildEffectiveHolding(h, fRes, tRes)
 
     states.set(h.code, {
       code: h.code,
-      source: 'artifact',
+      source,
       fundamentals: { status: fRes.status, reason: fRes.reason },
       technicals: { status: tRes.status, reason: tRes.reason },
-      authoritative: fRes.status === 'known' && tRes.status === 'known',
+      authoritative: source === 'artifact' && fRes.status === 'known' && tRes.status === 'known',
     })
     return enriched
   })

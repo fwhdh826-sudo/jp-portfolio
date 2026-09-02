@@ -5,6 +5,7 @@ import { resetPortfolioGenerationLockAdapterForTest, setPortfolioGenerationLockA
 beforeEach(() => setPortfolioGenerationLockAdapterForTest(createImmediatePortfolioGenerationLockAdapterForTest()))
 afterEach(() => resetPortfolioGenerationLockAdapterForTest())
 import type { Holding, Trust } from '../types'
+import type { HoldingEvidenceArtifact } from '../types/holdingEvidence'
 import {
   computeCanonicalPortfolioGenerationIdentity,
   computeCanonicalPortfolioGenerationIdentityV2,
@@ -72,6 +73,43 @@ function holding(code = '1001', evalValue = 100_000): Holding {
     score: 50,
     decision: 'HOLD',
     ev: 0,
+  }
+}
+
+/**
+ * 弱い指標を authoritative な published evidence として与える holding_evidence
+ * artifact。persisted metadataStatus=known は R1 以降 runtime authority として
+ * 生存しないため、legitimate な SELL を得るには fresh な evidence が必要。
+ */
+function weakHoldingEvidence(code: string, generatedAtMs: number): HoldingEvidenceArtifact {
+  const iso = (ms: number) => new Date(ms).toISOString()
+  const present = (v: number | boolean) => ({ v, status: 'present' as const })
+  return {
+    schemaVersion: 'holding-evidence-1',
+    not_for_trading: true,
+    _meta: {
+      kind: 'holding_evidence',
+      schemaVersion: 'holding-evidence-1',
+      generatedAt: iso(generatedAtMs - 60 * 60 * 1000),
+      not_for_trading: true,
+    },
+    entries: [{
+      code, ticker: `${code}.T`, market: 'TSE',
+      fundamentals: {
+        asOf: iso(generatedAtMs - 24 * 60 * 60 * 1000), source: 'test',
+        fields: {
+          roe: present(1), per: present(120), pbr: present(9),
+          epsG: present(-35), cfOk: present(false), de: present(9), divG: present(0),
+        },
+      },
+      technicals: {
+        asOf: iso(generatedAtMs - 60 * 60 * 1000), source: 'test', bars: 120,
+        fields: {
+          ma: present(false), rsi: present(82), macd: present(false),
+          vol: present(false), mom3m: present(-25),
+        },
+      },
+    }],
   }
 }
 
@@ -1506,23 +1544,14 @@ describe('T9-A001/A002: structured CSV result and atomic store commit', () => {
     useAppStore.setState(state => ({
       holdings: [{
         ...holding(),
-        // C2 exercises the lock clock, not legacy provenance. Mark these
-        // deliberately supplied low indicators as authoritative known data.
-        metadataStatus: { fundamentals: 'known', technicals: 'known' },
+        // C2 exercises the lock clock. The weak indicators that drive SELL are
+        // supplied as authoritative published evidence (holdingEvidence below);
+        // persisted metadataStatus=known no longer survives as runtime authority (R1).
         mu: -0.2,
         sigma: 0.5,
         beta: 1.5,
-        ma: false,
-        rsi: 80,
-        macd: false,
-        mom3m: -20,
-        roe: 0,
-        per: 100,
-        epsG: -30,
-        cfOk: false,
-        de: 10,
-        divG: 0,
       }],
+      holdingEvidence: weakHoldingEvidence('1001', analysisNow),
       system: {
         ...state.system,
         dataSourceStatus: {

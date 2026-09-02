@@ -149,6 +149,38 @@ describe('runFullAnalysis + holding_evidence', () => {
       .not.toBe(buildPortfolioAnalysisFingerprint(withArtifact))
   })
 
+  it('R1: persisted metadataStatus known/known does NOT leak as runtime authority', () => {
+    const persistedKnown = makeHolding({ metadataStatus: { fundamentals: 'known', technicals: 'known' } })
+    const before = structuredClone(persistedKnown)
+
+    // artifact 不在
+    const absent = runFullAnalysis(stateWith([persistedKnown], null), { nowMs: NOW_MS })
+    expect(absent.analysis[0].decision).toBe('INSUFFICIENT_EVIDENCE')
+    expect(absent.analysis[0].evidence).toMatchObject({ source: 'persisted', authoritative: false })
+
+    // stale pipeline（本来なら weak score で SELL になる artifact）
+    const stale = runFullAnalysis(stateWith([persistedKnown], artifact([entry('weak')], NOW_MS - 100 * HOUR)), { nowMs: NOW_MS })
+    expect(stale.analysis[0].decision).toBe('INSUFFICIENT_EVIDENCE')
+
+    // identity mismatch
+    const mismatch = runFullAnalysis(
+      stateWith([persistedKnown], artifact([{ ...entry('weak'), ticker: '6098.OS' }])),
+      { nowMs: NOW_MS },
+    )
+    expect(mismatch.analysis[0].decision).toBe('INSUFFICIENT_EVIDENCE')
+
+    // 書き戻し後も persisted metadataStatus は known/known のまま、入力オブジェクトも不変
+    expect(absent.holdings[0].metadataStatus).toEqual({ fundamentals: 'known', technicals: 'known' })
+    expect(persistedKnown).toEqual(before)
+  })
+
+  it('R1 positive control: persisted known/known + valid fresh weak artifact still SELLs', () => {
+    const persistedKnown = makeHolding({ metadataStatus: { fundamentals: 'known', technicals: 'known' } })
+    const result = runFullAnalysis(stateWith([persistedKnown], artifact([entry('weak')])), { nowMs: NOW_MS })
+    expect(result.analysis[0].totalScore).toBeLessThan(50)
+    expect(result.analysis[0].decision).toBe('SELL')
+  })
+
   it('does not throw on a stale-pipeline artifact and abstains', () => {
     const stale = artifact([entry('weak')], NOW_MS - 100 * HOUR)
     const result = runFullAnalysis(stateWith([makeHolding()], stale), { nowMs: NOW_MS })
