@@ -52388,3 +52388,76 @@ browser 320/375px実確認はB3-C-Vからの残存follow-upであり、本R1の�
 B3-C-R1はproduction/test修正とvalidation完了、外部manifest writeのみ環境権限待ち。
 manifest作成後、Codex GPT-5.6 Sol / highによる**B3-C-V2限定再監査**が必要。
 portfolioFit/officialDecision/BUY_NEW等の後続機能は未着手。
+
+---
+
+## HOLDING-EVIDENCE-2A — authoritative holding evidence generator（実装記録）
+
+### スコープ
+
+HE-1（`src/types/holdingEvidence.ts` / `src/domain/analysis/holdingEvidence.ts`、
+`origin/v13.3-dev` = `feeb1da`）で凍結された `holding_evidence.json` artifact 契約に対し、
+本番 Python generator・Python 契約 validator・cross-language parity・update-data.yml
+統合を実装した。HE-1 の意思決定コア（型 / runtime join / computeAnalysis 閾値）は不変。
+
+### 新規ファイル
+
+- `data/update_holding_evidence.py` — yfinance 由来の generator（fetch/pure 分離）
+- `data/holding_evidence_contract.py` — stdlib のみの構造 validator + strict timestamp
+- `tests/test_update_holding_evidence.py` — deterministic generator テスト（§36 matrix / ticker drift / parity Python 側）
+- `tests/test_holding_evidence_contract.py` — validator テスト（TS strict parser parity / negative cases）
+- `tests/fixtures/holding_evidence_parity_v1.json` — cross-language parity fixture（Python pure builder が生成、両言語が同一意味で解釈）
+- `src/types/holdingEvidence.contract.test.ts` — TS 側 parity（parse + join + negative cases）
+
+### 変更ファイル
+
+- `.github/workflows/update-data.yml`
+  - `Update holding_evidence.json (HOLDING-EVIDENCE-2 / yfinance)` を
+    `Update market_intel.json` の直後・`Copy JSON to public/data` の直前に追加（fail-soft `|| true`）
+  - copy loop に `holding_evidence` を追加
+  - `Validate holding_evidence artifact strictly` を `Validate market JSON twins strictly` の直後に追加
+    （hard-fail。public/data 側が無ければ successful skip。strict JSON parse + 契約 validation +
+    禁止トークン検査 + data/public byte 一致）
+  - mutation-admission checkpoint（pre_fetch / pre_publish）の数・順序・直後ステップは不変
+- `tests/test_update_data_workflow.py` — generator/copy/validation の存在・順序・fail-soft/hard-fail・checkpoint 不変を検証
+
+### generator アーキテクチャ
+
+- fetch 境界: `fetch_fundamentals_surface` / `fetch_technicals_surface`（yfinance を隔離、deterministic に最大 2 attempt、失敗時 None）
+- pure transform: 注入 `FundamentalsSurface` / `TechnicalsSurface` → `build_fundamentals_group` / `build_technicals_group` → `build_entry` → `build_artifact`。unit test は network に触れない
+- universe: `HOLDING_EVIDENCE_TICKERS`（現行 16 の JP .T シンボル）。`data/update_returns.py` /
+  `data/update_correlation.py` の静的 `TICKERS` と AST 抽出比較で drift を防ぐ
+- fleet publication: eligible entry（fundamentals 完全〈承認済み de not_applicable を除く〉AND
+  technicals 完全 AND bars>=75）が 1 件以上のときのみ atomic replace。0 件なら exit 非ゼロ・既存 artifact / generatedAt を保持
+- atomic write: メモリ内で完全 artifact 構築 → 契約 validation → `json.dumps(allow_nan=False)` →
+  同一ディレクトリ temp file → `fsync` → `os.replace`。失敗時は既存 artifact 無傷
+
+### freshness ドキュメント規則（重要・凍結）
+
+- **財務諸表 source-age の実上限は FY0 period-end + 456 日**（`STATEMENT_MAX_AGE_DAYS = 456`、
+  `data/update_holding_evidence.py` の Python guard）。FY0 period-end がこれより古い場合、
+  7 つの fundamentals フィールドすべて（8306 の de not_applicable を含め）が missing になる。
+- HE-1 の 45 日 fundamentals TTL（`HOLDING_EVIDENCE_FUNDAMENTALS_TTL_MS`）は group `asOf`
+  （＝statement surface の観測時刻）に対する **backstop** であって、
+  「財務諸表が 45 日以内」を意味しない。この HE-2 生成モデルでは source-age 保証は 456 日側が担う。
+- これを「45 日 financial freshness」と呼んではならない。
+
+### carry-forward（HE-2A blocker ではない）
+
+- 負 PER の seven-axis valuation 表示は display-only の既知 quirk。HE-2A では修正しない。
+- `STOCK_CODE_FULL_RE` 依存（`data` パッケージ import 前提の validator/test 橋渡し含む）は
+  MINOR_ARCHITECTURE_DEBT。HE-2A blocker ではない。
+
+### 検証
+
+- `tests/test_update_holding_evidence.py`: 59 passed
+- `tests/test_holding_evidence_contract.py`: 45 passed
+- `src/types/holdingEvidence.contract.test.ts`: 10 passed
+- `tests/test_update_data_workflow.py`: 29 passed
+- HE-1 vitest regression（holdingEvidence / integration / metadataCorrectnessA2 / displayDecision）: 120 passed
+- `tests/test_mutation_serialization_workflows.py`: checkpoint 位置・byte-frozen ステップ全て pass
+  （drift guard `test_no_source_or_production_data_drift_outside_exact_scope` は
+  実装 commit 前のみ未追跡ファイルで RED、commit 後は clean tree で GREEN）
+- `npx tsc --noEmit`: PASS
+- `npm run build`: PASS（既知の 500kB chunk warning のみ）
+- `git diff --check`: PASS

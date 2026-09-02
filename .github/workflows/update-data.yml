@@ -79,9 +79,13 @@ jobs:
       - name: Update market_intel.json (VIX / Nikkei MA / SP500 drawdown / USDJPY)
         run: python3 data/update_market_intel.py || true
 
+      # ── HOLDING-EVIDENCE-2 (yfinance holding evidence generator) ──
+      - name: Update holding_evidence.json (HOLDING-EVIDENCE-2 / yfinance)
+        run: python3 data/update_holding_evidence.py || true
+
       - name: Copy JSON to public/data
         run: |
-          for f in correlation market macro sq_calendar margin flows earnings_calendar news returns market_intel; do
+          for f in correlation market macro sq_calendar margin flows earnings_calendar news returns market_intel holding_evidence; do
             if [ -f "data/${f}.json" ]; then
               cp "data/${f}.json" "public/data/${f}.json"
             fi
@@ -100,6 +104,41 @@ jobs:
               with path.open(encoding="utf-8") as source:
                   json.load(source, parse_constant=reject_constant)
               print(f"strict JSON ok: {path}")
+          PY
+
+      - name: Validate holding_evidence artifact strictly
+        run: |
+          # generator step 自体は fail-soft だが、malformed / 禁止トークンを含む
+          # artifact の publish は許さない。public/data 側が無ければ successful skip。
+          python3 - <<'PY'
+          import sys
+          from pathlib import Path
+
+          published = Path("public/data/holding_evidence.json")
+          if not published.exists():
+              print("holding_evidence: no published artifact — skip")
+              sys.exit(0)
+
+          from data.holding_evidence_contract import (
+              load_strict_json,
+              validate_holding_evidence_artifact,
+          )
+
+          artifact = load_strict_json(str(published))  # NaN / Infinity を拒否
+          ok, problems = validate_holding_evidence_artifact(artifact)
+          if not ok:
+              print("holding_evidence contract FAILED:", file=sys.stderr)
+              for problem in problems:
+                  print(f"  - {problem}", file=sys.stderr)
+              sys.exit(1)
+
+          source = Path("data/holding_evidence.json")
+          if source.exists():
+              if source.read_bytes() != published.read_bytes():
+                  print("holding_evidence: data/ と public/data/ が byte 不一致", file=sys.stderr)
+                  sys.exit(1)
+
+          print("holding_evidence artifact strict validation ok")
           PY
 
       - name: Build candidates news summary

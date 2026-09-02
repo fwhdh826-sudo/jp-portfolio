@@ -1,0 +1,210 @@
+{
+  "schemaVersion": "holding-evidence-1",
+  "not_for_trading": true,
+  "_meta": {
+    "kind": "holding_evidence",
+    "schemaVersion": "holding-evidence-1",
+    "generatedAt": "2026-08-31T23:00:00.000Z",
+    "not_for_trading": true
+  },
+  "entries": [
+    {
+      "code": "6098",
+      "ticker": "6098.T",
+      "market": "TSE",
+      "fundamentals": {
+        "asOf": "2026-08-31T00:00:00.000Z",
+        "source": "yfinance annual income_stmt/balance_sheet/cashflow + info",
+        "fields": {
+          "roe": {
+            "v": 20.0,
+            "status": "present"
+          },
+          "per": {
+            "v": 6.975,
+            "status": "present"
+          },
+          "pbr": {
+            "v": 1.5,
+            "status": "present"
+          },
+          "epsG": {
+            "v": 25.0,
+            "status": "present"
+          },
+          "cfOk": {
+            "v": true,
+            "status": "present"
+          },
+          "de": {
+            "v": 0.4,
+            "status": "present"
+          },
+          "divG": {
+            "v": 20.0,
+            "status": "present"
+          }
+        }
+      },
+      "technicals": {
+        "asOf": "2026-08-31T06:30:00.000Z",
+        "source": "yfinance history(period=1y, interval=1d, auto_adjust=True, actions=False)",
+        "bars": 80,
+        "fields": {
+          "ma": {
+            "v": true,
+            "status": "present"
+          },
+          "rsi": {
+            "v": 100.0,
+            "status": "present"
+          },
+          "macd": {
+            "v": true,
+            "status": "present"
+          },
+          "vol": {
+            "v": true,
+            "status": "present"
+          },
+          "mom3m": {
+            "v": 29.166666666666675,
+            "status": "present"
+          }
+        }
+      }
+    },
+    {
+      "code": "9697",
+      "ticker": "9697.T",
+      "market": "TSE",
+      "fundamentals": {
+        "asOf": "2026-08-31T00:00:00.000Z",
+        "source": "yfinance annual income_stmt/balance_sheet/cashflow + info",
+        "fields": {
+          "roe": {
+            "v": null,
+            "status": "missing"
+          },
+          "per": {
+            "v": 6.725,
+            "status": "present"
+          },
+          "pbr": {
+            "v": 1.5,
+            "status": "present"
+          },
+          "epsG": {
+            "v": 25.0,
+            "status": "present"
+          },
+          "cfOk": {
+            "v": true,
+            "status": "present"
+          },
+          "de": {
+            "v": 0.4,
+            "status": "present"
+          },
+          "divG": {
+            "v": 20.0,
+            "status": "present"
+          }
+        }
+      },
+      "technicals": {
+        "asOf": "2026-08-31T06:30:00.000Z",
+        "source": "yfinance history(period=1y, interval=1d, auto_adjust=True, actions=False)",
+        "bars": 70,
+        "fields": {
+          "ma": {
+            "v": null,
+            "status": "missing"
+          },
+          "rsi": {
+            "v": null,
+            "status": "missing"
+          },
+          "macd": {
+            "v": null,
+            "status": "missing"
+          },
+          "vol": {
+            "v": null,
+            "status": "missing"
+          },
+          "mom3m": {
+            "v": null,
+            "status": "missing"
+          }
+        }
+      }
+    },
+    {
+      "code": "8306",
+      "ticker": "8306.T",
+      "market": "TSE",
+      "fundamentals": {
+        "asOf": "2026-08-31T00:00:00.000Z",
+        "source": "yfinance annual income_stmt/balance_sheet/cashflow + info",
+        "fields": {
+          "roe": {
+            "v": 8.0,
+            "status": "present"
+          },
+          "per": {
+            "v": 1.55,
+            "status": "present"
+          },
+          "pbr": {
+            "v": 0.8,
+            "status": "present"
+          },
+          "epsG": {
+            "v": 12.5,
+            "status": "present"
+          },
+          "cfOk": {
+            "v": true,
+            "status": "present"
+          },
+          "de": {
+            "v": null,
+            "status": "not_applicable"
+          },
+          "divG": {
+            "v": 20.0,
+            "status": "present"
+          }
+        }
+      },
+      "technicals": {
+        "asOf": "2026-08-31T06:30:00.000Z",
+        "source": "yfinance history(period=1y, interval=1d, auto_adjust=True, actions=False)",
+        "bars": 80,
+        "fields": {
+          "ma": {
+            "v": true,
+            "status": "present"
+          },
+          "rsi": {
+            "v": 100.0,
+            "status": "present"
+          },
+          "macd": {
+            "v": true,
+            "status": "present"
+          },
+          "vol": {
+            "v": true,
+            "status": "present"
+          },
+          "mom3m": {
+            "v": 29.166666666666675,
+            "status": "present"
+          }
+        }
+      }
+    }
+  ]
+}
