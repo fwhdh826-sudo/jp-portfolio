@@ -215,6 +215,91 @@ def test_reject_forbidden_token_in_string_value(artifact):
     _reject(artifact, "forbidden trading-decision token")
 
 
+# ── D1..D4 de:not_applicable は承認済みコードのみ（§14 authority repair）────
+def _set_code(entry: dict, code: str) -> None:
+    entry["code"] = code
+    entry["ticker"] = f"{code}.T"
+
+
+def test_d1_8306_de_not_applicable_valid(artifact):
+    # fixture entry[2] は 8306 + de:not_applicable
+    assert artifact["entries"][2]["code"] == "8306"
+    assert artifact["entries"][2]["fundamentals"]["fields"]["de"]["status"] == "not_applicable"
+    ok, errors = validate_holding_evidence_artifact(artifact)
+    assert ok, errors
+
+
+@pytest.mark.parametrize("code", ["6098", "8593", "4755"])
+def test_d2_d3_d4_unapproved_de_not_applicable_rejected(artifact, code):
+    entry = artifact["entries"][0]
+    _set_code(entry, code)
+    entry["fundamentals"]["fields"]["de"] = {"v": None, "status": "not_applicable"}
+    _reject(artifact, "not_applicable is only permitted for")
+
+
+def test_d_any_non_de_field_not_applicable_still_rejected(artifact):
+    artifact["entries"][2]["fundamentals"]["fields"]["roe"] = {"v": None, "status": "not_applicable"}
+    _reject(artifact, "not_applicable is only legal")
+
+
+# ── V1..V7 exact root/_meta schema + forbidden decision output（§28 / §33-3）──
+def test_v1_extra_root_key_buy_rejected(artifact):
+    artifact["BUY"] = True
+    _reject(artifact, "root: keys must be exactly")
+
+
+def test_v2_extra_root_action_strong_buy_rejected(artifact):
+    artifact["action"] = "STRONG_BUY"
+    ok, errors = validate_holding_evidence_artifact(artifact)
+    assert ok is False
+    assert any("root: keys must be exactly" in e for e in errors), errors
+    assert any("forbidden trading-decision" in e for e in errors), errors
+
+
+def test_v3_extra_meta_decision_key_rejected(artifact):
+    artifact["_meta"]["decision"] = "HOLD"
+    ok, errors = validate_holding_evidence_artifact(artifact)
+    assert ok is False
+    assert any("_meta: keys must be exactly" in e for e in errors), errors
+    assert any("forbidden trading-decision" in e for e in errors), errors
+
+
+def test_v4_unknown_root_key_rejected_by_exact_schema(artifact):
+    artifact["provenanceNote"] = "harmless-looking"
+    _reject(artifact, "root: keys must be exactly")
+
+
+def test_v5_unknown_meta_key_rejected_by_exact_schema(artifact):
+    artifact["_meta"]["extraProvenance"] = "x"
+    _reject(artifact, "_meta: keys must be exactly")
+
+
+def test_v6_valid_canonical_fixture_still_passes(artifact):
+    ok, errors = validate_holding_evidence_artifact(artifact)
+    assert ok, errors
+
+
+def test_v7_forbidden_nested_decision_key_rejected(artifact):
+    # field object は exact {v, status} だが、recursive walk は全 nesting を掃く
+    artifact["entries"][0]["fundamentals"]["fields"]["roe"]["recommendedAction"] = "BUY"
+    ok, errors = validate_holding_evidence_artifact(artifact)
+    assert ok is False
+    assert any("forbidden trading-decision key" in e for e in errors), errors
+
+
+def test_v_compound_value_strong_buy_in_string_rejected(artifact):
+    artifact["entries"][0]["technicals"]["source"] = "pipeline: STRONG_BUY override"
+    _reject(artifact, "forbidden trading-decision token")
+
+
+def test_v_legit_source_provenance_not_false_positive(artifact):
+    # 正当な source 文字列は禁止トークンを含まないため通る
+    ok, errors = validate_holding_evidence_artifact(artifact)
+    assert ok, errors
+    for entry in artifact["entries"]:
+        assert "yfinance" in entry["fundamentals"]["source"]
+
+
 # ── validator を通しても実 artifact は byte 安定 ─────────────────────────
 def test_validation_is_pure(artifact):
     before = copy.deepcopy(artifact)

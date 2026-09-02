@@ -489,6 +489,216 @@ def test_retry_policy_succeeds_on_second_attempt():
 
 
 # ═══════════════════════════════════════════════════════════════════════
+# S1..S5 split retrieval failure ≠ empty splits（P1 authority repair）
+# ═══════════════════════════════════════════════════════════════════════
+class _RaisingSplitsHandle:
+    """handle.splits accessor を最初の `raises` 回だけ実際に raise させる fake。"""
+
+    def __init__(self, raises: int, series):
+        self._remaining = raises
+        self._series = series
+
+    @property
+    def splits(self):
+        if self._remaining > 0:
+            self._remaining -= 1
+            raise RuntimeError("splits endpoint unavailable")
+        return self._series
+
+
+class _Series:
+    def __init__(self, pairs):
+        self._pairs = pairs
+
+    def items(self):
+        return iter(self._pairs)
+
+
+def test_s1_splits_ok_empty_series_normal_per_epsg():
+    fund = _fundamentals(splits=[], splits_ok=True)
+    f = _fund_group(fundamentals=fund, price_last_close=240.0)
+    assert _field(f, "per")["status"] == "present"
+    assert _field(f, "epsG")["status"] == "present"
+
+
+def test_s2_splits_ok_relevant_split_per_epsg_missing():
+    fund = _fundamentals(splits=[(date(2025, 6, 1), 2.0)], splits_ok=True)
+    f = _fund_group(fundamentals=fund, price_last_close=240.0)
+    assert _field(f, "per")["status"] == "missing"
+    assert _field(f, "epsG")["status"] == "missing"
+    assert _field(f, "roe")["status"] == "present"
+
+
+def test_s3_splits_first_attempt_raises_second_empty_allows_per_epsg():
+    handle = _RaisingSplitsHandle(raises=1, series=_Series([]))
+    result = gen._retry(lambda: gen._collect_splits(handle))
+    assert result == []  # 2 回目で成功（例外を握り潰していない）
+    fund = _fundamentals(splits=result, splits_ok=result is not None)
+    f = _fund_group(fundamentals=fund, price_last_close=240.0)
+    assert _field(f, "per")["status"] == "present"
+    assert _field(f, "epsG")["status"] == "present"
+
+
+def test_s4_splits_both_attempts_raise_forces_per_epsg_missing_not_eligible():
+    handle = _RaisingSplitsHandle(raises=2, series=_Series([]))
+    result = gen._retry(lambda: gen._collect_splits(handle))
+    assert result is None  # 両試行失敗 → unknown split history
+
+    fund = _fundamentals(splits=[], splits_ok=False)
+    entry = gen.build_entry(gen.EntryInput("6098", fund, _technicals(80), REF_NOW))
+    fields = entry["fundamentals"]["fields"]
+    assert fields["per"]["status"] == "missing"
+    assert fields["epsG"]["status"] == "missing"
+    # fundamentals group は per/epsG が required のため不完全 → fleet ineligible
+    assert gen.is_eligible(entry) is False
+
+
+def test_s5_failed_split_surface_does_not_mutate_unrelated_fields():
+    fund = _fundamentals(splits=[], splits_ok=False)
+    f = _fund_group(fundamentals=fund, price_last_close=240.0)
+    assert _field(f, "roe") == {"v": pytest.approx(20.0), "status": "present"}
+    assert _field(f, "pbr") == {"v": pytest.approx(1.5), "status": "present"}
+    assert _field(f, "cfOk") == {"v": True, "status": "present"}
+    assert _field(f, "de")["v"] == pytest.approx(0.4)
+    assert _field(f, "divG")["v"] == pytest.approx(20.0)
+
+
+def test_s_split_accessor_success_after_retry_parses_pairs():
+    handle = _RaisingSplitsHandle(raises=1, series=_Series([(date(2025, 6, 1), 2.0)]))
+    result = gen._retry(lambda: gen._collect_splits(handle))
+    assert result == [(date(2025, 6, 1), 2.0)]
+
+
+# ═══════════════════════════════════════════════════════════════════════
+# D5 malformed de:not_applicable can never increase eligibility（P2）
+# ═══════════════════════════════════════════════════════════════════════
+def test_d5_unapproved_de_not_applicable_not_eligible():
+    fund = _fundamentals()
+    entry = gen.build_entry(gen.EntryInput("6098", fund, _technicals(80), REF_NOW))
+    # 承認外コード 6098 の de を not_applicable へ改竄
+    entry["fundamentals"]["fields"]["de"] = {"v": None, "status": "not_applicable"}
+    assert gen.is_eligible(entry) is False
+    # 承認済み 8306 は許容
+    entry_bank = gen.build_entry(gen.EntryInput("8306", _fundamentals(), _technicals(80), REF_NOW))
+    assert entry_bank["fundamentals"]["fields"]["de"]["status"] == "not_applicable"
+    assert gen.is_eligible(entry_bank) is True
+
+
+# ═══════════════════════════════════════════════════════════════════════
+# VOL1..VOL3 zero current volume is authoritative false（P3）
+# ═══════════════════════════════════════════════════════════════════════
+def test_vol1_zero_current_volume_present_false():
+    volumes = [1000.0] * 20 + [0.0]
+    assert gen._volume_confirmation(volumes) is False
+
+
+def test_vol1b_zero_current_volume_via_group_is_present_false():
+    bars = _rising_bars(80)
+    bars[-1]["volume"] = 0.0
+    g = gen.build_technicals_group(gen.clean_bars(bars, NOW_JST), REF_NOW)
+    assert _field(g, "vol") == {"v": False, "status": "present"}
+
+
+def test_vol2_non_finite_current_volume_missing():
+    volumes = [1000.0] * 20 + [float("nan")]
+    assert gen._volume_confirmation(volumes) is None
+
+
+def test_vol3_zero_baseline_mean_missing():
+    volumes = [0.0] * 20 + [500.0]
+    assert gen._volume_confirmation(volumes) is None
+
+
+def test_vol_insufficient_observations_missing():
+    assert gen._volume_confirmation([1000.0] * 20) is None
+
+
+# ═══════════════════════════════════════════════════════════════════════
+# A1..A5 atomic write temp-file cleanup（P3）
+# ═══════════════════════════════════════════════════════════════════════
+def _tmp_glob(tmp_path):
+    return list(tmp_path.glob(".holding_evidence.json.tmp*"))
+
+
+def test_a1_serialization_failure_no_temp_old_unchanged(tmp_path):
+    target = tmp_path / "holding_evidence.json"
+    good = '{"prev":"valid"}\n'
+    target.write_text(good)
+    with pytest.raises(ValueError):
+        gen.atomic_write_json(target, {"x": float("nan")})
+    assert target.read_text() == good
+    assert not _tmp_glob(tmp_path)
+
+
+def test_a2_write_failure_after_temp_creation_cleans_temp(tmp_path, monkeypatch):
+    target = tmp_path / "holding_evidence.json"
+    good = '{"prev":"valid"}\n'
+    target.write_text(good)
+
+    real_open = open
+
+    class _FailingHandle:
+        def __init__(self, path):
+            self._fh = real_open(path, "w", encoding="utf-8")
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *exc):
+            self._fh.close()
+            return False
+
+        def write(self, _data):
+            raise OSError("disk full")
+
+        def flush(self):
+            pass
+
+        def fileno(self):
+            return self._fh.fileno()
+
+    def _fake_open(path, mode="r", **kwargs):
+        assert "w" in mode
+        return _FailingHandle(path)
+
+    monkeypatch.setattr(gen, "open", _fake_open, raising=False)
+    with pytest.raises(OSError):
+        gen.atomic_write_json(target, {"ok": True})
+    assert target.read_text() == good
+    assert not _tmp_glob(tmp_path)
+
+
+def test_a3_fsync_failure_old_unchanged_temp_cleaned(tmp_path, monkeypatch):
+    target = tmp_path / "holding_evidence.json"
+    good = '{"prev":"valid"}\n'
+    target.write_text(good)
+    monkeypatch.setattr(gen.os, "fsync", lambda fd: (_ for _ in ()).throw(OSError("fsync")))
+    with pytest.raises(OSError):
+        gen.atomic_write_json(target, {"ok": True})
+    assert target.read_text() == good
+    assert not _tmp_glob(tmp_path)
+
+
+def test_a4_replace_failure_old_unchanged_temp_cleaned(tmp_path, monkeypatch):
+    target = tmp_path / "holding_evidence.json"
+    good = '{"prev":"valid"}\n'
+    target.write_text(good)
+    monkeypatch.setattr(gen.os, "replace", lambda src, dst: (_ for _ in ()).throw(OSError("replace")))
+    with pytest.raises(OSError):
+        gen.atomic_write_json(target, {"ok": True})
+    assert target.read_text() == good
+    assert not _tmp_glob(tmp_path)
+
+
+def test_a5_success_replaces_atomically_no_temp(tmp_path):
+    target = tmp_path / "holding_evidence.json"
+    target.write_text('{"prev":"valid"}\n')
+    gen.atomic_write_json(target, {"ok": True})
+    assert json.loads(target.read_text()) == {"ok": True}
+    assert not _tmp_glob(tmp_path)
+
+
+# ═══════════════════════════════════════════════════════════════════════
 # §24 ticker universe drift guard（AST 抽出・依存なし）
 # ═══════════════════════════════════════════════════════════════════════
 def _ast_static_tickers(relpath: str) -> list[str]:

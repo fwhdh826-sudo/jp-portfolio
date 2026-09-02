@@ -50,7 +50,20 @@ FIELD_STATUSES = frozenset({"present", "missing", "not_applicable"})
 
 STATUS_ENUM = FIELD_STATUSES
 
+# root / _meta の exact key set（HE-1 契約と 1:1）。required-subset ではなく完全一致。
+ROOT_KEYS = frozenset({"schemaVersion", "not_for_trading", "_meta", "entries"})
+META_KEYS = frozenset({"kind", "schemaVersion", "generatedAt", "not_for_trading"})
+
 _CODE_RE = re.compile(r"^\d{3}[0-9A-HJ-NP-Z]$")
+
+
+def de_not_applicable_permitted(code: Any) -> bool:
+    """de = not_applicable が契約上許容されるのは承認済みコードのみ（§14）。
+
+    validator と generator の eligibility が同一規則を共有するための canonical helper。
+    """
+    return isinstance(code, str) and code in DE_NOT_APPLICABLE_CODES
+
 
 # src/utils/strictTimestamp.ts の DATE_TIME_RE と同一。permissive な datetime parse は
 # 不可能な暦日（2026-02-30...）や 6 桁マイクロ秒 / +00:00 無 tz を通すため使わない。
@@ -59,17 +72,36 @@ _DATE_TIME_RE = re.compile(
 )
 
 # 売買判断・注文を示す禁止キー（§28 / §33-3）。artifact は evidence のみを所有する。
-FORBIDDEN_KEYS = frozenset(
+# case-insensitive で照合する（BUY / buy / Buy いずれも禁止）。exact key schema が
+# 一次防御であり、これは variable-content dict に対する defense-in-depth（§33-3 B）。
+_FORBIDDEN_KEYS_LC = frozenset(
     {
-        "recommendedAction",
-        "targetWeight",
-        "rebalanceAmount",
-        "orderQuantity",
-        "officialDecision",
+        "recommendedaction",
+        "recommendation",
+        "targetweight",
+        "rebalanceamount",
+        "orderquantity",
+        "orderside",
+        "ordertype",
+        "officialdecision",
+        "action",
+        "decision",
+        "verdict",
+        "signal",
+        "buy",
+        "sell",
+        "hold",
+        "wait",
     }
 )
-# 文字列値中で禁止する standalone トークン。
-_FORBIDDEN_TOKEN_RE = re.compile(r"\b(BUY|SELL|HOLD|WAIT)\b")
+# 文字列値中で禁止する decision トークン。ASCII 文字境界のみを見るため
+# STRONG_BUY / STRONG-BUY のような compound value も検出する（"WITHHOLD" 等の
+# 正当な単語は前後の文字境界で除外される）。
+_FORBIDDEN_TOKEN_RE = re.compile(r"(?<![A-Za-z])(BUY|SELL|HOLD|WAIT)(?![A-Za-z])")
+
+
+def _key_is_forbidden(key: Any) -> bool:
+    return isinstance(key, str) and key.lower() in _FORBIDDEN_KEYS_LC
 
 
 def _is_leap(year: int) -> bool:
@@ -208,11 +240,24 @@ def _check_entry(errors: list[str], index: int, entry: Any) -> None:
     _check_group(errors, f"{path}.fundamentals", entry.get("fundamentals"), FUNDAMENTALS_FIELDS, False)
     _check_group(errors, f"{path}.technicals", entry.get("technicals"), TECHNICALS_FIELDS, True)
 
+    # de = not_applicable は承認済みコードでのみ合法（§14）。field-level check は
+    # フィールド名しか見ないため、ここで code と突き合わせる。
+    fundamentals = entry.get("fundamentals")
+    if isinstance(fundamentals, dict):
+        fields = fundamentals.get("fields")
+        de_field = fields.get("de") if isinstance(fields, dict) else None
+        if isinstance(de_field, dict) and de_field.get("status") == "not_applicable":
+            if not de_not_applicable_permitted(code):
+                errors.append(
+                    f"{path}.fundamentals.fields.de: not_applicable is only permitted for "
+                    f"codes {sorted(DE_NOT_APPLICABLE_CODES)}"
+                )
+
 
 def _walk_forbidden(errors: list[str], node: Any, path: str) -> None:
     if isinstance(node, dict):
         for key, value in node.items():
-            if key in FORBIDDEN_KEYS:
+            if _key_is_forbidden(key):
                 errors.append(f"{path}: forbidden trading-decision key {key!r}")
             _walk_forbidden(errors, value, f"{path}.{key}")
     elif isinstance(node, list):
@@ -229,6 +274,10 @@ def validate_holding_evidence_artifact(obj: Any) -> tuple[bool, list[str]]:
     try:
         if not isinstance(obj, dict):
             return False, ["root: artifact must be an object"]
+        if set(obj.keys()) != ROOT_KEYS:
+            errors.append(
+                f"root: keys must be exactly {sorted(ROOT_KEYS)}, got {sorted(obj.keys())}"
+            )
         if obj.get("schemaVersion") != SCHEMA_VERSION:
             errors.append(f"root.schemaVersion: must be {SCHEMA_VERSION!r}")
         if obj.get("not_for_trading") is not True:
@@ -238,6 +287,10 @@ def validate_holding_evidence_artifact(obj: Any) -> tuple[bool, list[str]]:
         if not isinstance(meta, dict):
             errors.append("_meta: must be an object")
         else:
+            if set(meta.keys()) != META_KEYS:
+                errors.append(
+                    f"_meta: keys must be exactly {sorted(META_KEYS)}, got {sorted(meta.keys())}"
+                )
             if meta.get("kind") != KIND:
                 errors.append(f"_meta.kind: must be {KIND!r}")
             if meta.get("schemaVersion") != SCHEMA_VERSION:

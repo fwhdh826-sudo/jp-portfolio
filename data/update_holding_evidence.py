@@ -42,28 +42,26 @@ from typing import Any, Callable, Optional
 
 try:  # generator は `python3 data/update_holding_evidence.py`（sys.path[0]=data/）
     from holding_evidence_contract import (
-        DE_NOT_APPLICABLE_CODES,
         FUNDAMENTALS_FIELDS,
         KIND,
         MARKET,
         MIN_TECHNICAL_BARS,
-        NOT_APPLICABLE_FIELDS,
         SCHEMA_VERSION,
         STATEMENT_MAX_AGE_DAYS,
         TECHNICALS_FIELDS,
+        de_not_applicable_permitted,
         validate_holding_evidence_artifact,
     )
 except ImportError:  # pytest は `import data.update_holding_evidence`（repo root on path）
     from data.holding_evidence_contract import (
-        DE_NOT_APPLICABLE_CODES,
         FUNDAMENTALS_FIELDS,
         KIND,
         MARKET,
         MIN_TECHNICAL_BARS,
-        NOT_APPLICABLE_FIELDS,
         SCHEMA_VERSION,
         STATEMENT_MAX_AGE_DAYS,
         TECHNICALS_FIELDS,
+        de_not_applicable_permitted,
         validate_holding_evidence_artifact,
     )
 
@@ -118,6 +116,10 @@ class FundamentalsSurface:
     dividends: list[tuple[date, float]]
     dividends_ok: bool
     observed_at: datetime  # tz-aware UTC
+    # split history が retry 後も取得できたか。False = unknown split history であり
+    # 「分割なし」ではない（§7）。空 series（splits==[] かつ splits_ok=True）は
+    # authoritative「関連する分割は観測されず」。
+    splits_ok: bool = True
 
 
 @dataclass
@@ -288,7 +290,10 @@ def build_fundamentals_group(
     eps_label = _eps_label(income)
     eps_fy0 = _row(income, eps_label, 0)
     eps_fy1 = _row(income, eps_label, 1)
-    split_ok = _split_guard_ok(surface.splits, surface.period_ends)
+    # split history が取得できていない（splits_ok=False）場合は unknown split history。
+    # per / epsG は fail-closed で missing にする（retrieval 失敗を「分割なし」と
+    # 同一視しない, §7）。roe/pbr/cfOk/de/divG は split と無関係なので影響しない。
+    split_ok = surface.splits_ok and _split_guard_ok(surface.splits, surface.period_ends)
 
     # ── per（§9）──────────────────────────────────────────────
     if (
@@ -320,7 +325,7 @@ def build_fundamentals_group(
         fields["cfOk"] = _present_bool(ocf_fy0 > 0 and fcf_fy0 > 0)  # false も present
 
     # ── de（§13 / §14）───────────────────────────────────────
-    if code in DE_NOT_APPLICABLE_CODES:
+    if de_not_applicable_permitted(code):
         fields["de"] = _not_applicable()
     else:
         if "Total Debt" in balance:
@@ -406,14 +411,22 @@ def _macd_line_above_signal(closes: list[float]) -> bool:
 
 
 def _volume_confirmation(volumes: list[float]) -> Optional[bool]:
-    """Volume_t > 1.3 * mean(直近 20 バー、当日除外)（§20）。"""
+    """Volume_t > 1.3 * mean(直近 20 バー、当日除外)（§20）。
+
+    21 観測すべてが有限 かつ baseline mean > 0 のとき、この不等式は well-defined。
+    観測された Volume_t == 0 は source 不在ではなく authoritative な False（0 は
+    どんな正の閾値も超えない, §20）。missing にするのは非有限 volume / 観測不足 /
+    baseline mean <= 0 のときのみ。"""
     if len(volumes) < 21:
         return None
     baseline = volumes[-21:-1]
-    baseline_mean = sum(baseline) / 20.0
-    if baseline_mean <= 0 or volumes[-1] <= 0:
+    current = volumes[-1]
+    if not all(math.isfinite(value) for value in baseline) or not math.isfinite(current):
         return None
-    return volumes[-1] > 1.3 * baseline_mean
+    baseline_mean = sum(baseline) / 20.0
+    if baseline_mean <= 0:
+        return None
+    return current > 1.3 * baseline_mean
 
 
 def _mom3m(closes: list[float]) -> Optional[float]:
@@ -520,12 +533,14 @@ def build_artifact(entry_inputs: list[EntryInput], generated_at: datetime) -> di
 
 def is_eligible(entry: dict[str, Any]) -> bool:
     """fundamentals 完全（承認済み de not_applicable を除く）AND technicals 完全 AND bars>=75（§25）。"""
+    code = entry.get("code")
     fundamentals_fields = entry["fundamentals"]["fields"]
     for key in FUNDAMENTALS_FIELDS:
         status = fundamentals_fields[key]["status"]
         if status == "present":
             continue
-        if status == "not_applicable" and key in NOT_APPLICABLE_FIELDS:
+        # not_applicable が完全性を満たすのは承認済みコードの de のみ（validator と同一規則）。
+        if status == "not_applicable" and key == "de" and de_not_applicable_permitted(code):
             continue
         return False
 
@@ -542,15 +557,28 @@ def is_eligible(entry: dict[str, Any]) -> bool:
 # atomic write（§26）
 # ═══════════════════════════════════════════════════════════════════════
 def atomic_write_json(path: Path, payload: dict[str, Any]) -> None:
+    # serialize は temp 生成の前。ここで失敗しても temp file は存在しない。
     serialized = json.dumps(payload, ensure_ascii=False, indent=2, allow_nan=False)
     directory = path.parent
     temp_path = directory / f".{path.name}.tmp.{os.getpid()}"
-    with open(temp_path, "w", encoding="utf-8") as handle:
-        handle.write(serialized)
-        handle.write("\n")
-        handle.flush()
-        os.fsync(handle.fileno())
-    os.replace(temp_path, path)
+    replaced = False
+    try:
+        with open(temp_path, "w", encoding="utf-8") as handle:
+            handle.write(serialized)
+            handle.write("\n")
+            handle.flush()
+            os.fsync(handle.fileno())
+        os.replace(temp_path, path)
+        replaced = True
+    finally:
+        # temp 生成後・os.replace 成功前のいかなる例外でも temp を掃除する。
+        # 元の destination は無傷（os.replace は atomic）。cleanup 失敗は
+        # 一次例外を隠さない。
+        if not replaced:
+            try:
+                os.unlink(temp_path)
+            except OSError:
+                pass
 
 
 # ═══════════════════════════════════════════════════════════════════════
@@ -591,6 +619,18 @@ def _to_date(value: Any) -> Optional[date]:
         return None
 
 
+def _collect_splits(handle: Any) -> list[tuple[date, float]]:
+    """handle.splits を (date, factor) list へ。accessor / iteration の例外は
+    呼び出し側（_retry）へ伝播させる — 空 series の捏造で握り潰さない（§7）。"""
+    collected: list[tuple[date, float]] = []
+    for when, ratio in handle.splits.items():
+        parsed = _to_date(when)
+        factor = _finite(ratio)
+        if parsed is not None and factor is not None:
+            collected.append((parsed, factor))
+    return collected
+
+
 def fetch_fundamentals_surface(ticker: str) -> Optional[FundamentalsSurface]:
     import yfinance as yf
 
@@ -605,15 +645,14 @@ def fetch_fundamentals_surface(ticker: str) -> Optional[FundamentalsSurface]:
         except Exception:  # noqa: BLE001
             info = {}
 
-        splits: list[tuple[date, float]] = []
-        try:
-            for when, ratio in handle.splits.items():
-                parsed = _to_date(when)
-                factor = _finite(ratio)
-                if parsed is not None and factor is not None:
-                    splits.append((parsed, factor))
-        except Exception:  # noqa: BLE001
-            splits = []
+        # split history は per-ticker retry policy に参加する（最大 _FETCH_ATTEMPTS 回）。
+        # _collect_splits は必ず list を返すので _retry の None は「両試行が例外」を意味する。
+        # その場合 splits_ok=False（unknown split history）。空 series の握り潰しはしない（§7）。
+        splits_result = _retry(lambda: _collect_splits(handle))
+        splits_ok = splits_result is not None
+        splits = splits_result if splits_result is not None else []
+        if not splits_ok:
+            print(f"    {ticker}: split history unavailable after retry → per/epsG missing")
 
         dividends: list[tuple[date, float]] = []
         dividends_ok = True
@@ -640,6 +679,7 @@ def fetch_fundamentals_surface(ticker: str) -> Optional[FundamentalsSurface]:
             dividends=dividends,
             dividends_ok=dividends_ok,
             observed_at=datetime.now(UTC),
+            splits_ok=splits_ok,
         )
 
     return _retry(_load)
