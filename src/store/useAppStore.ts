@@ -14,6 +14,7 @@ import {
 } from '../constants/market'
 import { refreshAllData as loadPublishedData, DEFAULT_CANDIDATES_NEWS_DATA, DEFAULT_CANDIDATES_STOCKS_DATA, DEFAULT_REGIME_STATE, DEFAULT_SAFE_MODE_SNAPSHOT, DEFAULT_TIER_A_VIOLATIONS_SNAPSHOT, DEFAULT_TIER_A_ALERTS_SNAPSHOT } from '../services/loadStaticData'
 import { computeAnalysis, calcPortfolioMetrics } from '../domain/analysis/computeAnalysis'
+import { joinHoldingEvidence, buildHoldingAnalysisEvidence, isHoldingEvidencePipelineFresh } from '../domain/analysis/holdingEvidence'
 import {
   importPortfolioCsv,
   buildNewHoldingFromCsvRow,
@@ -730,6 +731,9 @@ export function buildPortfolioAnalysisFingerprint(
     serialize('portfolioPolicy', state.portfolioPolicy),
     serialize('candidatesNews', state.candidatesNews),
     serialize('candidatesStocks', state.candidatesStocks),
+    // HOLDING-EVIDENCE-1: computeAnalysis へ join される ephemeral 入力なので
+    // artifact が変われば analysis を再実行する必要がある。
+    serialize('holdingEvidence', state.holdingEvidence),
     serialize('regimeState', state.regimeState),
     serialize('safeMode', state.safeMode),
     serialize('csvLastImportedAt', state.system.csvLastImportedAt),
@@ -1021,6 +1025,10 @@ function classifyDataSourceOutcomes(publishedData: PublishedLoadData): {
   const bySource = (source: string): DataSourceOutcome => source === 'loaded' ? 'loaded' : 'fallback'
   const byData = (data: unknown): DataSourceOutcome => data !== null ? 'loaded' : 'fallback'
   const candidateFunnel = publishedData.candidateFunnel ?? { status: 'unavailable' as const, data: null }
+  // HOLDING-EVIDENCE-1: HOLDING-EVIDENCE-2 の generator/workflow が未実装のため、
+  // 本番デプロイでは常に unavailable。trust/holdings と同じく REQUIRED には数えない
+  // （数えると正常な本番 boot が恒久的に partial になる）。observability のみ。
+  const holdingEvidence = publishedData.holdingEvidence ?? { status: 'unavailable' as const, data: null }
   // F-A-P0-1: nikkei_vi.json is a dead legacy source; macro.json's own nikkeiVI field is the
   // canonical authority (see mergedMacro below), so nikkeiVI counts as available whenever either
   // the dedicated fetch or the macro payload actually carried a value.
@@ -1039,6 +1047,7 @@ function classifyDataSourceOutcomes(publishedData: PublishedLoadData): {
     candidatesNews: bySource(publishedData.candidatesNews.source),
     candidatesStocks: bySource(publishedData.candidatesStocks.source),
     candidateFunnel: candidateFunnel.status === 'loaded' ? 'loaded' : 'fallback',
+    holdingEvidence: holdingEvidence.status === 'loaded' ? 'loaded' : 'fallback',
     regimeState: bySource(publishedData.regimeState.source),
     safeMode: bySource(publishedData.safeMode.source),
     tierAViolations: bySource(publishedData.tierAViolations.source),
@@ -1110,6 +1119,7 @@ function buildStateWithPublishedData(
     candidatesNews,
     candidatesStocks,
     candidateFunnel = { status: 'unavailable' as const, data: null },
+    holdingEvidence = { status: 'unavailable' as const, data: null },
     regimeState,
     safeMode,
     tierAViolations,
@@ -1136,6 +1146,14 @@ function buildStateWithPublishedData(
     ? { ...macro.data, nikkeiVI: nikkeiVI.data.vi, nikkeiVIChg: nikkeiVI.data.viChg }
     : macro.data
 
+  // HOLDING-EVIDENCE-1: loaded だが pipeline generatedAt が PIPELINE_TTL(72h) 超過
+  // または未来日付なら 'stale' として観測する（§14）。artifact 自体は store へ保持し、
+  // join 側（joinHoldingEvidence）が同じ判定で該当 holding を unknown へ倒す。
+  const holdingEvidenceStatus: NonNullable<SystemState['dataSourceStatus']['holdingEvidence']> =
+    holdingEvidence.status === 'loaded'
+      ? (holdingEvidence.data && isHoldingEvidencePipelineFresh(holdingEvidence.data, options.nowMs) ? 'loaded' : 'stale')
+      : holdingEvidence.status
+
   const isValidScoringData = options.phase7StockRaw != null &&
     options.phase7StockRaw._meta?.kind !== 'sample_contract'
   const normalizedScores: StockScoreRecord[] = isValidScoringData && options.phase7StockRaw?.stock_scores_6axis
@@ -1156,6 +1174,7 @@ function buildStateWithPublishedData(
     candidatesNews: candidatesNews.data,
     candidatesStocks: candidatesStocks.data,
     candidateFunnel: candidateFunnel.status === 'loaded' ? candidateFunnel.data : null,
+    holdingEvidence: holdingEvidence.status === 'loaded' ? holdingEvidence.data : null,
     regimeState: regimeState.data,
     safeMode: safeMode.data,
     tierAViolations: tierAViolations.data,
@@ -1181,6 +1200,7 @@ function buildStateWithPublishedData(
         candidatesNews: candidatesNews.source,
         candidatesStocks: candidatesStocks.source,
         candidateFunnel: candidateFunnel.status,
+        holdingEvidence: holdingEvidenceStatus,
         regime: regimeState.source,
         safeMode: safeMode.source,
         tierAViolations: tierAViolations.source,
@@ -1201,6 +1221,9 @@ function buildStateWithPublishedData(
         candidatesStocks: candidatesStocks.data.updatedAt || null,
         candidateFunnel: candidateFunnel.status === 'loaded'
           ? candidateFunnel.data?._meta.generatedAt ?? null
+          : null,
+        holdingEvidence: holdingEvidence.status === 'loaded'
+          ? holdingEvidence.data?._meta.generatedAt ?? null
           : null,
         regime: regimeState.generatedAt,
         safeMode: safeMode.lastChecked,
@@ -2288,14 +2311,23 @@ export function runFullAnalysis(
     state.learning && state.learning.summary.total >= 20
       ? state.learning.suggestedWeights
       : null
+  // HOLDING-EVIDENCE-1: published holding_evidence artifact を ephemeral に join した
+  // enriched holdings を computeAnalysis の入力とする。state.holdings 自体は変更せず、
+  // evidence 由来の known / 数値は永続化経路（書き戻し・snapshot）へ一切漏らさない。
+  // artifact 不在 / stale / identity mismatch は NO EVIDENCE として該当 group を
+  // unknown へ倒すため、decision は INSUFFICIENT_EVIDENCE のままとなる（fail-closed）。
+  const evidenceJoin = joinHoldingEvidence(state.holdings, state.holdingEvidence, nowMs)
   const analysis = computeAnalysis(
-    state.holdings,
+    evidenceJoin.holdings,
     state.market,
     state.correlation,
     state.news,
     adaptiveWeights,
     nowMs,
-  )
+  ).map(a => {
+    const evidence = buildHoldingAnalysisEvidence(evidenceJoin.states.get(a.code))
+    return evidence ? { ...a, evidence } : a
+  })
   const metrics = calcPortfolioMetrics(state.holdings, state.correlation)
 
   // holdingsにスコア・判定を書き戻す
@@ -3075,6 +3107,8 @@ const createAppStoreStateCreator = (
   candidatesStocks: DEFAULT_CANDIDATES_STOCKS_DATA,
   // P5-B005-B3-B: dummy候補へfallbackしないproduction artifact
   candidateFunnel: null,
+  // HOLDING-EVIDENCE-1: published holding_evidence artifact（analysis join 専用・非永続）
+  holdingEvidence: null,
   // P5-B002b-1: candidatesStocks由来のscore/headroom/gate計算済み内部候補リスト（未接続）
   stockCandidates: [],
   // P4-A9d: 5-regime live state（observability用・意思決定未接続）
@@ -3114,6 +3148,7 @@ const createAppStoreStateCreator = (
       candidatesNews: 'default',
       candidatesStocks: 'default',
       candidateFunnel: 'unavailable',
+      holdingEvidence: 'unavailable',
       regime: 'default',
     },
     dataTimestamps: {
@@ -3130,6 +3165,7 @@ const createAppStoreStateCreator = (
       candidatesNews: null,
       candidatesStocks: null,
       candidateFunnel: null,
+      holdingEvidence: null,
       regime: null,
     },
   },

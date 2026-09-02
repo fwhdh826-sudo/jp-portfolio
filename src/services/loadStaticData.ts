@@ -19,6 +19,8 @@ import type {
 import { STATIC_MARKET } from '../constants/market'
 import type { CandidateFunnelArtifact } from '../types/candidateFunnelArtifact'
 import { parseCandidateFunnelArtifact } from './candidateFunnelParser'
+import type { HoldingEvidenceArtifact } from '../types/holdingEvidence'
+import { parseHoldingEvidenceArtifact } from '../domain/analysis/holdingEvidence'
 
 const BASE = (import.meta as { env?: { BASE_URL?: string } }).env?.BASE_URL ?? '/'
 interface LoadOptions {
@@ -323,6 +325,57 @@ export async function loadCandidateFunnel(options: LoadOptions = {}): Promise<Ca
 }
 
 // ═══════════════════════════════════════════════════════════
+// HOLDING-EVIDENCE-1: holding_evidence.json loader。
+//
+// candidate_funnel と同様、TypeScript cast だけで信頼せず独立した runtime
+// parser（domain/analysis/holdingEvidence.ts）を必ず経由する。
+//
+// HOLDING-EVIDENCE-2 の generator / workflow がまだ存在しないため、artifact
+// 不在（404 / fetch 失敗）は 'unavailable' として fail-soft する。合成 evidence へ
+// fallback しない（DEFAULT 無し）。effective metadata は unknown のまま、
+// decision は INSUFFICIENT_EVIDENCE のままとなり、それが期待動作。
+// ═══════════════════════════════════════════════════════════
+
+export type HoldingEvidenceLoadStatus = 'loaded' | 'unavailable' | 'invalid'
+
+export interface HoldingEvidenceLoadResult {
+  status: HoldingEvidenceLoadStatus
+  data: HoldingEvidenceArtifact | null
+}
+
+export async function loadHoldingEvidence(options: LoadOptions = {}): Promise<HoldingEvidenceLoadResult> {
+  let response: Response
+  try {
+    response = await fetch(buildJsonUrl('data/holding_evidence.json', options), {
+      cache: 'no-store',
+      headers: {
+        pragma: 'no-cache',
+        'cache-control': 'no-cache',
+      },
+    })
+  } catch {
+    return { status: 'unavailable', data: null }
+  }
+
+  if (!response.ok) {
+    return { status: 'unavailable', data: null }
+  }
+
+  let raw: unknown
+  try {
+    raw = await response.json()
+  } catch {
+    return { status: 'invalid', data: null }
+  }
+
+  const parsed = parseHoldingEvidenceArtifact(raw)
+  if (!parsed.ok) {
+    return { status: 'invalid', data: null }
+  }
+  return { status: 'loaded', data: parsed.data }
+}
+
+// ═══════════════════════════════════════════════════════════
 // P4-A9d: regime_state.json loader
 // ═══════════════════════════════════════════════════════════
 
@@ -458,7 +511,7 @@ export async function loadTierAAlerts(
 export async function refreshAllData(options: { bustCache?: boolean } = {}) {
   const loadOptions: LoadOptions = options.bustCache ? { bustToken: `${Date.now()}` } : {}
   // 並列fetch（partial updateしない — 全部揃ってからStore更新）
-  const [market, correlation, news, trust, holdingsSnapshot, macro, nikkeiVI, sq, margin, flows, candidatesNews, candidatesStocks, candidateFunnel, regimeState, safeMode, tierAViolations, tierAAlerts] = await Promise.all([
+  const [market, correlation, news, trust, holdingsSnapshot, macro, nikkeiVI, sq, margin, flows, candidatesNews, candidatesStocks, candidateFunnel, holdingEvidence, regimeState, safeMode, tierAViolations, tierAAlerts] = await Promise.all([
     loadMarket(loadOptions),
     loadCorrelation(loadOptions),
     loadNews(loadOptions),
@@ -472,10 +525,11 @@ export async function refreshAllData(options: { bustCache?: boolean } = {}) {
     loadCandidatesNews(loadOptions),
     loadCandidatesStocks(loadOptions),
     loadCandidateFunnel(loadOptions),
+    loadHoldingEvidence(loadOptions),
     loadRegimeState(loadOptions),
     loadSafeMode(loadOptions),
     loadTierAViolations(loadOptions),
     loadTierAAlerts(loadOptions),
   ])
-  return { market, correlation, news, trust, holdingsSnapshot, macro, nikkeiVI, sq, margin, flows, candidatesNews, candidatesStocks, candidateFunnel, regimeState, safeMode, tierAViolations, tierAAlerts }
+  return { market, correlation, news, trust, holdingsSnapshot, macro, nikkeiVI, sq, margin, flows, candidatesNews, candidatesStocks, candidateFunnel, holdingEvidence, regimeState, safeMode, tierAViolations, tierAAlerts }
 }
