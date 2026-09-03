@@ -30,7 +30,6 @@ import {
   CANDIDATE_FUNNEL_SOFT_REASON_CODES,
   CANDIDATE_FUNNEL_STATUSES,
   CANDIDATE_FUNNEL_THEME_STATUSES,
-  CANDIDATE_FUNNEL_TIERS,
   CANDIDATE_FUNNEL_VERSION,
 } from '../types/candidateFunnel'
 import type { CandidateFunnelCandidate, CandidateFunnelScoreComponent } from '../types/candidateFunnel'
@@ -68,12 +67,28 @@ const CANDIDATE_FUNNEL_QUALITY_GATE_WARN_ALLOWED_IDS: ReadonlySet<string> = new 
   'P-15',
 ])
 
+// ── 最終 published artifact contract で candidate へ付与され得る tier のみ。
+//    shared engine enum（CANDIDATE_FUNNEL_TIERS）には中間 tier 'eligible' が
+//    含まれるが、production backend authority
+//    （data/candidate_funnel_engine.py Step 10）は最終 tier として
+//    screened / deep_review / actionable / excluded のみ割り当てる。
+//    'eligible' を持つ candidate は malformed artifact として reject する
+//    （UI も 'eligible' を描画しないため、silent に消えさせない）。 ──────
+const CANDIDATE_FUNNEL_PUBLISHED_TIERS = [
+  'excluded',
+  'screened',
+  'deep_review',
+  'actionable',
+] as const
+
 export type CandidateFunnelLoadFailureCode =
   | 'malformed_root'
   | 'forbidden_key'
   | 'invalid_version'
   | 'privacy_violation'
   | 'invalid_status'
+  | 'unpublished_status'
+  | 'invalid_tier'
   | 'invalid_counts'
   | 'invalid_candidates'
   | 'invalid_distribution'
@@ -119,6 +134,17 @@ function isValidTimestamp(value: unknown): value is string {
 
 function isEnumValue<T extends readonly string[]>(value: unknown, allowed: T): value is T[number] {
   return typeof value === 'string' && (allowed as readonly string[]).includes(value)
+}
+
+// dataset-level degradationReasons は engine の frozen 出力では
+// "CODE: human-readable detail" 形式（data/candidate_funnel_engine.py。
+// tests/test_candidate_funnel_engine.py が literal を凍結）。先頭 token
+// （':' か空白まで）が既知の degradation code であることのみ要求する。
+// 未知 code / 非文字列は従来どおり fail-closed で reject する。
+function hasKnownDegradationReasonCode(value: unknown): boolean {
+  if (typeof value !== 'string' || value.length === 0) return false
+  const code = value.split(/[:\s]/, 1)[0]
+  return (CANDIDATE_FUNNEL_DEGRADATION_REASON_CODES as readonly string[]).includes(code)
 }
 
 function isJsonValue(value: unknown, seen: Set<unknown> = new Set()): value is JsonValue {
@@ -190,7 +216,7 @@ function validateCandidate(value: unknown): value is CandidateFunnelCandidate {
     isFiniteOrNull(value.dataConfidence) &&
     isFiniteOrNull(value.marketScore) &&
     (value.marketRank === null || isNonNegativeInteger(value.marketRank)) &&
-    isEnumValue(value.tier, CANDIDATE_FUNNEL_TIERS) &&
+    isEnumValue(value.tier, CANDIDATE_FUNNEL_PUBLISHED_TIERS) &&
     Array.isArray(value.selectedReasons) &&
     value.selectedReasons.every((r) => isEnumValue(r, CANDIDATE_FUNNEL_SELECTED_REASON_CODES)) &&
     Array.isArray(value.riskReasons) &&
@@ -330,8 +356,17 @@ function doParse(input: unknown): CandidateFunnelParseResult {
   if (input.scoreVersion !== CANDIDATE_FUNNEL_SCORE_VERSION) return fail('invalid_version')
   if (input.not_for_trading !== true) return fail('privacy_violation')
   if (!isEnumValue(input.status, CANDIDATE_FUNNEL_STATUSES)) return fail('invalid_status')
+  // ── 最終 published artifact contract: status は正確に 'generated' のみ有効。
+  //    'not_generated' は engine / batch の生成結果（build_candidate_funnel が
+  //    frozen 仕様どおり funnel を生成しなかった）を表すが、
+  //    candidate_funnel_batch は overallPass=False → run_batch が None を返し、
+  //    その空 artifact を publish しない（既存の正常 artifact を保持する）。
+  //    したがって fetch できた最終 artifact の status が 'generated' 以外なら、
+  //    それは不正な published payload として reject する（frontend に
+  //    not_generated という load 状態を作らない）。 ────────────────────
+  if (input.status !== 'generated') return fail('unpublished_status')
   if (!isStringArray(input.degradationReasons)) return fail('invalid_status')
-  if (!input.degradationReasons.every((r) => isEnumValue(r, CANDIDATE_FUNNEL_DEGRADATION_REASON_CODES))) {
+  if (!input.degradationReasons.every(hasKnownDegradationReasonCode)) {
     return fail('invalid_status')
   }
 
@@ -339,6 +374,16 @@ function doParse(input: unknown): CandidateFunnelParseResult {
   const counts = input.counts as CandidateFunnelArtifact['counts']
 
   if (!Array.isArray(input.candidates)) return fail('invalid_candidates')
+  // 中間 tier 'eligible' を持つ candidate は最終 published contract 違反として
+  // 明示的に reject する（generic な invalid_candidates と区別し、回帰 test の
+  // 対象を安定させる）。
+  if (
+    input.candidates.some(
+      (c) => isPlainObject(c) && c.tier === 'eligible',
+    )
+  ) {
+    return fail('invalid_tier')
+  }
   if (!input.candidates.every(validateCandidate)) return fail('invalid_candidates')
   const candidates = input.candidates as CandidateFunnelCandidate[]
 

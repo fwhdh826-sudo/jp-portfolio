@@ -39,6 +39,7 @@ import {
   SYNTHESIS_ACTION_LABEL,
   synthesisNonExecutableReasonText,
 } from '../candidates/candidateDecisionSynthesisPresentation'
+import { isCandidateFunnelRawAvailable } from '../../services/candidateFunnelFreshness'
 import type { CandidateDecisionSynthesisEntry, CandidateDecisionSynthesisSnapshot } from '../../types/candidateDecisionSynthesis'
 import type { HoldingAnalysis, Holding } from '../../types'
 
@@ -73,11 +74,20 @@ export function computeSynthesisDecisionsForDisplay(
 
 // UI-9: synthesis.status を使って「データ更新待ち」と「再計算が必要」を
 // 文言レベルで区別する（表示専用。status===undefinedの判定ロジック自体は変更しない）。
+//
+// P5-B005-B3-C-V2-R1 FIX F: raw candidate funnel artifact が利用可能なのに
+// synthesis（CAND-SYN / AllocationPlan 連携）だけが未確定な場合、
+// 「候補データ更新待ち」は raw candidate データ自体が無いかのように誤読させる。
+// その場合は「連携（ポートフォリオ認可）の待ち」であることを明示する。
 export function candidateSynthesisUnavailableText(
   synthesis: CandidateDecisionSynthesisSnapshot | null,
+  rawFunnelAvailable = false,
 ): string {
   if (synthesis !== null && synthesis.status === 'invalid') {
     return '候補データの再計算が必要です。次回のデータ更新をお待ちください。'
+  }
+  if (rawFunnelAvailable) {
+    return 'ポートフォリオ連携結果（AllocationPlan認可）を更新中です。次回のデータ更新後に表示されます。'
   }
   return '候補データ更新待ちです。次回のデータ更新後に表示されます。'
 }
@@ -758,6 +768,13 @@ function CandidateListItem({ entry }: { entry: CandidateDecisionSynthesisEntry }
 // fallback); decisions.length===0 shows a no-action state, never nothing.
 function CandidateCard() {
   const synthesis = useAppStore(selectCandidateDecisionSynthesis)
+  const rawFunnelAvailable = useAppStore(s =>
+    isCandidateFunnelRawAvailable({
+      status: s.system.dataSourceStatus.candidateFunnel,
+      artifact: s.candidateFunnel,
+      generatedAtTimestamp: s.system.dataTimestamps?.candidateFunnel,
+    }),
+  )
   const decisions = computeSynthesisDecisionsForDisplay(synthesis)
   const isUnavailable = synthesis === null || synthesis.status !== 'available'
 
@@ -769,7 +786,7 @@ function CandidateCard() {
       </div>
 
       {isUnavailable && (
-        <div className="home-card-empty">{candidateSynthesisUnavailableText(synthesis)}</div>
+        <div className="home-card-empty">{candidateSynthesisUnavailableText(synthesis, rawFunnelAvailable)}</div>
       )}
       {!isUnavailable && decisions.length === 0 && (
         <div className="home-card-empty">現在は実行可能な候補はありません。</div>

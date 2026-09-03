@@ -8,6 +8,7 @@ import { useState } from 'react'
 import { useIsMobile } from '../../hooks/useIsMobile'
 import { useAppStore } from '../../store/useAppStore'
 import { selectMarketDataQuality, selectEffectiveSafeModeActive, selectCandidateDecisionSynthesis } from '../../store/selectors'
+import { isCandidateFunnelRawAvailable } from '../../services/candidateFunnelFreshness'
 import { formatJPYAuto, formatSignedPct } from '../../utils/format'
 import { SectionHeader } from '../layout/SectionHeader'
 import { PageHeader } from '../layout/PageHeader'
@@ -849,7 +850,7 @@ function CandidateSynthesisEntryCard({
         <CandidateSynthesisActionBadge action={entry.action} />
         {typeof entry.candidateQuality.marketScore === 'number' && (
           <span style={{ fontSize: '11px', color: colors.textMuted, marginLeft: 'auto' }}>
-            スコア {entry.candidateQuality.marketScore.toFixed(1)}
+            市場スコア {entry.candidateQuality.marketScore.toFixed(1)}
           </span>
         )}
       </div>
@@ -911,7 +912,14 @@ function CandidateSynthesisEntryCard({
 function CandidateDecisionSection() {
   const synthesis           = useAppStore(selectCandidateDecisionSynthesis)
   const rawCandidatesStocks = useAppStore(s => s.candidatesStocks)
+  const candidateFunnel     = useAppStore(s => s.candidateFunnel)
   const system              = useAppStore(s => s.system)
+  // FIX F: raw candidate funnel は表示可能なのに synthesis 連携だけ未確定か
+  const rawFunnelAvailable  = isCandidateFunnelRawAvailable({
+    status: system.dataSourceStatus.candidateFunnel,
+    artifact: candidateFunnel,
+    generatedAtTimestamp: system.dataTimestamps?.candidateFunnel,
+  })
 
   const rawByCode = new Map(rawCandidatesStocks.candidates.map(c => [c.code, c]))
   // P5-B003由来: 判断ロジックには一切影響しない表示専用の警告（P4.5-A012整合）。
@@ -938,7 +946,20 @@ function CandidateDecisionSection() {
       )}
 
       {isUnavailable && (
-        <EmptyState message={synthesis?.status === 'invalid' ? '候補データの再計算が必要です' : '候補データ更新待ちです'} detail="次回のデータ更新後に表示されます" />
+        <EmptyState
+          message={
+            synthesis?.status === 'invalid'
+              ? '候補データの再計算が必要です'
+              : rawFunnelAvailable
+                ? 'ポートフォリオ連携結果を更新中です'
+                : '候補データ更新待ちです'
+          }
+          detail={
+            rawFunnelAvailable
+              ? '市場候補ファネルは下に表示しています'
+              : '次回のデータ更新後に表示されます'
+          }
+        />
       )}
       {!isUnavailable && decisions.length === 0 && watchList.length === 0 && (
         <EmptyState message="現在は候補がありません" />

@@ -659,6 +659,106 @@ describe('P5-B005-B3-C freshness and load states', () => {
   })
 })
 
+describe('P5-B005-B3-C-V2-R1 FIX B/C/D — provenance, degradation, and exclusion surfaces', () => {
+  it('FIX B: a fallback artifact that is also stale shows BOTH banners (no collapse)', () => {
+    const data = artifact()
+    data._meta.pipelinePath = 'cache_fallback'
+    data.selectionObservability.sourceStale = true
+    const html = renderPanel(data, 'degraded')
+    expect(html).toContain('代替データ経路を使用しています')
+    expect(html).toContain('データが古い可能性があります')
+    expect(html).toContain('テスト銘柄1003')
+    expect(html).not.toContain('cache_fallback')
+  })
+
+  it('FIX B: a normal fresh artifact shows neither the fallback nor the stale banner', () => {
+    const html = renderPanel(artifact(), 'fresh')
+    expect(html).not.toContain('代替データ経路を使用しています')
+    expect(html).not.toContain('データが古い可能性があります')
+  })
+
+  it('FIX C: renders the normalized degradation reason body, not raw codes', () => {
+    const data = artifact()
+    data._meta.pipelinePath = 'cache_fallback'
+    data.degradationReasons = [
+      'CACHE_FALLBACK_PROVENANCE: pipelinePath=cache_fallback',
+      'DUPLICATE_CANDIDATE_CODE: 1 duplicate code(s), 2 record(s) excluded',
+    ]
+    const html = renderPanel(data, 'degraded')
+    expect(html).toContain('データ品質・鮮度の注記')
+    expect(html).toContain('キャッシュした代替データで生成しています')
+    expect(html).toContain('重複コードのレコードを除外しました')
+    expect(html).not.toContain('CACHE_FALLBACK_PROVENANCE')
+    expect(html).not.toContain('pipelinePath=cache_fallback')
+  })
+
+  it('FIX C: degradation notes render even when the pipeline path is normal (e.g. duplicate codes)', () => {
+    const data = artifact()
+    data.degradationReasons = ['DUPLICATE_CANDIDATE_CODE: 1 duplicate']
+    const html = renderPanel(data, 'fresh')
+    expect(html).toContain('データ品質・鮮度の注記')
+    expect(html).toContain('重複コードのレコードを除外しました')
+  })
+
+  it('FIX C: no degradation-notes block when degradationReasons is empty', () => {
+    const html = renderPanel(artifact(), 'fresh')
+    expect(html).not.toContain('データ品質・鮮度の注記')
+  })
+
+  it('FIX D: surfaces hard exclusion diagnostics distinctly from risk/selected reasons', () => {
+    const data = artifact()
+    data.excludedSummary = {
+      total: 2,
+      byReason: { HARD_NOT_PRIME_DOMESTIC: 1, HARD_NO_TRADABLE_SERIES: 1 },
+    }
+    const html = renderPanel(data, 'fresh')
+    expect(html).toContain('除外の内訳（2件）')
+    expect(html).toContain('プライム市場の国内株ではありません')
+    expect(html).toContain('取引可能な価格系列がありません')
+    expect(html).toContain('リスク要因）とは異なります')
+    expect(html).not.toContain('HARD_NOT_PRIME_DOMESTIC')
+  })
+
+  it('FIX D: no excluded-diagnostics surface when excludedSummary.total is 0', () => {
+    const html = renderPanel(artifact(), 'fresh')
+    expect(html).not.toContain('除外の内訳')
+  })
+})
+
+describe('P5-B005-B3-C-V2-R1 FIX D / reason matrix — card renders every reason class separately', () => {
+  it('renders selectedReasons, riskReasons and hardExclusionReasons under distinct labels', () => {
+    const data = artifact()
+    const item = candidate(data, 'actionable')
+    item.selectedReasons = ['SELECTED_ACTIONABLE']
+    item.riskReasons = ['SOFT_ELEVATED_VOLATILITY']
+    item.hardExclusionReasons = ['HARD_NOT_PRIME_DOMESTIC' as CandidateFunnelCandidate['hardExclusionReasons'][number]]
+    const html = renderToStaticMarkup(<CandidateFunnelCard candidate={item} />)
+    expect(html).toContain('選別理由')
+    expect(html).toContain('次段階の検討対象')
+    expect(html).toContain('確認事項')
+    expect(html).toContain('値動きが大きい可能性')
+    expect(html).toContain('除外理由')
+    expect(html).toContain('プライム市場の国内株ではありません')
+    // 4つの reason class が1つの generic list へ畳み込まれていない
+    expect(html.match(/candidate-funnel-card__reason-label/g)?.length).toBe(3)
+  })
+
+  it('does not render the exclusion group when there are no hard exclusion reasons', () => {
+    const html = renderToStaticMarkup(
+      <CandidateFunnelCard candidate={candidate(artifact(), 'actionable')} />,
+    )
+    expect(html).not.toContain('除外理由')
+  })
+
+  it('falls back safely for an unknown hard exclusion reason without exposing the enum', () => {
+    const item = candidate(artifact(), 'actionable')
+    item.hardExclusionReasons = ['HARD_FUTURE_REASON' as CandidateFunnelCandidate['hardExclusionReasons'][number]]
+    const html = renderToStaticMarkup(<CandidateFunnelCard candidate={item} />)
+    expect(html).toContain('データ品質上の除外理由があります')
+    expect(html).not.toContain('HARD_FUTURE_REASON')
+  })
+})
+
 describe('P5-B005-B3-C candidate card presentation', () => {
   it('renders every required card field', () => {
     const data = artifact()

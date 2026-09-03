@@ -12,6 +12,7 @@ import {
   computeTopCandidateSignalsForDisplay,
   isPortfolioSnapshotStale,
   candidateCardFooterText,
+  candidateSynthesisUnavailableText,
   computeHoldingsStale,
   computeSystemStatusNotices,
 } from './T0_Home'
@@ -91,6 +92,34 @@ describe('computeSynthesisDecisionsForDisplay', () => {
 
   it('decisions が空のとき空配列を返す（候補なし状態）', () => {
     expect(computeSynthesisDecisionsForDisplay(makeSnapshot([]))).toEqual([])
+  })
+})
+
+// P5-B005-B3-C-V2-R1 FIX F: raw funnel の可用性と synthesis 連携待ちを文言で分離
+describe('candidateSynthesisUnavailableText', () => {
+  it('synthesis invalid のときは raw funnel 状態に関係なく「再計算が必要」', () => {
+    const invalid = makeSnapshot([], { status: 'invalid' })
+    expect(candidateSynthesisUnavailableText(invalid, true)).toContain('再計算が必要')
+    expect(candidateSynthesisUnavailableText(invalid, false)).toContain('再計算が必要')
+  })
+
+  it('raw funnel が利用可能なら「連携（AllocationPlan認可）を更新中」を示し、候補データ不在を主張しない', () => {
+    const text = candidateSynthesisUnavailableText(null, true)
+    expect(text).toContain('連携')
+    expect(text).toContain('AllocationPlan')
+    expect(text).not.toContain('候補データ更新待ち')
+  })
+
+  it('raw funnel も無いときは従来どおり「候補データ更新待ち」', () => {
+    expect(candidateSynthesisUnavailableText(null, false)).toBe(
+      '候補データ更新待ちです。次回のデータ更新後に表示されます。',
+    )
+  })
+
+  it('rawFunnelAvailable 省略時は従来の文言（後方互換）', () => {
+    expect(candidateSynthesisUnavailableText(null)).toBe(
+      '候補データ更新待ちです。次回のデータ更新後に表示されます。',
+    )
   })
 })
 

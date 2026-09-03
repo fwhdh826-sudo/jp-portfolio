@@ -34,6 +34,20 @@ const SELECTED_REASON_LABELS: Record<string, string> = {
   SELECTED_ACTIONABLE: '次段階の検討対象',
 }
 
+// P5-B005-B3-C-V2-R1 FIX D: hard exclusion（適格性・データ品質による対象外）は
+// selectedReasons / riskReasons / degradationReasons のいずれとも意味的に別。
+// soft caution として扱わず「除外理由」として明示する。
+const CANDIDATE_HARD_EXCLUSION_REASON_LABELS: Record<string, string> = {
+  HARD_NOT_PRIME_DOMESTIC: 'プライム市場の国内株ではありません',
+  HARD_NON_EQUITY_INSTRUMENT: '株式以外の銘柄です',
+  HARD_PREFERRED_OR_NONSTANDARD_CODE: '優先株・非標準コードです',
+  HARD_INSUFFICIENT_HISTORY: '価格履歴が不足しています',
+  HARD_BELOW_MAIN_FLOOR: '主要基準の下限を下回っています',
+  HARD_NONFINITE_SERIES: '価格系列に無効な値があります',
+  HARD_CONTRACT_VIOLATION: 'データ契約に違反しています',
+  HARD_NO_TRADABLE_SERIES: '取引可能な価格系列がありません',
+}
+
 export function formatCandidateTier(tier: CandidateFunnelTier): string {
   return CANDIDATE_TIER_LABELS[tier]
 }
@@ -49,6 +63,10 @@ export function formatCandidateDataConfidence(value: number | null): string {
 
 export function formatCandidateRiskReason(reason: string): string {
   return CANDIDATE_RISK_REASON_LABELS[reason] ?? 'その他のリスク要因'
+}
+
+export function formatCandidateHardExclusionReason(reason: string): string {
+  return CANDIDATE_HARD_EXCLUSION_REASON_LABELS[reason] ?? 'データ品質上の除外理由があります'
 }
 
 export function formatCandidateTheme(
@@ -203,6 +221,17 @@ export function CandidateFunnelCard({
           <ul>
             {candidate.riskReasons.map((reason, index) => (
               <li key={`${reason}-${index}`}>{formatCandidateRiskReason(reason)}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {candidate.hardExclusionReasons.length > 0 && (
+        <div className="candidate-funnel-card__reason-group candidate-funnel-card__reason-group--exclusion">
+          <div className="candidate-funnel-card__reason-label">除外理由</div>
+          <ul>
+            {candidate.hardExclusionReasons.map((reason, index) => (
+              <li key={`${reason}-${index}`}>{formatCandidateHardExclusionReason(reason)}</li>
             ))}
           </ul>
         </div>

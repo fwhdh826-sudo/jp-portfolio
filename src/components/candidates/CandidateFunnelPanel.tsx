@@ -7,9 +7,10 @@ import type {
 } from '../../types/candidateFunnel'
 import type { CandidateFunnelArtifact } from '../../types/candidateFunnelArtifact'
 import type { CandidateFunnelFreshness } from '../../services/candidateFunnelFreshness'
+import { evaluateCandidateFunnelPresentationState } from '../../services/candidateFunnelFreshness'
 import { useCandidatePortfolioFit } from '../../hooks/useCandidatePortfolioFit'
+import { CandidateFunnelCard, formatCandidateHardExclusionReason } from './CandidateFunnelCard'
 import { SectionHeader } from '../layout/SectionHeader'
-import { CandidateFunnelCard } from './CandidateFunnelCard'
 import {
   projectCandidatePortfolioFitPresentation,
   selectCandidatePortfolioFitCardViewModel,
@@ -136,6 +137,24 @@ function generalPipelineLabel(artifact: CandidateFunnelArtifact): string {
   return artifact._meta.pipelinePath === 'normal' ? '通常データ経路' : '代替データ経路'
 }
 
+// P5-B005-B3-C-V2-R1 FIX C: dataset-level degradationReasons を正規化ラベルへ
+// 変換する presentation-scope の決定的マッピング。artifact の raw 文字列
+// （"CODE: detail..." 形式）から先頭 code だけを取り出し、opaque enum を
+// そのまま露出しない。stock 固有の riskReasons とは別物として扱う。
+const CANDIDATE_FUNNEL_DEGRADATION_REASON_LABELS: Record<string, string> = {
+  SEED_FALLBACK_PIPELINE_PATH: 'シード代替経路のため候補ファネルを生成できませんでした',
+  CACHE_FALLBACK_PROVENANCE: 'キャッシュした代替データで生成しています',
+  STALE_SOURCE: '参照データが更新期限を超えています',
+  PRESCREEN_FALLBACK_USED: '一次選別が代替キャッシュにフォールバックしました',
+  PRESCREEN_METADATA_MISSING: '一次選別メタデータの一部が取得できていません',
+  DUPLICATE_CANDIDATE_CODE: '重複コードのレコードを除外しました',
+}
+
+export function formatCandidateFunnelDegradationReason(reason: string): string {
+  const code = reason.split(/[:\s]/, 1)[0]
+  return CANDIDATE_FUNNEL_DEGRADATION_REASON_LABELS[code] ?? 'データ品質・鮮度に関する注記があります'
+}
+
 function filterTierForAria(filter: CandidateFunnelFilter): CandidateFunnelTier {
   return filter
 }
@@ -146,6 +165,11 @@ interface CandidateFunnelPanelViewProps {
   portfolioFit?: CandidatePortfolioFitPresentationViewModel
   viewState: CandidateFunnelViewState
   onAction: (action: CandidateFunnelViewAction) => void
+  // P5-B005-B3-C-V2-R1 FIX B: fallback provenance と age-staleness を直交に
+  // 判定するための評価時刻。CandidateFunnelPanel が portfolio-fit の
+  // evaluatedAt を注入する。未注入時は age 判定を行わず sourceStale のみ見る
+  // （View 自身は時計を持たない）。
+  nowMs?: number
 }
 
 export function CandidateFunnelPanelView({
@@ -157,10 +181,30 @@ export function CandidateFunnelPanelView({
   }),
   viewState,
   onAction,
+  nowMs,
 }: CandidateFunnelPanelViewProps) {
   const canDisplayCandidates =
     artifact !== null &&
     (freshness === 'fresh' || freshness === 'stale' || freshness === 'degraded')
+
+  // FIX B: provenance（生成経路）と freshness（鮮度）を分離して保持する。
+  // 既存の freshness enum は fallback を 'degraded' に畳み込み stale を隠すため、
+  // artifact から直接 orthogonal state を導出する。
+  const presentation =
+    artifact !== null && canDisplayCandidates
+      ? evaluateCandidateFunnelPresentationState(
+          { status: 'loaded', artifact, generatedAtTimestamp: artifact._meta.generatedAt },
+          typeof nowMs === 'number' ? nowMs : Number.NaN,
+        )
+      : null
+  const showFallbackBanner =
+    canDisplayCandidates && (presentation?.fallback === true || freshness === 'degraded')
+  const showStaleBanner =
+    canDisplayCandidates && (presentation?.stale === true || freshness === 'stale')
+  const degradationReasons =
+    artifact !== null && canDisplayCandidates ? artifact.degradationReasons : []
+  const excludedSummary =
+    artifact !== null && canDisplayCandidates ? artifact.excludedSummary : null
 
   const handleFilterKeyDown = (
     event: React.KeyboardEvent<HTMLButtonElement>,
@@ -214,7 +258,7 @@ export function CandidateFunnelPanelView({
         </div>
       )}
 
-      {canDisplayCandidates && freshness === 'stale' && (
+      {showStaleBanner && (
         <div
           className="candidate-funnel__state candidate-funnel__state--warning"
           role="status"
@@ -225,13 +269,32 @@ export function CandidateFunnelPanelView({
         </div>
       )}
 
-      {canDisplayCandidates && freshness === 'degraded' && (
+      {showFallbackBanner && (
         <div
           className="candidate-funnel__state candidate-funnel__state--danger"
           role="alert"
         >
           <span aria-hidden="true">⚠</span>
           <span>代替データ経路を使用しています。現在の購入判断には使用しないでください。</span>
+        </div>
+      )}
+
+      {canDisplayCandidates && degradationReasons.length > 0 && (
+        <div
+          className="candidate-funnel__degradation-reasons"
+          role="status"
+          aria-live="polite"
+        >
+          <div className="candidate-funnel__degradation-reasons-label">
+            データ品質・鮮度の注記
+          </div>
+          <ul>
+            {degradationReasons.map((reason, index) => (
+              <li key={`${reason}-${index}`}>
+                {formatCandidateFunnelDegradationReason(reason)}
+              </li>
+            ))}
+          </ul>
         </div>
       )}
 
@@ -327,6 +390,23 @@ export function CandidateFunnelPanelView({
             </dl>
           </details>
 
+          {excludedSummary !== null && excludedSummary.total > 0 && (
+            <details className="candidate-funnel__excluded-details">
+              <summary>除外の内訳（{excludedSummary.total}件）</summary>
+              <dl>
+                {Object.entries(excludedSummary.byReason).map(([code, count]) => (
+                  <div key={code}>
+                    <dt>{formatCandidateHardExclusionReason(code)}</dt>
+                    <dd>{count}件</dd>
+                  </div>
+                ))}
+              </dl>
+              <p className="candidate-funnel__excluded-note">
+                除外はデータ品質・適格性による対象外です。銘柄ごとの確認事項（リスク要因）とは異なります。
+              </p>
+            </details>
+          )}
+
           <div className="candidate-funnel__filters" role="tablist" aria-label="候補の選別段階">
             {FILTER_OPTIONS.map(option => {
               const selected = option.id === viewState.filter
@@ -419,6 +499,7 @@ export function CandidateFunnelPanel() {
       portfolioFit={portfolioFit}
       viewState={viewState}
       onAction={dispatch}
+      nowMs={evaluatedAtMs}
     />
   )
 }

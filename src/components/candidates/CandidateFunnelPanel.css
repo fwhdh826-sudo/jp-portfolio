@@ -507,6 +507,96 @@
   color: var(--color-wait-text);
 }
 
+.candidate-funnel-card__reason-group--exclusion {
+  padding: var(--space-2);
+  border-left: 3px solid var(--color-sell);
+  background: var(--color-sell-bg);
+  color: var(--color-sell-text);
+}
+
+/* P5-B005-B3-C-V2-R1 FIX C: dataset-level degradation reasons の本文表示。
+   candidate ranking より支配的にならないよう compact に保つ。 */
+.candidate-funnel__degradation-reasons {
+  min-width: 0;
+  margin-bottom: var(--space-3);
+  padding: var(--space-3);
+  border: 1px solid var(--color-wait-border);
+  border-radius: var(--radius-md);
+  background: var(--color-wait-bg);
+  color: var(--color-wait-text);
+  font-size: var(--font-xs);
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+
+.candidate-funnel__degradation-reasons-label {
+  margin-bottom: var(--space-1);
+  font-weight: 700;
+}
+
+.candidate-funnel__degradation-reasons ul {
+  margin: 0;
+  padding-left: var(--space-4);
+}
+
+/* P5-B005-B3-C-V2-R1 FIX D: hard exclusion 診断。primary な候補リストを
+   圧迫しないよう折りたたみ surface とする。 */
+.candidate-funnel__excluded-details {
+  min-width: 0;
+  margin-bottom: var(--space-4);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-surface);
+}
+
+.candidate-funnel__excluded-details summary {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 var(--space-3);
+  color: var(--color-text-second);
+  font-size: var(--font-sm);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.candidate-funnel__excluded-details dl {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0 var(--space-3) var(--space-2);
+}
+
+.candidate-funnel__excluded-details dl > div {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+  min-width: 0;
+  color: var(--color-text-subtle);
+  font-size: var(--font-xs);
+  overflow-wrap: anywhere;
+}
+
+.candidate-funnel__excluded-details dt,
+.candidate-funnel__excluded-details dd {
+  margin: 0;
+}
+
+.candidate-funnel__excluded-note {
+  margin: 0;
+  padding: 0 var(--space-3) var(--space-3);
+  color: var(--color-text-muted);
+  font-size: var(--font-xs);
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+
+.candidate-funnel__excluded-details summary:focus-visible {
+  outline: 3px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
 .candidate-funnel-card__reason-label {
   margin-bottom: var(--space-1);
   font-weight: 700;

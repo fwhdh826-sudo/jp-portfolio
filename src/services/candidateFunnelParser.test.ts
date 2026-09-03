@@ -237,6 +237,120 @@ describe('parseCandidateFunnelArtifact — candidate / scoreBreakdown rejection'
   })
 })
 
+describe('P5-B005-B3-C-V2-R1 FIX A — final published artifact status contract', () => {
+  it('rejects a published artifact whose top-level status is not_generated', () => {
+    const artifact = buildValidCandidateFunnelArtifact()
+    artifact.status = 'not_generated'
+    const result = parseCandidateFunnelArtifact(artifact)
+    expect(result.ok).toBe(false)
+    if (result.ok) throw new Error('unreachable')
+    // not_generated は engine/batch の outcome であり published state ではない。
+    expect(result.code).toBe('unpublished_status')
+  })
+
+  it('rejects an unknown status string distinctly from the not_generated case', () => {
+    const artifact = buildValidCandidateFunnelArtifact()
+    ;(artifact as { status: string }).status = 'partially_generated'
+    const result = parseCandidateFunnelArtifact(artifact)
+    expect(result.ok).toBe(false)
+    if (result.ok) throw new Error('unreachable')
+    expect(result.code).toBe('invalid_status')
+  })
+
+  it('still accepts a well-formed status=generated artifact', () => {
+    expect(parseCandidateFunnelArtifact(buildValidCandidateFunnelArtifact()).ok).toBe(true)
+  })
+})
+
+describe('P5-B005-B3-C-V2-R1 FIX E — final published tier contract (eligible rejected)', () => {
+  it('rejects a candidate whose published tier is eligible', () => {
+    const artifact = buildValidCandidateFunnelArtifact()
+    artifact.candidates[0].tier = 'eligible'
+    const result = parseCandidateFunnelArtifact(artifact)
+    expect(result.ok).toBe(false)
+    if (result.ok) throw new Error('unreachable')
+    expect(result.code).toBe('invalid_tier')
+  })
+
+  it('rejects a candidate with an unknown tier', () => {
+    const artifact = buildValidCandidateFunnelArtifact()
+    ;(artifact.candidates[0] as { tier: string }).tier = 'promoted'
+    expect(parseCandidateFunnelArtifact(artifact).ok).toBe(false)
+  })
+
+  it('accepts the published final tiers screened / deep_review / actionable', () => {
+    expect(parseCandidateFunnelArtifact(buildValidCandidateFunnelArtifact()).ok).toBe(true)
+  })
+
+  it('accepts a well-formed excluded candidate entry with hardExclusionReasons', () => {
+    const artifact = buildValidCandidateFunnelArtifact()
+    const base = structuredClone(artifact.candidates[0])
+    artifact.candidates.push({
+      ...base,
+      code: '9999',
+      name: '除外テスト銘柄',
+      prescreenScore: null,
+      prescreenRank: null,
+      prescreenPool: null,
+      rawCompositeScore: null,
+      dataConfidence: null,
+      marketScore: null,
+      marketRank: null,
+      tier: 'excluded',
+      selectedReasons: [],
+      riskReasons: [],
+      hardExclusionReasons: ['HARD_NOT_PRIME_DOMESTIC', 'HARD_INSUFFICIENT_HISTORY'],
+    })
+    artifact.counts = { ...artifact.counts, total: 4, excluded: 1 }
+    artifact.excludedSummary = {
+      total: 1,
+      byReason: { HARD_NOT_PRIME_DOMESTIC: 1, HARD_INSUFFICIENT_HISTORY: 1 },
+    }
+    const result = parseCandidateFunnelArtifact(artifact)
+    expect(result.ok).toBe(true)
+    if (!result.ok) throw new Error(`expected ok: ${result.code}`)
+    expect(result.data.candidates.find(c => c.code === '9999')?.tier).toBe('excluded')
+  })
+
+  it('preserves fail-closed counts behaviour when an excluded tally mismatches', () => {
+    const artifact = buildValidCandidateFunnelArtifact()
+    artifact.counts = { ...artifact.counts, excluded: 5 }
+    expect(parseCandidateFunnelArtifact(artifact).ok).toBe(false)
+  })
+})
+
+describe('parseCandidateFunnelArtifact — dataset degradationReasons (engine "CODE: detail" contract)', () => {
+  it('accepts the frozen engine format "CODE: human-readable detail"', () => {
+    const artifact = buildValidCandidateFunnelArtifact()
+    artifact.degradationReasons = [
+      'CACHE_FALLBACK_PROVENANCE: pipelinePath=cache_fallback',
+      'DUPLICATE_CANDIDATE_CODE: 1 duplicate code(s), 2 record(s) excluded',
+    ]
+    expect(parseCandidateFunnelArtifact(artifact).ok).toBe(true)
+  })
+
+  it('accepts a bare degradation code', () => {
+    const artifact = buildValidCandidateFunnelArtifact()
+    artifact.degradationReasons = ['STALE_SOURCE']
+    expect(parseCandidateFunnelArtifact(artifact).ok).toBe(true)
+  })
+
+  it('still rejects an unknown degradation code (fail-closed)', () => {
+    const artifact = buildValidCandidateFunnelArtifact()
+    artifact.degradationReasons = ['MADE_UP_REASON: whatever']
+    const result = parseCandidateFunnelArtifact(artifact)
+    expect(result.ok).toBe(false)
+    if (result.ok) throw new Error('unreachable')
+    expect(result.code).toBe('invalid_status')
+  })
+
+  it('still rejects a non-string degradationReasons entry', () => {
+    const artifact = buildValidCandidateFunnelArtifact() as { degradationReasons: unknown[] }
+    artifact.degradationReasons = [{ code: 'STALE_SOURCE' }]
+    expect(parseCandidateFunnelArtifact(artifact).ok).toBe(false)
+  })
+})
+
 describe('parseCandidateFunnelArtifact — forbidden key rejection (recursive, all levels)', () => {
   it('rejects a forbidden key at the top level', () => {
     const artifact = buildValidCandidateFunnelArtifact() as Record<string, unknown>
