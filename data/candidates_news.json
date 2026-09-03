@@ -1,54 +1,41 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-09-03T10:16:40.644647+09:00",
-  "sourceUpdatedAt": "2026-09-03T01:10:43+00:00",
+  "updatedAt": "2026-09-03T17:12:24.308243+09:00",
+  "sourceUpdatedAt": "2026-09-03T08:02:26+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": 0.0,
+      "avgSentiment": -0.165,
       "negativeCount": 1,
-      "positiveCount": 1,
+      "positiveCount": 0,
       "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Bessent Leaves BOJ in No-Win Situation Over Japan Rate Hikes",
-      "topPositiveTitle": "Yen’s Spike Leaves Traders Guessing About Intervention",
+      "topNegativeTitle": "Carry Trade Funding May Shift to Yuan From Yen, BBVA Says",
+      "topPositiveTitle": "BOJ Is Said to Favor Quarter-Point Hike, Flexible on Future Path",
       "items": [
         {
-          "title": "Bessent Leaves BOJ in No-Win Situation Over Japan Rate Hikes",
-          "source": "Bloomberg Economics",
+          "title": "Carry Trade Funding May Shift to Yuan From Yen, BBVA Says",
+          "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-09-02T14:16:44+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-02/bessent-leaves-boj-in-no-win-situation-over-japan-rate-hikes",
+          "publishedAt": "2026-09-03T07:17:29+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-03/carry-trade-funding-may-shift-to-yuan-from-yen-bbva-says",
           "tags": [
+            "fx",
             "jp_broad",
             "market"
           ]
         },
         {
-          "title": "Natixis Raises Japan Stocks Allocation, Cuts US Equity Exposure",
-          "source": "Bloomberg Markets",
+          "title": "BOJ Is Said to Favor Quarter-Point Hike, Flexible on Future Path",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-03T00:20:16+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-03/natixis-raises-japan-stocks-allocation-cuts-us-equity-exposure",
+          "publishedAt": "2026-09-03T07:35:21+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-03/boj-is-said-to-favor-quarter-point-hike-flexible-on-future-path",
           "tags": [
-            "jp_broad",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Yen’s Spike Leaves Traders Guessing About Intervention",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-02T13:47:16+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-02/yen-surges-with-traders-on-high-alert-for-further-intervention",
-          "tags": [
-            "fx",
             "jp_broad",
             "market"
           ]
@@ -56,37 +43,53 @@
       ]
     },
     "jp_semiconductor": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.33,
       "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "us_broad": {
-      "avgSentiment": 0.043,
-      "negativeCount": 1,
       "positiveCount": 1,
-      "neutralCount": 6,
-      "sourceCount": 2,
-      "itemCount": 8,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Petco Services, Auto-Ship Sales Grow as Turnaround Continues",
-      "topPositiveTitle": "ADP Says US Companies Added 38,000 Jobs in August",
+      "topNegativeTitle": "Healey Bind Deepens as Markets Chip Away at UK Fiscal Buffer",
+      "topPositiveTitle": "Healey Bind Deepens as Markets Chip Away at UK Fiscal Buffer",
       "items": [
         {
-          "title": "Petco Services, Auto-Ship Sales Grow as Turnaround Continues",
+          "title": "Healey Bind Deepens as Markets Chip Away at UK Fiscal Buffer",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-02T15:44:51+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-02/healey-bind-deepens-as-markets-chip-away-at-uk-fiscal-buffer",
+          "tags": [
+            "geopolitical",
+            "jp_semiconductor",
+            "market"
+          ]
+        }
+      ]
+    },
+    "us_broad": {
+      "avgSentiment": 0.223,
+      "negativeCount": 1,
+      "positiveCount": 2,
+      "neutralCount": 3,
+      "sourceCount": 2,
+      "itemCount": 6,
+      "isStale": false,
+      "topNegativeTitle": "Schroders Buys Long-Dated Treasuries Citing Attractive Yields",
+      "topPositiveTitle": "Stocks Steady as Oil, Bonds Stabilize; Yen Gains: Markets Wrap",
+      "items": [
+        {
+          "title": "Schroders Buys Long-Dated Treasuries Citing Attractive Yields",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-09-02T22:16:56+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-02/petco-services-auto-ship-sales-grow-as-turnaround-continues",
+          "publishedAt": "2026-09-03T07:51:44+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-03/schroders-buys-long-dated-treasuries-citing-attractive-yields",
           "tags": [
+            "macro_risk",
             "market",
+            "rates",
             "us_broad"
           ]
         },
@@ -128,14 +131,16 @@
           ]
         },
         {
-          "title": "Spain’s Push on Undocumented Migrants Distorts Labor Statistics",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-02T13:34:20+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-02/spain-s-push-on-undocumented-migrants-distorts-labor-statistics",
+          "title": "Odd Lots: Darrell Duffie on the Surge in Bond Yields (Podcast)",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-09-03T08:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/audio/2026-09-03/odd-lots-darrell-duffie-on-the-surge-in-bond-yields-podcast",
           "tags": [
+            "dividend",
             "market",
+            "rates",
             "us_broad"
           ]
         }
@@ -166,15 +171,15 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": 0.165,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
-      "positiveCount": 1,
+      "positiveCount": 0,
       "neutralCount": 1,
-      "sourceCount": 2,
-      "itemCount": 2,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
       "topNegativeTitle": "Dutch Shift Gold to London From US on Geopolitical Unrest",
-      "topPositiveTitle": "Gold Holds Gain as Trump’s War Comments Ease Inflation Jitters",
+      "topPositiveTitle": "Dutch Shift Gold to London From US on Geopolitical Unrest",
       "items": [
         {
           "title": "Dutch Shift Gold to London From US on Geopolitical Unrest",
@@ -186,21 +191,6 @@
           "tags": [
             "geopolitical",
             "gold",
-            "market"
-          ]
-        },
-        {
-          "title": "Gold Holds Gain as Trump’s War Comments Ease Inflation Jitters",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-02T23:58:31+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-02/gold-holds-gain-as-trump-s-war-comments-ease-inflation-jitters",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "gold",
-            "macro_risk",
             "market"
           ]
         }
@@ -219,75 +209,92 @@
       "items": []
     },
     "dividend": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.67,
       "negativeCount": 0,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "macro_risk": {
-      "avgSentiment": 0.1,
-      "negativeCount": 3,
-      "positiveCount": 4,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 9,
-      "isStale": false,
-      "topNegativeTitle": "World’s Unusually High Dollar Exposure Risks Fueling Selloff",
-      "topPositiveTitle": "Asian Stocks Advance as Oil Slips, Yen in Focus: Markets Wrap",
+      "topNegativeTitle": "Odd Lots: Darrell Duffie on the Surge in Bond Yields (Podcast)",
+      "topPositiveTitle": "Odd Lots: Darrell Duffie on the Surge in Bond Yields (Podcast)",
       "items": [
         {
-          "title": "World’s Unusually High Dollar Exposure Risks Fueling Selloff",
+          "title": "Odd Lots: Darrell Duffie on the Surge in Bond Yields (Podcast)",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-09-03T08:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/audio/2026-09-03/odd-lots-darrell-duffie-on-the-surge-in-bond-yields-podcast",
+          "tags": [
+            "dividend",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        }
+      ]
+    },
+    "macro_risk": {
+      "avgSentiment": 0.144,
+      "negativeCount": 2,
+      "positiveCount": 2,
+      "neutralCount": 3,
+      "sourceCount": 2,
+      "itemCount": 7,
+      "isStale": false,
+      "topNegativeTitle": "Schroders Buys Long-Dated Treasuries Citing Attractive Yields",
+      "topPositiveTitle": "India’s Rupee Gains as RBI Measures Bring in Bumper $136 Billion",
+      "items": [
+        {
+          "title": "Schroders Buys Long-Dated Treasuries Citing Attractive Yields",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.43,
-          "publishedAt": "2026-09-03T00:00:01+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-03/world-s-unusually-high-dollar-exposure-risks-fueling-selloff",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-03T07:51:44+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-03/schroders-buys-long-dated-treasuries-citing-attractive-yields",
+          "tags": [
+            "macro_risk",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Russians See New Allure in Cash as War Hits Closer to Home",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-03T06:15:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-03/russians-see-new-allure-in-cash-as-war-hits-closer-to-home",
           "tags": [
             "fx",
+            "geopolitical",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Japan’s 30-Year Bond Auction Risks Adding Fuel to Debt Selloff",
+          "title": "India’s Record Diaspora Inflows Swamp Banks, Test RBI Tools",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-02T23:07:04+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-02/japan-s-30-year-bond-auction-risks-adding-fuel-to-debt-selloff",
-          "tags": [
-            "macro_risk",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Bank of Canada Holds Rates and Flags Inflation Risks; Bonds Drop",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-02T13:45:08+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-02/bank-of-canada-holds-rates-at-2-25-as-tariff-war-heats-up",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Energy Prices Surge, Reviving Inflation Fears as Winter Nears",
-          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-02T15:48:49+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-02/energy-prices-surge-reviving-inflation-fears-video",
+          "publishedAt": "2026-09-03T07:27:54+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-03/india-s-record-diaspora-inflows-swamp-banks-test-rbi-tools",
+          "tags": [
+            "fx",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Taiwan Proposes Funding Package to Secure LNG Disrupted by War",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-03T07:26:44+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-03/taiwan-proposes-funding-package-to-secure-lng-disrupted-by-war",
           "tags": [
             "commodity",
             "geopolitical",
@@ -296,12 +303,12 @@
           ]
         },
         {
-          "title": "Bank of Canada Set to Hold as Trade War Creates New Dilemma for Tiff Macklem",
-          "source": "Bloomberg Economics",
+          "title": "US Diesel Hits Four-Year High as Wars Strain Global Supplies",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-01T10:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-01/bank-of-canada-set-to-hold-as-trade-war-creates-new-dilemma-for-tiff-macklem",
+          "publishedAt": "2026-09-03T07:24:51+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-03/us-diesel-hits-four-year-high-as-wars-strain-global-supplies",
           "tags": [
             "geopolitical",
             "macro_risk",
@@ -311,49 +318,23 @@
       ]
     },
     "fx": {
-      "avgSentiment": 0.373,
+      "avgSentiment": 0.223,
       "negativeCount": 2,
-      "positiveCount": 4,
-      "neutralCount": 0,
+      "positiveCount": 2,
+      "neutralCount": 2,
       "sourceCount": 2,
       "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "World’s Unusually High Dollar Exposure Risks Fueling Selloff",
-      "topPositiveTitle": "Dollar Debasement Is Favoring Singapore’s Currency, Analysts Say",
+      "topNegativeTitle": "Carry Trade Funding May Shift to Yuan From Yen, BBVA Says",
+      "topPositiveTitle": "India’s Rupee Gains as RBI Measures Bring in Bumper $136 Billion",
       "items": [
         {
-          "title": "World’s Unusually High Dollar Exposure Risks Fueling Selloff",
+          "title": "Carry Trade Funding May Shift to Yuan From Yen, BBVA Says",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.43,
-          "publishedAt": "2026-09-03T00:00:01+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-03/world-s-unusually-high-dollar-exposure-risks-fueling-selloff",
-          "tags": [
-            "fx",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Danish Central Bank Intervenes Again to Defend Currency Peg",
-          "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-09-02T15:17:19+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-02/danish-central-bank-intervenes-again-to-defend-currency-peg",
-          "tags": [
-            "fx",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Yen’s Spike Leaves Traders Guessing About Intervention",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-02T13:47:16+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-02/yen-surges-with-traders-on-high-alert-for-further-intervention",
+          "publishedAt": "2026-09-03T07:17:29+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-03/carry-trade-funding-may-shift-to-yuan-from-yen-bbva-says",
           "tags": [
             "fx",
             "jp_broad",
@@ -361,105 +342,132 @@
           ]
         },
         {
-          "title": "Yen Surge Puts Traders on High Alert for Intervention",
+          "title": "Russians See New Allure in Cash as War Hits Closer to Home",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-03T06:15:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-03/russians-see-new-allure-in-cash-as-war-hits-closer-to-home",
+          "tags": [
+            "fx",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Two Key Reasons Yen Is Suddenly Surging: 3-Minutes MLIV",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-09-03T00:30:58+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-03/yen-surge-puts-traders-on-high-alert-for-intervention-video",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-03T08:02:26+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-03/two-key-reasons-yen-is-suddenly-surging-3-minutes-mliv-video",
           "tags": [
             "fx",
             "market"
           ]
         },
         {
-          "title": "Dollar Debasement Is Favoring Singapore’s Currency, Analysts Say",
+          "title": "India’s Record Diaspora Inflows Swamp Banks, Test RBI Tools",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-03T07:27:54+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-03/india-s-record-diaspora-inflows-swamp-banks-test-rbi-tools",
+          "tags": [
+            "fx",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "India’s Rupee Gains as RBI Measures Bring in Bumper $136 Billion",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 1.0,
-          "publishedAt": "2026-09-03T00:00:31+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-03/dollar-debasement-is-favoring-singapore-s-currency-analysts-say",
+          "publishedAt": "2026-09-03T03:33:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-03/india-s-rupee-gains-as-rbi-measures-bring-in-bumper-136-billion",
           "tags": [
             "fx",
+            "geopolitical",
+            "macro_risk",
             "market"
           ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": -0.132,
-      "negativeCount": 3,
-      "positiveCount": 1,
+      "avgSentiment": 0.39,
+      "negativeCount": 1,
+      "positiveCount": 4,
       "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Japan’s 30-Year Bond Auction Risks Adding Fuel to Debt Selloff",
-      "topPositiveTitle": "Apollo’s Slok Says US Yields Set to Rise on Iran War, Tariffs",
+      "topNegativeTitle": "Schroders Buys Long-Dated Treasuries Citing Attractive Yields",
+      "topPositiveTitle": "Stocks Steady as Oil, Bonds Stabilize; Yen Gains: Markets Wrap",
       "items": [
         {
-          "title": "Japan’s 30-Year Bond Auction Risks Adding Fuel to Debt Selloff",
+          "title": "Schroders Buys Long-Dated Treasuries Citing Attractive Yields",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-09-02T23:07:04+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-02/japan-s-30-year-bond-auction-risks-adding-fuel-to-debt-selloff",
+          "publishedAt": "2026-09-03T07:51:44+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-03/schroders-buys-long-dated-treasuries-citing-attractive-yields",
           "tags": [
             "macro_risk",
             "market",
-            "rates"
+            "rates",
+            "us_broad"
           ]
         },
         {
-          "title": "Danish Central Bank Intervenes Again to Defend Currency Peg",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-02T15:17:19+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-02/danish-central-bank-intervenes-again-to-defend-currency-peg",
-          "tags": [
-            "fx",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Bank of Canada Holds Rates and Flags Inflation Risks; Bonds Drop",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-02T13:45:08+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-02/bank-of-canada-holds-rates-at-2-25-as-tariff-war-heats-up",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Natixis Raises Japan Stocks Allocation, Cuts US Equity Exposure",
+          "title": "Why Bond Yields Surging Around the World (UST)",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-03T00:20:16+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-03/natixis-raises-japan-stocks-allocation-cuts-us-equity-exposure",
+          "publishedAt": "2026-09-03T08:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-03/why-bond-yields-surging-around-the-world-ust",
           "tags": [
-            "jp_broad",
             "market",
             "rates"
           ]
         },
         {
-          "title": "Apollo’s Slok Says US Yields Set to Rise on Iran War, Tariffs",
+          "title": "Turkey Prices Cool Further in August, Raising Rate-Cut Prospect",
           "source": "Bloomberg Economics",
           "sentiment": "positive",
           "sentimentScore": 0.33,
-          "publishedAt": "2026-09-02T11:28:52+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-02/apollo-s-slok-says-us-yields-set-to-rise-on-iran-war-tariffs",
+          "publishedAt": "2026-09-03T07:03:59+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-03/turkish-prices-cool-more-than-expected-to-31-5-in-august",
           "tags": [
-            "geopolitical",
-            "macro_risk",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Odd Lots: Darrell Duffie on the Surge in Bond Yields (Podcast)",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-09-03T08:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/audio/2026-09-03/odd-lots-darrell-duffie-on-the-surge-in-bond-yields-podcast",
+          "tags": [
+            "dividend",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Dry Bulk Shipping Rates Surge on Tight Capesize Vessel Supply",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-09-03T03:38:31+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-03/dry-bulk-shipping-rates-surge-on-tight-capesize-vessel-supply",
+          "tags": [
             "market",
             "rates"
           ]
@@ -467,16 +475,42 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.284,
+      "avgSentiment": 0.25,
       "negativeCount": 0,
-      "positiveCount": 4,
+      "positiveCount": 1,
       "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 7,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Fed Beige Book Shows Modest Growth, Mixed Sentiment",
-      "topPositiveTitle": "Asian Stocks Advance as Oil Slips, Yen in Focus: Markets Wrap",
+      "topNegativeTitle": "Taiwan Proposes Funding Package to Secure LNG Disrupted by War",
+      "topPositiveTitle": "Stocks Steady as Oil, Bonds Stabilize; Yen Gains: Markets Wrap",
       "items": [
+        {
+          "title": "Taiwan Proposes Funding Package to Secure LNG Disrupted by War",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-03T07:26:44+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-03/taiwan-proposes-funding-package-to-secure-lng-disrupted-by-war",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Bangladesh Pays Most for Gas Since 2022 to Ease Power Blackouts",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-03T07:17:24+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-03/bangladesh-pays-most-for-gas-since-2022-to-ease-power-blackouts",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
         {
           "title": "Fed Beige Book Shows Modest Growth, Mixed Sentiment",
           "source": "Bloomberg Economics",
@@ -491,96 +525,83 @@
           ]
         },
         {
-          "title": "Energy Prices Surge, Reviving Inflation Fears as Winter Nears",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-02T15:48:49+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-02/energy-prices-surge-reviving-inflation-fears-video",
+          "title": "Stocks Steady as Oil, Bonds Stabilize; Yen Gains: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-09-02T22:08:10+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-02/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Fed’s Williams Says Inflation Continuing to Trend Down",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-02T12:55:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-02/fed-s-williams-says-inflation-continuing-to-trending-down",
-          "tags": [
-            "commodity",
+            "fx",
             "market",
+            "rates",
             "us_broad"
-          ]
-        },
-        {
-          "title": "Gold Holds Gain as Trump’s War Comments Ease Inflation Jitters",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-02T23:58:31+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-02/gold-holds-gain-as-trump-s-war-comments-ease-inflation-jitters",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "gold",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Latest Oil Market News and Analysis for Sept. 3",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-02T22:03:57+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-02/latest-oil-market-news-and-analysis-for-sept-3",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "market"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.221,
+      "avgSentiment": 0.209,
       "negativeCount": 1,
-      "positiveCount": 5,
-      "neutralCount": 3,
+      "positiveCount": 3,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 9,
+      "itemCount": 8,
       "isStale": false,
-      "topNegativeTitle": "Bank of Canada Holds Rates and Flags Inflation Risks; Bonds Drop",
-      "topPositiveTitle": "Asian Stocks Advance as Oil Slips, Yen in Focus: Markets Wrap",
+      "topNegativeTitle": "Russians See New Allure in Cash as War Hits Closer to Home",
+      "topPositiveTitle": "India’s Rupee Gains as RBI Measures Bring in Bumper $136 Billion",
       "items": [
         {
-          "title": "Bank of Canada Holds Rates and Flags Inflation Risks; Bonds Drop",
+          "title": "Russians See New Allure in Cash as War Hits Closer to Home",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-09-02T13:45:08+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-02/bank-of-canada-holds-rates-at-2-25-as-tariff-war-heats-up",
+          "publishedAt": "2026-09-03T06:15:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-03/russians-see-new-allure-in-cash-as-war-hits-closer-to-home",
           "tags": [
+            "fx",
             "geopolitical",
             "macro_risk",
-            "market",
-            "rates"
+            "market"
           ]
         },
         {
-          "title": "Energy Prices Surge, Reviving Inflation Fears as Winter Nears",
-          "source": "Bloomberg Economics",
+          "title": "India’s Record Diaspora Inflows Swamp Banks, Test RBI Tools",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-02T15:48:49+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-02/energy-prices-surge-reviving-inflation-fears-video",
+          "publishedAt": "2026-09-03T07:27:54+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-03/india-s-record-diaspora-inflows-swamp-banks-test-rbi-tools",
+          "tags": [
+            "fx",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Taiwan Proposes Funding Package to Secure LNG Disrupted by War",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-03T07:26:44+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-03/taiwan-proposes-funding-package-to-secure-lng-disrupted-by-war",
           "tags": [
             "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "US Diesel Hits Four-Year High as Wars Strain Global Supplies",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-03T07:24:51+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-03/us-diesel-hits-four-year-high-as-wars-strain-global-supplies",
+          "tags": [
             "geopolitical",
             "macro_risk",
             "market"
@@ -596,34 +617,6 @@
           "tags": [
             "geopolitical",
             "gold",
-            "market"
-          ]
-        },
-        {
-          "title": "Bank of Canada Set to Hold as Trade War Creates New Dilemma for Tiff Macklem",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-01T10:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-01/bank-of-canada-set-to-hold-as-trade-war-creates-new-dilemma-for-tiff-macklem",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Gold Holds Gain as Trump’s War Comments Ease Inflation Jitters",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-02T23:58:31+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-02/gold-holds-gain-as-trump-s-war-comments-ease-inflation-jitters",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "gold",
-            "macro_risk",
             "market"
           ]
         }
