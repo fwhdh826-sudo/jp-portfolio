@@ -1,16 +1,16 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-09-04T00:05:09.849633+09:00",
-  "sourceUpdatedAt": "2026-09-03T15:03:25+00:00",
+  "updatedAt": "2026-09-04T08:24:45.123138+09:00",
+  "sourceUpdatedAt": "2026-09-03T23:01:00+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": -0.033,
+      "avgSentiment": -0.043,
       "negativeCount": 1,
       "positiveCount": 0,
-      "neutralCount": 3,
+      "neutralCount": 2,
       "sourceCount": 3,
-      "itemCount": 4,
+      "itemCount": 3,
       "isStale": false,
       "topNegativeTitle": "BOJ Data Suggest No Intervention While Officials Vow to Fight On",
       "topPositiveTitle": "Yen Rises as Intervention, BOJ Rate Hike Risks Jolt Traders",
@@ -43,18 +43,6 @@
           "titleJa": "片山財務相「米財務長官に問いただされたことない」日銀めぐり"
         },
         {
-          "title": "BOJ Is Said to Favor Quarter-Point Hike, Flexible on Future Path",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-03T07:35:21+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-03/boj-is-said-to-favor-quarter-point-hike-flexible-on-future-path",
-          "tags": [
-            "jp_broad",
-            "market"
-          ]
-        },
-        {
           "title": "Yen Rises as Intervention, BOJ Rate Hike Risks Jolt Traders",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
@@ -71,62 +59,35 @@
       ]
     },
     "jp_semiconductor": {
-      "avgSentiment": 0.33,
+      "avgSentiment": 0,
       "negativeCount": 0,
-      "positiveCount": 1,
+      "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Healey Bind Deepens as Markets Chip Away at UK Fiscal Buffer",
-      "topPositiveTitle": "Healey Bind Deepens as Markets Chip Away at UK Fiscal Buffer",
-      "items": [
-        {
-          "title": "Healey Bind Deepens as Markets Chip Away at UK Fiscal Buffer",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-02T15:44:51+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-02/healey-bind-deepens-as-markets-chip-away-at-uk-fiscal-buffer",
-          "tags": [
-            "geopolitical",
-            "jp_semiconductor",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "us_broad": {
-      "avgSentiment": 0.256,
-      "negativeCount": 2,
-      "positiveCount": 6,
-      "neutralCount": 1,
+      "avgSentiment": 0.228,
+      "negativeCount": 0,
+      "positiveCount": 2,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 9,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Waller Says August CPI Is Key to a Rate Decision",
-      "topPositiveTitle": "Treasuries Rise After Fed’s Waller Notes Progress on Inflation",
+      "topNegativeTitle": "S&P 500 Notches Best Day in Month as Traders Pare Rate-Hike Bets",
+      "topPositiveTitle": "Stocks Climb as Fed-Hike Wagers Ease on Waller: Markets Wrap",
       "items": [
         {
-          "title": "Waller Says August CPI Is Key to a Rate Decision",
+          "title": "S&P 500 Notches Best Day in Month as Traders Pare Rate-Hike Bets",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-03T13:06:59+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-03/waller-says-august-cpi-is-key-to-a-rate-decision-video",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Why Nuveen’s Rodriguez Is ‘Fairly Neutral’ on Duration",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-03T13:49:46+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-03/why-nuveen-s-rodriguez-is-fairly-neutral-on-duration-video",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-03T12:50:32+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-03/us-stock-futures-rise-as-traders-parse-fedspeak-earnings",
           "tags": [
             "market",
             "us_broad"
@@ -146,23 +107,38 @@
           ]
         },
         {
-          "title": "Odd Lots: What the Fed Needs to Do to Shrink Its Balance Sheet",
+          "title": "Asia Stocks to Gain as Fed Bets Cool, Dollar Drops: Markets Wrap",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-03T14:34:12+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-03/odd-lots-what-the-fed-needs-to-do-to-shrink-its-balance-sheet",
+          "sentiment": "neutral",
+          "sentimentScore": 0.14,
+          "publishedAt": "2026-09-03T22:14:26+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-03/stock-market-today-dow-s-p-live-updates",
           "tags": [
+            "commodity",
+            "fx",
             "market",
             "rates",
             "us_broad"
           ]
         },
         {
-          "title": "Stocks, Bonds Rise as Fed-Hike Bets Ease on Waller: Markets Wrap",
-          "source": "Bloomberg Markets",
+          "title": "Dollar Falls to Lowest Since May on Waller Remarks, Yen Gain",
+          "source": "Bloomberg Economics",
           "sentiment": "positive",
           "sentimentScore": 0.33,
+          "publishedAt": "2026-09-03T17:30:24+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-03/dollar-falls-to-weakest-since-may-on-waller-comments-yen-surge",
+          "tags": [
+            "fx",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Stocks Climb as Fed-Hike Wagers Ease on Waller: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
           "publishedAt": "2026-09-02T22:08:10+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-02/stock-market-today-dow-s-p-live-updates",
           "tags": [
@@ -181,16 +157,16 @@
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Saudi Firm Humain Eyes $2.5 Billion Fund to Build Data Centers",
-      "topPositiveTitle": "Saudi Firm Humain Eyes $2.5 Billion Fund to Build Data Centers",
+      "topNegativeTitle": "Anthropic Nears Finalizing $15 Billion Pre-IPO Credit Facility",
+      "topPositiveTitle": "Anthropic Nears Finalizing $15 Billion Pre-IPO Credit Facility",
       "items": [
         {
-          "title": "Saudi Firm Humain Eyes $2.5 Billion Fund to Build Data Centers",
+          "title": "Anthropic Nears Finalizing $15 Billion Pre-IPO Credit Facility",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-03T12:43:20+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-03/saudi-firm-humain-eyes-2-5-billion-fund-to-build-data-centers",
+          "publishedAt": "2026-09-03T22:43:54+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-03/anthropic-nears-finalizing-15-billion-pre-ipo-credit-facility",
           "tags": [
             "market",
             "us_growth"
@@ -199,42 +175,27 @@
       ]
     },
     "global_broad": {
-      "avgSentiment": 0.6,
+      "avgSentiment": 0,
       "negativeCount": 0,
-      "positiveCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
+      "isStale": false,
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
+    },
+    "gold": {
+      "avgSentiment": -1.0,
+      "negativeCount": 1,
+      "positiveCount": 0,
       "neutralCount": 0,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "European Stocks Gain as Fed Rate Hike Wagers Ease; Soitec Jumps",
-      "topPositiveTitle": "European Stocks Gain as Fed Rate Hike Wagers Ease; Soitec Jumps",
-      "items": [
-        {
-          "title": "European Stocks Gain as Fed Rate Hike Wagers Ease; Soitec Jumps",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.6,
-          "publishedAt": "2026-09-03T07:14:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-03/european-stocks-muted-as-deutsche-telekom-gains-on-elliott-stake",
-          "tags": [
-            "global_broad",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        }
-      ]
-    },
-    "gold": {
-      "avgSentiment": -0.285,
-      "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 0,
-      "sourceCount": 2,
-      "itemCount": 2,
-      "isStale": false,
       "topNegativeTitle": "US Share of Canada’s Exports Drops to 66%, Lowest Outside Pandemic",
-      "topPositiveTitle": "Gold Jumps as Traders Weigh Yen Intervention Risk, Fedspeak",
+      "topPositiveTitle": "US Share of Canada’s Exports Drops to 66%, Lowest Outside Pandemic",
       "items": [
         {
           "title": "US Share of Canada’s Exports Drops to 66%, Lowest Outside Pandemic",
@@ -248,24 +209,35 @@
             "gold",
             "market"
           ]
-        },
-        {
-          "title": "Gold Jumps as Traders Weigh Yen Intervention Risk, Fedspeak",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.43,
-          "publishedAt": "2026-09-02T23:58:31+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-02/gold-holds-gain-as-trump-s-war-comments-ease-inflation-jitters",
-          "tags": [
-            "fx",
-            "gold",
-            "market",
-            "us_broad"
-          ]
         }
       ]
     },
     "reit": {
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "NYC Transit Agency Prepares $785 Million Mansion Tax Bond Sale",
+      "topPositiveTitle": "NYC Transit Agency Prepares $785 Million Mansion Tax Bond Sale",
+      "items": [
+        {
+          "title": "NYC Transit Agency Prepares $785 Million Mansion Tax Bond Sale",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-03T15:54:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-03/nyc-transit-agency-prepares-785-million-mansion-tax-bond-sale",
+          "tags": [
+            "market",
+            "reit"
+          ]
+        }
+      ]
+    },
+    "dividend": {
       "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
@@ -277,65 +249,26 @@
       "topPositiveTitle": null,
       "items": []
     },
-    "dividend": {
-      "avgSentiment": -1.0,
-      "negativeCount": 1,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
-      "isStale": false,
-      "topNegativeTitle": "Campbell’s Shares Slump on Sales Drop, Dividend Cut, Outlook",
-      "topPositiveTitle": "Campbell’s Shares Slump on Sales Drop, Dividend Cut, Outlook",
-      "items": [
-        {
-          "title": "Campbell’s Shares Slump on Sales Drop, Dividend Cut, Outlook",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-09-03T12:34:53+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-03/campbell-s-shares-slump-on-sales-slide-dividend-cut-outlook",
-          "tags": [
-            "dividend",
-            "market"
-          ]
-        }
-      ]
-    },
     "macro_risk": {
-      "avgSentiment": -0.266,
-      "negativeCount": 2,
-      "positiveCount": 0,
-      "neutralCount": 3,
+      "avgSentiment": 0.11,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Russia’s Oil Revenue Sinks to Six-Month Low as Urals Price Drops",
-      "topPositiveTitle": "Iceland Data Center Costs Widen Current Account Gap to 2008 High",
+      "topNegativeTitle": "South Africa’s Kganyago Sees Room for Caution on Rate Moves",
+      "topPositiveTitle": "Australia’s Battered Bonds Have Reasons to Rebound, Funds Say",
       "items": [
         {
-          "title": "Russia’s Oil Revenue Sinks to Six-Month Low as Urals Price Drops",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-09-03T12:56:14+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-03/russia-s-oil-revenue-sinks-to-six-month-low-as-urals-price-drops",
+          "title": "South Africa’s Kganyago Sees Room for Caution on Rate Moves",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-03T18:21:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-03/south-africa-s-kganyago-sees-room-for-caution-on-rate-moves",
           "tags": [
             "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Russians Pile $25 Billion Into Cash as War Anxiety Grows",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-03T06:15:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-03/russians-see-new-allure-in-cash-as-war-hits-closer-to-home",
-          "tags": [
-            "fx",
             "geopolitical",
             "macro_risk",
             "market"
@@ -354,44 +287,30 @@
           ]
         },
         {
-          "title": "A $5 Billion Bond Revamp Starts Clock on Senegal Default",
+          "title": "Australia’s Battered Bonds Have Reasons to Rebound, Funds Say",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-03T05:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-03/senegal-starts-countdown-to-first-african-default-since-2023",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-03T21:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-03/australia-s-battered-bonds-have-reasons-to-rebound-funds-say",
           "tags": [
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Your ETF of the Moment: Riding the Wild, War-Fueled Oil Market",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-03T14:16:02+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-03/your-etf-of-the-moment-riding-the-wild-war-fueled-oil-market",
-          "tags": [
-            "commodity",
-            "geopolitical",
             "macro_risk",
             "market",
-            "trust"
+            "rates"
           ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": -0.008,
-      "negativeCount": 2,
-      "positiveCount": 1,
-      "neutralCount": 1,
+      "avgSentiment": 0.202,
+      "negativeCount": 1,
+      "positiveCount": 2,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 5,
       "isStale": false,
       "topNegativeTitle": "BOJ Data Suggest No Intervention While Officials Vow to Fight On",
-      "topPositiveTitle": "Gold Jumps as Traders Weigh Yen Intervention Risk, Fedspeak",
+      "topPositiveTitle": "UBS's Panseri on Global Bond Yields, ECB Hike Expectations",
       "items": [
         {
           "title": "BOJ Data Suggest No Intervention While Officials Vow to Fight On",
@@ -408,17 +327,18 @@
           ]
         },
         {
-          "title": "Russians Pile $25 Billion Into Cash as War Anxiety Grows",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-03T06:15:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-03/russians-see-new-allure-in-cash-as-war-hits-closer-to-home",
+          "title": "Asia Stocks to Gain as Fed Bets Cool, Dollar Drops: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.14,
+          "publishedAt": "2026-09-03T22:14:26+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-03/stock-market-today-dow-s-p-live-updates",
           "tags": [
+            "commodity",
             "fx",
-            "geopolitical",
-            "macro_risk",
-            "market"
+            "market",
+            "rates",
+            "us_broad"
           ]
         },
         {
@@ -436,45 +356,44 @@
           ]
         },
         {
-          "title": "Gold Jumps as Traders Weigh Yen Intervention Risk, Fedspeak",
-          "source": "Bloomberg Markets",
+          "title": "Dollar Falls to Lowest Since May on Waller Remarks, Yen Gain",
+          "source": "Bloomberg Economics",
           "sentiment": "positive",
-          "sentimentScore": 0.43,
-          "publishedAt": "2026-09-02T23:58:31+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-02/gold-holds-gain-as-trump-s-war-comments-ease-inflation-jitters",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-03T17:30:24+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-03/dollar-falls-to-weakest-since-may-on-waller-comments-yen-surge",
           "tags": [
             "fx",
-            "gold",
             "market",
             "us_broad"
+          ]
+        },
+        {
+          "title": "UBS's Panseri on Global Bond Yields, ECB Hike Expectations",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-09-03T19:56:57+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-03/panseri-on-global-bond-yields-ecb-hike-expectations-video",
+          "tags": [
+            "fx",
+            "market",
+            "rates"
           ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": 0.18,
-      "negativeCount": 2,
-      "positiveCount": 5,
-      "neutralCount": 3,
+      "avgSentiment": 0.187,
+      "negativeCount": 1,
+      "positiveCount": 3,
+      "neutralCount": 5,
       "sourceCount": 2,
-      "itemCount": 10,
+      "itemCount": 9,
       "isStale": false,
-      "topNegativeTitle": "Waller Says August CPI Is Key to a Rate Decision",
-      "topPositiveTitle": "Treasuries Rise After Fed’s Waller Notes Progress on Inflation",
+      "topNegativeTitle": "BOJ Data Suggest No Intervention While Officials Vow to Fight On",
+      "topPositiveTitle": "UBS's Panseri on Global Bond Yields, ECB Hike Expectations",
       "items": [
-        {
-          "title": "Waller Says August CPI Is Key to a Rate Decision",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-03T13:06:59+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-03/waller-says-august-cpi-is-key-to-a-rate-decision-video",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
         {
           "title": "BOJ Data Suggest No Intervention While Officials Vow to Fight On",
           "source": "Bloomberg Economics",
@@ -485,6 +404,18 @@
           "tags": [
             "fx",
             "jp_broad",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Bessent 'Wants To Win', Drive Yields Lower: Brill",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-03T20:14:02+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-03/bessent-wants-to-win-drive-yields-lower-brill-video",
+          "tags": [
             "market",
             "rates"
           ]
@@ -515,46 +446,33 @@
           ]
         },
         {
-          "title": "Yen Rises as Intervention, BOJ Rate Hike Risks Jolt Traders",
+          "title": "Asia Stocks to Gain as Fed Bets Cool, Dollar Drops: Markets Wrap",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.2,
-          "publishedAt": "2026-09-03T02:44:13+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-03/yen-traders-brace-for-holiday-intervention-risk-around-boj",
+          "sentiment": "neutral",
+          "sentimentScore": 0.14,
+          "publishedAt": "2026-09-03T22:14:26+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-03/stock-market-today-dow-s-p-live-updates",
           "tags": [
+            "commodity",
             "fx",
-            "jp_broad",
             "market",
-            "rates"
+            "rates",
+            "us_broad"
           ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": -0.2,
-      "negativeCount": 2,
-      "positiveCount": 2,
-      "neutralCount": 1,
+      "avgSentiment": -0.106,
+      "negativeCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 3,
       "sourceCount": 2,
       "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Russia’s Oil Revenue Sinks to Six-Month Low as Urals Price Drops",
-      "topPositiveTitle": "Trump’s Oil Deal Lifts Venezuela Bonds Ahead of Debt Rework",
+      "topNegativeTitle": "US Share of Canada’s Exports Drops to 66%, Lowest Outside Pandemic",
+      "topPositiveTitle": "Latest Oil Market News and Analysis for Sept. 4",
       "items": [
-        {
-          "title": "Russia’s Oil Revenue Sinks to Six-Month Low as Urals Price Drops",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-09-03T12:56:14+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-03/russia-s-oil-revenue-sinks-to-six-month-low-as-urals-price-drops",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
         {
           "title": "US Share of Canada’s Exports Drops to 66%, Lowest Outside Pandemic",
           "source": "Bloomberg Economics",
@@ -569,110 +487,109 @@
           ]
         },
         {
-          "title": "Your ETF of the Moment: Riding the Wild, War-Fueled Oil Market",
+          "title": "The Hottest New Trade Is Your Own Electricity",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-03T14:16:02+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-03/your-etf-of-the-moment-riding-the-wild-war-fueled-oil-market",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market",
-            "trust"
-          ]
-        },
-        {
-          "title": "Germany's Blessing on Economy, Banking Consolidation, Energy Prices",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-03T09:08:57+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-03/germany-s-blessing-on-economy-banking-consolidation-energy-prices",
+          "publishedAt": "2026-09-03T21:00:05+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-03/the-hottest-new-trade-is-your-own-electricity",
           "tags": [
             "commodity",
             "market"
           ]
         },
         {
-          "title": "Trump’s Oil Deal Lifts Venezuela Bonds Ahead of Debt Rework",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-09-03T13:34:15+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-03/trump-s-oil-deal-lifts-venezuela-bonds-ahead-of-debt-rework",
+          "title": "South Africa’s Kganyago Sees Room for Caution on Rate Moves",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-03T18:21:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-03/south-africa-s-kganyago-sees-room-for-caution-on-rate-moves",
           "tags": [
             "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Asia Stocks to Gain as Fed Bets Cool, Dollar Drops: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.14,
+          "publishedAt": "2026-09-03T22:14:26+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-03/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "fx",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Latest Oil Market News and Analysis for Sept. 4",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-03T22:12:01+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-03/latest-oil-market-news-and-analysis-for-sept-4",
+          "tags": [
+            "commodity",
+            "geopolitical",
             "market"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": -0.25,
-      "negativeCount": 2,
+      "avgSentiment": 0.11,
+      "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 1,
-      "sourceCount": 2,
-      "itemCount": 4,
+      "neutralCount": 2,
+      "sourceCount": 3,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Russia’s Oil Revenue Sinks to Six-Month Low as Urals Price Drops",
-      "topPositiveTitle": "Healey Bind Deepens as Markets Chip Away at UK Fiscal Buffer",
+      "topNegativeTitle": "South Africa’s Kganyago Sees Room for Caution on Rate Moves",
+      "topPositiveTitle": "Latest Oil Market News and Analysis for Sept. 4",
       "items": [
         {
-          "title": "Russia’s Oil Revenue Sinks to Six-Month Low as Urals Price Drops",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-09-03T12:56:14+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-03/russia-s-oil-revenue-sinks-to-six-month-low-as-urals-price-drops",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Russians Pile $25 Billion Into Cash as War Anxiety Grows",
+          "title": "South Africa’s Kganyago Sees Room for Caution on Rate Moves",
           "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-03T06:15:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-03/russians-see-new-allure-in-cash-as-war-hits-closer-to-home",
-          "tags": [
-            "fx",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Your ETF of the Moment: Riding the Wild, War-Fueled Oil Market",
-          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-03T14:16:02+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-03/your-etf-of-the-moment-riding-the-wild-war-fueled-oil-market",
+          "publishedAt": "2026-09-03T18:21:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-03/south-africa-s-kganyago-sees-room-for-caution-on-rate-moves",
           "tags": [
             "commodity",
             "geopolitical",
             "macro_risk",
-            "market",
-            "trust"
+            "market"
           ]
         },
         {
-          "title": "Healey Bind Deepens as Markets Chip Away at UK Fiscal Buffer",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-02T15:44:51+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-02/healey-bind-deepens-as-markets-chip-away-at-uk-fiscal-buffer",
+          "title": "色丹島にインドネシア人 北方領土で受け入れ進む外国人労働者",
+          "source": "NHK 経済",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-03T20:24:27+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20260903de48059",
           "tags": [
             "geopolitical",
-            "jp_semiconductor",
+            "market"
+          ],
+          "titleJa": "色丹島にインドネシア人 北方領土で受け入れ進む外国人労働者"
+        },
+        {
+          "title": "Latest Oil Market News and Analysis for Sept. 4",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-03T22:12:01+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-03/latest-oil-market-news-and-analysis-for-sept-4",
+          "tags": [
+            "commodity",
+            "geopolitical",
             "market"
           ]
         }
@@ -687,7 +604,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 2,
+    "excludedCount": 3,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
