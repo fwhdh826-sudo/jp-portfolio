@@ -1,19 +1,19 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-09-03T00:10:37.233693+09:00",
-  "sourceUpdatedAt": "2026-09-02T15:07:52+00:00",
+  "updatedAt": "2026-09-03T10:16:40.644647+09:00",
+  "sourceUpdatedAt": "2026-09-03T01:10:43+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": -0.33,
-      "negativeCount": 2,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 2,
+      "avgSentiment": 0.0,
+      "negativeCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 1,
+      "sourceCount": 2,
+      "itemCount": 3,
       "isStale": false,
       "topNegativeTitle": "Bessent Leaves BOJ in No-Win Situation Over Japan Rate Hikes",
-      "topPositiveTitle": "Bessent Leaves BOJ in No-Win Situation Over Japan Rate Hikes",
+      "topPositiveTitle": "Yen’s Spike Leaves Traders Guessing About Intervention",
       "items": [
         {
           "title": "Bessent Leaves BOJ in No-Win Situation Over Japan Rate Hikes",
@@ -28,78 +28,101 @@
           ]
         },
         {
-          "title": "BOJ Board Hawk Takata Keeps Door Open for Outsized Rate Hike",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-02T01:49:58+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-02/boj-board-hawk-calls-for-nimble-hikes-to-prevent-price-risks",
+          "title": "Natixis Raises Japan Stocks Allocation, Cuts US Equity Exposure",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-03T00:20:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-03/natixis-raises-japan-stocks-allocation-cuts-us-equity-exposure",
           "tags": [
             "jp_broad",
             "market",
             "rates"
           ]
-        }
-      ]
-    },
-    "jp_semiconductor": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
-      "isStale": false,
-      "topNegativeTitle": "Broadcom Needs Nvidia-Like Earnings to Stop $520 Billion Skid",
-      "topPositiveTitle": "Broadcom Needs Nvidia-Like Earnings to Stop $520 Billion Skid",
-      "items": [
+        },
         {
-          "title": "Broadcom Needs Nvidia-Like Earnings to Stop $520 Billion Skid",
+          "title": "Yen’s Spike Leaves Traders Guessing About Intervention",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-02T10:45:01+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-02/broadcom-needs-nvidia-like-earnings-to-stop-520-billion-skid",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-02T13:47:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-02/yen-surges-with-traders-on-high-alert-for-further-intervention",
           "tags": [
-            "jp_semiconductor",
-            "market",
-            "us_growth"
+            "fx",
+            "jp_broad",
+            "market"
           ]
         }
       ]
     },
-    "us_broad": {
-      "avgSentiment": 0.239,
+    "jp_semiconductor": {
+      "avgSentiment": 0,
       "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 5,
-      "sourceCount": 2,
-      "itemCount": 7,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Warsh's Data Dashboard for Reading the US Economy",
-      "topPositiveTitle": "Gold Rises as Dollar Pushes Lower While Traders Weigh Fed Path",
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
+    },
+    "us_broad": {
+      "avgSentiment": 0.043,
+      "negativeCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 6,
+      "sourceCount": 2,
+      "itemCount": 8,
+      "isStale": false,
+      "topNegativeTitle": "Petco Services, Auto-Ship Sales Grow as Turnaround Continues",
+      "topPositiveTitle": "ADP Says US Companies Added 38,000 Jobs in August",
       "items": [
         {
-          "title": "Warsh's Data Dashboard for Reading the US Economy",
+          "title": "Petco Services, Auto-Ship Sales Grow as Turnaround Continues",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-02T14:49:05+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-02/warsh-s-data-dashboard-for-reading-the-us-economy-video",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-02T22:16:56+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-02/petco-services-auto-ship-sales-grow-as-turnaround-continues",
           "tags": [
             "market",
             "us_broad"
           ]
         },
         {
-          "title": "S&P 500 Steadies After Three-Day Skid as Oil Prices Halt Advance",
-          "source": "Bloomberg Markets",
+          "title": "Fed Beige Book Shows Modest Growth, Mixed Sentiment",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-02T14:08:37+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-02/s-p-500-steadies-after-three-day-skid-as-oil-prices-halt-advance",
+          "publishedAt": "2026-09-02T19:10:47+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-02/fed-beige-book-shows-modest-growth-mixed-sentiment-video",
           "tags": [
             "commodity",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Fed’s Beige Book Shows Economic Activity Up Modestly",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-02T18:16:39+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-02/fed-s-beige-book-shows-economic-activity-up-modestly-since-july",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Fed Watchdog Flags Questions Around Confidential Information",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-02T16:26:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-02/fed-watchdog-flags-questions-around-confidential-information",
+          "tags": [
             "market",
             "us_broad"
           ]
@@ -115,59 +138,20 @@
             "market",
             "us_broad"
           ]
-        },
-        {
-          "title": "Fed’s Warsh Lays Out Data Dashboard to Read US Economy",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-02T13:18:51+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-02/fed-s-warsh-lays-out-data-dashboard-to-read-us-economy",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Fed’s Williams Says Inflation Continuing to Trend Down",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-02T12:55:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-02/fed-s-williams-says-inflation-continuing-to-trending-down",
-          "tags": [
-            "commodity",
-            "market",
-            "us_broad"
-          ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Broadcom Needs Nvidia-Like Earnings to Stop $520 Billion Skid",
-      "topPositiveTitle": "Broadcom Needs Nvidia-Like Earnings to Stop $520 Billion Skid",
-      "items": [
-        {
-          "title": "Broadcom Needs Nvidia-Like Earnings to Stop $520 Billion Skid",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-02T10:45:01+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-02/broadcom-needs-nvidia-like-earnings-to-stop-520-billion-skid",
-          "tags": [
-            "jp_semiconductor",
-            "market",
-            "us_growth"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "global_broad": {
       "avgSentiment": 0,
@@ -182,7 +166,7 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": 0.5,
+      "avgSentiment": 0.165,
       "negativeCount": 0,
       "positiveCount": 1,
       "neutralCount": 1,
@@ -190,7 +174,7 @@
       "itemCount": 2,
       "isStale": false,
       "topNegativeTitle": "Dutch Shift Gold to London From US on Geopolitical Unrest",
-      "topPositiveTitle": "Gold Rises as Dollar Pushes Lower While Traders Weigh Fed Path",
+      "topPositiveTitle": "Gold Holds Gain as Trump’s War Comments Ease Inflation Jitters",
       "items": [
         {
           "title": "Dutch Shift Gold to London From US on Geopolitical Unrest",
@@ -206,17 +190,18 @@
           ]
         },
         {
-          "title": "Gold Rises as Dollar Pushes Lower While Traders Weigh Fed Path",
+          "title": "Gold Holds Gain as Trump’s War Comments Ease Inflation Jitters",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-09-01T23:40:28+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-01/gold-holds-drop-as-higher-oil-bond-selloff-raise-rate-hike-bets",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-02T23:58:31+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-02/gold-holds-gain-as-trump-s-war-comments-ease-inflation-jitters",
           "tags": [
-            "fx",
+            "commodity",
+            "geopolitical",
             "gold",
-            "market",
-            "us_broad"
+            "macro_risk",
+            "market"
           ]
         }
       ]
@@ -246,34 +231,47 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.002,
-      "negativeCount": 1,
-      "positiveCount": 2,
+      "avgSentiment": 0.1,
+      "negativeCount": 3,
+      "positiveCount": 4,
       "neutralCount": 2,
-      "sourceCount": 1,
-      "itemCount": 5,
+      "sourceCount": 2,
+      "itemCount": 9,
       "isStale": false,
-      "topNegativeTitle": "South Africa Business Mood Stuck at Level Too Low for Investment",
-      "topPositiveTitle": "Apollo’s Slok Says US Yields Set to Rise on Iran War, Tariffs",
+      "topNegativeTitle": "World’s Unusually High Dollar Exposure Risks Fueling Selloff",
+      "topPositiveTitle": "Asian Stocks Advance as Oil Slips, Yen in Focus: Markets Wrap",
       "items": [
         {
-          "title": "South Africa Business Mood Stuck at Level Too Low for Investment",
-          "source": "Bloomberg Economics",
+          "title": "World’s Unusually High Dollar Exposure Risks Fueling Selloff",
+          "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-09-02T10:01:18+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-02/south-africa-business-mood-stuck-at-level-too-low-for-investment",
+          "sentimentScore": -0.43,
+          "publishedAt": "2026-09-03T00:00:01+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-03/world-s-unusually-high-dollar-exposure-risks-fueling-selloff",
           "tags": [
-            "geopolitical",
+            "fx",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Bank of Canada Holds Rates as Tariffs Cloud Growth Outlook",
+          "title": "Japan’s 30-Year Bond Auction Risks Adding Fuel to Debt Selloff",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-02T23:07:04+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-02/japan-s-30-year-bond-auction-risks-adding-fuel-to-debt-selloff",
+          "tags": [
+            "macro_risk",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Bank of Canada Holds Rates and Flags Inflation Risks; Bonds Drop",
           "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
           "publishedAt": "2026-09-02T13:45:08+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-02/bank-of-canada-holds-rates-at-2-25-as-tariff-war-heats-up",
           "tags": [
@@ -281,6 +279,20 @@
             "macro_risk",
             "market",
             "rates"
+          ]
+        },
+        {
+          "title": "Energy Prices Surge, Reviving Inflation Fears as Winter Nears",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-02T15:48:49+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-02/energy-prices-surge-reviving-inflation-fears-video",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
           ]
         },
         {
@@ -295,122 +307,145 @@
             "macro_risk",
             "market"
           ]
+        }
+      ]
+    },
+    "fx": {
+      "avgSentiment": 0.373,
+      "negativeCount": 2,
+      "positiveCount": 4,
+      "neutralCount": 0,
+      "sourceCount": 2,
+      "itemCount": 6,
+      "isStale": false,
+      "topNegativeTitle": "World’s Unusually High Dollar Exposure Risks Fueling Selloff",
+      "topPositiveTitle": "Dollar Debasement Is Favoring Singapore’s Currency, Analysts Say",
+      "items": [
+        {
+          "title": "World’s Unusually High Dollar Exposure Risks Fueling Selloff",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.43,
+          "publishedAt": "2026-09-03T00:00:01+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-03/world-s-unusually-high-dollar-exposure-risks-fueling-selloff",
+          "tags": [
+            "fx",
+            "macro_risk",
+            "market"
+          ]
         },
         {
-          "title": "Apollo’s Slok Says US Yields Set to Rise on Iran War, Tariffs",
+          "title": "Danish Central Bank Intervenes Again to Defend Currency Peg",
           "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-02T11:28:52+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-02/apollo-s-slok-says-us-yields-set-to-rise-on-iran-war-tariffs",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-02T15:17:19+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-02/danish-central-bank-intervenes-again-to-defend-currency-peg",
           "tags": [
-            "geopolitical",
-            "macro_risk",
+            "fx",
             "market",
             "rates"
           ]
         },
         {
-          "title": "Ghana Inflation Resumes Upswing, Supports Case for Rate Hold",
-          "source": "Bloomberg Economics",
+          "title": "Yen’s Spike Leaves Traders Guessing About Intervention",
+          "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.33,
-          "publishedAt": "2026-09-02T10:29:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-02/ghana-inflation-resumes-upswing-supporting-case-for-rate-hold",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        }
-      ]
-    },
-    "fx": {
-      "avgSentiment": 0.89,
-      "negativeCount": 0,
-      "positiveCount": 3,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 3,
-      "isStale": false,
-      "topNegativeTitle": "India Diaspora Flows Hit $127 Billion, 1.5 Times Above Estimate",
-      "topPositiveTitle": "Yen Surges With Traders on High Alert for Further Intervention",
-      "items": [
-        {
-          "title": "India Diaspora Flows Hit $127 Billion, 1.5 Times Above Estimate",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-09-02T12:50:21+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-02/india-raises-record-127-billion-in-forex-deposits-from-diaspora",
-          "tags": [
-            "fx",
-            "market"
-          ]
-        },
-        {
-          "title": "Yen Surges With Traders on High Alert for Further Intervention",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
           "publishedAt": "2026-09-02T13:47:16+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-02/yen-surges-with-traders-on-high-alert-for-further-intervention",
           "tags": [
             "fx",
+            "jp_broad",
             "market"
           ]
         },
         {
-          "title": "Gold Rises as Dollar Pushes Lower While Traders Weigh Fed Path",
+          "title": "Yen Surge Puts Traders on High Alert for Intervention",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-09-03T00:30:58+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-03/yen-surge-puts-traders-on-high-alert-for-intervention-video",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        },
+        {
+          "title": "Dollar Debasement Is Favoring Singapore’s Currency, Analysts Say",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 1.0,
-          "publishedAt": "2026-09-01T23:40:28+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-01/gold-holds-drop-as-higher-oil-bond-selloff-raise-rate-hike-bets",
+          "publishedAt": "2026-09-03T00:00:31+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-03/dollar-debasement-is-favoring-singapore-s-currency-analysts-say",
           "tags": [
             "fx",
-            "gold",
-            "market",
-            "us_broad"
+            "market"
           ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": 0.0,
-      "negativeCount": 1,
+      "avgSentiment": -0.132,
+      "negativeCount": 3,
       "positiveCount": 1,
       "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 3,
+      "sourceCount": 2,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "BOJ Board Hawk Takata Keeps Door Open for Outsized Rate Hike",
+      "topNegativeTitle": "Japan’s 30-Year Bond Auction Risks Adding Fuel to Debt Selloff",
       "topPositiveTitle": "Apollo’s Slok Says US Yields Set to Rise on Iran War, Tariffs",
       "items": [
         {
-          "title": "BOJ Board Hawk Takata Keeps Door Open for Outsized Rate Hike",
-          "source": "Bloomberg Economics",
+          "title": "Japan’s 30-Year Bond Auction Risks Adding Fuel to Debt Selloff",
+          "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-09-02T01:49:58+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-02/boj-board-hawk-calls-for-nimble-hikes-to-prevent-price-risks",
+          "publishedAt": "2026-09-02T23:07:04+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-02/japan-s-30-year-bond-auction-risks-adding-fuel-to-debt-selloff",
           "tags": [
-            "jp_broad",
+            "macro_risk",
             "market",
             "rates"
           ]
         },
         {
-          "title": "Bank of Canada Holds Rates as Tariffs Cloud Growth Outlook",
+          "title": "Danish Central Bank Intervenes Again to Defend Currency Peg",
           "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-02T15:17:19+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-02/danish-central-bank-intervenes-again-to-defend-currency-peg",
+          "tags": [
+            "fx",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Bank of Canada Holds Rates and Flags Inflation Risks; Bonds Drop",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
           "publishedAt": "2026-09-02T13:45:08+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-02/bank-of-canada-holds-rates-at-2-25-as-tariff-war-heats-up",
           "tags": [
             "geopolitical",
             "macro_risk",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Natixis Raises Japan Stocks Allocation, Cuts US Equity Exposure",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-03T00:20:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-03/natixis-raises-japan-stocks-allocation-cuts-us-equity-exposure",
+          "tags": [
+            "jp_broad",
             "market",
             "rates"
           ]
@@ -432,47 +467,23 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.041,
-      "negativeCount": 1,
-      "positiveCount": 2,
-      "neutralCount": 5,
+      "avgSentiment": 0.284,
+      "negativeCount": 0,
+      "positiveCount": 4,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 8,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "Norwegian Hydro Stocks Hit Record Low, Raising Power Price Risks",
-      "topPositiveTitle": "Ghana Inflation Resumes Upswing, Supports Case for Rate Hold",
+      "topNegativeTitle": "Fed Beige Book Shows Modest Growth, Mixed Sentiment",
+      "topPositiveTitle": "Asian Stocks Advance as Oil Slips, Yen in Focus: Markets Wrap",
       "items": [
         {
-          "title": "Norwegian Hydro Stocks Hit Record Low, Raising Power Price Risks",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-02T12:34:21+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-02/norwegian-hydro-stocks-hit-record-low-raising-power-price-risks",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "Italy’s Eni Plans Major Increase in Venezuela Oil Production",
-          "source": "Bloomberg Markets",
+          "title": "Fed Beige Book Shows Modest Growth, Mixed Sentiment",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-02T14:36:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-02/italy-s-eni-plans-major-increase-in-venezuela-oil-production",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "S&P 500 Steadies After Three-Day Skid as Oil Prices Halt Advance",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-02T14:08:37+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-02/s-p-500-steadies-after-three-day-skid-as-oil-prices-halt-advance",
+          "publishedAt": "2026-09-02T19:10:47+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-02/fed-beige-book-shows-modest-growth-mixed-sentiment-video",
           "tags": [
             "commodity",
             "market",
@@ -480,14 +491,16 @@
           ]
         },
         {
-          "title": "US’s Wright on Venezuela Oil Production, SPR, Strait of Hormuz",
-          "source": "Bloomberg Markets",
+          "title": "Energy Prices Surge, Reviving Inflation Fears as Winter Nears",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-02T13:55:14+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-02/us-s-wright-on-venezuela-oil-production-spr-hormuz-video",
+          "publishedAt": "2026-09-02T15:48:49+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-02/energy-prices-surge-reviving-inflation-fears-video",
           "tags": [
             "commodity",
+            "geopolitical",
+            "macro_risk",
             "market"
           ]
         },
@@ -503,50 +516,53 @@
             "market",
             "us_broad"
           ]
-        }
-      ]
-    },
-    "geopolitical": {
-      "avgSentiment": -0.022,
-      "negativeCount": 2,
-      "positiveCount": 3,
-      "neutralCount": 3,
-      "sourceCount": 2,
-      "itemCount": 8,
-      "isStale": false,
-      "topNegativeTitle": "South Africa Business Mood Stuck at Level Too Low for Investment",
-      "topPositiveTitle": "Apollo’s Slok Says US Yields Set to Rise on Iran War, Tariffs",
-      "items": [
+        },
         {
-          "title": "South Africa Business Mood Stuck at Level Too Low for Investment",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-09-02T10:01:18+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-02/south-africa-business-mood-stuck-at-level-too-low-for-investment",
+          "title": "Gold Holds Gain as Trump’s War Comments Ease Inflation Jitters",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-02T23:58:31+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-02/gold-holds-gain-as-trump-s-war-comments-ease-inflation-jitters",
           "tags": [
+            "commodity",
             "geopolitical",
+            "gold",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Corn Drops Most in Three Weeks as Profit-Taking Hits Grain Rally",
+          "title": "Latest Oil Market News and Analysis for Sept. 3",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.5,
-          "publishedAt": "2026-09-02T04:08:15+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-02/corn-drops-most-in-three-weeks-as-profit-taking-hits-grain-rally",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-02T22:03:57+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-02/latest-oil-market-news-and-analysis-for-sept-3",
           "tags": [
+            "commodity",
             "geopolitical",
             "market"
           ]
-        },
+        }
+      ]
+    },
+    "geopolitical": {
+      "avgSentiment": 0.221,
+      "negativeCount": 1,
+      "positiveCount": 5,
+      "neutralCount": 3,
+      "sourceCount": 2,
+      "itemCount": 9,
+      "isStale": false,
+      "topNegativeTitle": "Bank of Canada Holds Rates and Flags Inflation Risks; Bonds Drop",
+      "topPositiveTitle": "Asian Stocks Advance as Oil Slips, Yen in Focus: Markets Wrap",
+      "items": [
         {
-          "title": "Bank of Canada Holds Rates as Tariffs Cloud Growth Outlook",
+          "title": "Bank of Canada Holds Rates and Flags Inflation Risks; Bonds Drop",
           "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
           "publishedAt": "2026-09-02T13:45:08+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-02/bank-of-canada-holds-rates-at-2-25-as-tariff-war-heats-up",
           "tags": [
@@ -554,6 +570,20 @@
             "macro_risk",
             "market",
             "rates"
+          ]
+        },
+        {
+          "title": "Energy Prices Surge, Reviving Inflation Fears as Winter Nears",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-02T15:48:49+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-02/energy-prices-surge-reviving-inflation-fears-video",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
           ]
         },
         {
@@ -581,6 +611,21 @@
             "macro_risk",
             "market"
           ]
+        },
+        {
+          "title": "Gold Holds Gain as Trump’s War Comments Ease Inflation Jitters",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-02T23:58:31+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-02/gold-holds-gain-as-trump-s-war-comments-ease-inflation-jitters",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "gold",
+            "macro_risk",
+            "market"
+          ]
         }
       ]
     }
@@ -593,7 +638,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 3,
+    "excludedCount": 2,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
