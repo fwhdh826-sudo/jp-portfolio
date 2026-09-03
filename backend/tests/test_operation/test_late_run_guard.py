@@ -77,9 +77,9 @@ def evaluate(
             "full",
             "30 21 * * 0-4",
             "2026-08-28T06:30:00",
-            "2026-08-28T07:30:00",
+            "2026-08-28T12:00:00",
             "2026-08-27T21:30:00Z",
-            "2026-08-27T22:30:00Z",
+            "2026-08-28T03:00:00Z",
         ),
         (
             "update",
@@ -161,7 +161,7 @@ def test_all_frozen_deadlines_in_jst_and_utc(
 @pytest.mark.parametrize(
     ("workflow", "cron", "scheduled", "deadline"),
     [
-        ("full", "30 21 * * 0-4", "2026-08-28T06:30:00", "2026-08-28T07:30:00"),
+        ("full", "30 21 * * 0-4", "2026-08-28T06:30:00", "2026-08-28T12:00:00"),
         ("update", "30 23 * * *", "2026-08-28T08:30:00", "2026-08-28T12:00:00"),
         ("update", "30 23 * * *", "2026-08-29T08:30:00", "2026-08-29T20:00:00"),
         ("intraday", "30 3 * * 1-5", "2026-08-28T12:30:00", "2026-08-28T20:00:00"),
@@ -235,6 +235,72 @@ def test_holiday_is_an_ordinary_weekday_calendar_day():
     )
     assert result.deadline == utc("2026-01-01T03:00:00Z")
     assert result.decision == "SKIP"
+
+
+@pytest.mark.parametrize(
+    ("case_id", "delay_minutes", "started_local", "decision", "reason"),
+    [
+        ("FB-01", 2, "2026-08-28T06:32:00", "RUN", "started_before_deadline"),
+        ("FB-02", 117, "2026-08-28T08:27:00", "RUN", "started_before_deadline"),
+        ("FB-03", 131, "2026-08-28T08:41:00", "RUN", "started_before_deadline"),
+        ("FB-04", 192, "2026-08-28T09:42:00", "RUN", "started_before_deadline"),
+        ("FB-05", 329, "2026-08-28T11:59:00", "RUN", "started_before_deadline"),
+        (
+            "FB-06",
+            330,
+            "2026-08-28T12:00:00",
+            "SKIP",
+            "started_at_at_or_after_deadline",
+        ),
+        (
+            "FB-08",
+            481,
+            "2026-08-28T14:31:00",
+            "SKIP",
+            "started_at_at_or_after_deadline",
+        ),
+    ],
+)
+def test_full_batch_deadline_realignment_boundary_matrix(
+    case_id, delay_minutes, started_local, decision, reason
+):
+    """OPS-FULL-BATCH-SAFE-START-RECOVERY: the realigned 12:00 JST full
+    deadline must RUN observed-style scheduler delays (117/131/192/329
+    minutes) that previously SKIPped under the 07:30 deadline, while still
+    SKIPping at and beyond the 12:00 boundary — including the 481-minute
+    delay actually observed on natural run #82. This is deliberately not
+    rescued: fail-closed admission past the boundary is intentional.
+    """
+    scheduled = local("2026-08-28T06:30:00")
+    result = evaluate("full", "30 21 * * 0-4", scheduled, local(started_local))
+    assert result.lateness_minutes == delay_minutes, case_id
+    assert result.decision == decision, case_id
+    assert result.reason == reason, case_id
+    assert result.deadline == utc("2026-08-28T03:00:00Z"), case_id
+
+
+def test_full_batch_deadline_boundary_is_inclusive_for_skip_at_exact_second():
+    """FB-06/FB-07: the boundary itself and one second past it both SKIP;
+    one second before it still RUNs. Mirrors
+    test_every_deadline_boundary_is_inclusive_for_skip's contract for the
+    realigned full deadline specifically.
+    """
+    scheduled = local("2026-08-28T06:30:00")
+    deadline = local("2026-08-28T12:00:00")
+
+    just_before = evaluate(
+        "full", "30 21 * * 0-4", scheduled, deadline - timedelta(seconds=1)
+    )
+    at_boundary = evaluate("full", "30 21 * * 0-4", scheduled, deadline)
+    just_after = evaluate(
+        "full", "30 21 * * 0-4", scheduled, deadline + timedelta(seconds=1)
+    )
+
+    assert just_before.decision == "RUN"
+    assert at_boundary.decision == "SKIP"
+    assert at_boundary.reason == "started_at_at_or_after_deadline"
+    assert just_after.decision == "SKIP"
+    assert just_after.reason == "started_at_at_or_after_deadline"
 
 
 def test_manual_dispatch_bypasses_api_metadata_and_deadlines(tmp_path):

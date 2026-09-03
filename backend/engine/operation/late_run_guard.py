@@ -234,7 +234,19 @@ def resolve_nominal(
 def deadline_for(workflow: str, scheduled_at: datetime) -> datetime:
     local = scheduled_at.astimezone(JST)
     if workflow == "full":
-        deadline_local = local.replace(hour=7, minute=30)
+        # OPS-FULL-BATCH-SAFE-START-RECOVERY: full's nominal is 06:30 JST and
+        # the next production mutator nominal is intraday's 12:30 JST. The
+        # admission deadline is set to 12:00 JST — 30 minutes ahead of that
+        # next nominal, matching the update-data 08:30-nominal deadline rule
+        # (deadline = next mutator nominal - update-data's own 30-minute
+        # timeout-minutes). mutation_admission applies its own independent
+        # 5-minute MARGIN_MINUTES on top of this, so the effective mutation
+        # deadline is 11:55 JST; MARGIN_MINUTES is unchanged by this policy.
+        # This absorbs observed GitHub-hosted scheduler start delay (up to
+        # ~330 minutes past nominal has been observed) without weakening
+        # fail-closed admission: duplicate election, next-nominal crossing
+        # detection, and the shared mutation lock remain untouched.
+        deadline_local = local.replace(hour=12, minute=0)
     elif workflow == "intraday":
         deadline_local = local.replace(hour=20, minute=0)
     elif workflow == "update" and (local.hour, local.minute) == (8, 30):
