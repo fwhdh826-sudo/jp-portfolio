@@ -82,7 +82,11 @@ export interface CandidateFunnelPresentationInput {
   status: 'loaded' | 'unavailable' | 'invalid' | undefined
   /** state.candidateFunnel（parser を通過した artifact のみ） */
   artifact: CandidateFunnelArtifact | null
-  /** state.system.dataTimestamps?.candidateFunnel（整合性チェック用。省略可） */
+  /**
+   * state.system.dataTimestamps?.candidateFunnel。runtime store は artifact と
+   * atomic に publish するため、available と判定するには valid な timestamp が
+   * 存在し _meta.generatedAt と一致することが必須（P2-2 fail-closed）。
+   */
   generatedAtTimestamp: string | null | undefined
 }
 
@@ -123,7 +127,20 @@ export function evaluateCandidateFunnelPresentationState(
   // defense-in-depth: parser は status!=='generated' と _meta 欠落を既に
   // reject しているが、手組みの state でも壊れないようにここでも確認する。
   if (artifact.status !== 'generated' || meta == null) return PRESENTATION_INVALID
-  if (generatedAtTimestamp != null && generatedAtTimestamp !== meta.generatedAt) {
+
+  // ── P5-B005-B3-C-V2-R2 P2-2: runtime store は candidateFunnel artifact /
+  //    load status / data timestamp を atomic に publish する
+  //    （useAppStore.ts。dataTimestamps.candidateFunnel = data._meta.generatedAt）。
+  //    したがって status='loaded' かつ valid artifact なのに coherent な
+  //    generatedAt timestamp を伴わない state は正当な runtime 状態ではない。
+  //    timestamp が有効な値であり、かつ既存の canonical 比較（strict 一致）で
+  //    artifact._meta.generatedAt と一致することを require し、そうでなければ
+  //    fail-closed で invalid にする（boot 順の例外は設けない）。
+  if (
+    typeof generatedAtTimestamp !== 'string' ||
+    Number.isNaN(Date.parse(generatedAtTimestamp)) ||
+    generatedAtTimestamp !== meta.generatedAt
+  ) {
     return PRESENTATION_INVALID
   }
 

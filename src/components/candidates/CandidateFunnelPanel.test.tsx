@@ -712,7 +712,7 @@ describe('P5-B005-B3-C-V2-R1 FIX B/C/D — provenance, degradation, and exclusio
       byReason: { HARD_NOT_PRIME_DOMESTIC: 1, HARD_NO_TRADABLE_SERIES: 1 },
     }
     const html = renderPanel(data, 'fresh')
-    expect(html).toContain('除外の内訳（2件）')
+    expect(html).toContain('除外候補の診断（2銘柄）')
     expect(html).toContain('プライム市場の国内株ではありません')
     expect(html).toContain('取引可能な価格系列がありません')
     expect(html).toContain('リスク要因）とは異なります')
@@ -721,7 +721,35 @@ describe('P5-B005-B3-C-V2-R1 FIX B/C/D — provenance, degradation, and exclusio
 
   it('FIX D: no excluded-diagnostics surface when excludedSummary.total is 0', () => {
     const html = renderPanel(artifact(), 'fresh')
+    expect(html).not.toContain('除外候補の診断')
     expect(html).not.toContain('除外の内訳')
+  })
+
+  // P5-B005-B3-C-V2-R2 P2-3: excludedSummary.total は除外「銘柄」数、byReason は
+  // 除外「理由」の出現回数。1銘柄が複数の hardExclusionReasons を持ち得るため
+  // 理由行の合計は除外銘柄数を上回り得る。UI はこの重複を明示し、合計が
+  // 銘柄数と一致すべきと示唆してはならない。
+  it('P2-3: one excluded candidate with two hard reasons — shows 1 candidate, both reason counts, and an explicit overlap explanation', () => {
+    const data = artifact()
+    data.excludedSummary = {
+      total: 1,
+      byReason: { HARD_NOT_PRIME_DOMESTIC: 1, HARD_NO_TRADABLE_SERIES: 1 },
+    }
+    const html = renderPanel(data, 'fresh')
+
+    // 除外「銘柄」数は 1
+    expect(html).toContain('除外候補の診断（1銘柄）')
+    // 理由行は両方表示され、それぞれ 1件
+    expect(html).toContain('プライム市場の国内株ではありません')
+    expect(html).toContain('取引可能な価格系列がありません')
+    expect(html.match(/<dd>1件<\/dd>/g)).toHaveLength(2)
+    // 重複の明示的な説明（合計が銘柄数を上回り得る）
+    expect(html).toContain('1銘柄に複数の除外理由が付くことがあるため')
+    expect(html).toContain('除外銘柄数（1銘柄）を上回る場合があります')
+    // 相互排他な分割を示唆する「内訳」を使わない
+    expect(html).not.toContain('内訳')
+    // 合計が 2 であるべきと示唆しない
+    expect(html).not.toContain('除外候補の診断（2銘柄）')
   })
 })
 

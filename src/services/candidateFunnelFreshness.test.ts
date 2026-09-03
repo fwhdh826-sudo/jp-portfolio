@@ -191,6 +191,96 @@ describe('evaluateCandidateFunnelPresentationState (FIX B — orthogonal provena
   })
 })
 
+// ── P5-B005-B3-C-V2-R2 P2-2: runtime store は artifact / load status /
+//    data timestamp を atomic に publish する。したがって status='loaded' かつ
+//    valid artifact なのに coherent な generatedAt timestamp を伴わない state は
+//    正当ではなく、fail-closed で invalid にする。
+describe('evaluateCandidateFunnelPresentationState (P2-2 — timestamp fail-closed)', () => {
+  it('loaded + valid artifact + matching timestamp → available', () => {
+    const artifact = presentationArtifact()
+    const s = evaluateCandidateFunnelPresentationState(
+      { status: 'loaded', artifact, generatedAtTimestamp: artifact._meta.generatedAt },
+      NOW_MS,
+    )
+    expect(s.availability).toBe('available')
+    expect(s.canDisplayCandidates).toBe(true)
+  })
+
+  it('loaded + valid artifact + null timestamp → invalid', () => {
+    const artifact = presentationArtifact()
+    const s = evaluateCandidateFunnelPresentationState(
+      { status: 'loaded', artifact, generatedAtTimestamp: null },
+      NOW_MS,
+    )
+    expect(s.availability).toBe('invalid')
+    expect(s.canDisplayCandidates).toBe(false)
+  })
+
+  it('loaded + valid artifact + undefined timestamp → invalid', () => {
+    const artifact = presentationArtifact()
+    const s = evaluateCandidateFunnelPresentationState(
+      { status: 'loaded', artifact, generatedAtTimestamp: undefined },
+      NOW_MS,
+    )
+    expect(s.availability).toBe('invalid')
+  })
+
+  it('loaded + valid artifact + malformed timestamp → invalid', () => {
+    const artifact = presentationArtifact()
+    const s = evaluateCandidateFunnelPresentationState(
+      { status: 'loaded', artifact, generatedAtTimestamp: 'not-a-timestamp' },
+      NOW_MS,
+    )
+    expect(s.availability).toBe('invalid')
+  })
+
+  it('loaded + valid artifact + mismatching (but valid) timestamp → invalid', () => {
+    const artifact = presentationArtifact()
+    const s = evaluateCandidateFunnelPresentationState(
+      { status: 'loaded', artifact, generatedAtTimestamp: '2020-01-01T00:00:00.000Z' },
+      NOW_MS,
+    )
+    expect(s.availability).toBe('invalid')
+  })
+
+  it('loaded + null artifact → invalid regardless of timestamp', () => {
+    expect(
+      evaluateCandidateFunnelPresentationState(
+        { status: 'loaded', artifact: null, generatedAtTimestamp: null },
+        NOW_MS,
+      ).availability,
+    ).toBe('invalid')
+    expect(
+      evaluateCandidateFunnelPresentationState(
+        { status: 'loaded', artifact: null, generatedAtTimestamp: '2026-07-26T07:11:40.540Z' },
+        NOW_MS,
+      ).availability,
+    ).toBe('invalid')
+  })
+
+  it('no boot-order exception: a matching timestamp is required even for a fallback/stale artifact', () => {
+    const stale = evaluateCandidateFunnelPresentationState(
+      {
+        status: 'loaded',
+        artifact: presentationArtifact(a => { a.selectionObservability.sourceStale = true }),
+        generatedAtTimestamp: null,
+      },
+      Number.NaN,
+    )
+    expect(stale.availability).toBe('invalid')
+
+    const fallback = evaluateCandidateFunnelPresentationState(
+      {
+        status: 'loaded',
+        artifact: presentationArtifact(a => { a._meta.pipelinePath = 'cache_fallback' }),
+        generatedAtTimestamp: undefined,
+      },
+      NOW_MS,
+    )
+    expect(fallback.availability).toBe('invalid')
+  })
+})
+
 describe('isCandidateFunnelRawAvailable (FIX F helper)', () => {
   it('true for a fresh generated artifact', () => {
     expect(isCandidateFunnelRawAvailable(stateInput(presentationArtifact()))).toBe(true)
@@ -204,5 +294,31 @@ describe('isCandidateFunnelRawAvailable (FIX F helper)', () => {
     expect(isCandidateFunnelRawAvailable({ status: 'unavailable', artifact: null, generatedAtTimestamp: null })).toBe(false)
     expect(isCandidateFunnelRawAvailable({ status: 'invalid', artifact: null, generatedAtTimestamp: null })).toBe(false)
     expect(isCandidateFunnelRawAvailable(stateInput(presentationArtifact(a => { a.status = 'not_generated' })))).toBe(false)
+  })
+
+  // P2-2: freshness は raw availability を決めない — 一致した timestamp があれば
+  // fresh でも stale でも fallback でも true、timestamp が欠落/不正/不一致なら false。
+  it.each([
+    ['matching timestamp', (a: CandidateFunnelArtifact) => a._meta.generatedAt as string | null | undefined, true],
+    ['null timestamp', () => null, false],
+    ['undefined timestamp', () => undefined, false],
+    ['malformed timestamp', () => 'nope', false],
+    ['mismatching timestamp', () => '2020-01-01T00:00:00.000Z', false],
+  ] as const)('%s → %s', (_label, pick, expected) => {
+    const artifact = presentationArtifact()
+    expect(
+      isCandidateFunnelRawAvailable({
+        status: 'loaded',
+        artifact,
+        generatedAtTimestamp: pick(artifact),
+      }),
+    ).toBe(expected)
+  })
+
+  it('stale-but-otherwise-valid and fallback-but-otherwise-valid remain raw-available (age/provenance do not gate)', () => {
+    const stale = presentationArtifact(a => { a.selectionObservability.sourceStale = true })
+    expect(isCandidateFunnelRawAvailable({ status: 'loaded', artifact: stale, generatedAtTimestamp: stale._meta.generatedAt })).toBe(true)
+    const fallback = presentationArtifact(a => { a._meta.pipelinePath = 'cache_fallback' })
+    expect(isCandidateFunnelRawAvailable({ status: 'loaded', artifact: fallback, generatedAtTimestamp: fallback._meta.generatedAt })).toBe(true)
   })
 })

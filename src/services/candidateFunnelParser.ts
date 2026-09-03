@@ -136,15 +136,27 @@ function isEnumValue<T extends readonly string[]>(value: unknown, allowed: T): v
   return typeof value === 'string' && (allowed as readonly string[]).includes(value)
 }
 
-// dataset-level degradationReasons は engine の frozen 出力では
-// "CODE: human-readable detail" 形式（data/candidate_funnel_engine.py。
-// tests/test_candidate_funnel_engine.py が literal を凍結）。先頭 token
-// （':' か空白まで）が既知の degradation code であることのみ要求する。
-// 未知 code / 非文字列は従来どおり fail-closed で reject する。
-function hasKnownDegradationReasonCode(value: unknown): boolean {
-  if (typeof value !== 'string' || value.length === 0) return false
-  const code = value.split(/[:\s]/, 1)[0]
-  return (CANDIDATE_FUNNEL_DEGRADATION_REASON_CODES as readonly string[]).includes(code)
+// ── P5-B005-B3-C-V2-R2 P2-1: published degradationReasons の exact producer
+//    contract。production backend authority（data/candidate_funnel_engine.py
+//    _build_degradation_reasons / _not_generated_result）が emit する形式は
+//    常に "<known code>: <non-empty detail>" のみで、bare code や
+//    区切りなしの suffix は emit されない。frontend parser は producer 出力に
+//    一致させ、producer 権限を広げない:
+//      * 文字列であること
+//      * 最初の ':' より前が CANDIDATE_FUNNEL_DEGRADATION_REASON_CODES の
+//        いずれかと完全一致すること（prefix 一致では不可）
+//      * ':' が必須
+//      * ':' 以降に非空白の detail が存在すること
+//    未知 code / colon 無し / detail 空 / 非文字列は fail-closed で reject。
+function isPublishedDegradationReason(value: unknown): boolean {
+  if (typeof value !== 'string') return false
+  const colonIndex = value.indexOf(':')
+  if (colonIndex === -1) return false
+  const code = value.slice(0, colonIndex)
+  if (!(CANDIDATE_FUNNEL_DEGRADATION_REASON_CODES as readonly string[]).includes(code)) {
+    return false
+  }
+  return value.slice(colonIndex + 1).trim().length > 0
 }
 
 function isJsonValue(value: unknown, seen: Set<unknown> = new Set()): value is JsonValue {
@@ -366,7 +378,7 @@ function doParse(input: unknown): CandidateFunnelParseResult {
   //    not_generated という load 状態を作らない）。 ────────────────────
   if (input.status !== 'generated') return fail('unpublished_status')
   if (!isStringArray(input.degradationReasons)) return fail('invalid_status')
-  if (!input.degradationReasons.every(hasKnownDegradationReasonCode)) {
+  if (!input.degradationReasons.every(isPublishedDegradationReason)) {
     return fail('invalid_status')
   }
 

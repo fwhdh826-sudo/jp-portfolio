@@ -592,6 +592,12 @@
   overflow-wrap: anywhere;
 }
 
+/* P2-3: 除外銘柄数と理由別件数の重複を説明する先頭注記。summary 直下に
+   置くため上側にも余白を持たせる。 */
+.candidate-funnel__excluded-note--lead {
+  padding-top: var(--space-2);
+}
+
 .candidate-funnel__excluded-details summary:focus-visible {
   outline: 3px solid var(--color-primary);
   outline-offset: 2px;

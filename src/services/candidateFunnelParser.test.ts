@@ -319,35 +319,62 @@ describe('P5-B005-B3-C-V2-R1 FIX E — final published tier contract (eligible r
   })
 })
 
-describe('parseCandidateFunnelArtifact — dataset degradationReasons (engine "CODE: detail" contract)', () => {
-  it('accepts the frozen engine format "CODE: human-readable detail"', () => {
+describe('P5-B005-B3-C-V2-R2 P2-1 — degradationReasons exact producer contract', () => {
+  // production backend authority（data/candidate_funnel_engine.py）は
+  // "<known code>: <non-empty detail>" のみを emit する。frontend parser は
+  // その形式に一致させ、bare code / colon 無し / 空 detail / 未知 code を
+  // fail-closed で reject する（producer 権限を広げない）。
+  function withReasons(reasons: unknown): ReturnType<typeof buildValidCandidateFunnelArtifact> {
     const artifact = buildValidCandidateFunnelArtifact()
-    artifact.degradationReasons = [
-      'CACHE_FALLBACK_PROVENANCE: pipelinePath=cache_fallback',
-      'DUPLICATE_CANDIDATE_CODE: 1 duplicate code(s), 2 record(s) excluded',
-    ]
-    expect(parseCandidateFunnelArtifact(artifact).ok).toBe(true)
+    ;(artifact as { degradationReasons: unknown }).degradationReasons = reasons
+    return artifact
+  }
+
+  it('accepts [] (no degradation)', () => {
+    expect(parseCandidateFunnelArtifact(withReasons([])).ok).toBe(true)
   })
 
-  it('accepts a bare degradation code', () => {
-    const artifact = buildValidCandidateFunnelArtifact()
-    artifact.degradationReasons = ['STALE_SOURCE']
-    expect(parseCandidateFunnelArtifact(artifact).ok).toBe(true)
+  it('accepts the frozen engine format "<code>: human-readable detail"', () => {
+    expect(
+      parseCandidateFunnelArtifact(
+        withReasons([
+          'STALE_SOURCE: source age exceeded threshold',
+          'CACHE_FALLBACK_PROVENANCE: pipelinePath=cache_fallback',
+          'DUPLICATE_CANDIDATE_CODE: 1 duplicate code(s), 2 record(s) excluded',
+        ]),
+      ).ok,
+    ).toBe(true)
   })
 
-  it('still rejects an unknown degradation code (fail-closed)', () => {
-    const artifact = buildValidCandidateFunnelArtifact()
-    artifact.degradationReasons = ['MADE_UP_REASON: whatever']
-    const result = parseCandidateFunnelArtifact(artifact)
+  it.each([
+    ['bare known code, no colon', 'STALE_SOURCE'],
+    ['known code + colon, empty detail', 'STALE_SOURCE:'],
+    ['known code + colon, whitespace-only detail', 'STALE_SOURCE:    '],
+    ['known code + space-separated suffix (no colon)', 'STALE_SOURCE EVIL'],
+    ['unknown code with colon + detail', 'UNKNOWN_CODE: detail'],
+    ['known-code prefix but different token', 'STALE_SOURCE_EVIL: detail'],
+    ['known-code prefix, no colon', 'STALE_SOURCE_EVIL'],
+    ['empty string', ''],
+  ])('rejects %s (fail-closed as invalid_status)', (_label, entry) => {
+    const result = parseCandidateFunnelArtifact(withReasons([entry]))
     expect(result.ok).toBe(false)
     if (result.ok) throw new Error('unreachable')
     expect(result.code).toBe('invalid_status')
   })
 
-  it('still rejects a non-string degradationReasons entry', () => {
-    const artifact = buildValidCandidateFunnelArtifact() as { degradationReasons: unknown[] }
-    artifact.degradationReasons = [{ code: 'STALE_SOURCE' }]
-    expect(parseCandidateFunnelArtifact(artifact).ok).toBe(false)
+  it('rejects a non-string degradationReasons entry', () => {
+    expect(parseCandidateFunnelArtifact(withReasons([{ code: 'STALE_SOURCE' }])).ok).toBe(false)
+    expect(parseCandidateFunnelArtifact(withReasons([123])).ok).toBe(false)
+    expect(parseCandidateFunnelArtifact(withReasons([null])).ok).toBe(false)
+  })
+
+  it('rejects the whole list if any single entry violates the contract', () => {
+    const result = parseCandidateFunnelArtifact(
+      withReasons(['STALE_SOURCE: valid detail', 'STALE_SOURCE']),
+    )
+    expect(result.ok).toBe(false)
+    if (result.ok) throw new Error('unreachable')
+    expect(result.code).toBe('invalid_status')
   })
 })
 

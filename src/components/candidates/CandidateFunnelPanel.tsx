@@ -392,8 +392,15 @@ export function CandidateFunnelPanelView({
 
           {excludedSummary !== null && excludedSummary.total > 0 && (
             <details className="candidate-funnel__excluded-details">
-              <summary>除外の内訳（{excludedSummary.total}件）</summary>
-              <dl>
+              <summary>除外候補の診断（{excludedSummary.total}銘柄）</summary>
+              {/* P5-B005-B3-C-V2-R2 P2-3: excludedSummary.total は除外「銘柄」数、
+                  byReason は除外「理由」の出現回数。1銘柄に複数の hard 除外理由が
+                  付き得るため、理由別件数の合計は除外銘柄数を上回る場合がある。
+                  「内訳」という語は相互排他な分割を強く示唆するため避ける。 */}
+              <p className="candidate-funnel__excluded-note candidate-funnel__excluded-note--lead">
+                1銘柄に複数の除外理由が付くことがあるため、理由別の件数の合計は除外銘柄数（{excludedSummary.total}銘柄）を上回る場合があります。
+              </p>
+              <dl aria-label="除外理由別の件数">
                 {Object.entries(excludedSummary.byReason).map(([code, count]) => (
                   <div key={code}>
                     <dt>{formatCandidateHardExclusionReason(code)}</dt>
