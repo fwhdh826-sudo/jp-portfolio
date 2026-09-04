@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-09-04T08:24:45.123138+09:00",
-  "sourceUpdatedAt": "2026-09-03T23:01:00+00:00",
+  "updatedAt": "2026-09-04T10:08:23.796488+09:00",
+  "sourceUpdatedAt": "2026-09-04T00:42:23+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -9,24 +9,22 @@
       "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 2,
-      "sourceCount": 3,
+      "sourceCount": 2,
       "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "BOJ Data Suggest No Intervention While Officials Vow to Fight On",
-      "topPositiveTitle": "Yen Rises as Intervention, BOJ Rate Hike Risks Jolt Traders",
+      "topNegativeTitle": "Nomura's Goto Sees Further BOJ Rate Hikes as 'Possible'",
+      "topPositiveTitle": "Yen Rises as Intervention Risks, BOJ Hike Bets Jolt Traders",
       "items": [
         {
-          "title": "BOJ Data Suggest No Intervention While Officials Vow to Fight On",
-          "source": "Bloomberg Economics",
+          "title": "Nomura's Goto Sees Further BOJ Rate Hikes as 'Possible'",
+          "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-09-03T09:26:07+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-03/boj-accounts-suggest-no-major-yen-intervention-on-wednesday",
+          "publishedAt": "2026-09-04T00:41:39+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-04/nomura-s-goto-sees-further-boj-rate-hikes-as-possible-video",
           "tags": [
-            "fx",
             "jp_broad",
-            "market",
-            "rates"
+            "market"
           ]
         },
         {
@@ -43,7 +41,7 @@
           "titleJa": "片山財務相「米財務長官に問いただされたことない」日銀めぐり"
         },
         {
-          "title": "Yen Rises as Intervention, BOJ Rate Hike Risks Jolt Traders",
+          "title": "Yen Rises as Intervention Risks, BOJ Hike Bets Jolt Traders",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.2,
@@ -52,44 +50,74 @@
           "tags": [
             "fx",
             "jp_broad",
-            "market",
-            "rates"
+            "market"
           ]
         }
       ]
     },
     "jp_semiconductor": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "us_broad": {
-      "avgSentiment": 0.228,
-      "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 3,
-      "sourceCount": 2,
-      "itemCount": 5,
-      "isStale": false,
-      "topNegativeTitle": "S&P 500 Notches Best Day in Month as Traders Pare Rate-Hike Bets",
-      "topPositiveTitle": "Stocks Climb as Fed-Hike Wagers Ease on Waller: Markets Wrap",
+      "topNegativeTitle": "Trump Mulls More Chip Tariffs, Traders on Yen Intervention Watch | The Asia Trade 9/3/2026",
+      "topPositiveTitle": "Trump Mulls More Chip Tariffs, Traders on Yen Intervention Watch | The Asia Trade 9/3/2026",
       "items": [
         {
-          "title": "S&P 500 Notches Best Day in Month as Traders Pare Rate-Hike Bets",
+          "title": "Trump Mulls More Chip Tariffs, Traders on Yen Intervention Watch | The Asia Trade 9/3/2026",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-03T12:50:32+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-03/us-stock-futures-rise-as-traders-parse-fedspeak-earnings",
+          "publishedAt": "2026-09-03T05:14:00+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-03/the-asia-trade-9-3-2026-video",
           "tags": [
+            "fx",
+            "global_broad",
+            "jp_semiconductor",
+            "market"
+          ]
+        }
+      ]
+    },
+    "us_broad": {
+      "avgSentiment": 0.128,
+      "negativeCount": 2,
+      "positiveCount": 3,
+      "neutralCount": 1,
+      "sourceCount": 2,
+      "itemCount": 6,
+      "isStale": false,
+      "topNegativeTitle": "US Dollar Slumps to Start September as Yen Surges on Rate Bets",
+      "topPositiveTitle": "Stocks Climb as Fed-Hike Wagers Ease on Waller: Markets Wrap",
+      "items": [
+        {
+          "title": "US Dollar Slumps to Start September as Yen Surges on Rate Bets",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-04T00:29:47+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-04/us-dollar-slumps-to-start-september-as-yen-surges-on-rate-bets",
+          "tags": [
+            "fx",
             "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Gold to End Volatile Week Higher as Fedspeak Trims Rate-Hike Bet",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-04T00:27:29+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-04/gold-to-end-volatile-week-higher-as-fedspeak-trims-rate-hike-bet",
+          "tags": [
+            "gold",
+            "market",
+            "rates",
             "us_broad"
           ]
         },
@@ -101,21 +129,6 @@
           "publishedAt": "2026-09-03T12:30:00+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-03/fed-s-waller-says-september-rate-decision-hinges-on-august-cpi",
           "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Asia Stocks to Gain as Fed Bets Cool, Dollar Drops: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.14,
-          "publishedAt": "2026-09-03T22:14:26+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-03/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "fx",
             "market",
             "rates",
             "us_broad"
@@ -135,13 +148,14 @@
           ]
         },
         {
-          "title": "Stocks Climb as Fed-Hike Wagers Ease on Waller: Markets Wrap",
+          "title": "Asian Stocks Climb as Fed Bets Cool, Yen Gains: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-09-02T22:08:10+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-02/stock-market-today-dow-s-p-live-updates",
+          "sentimentScore": 0.43,
+          "publishedAt": "2026-09-03T22:14:26+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-03/stock-market-today-dow-s-p-live-updates",
           "tags": [
+            "fx",
             "market",
             "rates",
             "us_broad"
@@ -157,11 +171,11 @@
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Anthropic Nears Finalizing $15 Billion Pre-IPO Credit Facility",
-      "topPositiveTitle": "Anthropic Nears Finalizing $15 Billion Pre-IPO Credit Facility",
+      "topNegativeTitle": "Anthropic Finalizing $15 Billion Pre-IPO Credit Facility",
+      "topPositiveTitle": "Anthropic Finalizing $15 Billion Pre-IPO Credit Facility",
       "items": [
         {
-          "title": "Anthropic Nears Finalizing $15 Billion Pre-IPO Credit Facility",
+          "title": "Anthropic Finalizing $15 Billion Pre-IPO Credit Facility",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
@@ -175,27 +189,56 @@
       ]
     },
     "global_broad": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "gold": {
-      "avgSentiment": -1.0,
+      "avgSentiment": -0.165,
       "negativeCount": 1,
       "positiveCount": 0,
-      "neutralCount": 0,
+      "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 1,
+      "itemCount": 2,
+      "isStale": false,
+      "topNegativeTitle": "US, Iran Escalate Attacks; Global Bond Selloff Deepens | The Asia Trade 9/2/2026",
+      "topPositiveTitle": "Trump Mulls More Chip Tariffs, Traders on Yen Intervention Watch | The Asia Trade 9/3/2026",
+      "items": [
+        {
+          "title": "US, Iran Escalate Attacks; Global Bond Selloff Deepens | The Asia Trade 9/2/2026",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-02T05:25:56+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-02/the-asia-trade-9-2-2026-video",
+          "tags": [
+            "geopolitical",
+            "global_broad",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Trump Mulls More Chip Tariffs, Traders on Yen Intervention Watch | The Asia Trade 9/3/2026",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-03T05:14:00+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-03/the-asia-trade-9-3-2026-video",
+          "tags": [
+            "fx",
+            "global_broad",
+            "jp_semiconductor",
+            "market"
+          ]
+        }
+      ]
+    },
+    "gold": {
+      "avgSentiment": -0.665,
+      "negativeCount": 2,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 2,
+      "itemCount": 2,
       "isStale": false,
       "topNegativeTitle": "US Share of Canada’s Exports Drops to 66%, Lowest Outside Pandemic",
-      "topPositiveTitle": "US Share of Canada’s Exports Drops to 66%, Lowest Outside Pandemic",
+      "topPositiveTitle": "Gold to End Volatile Week Higher as Fedspeak Trims Rate-Hike Bet",
       "items": [
         {
           "title": "US Share of Canada’s Exports Drops to 66%, Lowest Outside Pandemic",
@@ -208,6 +251,20 @@
             "commodity",
             "gold",
             "market"
+          ]
+        },
+        {
+          "title": "Gold to End Volatile Week Higher as Fedspeak Trims Rate-Hike Bet",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-04T00:27:29+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-04/gold-to-end-volatile-week-higher-as-fedspeak-trims-rate-hike-bet",
+          "tags": [
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
           ]
         }
       ]
@@ -250,16 +307,30 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.11,
-      "negativeCount": 0,
-      "positiveCount": 1,
+      "avgSentiment": -0.11,
+      "negativeCount": 1,
+      "positiveCount": 0,
       "neutralCount": 2,
       "sourceCount": 2,
       "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "South Africa’s Kganyago Sees Room for Caution on Rate Moves",
-      "topPositiveTitle": "Australia’s Battered Bonds Have Reasons to Rebound, Funds Say",
+      "topNegativeTitle": "US, Iran Escalate Attacks; Global Bond Selloff Deepens | The Asia Trade 9/2/2026",
+      "topPositiveTitle": "South Africa’s Kganyago Sees Room for Caution on Rate Moves",
       "items": [
+        {
+          "title": "US, Iran Escalate Attacks; Global Bond Selloff Deepens | The Asia Trade 9/2/2026",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-02T05:25:56+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-02/the-asia-trade-9-2-2026-video",
+          "tags": [
+            "geopolitical",
+            "global_broad",
+            "macro_risk",
+            "market"
+          ]
+        },
         {
           "title": "South Africa’s Kganyago Sees Room for Caution on Rate Moves",
           "source": "Bloomberg Economics",
@@ -285,56 +356,28 @@
             "macro_risk",
             "market"
           ]
-        },
-        {
-          "title": "Australia’s Battered Bonds Have Reasons to Rebound, Funds Say",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-03T21:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-03/australia-s-battered-bonds-have-reasons-to-rebound-funds-say",
-          "tags": [
-            "macro_risk",
-            "market",
-            "rates"
-          ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": 0.202,
+      "avgSentiment": 0.272,
       "negativeCount": 1,
-      "positiveCount": 2,
+      "positiveCount": 3,
       "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "BOJ Data Suggest No Intervention While Officials Vow to Fight On",
-      "topPositiveTitle": "UBS's Panseri on Global Bond Yields, ECB Hike Expectations",
+      "topNegativeTitle": "US Dollar Slumps to Start September as Yen Surges on Rate Bets",
+      "topPositiveTitle": "Yen’s $103 Billion Short Risks Unwind Below 155, JPMorgan Says",
       "items": [
         {
-          "title": "BOJ Data Suggest No Intervention While Officials Vow to Fight On",
-          "source": "Bloomberg Economics",
+          "title": "US Dollar Slumps to Start September as Yen Surges on Rate Bets",
+          "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-09-03T09:26:07+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-03/boj-accounts-suggest-no-major-yen-intervention-on-wednesday",
+          "publishedAt": "2026-09-04T00:29:47+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-04/us-dollar-slumps-to-start-september-as-yen-surges-on-rate-bets",
           "tags": [
-            "fx",
-            "jp_broad",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Asia Stocks to Gain as Fed Bets Cool, Dollar Drops: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.14,
-          "publishedAt": "2026-09-03T22:14:26+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-03/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
             "fx",
             "market",
             "rates",
@@ -342,7 +385,21 @@
           ]
         },
         {
-          "title": "Yen Rises as Intervention, BOJ Rate Hike Risks Jolt Traders",
+          "title": "Trump Mulls More Chip Tariffs, Traders on Yen Intervention Watch | The Asia Trade 9/3/2026",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-03T05:14:00+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-03/the-asia-trade-9-3-2026-video",
+          "tags": [
+            "fx",
+            "global_broad",
+            "jp_semiconductor",
+            "market"
+          ]
+        },
+        {
+          "title": "Yen Rises as Intervention Risks, BOJ Hike Bets Jolt Traders",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.2,
@@ -351,8 +408,7 @@
           "tags": [
             "fx",
             "jp_broad",
-            "market",
-            "rates"
+            "market"
           ]
         },
         {
@@ -369,55 +425,58 @@
           ]
         },
         {
-          "title": "UBS's Panseri on Global Bond Yields, ECB Hike Expectations",
+          "title": "Asian Stocks Climb as Fed Bets Cool, Yen Gains: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-09-03T19:56:57+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-03/panseri-on-global-bond-yields-ecb-hike-expectations-video",
+          "sentimentScore": 0.43,
+          "publishedAt": "2026-09-03T22:14:26+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-03/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "fx",
             "market",
-            "rates"
+            "rates",
+            "us_broad"
           ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": 0.187,
-      "negativeCount": 1,
-      "positiveCount": 3,
-      "neutralCount": 5,
+      "avgSentiment": 0.073,
+      "negativeCount": 2,
+      "positiveCount": 2,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 9,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "BOJ Data Suggest No Intervention While Officials Vow to Fight On",
-      "topPositiveTitle": "UBS's Panseri on Global Bond Yields, ECB Hike Expectations",
+      "topNegativeTitle": "US Dollar Slumps to Start September as Yen Surges on Rate Bets",
+      "topPositiveTitle": "Stocks Climb as Fed-Hike Wagers Ease on Waller: Markets Wrap",
       "items": [
         {
-          "title": "BOJ Data Suggest No Intervention While Officials Vow to Fight On",
-          "source": "Bloomberg Economics",
+          "title": "US Dollar Slumps to Start September as Yen Surges on Rate Bets",
+          "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-09-03T09:26:07+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-03/boj-accounts-suggest-no-major-yen-intervention-on-wednesday",
+          "publishedAt": "2026-09-04T00:29:47+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-04/us-dollar-slumps-to-start-september-as-yen-surges-on-rate-bets",
           "tags": [
             "fx",
-            "jp_broad",
             "market",
-            "rates"
+            "rates",
+            "us_broad"
           ]
         },
         {
-          "title": "Bessent 'Wants To Win', Drive Yields Lower: Brill",
+          "title": "Gold to End Volatile Week Higher as Fedspeak Trims Rate-Hike Bet",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-03T20:14:02+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-03/bessent-wants-to-win-drive-yields-lower-brill-video",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-04T00:27:29+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-04/gold-to-end-volatile-week-higher-as-fedspeak-trims-rate-hike-bet",
           "tags": [
+            "gold",
             "market",
-            "rates"
+            "rates",
+            "us_broad"
           ]
         },
         {
@@ -446,14 +505,13 @@
           ]
         },
         {
-          "title": "Asia Stocks to Gain as Fed Bets Cool, Dollar Drops: Markets Wrap",
+          "title": "Asian Stocks Climb as Fed Bets Cool, Yen Gains: Markets Wrap",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.14,
+          "sentiment": "positive",
+          "sentimentScore": 0.43,
           "publishedAt": "2026-09-03T22:14:26+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-03/stock-market-today-dow-s-p-live-updates",
           "tags": [
-            "commodity",
             "fx",
             "market",
             "rates",
@@ -463,16 +521,28 @@
       ]
     },
     "commodity": {
-      "avgSentiment": -0.106,
-      "negativeCount": 1,
+      "avgSentiment": -0.417,
+      "negativeCount": 2,
       "positiveCount": 1,
-      "neutralCount": 3,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "US Share of Canada’s Exports Drops to 66%, Lowest Outside Pandemic",
+      "topNegativeTitle": "Malaysian Palm Oil Exports Fell in August on Weak Indian Demand",
       "topPositiveTitle": "Latest Oil Market News and Analysis for Sept. 4",
       "items": [
+        {
+          "title": "Malaysian Palm Oil Exports Fell in August on Weak Indian Demand",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-09-04T00:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-04/malaysian-palm-oil-exports-fell-in-august-on-weak-indian-demand",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
         {
           "title": "US Share of Canada’s Exports Drops to 66%, Lowest Outside Pandemic",
           "source": "Bloomberg Economics",
@@ -483,18 +553,6 @@
           "tags": [
             "commodity",
             "gold",
-            "market"
-          ]
-        },
-        {
-          "title": "The Hottest New Trade Is Your Own Electricity",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-03T21:00:05+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-03/the-hottest-new-trade-is-your-own-electricity",
-          "tags": [
-            "commodity",
             "market"
           ]
         },
@@ -513,21 +571,6 @@
           ]
         },
         {
-          "title": "Asia Stocks to Gain as Fed Bets Cool, Dollar Drops: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.14,
-          "publishedAt": "2026-09-03T22:14:26+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-03/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "fx",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
           "title": "Latest Oil Market News and Analysis for Sept. 4",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
@@ -543,16 +586,30 @@
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.11,
-      "negativeCount": 0,
+      "avgSentiment": 0.0,
+      "negativeCount": 1,
       "positiveCount": 1,
       "neutralCount": 2,
       "sourceCount": 3,
-      "itemCount": 3,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "South Africa’s Kganyago Sees Room for Caution on Rate Moves",
+      "topNegativeTitle": "US, Iran Escalate Attacks; Global Bond Selloff Deepens | The Asia Trade 9/2/2026",
       "topPositiveTitle": "Latest Oil Market News and Analysis for Sept. 4",
       "items": [
+        {
+          "title": "US, Iran Escalate Attacks; Global Bond Selloff Deepens | The Asia Trade 9/2/2026",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-02T05:25:56+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-02/the-asia-trade-9-2-2026-video",
+          "tags": [
+            "geopolitical",
+            "global_broad",
+            "macro_risk",
+            "market"
+          ]
+        },
         {
           "title": "South Africa’s Kganyago Sees Room for Caution on Rate Moves",
           "source": "Bloomberg Economics",
