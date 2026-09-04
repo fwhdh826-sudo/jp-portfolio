@@ -808,34 +808,112 @@ def test_funnel_containment_does_not_suppress_unrelated_real_write_gates():
 # ── P5-B005-JPX-UNIVERSE-PRODUCTION-RECOVERY: JPX universe cache persistence ──
 
 _JPX_CACHE_FILE = "data/.jpx_cache/jpx_universe_cache.json"
-_JPX_CACHE_STEP = "Restore JPX universe cache (durable last-good fallback)"
+_JPX_CACHE_RESTORE_STEP = "Restore JPX universe cache (durable last-good fallback)"
+_JPX_CACHE_SAVE_STEP = "Save JPX universe cache (durable last-good fallback)"
+_JPX_CACHE_CHECK_STEP = "Check JPX universe cache is present for save"
+# backward-compat alias: earlier R1 tests referenced this name for the
+# restore step (the only actions/cache step at the time).
+_JPX_CACHE_STEP = _JPX_CACHE_RESTORE_STEP
 
 
-def test_jpx_cache_uses_actions_cache_with_correct_path():
+def _jpx_cache_step_body(section: str, step_name: str) -> str:
+    return section.split(f"- name: {step_name}", 1)[1].split("- name:", 1)[0]
+
+
+def test_jpx_cache_restore_uses_explicit_restore_action_with_correct_path():
+    # P5-B005-R2 BLOCKER D: restore/save must be split into the explicit
+    # actions/cache/restore + actions/cache/save actions, never the combined
+    # actions/cache action (whose post-job save carries an implicit
+    # success()-gated skip — see test_no_combined_actions_cache_regression).
     section = _update_data_section()
-    assert _JPX_CACHE_STEP in section
-    step = section.split(f"- name: {_JPX_CACHE_STEP}", 1)[1].split("- name:", 1)[0]
-    assert "uses: actions/cache@v4" in step
+    assert _JPX_CACHE_RESTORE_STEP in section
+    step = _jpx_cache_step_body(section, _JPX_CACHE_RESTORE_STEP)
+    assert "uses: actions/cache/restore@v4" in step
     assert f"path: {_JPX_CACHE_FILE}" in step
+
+
+def test_jpx_cache_save_uses_explicit_save_action_with_correct_path_and_key():
+    section = _update_data_section()
+    assert _JPX_CACHE_SAVE_STEP in section
+    step = _jpx_cache_step_body(section, _JPX_CACHE_SAVE_STEP)
+    assert "uses: actions/cache/save@v4" in step
+    assert f"path: {_JPX_CACHE_FILE}" in step
+    # same rotating primary key as the restore step — never the restored
+    # (stale) key, so a live-refreshed cache always rotates forward (§28).
+    assert "key: jpx-universe-cache-v1-${{ runner.os }}-${{ github.run_id }}" in step
+    # restore-keys is meaningless (and unsupported) for actions/cache/save.
+    assert "restore-keys:" not in step
+
+
+def test_jpx_cache_save_condition_checks_file_presence_not_job_success():
+    # The save step's own `if:` must be a small, local, always()-independent
+    # existence check — never `if: success()` / `if: always()` tied to the
+    # whole job's final outcome. That is exactly the shape that let R1's
+    # combined actions/cache@v4 post-job save get skipped by an unrelated
+    # downstream failure.
+    section = _update_data_section()
+    save_step = _jpx_cache_step_body(section, _JPX_CACHE_SAVE_STEP)
+    assert "if: steps.jpx-cache-check.outputs.cache_exists == 'true'" in save_step
+    assert "success()" not in save_step
+    assert "always()" not in save_step
+
+    check_step = _jpx_cache_step_body(section, _JPX_CACHE_CHECK_STEP)
+    assert "cache_exists" in check_step
+    assert _JPX_CACHE_FILE in check_step
+
+
+def test_no_combined_actions_cache_regression():
+    # Guard against regressing back to the single combined `actions/cache@v4`
+    # step, whose automatic post-job save is skipped whenever any later step
+    # in the job fails (BLOCKER D). Only the explicit restore/save actions
+    # are allowed anywhere in the workflow.
+    for line in _TEXT.splitlines():
+        stripped = line.strip()
+        if stripped.startswith("uses: actions/cache@"):
+            raise AssertionError(f"combined actions/cache action must not be used: {line!r}")
 
 
 def test_jpx_cache_restore_is_after_reanchor():
     section = _update_data_section()
     reanchor_pos = section.index("Re-anchor to latest remote tip")
-    cache_pos = section.index(_JPX_CACHE_STEP)
+    cache_pos = section.index(_JPX_CACHE_RESTORE_STEP)
     assert reanchor_pos < cache_pos, "cache restore must run after the re-anchor gate"
 
 
 def test_jpx_cache_restore_is_before_candidates_provider_execution():
     section = _update_data_section()
-    cache_pos = section.index(_JPX_CACHE_STEP)
+    cache_pos = section.index(_JPX_CACHE_RESTORE_STEP)
     build_pos = section.index("python3 -m data.build_candidates_stocks")
     assert cache_pos < build_pos, "cache restore must run before the whole-market provider"
 
 
+def test_jpx_cache_save_is_after_candidates_stocks_build_and_its_gate():
+    # §25: save must happen only after both the whole-market acquisition
+    # step and its own schema/privacy/provenance/freshness contract gate
+    # have succeeded (sequential step ordering enforces this at runtime).
+    section = _update_data_section()
+    build_pos = section.index("python3 -m data.build_candidates_stocks")
+    gate_pos = section.index("Gate candidates_stocks E2E contract")
+    save_pos = section.index(_JPX_CACHE_SAVE_STEP)
+    assert build_pos < gate_pos < save_pos
+
+
+def test_jpx_cache_save_is_before_candidate_funnel_build_and_terminal_enforcement():
+    # §25/§29: save must run before candidate funnel generation and the
+    # terminal publication enforcement step, so a later funnel failure can
+    # never prevent the JPX cache that was already validated from being
+    # persisted.
+    section = _update_data_section()
+    save_pos = section.index(_JPX_CACHE_SAVE_STEP)
+    funnel_build_pos = section.index("Build candidate_funnel.json")
+    enforce_pos = section.index("Enforce candidate funnel publication status")
+    assert save_pos < funnel_build_pos
+    assert save_pos < enforce_pos
+
+
 def test_jpx_cache_has_versioned_key_and_stable_restore_prefix():
     section = _update_data_section()
-    step = section.split(f"- name: {_JPX_CACHE_STEP}", 1)[1].split("- name:", 1)[0]
+    step = _jpx_cache_step_body(section, _JPX_CACHE_RESTORE_STEP)
     # rotating exact key: schema version + os + per-run uniqueness
     assert "key: jpx-universe-cache-v1-${{ runner.os }}-${{ github.run_id }}" in step
     # stable restore prefix so a later run restores the newest prior cache
@@ -845,10 +923,11 @@ def test_jpx_cache_has_versioned_key_and_stable_restore_prefix():
 
 def test_jpx_cache_scope_is_single_universe_file_not_whole_dir():
     section = _update_data_section()
-    step = section.split(f"- name: {_JPX_CACHE_STEP}", 1)[1].split("- name:", 1)[0]
-    # smallest safe scope: the prescreen cache in the same dir is NOT persisted
-    assert "path: data/.jpx_cache\n" not in step
-    assert "cheap_prescreen_cache" not in step
+    for step_name in (_JPX_CACHE_RESTORE_STEP, _JPX_CACHE_SAVE_STEP):
+        step = _jpx_cache_step_body(section, step_name)
+        # smallest safe scope: the prescreen cache in the same dir is NOT persisted
+        assert "path: data/.jpx_cache\n" not in step
+        assert "cheap_prescreen_cache" not in step
 
 
 def test_jpx_cache_is_never_staged_copied_or_published():

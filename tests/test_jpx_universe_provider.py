@@ -46,9 +46,12 @@ from data.jpx_universe_provider import (
     JPX_ALLOWED_HOST,
     JPX_LISTING_PAGE_URL,
     MARKET_SEGMENT_PRIME_DOMESTIC,
+    MAX_CACHE_AGE_HOURS,
+    MAX_REDIRECTS,
     MIN_ELIGIBLE_COUNT,
     MIN_RAW_ROW_COUNT,
     REQUIRED_COLUMNS,
+    SOURCE_IDENTIFIER,
     UNIVERSE_ID,
     JPXEligibleCountGuardError,
     JPXFetchError,
@@ -59,7 +62,10 @@ from data.jpx_universe_provider import (
     detect_duplicate_codes,
     detect_workbook_format,
     discover_workbook_url,
+    download_workbook,
+    fetch_jpx_workbook_bytes,
     fetch_jpx_xls,
+    fetch_listing_page,
     get_jpx_universe,
     is_preferred_or_class_share,
     load_cache,
@@ -123,6 +129,60 @@ def _bulk_rows(n, market='プライム（内国株式）', start_code=1300):
     合成するためのhelper。get_jpx_universe()をfake fetch/parse経由で通す
     テストは、floor未満だと(意図せず)fallbackへ落ちてしまうため使う。"""
     return [_row(code=float(start_code + i), name=f'銘柄{i}', market=market) for i in range(n)]
+
+
+def _cache_items(n, start_code=1300):
+    """last-good cache用の(code, name, sector)itemsをn件合成する。4桁数字
+    codeはis_preferred_or_class_share()に該当しない（authority validatorの
+    eligibility再チェックを通る）。"""
+    return [[str(start_code + i), f'銘柄{i}', 'sector'] for i in range(n)]
+
+
+def _valid_cache_payload(
+    *,
+    items=None,
+    row_count=None,
+    fetched_at=None,
+    universe_id=UNIVERSE_ID,
+    source='jpx_data_j_xls',
+    segment_counts=None,
+    filters_applied=None,
+    source_as_of='2026-06-30',
+    workbook_format='xlsx',
+):
+    """RESTORED_CACHE_REVALIDATED配下のtestで共有する、_cache_authority_valid()
+    を通る最小限に整合したcache payload builder。個々のtestは差分だけ上書きし、
+    重複コードで整合性を崩さないようにする。"""
+    if items is None:
+        items = _cache_items(MIN_ELIGIBLE_COUNT)
+    if row_count is None:
+        # rawのMIN_RAW_ROW_COUNT floorとeligible(items)件数の両方を満たす。
+        row_count = max(len(items), MIN_RAW_ROW_COUNT)
+    if fetched_at is None:
+        fetched_at = _NOW.isoformat()
+    if segment_counts is None:
+        segment_counts = {MARKET_SEGMENT_PRIME_DOMESTIC: len(items)}
+        other = row_count - len(items)
+        if other > 0:
+            segment_counts['スタンダード（内国株式）'] = other
+    if filters_applied is None:
+        filters_applied = [
+            {'stage': 'source_rows', 'count': row_count},
+            {'stage': 'market_segment_prime_domestic_common_strict_match', 'count': len(items)},
+            {'stage': 'exclude_preferred_or_class_shares_5digit_code', 'count': len(items)},
+        ]
+    return {
+        'schemaKind': 'jpx_universe_cache_v1',
+        'universe_id': universe_id,
+        'items': items,
+        'source': source,
+        'fetched_at': fetched_at,
+        'source_as_of': source_as_of,
+        'row_count': row_count,
+        'segment_counts': segment_counts,
+        'filters_applied': filters_applied,
+        'workbook_format': workbook_format,
+    }
 
 
 # ---------------------------------------------------------------------------
@@ -386,18 +446,14 @@ class TestProvenance:
 # ---------------------------------------------------------------------------
 
 class TestFallbackChain:
-    def _seed_valid_cache(self, cache_path, row_count=2):
-        save_cache({
-            "schemaKind": "jpx_universe_cache_v1",
-            "universe_id": UNIVERSE_ID,
-            "items": [["1301", "極洋", "水産・農林業"], ["166A", "タスキHD", "建設業"]][:row_count],
-            "source": "jpx_data_j_xls",
-            "fetched_at": (_NOW - timedelta(hours=5)).isoformat(),
-            "source_as_of": "2026-06-30",
-            "row_count": row_count,
-            "segment_counts": {"プライム（内国株式）": row_count},
-            "filters_applied": [],
-        }, cache_path)
+    def _seed_valid_cache(self, cache_path, n=MIN_ELIGIBLE_COUNT):
+        save_cache(
+            _valid_cache_payload(
+                items=_cache_items(n),
+                fetched_at=(_NOW - timedelta(hours=5)).isoformat(),
+            ),
+            cache_path,
+        )
 
     def test_fetch_failure_falls_back_to_valid_cache(self, tmp_path):
         cache_path = tmp_path / "cache.json"
@@ -410,7 +466,7 @@ class TestFallbackChain:
         assert result.fallback_used is True
         assert result.universe_id == UNIVERSE_ID
         assert result.cache_age_hours == pytest.approx(5.0, abs=0.01)
-        assert len(result.items) == 2
+        assert len(result.items) == MIN_ELIGIBLE_COUNT
 
     def test_corrupt_cache_is_not_used_as_fallback(self, tmp_path):
         cache_path = tmp_path / "cache.json"
@@ -470,20 +526,28 @@ class TestFallbackChain:
 # ---------------------------------------------------------------------------
 
 class TestRowCountGuard:
-    def test_row_count_below_70_percent_triggers_cache_fallback(self, tmp_path):
+    def _row_count_guard_cache(self, cache_path):
         # baselineを2000にすることで、60%(=1200)がMIN_RAW_ROW_COUNT(1000)の
-        # 絶対floorではなくratio guard自体で弾かれることを検証する。
+        # 絶対floorではなくratio guard自体で弾かれることを検証する。items
+        # 側もfloor(MIN_ELIGIBLE_COUNT=300)を満たす件数にし、authority
+        # validatorのeligible floor/row_count整合性checkを通す。
+        items = _cache_items(1400)
+        save_cache(
+            _valid_cache_payload(
+                items=items,
+                row_count=2000,
+                fetched_at=(_NOW - timedelta(hours=2)).isoformat(),
+                segment_counts={
+                    MARKET_SEGMENT_PRIME_DOMESTIC: 1400,
+                    "スタンダード（内国株式）": 600,
+                },
+            ),
+            cache_path,
+        )
+
+    def test_row_count_below_70_percent_triggers_cache_fallback(self, tmp_path):
         cache_path = tmp_path / "cache.json"
-        save_cache({
-            "schemaKind": "jpx_universe_cache_v1",
-            "universe_id": UNIVERSE_ID,
-            "items": [["1301", "極洋", "水産・農林業"]],
-            "source": "jpx_data_j_xls",
-            "fetched_at": (_NOW - timedelta(hours=2)).isoformat(),
-            "row_count": 2000,
-            "segment_counts": {},
-            "filters_applied": [],
-        }, cache_path)
+        self._row_count_guard_cache(cache_path)
 
         small_rows = _bulk_rows(1200)  # 2000の60% < 70%閾値（絶対floor1000は超える）
 
@@ -501,16 +565,7 @@ class TestRowCountGuard:
 
     def test_row_count_above_70_percent_does_not_trigger_guard(self, tmp_path):
         cache_path = tmp_path / "cache.json"
-        save_cache({
-            "schemaKind": "jpx_universe_cache_v1",
-            "universe_id": UNIVERSE_ID,
-            "items": [["1301", "極洋", "水産・農林業"]],
-            "source": "jpx_data_j_xls",
-            "fetched_at": (_NOW - timedelta(hours=2)).isoformat(),
-            "row_count": 2000,
-            "segment_counts": {},
-            "filters_applied": [],
-        }, cache_path)
+        self._row_count_guard_cache(cache_path)
 
         ok_rows = _bulk_rows(1600)  # 2000の80% >= 70%閾値
 
@@ -1065,6 +1120,132 @@ class TestWorkbookDiscovery:
         assert JPX_LISTING_PAGE_URL.startswith("https://www.jpx.co.jp/")
         assert set(APPROVED_WORKBOOK_BASENAMES) == {"data_j.xls", "data_j.xlsx"}
 
+    def test_userinfo_trick_is_rejected(self):
+        with pytest.raises(JPXFetchError):
+            discover_workbook_url(_listing_html([
+                "https://evil.example@www.jpx.co.jp/markets/statistics-equities/misc/"
+                "x-att/data_j.xlsx"
+            ]))
+        with pytest.raises(JPXFetchError):
+            discover_workbook_url(_listing_html([
+                "https://www.jpx.co.jp@evil.example/markets/statistics-equities/misc/"
+                "x-att/data_j.xlsx"
+            ]))
+
+
+# ---------------------------------------------------------------------------
+# P5-B005-R2 §5-8/§12-13 — real anchor-only discovery / encoded traversal
+# ---------------------------------------------------------------------------
+
+class TestHTMLDiscoveryRobustness:
+    """DISCOVERY_HTML_ROBUSTNESS: 実際の<a href="...">属性値のみが
+    discoveryの候補になり、data-href属性・HTMLコメント・script内テキスト・
+    地の文はいずれも構造的に候補へ混入しないことを証明する。"""
+
+    _REAL_HREF = "/markets/statistics-equities/misc/tvdivq0000001vg2-att/data_j.xlsx"
+
+    def test_data_href_attribute_is_ignored(self):
+        html_src = (
+            f'<div data-href="{self._REAL_HREF}">not a real link</div>'
+        )
+        with pytest.raises(JPXFetchError):
+            discover_workbook_url(html_src)
+
+    def test_html_comment_link_is_ignored(self):
+        html_src = f'<!-- <a href="{self._REAL_HREF}"> -->'
+        with pytest.raises(JPXFetchError):
+            discover_workbook_url(html_src)
+
+    def test_script_contained_link_is_ignored(self):
+        html_src = (
+            "<script>const x = '<a href=\""
+            + self._REAL_HREF
+            + "\">'</script>"
+        )
+        with pytest.raises(JPXFetchError):
+            discover_workbook_url(html_src)
+
+    def test_plain_text_href_string_is_ignored(self):
+        html_src = f'plain text: href="{self._REAL_HREF}"'
+        with pytest.raises(JPXFetchError):
+            discover_workbook_url(html_src)
+
+    def test_real_anchor_among_all_the_above_is_still_discovered(self):
+        html_src = (
+            f'<div data-href="{self._REAL_HREF}">nope</div>'
+            f'<!-- <a href="{self._REAL_HREF}"> -->'
+            "<script>const x = '<a href=\""
+            + self._REAL_HREF
+            + '\">\'</script>'
+            f'plain text: href="{self._REAL_HREF}"'
+            f'<a href="{self._REAL_HREF}">本物</a>'
+        )
+        url = discover_workbook_url(html_src)
+        assert url.endswith("/data_j.xlsx")
+
+    def test_single_quoted_href_is_discovered(self):
+        html_src = f"<a href='{self._REAL_HREF}'>x</a>"
+        url = discover_workbook_url(html_src)
+        assert url.endswith("/data_j.xlsx")
+
+    def test_arbitrary_attribute_order_is_discovered(self):
+        html_src = f'<a rel="external" target="_blank" href="{self._REAL_HREF}" class="x">x</a>'
+        url = discover_workbook_url(html_src)
+        assert url.endswith("/data_j.xlsx")
+
+    def test_uppercase_tag_and_attribute_are_discovered(self):
+        html_src = f'<A HREF="{self._REAL_HREF}">x</A>'
+        url = discover_workbook_url(html_src)
+        assert url.endswith("/data_j.xlsx")
+
+    def test_whitespace_and_newlines_around_href_are_discovered(self):
+        html_src = f'<a\n  href\n  =\n  "{self._REAL_HREF}"\n>x</a>'
+        url = discover_workbook_url(html_src)
+        assert url.endswith("/data_j.xlsx")
+
+    def test_html_entity_in_href_is_decoded_exactly_once(self):
+        # &amp; -> & 。HTMLParserがattrs decodeを担うため、ここで
+        # 二重decodeされていないことを実際のcontainer名で確認する
+        # （&amp;がそのまま"&"1文字へ、"&amp;amp;"のような残骸が
+        # 残らないことを検証する）。
+        href = (
+            "/markets/statistics-equities/misc/tvdivq0000001vg2-att/"
+            "data_j.xlsx"
+        )
+        html_src = f'<a href="{href}?x=1&amp;y=2#ignored">x</a>'
+        # クエリ/フラグメントは許可されないため、このリンク自体はrejectされる
+        # ——ただしdecode段でraiseされる例外ではなく、authority検証（query
+        # 拒否）でrejectされることを確認する（つまりURL自体は正しく1回だけ
+        # decodeされ、"&amp;y=2"のような残骸文字列として素通りしていない）。
+        with pytest.raises(JPXFetchError):
+            discover_workbook_url(html_src)
+
+
+class TestEncodedTraversalRejected:
+    """§12/§13: 単一/二重encodeされたtraversalも含め、workbook pathに
+    "%"を1文字でも含むhrefはdecodeせずfail closedで拒否する。"""
+
+    _CASES = [
+        "/markets/statistics-equities/misc/x-att/%2e%2e/data_j.xlsx",
+        "/markets/statistics-equities/misc/x-att/%2E%2E/data_j.xlsx",
+        "/markets/statistics-equities/misc/%2e%2e%2fx-att/data_j.xlsx",
+        "/markets/statistics-equities/misc/%2E%2E%5Cx-att/data_j.xlsx",
+        "/markets/statistics-equities/misc/%252e%252e%252fx-att/data_j.xlsx",
+        "/markets/statistics-equities/misc/x-att/..%2fdata_j.xlsx",
+        "/markets%2f..%2f..%2fdata_j.xlsx",
+    ]
+
+    @pytest.mark.parametrize("href", _CASES)
+    def test_encoded_traversal_variant_is_rejected(self, href):
+        with pytest.raises(JPXFetchError):
+            discover_workbook_url(_listing_html([href]))
+
+    def test_literal_backslash_traversal_is_rejected(self):
+        with pytest.raises(JPXFetchError):
+            discover_workbook_url(_listing_html([
+                "/markets/statistics-equities/misc/x-att\\..\\data_j.xlsx"
+            ]))
+
 
 # ---------------------------------------------------------------------------
 # §24 — signature-based format detection
@@ -1220,18 +1401,21 @@ class TestXlsXlsxCanonicalParity:
 
 class TestDiscoveryFallbackMatrix:
     def _valid_cache(self, cache_path):
-        save_cache({
-            "schemaKind": "jpx_universe_cache_v1",
-            "universe_id": UNIVERSE_ID,
-            "items": [["1301", "極洋", "水産・農林業"], ["7203", "トヨタ", "輸送用機器"]],
-            "source": "jpx_data_j_xls",
-            "fetched_at": (_NOW - timedelta(hours=6)).isoformat(),
-            "source_as_of": "2026-08-31",
-            "row_count": 4400,
-            "segment_counts": {},
-            "filters_applied": [],
-            "workbook_format": "xlsx",
-        }, cache_path)
+        items = _cache_items(400)
+        save_cache(
+            _valid_cache_payload(
+                items=items,
+                row_count=4400,
+                fetched_at=(_NOW - timedelta(hours=6)).isoformat(),
+                source_as_of="2026-08-31",
+                segment_counts={
+                    MARKET_SEGMENT_PRIME_DOMESTIC: 400,
+                    "スタンダード（内国株式）": 4000,
+                },
+                workbook_format="xlsx",
+            ),
+            cache_path,
+        )
 
     def test_page_fetch_failure_with_cache_uses_cache(self, tmp_path):
         cache_path = tmp_path / "c.json"
@@ -1243,7 +1427,7 @@ class TestDiscoveryFallbackMatrix:
         result = get_jpx_universe(now=_NOW, fetch_fn=boom, cache_path=cache_path)
         assert result.fallback_used is True
         assert result.universe_id == UNIVERSE_ID
-        assert len(result.items) == 2
+        assert len(result.items) == 400
 
     def test_workbook_parse_failure_with_cache_uses_cache(self, tmp_path):
         cache_path = tmp_path / "c.json"
@@ -1266,3 +1450,425 @@ class TestDiscoveryFallbackMatrix:
         )
         assert result.fallback_used is True
         assert result.universe_id == FALLBACK_UNIVERSE_ID
+
+
+# ---------------------------------------------------------------------------
+# P5-B005-R2 §9-11 — bounded redirect handling / final-URL revalidation
+# ---------------------------------------------------------------------------
+
+class _FakeResponse:
+    def __init__(self, status_code, headers=None, content=b"", text="", url=""):
+        self.status_code = status_code
+        self.headers = headers or {}
+        self.content = content
+        self.text = text
+        self.url = url or ""
+
+
+class _FakeRequests:
+    """requests moduleのGET部分だけを置き換えるfake。allow_redirects=Falseを
+    強制し、未登録URLへのGETはAssertionErrorにする——foreign redirect先の
+    bodyを実際にconsumeしていないことを、この例外の非発生で証明する。"""
+
+    def __init__(self, responses):
+        self._responses = responses
+        self.calls: list[str] = []
+
+    def get(self, url, timeout=None, allow_redirects=None):
+        assert allow_redirects is False, "provider must use allow_redirects=False"
+        self.calls.append(url)
+        if url not in self._responses:
+            raise AssertionError(f"unexpected request to unregistered URL: {url!r}")
+        return self._responses[url]
+
+
+_VALID_WORKBOOK_URL = (
+    "https://www.jpx.co.jp/markets/statistics-equities/misc/"
+    "tvdivq0000001vg2-att/data_j.xlsx"
+)
+
+
+class TestListingPageRedirectSecurity:
+    def test_no_redirect_returns_body(self, monkeypatch):
+        resp = _FakeResponse(
+            200, headers={"content-type": "text/html; charset=utf-8"},
+            text="<html>ok</html>", url=JPX_LISTING_PAGE_URL,
+        )
+        fake = _FakeRequests({JPX_LISTING_PAGE_URL: resp})
+        monkeypatch.setitem(sys.modules, "requests", fake)
+        assert fetch_listing_page() == "<html>ok</html>"
+
+    def test_follows_same_host_redirect(self, monkeypatch):
+        moved = "https://www.jpx.co.jp/markets/statistics-equities/misc/01-new.html"
+        r1 = _FakeResponse(302, headers={"Location": moved})
+        r2 = _FakeResponse(
+            200, headers={"content-type": "text/html"}, text="<html>moved</html>", url=moved
+        )
+        fake = _FakeRequests({JPX_LISTING_PAGE_URL: r1, moved: r2})
+        monkeypatch.setitem(sys.modules, "requests", fake)
+        assert fetch_listing_page() == "<html>moved</html>"
+
+    def test_foreign_redirect_rejected_before_body_consumed(self, monkeypatch):
+        evil = "https://evil.example/phish.html"
+        r1 = _FakeResponse(302, headers={"Location": evil})
+        fake = _FakeRequests({JPX_LISTING_PAGE_URL: r1})
+        monkeypatch.setitem(sys.modules, "requests", fake)
+        with pytest.raises(JPXFetchError):
+            fetch_listing_page()
+        assert evil not in fake.calls  # evilのbodyは一度もrequestされていない
+
+    def test_http_downgrade_redirect_rejected(self, monkeypatch):
+        downgraded = "http://www.jpx.co.jp/markets/statistics-equities/misc/01.html"
+        r1 = _FakeResponse(302, headers={"Location": downgraded})
+        fake = _FakeRequests({JPX_LISTING_PAGE_URL: r1})
+        monkeypatch.setitem(sys.modules, "requests", fake)
+        with pytest.raises(JPXFetchError):
+            fetch_listing_page()
+
+    def test_redirect_without_location_rejected(self, monkeypatch):
+        r1 = _FakeResponse(302, headers={})
+        fake = _FakeRequests({JPX_LISTING_PAGE_URL: r1})
+        monkeypatch.setitem(sys.modules, "requests", fake)
+        with pytest.raises(JPXFetchError):
+            fetch_listing_page()
+
+    def test_redirect_loop_rejected(self, monkeypatch):
+        url_b = "https://www.jpx.co.jp/markets/statistics-equities/misc/loop.html"
+        ra = _FakeResponse(302, headers={"Location": url_b})
+        rb = _FakeResponse(302, headers={"Location": JPX_LISTING_PAGE_URL})
+        fake = _FakeRequests({JPX_LISTING_PAGE_URL: ra, url_b: rb})
+        monkeypatch.setitem(sys.modules, "requests", fake)
+        with pytest.raises(JPXFetchError):
+            fetch_listing_page()
+
+    def test_excessive_redirects_rejected(self, monkeypatch):
+        base = "https://www.jpx.co.jp/markets/statistics-equities/misc/"
+        hops = [JPX_LISTING_PAGE_URL] + [f"{base}hop{i}.html" for i in range(MAX_REDIRECTS + 3)]
+        responses = {
+            hops[i]: _FakeResponse(302, headers={"Location": hops[i + 1]})
+            for i in range(len(hops) - 1)
+        }
+        fake = _FakeRequests(responses)
+        monkeypatch.setitem(sys.modules, "requests", fake)
+        with pytest.raises(JPXFetchError):
+            fetch_listing_page()
+
+    def test_final_response_content_type_still_checked_after_redirect(self, monkeypatch):
+        moved = "https://www.jpx.co.jp/markets/statistics-equities/misc/01-new.html"
+        r1 = _FakeResponse(302, headers={"Location": moved})
+        r2 = _FakeResponse(200, headers={"content-type": "application/pdf"}, text="", url=moved)
+        fake = _FakeRequests({JPX_LISTING_PAGE_URL: r1, moved: r2})
+        monkeypatch.setitem(sys.modules, "requests", fake)
+        with pytest.raises(JPXFetchError):
+            fetch_listing_page()
+
+
+class TestWorkbookRedirectSecurity:
+    def test_no_redirect_downloads_body(self, monkeypatch):
+        body = _make_xlsx_bytes(FULL_HEADER, [_row()])
+        resp = _FakeResponse(200, content=body, url=_VALID_WORKBOOK_URL)
+        fake = _FakeRequests({_VALID_WORKBOOK_URL: resp})
+        monkeypatch.setitem(sys.modules, "requests", fake)
+        content, fmt = download_workbook(_VALID_WORKBOOK_URL)
+        assert fmt == "xlsx"
+        assert content == body
+
+    def test_follows_same_origin_redirect_to_another_valid_workbook_url(self, monkeypatch):
+        new_url = (
+            "https://www.jpx.co.jp/markets/statistics-equities/misc/"
+            "newatt-att/data_j.xlsx"
+        )
+        body = _make_xlsx_bytes(FULL_HEADER, [_row()])
+        r1 = _FakeResponse(302, headers={"Location": new_url})
+        r2 = _FakeResponse(200, content=body, url=new_url)
+        fake = _FakeRequests({_VALID_WORKBOOK_URL: r1, new_url: r2})
+        monkeypatch.setitem(sys.modules, "requests", fake)
+        content, fmt = download_workbook(_VALID_WORKBOOK_URL)
+        assert fmt == "xlsx"
+        assert content == body
+
+    def test_foreign_redirect_rejected_before_body_consumed(self, monkeypatch):
+        evil = "https://evil.example/data_j.xlsx"
+        r1 = _FakeResponse(302, headers={"Location": evil})
+        fake = _FakeRequests({_VALID_WORKBOOK_URL: r1})
+        monkeypatch.setitem(sys.modules, "requests", fake)
+        with pytest.raises(JPXFetchError):
+            download_workbook(_VALID_WORKBOOK_URL)
+        assert evil not in fake.calls
+
+    def test_encoded_traversal_redirect_rejected(self, monkeypatch):
+        evil = (
+            "https://www.jpx.co.jp/markets/statistics-equities/misc/"
+            "%2e%2e%2fdata_j.xlsx"
+        )
+        r1 = _FakeResponse(302, headers={"Location": evil})
+        fake = _FakeRequests({_VALID_WORKBOOK_URL: r1})
+        monkeypatch.setitem(sys.modules, "requests", fake)
+        with pytest.raises(JPXFetchError):
+            download_workbook(_VALID_WORKBOOK_URL)
+
+    def test_wrong_basename_redirect_rejected(self, monkeypatch):
+        wrong = (
+            "https://www.jpx.co.jp/markets/statistics-equities/misc/"
+            "tvdivq0000001vg2-att/all_issues.xlsx"
+        )
+        r1 = _FakeResponse(302, headers={"Location": wrong})
+        fake = _FakeRequests({_VALID_WORKBOOK_URL: r1})
+        monkeypatch.setitem(sys.modules, "requests", fake)
+        with pytest.raises(JPXFetchError):
+            download_workbook(_VALID_WORKBOOK_URL)
+
+    def test_final_response_url_is_revalidated_even_without_3xx(self, monkeypatch):
+        # transportがtransparentにredirectしてしまった（allow_redirects=Falseの
+        # 想定に反する）場合でも、resp.urlを再検証することでforeign originの
+        # bodyをそのまま採用しない（REDIRECT_AUTHORITY_REVALIDATED）。
+        resp = _FakeResponse(200, content=b"whatever", url="https://evil.example/data_j.xlsx")
+        fake = _FakeRequests({_VALID_WORKBOOK_URL: resp})
+        monkeypatch.setitem(sys.modules, "requests", fake)
+        with pytest.raises(JPXFetchError):
+            download_workbook(_VALID_WORKBOOK_URL)
+
+    def test_missing_requests_raises_jpx_fetch_error(self, monkeypatch):
+        monkeypatch.setitem(sys.modules, "requests", None)
+        with pytest.raises(JPXFetchError):
+            download_workbook(_VALID_WORKBOOK_URL)
+
+    def test_full_default_path_discovers_and_downloads_through_redirect(self, monkeypatch):
+        # fetch_jpx_workbook_bytes() end-to-end: listing page → discover →
+        # workbook download（same-origin 1-hop redirect込み）。
+        listing_html = _listing_html([_VALID_WORKBOOK_URL])
+        listing_resp = _FakeResponse(
+            200, headers={"content-type": "text/html"}, text=listing_html,
+            url=JPX_LISTING_PAGE_URL,
+        )
+        moved = (
+            "https://www.jpx.co.jp/markets/statistics-equities/misc/"
+            "tvdivq0000001vg2v2-att/data_j.xlsx"
+        )
+        body = _make_xlsx_bytes(FULL_HEADER, [_row()])
+        redirect_resp = _FakeResponse(302, headers={"Location": moved})
+        workbook_resp = _FakeResponse(200, content=body, url=moved)
+        fake = _FakeRequests({
+            JPX_LISTING_PAGE_URL: listing_resp,
+            _VALID_WORKBOOK_URL: redirect_resp,
+            moved: workbook_resp,
+        })
+        monkeypatch.setitem(sys.modules, "requests", fake)
+        content = fetch_jpx_workbook_bytes()
+        assert content == body
+
+
+# ---------------------------------------------------------------------------
+# P5-B005-R2 §14-22 — restored cache authority revalidation
+# ---------------------------------------------------------------------------
+
+class TestRestoredCacheAuthority:
+    """RESTORED_CACHE_REVALIDATED: 構造的にparse可能でも last-good authority
+    契約から外れるcacheはget_jpx_universe()のfallback候補として使わない。
+    いずれのケースもlive fetchを故意に失敗させ、cacheが使われるか
+    seed_list_v1へ縮退するかで authority validation の可否を観測する。"""
+
+    def _boom(self):
+        raise JPXFetchError("live fetch unavailable")
+
+    def _get(self, cache_path):
+        return get_jpx_universe(now=_NOW, fetch_fn=self._boom, cache_path=cache_path)
+
+    def test_valid_current_cache_is_accepted(self, tmp_path):
+        cache_path = tmp_path / "cache.json"
+        save_cache(_valid_cache_payload(fetched_at=(_NOW - timedelta(hours=3)).isoformat()), cache_path)
+        result = self._get(cache_path)
+        assert result.fallback_used is True
+        assert result.universe_id == UNIVERSE_ID
+        assert len(result.items) == MIN_ELIGIBLE_COUNT
+
+    def test_very_old_cache_is_rejected(self, tmp_path):
+        cache_path = tmp_path / "cache.json"
+        ten_years = _NOW - timedelta(days=365 * 10)
+        save_cache(_valid_cache_payload(fetched_at=ten_years.isoformat()), cache_path)
+        result = self._get(cache_path)
+        assert result.universe_id == FALLBACK_UNIVERSE_ID
+
+    def test_cache_older_than_max_age_is_rejected(self, tmp_path):
+        cache_path = tmp_path / "cache.json"
+        too_old = _NOW - timedelta(hours=MAX_CACHE_AGE_HOURS + 1)
+        save_cache(_valid_cache_payload(fetched_at=too_old.isoformat()), cache_path)
+        result = self._get(cache_path)
+        assert result.universe_id == FALLBACK_UNIVERSE_ID
+
+    def test_future_dated_cache_is_rejected(self, tmp_path):
+        cache_path = tmp_path / "cache.json"
+        future = _NOW + timedelta(days=30)
+        save_cache(_valid_cache_payload(fetched_at=future.isoformat()), cache_path)
+        result = self._get(cache_path)
+        assert result.universe_id == FALLBACK_UNIVERSE_ID
+
+    def test_slightly_future_cache_within_clock_skew_is_accepted(self, tmp_path):
+        cache_path = tmp_path / "cache.json"
+        barely_future = _NOW + timedelta(minutes=1)
+        save_cache(_valid_cache_payload(fetched_at=barely_future.isoformat()), cache_path)
+        result = self._get(cache_path)
+        assert result.fallback_used is True
+        assert result.universe_id == UNIVERSE_ID
+
+    def test_wrong_source_is_rejected(self, tmp_path):
+        cache_path = tmp_path / "cache.json"
+        save_cache(_valid_cache_payload(source="some_other_source"), cache_path)
+        result = self._get(cache_path)
+        assert result.universe_id == FALLBACK_UNIVERSE_ID
+
+    def test_wrong_universe_id_is_rejected(self, tmp_path):
+        cache_path = tmp_path / "cache.json"
+        save_cache(_valid_cache_payload(universe_id="some_other_universe"), cache_path)
+        result = self._get(cache_path)
+        assert result.universe_id == FALLBACK_UNIVERSE_ID
+
+    def test_duplicate_code_in_items_is_rejected(self, tmp_path):
+        cache_path = tmp_path / "cache.json"
+        items = _cache_items(MIN_ELIGIBLE_COUNT)
+        items[-1] = list(items[0])  # 末尾codeを先頭codeと重複させる
+        save_cache(_valid_cache_payload(items=items), cache_path)
+        result = self._get(cache_path)
+        assert result.universe_id == FALLBACK_UNIVERSE_ID
+
+    def test_below_floor_universe_is_rejected(self, tmp_path):
+        cache_path = tmp_path / "cache.json"
+        items = _cache_items(MIN_ELIGIBLE_COUNT - 1)
+        save_cache(_valid_cache_payload(items=items, row_count=MIN_RAW_ROW_COUNT), cache_path)
+        result = self._get(cache_path)
+        assert result.universe_id == FALLBACK_UNIVERSE_ID
+
+    def test_one_item_universe_is_rejected(self, tmp_path):
+        cache_path = tmp_path / "cache.json"
+        items = _cache_items(1)
+        save_cache(_valid_cache_payload(items=items, row_count=MIN_RAW_ROW_COUNT), cache_path)
+        result = self._get(cache_path)
+        assert result.universe_id == FALLBACK_UNIVERSE_ID
+
+    def test_negative_row_count_is_rejected(self, tmp_path):
+        cache_path = tmp_path / "cache.json"
+        save_cache(_valid_cache_payload(row_count=-1), cache_path)
+        result = self._get(cache_path)
+        assert result.universe_id == FALLBACK_UNIVERSE_ID
+
+    def test_row_count_smaller_than_items_is_rejected(self, tmp_path):
+        cache_path = tmp_path / "cache.json"
+        items = _cache_items(MIN_ELIGIBLE_COUNT)
+        save_cache(_valid_cache_payload(items=items, row_count=len(items) - 1), cache_path)
+        result = self._get(cache_path)
+        assert result.universe_id == FALLBACK_UNIVERSE_ID
+
+    def test_malformed_segment_counts_sum_mismatch_is_rejected(self, tmp_path):
+        cache_path = tmp_path / "cache.json"
+        items = _cache_items(MIN_ELIGIBLE_COUNT)
+        save_cache(
+            _valid_cache_payload(
+                items=items,
+                row_count=MIN_RAW_ROW_COUNT,
+                segment_counts={MARKET_SEGMENT_PRIME_DOMESTIC: 1},  # row_countと合計不一致
+            ),
+            cache_path,
+        )
+        result = self._get(cache_path)
+        assert result.universe_id == FALLBACK_UNIVERSE_ID
+
+    def test_negative_segment_counts_value_is_rejected(self, tmp_path):
+        cache_path = tmp_path / "cache.json"
+        items = _cache_items(MIN_ELIGIBLE_COUNT)
+        save_cache(
+            _valid_cache_payload(
+                items=items,
+                row_count=MIN_RAW_ROW_COUNT,
+                segment_counts={MARKET_SEGMENT_PRIME_DOMESTIC: -5, "x": MIN_RAW_ROW_COUNT + 5},
+            ),
+            cache_path,
+        )
+        result = self._get(cache_path)
+        assert result.universe_id == FALLBACK_UNIVERSE_ID
+
+    def test_non_dict_segment_counts_is_rejected(self, tmp_path):
+        cache_path = tmp_path / "cache.json"
+        payload = _valid_cache_payload()
+        payload["segment_counts"] = ["not", "a", "dict"]
+        save_cache(payload, cache_path)
+        result = self._get(cache_path)
+        assert result.universe_id == FALLBACK_UNIVERSE_ID
+
+    def test_malformed_filters_applied_shape_is_rejected(self, tmp_path):
+        cache_path = tmp_path / "cache.json"
+        payload = _valid_cache_payload()
+        payload["filters_applied"] = [{"stage": "x"}]  # countキー欠如
+        save_cache(payload, cache_path)
+        result = self._get(cache_path)
+        assert result.universe_id == FALLBACK_UNIVERSE_ID
+
+    def test_non_list_filters_applied_is_rejected(self, tmp_path):
+        cache_path = tmp_path / "cache.json"
+        payload = _valid_cache_payload()
+        payload["filters_applied"] = "not-a-list"
+        save_cache(payload, cache_path)
+        result = self._get(cache_path)
+        assert result.universe_id == FALLBACK_UNIVERSE_ID
+
+    def test_invalid_preferred_share_code_is_rejected(self, tmp_path):
+        # 5桁code（優先株/種類株式相当）はeligibility上除外されるべきなので、
+        # last-good cacheに混入していればauthority違反として拒否する。
+        cache_path = tmp_path / "cache.json"
+        items = _cache_items(MIN_ELIGIBLE_COUNT - 1)
+        items.append(["25935", "伊藤園優先", "食料品"])
+        save_cache(_valid_cache_payload(items=items), cache_path)
+        result = self._get(cache_path)
+        assert result.universe_id == FALLBACK_UNIVERSE_ID
+
+    def test_live_fail_with_invalid_cache_falls_back_to_seed(self, tmp_path):
+        cache_path = tmp_path / "cache.json"
+        save_cache(_valid_cache_payload(source="tampered"), cache_path)
+        result = self._get(cache_path)
+        assert result.fallback_used is True
+        assert result.universe_id == FALLBACK_UNIVERSE_ID
+        assert result.items == list(SEED_LIST)
+
+    def test_live_fail_with_valid_cache_uses_cache_not_seed(self, tmp_path):
+        cache_path = tmp_path / "cache.json"
+        save_cache(_valid_cache_payload(), cache_path)
+        result = self._get(cache_path)
+        assert result.fallback_used is True
+        assert result.universe_id == UNIVERSE_ID
+        assert result.items != list(SEED_LIST)
+
+
+# ---------------------------------------------------------------------------
+# P5-B005-R2 §22 — cache round-trip contract
+# ---------------------------------------------------------------------------
+
+class TestCacheRoundTrip:
+    def test_live_success_save_reload_validate_yields_same_canonical_universe(self, tmp_path):
+        cache_path = tmp_path / "cache.json"
+        rows = _bulk_rows(1200)
+
+        def fake_fetch():
+            return b"irrelevant"
+
+        def fake_parse(_content):
+            return parse_rows_from_sheet(_sheet(rows))
+
+        live_result = get_jpx_universe(
+            now=_NOW, fetch_fn=fake_fetch, parse_fn=fake_parse, cache_path=cache_path
+        )
+        assert live_result.fallback_used is False
+
+        reloaded = load_cache(cache_path)
+        assert reloaded is not None
+
+        # 再度live fetchを失敗させ、直前にsaveされたcacheがauthority
+        # revalidationを通って last-good として使われることを証明する。
+        later = _NOW + timedelta(hours=1)
+        fallback_result = get_jpx_universe(
+            now=later,
+            fetch_fn=lambda: (_ for _ in ()).throw(JPXFetchError("down")),
+            cache_path=cache_path,
+        )
+        assert fallback_result.fallback_used is True
+        assert fallback_result.universe_id == live_result.universe_id
+        assert sorted(fallback_result.items) == sorted(live_result.items)
+        assert fallback_result.row_count == live_result.row_count

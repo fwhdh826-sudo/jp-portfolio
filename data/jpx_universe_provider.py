@@ -55,6 +55,7 @@ import json
 import re
 import sys
 from datetime import date, datetime, timezone
+from html.parser import HTMLParser
 from pathlib import Path
 from typing import Any, NamedTuple
 from urllib.parse import urljoin, urlsplit
@@ -132,6 +133,19 @@ ELIGIBLE_COUNT_MIN_RATIO = 0.7
 CACHE_PATH = Path(__file__).parent / ".jpx_cache" / "jpx_universe_cache.json"
 CACHE_SCHEMA_KIND = "jpx_universe_cache_v1"
 
+# last-good cacheとして使ってよい最大経過時間。Full Batchは平日毎朝走るが、
+# 複数日にわたるJPX live取得断絶でもfallbackとして使えるよう十分な余裕を
+# 持たせつつ、10年前cache等の明らかにstaleなpayloadは拒否できる値として
+# 30日（720h）を採用する（P5-B005-R2: RESTORED_CACHE_REVALIDATED §16）。
+MAX_CACHE_AGE_HOURS = 24 * 30
+# fetched_atがnowよりわずかに未来（save直後の時計ずれ等）でも許容する
+# clock-skew tolerance。これを超える未来日時のcacheは拒否する。
+CACHE_CLOCK_SKEW_TOLERANCE_HOURS = 1.0
+
+# workbook URL探索でfollowするredirectの最大段数。各hopのLocationは
+# 次のrequestを出す前に必ずJPX authorityへ再検証する（P5-B005-R2 §9）。
+MAX_REDIRECTS = 5
+
 
 # ---------------------------------------------------------------------------
 # 例外
@@ -207,24 +221,109 @@ class JPXUniverseResult(NamedTuple):
 # ---------------------------------------------------------------------------
 
 
-def fetch_listing_page(
-    url: str = JPX_LISTING_PAGE_URL, timeout: int = FETCH_TIMEOUT_SECONDS
-) -> str:
-    """公式の上場銘柄一覧authority page（01.html）を取得しHTML textを返す。
-    非200・非HTML・network例外・requests未導入はいずれもJPXFetchErrorへ
-    正規化する（呼び出し側でcache/seed fallbackへ回す）。"""
+class _AnchorHrefExtractor(HTMLParser):
+    """<a ... href="..."> のanchor要素のhref属性値のみを抽出するHTMLParser。
+
+    html.parser.HTMLParserの構文解析に委ねることで、以下は構造的に
+    href候補へ混入しない（正規表現による生テキストscanの弱点を排除する。
+    P5-B005-R2: DISCOVERY_HTML_ROBUSTNESS）:
+      - data-href等、"href"を含むが別名の属性（handle_starttagはtag名と
+        属性名の完全一致でのみ拾う）
+      - HTMLコメント内の文字列（コメントはhandle_commentへ渡り、
+        handle_starttagは呼ばれない）
+      - <script>内のテキスト（script要素の中身はCDATA相当として扱われ、
+        タグとしてparseされない）
+      - 地の文（plain text）中の"href=..."という文字列そのもの
+
+    HTMLParserは既定でattribute値の文字参照（entity）をunescapeして
+    渡すため、ここで再度html.unescape()を呼ぶと二重decodeになる
+    （実機動作で確認済み。本ticketではattrsの値をそのまま使う）。"""
+
+    def __init__(self) -> None:
+        super().__init__(convert_charrefs=True)
+        self.hrefs: list[str] = []
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        if tag.lower() != "a":
+            return
+        for name, value in attrs:
+            if name.lower() == "href" and value is not None:
+                self.hrefs.append(value)
+
+
+def _extract_anchor_hrefs(page_html: str) -> list[str]:
+    """page_html中の実際の<a href="...">属性値のみを順序維持で返す。
+    malformed HTML（未閉タグ等）でもHTMLParserは可能な範囲でbest-effort
+    parseを続ける——それ自体は検出漏れを増やさない（承認済みbasenameへの
+    一致・authority検証は後段で別途行うため、ここでは抽出のみを担う）。"""
+    parser = _AnchorHrefExtractor()
+    parser.feed(page_html)
+    parser.close()
+    return parser.hrefs
+
+
+def _bounded_redirect_fetch(
+    initial_url: str,
+    validate_fn: Any,
+    timeout: int,
+    max_redirects: int = MAX_REDIRECTS,
+) -> tuple[Any, str]:
+    """allow_redirects=Falseで手動bounded-redirectを行うHTTPS GET helper。
+
+    どのURL（初期URL・各redirect Location）も、requestsで実際にrequestを
+    出す前に必ずvalidate_fn()で検証する——redirect先のbodyは、そのURLが
+    検証を通過するまで一切consumeしない（P5-B005-R2:
+    REDIRECT_AUTHORITY_REVALIDATED）。
+
+    拒否: Locationヘッダ欠如・redirect loop（同一URL再訪）・
+    max_redirects超過・validate_fn()が拒否するforeign/downgrade/
+    traversal先。最終的な200応答のresp.urlも再度validate_fn()へ通してから
+    返す（redirect無しの直接200応答でも同じ経路で再検証する）。"""
     try:
         import requests
     except ImportError as e:
         raise JPXFetchError(f"requests is not installed: {e!r}") from e
 
-    try:
-        resp = requests.get(url, timeout=timeout)
-    except Exception as e:  # noqa: BLE001
-        raise JPXFetchError(f"listing page fetch failed: {e!r}") from e
+    seen: set[str] = set()
+    url = validate_fn(initial_url)
+    for _ in range(max_redirects + 1):
+        if url in seen:
+            raise JPXFetchError(f"redirect loop detected at {url!r}")
+        seen.add(url)
 
-    if resp.status_code != 200:
-        raise JPXFetchError(f"listing page unexpected status_code={resp.status_code}")
+        try:
+            resp = requests.get(url, timeout=timeout, allow_redirects=False)
+        except Exception as e:  # noqa: BLE001
+            raise JPXFetchError(f"fetch failed: {e!r}") from e
+
+        if resp.status_code in (301, 302, 303, 307, 308):
+            location = resp.headers.get("Location")
+            if not location:
+                raise JPXFetchError(f"redirect without Location header from {url!r}")
+            next_url = urljoin(url, location)
+            url = validate_fn(next_url)
+            continue
+
+        if resp.status_code != 200:
+            raise JPXFetchError(f"unexpected status_code={resp.status_code} at {url!r}")
+
+        final_url = validate_fn(str(resp.url))
+        return resp, final_url
+
+    raise JPXFetchError(f"too many redirects (>{max_redirects}) starting at {initial_url!r}")
+
+
+def fetch_listing_page(
+    url: str = JPX_LISTING_PAGE_URL, timeout: int = FETCH_TIMEOUT_SECONDS
+) -> str:
+    """公式の上場銘柄一覧authority page（01.html）を取得しHTML textを返す。
+    非200・非HTML・network例外・requests未導入はいずれもJPXFetchErrorへ
+    正規化する（呼び出し側でcache/seed fallbackへ回す）。
+
+    redirectはallow_redirects=Falseで手動bounded-followし、各hopのLocationを
+    _validate_listing_page_url()で再検証してから次のrequestを出す
+    （P5-B005-R2: DISCOVERED_URL_SECURITY §9/§10）。"""
+    resp, _final_url = _bounded_redirect_fetch(url, _validate_listing_page_url, timeout)
 
     ctype = resp.headers.get("content-type", "")
     if "html" not in ctype.lower():
@@ -233,34 +332,61 @@ def fetch_listing_page(
     return resp.text
 
 
-def _validate_discovered_workbook_url(
-    href: str, base_url: str = JPX_LISTING_PAGE_URL
-) -> str:
-    """listing pageから抽出したhrefを絶対URLへ解決し、authority制約
-    （§7）をstrictに検証する。満たさない場合はJPXFetchError。
+def _reject_encoded_path_escape(path: str, what: str) -> None:
+    """pathに"%"が1文字でも含まれる場合はfail closedで拒否する。
+
+    JPX workbook attachment path（/markets/statistics-equities/misc/
+    <...-att>/data_j.(xls|xlsx)）とlisting page pathはいずれもASCIIの
+    固定文字集合のみで構成され、percent-encodingを正当に必要とする
+    セグメントは存在しない。%2e%2e%2f・%2E%2E%5C・%252e%252e%252f
+    （二重encode）はいずれも"%"を含むため、decode/canonicalizeを一切
+    行わずこの1判定だけでtraversal escapeをfail closedに拒否できる
+    （単純unquoteによる二重encode見逃しを避ける。P5-B005-R2 §12）。"""
+    if "%" in path:
+        raise JPXFetchError(f"percent-encoded characters not allowed in {what}: {path!r}")
+
+
+def _validate_listing_page_url(url: str) -> str:
+    """listing page URL（初期URL・redirect先いずれも）がJPX authorityを
+    満たすか検証する。workbook URLと異なりbasename/CMS添付namespaceは
+    要求しない（listing pageのpath自体は将来変わりうる）が、
+    scheme/host/userinfo/encoded-traversalは同じ厳格さで検証する
+    （P5-B005-R2 §10）。"""
+    if not isinstance(url, str) or not url.strip():
+        raise JPXFetchError("empty listing page URL")
+
+    parts = urlsplit(url)
+    if parts.scheme != JPX_ALLOWED_SCHEME:
+        raise JPXFetchError(f"non-https listing page URL scheme: {parts.scheme!r}")
+    # netloc（userinfo付き含む）の完全一致要求により、
+    # "user@www.jpx.co.jp@evil.example" 等のuserinfo trickも
+    # www.jpx.co.jp単体のnetlocとは一致せず自動的に拒否される。
+    if parts.netloc != JPX_ALLOWED_HOST:
+        raise JPXFetchError(f"unexpected listing page host: {parts.netloc!r}")
+
+    _reject_encoded_path_escape(parts.path, "listing page path")
+    segments = parts.path.split("/")
+    if any(seg in (".", "..") for seg in segments):
+        raise JPXFetchError(f"path traversal in listing page path: {parts.path!r}")
+
+    return url
+
+
+def _validate_workbook_authority(resolved: str) -> str:
+    """解決済み絶対URLに対してworkbook authority制約（§7）をstrictに検証
+    する。呼び出し元は以下の2箇所:
+      - _validate_discovered_workbook_url(): listing page hrefをurljoinで
+        絶対化した直後
+      - download_workbook()の_bounded_redirect_fetch(): 最初のURLと、
+        redirectで示された各Location（urljoin後）を再検証
 
     許可: https / host==www.jpx.co.jp / path が
     /markets/statistics-equities/misc/<...-att>/data_j.(xls|xlsx) の形
-    （query/fragmentなし、"." ".." セグメントなし、"//" なし）。
-    拒否: http・protocol-relativeな別origin・javascript:/data:等・path traversal・
-    想定外basename・想定外namespace・authorityを変えるquery trick・malformed href。"""
-    if not isinstance(href, str) or not href.strip():
-        raise JPXFetchError("empty workbook href")
-    raw = href.strip()
-
-    lowered = raw.lower()
-    for bad_scheme in ("javascript:", "data:", "vbscript:", "file:", "about:"):
-        if lowered.startswith(bad_scheme):
-            raise JPXFetchError(f"rejected workbook href scheme: {raw!r}")
-
-    # urljoin前の生hrefでの明示的なtraversal拒否（解決後のnamespace checkでも
-    # 弾かれるが、理由を明確にするため前段で落とす）。
-    if ".." in re.split(r"[\\/]", raw):
-        raise JPXFetchError(f"path traversal in workbook href: {raw!r}")
-    if "\\" in raw:
-        raise JPXFetchError(f"backslash in workbook href: {raw!r}")
-
-    resolved = urljoin(base_url, raw)
+    （query/fragmentなし、encoded文字なし、"." ".." セグメントなし、
+    "//" なし）。
+    拒否: http・別origin・userinfo trick・path traversal（literal/encoded/
+    二重encoded問わず）・想定外basename・想定外namespace・
+    query/fragment authority trick。"""
     parts = urlsplit(resolved)
 
     if parts.scheme != JPX_ALLOWED_SCHEME:
@@ -271,6 +397,7 @@ def _validate_discovered_workbook_url(
         raise JPXFetchError("workbook URL must not carry query/fragment")
 
     path = parts.path
+    _reject_encoded_path_escape(path, "workbook path")
     if "//" in path:
         raise JPXFetchError(f"malformed workbook path: {path!r}")
     segments = path.split("/")
@@ -300,21 +427,47 @@ def _validate_discovered_workbook_url(
     return resolved
 
 
+def _validate_discovered_workbook_url(
+    href: str, base_url: str = JPX_LISTING_PAGE_URL
+) -> str:
+    """listing pageから抽出したhrefを絶対URLへ解決し、
+    _validate_workbook_authority()へ委譲する。満たさない場合はJPXFetchError。"""
+    if not isinstance(href, str) or not href.strip():
+        raise JPXFetchError("empty workbook href")
+    raw = href.strip()
+
+    lowered = raw.lower()
+    for bad_scheme in ("javascript:", "data:", "vbscript:", "file:", "about:"):
+        if lowered.startswith(bad_scheme):
+            raise JPXFetchError(f"rejected workbook href scheme: {raw!r}")
+
+    # urljoin前の生hrefでの明示的なtraversal拒否（解決後のnamespace checkでも
+    # 弾かれるが、理由を明確にするため前段で落とす）。
+    if ".." in re.split(r"[\\/]", raw):
+        raise JPXFetchError(f"path traversal in workbook href: {raw!r}")
+    if "\\" in raw:
+        raise JPXFetchError(f"backslash in workbook href: {raw!r}")
+
+    resolved = urljoin(base_url, raw)
+    return _validate_workbook_authority(resolved)
+
+
 def discover_workbook_url(
     page_html: str, base_url: str = JPX_LISTING_PAGE_URL
 ) -> str:
     """listing page HTMLから現行listed-issues workbookリンクをdiscoverする。
 
-    approved basename（data_j.xls / data_j.xlsx）を指すhrefのみを候補にし、
-    それぞれを_validate_discovered_workbook_url()へ通す。検証を通る一意な
-    URLが得られた場合のみそれを返す。0件・parse不能・複数の相異なる
+    候補hrefは実際の<a href="...">属性値のみ（_extract_anchor_hrefs、
+    html.parser.HTMLParserベース）とし、approved basename
+    （data_j.xls / data_j.xlsx）を指すものだけをそれぞれ
+    _validate_discovered_workbook_url()へ通す。検証を通る一意なURLが
+    得られた場合のみそれを返す。0件・parse不能・複数の相異なる
     approved URL（xls/xlsx混在など曖昧な状態）はいずれもfail closed
     （JPXFetchError）——推測した固定URLへdefaultしない（§8）。"""
     if not isinstance(page_html, str) or not page_html.strip():
         raise JPXFetchError("empty listing page HTML")
 
-    hrefs = re.findall(r'href\s*=\s*"([^"]*)"', page_html, re.IGNORECASE)
-    hrefs += re.findall(r"href\s*=\s*'([^']*)'", page_html, re.IGNORECASE)
+    hrefs = _extract_anchor_hrefs(page_html)
 
     accepted: list[str] = []
     for href in hrefs:
@@ -372,26 +525,19 @@ def download_workbook(
 ) -> tuple[bytes, str]:
     """検証済みworkbook URLをHTTPS取得し、(content, format) を返す。
 
-    非200・network例外・requests未導入はJPXFetchError。
-    URL拡張子とbytesシグネチャが不一致（.xlsxなのにOLE2、.xlsなのにZIP等）の
-    場合はfail closed（§9）。"""
-    try:
-        import requests
-    except ImportError as e:
-        raise JPXFetchError(f"requests is not installed: {e!r}") from e
-
-    try:
-        resp = requests.get(url, timeout=timeout)
-    except Exception as e:  # noqa: BLE001
-        raise JPXFetchError(f"workbook fetch failed: {e!r}") from e
-
-    if resp.status_code != 200:
-        raise JPXFetchError(f"workbook unexpected status_code={resp.status_code}")
+    非200・network例外・requests未導入はJPXFetchError。redirectは
+    allow_redirects=Falseで手動bounded-followし、各hopのLocationおよび
+    最終応答URLを_validate_workbook_authority()で再検証してから次の
+    requestを出す／bodyをconsumeする（P5-B005-R2: DISCOVERED_URL_SECURITY
+    §9/§11）。URL拡張子とbytesシグネチャが不一致（.xlsxなのにOLE2、.xls
+    なのにZIP等）の場合はfail closed（§9）。extension判定は最終検証済みURL
+    （リダイレクト後）に対して行う。"""
+    resp, final_url = _bounded_redirect_fetch(url, _validate_workbook_authority, timeout)
 
     content = resp.content
     detected = detect_workbook_format(content)
 
-    ext_format = "xlsx" if url.lower().endswith(".xlsx") else "xls"
+    ext_format = "xlsx" if final_url.lower().endswith(".xlsx") else "xls"
     if ext_format != detected:
         raise JPXFetchError(
             f"workbook extension/signature mismatch: URL says .{ext_format} "
@@ -823,6 +969,100 @@ def _cache_age_hours(cache_payload: dict[str, Any], now: datetime) -> float:
     return (now - fetched).total_seconds() / 3600
 
 
+def _cache_authority_valid(payload: dict[str, Any], now: datetime) -> bool:
+    """load_cache()の構造的validation（corruption検出）を通過したcache
+    payloadに対し、last-good authorityとして実際に使ってよいかを再検証する
+    （P5-B005-R2: RESTORED_CACHE_REVALIDATED）。
+
+    live provider（get_jpx_universe()のsave_cache()呼び出し箇所）が
+    実際に書きうる契約——source/universe_id/eligibility後のitems/
+    apply_eligibility()由来のsegment_counts・filters_applied——を正とし、
+    構造的にparse可能でもこの契約から外れるpayload（古すぎる/未来日時/
+    別source/別universe_id/重複code/floor未満/row_countとの矛盾/
+    改竄されたsegment_counts・filters_applied）はいずれもfalseを返す。
+    load_cache()自体（schema/型のcorruption検出）は変更しない——単一の
+    canonical validatorとしてここに集約し、load_cache()は構造層、
+    本関数は意味論層を担う。"""
+    # provenance: このprovider自身が書いたcacheであることを要求する。
+    if payload.get("source") != SOURCE_IDENTIFIER:
+        return False
+    if payload.get("universe_id") != UNIVERSE_ID:
+        return False
+
+    # freshness: 10年前cache・未来日時cacheをclock-skew tolerance付きで拒否。
+    fetched = _parse_iso(payload.get("fetched_at"))
+    if fetched is None:
+        return False
+    now_utc = now if now.tzinfo is not None else now.replace(tzinfo=timezone.utc)
+    age_hours = (now_utc - fetched).total_seconds() / 3600
+    if age_hours > MAX_CACHE_AGE_HOURS:
+        return False
+    if age_hours < -CACHE_CLOCK_SKEW_TOLERANCE_HOURS:
+        return False
+
+    # universe content: cached itemsは既にeligibility適用後のcanonical
+    # universeであるべきなので、live pathと同じ制約を再チェックする——
+    # cache metadata（stored row_count/eligible相当件数）を信用せず、
+    # 実際のitemsから再計算する。
+    items = payload.get("items")
+    if not isinstance(items, list) or not items:
+        return False
+    codes = [item[0] for item in items]
+    if len(set(codes)) != len(codes):
+        return False  # 重複code
+    if any(is_preferred_or_class_share(c) for c in codes):
+        return False  # eligibility上除外されるはずの5桁code混入
+    if len(items) < MIN_ELIGIBLE_COUNT:
+        return False  # below-floor universe
+
+    # count consistency: row_countはraw行数（items=eligible行数の上位集合）
+    # のはずなので、負値・非intは無効。eligible件数を上回らない
+    # row_countは矛盾（rowsとの不整合）として拒否する。
+    row_count = payload.get("row_count")
+    if not isinstance(row_count, int) or isinstance(row_count, bool):
+        return False
+    if row_count < MIN_RAW_ROW_COUNT:
+        return False
+    if row_count < len(items):
+        return False
+
+    # segment_counts: 各stageのcount合計がrow_countと一致するはず
+    # （apply_eligibility()のstage_source.count==len(rows)==row_countと同義）。
+    # malformed/impossible値（非dict・非str key・非int value・負値・
+    # 合計不一致）はいずれも拒否する。空dict（既存実装のplaceholder出力）は
+    # 許容するが、非空の場合は厳密整合性を要求する。
+    segment_counts = payload.get("segment_counts")
+    if not isinstance(segment_counts, dict):
+        return False
+    if segment_counts:
+        for key, value in segment_counts.items():
+            if not isinstance(key, str):
+                return False
+            if not isinstance(value, int) or isinstance(value, bool) or value < 0:
+                return False
+        if sum(segment_counts.values()) != row_count:
+            return False
+        prime_count = segment_counts.get(MARKET_SEGMENT_PRIME_DOMESTIC, 0)
+        if prime_count < len(items):
+            return False
+
+    # filters_applied: apply_eligibility()が実際に返す形（各stageがdictで
+    # "stage": str・"count": non-negative intを持つ）から外れる場合は拒否する。
+    filters_applied = payload.get("filters_applied")
+    if not isinstance(filters_applied, list):
+        return False
+    for stage in filters_applied:
+        if not isinstance(stage, dict):
+            return False
+        if not isinstance(stage.get("stage"), str) or not stage["stage"]:
+            return False
+        count = stage.get("count")
+        if not isinstance(count, int) or isinstance(count, bool) or count < 0:
+            return False
+
+    return True
+
+
 def _cache_to_result(cache_payload: dict[str, Any], now: datetime) -> JPXUniverseResult:
     """last-good cacheをJPXUniverseResultへ変換する。fallbackUsed=True、
     timestampはcache生成時のfetched_atをそのまま使う（偽装しない）。"""
@@ -910,6 +1150,17 @@ def get_jpx_universe(
         now = datetime.now(timezone.utc)
 
     cache = load_cache(cache_path)
+    if cache is not None and not _cache_authority_valid(cache, now):
+        # 構造的にparse可能でもlast-good authorityの契約（provenance/
+        # freshness/universe content/count consistency）を満たさない
+        # cacheは、guard比較にも_cache_to_result()のfallback候補にも使わない
+        # （P5-B005-R2: RESTORED_CACHE_REVALIDATED）。
+        print(
+            "[jpx_universe_provider] cached last-good universe failed authority "
+            "revalidation, discarding",
+            file=sys.stderr,
+        )
+        cache = None
 
     try:
         content = fetch_fn()

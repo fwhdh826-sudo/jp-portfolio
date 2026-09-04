@@ -119,13 +119,23 @@ jobs:
       #  - scope は universe cache 1ファイルに限定。cheap_prescreen_cache.json は
       #    同ディレクトリだが独自 freshness 管理を持ち候補スコアリング権威に
       #    影響しうるため含めない（最小安全スコープ）。
-      #  - restore された cache も provider 側 schema/age/provenance 検証を必ず
-      #    通ってから使用される（actions/cache の復元自体は信用しない）。
-      #  - key に run_id を含めるため primary key は毎回 miss し post-job で必ず
-      #    新しい cache を save、次回 run は restore-keys prefix で最新を復元する。
-      #    schema 破壊時は key の v1 を上げて無効化できる。
+      #  - restore された cache も provider 側 schema/age/provenance/freshness/
+      #    count-consistency 検証（_cache_authority_valid）を必ず通ってから
+      #    last-good として使用される（actions/cache の復元自体は信用しない）。
+      #  - key に run_id を含めるため primary key は毎回 miss し、restore-keys
+      #    prefix で直近の save 済み cache を復元する。schema 破壊時は key の
+      #    v1 を上げて無効化できる。
+      #  - P5-B005-R2: restore/save を actions/cache/restore・
+      #    actions/cache/save の明示ステップへ分離する（BLOCKER D）。
+      #    combined actions/cache@v4 の post-job save は成功時のみ走る内部
+      #    gateを持ち、この後段（candidate funnel 等）が失敗すると
+      #    このjob全体の成功可否に関わらずsaveがskipされる。save位置を
+      #    「candidates_stocks 生成＋その契約gate成功直後・candidate funnel
+      #    生成より前」に明示的に固定することで、後続の無関係な致命的gateが
+      #    落ちても直前に確定した正常 JPX universe cache は必ず永続化される。
       - name: Restore JPX universe cache (durable last-good fallback)
-        uses: actions/cache@v4
+        id: jpx-cache-restore
+        uses: actions/cache/restore@v4
         with:
           path: data/.jpx_cache/jpx_universe_cache.json
           key: jpx-universe-cache-v1-${{ runner.os }}-${{ github.run_id }}
@@ -212,6 +222,33 @@ jobs:
           python3 -m data.candidates_stocks_privacy_smoke --production
           --run-started-at "${{ steps.candidates-run-start.outputs.started_at }}"
           --expected-run-token "${{ steps.candidates-run-token.outputs.run_token }}"
+
+      # ── P5-B005-R2 BLOCKER D: JPX universe cache永続化 (explicit save) ──
+      # candidates_stocks whole-market acquisition（provider実行）＋その
+      # schema/privacy/provenance/freshness契約gateがここまでで成功して
+      # いる（このstepへ到達すること自体がgithub actionsの逐次step実行に
+      # よって保証される——前段のいずれかが失敗すればjobはここへ進まない）。
+      # provider自身がlive成功時にのみ_cache_authority_valid()契約を満たす
+      # last-good cacheをsave_cache()で書いているため、workflow側では
+      # ファイル存在だけを確認し、providerの検証結果を再判定はしない
+      # （providerが最終authority）。この位置はcandidate funnel生成・
+      # publication enforcement等の後続の無関係な致命的gateより前であり、
+      # それらが後で失敗してもここで確定したcacheのsaveには影響しない。
+      - name: Check JPX universe cache is present for save
+        id: jpx-cache-check
+        run: |
+          if [ -f data/.jpx_cache/jpx_universe_cache.json ]; then
+            echo "cache_exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "cache_exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Save JPX universe cache (durable last-good fallback)
+        if: steps.jpx-cache-check.outputs.cache_exists == 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: data/.jpx_cache/jpx_universe_cache.json
+          key: jpx-universe-cache-v1-${{ runner.os }}-${{ github.run_id }}
 
       - name: Build candidates news summary
         run: python3 data/build_candidates_news.py
