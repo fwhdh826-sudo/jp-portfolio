@@ -39,9 +39,12 @@ from data.build_candidates_stocks import (
     enforce_enrichment_guard,
 )
 from data.jpx_universe_provider import (
+    APPROVED_WORKBOOK_BASENAMES,
     CACHE_PATH,
     ELIGIBLE_COUNT_MIN_RATIO,
     FALLBACK_UNIVERSE_ID,
+    JPX_ALLOWED_HOST,
+    JPX_LISTING_PAGE_URL,
     MARKET_SEGMENT_PRIME_DOMESTIC,
     MIN_ELIGIBLE_COUNT,
     MIN_RAW_ROW_COUNT,
@@ -54,11 +57,15 @@ from data.jpx_universe_provider import (
     JPXSchemaError,
     apply_eligibility,
     detect_duplicate_codes,
+    detect_workbook_format,
+    discover_workbook_url,
     fetch_jpx_xls,
     get_jpx_universe,
     is_preferred_or_class_share,
     load_cache,
+    parse_jpx_workbook_bytes,
     parse_jpx_xls_bytes,
+    parse_jpx_xlsx_bytes,
     parse_rows_from_sheet,
     save_cache,
     seed_list_v1_fallback,
@@ -580,11 +587,29 @@ class TestCacheNotPublic:
         assert "public" not in CACHE_PATH.parts
 
     def test_full_batch_workflow_does_not_copy_jpx_cache_to_public(self):
+        # P5-B005-JPX-UNIVERSE-PRODUCTION-RECOVERY: the internal JPX cache is now
+        # referenced by an actions/cache step (cross-run persistence). It must
+        # still never be copied into public/data, staged, or published — assert
+        # the *intent* (no cache path on any copy/publish line), not string
+        # absence.
         import pathlib
         workflow_path = pathlib.Path(__file__).parent.parent / ".github" / "workflows" / "full_batch.yml"
         content = workflow_path.read_text(encoding="utf-8")
-        assert "jpx_universe_cache" not in content
-        assert "jpx_cache" not in content
+
+        for line in content.splitlines():
+            if ".jpx_cache" not in line and "jpx_universe_cache" not in line:
+                continue
+            lowered = line.lower()
+            assert "public/data" not in lowered, line
+            assert "cp " not in lowered, line
+            assert "upload-artifact" not in lowered, line
+            assert "git add" not in lowered, line
+
+        # The "Copy JSON to public/data" loop must only carry the fixed public
+        # basenames, never the internal cache.
+        copy_step = content.split("Copy JSON to public/data", 1)[1].split("- name:", 1)[0]
+        assert "jpx_cache" not in copy_step
+        assert "jpx_universe_cache" not in copy_step
 
 
 # ---------------------------------------------------------------------------
@@ -898,3 +923,346 @@ class TestAtomicCacheWrite:
 
         assert cache_path.read_text(encoding="utf-8") == original
         assert not (tmp_path / "cache.json.tmp").exists()
+
+
+# ===========================================================================
+# P5-B005-JPX-UNIVERSE-PRODUCTION-RECOVERY
+# ===========================================================================
+
+_OLE2_SIG = b"\xd0\xcf\x11\xe0\xa1\xb1\x1a\xe1"
+_ZIP_SIG = b"PK\x03\x04"
+
+
+def _listing_html(hrefs):
+    """approved workbookリンクを含む最小のlisting page HTMLを合成する。"""
+    anchors = "".join(f'<td><a href="{h}" rel="external">x</a></td>' for h in hrefs)
+    return f"<!DOCTYPE html><html><body><table>{anchors}</table></body></html>"
+
+
+def _make_xlsx_bytes(header, data_rows):
+    """openpyxlで実xlsx bytesを生成する（PK/OOXML）。"""
+    openpyxl = pytest.importorskip("openpyxl")
+    import io
+
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    ws.append(list(header))
+    for row in data_rows:
+        ws.append(list(row))
+    buf = io.BytesIO()
+    wb.save(buf)
+    return buf.getvalue()
+
+
+# ---------------------------------------------------------------------------
+# §23 — official listing-page discovery
+# ---------------------------------------------------------------------------
+
+class TestWorkbookDiscovery:
+    def test_relative_xlsx_link_is_discovered(self):
+        url = discover_workbook_url(_listing_html(
+            ["/markets/statistics-equities/misc/tvdivq0000001vg2-att/data_j.xlsx"]
+        ))
+        assert url == (
+            "https://www.jpx.co.jp/markets/statistics-equities/misc/"
+            "tvdivq0000001vg2-att/data_j.xlsx"
+        )
+
+    def test_legacy_relative_xls_link_is_discovered(self):
+        url = discover_workbook_url(_listing_html(
+            ["/markets/statistics-equities/misc/tvdivq0000001vg2-att/data_j.xls"]
+        ))
+        assert url.endswith("/tvdivq0000001vg2-att/data_j.xls")
+
+    def test_absolute_same_origin_approved_link_is_discovered(self):
+        url = discover_workbook_url(_listing_html([
+            "https://www.jpx.co.jp/markets/statistics-equities/misc/"
+            "abc123-att/data_j.xlsx"
+        ]))
+        assert url.endswith("/abc123-att/data_j.xlsx")
+
+    def test_missing_link_fails_live(self):
+        with pytest.raises(JPXFetchError):
+            discover_workbook_url("<html><body>no workbook here</body></html>")
+
+    def test_malformed_html_fails_live(self):
+        with pytest.raises(JPXFetchError):
+            discover_workbook_url("")
+        with pytest.raises(JPXFetchError):
+            discover_workbook_url("<<<not really html>>>")
+
+    def test_foreign_host_is_rejected(self):
+        with pytest.raises(JPXFetchError):
+            discover_workbook_url(_listing_html(["https://evil.example/data_j.xlsx"]))
+
+    def test_protocol_relative_foreign_origin_is_rejected(self):
+        with pytest.raises(JPXFetchError):
+            discover_workbook_url(_listing_html(["//evil.example/a-att/data_j.xlsx"]))
+
+    def test_http_scheme_is_rejected(self):
+        with pytest.raises(JPXFetchError):
+            discover_workbook_url(_listing_html([
+                "http://www.jpx.co.jp/markets/statistics-equities/misc/"
+                "x-att/data_j.xlsx"
+            ]))
+
+    def test_wrong_basename_is_rejected(self):
+        with pytest.raises(JPXFetchError):
+            discover_workbook_url(_listing_html([
+                "/markets/statistics-equities/misc/x-att/all_issues.xlsx"
+            ]))
+
+    def test_wrong_path_namespace_is_rejected(self):
+        with pytest.raises(JPXFetchError):
+            discover_workbook_url(_listing_html([
+                "https://www.jpx.co.jp/markets/other-section/x-att/data_j.xlsx"
+            ]))
+
+    def test_path_traversal_is_rejected(self):
+        with pytest.raises(JPXFetchError):
+            discover_workbook_url(_listing_html([
+                "https://www.jpx.co.jp/markets/statistics-equities/misc/"
+                "x-att/../../../data_j.xlsx"
+            ]))
+
+    def test_absolute_host_relative_traversal_is_rejected(self):
+        with pytest.raises(JPXFetchError):
+            discover_workbook_url(_listing_html([
+                "https://www.jpx.co.jp/../../data_j.xlsx"
+            ]))
+
+    def test_javascript_and_data_uri_hrefs_are_rejected(self):
+        for bad in ("javascript:alert('data_j.xlsx')", "data:text/html,data_j.xlsx"):
+            with pytest.raises(JPXFetchError):
+                discover_workbook_url(_listing_html([bad]))
+
+    def test_non_attachment_container_is_rejected(self):
+        with pytest.raises(JPXFetchError):
+            discover_workbook_url(_listing_html([
+                "/markets/statistics-equities/misc/plain-dir/data_j.xlsx"
+            ]))
+
+    def test_query_string_authority_trick_is_rejected(self):
+        with pytest.raises(JPXFetchError):
+            discover_workbook_url(_listing_html([
+                "/markets/statistics-equities/misc/x-att/data_j.xlsx?../../x"
+            ]))
+
+    def test_multiple_conflicting_approved_links_fail_closed(self):
+        with pytest.raises(JPXFetchError):
+            discover_workbook_url(_listing_html([
+                "/markets/statistics-equities/misc/aaa-att/data_j.xlsx",
+                "/markets/statistics-equities/misc/bbb-att/data_j.xls",
+            ]))
+
+    def test_same_url_listed_twice_is_not_ambiguous(self):
+        href = "/markets/statistics-equities/misc/tvdivq0000001vg2-att/data_j.xlsx"
+        url = discover_workbook_url(_listing_html([href, href]))
+        assert url.endswith("/data_j.xlsx")
+
+    def test_constants_are_sane(self):
+        assert JPX_ALLOWED_HOST == "www.jpx.co.jp"
+        assert JPX_LISTING_PAGE_URL.startswith("https://www.jpx.co.jp/")
+        assert set(APPROVED_WORKBOOK_BASENAMES) == {"data_j.xls", "data_j.xlsx"}
+
+
+# ---------------------------------------------------------------------------
+# §24 — signature-based format detection
+# ---------------------------------------------------------------------------
+
+class TestWorkbookFormatDetection:
+    def test_valid_ole2_is_xls(self):
+        assert detect_workbook_format(_OLE2_SIG + b"\x00" * 512) == "xls"
+
+    def test_valid_zip_ooxml_is_xlsx(self):
+        assert detect_workbook_format(_ZIP_SIG + b"\x00" * 512) == "xlsx"
+
+    def test_real_openpyxl_xlsx_is_xlsx(self):
+        content = _make_xlsx_bytes(FULL_HEADER, [_row()])
+        assert detect_workbook_format(content) == "xlsx"
+
+    def test_html_bytes_rejected(self):
+        with pytest.raises(JPXFetchError):
+            detect_workbook_format(b"<!DOCTYPE html><html><head>404</head></html>" + b" " * 40)
+        with pytest.raises(JPXFetchError):
+            detect_workbook_format(b"   <html>error</html>" + b" " * 40)
+
+    def test_truncated_garbage_rejected(self):
+        with pytest.raises(JPXFetchError):
+            detect_workbook_format(b"PK")
+        with pytest.raises(JPXFetchError):
+            detect_workbook_format(b"\x01\x02\x03\x04\x05\x06\x07\x08garbage")
+
+    def test_empty_or_spanned_zip_rejected(self):
+        with pytest.raises(JPXFetchError):
+            detect_workbook_format(b"PK\x05\x06" + b"\x00" * 40)
+        with pytest.raises(JPXFetchError):
+            detect_workbook_format(b"PK\x07\x08" + b"\x00" * 40)
+
+    def test_parse_workbook_bytes_dispatches_and_fails_closed(self):
+        # HTML disguised → JPXParseError（fallback chainへ）
+        with pytest.raises(JPXParseError):
+            parse_jpx_workbook_bytes(b"<!DOCTYPE html><html>err</html>" + b" " * 40)
+        with pytest.raises(JPXParseError):
+            parse_jpx_workbook_bytes(b"not-a-workbook-at-all-xxxxxxxx")
+
+    def test_parse_workbook_bytes_routes_xlsx_to_openpyxl(self):
+        pytest.importorskip("openpyxl")
+        content = _make_xlsx_bytes(FULL_HEADER, [_row(code=1301.0), _row(code=7203.0, name='トヨタ')])
+        rows, dropped = parse_jpx_workbook_bytes(content)
+        assert {r["code"] for r in rows} == {"1301", "7203"}
+        assert dropped == []
+
+    def test_invalid_zip_that_is_not_xlsx_workbook_is_rejected(self):
+        import io, zipfile
+        buf = io.BytesIO()
+        with zipfile.ZipFile(buf, "w") as zf:
+            zf.writestr("hello.txt", "not a workbook")
+        with pytest.raises(JPXParseError):
+            parse_jpx_workbook_bytes(buf.getvalue())
+
+
+# ---------------------------------------------------------------------------
+# §25 — XLS / XLSX canonical parity
+# ---------------------------------------------------------------------------
+
+class TestXlsXlsxCanonicalParity:
+    def _logical_rows(self):
+        # (date, code, name, market, sector)。同一の論理listed-issue集合を
+        # xls風(xlrd=float)とxlsx(openpyxl=int/native)の双方で表現する。
+        return [
+            (20260831, 1301, "極洋", "プライム（内国株式）", "水産・農林業"),
+            (20260831, 7203, "トヨタ自動車", "プライム（内国株式）", "輸送用機器"),
+            (20260831, "166A", "タスキHD", "プライム（内国株式）", "建設業"),
+            (20260831, 25935, "伊藤園優先", "プライム（内国株式）", "食料品"),
+            (20260831, 1305, "ETF", "ETF・ETN", "-"),
+            (20260831, 9999, "グロース銘柄", "グロース（内国株式）", "情報・通信業"),
+            (20260831, 8697, "外国株", "プライム（外国株式）", "その他"),
+        ]
+
+    def _xls_side_sheet(self):
+        rows = []
+        for d, code, name, market, sector in self._logical_rows():
+            xls_code = float(code) if isinstance(code, int) else code
+            rows.append([float(d), xls_code, name, market, 50.0, sector, 1.0, "食品", 6.0, "x"])
+        return _FakeSheet(FULL_HEADER, rows)
+
+    def _xlsx_side_bytes(self):
+        rows = []
+        for d, code, name, market, sector in self._logical_rows():
+            rows.append([d, code, name, market, 50, sector, 1, "食品", 6, "x"])
+        return _make_xlsx_bytes(FULL_HEADER, rows)
+
+    def test_parsed_rows_are_equivalent(self):
+        pytest.importorskip("openpyxl")
+        xls_rows, xls_dropped = parse_rows_from_sheet(self._xls_side_sheet())
+        xlsx_rows, xlsx_dropped = parse_jpx_xlsx_bytes(self._xlsx_side_bytes())
+
+        def norm(rows):
+            return [
+                (r["code"], r["name"], r["market_segment"], r["sector"])
+                for r in rows
+            ]
+
+        assert norm(xls_rows) == norm(xlsx_rows)
+        assert len(xls_dropped) == len(xlsx_dropped)
+
+    def test_eligibility_output_is_equivalent(self):
+        pytest.importorskip("openpyxl")
+        xls_rows, _ = parse_rows_from_sheet(self._xls_side_sheet())
+        xlsx_rows, _ = parse_jpx_xlsx_bytes(self._xlsx_side_bytes())
+
+        xls_elig, xls_seg, xls_filters = apply_eligibility(xls_rows)
+        xlsx_elig, xlsx_seg, xlsx_filters = apply_eligibility(xlsx_rows)
+
+        assert [r["code"] for r in xls_elig] == [r["code"] for r in xlsx_elig]
+        assert {r["code"] for r in xls_elig} == {"1301", "7203", "166A"}
+        assert xls_seg == xlsx_seg
+        assert xls_filters == xlsx_filters
+
+    def test_full_provider_parity_via_get_jpx_universe(self, tmp_path):
+        pytest.importorskip("openpyxl")
+        # 絶対floorを満たすため、eligible行を1200件へ増やした等価な合成workbook。
+        base = [
+            (20260831, 1300 + i, f"銘柄{i}", "プライム（内国株式）", "sector")
+            for i in range(1200)
+        ]
+        xls_rows = [[float(d), float(c), n, m, 50.0, s, 1.0, "食品", 6.0, "x"] for d, c, n, m, s in base]
+        xlsx_rows = [[d, c, n, m, 50, s, 1, "食品", 6, "x"] for d, c, n, m, s in base]
+
+        xls_result = get_jpx_universe(
+            now=_NOW,
+            fetch_fn=lambda: b"irrelevant",
+            parse_fn=lambda _c: parse_rows_from_sheet(_FakeSheet(FULL_HEADER, xls_rows)),
+            cache_path=tmp_path / "xls_cache.json",
+        )
+        xlsx_bytes = _make_xlsx_bytes(FULL_HEADER, xlsx_rows)
+        xlsx_result = get_jpx_universe(
+            now=_NOW,
+            fetch_fn=lambda: xlsx_bytes,
+            parse_fn=parse_jpx_workbook_bytes,
+            cache_path=tmp_path / "xlsx_cache.json",
+        )
+
+        assert xls_result.fallback_used is False
+        assert xlsx_result.fallback_used is False
+        assert xls_result.items == xlsx_result.items
+        assert xls_result.eligible_count == xlsx_result.eligible_count == 1200
+        assert xls_result.row_count == xlsx_result.row_count
+        assert xls_result.source_as_of == xlsx_result.source_as_of == "2026-08-31"
+        assert xlsx_result.workbook_format == "xlsx"
+        assert xls_result.segment_counts == xlsx_result.segment_counts
+
+
+# ---------------------------------------------------------------------------
+# §27 — fallback matrix (live discovery path)
+# ---------------------------------------------------------------------------
+
+class TestDiscoveryFallbackMatrix:
+    def _valid_cache(self, cache_path):
+        save_cache({
+            "schemaKind": "jpx_universe_cache_v1",
+            "universe_id": UNIVERSE_ID,
+            "items": [["1301", "極洋", "水産・農林業"], ["7203", "トヨタ", "輸送用機器"]],
+            "source": "jpx_data_j_xls",
+            "fetched_at": (_NOW - timedelta(hours=6)).isoformat(),
+            "source_as_of": "2026-08-31",
+            "row_count": 4400,
+            "segment_counts": {},
+            "filters_applied": [],
+            "workbook_format": "xlsx",
+        }, cache_path)
+
+    def test_page_fetch_failure_with_cache_uses_cache(self, tmp_path):
+        cache_path = tmp_path / "c.json"
+        self._valid_cache(cache_path)
+
+        def boom():
+            raise JPXFetchError("listing page 500")
+
+        result = get_jpx_universe(now=_NOW, fetch_fn=boom, cache_path=cache_path)
+        assert result.fallback_used is True
+        assert result.universe_id == UNIVERSE_ID
+        assert len(result.items) == 2
+
+    def test_workbook_parse_failure_with_cache_uses_cache(self, tmp_path):
+        cache_path = tmp_path / "c.json"
+        self._valid_cache(cache_path)
+
+        result = get_jpx_universe(
+            now=_NOW,
+            fetch_fn=lambda: b"<!DOCTYPE html><html>err</html>" + b" " * 40,
+            parse_fn=parse_jpx_workbook_bytes,
+            cache_path=cache_path,
+        )
+        assert result.fallback_used is True
+        assert result.universe_id == UNIVERSE_ID
+
+    def test_live_fail_no_cache_uses_seed(self, tmp_path):
+        result = get_jpx_universe(
+            now=_NOW,
+            fetch_fn=lambda: (_ for _ in ()).throw(JPXFetchError("no page")),
+            cache_path=tmp_path / "missing.json",
+        )
+        assert result.fallback_used is True
+        assert result.universe_id == FALLBACK_UNIVERSE_ID

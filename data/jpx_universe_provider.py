@@ -1,11 +1,24 @@
 #!/usr/bin/env python3
 """
-P5-B004b: JPX公式 東証上場銘柄一覧（data_j.xls）をprimary sourceとする
-whole-market universe providerと、eligibility v1 filter・cache/fallback・
+P5-B004b: JPX公式 東証上場銘柄一覧（listed-issues workbook）をprimary source
+とするwhole-market universe providerと、eligibility v1 filter・cache/fallback・
 provenanceを含む正規化されたprovider result契約。
 
+P5-B005-JPX-UNIVERSE-PRODUCTION-RECOVERY: JPX公式CMSの添付ファイル形式が
+data_j.xls（OLE2）→ data_j.xlsx（OOXML/ZIP）へ移行し、旧固定URLが404化した
+ことへの回復。固定添付URLを別の固定URLへ差し替えるのではなく、公式の
+上場銘柄一覧ページ（01.html）を起点に現行workbookリンクを都度discoverし、
+URL authority（scheme/host/namespace/basename/extension）をstrictに検証した
+うえで、bytesシグネチャからxls/xlsxを判定してparseする。legacy xls経路
+（xlrd）は温存し、xlsx経路（openpyxl, read_only/data_only）を同じ正規化row
+契約へ合流させる。
+
 責務:
-  - JPX公式サイトからdata_j.xlsをHTTPS取得・OLE2/xls検証・xlrd parse
+  - JPX公式listing pageをHTTPS取得し、現行listed-issues workbookリンクを
+    discover・authority検証（fetch_listing_page/discover_workbook_url）
+  - discoverしたworkbookをHTTPS取得し、bytesシグネチャでxls(OLE2)/xlsx(ZIP)
+    を判定してparse（detect_workbook_format/parse_jpx_workbook_bytes）。
+    extension↔signature不一致・HTMLエラーページはfail closed
   - eligibility v1 filter（プライム内国株式のみ、5桁優先株/種類株式除外）
   - internal-onlyなlast-good cacheと、fetch/parse/schema/duplicate/
     row-count異常時のcache→seed_list_v1の3段fallback chain
@@ -39,19 +52,43 @@ public/data配下へは一切コピーしない。
 from __future__ import annotations
 
 import json
+import re
 import sys
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Any, NamedTuple
+from urllib.parse import urljoin, urlsplit
 
 # ---------------------------------------------------------------------------
 # 定数
 # ---------------------------------------------------------------------------
 
+# 公式の上場銘柄一覧authority page（安定URL）。ここから現行workbookリンクを
+# discoverする。opaqueなCMS添付ID（tvdivq0000001vg2-att）が恒久である前提は
+# 置かない。
+JPX_LISTING_PAGE_URL = (
+    "https://www.jpx.co.jp/markets/statistics-equities/misc/01.html"
+)
+
+# discoverしたworkbook URLが満たすべきauthority制約。
+JPX_ALLOWED_SCHEME = "https"
+JPX_ALLOWED_HOST = "www.jpx.co.jp"
+# 添付ファイルは必ずこのnamespace配下に置かれる。
+JPX_ATTACHMENT_PATH_PREFIX = "/markets/statistics-equities/misc/"
+# CMS添付コンテナディレクトリは "-att" で終わる（例: tvdivq0000001vg2-att）。
+JPX_ATTACHMENT_DIR_SUFFIX = "-att"
+# 許可するlisted-issues workbook basename（xls/xlsx両対応）。
+APPROVED_WORKBOOK_BASENAMES = ("data_j.xls", "data_j.xlsx")
+APPROVED_WORKBOOK_EXTENSIONS = (".xls", ".xlsx")
+
+# legacy固定添付URL（現在404）。default fetch pathでは使わない。
+# fetch_jpx_xls() のdefault引数としてのみ残す（後方互換）。
 JPX_SOURCE_URL = (
     "https://www.jpx.co.jp/markets/statistics-equities/misc/"
     "tvdivq0000001vg2-att/data_j.xls"
 )
+# 公開provenance上のsource識別子。workbook形式（xls/xlsx）に依存しない安定値
+# （形式差はJPXUniverseResult.workbook_format / 内部ログで区別する。§14）。
 SOURCE_IDENTIFIER = "jpx_data_j_xls"
 FETCH_TIMEOUT_SECONDS = 30
 
@@ -59,7 +96,11 @@ UNIVERSE_ID = "jpx_prime_domestic_v1"
 FALLBACK_UNIVERSE_ID = "seed_list_v1"
 
 REQUIRED_COLUMNS = ("コード", "銘柄名", "市場・商品区分")
+# xls: OLE2 / Compound File Binary。xlsx: ZIP local file header（PK\x03\x04）。
 OLE2_SIGNATURE = b"\xd0\xcf\x11\xe0\xa1\xb1\x1a\xe1"
+ZIP_LOCAL_FILE_SIGNATURE = b"PK\x03\x04"
+ZIP_EMPTY_SIGNATURE = b"PK\x05\x06"
+ZIP_SPANNED_SIGNATURE = b"PK\x07\x08"
 
 # eligibility v1: プライムかつ内国株式（普通株式相当）のみを厳密一致で採用する。
 # ETF・ETN / REIT・ベンチャーファンド等 / PRO Market / 出資証券 / 外国株式 /
@@ -154,20 +195,231 @@ class JPXUniverseResult(NamedTuple):
     fallback_used: bool
     cache_age_hours: float | None
     dropped_rows: list[dict[str, Any]]
+    # "xls" / "xlsx" / None（cache・seed fallback時、または形式判定不能時）。
+    # 公開candidates_stocks schemaには出さない内部provenance（§14）。末尾の
+    # optionalフィールドとして追加——既存のkeyword構築・duck typing consumerに
+    # 影響しない。
+    workbook_format: str | None = None
 
 
 # ---------------------------------------------------------------------------
-# Source adapter: fetch
+# Source adapter: official listing-page discovery（§6/§7/§8）
 # ---------------------------------------------------------------------------
+
+
+def fetch_listing_page(
+    url: str = JPX_LISTING_PAGE_URL, timeout: int = FETCH_TIMEOUT_SECONDS
+) -> str:
+    """公式の上場銘柄一覧authority page（01.html）を取得しHTML textを返す。
+    非200・非HTML・network例外・requests未導入はいずれもJPXFetchErrorへ
+    正規化する（呼び出し側でcache/seed fallbackへ回す）。"""
+    try:
+        import requests
+    except ImportError as e:
+        raise JPXFetchError(f"requests is not installed: {e!r}") from e
+
+    try:
+        resp = requests.get(url, timeout=timeout)
+    except Exception as e:  # noqa: BLE001
+        raise JPXFetchError(f"listing page fetch failed: {e!r}") from e
+
+    if resp.status_code != 200:
+        raise JPXFetchError(f"listing page unexpected status_code={resp.status_code}")
+
+    ctype = resp.headers.get("content-type", "")
+    if "html" not in ctype.lower():
+        raise JPXFetchError(f"listing page content-type is not HTML: {ctype!r}")
+
+    return resp.text
+
+
+def _validate_discovered_workbook_url(
+    href: str, base_url: str = JPX_LISTING_PAGE_URL
+) -> str:
+    """listing pageから抽出したhrefを絶対URLへ解決し、authority制約
+    （§7）をstrictに検証する。満たさない場合はJPXFetchError。
+
+    許可: https / host==www.jpx.co.jp / path が
+    /markets/statistics-equities/misc/<...-att>/data_j.(xls|xlsx) の形
+    （query/fragmentなし、"." ".." セグメントなし、"//" なし）。
+    拒否: http・protocol-relativeな別origin・javascript:/data:等・path traversal・
+    想定外basename・想定外namespace・authorityを変えるquery trick・malformed href。"""
+    if not isinstance(href, str) or not href.strip():
+        raise JPXFetchError("empty workbook href")
+    raw = href.strip()
+
+    lowered = raw.lower()
+    for bad_scheme in ("javascript:", "data:", "vbscript:", "file:", "about:"):
+        if lowered.startswith(bad_scheme):
+            raise JPXFetchError(f"rejected workbook href scheme: {raw!r}")
+
+    # urljoin前の生hrefでの明示的なtraversal拒否（解決後のnamespace checkでも
+    # 弾かれるが、理由を明確にするため前段で落とす）。
+    if ".." in re.split(r"[\\/]", raw):
+        raise JPXFetchError(f"path traversal in workbook href: {raw!r}")
+    if "\\" in raw:
+        raise JPXFetchError(f"backslash in workbook href: {raw!r}")
+
+    resolved = urljoin(base_url, raw)
+    parts = urlsplit(resolved)
+
+    if parts.scheme != JPX_ALLOWED_SCHEME:
+        raise JPXFetchError(f"non-https workbook URL scheme: {parts.scheme!r}")
+    if parts.netloc != JPX_ALLOWED_HOST:
+        raise JPXFetchError(f"unexpected workbook host: {parts.netloc!r}")
+    if parts.query or parts.fragment:
+        raise JPXFetchError("workbook URL must not carry query/fragment")
+
+    path = parts.path
+    if "//" in path:
+        raise JPXFetchError(f"malformed workbook path: {path!r}")
+    segments = path.split("/")
+    if any(seg in (".", "..") for seg in segments):
+        raise JPXFetchError(f"path traversal in resolved workbook path: {path!r}")
+    if "" in segments[1:]:
+        raise JPXFetchError(f"empty segment in workbook path: {path!r}")
+
+    if not path.startswith(JPX_ATTACHMENT_PATH_PREFIX):
+        raise JPXFetchError(
+            f"workbook path outside allowed namespace {JPX_ATTACHMENT_PATH_PREFIX!r}: {path!r}"
+        )
+    if len(segments) < 6:
+        raise JPXFetchError(f"workbook path too shallow for an attachment: {path!r}")
+
+    basename = segments[-1]
+    container = segments[-2]
+    if basename not in APPROVED_WORKBOOK_BASENAMES:
+        raise JPXFetchError(f"unexpected workbook basename: {basename!r}")
+    if not basename.endswith(APPROVED_WORKBOOK_EXTENSIONS):
+        raise JPXFetchError(f"unexpected workbook extension: {basename!r}")
+    if not container.endswith(JPX_ATTACHMENT_DIR_SUFFIX):
+        raise JPXFetchError(
+            f"workbook not under a CMS attachment container ({JPX_ATTACHMENT_DIR_SUFFIX!r}): {path!r}"
+        )
+
+    return resolved
+
+
+def discover_workbook_url(
+    page_html: str, base_url: str = JPX_LISTING_PAGE_URL
+) -> str:
+    """listing page HTMLから現行listed-issues workbookリンクをdiscoverする。
+
+    approved basename（data_j.xls / data_j.xlsx）を指すhrefのみを候補にし、
+    それぞれを_validate_discovered_workbook_url()へ通す。検証を通る一意な
+    URLが得られた場合のみそれを返す。0件・parse不能・複数の相異なる
+    approved URL（xls/xlsx混在など曖昧な状態）はいずれもfail closed
+    （JPXFetchError）——推測した固定URLへdefaultしない（§8）。"""
+    if not isinstance(page_html, str) or not page_html.strip():
+        raise JPXFetchError("empty listing page HTML")
+
+    hrefs = re.findall(r'href\s*=\s*"([^"]*)"', page_html, re.IGNORECASE)
+    hrefs += re.findall(r"href\s*=\s*'([^']*)'", page_html, re.IGNORECASE)
+
+    accepted: list[str] = []
+    for href in hrefs:
+        tail = href.split("#", 1)[0].split("?", 1)[0].strip()
+        basename = tail.rsplit("/", 1)[-1].lower()
+        if basename not in APPROVED_WORKBOOK_BASENAMES:
+            continue
+        try:
+            accepted.append(_validate_discovered_workbook_url(href, base_url))
+        except JPXFetchError:
+            # approved basenameだがauthority検証に落ちたhrefは黙って捨てる
+            # （untrusted linkをpickしない）。
+            continue
+
+    unique = sorted(set(accepted))
+    if not unique:
+        raise JPXFetchError(
+            "no approved listed-issues workbook link found on JPX listing page"
+        )
+    if len(unique) > 1:
+        raise JPXFetchError(
+            f"ambiguous approved workbook links on JPX listing page: {unique}"
+        )
+    return unique[0]
+
+
+def detect_workbook_format(content: bytes) -> str:
+    """downloadしたbytesのシグネチャからworkbook形式を判定する。
+    "xls"（OLE2/Compound File）または "xlsx"（ZIP/OOXML）。
+
+    HTMLエラーページ・truncated/garbage・空/spanned ZIPはJPXFetchError。
+    拡張子ではなく必ずbytesで判定する（§9）。"""
+    if not isinstance(content, (bytes, bytearray)):
+        raise JPXFetchError(f"workbook content is not bytes: {type(content).__name__}")
+    if len(content) < 8:
+        raise JPXFetchError(f"workbook content too small: {len(content)} bytes")
+
+    if content.startswith(OLE2_SIGNATURE):
+        return "xls"
+    if content.startswith(ZIP_LOCAL_FILE_SIGNATURE):
+        return "xlsx"
+    if content.startswith((ZIP_EMPTY_SIGNATURE, ZIP_SPANNED_SIGNATURE)):
+        raise JPXFetchError("ZIP archive is empty or spanned, not an xlsx workbook")
+
+    head = content[:512].lstrip().lower()
+    if head.startswith((b"<!doctype", b"<html", b"<?xml", b"<head", b"<body")):
+        raise JPXFetchError("received HTML/XML error page, not a workbook")
+    raise JPXFetchError(
+        f"unrecognized workbook signature: {bytes(content[:8]).hex()!r}"
+    )
+
+
+def download_workbook(
+    url: str, timeout: int = FETCH_TIMEOUT_SECONDS
+) -> tuple[bytes, str]:
+    """検証済みworkbook URLをHTTPS取得し、(content, format) を返す。
+
+    非200・network例外・requests未導入はJPXFetchError。
+    URL拡張子とbytesシグネチャが不一致（.xlsxなのにOLE2、.xlsなのにZIP等）の
+    場合はfail closed（§9）。"""
+    try:
+        import requests
+    except ImportError as e:
+        raise JPXFetchError(f"requests is not installed: {e!r}") from e
+
+    try:
+        resp = requests.get(url, timeout=timeout)
+    except Exception as e:  # noqa: BLE001
+        raise JPXFetchError(f"workbook fetch failed: {e!r}") from e
+
+    if resp.status_code != 200:
+        raise JPXFetchError(f"workbook unexpected status_code={resp.status_code}")
+
+    content = resp.content
+    detected = detect_workbook_format(content)
+
+    ext_format = "xlsx" if url.lower().endswith(".xlsx") else "xls"
+    if ext_format != detected:
+        raise JPXFetchError(
+            f"workbook extension/signature mismatch: URL says .{ext_format} "
+            f"but bytes are {detected}"
+        )
+    return content, detected
+
+
+def fetch_jpx_workbook_bytes(timeout: int = FETCH_TIMEOUT_SECONDS) -> bytes:
+    """default fetch path: listing page取得 → workbook URL discover →
+    workbook download（signature検証込み）。bytesのみ返す
+    （形式はparse_jpx_workbook_bytes / detect_workbook_format側で再判定する）。
+
+    いずれの段階の失敗もJPXFetchErrorとして送出され、get_jpx_universe()の
+    live → valid cache → seed_list_v1 fallback chainへ回る。"""
+    html = fetch_listing_page(timeout=timeout)
+    url = discover_workbook_url(html)
+    content, _fmt = download_workbook(url, timeout=timeout)
+    return content
 
 
 def fetch_jpx_xls(url: str = JPX_SOURCE_URL, timeout: int = FETCH_TIMEOUT_SECONDS) -> bytes:
-    """JPX公式data_j.xlsをHTTPS取得する。200以外・OLE2/xls以外のシグネチャは
-    JPXFetchErrorとして送出する（呼び出し側でcache/seed fallbackへ回す）。
+    """（legacy・後方互換）固定data_j.xls URLをHTTPS取得する。現在この添付URLは
+    404であり、default fetch pathでは使わない（fetch_jpx_workbook_bytes参照）。
 
-    requests自体が未導入の環境（ImportError/ModuleNotFoundError）もfetch異常の
-    一種としてJPXFetchErrorへ正規化する。これによりdependency欠如が
-    live → valid cache → seed_list_v1 のfallback chainを突破しない。"""
+    200以外・OLE2/xls以外のシグネチャはJPXFetchErrorとして送出する。
+    requests未導入（ImportError/ModuleNotFoundError）もfetch異常の一種として
+    JPXFetchErrorへ正規化する。"""
     try:
         import requests
     except ImportError as e:
@@ -195,9 +447,13 @@ def fetch_jpx_xls(url: str = JPX_SOURCE_URL, timeout: int = FETCH_TIMEOUT_SECOND
 
 
 def _code_to_str(raw: Any) -> str:
-    """codeは必ずstrとして保持する。xlrdの数値セルはfloatで返るため
-    整数値であればゼロ小数を落としてstr化し、文字列セル（英字混在code等）は
-    strip済みのstrをそのまま使う。"""
+    """codeは必ずstrとして保持する。xlrdの数値セルはfloat、openpyxlの数値セルは
+    intで返るため、整数値であればゼロ小数を落としてstr化し、文字列セル
+    （英字混在code等）はstrip済みのstrをそのまま使う。boolは数値扱いしない。"""
+    if isinstance(raw, bool):
+        return str(raw)
+    if isinstance(raw, int):
+        return str(raw)
     if isinstance(raw, float):
         if raw.is_integer():
             return str(int(raw))
@@ -291,6 +547,90 @@ def parse_jpx_xls_bytes(content: bytes) -> tuple[list[dict[str, Any]], list[dict
     return parse_rows_from_sheet(sheet)
 
 
+class _MatrixSheet:
+    """openpyxl等が返す行列（list[tuple]）を、parse_rows_from_sheet()が期待する
+    xlrd sheet互換interface（.nrows / .ncols / .cell(r, c).value）へ薄く適合させる。
+
+    xls経路とxlsx経路を単一の正規化ロジック（parse_rows_from_sheet）へ合流させ、
+    同一workbookのxls/xlsx入力が等価な正規化結果を返すことを保証する（§11/§25）。
+    ragged row（列数不揃い）は範囲外セルをNone扱いにする。"""
+
+    __slots__ = ("_matrix", "nrows", "ncols")
+
+    def __init__(self, matrix: list) -> None:
+        self._matrix = matrix
+        self.nrows = len(matrix)
+        self.ncols = len(matrix[0]) if matrix else 0
+
+    def cell(self, r: int, c: int) -> Any:
+        row = self._matrix[r]
+        value = row[c] if 0 <= c < len(row) else None
+        return _MatrixCell(value)
+
+
+class _MatrixCell:
+    __slots__ = ("value",)
+
+    def __init__(self, value: Any) -> None:
+        self.value = value
+
+
+def parse_jpx_xlsx_bytes(content: bytes) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    """ZIP/OOXML/xlsx bytesをopenpyxlでparseし、parse_rows_from_sheet()へ委譲する。
+
+    openpyxlはread_only=True / data_only=Trueで開く（マクロ実行なし、数式は
+    キャッシュ値のみ、大きなシートでも低メモリ）。openpyxl未導入・workbook open
+    失敗・sheet読み出し失敗はいずれもJPXParseErrorへ正規化する
+    （parse_rows_from_sheetが送出するschema系例外はそのまま伝播）。"""
+    try:
+        import openpyxl
+    except ImportError as e:
+        raise JPXParseError(f"openpyxl is not installed: {e!r}") from e
+
+    import io
+
+    wb = None
+    try:
+        wb = openpyxl.load_workbook(
+            io.BytesIO(content), read_only=True, data_only=True
+        )
+        if not wb.sheetnames:
+            raise JPXParseError("xlsx workbook has no sheets")
+        ws = wb[wb.sheetnames[0]]
+        matrix = [tuple(row) for row in ws.iter_rows(values_only=True)]
+    except JPXParseError:
+        raise
+    except Exception as e:  # noqa: BLE001
+        raise JPXParseError(f"openpyxl parse failed: {e!r}") from e
+    finally:
+        if wb is not None:
+            try:
+                wb.close()
+            except Exception:  # noqa: BLE001
+                pass
+
+    if not matrix:
+        raise JPXSchemaError("empty sheet (no header row)")
+
+    return parse_rows_from_sheet(_MatrixSheet(matrix))
+
+
+def parse_jpx_workbook_bytes(content: bytes) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    """default parse path: bytesシグネチャからxls/xlsxを判定し、対応する
+    parserへdispatchする。拡張子ではなくbytesで判定する（§9）。
+
+    未知シグネチャ・HTMLエラーページはJPXParseErrorへ正規化する
+    （fetch段の検証をすり抜けたケースへの二重防御）。"""
+    try:
+        fmt = detect_workbook_format(content)
+    except JPXFetchError as e:
+        raise JPXParseError(f"workbook signature detection failed: {e}") from e
+
+    if fmt == "xls":
+        return parse_jpx_xls_bytes(content)
+    return parse_jpx_xlsx_bytes(content)
+
+
 def detect_duplicate_codes(rows: list[dict[str, Any]]) -> list[str]:
     """code重複を検出する（順序維持、重複した2回目以降のcodeを列挙）。"""
     seen: set[str] = set()
@@ -304,10 +644,17 @@ def detect_duplicate_codes(rows: list[dict[str, Any]]) -> list[str]:
 
 
 def _source_as_of_iso(rows: list[dict[str, Any]]) -> str | None:
-    """JPX「日付」列（YYYYMMDD形式のfloat、例: 20260630.0）をISO date文字列へ。
+    """JPX「日付」列をISO date文字列へ。xlrdはfloat(20260630.0)、openpyxlは
+    int(20260630)を返し、稀にdatetime/dateセルの可能性もあるため全て受ける。
     先頭の有効な値を採用する（同一ファイル内で単一のsourceAsOfのため）。"""
     for row in rows:
         raw = row.get("source_as_of_raw")
+        if isinstance(raw, bool):
+            continue
+        if isinstance(raw, datetime):
+            return raw.date().isoformat()
+        if isinstance(raw, date):
+            return raw.isoformat()
         if isinstance(raw, (int, float)):
             s = str(int(raw))
             if len(s) == 8:
@@ -435,6 +782,9 @@ def _cache_payload_valid(payload: Any) -> bool:
         return False
     if not isinstance(payload.get("fetched_at"), str) or _parse_iso(payload["fetched_at"]) is None:
         return False
+    fmt = payload.get("workbook_format")
+    if fmt is not None and fmt not in ("xls", "xlsx"):
+        return False
     return True
 
 
@@ -491,6 +841,7 @@ def _cache_to_result(cache_payload: dict[str, Any], now: datetime) -> JPXUnivers
         fallback_used=True,
         cache_age_hours=_cache_age_hours(cache_payload, now),
         dropped_rows=[],
+        workbook_format=cache_payload.get("workbook_format"),
     )
 
 
@@ -515,6 +866,7 @@ def seed_list_v1_fallback(now: datetime) -> JPXUniverseResult:
         fallback_used=True,
         cache_age_hours=None,
         dropped_rows=[],
+        workbook_format=None,
     )
 
 
@@ -525,12 +877,13 @@ def seed_list_v1_fallback(now: datetime) -> JPXUniverseResult:
 
 def get_jpx_universe(
     now: datetime | None = None,
-    fetch_fn: Any = fetch_jpx_xls,
-    parse_fn: Any = parse_jpx_xls_bytes,
+    fetch_fn: Any = fetch_jpx_workbook_bytes,
+    parse_fn: Any = parse_jpx_workbook_bytes,
     cache_path: Path = CACHE_PATH,
 ) -> JPXUniverseResult:
     """JPX universe providerの主エントリポイント。failure chain:
-      1. live fetch成功 → validate（OLE2/schema/duplicate/row-count/
+      1. live fetch成功（listing page discover → workbook download →
+         signature検証）→ validate（schema/duplicate/row-count/
          eligible-count guard）→ eligible universe（fallbackUsed=False）
       2. fetch/parse/schema/duplicate/row-count/eligible-count異常
          → valid last-good cache（fallbackUsed=True, cacheAgeHours>=0）
@@ -550,6 +903,8 @@ def get_jpx_universe(
 
     fetch_fn/parse_fnはテスト用のdependency injectionポイント
     （fetch_fn: () -> bytes、parse_fn: (bytes) -> (rows, dropped)）。
+    defaultはlisting-page discovery経路（fetch_jpx_workbook_bytes）と
+    signature-dispatch parse（parse_jpx_workbook_bytes, xls/xlsx両対応）。
     """
     if now is None:
         now = datetime.now(timezone.utc)
@@ -559,6 +914,13 @@ def get_jpx_universe(
     try:
         content = fetch_fn()
         rows, dropped = parse_fn(content)
+
+        try:
+            workbook_format: str | None = detect_workbook_format(content)
+        except (JPXFetchError, TypeError):
+            # injected fake fetch（b"irrelevant"等）では判定不能。provenanceは
+            # Noneのまま——parse自体は成功しているので結果は有効。
+            workbook_format = None
 
         dupes = detect_duplicate_codes(rows)
         if dupes:
@@ -611,6 +973,7 @@ def get_jpx_universe(
             fallback_used=False,
             cache_age_hours=0.0,
             dropped_rows=dropped,
+            workbook_format=workbook_format,
         )
 
         save_cache({
@@ -623,6 +986,7 @@ def get_jpx_universe(
             "row_count": result.row_count,
             "segment_counts": result.segment_counts,
             "filters_applied": result.filters_applied,
+            "workbook_format": result.workbook_format,
         }, cache_path)
 
         return result

@@ -51,7 +51,9 @@ jobs:
           python-version: '3.11'
 
       - name: Install pytest and B004 test dependencies
-        run: pip install pytest pandas numpy requests xlrd
+        # xlrd: legacy JPX data_j.xls (OLE2) parse. openpyxl: current JPX
+        # data_j.xlsx (OOXML) parse — P5-B005-JPX-UNIVERSE-PRODUCTION-RECOVERY.
+        run: pip install pytest pandas numpy requests xlrd openpyxl
 
       - name: Run Operation + Tier A tests
         # test_operation (Card 2-1/2-2) + test_tier_a (Card 1-2〜1-4) のみ対象
@@ -106,12 +108,38 @@ jobs:
       - name: Re-anchor to latest remote tip
         run: python3 -m backend.engine.operation.ref_reanchor_gate
 
+      # ── P5-B005-JPX-UNIVERSE-PRODUCTION-RECOVERY: JPX universe cache持続化 ──
+      # data/.jpx_cache/jpx_universe_cache.json は .gitignore 対象で commit されず、
+      # GitHub-hosted scheduled run 間で揮発する。そのため live → last-good cache
+      # → seed の fallback chain が実運用では live → seed に縮退していた。
+      # この1ファイルだけを actions/cache で cross-run 持続化し、JPX live 取得が
+      # 一時失敗しても直前の正常 whole-market universe を復元できるようにする。
+      #  - restore はこの位置（checkout + re-anchor 済み・provider 実行前）で行う。
+      #    re-anchor は merge --ff-only のみで untracked/ignored file を消さない。
+      #  - scope は universe cache 1ファイルに限定。cheap_prescreen_cache.json は
+      #    同ディレクトリだが独自 freshness 管理を持ち候補スコアリング権威に
+      #    影響しうるため含めない（最小安全スコープ）。
+      #  - restore された cache も provider 側 schema/age/provenance 検証を必ず
+      #    通ってから使用される（actions/cache の復元自体は信用しない）。
+      #  - key に run_id を含めるため primary key は毎回 miss し post-job で必ず
+      #    新しい cache を save、次回 run は restore-keys prefix で最新を復元する。
+      #    schema 破壊時は key の v1 を上げて無効化できる。
+      - name: Restore JPX universe cache (durable last-good fallback)
+        uses: actions/cache@v4
+        with:
+          path: data/.jpx_cache/jpx_universe_cache.json
+          key: jpx-universe-cache-v1-${{ runner.os }}-${{ github.run_id }}
+          restore-keys: |
+            jpx-universe-cache-v1-${{ runner.os }}-
+
       - name: Install Python deps
         # P5-B004d: data/jpx_universe_provider.py (JPX data_j.xls source
         # adapter) + data/jpx_cheap_prescreen.py (bulk OHLCV pre-screen) の
-        # 依存。requests/xlrdはJPX providerのfetch/parseに、
+        # 依存。requests/xlrd/openpyxlはJPX providerのfetch/parseに、
         # pandas/numpyはcheap pre-screenのmetrics計算に使う。
-        run: pip install yfinance pandas numpy feedparser requests xlrd
+        # openpyxl: 現行JPX data_j.xlsx (OOXML) parse
+        # — P5-B005-JPX-UNIVERSE-PRODUCTION-RECOVERY。
+        run: pip install yfinance pandas numpy feedparser requests xlrd openpyxl
 
       - name: Evaluate mutation admission (pre_fetch)
         env:

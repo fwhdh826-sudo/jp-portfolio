@@ -803,3 +803,90 @@ def test_funnel_containment_does_not_suppress_unrelated_real_write_gates():
     assert "tier_a_snapshot_writer --output-dir public/data/ || true" not in section
     assert "tier_a_snapshot_writer --output-dir data/ || true" not in section
     assert "data.candidates_stocks_privacy_smoke --production" in section
+
+
+# ── P5-B005-JPX-UNIVERSE-PRODUCTION-RECOVERY: JPX universe cache persistence ──
+
+_JPX_CACHE_FILE = "data/.jpx_cache/jpx_universe_cache.json"
+_JPX_CACHE_STEP = "Restore JPX universe cache (durable last-good fallback)"
+
+
+def test_jpx_cache_uses_actions_cache_with_correct_path():
+    section = _update_data_section()
+    assert _JPX_CACHE_STEP in section
+    step = section.split(f"- name: {_JPX_CACHE_STEP}", 1)[1].split("- name:", 1)[0]
+    assert "uses: actions/cache@v4" in step
+    assert f"path: {_JPX_CACHE_FILE}" in step
+
+
+def test_jpx_cache_restore_is_after_reanchor():
+    section = _update_data_section()
+    reanchor_pos = section.index("Re-anchor to latest remote tip")
+    cache_pos = section.index(_JPX_CACHE_STEP)
+    assert reanchor_pos < cache_pos, "cache restore must run after the re-anchor gate"
+
+
+def test_jpx_cache_restore_is_before_candidates_provider_execution():
+    section = _update_data_section()
+    cache_pos = section.index(_JPX_CACHE_STEP)
+    build_pos = section.index("python3 -m data.build_candidates_stocks")
+    assert cache_pos < build_pos, "cache restore must run before the whole-market provider"
+
+
+def test_jpx_cache_has_versioned_key_and_stable_restore_prefix():
+    section = _update_data_section()
+    step = section.split(f"- name: {_JPX_CACHE_STEP}", 1)[1].split("- name:", 1)[0]
+    # rotating exact key: schema version + os + per-run uniqueness
+    assert "key: jpx-universe-cache-v1-${{ runner.os }}-${{ github.run_id }}" in step
+    # stable restore prefix so a later run restores the newest prior cache
+    assert "restore-keys:" in step
+    assert "jpx-universe-cache-v1-${{ runner.os }}-\n" in step
+
+
+def test_jpx_cache_scope_is_single_universe_file_not_whole_dir():
+    section = _update_data_section()
+    step = section.split(f"- name: {_JPX_CACHE_STEP}", 1)[1].split("- name:", 1)[0]
+    # smallest safe scope: the prescreen cache in the same dir is NOT persisted
+    assert "path: data/.jpx_cache\n" not in step
+    assert "cheap_prescreen_cache" not in step
+
+
+def test_jpx_cache_is_never_staged_copied_or_published():
+    for line in _TEXT.splitlines():
+        if ".jpx_cache" not in line and "jpx_universe_cache" not in line:
+            continue
+        low = line.lower()
+        assert "git add" not in low, line
+        assert "cp " not in low, line
+        assert "upload-artifact" not in low, line
+        assert "public/data" not in low, line
+    copy_step = _TEXT.split("Copy JSON to public/data", 1)[1].split("- name:", 1)[0]
+    assert "jpx_cache" not in copy_step
+
+
+def test_jpx_cache_file_is_git_ignored():
+    repo_root = Path(__file__).resolve().parents[1]
+    result = subprocess.run(
+        ["git", "check-ignore", "-q", _JPX_CACHE_FILE], cwd=repo_root
+    )
+    assert result.returncode == 0
+
+
+def test_openpyxl_installed_in_both_provider_execution_paths():
+    # §21: every Full Batch dependency-install step that can execute the JPX
+    # provider / build_candidates_stocks must install the xlsx parser.
+    operation_section = _TEXT.split("  operation-health:")[1].split("  update-data:")[0]
+    update_section = _update_data_section()
+    for section in (operation_section, update_section):
+        pip_lines = [l for l in section.splitlines() if "pip install" in l]
+        assert pip_lines
+        assert all("openpyxl" in l for l in pip_lines), pip_lines
+        assert all("xlrd" in l for l in pip_lines), pip_lines
+
+
+def test_safe_start_guard_job_is_unchanged_shape():
+    # §29: safe-start recovery is CLOSED — this ticket must not alter it.
+    assert "safe-start-guard:" in _TEXT
+    assert "late_run_guard --workflow full" in _TEXT
+    assert "needs: [safe-start-guard]" in _TEXT
+    assert _TEXT.count("- cron: '30 21 * * 0-4'") == 1
