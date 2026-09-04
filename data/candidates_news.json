@@ -1,34 +1,20 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-09-04T17:07:27.737014+09:00",
-  "sourceUpdatedAt": "2026-09-04T08:00:59+00:00",
+  "updatedAt": "2026-09-05T00:02:01.921748+09:00",
+  "sourceUpdatedAt": "2026-09-04T14:48:40+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": -0.057,
-      "negativeCount": 1,
-      "positiveCount": 1,
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
+      "positiveCount": 0,
       "neutralCount": 1,
-      "sourceCount": 3,
-      "itemCount": 3,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Nomura Says Three Straight BOJ Hikes Possible in Extreme Case",
-      "topPositiveTitle": "Yen Holds Most of Its Gains After Thursday's 2% Rise",
+      "topNegativeTitle": "片山財務相「米財務長官に問いただされたことない」日銀めぐり",
+      "topPositiveTitle": "片山財務相「米財務長官に問いただされたことない」日銀めぐり",
       "items": [
-        {
-          "title": "Nomura Says Three Straight BOJ Hikes Possible in Extreme Case",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-09-04T01:52:28+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-04/nomura-says-three-straight-boj-hikes-possible-in-extreme-case",
-          "tags": [
-            "fx",
-            "jp_broad",
-            "market",
-            "rates"
-          ]
-        },
         {
           "title": "片山財務相「米財務長官に問いただされたことない」日銀めぐり",
           "source": "NHK 経済",
@@ -41,19 +27,6 @@
             "market"
           ],
           "titleJa": "片山財務相「米財務長官に問いただされたことない」日銀めぐり"
-        },
-        {
-          "title": "Yen Holds Most of Its Gains After Thursday's 2% Rise",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.5,
-          "publishedAt": "2026-09-04T06:55:52+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-04/yen-holds-most-of-its-gains-after-thursday-s-2-rise-video",
-          "tags": [
-            "fx",
-            "jp_broad",
-            "market"
-          ]
         }
       ]
     },
@@ -70,36 +43,23 @@
       "items": []
     },
     "us_broad": {
-      "avgSentiment": -0.085,
-      "negativeCount": 2,
+      "avgSentiment": -0.054,
+      "negativeCount": 1,
       "positiveCount": 2,
-      "neutralCount": 0,
+      "neutralCount": 7,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 10,
       "isStale": false,
-      "topNegativeTitle": "World’s Biggest Money Managers Are Rebuilding Gold Positions",
-      "topPositiveTitle": "European Stocks Muted Before US Data; VW Soars on Restructuring",
+      "topNegativeTitle": "Treasuries Slide After Jobs Data Lift Fed Hike Wagers",
+      "topPositiveTitle": "Jobs Report Is More About Inflation, BlackRock's Rosenberg Says",
       "items": [
         {
-          "title": "World’s Biggest Money Managers Are Rebuilding Gold Positions",
+          "title": "Treasuries Slide After Jobs Data Lift Fed Hike Wagers",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-09-04T07:31:23+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-04/world-s-biggest-money-managers-are-rebuilding-gold-positions",
-          "tags": [
-            "gold",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "US Stocks and Treasuries Steady Before Jobs Data: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-03T22:14:26+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-03/stock-market-today-dow-s-p-live-updates",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-09-04T12:43:21+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-04/treasuries-slide-after-strong-jobs-data-lift-fed-hike-wagers",
           "tags": [
             "market",
             "rates",
@@ -107,123 +67,134 @@
           ]
         },
         {
-          "title": "European Stocks Muted Before US Data; VW Soars on Restructuring",
+          "title": "Dollar Slumps to Start September as Yen Surges on Rate Bets",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-04T07:33:15+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-04/european-stocks-muted-before-us-data-vw-soars-on-restructuring",
-          "tags": [
-            "global_broad",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Dollar Falls to Lowest Since May on Waller Remarks, Yen Gain",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-03T17:30:24+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-03/dollar-falls-to-weakest-since-may-on-waller-comments-yen-surge",
+          "sentiment": "negative",
+          "sentimentScore": -0.2,
+          "publishedAt": "2026-09-04T00:29:47+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-04/us-dollar-slumps-to-start-september-as-yen-surges-on-rate-bets",
           "tags": [
             "fx",
             "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Trump Says Fed ‘Must Get Smart’ and Lower Interest Rates",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-04T14:20:05+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-04/trump-says-fed-must-get-smart-and-lower-interest-rates-video",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "US Jobs Report August 2026: Key Takeaways on Employment, Payrolls",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-04T13:46:11+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-04/us-jobs-report-august-2026-key-takeaways-on-employment-payrolls",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Risk Assets Can Withstand Fed Rate Hike, BlackRock's Rosenberg Says",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-04T13:41:53+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-04/risk-assets-can-withstand-rate-hike-jeffrey-rosenberg-video",
+          "tags": [
+            "market",
+            "rates",
             "us_broad"
           ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.33,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "avgSentiment": -0.335,
+      "negativeCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 2,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Pimco Fund Beating 97% of Peers Cuts ‘Mag Seven’ to Bet on Asia",
-      "topPositiveTitle": "Pimco Fund Beating 97% of Peers Cuts ‘Mag Seven’ to Bet on Asia",
+      "topNegativeTitle": "Lululemon Falls on China Business; Tesla Cybercab Service | Stock Movers",
+      "topPositiveTitle": "Roubini Is Unworried by Higher Bond Yields With Rosy View of AI",
       "items": [
         {
-          "title": "Pimco Fund Beating 97% of Peers Cuts ‘Mag Seven’ to Bet on Asia",
+          "title": "Lululemon Falls on China Business; Tesla Cybercab Service | Stock Movers",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-04T06:42:12+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-04/pimco-fund-beating-97-of-peers-cuts-mag-seven-to-bet-on-asia",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-09-04T14:35:58+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-04/lululemon-falls-on-china-business-tesla-cybercab-video",
           "tags": [
+            "fx",
             "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Roubini Is Unworried by Higher Bond Yields With Rosy View of AI",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-04T08:48:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-04/roubini-is-unworried-by-higher-bond-yields-with-rosy-view-of-ai",
+          "tags": [
+            "macro_risk",
+            "market",
+            "rates",
             "us_growth"
           ]
         }
       ]
     },
     "global_broad": {
-      "avgSentiment": 0.165,
+      "avgSentiment": 0.67,
       "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 1,
+      "neutralCount": 0,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Horizons Middle East & Africa 9/4/2026",
-      "topPositiveTitle": "European Stocks Muted Before US Data; VW Soars on Restructuring",
+      "topNegativeTitle": "Emerging-Market Currencies Post Longest Winning Run Since 2007",
+      "topPositiveTitle": "Emerging-Market Currencies Post Longest Winning Run Since 2007",
       "items": [
         {
-          "title": "Horizons Middle East & Africa 9/4/2026",
+          "title": "Emerging-Market Currencies Post Longest Winning Run Since 2007",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-04T06:53:46+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-04/horizons-middle-east-africa-9-4-2026-video",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-09-04T04:11:05+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-04/emerging-market-stocks-currencies-rise-as-fed-hike-bets-ease",
           "tags": [
             "global_broad",
             "market"
-          ]
-        },
-        {
-          "title": "European Stocks Muted Before US Data; VW Soars on Restructuring",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-04T07:33:15+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-04/european-stocks-muted-before-us-data-vw-soars-on-restructuring",
-          "tags": [
-            "global_broad",
-            "market",
-            "rates",
-            "us_broad"
           ]
         }
       ]
     },
     "gold": {
-      "avgSentiment": -0.67,
-      "negativeCount": 1,
+      "avgSentiment": 0,
+      "negativeCount": 0,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "World’s Biggest Money Managers Are Rebuilding Gold Positions",
-      "topPositiveTitle": "World’s Biggest Money Managers Are Rebuilding Gold Positions",
-      "items": [
-        {
-          "title": "World’s Biggest Money Managers Are Rebuilding Gold Positions",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-09-04T07:31:23+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-04/world-s-biggest-money-managers-are-rebuilding-gold-positions",
-          "tags": [
-            "gold",
-            "market",
-            "us_broad"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "reit": {
       "avgSentiment": 0,
@@ -250,139 +221,102 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.055,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 5,
+      "avgSentiment": -0.083,
+      "negativeCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Slim: Saudi, UAE Investment May Top 2025 Levels",
-      "topPositiveTitle": "European Gas Heads for Fourth Weekly Gain as Iran War Drags On",
+      "topNegativeTitle": "Latest Oil Market News and Analysis for Sept. 4",
+      "topPositiveTitle": "Record Labor Day Gas Prices Punctuate Worsening Fuel Crisis",
       "items": [
         {
-          "title": "Slim: Saudi, UAE Investment May Top 2025 Levels",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-04T05:09:46+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-04/slim-saudi-uae-investment-may-top-2025-levels-video",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "India Says US Trade Deal Hinges on Preferential Tariff Rate",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-04T02:58:13+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-04/india-says-us-trade-deal-hinges-on-preferential-tariff-rate",
-          "tags": [
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Bathla Crisis Puts Focus on $94 Million of Unsecured Debts",
+          "title": "Latest Oil Market News and Analysis for Sept. 4",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-04T02:21:53+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-04/bathla-crisis-puts-focus-on-94-million-of-unsecured-debts",
-          "tags": [
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Philippines Keeps Eye on Iran War as Inflation Barely Eases",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-04T01:04:33+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-04/philippine-inflation-eases-to-6-1-after-successive-rate-hikes",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "South Africa’s Kganyago Sees Room for Caution on Rate Moves",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-03T18:21:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-03/south-africa-s-kganyago-sees-room-for-caution-on-rate-moves",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-03T22:12:01+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-03/latest-oil-market-news-and-analysis-for-sept-4",
           "tags": [
             "commodity",
             "geopolitical",
             "macro_risk",
             "market"
+          ]
+        },
+        {
+          "title": "Record Labor Day Gas Prices Punctuate Worsening Fuel Crisis",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-04T10:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-04/americans-are-out-of-places-to-hide-from-an-unending-fuel-crisis",
+          "tags": [
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "‘Nothing But Headaches’: Vermont Businesses Decry Canada Tariffs",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-04T10:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-04/-nothing-but-headaches-vermont-businesses-decry-canada-tariffs",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Roubini Is Unworried by Higher Bond Yields With Rosy View of AI",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-04T08:48:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-04/roubini-is-unworried-by-higher-bond-yields-with-rosy-view-of-ai",
+          "tags": [
+            "macro_risk",
+            "market",
+            "rates",
+            "us_growth"
           ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": 0.098,
+      "avgSentiment": -0.067,
       "negativeCount": 1,
-      "positiveCount": 3,
+      "positiveCount": 1,
       "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Nomura Says Three Straight BOJ Hikes Possible in Extreme Case",
-      "topPositiveTitle": "Yen Holds Most of Its Gains After Thursday's 2% Rise",
+      "topNegativeTitle": "Lululemon Falls on China Business; Tesla Cybercab Service | Stock Movers",
+      "topPositiveTitle": "World Bank Warns Zimbabwe Against Rush to Make ZiG Sole Currency",
       "items": [
         {
-          "title": "Nomura Says Three Straight BOJ Hikes Possible in Extreme Case",
-          "source": "Bloomberg Economics",
+          "title": "Lululemon Falls on China Business; Tesla Cybercab Service | Stock Movers",
+          "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.67,
-          "publishedAt": "2026-09-04T01:52:28+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-04/nomura-says-three-straight-boj-hikes-possible-in-extreme-case",
+          "publishedAt": "2026-09-04T14:35:58+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-04/lululemon-falls-on-china-business-tesla-cybercab-video",
           "tags": [
             "fx",
-            "jp_broad",
             "market",
-            "rates"
+            "us_growth"
           ]
         },
         {
-          "title": "Japan Finance Chief to Survive Takaichi’s Reshuffle, Reports Say",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-04T06:00:12+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-04/japan-s-katayama-set-to-stay-as-finance-minister-reports-say",
-          "tags": [
-            "fx",
-            "market"
-          ]
-        },
-        {
-          "title": "Carry Trade Unwind Sparks Biggest Yen Rally in Months | Insight with Haslinda Amin 9/4/2026",
+          "title": "Dollar Slumps to Start September as Yen Surges on Rate Bets",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-04T06:13:33+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-04/insight-with-haslinda-amin-9-4-2026-video",
-          "tags": [
-            "fx",
-            "market"
-          ]
-        },
-        {
-          "title": "Dollar Falls to Lowest Since May on Waller Remarks, Yen Gain",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-03T17:30:24+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-03/dollar-falls-to-weakest-since-may-on-waller-comments-yen-surge",
+          "sentiment": "negative",
+          "sentimentScore": -0.2,
+          "publishedAt": "2026-09-04T00:29:47+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-04/us-dollar-slumps-to-start-september-as-yen-surges-on-rate-bets",
           "tags": [
             "fx",
             "market",
@@ -390,64 +324,37 @@
           ]
         },
         {
-          "title": "Yen Holds Most of Its Gains After Thursday's 2% Rise",
-          "source": "Bloomberg Markets",
+          "title": "World Bank Warns Zimbabwe Against Rush to Make ZiG Sole Currency",
+          "source": "Bloomberg Economics",
           "sentiment": "positive",
-          "sentimentScore": 0.5,
-          "publishedAt": "2026-09-04T06:55:52+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-04/yen-holds-most-of-its-gains-after-thursday-s-2-rise-video",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-09-04T11:14:42+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-04/world-bank-warns-zimbabwe-against-rush-to-make-zig-sole-currency",
           "tags": [
             "fx",
-            "jp_broad",
             "market"
           ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": -0.096,
-      "negativeCount": 3,
+      "avgSentiment": -0.042,
+      "negativeCount": 1,
       "positiveCount": 2,
-      "neutralCount": 2,
+      "neutralCount": 5,
       "sourceCount": 2,
-      "itemCount": 7,
+      "itemCount": 8,
       "isStale": false,
-      "topNegativeTitle": "Nomura Says Three Straight BOJ Hikes Possible in Extreme Case",
-      "topPositiveTitle": "European Stocks Muted Before US Data; VW Soars on Restructuring",
+      "topNegativeTitle": "Treasuries Slide After Jobs Data Lift Fed Hike Wagers",
+      "topPositiveTitle": "Aviva Investors Boosts Gilts Bet as Yield Surge Caps UK Spending",
       "items": [
         {
-          "title": "Nomura Says Three Straight BOJ Hikes Possible in Extreme Case",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-09-04T01:52:28+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-04/nomura-says-three-straight-boj-hikes-possible-in-extreme-case",
-          "tags": [
-            "fx",
-            "jp_broad",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Economists See Final ECB Rate Hike Next Week",
+          "title": "Treasuries Slide After Jobs Data Lift Fed Hike Wagers",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-04T06:25:48+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-04/economists-see-final-ecb-rate-hike-next-week-video",
-          "tags": [
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "US Stocks and Treasuries Steady Before Jobs Data: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-03T22:14:26+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-03/stock-market-today-dow-s-p-live-updates",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-09-04T12:43:21+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-04/treasuries-slide-after-strong-jobs-data-lift-fed-hike-wagers",
           "tags": [
             "market",
             "rates",
@@ -455,57 +362,87 @@
           ]
         },
         {
-          "title": "Kazakhstan Delivers Third Straight Rate Cut on Slowing Inflation",
-          "source": "Bloomberg Economics",
+          "title": "Trump Says Fed ‘Must Get Smart’ and Lower Interest Rates",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-04T07:06:10+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-04/kazakhstan-delivers-third-straight-rate-cut-on-slowing-inflation",
+          "publishedAt": "2026-09-04T14:20:05+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-04/trump-says-fed-must-get-smart-and-lower-interest-rates-video",
           "tags": [
-            "commodity",
             "market",
-            "rates"
+            "rates",
+            "us_broad"
           ]
         },
         {
-          "title": "Economists See Final ECB Hike Next Week in Split With Markets",
+          "title": "Risk Assets Can Withstand Fed Rate Hike, BlackRock's Rosenberg Says",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-04T13:41:53+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-04/risk-assets-can-withstand-rate-hike-jeffrey-rosenberg-video",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "S&P 500 Wavers as Strong Jobs Growth Fuels Fed-Hike Bets",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-04T11:50:13+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-04/us-stock-futures-steady-ahead-of-key-august-jobs-data",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Roubini Is Unworried by Higher Bond Yields With Rosy View of AI",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-04T04:15:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-04/economists-see-final-ecb-hike-next-week-in-split-with-markets",
+          "publishedAt": "2026-09-04T08:48:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-04/roubini-is-unworried-by-higher-bond-yields-with-rosy-view-of-ai",
           "tags": [
+            "macro_risk",
             "market",
-            "rates"
+            "rates",
+            "us_growth"
           ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.249,
-      "negativeCount": 0,
-      "positiveCount": 4,
-      "neutralCount": 4,
+      "avgSentiment": -0.11,
+      "negativeCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 8,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Why Laser Beams Are the Hottest New Tech in Defense",
-      "topPositiveTitle": "US Retail Diesel Hits Record as Hormuz, Russia Crises Stretch On",
+      "topNegativeTitle": "Latest Oil Market News and Analysis for Sept. 4",
+      "topPositiveTitle": "Kazakhstan Delivers Third Rate Cut on Inflation Slowdown",
       "items": [
         {
-          "title": "Why Laser Beams Are the Hottest New Tech in Defense",
+          "title": "Latest Oil Market News and Analysis for Sept. 4",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-04T08:00:34+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-04/why-laser-beams-are-the-hottest-new-tech-in-defense",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-03T22:12:01+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-03/latest-oil-market-news-and-analysis-for-sept-4",
           "tags": [
             "commodity",
+            "geopolitical",
+            "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Kazakhstan Delivers Third Straight Rate Cut on Slowing Inflation",
+          "title": "Kazakhstan Delivers Third Rate Cut on Inflation Slowdown",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
@@ -518,78 +455,38 @@
           ]
         },
         {
-          "title": "Slim: Saudi, UAE Investment May Top 2025 Levels",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-04T05:09:46+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-04/slim-saudi-uae-investment-may-top-2025-levels-video",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "South Africa’s Kganyago Sees Room for Caution on Rate Moves",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-03T18:21:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-03/south-africa-s-kganyago-sees-room-for-caution-on-rate-moves",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Markets Weigh Energy Supply Strain: Market Snapshot",
+          "title": "A $1.6 Billion Quant ETF Pivots to Huge Oil Bet as Adviser Exits",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-04T06:31:42+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-04/markets-weigh-energy-supply-strain-market-snapshot-video",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-04T14:16:49+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-04/a-1-6-billion-quant-etf-pivots-to-huge-oil-bet-as-adviser-exits",
           "tags": [
             "commodity",
-            "geopolitical",
-            "market"
+            "market",
+            "trust"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.249,
-      "negativeCount": 0,
-      "positiveCount": 4,
-      "neutralCount": 4,
+      "avgSentiment": 0.085,
+      "negativeCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 8,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Ferrexpo Takes a Step Off the Brink With $100 Million in Funding",
-      "topPositiveTitle": "US Retail Diesel Hits Record as Hormuz, Russia Crises Stretch On",
+      "topNegativeTitle": "Latest Oil Market News and Analysis for Sept. 4",
+      "topPositiveTitle": "Global Food Prices Jump to Highest Since 2022 as Risks Build",
       "items": [
         {
-          "title": "Ferrexpo Takes a Step Off the Brink With $100 Million in Funding",
+          "title": "Latest Oil Market News and Analysis for Sept. 4",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-04T07:47:09+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-04/ferrexpo-takes-a-step-off-the-brink-with-100-million-in-funding",
-          "tags": [
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "Slim: Saudi, UAE Investment May Top 2025 Levels",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-04T05:09:46+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-04/slim-saudi-uae-investment-may-top-2025-levels-video",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-03T22:12:01+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-03/latest-oil-market-news-and-analysis-for-sept-4",
           "tags": [
             "commodity",
             "geopolitical",
@@ -598,41 +495,38 @@
           ]
         },
         {
-          "title": "Philippines Keeps Eye on Iran War as Inflation Barely Eases",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-04T01:04:33+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-04/philippine-inflation-eases-to-6-1-after-successive-rate-hikes",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "South Africa’s Kganyago Sees Room for Caution on Rate Moves",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-03T18:21:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-03/south-africa-s-kganyago-sees-room-for-caution-on-rate-moves",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Markets Weigh Energy Supply Strain: Market Snapshot",
+          "title": "US Sanctions Small Turkish Investment Bank Over Iran Links",
           "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-04T14:28:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-04/us-sanctions-small-turkish-investment-bank-over-iran-links",
+          "tags": [
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "‘Nothing But Headaches’: Vermont Businesses Decry Canada Tariffs",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-04T10:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-04/-nothing-but-headaches-vermont-businesses-decry-canada-tariffs",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Global Food Prices Jump to Highest Since 2022 as Risks Build",
+          "source": "Bloomberg Economics",
           "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-04T06:31:42+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-04/markets-weigh-energy-supply-strain-market-snapshot-video",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-09-04T08:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-04/global-food-prices-jump-to-highest-since-2022-as-risks-increase",
           "tags": [
-            "commodity",
             "geopolitical",
             "market"
           ]
