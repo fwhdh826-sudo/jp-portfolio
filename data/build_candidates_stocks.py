@@ -182,6 +182,7 @@ def whole_market_universe_provider(
     now: datetime | None = None,
     get_universe_fn: Any = None,
     build_shortlist_fn: Any = None,
+    run_token: str | None = None,
 ) -> UniverseResultWithProvenance:
     """P5-B004d: production向けwhole-market provider。
 
@@ -199,7 +200,15 @@ def whole_market_universe_provider(
 
     get_universe_fn/build_shortlist_fnはテスト用のdependency injection
     ポイント（省略時はget_jpx_universe/build_cheap_prescreen_shortlistの
-    実実装を使う）。"""
+    実実装を使う）。
+
+    run_tokenはFull Batchの既存run-token（main()の--run-tokenをそのまま
+    透過、P5-B005-R4 §19）。get_universe_fnが省略された場合のみ、実装の
+    get_jpx_universe()呼び出しへこのtokenを渡す——current-run cache
+    attestation（jpx_universe_provider.ATTESTATION_PATH）の書き込みに
+    使われる。get_universe_fnを明示指定するテストのcall signature
+    （lambda now=None: ...等）には一切影響しない
+    （呼び出し箇所get_universe_fn(now=now)は変更しない）。"""
     if now is None:
         now = datetime.now(timezone.utc)
 
@@ -211,7 +220,8 @@ def whole_market_universe_provider(
         from data.jpx_cheap_prescreen import build_cheap_prescreen_shortlist
 
         if get_universe_fn is None:
-            get_universe_fn = get_jpx_universe
+            def get_universe_fn(now: datetime | None = None) -> Any:
+                return get_jpx_universe(now=now, run_token=run_token)
         if build_shortlist_fn is None:
             build_shortlist_fn = build_cheap_prescreen_shortlist
 
@@ -726,7 +736,7 @@ def main(argv: list[str] | tuple[str, ...] = ()) -> None:
     # P5-B005-B2: provider呼び出しは1回のみ行い（re-fetch禁止）、その結果を
     # build_candidates_stocks()とprescreen_metadata.json書き出しの両方で
     # 共有する（同一runの同一prescreen結果であることをconstructionで保証する）。
-    provider_result = whole_market_universe_provider(now=now)
+    provider_result = whole_market_universe_provider(now=now, run_token=args.run_token)
     payload = build_candidates_stocks(
         universe_provider=lambda: provider_result,
         now=now,

@@ -867,39 +867,49 @@ def test_jpx_cache_save_condition_depends_on_current_run_provenance_not_file_pre
     assert "save_eligible" in eligibility_step
 
 
-def test_jpx_cache_save_eligibility_uses_current_run_pipeline_path_and_run_token():
-    # §24/§26: current-run provenance must come from existing fields already
-    # produced this run — candidates_stocks.json's _meta.pipelinePath (only
-    # "normal" for a fresh live JPX success; whole_market_universe_provider()
-    # sets it to "cache_fallback"/"seed_fallback" otherwise) and _meta.runToken
-    # (from the existing candidates-run-token step), not an invented schema.
+def test_jpx_cache_save_eligibility_uses_jpx_specific_provenance_and_run_token():
+    # P5-B005-R4 §16/§27: aggregate _meta.pipelinePath must NOT gate JPX
+    # cache save eligibility — it mixes in the unrelated prescreen fallback
+    # outcome, which would wrongly veto a JPX live refresh whenever only the
+    # prescreen stage later falls back (R3 false-negative). The gate must
+    # instead use JPX-specific provenance (_meta.universeProvenance.
+    # jpxFallbackUsed, already produced this run by
+    # whole_market_universe_provider()) and _meta.runToken.
     section = _update_data_section()
     step = _jpx_cache_step_body(section, _JPX_CACHE_ELIGIBILITY_STEP)
     assert "steps.candidates-run-token.outputs.run_token" in step
-    assert "steps.candidates-run-start.outputs.started_at" in step
-    assert "pipelinePath" in step
-    assert 'pipeline_path != "normal"' in step
-    assert "runToken" in step
+    assert 'candidates.get("_meta"' in step
+    assert "pipeline_path" not in step
+    assert "_meta.pipelinePath" not in step
 
 
-def test_jpx_cache_save_eligibility_revalidates_cache_through_canonical_validator():
-    # §11: the eligibility gate must reuse the same canonical cache
-    # authority validator the provider itself uses for save/load — not a
-    # second, independently-defined notion of a valid cache.
+def test_jpx_cache_save_eligibility_delegates_to_single_canonical_implementation():
+    # §11/§22: the eligibility gate must reuse a single canonical
+    # implementation (jpx_cache_save_eligible) shared with the provider's
+    # own save/load path — not a second, independently-defined notion of a
+    # valid/current-run cache duplicated inline in the workflow step.
     section = _update_data_section()
     step = _jpx_cache_step_body(section, _JPX_CACHE_ELIGIBILITY_STEP)
-    assert "from data.jpx_universe_provider import CACHE_PATH, cache_authority_valid" in step
-    assert "cache_authority_valid(payload, now)" in step
+    assert "from data.jpx_universe_provider import (" in step
+    assert "ATTESTATION_PATH," in step
+    assert "CACHE_PATH," in step
+    assert "jpx_cache_save_eligible," in step
+    assert "load_attestation," in step
+    assert "jpx_cache_save_eligible(" in step
 
 
-def test_jpx_cache_save_eligibility_checks_freshness_against_run_start():
-    # §26/§32: a valid cache used only as a fallback (live failed, restored
-    # cache still authority-valid) must not be treated as freshly refreshed —
-    # its fetched_at predates this run's own started_at.
+def test_jpx_cache_save_eligibility_binds_to_current_run_attestation():
+    # §17-22/§28: current-run cache save eligibility must be proven by a
+    # content-strong current-run attestation (run_token + SHA-256 of the
+    # exact cache file bytes), not an approximate combination of source /
+    # count / timestamp lower bound — a different independently-valid cache
+    # payload substituted after attestation creation must be rejected.
     section = _update_data_section()
     step = _jpx_cache_step_body(section, _JPX_CACHE_ELIGIBILITY_STEP)
-    assert "fetched_at" in step
-    assert "run_started - fetched_at" in step
+    assert "load_attestation(ATTESTATION_PATH)" in step
+    assert "cache_bytes = CACHE_PATH.read_bytes()" in step
+    assert "attestation=attestation" in step
+    assert "cache_bytes=cache_bytes" in step
 
 
 def test_jpx_cache_save_eligibility_never_fails_the_job_on_fallback():

@@ -51,6 +51,7 @@ public/data配下へは一切コピーしない。
 """
 from __future__ import annotations
 
+import hashlib
 import json
 import re
 import sys
@@ -174,6 +175,20 @@ ELIGIBLE_COUNT_MIN_RATIO = 0.7
 
 CACHE_PATH = Path(__file__).parent / ".jpx_cache" / "jpx_universe_cache.json"
 CACHE_SCHEMA_KIND = "jpx_universe_cache_v1"
+
+# P5-B005-R4: current-run cache attestation（ephemeral、§17-21）。
+# jpx_universe_cache.json（persistent last-good cache、actions/cacheで
+# cross-run永続化される）とは別の、"このrunner・このrunが実際にこの
+# cache bytesをlive JPXから生成した"ことだけを証明するsidecar。
+# data/.jpx_cache/ 配下（.gitignore対象、CACHE_PATH参照）に置くことで
+# 追加のgitignoreルールなしでcommit対象外になる。actions/cacheの
+# path（full_batch.yml）はjpx_universe_cache.jsonの1ファイルのみを
+# 指すため、このsidecarはcross-run永続化されない
+# （毎runで揮発する——これは意図的な設計であり欠陥ではない、§21）。
+ATTESTATION_PATH = (
+    Path(__file__).parent / ".jpx_cache" / "jpx_universe_cache.attestation.json"
+)
+ATTESTATION_SCHEMA_KIND = "jpx_universe_cache_attestation_v1"
 
 # last-good cacheとして使ってよい最大経過時間。Full Batchは平日毎朝走るが、
 # 複数日にわたるJPX live取得断絶でもfallbackとして使えるよう十分な余裕を
@@ -870,14 +885,33 @@ def _source_as_of_iso(rows: list[dict[str, Any]]) -> str | None:
 # ---------------------------------------------------------------------------
 
 
-# 実データ（1301, 7203, 166A, 285A, 25935等）で確認済みのJPX証券code形状:
-# 先頭は必ず1-9の数字、残りは数字またはASCII大文字のみ、全体で4桁
-# （普通株式相当）または5桁（優先株/種類株式、is_preferred_or_class_share
-# 参照）。空白・小文字・記号（"BAD!"等）・非ASCIIはいずれも実際の
-# JPXコード命名規則に現れない（P5-B005-R3 §12: cache authorityの
-# canonical code contractとしてlive parse authorityが生成しうる形状を
-# 単一の定義として再利用する）。
-_JPX_CODE_SHAPE_RE = re.compile(r"^[1-9][0-9A-Z]{3,4}$")
+# JPX/SICC公式の証券コード新設ルールにおける4文字specific-name code
+# （普通株式相当。5桁優先株/種類株式=4文字specific-name code+1文字
+# reserved codeの構造は別——is_preferred_or_class_share()参照、§12）の
+# 位置別文字種契約（P5-B005-R4 Blocker A: R3の`[1-9][0-9A-Z]{3,4}`は
+# 桁数のみで英字位置・除外英字を一切見ておらず、1ABC/12A4/123B/999Z等の
+# 非正規formatを誤って受理していた）:
+#   位置1: 数字のみ（既存JPX code authorityと同じ1-9。0始まりのcodeは
+#          実データに現れない、P5-B005-R3 §12を踏襲）
+#   位置2: 数字 または 割当許可されたASCII大文字英字
+#   位置3: 数字のみ
+#   位置4: 数字 または 割当許可されたASCII大文字英字
+# JPX/SICCが証券codeへの割当から除外している英字（紛らわしい形状の文字を
+# 避けるための公式除外）: B, E, I, O, Q, V, Z。
+# 実データ（1301, 7203等の数字のみ、166A, 285A等の位置2/4英字混在）・
+# 将来の公式割当例（1A00等、位置2英字）のいずれとも整合する
+# （2026-07-14実データのalphanumeric codeは166A/285Aの2件のみだが、
+# この2件を正しく受理しつつ非正規formatを拒否するのが本ruleの目的——
+# 「今日時点の1552件に含まれる」ことをvalidityの定義にしてはならない、
+# P5-B005-R4 §10）。
+_JPX_EXCLUDED_LETTERS = frozenset("BEIOQVZ")
+_JPX_PERMITTED_DIGIT_OR_LETTER = "".join(
+    ch for ch in "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    if ch not in _JPX_EXCLUDED_LETTERS
+)
+_JPX_CODE_SHAPE_RE = re.compile(
+    rf"^[1-9][{_JPX_PERMITTED_DIGIT_OR_LETTER}][0-9][{_JPX_PERMITTED_DIGIT_OR_LETTER}]$"
+)
 
 
 def _is_canonical_jpx_code(code: Any) -> bool:
@@ -1166,6 +1200,160 @@ def cache_authority_valid(payload: dict[str, Any], now: datetime) -> bool:
     return _cache_authority_valid(payload, now)
 
 
+# ---------------------------------------------------------------------------
+# Current-run cache attestation（P5-B005-R4 §17-22。ephemeral、actions/cache
+# には一切persistしない——ATTESTATION_PATH参照）。
+# ---------------------------------------------------------------------------
+
+
+def _sha256_bytes(data: bytes) -> str:
+    return hashlib.sha256(data).hexdigest()
+
+
+def _remove_attestation(path: Path = ATTESTATION_PATH) -> None:
+    """新しいrunのJPX取得を試みる前に、前run由来のattestationを必ず削除する
+    （§20）。live→cache fallback→seed fallbackのいずれの経路を辿っても、
+    このrunがちょうど書いたattestationだけが有効という不変条件を保つ。
+    削除自体の失敗（存在しない・権限等）はfallback chainを妨げない。"""
+    try:
+        path.unlink(missing_ok=True)
+    except OSError:
+        pass
+
+
+def _write_attestation(
+    *,
+    run_token: str,
+    cache_path: Path,
+    source: str,
+    fetched_at: str,
+    eligible_count: int,
+    attestation_path: Path = ATTESTATION_PATH,
+) -> None:
+    """live JPX取得成功＋canonical cache書き込み直後にのみ呼ばれる。
+    cache_sha256はcache_path書き込み"後"に実ファイルbytesを読み直して
+    計算する（§18: hashはfinal canonical cache fileが書かれた後に計算
+    しなければならない——in-memory payloadのjson.dumps結果を仮定しない）。
+    save_cache()と同じ一時ファイル→atomic replaceパターンで書き込む。"""
+    cache_sha256 = _sha256_bytes(cache_path.read_bytes())
+    payload = {
+        "schemaKind": ATTESTATION_SCHEMA_KIND,
+        "run_token": run_token,
+        "cache_sha256": cache_sha256,
+        "source": source,
+        "fetched_at": fetched_at,
+        "eligible_count": eligible_count,
+    }
+    attestation_path.parent.mkdir(parents=True, exist_ok=True)
+    tmp_path = attestation_path.with_name(attestation_path.name + ".tmp")
+    try:
+        tmp_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+        tmp_path.replace(attestation_path)
+    except BaseException:
+        tmp_path.unlink(missing_ok=True)
+        raise
+
+
+def _attestation_payload_valid(payload: Any) -> bool:
+    """attestationファイルがschema上有効か（corruption/tamper検出の構造層。
+    意味論的なcache/run_tokenとの一致はjpx_cache_save_eligible()が担う）。"""
+    if not isinstance(payload, dict):
+        return False
+    if payload.get("schemaKind") != ATTESTATION_SCHEMA_KIND:
+        return False
+    run_token = payload.get("run_token")
+    if not isinstance(run_token, str) or not run_token:
+        return False
+    cache_sha256 = payload.get("cache_sha256")
+    if not isinstance(cache_sha256, str) or len(cache_sha256) != 64:
+        return False
+    if any(c not in "0123456789abcdef" for c in cache_sha256):
+        return False
+    if not isinstance(payload.get("source"), str) or not payload["source"]:
+        return False
+    if not isinstance(payload.get("fetched_at"), str) or _parse_iso(payload["fetched_at"]) is None:
+        return False
+    eligible_count = payload.get("eligible_count")
+    if not isinstance(eligible_count, int) or isinstance(eligible_count, bool) or eligible_count < 0:
+        return False
+    return True
+
+
+def load_attestation(path: Path = ATTESTATION_PATH) -> dict[str, Any] | None:
+    """current-run attestationを読み込む。存在しない/corrupt/schema不正なら
+    None（load_cache()と同じcorruption-safe契約）。"""
+    if not path.exists():
+        return None
+    try:
+        raw = json.loads(path.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError, UnicodeDecodeError):
+        return None
+    return raw if _attestation_payload_valid(raw) else None
+
+
+def jpx_cache_save_eligible(
+    *,
+    candidates_meta: dict[str, Any],
+    expected_run_token: str,
+    cache_payload: dict[str, Any] | None,
+    cache_bytes: bytes | None,
+    attestation: dict[str, Any] | None,
+    now: datetime,
+) -> tuple[bool, str]:
+    """P5-B005-R4 §22: Full Batch workflowのJPX cache save-eligibility gate
+    が使う単一canonical判定（cache_authority_validと同じ「複製ではなく
+    module外から再利用する単一実装」契約、§11踏襲）。
+
+    aggregate _meta.pipelinePathは使わない（§16: prescreenだけがcache
+    fallbackへ回ってもJPX自体はlive成功していうるケース＝§27の
+    JPX_LIVE_AND_PRESCREEN_FALLBACK_STILL_ELIGIBLEを誤ってfalseにする
+    ため）。代わりにJPX固有のprovenance
+    （_meta.universeProvenance.jpxFallbackUsed/jpxSource/jpxEligibleCount、
+    既存whole_market_universe_provider()が同一run内で書く値）＋canonical
+    cache authority＋current-run attestationのcontent binding
+    （run_token一致・SHA256一致・source/eligible_count/fetched_at一致）の
+    全てを要求する。いずれか1つでも欠けたり食い違えばFalseを返す
+    （fail closed）。戻り値の理由文字列はworkflow step診断ログとテスト
+    双方から使う。"""
+    if not isinstance(expected_run_token, str) or not expected_run_token:
+        return False, "expected_run_token is empty"
+    if candidates_meta.get("runToken") != expected_run_token:
+        return False, "candidates_stocks.json _meta.runToken does not match this run"
+
+    provenance = candidates_meta.get("universeProvenance")
+    if not isinstance(provenance, dict):
+        return False, "candidates_stocks.json _meta.universeProvenance is missing"
+    if provenance.get("jpxFallbackUsed") is not False:
+        return False, (
+            "universeProvenance.jpxFallbackUsed is not a fresh live JPX acquisition"
+        )
+    if provenance.get("jpxSource") != SOURCE_IDENTIFIER:
+        return False, "universeProvenance.jpxSource is not the expected JPX source identifier"
+
+    if cache_payload is None:
+        return False, "cache file does not exist or is not valid JSON"
+    if not cache_authority_valid(cache_payload, now):
+        return False, "cache payload fails canonical authority validation"
+
+    if provenance.get("jpxEligibleCount") != len(cache_payload.get("items", [])):
+        return False, "universeProvenance.jpxEligibleCount does not match cache items"
+
+    if attestation is None:
+        return False, "current-run cache attestation is missing or invalid"
+    if attestation.get("run_token") != expected_run_token:
+        return False, "attestation run_token does not match this run"
+    if cache_bytes is None or attestation.get("cache_sha256") != _sha256_bytes(cache_bytes):
+        return False, "attestation cache_sha256 does not match the cache file bytes"
+    if attestation.get("source") != cache_payload.get("source"):
+        return False, "attestation source does not match cache source"
+    if attestation.get("eligible_count") != len(cache_payload.get("items", [])):
+        return False, "attestation eligible_count does not match cache items"
+    if attestation.get("fetched_at") != cache_payload.get("fetched_at"):
+        return False, "attestation fetched_at does not match cache fetched_at"
+
+    return True, "eligible"
+
+
 def _cache_to_result(cache_payload: dict[str, Any], now: datetime) -> JPXUniverseResult:
     """last-good cacheをJPXUniverseResultへ変換する。fallbackUsed=True、
     timestampはcache生成時のfetched_atをそのまま使う（偽装しない）。"""
@@ -1223,6 +1411,8 @@ def get_jpx_universe(
     fetch_fn: Any = fetch_jpx_workbook_bytes,
     parse_fn: Any = parse_jpx_workbook_bytes,
     cache_path: Path = CACHE_PATH,
+    run_token: str | None = None,
+    attestation_path: Path = ATTESTATION_PATH,
 ) -> JPXUniverseResult:
     """JPX universe providerの主エントリポイント。failure chain:
       1. live fetch成功（listing page discover → workbook download →
@@ -1248,9 +1438,20 @@ def get_jpx_universe(
     （fetch_fn: () -> bytes、parse_fn: (bytes) -> (rows, dropped)）。
     defaultはlisting-page discovery経路（fetch_jpx_workbook_bytes）と
     signature-dispatch parse（parse_jpx_workbook_bytes, xls/xlsx両対応）。
+
+    run_tokenはFull Batchの既存run-token（build_candidates_stocks.py
+    main()の--run-tokenをそのまま透過）。live JPX取得成功＋canonical
+    cache書き込みが完了した場合のみ、current-run attestation
+    （attestation_path、既定ATTESTATION_PATH）をこのtokenで書く
+    （P5-B005-R4 §17-22）。Noneの場合はattestationを一切書かない
+    （offline test・ad-hoc実行等、run-tokenが存在しない呼び出し）。
+    どの経路（live成功/cache fallback/seed fallback）でも、新しい取得を
+    試みる前に必ず前run由来のstale attestationを削除する（§20）。
     """
     if now is None:
         now = datetime.now(timezone.utc)
+
+    _remove_attestation(attestation_path)
 
     cache = load_cache(cache_path)
     if cache is not None and not _cache_authority_valid(cache, now):
@@ -1353,6 +1554,18 @@ def get_jpx_universe(
             "filters_applied": result.filters_applied,
             "workbook_format": result.workbook_format,
         }, cache_path)
+
+        if run_token is not None:
+            # §18: hashはcanonical cache fileが書かれた"後"に実bytesを
+            # 読み直して計算する（_write_attestation内部）。
+            _write_attestation(
+                run_token=run_token,
+                cache_path=cache_path,
+                source=result.source,
+                fetched_at=result.fetched_at,
+                eligible_count=result.eligible_count,
+                attestation_path=attestation_path,
+            )
 
         return result
 

@@ -24,6 +24,7 @@ PROVIDER-HARDENINGでcache/dependency/eligibility guard関連を追加）。
   eligible=0・急減guard / first-run truncated保護 / malformed cache items深層reject /
   1552件相当のguard通過
 """
+import hashlib
 import json
 import subprocess
 import sys
@@ -40,6 +41,7 @@ from data.build_candidates_stocks import (
 )
 from data.jpx_universe_provider import (
     APPROVED_WORKBOOK_BASENAMES,
+    ATTESTATION_PATH,
     CACHE_PATH,
     ELIGIBLE_COUNT_MIN_RATIO,
     FALLBACK_UNIVERSE_ID,
@@ -68,6 +70,8 @@ from data.jpx_universe_provider import (
     fetch_listing_page,
     get_jpx_universe,
     is_preferred_or_class_share,
+    jpx_cache_save_eligible,
+    load_attestation,
     load_cache,
     parse_jpx_workbook_bytes,
     parse_jpx_xls_bytes,
@@ -76,6 +80,7 @@ from data.jpx_universe_provider import (
     save_cache,
     seed_list_v1_fallback,
 )
+from data.jpx_universe_provider import _is_canonical_jpx_code  # noqa: PLC2701 - 単一canonical実装への直接単体テスト
 
 JST = timezone(timedelta(hours=9))
 _NOW = datetime(2026, 7, 14, 12, 0, 0, tzinfo=JST)
@@ -260,6 +265,61 @@ class TestAlphaMixedCode:
         assert is_preferred_or_class_share('166A') is False  # 4桁 → 保持
         assert is_preferred_or_class_share('1301') is False  # 4桁 → 保持
         assert is_preferred_or_class_share('25935') is True  # 5桁 → 除外
+
+
+# ---------------------------------------------------------------------------
+# P5-B005-R4 Blocker A: official specific-name code position/letter rule
+# (§6-§10/§13). Unit-level tests against the single canonical implementation
+# (_is_canonical_jpx_code) — the cache-authority-level acceptance/rejection
+# behavior is covered end-to-end in TestCacheAdversarialMatrix.
+# ---------------------------------------------------------------------------
+
+class TestCanonicalCodeShape:
+    @pytest.mark.parametrize(
+        "code",
+        [
+            "1301", "7203",   # 数字のみ（実データ）
+            "166A", "285A",   # 位置4が許可英字（実データ）
+            "130A",           # 位置4が許可英字（既存authorityと整合する将来例）
+            "1A00",           # 位置2が許可英字（公式に定義された将来有効例）
+        ],
+    )
+    def test_valid_codes_are_accepted(self, code):
+        assert _is_canonical_jpx_code(code) is True
+
+    @pytest.mark.parametrize(
+        "code",
+        [
+            "BAD!",   # 記号
+            "1ABC",   # 位置3が英字（数字のみのはず）
+            "12A4",   # 位置3が英字（数字のみのはず）
+            "123B",   # 位置4が除外英字 B
+            "999Z",   # 位置4が除外英字 Z
+            "123E",   # 位置4が除外英字 E
+            "123I",   # 位置4が除外英字 I
+            "123O",   # 位置4が除外英字 O
+            "123Q",   # 位置4が除外英字 Q
+            "123V",   # 位置4が除外英字 V
+            "B123",   # 位置1が英字（数字のみのはず）
+            "1B23",   # 位置2が除外英字
+            "166a",   # 小文字
+            " 1301",  # 前方空白
+            "1301 ",  # 後方空白
+            "１３０１",  # 全角数字  # noqa: RUF001 - 意図的な全角
+            "130",    # 3桁（短すぎ）
+            "13011",  # 5桁（specific-name codeとしては長すぎ——
+                      # 5桁優先株/種類株式はis_preferred_or_class_share()で
+                      # 別途扱う、§12。本regexの対象は4桁specific-name codeのみ）
+            "0301",   # 位置1が0始まり
+            "",       # 空文字
+        ],
+    )
+    def test_invalid_codes_are_rejected(self, code):
+        assert _is_canonical_jpx_code(code) is False
+
+    def test_non_string_input_is_rejected(self):
+        assert _is_canonical_jpx_code(1301) is False
+        assert _is_canonical_jpx_code(None) is False
 
 
 # ---------------------------------------------------------------------------
@@ -641,6 +701,14 @@ class TestCacheNotPublic:
         assert "public/data" not in str(CACHE_PATH).replace("\\", "/")
         assert "public" not in CACHE_PATH.parts
 
+    def test_attestation_path_is_not_under_public_data(self):
+        # P5-B005-R4 §21: the current-run attestation sidecar must never be
+        # public — same directory contract as the persistent cache.
+        assert "public/data" not in str(ATTESTATION_PATH).replace("\\", "/")
+        assert "public" not in ATTESTATION_PATH.parts
+        assert ATTESTATION_PATH.parent == CACHE_PATH.parent
+        assert ATTESTATION_PATH != CACHE_PATH
+
     def test_full_batch_workflow_does_not_copy_jpx_cache_to_public(self):
         # P5-B005-JPX-UNIVERSE-PRODUCTION-RECOVERY: the internal JPX cache is now
         # referenced by an actions/cache step (cross-run persistence). It must
@@ -678,6 +746,18 @@ class TestCacheGitIgnored:
         repo_root = Path(__file__).resolve().parent.parent
         result = subprocess.run(
             ["git", "check-ignore", "-q", str(CACHE_PATH)],
+            cwd=repo_root,
+        )
+        assert result.returncode == 0
+
+    def test_attestation_path_is_git_ignored(self):
+        # P5-B005-R4 §21: the ephemeral attestation sidecar must never be
+        # committed — it lives under the same gitignored directory as the
+        # persistent cache (data/.jpx_cache/), so no additional gitignore
+        # rule is required, but the contract itself must hold.
+        repo_root = Path(__file__).resolve().parent.parent
+        result = subprocess.run(
+            ["git", "check-ignore", "-q", str(ATTESTATION_PATH)],
             cwd=repo_root,
         )
         assert result.returncode == 0
@@ -1972,6 +2052,42 @@ class TestCacheAdversarialMatrix:
         items.append(["0301", "ゼロ始まりcode", "sector"])
         self._assert_rejected(_valid_cache_payload(items=items), tmp_path)
 
+    # --- P5-B005-R4 Blocker A: official specific-name code position/letter
+    #     rule (§6-§10/§13). The R3 shape `[1-9][0-9A-Z]{3,4}` only checked
+    #     digit count and accepted letters in any of positions 2-4 —
+    #     including positions that must be numeric-only (3) and excluded
+    #     letters (B/E/I/O/Q/V/Z) in the alphabet-capable positions (2/4).
+
+    @pytest.mark.parametrize("valid_code", ["166A", "285A", "130A", "1A00"])
+    def test_official_alphanumeric_specific_name_codes_are_accepted(self, tmp_path, valid_code):
+        items = _cache_items(MIN_ELIGIBLE_COUNT - 1)
+        items.append([valid_code, "銘柄", "sector"])
+        self._assert_accepted(_valid_cache_payload(items=items), tmp_path)
+
+    @pytest.mark.parametrize(
+        "bad_code",
+        [
+            "1ABC",  # position 3 must be numeric-only, "B" is alphabetic
+            "12A4",  # position 3 must be numeric-only, "A" is alphabetic
+            "123B",  # position 4: "B" is an excluded letter
+            "999Z",  # position 4: "Z" is an excluded letter
+            "123E",  # position 4: "E" is an excluded letter
+            "123I",  # position 4: "I" is an excluded letter
+            "123O",  # position 4: "O" is an excluded letter
+            "123Q",  # position 4: "Q" is an excluded letter
+            "123V",  # position 4: "V" is an excluded letter
+        ],
+    )
+    def test_non_canonical_specific_name_codes_are_rejected(self, tmp_path, bad_code):
+        items = _cache_items(MIN_ELIGIBLE_COUNT - 1)
+        items.append([bad_code, "不正銘柄", "sector"])
+        self._assert_rejected(_valid_cache_payload(items=items), tmp_path)
+
+    def test_full_width_digit_code_is_rejected(self, tmp_path):
+        items = _cache_items(MIN_ELIGIBLE_COUNT - 1)
+        items.append(["１３０１", "全角code", "sector"])  # noqa: RUF001 - 意図的な全角
+        self._assert_rejected(_valid_cache_payload(items=items), tmp_path)
+
     def test_duplicate_canonical_code_is_rejected(self, tmp_path):
         items = _cache_items(MIN_ELIGIBLE_COUNT)
         items[-1] = list(items[0])
@@ -2117,3 +2233,330 @@ class TestCacheRoundTrip:
         assert fallback_result.universe_id == live_result.universe_id
         assert sorted(fallback_result.items) == sorted(live_result.items)
         assert fallback_result.row_count == live_result.row_count
+
+
+# ---------------------------------------------------------------------------
+# P5-B005-R4 §17-21 — current-run cache attestation lifecycle
+# ---------------------------------------------------------------------------
+
+class TestCurrentRunAttestationLifecycle:
+    def _live(self, cache_path, attestation_path, run_token="run-token-1", now=_NOW):
+        rows = _bulk_rows(1200)
+        return get_jpx_universe(
+            now=now,
+            fetch_fn=lambda: b"irrelevant",
+            parse_fn=lambda _content: parse_rows_from_sheet(_sheet(rows)),
+            cache_path=cache_path,
+            run_token=run_token,
+            attestation_path=attestation_path,
+        )
+
+    def test_attestation_written_on_live_success_with_run_token(self, tmp_path):
+        cache_path = tmp_path / "cache.json"
+        attestation_path = tmp_path / "cache.attestation.json"
+        result = self._live(cache_path, attestation_path)
+        assert result.fallback_used is False
+
+        attestation = load_attestation(attestation_path)
+        assert attestation is not None
+        assert attestation["run_token"] == "run-token-1"
+        assert attestation["cache_sha256"] == hashlib.sha256(cache_path.read_bytes()).hexdigest()
+        assert attestation["source"] == result.source
+        assert attestation["fetched_at"] == result.fetched_at
+        assert attestation["eligible_count"] == result.eligible_count
+
+    def test_attestation_not_written_without_run_token(self, tmp_path):
+        cache_path = tmp_path / "cache.json"
+        attestation_path = tmp_path / "cache.attestation.json"
+        rows = _bulk_rows(1200)
+        result = get_jpx_universe(
+            now=_NOW,
+            fetch_fn=lambda: b"irrelevant",
+            parse_fn=lambda _content: parse_rows_from_sheet(_sheet(rows)),
+            cache_path=cache_path,
+            attestation_path=attestation_path,
+        )
+        assert result.fallback_used is False
+        assert not attestation_path.exists()
+
+    def test_attestation_not_written_on_cache_fallback(self, tmp_path):
+        cache_path = tmp_path / "cache.json"
+        attestation_path = tmp_path / "cache.attestation.json"
+        self._live(cache_path, attestation_path, run_token="run-1", now=_NOW)
+        assert attestation_path.exists()
+
+        result = get_jpx_universe(
+            now=_NOW + timedelta(hours=1),
+            fetch_fn=lambda: (_ for _ in ()).throw(JPXFetchError("down")),
+            cache_path=cache_path,
+            run_token="run-2",
+            attestation_path=attestation_path,
+        )
+        assert result.fallback_used is True
+        # stale attestation (run-1由来) はrun開始時に削除済みで、
+        # cache fallback経路では新規attestationも書かれない。
+        assert not attestation_path.exists()
+
+    def test_attestation_not_written_on_seed_fallback(self, tmp_path):
+        cache_path = tmp_path / "cache.json"  # 存在しない = no valid cache
+        attestation_path = tmp_path / "cache.attestation.json"
+        result = get_jpx_universe(
+            now=_NOW,
+            fetch_fn=lambda: (_ for _ in ()).throw(JPXFetchError("down")),
+            cache_path=cache_path,
+            run_token="run-1",
+            attestation_path=attestation_path,
+        )
+        assert result.universe_id == FALLBACK_UNIVERSE_ID
+        assert not attestation_path.exists()
+
+    def test_stale_attestation_from_previous_run_is_removed_before_new_acquisition(self, tmp_path):
+        cache_path = tmp_path / "cache.json"
+        attestation_path = tmp_path / "cache.attestation.json"
+        self._live(cache_path, attestation_path, run_token="run-1", now=_NOW)
+        assert load_attestation(attestation_path)["run_token"] == "run-1"
+
+        get_jpx_universe(
+            now=_NOW + timedelta(hours=1),
+            fetch_fn=lambda: (_ for _ in ()).throw(JPXFetchError("down")),
+            cache_path=cache_path,
+            run_token="run-2",
+            attestation_path=attestation_path,
+        )
+        # run-1のattestationが「run-2のattestation」として誤って
+        # 生き残ってはならない——このrunはcache fallbackへ回るため
+        # 一切のattestationが存在しない状態が正しい。
+        assert not attestation_path.exists()
+
+    def test_restore_then_live_refresh_writes_new_attestation_for_new_run_token(self, tmp_path):
+        cache_path = tmp_path / "cache.json"
+        attestation_path = tmp_path / "cache.attestation.json"
+        self._live(cache_path, attestation_path, run_token="run-1", now=_NOW)
+
+        second = self._live(
+            cache_path, attestation_path, run_token="run-2", now=_NOW + timedelta(hours=1)
+        )
+        attestation = load_attestation(attestation_path)
+        assert attestation["run_token"] == "run-2"
+        assert attestation["fetched_at"] == second.fetched_at
+        assert attestation["cache_sha256"] == hashlib.sha256(cache_path.read_bytes()).hexdigest()
+
+
+class TestLoadAttestation:
+    def test_missing_file_returns_none(self, tmp_path):
+        assert load_attestation(tmp_path / "missing.json") is None
+
+    def test_malformed_json_returns_none(self, tmp_path):
+        path = tmp_path / "attestation.json"
+        path.write_text("{not valid json", encoding="utf-8")
+        assert load_attestation(path) is None
+
+    def test_wrong_schema_kind_returns_none(self, tmp_path):
+        path = tmp_path / "attestation.json"
+        path.write_text(json.dumps({"schemaKind": "wrong"}), encoding="utf-8")
+        assert load_attestation(path) is None
+
+    def test_missing_required_field_returns_none(self, tmp_path):
+        path = tmp_path / "attestation.json"
+        path.write_text(
+            json.dumps({
+                "schemaKind": "jpx_universe_cache_attestation_v1",
+                "run_token": "abc",
+                # cache_sha256欠損
+                "source": SOURCE_IDENTIFIER,
+                "fetched_at": _NOW.isoformat(),
+                "eligible_count": 10,
+            }),
+            encoding="utf-8",
+        )
+        assert load_attestation(path) is None
+
+    def test_non_hex_sha256_returns_none(self, tmp_path):
+        path = tmp_path / "attestation.json"
+        path.write_text(
+            json.dumps({
+                "schemaKind": "jpx_universe_cache_attestation_v1",
+                "run_token": "abc",
+                "cache_sha256": "z" * 64,
+                "source": SOURCE_IDENTIFIER,
+                "fetched_at": _NOW.isoformat(),
+                "eligible_count": 10,
+            }),
+            encoding="utf-8",
+        )
+        assert load_attestation(path) is None
+
+    def test_valid_attestation_is_loaded(self, tmp_path):
+        path = tmp_path / "attestation.json"
+        payload = {
+            "schemaKind": "jpx_universe_cache_attestation_v1",
+            "run_token": "abc",
+            "cache_sha256": "0" * 64,
+            "source": SOURCE_IDENTIFIER,
+            "fetched_at": _NOW.isoformat(),
+            "eligible_count": 10,
+        }
+        path.write_text(json.dumps(payload), encoding="utf-8")
+        assert load_attestation(path) == payload
+
+
+# ---------------------------------------------------------------------------
+# P5-B005-R4 §22/§36 — jpx_cache_save_eligible() canonical save-authority
+# matrix. This is the exact function the Full Batch workflow's
+# "Validate JPX cache save eligibility" step imports and calls — testing it
+# directly exercises the real save-authority contract without needing to
+# execute the embedded workflow script.
+# ---------------------------------------------------------------------------
+
+class TestJpxCacheSaveEligible:
+    _RUN_TOKEN = "run-token-abc"
+
+    def _valid_scenario(self):
+        cache_payload = _valid_cache_payload()
+        cache_bytes = json.dumps(cache_payload, ensure_ascii=False, indent=2).encode("utf-8")
+        attestation = {
+            "schemaKind": "jpx_universe_cache_attestation_v1",
+            "run_token": self._RUN_TOKEN,
+            "cache_sha256": hashlib.sha256(cache_bytes).hexdigest(),
+            "source": cache_payload["source"],
+            "fetched_at": cache_payload["fetched_at"],
+            "eligible_count": len(cache_payload["items"]),
+        }
+        candidates_meta = {
+            "runToken": self._RUN_TOKEN,
+            "universeProvenance": {
+                "jpxFallbackUsed": False,
+                "jpxSource": SOURCE_IDENTIFIER,
+                "jpxEligibleCount": len(cache_payload["items"]),
+            },
+        }
+        return candidates_meta, cache_payload, cache_bytes, attestation
+
+    def _eval(self, meta, cache, cache_bytes, attestation):
+        return jpx_cache_save_eligible(
+            candidates_meta=meta,
+            expected_run_token=self._RUN_TOKEN,
+            cache_payload=cache,
+            cache_bytes=cache_bytes,
+            attestation=attestation,
+            now=_NOW,
+        )
+
+    # --- §36 direct save-authority scenarios A-H ---------------------------
+
+    def test_a_live_jpx_no_restored_cache_is_eligible(self):
+        meta, cache, cache_bytes, attestation = self._valid_scenario()
+        ok, _ = self._eval(meta, cache, cache_bytes, attestation)
+        assert ok is True
+
+    def test_b_restored_valid_cache_live_fail_is_not_eligible(self):
+        meta, cache, cache_bytes, _attestation = self._valid_scenario()
+        meta["universeProvenance"]["jpxFallbackUsed"] = True
+        ok, _ = self._eval(meta, cache, cache_bytes, None)
+        assert ok is False
+
+    def test_c_invalid_cache_seed_fallback_is_not_eligible(self):
+        meta, _cache, _cache_bytes, _attestation = self._valid_scenario()
+        meta["universeProvenance"]["jpxFallbackUsed"] = True
+        meta["universeProvenance"]["jpxSource"] = "data/build_candidates_stocks.py::SEED_LIST"
+        ok, _ = self._eval(meta, None, None, None)
+        assert ok is False
+
+    def test_d_restored_cache_live_refresh_is_eligible(self):
+        meta, cache, cache_bytes, attestation = self._valid_scenario()
+        ok, _ = self._eval(meta, cache, cache_bytes, attestation)
+        assert ok is True
+
+    def test_e_live_refresh_with_prescreen_fallback_is_still_eligible(self):
+        # aggregate _meta.pipelinePath would be "cache_fallback" here (only
+        # the prescreen stage fell back), but jpxFallbackUsed stays False —
+        # the gate must not depend on pipelinePath at all (§16/§27).
+        meta, cache, cache_bytes, attestation = self._valid_scenario()
+        ok, _ = self._eval(meta, cache, cache_bytes, attestation)
+        assert ok is True
+
+    def test_f_fresh_cache_replaced_by_another_valid_cache_is_not_eligible(self):
+        meta, _cache, _cache_bytes, attestation = self._valid_scenario()
+        other_cache = _valid_cache_payload(
+            items=_cache_items(MIN_ELIGIBLE_COUNT, start_code=5000)
+        )
+        other_bytes = json.dumps(other_cache, ensure_ascii=False, indent=2).encode("utf-8")
+        ok, reason = self._eval(meta, other_cache, other_bytes, attestation)
+        assert ok is False
+        assert "cache_sha256" in reason
+
+    def test_g_wrong_attestation_run_token_is_not_eligible(self):
+        meta, cache, cache_bytes, attestation = self._valid_scenario()
+        attestation = dict(attestation, run_token="different-token")
+        ok, reason = self._eval(meta, cache, cache_bytes, attestation)
+        assert ok is False
+        assert "run_token" in reason
+
+    def test_h_wrong_attestation_hash_is_not_eligible(self):
+        meta, cache, cache_bytes, attestation = self._valid_scenario()
+        attestation = dict(attestation, cache_sha256="0" * 64)
+        ok, reason = self._eval(meta, cache, cache_bytes, attestation)
+        assert ok is False
+        assert "cache_sha256" in reason
+
+    # --- §28 additional tamper matrix ---------------------------------------
+
+    def test_missing_attestation_is_not_eligible(self):
+        meta, cache, cache_bytes, _attestation = self._valid_scenario()
+        ok, reason = self._eval(meta, cache, cache_bytes, None)
+        assert ok is False
+        assert "attestation" in reason
+
+    def test_wrong_attestation_source_is_not_eligible(self):
+        meta, cache, cache_bytes, attestation = self._valid_scenario()
+        attestation = dict(attestation, source="some_other_source")
+        ok, _ = self._eval(meta, cache, cache_bytes, attestation)
+        assert ok is False
+
+    def test_wrong_attestation_eligible_count_is_not_eligible(self):
+        meta, cache, cache_bytes, attestation = self._valid_scenario()
+        attestation = dict(attestation, eligible_count=attestation["eligible_count"] + 1)
+        ok, _ = self._eval(meta, cache, cache_bytes, attestation)
+        assert ok is False
+
+    def test_wrong_attestation_timestamp_is_not_eligible(self):
+        meta, cache, cache_bytes, attestation = self._valid_scenario()
+        attestation = dict(attestation, fetched_at="2020-01-01T00:00:00+00:00")
+        ok, _ = self._eval(meta, cache, cache_bytes, attestation)
+        assert ok is False
+
+    def test_wrong_universe_provenance_source_is_not_eligible(self):
+        meta, cache, cache_bytes, attestation = self._valid_scenario()
+        meta["universeProvenance"]["jpxSource"] = "not_the_jpx_source"
+        ok, _ = self._eval(meta, cache, cache_bytes, attestation)
+        assert ok is False
+
+    def test_wrong_universe_provenance_eligible_count_is_not_eligible(self):
+        meta, cache, cache_bytes, attestation = self._valid_scenario()
+        meta["universeProvenance"]["jpxEligibleCount"] += 1
+        ok, _ = self._eval(meta, cache, cache_bytes, attestation)
+        assert ok is False
+
+    def test_wrong_run_token_in_candidates_meta_is_not_eligible(self):
+        meta, cache, cache_bytes, attestation = self._valid_scenario()
+        meta["runToken"] = "different-run-token"
+        ok, _ = self._eval(meta, cache, cache_bytes, attestation)
+        assert ok is False
+
+    def test_missing_universe_provenance_is_not_eligible(self):
+        meta, cache, cache_bytes, attestation = self._valid_scenario()
+        del meta["universeProvenance"]
+        ok, _ = self._eval(meta, cache, cache_bytes, attestation)
+        assert ok is False
+
+    def test_cache_authority_invalid_is_not_eligible(self):
+        meta, cache, cache_bytes, attestation = self._valid_scenario()
+        cache = dict(cache, source="wrong_source")
+        ok, _ = self._eval(meta, cache, cache_bytes, attestation)
+        assert ok is False
+
+    def test_missing_cache_file_is_not_eligible(self):
+        meta, _cache, _cache_bytes, attestation = self._valid_scenario()
+        ok, reason = self._eval(meta, None, None, attestation)
+        assert ok is False
+        assert "cache" in reason
