@@ -223,28 +223,103 @@ jobs:
           --run-started-at "${{ steps.candidates-run-start.outputs.started_at }}"
           --expected-run-token "${{ steps.candidates-run-token.outputs.run_token }}"
 
-      # ── P5-B005-R2 BLOCKER D: JPX universe cache永続化 (explicit save) ──
+      # ── P5-B005-R3 BLOCKER C: JPX universe cache永続化 (explicit save,
+      #    current-run live provenance gate) ──
       # candidates_stocks whole-market acquisition（provider実行）＋その
       # schema/privacy/provenance/freshness契約gateがここまでで成功して
       # いる（このstepへ到達すること自体がgithub actionsの逐次step実行に
       # よって保証される——前段のいずれかが失敗すればjobはここへ進まない）。
-      # provider自身がlive成功時にのみ_cache_authority_valid()契約を満たす
-      # last-good cacheをsave_cache()で書いているため、workflow側では
-      # ファイル存在だけを確認し、providerの検証結果を再判定はしない
-      # （providerが最終authority）。この位置はcandidate funnel生成・
-      # publication enforcement等の後続の無関係な致命的gateより前であり、
-      # それらが後で失敗してもここで確定したcacheのsaveには影響しない。
-      - name: Check JPX universe cache is present for save
-        id: jpx-cache-check
+      # P5-B005-R2まではファイル存在だけをsave条件にしていたが、これは
+      # 不十分だった: restoreされたcacheが（構造的にparse可能だが）
+      # authority-invalidで provider が拒否 → live取得も失敗 → seed
+      # fallback、という縮退経路でも、無効な旧cache fileがdiskに残って
+      # いれば「存在する」という理由だけでfresh keyの下へ再saveされて
+      # しまう（stale/invalid cacheがrotateされる）。
+      # このgateはfile存在の代わりに、このrun自身がlive JPX取得に成功して
+      # cacheをrefreshしたことを、同一runがちょうど書いたcandidates_stocks
+      # のprovenance（_meta.runToken/_meta.pipelinePath、既存
+      # candidates-run-token/candidates-run-start step由来）＋cache自体の
+      # canonical authority再検証（cache_authority_valid、provider内の
+      # save_cache()/_cache_authority_valid()と単一の実装を共有）＋
+      # cacheのfetched_atがこのrun開始後であること、の3点で証明する。
+      #   - pipelinePath=="normal": jpx_universe.fallback_used==Falseの
+      #     live成功時のみ（whole_market_universe_provider()参照）。
+      #     cache_fallback/seed_fallbackはいずれもFalseにする。
+      #   - runToken一致: stale artifact（前段のGate stepで既に
+      #     enforceされているが、二重に確認する）。
+      #   - fetched_at >= run started_at - tolerance: restoreされた
+      #     valid cacheをそのままfallback使用しただけ（saveされていない）
+      #     ケースを、cache自体の内容が有効でも除外する。
+      - name: Validate JPX cache save eligibility (current-run live provenance)
+        id: jpx-cache-save-eligibility
         run: |
-          if [ -f data/.jpx_cache/jpx_universe_cache.json ]; then
-            echo "cache_exists=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "cache_exists=false" >> "$GITHUB_OUTPUT"
-          fi
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          import json
+          import sys
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          from data.jpx_universe_provider import CACHE_PATH, cache_authority_valid
+
+          EXPECTED_RUN_TOKEN = "${{ steps.candidates-run-token.outputs.run_token }}"
+          RUN_STARTED_AT = "${{ steps.candidates-run-start.outputs.started_at }}"
+          CLOCK_SKEW_TOLERANCE_SECONDS = 60
+
+          def parse_iso(raw):
+              return datetime.fromisoformat(raw.replace("Z", "+00:00"))
+
+          def ineligible(reason):
+              print(f"[jpx-cache-save-eligibility] NOT eligible: {reason}", file=sys.stderr)
+              return "save_eligible=false"
+
+          def evaluate():
+              try:
+                  candidates = json.loads(Path("data/candidates_stocks.json").read_text(encoding="utf-8"))
+              except (OSError, json.JSONDecodeError) as e:
+                  return ineligible(f"cannot read data/candidates_stocks.json: {e!r}")
+
+              meta = candidates.get("_meta", {})
+              if meta.get("runToken") != EXPECTED_RUN_TOKEN:
+                  return ineligible("candidates_stocks.json _meta.runToken does not match this run")
+              pipeline_path = meta.get("pipelinePath")
+              if pipeline_path != "normal":
+                  return ineligible(
+                      f"_meta.pipelinePath={pipeline_path!r} is not a fresh live JPX acquisition"
+                  )
+
+              if not CACHE_PATH.exists():
+                  return ineligible("cache file does not exist")
+              try:
+                  payload = json.loads(CACHE_PATH.read_text(encoding="utf-8"))
+              except (OSError, json.JSONDecodeError) as e:
+                  return ineligible(f"cache file is not valid JSON: {e!r}")
+
+              now = datetime.now(timezone.utc)
+              if not cache_authority_valid(payload, now):
+                  return ineligible("cache payload fails canonical authority validation")
+
+              try:
+                  fetched_at = parse_iso(payload.get("fetched_at", ""))
+              except ValueError as e:
+                  return ineligible(f"cache fetched_at is not parseable: {e!r}")
+              try:
+                  run_started = parse_iso(RUN_STARTED_AT)
+              except ValueError as e:
+                  return ineligible(f"run started_at is not parseable: {e!r}")
+
+              # cacheが「このrunより前」にfetchされていれば、それは
+              # restoreされたvalid last-good cacheをそのままfallback使用
+              # しただけ（provider自身のsave_cache()は呼ばれていない）。
+              if (run_started - fetched_at).total_seconds() > CLOCK_SKEW_TOLERANCE_SECONDS:
+                  return ineligible("cache fetched_at predates this run's start")
+
+              return "save_eligible=true"
+
+          print(evaluate())
+          PY
 
       - name: Save JPX universe cache (durable last-good fallback)
-        if: steps.jpx-cache-check.outputs.cache_exists == 'true'
+        if: steps.jpx-cache-save-eligibility.outputs.save_eligible == 'true'
         uses: actions/cache/save@v4
         with:
           path: data/.jpx_cache/jpx_universe_cache.json

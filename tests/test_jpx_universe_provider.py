@@ -780,16 +780,18 @@ class TestEligibilityIntegrityGuard:
     def test_eligible_extreme_drop_falls_back_without_overwriting_last_good_cache(self, tmp_path):
         cache_path = tmp_path / "cache.json"
         previous_items = [[str(2000 + i), f'既存銘柄{i}', 'sector'] for i in range(1000)]
-        save_cache({
-            "schemaKind": "jpx_universe_cache_v1",
-            "universe_id": UNIVERSE_ID,
-            "items": previous_items,
-            "source": "jpx_data_j_xls",
-            "fetched_at": (_NOW - timedelta(hours=3)).isoformat(),
-            "row_count": 1000,
-            "segment_counts": {},
-            "filters_applied": [],
-        }, cache_path)
+        # P5-B005-R3: cache authority validatorがwriter由来のsegment_counts/
+        # filters_applied契約を厳密検証するようになったため、この
+        # last-good cache fixtureも_valid_cache_payload()で生成した
+        # canonical shapeを使う（空segment_counts/空filters_appliedは
+        # もはやvalid authorityではない）。
+        save_cache(
+            _valid_cache_payload(
+                items=previous_items,
+                fetched_at=(_NOW - timedelta(hours=3)).isoformat(),
+            ),
+            cache_path,
+        )
         before = cache_path.read_text(encoding="utf-8")
 
         # raw row_countは絶対floor・前回比ratioとも正常だが、eligibleだけ
@@ -1489,6 +1491,12 @@ _VALID_WORKBOOK_URL = (
 
 
 class TestListingPageRedirectSecurity:
+    """P5-B005-R3 Blocker A: listing pageのauthorityは
+    www.jpx.co.jp配下の任意pathではなく、JPX_LISTING_PAGE_PATH
+    （/markets/statistics-equities/misc/01.html）へのexact一致のみを
+    許可する。§9で要求される拒否matrix（corporate/english/別markets
+    page/query/fragment/foreign/downgrade）を直接probeとして証明する。"""
+
     def test_no_redirect_returns_body(self, monkeypatch):
         resp = _FakeResponse(
             200, headers={"content-type": "text/html; charset=utf-8"},
@@ -1498,15 +1506,62 @@ class TestListingPageRedirectSecurity:
         monkeypatch.setitem(sys.modules, "requests", fake)
         assert fetch_listing_page() == "<html>ok</html>"
 
-    def test_follows_same_host_redirect(self, monkeypatch):
+    def test_out_of_namespace_same_host_redirect_rejected(self, monkeypatch):
+        # R2はwww.jpx.co.jp配下の任意pathへのredirectをfetchしてしまう
+        # 広すぎるauthorityだった（audit実証: 01-new.html等の別
+        # /markets/statistics-equities/misc/ page）。同一host内でも
+        # exact path外はfetch前に拒否する。
         moved = "https://www.jpx.co.jp/markets/statistics-equities/misc/01-new.html"
         r1 = _FakeResponse(302, headers={"Location": moved})
-        r2 = _FakeResponse(
-            200, headers={"content-type": "text/html"}, text="<html>moved</html>", url=moved
-        )
-        fake = _FakeRequests({JPX_LISTING_PAGE_URL: r1, moved: r2})
+        fake = _FakeRequests({JPX_LISTING_PAGE_URL: r1, moved: _FakeResponse(200, text="<html>moved</html>", url=moved)})
         monkeypatch.setitem(sys.modules, "requests", fake)
-        assert fetch_listing_page() == "<html>moved</html>"
+        with pytest.raises(JPXFetchError):
+            fetch_listing_page()
+        assert moved not in fake.calls  # out-of-namespace先は一度もrequestされていない
+
+    def test_corporate_path_redirect_rejected(self, monkeypatch):
+        corporate = "https://www.jpx.co.jp/corporate/about-jpx/index.html"
+        r1 = _FakeResponse(302, headers={"Location": corporate})
+        fake = _FakeRequests({
+            JPX_LISTING_PAGE_URL: r1,
+            corporate: _FakeResponse(200, text="<html>corporate</html>", url=corporate),
+        })
+        monkeypatch.setitem(sys.modules, "requests", fake)
+        with pytest.raises(JPXFetchError):
+            fetch_listing_page()
+        assert corporate not in fake.calls
+
+    def test_english_path_redirect_rejected(self, monkeypatch):
+        english = "https://www.jpx.co.jp/english/"
+        r1 = _FakeResponse(302, headers={"Location": english})
+        fake = _FakeRequests({
+            JPX_LISTING_PAGE_URL: r1,
+            english: _FakeResponse(200, text="<html>english</html>", url=english),
+        })
+        monkeypatch.setitem(sys.modules, "requests", fake)
+        with pytest.raises(JPXFetchError):
+            fetch_listing_page()
+        assert english not in fake.calls
+
+    def test_query_bearing_redirect_rejected(self, monkeypatch):
+        with_query = JPX_LISTING_PAGE_URL + "?lang=en"
+        r1 = _FakeResponse(302, headers={"Location": with_query})
+        fake = _FakeRequests({
+            JPX_LISTING_PAGE_URL: r1,
+            with_query: _FakeResponse(200, text="<html>q</html>", url=with_query),
+        })
+        monkeypatch.setitem(sys.modules, "requests", fake)
+        with pytest.raises(JPXFetchError):
+            fetch_listing_page()
+        assert with_query not in fake.calls
+
+    def test_fragment_bearing_redirect_rejected(self, monkeypatch):
+        with_fragment = JPX_LISTING_PAGE_URL + "#section"
+        r1 = _FakeResponse(302, headers={"Location": with_fragment})
+        fake = _FakeRequests({JPX_LISTING_PAGE_URL: r1})
+        monkeypatch.setitem(sys.modules, "requests", fake)
+        with pytest.raises(JPXFetchError):
+            fetch_listing_page()
 
     def test_foreign_redirect_rejected_before_body_consumed(self, monkeypatch):
         evil = "https://evil.example/phish.html"
@@ -1525,6 +1580,16 @@ class TestListingPageRedirectSecurity:
         with pytest.raises(JPXFetchError):
             fetch_listing_page()
 
+    def test_initial_url_out_of_namespace_rejected_before_any_request(self, monkeypatch):
+        # §37: fetch_listing_page()自体に承認外URLを渡した場合も、
+        # requestを一切出さずfail closedする。
+        bad = "https://www.jpx.co.jp/corporate/about-jpx/index.html"
+        fake = _FakeRequests({})
+        monkeypatch.setitem(sys.modules, "requests", fake)
+        with pytest.raises(JPXFetchError):
+            fetch_listing_page(url=bad)
+        assert fake.calls == []
+
     def test_redirect_without_location_rejected(self, monkeypatch):
         r1 = _FakeResponse(302, headers={})
         fake = _FakeRequests({JPX_LISTING_PAGE_URL: r1})
@@ -1533,31 +1598,23 @@ class TestListingPageRedirectSecurity:
             fetch_listing_page()
 
     def test_redirect_loop_rejected(self, monkeypatch):
-        url_b = "https://www.jpx.co.jp/markets/statistics-equities/misc/loop.html"
-        ra = _FakeResponse(302, headers={"Location": url_b})
-        rb = _FakeResponse(302, headers={"Location": JPX_LISTING_PAGE_URL})
-        fake = _FakeRequests({JPX_LISTING_PAGE_URL: ra, url_b: rb})
+        # 承認path単一化後は、承認済みURL同士でしかloopを構成できない
+        # （非承認先へのredirectはloop判定に到達する前にauthority違反で
+        # 拒否される）。canonical URLがそれ自身へredirectする自己loopで
+        # loop検出そのものを証明する。
+        ra = _FakeResponse(302, headers={"Location": JPX_LISTING_PAGE_URL})
+        fake = _FakeRequests({JPX_LISTING_PAGE_URL: ra})
         monkeypatch.setitem(sys.modules, "requests", fake)
         with pytest.raises(JPXFetchError):
             fetch_listing_page()
 
-    def test_excessive_redirects_rejected(self, monkeypatch):
-        base = "https://www.jpx.co.jp/markets/statistics-equities/misc/"
-        hops = [JPX_LISTING_PAGE_URL] + [f"{base}hop{i}.html" for i in range(MAX_REDIRECTS + 3)]
-        responses = {
-            hops[i]: _FakeResponse(302, headers={"Location": hops[i + 1]})
-            for i in range(len(hops) - 1)
-        }
-        fake = _FakeRequests(responses)
-        monkeypatch.setitem(sys.modules, "requests", fake)
-        with pytest.raises(JPXFetchError):
-            fetch_listing_page()
-
-    def test_final_response_content_type_still_checked_after_redirect(self, monkeypatch):
-        moved = "https://www.jpx.co.jp/markets/statistics-equities/misc/01-new.html"
-        r1 = _FakeResponse(302, headers={"Location": moved})
-        r2 = _FakeResponse(200, headers={"content-type": "application/pdf"}, text="", url=moved)
-        fake = _FakeRequests({JPX_LISTING_PAGE_URL: r1, moved: r2})
+    def test_content_type_checked_on_direct_response(self, monkeypatch):
+        # redirect先は承認path外だと即座に拒否されるため、
+        # content-type gateはredirect後ではなくdirect responseで検証する。
+        resp = _FakeResponse(
+            200, headers={"content-type": "application/pdf"}, text="", url=JPX_LISTING_PAGE_URL,
+        )
+        fake = _FakeRequests({JPX_LISTING_PAGE_URL: resp})
         monkeypatch.setitem(sys.modules, "requests", fake)
         with pytest.raises(JPXFetchError):
             fetch_listing_page()
@@ -1603,6 +1660,24 @@ class TestWorkbookRedirectSecurity:
         )
         r1 = _FakeResponse(302, headers={"Location": evil})
         fake = _FakeRequests({_VALID_WORKBOOK_URL: r1})
+        monkeypatch.setitem(sys.modules, "requests", fake)
+        with pytest.raises(JPXFetchError):
+            download_workbook(_VALID_WORKBOOK_URL)
+
+    def test_excessive_workbook_redirects_rejected(self, monkeypatch):
+        # workbook authorityは複数の相異なるattachment containerを許容する
+        # ため（各hopは承認済みだが異なるURL）、listing pageと異なり
+        # MAX_REDIRECTS超過そのものを承認済みURL同士のchainで実際に
+        # 構成・検証できる。
+        base = "https://www.jpx.co.jp/markets/statistics-equities/misc/"
+        hops = [_VALID_WORKBOOK_URL] + [
+            f"{base}hop{i}-att/data_j.xlsx" for i in range(MAX_REDIRECTS + 3)
+        ]
+        responses = {
+            hops[i]: _FakeResponse(302, headers={"Location": hops[i + 1]})
+            for i in range(len(hops) - 1)
+        }
+        fake = _FakeRequests(responses)
         monkeypatch.setitem(sys.modules, "requests", fake)
         with pytest.raises(JPXFetchError):
             download_workbook(_VALID_WORKBOOK_URL)
@@ -1835,6 +1910,176 @@ class TestRestoredCacheAuthority:
         assert result.fallback_used is True
         assert result.universe_id == UNIVERSE_ID
         assert result.items != list(SEED_LIST)
+
+
+# ---------------------------------------------------------------------------
+# P5-B005-R3 §20 — cache adversarial matrix: _valid_cache_payload()（実際に
+# save_cache()が書きうるcanonical shape）を1 field ずつmutateし、rejectを
+# 証明する。ハンドクラフトした無関係payloadではなく、canonical baselineを
+# 崩すことで実際のwriter/validator契約の境界を検証する。
+# ---------------------------------------------------------------------------
+
+class TestCacheAdversarialMatrix:
+    def _boom(self):
+        raise JPXFetchError("live fetch unavailable")
+
+    def _get(self, cache_path):
+        return get_jpx_universe(now=_NOW, fetch_fn=self._boom, cache_path=cache_path)
+
+    def _assert_rejected(self, payload, tmp_path):
+        cache_path = tmp_path / "cache.json"
+        save_cache(payload, cache_path)
+        result = self._get(cache_path)
+        assert result.universe_id == FALLBACK_UNIVERSE_ID
+
+    def _assert_accepted(self, payload, tmp_path):
+        cache_path = tmp_path / "cache.json"
+        save_cache(payload, cache_path)
+        result = self._get(cache_path)
+        assert result.fallback_used is True
+        assert result.universe_id == UNIVERSE_ID
+        return result
+
+    # --- baseline sanity -----------------------------------------------
+
+    def test_baseline_valid_payload_is_accepted(self, tmp_path):
+        self._assert_accepted(_valid_cache_payload(), tmp_path)
+
+    def test_alpha_mixed_code_is_accepted(self, tmp_path):
+        items = _cache_items(MIN_ELIGIBLE_COUNT - 1)
+        items.append(["166A", "タスキHD", "建設業"])
+        self._assert_accepted(_valid_cache_payload(items=items), tmp_path)
+
+    # --- codes -----------------------------------------------------------
+
+    def test_malformed_code_bad_bang_is_rejected(self, tmp_path):
+        items = _cache_items(MIN_ELIGIBLE_COUNT - 1)
+        items.append(["BAD!", "不正銘柄", "sector"])
+        self._assert_rejected(_valid_cache_payload(items=items), tmp_path)
+
+    def test_lowercase_code_is_rejected(self, tmp_path):
+        items = _cache_items(MIN_ELIGIBLE_COUNT - 1)
+        items.append(["166a", "小文字code", "sector"])
+        self._assert_rejected(_valid_cache_payload(items=items), tmp_path)
+
+    def test_whitespace_padded_code_is_rejected(self, tmp_path):
+        items = _cache_items(MIN_ELIGIBLE_COUNT - 1)
+        items.append([" 1301", "空白付きcode", "sector"])
+        self._assert_rejected(_valid_cache_payload(items=items), tmp_path)
+
+    def test_code_starting_with_zero_is_rejected(self, tmp_path):
+        items = _cache_items(MIN_ELIGIBLE_COUNT - 1)
+        items.append(["0301", "ゼロ始まりcode", "sector"])
+        self._assert_rejected(_valid_cache_payload(items=items), tmp_path)
+
+    def test_duplicate_canonical_code_is_rejected(self, tmp_path):
+        items = _cache_items(MIN_ELIGIBLE_COUNT)
+        items[-1] = list(items[0])
+        self._assert_rejected(_valid_cache_payload(items=items), tmp_path)
+
+    # --- segment_counts ----------------------------------------------------
+
+    def test_empty_segment_counts_is_rejected(self, tmp_path):
+        payload = _valid_cache_payload()
+        payload["segment_counts"] = {}
+        self._assert_rejected(payload, tmp_path)
+
+    def test_segment_counts_missing_prime_domestic_key_is_rejected(self, tmp_path):
+        row_count = _valid_cache_payload()["row_count"]
+        payload = _valid_cache_payload(segment_counts={"スタンダード（内国株式）": row_count})
+        self._assert_rejected(payload, tmp_path)
+
+    def test_segment_counts_unapproved_key_is_rejected(self, tmp_path):
+        items = _cache_items(MIN_ELIGIBLE_COUNT)
+        row_count = MIN_RAW_ROW_COUNT
+        payload = _valid_cache_payload(
+            items=items,
+            row_count=row_count,
+            segment_counts={
+                MARKET_SEGMENT_PRIME_DOMESTIC: len(items),
+                "未知区分（架空）": row_count - len(items),
+            },
+        )
+        self._assert_rejected(payload, tmp_path)
+
+    def test_segment_counts_boolean_value_is_rejected(self, tmp_path):
+        # bool は int の subclass なので sum() は数値上一致しうる
+        # （True + 999 == 1000）——isinstance(value, bool)の明示排除が
+        # なければこのpayloadはsum一致check単体では素通りしてしまう。
+        items = _cache_items(MIN_ELIGIBLE_COUNT)
+        payload = _valid_cache_payload(
+            items=items,
+            row_count=MIN_RAW_ROW_COUNT,
+            segment_counts={
+                MARKET_SEGMENT_PRIME_DOMESTIC: True,
+                "スタンダード（内国株式）": MIN_RAW_ROW_COUNT - 1,
+            },
+        )
+        self._assert_rejected(payload, tmp_path)
+
+    def test_segment_counts_wrong_sum_is_rejected(self, tmp_path):
+        items = _cache_items(MIN_ELIGIBLE_COUNT)
+        payload = _valid_cache_payload(
+            items=items,
+            row_count=MIN_RAW_ROW_COUNT,
+            segment_counts={MARKET_SEGMENT_PRIME_DOMESTIC: len(items)},  # row_countと不一致
+        )
+        self._assert_rejected(payload, tmp_path)
+
+    # --- filters_applied -----------------------------------------------
+
+    def test_empty_filters_applied_is_rejected(self, tmp_path):
+        payload = _valid_cache_payload()
+        payload["filters_applied"] = []
+        self._assert_rejected(payload, tmp_path)
+
+    def test_filters_applied_missing_stage_is_rejected(self, tmp_path):
+        payload = _valid_cache_payload()
+        payload["filters_applied"] = payload["filters_applied"][:2]
+        self._assert_rejected(payload, tmp_path)
+
+    def test_filters_applied_extra_stage_is_rejected(self, tmp_path):
+        payload = _valid_cache_payload()
+        payload["filters_applied"] = payload["filters_applied"] + [
+            {"stage": "extra_bogus_stage", "count": 0}
+        ]
+        self._assert_rejected(payload, tmp_path)
+
+    def test_filters_applied_wrong_stage_name_is_rejected(self, tmp_path):
+        payload = _valid_cache_payload()
+        payload["filters_applied"][0]["stage"] = "not_source_rows"
+        self._assert_rejected(payload, tmp_path)
+
+    def test_filters_applied_wrong_order_is_rejected(self, tmp_path):
+        payload = _valid_cache_payload()
+        stages = payload["filters_applied"]
+        payload["filters_applied"] = [stages[1], stages[0], stages[2]]
+        self._assert_rejected(payload, tmp_path)
+
+    def test_filters_applied_negative_count_is_rejected(self, tmp_path):
+        payload = _valid_cache_payload()
+        payload["filters_applied"][-1]["count"] = -1
+        self._assert_rejected(payload, tmp_path)
+
+    def test_filters_applied_boolean_count_is_rejected(self, tmp_path):
+        payload = _valid_cache_payload()
+        payload["filters_applied"][-1]["count"] = True
+        self._assert_rejected(payload, tmp_path)
+
+    def test_filters_applied_increasing_progression_is_rejected(self, tmp_path):
+        payload = _valid_cache_payload()
+        payload["filters_applied"][-1]["count"] = payload["filters_applied"][0]["count"] + 1
+        self._assert_rejected(payload, tmp_path)
+
+    def test_filters_applied_wrong_final_eligible_count_is_rejected(self, tmp_path):
+        payload = _valid_cache_payload()
+        payload["filters_applied"][-1]["count"] = len(payload["items"]) - 1
+        self._assert_rejected(payload, tmp_path)
+
+    def test_filters_applied_wrong_initial_raw_count_is_rejected(self, tmp_path):
+        payload = _valid_cache_payload()
+        payload["filters_applied"][0]["count"] = payload["row_count"] - 1
+        self._assert_rejected(payload, tmp_path)
 
 
 # ---------------------------------------------------------------------------

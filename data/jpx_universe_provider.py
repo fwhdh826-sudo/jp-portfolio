@@ -70,6 +70,13 @@ from urllib.parse import urljoin, urlsplit
 JPX_LISTING_PAGE_URL = (
     "https://www.jpx.co.jp/markets/statistics-equities/misc/01.html"
 )
+# listing page URL（初期URL・redirect先いずれも）が満たすべき正規path。
+# www.jpx.co.jp配下の任意のpath（/corporate/・/english/・
+# /markets/statistics-equities/ 配下の別page等）を許可するのは広すぎる
+# authorityであり、CMS内の無関係pageへのredirectをfetchしてしまう
+# （P5-B005-R3 Blocker A）。narrowest correct contractとして、この
+# 上場銘柄一覧authority page 1つのnormalized pathのみを許可する。
+JPX_LISTING_PAGE_PATH = "/markets/statistics-equities/misc/01.html"
 
 # discoverしたworkbook URLが満たすべきauthority制約。
 JPX_ALLOWED_SCHEME = "https"
@@ -112,6 +119,41 @@ ZIP_SPANNED_SIGNATURE = b"PK\x07\x08"
 # インフラファンド/スタンダード（外国株式）/グロース（外国株式）/出資証券/
 # プライム（外国株式）の10種）。
 MARKET_SEGMENT_PRIME_DOMESTIC = "プライム（内国株式）"
+
+# 2026-07-14実データで確認したJPX「市場・商品区分」列の全既知値
+# （上記10種、モジュールdocstring参照）。segment_countsのkeyがこの
+# 集合の外に出ることは、JPXが市場区分を追加/変更したか、cache
+# payloadが改竄されたかのいずれかであり、cache authorityとしては
+# 承認済み集合の範囲内でのみ受理する（P5-B005-R3 §15）。
+APPROVED_MARKET_SEGMENTS = frozenset({
+    "スタンダード（内国株式）",
+    MARKET_SEGMENT_PRIME_DOMESTIC,
+    "グロース（内国株式）",
+    "ETF・ETN",
+    "PRO Market",
+    "REIT・ベンチャーファンド・カントリーファンド・インフラファンド",
+    "スタンダード（外国株式）",
+    "グロース（外国株式）",
+    "出資証券",
+    "プライム（外国株式）",
+})
+
+# apply_eligibility()が返すfilters_appliedの各stage名（writer authority）。
+# cache validator（_cache_authority_valid）はこれらの定数を直接参照して
+# 検証することで、writerとvalidatorの間でstage名の定義が二重化・
+# 乖離することを防ぐ（P5-B005-R3 §11/§16）。
+FILTER_STAGE_SOURCE_ROWS = "source_rows"
+FILTER_STAGE_MARKET_SEGMENT_PRIME_DOMESTIC = (
+    "market_segment_prime_domestic_common_strict_match"
+)
+FILTER_STAGE_EXCLUDE_PREFERRED_OR_CLASS = (
+    "exclude_preferred_or_class_shares_5digit_code"
+)
+FILTERS_APPLIED_STAGE_ORDER = (
+    FILTER_STAGE_SOURCE_ROWS,
+    FILTER_STAGE_MARKET_SEGMENT_PRIME_DOMESTIC,
+    FILTER_STAGE_EXCLUDE_PREFERRED_OR_CLASS,
+)
 
 # 前回正常row_countの何%未満ならsource異常とみなしcache fallbackへ回すか。
 ROW_COUNT_MIN_RATIO = 0.7
@@ -347,11 +389,18 @@ def _reject_encoded_path_escape(path: str, what: str) -> None:
 
 
 def _validate_listing_page_url(url: str) -> str:
-    """listing page URL（初期URL・redirect先いずれも）がJPX authorityを
-    満たすか検証する。workbook URLと異なりbasename/CMS添付namespaceは
-    要求しない（listing pageのpath自体は将来変わりうる）が、
-    scheme/host/userinfo/encoded-traversalは同じ厳格さで検証する
-    （P5-B005-R2 §10）。"""
+    """listing page URL（初期URL・redirect先いずれも）がJPX listing-page
+    authority契約を満たすか検証する（P5-B005-R3 Blocker A）。
+
+    許可: https / host==www.jpx.co.jp（userinfoなし） / query・fragment
+    なし / pathが承認済みJPX統計・上場銘柄一覧authority page
+    （JPX_LISTING_PAGE_PATH）に正規化後exact一致。
+    拒否: http・別origin・userinfo trick・query/fragment付与・
+    path traversal（literal/encoded問わず）・www.jpx.co.jp配下の
+    他の任意path（/corporate/・/english/・
+    /markets/statistics-equities/ 配下の別pageを含む）。
+    "同一host"だけではauthorityとして不十分——workbook URLと同じ
+    strictさでnamespaceをexact一致まで絞る（§7-8）。"""
     if not isinstance(url, str) or not url.strip():
         raise JPXFetchError("empty listing page URL")
 
@@ -363,11 +412,19 @@ def _validate_listing_page_url(url: str) -> str:
     # www.jpx.co.jp単体のnetlocとは一致せず自動的に拒否される。
     if parts.netloc != JPX_ALLOWED_HOST:
         raise JPXFetchError(f"unexpected listing page host: {parts.netloc!r}")
+    if parts.query or parts.fragment:
+        raise JPXFetchError("listing page URL must not carry query/fragment")
 
     _reject_encoded_path_escape(parts.path, "listing page path")
     segments = parts.path.split("/")
     if any(seg in (".", "..") for seg in segments):
         raise JPXFetchError(f"path traversal in listing page path: {parts.path!r}")
+
+    if parts.path != JPX_LISTING_PAGE_PATH:
+        raise JPXFetchError(
+            f"listing page path outside approved authority "
+            f"{JPX_LISTING_PAGE_PATH!r}: {parts.path!r}"
+        )
 
     return url
 
@@ -813,6 +870,21 @@ def _source_as_of_iso(rows: list[dict[str, Any]]) -> str | None:
 # ---------------------------------------------------------------------------
 
 
+# 実データ（1301, 7203, 166A, 285A, 25935等）で確認済みのJPX証券code形状:
+# 先頭は必ず1-9の数字、残りは数字またはASCII大文字のみ、全体で4桁
+# （普通株式相当）または5桁（優先株/種類株式、is_preferred_or_class_share
+# 参照）。空白・小文字・記号（"BAD!"等）・非ASCIIはいずれも実際の
+# JPXコード命名規則に現れない（P5-B005-R3 §12: cache authorityの
+# canonical code contractとしてlive parse authorityが生成しうる形状を
+# 単一の定義として再利用する）。
+_JPX_CODE_SHAPE_RE = re.compile(r"^[1-9][0-9A-Z]{3,4}$")
+
+
+def _is_canonical_jpx_code(code: Any) -> bool:
+    """codeがlive parse authorityの生成しうる正規形と一致するか。"""
+    return isinstance(code, str) and bool(_JPX_CODE_SHAPE_RE.fullmatch(code))
+
+
 def is_preferred_or_class_share(code: str) -> bool:
     """5桁コードは優先株/種類株式を示す（JPXコード命名規則、
     2026-07-14実データで7件全て「◯◯優先株式」「◯◯種類株式」名称と一致確認済み）。
@@ -848,11 +920,11 @@ def apply_eligibility(
     for row in rows:
         segment_counts[row["market_segment"]] = segment_counts.get(row["market_segment"], 0) + 1
 
-    stage_source = {"stage": "source_rows", "count": len(rows)}
+    stage_source = {"stage": FILTER_STAGE_SOURCE_ROWS, "count": len(rows)}
 
     prime_domestic = [r for r in rows if r["market_segment"] == MARKET_SEGMENT_PRIME_DOMESTIC]
     stage_market = {
-        "stage": "market_segment_prime_domestic_common_strict_match",
+        "stage": FILTER_STAGE_MARKET_SEGMENT_PRIME_DOMESTIC,
         "count": len(prime_domestic),
         "excluded_segment_counts": {
             k: v for k, v in segment_counts.items() if k != MARKET_SEGMENT_PRIME_DOMESTIC
@@ -862,7 +934,7 @@ def apply_eligibility(
     preferred_excluded = [r for r in prime_domestic if is_preferred_or_class_share(r["code"])]
     eligible = [r for r in prime_domestic if not is_preferred_or_class_share(r["code"])]
     stage_preferred = {
-        "stage": "exclude_preferred_or_class_shares_5digit_code",
+        "stage": FILTER_STAGE_EXCLUDE_PREFERRED_OR_CLASS,
         "count": len(eligible),
         "excluded_count": len(preferred_excluded),
         "excluded_codes": sorted(r["code"] for r in preferred_excluded),
@@ -1008,8 +1080,10 @@ def _cache_authority_valid(payload: dict[str, Any], now: datetime) -> bool:
     if not isinstance(items, list) or not items:
         return False
     codes = [item[0] for item in items]
+    if not all(_is_canonical_jpx_code(c) for c in codes):
+        return False  # live parse authorityが生成しえない形状のcode（例: "BAD!"）
     if len(set(codes)) != len(codes):
-        return False  # 重複code
+        return False  # 重複code（canonical形状のみ受理するため正規化の曖昧さはない）
     if any(is_preferred_or_class_share(c) for c in codes):
         return False  # eligibility上除外されるはずの5桁code混入
     if len(items) < MIN_ELIGIBLE_COUNT:
@@ -1026,41 +1100,70 @@ def _cache_authority_valid(payload: dict[str, Any], now: datetime) -> bool:
     if row_count < len(items):
         return False
 
-    # segment_counts: 各stageのcount合計がrow_countと一致するはず
-    # （apply_eligibility()のstage_source.count==len(rows)==row_countと同義）。
-    # malformed/impossible値（非dict・非str key・非int value・負値・
-    # 合計不一致）はいずれも拒否する。空dict（既存実装のplaceholder出力）は
-    # 許容するが、非空の場合は厳密整合性を要求する。
+    # segment_counts: apply_eligibility()はrowsが非空である限り必ず非空dictを
+    # 返す（rows中の各行のmarket_segmentを1件ずつ集計するため）。row_countが
+    # MIN_RAW_ROW_COUNT floor以上のlive/cache payloadで空dictが正当に
+    # 現れることはないため、空dictは無条件で拒否する（P5-B005-R2は誤って
+    # 空dictを許容していた——P5-B005-R3 §14で修正）。keyはJPXが実際に
+    # 使う市場区分の承認済み集合（APPROVED_MARKET_SEGMENTS）の範囲内のみ、
+    # valueはnon-negative int（bool除外）、合計はrow_countと一致、
+    # プライム内国株式区分の値はeligible items件数以上を要求する
+    # （apply_eligibility()のstage_source.count==len(rows)==row_countと
+    # stage_market.count==segment_counts[PRIME_DOMESTIC]の同値性より）。
     segment_counts = payload.get("segment_counts")
-    if not isinstance(segment_counts, dict):
+    if not isinstance(segment_counts, dict) or not segment_counts:
         return False
-    if segment_counts:
-        for key, value in segment_counts.items():
-            if not isinstance(key, str):
-                return False
-            if not isinstance(value, int) or isinstance(value, bool) or value < 0:
-                return False
-        if sum(segment_counts.values()) != row_count:
+    for key, value in segment_counts.items():
+        if not isinstance(key, str) or key not in APPROVED_MARKET_SEGMENTS:
             return False
-        prime_count = segment_counts.get(MARKET_SEGMENT_PRIME_DOMESTIC, 0)
-        if prime_count < len(items):
+        if not isinstance(value, int) or isinstance(value, bool) or value < 0:
             return False
+    if sum(segment_counts.values()) != row_count:
+        return False
+    prime_count = segment_counts.get(MARKET_SEGMENT_PRIME_DOMESTIC, 0)
+    if prime_count < len(items):
+        return False
 
-    # filters_applied: apply_eligibility()が実際に返す形（各stageがdictで
-    # "stage": str・"count": non-negative intを持つ）から外れる場合は拒否する。
+    # filters_applied: apply_eligibility()が実際に返す形——正確に3段、
+    # FILTERS_APPLIED_STAGE_ORDERの名前・順序と厳密一致、countは
+    # non-negative int（bool除外）かつ段を追うごとに単調非増加、
+    # 初段count==row_count、終段count==eligible items件数、
+    # 中段（market_segment）count==segment_counts[PRIME_DOMESTIC]
+    # ——を要求する（P5-B005-R3 §16/§17: writer由来の意味論関係を検証）。
     filters_applied = payload.get("filters_applied")
     if not isinstance(filters_applied, list):
         return False
-    for stage in filters_applied:
+    if len(filters_applied) != len(FILTERS_APPLIED_STAGE_ORDER):
+        return False
+    prev_count: int | None = None
+    for stage, expected_name in zip(filters_applied, FILTERS_APPLIED_STAGE_ORDER):
         if not isinstance(stage, dict):
             return False
-        if not isinstance(stage.get("stage"), str) or not stage["stage"]:
+        if stage.get("stage") != expected_name:
             return False
         count = stage.get("count")
         if not isinstance(count, int) or isinstance(count, bool) or count < 0:
             return False
+        if prev_count is not None and count > prev_count:
+            return False  # 段を追うごとに単調非増加でなければならない
+        prev_count = count
+    if filters_applied[0]["count"] != row_count:
+        return False
+    if filters_applied[1]["count"] != prime_count:
+        return False
+    if filters_applied[-1]["count"] != len(items):
+        return False
 
     return True
+
+
+def cache_authority_valid(payload: dict[str, Any], now: datetime) -> bool:
+    """_cache_authority_valid()の公開ラッパー。module外（Full Batch
+    workflowのJPX cache save-eligibility gate step等）からcanonical cache
+    validatorを再利用するために公開する。ロジックの複製ではなく単一
+    canonical実装への薄いshim（P5-B005-R3 §11: single writer/validator
+    contract）。"""
+    return _cache_authority_valid(payload, now)
 
 
 def _cache_to_result(cache_payload: dict[str, Any], now: datetime) -> JPXUniverseResult:
@@ -1161,6 +1264,17 @@ def get_jpx_universe(
             file=sys.stderr,
         )
         cache = None
+        # defense in depth（P5-B005-R3 §27）: authority-invalidと判定された
+        # restored cache fileはbest-effortで削除する。これは
+        # Full BatchのCACHE_SAVE_CONDITION gate（現在-run live provenance
+        # 相関）を置き換えるものではない——このprocessが仮にcrash/skipして
+        # ファイルが残っても、workflow側のsave-eligibility gateが単独で
+        # 安全である設計を維持する。削除自体の失敗（権限・並行削除等）は
+        # fallback chainを妨げない。
+        try:
+            cache_path.unlink(missing_ok=True)
+        except OSError:
+            pass
 
     try:
         content = fetch_fn()

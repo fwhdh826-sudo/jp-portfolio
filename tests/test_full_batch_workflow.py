@@ -810,7 +810,9 @@ def test_funnel_containment_does_not_suppress_unrelated_real_write_gates():
 _JPX_CACHE_FILE = "data/.jpx_cache/jpx_universe_cache.json"
 _JPX_CACHE_RESTORE_STEP = "Restore JPX universe cache (durable last-good fallback)"
 _JPX_CACHE_SAVE_STEP = "Save JPX universe cache (durable last-good fallback)"
-_JPX_CACHE_CHECK_STEP = "Check JPX universe cache is present for save"
+# P5-B005-R3 BLOCKER C: replaces the R2 file-existence-only
+# "Check JPX universe cache is present for save" step.
+_JPX_CACHE_ELIGIBILITY_STEP = "Validate JPX cache save eligibility (current-run live provenance)"
 # backward-compat alias: earlier R1 tests referenced this name for the
 # restore step (the only actions/cache step at the time).
 _JPX_CACHE_STEP = _JPX_CACHE_RESTORE_STEP
@@ -845,21 +847,87 @@ def test_jpx_cache_save_uses_explicit_save_action_with_correct_path_and_key():
     assert "restore-keys:" not in step
 
 
-def test_jpx_cache_save_condition_checks_file_presence_not_job_success():
-    # The save step's own `if:` must be a small, local, always()-independent
-    # existence check — never `if: success()` / `if: always()` tied to the
-    # whole job's final outcome. That is exactly the shape that let R1's
-    # combined actions/cache@v4 post-job save get skipped by an unrelated
-    # downstream failure.
+def test_jpx_cache_save_condition_depends_on_current_run_provenance_not_file_presence():
+    # P5-B005-R3 BLOCKER C: the save step's own `if:` must depend on the
+    # explicit current-run live-provenance validation step's output — never
+    # bare file existence (the R2 bug: an invalid restored cache left on
+    # disk by a rejected-cache-then-seed-fallback run would still satisfy a
+    # pure existence check and get rotated into a fresh key) — and never
+    # `if: success()` / `if: always()` tied to the whole job's final outcome
+    # (the R1 bug).
     section = _update_data_section()
     save_step = _jpx_cache_step_body(section, _JPX_CACHE_SAVE_STEP)
-    assert "if: steps.jpx-cache-check.outputs.cache_exists == 'true'" in save_step
+    assert "if: steps.jpx-cache-save-eligibility.outputs.save_eligible == 'true'" in save_step
     assert "success()" not in save_step
     assert "always()" not in save_step
+    assert "cache_exists" not in save_step
 
-    check_step = _jpx_cache_step_body(section, _JPX_CACHE_CHECK_STEP)
-    assert "cache_exists" in check_step
-    assert _JPX_CACHE_FILE in check_step
+    eligibility_step = _jpx_cache_step_body(section, _JPX_CACHE_ELIGIBILITY_STEP)
+    assert "id: jpx-cache-save-eligibility" in eligibility_step
+    assert "save_eligible" in eligibility_step
+
+
+def test_jpx_cache_save_eligibility_uses_current_run_pipeline_path_and_run_token():
+    # §24/§26: current-run provenance must come from existing fields already
+    # produced this run — candidates_stocks.json's _meta.pipelinePath (only
+    # "normal" for a fresh live JPX success; whole_market_universe_provider()
+    # sets it to "cache_fallback"/"seed_fallback" otherwise) and _meta.runToken
+    # (from the existing candidates-run-token step), not an invented schema.
+    section = _update_data_section()
+    step = _jpx_cache_step_body(section, _JPX_CACHE_ELIGIBILITY_STEP)
+    assert "steps.candidates-run-token.outputs.run_token" in step
+    assert "steps.candidates-run-start.outputs.started_at" in step
+    assert "pipelinePath" in step
+    assert 'pipeline_path != "normal"' in step
+    assert "runToken" in step
+
+
+def test_jpx_cache_save_eligibility_revalidates_cache_through_canonical_validator():
+    # §11: the eligibility gate must reuse the same canonical cache
+    # authority validator the provider itself uses for save/load — not a
+    # second, independently-defined notion of a valid cache.
+    section = _update_data_section()
+    step = _jpx_cache_step_body(section, _JPX_CACHE_ELIGIBILITY_STEP)
+    assert "from data.jpx_universe_provider import CACHE_PATH, cache_authority_valid" in step
+    assert "cache_authority_valid(payload, now)" in step
+
+
+def test_jpx_cache_save_eligibility_checks_freshness_against_run_start():
+    # §26/§32: a valid cache used only as a fallback (live failed, restored
+    # cache still authority-valid) must not be treated as freshly refreshed —
+    # its fetched_at predates this run's own started_at.
+    section = _update_data_section()
+    step = _jpx_cache_step_body(section, _JPX_CACHE_ELIGIBILITY_STEP)
+    assert "fetched_at" in step
+    assert "run_started - fetched_at" in step
+
+
+def test_jpx_cache_save_eligibility_never_fails_the_job_on_fallback():
+    # §25: a legitimate JPX fallback (cache or seed) must not fail the whole
+    # job — the step only ever sets save_eligible=false, never a non-zero
+    # exit for that case.
+    section = _update_data_section()
+    step = _jpx_cache_step_body(section, _JPX_CACHE_ELIGIBILITY_STEP)
+    assert "save_eligible=false" in step
+    assert "save_eligible=true" in step
+    assert "exit 1" not in step
+    assert "set -e" not in step
+
+
+def test_jpx_cache_save_eligibility_is_after_gate_and_before_save():
+    section = _update_data_section()
+    gate_pos = section.index("Gate candidates_stocks E2E contract")
+    eligibility_pos = section.index(_JPX_CACHE_ELIGIBILITY_STEP)
+    save_pos = section.index(_JPX_CACHE_SAVE_STEP)
+    assert gate_pos < eligibility_pos < save_pos
+
+
+def test_jpx_cache_check_file_existence_only_step_is_removed():
+    # R2's "Check JPX universe cache is present for save" step (bare
+    # existence check, no current-run provenance) must not remain anywhere —
+    # a step name reappearing would silently reintroduce a second,
+    # weaker save gate alongside the eligibility one.
+    assert "Check JPX universe cache is present for save" not in _TEXT
 
 
 def test_no_combined_actions_cache_regression():
