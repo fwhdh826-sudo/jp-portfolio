@@ -2,6 +2,7 @@
 import { readFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
 import type { CandidatesStocksData, StockCandidateItem } from '../../types/candidatesStocks'
+import { normalizePortfolioFitCode } from './portfolioFit'
 import {
   captureCandidateExecutionPriceDatasetProvenance,
   captureCandidateExecutionPriceReferences,
@@ -223,32 +224,156 @@ describe('CAND-SYN-1B captureCandidateExecutionPriceReferences (join direction: 
 })
 
 describe('CAND-SYN-1B real production artifact compatibility (§33)', () => {
-  const raw = readFileSync(
-    new URL('../../../public/data/candidates_stocks.json', import.meta.url),
-    'utf8',
-  )
+  // public/data/candidates_stocks.json is mutable generated production data:
+  // candidate membership legitimately changes between valid scheduled runs
+  // (e.g. the current seed-fallback pipeline publishes 41 seed names and no
+  // 5108). Compatibility here means "a candidate actually present in the
+  // checked-in artifact joins correctly", never "5108 is present forever".
+  const ARTIFACT_URL = new URL('../../../public/data/candidates_stocks.json', import.meta.url)
+  const raw = readFileSync(ARTIFACT_URL, 'utf8')
   const real = JSON.parse(raw) as CandidatesStocksData
 
+  interface UsableRealEntry {
+    readonly normalizedCode: string
+    readonly price: number
+  }
+
+  /**
+   * Test-side usability predicate for the real-artifact positive join probe,
+   * grounded in the production join contract:
+   *  - the code normalizes 'valid' under the same normalizePortfolioFitCode
+   *    authority the runtime joins on
+   *  - dataStatus === 'ok'
+   *  - price is finite and strictly positive
+   *  - the normalized code is unambiguous within the artifact (the runtime
+   *    fail-closes a duplicated normalized code to AMBIGUOUS).
+   * Result is sorted deterministically by normalized code — no reliance on
+   * array position, a fixed code/name/sector, or today's candidate count.
+   */
+  function usableRealEntries(data: CandidatesStocksData): UsableRealEntry[] {
+    const normalizedCounts = new Map<string, number>()
+    for (const c of data.candidates) {
+      const n = normalizePortfolioFitCode(c.code)
+      if (n.status !== 'valid' || n.normalizedCode === null) continue
+      normalizedCounts.set(n.normalizedCode, (normalizedCounts.get(n.normalizedCode) ?? 0) + 1)
+    }
+    return data.candidates
+      .map((item): UsableRealEntry | null => {
+        const n = normalizePortfolioFitCode(item.code)
+        if (n.status !== 'valid' || n.normalizedCode === null) return null
+        if ((normalizedCounts.get(n.normalizedCode) ?? 0) !== 1) return null
+        const price = item.price
+        if (item.dataStatus !== 'ok') return null
+        if (typeof price !== 'number' || !Number.isFinite(price) || price <= 0) return null
+        return { normalizedCode: n.normalizedCode, price }
+      })
+      .filter((e): e is UsableRealEntry => e !== null)
+      .sort((a, b) => a.normalizedCode.localeCompare(b.normalizedCode))
+  }
+
   it('captures real dataset provenance without mutating the file', () => {
-    const before = readFileSync(new URL('../../../public/data/candidates_stocks.json', import.meta.url), 'utf8')
+    const before = readFileSync(ARTIFACT_URL, 'utf8')
     const provenance = captureCandidateExecutionPriceDatasetProvenance(real, 'loaded', Date.parse(real.updatedAt))
     expect(provenance.updatedAt).toBe(real.updatedAt)
     expect(provenance.sourceUpdatedAt).toBe(real.sourceUpdatedAt)
     expect(provenance.runToken).toBe(real._meta.runToken ?? null)
-    const after = readFileSync(new URL('../../../public/data/candidates_stocks.json', import.meta.url), 'utf8')
+    const after = readFileSync(ARTIFACT_URL, 'utf8')
     expect(after).toBe(before)
   })
 
-  it('real authorized-funnel-shaped join: a known code (5108) resolves AVAILABLE', () => {
-    const result = captureCandidateExecutionPriceReferences({
-      candidatesStocks: real,
-      candidatesStocksSource: 'loaded',
-      now: Date.parse(real.updatedAt),
-      candidates: [{ instrumentId: 'stock:5108', code: '5108' }],
-    })
-    expect(result.references[0].status).toBe('AVAILABLE')
-    expect(result.references[0].lotSizeShares).toBe(100)
-    expect(result.references[0].priceJpy).toBeGreaterThan(0)
+  it('real authorized-funnel-shaped join resolves a currently-present usable candidate (dynamic membership, not a fixed 5108)', () => {
+    const before = readFileSync(ARTIFACT_URL, 'utf8')
+    const usable = usableRealEntries(real)
+
+    if (real.candidates.length === 0) {
+      // CASE A — genuinely empty artifact: fail closed, never fabricate a
+      // usable entry or an AVAILABLE reference.
+      expect(usable).toHaveLength(0)
+      const result = captureCandidateExecutionPriceReferences({
+        candidatesStocks: real,
+        candidatesStocksSource: 'loaded',
+        now: Date.parse(real.updatedAt),
+        candidates: [],
+      })
+      expect(result.references).toEqual([])
+    } else if (usable.length === 0) {
+      // CASE B — non-empty artifact with no usable execution-price entry:
+      // deterministic probes of the actual candidates must not manufacture a
+      // fake AVAILABLE executable price; executable price/lot stays null.
+      const probes = [...real.candidates]
+        .map(c => normalizePortfolioFitCode(c.code).normalizedCode)
+        .filter((c): c is string => c !== null)
+        .sort((a, b) => a.localeCompare(b))
+        .map(code => ({ instrumentId: `stock:${code}`, code }))
+      const result = captureCandidateExecutionPriceReferences({
+        candidatesStocks: real,
+        candidatesStocksSource: 'loaded',
+        now: Date.parse(real.updatedAt),
+        candidates: probes,
+      })
+      for (const ref of result.references) {
+        expect(ref.status).not.toBe('AVAILABLE')
+        expect(ref.priceJpy).toBeNull()
+        expect(ref.lotSizeShares).toBeNull()
+      }
+    } else {
+      // Positive real-artifact join: first usable entry by normalized code.
+      const selected = usable[0]
+      const result = captureCandidateExecutionPriceReferences({
+        candidatesStocks: real,
+        candidatesStocksSource: 'loaded',
+        now: Date.parse(real.updatedAt),
+        candidates: [{ instrumentId: `stock:${selected.normalizedCode}`, code: selected.normalizedCode }],
+      })
+      expect(result.references).toHaveLength(1)
+      const ref = result.references[0]
+      expect(ref.status).toBe('AVAILABLE')
+      expect(ref.code).toBe(selected.normalizedCode)
+      expect(ref.rawPrice).toBe(selected.price)
+      expect(ref.priceJpy).toBe(Math.ceil(selected.price))
+      expect(ref.priceJpy).toBeGreaterThan(0)
+      expect(ref.lotSizeShares).toBe(100)
+      expect(ref.reason).toBeNull()
+      expect(result.datasetProvenance.usable).toBe(true)
+    }
+
+    // §10 file immutability: exact byte equality, no write path.
+    expect(readFileSync(ARTIFACT_URL, 'utf8')).toBe(before)
+  })
+
+  it('the real-artifact join contract does not depend on code 5108 being a member', () => {
+    // 5108 is legitimately absent under the current seed-fallback artifact.
+    // Prove the positive join path is driven by dynamic membership: removing
+    // 5108 from a production-like clone leaves the contract intact whenever
+    // another usable entry exists, and a direct "must contain 5108" assertion
+    // would fail against the current artifact.
+    const has5108 = real.candidates.some(
+      c => normalizePortfolioFitCode(c.code).normalizedCode === '5108',
+    )
+    const without5108: CandidatesStocksData = {
+      ...real,
+      candidates: real.candidates.filter(
+        c => normalizePortfolioFitCode(c.code).normalizedCode !== '5108',
+      ),
+    }
+    const usable = usableRealEntries(without5108)
+
+    if (usable.length > 0) {
+      const selected = usable[0]
+      expect(selected.normalizedCode).not.toBe('5108')
+      const result = captureCandidateExecutionPriceReferences({
+        candidatesStocks: without5108,
+        candidatesStocksSource: 'loaded',
+        now: Date.parse(without5108.updatedAt),
+        candidates: [{ instrumentId: `stock:${selected.normalizedCode}`, code: selected.normalizedCode }],
+      })
+      expect(result.references[0].status).toBe('AVAILABLE')
+      expect(result.references[0].lotSizeShares).toBe(100)
+    } else {
+      // No usable entry once 5108 is excluded — then 5108 cannot have been a
+      // silent load-bearing member of the real artifact either.
+      expect(has5108).toBe(false)
+    }
   })
 
   it('every real candidates_stocks price, when finite and positive, normalizes deterministically', () => {
