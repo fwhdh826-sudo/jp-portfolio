@@ -7,6 +7,10 @@ import {
   captureCandidateExecutionPriceDatasetProvenance,
   captureCandidateExecutionPriceReferences,
 } from './candidateExecutionPriceReference'
+import type {
+  CandidateExecutionPriceReference,
+  CandidateExecutionPriceReferenceStatus,
+} from './candidateExecutionPriceReference'
 
 const NOW = Date.parse('2026-08-14T10:00:00.000Z')
 
@@ -271,6 +275,56 @@ describe('CAND-SYN-1B real production artifact compatibility (§33)', () => {
       .sort((a, b) => a.normalizedCode.localeCompare(b.normalizedCode))
   }
 
+  const FAIL_CLOSED_STATUSES: readonly CandidateExecutionPriceReferenceStatus[] = [
+    'INVALID',
+    'UNAVAILABLE',
+    'AMBIGUOUS',
+    'STALE',
+  ]
+
+  /**
+   * §7 shared non-vacuous fail-closed probe for a non-empty artifact that has
+   * no execution-price-usable entry. Every actual candidate contributes a
+   * runtime probe built from its RAW code — normalization is never used here
+   * as a test-side prevalidation filter (§13), so an artifact whose codes are
+   * all malformed still exercises the production function, and the runtime
+   * itself is responsible for classifying them INVALID. Proves the runtime
+   * never manufactures executable authority: references are non-empty, none
+   * AVAILABLE, and priceJpy/lotSizeShares stay null on every one, with at
+   * least one explicit fail-closed status.
+   */
+  function assertNoExecutableAuthority(
+    data: CandidatesStocksData,
+    now: number,
+  ): readonly CandidateExecutionPriceReference[] {
+    const probes = data.candidates
+      .map((candidate, index) => ({ index, rawCode: candidate.code }))
+      .sort((a, b) => a.rawCode.localeCompare(b.rawCode) || a.index - b.index)
+      .map(({ rawCode, index }) => ({
+        instrumentId: `stock:probe:${index}:${rawCode}`,
+        code: rawCode,
+      }))
+    expect(probes.length).toBeGreaterThan(0)
+
+    const result = captureCandidateExecutionPriceReferences({
+      candidatesStocks: data,
+      candidatesStocksSource: 'loaded',
+      now,
+      candidates: probes,
+    })
+
+    expect(result.references).toHaveLength(probes.length)
+    expect(result.references.length).toBeGreaterThan(0)
+    for (const ref of result.references) {
+      expect(ref.status).not.toBe('AVAILABLE')
+      expect(FAIL_CLOSED_STATUSES).toContain(ref.status)
+      expect(ref.priceJpy).toBeNull()
+      expect(ref.lotSizeShares).toBeNull()
+    }
+    expect(result.references.some(ref => FAIL_CLOSED_STATUSES.includes(ref.status))).toBe(true)
+    return result.references
+  }
+
   it('captures real dataset provenance without mutating the file', () => {
     const before = readFileSync(ARTIFACT_URL, 'utf8')
     const provenance = captureCandidateExecutionPriceDatasetProvenance(real, 'loaded', Date.parse(real.updatedAt))
@@ -297,25 +351,13 @@ describe('CAND-SYN-1B real production artifact compatibility (§33)', () => {
       })
       expect(result.references).toEqual([])
     } else if (usable.length === 0) {
-      // CASE B — non-empty artifact with no usable execution-price entry:
-      // deterministic probes of the actual candidates must not manufacture a
-      // fake AVAILABLE executable price; executable price/lot stays null.
-      const probes = [...real.candidates]
-        .map(c => normalizePortfolioFitCode(c.code).normalizedCode)
-        .filter((c): c is string => c !== null)
-        .sort((a, b) => a.localeCompare(b))
-        .map(code => ({ instrumentId: `stock:${code}`, code }))
-      const result = captureCandidateExecutionPriceReferences({
-        candidatesStocks: real,
-        candidatesStocksSource: 'loaded',
-        now: Date.parse(real.updatedAt),
-        candidates: probes,
-      })
-      for (const ref of result.references) {
-        expect(ref.status).not.toBe('AVAILABLE')
-        expect(ref.priceJpy).toBeNull()
-        expect(ref.lotSizeShares).toBeNull()
-      }
+      // CASE B — non-empty artifact with no usable execution-price entry.
+      // §7: probe every actual candidate by its RAW code (no test-side
+      // normalization filter — §13) and prove the runtime fail-closes without
+      // manufacturing a fake AVAILABLE executable price. This cannot pass
+      // vacuously: assertNoExecutableAuthority asserts references.length > 0
+      // even when every artifact code is malformed.
+      assertNoExecutableAuthority(real, Date.parse(real.updatedAt))
     } else {
       // Positive real-artifact join: first usable entry by normalized code.
       const selected = usable[0]
@@ -343,13 +385,13 @@ describe('CAND-SYN-1B real production artifact compatibility (§33)', () => {
 
   it('the real-artifact join contract does not depend on code 5108 being a member', () => {
     // 5108 is legitimately absent under the current seed-fallback artifact.
-    // Prove the positive join path is driven by dynamic membership: removing
-    // 5108 from a production-like clone leaves the contract intact whenever
-    // another usable entry exists, and a direct "must contain 5108" assertion
-    // would fail against the current artifact.
-    const has5108 = real.candidates.some(
-      c => normalizePortfolioFitCode(c.code).normalizedCode === '5108',
-    )
+    // The contract that must hold: removing 5108 from a production-like clone
+    // must not break dynamic real-entry selection when another usable
+    // candidate exists, and must still fail closed (never fabricate an
+    // AVAILABLE price) when it does not. The zero-usable branch is validated
+    // against the runtime contract — never with a mutable "5108 is absent"
+    // membership assertion, which would false-fail a future artifact where
+    // 5108 is the only usable entry (see the §11 regression below).
     const without5108: CandidatesStocksData = {
       ...real,
       candidates: real.candidates.filter(
@@ -359,6 +401,7 @@ describe('CAND-SYN-1B real production artifact compatibility (§33)', () => {
     const usable = usableRealEntries(without5108)
 
     if (usable.length > 0) {
+      // CASE A — another usable entry exists: dynamic selection is intact.
       const selected = usable[0]
       expect(selected.normalizedCode).not.toBe('5108')
       const result = captureCandidateExecutionPriceReferences({
@@ -367,13 +410,116 @@ describe('CAND-SYN-1B real production artifact compatibility (§33)', () => {
         now: Date.parse(without5108.updatedAt),
         candidates: [{ instrumentId: `stock:${selected.normalizedCode}`, code: selected.normalizedCode }],
       })
+      expect(result.references).toHaveLength(1)
       expect(result.references[0].status).toBe('AVAILABLE')
+      expect(result.references[0].code).toBe(selected.normalizedCode)
+      expect(result.references[0].rawPrice).toBe(selected.price)
+      expect(result.references[0].priceJpy).toBe(Math.ceil(selected.price))
       expect(result.references[0].lotSizeShares).toBe(100)
+    } else if (without5108.candidates.length === 0) {
+      // CASE B-empty — removing 5108 empties the artifact: the degraded
+      // contract is the empty-artifact contract (no probes, no references).
+      const result = captureCandidateExecutionPriceReferences({
+        candidatesStocks: without5108,
+        candidatesStocksSource: 'loaded',
+        now: Date.parse(without5108.updatedAt),
+        candidates: [],
+      })
+      expect(result.references).toEqual([])
     } else {
-      // No usable entry once 5108 is excluded — then 5108 cannot have been a
-      // silent load-bearing member of the real artifact either.
-      expect(has5108).toBe(false)
+      // CASE B-unusable — candidates remain but none are execution-price
+      // usable: prove fail-closed runtime behavior on raw probes rather than
+      // asserting anything about 5108's membership.
+      assertNoExecutableAuthority(without5108, Date.parse(without5108.updatedAt))
     }
+  })
+
+  it('§16C nonempty artifact whose candidates all have malformed codes fails closed (no vacuous pass)', () => {
+    const allInvalid = dataset({
+      candidates: [
+        item({ code: '', price: 4000 }),
+        item({ code: 'ABCD', price: 4000 }),
+        item({ code: '12', price: 4000 }),
+      ],
+    })
+    expect(usableRealEntries(allInvalid)).toHaveLength(0)
+    const references = assertNoExecutableAuthority(allInvalid, NOW)
+    expect(references.length).toBeGreaterThan(0)
+    expect(references.every(ref => ref.status === 'INVALID')).toBe(true)
+    expect(references.every(ref => ref.priceJpy === null && ref.lotSizeShares === null)).toBe(true)
+  })
+
+  it('§16D nonempty artifact with valid codes but no execution-price-usable entry fails closed', () => {
+    const noneUsable = dataset({
+      candidates: [
+        item({ code: '7203', dataStatus: 'partial', price: 1500 }),
+        item({ code: '6758', dataStatus: 'ok', price: 0 }),
+        item({ code: '5108', dataStatus: 'ok', price: -5 }),
+      ],
+    })
+    expect(usableRealEntries(noneUsable)).toHaveLength(0)
+    const references = assertNoExecutableAuthority(noneUsable, NOW)
+    expect(references.every(ref => ref.status === 'UNAVAILABLE')).toBe(true)
+  })
+
+  it('§11 future artifact where 5108 is the only usable entry: removing it degrades to fail-closed, not a membership false-failure', () => {
+    const future5108Only = dataset({
+      candidates: [
+        item({ code: '5108', dataStatus: 'ok', price: 4213.2 }),
+        item({ code: '', dataStatus: 'ok', price: 3000 }),          // malformed code
+        item({ code: '7203', dataStatus: 'partial', price: 1500 }), // unusable: dataStatus not ok
+        item({ code: '6758', dataStatus: 'ok', price: 0 }),         // unusable: non-positive price
+      ],
+    })
+    const usable = usableRealEntries(future5108Only)
+    expect(usable).toHaveLength(1)
+    expect(usable[0].normalizedCode).toBe('5108')
+
+    // Before removal: 5108 is a legitimate AVAILABLE execution-price authority.
+    const before = captureCandidateExecutionPriceReferences({
+      candidatesStocks: future5108Only,
+      candidatesStocksSource: 'loaded',
+      now: NOW,
+      candidates: [{ instrumentId: 'stock:5108', code: '5108' }],
+    })
+    expect(before.references[0].status).toBe('AVAILABLE')
+    expect(before.references[0].priceJpy).toBe(4214)
+    expect(before.references[0].lotSizeShares).toBe(100)
+
+    // After removal: the 5108-independence concept must NOT false-fail merely
+    // because 5108 had been a member. The remaining artifact is nonempty and
+    // unusable — it passes only by proving fail-closed runtime behavior.
+    const without5108: CandidatesStocksData = {
+      ...future5108Only,
+      candidates: future5108Only.candidates.filter(
+        c => normalizePortfolioFitCode(c.code).normalizedCode !== '5108',
+      ),
+    }
+    expect(usableRealEntries(without5108)).toHaveLength(0)
+    expect(without5108.candidates.length).toBeGreaterThan(0)
+    const references = assertNoExecutableAuthority(without5108, NOW)
+    expect(references.some(ref => ref.status === 'AVAILABLE')).toBe(false)
+  })
+
+  it('§11 future artifact where 5108 is the only candidate: removing it yields the empty-artifact contract', () => {
+    const only5108 = dataset({
+      candidates: [item({ code: '5108', dataStatus: 'ok', price: 4000 })],
+    })
+    expect(usableRealEntries(only5108)).toHaveLength(1)
+    const without5108: CandidatesStocksData = {
+      ...only5108,
+      candidates: only5108.candidates.filter(
+        c => normalizePortfolioFitCode(c.code).normalizedCode !== '5108',
+      ),
+    }
+    expect(without5108.candidates).toHaveLength(0)
+    const result = captureCandidateExecutionPriceReferences({
+      candidatesStocks: without5108,
+      candidatesStocksSource: 'loaded',
+      now: NOW,
+      candidates: [],
+    })
+    expect(result.references).toEqual([])
   })
 
   it('every real candidates_stocks price, when finite and positive, normalizes deterministically', () => {
