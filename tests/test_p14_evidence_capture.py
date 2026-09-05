@@ -1,9 +1,18 @@
-"""Frozen P14-E2 capture tests T-01..T-12 (one test per frozen ID).
+"""Frozen P14-E2 capture tests T-01..T-12 (one test per frozen ID), plus
+P14-P3C-R1A test-authority hardening tests.
 
 P14-P3C: the valid baseline authority is the deterministic same-run NORMAL
 fixture (tests/fixtures/p14_same_run_normal_v1.json), not the mutable
 committed data/candidates_stocks.json production artifact. See
 _load_same_run_fixture / P14_P3C_FIXTURE_PATH below.
+
+P14-P3C-R1A: the ordinary valid baseline also no longer reads the mutable
+committed public/data/regime_state.json (see _load_synthetic_regime) and no
+longer depends on real datetime.now() (see _frozen_datetime / FRESH_ASOF).
+The one test allowed to read current committed production artifacts is
+test_current_production_artifacts_follow_fail_closed_contract in
+tests/test_p14_evidence_validate.py -- it is isolated from every helper in
+this file.
 """
 from __future__ import annotations
 
@@ -11,6 +20,7 @@ import copy
 import hashlib
 import json
 import subprocess
+from datetime import datetime
 from pathlib import Path
 
 import pytest
@@ -20,6 +30,16 @@ from data import p14_evidence_capture as capture
 
 REPO = Path(__file__).parents[1]
 P14_P3C_FIXTURE_PATH = REPO / "tests/fixtures/p14_same_run_normal_v1.json"
+
+# P14-P3C-R1A deterministic clock authority. sourceUpdatedAt in the fixture
+# is 2026-07-29T23:30:00+09:00 (== 2026-07-29T14:30:00Z); staleThresholdHours
+# is 48. FRESH_ASOF / FRESH_ASOF_ALT are two different real instants that
+# both represent the SAME intended freshness (well inside the 48h window);
+# STALE_ASOF is deliberately beyond it. None of these is the actual current
+# wall-clock time -- the same fixture stays valid indefinitely.
+FRESH_ASOF = "2026-07-30T00:30:00+00:00"
+FRESH_ASOF_ALT = "2026-07-30T05:00:00+00:00"
+STALE_ASOF = "2026-08-01T00:00:00+00:00"
 
 
 def _sha(path: Path) -> str:
@@ -31,6 +51,32 @@ def _load_same_run_fixture() -> dict:
     callers mutate freely without contaminating other tests)."""
     fixture = json.loads(P14_P3C_FIXTURE_PATH.read_text(encoding="utf-8"))
     return copy.deepcopy(fixture["candidatesStocks"])
+
+
+def _load_synthetic_regime() -> dict:
+    """Load the deterministic P14-P3C-R1A synthetic regime_state.json shape
+    (deep copy). This is the sole regime authority for the ordinary valid
+    baseline -- it must never be the mutable committed
+    public/data/regime_state.json (P2-A)."""
+    fixture = json.loads(P14_P3C_FIXTURE_PATH.read_text(encoding="utf-8"))
+    return copy.deepcopy(fixture["regimeState"])
+
+
+def _frozen_datetime(as_of: str) -> type[datetime]:
+    """Return a datetime subclass whose now() always returns the fixed
+    instant `as_of` (ISO8601, offset-aware), for monkeypatching
+    capture.datetime. Every other datetime behavior (fromisoformat,
+    isoformat, arithmetic, astimezone) is inherited unchanged from the real
+    class -- only now() is overridden, so build_bundle's asOf/createdAt stop
+    depending on the real wall clock (P2-B)."""
+    fixed = datetime.fromisoformat(as_of)
+
+    class _Frozen(datetime):
+        @classmethod
+        def now(cls, tz=None):
+            return fixed.astimezone(tz) if tz is not None else fixed
+
+    return _Frozen
 
 
 def _same_observation_prescreen_entries(candidates: dict) -> list[dict]:
@@ -73,7 +119,12 @@ def _write_sources(tmp_path: Path) -> tuple[Path, Path, Path]:
         json.dumps(candidates, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
     )
     prescreen_path.write_text(json.dumps(prescreen, ensure_ascii=False, indent=2) + "\n")
-    regime_path.write_bytes((REPO / "public/data/regime_state.json").read_bytes())
+    # P14-P3C-R1A: synthetic regime authority, not the mutable committed
+    # public/data/regime_state.json (P2-A).
+    regime_path.write_text(
+        json.dumps(_load_synthetic_regime(), ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
     return candidates_path, prescreen_path, regime_path
 
 
@@ -119,6 +170,9 @@ def evidence_bundle(tmp_path_factory: pytest.TempPathFactory):
     sources = _write_sources(tmp)
     patch = pytest.MonkeyPatch()
     patch.setattr(capture, "_environment", _test_environment)
+    # P14-P3C-R1A: fixed deterministic clock (P2-B) -- the ordinary valid
+    # baseline no longer depends on the real wall clock.
+    patch.setattr(capture, "datetime", _frozen_datetime(FRESH_ASOF))
     bundle = capture.build_bundle(
         out_parent=tmp / "out",
         repo_root=REPO,
@@ -261,6 +315,7 @@ def test_quality_report_saved_even_when_overall_pass_false(tmp_path, monkeypatch
 
     monkeypatch.setattr(batch, "compute_quality_report", forced_fail)
     monkeypatch.setattr(capture, "_environment", _test_environment)
+    monkeypatch.setattr(capture, "datetime", _frozen_datetime(FRESH_ASOF))
     bundle = capture.build_bundle(
         out_parent=tmp_path / "out",
         repo_root=REPO,
@@ -316,3 +371,89 @@ def test_capture_never_writes_inside_repository_worktree(tmp_path):
         ["git", "status", "--porcelain=v1", "--untracked-files=all"], cwd=REPO, text=True
     )
     assert after == before
+
+
+# ---------------------------------------------------------------------------
+# P14-P3C-R1A: clock independence + freshness contract (P2-B).
+#
+# build_candidate_funnel is a pure function of (candidates, context); context
+# carries the caller-supplied asOf. These tests fix asOf via
+# _frozen_datetime instead of letting build_bundle read the real wall clock,
+# so the same fixture stays valid regardless of when the suite actually runs.
+# ---------------------------------------------------------------------------
+
+
+def _build_at(tmp_path: Path, monkeypatch: pytest.MonkeyPatch, label: str, as_of: str) -> dict:
+    """Build one evidence bundle under its own tmp subdir with a fixed clock
+    at `as_of`, and return the run-1 base-engine.json result."""
+    root = tmp_path / label
+    sources = _write_sources(root)
+    monkeypatch.setattr(capture, "_environment", _test_environment)
+    monkeypatch.setattr(capture, "datetime", _frozen_datetime(as_of))
+    bundle = capture.build_bundle(
+        out_parent=root / "out",
+        repo_root=REPO,
+        run_identity=_identity(),
+        candidates_path=sources[0],
+        prescreen_path=sources[1],
+        regime_path=sources[2],
+        previous_path=None,
+    )
+    snapshot = next((bundle / "snapshots").glob("real-*"))
+    return json.loads((snapshot / "outputs/run-1/base-engine.json").read_text())
+
+
+def _risk_reasons_by_code(base_result: dict) -> dict[str, list[str]]:
+    return {
+        row["code"]: row["riskReasons"]
+        for row in base_result["candidates"]
+        if isinstance(row, dict) and row.get("tier") != "excluded"
+    }
+
+
+def test_fresh_synthetic_baseline_has_no_soft_stale_source_and_one_actionable_candidate(
+    tmp_path, monkeypatch
+):
+    """P14-P3C-R1A §7A: the deterministic fresh observation must never carry
+    SOFT_STALE_SOURCE -- staleness here is fixture-controlled, not derived
+    from the real wall clock."""
+    base = _build_at(tmp_path, monkeypatch, "fresh", FRESH_ASOF)
+    assert base["counts"]["actionable"] == 1
+    reasons = _risk_reasons_by_code(base)
+    assert all("SOFT_STALE_SOURCE" not in r for r in reasons.values())
+
+
+def test_synthetic_stale_observation_activates_soft_stale_source_per_48h_contract(
+    tmp_path, monkeypatch
+):
+    """P14-P3C-R1A §7B: an explicitly synthetic stale asOf (beyond the
+    existing 48h staleThresholdHours contract) must activate
+    SOFT_STALE_SOURCE and the frozen actionable-eligibility gate
+    (`not is_stale`, A2-S §25.8) -- exercised only here, never in the
+    ordinary fresh baseline above."""
+    base = _build_at(tmp_path, monkeypatch, "stale", STALE_ASOF)
+    assert base["counts"]["actionable"] == 0
+    reasons = _risk_reasons_by_code(base)
+    assert reasons  # sanity: population is non-empty
+    assert all("SOFT_STALE_SOURCE" in r for r in reasons.values())
+
+
+def test_time_travel_equivalent_fresh_asof_values_produce_identical_engine_result(
+    tmp_path, monkeypatch
+):
+    """P14-P3C-R1A §8/§22: two different real instants that both represent
+    the SAME intended freshness (well inside the 48h window) must produce a
+    byte-identical engine result -- proving the baseline's semantics do not
+    depend on which actual wall-clock moment the suite happens to run at.
+    A third, deliberately stale asOf must differ (proving the difference is
+    caused by staleness alone, not by non-determinism elsewhere)."""
+    fresh_a = _build_at(tmp_path, monkeypatch, "fresh-a", FRESH_ASOF)
+    fresh_b = _build_at(tmp_path, monkeypatch, "fresh-b", FRESH_ASOF_ALT)
+    stale = _build_at(tmp_path, monkeypatch, "stale-c", STALE_ASOF)
+
+    assert fresh_a["candidates"] == fresh_b["candidates"]
+    assert fresh_a["counts"] == fresh_b["counts"]
+    assert fresh_a["sectorDistribution"] == fresh_b["sectorDistribution"]
+
+    assert fresh_a["counts"] != stale["counts"]
+    assert fresh_a["candidates"] != stale["candidates"]

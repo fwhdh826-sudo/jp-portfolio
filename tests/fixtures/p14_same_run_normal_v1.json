@@ -1,7 +1,7 @@
 {
   "fixtureId": "p14-same-run-normal-v1",
   "fixtureVersion": 1,
-  "description": "P14-P3C deterministic same-run NORMAL observation fixture. candidatesStocks is one coherent, normal-provenance candidates_stocks.json shaped population (pipelinePath=normal, no seed/cache fallback) used as the algorithm/same-run baseline authority for P14 unit and validator tests. olderFunnel is a separate, deliberately older synthetic funnel used only by the Architecture-B temporal-independence test -- it must never be used as a hidden baseline authority for AC-02/AC-05/AC-19.",
+  "description": "P14-P3C deterministic same-run NORMAL observation fixture. candidatesStocks is one coherent, normal-provenance candidates_stocks.json shaped population (pipelinePath=normal, no seed/cache fallback) used as the algorithm/same-run baseline authority for P14 unit and validator tests. olderFunnel is a separate, deliberately older synthetic funnel used only by the Architecture-B temporal-independence test -- it must never be used as a hidden baseline authority for AC-02/AC-05/AC-19. regimeState is a deterministic synthetic regime_state.json shape (P14-P3C-R1A) carrying only the two fields the current P14 capture/validator test path actually consumes (_meta.generatedAt, regime_state.current_regime) -- it replaces reading the mutable committed public/data/regime_state.json as the ordinary valid-baseline authority.",
   "candidatesStocks": {
     "schemaVersion": "candidates-stocks-1",
     "updatedAt": "2026-07-30T00:00:00+09:00",
@@ -767,5 +767,17 @@
         "marketRank": 5
       }
     ]
+  },
+  "regimeState": {
+    "_meta": {
+      "schemaVersion": "regime-state-1",
+      "kind": "live_regime_state",
+      "not_for_trading": true,
+      "generatedAt": "2026-07-30T00:00:00+00:00",
+      "source": "tests/fixtures/p14_same_run_normal_v1.json (P14-P3C-R1A deterministic synthetic regime)"
+    },
+    "regime_state": {
+      "current_regime": "uncertain"
+    }
   }
 }

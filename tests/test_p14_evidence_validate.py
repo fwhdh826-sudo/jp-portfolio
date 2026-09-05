@@ -1,4 +1,5 @@
-"""Frozen P14-E2 validator tests T-13..T-22.
+"""Frozen P14-E2 validator tests T-13..T-22, plus P14-P3C-R1A test-authority
+hardening tests.
 
 P14-P3C: the valid baseline authority is the deterministic same-run NORMAL
 fixture (tests/fixtures/p14_same_run_normal_v1.json), not the mutable
@@ -6,6 +7,18 @@ committed data/candidates_stocks.json production artifact. The fixture's
 olderFunnel section is a dedicated, deliberately older synthetic funnel used
 ONLY by the Architecture-B temporal-independence test below -- it must never
 serve as a hidden baseline for AC-02/AC-05/AC-19.
+
+P14-P3C-R1A: the ordinary valid baseline also no longer reads the mutable
+committed public/data/regime_state.json (see _load_synthetic_regime) and no
+longer depends on real datetime.now() (see _frozen_datetime / FRESH_ASOF).
+test_current_production_artifacts_follow_fail_closed_contract near the
+bottom of this file is the ONE test allowed to read current committed
+production artifacts -- it is isolated from every helper above it (P2-C).
+
+Known open defect (out of scope for this ticket, see P14-AC19-IDENTITY-
+INTEGRITY-REPAIR): AC-19 currently checks only rank-vector length against
+manifest population, not identity-set/uniqueness equality, so a same-count
+duplicate/substituted identity can still pass AC-19. Not repaired here.
 """
 from __future__ import annotations
 
@@ -13,6 +26,7 @@ import copy
 import json
 import shutil
 import subprocess
+from datetime import datetime
 from pathlib import Path
 
 import pytest
@@ -24,6 +38,12 @@ REPO = Path(__file__).parents[1]
 TEMPORAL_DIVERGENCE_CODE = "9999"
 P14_P3C_FIXTURE_PATH = REPO / "tests/fixtures/p14_same_run_normal_v1.json"
 
+# P14-P3C-R1A deterministic clock authority -- see the identical constants
+# and rationale in tests/test_p14_evidence_capture.py.
+FRESH_ASOF = "2026-07-30T00:30:00+00:00"
+FRESH_ASOF_ALT = "2026-07-30T05:00:00+00:00"
+STALE_ASOF = "2026-08-01T00:00:00+00:00"
+
 
 def _load_p3c_fixture() -> dict:
     """Load the whole P14-P3C fixture document (deep copy)."""
@@ -33,6 +53,27 @@ def _load_p3c_fixture() -> dict:
 def _load_same_run_fixture() -> dict:
     """Load just the same-run NORMAL candidatesStocks authority (deep copy)."""
     return copy.deepcopy(_load_p3c_fixture()["candidatesStocks"])
+
+
+def _load_synthetic_regime() -> dict:
+    """Load the deterministic P14-P3C-R1A synthetic regime_state.json shape
+    (deep copy) -- the sole regime authority for the ordinary valid baseline
+    (P2-A). Never the mutable committed public/data/regime_state.json."""
+    return copy.deepcopy(_load_p3c_fixture()["regimeState"])
+
+
+def _frozen_datetime(as_of: str) -> type[datetime]:
+    """Return a datetime subclass whose now() always returns the fixed
+    instant `as_of`. See the identical helper in
+    tests/test_p14_evidence_capture.py for the full rationale (P2-B)."""
+    fixed = datetime.fromisoformat(as_of)
+
+    class _Frozen(datetime):
+        @classmethod
+        def now(cls, tz=None):
+            return fixed.astimezone(tz) if tz is not None else fixed
+
+    return _Frozen
 
 
 def _same_observation_prescreen_entries(candidates: dict) -> list[dict]:
@@ -86,7 +127,12 @@ def _sources(
     )
     cp.write_text(json.dumps(candidates, ensure_ascii=False, indent=2) + "\n")
     pp.write_text(json.dumps(prescreen, ensure_ascii=False, indent=2) + "\n")
-    rp.write_bytes((REPO / "public/data/regime_state.json").read_bytes())
+    # P14-P3C-R1A: synthetic regime authority, not the mutable committed
+    # public/data/regime_state.json (P2-A).
+    rp.write_text(
+        json.dumps(_load_synthetic_regime(), ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
     return cp, pp, rp
 
 
@@ -133,6 +179,9 @@ def valid_bundle(tmp_path_factory: pytest.TempPathFactory):
     cp, pp, rp = _sources(tmp)
     patch = pytest.MonkeyPatch()
     patch.setattr(capture, "_environment", _environment)
+    # P14-P3C-R1A: fixed deterministic clock (P2-B) -- the ordinary valid
+    # baseline no longer depends on the real wall clock.
+    patch.setattr(capture, "datetime", _frozen_datetime(FRESH_ASOF))
     bundle = capture.build_bundle(
         out_parent=tmp / "out",
         repo_root=REPO,
@@ -163,6 +212,13 @@ def _copy(valid_bundle: Path, tmp_path: Path) -> Path:
 def _failed(report: dict, criterion_id: str) -> bool:
     return any(
         row["id"] == criterion_id and row["passed"] is False
+        for row in report["criteria"]
+    )
+
+
+def _passed(report: dict, criterion_id: str) -> bool:
+    return any(
+        row["id"] == criterion_id and row["passed"] is True
         for row in report["criteria"]
     )
 
@@ -294,6 +350,7 @@ def test_later_candidate_need_not_exist_in_retained_previous_funnel(
         tmp_path, later_candidate_code=TEMPORAL_DIVERGENCE_CODE
     )
     monkeypatch.setattr(capture, "_environment", _environment)
+    monkeypatch.setattr(capture, "datetime", _frozen_datetime(FRESH_ASOF))
     bundle = capture.build_bundle(
         out_parent=tmp_path / "out",
         repo_root=REPO,
@@ -353,3 +410,173 @@ def test_non_normal_pipeline_path_is_rejected(valid_bundle, tmp_path):
     path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n")
     report = validator.validate_bundle(bundle, repo_root=REPO, ci=True)
     assert _failed(report, "AC-02")
+
+
+# ---------------------------------------------------------------------------
+# P14-P3C-R1A §9-11: AC-05 adversarial coverage (timestamp already covered by
+# T-18 above; shortlist and pipeline were previously uncommitted P2-D gaps).
+# AC-05's same_run check is a three-way conjunction (validator.py):
+#   prescreen.generatedAt == candidates.updatedAt   (T-18, existing)
+#   prescreen.shortlistId == candidates._meta.universeProvenance.shortlistId
+#   prescreen.pipelinePath == candidates._meta.pipelinePath
+# Each new test here mutates only the minimum relevant field on the
+# prescreen side, so the corresponding candidates-side criteria (AC-02 in
+# particular) are never weakened by the mutation.
+# ---------------------------------------------------------------------------
+
+
+def test_ac05_passes_on_coherent_baseline_before_any_mutation(valid_bundle):
+    """P14-P3C-R1A §9-11: sanity anchor -- AC-05 itself (not merely overall
+    acceptance) is proven PASS on the untouched coherent baseline before each
+    adversarial mutation test below asserts it flips to FAIL."""
+    report = validator.validate_bundle(valid_bundle, repo_root=REPO, ci=True)
+    assert report["accepted"] is True, report
+    assert _passed(report, "AC-05"), report
+
+
+def test_ac05_shortlist_mismatch_is_rejected(valid_bundle, tmp_path):
+    """P14-P3C-R1A §10: committed adversarial coverage for AC-05 shortlist
+    disagreement. Mutates only prescreen_metadata.shortlistId -- the
+    candidates-side universeProvenance.shortlistId (and therefore AC-02) is
+    untouched."""
+    bundle = _copy(valid_bundle, tmp_path)
+    path = next(bundle.glob("snapshots/real-*/inputs/data/prescreen_metadata.json"))
+    payload = json.loads(path.read_text())
+    payload["shortlistId"] = f"{payload['shortlistId']}-mismatch"
+    path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n")
+    report = validator.validate_bundle(bundle, repo_root=REPO, ci=True)
+    assert report["accepted"] is False
+    assert _failed(report, "AC-05")
+    assert _passed(report, "AC-02")
+
+
+def test_ac05_pipeline_path_mismatch_is_rejected_without_weakening_ac02(
+    valid_bundle, tmp_path
+):
+    """P14-P3C-R1A §11: committed adversarial coverage for AC-05
+    candidate/prescreen pipeline-path disagreement. Mutates only
+    prescreen_metadata.pipelinePath -- the candidates-side
+    _meta.pipelinePath (and therefore AC-02, which reads only that side) is
+    untouched, so AC-05 is proven false without degrading AC-02 (per the
+    ticket's "Do NOT weaken AC-02" constraint)."""
+    bundle = _copy(valid_bundle, tmp_path)
+    path = next(bundle.glob("snapshots/real-*/inputs/data/prescreen_metadata.json"))
+    payload = json.loads(path.read_text())
+    assert payload["pipelinePath"] == "normal"
+    payload["pipelinePath"] = "cache_fallback"
+    path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n")
+    report = validator.validate_bundle(bundle, repo_root=REPO, ci=True)
+    assert report["accepted"] is False
+    assert _failed(report, "AC-05")
+    assert _passed(report, "AC-02")
+
+
+# ---------------------------------------------------------------------------
+# P14-P3C-R1A §12-14: explicit CURRENT production-artifact compatibility /
+# fail-closed test. This is the ONLY test in this file allowed to read
+# current committed production artifacts (data/candidates_stocks.json,
+# data/prescreen_metadata.json, public/data/regime_state.json). It is
+# isolated from every synthetic baseline above: it shares none of
+# _sources/_load_same_run_fixture/_load_synthetic_regime/valid_bundle, and
+# its own bundle never feeds AC-02/AC-05/AC-19 fixtures elsewhere in the
+# suite. It intentionally does NOT freeze the clock -- "current" provenance
+# compatibility is evaluated against the real wall clock by design, and it
+# must not require today's artifact to be permanently seed_fallback: it
+# inspects the actual observed provenance and asserts the outcome the P14
+# contract requires for THAT observation.
+# ---------------------------------------------------------------------------
+
+
+def _real_production_identity(candidates_payload: dict, prescreen_payload: dict) -> dict[str, str]:
+    meta = candidates_payload.get("_meta", {}) if isinstance(candidates_payload, dict) else {}
+    return {
+        "runId": "9900",
+        "runAttempt": "1",
+        "runToken": meta.get("runToken"),
+        "workflow": capture.WORKFLOW,
+        "event": "workflow_dispatch",
+        "startedAt": "2026-01-01T00:00:00Z",
+        "runnerOs": "Linux",
+        "runnerArch": "X64",
+        "timezone": "UTC",
+        "locale": "C.UTF-8",
+        "pythonVersion": "3.11.15",
+        "pythonHashSeed": "0",
+        "gitRef": "refs/heads/v13.3-dev",
+        "gitRefType": "branch",
+        "gitSha": subprocess.check_output(
+            ["git", "rev-parse", "HEAD"], cwd=REPO, text=True
+        ).strip(),
+    }
+
+
+def _real_production_environment(_run_identity: dict[str, str]) -> dict[str, object]:
+    # CI-consistent environment fields only -- this does not make the test
+    # read fabricated candidate/prescreen/regime data, it only prevents the
+    # local dev interpreter/timezone from polluting AC-16/AC-17 with noise
+    # unrelated to production data provenance.
+    return {
+        "capturedAt": "2026-01-01T00:00:01+00:00",
+        "runnerOs": "Linux",
+        "runnerArch": "X64",
+        "pythonVersion": "3.11.15",
+        "pipFreeze": ["pytest==test"],
+        "locale": "C.UTF-8",
+        "timezone": "UTC",
+        "pythonHashSeed": "0",
+        "variableNames": [],
+        "redactedVariableNames": [],
+    }
+
+
+def test_current_production_artifacts_follow_fail_closed_contract(tmp_path, monkeypatch):
+    """P14-P3C-R1A §12/§13: capture+validate the actual current committed
+    production artifacts and assert the contract outcome that matches the
+    OBSERVED provenance -- normal/coherent/same-run must be compatible;
+    seed_fallback/cache_fallback/stale/incoherent must fail closed."""
+    candidates_path = REPO / "data/candidates_stocks.json"
+    prescreen_path = REPO / "data/prescreen_metadata.json"
+    regime_path = REPO / "public/data/regime_state.json"
+    for path in (candidates_path, prescreen_path, regime_path):
+        assert path.is_file(), f"missing real production artifact: {path}"
+
+    candidates_payload = json.loads(candidates_path.read_text(encoding="utf-8"))
+    prescreen_payload = json.loads(prescreen_path.read_text(encoding="utf-8"))
+    meta = candidates_payload.get("_meta", {})
+    provenance = meta.get("universeProvenance", {})
+    pipeline_path = meta.get("pipelinePath")
+
+    is_normal_provenance = (
+        pipeline_path == "normal"
+        and provenance.get("jpxFallbackUsed") is False
+        and provenance.get("shortlistFallbackUsed") is False
+        and provenance.get("shortlistBypassSeedListV1") is False
+    )
+    is_same_run = (
+        prescreen_payload.get("generatedAt") == candidates_payload.get("updatedAt")
+        and prescreen_payload.get("shortlistId") == provenance.get("shortlistId")
+        and prescreen_payload.get("pipelinePath") == pipeline_path
+    )
+
+    monkeypatch.setattr(capture, "_environment", _real_production_environment)
+    bundle = capture.build_bundle(
+        out_parent=tmp_path / "out",
+        repo_root=REPO,
+        run_identity=_real_production_identity(candidates_payload, prescreen_payload),
+        candidates_path=candidates_path,
+        prescreen_path=prescreen_path,
+        regime_path=regime_path,
+        previous_path=None,
+    )
+    report = validator.validate_bundle(bundle, repo_root=REPO, ci=True)
+
+    if is_normal_provenance and is_same_run:
+        assert report["accepted"] is True, report
+        assert _passed(report, "AC-02"), report
+        assert _passed(report, "AC-05"), report
+    else:
+        assert report["accepted"] is False, report
+        if not is_normal_provenance:
+            assert _failed(report, "AC-02"), report
+        if not is_same_run:
+            assert _failed(report, "AC-05"), report
