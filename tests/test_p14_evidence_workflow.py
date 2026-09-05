@@ -66,3 +66,53 @@ def test_full_batch_has_no_p14_evidence_capture_responsibility():
     assert "p14_evidence_capture" not in full_batch
     assert "data.p14_evidence" not in full_batch
     assert "Upload evidence artifact" not in full_batch
+
+
+def test_workflow_uses_python_311():
+    """P14-P3A: manual evidence workflow must pin Python 3.11."""
+    block = _step("Set up Python 3.11")
+    assert re.search(r'python-version:\s*["\']?3\.11["\']?', block)
+
+
+def test_dependency_install_includes_xlsx_and_legacy_xls_parsers():
+    """P14-P3A root cause: current JPX source is XLSX (openpyxl), legacy
+    fallback is XLS (xlrd). Manual workflow previously installed xlrd only,
+    lacking openpyxl for the current XLSX format."""
+    block = _step("Install public-data dependencies")
+    install_line = block.splitlines()[
+        [i for i, ln in enumerate(block.splitlines()) if ln.strip().startswith("run:")][0]
+    ]
+    assert "xlrd" in install_line
+    assert "openpyxl" in install_line
+
+
+def test_dependency_install_precedes_candidate_acquisition():
+    """P14-P3A: dependencies (incl. openpyxl) must be installed before the
+    same-run candidate acquisition step that triggers JPX XLSX parsing."""
+    install_idx = TEXT.index("- name: Install public-data dependencies")
+    acquire_idx = TEXT.index("- name: Acquire same-run candidates and prescreen")
+    assert install_idx < acquire_idx
+
+
+def test_candidate_acquisition_invokes_build_candidates_stocks_with_run_token():
+    """P14-P3A: candidate acquisition module and run-token wiring unchanged."""
+    block = _step("Acquire same-run candidates and prescreen")
+    assert "python3 -m data.build_candidates_stocks" in block
+    assert "--run-token" in block
+    assert "steps.identity.outputs.run_token" in block
+
+
+def test_frozen_branch_guard_unchanged():
+    """P14-P3A: frozen branch enforcement must remain refs/heads/v13.3-dev."""
+    block = _step("Enforce frozen branch")
+    assert "refs/heads/v13.3-dev" in block
+
+
+def test_removing_openpyxl_from_dependency_install_fails_contract():
+    """Negative regression: simulating the pre-repair dependency line (xlrd
+    only, no openpyxl) must fail the same assertion the fixed test enforces."""
+    block = _step("Install public-data dependencies")
+    run_line = [ln for ln in block.splitlines() if ln.strip().startswith("run:")][0]
+    pre_repair_line = run_line.replace(" openpyxl", "")
+    assert "xlrd" in pre_repair_line
+    assert "openpyxl" not in pre_repair_line

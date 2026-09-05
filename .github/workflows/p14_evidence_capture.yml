@@ -35,7 +35,9 @@ jobs:
           python-version: "3.11"
 
       - name: Install public-data dependencies
-        run: pip install yfinance pandas numpy feedparser requests xlrd
+        # xlrd: legacy JPX data_j.xls (OLE2) parse. openpyxl: current JPX
+        # data_j.xlsx (OOXML) parse.
+        run: pip install yfinance pandas numpy feedparser requests xlrd openpyxl
 
       - name: Create run identity
         id: identity
