@@ -1,0 +1,771 @@
+{
+  "fixtureId": "p14-same-run-normal-v1",
+  "fixtureVersion": 1,
+  "description": "P14-P3C deterministic same-run NORMAL observation fixture. candidatesStocks is one coherent, normal-provenance candidates_stocks.json shaped population (pipelinePath=normal, no seed/cache fallback) used as the algorithm/same-run baseline authority for P14 unit and validator tests. olderFunnel is a separate, deliberately older synthetic funnel used only by the Architecture-B temporal-independence test -- it must never be used as a hidden baseline authority for AC-02/AC-05/AC-19.",
+  "candidatesStocks": {
+    "schemaVersion": "candidates-stocks-1",
+    "updatedAt": "2026-07-30T00:00:00+09:00",
+    "sourceUpdatedAt": "2026-07-29T23:30:00+09:00",
+    "staleThresholdHours": 48,
+    "_meta": {
+      "kind": "candidates_stocks",
+      "source": "tests/fixtures/p14_same_run_normal_v1.json (P14-P3C deterministic same-run fixture)",
+      "not_for_trading": true,
+      "universe": "p14_p3c_fixture_v1",
+      "note": "P14-P3C同一run決定的fixture。市場公開情報形状の合成値のみ、個人資産・保有実額・口座情報は含まない",
+      "counts": {
+        "universeCount": 45,
+        "publishedCount": 45,
+        "truncatedCount": 0,
+        "failedTotalCount": 0
+      },
+      "runToken": "00000000-0000-4000-8000-000000000001",
+      "universeProvenance": {
+        "pipelinePath": "normal",
+        "jpxSource": "tests/fixtures/p14_same_run_normal_v1.json::FIXTURE",
+        "jpxFallbackUsed": false,
+        "jpxEligibleCount": 45,
+        "shortlistId": "p14_p3c_fixture_shortlist_v1",
+        "shortlistCount": 45,
+        "shortlistSuccessRatio": 1.0,
+        "shortlistFallbackUsed": false,
+        "shortlistBypassSeedListV1": false,
+        "sectorCapRelaxed": false,
+        "sectorCapRelaxedCount": 0
+      },
+      "pipelineContract": "jpx_whole_market_candidates_v1",
+      "pipelinePath": "normal"
+    },
+    "candidates": [
+      {
+        "code": "1001",
+        "name": "P14P3Cサンプル銘柄01",
+        "sector": "情報・通信業",
+        "price": 500.0,
+        "per": 6.0,
+        "pbr": 0.4,
+        "roe": 2.0,
+        "dividendYield": 0.0,
+        "sigma252d": 0.12,
+        "mom3m": -8.0,
+        "screenReasons": [
+          "低PER"
+        ],
+        "dataStatus": "ok"
+      },
+      {
+        "code": "1002",
+        "name": "P14P3Cサンプル銘柄02",
+        "sector": "電気機器",
+        "price": 545.0,
+        "per": 7.3,
+        "pbr": 0.65,
+        "roe": 2.9,
+        "dividendYield": 0.5,
+        "sigma252d": 0.14,
+        "mom3m": -6.9,
+        "screenReasons": [
+          "低PER"
+        ],
+        "dataStatus": "ok"
+      },
+      {
+        "code": "1003",
+        "name": "P14P3Cサンプル銘柄03",
+        "sector": "輸送用機器",
+        "price": 590.0,
+        "per": 8.6,
+        "pbr": 0.9,
+        "roe": 3.8,
+        "dividendYield": 1.0,
+        "sigma252d": 0.16,
+        "mom3m": -5.8,
+        "screenReasons": [
+          "低PER"
+        ],
+        "dataStatus": "ok"
+      },
+      {
+        "code": "1004",
+        "name": "P14P3Cサンプル銘柄04",
+        "sector": "医薬品",
+        "price": 635.0,
+        "per": 9.9,
+        "pbr": 1.15,
+        "roe": 4.7,
+        "dividendYield": 1.5,
+        "sigma252d": 0.18,
+        "mom3m": -4.7,
+        "screenReasons": [
+          "低PER"
+        ],
+        "dataStatus": "ok"
+      },
+      {
+        "code": "1005",
+        "name": "P14P3Cサンプル銘柄05",
+        "sector": "小売業",
+        "price": 680.0,
+        "per": 11.2,
+        "pbr": 1.4,
+        "roe": 5.6,
+        "dividendYield": 2.0,
+        "sigma252d": 0.2,
+        "mom3m": -3.6,
+        "screenReasons": [],
+        "dataStatus": "ok"
+      },
+      {
+        "code": "1006",
+        "name": "P14P3Cサンプル銘柄06",
+        "sector": "化学",
+        "price": 725.0,
+        "per": 12.5,
+        "pbr": 1.65,
+        "roe": 6.5,
+        "dividendYield": 2.5,
+        "sigma252d": 0.22,
+        "mom3m": -2.5,
+        "screenReasons": [
+          "高配当"
+        ],
+        "dataStatus": "ok"
+      },
+      {
+        "code": "1007",
+        "name": "P14P3Cサンプル銘柄07",
+        "sector": "銀行業",
+        "price": 770.0,
+        "per": 13.8,
+        "pbr": 1.9,
+        "roe": 7.4,
+        "dividendYield": 3.0,
+        "sigma252d": 0.24,
+        "mom3m": -1.4,
+        "screenReasons": [
+          "高配当"
+        ],
+        "dataStatus": "ok"
+      },
+      {
+        "code": "1008",
+        "name": "P14P3Cサンプル銘柄08",
+        "sector": "食料品",
+        "price": 815.0,
+        "per": 15.1,
+        "pbr": 2.15,
+        "roe": 8.3,
+        "dividendYield": 3.5,
+        "sigma252d": 0.26,
+        "mom3m": -0.3,
+        "screenReasons": [
+          "高配当"
+        ],
+        "dataStatus": "ok"
+      },
+      {
+        "code": "1009",
+        "name": "P14P3Cサンプル銘柄09",
+        "sector": "機械",
+        "price": 860.0,
+        "per": 16.4,
+        "pbr": 2.4,
+        "roe": 9.2,
+        "dividendYield": 0.0,
+        "sigma252d": 0.28,
+        "mom3m": 0.8,
+        "screenReasons": [],
+        "dataStatus": "ok"
+      },
+      {
+        "code": "1010",
+        "name": "P14P3Cサンプル銘柄10",
+        "sector": "情報・通信業",
+        "price": 905.0,
+        "per": 17.7,
+        "pbr": 2.65,
+        "roe": 10.1,
+        "dividendYield": 0.5,
+        "sigma252d": 0.3,
+        "mom3m": 1.9,
+        "screenReasons": [],
+        "dataStatus": "ok"
+      },
+      {
+        "code": "1011",
+        "name": "P14P3Cサンプル銘柄11",
+        "sector": "電気機器",
+        "price": 950.0,
+        "per": 19.0,
+        "pbr": 0.4,
+        "roe": 11.0,
+        "dividendYield": 1.0,
+        "sigma252d": 0.32,
+        "mom3m": 3.0,
+        "screenReasons": [],
+        "dataStatus": "ok"
+      },
+      {
+        "code": "1012",
+        "name": "P14P3Cサンプル銘柄12",
+        "sector": "輸送用機器",
+        "price": 995.0,
+        "per": 20.3,
+        "pbr": 0.65,
+        "roe": 11.9,
+        "dividendYield": 1.5,
+        "sigma252d": 0.34,
+        "mom3m": 4.1,
+        "screenReasons": [],
+        "dataStatus": "ok"
+      },
+      {
+        "code": "1013",
+        "name": "P14P3Cサンプル銘柄13",
+        "sector": "医薬品",
+        "price": 1040.0,
+        "per": 21.6,
+        "pbr": 0.9,
+        "roe": 12.8,
+        "dividendYield": 2.0,
+        "sigma252d": 0.12,
+        "mom3m": 5.2,
+        "screenReasons": [],
+        "dataStatus": "ok"
+      },
+      {
+        "code": "1014",
+        "name": "P14P3Cサンプル銘柄14",
+        "sector": "小売業",
+        "price": 1085.0,
+        "per": 22.9,
+        "pbr": 1.15,
+        "roe": 13.7,
+        "dividendYield": 2.5,
+        "sigma252d": 0.14,
+        "mom3m": 6.3,
+        "screenReasons": [
+          "高配当"
+        ],
+        "dataStatus": "ok"
+      },
+      {
+        "code": "1015",
+        "name": "P14P3Cサンプル銘柄15",
+        "sector": "化学",
+        "price": 1130.0,
+        "per": 24.2,
+        "pbr": 1.4,
+        "roe": 14.6,
+        "dividendYield": 3.0,
+        "sigma252d": 0.16,
+        "mom3m": 7.4,
+        "screenReasons": [
+          "高配当"
+        ],
+        "dataStatus": "ok"
+      },
+      {
+        "code": "1016",
+        "name": "P14P3Cサンプル銘柄16",
+        "sector": "銀行業",
+        "price": 1175.0,
+        "per": 6.0,
+        "pbr": 1.65,
+        "roe": 15.5,
+        "dividendYield": 3.5,
+        "sigma252d": 0.18,
+        "mom3m": 8.5,
+        "screenReasons": [
+          "低PER",
+          "高ROE",
+          "高配当"
+        ],
+        "dataStatus": "ok"
+      },
+      {
+        "code": "1017",
+        "name": "P14P3Cサンプル銘柄17",
+        "sector": "食料品",
+        "price": 1220.0,
+        "per": 7.3,
+        "pbr": 1.9,
+        "roe": 16.4,
+        "dividendYield": 0.0,
+        "sigma252d": 0.2,
+        "mom3m": 9.6,
+        "screenReasons": [
+          "低PER",
+          "高ROE"
+        ],
+        "dataStatus": "ok"
+      },
+      {
+        "code": "1018",
+        "name": "P14P3Cサンプル銘柄18",
+        "sector": "機械",
+        "price": 1265.0,
+        "per": 8.6,
+        "pbr": 2.15,
+        "roe": 17.3,
+        "dividendYield": 0.5,
+        "sigma252d": 0.22,
+        "mom3m": -8.0,
+        "screenReasons": [
+          "低PER",
+          "高ROE"
+        ],
+        "dataStatus": "ok"
+      },
+      {
+        "code": "1019",
+        "name": "P14P3Cサンプル銘柄19",
+        "sector": "情報・通信業",
+        "price": 1310.0,
+        "per": 9.9,
+        "pbr": 2.4,
+        "roe": 18.2,
+        "dividendYield": 1.0,
+        "sigma252d": 0.24,
+        "mom3m": -6.9,
+        "screenReasons": [
+          "低PER",
+          "高ROE"
+        ],
+        "dataStatus": "ok"
+      },
+      {
+        "code": "1020",
+        "name": "P14P3Cサンプル銘柄20",
+        "sector": "電気機器",
+        "price": 1355.0,
+        "per": 11.2,
+        "pbr": 2.65,
+        "roe": 19.1,
+        "dividendYield": 1.5,
+        "sigma252d": 0.26,
+        "mom3m": -5.8,
+        "screenReasons": [
+          "高ROE"
+        ],
+        "dataStatus": "ok"
+      },
+      {
+        "code": "1021",
+        "name": "P14P3Cサンプル銘柄21",
+        "sector": "輸送用機器",
+        "price": 1400.0,
+        "per": 12.5,
+        "pbr": 0.4,
+        "roe": 2.0,
+        "dividendYield": 2.0,
+        "sigma252d": 0.28,
+        "mom3m": -4.7,
+        "screenReasons": [],
+        "dataStatus": "ok"
+      },
+      {
+        "code": "1022",
+        "name": "P14P3Cサンプル銘柄22",
+        "sector": "医薬品",
+        "price": 1445.0,
+        "per": 13.8,
+        "pbr": 0.65,
+        "roe": 2.9,
+        "dividendYield": 2.5,
+        "sigma252d": 0.3,
+        "mom3m": -3.6,
+        "screenReasons": [
+          "高配当"
+        ],
+        "dataStatus": "ok"
+      },
+      {
+        "code": "1023",
+        "name": "P14P3Cサンプル銘柄23",
+        "sector": "小売業",
+        "price": 1490.0,
+        "per": 15.1,
+        "pbr": 0.9,
+        "roe": 3.8,
+        "dividendYield": 3.0,
+        "sigma252d": 0.32,
+        "mom3m": -2.5,
+        "screenReasons": [
+          "高配当"
+        ],
+        "dataStatus": "ok"
+      },
+      {
+        "code": "1024",
+        "name": "P14P3Cサンプル銘柄24",
+        "sector": "化学",
+        "price": 1535.0,
+        "per": 16.4,
+        "pbr": 1.15,
+        "roe": 4.7,
+        "dividendYield": 3.5,
+        "sigma252d": 0.34,
+        "mom3m": -1.4,
+        "screenReasons": [
+          "高配当"
+        ],
+        "dataStatus": "ok"
+      },
+      {
+        "code": "1025",
+        "name": "P14P3Cサンプル銘柄25",
+        "sector": "銀行業",
+        "price": 1580.0,
+        "per": 17.7,
+        "pbr": 1.4,
+        "roe": 5.6,
+        "dividendYield": 0.0,
+        "sigma252d": 0.12,
+        "mom3m": -0.3,
+        "screenReasons": [],
+        "dataStatus": "ok"
+      },
+      {
+        "code": "1026",
+        "name": "P14P3Cサンプル銘柄26",
+        "sector": "食料品",
+        "price": 1625.0,
+        "per": 19.0,
+        "pbr": 1.65,
+        "roe": 6.5,
+        "dividendYield": 0.5,
+        "sigma252d": 0.14,
+        "mom3m": 0.8,
+        "screenReasons": [],
+        "dataStatus": "ok"
+      },
+      {
+        "code": "1027",
+        "name": "P14P3Cサンプル銘柄27",
+        "sector": "機械",
+        "price": 1670.0,
+        "per": 20.3,
+        "pbr": 1.9,
+        "roe": 7.4,
+        "dividendYield": 1.0,
+        "sigma252d": 0.16,
+        "mom3m": 1.9,
+        "screenReasons": [],
+        "dataStatus": "ok"
+      },
+      {
+        "code": "1028",
+        "name": "P14P3Cサンプル銘柄28",
+        "sector": "情報・通信業",
+        "price": 1715.0,
+        "per": 21.6,
+        "pbr": 2.15,
+        "roe": 8.3,
+        "dividendYield": 1.5,
+        "sigma252d": 0.18,
+        "mom3m": 3.0,
+        "screenReasons": [],
+        "dataStatus": "ok"
+      },
+      {
+        "code": "1029",
+        "name": "P14P3Cサンプル銘柄29",
+        "sector": "電気機器",
+        "price": 1760.0,
+        "per": 22.9,
+        "pbr": 2.4,
+        "roe": 9.2,
+        "dividendYield": 2.0,
+        "sigma252d": 0.2,
+        "mom3m": 4.1,
+        "screenReasons": [],
+        "dataStatus": "ok"
+      },
+      {
+        "code": "1030",
+        "name": "P14P3Cサンプル銘柄30",
+        "sector": "輸送用機器",
+        "price": 1805.0,
+        "per": 24.2,
+        "pbr": 2.65,
+        "roe": 10.1,
+        "dividendYield": 2.5,
+        "sigma252d": 0.22,
+        "mom3m": 5.2,
+        "screenReasons": [
+          "高配当"
+        ],
+        "dataStatus": "ok"
+      },
+      {
+        "code": "1031",
+        "name": "P14P3Cサンプル銘柄31",
+        "sector": "医薬品",
+        "price": 1850.0,
+        "per": 6.0,
+        "pbr": 0.4,
+        "roe": 11.0,
+        "dividendYield": 3.0,
+        "sigma252d": 0.24,
+        "mom3m": 6.3,
+        "screenReasons": [
+          "低PER",
+          "高配当"
+        ],
+        "dataStatus": "ok"
+      },
+      {
+        "code": "1032",
+        "name": "P14P3Cサンプル銘柄32",
+        "sector": "小売業",
+        "price": 1895.0,
+        "per": 7.3,
+        "pbr": 0.65,
+        "roe": 11.9,
+        "dividendYield": 3.5,
+        "sigma252d": 0.26,
+        "mom3m": 7.4,
+        "screenReasons": [
+          "低PER",
+          "高配当"
+        ],
+        "dataStatus": "ok"
+      },
+      {
+        "code": "1033",
+        "name": "P14P3Cサンプル銘柄33",
+        "sector": "化学",
+        "price": 1940.0,
+        "per": 8.6,
+        "pbr": 0.9,
+        "roe": 12.8,
+        "dividendYield": 0.0,
+        "sigma252d": 0.28,
+        "mom3m": 8.5,
+        "screenReasons": [
+          "低PER"
+        ],
+        "dataStatus": "ok"
+      },
+      {
+        "code": "1034",
+        "name": "P14P3Cサンプル銘柄34",
+        "sector": "銀行業",
+        "price": 1985.0,
+        "per": 9.9,
+        "pbr": 1.15,
+        "roe": 13.7,
+        "dividendYield": 0.5,
+        "sigma252d": 0.3,
+        "mom3m": 9.6,
+        "screenReasons": [
+          "低PER"
+        ],
+        "dataStatus": "ok"
+      },
+      {
+        "code": "1035",
+        "name": "P14P3Cサンプル銘柄35",
+        "sector": "食料品",
+        "price": 2030.0,
+        "per": 11.2,
+        "pbr": 1.4,
+        "roe": 14.6,
+        "dividendYield": 1.0,
+        "sigma252d": 0.32,
+        "mom3m": -8.0,
+        "screenReasons": [],
+        "dataStatus": "ok"
+      },
+      {
+        "code": "1036",
+        "name": "P14P3Cサンプル銘柄36",
+        "sector": "機械",
+        "price": 2075.0,
+        "per": 12.5,
+        "pbr": 1.65,
+        "roe": 15.5,
+        "dividendYield": 1.5,
+        "sigma252d": 0.34,
+        "mom3m": -6.9,
+        "screenReasons": [
+          "高ROE"
+        ],
+        "dataStatus": "ok"
+      },
+      {
+        "code": "1037",
+        "name": "P14P3Cサンプル銘柄37",
+        "sector": "情報・通信業",
+        "price": 2120.0,
+        "per": 13.8,
+        "pbr": 1.9,
+        "roe": 16.4,
+        "dividendYield": 2.0,
+        "sigma252d": 0.12,
+        "mom3m": -5.8,
+        "screenReasons": [
+          "高ROE"
+        ],
+        "dataStatus": "ok"
+      },
+      {
+        "code": "1038",
+        "name": "P14P3Cサンプル銘柄38",
+        "sector": "電気機器",
+        "price": 2165.0,
+        "per": 15.1,
+        "pbr": 2.15,
+        "roe": 17.3,
+        "dividendYield": 2.5,
+        "sigma252d": 0.14,
+        "mom3m": -4.7,
+        "screenReasons": [
+          "高ROE",
+          "高配当"
+        ],
+        "dataStatus": "ok"
+      },
+      {
+        "code": "1039",
+        "name": "P14P3Cサンプル銘柄39",
+        "sector": "輸送用機器",
+        "price": 2210.0,
+        "per": 16.4,
+        "pbr": 2.4,
+        "roe": 18.2,
+        "dividendYield": 3.0,
+        "sigma252d": 0.16,
+        "mom3m": -3.6,
+        "screenReasons": [
+          "高ROE",
+          "高配当"
+        ],
+        "dataStatus": "ok"
+      },
+      {
+        "code": "1040",
+        "name": "P14P3Cサンプル銘柄40",
+        "sector": "医薬品",
+        "price": 2255.0,
+        "per": 17.7,
+        "pbr": 2.65,
+        "roe": 19.1,
+        "dividendYield": 3.5,
+        "sigma252d": 0.18,
+        "mom3m": -2.5,
+        "screenReasons": [
+          "高ROE",
+          "高配当"
+        ],
+        "dataStatus": "ok"
+      },
+      {
+        "code": "1041",
+        "name": "P14P3Cサンプル銘柄41",
+        "sector": "小売業",
+        "price": 2300.0,
+        "per": 19.0,
+        "pbr": 0.4,
+        "roe": 2.0,
+        "dividendYield": 0.0,
+        "sigma252d": 0.2,
+        "mom3m": -1.4,
+        "screenReasons": [],
+        "dataStatus": "ok"
+      },
+      {
+        "code": "1042",
+        "name": "P14P3Cサンプル銘柄42",
+        "sector": "化学",
+        "price": 2345.0,
+        "per": 20.3,
+        "pbr": 0.65,
+        "roe": 2.9,
+        "dividendYield": 0.5,
+        "sigma252d": 0.22,
+        "mom3m": -0.3,
+        "screenReasons": [],
+        "dataStatus": "ok"
+      },
+      {
+        "code": "1043",
+        "name": "P14P3Cサンプル銘柄43",
+        "sector": "銀行業",
+        "price": 2390.0,
+        "per": 21.6,
+        "pbr": 0.9,
+        "roe": 3.8,
+        "dividendYield": 1.0,
+        "sigma252d": 0.24,
+        "mom3m": 0.8,
+        "screenReasons": [],
+        "dataStatus": "ok"
+      },
+      {
+        "code": "1044",
+        "name": "P14P3Cサンプル銘柄44",
+        "sector": "食料品",
+        "price": 2435.0,
+        "per": 22.9,
+        "pbr": 1.15,
+        "roe": 4.7,
+        "dividendYield": 1.5,
+        "sigma252d": 0.26,
+        "mom3m": 1.9,
+        "screenReasons": [],
+        "dataStatus": "ok"
+      },
+      {
+        "code": "1045",
+        "name": "P14P3Cサンプル銘柄45",
+        "sector": "機械",
+        "price": 2480.0,
+        "per": 24.2,
+        "pbr": 1.4,
+        "roe": 5.6,
+        "dividendYield": 2.0,
+        "sigma252d": 0.28,
+        "mom3m": 3.0,
+        "screenReasons": [],
+        "dataStatus": "ok"
+      }
+    ],
+    "missing": [],
+    "status": "ok"
+  },
+  "olderFunnel": {
+    "schemaVersion": "candidate-funnel-1",
+    "status": "generated",
+    "generatedAt": "2026-06-01T00:00:00+09:00",
+    "note": "P14-P3C Architecture-B fixture: a deliberately older, independent funnel snapshot used only by the temporal-independence test. Codes are disjoint from p14_same_run_normal_v1 candidatesStocks and from TEMPORAL_DIVERGENCE_CODE ('9999').",
+    "candidates": [
+      {
+        "code": "2001",
+        "name": "P14P3C旧サンプル銘柄01",
+        "marketRank": 1
+      },
+      {
+        "code": "2002",
+        "name": "P14P3C旧サンプル銘柄02",
+        "marketRank": 2
+      },
+      {
+        "code": "2003",
+        "name": "P14P3C旧サンプル銘柄03",
+        "marketRank": 3
+      },
+      {
+        "code": "2004",
+        "name": "P14P3C旧サンプル銘柄04",
+        "marketRank": 4
+      },
+      {
+        "code": "2005",
+        "name": "P14P3C旧サンプル銘柄05",
+        "marketRank": 5
+      }
+    ]
+  }
+}

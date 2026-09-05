@@ -1,6 +1,13 @@
-"""Frozen P14-E2 capture tests T-01..T-12 (one test per frozen ID)."""
+"""Frozen P14-E2 capture tests T-01..T-12 (one test per frozen ID).
+
+P14-P3C: the valid baseline authority is the deterministic same-run NORMAL
+fixture (tests/fixtures/p14_same_run_normal_v1.json), not the mutable
+committed data/candidates_stocks.json production artifact. See
+_load_same_run_fixture / P14_P3C_FIXTURE_PATH below.
+"""
 from __future__ import annotations
 
+import copy
 import hashlib
 import json
 import subprocess
@@ -12,17 +19,25 @@ from data import candidate_funnel_batch as batch
 from data import p14_evidence_capture as capture
 
 REPO = Path(__file__).parents[1]
+P14_P3C_FIXTURE_PATH = REPO / "tests/fixtures/p14_same_run_normal_v1.json"
 
 
 def _sha(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def _load_same_run_fixture() -> dict:
+    """Load the deterministic P14-P3C same-run NORMAL fixture (deep copy;
+    callers mutate freely without contaminating other tests)."""
+    fixture = json.loads(P14_P3C_FIXTURE_PATH.read_text(encoding="utf-8"))
+    return copy.deepcopy(fixture["candidatesStocks"])
+
+
 def _same_observation_prescreen_entries(candidates: dict) -> list[dict]:
     """Build deterministic prescreen metadata for this candidate observation.
 
-    The committed candidate funnel is an older P-15 baseline under Architecture B,
-    not the prescreen authority for a later candidate population.
+    Same-run authority: the fixture's candidates ARE the prescreen authority
+    for this observation, not a retained/older funnel (Architecture B).
     """
     rows = sorted(candidates["candidates"], key=lambda row: row["code"])
     population = len(rows)
@@ -38,7 +53,7 @@ def _same_observation_prescreen_entries(candidates: dict) -> list[dict]:
 
 
 def _write_sources(tmp_path: Path) -> tuple[Path, Path, Path]:
-    candidates = json.loads((REPO / "data/candidates_stocks.json").read_text())
+    candidates = _load_same_run_fixture()
     candidates["_meta"]["runToken"] = "7f1a076e-2a44-4d92-968d-f9c69c1f83b1"
     entries = _same_observation_prescreen_entries(candidates)
     prescreen = {
@@ -111,7 +126,10 @@ def evidence_bundle(tmp_path_factory: pytest.TempPathFactory):
         candidates_path=sources[0],
         prescreen_path=sources[1],
         regime_path=sources[2],
-        previous_path=REPO / "data/candidate_funnel.json",
+        # P14-P3C: ordinary baseline tests carry no retained-previous-funnel
+        # authority (P-15 is a RECORD gate, not fail-closed) -- the mutable
+        # committed data/candidate_funnel.json must not be a hidden baseline.
+        previous_path=None,
     )
     patch.undo()
     return bundle, sources

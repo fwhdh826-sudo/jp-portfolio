@@ -1,6 +1,15 @@
-"""Frozen P14-E2 validator tests T-13..T-22."""
+"""Frozen P14-E2 validator tests T-13..T-22.
+
+P14-P3C: the valid baseline authority is the deterministic same-run NORMAL
+fixture (tests/fixtures/p14_same_run_normal_v1.json), not the mutable
+committed data/candidates_stocks.json production artifact. The fixture's
+olderFunnel section is a dedicated, deliberately older synthetic funnel used
+ONLY by the Architecture-B temporal-independence test below -- it must never
+serve as a hidden baseline for AC-02/AC-05/AC-19.
+"""
 from __future__ import annotations
 
+import copy
 import json
 import shutil
 import subprocess
@@ -13,6 +22,17 @@ from data import p14_evidence_validate as validator
 
 REPO = Path(__file__).parents[1]
 TEMPORAL_DIVERGENCE_CODE = "9999"
+P14_P3C_FIXTURE_PATH = REPO / "tests/fixtures/p14_same_run_normal_v1.json"
+
+
+def _load_p3c_fixture() -> dict:
+    """Load the whole P14-P3C fixture document (deep copy)."""
+    return copy.deepcopy(json.loads(P14_P3C_FIXTURE_PATH.read_text(encoding="utf-8")))
+
+
+def _load_same_run_fixture() -> dict:
+    """Load just the same-run NORMAL candidatesStocks authority (deep copy)."""
+    return copy.deepcopy(_load_p3c_fixture()["candidatesStocks"])
 
 
 def _same_observation_prescreen_entries(candidates: dict) -> list[dict]:
@@ -33,7 +53,7 @@ def _same_observation_prescreen_entries(candidates: dict) -> list[dict]:
 def _sources(
     tmp: Path, *, later_candidate_code: str | None = None
 ) -> tuple[Path, Path, Path]:
-    candidates = json.loads((REPO / "data/candidates_stocks.json").read_text())
+    candidates = _load_same_run_fixture()
     candidates["_meta"]["runToken"] = "cc139a4e-e3b8-4515-843e-cf5b73612237"
     if later_candidate_code is not None:
         assert all(
@@ -120,7 +140,10 @@ def valid_bundle(tmp_path_factory: pytest.TempPathFactory):
         candidates_path=cp,
         prescreen_path=pp,
         regime_path=rp,
-        previous_path=REPO / "data/candidate_funnel.json",
+        # P14-P3C: ordinary baseline tests carry no retained-previous-funnel
+        # authority (P-15 is a RECORD gate, not fail-closed) -- the mutable
+        # committed data/candidate_funnel.json must not be a hidden baseline.
+        previous_path=None,
     )
     patch.undo()
     report = validator.validate_bundle(bundle, repo_root=REPO, ci=True)
@@ -251,11 +274,22 @@ def test_prescreen_generated_at_not_equal_candidates_updated_at_is_rejected(
 def test_later_candidate_need_not_exist_in_retained_previous_funnel(
     tmp_path, monkeypatch
 ):
-    """Architecture B keeps an older funnel while later candidate sets evolve."""
-    previous = json.loads((REPO / "data/candidate_funnel.json").read_text())
+    """Architecture B keeps an older funnel while later candidate sets evolve.
+
+    P14-P3C: the "retained older funnel" authority here is a dedicated
+    deterministic fixture (fixture's olderFunnel section), deliberately
+    older than and disjoint from the same-run candidatesStocks population --
+    never the mutable committed data/candidate_funnel.json.
+    """
+    previous = _load_p3c_fixture()["olderFunnel"]
     assert TEMPORAL_DIVERGENCE_CODE not in {
         row["code"] for row in previous["candidates"]
     }
+    previous_path = tmp_path / "older-funnel" / "candidate_funnel_previous.json"
+    previous_path.parent.mkdir(parents=True)
+    previous_path.write_text(
+        json.dumps(previous, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
     cp, pp, rp = _sources(
         tmp_path, later_candidate_code=TEMPORAL_DIVERGENCE_CODE
     )
@@ -267,7 +301,7 @@ def test_later_candidate_need_not_exist_in_retained_previous_funnel(
         candidates_path=cp,
         prescreen_path=pp,
         regime_path=rp,
-        previous_path=REPO / "data/candidate_funnel.json",
+        previous_path=previous_path,
     )
     report = validator.validate_bundle(bundle, repo_root=REPO, ci=True)
     assert report["accepted"] is True, report
