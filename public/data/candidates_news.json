@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-09-05T00:02:01.921748+09:00",
-  "sourceUpdatedAt": "2026-09-04T14:48:40+00:00",
+  "updatedAt": "2026-09-05T10:12:31.815960+09:00",
+  "sourceUpdatedAt": "2026-09-05T00:08:19+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -43,49 +43,63 @@
       "items": []
     },
     "us_broad": {
-      "avgSentiment": -0.054,
-      "negativeCount": 1,
-      "positiveCount": 2,
-      "neutralCount": 7,
+      "avgSentiment": 0.083,
+      "negativeCount": 2,
+      "positiveCount": 4,
+      "neutralCount": 6,
       "sourceCount": 2,
-      "itemCount": 10,
+      "itemCount": 12,
       "isStale": false,
-      "topNegativeTitle": "Treasuries Slide After Jobs Data Lift Fed Hike Wagers",
-      "topPositiveTitle": "Jobs Report Is More About Inflation, BlackRock's Rosenberg Says",
+      "topNegativeTitle": "Wall Street Risk Complex Defies Rate Threat After Jobs Data",
+      "topPositiveTitle": "Fed Rate Decision Still Hangs on Inflation After Jobs Report",
       "items": [
         {
-          "title": "Treasuries Slide After Jobs Data Lift Fed Hike Wagers",
+          "title": "Wall Street Risk Complex Defies Rate Threat After Jobs Data",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-09-04T12:43:21+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-04/treasuries-slide-after-strong-jobs-data-lift-fed-hike-wagers",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-04T20:14:30+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-04/wall-street-risk-complex-defies-rate-threat-after-jobs-blowout",
           "tags": [
+            "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Gold Falls as Strong US Payrolls Power Bets on Fed Rate Hikes",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-04T00:27:29+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-04/gold-to-end-volatile-week-higher-as-fedspeak-trims-rate-hike-bet",
+          "tags": [
+            "gold",
             "market",
             "rates",
             "us_broad"
           ]
         },
         {
-          "title": "Dollar Slumps to Start September as Yen Surges on Rate Bets",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.2,
-          "publishedAt": "2026-09-04T00:29:47+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-04/us-dollar-slumps-to-start-september-as-yen-surges-on-rate-bets",
-          "tags": [
-            "fx",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Trump Says Fed ‘Must Get Smart’ and Lower Interest Rates",
+          "title": "Bloom Energy, Illumina, Everpure to Join S&P 500 This Month",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-04T14:20:05+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-04/trump-says-fed-must-get-smart-and-lower-interest-rates-video",
+          "publishedAt": "2026-09-04T21:43:05+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-04/bloom-energy-illumina-everpure-to-join-s-p-500-in-september",
+          "tags": [
+            "commodity",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Algorithm Research CEO on Interest Rates Expectations",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-04T20:14:00+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-04/algorithm-research-ceo-on-interest-rates-expectations-video",
           "tags": [
             "market",
             "rates",
@@ -93,56 +107,30 @@
           ]
         },
         {
-          "title": "US Jobs Report August 2026: Key Takeaways on Employment, Payrolls",
+          "title": "Fed’s Hammack Says It’s Time to Act to Bring Down Inflation",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-04T13:46:11+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-04/us-jobs-report-august-2026-key-takeaways-on-employment-payrolls",
+          "publishedAt": "2026-09-04T16:36:08+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-04/fed-s-hammack-says-it-s-time-to-act-to-bring-down-inflation",
           "tags": [
             "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Risk Assets Can Withstand Fed Rate Hike, BlackRock's Rosenberg Says",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-04T13:41:53+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-04/risk-assets-can-withstand-rate-hike-jeffrey-rosenberg-video",
-          "tags": [
-            "market",
-            "rates",
             "us_broad"
           ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": -0.335,
-      "negativeCount": 1,
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
       "positiveCount": 0,
       "neutralCount": 1,
-      "sourceCount": 2,
-      "itemCount": 2,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Lululemon Falls on China Business; Tesla Cybercab Service | Stock Movers",
+      "topNegativeTitle": "Roubini Is Unworried by Higher Bond Yields With Rosy View of AI",
       "topPositiveTitle": "Roubini Is Unworried by Higher Bond Yields With Rosy View of AI",
       "items": [
-        {
-          "title": "Lululemon Falls on China Business; Tesla Cybercab Service | Stock Movers",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-09-04T14:35:58+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-04/lululemon-falls-on-china-business-tesla-cybercab-video",
-          "tags": [
-            "fx",
-            "market",
-            "us_growth"
-          ]
-        },
         {
           "title": "Roubini Is Unworried by Higher Bond Yields With Rosy View of AI",
           "source": "Bloomberg Economics",
@@ -160,21 +148,21 @@
       ]
     },
     "global_broad": {
-      "avgSentiment": 0.67,
+      "avgSentiment": 0.33,
       "negativeCount": 0,
       "positiveCount": 1,
       "neutralCount": 0,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Emerging-Market Currencies Post Longest Winning Run Since 2007",
-      "topPositiveTitle": "Emerging-Market Currencies Post Longest Winning Run Since 2007",
+      "topNegativeTitle": "Emerging Currencies Cap Longest Winning Streak Since 2007",
+      "topPositiveTitle": "Emerging Currencies Cap Longest Winning Streak Since 2007",
       "items": [
         {
-          "title": "Emerging-Market Currencies Post Longest Winning Run Since 2007",
+          "title": "Emerging Currencies Cap Longest Winning Streak Since 2007",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.67,
+          "sentimentScore": 0.33,
           "publishedAt": "2026-09-04T04:11:05+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-04/emerging-market-stocks-currencies-rise-as-fed-hike-bets-ease",
           "tags": [
@@ -185,16 +173,31 @@
       ]
     },
     "gold": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
+      "avgSentiment": -0.33,
+      "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Gold Falls as Strong US Payrolls Power Bets on Fed Rate Hikes",
+      "topPositiveTitle": "Gold Falls as Strong US Payrolls Power Bets on Fed Rate Hikes",
+      "items": [
+        {
+          "title": "Gold Falls as Strong US Payrolls Power Bets on Fed Rate Hikes",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-04T00:27:29+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-04/gold-to-end-volatile-week-higher-as-fedspeak-trims-rate-hike-bet",
+          "tags": [
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        }
+      ]
     },
     "reit": {
       "avgSentiment": 0,
@@ -221,28 +224,69 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.083,
-      "negativeCount": 1,
+      "avgSentiment": -0.073,
+      "negativeCount": 2,
       "positiveCount": 0,
-      "neutralCount": 3,
-      "sourceCount": 2,
-      "itemCount": 4,
+      "neutralCount": 7,
+      "sourceCount": 3,
+      "itemCount": 9,
       "isStale": false,
-      "topNegativeTitle": "Latest Oil Market News and Analysis for Sept. 4",
-      "topPositiveTitle": "Record Labor Day Gas Prices Punctuate Worsening Fuel Crisis",
+      "topNegativeTitle": "S&P Downgrades Senegal After Government Unveils Debt Rework",
+      "topPositiveTitle": "Hedge Funds Hike Bullish Oil Bets to May High as Iran War Flares",
       "items": [
         {
-          "title": "Latest Oil Market News and Analysis for Sept. 4",
+          "title": "S&P Downgrades Senegal After Government Unveils Debt Rework",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-09-03T22:12:01+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-03/latest-oil-market-news-and-analysis-for-sept-4",
+          "publishedAt": "2026-09-04T20:51:01+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-04/s-p-downgrades-senegal-after-government-unveils-debt-rework",
+          "tags": [
+            "fx",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Wall Street Risk Complex Defies Rate Threat After Jobs Data",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-04T20:14:30+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-04/wall-street-risk-complex-defies-rate-threat-after-jobs-blowout",
+          "tags": [
+            "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Hedge Funds Hike Bullish Oil Bets to May High as Iran War Flares",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-04T20:38:47+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-04/hedge-funds-hike-bullish-oil-bets-to-may-high-as-iran-war-flares",
           "tags": [
             "commodity",
             "geopolitical",
             "macro_risk",
             "market"
+          ]
+        },
+        {
+          "title": "Bessent Sees Oil as Low as $40 Post-Iran War, Lower Yields",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-04T18:42:52+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-04/bessent-sees-oil-as-low-as-40-post-iran-war-taking-yields-down",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "rates"
           ]
         },
         {
@@ -256,65 +300,38 @@
             "macro_risk",
             "market"
           ]
-        },
-        {
-          "title": "‘Nothing But Headaches’: Vermont Businesses Decry Canada Tariffs",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-04T10:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-04/-nothing-but-headaches-vermont-businesses-decry-canada-tariffs",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Roubini Is Unworried by Higher Bond Yields With Rosy View of AI",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-04T08:48:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-04/roubini-is-unworried-by-higher-bond-yields-with-rosy-view-of-ai",
-          "tags": [
-            "macro_risk",
-            "market",
-            "rates",
-            "us_growth"
-          ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": -0.067,
+      "avgSentiment": 0.113,
       "negativeCount": 1,
       "positiveCount": 1,
       "neutralCount": 1,
       "sourceCount": 2,
       "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Lululemon Falls on China Business; Tesla Cybercab Service | Stock Movers",
+      "topNegativeTitle": "S&P Downgrades Senegal After Government Unveils Debt Rework",
       "topPositiveTitle": "World Bank Warns Zimbabwe Against Rush to Make ZiG Sole Currency",
       "items": [
         {
-          "title": "Lululemon Falls on China Business; Tesla Cybercab Service | Stock Movers",
+          "title": "S&P Downgrades Senegal After Government Unveils Debt Rework",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-09-04T14:35:58+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-04/lululemon-falls-on-china-business-tesla-cybercab-video",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-04T20:51:01+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-04/s-p-downgrades-senegal-after-government-unveils-debt-rework",
           "tags": [
             "fx",
-            "market",
-            "us_growth"
+            "macro_risk",
+            "market"
           ]
         },
         {
-          "title": "Dollar Slumps to Start September as Yen Surges on Rate Bets",
+          "title": "Dollar Posts Weekly Loss as Yen Jumps Amid Shifting Rate Bets",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.2,
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
           "publishedAt": "2026-09-04T00:29:47+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-04/us-dollar-slumps-to-start-september-as-yen-surges-on-rate-bets",
           "tags": [
@@ -338,23 +355,37 @@
       ]
     },
     "rates": {
-      "avgSentiment": -0.042,
+      "avgSentiment": 0.166,
       "negativeCount": 1,
-      "positiveCount": 2,
-      "neutralCount": 5,
+      "positiveCount": 5,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 8,
+      "itemCount": 10,
       "isStale": false,
-      "topNegativeTitle": "Treasuries Slide After Jobs Data Lift Fed Hike Wagers",
-      "topPositiveTitle": "Aviva Investors Boosts Gilts Bet as Yield Surge Caps UK Spending",
+      "topNegativeTitle": "Gold Falls as Strong US Payrolls Power Bets on Fed Rate Hikes",
+      "topPositiveTitle": "Fed Rate Decision Still Hangs on Inflation After Jobs Report",
       "items": [
         {
-          "title": "Treasuries Slide After Jobs Data Lift Fed Hike Wagers",
+          "title": "Gold Falls as Strong US Payrolls Power Bets on Fed Rate Hikes",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-09-04T12:43:21+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-04/treasuries-slide-after-strong-jobs-data-lift-fed-hike-wagers",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-04T00:27:29+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-04/gold-to-end-volatile-week-higher-as-fedspeak-trims-rate-hike-bet",
+          "tags": [
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Algorithm Research CEO on Interest Rates Expectations",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-04T20:14:00+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-04/algorithm-research-ceo-on-interest-rates-expectations-video",
           "tags": [
             "market",
             "rates",
@@ -362,42 +393,18 @@
           ]
         },
         {
-          "title": "Trump Says Fed ‘Must Get Smart’ and Lower Interest Rates",
-          "source": "Bloomberg Markets",
+          "title": "Bessent Sees Oil as Low as $40 Post-Iran War, Lower Yields",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-04T14:20:05+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-04/trump-says-fed-must-get-smart-and-lower-interest-rates-video",
+          "publishedAt": "2026-09-04T18:42:52+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-04/bessent-sees-oil-as-low-as-40-post-iran-war-taking-yields-down",
           "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
             "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Risk Assets Can Withstand Fed Rate Hike, BlackRock's Rosenberg Says",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-04T13:41:53+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-04/risk-assets-can-withstand-rate-hike-jeffrey-rosenberg-video",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "S&P 500 Wavers as Strong Jobs Growth Fuels Fed-Hike Bets",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-04T11:50:13+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-04/us-stock-futures-steady-ahead-of-key-august-jobs-data",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
+            "rates"
           ]
         },
         {
@@ -413,32 +420,73 @@
             "rates",
             "us_growth"
           ]
+        },
+        {
+          "title": "Kazakhstan Delivers Third Rate Cut on Inflation Slowdown",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-04T07:06:10+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-04/kazakhstan-delivers-third-straight-rate-cut-on-slowing-inflation",
+          "tags": [
+            "commodity",
+            "market",
+            "rates"
+          ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": -0.11,
-      "negativeCount": 1,
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 2,
+      "neutralCount": 5,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Latest Oil Market News and Analysis for Sept. 4",
-      "topPositiveTitle": "Kazakhstan Delivers Third Rate Cut on Inflation Slowdown",
+      "topNegativeTitle": "Bloom Energy, Illumina, Everpure to Join S&P 500 This Month",
+      "topPositiveTitle": "Bloom Energy, Illumina, Everpure to Join S&P 500 This Month",
       "items": [
         {
-          "title": "Latest Oil Market News and Analysis for Sept. 4",
+          "title": "Bloom Energy, Illumina, Everpure to Join S&P 500 This Month",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-03T22:12:01+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-03/latest-oil-market-news-and-analysis-for-sept-4",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-04T21:43:05+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-04/bloom-energy-illumina-everpure-to-join-s-p-500-in-september",
+          "tags": [
+            "commodity",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Hedge Funds Hike Bullish Oil Bets to May High as Iran War Flares",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-04T20:38:47+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-04/hedge-funds-hike-bullish-oil-bets-to-may-high-as-iran-war-flares",
           "tags": [
             "commodity",
             "geopolitical",
             "macro_risk",
             "market"
+          ]
+        },
+        {
+          "title": "Bessent Sees Oil as Low as $40 Post-Iran War, Lower Yields",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-04T18:42:52+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-04/bessent-sees-oil-as-low-as-40-post-iran-war-taking-yields-down",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "rates"
           ]
         },
         {
@@ -455,36 +503,10 @@
           ]
         },
         {
-          "title": "A $1.6 Billion Quant ETF Pivots to Huge Oil Bet as Adviser Exits",
+          "title": "Latest Oil Market News and Analysis for Sept. 4",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-04T14:16:49+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-04/a-1-6-billion-quant-etf-pivots-to-huge-oil-bet-as-adviser-exits",
-          "tags": [
-            "commodity",
-            "market",
-            "trust"
-          ]
-        }
-      ]
-    },
-    "geopolitical": {
-      "avgSentiment": 0.085,
-      "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 4,
-      "isStale": false,
-      "topNegativeTitle": "Latest Oil Market News and Analysis for Sept. 4",
-      "topPositiveTitle": "Global Food Prices Jump to Highest Since 2022 as Risks Build",
-      "items": [
-        {
-          "title": "Latest Oil Market News and Analysis for Sept. 4",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
           "publishedAt": "2026-09-03T22:12:01+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-03/latest-oil-market-news-and-analysis-for-sept-4",
           "tags": [
@@ -493,17 +515,47 @@
             "macro_risk",
             "market"
           ]
-        },
+        }
+      ]
+    },
+    "geopolitical": {
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 4,
+      "sourceCount": 2,
+      "itemCount": 4,
+      "isStale": false,
+      "topNegativeTitle": "Hedge Funds Hike Bullish Oil Bets to May High as Iran War Flares",
+      "topPositiveTitle": "Hedge Funds Hike Bullish Oil Bets to May High as Iran War Flares",
+      "items": [
         {
-          "title": "US Sanctions Small Turkish Investment Bank Over Iran Links",
+          "title": "Hedge Funds Hike Bullish Oil Bets to May High as Iran War Flares",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-04T14:28:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-04/us-sanctions-small-turkish-investment-bank-over-iran-links",
+          "publishedAt": "2026-09-04T20:38:47+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-04/hedge-funds-hike-bullish-oil-bets-to-may-high-as-iran-war-flares",
           "tags": [
+            "commodity",
             "geopolitical",
+            "macro_risk",
             "market"
+          ]
+        },
+        {
+          "title": "Bessent Sees Oil as Low as $40 Post-Iran War, Lower Yields",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-04T18:42:52+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-04/bessent-sees-oil-as-low-as-40-post-iran-war-taking-yields-down",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "rates"
           ]
         },
         {
@@ -520,14 +572,16 @@
           ]
         },
         {
-          "title": "Global Food Prices Jump to Highest Since 2022 as Risks Build",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-09-04T08:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-04/global-food-prices-jump-to-highest-since-2022-as-risks-increase",
+          "title": "Latest Oil Market News and Analysis for Sept. 4",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-03T22:12:01+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-03/latest-oil-market-news-and-analysis-for-sept-4",
           "tags": [
+            "commodity",
             "geopolitical",
+            "macro_risk",
             "market"
           ]
         }
@@ -542,7 +596,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 4,
+    "excludedCount": 3,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
