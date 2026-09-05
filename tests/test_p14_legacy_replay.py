@@ -24,7 +24,7 @@ from data import p14_evidence_validate as validator
 from data import p14_legacy_replay as replay
 
 REPO = Path(__file__).parents[1]
-EXPECTED_REPLAY_MODULE_SHA256 = "e586d6a04b9f038995f78b8ad7219fcb264b71ab0a11ec4a6a760fe15ecc8d68"
+EXPECTED_REPLAY_MODULE_SHA256 = "86ca1e8ab261b0cddb7f1af1a91a5ca231fa5a95003c0fb1ea61de93366af76b"
 _E1_ARCHIVE_ENV = "P14_E1_ARCHIVE"
 _E1_ARCHIVE_NAME = "p5-b005-c-p14-e1-evidence.tar.gz"
 _CANONICAL_AUDIT_ROOT_CANDIDATES = (

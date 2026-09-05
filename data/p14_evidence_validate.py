@@ -97,6 +97,48 @@ def _criterion(
     criteria.append({"id": criterion_id, "passed": bool(passed), "detail": detail})
 
 
+def _canonical_identity_set(rows: Any) -> set[str] | None:
+    """AC-19 canonical identity extraction.
+
+    Returns the set of `code` identities for `rows` (a list of candidate/rank-vector
+    rows), or None if `rows` is not a list, contains a non-dict row, a row with a
+    missing/null/non-string/empty `code`, or two rows sharing the same `code`.
+    A None result means the population is not internally coherent and must fail
+    closed -- it is never treated as an empty-but-valid identity set.
+    """
+    if not isinstance(rows, list):
+        return None
+    ids: list[Any] = []
+    for row in rows:
+        if not isinstance(row, dict):
+            return None
+        code = row.get("code")
+        if not isinstance(code, str) or not code:
+            return None
+        ids.append(code)
+    if len(set(ids)) != len(ids):
+        return None
+    return set(ids)
+
+
+def _rank_vector_population_ok(
+    vector: Any, joined_ids: set[str] | None, expected_length: Any
+) -> bool:
+    """AC-19: a full rank vector is population-integrity-valid only when its
+    length matches the joined population, every one of its identities is
+    well-formed and unique, and its identity set exactly equals the joined
+    candidate population's identity set. Vector ordering is irrelevant.
+    """
+    if joined_ids is None:
+        return False
+    if not isinstance(vector, list) or len(vector) != expected_length:
+        return False
+    vector_ids = _canonical_identity_set(vector)
+    if vector_ids is None:
+        return False
+    return vector_ids == joined_ids
+
+
 def _snapshot_root(bundle_root: Path, manifest: dict[str, Any]) -> Path:
     candidates = sorted((bundle_root / "snapshots").glob("real-*"))
     if len(candidates) != 1:
@@ -424,11 +466,21 @@ def validate_bundle(
     _criterion(criteria, "AC-18", rerun_ok, f"reruns={len(reruns) if isinstance(reruns, list) else -1}")
 
     population = manifest.get("population")
+    joined_candidates_path = inputs / "joined_candidates.json"
+    ac19_joined_payload = (
+        _read_json(joined_candidates_path) if joined_candidates_path.is_file() else None
+    )
+    ac19_joined = (
+        ac19_joined_payload.get("candidates")
+        if isinstance(ac19_joined_payload, dict)
+        else None
+    )
+    ac19_joined_ids = _canonical_identity_set(ac19_joined)
     vectors_ok = True
     for index in range(1, 6):
         vector_path = snapshot / "ranks" / f"run-{index}-full-rank-vector.json"
         vector = _read_json(vector_path) if vector_path.is_file() else None
-        if not isinstance(vector, list) or len(vector) != population:
+        if not _rank_vector_population_ok(vector, ac19_joined_ids, population):
             vectors_ok = False
     _criterion(criteria, "AC-19", vectors_ok, f"population={population!r}")
 
@@ -982,9 +1034,26 @@ def validate_legacy_bundle(bundle_root: Path, *, repo_root: Path, ci: bool,
                           row.get("verdict")) for row in reruns}) == 1)
     _criterion(ac, "AC-18", rerun_ac, f"reruns={len(reruns) if isinstance(reruns, list) else -1}")
     population = manifest.get("population")
-    vectors_ok = all(isinstance(_read_json(snapshot / f"ranks/run-{number}-full-rank-vector.json"), list)
-                     and len(_read_json(snapshot / f"ranks/run-{number}-full-rank-vector.json"))
-                     == population for number in range(1, 6))
+    ac19_joined_candidates_path = inputs / "joined_candidates.json"
+    ac19_joined_payload = (
+        _read_json(ac19_joined_candidates_path)
+        if ac19_joined_candidates_path.is_file()
+        else None
+    )
+    ac19_joined = (
+        ac19_joined_payload.get("candidates")
+        if isinstance(ac19_joined_payload, dict)
+        else None
+    )
+    ac19_joined_ids = _canonical_identity_set(ac19_joined)
+    vectors_ok = all(
+        _rank_vector_population_ok(
+            _read_json(snapshot / f"ranks/run-{number}-full-rank-vector.json"),
+            ac19_joined_ids,
+            population,
+        )
+        for number in range(1, 6)
+    )
     _criterion(ac, "AC-19", vectors_ok, f"population={population!r}")
     required_metric_keys = {"baseTop", "perturbedTop", "jaccard", "retention", "swapCount",
                             "verdict", "assignmentContract", "assignmentNote"}
