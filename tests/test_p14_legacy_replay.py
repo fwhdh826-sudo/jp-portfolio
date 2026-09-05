@@ -24,7 +24,7 @@ from data import p14_evidence_validate as validator
 from data import p14_legacy_replay as replay
 
 REPO = Path(__file__).parents[1]
-EXPECTED_REPLAY_MODULE_SHA256 = "3c352bf7a604a0ac01a4ea571e220f1ac7efa7514f41173d028333cde6735aa9"
+EXPECTED_REPLAY_MODULE_SHA256 = "e586d6a04b9f038995f78b8ad7219fcb264b71ab0a11ec4a6a760fe15ecc8d68"
 _E1_ARCHIVE_ENV = "P14_E1_ARCHIVE"
 _E1_ARCHIVE_NAME = "p5-b005-c-p14-e1-evidence.tar.gz"
 _CANONICAL_AUDIT_ROOT_CANDIDATES = (
@@ -808,7 +808,11 @@ def _build_synthetic_current_canonical(
     production_code.mkdir(parents=True)
     for name in ("candidate_funnel_engine.py", "candidate_funnel_batch.py",
                  "build_candidates_stocks.py"):
-        raw = (REPO / "data" / name).read_bytes()
+        # The E1 archive's production_code represents the pinned historical
+        # replay target's checkout (CURRENT_GIT_SHA), not the live tooling
+        # checkout -- source it from replay_target so this synthetic fixture
+        # stays correct even as REPO's own build_candidates_stocks.py drifts.
+        raw = (replay_target / "data" / name).read_bytes()
         if name == "candidate_funnel_batch.py":
             raw += b"\n# synthetic pre-O2 drift marker\n"
         (production_code / name).write_bytes(raw)
@@ -883,11 +887,26 @@ def test_delivered_commit_uses_base_pinned_replay_repository(replay_repositories
         ["git", "rev-parse", "--verify", "HEAD^{commit}"], cwd=REPO, text=True
     ).strip()
     assert tooling_head != target_head
-    for repository in (replay_target, REPO):
-        assert {
-            path: capture.sha256_file(repository / path)
-            for path in replay.PRODUCTION_SOURCE_HASHES
-        } == replay.PRODUCTION_SOURCE_HASHES
+    # Historical replay target authority: ALL frozen production source
+    # hashes (including data/build_candidates_stocks.py) apply strictly to
+    # the pinned historical replay target repository.
+    assert {
+        path: capture.sha256_file(replay_target / path)
+        for path in replay.PRODUCTION_SOURCE_HASHES
+    } == replay.PRODUCTION_SOURCE_HASHES
+    # Current tooling authority: only the modules legacy-replay tooling
+    # actually imports/executes (candidate_funnel_engine.py,
+    # candidate_funnel_batch.py) are pinned against the tooling checkout.
+    # data/build_candidates_stocks.py is intentionally excluded -- current
+    # main's newer, non-executed builder must not be compared against the
+    # frozen historical target hash (P14-P3B).
+    assert {
+        path: capture.sha256_file(REPO / path)
+        for path in replay.CURRENT_TOOLING_PRODUCTION_SOURCES
+    } == {
+        path: replay.PRODUCTION_SOURCE_HASHES[path]
+        for path in replay.CURRENT_TOOLING_PRODUCTION_SOURCES
+    }
     assert {
         path: hashlib.sha256((REPO / path).read_bytes()).hexdigest()
         for path in replay.TOOLING_SOURCE_HASHES
@@ -1424,6 +1443,77 @@ def test_required_tooling_blobs_are_hash_pinned(tmp_path):
     path.write_bytes(path.read_bytes() + b"\n")
     with pytest.raises(replay.LegacyReplayError, match="p14_evidence_validate.py"):
         replay.tooling_identity(changed)
+
+
+def test_historical_build_hash_strict(tmp_path):
+    """P14-P3B / HISTORICAL_BUILD_HASH_STRICT.
+
+    The historical replay target's data/build_candidates_stocks.py must
+    still equal the frozen PRODUCTION_SOURCE_HASHES entry, and mutating it
+    must still fail closed through the real historical-target identity
+    code (not a mock)."""
+    assert replay.PRODUCTION_SOURCE_HASHES["data/build_candidates_stocks.py"] == (
+        "acc248fba4919f29814fcb17dcfdd6343c1c4c2488da005b4c1c56b518b97b7a"
+    )
+    target = _clone_detached(tmp_path / "historical-target", replay.CURRENT_GIT_SHA)
+    # Unmutated: passes.
+    replay._assert_historical_target_production_sources(target)
+    # Mutated: the pinned historical builder must fail closed.
+    path = target / "data/build_candidates_stocks.py"
+    path.write_bytes(path.read_bytes() + b"\n# mutated\n")
+    with pytest.raises(replay.LegacyReplayError, match="P14_E4_R1_CURRENT_SHA_DRIFT"):
+        replay._assert_historical_target_production_sources(target)
+
+
+def test_current_nonexecuted_builder_drift_allowed(tmp_path):
+    """P14-P3B / CURRENT_NONEXECUTED_BUILDER_DRIFT_ALLOWED.
+
+    A current tooling checkout may carry a newer, non-executed
+    data/build_candidates_stocks.py without tripping
+    P14_E4_R1_CURRENT_SHA_DRIFT, provided the modules current tooling
+    actually imports/executes (engine.py, batch.py) remain pinned. This
+    exercises the real tooling_identity()/E4-GENERATORS code paths, not a
+    mock or bypass."""
+    current_hash = capture.sha256_file(REPO / "data/build_candidates_stocks.py")
+    historical_hash = replay.PRODUCTION_SOURCE_HASHES["data/build_candidates_stocks.py"]
+    assert current_hash != historical_hash, (
+        "fixture assumption: current main's build_candidates_stocks.py must have "
+        "drifted from the frozen historical target hash for this regression to "
+        "be meaningful"
+    )
+    assert "data/build_candidates_stocks.py" not in replay.CURRENT_TOOLING_PRODUCTION_SOURCES
+    clone = _clone_approved_tooling(tmp_path / "current-tooling-drifted-builder")
+    assert capture.sha256_file(clone / "data/build_candidates_stocks.py") == current_hash
+    # Must not raise despite the non-executed builder drift.
+    identity = replay.tooling_identity(clone)
+    assert identity["toolingSourceHashes"] == replay.TOOLING_SOURCE_HASHES
+
+
+def test_executed_engine_batch_authority(tmp_path):
+    """P14-P3B / EXECUTED_ENGINE_BATCH_AUTHORITY.
+
+    candidate_funnel_engine.py and candidate_funnel_batch.py are actually
+    imported/executed by legacy-replay tooling, so mutating either in the
+    *current tooling checkout* must still be rejected by current tooling
+    authority, and mutating either in the *historical replay target* must
+    still be rejected by historical target authority."""
+    for relative in ("data/candidate_funnel_engine.py", "data/candidate_funnel_batch.py"):
+        assert relative in replay.CURRENT_TOOLING_PRODUCTION_SOURCES
+        tooling_clone = _clone_approved_tooling(
+            tmp_path / f"tooling-mutated-{Path(relative).stem}"
+        )
+        path = tooling_clone / relative
+        path.write_bytes(path.read_bytes() + b"\n# mutated\n")
+        with pytest.raises(replay.LegacyReplayError, match="P14_E4_R2_TOOLING_SOURCE_DRIFT"):
+            replay.tooling_identity(tooling_clone)
+
+        target_clone = _clone_detached(
+            tmp_path / f"target-mutated-{Path(relative).stem}", replay.CURRENT_GIT_SHA
+        )
+        path = target_clone / relative
+        path.write_bytes(path.read_bytes() + b"\n# mutated\n")
+        with pytest.raises(replay.LegacyReplayError, match="P14_E4_R1_CURRENT_SHA_DRIFT"):
+            replay._assert_historical_target_production_sources(target_clone)
 
 
 def test_topology_linear_tip(tmp_path):

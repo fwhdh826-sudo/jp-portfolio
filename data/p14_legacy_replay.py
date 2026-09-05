@@ -25,7 +25,7 @@ CURRENT_GIT_SHA = "8cfa55680a643415f18c6df8eb5ff2d767a0b77f"
 CURRENT_GIT_REF = "refs/heads/v13.3-dev"
 TOOLING_SOURCE_HASHES = {
     "data/p14_evidence_validate.py":
-        "899d9db04c9913c37ae5c2cc810d5cd5f1c56ee9667088d34c70bf6f0eb4f050",
+        "34f3640943da66dfba97a03dc15ea1bb8760a3610aa04b9ab0e7844bdba2d72c",
     "data/p14_evidence_capture.py":
         "f8a37b5c9cd3d6c5ae344aa3ecaf6e6113f51baf2a6539456ef9aea704dc4a06",
     "data/p14_evidence_privacy_filter.py":
@@ -37,6 +37,19 @@ PRODUCTION_SOURCE_HASHES = {
     "data/candidate_funnel_batch.py": "e68fff47290b3f882a5be7251cee433a89a8464fc4b6adb7460ec66e0881762c",
     "data/build_candidates_stocks.py": "acc248fba4919f29814fcb17dcfdd6343c1c4c2488da005b4c1c56b518b97b7a",
 }
+# Subset of PRODUCTION_SOURCE_HASHES that legacy-replay tooling actually
+# imports and executes in-process from the *current tooling checkout*
+# (p14_legacy_replay imports candidate_funnel_batch, which itself imports
+# candidate_funnel_engine). data/build_candidates_stocks.py is deliberately
+# excluded: it is never imported or executed by this tooling -- it is only
+# ever read out of the frozen historical E1 archive / replay target repo --
+# so a newer, non-executed build_candidates_stocks.py living in the current
+# tooling checkout must never be compared against the frozen historical
+# target hash. See _assert_current_tooling_production_sources.
+CURRENT_TOOLING_PRODUCTION_SOURCES = (
+    "data/candidate_funnel_engine.py",
+    "data/candidate_funnel_batch.py",
+)
 E1_ARCHIVE_SHA256 = "35f55858a9dd243371de9aa4575e3816ebefbdf0526d9500213961ff74be252e"
 E1_ARCHIVE_BYTES = 7_517_928
 E1_ARCHIVE_REGULAR_FILES = 330
@@ -251,11 +264,33 @@ def _git(repo: Path, *args: str) -> str:
                           text=True).stdout.strip()
 
 
-def _assert_production_sources(repo: Path) -> None:
+def _assert_historical_target_production_sources(repo: Path) -> None:
+    """Historical replay target authority (immutable, fail-closed).
+
+    PRODUCTION_SOURCE_HASHES is the frozen identity of every production
+    module the E1 legacy replay target shipped, including
+    data/build_candidates_stocks.py even though current tooling never
+    imports or executes it. Only the pinned historical replay target
+    repository (CURRENT_GIT_SHA) is checked here.
+    """
     for relative, expected in PRODUCTION_SOURCE_HASHES.items():
         path = repo / relative
         if not path.is_file() or capture.sha256_file(path) != expected:
             raise LegacyReplayError("P14_E4_R1_CURRENT_SHA_DRIFT: production source hash")
+
+
+def _assert_current_tooling_production_sources(repo: Path) -> None:
+    """Current tooling authority: pin only the production modules this
+    tooling actually imports/executes (see CURRENT_TOOLING_PRODUCTION_SOURCES).
+    Unlike the historical replay target, the current tooling checkout tracks
+    live main and must not be compared against PRODUCTION_SOURCE_HASHES
+    entries it never executes (e.g. data/build_candidates_stocks.py).
+    """
+    for relative in CURRENT_TOOLING_PRODUCTION_SOURCES:
+        expected = PRODUCTION_SOURCE_HASHES[relative]
+        path = repo / relative
+        if not path.is_file() or capture.sha256_file(path) != expected:
+            raise LegacyReplayError(f"P14_E4_R2_TOOLING_SOURCE_DRIFT: {relative}")
 
 
 def tooling_identity(tooling_repo: Path) -> dict[str, Any]:
@@ -273,7 +308,7 @@ def tooling_identity(tooling_repo: Path) -> dict[str, Any]:
         if actual != expected:
             raise LegacyReplayError(f"P14_E4_R2_TOOLING_SOURCE_DRIFT: {relative}")
         actual_hashes[relative] = actual
-    _assert_production_sources(tooling_repo)
+    _assert_current_tooling_production_sources(tooling_repo)
     return {
         "toolingImplementationSha": implementation_sha,
         "toolingSourceHashes": actual_hashes,
@@ -286,7 +321,7 @@ def replay_identity(repo: Path, execution_id: str, started_at: str | None = None
     execution_head = _git(repo, "rev-parse", "HEAD")
     if execution_head != CURRENT_GIT_SHA:
         raise LegacyReplayError("P14_E4_R1_CURRENT_SHA_DRIFT")
-    _assert_production_sources(repo)
+    _assert_historical_target_production_sources(repo)
     if not platform.python_version().startswith("3.11."):
         raise LegacyReplayError("P14_E4_R1_VALIDATION_FAILED: Python 3.11 required")
     if (os.environ.get("TZ") != "UTC" or os.environ.get("PYTHONHASHSEED") != "0"

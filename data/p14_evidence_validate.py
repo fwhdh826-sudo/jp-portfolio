@@ -694,10 +694,16 @@ def validate_legacy_bundle(bundle_root: Path, *, repo_root: Path, ci: bool,
         generator_ok = generator_ok and expected == frozen and copied.is_file()
         generator_ok = generator_ok and _git_blob_hash(repo_root, legacy.CURRENT_GIT_SHA,
                                                         relative) == frozen
-        tooling_path = tooling_root / relative
-        generator_ok = generator_ok and tooling_path.is_file()
-        generator_ok = generator_ok and sha256_file(tooling_path) == frozen
-    check("E4-GENERATORS", generator_ok, "target/tooling/frozen source hashes")
+        # Current tooling authority applies only to modules this tooling
+        # actually imports/executes. data/build_candidates_stocks.py is the
+        # frozen historical replay target's builder -- it is never imported
+        # or executed by current tooling, so a newer, non-executed copy in
+        # the current tooling checkout must not be compared to `frozen`.
+        if relative in legacy.CURRENT_TOOLING_PRODUCTION_SOURCES:
+            tooling_path = tooling_root / relative
+            generator_ok = generator_ok and tooling_path.is_file()
+            generator_ok = generator_ok and sha256_file(tooling_path) == frozen
+    check("E4-GENERATORS", generator_ok, "historical target + current tooling frozen source hashes")
     environment = _read_json(root / "environment.json")
     runtime_ok = (str(environment.get("pythonVersion", "")).startswith("3.11.")
                   and environment.get("timezone") == "UTC"
