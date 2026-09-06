@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-09-06T10:10:40.708945+09:00",
-  "sourceUpdatedAt": "2026-09-06T00:19:30+00:00",
+  "updatedAt": "2026-09-06T23:17:25.304222+09:00",
+  "sourceUpdatedAt": "2026-09-06T13:52:11+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -43,12 +43,12 @@
       "items": []
     },
     "us_broad": {
-      "avgSentiment": 0.667,
+      "avgSentiment": 0.5,
       "negativeCount": 0,
-      "positiveCount": 2,
+      "positiveCount": 1,
       "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 2,
       "isStale": false,
       "topNegativeTitle": "Fed Governors’ Calendars Show Blackout Events With Bankers",
       "topPositiveTitle": "Jobs Surge Raises Odds of September Fed Hike",
@@ -77,18 +77,6 @@
             "rates",
             "us_broad"
           ]
-        },
-        {
-          "title": "World Economy Latest: US Payrolls Growth Tops Forecast in Broad Advance",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-09-05T09:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-05/world-economy-latest-us-payrolls-growth-tops-forecast-in-broad-advance",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
         }
       ]
     },
@@ -105,26 +93,25 @@
       "items": []
     },
     "global_broad": {
-      "avgSentiment": -0.33,
-      "negativeCount": 1,
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
+      "neutralCount": 1,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Emerging Markets Prove Resilient in Bond Selloff: New Economy",
-      "topPositiveTitle": "Emerging Markets Prove Resilient in Bond Selloff: New Economy",
+      "topNegativeTitle": "BlackRock to JPMorgan Bet on EM as Turmoil Seizes Global Bonds",
+      "topPositiveTitle": "BlackRock to JPMorgan Bet on EM as Turmoil Seizes Global Bonds",
       "items": [
         {
-          "title": "Emerging Markets Prove Resilient in Bond Selloff: New Economy",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-05T10:45:01+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-09-05/emerging-markets-prove-resilient-in-bond-selloff-new-economy",
+          "title": "BlackRock to JPMorgan Bet on EM as Turmoil Seizes Global Bonds",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-06T12:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-06/blackrock-to-jpmorgan-bet-on-em-as-turmoil-seizes-global-bonds",
           "tags": [
             "global_broad",
-            "macro_risk",
             "market"
           ]
         }
@@ -167,16 +154,29 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.11,
+      "avgSentiment": -0.066,
       "negativeCount": 2,
-      "positiveCount": 0,
-      "neutralCount": 4,
+      "positiveCount": 1,
+      "neutralCount": 2,
       "sourceCount": 3,
-      "itemCount": 6,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "US Strikes Iranian Tankers After Attack on US Warships",
-      "topPositiveTitle": "EU Envoy Urges Maximum Pressure on Russia",
+      "topNegativeTitle": "Turkey Cuts 2027 GDP Growth Forecast as Elections Beckon",
+      "topPositiveTitle": "US Envoys Test New Opening in Ukraine Talks",
       "items": [
+        {
+          "title": "Turkey Cuts 2027 GDP Growth Forecast as Elections Beckon",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-06T08:28:54+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-06/turkey-cuts-2027-gdp-growth-forecast-to-4-2-as-elections-beckon",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
         {
           "title": "US Strikes Iranian Tankers After Attack on US Warships",
           "source": "Bloomberg Markets",
@@ -192,38 +192,12 @@
           ]
         },
         {
-          "title": "Emerging Markets Prove Resilient in Bond Selloff: New Economy",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-05T10:45:01+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-09-05/emerging-markets-prove-resilient-in-bond-selloff-new-economy",
-          "tags": [
-            "global_broad",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "EU Envoy Urges Maximum Pressure on Russia",
+          "title": "OPEC+ Sticks With Plan to Keep Oil Output Quotas Unchanged",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-05T13:55:08+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-05/eu-envoy-urges-maximum-pressure-on-russia-video",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Energy Markets Strained by Iran, Ukraine Wars",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-05T11:54:03+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-05/energy-markets-strained-by-iran-ukraine-wars-video",
+          "publishedAt": "2026-09-06T11:25:47+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-06/opec-sticks-with-plan-to-keep-oil-production-quotas-unchanged",
           "tags": [
             "commodity",
             "geopolitical",
@@ -232,13 +206,27 @@
           ]
         },
         {
-          "title": "A Bond Crisis Is When Central Banks Step In, Scope Ratings Says",
-          "source": "Bloomberg Economics",
+          "title": "訪米中の赤澤経産相 関税措置めぐり“去年の日米合意は不変”",
+          "source": "NHK 経済",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-05T07:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-05/a-bond-crisis-is-when-central-banks-step-in-scope-ratings-says",
+          "publishedAt": "2026-09-05T00:08:00+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20260905de48275",
           "tags": [
+            "macro_risk",
+            "market"
+          ],
+          "titleJa": "訪米中の赤澤経産相 関税措置めぐり“去年の日米合意は不変”"
+        },
+        {
+          "title": "US Envoys Test New Opening in Ukraine Talks",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-06T12:55:36+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-06/us-envoys-test-new-opening-in-ukraine-talks-video",
+          "tags": [
+            "geopolitical",
             "macro_risk",
             "market"
           ]
@@ -246,16 +234,29 @@
       ]
     },
     "fx": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Trump Says Canada’s Dollar ‘Imbalance’ With US Is Unacceptable",
+      "topPositiveTitle": "Trump Says Canada’s Dollar ‘Imbalance’ With US Is Unacceptable",
+      "items": [
+        {
+          "title": "Trump Says Canada’s Dollar ‘Imbalance’ With US Is Unacceptable",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-06T13:22:20+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-06/trump-says-canada-s-dollar-imbalance-with-us-is-unacceptable",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        }
+      ]
     },
     "rates": {
       "avgSentiment": 0.335,
@@ -296,15 +297,15 @@
       ]
     },
     "commodity": {
-      "avgSentiment": -0.165,
+      "avgSentiment": -0.11,
       "negativeCount": 1,
       "positiveCount": 0,
-      "neutralCount": 1,
+      "neutralCount": 2,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 3,
       "isStale": false,
       "topNegativeTitle": "US Strikes Iranian Tankers After Attack on US Warships",
-      "topPositiveTitle": "Energy Markets Strained by Iran, Ukraine Wars",
+      "topPositiveTitle": "US Iran Fight Shifts to Economic Endurance",
       "items": [
         {
           "title": "US Strikes Iranian Tankers After Attack on US Warships",
@@ -321,12 +322,25 @@
           ]
         },
         {
-          "title": "Energy Markets Strained by Iran, Ukraine Wars",
+          "title": "US Iran Fight Shifts to Economic Endurance",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-05T11:54:03+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-05/energy-markets-strained-by-iran-ukraine-wars-video",
+          "publishedAt": "2026-09-06T11:54:03+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-06/us-iran-fight-shifts-to-economic-endurance-video",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "OPEC+ Sticks With Plan to Keep Oil Output Quotas Unchanged",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-06T11:25:47+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-06/opec-sticks-with-plan-to-keep-oil-production-quotas-unchanged",
           "tags": [
             "commodity",
             "geopolitical",
@@ -337,16 +351,29 @@
       ]
     },
     "geopolitical": {
-      "avgSentiment": -0.083,
-      "negativeCount": 1,
-      "positiveCount": 0,
+      "avgSentiment": 0.039,
+      "negativeCount": 2,
+      "positiveCount": 2,
       "neutralCount": 3,
-      "sourceCount": 1,
-      "itemCount": 4,
+      "sourceCount": 2,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "US Strikes Iranian Tankers After Attack on US Warships",
-      "topPositiveTitle": "EU Envoy Urges Maximum Pressure on Russia",
+      "topNegativeTitle": "Turkey Cuts 2027 GDP Growth Forecast as Elections Beckon",
+      "topPositiveTitle": "US Races to Boost Missile Interceptor Output",
       "items": [
+        {
+          "title": "Turkey Cuts 2027 GDP Growth Forecast as Elections Beckon",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-06T08:28:54+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-06/turkey-cuts-2027-gdp-growth-forecast-to-4-2-as-elections-beckon",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
         {
           "title": "US Strikes Iranian Tankers After Attack on US Warships",
           "source": "Bloomberg Markets",
@@ -362,41 +389,41 @@
           ]
         },
         {
-          "title": "EU Envoy Urges Maximum Pressure on Russia",
+          "title": "Afghan Deportations Fuel Humanitarian Strain",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-05T13:55:08+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-05/eu-envoy-urges-maximum-pressure-on-russia-video",
+          "publishedAt": "2026-09-06T12:55:31+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-06/afghan-deportations-fuel-humanitarian-strain-video",
           "tags": [
             "geopolitical",
-            "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Energy Markets Strained by Iran, Ukraine Wars",
+          "title": "US Iran Fight Shifts to Economic Endurance",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-05T11:54:03+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-05/energy-markets-strained-by-iran-ukraine-wars-video",
+          "publishedAt": "2026-09-06T11:54:03+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-06/us-iran-fight-shifts-to-economic-endurance-video",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "OPEC+ Sticks With Plan to Keep Oil Output Quotas Unchanged",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-06T11:25:47+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-06/opec-sticks-with-plan-to-keep-oil-production-quotas-unchanged",
           "tags": [
             "commodity",
             "geopolitical",
             "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Leonardo CEO Mariani Sees Ukraine Unit as Acquisition Outpost",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-05T08:09:45+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-05/leonardo-ceo-mariani-sees-ukraine-unit-as-acquisition-outpost",
-          "tags": [
-            "geopolitical",
             "market"
           ]
         }
@@ -411,7 +438,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 4,
+    "excludedCount": 5,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
