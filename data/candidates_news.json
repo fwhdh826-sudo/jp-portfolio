@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-09-06T23:17:25.304222+09:00",
-  "sourceUpdatedAt": "2026-09-06T13:52:11+00:00",
+  "updatedAt": "2026-09-07T08:00:42.853698+09:00",
+  "sourceUpdatedAt": "2026-09-06T22:25:05+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -43,42 +43,16 @@
       "items": []
     },
     "us_broad": {
-      "avgSentiment": 0.5,
+      "avgSentiment": 0,
       "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 1,
-      "sourceCount": 2,
-      "itemCount": 2,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Fed Governors’ Calendars Show Blackout Events With Bankers",
-      "topPositiveTitle": "Jobs Surge Raises Odds of September Fed Hike",
-      "items": [
-        {
-          "title": "Fed Governors’ Calendars Show Blackout Events With Bankers",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-05T13:15:07+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-05/fed-governors-calendars-show-blackout-events-with-bankers",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Jobs Surge Raises Odds of September Fed Hike",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-09-05T15:37:28+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-05/jobs-surge-raises-odds-of-september-fed-hike-video",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "us_growth": {
       "avgSentiment": 0,
@@ -154,10 +128,10 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.066,
-      "negativeCount": 2,
+      "avgSentiment": 0.0,
+      "negativeCount": 1,
       "positiveCount": 1,
-      "neutralCount": 2,
+      "neutralCount": 3,
       "sourceCount": 3,
       "itemCount": 5,
       "isStale": false,
@@ -178,15 +152,13 @@
           ]
         },
         {
-          "title": "US Strikes Iranian Tankers After Attack on US Warships",
+          "title": "Rep. Stevens Says Canadian Tariffs Are Squeezing Michigan",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-05T14:34:22+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-05/us-strikes-iranian-tankers-after-attack-on-us-warships-video",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-06T14:44:06+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-06/rep-stevens-says-tariffs-are-squeezing-michigan-video",
           "tags": [
-            "commodity",
-            "geopolitical",
             "macro_risk",
             "market"
           ]
@@ -259,15 +231,15 @@
       ]
     },
     "rates": {
-      "avgSentiment": 0.335,
+      "avgSentiment": -0.33,
       "negativeCount": 1,
-      "positiveCount": 1,
+      "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 2,
-      "itemCount": 2,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
       "topNegativeTitle": "ECB Doubles Down as G7’s Hawk With Another Rate Hike Due This Week",
-      "topPositiveTitle": "Jobs Surge Raises Odds of September Fed Hike",
+      "topPositiveTitle": "ECB Doubles Down as G7’s Hawk With Another Rate Hike Due This Week",
       "items": [
         {
           "title": "ECB Doubles Down as G7’s Hawk With Another Rate Hike Due This Week",
@@ -280,47 +252,20 @@
             "market",
             "rates"
           ]
-        },
-        {
-          "title": "Jobs Surge Raises Odds of September Fed Hike",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-09-05T15:37:28+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-05/jobs-surge-raises-odds-of-september-fed-hike-video",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": -0.11,
-      "negativeCount": 1,
-      "positiveCount": 0,
+      "avgSentiment": 0.417,
+      "negativeCount": 0,
+      "positiveCount": 2,
       "neutralCount": 2,
       "sourceCount": 1,
-      "itemCount": 3,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "US Strikes Iranian Tankers After Attack on US Warships",
-      "topPositiveTitle": "US Iran Fight Shifts to Economic Endurance",
+      "topNegativeTitle": "US Iran Fight Shifts to Economic Endurance",
+      "topPositiveTitle": "Asian Stocks to Gain, Oil Rises on US-Iran Strikes: Markets Wrap",
       "items": [
-        {
-          "title": "US Strikes Iranian Tankers After Attack on US Warships",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-05T14:34:22+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-05/us-strikes-iranian-tankers-after-attack-on-us-warships-video",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
         {
           "title": "US Iran Fight Shifts to Economic Endurance",
           "source": "Bloomberg Markets",
@@ -347,19 +292,44 @@
             "macro_risk",
             "market"
           ]
+        },
+        {
+          "title": "Latest Oil Market News and Analysis for September 7",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-09-06T22:04:41+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-06/latest-oil-market-news-and-analysis-for-september-7",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "Asian Stocks to Gain, Oil Rises on US-Iran Strikes: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-09-06T22:15:34+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-06/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
+          ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.039,
-      "negativeCount": 2,
-      "positiveCount": 2,
+      "avgSentiment": 0.229,
+      "negativeCount": 1,
+      "positiveCount": 3,
       "neutralCount": 3,
       "sourceCount": 2,
       "itemCount": 7,
       "isStale": false,
       "topNegativeTitle": "Turkey Cuts 2027 GDP Growth Forecast as Elections Beckon",
-      "topPositiveTitle": "US Races to Boost Missile Interceptor Output",
+      "topPositiveTitle": "Asian Stocks to Gain, Oil Rises on US-Iran Strikes: Markets Wrap",
       "items": [
         {
           "title": "Turkey Cuts 2027 GDP Growth Forecast as Elections Beckon",
@@ -369,20 +339,6 @@
           "publishedAt": "2026-09-06T08:28:54+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-06/turkey-cuts-2027-gdp-growth-forecast-to-4-2-as-elections-beckon",
           "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "US Strikes Iranian Tankers After Attack on US Warships",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-05T14:34:22+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-05/us-strikes-iranian-tankers-after-attack-on-us-warships-video",
-          "tags": [
-            "commodity",
             "geopolitical",
             "macro_risk",
             "market"
@@ -422,6 +378,19 @@
           "url": "https://www.bloomberg.com/news/articles/2026-09-06/opec-sticks-with-plan-to-keep-oil-production-quotas-unchanged",
           "tags": [
             "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "US Envoys Test New Opening in Ukraine Talks",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-06T12:55:36+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-06/us-envoys-test-new-opening-in-ukraine-talks-video",
+          "tags": [
             "geopolitical",
             "macro_risk",
             "market"
