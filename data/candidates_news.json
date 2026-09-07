@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-09-07T08:00:42.853698+09:00",
-  "sourceUpdatedAt": "2026-09-06T22:25:05+00:00",
+  "updatedAt": "2026-09-07T10:11:08.585411+09:00",
+  "sourceUpdatedAt": "2026-09-07T01:01:55+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -43,16 +43,44 @@
       "items": []
     },
     "us_broad": {
-      "avgSentiment": 0,
+      "avgSentiment": -0.1,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 2,
+      "sourceCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Gold Holds Drop as US Jobs, Hormuz Strikes Boost Rate-Hike Case",
+      "topPositiveTitle": "Japan Likely Sold Treasuries to Fund Record Yen Intervention",
+      "items": [
+        {
+          "title": "Gold Holds Drop as US Jobs, Hormuz Strikes Boost Rate-Hike Case",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.2,
+          "publishedAt": "2026-09-06T23:28:46+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-06/gold-holds-decline-as-traders-weigh-prospects-for-fed-rate-hike",
+          "tags": [
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Japan Likely Sold Treasuries to Fund Record Yen Intervention",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-06T23:56:48+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-06/japan-likely-sold-treasuries-to-fund-record-yen-intervention",
+          "tags": [
+            "fx",
+            "market",
+            "us_broad"
+          ]
+        }
+      ]
     },
     "us_growth": {
       "avgSentiment": 0,
@@ -67,6 +95,45 @@
       "items": []
     },
     "global_broad": {
+      "avgSentiment": 0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
+      "isStale": false,
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
+    },
+    "gold": {
+      "avgSentiment": -0.2,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "Gold Holds Drop as US Jobs, Hormuz Strikes Boost Rate-Hike Case",
+      "topPositiveTitle": "Gold Holds Drop as US Jobs, Hormuz Strikes Boost Rate-Hike Case",
+      "items": [
+        {
+          "title": "Gold Holds Drop as US Jobs, Hormuz Strikes Boost Rate-Hike Case",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.2,
+          "publishedAt": "2026-09-06T23:28:46+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-06/gold-holds-decline-as-traders-weigh-prospects-for-fed-rate-hike",
+          "tags": [
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        }
+      ]
+    },
+    "reit": {
       "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
@@ -74,46 +141,23 @@
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "BlackRock to JPMorgan Bet on EM as Turmoil Seizes Global Bonds",
-      "topPositiveTitle": "BlackRock to JPMorgan Bet on EM as Turmoil Seizes Global Bonds",
+      "topNegativeTitle": "Bathla Gets Stopgap Funding as Longer-Term Debt Crisis Lingers",
+      "topPositiveTitle": "Bathla Gets Stopgap Funding as Longer-Term Debt Crisis Lingers",
       "items": [
         {
-          "title": "BlackRock to JPMorgan Bet on EM as Turmoil Seizes Global Bonds",
+          "title": "Bathla Gets Stopgap Funding as Longer-Term Debt Crisis Lingers",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-06T12:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-06/blackrock-to-jpmorgan-bet-on-em-as-turmoil-seizes-global-bonds",
+          "publishedAt": "2026-09-07T00:08:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-07/bathla-s-2-5-billion-property-debt-crisis-faces-fresh-tests",
           "tags": [
-            "global_broad",
-            "market"
+            "macro_risk",
+            "market",
+            "reit"
           ]
         }
       ]
-    },
-    "gold": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "reit": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
     },
     "dividend": {
       "avgSentiment": 0,
@@ -152,6 +196,19 @@
           ]
         },
         {
+          "title": "Bathla Gets Stopgap Funding as Longer-Term Debt Crisis Lingers",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-07T00:08:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-07/bathla-s-2-5-billion-property-debt-crisis-faces-fresh-tests",
+          "tags": [
+            "macro_risk",
+            "market",
+            "reit"
+          ]
+        },
+        {
           "title": "Rep. Stevens Says Canadian Tariffs Are Squeezing Michigan",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
@@ -159,20 +216,6 @@
           "publishedAt": "2026-09-06T14:44:06+00:00",
           "url": "https://www.bloomberg.com/news/videos/2026-09-06/rep-stevens-says-tariffs-are-squeezing-michigan-video",
           "tags": [
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "OPEC+ Sticks With Plan to Keep Oil Output Quotas Unchanged",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-06T11:25:47+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-06/opec-sticks-with-plan-to-keep-oil-production-quotas-unchanged",
-          "tags": [
-            "commodity",
-            "geopolitical",
             "macro_risk",
             "market"
           ]
@@ -209,13 +252,26 @@
       "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
+      "neutralCount": 2,
       "sourceCount": 1,
-      "itemCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Trump Says Canada’s Dollar ‘Imbalance’ With US Is Unacceptable",
-      "topPositiveTitle": "Trump Says Canada’s Dollar ‘Imbalance’ With US Is Unacceptable",
+      "topNegativeTitle": "Japan Likely Sold Treasuries to Fund Record Yen Intervention",
+      "topPositiveTitle": "Japan Likely Sold Treasuries to Fund Record Yen Intervention",
       "items": [
+        {
+          "title": "Japan Likely Sold Treasuries to Fund Record Yen Intervention",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-06T23:56:48+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-06/japan-likely-sold-treasuries-to-fund-record-yen-intervention",
+          "tags": [
+            "fx",
+            "market",
+            "us_broad"
+          ]
+        },
         {
           "title": "Trump Says Canada’s Dollar ‘Imbalance’ With US Is Unacceptable",
           "source": "Bloomberg Markets",
@@ -231,15 +287,15 @@
       ]
     },
     "rates": {
-      "avgSentiment": -0.33,
+      "avgSentiment": -0.265,
       "negativeCount": 1,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 1,
+      "sourceCount": 2,
+      "itemCount": 2,
       "isStale": false,
       "topNegativeTitle": "ECB Doubles Down as G7’s Hawk With Another Rate Hike Due This Week",
-      "topPositiveTitle": "ECB Doubles Down as G7’s Hawk With Another Rate Hike Due This Week",
+      "topPositiveTitle": "Gold Holds Drop as US Jobs, Hormuz Strikes Boost Rate-Hike Case",
       "items": [
         {
           "title": "ECB Doubles Down as G7’s Hawk With Another Rate Hike Due This Week",
@@ -252,47 +308,34 @@
             "market",
             "rates"
           ]
+        },
+        {
+          "title": "Gold Holds Drop as US Jobs, Hormuz Strikes Boost Rate-Hike Case",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.2,
+          "publishedAt": "2026-09-06T23:28:46+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-06/gold-holds-decline-as-traders-weigh-prospects-for-fed-rate-hike",
+          "tags": [
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.417,
+      "avgSentiment": 0.835,
       "negativeCount": 0,
       "positiveCount": 2,
-      "neutralCount": 2,
+      "neutralCount": 0,
       "sourceCount": 1,
-      "itemCount": 4,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "US Iran Fight Shifts to Economic Endurance",
-      "topPositiveTitle": "Asian Stocks to Gain, Oil Rises on US-Iran Strikes: Markets Wrap",
+      "topNegativeTitle": "Latest Oil Market News and Analysis for September 7",
+      "topPositiveTitle": "Asian Stocks Gain on Tech, Oil Rises After Attacks: Markets Wrap",
       "items": [
-        {
-          "title": "US Iran Fight Shifts to Economic Endurance",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-06T11:54:03+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-06/us-iran-fight-shifts-to-economic-endurance-video",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "OPEC+ Sticks With Plan to Keep Oil Output Quotas Unchanged",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-06T11:25:47+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-06/opec-sticks-with-plan-to-keep-oil-production-quotas-unchanged",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
         {
           "title": "Latest Oil Market News and Analysis for September 7",
           "source": "Bloomberg Markets",
@@ -306,7 +349,7 @@
           ]
         },
         {
-          "title": "Asian Stocks to Gain, Oil Rises on US-Iran Strikes: Markets Wrap",
+          "title": "Asian Stocks Gain on Tech, Oil Rises After Attacks: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 1.0,
@@ -321,15 +364,15 @@
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.229,
+      "avgSentiment": 0.4,
       "negativeCount": 1,
       "positiveCount": 3,
-      "neutralCount": 3,
+      "neutralCount": 0,
       "sourceCount": 2,
-      "itemCount": 7,
+      "itemCount": 4,
       "isStale": false,
       "topNegativeTitle": "Turkey Cuts 2027 GDP Growth Forecast as Elections Beckon",
-      "topPositiveTitle": "Asian Stocks to Gain, Oil Rises on US-Iran Strikes: Markets Wrap",
+      "topPositiveTitle": "Asian Stocks Gain on Tech, Oil Rises After Attacks: Markets Wrap",
       "items": [
         {
           "title": "Turkey Cuts 2027 GDP Growth Forecast as Elections Beckon",
@@ -345,45 +388,6 @@
           ]
         },
         {
-          "title": "Afghan Deportations Fuel Humanitarian Strain",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-06T12:55:31+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-06/afghan-deportations-fuel-humanitarian-strain-video",
-          "tags": [
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "US Iran Fight Shifts to Economic Endurance",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-06T11:54:03+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-06/us-iran-fight-shifts-to-economic-endurance-video",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "OPEC+ Sticks With Plan to Keep Oil Output Quotas Unchanged",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-06T11:25:47+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-06/opec-sticks-with-plan-to-keep-oil-production-quotas-unchanged",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
           "title": "US Envoys Test New Opening in Ukraine Talks",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
@@ -393,6 +397,31 @@
           "tags": [
             "geopolitical",
             "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "US Races to Boost Missile Interceptor Output",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.6,
+          "publishedAt": "2026-09-06T13:25:01+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-06/us-races-to-boost-missile-interceptor-output-video",
+          "tags": [
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Asian Stocks Gain on Tech, Oil Rises After Attacks: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-09-06T22:15:34+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-06/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "geopolitical",
             "market"
           ]
         }
