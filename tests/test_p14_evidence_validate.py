@@ -12,8 +12,25 @@ P14-P3C-R1A: the ordinary valid baseline also no longer reads the mutable
 committed public/data/regime_state.json (see _load_synthetic_regime) and no
 longer depends on real datetime.now() (see _frozen_datetime / FRESH_ASOF).
 test_current_production_artifacts_follow_fail_closed_contract near the
-bottom of this file is the ONE test allowed to read current committed
-production artifacts -- it is isolated from every helper above it (P2-C).
+bottom of this file is the ONE test allowed to read current real production
+inputs -- it is isolated from every helper above it (P2-C).
+
+P14-REAL-ARTIFACT-TEST-ENVIRONMENT-AUTHORITY: of the three real inputs that
+one test reads, only data/candidates_stocks.json and
+public/data/regime_state.json are committed durable artifacts;
+data/prescreen_metadata.json is job-local ephemeral plumbing (.gitignore:33
+-- generated solely by data.build_candidates_stocks, consumed only by later
+steps of the same CI job, never committed). A clean checkout therefore
+legitimately lacks it, and that absence is NOT a production-contract
+failure. The real-artifact test recognizes the three legitimate prescreen
+states via _classify_local_prescreen (absent / present-coherent /
+present-incoherent) and only exercises the full capture+validate contract
+path when a real prescreen is actually available; authoritative same-job
+real-artifact fail-closed coverage lives in
+.github/workflows/p14_evidence_capture.yml (build_candidates_stocks ->
+p14_evidence_capture -> p14_evidence_validate --ci, one job, real data).
+A prescreen file that exists but is malformed is a hard error, never
+silently downgraded to "absent".
 
 Known open defect (out of scope for this ticket, see P14-AC19-IDENTITY-
 INTEGRITY-REPAIR): AC-19 currently checks only rank-vector length against
@@ -472,11 +489,12 @@ def test_ac05_pipeline_path_mismatch_is_rejected_without_weakening_ac02(
 
 
 # ---------------------------------------------------------------------------
-# P14-P3C-R1A §12-14: explicit CURRENT production-artifact compatibility /
-# fail-closed test. This is the ONLY test in this file allowed to read
-# current committed production artifacts (data/candidates_stocks.json,
-# data/prescreen_metadata.json, public/data/regime_state.json). It is
-# isolated from every synthetic baseline above: it shares none of
+# P14-P3C-R1A §12-14 + P14-REAL-ARTIFACT-TEST-ENVIRONMENT-AUTHORITY: explicit
+# CURRENT real-input compatibility / fail-closed test. This is the ONLY test
+# in this file allowed to read current real production inputs
+# (data/candidates_stocks.json + public/data/regime_state.json, both
+# committed; data/prescreen_metadata.json, job-local ephemeral -- .gitignore).
+# It is isolated from every synthetic baseline above: it shares none of
 # _sources/_load_same_run_fixture/_load_synthetic_regime/valid_bundle, and
 # its own bundle never feeds AC-02/AC-05/AC-19 fixtures elsewhere in the
 # suite. It intentionally does NOT freeze the clock -- "current" provenance
@@ -484,7 +502,70 @@ def test_ac05_pipeline_path_mismatch_is_rejected_without_weakening_ac02(
 # must not require today's artifact to be permanently seed_fallback: it
 # inspects the actual observed provenance and asserts the outcome the P14
 # contract requires for THAT observation.
+#
+# Environment authority (P14-REAL-ARTIFACT-TEST-ENVIRONMENT-AUTHORITY): the
+# ephemeral prescreen artifact is only produced by the same-job
+# data.build_candidates_stocks step. When it is legitimately absent (clean
+# checkout / dev tree where that step has not run) the test asserts only the
+# invariants the two COMMITTED artifacts must always satisfy and records the
+# prescreen as unavailable in this environment -- it does not fabricate a
+# prescreen and call it "current production". The full capture+validate
+# contract path (including the observed-provenance PASS/fail-closed branch)
+# runs whenever a real prescreen IS available. Same-job real-artifact
+# fail-closed coverage is additionally guaranteed by
+# .github/workflows/p14_evidence_capture.yml.
 # ---------------------------------------------------------------------------
+
+_PROD_CANDIDATES_PATH = REPO / "data/candidates_stocks.json"
+_PROD_PRESCREEN_PATH = REPO / "data/prescreen_metadata.json"
+_PROD_REGIME_PATH = REPO / "public/data/regime_state.json"
+
+
+def _classify_local_prescreen(prescreen_path: Path) -> tuple[str, dict | None]:
+    """Distinguish the legitimate states of the job-local ephemeral
+    data/prescreen_metadata.json (.gitignore:33 -- generated only by
+    data.build_candidates_stocks, consumed only by later steps of the same
+    CI job, never committed):
+
+      "absent"  -- clean checkout / dev tree where the same-job producer has
+                   not run. NOT a production-contract failure. Authoritative
+                   same-job real-artifact compatibility is covered by
+                   .github/workflows/p14_evidence_capture.yml.
+      "present" -- a real same-job / dev-generated prescreen is available;
+                   the caller exercises the full capture+validate contract.
+
+    A file that exists but is not valid JSON / not a JSON object is a hard
+    error (raised), never silently downgraded to "absent"
+    (P14-REAL-ARTIFACT-TEST-ENVIRONMENT-AUTHORITY R7)."""
+    if not prescreen_path.exists():
+        return "absent", None
+    payload = json.loads(prescreen_path.read_text(encoding="utf-8"))
+    assert isinstance(payload, dict), (
+        f"malformed real prescreen artifact (not a JSON object): {prescreen_path}"
+    )
+    return "present", payload
+
+
+def test_absent_ephemeral_prescreen_is_not_a_production_failure(tmp_path):
+    """T1 / R1: a checkout where the gitignored ephemeral
+    data/prescreen_metadata.json is simply not present classifies as
+    'absent' (recognized unavailable in this environment) -- it must never
+    raise a production-contract failure."""
+    state, payload = _classify_local_prescreen(tmp_path / "prescreen_metadata.json")
+    assert state == "absent"
+    assert payload is None
+
+
+def test_malformed_real_prescreen_is_not_silently_treated_as_unavailable(tmp_path):
+    """T4 / R7: a prescreen file that exists but is not valid JSON / not a
+    JSON object is a hard error, never downgraded to 'absent'."""
+    bad = tmp_path / "prescreen_metadata.json"
+    bad.write_text("{ not valid json", encoding="utf-8")
+    with pytest.raises(json.JSONDecodeError):
+        _classify_local_prescreen(bad)
+    bad.write_text("[]", encoding="utf-8")
+    with pytest.raises(AssertionError, match="malformed real prescreen artifact"):
+        _classify_local_prescreen(bad)
 
 
 def _real_production_identity(candidates_payload: dict, prescreen_payload: dict) -> dict[str, str]:
@@ -530,21 +611,43 @@ def _real_production_environment(_run_identity: dict[str, str]) -> dict[str, obj
 
 
 def test_current_production_artifacts_follow_fail_closed_contract(tmp_path, monkeypatch):
-    """P14-P3C-R1A §12/§13: capture+validate the actual current committed
-    production artifacts and assert the contract outcome that matches the
-    OBSERVED provenance -- normal/coherent/same-run must be compatible;
-    seed_fallback/cache_fallback/stale/incoherent must fail closed."""
-    candidates_path = REPO / "data/candidates_stocks.json"
-    prescreen_path = REPO / "data/prescreen_metadata.json"
-    regime_path = REPO / "public/data/regime_state.json"
-    for path in (candidates_path, prescreen_path, regime_path):
-        assert path.is_file(), f"missing real production artifact: {path}"
+    """P14-P3C-R1A §12/§13 + P14-REAL-ARTIFACT-TEST-ENVIRONMENT-AUTHORITY:
+    capture+validate the actual current real inputs and assert the contract
+    outcome that matches the OBSERVED provenance -- normal/coherent/same-run
+    must be compatible; seed_fallback/cache_fallback/stale/incoherent must
+    fail closed.
+
+    Only data/candidates_stocks.json and public/data/regime_state.json are
+    committed and therefore hard-required here. data/prescreen_metadata.json
+    is job-local ephemeral (.gitignore): when it is legitimately absent
+    (clean checkout) this test asserts only the invariants the committed
+    artifacts must always hold and stops -- it does not fabricate a
+    prescreen (R2). The full capture+validate + observed-provenance branch
+    runs whenever a real prescreen is available (R3); a malformed prescreen
+    is a hard error via _classify_local_prescreen (R7)."""
+    candidates_path = _PROD_CANDIDATES_PATH
+    prescreen_path = _PROD_PRESCREEN_PATH
+    regime_path = _PROD_REGIME_PATH
+    for path in (candidates_path, regime_path):
+        assert path.is_file(), f"missing committed production artifact: {path}"
 
     candidates_payload = json.loads(candidates_path.read_text(encoding="utf-8"))
-    prescreen_payload = json.loads(prescreen_path.read_text(encoding="utf-8"))
     meta = candidates_payload.get("_meta", {})
     provenance = meta.get("universeProvenance", {})
     pipeline_path = meta.get("pipelinePath")
+
+    prescreen_state, prescreen_payload = _classify_local_prescreen(prescreen_path)
+    if prescreen_state == "absent":
+        # R1: legitimate clean-checkout state -- the same-job ephemeral
+        # producer (data.build_candidates_stocks) has not run in this
+        # environment. Assert only what the committed artifacts must always
+        # satisfy; real-artifact same-job fail-closed coverage then lives in
+        # .github/workflows/p14_evidence_capture.yml.
+        assert isinstance(provenance, dict) and provenance, candidates_payload
+        assert pipeline_path in {"normal", "cache_fallback", "seed_fallback"}, meta
+        assert isinstance(candidates_payload.get("updatedAt"), str), candidates_payload
+        assert regime_path.stat().st_size > 0
+        return
 
     is_normal_provenance = (
         pipeline_path == "normal"
