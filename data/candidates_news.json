@@ -1,69 +1,97 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-09-07T10:11:08.585411+09:00",
-  "sourceUpdatedAt": "2026-09-07T01:01:55+00:00",
+  "updatedAt": "2026-09-07T17:32:17.936175+09:00",
+  "sourceUpdatedAt": "2026-09-07T08:15:03+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 1.0,
       "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 0,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "片山財務相「米財務長官に問いただされたことない」日銀めぐり",
-      "topPositiveTitle": "片山財務相「米財務長官に問いただされたことない」日銀めぐり",
+      "topNegativeTitle": "Japan’s Nikkei Rises as Tech Tailwinds Help Balance Macro Nerves",
+      "topPositiveTitle": "Japan’s Nikkei Rises as Tech Tailwinds Help Balance Macro Nerves",
       "items": [
         {
-          "title": "片山財務相「米財務長官に問いただされたことない」日銀めぐり",
-          "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-03T12:25:52+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20260903de48048",
+          "title": "Japan’s Nikkei Rises as Tech Tailwinds Help Balance Macro Nerves",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-09-07T00:48:55+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-07/japanese-stocks-advance-as-tech-chip-shares-follow-us-peers",
           "tags": [
+            "fx",
             "jp_broad",
-            "market"
-          ],
-          "titleJa": "片山財務相「米財務長官に問いただされたことない」日銀めぐり"
+            "jp_semiconductor",
+            "market",
+            "rates"
+          ]
         }
       ]
     },
     "jp_semiconductor": {
-      "avgSentiment": 0,
+      "avgSentiment": 1.0,
       "negativeCount": 0,
-      "positiveCount": 0,
+      "positiveCount": 2,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "us_broad": {
-      "avgSentiment": -0.1,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 2,
       "sourceCount": 1,
       "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Gold Holds Drop as US Jobs, Hormuz Strikes Boost Rate-Hike Case",
-      "topPositiveTitle": "Japan Likely Sold Treasuries to Fund Record Yen Intervention",
+      "topNegativeTitle": "Won Climbs to Two-Year High With Rally Momentum at Extremes",
+      "topPositiveTitle": "Won Climbs to Two-Year High With Rally Momentum at Extremes",
       "items": [
         {
-          "title": "Gold Holds Drop as US Jobs, Hormuz Strikes Boost Rate-Hike Case",
+          "title": "Won Climbs to Two-Year High With Rally Momentum at Extremes",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.2,
-          "publishedAt": "2026-09-06T23:28:46+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-06/gold-holds-decline-as-traders-weigh-prospects-for-fed-rate-hike",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-09-07T01:38:52+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-07/won-climbs-to-two-year-high-with-rally-momentum-at-extremes",
           "tags": [
-            "gold",
+            "jp_semiconductor",
+            "market"
+          ]
+        },
+        {
+          "title": "Japan’s Nikkei Rises as Tech Tailwinds Help Balance Macro Nerves",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-09-07T00:48:55+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-07/japanese-stocks-advance-as-tech-chip-shares-follow-us-peers",
+          "tags": [
+            "fx",
+            "jp_broad",
+            "jp_semiconductor",
             "market",
-            "rates",
+            "rates"
+          ]
+        }
+      ]
+    },
+    "us_broad": {
+      "avgSentiment": 0.11,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 2,
+      "sourceCount": 1,
+      "itemCount": 3,
+      "isStale": false,
+      "topNegativeTitle": "This Week Is All About US CPI: 3-Minute MLIV",
+      "topPositiveTitle": "Rabobank's Foley Sees 'Weakened' Confidence in Dollar",
+      "items": [
+        {
+          "title": "This Week Is All About US CPI: 3-Minute MLIV",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-07T07:14:56+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-07/this-week-is-all-about-us-cpi-3-minute-mliv-video",
+          "tags": [
+            "market",
             "us_broad"
           ]
         },
@@ -77,58 +105,97 @@
           "tags": [
             "fx",
             "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Rabobank's Foley Sees 'Weakened' Confidence in Dollar",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-07T06:05:57+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-07/rabobank-s-foley-sees-weakened-confidence-in-dollar-video",
+          "tags": [
+            "fx",
+            "market",
             "us_broad"
           ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "global_broad": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "gold": {
-      "avgSentiment": -0.2,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
       "neutralCount": 1,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Gold Holds Drop as US Jobs, Hormuz Strikes Boost Rate-Hike Case",
-      "topPositiveTitle": "Gold Holds Drop as US Jobs, Hormuz Strikes Boost Rate-Hike Case",
+      "topNegativeTitle": "Netflix, WhatsApp Face South Africa Inquiry Into Consumer Pricing Practices",
+      "topPositiveTitle": "Netflix, WhatsApp Face South Africa Inquiry Into Consumer Pricing Practices",
       "items": [
         {
-          "title": "Gold Holds Drop as US Jobs, Hormuz Strikes Boost Rate-Hike Case",
+          "title": "Netflix, WhatsApp Face South Africa Inquiry Into Consumer Pricing Practices",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-07T06:28:41+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-07/south-africa-to-scrutinize-netflix-whatsapp-pricing-bd-reports",
+          "tags": [
+            "market",
+            "us_growth"
+          ]
+        }
+      ]
+    },
+    "global_broad": {
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "BlackRock, JPMorgan Bet on EM as Turmoil Seizes Global Bonds",
+      "topPositiveTitle": "BlackRock, JPMorgan Bet on EM as Turmoil Seizes Global Bonds",
+      "items": [
+        {
+          "title": "BlackRock, JPMorgan Bet on EM as Turmoil Seizes Global Bonds",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-06T12:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-06/blackrock-to-jpmorgan-bet-on-em-as-turmoil-seizes-global-bonds",
+          "tags": [
+            "global_broad",
+            "market"
+          ]
+        }
+      ]
+    },
+    "gold": {
+      "avgSentiment": -0.33,
+      "negativeCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "Gold Falls as US Jobs Data, Hormuz Clashes Boost Rate-Hike Bets",
+      "topPositiveTitle": "Gold Falls as US Jobs Data, Hormuz Clashes Boost Rate-Hike Bets",
+      "items": [
+        {
+          "title": "Gold Falls as US Jobs Data, Hormuz Clashes Boost Rate-Hike Bets",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.2,
+          "sentimentScore": -0.33,
           "publishedAt": "2026-09-06T23:28:46+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-06/gold-holds-decline-as-traders-weigh-prospects-for-fed-rate-hike",
           "tags": [
             "gold",
             "market",
-            "rates",
-            "us_broad"
+            "rates"
           ]
         }
       ]
@@ -141,11 +208,11 @@
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Bathla Gets Stopgap Funding as Longer-Term Debt Crisis Lingers",
-      "topPositiveTitle": "Bathla Gets Stopgap Funding as Longer-Term Debt Crisis Lingers",
+      "topNegativeTitle": "Bathla Group Faces Funding Talks as $2.5 Billion Debt Crisis Deepens",
+      "topPositiveTitle": "Bathla Group Faces Funding Talks as $2.5 Billion Debt Crisis Deepens",
       "items": [
         {
-          "title": "Bathla Gets Stopgap Funding as Longer-Term Debt Crisis Lingers",
+          "title": "Bathla Group Faces Funding Talks as $2.5 Billion Debt Crisis Deepens",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
@@ -172,15 +239,15 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.0,
+      "avgSentiment": -0.066,
       "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 3,
+      "positiveCount": 0,
+      "neutralCount": 4,
       "sourceCount": 3,
       "itemCount": 5,
       "isStale": false,
       "topNegativeTitle": "Turkey Cuts 2027 GDP Growth Forecast as Elections Beckon",
-      "topPositiveTitle": "US Envoys Test New Opening in Ukraine Talks",
+      "topPositiveTitle": "Investors Turn to Emerging Market Debt Amid Yield Volatility | Insight with Haslinda Amin 9/7/2026",
       "items": [
         {
           "title": "Turkey Cuts 2027 GDP Growth Forecast as Elections Beckon",
@@ -196,7 +263,33 @@
           ]
         },
         {
-          "title": "Bathla Gets Stopgap Funding as Longer-Term Debt Crisis Lingers",
+          "title": "Investors Turn to Emerging Market Debt Amid Yield Volatility | Insight with Haslinda Amin 9/7/2026",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-07T06:13:14+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-07/insight-with-haslinda-amin-9-7-2026-video",
+          "tags": [
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "War-Tested Oil Traders Descend on Singapore as $100 Beckons",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-07T01:00:11+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-07/war-tested-oil-traders-descend-on-singapore-as-fresh-risks-loom",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Bathla Group Faces Funding Talks as $2.5 Billion Debt Crisis Deepens",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
@@ -206,18 +299,6 @@
             "macro_risk",
             "market",
             "reit"
-          ]
-        },
-        {
-          "title": "Rep. Stevens Says Canadian Tariffs Are Squeezing Michigan",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-06T14:44:06+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-06/rep-stevens-says-tariffs-are-squeezing-michigan-video",
-          "tags": [
-            "macro_risk",
-            "market"
           ]
         },
         {
@@ -232,32 +313,19 @@
             "market"
           ],
           "titleJa": "訪米中の赤澤経産相 関税措置めぐり“去年の日米合意は不変”"
-        },
-        {
-          "title": "US Envoys Test New Opening in Ukraine Talks",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-06T12:55:36+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-06/us-envoys-test-new-opening-in-ukraine-talks-video",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0.415,
       "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 2,
+      "positiveCount": 3,
+      "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 4,
       "isStale": false,
       "topNegativeTitle": "Japan Likely Sold Treasuries to Fund Record Yen Intervention",
-      "topPositiveTitle": "Japan Likely Sold Treasuries to Fund Record Yen Intervention",
+      "topPositiveTitle": "Japan’s Nikkei Rises as Tech Tailwinds Help Balance Macro Nerves",
       "items": [
         {
           "title": "Japan Likely Sold Treasuries to Fund Record Yen Intervention",
@@ -269,34 +337,76 @@
           "tags": [
             "fx",
             "market",
+            "rates",
             "us_broad"
           ]
         },
         {
-          "title": "Trump Says Canada’s Dollar ‘Imbalance’ With US Is Unacceptable",
+          "title": "Rabobank's Foley Sees 'Weakened' Confidence in Dollar",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-06T13:22:20+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-06/trump-says-canada-s-dollar-imbalance-with-us-is-unacceptable",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-07T06:05:57+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-07/rabobank-s-foley-sees-weakened-confidence-in-dollar-video",
+          "tags": [
+            "fx",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Yen Hits Highest Since February Past Intervention Peak",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-07T08:15:03+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-07/yen-rises-to-strongest-since-may-topping-intervention-rally",
           "tags": [
             "fx",
             "market"
+          ]
+        },
+        {
+          "title": "Japan’s Nikkei Rises as Tech Tailwinds Help Balance Macro Nerves",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-09-07T00:48:55+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-07/japanese-stocks-advance-as-tech-chip-shares-follow-us-peers",
+          "tags": [
+            "fx",
+            "jp_broad",
+            "jp_semiconductor",
+            "market",
+            "rates"
           ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": -0.265,
-      "negativeCount": 1,
-      "positiveCount": 0,
+      "avgSentiment": 0.085,
+      "negativeCount": 2,
+      "positiveCount": 1,
       "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 2,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "ECB Doubles Down as G7’s Hawk With Another Rate Hike Due This Week",
-      "topPositiveTitle": "Gold Holds Drop as US Jobs, Hormuz Strikes Boost Rate-Hike Case",
+      "topNegativeTitle": "Gold Falls as US Jobs Data, Hormuz Clashes Boost Rate-Hike Bets",
+      "topPositiveTitle": "Japan’s Nikkei Rises as Tech Tailwinds Help Balance Macro Nerves",
       "items": [
+        {
+          "title": "Gold Falls as US Jobs Data, Hormuz Clashes Boost Rate-Hike Bets",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-06T23:28:46+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-06/gold-holds-decline-as-traders-weigh-prospects-for-fed-rate-hike",
+          "tags": [
+            "gold",
+            "market",
+            "rates"
+          ]
+        },
         {
           "title": "ECB Doubles Down as G7’s Hawk With Another Rate Hike Due This Week",
           "source": "Bloomberg Economics",
@@ -310,46 +420,87 @@
           ]
         },
         {
-          "title": "Gold Holds Drop as US Jobs, Hormuz Strikes Boost Rate-Hike Case",
+          "title": "Japan Likely Sold Treasuries to Fund Record Yen Intervention",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.2,
-          "publishedAt": "2026-09-06T23:28:46+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-06/gold-holds-decline-as-traders-weigh-prospects-for-fed-rate-hike",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-06T23:56:48+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-06/japan-likely-sold-treasuries-to-fund-record-yen-intervention",
           "tags": [
-            "gold",
+            "fx",
             "market",
             "rates",
             "us_broad"
+          ]
+        },
+        {
+          "title": "Japan’s Nikkei Rises as Tech Tailwinds Help Balance Macro Nerves",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-09-07T00:48:55+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-07/japanese-stocks-advance-as-tech-chip-shares-follow-us-peers",
+          "tags": [
+            "fx",
+            "jp_broad",
+            "jp_semiconductor",
+            "market",
+            "rates"
           ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.835,
+      "avgSentiment": 0.415,
       "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 0,
+      "positiveCount": 3,
+      "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Latest Oil Market News and Analysis for September 7",
-      "topPositiveTitle": "Asian Stocks Gain on Tech, Oil Rises After Attacks: Markets Wrap",
+      "topNegativeTitle": "War-Tested Oil Traders Descend on Singapore as $100 Beckons",
+      "topPositiveTitle": "Oil Rise Counters Tech Gains to Hold Back Stocks: Markets Wrap",
       "items": [
         {
-          "title": "Latest Oil Market News and Analysis for September 7",
+          "title": "War-Tested Oil Traders Descend on Singapore as $100 Beckons",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-07T01:00:11+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-07/war-tested-oil-traders-descend-on-singapore-as-fresh-risks-loom",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "China Oil Demand Revival Spurs Price Spikes From Congo to Brazil",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-09-06T22:04:41+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-06/latest-oil-market-news-and-analysis-for-september-7",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-07T06:55:05+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-07/china-oil-demand-revival-spurs-price-spikes-from-congo-to-brazil",
           "tags": [
             "commodity",
             "market"
           ]
         },
         {
-          "title": "Asian Stocks Gain on Tech, Oil Rises After Attacks: Markets Wrap",
+          "title": "FTSE 100 Live: European Bonds Fall as Oil Rises",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-07T05:57:06+00:00",
+          "url": "https://www.bloomberg.com/news/live-blog/2026-09-07/ftse-100-live-pound-gilts-bonds-healey-iran-us-war-oil-prices-hormuz-what-s-moving-uk-markets-right-now-markets-today",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "Oil Rise Counters Tech Gains to Hold Back Stocks: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 1.0,
@@ -364,15 +515,15 @@
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.4,
+      "avgSentiment": 0.223,
       "negativeCount": 1,
-      "positiveCount": 3,
-      "neutralCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 3,
       "isStale": false,
       "topNegativeTitle": "Turkey Cuts 2027 GDP Growth Forecast as Elections Beckon",
-      "topPositiveTitle": "Asian Stocks Gain on Tech, Oil Rises After Attacks: Markets Wrap",
+      "topPositiveTitle": "Oil Rise Counters Tech Gains to Hold Back Stocks: Markets Wrap",
       "items": [
         {
           "title": "Turkey Cuts 2027 GDP Growth Forecast as Elections Beckon",
@@ -388,32 +539,21 @@
           ]
         },
         {
-          "title": "US Envoys Test New Opening in Ukraine Talks",
+          "title": "War-Tested Oil Traders Descend on Singapore as $100 Beckons",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-06T12:55:36+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-06/us-envoys-test-new-opening-in-ukraine-talks-video",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-07T01:00:11+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-07/war-tested-oil-traders-descend-on-singapore-as-fresh-risks-loom",
           "tags": [
+            "commodity",
             "geopolitical",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "US Races to Boost Missile Interceptor Output",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.6,
-          "publishedAt": "2026-09-06T13:25:01+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-06/us-races-to-boost-missile-interceptor-output-video",
-          "tags": [
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "Asian Stocks Gain on Tech, Oil Rises After Attacks: Markets Wrap",
+          "title": "Oil Rise Counters Tech Gains to Hold Back Stocks: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 1.0,
