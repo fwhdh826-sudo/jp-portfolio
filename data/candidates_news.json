@@ -1,20 +1,33 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-09-08T08:42:35.346641+09:00",
-  "sourceUpdatedAt": "2026-09-07T23:31:00+00:00",
+  "updatedAt": "2026-09-08T10:17:23.595322+09:00",
+  "sourceUpdatedAt": "2026-09-08T00:30:01+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": 0.33,
-      "negativeCount": 0,
-      "positiveCount": 1,
+      "avgSentiment": 0.333,
+      "negativeCount": 1,
+      "positiveCount": 2,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 2,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Japan’s Wages Grow Most Since 1997, Keeping BOJ on Rate Hike Path",
-      "topPositiveTitle": "Japan’s Wages Grow Most Since 1997, Keeping BOJ on Rate Hike Path",
+      "topNegativeTitle": "Japan’s Faster GDP Growth Supports BOJ Interest-Rate Hike Case",
+      "topPositiveTitle": "Yen Advances to Six-Month High, Chip Stocks Rise: Markets Wrap",
       "items": [
+        {
+          "title": "Japan’s Faster GDP Growth Supports BOJ Interest-Rate Hike Case",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-07T23:57:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-07/japan-s-gdp-growth-revised-higher-backing-boj-rate-hike-case",
+          "tags": [
+            "jp_broad",
+            "market",
+            "rates"
+          ]
+        },
         {
           "title": "Japan’s Wages Grow Most Since 1997, Keeping BOJ on Rate Hike Path",
           "source": "Bloomberg Economics",
@@ -27,20 +40,49 @@
             "market",
             "rates"
           ]
+        },
+        {
+          "title": "Yen Advances to Six-Month High, Chip Stocks Rise: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-09-07T22:08:43+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-07/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "fx",
+            "jp_broad",
+            "jp_semiconductor",
+            "market"
+          ]
         }
       ]
     },
     "jp_semiconductor": {
-      "avgSentiment": 0,
+      "avgSentiment": 1.0,
       "negativeCount": 0,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Yen Advances to Six-Month High, Chip Stocks Rise: Markets Wrap",
+      "topPositiveTitle": "Yen Advances to Six-Month High, Chip Stocks Rise: Markets Wrap",
+      "items": [
+        {
+          "title": "Yen Advances to Six-Month High, Chip Stocks Rise: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-09-07T22:08:43+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-07/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "fx",
+            "jp_broad",
+            "jp_semiconductor",
+            "market"
+          ]
+        }
+      ]
     },
     "us_broad": {
       "avgSentiment": 0.0,
@@ -119,29 +161,16 @@
       "items": []
     },
     "global_broad": {
-      "avgSentiment": 0.25,
-      "negativeCount": 1,
+      "avgSentiment": 1.0,
+      "negativeCount": 0,
       "positiveCount": 1,
       "neutralCount": 0,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "European Stocks Muted as Oil Prices Climb and Novartis Falls",
+      "topNegativeTitle": "EM Stocks Jump to Highest Since June as Tech Offsets Higher Oil",
       "topPositiveTitle": "EM Stocks Jump to Highest Since June as Tech Offsets Higher Oil",
       "items": [
-        {
-          "title": "European Stocks Muted as Oil Prices Climb and Novartis Falls",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.5,
-          "publishedAt": "2026-09-07T07:24:05+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-07/european-stocks-muted-as-oil-creeps-higher-novartis-falls",
-          "tags": [
-            "commodity",
-            "global_broad",
-            "market"
-          ]
-        },
         {
           "title": "EM Stocks Jump to Highest Since June as Tech Offsets Higher Oil",
           "source": "Bloomberg Markets",
@@ -158,12 +187,12 @@
       ]
     },
     "gold": {
-      "avgSentiment": 0.667,
+      "avgSentiment": 0.665,
       "negativeCount": 0,
-      "positiveCount": 3,
+      "positiveCount": 2,
       "neutralCount": 0,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 2,
       "isStale": false,
       "topNegativeTitle": "Gold Steadies as Traders Weigh Mideast Tensions and Dollar Moves",
       "topPositiveTitle": "China Central Bank Adds Most Gold Since 2023 Even as Prices Jump",
@@ -176,20 +205,6 @@
           "publishedAt": "2026-09-07T23:19:32+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-07/gold-steadies-as-traders-weigh-mideast-tensions-and-dollar-moves",
           "tags": [
-            "fx",
-            "gold",
-            "market"
-          ]
-        },
-        {
-          "title": "Gold Edges Lower as Traders Focus on Oil Price Swings and Dollar",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-09-06T23:28:46+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-06/gold-holds-decline-as-traders-weigh-prospects-for-fed-rate-hike",
-          "tags": [
-            "commodity",
             "fx",
             "gold",
             "market"
@@ -222,24 +237,37 @@
       "items": []
     },
     "dividend": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Samsung Buyback Highlights Korea’s 45% Preferred Stock Discount",
+      "topPositiveTitle": "Samsung Buyback Highlights Korea’s 45% Preferred Stock Discount",
+      "items": [
+        {
+          "title": "Samsung Buyback Highlights Korea’s 45% Preferred Stock Discount",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-08T00:19:36+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-08/samsung-buyback-highlights-korea-s-45-preferred-stock-discount",
+          "tags": [
+            "dividend",
+            "market"
+          ]
+        }
+      ]
     },
     "macro_risk": {
-      "avgSentiment": 0.167,
+      "avgSentiment": 0.2,
       "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 5,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 5,
       "isStale": false,
       "topNegativeTitle": "Sapporo Breweries CSO on Tariffs, Iran War",
       "topPositiveTitle": "Copper Hits All-Time High Amid Tariff Turmoil, Mine Struggles",
@@ -270,7 +298,7 @@
           ]
         },
         {
-          "title": "Canada Set to Hit at Trump Tariffs, Risking Wider Trade War",
+          "title": "Canada Set to Hit Back at Trump Tariffs, Risking Wider Trade War",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
@@ -296,15 +324,13 @@
           ]
         },
         {
-          "title": "Mercuria and Gunvor Profits More Than Double on War Volatility",
+          "title": "Copper Hits All-Time High Amid Tariff Turmoil, Mine Struggles",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-07T13:21:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-07/mercuria-and-gunvor-see-profits-more-than-double-on-war-bonanza",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-09-07T15:08:36+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-07/copper-surges-to-all-time-high-as-tariff-turmoil-rocks-market",
           "tags": [
-            "commodity",
-            "geopolitical",
             "macro_risk",
             "market"
           ]
@@ -312,15 +338,15 @@
       ]
     },
     "fx": {
-      "avgSentiment": 0.417,
+      "avgSentiment": 0.388,
       "negativeCount": 1,
-      "positiveCount": 3,
-      "neutralCount": 0,
+      "positiveCount": 4,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 6,
       "isStale": false,
       "topNegativeTitle": "Global Reserves Shift From Dollar Overstated, NY Fed Study Says",
-      "topPositiveTitle": "Stocks in Asia Poised to Edge Down, Yen in Focus: Markets Wrap",
+      "topPositiveTitle": "Yen Gains Past 154 as Rally Extends",
       "items": [
         {
           "title": "Global Reserves Shift From Dollar Overstated, NY Fed Study Says",
@@ -333,6 +359,30 @@
             "fx",
             "market",
             "us_broad"
+          ]
+        },
+        {
+          "title": "Reliance Plans $1.3 Billion Bond Sale, India’s Biggest This Year",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-07T15:59:15+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-07/reliance-plans-1-3-billion-bond-sale-india-s-biggest-this-year",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        },
+        {
+          "title": "Yen’s Rally Through Key Level Puts Currency’s 2026 High in Reach",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-08T00:20:47+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-08/yen-s-rally-through-key-level-puts-currency-s-2026-high-in-reach",
+          "tags": [
+            "fx",
+            "market"
           ]
         },
         {
@@ -349,28 +399,13 @@
           ]
         },
         {
-          "title": "Gold Edges Lower as Traders Focus on Oil Price Swings and Dollar",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-09-06T23:28:46+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-06/gold-holds-decline-as-traders-weigh-prospects-for-fed-rate-hike",
-          "tags": [
-            "commodity",
-            "fx",
-            "gold",
-            "market"
-          ]
-        },
-        {
-          "title": "Stocks in Asia Poised to Edge Down, Yen in Focus: Markets Wrap",
+          "title": "Yen Gains Past 154 as Rally Extends",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 1.0,
-          "publishedAt": "2026-09-07T22:08:43+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-07/stock-market-today-dow-s-p-live-updates",
+          "publishedAt": "2026-09-07T23:37:29+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-07/yen-gains-past-154-as-rally-extends-video",
           "tags": [
-            "commodity",
             "fx",
             "market"
           ]
@@ -378,16 +413,41 @@
       ]
     },
     "rates": {
-      "avgSentiment": 0.096,
-      "negativeCount": 3,
+      "avgSentiment": -0.041,
+      "negativeCount": 4,
       "positiveCount": 4,
       "neutralCount": 0,
       "sourceCount": 2,
-      "itemCount": 7,
+      "itemCount": 8,
       "isStale": false,
-      "topNegativeTitle": "France Champagne Output Set to Halve on Heat Waves and Drought",
+      "topNegativeTitle": "Australia’s Consumer Confidence Slumps on Rate Fears, Fuel Costs",
       "topPositiveTitle": "Why Are Japan’s Bond Yields Rising? What’s Driving the Surge",
       "items": [
+        {
+          "title": "Australia’s Consumer Confidence Slumps on Rate Fears, Fuel Costs",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-09-08T00:30:01+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-08/australia-s-consumer-confidence-slumps-on-rate-fears-fuel-costs",
+          "tags": [
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Japan’s Faster GDP Growth Supports BOJ Interest-Rate Hike Case",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-07T23:57:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-07/japan-s-gdp-growth-revised-higher-backing-boj-rate-hike-case",
+          "tags": [
+            "jp_broad",
+            "market",
+            "rates"
+          ]
+        },
         {
           "title": "France Champagne Output Set to Halve on Heat Waves and Drought",
           "source": "Bloomberg Markets",
@@ -413,18 +473,6 @@
           ]
         },
         {
-          "title": "Deutsche Bank’s Allen Says Traders Are Wrong on Rates or Prices",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-07T14:01:57+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-07/deutsche-bank-s-allen-says-traders-are-wrong-on-rates-or-prices",
-          "tags": [
-            "market",
-            "rates"
-          ]
-        },
-        {
           "title": "Japan’s Wages Grow Most Since 1997, Keeping BOJ on Rate Hike Path",
           "source": "Bloomberg Economics",
           "sentiment": "positive",
@@ -436,60 +484,20 @@
             "market",
             "rates"
           ]
-        },
-        {
-          "title": "High Expectations Leave Stocks Vulnerable: Noviskis",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-07T16:43:47+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-07/high-expectations-leave-stocks-vulnerable-noviskis-video",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.406,
-      "negativeCount": 1,
-      "positiveCount": 4,
-      "neutralCount": 2,
+      "avgSentiment": 0.667,
+      "negativeCount": 0,
+      "positiveCount": 3,
+      "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 7,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "European Stocks Muted as Oil Prices Climb and Novartis Falls",
-      "topPositiveTitle": "Stocks in Asia Poised to Edge Down, Yen in Focus: Markets Wrap",
+      "topNegativeTitle": "US Stocks Slip as Oil Gains Keep Traders Cautious: Markets Wrap",
+      "topPositiveTitle": "Latest Oil Market News and Analysis for Sept. 8",
       "items": [
-        {
-          "title": "European Stocks Muted as Oil Prices Climb and Novartis Falls",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.5,
-          "publishedAt": "2026-09-07T07:24:05+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-07/european-stocks-muted-as-oil-creeps-higher-novartis-falls",
-          "tags": [
-            "commodity",
-            "global_broad",
-            "market"
-          ]
-        },
-        {
-          "title": "Mercuria and Gunvor Profits More Than Double on War Volatility",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-07T13:21:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-07/mercuria-and-gunvor-see-profits-more-than-double-on-war-bonanza",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
         {
           "title": "US Stocks Slip as Oil Gains Keep Traders Cautious: Markets Wrap",
           "source": "Bloomberg Markets",
@@ -504,10 +512,23 @@
           ]
         },
         {
-          "title": "Latest Oil Market News and Analysis for Sept. 8",
+          "title": "Oil Extends Gain, Iran Says Deal With Oman Is Close",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.67,
+          "publishedAt": "2026-09-07T23:41:22+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-07/oil-extends-gain-iran-says-deal-with-oman-is-close-video",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Latest Oil Market News and Analysis for Sept. 8",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
           "publishedAt": "2026-09-07T22:09:49+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-07/latest-oil-market-news-and-analysis-for-sept-8",
           "tags": [
@@ -516,31 +537,30 @@
           ]
         },
         {
-          "title": "Gold Edges Lower as Traders Focus on Oil Price Swings and Dollar",
+          "title": "EM Stocks Jump to Highest Since June as Tech Offsets Higher Oil",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-09-06T23:28:46+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-06/gold-holds-decline-as-traders-weigh-prospects-for-fed-rate-hike",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-09-07T03:44:49+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-07/em-stocks-jump-to-2-month-high-as-tech-rally-offsets-higher-oil",
           "tags": [
             "commodity",
-            "fx",
-            "gold",
+            "global_broad",
             "market"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0.168,
       "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 4,
+      "positiveCount": 1,
+      "neutralCount": 3,
       "sourceCount": 2,
       "itemCount": 4,
       "isStale": false,
       "topNegativeTitle": "Sapporo Breweries CSO on Tariffs, Iran War",
-      "topPositiveTitle": "Sapporo Breweries CSO on Tariffs, Iran War",
+      "topPositiveTitle": "Oil Extends Gain, Iran Says Deal With Oman Is Close",
       "items": [
         {
           "title": "Sapporo Breweries CSO on Tariffs, Iran War",
@@ -556,7 +576,7 @@
           ]
         },
         {
-          "title": "Canada Set to Hit at Trump Tariffs, Risking Wider Trade War",
+          "title": "Canada Set to Hit Back at Trump Tariffs, Risking Wider Trade War",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
@@ -582,16 +602,15 @@
           ]
         },
         {
-          "title": "Mercuria and Gunvor Profits More Than Double on War Volatility",
+          "title": "Oil Extends Gain, Iran Says Deal With Oman Is Close",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-07T13:21:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-07/mercuria-and-gunvor-see-profits-more-than-double-on-war-bonanza",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-09-07T23:41:22+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-07/oil-extends-gain-iran-says-deal-with-oman-is-close-video",
           "tags": [
             "commodity",
             "geopolitical",
-            "macro_risk",
             "market"
           ]
         }
@@ -606,7 +625,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 4,
+    "excludedCount": 3,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
