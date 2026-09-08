@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-09-09T00:13:09.552781+09:00",
-  "sourceUpdatedAt": "2026-09-08T15:00:00+00:00",
+  "updatedAt": "2026-09-09T08:34:03.019153+09:00",
+  "sourceUpdatedAt": "2026-09-08T23:01:00+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -17,32 +17,47 @@
       "items": []
     },
     "jp_semiconductor": {
-      "avgSentiment": -1.0,
-      "negativeCount": 1,
-      "positiveCount": 0,
-      "neutralCount": 0,
+      "avgSentiment": 0.335,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Novartis and Boston Scientific Slide, Intel Price Hikes | Stock Movers",
-      "topPositiveTitle": "Novartis and Boston Scientific Slide, Intel Price Hikes | Stock Movers",
+      "topNegativeTitle": "Google, Blackstone Venture Faces Delays at Data-Center Sites",
+      "topPositiveTitle": "Asian Chip Stocks Set for Gains, Brent Nears $100: Markets Wrap",
       "items": [
         {
-          "title": "Novartis and Boston Scientific Slide, Intel Price Hikes | Stock Movers",
+          "title": "Google, Blackstone Venture Faces Delays at Data-Center Sites",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-09-08T14:23:49+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-08/novartis-dips-intel-gains-on-price-hikes-stock-movers-video",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-08T20:25:10+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-08/google-blackstone-venture-faces-delays-at-data-center-sites",
           "tags": [
             "jp_semiconductor",
-            "market"
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Asian Chip Stocks Set for Gains, Brent Nears $100: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-09-08T22:11:28+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-08/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "jp_semiconductor",
+            "market",
+            "us_growth"
           ]
         }
       ]
     },
     "us_broad": {
-      "avgSentiment": -0.085,
+      "avgSentiment": 0.082,
       "negativeCount": 1,
       "positiveCount": 1,
       "neutralCount": 2,
@@ -50,7 +65,7 @@
       "itemCount": 4,
       "isStale": false,
       "topNegativeTitle": "Chile Set to Hold Rates as Fed Risk Overshadows Growth Slump",
-      "topPositiveTitle": "US Earnings Upgrades Are on Their Longest Run in Five Years",
+      "topPositiveTitle": "Latin American Currencies Lead Gains in EM With US CPI in Focus",
       "items": [
         {
           "title": "Chile Set to Hold Rates as Fed Risk Overshadows Growth Slump",
@@ -66,14 +81,16 @@
           ]
         },
         {
-          "title": "Markets Bracing for PPI, CPI Reports This Week",
+          "title": "Bessent’s ‘Fever’-Cooling Debt Buybacks Put Wall St. on Edge",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-08T13:43:43+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-08/markets-bracing-for-ppi-cpi-reports-this-week-video",
+          "publishedAt": "2026-09-08T19:17:26+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-08/bessent-s-fever-quelling-debt-buybacks-put-wall-street-on-edge",
           "tags": [
+            "dividend",
             "market",
+            "rates",
             "us_broad"
           ]
         },
@@ -90,13 +107,14 @@
           ]
         },
         {
-          "title": "US Earnings Upgrades Are on Their Longest Run in Five Years",
-          "source": "Bloomberg Economics",
+          "title": "Latin American Currencies Lead Gains in EM With US CPI in Focus",
+          "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-08T10:31:04+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-08/us-earnings-upgrades-are-on-their-longest-run-in-five-years",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-09-08T10:53:18+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-08/emerging-markets-pause-rally-as-crude-price-closes-in-on-100",
           "tags": [
+            "fx",
             "market",
             "us_broad"
           ]
@@ -104,24 +122,39 @@
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0.335,
       "negativeCount": 0,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "SpaceX Shares to Get a Boost If Nasdaq 100 Increases Weighting",
-      "topPositiveTitle": "SpaceX Shares to Get a Boost If Nasdaq 100 Increases Weighting",
+      "topNegativeTitle": "Google, Blackstone Venture Faces Delays at Data-Center Sites",
+      "topPositiveTitle": "Asian Chip Stocks Set for Gains, Brent Nears $100: Markets Wrap",
       "items": [
         {
-          "title": "SpaceX Shares to Get a Boost If Nasdaq 100 Increases Weighting",
+          "title": "Google, Blackstone Venture Faces Delays at Data-Center Sites",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-08T11:00:02+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-08/spacex-set-for-boost-from-potential-jump-in-nasdaq-100-weighting",
+          "publishedAt": "2026-09-08T20:25:10+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-08/google-blackstone-venture-faces-delays-at-data-center-sites",
           "tags": [
+            "jp_semiconductor",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Asian Chip Stocks Set for Gains, Brent Nears $100: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-09-08T22:11:28+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-08/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "jp_semiconductor",
             "market",
             "us_growth"
           ]
@@ -148,11 +181,11 @@
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Gold Wavers as Traders Weigh Mideast Tensions and Dollar Moves",
-      "topPositiveTitle": "Gold Wavers as Traders Weigh Mideast Tensions and Dollar Moves",
+      "topNegativeTitle": "Gold Slips as Traders Weigh Mideast Tensions and Dollar Moves",
+      "topPositiveTitle": "Gold Slips as Traders Weigh Mideast Tensions and Dollar Moves",
       "items": [
         {
-          "title": "Gold Wavers as Traders Weigh Mideast Tensions and Dollar Moves",
+          "title": "Gold Slips as Traders Weigh Mideast Tensions and Dollar Moves",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.33,
@@ -167,67 +200,80 @@
       ]
     },
     "reit": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.33,
       "negativeCount": 0,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "dividend": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "macro_risk": {
-      "avgSentiment": -0.237,
-      "negativeCount": 3,
-      "positiveCount": 0,
-      "neutralCount": 4,
-      "sourceCount": 2,
-      "itemCount": 7,
-      "isStale": false,
-      "topNegativeTitle": "OPEC Output Slumps as Conflict Curbs Saudi Flows, Survey Shows",
-      "topPositiveTitle": "China Ships Out First Sulfuric Acid Cargo Since Halt on Exports",
+      "topNegativeTitle": "Cerberus Sells Real Estate Firm Tenet Equity for $1.6 Billion",
+      "topPositiveTitle": "Cerberus Sells Real Estate Firm Tenet Equity for $1.6 Billion",
       "items": [
         {
-          "title": "OPEC Output Slumps as Conflict Curbs Saudi Flows, Survey Shows",
+          "title": "Cerberus Sells Real Estate Firm Tenet Equity for $1.6 Billion",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-09-08T13:55:49+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-08/opec-output-slumps-as-conflict-curbs-saudi-flows-survey-shows",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-08T20:01:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-08/cerberus-sells-real-estate-firm-tenet-equity-for-1-6-billion",
           "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
+            "market",
+            "reit"
+          ]
+        }
+      ]
+    },
+    "dividend": {
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 2,
+      "sourceCount": 2,
+      "itemCount": 2,
+      "isStale": false,
+      "topNegativeTitle": "Bessent’s ‘Fever’-Cooling Debt Buybacks Put Wall St. on Edge",
+      "topPositiveTitle": "Bessent’s ‘Fever’-Cooling Debt Buybacks Put Wall St. on Edge",
+      "items": [
+        {
+          "title": "Bessent’s ‘Fever’-Cooling Debt Buybacks Put Wall St. on Edge",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-08T19:17:26+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-08/bessent-s-fever-quelling-debt-buybacks-put-wall-street-on-edge",
+          "tags": [
+            "dividend",
+            "market",
+            "rates",
+            "us_broad"
           ]
         },
         {
-          "title": "South African GDP Snaps Growth Streak as Iran War Takes Toll",
+          "title": "Bessent Says Buyback Move Aimed at Quelling Market ‘Fever’",
           "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-08T09:02:22+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-08/south-african-economy-snaps-growth-streak-as-iran-war-takes-toll",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-08T15:55:33+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-08/bessent-says-buyback-move-was-aimed-at-quelling-market-fever",
           "tags": [
-            "geopolitical",
-            "macro_risk",
+            "dividend",
             "market"
           ]
-        },
+        }
+      ]
+    },
+    "macro_risk": {
+      "avgSentiment": 0.168,
+      "negativeCount": 1,
+      "positiveCount": 3,
+      "neutralCount": 6,
+      "sourceCount": 2,
+      "itemCount": 10,
+      "isStale": false,
+      "topNegativeTitle": "UK Pays Most Since 1998 to Borrow After Gilt Selloff",
+      "topPositiveTitle": "A Case Against the \"Conventional Wisdom\" of Investing",
+      "items": [
         {
           "title": "UK Pays Most Since 1998 to Borrow After Gilt Selloff",
           "source": "Bloomberg Economics",
@@ -242,12 +288,12 @@
           ]
         },
         {
-          "title": "China Ships Out First Sulfuric Acid Cargo Since Halt on Exports",
-          "source": "Bloomberg Markets",
+          "title": "UK Food Inflation Will Hit 6% on El Niño and Drought, Firms Warn",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-08T14:40:13+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-08/china-ships-out-first-sulfuric-acid-cargo-since-halt-on-exports",
+          "publishedAt": "2026-09-08T23:01:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-08/uk-food-inflation-will-hit-6-on-el-nino-and-drought-firms-warn",
           "tags": [
             "geopolitical",
             "macro_risk",
@@ -255,13 +301,40 @@
           ]
         },
         {
-          "title": "Volatility Limits Post-Labor Day US Bond Rush to Six-Year Low",
+          "title": "Chile Holds Key Rate Steady and Casts Doubt on Economic Recovery",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-08T20:59:58+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-08/chile-holds-key-rate-at-4-5-on-inflation-risks-and-weak-economy",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Why the US-Canada Trade War Is Escalating",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-08T16:12:32+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-08/why-the-us-canada-trade-war-is-escalating",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Post-Labor Day US High-Grade Bond Rush Gets Off to Slower Start",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
           "publishedAt": "2026-09-08T14:05:00+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-08/volatility-limits-post-labor-day-us-bond-rush-to-six-year-low",
           "tags": [
+            "fx",
             "macro_risk",
             "market"
           ]
@@ -269,18 +342,31 @@
       ]
     },
     "fx": {
-      "avgSentiment": 0.33,
+      "avgSentiment": 0.6,
       "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "positiveCount": 4,
+      "neutralCount": 1,
+      "sourceCount": 2,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Gold Wavers as Traders Weigh Mideast Tensions and Dollar Moves",
-      "topPositiveTitle": "Gold Wavers as Traders Weigh Mideast Tensions and Dollar Moves",
+      "topNegativeTitle": "Post-Labor Day US High-Grade Bond Rush Gets Off to Slower Start",
+      "topPositiveTitle": "Latin American Currencies Lead Gains in EM With US CPI in Focus",
       "items": [
         {
-          "title": "Gold Wavers as Traders Weigh Mideast Tensions and Dollar Moves",
+          "title": "Post-Labor Day US High-Grade Bond Rush Gets Off to Slower Start",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-08T14:05:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-08/volatility-limits-post-labor-day-us-bond-rush-to-six-year-low",
+          "tags": [
+            "fx",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Gold Slips as Traders Weigh Mideast Tensions and Dollar Moves",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.33,
@@ -291,16 +377,54 @@
             "gold",
             "market"
           ]
+        },
+        {
+          "title": "A Case Against the \"Conventional Wisdom\" of Investing",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-09-08T21:56:45+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-08/a-case-against-the-conventional-wisdom-of-investing-video",
+          "tags": [
+            "fx",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Latin American Currencies Lead Gains in EM With US CPI in Focus",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-09-08T10:53:18+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-08/emerging-markets-pause-rally-as-crude-price-closes-in-on-100",
+          "tags": [
+            "fx",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Bessent Dares Traders to Bet Against Yen: ‘I Am the House Now’",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-09-08T22:16:03+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-08/bessent-dares-traders-to-bet-against-yen-i-am-the-house-now",
+          "tags": [
+            "fx",
+            "market"
+          ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": -0.068,
+      "avgSentiment": -0.112,
       "negativeCount": 2,
-      "positiveCount": 2,
-      "neutralCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 6,
       "isStale": false,
       "topNegativeTitle": "Chile Set to Hold Rates as Fed Risk Overshadows Growth Slump",
       "topPositiveTitle": "RBA Stands Ready to Raise Rates Again if Needed, Hauser Says",
@@ -332,35 +456,36 @@
           ]
         },
         {
-          "title": "Taiwan Inflation Just Above Alert Level Before Rate Decision",
-          "source": "Bloomberg Economics",
+          "title": "Japan’s Rising Yields Stir Debate Over Growing Repatriation Risk",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-08T08:16:18+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-08/taiwan-inflation-sticks-above-alert-level-before-rate-decision",
-          "tags": [
-            "geopolitical",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "RBA Stands Ready to Raise Rates Again if Needed, Hauser Says",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-08T04:27:41+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-08/rba-s-hunter-says-inflation-top-priority-may-have-to-raise-rate",
+          "publishedAt": "2026-09-08T21:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-08/japan-s-rising-yields-stir-debate-over-growing-repatriation-risk",
           "tags": [
             "market",
             "rates"
           ]
         },
         {
-          "title": "Stocks Fall as Oil Gain Stokes Inflation Worries: Markets Wrap",
+          "title": "Bessent’s ‘Fever’-Cooling Debt Buybacks Put Wall St. on Edge",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-08T19:17:26+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-08/bessent-s-fever-quelling-debt-buybacks-put-wall-street-on-edge",
+          "tags": [
+            "dividend",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Stocks Fall as Middle East Jitters Spur Oil Rally: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
           "publishedAt": "2026-09-07T22:08:43+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-07/stock-market-today-dow-s-p-live-updates",
           "tags": [
@@ -372,27 +497,38 @@
       ]
     },
     "commodity": {
-      "avgSentiment": -0.167,
+      "avgSentiment": 0.096,
       "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 2,
+      "positiveCount": 2,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "OPEC Output Slumps as Conflict Curbs Saudi Flows, Survey Shows",
-      "topPositiveTitle": "Stocks Fall as Oil Gain Stokes Inflation Worries: Markets Wrap",
+      "topNegativeTitle": "Stocks Slide as U.S.-Iran Tensions Push Oil Toward $99 | Closing Bell",
+      "topPositiveTitle": "Asian Chip Stocks Set for Gains, Brent Nears $100: Markets Wrap",
       "items": [
         {
-          "title": "OPEC Output Slumps as Conflict Curbs Saudi Flows, Survey Shows",
+          "title": "Stocks Slide as U.S.-Iran Tensions Push Oil Toward $99 | Closing Bell",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-09-08T13:55:49+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-08/opec-output-slumps-as-conflict-curbs-saudi-flows-survey-shows",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-09-08T20:18:00+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-08/us-iran-tensions-push-oil-higher-closing-bell-video",
           "tags": [
             "commodity",
             "geopolitical",
-            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Massachusetts Will Require New Data Centers to Use Clean Energy",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-08T20:01:46+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-08/massachusetts-will-require-new-data-centers-to-use-clean-energy",
+          "tags": [
+            "commodity",
             "market"
           ]
         },
@@ -410,22 +546,10 @@
           ]
         },
         {
-          "title": "Nuclear Firm HGP Plans SPAC Deal at $1.2 Billion Value",
+          "title": "Stocks Fall as Middle East Jitters Spur Oil Rally: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-08T12:15:24+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-08/nuclear-firm-hgp-said-to-plan-spac-deal-at-1-2-billion-value",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "Stocks Fall as Oil Gain Stokes Inflation Worries: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
           "publishedAt": "2026-09-07T22:08:43+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-07/stock-market-today-dow-s-p-live-updates",
           "tags": [
@@ -433,44 +557,43 @@
             "market",
             "rates"
           ]
+        },
+        {
+          "title": "Westwood CEO on the First ETF Listing on the TXSE",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-08T21:32:14+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-08/westwood-ceo-on-the-first-etf-listing-on-the-txse-video",
+          "tags": [
+            "commodity",
+            "market",
+            "trust"
+          ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": -0.099,
-      "negativeCount": 3,
-      "positiveCount": 1,
-      "neutralCount": 6,
+      "avgSentiment": 0.0,
+      "negativeCount": 2,
+      "positiveCount": 2,
+      "neutralCount": 7,
       "sourceCount": 3,
-      "itemCount": 10,
+      "itemCount": 11,
       "isStale": false,
-      "topNegativeTitle": "OPEC Output Slumps as Conflict Curbs Saudi Flows, Survey Shows",
-      "topPositiveTitle": "US Targets Iran’s Airlines as New Sanctions Push Continues",
+      "topNegativeTitle": "Stocks Slide as U.S.-Iran Tensions Push Oil Toward $99 | Closing Bell",
+      "topPositiveTitle": "Carney Says Tariffs on US Goods Meant to Protect Canada, Not Escalate Conflict",
       "items": [
         {
-          "title": "OPEC Output Slumps as Conflict Curbs Saudi Flows, Survey Shows",
+          "title": "Stocks Slide as U.S.-Iran Tensions Push Oil Toward $99 | Closing Bell",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-09-08T13:55:49+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-08/opec-output-slumps-as-conflict-curbs-saudi-flows-survey-shows",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-09-08T20:18:00+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-08/us-iran-tensions-push-oil-higher-closing-bell-video",
           "tags": [
             "commodity",
             "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "South African GDP Snaps Growth Streak as Iran War Takes Toll",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-08T09:02:22+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-08/south-african-economy-snaps-growth-streak-as-iran-war-takes-toll",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
             "market"
           ]
         },
@@ -488,12 +611,12 @@
           "titleJa": "茂木外相 イラン外相と電話会談“事態沈静化向け柔軟対応を”"
         },
         {
-          "title": "China Ships Out First Sulfuric Acid Cargo Since Halt on Exports",
-          "source": "Bloomberg Markets",
+          "title": "UK Food Inflation Will Hit 6% on El Niño and Drought, Firms Warn",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-08T14:40:13+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-08/china-ships-out-first-sulfuric-acid-cargo-since-halt-on-exports",
+          "publishedAt": "2026-09-08T23:01:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-08/uk-food-inflation-will-hit-6-on-el-nino-and-drought-firms-warn",
           "tags": [
             "geopolitical",
             "macro_risk",
@@ -501,15 +624,28 @@
           ]
         },
         {
-          "title": "Qatar Has Widest Deficit in a Decade as Hormuz Ties Up Gas Trade",
+          "title": "Chile Holds Key Rate Steady and Casts Doubt on Economic Recovery",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-08T14:39:30+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-08/qatar-has-widest-deficit-in-a-decade-as-hormuz-ties-up-gas-trade",
+          "publishedAt": "2026-09-08T20:59:58+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-08/chile-holds-key-rate-at-4-5-on-inflation-risks-and-weak-economy",
           "tags": [
-            "commodity",
             "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Why the US-Canada Trade War Is Escalating",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-08T16:12:32+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-08/why-the-us-canada-trade-war-is-escalating",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
             "market"
           ]
         }
