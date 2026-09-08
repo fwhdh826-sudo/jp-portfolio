@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-08T01:16:47+00:00",
+  "updatedAt": "2026-09-08T08:14:45+00:00",
   "sourceStatus": {
     "Yahoo!ファイナンス Market": "timeout",
     "Yahoo!ファイナンス News": "timeout",
@@ -18,27 +18,48 @@
     "Yahoo!ファイナンス News": null,
     "Reuters Business": null,
     "Reuters Markets": null,
-    "Bloomberg Markets": "2026-09-08T00:20:47+00:00",
-    "Bloomberg Economics": "2026-09-08T00:30:01+00:00",
-    "NHK 経済": "2026-09-07T23:50:30+00:00",
-    "reddit r/investing": "2026-09-07T23:57:43+00:00",
+    "Bloomberg Markets": "2026-09-08T07:39:43+00:00",
+    "Bloomberg Economics": "2026-09-08T07:42:16+00:00",
+    "NHK 経済": "2026-09-08T05:43:14+00:00",
+    "reddit r/investing": "2026-09-08T08:00:28+00:00",
     "reddit r/stocks": null,
     "Finnhub": null,
     "X (RSS mirror)": null
   },
   "marketNews": [
     {
-      "id": "4ed970cd6376",
+      "id": "ac60edc881eb",
       "source": "Bloomberg Economics",
-      "title": "Japan’s Faster GDP Growth Supports BOJ Interest-Rate Hike Case",
-      "summary": "Japan’s economy grew at a faster clip in the second quarter than initially estimated, supporting the case for a widely expected Bank of Japan interest-rate hike next week.",
+      "title": "Japan’s Faster GDP, Wage Growth Support BOJ Interest-Rate Hike",
+      "summary": "Japan’s economy grew at a faster clip in the second quarter than initially estimated while wages jumped the most in nearly three decades in July, supporting the case for a widely expected Bank of Japan interest-rate hike next week.",
       "url": "https://www.bloomberg.com/news/articles/2026-09-07/japan-s-gdp-growth-revised-higher-backing-boj-rate-hike-case",
       "publishedAt": "2026-09-07T23:57:00+00:00",
-      "sentiment": "negative",
-      "sentimentScore": -0.33,
+      "sentiment": "positive",
+      "sentimentScore": 0.33,
       "importance": 0.41,
       "tags": [
         "jp_broad",
+        "market",
+        "rates"
+      ],
+      "tickers": [],
+      "impact": "positive",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "8ed0a9cea23d",
+      "source": "Bloomberg Economics",
+      "title": "UK Set to Pay Most Since 1998 for Borrowing After Gilt Selloff",
+      "summary": "The UK is set to pay its highest borrowing costs on a debt sale since at least 1998 as a global bond selloff sent yields surging and squeezed the government’s finances.",
+      "url": "https://www.bloomberg.com/news/articles/2026-09-08/uk-set-to-pay-most-since-1998-for-borrowing-after-gilt-selloff",
+      "publishedAt": "2026-09-08T07:42:16+00:00",
+      "sentiment": "negative",
+      "sentimentScore": -0.33,
+      "importance": 0.33,
+      "tags": [
+        "macro_risk",
         "market",
         "rates"
       ],
@@ -49,9 +70,432 @@
       "translationStatus": "pending"
     },
     {
-      "id": "f62d9264e38a",
+      "id": "defe76c7621c",
+      "source": "Bloomberg Markets",
+      "title": "Gaw Capital Gets $547 Million Loan Backed by Regent Hong Kong",
+      "summary": "Gaw Capital Partners has secured a HK$4.29 billion ($547 million) loan backed by its Regent Hong Kong hotel with lender commitments exceeding the target amount, underlining strong demand for prime hospitality assets despite weakness in the ",
+      "url": "https://www.bloomberg.com/news/articles/2026-09-08/gaw-capital-gets-547-million-loan-backed-by-regent-hong-kong",
+      "publishedAt": "2026-09-08T07:39:43+00:00",
+      "sentiment": "negative",
+      "sentimentScore": -0.33,
+      "importance": 0.33,
+      "tags": [
+        "market",
+        "unknown"
+      ],
+      "tickers": [],
+      "impact": "negative",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "2690bb7fe59f",
+      "source": "Bloomberg Markets",
+      "title": "Cinven Raises €2.3 Billion for Latest Mid-Market Buyout Fund",
+      "summary": "Cinven has raised €2.3 billion ($2.7 billion) for its latest fund targeting mid-sized deals, exceeding its target at a time of elevated demand for buyout assets that can be more easily monetized.",
+      "url": "https://www.bloomberg.com/news/articles/2026-09-08/cinven-raises-2-3-billion-for-latest-mid-market-buyout-fund",
+      "publishedAt": "2026-09-08T07:30:35+00:00",
+      "sentiment": "neutral",
+      "sentimentScore": 0.0,
+      "importance": 0.33,
+      "tags": [
+        "market",
+        "unknown"
+      ],
+      "tickers": [],
+      "impact": "neutral",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "1b1b4244b2e9",
+      "source": "Bloomberg Markets",
+      "title": "Aussie Rises to Highest in 13 Years Against Kiwi on Hawkish RBA",
+      "summary": "The Australian dollar rose to a fresh 13-year high against its New Zealand peer, driven by a diverging interest-rate outlook by their central banks and a lift in metals prices.",
+      "url": "https://www.bloomberg.com/news/articles/2026-09-08/aussie-rises-to-highest-in-13-years-against-kiwi-on-hawkish-rba",
+      "publishedAt": "2026-09-08T07:06:34+00:00",
+      "sentiment": "positive",
+      "sentimentScore": 1.0,
+      "importance": 0.33,
+      "tags": [
+        "fx",
+        "market"
+      ],
+      "tickers": [],
+      "impact": "positive",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "c8b2d0337991",
+      "source": "Bloomberg Markets",
+      "title": "Billionaire’s Phosphate Bet Backfires, Hundreds of Jobs at Stake",
+      "summary": "South African billionaire Patrice Motsepe’s near decade-long backing for phosphate producer Kropz Plc has backfired, with the company announcing the restructuring of its sole operating asset and one of its contractors warning of hundreds of",
+      "url": "https://www.bloomberg.com/news/articles/2026-09-08/billionaire-s-phosphate-bet-backfires-hundreds-of-jobs-at-stake",
+      "publishedAt": "2026-09-08T06:53:02+00:00",
+      "sentiment": "negative",
+      "sentimentScore": -0.67,
+      "importance": 0.33,
+      "tags": [
+        "market",
+        "unknown"
+      ],
+      "tickers": [],
+      "impact": "negative",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "e286463048ca",
+      "source": "Bloomberg Markets",
+      "title": "Saudi Arabia Says Energy Sites Near Yemen Halted After Attacks",
+      "summary": "Saudi Arabia said operations at several energy facilities in the kingdom’s south were halted after attacks ignited fires, the latest escalation in the region bordering Yemen.",
+      "url": "https://www.bloomberg.com/news/articles/2026-09-08/saudi-arabia-says-several-energy-sites-halted-after-attacks",
+      "publishedAt": "2026-09-08T06:41:45+00:00",
+      "sentiment": "neutral",
+      "sentimentScore": 0.0,
+      "importance": 0.33,
+      "tags": [
+        "commodity",
+        "market"
+      ],
+      "tickers": [],
+      "impact": "neutral",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "96597c4d9b18",
+      "source": "Bloomberg Markets",
+      "title": "Horizons Middle East & Africa 9/8/2026",
+      "summary": "Horizons Middle East & Africa is your daily spotlight on one of the world's fastest-growing regions. Live from Dubai, we bring you the latest global markets and analysis, plus news-making interviews, with a special focus on MEA. All that an",
+      "url": "https://www.bloomberg.com/news/videos/2026-09-08/horizons-middle-east-africa-9-8-2026-video",
+      "publishedAt": "2026-09-08T06:36:54+00:00",
+      "sentiment": "neutral",
+      "sentimentScore": 0.0,
+      "importance": 0.33,
+      "tags": [
+        "global_broad",
+        "market"
+      ],
+      "tickers": [],
+      "impact": "neutral",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "1d3902e28bec",
       "source": "Bloomberg Economics",
-      "title": "Australia’s Consumer Confidence Slumps on Rate Fears, Fuel Costs",
+      "title": "German Exports Unexpectedly Decline for First Time Since January",
+      "summary": "German exports unexpectedly dropped in July, snapping five months of gains and muting hopes for a quick recovery in Europe’s largest economy.",
+      "url": "https://www.bloomberg.com/news/articles/2026-09-08/german-exports-unexpectedly-drop-for-first-time-since-january",
+      "publishedAt": "2026-09-08T06:19:04+00:00",
+      "sentiment": "negative",
+      "sentimentScore": -0.2,
+      "importance": 0.33,
+      "tags": [
+        "market",
+        "unknown"
+      ],
+      "tickers": [],
+      "impact": "neutral",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "e76b0f88a477",
+      "source": "Bloomberg Markets",
+      "title": "Wall of Political and Economic Risks Is Growing: Taking Stock",
+      "summary": "Stock investors are caught between the pull of strong earnings and mounting macroeconomic risks, with key events carrying binary outcomes that argue for some protection.",
+      "url": "https://www.bloomberg.com/news/articles/2026-09-08/wall-of-political-and-economic-risks-is-growing-taking-stock",
+      "publishedAt": "2026-09-08T06:13:25+00:00",
+      "sentiment": "positive",
+      "sentimentScore": 0.33,
+      "importance": 0.33,
+      "tags": [
+        "market",
+        "unknown"
+      ],
+      "tickers": [],
+      "impact": "positive",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "1258c5c2d022",
+      "source": "Bloomberg Markets",
+      "title": "Global Bond Rush Kicks Off in Asia With Banks Leading the Charge",
+      "summary": "Borrowers from around the Asia Pacific stormed the dollar bond market on Tuesday, unleashing one of the busiest sessions of the year in the region, as companies across the globe are primed to tap investors in force before interest rates go ",
+      "url": "https://www.bloomberg.com/news/articles/2026-09-08/global-bond-rush-kicks-off-in-asia-with-banks-leading-the-charge",
+      "publishedAt": "2026-09-08T06:10:06+00:00",
+      "sentiment": "neutral",
+      "sentimentScore": 0.0,
+      "importance": 0.33,
+      "tags": [
+        "fx",
+        "market",
+        "rates"
+      ],
+      "tickers": [],
+      "impact": "neutral",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "36b7ca9ad4d0",
+      "source": "Bloomberg Markets",
+      "title": "Vista Land Weighs Sale of Assets to Repay $420 Million Bond",
+      "summary": "Vista Land &amp; Landscapes Inc., owned by Philippine billionaire Manuel Villar, said it’s evaluating options to raise funds including the sale of assets to ensure it’s able to meet obligations, including a $420-million bond that will fall ",
+      "url": "https://www.bloomberg.com/news/articles/2026-09-08/vista-land-weighs-sale-of-assets-to-repay-420-million-bond",
+      "publishedAt": "2026-09-08T06:09:20+00:00",
+      "sentiment": "negative",
+      "sentimentScore": -0.33,
+      "importance": 0.33,
+      "tags": [
+        "market",
+        "unknown"
+      ],
+      "tickers": [],
+      "impact": "negative",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "c8fa51f17b05",
+      "source": "Bloomberg Markets",
+      "title": "Yen's Fundamentals 'Different This Time Around,' Natixis Says",
+      "summary": "There is room for a \"lot of movement\" for the yen, according to Trinh Nguyen, senior economist for emerging Asia at Natixis. \"The reshoring of not just Japanese investors, the hiking of interest rates, and also on top of that, the fact that",
+      "url": "https://www.bloomberg.com/news/videos/2026-09-08/yen-fundamentals-different-this-time-around-natixis-video",
+      "publishedAt": "2026-09-08T06:05:34+00:00",
+      "sentiment": "neutral",
+      "sentimentScore": 0.0,
+      "importance": 0.33,
+      "tags": [
+        "fx",
+        "market",
+        "rates"
+      ],
+      "tickers": [],
+      "impact": "neutral",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "e1089ba8d98c",
+      "source": "Bloomberg Markets",
+      "title": "Bridgepoint Credit Sells €1.2 Billion Loan Portfolio to Pantheon",
+      "summary": "Bridgepoint Credit has transferred €1.2 billion ($1.4 billion) of loans from an older direct-lending fund into a new continuation vehicle, according to a statement seen by Bloomberg.",
+      "url": "https://www.bloomberg.com/news/articles/2026-09-08/bridgepoint-credit-sells-1-2-billion-loan-portfolio-to-pantheon",
+      "publishedAt": "2026-09-08T06:00:00+00:00",
+      "sentiment": "neutral",
+      "sentimentScore": 0.0,
+      "importance": 0.33,
+      "tags": [
+        "market",
+        "unknown"
+      ],
+      "tickers": [],
+      "impact": "neutral",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "67bf93a7fa82",
+      "source": "Bloomberg Markets",
+      "title": "High-Speed Trader AlphaGrep Turns to Bonds After India Bank Curb",
+      "summary": "AlphaGrep Securities Pvt., one of India’s largest high-frequency trading firms, is turning to the bond market for funding after the regulator tightened banks’ exposure to trading firms that use their own capital.",
+      "url": "https://www.bloomberg.com/news/articles/2026-09-08/high-speed-trader-alphagrep-turns-to-bonds-after-india-bank-curb",
+      "publishedAt": "2026-09-08T05:59:32+00:00",
+      "sentiment": "neutral",
+      "sentimentScore": 0.0,
+      "importance": 0.33,
+      "tags": [
+        "market",
+        "unknown"
+      ],
+      "tickers": [],
+      "impact": "neutral",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "4f5f07cf8138",
+      "source": "Bloomberg Markets",
+      "title": "Old Mutual Posts First Profit Drop Since 2022 as War Hits Gains",
+      "summary": "Profit at Old Mutual declined for the first time since 2022 as risk-off sentiment from conflicts in the Middle East curbed investment returns at the Africa’s biggest insurer by assets.",
+      "url": "https://www.bloomberg.com/news/articles/2026-09-08/old-mutual-profit-drops-us-iran-war-fallout-curbs-investments",
+      "publishedAt": "2026-09-08T05:25:10+00:00",
+      "sentiment": "negative",
+      "sentimentScore": -0.2,
+      "importance": 0.33,
+      "tags": [
+        "geopolitical",
+        "macro_risk",
+        "market"
+      ],
+      "tickers": [],
+      "impact": "neutral",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "f9cf1b49101e",
+      "source": "Bloomberg Economics",
+      "title": "RBA’s Hunter Says Inflation Top Priority, May Have to Raise Rate",
+      "summary": "Australia’s central bank board views elevated inflation as its top priority and may need to raise interest rates further to tackle it, Assistant Governor Sarah Hunter said, even at a time when the nation’s property market is weakening.",
+      "url": "https://www.bloomberg.com/news/articles/2026-09-08/rba-s-hunter-says-inflation-top-priority-may-have-to-raise-rate",
+      "publishedAt": "2026-09-08T04:27:41+00:00",
+      "sentiment": "negative",
+      "sentimentScore": -0.33,
+      "importance": 0.33,
+      "tags": [
+        "market",
+        "rates"
+      ],
+      "tickers": [],
+      "impact": "negative",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "a4e71b530163",
+      "source": "Bloomberg Economics",
+      "title": "Meloni’s Pre-Election Italian Budget Is Getting a Growth Boost",
+      "summary": "Prime Minister Giorgia Meloni’s hopes of delivering a pre-election budget that can both woo voters and assuage coalition partners just got a helping hand from the Italian economy.",
+      "url": "https://www.bloomberg.com/news/articles/2026-09-08/meloni-s-pre-election-italian-budget-is-getting-a-growth-boost",
+      "publishedAt": "2026-09-08T04:15:00+00:00",
+      "sentiment": "neutral",
+      "sentimentScore": 0.0,
+      "importance": 0.33,
+      "tags": [
+        "market",
+        "unknown"
+      ],
+      "tickers": [],
+      "impact": "neutral",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "e0d2015a3b97",
+      "source": "Bloomberg Economics",
+      "title": "Philippine Jobless Rate Surges to Four-Year High as Growth Slows",
+      "summary": "Philippine jobless rate climbed to the highest in four years as fresh graduates sought work in an economy that slowed due to a corruption scandal and the global oil shock.",
+      "url": "https://www.bloomberg.com/news/articles/2026-09-08/philippine-jobless-rate-surges-to-four-year-high-as-growth-slows",
+      "publishedAt": "2026-09-08T02:44:18+00:00",
+      "sentiment": "positive",
+      "sentimentScore": 1.0,
+      "importance": 0.33,
+      "tags": [
+        "commodity",
+        "market"
+      ],
+      "tickers": [],
+      "impact": "positive",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "64ea827da5ae",
+      "source": "Bloomberg Economics",
+      "title": "China’s Exports Lifted by AI as Trade Surplus Nears $806 Billion",
+      "summary": "China’s export growth accelerated in August, swelling its trade surplus near $806 billion for the year just as the US ramps up pressure on Beijing to address imbalances before the leaders of the world’s biggest economies meet in Washington.",
+      "url": "https://www.bloomberg.com/news/articles/2026-09-08/china-export-growth-rebounds-as-ai-boom-offsets-extreme-weather",
+      "publishedAt": "2026-09-08T02:38:27+00:00",
+      "sentiment": "neutral",
+      "sentimentScore": 0.0,
+      "importance": 0.33,
+      "tags": [
+        "market",
+        "unknown"
+      ],
+      "tickers": [],
+      "impact": "neutral",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "e0e7c0d466c8",
+      "source": "Bloomberg Markets",
+      "title": "Wheat Surges With No Sign of Breakthrough in Black Sea Talks",
+      "summary": "Wheat jumped the most in almost two weeks as Russia rejected a proposed moratorium on attacks against ships carrying civilian goods in the Black Sea, heightening concerns about prolonged disruptions to grain shipments in the vital trade cor",
+      "url": "https://www.bloomberg.com/news/articles/2026-09-08/wheat-jumps-as-russia-focused-on-ukraine-war-despite-us-talks",
+      "publishedAt": "2026-09-08T02:29:12+00:00",
+      "sentiment": "positive",
+      "sentimentScore": 1.0,
+      "importance": 0.33,
+      "tags": [
+        "geopolitical",
+        "market"
+      ],
+      "tickers": [],
+      "impact": "positive",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "3e3ce46bd858",
+      "source": "Bloomberg Economics",
+      "title": "Philippines Central Bank Sees High Interest Rates But No Shortage of Loans",
+      "summary": "Philippine borrowers will face high interest rates rather than a shortage of loans, the central bank said, easing concerns that record level of government borrowing is squeezing out private businesses.",
+      "url": "https://www.bloomberg.com/news/articles/2026-09-08/philippines-central-bank-sees-high-interest-rates-but-no-shortage-of-loans",
+      "publishedAt": "2026-09-08T02:22:42+00:00",
+      "sentiment": "neutral",
+      "sentimentScore": 0.0,
+      "importance": 0.33,
+      "tags": [
+        "market",
+        "rates"
+      ],
+      "tickers": [],
+      "impact": "neutral",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "091091bb5e31",
+      "source": "Bloomberg Economics",
+      "title": "Japan’s Katayama Says Will Aim to Maintain Orderly FX Market",
+      "summary": "Japan’s stance on currencies hasn’t shifted since it conducted joint intervention with its US counterparts, and authorities will work to maintain orderly markets, Finance Minister Satsuki Katayama said after the yen strengthened briskly to ",
+      "url": "https://www.bloomberg.com/news/articles/2026-09-08/japan-s-katayama-says-will-aim-to-maintain-orderly-fx-market",
+      "publishedAt": "2026-09-08T01:48:02+00:00",
+      "sentiment": "positive",
+      "sentimentScore": 0.67,
+      "importance": 0.33,
+      "tags": [
+        "fx",
+        "market"
+      ],
+      "tickers": [],
+      "impact": "positive",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "34e8878e9895",
+      "source": "Bloomberg Economics",
+      "title": "Australia’s Consumer Confidence Slumps on Rates, Fuel Costs",
       "summary": "Australia’s consumer confidence slumped back toward deeply pessimistic territory in September, spurred by household concerns that the Reserve Bank will resume raising interest rates as well as higher fuel costs.",
       "url": "https://www.bloomberg.com/news/articles/2026-09-08/australia-s-consumer-confidence-slumps-on-rate-fears-fuel-costs",
       "publishedAt": "2026-09-08T00:30:01+00:00",
@@ -64,87 +508,6 @@
       ],
       "tickers": [],
       "impact": "negative",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "db4c45293838",
-      "source": "Bloomberg Markets",
-      "title": "Yen’s Rally Through Key Level Puts Currency’s 2026 High in Reach",
-      "summary": "The yen is closing in on its strongest level this year after a break through 155 per dollar triggered stop-loss orders, putting the 152 area firmly in traders’ sights.",
-      "url": "https://www.bloomberg.com/news/articles/2026-09-08/yen-s-rally-through-key-level-puts-currency-s-2026-high-in-reach",
-      "publishedAt": "2026-09-08T00:20:47+00:00",
-      "sentiment": "positive",
-      "sentimentScore": 0.33,
-      "importance": 0.33,
-      "tags": [
-        "fx",
-        "market"
-      ],
-      "tickers": [],
-      "impact": "positive",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "9a6c104a2ee1",
-      "source": "Bloomberg Markets",
-      "title": "Samsung Buyback Highlights Korea’s 45% Preferred Stock Discount",
-      "summary": "Samsung Electronics Co.’s anticipated equity buyback is raising investor expectations that the Korean giant will buy up non‑voting preferred shares, narrowing a steep discount and setting an example for others.",
-      "url": "https://www.bloomberg.com/news/articles/2026-09-08/samsung-buyback-highlights-korea-s-45-preferred-stock-discount",
-      "publishedAt": "2026-09-08T00:19:36+00:00",
-      "sentiment": "neutral",
-      "sentimentScore": 0.0,
-      "importance": 0.33,
-      "tags": [
-        "dividend",
-        "market"
-      ],
-      "tickers": [],
-      "impact": "neutral",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "da5adcbadd91",
-      "source": "Bloomberg Markets",
-      "title": "Oil Extends Gain, Iran Says Deal With Oman Is Close",
-      "summary": "Oil extended gains as traders watched for details of an Iranian deal with Oman to manage shipping through the Strait of Hormuz. Bloomberg's Michael Heath shares what we know so far. (Source: Bloomberg)",
-      "url": "https://www.bloomberg.com/news/videos/2026-09-07/oil-extends-gain-iran-says-deal-with-oman-is-close-video",
-      "publishedAt": "2026-09-07T23:41:22+00:00",
-      "sentiment": "positive",
-      "sentimentScore": 0.67,
-      "importance": 0.33,
-      "tags": [
-        "commodity",
-        "geopolitical",
-        "market"
-      ],
-      "tickers": [],
-      "impact": "positive",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "cd8cc16243ab",
-      "source": "Bloomberg Markets",
-      "title": "Yen Gains Past 154 as Rally Extends",
-      "summary": "The yen extends its recent rally, trading beyond 154 per dollar. Bloomberg's Mark Cranfield has the latest. (Source: Bloomberg)",
-      "url": "https://www.bloomberg.com/news/videos/2026-09-07/yen-gains-past-154-as-rally-extends-video",
-      "publishedAt": "2026-09-07T23:37:29+00:00",
-      "sentiment": "positive",
-      "sentimentScore": 1.0,
-      "importance": 0.33,
-      "tags": [
-        "fx",
-        "market"
-      ],
-      "tickers": [],
-      "impact": "positive",
       "whyImportant": "短期の地合い把握に有用なため。",
       "recommendation": "監視継続。次回更新時に再評価する。",
       "translationStatus": "pending"
@@ -171,10 +534,10 @@
       "translationStatus": "pending"
     },
     {
-      "id": "6d8b4b6500b0",
+      "id": "b2e8a21b9d03",
       "source": "Bloomberg Markets",
-      "title": "Gold Steadies as Traders Weigh Mideast Tensions and Dollar Moves",
-      "summary": "Gold was steady near $4,400 an ounce, as traders weighed the competing effects of Middle East tensions and the US dollar’s decline against the yen.",
+      "title": "Gold Wavers as Traders Weigh Mideast Tensions and Dollar Moves",
+      "summary": "Gold wavered, as traders weighed the competing effects of rising Middle East tensions and the US dollar’s decline against the yen.",
       "url": "https://www.bloomberg.com/news/articles/2026-09-07/gold-steadies-as-traders-weigh-mideast-tensions-and-dollar-moves",
       "publishedAt": "2026-09-07T23:19:32+00:00",
       "sentiment": "positive",
@@ -212,34 +575,14 @@
       "translationStatus": "pending"
     },
     {
-      "id": "f692306e1a65",
-      "source": "Bloomberg Markets",
-      "title": "CapitaLand Targets $500 Million for Third Asian Credit Fund",
-      "summary": "Singapore’s CapitaLand Investment Ltd. is targeting $500 million in commitments from investors for its third Asia Pacific credit program, according to people familiar with the matter.",
-      "url": "https://www.bloomberg.com/news/articles/2026-09-07/capitaland-targets-500-million-for-third-asian-credit-fund",
-      "publishedAt": "2026-09-07T23:00:01+00:00",
-      "sentiment": "neutral",
-      "sentimentScore": 0.0,
-      "importance": 0.33,
-      "tags": [
-        "market",
-        "unknown"
-      ],
-      "tickers": [],
-      "impact": "neutral",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
       "id": "e788bf5554eb",
       "source": "Bloomberg Markets",
       "title": "Latest Oil Market News and Analysis for Sept. 8",
-      "summary": "Oil held gains near $100 a barrel as traders watched for details of an Iranian deal with Oman to manage shipping through the Strait of Hormuz, while strong Chinese buying tightened the market.",
+      "summary": "Brent oil surged toward $100 a barrel after Saudi Arabia halted some energy operations near its border with Yemen due to attacks, highlighting risks to supply from the region.",
       "url": "https://www.bloomberg.com/news/articles/2026-09-07/latest-oil-market-news-and-analysis-for-sept-8",
       "publishedAt": "2026-09-07T22:09:49+00:00",
       "sentiment": "positive",
-      "sentimentScore": 1.0,
+      "sentimentScore": 0.67,
       "importance": 0.33,
       "tags": [
         "commodity",
@@ -252,120 +595,20 @@
       "translationStatus": "pending"
     },
     {
-      "id": "fa02acfa30b4",
+      "id": "76c9ef576352",
       "source": "Bloomberg Markets",
-      "title": "Yen Advances to Six-Month High, Chip Stocks Rise: Markets Wrap",
-      "summary": "The yen extended Monday’s advance to reach the strongest level since February, aided by rising expectations of a Bank of Japan interest-rate increase next week. Gains in South Korean chip stocks helped support Asian equities.",
+      "title": "Stocks Fall as Oil Rally Fuels Inflation Fears: Markets Wrap",
+      "summary": "Global stocks fell as Brent crude approached $100 a barrel, reinforcing expectations that central banks will have to raise interest rates to contain inflation. The yen hit the highest level since February.",
       "url": "https://www.bloomberg.com/news/articles/2026-09-07/stock-market-today-dow-s-p-live-updates",
       "publishedAt": "2026-09-07T22:08:43+00:00",
-      "sentiment": "positive",
-      "sentimentScore": 1.0,
-      "importance": 0.33,
-      "tags": [
-        "fx",
-        "jp_broad",
-        "jp_semiconductor",
-        "market"
-      ],
-      "tickers": [],
-      "impact": "positive",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "7257421bda4b",
-      "source": "Bloomberg Markets",
-      "title": "Sapporo Breweries CSO on Tariffs, Iran War",
-      "summary": "Sapporo Breweries is shifting some production to the US from Canada due to 50% tariffs imposed on beer exports from the country, Chief Strategy Officer Rieko Shofu said. She spoke exclusively with Bloomberg's Shery Ahn on being impacted by ",
-      "url": "https://www.bloomberg.com/news/videos/2026-09-07/sapporo-breweries-cso-on-tariffs-iran-war-video",
-      "publishedAt": "2026-09-07T21:00:56+00:00",
-      "sentiment": "neutral",
-      "sentimentScore": 0.0,
-      "importance": 0.33,
-      "tags": [
-        "geopolitical",
-        "macro_risk",
-        "market"
-      ],
-      "tickers": [],
-      "impact": "neutral",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "53e99abae3df",
-      "source": "Bloomberg Markets",
-      "title": "Why Are Japan’s Bond Yields Rising? What’s Driving the Surge",
-      "summary": "Government bonds are generally viewed as one of the safest assets to invest in. That’s because it’s considered relatively unlikely that the issuer — a government — will go bankrupt. Among the world’s major government debt markets, Japan’s $",
-      "url": "https://www.bloomberg.com/news/articles/2026-09-07/why-are-japan-s-bond-yields-rising-what-s-driving-the-surge",
-      "publishedAt": "2026-09-07T20:00:00+00:00",
-      "sentiment": "positive",
-      "sentimentScore": 0.67,
-      "importance": 0.33,
-      "tags": [
-        "market",
-        "rates"
-      ],
-      "tickers": [],
-      "impact": "positive",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "e1e003507b95",
-      "source": "Bloomberg Markets",
-      "title": "Australia Housing Firm Bathla Collapse: What Happens to Buyers, Their Deposits?",
-      "summary": "Sydney property developer Bathla Group’s collapse has left thousands of Australian homebuyers — who have paid deposits and are waiting for their off-the-plan homes to be built — in limbo.",
-      "url": "https://www.bloomberg.com/news/articles/2026-09-07/bathla-group-collapse-what-happens-to-homebuyers-and-their-deposits",
-      "publishedAt": "2026-09-07T20:00:00+00:00",
-      "sentiment": "neutral",
-      "sentimentScore": 0.0,
-      "importance": 0.33,
-      "tags": [
-        "market",
-        "unknown"
-      ],
-      "tickers": [],
-      "impact": "neutral",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "9e09160c259a",
-      "source": "Bloomberg Markets",
-      "title": "High Expectations Leave Stocks Vulnerable: Noviskis",
-      "summary": "Jessica Noviskis, OCIO portfolio strategist at Marquette Associates, says strong earnings continue to support US stocks, but elevated expectations and higher yields leave the market vulnerable if results disappoint. “When we do see those hi",
-      "url": "https://www.bloomberg.com/news/videos/2026-09-07/high-expectations-leave-stocks-vulnerable-noviskis-video",
-      "publishedAt": "2026-09-07T16:43:47+00:00",
-      "sentiment": "positive",
-      "sentimentScore": 0.33,
-      "importance": 0.33,
-      "tags": [
-        "market",
-        "rates",
-        "us_broad"
-      ],
-      "tickers": [],
-      "impact": "positive",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "33c63ef53da7",
-      "source": "Bloomberg Markets",
-      "title": "France Champagne Output Set to Halve on Heat Waves and Drought",
-      "summary": "France’s Champagne output is set to fall by almost half from 2025 as extreme weather batters yields.",
-      "url": "https://www.bloomberg.com/news/articles/2026-09-07/france-champagne-output-set-to-halve-on-heat-waves-and-drought",
-      "publishedAt": "2026-09-07T16:21:01+00:00",
       "sentiment": "negative",
-      "sentimentScore": -0.33,
+      "sentimentScore": -0.5,
       "importance": 0.33,
       "tags": [
+        "commodity",
+        "fx",
+        "global_broad",
+        "macro_risk",
         "market",
         "rates"
       ],
@@ -416,10 +659,10 @@
       "translationStatus": "pending"
     },
     {
-      "id": "f0d6806ce0d5",
+      "id": "1e0801493e1e",
       "source": "Bloomberg Markets",
-      "title": "Reliance Plans $1.3 Billion Bond Sale, India’s Biggest This Year",
-      "summary": "Billionaire Mukesh Ambani’s Reliance Industries Ltd. is planning to raise as much as 125 billion rupees ($1.3 billion) via local-currency bonds as early as next week, people familiar with the matter said, which would make it the largest lis",
+      "title": "Reliance Plans $1.3 Billion Bond in First Sale Since 2023",
+      "summary": "Billionaire Mukesh Ambani’s Reliance Industries Ltd. is planning to raise as much as 125 billion rupees ($1.3 billion) via local-currency bonds as early as next week, according to people familiar with the matter, which would make it the lar",
       "url": "https://www.bloomberg.com/news/articles/2026-09-07/reliance-plans-1-3-billion-bond-sale-india-s-biggest-this-year",
       "publishedAt": "2026-09-07T15:59:15+00:00",
       "sentiment": "neutral",
@@ -456,30 +699,30 @@
       "translationStatus": "pending"
     },
     {
-      "id": "dbae9e644624",
+      "id": "f3c39f2fa9b6",
       "source": "Bloomberg Markets",
-      "title": "Copper Hits All-Time High Amid Tariff Turmoil, Mine Struggles",
-      "summary": "Copper surged to its highest-ever price on the London Metal Exchange after a weeks-long rally fueled by anticipation that President Donald Trump will expand US tariffs to imports of refined metal.",
-      "url": "https://www.bloomberg.com/news/articles/2026-09-07/copper-surges-to-all-time-high-as-tariff-turmoil-rocks-market",
-      "publishedAt": "2026-09-07T15:08:36+00:00",
-      "sentiment": "positive",
-      "sentimentScore": 1.0,
+      "title": "Cerba Bank Debt for Sale as $5.8 Billion Restructuring Progresses",
+      "summary": "A slice of Cerba Healthcare’s revolving credit facility is said to be up for sale as the EQT AB-backed private laboratories company moves toward court-supervised restructuring proceedings to tackle its €5 billion ($5.8 billion) debt pile.",
+      "url": "https://www.bloomberg.com/news/articles/2026-09-07/cerba-bank-debt-for-sale-as-5-billion-restructuring-progresses",
+      "publishedAt": "2026-09-07T15:41:06+00:00",
+      "sentiment": "neutral",
+      "sentimentScore": 0.0,
       "importance": 0.33,
       "tags": [
-        "macro_risk",
-        "market"
+        "market",
+        "unknown"
       ],
       "tickers": [],
-      "impact": "positive",
+      "impact": "neutral",
       "whyImportant": "短期の地合い把握に有用なため。",
       "recommendation": "監視継続。次回更新時に再評価する。",
       "translationStatus": "pending"
     },
     {
-      "id": "536e87e394b4",
+      "id": "c9e15fa23ea2",
       "source": "Bloomberg Economics",
-      "title": "Canada Set to Hit Back at Trump Tariffs, Risking Wider Trade War",
-      "summary": "Canada is poised to impose tariffs of 15% to 50% on hundreds of products from the US on Tuesday, as Prime Minister Mark Carney bets that standing up to President Donald Trump will eventually help Ottawa’s negotiating position with its bigge",
+      "title": "Canada Imposes Tariffs Up to 50% on US, Risking Wider Trade War",
+      "summary": "Canada imposed tariffs of 15% to 50% on hundreds of products from the US on Tuesday, as Prime Minister Mark Carney bets that standing up to President Donald Trump will eventually help Ottawa’s negotiating position with its biggest trading p",
       "url": "https://www.bloomberg.com/news/articles/2026-09-07/canada-set-to-hit-back-at-trump-tariffs-risking-wider-trade-war",
       "publishedAt": "2026-09-07T14:35:53+00:00",
       "sentiment": "neutral",
@@ -517,9 +760,9 @@
       "translationStatus": "pending"
     },
     {
-      "id": "1002d34d187a",
+      "id": "2d91a95160ac",
       "source": "Bloomberg Economics",
-      "title": "South Africa’s Economy Seen Ending Longest Growth Run in Decade",
+      "title": "South Africa Set to End Longest Growth Run in Decade on Iran",
       "summary": "South Africa’s economy is seen snapping its longest quarterly growth run in almost a decade as the war in Iran crimps domestic demand and key sectors accounting for almost a fifth of gross domestic product contract.",
       "url": "https://www.bloomberg.com/news/articles/2026-09-07/south-africa-s-economy-seen-ending-longest-growth-run-in-decade",
       "publishedAt": "2026-09-07T14:09:21+00:00",
@@ -558,26 +801,6 @@
       "translationStatus": "pending"
     },
     {
-      "id": "401093ba2824",
-      "source": "Bloomberg Markets",
-      "title": "Jio Platforms Said to Start Marketing India IPO Next Week",
-      "summary": "Billionaire Mukesh Ambani’s Jio Platforms Ltd. plans to formally kick off investor outreach for its initial public offering as early as next week, according to people familiar with the matter, advancing plans for what could be one of India’",
-      "url": "https://www.bloomberg.com/news/articles/2026-09-07/jio-platforms-said-to-start-marketing-record-india-ipo-next-week",
-      "publishedAt": "2026-09-07T12:50:51+00:00",
-      "sentiment": "neutral",
-      "sentimentScore": 0.0,
-      "importance": 0.33,
-      "tags": [
-        "market",
-        "unknown"
-      ],
-      "tickers": [],
-      "impact": "neutral",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
       "id": "7e6b0a479077",
       "source": "Bloomberg Economics",
       "title": "China Central Bank Adds Most Gold Since 2023 Even as Prices Jump",
@@ -598,47 +821,6 @@
       "translationStatus": "pending"
     },
     {
-      "id": "67db4af92131",
-      "source": "Bloomberg Economics",
-      "title": "Fed Latest: Warsh’s speech contrasts with New York Fed president’s take",
-      "summary": "Chair Warsh’s speech contrasts with New York Fed president’s take.",
-      "url": "https://www.bloomberg.com/news/newsletters/2026-09-07/fed-latest-warsh-s-speech-contrasts-with-new-york-fed-president-s-take",
-      "publishedAt": "2026-09-07T11:00:01+00:00",
-      "sentiment": "neutral",
-      "sentimentScore": 0.0,
-      "importance": 0.33,
-      "tags": [
-        "market",
-        "us_broad"
-      ],
-      "tickers": [],
-      "impact": "neutral",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "7dd15f5f49bd",
-      "source": "Bloomberg Economics",
-      "title": "Global Reserves Shift From Dollar Overstated, NY Fed Study Says",
-      "summary": "The decline in the dollar’s share of foreign-exchange reserves doesn’t reflect a widespread reallocation away from the currency, but rather moves by a small number of reserve managers, according to research from the Federal Reserve Bank of ",
-      "url": "https://www.bloomberg.com/news/articles/2026-09-07/global-reserves-shift-from-dollar-overstated-ny-fed-study-says",
-      "publishedAt": "2026-09-07T10:32:14+00:00",
-      "sentiment": "negative",
-      "sentimentScore": -0.33,
-      "importance": 0.33,
-      "tags": [
-        "fx",
-        "market",
-        "us_broad"
-      ],
-      "tickers": [],
-      "impact": "negative",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
       "id": "48e78b2c16d6",
       "source": "Bloomberg Economics",
       "title": "UK Chancellor Healey Vows Fiscal Rigor in First Big Speech",
@@ -651,168 +833,6 @@
       "tags": [
         "market",
         "unknown"
-      ],
-      "tickers": [],
-      "impact": "neutral",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "a15afdf3e08f",
-      "source": "Bloomberg Economics",
-      "title": "Euro-Zone Growth Upgraded After Bumper Quarter for Ireland",
-      "summary": "The euro-zone economy expanded more than initially thought in the second quarter after a sharp upward revision in Ireland.",
-      "url": "https://www.bloomberg.com/news/articles/2026-09-07/euro-zone-growth-upgraded-after-bumper-second-quarter-in-ireland",
-      "publishedAt": "2026-09-07T09:02:01+00:00",
-      "sentiment": "positive",
-      "sentimentScore": 0.67,
-      "importance": 0.33,
-      "tags": [
-        "market",
-        "unknown"
-      ],
-      "tickers": [],
-      "impact": "positive",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "54b0abfa67f8",
-      "source": "Bloomberg Economics",
-      "title": "South Africa Quarterly Farm Exports Surge, US Shipments Rise",
-      "summary": "South African agricultural exports rose 10% in the second quarter from the same period a year ago, buoyed by higher volumes and better prices.",
-      "url": "https://www.bloomberg.com/news/articles/2026-09-07/south-africa-s-quarterly-farm-exports-surge-us-shipments-rise",
-      "publishedAt": "2026-09-07T07:34:50+00:00",
-      "sentiment": "positive",
-      "sentimentScore": 1.0,
-      "importance": 0.33,
-      "tags": [
-        "market",
-        "unknown"
-      ],
-      "tickers": [],
-      "impact": "positive",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "59b18e8b8b08",
-      "source": "Bloomberg Economics",
-      "title": "France’s Lescure Says Vast Effort Needed to Contain Budget Gap",
-      "summary": "French Finance Minister Roland Lescure said the 2027 finance bill will require sweeping savings to get control of a runaway deficit as the global economy sours and interest rates rise.",
-      "url": "https://www.bloomberg.com/news/articles/2026-09-07/france-s-lescure-says-vast-effort-needed-to-contain-budget-gap",
-      "publishedAt": "2026-09-07T07:00:59+00:00",
-      "sentiment": "positive",
-      "sentimentScore": 0.33,
-      "importance": 0.33,
-      "tags": [
-        "market",
-        "rates"
-      ],
-      "tickers": [],
-      "impact": "positive",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "41dc9f02145e",
-      "source": "Bloomberg Economics",
-      "title": "German Industry Output Unexpectedly Drops Most in Almost a Year",
-      "summary": "German industrial production declined the most in almost a year, marking an unexpected setback to the recovery of Europe’s biggest economy.",
-      "url": "https://www.bloomberg.com/news/articles/2026-09-07/german-industrial-output-unexpectedly-drops-most-in-almost-year",
-      "publishedAt": "2026-09-07T06:12:06+00:00",
-      "sentiment": "negative",
-      "sentimentScore": -1.0,
-      "importance": 0.33,
-      "tags": [
-        "market",
-        "unknown"
-      ],
-      "tickers": [],
-      "impact": "negative",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "d82f235426fe",
-      "source": "Bloomberg Markets",
-      "title": "EM Stocks Jump to Highest Since June as Tech Offsets Higher Oil",
-      "summary": "An index tracking emerging-market equities rallied at the start of the week, closing at its highest level in more than two months, as optimism over new AI models helped counter the drag from increased oil prices.",
-      "url": "https://www.bloomberg.com/news/articles/2026-09-07/em-stocks-jump-to-2-month-high-as-tech-rally-offsets-higher-oil",
-      "publishedAt": "2026-09-07T03:44:49+00:00",
-      "sentiment": "positive",
-      "sentimentScore": 1.0,
-      "importance": 0.33,
-      "tags": [
-        "commodity",
-        "global_broad",
-        "market"
-      ],
-      "tickers": [],
-      "impact": "positive",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "e19735532333",
-      "source": "Bloomberg Economics",
-      "title": "UK Hiring Accelerates for the First Time in Four Years",
-      "summary": "UK firms increased their hiring of full-time staff in August, according to a survey that’s watched closely by Bank of England policymakers.",
-      "url": "https://www.bloomberg.com/news/articles/2026-09-06/uk-hiring-accelerates-for-the-first-time-in-four-years-rec-says",
-      "publishedAt": "2026-09-06T23:01:00+00:00",
-      "sentiment": "neutral",
-      "sentimentScore": 0.0,
-      "importance": 0.33,
-      "tags": [
-        "market",
-        "unknown"
-      ],
-      "tickers": [],
-      "impact": "neutral",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "77622f030392",
-      "source": "Bloomberg Economics",
-      "title": "Healey to Pitch UK Regional Growth Plus Fiscal Discipline",
-      "summary": "John Healey plans to put regional growth at the heart of his economic vision, while vowing fiscal discipline, in his first major speech as chancellor of the Exchequer on Monday.",
-      "url": "https://www.bloomberg.com/news/articles/2026-09-06/healey-to-pitch-uk-regional-growth-paired-with-fiscal-discipline",
-      "publishedAt": "2026-09-06T23:01:00+00:00",
-      "sentiment": "neutral",
-      "sentimentScore": 0.0,
-      "importance": 0.33,
-      "tags": [
-        "market",
-        "unknown"
-      ],
-      "tickers": [],
-      "impact": "neutral",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "aceb94e303d7",
-      "source": "Bloomberg Markets",
-      "title": "US Stocks Slip as Oil Gains Keep Traders Cautious: Markets Wrap",
-      "summary": "US stock futures fell in cautious trading as an escalation in the Middle East pushed oil prices higher, adding to an already difficult inflationary backdrop.",
-      "url": "https://www.bloomberg.com/news/articles/2026-09-06/stock-market-today-dow-s-p-live-updates",
-      "publishedAt": "2026-09-06T22:15:34+00:00",
-      "sentiment": "neutral",
-      "sentimentScore": 0.0,
-      "importance": 0.33,
-      "tags": [
-        "commodity",
-        "market",
-        "us_broad"
       ],
       "tickers": [],
       "impact": "neutral",
@@ -869,12 +889,12 @@
       "translationStatus": "pending"
     },
     {
-      "id": "94da9008b9ac",
+      "id": "d6e46e0ad8bb",
       "source": "NHK 経済",
-      "title": "高市首相動静 2026年9月7日",
-      "summary": "（高市首相動静 2026年9月7日） 10:28 徒歩で公邸発 10:30 官邸着 11:59 自民党の小林鷹之政務調査会長、萩生田光一幹事長代行と昼食。木原稔官房長官同席。（～13:04） 15:…",
-      "url": "https://news.web.nhk/newsweb/na/nd-20260908de48929",
-      "publishedAt": "2026-09-07T23:50:30+00:00",
+      "title": "自衛隊の医療体制強化に向けて 防衛・厚労両省が連携検討へ",
+      "summary": "自衛隊の医療体制の強化に向けて、小泉防衛大臣は、上野厚生労働大臣と会談し、一般の医療機関で、負傷した隊員の治療を行ったり、自衛隊の医官の研修を実施したりできるよう協力を求め、今後、具体的な連携のあり方…",
+      "url": "https://news.web.nhk/newsweb/na/nd-20260908de49004",
+      "publishedAt": "2026-09-08T05:43:14+00:00",
       "sentiment": "neutral",
       "sentimentScore": 0.0,
       "importance": 0.25,
@@ -886,17 +906,17 @@
       "impact": "neutral",
       "whyImportant": "短期の地合い把握に有用なため。",
       "recommendation": "監視継続。次回更新時に再評価する。",
-      "titleJa": "高市首相動静 2026年9月7日",
-      "summaryJa": "（高市首相動静 2026年9月7日） 10:28 徒歩で公邸発 10:30 官邸着 11:59 自民党の小林鷹之政務調査会長、萩生田光一幹事長代行と昼食。木原稔官房長官同席。（～13:04） 15:…",
+      "titleJa": "自衛隊の医療体制強化に向けて 防衛・厚労両省が連携検討へ",
+      "summaryJa": "自衛隊の医療体制の強化に向けて、小泉防衛大臣は、上野厚生労働大臣と会談し、一般の医療機関で、負傷した隊員の治療を行ったり、自衛隊の医官の研修を実施したりできるよう協力を求め、今後、具体的な連携のあり方…",
       "translationStatus": "ja-original"
     },
     {
-      "id": "d6e3d041fee9",
+      "id": "031360773149",
       "source": "NHK 経済",
-      "title": "自民党役員人事と内閣改造 来週にも実施で調整 国会審議備え",
-      "summary": "高市総理大臣は、自民党の役員人事と内閣改造に向けて、日程や人選などの検討を本格化させています。早ければ来週にも実施する方向で調整していて、政権の骨格は維持し、臨時国会での法案審議などに備えるものとみら…",
-      "url": "https://news.web.nhk/newsweb/na/nd-20260908de48893",
-      "publishedAt": "2026-09-07T20:44:38+00:00",
+      "title": "高市首相 概算要求過去最大“補正予算依存から脱却”",
+      "summary": "来年度予算案の概算要求の総額が過去最大となったことについて高市総理大臣は自民党の役員会で、補正予算への依存から脱却し、恒常的な施策を計上したものだとした上で、年末の予算編成での絞り込みに向けて党で活発…",
+      "url": "https://news.web.nhk/newsweb/na/nd-20260908de49005",
+      "publishedAt": "2026-09-08T05:35:34+00:00",
       "sentiment": "neutral",
       "sentimentScore": 0.0,
       "importance": 0.25,
@@ -908,17 +928,17 @@
       "impact": "neutral",
       "whyImportant": "短期の地合い把握に有用なため。",
       "recommendation": "監視継続。次回更新時に再評価する。",
-      "titleJa": "自民党役員人事と内閣改造 来週にも実施で調整 国会審議備え",
-      "summaryJa": "高市総理大臣は、自民党の役員人事と内閣改造に向けて、日程や人選などの検討を本格化させています。早ければ来週にも実施する方向で調整していて、政権の骨格は維持し、臨時国会での法案審議などに備えるものとみら…",
+      "titleJa": "高市首相 概算要求過去最大“補正予算依存から脱却”",
+      "summaryJa": "来年度予算案の概算要求の総額が過去最大となったことについて高市総理大臣は自民党の役員会で、補正予算への依存から脱却し、恒常的な施策を計上したものだとした上で、年末の予算編成での絞り込みに向けて党で活発…",
       "translationStatus": "ja-original"
     },
     {
-      "id": "c695606b83bb",
+      "id": "dabe965cf1fc",
       "source": "NHK 経済",
-      "title": "木原官房長官 米中首脳会談「高い関心持ち注視」",
-      "summary": "今月予定される米中首脳会談について、木原官房長官は、高い関心を持って注視しているとした上で、アメリカとの間で首脳レベルを含め緊密に連携していく考えを示しました。",
-      "url": "https://news.web.nhk/newsweb/na/nd-20260907de48835",
-      "publishedAt": "2026-09-07T10:24:21+00:00",
+      "title": "高市首相 自民党役員人事 小林政調会長 留任の方向で調整",
+      "summary": "高市総理大臣は、自民党の役員人事で、新たに小林政務調査会長を留任させる方向で調整に入りました。幅広い分野の政策に精通する小林氏を留任させ、重要政策を推し進める狙いがあるものとみられます。",
+      "url": "https://news.web.nhk/newsweb/na/nd-20260908de48998",
+      "publishedAt": "2026-09-08T05:31:00+00:00",
       "sentiment": "neutral",
       "sentimentScore": 0.0,
       "importance": 0.25,
@@ -930,17 +950,17 @@
       "impact": "neutral",
       "whyImportant": "短期の地合い把握に有用なため。",
       "recommendation": "監視継続。次回更新時に再評価する。",
-      "titleJa": "木原官房長官 米中首脳会談「高い関心持ち注視」",
-      "summaryJa": "今月予定される米中首脳会談について、木原官房長官は、高い関心を持って注視しているとした上で、アメリカとの間で首脳レベルを含め緊密に連携していく考えを示しました。",
+      "titleJa": "高市首相 自民党役員人事 小林政調会長 留任の方向で調整",
+      "summaryJa": "高市総理大臣は、自民党の役員人事で、新たに小林政務調査会長を留任させる方向で調整に入りました。幅広い分野の政策に精通する小林氏を留任させ、重要政策を推し進める狙いがあるものとみられます。",
       "translationStatus": "ja-original"
     },
     {
-      "id": "3a36c5e8b476",
+      "id": "1c45d718ca89",
       "source": "NHK 経済",
-      "title": "横浜市 山中市長の辞職 市議会が同意",
-      "summary": "職員に対する重大なパワハラ行為が認められた横浜市の山中市長の辞職が、7日、市議会の本会議で同意されました。議会後、山中市長は任期途中での辞職を謝罪した一方、辞職に伴う選挙への対応については態度を明らか…",
-      "url": "https://news.web.nhk/newsweb/na/nd-20260907de48811",
-      "publishedAt": "2026-09-07T10:22:46+00:00",
+      "title": "牧野復興相 福島大動画“ある種の偏見の表れ 正しい発信を”",
+      "summary": "ネット上に配信された動画で福島大学の放射能の研究をやゆするような発言があったことをめぐり、牧野復興大臣は、福島の復興に対する偏見の表れではないかとして、現状を理解した上での正しい発信を求めました。",
+      "url": "https://news.web.nhk/newsweb/na/nd-20260908de49002",
+      "publishedAt": "2026-09-08T05:29:00+00:00",
       "sentiment": "neutral",
       "sentimentScore": 0.0,
       "importance": 0.25,
@@ -952,17 +972,17 @@
       "impact": "neutral",
       "whyImportant": "短期の地合い把握に有用なため。",
       "recommendation": "監視継続。次回更新時に再評価する。",
-      "titleJa": "横浜市 山中市長の辞職 市議会が同意",
-      "summaryJa": "職員に対する重大なパワハラ行為が認められた横浜市の山中市長の辞職が、7日、市議会の本会議で同意されました。議会後、山中市長は任期途中での辞職を謝罪した一方、辞職に伴う選挙への対応については態度を明らか…",
+      "titleJa": "牧野復興相 福島大動画“ある種の偏見の表れ 正しい発信を”",
+      "summaryJa": "ネット上に配信された動画で福島大学の放射能の研究をやゆするような発言があったことをめぐり、牧野復興大臣は、福島の復興に対する偏見の表れではないかとして、現状を理解した上での正しい発信を求めました。",
       "translationStatus": "ja-original"
     },
     {
-      "id": "6d579eee9fc1",
+      "id": "da4cae8c91b8",
       "source": "NHK 経済",
-      "title": "黄川田こども相 ユーチューバーと面会 悩みある子ども声かけを",
-      "summary": "子どもの自殺防止に向けた取り組みを進めるため黄川田こども政策担当大臣はみずからもいじめを受けた経験がある人気ユーチューバーと面会し、悩みを抱える子どもたちへの声かけの大切さについて意見を交わしました。",
-      "url": "https://news.web.nhk/newsweb/na/nd-20260907de48833",
-      "publishedAt": "2026-09-07T09:37:59+00:00",
+      "title": "高市首相 小野寺税調会長らと会談 消費税減税大綱へ調整指示",
+      "summary": "食料品の消費税減税をめぐり、高市総理大臣は、自民党の小野寺税制調査会長や片山財務大臣らと会談し、具体的な制度設計を盛り込んだ大綱のとりまとめに向けて調整を進めるよう指示しました。",
+      "url": "https://news.web.nhk/newsweb/na/nd-20260908de49001",
+      "publishedAt": "2026-09-08T05:21:00+00:00",
       "sentiment": "neutral",
       "sentimentScore": 0.0,
       "importance": 0.25,
@@ -974,52 +994,30 @@
       "impact": "neutral",
       "whyImportant": "短期の地合い把握に有用なため。",
       "recommendation": "監視継続。次回更新時に再評価する。",
-      "titleJa": "黄川田こども相 ユーチューバーと面会 悩みある子ども声かけを",
-      "summaryJa": "子どもの自殺防止に向けた取り組みを進めるため黄川田こども政策担当大臣はみずからもいじめを受けた経験がある人気ユーチューバーと面会し、悩みを抱える子どもたちへの声かけの大切さについて意見を交わしました。",
+      "titleJa": "高市首相 小野寺税調会長らと会談 消費税減税大綱へ調整指示",
+      "summaryJa": "食料品の消費税減税をめぐり、高市総理大臣は、自民党の小野寺税制調査会長や片山財務大臣らと会談し、具体的な制度設計を盛り込んだ大綱のとりまとめに向けて調整を進めるよう指示しました。",
       "translationStatus": "ja-original"
     },
     {
-      "id": "c96da49edbb1",
+      "id": "a378aaff7213",
       "source": "NHK 経済",
-      "title": "中道 野田元首相 3党合流断念陳謝“中道勢力の結集諦めない”",
-      "summary": "中道改革連合が野党3党での合流を断念したことを受けて、結成当初、共同代表を務めていた野田元総理大臣はみずからのホームページで合流に至らなかったことを陳謝した上で引き続き中道勢力の結集を目指す考えを強調…",
-      "url": "https://news.web.nhk/newsweb/na/nd-20260907de48839",
-      "publishedAt": "2026-09-07T09:30:21+00:00",
+      "title": "新イラン大使に森川徹氏 政府が閣議決定",
+      "summary": "政府は8日の閣議で、新しいイラン大使に、内閣府国際平和協力本部の事務局長などを務めた森川徹氏を起用する人事を決めました。",
+      "url": "https://news.web.nhk/newsweb/na/nd-20260908de48981",
+      "publishedAt": "2026-09-08T04:19:30+00:00",
       "sentiment": "neutral",
       "sentimentScore": 0.0,
       "importance": 0.25,
       "tags": [
-        "market",
-        "unknown"
+        "geopolitical",
+        "market"
       ],
       "tickers": [],
       "impact": "neutral",
       "whyImportant": "短期の地合い把握に有用なため。",
       "recommendation": "監視継続。次回更新時に再評価する。",
-      "titleJa": "中道 野田元首相 3党合流断念陳謝“中道勢力の結集諦めない”",
-      "summaryJa": "中道改革連合が野党3党での合流を断念したことを受けて、結成当初、共同代表を務めていた野田元総理大臣はみずからのホームページで合流に至らなかったことを陳謝した上で引き続き中道勢力の結集を目指す考えを強調…",
-      "translationStatus": "ja-original"
-    },
-    {
-      "id": "6d9c48554979",
-      "source": "NHK 経済",
-      "title": "小泉防衛相 広島 呉の「複合防衛拠点」早期整備目指す考え",
-      "summary": "小泉防衛大臣は防衛省が広島県呉市に整備を計画している「複合防衛拠点」の予定地を視察し、拠点は防衛装備品の国内での生産基盤の強化などにつながる重要なものだとして早期の整備を目指す考えを示しました。",
-      "url": "https://news.web.nhk/newsweb/na/nd-20260907de48836",
-      "publishedAt": "2026-09-07T09:27:10+00:00",
-      "sentiment": "neutral",
-      "sentimentScore": 0.0,
-      "importance": 0.25,
-      "tags": [
-        "market",
-        "unknown"
-      ],
-      "tickers": [],
-      "impact": "neutral",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "titleJa": "小泉防衛相 広島 呉の「複合防衛拠点」早期整備目指す考え",
-      "summaryJa": "小泉防衛大臣は防衛省が広島県呉市に整備を計画している「複合防衛拠点」の予定地を視察し、拠点は防衛装備品の国内での生産基盤の強化などにつながる重要なものだとして早期の整備を目指す考えを示しました。",
+      "titleJa": "新イラン大使に森川徹氏 政府が閣議決定",
+      "summaryJa": "政府は8日の閣議で、新しいイラン大使に、内閣府国際平和協力本部の事務局長などを務めた森川徹氏を起用する人事を決めました。",
       "translationStatus": "ja-original"
     }
   ],
@@ -1045,12 +1043,33 @@
       "whyImportant": "関連銘柄の前提確認に必要なため。",
       "recommendation": "分割エントリー可能か、理想PF差分と合わせて確認する。",
       "translationStatus": "pending"
+    },
+    {
+      "id": "df8fb2744186",
+      "source": "reddit r/investing",
+      "title": "On what basis do you buy, hold, sell ETFs?",
+      "summary": "I am in the process of building out an investment tracking dashboard using Claude. It is coming along quite nicely. I am trying to see if I can include automated buy, hold, sell recommendations based on objective criteria. I am curious how ",
+      "url": "https://www.reddit.com/r/investing/comments/1wabt8n/on_what_basis_do_you_buy_hold_sell_etfs/",
+      "publishedAt": "2026-09-08T02:25:18+00:00",
+      "sentiment": "neutral",
+      "sentimentScore": 0.0,
+      "importance": 0.2,
+      "tags": [
+        "social",
+        "social_noise",
+        "trust"
+      ],
+      "tickers": [],
+      "impact": "neutral",
+      "whyImportant": "個人投資家のセンチメント変化を早期に検知するため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
     }
   ],
   "meta": {
-    "totalCount": 49,
+    "totalCount": 50,
     "marketCount": 48,
-    "stockCount": 1,
-    "duplicateRemoved": 4
+    "stockCount": 2,
+    "duplicateRemoved": 3
   }
 }
