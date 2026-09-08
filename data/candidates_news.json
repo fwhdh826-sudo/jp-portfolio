@@ -1,135 +1,155 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-09-08T17:14:45.290845+09:00",
-  "sourceUpdatedAt": "2026-09-08T08:00:28+00:00",
+  "updatedAt": "2026-09-09T00:13:09.552781+09:00",
+  "sourceUpdatedAt": "2026-09-08T15:00:00+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": 0.33,
+      "avgSentiment": 0,
       "negativeCount": 0,
-      "positiveCount": 2,
+      "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 2,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Japan’s Faster GDP, Wage Growth Support BOJ Interest-Rate Hike",
-      "topPositiveTitle": "Japan’s Faster GDP, Wage Growth Support BOJ Interest-Rate Hike",
-      "items": [
-        {
-          "title": "Japan’s Faster GDP, Wage Growth Support BOJ Interest-Rate Hike",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-07T23:57:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-07/japan-s-gdp-growth-revised-higher-backing-boj-rate-hike-case",
-          "tags": [
-            "jp_broad",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Japan’s Wages Grow Most Since 1997, Keeping BOJ on Rate Hike Path",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-07T23:31:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-07/japan-s-wages-grow-most-since-1997-keeping-boj-on-rate-hike-path",
-          "tags": [
-            "jp_broad",
-            "market",
-            "rates"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "jp_semiconductor": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "us_broad": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "us_growth": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "global_broad": {
-      "avgSentiment": -0.25,
+      "avgSentiment": -1.0,
       "negativeCount": 1,
       "positiveCount": 0,
-      "neutralCount": 1,
+      "neutralCount": 0,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Stocks Fall as Oil Rally Fuels Inflation Fears: Markets Wrap",
-      "topPositiveTitle": "Horizons Middle East & Africa 9/8/2026",
+      "topNegativeTitle": "Novartis and Boston Scientific Slide, Intel Price Hikes | Stock Movers",
+      "topPositiveTitle": "Novartis and Boston Scientific Slide, Intel Price Hikes | Stock Movers",
       "items": [
         {
-          "title": "Stocks Fall as Oil Rally Fuels Inflation Fears: Markets Wrap",
+          "title": "Novartis and Boston Scientific Slide, Intel Price Hikes | Stock Movers",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.5,
-          "publishedAt": "2026-09-07T22:08:43+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-07/stock-market-today-dow-s-p-live-updates",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-09-08T14:23:49+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-08/novartis-dips-intel-gains-on-price-hikes-stock-movers-video",
           "tags": [
-            "commodity",
-            "fx",
-            "global_broad",
-            "macro_risk",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Horizons Middle East & Africa 9/8/2026",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-08T06:36:54+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-08/horizons-middle-east-africa-9-8-2026-video",
-          "tags": [
-            "global_broad",
+            "jp_semiconductor",
             "market"
           ]
         }
       ]
     },
-    "gold": {
-      "avgSentiment": 0.665,
-      "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 0,
+    "us_broad": {
+      "avgSentiment": -0.085,
+      "negativeCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 2,
+      "itemCount": 4,
+      "isStale": false,
+      "topNegativeTitle": "Chile Set to Hold Rates as Fed Risk Overshadows Growth Slump",
+      "topPositiveTitle": "US Earnings Upgrades Are on Their Longest Run in Five Years",
+      "items": [
+        {
+          "title": "Chile Set to Hold Rates as Fed Risk Overshadows Growth Slump",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-09-08T10:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-08/chile-set-to-hold-rates-as-fed-risk-overshadows-slumping-economy",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Markets Bracing for PPI, CPI Reports This Week",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-08T13:43:43+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-08/markets-bracing-for-ppi-cpi-reports-this-week-video",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "NY Fed Survey: Americans Feeling Worse About Finances in August",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-08T15:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-08/americans-feeling-worse-about-finances-in-august-ny-fed-survey",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "US Earnings Upgrades Are on Their Longest Run in Five Years",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-08T10:31:04+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-08/us-earnings-upgrades-are-on-their-longest-run-in-five-years",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        }
+      ]
+    },
+    "us_growth": {
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "SpaceX Shares to Get a Boost If Nasdaq 100 Increases Weighting",
+      "topPositiveTitle": "SpaceX Shares to Get a Boost If Nasdaq 100 Increases Weighting",
+      "items": [
+        {
+          "title": "SpaceX Shares to Get a Boost If Nasdaq 100 Increases Weighting",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-08T11:00:02+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-08/spacex-set-for-boost-from-potential-jump-in-nasdaq-100-weighting",
+          "tags": [
+            "market",
+            "us_growth"
+          ]
+        }
+      ]
+    },
+    "global_broad": {
+      "avgSentiment": 0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
+      "isStale": false,
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
+    },
+    "gold": {
+      "avgSentiment": 0.33,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
       "topNegativeTitle": "Gold Wavers as Traders Weigh Mideast Tensions and Dollar Moves",
-      "topPositiveTitle": "China Central Bank Adds Most Gold Since 2023 Even as Prices Jump",
+      "topPositiveTitle": "Gold Wavers as Traders Weigh Mideast Tensions and Dollar Moves",
       "items": [
         {
           "title": "Gold Wavers as Traders Weigh Mideast Tensions and Dollar Moves",
@@ -140,18 +160,6 @@
           "url": "https://www.bloomberg.com/news/articles/2026-09-07/gold-steadies-as-traders-weigh-mideast-tensions-and-dollar-moves",
           "tags": [
             "fx",
-            "gold",
-            "market"
-          ]
-        },
-        {
-          "title": "China Central Bank Adds Most Gold Since 2023 Even as Prices Jump",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-09-07T11:32:17+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-07/china-central-bank-adds-most-gold-since-2023-even-as-prices-jump",
-          "tags": [
             "gold",
             "market"
           ]
@@ -183,34 +191,45 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.172,
-      "negativeCount": 2,
+      "avgSentiment": -0.237,
+      "negativeCount": 3,
       "positiveCount": 0,
       "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "Stocks Fall as Oil Rally Fuels Inflation Fears: Markets Wrap",
-      "topPositiveTitle": "Portugal Gets €1.5 Billion EIB Loan to Ease Its Housing Crunch",
+      "topNegativeTitle": "OPEC Output Slumps as Conflict Curbs Saudi Flows, Survey Shows",
+      "topPositiveTitle": "China Ships Out First Sulfuric Acid Cargo Since Halt on Exports",
       "items": [
         {
-          "title": "Stocks Fall as Oil Rally Fuels Inflation Fears: Markets Wrap",
+          "title": "OPEC Output Slumps as Conflict Curbs Saudi Flows, Survey Shows",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.5,
-          "publishedAt": "2026-09-07T22:08:43+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-07/stock-market-today-dow-s-p-live-updates",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-09-08T13:55:49+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-08/opec-output-slumps-as-conflict-curbs-saudi-flows-survey-shows",
           "tags": [
             "commodity",
-            "fx",
-            "global_broad",
+            "geopolitical",
             "macro_risk",
-            "market",
-            "rates"
+            "market"
           ]
         },
         {
-          "title": "UK Set to Pay Most Since 1998 for Borrowing After Gilt Selloff",
+          "title": "South African GDP Snaps Growth Streak as Iran War Takes Toll",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-08T09:02:22+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-08/south-african-economy-snaps-growth-streak-as-iran-war-takes-toll",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "UK Pays Most Since 1998 to Borrow After Gilt Selloff",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.33,
@@ -223,12 +242,12 @@
           ]
         },
         {
-          "title": "Old Mutual Posts First Profit Drop Since 2022 as War Hits Gains",
+          "title": "China Ships Out First Sulfuric Acid Cargo Since Halt on Exports",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.2,
-          "publishedAt": "2026-09-08T05:25:10+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-08/old-mutual-profit-drops-us-iran-war-fallout-curbs-investments",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-08T14:40:13+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-08/china-ships-out-first-sulfuric-acid-cargo-since-halt-on-exports",
           "tags": [
             "geopolitical",
             "macro_risk",
@@ -236,26 +255,13 @@
           ]
         },
         {
-          "title": "Portugal Gets €1.5 Billion EIB Loan to Ease Its Housing Crunch",
-          "source": "Bloomberg Economics",
+          "title": "Volatility Limits Post-Labor Day US Bond Rush to Six-Year Low",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-07T16:01:36+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-07/portugal-gets-1-5-billion-eib-loan-to-ease-its-housing-crunch",
+          "publishedAt": "2026-09-08T14:05:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-08/volatility-limits-post-labor-day-us-bond-rush-to-six-year-low",
           "tags": [
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Canada Imposes Tariffs Up to 50% on US, Risking Wider Trade War",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-07T14:35:53+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-07/canada-set-to-hit-back-at-trump-tariffs-risking-wider-trade-war",
-          "tags": [
-            "geopolitical",
             "macro_risk",
             "market"
           ]
@@ -263,70 +269,16 @@
       ]
     },
     "fx": {
-      "avgSentiment": 0.214,
-      "negativeCount": 1,
-      "positiveCount": 3,
-      "neutralCount": 3,
-      "sourceCount": 2,
-      "itemCount": 7,
+      "avgSentiment": 0.33,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Stocks Fall as Oil Rally Fuels Inflation Fears: Markets Wrap",
-      "topPositiveTitle": "Aussie Rises to Highest in 13 Years Against Kiwi on Hawkish RBA",
+      "topNegativeTitle": "Gold Wavers as Traders Weigh Mideast Tensions and Dollar Moves",
+      "topPositiveTitle": "Gold Wavers as Traders Weigh Mideast Tensions and Dollar Moves",
       "items": [
-        {
-          "title": "Stocks Fall as Oil Rally Fuels Inflation Fears: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.5,
-          "publishedAt": "2026-09-07T22:08:43+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-07/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "fx",
-            "global_broad",
-            "macro_risk",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Global Bond Rush Kicks Off in Asia With Banks Leading the Charge",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-08T06:10:06+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-08/global-bond-rush-kicks-off-in-asia-with-banks-leading-the-charge",
-          "tags": [
-            "fx",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Yen's Fundamentals 'Different This Time Around,' Natixis Says",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-08T06:05:34+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-08/yen-fundamentals-different-this-time-around-natixis-video",
-          "tags": [
-            "fx",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Reliance Plans $1.3 Billion Bond in First Sale Since 2023",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-07T15:59:15+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-07/reliance-plans-1-3-billion-bond-sale-india-s-biggest-this-year",
-          "tags": [
-            "fx",
-            "market"
-          ]
-        },
         {
           "title": "Gold Wavers as Traders Weigh Mideast Tensions and Dollar Moves",
           "source": "Bloomberg Markets",
@@ -343,46 +295,31 @@
       ]
     },
     "rates": {
-      "avgSentiment": -0.183,
-      "negativeCount": 5,
+      "avgSentiment": -0.068,
+      "negativeCount": 2,
       "positiveCount": 2,
-      "neutralCount": 3,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 10,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Australia’s Consumer Confidence Slumps on Rates, Fuel Costs",
-      "topPositiveTitle": "Japan’s Faster GDP, Wage Growth Support BOJ Interest-Rate Hike",
+      "topNegativeTitle": "Chile Set to Hold Rates as Fed Risk Overshadows Growth Slump",
+      "topPositiveTitle": "RBA Stands Ready to Raise Rates Again if Needed, Hauser Says",
       "items": [
         {
-          "title": "Australia’s Consumer Confidence Slumps on Rates, Fuel Costs",
+          "title": "Chile Set to Hold Rates as Fed Risk Overshadows Growth Slump",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-09-08T00:30:01+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-08/australia-s-consumer-confidence-slumps-on-rate-fears-fuel-costs",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-09-08T10:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-08/chile-set-to-hold-rates-as-fed-risk-overshadows-slumping-economy",
           "tags": [
             "market",
-            "rates"
+            "rates",
+            "us_broad"
           ]
         },
         {
-          "title": "Stocks Fall as Oil Rally Fuels Inflation Fears: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.5,
-          "publishedAt": "2026-09-07T22:08:43+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-07/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "fx",
-            "global_broad",
-            "macro_risk",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "UK Set to Pay Most Since 1998 for Borrowing After Gilt Selloff",
+          "title": "UK Pays Most Since 1998 to Borrow After Gilt Selloff",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.33,
@@ -395,10 +332,23 @@
           ]
         },
         {
-          "title": "RBA’s Hunter Says Inflation Top Priority, May Have to Raise Rate",
+          "title": "Taiwan Inflation Just Above Alert Level Before Rate Decision",
           "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-08T08:16:18+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-08/taiwan-inflation-sticks-above-alert-level-before-rate-decision",
+          "tags": [
+            "geopolitical",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "RBA Stands Ready to Raise Rates Again if Needed, Hauser Says",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
           "publishedAt": "2026-09-08T04:27:41+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-08/rba-s-hunter-says-inflation-top-priority-may-have-to-raise-rate",
           "tags": [
@@ -407,13 +357,14 @@
           ]
         },
         {
-          "title": "Mélenchon Fumes at ECB Rate Hikes After Calling for Debt Wipeout",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-07T15:45:55+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-07/melenchon-fumes-at-ecb-rate-hikes-after-calling-for-debt-wipeout",
+          "title": "Stocks Fall as Oil Gain Stokes Inflation Worries: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-07T22:08:43+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-07/stock-market-today-dow-s-p-live-updates",
           "tags": [
+            "commodity",
             "market",
             "rates"
           ]
@@ -421,101 +372,102 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.292,
+      "avgSentiment": -0.167,
       "negativeCount": 1,
-      "positiveCount": 2,
-      "neutralCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 2,
       "sourceCount": 2,
       "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Stocks Fall as Oil Rally Fuels Inflation Fears: Markets Wrap",
-      "topPositiveTitle": "Philippine Jobless Rate Surges to Four-Year High as Growth Slows",
+      "topNegativeTitle": "OPEC Output Slumps as Conflict Curbs Saudi Flows, Survey Shows",
+      "topPositiveTitle": "Stocks Fall as Oil Gain Stokes Inflation Worries: Markets Wrap",
       "items": [
         {
-          "title": "Stocks Fall as Oil Rally Fuels Inflation Fears: Markets Wrap",
+          "title": "OPEC Output Slumps as Conflict Curbs Saudi Flows, Survey Shows",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.5,
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-09-08T13:55:49+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-08/opec-output-slumps-as-conflict-curbs-saudi-flows-survey-shows",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Qatar Has Widest Deficit in a Decade as Hormuz Ties Up Gas Trade",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-08T14:39:30+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-08/qatar-has-widest-deficit-in-a-decade-as-hormuz-ties-up-gas-trade",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Nuclear Firm HGP Plans SPAC Deal at $1.2 Billion Value",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-08T12:15:24+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-08/nuclear-firm-hgp-said-to-plan-spac-deal-at-1-2-billion-value",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "Stocks Fall as Oil Gain Stokes Inflation Worries: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
           "publishedAt": "2026-09-07T22:08:43+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-07/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
-            "fx",
-            "global_broad",
-            "macro_risk",
             "market",
             "rates"
-          ]
-        },
-        {
-          "title": "Saudi Arabia Says Energy Sites Near Yemen Halted After Attacks",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-08T06:41:45+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-08/saudi-arabia-says-several-energy-sites-halted-after-attacks",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "Latest Oil Market News and Analysis for Sept. 8",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-09-07T22:09:49+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-07/latest-oil-market-news-and-analysis-for-sept-8",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "Philippine Jobless Rate Surges to Four-Year High as Growth Slows",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-09-08T02:44:18+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-08/philippine-jobless-rate-surges-to-four-year-high-as-growth-slows",
-          "tags": [
-            "commodity",
-            "market"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.16,
-      "negativeCount": 0,
+      "avgSentiment": -0.099,
+      "negativeCount": 3,
       "positiveCount": 1,
-      "neutralCount": 4,
+      "neutralCount": 6,
       "sourceCount": 3,
-      "itemCount": 5,
+      "itemCount": 10,
       "isStale": false,
-      "topNegativeTitle": "Old Mutual Posts First Profit Drop Since 2022 as War Hits Gains",
-      "topPositiveTitle": "Wheat Surges With No Sign of Breakthrough in Black Sea Talks",
+      "topNegativeTitle": "OPEC Output Slumps as Conflict Curbs Saudi Flows, Survey Shows",
+      "topPositiveTitle": "US Targets Iran’s Airlines as New Sanctions Push Continues",
       "items": [
         {
-          "title": "Old Mutual Posts First Profit Drop Since 2022 as War Hits Gains",
+          "title": "OPEC Output Slumps as Conflict Curbs Saudi Flows, Survey Shows",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.2,
-          "publishedAt": "2026-09-08T05:25:10+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-08/old-mutual-profit-drops-us-iran-war-fallout-curbs-investments",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-09-08T13:55:49+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-08/opec-output-slumps-as-conflict-curbs-saudi-flows-survey-shows",
           "tags": [
+            "commodity",
             "geopolitical",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Canada Imposes Tariffs Up to 50% on US, Risking Wider Trade War",
+          "title": "South African GDP Snaps Growth Streak as Iran War Takes Toll",
           "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-07T14:35:53+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-07/canada-set-to-hit-back-at-trump-tariffs-risking-wider-trade-war",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-08T09:02:22+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-08/south-african-economy-snaps-growth-streak-as-iran-war-takes-toll",
           "tags": [
             "geopolitical",
             "macro_risk",
@@ -523,39 +475,40 @@
           ]
         },
         {
-          "title": "South Africa Set to End Longest Growth Run in Decade on Iran",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-07T14:09:21+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-07/south-africa-s-economy-seen-ending-longest-growth-run-in-decade",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "新イラン大使に森川徹氏 政府が閣議決定",
+          "title": "茂木外相 イラン外相と電話会談“事態沈静化向け柔軟対応を”",
           "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-08T04:19:30+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20260908de48981",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-08T11:45:22+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20260908de49140",
           "tags": [
             "geopolitical",
             "market"
           ],
-          "titleJa": "新イラン大使に森川徹氏 政府が閣議決定"
+          "titleJa": "茂木外相 イラン外相と電話会談“事態沈静化向け柔軟対応を”"
         },
         {
-          "title": "Wheat Surges With No Sign of Breakthrough in Black Sea Talks",
+          "title": "China Ships Out First Sulfuric Acid Cargo Since Halt on Exports",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-09-08T02:29:12+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-08/wheat-jumps-as-russia-focused-on-ukraine-war-despite-us-talks",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-08T14:40:13+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-08/china-ships-out-first-sulfuric-acid-cargo-since-halt-on-exports",
           "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Qatar Has Widest Deficit in a Decade as Hormuz Ties Up Gas Trade",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-08T14:39:30+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-08/qatar-has-widest-deficit-in-a-decade-as-hormuz-ties-up-gas-trade",
+          "tags": [
+            "commodity",
             "geopolitical",
             "market"
           ]
@@ -571,7 +524,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 4,
+    "excludedCount": 3,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
