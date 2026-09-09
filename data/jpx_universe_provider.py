@@ -1075,36 +1075,107 @@ def _cache_age_hours(cache_payload: dict[str, Any], now: datetime) -> float:
     return (now - fetched).total_seconds() / 3600
 
 
-def _cache_authority_valid(payload: dict[str, Any], now: datetime) -> bool:
+class CacheRevalidationOutcome(NamedTuple):
+    """_evaluate_cache_authority() の構造化結果。
+
+    `valid` は従来の _cache_authority_valid() が返してきた bool と完全同値
+    ——判定ロジックはこの評価器 1 箇所にのみ存在し、bool shim
+    （_cache_authority_valid）と jpx_cache_revalidation 可観測性イベントの
+    双方がこの同一結果を共有する（§11/§16 single writer/validator contract。
+    「validation logic #1 ＋ logging 用 validation logic #2」による drift を
+    作らない）。
+
+    `reason` は valid=False のとき最初に失敗したチェックの識別子
+    （"<dimension>:<check>" 形式）、valid=True のとき None。granular フラグ
+    （provenance/freshness/canonicalCode/filter integrity）と
+    schema_kind/source/universe/eligible_count/row_count/cache_age_hours は
+    可観測性イベント用の machine-readable サマリであり、権威チェックが
+    実際に参照した payload 値をそのまま公開する（別経路での再検証・
+    再計算はしない）。"""
+
+    valid: bool
+    reason: str | None
+    schema_kind: Any
+    source: Any
+    universe: Any
+    eligible_count: int | None
+    row_count: int | None
+    cache_age_hours: float | None
+    provenance_integrity: bool
+    freshness_valid: bool
+    canonical_code_integrity: bool
+    filter_integrity: bool
+
+
+def _evaluate_cache_authority(
+    payload: dict[str, Any], now: datetime
+) -> CacheRevalidationOutcome:
     """load_cache()の構造的validation（corruption検出）を通過したcache
-    payloadに対し、last-good authorityとして実際に使ってよいかを再検証する
-    （P5-B005-R2: RESTORED_CACHE_REVALIDATED）。
+    payloadに対し、last-good authorityとして実際に使ってよいかを再検証し、
+    その結果を構造化して返す（P5-B005-R2: RESTORED_CACHE_REVALIDATED /
+    P5-B005-JPX-CROSS-RUN-REVALIDATION-OBSERVABILITY）。
 
     live provider（get_jpx_universe()のsave_cache()呼び出し箇所）が
     実際に書きうる契約——source/universe_id/eligibility後のitems/
     apply_eligibility()由来のsegment_counts・filters_applied——を正とし、
     構造的にparse可能でもこの契約から外れるpayload（古すぎる/未来日時/
     別source/別universe_id/重複code/floor未満/row_countとの矛盾/
-    改竄されたsegment_counts・filters_applied）はいずれもfalseを返す。
+    改竄されたsegment_counts・filters_applied）はいずれも valid=False を返す。
     load_cache()自体（schema/型のcorruption検出）は変更しない——単一の
     canonical validatorとしてここに集約し、load_cache()は構造層、
-    本関数は意味論層を担う。"""
+    本関数は意味論層を担う。_cache_authority_valid() はこの結果の
+    .valid を返すだけの薄い shim。"""
+    schema_kind = payload.get("schemaKind")
+    source_id = payload.get("source")
+    universe = payload.get("universe_id")
+    row_count_raw = payload.get("row_count")
+    row_count_out = (
+        row_count_raw
+        if isinstance(row_count_raw, int) and not isinstance(row_count_raw, bool)
+        else None
+    )
+    items_raw = payload.get("items")
+    eligible_out = len(items_raw) if isinstance(items_raw, list) else None
+    age_out = _cache_age_hours(payload, now)
+    if age_out == float("inf"):
+        age_out = None
+
+    prov_ok = fresh_ok = canon_ok = filt_ok = False
+
+    def _out(valid: bool, reason: str | None) -> CacheRevalidationOutcome:
+        return CacheRevalidationOutcome(
+            valid=valid,
+            reason=reason,
+            schema_kind=schema_kind,
+            source=source_id,
+            universe=universe,
+            eligible_count=eligible_out,
+            row_count=row_count_out,
+            cache_age_hours=age_out,
+            provenance_integrity=prov_ok,
+            freshness_valid=fresh_ok,
+            canonical_code_integrity=canon_ok,
+            filter_integrity=filt_ok,
+        )
+
     # provenance: このprovider自身が書いたcacheであることを要求する。
     if payload.get("source") != SOURCE_IDENTIFIER:
-        return False
+        return _out(False, "provenance:source_identifier_mismatch")
     if payload.get("universe_id") != UNIVERSE_ID:
-        return False
+        return _out(False, "provenance:universe_id_mismatch")
+    prov_ok = True
 
     # freshness: 10年前cache・未来日時cacheをclock-skew tolerance付きで拒否。
     fetched = _parse_iso(payload.get("fetched_at"))
     if fetched is None:
-        return False
+        return _out(False, "freshness:fetched_at_unparseable")
     now_utc = now if now.tzinfo is not None else now.replace(tzinfo=timezone.utc)
     age_hours = (now_utc - fetched).total_seconds() / 3600
     if age_hours > MAX_CACHE_AGE_HOURS:
-        return False
+        return _out(False, "freshness:older_than_max_cache_age")
     if age_hours < -CACHE_CLOCK_SKEW_TOLERANCE_HOURS:
-        return False
+        return _out(False, "freshness:fetched_at_in_future")
+    fresh_ok = True
 
     # universe content: cached itemsは既にeligibility適用後のcanonical
     # universeであるべきなので、live pathと同じ制約を再チェックする——
@@ -1112,27 +1183,31 @@ def _cache_authority_valid(payload: dict[str, Any], now: datetime) -> bool:
     # 実際のitemsから再計算する。
     items = payload.get("items")
     if not isinstance(items, list) or not items:
-        return False
+        return _out(False, "canonicalCode:items_missing_or_empty")
     codes = [item[0] for item in items]
     if not all(_is_canonical_jpx_code(c) for c in codes):
-        return False  # live parse authorityが生成しえない形状のcode（例: "BAD!"）
+        # live parse authorityが生成しえない形状のcode（例: "BAD!"）
+        return _out(False, "canonicalCode:non_canonical_code_shape")
     if len(set(codes)) != len(codes):
-        return False  # 重複code（canonical形状のみ受理するため正規化の曖昧さはない）
+        # 重複code（canonical形状のみ受理するため正規化の曖昧さはない）
+        return _out(False, "canonicalCode:duplicate_code")
     if any(is_preferred_or_class_share(c) for c in codes):
-        return False  # eligibility上除外されるはずの5桁code混入
+        # eligibility上除外されるはずの5桁code混入
+        return _out(False, "canonicalCode:preferred_or_class_share_present")
     if len(items) < MIN_ELIGIBLE_COUNT:
-        return False  # below-floor universe
+        return _out(False, "canonicalCode:eligible_universe_below_floor")
+    canon_ok = True
 
     # count consistency: row_countはraw行数（items=eligible行数の上位集合）
     # のはずなので、負値・非intは無効。eligible件数を上回らない
     # row_countは矛盾（rowsとの不整合）として拒否する。
     row_count = payload.get("row_count")
     if not isinstance(row_count, int) or isinstance(row_count, bool):
-        return False
+        return _out(False, "filter:row_count_not_int")
     if row_count < MIN_RAW_ROW_COUNT:
-        return False
+        return _out(False, "filter:row_count_below_floor")
     if row_count < len(items):
-        return False
+        return _out(False, "filter:row_count_smaller_than_eligible")
 
     # segment_counts: apply_eligibility()はrowsが非空である限り必ず非空dictを
     # 返す（rows中の各行のmarket_segmentを1件ずつ集計するため）。row_countが
@@ -1146,17 +1221,17 @@ def _cache_authority_valid(payload: dict[str, Any], now: datetime) -> bool:
     # stage_market.count==segment_counts[PRIME_DOMESTIC]の同値性より）。
     segment_counts = payload.get("segment_counts")
     if not isinstance(segment_counts, dict) or not segment_counts:
-        return False
+        return _out(False, "filter:segment_counts_missing_or_empty")
     for key, value in segment_counts.items():
         if not isinstance(key, str) or key not in APPROVED_MARKET_SEGMENTS:
-            return False
+            return _out(False, "filter:segment_counts_unapproved_key")
         if not isinstance(value, int) or isinstance(value, bool) or value < 0:
-            return False
+            return _out(False, "filter:segment_counts_invalid_value")
     if sum(segment_counts.values()) != row_count:
-        return False
+        return _out(False, "filter:segment_counts_sum_mismatch")
     prime_count = segment_counts.get(MARKET_SEGMENT_PRIME_DOMESTIC, 0)
     if prime_count < len(items):
-        return False
+        return _out(False, "filter:prime_segment_count_below_eligible")
 
     # filters_applied: apply_eligibility()が実際に返す形——正確に3段、
     # FILTERS_APPLIED_STAGE_ORDERの名前・順序と厳密一致、countは
@@ -1166,29 +1241,104 @@ def _cache_authority_valid(payload: dict[str, Any], now: datetime) -> bool:
     # ——を要求する（P5-B005-R3 §16/§17: writer由来の意味論関係を検証）。
     filters_applied = payload.get("filters_applied")
     if not isinstance(filters_applied, list):
-        return False
+        return _out(False, "filter:filters_applied_not_list")
     if len(filters_applied) != len(FILTERS_APPLIED_STAGE_ORDER):
-        return False
+        return _out(False, "filter:filters_applied_wrong_length")
     prev_count: int | None = None
     for stage, expected_name in zip(filters_applied, FILTERS_APPLIED_STAGE_ORDER):
         if not isinstance(stage, dict):
-            return False
+            return _out(False, "filter:filters_applied_stage_not_dict")
         if stage.get("stage") != expected_name:
-            return False
+            return _out(False, "filter:filters_applied_stage_name_mismatch")
         count = stage.get("count")
         if not isinstance(count, int) or isinstance(count, bool) or count < 0:
-            return False
+            return _out(False, "filter:filters_applied_count_invalid")
         if prev_count is not None and count > prev_count:
-            return False  # 段を追うごとに単調非増加でなければならない
+            # 段を追うごとに単調非増加でなければならない
+            return _out(False, "filter:filters_applied_not_monotonic")
         prev_count = count
     if filters_applied[0]["count"] != row_count:
-        return False
+        return _out(False, "filter:filters_applied_initial_count_mismatch")
     if filters_applied[1]["count"] != prime_count:
-        return False
+        return _out(False, "filter:filters_applied_market_count_mismatch")
     if filters_applied[-1]["count"] != len(items):
-        return False
+        return _out(False, "filter:filters_applied_final_count_mismatch")
+    filt_ok = True
 
-    return True
+    return _out(True, None)
+
+
+def _cache_authority_valid(payload: dict[str, Any], now: datetime) -> bool:
+    """_evaluate_cache_authority() の bool shim。cache payload を last-good
+    authority として使ってよいか（= 従来のこの関数の戻り値）だけを返す。
+
+    判定ロジックは _evaluate_cache_authority() の 1 箇所にのみ存在し、
+    本 shim・公開ラッパー cache_authority_valid()・jpx_cache_revalidation
+    可観測性イベントはすべて同一の評価結果を共有する（検証の二重化・
+    drift を避ける、§11/§16）。"""
+    return _evaluate_cache_authority(payload, now).valid
+
+
+def _emit_cache_revalidation_event(
+    *,
+    status: str,
+    outcome: CacheRevalidationOutcome | None,
+    prior_run_attestation_present: bool,
+    stream: Any = None,
+) -> dict[str, Any]:
+    """durable JPX cache file が存在したときに、その restored bytes が
+    last-good authority 再検証契約を通過したか否かを 1 行の machine-readable
+    JSON として emit する（P5-B005-JPX-CROSS-RUN-REVALIDATION-OBSERVABILITY）。
+
+    status（少なくとも以下の 3 状態を区別する）:
+      - "structural_load_failed": ファイルは存在するが JSON/schema 破損で
+        load_cache() が None を返した（outcome is None）。
+      - "authority_revalidation_failed": 構造ロードは成功したが
+        _evaluate_cache_authority() が last-good authority 契約違反を検出
+        （rejectionReason に失敗した次元:チェックを載せる）。
+      - "pass": 構造ロード成功かつ authority 再検証を全次元通過。
+        schemaKind/source/universe/eligibleCount/rowCount/cacheAgeHours と
+        4 つの integrity フラグを載せ、後続の自然な production run が
+        凍結契約の充足を source 推論なしに証明できるようにする。
+
+    加えて、durable restore authority（canonical cache JSON）と current-run
+    attestation（別の ephemeral sidecar。actions/cache には persist されず、
+    新しい取得の前に必ず削除される——§17-22）が別権威であることを明示する。
+    このイベントは検証を一切行わず、_evaluate_cache_authority() の結果を
+    そのまま整形するだけ（validation は単一権威のまま）。"""
+    if stream is None:
+        stream = sys.stderr
+    event: dict[str, Any] = {
+        "event": "jpx_cache_revalidation",
+        "status": status,
+        "schemaKind": outcome.schema_kind if outcome else None,
+        "source": outcome.source if outcome else None,
+        "universe": outcome.universe if outcome else None,
+        "eligibleCount": outcome.eligible_count if outcome else None,
+        "rowCount": outcome.row_count if outcome else None,
+        "cacheAgeHours": (
+            round(outcome.cache_age_hours, 3)
+            if outcome is not None and outcome.cache_age_hours is not None
+            else None
+        ),
+        "provenanceIntegrity": bool(outcome.provenance_integrity) if outcome else False,
+        "freshnessValid": bool(outcome.freshness_valid) if outcome else False,
+        "canonicalCodeIntegrity": (
+            bool(outcome.canonical_code_integrity) if outcome else False
+        ),
+        "filterIntegrity": bool(outcome.filter_integrity) if outcome else False,
+        "rejectionReason": (
+            outcome.reason if outcome else "structural_load_failed"
+        ),
+        # attestation isolation observability（§17-22）:
+        "durableRestoreAuthority": "canonical_cache_json",
+        "currentRunAttestationAuthority": (
+            "separate_ephemeral_sidecar_not_actions_cached"
+        ),
+        "priorRunAttestationPresentAfterReset": bool(prior_run_attestation_present),
+    }
+    print(json.dumps(event, ensure_ascii=False, sort_keys=True), file=stream)
+    return event
 
 
 def cache_authority_valid(payload: dict[str, Any], now: datetime) -> bool:
@@ -1452,30 +1602,55 @@ def get_jpx_universe(
         now = datetime.now(timezone.utc)
 
     _remove_attestation(attestation_path)
+    # §17-22: attestationは新しい取得の前に必ず削除される別権威。restored
+    # durable cacheはこのsidecarを復元しない（下のイベントで externally 明示）。
+    prior_run_attestation_present = attestation_path.exists()
 
     cache = load_cache(cache_path)
-    if cache is not None and not _cache_authority_valid(cache, now):
-        # 構造的にparse可能でもlast-good authorityの契約（provenance/
-        # freshness/universe content/count consistency）を満たさない
-        # cacheは、guard比較にも_cache_to_result()のfallback候補にも使わない
-        # （P5-B005-R2: RESTORED_CACHE_REVALIDATED）。
-        print(
-            "[jpx_universe_provider] cached last-good universe failed authority "
-            "revalidation, discarding",
-            file=sys.stderr,
+    durable_cache_file_present = cache_path.exists()
+
+    if cache is None:
+        if durable_cache_file_present:
+            # durable cache fileは存在したが、load_cache()が構造層
+            # （JSON破損 / schema不一致 / malformed items）で棄却した。
+            # authority再検証には到達しない——PASSは出さない（T2）。
+            _emit_cache_revalidation_event(
+                status="structural_load_failed",
+                outcome=None,
+                prior_run_attestation_present=prior_run_attestation_present,
+            )
+    else:
+        # 構造ロード成功。single-authority validator で意味論層を再検証し、
+        # その結果をそのまま machine-readable イベントへ整形する
+        # （validation logic の複製はしない）。
+        revalidation = _evaluate_cache_authority(cache, now)
+        _emit_cache_revalidation_event(
+            status="pass" if revalidation.valid else "authority_revalidation_failed",
+            outcome=revalidation,
+            prior_run_attestation_present=prior_run_attestation_present,
         )
-        cache = None
-        # defense in depth（P5-B005-R3 §27）: authority-invalidと判定された
-        # restored cache fileはbest-effortで削除する。これは
-        # Full BatchのCACHE_SAVE_CONDITION gate（現在-run live provenance
-        # 相関）を置き換えるものではない——このprocessが仮にcrash/skipして
-        # ファイルが残っても、workflow側のsave-eligibility gateが単独で
-        # 安全である設計を維持する。削除自体の失敗（権限・並行削除等）は
-        # fallback chainを妨げない。
-        try:
-            cache_path.unlink(missing_ok=True)
-        except OSError:
-            pass
+        if not revalidation.valid:
+            # 構造的にparse可能でもlast-good authorityの契約（provenance/
+            # freshness/universe content/count consistency）を満たさない
+            # cacheは、guard比較にも_cache_to_result()のfallback候補にも
+            # 使わない（P5-B005-R2: RESTORED_CACHE_REVALIDATED）。
+            print(
+                "[jpx_universe_provider] cached last-good universe failed authority "
+                f"revalidation ({revalidation.reason}), discarding",
+                file=sys.stderr,
+            )
+            cache = None
+            # defense in depth（P5-B005-R3 §27）: authority-invalidと判定された
+            # restored cache fileはbest-effortで削除する。これは
+            # Full BatchのCACHE_SAVE_CONDITION gate（現在-run live provenance
+            # 相関）を置き換えるものではない——このprocessが仮にcrash/skipして
+            # ファイルが残っても、workflow側のsave-eligibility gateが単独で
+            # 安全である設計を維持する。削除自体の失敗（権限・並行削除等）は
+            # fallback chainを妨げない。
+            try:
+                cache_path.unlink(missing_ok=True)
+            except OSError:
+                pass
 
     try:
         content = fetch_fn()

@@ -2560,3 +2560,289 @@ class TestJpxCacheSaveEligible:
         ok, reason = self._eval(meta, None, None, attestation)
         assert ok is False
         assert "cache" in reason
+
+
+# ---------------------------------------------------------------------------
+# P5-B005-JPX-CROSS-RUN-REVALIDATION-OBSERVABILITY — a restored durable JPX
+# cache must produce narrowly-scoped, machine-readable positive runtime
+# evidence proving it was (1) structurally loaded, (2) passed last-good
+# authority revalidation, (3) exposes the validated eligible-count/integrity
+# summary, (4) remains separate from current-run attestation authority.
+#
+# Validation stays single-authority: _evaluate_cache_authority() is the only
+# implementation; _cache_authority_valid() is its .valid shim and the
+# jpx_cache_revalidation event only formats its structured result.
+# ---------------------------------------------------------------------------
+
+from data.jpx_universe_provider import (  # noqa: E402, PLC2701 - single canonical validator への直接テスト
+    CacheRevalidationOutcome,
+    _cache_authority_valid,
+    _emit_cache_revalidation_event,
+    _evaluate_cache_authority,
+    cache_authority_valid,
+)
+
+
+def _revalidation_events(captured_err: str) -> list[dict]:
+    """capsys が捕捉した stderr から jpx_cache_revalidation JSON イベント行を
+    抽出する（機械可読であることの検証を兼ねる）。"""
+    events = []
+    for raw in captured_err.splitlines():
+        line = raw.strip()
+        if not line.startswith("{"):
+            continue
+        try:
+            obj = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        if obj.get("event") == "jpx_cache_revalidation":
+            events.append(obj)
+    return events
+
+
+class TestDurableCacheRevalidationObservability:
+    def _boom(self):
+        raise JPXFetchError("live fetch unavailable")
+
+    def _run(self, cache_path, capsys, *, run_token=None, attestation_path=None):
+        kwargs = {}
+        if attestation_path is not None:
+            kwargs["attestation_path"] = attestation_path
+        result = get_jpx_universe(
+            now=_NOW,
+            fetch_fn=self._boom,
+            cache_path=cache_path,
+            run_token=run_token,
+            **kwargs,
+        )
+        events = _revalidation_events(capsys.readouterr().err)
+        return result, events
+
+    # T1: valid durable cache -> positive revalidation status is emitted -----
+    def test_t1_valid_durable_cache_emits_pass_event(self, tmp_path, capsys):
+        cache_path = tmp_path / "cache.json"
+        payload = _valid_cache_payload(fetched_at=(_NOW - timedelta(hours=3)).isoformat())
+        save_cache(payload, cache_path)
+
+        result, events = self._run(cache_path, capsys)
+
+        assert result.universe_id == UNIVERSE_ID
+        assert len(events) == 1
+        ev = events[0]
+        assert ev["status"] == "pass"
+        assert ev["schemaKind"] == "jpx_universe_cache_v1"
+        assert ev["source"] == SOURCE_IDENTIFIER
+        assert ev["universe"] == UNIVERSE_ID
+        assert ev["eligibleCount"] == len(payload["items"])
+        assert ev["rowCount"] == payload["row_count"]
+        assert ev["provenanceIntegrity"] is True
+        assert ev["freshnessValid"] is True
+        assert ev["canonicalCodeIntegrity"] is True
+        assert ev["filterIntegrity"] is True
+        assert ev["rejectionReason"] is None
+        assert ev["cacheAgeHours"] == pytest.approx(3.0, abs=0.05)
+
+    # T2: malformed / structurally invalid cache -> must NOT emit PASS -------
+    def test_t2_structurally_invalid_json_does_not_emit_pass(self, tmp_path, capsys):
+        cache_path = tmp_path / "cache.json"
+        cache_path.write_text("{ this is not valid json", encoding="utf-8")
+
+        result, events = self._run(cache_path, capsys)
+
+        assert result.universe_id == FALLBACK_UNIVERSE_ID
+        assert len(events) == 1
+        assert events[0]["status"] == "structural_load_failed"
+        assert events[0]["status"] != "pass"
+        assert events[0]["provenanceIntegrity"] is False
+        assert events[0]["canonicalCodeIntegrity"] is False
+        assert events[0]["filterIntegrity"] is False
+
+    def test_t2b_structurally_broken_items_does_not_emit_pass(self, tmp_path, capsys):
+        cache_path = tmp_path / "cache.json"
+        payload = _valid_cache_payload()
+        payload["items"] = [["1301", "極洋"]]  # wrong-length item: load_cache() rejects
+        save_cache(payload, cache_path)
+
+        _result, events = self._run(cache_path, capsys)
+
+        assert len(events) == 1
+        assert events[0]["status"] == "structural_load_failed"
+
+    # T3: structurally valid but provenance-invalid -> reveal rejection -----
+    def test_t3_provenance_invalid_cache_reveals_rejection(self, tmp_path, capsys):
+        cache_path = tmp_path / "cache.json"
+        save_cache(_valid_cache_payload(source="tampered_source"), cache_path)
+
+        result, events = self._run(cache_path, capsys)
+
+        assert result.universe_id == FALLBACK_UNIVERSE_ID
+        assert len(events) == 1
+        ev = events[0]
+        assert ev["status"] == "authority_revalidation_failed"
+        assert ev["status"] != "pass"
+        assert ev["provenanceIntegrity"] is False
+        assert ev["rejectionReason"].startswith("provenance:")
+
+    # T4: canonical-code / integrity-invalid -> reveal rejection ------------
+    def test_t4_canonical_code_invalid_cache_reveals_rejection(self, tmp_path, capsys):
+        cache_path = tmp_path / "cache.json"
+        items = _cache_items(MIN_ELIGIBLE_COUNT - 1)
+        items.append(["BAD!", "壊れたコード", "sector"])
+        save_cache(_valid_cache_payload(items=items), cache_path)
+
+        result, events = self._run(cache_path, capsys)
+
+        assert result.universe_id == FALLBACK_UNIVERSE_ID
+        ev = events[0]
+        assert ev["status"] == "authority_revalidation_failed"
+        assert ev["provenanceIntegrity"] is True
+        assert ev["freshnessValid"] is True
+        assert ev["canonicalCodeIntegrity"] is False
+        assert ev["filterIntegrity"] is False
+        assert ev["rejectionReason"].startswith("canonicalCode:")
+
+    # T5: stale cache -> reveal rejection ----------------------------------
+    def test_t5_stale_cache_reveals_rejection(self, tmp_path, capsys):
+        cache_path = tmp_path / "cache.json"
+        too_old = _NOW - timedelta(hours=MAX_CACHE_AGE_HOURS + 5)
+        save_cache(_valid_cache_payload(fetched_at=too_old.isoformat()), cache_path)
+
+        result, events = self._run(cache_path, capsys)
+
+        assert result.universe_id == FALLBACK_UNIVERSE_ID
+        ev = events[0]
+        assert ev["status"] == "authority_revalidation_failed"
+        assert ev["provenanceIntegrity"] is True
+        assert ev["freshnessValid"] is False
+        assert ev["canonicalCodeIntegrity"] is False
+        assert ev["rejectionReason"] == "freshness:older_than_max_cache_age"
+
+    # T6: valid-cache observability does not alter returned provider behavior
+    def test_t6_observability_does_not_alter_returned_behavior(self, tmp_path, capsys):
+        cache_path = tmp_path / "cache.json"
+        payload = _valid_cache_payload(fetched_at=(_NOW - timedelta(hours=2)).isoformat())
+        save_cache(payload, cache_path)
+
+        result, events = self._run(cache_path, capsys)
+
+        assert events[0]["status"] == "pass"
+        # returned result is exactly the last-good cache fallback, unchanged.
+        assert result.fallback_used is True
+        assert result.universe_id == UNIVERSE_ID
+        assert result.source == SOURCE_IDENTIFIER
+        assert result.eligible_count == len(payload["items"])
+        assert result.row_count == payload["row_count"]
+        assert [list(x) for x in result.items] == payload["items"]
+        assert result.segment_counts == payload["segment_counts"]
+        assert result.cache_age_hours == pytest.approx(2.0, abs=0.05)
+
+    # T7: attestation stays a separate, non-durable authority --------------
+    def test_t7_attestation_separate_and_not_persisted_as_durable(self, tmp_path, capsys):
+        cache_path = tmp_path / "cache.json"
+        attestation_path = tmp_path / "cache.attestation.json"
+        save_cache(
+            _valid_cache_payload(fetched_at=(_NOW - timedelta(hours=1)).isoformat()),
+            cache_path,
+        )
+        # a prior-run attestation is sitting next to the restored cache.
+        attestation_path.write_text(
+            json.dumps(
+                {
+                    "schemaKind": "jpx_universe_cache_attestation_v1",
+                    "run_token": "prior-run",
+                    "cache_sha256": "a" * 64,
+                    "source": SOURCE_IDENTIFIER,
+                    "fetched_at": _NOW.isoformat(),
+                    "eligible_count": 300,
+                }
+            ),
+            encoding="utf-8",
+        )
+
+        result, events = self._run(
+            cache_path, capsys, run_token="new-run", attestation_path=attestation_path
+        )
+
+        ev = events[0]
+        assert ev["status"] == "pass"
+        assert ev["durableRestoreAuthority"] == "canonical_cache_json"
+        assert ev["currentRunAttestationAuthority"] == (
+            "separate_ephemeral_sidecar_not_actions_cached"
+        )
+        # prior-run attestation was cleared before acquisition and NOT
+        # restored as durable authority; cache-fallback writes no new one.
+        assert ev["priorRunAttestationPresentAfterReset"] is False
+        assert not attestation_path.exists()
+        assert load_attestation(attestation_path) is None
+        # durable restore still succeeded purely from the canonical cache JSON.
+        assert result.universe_id == UNIVERSE_ID
+        assert result.fallback_used is True
+
+    # first-run (no durable cache file at all) emits nothing ---------------
+    def test_no_durable_cache_file_emits_no_event(self, tmp_path, capsys):
+        cache_path = tmp_path / "cache.json"  # does not exist
+        _result, events = self._run(cache_path, capsys)
+        assert events == []
+
+
+class TestEvaluateCacheAuthoritySingleSource:
+    """_evaluate_cache_authority() が単一 canonical validator であり、
+    bool shim（_cache_authority_valid / cache_authority_valid）と .valid が
+    完全一致することを固定する（logging 用の別検証ロジックを作らない）。"""
+
+    def test_valid_payload_structured_outcome_matches_bool_shims(self):
+        payload = _valid_cache_payload()
+        outcome = _evaluate_cache_authority(payload, _NOW)
+        assert isinstance(outcome, CacheRevalidationOutcome)
+        assert outcome.valid is True
+        assert outcome.valid is _cache_authority_valid(payload, _NOW)
+        assert outcome.valid is cache_authority_valid(payload, _NOW)
+        assert outcome.reason is None
+        assert outcome.eligible_count == len(payload["items"])
+        assert outcome.row_count == payload["row_count"]
+        assert outcome.provenance_integrity is True
+        assert outcome.freshness_valid is True
+        assert outcome.canonical_code_integrity is True
+        assert outcome.filter_integrity is True
+
+    @pytest.mark.parametrize(
+        "mutate,reason_prefix,false_flag",
+        [
+            (lambda p: p.update(source="x"), "provenance:", "provenance_integrity"),
+            (lambda p: p.update(universe_id="x"), "provenance:", "provenance_integrity"),
+            (
+                lambda p: p.update(
+                    fetched_at=(_NOW - timedelta(days=365 * 9)).isoformat()
+                ),
+                "freshness:",
+                "freshness_valid",
+            ),
+            (
+                lambda p: p["items"].__setitem__(0, ["BAD!", "x", "s"]),
+                "canonicalCode:",
+                "canonical_code_integrity",
+            ),
+            (lambda p: p.update(row_count=1), "filter:", "filter_integrity"),
+        ],
+    )
+    def test_each_failed_dimension_is_revealed_and_agrees_with_shim(
+        self, mutate, reason_prefix, false_flag
+    ):
+        payload = _valid_cache_payload()
+        mutate(payload)
+        outcome = _evaluate_cache_authority(payload, _NOW)
+        assert outcome.valid is False
+        assert outcome.valid is _cache_authority_valid(payload, _NOW)
+        assert outcome.reason.startswith(reason_prefix)
+        assert getattr(outcome, false_flag) is False
+
+    def test_emit_helper_is_pure_formatting_of_outcome(self, capsys):
+        payload = _valid_cache_payload()
+        outcome = _evaluate_cache_authority(payload, _NOW)
+        returned = _emit_cache_revalidation_event(
+            status="pass", outcome=outcome, prior_run_attestation_present=False
+        )
+        printed = _revalidation_events(capsys.readouterr().err)
+        assert printed == [returned]
+        assert returned["eligibleCount"] == outcome.eligible_count
+        assert returned["canonicalCodeIntegrity"] == outcome.canonical_code_integrity
