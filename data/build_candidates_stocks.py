@@ -494,14 +494,15 @@ def enrich_universe(
             missing.append(code)
         if fundamentals_enricher is not None:
             # fundamental shadow channel の障害は market candidate を巻き込まない。
+            # enrich() 自体が fail-soft だが、outer handler でも二重に握り、
+            # 例外時も published symbol を coverage/diagnostics 集計へ
+            # ちょうど 1 回登録する（§5 / 監査 P2-A: no exception path bypasses
+            # coverage accounting）。
             try:
                 fundamentals_enricher.enrich(item, code)
             except Exception as e:  # noqa: BLE001 - zero-weight shadow は最終防御で握る
                 print(f"  ⚠ {code} fundamentals shadow enrich 失敗: {e}", file=sys.stderr)
-                item.setdefault('profitGrowth', None)
-                item.setdefault('epsGrowth', None)
-                item.setdefault('fiscalPeriodEnd', None)
-                item.setdefault('fundamentalsStatus', 'invalid')
+                fundamentals_enricher.record_enrich_failure(item, code)
         candidates.append(item)
 
     return candidates, missing

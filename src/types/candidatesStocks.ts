@@ -72,6 +72,9 @@ export interface CandidatesStocksData {
       statementMaxAgeDays: 456
       canonicalPeField?: 'per'
       growthScoringStatus?: 'reserved_zero_weight'
+      // P5-B005-B4-A-R1: coverage は TOTAL かつ MUTUALLY EXCLUSIVE。
+      // publish 対象の各 symbol はちょうど 1 bucket に寄与し、
+      // 全 bucket の合計は counts.publishedCount と一致する。
       coverage: {
         present: number
         stale: number
@@ -80,6 +83,15 @@ export interface CandidatesStocksData {
         splitGuardBlocked: number
         irregularPeriod: number
         rowLabelMissing: number
+        // outer fail-soft 例外 / provider 障害 / 非有限セル。
+        invalid: number
+      }
+      // P5-B005-B4-A-R1: §4 axis-specific diagnostics。coverage とは別契約の
+      // overlapping counter（合計は publishedCount と一致しない）。
+      // mixed-axis authority（片軸 valid / 片軸 block）を保存する。
+      diagnostics?: {
+        profitGrowth: Record<string, number>
+        epsGrowth: Record<string, number>
       }
       aborted: boolean
       abortReason: string | null

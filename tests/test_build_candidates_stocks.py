@@ -31,6 +31,7 @@ P5-B004b追加確認項目（Fable adversarial review P1×4対応）:
       silent truncationせずfail-fastする（SCALE-01）
 """
 
+import json
 from datetime import date, datetime, timezone, timedelta
 
 import pytest
@@ -43,6 +44,7 @@ from data.build_candidates_stocks import (
     UNIVERSE,
     EnrichmentGuardExceeded,
     UniverseResult,
+    UniverseResultWithProvenance,
     apply_publish_cap,
     build_candidates_stocks,
     decide_write,
@@ -594,3 +596,106 @@ class TestFundamentalsPlumbing:
             fundamentals_fetch_fn=_fund_fetch_ok,
         )
         assert check_candidates_stocks_payload(payload, "p") == []
+
+    # ── P5-B005-B4-A-R1: coverage authority repair ──────────────────
+    def test_outer_fail_soft_still_counts_every_published_symbol(self):
+        # §14 CASE A（post-repair）: fundamentals enrichment が予期せず throw
+        # しても publishedCount == sum(coverage.values())。
+        def boom_fund(code):
+            raise RuntimeError("unexpected fundamentals bug")
+
+        payload = build_candidates_stocks(
+            universe_provider=self._provider(1),
+            fetch_fn=_fake_fetch_ok,
+            now=datetime(2026, 6, 30, tzinfo=JST),
+            fundamentals_fetch_fn=boom_fund,
+        )
+        fm = payload["_meta"]["fundamentals"]
+        published = len(payload["candidates"])
+        assert published == 1
+        assert sum(fm["coverage"].values()) == published
+        assert fm["coverage"]["invalid"] == 1
+        assert fm["diagnostics"]["profitGrowth"]["enrichFailed"] == 1
+
+    def test_coverage_sum_equals_published_count_with_mixed_outcomes(self):
+        def mixed_fund(code):
+            if code == "1000":
+                return _fund_fetch_ok(code)  # present
+            if code == "1001":
+                return FundamentalsFetch({}, {}, [], [], False, ok=False, failure="missing")
+            raise RuntimeError("boom")  # outer fail-soft → invalid
+
+        payload = build_candidates_stocks(
+            universe_provider=self._provider(3),
+            fetch_fn=_fake_fetch_ok,
+            now=datetime(2026, 6, 30, tzinfo=JST),
+            fundamentals_fetch_fn=mixed_fund,
+        )
+        fm = payload["_meta"]["fundamentals"]
+        assert sum(fm["coverage"].values()) == len(payload["candidates"]) == 3
+        assert fm["coverage"]["present"] == 1
+        assert fm["coverage"]["missing"] == 1
+        assert fm["coverage"]["invalid"] == 1
+        # coverage は mutually exclusive（各 symbol 1 bucket）
+        assert all(v >= 0 for v in fm["coverage"].values())
+
+    def test_production_main_wires_fundamentals_channel(self, tmp_path, monkeypatch):
+        # §9: production CLI wiring 回帰。main() が
+        # fetch_fundamentals_one → FundamentalsEnricher を配線し続けることを
+        # 実挙動で担保する（None へ戻す変更で fail する）。network なし。
+        import data.build_candidates_stocks as bcs
+
+        calls = {"fund": 0}
+
+        def fake_fund_fetch(code):
+            calls["fund"] += 1
+            return FundamentalsFetch(
+                income_stmt={"Net Income": [120.0, 100.0], "Diluted EPS": [12.0, 10.0]},
+                balance_sheet={"Stockholders Equity": [1000.0, 900.0]},
+                period_ends=[date(2026, 3, 31), date(2025, 3, 31)],
+                splits=[], splits_ok=True, ok=True,
+            )
+
+        provider_result = UniverseResultWithProvenance(
+            universe_id="seed_list_v1",
+            items=[("7203", "トヨタ自動車", "自動車")],
+            provenance={
+                "pipelinePath": "seed_fallback", "jpxSource": "unavailable",
+                "jpxFallbackUsed": True, "jpxEligibleCount": 0,
+                "shortlistId": "seed_list_v1_bypass", "shortlistCount": 0,
+                "shortlistSuccessRatio": 0.0, "shortlistFallbackUsed": True,
+                "shortlistFallbackReason": "test", "shortlistBypassSeedListV1": True,
+                "sectorCapRelaxed": False, "sectorCapRelaxedCount": 0,
+            },
+        )
+        monkeypatch.setattr(bcs, "fetch_fundamentals_one", fake_fund_fetch)
+        monkeypatch.setattr(bcs, "fetch_one", lambda code, name, sector: _ok_item(code, name, sector))
+        monkeypatch.setattr(
+            bcs, "whole_market_universe_provider",
+            lambda now=None, run_token=None: provider_result,
+        )
+        monkeypatch.setattr(bcs, "load_existing", lambda path: None)
+        out = tmp_path / "candidates_stocks.json"
+        monkeypatch.setattr(bcs, "OUTPUT_PATH", out)
+        monkeypatch.setattr(bcs, "PRESCREEN_METADATA_PATH", tmp_path / "prescreen_metadata.json")
+
+        bcs.main([])
+
+        written = json.loads(out.read_text())
+        assert calls["fund"] == 1, "main() must call fetch_fundamentals_one per symbol"
+        assert "fundamentals" in written["_meta"], "main() must wire FundamentalsEnricher"
+        fm = written["_meta"]["fundamentals"]
+        assert fm["growthScoringStatus"] == "reserved_zero_weight"
+        assert sum(fm["coverage"].values()) == len(written["candidates"])
+        assert written["candidates"][0]["fundamentalsStatus"] == "available"
+
+    def test_production_main_wiring_is_not_none(self):
+        # 構造的 backstop: main() source が fetch_fundamentals_one を明示的に
+        # fundamentals_fetch_fn へ渡し、None を渡していないこと。
+        import inspect
+
+        import data.build_candidates_stocks as bcs
+
+        src = inspect.getsource(bcs.main)
+        assert "fundamentals_fetch_fn=fetch_fundamentals_one" in src
+        assert "fundamentals_fetch_fn=None" not in src
