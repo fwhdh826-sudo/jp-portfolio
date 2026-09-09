@@ -58,8 +58,9 @@ FUNDAMENTALS_COVERAGE_REQUIRED_KEYS = {
     "irregularPeriod", "rowLabelMissing", "invalid",
 }
 FUNDAMENTALS_COVERAGE_ALLOWED_KEYS = FUNDAMENTALS_COVERAGE_REQUIRED_KEYS
-# §4: diagnostics は overlapping（sum は publishedCount と一致しなくてよい）。
-# axis ごとに 1 dict。coverage 契約とは別物 —— 混同しない。
+# §4 / §9: diagnostics は per-axis の分類。各軸は canonical key の完全集合を
+# 持ち（空 {} や部分集合は不可、P2-02）、各軸の合計 == publishedCount。
+# terminal coverage 契約とは独立 —— 混同しない。
 FUNDAMENTALS_DIAGNOSTICS_PROFIT_KEYS = {
     "available", "missing", "rowLabelMissing", "invalidNumeric",
     "irregularPeriod", "negativeBase", "stale", "enrichFailed",
@@ -220,9 +221,18 @@ def _parse_date(raw: Any) -> Any:
         return None
 
 
-def _check_fundamentals_diagnostics(diagnostics: Any, label: str) -> list[str]:
-    """§4: diagnostics block（存在時）の shape を検証する。overlapping counter
-    であり sum == publishedCount は要求しない —— coverage 契約と混同しない。"""
+def _check_fundamentals_diagnostics(
+    diagnostics: Any, label: str, published_count: int | None = None
+) -> list[str]:
+    """§4 / §9 / P2-02: diagnostics block を authoritative に検証する。
+
+    diagnostics は overlapping counter ではあるが、各 published symbol は
+    「軸ごとにちょうど 1 つ」の診断状態を取る（§9）。したがって:
+      - 空 dict / 一部 canonical key 欠落は reject（弱い契約を許さない）
+      - 未知 key・負値・非整数・bool は reject
+      - published_count が渡された場合、各軸の合計 == publishedCount を要求する
+        （coverage 契約とは独立した per-axis totality）
+    """
     violations: list[str] = []
     if not isinstance(diagnostics, dict):
         return [f"{label}: _meta.fundamentals.diagnostics is not a dict"]
@@ -252,12 +262,34 @@ def _check_fundamentals_diagnostics(diagnostics: Any, label: str) -> list[str]:
                 f"{label}: unexpected _meta.fundamentals.diagnostics.{axis} keys "
                 f"{unexpected_keys}"
             )
+        missing_keys = sorted(allowed - set(axis_block))
+        if missing_keys:
+            violations.append(
+                f"{label}: _meta.fundamentals.diagnostics.{axis} missing required keys "
+                f"{missing_keys}"
+            )
+        axis_total = 0
+        axis_ok = True
         for key, value in axis_block.items():
             if not _is_int(value) or value < 0:
+                axis_ok = False
                 violations.append(
                     f"{label}: _meta.fundamentals.diagnostics.{axis}.{key} must be a "
                     "non-negative int"
                 )
+            else:
+                axis_total += value
+        if (
+            axis_ok
+            and not missing_keys
+            and published_count is not None
+            and axis_total != published_count
+        ):
+            violations.append(
+                f"{label}: _meta.fundamentals.diagnostics.{axis} sum {axis_total} does not "
+                f"equal publishedCount {published_count} (each published symbol must have "
+                "exactly one diagnostic state per axis)"
+            )
     return violations
 
 
@@ -271,7 +303,11 @@ def check_fundamentals_meta(
     P5-B005-B4-A-R1 (§7): coverage を truthful/total として fail-closed 検証
     する —— 必須 key の欠落・未知 terminal key・負値/非整数を reject し、
     published_count が渡された場合 sum(coverage.values()) == publishedCount を
-    要求する。diagnostics block も存在時に shape 検証する。"""
+    要求する。
+
+    P5-B005-B4-A-R2 (P2-02): diagnostics block は fundamentals 存在時の必須
+    要素であり、各軸が canonical key の完全集合を持ち（空 {} 不可）、各軸の
+    合計が publishedCount と一致することを fail-closed 検証する。"""
     violations: list[str] = []
     if not isinstance(meta_fundamentals, dict):
         return [f"{label}: _meta.fundamentals is not a dict"]
@@ -280,9 +316,11 @@ def check_fundamentals_meta(
     if unexpected:
         violations.append(f"{label}: unexpected _meta.fundamentals keys {unexpected}")
 
+    # P2-02: fundamentals block が存在するなら diagnostics は必須。省略や空 {} で
+    # production validator を通過できてはならない。
     for required_key in (
         "source", "fetchedAt", "statementMaxAgeDays", "canonicalPeField",
-        "growthScoringStatus", "coverage",
+        "growthScoringStatus", "coverage", "diagnostics",
     ):
         if required_key not in meta_fundamentals:
             violations.append(f"{label}: _meta.fundamentals missing {required_key}")
@@ -344,7 +382,9 @@ def check_fundamentals_meta(
 
     if "diagnostics" in meta_fundamentals:
         violations.extend(
-            _check_fundamentals_diagnostics(meta_fundamentals.get("diagnostics"), label)
+            _check_fundamentals_diagnostics(
+                meta_fundamentals.get("diagnostics"), label, published_count
+            )
         )
 
     aborted = meta_fundamentals.get("aborted")

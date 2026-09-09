@@ -611,6 +611,79 @@ def test_legacy_artifact_without_fundamentals_block_still_valid():
     assert check_production_candidates_stocks_payload(payload, "p") == []
 
 
+# --- P5-B005-B4-A-R2 (P2-02): diagnostics MUST be authoritative -------------
+
+
+def test_p2_02_fundamentals_present_but_diagnostics_omitted_is_rejected():
+    # negative regression CASE 2: PRE dca2501 では violations == []
+    payload = _with_fundamentals(_valid_production_payload())
+    del payload["_meta"]["fundamentals"]["diagnostics"]
+    violations = check_production_candidates_stocks_payload(payload, "p")
+    assert any("diagnostics" in v for v in violations)
+
+
+def test_p2_02_empty_diagnostics_dict_is_rejected():
+    payload = _with_fundamentals(_valid_production_payload())
+    payload["_meta"]["fundamentals"]["diagnostics"] = {}
+    violations = check_production_candidates_stocks_payload(payload, "p")
+    assert any("diagnostics" in v for v in violations)
+
+
+def test_p2_02_empty_profit_axis_is_rejected():
+    # negative regression CASE 3
+    payload = _with_fundamentals(_valid_production_payload())
+    payload["_meta"]["fundamentals"]["diagnostics"]["profitGrowth"] = {}
+    violations = check_production_candidates_stocks_payload(payload, "p")
+    assert any("diagnostics.profitGrowth" in v for v in violations)
+
+
+def test_p2_02_empty_eps_axis_is_rejected():
+    payload = _with_fundamentals(_valid_production_payload())
+    payload["_meta"]["fundamentals"]["diagnostics"]["epsGrowth"] = {}
+    violations = check_production_candidates_stocks_payload(payload, "p")
+    assert any("diagnostics.epsGrowth" in v for v in violations)
+
+
+def test_p2_02_missing_single_canonical_key_is_rejected():
+    payload = _with_fundamentals(_valid_production_payload())
+    del payload["_meta"]["fundamentals"]["diagnostics"]["profitGrowth"]["enrichFailed"]
+    violations = check_production_candidates_stocks_payload(payload, "p")
+    assert any("missing required keys" in v and "profitGrowth" in v for v in violations)
+
+
+def test_p2_02_float_diagnostic_count_is_rejected():
+    payload = _with_fundamentals(_valid_production_payload())
+    payload["_meta"]["fundamentals"]["diagnostics"]["profitGrowth"]["available"] = 1.0
+    violations = check_production_candidates_stocks_payload(payload, "p")
+    assert any("diagnostics.profitGrowth.available" in v for v in violations)
+
+
+def test_p2_02_bool_diagnostic_count_is_rejected():
+    payload = _with_fundamentals(_valid_production_payload())
+    payload["_meta"]["fundamentals"]["diagnostics"]["epsGrowth"]["available"] = True
+    violations = check_production_candidates_stocks_payload(payload, "p")
+    assert any("diagnostics.epsGrowth.available" in v for v in violations)
+
+
+def test_p2_02_profit_axis_sum_not_published_count_is_rejected():
+    payload = _with_fundamentals(_valid_production_payload())
+    payload["_meta"]["fundamentals"]["diagnostics"]["profitGrowth"]["available"] -= 1
+    violations = check_production_candidates_stocks_payload(payload, "p")
+    assert any("diagnostics.profitGrowth sum" in v for v in violations)
+
+
+def test_p2_02_eps_axis_sum_not_published_count_is_rejected():
+    payload = _with_fundamentals(_valid_production_payload())
+    payload["_meta"]["fundamentals"]["diagnostics"]["epsGrowth"]["available"] += 1
+    violations = check_production_candidates_stocks_payload(payload, "p")
+    assert any("diagnostics.epsGrowth sum" in v for v in violations)
+
+
+def test_p2_02_fully_populated_diagnostics_passes():
+    payload = _with_fundamentals(_valid_production_payload())
+    assert check_production_candidates_stocks_payload(payload, "p") == []
+
+
 def test_production_contract_rejects_missing_pipeline_path():
     payload = _valid_production_payload()
     del payload["_meta"]["pipelinePath"]

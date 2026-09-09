@@ -46,6 +46,7 @@ from data.candidate_fundamentals import (
     FundamentalsFetch,
     FundamentalsRateLimit,
     derive_fundamentals,
+    fetch_fundamentals_one,
     is_rate_limit_error,
     read_fundamentals_input,
 )
@@ -404,8 +405,19 @@ class _FakeHandle:
         return _S(self._splits)
 
 
-def test_read_fundamentals_input_statement_failure_returns_missing():
+def test_read_fundamentals_input_statement_failure_returns_invalid():
+    # P2-01 §4C: income statement の fetch/parse 例外は provider 障害であり、
+    # 「行が正当に無い（missing）」ではなく `invalid` として露出する。
     handle = _FakeHandle(raise_on={"income"})
+    fetched = read_fundamentals_input(handle)
+    assert fetched.ok is False
+    assert fetched.failure == "invalid"
+
+
+def test_read_fundamentals_input_empty_statement_is_missing_not_invalid():
+    # P2-01 §5: 成功応答だが期が空 → genuine data absence（missing のまま）。
+    income = _FakeFrame([], {})
+    handle = _FakeHandle(income=income, balance=_FakeFrame([], {}))
     fetched = read_fundamentals_input(handle)
     assert fetched.ok is False
     assert fetched.failure == "missing"
@@ -453,6 +465,25 @@ def test_is_rate_limit_error_ignores_unrelated():
     assert is_rate_limit_error(RuntimeError("connection reset")) is False
 
 
+def test_fetch_fundamentals_one_provider_exception_returns_invalid():
+    # P2-01 §4C: ticker 構築/読み取りが非 rate-limit 例外で落ちたら provider
+    # 障害 → failure="invalid"（missing ではない）。
+    def boom_factory(symbol):
+        raise RuntimeError("connection reset by peer")
+
+    fetched = fetch_fundamentals_one("0001", ticker_factory=boom_factory)
+    assert fetched.ok is False
+    assert fetched.failure == "invalid"
+
+
+def test_fetch_fundamentals_one_rate_limit_propagates_as_abort():
+    def rl_factory(symbol):
+        raise RuntimeError("HTTP 429 Too Many Requests")
+
+    with pytest.raises(FundamentalsRateLimit):
+        fetch_fundamentals_one("0001", ticker_factory=rl_factory)
+
+
 def test_read_fundamentals_input_rate_limit_propagates():
     handle = _FakeHandle(raise_on={"income"})
     handle._raise_on = set()
@@ -498,11 +529,12 @@ def test_enricher_rate_limit_aborts_remaining_symbols():
     assert enr.abort_reason and "rate" in enr.abort_reason.lower()
     # 最初の 1 件は正常導出
     assert items[0]["profitGrowth"] == pytest.approx(20.0)
-    # abort 後は null + missing status
+    # P2-01 §4D/§4E: rate-limit を引いた symbol と abort 後に fetch されなかった
+    # symbol は「財務的に missing」ではなく provider/enrichment 障害。
     for it in items[1:]:
         assert it["profitGrowth"] is None
         assert it["epsGrowth"] is None
-        assert it["fundamentalsStatus"] == FUNDAMENTALS_STATUS_MISSING
+        assert it["fundamentalsStatus"] == FUNDAMENTALS_STATUS_INVALID
 
     meta = enr.meta([it["code"] for it in items])
     assert meta["aborted"] is True
@@ -511,6 +543,17 @@ def test_enricher_rate_limit_aborts_remaining_symbols():
     assert meta["canonicalPeField"] == "per"
     assert meta["growthScoringStatus"] == "reserved_zero_weight"
     assert sum(meta["coverage"].values()) == 4
+    # 3 件（rate-limit 1 + skipped 2）が invalid、1 件が present
+    assert meta["coverage"]["invalid"] == 3
+    assert meta["coverage"]["present"] == 1
+    assert meta["coverage"]["missing"] == 0
+    # per-axis diagnostics: 3 件 enrichFailed、1 件 available、各軸合計 == 4
+    assert meta["diagnostics"]["profitGrowth"]["enrichFailed"] == 3
+    assert meta["diagnostics"]["epsGrowth"]["enrichFailed"] == 3
+    assert meta["diagnostics"]["profitGrowth"]["available"] == 1
+    assert meta["diagnostics"]["epsGrowth"]["available"] == 1
+    assert sum(meta["diagnostics"]["profitGrowth"].values()) == 4
+    assert sum(meta["diagnostics"]["epsGrowth"].values()) == 4
 
 
 def test_enricher_statement_failure_is_fail_soft_per_symbol():
@@ -528,6 +571,62 @@ def test_enricher_statement_failure_is_fail_soft_per_symbol():
     assert items[0]["fundamentalsStatus"] == FUNDAMENTALS_STATUS_AVAILABLE
     assert items[1]["fundamentalsStatus"] == FUNDAMENTALS_STATUS_MISSING
     assert items[2]["fundamentalsStatus"] == FUNDAMENTALS_STATUS_AVAILABLE
+
+
+def test_enricher_provider_failure_is_invalid_not_missing():
+    # P2-01 §4C / negative regression CASE 1: provider fetch 障害
+    # （failure="invalid"）は missing authority ではなく invalid / enrichFailed。
+    def fetch_fn(code):
+        if code == "0002":
+            return FundamentalsFetch({}, {}, [], [], False, ok=False, failure="invalid")
+        return _valid_fetch()
+
+    enr = FundamentalsEnricher(fetch_fn, now=OBSERVED)
+    items = [{"code": c, "per": 10.0, "roe": 12.0, "price": 1000.0} for c in ("0001", "0002", "0003")]
+    for it in items:
+        enr.enrich(it, it["code"])
+
+    assert enr.aborted is False
+    assert items[1]["fundamentalsStatus"] == FUNDAMENTALS_STATUS_INVALID
+    assert items[1]["profitGrowth"] is None and items[1]["epsGrowth"] is None
+    meta = enr.meta([it["code"] for it in items])
+    assert meta["coverage"]["invalid"] == 1
+    assert meta["coverage"]["missing"] == 0
+    assert meta["diagnostics"]["profitGrowth"]["enrichFailed"] == 1
+    assert meta["diagnostics"]["epsGrowth"]["enrichFailed"] == 1
+    assert sum(meta["coverage"].values()) == 3
+    assert sum(meta["diagnostics"]["profitGrowth"].values()) == 3
+    assert sum(meta["diagnostics"]["epsGrowth"].values()) == 3
+
+
+def test_enricher_three_symbol_rate_limit_state_machine():
+    # §6: symbol1 normal / symbol2 rate-limit exception / symbol3 は provider
+    # fetch を呼ばれてはならない。
+    calls: list[str] = []
+
+    def fetch_fn(code):
+        calls.append(code)
+        if code == "0002":
+            raise FundamentalsRateLimit("HTTP 429 Too Many Requests")
+        return _valid_fetch()
+
+    enr = FundamentalsEnricher(fetch_fn, now=OBSERVED)
+    items = [{"code": c, "per": 10.0, "roe": 12.0, "price": 1000.0} for c in ("0001", "0002", "0003")]
+    for it in items:
+        enr.enrich(it, it["code"])
+
+    assert calls == ["0001", "0002"]  # 0003 は fetch されない
+    assert enr.aborted is True
+    assert items[0]["fundamentalsStatus"] == FUNDAMENTALS_STATUS_AVAILABLE
+    assert items[1]["fundamentalsStatus"] == FUNDAMENTALS_STATUS_INVALID
+    assert items[2]["fundamentalsStatus"] == FUNDAMENTALS_STATUS_INVALID
+    meta = enr.meta([it["code"] for it in items])
+    assert meta["aborted"] is True and meta["abortReason"]
+    assert meta["coverage"]["invalid"] == 2 and meta["coverage"]["present"] == 1
+    assert meta["diagnostics"]["profitGrowth"]["enrichFailed"] == 2
+    assert meta["diagnostics"]["epsGrowth"]["enrichFailed"] == 2
+    assert sum(meta["diagnostics"]["profitGrowth"].values()) == 3
+    assert sum(meta["diagnostics"]["epsGrowth"].values()) == 3
 
 
 def test_enricher_meta_coverage_only_counts_published():
