@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-09-09T10:21:52.920031+09:00",
-  "sourceUpdatedAt": "2026-09-09T01:11:46+00:00",
+  "updatedAt": "2026-09-09T17:17:59.451265+09:00",
+  "sourceUpdatedAt": "2026-09-09T08:00:11+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -17,84 +17,6 @@
       "items": []
     },
     "jp_semiconductor": {
-      "avgSentiment": 1.0,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
-      "isStale": false,
-      "topNegativeTitle": "Asian Chip Stocks Rise, Crude Climbs Toward $100: Markets Wrap",
-      "topPositiveTitle": "Asian Chip Stocks Rise, Crude Climbs Toward $100: Markets Wrap",
-      "items": [
-        {
-          "title": "Asian Chip Stocks Rise, Crude Climbs Toward $100: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-09-08T22:11:28+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-08/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "jp_semiconductor",
-            "market"
-          ]
-        }
-      ]
-    },
-    "us_broad": {
-      "avgSentiment": -0.223,
-      "negativeCount": 1,
-      "positiveCount": 0,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 3,
-      "isStale": false,
-      "topNegativeTitle": "Chile Set to Hold Rates as Fed Risk Overshadows Growth Slump",
-      "topPositiveTitle": "Bessent’s ‘Fever’-Cooling Debt Buybacks Put Wall St. on Edge",
-      "items": [
-        {
-          "title": "Chile Set to Hold Rates as Fed Risk Overshadows Growth Slump",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-09-08T10:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-08/chile-set-to-hold-rates-as-fed-risk-overshadows-slumping-economy",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Bessent’s ‘Fever’-Cooling Debt Buybacks Put Wall St. on Edge",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-08T19:17:26+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-08/bessent-s-fever-quelling-debt-buybacks-put-wall-street-on-edge",
-          "tags": [
-            "dividend",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "NY Fed Survey: Americans Feeling Worse About Finances in August",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-08T15:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-08/americans-feeling-worse-about-finances-in-august-ny-fed-survey",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        }
-      ]
-    },
-    "us_growth": {
       "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
@@ -105,6 +27,58 @@
       "topNegativeTitle": null,
       "topPositiveTitle": null,
       "items": []
+    },
+    "us_broad": {
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "US Stocks Drift as $100 Brent Lifts Inflation Risk: Markets Wrap",
+      "topPositiveTitle": "US Stocks Drift as $100 Brent Lifts Inflation Risk: Markets Wrap",
+      "items": [
+        {
+          "title": "US Stocks Drift as $100 Brent Lifts Inflation Risk: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-08T22:11:28+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-08/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "market",
+            "us_broad"
+          ]
+        }
+      ]
+    },
+    "us_growth": {
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "Chinese Inflation Revives as Oil Spike, AI Boom Feed Into Prices",
+      "topPositiveTitle": "Chinese Inflation Revives as Oil Spike, AI Boom Feed Into Prices",
+      "items": [
+        {
+          "title": "Chinese Inflation Revives as Oil Spike, AI Boom Feed Into Prices",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-09T01:36:52+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-09/china-consumer-producer-price-pressures-revived-by-energy-spike",
+          "tags": [
+            "commodity",
+            "market",
+            "us_growth"
+          ]
+        }
+      ]
     },
     "global_broad": {
       "avgSentiment": 0,
@@ -119,30 +93,16 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": -0.67,
-      "negativeCount": 1,
+      "avgSentiment": 0,
+      "negativeCount": 0,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Gold Holds Decline as Mideast Tensions Bolster Rate-Hike Case",
-      "topPositiveTitle": "Gold Holds Decline as Mideast Tensions Bolster Rate-Hike Case",
-      "items": [
-        {
-          "title": "Gold Holds Decline as Mideast Tensions Bolster Rate-Hike Case",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-09-08T23:25:47+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-08/gold-holds-decline-as-mideast-tensions-bolster-rate-hike-case",
-          "tags": [
-            "gold",
-            "market",
-            "rates"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "reit": {
       "avgSentiment": 0,
@@ -157,79 +117,79 @@
       "items": []
     },
     "dividend": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0.33,
       "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 3,
-      "sourceCount": 2,
-      "itemCount": 3,
+      "positiveCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Treasury Buybacks Won't Fix US Yields, Strategist Says",
-      "topPositiveTitle": "Treasury Buybacks Won't Fix US Yields, Strategist Says",
+      "topNegativeTitle": "Dollar Eyes Seven-Month Low With US Buybacks, Inflation In Focus",
+      "topPositiveTitle": "Dollar Eyes Seven-Month Low With US Buybacks, Inflation In Focus",
       "items": [
         {
-          "title": "Treasury Buybacks Won't Fix US Yields, Strategist Says",
+          "title": "Dollar Eyes Seven-Month Low With US Buybacks, Inflation In Focus",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-08T23:49:59+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-08/treasury-buybacks-won-t-fix-us-yields-strategist-says-video",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-09T07:34:57+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-09/dollar-eyes-seven-month-low-with-us-buybacks-inflation-in-focus",
           "tags": [
             "dividend",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Bessent’s ‘Fever’-Cooling Debt Buybacks Put Wall St. on Edge",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-08T19:17:26+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-08/bessent-s-fever-quelling-debt-buybacks-put-wall-street-on-edge",
-          "tags": [
-            "dividend",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Bessent Says Buyback Move Aimed at Quelling Market ‘Fever’",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-08T15:55:33+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-08/bessent-says-buyback-move-was-aimed-at-quelling-market-fever",
-          "tags": [
-            "dividend",
+            "fx",
             "market"
           ]
         }
       ]
     },
     "macro_risk": {
-      "avgSentiment": 0.201,
+      "avgSentiment": 0.031,
       "negativeCount": 1,
-      "positiveCount": 4,
-      "neutralCount": 5,
+      "positiveCount": 2,
+      "neutralCount": 8,
       "sourceCount": 2,
-      "itemCount": 10,
+      "itemCount": 11,
       "isStale": false,
-      "topNegativeTitle": "UK Pays Most Since 1998 to Borrow After Gilt Selloff",
-      "topPositiveTitle": "A Case Against the \"Conventional Wisdom\" of Investing",
+      "topNegativeTitle": "French Industrial Output Drops in Blow to Economic Outlook",
+      "topPositiveTitle": "UK Youth Unemployment Czar Hints at Change in Minimum Wage",
       "items": [
         {
-          "title": "UK Pays Most Since 1998 to Borrow After Gilt Selloff",
+          "title": "French Industrial Output Drops in Blow to Economic Outlook",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-08T07:42:16+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-08/uk-set-to-pay-most-since-1998-for-borrowing-after-gilt-selloff",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-09-09T06:45:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-09/french-industrial-output-drops-in-blow-to-economic-outlook",
           "tags": [
             "macro_risk",
-            "market",
-            "rates"
+            "market"
+          ]
+        },
+        {
+          "title": "Morgan Stanley Says War-Weary Oil Traders Shun Long-Term Bets",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-09T06:06:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-09/morgan-stanley-says-war-weary-oil-traders-shun-long-term-bets",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Ex-BOK Governor Says No Need to Panic Over Short-Term Won Moves",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-09T02:45:27+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-09/ex-bok-governor-says-no-need-to-panic-over-short-term-won-moves",
+          "tags": [
+            "fx",
+            "macro_risk",
+            "market"
           ]
         },
         {
@@ -246,39 +206,14 @@
           ]
         },
         {
-          "title": "Chile Holds Key Rate Steady and Casts Doubt on Economic Recovery",
-          "source": "Bloomberg Economics",
+          "title": "Brent Oil Hits $100 as US-Iran War Shows Little Sign of Abating",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-08T20:59:58+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-08/chile-holds-key-rate-at-4-5-on-inflation-risks-and-weak-economy",
+          "publishedAt": "2026-09-08T22:03:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-08/latest-oil-market-news-and-analysis-for-sept-9",
           "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Why the US-Canada Trade War Is Escalating",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-08T16:12:32+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-08/why-the-us-canada-trade-war-is-escalating",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "US-Canada Trade War Has Small Businesses Struggling With Tariff Shock",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-08T13:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/features/2026-09-08/us-canada-trade-war-has-small-businesses-struggling-with-tariff-shock",
-          "tags": [
+            "commodity",
             "geopolitical",
             "macro_risk",
             "market"
@@ -287,57 +222,46 @@
       ]
     },
     "fx": {
-      "avgSentiment": 0.332,
+      "avgSentiment": 0.132,
       "negativeCount": 0,
-      "positiveCount": 4,
-      "neutralCount": 1,
+      "positiveCount": 2,
+      "neutralCount": 3,
       "sourceCount": 2,
       "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Hedge Funds Bet Yen Will Strengthen Beyond 150 by Year-End",
-      "topPositiveTitle": "A Case Against the \"Conventional Wisdom\" of Investing",
+      "topNegativeTitle": "Bolivia Central Bank to Start Dollar Sales to Banks Wednesday",
+      "topPositiveTitle": "Dollar Eyes Seven-Month Low With US Buybacks, Inflation In Focus",
       "items": [
         {
-          "title": "Hedge Funds Bet Yen Will Strengthen Beyond 150 by Year-End",
-          "source": "Bloomberg Markets",
+          "title": "Bolivia Central Bank to Start Dollar Sales to Banks Wednesday",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-09T00:49:05+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-09/hedge-funds-bet-yen-will-strengthen-beyond-150-by-year-end",
+          "publishedAt": "2026-09-09T02:58:15+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-09/bolivia-central-bank-to-start-dollar-sales-to-banks-wednesday",
           "tags": [
             "fx",
             "market"
           ]
         },
         {
-          "title": "Yuan Steps Into Carry Trade Spotlight Over Yen, Strategists Say",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-09T00:51:15+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-09/yuan-steps-into-carry-trade-spotlight-over-yen-strategists-say",
+          "title": "Ex-BOK Governor Says No Need to Panic Over Short-Term Won Moves",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-09T02:45:27+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-09/ex-bok-governor-says-no-need-to-panic-over-short-term-won-moves",
           "tags": [
             "fx",
-            "market"
-          ]
-        },
-        {
-          "title": "Bessent Dares Traders on Yen Bets: ‘I Am the House Now’",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-08T23:53:04+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-08/bessent-dares-traders-on-yen-bets-i-am-the-house-now-video",
-          "tags": [
-            "fx",
+            "macro_risk",
             "market"
           ]
         },
         {
           "title": "Treasury Secretary Bessent Says He Has ‘Pretty Good Insight’ on Yen Moves",
           "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
           "publishedAt": "2026-09-08T22:16:03+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-08/bessent-dares-traders-to-bet-against-yen-i-am-the-house-now",
           "tags": [
@@ -346,129 +270,123 @@
           ]
         },
         {
-          "title": "A Case Against the \"Conventional Wisdom\" of Investing",
+          "title": "Dollar Eyes Seven-Month Low With US Buybacks, Inflation In Focus",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-09-08T21:56:45+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-08/a-case-against-the-conventional-wisdom-of-investing-video",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-09T07:34:57+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-09/dollar-eyes-seven-month-low-with-us-buybacks-inflation-in-focus",
+          "tags": [
+            "dividend",
+            "fx",
+            "market"
+          ]
+        },
+        {
+          "title": "Hedge Funds Bet Yen Will Strengthen Beyond 150 by Year-End",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-09T00:49:05+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-09/hedge-funds-bet-yen-will-strengthen-beyond-150-by-year-end",
           "tags": [
             "fx",
-            "macro_risk",
             "market"
           ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": -0.223,
-      "negativeCount": 3,
-      "positiveCount": 1,
-      "neutralCount": 2,
+      "avgSentiment": 0.11,
+      "negativeCount": 1,
+      "positiveCount": 2,
+      "neutralCount": 0,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Gold Holds Decline as Mideast Tensions Bolster Rate-Hike Case",
-      "topPositiveTitle": "RBA Stands Ready to Raise Rates Again if Needed, Hauser Says",
+      "topNegativeTitle": "One ECB Rate Hike 'Could Be Enough,' ING Economist Says",
+      "topPositiveTitle": "Poland to Hold Interest Rates With Inflation at 14-Month High",
       "items": [
         {
-          "title": "Gold Holds Decline as Mideast Tensions Bolster Rate-Hike Case",
+          "title": "One ECB Rate Hike 'Could Be Enough,' ING Economist Says",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-09-08T23:25:47+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-08/gold-holds-decline-as-mideast-tensions-bolster-rate-hike-case",
-          "tags": [
-            "gold",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Chile Set to Hold Rates as Fed Risk Overshadows Growth Slump",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-09-08T10:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-08/chile-set-to-hold-rates-as-fed-risk-overshadows-slumping-economy",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "UK Pays Most Since 1998 to Borrow After Gilt Selloff",
-          "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-09-08T07:42:16+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-08/uk-set-to-pay-most-since-1998-for-borrowing-after-gilt-selloff",
+          "publishedAt": "2026-09-09T07:44:17+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-09/one-ecb-rate-hike-could-be-enough-ing-economist-says-video",
           "tags": [
-            "macro_risk",
             "market",
             "rates"
           ]
         },
         {
-          "title": "Treasury Buybacks Won't Fix US Yields, Strategist Says",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-08T23:49:59+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-08/treasury-buybacks-won-t-fix-us-yields-strategist-says-video",
+          "title": "Poland to Hold Interest Rates With Inflation at 14-Month High",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-09T04:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-09/poland-to-hold-interest-rates-with-inflation-at-14-month-high",
           "tags": [
-            "dividend",
             "market",
             "rates"
           ]
         },
         {
-          "title": "Bessent’s ‘Fever’-Cooling Debt Buybacks Put Wall St. on Edge",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-08T19:17:26+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-08/bessent-s-fever-quelling-debt-buybacks-put-wall-street-on-edge",
+          "title": "RBA Stands Ready to Raise Rates Again if Needed, Hauser Says",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-08T04:27:41+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-08/rba-s-hunter-says-inflation-top-priority-may-have-to-raise-rate",
           "tags": [
-            "dividend",
             "market",
-            "rates",
-            "us_broad"
+            "rates"
           ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.25,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 3,
+      "positiveCount": 0,
+      "neutralCount": 8,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 8,
       "isStale": false,
-      "topNegativeTitle": "Latest Oil Market News and Analysis for Sept. 9",
-      "topPositiveTitle": "Asian Chip Stocks Rise, Crude Climbs Toward $100: Markets Wrap",
+      "topNegativeTitle": "Commodities Bull Market Is Underpriced: 3-Minutes MLIV",
+      "topPositiveTitle": "Commodities Bull Market Is Underpriced: 3-Minutes MLIV",
       "items": [
         {
-          "title": "Latest Oil Market News and Analysis for Sept. 9",
+          "title": "Commodities Bull Market Is Underpriced: 3-Minutes MLIV",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-08T22:03:16+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-08/latest-oil-market-news-and-analysis-for-sept-9",
+          "publishedAt": "2026-09-09T07:21:51+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-09/commodities-bull-market-is-underpriced-3-minutes-mliv-video",
           "tags": [
             "commodity",
             "market"
           ]
         },
         {
-          "title": "Qatar Has Widest Deficit in a Decade as Hormuz Ties Up Gas Trade",
-          "source": "Bloomberg Economics",
+          "title": "China’s Huachen Energy Seeks Another Six-Year Extension on Bonds",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-08T14:39:30+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-08/qatar-has-widest-deficit-in-a-decade-as-hormuz-ties-up-gas-trade",
+          "publishedAt": "2026-09-09T07:04:44+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-09/china-s-huachen-energy-seeks-another-six-year-extension-on-bonds",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "Russia’s Key Black Sea Port Hit in Overnight Drone Attack",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-09T06:59:56+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-09/russia-s-key-black-sea-port-hit-in-overnight-drone-attack",
           "tags": [
             "commodity",
             "geopolitical",
@@ -476,56 +394,71 @@
           ]
         },
         {
-          "title": "Westwood CEO on the First ETF Listing on the TXSE",
+          "title": "Morgan Stanley Says War-Weary Oil Traders Shun Long-Term Bets",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-08T21:32:14+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-08/westwood-ceo-on-the-first-etf-listing-on-the-txse-video",
+          "publishedAt": "2026-09-09T06:06:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-09/morgan-stanley-says-war-weary-oil-traders-shun-long-term-bets",
           "tags": [
             "commodity",
-            "market",
-            "trust"
+            "geopolitical",
+            "macro_risk",
+            "market"
           ]
         },
         {
-          "title": "Asian Chip Stocks Rise, Crude Climbs Toward $100: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-09-08T22:11:28+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-08/stock-market-today-dow-s-p-live-updates",
+          "title": "Chinese Inflation Revives as Oil Spike, AI Boom Feed Into Prices",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-09T01:36:52+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-09/china-consumer-producer-price-pressures-revived-by-energy-spike",
           "tags": [
             "commodity",
-            "jp_semiconductor",
-            "market"
+            "market",
+            "us_growth"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.067,
-      "negativeCount": 1,
-      "positiveCount": 2,
-      "neutralCount": 7,
-      "sourceCount": 3,
-      "itemCount": 10,
+      "avgSentiment": 0.074,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 8,
+      "sourceCount": 2,
+      "itemCount": 9,
       "isStale": false,
-      "topNegativeTitle": "茂木外相 イラン外相と電話会談“事態沈静化向け柔軟対応を”",
+      "topNegativeTitle": "Russia’s Key Black Sea Port Hit in Overnight Drone Attack",
       "topPositiveTitle": "Carney Says Tariffs on US Goods Meant to Protect Canada, Not Escalate Conflict",
       "items": [
         {
-          "title": "茂木外相 イラン外相と電話会談“事態沈静化向け柔軟対応を”",
-          "source": "NHK 経済",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-08T11:45:22+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20260908de49140",
+          "title": "Russia’s Key Black Sea Port Hit in Overnight Drone Attack",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-09T06:59:56+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-09/russia-s-key-black-sea-port-hit-in-overnight-drone-attack",
           "tags": [
+            "commodity",
             "geopolitical",
             "market"
-          ],
-          "titleJa": "茂木外相 イラン外相と電話会談“事態沈静化向け柔軟対応を”"
+          ]
+        },
+        {
+          "title": "Morgan Stanley Says War-Weary Oil Traders Shun Long-Term Bets",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-09T06:06:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-09/morgan-stanley-says-war-weary-oil-traders-shun-long-term-bets",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
         },
         {
           "title": "UK Food Inflation Will Hit 6% on El Niño and Drought, Firms Warn",
@@ -541,6 +474,20 @@
           ]
         },
         {
+          "title": "Brent Oil Hits $100 as US-Iran War Shows Little Sign of Abating",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-08T22:03:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-08/latest-oil-market-news-and-analysis-for-sept-9",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
           "title": "Chile Holds Key Rate Steady and Casts Doubt on Economic Recovery",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
@@ -550,32 +497,6 @@
           "tags": [
             "geopolitical",
             "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Why the US-Canada Trade War Is Escalating",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-08T16:12:32+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-08/why-the-us-canada-trade-war-is-escalating",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Qatar Has Widest Deficit in a Decade as Hormuz Ties Up Gas Trade",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-08T14:39:30+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-08/qatar-has-widest-deficit-in-a-decade-as-hormuz-ties-up-gas-trade",
-          "tags": [
-            "commodity",
-            "geopolitical",
             "market"
           ]
         }
