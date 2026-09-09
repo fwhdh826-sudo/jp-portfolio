@@ -43,6 +43,7 @@ from __future__ import annotations
 import json
 import math
 import os
+import re
 from dataclasses import dataclass, field
 from datetime import date, datetime, timezone
 from pathlib import Path
@@ -95,14 +96,21 @@ FUNDAMENTALS_STATUSES = (
     FUNDAMENTALS_STATUS_INVALID,
 )
 
-# _meta.fundamentals.coverage の bucket（各 symbol はちょうど 1 bucket へ寄与する）。
-COVERAGE_PRESENT = "present"
-COVERAGE_STALE = "stale"
-COVERAGE_MISSING = "missing"
-COVERAGE_NEGATIVE_BASE = "negativeBase"
-COVERAGE_SPLIT_GUARD_BLOCKED = "splitGuardBlocked"
-COVERAGE_IRREGULAR_PERIOD = "irregularPeriod"
-COVERAGE_ROW_LABEL_MISSING = "rowLabelMissing"
+# _meta.fundamentals.coverage の bucket（§3: TOTAL かつ MUTUALLY EXCLUSIVE。
+# publish 対象の各 symbol はちょうど 1 bucket へ寄与し、
+# sum(coverage.values()) == publishedCount が常に成り立つ）。
+COVERAGE_PRESENT = "present"                    # profitGrowth / epsGrowth 双方が有効
+COVERAGE_STALE = "stale"                        # FY0 が 456 日より古い（statement 全体）
+COVERAGE_MISSING = "missing"                    # statement / FY1 列が取得できない
+COVERAGE_NEGATIVE_BASE = "negativeBase"         # FY1 ベースが非正
+COVERAGE_SPLIT_GUARD_BLOCKED = "splitGuardBlocked"  # 分割調整が確定できない（EPS 軸）
+COVERAGE_IRREGULAR_PERIOD = "irregularPeriod"   # FY0-FY1 span が 335..395 日外
+COVERAGE_ROW_LABEL_MISSING = "rowLabelMissing"  # 行ラベル自体が不在
+# 監査 P2-A の repair で追加した唯一の terminal bucket（§3: implementation
+# constraint により unavoidable）。outer fail-soft 例外 / provider 障害 /
+# statement セルが非有限、のいずれかで fundamental を確定させられなかった
+# published symbol を、`missing`（＝行が無い）と混同せず truthfully 計上する。
+COVERAGE_INVALID = "invalid"
 
 COVERAGE_BUCKETS = (
     COVERAGE_PRESENT,
@@ -112,15 +120,84 @@ COVERAGE_BUCKETS = (
     COVERAGE_SPLIT_GUARD_BLOCKED,
     COVERAGE_IRREGULAR_PERIOD,
     COVERAGE_ROW_LABEL_MISSING,
+    COVERAGE_INVALID,
 )
+
+# ── 決定的 terminal precedence（§3 / §6）──────────────────────────────
+# profitGrowth / epsGrowth のどちらも `present` にならないとき、terminal
+# coverage bucket は「非可用となった軸（複数可）の原因」のうち、この順序で
+# 最初に一致するものを採る。coincident cause はこの一覧で解決する ——
+# コードの出現順に暗黙依存しない（§3）。順序の意図は
+# 「上流 / データ非可用」→「データ品質」→「データは揃うが計算が誤誘導的」。
+_COVERAGE_PRECEDENCE = (
+    COVERAGE_STALE,               # 1. FY0 が古すぎて statement 全体が使えない
+    COVERAGE_MISSING,             # 2. statement / FY1 列そのものが無い
+    COVERAGE_ROW_LABEL_MISSING,   # 3. 必要な行ラベルが無い
+    COVERAGE_INVALID,             # 4. 行はあるが非有限 / provider 障害
+    COVERAGE_IRREGULAR_PERIOD,    # 5. period 構造が YoY に使えない
+    COVERAGE_SPLIT_GUARD_BLOCKED, # 6. 分割調整が確定できない（EPS 軸）
+    COVERAGE_NEGATIVE_BASE,       # 7. データは揃うが FY1 ベースが非正
+)
+
+# ── axis-specific diagnostics（§4）───────────────────────────────────
+# coverage（exclusive, sum == publishedCount）と混同しない overlapping な
+# per-axis 観測値。各軸は published symbol ごとにちょうど 1 つの reason を
+# 取る（mixed-axis authority を保存する）。
+_AXIS_AVAILABLE = "available"
+_AXIS_MISSING = "missing"
+_AXIS_ROW_LABEL_MISSING = "rowLabelMissing"
+_AXIS_INVALID_NUMERIC = "invalidNumeric"
+_AXIS_IRREGULAR_PERIOD = "irregularPeriod"
+_AXIS_SPLIT_GUARD_BLOCKED = "splitGuardBlocked"  # EPS 軸のみ
+_AXIS_NEGATIVE_BASE = "negativeBase"
+_AXIS_STALE = "stale"
+_AXIS_ENRICH_FAILED = "enrichFailed"  # provider 障害 / rate-limit abort / outer 例外
+
+_DIAG_PROFIT_KEYS = (
+    _AXIS_AVAILABLE,
+    _AXIS_MISSING,
+    _AXIS_ROW_LABEL_MISSING,
+    _AXIS_INVALID_NUMERIC,
+    _AXIS_IRREGULAR_PERIOD,
+    _AXIS_NEGATIVE_BASE,
+    _AXIS_STALE,
+    _AXIS_ENRICH_FAILED,
+)
+_DIAG_EPS_KEYS = _DIAG_PROFIT_KEYS + (_AXIS_SPLIT_GUARD_BLOCKED,)
+
+# axis reason → terminal coverage bucket。`available` は非可用軸の集合に
+# 入らないため写像不要。
+_AXIS_TO_COVERAGE = {
+    _AXIS_MISSING: COVERAGE_MISSING,
+    _AXIS_ROW_LABEL_MISSING: COVERAGE_ROW_LABEL_MISSING,
+    _AXIS_INVALID_NUMERIC: COVERAGE_INVALID,
+    _AXIS_IRREGULAR_PERIOD: COVERAGE_IRREGULAR_PERIOD,
+    _AXIS_SPLIT_GUARD_BLOCKED: COVERAGE_SPLIT_GUARD_BLOCKED,
+    _AXIS_NEGATIVE_BASE: COVERAGE_NEGATIVE_BASE,
+    _AXIS_STALE: COVERAGE_STALE,
+    _AXIS_ENRICH_FAILED: COVERAGE_INVALID,
+}
 
 _FETCH_ATTEMPTS = 1  # zero-weight shadow channel。retry storm を持ち込まない（§15）。
 
-_RATE_LIMIT_MARKERS = (
+# ── rate-limit 検出（§8: bare "429" substring を廃止）────────────────
+# text fallback の "429" は必ず数値境界と context を要求し、
+# "4290.T connection reset" / "account 1429 unavailable" のような無関係
+# 文字列で false-positive しないようにする。
+_RATE_LIMIT_TEXT_MARKERS = (
     "rate limit",
+    "rate-limit",
     "ratelimit",
     "too many requests",
-    "429",
+)
+_RATE_LIMIT_429_RE = re.compile(
+    # HTTP/status/response/code/error のような context 語の直後（非数字 0..6 文字）
+    # に、前後を数字・ドットで囲まれない 429。
+    r"\b(?:http|https|status|status[_-]?code|statuscode|response|resp|err|error|code)\b"
+    r"[^0-9]{0,6}429(?![\d.])"
+    # または「429 Too Many Requests」「429 Client Error」「429 rate ...」。
+    r"|(?<![\d.])429(?![\d.])\s*(?:too many requests|client error|rate)",
+    re.IGNORECASE,
 )
 
 
@@ -186,9 +263,20 @@ class FundamentalsResult:
     shadow_per: Optional[float]
     shadow_roe: Optional[float]
     coverage: str
+    # §4 axis-specific diagnostics。coverage（exclusive）とは別契約の per-axis
+    # reason。mixed-axis authority（片軸 valid / 片軸 block）を保存する。
+    profit_axis: str = _AXIS_MISSING
+    eps_axis: str = _AXIS_MISSING
 
 
-def _null_result(status: str, fiscal_period_end: Optional[str] = None, coverage: str = COVERAGE_MISSING) -> FundamentalsResult:
+def _null_result(
+    status: str,
+    fiscal_period_end: Optional[str] = None,
+    coverage: str = COVERAGE_MISSING,
+    *,
+    profit_axis: str = _AXIS_MISSING,
+    eps_axis: str = _AXIS_MISSING,
+) -> FundamentalsResult:
     return FundamentalsResult(
         profit_growth=None,
         eps_growth=None,
@@ -197,6 +285,8 @@ def _null_result(status: str, fiscal_period_end: Optional[str] = None, coverage:
         shadow_per=None,
         shadow_roe=None,
         coverage=coverage,
+        profit_axis=profit_axis,
+        eps_axis=eps_axis,
     )
 
 
@@ -215,68 +305,83 @@ def derive_fundamentals(
     network I/O 一切なし。全入力は明示的に注入される（§22）。
     """
     if not period_ends:
-        return _null_result(FUNDAMENTALS_STATUS_INVALID, coverage=COVERAGE_MISSING)
+        return _null_result(
+            FUNDAMENTALS_STATUS_INVALID,
+            coverage=COVERAGE_MISSING,
+            profit_axis=_AXIS_MISSING,
+            eps_axis=_AXIS_MISSING,
+        )
 
-    fiscal_period_end = period_ends[0].isoformat()
+    # ── FY0 / FY1 を period identity で決定する（§10 T9）────────────────
+    # provider の列順に依存しない。データが period-end を持つ以上、それを
+    # 単一 authority として降順に並べ替える。厳密降順にできない
+    # （重複 period-end 等）場合は span guard が deterministic に fail-closed
+    # する（span 0 は 335..395 外）。
+    sorted_ends = sorted(period_ends, reverse=True)
+    fiscal_period_end = sorted_ends[0].isoformat()
+    fy_order = sorted(range(len(period_ends)), key=lambda i: period_ends[i], reverse=True)
+    fy0_idx: Optional[int] = fy_order[0]
+    fy1_idx: Optional[int] = fy_order[1] if len(fy_order) >= 2 else None
 
     # 2 つの時計を混同しない（§13）: ここで見るのは財務諸表の freshness
     # （fiscalPeriodEnd / 456 日 authority）であって dataset freshness ではない。
-    if not _he_statement_age_ok(period_ends, observed_at):
+    if not _he_statement_age_ok(sorted_ends, observed_at):
         return _null_result(
-            FUNDAMENTALS_STATUS_STALE, fiscal_period_end=fiscal_period_end, coverage=COVERAGE_STALE
+            FUNDAMENTALS_STATUS_STALE,
+            fiscal_period_end=fiscal_period_end,
+            coverage=COVERAGE_STALE,
+            profit_axis=_AXIS_STALE,
+            eps_axis=_AXIS_STALE,
         )
 
     ni_label = _ni_label(income_stmt)
     eps_label = _he_eps_label(income_stmt)
 
-    ni0, ni0_kind = _cell(income_stmt, ni_label, 0)
-    ni1, ni1_kind = _cell(income_stmt, ni_label, 1)
-    eps0, eps0_kind = _cell(income_stmt, eps_label, 0)
-    eps1, eps1_kind = _cell(income_stmt, eps_label, 1)
+    ni0, ni0_kind = _cell(income_stmt, ni_label, fy0_idx) if fy0_idx is not None else (None, _CELL_INDEX_MISSING)
+    ni1, ni1_kind = _cell(income_stmt, ni_label, fy1_idx) if fy1_idx is not None else (None, _CELL_INDEX_MISSING)
+    eps0, eps0_kind = _cell(income_stmt, eps_label, fy0_idx) if fy0_idx is not None else (None, _CELL_INDEX_MISSING)
+    eps1, eps1_kind = _cell(income_stmt, eps_label, fy1_idx) if fy1_idx is not None else (None, _CELL_INDEX_MISSING)
     equity0, _equity0_kind = _cell(balance_sheet, "Stockholders Equity", 0)
 
-    span_ok = _comparable_span_ok(period_ends)
+    span_ok = _comparable_span_ok(sorted_ends)
     # split history が取得できていない場合は fail-closed（§7）。
-    split_ok = bool(splits_ok) and _he_split_guard_ok(splits, period_ends)
+    split_ok = bool(splits_ok) and _he_split_guard_ok(splits, sorted_ends)
 
-    invalid_seen = False
-
-    # ── profitGrowth（§7）───────────────────────────────────────────────
+    # ── profitGrowth 軸（§7）── reason 内の precedence は
+    # rowLabelMissing > invalidNumeric > missing > irregularPeriod > negativeBase。
     profit_growth: Optional[float] = None
     if ni_label is None:
-        profit_reason = COVERAGE_ROW_LABEL_MISSING
+        profit_axis = _AXIS_ROW_LABEL_MISSING
     elif ni0_kind == _CELL_NOT_FINITE or ni1_kind == _CELL_NOT_FINITE:
-        profit_reason = "invalid"
-        invalid_seen = True
+        profit_axis = _AXIS_INVALID_NUMERIC
     elif ni0 is None or ni1 is None:
-        profit_reason = COVERAGE_MISSING  # 片方の FY しか無い
+        profit_axis = _AXIS_MISSING  # 片方の FY しか無い
     elif not span_ok:
-        profit_reason = COVERAGE_IRREGULAR_PERIOD
+        profit_axis = _AXIS_IRREGULAR_PERIOD
     elif ni1 <= 0:
         # NI_FY1 <= 0: ゼロ/負ベースから explosive/misleading な成長率を作らない
-        profit_reason = COVERAGE_NEGATIVE_BASE
+        profit_axis = _AXIS_NEGATIVE_BASE
     else:
         profit_growth = (ni0 - ni1) / ni1 * 100.0
-        profit_reason = COVERAGE_PRESENT
+        profit_axis = _AXIS_AVAILABLE
 
-    # ── epsGrowth（§8）─────────────────────────────────────────────────
+    # ── epsGrowth 軸（§8）── split guard は irregularPeriod と negativeBase の間。
     eps_growth: Optional[float] = None
     if eps_label is None:
-        eps_reason = COVERAGE_ROW_LABEL_MISSING
+        eps_axis = _AXIS_ROW_LABEL_MISSING
     elif eps0_kind == _CELL_NOT_FINITE or eps1_kind == _CELL_NOT_FINITE:
-        eps_reason = "invalid"
-        invalid_seen = True
+        eps_axis = _AXIS_INVALID_NUMERIC
     elif eps0 is None or eps1 is None:
-        eps_reason = COVERAGE_MISSING
+        eps_axis = _AXIS_MISSING
     elif not span_ok:
-        eps_reason = COVERAGE_IRREGULAR_PERIOD
+        eps_axis = _AXIS_IRREGULAR_PERIOD
     elif not split_ok:
-        eps_reason = COVERAGE_SPLIT_GUARD_BLOCKED
+        eps_axis = _AXIS_SPLIT_GUARD_BLOCKED
     elif eps1 <= 0:
-        eps_reason = COVERAGE_NEGATIVE_BASE
+        eps_axis = _AXIS_NEGATIVE_BASE
     else:
         eps_growth = (eps0 - eps1) / eps1 * 100.0
-        eps_reason = COVERAGE_PRESENT
+        eps_axis = _AXIS_AVAILABLE
 
     # ── shadow PER（§9。OBSERVABILITY ONLY）────────────────────────────
     # derived PER shadow = latest relevant price / annual reported EPS authority
@@ -297,41 +402,47 @@ def derive_fundamentals(
     if ni0 is not None and equity0 is not None and equity0 > 0:
         shadow_roe = ni0 / equity0 * 100.0
 
-    # ── coverage bucket（単一・決定的）─────────────────────────────────
-    if profit_growth is not None or eps_growth is not None:
+    # ── coverage bucket（§3: exclusive・total・決定的）─────────────────
+    # `present` は「両軸とも available」のときのみ。片軸でも block されていれば
+    # coverage はその block 原因を露出する（監査 P2-B の repair）。
+    if profit_axis == _AXIS_AVAILABLE and eps_axis == _AXIS_AVAILABLE:
         coverage = COVERAGE_PRESENT
     else:
-        reasons = {profit_reason, eps_reason}
-        # 「invalid numeric」は §12 の 7 bucket に無いため missing へ畳む
-        # （status は別途 invalid になる）。
-        precedence = (
-            COVERAGE_ROW_LABEL_MISSING,
-            COVERAGE_MISSING,
-            COVERAGE_IRREGULAR_PERIOD,
-            COVERAGE_SPLIT_GUARD_BLOCKED,
-            COVERAGE_NEGATIVE_BASE,
+        blocked_buckets = {
+            _AXIS_TO_COVERAGE[axis]
+            for axis in (profit_axis, eps_axis)
+            if axis != _AXIS_AVAILABLE
+        }
+        coverage = next(
+            (bucket for bucket in _COVERAGE_PRECEDENCE if bucket in blocked_buckets),
+            COVERAGE_INVALID,
         )
-        coverage = COVERAGE_MISSING
-        if "invalid" in reasons and reasons.issubset({"invalid"}):
-            coverage = COVERAGE_MISSING
-        else:
-            for candidate in precedence:
-                if candidate in reasons:
-                    coverage = candidate
-                    break
 
-    # ── status（null 値を等価に見せない）──────────────────────────────
-    if profit_growth is not None and eps_growth is not None:
+    # ── status（§11: 5 値 vocabulary。詳細な原因は diagnostics へ委ねる）──
+    # 決定的 precedence:
+    #   both available            → available
+    #   片軸のみ available          → partial
+    #   いずれかの軸が invalid/障害  → invalid
+    #   両軸 stale                 → stale
+    #   両軸が missing/rowLabel     → missing
+    #   それ以外（行はあるが両軸 block）→ partial
+    profit_ok = profit_axis == _AXIS_AVAILABLE
+    eps_ok = eps_axis == _AXIS_AVAILABLE
+    axes = (profit_axis, eps_axis)
+    if profit_ok and eps_ok:
         status = FUNDAMENTALS_STATUS_AVAILABLE
-    elif profit_growth is not None or eps_growth is not None:
+    elif profit_ok or eps_ok:
         status = FUNDAMENTALS_STATUS_PARTIAL
-    elif invalid_seen:
+    elif _AXIS_ENRICH_FAILED in axes or _AXIS_INVALID_NUMERIC in axes:
         status = FUNDAMENTALS_STATUS_INVALID
-    elif ni_label is None and eps_label is None:
+    elif profit_axis == _AXIS_STALE and eps_axis == _AXIS_STALE:
+        status = FUNDAMENTALS_STATUS_STALE
+    elif profit_axis in (_AXIS_MISSING, _AXIS_ROW_LABEL_MISSING) and eps_axis in (
+        _AXIS_MISSING,
+        _AXIS_ROW_LABEL_MISSING,
+    ):
         status = FUNDAMENTALS_STATUS_MISSING
     else:
-        # 行はあるが negativeBase / split guard / irregular period 等で
-        # 双方 null（部分的な authority のみ）。
         status = FUNDAMENTALS_STATUS_PARTIAL
 
     return FundamentalsResult(
@@ -342,6 +453,8 @@ def derive_fundamentals(
         shadow_per=shadow_per,
         shadow_roe=shadow_roe,
         coverage=coverage,
+        profit_axis=profit_axis,
+        eps_axis=eps_axis,
     )
 
 
@@ -423,14 +536,43 @@ class FundamentalsRateLimit(RuntimeError):
         self.reason = reason
 
 
+def _int_attr(obj: Any, name: str) -> Optional[int]:
+    """obj.<name> が bool でない int ならそれを、さもなくば None を返す。"""
+    try:
+        value = getattr(obj, name, None)
+    except Exception:  # noqa: BLE001 - 属性 getter が投げても rate-limit 判定は続行
+        return None
+    if isinstance(value, bool):
+        return None
+    return value if isinstance(value, int) else None
+
+
 def is_rate_limit_error(exc: BaseException) -> bool:
-    """例外が provider rate-limit 由来か（type 名 / message から非機微判定）。"""
+    """例外が provider rate-limit 由来か（§8: 明示的 type / status_code を優先し、
+    text fallback の "429" は数値境界＋context を必須にする。"4290.T ..." や
+    "account 1429 ..." では決して true にしない）。"""
+    # 1. 明示的な provider exception type
     if isinstance(exc, FundamentalsRateLimit):
         return True
-    if "ratelimit" in type(exc).__name__.lower():
+    type_name = type(exc).__name__.lower()
+    if "ratelimit" in type_name or "toomanyrequests" in type_name:
         return True
-    message = str(exc).lower()
-    return any(marker in message for marker in _RATE_LIMIT_MARKERS)
+    # 2. 明示的な status_code == 429（例外自身の属性）
+    for attr in ("status_code", "code", "status"):
+        if _int_attr(exc, attr) == 429:
+            return True
+    # 3. response.status_code == 429（観測可能な場合）
+    response = getattr(exc, "response", None)
+    if response is not None and _int_attr(response, "status_code") == 429:
+        return True
+    # 4. 十分に境界の明確な textual signal
+    message = str(exc)
+    lowered = message.lower()
+    if any(marker in lowered for marker in _RATE_LIMIT_TEXT_MARKERS):
+        return True
+    if _RATE_LIMIT_429_RE.search(message):
+        return True
+    return False
 
 
 @dataclass(frozen=True)
@@ -578,16 +720,42 @@ class FundamentalsEnricher:
         self._fetch_fn = fetch_fn
         self._now = now if now.tzinfo is not None else now.replace(tzinfo=timezone.utc)
         self._coverage_by_code: dict[str, str] = {}
+        # §4 axis diagnostics: code -> (profit_axis, eps_axis)
+        self._axes_by_code: dict[str, tuple[str, str]] = {}
         self._shadow = _ShadowAggregator()
         self.aborted = False
         self.abort_reason: Optional[str] = None
 
+    def _record(self, code: str, result: FundamentalsResult) -> None:
+        """1 published symbol 分の terminal coverage bucket と per-axis diagnostics
+        を登録する。§3: どの経路もここを通り、集計から漏れる symbol を作らない。"""
+        self._coverage_by_code[code] = result.coverage
+        self._axes_by_code[code] = (result.profit_axis, result.eps_axis)
+
     def enrich(self, item: dict[str, Any], code: str) -> None:
         """item へ profitGrowth / epsGrowth / fiscalPeriodEnd / fundamentalsStatus
-        を付与する。"""
+        を付与する。この shadow channel は zero-weight であり、いかなる例外でも
+        market candidate publication を止めない —— 予期しない例外は terminal
+        invalid bucket として計上する（§5 / §3: no exception path bypasses
+        registration）。"""
+        try:
+            self._enrich_inner(item, code)
+        except Exception as exc:  # noqa: BLE001 - fail-soft 最終防御（§5）
+            print(
+                f"  ⚠ {code}: fundamentals shadow enrich unexpected error: "
+                f"{type(exc).__name__}"
+            )
+            self.record_enrich_failure(item, code)
+
+    def _enrich_inner(self, item: dict[str, Any], code: str) -> None:
         if self.aborted:
-            self._apply(item, _null_result(FUNDAMENTALS_STATUS_MISSING))
-            self._coverage_by_code[code] = COVERAGE_MISSING
+            result = _null_result(
+                FUNDAMENTALS_STATUS_MISSING,
+                profit_axis=_AXIS_MISSING,
+                eps_axis=_AXIS_MISSING,
+            )
+            self._apply(item, result)
+            self._record(code, result)
             return
 
         try:
@@ -599,18 +767,31 @@ class FundamentalsEnricher:
                 f"  ⚠ fundamentals shadow channel aborted (provider rate limit); "
                 f"remaining symbols get null fundamentals"
             )
-            self._apply(item, _null_result(FUNDAMENTALS_STATUS_MISSING))
-            self._coverage_by_code[code] = COVERAGE_MISSING
+            result = _null_result(
+                FUNDAMENTALS_STATUS_MISSING,
+                profit_axis=_AXIS_MISSING,
+                eps_axis=_AXIS_MISSING,
+            )
+            self._apply(item, result)
+            self._record(code, result)
             return
 
         if not fetched.ok:
-            status = (
-                FUNDAMENTALS_STATUS_INVALID
-                if fetched.failure == "invalid"
-                else FUNDAMENTALS_STATUS_MISSING
-            )
-            self._apply(item, _null_result(status))
-            self._coverage_by_code[code] = COVERAGE_MISSING
+            if fetched.failure == "invalid":
+                result = _null_result(
+                    FUNDAMENTALS_STATUS_INVALID,
+                    coverage=COVERAGE_INVALID,
+                    profit_axis=_AXIS_ENRICH_FAILED,
+                    eps_axis=_AXIS_ENRICH_FAILED,
+                )
+            else:
+                result = _null_result(
+                    FUNDAMENTALS_STATUS_MISSING,
+                    profit_axis=_AXIS_MISSING,
+                    eps_axis=_AXIS_MISSING,
+                )
+            self._apply(item, result)
+            self._record(code, result)
             return
 
         result = derive_fundamentals(
@@ -629,7 +810,22 @@ class FundamentalsEnricher:
             shadow_roe=result.shadow_roe,
         )
         self._apply(item, result)
-        self._coverage_by_code[code] = result.coverage
+        self._record(code, result)
+
+    def record_enrich_failure(self, item: dict[str, Any], code: str) -> None:
+        """enrich() が予期せず throw した場合（あるいは呼び出し元の outer
+        fail-soft handler）の最終防御（§5 / 監査 P2-A）。published symbol が
+        coverage / diagnostics 集計から漏れないよう terminal invalid bucket を
+        ちょうど 1 つ登録し、market field は保ったまま fundamental を null に
+        する。dataset publication は継続する。"""
+        result = _null_result(
+            FUNDAMENTALS_STATUS_INVALID,
+            coverage=COVERAGE_INVALID,
+            profit_axis=_AXIS_ENRICH_FAILED,
+            eps_axis=_AXIS_ENRICH_FAILED,
+        )
+        self._apply(item, result)
+        self._record(code, result)
 
     @staticmethod
     def _apply(item: dict[str, Any], result: FundamentalsResult) -> None:
@@ -639,13 +835,33 @@ class FundamentalsEnricher:
         item["fundamentalsStatus"] = result.status
 
     def meta(self, published_codes: list[str]) -> dict[str, Any]:
-        """_meta.fundamentals contract（§12）。coverage は publish 対象 symbol
-        のみ集計する（公開 artifact と一致させる）。"""
+        """_meta.fundamentals contract（§12）。coverage / diagnostics は publish
+        対象 symbol のみ集計する（公開 artifact と一致させる）。
+
+        §3 invariant: sum(coverage.values()) == len(published_codes)。すべての
+        published symbol はちょうど 1 つの terminal bucket に寄与する。未登録
+        symbol（本来あり得ない）は fail-closed で `invalid` として計上し、
+        observability を保つ。"""
         coverage = {bucket: 0 for bucket in COVERAGE_BUCKETS}
+        diagnostics = {
+            "profitGrowth": {key: 0 for key in _DIAG_PROFIT_KEYS},
+            "epsGrowth": {key: 0 for key in _DIAG_EPS_KEYS},
+        }
         for code in published_codes:
             bucket = self._coverage_by_code.get(code)
-            if bucket in coverage:
-                coverage[bucket] += 1
+            if bucket not in coverage:
+                bucket = COVERAGE_INVALID  # fail-closed（§3: 漏れを許さない）
+            coverage[bucket] += 1
+
+            profit_axis, eps_axis = self._axes_by_code.get(
+                code, (_AXIS_ENRICH_FAILED, _AXIS_ENRICH_FAILED)
+            )
+            diagnostics["profitGrowth"][
+                profit_axis if profit_axis in diagnostics["profitGrowth"] else _AXIS_ENRICH_FAILED
+            ] += 1
+            diagnostics["epsGrowth"][
+                eps_axis if eps_axis in diagnostics["epsGrowth"] else _AXIS_ENRICH_FAILED
+            ] += 1
         return {
             "source": FUNDAMENTALS_SOURCE,
             "fetchedAt": self._now.isoformat(),
@@ -653,6 +869,7 @@ class FundamentalsEnricher:
             "canonicalPeField": CANONICAL_PE_FIELD,
             "growthScoringStatus": GROWTH_SCORING_STATUS,
             "coverage": coverage,
+            "diagnostics": diagnostics,
             "aborted": self.aborted,
             "abortReason": self.abort_reason,
         }

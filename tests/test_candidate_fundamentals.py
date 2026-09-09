@@ -28,7 +28,9 @@ import pytest
 
 from data.candidate_fundamentals import (
     CANONICAL_PE_FIELD,
+    COVERAGE_INVALID,
     COVERAGE_IRREGULAR_PERIOD,
+    COVERAGE_MISSING,
     COVERAGE_NEGATIVE_BASE,
     COVERAGE_PRESENT,
     COVERAGE_ROW_LABEL_MISSING,
@@ -278,10 +280,12 @@ def test_split_after_fy1_blocks_eps_growth_and_per_shadow():
     assert result.shadow_per is None
     # profitGrowth は split と無関係
     assert result.profit_growth == pytest.approx(20.0)
-    # profitGrowth があるため coverage の primary bucket は present
-    # （status=partial が eps 側の欠落を露出する）
+    # P5-B005-B4-A-R1（監査 P2-B repair）: 片軸でも block されていれば coverage は
+    # `present` を主張せず、その block 原因を露出する。status=partial は維持。
     assert result.status == FUNDAMENTALS_STATUS_PARTIAL
-    assert result.coverage == COVERAGE_PRESENT
+    assert result.coverage == COVERAGE_SPLIT_GUARD_BLOCKED
+    assert result.profit_axis == "available"
+    assert result.eps_axis == "splitGuardBlocked"
 
 
 def test_split_only_blocked_symbol_coverage_is_split_guard():
@@ -546,3 +550,278 @@ def test_enricher_shadow_evidence_has_no_raw_values():
     text = str(evidence)
     assert "perShadowVsProviderTrailingPE" in evidence
     assert "comparablePairs" in evidence["perShadowVsProviderTrailingPE"]
+
+
+# ══════════════════════════════════════════════════════════════════════
+# P5-B005-B4-A-R1: fundamentals coverage authority repair
+# ══════════════════════════════════════════════════════════════════════
+
+# ── §6: mixed / partial authority ────────────────────────────────────
+def test_mixed_axis_profit_valid_eps_split_blocked():
+    # §6.A: profitGrowth valid / epsGrowth split-blocked
+    result = _derive(
+        income_stmt={"Net Income": [120.0, 100.0], "Diluted EPS": [6.0, 10.0]},
+        splits=[(date(2025, 10, 1), 2.0)],
+    )
+    assert result.profit_growth == pytest.approx(20.0)
+    assert result.eps_growth is None
+    assert result.status == FUNDAMENTALS_STATUS_PARTIAL
+    assert result.coverage != COVERAGE_PRESENT
+    assert result.coverage == COVERAGE_SPLIT_GUARD_BLOCKED
+    # diagnostics は両軸を保存する
+    assert result.profit_axis == "available"
+    assert result.eps_axis == "splitGuardBlocked"
+
+
+def test_mixed_axis_profit_negative_base_eps_valid():
+    # §6.B: profitGrowth negative-base / epsGrowth valid
+    result = _derive(
+        income_stmt={"Net Income": [120.0, -50.0], "Diluted EPS": [12.0, 10.0]},
+    )
+    assert result.profit_growth is None
+    assert result.eps_growth == pytest.approx(20.0)
+    assert result.status == FUNDAMENTALS_STATUS_PARTIAL
+    assert result.coverage == COVERAGE_NEGATIVE_BASE
+    assert result.profit_axis == "negativeBase"
+    assert result.eps_axis == "available"
+
+
+def test_mixed_axis_profit_valid_eps_row_missing():
+    # §6.C: profitGrowth valid / epsGrowth row missing
+    result = _derive(income_stmt={"Net Income": [120.0, 100.0]})
+    assert result.profit_growth == pytest.approx(20.0)
+    assert result.eps_growth is None
+    assert result.status == FUNDAMENTALS_STATUS_PARTIAL
+    assert result.coverage == COVERAGE_ROW_LABEL_MISSING
+    assert result.profit_axis == "available"
+    assert result.eps_axis == "rowLabelMissing"
+
+
+def test_stale_is_statement_level_not_axis_level():
+    # §6.D: 現 architecture では freshness は statement 単位。片軸のみ stale は
+    # 構造的に発生しない —— FY0 が古ければ両軸が stale になる。
+    result = _derive(
+        income_stmt={"Net Income": [120.0, 100.0], "Diluted EPS": [12.0, 10.0]},
+        period_ends=[date(2024, 1, 1), date(2023, 1, 1)],
+        observed_at=datetime(2026, 9, 9, tzinfo=timezone.utc),
+    )
+    assert result.status == FUNDAMENTALS_STATUS_STALE
+    assert result.coverage == COVERAGE_STALE
+    assert result.profit_axis == "stale" and result.eps_axis == "stale"
+
+
+# ── §3: terminal precedence（決定的）────────────────────────────────
+def test_terminal_precedence_split_guard_beats_negative_base():
+    # profit=negativeBase, eps=splitGuardBlocked → precedence で splitGuard が勝つ
+    result = _derive(
+        income_stmt={"Net Income": [100.0, -5.0], "Diluted EPS": [6.0, 10.0]},
+        splits=[(date(2025, 10, 1), 2.0)],
+    )
+    assert result.profit_axis == "negativeBase"
+    assert result.eps_axis == "splitGuardBlocked"
+    assert result.coverage == COVERAGE_SPLIT_GUARD_BLOCKED
+
+
+def test_terminal_precedence_missing_beats_negative_base():
+    # profit=missing（片 FY のみ）, eps=negativeBase → missing が勝つ
+    result = _derive(
+        income_stmt={"Net Income": [120.0], "Diluted EPS": [12.0, -3.0]},
+        period_ends=[FY0_END, FY1_END],
+    )
+    # ni は片列のみ → missing、eps1<0 → negativeBase
+    assert result.coverage == COVERAGE_MISSING
+
+
+# ── §10: authority boundary tests ───────────────────────────────────
+def test_t1_diluted_eps_present_but_invalid_does_not_fall_back_to_basic():
+    result = _derive(
+        income_stmt={
+            "Net Income": [120.0, 100.0],
+            "Diluted EPS": [float("nan"), 10.0],
+            "Basic EPS": [13.0, 10.0],  # 使われてはならない
+        },
+    )
+    assert result.eps_growth is None
+    assert result.profit_growth == pytest.approx(20.0)
+    assert result.eps_axis == "invalidNumeric"
+
+
+def test_t2_t3_fy0_age_456_ok_457_stale():
+    fy0 = date(2025, 1, 1)
+    stmt = {"Net Income": [110.0, 100.0], "Diluted EPS": [11.0, 10.0]}
+    fy1 = date(2024, 1, 3)
+    ok = _derive(
+        income_stmt=stmt, period_ends=[fy0, fy1],
+        observed_at=datetime(2026, 4, 2, tzinfo=timezone.utc),  # 456d
+    )
+    assert ok.status != FUNDAMENTALS_STATUS_STALE
+    stale = _derive(
+        income_stmt=stmt, period_ends=[fy0, fy1],
+        observed_at=datetime(2026, 4, 3, tzinfo=timezone.utc),  # 457d
+    )
+    assert (datetime(2026, 4, 3).date() - fy0).days == 457
+    assert stale.status == FUNDAMENTALS_STATUS_STALE
+    assert stale.coverage == COVERAGE_STALE
+
+
+@pytest.mark.parametrize(
+    "span_days,expect_growth",
+    [(334, False), (335, True), (395, True), (396, False)],
+)
+def test_t4_t7_comparable_span_boundaries(span_days, expect_growth):
+    fy0 = date(2026, 3, 31)
+    fy1 = date.fromordinal(fy0.toordinal() - span_days)
+    result = _derive(
+        income_stmt={"Net Income": [110.0, 100.0], "Diluted EPS": [11.0, 10.0]},
+        period_ends=[fy0, fy1],
+    )
+    if expect_growth:
+        assert result.profit_growth == pytest.approx(10.0), span_days
+    else:
+        assert result.profit_growth is None, span_days
+        assert result.coverage == COVERAGE_IRREGULAR_PERIOD
+
+
+def test_t8_boolean_statement_cell_is_invalid_numeric():
+    result = _derive(
+        income_stmt={"Net Income": [True, 100.0], "Diluted EPS": [12.0, 10.0]},
+    )
+    assert result.profit_growth is None
+    assert result.profit_axis == "invalidNumeric"
+    # eps 側は有効
+    assert result.eps_growth == pytest.approx(20.0)
+    assert result.status == FUNDAMENTALS_STATUS_PARTIAL
+
+
+def test_t9_reversed_statement_columns_do_not_produce_wrong_growth():
+    # provider が古い順で返しても、period identity が FY0/FY1 を決める
+    result = _derive(
+        income_stmt={"Net Income": [100.0, 120.0], "Diluted EPS": [10.0, 12.0]},
+        period_ends=[FY1_END, FY0_END],  # oldest-first（reversed）
+    )
+    # FY0=2026(120) / FY1=2025(100) → +20%（-16.7% ではない）
+    assert result.profit_growth == pytest.approx(20.0)
+    assert result.eps_growth == pytest.approx(20.0)
+    assert result.fiscal_period_end == "2026-03-31"
+
+
+def test_t9_duplicate_period_ends_fail_closed():
+    result = _derive(
+        income_stmt={"Net Income": [120.0, 100.0], "Diluted EPS": [12.0, 10.0]},
+        period_ends=[FY0_END, FY0_END],
+    )
+    assert result.profit_growth is None and result.eps_growth is None
+    assert result.coverage == COVERAGE_IRREGULAR_PERIOD
+
+
+# ── §8: rate-limit detection hardening ──────────────────────────────
+@pytest.mark.parametrize(
+    "text",
+    [
+        "4290.T connection reset",
+        "account 1429 unavailable",
+        "error code 4290",
+        "HTTP 4299 gateway",
+        "connection reset by peer",
+    ],
+)
+def test_rate_limit_does_not_false_positive_on_bare_429(text):
+    assert is_rate_limit_error(RuntimeError(text)) is False
+
+
+@pytest.mark.parametrize(
+    "text",
+    [
+        "HTTP 429",
+        "status=429",
+        "status_code=429",
+        "429 Too Many Requests",
+        "Received response code 429",
+        "provider rate-limit hit",
+    ],
+)
+def test_rate_limit_detects_bounded_429_and_textual_signals(text):
+    assert is_rate_limit_error(RuntimeError(text)) is True
+
+
+def test_rate_limit_detects_explicit_status_code_attribute():
+    class _Boom(Exception):
+        status_code = 429
+
+    class _RespBoom(Exception):
+        class response:  # noqa: N801
+            status_code = 429
+
+    assert is_rate_limit_error(_Boom("weird message")) is True
+    assert is_rate_limit_error(_RespBoom("weird message")) is True
+
+
+def test_rate_limit_ignores_non_429_status_code():
+    class _Boom(Exception):
+        status_code = 503
+
+    assert is_rate_limit_error(_Boom("service unavailable")) is False
+
+
+# ── §4: diagnostics contract（overlapping, per-axis）────────────────
+def test_meta_diagnostics_preserves_mixed_axis_authority():
+    def fetch_fn(code):
+        if code == "0001":
+            return FundamentalsFetch(
+                income_stmt={"Net Income": [120.0, 100.0], "Diluted EPS": [6.0, 10.0]},
+                balance_sheet={}, period_ends=[FY0_END, FY1_END],
+                splits=[(date(2025, 10, 1), 2.0)], splits_ok=True, ok=True,
+            )
+        return _valid_fetch()
+
+    enr = FundamentalsEnricher(fetch_fn, now=OBSERVED)
+    for code in ("0001", "0002"):
+        enr.enrich({"code": code, "per": 10.0, "roe": 12.0, "price": 1000.0}, code)
+    meta = enr.meta(["0001", "0002"])
+    # coverage: exclusive, sum == publishedCount
+    assert sum(meta["coverage"].values()) == 2
+    assert meta["coverage"]["present"] == 1
+    assert meta["coverage"]["splitGuardBlocked"] == 1
+    # diagnostics: per-axis, overlapping。0001 は profit available / eps split-blocked
+    diag = meta["diagnostics"]
+    assert diag["profitGrowth"]["available"] == 2
+    assert diag["epsGrowth"]["available"] == 1
+    assert diag["epsGrowth"]["splitGuardBlocked"] == 1
+
+
+# ── §5 / §14: outer fail-soft + negative regression proof ───────────
+def test_enricher_enrich_never_raises_and_registers_on_unexpected_error():
+    def boom(code):
+        raise RuntimeError("unexpected provider bug")
+
+    enr = FundamentalsEnricher(boom, now=OBSERVED)
+    item = {"code": "0001", "per": 10.0, "roe": 12.0, "price": 1000.0}
+    enr.enrich(item, "0001")  # 例外を投げない
+    assert item["fundamentalsStatus"] == FUNDAMENTALS_STATUS_INVALID
+    assert item["profitGrowth"] is None and item["epsGrowth"] is None
+    meta = enr.meta(["0001"])
+    # §14 CASE A（post-repair）: publishedCount=1 → coverage sum == 1
+    assert sum(meta["coverage"].values()) == 1
+    assert meta["coverage"]["invalid"] == 1
+    assert meta["diagnostics"]["profitGrowth"]["enrichFailed"] == 1
+    assert meta["diagnostics"]["epsGrowth"]["enrichFailed"] == 1
+
+
+def test_record_enrich_failure_is_total_for_outer_handler():
+    enr = FundamentalsEnricher(lambda code: _valid_fetch(), now=OBSERVED)
+    item = {"code": "0001", "per": 10.0, "roe": 12.0, "price": 1000.0}
+    enr.record_enrich_failure(item, "0001")
+    assert item["fundamentalsStatus"] == FUNDAMENTALS_STATUS_INVALID
+    meta = enr.meta(["0001"])
+    assert sum(meta["coverage"].values()) == 1
+    assert meta["coverage"]["invalid"] == 1
+
+
+def test_meta_fail_closed_counts_unregistered_published_symbol():
+    # 本来あり得ないが、published_code が未登録でも coverage 合計は
+    # publishedCount と一致し続ける（fail-closed）。
+    enr = FundamentalsEnricher(lambda code: _valid_fetch(), now=OBSERVED)
+    enr.enrich({"code": "0001", "per": 10.0, "roe": 12.0, "price": 1000.0}, "0001")
+    meta = enr.meta(["0001", "0002"])  # 0002 は enrich されていない
+    assert sum(meta["coverage"].values()) == 2
+    assert meta["coverage"]["invalid"] == 1
