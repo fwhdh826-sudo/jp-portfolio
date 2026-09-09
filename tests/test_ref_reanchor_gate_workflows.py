@@ -86,7 +86,7 @@ def test_full_exact_placement_checkout_setup_reanchor_deps_then_p1():
         job.index("actions/checkout@v4"),
         job.index("actions/setup-python@v5"),
         job.index(COMMAND),
-        job.index("pip install yfinance pandas numpy feedparser requests xlrd"),
+        job.index("pip install yfinance==1.7.0 pandas numpy feedparser requests xlrd"),
         job.index("Evaluate mutation admission (pre_fetch)"),
     ]
     assert positions == sorted(positions)

@@ -149,7 +149,12 @@ jobs:
         # pandas/numpyはcheap pre-screenのmetrics計算に使う。
         # openpyxl: 現行JPX data_j.xlsx (OOXML) parse
         # — P5-B005-JPX-UNIVERSE-PRODUCTION-RECOVERY。
-        run: pip install yfinance pandas numpy feedparser requests xlrd openpyxl
+        # P5-B005-B4-A: yfinance を production CI が実際に解決していた版へ pin
+        # する（観測: run 34290922431 / 34170693618 の Install Python deps は
+        # いずれも yfinance-1.7.0 を resolve）。candidate fundamental source
+        # plumbing は annual income_stmt/balance_sheet/splits に依存するため、
+        # provider 版の非決定的 drift を避ける。他パッケージは pin しない。
+        run: pip install yfinance==1.7.0 pandas numpy feedparser requests xlrd openpyxl
 
       - name: Evaluate mutation admission (pre_fetch)
         env:

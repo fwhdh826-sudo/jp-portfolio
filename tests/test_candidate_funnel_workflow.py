@@ -108,4 +108,7 @@ def test_git_add_covers_candidate_funnel_artifacts_via_directory_scope():
 def test_no_new_pip_dependency_added_for_candidate_funnel():
     # candidate_funnel_batch.py / candidate_funnel_privacy_smoke.py はstdlib
     # only（A2-S 禁止35: dependency追加禁止）。pip installの依存集合は不変。
-    assert "pip install yfinance pandas numpy feedparser requests xlrd" in _TEXT
+    # P5-B005-B4-A: yfinance を production 解決版へ pin（§21）。集合は不変。
+    assert (
+        "pip install yfinance==1.7.0 pandas numpy feedparser requests xlrd openpyxl" in _TEXT
+    )
