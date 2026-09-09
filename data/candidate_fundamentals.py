@@ -106,10 +106,15 @@ COVERAGE_NEGATIVE_BASE = "negativeBase"         # FY1 ベースが非正
 COVERAGE_SPLIT_GUARD_BLOCKED = "splitGuardBlocked"  # 分割調整が確定できない（EPS 軸）
 COVERAGE_IRREGULAR_PERIOD = "irregularPeriod"   # FY0-FY1 span が 335..395 日外
 COVERAGE_ROW_LABEL_MISSING = "rowLabelMissing"  # 行ラベル自体が不在
-# 監査 P2-A の repair で追加した唯一の terminal bucket（§3: implementation
-# constraint により unavoidable）。outer fail-soft 例外 / provider 障害 /
-# statement セルが非有限、のいずれかで fundamental を確定させられなかった
-# published symbol を、`missing`（＝行が無い）と混同せず truthfully 計上する。
+# 監査 P2-A / P2-01 の repair で追加/拡張した唯一の terminal bucket（§3:
+# implementation constraint により unavoidable）。次のいずれかで fundamental を
+# 「確定させられなかった」published symbol を、`missing`（＝provider が成功応答を
+# 返し、行/期/statement が正当に不在）と混同せず truthfully 計上する:
+#   - outer fail-soft 例外 / provider fetch 例外（transport / parse 障害）
+#   - provider rate-limit を引いた symbol（fetch が確定前に abort）
+#   - run-level rate-limit abort 後に fetch されなかった symbol
+#     （財務的 missing だと証明されていない）
+#   - statement セルが非有限（invalid numeric）
 COVERAGE_INVALID = "invalid"
 
 COVERAGE_BUCKETS = (
@@ -585,6 +590,11 @@ class FundamentalsFetch:
     splits: list[tuple[date, float]]
     splits_ok: bool
     ok: bool = True
+    # None            : ok
+    # "missing"       : provider が成功応答を返したが必要な statement/期/行が
+    #                   正当に不在（§4A: genuine data absence）
+    # "invalid"       : provider fetch / parse 例外。信頼できる statement
+    #                   authority が確立する前に失敗した（§4C: provider failure）
     failure: Optional[str] = None  # "missing" | "invalid" | None
 
 
@@ -632,7 +642,10 @@ def read_fundamentals_input(handle: Any) -> FundamentalsFetch:
     except Exception as error:  # noqa: BLE001
         if is_rate_limit_error(error):
             raise FundamentalsRateLimit(_safe_reason(error)) from None
-        return FundamentalsFetch({}, {}, [], [], False, ok=False, failure="missing")
+        # §4C / P2-01: income statement の fetch/parse 例外は provider 障害であり、
+        # 「行が正当に無い（missing）」とは意味が違う。信頼できる statement
+        # authority が確立する前に失敗しているので `invalid` として露出する。
+        return FundamentalsFetch({}, {}, [], [], False, ok=False, failure="invalid")
 
     try:
         balance, _balance_ends = _statement_to_columns(handle.balance_sheet)
@@ -693,7 +706,10 @@ def fetch_fundamentals_one(code: str, *, ticker_factory: Optional[Callable[[str]
             last_error = error
     if last_error is not None:
         print(f"    {code}: fundamentals fetch failed: {type(last_error).__name__}")
-    return FundamentalsFetch({}, {}, [], [], False, ok=False, failure="missing")
+    # §4C / P2-01: ここに到達するのは non-rate-limit の provider 例外が起きた
+    # ときのみ（正常 fetch は上で return 済み）。provider 障害であって
+    # 「行が正当に無い」ではないため `invalid`。
+    return FundamentalsFetch({}, {}, [], [], False, ok=False, failure="invalid")
 
 
 FundamentalsFetchFn = Callable[[str], FundamentalsFetch]
@@ -749,10 +765,15 @@ class FundamentalsEnricher:
 
     def _enrich_inner(self, item: dict[str, Any], code: str) -> None:
         if self.aborted:
+            # §4E / P2-01: run-level rate-limit abort 後に fetch されなかった
+            # symbol。財務的に missing だと証明されていない —— provider authority
+            # が既に abort していたため fetch されなかっただけ。truthful に
+            # invalid / enrichFailed とする（追加 fetch はしない）。
             result = _null_result(
-                FUNDAMENTALS_STATUS_MISSING,
-                profit_axis=_AXIS_MISSING,
-                eps_axis=_AXIS_MISSING,
+                FUNDAMENTALS_STATUS_INVALID,
+                coverage=COVERAGE_INVALID,
+                profit_axis=_AXIS_ENRICH_FAILED,
+                eps_axis=_AXIS_ENRICH_FAILED,
             )
             self._apply(item, result)
             self._record(code, result)
@@ -767,10 +788,14 @@ class FundamentalsEnricher:
                 f"  ⚠ fundamentals shadow channel aborted (provider rate limit); "
                 f"remaining symbols get null fundamentals"
             )
+            # §4D / P2-01: rate-limit を引いた symbol 自身。provider 障害と同じ
+            # authority（invalid / enrichFailed）。加えて aborted=True /
+            # abortReason は上で設定済み。
             result = _null_result(
-                FUNDAMENTALS_STATUS_MISSING,
-                profit_axis=_AXIS_MISSING,
-                eps_axis=_AXIS_MISSING,
+                FUNDAMENTALS_STATUS_INVALID,
+                coverage=COVERAGE_INVALID,
+                profit_axis=_AXIS_ENRICH_FAILED,
+                eps_axis=_AXIS_ENRICH_FAILED,
             )
             self._apply(item, result)
             self._record(code, result)

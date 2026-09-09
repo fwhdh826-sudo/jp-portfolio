@@ -565,11 +565,20 @@ class TestFundamentalsPlumbing:
         fm = payload["_meta"]["fundamentals"]
         assert fm["aborted"] is True
         assert fm["abortReason"]
-        # abort 後の銘柄は null fundamentals
+        # abort 後の銘柄は null fundamentals。P2-01 §4D/§4E: rate-limit を
+        # 引いた銘柄も abort 後に fetch されなかった銘柄も「財務的に missing」
+        # ではなく provider/enrichment 障害 (invalid / enrichFailed)。
         assert payload["candidates"][0]["profitGrowth"] == 20.0
         for c in payload["candidates"][1:]:
             assert c["profitGrowth"] is None
-            assert c["fundamentalsStatus"] == "missing"
+            assert c["fundamentalsStatus"] == "invalid"
+        assert fm["coverage"]["invalid"] == 3
+        assert fm["coverage"]["present"] == 1
+        assert fm["coverage"]["missing"] == 0
+        assert fm["diagnostics"]["profitGrowth"]["enrichFailed"] == 3
+        assert fm["diagnostics"]["epsGrowth"]["enrichFailed"] == 3
+        assert sum(fm["diagnostics"]["profitGrowth"].values()) == 4
+        assert sum(fm["diagnostics"]["epsGrowth"].values()) == 4
 
     def test_fundamentals_channel_failure_does_not_break_market_candidates(self):
         def boom_fund(code):

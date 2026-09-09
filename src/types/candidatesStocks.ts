@@ -16,6 +16,26 @@ export type StockCandidateFundamentalsStatus =
   | 'stale'
   | 'invalid'
 
+// P5-B005-B4-A-R2 (§8): fundamentals diagnostics の canonical key 契約。
+// 各軸は published symbol ごとにちょうど 1 状態を取り、全 key が必須
+// （Partial や Record<string, number> にしない —— 空 {} を排除するため）。
+export interface FundamentalsProfitDiagnostics {
+  available: number
+  missing: number
+  rowLabelMissing: number
+  invalidNumeric: number
+  irregularPeriod: number
+  negativeBase: number
+  stale: number
+  // provider 障害 / rate-limit abort / outer 例外。
+  enrichFailed: number
+}
+
+export interface FundamentalsEpsDiagnostics extends FundamentalsProfitDiagnostics {
+  // EPS 軸のみ: 分割調整が確定できない。
+  splitGuardBlocked: number
+}
+
 export interface StockCandidateItem {
   code: string
   name: string
@@ -86,12 +106,14 @@ export interface CandidatesStocksData {
         // outer fail-soft 例外 / provider 障害 / 非有限セル。
         invalid: number
       }
-      // P5-B005-B4-A-R1: §4 axis-specific diagnostics。coverage とは別契約の
-      // overlapping counter（合計は publishedCount と一致しない）。
-      // mixed-axis authority（片軸 valid / 片軸 block）を保存する。
-      diagnostics?: {
-        profitGrowth: Record<string, number>
-        epsGrowth: Record<string, number>
+      // P5-B005-B4-A-R2 (§9 / §11): axis-specific diagnostics。fundamentals が
+      // 存在するなら必須。各軸は published symbol ごとにちょうど 1 つの診断
+      // 状態を取り、各軸の値の合計は counts.publishedCount と一致する。
+      // canonical key 集合は必須（空 {} は契約を満たさない）。terminal
+      // coverage とは独立した per-axis 分類。
+      diagnostics: {
+        profitGrowth: FundamentalsProfitDiagnostics
+        epsGrowth: FundamentalsEpsDiagnostics
       }
       aborted: boolean
       abortReason: string | null
