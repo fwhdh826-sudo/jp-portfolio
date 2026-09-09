@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-09-09T08:34:03.019153+09:00",
-  "sourceUpdatedAt": "2026-09-08T23:01:00+00:00",
+  "updatedAt": "2026-09-09T10:21:52.920031+09:00",
+  "sourceUpdatedAt": "2026-09-09T01:11:46+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -17,55 +17,41 @@
       "items": []
     },
     "jp_semiconductor": {
-      "avgSentiment": 0.335,
+      "avgSentiment": 1.0,
       "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 1,
+      "neutralCount": 0,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Google, Blackstone Venture Faces Delays at Data-Center Sites",
-      "topPositiveTitle": "Asian Chip Stocks Set for Gains, Brent Nears $100: Markets Wrap",
+      "topNegativeTitle": "Asian Chip Stocks Rise, Crude Climbs Toward $100: Markets Wrap",
+      "topPositiveTitle": "Asian Chip Stocks Rise, Crude Climbs Toward $100: Markets Wrap",
       "items": [
         {
-          "title": "Google, Blackstone Venture Faces Delays at Data-Center Sites",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-08T20:25:10+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-08/google-blackstone-venture-faces-delays-at-data-center-sites",
-          "tags": [
-            "jp_semiconductor",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Asian Chip Stocks Set for Gains, Brent Nears $100: Markets Wrap",
+          "title": "Asian Chip Stocks Rise, Crude Climbs Toward $100: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.67,
+          "sentimentScore": 1.0,
           "publishedAt": "2026-09-08T22:11:28+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-08/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
             "jp_semiconductor",
-            "market",
-            "us_growth"
+            "market"
           ]
         }
       ]
     },
     "us_broad": {
-      "avgSentiment": 0.082,
+      "avgSentiment": -0.223,
       "negativeCount": 1,
-      "positiveCount": 1,
+      "positiveCount": 0,
       "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 3,
       "isStale": false,
       "topNegativeTitle": "Chile Set to Hold Rates as Fed Risk Overshadows Growth Slump",
-      "topPositiveTitle": "Latin American Currencies Lead Gains in EM With US CPI in Focus",
+      "topPositiveTitle": "Bessent’s ‘Fever’-Cooling Debt Buybacks Put Wall St. on Edge",
       "items": [
         {
           "title": "Chile Set to Hold Rates as Fed Risk Overshadows Growth Slump",
@@ -105,61 +91,20 @@
             "market",
             "us_broad"
           ]
-        },
-        {
-          "title": "Latin American Currencies Lead Gains in EM With US CPI in Focus",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-09-08T10:53:18+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-08/emerging-markets-pause-rally-as-crude-price-closes-in-on-100",
-          "tags": [
-            "fx",
-            "market",
-            "us_broad"
-          ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.335,
+      "avgSentiment": 0,
       "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 2,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Google, Blackstone Venture Faces Delays at Data-Center Sites",
-      "topPositiveTitle": "Asian Chip Stocks Set for Gains, Brent Nears $100: Markets Wrap",
-      "items": [
-        {
-          "title": "Google, Blackstone Venture Faces Delays at Data-Center Sites",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-08T20:25:10+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-08/google-blackstone-venture-faces-delays-at-data-center-sites",
-          "tags": [
-            "jp_semiconductor",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Asian Chip Stocks Set for Gains, Brent Nears $100: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-09-08T22:11:28+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-08/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "jp_semiconductor",
-            "market",
-            "us_growth"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "global_broad": {
       "avgSentiment": 0,
@@ -174,67 +119,67 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": 0.33,
-      "negativeCount": 0,
-      "positiveCount": 1,
+      "avgSentiment": -0.67,
+      "negativeCount": 1,
+      "positiveCount": 0,
       "neutralCount": 0,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Gold Slips as Traders Weigh Mideast Tensions and Dollar Moves",
-      "topPositiveTitle": "Gold Slips as Traders Weigh Mideast Tensions and Dollar Moves",
+      "topNegativeTitle": "Gold Holds Decline as Mideast Tensions Bolster Rate-Hike Case",
+      "topPositiveTitle": "Gold Holds Decline as Mideast Tensions Bolster Rate-Hike Case",
       "items": [
         {
-          "title": "Gold Slips as Traders Weigh Mideast Tensions and Dollar Moves",
+          "title": "Gold Holds Decline as Mideast Tensions Bolster Rate-Hike Case",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-07T23:19:32+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-07/gold-steadies-as-traders-weigh-mideast-tensions-and-dollar-moves",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-09-08T23:25:47+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-08/gold-holds-decline-as-mideast-tensions-bolster-rate-hike-case",
           "tags": [
-            "fx",
             "gold",
-            "market"
+            "market",
+            "rates"
           ]
         }
       ]
     },
     "reit": {
-      "avgSentiment": 0.33,
+      "avgSentiment": 0,
       "negativeCount": 0,
-      "positiveCount": 1,
+      "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Cerberus Sells Real Estate Firm Tenet Equity for $1.6 Billion",
-      "topPositiveTitle": "Cerberus Sells Real Estate Firm Tenet Equity for $1.6 Billion",
-      "items": [
-        {
-          "title": "Cerberus Sells Real Estate Firm Tenet Equity for $1.6 Billion",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-08T20:01:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-08/cerberus-sells-real-estate-firm-tenet-equity-for-1-6-billion",
-          "tags": [
-            "market",
-            "reit"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "dividend": {
       "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 2,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 2,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Bessent’s ‘Fever’-Cooling Debt Buybacks Put Wall St. on Edge",
-      "topPositiveTitle": "Bessent’s ‘Fever’-Cooling Debt Buybacks Put Wall St. on Edge",
+      "topNegativeTitle": "Treasury Buybacks Won't Fix US Yields, Strategist Says",
+      "topPositiveTitle": "Treasury Buybacks Won't Fix US Yields, Strategist Says",
       "items": [
+        {
+          "title": "Treasury Buybacks Won't Fix US Yields, Strategist Says",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-08T23:49:59+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-08/treasury-buybacks-won-t-fix-us-yields-strategist-says-video",
+          "tags": [
+            "dividend",
+            "market",
+            "rates"
+          ]
+        },
         {
           "title": "Bessent’s ‘Fever’-Cooling Debt Buybacks Put Wall St. on Edge",
           "source": "Bloomberg Markets",
@@ -264,10 +209,10 @@
       ]
     },
     "macro_risk": {
-      "avgSentiment": 0.168,
+      "avgSentiment": 0.201,
       "negativeCount": 1,
-      "positiveCount": 3,
-      "neutralCount": 6,
+      "positiveCount": 4,
+      "neutralCount": 5,
       "sourceCount": 2,
       "itemCount": 10,
       "isStale": false,
@@ -327,14 +272,14 @@
           ]
         },
         {
-          "title": "Post-Labor Day US High-Grade Bond Rush Gets Off to Slower Start",
-          "source": "Bloomberg Markets",
+          "title": "US-Canada Trade War Has Small Businesses Struggling With Tariff Shock",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-08T14:05:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-08/volatility-limits-post-labor-day-us-bond-rush-to-six-year-low",
+          "publishedAt": "2026-09-08T13:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/features/2026-09-08/us-canada-trade-war-has-small-businesses-struggling-with-tariff-shock",
           "tags": [
-            "fx",
+            "geopolitical",
             "macro_risk",
             "market"
           ]
@@ -342,39 +287,61 @@
       ]
     },
     "fx": {
-      "avgSentiment": 0.6,
+      "avgSentiment": 0.332,
       "negativeCount": 0,
       "positiveCount": 4,
       "neutralCount": 1,
       "sourceCount": 2,
       "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Post-Labor Day US High-Grade Bond Rush Gets Off to Slower Start",
-      "topPositiveTitle": "Latin American Currencies Lead Gains in EM With US CPI in Focus",
+      "topNegativeTitle": "Hedge Funds Bet Yen Will Strengthen Beyond 150 by Year-End",
+      "topPositiveTitle": "A Case Against the \"Conventional Wisdom\" of Investing",
       "items": [
         {
-          "title": "Post-Labor Day US High-Grade Bond Rush Gets Off to Slower Start",
+          "title": "Hedge Funds Bet Yen Will Strengthen Beyond 150 by Year-End",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-08T14:05:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-08/volatility-limits-post-labor-day-us-bond-rush-to-six-year-low",
+          "publishedAt": "2026-09-09T00:49:05+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-09/hedge-funds-bet-yen-will-strengthen-beyond-150-by-year-end",
           "tags": [
             "fx",
-            "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Gold Slips as Traders Weigh Mideast Tensions and Dollar Moves",
+          "title": "Yuan Steps Into Carry Trade Spotlight Over Yen, Strategists Say",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.33,
-          "publishedAt": "2026-09-07T23:19:32+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-07/gold-steadies-as-traders-weigh-mideast-tensions-and-dollar-moves",
+          "publishedAt": "2026-09-09T00:51:15+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-09/yuan-steps-into-carry-trade-spotlight-over-yen-strategists-say",
           "tags": [
             "fx",
-            "gold",
+            "market"
+          ]
+        },
+        {
+          "title": "Bessent Dares Traders on Yen Bets: ‘I Am the House Now’",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-08T23:53:04+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-08/bessent-dares-traders-on-yen-bets-i-am-the-house-now-video",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        },
+        {
+          "title": "Treasury Secretary Bessent Says He Has ‘Pretty Good Insight’ on Yen Moves",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-08T22:16:03+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-08/bessent-dares-traders-to-bet-against-yen-i-am-the-house-now",
+          "tags": [
+            "fx",
             "market"
           ]
         },
@@ -390,45 +357,33 @@
             "macro_risk",
             "market"
           ]
-        },
-        {
-          "title": "Latin American Currencies Lead Gains in EM With US CPI in Focus",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-09-08T10:53:18+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-08/emerging-markets-pause-rally-as-crude-price-closes-in-on-100",
-          "tags": [
-            "fx",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Bessent Dares Traders to Bet Against Yen: ‘I Am the House Now’",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-09-08T22:16:03+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-08/bessent-dares-traders-to-bet-against-yen-i-am-the-house-now",
-          "tags": [
-            "fx",
-            "market"
-          ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": -0.112,
-      "negativeCount": 2,
+      "avgSentiment": -0.223,
+      "negativeCount": 3,
       "positiveCount": 1,
-      "neutralCount": 3,
+      "neutralCount": 2,
       "sourceCount": 2,
       "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Chile Set to Hold Rates as Fed Risk Overshadows Growth Slump",
+      "topNegativeTitle": "Gold Holds Decline as Mideast Tensions Bolster Rate-Hike Case",
       "topPositiveTitle": "RBA Stands Ready to Raise Rates Again if Needed, Hauser Says",
       "items": [
+        {
+          "title": "Gold Holds Decline as Mideast Tensions Bolster Rate-Hike Case",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-09-08T23:25:47+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-08/gold-holds-decline-as-mideast-tensions-bolster-rate-hike-case",
+          "tags": [
+            "gold",
+            "market",
+            "rates"
+          ]
+        },
         {
           "title": "Chile Set to Hold Rates as Fed Risk Overshadows Growth Slump",
           "source": "Bloomberg Economics",
@@ -456,13 +411,14 @@
           ]
         },
         {
-          "title": "Japan’s Rising Yields Stir Debate Over Growing Repatriation Risk",
+          "title": "Treasury Buybacks Won't Fix US Yields, Strategist Says",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-08T21:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-08/japan-s-rising-yields-stir-debate-over-growing-repatriation-risk",
+          "publishedAt": "2026-09-08T23:49:59+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-08/treasury-buybacks-won-t-fix-us-yields-strategist-says-video",
           "tags": [
+            "dividend",
             "market",
             "rates"
           ]
@@ -480,53 +436,27 @@
             "rates",
             "us_broad"
           ]
-        },
-        {
-          "title": "Stocks Fall as Middle East Jitters Spur Oil Rally: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-07T22:08:43+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-07/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "market",
-            "rates"
-          ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.096,
-      "negativeCount": 1,
-      "positiveCount": 2,
-      "neutralCount": 4,
+      "avgSentiment": 0.25,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 7,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Stocks Slide as U.S.-Iran Tensions Push Oil Toward $99 | Closing Bell",
-      "topPositiveTitle": "Asian Chip Stocks Set for Gains, Brent Nears $100: Markets Wrap",
+      "topNegativeTitle": "Latest Oil Market News and Analysis for Sept. 9",
+      "topPositiveTitle": "Asian Chip Stocks Rise, Crude Climbs Toward $100: Markets Wrap",
       "items": [
         {
-          "title": "Stocks Slide as U.S.-Iran Tensions Push Oil Toward $99 | Closing Bell",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-09-08T20:18:00+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-08/us-iran-tensions-push-oil-higher-closing-bell-video",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "Massachusetts Will Require New Data Centers to Use Clean Energy",
+          "title": "Latest Oil Market News and Analysis for Sept. 9",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-08T20:01:46+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-08/massachusetts-will-require-new-data-centers-to-use-clean-energy",
+          "publishedAt": "2026-09-08T22:03:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-08/latest-oil-market-news-and-analysis-for-sept-9",
           "tags": [
             "commodity",
             "market"
@@ -546,19 +476,6 @@
           ]
         },
         {
-          "title": "Stocks Fall as Middle East Jitters Spur Oil Rally: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-07T22:08:43+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-07/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "market",
-            "rates"
-          ]
-        },
-        {
           "title": "Westwood CEO on the First ETF Listing on the TXSE",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
@@ -570,33 +487,33 @@
             "market",
             "trust"
           ]
+        },
+        {
+          "title": "Asian Chip Stocks Rise, Crude Climbs Toward $100: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-09-08T22:11:28+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-08/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "jp_semiconductor",
+            "market"
+          ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.0,
-      "negativeCount": 2,
+      "avgSentiment": 0.067,
+      "negativeCount": 1,
       "positiveCount": 2,
       "neutralCount": 7,
       "sourceCount": 3,
-      "itemCount": 11,
+      "itemCount": 10,
       "isStale": false,
-      "topNegativeTitle": "Stocks Slide as U.S.-Iran Tensions Push Oil Toward $99 | Closing Bell",
+      "topNegativeTitle": "茂木外相 イラン外相と電話会談“事態沈静化向け柔軟対応を”",
       "topPositiveTitle": "Carney Says Tariffs on US Goods Meant to Protect Canada, Not Escalate Conflict",
       "items": [
-        {
-          "title": "Stocks Slide as U.S.-Iran Tensions Push Oil Toward $99 | Closing Bell",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-09-08T20:18:00+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-08/us-iran-tensions-push-oil-higher-closing-bell-video",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "market"
-          ]
-        },
         {
           "title": "茂木外相 イラン外相と電話会談“事態沈静化向け柔軟対応を”",
           "source": "NHK 経済",
@@ -646,6 +563,19 @@
           "tags": [
             "geopolitical",
             "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Qatar Has Widest Deficit in a Decade as Hormuz Ties Up Gas Trade",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-08T14:39:30+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-08/qatar-has-widest-deficit-in-a-decade-as-hormuz-ties-up-gas-trade",
+          "tags": [
+            "commodity",
+            "geopolitical",
             "market"
           ]
         }
