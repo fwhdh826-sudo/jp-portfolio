@@ -54,6 +54,14 @@ from datetime import datetime, timezone, timedelta
 from pathlib import Path
 from typing import Any, Callable, NamedTuple
 
+# P5-B005-B4-A: Candidate Funnel fundamental-source plumbing（Phase A）。
+# growth scoring は有効化しない（GROWTH_SCORING_STATUS = reserved_zero_weight）。
+# derived PER/ROE は SHADOW evidence のみ。既存 public per/roe authority は不変。
+try:
+    from data.candidate_fundamentals import FundamentalsEnricher, fetch_fundamentals_one
+except ImportError:  # generator 実行時 (sys.path[0]=data/)
+    from candidate_fundamentals import FundamentalsEnricher, fetch_fundamentals_one
+
 SCHEMA_VERSION = "candidates-stocks-1"
 UNIVERSE = "seed_list_v1"
 PIPELINE_CONTRACT = "jpx_whole_market_candidates_v1"
@@ -454,11 +462,20 @@ def enforce_enrichment_guard(
 
 
 def enrich_universe(
-    universe: list[tuple[str, str, str]], fetch_fn: EnrichFn = fetch_one
+    universe: list[tuple[str, str, str]],
+    fetch_fn: EnrichFn = fetch_one,
+    fundamentals_enricher: "FundamentalsEnricher | None" = None,
 ) -> tuple[list[dict[str, Any]], list[str]]:
     """universe（(code,name,sector)のリスト）を1件ずつenrichする。
     銘柄単位fail-soft: 1銘柄が完全に例外を投げても全体を止めず、
-    partial扱いのitemを積んで続行する。"""
+    partial扱いのitemを積んで続行する。
+
+    fundamentals_enricher（P5-B005-B4-A）が渡された場合、market enrichment 後に
+    各itemへ Phase A fundamental shadow field（profitGrowth/epsGrowth/
+    fiscalPeriodEnd/fundamentalsStatus）を付与する。この channel は
+    reserved zero-weight であり、market candidate publication を止めない
+    （§14/§15 fail-soft）。fetch_fn が明示指定されず fundamentals_enricher が
+    None の既存呼び出しは一切挙動が変わらない（新 field 自体が付かない）。"""
     candidates: list[dict[str, Any]] = []
     missing: list[str] = []
 
@@ -475,6 +492,16 @@ def enrich_universe(
             }
         if item['dataStatus'] != 'ok':
             missing.append(code)
+        if fundamentals_enricher is not None:
+            # fundamental shadow channel の障害は market candidate を巻き込まない。
+            try:
+                fundamentals_enricher.enrich(item, code)
+            except Exception as e:  # noqa: BLE001 - zero-weight shadow は最終防御で握る
+                print(f"  ⚠ {code} fundamentals shadow enrich 失敗: {e}", file=sys.stderr)
+                item.setdefault('profitGrowth', None)
+                item.setdefault('epsGrowth', None)
+                item.setdefault('fiscalPeriodEnd', None)
+                item.setdefault('fundamentalsStatus', 'invalid')
         candidates.append(item)
 
     return candidates, missing
@@ -506,6 +533,7 @@ def build_candidates_stocks(
     enrichment_guard: int = MAX_ENRICHMENT_UNIVERSE,
     now: datetime | None = None,
     run_token: str | None = None,
+    fundamentals_fetch_fn: Any = None,
 ) -> dict[str, Any]:
     """provider→enrichment→publish capの3段を実行し、公開JSON payload
     （dict、ファイルI/Oなし）を返す純粋関数。
@@ -526,7 +554,16 @@ def build_candidates_stocks(
     universe_provenance = getattr(provider_result, "provenance", None)
     enforce_enrichment_guard(universe, max_items=enrichment_guard)
 
-    candidates_all, missing_all = enrich_universe(universe, fetch_fn=fetch_fn)
+    # P5-B005-B4-A: fundamentals shadow channel（reserved zero-weight）。
+    # fundamentals_fetch_fn が渡された run のみ新 field / _meta.fundamentals を
+    # 生成する。既存の全 caller（fundamentals_fetch_fn 省略）は挙動不変。
+    fundamentals_enricher = None
+    if fundamentals_fetch_fn is not None:
+        fundamentals_enricher = FundamentalsEnricher(fundamentals_fetch_fn, now=now)
+
+    candidates_all, missing_all = enrich_universe(
+        universe, fetch_fn=fetch_fn, fundamentals_enricher=fundamentals_enricher
+    )
     candidates, missing, truncated = apply_publish_cap(candidates_all, missing_all, publish_cap)
 
     if truncated > 0:
@@ -568,6 +605,16 @@ def build_candidates_stocks(
         meta["universeProvenance"] = universe_provenance
         meta["pipelineContract"] = PIPELINE_CONTRACT
         meta["pipelinePath"] = universe_provenance.get("pipelinePath")
+
+    # P5-B005-B4-A: dataset-level fundamentals authority/coverage meta。
+    # fundamentals_fetch_fn を渡した run のみ付与される optional block
+    # （既存 default caller は _meta 形状不変）。raw financial statement は
+    # ここへ入れない（§12）。
+    if fundamentals_enricher is not None:
+        meta["fundamentals"] = fundamentals_enricher.meta([c["code"] for c in candidates])
+        # ephemeral shadow evidence は log（+ RUNNER_TEMP）へのみ。
+        # repo / public/data へは決して書かない（§16）。
+        fundamentals_enricher.emit_shadow_evidence()
 
     return {
         "schemaVersion": SCHEMA_VERSION,
@@ -741,6 +788,10 @@ def main(argv: list[str] | tuple[str, ...] = ()) -> None:
         universe_provider=lambda: provider_result,
         now=now,
         run_token=args.run_token,
+        # P5-B005-B4-A: production run は fundamentals shadow channel を有効化する。
+        # growth scoring は有効化しない（reserved zero-weight）。fetch 障害・
+        # rate-limit は fail-soft（market candidate publication を止めない）。
+        fundamentals_fetch_fn=fetch_fundamentals_one,
     )
     ok_count = sum(1 for c in payload['candidates'] if c.get('dataStatus') == 'ok')
     print(

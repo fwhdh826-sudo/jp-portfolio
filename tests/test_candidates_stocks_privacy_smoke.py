@@ -415,6 +415,101 @@ def test_production_contract_accepts_all_three_explicit_paths(path):
     assert check_production_candidates_stocks_payload(payload, "p") == []
 
 
+def _with_fundamentals(payload, coverage=None, aborted=False, abort_reason=None):
+    count = payload["_meta"]["counts"]["publishedCount"]
+    cov = {
+        "present": count, "stale": 0, "missing": 0, "negativeBase": 0,
+        "splitGuardBlocked": 0, "irregularPeriod": 0, "rowLabelMissing": 0,
+    }
+    if coverage:
+        cov.update(coverage)
+    for c in payload["candidates"]:
+        c.setdefault("profitGrowth", 12.5)
+        c.setdefault("epsGrowth", 9.1)
+        c.setdefault("fiscalPeriodEnd", "2026-03-31")
+        c.setdefault("fundamentalsStatus", "available")
+    payload["_meta"]["fundamentals"] = {
+        "source": "yfinance annual income_stmt/balance_sheet + splits",
+        "fetchedAt": payload["updatedAt"],
+        "statementMaxAgeDays": 456,
+        "canonicalPeField": "per",
+        "growthScoringStatus": "reserved_zero_weight",
+        "coverage": cov,
+        "aborted": aborted,
+        "abortReason": abort_reason,
+    }
+    return payload
+
+
+# --- P5-B005-B4-A: fundamental shadow field / _meta.fundamentals ----------
+
+
+def test_new_fundamental_fields_are_optional_not_required():
+    # 既存 artifact（新 field 無し）は production guard を通る
+    payload = _valid_production_payload()
+    assert check_production_candidates_stocks_payload(payload, "p") == []
+
+
+def test_production_contract_accepts_valid_fundamentals_block():
+    payload = _with_fundamentals(_valid_production_payload())
+    assert check_production_candidates_stocks_payload(payload, "p") == []
+
+
+def test_fundamentals_meta_rejects_wrong_statement_max_age():
+    payload = _with_fundamentals(_valid_production_payload())
+    payload["_meta"]["fundamentals"]["statementMaxAgeDays"] = 45
+    violations = check_production_candidates_stocks_payload(payload, "p")
+    assert any("statementMaxAgeDays" in v for v in violations)
+
+
+def test_fundamentals_meta_rejects_growth_scoring_activation_marker():
+    payload = _with_fundamentals(_valid_production_payload())
+    payload["_meta"]["fundamentals"]["growthScoringStatus"] = "active"
+    violations = check_production_candidates_stocks_payload(payload, "p")
+    assert any("growthScoringStatus" in v for v in violations)
+
+
+def test_fundamentals_meta_rejects_unknown_coverage_bucket():
+    payload = _with_fundamentals(_valid_production_payload())
+    payload["_meta"]["fundamentals"]["coverage"]["mysteryBucket"] = 1
+    violations = check_production_candidates_stocks_payload(payload, "p")
+    assert any("coverage" in v for v in violations)
+
+
+def test_fundamentals_meta_aborted_requires_reason():
+    payload = _with_fundamentals(_valid_production_payload(), aborted=True, abort_reason=None)
+    violations = check_production_candidates_stocks_payload(payload, "p")
+    assert any("abortReason" in v for v in violations)
+
+
+def test_fundamentals_meta_aborted_with_reason_ok():
+    payload = _with_fundamentals(
+        _valid_production_payload(), aborted=True, abort_reason="provider_rate_limited: YFRateLimitError"
+    )
+    assert check_production_candidates_stocks_payload(payload, "p") == []
+
+
+def test_candidate_fundamentals_status_enum_enforced():
+    payload = _with_fundamentals(_valid_production_payload())
+    payload["candidates"][0]["fundamentalsStatus"] = "bogus"
+    violations = check_production_candidates_stocks_payload(payload, "p")
+    assert any("fundamentalsStatus" in v for v in violations)
+
+
+def test_candidate_growth_must_be_number_or_null():
+    payload = _with_fundamentals(_valid_production_payload())
+    payload["candidates"][0]["profitGrowth"] = "20%"
+    violations = check_production_candidates_stocks_payload(payload, "p")
+    assert any("profitGrowth" in v for v in violations)
+
+
+def test_candidate_fiscal_period_end_must_be_iso_date():
+    payload = _with_fundamentals(_valid_production_payload())
+    payload["candidates"][0]["fiscalPeriodEnd"] = "2026-03-31T00:00:00Z"
+    violations = check_production_candidates_stocks_payload(payload, "p")
+    assert any("fiscalPeriodEnd" in v for v in violations)
+
+
 def test_production_contract_rejects_missing_pipeline_path():
     payload = _valid_production_payload()
     del payload["_meta"]["pipelinePath"]

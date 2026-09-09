@@ -31,7 +31,7 @@ P5-B004b追加確認項目（Fable adversarial review P1×4対応）:
       silent truncationせずfail-fastする（SCALE-01）
 """
 
-from datetime import datetime, timezone, timedelta
+from datetime import date, datetime, timezone, timedelta
 
 import pytest
 
@@ -52,6 +52,7 @@ from data.build_candidates_stocks import (
     is_stale_payload,
     is_valid_candidates_stocks_schema,
 )
+from data.candidate_fundamentals import FundamentalsFetch, FundamentalsRateLimit
 
 JST = timezone(timedelta(hours=9))
 _NOW = datetime(2026, 7, 13, 12, 0, 0, tzinfo=JST)
@@ -475,3 +476,121 @@ class TestNoPersonalData:
         codes = {c['code'] for c in payload['candidates']}
         seed_codes = {code for code, _, _ in SEED_LIST}
         assert codes == seed_codes
+
+
+# ---------------------------------------------------------------------------
+# P5-B005-B4-A: fundamental source plumbing（Phase A、shadow / reserved zero-weight）
+# ---------------------------------------------------------------------------
+
+_FY0_END = date(2026, 3, 31)
+_FY1_END = date(2025, 3, 31)
+
+
+def _fund_fetch_ok(code: str) -> FundamentalsFetch:
+    return FundamentalsFetch(
+        income_stmt={"Net Income": [120.0, 100.0], "Diluted EPS": [12.0, 10.0]},
+        balance_sheet={"Stockholders Equity": [1000.0, 900.0]},
+        period_ends=[_FY0_END, _FY1_END],
+        splits=[],
+        splits_ok=True,
+        ok=True,
+    )
+
+
+class TestFundamentalsPlumbing:
+    def _provider(self, n=3):
+        return lambda: UniverseResult("seed_list_v1", [(str(1000 + i), f"n{i}", "s") for i in range(n)])
+
+    def test_default_build_has_no_fundamental_fields(self):
+        # fundamentals_fetch_fn 未指定の既存 caller は _meta 形状・candidate
+        # 形状ともに不変
+        payload = build_candidates_stocks(fetch_fn=_fake_fetch_ok, now=_NOW)
+        assert "fundamentals" not in payload["_meta"]
+        for c in payload["candidates"]:
+            assert "profitGrowth" not in c
+            assert "epsGrowth" not in c
+            assert "fundamentalsStatus" not in c
+
+    def test_fundamentals_fields_added_when_fetch_fn_supplied(self):
+        payload = build_candidates_stocks(
+            universe_provider=self._provider(3),
+            fetch_fn=_fake_fetch_ok,
+            now=datetime(2026, 6, 30, tzinfo=JST),
+            fundamentals_fetch_fn=_fund_fetch_ok,
+        )
+        for c in payload["candidates"]:
+            assert c["profitGrowth"] == 20.0
+            assert c["epsGrowth"] == 20.0
+            assert c["fiscalPeriodEnd"] == "2026-03-31"
+            assert c["fundamentalsStatus"] == "available"
+
+    def test_meta_fundamentals_contract(self):
+        payload = build_candidates_stocks(
+            universe_provider=self._provider(3),
+            fetch_fn=_fake_fetch_ok,
+            now=datetime(2026, 6, 30, tzinfo=JST),
+            fundamentals_fetch_fn=_fund_fetch_ok,
+        )
+        fm = payload["_meta"]["fundamentals"]
+        assert fm["statementMaxAgeDays"] == 456
+        assert fm["canonicalPeField"] == "per"
+        assert fm["growthScoringStatus"] == "reserved_zero_weight"
+        assert fm["aborted"] is False
+        assert fm["abortReason"] is None
+        assert sum(fm["coverage"].values()) == 3
+        assert fm["coverage"]["present"] == 3
+
+    def test_rate_limit_abort_is_fail_soft_and_observable(self):
+        seen: list[str] = []
+
+        def flaky_fund(code):
+            seen.append(code)
+            if code == "1001":
+                raise FundamentalsRateLimit("HTTP 429")
+            return _fund_fetch_ok(code)
+
+        payload = build_candidates_stocks(
+            universe_provider=self._provider(4),
+            fetch_fn=_fake_fetch_ok,
+            now=datetime(2026, 6, 30, tzinfo=JST),
+            fundamentals_fetch_fn=flaky_fund,
+        )
+        # market candidate publication は止まらない
+        assert payload["status"] == "ok"
+        assert len(payload["candidates"]) == 4
+        # rate-limit 後は新規 fundamental fetch を止める
+        assert seen == ["1000", "1001"]
+        fm = payload["_meta"]["fundamentals"]
+        assert fm["aborted"] is True
+        assert fm["abortReason"]
+        # abort 後の銘柄は null fundamentals
+        assert payload["candidates"][0]["profitGrowth"] == 20.0
+        for c in payload["candidates"][1:]:
+            assert c["profitGrowth"] is None
+            assert c["fundamentalsStatus"] == "missing"
+
+    def test_fundamentals_channel_failure_does_not_break_market_candidates(self):
+        def boom_fund(code):
+            raise RuntimeError("unexpected fundamentals bug")
+
+        payload = build_candidates_stocks(
+            universe_provider=self._provider(2),
+            fetch_fn=_fake_fetch_ok,
+            now=datetime(2026, 6, 30, tzinfo=JST),
+            fundamentals_fetch_fn=boom_fund,
+        )
+        assert payload["status"] == "ok"
+        for c in payload["candidates"]:
+            assert c["fundamentalsStatus"] == "invalid"
+            assert c["price"] == 100.0  # market field 不変
+
+    def test_builder_output_with_fundamentals_passes_privacy_smoke(self):
+        from data.candidates_stocks_privacy_smoke import check_candidates_stocks_payload
+
+        payload = build_candidates_stocks(
+            universe_provider=self._provider(3),
+            fetch_fn=_fake_fetch_ok,
+            now=datetime(2026, 6, 30, tzinfo=JST),
+            fundamentals_fetch_fn=_fund_fetch_ok,
+        )
+        assert check_candidates_stocks_payload(payload, "p") == []

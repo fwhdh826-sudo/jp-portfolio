@@ -130,7 +130,13 @@ def test_batch_and_smoke_steps_remain_blocking():
 
 
 def test_no_new_pip_dependency_added():
-    assert "pip install yfinance pandas numpy feedparser requests xlrd" in _TEXT
+    # P5-B005-B4-A: yfinance を production 解決版へ pin する以外、依存の
+    # 追加・upgrade はしない（§21）。パッケージ集合は不変。
+    assert (
+        "pip install yfinance==1.7.0 pandas numpy feedparser requests xlrd openpyxl" in _TEXT
+    )
+    # 新規パッケージ名が混入していないこと
+    assert "pip install yfinance pandas numpy feedparser requests xlrd" not in _TEXT
 
 
 def test_capture_and_upload_steps_have_no_secrets_env():

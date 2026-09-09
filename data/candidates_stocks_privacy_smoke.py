@@ -38,22 +38,46 @@ ROOT_ALLOWED_KEYS = {
 META_ALLOWED_KEYS = {
     "kind", "source", "not_for_trading", "universe", "note", "counts",
     "universeProvenance", "pipelineContract", "pipelinePath", "runToken",
+    # P5-B005-B4-A: dataset-level fundamentals authority/coverage meta。
+    "fundamentals",
 }
 COUNTS_ALLOWED_KEYS = {
     "universeCount", "publishedCount", "truncatedCount", "failedTotalCount",
 }
+# P5-B005-B4-A: _meta.fundamentals（optional。存在時のみ構造検証する）
+FUNDAMENTALS_META_ALLOWED_KEYS = {
+    "source", "fetchedAt", "statementMaxAgeDays", "canonicalPeField",
+    "growthScoringStatus", "coverage", "aborted", "abortReason",
+}
+FUNDAMENTALS_COVERAGE_ALLOWED_KEYS = {
+    "present", "stale", "missing", "negativeBase", "splitGuardBlocked",
+    "irregularPeriod", "rowLabelMissing",
+}
+FUNDAMENTALS_STATUS_VALUES = {
+    "available", "partial", "missing", "stale", "invalid",
+}
+STATEMENT_MAX_AGE_DAYS = 456
 PROVENANCE_ALLOWED_KEYS = {
     "pipelinePath", "jpxSource", "jpxFallbackUsed", "jpxEligibleCount",
     "shortlistId", "shortlistCount", "shortlistSuccessRatio",
     "shortlistFallbackUsed", "shortlistFallbackReason",
     "shortlistBypassSeedListV1", "sectorCapRelaxed", "sectorCapRelaxedCount",
 }
-CANDIDATE_ALLOWED_KEYS = {
+# P5-B002a の canonical 12 field。production では全 candidate に必須。
+CANDIDATE_REQUIRED_KEYS = {
     "code", "name", "sector", "price", "per", "pbr", "roe",
     "dividendYield", "sigma252d", "mom3m", "screenReasons", "dataStatus",
 }
+# P5-B005-B4-A: backward-compatible OPTIONAL fundamental shadow field
+# （§10）。許可はするが required にはしない —— 既存 artifact は次の
+# production run で追随する。
+CANDIDATE_OPTIONAL_KEYS = {
+    "profitGrowth", "epsGrowth", "fiscalPeriodEnd", "fundamentalsStatus",
+}
+CANDIDATE_ALLOWED_KEYS = CANDIDATE_REQUIRED_KEYS | CANDIDATE_OPTIONAL_KEYS
 PRODUCTION_REQUIRED_ROOT_KEYS = ROOT_ALLOWED_KEYS
-PRODUCTION_REQUIRED_META_KEYS = META_ALLOWED_KEYS - {"runToken"}
+# fundamentals は optional-when-absent（pre-existing artifact 互換）。
+PRODUCTION_REQUIRED_META_KEYS = META_ALLOWED_KEYS - {"runToken", "fundamentals"}
 
 # P4.5-A010/A010-1a: 個人資産・実額・口座種別を含めない方針のguard
 FORBIDDEN_KEYS = {
@@ -107,6 +131,9 @@ def check_candidates_stocks_payload(payload: Any, label: str) -> list[str]:
                 violations.append(
                     f"{label}: unexpected _meta.counts keys {unexpected_counts}"
                 )
+
+        if "fundamentals" in meta:
+            violations.extend(check_fundamentals_meta(meta.get("fundamentals"), label))
 
         provenance = meta.get("universeProvenance")
         if isinstance(provenance, dict):
@@ -165,6 +192,76 @@ def _parse_iso(raw: Any) -> datetime | None:
     if parsed.tzinfo is None or parsed.utcoffset() is None:
         return None
     return parsed.astimezone(timezone.utc)
+
+
+def _parse_date(raw: Any) -> Any:
+    if not isinstance(raw, str) or not raw:
+        return None
+    try:
+        return datetime.strptime(raw, "%Y-%m-%d").date()
+    except ValueError:
+        return None
+
+
+def check_fundamentals_meta(meta_fundamentals: Any, label: str) -> list[str]:
+    """P5-B005-B4-A: _meta.fundamentals block（存在時のみ）を検証する。
+    raw financial statement を持ち込んでいないこと・coverage bucket が凍結
+    集合であること・authority が Phase A 契約どおりであることを確認する。"""
+    violations: list[str] = []
+    if not isinstance(meta_fundamentals, dict):
+        return [f"{label}: _meta.fundamentals is not a dict"]
+
+    unexpected = sorted(set(meta_fundamentals) - FUNDAMENTALS_META_ALLOWED_KEYS)
+    if unexpected:
+        violations.append(f"{label}: unexpected _meta.fundamentals keys {unexpected}")
+
+    for required_key in ("source", "fetchedAt", "statementMaxAgeDays", "coverage"):
+        if required_key not in meta_fundamentals:
+            violations.append(f"{label}: _meta.fundamentals missing {required_key}")
+
+    if not isinstance(meta_fundamentals.get("source"), str) or not meta_fundamentals.get("source"):
+        violations.append(f"{label}: _meta.fundamentals.source must be a non-empty string")
+    if _parse_iso(meta_fundamentals.get("fetchedAt")) is None:
+        violations.append(f"{label}: _meta.fundamentals.fetchedAt must be a tz-aware ISO timestamp")
+    if meta_fundamentals.get("statementMaxAgeDays") != STATEMENT_MAX_AGE_DAYS:
+        violations.append(
+            f"{label}: _meta.fundamentals.statementMaxAgeDays must be {STATEMENT_MAX_AGE_DAYS}"
+        )
+    if "canonicalPeField" in meta_fundamentals and meta_fundamentals["canonicalPeField"] != "per":
+        violations.append(f"{label}: _meta.fundamentals.canonicalPeField must be 'per'")
+    if (
+        "growthScoringStatus" in meta_fundamentals
+        and meta_fundamentals["growthScoringStatus"] != "reserved_zero_weight"
+    ):
+        violations.append(
+            f"{label}: _meta.fundamentals.growthScoringStatus must be 'reserved_zero_weight'"
+        )
+
+    coverage = meta_fundamentals.get("coverage")
+    if not isinstance(coverage, dict):
+        violations.append(f"{label}: _meta.fundamentals.coverage is not a dict")
+    else:
+        unexpected_cov = sorted(set(coverage) - FUNDAMENTALS_COVERAGE_ALLOWED_KEYS)
+        if unexpected_cov:
+            violations.append(
+                f"{label}: unexpected _meta.fundamentals.coverage keys {unexpected_cov}"
+            )
+        for cov_key, cov_value in coverage.items():
+            if not _is_int(cov_value) or cov_value < 0:
+                violations.append(
+                    f"{label}: _meta.fundamentals.coverage.{cov_key} must be a non-negative int"
+                )
+
+    aborted = meta_fundamentals.get("aborted")
+    if aborted is not None and not isinstance(aborted, bool):
+        violations.append(f"{label}: _meta.fundamentals.aborted must be boolean")
+    abort_reason = meta_fundamentals.get("abortReason")
+    if abort_reason is not None and (not isinstance(abort_reason, str) or not abort_reason.strip()):
+        violations.append(f"{label}: _meta.fundamentals.abortReason must be null or non-empty string")
+    if aborted is True and not (isinstance(abort_reason, str) and abort_reason.strip()):
+        violations.append(f"{label}: _meta.fundamentals.aborted requires a non-empty abortReason")
+
+    return violations
 
 
 def _is_int(value: Any) -> bool:
@@ -297,7 +394,7 @@ def check_production_candidates_stocks_payload(
     for candidate in candidates:
         if not isinstance(candidate, dict):
             continue
-        missing_candidate_keys = sorted(CANDIDATE_ALLOWED_KEYS - set(candidate))
+        missing_candidate_keys = sorted(CANDIDATE_REQUIRED_KEYS - set(candidate))
         if missing_candidate_keys:
             violations.append(
                 f"{label}: candidate {candidate.get('code')!r} missing required keys "
@@ -335,6 +432,28 @@ def check_production_candidates_stocks_payload(
         if candidate.get("dataStatus") == "partial" and has_any_market_data:
             violations.append(
                 f"{label}: candidate {code!r} dataStatus partial has enriched market data"
+            )
+
+        # P5-B005-B4-A: OPTIONAL fundamental shadow field。存在時のみ型検証する
+        # （§10 backward-compatible optional。score/action/amount semantics 禁止）。
+        for growth_key in ("profitGrowth", "epsGrowth"):
+            value = candidate.get(growth_key)
+            if value is not None and not _is_number(value):
+                violations.append(
+                    f"{label}: candidate {code!r} {growth_key} must be finite number or null"
+                )
+        fiscal_period_end = candidate.get("fiscalPeriodEnd")
+        if fiscal_period_end is not None and (
+            not isinstance(fiscal_period_end, str) or _parse_date(fiscal_period_end) is None
+        ):
+            violations.append(
+                f"{label}: candidate {code!r} fiscalPeriodEnd must be an ISO date string or null"
+            )
+        fundamentals_status = candidate.get("fundamentalsStatus")
+        if fundamentals_status is not None and fundamentals_status not in FUNDAMENTALS_STATUS_VALUES:
+            violations.append(
+                f"{label}: candidate {code!r} fundamentalsStatus {fundamentals_status!r} "
+                f"not in {sorted(FUNDAMENTALS_STATUS_VALUES)}"
             )
 
     duplicate_codes = sorted(
