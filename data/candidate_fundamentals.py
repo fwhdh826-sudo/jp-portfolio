@@ -74,6 +74,14 @@ except ImportError:
 CANONICAL_PE_FIELD = "per"
 GROWTH_SCORING_STATUS = "reserved_zero_weight"
 
+# P5-B005-B4-D1a-O: D1a-O 期間中は public production authority は provider ベース
+# のまま。strict-derived annual FY0 PER は ephemeral calibration mirror でのみ
+# 使用する（実際の authority migration は本 ticket では行わない）。
+PER_AUTHORITY_PROVIDER = "providerTrailingPE"
+PER_AUTHORITY_DERIVED = "derivedAnnualFY0"
+DERIVED_PER_CALIBRATION_HANDOFF_SCHEMA = "derived-per-calibration-handoff-1"
+DERIVED_PER_CALIBRATION_HANDOFF_FILENAME = "derived_per_calibration_handoff.json"
+
 COMPARABLE_SPAN_MIN_DAYS = 335
 COMPARABLE_SPAN_MAX_DAYS = 395
 
@@ -183,6 +191,39 @@ _AXIS_TO_COVERAGE = {
     _AXIS_ENRICH_FAILED: COVERAGE_INVALID,
 }
 
+# ── strict-derived PER 診断語彙（P5-B005-B4-D1a-O calibration authority）──
+# frozen future authority = candidate canonical price / accepted annual FY0
+# reported EPS（Diluted 優先、Diluted 行が無い場合のみ Basic。Diluted 行が
+# あって値が invalid なら Basic fallback しない）。この値は D1a-O では
+# ephemeral な calibration mirror でのみ使われ、production の public `per`
+# authority（provider trailingPE）は一切変更しない。
+#
+# 各 published symbol はちょうど 1 つの per-diagnostic bucket へ寄与し、
+# sum(diagnostics.per.values()) == publishedCount が常に成り立つ。
+PER_DIAG_AVAILABLE = "available"
+PER_DIAG_MISSING = "missing"                    # EPS 行はあるが FY0 セルが無い
+PER_DIAG_ROW_LABEL_MISSING = "rowLabelMissing"  # Diluted/Basic EPS 行自体が不在
+PER_DIAG_INVALID_NUMERIC = "invalidNumeric"     # FY0 EPS セルが非有限
+PER_DIAG_EPS_NOT_POSITIVE = "epsNotPositive"    # FY0 EPS <= 0
+PER_DIAG_STALE = "stale"                        # FY0 statement が 456 日より古い
+PER_DIAG_IRREGULAR_PERIOD = "irregularPeriod"   # FY0-FY1 span が 335..395 日外
+PER_DIAG_SPLIT_GUARD_BLOCKED = "splitGuardBlocked"  # 分割調整不確定 / split 履歴取得失敗
+PER_DIAG_ENRICH_FAILED = "enrichFailed"         # provider 障害 / rate-limit abort / outer 例外
+PER_DIAG_PRICE_UNAVAILABLE = "priceUnavailable"  # canonical price が非正 / 非有限 / 欠損
+
+PER_DIAG_KEYS = (
+    PER_DIAG_AVAILABLE,
+    PER_DIAG_MISSING,
+    PER_DIAG_ROW_LABEL_MISSING,
+    PER_DIAG_INVALID_NUMERIC,
+    PER_DIAG_EPS_NOT_POSITIVE,
+    PER_DIAG_STALE,
+    PER_DIAG_IRREGULAR_PERIOD,
+    PER_DIAG_SPLIT_GUARD_BLOCKED,
+    PER_DIAG_ENRICH_FAILED,
+    PER_DIAG_PRICE_UNAVAILABLE,
+)
+
 _FETCH_ATTEMPTS = 1  # zero-weight shadow channel。retry storm を持ち込まない（§15）。
 
 # ── rate-limit 検出（§8: bare "429" substring を廃止）────────────────
@@ -272,6 +313,10 @@ class FundamentalsResult:
     # reason。mixed-axis authority（片軸 valid / 片軸 block）を保存する。
     profit_axis: str = _AXIS_MISSING
     eps_axis: str = _AXIS_MISSING
+    # P5-B005-B4-D1a-O: strict-derived annual FY0 PER（ephemeral calibration
+    # mirror 専用。production public `per` authority は不変）。
+    strict_derived_per: Optional[float] = None
+    strict_derived_per_diag: str = PER_DIAG_MISSING
 
 
 def _null_result(
@@ -281,6 +326,7 @@ def _null_result(
     *,
     profit_axis: str = _AXIS_MISSING,
     eps_axis: str = _AXIS_MISSING,
+    strict_derived_per_diag: str = PER_DIAG_MISSING,
 ) -> FundamentalsResult:
     return FundamentalsResult(
         profit_growth=None,
@@ -292,6 +338,8 @@ def _null_result(
         coverage=coverage,
         profit_axis=profit_axis,
         eps_axis=eps_axis,
+        strict_derived_per=None,
+        strict_derived_per_diag=strict_derived_per_diag,
     )
 
 
@@ -315,6 +363,7 @@ def derive_fundamentals(
             coverage=COVERAGE_MISSING,
             profit_axis=_AXIS_MISSING,
             eps_axis=_AXIS_MISSING,
+            strict_derived_per_diag=PER_DIAG_MISSING,
         )
 
     # ── FY0 / FY1 を period identity で決定する（§10 T9）────────────────
@@ -337,6 +386,7 @@ def derive_fundamentals(
             coverage=COVERAGE_STALE,
             profit_axis=_AXIS_STALE,
             eps_axis=_AXIS_STALE,
+            strict_derived_per_diag=PER_DIAG_STALE,
         )
 
     ni_label = _ni_label(income_stmt)
@@ -407,6 +457,39 @@ def derive_fundamentals(
     if ni0 is not None and equity0 is not None and equity0 > 0:
         shadow_roe = ni0 / equity0 * 100.0
 
+    # ── strict-derived annual FY0 PER（§2 / P5-B005-B4-D1a-O）────────────
+    # canonical price / accepted annual FY0 reported EPS。provider PER
+    # fallback は決して使わない（frozen future authority = STRICT_DERIVED）。
+    # numeric になるのは全 guard が pass したときのみ。決定的 precedence:
+    #   rowLabelMissing > invalidNumeric > missing > irregularPeriod
+    #   > splitGuardBlocked > epsNotPositive > priceUnavailable > available
+    # （stale は上で早期 return 済み。enrichFailed は enricher が設定する。）
+    strict_derived_per: Optional[float] = None
+    if eps_label is None:
+        strict_derived_per_diag = PER_DIAG_ROW_LABEL_MISSING
+    elif eps0_kind == _CELL_NOT_FINITE:
+        strict_derived_per_diag = PER_DIAG_INVALID_NUMERIC
+    elif eps0 is None:
+        strict_derived_per_diag = PER_DIAG_MISSING
+    elif len(sorted_ends) >= 2 and not span_ok:
+        strict_derived_per_diag = PER_DIAG_IRREGULAR_PERIOD
+    elif not split_ok:
+        # split guard 未 pass、または split 履歴取得失敗（splits_ok=False）を
+        # 決定的に splitGuardBlocked へ写像する（§5 注 A。「分割なし」と
+        # silent に混同しない）。
+        strict_derived_per_diag = PER_DIAG_SPLIT_GUARD_BLOCKED
+    elif eps0 <= 0:
+        strict_derived_per_diag = PER_DIAG_EPS_NOT_POSITIVE
+    elif price_last_close is None or not (
+        isinstance(price_last_close, (int, float))
+        and math.isfinite(price_last_close)
+        and price_last_close > 0
+    ):
+        strict_derived_per_diag = PER_DIAG_PRICE_UNAVAILABLE
+    else:
+        strict_derived_per = price_last_close / eps0
+        strict_derived_per_diag = PER_DIAG_AVAILABLE
+
     # ── coverage bucket（§3: exclusive・total・決定的）─────────────────
     # `present` は「両軸とも available」のときのみ。片軸でも block されていれば
     # coverage はその block 原因を露出する（監査 P2-B の repair）。
@@ -460,6 +543,8 @@ def derive_fundamentals(
         coverage=coverage,
         profit_axis=profit_axis,
         eps_axis=eps_axis,
+        strict_derived_per=strict_derived_per,
+        strict_derived_per_diag=strict_derived_per_diag,
     )
 
 
@@ -739,14 +824,33 @@ class FundamentalsEnricher:
         # §4 axis diagnostics: code -> (profit_axis, eps_axis)
         self._axes_by_code: dict[str, tuple[str, str]] = {}
         self._shadow = _ShadowAggregator()
+        # P5-B005-B4-D1a-O: per-symbol strict-derived PER calibration record。
+        # provider per の availability と strict-derived PER + diagnostic のみ。
+        # raw income statement / EPS 履歴は保持しない（§7）。
+        self._calib_by_code: dict[str, dict[str, Any]] = {}
         self.aborted = False
         self.abort_reason: Optional[str] = None
 
-    def _record(self, code: str, result: FundamentalsResult) -> None:
+    def _record(
+        self, code: str, result: FundamentalsResult, item: Optional[dict[str, Any]] = None
+    ) -> None:
         """1 published symbol 分の terminal coverage bucket と per-axis diagnostics
         を登録する。§3: どの経路もここを通り、集計から漏れる symbol を作らない。"""
         self._coverage_by_code[code] = result.coverage
         self._axes_by_code[code] = (result.profit_axis, result.eps_axis)
+        provider_per = _finite_or_none(item.get("per")) if isinstance(item, dict) else None
+        strict_per = _finite_or_none(result.strict_derived_per)
+        strict_valid = strict_per is not None and result.strict_derived_per_diag == PER_DIAG_AVAILABLE
+        self._calib_by_code[code] = {
+            "code": code,
+            "providerPer": provider_per,
+            # availability class は dataConfidence の per usable-axis と同じ規律
+            # （engine: per_vals is not None ＝ 有限なら符号を問わず usable）。
+            "providerPerValid": provider_per is not None,
+            "strictDerivedPer": strict_per if strict_valid else None,
+            "strictDerivedPerValid": strict_valid,
+            "strictDerivedPerDiag": result.strict_derived_per_diag,
+        }
 
     def enrich(self, item: dict[str, Any], code: str) -> None:
         """item へ profitGrowth / epsGrowth / fiscalPeriodEnd / fundamentalsStatus
@@ -774,9 +878,10 @@ class FundamentalsEnricher:
                 coverage=COVERAGE_INVALID,
                 profit_axis=_AXIS_ENRICH_FAILED,
                 eps_axis=_AXIS_ENRICH_FAILED,
+                strict_derived_per_diag=PER_DIAG_ENRICH_FAILED,
             )
             self._apply(item, result)
-            self._record(code, result)
+            self._record(code, result, item)
             return
 
         try:
@@ -796,9 +901,10 @@ class FundamentalsEnricher:
                 coverage=COVERAGE_INVALID,
                 profit_axis=_AXIS_ENRICH_FAILED,
                 eps_axis=_AXIS_ENRICH_FAILED,
+                strict_derived_per_diag=PER_DIAG_ENRICH_FAILED,
             )
             self._apply(item, result)
-            self._record(code, result)
+            self._record(code, result, item)
             return
 
         if not fetched.ok:
@@ -808,15 +914,17 @@ class FundamentalsEnricher:
                     coverage=COVERAGE_INVALID,
                     profit_axis=_AXIS_ENRICH_FAILED,
                     eps_axis=_AXIS_ENRICH_FAILED,
+                    strict_derived_per_diag=PER_DIAG_ENRICH_FAILED,
                 )
             else:
                 result = _null_result(
                     FUNDAMENTALS_STATUS_MISSING,
                     profit_axis=_AXIS_MISSING,
                     eps_axis=_AXIS_MISSING,
+                    strict_derived_per_diag=PER_DIAG_MISSING,
                 )
             self._apply(item, result)
-            self._record(code, result)
+            self._record(code, result, item)
             return
 
         result = derive_fundamentals(
@@ -835,7 +943,7 @@ class FundamentalsEnricher:
             shadow_roe=result.shadow_roe,
         )
         self._apply(item, result)
-        self._record(code, result)
+        self._record(code, result, item)
 
     def record_enrich_failure(self, item: dict[str, Any], code: str) -> None:
         """enrich() が予期せず throw した場合（あるいは呼び出し元の outer
@@ -848,9 +956,10 @@ class FundamentalsEnricher:
             coverage=COVERAGE_INVALID,
             profit_axis=_AXIS_ENRICH_FAILED,
             eps_axis=_AXIS_ENRICH_FAILED,
+            strict_derived_per_diag=PER_DIAG_ENRICH_FAILED,
         )
         self._apply(item, result)
-        self._record(code, result)
+        self._record(code, result, item)
 
     @staticmethod
     def _apply(item: dict[str, Any], result: FundamentalsResult) -> None:
@@ -871,6 +980,9 @@ class FundamentalsEnricher:
         diagnostics = {
             "profitGrowth": {key: 0 for key in _DIAG_PROFIT_KEYS},
             "epsGrowth": {key: 0 for key in _DIAG_EPS_KEYS},
+            # §5: strict-derived PER calibration diagnostic（exclusive・total）。
+            # sum(diagnostics.per.values()) == publishedCount。growth 診断は不変。
+            "per": {key: 0 for key in PER_DIAG_KEYS},
         }
         for code in published_codes:
             bucket = self._coverage_by_code.get(code)
@@ -887,17 +999,69 @@ class FundamentalsEnricher:
             diagnostics["epsGrowth"][
                 eps_axis if eps_axis in diagnostics["epsGrowth"] else _AXIS_ENRICH_FAILED
             ] += 1
+            per_diag = (self._calib_by_code.get(code) or {}).get(
+                "strictDerivedPerDiag", PER_DIAG_ENRICH_FAILED
+            )
+            diagnostics["per"][
+                per_diag if per_diag in diagnostics["per"] else PER_DIAG_ENRICH_FAILED
+            ] += 1
         return {
             "source": FUNDAMENTALS_SOURCE,
             "fetchedAt": self._now.isoformat(),
             "statementMaxAgeDays": STATEMENT_MAX_AGE_DAYS,
             "canonicalPeField": CANONICAL_PE_FIELD,
+            # §6: D1a-O 期間中の public production authority は provider ベース。
+            # 実際の authority migration まで "derivedAnnualFY0" にはしない。
+            "perAuthority": PER_AUTHORITY_PROVIDER,
             "growthScoringStatus": GROWTH_SCORING_STATUS,
             "coverage": coverage,
             "diagnostics": diagnostics,
             "aborted": self.aborted,
             "abortReason": self.abort_reason,
         }
+
+    def calibration_handoff_payload(self, published_codes: list[str]) -> dict[str, Any]:
+        """§7: job-local ephemeral calibration handoff。mirror を回すのに必要な
+        最小限の per-symbol scalar のみ（raw income statement / EPS 履歴なし、
+        secrets なし、portfolio data なし）。RUNNER_TEMP 以外へは決して書かない。"""
+        entries = []
+        for code in published_codes:
+            rec = self._calib_by_code.get(code)
+            if rec is None:
+                rec = {
+                    "code": code,
+                    "providerPer": None,
+                    "providerPerValid": False,
+                    "strictDerivedPer": None,
+                    "strictDerivedPerValid": False,
+                    "strictDerivedPerDiag": PER_DIAG_ENRICH_FAILED,
+                }
+            entries.append(dict(rec))
+        return {
+            "schemaVersion": DERIVED_PER_CALIBRATION_HANDOFF_SCHEMA,
+            "kind": "derived_per_calibration_handoff",
+            "generatedAt": self._now.isoformat(),
+            "not_for_trading": True,
+            "perAuthority": PER_AUTHORITY_PROVIDER,
+            "mirrorAuthority": PER_AUTHORITY_DERIVED,
+            "aborted": self.aborted,
+            "abortReason": self.abort_reason,
+            "entries": entries,
+        }
+
+    def emit_calibration_handoff(self, published_codes: list[str]) -> Optional[Path]:
+        """calibration handoff を RUNNER_TEMP へ書く（§7 / §19）。RUNNER_TEMP が
+        無ければ何もしない。data/ ・ public/data/ へは決して書かない。"""
+        runner_temp = os.environ.get("RUNNER_TEMP")
+        if not runner_temp:
+            return None
+        payload = self.calibration_handoff_payload(published_codes)
+        try:
+            out_path = Path(runner_temp) / DERIVED_PER_CALIBRATION_HANDOFF_FILENAME
+            out_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+            return out_path
+        except OSError:
+            return None
 
     def shadow_evidence(self) -> dict[str, Any]:
         """ephemeral な Phase B calibration 用要約（raw 値なし、非機微）。"""
