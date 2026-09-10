@@ -1,20 +1,32 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-09-10T10:16:05.042147+09:00",
-  "sourceUpdatedAt": "2026-09-10T00:36:47+00:00",
+  "updatedAt": "2026-09-10T17:17:28.675848+09:00",
+  "sourceUpdatedAt": "2026-09-10T08:10:01+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
       "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
+      "neutralCount": 2,
       "sourceCount": 1,
-      "itemCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Bessent Jawboning Risks Raising Expectations BOJ Can’t Meet",
-      "topPositiveTitle": "Bessent Jawboning Risks Raising Expectations BOJ Can’t Meet",
+      "topNegativeTitle": "BOJ’s Masu Says Will Continue to Raise Benchmark Rate",
+      "topPositiveTitle": "BOJ’s Masu Says Will Continue to Raise Benchmark Rate",
       "items": [
+        {
+          "title": "BOJ’s Masu Says Will Continue to Raise Benchmark Rate",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-10T01:39:12+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-10/boj-s-masu-says-will-continue-to-raise-benchmark-interest-rate",
+          "tags": [
+            "jp_broad",
+            "market"
+          ]
+        },
         {
           "title": "Bessent Jawboning Risks Raising Expectations BOJ Can’t Meet",
           "source": "Bloomberg Economics",
@@ -43,49 +55,45 @@
       "items": []
     },
     "us_broad": {
-      "avgSentiment": 0.0,
-      "negativeCount": 2,
+      "avgSentiment": 0.113,
+      "negativeCount": 1,
       "positiveCount": 1,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 5,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Asian Stocks Fall as Oil Stokes Inflation Fears: Markets Wrap",
-      "topPositiveTitle": "AI Boom Set to Push S&P 500 Earnings Growth to 32% This Year",
+      "topNegativeTitle": "Treasuries Dismiss President's Promise: 3-Minutes MLIV",
+      "topPositiveTitle": "Gold Rises Back Above $4,400 as Traders Weigh Fed Rate-Hike Path",
       "items": [
         {
-          "title": "Asian Stocks Fall as Oil Stokes Inflation Fears: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-09-09T22:13:56+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-09/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "China-US 10-Year Yield Gap Widens to Largest on Record",
+          "title": "Treasuries Dismiss President's Promise: 3-Minutes MLIV",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-09-10T00:02:48+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-10/china-us-10-year-yield-gap-widens-to-largest-on-record",
+          "publishedAt": "2026-09-10T07:25:22+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-10/treasuries-dismiss-president-s-promise-3-minutes-mliv-video",
           "tags": [
             "market",
-            "rates",
             "us_broad"
           ]
         },
         {
-          "title": "Gold Steadies Near $4,400 as Traders Weigh Fed Rate-Hike Path",
+          "title": "Stocks Tick Higher Ahead of ECB, Tech Earnings: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
+          "publishedAt": "2026-09-09T22:13:56+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-09/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Gold Rises Back Above $4,400 as Traders Weigh Fed Rate-Hike Path",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
           "publishedAt": "2026-09-09T23:33:18+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-09/gold-steadies-near-4-400-as-traders-weigh-fed-rate-hike-path",
           "tags": [
@@ -94,46 +102,32 @@
             "rates",
             "us_broad"
           ]
-        },
-        {
-          "title": "Energy Transfer Switches Listing to Texas From NYSE, WSJ Says",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-09T22:08:30+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-09/energy-transfer-switches-listing-to-texas-from-nyse-wsj-says",
-          "tags": [
-            "commodity",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "AI Boom Set to Push S&P 500 Earnings Growth to 32% This Year",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-09-09T12:00:01+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-09/ai-boom-set-to-push-s-p-500-earnings-growth-to-32-this-year",
-          "tags": [
-            "market",
-            "us_broad",
-            "us_growth"
-          ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.5,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 2,
       "sourceCount": 1,
       "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "ECB’s Nagel Says AI Will Be ‘Litmus Test’ for Europe’s Future",
-      "topPositiveTitle": "AI Boom Set to Push S&P 500 Earnings Growth to 32% This Year",
+      "topNegativeTitle": "What Happens If the AI Boom Never Pays Off?",
+      "topPositiveTitle": "What Happens If the AI Boom Never Pays Off?",
       "items": [
+        {
+          "title": "What Happens If the AI Boom Never Pays Off?",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-10T07:29:17+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-10/what-happens-if-the-ai-boom-never-pays-off",
+          "tags": [
+            "market",
+            "us_growth"
+          ]
+        },
         {
           "title": "ECB’s Nagel Says AI Will Be ‘Litmus Test’ for Europe’s Future",
           "source": "Bloomberg Economics",
@@ -143,19 +137,6 @@
           "url": "https://www.bloomberg.com/news/articles/2026-09-09/ecb-s-nagel-says-ai-will-be-litmus-test-for-europe-s-future",
           "tags": [
             "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "AI Boom Set to Push S&P 500 Earnings Growth to 32% This Year",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-09-09T12:00:01+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-09/ai-boom-set-to-push-s-p-500-earnings-growth-to-32-this-year",
-          "tags": [
-            "market",
-            "us_broad",
             "us_growth"
           ]
         }
@@ -174,21 +155,21 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0.67,
       "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 0,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Gold Steadies Near $4,400 as Traders Weigh Fed Rate-Hike Path",
-      "topPositiveTitle": "Gold Steadies Near $4,400 as Traders Weigh Fed Rate-Hike Path",
+      "topNegativeTitle": "Gold Rises Back Above $4,400 as Traders Weigh Fed Rate-Hike Path",
+      "topPositiveTitle": "Gold Rises Back Above $4,400 as Traders Weigh Fed Rate-Hike Path",
       "items": [
         {
-          "title": "Gold Steadies Near $4,400 as Traders Weigh Fed Rate-Hike Path",
+          "title": "Gold Rises Back Above $4,400 as Traders Weigh Fed Rate-Hike Path",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
           "publishedAt": "2026-09-09T23:33:18+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-09/gold-steadies-near-4-400-as-traders-weigh-fed-rate-hike-path",
           "tags": [
@@ -201,79 +182,66 @@
       ]
     },
     "reit": {
-      "avgSentiment": -0.33,
-      "negativeCount": 1,
+      "avgSentiment": 0,
+      "negativeCount": 0,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Australian Property Stocks Vulnerable Following Bathla Collapse",
-      "topPositiveTitle": "Australian Property Stocks Vulnerable Following Bathla Collapse",
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
+    },
+    "dividend": {
+      "avgSentiment": 0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
+      "isStale": false,
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
+    },
+    "macro_risk": {
+      "avgSentiment": 0.041,
+      "negativeCount": 1,
+      "positiveCount": 2,
+      "neutralCount": 5,
+      "sourceCount": 3,
+      "itemCount": 8,
+      "isStale": false,
+      "topNegativeTitle": "Aster Eyes Latin America, Africa as Mideast Flows Fall",
+      "topPositiveTitle": "Egypt Inflation Turns to Easing Again Despite War Pressures",
       "items": [
         {
-          "title": "Australian Property Stocks Vulnerable Following Bathla Collapse",
+          "title": "Aster Eyes Latin America, Africa as Mideast Flows Fall",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-09-09T21:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-09/australian-property-stocks-vulnerable-following-bathla-collapse",
-          "tags": [
-            "market",
-            "reit"
-          ]
-        }
-      ]
-    },
-    "dividend": {
-      "avgSentiment": -1.0,
-      "negativeCount": 1,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
-      "isStale": false,
-      "topNegativeTitle": "Bessent’s Upsized Buybacks Get Hit by Bond Market Reality",
-      "topPositiveTitle": "Bessent’s Upsized Buybacks Get Hit by Bond Market Reality",
-      "items": [
-        {
-          "title": "Bessent’s Upsized Buybacks Get Hit by Bond Market Reality",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-09-09T15:02:22+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-09/us-more-than-doubles-long-dated-debt-buyback-size-to-6-billion",
-          "tags": [
-            "dividend",
-            "market"
-          ]
-        }
-      ]
-    },
-    "macro_risk": {
-      "avgSentiment": 0.047,
-      "negativeCount": 1,
-      "positiveCount": 2,
-      "neutralCount": 4,
-      "sourceCount": 2,
-      "itemCount": 7,
-      "isStale": false,
-      "topNegativeTitle": "Asian Stocks Fall as Oil Stokes Inflation Fears: Markets Wrap",
-      "topPositiveTitle": "Latest Oil Market News and Analysis for Sept. 10",
-      "items": [
-        {
-          "title": "Asian Stocks Fall as Oil Stokes Inflation Fears: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-09-09T22:13:56+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-09/stock-market-today-dow-s-p-live-updates",
+          "publishedAt": "2026-09-09T10:24:39+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-09/aster-turns-to-latin-america-africa-as-mideast-oil-flows-falter",
           "tags": [
             "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "ECB Expected to Raise Interest Rates",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-10T06:10:53+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-10/ecb-expected-to-raise-interest-rates-video",
+          "tags": [
+            "geopolitical",
             "macro_risk",
             "market",
-            "rates",
-            "us_broad"
+            "rates"
           ]
         },
         {
@@ -289,27 +257,13 @@
           ]
         },
         {
-          "title": "US-Canada Trade War",
+          "title": "Port of LA Hits Three-Month Record as Cargo Peak Stretches On",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-09T11:00:01+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-09-09/us-canada-trade-war",
+          "publishedAt": "2026-09-09T22:29:41+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-09/port-of-la-hits-three-month-record-as-cargo-peak-stretches-on",
           "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Bolivia Central Bank Sells Dollars to Curb FX Volatility",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-09T02:58:15+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-09/bolivia-central-bank-to-start-dollar-sales-to-banks-wednesday",
-          "tags": [
-            "fx",
             "macro_risk",
             "market"
           ]
@@ -330,36 +284,23 @@
       ]
     },
     "fx": {
-      "avgSentiment": -0.168,
-      "negativeCount": 1,
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 3,
-      "sourceCount": 2,
-      "itemCount": 4,
+      "neutralCount": 2,
+      "sourceCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Denmark Seen Unlikely to Need Extra Rate Hike in Next 12 Months",
-      "topPositiveTitle": "‘I Am the House Now’: Bessent Challenges Traders on Yen",
+      "topNegativeTitle": "India Favors Central Bank Digital Currencies for BRICS Payments",
+      "topPositiveTitle": "India Favors Central Bank Digital Currencies for BRICS Payments",
       "items": [
         {
-          "title": "Denmark Seen Unlikely to Need Extra Rate Hike in Next 12 Months",
+          "title": "India Favors Central Bank Digital Currencies for BRICS Payments",
           "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-09-09T11:59:34+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-09/denmark-seen-unlikely-to-need-extra-rate-hike-in-next-12-months",
-          "tags": [
-            "fx",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "‘I Am the House Now’: Bessent Challenges Traders on Yen",
-          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-10T00:36:47+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-10/-i-am-the-house-now-bessent-challenges-traders-on-yen-video",
+          "publishedAt": "2026-09-10T04:21:41+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-10/india-favors-central-bank-digital-currencies-for-brics-payments",
           "tags": [
             "fx",
             "market"
@@ -377,95 +318,80 @@
             "jp_broad",
             "market"
           ]
-        },
-        {
-          "title": "Bolivia Central Bank Sells Dollars to Curb FX Volatility",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-09T02:58:15+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-09/bolivia-central-bank-to-start-dollar-sales-to-banks-wednesday",
-          "tags": [
-            "fx",
-            "macro_risk",
-            "market"
-          ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": -0.096,
-      "negativeCount": 3,
-      "positiveCount": 2,
-      "neutralCount": 2,
+      "avgSentiment": 0.332,
+      "negativeCount": 0,
+      "positiveCount": 5,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 7,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Asian Stocks Fall as Oil Stokes Inflation Fears: Markets Wrap",
-      "topPositiveTitle": "Mexico Inflation Ticks Up Again as Banxico Holds Rates Firm",
+      "topNegativeTitle": "ECB Expected to Raise Interest Rates",
+      "topPositiveTitle": "Gold Rises Back Above $4,400 as Traders Weigh Fed Rate-Hike Path",
       "items": [
         {
-          "title": "Asian Stocks Fall as Oil Stokes Inflation Fears: Markets Wrap",
+          "title": "ECB Expected to Raise Interest Rates",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-09-09T22:13:56+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-09/stock-market-today-dow-s-p-live-updates",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-10T06:10:53+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-10/ecb-expected-to-raise-interest-rates-video",
           "tags": [
-            "commodity",
+            "geopolitical",
             "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Denmark Seen Unlikely to Need Extra Rate Hike in Next 12 Months",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-09-09T11:59:34+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-09/denmark-seen-unlikely-to-need-extra-rate-hike-in-next-12-months",
-          "tags": [
-            "fx",
             "market",
             "rates"
           ]
         },
         {
-          "title": "China-US 10-Year Yield Gap Widens to Largest on Record",
+          "title": "Europe’s Shrinking Bank Liquidity Fuels Hedge Fund Rates Bet",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-10T00:02:48+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-10/china-us-10-year-yield-gap-widens-to-largest-on-record",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-10T07:26:18+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-10/europe-s-shrinking-bank-liquidity-fuels-hedge-fund-rates-bet",
           "tags": [
             "market",
-            "rates",
-            "us_broad"
+            "rates"
           ]
         },
         {
-          "title": "Gold Steadies Near $4,400 as Traders Weigh Fed Rate-Hike Path",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-09T23:33:18+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-09/gold-steadies-near-4-400-as-traders-weigh-fed-rate-hike-path",
-          "tags": [
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Poland Keeps Rates Unchanged as Fuel Costs Boost Inflation",
+          "title": "AI Model Built by Bloomberg Predicts Bank of England Rate Rise in February",
           "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-09T13:41:15+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-09/poland-keeps-rates-unchanged-as-fuel-costs-boost-inflation",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-10T07:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-10/ai-model-built-by-bloomberg-predicts-bank-of-england-rate-rise-in-february",
+          "tags": [
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "ECB to Hike Interest Rates Again as Iran War Fans Inflation",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-10T04:15:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-10/ecb-to-hike-interest-rates-again-as-iran-war-fans-inflation",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Vietnam’s Mortgage Rate Surge Putting Homeownership Out of Reach",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-09T23:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-09/vietnam-s-mortgage-rate-surge-putting-homeownership-out-of-reach",
           "tags": [
             "market",
             "rates"
@@ -474,75 +400,64 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.15,
-      "negativeCount": 2,
-      "positiveCount": 5,
-      "neutralCount": 3,
+      "avgSentiment": 0.25,
+      "negativeCount": 1,
+      "positiveCount": 2,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 10,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Asian Stocks Fall as Oil Stokes Inflation Fears: Markets Wrap",
-      "topPositiveTitle": "Carney Woos Investors With Data Centers, Mines and LNG Deals",
+      "topNegativeTitle": "Aster Eyes Latin America, Africa as Mideast Flows Fall",
+      "topPositiveTitle": "UK Faces Soaring Gas Prices as Winter Nears",
       "items": [
         {
-          "title": "Asian Stocks Fall as Oil Stokes Inflation Fears: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-09-09T22:13:56+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-09/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Citadel Securities Urges SEC to Take Oversight of Some Wagers",
+          "title": "Aster Eyes Latin America, Africa as Mideast Flows Fall",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-09-09T22:18:32+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-09/citadel-securities-urges-sec-to-take-oversight-of-some-wagers",
+          "publishedAt": "2026-09-09T10:24:39+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-09/aster-turns-to-latin-america-africa-as-mideast-oil-flows-falter",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Britain Faces Winter With Soaring Gas Prices and Thin Reserves",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-10T04:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-10/britain-faces-winter-with-soaring-gas-prices-and-thin-reserves",
           "tags": [
             "commodity",
             "market"
           ]
         },
         {
-          "title": "Energy Transfer Switches Listing to Texas From NYSE, WSJ Says",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-09T22:08:30+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-09/energy-transfer-switches-listing-to-texas-from-nyse-wsj-says",
+          "title": "ECB to Hike Interest Rates Again as Iran War Fans Inflation",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-10T04:15:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-10/ecb-to-hike-interest-rates-again-as-iran-war-fans-inflation",
           "tags": [
             "commodity",
+            "geopolitical",
+            "macro_risk",
             "market",
-            "us_broad"
+            "rates"
           ]
         },
         {
-          "title": "Boom eléctrico de Brasil atrae a Trafigura y Macquarie",
+          "title": "UK Faces Soaring Gas Prices as Winter Nears",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-09T21:00:43+00:00",
-          "url": "https://www.bloomberg.com/news/features/2026-09-09/boom-electrico-de-brasil-atrae-a-trafigura-y-macquarie",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "Mexican Government Slashes Pemex Aid by 70% in New Budget",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-09T01:08:46+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-09/mexico-slashes-pemex-aid-by-70-to-4-8-billion-in-new-budget",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-09-10T06:20:02+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-10/uk-faces-soaring-gas-prices-as-winter-nears-video",
           "tags": [
             "commodity",
             "market"
@@ -551,27 +466,42 @@
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.223,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 3,
+      "avgSentiment": 0.055,
+      "negativeCount": 1,
+      "positiveCount": 2,
+      "neutralCount": 3,
+      "sourceCount": 3,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "US-Canada Trade War",
-      "topPositiveTitle": "Latest Oil Market News and Analysis for Sept. 10",
+      "topNegativeTitle": "Aster Eyes Latin America, Africa as Mideast Flows Fall",
+      "topPositiveTitle": "Egypt Inflation Turns to Easing Again Despite War Pressures",
       "items": [
         {
-          "title": "US-Canada Trade War",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-09T11:00:01+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-09-09/us-canada-trade-war",
+          "title": "Aster Eyes Latin America, Africa as Mideast Flows Fall",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-09T10:24:39+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-09/aster-turns-to-latin-america-africa-as-mideast-oil-flows-falter",
           "tags": [
+            "commodity",
             "geopolitical",
             "macro_risk",
             "market"
+          ]
+        },
+        {
+          "title": "ECB Expected to Raise Interest Rates",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-10T06:10:53+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-10/ecb-expected-to-raise-interest-rates-video",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "rates"
           ]
         },
         {
@@ -588,14 +518,26 @@
           ]
         },
         {
-          "title": "Latest Oil Market News and Analysis for Sept. 10",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-09-09T22:04:56+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-09/latest-oil-market-news-and-analysis-for-sept-10",
+          "title": "木原長官 イコールアース図法の北方領土表記など修正申し入れ",
+          "source": "NHK 経済",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-10T05:39:00+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20260910de49494",
           "tags": [
-            "commodity",
+            "geopolitical",
+            "market"
+          ],
+          "titleJa": "木原長官 イコールアース図法の北方領土表記など修正申し入れ"
+        },
+        {
+          "title": "Egypt Inflation Turns to Easing Again Despite War Pressures",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-10T06:25:21+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-10/egypt-inflation-turns-to-easing-again-despite-war-pressures",
+          "tags": [
             "geopolitical",
             "macro_risk",
             "market"
