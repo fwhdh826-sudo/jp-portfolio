@@ -483,6 +483,17 @@ jobs:
 
           echo "publication_status=smoke_passed" >> "$GITHUB_OUTPUT"
 
+      # ── P5-B005-B4-D1a-O: strict-derived PER migration calibration observability。
+      #    candidate funnel 生成の PASS/FAIL を問わず read-only で再現し、
+      #    BASELINE（provider per）と DERIVED MIRROR（strict-derived per）funnel を
+      #    比較した aggregate evidence を RUNNER_TEMP のみへ書く。production PER
+      #    authority・ranking・public artifact・quality gate には一切影響しない。
+      #    non-blocking（常に exit 0）。data/ ・ public/data/ へは書かない（§19）。
+      - name: Derived PER migration calibration observability
+        if: always()
+        continue-on-error: true
+        run: python3 -m data.derived_per_calibration
+
       # ── OPS-P14-2: same-run evidence capture（P14 PASS/FAILを問わず、
       #    このrunで実際に使用した入力/output/gate結果をNEXT-5用negative
       #    control corpus構築に備え保全する。診断§6.7の最小action）。
@@ -511,6 +522,21 @@ jobs:
         with:
           name: candidate-funnel-evidence-${{ github.run_id }}-${{ github.run_attempt }}
           path: ${{ runner.temp }}/candidate-funnel-evidence/bundle/
+          if-no-files-found: warn
+          retention-days: 90
+
+      # ── P5-B005-B4-D1a-O: strict-derived PER migration calibration evidence。
+      #    ephemeral・非公開・not_for_trading。data/ ・ public/data/ ・ Pages へは
+      #    決して書かない（§19）。3-run migration review 用に aggregate evidence
+      #    のみを artifact として保全する（handoff / per-symbol scalar は upload
+      #    しない）。data.candidate_funnel_batch が RUNNER_TEMP へ既に書いている。
+      - name: Upload derived PER migration calibration evidence
+        if: always()
+        continue-on-error: true
+        uses: actions/upload-artifact@v4
+        with:
+          name: derived-per-calibration-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/derived_per_calibration_evidence.json
           if-no-files-found: warn
           retention-days: 90
 

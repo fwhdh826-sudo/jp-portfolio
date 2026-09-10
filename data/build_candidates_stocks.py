@@ -612,10 +612,14 @@ def build_candidates_stocks(
     # （既存 default caller は _meta 形状不変）。raw financial statement は
     # ここへ入れない（§12）。
     if fundamentals_enricher is not None:
-        meta["fundamentals"] = fundamentals_enricher.meta([c["code"] for c in candidates])
+        published_codes = [c["code"] for c in candidates]
+        meta["fundamentals"] = fundamentals_enricher.meta(published_codes)
         # ephemeral shadow evidence は log（+ RUNNER_TEMP）へのみ。
         # repo / public/data へは決して書かない（§16）。
         fundamentals_enricher.emit_shadow_evidence()
+        # P5-B005-B4-D1a-O: strict-derived PER calibration handoff（§7）。
+        # RUNNER_TEMP のみ。candidate funnel batch step が mirror 評価に使う。
+        fundamentals_enricher.emit_calibration_handoff(published_codes)
 
     return {
         "schemaVersion": SCHEMA_VERSION,

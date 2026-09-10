@@ -49,6 +49,13 @@ COUNTS_ALLOWED_KEYS = {
 FUNDAMENTALS_META_ALLOWED_KEYS = {
     "source", "fetchedAt", "statementMaxAgeDays", "canonicalPeField",
     "growthScoringStatus", "coverage", "diagnostics", "aborted", "abortReason",
+    # P5-B005-B4-D1a-O §6: D1a-O 期間中の public production PER authority。
+    "perAuthority",
+}
+# §5: strict-derived PER calibration diagnostic vocabulary（exclusive・total）。
+FUNDAMENTALS_DIAGNOSTICS_PER_KEYS = {
+    "available", "missing", "rowLabelMissing", "invalidNumeric", "epsNotPositive",
+    "stale", "irregularPeriod", "splitGuardBlocked", "enrichFailed", "priceUnavailable",
 }
 # §3: coverage は TOTAL かつ MUTUALLY EXCLUSIVE。存在時は全 bucket key が
 # 揃い、sum(values) == publishedCount でなければならない。
@@ -236,7 +243,7 @@ def _check_fundamentals_diagnostics(
     violations: list[str] = []
     if not isinstance(diagnostics, dict):
         return [f"{label}: _meta.fundamentals.diagnostics is not a dict"]
-    unexpected_axes = sorted(set(diagnostics) - {"profitGrowth", "epsGrowth"})
+    unexpected_axes = sorted(set(diagnostics) - {"profitGrowth", "epsGrowth", "per"})
     if unexpected_axes:
         violations.append(
             f"{label}: unexpected _meta.fundamentals.diagnostics axes {unexpected_axes}"
@@ -244,6 +251,7 @@ def _check_fundamentals_diagnostics(
     for axis, allowed in (
         ("profitGrowth", FUNDAMENTALS_DIAGNOSTICS_PROFIT_KEYS),
         ("epsGrowth", FUNDAMENTALS_DIAGNOSTICS_EPS_KEYS),
+        ("per", FUNDAMENTALS_DIAGNOSTICS_PER_KEYS),
     ):
         if axis not in diagnostics:
             violations.append(
@@ -320,7 +328,7 @@ def check_fundamentals_meta(
     # production validator を通過できてはならない。
     for required_key in (
         "source", "fetchedAt", "statementMaxAgeDays", "canonicalPeField",
-        "growthScoringStatus", "coverage", "diagnostics",
+        "growthScoringStatus", "coverage", "diagnostics", "perAuthority",
     ):
         if required_key not in meta_fundamentals:
             violations.append(f"{label}: _meta.fundamentals missing {required_key}")
@@ -336,6 +344,15 @@ def check_fundamentals_meta(
     # §7 coherence: canonicalPeField / growthScoringStatus は凍結値必須。
     if "canonicalPeField" in meta_fundamentals and meta_fundamentals["canonicalPeField"] != "per":
         violations.append(f"{label}: _meta.fundamentals.canonicalPeField must be 'per'")
+    # P5-B005-B4-D1a-O §6: D1a-O 期間中は public production authority は
+    # provider ベースのまま。"derivedAnnualFY0" は実際の migration まで禁止。
+    if (
+        "perAuthority" in meta_fundamentals
+        and meta_fundamentals["perAuthority"] != "providerTrailingPE"
+    ):
+        violations.append(
+            f"{label}: _meta.fundamentals.perAuthority must be 'providerTrailingPE' during D1a-O"
+        )
     if (
         "growthScoringStatus" in meta_fundamentals
         and meta_fundamentals["growthScoringStatus"] != "reserved_zero_weight"
