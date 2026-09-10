@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-09-10T08:29:46.975112+09:00",
-  "sourceUpdatedAt": "2026-09-09T23:05:57+00:00",
+  "updatedAt": "2026-09-10T10:16:05.042147+09:00",
+  "sourceUpdatedAt": "2026-09-10T00:36:47+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -43,26 +43,53 @@
       "items": []
     },
     "us_broad": {
-      "avgSentiment": 0.25,
-      "negativeCount": 1,
+      "avgSentiment": 0.0,
+      "negativeCount": 2,
       "positiveCount": 1,
-      "neutralCount": 1,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Asian Stocks to Drop as Oil Stokes Inflation Fears: Markets Wrap",
+      "topNegativeTitle": "Asian Stocks Fall as Oil Stokes Inflation Fears: Markets Wrap",
       "topPositiveTitle": "AI Boom Set to Push S&P 500 Earnings Growth to 32% This Year",
       "items": [
         {
-          "title": "Asian Stocks to Drop as Oil Stokes Inflation Fears: Markets Wrap",
+          "title": "Asian Stocks Fall as Oil Stokes Inflation Fears: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.25,
+          "sentimentScore": -0.67,
           "publishedAt": "2026-09-09T22:13:56+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-09/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
             "macro_risk",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "China-US 10-Year Yield Gap Widens to Largest on Record",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-10T00:02:48+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-10/china-us-10-year-yield-gap-widens-to-largest-on-record",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Gold Steadies Near $4,400 as Traders Weigh Fed Rate-Hike Path",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-09T23:33:18+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-09/gold-steadies-near-4-400-as-traders-weigh-fed-rate-hike-path",
+          "tags": [
+            "gold",
             "market",
             "rates",
             "us_broad"
@@ -147,16 +174,31 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Gold Steadies Near $4,400 as Traders Weigh Fed Rate-Hike Path",
+      "topPositiveTitle": "Gold Steadies Near $4,400 as Traders Weigh Fed Rate-Hike Path",
+      "items": [
+        {
+          "title": "Gold Steadies Near $4,400 as Traders Weigh Fed Rate-Hike Path",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-09T23:33:18+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-09/gold-steadies-near-4-400-as-traders-weigh-fed-rate-hike-path",
+          "tags": [
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        }
+      ]
     },
     "reit": {
       "avgSentiment": -0.33,
@@ -209,21 +251,21 @@
       ]
     },
     "macro_risk": {
-      "avgSentiment": 0.083,
+      "avgSentiment": 0.047,
       "negativeCount": 1,
       "positiveCount": 2,
-      "neutralCount": 6,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 9,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "Asian Stocks to Drop as Oil Stokes Inflation Fears: Markets Wrap",
+      "topNegativeTitle": "Asian Stocks Fall as Oil Stokes Inflation Fears: Markets Wrap",
       "topPositiveTitle": "Latest Oil Market News and Analysis for Sept. 10",
       "items": [
         {
-          "title": "Asian Stocks to Drop as Oil Stokes Inflation Fears: Markets Wrap",
+          "title": "Asian Stocks Fall as Oil Stokes Inflation Fears: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.25,
+          "sentimentScore": -0.67,
           "publishedAt": "2026-09-09T22:13:56+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-09/stock-market-today-dow-s-p-live-updates",
           "tags": [
@@ -235,36 +277,12 @@
           ]
         },
         {
-          "title": "Famous Brazil Judge Yanked From ‘Fake News’ Probe That Made Him",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-09T23:05:57+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-09/famous-brazil-judge-yanked-from-fake-news-probe-that-made-him",
-          "tags": [
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
           "title": "UK Universities Want Wider Tax Break for Firms Hiring Young Workers",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
           "publishedAt": "2026-09-09T23:01:00+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-09/uk-universities-want-wider-tax-break-for-firms-hiring-young-workers",
-          "tags": [
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Port of LA Hits Three-Month Record as Cargo Peak Stretches On",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-09T22:29:41+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-09/port-of-la-hits-three-month-record-as-cargo-peak-stretches-on",
           "tags": [
             "macro_risk",
             "market"
@@ -282,6 +300,32 @@
             "macro_risk",
             "market"
           ]
+        },
+        {
+          "title": "Bolivia Central Bank Sells Dollars to Curb FX Volatility",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-09T02:58:15+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-09/bolivia-central-bank-to-start-dollar-sales-to-banks-wednesday",
+          "tags": [
+            "fx",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Why the US-Canada Trade War Is Escalating",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-08T16:12:32+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-08/why-the-us-canada-trade-war-is-escalating",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
         }
       ]
     },
@@ -294,7 +338,7 @@
       "itemCount": 4,
       "isStale": false,
       "topNegativeTitle": "Denmark Seen Unlikely to Need Extra Rate Hike in Next 12 Months",
-      "topPositiveTitle": "Bessent Jawboning Risks Raising Expectations BOJ Can’t Meet",
+      "topPositiveTitle": "‘I Am the House Now’: Bessent Challenges Traders on Yen",
       "items": [
         {
           "title": "Denmark Seen Unlikely to Need Extra Rate Hike in Next 12 Months",
@@ -310,6 +354,18 @@
           ]
         },
         {
+          "title": "‘I Am the House Now’: Bessent Challenges Traders on Yen",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-10T00:36:47+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-10/-i-am-the-house-now-bessent-challenges-traders-on-yen-video",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        },
+        {
           "title": "Bessent Jawboning Risks Raising Expectations BOJ Can’t Meet",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
@@ -319,18 +375,6 @@
           "tags": [
             "fx",
             "jp_broad",
-            "market"
-          ]
-        },
-        {
-          "title": "Dollar Ends Day at Lowest Since February as Bessent Aids Yen",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-09T07:34:57+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-09/dollar-eyes-seven-month-low-with-us-buybacks-inflation-in-focus",
-          "tags": [
-            "fx",
             "market"
           ]
         },
@@ -350,16 +394,31 @@
       ]
     },
     "rates": {
-      "avgSentiment": 0.125,
-      "negativeCount": 2,
-      "positiveCount": 3,
-      "neutralCount": 1,
+      "avgSentiment": -0.096,
+      "negativeCount": 3,
+      "positiveCount": 2,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "Denmark Seen Unlikely to Need Extra Rate Hike in Next 12 Months",
-      "topPositiveTitle": "Bond Market Rate Spiral Has Potent Accelerator Behind the Scenes",
+      "topNegativeTitle": "Asian Stocks Fall as Oil Stokes Inflation Fears: Markets Wrap",
+      "topPositiveTitle": "Mexico Inflation Ticks Up Again as Banxico Holds Rates Firm",
       "items": [
+        {
+          "title": "Asian Stocks Fall as Oil Stokes Inflation Fears: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-09-09T22:13:56+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-09/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "macro_risk",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
         {
           "title": "Denmark Seen Unlikely to Need Extra Rate Hike in Next 12 Months",
           "source": "Bloomberg Economics",
@@ -374,15 +433,27 @@
           ]
         },
         {
-          "title": "Asian Stocks to Drop as Oil Stokes Inflation Fears: Markets Wrap",
+          "title": "China-US 10-Year Yield Gap Widens to Largest on Record",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.25,
-          "publishedAt": "2026-09-09T22:13:56+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-09/stock-market-today-dow-s-p-live-updates",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-10T00:02:48+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-10/china-us-10-year-yield-gap-widens-to-largest-on-record",
           "tags": [
-            "commodity",
-            "macro_risk",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Gold Steadies Near $4,400 as Traders Weigh Fed Rate-Hike Path",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-09T23:33:18+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-09/gold-steadies-near-4-400-as-traders-weigh-fed-rate-hike-path",
+          "tags": [
+            "gold",
             "market",
             "rates",
             "us_broad"
@@ -399,44 +470,35 @@
             "market",
             "rates"
           ]
-        },
-        {
-          "title": "Vietnam’s Mortgage Rate Surge Putting Homeownership Out of Reach",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-09T23:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-09/vietnam-s-mortgage-rate-surge-putting-homeownership-out-of-reach",
-          "tags": [
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Bond Market Rate Spiral Has Potent Accelerator Behind the Scenes",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-09-09T20:30:15+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-09/bond-market-rate-spiral-has-potent-accelerator-behind-the-scenes",
-          "tags": [
-            "market",
-            "rates"
-          ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.175,
+      "avgSentiment": 0.15,
       "negativeCount": 2,
       "positiveCount": 5,
-      "neutralCount": 4,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 11,
+      "itemCount": 10,
       "isStale": false,
-      "topNegativeTitle": "Citadel Securities Urges SEC to Take Oversight of Some Wagers",
-      "topPositiveTitle": "Carney Woos Investors on Deals for Data Centers, Mines and LNG",
+      "topNegativeTitle": "Asian Stocks Fall as Oil Stokes Inflation Fears: Markets Wrap",
+      "topPositiveTitle": "Carney Woos Investors With Data Centers, Mines and LNG Deals",
       "items": [
+        {
+          "title": "Asian Stocks Fall as Oil Stokes Inflation Fears: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-09-09T22:13:56+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-09/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "macro_risk",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
         {
           "title": "Citadel Securities Urges SEC to Take Oversight of Some Wagers",
           "source": "Bloomberg Markets",
@@ -447,21 +509,6 @@
           "tags": [
             "commodity",
             "market"
-          ]
-        },
-        {
-          "title": "Asian Stocks to Drop as Oil Stokes Inflation Fears: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.25,
-          "publishedAt": "2026-09-09T22:13:56+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-09/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
           ]
         },
         {
@@ -490,12 +537,12 @@
           ]
         },
         {
-          "title": "Enbridge to Buy Tallgrass Crude Business for $2.6 Billion",
+          "title": "Mexican Government Slashes Pemex Aid by 70% in New Budget",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-09T20:42:19+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-09/canada-s-enbridge-to-buy-tallgrass-oil-business-for-2-6-billion",
+          "publishedAt": "2026-09-09T01:08:46+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-09/mexico-slashes-pemex-aid-by-70-to-4-8-billion-in-new-budget",
           "tags": [
             "commodity",
             "market"
