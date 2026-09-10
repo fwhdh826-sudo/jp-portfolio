@@ -27,7 +27,7 @@ from __future__ import annotations
 
 import copy
 import json
-from datetime import date, datetime, timezone
+from datetime import date, datetime, timedelta, timezone
 
 import pytest
 
@@ -36,6 +36,7 @@ from data.candidate_fundamentals import (
     PER_AUTHORITY_PROVIDER,
     PER_DIAG_AVAILABLE,
     PER_DIAG_EPS_NOT_POSITIVE,
+    PER_DIAG_IRREGULAR_PERIOD,
     PER_DIAG_PRICE_UNAVAILABLE,
     PER_DIAG_ROW_LABEL_MISSING,
     PER_DIAG_SPLIT_GUARD_BLOCKED,
@@ -129,6 +130,58 @@ def test_no_false_positive_numeric_per_without_available_diag():
         r = _derive(**kw)
         if r.strict_derived_per is not None:
             assert r.strict_derived_per_diag == PER_DIAG_AVAILABLE
+
+
+# ---------------------------------------------------------------------------
+# P5-B005-B4-D1a-O-R1: strict-derived PER は annual FY0/FY1 span を要求する。
+# FY1 period identity が欠落（period_ends が 1 本のみ）でも numeric にしない。
+# ---------------------------------------------------------------------------
+
+
+def _span_ends(days: int) -> list:
+    """FY1 を FY0 から `days` 日前に置いた 2 本の period-end。"""
+    return [FY0_END, FY0_END - timedelta(days=days)]
+
+
+def test_strict_derived_per_null_when_only_fy0_period_identity():
+    # A: FY0 のみ（FY1 period identity 欠落）。EPS FY0 valid / price valid /
+    # splits_ok true でも strict-derived PER は None、diag=irregularPeriod。
+    r = _derive(
+        income_stmt={"Diluted EPS": [100.0], "Net Income": [1e9]},
+        period_ends=[FY0_END],
+    )
+    assert r.strict_derived_per is None
+    assert r.strict_derived_per_diag == PER_DIAG_IRREGULAR_PERIOD
+
+
+def test_strict_derived_per_null_on_334_day_span():
+    r = _derive(period_ends=_span_ends(334))
+    assert r.strict_derived_per is None
+    assert r.strict_derived_per_diag == PER_DIAG_IRREGULAR_PERIOD
+
+
+def test_strict_derived_per_null_on_396_day_span():
+    r = _derive(period_ends=_span_ends(396))
+    assert r.strict_derived_per is None
+    assert r.strict_derived_per_diag == PER_DIAG_IRREGULAR_PERIOD
+
+
+def test_strict_derived_per_not_span_blocked_on_335_day_span():
+    r = _derive(period_ends=_span_ends(335))
+    assert r.strict_derived_per_diag != PER_DIAG_IRREGULAR_PERIOD
+    assert r.strict_derived_per == pytest.approx(20.0)
+
+
+def test_strict_derived_per_not_span_blocked_on_395_day_span():
+    r = _derive(period_ends=_span_ends(395))
+    assert r.strict_derived_per_diag != PER_DIAG_IRREGULAR_PERIOD
+    assert r.strict_derived_per == pytest.approx(20.0)
+
+
+def test_strict_derived_per_null_on_duplicate_period_ends_zero_span():
+    r = _derive(period_ends=[FY0_END, FY0_END])
+    assert r.strict_derived_per is None
+    assert r.strict_derived_per_diag == PER_DIAG_IRREGULAR_PERIOD
 
 
 # ---------------------------------------------------------------------------
