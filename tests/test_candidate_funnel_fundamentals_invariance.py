@@ -77,9 +77,14 @@ def test_funnel_output_is_identical_with_and_without_phase_a_fields():
     decorated_pop = _decorate_with_phase_a(base_pop)
 
     for ctx in _CONTEXTS:
+        # calibration/engine 実行自体が入力を mutate しないことも証明したいので
+        # 比較確立の前に独立 deep copy を使う（P3 test hardening）。
         without = build_candidate_funnel(copy.deepcopy(base_pop), dict(ctx))
-        with_fields = build_candidate_funnel(decorated_pop, dict(ctx))
+        with_fields = build_candidate_funnel(copy.deepcopy(decorated_pop), dict(ctx))
         assert without == with_fields, f"funnel output changed for context {ctx}"
+
+    # decorated_pop 自体が上記呼び出しで mutate されていないこと。
+    assert decorated_pop == _decorate_with_phase_a(base_pop)
 
 
 def test_phase_a_fields_do_not_appear_in_funnel_candidate_output():

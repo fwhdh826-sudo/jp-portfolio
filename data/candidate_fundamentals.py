@@ -471,7 +471,11 @@ def derive_fundamentals(
         strict_derived_per_diag = PER_DIAG_INVALID_NUMERIC
     elif eps0 is None:
         strict_derived_per_diag = PER_DIAG_MISSING
-    elif len(sorted_ends) >= 2 and not span_ok:
+    elif not span_ok:
+        # FY1 period identity が欠落（sorted_ends < 2）でも strict-derived PER は
+        # usable にしない。frozen D1a authority は FY0/FY1 の annual temporal
+        # identity を要求する。comparability guard が pass できない以上
+        # irregularPeriod で fail-closed する（provider PER fallback は禁止）。
         strict_derived_per_diag = PER_DIAG_IRREGULAR_PERIOD
     elif not split_ok:
         # split guard 未 pass、または split 履歴取得失敗（splits_ok=False）を
