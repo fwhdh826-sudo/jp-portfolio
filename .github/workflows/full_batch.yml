@@ -60,6 +60,17 @@ jobs:
         run: python -m pytest backend/tests/test_operation backend/tests/test_tier_a -q
 
       - name: Run P5-B004 candidates pipeline contract tests
+        # P5-B005-B4-D1a-O TRANSITION-GATE-COMPAT §2:
+        # SEPARATE_STATIC_CONTRACT_TESTS_FROM_RUNTIME_ARTIFACT_VALIDATION。
+        # この gate は update-data の regeneration より前に走る。validator の
+        # unit / synthetic contract / rejection 系は全て実行するが、mutable な
+        # committed production snapshot（data/・public/data の candidates_stocks.json）
+        # が最新 source validator schema に「たまたま」適合しているかを regeneration
+        # の前提条件にしてはならない。実 production artifact の適合性は regeneration
+        # 後の `data.candidates_stocks_privacy_smoke --production` gate で引き続き
+        # fail-closed に強制される（§4）。よって以下 2 件の repository-snapshot テスト
+        # のみを pre-regeneration gate から deselect する（module 内には残し、手動 /
+        # full-repo 実行では引き続き実行される — §6 Policy A）。
         run: >-
           python -m pytest
           tests/test_build_candidates_stocks.py
@@ -68,6 +79,8 @@ jobs:
           tests/test_whole_market_universe_provider.py
           tests/test_candidates_stocks_privacy_smoke.py
           tests/test_full_batch_workflow.py
+          --deselect "tests/test_candidates_stocks_privacy_smoke.py::test_production_candidates_stocks_json_passes_guard"
+          --deselect "tests/test_candidates_stocks_privacy_smoke.py::test_production_public_candidates_stocks_json_passes_guard"
           -q
 
       - name: Report data freshness (detection-only, no writes)

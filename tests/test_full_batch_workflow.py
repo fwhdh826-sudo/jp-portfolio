@@ -511,6 +511,69 @@ def test_operation_health_runs_b004_root_tests():
         assert test_file in operation_section
 
 
+# ── P5-B005-B4-D1a-O TRANSITION-GATE-COMPAT ─────────────────────────────
+# operation-health は update-data の regeneration より前に走る。committed な
+# mutable production snapshot が最新 validator schema に適合しているかを検証する
+# 2 件の repository-snapshot テストは、その pre-regeneration gate から deselect
+# されていなければならない（stale artifact が自らの regeneration を block しない
+# ため）。実 artifact の適合性は regeneration 後の CLI gate が引き続き強制する。
+
+_D1A_O_SNAPSHOT_TESTS = (
+    "tests/test_candidates_stocks_privacy_smoke.py::"
+    "test_production_candidates_stocks_json_passes_guard",
+    "tests/test_candidates_stocks_privacy_smoke.py::"
+    "test_production_public_candidates_stocks_json_passes_guard",
+)
+
+
+def _operation_health_section() -> str:
+    return _TEXT.split("  operation-health:")[1].split("  update-data:")[0]
+
+
+def test_d1a_o_snapshot_tests_deselected_from_pre_regen_gate():
+    section = _operation_health_section()
+    # module 全体は依然として operation-health の選択対象（contract coverage 維持）。
+    assert "tests/test_candidates_stocks_privacy_smoke.py" in section
+    for node in _D1A_O_SNAPSHOT_TESTS:
+        assert f'--deselect "{node}"' in section, node
+
+
+def test_d1a_o_snapshot_tests_still_exist_in_module():
+    src = (
+        Path(__file__).parents[1]
+        / "tests"
+        / "test_candidates_stocks_privacy_smoke.py"
+    ).read_text()
+    assert "def test_production_candidates_stocks_json_passes_guard(" in src
+    assert "def test_production_public_candidates_stocks_json_passes_guard(" in src
+
+
+def test_post_regen_production_gate_exists_after_build_and_copy():
+    section = _update_data_section()
+    build_pos = section.index("python3 -m data.build_candidates_stocks")
+    copy_pos = section.index("Copy JSON to public/data")
+    gate_pos = section.index("data.candidates_stocks_privacy_smoke --production")
+    assert build_pos < copy_pos < gate_pos
+
+
+def test_update_data_still_depends_on_operation_health():
+    section = _update_data_section()
+    assert "needs: [operation-health]" in section
+
+
+def test_transition_gate_compat_introduces_no_validator_relaxation():
+    # workflow が transitional な production flag / schema bypass を渡さないこと。
+    section = _operation_health_section() + _update_data_section()
+    for forbidden in (
+        "--allow-legacy",
+        "--transition",
+        "--skip-fundamentals",
+        "D1A_O_TRANSITION",
+        "perAuthority-optional",
+    ):
+        assert forbidden not in section
+
+
 def test_candidates_builder_failure_is_not_suppressed():
     update_data_section = _update_data_section()
     assert "python3 data/build_candidates_stocks.py || true" not in update_data_section
