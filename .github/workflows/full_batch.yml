@@ -492,6 +492,15 @@ jobs:
       - name: Derived PER migration calibration observability
         if: always()
         continue-on-error: true
+        env:
+          # §4: current-run Candidate Funnel の build/smoke outcome を渡す。
+          # batch_passed かつ smoke_passed のときのみ current-run production
+          # baseline を acceptance-eligible として使える。それ以外（batch_failed
+          # / smoke_failed / not-run / rollback）は baselineEquivalence !=
+          # PROVEN、acceptanceEligible=false。previous committed artifact は
+          # current-run baseline として使わない。
+          CANDIDATE_FUNNEL_BATCH_STATUS: ${{ steps.candidate-funnel-build.outputs.publication_status }}
+          CANDIDATE_FUNNEL_SMOKE_STATUS: ${{ steps.candidate-funnel-smoke.outputs.publication_status }}
         run: python3 -m data.derived_per_calibration
 
       # ── OPS-P14-2: same-run evidence capture（P14 PASS/FAILを問わず、
