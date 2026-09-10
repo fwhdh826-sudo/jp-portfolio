@@ -379,6 +379,16 @@ def test_cli_invocation_exit_code_is_zero_on_success(tmp_path):
 
 
 # --- 9. production whole-market artifact contract ---------------------------
+#
+# P5-B005-B4-D1a-O TRANSITION-GATE-COMPAT §5/§6:
+# 次の 2 件は checked-out commit の mutable な production snapshot が現行の
+# source validator schema に適合しているかを検証する repository-snapshot テスト。
+# validator ロジック自体の検証ではなく、また現在の run が生成する artifact の
+# 検証でもない（後者は Full Batch の regeneration 後 CLI gate
+# `data.candidates_stocks_privacy_smoke --production` が担う）。
+# したがって Full Batch の operation-health（regeneration 前）pytest 選択からは
+# `--deselect` で除外される。手動 / full-repo 実行では引き続き実行され、
+# committed artifact の schema drift を検知する（§6 Policy A）。
 
 
 def test_production_candidates_stocks_json_passes_guard():
