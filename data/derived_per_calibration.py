@@ -35,18 +35,42 @@ from typing import Any, Callable, Optional
 
 from data.candidate_fundamentals import (
     DERIVED_PER_CALIBRATION_HANDOFF_FILENAME,
+    DERIVED_PER_CALIBRATION_HANDOFF_SCHEMA,
     PER_AUTHORITY_DERIVED,
     PER_AUTHORITY_PROVIDER,
     PER_DIAG_AVAILABLE,
     PER_DIAG_KEYS,
 )
 from data.candidate_funnel_batch import (
+    DATA_OUTPUT_PATH,
     TOP_N_STABILITY,
     _jaccard,
     _perturb_candidates,
     _top_n_codes_ordered,
 )
 from data.candidate_funnel_engine import build_candidate_funnel
+
+_HANDOFF_KIND = "derived_per_calibration_handoff"
+_ENTRY_FIELDS = frozenset(
+    {
+        "code",
+        "providerPer",
+        "providerPerValid",
+        "strictDerivedPer",
+        "strictDerivedPerValid",
+        "strictDerivedPerDiag",
+    }
+)
+
+# calibrationStatus（§10）
+CALIB_STATUS_VALID = "valid"
+CALIB_STATUS_INVALID_INPUT = "invalid_input"
+CALIB_STATUS_BASELINE_UNAVAILABLE = "baseline_unavailable"
+
+# baselineEquivalence（§5）
+BASELINE_EQUIV_PROVEN = "PROVEN"
+BASELINE_EQUIV_NOT_PROVEN = "NOT_PROVEN"
+BASELINE_EQUIV_BROKEN = "BROKEN"
 
 CALIBRATION_EVIDENCE_KIND = "derived_per_migration_calibration"
 CALIBRATION_EVIDENCE_FILENAME = "derived_per_calibration_evidence.json"
@@ -136,6 +160,129 @@ def _index_by_code(result: dict[str, Any]) -> dict[str, dict[str, Any]]:
     return out
 
 
+def _is_finite_number(value: Any) -> bool:
+    """bool を除外した有限 numeric か。NaN / Inf / -Inf を拒否する（§7 / §8）。"""
+    if isinstance(value, bool) or not isinstance(value, _NUMERIC):
+        return False
+    try:
+        return math.isfinite(float(value))
+    except (TypeError, ValueError):
+        return False
+
+
+def _well_formed_codes(codes: list[Any]) -> tuple[bool, bool]:
+    """(all_non_empty_str, all_unique) を返す。"""
+    all_str = all(isinstance(c, str) and c != "" for c in codes)
+    unique = len(codes) == len(set(codes)) if all_str else False
+    return all_str, unique
+
+
+def validate_handoff_contract(
+    handoff: Any, expected_codes: Optional[list[Any]] = None
+) -> list[str]:
+    """§6..§9 / §11: handoff の schema / authority / type / value coherence と
+    （expected_codes 指定時は）population identity-set parity を fail-closed で
+    検証する。違反があれば aggregate reason code の sorted list を返す
+    （raw financial value は一切含めない）。空 list == contract 適合。"""
+    v: set[str] = set()
+    if not isinstance(handoff, dict):
+        return ["handoff_not_object"]
+
+    if handoff.get("schemaVersion") != DERIVED_PER_CALIBRATION_HANDOFF_SCHEMA:
+        v.add("schema_version_mismatch")
+    if handoff.get("kind") != _HANDOFF_KIND:
+        v.add("kind_mismatch")
+    if handoff.get("not_for_trading") is not True:
+        v.add("not_for_trading_not_true")
+    if handoff.get("perAuthority") != PER_AUTHORITY_PROVIDER:
+        v.add("per_authority_mismatch")
+    if handoff.get("mirrorAuthority") != PER_AUTHORITY_DERIVED:
+        v.add("mirror_authority_mismatch")
+    if not isinstance(handoff.get("aborted"), bool):
+        v.add("aborted_not_bool")
+    abort_reason = handoff.get("abortReason")
+    if abort_reason is not None and not isinstance(abort_reason, str):
+        v.add("abort_reason_type")
+
+    entries = handoff.get("entries")
+    if not isinstance(entries, list):
+        v.add("entries_not_list")
+        return sorted(v)
+
+    codes: list[str] = []
+    seen: set[str] = set()
+    for entry in entries:
+        if not isinstance(entry, dict):
+            v.add("entry_not_object")
+            continue
+        if frozenset(entry.keys()) != _ENTRY_FIELDS:
+            v.add("entry_field_set_mismatch")
+
+        code = entry.get("code")
+        if not isinstance(code, str) or code == "":
+            v.add("entry_code_invalid")
+        else:
+            if code in seen:
+                v.add("entry_code_duplicate")
+            seen.add(code)
+            codes.append(code)
+
+        # ── provider PER coherence（§8）──────────────────────────────
+        provider_per = entry.get("providerPer")
+        provider_valid = entry.get("providerPerValid")
+        if not isinstance(provider_valid, bool):
+            v.add("provider_per_valid_not_bool")
+        if isinstance(provider_per, bool):
+            v.add("provider_per_bool")
+        elif provider_per is not None and not _is_finite_number(provider_per):
+            v.add("provider_per_non_finite")
+        if isinstance(provider_valid, bool):
+            if provider_valid != _is_finite_number(provider_per):
+                v.add("provider_per_coherence")
+
+        # ── strict-derived PER coherence（§9）───────────────────────
+        derived_per = entry.get("strictDerivedPer")
+        derived_valid = entry.get("strictDerivedPerValid")
+        diag = entry.get("strictDerivedPerDiag")
+        if not isinstance(derived_valid, bool):
+            v.add("strict_derived_per_valid_not_bool")
+        if diag not in PER_DIAG_KEYS:
+            v.add("strict_derived_diag_unknown")
+        if isinstance(derived_per, bool):
+            v.add("strict_derived_per_bool")
+        elif derived_per is not None and not _is_finite_number(derived_per):
+            v.add("strict_derived_per_non_finite")
+
+        derived_ok = (
+            _is_finite_number(derived_per)
+            and float(derived_per) > 0.0
+            and diag == PER_DIAG_AVAILABLE
+        )
+        if isinstance(derived_valid, bool) and derived_valid != derived_ok:
+            v.add("strict_derived_per_coherence")
+        if diag != PER_DIAG_AVAILABLE and derived_per is not None:
+            v.add("strict_derived_per_non_null_on_blocked_diag")
+
+    # ── population identity-set parity（§11）────────────────────────────
+    if expected_codes is not None:
+        exp = list(expected_codes)
+        exp_all_str, exp_unique = _well_formed_codes(exp)
+        if not exp_all_str:
+            v.add("joined_candidate_code_malformed")
+        if not exp_unique:
+            v.add("joined_candidate_code_duplicate")
+        if len(codes) != len(entries):
+            # malformed entry を silent filter しない（§7）
+            v.add("handoff_entry_malformed_present")
+        if exp_all_str and exp_unique:
+            if len(codes) != len(exp):
+                v.add("population_length_mismatch")
+            if set(codes) != set(exp):
+                v.add("population_set_mismatch")
+
+    return sorted(v)
+
+
 def build_mirror_candidates(
     joined_candidates: list[Any], handoff_by_code: dict[str, dict[str, Any]]
 ) -> list[Any]:
@@ -155,21 +302,129 @@ def build_mirror_candidates(
     return mirror
 
 
+def _fail_closed_evidence(
+    *,
+    now: datetime,
+    run_identity: Optional[dict[str, Any]],
+    calibration_status: str,
+    handoff_contract_valid: bool,
+    population_identity_valid: bool,
+    baseline_equivalence: str,
+    baseline_identity_proven: bool,
+    violations: list[str],
+) -> dict[str, Any]:
+    """malformed handoff / 証明不能 baseline に対する aggregate-only fail-closed
+    evidence（§10）。normal acceptance snapshot は一切出さない。per-symbol・
+    raw financial value は含めない —— aggregate な違反理由コードのみ。"""
+    return {
+        "schemaVersion": CALIBRATION_EVIDENCE_SCHEMA,
+        "kind": CALIBRATION_EVIDENCE_KIND,
+        "not_for_trading": True,
+        "generatedAt": now.astimezone(timezone.utc).isoformat()
+        if now.tzinfo
+        else now.replace(tzinfo=timezone.utc).isoformat(),
+        "runIdentity": run_identity,
+        "perAuthority": PER_AUTHORITY_PROVIDER,
+        "mirrorAuthority": PER_AUTHORITY_DERIVED,
+        "providerAccessDelta": 0,
+        "publicPerAuthorityChanged": False,
+        "productionRankingChanged": False,
+        "calibrationStatus": calibration_status,
+        "handoffContractValid": handoff_contract_valid,
+        "populationIdentityValid": population_identity_valid,
+        "baselineEquivalence": baseline_equivalence,
+        "baselineIdentityProven": baseline_identity_proven,
+        "contractViolations": violations,
+        "acceptanceEligible": False,
+    }
+
+
 def build_derived_per_calibration_evidence(
     *,
     handoff: dict[str, Any],
     joined_candidates: list[Any],
     context: dict[str, Any],
-    baseline_result: dict[str, Any],
+    baseline_result: Optional[dict[str, Any]],
     now: datetime,
+    baseline_identity_proven: bool = True,
     run_identity: Optional[dict[str, Any]] = None,
     build_funnel_fn: Callable[[list[Any], dict[str, Any]], dict[str, Any]] = build_candidate_funnel,
 ) -> dict[str, Any]:
     """1 つの aggregate calibration evidence document を作る（per-symbol raw 値・
-    raw financial statement は含めない、§18）。"""
+    raw financial statement は含めない、§33）。
+
+    handoff contract / population identity（§6..§11）を先に fail-closed で検証し、
+    違反があれば normal mirror metric を計算せず invalid_input evidence を返す。
+    baseline_identity（current-run production baseline、§2..§5）が証明できない
+    場合は baseline_unavailable evidence を返す。いずれも acceptanceEligible は
+    false。"""
+    raw_entries = list(handoff.get("entries") or []) if isinstance(handoff, dict) else []
+
+    joined_codes = [
+        c.get("code") for c in joined_candidates if isinstance(c, dict)
+    ]
+    violations = validate_handoff_contract(handoff, joined_codes)
+    handoff_contract_valid = not violations
+
+    # population identity: joined == handoff == baseline candidate 集団（§11）
+    handoff_codes = [
+        e.get("code")
+        for e in raw_entries
+        if isinstance(e, dict) and isinstance(e.get("code"), str) and e.get("code") != ""
+    ]
+    jc_all_str, jc_unique = _well_formed_codes(joined_codes)
+    ho_all_str, ho_unique = _well_formed_codes(handoff_codes)
+    population_identity_valid = (
+        jc_all_str
+        and jc_unique
+        and ho_all_str
+        and ho_unique
+        and len(handoff_codes) == len(raw_entries)
+        and set(joined_codes) == set(handoff_codes)
+    )
+    if baseline_result is not None:
+        base_codes = [
+            c.get("code")
+            for c in baseline_result.get("candidates", [])
+            if isinstance(c, dict)
+        ]
+        b_all_str, b_unique = _well_formed_codes(base_codes)
+        population_identity_valid = (
+            population_identity_valid
+            and b_all_str
+            and b_unique
+            and set(base_codes) == set(joined_codes)
+        )
+        if not (b_all_str and b_unique and set(base_codes) == set(joined_codes)):
+            violations = sorted(set(violations) | {"baseline_population_mismatch"})
+
+    if not handoff_contract_valid or not population_identity_valid:
+        return _fail_closed_evidence(
+            now=now,
+            run_identity=run_identity,
+            calibration_status=CALIB_STATUS_INVALID_INPUT,
+            handoff_contract_valid=handoff_contract_valid,
+            population_identity_valid=population_identity_valid,
+            baseline_equivalence=BASELINE_EQUIV_BROKEN,
+            baseline_identity_proven=bool(baseline_identity_proven),
+            violations=violations or ["population_identity_invalid"],
+        )
+
+    if not baseline_identity_proven or baseline_result is None:
+        return _fail_closed_evidence(
+            now=now,
+            run_identity=run_identity,
+            calibration_status=CALIB_STATUS_BASELINE_UNAVAILABLE,
+            handoff_contract_valid=True,
+            population_identity_valid=True,
+            baseline_equivalence=BASELINE_EQUIV_NOT_PROVEN,
+            baseline_identity_proven=False,
+            violations=["current_run_baseline_not_proven"],
+        )
+
     entries = [
         e
-        for e in (handoff.get("entries") or [])
+        for e in raw_entries
         if isinstance(e, dict) and isinstance(e.get("code"), str) and e["code"] != ""
     ]
     handoff_by_code = {e["code"]: e for e in entries}
@@ -435,6 +690,30 @@ def build_derived_per_calibration_evidence(
     }
 
     aborted = bool(handoff.get("aborted"))
+    structural_mirror_generated = mirror_result.get("status") == "generated"
+    # §20: population identity 検証後、class 未分類 code は構造的に存在しない
+    # ため unexplained_top40 は 0 でなければならない。明示 hard gate として扱う。
+    top40_unexplained_movement = unexplained_top40
+
+    class_totality_holds = sum(class_counts.values()) == len(entries) == len(joined_codes)
+    acceptance_eligible = (
+        handoff_contract_valid
+        and population_identity_valid
+        and class_totality_holds
+        and baseline_identity_proven
+        and not aborted
+        and false_positive == 0
+        and numeric_without_available == 0
+        and dc_unexpected == 0
+        and decomposition["unexplained"] == 0
+        and top40_unexplained_movement == 0
+        and structural_mirror_generated
+        and mirror_p14_jaccard >= MIRROR_P14_JACCARD_MIN
+    )
+    baseline_equivalence = (
+        BASELINE_EQUIV_PROVEN if baseline_identity_proven else BASELINE_EQUIV_NOT_PROVEN
+    )
+
     evidence = {
         "schemaVersion": CALIBRATION_EVIDENCE_SCHEMA,
         "kind": CALIBRATION_EVIDENCE_KIND,
@@ -448,7 +727,15 @@ def build_derived_per_calibration_evidence(
         "providerAccessDelta": 0,
         "publicPerAuthorityChanged": False,
         "productionRankingChanged": False,
+        "calibrationStatus": CALIB_STATUS_VALID,
+        "handoffContractValid": True,
+        "populationIdentityValid": True,
+        "baselineEquivalence": baseline_equivalence,
+        "baselineIdentityProven": bool(baseline_identity_proven),
+        "contractViolations": [],
         "calibratedSymbolCount": len(entries),
+        "joinedCandidateCount": len(joined_codes),
+        "classTotalityHolds": class_totality_holds,
         "availabilityClassCounts": class_counts,
         "perDiagnosticCounts": per_diag_counts,
         "perDiagnosticSumEqualsCalibrated": sum(per_diag_counts.values()) == len(entries),
@@ -470,12 +757,20 @@ def build_derived_per_calibration_evidence(
             "structuralMirrorGenerated": mirror_result.get("status") == "generated",
             "actionableMirrorCount": len(mirror_actionable),
         },
+        "top40UnexplainedMovement": top40_unexplained_movement,
+        "acceptanceEligible": acceptance_eligible,
         "acceptanceGateSnapshot": {
+            "calibrationStatusValid": True,
+            "handoffContractValid": True,
+            "populationIdentityValid": True,
+            "baselineEquivalenceProven": baseline_equivalence == BASELINE_EQUIV_PROVEN,
             "falsePositiveDerivedPerCountZero": false_positive == 0,
+            "numericDerivedPerWithoutAvailableDiagCountZero": numeric_without_available == 0,
             "unexpectedDcDeltaCountZero": dc_unexpected == 0,
             "unexplainedTransitionCountZero": decomposition["unexplained"] == 0,
+            "top40UnexplainedMovementZero": top40_unexplained_movement == 0,
             "mirrorP14JaccardPass": mirror_p14_jaccard >= MIRROR_P14_JACCARD_MIN,
-            "structuralMirrorGenerated": mirror_result.get("status") == "generated",
+            "structuralMirrorGenerated": structural_mirror_generated,
             "abortFalse": not aborted,
         },
     }
@@ -525,8 +820,9 @@ def run_derived_per_calibration(
     *,
     joined_candidates: list[Any],
     context: dict[str, Any],
-    baseline_result: dict[str, Any],
+    baseline_result: Optional[dict[str, Any]],
     now: datetime,
+    baseline_identity_proven: bool = True,
     run_identity: Optional[dict[str, Any]] = None,
     handoff_path: Optional[Path] = None,
     build_funnel_fn: Callable[[list[Any], dict[str, Any]], dict[str, Any]] = build_candidate_funnel,
@@ -542,6 +838,7 @@ def run_derived_per_calibration(
         context=context,
         baseline_result=baseline_result,
         now=now,
+        baseline_identity_proven=baseline_identity_proven,
         run_identity=run_identity,
         build_funnel_fn=build_funnel_fn,
     )
@@ -552,7 +849,9 @@ def run_derived_per_calibration(
 def _reconstruct_batch_inputs(now: datetime) -> Optional[dict[str, Any]]:
     """production batch と同一の loader / join / context 構築を read-only で
     再現する（batch module は import するだけで一切変更しない）。candidate
-    funnel 生成本体（publish / gate）とは独立した観測専用経路。"""
+    funnel 生成本体（publish / gate）とは独立した観測専用経路。context.asOf は
+    second wall clock なので scoring には使わず、_meta 由来の production asOf で
+    上書きする（§2 / §17）。"""
     from data.candidate_funnel_batch import (
         CANDIDATES_STOCKS_PATH,
         PRESCREEN_METADATA_PATH,
@@ -570,8 +869,56 @@ def _reconstruct_batch_inputs(now: datetime) -> Optional[dict[str, Any]]:
     regime = read_current_regime(REGIME_STATE_PATH)
     prescreen_index, _dupes = build_prescreen_index(prescreen_payload)
     joined, _stats = join_candidates_with_prescreen(payload.get("candidates", []), prescreen_index)
-    context = build_context(payload, regime, now)
-    return {"joined_candidates": joined, "context": context}
+    source_context = build_context(payload, regime, now)
+    return {"joined_candidates": joined, "source_context": source_context, "regime": regime}
+
+
+def _load_current_run_baseline(path: Path = DATA_OUTPUT_PATH) -> Optional[dict[str, Any]]:
+    """current-run production candidate_funnel artifact を読む（§3）。engine
+    result + `_meta`（production context / provenance）を要求する。"""
+    try:
+        artifact = json.loads(Path(path).read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return None
+    if not isinstance(artifact, dict):
+        return None
+    if not isinstance(artifact.get("_meta"), dict) or not isinstance(
+        artifact.get("candidates"), list
+    ):
+        return None
+    return artifact
+
+
+def _production_context_from_meta(
+    baseline_artifact: dict[str, Any], source_context: dict[str, Any]
+) -> dict[str, Any]:
+    """production の scoring-relevant context を、current-run artifact `_meta`
+    （asOf / sourceUpdatedAt / pipelinePath / regimeRequested）と immutable な
+    same-run source input（staleThresholdHours / prescreenFallbackUsed）から
+    再構成する。datetime.now() は使わない（§3 / §17）。"""
+    meta = baseline_artifact.get("_meta") or {}
+    return {
+        "pipelinePath": meta.get("pipelinePath"),
+        "regime": meta.get("regimeRequested"),
+        "sourceUpdatedAt": meta.get("sourceUpdatedAt"),
+        "asOf": meta.get("asOf"),
+        "staleThresholdHours": source_context.get("staleThresholdHours"),
+        "prescreenFallbackUsed": source_context.get("prescreenFallbackUsed"),
+    }
+
+
+def _context_equivalent(source_context: dict[str, Any], meta: dict[str, Any]) -> bool:
+    """current-run source input が production `_meta` の記録と一致するか（§5）。
+    一致するなら _meta に無い context field（staleThresholdHours /
+    prescreenFallbackUsed）も同じ source 由来なので production-equivalent と
+    見なせる。asOf は second-clock なので比較対象外。"""
+    return (
+        source_context.get("pipelinePath") == meta.get("pipelinePath")
+        and source_context.get("sourceUpdatedAt") == meta.get("sourceUpdatedAt")
+        and source_context.get("regime") == meta.get("regimeRequested")
+        and meta.get("asOf") is not None
+        and meta.get("sourceUpdatedAt") is not None
+    )
 
 
 def main(argv: list[str] | tuple[str, ...] = ()) -> int:
@@ -579,20 +926,47 @@ def main(argv: list[str] | tuple[str, ...] = ()) -> int:
     calibration observability は non-blocking —— どんな失敗でも exit 0。"""
     now = datetime.now(timezone.utc)
     try:
+        batch_status = os.environ.get("CANDIDATE_FUNNEL_BATCH_STATUS", "")
+        smoke_status = os.environ.get("CANDIDATE_FUNNEL_SMOKE_STATUS", "")
+        current_run_published = (
+            batch_status == "batch_passed" and smoke_status == "smoke_passed"
+        )
+
         inputs = _reconstruct_batch_inputs(now)
         if inputs is None:
             print("  derived PER calibration: batch inputs unavailable; skipped")
             return 0
-        baseline_result = build_candidate_funnel(inputs["joined_candidates"], inputs["context"])
+
+        joined = inputs["joined_candidates"]
+        source_context = inputs["source_context"]
+
+        baseline_artifact = _load_current_run_baseline() if current_run_published else None
+        if baseline_artifact is not None and _context_equivalent(
+            source_context, baseline_artifact.get("_meta") or {}
+        ):
+            production_context = _production_context_from_meta(baseline_artifact, source_context)
+            baseline_identity_proven = True
+            baseline_result: Optional[dict[str, Any]] = baseline_artifact
+        else:
+            # §4 / §23: current-run baseline を証明できない。previous committed
+            # artifact を current-run baseline として使わない。second clock で
+            # baseline を作り直さない。fail-closed evidence のみ emit する。
+            production_context = source_context
+            baseline_identity_proven = False
+            baseline_result = None
+
         evidence = run_derived_per_calibration(
-            joined_candidates=inputs["joined_candidates"],
-            context=inputs["context"],
+            joined_candidates=joined,
+            context=production_context,
             baseline_result=baseline_result,
             now=now,
+            baseline_identity_proven=baseline_identity_proven,
             run_identity={
-                "asOf": inputs["context"].get("asOf"),
-                "sourceUpdatedAt": inputs["context"].get("sourceUpdatedAt"),
-                "pipelinePath": inputs["context"].get("pipelinePath"),
+                "asOf": production_context.get("asOf"),
+                "sourceUpdatedAt": production_context.get("sourceUpdatedAt"),
+                "pipelinePath": production_context.get("pipelinePath"),
+                "batchStatus": batch_status or None,
+                "smokeStatus": smoke_status or None,
             },
         )
         if evidence is None:

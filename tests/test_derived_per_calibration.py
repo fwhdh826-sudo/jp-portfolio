@@ -32,6 +32,7 @@ from datetime import date, datetime, timedelta, timezone
 import pytest
 
 from data.candidate_fundamentals import (
+    DERIVED_PER_CALIBRATION_HANDOFF_SCHEMA,
     PER_AUTHORITY_DERIVED,
     PER_AUTHORITY_PROVIDER,
     PER_DIAG_AVAILABLE,
@@ -324,7 +325,24 @@ def _handoff_for(pop):
                     "strictDerivedPerDiag": "available",
                 }
             )
-    return {"entries": entries, "aborted": False, "abortReason": None}
+    return _envelope(entries)
+
+
+def _envelope(entries, **overrides):
+    """valid な derived-per-calibration handoff top-level（§6）。overrides で
+    negative test 用に個別 field を壊す。"""
+    payload = {
+        "schemaVersion": DERIVED_PER_CALIBRATION_HANDOFF_SCHEMA,
+        "kind": "derived_per_calibration_handoff",
+        "not_for_trading": True,
+        "perAuthority": PER_AUTHORITY_PROVIDER,
+        "mirrorAuthority": PER_AUTHORITY_DERIVED,
+        "aborted": False,
+        "abortReason": None,
+        "entries": entries,
+    }
+    payload.update(overrides)
+    return payload
 
 
 CTX = {"pipelinePath": "normal"}
@@ -371,7 +389,9 @@ def test_false_positive_gate_and_numeric_requires_available():
     assert ev["perDiagnosticSumEqualsCalibrated"] is True
 
 
-def test_false_positive_detected_when_contract_violated():
+def test_false_positive_contract_violation_fails_closed():
+    # §9 / §16: numeric strict-derived PER + blocked diagnostic は handoff
+    # contract 層で reject され、normal acceptance snapshot を出さない。
     pop = _population()
     handoff = _handoff_for(pop)
     handoff["entries"][3]["strictDerivedPer"] = 15.0
@@ -381,7 +401,11 @@ def test_false_positive_detected_when_contract_violated():
     ev = build_derived_per_calibration_evidence(
         handoff=handoff, joined_candidates=pop, context=dict(CTX), baseline_result=baseline, now=OBSERVED
     )
-    assert ev["falsePositiveDerivedPerCount"] == 1
+    assert ev["calibrationStatus"] == "invalid_input"
+    assert ev["handoffContractValid"] is False
+    assert ev["acceptanceEligible"] is False
+    assert "acceptanceGateSnapshot" not in ev
+    assert "strict_derived_per_non_null_on_blocked_diag" in ev["contractViolations"]
 
 
 def test_mirror_changes_only_canonical_per():
@@ -451,7 +475,7 @@ def test_emit_evidence_only_under_runner_temp(tmp_path, monkeypatch):
     assert "data" not in out.parts[:-1] or str(tmp_path) in str(out)
 
 
-def test_abort_state_is_surfaced():
+def test_abort_state_is_surfaced_and_not_acceptance_eligible():
     pop = _population()
     handoff = _handoff_for(pop)
     handoff["aborted"] = True
@@ -462,3 +486,279 @@ def test_abort_state_is_surfaced():
     )
     assert ev["abort"]["fundamentalsAborted"] is True
     assert ev["acceptanceGateSnapshot"]["abortFalse"] is False
+    assert ev["acceptanceEligible"] is False
+
+
+# ---------------------------------------------------------------------------
+# R2 P2-02: handoff contract fail-closed（§6..§10 / §28）
+# ---------------------------------------------------------------------------
+
+from data.derived_per_calibration import (  # noqa: E402
+    _context_equivalent,
+    _production_context_from_meta,
+    validate_handoff_contract,
+)
+
+
+def _valid_pair():
+    pop = _population(20)
+    handoff = _handoff_for(pop)
+    baseline = build_candidate_funnel(copy.deepcopy(pop), dict(CTX))
+    return pop, handoff, baseline
+
+
+def _build(pop, handoff, baseline, **kw):
+    return build_derived_per_calibration_evidence(
+        handoff=handoff, joined_candidates=pop, context=dict(CTX),
+        baseline_result=baseline, now=OBSERVED, **kw
+    )
+
+
+def _assert_fail_closed(ev, status="invalid_input"):
+    assert ev["calibrationStatus"] == status
+    assert ev["acceptanceEligible"] is False
+    assert "acceptanceGateSnapshot" not in ev
+    # aggregate reason codes only, no per-symbol financial data
+    blob = json.dumps(ev, default=str)
+    assert "Diluted EPS" not in blob
+
+
+@pytest.mark.parametrize(
+    "mutate",
+    [
+        lambda h: h.update(schemaVersion="wrong"),
+        lambda h: h.update(kind="wrong"),
+        lambda h: h.update(perAuthority="derivedAnnualFY0"),
+        lambda h: h.update(mirrorAuthority="providerTrailingPE"),
+        lambda h: h.update(not_for_trading=False),
+        lambda h: h.pop("not_for_trading"),
+        lambda h: h.update(entries={}),
+        lambda h: h.update(aborted="no"),
+    ],
+)
+def test_handoff_toplevel_negatives_fail_closed(mutate):
+    pop, handoff, baseline = _valid_pair()
+    mutate(handoff)
+    _assert_fail_closed(_build(pop, handoff, baseline))
+
+
+@pytest.mark.parametrize(
+    "mutate",
+    [
+        lambda e: e.__setitem__("code", ""),
+        lambda e: e.__setitem__("code", 123),
+        lambda e: e.__setitem__("providerPerValid", False),  # finite per + valid False
+        lambda e: (e.__setitem__("providerPer", None), e.__setitem__("providerPerValid", True)),
+        lambda e: e.__setitem__("providerPer", True),
+        lambda e: e.__setitem__("providerPer", float("nan")),
+        lambda e: e.__setitem__("providerPer", float("inf")),
+        lambda e: (e.__setitem__("strictDerivedPer", -5.0), e.__setitem__("strictDerivedPerValid", True), e.__setitem__("strictDerivedPerDiag", "available")),
+        lambda e: (e.__setitem__("strictDerivedPer", 0.0), e.__setitem__("strictDerivedPerValid", True), e.__setitem__("strictDerivedPerDiag", "available")),
+        lambda e: (e.__setitem__("strictDerivedPer", None), e.__setitem__("strictDerivedPerValid", True), e.__setitem__("strictDerivedPerDiag", "available")),
+        lambda e: (e.__setitem__("strictDerivedPer", 20.0), e.__setitem__("strictDerivedPerValid", False), e.__setitem__("strictDerivedPerDiag", "available")),
+        lambda e: (e.__setitem__("strictDerivedPer", 20.0), e.__setitem__("strictDerivedPerValid", True), e.__setitem__("strictDerivedPerDiag", "splitGuardBlocked")),
+        lambda e: (e.__setitem__("strictDerivedPer", 20.0), e.__setitem__("strictDerivedPerValid", False), e.__setitem__("strictDerivedPerDiag", "splitGuardBlocked")),
+        lambda e: e.__setitem__("strictDerivedPerDiag", "totallyUnknown"),
+        lambda e: e.__setitem__("strictDerivedPer", float("nan")),
+    ],
+)
+def test_handoff_entry_negatives_fail_closed(mutate):
+    pop, handoff, baseline = _valid_pair()
+    # pick a bothValid entry (index 3)
+    mutate(handoff["entries"][3])
+    _assert_fail_closed(_build(pop, handoff, baseline))
+
+
+def test_non_object_entry_not_silently_filtered():
+    pop, handoff, baseline = _valid_pair()
+    handoff["entries"][2] = "not-an-object"
+    _assert_fail_closed(_build(pop, handoff, baseline))
+
+
+def test_duplicate_handoff_code_fails_closed():
+    pop, handoff, baseline = _valid_pair()
+    handoff["entries"][1]["code"] = handoff["entries"][0]["code"]
+    ev = _build(pop, handoff, baseline)
+    _assert_fail_closed(ev)
+    assert ev["populationIdentityValid"] is False
+
+
+def test_missing_handoff_code_fails_closed():
+    pop, handoff, baseline = _valid_pair()
+    handoff["entries"].pop()
+    ev = _build(pop, handoff, baseline)
+    _assert_fail_closed(ev)
+    assert ev["populationIdentityValid"] is False
+
+
+def test_extra_handoff_code_fails_closed():
+    pop, handoff, baseline = _valid_pair()
+    extra = dict(handoff["entries"][0])
+    extra["code"] = "9999"
+    handoff["entries"].append(extra)
+    ev = _build(pop, handoff, baseline)
+    _assert_fail_closed(ev)
+    assert ev["populationIdentityValid"] is False
+
+
+def test_baseline_population_mismatch_fails_closed():
+    pop, handoff, baseline = _valid_pair()
+    baseline["candidates"] = baseline["candidates"][:-1]
+    ev = _build(pop, handoff, baseline)
+    _assert_fail_closed(ev)
+    assert "baseline_population_mismatch" in ev["contractViolations"]
+
+
+def test_validate_handoff_contract_accepts_valid():
+    pop, handoff, _b = _valid_pair()
+    codes = [c["code"] for c in pop]
+    assert validate_handoff_contract(handoff, codes) == []
+
+
+def test_provider_negative_and_zero_per_are_coherent():
+    # §8: 有限なら符号を問わず providerPerValid True で coherent。
+    pop, handoff, baseline = _valid_pair()
+    handoff["entries"][3]["providerPer"] = -5.0
+    handoff["entries"][8]["providerPer"] = 0.0
+    ev = _build(pop, handoff, baseline)
+    assert ev["calibrationStatus"] == "valid"
+    assert ev["handoffContractValid"] is True
+
+
+# ---------------------------------------------------------------------------
+# R2 P2-01: baseline identity / second-clock elimination（§2..§5 / §29）
+# ---------------------------------------------------------------------------
+
+
+def test_baseline_unavailable_when_identity_not_proven():
+    pop, handoff, _b = _valid_pair()
+    ev = _build(pop, handoff, None, baseline_identity_proven=False)
+    _assert_fail_closed(ev, status="baseline_unavailable")
+    assert ev["baselineEquivalence"] == "NOT_PROVEN"
+
+
+def test_baseline_result_none_is_baseline_unavailable():
+    pop, handoff, _b = _valid_pair()
+    ev = _build(pop, handoff, None, baseline_identity_proven=True)
+    _assert_fail_closed(ev, status="baseline_unavailable")
+
+
+def test_second_clock_does_not_change_scoring():
+    # §2 / §29-A/B: 同一 production context に対し、calibration 呼び出しの
+    # wall clock（now）が変わっても mirror/baseline scoring は不変。
+    pop, handoff, baseline = _valid_pair()
+    e1 = build_derived_per_calibration_evidence(
+        handoff=handoff, joined_candidates=pop, context=dict(CTX),
+        baseline_result=baseline, now=OBSERVED,
+    )
+    e2 = build_derived_per_calibration_evidence(
+        handoff=handoff, joined_candidates=copy.deepcopy(pop), context=dict(CTX),
+        baseline_result=baseline, now=OBSERVED + timedelta(days=930),
+    )
+    assert e1["rankScoreMirrorMetrics"] == e2["rankScoreMirrorMetrics"]
+    assert e1["dataConfidenceParity"] == e2["dataConfidenceParity"]
+    assert e1["tierTransitionDecomposition"] == e2["tierTransitionDecomposition"]
+
+
+def test_production_context_from_meta_uses_meta_not_now():
+    artifact = {
+        "candidates": [],
+        "_meta": {
+            "asOf": "2026-09-06T23:00:43+00:00",
+            "sourceUpdatedAt": "2026-09-07T07:58:08+09:00",
+            "pipelinePath": "normal",
+            "regimeRequested": "uncertain",
+        },
+    }
+    src = {
+        "pipelinePath": "normal",
+        "regime": "uncertain",
+        "sourceUpdatedAt": "2026-09-07T07:58:08+09:00",
+        "asOf": "2029-01-01T00:00:00+00:00",  # second clock
+        "staleThresholdHours": 72,
+        "prescreenFallbackUsed": False,
+    }
+    ctx = _production_context_from_meta(artifact, src)
+    assert ctx["asOf"] == "2026-09-06T23:00:43+00:00"
+    assert ctx["staleThresholdHours"] == 72
+    assert _context_equivalent(src, artifact["_meta"]) is True
+    # source drift → not equivalent
+    src2 = dict(src, pipelinePath="cache_fallback")
+    assert _context_equivalent(src2, artifact["_meta"]) is False
+
+
+# ---------------------------------------------------------------------------
+# R2 positive E2E（§30）
+# ---------------------------------------------------------------------------
+
+
+def test_positive_e2e_acceptance_eligible():
+    pop = _population(30)
+    handoff = _handoff_for(pop)
+    baseline = build_candidate_funnel(copy.deepcopy(pop), dict(CTX))
+    ev = build_derived_per_calibration_evidence(
+        handoff=handoff, joined_candidates=pop, context=dict(CTX),
+        baseline_result=baseline, now=OBSERVED, baseline_identity_proven=True,
+    )
+    assert ev["calibrationStatus"] == "valid"
+    assert ev["handoffContractValid"] is True
+    assert ev["populationIdentityValid"] is True
+    assert ev["baselineEquivalence"] == "PROVEN"
+    assert ev["acceptanceEligible"] is True
+    assert ev["classTotalityHolds"] is True
+    assert ev["top40UnexplainedMovement"] == 0
+    # mirror differs only in per
+    by_code = {e["code"]: e for e in handoff["entries"]}
+    mir = build_mirror_candidates(pop, by_code)
+    for o, m in zip(pop, mir):
+        for k in o:
+            if k != "per":
+                assert m[k] == o[k]
+
+
+def test_build_evidence_does_not_mutate_arguments():
+    # P3-01: 実引数オブジェクトそのものが不変であることを証明する。
+    pop = _population(15)
+    handoff = _handoff_for(pop)
+    baseline = build_candidate_funnel(copy.deepcopy(pop), dict(CTX))
+    pop_snap = copy.deepcopy(pop)
+    handoff_snap = copy.deepcopy(handoff)
+    baseline_snap = copy.deepcopy(baseline)
+    ctx = dict(CTX)
+    ctx_snap = dict(ctx)
+    build_derived_per_calibration_evidence(
+        handoff=handoff, joined_candidates=pop, context=ctx,
+        baseline_result=baseline, now=OBSERVED,
+    )
+    assert pop == pop_snap
+    assert handoff == handoff_snap
+    assert baseline == baseline_snap
+    assert ctx == ctx_snap
+
+
+# ---------------------------------------------------------------------------
+# R1 regression（§31）
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize(
+    "period_ends, blocked",
+    [
+        ([FY0_END], True),
+        (_span_ends(334), True),
+        (_span_ends(335), False),
+        (_span_ends(395), False),
+        (_span_ends(396), True),
+        ([FY0_END, FY0_END], True),
+    ],
+)
+def test_r1_annual_span_authority_regression(period_ends, blocked):
+    eps = [100.0] if len(period_ends) == 1 else [100.0, 90.0]
+    r = _derive(income_stmt={"Diluted EPS": eps, "Net Income": [1e9] * len(eps)},
+                period_ends=period_ends)
+    if blocked:
+        assert r.strict_derived_per is None
+        assert r.strict_derived_per_diag == PER_DIAG_IRREGULAR_PERIOD
+    else:
+        assert r.strict_derived_per == pytest.approx(20.0)
+        assert r.strict_derived_per_diag == PER_DIAG_AVAILABLE
