@@ -1,20 +1,34 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-09-11T08:25:21.151002+09:00",
-  "sourceUpdatedAt": "2026-09-10T23:05:12+00:00",
+  "updatedAt": "2026-09-11T10:17:47.272684+09:00",
+  "sourceUpdatedAt": "2026-09-11T00:53:41+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": 0,
+      "avgSentiment": 1.0,
       "negativeCount": 0,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Japan’s Producer Price Gains Stay Elevated, Backing BOJ Hikes",
+      "topPositiveTitle": "Japan’s Producer Price Gains Stay Elevated, Backing BOJ Hikes",
+      "items": [
+        {
+          "title": "Japan’s Producer Price Gains Stay Elevated, Backing BOJ Hikes",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-09-11T00:25:02+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-11/japan-s-producer-price-gains-stay-elevated-backing-boj-hikes",
+          "tags": [
+            "jp_broad",
+            "market",
+            "rates"
+          ]
+        }
+      ]
     },
     "jp_semiconductor": {
       "avgSentiment": 0,
@@ -29,25 +43,24 @@
       "items": []
     },
     "us_broad": {
-      "avgSentiment": 0.028,
+      "avgSentiment": -0.089,
       "negativeCount": 5,
-      "positiveCount": 4,
-      "neutralCount": 2,
+      "positiveCount": 3,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 11,
+      "itemCount": 9,
       "isStale": false,
-      "topNegativeTitle": "Asian Stocks, Bonds to Drop on Oil, Inflation Woes: Markets Wrap",
+      "topNegativeTitle": "Global Bond Selloff Sends 10-Year Treasury Yields to Cusp of 5%",
       "topPositiveTitle": "Mortgage Rates in the US Rise to 6.76%, Highest Since June 2025",
       "items": [
         {
-          "title": "Asian Stocks, Bonds to Drop on Oil, Inflation Woes: Markets Wrap",
+          "title": "Global Bond Selloff Sends 10-Year Treasury Yields to Cusp of 5%",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.67,
-          "publishedAt": "2026-09-10T22:15:53+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-10/stock-market-today-dow-s-p-live-updates",
+          "publishedAt": "2026-09-11T00:13:24+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-11/global-bond-selloff-sends-10-year-treasury-yields-to-cusp-of-5",
           "tags": [
-            "commodity",
             "macro_risk",
             "market",
             "rates",
@@ -55,14 +68,30 @@
           ]
         },
         {
-          "title": "Stocks, Bonds Drop as Oil Spike Boosts Fed Wagers: Markets Wrap",
+          "title": "Gold Set for Weekly Drop as Oil, Inflation Boost Rate-Hike Bets",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.5,
-          "publishedAt": "2026-09-09T22:13:56+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-09/stock-market-today-dow-s-p-live-updates",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-09-10T23:34:43+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-10/gold-holds-drop-as-rising-oil-inflation-bolster-rate-hike-bets",
           "tags": [
             "commodity",
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Asian Stocks, Bonds Fall on Oil, Inflation Concern: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.6,
+          "publishedAt": "2026-09-10T22:15:53+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-10/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "macro_risk",
             "market",
             "rates",
             "us_broad"
@@ -93,20 +122,6 @@
             "commodity",
             "dividend",
             "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "S&P 500 Slides Fourth Straight Day as Oil Prices, Yields Surge",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-10T11:31:26+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-10/futures-muted-ahead-of-ppi-data-oracle-s-ai-signaling-results",
-          "tags": [
-            "commodity",
             "market",
             "rates",
             "us_broad"
@@ -152,16 +167,32 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
+      "avgSentiment": -0.67,
+      "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Gold Set for Weekly Drop as Oil, Inflation Boost Rate-Hike Bets",
+      "topPositiveTitle": "Gold Set for Weekly Drop as Oil, Inflation Boost Rate-Hike Bets",
+      "items": [
+        {
+          "title": "Gold Set for Weekly Drop as Oil, Inflation Boost Rate-Hike Bets",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-09-10T23:34:43+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-10/gold-holds-drop-as-rising-oil-inflation-bolster-rate-hike-bets",
+          "tags": [
+            "commodity",
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        }
+      ]
     },
     "reit": {
       "avgSentiment": 0,
@@ -219,12 +250,12 @@
       ]
     },
     "macro_risk": {
-      "avgSentiment": -0.278,
-      "negativeCount": 3,
+      "avgSentiment": -0.324,
+      "negativeCount": 4,
       "positiveCount": 1,
       "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 7,
       "isStale": false,
       "topNegativeTitle": "South Africa Posts Widest Current-Account Deficit Since 2019",
       "topPositiveTitle": "Lagarde Calls ECB Hike ‘No Brainer’ as Markets Bet on More Ahead",
@@ -243,10 +274,24 @@
           ]
         },
         {
-          "title": "Asian Stocks, Bonds to Drop on Oil, Inflation Woes: Markets Wrap",
+          "title": "Global Bond Selloff Sends 10-Year Treasury Yields to Cusp of 5%",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.67,
+          "publishedAt": "2026-09-11T00:13:24+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-11/global-bond-selloff-sends-10-year-treasury-yields-to-cusp-of-5",
+          "tags": [
+            "macro_risk",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Asian Stocks, Bonds Fall on Oil, Inflation Concern: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.6,
           "publishedAt": "2026-09-10T22:15:53+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-10/stock-market-today-dow-s-p-live-updates",
           "tags": [
@@ -284,44 +329,30 @@
             "macro_risk",
             "market"
           ]
-        },
-        {
-          "title": "Swiss Firms May See $2 Billion in US Tariff Refunds, UBS Says",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-10T09:02:57+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-10/swiss-firms-may-see-2-billion-in-us-tariff-refunds-ubs-says",
-          "tags": [
-            "macro_risk",
-            "market"
-          ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": 0.67,
+      "avgSentiment": 0.5,
       "negativeCount": 0,
       "positiveCount": 2,
       "neutralCount": 0,
       "sourceCount": 2,
       "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Dollar Rises as Fed Hike Bets Grow Heading Into Inflation Report",
-      "topPositiveTitle": "Dollar Rises as Fed Hike Bets Grow Heading Into Inflation Report",
+      "topNegativeTitle": "Edmond de Rothschild Says Buy Yen Dips as Carry Trade Unwinds",
+      "topPositiveTitle": "Bessent Bets Reputation on Fights With Markets He Can’t Control",
       "items": [
         {
-          "title": "Dollar Rises as Fed Hike Bets Grow Heading Into Inflation Report",
+          "title": "Edmond de Rothschild Says Buy Yen Dips as Carry Trade Unwinds",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-09-10T14:23:22+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-10/dollar-has-best-day-in-two-weeks-as-ppi-oil-add-to-fed-bets",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-11T00:04:52+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-11/edmond-de-rothschild-says-buy-yen-dips-as-carry-trade-unwinds",
           "tags": [
-            "commodity",
             "fx",
-            "market",
-            "us_broad"
+            "market"
           ]
         },
         {
@@ -342,15 +373,15 @@
       ]
     },
     "rates": {
-      "avgSentiment": -0.002,
+      "avgSentiment": -0.01,
       "negativeCount": 6,
       "positiveCount": 6,
-      "neutralCount": 3,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 15,
+      "itemCount": 14,
       "isStale": false,
       "topNegativeTitle": "US Existing Home Sales Slide to Weakest in More Than a Year",
-      "topPositiveTitle": "Mortgage Rates in the US Rise to 6.76%, Highest Since June 2025",
+      "topPositiveTitle": "Japan’s Producer Price Gains Stay Elevated, Backing BOJ Hikes",
       "items": [
         {
           "title": "US Existing Home Sales Slide to Weakest in More Than a Year",
@@ -365,14 +396,13 @@
           ]
         },
         {
-          "title": "Asian Stocks, Bonds to Drop on Oil, Inflation Woes: Markets Wrap",
+          "title": "Global Bond Selloff Sends 10-Year Treasury Yields to Cusp of 5%",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.67,
-          "publishedAt": "2026-09-10T22:15:53+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-10/stock-market-today-dow-s-p-live-updates",
+          "publishedAt": "2026-09-11T00:13:24+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-11/global-bond-selloff-sends-10-year-treasury-yields-to-cusp-of-5",
           "tags": [
-            "commodity",
             "macro_risk",
             "market",
             "rates",
@@ -380,14 +410,30 @@
           ]
         },
         {
-          "title": "Stocks, Bonds Drop as Oil Spike Boosts Fed Wagers: Markets Wrap",
+          "title": "Gold Set for Weekly Drop as Oil, Inflation Boost Rate-Hike Bets",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.5,
-          "publishedAt": "2026-09-09T22:13:56+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-09/stock-market-today-dow-s-p-live-updates",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-09-10T23:34:43+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-10/gold-holds-drop-as-rising-oil-inflation-bolster-rate-hike-bets",
           "tags": [
             "commodity",
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Asian Stocks, Bonds Fall on Oil, Inflation Concern: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.6,
+          "publishedAt": "2026-09-10T22:15:53+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-10/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "macro_risk",
             "market",
             "rates",
             "us_broad"
@@ -402,22 +448,6 @@
           "url": "https://www.bloomberg.com/news/articles/2026-09-10/australia-bond-yields-jump-to-highest-since-2011-on-oil-concerns",
           "tags": [
             "commodity",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Treasury Yields Surge as Oil, Buyback Results Fuel Selloff",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-10T18:14:34+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-10/treasury-buys-less-than-maximum-in-longer-debt-buyback-operation",
-          "tags": [
-            "commodity",
-            "dividend",
-            "macro_risk",
             "market",
             "rates",
             "us_broad"
@@ -426,40 +456,41 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.042,
-      "negativeCount": 5,
-      "positiveCount": 6,
+      "avgSentiment": 0.006,
+      "negativeCount": 4,
+      "positiveCount": 5,
       "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 12,
+      "itemCount": 10,
       "isStale": false,
-      "topNegativeTitle": "Asian Stocks, Bonds to Drop on Oil, Inflation Woes: Markets Wrap",
-      "topPositiveTitle": "Dollar Rises as Fed Hike Bets Grow Heading Into Inflation Report",
+      "topNegativeTitle": "Gold Set for Weekly Drop as Oil, Inflation Boost Rate-Hike Bets",
+      "topPositiveTitle": "Bessent Bets Reputation on Fights With Markets He Can’t Control",
       "items": [
         {
-          "title": "Asian Stocks, Bonds to Drop on Oil, Inflation Woes: Markets Wrap",
+          "title": "Gold Set for Weekly Drop as Oil, Inflation Boost Rate-Hike Bets",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.67,
-          "publishedAt": "2026-09-10T22:15:53+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-10/stock-market-today-dow-s-p-live-updates",
+          "publishedAt": "2026-09-10T23:34:43+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-10/gold-holds-drop-as-rising-oil-inflation-bolster-rate-hike-bets",
           "tags": [
             "commodity",
-            "macro_risk",
+            "gold",
             "market",
             "rates",
             "us_broad"
           ]
         },
         {
-          "title": "Stocks, Bonds Drop as Oil Spike Boosts Fed Wagers: Markets Wrap",
+          "title": "Asian Stocks, Bonds Fall on Oil, Inflation Concern: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.5,
-          "publishedAt": "2026-09-09T22:13:56+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-09/stock-market-today-dow-s-p-live-updates",
+          "sentimentScore": -0.6,
+          "publishedAt": "2026-09-10T22:15:53+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-10/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
+            "macro_risk",
             "market",
             "rates",
             "us_broad"
@@ -496,17 +527,15 @@
           ]
         },
         {
-          "title": "S&P 500 Slides Fourth Straight Day as Oil Prices, Yields Surge",
+          "title": "China Halts New Battery Factories on Capacity Concerns: Caixin",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-10T11:31:26+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-10/futures-muted-ahead-of-ppi-data-oracle-s-ai-signaling-results",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-11T00:22:47+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-11/china-halts-new-battery-factories-on-capacity-concerns-caixin",
           "tags": [
             "commodity",
-            "market",
-            "rates",
-            "us_broad"
+            "market"
           ]
         }
       ]
