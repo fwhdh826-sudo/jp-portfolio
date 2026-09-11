@@ -1,31 +1,30 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-09-11T10:17:47.272684+09:00",
-  "sourceUpdatedAt": "2026-09-11T00:53:41+00:00",
+  "updatedAt": "2026-09-11T17:12:45.821724+09:00",
+  "sourceUpdatedAt": "2026-09-11T08:07:10+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": 1.0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 1,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Japan’s Producer Price Gains Stay Elevated, Backing BOJ Hikes",
-      "topPositiveTitle": "Japan’s Producer Price Gains Stay Elevated, Backing BOJ Hikes",
+      "topNegativeTitle": "BOJ Watchers See Follow-Up Hike by January After September Move",
+      "topPositiveTitle": "BOJ Watchers See Follow-Up Hike by January After September Move",
       "items": [
         {
-          "title": "Japan’s Producer Price Gains Stay Elevated, Backing BOJ Hikes",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-09-11T00:25:02+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-11/japan-s-producer-price-gains-stay-elevated-backing-boj-hikes",
+          "title": "BOJ Watchers See Follow-Up Hike by January After September Move",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-11T01:30:02+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-11/boj-watchers-see-follow-up-hike-by-january-after-september-move",
           "tags": [
             "jp_broad",
-            "market",
-            "rates"
+            "market"
           ]
         }
       ]
@@ -43,87 +42,78 @@
       "items": []
     },
     "us_broad": {
-      "avgSentiment": -0.089,
-      "negativeCount": 5,
-      "positiveCount": 3,
-      "neutralCount": 1,
+      "avgSentiment": 0.096,
+      "negativeCount": 2,
+      "positiveCount": 2,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 9,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "Global Bond Selloff Sends 10-Year Treasury Yields to Cusp of 5%",
+      "topNegativeTitle": "BNP Paribas Says Warsh Can Prove Credibility With Rate Hike",
       "topPositiveTitle": "Mortgage Rates in the US Rise to 6.76%, Highest Since June 2025",
       "items": [
         {
-          "title": "Global Bond Selloff Sends 10-Year Treasury Yields to Cusp of 5%",
+          "title": "BNP Paribas Says Warsh Can Prove Credibility With Rate Hike",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-09-11T00:13:24+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-11/global-bond-selloff-sends-10-year-treasury-yields-to-cusp-of-5",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-11T07:39:36+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-11/bnp-paribas-says-warsh-can-prove-credibility-with-hike-video",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Global Bonds Hit By Selloff Ahead of US CPI",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-11T06:11:20+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-11/insight-with-haslinda-amin-9-11-2026-video",
           "tags": [
             "macro_risk",
             "market",
-            "rates",
             "us_broad"
           ]
         },
         {
-          "title": "Gold Set for Weekly Drop as Oil, Inflation Boost Rate-Hike Bets",
+          "title": "Oil Price Move Matters More Than CPI: 3-Minutes MLIV",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-09-10T23:34:43+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-10/gold-holds-drop-as-rising-oil-inflation-bolster-rate-hike-bets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-11T07:57:45+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-11/oil-price-move-matters-more-than-cpi-3-minutes-mliv-video",
           "tags": [
             "commodity",
-            "gold",
             "market",
-            "rates",
             "us_broad"
           ]
         },
         {
-          "title": "Asian Stocks, Bonds Fall on Oil, Inflation Concern: Markets Wrap",
+          "title": "Stocks and Treasuries Find Relief Before CPI Print: Markets Wrap",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.6,
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
           "publishedAt": "2026-09-10T22:15:53+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-10/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
-            "macro_risk",
             "market",
             "rates",
             "us_broad"
           ]
         },
         {
-          "title": "Australia Bond Yields Jump to Highest Since 2011 on Oil Concerns",
+          "title": "The Bull Market Fears a Fed Cycle, Not One Hike: Taking Stock",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-10T23:05:12+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-10/australia-bond-yields-jump-to-highest-since-2011-on-oil-concerns",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-11T06:15:26+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-11/the-bull-market-fears-a-fed-cycle-not-one-hike-taking-stock",
           "tags": [
-            "commodity",
             "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Treasury Yields Surge as Oil, Buyback Results Fuel Selloff",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-10T18:14:34+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-10/treasury-buys-less-than-maximum-in-longer-debt-buyback-operation",
-          "tags": [
-            "commodity",
-            "dividend",
-            "macro_risk",
-            "market",
-            "rates",
             "us_broad"
           ]
         }
@@ -137,16 +127,16 @@
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "RBI’s Malhotra Urges Fintechs to Guard Data as AI Use Expands",
-      "topPositiveTitle": "RBI’s Malhotra Urges Fintechs to Guard Data as AI Use Expands",
+      "topNegativeTitle": "AI Helps UK Economy Unexpectedly Grow in Boost for Burnham",
+      "topPositiveTitle": "AI Helps UK Economy Unexpectedly Grow in Boost for Burnham",
       "items": [
         {
-          "title": "RBI’s Malhotra Urges Fintechs to Guard Data as AI Use Expands",
+          "title": "AI Helps UK Economy Unexpectedly Grow in Boost for Burnham",
           "source": "Bloomberg Economics",
           "sentiment": "positive",
           "sentimentScore": 0.33,
-          "publishedAt": "2026-09-10T11:41:39+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-10/rbi-s-malhotra-urges-fintechs-to-guard-data-as-ai-use-expands",
+          "publishedAt": "2026-09-11T06:03:43+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-11/britain-s-economy-unexpectedly-grew-0-4-in-july",
           "tags": [
             "market",
             "us_growth"
@@ -155,6 +145,34 @@
       ]
     },
     "global_broad": {
+      "avgSentiment": 0.67,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "Oil Surges as Houthi-Saudi Fighting Escalates, Iran Braces for Long War",
+      "topPositiveTitle": "Oil Surges as Houthi-Saudi Fighting Escalates, Iran Braces for Long War",
+      "items": [
+        {
+          "title": "Oil Surges as Houthi-Saudi Fighting Escalates, Iran Braces for Long War",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-09-11T06:36:06+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-11/horizons-middle-east-africa-9-11-2026-video",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "global_broad",
+            "macro_risk",
+            "market"
+          ]
+        }
+      ]
+    },
+    "gold": {
       "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
@@ -165,34 +183,6 @@
       "topNegativeTitle": null,
       "topPositiveTitle": null,
       "items": []
-    },
-    "gold": {
-      "avgSentiment": -0.67,
-      "negativeCount": 1,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
-      "isStale": false,
-      "topNegativeTitle": "Gold Set for Weekly Drop as Oil, Inflation Boost Rate-Hike Bets",
-      "topPositiveTitle": "Gold Set for Weekly Drop as Oil, Inflation Boost Rate-Hike Bets",
-      "items": [
-        {
-          "title": "Gold Set for Weekly Drop as Oil, Inflation Boost Rate-Hike Bets",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-09-10T23:34:43+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-10/gold-holds-drop-as-rising-oil-inflation-bolster-rate-hike-bets",
-          "tags": [
-            "commodity",
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        }
-      ]
     },
     "reit": {
       "avgSentiment": 0,
@@ -207,58 +197,27 @@
       "items": []
     },
     "dividend": {
-      "avgSentiment": -0.265,
-      "negativeCount": 1,
+      "avgSentiment": 0,
+      "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 2,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Treasury Yields Surge as Oil, Buyback Results Fuel Selloff",
-      "topPositiveTitle": "Bessent Dismisses Buyback Concern, Says Treasuries Strong",
-      "items": [
-        {
-          "title": "Treasury Yields Surge as Oil, Buyback Results Fuel Selloff",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-10T18:14:34+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-10/treasury-buys-less-than-maximum-in-longer-debt-buyback-operation",
-          "tags": [
-            "commodity",
-            "dividend",
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Bessent Dismisses Buyback Concern, Says Treasuries Strong",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.2,
-          "publishedAt": "2026-09-10T22:09:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-10/bessent-dismisses-concern-on-buyback-says-treasuries-are-strong",
-          "tags": [
-            "dividend",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.324,
-      "negativeCount": 4,
-      "positiveCount": 1,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 7,
+      "avgSentiment": -0.066,
+      "negativeCount": 2,
+      "positiveCount": 2,
+      "neutralCount": 1,
+      "sourceCount": 3,
+      "itemCount": 5,
       "isStale": false,
       "topNegativeTitle": "South Africa Posts Widest Current-Account Deficit Since 2019",
-      "topPositiveTitle": "Lagarde Calls ECB Hike ‘No Brainer’ as Markets Bet on More Ahead",
+      "topPositiveTitle": "Oil Surges as Houthi-Saudi Fighting Escalates, Iran Braces for Long War",
       "items": [
         {
           "title": "South Africa Posts Widest Current-Account Deficit Since 2019",
@@ -274,58 +233,57 @@
           ]
         },
         {
-          "title": "Global Bond Selloff Sends 10-Year Treasury Yields to Cusp of 5%",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-09-11T00:13:24+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-11/global-bond-selloff-sends-10-year-treasury-yields-to-cusp-of-5",
-          "tags": [
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Asian Stocks, Bonds Fall on Oil, Inflation Concern: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.6,
-          "publishedAt": "2026-09-10T22:15:53+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-10/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Treasury Yields Surge as Oil, Buyback Results Fuel Selloff",
+          "title": "Global Bonds Hit By Selloff Ahead of US CPI",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-09-10T18:14:34+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-10/treasury-buys-less-than-maximum-in-longer-debt-buyback-operation",
+          "publishedAt": "2026-09-11T06:11:20+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-11/insight-with-haslinda-amin-9-11-2026-video",
           "tags": [
-            "commodity",
-            "dividend",
             "macro_risk",
             "market",
-            "rates",
             "us_broad"
           ]
         },
         {
-          "title": "Trump’s Targeted Canada Tariffs Offer Scope and Time for a Deal",
-          "source": "Bloomberg Economics",
+          "title": "「法の支配」議連 “ICC赤根所長制裁でアメリカと対話を”",
+          "source": "NHK 経済",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-10T11:28:26+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-10/trump-s-targeted-canada-tariffs-offer-scope-and-time-for-a-deal",
+          "publishedAt": "2026-09-11T07:59:15+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20260911de49688",
           "tags": [
+            "macro_risk",
+            "market"
+          ],
+          "titleJa": "「法の支配」議連 “ICC赤根所長制裁でアメリカと対話を”"
+        },
+        {
+          "title": "Lagarde Calls ECB Hike ‘No Brainer’ as Markets Bet on More Ahead",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-10T12:15:20+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-10/ecb-lifts-rates-for-second-time-as-iran-war-drives-inflation",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Oil Surges as Houthi-Saudi Fighting Escalates, Iran Braces for Long War",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-09-11T06:36:06+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-11/horizons-middle-east-africa-9-11-2026-video",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "global_broad",
             "macro_risk",
             "market"
           ]
@@ -333,55 +291,27 @@
       ]
     },
     "fx": {
-      "avgSentiment": 0.5,
+      "avgSentiment": 0,
       "negativeCount": 0,
-      "positiveCount": 2,
+      "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 2,
-      "itemCount": 2,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Edmond de Rothschild Says Buy Yen Dips as Carry Trade Unwinds",
-      "topPositiveTitle": "Bessent Bets Reputation on Fights With Markets He Can’t Control",
-      "items": [
-        {
-          "title": "Edmond de Rothschild Says Buy Yen Dips as Carry Trade Unwinds",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-11T00:04:52+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-11/edmond-de-rothschild-says-buy-yen-dips-as-carry-trade-unwinds",
-          "tags": [
-            "fx",
-            "market"
-          ]
-        },
-        {
-          "title": "Bessent Bets Reputation on Fights With Markets He Can’t Control",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-09-10T11:14:24+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-09-10/bessent-bets-reputation-on-fights-with-markets-he-can-t-control",
-          "tags": [
-            "commodity",
-            "fx",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "rates": {
-      "avgSentiment": -0.01,
-      "negativeCount": 6,
-      "positiveCount": 6,
+      "avgSentiment": 0.074,
+      "negativeCount": 3,
+      "positiveCount": 4,
       "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 14,
+      "itemCount": 9,
       "isStale": false,
       "topNegativeTitle": "US Existing Home Sales Slide to Weakest in More Than a Year",
-      "topPositiveTitle": "Japan’s Producer Price Gains Stay Elevated, Backing BOJ Hikes",
+      "topPositiveTitle": "Mortgage Rates in the US Rise to 6.76%, Highest Since June 2025",
       "items": [
         {
           "title": "US Existing Home Sales Slide to Weakest in More Than a Year",
@@ -396,160 +326,147 @@
           ]
         },
         {
-          "title": "Global Bond Selloff Sends 10-Year Treasury Yields to Cusp of 5%",
+          "title": "BNP Paribas Says Warsh Can Prove Credibility With Rate Hike",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-09-11T00:13:24+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-11/global-bond-selloff-sends-10-year-treasury-yields-to-cusp-of-5",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-11T07:39:36+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-11/bnp-paribas-says-warsh-can-prove-credibility-with-hike-video",
           "tags": [
-            "macro_risk",
             "market",
             "rates",
             "us_broad"
           ]
         },
         {
-          "title": "Gold Set for Weekly Drop as Oil, Inflation Boost Rate-Hike Bets",
-          "source": "Bloomberg Markets",
+          "title": "Kotecki Sees Poland Rate Hikes if Inflation Tops 4% for Longer",
+          "source": "Bloomberg Economics",
           "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-09-10T23:34:43+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-10/gold-holds-drop-as-rising-oil-inflation-bolster-rate-hike-bets",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-11T07:33:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-11/kotecki-sees-poland-rate-hikes-if-inflation-tops-4-for-longer",
           "tags": [
-            "commodity",
-            "gold",
             "market",
-            "rates",
-            "us_broad"
+            "rates"
           ]
         },
         {
-          "title": "Asian Stocks, Bonds Fall on Oil, Inflation Concern: Markets Wrap",
+          "title": "Stocks and Treasuries Find Relief Before CPI Print: Markets Wrap",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.6,
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
           "publishedAt": "2026-09-10T22:15:53+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-10/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
-            "macro_risk",
             "market",
             "rates",
             "us_broad"
           ]
         },
         {
-          "title": "Australia Bond Yields Jump to Highest Since 2011 on Oil Concerns",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-10T23:05:12+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-10/australia-bond-yields-jump-to-highest-since-2011-on-oil-concerns",
+          "title": "ECB Officials Expect More Tightening and October Is in Play",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-10T15:13:41+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-10/ecb-officials-expect-more-tightening-and-october-is-in-play",
           "tags": [
-            "commodity",
             "market",
-            "rates",
-            "us_broad"
+            "rates"
           ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.006,
-      "negativeCount": 4,
+      "avgSentiment": 0.291,
+      "negativeCount": 0,
       "positiveCount": 5,
-      "neutralCount": 1,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 10,
+      "itemCount": 8,
       "isStale": false,
-      "topNegativeTitle": "Gold Set for Weekly Drop as Oil, Inflation Boost Rate-Hike Bets",
-      "topPositiveTitle": "Bessent Bets Reputation on Fights With Markets He Can’t Control",
+      "topNegativeTitle": "Oil Price Move Matters More Than CPI: 3-Minutes MLIV",
+      "topPositiveTitle": "US Diesel Prices Rise Past $6 a Gallon for First Time Ever",
       "items": [
         {
-          "title": "Gold Set for Weekly Drop as Oil, Inflation Boost Rate-Hike Bets",
+          "title": "Oil Price Move Matters More Than CPI: 3-Minutes MLIV",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-09-10T23:34:43+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-10/gold-holds-drop-as-rising-oil-inflation-bolster-rate-hike-bets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-11T07:57:45+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-11/oil-price-move-matters-more-than-cpi-3-minutes-mliv-video",
           "tags": [
             "commodity",
-            "gold",
             "market",
-            "rates",
             "us_broad"
           ]
         },
         {
-          "title": "Asian Stocks, Bonds Fall on Oil, Inflation Concern: Markets Wrap",
+          "title": "Stocks and Treasuries Find Relief Before CPI Print: Markets Wrap",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.6,
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
           "publishedAt": "2026-09-10T22:15:53+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-10/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
-            "macro_risk",
             "market",
             "rates",
             "us_broad"
           ]
         },
         {
-          "title": "Australia Bond Yields Jump to Highest Since 2011 on Oil Concerns",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-10T23:05:12+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-10/australia-bond-yields-jump-to-highest-since-2011-on-oil-concerns",
-          "tags": [
-            "commodity",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Treasury Yields Surge as Oil, Buyback Results Fuel Selloff",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-10T18:14:34+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-10/treasury-buys-less-than-maximum-in-longer-debt-buyback-operation",
-          "tags": [
-            "commodity",
-            "dividend",
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "China Halts New Battery Factories on Capacity Concerns: Caixin",
+          "title": "Ukraine Strikes Degrade Russian Oil-Refining Industry, IEA Says",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-11T00:22:47+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-11/china-halts-new-battery-factories-on-capacity-concerns-caixin",
+          "publishedAt": "2026-09-11T08:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-11/ukraine-strikes-degrade-russian-oil-refining-industry-iea-says",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Asia Confronts New Inflation, Fiscal Threat as Oil Tops $100",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-11T04:09:30+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-11/asia-confronts-fresh-inflation-fiscal-threats-as-oil-tops-100",
           "tags": [
             "commodity",
             "market"
+          ]
+        },
+        {
+          "title": "US Producer Prices Rise Most in Three Months on Energy Surge",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-10T12:33:58+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-10/key-gauge-of-us-producer-prices-rises-less-than-forecast",
+          "tags": [
+            "commodity",
+            "market",
+            "rates",
+            "us_broad"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": -0.335,
+      "avgSentiment": 0.066,
       "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 2,
+      "positiveCount": 3,
+      "neutralCount": 1,
+      "sourceCount": 2,
+      "itemCount": 5,
       "isStale": false,
       "topNegativeTitle": "South Africa Posts Widest Current-Account Deficit Since 2019",
-      "topPositiveTitle": "Lagarde Calls ECB Hike ‘No Brainer’ as Markets Bet on More Ahead",
+      "topPositiveTitle": "Oil Surges as Houthi-Saudi Fighting Escalates, Iran Braces for Long War",
       "items": [
         {
           "title": "South Africa Posts Widest Current-Account Deficit Since 2019",
@@ -561,6 +478,31 @@
           "tags": [
             "geopolitical",
             "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Ukraine Strikes Degrade Russian Oil-Refining Industry, IEA Says",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-11T08:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-11/ukraine-strikes-degrade-russian-oil-refining-industry-iea-says",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Putin Gives Russian Central Bank Green Light to Pause Rate Cuts",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-11T03:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-11/putin-gives-russian-central-bank-green-light-to-pause-rate-cuts",
+          "tags": [
+            "geopolitical",
             "market"
           ]
         },
@@ -577,6 +519,21 @@
             "macro_risk",
             "market",
             "rates"
+          ]
+        },
+        {
+          "title": "Oil Surges as Houthi-Saudi Fighting Escalates, Iran Braces for Long War",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-09-11T06:36:06+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-11/horizons-middle-east-africa-9-11-2026-video",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "global_broad",
+            "macro_risk",
+            "market"
           ]
         }
       ]
