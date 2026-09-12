@@ -299,7 +299,16 @@ export function buildCandidateDecisionSynthesisFromState(
   // I-SYN-EXEC-1: the canonical single-execution result is read straight off the
   // AllocationPlan snapshot. Synthesis compares against it and never re-ranks to
   // choose a different money winner.
-  const canonicalWinner = allocationPlan.instrumentPlans.find(plan => plan.executable) ?? null
+  // OPS-SBI-P2-PREBUILD-PHASE2 Policy B (R2-B / P1-05 ticket section 20): candidate synthesis
+  // must explicitly require executable allocation authority — it must never select an
+  // "executable" instrument out of a parent allocation whose status is blocked/non-authoritative.
+  // The allocation-plan mutation this composer reads from already neutralizes `executable` for a
+  // Policy-B-blocked snapshot (see runFullAnalysis), but this check is kept as the named
+  // candidate-synthesis-side invariant so a future caller that (re-)constructs a raw
+  // AllocationPlanSnapshot without going through that gate cannot restore execution here.
+  const canonicalWinner = allocationPlanStatus === 'current'
+    ? allocationPlan.instrumentPlans.find(plan => plan.executable) ?? null
+    : null
 
   return buildCandidateDecisionSynthesis({
     generatedAt: evaluatedAt,

@@ -485,4 +485,33 @@ describe('CAND-SYN-1B buildCandidateDecisionSynthesisFromState', () => {
   it('N/L candidateDecisionSynthesis composition has no store/officialDecision/UI import', () => {
     expect(source).not.toMatch(/useAppStore|officialDecision|from ['"]\.\.\/components/)
   })
+
+  // OPS-SBI-P2-PREBUILD-PHASE2-R2-A (P1-05 ticket section 20): candidate synthesis must
+  // explicitly require executable allocation authority — it must not select
+  // instrumentPlans.find(plan => plan.executable) from a parent allocation whose status is
+  // blocked/non-authoritative, even if (by a bug elsewhere) the underlying instrumentPlan array
+  // still carried an executable=true entry.
+  it('never treats an executable instrument as canonical winner when allocationPlanStatus is not current', () => {
+    const state = baseState()
+    const plan = planFor(state)
+    expect(plan.instrumentPlans.length).toBeGreaterThan(0)
+    // Force one instrument executable=true — simulating the exact bug this guard defends
+    // against (a raw snapshot that, for whatever reason, disagrees with its own wrapper status).
+    const contradictoryPlan: AllocationPlanSnapshot = {
+      ...plan,
+      instrumentPlans: plan.instrumentPlans.map((p, index) =>
+        index === 0 ? { ...p, executable: true, finalSuggestedAmount: 12_345 } : p),
+    }
+    const result = buildCandidateDecisionSynthesisFromState({
+      state, allocationPlan: contradictoryPlan, allocationPlanStatus: 'blocked',
+      allocationPlanCandidateGenerationId: FUNNEL_GENERATION,
+      fitResult: defaultFitResult(), candidateFreshness: 'fresh', evaluatedAt: NOW_ISO, nowMs: NOW,
+    })
+    // The guarded canonicalWinner (null, since status !== 'current') disagrees with the forced
+    // executable entry the underlying snapshot still carries — the pure 1A composer's own
+    // I-SYN-EXEC-1 invariant then fails closed by invalidating the whole synthesis (never
+    // partially adopting a disagreeing executable entry). Either way, no executable money leaks.
+    const allEntries = [...(result?.decisions ?? []), ...(result?.watchList ?? [])]
+    expect(allEntries.some(entry => entry.money.kind === 'EXECUTABLE')).toBe(false)
+  })
 })

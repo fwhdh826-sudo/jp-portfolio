@@ -2853,12 +2853,28 @@ export function runFullAnalysis(
         allocationPlan,
         allocationInput.safetyState.holdings,
       )
-      // OPS-SBI-P2-PREBUILD-PHASE2 Policy B: an otherwise-executable ('current') allocation
-      // plan derived from an unproven holdings population must not present as executable.
-      // Every other status ('estimate_only'/'stale'/'invalid'/'absent') is already
+      // OPS-SBI-P2-PREBUILD-PHASE2 Policy B (R2-B / P1-05): an otherwise-executable ('current')
+      // allocation plan derived from an unproven holdings population must not present as
+      // executable. Every other status ('estimate_only'/'stale'/'invalid'/'absent') is already
       // non-executable presentation and is left untouched.
       if (portfolioAuthorityBlocked && allocationPlanStatusValue === 'current') {
         allocationPlanStatusValue = 'blocked'
+        // R2-B: allocationPlanStatus alone is a wrapper flag — every OTHER path that reaches
+        // 'blocked' already guarantees instrumentPlans.every(plan => !plan.executable) by
+        // construction (allocationPlanStatus() derives 'blocked' from exactly that; see
+        // allocationPlanSelectors.ts's snapshotExecutability). This artificial downgrade is the
+        // one path that does not, so it must neutralize `executable` itself here — otherwise any
+        // direct reader of allocationPlan.instrumentPlans (not routed through the consumer
+        // selector) could still find and act on an "executable" instrument despite the blocked
+        // status (ticket section 19/20). Amount estimates are intentionally left untouched — only
+        // the one field callers must trust for executability is corrected.
+        if (allocationPlan !== null) {
+          allocationPlan = {
+            ...allocationPlan,
+            instrumentPlans: allocationPlan.instrumentPlans.map(plan =>
+              plan.executable ? { ...plan, executable: false } : plan),
+          }
+        }
       }
       allocationPlanCandidateGenerationId = allocationPlan !== null &&
         !hasExplicitAllocationCandidates &&

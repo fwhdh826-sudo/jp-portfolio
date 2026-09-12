@@ -2,6 +2,7 @@
 import { readFileSync } from 'node:fs'
 import { describe, expect, it, vi } from 'vitest'
 import type { AppState, Trust } from '../types'
+import { LEGACY_UNPROVEN_PORTFOLIO_IMPORT_AUTHORITY } from '../types'
 import type { AllocationPlanInput } from '../types/allocationPlan'
 import {
   buildAllocationPlanInput,
@@ -538,6 +539,39 @@ describe('AllocationPlanSnapshot store authority', () => {
       created.controls.dispose()
       warning.mockRestore()
       vi.unstubAllGlobals()
+    }
+  })
+})
+
+// ═══════════════════════════════════════════════════════════════════════════
+// OPS-SBI-P2-PREBUILD-PHASE2-R2-B — ticket section 30 test matrix (P1-05 Policy B repair)
+// ═══════════════════════════════════════════════════════════════════════════
+
+describe('Policy B allocation neutralization (P1-05 ticket section 18-20)', () => {
+  it('an unproven-authority snapshot never exposes an executable instrument, even though the identical calculation is executable under COMPLETE', () => {
+    // Baseline: with COMPLETE authority this exact fixture genuinely produces an executable
+    // instrument — proves the neutralization below is authority-caused, not fixture-caused.
+    const completeComputed = calculate('fresh', 'policy-b-complete')
+    expect(completeComputed.allocationPlanStatus).toBe('current')
+    expect(completeComputed.allocationPlan?.instrumentPlans.some(plan => plan.executable)).toBe(true)
+
+    const legacyState: AppState = { ...cleanState(), portfolioImportAuthority: LEGACY_UNPROVEN_PORTFOLIO_IMPORT_AUTHORITY }
+    const blockedComputed = runFullAnalysis(legacyState, {
+      nowMs: NOW,
+      allocationPlanInput: adapter('fresh', 'policy-b-blocked'),
+    })
+    expect(blockedComputed.allocationPlanStatus).toBe('blocked')
+    // The root fix: the underlying instrumentPlans themselves are neutralized, not just the
+    // wrapper status — any direct reader of allocationPlan.instrumentPlans stays safe too.
+    expect(blockedComputed.allocationPlan?.instrumentPlans.length).toBeGreaterThan(0)
+    expect(blockedComputed.allocationPlan?.instrumentPlans.every(plan => !plan.executable)).toBe(true)
+
+    // The consumer-selector projection built from this exact snapshot must never expose an
+    // executable instrument either (defense-in-depth boundary, ticket section 19).
+    const consumerSnapshot = selectAllocationConsumerSnapshot({ ...legacyState, ...blockedComputed })
+    expect(consumerSnapshot.availability).toBe('available')
+    if (consumerSnapshot.availability === 'available') {
+      expect(consumerSnapshot.instruments.every(instrument => !instrument.executable)).toBe(true)
     }
   })
 })
