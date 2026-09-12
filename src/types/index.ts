@@ -684,6 +684,7 @@ export type {
 export {
   PORTFOLIO_IMPORT_AUTHORITY_VERSION,
   LEGACY_UNPROVEN_PORTFOLIO_IMPORT_AUTHORITY,
+  isPortfolioImportAuthorityV1,
 } from './portfolioImportAuthority'
 
 export type {

@@ -1,0 +1,186 @@
+// OPS-SBI-P2-PREBUILD-PHASE2-R1-AUTHORITY-INTEGRITY-REPAIR (P2-01): end-to-end store-level
+// proof that a manual portfolio-snapshot transfer (exportPortfolioSnapshot →
+// importPortfolioSnapshot, PC/スマホ間の手動コピー相当) preserves PortfolioImportAuthorityV1
+// across two independent store instances (simulating two devices/tabs).
+// Synthetic fixtures only — no real SBI export data (Phase 1/2 privacy discipline).
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import type { Holding } from '../types'
+import { CSV_IMPORT_GENERATION_KEY, restoreCsvImportGeneration } from './persist'
+import type { PortfolioGenerationLockAdapter } from './portfolioGenerationLock'
+import { createAppStoreInstanceForTest } from './useAppStore'
+
+const MANUAL_HOLDING: Holding = {
+  code: '9999', name: '手動保有', eval: 300_000, pnlPct: 1, mu: 0.08, sigma: 0.2,
+  sigmaSource: 'static', beta: 1, sector: 'テスト', target: 0, alert: 0,
+  lock: false, mitsu: false, ma: true, rsi: 50, macd: true, vol: false, mom3m: 0,
+  roe: 10, per: 15, pbr: 1, epsG: 5, cfOk: true, de: 0.5, divG: 1,
+  score: 50, decision: 'HOLD', ev: 0,
+}
+
+const NOW_MS = Date.parse('2026-09-12T03:00:00.000Z')
+
+class TestFileReader {
+  onload: ((event: { target: { result: ArrayBuffer } }) => void) | null = null
+  onerror: (() => void) | null = null
+
+  readAsArrayBuffer(file: File) {
+    file.arrayBuffer()
+      .then(result => this.onload?.({ target: { result } }))
+      .catch(() => this.onerror?.())
+  }
+}
+
+function immediateAdapter(): PortfolioGenerationLockAdapter {
+  return {
+    async runExclusive(_operation, callback) {
+      return { ok: true, value: await callback() }
+    },
+  }
+}
+
+const STOCK_HEADER = '銘柄コード,銘柄名,現在値,評価額,損益（％）,前日比（％）,取得日'
+const TRUST_HEADER = 'ファンド名,基準価額,評価額,損益（％）,前日比（％）,取得日'
+const STOCK_LABEL = '株式（現物/特定預り）'
+const STOCK_TOTAL = '株式（現物/特定預り）合計'
+const TRUST_TAXABLE_LABEL = '投資信託（金額/特定預り）'
+const TRUST_TAXABLE_TOTAL = '投資信託（金額/特定預り）合計'
+const TRUST_GROWTH_LABEL = '投資信託（金額/NISA預り（成長投資枠））'
+const TRUST_GROWTH_TOTAL = '投資信託（金額/NISA預り（成長投資枠））合計'
+const TRUST_TSUMITATE_LABEL = '投資信託（金額/NISA預り（つみたて投資枠））'
+const TRUST_TSUMITATE_TOTAL = '投資信託（金額/NISA預り（つみたて投資枠））合計'
+
+function emptyTrustSection(label: string, total: string): string[] {
+  return [label, TRUST_HEADER, total]
+}
+
+function fullExportCsvLines(): string[] {
+  return [
+    // 明示的なデータ基準日時を含める — File.lastModifiedはjsdomの実時刻を使うため
+    // （vi.setSystemTimeの影響を受けない）、これを含めない場合はfake clockより
+    // 未来のweak sourceAsOfになり得る（このtestファイル固有の環境事情）。
+    'データ基準日時,2026-09-11T00:00:00+09:00',
+    STOCK_LABEL, STOCK_HEADER,
+    '6501,日立製作所,8500,900000,15.20,1.10,2025-06-01',
+    STOCK_TOTAL,
+    TRUST_TAXABLE_LABEL, TRUST_HEADER,
+    TRUST_TAXABLE_TOTAL,
+    ...emptyTrustSection(TRUST_GROWTH_LABEL, TRUST_GROWTH_TOTAL),
+    ...emptyTrustSection(TRUST_TSUMITATE_LABEL, TRUST_TSUMITATE_TOTAL),
+  ]
+}
+
+function csvFile(lines: string[]): File {
+  return new File([lines.join('\n')], 'portfolio.csv', { type: 'text/csv' })
+}
+
+// Two independent storage backends simulate two separate devices/tabs — a manual
+// snapshot transfer never shares localStorage between them.
+function makeStorage() {
+  const store: Record<string, string> = {}
+  return {
+    store,
+    mock: {
+      getItem: (key: string) => store[key] ?? null,
+      setItem: (key: string, value: string) => { store[key] = value },
+      removeItem: (key: string) => { delete store[key] },
+    },
+  }
+}
+
+function instance(storageMock: ReturnType<typeof makeStorage>['mock']) {
+  vi.stubGlobal('localStorage', storageMock)
+  const created = createAppStoreInstanceForTest({ portfolioGenerationLock: immediateAdapter() })
+  created.store.setState(state => ({
+    system: { ...state.system, status: 'idle', error: null, dataSourceOutcome: { loaded: 14, total: 14 } },
+  }))
+  return created
+}
+
+beforeEach(() => {
+  vi.useFakeTimers()
+  vi.setSystemTime(NOW_MS)
+  vi.stubGlobal('FileReader', TestFileReader)
+})
+
+afterEach(() => {
+  vi.restoreAllMocks()
+  vi.unstubAllGlobals()
+  vi.useRealTimers()
+})
+
+describe('P2-01: manual snapshot transfer preserves PortfolioImportAuthorityV1 end-to-end', () => {
+  it('v6 COMPLETE round-trip: source proves COMPLETE via FULL_EXPORT, destination adopts COMPLETE from the transfer', async () => {
+    const sourceStorage = makeStorage()
+    const source = instance(sourceStorage.mock)
+    const fullExportResult = await source.store.getState().importSbiPortfolioFullExport(csvFile(fullExportCsvLines()))
+    expect(fullExportResult).toMatchObject({ ok: true, code: 'SUCCESS', authorityStatus: 'COMPLETE' })
+    expect(source.store.getState().portfolioImportAuthority.authorityStatus).toBe('COMPLETE')
+
+    vi.stubGlobal('localStorage', sourceStorage.mock)
+    const raw = source.store.getState().exportPortfolioSnapshot()
+    const parsedRaw = JSON.parse(raw)
+    expect(parsedRaw.schemaVersion).toBe('portfolio-snapshot-4')
+    expect(parsedRaw.importAuthority.authorityStatus).toBe('COMPLETE')
+
+    const destinationStorage = makeStorage()
+    const destination = instance(destinationStorage.mock)
+    const importResult = await destination.store.getState().importPortfolioSnapshot(raw)
+    expect(importResult).toMatchObject({ ok: true, code: 'SUCCESS' })
+    expect(destination.store.getState().portfolioImportAuthority.authorityStatus).toBe('COMPLETE')
+    expect(destination.store.getState().portfolioImportAuthority).toEqual(source.store.getState().portfolioImportAuthority)
+
+    vi.stubGlobal('localStorage', destinationStorage.mock)
+    const generation = restoreCsvImportGeneration()
+    expect(generation.status).toBe('committed')
+    if (generation.status === 'committed') {
+      expect(generation.schemaVersion).toBe('csv-import-generation-6')
+      expect(generation.payload.importAuthority?.authorityStatus).toBe('COMPLETE')
+    }
+  })
+
+  it('v6 LEGACY_UNPROVEN round-trip: a never-proven source transfers as LEGACY_UNPROVEN (unchanged v5 behavior)', async () => {
+    const sourceStorage = makeStorage()
+    const source = instance(sourceStorage.mock)
+    source.store.setState({ holdings: [MANUAL_HOLDING] })
+    expect(source.store.getState().portfolioImportAuthority.authorityStatus).toBe('LEGACY_UNPROVEN')
+
+    vi.stubGlobal('localStorage', sourceStorage.mock)
+    const raw = source.store.getState().exportPortfolioSnapshot()
+    expect(JSON.parse(raw).importAuthority.authorityStatus).toBe('LEGACY_UNPROVEN')
+
+    const destinationStorage = makeStorage()
+    const destination = instance(destinationStorage.mock)
+    const importResult = await destination.store.getState().importPortfolioSnapshot(raw)
+    expect(importResult).toMatchObject({ ok: true, code: 'SUCCESS' })
+    expect(destination.store.getState().portfolioImportAuthority.authorityStatus).toBe('LEGACY_UNPROVEN')
+
+    vi.stubGlobal('localStorage', destinationStorage.mock)
+    const generation = restoreCsvImportGeneration()
+    expect(generation.status).toBe('committed')
+    if (generation.status === 'committed') {
+      // Unchanged historical behavior: a LEGACY_UNPROVEN transfer keeps writing v5 (no
+      // importAuthority key at all — see ticket section 3's own frozen precedent).
+      expect(generation.schemaVersion).toBe('csv-import-generation-5')
+    }
+  })
+
+  it('no old snapshot may upgrade itself to COMPLETE: a tampered wire authority fails closed and mutates nothing', async () => {
+    const sourceStorage = makeStorage()
+    const source = instance(sourceStorage.mock)
+    vi.stubGlobal('localStorage', sourceStorage.mock)
+    const raw = source.store.getState().exportPortfolioSnapshot()
+    const tampered = JSON.parse(raw)
+    tampered.importAuthority.authorityStatus = 'COMPLETE' // forged, without recomputing identity
+    const tamperedRaw = JSON.stringify(tampered)
+
+    const destinationStorage = makeStorage()
+    const destination = instance(destinationStorage.mock)
+    const before = destination.store.getState()
+    const importResult = await destination.store.getState().importPortfolioSnapshot(tamperedRaw)
+    expect(importResult).toMatchObject({ ok: false, code: 'INVALID_SNAPSHOT_GENERATION' })
+    expect(destination.store.getState().holdings).toBe(before.holdings)
+    expect(destination.store.getState().portfolioImportAuthority).toEqual(before.portfolioImportAuthority)
+    vi.stubGlobal('localStorage', destinationStorage.mock)
+    expect(destinationStorage.store[CSV_IMPORT_GENERATION_KEY]).toBeUndefined()
+  })
+})

@@ -13,6 +13,13 @@ import { compareUtf16CodeUnits, sha256Utf8Hex } from '../domain/csv/csvSemanticI
 import { normalizeStrictTimestamp } from './strictTimestamp'
 
 export const SNAPSHOT_GENERATION_CONTRACT = 'portfolio-snapshot-generation-1' as const
+// OPS-SBI-P2-PREBUILD-PHASE2-R1-AUTHORITY-INTEGRITY-REPAIR (P2-01 ticket section 4): adds
+// PortfolioImportAuthorityV1 to the manual cross-device transfer identity digest domain, so two
+// otherwise-identical portfolio snapshots differing only in authorityStatus (e.g. COMPLETE vs
+// LEGACY_UNPROVEN) can never share a transfer identity. V1 (above) is untouched — every existing
+// call site (internal canonical-generation staged-transfer identities, none of which carry
+// portfolioImportAuthority) keeps its exact historical digest input and output.
+export const SNAPSHOT_GENERATION_CONTRACT_V2 = 'portfolio-snapshot-generation-2' as const
 export const CANONICAL_GENERATION_CONTRACT_V1 = 'canonical-portfolio-generation-1' as const
 export const CANONICAL_GENERATION_CONTRACT_V2 = 'canonical-portfolio-generation-2' as const
 // OPS-SBI-P2-PREBUILD-PHASE2: canonical envelope v6 identity contract. Binds
@@ -207,6 +214,35 @@ export function serializeSnapshotGeneration(input: SnapshotGenerationInput): str
 
 export function computeSnapshotGenerationIdentity(input: SnapshotGenerationInput): string {
   return `sha256:${sha256Utf8Hex(serializeSnapshotGeneration(input))}`
+}
+
+export interface SnapshotGenerationInputV2 extends SnapshotGenerationInput {
+  /** OPS-SBI-P2-PREBUILD-PHASE2-R1-AUTHORITY-INTEGRITY-REPAIR: null only for a legacy (v1-v3)
+   *  transfer that never carried authority metadata at all — a proven LEGACY_UNPROVEN authority
+   *  object still participates in the digest like any other status, so it is never equated with
+   *  the absence of the field. */
+  importAuthority: PortfolioImportAuthorityV1 | null
+}
+
+/**
+ * Transfer-identity contract for the versioned manual snapshot format (portfolio-snapshot-4):
+ * binds PortfolioImportAuthorityV1 into the same digest domain as the rest of the transported
+ * generation, so authority metadata cannot be swapped onto an otherwise-identical transfer
+ * without changing its identity (ticket section 4: "Two otherwise identical portfolio snapshots
+ * differing only in COMPLETE vs LEGACY_UNPROVEN must NOT share the same transfer/generation
+ * identity"). The contract tag is part of the digest domain, so a V1-identity value can never
+ * collide with a V2-identity value even for byte-identical non-authority content.
+ */
+export function serializeSnapshotGenerationV2(input: SnapshotGenerationInputV2): string {
+  return JSON.stringify({
+    ...JSON.parse(serializeSnapshotGeneration(input)),
+    contract: SNAPSHOT_GENERATION_CONTRACT_V2,
+    importAuthority: input.importAuthority,
+  })
+}
+
+export function computeSnapshotGenerationIdentityV2(input: SnapshotGenerationInputV2): string {
+  return `sha256:${sha256Utf8Hex(serializeSnapshotGenerationV2(input))}`
 }
 
 function stableCanonicalValue(value: unknown): unknown {

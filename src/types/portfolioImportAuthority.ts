@@ -69,3 +69,74 @@ export const LEGACY_UNPROVEN_PORTFOLIO_IMPORT_AUTHORITY: PortfolioImportAuthorit
   provenanceScope: 'UNKNOWN',
   sectionCompleteness: [],
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// OPS-SBI-P2-PREBUILD-PHASE2-R1-AUTHORITY-INTEGRITY-REPAIR: the single shared runtime
+// validator for PortfolioImportAuthorityV1's wire shape. Every caller that must trust a
+// serialized authority object (the canonical v6 envelope in store/persist.ts, and the
+// portfolio-snapshot-4 manual transfer wire format in utils/portfolioSnapshotTransfer.ts)
+// reuses this exact function rather than each re-implementing its own copy — an unknown
+// future authorityVersion, or any malformed field, is rejected (fail closed). This module
+// duplicates the handful of tiny structural-validation primitives it needs (isRecord/
+// hasExactKeys) rather than importing them from store/ or domain/, so this pure data-shape
+// file has no dependency on either layer (same rationale as sbiPortfolioImportV2.ts's own
+// header comment for duplicating its text primitives).
+// ─────────────────────────────────────────────────────────────────────────────
+
+type UnknownRecord = Record<string, unknown>
+
+function isRecord(value: unknown): value is UnknownRecord {
+  return value !== null && typeof value === 'object' && !Array.isArray(value)
+}
+
+function hasExactKeys(value: UnknownRecord, required: readonly string[], optional: readonly string[] = []): boolean {
+  const allowed = new Set([...required, ...optional])
+  return required.every(key => Object.prototype.hasOwnProperty.call(value, key)) &&
+    Object.keys(value).every(key => allowed.has(key))
+}
+
+function isNonEmptyString(value: unknown): value is string {
+  return typeof value === 'string' && value.length > 0
+}
+
+const PORTFOLIO_IMPORT_AUTHORITY_STATUSES = ['COMPLETE', 'PARTIAL', 'LEGACY_UNPROVEN'] as const
+const PORTFOLIO_IMPORT_AUTHORITY_ASSET_CLASSES = ['JP_STOCK', 'INVESTMENT_TRUST'] as const
+const PORTFOLIO_IMPORT_PROVENANCE_SCOPES = ['FULL_EXPORT', 'PARTIAL_IMPORT', 'UNKNOWN'] as const
+const PORTFOLIO_IMPORT_SECTION_STATUSES = ['ABSENT', 'VALID_EMPTY', 'VALID_NONEMPTY', 'PARSE_FAILED'] as const
+
+function isPortfolioImportAuthorityAssetClassArrayOrNull(
+  value: unknown,
+): value is PortfolioImportAuthorityAssetClass[] | null {
+  if (value === null) return true
+  return Array.isArray(value) &&
+    value.every(item => (PORTFOLIO_IMPORT_AUTHORITY_ASSET_CLASSES as readonly unknown[]).includes(item))
+}
+
+function isPortfolioImportSectionCompletenessEntry(value: unknown): value is PortfolioImportSectionCompletenessEntry {
+  return isRecord(value) && hasExactKeys(value, ['sectionId', 'status']) &&
+    isNonEmptyString(value.sectionId) &&
+    (PORTFOLIO_IMPORT_SECTION_STATUSES as readonly unknown[]).includes(value.status)
+}
+
+/**
+ * Exact-key, fail-closed validation for PortfolioImportAuthorityV1 — an unknown future
+ * authorityVersion, or any malformed field, is rejected. This function never trusts the JSON
+ * author; callers that treat the wire object as proof of a specific generation additionally
+ * never trust this shape alone — they also recompute and compare a content-bound identity.
+ */
+export function isPortfolioImportAuthorityV1(value: unknown): value is PortfolioImportAuthorityV1 {
+  if (!isRecord(value) || !hasExactKeys(value, [
+    'authorityVersion', 'importMode', 'contractVersion', 'profileId', 'authorityStatus',
+    'selectedAssetClasses', 'preservedAssetClasses', 'provenanceScope', 'sectionCompleteness',
+  ])) return false
+  if (value.authorityVersion !== PORTFOLIO_IMPORT_AUTHORITY_VERSION) return false
+  if (value.importMode !== 'FULL_EXPORT' && value.importMode !== 'PARTIAL_IMPORT' && value.importMode !== null) return false
+  if (value.contractVersion !== null && !isNonEmptyString(value.contractVersion)) return false
+  if (value.profileId !== null && !isNonEmptyString(value.profileId)) return false
+  if (!(PORTFOLIO_IMPORT_AUTHORITY_STATUSES as readonly unknown[]).includes(value.authorityStatus)) return false
+  if (!isPortfolioImportAuthorityAssetClassArrayOrNull(value.selectedAssetClasses)) return false
+  if (!isPortfolioImportAuthorityAssetClassArrayOrNull(value.preservedAssetClasses)) return false
+  if (!(PORTFOLIO_IMPORT_PROVENANCE_SCOPES as readonly unknown[]).includes(value.provenanceScope)) return false
+  return Array.isArray(value.sectionCompleteness) &&
+    value.sectionCompleteness.every(isPortfolioImportSectionCompletenessEntry)
+}

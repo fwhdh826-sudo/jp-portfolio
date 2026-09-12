@@ -6,14 +6,18 @@ import {
   CANONICAL_GENERATION_CONTRACT_V1,
   CANONICAL_GENERATION_CONTRACT_V2,
   CANONICAL_GENERATION_CONTRACT_V3,
+  SNAPSHOT_GENERATION_CONTRACT,
+  SNAPSHOT_GENERATION_CONTRACT_V2,
   computeCanonicalPortfolioGenerationIdentity,
   computeCanonicalPortfolioGenerationIdentityV2,
   computeCanonicalPortfolioGenerationIdentityV3,
   computeSnapshotGenerationIdentity,
+  computeSnapshotGenerationIdentityV2,
   serializeCanonicalPortfolioGeneration,
   serializeCanonicalPortfolioGenerationV2,
   serializeCanonicalPortfolioGenerationV3,
   serializeSnapshotGeneration,
+  serializeSnapshotGenerationV2,
   type SnapshotGenerationInput,
 } from './snapshotGenerationIdentity'
 
@@ -279,5 +283,73 @@ describe('T9-A004-R3-FIX-A canonical generation identity', () => {
       const v2WithAuthority = computeCanonicalPortfolioGenerationIdentityV2({ ...fullGeneration, importAuthority: completeAuthority })
       expect(v2WithAuthority).toBe(v2WithoutAuthority)
     })
+  })
+})
+
+// OPS-SBI-P2-PREBUILD-PHASE2-R1-AUTHORITY-INTEGRITY-REPAIR (P2-01 ticket section 4): the
+// manual cross-device transfer identity contract binds PortfolioImportAuthorityV1.
+describe('P2-01 transfer identity (V2 contract) authority binding', () => {
+  const completeAuthority = {
+    authorityVersion: 'portfolio-import-authority-1' as const,
+    importMode: 'FULL_EXPORT' as const,
+    contractVersion: 'sbi-portfolio-import-2',
+    profileId: 'sbi-portfolio-v1',
+    authorityStatus: 'COMPLETE' as const,
+    selectedAssetClasses: null,
+    preservedAssetClasses: null,
+    provenanceScope: 'FULL_EXPORT' as const,
+    sectionCompleteness: [{ sectionId: 'JP_STOCK_CUSTODY', status: 'VALID_NONEMPTY' as const }],
+  }
+
+  it('is contract-domain separated from the V1 (non-authority) transfer identity and byte-deterministic', () => {
+    const base = envelope()
+    const v2 = computeSnapshotGenerationIdentityV2({ ...base, importAuthority: completeAuthority })
+    expect(SNAPSHOT_GENERATION_CONTRACT).toBe('portfolio-snapshot-generation-1')
+    expect(SNAPSHOT_GENERATION_CONTRACT_V2).toBe('portfolio-snapshot-generation-2')
+    expect(v2).toMatch(/^sha256:[0-9a-f]{64}$/)
+    expect(v2).not.toBe(computeSnapshotGenerationIdentity(base))
+    expect(serializeSnapshotGenerationV2({ ...base, importAuthority: completeAuthority }))
+      .toContain('"contract":"portfolio-snapshot-generation-2"')
+  })
+
+  it('changes identity when authorityStatus differs on an otherwise identical transfer (COMPLETE vs LEGACY_UNPROVEN)', () => {
+    const base = envelope({ holdings: [{ code: '7203', name: 'トヨタ', eval: 1, pnlPct: 0 }] })
+    const complete = computeSnapshotGenerationIdentityV2({ ...base, importAuthority: completeAuthority })
+    const legacyUnproven = computeSnapshotGenerationIdentityV2({
+      ...base,
+      importAuthority: { ...completeAuthority, authorityStatus: 'LEGACY_UNPROVEN' as const },
+    })
+    const nullAuthority = computeSnapshotGenerationIdentityV2({ ...base, importAuthority: null })
+    expect(complete).not.toBe(legacyUnproven)
+    expect(complete).not.toBe(nullAuthority)
+    expect(legacyUnproven).not.toBe(nullAuthority)
+  })
+
+  it('changes identity when sectionCompleteness differs on an otherwise identical authority', () => {
+    const base = envelope()
+    const a = computeSnapshotGenerationIdentityV2({ ...base, importAuthority: completeAuthority })
+    const b = computeSnapshotGenerationIdentityV2({
+      ...base,
+      importAuthority: {
+        ...completeAuthority,
+        sectionCompleteness: [{ sectionId: 'JP_STOCK_CUSTODY', status: 'VALID_EMPTY' as const }],
+      },
+    })
+    expect(a).not.toBe(b)
+  })
+
+  it('changes identity when contractVersion/profileId differ on an otherwise identical authority', () => {
+    const base = envelope()
+    const a = computeSnapshotGenerationIdentityV2({ ...base, importAuthority: completeAuthority })
+    const b = computeSnapshotGenerationIdentityV2({
+      ...base,
+      importAuthority: { ...completeAuthority, profileId: 'other-profile-v1' },
+    })
+    expect(a).not.toBe(b)
+  })
+
+  it('the V1 (non-authority) transfer identity is unaffected — every existing call site keeps its exact digest', () => {
+    const input = envelope({ holdings: [{ code: 'A', name: 'A', eval: 1, pnlPct: 1 }] })
+    expect(computeSnapshotGenerationIdentity(input)).toBe(nodeOracle(input))
   })
 })

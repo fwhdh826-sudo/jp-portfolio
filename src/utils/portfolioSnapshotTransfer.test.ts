@@ -7,7 +7,28 @@ import {
   PORTFOLIO_SNAPSHOT_SCHEMA_VERSION,
   PORTFOLIO_SNAPSHOT_SCHEMA_VERSION_V2,
   PORTFOLIO_SNAPSHOT_SCHEMA_VERSION_V3,
+  PORTFOLIO_SNAPSHOT_SCHEMA_VERSION_V4,
 } from './portfolioSnapshotTransfer'
+import type { PortfolioImportAuthorityV1 } from '../types'
+import { LEGACY_UNPROVEN_PORTFOLIO_IMPORT_AUTHORITY } from '../types'
+import { computeSnapshotGenerationIdentity } from './snapshotGenerationIdentity'
+
+const COMPLETE_AUTHORITY: PortfolioImportAuthorityV1 = {
+  authorityVersion: 'portfolio-import-authority-1',
+  importMode: 'FULL_EXPORT',
+  contractVersion: 'sbi-portfolio-import-2',
+  profileId: 'sbi-portfolio-v1',
+  authorityStatus: 'COMPLETE',
+  selectedAssetClasses: null,
+  preservedAssetClasses: null,
+  provenanceScope: 'FULL_EXPORT',
+  sectionCompleteness: [
+    { sectionId: 'JP_STOCK_CUSTODY', status: 'VALID_NONEMPTY' },
+    { sectionId: 'TRUST_TAXABLE', status: 'VALID_NONEMPTY' },
+    { sectionId: 'TRUST_NISA_GROWTH', status: 'VALID_EMPTY' },
+    { sectionId: 'TRUST_NISA_ACCUMULATION', status: 'VALID_EMPTY' },
+  ],
+}
 
 function makeExportArgs(
   overrides: Partial<Parameters<typeof serializePortfolioSnapshotExport>[0]> = {},
@@ -40,21 +61,25 @@ function makeExportArgs(
       sourceFileName: 'portfolio.csv',
       fileLastModified: '2026-07-06T08:30:00.000Z',
     },
+    importAuthority: LEGACY_UNPROVEN_PORTFOLIO_IMPORT_AUTHORITY,
     ...overrides,
   }
 }
 
-// P4.5-A013-T7: serializePortfolioSnapshotExportは常にschemaVersion v2を出力する
-// （新規個別株full-syncに必要なnameを含む）。v1形式の受け入れはparsePortfolioSnapshotImport
-// 側の後方互換テスト（下部の「v1後方互換」describe）で別途固定する。
-describe('serializePortfolioSnapshotExport / parsePortfolioSnapshotImport 往復（v3）', () => {
+// P4.5-A013-T7 / OPS-SBI-P2-PREBUILD-PHASE2-R1-AUTHORITY-INTEGRITY-REPAIR:
+// serializePortfolioSnapshotExportは常に最新schemaVersion（v4）を出力する
+// （v2で新規個別株full-syncに必要なnameを、v4でPortfolioImportAuthorityV1を追加）。
+// v1-v3形式の受け入れはparsePortfolioSnapshotImport側の後方互換テスト
+// （下部の「v1/v2後方互換」describe）で別途固定する。
+describe('serializePortfolioSnapshotExport / parsePortfolioSnapshotImport 往復（v4）', () => {
   it('happy path: exportしたJSONをimportすると元の値が復元される', () => {
     const args = makeExportArgs()
     const json = serializePortfolioSnapshotExport(args)
     const result = parsePortfolioSnapshotImport(json)
     expect(result.ok).toBe(true)
     if (result.ok) {
-      expect(result.data.schemaVersion).toBe(PORTFOLIO_SNAPSHOT_SCHEMA_VERSION_V3)
+      expect(result.data.schemaVersion).toBe(PORTFOLIO_SNAPSHOT_SCHEMA_VERSION_V4)
+      expect(result.data.importAuthority).toEqual(LEGACY_UNPROVEN_PORTFOLIO_IMPORT_AUTHORITY)
       expect(result.data.csvImportProvenance).toEqual(args.csvImportProvenance)
       expect(result.data.holdings).toEqual([
         { code: '1101', name: 'テスト商事', eval: 892_000, pnlPct: 4.94, currentPrice: 8920, acquiredAt: '2024-01-10' },
@@ -116,10 +141,10 @@ describe('serializePortfolioSnapshotExport / parsePortfolioSnapshotImport 往復
     }
   })
 
-  it('exportのJSONにschemaVersion v3/sourceが含まれる', () => {
+  it('exportのJSONにschemaVersion v4/sourceが含まれる', () => {
     const json = serializePortfolioSnapshotExport(makeExportArgs())
     const parsed = JSON.parse(json)
-    expect(parsed.schemaVersion).toBe(PORTFOLIO_SNAPSHOT_SCHEMA_VERSION_V3)
+    expect(parsed.schemaVersion).toBe(PORTFOLIO_SNAPSHOT_SCHEMA_VERSION_V4)
     expect(parsed.source).toBe('manual')
   })
 
@@ -273,6 +298,116 @@ describe('serializePortfolioSnapshotExport / parsePortfolioSnapshotImport 往復
     payload.exportedAt = '2099-12-31T23:59:59.000Z'
     const result = parsePortfolioSnapshotImport(JSON.stringify(payload))
     expect(result).toMatchObject({ ok: true, data: { csvImportProvenance: null } })
+  })
+})
+
+// OPS-SBI-P2-PREBUILD-PHASE2-R1-AUTHORITY-INTEGRITY-REPAIR (P2-01): snapshot/transfer must
+// preserve PortfolioImportAuthorityV1, and authority metadata must participate in transfer
+// identity (ticket sections 3/4/13).
+describe('P2-01: snapshot/transfer authority preservation', () => {
+  it('v6 COMPLETE round-trip transfer remains COMPLETE', () => {
+    const json = serializePortfolioSnapshotExport(makeExportArgs({ importAuthority: COMPLETE_AUTHORITY }))
+    const result = parsePortfolioSnapshotImport(json)
+    expect(result).toMatchObject({ ok: true, data: { importAuthority: COMPLETE_AUTHORITY } })
+  })
+
+  it('v6 PARTIAL round-trip transfer remains PARTIAL', () => {
+    const partial: PortfolioImportAuthorityV1 = {
+      ...COMPLETE_AUTHORITY,
+      importMode: 'PARTIAL_IMPORT',
+      authorityStatus: 'PARTIAL',
+      selectedAssetClasses: ['JP_STOCK'],
+      preservedAssetClasses: ['INVESTMENT_TRUST'],
+      provenanceScope: 'PARTIAL_IMPORT',
+    }
+    const json = serializePortfolioSnapshotExport(makeExportArgs({ importAuthority: partial }))
+    const result = parsePortfolioSnapshotImport(json)
+    expect(result).toMatchObject({ ok: true, data: { importAuthority: partial } })
+  })
+
+  it('v6 LEGACY_UNPROVEN round-trip transfer remains LEGACY_UNPROVEN', () => {
+    const json = serializePortfolioSnapshotExport(makeExportArgs({
+      importAuthority: LEGACY_UNPROVEN_PORTFOLIO_IMPORT_AUTHORITY,
+    }))
+    const result = parsePortfolioSnapshotImport(json)
+    expect(result).toMatchObject({ ok: true, data: { importAuthority: LEGACY_UNPROVEN_PORTFOLIO_IMPORT_AUTHORITY } })
+  })
+
+  it('v1-v3 (legacy) restore is always classified LEGACY_UNPROVEN, never self-upgrading to COMPLETE', () => {
+    // A genuine v3 export never carried importAuthority at all (the wire shape has no such
+    // field), and its identity used the V1 (non-authority) contract — reconstruct exactly that
+    // shape rather than merely stripping importAuthority off a v4 payload's V2-contract identity.
+    const v4Payload = JSON.parse(serializePortfolioSnapshotExport(makeExportArgs({ importAuthority: COMPLETE_AUTHORITY })))
+    const v3Payload = { ...v4Payload, schemaVersion: PORTFOLIO_SNAPSHOT_SCHEMA_VERSION_V3 }
+    delete v3Payload.importAuthority
+    v3Payload.snapshotGenerationIdentity = computeSnapshotGenerationIdentity({
+      holdings: v3Payload.holdings,
+      trust: v3Payload.trust,
+      portfolioPolicy: v3Payload.portfolioPolicy,
+      cashAssumptions: v3Payload.cashAssumptions,
+      csvImportedAt: v3Payload.csvImportedAt,
+      csvImportProvenance: v3Payload.csvImportProvenance,
+    })
+    const result = parsePortfolioSnapshotImport(JSON.stringify(v3Payload))
+    expect(result).toMatchObject({ ok: true, data: { importAuthority: LEGACY_UNPROVEN_PORTFOLIO_IMPORT_AUTHORITY } })
+  })
+
+  it('authority-only mutation changes identity: COMPLETE vs LEGACY_UNPROVEN never share a transfer identity', () => {
+    const complete = JSON.parse(serializePortfolioSnapshotExport(makeExportArgs({ importAuthority: COMPLETE_AUTHORITY })))
+    const legacy = JSON.parse(serializePortfolioSnapshotExport(makeExportArgs({
+      importAuthority: LEGACY_UNPROVEN_PORTFOLIO_IMPORT_AUTHORITY,
+    })))
+    expect(complete.snapshotGenerationIdentity).not.toBe(legacy.snapshotGenerationIdentity)
+  })
+
+  it('authority-only mutation changes identity: differing sectionCompleteness never shares an identity', () => {
+    const a = JSON.parse(serializePortfolioSnapshotExport(makeExportArgs({ importAuthority: COMPLETE_AUTHORITY })))
+    const differentSections: PortfolioImportAuthorityV1 = {
+      ...COMPLETE_AUTHORITY,
+      sectionCompleteness: COMPLETE_AUTHORITY.sectionCompleteness.map(entry =>
+        entry.sectionId === 'TRUST_NISA_GROWTH' ? { ...entry, status: 'VALID_NONEMPTY' } : entry),
+    }
+    const b = JSON.parse(serializePortfolioSnapshotExport(makeExportArgs({ importAuthority: differentSections })))
+    expect(a.snapshotGenerationIdentity).not.toBe(b.snapshotGenerationIdentity)
+  })
+
+  it('authority-only mutation changes identity: differing contractVersion/profileId never shares an identity', () => {
+    const a = JSON.parse(serializePortfolioSnapshotExport(makeExportArgs({ importAuthority: COMPLETE_AUTHORITY })))
+    const differentProfile: PortfolioImportAuthorityV1 = { ...COMPLETE_AUTHORITY, profileId: 'other-profile-v1' }
+    const b = JSON.parse(serializePortfolioSnapshotExport(makeExportArgs({ importAuthority: differentProfile })))
+    expect(a.snapshotGenerationIdentity).not.toBe(b.snapshotGenerationIdentity)
+  })
+
+  it('malformed authority (unknown authorityStatus) is rejected fail-closed', () => {
+    const payload = JSON.parse(serializePortfolioSnapshotExport(makeExportArgs({ importAuthority: COMPLETE_AUTHORITY })))
+    payload.importAuthority.authorityStatus = 'SOMETHING_ELSE'
+    const result = parsePortfolioSnapshotImport(JSON.stringify(payload))
+    expect(result).toMatchObject({ ok: false, code: 'INVALID_SNAPSHOT_AUTHORITY' })
+  })
+
+  it('unknown authorityVersion is rejected fail-closed', () => {
+    const payload = JSON.parse(serializePortfolioSnapshotExport(makeExportArgs({ importAuthority: COMPLETE_AUTHORITY })))
+    payload.importAuthority.authorityVersion = 'portfolio-import-authority-999'
+    const result = parsePortfolioSnapshotImport(JSON.stringify(payload))
+    expect(result).toMatchObject({ ok: false, code: 'INVALID_SNAPSHOT_AUTHORITY' })
+  })
+
+  it('missing importAuthority on a v4 payload is rejected fail-closed', () => {
+    const payload = JSON.parse(serializePortfolioSnapshotExport(makeExportArgs({ importAuthority: COMPLETE_AUTHORITY })))
+    delete payload.importAuthority
+    const result = parsePortfolioSnapshotImport(JSON.stringify(payload))
+    expect(result).toMatchObject({ ok: false, code: 'INVALID_SNAPSHOT_AUTHORITY' })
+  })
+
+  it('tampered authority with stale (unrecomputed) identity is rejected, not silently trusted', () => {
+    // Editing authorityStatus without recomputing the identity must fail the identity check
+    // before the (now-forged-looking) authority object could ever be trusted as COMPLETE.
+    const payload = JSON.parse(serializePortfolioSnapshotExport(makeExportArgs({
+      importAuthority: LEGACY_UNPROVEN_PORTFOLIO_IMPORT_AUTHORITY,
+    })))
+    payload.importAuthority = COMPLETE_AUTHORITY
+    const result = parsePortfolioSnapshotImport(JSON.stringify(payload))
+    expect(result).toMatchObject({ ok: false, code: 'INVALID_SNAPSHOT_GENERATION' })
   })
 })
 

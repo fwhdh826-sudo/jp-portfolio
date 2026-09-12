@@ -25,7 +25,7 @@ import {
   type CsvImportDiagnostics,
   type TrustSyncReport,
 } from '../domain/csv/importPortfolioCsv'
-import { parseSbiPortfolioImportV2, type CompletenessReason } from '../domain/csv/sbiPortfolioImportV2'
+import { parseSbiPortfolioImportV2, SBI_PORTFOLIO_PROFILE_ID, type CompletenessReason } from '../domain/csv/sbiPortfolioImportV2'
 import {
   resolveTrustRows,
   evaluateFinalFullExportAuthority,
@@ -70,6 +70,7 @@ import {
   type LegacyPortfolioGenerationTransactionResult,
 } from './persist'
 import {
+  buildCsvSourceProvenance,
   evaluateCsvImportMonotonicity,
   InvalidCsvSourceTimestampError,
 } from '../domain/csv/csvProvenance'
@@ -130,10 +131,12 @@ import {
   serializePortfolioSnapshotExport,
   parsePortfolioSnapshotImport,
   PORTFOLIO_SNAPSHOT_SCHEMA_VERSION,
+  PORTFOLIO_SNAPSHOT_SCHEMA_VERSION_V4,
   type PortfolioSnapshotHolding,
+  type PortfolioSnapshotSchemaVersion,
 } from '../utils/portfolioSnapshotTransfer'
-import { computeSnapshotGenerationIdentity } from '../utils/snapshotGenerationIdentity'
-import { sha256Utf8Hex } from '../domain/csv/csvSemanticIdentity'
+import { computeSnapshotGenerationIdentity, computeSnapshotGenerationIdentityV2 } from '../utils/snapshotGenerationIdentity'
+import { compareCsvSemanticRows, sha256Utf8Hex, type CsvSemanticRow } from '../domain/csv/csvSemanticIdentity'
 import {
   ALLOCATION_PLAN_AUTHORITY_VERSION,
   type AllocationPlanInput,
@@ -318,11 +321,21 @@ export interface SbiFullExportImportOptions {
    * preview, including a stale confirmation replayed after a newer commit.
    */
   confirmationToken?: string
+  /**
+   * OPS-SBI-P2-PREBUILD-PHASE2-R1-AUTHORITY-INTEGRITY-REPAIR (P2-03 ticket section 10): required
+   * to commit when the incoming source's freshness cannot be proven newer than the current
+   * generation (weak/unknown provenance replacing a different generation) — the same explicit
+   * confirmation contract as CsvImportOptions.confirmUnknownProvenance.
+   */
+  confirmUnknownProvenance?: boolean
 }
 
 export type SbiFullExportImportErrorCode =
   | 'FILE_READ_ERROR'
   | 'AUTHORITY_NOT_PASS'
+  | 'STALE_SOURCE'
+  | 'SOURCE_PROVENANCE_CONFLICT'
+  | 'SOURCE_PROVENANCE_UNKNOWN'
   | 'ANALYSIS_ERROR'
   | 'OFFICIAL_DECISION_ERROR'
   | 'PERSISTENCE_ERROR'
@@ -342,6 +355,15 @@ export type SbiFullExportImportResult =
       }
       importedAt: string
       authorityStatus: 'COMPLETE'
+    }
+  | {
+      // OPS-SBI-P2-PREBUILD-PHASE2-R1-AUTHORITY-INTEGRITY-REPAIR (P2-03 ticket section 9): an
+      // exact same authoritative export is a no-op — the existing duplicate/no-op semantics,
+      // mirroring importCsv's own DUPLICATE_CSV code. No new generation, no mutation.
+      ok: true
+      code: 'DUPLICATE_FULL_EXPORT'
+      message: string
+      importedAt: string
     }
   | {
       ok: false
@@ -1634,6 +1656,55 @@ function computeCanonicalSnapshotStateIdentity(payload: CsvImportPersistencePayl
   }
 }
 
+// OPS-SBI-P2-PREBUILD-PHASE2-R1-AUTHORITY-INTEGRITY-REPAIR: importPortfolioSnapshot's own
+// self-duplicate recognition must compare against the identity domain the *incoming* snapshot
+// was actually computed in — v4 payloads always carry a V2 (importAuthority-bound) identity, so
+// re-deriving a fallback (no stored snapshotTransferIdentity) in the V1 domain would make a
+// byte-identical v4 re-import permanently fail to match. v1-v3 keep using the exact original V1
+// fallback, unchanged. This is intentionally scoped to computeCurrentSnapshotStateIdentity's
+// other four call sites (importCsv/importSbiPortfolioFullExport's own internal V1-domain staged/
+// committed transfer-identity comparisons) untouched — those never observe a v4 wire payload.
+function computeCurrentSnapshotStateIdentityForImport(
+  state: AppState,
+  schemaVersion: PortfolioSnapshotSchemaVersion,
+): string | null {
+  if (schemaVersion !== PORTFOLIO_SNAPSHOT_SCHEMA_VERSION_V4) return computeCurrentSnapshotStateIdentity(state)
+  try {
+    return computeSnapshotGenerationIdentityV2({
+      holdings: state.holdings,
+      trust: state.trust,
+      portfolioPolicy: state.portfolioPolicy,
+      cashAssumptions: state.cashAssumptions,
+      csvImportedAt: state.system.csvLastImportedAt,
+      csvImportProvenance: state.system.csvImportProvenance ?? null,
+      importAuthority: state.portfolioImportAuthority,
+    })
+  } catch {
+    return null
+  }
+}
+
+function computeCanonicalSnapshotStateIdentityForImport(
+  payload: CsvImportPersistencePayload,
+  schemaVersion: PortfolioSnapshotSchemaVersion,
+): string | null {
+  if (payload.snapshotTransferIdentity) return payload.snapshotTransferIdentity
+  if (schemaVersion !== PORTFOLIO_SNAPSHOT_SCHEMA_VERSION_V4) return computeCanonicalSnapshotStateIdentity(payload)
+  try {
+    return computeSnapshotGenerationIdentityV2({
+      holdings: payload.holdings,
+      trust: payload.trust,
+      portfolioPolicy: payload.portfolioPolicy ?? { ...DEFAULT_PORTFOLIO_POLICY },
+      cashAssumptions: payload.cashAssumptions ?? { ...DEFAULT_CASH_ASSUMPTIONS },
+      csvImportedAt: getCsvImportPayloadCsvImportedAt(payload),
+      csvImportProvenance: payload.provenance ?? null,
+      importAuthority: payload.importAuthority ?? LEGACY_UNPROVEN_PORTFOLIO_IMPORT_AUTHORITY,
+    })
+  } catch {
+    return null
+  }
+}
+
 /** @internal Test-only read access for subscriber-order assertions; application code must not use. */
 export function readLastAppliedSnapshotGenerationForTest(): Readonly<{
   incomingIdentity: string
@@ -1650,6 +1721,11 @@ interface PortfolioGenerationProjection {
   csvLastImportedAt: string | null
   csvImportProvenance: CsvImportProvenance | null
   csvSyncSummary: CsvSyncSummary | null
+  // OPS-SBI-P2-PREBUILD-PHASE2-R1-AUTHORITY-INTEGRITY-REPAIR (P2-02 ticket section 5): the
+  // durable stale-tab comparison must include importAuthority in its semantic identity domain —
+  // otherwise a byte-identical-content-but-different-authority generation (e.g. a stale
+  // LEGACY_UNPROVEN writer vs. a current COMPLETE generation) would not be flagged stale.
+  importAuthority: PortfolioImportAuthorityV1
 }
 
 type DurableAlignmentResult =
@@ -1702,6 +1778,7 @@ function buildPublishedPortfolioGenerationProjection(
     trust: state.trust,
     portfolioPolicy: state.portfolioPolicy,
     cashAssumptions: state.cashAssumptions,
+    importAuthority: state.portfolioImportAuthority,
     ...normalizeCsvMetadataProjection(
       state.system.csvLastImportedAt,
       state.system.csvImportProvenance ?? null,
@@ -1724,6 +1801,11 @@ function buildCanonicalPortfolioGenerationProjection(
     cashAssumptions: payload.cashAssumptions
       ? normalizeCashAuthorityRecord(payload.cashAssumptions) ?? { ...NO_CASH_AUTHORITY }
       : { ...DEFAULT_CASH_ASSUMPTIONS },
+    // OPS-SBI-P2-PREBUILD-PHASE2-R1-AUTHORITY-INTEGRITY-REPAIR (P2-02): a v4/v5 payload never
+    // carries an importAuthority key at all (isCsvImportPayload's exact-key schema forbids it),
+    // so `payload.importAuthority` is undefined for every non-v6 generation — always exactly
+    // LEGACY_UNPROVEN there, mirroring deriveAuthorityFromCsvGeneration's own fallback.
+    importAuthority: payload.importAuthority ?? LEGACY_UNPROVEN_PORTFOLIO_IMPORT_AUTHORITY,
     ...normalizeCsvMetadataProjection(
       getCsvImportPayloadCsvImportedAt(payload),
       payload.provenance ?? null,
@@ -1890,13 +1972,19 @@ function inspectDurablePortfolioAlignment(
   // A legacy portfolio generation is provable only when both core collections exist. Optional
   // legacy fields are compared when present; absent optional keys carry no overwrite authority.
   if (legacyHoldings === null || legacyTrust === null) return { status: 'stale' }
+  // A pure legacy-key generation (no v6 canonical envelope) can never carry any authority
+  // proof — both sides are neutralized to LEGACY_UNPROVEN here, the same way portfolioPolicy/
+  // cashAssumptions/CSV metadata are already neutralized on this holdings/trust-only comparison
+  // (checked separately below).
   if (!portfolioGenerationProjectionsEqual(
     { ...publishedProjection, portfolioPolicy: DEFAULT_PORTFOLIO_POLICY,
       cashAssumptions: DEFAULT_CASH_ASSUMPTIONS, csvLastImportedAt: null,
-      csvImportProvenance: null, csvSyncSummary: null },
+      csvImportProvenance: null, csvSyncSummary: null,
+      importAuthority: LEGACY_UNPROVEN_PORTFOLIO_IMPORT_AUTHORITY },
     { holdings: legacyHoldings, trust: legacyTrust,
       portfolioPolicy: DEFAULT_PORTFOLIO_POLICY, cashAssumptions: DEFAULT_CASH_ASSUMPTIONS,
-      csvLastImportedAt: null, csvImportProvenance: null, csvSyncSummary: null },
+      csvLastImportedAt: null, csvImportProvenance: null, csvSyncSummary: null,
+      importAuthority: LEGACY_UNPROVEN_PORTFOLIO_IMPORT_AUTHORITY },
   )) return { status: 'stale' }
   if (legacyRaw[2] !== null &&
       JSON.stringify(stableStructuralValue(state.portfolioPolicy)) !==
@@ -4230,6 +4318,78 @@ const createAppStoreStateCreator = (
               }
             }
 
+            const now = new Date(transaction.analysisNow).toISOString()
+            const currentGeneration = restoreCsvImportGenerationFromRaw(alignment.canonicalRaw)
+
+            // OPS-SBI-P2-PREBUILD-PHASE2-R1-AUTHORITY-INTEGRITY-REPAIR (P2-03): the FULL_EXPORT
+            // path must pass the same provenance/freshness/duplicate gate as the legacy CSV
+            // importer before mutation — reusing (not reinventing) buildCsvSourceProvenance and
+            // evaluateCsvImportMonotonicity. Correct order (ticket section 10): structural
+            // completeness → trust resolution → final FULL_EXPORT completeness (both already
+            // proven above) → this gate → staged diff → confirmation → persistence.
+            const fullExportSemanticRows: CsvSemanticRow[] = [
+              ...parsed.provisionalStockRows.map((row): CsvSemanticRow => ({
+                assetType: 'stock', code: row.code, name: row.name, eval: row.eval,
+                pnlPct: row.pnlPct, dayPct: row.dayPct, price: row.price, acquiredAt: row.acquiredAt,
+                accountHint: '特定',
+              })),
+              ...parsed.provisionalTrustRows.map((row): CsvSemanticRow => ({
+                assetType: 'trust', code: row.code, name: row.name, eval: row.eval,
+                pnlPct: row.pnlPct, dayPct: row.dayPct, price: row.price, acquiredAt: row.acquiredAt,
+                accountHint: row.accountHint as '' | '特定' | 'NISA成長' | 'NISA積立',
+              })),
+            ].sort(compareCsvSemanticRows)
+            const fullExportSourceProvenance = buildCsvSourceProvenance({
+              text,
+              fileName: String(file.name || ''),
+              fileLastModified: Number(file.lastModified || 0),
+              semanticContent: { profile: SBI_PORTFOLIO_PROFILE_ID, rows: fullExportSemanticRows },
+            })
+            const incomingFullExportProvenance: CsvImportProvenance = { importedAt: now, ...fullExportSourceProvenance }
+            const currentFullExportGenerationExists = currentGeneration.status === 'committed'
+            const fullExportMonotonicity = evaluateCsvImportMonotonicity({
+              incoming: incomingFullExportProvenance,
+              current: currentFullExportGenerationExists ? currentGeneration.payload.provenance ?? null : null,
+              currentGenerationExists: currentFullExportGenerationExists,
+            })
+            if (fullExportMonotonicity.decision === 'DUPLICATE') {
+              // Section 9: an exact same authoritative export is a no-op — do not create a
+              // needless new generation simply because importedAt changed.
+              const currentFullExportProvenance = currentFullExportGenerationExists
+                ? currentGeneration.payload.provenance
+                : null
+              if (!currentFullExportProvenance) {
+                return sbiFullExportImportFailure(
+                  'SOURCE_PROVENANCE_UNKNOWN',
+                  '現在のCSV世代のprovenanceを確認できないため、同一内容として確定できませんでした。状態は変更されていません。',
+                )
+              }
+              return {
+                ok: true,
+                code: 'DUPLICATE_FULL_EXPORT',
+                message: '同じ内容のFULL_EXPORTは既に取り込み済みです。portfolio generationは変更していません。',
+                importedAt: currentFullExportProvenance.importedAt,
+              }
+            }
+            if (fullExportMonotonicity.decision === 'REJECT_STALE') {
+              return sbiFullExportImportFailure(
+                'STALE_SOURCE',
+                'CSVのデータ基準時刻が現在のportfolio generationより古いため、取込を中断しました。状態は変更されていません。',
+              )
+            }
+            if (fullExportMonotonicity.decision === 'REJECT_CONFLICT') {
+              return sbiFullExportImportFailure(
+                'SOURCE_PROVENANCE_CONFLICT',
+                '同じデータ基準時刻で内容が異なるCSVを検出したため、取込を中断しました。状態は変更されていません。',
+              )
+            }
+            if (fullExportMonotonicity.decision === 'REJECT_UNKNOWN_DOWNGRADE' && !options.confirmUnknownProvenance) {
+              return sbiFullExportImportFailure(
+                'SOURCE_PROVENANCE_UNKNOWN',
+                'CSVデータの基準時刻を信頼できず、現在のportfolio generationより新しいと確認できません。状態は変更されていません。内容を確認した上で明示的な再取込が必要です。',
+              )
+            }
+
             const diff: FullExportStagedDiff = buildFullExportStagedDiff({
               provisionalStockRows: parsed.provisionalStockRows,
               trustRowResolutions: trustResolutions,
@@ -4239,7 +4399,6 @@ const createAppStoreStateCreator = (
               removalAbsoluteCap: STOCK_REMOVAL_ABSOLUTE_CAP,
             })
 
-            const currentGeneration = restoreCsvImportGenerationFromRaw(alignment.canonicalRaw)
             const diffIdentity = sha256Utf8Hex(JSON.stringify({
               stockAdd: diff.stock.add.map(r => r.code).sort(),
               stockUpdate: diff.stock.update.map(r => r.code).sort(),
@@ -4306,7 +4465,6 @@ const createAppStoreStateCreator = (
               return fund
             })
 
-            const now = new Date(transaction.analysisNow).toISOString()
             const stagedState: AppState = {
               ...baseState,
               holdings: updatedHoldings,
@@ -4343,8 +4501,19 @@ const createAppStoreStateCreator = (
               portfolioPolicy: baseState.portfolioPolicy,
               cashAssumptions: baseState.cashAssumptions,
               csvImportedAt: now,
-              csvImportProvenance: null,
+              csvImportProvenance: incomingFullExportProvenance,
             })
+            // OPS-SBI-P2-PREBUILD-PHASE2-R1-AUTHORITY-INTEGRITY-REPAIR: hoisted so the exact
+            // same object is both durably persisted and published into live state below — a
+            // durable-vs-live mismatch here (canonical carrying a real summary while live state
+            // kept it null) made inspectDurablePortfolioAlignment treat this tab's own
+            // just-committed generation as stale on the very next write (pre-existing latent
+            // bug, surfaced by P2-03's own required "second FULL_EXPORT succeeds" test).
+            const fullExportSyncSummary: CsvSyncSummary = {
+              importedAt: now,
+              stock: { updated: diff.stock.update.length, added: diff.stock.add.length, removed: diff.stock.remove.length },
+              trust: { updated: diff.trust.update.length, reheld: 0, zeroed: diff.trust.zero.length, unknownFunds: [], ambiguousFundIds: [] },
+            }
 
             let persistenceReceipt: CsvImportPersistenceReceipt
             const generationCommittedAt = Date.now()
@@ -4355,12 +4524,8 @@ const createAppStoreStateCreator = (
                 trust: computed.trust,
                 learning: computed.learning,
                 csvImportedAt: now,
-                provenance: null,
-                syncSummary: {
-                  importedAt: now,
-                  stock: { updated: diff.stock.update.length, added: diff.stock.add.length, removed: diff.stock.remove.length },
-                  trust: { updated: diff.trust.update.length, reheld: 0, zeroed: diff.trust.zero.length, unknownFunds: [], ambiguousFundIds: [] },
-                },
+                provenance: incomingFullExportProvenance,
+                syncSummary: fullExportSyncSummary,
                 trustShortSnapshot: carriedTrustShortSnapshot,
                 portfolioPolicy: baseState.portfolioPolicy,
                 cashAssumptions: baseState.cashAssumptions,
@@ -4410,8 +4575,15 @@ const createAppStoreStateCreator = (
                 ...baseState.system,
                 status: deriveStatusFromDataSourceOutcome(baseState.system.dataSourceOutcome),
                 csvLastImportedAt: now,
-                csvImportProvenance: null,
-                csvSyncSummary: null,
+                // OPS-SBI-P2-PREBUILD-PHASE2-R1-AUTHORITY-INTEGRITY-REPAIR (P2-03): published
+                // live provenance now matches what was just durably committed and what
+                // stagedTransferIdentity was computed from, so the post-publish identity check
+                // below stays internally consistent.
+                csvImportProvenance: incomingFullExportProvenance,
+                // Same fix as csvImportProvenance above: the durable canonical always carried a
+                // real syncSummary here — publishing null into live state was the actual root
+                // cause of the pre-existing own-write staleness bug this comment describes.
+                csvSyncSummary: fullExportSyncSummary,
                 analysisLastRunAt: now,
                 error: null,
                 localStorageFreshness,
@@ -4678,6 +4850,9 @@ const createAppStoreStateCreator = (
       cashAssumptions: exportableCash,
       csvImportedAt: state.system.csvLastImportedAt,
       csvImportProvenance: state.system.csvImportProvenance ?? null,
+      // OPS-SBI-P2-PREBUILD-PHASE2-R1-AUTHORITY-INTEGRITY-REPAIR (P2-01): the exporting
+      // device's current proven (or LEGACY_UNPROVEN) authority travels with the transfer.
+      importAuthority: state.portfolioImportAuthority,
     })
   },
 
@@ -4786,10 +4961,10 @@ const createAppStoreStateCreator = (
       const currentGenerationExists = canonicalPayload !== null ||
         hasCurrentPortfolioContentEvidence(state)
       const currentStateIdentity = canonicalPayload === null && currentGenerationExists
-        ? computeCurrentSnapshotStateIdentity(state)
+        ? computeCurrentSnapshotStateIdentityForImport(state, snapshot.schemaVersion)
         : null
       const canonicalStateIdentity = canonicalPayload !== null
-        ? computeCanonicalSnapshotStateIdentity(canonicalPayload)
+        ? computeCanonicalSnapshotStateIdentityForImport(canonicalPayload, snapshot.schemaVersion)
         : null
       if (snapshot.snapshotGenerationIdentity !== null && (
         (canonicalPayload === null && snapshot.snapshotGenerationIdentity === currentStateIdentity) ||
@@ -4987,6 +5162,16 @@ const createAppStoreStateCreator = (
         }
       }
 
+      // OPS-SBI-P2-PREBUILD-PHASE2-R1-AUTHORITY-INTEGRITY-REPAIR (P2-01 ticket section 3): a
+      // proven (COMPLETE/PARTIAL) transported authority is preserved into the destination
+      // canonical generation via the v6 envelope; a LEGACY_UNPROVEN transfer keeps writing the
+      // exact original v5 shape unchanged (v5's exact-key schema has no importAuthority key at
+      // all — adding one there would fail validation). No old snapshot may upgrade itself to
+      // COMPLETE: this only ever forwards an authority object parsePortfolioSnapshotImport has
+      // already structurally validated and bound into the recomputed transfer identity.
+      const preservedImportAuthority = snapshot.importAuthority.authorityStatus === 'LEGACY_UNPROVEN'
+        ? null
+        : snapshot.importAuthority
       const payload: CsvImportPersistencePayload = {
         holdings: computed.holdings,
         trust: computed.trust,
@@ -4999,7 +5184,11 @@ const createAppStoreStateCreator = (
         cashAssumptions: nextCashAssumptions,
         origin: 'snapshot',
         snapshotTransferIdentity: snapshot.snapshotGenerationIdentity,
+        ...(preservedImportAuthority ? { importAuthority: preservedImportAuthority } : {}),
       }
+      const snapshotWriteContract: CsvImportCanonicalWriteContract = preservedImportAuthority
+        ? { schemaVersion: CSV_IMPORT_GENERATION_SCHEMA_V6 }
+        : { schemaVersion: CSV_IMPORT_GENERATION_SCHEMA_V5 }
 
       // pre-persist CAS付き単一durable commit。transaction開始時に捕捉したbytesと
       // 物理bytesが一致する場合のみcanonical世代を置換できる（stale writerはconflict）。
@@ -5007,9 +5196,7 @@ const createAppStoreStateCreator = (
       const generationCommittedAt = Date.now()
       let receipt: CsvImportPersistenceReceipt
       try {
-        receipt = persistCsvImportTransaction(payload, generationCommittedAt, canonicalPreviousRaw, {
-          schemaVersion: CSV_IMPORT_GENERATION_SCHEMA_V5,
-        })
+        receipt = persistCsvImportTransaction(payload, generationCommittedAt, canonicalPreviousRaw, snapshotWriteContract)
       } catch (error) {
         if (error instanceof CsvImportCanonicalConflictError) {
           return {
@@ -5072,7 +5259,7 @@ const createAppStoreStateCreator = (
       const markSnapshotGenerationApplied = () => {
         runtime.lastLocallyPersistedLegacyProjection = null
         if (snapshot.snapshotGenerationIdentity !== null) {
-          const appliedStateIdentity = computeCurrentSnapshotStateIdentity(get())
+          const appliedStateIdentity = computeCurrentSnapshotStateIdentityForImport(get(), snapshot.schemaVersion)
           runtime.lastAppliedSnapshotGeneration = appliedStateIdentity === null
             ? null
             : {
@@ -5112,6 +5299,7 @@ const createAppStoreStateCreator = (
             ...computed,
             portfolioPolicy: nextPortfolioPolicy,
             cashAssumptions: nextCashAssumptions,
+            portfolioImportAuthority: preservedImportAuthority ?? LEGACY_UNPROVEN_PORTFOLIO_IMPORT_AUTHORITY,
             system: {
               ...state.system,
               csvLastImportedAt: snapshot.csvImportedAt,
@@ -5151,6 +5339,11 @@ const createAppStoreStateCreator = (
           ...computed,
           portfolioPolicy: nextPortfolioPolicy,
           cashAssumptions: nextCashAssumptions,
+          // OPS-SBI-P2-PREBUILD-PHASE2-R1-AUTHORITY-INTEGRITY-REPAIR (P2-01): the live store's
+          // portfolioImportAuthority follows exactly what was just durably committed — a proven
+          // transported authority is adopted, a LEGACY_UNPROVEN transfer resets to the canonical
+          // LEGACY_UNPROVEN object (this path never itself proves FULL_EXPORT/PARTIAL_IMPORT).
+          portfolioImportAuthority: preservedImportAuthority ?? LEGACY_UNPROVEN_PORTFOLIO_IMPORT_AUTHORITY,
           system: {
             ...s.system,
             status: deriveStatusFromDataSourceOutcome(s.system.dataSourceOutcome),

@@ -237,3 +237,137 @@ describe('importSbiPortfolioFullExport: FULL_EXPORT store commit path', () => {
     expect(confirmed).toMatchObject({ ok: true, code: 'SUCCESS' })
   })
 })
+
+// OPS-SBI-P2-PREBUILD-PHASE2-R1-AUTHORITY-INTEGRITY-REPAIR (P2-03): the FULL_EXPORT path must
+// pass the same sourceAsOf monotonicity / semantic duplicate protections as the legacy CSV
+// importer before mutation (ticket sections 7-11/14).
+describe('importSbiPortfolioFullExport: P2-03 provenance/freshness/duplicate gate', () => {
+  function fullExportCsvLinesWithSourceAsOf(sourceAsOf: string, stockEval = 900_000): string[] {
+    return [
+      `データ基準日時,${sourceAsOf}`,
+      ...fullExportCsvLines({ stockRows: [`6501,日立製作所,8500,${stockEval},15.20,1.10,2025-06-01`] }),
+    ]
+  }
+
+  // Regression guard: a successful FULL_EXPORT commit must leave the live published projection
+  // aligned with what was just durably committed (own-write alignment), so a subsequent write
+  // from the very same tab is not spuriously rejected as CROSS_TAB_STATE_STALE.
+  it('a subsequent manual mutation after a successful FULL_EXPORT commit is not spuriously stale', async () => {
+    const created = instance()
+    const first = await created.store.getState().importSbiPortfolioFullExport(
+      csvFile(fullExportCsvLinesWithSourceAsOf('2026-09-10T00:00:00+09:00', 900_000)),
+    )
+    expect(first).toMatchObject({ ok: true, code: 'SUCCESS' })
+    const followUp = await created.store.getState().updateHolding('6501', { eval: 1 })
+    expect(followUp).toMatchObject({ ok: true })
+  })
+
+  it('newer explicit source succeeds and advances the generation', async () => {
+    const created = instance()
+    const first = await created.store.getState().importSbiPortfolioFullExport(
+      csvFile(fullExportCsvLinesWithSourceAsOf('2026-09-10T00:00:00+09:00', 900_000)),
+    )
+    expect(first).toMatchObject({ ok: true, code: 'SUCCESS' })
+
+    const second = await created.store.getState().importSbiPortfolioFullExport(
+      csvFile(fullExportCsvLinesWithSourceAsOf('2026-09-11T00:00:00+09:00', 950_000)),
+    )
+    expect(second).toMatchObject({ ok: true, code: 'SUCCESS' })
+    expect(created.store.getState().holdings.find(h => h.code === '6501')?.eval).toBe(950_000)
+  })
+
+  it('older explicit source is rejected (STALE_SOURCE), zero mutation', async () => {
+    const created = instance()
+    const first = await created.store.getState().importSbiPortfolioFullExport(
+      csvFile(fullExportCsvLinesWithSourceAsOf('2026-09-11T00:00:00+09:00', 900_000)),
+    )
+    expect(first).toMatchObject({ ok: true, code: 'SUCCESS' })
+    const before = created.store.getState()
+    const canonicalRawBefore = storage[CSV_IMPORT_GENERATION_KEY]
+
+    const stale = await created.store.getState().importSbiPortfolioFullExport(
+      csvFile(fullExportCsvLinesWithSourceAsOf('2026-09-10T00:00:00+09:00', 111_111)),
+    )
+    expect(stale).toMatchObject({ ok: false, code: 'STALE_SOURCE' })
+    expect(created.store.getState().holdings).toBe(before.holdings)
+    expect(created.store.getState().portfolioImportAuthority).toBe(before.portfolioImportAuthority)
+    expect(storage[CSV_IMPORT_GENERATION_KEY]).toBe(canonicalRawBefore)
+  })
+
+  it('same semantic export duplicate is a no-op (DUPLICATE_FULL_EXPORT), no needless new generation', async () => {
+    const created = instance()
+    const lines = fullExportCsvLinesWithSourceAsOf('2026-09-11T00:00:00+09:00', 900_000)
+    const first = await created.store.getState().importSbiPortfolioFullExport(csvFile(lines))
+    expect(first).toMatchObject({ ok: true, code: 'SUCCESS' })
+    const canonicalRawBefore = storage[CSV_IMPORT_GENERATION_KEY]
+
+    const duplicate = await created.store.getState().importSbiPortfolioFullExport(csvFile([...lines]))
+    expect(duplicate).toMatchObject({ ok: true, code: 'DUPLICATE_FULL_EXPORT' })
+    // No needless new generation: canonical bytes are byte-identical (importedAt did not
+    // silently bump the generation merely because operation time changed).
+    expect(storage[CSV_IMPORT_GENERATION_KEY]).toBe(canonicalRawBefore)
+  })
+
+  it('a new operation time with an old sourceAsOf does not bypass stale protection', async () => {
+    const created = instance()
+    const first = await created.store.getState().importSbiPortfolioFullExport(
+      csvFile(fullExportCsvLinesWithSourceAsOf('2026-09-11T00:00:00+09:00', 900_000)),
+    )
+    expect(first).toMatchObject({ ok: true, code: 'SUCCESS' })
+    const before = created.store.getState()
+
+    // Advance wall-clock operation time — importedAt (not sourceAsOf) moves forward — while the
+    // CSV's own explicit sourceAsOf is still older than the current generation's.
+    vi.setSystemTime(NOW_MS + 24 * 60 * 60 * 1000)
+    const stale = await created.store.getState().importSbiPortfolioFullExport(
+      csvFile(fullExportCsvLinesWithSourceAsOf('2026-09-10T00:00:00+09:00', 222_222)),
+    )
+    expect(stale).toMatchObject({ ok: false, code: 'STALE_SOURCE' })
+    expect(created.store.getState().holdings).toBe(before.holdings)
+  })
+
+  it('weak/unknown conflicting source requires explicit confirmUnknownProvenance', async () => {
+    const created = instance()
+    const first = await created.store.getState().importSbiPortfolioFullExport(
+      csvFile(fullExportCsvLinesWithSourceAsOf('2026-09-11T00:00:00+09:00', 900_000)),
+    )
+    expect(first).toMatchObject({ ok: true, code: 'SUCCESS' })
+    const before = created.store.getState()
+    const canonicalRawBefore = storage[CSV_IMPORT_GENERATION_KEY]
+
+    // No data-basis-date header at all → weak/unknown provenance, replacing an authoritative
+    // current generation with different content.
+    const weakLines = fullExportCsvLines({ stockRows: ['6501,日立製作所,8500,333333,15.20,1.10,2025-06-01'] })
+    const rejected = await created.store.getState().importSbiPortfolioFullExport(csvFile(weakLines))
+    expect(rejected).toMatchObject({ ok: false, code: 'SOURCE_PROVENANCE_UNKNOWN' })
+    expect(created.store.getState().holdings).toBe(before.holdings)
+    expect(storage[CSV_IMPORT_GENERATION_KEY]).toBe(canonicalRawBefore)
+
+    const confirmed = await created.store.getState().importSbiPortfolioFullExport(
+      csvFile(weakLines),
+      { confirmUnknownProvenance: true },
+    )
+    expect(confirmed).toMatchObject({ ok: true, code: 'SUCCESS' })
+    expect(created.store.getState().holdings.find(h => h.code === '6501')?.eval).toBe(333_333)
+  })
+
+  it('a failed provenance gate causes zero mutation: canonical bytes, holdings, trust, authority all unchanged', async () => {
+    const created = instance()
+    const first = await created.store.getState().importSbiPortfolioFullExport(
+      csvFile(fullExportCsvLinesWithSourceAsOf('2026-09-11T00:00:00+09:00', 900_000)),
+    )
+    expect(first).toMatchObject({ ok: true, code: 'SUCCESS' })
+    const before = created.store.getState()
+    const canonicalRawBefore = storage[CSV_IMPORT_GENERATION_KEY]
+
+    const conflicting = await created.store.getState().importSbiPortfolioFullExport(
+      csvFile(fullExportCsvLinesWithSourceAsOf('2026-09-11T00:00:00+09:00', 444_444)),
+    )
+    expect(conflicting).toMatchObject({ ok: false, code: 'SOURCE_PROVENANCE_CONFLICT' })
+    expect(created.store.getState().holdings).toBe(before.holdings)
+    expect(created.store.getState().trust).toBe(before.trust)
+    expect(created.store.getState().portfolioImportAuthority).toBe(before.portfolioImportAuthority)
+    expect(created.store.getState().officialDecision).toBe(before.officialDecision)
+    expect(storage[CSV_IMPORT_GENERATION_KEY]).toBe(canonicalRawBefore)
+  })
+})

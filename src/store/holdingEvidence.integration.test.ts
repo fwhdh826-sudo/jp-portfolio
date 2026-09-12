@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it } from 'vitest'
 import type { Holding } from '../types'
+import { LEGACY_UNPROVEN_PORTFOLIO_IMPORT_AUTHORITY } from '../types'
 import type { HoldingEvidenceArtifact, HoldingEvidenceEntry } from '../types/holdingEvidence'
 import { buildNewHoldingFromCsvRow } from '../domain/csv/importPortfolioCsv'
 import { buildPortfolioAnalysisFingerprint, runFullAnalysis, useAppStore } from './useAppStore'
@@ -124,6 +125,7 @@ describe('runFullAnalysis + holding_evidence', () => {
       cashAssumptions: null,
       csvImportedAt: NOW,
       csvImportProvenance: null,
+      importAuthority: LEGACY_UNPROVEN_PORTFOLIO_IMPORT_AUTHORITY,
     })
     const parsed = JSON.parse(json) as { holdings: Array<Record<string, unknown>> }
     const h = parsed.holdings[0]

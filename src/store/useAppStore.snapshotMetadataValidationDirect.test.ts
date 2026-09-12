@@ -5,6 +5,7 @@ import { resetPortfolioGenerationLockAdapterForTest, setPortfolioGenerationLockA
 beforeEach(() => setPortfolioGenerationLockAdapterForTest(createImmediatePortfolioGenerationLockAdapterForTest()))
 afterEach(() => resetPortfolioGenerationLockAdapterForTest())
 import type { CsvImportProvenance } from '../types'
+import { LEGACY_UNPROVEN_PORTFOLIO_IMPORT_AUTHORITY } from '../types'
 import type { PortfolioSnapshotData } from '../utils/portfolioSnapshotTransfer'
 
 const NOW_MS = Date.parse('2026-07-19T00:00:00.000Z')
@@ -47,6 +48,7 @@ function parsedSnapshot(input: {
     trust: [],
     portfolioPolicy: null,
     cashAssumptions: null,
+    importAuthority: LEGACY_UNPROVEN_PORTFOLIO_IMPORT_AUTHORITY,
   }
 }
 

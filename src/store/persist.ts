@@ -1,7 +1,6 @@
 import {
   DEFAULT_CASH_ASSUMPTIONS,
   DEFAULT_PORTFOLIO_POLICY,
-  PORTFOLIO_IMPORT_AUTHORITY_VERSION,
   type Holding,
   type Trust,
   type LearningState,
@@ -9,9 +8,8 @@ import {
   type CashAssumptions,
   type CsvImportProvenance,
   type CsvSyncSummary,
-  type PortfolioImportAuthorityAssetClass,
   type PortfolioImportAuthorityV1,
-  type PortfolioImportSectionCompletenessEntry,
+  isPortfolioImportAuthorityV1,
 } from '../types'
 import {
   NO_CASH_AUTHORITY,
@@ -369,47 +367,12 @@ function isCashAssumptions(value: unknown): value is CashAssumptions {
   return isCurrentCashAssumptions(value) || isLegacyCashAssumptions(value)
 }
 
-const PORTFOLIO_IMPORT_AUTHORITY_STATUSES = ['COMPLETE', 'PARTIAL', 'LEGACY_UNPROVEN'] as const
-const PORTFOLIO_IMPORT_AUTHORITY_ASSET_CLASSES = ['JP_STOCK', 'INVESTMENT_TRUST'] as const
-const PORTFOLIO_IMPORT_PROVENANCE_SCOPES = ['FULL_EXPORT', 'PARTIAL_IMPORT', 'UNKNOWN'] as const
-const PORTFOLIO_IMPORT_SECTION_STATUSES = ['ABSENT', 'VALID_EMPTY', 'VALID_NONEMPTY', 'PARSE_FAILED'] as const
-
-function isPortfolioImportAuthorityAssetClassArrayOrNull(
-  value: unknown,
-): value is PortfolioImportAuthorityAssetClass[] | null {
-  if (value === null) return true
-  return Array.isArray(value) &&
-    value.every(item => (PORTFOLIO_IMPORT_AUTHORITY_ASSET_CLASSES as readonly unknown[]).includes(item))
-}
-
-function isPortfolioImportSectionCompletenessEntry(value: unknown): value is PortfolioImportSectionCompletenessEntry {
-  return isRecord(value) && hasExactKeys(value, ['sectionId', 'status']) &&
-    isNonEmptyString(value.sectionId) &&
-    (PORTFOLIO_IMPORT_SECTION_STATUSES as readonly unknown[]).includes(value.status)
-}
-
-/**
- * OPS-SBI-P2-PREBUILD-PHASE2: exact-key, fail-closed validation for PortfolioImportAuthorityV1 —
- * an unknown future authorityVersion, or any malformed field, is rejected (ticket section 25
- * items 9/10). This function never trusts the JSON author; the caller (isCsvImportPayload v6
- * branch) additionally never trusts this shape alone — see the identity recomputation below.
- */
-function isPortfolioImportAuthorityV1(value: unknown): value is PortfolioImportAuthorityV1 {
-  if (!isRecord(value) || !hasExactKeys(value, [
-    'authorityVersion', 'importMode', 'contractVersion', 'profileId', 'authorityStatus',
-    'selectedAssetClasses', 'preservedAssetClasses', 'provenanceScope', 'sectionCompleteness',
-  ])) return false
-  if (value.authorityVersion !== PORTFOLIO_IMPORT_AUTHORITY_VERSION) return false
-  if (value.importMode !== 'FULL_EXPORT' && value.importMode !== 'PARTIAL_IMPORT' && value.importMode !== null) return false
-  if (value.contractVersion !== null && !isNonEmptyString(value.contractVersion)) return false
-  if (value.profileId !== null && !isNonEmptyString(value.profileId)) return false
-  if (!(PORTFOLIO_IMPORT_AUTHORITY_STATUSES as readonly unknown[]).includes(value.authorityStatus)) return false
-  if (!isPortfolioImportAuthorityAssetClassArrayOrNull(value.selectedAssetClasses)) return false
-  if (!isPortfolioImportAuthorityAssetClassArrayOrNull(value.preservedAssetClasses)) return false
-  if (!(PORTFOLIO_IMPORT_PROVENANCE_SCOPES as readonly unknown[]).includes(value.provenanceScope)) return false
-  return Array.isArray(value.sectionCompleteness) &&
-    value.sectionCompleteness.every(isPortfolioImportSectionCompletenessEntry)
-}
+// OPS-SBI-P2-PREBUILD-PHASE2-R1-AUTHORITY-INTEGRITY-REPAIR: isPortfolioImportAuthorityV1 (the
+// exact-key, fail-closed structural validator — ticket section 25 items 9/10) now lives in
+// types/portfolioImportAuthority.ts as the single shared validator, reused by both this v6
+// envelope check and the portfolio-snapshot-4 manual transfer wire format. This function never
+// trusts the JSON author; the caller (isCsvImportPayload v6 branch) additionally never trusts
+// this shape alone — see the identity recomputation below.
 
 function isCsvImportPayload(value: unknown, schemaVersion: string): value is CsvImportPersistencePayload {
   const isV1 = schemaVersion === CSV_IMPORT_GENERATION_SCHEMA_V1

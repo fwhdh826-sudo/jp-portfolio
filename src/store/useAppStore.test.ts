@@ -498,12 +498,13 @@ describe('useAppStore: portfolio snapshot（P4.5-A012b）', () => {
   })
   afterEach(() => { vi.unstubAllGlobals() })
 
-  it('exportPortfolioSnapshotがCSV provenance付きv3 JSON文字列を返す', () => {
+  it('exportPortfolioSnapshotがCSV provenance付きv4 JSON文字列を返す', () => {
     const json = useAppStore.getState().exportPortfolioSnapshot()
     expect(typeof json).toBe('string')
     const parsed = JSON.parse(json)
-    expect(parsed.schemaVersion).toBe('portfolio-snapshot-3')
+    expect(parsed.schemaVersion).toBe('portfolio-snapshot-4')
     expect(parsed.csvImportProvenance).toEqual(useAppStore.getState().system.csvImportProvenance)
+    expect(parsed.importAuthority).toEqual(useAppStore.getState().portfolioImportAuthority)
     expect(parsed.holdings).toHaveLength(2)
     expect(parsed.trust).toHaveLength(1)
   })

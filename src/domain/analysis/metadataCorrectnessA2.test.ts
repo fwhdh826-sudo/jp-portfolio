@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import type { Holding, Market } from '../../types'
+import { LEGACY_UNPROVEN_PORTFOLIO_IMPORT_AUTHORITY } from '../../types'
 import { buildNewHoldingFromCsvRow } from '../csv/importPortfolioCsv'
 import { updatePerformanceTracker } from '../learning/performanceTracker'
 import { buildCommitteeDecision } from './committeeDecision'
@@ -125,6 +126,7 @@ describe('STOCK-DECISION-METADATA-CORRECTNESS-A2', () => {
       cashAssumptions: null,
       csvImportedAt: null,
       csvImportProvenance: null,
+      importAuthority: LEGACY_UNPROVEN_PORTFOLIO_IMPORT_AUTHORITY,
     })
     const parsed = parsePortfolioSnapshotImport(raw)
     expect(parsed.ok).toBe(true)

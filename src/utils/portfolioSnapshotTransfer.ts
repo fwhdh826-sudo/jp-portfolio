@@ -1,7 +1,8 @@
 // ═══════════════════════════════════════════════════════════
 
 import { isStrictTimestamp } from './strictTimestamp'
-import type { CashAssumptions, CsvImportProvenance } from '../types'
+import type { CashAssumptions, CsvImportProvenance, PortfolioImportAuthorityV1 } from '../types'
+import { LEGACY_UNPROVEN_PORTFOLIO_IMPORT_AUTHORITY, isPortfolioImportAuthorityV1 } from '../types'
 import { isCsvImportProvenance } from '../domain/csv/csvProvenance'
 import {
   NO_CASH_AUTHORITY,
@@ -10,6 +11,7 @@ import {
 } from '../domain/cash/cashAuthority'
 import {
   computeSnapshotGenerationIdentity,
+  computeSnapshotGenerationIdentityV2,
   isLegacyCashAssumptionsIdentityShape,
   isSnapshotGenerationIdentity,
   type LegacyCashAssumptionsIdentityShape,
@@ -34,10 +36,18 @@ export const PORTFOLIO_SNAPSHOT_SCHEMA_VERSION_V2 = 'portfolio-snapshot-2' as co
 // portfolio generation. exportedAt is operation-only and excluded from the binding;
 // csvImportedAt remains non-authoritative operation metadata but is bound as transported state.
 export const PORTFOLIO_SNAPSHOT_SCHEMA_VERSION_V3 = 'portfolio-snapshot-3' as const
+// OPS-SBI-P2-PREBUILD-PHASE2-R1-AUTHORITY-INTEGRITY-REPAIR (P2-01): v4 transports the
+// exporting device's PortfolioImportAuthorityV1 (ticket section 3) and binds it into the
+// transfer identity (ticket section 4, via computeSnapshotGenerationIdentityV2). v1-v3 remain
+// readable unchanged for backward compatibility; a legacy import is always classified
+// LEGACY_UNPROVEN downstream (it never carried authority proof to begin with — no old snapshot
+// may upgrade itself to COMPLETE).
+export const PORTFOLIO_SNAPSHOT_SCHEMA_VERSION_V4 = 'portfolio-snapshot-4' as const
 export type PortfolioSnapshotSchemaVersion =
   | typeof PORTFOLIO_SNAPSHOT_SCHEMA_VERSION
   | typeof PORTFOLIO_SNAPSHOT_SCHEMA_VERSION_V2
   | typeof PORTFOLIO_SNAPSHOT_SCHEMA_VERSION_V3
+  | typeof PORTFOLIO_SNAPSHOT_SCHEMA_VERSION_V4
 
 export interface PortfolioSnapshotHolding {
   code: string
@@ -94,6 +104,9 @@ export interface PortfolioSnapshotExportPayload {
   trust: PortfolioSnapshotTrust[]
   portfolioPolicy: PortfolioSnapshotPortfolioPolicy | null
   cashAssumptions: PortfolioSnapshotCashAssumptions | null
+  /** OPS-SBI-P2-PREBUILD-PHASE2-R1-AUTHORITY-INTEGRITY-REPAIR: the exporting device's proven
+   *  (or LEGACY_UNPROVEN) authority at export time. Always present from v4 onward. */
+  importAuthority: PortfolioImportAuthorityV1
 }
 
 export interface PortfolioSnapshotData {
@@ -102,17 +115,25 @@ export interface PortfolioSnapshotData {
   csvImportedAt: string | null
   /** null for legacy v1/v2 and for an explicitly unknown v3 generation. */
   csvImportProvenance: CsvImportProvenance | null
-  /** Required and independently verified for v3; null for legacy v1/v2. */
+  /** Required and independently verified for v3+; null for legacy v1/v2. */
   snapshotGenerationIdentity: string | null
   holdings: PortfolioSnapshotHolding[]
   trust: PortfolioSnapshotTrust[]
   portfolioPolicy: PortfolioSnapshotPortfolioPolicy | null
   cashAssumptions: PortfolioSnapshotCashAssumptions | null
+  /** OPS-SBI-P2-PREBUILD-PHASE2-R1-AUTHORITY-INTEGRITY-REPAIR: always LEGACY_UNPROVEN for a
+   *  legacy (v1-v3) transfer — those formats never carried authority proof, and no old
+   *  snapshot may upgrade itself to COMPLETE merely by being re-imported. */
+  importAuthority: PortfolioImportAuthorityV1
 }
 
 export type PortfolioSnapshotParseResult =
   | { ok: true; data: PortfolioSnapshotData }
-  | { ok: false; error: string; code?: 'INVALID_SNAPSHOT_PROVENANCE' | 'INVALID_SNAPSHOT_GENERATION' }
+  | {
+      ok: false
+      error: string
+      code?: 'INVALID_SNAPSHOT_PROVENANCE' | 'INVALID_SNAPSHOT_GENERATION' | 'INVALID_SNAPSHOT_AUTHORITY'
+    }
 
 // 異常に大きすぎる値のガード（cashAssumptionsTransfer.tsと同じ基準。1兆円）
 const MAX_REASONABLE_AMOUNT = 1_000_000_000_000
@@ -171,6 +192,10 @@ export function serializePortfolioSnapshotExport(args: {
   cashAssumptions: PortfolioSnapshotCashAssumptions | null
   csvImportedAt: string | null
   csvImportProvenance: CsvImportProvenance | null
+  /** OPS-SBI-P2-PREBUILD-PHASE2-R1-AUTHORITY-INTEGRITY-REPAIR: the exporting device's current
+   *  portfolioImportAuthority. Pass LEGACY_UNPROVEN_PORTFOLIO_IMPORT_AUTHORITY when the caller
+   *  has none proven — this field is never optional, so no call site can silently omit it. */
+  importAuthority: PortfolioImportAuthorityV1
 }): string {
   const holdings: PortfolioSnapshotHolding[] = args.holdings.map(h => {
     const picked: PortfolioSnapshotHolding = { code: h.code, name: h.name, eval: h.eval, pnlPct: h.pnlPct }
@@ -209,23 +234,25 @@ export function serializePortfolioSnapshotExport(args: {
     : null
 
   const payload: PortfolioSnapshotExportPayload = {
-    schemaVersion: PORTFOLIO_SNAPSHOT_SCHEMA_VERSION_V3,
+    schemaVersion: PORTFOLIO_SNAPSHOT_SCHEMA_VERSION_V4,
     exportedAt: new Date().toISOString(),
     csvImportedAt: args.csvImportedAt,
     csvImportProvenance: args.csvImportProvenance,
-    snapshotGenerationIdentity: computeSnapshotGenerationIdentity({
+    snapshotGenerationIdentity: computeSnapshotGenerationIdentityV2({
       holdings,
       trust,
       portfolioPolicy,
       cashAssumptions,
       csvImportedAt: args.csvImportedAt,
       csvImportProvenance: args.csvImportProvenance,
+      importAuthority: args.importAuthority,
     }),
     source: 'manual',
     holdings,
     trust,
     portfolioPolicy,
     cashAssumptions,
+    importAuthority: args.importAuthority,
   }
   return JSON.stringify(payload, null, 2)
 }
@@ -459,17 +486,23 @@ export function parsePortfolioSnapshotImport(raw: string): PortfolioSnapshotPars
 
   const p = parsed as Record<string, unknown>
 
-  // v1/v2 remain parseable as legacy/unknown provenance. v3 requires an explicit
+  // v1/v2 remain parseable as legacy/unknown provenance. v3/v4 require an explicit
   // provenance field, including null, so malformed provenance cannot downgrade silently.
   // 不明schemaとしてfail-closedでreject（将来schemaとの誤動作を防ぐ）。
   if (
     p.schemaVersion !== PORTFOLIO_SNAPSHOT_SCHEMA_VERSION &&
     p.schemaVersion !== PORTFOLIO_SNAPSHOT_SCHEMA_VERSION_V2 &&
-    p.schemaVersion !== PORTFOLIO_SNAPSHOT_SCHEMA_VERSION_V3
+    p.schemaVersion !== PORTFOLIO_SNAPSHOT_SCHEMA_VERSION_V3 &&
+    p.schemaVersion !== PORTFOLIO_SNAPSHOT_SCHEMA_VERSION_V4
   ) {
     return { ok: false, error: 'このアプリからエクスポートされたデータではないようです（schemaVersion不一致）。' }
   }
   const schemaVersion = p.schemaVersion
+  // OPS-SBI-P2-PREBUILD-PHASE2-R1-AUTHORITY-INTEGRITY-REPAIR: v3 and v4 share the same
+  // provenance-envelope contract (explicit csvImportProvenance + snapshotGenerationIdentity);
+  // v4 additionally requires and binds importAuthority (see below).
+  const requiresProvenanceEnvelope = schemaVersion === PORTFOLIO_SNAPSHOT_SCHEMA_VERSION_V3 ||
+    schemaVersion === PORTFOLIO_SNAPSHOT_SCHEMA_VERSION_V4
 
   if (!Array.isArray(p.holdings)) {
     return { ok: false, error: 'holdingsが配列ではありません。' }
@@ -506,7 +539,7 @@ export function parsePortfolioSnapshotImport(raw: string): PortfolioSnapshotPars
     const result = validateCashAssumptions(p.cashAssumptions)
     if (!result.ok) return { ok: false, error: result.error }
     cashAssumptionsWire =
-      schemaVersion === PORTFOLIO_SNAPSHOT_SCHEMA_VERSION_V3 &&
+      requiresProvenanceEnvelope &&
       isLegacyCashAssumptionsIdentityShape(result.value)
         ? { ...result.value, manualOverrideEnabled: true }
         : result.value
@@ -521,9 +554,24 @@ export function parsePortfolioSnapshotImport(raw: string): PortfolioSnapshotPars
   const csvImportedAt = p.csvImportedAt as string | null
   const exportedAt = p.exportedAt as string
 
+  // OPS-SBI-P2-PREBUILD-PHASE2-R1-AUTHORITY-INTEGRITY-REPAIR (P2-01 ticket section 3): v4
+  // requires and structurally validates importAuthority before it participates in the identity
+  // recomputation below — a malformed or unknown-version authority object fails closed. v1-v3
+  // never carried authority proof; a v1-v3 restore is always classified LEGACY_UNPROVEN
+  // regardless of any stray key an untrusted editor may have added (no old snapshot may
+  // upgrade itself to COMPLETE).
+  let importAuthority: PortfolioImportAuthorityV1 = LEGACY_UNPROVEN_PORTFOLIO_IMPORT_AUTHORITY
+  if (schemaVersion === PORTFOLIO_SNAPSHOT_SCHEMA_VERSION_V4) {
+    if (!Object.prototype.hasOwnProperty.call(p, 'importAuthority') ||
+        !isPortfolioImportAuthorityV1(p.importAuthority)) {
+      return { ok: false, code: 'INVALID_SNAPSHOT_AUTHORITY', error: 'snapshotのimport authorityが欠損または不正です。' }
+    }
+    importAuthority = p.importAuthority
+  }
+
   let csvImportProvenance: CsvImportProvenance | null = null
   let snapshotGenerationIdentity: string | null = null
-  if (schemaVersion === PORTFOLIO_SNAPSHOT_SCHEMA_VERSION_V3) {
+  if (requiresProvenanceEnvelope) {
     if (!Object.prototype.hasOwnProperty.call(p, 'csvImportProvenance')) {
       return { ok: false, code: 'INVALID_SNAPSHOT_PROVENANCE', error: 'snapshotのCSV provenanceが欠損しています。' }
     }
@@ -541,14 +589,29 @@ export function parsePortfolioSnapshotImport(raw: string): PortfolioSnapshotPars
       return { ok: false, code: 'INVALID_SNAPSHOT_GENERATION', error: 'snapshotのgeneration identityが欠損または不正です。' }
     }
     snapshotGenerationIdentity = p.snapshotGenerationIdentity
-    const recomputedIdentity = computeSnapshotGenerationIdentity({
-      holdings,
-      trust,
-      portfolioPolicy,
-      cashAssumptions: cashAssumptionsWire,
-      csvImportedAt,
-      csvImportProvenance,
-    })
+    // OPS-SBI-P2-PREBUILD-PHASE2-R1-AUTHORITY-INTEGRITY-REPAIR (P2-01 ticket section 4): v4
+    // binds importAuthority into the recomputed identity (via the V2 contract), so tampering
+    // the authority object without also recomputing the identity is caught here exactly like
+    // tampering holdings/trust/policy/cash already is. v3 keeps its exact original V1-contract
+    // digest — untouched, still byte-identical to every existing v3 payload/test.
+    const recomputedIdentity = schemaVersion === PORTFOLIO_SNAPSHOT_SCHEMA_VERSION_V4
+      ? computeSnapshotGenerationIdentityV2({
+          holdings,
+          trust,
+          portfolioPolicy,
+          cashAssumptions: cashAssumptionsWire,
+          csvImportedAt,
+          csvImportProvenance,
+          importAuthority,
+        })
+      : computeSnapshotGenerationIdentity({
+          holdings,
+          trust,
+          portfolioPolicy,
+          cashAssumptions: cashAssumptionsWire,
+          csvImportedAt,
+          csvImportProvenance,
+        })
     if (snapshotGenerationIdentity !== recomputedIdentity) {
       return { ok: false, code: 'INVALID_SNAPSHOT_GENERATION', error: 'snapshotの内容とgeneration identityが一致しません。' }
     }
@@ -575,6 +638,7 @@ export function parsePortfolioSnapshotImport(raw: string): PortfolioSnapshotPars
       trust,
       portfolioPolicy,
       cashAssumptions,
+      importAuthority,
     },
   }
 }
