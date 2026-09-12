@@ -37,6 +37,7 @@ const PORTFOLIO_GENERATION_OPERATION_MEMBERSHIP: Record<PortfolioGenerationOpera
   initialize: true,
   refreshAllData: true,
   importCsv: true,
+  importSbiPortfolioFullExport: true,
   importPortfolioSnapshot: true,
   updateHolding: true,
   updateTrust: true,

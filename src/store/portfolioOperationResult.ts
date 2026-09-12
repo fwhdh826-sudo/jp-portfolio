@@ -2,6 +2,8 @@ export type PortfolioGenerationOperation =
   | 'initialize'
   | 'refreshAllData'
   | 'importCsv'
+  // OPS-SBI-P2-PREBUILD-PHASE2: dedicated FULL_EXPORT/COMPLETE-authority SBI import path.
+  | 'importSbiPortfolioFullExport'
   | 'importPortfolioSnapshot'
   | 'updateHolding'
   | 'updateTrust'

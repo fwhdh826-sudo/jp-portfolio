@@ -105,6 +105,7 @@ describe('constants', () => {
       'initialize',
       'refreshAllData',
       'importCsv',
+      'importSbiPortfolioFullExport',
       'importPortfolioSnapshot',
       'updateHolding',
       'updateTrust',

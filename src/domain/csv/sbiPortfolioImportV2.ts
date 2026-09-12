@@ -165,6 +165,34 @@ export interface ProvisionalTrustRow {
   name: string
   code: string
   eval: number
+  /**
+   * OPS-SBI-P2-PREBUILD-PHASE2: best-effort secondary fields, captured purely for the Stage B
+   * store-authority value-merge layer (sbiPortfolioAuthorityV2.ts). Unlike `eval`, a malformed/
+   * blank cell here never blocks completeness or trust resolution — it degrades to 0/null the
+   * same way the legacy importPortfolioCsv.ts parser's non-authoritative fields do.
+   */
+  price: number
+  pnlPct: number
+  dayPct: number
+  acquiredAt: string | null
+}
+
+/**
+ * OPS-SBI-P2-PREBUILD-PHASE2: symmetric counterpart of ProvisionalTrustRow for the
+ * JP_STOCK_CUSTODY section. Phase 1 deliberately captured only aggregate counts for stock rows
+ * (this module never merges/mutates state); Phase 2's staged-diff builder needs the actual
+ * accepted-row values, so this is captured the same additive, non-authoritative way as the trust
+ * secondary fields above — it changes no existing status/completeness/diagnostic behavior.
+ */
+export interface ProvisionalStockRow {
+  sectionId: 'JP_STOCK_CUSTODY'
+  code: string
+  name: string
+  eval: number
+  price: number
+  pnlPct: number
+  dayPct: number
+  acquiredAt: string | null
 }
 
 export interface SbiPortfolioImportResultV2 {
@@ -182,6 +210,8 @@ export interface SbiPortfolioImportResultV2 {
   completeness: CompletenessResult
   trustResolution: TrustResolutionStatus
   provisionalTrustRows: ProvisionalTrustRow[]
+  /** OPS-SBI-P2-PREBUILD-PHASE2: accepted JP_STOCK_CUSTODY rows, additive (see ProvisionalStockRow). */
+  provisionalStockRows: ProvisionalStockRow[]
   provenance: {
     /** Pure text-derived provenance only — this layer does not know the source file name/mtime. */
     explicitSourceTimestamp: ExplicitSourceTimestampResult
@@ -318,6 +348,29 @@ function evalRejectionReason(outcome: Exclude<NumberOutcome, { kind: 'valid' }>)
   return 'INVALID_EVAL_MALFORMED'
 }
 
+// OPS-SBI-P2-PREBUILD-PHASE2: lenient secondary-field parsing (price/pnlPct/dayPct/acquiredAt).
+// Deliberately mirrors legacy importPortfolioCsv.ts's parseNum/normalizeDate: unlike `eval`
+// (parseAuthoritativeNumber above), a malformed/blank secondary field degrades to 0/null instead
+// of rejecting the row — these fields never participate in completeness or trust resolution.
+function parseLenientNumber(raw: string): number {
+  const normalized = normalizeCell(raw).replace(/,/g, '').replace(/[−―]/g, '-')
+  if (!normalized) return 0
+  const value = Number.parseFloat(normalized)
+  return Number.isFinite(value) ? value : 0
+}
+
+function parseLenientDate(raw: string): string | null {
+  if (!raw) return null
+  const cleaned = normalizeCell(raw)
+  if (!cleaned || cleaned.includes('----')) return null
+  const match = cleaned.match(/(\d{4})[/\-年](\d{1,2})[/\-月](\d{1,2})/)
+  if (!match) return null
+  const y = match[1]
+  const m = match[2].padStart(2, '0')
+  const d = match[3].padStart(2, '0')
+  return `${y}-${m}-${d}`
+}
+
 // Section 13: preserve the existing safe JPX code charset (P4.5-A013-HARDENING-F3) —
 // 3 digits + 1 alphanumeric (excluding visually-confusable I/O).
 const STOCK_CODE_SEARCH_RE = /\d{3}[0-9A-HJ-NP-Z]/
@@ -335,13 +388,28 @@ function cleanupPositionName(raw: string, code: string): string {
     .trim()
 }
 
-interface PositionRowAccepted { accepted: true; code: string; name: string; eval: number }
+interface PositionRowAccepted {
+  accepted: true
+  code: string
+  name: string
+  eval: number
+  price: number
+  pnlPct: number
+  dayPct: number
+  acquiredAt: string | null
+}
 interface PositionRowRejected { accepted: false; rejectionReason: RowRejectionReason }
 type PositionRowOutcome = PositionRowAccepted | PositionRowRejected
 
 function parsePositionRow(assetType: SectionAssetType, normalizedCols: string[], schema: ColumnSchema): PositionRowOutcome {
   const cell = (idx: number) => (idx >= 0 && idx < normalizedCols.length ? normalizedCols[idx] : '')
   const evalOutcome = parseAuthoritativeNumber(cell(schema.fieldIndex.eval))
+  const secondaryFields = {
+    price: parseLenientNumber(cell(schema.fieldIndex.price)),
+    pnlPct: parseLenientNumber(cell(schema.fieldIndex.pnlPct)),
+    dayPct: parseLenientNumber(cell(schema.fieldIndex.dayPct)),
+    acquiredAt: parseLenientDate(cell(schema.fieldIndex.acquiredAt)),
+  }
 
   if (assetType === 'stock') {
     const codeCell = cell(schema.fieldIndex.code) || cell(schema.fieldIndex.name)
@@ -350,14 +418,14 @@ function parsePositionRow(assetType: SectionAssetType, normalizedCols: string[],
     const name = cleanupPositionName(cell(schema.fieldIndex.name), code)
     if (!name) return { accepted: false, rejectionReason: 'MISSING_NAME' }
     if (evalOutcome.kind !== 'valid') return { accepted: false, rejectionReason: evalRejectionReason(evalOutcome) }
-    return { accepted: true, code, name, eval: evalOutcome.value }
+    return { accepted: true, code, name, eval: evalOutcome.value, ...secondaryFields }
   }
 
   const name = cell(schema.fieldIndex.name)
   if (!name) return { accepted: false, rejectionReason: 'MISSING_NAME' }
   if (evalOutcome.kind !== 'valid') return { accepted: false, rejectionReason: evalRejectionReason(evalOutcome) }
   const code = schema.fieldIndex.code >= 0 ? cell(schema.fieldIndex.code) : ''
-  return { accepted: true, code, name, eval: evalOutcome.value }
+  return { accepted: true, code, name, eval: evalOutcome.value, ...secondaryFields }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -437,6 +505,7 @@ export function parseSbiPortfolioImportV2(
   const unsupportedSections: UnsupportedSectionResult[] = []
   const rowDiagnostics: RowDiagnosticEntry[] = []
   const provisionalTrustRows: ProvisionalTrustRow[] = []
+  const provisionalStockRows: ProvisionalStockRow[] = []
   let orphanPositionRowCount = 0
   let anyStructuralSectionSeen = false
 
@@ -689,6 +758,21 @@ export function parseSbiPortfolioImportV2(
               name: outcome.name,
               code: outcome.code,
               eval: outcome.eval,
+              price: outcome.price,
+              pnlPct: outcome.pnlPct,
+              dayPct: outcome.dayPct,
+              acquiredAt: outcome.acquiredAt,
+            })
+          } else {
+            provisionalStockRows.push({
+              sectionId: 'JP_STOCK_CUSTODY',
+              code: outcome.code,
+              name: outcome.name,
+              eval: outcome.eval,
+              price: outcome.price,
+              pnlPct: outcome.pnlPct,
+              dayPct: outcome.dayPct,
+              acquiredAt: outcome.acquiredAt,
             })
           }
         } else {
@@ -752,6 +836,7 @@ export function parseSbiPortfolioImportV2(
     orphanPositionRowCount,
     trustResolution,
     provisionalTrustRows,
+    provisionalStockRows,
     provenance: { explicitSourceTimestamp },
   } satisfies Omit<SbiPortfolioImportResultV2, 'completeness'>
 
@@ -796,6 +881,9 @@ export function evaluateFullExportCompleteness(
 
   // Section 14/17: this layer cannot prove unique trust-master identity (no registry
   // input) — a non-empty trust section can never yield a bare FULL_EXPORT PASS here.
+  // (sbiPortfolioAuthorityV2.ts's evaluateFinalFullExportAuthority strips this specific
+  // reason back out once Stage B has independently proven trust identity against the live
+  // registry — see that function's comment.)
   if (result.trustResolution === 'STRUCTURALLY_VALID_BUT_TRUST_RESOLUTION_REQUIRED') {
     reasons.add('TRUST_REGISTRY_MISS')
   }

@@ -23,6 +23,7 @@ const OPERATIONS = [
   'initialize',
   'refreshAllData',
   'importCsv',
+  'importSbiPortfolioFullExport',
   'importPortfolioSnapshot',
   'updateHolding',
   'updateTrust',
@@ -43,7 +44,7 @@ const ERROR_CODES = [
   'PORTFOLIO_GENERATION_CONFLICT',
 ] as const satisfies readonly PortfolioCoordinationErrorCode[]
 
-const MANUAL_OPERATIONS = OPERATIONS.slice(4) as readonly ManualPortfolioMutationOperation[]
+const MANUAL_OPERATIONS = OPERATIONS.slice(5) as readonly ManualPortfolioMutationOperation[]
 const LOAD_OPERATIONS = OPERATIONS.slice(0, 2) as readonly PortfolioLoadOperation[]
 const LOAD_FAILURE_CODES = [
   'LOAD_RESTORE_ERROR',
@@ -60,10 +61,10 @@ const MANUAL_FAILURE_CODES = [
 ] as const satisfies readonly ManualMutationFailureCode[]
 
 describe('portfolio operation coordination taxonomy', () => {
-  it('defines exactly the eleven portfolio generation operations', () => {
+  it('defines exactly the twelve portfolio generation operations', () => {
     expectTypeOf<PortfolioGenerationOperation>()
       .toEqualTypeOf<(typeof OPERATIONS)[number]>()
-    expect(OPERATIONS).toHaveLength(11)
+    expect(OPERATIONS).toHaveLength(12)
   })
 
   it('defines exactly the seven coordination error codes without WEB_LOCK_BUSY', () => {

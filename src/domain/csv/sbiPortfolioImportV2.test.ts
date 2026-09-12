@@ -436,6 +436,7 @@ describe('sbiPortfolioImportV2: evaluateFullExportCompleteness is independently 
       orphanPositionRowCount: 0,
       trustResolution: 'NOT_APPLICABLE' as const,
       provisionalTrustRows: [],
+      provisionalStockRows: [],
       provenance: { explicitSourceTimestamp: { status: 'absent' as const } },
     }
     expect(evaluateFullExportCompleteness(draft)).toEqual({ status: 'PASS' })
@@ -458,7 +459,8 @@ describe('sbiPortfolioImportV2: evaluateFullExportCompleteness is independently 
       rowDiagnostics: [],
       orphanPositionRowCount: 0,
       trustResolution: 'STRUCTURALLY_VALID_BUT_TRUST_RESOLUTION_REQUIRED' as const,
-      provisionalTrustRows: [{ sectionId: 'TRUST_TAXABLE' as const, accountHint: '特定', name: 'テスト', code: '', eval: 100 }],
+      provisionalTrustRows: [{ sectionId: 'TRUST_TAXABLE' as const, accountHint: '特定', name: 'テスト', code: '', eval: 100, price: 0, pnlPct: 0, dayPct: 0, acquiredAt: null }],
+      provisionalStockRows: [],
       provenance: { explicitSourceTimestamp: { status: 'absent' as const } },
     }
     expect(evaluateFullExportCompleteness(draft)).toEqual({ status: 'FAIL', reasons: ['TRUST_REGISTRY_MISS'] })

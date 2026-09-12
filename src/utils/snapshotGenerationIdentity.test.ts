@@ -5,11 +5,14 @@ import type { CsvImportProvenance } from '../types'
 import {
   CANONICAL_GENERATION_CONTRACT_V1,
   CANONICAL_GENERATION_CONTRACT_V2,
+  CANONICAL_GENERATION_CONTRACT_V3,
   computeCanonicalPortfolioGenerationIdentity,
   computeCanonicalPortfolioGenerationIdentityV2,
+  computeCanonicalPortfolioGenerationIdentityV3,
   computeSnapshotGenerationIdentity,
   serializeCanonicalPortfolioGeneration,
   serializeCanonicalPortfolioGenerationV2,
+  serializeCanonicalPortfolioGenerationV3,
   serializeSnapshotGeneration,
   type SnapshotGenerationInput,
 } from './snapshotGenerationIdentity'
@@ -229,5 +232,52 @@ describe('T9-A004-R3-FIX-A canonical generation identity', () => {
 
     expect(computeCanonicalPortfolioGenerationIdentityV2(july18))
       .not.toBe(computeCanonicalPortfolioGenerationIdentityV2(july19))
+  })
+
+  // OPS-SBI-P2-PREBUILD-PHASE2: canonical v6 identity contract.
+  describe('canonical v6 (V3 contract) authority binding', () => {
+    const completeAuthority = {
+      authorityVersion: 'portfolio-import-authority-1' as const,
+      importMode: 'FULL_EXPORT' as const,
+      contractVersion: 'sbi-portfolio-import-2',
+      profileId: 'sbi-portfolio-v1',
+      authorityStatus: 'COMPLETE' as const,
+      selectedAssetClasses: null,
+      preservedAssetClasses: null,
+      provenanceScope: 'FULL_EXPORT' as const,
+      sectionCompleteness: [{ sectionId: 'JP_STOCK_CUSTODY', status: 'VALID_NONEMPTY' as const }],
+    }
+
+    it('is schema/contract-domain separated from v1/v2 and byte-deterministic', () => {
+      const v3 = computeCanonicalPortfolioGenerationIdentityV3({ ...fullGeneration, importAuthority: completeAuthority })
+      expect(CANONICAL_GENERATION_CONTRACT_V3).toBe('canonical-portfolio-generation-3')
+      expect(v3).toMatch(/^sha256:[0-9a-f]{64}$/)
+      expect(v3).not.toBe(computeCanonicalPortfolioGenerationIdentity(fullGeneration))
+      expect(v3).not.toBe(computeCanonicalPortfolioGenerationIdentityV2(fullGeneration))
+      expect(serializeCanonicalPortfolioGenerationV3({ ...fullGeneration, importAuthority: completeAuthority }))
+        .toContain('"contract":"canonical-portfolio-generation-3"')
+      expect(serializeCanonicalPortfolioGenerationV3({ ...fullGeneration, importAuthority: completeAuthority }))
+        .toContain('"schemaVersion":"csv-import-generation-6"')
+    })
+
+    it('changes identity when authorityStatus differs on an otherwise identical payload', () => {
+      const complete = computeCanonicalPortfolioGenerationIdentityV3({ ...fullGeneration, importAuthority: completeAuthority })
+      const legacyUnproven = computeCanonicalPortfolioGenerationIdentityV3({
+        ...fullGeneration,
+        importAuthority: { ...completeAuthority, authorityStatus: 'LEGACY_UNPROVEN' as const },
+      })
+      const omitted = computeCanonicalPortfolioGenerationIdentityV3(fullGeneration)
+      expect(complete).not.toBe(legacyUnproven)
+      expect(complete).not.toBe(omitted)
+    })
+
+    it('V1/V2 digests are unaffected by the presence of importAuthority (additive field only)', () => {
+      const withoutAuthority = computeCanonicalPortfolioGenerationIdentity(fullGeneration)
+      const withAuthority = computeCanonicalPortfolioGenerationIdentity({ ...fullGeneration, importAuthority: completeAuthority })
+      expect(withAuthority).toBe(withoutAuthority)
+      const v2WithoutAuthority = computeCanonicalPortfolioGenerationIdentityV2(fullGeneration)
+      const v2WithAuthority = computeCanonicalPortfolioGenerationIdentityV2({ ...fullGeneration, importAuthority: completeAuthority })
+      expect(v2WithAuthority).toBe(v2WithoutAuthority)
+    })
   })
 })

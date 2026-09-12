@@ -428,7 +428,10 @@ export function buildNewHoldingFromCsvRow(row: ParsedRow & { code: string }): Ho
 }
 
 // ── ファイル読み込み（UTF-8 / Shift-JIS判定）───────────────────
-async function readFileAsText(file: File): Promise<string> {
+// OPS-SBI-P2-PREBUILD-PHASE2: exported so the new FULL_EXPORT store action
+// (importSbiPortfolioFullExport) can reuse the same encoding-detection file read without
+// duplicating this browser API dance. Pure I/O; no domain coupling either direction.
+export async function readFileAsText(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
     let settled = false
     let reader: FileReader

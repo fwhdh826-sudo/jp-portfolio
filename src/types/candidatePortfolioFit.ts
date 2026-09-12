@@ -38,6 +38,10 @@ export const PORTFOLIO_FIT_SNAPSHOT_SCHEMA_VERSIONS = [
   'csv-import-generation-3',
   'csv-import-generation-4',
   'csv-import-generation-5',
+  // OPS-SBI-P2-PREBUILD-PHASE2: canonical envelope v6 (importAuthority). Additive only — this
+  // consumer projects holdings/trust/policy/cash/provenance the same way regardless of schema
+  // version; it does not itself read or gate on importAuthority.
+  'csv-import-generation-6',
 ] as const
 export type PortfolioFitSnapshotSchemaVersion = (typeof PORTFOLIO_FIT_SNAPSHOT_SCHEMA_VERSIONS)[number]
 

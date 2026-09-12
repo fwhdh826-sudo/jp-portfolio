@@ -1,4 +1,5 @@
 import type { HoldingAnalysisEvidence } from './holdingEvidence'
+import type { PortfolioImportAuthorityV1 } from './portfolioImportAuthority'
 
 // ── Holding (日本株 個別銘柄) ──────────────────────────────────
 export type MetadataProvenance = 'known' | 'unknown'
@@ -651,6 +652,11 @@ export interface AppState {
   portfolioPolicy: PortfolioPolicy
   // P4.5-A002: 資金前提の手動override（現金・待機資金）
   cashAssumptions: CashAssumptions
+  // OPS-SBI-P2-PREBUILD-PHASE2: versioned portfolio import authority (COMPLETE/PARTIAL/
+  // LEGACY_UNPROVEN)。officialDecision/executable allocation/trading execution authorityは
+  // COMPLETEでのみ有効（hasCompletePortfolioAuthority参照）。reload/transferではCOMPLETEは
+  // 自然消滅せず、LEGACY_UNPROVENは自然昇格しない。
+  portfolioImportAuthority: PortfolioImportAuthorityV1
 }
 
 export type AllocationPlanSnapshotState =
@@ -668,6 +674,18 @@ export type TabId = 'T0' | 'T1' | 'T2' | 'T3' | 'T4' | 'T5' | 'T6' | 'T7' | 'T8'
 export type AssetType = 'jp_stock' | 'jp_fund' | 'global_fund'
 
 // ── v13.3 新規型（既存型は変更しない） ──────────────────────
+export type {
+  PortfolioImportAuthorityStatus,
+  PortfolioImportAuthorityAssetClass,
+  PortfolioImportProvenanceScope,
+  PortfolioImportSectionCompletenessEntry,
+  PortfolioImportAuthorityV1,
+} from './portfolioImportAuthority'
+export {
+  PORTFOLIO_IMPORT_AUTHORITY_VERSION,
+  LEGACY_UNPROVEN_PORTFOLIO_IMPORT_AUTHORITY,
+} from './portfolioImportAuthority'
+
 export type {
   CandidateFunnelArtifact,
   CandidateFunnelArtifactMeta,

@@ -64,13 +64,16 @@ describe('P5-B005-C-B1 candidatePortfolioFit — exact contract', () => {
     expect(PORTFOLIO_FIT_POLICY_MAX_RATIO).toBe(0.3)
   })
 
-  it('snapshot schema version union is exact 5-member set (A2 §4)', () => {
+  // OPS-SBI-P2-PREBUILD-PHASE2: extended to 6 members (csv-import-generation-6 / canonical
+  // envelope v6, importAuthority) — additive only, this consumer's own projection is unchanged.
+  it('snapshot schema version union is exact 6-member set (A2 §4)', () => {
     expect(PORTFOLIO_FIT_SNAPSHOT_SCHEMA_VERSIONS).toEqual([
       'csv-import-generation-1',
       'csv-import-generation-2',
       'csv-import-generation-3',
       'csv-import-generation-4',
       'csv-import-generation-5',
+      'csv-import-generation-6',
     ])
   })
 

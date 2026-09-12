@@ -6,8 +6,13 @@ import {
   persistTrust, restoreTrust, getTrustStorageFreshness,
   persistCsvSyncSummary, restoreCsvSyncSummary,
   persistCsvImportTransaction, CsvImportPersistenceError,
+  restoreCsvImportGenerationFromRaw,
+  CSV_IMPORT_GENERATION_SCHEMA_V5,
+  CSV_IMPORT_GENERATION_SCHEMA_V6,
+  CSV_IMPORT_GENERATION_KEY,
 } from './persist'
-import type { Holding, Trust, CsvSyncSummary } from '../types'
+import type { Holding, Trust, CsvSyncSummary, PortfolioImportAuthorityV1 } from '../types'
+import { DEFAULT_PORTFOLIO_POLICY, DEFAULT_CASH_ASSUMPTIONS } from '../types'
 
 const POLICY_KEY = 'v13_portfolio_policy'
 const CASH_ASSUMPTIONS_KEY = 'v13_cash_assumptions'
@@ -428,5 +433,134 @@ describe('CsvSyncSummary persist/restore（P4.5-A013-T6）', () => {
   it('restoreCsvSyncSummary: 壊れたJSONはnull（fail-closed、例外を投げない）', () => {
     store[CSV_SYNC_SUMMARY_KEY] = 'corrupted{'
     expect(restoreCsvSyncSummary()).toBeNull()
+  })
+})
+
+// OPS-SBI-P2-PREBUILD-PHASE2: canonical envelope v6 (importAuthority).
+describe('canonical v6 (importAuthority) persist/restore', () => {
+  const store: Record<string, string> = {}
+  const lsMock = {
+    getItem: (k: string) => store[k] ?? null,
+    setItem: (k: string, v: string) => { store[k] = v },
+    removeItem: (k: string) => { delete store[k] },
+  }
+
+  beforeEach(() => {
+    vi.stubGlobal('localStorage', lsMock)
+    for (const k in store) delete store[k]
+  })
+  afterEach(() => { vi.unstubAllGlobals() })
+
+  function buildHolding(overrides: Partial<Holding> = {}): Holding {
+    return {
+      code: '6501', name: '日立製作所', eval: 900_000, pnlPct: 15.2, mu: 0.1, sigma: 0.2,
+      sigmaSource: 'static', beta: 1.0, sector: '未分類', target: 0, alert: 0, lock: false,
+      mitsu: false, ma: false, rsi: 50, macd: false, vol: false, mom3m: 0, roe: 0, per: 0,
+      pbr: 0, epsG: 0, cfOk: false, de: 1.5, divG: 0, score: 0, decision: 'HOLD', ev: 0,
+      ...overrides,
+    }
+  }
+
+  function buildTrust(overrides: Partial<Trust> = {}): Trust {
+    return {
+      id: 'sp500_sbi', name: 'SBI V S&P500', abbr: 'S&P500', account: '特定', policy: 'OVERSEAS_LONGTERM',
+      eval: 4_500_000, pnlPct: 95.5, dayPct: -1.8, cost: 0.06, mu: 0.14, sigma: 0.17,
+      score: 0, signal: 'HOLD', ev: 0, decision: 'HOLD',
+      ...overrides,
+    }
+  }
+
+  const completeAuthority: PortfolioImportAuthorityV1 = {
+    authorityVersion: 'portfolio-import-authority-1',
+    importMode: 'FULL_EXPORT',
+    contractVersion: 'sbi-portfolio-import-2',
+    profileId: 'sbi-portfolio-v1',
+    authorityStatus: 'COMPLETE',
+    selectedAssetClasses: null,
+    preservedAssetClasses: null,
+    provenanceScope: 'FULL_EXPORT',
+    sectionCompleteness: [{ sectionId: 'JP_STOCK_CUSTODY', status: 'VALID_NONEMPTY' }],
+  }
+
+  function persistV6(overrides: { holdings?: Holding[]; trust?: Trust[]; importAuthority?: PortfolioImportAuthorityV1 } = {}) {
+    return persistCsvImportTransaction({
+      holdings: overrides.holdings ?? [buildHolding()],
+      trust: overrides.trust ?? [buildTrust()],
+      learning: null,
+      csvImportedAt: '2026-09-12T00:00:00+09:00',
+      provenance: null,
+      syncSummary: null,
+      trustShortSnapshot: { date: '2026-09-12', total: 0, evalById: {} },
+      portfolioPolicy: { ...DEFAULT_PORTFOLIO_POLICY },
+      cashAssumptions: { ...DEFAULT_CASH_ASSUMPTIONS },
+      origin: null,
+      snapshotGenerationIdentity: null,
+      snapshotTransferIdentity: null,
+      importAuthority: overrides.importAuthority ?? completeAuthority,
+    }, Date.now(), undefined, { schemaVersion: CSV_IMPORT_GENERATION_SCHEMA_V6 })
+  }
+
+  it('test 1: v6 COMPLETE round-trip persists exact authority', () => {
+    persistV6()
+    const restored = restoreCsvImportGenerationFromRaw(store[CSV_IMPORT_GENERATION_KEY])
+    expect(restored.status).toBe('committed')
+    if (restored.status === 'committed') {
+      expect(restored.schemaVersion).toBe(CSV_IMPORT_GENERATION_SCHEMA_V6)
+      expect(restored.payload.importAuthority).toEqual(completeAuthority)
+    }
+  })
+
+  it('test 9: a malformed v6 authority object is rejected fail-closed', () => {
+    persistV6()
+    const raw = store[CSV_IMPORT_GENERATION_KEY]
+    const envelope = JSON.parse(raw)
+    envelope.payload.importAuthority = { ...completeAuthority, authorityStatus: 'NOT_A_REAL_STATUS' }
+    // Re-point the checksum-unaware corruption at storage directly (bypassing the writer).
+    store[CSV_IMPORT_GENERATION_KEY] = JSON.stringify(envelope)
+    expect(restoreCsvImportGenerationFromRaw(store[CSV_IMPORT_GENERATION_KEY]).status).toBe('invalid')
+  })
+
+  it('test 10: an unknown future authorityVersion fails closed', () => {
+    persistV6()
+    const envelope = JSON.parse(store[CSV_IMPORT_GENERATION_KEY])
+    envelope.payload.importAuthority = { ...completeAuthority, authorityVersion: 'portfolio-import-authority-99' }
+    store[CSV_IMPORT_GENERATION_KEY] = JSON.stringify(envelope)
+    expect(restoreCsvImportGenerationFromRaw(store[CSV_IMPORT_GENERATION_KEY]).status).toBe('invalid')
+  })
+
+  it('a v6 envelope missing importAuthority entirely fails closed (exact-key contract)', () => {
+    persistV6()
+    const envelope = JSON.parse(store[CSV_IMPORT_GENERATION_KEY])
+    delete envelope.payload.importAuthority
+    store[CSV_IMPORT_GENERATION_KEY] = JSON.stringify(envelope)
+    expect(restoreCsvImportGenerationFromRaw(store[CSV_IMPORT_GENERATION_KEY]).status).toBe('invalid')
+  })
+
+  it('v5 and v6 payloads with equivalent content never share a canonical identity', () => {
+    persistV6()
+    const v6Identity = restoreCsvImportGenerationFromRaw(store[CSV_IMPORT_GENERATION_KEY])
+    for (const k in store) delete store[k]
+    persistCsvImportTransaction({
+      holdings: [buildHolding()],
+      trust: [buildTrust()],
+      learning: null,
+      csvImportedAt: '2026-09-12T00:00:00+09:00',
+      provenance: null,
+      syncSummary: null,
+      trustShortSnapshot: { date: '2026-09-12', total: 0, evalById: {} },
+      portfolioPolicy: { ...DEFAULT_PORTFOLIO_POLICY },
+      cashAssumptions: { ...DEFAULT_CASH_ASSUMPTIONS },
+      origin: null,
+      snapshotGenerationIdentity: null,
+      snapshotTransferIdentity: null,
+    }, Date.now(), undefined, { schemaVersion: CSV_IMPORT_GENERATION_SCHEMA_V5 })
+    const v5Identity = restoreCsvImportGenerationFromRaw(store[CSV_IMPORT_GENERATION_KEY])
+    expect(v6Identity.status).toBe('committed')
+    expect(v5Identity.status).toBe('committed')
+    if (v6Identity.status === 'committed' && v5Identity.status === 'committed') {
+      expect(v6Identity.generationId).not.toBe(v5Identity.generationId) // sanity: distinct writes
+      expect((v6Identity.payload as { snapshotGenerationIdentity?: string }).snapshotGenerationIdentity)
+        .not.toBe((v5Identity.payload as { snapshotGenerationIdentity?: string }).snapshotGenerationIdentity)
+    }
   })
 })

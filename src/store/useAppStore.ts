@@ -1,9 +1,9 @@
 import { create, type StateCreator } from 'zustand'
 import { createStore, type StoreApi } from 'zustand/vanilla'
-import type { AppState, Holding, Trust, TabId, StockScoreRecord, FundPhase7Map, OfficialDecision, OfficialDecisionItem, OfficialDecisionAction, PortfolioPolicy, CashAssumptions, CsvImportProvenance, CsvSyncSummary, SystemState, AllocationPlanSnapshotState } from '../types'
-import { DEFAULT_PORTFOLIO_POLICY, DEFAULT_CASH_ASSUMPTIONS } from '../types'
+import type { AppState, Holding, Trust, TabId, StockScoreRecord, FundPhase7Map, OfficialDecision, OfficialDecisionItem, OfficialDecisionAction, PortfolioPolicy, CashAssumptions, CsvImportProvenance, CsvSyncSummary, SystemState, AllocationPlanSnapshotState, PortfolioImportAuthorityV1 } from '../types'
+import { DEFAULT_PORTFOLIO_POLICY, DEFAULT_CASH_ASSUMPTIONS, LEGACY_UNPROVEN_PORTFOLIO_IMPORT_AUTHORITY } from '../types'
 import { INITIAL_HOLDINGS } from '../constants/holdings'
-import { INITIAL_TRUST } from '../constants/trust'
+import { INITIAL_TRUST, TRUST_SBI_CSV_ALIASES } from '../constants/trust'
 import {
   STATIC_MARKET,
   INITIAL_CASH,
@@ -18,12 +18,21 @@ import { joinHoldingEvidence, buildHoldingAnalysisEvidence, isHoldingEvidencePip
 import {
   importPortfolioCsv,
   buildNewHoldingFromCsvRow,
+  readFileAsText,
   STOCK_REMOVAL_RATIO_THRESHOLD,
   STOCK_REMOVAL_ABSOLUTE_CAP,
   CsvFullSyncGuardError,
   type CsvImportDiagnostics,
   type TrustSyncReport,
 } from '../domain/csv/importPortfolioCsv'
+import { parseSbiPortfolioImportV2, type CompletenessReason } from '../domain/csv/sbiPortfolioImportV2'
+import {
+  resolveTrustRows,
+  evaluateFinalFullExportAuthority,
+  buildCompleteFullExportAuthority,
+  buildFullExportStagedDiff,
+  type FullExportStagedDiff,
+} from '../domain/csv/sbiPortfolioAuthorityV2'
 import {
   restorePortfolio,
   restoreTrust,
@@ -46,6 +55,8 @@ import {
   CsvImportPersistenceIndeterminateError,
   CSV_IMPORT_GENERATION_SCHEMA_V4,
   CSV_IMPORT_GENERATION_SCHEMA_V5,
+  CSV_IMPORT_GENERATION_SCHEMA_V6,
+  restoreCsvTrustShortSnapshot,
   restorePortfolioPolicy,
   restoreCashAssumptions,
   persistLegacyPortfolioGenerationTransaction,
@@ -68,7 +79,7 @@ import { buildTrustPortfolioPlan } from '../domain/optimization/trustPortfolio'
 import { buildZeroBasePlan } from '../domain/optimization/zeroBase'
 import { buildStockPortfolioPlan } from '../domain/optimization/stockPortfolio'
 import { buildCommitteeDecision } from '../domain/analysis/committeeDecision'
-import { selectMarketDataQuality, selectEffectiveCashAssumptions, selectEffectiveSafeModeActive, selectCashAssumptionsFreshness, selectSafeModeDataQuality, selectCandidateFunnelFreshness } from './selectors'
+import { selectMarketDataQuality, selectEffectiveCashAssumptions, selectEffectiveSafeModeActive, selectCashAssumptionsFreshness, selectSafeModeDataQuality, selectCandidateFunnelFreshness, selectHasCompletePortfolioAuthority } from './selectors'
 import { buildCandidateUniverse, scoreCandidates, buildStockCandidatePlan, computeJpStockHeadroom, buildHoldingAllocationCandidates } from '../domain/candidates'
 import type { CandidateItem } from '../domain/candidates'
 import { buildCandidateDecisionSynthesisFromState } from './candidateDecisionSynthesisComposer'
@@ -196,6 +207,9 @@ interface AppActions {
   refreshAllData: () => Promise<PortfolioLoadResult>
   // CSV取込 → 即時再分析
   importCsv: (file: File, options?: CsvImportOptions) => Promise<CsvImportResult>
+  // OPS-SBI-P2-PREBUILD-PHASE2: two-stage authority (Stage A structural + Stage B trust
+  // resolution) SBI FULL_EXPORT import → COMPLETE portfolio authority
+  importSbiPortfolioFullExport: (file: File, options?: SbiFullExportImportOptions) => Promise<SbiFullExportImportResult>
   // タブ切替
   setTab: (tab: TabId) => void
   // holding手動更新（score等）
@@ -292,6 +306,76 @@ export type CsvImportResult =
       diagnostics?: CsvImportDiagnostics
     }
   | (PortfolioCoordinationFailure & { operation: 'importCsv' })
+
+// ── OPS-SBI-P2-PREBUILD-PHASE2: SBI FULL_EXPORT (two-stage authority) import ──────────
+export interface SbiFullExportImportOptions {
+  /**
+   * Required to commit when the staged diff crosses the destructive-change threshold (ticket
+   * section 14/15). Must exactly equal the `confirmationToken` a prior CONFIRMATION_REQUIRED
+   * result for this same file returned — it is bound to the CSV content hash, the current
+   * canonical generation id, the import mode, and the staged diff identity, so it is
+   * automatically invalid (recomputes to a different value) if any of those changed since
+   * preview, including a stale confirmation replayed after a newer commit.
+   */
+  confirmationToken?: string
+}
+
+export type SbiFullExportImportErrorCode =
+  | 'FILE_READ_ERROR'
+  | 'AUTHORITY_NOT_PASS'
+  | 'ANALYSIS_ERROR'
+  | 'OFFICIAL_DECISION_ERROR'
+  | 'PERSISTENCE_ERROR'
+  | 'PERSISTENCE_INDETERMINATE'
+  | 'IMPORT_CONFLICT'
+  | 'CSV_CANONICAL_INVALID'
+  | 'UNKNOWN_ERROR'
+
+export type SbiFullExportImportResult =
+  | {
+      ok: true
+      code: 'SUCCESS'
+      message: string
+      imported: {
+        stock: { added: number; updated: number; removed: number }
+        trust: { updated: number; zeroed: number }
+      }
+      importedAt: string
+      authorityStatus: 'COMPLETE'
+    }
+  | {
+      ok: false
+      code: 'CONFIRMATION_REQUIRED'
+      message: string
+      confirmationToken: string
+      stagedDiffSummary: {
+        stockAdd: number
+        stockUpdate: number
+        stockRemove: number
+        trustUpdate: number
+        trustZero: number
+        removedStockRatio: number
+      }
+    }
+  | {
+      ok: false
+      code: 'AUTHORITY_NOT_PASS'
+      message: string
+      reasons: CompletenessReason[]
+    }
+  | {
+      ok: false
+      code: Exclude<SbiFullExportImportErrorCode, 'AUTHORITY_NOT_PASS'>
+      message: string
+    }
+  | (PortfolioCoordinationFailure & { operation: 'importSbiPortfolioFullExport' })
+
+function sbiFullExportImportFailure(
+  code: Exclude<SbiFullExportImportErrorCode, 'AUTHORITY_NOT_PASS'>,
+  message: string,
+): SbiFullExportImportResult {
+  return { ok: false, code, message }
+}
 
 class OfficialDecisionGenerationError extends Error {
   constructor(cause: unknown) {
@@ -873,6 +957,13 @@ type CsvImportCanonicalSchemaVersion = Extract<
 function canonicalReplacementWriteContract(
   schemaVersion: CsvImportCanonicalSchemaVersion,
 ): CsvImportCanonicalWriteContract {
+  // OPS-SBI-P2-PREBUILD-PHASE2 (ticket section 10/25 item 5): a v6 generation's schema tier must
+  // be preserved on every best-effort replacement write (manual mutations, initialize's
+  // post-analysis re-persist) — downgrading to v4 here would silently strip importAuthority and
+  // turn a COMPLETE generation into LEGACY_UNPROVEN merely because some unrelated field (e.g. a
+  // manual holding edit) triggered a replacement write. "COMPLETE cannot become PARTIAL/LEGACY
+  // merely because of reload" applies here exactly as much as to a plain reload.
+  if (schemaVersion === CSV_IMPORT_GENERATION_SCHEMA_V6) return { schemaVersion: CSV_IMPORT_GENERATION_SCHEMA_V6 }
   return schemaVersion === CSV_IMPORT_GENERATION_SCHEMA_V5
     ? { schemaVersion: CSV_IMPORT_GENERATION_SCHEMA_V5 }
     : { schemaVersion: CSV_IMPORT_GENERATION_SCHEMA_V4 }
@@ -926,6 +1017,14 @@ function persistCurrentPortfolioGeneration(
         ? null
         : state.system.csvSyncSummary ?? canonical.payload.syncSummary
       const provenance = state.system.csvImportProvenance ?? null
+      // OPS-SBI-P2-PREBUILD-PHASE2 (ticket section 10/20/25): a replacement write of a v6
+      // generation must carry its exact importAuthority forward unchanged — this path never
+      // itself proves or disproves FULL_EXPORT completeness, so it must neither invent COMPLETE
+      // nor silently drop an already-proven one. The key is added only for v6 (a v4/v5 payload
+      // must never gain an extra key that its exact-key schema rejects).
+      const importAuthorityField = canonical.schemaVersion === CSV_IMPORT_GENERATION_SCHEMA_V6
+        ? { importAuthority: canonical.payload.importAuthority ?? LEGACY_UNPROVEN_PORTFOLIO_IMPORT_AUTHORITY }
+        : {}
       const receipt = persistCsvImportTransaction({
         holdings: state.holdings,
         trust: state.trust,
@@ -948,6 +1047,7 @@ function persistCurrentPortfolioGeneration(
           csvImportedAt,
           csvImportProvenance: provenance,
         }),
+        ...importAuthorityField,
       }, savedAt, knownCanonicalRaw, canonicalReplacementWriteContract(canonical.schemaVersion))
       return { status: 'persisted', target: 'canonical', receipt }
     } catch (error) {
@@ -1275,6 +1375,25 @@ function reconcileRestoredTrustRegistry(savedTrust: Trust[]): TrustRegistryRecon
 }
 
 /**
+ * OPS-SBI-P2-PREBUILD-PHASE2: derives the store's portfolioImportAuthority from the same
+ * restored canonical generation used for holdings/trust/policy/cash (ticket section 10/25).
+ * A v6 generation's own proven authority object is trusted as-is (isCsvImportPayload already
+ * re-verified it against the live registry-independent identity digest at restore time); every
+ * v1-v5 generation — and a fresh/absent store — is LEGACY_UNPROVEN. Reload never promotes
+ * LEGACY_UNPROVEN to COMPLETE and never demotes a genuinely restored COMPLETE generation.
+ */
+function deriveAuthorityFromCsvGeneration(
+  csvGeneration: CsvImportGenerationRestoreResult,
+): PortfolioImportAuthorityV1 {
+  if (csvGeneration.status === 'committed' &&
+      csvGeneration.schemaVersion === CSV_IMPORT_GENERATION_SCHEMA_V6 &&
+      csvGeneration.payload.importAuthority) {
+    return csvGeneration.payload.importAuthority
+  }
+  return LEGACY_UNPROVEN_PORTFOLIO_IMPORT_AUTHORITY
+}
+
+/**
  * Bootstrap restore for initialize: the latest durable canonical/legacy generation is always the
  * base, regardless of whatever the just-created local Zustand state currently holds. A present
  * but corrupt canonical envelope fails closed (no legacy fallback, no defaults) instead of mixing
@@ -1325,6 +1444,7 @@ function buildInitializeRestoredState(baseState: AppState, nowMs: number): Initi
     ...(savedLearning ? { learning: savedLearning } : {}),
     portfolioPolicy: savedPolicy,
     cashAssumptions: savedCashAssumptions,
+    portfolioImportAuthority: deriveAuthorityFromCsvGeneration(csvGeneration),
     system: {
       ...baseState.system,
       ...(csvGeneration.status === 'committed'
@@ -1807,6 +1927,10 @@ export function committeeToOfficialDecision(
   dqSuppressed: boolean,
   safeModeActive: boolean,
   holdings: Holding[],
+  // OPS-SBI-P2-PREBUILD-PHASE2: true when portfolioImportAuthority.authorityStatus !== 'COMPLETE'
+  // (see selectHasCompletePortfolioAuthority). Defaults to false so every pre-existing caller
+  // (production and tests) keeps its current behavior unless it explicitly opts in.
+  portfolioAuthorityBlocked = false,
 ): OfficialDecision {
   // P1-3D前準備: stock系アクションに証券コードを補完する
   // CommitteeAction.id は "stock-BUY_7203" / "stock-SELL_7203" / "stock-WAIT_7203" の形式
@@ -1830,11 +1954,19 @@ export function committeeToOfficialDecision(
     // P4-A148: risk-notrade/DQ抑制のいずれでもない場合のみ、SAFE_MODE中のBUYをBLOCKED化する。
     // SELL/WATCH/HOLD系のタイトルは対象外のため、防御・監視判断はSAFE_MODE中でも維持される。
     const isSafeModeBuyBlocked = !isRiskNoTrade && !isDqBlocked && safeModeActive && a.title.startsWith('BUY ')
+    // OPS-SBI-P2-PREBUILD-PHASE2 Policy B (ticket section 16): an unproven portfolio population
+    // (authorityStatus !== COMPLETE) must never authorize an executable BUY/SELL — the held
+    // codes/evals themselves are not proven, so no trade decision derived from them can be
+    // "official". HOLD/WATCH/MONITOR remain (exploratory/informational), matching how DQ
+    // suppression and SAFE_MODE already narrow only the executable actions above.
+    const isPortfolioAuthorityBlocked = !isRiskNoTrade && !isDqBlocked && portfolioAuthorityBlocked &&
+      (a.title.startsWith('BUY ') || a.title.startsWith('SELL '))
 
     const action: OfficialDecisionAction =
-      isRiskNoTrade          ? 'BLOCKED'
-      : isDqBlocked          ? 'DATA_WAIT'
-      : isSafeModeBuyBlocked ? 'BLOCKED'
+      isRiskNoTrade               ? 'BLOCKED'
+      : isDqBlocked               ? 'DATA_WAIT'
+      : isSafeModeBuyBlocked      ? 'BLOCKED'
+      : isPortfolioAuthorityBlocked ? 'BLOCKED'
       : a.title.startsWith('BUY ')  ? 'BUY'
       : a.title.startsWith('SELL ') ? 'SELL'
       : 'HOLD'
@@ -1854,7 +1986,9 @@ export function committeeToOfficialDecision(
       source:        'committee' as const,
       blockedReason: isSafeModeBuyBlocked
         ? 'SAFE_MODE発動中 — 新規買付停止'
-        : action === 'BLOCKED' || action === 'DATA_WAIT' ? a.detail : undefined,
+        : isPortfolioAuthorityBlocked
+          ? 'ポートフォリオの完全性が未証明のため実行権限がありません（COMPLETE FULL_EXPORTが必要）'
+          : action === 'BLOCKED' || action === 'DATA_WAIT' ? a.detail : undefined,
     }
   })
 
@@ -1863,7 +1997,7 @@ export function committeeToOfficialDecision(
     source:                'committee',
     headline:              cd.verdict.label,
     stance,
-    noTrade:               cd.verdict.noTrade || dqSuppressed,
+    noTrade:               cd.verdict.noTrade || dqSuppressed || portfolioAuthorityBlocked,
     dataQualitySuppressed: dqSuppressed,
     actions,
     risks:                 cd.risks,
@@ -2307,6 +2441,11 @@ export function runFullAnalysis(
   const nowMs = options.nowMs ?? Date.now()
   const nowIso = new Date(nowMs).toISOString()
   const trustShortInput = options.trustShortInput ?? captureTrustShortAnalysisInput(nowMs)
+  // OPS-SBI-P2-PREBUILD-PHASE2 Policy B (ticket section 16/17): single central authority
+  // predicate, read once here and applied at the two narrowest executable-decision boundaries
+  // below (officialDecision BUY/SELL actions, allocationPlanStatus). Exploratory
+  // analysis/candidates remain unaffected.
+  const portfolioAuthorityBlocked = !selectHasCompletePortfolioAuthority(state)
   const adaptiveWeights =
     state.learning && state.learning.summary.total >= 20
       ? state.learning.suggestedWeights
@@ -2443,7 +2582,7 @@ export function runFullAnalysis(
       nowMs,
     })
     const cd = buildCommitteeDecision({ zeroPlan, stockPlan, trustPlan, metrics, market: state.market, holdings, nowMs })
-    officialDecision = committeeToOfficialDecision(cd, dqSuppressed, safeModeActive, holdings)
+    officialDecision = committeeToOfficialDecision(cd, dqSuppressed, safeModeActive, holdings, portfolioAuthorityBlocked)
 
     // P4-A1' → P4.5-A013-T5で判定基準を変更:
     // 元々はtrust_master（public snapshot）未ロード時のINITIAL_TRUSTの静的eval:0
@@ -2599,6 +2738,13 @@ export function runFullAnalysis(
         allocationPlan,
         allocationInput.safetyState.holdings,
       )
+      // OPS-SBI-P2-PREBUILD-PHASE2 Policy B: an otherwise-executable ('current') allocation
+      // plan derived from an unproven holdings population must not present as executable.
+      // Every other status ('estimate_only'/'stale'/'invalid'/'absent') is already
+      // non-executable presentation and is left untouched.
+      if (portfolioAuthorityBlocked && allocationPlanStatusValue === 'current') {
+        allocationPlanStatusValue = 'blocked'
+      }
       allocationPlanCandidateGenerationId = allocationPlan !== null &&
         !hasExplicitAllocationCandidates &&
         candidateCapture.status === 'available'
@@ -3121,6 +3267,8 @@ const createAppStoreStateCreator = (
   portfolioPolicy: DEFAULT_PORTFOLIO_POLICY,
   // P4.5-A002: 資金前提の手動override（初期値は既定値のまま、initialize時にlocalStorageから復元）
   cashAssumptions: DEFAULT_CASH_ASSUMPTIONS,
+  // OPS-SBI-P2-PREBUILD-PHASE2: 初期値は常にLEGACY_UNPROVEN（initialize時にcanonical世代から復元）。
+  portfolioImportAuthority: LEGACY_UNPROVEN_PORTFOLIO_IMPORT_AUTHORITY,
   system: {
     version: '10.0',
     // F-P0-3: initialize()完了までの間、ブート中を表すsentinel。single-final-publish
@@ -3997,6 +4145,317 @@ const createAppStoreStateCreator = (
       return csvImportFailure(
         'UNKNOWN_ERROR',
         'CSV取込中に予期しないエラーが発生しました。状態は変更されていません。再試行してください。',
+      )
+    } finally {
+      releasePortfolioOperationFromRuntime(runtime, operationTicket)
+    }
+  },
+
+  // OPS-SBI-P2-PREBUILD-PHASE2: dedicated FULL_EXPORT import path. Pure parser
+  // (sbiPortfolioImportV2) → pure trust resolver → pure final authority evaluator
+  // (sbiPortfolioAuthorityV2) → this store orchestration. Canonical bytes/generation/holdings/
+  // trust/officialDecision are provably unchanged unless final authority is exactly PASS
+  // (ticket section 12): every early return below happens before any persistence or set() call.
+  //
+  // Deliberate scope simplifications versus importCsv (documented, not silent — see the Phase 2
+  // final report): no CSV provenance monotonicity/duplicate detection, and no trust-short
+  // tracker execution staging. Cross-tab alignment/stale-tab refusal and exact-byte canonical
+  // ownership verification (sections 20/28) are preserved.
+  importSbiPortfolioFullExport: async (file, options = {}) => {
+    const operation: PortfolioGenerationOperation = 'importSbiPortfolioFullExport'
+    if (isPortfolioGenerationCriticalSection(runtime)) {
+      reportRejectedReentrantMutation(operation)
+      return createPortfolioCoordinationFailure(operation, 'LOCAL_OPERATION_BUSY')
+    }
+    const operationTicket = acquirePortfolioOperationFromRuntime(runtime, 'csv')
+    if (operationTicket === null) {
+      return createPortfolioCoordinationFailure(operation, 'LOCAL_OPERATION_BUSY')
+    }
+    try {
+      const lockResult = await runtime.portfolioGenerationLock.runExclusive(
+        operation,
+        async (): Promise<SbiFullExportImportResult> => {
+          const baseState = get()
+          const analysisNow = Date.now()
+          const alignment = inspectDurablePortfolioAlignment(runtime, baseState, analysisNow)
+          if (alignment.status === 'stale') {
+            return createPortfolioCoordinationFailure(operation, 'CROSS_TAB_STATE_STALE')
+          }
+          if (alignment.status === 'invalid') {
+            return alignment.canonicalInvalid
+              ? sbiFullExportImportFailure(
+                  'CSV_CANONICAL_INVALID',
+                  '保存済みの取込世代データが破損しているため、取込を中断しました。状態は変更されていません。',
+                )
+              : sbiFullExportImportFailure(
+                  'PERSISTENCE_ERROR',
+                  '保存済みデータを読み込めないため、取込を中断しました。再読み込み後に再試行してください。',
+                )
+          }
+
+          const transaction: CsvImportTransaction = {
+            token: Symbol('sbi-full-export-import-owner'),
+            origin: 'csv',
+            phase: 'READING',
+            analysisNow,
+            initialFingerprint: '',
+            trackerSnapshot: null,
+            trackerPortfolioBaseline: null,
+            canonicalPreviousRaw: alignment.canonicalRaw,
+          }
+          runtime.activePortfolioGenerationTransaction = transaction
+
+          try {
+            setPortfolioGenerationTransactionPhase(runtime, transaction, 'READING')
+            let text: string
+            try {
+              text = await readFileAsText(file)
+            } catch (error) {
+              return sbiFullExportImportFailure(
+                'FILE_READ_ERROR',
+                `CSVファイルを読み込めませんでした: ${error instanceof Error ? error.message : String(error)}`,
+              )
+            }
+
+            setPortfolioGenerationTransactionPhase(runtime, transaction, 'STAGING')
+            const parsed = parseSbiPortfolioImportV2(text, { mode: 'FULL_EXPORT' })
+            const trustResolutions = resolveTrustRows(parsed.provisionalTrustRows, baseState.trust, TRUST_SBI_CSV_ALIASES)
+            const finalAuthority = evaluateFinalFullExportAuthority(parsed, trustResolutions)
+            if (finalAuthority.status !== 'PASS') {
+              return {
+                ok: false,
+                code: 'AUTHORITY_NOT_PASS',
+                message: 'CSVは完全な取込対象ポートフォリオであることを証明できませんでした。状態は変更されていません。',
+                reasons: finalAuthority.status === 'FAIL' ? finalAuthority.reasons : [],
+              }
+            }
+
+            const diff: FullExportStagedDiff = buildFullExportStagedDiff({
+              provisionalStockRows: parsed.provisionalStockRows,
+              trustRowResolutions: trustResolutions,
+              currentHoldingCodes: baseState.holdings.map(h => h.code),
+              currentTrust: baseState.trust.map(t => ({ id: t.id, eval: t.eval })),
+              removalRatioThreshold: STOCK_REMOVAL_RATIO_THRESHOLD,
+              removalAbsoluteCap: STOCK_REMOVAL_ABSOLUTE_CAP,
+            })
+
+            const currentGeneration = restoreCsvImportGenerationFromRaw(alignment.canonicalRaw)
+            const diffIdentity = sha256Utf8Hex(JSON.stringify({
+              stockAdd: diff.stock.add.map(r => r.code).sort(),
+              stockUpdate: diff.stock.update.map(r => r.code).sort(),
+              stockRemove: [...diff.stock.remove].sort(),
+              trustUpdate: diff.trust.update.map(r => r.id).sort(),
+              trustZero: [...diff.trust.zero].sort(),
+            }))
+            const confirmationToken = sha256Utf8Hex(JSON.stringify({
+              contentHash: sha256Utf8Hex(text),
+              generationId: currentGeneration.status === 'committed' ? currentGeneration.generationId : null,
+              importMode: 'FULL_EXPORT',
+              diffIdentity,
+            }))
+
+            if (diff.destructive && options.confirmationToken !== confirmationToken) {
+              return {
+                ok: false,
+                code: 'CONFIRMATION_REQUIRED',
+                message: `既存保有銘柄${diff.removedStockCount}件がCSVに見つかりませんでした` +
+                  `（消滅率${Math.round(diff.removedStockRatio * 100)}%）。同じconfirmationTokenを指定して再度呼び出すと確定します。状態は変更されていません。`,
+                confirmationToken,
+                stagedDiffSummary: {
+                  stockAdd: diff.stock.add.length,
+                  stockUpdate: diff.stock.update.length,
+                  stockRemove: diff.stock.remove.length,
+                  trustUpdate: diff.trust.update.length,
+                  trustZero: diff.trust.zero.length,
+                  removedStockRatio: diff.removedStockRatio,
+                },
+              }
+            }
+
+            setPortfolioGenerationTransactionPhase(runtime, transaction, 'STAGING')
+            const stockByCode = new Map(baseState.holdings.map(h => [h.code, h]))
+            const updatedExistingHoldings = diff.stock.update.map(row => {
+              const holding = stockByCode.get(row.code)!
+              return {
+                ...holding,
+                eval: row.eval,
+                pnlPct: Number.isFinite(row.pnlPct) ? row.pnlPct : holding.pnlPct,
+                currentPrice: row.price > 0 ? row.price : holding.currentPrice,
+                acquiredAt: row.acquiredAt ?? holding.acquiredAt,
+              }
+            })
+            const newHoldings = diff.stock.add.map(row => buildNewHoldingFromCsvRow({
+              assetType: 'stock',
+              code: row.code,
+              name: row.name,
+              eval: row.eval,
+              pnlPct: row.pnlPct,
+              dayPct: row.dayPct,
+              price: row.price,
+              acquiredAt: row.acquiredAt ?? undefined,
+              accountHint: '',
+            }))
+            const updatedHoldings = [...updatedExistingHoldings, ...newHoldings]
+
+            const trustUpdateById = new Map(diff.trust.update.map(row => [row.id, row]))
+            const trustZeroIds = new Set(diff.trust.zero)
+            const updatedTrust = baseState.trust.map(fund => {
+              const matched = trustUpdateById.get(fund.id)
+              if (matched) return { ...fund, eval: matched.eval, pnlPct: matched.pnlPct, dayPct: matched.dayPct }
+              if (trustZeroIds.has(fund.id)) return { ...fund, eval: 0, pnlPct: 0, dayPct: 0 }
+              return fund
+            })
+
+            const now = new Date(transaction.analysisNow).toISOString()
+            const stagedState: AppState = {
+              ...baseState,
+              holdings: updatedHoldings,
+              trust: updatedTrust,
+            }
+
+            let computed: ReturnType<typeof runFullAnalysis>
+            try {
+              setPortfolioGenerationTransactionPhase(runtime, transaction, 'ANALYZING')
+              computed = runFullAnalysis(stagedState, {
+                requireOfficialDecision: true,
+                nowMs: transaction.analysisNow,
+              })
+            } catch (error) {
+              const isOfficialDecisionError = error instanceof OfficialDecisionGenerationError
+              return sbiFullExportImportFailure(
+                isOfficialDecisionError ? 'OFFICIAL_DECISION_ERROR' : 'ANALYSIS_ERROR',
+                isOfficialDecisionError
+                  ? `公式判断の生成に失敗しました: ${error.message}`
+                  : `分析に失敗しました: ${error instanceof Error ? error.message : String(error)}`,
+              )
+            }
+
+            setPortfolioGenerationTransactionPhase(runtime, transaction, 'PREPARED')
+            const importAuthority = buildCompleteFullExportAuthority(parsed)
+            const carriedTrustShortSnapshot = restoreCsvTrustShortSnapshot() ?? {
+              date: now.slice(0, 10),
+              total: 0,
+              evalById: {},
+            }
+            const stagedTransferIdentity = computeSnapshotGenerationIdentity({
+              holdings: computed.holdings,
+              trust: computed.trust,
+              portfolioPolicy: baseState.portfolioPolicy,
+              cashAssumptions: baseState.cashAssumptions,
+              csvImportedAt: now,
+              csvImportProvenance: null,
+            })
+
+            let persistenceReceipt: CsvImportPersistenceReceipt
+            const generationCommittedAt = Date.now()
+            try {
+              setPortfolioGenerationTransactionPhase(runtime, transaction, 'PERSISTING')
+              persistenceReceipt = persistCsvImportTransaction({
+                holdings: computed.holdings,
+                trust: computed.trust,
+                learning: computed.learning,
+                csvImportedAt: now,
+                provenance: null,
+                syncSummary: {
+                  importedAt: now,
+                  stock: { updated: diff.stock.update.length, added: diff.stock.add.length, removed: diff.stock.remove.length },
+                  trust: { updated: diff.trust.update.length, reheld: 0, zeroed: diff.trust.zero.length, unknownFunds: [], ambiguousFundIds: [] },
+                },
+                trustShortSnapshot: carriedTrustShortSnapshot,
+                portfolioPolicy: baseState.portfolioPolicy,
+                cashAssumptions: baseState.cashAssumptions,
+                origin: 'csv',
+                snapshotTransferIdentity: stagedTransferIdentity,
+                importAuthority,
+              }, generationCommittedAt, alignment.canonicalRaw, { schemaVersion: CSV_IMPORT_GENERATION_SCHEMA_V6 })
+              setPortfolioGenerationTransactionPhase(runtime, transaction, 'COMMITTED')
+            } catch (error) {
+              setPortfolioGenerationTransactionPhase(runtime, transaction, 'PREPARED')
+              if (error instanceof CsvImportPersistenceIndeterminateError) {
+                return sbiFullExportImportFailure('PERSISTENCE_INDETERMINATE', '保存結果を確認できません。再読み込みして状態を確認してください。')
+              }
+              return sbiFullExportImportFailure(
+                error instanceof CsvImportCanonicalConflictError ? 'IMPORT_CONFLICT' : 'PERSISTENCE_ERROR',
+                error instanceof Error ? error.message : String(error),
+              )
+            }
+
+            if (!ownsCsvImportCanonicalBytes(persistenceReceipt)) {
+              return sbiFullExportImportFailure(
+                'IMPORT_CONFLICT',
+                '保存後にcanonical世代の所有権を失ったため、準備した分析結果は公開しませんでした。外部の保存世代を維持したまま再試行してください。',
+              )
+            }
+            const authorityCheck = restoreExactCommittedCanonicalAuthority(persistenceReceipt)
+            if (!authorityCheck.ok) {
+              return sbiFullExportImportFailure(
+                'PERSISTENCE_ERROR',
+                '保存したcanonical世代を検証できなかったため、準備した分析結果は公開しませんでした。再読み込み後に再試行してください。',
+              )
+            }
+
+            const localStorageFreshness = computeLocalStorageFreshness(generationCommittedAt)
+            if (!ownsCsvImportCanonicalBytes(persistenceReceipt)) {
+              return sbiFullExportImportFailure(
+                'IMPORT_CONFLICT',
+                '公開直前にcanonical世代の所有権を失ったため、準備した分析結果は公開しませんでした。外部の保存世代を維持したまま再試行してください。',
+              )
+            }
+
+            set({
+              ...baseState,
+              ...computed,
+              portfolioImportAuthority: importAuthority,
+              system: {
+                ...baseState.system,
+                status: deriveStatusFromDataSourceOutcome(baseState.system.dataSourceOutcome),
+                csvLastImportedAt: now,
+                csvImportProvenance: null,
+                csvSyncSummary: null,
+                analysisLastRunAt: now,
+                error: null,
+                localStorageFreshness,
+              },
+            })
+            setPortfolioGenerationTransactionPhase(runtime, transaction, 'PUBLISHED')
+
+            if (computeCurrentSnapshotStateIdentity(get()) === stagedTransferIdentity) {
+              emitPortfolioGenerationInvalidationAfterCommit(runtime, {
+                operation,
+                committedAtMs: generationCommittedAt,
+              })
+            }
+
+            return {
+              ok: true,
+              code: 'SUCCESS',
+              message: `${String(file.name || 'CSVファイル')} のFULL_EXPORT取込・分析・保存が完了しました（authorityStatus=COMPLETE）。`,
+              imported: {
+                stock: { added: diff.stock.add.length, updated: diff.stock.update.length, removed: diff.stock.remove.length },
+                trust: { updated: diff.trust.update.length, zeroed: diff.trust.zero.length },
+              },
+              importedAt: now,
+              authorityStatus: 'COMPLETE',
+            }
+          } catch (error) {
+            return sbiFullExportImportFailure(
+              'UNKNOWN_ERROR',
+              `FULL_EXPORT取込中に予期しないエラーが発生しました: ${error instanceof Error ? error.message : String(error)}。状態は変更されていません。`,
+            )
+          } finally {
+            if (runtime.activePortfolioGenerationTransaction?.token === transaction.token) {
+              runtime.activePortfolioGenerationTransaction = null
+            }
+          }
+        },
+      )
+      return lockResult.ok
+        ? lockResult.value
+        : createPortfolioCoordinationFailure(operation, lockResult.code)
+    } catch {
+      return sbiFullExportImportFailure(
+        'UNKNOWN_ERROR',
+        'FULL_EXPORT取込中に予期しないエラーが発生しました。状態は変更されていません。再試行してください。',
       )
     } finally {
       releasePortfolioOperationFromRuntime(runtime, operationTicket)

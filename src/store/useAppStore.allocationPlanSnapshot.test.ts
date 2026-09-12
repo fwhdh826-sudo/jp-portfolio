@@ -34,9 +34,26 @@ const dualAuthorityTypeProbe: AllocationPlanInputAdapterOptions = {
 }
 void dualAuthorityTypeProbe
 
+// OPS-SBI-P2-PREBUILD-PHASE2: this file's fixtures test allocation-plan-snapshot mechanics
+// (cross-tab invalidation, CLASS_FULL, freshness), not portfolio import authority — give every
+// fixture a COMPLETE authority so the new Policy B gate (runFullAnalysis) never overrides an
+// otherwise-'current' status to 'blocked' here. See portfolioAuthorityGate tests for the gate
+// itself.
+const COMPLETE_AUTHORITY_FIXTURE: AppState['portfolioImportAuthority'] = {
+  authorityVersion: 'portfolio-import-authority-1',
+  importMode: 'FULL_EXPORT',
+  contractVersion: 'sbi-portfolio-import-2',
+  profileId: 'sbi-portfolio-v1',
+  authorityStatus: 'COMPLETE',
+  selectedAssetClasses: null,
+  preservedAssetClasses: null,
+  provenanceScope: 'FULL_EXPORT',
+  sectionCompleteness: [],
+}
+
 function cleanState(): AppState {
   const state = useAppStore.getState()
-  return { ...state, holdings: [], trust: [] }
+  return { ...state, holdings: [], trust: [], portfolioImportAuthority: COMPLETE_AUTHORITY_FIXTURE }
 }
 
 function adapter(
@@ -392,6 +409,10 @@ describe('AllocationPlanSnapshot store authority', () => {
         transport: invalidation.transport,
       },
     })
+    // See COMPLETE_AUTHORITY_FIXTURE comment: this instance's own state also needs it, since
+    // runFullAnalysis's returned Pick<AppState, ...> never includes portfolioImportAuthority —
+    // setState below only shallow-merges the fields runFullAnalysis actually returns.
+    created.store.setState({ portfolioImportAuthority: COMPLETE_AUTHORITY_FIXTURE })
     const first = runFullAnalysis(cleanState(), {
       nowMs: NOW,
       allocationPlanInput: adapter('fresh', 'cross-tab-before'),

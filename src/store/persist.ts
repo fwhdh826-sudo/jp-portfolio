@@ -1,6 +1,7 @@
 import {
   DEFAULT_CASH_ASSUMPTIONS,
   DEFAULT_PORTFOLIO_POLICY,
+  PORTFOLIO_IMPORT_AUTHORITY_VERSION,
   type Holding,
   type Trust,
   type LearningState,
@@ -8,6 +9,9 @@ import {
   type CashAssumptions,
   type CsvImportProvenance,
   type CsvSyncSummary,
+  type PortfolioImportAuthorityAssetClass,
+  type PortfolioImportAuthorityV1,
+  type PortfolioImportSectionCompletenessEntry,
 } from '../types'
 import {
   NO_CASH_AUTHORITY,
@@ -21,6 +25,7 @@ import { isCsvImportProvenance } from '../domain/csv/csvProvenance'
 import {
   computeCanonicalPortfolioGenerationIdentity,
   computeCanonicalPortfolioGenerationIdentityV2,
+  computeCanonicalPortfolioGenerationIdentityV3,
   isSnapshotGenerationIdentity,
 } from '../utils/snapshotGenerationIdentity'
 
@@ -38,10 +43,14 @@ export const CSV_IMPORT_GENERATION_SCHEMA_V4 = 'csv-import-generation-4' as cons
 /** Backward-compatible default writer schema name. */
 export const CSV_IMPORT_GENERATION_SCHEMA = CSV_IMPORT_GENERATION_SCHEMA_V4
 export const CSV_IMPORT_GENERATION_SCHEMA_V5 = 'csv-import-generation-5' as const
+// OPS-SBI-P2-PREBUILD-PHASE2: canonical envelope v6. Adds `importAuthority` on top of v5's
+// exact-key shape; v5's own exact-key set is never mutated (ticket section 9).
+export const CSV_IMPORT_GENERATION_SCHEMA_V6 = 'csv-import-generation-6' as const
 
 export type CsvImportCanonicalWriteContract =
   | { schemaVersion: typeof CSV_IMPORT_GENERATION_SCHEMA }
   | { schemaVersion: typeof CSV_IMPORT_GENERATION_SCHEMA_V5 }
+  | { schemaVersion: typeof CSV_IMPORT_GENERATION_SCHEMA_V6 }
 
 export type PortfolioGenerationOrigin = 'csv' | 'snapshot' | null
 
@@ -70,6 +79,10 @@ export interface CsvImportPersistencePayload {
   snapshotGenerationIdentity?: string | null
   /** Incoming/export transfer identity used for pre-analysis duplicate classification. */
   snapshotTransferIdentity?: string | null
+  /** OPS-SBI-P2-PREBUILD-PHASE2: present (and required non-null) only in v6 envelopes. Absent
+   *  in every v1-v5 envelope — that absence is exactly what makes a restored v1-v5 generation
+   *  LEGACY_UNPROVEN (ticket section 10). */
+  importAuthority?: PortfolioImportAuthorityV1
 }
 
 export interface CsvImportPersistenceReceipt {
@@ -79,6 +92,7 @@ export interface CsvImportPersistenceReceipt {
 
 interface CsvImportGenerationManifest {
   schemaVersion:
+    | typeof CSV_IMPORT_GENERATION_SCHEMA_V6
     | typeof CSV_IMPORT_GENERATION_SCHEMA_V5
     | typeof CSV_IMPORT_GENERATION_SCHEMA
     | typeof CSV_IMPORT_GENERATION_SCHEMA_V3
@@ -355,34 +369,80 @@ function isCashAssumptions(value: unknown): value is CashAssumptions {
   return isCurrentCashAssumptions(value) || isLegacyCashAssumptions(value)
 }
 
+const PORTFOLIO_IMPORT_AUTHORITY_STATUSES = ['COMPLETE', 'PARTIAL', 'LEGACY_UNPROVEN'] as const
+const PORTFOLIO_IMPORT_AUTHORITY_ASSET_CLASSES = ['JP_STOCK', 'INVESTMENT_TRUST'] as const
+const PORTFOLIO_IMPORT_PROVENANCE_SCOPES = ['FULL_EXPORT', 'PARTIAL_IMPORT', 'UNKNOWN'] as const
+const PORTFOLIO_IMPORT_SECTION_STATUSES = ['ABSENT', 'VALID_EMPTY', 'VALID_NONEMPTY', 'PARSE_FAILED'] as const
+
+function isPortfolioImportAuthorityAssetClassArrayOrNull(
+  value: unknown,
+): value is PortfolioImportAuthorityAssetClass[] | null {
+  if (value === null) return true
+  return Array.isArray(value) &&
+    value.every(item => (PORTFOLIO_IMPORT_AUTHORITY_ASSET_CLASSES as readonly unknown[]).includes(item))
+}
+
+function isPortfolioImportSectionCompletenessEntry(value: unknown): value is PortfolioImportSectionCompletenessEntry {
+  return isRecord(value) && hasExactKeys(value, ['sectionId', 'status']) &&
+    isNonEmptyString(value.sectionId) &&
+    (PORTFOLIO_IMPORT_SECTION_STATUSES as readonly unknown[]).includes(value.status)
+}
+
+/**
+ * OPS-SBI-P2-PREBUILD-PHASE2: exact-key, fail-closed validation for PortfolioImportAuthorityV1 —
+ * an unknown future authorityVersion, or any malformed field, is rejected (ticket section 25
+ * items 9/10). This function never trusts the JSON author; the caller (isCsvImportPayload v6
+ * branch) additionally never trusts this shape alone — see the identity recomputation below.
+ */
+function isPortfolioImportAuthorityV1(value: unknown): value is PortfolioImportAuthorityV1 {
+  if (!isRecord(value) || !hasExactKeys(value, [
+    'authorityVersion', 'importMode', 'contractVersion', 'profileId', 'authorityStatus',
+    'selectedAssetClasses', 'preservedAssetClasses', 'provenanceScope', 'sectionCompleteness',
+  ])) return false
+  if (value.authorityVersion !== PORTFOLIO_IMPORT_AUTHORITY_VERSION) return false
+  if (value.importMode !== 'FULL_EXPORT' && value.importMode !== 'PARTIAL_IMPORT' && value.importMode !== null) return false
+  if (value.contractVersion !== null && !isNonEmptyString(value.contractVersion)) return false
+  if (value.profileId !== null && !isNonEmptyString(value.profileId)) return false
+  if (!(PORTFOLIO_IMPORT_AUTHORITY_STATUSES as readonly unknown[]).includes(value.authorityStatus)) return false
+  if (!isPortfolioImportAuthorityAssetClassArrayOrNull(value.selectedAssetClasses)) return false
+  if (!isPortfolioImportAuthorityAssetClassArrayOrNull(value.preservedAssetClasses)) return false
+  if (!(PORTFOLIO_IMPORT_PROVENANCE_SCOPES as readonly unknown[]).includes(value.provenanceScope)) return false
+  return Array.isArray(value.sectionCompleteness) &&
+    value.sectionCompleteness.every(isPortfolioImportSectionCompletenessEntry)
+}
+
 function isCsvImportPayload(value: unknown, schemaVersion: string): value is CsvImportPersistencePayload {
   const isV1 = schemaVersion === CSV_IMPORT_GENERATION_SCHEMA_V1
   const isV2 = schemaVersion === CSV_IMPORT_GENERATION_SCHEMA_V2
   const isV3 = schemaVersion === CSV_IMPORT_GENERATION_SCHEMA_V3
   const isV4 = schemaVersion === CSV_IMPORT_GENERATION_SCHEMA
   const isV5 = schemaVersion === CSV_IMPORT_GENERATION_SCHEMA_V5
-  if (!isV1 && !isV2 && !isV3 && !isV4 && !isV5) return false
+  const isV6 = schemaVersion === CSV_IMPORT_GENERATION_SCHEMA_V6
+  if (!isV1 && !isV2 && !isV3 && !isV4 && !isV5 && !isV6) return false
   const baseKeys = ['holdings', 'trust', 'learning', 'importedAt', 'syncSummary', 'trustShortSnapshot'] as const
+  const v4v5Keys = [
+    'holdings', 'trust', 'learning', 'csvImportedAt', 'provenance', 'syncSummary',
+    'trustShortSnapshot', 'portfolioPolicy', 'cashAssumptions', 'origin',
+    'snapshotGenerationIdentity', 'snapshotTransferIdentity',
+  ] as const
   if (!isRecord(value)) return false
-  if (!hasExactKeys(value, isV4 || isV5
-    ? [
-        'holdings', 'trust', 'learning', 'csvImportedAt', 'provenance', 'syncSummary',
-        'trustShortSnapshot', 'portfolioPolicy', 'cashAssumptions', 'origin',
-        'snapshotGenerationIdentity', 'snapshotTransferIdentity',
-      ]
-    : isV1
-      ? baseKeys
-      : isV2
-        ? [...baseKeys, 'provenance']
-        : [...baseKeys, 'provenance', 'portfolioPolicy', 'cashAssumptions', 'origin'])) return false
+  if (!hasExactKeys(value, isV6
+    ? [...v4v5Keys, 'importAuthority']
+    : isV4 || isV5
+      ? v4v5Keys
+      : isV1
+        ? baseKeys
+        : isV2
+          ? [...baseKeys, 'provenance']
+          : [...baseKeys, 'provenance', 'portfolioPolicy', 'cashAssumptions', 'origin'])) return false
 
   const commonValid = Array.isArray(value.holdings) && value.holdings.every(isHolding) &&
     Array.isArray(value.trust) && value.trust.every(isTrust) &&
     (value.learning === null || isLearningState(value.learning)) &&
-    isTrustShortSnapshot(value.trustShortSnapshot, isV5)
+    isTrustShortSnapshot(value.trustShortSnapshot, isV5 || isV6)
   if (!commonValid) return false
 
-  if (!isV4 && !isV5) {
+  if (!isV4 && !isV5 && !isV6) {
     return isTimestamp(value.importedAt, false) && isCsvSyncSummary(value.syncSummary) &&
       (isV1 || value.provenance === null ||
         (isCsvImportProvenance(value.provenance) && value.provenance.importedAt === value.importedAt)) &&
@@ -406,6 +466,10 @@ function isCsvImportPayload(value: unknown, schemaVersion: string): value is Csv
       !isSnapshotGenerationIdentity(value.snapshotGenerationIdentity) ||
       (value.snapshotTransferIdentity !== null &&
         !isSnapshotGenerationIdentity(value.snapshotTransferIdentity))) return false
+  // v6 requires a structurally valid, non-null authority object — a malformed or absent
+  // authority object on a v6-tagged envelope fails closed rather than degrading silently
+  // (ticket section 25 item 9).
+  if (isV6 && !isPortfolioImportAuthorityV1(value.importAuthority)) return false
 
   if (provenance !== null && provenance.importedAt !== csvImportedAt) return false
   if (syncSummary !== null &&
@@ -431,10 +495,13 @@ function isCsvImportPayload(value: unknown, schemaVersion: string): value is Csv
     trustShortSnapshot: value.trustShortSnapshot as TrustShortPortfolioSnapshot,
     origin: canonicalOrigin,
     snapshotTransferIdentity: value.snapshotTransferIdentity,
+    ...(isV6 ? { importAuthority: value.importAuthority as PortfolioImportAuthorityV1 } : {}),
   }
-  const expectedIdentity = isV5
-    ? computeCanonicalPortfolioGenerationIdentityV2(identityInput)
-    : computeCanonicalPortfolioGenerationIdentity(identityInput)
+  const expectedIdentity = isV6
+    ? computeCanonicalPortfolioGenerationIdentityV3(identityInput)
+    : isV5
+      ? computeCanonicalPortfolioGenerationIdentityV2(identityInput)
+      : computeCanonicalPortfolioGenerationIdentity(identityInput)
   if (value.snapshotGenerationIdentity !== expectedIdentity) return false
   return true
 }
@@ -465,7 +532,8 @@ export function restoreCsvImportGenerationFromRaw(raw: string | null): CsvImport
     const manifest = envelope.manifest
     if (
       !hasExactKeys(manifest, ['schemaVersion', 'generationId', 'savedAt', 'committed', 'payloadChecksum']) ||
-      (manifest.schemaVersion !== CSV_IMPORT_GENERATION_SCHEMA_V5 &&
+      (manifest.schemaVersion !== CSV_IMPORT_GENERATION_SCHEMA_V6 &&
+        manifest.schemaVersion !== CSV_IMPORT_GENERATION_SCHEMA_V5 &&
         manifest.schemaVersion !== CSV_IMPORT_GENERATION_SCHEMA &&
         manifest.schemaVersion !== CSV_IMPORT_GENERATION_SCHEMA_V3 &&
         manifest.schemaVersion !== CSV_IMPORT_GENERATION_SCHEMA_V2 &&
@@ -1023,12 +1091,15 @@ export function persistCsvImportTransaction(
       trustShortSnapshot: normalizedBase.trustShortSnapshot,
       origin: normalizedBase.origin,
       snapshotTransferIdentity: normalizedBase.snapshotTransferIdentity,
+      importAuthority: normalizedBase.importAuthority,
     }
     const normalizedPayload: CsvImportPersistencePayload = {
       ...normalizedBase,
-      snapshotGenerationIdentity: writeContract.schemaVersion === CSV_IMPORT_GENERATION_SCHEMA_V5
-        ? computeCanonicalPortfolioGenerationIdentityV2(identityInput)
-        : computeCanonicalPortfolioGenerationIdentity(identityInput),
+      snapshotGenerationIdentity: writeContract.schemaVersion === CSV_IMPORT_GENERATION_SCHEMA_V6
+        ? computeCanonicalPortfolioGenerationIdentityV3(identityInput)
+        : writeContract.schemaVersion === CSV_IMPORT_GENERATION_SCHEMA_V5
+          ? computeCanonicalPortfolioGenerationIdentityV2(identityInput)
+          : computeCanonicalPortfolioGenerationIdentity(identityInput),
     }
     if (!isCsvImportPayload(normalizedPayload, writeContract.schemaVersion)) {
       throw new Error('canonical payload schema validation failed')

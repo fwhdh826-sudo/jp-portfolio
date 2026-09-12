@@ -1627,7 +1627,11 @@ describe('T9-A001/A002: structured CSV result and atomic store commit', () => {
       expect(nextAnalysis?.debate.recommendedAction).not.toContain('売却不可期間中')
       expect(nextStockRow?.locked).toBe(false)
       expect(nextZeroAction?.action).toBe('SELL')
-      expect(nextOfficialAction?.action).toBe('SELL')
+      // OPS-SBI-P2-PREBUILD-PHASE2 Policy B: importCsv (the legacy parser path) never proves
+      // FULL_EXPORT/COMPLETE portfolio authority, so an executable SELL is correctly fail-closed
+      // to BLOCKED here — zeroPlan (exploratory) still shows SELL above; only the "official"/
+      // executable decision is gated. See selectHasCompletePortfolioAuthority.
+      expect(nextOfficialAction?.action).toBe('BLOCKED')
     } finally {
       vi.stubGlobal('FileReader', TestFileReader)
       vi.useRealTimers()

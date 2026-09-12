@@ -339,3 +339,13 @@ export function selectCashAuthorityView(
 ): CashAuthorityView {
   return deriveCashAuthorityView(s.cashAssumptions, now)
 }
+
+// ── OPS-SBI-P2-PREBUILD-PHASE2: portfolio import authority gate ────────────
+// Single central predicate (ticket section 17): the narrowest authoritative decision/execution
+// boundary (officialDecision generation, allocation executability) reads this instead of
+// scattering authorityStatus checks through components. PARTIAL is also not COMPLETE — Phase 2
+// implements its type/store semantics but does not expose a normal reachable T9 workflow for it
+// yet (ticket section 22), so it is fail-closed here exactly like LEGACY_UNPROVEN.
+export function selectHasCompletePortfolioAuthority(s: AppState): boolean {
+  return s.portfolioImportAuthority.authorityStatus === 'COMPLETE'
+}

@@ -4,6 +4,7 @@ import type {
   CsvSyncSummary,
   Holding,
   LearningState,
+  PortfolioImportAuthorityV1,
   PortfolioPolicy,
   Trust,
 } from '../types'
@@ -14,10 +15,16 @@ import { normalizeStrictTimestamp } from './strictTimestamp'
 export const SNAPSHOT_GENERATION_CONTRACT = 'portfolio-snapshot-generation-1' as const
 export const CANONICAL_GENERATION_CONTRACT_V1 = 'canonical-portfolio-generation-1' as const
 export const CANONICAL_GENERATION_CONTRACT_V2 = 'canonical-portfolio-generation-2' as const
+// OPS-SBI-P2-PREBUILD-PHASE2: canonical envelope v6 identity contract. Binds
+// PortfolioImportAuthorityV1 into the digest so a COMPLETE generation and an otherwise
+// byte-identical LEGACY_UNPROVEN/PARTIAL generation can never share an identity (ticket
+// section 20/25 item 6).
+export const CANONICAL_GENERATION_CONTRACT_V3 = 'canonical-portfolio-generation-3' as const
 /** Backward-compatible name for the v4 canonical identity contract. */
 export const CANONICAL_GENERATION_CONTRACT = CANONICAL_GENERATION_CONTRACT_V1
 
 const CANONICAL_GENERATION_SCHEMA_V5 = 'csv-import-generation-5' as const
+const CANONICAL_GENERATION_SCHEMA_V6 = 'csv-import-generation-6' as const
 
 export interface SnapshotGenerationHolding {
   code: string
@@ -86,6 +93,9 @@ export interface CanonicalPortfolioGenerationIdentityInput {
   trustShortSnapshot: TrustShortPortfolioSnapshot
   origin: 'csv' | 'snapshot' | null
   snapshotTransferIdentity: string | null
+  /** OPS-SBI-P2-PREBUILD-PHASE2: only read by serializeCanonicalPortfolioGenerationV3 (v6).
+   *  V1/V2 ignore this field entirely, so their digest output is byte-for-byte unchanged. */
+  importAuthority?: PortfolioImportAuthorityV1 | null
 }
 
 type CanonicalScalar = string | number | boolean | null
@@ -283,6 +293,44 @@ export function computeCanonicalPortfolioGenerationIdentityV2(
   input: CanonicalPortfolioGenerationIdentityInput,
 ): string {
   return `sha256:${sha256Utf8Hex(serializeCanonicalPortfolioGenerationV2(input))}`
+}
+
+/**
+ * Identity contract for canonical schema v6 (OPS-SBI-P2-PREBUILD-PHASE2). Adds
+ * PortfolioImportAuthorityV1 to the digest domain on top of v5's shape, so authority metadata is
+ * part of canonical/generation identity (ticket section 9/20): two payloads differing only in
+ * authorityStatus can never share an identity, and reload cannot silently change one into the
+ * other without also changing the generation identity.
+ */
+export function serializeCanonicalPortfolioGenerationV3(
+  input: CanonicalPortfolioGenerationIdentityInput,
+): string {
+  return JSON.stringify(stableCanonicalValue({
+    contract: CANONICAL_GENERATION_CONTRACT_V3,
+    schemaVersion: CANONICAL_GENERATION_SCHEMA_V6,
+    holdings: stableRows(input.holdings),
+    trust: stableRows(input.trust),
+    learning: input.learning,
+    transferGeneration: JSON.parse(serializeSnapshotGeneration({
+      holdings: input.holdings,
+      trust: input.trust,
+      portfolioPolicy: input.portfolioPolicy,
+      cashAssumptions: input.cashAssumptions,
+      csvImportedAt: input.csvImportedAt,
+      csvImportProvenance: input.csvImportProvenance,
+    })),
+    syncSummary: input.syncSummary,
+    trustShortSnapshot: input.trustShortSnapshot,
+    origin: input.origin,
+    snapshotTransferIdentity: input.snapshotTransferIdentity,
+    importAuthority: input.importAuthority ?? null,
+  }))
+}
+
+export function computeCanonicalPortfolioGenerationIdentityV3(
+  input: CanonicalPortfolioGenerationIdentityInput,
+): string {
+  return `sha256:${sha256Utf8Hex(serializeCanonicalPortfolioGenerationV3(input))}`
 }
 
 export function isSnapshotGenerationIdentity(value: unknown): value is string {
