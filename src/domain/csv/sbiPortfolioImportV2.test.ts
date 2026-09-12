@@ -636,6 +636,51 @@ describe('sbiPortfolioImportV2: totals fail-closed gaps (P2-01)', () => {
   })
 })
 
+// OPS-SBI-P2-PREBUILD-PHASE2-R2-R1 (P2-01 residual closure): the required-closing-boundary vs.
+// optional-summary-evidence distinction, enumerated per the ticket's required test list. Most of
+// these scenarios were already covered by name above (cross-referenced in each case); this block
+// closes the one genuinely missing gap — VALID_EMPTY safety when the REQUIRED boundary itself was
+// never proven — and states the distinction explicitly as its own regression surface.
+describe('sbiPortfolioImportV2: P2-01 residual — required closure vs. optional summary (R1)', () => {
+  it('VALID_EMPTY SAFETY: zero position rows + EOF with no required closing boundary is PARSE_FAILED, never VALID_EMPTY', () => {
+    // No "投資信託（金額/特定預り）合計" boundary line at all — EOF arrives straight after the
+    // header with zero rows. This must not be confused with the (legal) "boundary present, no
+    // optional summary offered" case tested just above.
+    const csv = [TRUST_TAXABLE_LABEL, TRUST_HEADER].join('\n')
+    const result = parseSbiPortfolioImportV2(csv)
+    expect(result.sections.TRUST_TAXABLE.status).toBe('PARSE_FAILED')
+    expect(result.sections.TRUST_TAXABLE.status).not.toBe('VALID_EMPTY')
+    expect(result.sections.TRUST_TAXABLE.failureReasons).toContain('TRUNCATED')
+  })
+
+  it('required section closes correctly with no optional summary at all → VALID_NONEMPTY (item 1)', () => {
+    // Cross-reference: also exercised end-to-end by the "no optional summary at all" PASS
+    // fixtures above (lines around emptyTrustSection usage) and by test 1's full-CSV fixture.
+    const csv = [
+      STOCK_LABEL, STOCK_HEADER,
+      '6501,日立製作所,8500,900000,15.20,1.10,2025-06-01',
+      STOCK_TOTAL,
+    ].join('\n')
+    const result = parseSbiPortfolioImportV2(csv)
+    expect(result.sections.JP_STOCK_CUSTODY.status).toBe('VALID_NONEMPTY')
+  })
+
+  it('required section closes correctly with a complete optional summary → VALID_NONEMPTY, unflagged (item 2)', () => {
+    // Cross-reference: sbiPortfolioImportV2: known totals/footer lines > "a reconciling totals
+    // block ... classified, never rejected" exercises the identical scenario end-to-end.
+    const csv = [
+      STOCK_LABEL, STOCK_HEADER,
+      '6501,日立製作所,8500,300000,15.20,1.10,2025-06-01',
+      STOCK_TOTAL,
+      '評価額,含み損益,含み損益（％）,前日比,前日比（％）,',
+      '300000,0,0,0,0,',
+    ].join('\n')
+    const result = parseSbiPortfolioImportV2(csv)
+    expect(result.sections.JP_STOCK_CUSTODY.status).toBe('VALID_NONEMPTY')
+    expect(result.sections.JP_STOCK_CUSTODY.failureReasons).toEqual([])
+  })
+})
+
 describe('sbiPortfolioImportV2: grand total structural presence (P2-01)', () => {
   it('EOF while awaiting the grand-total value truncates FULL_EXPORT', () => {
     const csv = [

@@ -498,13 +498,37 @@ function isKnownInformationalLine(firstCellNormalized: string, beforeAnyStructur
 // Main parser: a strict single-pass line-by-line section-state machine.
 // ─────────────────────────────────────────────────────────────────────────────
 
+// OPS-SBI-P2-PREBUILD-PHASE2-R2-R1 (P2-01 residual closure): states fall into two groups that
+// must never be confused with each other:
+//
+//   REQUIRED-STRUCTURE states — SCANNING / AWAITING_HEADER / OPEN / IN_UNSUPPORTED /
+//   IN_DUPLICATE_SECTION. While the state machine is in one of these for a given section, that
+//   section's REQUIRED closing boundary (its own "◯◯合計" line) has not yet been proven, and
+//   `sections[id]` may not legally read VALID_EMPTY/VALID_NONEMPTY yet — see
+//   closeOpenSectionAsTruncated() and the EOF handling below, which fail these closed.
+//
+//   CLOSED_SECTION_* states — CLOSED_SECTION_AWAITING_OPTIONAL_SUMMARY_HEADER /
+//   CLOSED_SECTION_AWAITING_OPTIONAL_SUMMARY_VALUE. Entry into either of these is only possible
+//   from closeOpenSectionAtBoundary(), i.e. AFTER the section's REQUIRED closing boundary line has
+//   already been seen and `sections[id]` has already been finalized (VALID_EMPTY / VALID_NONEMPTY
+//   / PARSE_FAILED). These two states exist purely to check for an OPTIONAL trailing
+//   "評価額 / 含み損益 / …" summary block that this profile treats as bonus evidence, never as
+//   part of the required closing contract (see the module header and closeOpenSectionAtBoundary's
+//   own comment). Reaching EOF while in either of these therefore does NOT mean "the required
+//   section is still incomplete" — the required section already closed; only the optional summary
+//   was left unresolved. (An audit once misread the older name `AWAITING_TOTALS_HEADER` as
+//   implying an incomplete REQUIRED state; it was not — the section had already closed — but the
+//   name invited that misreading, so it was renamed here to make the state's true meaning
+//   unambiguous. An optional summary block that STARTS (its header line matched) but does not
+//   finish correctly before EOF, or whose value is malformed, still fails the section — see the
+//   CLOSED_SECTION_AWAITING_OPTIONAL_SUMMARY_VALUE handling below and in-loop.)
 type ParserState =
   | 'SCANNING'
   | 'AWAITING_HEADER'
   | 'OPEN'
   | 'IN_UNSUPPORTED'
-  | 'AWAITING_TOTALS_HEADER'
-  | 'AWAITING_TOTALS_VALUE'
+  | 'CLOSED_SECTION_AWAITING_OPTIONAL_SUMMARY_HEADER'
+  | 'CLOSED_SECTION_AWAITING_OPTIONAL_SUMMARY_VALUE'
   | 'AWAITING_GRAND_TOTAL_VALUE'
   // OPS-SBI-P2-PREBUILD-PHASE2-R2-A (P1-02 ticket section 5): consuming the body of a duplicate
   // (second-or-later) required-section occurrence — every line is discarded until the next
@@ -588,6 +612,12 @@ export function parseSbiPortfolioImportV2(
   // line (seen a line or two later) can reconcile against it (section 10/17).
   const openAcceptedEvalSumBySection: Partial<Record<RequiredSectionId, number>> = {}
 
+  // Called only upon seeing this section's own "◯◯合計" line — i.e. its REQUIRED closing
+  // boundary has just been proven. `sections[id]` is finalized to a genuine VALID_EMPTY /
+  // VALID_NONEMPTY / PARSE_FAILED status right here; nothing that happens afterward (including
+  // EOF) can walk that status back to an incomplete/ABSENT one. The CLOSED_SECTION_* state
+  // entered below exists solely to look for the OPTIONAL trailing summary block — see the
+  // ParserState comment above.
   function closeOpenSectionAtBoundary(lineNumber: number) {
     const id = ctx.openSectionId!
     const status: SectionStatus = ctx.openRejectedCount > 0
@@ -605,7 +635,7 @@ export function parseSbiPortfolioImportV2(
     rowDiagnostics.push({ lineNumber, kind: 'sectionTotal', sectionId: id, unsupportedSectionLabel: null })
     ctx.openSectionId = null
     ctx.openSchema = null
-    ctx.state = 'AWAITING_TOTALS_HEADER'
+    ctx.state = 'CLOSED_SECTION_AWAITING_OPTIONAL_SUMMARY_HEADER'
     ctx.pendingTotalsFor = id
   }
 
@@ -721,7 +751,7 @@ export function parseSbiPortfolioImportV2(
       const normalizedCols = cols.map(normalizeCell)
       const sig = normalizeSignature(line)
 
-      if (ctx.state === 'AWAITING_TOTALS_VALUE' && ctx.pendingTotalsFor) {
+      if (ctx.state === 'CLOSED_SECTION_AWAITING_OPTIONAL_SUMMARY_VALUE' && ctx.pendingTotalsFor) {
         const id = ctx.pendingTotalsFor
         const outcome = parseAuthoritativeNumber(normalizedCols[0] ?? '')
         if (outcome.kind === 'valid') {
@@ -731,12 +761,14 @@ export function parseSbiPortfolioImportV2(
             sections[id] = { ...current, status: 'PARSE_FAILED', failureReasons: [...new Set([...current.failureReasons, 'TOTAL_MISMATCH' as const])] }
           }
         } else {
-          // OPS-SBI-P2-PREBUILD-PHASE2-R2-A (P2-01 ticket section 7): a totals block that
-          // committed to providing a reconciliation value must not silently pass when that value
-          // is blank/malformed/non-finite — it can never reconcile because it is not even a
-          // comparable number, exactly the "malformed/blank required section-total numeric"
-          // fail-open gap this section closes. Reuses TOTAL_MISMATCH (a blank/malformed total
-          // trivially fails to reconcile) rather than inventing a second, redundant reason.
+          // OPS-SBI-P2-PREBUILD-PHASE2-R2-A (P2-01 ticket section 7): an OPTIONAL summary block
+          // that committed to providing a reconciliation value (its header already matched) must
+          // not silently pass when that value is blank/malformed/non-finite — it can never
+          // reconcile because it is not even a comparable number. An optional block that STARTS
+          // must be internally complete (section 4): starting it and then failing to deliver a
+          // valid value is illegal, even though never starting it at all remains legal. Reuses
+          // TOTAL_MISMATCH (a blank/malformed total trivially fails to reconcile) rather than
+          // inventing a second, redundant reason.
           const current = sections[id]
           sections[id] = { ...current, status: 'PARSE_FAILED', failureReasons: [...new Set([...current.failureReasons, 'TOTAL_MISMATCH' as const])] }
         }
@@ -746,17 +778,21 @@ export function parseSbiPortfolioImportV2(
         continue
       }
 
-      if (ctx.state === 'AWAITING_TOTALS_HEADER' && ctx.pendingTotalsFor) {
+      if (ctx.state === 'CLOSED_SECTION_AWAITING_OPTIONAL_SUMMARY_HEADER' && ctx.pendingTotalsFor) {
         if ((normalizedCols[0] ?? '') === '評価額') {
           rowDiagnostics.push({ lineNumber, kind: 'sectionTotal', sectionId: ctx.pendingTotalsFor, unsupportedSectionLabel: null })
-          ctx.state = 'AWAITING_TOTALS_VALUE'
+          ctx.state = 'CLOSED_SECTION_AWAITING_OPTIONAL_SUMMARY_VALUE'
           continue
         }
-        // Not a totals block after all — abandon reconciliation and reprocess this line normally.
-        // (Frozen, deliberate: the 2-line totals block is optional bonus evidence, never a
-        // required part of "recognized matching 合計/end boundary" — see the module header and
-        // test 2/10's own comments. EOF here is indistinguishable from "no totals block offered
-        // at all" and must stay VALID_EMPTY/VALID_NONEMPTY, not be downgraded.)
+        // Not an optional summary block after all — abandon reconciliation and reprocess this
+        // line normally. (Frozen, deliberate: the 2-line summary block is optional bonus evidence,
+        // never a required part of "recognized matching 合計/end boundary" — see the module header
+        // and test 2/10's own comments. `sections[id]` was already finalized as the REQUIRED
+        // closing boundary was already proven back in closeOpenSectionAtBoundary(); nothing here
+        // reopens or downgrades it. EOF while still in this state is exactly this same case — the
+        // optional summary was simply never offered — and must stay VALID_EMPTY/VALID_NONEMPTY,
+        // not be downgraded; see the EOF handling below, which deliberately does nothing for this
+        // state.)
         ctx.pendingTotalsFor = null
         ctx.state = 'SCANNING'
         // fall through to SCANNING handling below
@@ -919,17 +955,23 @@ export function parseSbiPortfolioImportV2(
 
     if (ctx.state === 'OPEN') closeOpenSectionAsTruncated()
     if (ctx.state === 'IN_UNSUPPORTED') closeUnsupportedSection()
-    // OPS-SBI-P2-PREBUILD-PHASE2-R2-A (P2-01 ticket section 7): EOF while a totals block that
-    // already committed to a value (its header line matched) never delivered that value is a
-    // genuine truncation — downgrade the section sections[id] already recorded at boundary-close
-    // time. Unlike AWAITING_TOTALS_HEADER (no totals block ever offered — frozen as fine, see
-    // that branch's own comment), this state is unreachable without the header line having
-    // already matched, so there is no "never offered" ambiguity to preserve here.
-    if (ctx.state === 'AWAITING_TOTALS_VALUE' && ctx.pendingTotalsFor) {
+    // OPS-SBI-P2-PREBUILD-PHASE2-R2-A (P2-01 ticket section 7): EOF while an OPTIONAL summary
+    // block that already committed to a value (its header line matched) never delivered that
+    // value is a genuine truncation — downgrade the section sections[id] already recorded at
+    // boundary-close time. Unlike CLOSED_SECTION_AWAITING_OPTIONAL_SUMMARY_HEADER (no optional
+    // summary block ever offered — frozen as fine, see that branch's own comment), this state is
+    // unreachable without the header line having already matched, so there is no "never offered"
+    // ambiguity to preserve here.
+    if (ctx.state === 'CLOSED_SECTION_AWAITING_OPTIONAL_SUMMARY_VALUE' && ctx.pendingTotalsFor) {
       const id = ctx.pendingTotalsFor
       const current = sections[id]
       sections[id] = { ...current, status: 'PARSE_FAILED', failureReasons: [...new Set([...current.failureReasons, 'TRUNCATED' as const])] }
     }
+    // OPS-SBI-P2-PREBUILD-PHASE2-R2-R1 (P2-01 residual closure): deliberately no branch for
+    // CLOSED_SECTION_AWAITING_OPTIONAL_SUMMARY_HEADER here. Reaching EOF in that state means the
+    // section's REQUIRED closing boundary was already proven (closeOpenSectionAtBoundary already
+    // ran and finalized sections[id]) and the OPTIONAL summary block simply was never offered —
+    // exactly as legal as never offering it at all. There is nothing to downgrade.
     // EOF after the grand-total footer label but before its value line ever arrived.
     if (ctx.state === 'AWAITING_GRAND_TOTAL_VALUE') grandTotalTruncated = true
   }
