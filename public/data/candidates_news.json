@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-09-12T00:07:53.922489+09:00",
-  "sourceUpdatedAt": "2026-09-11T15:00:21+00:00",
+  "updatedAt": "2026-09-12T10:19:31.601219+09:00",
+  "sourceUpdatedAt": "2026-09-12T01:13:38+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -29,31 +29,18 @@
       "items": []
     },
     "us_broad": {
-      "avgSentiment": 0.084,
-      "negativeCount": 4,
-      "positiveCount": 4,
-      "neutralCount": 4,
+      "avgSentiment": -0.051,
+      "negativeCount": 3,
+      "positiveCount": 1,
+      "neutralCount": 9,
       "sourceCount": 2,
-      "itemCount": 12,
+      "itemCount": 13,
       "isStale": false,
-      "topNegativeTitle": "Bond Traders Price in Two Fed Hikes This Year After CPI Report",
-      "topPositiveTitle": "US Core CPI Rises More Than Expected in August",
+      "topNegativeTitle": "Dollar Wavers as CPI Adds to Fed Hike Bets While Oil Falls",
+      "topPositiveTitle": "Fed’s Rate Decision May Have Come Down to Phone Plan Changes",
       "items": [
         {
-          "title": "Bond Traders Price in Two Fed Hikes This Year After CPI Report",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-11T12:38:05+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-11/treasuries-fall-as-higher-than-expected-cpi-boosts-fed-hike-odds",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Dollar Wavers as Inflation Aids Fed Hike Bets While Oil Falls",
+          "title": "Dollar Wavers as CPI Adds to Fed Hike Bets While Oil Falls",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
@@ -62,6 +49,19 @@
           "tags": [
             "commodity",
             "fx",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Warsh Confronts Calls for Fed Rate Hike as Inflation Tops Forecasts",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-11T16:47:12+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-11/fed-chairman-warsh-faces-pressure-to-put-up-or-shut-up-after-hot-cpi-report",
+          "tags": [
             "market",
             "rates",
             "us_broad"
@@ -81,20 +81,6 @@
           ]
         },
         {
-          "title": "Stocks Climb as Oil Drop Outweighs Inflation Worry: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-10T22:15:53+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-10/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
           "title": "US CPI Report August 2026: Key Takeaways on Inflation, Consumer Price Index",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
@@ -105,33 +91,33 @@
             "market",
             "us_broad"
           ]
+        },
+        {
+          "title": "Treasuries End Bruising Week With Fed Hike Bets Firmed After CPI",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-11T12:38:05+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-11/treasuries-fall-as-higher-than-expected-cpi-boosts-fed-hike-odds",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Tesla Shares Suffer Slow Summer After SpaceX IPO, Earnings Rout",
-      "topPositiveTitle": "Tesla Shares Suffer Slow Summer After SpaceX IPO, Earnings Rout",
-      "items": [
-        {
-          "title": "Tesla Shares Suffer Slow Summer After SpaceX IPO, Earnings Rout",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-11T13:15:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-11/tesla-shares-suffer-slow-summer-after-spacex-ipo-earnings-rout",
-          "tags": [
-            "market",
-            "us_growth"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "global_broad": {
       "avgSentiment": 0,
@@ -146,32 +132,16 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": 0.5,
+      "avgSentiment": 0,
       "negativeCount": 0,
-      "positiveCount": 1,
+      "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Gold Rises as Dollar and Yields Whipsaw After US Inflation Print",
-      "topPositiveTitle": "Gold Rises as Dollar and Yields Whipsaw After US Inflation Print",
-      "items": [
-        {
-          "title": "Gold Rises as Dollar and Yields Whipsaw After US Inflation Print",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.5,
-          "publishedAt": "2026-09-10T23:34:43+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-10/gold-holds-drop-as-rising-oil-inflation-bolster-rate-hike-bets",
-          "tags": [
-            "fx",
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "reit": {
       "avgSentiment": 0,
@@ -186,40 +156,27 @@
       "items": []
     },
     "dividend": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "UBS Buys $7.9 Billion Credit Suisse Debt in Biggest Buyback",
-      "topPositiveTitle": "UBS Buys $7.9 Billion Credit Suisse Debt in Biggest Buyback",
-      "items": [
-        {
-          "title": "UBS Buys $7.9 Billion Credit Suisse Debt in Biggest Buyback",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-11T10:00:32+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-11/ubs-buys-7-9-billion-of-credit-suisse-bonds-in-biggest-buyback",
-          "tags": [
-            "dividend",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.0,
+      "avgSentiment": -0.223,
       "negativeCount": 1,
-      "positiveCount": 1,
+      "positiveCount": 0,
       "neutralCount": 2,
-      "sourceCount": 3,
-      "itemCount": 4,
+      "sourceCount": 2,
+      "itemCount": 3,
       "isStale": false,
       "topNegativeTitle": "Bank of Russia Injects $2 Billion Into Reinsurer on War Costs",
-      "topPositiveTitle": "Canada Trade Can Help US Cool Inflation, Poilievre Says",
+      "topPositiveTitle": "Russia Holds Wartime Key Rate for First Time in 15 Months",
       "items": [
         {
           "title": "Bank of Russia Injects $2 Billion Into Reinsurer on War Costs",
@@ -259,35 +216,34 @@
             "market"
           ],
           "titleJa": "「法の支配」議連 “ICC赤根所長制裁でアメリカと対話を”"
-        },
-        {
-          "title": "Canada Trade Can Help US Cool Inflation, Poilievre Says",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-09-11T14:14:36+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-11/canada-trade-can-help-us-cool-inflation-poilievre-says-video",
-          "tags": [
-            "commodity",
-            "macro_risk",
-            "market"
-          ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": 0.168,
-      "negativeCount": 1,
-      "positiveCount": 2,
-      "neutralCount": 2,
+      "avgSentiment": -0.165,
+      "negativeCount": 2,
+      "positiveCount": 1,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Dollar Wavers as Inflation Aids Fed Hike Bets While Oil Falls",
+      "topNegativeTitle": "Morgan Stanley Favors Trade With Yen Weakening to 163 per Dollar",
       "topPositiveTitle": "India Forex Reserves Jump to Record $785.7 Billion on Flows",
       "items": [
         {
-          "title": "Dollar Wavers as Inflation Aids Fed Hike Bets While Oil Falls",
+          "title": "Morgan Stanley Favors Trade With Yen Weakening to 163 per Dollar",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-09-11T18:12:05+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-11/morgan-stanley-favors-trade-with-yen-weakening-to-163-per-dollar",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        },
+        {
+          "title": "Dollar Wavers as CPI Adds to Fed Hike Bets While Oil Falls",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
@@ -302,19 +258,6 @@
           ]
         },
         {
-          "title": "Jeff Currie Sees ‘Extremely High’ Risk of $5 Gas by Midterms",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-11T12:19:19+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-11/jeff-currie-sees-extremely-high-chance-of-5-gas-by-midterms",
-          "tags": [
-            "commodity",
-            "fx",
-            "market"
-          ]
-        },
-        {
           "title": "India, Russia Explore Using Digital Currency Payments for Trade",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
@@ -325,21 +268,6 @@
             "fx",
             "geopolitical",
             "market"
-          ]
-        },
-        {
-          "title": "Gold Rises as Dollar and Yields Whipsaw After US Inflation Print",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.5,
-          "publishedAt": "2026-09-10T23:34:43+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-10/gold-holds-drop-as-rising-oil-inflation-bolster-rate-hike-bets",
-          "tags": [
-            "fx",
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
           ]
         },
         {
@@ -357,31 +285,18 @@
       ]
     },
     "rates": {
-      "avgSentiment": -0.014,
-      "negativeCount": 6,
-      "positiveCount": 3,
-      "neutralCount": 2,
+      "avgSentiment": -0.189,
+      "negativeCount": 4,
+      "positiveCount": 0,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 11,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "Bond Traders Price in Two Fed Hikes This Year After CPI Report",
-      "topPositiveTitle": "US Core CPI Rises More Than Expected in August",
+      "topNegativeTitle": "Dollar Wavers as CPI Adds to Fed Hike Bets While Oil Falls",
+      "topPositiveTitle": "Treasuries End Bruising Week With Fed Hike Bets Firmed After CPI",
       "items": [
         {
-          "title": "Bond Traders Price in Two Fed Hikes This Year After CPI Report",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-11T12:38:05+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-11/treasuries-fall-as-higher-than-expected-cpi-boosts-fed-hike-odds",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Dollar Wavers as Inflation Aids Fed Hike Bets While Oil Falls",
+          "title": "Dollar Wavers as CPI Adds to Fed Hike Bets While Oil Falls",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
@@ -390,6 +305,19 @@
           "tags": [
             "commodity",
             "fx",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Warsh Confronts Calls for Fed Rate Hike as Inflation Tops Forecasts",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-11T16:47:12+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-11/fed-chairman-warsh-faces-pressure-to-put-up-or-shut-up-after-hot-cpi-report",
+          "tags": [
             "market",
             "rates",
             "us_broad"
@@ -421,32 +349,33 @@
           ]
         },
         {
-          "title": "Kotecki Sees Poland Rate Hikes if Inflation Tops 4% for Longer",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-11T07:33:16+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-11/kotecki-sees-poland-rate-hikes-if-inflation-tops-4-for-longer",
+          "title": "Treasuries End Bruising Week With Fed Hike Bets Firmed After CPI",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-11T12:38:05+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-11/treasuries-fall-as-higher-than-expected-cpi-boosts-fed-hike-odds",
           "tags": [
             "market",
-            "rates"
+            "rates",
+            "us_broad"
           ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.189,
-      "negativeCount": 2,
-      "positiveCount": 4,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 8,
+      "avgSentiment": -0.083,
+      "negativeCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 3,
+      "sourceCount": 1,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Dollar Wavers as Inflation Aids Fed Hike Bets While Oil Falls",
-      "topPositiveTitle": "Canada Trade Can Help US Cool Inflation, Poilievre Says",
+      "topNegativeTitle": "Dollar Wavers as CPI Adds to Fed Hike Bets While Oil Falls",
+      "topPositiveTitle": "Wall Street Week | Venezuela’s Oil Test, Overcapacity in Renewables, Defense Tech Boom",
       "items": [
         {
-          "title": "Dollar Wavers as Inflation Aids Fed Hike Bets While Oil Falls",
+          "title": "Dollar Wavers as CPI Adds to Fed Hike Bets While Oil Falls",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
@@ -461,70 +390,56 @@
           ]
         },
         {
-          "title": "Stocks Climb as Oil Drop Outweighs Inflation Worry: Markets Wrap",
+          "title": "Wall Street Week | Venezuela’s Oil Test, Overcapacity in Renewables, Defense Tech Boom",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-10T22:15:53+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-10/stock-market-today-dow-s-p-live-updates",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-11T23:13:11+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-11/wall-street-week-eu-s-solar-problem-defense-tech-boom-video",
           "tags": [
             "commodity",
             "market",
-            "rates",
             "us_broad"
           ]
         },
         {
-          "title": "Jeff Currie Sees ‘Extremely High’ Risk of $5 Gas by Midterms",
+          "title": "Rebuilding After 9/11, Cantor Fitzgerald's Annual Charity, Eye on Energy Markets",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-11T12:19:19+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-11/jeff-currie-sees-extremely-high-chance-of-5-gas-by-midterms",
-          "tags": [
-            "commodity",
-            "fx",
-            "market"
-          ]
-        },
-        {
-          "title": "Italy Must Use EU’s Energy Leeway, Giorgetti Tells Lawmakers",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-08-05T07:56:37+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-08-05/italy-must-use-eu-s-energy-leeway-giorgetti-tells-lawmakers",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "Stocks, Treasuries Get Relief Ahead of CPI, US Diesel Passes $6/Gallon",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-11T13:07:45+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-11/bloomberg-brief-09-11-2026-video",
+          "publishedAt": "2026-09-11T22:54:21+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-11/the-close-9-11-2026-video",
           "tags": [
             "commodity",
             "market",
-            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "AI-Obsessed Wall Street Pours Billions Into Inflation-Era Bets",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-11T20:24:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-11/ai-obsessed-wall-street-pours-billions-into-inflation-era-bets",
+          "tags": [
+            "commodity",
+            "market",
             "us_broad"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": -0.223,
+      "avgSentiment": -0.085,
       "negativeCount": 1,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 2,
-      "sourceCount": 1,
-      "itemCount": 3,
+      "sourceCount": 2,
+      "itemCount": 4,
       "isStale": false,
       "topNegativeTitle": "Bank of Russia Injects $2 Billion Into Reinsurer on War Costs",
-      "topPositiveTitle": "India, Russia Explore Using Digital Currency Payments for Trade",
+      "topPositiveTitle": "イコールアースの北方領土表記など日本の修正要求にロシア反発",
       "items": [
         {
           "title": "Bank of Russia Injects $2 Billion Into Reinsurer on War Costs",
@@ -564,6 +479,19 @@
             "macro_risk",
             "market"
           ]
+        },
+        {
+          "title": "イコールアースの北方領土表記など日本の修正要求にロシア反発",
+          "source": "NHK 経済",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-12T01:13:38+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20260912de49854",
+          "tags": [
+            "geopolitical",
+            "market"
+          ],
+          "titleJa": "イコールアースの北方領土表記など日本の修正要求にロシア反発"
         }
       ]
     }
