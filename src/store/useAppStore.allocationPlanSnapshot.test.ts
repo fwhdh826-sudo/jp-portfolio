@@ -39,6 +39,9 @@ void dualAuthorityTypeProbe
 // fixture a COMPLETE authority so the new Policy B gate (runFullAnalysis) never overrides an
 // otherwise-'current' status to 'blocked' here. See portfolioAuthorityGate tests for the gate
 // itself.
+// OPS-SBI-P2-PREBUILD-PHASE2-R2-A (P1-03): a semantically valid COMPLETE requires exactly one
+// sectionCompleteness entry per required section — an empty array is a semantically
+// contradictory COMPLETE and no longer satisfies selectHasCompletePortfolioAuthority.
 const COMPLETE_AUTHORITY_FIXTURE: AppState['portfolioImportAuthority'] = {
   authorityVersion: 'portfolio-import-authority-1',
   importMode: 'FULL_EXPORT',
@@ -48,7 +51,12 @@ const COMPLETE_AUTHORITY_FIXTURE: AppState['portfolioImportAuthority'] = {
   selectedAssetClasses: null,
   preservedAssetClasses: null,
   provenanceScope: 'FULL_EXPORT',
-  sectionCompleteness: [],
+  sectionCompleteness: [
+    { sectionId: 'JP_STOCK_CUSTODY', status: 'VALID_NONEMPTY' },
+    { sectionId: 'TRUST_TAXABLE', status: 'VALID_NONEMPTY' },
+    { sectionId: 'TRUST_NISA_GROWTH', status: 'VALID_EMPTY' },
+    { sectionId: 'TRUST_NISA_ACCUMULATION', status: 'VALID_EMPTY' },
+  ],
 }
 
 function cleanState(): AppState {

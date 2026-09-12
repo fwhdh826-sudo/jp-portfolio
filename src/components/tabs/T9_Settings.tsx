@@ -13,7 +13,7 @@ import { colors, radius, spacing } from '../../theme/tokens'
 import { typography } from '../../theme/typography'
 import { PageHeader } from '../layout/PageHeader'
 import type { CsvImportProvenance, CsvSyncSummary } from '../../types'
-import type { CsvImportOptions, CsvImportResult, PortfolioSnapshotImportResult } from '../../store/useAppStore'
+import type { CsvImportResult, SbiFullExportImportOptions, SbiFullExportImportResult, PortfolioSnapshotImportResult } from '../../store/useAppStore'
 import type { ManualMutationResult } from '../../store/portfolioOperationResult'
 import type { PortfolioLoadResult } from '../../store/portfolioOperationResult'
 import {
@@ -191,11 +191,31 @@ export interface CsvImportFeedback {
   details?: string[]
 }
 
-export function csvImportFeedback(result: CsvImportResult): CsvImportFeedback {
+// OPS-SBI-P2-PREBUILD-PHASE2-R2-A (P1-01 ticket section 3/4): the production T9 SBI
+// full-portfolio import button is wired to importSbiPortfolioFullExport (the two-stage authority
+// action), never the legacy importCsv writer — a v6 COMPLETE generation can no longer be
+// downgraded to v5 by an ordinary T9 refresh. csvImportFeedback still accepts the legacy
+// CsvImportResult shape too (ticket section 3: the legacy importer may remain reachable only for
+// an explicitly non-authoritative compatibility purpose — never as the normal T9 wiring below),
+// discriminated at runtime by the presence of `diagnostics`/`authorityStatus`.
+export function csvImportFeedback(result: CsvImportResult | SbiFullExportImportResult): CsvImportFeedback {
   if (!result.ok && 'operation' in result) {
     return { ok: false, message: coordinationFailureMessage(result.code) }
   }
-  const diagnostics = result.diagnostics
+  if (!result.ok && result.code === 'AUTHORITY_NOT_PASS') {
+    return { ok: false, message: result.message }
+  }
+  if (result.ok && result.code === 'SUCCESS' && 'authorityStatus' in result) {
+    return {
+      ok: true,
+      message: result.message,
+      details: [
+        `個別株: 更新${result.imported.stock.updated} / 新規${result.imported.stock.added} / 売却反映${result.imported.stock.removed}`,
+        `投信: 更新${result.imported.trust.updated} / 解約反映${result.imported.trust.zeroed}`,
+      ],
+    }
+  }
+  const diagnostics = 'diagnostics' in result ? result.diagnostics : undefined
   const details = diagnostics
     ? [
         `今回の取込試行: 株式${diagnostics.recognizedStockRows}件 / 投信${diagnostics.recognizedTrustRows}件を認識`,
@@ -213,17 +233,19 @@ export function csvImportFeedback(result: CsvImportResult): CsvImportFeedback {
   return {
     ok: result.ok,
     message: result.message,
-    ...(result.ok && result.code === 'DUPLICATE_CSV' ? { tone: 'info' as const } : {}),
+    ...(result.ok && (result.code === 'DUPLICATE_CSV' || result.code === 'DUPLICATE_FULL_EXPORT')
+      ? { tone: 'info' as const }
+      : {}),
     ...(details ? { details } : {}),
   }
 }
 
 export async function executeCsvImportUiFlow(
   file: File,
-  importCsv: (file: File, options?: CsvImportOptions) => Promise<CsvImportResult>,
+  importSbiPortfolioFullExport: (file: File, options?: SbiFullExportImportOptions) => Promise<SbiFullExportImportResult>,
   setFeedback: (feedback: CsvImportFeedback | null) => void,
-  options?: CsvImportOptions,
-): Promise<CsvImportResult | null> {
+  options?: SbiFullExportImportOptions,
+): Promise<SbiFullExportImportResult | null> {
   if (!file.name.toLowerCase().endsWith('.csv')) {
     setFeedback({ ok: false, message: `${file.name} — CSVファイルのみ対応しています。` })
     return null
@@ -232,7 +254,7 @@ export async function executeCsvImportUiFlow(
   // 前回成功を即座に消し、actionのstructured resultが返るまで成功を表示しない。
   setFeedback(null)
   try {
-    const result = await importCsv(file, options)
+    const result = await importSbiPortfolioFullExport(file, options)
     setFeedback(csvImportFeedback(result))
     return result
   } catch {
@@ -241,11 +263,19 @@ export async function executeCsvImportUiFlow(
   }
 }
 
+// OPS-SBI-P2-PREBUILD-PHASE2-R2-A: importSbiPortfolioFullExport has two independent explicit-
+// confirmation reasons (weak/unknown source provenance vs. a destructive-change threshold), each
+// bound to a different option field. One pending-confirmation slot generalizes the existing
+// single-button retry UI to either, without any new layout.
+type PendingConfirmation =
+  | { kind: 'provenance'; file: File }
+  | { kind: 'destructive'; file: File; confirmationToken: string }
+
 function CsvDropArea({
   onFile,
   isLoading,
 }: {
-  onFile: (file: File, options?: CsvImportOptions) => Promise<CsvImportResult>
+  onFile: (file: File, options?: SbiFullExportImportOptions) => Promise<SbiFullExportImportResult>
   isLoading: boolean
 }) {
   const inputRef = useRef<HTMLInputElement>(null)
@@ -253,7 +283,7 @@ function CsvDropArea({
   const [isPending, setIsPending] = useState(false)
   const [isDragOver, setIsDragOver] = useState(false)
   const [lastResult, setLastResult] = useState<CsvImportFeedback | null>(null)
-  const [confirmationFile, setConfirmationFile] = useState<File | null>(null)
+  const [pendingConfirmation, setPendingConfirmation] = useState<PendingConfirmation | null>(null)
 
   const handleFile = useCallback(async (file: File) => {
     if (importInFlightRef.current || isLoading) return
@@ -261,7 +291,13 @@ function CsvDropArea({
     setIsPending(true)
     try {
       const result = await executeCsvImportUiFlow(file, onFile, setLastResult)
-      setConfirmationFile(result?.ok === false && result.code === 'CSV_PROVENANCE_UNKNOWN' ? file : null)
+      setPendingConfirmation(
+        result?.ok === false && result.code === 'SOURCE_PROVENANCE_UNKNOWN'
+          ? { kind: 'provenance', file }
+          : result?.ok === false && result.code === 'CONFIRMATION_REQUIRED'
+            ? { kind: 'destructive', file, confirmationToken: result.confirmationToken }
+            : null,
+      )
     } finally {
       importInFlightRef.current = false
       setIsPending(false)
@@ -269,22 +305,25 @@ function CsvDropArea({
   }, [isLoading, onFile])
 
   const handleConfirmedImport = useCallback(async () => {
-    if (!confirmationFile || importInFlightRef.current || isLoading) return
+    if (!pendingConfirmation || importInFlightRef.current || isLoading) return
     importInFlightRef.current = true
     setIsPending(true)
     try {
-      setConfirmationFile(null)
+      const confirmation = pendingConfirmation
+      setPendingConfirmation(null)
       await executeCsvImportUiFlow(
-        confirmationFile,
+        confirmation.file,
         onFile,
         setLastResult,
-        { confirmUnknownProvenance: true },
+        confirmation.kind === 'provenance'
+          ? { confirmUnknownProvenance: true }
+          : { confirmationToken: confirmation.confirmationToken },
       )
     } finally {
       importInFlightRef.current = false
       setIsPending(false)
     }
-  }, [confirmationFile, isLoading, onFile])
+  }, [pendingConfirmation, isLoading, onFile])
 
   const handleDrop = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault()
@@ -376,14 +415,16 @@ function CsvDropArea({
         </div>
       )}
 
-      {confirmationFile && (
+      {pendingConfirmation && (
         <button
           type="button"
           onClick={() => { void handleConfirmedImport() }}
           disabled={pending}
           style={{ marginTop: spacing[2] }}
         >
-          基準時刻不明を確認して、このCSVを再取込
+          {pendingConfirmation.kind === 'provenance'
+            ? '基準時刻不明を確認して、このCSVを再取込'
+            : '既存銘柄の消滅を確認して、このCSVを確定'}
         </button>
       )}
 
@@ -1326,7 +1367,7 @@ const JP_STOCK_RATIO_OPTIONS: { label: string; value: number }[] = [
 export function T9_Settings() {
   const system            = useAppStore(s => s.system)
   const refreshAllData    = useAppStore(s => s.refreshAllData)
-  const importCsv         = useAppStore(s => s.importCsv)
+  const importSbiPortfolioFullExport = useAppStore(s => s.importSbiPortfolioFullExport)
   const isStale           = useAppStore(selectIsStale)
   const portfolioPolicy   = useAppStore(s => s.portfolioPolicy)
   const setPortfolioPolicy = useAppStore(s => s.setPortfolioPolicy)
@@ -1342,9 +1383,10 @@ export function T9_Settings() {
     locallyPending: pendingOperation === 'refreshAllData' ? REFRESH_BUTTON_LABELS.locallyPending : '別の処理を実行中…',
   })
 
+  // OPS-SBI-P2-PREBUILD-PHASE2-R2-A (P1-01): the production T9 SBI portfolio refresh action.
   const handleImportCsv = useCallback(
-    async (file: File, options?: CsvImportOptions) => importCsv(file, options),
-    [importCsv],
+    async (file: File, options?: SbiFullExportImportOptions) => importSbiPortfolioFullExport(file, options),
+    [importSbiPortfolioFullExport],
   )
 
   const handleRefresh = useCallback(async () => {

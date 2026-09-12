@@ -1,36 +1,27 @@
 import { describe, expect, it } from 'vitest'
-import type { CsvImportResult } from '../../store/useAppStore'
+import type { SbiFullExportImportResult } from '../../store/useAppStore'
 import { executeCsvImportUiFlow } from './T9_Settings'
 
-function successResult(): Extract<CsvImportResult, { ok: true }> {
+// OPS-SBI-P2-PREBUILD-PHASE2-R2-A (P1-01): T9's production import UI flow is wired to
+// importSbiPortfolioFullExport — these fixtures use SbiFullExportImportResult's own shape.
+
+function successResult(): Extract<SbiFullExportImportResult, { ok: true; code: 'SUCCESS' }> {
   return {
     ok: true,
     code: 'SUCCESS',
     message: '取込みが完了しました',
     imported: {
-      stock: { updated: 1, added: 0, removed: 0 },
-      trust: { updated: 0, reheld: 0, zeroed: 0, unknown: 0, ambiguous: 0 },
+      stock: { added: 0, updated: 1, removed: 0 },
+      trust: { updated: 0, zeroed: 0 },
     },
-    warnings: [],
-    analysisCommitted: true,
-    officialDecisionCommitted: true,
-    persistence: { status: 'committed' },
     importedAt: '2026-07-15T00:00:00.000Z',
-    provenance: {
-      importedAt: '2026-07-15T00:00:00.000Z',
-      sourceAsOf: '2026-07-15T00:00:00.000Z',
-      sourceAsOfKind: 'csv_explicit',
-      sourceAsOfConfidence: 'authoritative',
-      contentFingerprint: 'fnv1a32:12345678',
-      sourceFileName: 'portfolio.csv',
-      fileLastModified: null,
-    },
+    authorityStatus: 'COMPLETE',
   }
 }
 
 describe('T9-A001: truthful CSV UI flow', () => {
   it('a valid extension does not emit success while import is pending', async () => {
-    let resolveImport!: (result: CsvImportResult) => void
+    let resolveImport!: (result: SbiFullExportImportResult) => void
     const results: Array<{ ok: boolean; message: string } | null> = []
     const pending = executeCsvImportUiFlow(
       new File(['csv'], 'portfolio.csv'),
@@ -48,14 +39,10 @@ describe('T9-A001: truthful CSV UI flow', () => {
 
   it('parser/store failure clears an old success and renders the structured error message', async () => {
     const results: Array<{ ok: boolean; message: string } | null> = [{ ok: true, message: 'old success' }]
-    const failure: CsvImportResult = {
+    const failure: SbiFullExportImportResult = {
       ok: false,
-      code: 'PARSE_ERROR',
+      code: 'UNKNOWN_ERROR',
       message: 'CSVを解析できませんでした',
-      warnings: [],
-      analysisCommitted: false,
-      officialDecisionCommitted: false,
-      persistence: { status: 'not_attempted' },
     }
 
     await executeCsvImportUiFlow(
@@ -88,18 +75,10 @@ describe('T9-A001: truthful CSV UI flow', () => {
   it.each([
     ['UNKNOWN_ERROR', 'CSV取込中に予期しないエラーが発生しました。再試行してください。'],
     ['IMPORT_CONFLICT', '取込中に分析条件が変更されました。再試行してください。'],
-    ['INVALID_CSV_SOURCE_TIMESTAMP', 'CSVのデータ基準日時が不正です。状態は変更されていません。'],
+    ['STALE_SOURCE', 'CSVのデータ基準日時が不正です。状態は変更されていません。'],
   ] as const)('%s structured failure is shown as failure and never as stale success', async (code, message) => {
     const feedback: Array<{ ok: boolean; message: string } | null> = [{ ok: true, message: 'old success' }]
-    const failure: CsvImportResult = {
-      ok: false,
-      code,
-      message,
-      warnings: [],
-      analysisCommitted: false,
-      officialDecisionCommitted: false,
-      persistence: { status: 'not_attempted' },
-    }
+    const failure: SbiFullExportImportResult = { ok: false, code, message }
 
     const result = await executeCsvImportUiFlow(
       new File(['csv'], 'portfolio.csv'),
@@ -112,13 +91,11 @@ describe('T9-A001: truthful CSV UI flow', () => {
   })
 
   it('duplicate no-op is truthful info feedback rather than green success', async () => {
-    const duplicate: CsvImportResult = {
-      ...successResult(),
-      code: 'DUPLICATE_CSV',
+    const duplicate: SbiFullExportImportResult = {
+      ok: true,
+      code: 'DUPLICATE_FULL_EXPORT',
       message: '同じ内容のCSVは取込み済みです',
-      analysisCommitted: false,
-      officialDecisionCommitted: false,
-      persistence: { status: 'not_attempted' },
+      importedAt: '2026-07-15T00:00:00.000Z',
     }
     const feedback: Array<{ ok: boolean; message: string; tone?: 'info' } | null> = []
 
@@ -129,6 +106,24 @@ describe('T9-A001: truthful CSV UI flow', () => {
     )
 
     expect(feedback[feedback.length - 1]).toEqual({ ok: true, tone: 'info', message: duplicate.message })
+  })
+
+  it('AUTHORITY_NOT_PASS is shown as failure with the structured message, never a stale success', async () => {
+    const failure: SbiFullExportImportResult = {
+      ok: false,
+      code: 'AUTHORITY_NOT_PASS',
+      message: 'CSVは完全な取込対象ポートフォリオであることを証明できませんでした。状態は変更されていません。',
+      reasons: ['EXPECTED_SECTION_ABSENT'],
+    }
+    const feedback: Array<{ ok: boolean; message: string } | null> = [{ ok: true, message: 'old success' }]
+
+    await executeCsvImportUiFlow(
+      new File(['csv'], 'portfolio.csv'),
+      async () => failure,
+      value => feedback.push(value),
+    )
+
+    expect(feedback[feedback.length - 1]).toEqual({ ok: false, message: failure.message })
   })
 
   it('passes explicit unknown-provenance confirmation only when requested', async () => {
@@ -144,5 +139,20 @@ describe('T9-A001: truthful CSV UI flow', () => {
     )
 
     expect(receivedConfirmation).toBe(true)
+  })
+
+  it('passes the destructive-change confirmationToken only when requested', async () => {
+    let receivedToken: string | undefined
+    await executeCsvImportUiFlow(
+      new File(['csv'], 'portfolio.csv'),
+      async (_file, options) => {
+        receivedToken = options?.confirmationToken
+        return successResult()
+      },
+      () => undefined,
+      { confirmationToken: 'sha256:abc' },
+    )
+
+    expect(receivedToken).toBe('sha256:abc')
   })
 })

@@ -8,6 +8,7 @@ import type { Holding } from '../types'
 import { CSV_IMPORT_GENERATION_KEY, restoreCsvImportGeneration } from './persist'
 import type { PortfolioGenerationLockAdapter } from './portfolioGenerationLock'
 import { createAppStoreInstanceForTest } from './useAppStore'
+import { computeSnapshotGenerationIdentityV2 } from '../utils/snapshotGenerationIdentity'
 
 const MANUAL_HOLDING: Holding = {
   code: '9999', name: '手動保有', eval: 300_000, pnlPct: 1, mu: 0.08, sigma: 0.2,
@@ -182,5 +183,90 @@ describe('P2-01: manual snapshot transfer preserves PortfolioImportAuthorityV1 e
     expect(destination.store.getState().portfolioImportAuthority).toEqual(before.portfolioImportAuthority)
     vi.stubGlobal('localStorage', destinationStorage.mock)
     expect(destinationStorage.store[CSV_IMPORT_GENERATION_KEY]).toBeUndefined()
+  })
+})
+
+// ═══════════════════════════════════════════════════════════════════════════
+// OPS-SBI-P2-PREBUILD-PHASE2-R2-A — ticket section 28 test matrix (P1-04 repair)
+// ═══════════════════════════════════════════════════════════════════════════
+
+/** Re-signs a tampered wire payload's snapshotGenerationIdentity so it passes the
+ *  identity/tamper check and reaches the application-level trust-integrity gate under test. */
+function resignSnapshotIdentity(payload: Record<string, unknown>): void {
+  payload.snapshotGenerationIdentity = computeSnapshotGenerationIdentityV2({
+    holdings: payload.holdings as never,
+    trust: payload.trust as never,
+    portfolioPolicy: payload.portfolioPolicy as never,
+    cashAssumptions: payload.cashAssumptions as never,
+    csvImportedAt: payload.csvImportedAt as string | null,
+    csvImportProvenance: payload.csvImportProvenance as never,
+    importAuthority: payload.importAuthority as never,
+  })
+}
+
+describe('P1-04: snapshot import never silently drops an unknown trust ID under COMPLETE/PARTIAL authority', () => {
+  it('COMPLETE + a positive-eval unknown destination trust ID is rejected before any mutation', async () => {
+    const sourceStorage = makeStorage()
+    const source = instance(sourceStorage.mock)
+    const fullExportResult = await source.store.getState().importSbiPortfolioFullExport(csvFile(fullExportCsvLines()))
+    expect(fullExportResult).toMatchObject({ ok: true, code: 'SUCCESS', authorityStatus: 'COMPLETE' })
+
+    vi.stubGlobal('localStorage', sourceStorage.mock)
+    const raw = source.store.getState().exportPortfolioSnapshot()
+    const tampered = JSON.parse(raw)
+    expect(tampered.importAuthority.authorityStatus).toBe('COMPLETE')
+    tampered.trust.push({ id: 'ghost-fund-nonexistent', eval: 500_000, pnlPct: 0 })
+    resignSnapshotIdentity(tampered)
+    const raisedRaw = JSON.stringify(tampered)
+
+    const destinationStorage = makeStorage()
+    const destination = instance(destinationStorage.mock)
+    const before = destination.store.getState()
+    const importResult = await destination.store.getState().importPortfolioSnapshot(raisedRaw)
+    expect(importResult).toMatchObject({ ok: false, code: 'INVALID_SNAPSHOT' })
+    expect(destination.store.getState().holdings).toBe(before.holdings)
+    expect(destination.store.getState().trust).toBe(before.trust)
+    expect(destination.store.getState().portfolioImportAuthority).toEqual(before.portfolioImportAuthority)
+    vi.stubGlobal('localStorage', destinationStorage.mock)
+    expect(destinationStorage.store[CSV_IMPORT_GENERATION_KEY]).toBeUndefined()
+  })
+
+  it('COMPLETE + a zero-eval unknown destination trust ID is still skipped+reported (economically inert, never rejected)', async () => {
+    const sourceStorage = makeStorage()
+    const source = instance(sourceStorage.mock)
+    const fullExportResult = await source.store.getState().importSbiPortfolioFullExport(csvFile(fullExportCsvLines()))
+    expect(fullExportResult).toMatchObject({ ok: true, code: 'SUCCESS', authorityStatus: 'COMPLETE' })
+
+    vi.stubGlobal('localStorage', sourceStorage.mock)
+    const raw = source.store.getState().exportPortfolioSnapshot()
+    const withZeroGhost = JSON.parse(raw)
+    withZeroGhost.trust.push({ id: 'ghost-fund-nonexistent', eval: 0, pnlPct: 0 })
+    resignSnapshotIdentity(withZeroGhost)
+
+    const destinationStorage = makeStorage()
+    const destination = instance(destinationStorage.mock)
+    const importResult = await destination.store.getState().importPortfolioSnapshot(JSON.stringify(withZeroGhost))
+    expect(importResult).toMatchObject({ ok: true, code: 'SUCCESS', skippedTrustIds: ['ghost-fund-nonexistent'] })
+    expect(destination.store.getState().portfolioImportAuthority.authorityStatus).toBe('COMPLETE')
+  })
+
+  it('a legacy (v1-v3, LEGACY_UNPROVEN) snapshot with an unknown trust ID keeps its existing safe skip+report behavior, unchanged', async () => {
+    const sourceStorage = makeStorage()
+    const source = instance(sourceStorage.mock)
+    source.store.setState({ holdings: [MANUAL_HOLDING] })
+    expect(source.store.getState().portfolioImportAuthority.authorityStatus).toBe('LEGACY_UNPROVEN')
+
+    vi.stubGlobal('localStorage', sourceStorage.mock)
+    const raw = source.store.getState().exportPortfolioSnapshot()
+    const legacyWithGhost = JSON.parse(raw)
+    expect(legacyWithGhost.importAuthority.authorityStatus).toBe('LEGACY_UNPROVEN')
+    legacyWithGhost.trust.push({ id: 'ghost-fund-nonexistent', eval: 500_000, pnlPct: 0 })
+    resignSnapshotIdentity(legacyWithGhost)
+
+    const destinationStorage = makeStorage()
+    const destination = instance(destinationStorage.mock)
+    const importResult = await destination.store.getState().importPortfolioSnapshot(JSON.stringify(legacyWithGhost))
+    expect(importResult).toMatchObject({ ok: true, code: 'SUCCESS', skippedTrustIds: ['ghost-fund-nonexistent'] })
+    expect(destination.store.getState().portfolioImportAuthority.authorityStatus).toBe('LEGACY_UNPROVEN')
   })
 })

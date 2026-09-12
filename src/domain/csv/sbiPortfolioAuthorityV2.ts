@@ -23,6 +23,11 @@ import type {
   SbiPortfolioImportResultV2,
 } from './sbiPortfolioImportV2'
 import {
+  REQUIRED_SECTION_IDS,
+  SBI_PORTFOLIO_IMPORT_CONTRACT_VERSION,
+  SBI_PORTFOLIO_PROFILE_ID,
+} from './sbiPortfolioImportV2'
+import {
   PORTFOLIO_IMPORT_AUTHORITY_VERSION,
   type PortfolioImportAuthorityAssetClass,
   type PortfolioImportAuthorityV1,
@@ -208,6 +213,112 @@ export function buildCompleteFullExportAuthority(parsed: SbiPortfolioImportResul
     provenanceScope: 'FULL_EXPORT',
     sectionCompleteness,
   }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// OPS-SBI-P2-PREBUILD-PHASE2-R2-A (P1-03 ticket section 9/10): SEMANTIC authority validation.
+//
+// portfolioImportAuthority.ts's isPortfolioImportAuthorityV1 is STRUCTURAL only — it proves the
+// wire shape (right keys, right primitive types/enums) but not that the combination of fields is
+// internally coherent for this profile. A structurally valid object can still, for example, claim
+// authorityStatus=COMPLETE while importMode is null, or while sectionCompleteness is missing a
+// required section — semantically contradictory, but structurally fine. This layer closes that
+// gap; it is SBI-profile-specific (reads REQUIRED_SECTION_IDS/contractVersion/profileId from
+// sbiPortfolioImportV2.ts), so it lives here rather than in the profile-agnostic types/ module.
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** Every possible value of PortfolioImportAuthorityAssetClass — used to prove a PARTIAL
+ *  authority's selected/preserved arrays exactly partition the full asset-class set. */
+const ALL_PORTFOLIO_IMPORT_ASSET_CLASSES: readonly PortfolioImportAuthorityAssetClass[] =
+  ['JP_STOCK', 'INVESTMENT_TRUST']
+
+function hasNoDuplicates<T>(values: readonly T[]): boolean {
+  return new Set(values).size === values.length
+}
+
+/**
+ * A semantically valid COMPLETE authority requires exactly the frozen FULL_EXPORT combination
+ * (ticket section 9): the current supported contract/profile, provenanceScope=FULL_EXPORT,
+ * selectedAssetClasses/preservedAssetClasses both null, and sectionCompleteness containing
+ * exactly one entry for every required section — no duplicates, no missing, no unknown ids, and
+ * only VALID_EMPTY/VALID_NONEMPTY statuses (never ABSENT/PARSE_FAILED).
+ */
+function isSemanticallyValidCompleteAuthority(authority: PortfolioImportAuthorityV1): boolean {
+  if (authority.importMode !== 'FULL_EXPORT') return false
+  if (authority.contractVersion !== SBI_PORTFOLIO_IMPORT_CONTRACT_VERSION) return false
+  if (authority.profileId !== SBI_PORTFOLIO_PROFILE_ID) return false
+  if (authority.provenanceScope !== 'FULL_EXPORT') return false
+  if (authority.selectedAssetClasses !== null) return false
+  if (authority.preservedAssetClasses !== null) return false
+  const sectionIds = authority.sectionCompleteness.map(entry => entry.sectionId)
+  if (!hasNoDuplicates(sectionIds)) return false
+  if (sectionIds.length !== REQUIRED_SECTION_IDS.length) return false
+  const requiredIdSet = new Set<string>(REQUIRED_SECTION_IDS)
+  return authority.sectionCompleteness.every(entry =>
+    requiredIdSet.has(entry.sectionId) &&
+    (entry.status === 'VALID_EMPTY' || entry.status === 'VALID_NONEMPTY'))
+}
+
+/**
+ * A semantically valid PARTIAL authority (ticket section 10) requires PARTIAL_IMPORT mode/scope
+ * and a selectedAssetClasses/preservedAssetClasses pair that exactly partitions the full
+ * asset-class set (no overlap, no gap) — a PARTIAL authority that claims to preserve a class it
+ * also selected (or vice versa, or leaves a class unaccounted for) is contradictory. Every
+ * sectionCompleteness entry must be a known required section id with a VALID_* status (never
+ * ABSENT/PARSE_FAILED — PARTIAL still proves completeness for whatever it did select).
+ */
+function isSemanticallyValidPartialAuthority(authority: PortfolioImportAuthorityV1): boolean {
+  if (authority.importMode !== 'PARTIAL_IMPORT') return false
+  if (authority.contractVersion !== SBI_PORTFOLIO_IMPORT_CONTRACT_VERSION) return false
+  if (authority.profileId !== SBI_PORTFOLIO_PROFILE_ID) return false
+  if (authority.provenanceScope !== 'PARTIAL_IMPORT') return false
+  const selected = authority.selectedAssetClasses
+  const preserved = authority.preservedAssetClasses
+  if (selected === null || selected.length === 0 || !hasNoDuplicates(selected)) return false
+  if (preserved === null || !hasNoDuplicates(preserved)) return false
+  if (selected.some(cls => preserved.includes(cls))) return false
+  const covered = new Set([...selected, ...preserved])
+  if (!ALL_PORTFOLIO_IMPORT_ASSET_CLASSES.every(cls => covered.has(cls))) return false
+  if (covered.size !== ALL_PORTFOLIO_IMPORT_ASSET_CLASSES.length) return false
+  const requiredIdSet = new Set<string>(REQUIRED_SECTION_IDS)
+  const sectionIds = authority.sectionCompleteness.map(entry => entry.sectionId)
+  if (!hasNoDuplicates(sectionIds)) return false
+  return authority.sectionCompleteness.every(entry =>
+    requiredIdSet.has(entry.sectionId) &&
+    (entry.status === 'VALID_EMPTY' || entry.status === 'VALID_NONEMPTY'))
+}
+
+/**
+ * LEGACY_UNPROVEN must never masquerade as FULL_EXPORT COMPLETE (or any other) metadata (ticket
+ * section 10) — the only semantically valid LEGACY_UNPROVEN shape is the exact frozen constant:
+ * every other field null/UNKNOWN/empty. Any stray non-null field is a masquerade and rejected.
+ */
+function isSemanticallyValidLegacyUnprovenAuthority(authority: PortfolioImportAuthorityV1): boolean {
+  return authority.importMode === null &&
+    authority.contractVersion === null &&
+    authority.profileId === null &&
+    authority.selectedAssetClasses === null &&
+    authority.preservedAssetClasses === null &&
+    authority.provenanceScope === 'UNKNOWN' &&
+    authority.sectionCompleteness.length === 0
+}
+
+/**
+ * The single semantic-authority predicate: STRUCTURAL validation (isPortfolioImportAuthorityV1)
+ * plus the per-status coherence rules above. A semantically invalid COMPLETE (or PARTIAL, or
+ * LEGACY_UNPROVEN masquerading otherwise) never passes here — callers that gate executable
+ * authority on COMPLETE must use this, not a bare `authorityStatus === 'COMPLETE'` check (P1-03).
+ */
+export function isSemanticallyValidPortfolioImportAuthority(authority: PortfolioImportAuthorityV1): boolean {
+  if (authority.authorityStatus === 'COMPLETE') return isSemanticallyValidCompleteAuthority(authority)
+  if (authority.authorityStatus === 'PARTIAL') return isSemanticallyValidPartialAuthority(authority)
+  return isSemanticallyValidLegacyUnprovenAuthority(authority)
+}
+
+/** Convenience predicate for the one narrow authority check the store's executable-decision
+ *  boundary actually needs: COMPLETE, and semantically coherent COMPLETE. */
+export function isSemanticallyCompletePortfolioImportAuthority(authority: PortfolioImportAuthorityV1): boolean {
+  return authority.authorityStatus === 'COMPLETE' && isSemanticallyValidCompleteAuthority(authority)
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

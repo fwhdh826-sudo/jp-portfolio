@@ -63,6 +63,11 @@ const TRUST_FIXTURE: Trust = {
   mu: 0.08, sigma: 0.15, score: 50, signal: 'HOLD', ev: 0, decision: 'HOLD',
 }
 
+// OPS-SBI-P2-PREBUILD-PHASE2-R2-A (P1-03): a semantically valid COMPLETE requires exactly one
+// sectionCompleteness entry per required section (see
+// isSemanticallyCompletePortfolioImportAuthority) — an empty array is a semantically
+// contradictory COMPLETE (missing all four required sections) and must never satisfy
+// selectHasCompletePortfolioAuthority, which is exactly what this fixture's own tests below verify.
 const COMPLETE_AUTHORITY: PortfolioImportAuthorityV1 = {
   authorityVersion: 'portfolio-import-authority-1',
   importMode: 'FULL_EXPORT',
@@ -72,7 +77,12 @@ const COMPLETE_AUTHORITY: PortfolioImportAuthorityV1 = {
   selectedAssetClasses: null,
   preservedAssetClasses: null,
   provenanceScope: 'FULL_EXPORT',
-  sectionCompleteness: [],
+  sectionCompleteness: [
+    { sectionId: 'JP_STOCK_CUSTODY', status: 'VALID_NONEMPTY' },
+    { sectionId: 'TRUST_TAXABLE', status: 'VALID_NONEMPTY' },
+    { sectionId: 'TRUST_NISA_GROWTH', status: 'VALID_EMPTY' },
+    { sectionId: 'TRUST_NISA_ACCUMULATION', status: 'VALID_EMPTY' },
+  ],
 }
 
 function seedV6Complete(): void {

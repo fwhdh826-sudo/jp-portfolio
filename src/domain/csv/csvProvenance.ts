@@ -54,6 +54,18 @@ const AUTHORITATIVE_LABELS = new Set([
 ])
 const WEAK_EXPORT_LABELS = new Set(['出力日時', 'エクスポート日時', 'ダウンロード日時', '作成日時'])
 
+/**
+ * OPS-SBI-P2-PREBUILD-PHASE2-R2-A: the exact, frozen vocabulary of preamble metadata-timestamp
+ * labels this parser layer recognizes — exported so sbiPortfolioImportV2.ts's preamble
+ * position-row classifier (ticket section 6) can recognize the same "label,timestamp-value" line
+ * shape as legitimate informational content, not a position-looking row, without duplicating (and
+ * risking drift from) this exact vocabulary.
+ */
+export const KNOWN_CSV_METADATA_LABELS: ReadonlySet<string> = new Set([
+  ...AUTHORITATIVE_LABELS,
+  ...WEAK_EXPORT_LABELS,
+])
+
 function normalizeLabel(value: string): string {
   return value.normalize('NFKC').replace(/^\uFEFF/, '').trim().replace(/\s+/g, '')
 }

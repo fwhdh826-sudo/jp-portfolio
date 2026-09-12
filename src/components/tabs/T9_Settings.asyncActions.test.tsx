@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import type { CsvImportResult, PortfolioSnapshotImportResult } from '../../store/useAppStore'
+import type { SbiFullExportImportResult, PortfolioSnapshotImportResult } from '../../store/useAppStore'
 import type {
   ManualMutationResult,
   ManualPortfolioMutationOperation,
@@ -225,13 +225,13 @@ describe('RA-007-D1 T9 CSV coordination flow', () => {
     ['CROSS_TAB_STATE_STALE', '別タブで更新された状態を検出しました。画面を再読み込みしてください。', false],
     ['PORTFOLIO_GENERATION_CONFLICT', '保存世代の競合を検出しました。画面を再読み込みしてください。', false],
   ] as const)('%s maps to the fixed shared message without a raw message field', (code, message, retryable) => {
-    const result: CsvImportResult = { ok: false, operation: 'importCsv', code, retryable }
+    const result: SbiFullExportImportResult = { ok: false, operation: 'importSbiPortfolioFullExport', code, retryable }
     expect(csvImportFeedback(result)).toEqual({ ok: false, message })
     expect(Object.keys(result).sort()).toEqual(['code', 'ok', 'operation', 'retryable'])
   })
 
   it('shows no completion feedback while pending and maps coordination only after resolve', async () => {
-    const gate = deferred<CsvImportResult>()
+    const gate = deferred<SbiFullExportImportResult>()
     const feedback: Array<ReturnType<typeof csvImportFeedback> | null> = []
     const running = executeCsvImportUiFlow(
       new File(['csv'], 'portfolio.csv'),
@@ -241,7 +241,7 @@ describe('RA-007-D1 T9 CSV coordination flow', () => {
     expect(feedback).toEqual([null])
     gate.resolve({
       ok: false,
-      operation: 'importCsv',
+      operation: 'importSbiPortfolioFullExport',
       code: 'CROSS_TAB_STATE_STALE',
       retryable: false,
     })

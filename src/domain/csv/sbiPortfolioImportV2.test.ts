@@ -434,6 +434,8 @@ describe('sbiPortfolioImportV2: evaluateFullExportCompleteness is independently 
       unsupportedSections: [],
       rowDiagnostics: [],
       orphanPositionRowCount: 0,
+      grandTotalTruncated: false,
+      grandTotalInvalid: false,
       trustResolution: 'NOT_APPLICABLE' as const,
       provisionalTrustRows: [],
       provisionalStockRows: [],
@@ -458,11 +460,227 @@ describe('sbiPortfolioImportV2: evaluateFullExportCompleteness is independently 
       unsupportedSections: [],
       rowDiagnostics: [],
       orphanPositionRowCount: 0,
+      grandTotalTruncated: false,
+      grandTotalInvalid: false,
       trustResolution: 'STRUCTURALLY_VALID_BUT_TRUST_RESOLUTION_REQUIRED' as const,
       provisionalTrustRows: [{ sectionId: 'TRUST_TAXABLE' as const, accountHint: '特定', name: 'テスト', code: '', eval: 100, price: 0, pnlPct: 0, dayPct: 0, acquiredAt: null }],
       provisionalStockRows: [],
       provenance: { explicitSourceTimestamp: { status: 'absent' as const } },
     }
     expect(evaluateFullExportCompleteness(draft)).toEqual({ status: 'FAIL', reasons: ['TRUST_REGISTRY_MISS'] })
+  })
+})
+
+// ═══════════════════════════════════════════════════════════════════════════
+// OPS-SBI-P2-PREBUILD-PHASE2-R2-A — ticket section 26 test matrix (P1-02/P2-01 repair)
+// ═══════════════════════════════════════════════════════════════════════════
+
+describe('sbiPortfolioImportV2: duplicate required section (P1-02)', () => {
+  it('a required section label appearing twice fails, never overwritten by the second occurrence', () => {
+    const csv = [
+      STOCK_LABEL, STOCK_HEADER,
+      '6501,日立製作所,8500,900000,15.20,1.10,2025-06-01',
+      STOCK_TOTAL,
+      STOCK_LABEL, STOCK_HEADER, // duplicate occurrence of the same required section
+      '7203,トヨタ自動車,3000,300000,5.00,0.50,2025-07-01',
+      STOCK_TOTAL,
+    ].join('\n')
+
+    const result = parseSbiPortfolioImportV2(csv)
+    expect(result.sections.JP_STOCK_CUSTODY.status).toBe('PARSE_FAILED')
+    expect(result.sections.JP_STOCK_CUSTODY.failureReasons).toContain('DUPLICATE_REQUIRED_SECTION')
+    expect(result.completeness).toMatchObject({ status: 'FAIL' })
+    if (result.completeness.status === 'FAIL') {
+      expect(result.completeness.reasons).toContain('SECTION_DUPLICATE_REQUIRED')
+    }
+    // the FIRST occurrence's evidence is preserved, never overwritten by the duplicate's rows
+    expect(result.sections.JP_STOCK_CUSTODY.acceptedRowCount).toBe(1)
+    expect(result.provisionalStockRows).toHaveLength(1)
+    expect(result.provisionalStockRows[0].code).toBe('6501')
+  })
+
+  it('an early malformed occurrence followed by a well-formed duplicate never upgrades to VALID_NONEMPTY', () => {
+    const csv = [
+      STOCK_LABEL,
+      '銘柄名,銘柄コード,評価額,現在値,取得日,損益（％）,前日比（％）', // unregistered schema — first occurrence fails
+      '日立製作所,6501,900000,8500,2025-06-01,15.20,1.10',
+      STOCK_TOTAL,
+      STOCK_LABEL, STOCK_HEADER, // second, well-formed occurrence
+      '7203,トヨタ自動車,3000,300000,5.00,0.50,2025-07-01',
+      STOCK_TOTAL,
+    ].join('\n')
+
+    const result = parseSbiPortfolioImportV2(csv)
+    expect(result.sections.JP_STOCK_CUSTODY.status).toBe('PARSE_FAILED')
+    expect(result.sections.JP_STOCK_CUSTODY.failureReasons).toContain('SCHEMA_UNRECOGNIZED')
+    expect(result.sections.JP_STOCK_CUSTODY.failureReasons).toContain('DUPLICATE_REQUIRED_SECTION')
+    expect(result.completeness.status).toBe('FAIL')
+  })
+
+  it('duplicate rows are consumed as duplicateSectionRow diagnostics, never as orphan/unexplained positions', () => {
+    const csv = [
+      STOCK_LABEL, STOCK_HEADER,
+      '6501,日立製作所,8500,900000,15.20,1.10,2025-06-01',
+      STOCK_TOTAL,
+      STOCK_LABEL, STOCK_HEADER,
+      '7203,トヨタ自動車,3000,300000,5.00,0.50,2025-07-01',
+      STOCK_TOTAL,
+    ].join('\n')
+    const result = parseSbiPortfolioImportV2(csv)
+    expect(result.orphanPositionRowCount).toBe(0)
+    expect(result.rowDiagnostics.some(row => row.kind === 'duplicateSectionRow')).toBe(true)
+  })
+})
+
+describe('sbiPortfolioImportV2: position-looking preamble row (P1-02)', () => {
+  it('a position-shaped row before the first structural section fails FULL_EXPORT', () => {
+    const csv = [
+      '6501,日立製作所,8500,900000,15.20,1.10,2025-06-01', // position-looking, but no section is open yet
+      STOCK_LABEL, STOCK_HEADER,
+      '6501,日立製作所,8500,900000,15.20,1.10,2025-06-01',
+      STOCK_TOTAL,
+    ].join('\n')
+    const result = parseSbiPortfolioImportV2(csv)
+    expect(result.orphanPositionRowCount).toBe(1)
+    expect(result.completeness.status).toBe('FAIL')
+    if (result.completeness.status === 'FAIL') {
+      expect(result.completeness.reasons).toContain('UNEXPLAINED_POSITION_ROW')
+    }
+  })
+
+  it('a non-position preamble title/note line is still tolerated as harmless informational content', () => {
+    const csv = [
+      'ポートフォリオ一覧',
+      'これはメモです', // arbitrary non-position informational text, no digit anywhere
+      STOCK_LABEL, STOCK_HEADER,
+      '6501,日立製作所,8500,900000,15.20,1.10,2025-06-01',
+      STOCK_TOTAL,
+      ...emptyTrustSection(TRUST_TAXABLE_LABEL, TRUST_TAXABLE_TOTAL),
+      ...emptyTrustSection(TRUST_GROWTH_LABEL, TRUST_GROWTH_TOTAL),
+      ...emptyTrustSection(TRUST_TSUMITATE_LABEL, TRUST_TSUMITATE_TOTAL),
+    ].join('\n')
+    const result = parseSbiPortfolioImportV2(csv)
+    expect(result.orphanPositionRowCount).toBe(0)
+    expect(result.completeness).toEqual({ status: 'PASS' })
+  })
+
+  it('a known metadata-timestamp preamble line (データ基準日時) is never misclassified as a position row', () => {
+    const csv = [
+      'データ基準日時,2026-09-10T00:00:00+09:00',
+      STOCK_LABEL, STOCK_HEADER,
+      '6501,日立製作所,8500,900000,15.20,1.10,2025-06-01',
+      STOCK_TOTAL,
+      ...emptyTrustSection(TRUST_TAXABLE_LABEL, TRUST_TAXABLE_TOTAL),
+      ...emptyTrustSection(TRUST_GROWTH_LABEL, TRUST_GROWTH_TOTAL),
+      ...emptyTrustSection(TRUST_TSUMITATE_LABEL, TRUST_TSUMITATE_TOTAL),
+    ].join('\n')
+    const result = parseSbiPortfolioImportV2(csv)
+    expect(result.orphanPositionRowCount).toBe(0)
+    expect(result.completeness).toEqual({ status: 'PASS' })
+  })
+})
+
+describe('sbiPortfolioImportV2: totals fail-closed gaps (P2-01)', () => {
+  it('a blank section-total value fails the section, never silently passes', () => {
+    const csv = [
+      STOCK_LABEL, STOCK_HEADER,
+      '6501,日立製作所,8500,300000,15.20,1.10,2025-06-01',
+      STOCK_TOTAL,
+      '評価額,含み損益,含み損益（％）,前日比,前日比（％）,',
+      ',,,,,', // blank totals value
+    ].join('\n')
+    const result = parseSbiPortfolioImportV2(csv)
+    expect(result.sections.JP_STOCK_CUSTODY.status).toBe('PARSE_FAILED')
+    expect(result.sections.JP_STOCK_CUSTODY.failureReasons).toContain('TOTAL_MISMATCH')
+  })
+
+  it('a malformed (non-numeric) section-total value fails the section', () => {
+    const csv = [
+      STOCK_LABEL, STOCK_HEADER,
+      '6501,日立製作所,8500,300000,15.20,1.10,2025-06-01',
+      STOCK_TOTAL,
+      '評価額,含み損益,含み損益（％）,前日比,前日比（％）,',
+      'N/A,,,,,',
+    ].join('\n')
+    const result = parseSbiPortfolioImportV2(csv)
+    expect(result.sections.JP_STOCK_CUSTODY.status).toBe('PARSE_FAILED')
+    expect(result.sections.JP_STOCK_CUSTODY.failureReasons).toContain('TOTAL_MISMATCH')
+  })
+
+  it('EOF while awaiting the totals value (header already matched) truncates the section', () => {
+    const csv = [
+      STOCK_LABEL, STOCK_HEADER,
+      '6501,日立製作所,8500,300000,15.20,1.10,2025-06-01',
+      STOCK_TOTAL,
+      '評価額,含み損益,含み損益（％）,前日比,前日比（％）,', // totals header matched, then EOF — value never arrives
+    ].join('\n')
+    const result = parseSbiPortfolioImportV2(csv)
+    expect(result.sections.JP_STOCK_CUSTODY.status).toBe('PARSE_FAILED')
+    expect(result.sections.JP_STOCK_CUSTODY.failureReasons).toContain('TRUNCATED')
+  })
+
+  it('VALID_EMPTY with an incomplete (header-only, no value) totals block fails, not VALID_EMPTY', () => {
+    const csv = [
+      TRUST_TAXABLE_LABEL, TRUST_HEADER, TRUST_TAXABLE_TOTAL,
+      '評価額,含み損益,含み損益（％）,前日比,前日比（％）,', // totals header matched for an otherwise-empty section, then EOF
+    ].join('\n')
+    const result = parseSbiPortfolioImportV2(csv)
+    expect(result.sections.TRUST_TAXABLE.status).toBe('PARSE_FAILED')
+    expect(result.sections.TRUST_TAXABLE.failureReasons).toContain('TRUNCATED')
+  })
+
+  it('no totals block offered at all still reaches VALID_EMPTY (frozen: totals block is optional bonus evidence)', () => {
+    const csv = emptyTrustSection(TRUST_TAXABLE_LABEL, TRUST_TAXABLE_TOTAL).join('\n')
+    const result = parseSbiPortfolioImportV2(csv)
+    expect(result.sections.TRUST_TAXABLE.status).toBe('VALID_EMPTY')
+  })
+})
+
+describe('sbiPortfolioImportV2: grand total structural presence (P2-01)', () => {
+  it('EOF while awaiting the grand-total value truncates FULL_EXPORT', () => {
+    const csv = [
+      STOCK_LABEL, STOCK_HEADER,
+      '6501,日立製作所,8500,900000,15.20,1.10,2025-06-01',
+      STOCK_TOTAL,
+      '総合計', // grand-total footer label seen, then EOF — value never arrives
+    ].join('\n')
+    const result = parseSbiPortfolioImportV2(csv)
+    expect(result.grandTotalTruncated).toBe(true)
+    expect(result.completeness.status).toBe('FAIL')
+    if (result.completeness.status === 'FAIL') {
+      expect(result.completeness.reasons).toContain('GRAND_TOTAL_TRUNCATED')
+    }
+  })
+
+  it('an invalid (non-numeric) grand-total value is surfaced, never silently accepted', () => {
+    const csv = [
+      STOCK_LABEL, STOCK_HEADER,
+      '6501,日立製作所,8500,900000,15.20,1.10,2025-06-01',
+      STOCK_TOTAL,
+      '総合計',
+      'N/A,,,,,',
+    ].join('\n')
+    const result = parseSbiPortfolioImportV2(csv)
+    expect(result.grandTotalInvalid).toBe(true)
+    expect(result.completeness.status).toBe('FAIL')
+    if (result.completeness.status === 'FAIL') {
+      expect(result.completeness.reasons).toContain('GRAND_TOTAL_INVALID')
+    }
+  })
+
+  it('a valid grand-total value is never flagged truncated or invalid', () => {
+    const csv = [
+      STOCK_LABEL, STOCK_HEADER,
+      '6501,日立製作所,8500,300000,15.20,1.10,2025-06-01',
+      '7203,トヨタ自動車,3000,300000,5.00,0.50,2025-07-01',
+      STOCK_TOTAL,
+      '評価額,含み損益,含み損益（％）,前日比,前日比（％）,',
+      '600000,6000,1.00,600,0.10,',
+      '総合計',
+      '600000,6000,1.00,600,0.10,',
+    ].join('\n')
+    const result = parseSbiPortfolioImportV2(csv)
+    expect(result.grandTotalTruncated).toBe(false)
+    expect(result.grandTotalInvalid).toBe(false)
   })
 })

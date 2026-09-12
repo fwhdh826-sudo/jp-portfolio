@@ -28,7 +28,7 @@
  * text-only parser does not take as input — see `TrustResolutionStatus`).
  */
 
-import { extractExplicitSourceTimestamp, type ExplicitSourceTimestampResult } from './csvProvenance'
+import { extractExplicitSourceTimestamp, KNOWN_CSV_METADATA_LABELS, type ExplicitSourceTimestampResult } from './csvProvenance'
 
 export const SBI_PORTFOLIO_IMPORT_CONTRACT_VERSION = 'sbi-portfolio-import-2' as const
 export const SBI_PORTFOLIO_PROFILE_ID = 'sbi-portfolio-v1' as const
@@ -42,7 +42,7 @@ export type RequiredSectionId =
   | 'TRUST_NISA_GROWTH'
   | 'TRUST_NISA_ACCUMULATION'
 
-const REQUIRED_SECTION_IDS: readonly RequiredSectionId[] = [
+export const REQUIRED_SECTION_IDS: readonly RequiredSectionId[] = [
   'JP_STOCK_CUSTODY',
   'TRUST_TAXABLE',
   'TRUST_NISA_GROWTH',
@@ -69,7 +69,11 @@ const REQUIRED_SECTION_SIGNATURES: Record<RequiredSectionId, RequiredSectionSign
 
 export type SectionStatus = 'ABSENT' | 'VALID_EMPTY' | 'VALID_NONEMPTY' | 'PARSE_FAILED'
 
-export type SectionFailureReason = 'SCHEMA_UNRECOGNIZED' | 'TRUNCATED' | 'REJECTED_ROWS' | 'TOTAL_MISMATCH'
+// OPS-SBI-P2-PREBUILD-PHASE2-R2-A (P1-02 ticket section 5): DUPLICATE_REQUIRED_SECTION marks a
+// second (or later) occurrence of an already-seen required section label — never silently
+// overwritten by, nor overwriting, whatever result the first occurrence already established.
+export type SectionFailureReason =
+  | 'SCHEMA_UNRECOGNIZED' | 'TRUNCATED' | 'REJECTED_ROWS' | 'TOTAL_MISMATCH' | 'DUPLICATE_REQUIRED_SECTION'
 
 /**
  * Deliberately a single flat shape (not a discriminated union per status) so the
@@ -99,6 +103,10 @@ export type RowClassificationKind =
   | 'supportedNonPosition'
   | 'acceptedPosition'
   | 'rejectedPosition'
+  // OPS-SBI-P2-PREBUILD-PHASE2-R2-A (P1-02 ticket section 5): a row belonging to a duplicate
+  // (second-or-later) occurrence of an already-seen required section. Consumed/discarded —
+  // never counted as an accepted/rejected position and never touches `sections[id]`.
+  | 'duplicateSectionRow'
 
 export type RowRejectionReason =
   | 'INVALID_CODE'
@@ -139,6 +147,10 @@ export type CompletenessReason =
   | 'SECTION_PARSE_FAILED'
   | 'SECTION_TRUNCATED'
   | 'SECTION_TOTAL_MISMATCH'
+  // OPS-SBI-P2-PREBUILD-PHASE2-R2-A (P1-02 ticket section 5): a required section label was seen
+  // more than once — a specific, machine-readable reason distinct from the generic
+  // SECTION_PARSE_FAILED that also always accompanies it.
+  | 'SECTION_DUPLICATE_REQUIRED'
   | 'UNEXPLAINED_POSITION_ROW'
   | 'UNKNOWN_POSITION_SECTION'
   | 'UNSUPPORTED_POSITION_SECTION'
@@ -146,6 +158,12 @@ export type CompletenessReason =
   | 'AMBIGUOUS_TRUST'
   | 'ACCOUNT_MISMATCH'
   | 'TRUST_REGISTRY_MISS'
+  // OPS-SBI-P2-PREBUILD-PHASE2-R2-A (P2-01 ticket section 7): the grand-total ("総合計") footer's
+  // value line never arrived before EOF, or arrived but was not a syntactically valid number.
+  // Structural presence/numeric-authority only — this profile does not reconcile the grand total
+  // against a cross-section sum (see evaluateFullExportCompleteness's own comment for why).
+  | 'GRAND_TOTAL_TRUNCATED'
+  | 'GRAND_TOTAL_INVALID'
 
 export type CompletenessResult =
   | { status: 'PASS' }
@@ -207,6 +225,12 @@ export interface SbiPortfolioImportResultV2 {
   rowDiagnostics: RowDiagnosticEntry[]
   /** Position-looking rows encountered with no section open at all (never silently dropped). */
   orphanPositionRowCount: number
+  /** OPS-SBI-P2-PREBUILD-PHASE2-R2-A (P2-01 ticket section 7): the grand-total ("総合計") footer
+   *  label was seen but EOF arrived before its value line. Structural presence only — see
+   *  evaluateFullExportCompleteness's own comment on why this profile does not go further. */
+  grandTotalTruncated: boolean
+  /** The grand-total value line was present but not a syntactically valid numeric literal. */
+  grandTotalInvalid: boolean
   completeness: CompletenessResult
   trustResolution: TrustResolutionStatus
   provisionalTrustRows: ProvisionalTrustRow[]
@@ -444,20 +468,30 @@ function detectGenericSectionSignature(normalizedSig: string): { assetType: Sect
   return { assetType, recognizedButOutOfScope }
 }
 
-function isKnownInformationalLine(firstCellNormalized: string, beforeAnyStructuralSection: boolean): boolean {
-  if (beforeAnyStructuralSection) return true // preamble/title/notes ahead of the first recognized section
+/** Best-effort fallback heuristic for a line with no section open at all (section 11: never silently drop). */
+function looksLikePositionRow(cols: string[]): boolean {
+  return cols.length >= 2 && cols.slice(1).some(cell => /\d/.test(cell))
+}
+
+// OPS-SBI-P2-PREBUILD-PHASE2-R2-A (P1-02 ticket section 6): a position-looking row occurring
+// before the first recognized structural section must NOT be swallowed as harmless preamble — it
+// is preamble only when it does NOT look like a position row. Arbitrary non-position
+// informational lines (titles/notes) stay tolerated exactly as before; the classifier stays exact
+// (a position-shaped preamble row instead falls through to the caller's looksLikePositionRow
+// check, which raises UNEXPLAINED_POSITION_ROW and fails FULL_EXPORT).
+function isKnownInformationalLine(firstCellNormalized: string, beforeAnyStructuralSection: boolean, cols: string[]): boolean {
   const noSpace = firstCellNormalized.replace(/\s/g, '')
   if (!noSpace) return true
   if (noSpace.startsWith('総件数')) return true
   if (noSpace.startsWith('選択範囲')) return true
   if (noSpace.startsWith('ページ')) return true
   if (noSpace === 'ポートフォリオ一覧' || noSpace === '個別表示' || noSpace === 'PTS株価非表示') return true
+  // A "label,timestamp" preamble line (データ基準日時 etc. — see csvProvenance.ts's own frozen
+  // vocabulary) legitimately has a digit-bearing second cell; it is exact known content, never a
+  // position row, regardless of the looksLikePositionRow heuristic below.
+  if (KNOWN_CSV_METADATA_LABELS.has(noSpace)) return true
+  if (beforeAnyStructuralSection && !looksLikePositionRow(cols)) return true
   return false
-}
-
-/** Best-effort fallback heuristic for a line with no section open at all (section 11: never silently drop). */
-function looksLikePositionRow(cols: string[]): boolean {
-  return cols.length >= 2 && cols.slice(1).some(cell => /\d/.test(cell))
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -472,6 +506,10 @@ type ParserState =
   | 'AWAITING_TOTALS_HEADER'
   | 'AWAITING_TOTALS_VALUE'
   | 'AWAITING_GRAND_TOTAL_VALUE'
+  // OPS-SBI-P2-PREBUILD-PHASE2-R2-A (P1-02 ticket section 5): consuming the body of a duplicate
+  // (second-or-later) required-section occurrence — every line is discarded until the next
+  // section-starting signature, `sections[duplicateSectionId]` is never touched while here.
+  | 'IN_DUPLICATE_SECTION'
 
 interface OpenUnsupportedSection {
   label: string
@@ -508,6 +546,12 @@ export function parseSbiPortfolioImportV2(
   const provisionalStockRows: ProvisionalStockRow[] = []
   let orphanPositionRowCount = 0
   let anyStructuralSectionSeen = false
+  let grandTotalTruncated = false
+  let grandTotalInvalid = false
+  // OPS-SBI-P2-PREBUILD-PHASE2-R2-A (P1-02 ticket section 5): each required section label may
+  // legitimately be seen once. Tracked from the FIRST occurrence's header line onward (not just
+  // once fully closed), so a duplicate mid-section (before its own boundary) is caught too.
+  const seenRequiredSectionIds = new Set<RequiredSectionId>()
 
   // All state-machine-relevant mutable fields live on one `ctx` object rather than as
   // bare closured `let`s. TypeScript's control-flow narrowing for a bare `let` that is
@@ -527,6 +571,7 @@ export function parseSbiPortfolioImportV2(
     openAcceptedEvalSum: number
     openUnsupported: OpenUnsupportedSection | null
     pendingTotalsFor: RequiredSectionId | null
+    duplicateSectionId: RequiredSectionId | null
   } = {
     state: 'SCANNING',
     pendingHeaderFor: null,
@@ -537,6 +582,7 @@ export function parseSbiPortfolioImportV2(
     openAcceptedEvalSum: 0,
     openUnsupported: null,
     pendingTotalsFor: null,
+    duplicateSectionId: null,
   }
   // Per-section accepted-eval sum, captured at boundary-close time so the totals-value
   // line (seen a line or two later) can reconcile against it (section 10/17).
@@ -598,6 +644,25 @@ export function parseSbiPortfolioImportV2(
     const matchedRequiredId = REQUIRED_SECTION_IDS.find(id => REQUIRED_SECTION_SIGNATURES[id].label === sig)
     if (matchedRequiredId) {
       anyStructuralSectionSeen = true
+      if (seenRequiredSectionIds.has(matchedRequiredId)) {
+        // OPS-SBI-P2-PREBUILD-PHASE2-R2-A (P1-02 ticket section 5): a duplicate required section.
+        // Permanently fail it — merging the DUPLICATE_REQUIRED_SECTION reason into whatever
+        // failureReasons the first occurrence already established — and never let this (or any
+        // later) occurrence's body overwrite/upgrade sections[id] again. The duplicate's own body
+        // is consumed and discarded (IN_DUPLICATE_SECTION), never counted as accepted/rejected
+        // positions and never treated as harmless orphan/informational content.
+        const existing = sections[matchedRequiredId]
+        sections[matchedRequiredId] = {
+          ...existing,
+          status: 'PARSE_FAILED',
+          failureReasons: [...new Set([...existing.failureReasons, 'DUPLICATE_REQUIRED_SECTION' as const])],
+        }
+        rowDiagnostics.push({ lineNumber, kind: 'duplicateSectionRow', sectionId: matchedRequiredId, unsupportedSectionLabel: null })
+        ctx.state = 'IN_DUPLICATE_SECTION'
+        ctx.duplicateSectionId = matchedRequiredId
+        return
+      }
+      seenRequiredSectionIds.add(matchedRequiredId)
       // Pessimistic placeholder: overwritten once the header (or EOF/interruption) resolves it.
       // This guarantees every reachable exit path leaves a correct, non-ABSENT status behind.
       sections[matchedRequiredId] = {
@@ -630,7 +695,7 @@ export function parseSbiPortfolioImportV2(
       return
     }
 
-    if (isKnownInformationalLine(first, !anyStructuralSectionSeen)) {
+    if (isKnownInformationalLine(first, !anyStructuralSectionSeen, cols)) {
       rowDiagnostics.push({ lineNumber, kind: 'registeredInformational', sectionId: null, unsupportedSectionLabel: null })
       return
     }
@@ -665,6 +730,15 @@ export function parseSbiPortfolioImportV2(
           if (Math.abs(outcome.value - expectedSum) > 0.01) {
             sections[id] = { ...current, status: 'PARSE_FAILED', failureReasons: [...new Set([...current.failureReasons, 'TOTAL_MISMATCH' as const])] }
           }
+        } else {
+          // OPS-SBI-P2-PREBUILD-PHASE2-R2-A (P2-01 ticket section 7): a totals block that
+          // committed to providing a reconciliation value must not silently pass when that value
+          // is blank/malformed/non-finite — it can never reconcile because it is not even a
+          // comparable number, exactly the "malformed/blank required section-total numeric"
+          // fail-open gap this section closes. Reuses TOTAL_MISMATCH (a blank/malformed total
+          // trivially fails to reconcile) rather than inventing a second, redundant reason.
+          const current = sections[id]
+          sections[id] = { ...current, status: 'PARSE_FAILED', failureReasons: [...new Set([...current.failureReasons, 'TOTAL_MISMATCH' as const])] }
         }
         rowDiagnostics.push({ lineNumber, kind: 'sectionTotal', sectionId: id, unsupportedSectionLabel: null })
         ctx.pendingTotalsFor = null
@@ -679,14 +753,47 @@ export function parseSbiPortfolioImportV2(
           continue
         }
         // Not a totals block after all — abandon reconciliation and reprocess this line normally.
+        // (Frozen, deliberate: the 2-line totals block is optional bonus evidence, never a
+        // required part of "recognized matching 合計/end boundary" — see the module header and
+        // test 2/10's own comments. EOF here is indistinguishable from "no totals block offered
+        // at all" and must stay VALID_EMPTY/VALID_NONEMPTY, not be downgraded.)
         ctx.pendingTotalsFor = null
         ctx.state = 'SCANNING'
         // fall through to SCANNING handling below
       }
 
       if (ctx.state === 'AWAITING_GRAND_TOTAL_VALUE') {
+        // OPS-SBI-P2-PREBUILD-PHASE2-R2-A (P2-01 ticket section 7/8): structural presence +
+        // basic numeric authority only — this profile does not reconcile the grand total against
+        // a cross-section sum (no established contract for what exactly it should sum over ABSENT
+        // sections; inventing one here would be exactly the "wide tolerance" section 8 forbids).
+        // A malformed/blank value is still evidence worth surfacing (GRAND_TOTAL_INVALID) rather
+        // than silently accepted.
+        if (parseAuthoritativeNumber(normalizedCols[0] ?? '').kind !== 'valid') grandTotalInvalid = true
         rowDiagnostics.push({ lineNumber, kind: 'grandTotalFooter', sectionId: null, unsupportedSectionLabel: null })
         ctx.state = 'SCANNING'
+        continue
+      }
+
+      if (ctx.state === 'IN_DUPLICATE_SECTION' && ctx.duplicateSectionId) {
+        const duplicateId = ctx.duplicateSectionId
+        const matchedNewRequired = REQUIRED_SECTION_IDS.some(otherId => REQUIRED_SECTION_SIGNATURES[otherId].label === sig)
+        const matchedGeneric = detectGenericSectionSignature(sig)
+        const boundaryLabel = `${REQUIRED_SECTION_SIGNATURES[duplicateId].label}合計`
+        if (matchedNewRequired || matchedGeneric || sig === '総合計') {
+          ctx.duplicateSectionId = null
+          ctx.state = 'SCANNING'
+          handleScanningLine(lineNumber, line, cols, normalizedCols)
+          continue
+        }
+        // Everything else — including the duplicate's own header/rows/boundary total line — is
+        // discarded evidence-only; sections[duplicateId] was already permanently fixed above.
+        rowDiagnostics.push({
+          lineNumber,
+          kind: 'duplicateSectionRow',
+          sectionId: duplicateId,
+          unsupportedSectionLabel: sig === boundaryLabel ? boundaryLabel : null,
+        })
         continue
       }
 
@@ -812,6 +919,19 @@ export function parseSbiPortfolioImportV2(
 
     if (ctx.state === 'OPEN') closeOpenSectionAsTruncated()
     if (ctx.state === 'IN_UNSUPPORTED') closeUnsupportedSection()
+    // OPS-SBI-P2-PREBUILD-PHASE2-R2-A (P2-01 ticket section 7): EOF while a totals block that
+    // already committed to a value (its header line matched) never delivered that value is a
+    // genuine truncation — downgrade the section sections[id] already recorded at boundary-close
+    // time. Unlike AWAITING_TOTALS_HEADER (no totals block ever offered — frozen as fine, see
+    // that branch's own comment), this state is unreachable without the header line having
+    // already matched, so there is no "never offered" ambiguity to preserve here.
+    if (ctx.state === 'AWAITING_TOTALS_VALUE' && ctx.pendingTotalsFor) {
+      const id = ctx.pendingTotalsFor
+      const current = sections[id]
+      sections[id] = { ...current, status: 'PARSE_FAILED', failureReasons: [...new Set([...current.failureReasons, 'TRUNCATED' as const])] }
+    }
+    // EOF after the grand-total footer label but before its value line ever arrived.
+    if (ctx.state === 'AWAITING_GRAND_TOTAL_VALUE') grandTotalTruncated = true
   }
 
   const parsed = anyStructuralSectionSeen
@@ -834,6 +954,8 @@ export function parseSbiPortfolioImportV2(
     unsupportedSections,
     rowDiagnostics,
     orphanPositionRowCount,
+    grandTotalTruncated,
+    grandTotalInvalid,
     trustResolution,
     provisionalTrustRows,
     provisionalStockRows,
@@ -869,10 +991,13 @@ export function evaluateFullExportCompleteness(
       if (section.failureReasons.includes('SCHEMA_UNRECOGNIZED')) reasons.add('SECTION_SCHEMA_UNRECOGNIZED')
       if (section.failureReasons.includes('TRUNCATED')) reasons.add('SECTION_TRUNCATED')
       if (section.failureReasons.includes('TOTAL_MISMATCH')) reasons.add('SECTION_TOTAL_MISMATCH')
+      if (section.failureReasons.includes('DUPLICATE_REQUIRED_SECTION')) reasons.add('SECTION_DUPLICATE_REQUIRED')
     }
   }
 
   if (result.orphanPositionRowCount > 0) reasons.add('UNEXPLAINED_POSITION_ROW')
+  if (result.grandTotalTruncated) reasons.add('GRAND_TOTAL_TRUNCATED')
+  if (result.grandTotalInvalid) reasons.add('GRAND_TOTAL_INVALID')
 
   for (const unsupported of result.unsupportedSections) {
     if (!unsupported.nonEmpty) continue

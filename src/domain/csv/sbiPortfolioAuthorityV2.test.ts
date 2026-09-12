@@ -1,11 +1,15 @@
 import { describe, expect, it } from 'vitest'
 import type { Trust } from '../../types'
 import { parseSbiPortfolioImportV2 } from './sbiPortfolioImportV2'
+import type { PortfolioImportAuthorityV1 } from '../../types/portfolioImportAuthority'
+import { LEGACY_UNPROVEN_PORTFOLIO_IMPORT_AUTHORITY } from '../../types/portfolioImportAuthority'
 import {
   resolveTrustRows,
   evaluateFinalFullExportAuthority,
   buildCompleteFullExportAuthority,
   buildFullExportStagedDiff,
+  isSemanticallyValidPortfolioImportAuthority,
+  isSemanticallyCompletePortfolioImportAuthority,
   type TrustRowResolutionResult,
 } from './sbiPortfolioAuthorityV2'
 
@@ -235,5 +239,143 @@ describe('buildFullExportStagedDiff', () => {
       removalAbsoluteCap: 5,
     })
     expect(diff.destructive).toBe(false)
+  })
+})
+
+// ═══════════════════════════════════════════════════════════════════════════
+// OPS-SBI-P2-PREBUILD-PHASE2-R2-A — ticket section 27 test matrix (P1-03 repair)
+// ═══════════════════════════════════════════════════════════════════════════
+
+describe('isSemanticallyCompletePortfolioImportAuthority / isSemanticallyValidPortfolioImportAuthority', () => {
+  function genuineCompleteAuthority(): PortfolioImportAuthorityV1 {
+    const parsed = parseSbiPortfolioImportV2(fullExportCsv(), { mode: 'FULL_EXPORT' })
+    return buildCompleteFullExportAuthority(parsed)
+  }
+
+  it('a genuinely built COMPLETE authority is semantically valid and passes the COMPLETE gate', () => {
+    const authority = genuineCompleteAuthority()
+    expect(isSemanticallyValidPortfolioImportAuthority(authority)).toBe(true)
+    expect(isSemanticallyCompletePortfolioImportAuthority(authority)).toBe(true)
+  })
+
+  it('LEGACY_UNPROVEN (the frozen canonical constant) is semantically valid but never satisfies the COMPLETE gate', () => {
+    expect(isSemanticallyValidPortfolioImportAuthority(LEGACY_UNPROVEN_PORTFOLIO_IMPORT_AUTHORITY)).toBe(true)
+    expect(isSemanticallyCompletePortfolioImportAuthority(LEGACY_UNPROVEN_PORTFOLIO_IMPORT_AUTHORITY)).toBe(false)
+  })
+
+  const CONTRADICTORY_COMPLETE_PATCHES: ReadonlyArray<[string, Partial<PortfolioImportAuthorityV1>]> = [
+    ['null importMode', { importMode: null }],
+    ['null contractVersion', { contractVersion: null }],
+    ['null profileId', { profileId: null }],
+    ['UNKNOWN provenanceScope', { provenanceScope: 'UNKNOWN' }],
+    ['non-null selectedAssetClasses', { selectedAssetClasses: ['JP_STOCK'] }],
+    ['non-null preservedAssetClasses', { preservedAssetClasses: ['JP_STOCK'] }],
+    ['unsupported contractVersion', { contractVersion: 'sbi-portfolio-import-9' }],
+    ['unsupported profileId', { profileId: 'sbi-portfolio-v9' }],
+  ]
+
+  it.each(CONTRADICTORY_COMPLETE_PATCHES)('rejects a semantically contradictory COMPLETE: %s', (_label, patch) => {
+    const authority: PortfolioImportAuthorityV1 = { ...genuineCompleteAuthority(), ...patch }
+    expect(isSemanticallyValidPortfolioImportAuthority(authority)).toBe(false)
+    expect(isSemanticallyCompletePortfolioImportAuthority(authority)).toBe(false)
+  })
+
+  it('rejects a COMPLETE missing a required section from sectionCompleteness', () => {
+    const authority = genuineCompleteAuthority()
+    const missing: PortfolioImportAuthorityV1 = {
+      ...authority,
+      sectionCompleteness: authority.sectionCompleteness.filter(entry => entry.sectionId !== 'TRUST_NISA_GROWTH'),
+    }
+    expect(isSemanticallyCompletePortfolioImportAuthority(missing)).toBe(false)
+  })
+
+  it('rejects a COMPLETE with a duplicate required section in sectionCompleteness', () => {
+    const authority = genuineCompleteAuthority()
+    const duplicated: PortfolioImportAuthorityV1 = {
+      ...authority,
+      sectionCompleteness: [...authority.sectionCompleteness, authority.sectionCompleteness[0]],
+    }
+    expect(isSemanticallyCompletePortfolioImportAuthority(duplicated)).toBe(false)
+  })
+
+  it('rejects a COMPLETE with an unknown section id in sectionCompleteness', () => {
+    const authority = genuineCompleteAuthority()
+    const unknown: PortfolioImportAuthorityV1 = {
+      ...authority,
+      sectionCompleteness: [
+        ...authority.sectionCompleteness.slice(1),
+        { sectionId: 'NOT_A_REAL_SECTION', status: 'VALID_EMPTY' },
+      ],
+    }
+    expect(isSemanticallyCompletePortfolioImportAuthority(unknown)).toBe(false)
+  })
+
+  it.each(['ABSENT', 'PARSE_FAILED'] as const)('rejects a COMPLETE with a %s section status', status => {
+    const authority = genuineCompleteAuthority()
+    const invalidStatus: PortfolioImportAuthorityV1 = {
+      ...authority,
+      sectionCompleteness: authority.sectionCompleteness.map((entry, index) =>
+        index === 0 ? { ...entry, status } : entry),
+    }
+    expect(isSemanticallyCompletePortfolioImportAuthority(invalidStatus)).toBe(false)
+  })
+
+  it('rejects PARTIAL metadata (importMode/provenanceScope) carried under authorityStatus=COMPLETE', () => {
+    const authority = genuineCompleteAuthority()
+    const partialMasqueradingAsComplete: PortfolioImportAuthorityV1 = {
+      ...authority,
+      importMode: 'PARTIAL_IMPORT',
+      provenanceScope: 'PARTIAL_IMPORT',
+      selectedAssetClasses: ['JP_STOCK'],
+    }
+    expect(isSemanticallyCompletePortfolioImportAuthority(partialMasqueradingAsComplete)).toBe(false)
+    // and it is not a semantically valid PARTIAL either, since authorityStatus itself still says COMPLETE
+    expect(isSemanticallyValidPortfolioImportAuthority(partialMasqueradingAsComplete)).toBe(false)
+  })
+
+  it('rejects LEGACY_UNPROVEN metadata masquerading under authorityStatus=COMPLETE', () => {
+    const legacyMasqueradingAsComplete: PortfolioImportAuthorityV1 = {
+      ...LEGACY_UNPROVEN_PORTFOLIO_IMPORT_AUTHORITY,
+      authorityStatus: 'COMPLETE',
+    }
+    expect(isSemanticallyCompletePortfolioImportAuthority(legacyMasqueradingAsComplete)).toBe(false)
+    expect(isSemanticallyValidPortfolioImportAuthority(legacyMasqueradingAsComplete)).toBe(false)
+  })
+
+  it('a semantically valid PARTIAL exists (types/store semantics only — not currently producible by any action)', () => {
+    const partial: PortfolioImportAuthorityV1 = {
+      authorityVersion: 'portfolio-import-authority-1',
+      importMode: 'PARTIAL_IMPORT',
+      contractVersion: 'sbi-portfolio-import-2',
+      profileId: 'sbi-portfolio-v1',
+      authorityStatus: 'PARTIAL',
+      selectedAssetClasses: ['JP_STOCK'],
+      preservedAssetClasses: ['INVESTMENT_TRUST'],
+      provenanceScope: 'PARTIAL_IMPORT',
+      sectionCompleteness: [{ sectionId: 'JP_STOCK_CUSTODY', status: 'VALID_NONEMPTY' }],
+    }
+    expect(isSemanticallyValidPortfolioImportAuthority(partial)).toBe(true)
+    // PARTIAL never satisfies the COMPLETE gate, no matter how internally coherent
+    expect(isSemanticallyCompletePortfolioImportAuthority(partial)).toBe(false)
+  })
+
+  it('rejects a PARTIAL whose selected/preserved classes overlap or leave a gap', () => {
+    const base: PortfolioImportAuthorityV1 = {
+      authorityVersion: 'portfolio-import-authority-1',
+      importMode: 'PARTIAL_IMPORT',
+      contractVersion: 'sbi-portfolio-import-2',
+      profileId: 'sbi-portfolio-v1',
+      authorityStatus: 'PARTIAL',
+      selectedAssetClasses: ['JP_STOCK'],
+      preservedAssetClasses: ['INVESTMENT_TRUST'],
+      provenanceScope: 'PARTIAL_IMPORT',
+      sectionCompleteness: [{ sectionId: 'JP_STOCK_CUSTODY', status: 'VALID_NONEMPTY' }],
+    }
+    // overlap: JP_STOCK claimed as both selected and preserved
+    expect(isSemanticallyValidPortfolioImportAuthority({
+      ...base, preservedAssetClasses: ['JP_STOCK', 'INVESTMENT_TRUST'],
+    })).toBe(false)
+    // gap: neither array covers INVESTMENT_TRUST
+    expect(isSemanticallyValidPortfolioImportAuthority({ ...base, preservedAssetClasses: [] })).toBe(false)
   })
 })

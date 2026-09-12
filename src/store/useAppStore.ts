@@ -56,7 +56,6 @@ import {
   CSV_IMPORT_GENERATION_SCHEMA_V4,
   CSV_IMPORT_GENERATION_SCHEMA_V5,
   CSV_IMPORT_GENERATION_SCHEMA_V6,
-  restoreCsvTrustShortSnapshot,
   restorePortfolioPolicy,
   restoreCashAssumptions,
   persistLegacyPortfolioGenerationTransaction,
@@ -1633,6 +1632,34 @@ function computeCurrentSnapshotStateIdentity(state: AppState): string | null {
     })
   } catch {
     return null
+  }
+}
+
+// OPS-SBI-P2-PREBUILD-PHASE2-R2-A (P2-04 ticket section 16): a deterministic durable identity
+// for "whatever the current portfolio content is" when no canonical v6 generation has ever been
+// committed (pure legacy keys, or a genuinely fresh/empty store) — covers holdings/trust/policy/
+// cash/CSV metadata-provenance AND the current (LEGACY_UNPROVEN, by construction here) authority
+// state, reusing the exact V2 (importAuthority-bound) identity contract rather than inventing a
+// new one. Used only to bind a destructive-change confirmation token to "this legacy content"
+// instead of the constant `null` a missing generationId previously collapsed to — a content
+// change (even one that leaves the add/remove code sets identical) changes this string, so a
+// stale confirmation token can never be replayed against different underlying content.
+function computeLegacyPortfolioProjectionIdentity(state: AppState): string {
+  try {
+    return computeSnapshotGenerationIdentityV2({
+      holdings: state.holdings,
+      trust: state.trust,
+      portfolioPolicy: state.portfolioPolicy,
+      cashAssumptions: state.cashAssumptions,
+      csvImportedAt: state.system.csvLastImportedAt,
+      csvImportProvenance: state.system.csvImportProvenance ?? null,
+      importAuthority: state.portfolioImportAuthority,
+    })
+  } catch {
+    // Pathologically malformed current state (non-finite number/invalid timestamp already
+    // present before this import even started) — fail closed to a fixed sentinel rather than
+    // silently degrading back to the unbound `null` this function exists to replace.
+    return 'legacy-portfolio-projection-identity-unavailable'
   }
 }
 
@@ -4295,6 +4322,12 @@ const createAppStoreStateCreator = (
 
           try {
             setPortfolioGenerationTransactionPhase(runtime, transaction, 'READING')
+            // OPS-SBI-P2-PREBUILD-PHASE2-R2-A (P2-05): capture the trust-short tracker baseline
+            // and snapshot before any CSV read/staging work, exactly mirroring importCsv — the
+            // staged-diff trust-execution detection below needs the pre-import baseline, and the
+            // analysis pass needs the same captured snapshot importCsv passes as trustShortInput.
+            transaction.trackerSnapshot = captureTrustShortAnalysisInput(transaction.analysisNow)
+            transaction.trackerPortfolioBaseline = captureTrustShortPortfolioBaseline()
             let text: string
             try {
               text = await readFileAsText(file)
@@ -4317,6 +4350,11 @@ const createAppStoreStateCreator = (
                 reasons: finalAuthority.status === 'FAIL' ? finalAuthority.reasons : [],
               }
             }
+
+            // OPS-SBI-P2-PREBUILD-PHASE2-R2-A (P2-02/P2-03): hoisted immediately once PASS is
+            // proven — both the staged-analysis authority ordering below and the duplicate-
+            // identity comparison above the diff/confirmation gate need this exact object.
+            const importAuthority = buildCompleteFullExportAuthority(parsed)
 
             const now = new Date(transaction.analysisNow).toISOString()
             const currentGeneration = restoreCsvImportGenerationFromRaw(alignment.canonicalRaw)
@@ -4364,11 +4402,23 @@ const createAppStoreStateCreator = (
                   '現在のCSV世代のprovenanceを確認できないため、同一内容として確定できませんでした。状態は変更されていません。',
                 )
               }
-              return {
-                ok: true,
-                code: 'DUPLICATE_FULL_EXPORT',
-                message: '同じ内容のFULL_EXPORTは既に取り込み済みです。portfolio generationは変更していません。',
-                importedAt: currentFullExportProvenance.importedAt,
+              // OPS-SBI-P2-PREBUILD-PHASE2-R2-A (P2-03 ticket section 14): row-identical CSV
+              // content is a true no-op only when the authority it would establish is unchanged
+              // from what is already committed (contractVersion/profileId/mode/sectionCompleteness
+              // all fold into `importAuthority`). An otherwise row-identical import that would
+              // establish a materially different authority must never be short-circuited here —
+              // fall through to the normal diff/confirmation/persistence path instead.
+              const currentImportAuthority = currentFullExportGenerationExists
+                ? currentGeneration.payload.importAuthority ?? LEGACY_UNPROVEN_PORTFOLIO_IMPORT_AUTHORITY
+                : LEGACY_UNPROVEN_PORTFOLIO_IMPORT_AUTHORITY
+              if (JSON.stringify(stableStructuralValue(currentImportAuthority)) ===
+                  JSON.stringify(stableStructuralValue(importAuthority))) {
+                return {
+                  ok: true,
+                  code: 'DUPLICATE_FULL_EXPORT',
+                  message: '同じ内容のFULL_EXPORTは既に取り込み済みです。portfolio generationは変更していません。',
+                  importedAt: currentFullExportProvenance.importedAt,
+                }
               }
             }
             if (fullExportMonotonicity.decision === 'REJECT_STALE') {
@@ -4406,9 +4456,14 @@ const createAppStoreStateCreator = (
               trustUpdate: diff.trust.update.map(r => r.id).sort(),
               trustZero: [...diff.trust.zero].sort(),
             }))
+            // OPS-SBI-P2-PREBUILD-PHASE2-R2-A (P2-04): when no canonical v6 generation exists yet,
+            // bind the confirmation to a real fingerprint of the current legacy content instead of
+            // the constant `null` — see computeLegacyPortfolioProjectionIdentity's own comment.
             const confirmationToken = sha256Utf8Hex(JSON.stringify({
               contentHash: sha256Utf8Hex(text),
-              generationId: currentGeneration.status === 'committed' ? currentGeneration.generationId : null,
+              generationId: currentGeneration.status === 'committed'
+                ? currentGeneration.generationId
+                : computeLegacyPortfolioProjectionIdentity(baseState),
               importMode: 'FULL_EXPORT',
               diffIdentity,
             }))
@@ -4465,10 +4520,26 @@ const createAppStoreStateCreator = (
               return fund
             })
 
+            // OPS-SBI-P2-PREBUILD-PHASE2-R2-A (P2-05): pure detection against the pre-import
+            // baseline captured at transaction start — mirrors importCsv's own
+            // stageTrustExecutionFromCsvSync call exactly (same helper, same placement: after the
+            // final trust values are known, before analysis/persistence).
+            const stagedTrustExecution = stageTrustExecutionFromCsvSync(
+              updatedTrust,
+              transaction.analysisNow,
+              transaction.trackerPortfolioBaseline ?? undefined,
+            )
+            const trustExecution = stagedTrustExecution.detection
+
+            // OPS-SBI-P2-PREBUILD-PHASE2-R2-A (P2-02): the incoming COMPLETE authority must be
+            // part of the staged state analysis runs against — never the stale baseState value —
+            // so officialDecision/allocation for THIS generation are computed under the same
+            // authority that gets published, not under whatever authority preceded this import.
             const stagedState: AppState = {
               ...baseState,
               holdings: updatedHoldings,
               trust: updatedTrust,
+              portfolioImportAuthority: importAuthority,
             }
 
             let computed: ReturnType<typeof runFullAnalysis>
@@ -4477,6 +4548,7 @@ const createAppStoreStateCreator = (
               computed = runFullAnalysis(stagedState, {
                 requireOfficialDecision: true,
                 nowMs: transaction.analysisNow,
+                trustShortInput: transaction.trackerSnapshot ?? undefined,
               })
             } catch (error) {
               const isOfficialDecisionError = error instanceof OfficialDecisionGenerationError
@@ -4489,12 +4561,6 @@ const createAppStoreStateCreator = (
             }
 
             setPortfolioGenerationTransactionPhase(runtime, transaction, 'PREPARED')
-            const importAuthority = buildCompleteFullExportAuthority(parsed)
-            const carriedTrustShortSnapshot = restoreCsvTrustShortSnapshot() ?? {
-              date: now.slice(0, 10),
-              total: 0,
-              evalById: {},
-            }
             const stagedTransferIdentity = computeSnapshotGenerationIdentity({
               holdings: computed.holdings,
               trust: computed.trust,
@@ -4526,7 +4592,11 @@ const createAppStoreStateCreator = (
                 csvImportedAt: now,
                 provenance: incomingFullExportProvenance,
                 syncSummary: fullExportSyncSummary,
-                trustShortSnapshot: carriedTrustShortSnapshot,
+                // OPS-SBI-P2-PREBUILD-PHASE2-R2-A (P2-05): the snapshot stageTrustExecutionFromCsvSync
+                // just computed from the actual post-import trust values — never a carried-forward
+                // stale snapshot — so the NEXT import's baseline comparison is against this
+                // generation's real trust state (same contract as importCsv's own commit).
+                trustShortSnapshot: stagedTrustExecution.snapshot,
                 portfolioPolicy: baseState.portfolioPolicy,
                 cashAssumptions: baseState.cashAssumptions,
                 origin: 'csv',
@@ -4596,6 +4666,48 @@ const createAppStoreStateCreator = (
                 operation,
                 committedAtMs: generationCommittedAt,
               })
+            }
+
+            // OPS-SBI-P2-PREBUILD-PHASE2-R2-A (P2-05/section 23): reproduce importCsv's exact
+            // trust-short execution history recording — a FULL_EXPORT that represents a newly
+            // executed/increased short-term trust position must update todayEntryCount the same
+            // way, so a second same-day plan (importer or manual) is coherently blocked by the
+            // existing daily-entry limit. Auxiliary telemetry only — never re-attempted, never
+            // rolls back the already-durably-committed generation on failure.
+            try {
+              if (trustExecution.executed && getTrustShortTodayExecutionCount(transaction.analysisNow) < 1) {
+                const state = get()
+                const trustPlan = buildTrustPortfolioPlan({
+                  trust: state.trust,
+                  market: state.market,
+                  macro: state.macro,
+                  news: state.news,
+                  sqCalendar: state.sqCalendar,
+                  margin: state.margin,
+                  flows: state.flows,
+                  todayEntryCount: getTrustShortTodayExecutionCount(transaction.analysisNow),
+                  performance30d: getTrustShortTrackingStats(transaction.analysisNow),
+                  noTrade: checkNoTrade(state).noTrade,
+                  jpTrustHeadroom: state.universe?.categories.find(c => c.class === 'JP_TRUST')?.diffValue,
+                  nowMs: transaction.analysisNow,
+                })
+
+                recordTrustShortDecision({
+                  date: now,
+                  decision: trustPlan.shortTermMode.candidateDirection,
+                  confidence: trustPlan.shortTermMode.confidence,
+                  executed: true,
+                  nikkeiChgPct: state.market.nikkeiChgPct,
+                  futuresChgPct: trustPlan.marketContext.nikkeiFuturesDirection,
+                  conditionsPassed: trustPlan.shortTermMode.conditionsPassed,
+                  vix: trustPlan.marketContext.vix,
+                  nikkeiVI: trustPlan.marketContext.nikkeiVI,
+                  volatilitySpread: trustPlan.marketContext.volatilitySpread,
+                })
+              }
+            } catch {
+              // Decision history is auxiliary post-commit telemetry; the staged portfolio snapshot
+              // itself is already part of the canonical durable generation.
             }
 
             return {
@@ -5088,6 +5200,31 @@ const createAppStoreStateCreator = (
           ok: false,
           code: 'INVALID_SNAPSHOT',
           error: `この端末に存在しない投信IDが含まれています: ${unknownTrustIds.join(', ')}`,
+        }
+      }
+      // OPS-SBI-P2-PREBUILD-PHASE2-R2-A (P1-04 ticket section 11/12): a full-sync snapshot
+      // carrying a COMPLETE or PARTIAL authority claims a fully-proven trust population for that
+      // authority — an unknown destination registry identity for a genuinely held (positive eval)
+      // trust position can never be silently skipped while that claim is preserved. Scoped to
+      // positive-eval rows only: a zero-eval unknown id is economically inert (the source device
+      // itself holds nothing there) and stays covered by the existing skip+report semantics below.
+      // v1-v3 snapshots never carry proven authority (parsePortfolioSnapshotImport always returns
+      // LEGACY_UNPROVEN for them), so this is a no-op there — their existing skip+report behavior
+      // is unchanged.
+      if (isFullSync &&
+        (snapshot.importAuthority.authorityStatus === 'COMPLETE' ||
+          snapshot.importAuthority.authorityStatus === 'PARTIAL')
+      ) {
+        const unknownPositiveTrustIds = snapshot.trust
+          .filter(t => !currentTrustIds.has(t.id) && t.eval > 0)
+          .map(t => t.id)
+        if (unknownPositiveTrustIds.length > 0) {
+          return {
+            ok: false,
+            code: 'INVALID_SNAPSHOT',
+            error: `${snapshot.importAuthority.authorityStatus} authorityのsnapshotに、` +
+              `この端末に存在しない投信ID（保有あり）が含まれているため、取込を中断しました: ${unknownPositiveTrustIds.join(', ')}`,
+          }
         }
       }
       const skippedTrustIds = isFullSync ? unknownTrustIds : []

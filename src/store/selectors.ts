@@ -1,5 +1,6 @@
 import type { AppState, CashAssumptions, HoldingAnalysis, Holding, Trust } from '../types'
 import { MARKET_DATA_STALE_HOURS, SYSTEM_STALE_HOURS, SAFE_MODE_STALE_HOURS } from '../domain/risk/thresholds'
+import { isSemanticallyCompletePortfolioImportAuthority } from '../domain/csv/sbiPortfolioAuthorityV2'
 import {
   deriveCashAuthorityView,
   evaluateCashAuthorityFreshness,
@@ -346,6 +347,11 @@ export function selectCashAuthorityView(
 // scattering authorityStatus checks through components. PARTIAL is also not COMPLETE — Phase 2
 // implements its type/store semantics but does not expose a normal reachable T9 workflow for it
 // yet (ticket section 22), so it is fail-closed here exactly like LEGACY_UNPROVEN.
+// OPS-SBI-P2-PREBUILD-PHASE2-R2-A (P1-03): a bare `authorityStatus === 'COMPLETE'` check trusts
+// the structural validator alone — a semantically contradictory COMPLETE (e.g. null
+// contractVersion, a missing/duplicate required section, ABSENT/PARSE_FAILED section statuses)
+// would still satisfy it. isSemanticallyCompletePortfolioImportAuthority additionally proves the
+// frozen FULL_EXPORT combination is internally coherent (ticket section 9).
 export function selectHasCompletePortfolioAuthority(s: AppState): boolean {
-  return s.portfolioImportAuthority.authorityStatus === 'COMPLETE'
+  return isSemanticallyCompletePortfolioImportAuthority(s.portfolioImportAuthority)
 }
