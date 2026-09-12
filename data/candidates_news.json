@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-09-12T10:19:31.601219+09:00",
-  "sourceUpdatedAt": "2026-09-12T01:13:38+00:00",
+  "updatedAt": "2026-09-12T23:16:17.308716+09:00",
+  "sourceUpdatedAt": "2026-09-12T14:05:15+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -29,31 +29,16 @@
       "items": []
     },
     "us_broad": {
-      "avgSentiment": -0.051,
-      "negativeCount": 3,
+      "avgSentiment": 0.0,
+      "negativeCount": 1,
       "positiveCount": 1,
-      "neutralCount": 9,
-      "sourceCount": 2,
-      "itemCount": 13,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Dollar Wavers as CPI Adds to Fed Hike Bets While Oil Falls",
+      "topNegativeTitle": "Warsh Confronts Calls for Fed Rate Hike as Inflation Tops Forecasts",
       "topPositiveTitle": "Fed’s Rate Decision May Have Come Down to Phone Plan Changes",
       "items": [
-        {
-          "title": "Dollar Wavers as CPI Adds to Fed Hike Bets While Oil Falls",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-11T13:21:27+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-11/dollar-wavers-as-inflation-aids-fed-hike-bets-while-oil-falls",
-          "tags": [
-            "commodity",
-            "fx",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
         {
           "title": "Warsh Confronts Calls for Fed Rate Hike as Inflation Tops Forecasts",
           "source": "Bloomberg Economics",
@@ -68,40 +53,14 @@
           ]
         },
         {
-          "title": "Economists Saw Fed Defying Expectations for Hikes: Survey",
+          "title": "Fed’s Rate Decision May Have Come Down to Phone Plan Changes",
           "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-11T09:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-11/economists-see-fed-defying-expectations-for-rate-hikes-survey",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-11T15:43:04+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-11/fed-s-rate-decision-may-have-come-down-to-phone-plan-changes",
           "tags": [
             "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "US CPI Report August 2026: Key Takeaways on Inflation, Consumer Price Index",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-11T13:44:24+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-11/us-cpi-report-august-2026-key-takeaways-on-inflation-consumer-price-index",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Treasuries End Bruising Week With Fed Hike Bets Firmed After CPI",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-11T12:38:05+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-11/treasuries-fall-as-higher-than-expected-cpi-boosts-fed-hike-odds",
-          "tags": [
-            "market",
-            "rates",
             "us_broad"
           ]
         }
@@ -168,36 +127,23 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.223,
-      "negativeCount": 1,
-      "positiveCount": 0,
+      "avgSentiment": 0.198,
+      "negativeCount": 0,
+      "positiveCount": 3,
       "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 3,
+      "sourceCount": 3,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Bank of Russia Injects $2 Billion Into Reinsurer on War Costs",
-      "topPositiveTitle": "Russia Holds Wartime Key Rate for First Time in 15 Months",
+      "topNegativeTitle": "Trump Signals US Wants Distance From Iran War",
+      "topPositiveTitle": "Modi Seeks BRICS Unity as Global Tensions Rise",
       "items": [
         {
-          "title": "Bank of Russia Injects $2 Billion Into Reinsurer on War Costs",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-09-11T13:19:44+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-11/bank-of-russia-injects-2-billion-into-reinsurer-on-war-costs",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Russia Holds Wartime Key Rate for First Time in 15 Months",
-          "source": "Bloomberg Economics",
+          "title": "Trump Signals US Wants Distance From Iran War",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-11T10:37:59+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-11/russia-holds-rate-for-first-time-in-15-months-on-inflation-risks",
+          "publishedAt": "2026-09-12T12:15:50+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-12/trump-signals-us-wants-distance-from-iran-war-video",
           "tags": [
             "geopolitical",
             "macro_risk",
@@ -216,67 +162,69 @@
             "market"
           ],
           "titleJa": "「法の支配」議連 “ICC赤根所長制裁でアメリカと対話を”"
+        },
+        {
+          "title": "Modi Seeks BRICS Unity as Global Tensions Rise",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-12T12:29:09+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-12/modi-seeks-brics-unity-as-global-tensions-rise-video",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Oil and Gas Markets Signal Winter Crisis and Rising Interest Rates",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-12T11:00:02+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-12/oil-and-gas-markets-signal-winter-crisis-and-rising-interest-rates",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Charting the Global Economy: Oil Surge Fans Global Inflation",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-12T09:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-12/charting-the-global-economy-oil-surge-fans-global-inflation",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": -0.165,
-      "negativeCount": 2,
-      "positiveCount": 1,
-      "neutralCount": 1,
-      "sourceCount": 2,
-      "itemCount": 4,
+      "avgSentiment": -0.67,
+      "negativeCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Morgan Stanley Favors Trade With Yen Weakening to 163 per Dollar",
-      "topPositiveTitle": "India Forex Reserves Jump to Record $785.7 Billion on Flows",
+      "topNegativeTitle": "By The Way: Headlines You May Have Missed",
+      "topPositiveTitle": "By The Way: Headlines You May Have Missed",
       "items": [
         {
-          "title": "Morgan Stanley Favors Trade With Yen Weakening to 163 per Dollar",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-09-11T18:12:05+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-11/morgan-stanley-favors-trade-with-yen-weakening-to-163-per-dollar",
-          "tags": [
-            "fx",
-            "market"
-          ]
-        },
-        {
-          "title": "Dollar Wavers as CPI Adds to Fed Hike Bets While Oil Falls",
+          "title": "By The Way: Headlines You May Have Missed",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-11T13:21:27+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-11/dollar-wavers-as-inflation-aids-fed-hike-bets-while-oil-falls",
-          "tags": [
-            "commodity",
-            "fx",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "India, Russia Explore Using Digital Currency Payments for Trade",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-11T10:43:55+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-11/india-russia-explore-using-digital-currency-payments-for-trade",
-          "tags": [
-            "fx",
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "India Forex Reserves Jump to Record $785.7 Billion on Flows",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-09-11T11:44:38+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-11/india-s-forex-reserves-jump-to-record-785-7-billion-on-inflows",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-09-12T13:05:43+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-12/by-the-way-headlines-you-may-have-missed-video",
           "tags": [
             "fx",
             "market"
@@ -285,31 +233,16 @@
       ]
     },
     "rates": {
-      "avgSentiment": -0.189,
-      "negativeCount": 4,
-      "positiveCount": 0,
-      "neutralCount": 3,
+      "avgSentiment": 0.0,
+      "negativeCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 0,
       "sourceCount": 2,
-      "itemCount": 7,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Dollar Wavers as CPI Adds to Fed Hike Bets While Oil Falls",
-      "topPositiveTitle": "Treasuries End Bruising Week With Fed Hike Bets Firmed After CPI",
+      "topNegativeTitle": "Warsh Confronts Calls for Fed Rate Hike as Inflation Tops Forecasts",
+      "topPositiveTitle": "Oil and Gas Markets Signal Winter Crisis and Rising Interest Rates",
       "items": [
-        {
-          "title": "Dollar Wavers as CPI Adds to Fed Hike Bets While Oil Falls",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-11T13:21:27+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-11/dollar-wavers-as-inflation-aids-fed-hike-bets-while-oil-falls",
-          "tags": [
-            "commodity",
-            "fx",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
         {
           "title": "Warsh Confronts Calls for Fed Rate Hike as Inflation Tops Forecasts",
           "source": "Bloomberg Economics",
@@ -324,130 +257,132 @@
           ]
         },
         {
-          "title": "Brazil Inflation Cools More Than Forecast Before Bank Meets",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-11T12:17:36+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-11/brazil-inflation-cools-more-than-forecast-before-rate-decision",
+          "title": "Oil and Gas Markets Signal Winter Crisis and Rising Interest Rates",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-12T11:00:02+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-12/oil-and-gas-markets-signal-winter-crisis-and-rising-interest-rates",
           "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
             "market",
             "rates"
-          ]
-        },
-        {
-          "title": "Economists Saw Fed Defying Expectations for Hikes: Survey",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-11T09:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-11/economists-see-fed-defying-expectations-for-rate-hikes-survey",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Treasuries End Bruising Week With Fed Hike Bets Firmed After CPI",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-11T12:38:05+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-11/treasuries-fall-as-higher-than-expected-cpi-boosts-fed-hike-odds",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
           ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": -0.083,
-      "negativeCount": 1,
-      "positiveCount": 0,
-      "neutralCount": 3,
-      "sourceCount": 1,
-      "itemCount": 4,
+      "avgSentiment": 0.066,
+      "negativeCount": 2,
+      "positiveCount": 3,
+      "neutralCount": 0,
+      "sourceCount": 2,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Dollar Wavers as CPI Adds to Fed Hike Bets While Oil Falls",
-      "topPositiveTitle": "Wall Street Week | Venezuela’s Oil Test, Overcapacity in Renewables, Defense Tech Boom",
+      "topNegativeTitle": "Iran Nuclear Activity Raises New Concerns",
+      "topPositiveTitle": "Oil Supply Risks Rise After Saudi Pipeline Attack",
       "items": [
         {
-          "title": "Dollar Wavers as CPI Adds to Fed Hike Bets While Oil Falls",
+          "title": "Iran Nuclear Activity Raises New Concerns",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-09-11T13:21:27+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-11/dollar-wavers-as-inflation-aids-fed-hike-bets-while-oil-falls",
+          "publishedAt": "2026-09-12T13:57:53+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-12/iran-nuclear-activity-raises-new-concerns-video",
           "tags": [
             "commodity",
-            "fx",
-            "market",
-            "rates",
-            "us_broad"
+            "geopolitical",
+            "market"
           ]
         },
         {
-          "title": "Wall Street Week | Venezuela’s Oil Test, Overcapacity in Renewables, Defense Tech Boom",
+          "title": "Can Venezuela Rescue the Oil Market?",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-11T23:13:11+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-11/wall-street-week-eu-s-solar-problem-defense-tech-boom-video",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-12T12:02:48+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-12/can-venezuela-rescue-the-oil-market-video",
           "tags": [
             "commodity",
-            "market",
-            "us_broad"
+            "market"
           ]
         },
         {
-          "title": "Rebuilding After 9/11, Cantor Fitzgerald's Annual Charity, Eye on Energy Markets",
+          "title": "Oil Supply Risks Rise After Saudi Pipeline Attack",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-11T22:54:21+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-11/the-close-9-11-2026-video",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-12T12:47:06+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-12/oil-supply-risks-rise-after-saudi-pipeline-attack-video",
           "tags": [
             "commodity",
-            "market",
-            "us_broad"
+            "market"
           ]
         },
         {
-          "title": "AI-Obsessed Wall Street Pours Billions Into Inflation-Era Bets",
+          "title": "Oil and Gas Markets Signal Winter Crisis and Rising Interest Rates",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-11T20:24:16+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-11/ai-obsessed-wall-street-pours-billions-into-inflation-era-bets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-12T11:00:02+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-12/oil-and-gas-markets-signal-winter-crisis-and-rising-interest-rates",
           "tags": [
             "commodity",
+            "geopolitical",
+            "macro_risk",
             "market",
-            "us_broad"
+            "rates"
+          ]
+        },
+        {
+          "title": "Charting the Global Economy: Oil Surge Fans Global Inflation",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-12T09:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-12/charting-the-global-economy-oil-surge-fans-global-inflation",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": -0.085,
+      "avgSentiment": 0.11,
       "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 4,
+      "positiveCount": 4,
+      "neutralCount": 4,
+      "sourceCount": 3,
+      "itemCount": 9,
       "isStale": false,
-      "topNegativeTitle": "Bank of Russia Injects $2 Billion Into Reinsurer on War Costs",
-      "topPositiveTitle": "イコールアースの北方領土表記など日本の修正要求にロシア反発",
+      "topNegativeTitle": "Iran Nuclear Activity Raises New Concerns",
+      "topPositiveTitle": "Modi Seeks BRICS Unity as Global Tensions Rise",
       "items": [
         {
-          "title": "Bank of Russia Injects $2 Billion Into Reinsurer on War Costs",
-          "source": "Bloomberg Economics",
+          "title": "Iran Nuclear Activity Raises New Concerns",
+          "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-09-11T13:19:44+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-11/bank-of-russia-injects-2-billion-into-reinsurer-on-war-costs",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-12T13:57:53+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-12/iran-nuclear-activity-raises-new-concerns-video",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Trump Signals US Wants Distance From Iran War",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-12T12:15:50+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-12/trump-signals-us-wants-distance-from-iran-war-video",
           "tags": [
             "geopolitical",
             "macro_risk",
@@ -455,43 +390,42 @@
           ]
         },
         {
-          "title": "India, Russia Explore Using Digital Currency Payments for Trade",
-          "source": "Bloomberg Economics",
+          "title": "Russia Turns to Far East to Export Grain Amid Black Sea Strikes",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-11T10:43:55+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-11/india-russia-explore-using-digital-currency-payments-for-trade",
+          "publishedAt": "2026-09-12T08:10:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-12/russia-turns-to-far-east-to-export-grain-amid-black-sea-strikes",
           "tags": [
-            "fx",
             "geopolitical",
             "market"
           ]
         },
         {
-          "title": "Russia Holds Wartime Key Rate for First Time in 15 Months",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-11T10:37:59+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-11/russia-holds-rate-for-first-time-in-15-months-on-inflation-risks",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "イコールアースの北方領土表記など日本の修正要求にロシア反発",
+          "title": "BRICS首脳会議開幕 このあと中印首脳会談へ",
           "source": "NHK 経済",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-12T01:13:38+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20260912de49854",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-12T10:07:00+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20260912de49901",
           "tags": [
             "geopolitical",
             "market"
           ],
-          "titleJa": "イコールアースの北方領土表記など日本の修正要求にロシア反発"
+          "titleJa": "BRICS首脳会議開幕 このあと中印首脳会談へ"
+        },
+        {
+          "title": "“イランが中国の衛星画像をもとに米軍攻撃か”米有力紙",
+          "source": "NHK 経済",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-12T08:08:00+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20260912de49890",
+          "tags": [
+            "geopolitical",
+            "market"
+          ],
+          "titleJa": "“イランが中国の衛星画像をもとに米軍攻撃か”米有力紙"
         }
       ]
     }
