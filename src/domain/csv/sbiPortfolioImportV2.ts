@@ -107,6 +107,10 @@ export type RowClassificationKind =
   // (second-or-later) occurrence of an already-seen required section. Consumed/discarded —
   // never counted as an accepted/rejected position and never touches `sections[id]`.
   | 'duplicateSectionRow'
+  // OPS-SBI-P2-PREBUILD-PHASE2-R4-A (P1-02 STRICT PREAMBLE CLASSIFICATION): an unregistered line
+  // that is neither an exact known informational signature nor position-row-shaped. Never
+  // tolerated as harmless — see isKnownInformationalLine's own comment.
+  | 'unknownPreambleLine'
 
 export type RowRejectionReason =
   | 'INVALID_CODE'
@@ -164,6 +168,12 @@ export type CompletenessReason =
   // against a cross-section sum (see evaluateFullExportCompleteness's own comment for why).
   | 'GRAND_TOTAL_TRUNCATED'
   | 'GRAND_TOTAL_INVALID'
+  // OPS-SBI-P2-PREBUILD-PHASE2-R4-A (P1-02 STRICT PREAMBLE CLASSIFICATION): a line that is not an
+  // explicitly registered normalized class (blank, known title, known metadata, known
+  // count/page-range informational row, or a registered section start) and does not itself
+  // look like a position row (which instead raises UNEXPLAINED_POSITION_ROW/UNKNOWN_POSITION_SECTION)
+  // is never silently tolerated as harmless — see isKnownInformationalLine's own comment.
+  | 'UNKNOWN_PREAMBLE_LINE'
 
 export type CompletenessResult =
   | { status: 'PASS' }
@@ -225,6 +235,10 @@ export interface SbiPortfolioImportResultV2 {
   rowDiagnostics: RowDiagnosticEntry[]
   /** Position-looking rows encountered with no section open at all (never silently dropped). */
   orphanPositionRowCount: number
+  /** OPS-SBI-P2-PREBUILD-PHASE2-R4-A (P1-02): unregistered, non-position-looking lines — never
+   *  silently tolerated merely because they fail the position-row heuristic. See
+   *  isKnownInformationalLine's own comment for the exact registered allow-list. */
+  unknownPreambleLineCount: number
   /** OPS-SBI-P2-PREBUILD-PHASE2-R2-A (P2-01 ticket section 7): the grand-total ("総合計") footer
    *  label was seen but EOF arrived before its value line. Structural presence only — see
    *  evaluateFullExportCompleteness's own comment on why this profile does not go further. */
@@ -473,24 +487,46 @@ function looksLikePositionRow(cols: string[]): boolean {
   return cols.length >= 2 && cols.slice(1).some(cell => /\d/.test(cell))
 }
 
-// OPS-SBI-P2-PREBUILD-PHASE2-R2-A (P1-02 ticket section 6): a position-looking row occurring
-// before the first recognized structural section must NOT be swallowed as harmless preamble — it
-// is preamble only when it does NOT look like a position row. Arbitrary non-position
-// informational lines (titles/notes) stay tolerated exactly as before; the classifier stays exact
-// (a position-shaped preamble row instead falls through to the caller's looksLikePositionRow
-// check, which raises UNEXPLAINED_POSITION_ROW and fails FULL_EXPORT).
-function isKnownInformationalLine(firstCellNormalized: string, beforeAnyStructuralSection: boolean, cols: string[]): boolean {
+// OPS-SBI-P2-PREBUILD-PHASE2-R4-A (P1-02 STRICT PREAMBLE CLASSIFICATION): registered
+// "ラベル：値" / "ラベル:値" informational rows only — an exact bare label, or the label
+// immediately followed by one of these two colon variants, is accepted; a label with arbitrary
+// text glued directly onto it with NO separator (the independent audit's reproduced
+// `総件数FAKE,900000,100`) is never accepted as this registered class. This is a fixed,
+// enumerable structural signature — not a fuzzy `startsWith` treated as authority over otherwise
+// unknown text (the classifier below never falls back to "unknown but harmless").
+const KNOWN_COUNT_OR_PAGE_LABELS: readonly string[] = ['総件数', '選択範囲', 'ページ']
+
+function isKnownCountOrPageInformationalLine(noSpace: string): boolean {
+  return KNOWN_COUNT_OR_PAGE_LABELS.some(label =>
+    noSpace === label || noSpace.startsWith(`${label}：`) || noSpace.startsWith(`${label}:`))
+}
+
+// OPS-SBI-P2-PREBUILD-PHASE2-R4-A (P1-02 STRICT PREAMBLE CLASSIFICATION): the frozen root cause
+// this replaces — an arbitrary line was inferred "safe" merely because it failed a loose
+// position-looking heuristic (`beforeAnyStructuralSection && !looksLikePositionRow`), and a blank
+// FIRST cell or a `startsWith` label-prefix match were each independently treated as authority
+// over otherwise-unknown text. The independent audit reproduced two concrete escapes:
+//   `,900000,100,200`          — blank first cell, but cols[1..] carry real numeric data.
+//   `総件数FAKE,900000,100`     — `startsWith('総件数')` accepted arbitrary glued-on text.
+// Both must fail. This function now ALLOWS only an explicitly registered normalized class —
+// never `startsWith`/`contains`/`!looksLikePositionRow` as authority for unknown text — and is
+// applied uniformly (preamble and mid-file): every other line falls through to the
+// looksLikePositionRow check (UNEXPLAINED_POSITION_ROW) or, failing that too, becomes
+// UNKNOWN_PREAMBLE_LINE. Never confuse "not registered" with "must look like a position row" —
+// both outcomes are failures, just distinguished for diagnostics.
+function isKnownInformationalLine(firstCellNormalized: string, cols: string[]): boolean {
   const noSpace = firstCellNormalized.replace(/\s/g, '')
-  if (!noSpace) return true
-  if (noSpace.startsWith('総件数')) return true
-  if (noSpace.startsWith('選択範囲')) return true
-  if (noSpace.startsWith('ページ')) return true
+  // A truly empty line never reaches here (the caller's `if (!line) continue` already skips it).
+  // This covers the comma-noise variant only: EVERY cell blank (e.g. ",,,"). A blank first cell
+  // with real data in a later cell (`,900000,100,200`) is deliberately NOT covered here — it
+  // falls through to the ordinary looksLikePositionRow check below, exactly like any other row.
+  if (cols.every(cell => !normalizeCell(cell))) return true
   if (noSpace === 'ポートフォリオ一覧' || noSpace === '個別表示' || noSpace === 'PTS株価非表示') return true
   // A "label,timestamp" preamble line (データ基準日時 etc. — see csvProvenance.ts's own frozen
   // vocabulary) legitimately has a digit-bearing second cell; it is exact known content, never a
   // position row, regardless of the looksLikePositionRow heuristic below.
   if (KNOWN_CSV_METADATA_LABELS.has(noSpace)) return true
-  if (beforeAnyStructuralSection && !looksLikePositionRow(cols)) return true
+  if (isKnownCountOrPageInformationalLine(noSpace)) return true
   return false
 }
 
@@ -569,6 +605,7 @@ export function parseSbiPortfolioImportV2(
   const provisionalTrustRows: ProvisionalTrustRow[] = []
   const provisionalStockRows: ProvisionalStockRow[] = []
   let orphanPositionRowCount = 0
+  let unknownPreambleLineCount = 0
   let anyStructuralSectionSeen = false
   let grandTotalTruncated = false
   let grandTotalInvalid = false
@@ -725,7 +762,7 @@ export function parseSbiPortfolioImportV2(
       return
     }
 
-    if (isKnownInformationalLine(first, !anyStructuralSectionSeen, cols)) {
+    if (isKnownInformationalLine(first, cols)) {
       rowDiagnostics.push({ lineNumber, kind: 'registeredInformational', sectionId: null, unsupportedSectionLabel: null })
       return
     }
@@ -736,9 +773,11 @@ export function parseSbiPortfolioImportV2(
       return
     }
 
-    // Genuinely ambiguous content with no open section: tolerate as informational rather
-    // than manufacture a false failure over content this Phase 1 profile does not model.
-    rowDiagnostics.push({ lineNumber, kind: 'registeredInformational', sectionId: null, unsupportedSectionLabel: null })
+    // OPS-SBI-P2-PREBUILD-PHASE2-R4-A (P1-02): an unregistered line that also does not look like
+    // a position row is no longer assumed harmless — fail closed rather than manufacture a false
+    // PASS over content this profile cannot prove safe (UNKNOWN_PREAMBLE_LINE).
+    unknownPreambleLineCount += 1
+    rowDiagnostics.push({ lineNumber, kind: 'unknownPreambleLine', sectionId: null, unsupportedSectionLabel: null })
   }
 
   if (!rawTextEmpty) {
@@ -996,6 +1035,7 @@ export function parseSbiPortfolioImportV2(
     unsupportedSections,
     rowDiagnostics,
     orphanPositionRowCount,
+    unknownPreambleLineCount,
     grandTotalTruncated,
     grandTotalInvalid,
     trustResolution,
@@ -1038,6 +1078,7 @@ export function evaluateFullExportCompleteness(
   }
 
   if (result.orphanPositionRowCount > 0) reasons.add('UNEXPLAINED_POSITION_ROW')
+  if (result.unknownPreambleLineCount > 0) reasons.add('UNKNOWN_PREAMBLE_LINE')
   if (result.grandTotalTruncated) reasons.add('GRAND_TOTAL_TRUNCATED')
   if (result.grandTotalInvalid) reasons.add('GRAND_TOTAL_INVALID')
 

@@ -244,6 +244,10 @@ function hasNoDuplicates<T>(values: readonly T[]): boolean {
  * only VALID_EMPTY/VALID_NONEMPTY statuses (never ABSENT/PARSE_FAILED).
  */
 function isSemanticallyValidCompleteAuthority(authority: PortfolioImportAuthorityV1): boolean {
+  // OPS-SBI-P2-PREBUILD-PHASE2-R4-A (RA-P3-01 ticket section 10): the semantic predicate itself
+  // must be internally complete — never rely solely on a serialization-layer structural check
+  // (isPortfolioImportAuthorityV1) elsewhere to reject an unknown/future authorityVersion.
+  if (authority.authorityVersion !== PORTFOLIO_IMPORT_AUTHORITY_VERSION) return false
   if (authority.importMode !== 'FULL_EXPORT') return false
   if (authority.contractVersion !== SBI_PORTFOLIO_IMPORT_CONTRACT_VERSION) return false
   if (authority.profileId !== SBI_PORTFOLIO_PROFILE_ID) return false
@@ -268,6 +272,7 @@ function isSemanticallyValidCompleteAuthority(authority: PortfolioImportAuthorit
  * ABSENT/PARSE_FAILED — PARTIAL still proves completeness for whatever it did select).
  */
 function isSemanticallyValidPartialAuthority(authority: PortfolioImportAuthorityV1): boolean {
+  if (authority.authorityVersion !== PORTFOLIO_IMPORT_AUTHORITY_VERSION) return false
   if (authority.importMode !== 'PARTIAL_IMPORT') return false
   if (authority.contractVersion !== SBI_PORTFOLIO_IMPORT_CONTRACT_VERSION) return false
   if (authority.profileId !== SBI_PORTFOLIO_PROFILE_ID) return false
@@ -294,7 +299,8 @@ function isSemanticallyValidPartialAuthority(authority: PortfolioImportAuthority
  * every other field null/UNKNOWN/empty. Any stray non-null field is a masquerade and rejected.
  */
 function isSemanticallyValidLegacyUnprovenAuthority(authority: PortfolioImportAuthorityV1): boolean {
-  return authority.importMode === null &&
+  return authority.authorityVersion === PORTFOLIO_IMPORT_AUTHORITY_VERSION &&
+    authority.importMode === null &&
     authority.contractVersion === null &&
     authority.profileId === null &&
     authority.selectedAssetClasses === null &&

@@ -4,6 +4,7 @@ import { isStrictTimestamp } from './strictTimestamp'
 import type { CashAssumptions, CsvImportProvenance, PortfolioImportAuthorityV1 } from '../types'
 import { LEGACY_UNPROVEN_PORTFOLIO_IMPORT_AUTHORITY, isPortfolioImportAuthorityV1 } from '../types'
 import { isCsvImportProvenance } from '../domain/csv/csvProvenance'
+import { isSemanticallyValidPortfolioImportAuthority } from '../domain/csv/sbiPortfolioAuthorityV2'
 import {
   NO_CASH_AUTHORITY,
   isIntegerJpy,
@@ -562,8 +563,16 @@ export function parsePortfolioSnapshotImport(raw: string): PortfolioSnapshotPars
   // upgrade itself to COMPLETE).
   let importAuthority: PortfolioImportAuthorityV1 = LEGACY_UNPROVEN_PORTFOLIO_IMPORT_AUTHORITY
   if (schemaVersion === PORTFOLIO_SNAPSHOT_SCHEMA_VERSION_V4) {
+    // OPS-SBI-P2-PREBUILD-PHASE2-R4-A (RA-P3-01: snapshot re-sign attack): structural validation
+    // alone is not enough — a structurally valid but semantically contradictory authority object
+    // (e.g. authorityStatus=COMPLETE with importMode=null, or a mismatched selected/preserved
+    // asset-class partition) must be rejected here, BEFORE it can participate in the recomputed
+    // generation identity below. Recomputing the identity to match a tampered-but-internally-
+    // consistent-looking authority object is not sufficient proof of validity — the semantic
+    // predicate itself must independently pass, at this exact admission point.
     if (!Object.prototype.hasOwnProperty.call(p, 'importAuthority') ||
-        !isPortfolioImportAuthorityV1(p.importAuthority)) {
+        !isPortfolioImportAuthorityV1(p.importAuthority) ||
+        !isSemanticallyValidPortfolioImportAuthority(p.importAuthority)) {
       return { ok: false, code: 'INVALID_SNAPSHOT_AUTHORITY', error: 'snapshotのimport authorityが欠損または不正です。' }
     }
     importAuthority = p.importAuthority

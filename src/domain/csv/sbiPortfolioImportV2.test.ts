@@ -434,6 +434,7 @@ describe('sbiPortfolioImportV2: evaluateFullExportCompleteness is independently 
       unsupportedSections: [],
       rowDiagnostics: [],
       orphanPositionRowCount: 0,
+      unknownPreambleLineCount: 0,
       grandTotalTruncated: false,
       grandTotalInvalid: false,
       trustResolution: 'NOT_APPLICABLE' as const,
@@ -460,6 +461,7 @@ describe('sbiPortfolioImportV2: evaluateFullExportCompleteness is independently 
       unsupportedSections: [],
       rowDiagnostics: [],
       orphanPositionRowCount: 0,
+      unknownPreambleLineCount: 0,
       grandTotalTruncated: false,
       grandTotalInvalid: false,
       trustResolution: 'STRUCTURALLY_VALID_BUT_TRUST_RESOLUTION_REQUIRED' as const,
@@ -548,10 +550,9 @@ describe('sbiPortfolioImportV2: position-looking preamble row (P1-02)', () => {
     }
   })
 
-  it('a non-position preamble title/note line is still tolerated as harmless informational content', () => {
+  it('an exact registered report title is tolerated as harmless informational content', () => {
     const csv = [
       'ポートフォリオ一覧',
-      'これはメモです', // arbitrary non-position informational text, no digit anywhere
       STOCK_LABEL, STOCK_HEADER,
       '6501,日立製作所,8500,900000,15.20,1.10,2025-06-01',
       STOCK_TOTAL,
@@ -561,6 +562,80 @@ describe('sbiPortfolioImportV2: position-looking preamble row (P1-02)', () => {
     ].join('\n')
     const result = parseSbiPortfolioImportV2(csv)
     expect(result.orphanPositionRowCount).toBe(0)
+    expect(result.completeness).toEqual({ status: 'PASS' })
+  })
+
+  // OPS-SBI-P2-PREBUILD-PHASE2-R4-A (P1-02 STRICT PREAMBLE CLASSIFICATION): the frozen root
+  // cause this closes — an arbitrary line was previously inferred "safe" merely because it
+  // failed a loose position-looking heuristic. An arbitrary free-form note is not a registered
+  // signature and must now fail FULL_EXPORT, distinct from (and never silently merged into)
+  // UNEXPLAINED_POSITION_ROW.
+  it('an arbitrary free-form note line (not a registered signature) fails FULL_EXPORT', () => {
+    const csv = [
+      'これはメモです', // arbitrary non-position informational text, no digit anywhere
+      STOCK_LABEL, STOCK_HEADER,
+      '6501,日立製作所,8500,900000,15.20,1.10,2025-06-01',
+      STOCK_TOTAL,
+    ].join('\n')
+    const result = parseSbiPortfolioImportV2(csv)
+    expect(result.orphanPositionRowCount).toBe(0)
+    expect(result.unknownPreambleLineCount).toBe(1)
+    expect(result.completeness.status).toBe('FAIL')
+    if (result.completeness.status === 'FAIL') {
+      expect(result.completeness.reasons).toContain('UNKNOWN_PREAMBLE_LINE')
+      expect(result.completeness.reasons).not.toContain('UNEXPLAINED_POSITION_ROW')
+    }
+  })
+
+  // Independent audit reproduction: a blank FIRST cell with real numeric data in a later cell
+  // must never be classified as a harmless blank/comma-noise line — it is exactly as
+  // position-shaped as any ordinary row and must fail the same way.
+  it('a blank-first-cell comma-heavy row fails FULL_EXPORT (independent audit repro)', () => {
+    const csv = [
+      ',900000,100,200',
+      STOCK_LABEL, STOCK_HEADER,
+      '6501,日立製作所,8500,900000,15.20,1.10,2025-06-01',
+      STOCK_TOTAL,
+    ].join('\n')
+    const result = parseSbiPortfolioImportV2(csv)
+    expect(result.orphanPositionRowCount).toBe(1)
+    expect(result.completeness.status).toBe('FAIL')
+    if (result.completeness.status === 'FAIL') {
+      expect(result.completeness.reasons).toContain('UNEXPLAINED_POSITION_ROW')
+    }
+  })
+
+  // Independent audit reproduction: arbitrary text glued directly onto a registered
+  // count/page-range label (no separator) must never be accepted via a loose `startsWith`
+  // match — only the exact label or "label：value"/"label:value" is a registered signature.
+  it('a fake-prefix line glued onto a registered count label fails FULL_EXPORT (independent audit repro)', () => {
+    const csv = [
+      '総件数FAKE,900000,100',
+      STOCK_LABEL, STOCK_HEADER,
+      '6501,日立製作所,8500,900000,15.20,1.10,2025-06-01',
+      STOCK_TOTAL,
+    ].join('\n')
+    const result = parseSbiPortfolioImportV2(csv)
+    expect(result.orphanPositionRowCount).toBe(1)
+    expect(result.completeness.status).toBe('FAIL')
+    if (result.completeness.status === 'FAIL') {
+      expect(result.completeness.reasons).toContain('UNEXPLAINED_POSITION_ROW')
+    }
+  })
+
+  it('a registered count label followed by an exact colon-separated value is tolerated', () => {
+    const csv = [
+      '総件数：150件',
+      STOCK_LABEL, STOCK_HEADER,
+      '6501,日立製作所,8500,900000,15.20,1.10,2025-06-01',
+      STOCK_TOTAL,
+      ...emptyTrustSection(TRUST_TAXABLE_LABEL, TRUST_TAXABLE_TOTAL),
+      ...emptyTrustSection(TRUST_GROWTH_LABEL, TRUST_GROWTH_TOTAL),
+      ...emptyTrustSection(TRUST_TSUMITATE_LABEL, TRUST_TSUMITATE_TOTAL),
+    ].join('\n')
+    const result = parseSbiPortfolioImportV2(csv)
+    expect(result.orphanPositionRowCount).toBe(0)
+    expect(result.unknownPreambleLineCount).toBe(0)
     expect(result.completeness).toEqual({ status: 'PASS' })
   })
 

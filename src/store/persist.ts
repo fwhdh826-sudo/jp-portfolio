@@ -20,6 +20,7 @@ import { sanitizeLearningState } from '../domain/learning/performanceTracker'
 import type { TrustShortPortfolioSnapshot } from '../domain/learning/trustShortTracker'
 import { isStrictTimestamp, parseStrictTimestamp } from '../utils/strictTimestamp'
 import { isCsvImportProvenance } from '../domain/csv/csvProvenance'
+import { isSemanticallyValidPortfolioImportAuthority } from '../domain/csv/sbiPortfolioAuthorityV2'
 import {
   computeCanonicalPortfolioGenerationIdentity,
   computeCanonicalPortfolioGenerationIdentityV2,
@@ -432,7 +433,14 @@ function isCsvImportPayload(value: unknown, schemaVersion: string): value is Csv
   // v6 requires a structurally valid, non-null authority object — a malformed or absent
   // authority object on a v6-tagged envelope fails closed rather than degrading silently
   // (ticket section 25 item 9).
-  if (isV6 && !isPortfolioImportAuthorityV1(value.importAuthority)) return false
+  // OPS-SBI-P2-PREBUILD-PHASE2-R4-A (RA-P3-01): structural validation alone is not enough — a
+  // structurally valid but semantically contradictory object (e.g. authorityStatus=COMPLETE with
+  // importMode=null) must never be admitted into the canonical v6 envelope at all, independent of
+  // whatever an execution-time selector later does with it. Both checks run at this one ingress.
+  if (isV6 && (
+    !isPortfolioImportAuthorityV1(value.importAuthority) ||
+    !isSemanticallyValidPortfolioImportAuthority(value.importAuthority)
+  )) return false
 
   if (provenance !== null && provenance.importedAt !== csvImportedAt) return false
   if (syncSummary !== null &&

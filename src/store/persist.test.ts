@@ -470,6 +470,10 @@ describe('canonical v6 (importAuthority) persist/restore', () => {
     }
   }
 
+  // OPS-SBI-P2-PREBUILD-PHASE2-R4-A (RA-P3-01): a genuine COMPLETE authority always carries a
+  // sectionCompleteness entry for every required section (see
+  // isSemanticallyValidPortfolioImportAuthority in sbiPortfolioAuthorityV2.ts) — the v6 envelope
+  // admission gate now enforces that same semantic predicate, not just the structural shape.
   const completeAuthority: PortfolioImportAuthorityV1 = {
     authorityVersion: 'portfolio-import-authority-1',
     importMode: 'FULL_EXPORT',
@@ -479,7 +483,12 @@ describe('canonical v6 (importAuthority) persist/restore', () => {
     selectedAssetClasses: null,
     preservedAssetClasses: null,
     provenanceScope: 'FULL_EXPORT',
-    sectionCompleteness: [{ sectionId: 'JP_STOCK_CUSTODY', status: 'VALID_NONEMPTY' }],
+    sectionCompleteness: [
+      { sectionId: 'JP_STOCK_CUSTODY', status: 'VALID_NONEMPTY' },
+      { sectionId: 'TRUST_TAXABLE', status: 'VALID_NONEMPTY' },
+      { sectionId: 'TRUST_NISA_GROWTH', status: 'VALID_EMPTY' },
+      { sectionId: 'TRUST_NISA_ACCUMULATION', status: 'VALID_EMPTY' },
+    ],
   }
 
   function persistV6(overrides: { holdings?: Holding[]; trust?: Trust[]; importAuthority?: PortfolioImportAuthorityV1 } = {}) {
