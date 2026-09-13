@@ -193,6 +193,47 @@ describe('importSbiPortfolioFullExport: FULL_EXPORT store commit path', () => {
     expect(storage[CSV_IMPORT_GENERATION_KEY]).toBeUndefined()
   })
 
+  // OPS-SBI-P2-PREBUILD-PHASE2-R5-A (RA-P1-01 ticket section 10): the row-level (not
+  // label-level) preamble repair closes a residual escape the above two P1-02 repros never
+  // exercised — a registered count-label PREFIX WITH ITS SEPARATOR followed by extra trailing
+  // columns. Parser-level closure is sbiPortfolioImportV2.test.ts's own RA-P1-01 repro block;
+  // these prove the identical rows also block the production store commit path.
+  it('RA-P1-01 independent audit repro: colon-separated count label with extra trailing columns blocks production FULL_EXPORT commit', async () => {
+    const created = instance()
+    const before = created.store.getState()
+    const csv = [
+      '総件数：FAKE,900000,100',
+      ...fullExportCsvLines({ trustTaxableRows: [`${SP500_ALIAS},26000,4500000,95.50,-1.80,`] }),
+    ]
+    const result = await created.store.getState().importSbiPortfolioFullExport(csvFile(csv))
+    expect(result).toMatchObject({ ok: false, code: 'AUTHORITY_NOT_PASS' })
+    if (!result.ok && result.code === 'AUTHORITY_NOT_PASS') {
+      expect(result.reasons).toContain('UNEXPLAINED_POSITION_ROW')
+    }
+    expect(created.store.getState().holdings).toBe(before.holdings)
+    expect(created.store.getState().trust).toBe(before.trust)
+    expect(created.store.getState().portfolioImportAuthority.authorityStatus).toBe('LEGACY_UNPROVEN')
+    expect(storage[CSV_IMPORT_GENERATION_KEY]).toBeUndefined()
+  })
+
+  it('RA-P1-01 independent audit repro: the registered report title with extra trailing columns blocks production FULL_EXPORT commit', async () => {
+    const created = instance()
+    const before = created.store.getState()
+    const csv = [
+      'ポートフォリオ一覧,900000,100',
+      ...fullExportCsvLines({ trustTaxableRows: [`${SP500_ALIAS},26000,4500000,95.50,-1.80,`] }),
+    ]
+    const result = await created.store.getState().importSbiPortfolioFullExport(csvFile(csv))
+    expect(result).toMatchObject({ ok: false, code: 'AUTHORITY_NOT_PASS' })
+    if (!result.ok && result.code === 'AUTHORITY_NOT_PASS') {
+      expect(result.reasons).toContain('UNEXPLAINED_POSITION_ROW')
+    }
+    expect(created.store.getState().holdings).toBe(before.holdings)
+    expect(created.store.getState().trust).toBe(before.trust)
+    expect(created.store.getState().portfolioImportAuthority.authorityStatus).toBe('LEGACY_UNPROVEN')
+    expect(storage[CSV_IMPORT_GENERATION_KEY]).toBeUndefined()
+  })
+
   it('test 4: unknown trust → no mutation', async () => {
     const created = instance()
     const before = created.store.getState()
@@ -925,6 +966,229 @@ describe('importSbiPortfolioFullExport: P2-06 persistence-indeterminate safety',
     await reloaded.store.getState().initialize()
     expect(reloaded.store.getState().system.portfolioDurabilityStatus).toBeUndefined()
     expect(reloaded.store.getState().portfolioImportAuthority.authorityStatus).toBe('COMPLETE')
+  })
+})
+
+// ═══════════════════════════════════════════════════════════════════════════
+// OPS-SBI-P2-PREBUILD-PHASE2-R5-B — RA-P2-01 / RA-P2-02 CLOSURE
+//
+// RA-P2-01: the P2-06 block above only ever proved quarantine for the three CSV/snapshot import
+// actions (which share persistCsvImportTransaction's own thrown CsvImportPersistenceIndeterminateError
+// catch). The independent re-audit reproduced the identical durable/live divergence risk through
+// the SHARED runManualPortfolioMutation writers (updateHolding/updateTrust/setPortfolioPolicy/
+// every cash-assumption action) and through refreshAllData/initialize's own best-effort
+// replacement write — none of which ever called quarantinePortfolioDurabilityInStore at all.
+//
+// RA-P2-02: even where quarantine WAS reachable, it silently skipped setting
+// system.portfolioDurabilityStatus whenever nothing in the CURRENT live state happened to be
+// executable at that instant (allocationPlanStatus already blocked/stale, or no BUY/SELL/
+// BUY_NEW/ADD_EXISTING officialDecision action) — so a LATER action publishing a fresh executable
+// surface, without ever performing a true durable reload, found no quarantine standing in its way.
+// ═══════════════════════════════════════════════════════════════════════════
+
+// Generic fault-injection localStorage: every setItem call physically writes the intended bytes
+// AND arms that exact key for exactly one immediate subsequent throw-on-read — reproducing
+// section 22's "setItem physically stores new bytes → then throws AND completion/read-back
+// throws" for whichever key a given writer's own transaction happens to touch first, without this
+// test needing to know persist.ts's internal (unexported) storage key names.
+function localStorageIndeterminateOnNextWrite() {
+  let armedKey: string | null = null
+  return {
+    getItem: (key: string) => {
+      if (key === armedKey) {
+        armedKey = null
+        throw new Error('raw readback failure')
+      }
+      return storage[key] ?? null
+    },
+    setItem: (key: string, value: string) => {
+      storage[key] = value
+      armedKey = key
+    },
+    removeItem: (key: string) => { delete storage[key] },
+  }
+}
+
+// Once a committed canonical (v6) generation exists, every writer below replaces it through
+// persistCsvImportTransaction instead of the legacy per-field transaction — its own indeterminate
+// trigger is different (see that function's own comment): setItem on CSV_IMPORT_GENERATION_KEY
+// itself must throw (a write-then-crash-before-completion-notification), and the SUBSEQUENT
+// commit-check read of that same key must also throw. Same pattern the P2-06 block above already
+// uses for persistCsvImportTransaction's other two callers (importCsv/importSbiPortfolioFullExport).
+function localStorageIndeterminateOnCanonicalWrite() {
+  let armed = false
+  return {
+    getItem: (key: string) => {
+      if (key === CSV_IMPORT_GENERATION_KEY && armed) {
+        armed = false
+        throw new Error('raw commit-check read failure')
+      }
+      return storage[key] ?? null
+    },
+    setItem: (key: string, value: string) => {
+      storage[key] = value
+      if (key === CSV_IMPORT_GENERATION_KEY) {
+        armed = true
+        throw new Error('raw completion notification failure')
+      }
+    },
+    removeItem: (key: string) => { delete storage[key] },
+  }
+}
+
+describe('RA-P2-01/RA-P2-02: shared-writer & load-operation durability quarantine (R5-B)', () => {
+  // Ticket section 22: setPortfolioPolicy / updateHolding / one trust mutation path / one
+  // cash-assumption path, each starting from a genuinely BLOCKED-state live portfolio (nothing
+  // executable) — the exact regression RA-P2-02 reproduced, since the old early-return made this
+  // specific starting condition the one where the marker was silently never set.
+  it.each([
+    ['setPortfolioPolicy', (created: ReturnType<typeof instance>) =>
+      created.store.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.25 })],
+    ['updateHolding', (created: ReturnType<typeof instance>) => {
+      created.store.setState({ holdings: [{ ...EXISTING_HOLDING }] })
+      return created.store.getState().updateHolding('9999', { eval: 60_000 })
+    }],
+    ['updateTrust', (created: ReturnType<typeof instance>) => {
+      const fundId = created.store.getState().trust[0]?.id
+      return created.store.getState().updateTrust(fundId, { eval: 210_000 })
+    }],
+    ['setCashAssumptions', (created: ReturnType<typeof instance>) =>
+      created.store.getState().setCashAssumptions({ grossCash: 500_000, safetyReserve: 0, pendingOrderCash: null })],
+  ] as const)('%s: an indeterminate durable write quarantines execution authority even though nothing was currently executable (RA-P2-02)', async (_label, runAction) => {
+    const created = instance()
+    // Baseline live state: default INITIAL_HOLDINGS/INITIAL_TRUST, no analysis ever run — nothing
+    // executable, portfolioDurabilityStatus unset. This is exactly the RA-P2-02 blocked-state.
+    expect(created.store.getState().system.portfolioDurabilityStatus).toBeUndefined()
+    expect(created.store.getState().allocationPlanStatus).not.toBe('current')
+
+    vi.stubGlobal('localStorage', localStorageIndeterminateOnNextWrite())
+    const result = await runAction(created)
+    expect(result).toMatchObject({ ok: false, code: 'MANUAL_PERSISTENCE_ERROR' })
+    expect(created.store.getState().system.portfolioDurabilityStatus).toBe('INDETERMINATE')
+  })
+
+  // Ticket section 24 (positive control): an ALREADY-executable live allocation/officialDecision
+  // must still be neutralized immediately — this was never broken by RA-P2-01 for the CSV/snapshot
+  // actions (P2-06 above), but was completely unreachable for the shared manual writers before
+  // this repair (quarantinePortfolioDurabilityInStore was never called on this path at all).
+  it('updateHolding: an existing executable allocation/officialDecision is quarantined immediately on an indeterminate durable write', async () => {
+    const created = instance()
+    const first = await created.store.getState().importSbiPortfolioFullExport(csvFile(fullExportCsvLines()))
+    expect(first).toMatchObject({ ok: true, code: 'SUCCESS' })
+    const settled = created.store.getState()
+    if (!settled.allocationPlan || !settled.officialDecision) throw new Error('fixture missing allocationPlan/officialDecision')
+
+    const forcedAllocationPlan = {
+      ...settled.allocationPlan,
+      instrumentPlans: settled.allocationPlan.instrumentPlans.map((plan, i) =>
+        i === 0 ? { ...plan, executable: true } : plan),
+    }
+    const forcedOfficialDecision = {
+      ...settled.officialDecision,
+      actions: settled.officialDecision.actions.map((action, i) =>
+        i === 0 ? { ...action, action: 'BUY' as const, blockedReason: undefined } : action),
+    }
+    created.store.setState({
+      allocationPlanStatus: 'current',
+      allocationPlan: forcedAllocationPlan,
+      officialDecision: forcedOfficialDecision,
+    })
+    const before = created.store.getState()
+
+    // A committed canonical generation exists after the FULL_EXPORT above, so updateHolding takes
+    // the persistCurrentPortfolioGeneration replacement-write branch — fault-inject that branch's
+    // own persistCsvImportTransaction write.
+    vi.stubGlobal('localStorage', localStorageIndeterminateOnCanonicalWrite())
+    const result = await created.store.getState().updateHolding('6501', { eval: 950_000 })
+    expect(result).toMatchObject({ ok: false, code: 'MANUAL_PERSISTENCE_ERROR' })
+
+    const quarantined = created.store.getState()
+    expect(quarantined.system.portfolioDurabilityStatus).toBe('INDETERMINATE')
+    expect(quarantined.allocationPlanStatus).toBe('blocked')
+    expect(quarantined.allocationPlan?.instrumentPlans.every(p => !p.executable)).toBe(true)
+    expect(quarantined.officialDecision?.actions.every(a =>
+      a.action !== 'BUY' && a.action !== 'SELL' && a.action !== 'BUY_NEW' && a.action !== 'ADD_EXISTING')).toBe(true)
+    expect(quarantined.candidateDecisionSynthesis).toBeNull()
+    expect(quarantined.holdings).toBe(before.holdings)
+    expect(quarantined.trust).toBe(before.trust)
+    expect(quarantined.portfolioImportAuthority).toBe(before.portfolioImportAuthority)
+  })
+
+  // Ticket section 23: the exact blocked-state regression, run end-to-end through a shared
+  // writer. Establish genuine COMPLETE authority, force the live allocation into a currently
+  // BLOCKED/non-executable state (imitating stale/suppressed market inputs — no positive
+  // allocation surface to protect right now), then cause an indeterminate persistence outcome via
+  // setPortfolioPolicy. durabilityStatus must still become INDETERMINATE, and neither a plain
+  // reanalysis nor fresh market data may restore executable authority — only a true durable
+  // reload may.
+  it('setPortfolioPolicy: durability is quarantined even from an already-blocked allocation, and a fresh reanalysis cannot lift it (RA-P2-02 blocked-state probe)', async () => {
+    const created = instance()
+    const first = await created.store.getState().importSbiPortfolioFullExport(csvFile(fullExportCsvLines()))
+    expect(first).toMatchObject({ ok: true, code: 'SUCCESS' })
+    // Force the live allocation to a currently-blocked/non-executable state — imitating stale or
+    // suppressed market/safety inputs — before the indeterminate write ever happens.
+    created.store.setState({ allocationPlanStatus: 'blocked' })
+    expect(created.store.getState().allocationPlanStatus).toBe('blocked')
+    expect(created.store.getState().system.portfolioDurabilityStatus).toBeUndefined()
+
+    vi.stubGlobal('localStorage', localStorageIndeterminateOnCanonicalWrite())
+    const result = await created.store.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.3 })
+    expect(result).toMatchObject({ ok: false, code: 'MANUAL_PERSISTENCE_ERROR' })
+    expect(created.store.getState().system.portfolioDurabilityStatus).toBe('INDETERMINATE')
+
+    // Supply fresh/permissive inputs and run ordinary reanalysis WITHOUT a durable reload — still
+    // blocked, no executable instrument, no executable BUY_NEW/ADD, no executable official trade.
+    const reanalyzed = runFullAnalysis(created.store.getState(), { nowMs: NOW_MS })
+    expect(reanalyzed.allocationPlanStatus).not.toBe('current')
+    expect(reanalyzed.allocationPlan?.instrumentPlans.every(p => !p.executable) ?? true).toBe(true)
+    expect(reanalyzed.officialDecision?.actions.every(a =>
+      a.action !== 'BUY' && a.action !== 'SELL' && a.action !== 'BUY_NEW' && a.action !== 'ADD_EXISTING') ?? true).toBe(true)
+
+    // Only a true verified reload/reconciliation may clear the quarantine.
+    vi.stubGlobal('localStorage', localStorageMock)
+    const reloaded = instance()
+    await reloaded.store.getState().initialize()
+    expect(reloaded.store.getState().system.portfolioDurabilityStatus).toBeUndefined()
+    expect(reloaded.store.getState().portfolioImportAuthority.authorityStatus).toBe('COMPLETE')
+  })
+
+  // refreshAllData: the audit's own explicitly-named reproduction path. An indeterminate
+  // best-effort replacement write must quarantine whatever was live BEFORE the refresh started —
+  // no publish happens on this failure path, so the pre-refresh state is what gets quarantined.
+  it('refreshAllData: an indeterminate durable write quarantines the pre-refresh live state, with zero optimistic publish', async () => {
+    const created = instance()
+    const first = await created.store.getState().importSbiPortfolioFullExport(csvFile(fullExportCsvLines()))
+    expect(first).toMatchObject({ ok: true, code: 'SUCCESS' })
+    const before = created.store.getState()
+    expect(before.system.portfolioDurabilityStatus).toBeUndefined()
+
+    vi.stubGlobal('localStorage', localStorageIndeterminateOnCanonicalWrite())
+    const result = await created.store.getState().refreshAllData()
+    expect(result.ok).toBe(false)
+    const after = created.store.getState()
+    expect(after.holdings).toBe(before.holdings)
+    expect(after.trust).toBe(before.trust)
+    expect(after.system.portfolioDurabilityStatus).toBe('INDETERMINATE')
+  })
+
+  // initialize: ticket section 20. A bootstrap whose own best-effort replacement write goes
+  // indeterminate must never publish an optimistic generation — and since no publish happens at
+  // all on this failure path, a quarantine already standing on a DIFFERENT already-running store
+  // instance's live state is a separate concern (proven by the P2-06 duplicate-quarantine test
+  // above); this proves initialize's own write failure is itself classified indeterminate and
+  // quarantines whatever this fresh instance's (pre-publish) live state currently is.
+  it('initialize: an indeterminate best-effort replacement write is quarantined, with zero optimistic publish', async () => {
+    const created = instance()
+    // Seed a legacy (non-canonical) durable generation so buildInitializeRestoredState's own
+    // restore phase succeeds normally and initialize proceeds all the way to its own persistence
+    // step (persistCurrentPortfolioGeneration's legacy-fallback branch).
+    const seeded = await created.store.getState().updateHolding('9999', { eval: 75_000 })
+    expect(seeded).toMatchObject({ ok: true })
+
+    vi.stubGlobal('localStorage', localStorageIndeterminateOnNextWrite())
+    const result = await created.store.getState().initialize()
+    expect(result.ok).toBe(false)
+    expect(created.store.getState().system.portfolioDurabilityStatus).toBe('INDETERMINATE')
   })
 })
 

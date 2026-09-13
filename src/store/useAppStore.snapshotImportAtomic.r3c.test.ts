@@ -440,7 +440,19 @@ describe('T9-A004-R3c: snapshot import atomic commit contract', () => {
       error: '保存結果を確認できません。再読み込みして状態を確認してください。',
       persistence: { status: 'indeterminate' },
     })
-    expect(useAppStore.getState()).toBe(before)
+    // No optimistic new live generation: every exploratory/authority field this quarantine never
+    // touches stays exactly as it was.
+    expect(useAppStore.getState().holdings).toBe(before.holdings)
+    expect(useAppStore.getState().trust).toBe(before.trust)
+    expect(useAppStore.getState().analysis).toBe(before.analysis)
+    expect(useAppStore.getState().officialDecision).toBe(before.officialDecision)
+    expect(useAppStore.getState().portfolioImportAuthority).toBe(before.portfolioImportAuthority)
+    // OPS-SBI-P2-PREBUILD-PHASE2-R5-B (RA-P2-02 CLOSURE): system.portfolioDurabilityStatus is set
+    // unconditionally on every indeterminate durable outcome — even here, where nothing in the
+    // live state was currently executable to protect (holdings=[] before this import). The
+    // previous contract asserted a total no-op (`toBe(before)` on the whole state); that was the
+    // exact RA-P2-02 bug this repair closes, not a property worth preserving.
+    expect(useAppStore.getState().system.portfolioDurabilityStatus).toBe('INDETERMINATE')
     expect(generationNotifications).toBe(0)
     expect(removeCalls).toBe(0)
     expect(storage[CSV_IMPORT_GENERATION_KEY]).toBeTypeOf('string')

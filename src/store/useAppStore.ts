@@ -3088,25 +3088,34 @@ function quarantineOfficialDecisionActions(decision: OfficialDecision): Official
 
 /**
  * OPS-SBI-P2-PREBUILD-PHASE2-R4-B (P2-06 EXECUTION QUARANTINE): the smallest central fail-closed
- * quarantine reachable from every PERSISTENCE_INDETERMINATE catch site (importCsv,
- * importSbiPortfolioFullExport, importPortfolioSnapshot). A durable write whose outcome could not
- * be confirmed must make every EXISTING live executable-decision surface unsafe IMMEDIATELY —
- * never left standing merely because this failed transaction's own set() call is skipped.
+ * quarantine reachable from every indeterminate-durable-outcome site across every authoritative
+ * portfolio writer (importCsv, importSbiPortfolioFullExport, importPortfolioSnapshot,
+ * runManualPortfolioMutation's shared writers — updateHolding/updateTrust/setPortfolioPolicy/
+ * every cash-assumption action — and initialize/refreshAllData's own best-effort replacement
+ * write). A durable write whose outcome could not be confirmed must make every EXISTING live
+ * executable-decision surface unsafe IMMEDIATELY — never left standing merely because this failed
+ * transaction's own set() call is skipped.
  *
- * A true no-op (zero set() calls, zero subscriber notification) when nothing in the CURRENT live
- * state is actually executable — this failed transaction's own staged content was never
- * published, so there is nothing here to protect (matches the exact-reference-equality contract
- * every other early-return failure path in these three actions already keeps). Once something IS
- * executable, only the specific fields callers must trust for executability are neutralized —
- * allocationPlanStatus/instrumentPlans.executable (same neutralization runFullAnalysis's own
- * Policy-B gate already applies for an unproven authority) and officialDecision BUY·SELL·
- * BUY_NEW·ADD_EXISTING (downgraded to BLOCKED in place, same shape a real authority-blocked
- * decision already takes) — never holdings/trust/analysis/metrics/portfolioImportAuthority/every
- * other exploratory field (ticket section 24: exploratory values remain visible).
- * candidateDecisionSynthesis/candidatePortfolioRecommendations are nulled outright: their one
- * production writer (appendCommittedCandidatePortfolioRecommendations) never runs on this path.
+ * OPS-SBI-P2-PREBUILD-PHASE2-R5-B (RA-P2-02 CLOSURE): system.portfolioDurabilityStatus is set
+ * UNCONDITIONALLY on every call reaching here that has not already quarantined — never gated on
+ * whether anything in the CURRENT live state happens to be executable right now. The independent
+ * audit reproduced the previous bug exactly: allocationPlanStatus already 'blocked'/'stale' (or no
+ * executable officialDecision action) made the whole function return before ever touching the
+ * marker, so a LATER action that published a fresh executable surface — without ever performing a
+ * true durable reload — found no quarantine standing in its way. Only a call that is BOTH already
+ * quarantined AND finds nothing currently executable is a true no-op (zero set() calls, zero
+ * subscriber notification) — that is genuinely nothing left to protect and nothing left to set.
+ * Once something IS executable (regardless of whether the marker was already set), only the
+ * specific fields callers must trust for executability are neutralized — allocationPlanStatus/
+ * instrumentPlans.executable (same neutralization runFullAnalysis's own Policy-B gate already
+ * applies for an unproven authority) and officialDecision BUY·SELL·BUY_NEW·ADD_EXISTING
+ * (downgraded to BLOCKED in place, same shape a real authority-blocked decision already takes) —
+ * never holdings/trust/analysis/metrics/portfolioImportAuthority/every other exploratory field
+ * (ticket section 24: exploratory values remain visible). candidateDecisionSynthesis/
+ * candidatePortfolioRecommendations are nulled outright: their one production writer
+ * (appendCommittedCandidatePortfolioRecommendations) never runs on this path.
  *
- * Also marks system.portfolioDurabilityStatus='INDETERMINATE', which runFullAnalysis's own
+ * system.portfolioDurabilityStatus='INDETERMINATE' is what runFullAnalysis's own
  * portfolioAuthorityBlocked gate additionally checks — so any LATER recompute from ANY store
  * action keeps failing closed too (ticket: "subsequent mutation: still blocked/stale"). Clears
  * only via buildInitializeRestoredState's successful branch (a true durable reload) — never by a
@@ -3117,11 +3126,11 @@ function quarantinePortfolioDurabilityInStore(
   set: (fn: (state: AppState) => Partial<AppState>) => void,
 ): void {
   const current = get()
-  if (current.system.portfolioDurabilityStatus === 'INDETERMINATE') return
+  const alreadyQuarantined = current.system.portfolioDurabilityStatus === 'INDETERMINATE'
   const allocationExecutable = current.allocationPlanStatus === 'current'
   const decisionExecutable = current.officialDecision?.actions.some(item =>
     DURABILITY_QUARANTINE_EXECUTABLE_ACTIONS.has(item.action)) ?? false
-  if (!allocationExecutable && !decisionExecutable) return
+  if (alreadyQuarantined && !allocationExecutable && !decisionExecutable) return
   set(s => ({
     system: { ...s.system, portfolioDurabilityStatus: 'INDETERMINATE' },
     allocationPlanStatus: s.allocationPlanStatus === 'current' ? 'blocked' as const : s.allocationPlanStatus,
@@ -3136,6 +3145,17 @@ function quarantinePortfolioDurabilityInStore(
     candidateDecisionSynthesis: null,
     candidatePortfolioRecommendations: [],
   }))
+}
+
+// OPS-SBI-P2-PREBUILD-PHASE2-R5-B (RA-P2-01 CLOSURE — section 15 centralization): the one shared
+// predicate every authoritative-writer call site uses to decide whether a persistence outcome
+// requires quarantinePortfolioDurabilityInStore. `LegacyPersistenceResult`'s own 'failed' variant
+// never carries a `reason` at all (see persist.ts) — the `'reason' in result` guard correctly
+// treats that type as never indeterminate, exactly matching its own narrower contract.
+function isIndeterminatePortfolioPersistenceResult(
+  result: LegacyPersistenceResult | LegacyPortfolioGenerationTransactionResult | CurrentPortfolioPersistenceResult,
+): boolean {
+  return result.status === 'failed' && 'reason' in result && result.reason === 'indeterminate'
 }
 
 export type AppStoreState = AppState & AppActions
@@ -3295,10 +3315,21 @@ const createAppStoreStateCreator = (
               persistenceResult = persistLegacy(finalState, operationNowMs)
             }
           } catch {
+            // OPS-SBI-P2-PREBUILD-PHASE2-R5-B (RA-P2-01 CLOSURE): an unexpected throw here can
+            // never prove the durable write did not physically land — treated exactly as
+            // conservatively as the typed 'indeterminate' result below.
+            quarantinePortfolioDurabilityInStore(get, set)
             publishManualPersistenceError({ status: 'failed', reason: 'indeterminate' })
             return createManualMutationFailure(source, 'MANUAL_PERSISTENCE_ERROR')
           }
           if (persistenceResult.status !== 'persisted') {
+            // OPS-SBI-P2-PREBUILD-PHASE2-R5-B (RA-P2-01 CLOSURE): every shared writer reachable
+            // through runManualPortfolioMutation (updateHolding/updateTrust/setPortfolioPolicy/
+            // every cash-assumption action) previously left an indeterminate durable outcome here
+            // completely unquarantined — the independent audit reproduced this exact gap.
+            if (isIndeterminatePortfolioPersistenceResult(persistenceResult)) {
+              quarantinePortfolioDurabilityInStore(get, set)
+            }
             publishManualPersistenceError(persistenceResult)
             const conflict =
               (persistenceResult.status === 'blocked' &&
@@ -3656,6 +3687,14 @@ const createAppStoreStateCreator = (
             return createPortfolioLoadFailure(operation, 'LOAD_PERSISTENCE_ERROR')
           }
           if (persistenceResult.status !== 'persisted') {
+            // OPS-SBI-P2-PREBUILD-PHASE2-R5-B (RA-P2-01 CLOSURE, ticket section 20): initialize's
+            // own best-effort replacement write can become indeterminate too. No publish happens
+            // on this failure path (restoredState/finalState are never set()), so a pre-existing
+            // quarantine on the currently-live state is never touched here — only a NEW
+            // indeterminate outcome from THIS write is newly quarantined.
+            if (isIndeterminatePortfolioPersistenceResult(persistenceResult)) {
+              quarantinePortfolioDurabilityInStore(get, set)
+            }
             return classifyLoadPersistenceFailure(operation, persistenceResult)
           }
           let committedReceipt: CsvImportPersistenceReceipt | null = null
@@ -3816,6 +3855,15 @@ const createAppStoreStateCreator = (
             return createPortfolioLoadFailure(operation, 'LOAD_PERSISTENCE_ERROR')
           }
           if (persistenceResult.status !== 'persisted') {
+            // OPS-SBI-P2-PREBUILD-PHASE2-R5-B (RA-P2-01 CLOSURE, ticket section 20): the
+            // independent audit reproduced this exact gap through refreshAllData — an already-
+            // executable live allocation/officialDecision surviving untouched because refresh's
+            // own best-effort replacement write went indeterminate and no quarantine ever ran (no
+            // publish happens on this failure path, so a pre-existing quarantine is never cleared
+            // here either).
+            if (isIndeterminatePortfolioPersistenceResult(persistenceResult)) {
+              quarantinePortfolioDurabilityInStore(get, set)
+            }
             return classifyLoadPersistenceFailure(operation, persistenceResult)
           }
           let committedReceipt: CsvImportPersistenceReceipt | null = null
@@ -4422,10 +4470,15 @@ const createAppStoreStateCreator = (
   // trust/officialDecision are provably unchanged unless final authority is exactly PASS
   // (ticket section 12): every early return below happens before any persistence or set() call.
   //
-  // Deliberate scope simplifications versus importCsv (documented, not silent — see the Phase 2
-  // final report): no CSV provenance monotonicity/duplicate detection, and no trust-short
-  // tracker execution staging. Cross-tab alignment/stale-tab refusal and exact-byte canonical
-  // ownership verification (sections 20/28) are preserved.
+  // OPS-SBI-P2-PREBUILD-PHASE2-R5-B (RA-P3-01 documentation repair): this path is NOT a scope
+  // simplification versus importCsv on any of these three axes — the same CSV provenance
+  // monotonicity/duplicate detection importCsv applies (P2-03: see this action's alignment/
+  // sourceAsOf checks below and the "provenance/freshness/duplicate gate" test suite), and the
+  // same trust-short tracker execution staging importCsv applies (P2-05: see
+  // captureTrustShortAnalysisInput/captureTrustShortPortfolioBaseline immediately below and the
+  // "trust-short execution history" test suite) both run on this path too. Cross-tab alignment/
+  // stale-tab refusal and exact-byte canonical ownership verification (sections 20/28) are
+  // likewise preserved.
   importSbiPortfolioFullExport: async (file, options = {}) => {
     const operation: PortfolioGenerationOperation = 'importSbiPortfolioFullExport'
     if (isPortfolioGenerationCriticalSection(runtime)) {
