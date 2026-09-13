@@ -653,6 +653,131 @@ describe('sbiPortfolioImportV2: position-looking preamble row (P1-02)', () => {
     expect(result.orphanPositionRowCount).toBe(0)
     expect(result.completeness).toEqual({ status: 'PASS' })
   })
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // OPS-SBI-P2-PREBUILD-PHASE2-R5-A — ticket section 10 P1 production test matrix
+  // (RA-P1-01 CLOSURE: row-level, not label-level, preamble contract)
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  // Independent re-audit reproduction (RA-P1-01): a colon-separated registered count label with
+  // arbitrary glued-on text AND extra trailing columns must never pass merely because the label
+  // prefix (with its separator) matches — the whole row's column count is part of the contract.
+  it('a registered count label with a half-width colon and extra trailing columns fails FULL_EXPORT (RA-P1-01 repro)', () => {
+    const csv = [
+      '総件数:FAKE,900000,100',
+      STOCK_LABEL, STOCK_HEADER,
+      '6501,日立製作所,8500,900000,15.20,1.10,2025-06-01',
+      STOCK_TOTAL,
+    ].join('\n')
+    const result = parseSbiPortfolioImportV2(csv)
+    expect(result.orphanPositionRowCount).toBe(1)
+    expect(result.completeness.status).toBe('FAIL')
+    if (result.completeness.status === 'FAIL') {
+      expect(result.completeness.reasons).toContain('UNEXPLAINED_POSITION_ROW')
+    }
+  })
+
+  it('a registered count label with a full-width colon and extra trailing columns fails FULL_EXPORT (RA-P1-01 repro)', () => {
+    const csv = [
+      '総件数：FAKE,900000,100',
+      STOCK_LABEL, STOCK_HEADER,
+      '6501,日立製作所,8500,900000,15.20,1.10,2025-06-01',
+      STOCK_TOTAL,
+    ].join('\n')
+    const result = parseSbiPortfolioImportV2(csv)
+    expect(result.orphanPositionRowCount).toBe(1)
+    expect(result.completeness.status).toBe('FAIL')
+    if (result.completeness.status === 'FAIL') {
+      expect(result.completeness.reasons).toContain('UNEXPLAINED_POSITION_ROW')
+    }
+  })
+
+  // Independent re-audit reproduction (RA-P1-01, ticket section 7): the registered report-title
+  // row's frozen fixture proves only the exact ONE-CELL shape — extra columns glued onto it must
+  // fail exactly like every other registered-label-plus-extra-columns escape.
+  it('the registered report title with extra trailing columns fails FULL_EXPORT (RA-P1-01 repro)', () => {
+    const csv = [
+      'ポートフォリオ一覧,900000,100',
+      STOCK_LABEL, STOCK_HEADER,
+      '6501,日立製作所,8500,900000,15.20,1.10,2025-06-01',
+      STOCK_TOTAL,
+    ].join('\n')
+    const result = parseSbiPortfolioImportV2(csv)
+    expect(result.orphanPositionRowCount).toBe(1)
+    expect(result.completeness.status).toBe('FAIL')
+    if (result.completeness.status === 'FAIL') {
+      expect(result.completeness.reasons).toContain('UNEXPLAINED_POSITION_ROW')
+    }
+  })
+
+  // RA-P1-01: the same row-level gap also applied to the csvProvenance.ts metadata-timestamp
+  // class — only the exact two-cell "label,value" shape is proven; a third trailing column must
+  // fail rather than disappear silently.
+  it('a known metadata-timestamp label with an extra trailing column fails FULL_EXPORT (RA-P1-01 repro)', () => {
+    const csv = [
+      'データ基準日時,2026-09-10T00:00:00+09:00,FAKE,900000',
+      STOCK_LABEL, STOCK_HEADER,
+      '6501,日立製作所,8500,900000,15.20,1.10,2025-06-01',
+      STOCK_TOTAL,
+    ].join('\n')
+    const result = parseSbiPortfolioImportV2(csv)
+    expect(result.orphanPositionRowCount).toBe(1)
+    expect(result.completeness.status).toBe('FAIL')
+    if (result.completeness.status === 'FAIL') {
+      expect(result.completeness.reasons).toContain('UNEXPLAINED_POSITION_ROW')
+    }
+  })
+
+  // Unregistered lookalike prefix (never proven by any fixture): must never be tolerated merely
+  // because it superficially resembles a registered label.
+  it('an unregistered registered-prefix lookalike with extra numeric columns fails FULL_EXPORT', () => {
+    const csv = [
+      '総件数計,900000,100',
+      STOCK_LABEL, STOCK_HEADER,
+      '6501,日立製作所,8500,900000,15.20,1.10,2025-06-01',
+      STOCK_TOTAL,
+    ].join('\n')
+    const result = parseSbiPortfolioImportV2(csv)
+    expect(result.orphanPositionRowCount).toBe(1)
+    expect(result.completeness.status).toBe('FAIL')
+    if (result.completeness.status === 'FAIL') {
+      expect(result.completeness.reasons).toContain('UNEXPLAINED_POSITION_ROW')
+    }
+  })
+
+  // Positive controls (ticket section 11): ページ/選択範囲 share 総件数's exact proven bare-
+  // label-with-colon-value contract shape — never previously exercised by any fixture.
+  it('a registered page-range label followed by an exact colon-separated value is tolerated', () => {
+    const csv = [
+      'ページ：3',
+      STOCK_LABEL, STOCK_HEADER,
+      '6501,日立製作所,8500,900000,15.20,1.10,2025-06-01',
+      STOCK_TOTAL,
+      ...emptyTrustSection(TRUST_TAXABLE_LABEL, TRUST_TAXABLE_TOTAL),
+      ...emptyTrustSection(TRUST_GROWTH_LABEL, TRUST_GROWTH_TOTAL),
+      ...emptyTrustSection(TRUST_TSUMITATE_LABEL, TRUST_TSUMITATE_TOTAL),
+    ].join('\n')
+    const result = parseSbiPortfolioImportV2(csv)
+    expect(result.orphanPositionRowCount).toBe(0)
+    expect(result.unknownPreambleLineCount).toBe(0)
+    expect(result.completeness).toEqual({ status: 'PASS' })
+  })
+
+  it('a registered selection-range label followed by an exact colon-separated value is tolerated', () => {
+    const csv = [
+      '選択範囲：1-100',
+      STOCK_LABEL, STOCK_HEADER,
+      '6501,日立製作所,8500,900000,15.20,1.10,2025-06-01',
+      STOCK_TOTAL,
+      ...emptyTrustSection(TRUST_TAXABLE_LABEL, TRUST_TAXABLE_TOTAL),
+      ...emptyTrustSection(TRUST_GROWTH_LABEL, TRUST_GROWTH_TOTAL),
+      ...emptyTrustSection(TRUST_TSUMITATE_LABEL, TRUST_TSUMITATE_TOTAL),
+    ].join('\n')
+    const result = parseSbiPortfolioImportV2(csv)
+    expect(result.orphanPositionRowCount).toBe(0)
+    expect(result.unknownPreambleLineCount).toBe(0)
+    expect(result.completeness).toEqual({ status: 'PASS' })
+  })
 })
 
 describe('sbiPortfolioImportV2: totals fail-closed gaps (P2-01)', () => {

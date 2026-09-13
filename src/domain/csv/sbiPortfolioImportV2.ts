@@ -487,18 +487,63 @@ function looksLikePositionRow(cols: string[]): boolean {
   return cols.length >= 2 && cols.slice(1).some(cell => /\d/.test(cell))
 }
 
-// OPS-SBI-P2-PREBUILD-PHASE2-R4-A (P1-02 STRICT PREAMBLE CLASSIFICATION): registered
-// "ラベル：値" / "ラベル:値" informational rows only — an exact bare label, or the label
-// immediately followed by one of these two colon variants, is accepted; a label with arbitrary
-// text glued directly onto it with NO separator (the independent audit's reproduced
-// `総件数FAKE,900000,100`) is never accepted as this registered class. This is a fixed,
-// enumerable structural signature — not a fuzzy `startsWith` treated as authority over otherwise
-// unknown text (the classifier below never falls back to "unknown but harmless").
+// OPS-SBI-P2-PREBUILD-PHASE2-R5-A (RA-P1-01 CLOSURE — ROW-LEVEL, NOT LABEL-LEVEL, CONTRACT):
+// the R4-A classifier below still authorized a whole row from its FIRST CELL alone — a registered
+// label prefix (bare, or "label："/"label:") was sufficient regardless of how many further
+// columns followed it or what they contained. The independent re-audit reproduced concrete
+// escapes exploiting exactly this gap, all sharing the same shape (a registered label cell
+// followed by unexplained extra columns the classifier never looked at):
+//   総件数:FAKE,900000,100       — half-width colon, extra columns after the value.
+//   総件数：FAKE,900000,100      — full-width colon, extra columns after the value.
+//   ポートフォリオ一覧,900000,100 — exact title label, extra columns glued on.
+// Every registered pre-section informational row below is now validated as a COMPLETE row
+// signature: exact normalized label/type AND the exact column count already proven legitimate by
+// the frozen fixture corpus (see sbiPortfolioImportV2.test.ts) AND (where the class has a value
+// position) a non-empty value AND — by construction, since the required column count is checked
+// — no unexplained trailing non-empty cells. No wider grammar than the fixtures already prove is
+// invented for any class (ticket section 6/35: no fuzzy SBI parsing, no unseen-variant support).
+
+// Section 7: the bare report-title / display-mode informational rows. The frozen fixture ("an
+// exact registered report title is tolerated as harmless informational content") proves only the
+// ONE-CELL shape — the whole line IS the label, nothing else follows it on the same row.
+const KNOWN_TITLE_LINES: readonly string[] = ['ポートフォリオ一覧', '個別表示', 'PTS株価非表示']
+
+function isKnownTitleLine(noSpace: string, cols: string[]): boolean {
+  return cols.length === 1 && KNOWN_TITLE_LINES.includes(noSpace)
+}
+
+// Section 8: count / page / selection-range metadata rows. The frozen fixture ("a registered
+// count label followed by an exact colon-separated value is tolerated") proves only the ONE-CELL
+// "label：value"/"label:value" shape (or the bare label alone, with nothing following it) —
+// never a comma-separated multi-column row. ページ/選択範囲 share this identical proven contract
+// shape with 総件数; no separate, wider grammar is invented for either.
 const KNOWN_COUNT_OR_PAGE_LABELS: readonly string[] = ['総件数', '選択範囲', 'ページ']
 
-function isKnownCountOrPageInformationalLine(noSpace: string): boolean {
-  return KNOWN_COUNT_OR_PAGE_LABELS.some(label =>
-    noSpace === label || noSpace.startsWith(`${label}：`) || noSpace.startsWith(`${label}:`))
+function isKnownCountOrPageInformationalLine(noSpace: string, cols: string[]): boolean {
+  if (cols.length !== 1) return false
+  return KNOWN_COUNT_OR_PAGE_LABELS.some(label => {
+    if (noSpace === label) return true
+    const fullWidthPrefix = `${label}：`
+    const halfWidthPrefix = `${label}:`
+    // Content must genuinely follow the separator — the separator alone with nothing after it
+    // (`総件数：` with no value) is not a proven legitimate value, so requires strictly-greater
+    // length rather than merely `startsWith`.
+    if (noSpace.startsWith(fullWidthPrefix)) return noSpace.length > fullWidthPrefix.length
+    if (noSpace.startsWith(halfWidthPrefix)) return noSpace.length > halfWidthPrefix.length
+    return false
+  })
+}
+
+// csvProvenance.ts's KNOWN_CSV_METADATA_LABELS: source/date metadata rows (データ基準日時 etc).
+// The frozen fixture ("a known metadata-timestamp preamble line is never misclassified as a
+// position row") proves only the EXACT TWO-CELL "label,value" shape — label alone in cols[0], the
+// metadata value alone in cols[1], nothing else. A third trailing cell is unproven and must fail
+// the same way every other registered class does.
+function isKnownMetadataTimestampLine(firstCellNormalized: string, cols: string[]): boolean {
+  if (cols.length !== 2) return false
+  const noSpace = firstCellNormalized.replace(/\s/g, '')
+  if (!KNOWN_CSV_METADATA_LABELS.has(noSpace)) return false
+  return normalizeCell(cols[1] ?? '').length > 0
 }
 
 // OPS-SBI-P2-PREBUILD-PHASE2-R4-A (P1-02 STRICT PREAMBLE CLASSIFICATION): the frozen root cause
@@ -521,12 +566,12 @@ function isKnownInformationalLine(firstCellNormalized: string, cols: string[]): 
   // with real data in a later cell (`,900000,100,200`) is deliberately NOT covered here — it
   // falls through to the ordinary looksLikePositionRow check below, exactly like any other row.
   if (cols.every(cell => !normalizeCell(cell))) return true
-  if (noSpace === 'ポートフォリオ一覧' || noSpace === '個別表示' || noSpace === 'PTS株価非表示') return true
+  if (isKnownTitleLine(noSpace, cols)) return true
   // A "label,timestamp" preamble line (データ基準日時 etc. — see csvProvenance.ts's own frozen
   // vocabulary) legitimately has a digit-bearing second cell; it is exact known content, never a
   // position row, regardless of the looksLikePositionRow heuristic below.
-  if (KNOWN_CSV_METADATA_LABELS.has(noSpace)) return true
-  if (isKnownCountOrPageInformationalLine(noSpace)) return true
+  if (isKnownMetadataTimestampLine(firstCellNormalized, cols)) return true
+  if (isKnownCountOrPageInformationalLine(noSpace, cols)) return true
   return false
 }
 
