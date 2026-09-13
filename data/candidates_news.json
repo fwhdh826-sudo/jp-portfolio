@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-09-12T23:16:17.308716+09:00",
-  "sourceUpdatedAt": "2026-09-12T14:05:15+00:00",
+  "updatedAt": "2026-09-13T10:16:27.078820+09:00",
+  "sourceUpdatedAt": "2026-09-13T00:17:18+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -30,53 +30,70 @@
     },
     "us_broad": {
       "avgSentiment": 0.0,
-      "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 2,
       "sourceCount": 1,
       "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Warsh Confronts Calls for Fed Rate Hike as Inflation Tops Forecasts",
-      "topPositiveTitle": "Fed’s Rate Decision May Have Come Down to Phone Plan Changes",
+      "topNegativeTitle": "Energy Driven Inflation Complicates Fed Rate Call",
+      "topPositiveTitle": "Energy Driven Inflation Complicates Fed Rate Call",
       "items": [
         {
-          "title": "Warsh Confronts Calls for Fed Rate Hike as Inflation Tops Forecasts",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-11T16:47:12+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-11/fed-chairman-warsh-faces-pressure-to-put-up-or-shut-up-after-hot-cpi-report",
+          "title": "Energy Driven Inflation Complicates Fed Rate Call",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-12T15:11:38+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-12/energy-driven-inflation-complicates-fed-rate-call-video",
           "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
             "market",
             "rates",
             "us_broad"
           ]
         },
         {
-          "title": "Fed’s Rate Decision May Have Come Down to Phone Plan Changes",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-11T15:43:04+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-11/fed-s-rate-decision-may-have-come-down-to-phone-plan-changes",
+          "title": "Higher Interest Rates May Be the New Normal",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-12T14:17:03+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-12/higher-interest-rates-may-be-the-new-normal-video",
           "tags": [
             "market",
+            "rates",
             "us_broad"
           ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "SpaceX to Get Weighting Boost in Nasdaq 100 After Rebalance",
+      "topPositiveTitle": "SpaceX to Get Weighting Boost in Nasdaq 100 After Rebalance",
+      "items": [
+        {
+          "title": "SpaceX to Get Weighting Boost in Nasdaq 100 After Rebalance",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-12T17:58:51+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-12/spacex-to-get-weighting-boost-in-nasdaq-100-after-rebalance",
+          "tags": [
+            "market",
+            "us_growth"
+          ]
+        }
+      ]
     },
     "global_broad": {
       "avgSentiment": 0,
@@ -127,27 +144,56 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.198,
+      "avgSentiment": 0.11,
       "negativeCount": 0,
-      "positiveCount": 3,
-      "neutralCount": 2,
+      "positiveCount": 2,
+      "neutralCount": 4,
       "sourceCount": 3,
-      "itemCount": 5,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Trump Signals US Wants Distance From Iran War",
+      "topNegativeTitle": "Trump’s Foes Find Common Ground at Modi’s New Delhi Summit",
       "topPositiveTitle": "Modi Seeks BRICS Unity as Global Tensions Rise",
       "items": [
         {
-          "title": "Trump Signals US Wants Distance From Iran War",
+          "title": "Trump’s Foes Find Common Ground at Modi’s New Delhi Summit",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-12T12:15:50+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-12/trump-signals-us-wants-distance-from-iran-war-video",
+          "publishedAt": "2026-09-12T15:31:39+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-12/trump-s-foes-find-common-ground-at-modi-s-new-delhi-summit",
           "tags": [
             "geopolitical",
             "macro_risk",
             "market"
+          ]
+        },
+        {
+          "title": "Iran War Revives Lessons of Iraq for Fukuyama",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-12T15:30:36+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-12/iran-war-revives-lessons-of-iraq-for-fukuyama-video",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Energy Driven Inflation Complicates Fed Rate Call",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-12T15:11:38+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-12/energy-driven-inflation-complicates-fed-rate-call-video",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "rates",
+            "us_broad"
           ]
         },
         {
@@ -171,35 +217,6 @@
           "publishedAt": "2026-09-12T12:29:09+00:00",
           "url": "https://www.bloomberg.com/news/videos/2026-09-12/modi-seeks-brics-unity-as-global-tensions-rise-video",
           "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Oil and Gas Markets Signal Winter Crisis and Rising Interest Rates",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-12T11:00:02+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-12/oil-and-gas-markets-signal-winter-crisis-and-rising-interest-rates",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Charting the Global Economy: Oil Surge Fans Global Inflation",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-12T09:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-12/charting-the-global-economy-oil-surge-fans-global-inflation",
-          "tags": [
-            "commodity",
             "geopolitical",
             "macro_risk",
             "market"
@@ -234,56 +251,82 @@
     },
     "rates": {
       "avgSentiment": 0.0,
-      "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 2,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Warsh Confronts Calls for Fed Rate Hike as Inflation Tops Forecasts",
-      "topPositiveTitle": "Oil and Gas Markets Signal Winter Crisis and Rising Interest Rates",
+      "topNegativeTitle": "All Eyes on Warsh as Rate-Hike Fever Spreads Across G7 Central Banks",
+      "topPositiveTitle": "All Eyes on Warsh as Rate-Hike Fever Spreads Across G7 Central Banks",
       "items": [
         {
-          "title": "Warsh Confronts Calls for Fed Rate Hike as Inflation Tops Forecasts",
+          "title": "All Eyes on Warsh as Rate-Hike Fever Spreads Across G7 Central Banks",
           "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-11T16:47:12+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-11/fed-chairman-warsh-faces-pressure-to-put-up-or-shut-up-after-hot-cpi-report",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-12T20:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-12/all-eyes-on-warsh-as-rate-hike-fever-spreads-across-g7-central-banks",
           "tags": [
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Energy Driven Inflation Complicates Fed Rate Call",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-12T15:11:38+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-12/energy-driven-inflation-complicates-fed-rate-call-video",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
             "market",
             "rates",
             "us_broad"
           ]
         },
         {
-          "title": "Oil and Gas Markets Signal Winter Crisis and Rising Interest Rates",
+          "title": "Higher Interest Rates May Be the New Normal",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-12T11:00:02+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-12/oil-and-gas-markets-signal-winter-crisis-and-rising-interest-rates",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-12T14:17:03+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-12/higher-interest-rates-may-be-the-new-normal-video",
           "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
             "market",
-            "rates"
+            "rates",
+            "us_broad"
           ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.066,
+      "avgSentiment": -0.057,
       "negativeCount": 2,
-      "positiveCount": 3,
-      "neutralCount": 0,
+      "positiveCount": 2,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Iran Nuclear Activity Raises New Concerns",
+      "topNegativeTitle": "Iran Nuclear Blind Spot Deepens as IAEA Loses Access",
       "topPositiveTitle": "Oil Supply Risks Rise After Saudi Pipeline Attack",
       "items": [
+        {
+          "title": "Iran Nuclear Blind Spot Deepens as IAEA Loses Access",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-09-12T14:57:05+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-12/iran-nuclear-blind-spot-deepens-as-iaea-loses-access-video",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
+          ]
+        },
         {
           "title": "Iran Nuclear Activity Raises New Concerns",
           "source": "Bloomberg Markets",
@@ -298,15 +341,31 @@
           ]
         },
         {
-          "title": "Can Venezuela Rescue the Oil Market?",
+          "title": "Bloomberg This Weekend 09/12/2026",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-12T12:02:48+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-12/can-venezuela-rescue-the-oil-market-video",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-12T17:10:20+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-12/bloomberg-this-weekend-09-12-2026-video",
           "tags": [
             "commodity",
             "market"
+          ]
+        },
+        {
+          "title": "Energy Driven Inflation Complicates Fed Rate Call",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-12T15:11:38+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-12/energy-driven-inflation-complicates-fed-rate-call-video",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "rates",
+            "us_broad"
           ]
         },
         {
@@ -320,49 +379,33 @@
             "commodity",
             "market"
           ]
-        },
-        {
-          "title": "Oil and Gas Markets Signal Winter Crisis and Rising Interest Rates",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-12T11:00:02+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-12/oil-and-gas-markets-signal-winter-crisis-and-rising-interest-rates",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Charting the Global Economy: Oil Surge Fans Global Inflation",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-12T09:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-12/charting-the-global-economy-oil-surge-fans-global-inflation",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.11,
-      "negativeCount": 1,
+      "avgSentiment": 0.055,
+      "negativeCount": 2,
       "positiveCount": 4,
-      "neutralCount": 4,
+      "neutralCount": 6,
       "sourceCount": 3,
-      "itemCount": 9,
+      "itemCount": 12,
       "isStale": false,
-      "topNegativeTitle": "Iran Nuclear Activity Raises New Concerns",
-      "topPositiveTitle": "Modi Seeks BRICS Unity as Global Tensions Rise",
+      "topNegativeTitle": "Iran Nuclear Blind Spot Deepens as IAEA Loses Access",
+      "topPositiveTitle": "Number of Vessels Redirected in US Blockade on Iran Reaches 100",
       "items": [
+        {
+          "title": "Iran Nuclear Blind Spot Deepens as IAEA Loses Access",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-09-12T14:57:05+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-12/iran-nuclear-blind-spot-deepens-as-iaea-loses-access-video",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
+          ]
+        },
         {
           "title": "Iran Nuclear Activity Raises New Concerns",
           "source": "Bloomberg Markets",
@@ -377,12 +420,12 @@
           ]
         },
         {
-          "title": "Trump Signals US Wants Distance From Iran War",
+          "title": "Trump’s Foes Find Common Ground at Modi’s New Delhi Summit",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-12T12:15:50+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-12/trump-signals-us-wants-distance-from-iran-war-video",
+          "publishedAt": "2026-09-12T15:31:39+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-12/trump-s-foes-find-common-ground-at-modi-s-new-delhi-summit",
           "tags": [
             "geopolitical",
             "macro_risk",
@@ -390,42 +433,33 @@
           ]
         },
         {
-          "title": "Russia Turns to Far East to Export Grain Amid Black Sea Strikes",
+          "title": "Iran War Revives Lessons of Iraq for Fukuyama",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-12T08:10:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-12/russia-turns-to-far-east-to-export-grain-amid-black-sea-strikes",
+          "publishedAt": "2026-09-12T15:30:36+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-12/iran-war-revives-lessons-of-iraq-for-fukuyama-video",
           "tags": [
             "geopolitical",
+            "macro_risk",
             "market"
           ]
         },
         {
-          "title": "BRICS首脳会議開幕 このあと中印首脳会談へ",
-          "source": "NHK 経済",
+          "title": "Energy Driven Inflation Complicates Fed Rate Call",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-12T10:07:00+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20260912de49901",
+          "publishedAt": "2026-09-12T15:11:38+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-12/energy-driven-inflation-complicates-fed-rate-call-video",
           "tags": [
+            "commodity",
             "geopolitical",
-            "market"
-          ],
-          "titleJa": "BRICS首脳会議開幕 このあと中印首脳会談へ"
-        },
-        {
-          "title": "“イランが中国の衛星画像をもとに米軍攻撃か”米有力紙",
-          "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-12T08:08:00+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20260912de49890",
-          "tags": [
-            "geopolitical",
-            "market"
-          ],
-          "titleJa": "“イランが中国の衛星画像をもとに米軍攻撃か”米有力紙"
+            "macro_risk",
+            "market",
+            "rates",
+            "us_broad"
+          ]
         }
       ]
     }
