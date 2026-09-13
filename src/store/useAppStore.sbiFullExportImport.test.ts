@@ -334,6 +334,97 @@ describe('importSbiPortfolioFullExport: FULL_EXPORT store commit path', () => {
   })
 })
 
+// OPS-SBI-P2-PREBUILD-PHASE2-R6-A (RA-P1-01 CLOSURE — VALUE GRAMMAR): parser-level closure is
+// sbiPortfolioImportV2.test.ts's own R6-A regression matrix; these prove the identical
+// malformed-value preamble rows also block the production store commit path — with zero
+// authority mutation, and (ticket section 7) as AUTHORITY_NOT_PASS at the parser admission
+// boundary rather than surfacing later as a generic UNKNOWN_ERROR.
+describe('importSbiPortfolioFullExport: R6-A preamble value grammar (RA-P1-01 closure)', () => {
+  it('a malformed 総件数 value blocks production FULL_EXPORT commit, zero mutation', async () => {
+    const created = instance()
+    const before = created.store.getState()
+    const csv = [
+      '総件数：FAKE',
+      ...fullExportCsvLines({ trustTaxableRows: [`${SP500_ALIAS},26000,4500000,95.50,-1.80,`] }),
+    ]
+    const result = await created.store.getState().importSbiPortfolioFullExport(csvFile(csv))
+    expect(result).toMatchObject({ ok: false, code: 'AUTHORITY_NOT_PASS' })
+    if (!result.ok && result.code === 'AUTHORITY_NOT_PASS') {
+      expect(result.reasons).toContain('UNKNOWN_PREAMBLE_LINE')
+    }
+    expect(created.store.getState().holdings).toBe(before.holdings)
+    expect(created.store.getState().trust).toBe(before.trust)
+    expect(created.store.getState().portfolioImportAuthority).toBe(before.portfolioImportAuthority)
+    expect(storage[CSV_IMPORT_GENERATION_KEY]).toBeUndefined()
+  })
+
+  it('a malformed 選択範囲 value (path-traversal-shaped payload) blocks production FULL_EXPORT commit, zero mutation', async () => {
+    const created = instance()
+    const before = created.store.getState()
+    const csv = [
+      '選択範囲：../../etc/passwd',
+      ...fullExportCsvLines({ trustTaxableRows: [`${SP500_ALIAS},26000,4500000,95.50,-1.80,`] }),
+    ]
+    const result = await created.store.getState().importSbiPortfolioFullExport(csvFile(csv))
+    expect(result).toMatchObject({ ok: false, code: 'AUTHORITY_NOT_PASS' })
+    if (!result.ok && result.code === 'AUTHORITY_NOT_PASS') {
+      expect(result.reasons).toContain('UNKNOWN_PREAMBLE_LINE')
+    }
+    expect(created.store.getState().holdings).toBe(before.holdings)
+    expect(created.store.getState().trust).toBe(before.trust)
+    expect(created.store.getState().portfolioImportAuthority).toBe(before.portfolioImportAuthority)
+    expect(storage[CSV_IMPORT_GENERATION_KEY]).toBeUndefined()
+  })
+
+  it('a malformed データ基準日時 timestamp value blocks production FULL_EXPORT commit as AUTHORITY_NOT_PASS (not UNKNOWN_ERROR), zero mutation', async () => {
+    const created = instance()
+    const before = created.store.getState()
+    const csv = [
+      'データ基準日時,not-a-timestamp',
+      ...fullExportCsvLines({ trustTaxableRows: [`${SP500_ALIAS},26000,4500000,95.50,-1.80,`] }),
+    ]
+    const result = await created.store.getState().importSbiPortfolioFullExport(csvFile(csv))
+    // The proven parser/production semantic split: this must fail closed at the authority gate,
+    // never reach buildCsvSourceProvenance and throw InvalidCsvSourceTimestampError → UNKNOWN_ERROR.
+    expect(result).toMatchObject({ ok: false, code: 'AUTHORITY_NOT_PASS' })
+    if (!result.ok && result.code === 'AUTHORITY_NOT_PASS') {
+      expect(result.reasons).toContain('UNKNOWN_PREAMBLE_LINE')
+    }
+    expect(created.store.getState().holdings).toBe(before.holdings)
+    expect(created.store.getState().trust).toBe(before.trust)
+    expect(created.store.getState().portfolioImportAuthority).toBe(before.portfolioImportAuthority)
+    expect(storage[CSV_IMPORT_GENERATION_KEY]).toBeUndefined()
+  })
+
+  it('a script-tag payload behind a weak export-timestamp label (出力日時) blocks production FULL_EXPORT commit, zero mutation', async () => {
+    const created = instance()
+    const before = created.store.getState()
+    const csv = [
+      '出力日時,<script>alert(1)</script>',
+      ...fullExportCsvLines({ trustTaxableRows: [`${SP500_ALIAS},26000,4500000,95.50,-1.80,`] }),
+    ]
+    const result = await created.store.getState().importSbiPortfolioFullExport(csvFile(csv))
+    expect(result).toMatchObject({ ok: false, code: 'AUTHORITY_NOT_PASS' })
+    expect(created.store.getState().holdings).toBe(before.holdings)
+    expect(created.store.getState().trust).toBe(before.trust)
+    expect(created.store.getState().portfolioImportAuthority).toBe(before.portfolioImportAuthority)
+    expect(storage[CSV_IMPORT_GENERATION_KEY]).toBeUndefined()
+  })
+
+  it('a fully valid preamble (count/page/range/timestamp) still commits to SUCCESS (positive control)', async () => {
+    const created = instance()
+    const csv = [
+      'データ基準日時,2026-09-10T00:00:00+09:00',
+      '総件数：150件',
+      'ページ：1',
+      '選択範囲：1-100',
+      ...fullExportCsvLines({ trustTaxableRows: [`${SP500_ALIAS},26000,4500000,95.50,-1.80,`] }),
+    ]
+    const result = await created.store.getState().importSbiPortfolioFullExport(csvFile(csv))
+    expect(result).toMatchObject({ ok: true, code: 'SUCCESS', authorityStatus: 'COMPLETE' })
+  })
+})
+
 // OPS-SBI-P2-PREBUILD-PHASE2-R1-AUTHORITY-INTEGRITY-REPAIR (P2-03): the FULL_EXPORT path must
 // pass the same sourceAsOf monotonicity / semantic duplicate protections as the legacy CSV
 // importer before mutation (ticket sections 7-11/14).

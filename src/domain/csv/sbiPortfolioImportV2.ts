@@ -29,6 +29,7 @@
  */
 
 import { extractExplicitSourceTimestamp, KNOWN_CSV_METADATA_LABELS, type ExplicitSourceTimestampResult } from './csvProvenance'
+import { normalizeStrictTimestamp } from '../../utils/strictTimestamp'
 
 export const SBI_PORTFOLIO_IMPORT_CONTRACT_VERSION = 'sbi-portfolio-import-2' as const
 export const SBI_PORTFOLIO_PROFILE_ID = 'sbi-portfolio-v1' as const
@@ -519,18 +520,41 @@ function isKnownTitleLine(noSpace: string, cols: string[]): boolean {
 // shape with 総件数; no separate, wider grammar is invented for either.
 const KNOWN_COUNT_OR_PAGE_LABELS: readonly string[] = ['総件数', '選択範囲', 'ページ']
 
+// OPS-SBI-P2-PREBUILD-PHASE2-R6-A (RA-P1-01 CLOSURE — VALUE GRAMMAR, NOT MERE NON-EMPTINESS):
+// the R5-A repair above closed the row-shape gap (label + separator + exact column count) but
+// still treated ANY non-empty text after the separator as a legitimate value — the independent
+// re-audit reproduced concrete escapes exploiting exactly that
+// (総件数：FAKE / 総件数:javascript:alert(1) / 選択範囲：../../etc/passwd / ページ：DROP TABLE
+// portfolios all satisfy the row shape while carrying an arbitrary payload). Each label's grammar
+// below is derived from the actual proven fixture value for that label (see
+// sbiPortfolioImportV2.test.ts's frozen positive controls) — no wider grammar than what those
+// fixtures already prove is invented: 総件数 is a decimal count with the "件" unit suffix (総件数：
+// 150件), ページ is a bare decimal page number (ページ：3), 選択範囲 is a decimal start-end range
+// (選択範囲：1-100). A positive allow-list, not a blacklist of the malicious examples — arbitrary
+// text fails because it does not satisfy the grammar, not because specific strings are named.
+const COUNT_OR_PAGE_VALUE_GRAMMAR: Readonly<Record<string, RegExp>> = {
+  総件数: /^\d+件$/,
+  ページ: /^\d+$/,
+  選択範囲: /^\d+-\d+$/,
+}
+
 function isKnownCountOrPageInformationalLine(noSpace: string, cols: string[]): boolean {
   if (cols.length !== 1) return false
   return KNOWN_COUNT_OR_PAGE_LABELS.some(label => {
     if (noSpace === label) return true
     const fullWidthPrefix = `${label}：`
     const halfWidthPrefix = `${label}:`
-    // Content must genuinely follow the separator — the separator alone with nothing after it
-    // (`総件数：` with no value) is not a proven legitimate value, so requires strictly-greater
-    // length rather than merely `startsWith`.
-    if (noSpace.startsWith(fullWidthPrefix)) return noSpace.length > fullWidthPrefix.length
-    if (noSpace.startsWith(halfWidthPrefix)) return noSpace.length > halfWidthPrefix.length
-    return false
+    const prefix = noSpace.startsWith(fullWidthPrefix)
+      ? fullWidthPrefix
+      : noSpace.startsWith(halfWidthPrefix)
+        ? halfWidthPrefix
+        : null
+    if (prefix === null) return false
+    // Content must genuinely satisfy this label's own positive value grammar — the separator
+    // alone with nothing after it, or with a malformed/arbitrary payload after it, is never a
+    // proven legitimate value (see the grammar table's own comment above).
+    const value = noSpace.slice(prefix.length)
+    return COUNT_OR_PAGE_VALUE_GRAMMAR[label].test(value)
   })
 }
 
@@ -539,11 +563,23 @@ function isKnownCountOrPageInformationalLine(noSpace: string, cols: string[]): b
 // position row") proves only the EXACT TWO-CELL "label,value" shape — label alone in cols[0], the
 // metadata value alone in cols[1], nothing else. A third trailing cell is unproven and must fail
 // the same way every other registered class does.
+//
+// OPS-SBI-P2-PREBUILD-PHASE2-R6-A (RA-P1-01 CLOSURE — TIMESTAMP VALUE GRAMMAR): the check above
+// used to accept ANY non-empty second cell as "the metadata value" — the independent re-audit
+// reproduced concrete escapes (データ基準日時,not-a-timestamp / 出力日時,<script>alert(1)</script>)
+// that satisfy the two-cell shape while carrying a non-timestamp payload, and a malformed
+// authoritative timestamp reached production only to surface later as a generic UNKNOWN_ERROR
+// instead of being rejected here at the parser admission boundary. Reuses csvProvenance.ts's own
+// normalizeStrictTimestamp — the exact strict grammar this same label vocabulary is already
+// validated against elsewhere in the provenance pipeline (see its normalizeTimestamp/
+// extractExplicitSourceTimestamp) — rather than inventing a second, inconsistent timestamp
+// language. allowDateOnly mirrors that same call so already-proven date-only fixtures
+// (データ基準日,2024-02-29 etc.) remain accepted.
 function isKnownMetadataTimestampLine(firstCellNormalized: string, cols: string[]): boolean {
   if (cols.length !== 2) return false
   const noSpace = firstCellNormalized.replace(/\s/g, '')
   if (!KNOWN_CSV_METADATA_LABELS.has(noSpace)) return false
-  return normalizeCell(cols[1] ?? '').length > 0
+  return normalizeStrictTimestamp(cols[1] ?? '', { allowDateOnly: true }) !== null
 }
 
 // OPS-SBI-P2-PREBUILD-PHASE2-R4-A (P1-02 STRICT PREAMBLE CLASSIFICATION): the frozen root cause

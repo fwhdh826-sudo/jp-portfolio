@@ -780,6 +780,97 @@ describe('sbiPortfolioImportV2: position-looking preamble row (P1-02)', () => {
   })
 })
 
+// ═══════════════════════════════════════════════════════════════════════════
+// OPS-SBI-P2-PREBUILD-PHASE2-R6-A — ticket section 9 regression matrix
+// (RA-P1-01 CLOSURE: value grammar, not mere row-shape/non-emptiness)
+// ═══════════════════════════════════════════════════════════════════════════
+describe('sbiPortfolioImportV2: R6-A preamble value grammar (RA-P1-01 closure)', () => {
+  function fullExportAround(preambleLine: string): string {
+    return [
+      preambleLine,
+      STOCK_LABEL, STOCK_HEADER,
+      '6501,日立製作所,8500,900000,15.20,1.10,2025-06-01',
+      STOCK_TOTAL,
+      ...emptyTrustSection(TRUST_TAXABLE_LABEL, TRUST_TAXABLE_TOTAL),
+      ...emptyTrustSection(TRUST_GROWTH_LABEL, TRUST_GROWTH_TOTAL),
+      ...emptyTrustSection(TRUST_TSUMITATE_LABEL, TRUST_TSUMITATE_TOTAL),
+    ].join('\n')
+  }
+
+  function expectFail(preambleLine: string) {
+    const result = parseSbiPortfolioImportV2(fullExportAround(preambleLine))
+    expect(result.completeness.status).toBe('FAIL')
+    if (result.completeness.status === 'FAIL') {
+      expect(
+        result.completeness.reasons.includes('UNKNOWN_PREAMBLE_LINE') ||
+        result.completeness.reasons.includes('UNEXPLAINED_POSITION_ROW'),
+      ).toBe(true)
+    }
+  }
+
+  function expectPass(preambleLine: string) {
+    const result = parseSbiPortfolioImportV2(fullExportAround(preambleLine))
+    expect(result.orphanPositionRowCount).toBe(0)
+    expect(result.unknownPreambleLineCount).toBe(0)
+    expect(result.completeness).toEqual({ status: 'PASS' })
+  }
+
+  // A. Count grammar (総件数): known label + valid one-cell colon shape + malformed value.
+  describe('A. 総件数 value grammar', () => {
+    it('rejects an empty value after the separator', () => expectFail('総件数：'))
+    it('rejects an arbitrary text payload', () => expectFail('総件数：FAKE'))
+    it('rejects a script-tag payload', () => expectFail('総件数：<script>alert(1)</script>'))
+    it('rejects a SQL-injection-shaped payload', () => expectFail('総件数：DROP TABLE portfolios'))
+    it('rejects a path-traversal-shaped payload', () => expectFail('総件数：../../etc/passwd'))
+    it('rejects the same malformed payload behind a half-width colon', () => expectFail('総件数:FAKE'))
+    it('accepts the boundary-valid fixture value behind a half-width colon', () => expectPass('総件数:150件'))
+    it('accepts a full-width-digit NFKC variant of the boundary-valid value', () => expectPass('総件数：１５０件'))
+  })
+
+  // B. Page grammar (ページ): bare decimal page number only.
+  describe('B. ページ value grammar', () => {
+    it('rejects an arbitrary text payload', () => expectFail('ページ：abc'))
+    it('rejects a digit-bearing but non-numeric-shaped payload', () => expectFail('ページ：3ページ目'))
+    it('rejects an unregistered near-match label (ページ数) even with a well-formed value', () => expectFail('ページ数：3'))
+    it('accepts another boundary-valid decimal page number', () => expectPass('ページ：1'))
+  })
+
+  // C. Range grammar (選択範囲): decimal start-end range only.
+  describe('C. 選択範囲 value grammar', () => {
+    it('rejects an arbitrary text payload', () => expectFail('選択範囲：abc'))
+    it('rejects a path-traversal-shaped payload', () => expectFail('選択範囲：../../etc/passwd'))
+    it('rejects a single number with no range separator', () => expectFail('選択範囲：100'))
+  })
+
+  // D. Timestamp grammar: every registered metadata-timestamp label requires an actual
+  // timestamp value, not merely a non-empty second cell.
+  describe('D. registered timestamp label value grammar', () => {
+    it('rejects a non-timestamp text value for the authoritative label (データ基準日時)', () =>
+      expectFail('データ基準日時,not-a-timestamp'))
+    it('rejects a script-tag payload for a weak export-timestamp label (出力日時)', () =>
+      expectFail('出力日時,<script>alert(1)</script>'))
+    it('rejects a digit-bearing but calendar-invalid timestamp (データ基準日時)', () =>
+      expectFail('データ基準日時,2026-13-40'))
+    it('accepts an already-proven full ISO offset timestamp (データ基準日時)', () =>
+      expectPass('データ基準日時,2026-09-10T00:00:00+09:00'))
+    it('accepts an already-proven date-only timestamp (データ基準日)', () =>
+      expectPass('データ基準日,2024-02-29'))
+    it('accepts a valid timestamp for a weak export-timestamp label (出力日時)', () =>
+      expectPass('出力日時,2026-07-15T09:00:00+09:00'))
+  })
+
+  // E. Normalization: half/full-width colon and NFKC digit variants remain supported for
+  // legitimate values; near-match labels remain rejected regardless of value validity.
+  describe('E. normalization', () => {
+    it('half-width colon with a boundary-valid value is tolerated (総件数)', () => expectPass('総件数:150件'))
+    it('full-width colon with a boundary-valid value is tolerated (ページ)', () => expectPass('ページ：3'))
+    it('full-width-digit NFKC variant of a boundary-valid value is tolerated (総件数)', () =>
+      expectPass('総件数：１５０件'))
+    it('a near-match label is never treated as registered regardless of value validity', () =>
+      expectFail('ページ数：3'))
+  })
+})
+
 describe('sbiPortfolioImportV2: totals fail-closed gaps (P2-01)', () => {
   it('a blank section-total value fails the section, never silently passes', () => {
     const csv = [
