@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-09-13T10:16:27.078820+09:00",
-  "sourceUpdatedAt": "2026-09-13T00:17:18+00:00",
+  "updatedAt": "2026-09-13T23:58:12.327613+09:00",
+  "sourceUpdatedAt": "2026-09-13T14:42:59+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -29,40 +29,67 @@
       "items": []
     },
     "us_broad": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0.083,
       "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 2,
-      "sourceCount": 1,
-      "itemCount": 2,
+      "positiveCount": 1,
+      "neutralCount": 3,
+      "sourceCount": 2,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Energy Driven Inflation Complicates Fed Rate Call",
-      "topPositiveTitle": "Energy Driven Inflation Complicates Fed Rate Call",
+      "topNegativeTitle": "Hassett Says White House Will 100% Support Fed’s Next Decision",
+      "topPositiveTitle": "After Oil Surge and War, Emerging Markets Unfazed by Fed Risk",
       "items": [
         {
-          "title": "Energy Driven Inflation Complicates Fed Rate Call",
-          "source": "Bloomberg Markets",
+          "title": "Hassett Says White House Will 100% Support Fed’s Next Decision",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-12T15:11:38+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-12/energy-driven-inflation-complicates-fed-rate-call-video",
+          "publishedAt": "2026-09-13T14:01:10+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-13/hassett-says-white-house-will-100-support-fed-s-next-decision",
           "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Trump Pushes Fed to Lower Rates Despite Pressure to Raise Them",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-13T13:45:52+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-13/trump-pushes-fed-to-lower-rates-despite-pressure-to-raise-them",
+          "tags": [
             "market",
             "rates",
             "us_broad"
           ]
         },
         {
-          "title": "Higher Interest Rates May Be the New Normal",
+          "title": "Wall Street Says Stay With Stocks Despite Late ‘90s Dot-Com Vibe",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-12T14:17:03+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-12/higher-interest-rates-may-be-the-new-normal-video",
+          "publishedAt": "2026-09-13T13:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-13/wall-street-says-stay-with-stocks-despite-late-90s-dot-com-vibe",
           "tags": [
+            "commodity",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "After Oil Surge and War, Emerging Markets Unfazed by Fed Risk",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-13T12:52:31+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-13/after-oil-surge-and-war-emerging-markets-unfazed-by-fed-risk",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "global_broad",
+            "macro_risk",
             "market",
             "rates",
             "us_broad"
@@ -96,16 +123,34 @@
       ]
     },
     "global_broad": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.33,
       "negativeCount": 0,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "After Oil Surge and War, Emerging Markets Unfazed by Fed Risk",
+      "topPositiveTitle": "After Oil Surge and War, Emerging Markets Unfazed by Fed Risk",
+      "items": [
+        {
+          "title": "After Oil Surge and War, Emerging Markets Unfazed by Fed Risk",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-13T12:52:31+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-13/after-oil-surge-and-war-emerging-markets-unfazed-by-fed-risk",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "global_broad",
+            "macro_risk",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        }
+      ]
     },
     "gold": {
       "avgSentiment": 0,
@@ -120,16 +165,29 @@
       "items": []
     },
     "reit": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.33,
       "negativeCount": 0,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Australia Spring Property Season Sees Auctions Rise but Volumes Stay 34% Lower",
+      "topPositiveTitle": "Australia Spring Property Season Sees Auctions Rise but Volumes Stay 34% Lower",
+      "items": [
+        {
+          "title": "Australia Spring Property Season Sees Auctions Rise but Volumes Stay 34% Lower",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-13T06:35:36+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-13/australia-spring-property-season-sees-auctions-rise-but-volumes-stay-34-lower",
+          "tags": [
+            "market",
+            "reit"
+          ]
+        }
+      ]
     },
     "dividend": {
       "avgSentiment": 0,
@@ -144,23 +202,23 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.11,
+      "avgSentiment": 0.106,
       "negativeCount": 0,
-      "positiveCount": 2,
+      "positiveCount": 1,
       "neutralCount": 4,
-      "sourceCount": 3,
-      "itemCount": 6,
+      "sourceCount": 2,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Trump’s Foes Find Common Ground at Modi’s New Delhi Summit",
-      "topPositiveTitle": "Modi Seeks BRICS Unity as Global Tensions Rise",
+      "topNegativeTitle": "How Will Silicon Valley Rearm America?",
+      "topPositiveTitle": "After Oil Surge and War, Emerging Markets Unfazed by Fed Risk",
       "items": [
         {
-          "title": "Trump’s Foes Find Common Ground at Modi’s New Delhi Summit",
+          "title": "How Will Silicon Valley Rearm America?",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-12T15:31:39+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-12/trump-s-foes-find-common-ground-at-modi-s-new-delhi-summit",
+          "publishedAt": "2026-09-13T14:04:17+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-13/how-will-silicon-valley-rearm-america-video",
           "tags": [
             "geopolitical",
             "macro_risk",
@@ -168,32 +226,17 @@
           ]
         },
         {
-          "title": "Iran War Revives Lessons of Iraq for Fukuyama",
+          "title": "Iran Seeks Gulf Support for Hormuz Plan",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-12T15:30:36+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-12/iran-war-revives-lessons-of-iraq-for-fukuyama-video",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Energy Driven Inflation Complicates Fed Rate Call",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-12T15:11:38+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-12/energy-driven-inflation-complicates-fed-rate-call-video",
+          "publishedAt": "2026-09-13T12:29:35+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-13/iran-seeks-gulf-support-for-hormuz-plan-video",
           "tags": [
             "commodity",
             "geopolitical",
             "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
+            "market"
           ]
         },
         {
@@ -210,56 +253,88 @@
           "titleJa": "「法の支配」議連 “ICC赤根所長制裁でアメリカと対話を”"
         },
         {
-          "title": "Modi Seeks BRICS Unity as Global Tensions Rise",
+          "title": "Traders Hedging Stock Rally Split on Plunge or Drift Protection",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.2,
+          "publishedAt": "2026-09-13T14:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-13/traders-hedging-stock-rally-split-on-plunge-or-drift-protection",
+          "tags": [
+            "commodity",
+            "macro_risk",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "After Oil Surge and War, Emerging Markets Unfazed by Fed Risk",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.33,
-          "publishedAt": "2026-09-12T12:29:09+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-12/modi-seeks-brics-unity-as-global-tensions-rise-video",
+          "publishedAt": "2026-09-13T12:52:31+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-13/after-oil-surge-and-war-emerging-markets-unfazed-by-fed-risk",
           "tags": [
+            "commodity",
             "geopolitical",
+            "global_broad",
             "macro_risk",
-            "market"
+            "market",
+            "rates",
+            "us_broad"
           ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": -0.67,
-      "negativeCount": 1,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
-      "isStale": false,
-      "topNegativeTitle": "By The Way: Headlines You May Have Missed",
-      "topPositiveTitle": "By The Way: Headlines You May Have Missed",
-      "items": [
-        {
-          "title": "By The Way: Headlines You May Have Missed",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-09-12T13:05:43+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-12/by-the-way-headlines-you-may-have-missed-video",
-          "tags": [
-            "fx",
-            "market"
-          ]
-        }
-      ]
-    },
-    "rates": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 3,
-      "sourceCount": 2,
-      "itemCount": 3,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "All Eyes on Warsh as Rate-Hike Fever Spreads Across G7 Central Banks",
-      "topPositiveTitle": "All Eyes on Warsh as Rate-Hike Fever Spreads Across G7 Central Banks",
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
+    },
+    "rates": {
+      "avgSentiment": 0.106,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 4,
+      "sourceCount": 2,
+      "itemCount": 5,
+      "isStale": false,
+      "topNegativeTitle": "Trump Pushes Fed to Lower Rates Despite Pressure to Raise Them",
+      "topPositiveTitle": "After Oil Surge and War, Emerging Markets Unfazed by Fed Risk",
       "items": [
+        {
+          "title": "Trump Pushes Fed to Lower Rates Despite Pressure to Raise Them",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-13T13:45:52+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-13/trump-pushes-fed-to-lower-rates-despite-pressure-to-raise-them",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Wall Street Says Stay With Stocks Despite Late ‘90s Dot-Com Vibe",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-13T13:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-13/wall-street-says-stay-with-stocks-despite-late-90s-dot-com-vibe",
+          "tags": [
+            "commodity",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
         {
           "title": "All Eyes on Warsh as Rate-Hike Fever Spreads Across G7 Central Banks",
           "source": "Bloomberg Economics",
@@ -273,29 +348,31 @@
           ]
         },
         {
-          "title": "Energy Driven Inflation Complicates Fed Rate Call",
+          "title": "Traders Hedging Stock Rally Split on Plunge or Drift Protection",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-12T15:11:38+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-12/energy-driven-inflation-complicates-fed-rate-call-video",
+          "sentiment": "positive",
+          "sentimentScore": 0.2,
+          "publishedAt": "2026-09-13T14:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-13/traders-hedging-stock-rally-split-on-plunge-or-drift-protection",
           "tags": [
             "commodity",
-            "geopolitical",
             "macro_risk",
             "market",
-            "rates",
-            "us_broad"
+            "rates"
           ]
         },
         {
-          "title": "Higher Interest Rates May Be the New Normal",
+          "title": "After Oil Surge and War, Emerging Markets Unfazed by Fed Risk",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-12T14:17:03+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-12/higher-interest-rates-may-be-the-new-normal-video",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-13T12:52:31+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-13/after-oil-surge-and-war-emerging-markets-unfazed-by-fed-risk",
           "tags": [
+            "commodity",
+            "geopolitical",
+            "global_broad",
+            "macro_risk",
             "market",
             "rates",
             "us_broad"
@@ -304,39 +381,41 @@
       ]
     },
     "commodity": {
-      "avgSentiment": -0.057,
-      "negativeCount": 2,
-      "positiveCount": 2,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 6,
+      "avgSentiment": 0.106,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 4,
+      "sourceCount": 1,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Iran Nuclear Blind Spot Deepens as IAEA Loses Access",
-      "topPositiveTitle": "Oil Supply Risks Rise After Saudi Pipeline Attack",
+      "topNegativeTitle": "Wall Street Says Stay With Stocks Despite Late ‘90s Dot-Com Vibe",
+      "topPositiveTitle": "After Oil Surge and War, Emerging Markets Unfazed by Fed Risk",
       "items": [
         {
-          "title": "Iran Nuclear Blind Spot Deepens as IAEA Loses Access",
+          "title": "Wall Street Says Stay With Stocks Despite Late ‘90s Dot-Com Vibe",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-09-12T14:57:05+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-12/iran-nuclear-blind-spot-deepens-as-iaea-loses-access-video",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-13T13:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-13/wall-street-says-stay-with-stocks-despite-late-90s-dot-com-vibe",
           "tags": [
             "commodity",
-            "geopolitical",
-            "market"
+            "market",
+            "rates",
+            "us_broad"
           ]
         },
         {
-          "title": "Iran Nuclear Activity Raises New Concerns",
+          "title": "Iran Seeks Gulf Support for Hormuz Plan",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-12T13:57:53+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-12/iran-nuclear-activity-raises-new-concerns-video",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-13T12:29:35+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-13/iran-seeks-gulf-support-for-hormuz-plan-video",
           "tags": [
             "commodity",
             "geopolitical",
+            "macro_risk",
             "market"
           ]
         },
@@ -353,79 +432,56 @@
           ]
         },
         {
-          "title": "Energy Driven Inflation Complicates Fed Rate Call",
+          "title": "Traders Hedging Stock Rally Split on Plunge or Drift Protection",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-12T15:11:38+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-12/energy-driven-inflation-complicates-fed-rate-call-video",
+          "sentiment": "positive",
+          "sentimentScore": 0.2,
+          "publishedAt": "2026-09-13T14:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-13/traders-hedging-stock-rally-split-on-plunge-or-drift-protection",
+          "tags": [
+            "commodity",
+            "macro_risk",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "After Oil Surge and War, Emerging Markets Unfazed by Fed Risk",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-13T12:52:31+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-13/after-oil-surge-and-war-emerging-markets-unfazed-by-fed-risk",
           "tags": [
             "commodity",
             "geopolitical",
+            "global_broad",
             "macro_risk",
             "market",
             "rates",
             "us_broad"
-          ]
-        },
-        {
-          "title": "Oil Supply Risks Rise After Saudi Pipeline Attack",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-12T12:47:06+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-12/oil-supply-risks-rise-after-saudi-pipeline-attack-video",
-          "tags": [
-            "commodity",
-            "market"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.055,
-      "negativeCount": 2,
-      "positiveCount": 4,
+      "avgSentiment": 0.083,
+      "negativeCount": 0,
+      "positiveCount": 2,
       "neutralCount": 6,
-      "sourceCount": 3,
-      "itemCount": 12,
+      "sourceCount": 2,
+      "itemCount": 8,
       "isStale": false,
-      "topNegativeTitle": "Iran Nuclear Blind Spot Deepens as IAEA Loses Access",
-      "topPositiveTitle": "Number of Vessels Redirected in US Blockade on Iran Reaches 100",
+      "topNegativeTitle": "How Will Silicon Valley Rearm America?",
+      "topPositiveTitle": "After Oil Surge and War, Emerging Markets Unfazed by Fed Risk",
       "items": [
         {
-          "title": "Iran Nuclear Blind Spot Deepens as IAEA Loses Access",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-09-12T14:57:05+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-12/iran-nuclear-blind-spot-deepens-as-iaea-loses-access-video",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "Iran Nuclear Activity Raises New Concerns",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-12T13:57:53+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-12/iran-nuclear-activity-raises-new-concerns-video",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "Trump’s Foes Find Common Ground at Modi’s New Delhi Summit",
+          "title": "How Will Silicon Valley Rearm America?",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-12T15:31:39+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-12/trump-s-foes-find-common-ground-at-modi-s-new-delhi-summit",
+          "publishedAt": "2026-09-13T14:04:17+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-13/how-will-silicon-valley-rearm-america-video",
           "tags": [
             "geopolitical",
             "macro_risk",
@@ -433,33 +489,55 @@
           ]
         },
         {
-          "title": "Iran War Revives Lessons of Iraq for Fukuyama",
+          "title": "Trump Urges Zelenskyy to Stop Hitting Russia’s Diesel Refineries",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-12T15:30:36+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-12/iran-war-revives-lessons-of-iraq-for-fukuyama-video",
+          "publishedAt": "2026-09-13T13:30:59+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-13/trump-urges-zelenskyy-to-stop-hitting-russia-s-diesel-refineries",
           "tags": [
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Iran Seeks Gulf Support for Hormuz Plan",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-13T12:29:35+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-13/iran-seeks-gulf-support-for-hormuz-plan-video",
+          "tags": [
+            "commodity",
             "geopolitical",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Energy Driven Inflation Complicates Fed Rate Call",
+          "title": "Ukraine Says Passenger Train Headed to Warsaw Hit by Drone",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-12T15:11:38+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-12/energy-driven-inflation-complicates-fed-rate-call-video",
+          "publishedAt": "2026-09-13T10:52:02+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-13/ukraine-says-passenger-train-headed-to-warsaw-is-hit-by-drone",
           "tags": [
-            "commodity",
             "geopolitical",
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
+            "market"
           ]
+        },
+        {
+          "title": "BRICS首脳会議開幕 このあと中印首脳会談へ",
+          "source": "NHK 経済",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-12T10:07:00+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20260912de49901",
+          "tags": [
+            "geopolitical",
+            "market"
+          ],
+          "titleJa": "BRICS首脳会議開幕 このあと中印首脳会談へ"
         }
       ]
     }
@@ -472,7 +550,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 2,
+    "excludedCount": 1,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
