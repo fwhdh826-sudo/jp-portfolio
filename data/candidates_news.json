@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-09-13T23:58:12.327613+09:00",
-  "sourceUpdatedAt": "2026-09-13T14:42:59+00:00",
+  "updatedAt": "2026-09-14T08:24:16.130626+09:00",
+  "sourceUpdatedAt": "2026-09-13T23:06:55+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -29,16 +29,42 @@
       "items": []
     },
     "us_broad": {
-      "avgSentiment": 0.083,
-      "negativeCount": 0,
-      "positiveCount": 1,
+      "avgSentiment": 0.0,
+      "negativeCount": 2,
+      "positiveCount": 2,
       "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "Hassett Says White House Will 100% Support Fed’s Next Decision",
-      "topPositiveTitle": "After Oil Surge and War, Emerging Markets Unfazed by Fed Risk",
+      "topNegativeTitle": "Fed’s Warsh on Collision Course With Trump as Rate Hike Looms",
+      "topPositiveTitle": "US Stock Futures Fall on AI Warning, Oil Gains: Markets Wrap",
       "items": [
+        {
+          "title": "Fed’s Warsh on Collision Course With Trump as Rate Hike Looms",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-13T20:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-13/fed-s-warsh-on-collision-course-with-trump-as-rate-hike-looms",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "A 5% Treasury Yield Is Raising New Risks for Markets, Economy",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-13T19:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-13/a-5-treasury-yield-is-raising-new-risks-for-markets-economy",
+          "tags": [
+            "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        },
         {
           "title": "Hassett Says White House Will 100% Support Fed’s Next Decision",
           "source": "Bloomberg Economics",
@@ -52,7 +78,7 @@
           ]
         },
         {
-          "title": "Trump Pushes Fed to Lower Rates Despite Pressure to Raise Them",
+          "title": "Trump Pushes Fed to Lower Rates Despite Pressure For a Hike",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
@@ -77,50 +103,20 @@
             "rates",
             "us_broad"
           ]
-        },
-        {
-          "title": "After Oil Surge and War, Emerging Markets Unfazed by Fed Risk",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-13T12:52:31+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-13/after-oil-surge-and-war-emerging-markets-unfazed-by-fed-risk",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "global_broad",
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
-          ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "SpaceX to Get Weighting Boost in Nasdaq 100 After Rebalance",
-      "topPositiveTitle": "SpaceX to Get Weighting Boost in Nasdaq 100 After Rebalance",
-      "items": [
-        {
-          "title": "SpaceX to Get Weighting Boost in Nasdaq 100 After Rebalance",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-12T17:58:51+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-12/spacex-to-get-weighting-boost-in-nasdaq-100-after-rebalance",
-          "tags": [
-            "market",
-            "us_growth"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "global_broad": {
       "avgSentiment": 0.33,
@@ -165,16 +161,30 @@
       "items": []
     },
     "reit": {
-      "avgSentiment": 0.33,
-      "negativeCount": 0,
+      "avgSentiment": 0.0,
+      "negativeCount": 1,
       "positiveCount": 1,
       "neutralCount": 0,
       "sourceCount": 1,
-      "itemCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Australia Spring Property Season Sees Auctions Rise but Volumes Stay 34% Lower",
+      "topNegativeTitle": "China’s Property Overhaul Puts Strain on Local Government Income",
       "topPositiveTitle": "Australia Spring Property Season Sees Auctions Rise but Volumes Stay 34% Lower",
       "items": [
+        {
+          "title": "China’s Property Overhaul Puts Strain on Local Government Income",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-13T23:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-13/china-s-property-overhaul-puts-strain-on-local-government-income",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "reit"
+          ]
+        },
         {
           "title": "Australia Spring Property Season Sees Auctions Rise but Volumes Stay 34% Lower",
           "source": "Bloomberg Economics",
@@ -202,16 +212,69 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.106,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 4,
-      "sourceCount": 2,
-      "itemCount": 5,
+      "avgSentiment": 0.021,
+      "negativeCount": 3,
+      "positiveCount": 2,
+      "neutralCount": 5,
+      "sourceCount": 3,
+      "itemCount": 10,
       "isStale": false,
-      "topNegativeTitle": "How Will Silicon Valley Rearm America?",
-      "topPositiveTitle": "After Oil Surge and War, Emerging Markets Unfazed by Fed Risk",
+      "topNegativeTitle": "A $7 Billion Gas Bill Sees Developing Asian Nations Sour on LNG",
+      "topPositiveTitle": "Latest Oil Market News and Analysis for Sept. 14",
       "items": [
+        {
+          "title": "A $7 Billion Gas Bill Sees Developing Asian Nations Sour on LNG",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-13T23:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-13/a-7-billion-gas-bill-sees-developing-asian-nations-sour-on-lng",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "China’s Property Overhaul Puts Strain on Local Government Income",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-13T23:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-13/china-s-property-overhaul-puts-strain-on-local-government-income",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "reit"
+          ]
+        },
+        {
+          "title": "A 5% Treasury Yield Is Raising New Risks for Markets, Economy",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-13T19:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-13/a-5-treasury-yield-is-raising-new-risks-for-markets-economy",
+          "tags": [
+            "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Noel Tata Faces Biggest Crisis Yet With Regulator’s IPO Order",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-13T16:02:32+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-13/noel-tata-faces-biggest-crisis-yet-with-regulator-s-ipo-order",
+          "tags": [
+            "macro_risk",
+            "market"
+          ]
+        },
         {
           "title": "How Will Silicon Valley Rearm America?",
           "source": "Bloomberg Markets",
@@ -223,64 +286,6 @@
             "geopolitical",
             "macro_risk",
             "market"
-          ]
-        },
-        {
-          "title": "Iran Seeks Gulf Support for Hormuz Plan",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-13T12:29:35+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-13/iran-seeks-gulf-support-for-hormuz-plan-video",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "「法の支配」議連 “ICC赤根所長制裁でアメリカと対話を”",
-          "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-11T07:59:15+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20260911de49688",
-          "tags": [
-            "macro_risk",
-            "market"
-          ],
-          "titleJa": "「法の支配」議連 “ICC赤根所長制裁でアメリカと対話を”"
-        },
-        {
-          "title": "Traders Hedging Stock Rally Split on Plunge or Drift Protection",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.2,
-          "publishedAt": "2026-09-13T14:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-13/traders-hedging-stock-rally-split-on-plunge-or-drift-protection",
-          "tags": [
-            "commodity",
-            "macro_risk",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "After Oil Surge and War, Emerging Markets Unfazed by Fed Risk",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-13T12:52:31+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-13/after-oil-surge-and-war-emerging-markets-unfazed-by-fed-risk",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "global_broad",
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
           ]
         }
       ]
@@ -298,18 +303,31 @@
       "items": []
     },
     "rates": {
-      "avgSentiment": 0.106,
-      "negativeCount": 0,
-      "positiveCount": 1,
+      "avgSentiment": 0.076,
+      "negativeCount": 1,
+      "positiveCount": 2,
       "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "Trump Pushes Fed to Lower Rates Despite Pressure to Raise Them",
-      "topPositiveTitle": "After Oil Surge and War, Emerging Markets Unfazed by Fed Risk",
+      "topNegativeTitle": "Fed’s Warsh on Collision Course With Trump as Rate Hike Looms",
+      "topPositiveTitle": "US Stock Futures Fall on AI Warning, Oil Gains: Markets Wrap",
       "items": [
         {
-          "title": "Trump Pushes Fed to Lower Rates Despite Pressure to Raise Them",
+          "title": "Fed’s Warsh on Collision Course With Trump as Rate Hike Looms",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-13T20:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-13/fed-s-warsh-on-collision-course-with-trump-as-rate-hike-looms",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Trump Pushes Fed to Lower Rates Despite Pressure For a Hike",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
@@ -360,37 +378,34 @@
             "market",
             "rates"
           ]
-        },
-        {
-          "title": "After Oil Surge and War, Emerging Markets Unfazed by Fed Risk",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-13T12:52:31+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-13/after-oil-surge-and-war-emerging-markets-unfazed-by-fed-risk",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "global_broad",
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
-          ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.106,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 4,
+      "avgSentiment": 0.191,
+      "negativeCount": 1,
+      "positiveCount": 4,
+      "neutralCount": 3,
       "sourceCount": 1,
-      "itemCount": 5,
+      "itemCount": 8,
       "isStale": false,
-      "topNegativeTitle": "Wall Street Says Stay With Stocks Despite Late ‘90s Dot-Com Vibe",
-      "topPositiveTitle": "After Oil Surge and War, Emerging Markets Unfazed by Fed Risk",
+      "topNegativeTitle": "A $7 Billion Gas Bill Sees Developing Asian Nations Sour on LNG",
+      "topPositiveTitle": "Latest Oil Market News and Analysis for Sept. 14",
       "items": [
+        {
+          "title": "A $7 Billion Gas Bill Sees Developing Asian Nations Sour on LNG",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-13T23:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-13/a-7-billion-gas-bill-sees-developing-asian-nations-sour-on-lng",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
         {
           "title": "Wall Street Says Stay With Stocks Despite Late ‘90s Dot-Com Vibe",
           "source": "Bloomberg Markets",
@@ -420,18 +435,6 @@
           ]
         },
         {
-          "title": "Bloomberg This Weekend 09/12/2026",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-12T17:10:20+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-12/bloomberg-this-weekend-09-12-2026-video",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
           "title": "Traders Hedging Stock Rally Split on Plunge or Drift Protection",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
@@ -446,17 +449,14 @@
           ]
         },
         {
-          "title": "After Oil Surge and War, Emerging Markets Unfazed by Fed Risk",
+          "title": "US Stock Futures Fall on AI Warning, Oil Gains: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.33,
-          "publishedAt": "2026-09-13T12:52:31+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-13/after-oil-surge-and-war-emerging-markets-unfazed-by-fed-risk",
+          "publishedAt": "2026-09-13T22:06:01+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-13/us-stock-futures-fall-on-ai-warning-oil-gains-markets-wrap",
           "tags": [
             "commodity",
-            "geopolitical",
-            "global_broad",
-            "macro_risk",
             "market",
             "rates",
             "us_broad"
@@ -465,16 +465,56 @@
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.083,
-      "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 6,
-      "sourceCount": 2,
-      "itemCount": 8,
+      "avgSentiment": 0.056,
+      "negativeCount": 2,
+      "positiveCount": 3,
+      "neutralCount": 7,
+      "sourceCount": 3,
+      "itemCount": 12,
       "isStale": false,
-      "topNegativeTitle": "How Will Silicon Valley Rearm America?",
-      "topPositiveTitle": "After Oil Surge and War, Emerging Markets Unfazed by Fed Risk",
+      "topNegativeTitle": "A $7 Billion Gas Bill Sees Developing Asian Nations Sour on LNG",
+      "topPositiveTitle": "Latest Oil Market News and Analysis for Sept. 14",
       "items": [
+        {
+          "title": "A $7 Billion Gas Bill Sees Developing Asian Nations Sour on LNG",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-13T23:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-13/a-7-billion-gas-bill-sees-developing-asian-nations-sour-on-lng",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "China’s Property Overhaul Puts Strain on Local Government Income",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-13T23:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-13/china-s-property-overhaul-puts-strain-on-local-government-income",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "reit"
+          ]
+        },
+        {
+          "title": "Hormuz Meeting With Iran and Gulf Nations Delayed, Oman Says",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-13T19:17:03+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-13/hormuz-meeting-with-iran-and-gulf-nations-postponed-oman-says",
+          "tags": [
+            "geopolitical",
+            "market"
+          ]
+        },
         {
           "title": "How Will Silicon Valley Rearm America?",
           "source": "Bloomberg Markets",
@@ -499,45 +539,6 @@
             "geopolitical",
             "market"
           ]
-        },
-        {
-          "title": "Iran Seeks Gulf Support for Hormuz Plan",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-13T12:29:35+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-13/iran-seeks-gulf-support-for-hormuz-plan-video",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Ukraine Says Passenger Train Headed to Warsaw Hit by Drone",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-13T10:52:02+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-13/ukraine-says-passenger-train-headed-to-warsaw-is-hit-by-drone",
-          "tags": [
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "BRICS首脳会議開幕 このあと中印首脳会談へ",
-          "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-12T10:07:00+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20260912de49901",
-          "tags": [
-            "geopolitical",
-            "market"
-          ],
-          "titleJa": "BRICS首脳会議開幕 このあと中印首脳会談へ"
         }
       ]
     }
