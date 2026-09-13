@@ -2,7 +2,8 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import type { Holding } from '../types'
 import { CSV_IMPORT_GENERATION_KEY, restoreCsvImportGeneration } from './persist'
 import type { PortfolioGenerationLockAdapter } from './portfolioGenerationLock'
-import { createAppStoreInstanceForTest } from './useAppStore'
+import { createAppStoreInstanceForTest, runFullAnalysis } from './useAppStore'
+import { buildValidCandidateFunnelArtifact } from '../services/candidateFunnelArtifact.fixtures'
 import { computeCanonicalPortfolioGenerationIdentityV3 } from '../utils/snapshotGenerationIdentity'
 
 // OPS-SBI-P2-PREBUILD-PHASE2-STORE-AUTHORITY: FULL_EXPORT store action tests (ticket section 26).
@@ -147,6 +148,47 @@ describe('importSbiPortfolioFullExport: FULL_EXPORT store commit path', () => {
       expect(result.reasons).toContain('EXPECTED_SECTION_ABSENT')
     }
     expect(created.store.getState().holdings).toBe(before.holdings)
+    expect(created.store.getState().portfolioImportAuthority.authorityStatus).toBe('LEGACY_UNPROVEN')
+    expect(storage[CSV_IMPORT_GENERATION_KEY]).toBeUndefined()
+  })
+
+  // OPS-SBI-P2-PREBUILD-PHASE2-R4-A (P1-02 ticket section 5): parser-level closure
+  // (sbiPortfolioImportV2.test.ts) proves the classifier itself; these two prove the same
+  // independent-audit-reproduced rows also block the production store commit path, not just
+  // the standalone parser — an otherwise-fully-valid FULL_EXPORT with one malicious/unknown
+  // preamble line must never reach SUCCESS.
+  it('P1-02 independent audit repro: blank-first-cell comma-heavy preamble row blocks production FULL_EXPORT commit', async () => {
+    const created = instance()
+    const before = created.store.getState()
+    const csv = [
+      ',900000,100,200',
+      ...fullExportCsvLines({ trustTaxableRows: [`${SP500_ALIAS},26000,4500000,95.50,-1.80,`] }),
+    ]
+    const result = await created.store.getState().importSbiPortfolioFullExport(csvFile(csv))
+    expect(result).toMatchObject({ ok: false, code: 'AUTHORITY_NOT_PASS' })
+    if (!result.ok && result.code === 'AUTHORITY_NOT_PASS') {
+      expect(result.reasons).toContain('UNEXPLAINED_POSITION_ROW')
+    }
+    expect(created.store.getState().holdings).toBe(before.holdings)
+    expect(created.store.getState().trust).toBe(before.trust)
+    expect(created.store.getState().portfolioImportAuthority.authorityStatus).toBe('LEGACY_UNPROVEN')
+    expect(storage[CSV_IMPORT_GENERATION_KEY]).toBeUndefined()
+  })
+
+  it('P1-02 independent audit repro: fake-prefix glued onto registered count label blocks production FULL_EXPORT commit', async () => {
+    const created = instance()
+    const before = created.store.getState()
+    const csv = [
+      '総件数FAKE,900000,100',
+      ...fullExportCsvLines({ trustTaxableRows: [`${SP500_ALIAS},26000,4500000,95.50,-1.80,`] }),
+    ]
+    const result = await created.store.getState().importSbiPortfolioFullExport(csvFile(csv))
+    expect(result).toMatchObject({ ok: false, code: 'AUTHORITY_NOT_PASS' })
+    if (!result.ok && result.code === 'AUTHORITY_NOT_PASS') {
+      expect(result.reasons).toContain('UNEXPLAINED_POSITION_ROW')
+    }
+    expect(created.store.getState().holdings).toBe(before.holdings)
+    expect(created.store.getState().trust).toBe(before.trust)
     expect(created.store.getState().portfolioImportAuthority.authorityStatus).toBe('LEGACY_UNPROVEN')
     expect(storage[CSV_IMPORT_GENERATION_KEY]).toBeUndefined()
   })
@@ -432,8 +474,45 @@ describe('importSbiPortfolioFullExport: P2-02 staged authority ordering', () => 
 })
 
 // ═══════════════════════════════════════════════════════════════════════════
-// OPS-SBI-P2-PREBUILD-PHASE2-R2-A — ticket section 15 test matrix (P2-03 repair)
+// OPS-SBI-P2-PREBUILD-PHASE2-R4-B — ticket section 18 test matrix (P2-02 repair)
 // ═══════════════════════════════════════════════════════════════════════════
+
+describe('importSbiPortfolioFullExport: P2-02 FULL_EXPORT pre/post-reload equivalence', () => {
+  // Independent audit reproduction: with a real candidateFunnel artifact available, the FIRST
+  // COMPLETE FULL_EXPORT commit's own candidateDecisionSynthesis previously stayed at
+  // runFullAnalysis's fail-closed `null` default (appendCommittedCandidatePortfolioRecommendations
+  // was never called on this path at all — see the R4-B fix), while reloading that SAME
+  // just-committed durable generation via initialize() ran the composition and produced a real
+  // ('available') synthesis. That divergence — not any particular candidate outcome — is exactly
+  // the "initial candidate synthesis = null vs. reconciled/reloaded generation = executable" gap.
+  it('a first COMPLETE FULL_EXPORT with a candidateFunnel available composes a real candidateDecisionSynthesis immediately, not a fail-closed null', async () => {
+    const created = instance()
+    const artifact = structuredClone(buildValidCandidateFunnelArtifact())
+    created.store.setState(s => ({
+      candidateFunnel: artifact,
+      system: {
+        ...s.system,
+        dataSourceStatus: { ...s.system.dataSourceStatus, candidateFunnel: 'loaded' },
+        dataTimestamps: { ...s.system.dataTimestamps!, candidateFunnel: artifact._meta.generatedAt },
+      },
+    }))
+
+    const result = await created.store.getState().importSbiPortfolioFullExport(
+      csvFile(fullExportCsvLines({ trustTaxableRows: [`${SP500_ALIAS},26000,4500000,95.50,-1.80,`] })),
+    )
+    expect(result).toMatchObject({ ok: true, code: 'SUCCESS' })
+    const committed = created.store.getState()
+
+    // The bug this closes: composition was skipped entirely on this action's own commit path.
+    expect(committed.candidateDecisionSynthesis).not.toBeNull()
+    expect(committed.candidateDecisionSynthesis?.status).toBe('available')
+    // provenance.candidateGenerationId binds the synthesis to the SAME candidateFunnel generation
+    // that was staged into analysis — proof this is a real composition, not a stale carry-over.
+    expect(committed.candidateDecisionSynthesis?.provenance.candidateGenerationId).toBe(artifact._meta.generatedAt)
+    // The durable generation this synthesis was composed against is the one that actually landed.
+    expect(restoreCsvImportGeneration().status).toBe('committed')
+  })
+})
 
 describe('importSbiPortfolioFullExport: P2-03 authority-aware duplicate identity', () => {
   it('same rows + same COMPLETE authority already committed is a true duplicate/no-op', async () => {
@@ -446,6 +525,43 @@ describe('importSbiPortfolioFullExport: P2-03 authority-aware duplicate identity
     const duplicate = await created.store.getState().importSbiPortfolioFullExport(csvFile([...lines]))
     expect(duplicate).toMatchObject({ ok: true, code: 'DUPLICATE_FULL_EXPORT' })
     expect(storage[CSV_IMPORT_GENERATION_KEY]).toBe(canonicalRawBefore)
+  })
+
+  // OPS-SBI-P2-PREBUILD-PHASE2-R4-A (P2-03 ticket section 14 DUPLICATE REGISTRY CHANGE TEST):
+  // 1. import complete export using the canonical fund name/alias
+  // 2. mutate the registry entry's ID through the legal production updateTrust path, retaining
+  //    name/account
+  // 3+4. resolve and re-import the byte-identical CSV
+  // Expected: NOT a duplicate/no-op — the resolved destination changed even though the CSV text
+  // did not, so normal diff/authority logic must execute (and correctly migrate the balance to
+  // the renamed id, never leaving it stranded under the old one).
+  it('re-importing byte-identical rows after a registry ID rename is NOT a duplicate — normal diff/authority logic executes', async () => {
+    const created = instance()
+    // Resolved by canonical registry NAME ('SBI V S&P500'), not the id-keyed alias table — an id
+    // rename would otherwise also orphan the alias lookup (TRUST_SBI_CSV_ALIASES is keyed by id),
+    // which is a separate, out-of-scope registry-maintenance concern from what this test targets.
+    const lines = fullExportCsvLines({ trustTaxableRows: ['SBI V S&P500,26000,4500000,95.50,-1.80,'] })
+    const first = await created.store.getState().importSbiPortfolioFullExport(csvFile(lines))
+    expect(first).toMatchObject({ ok: true, code: 'SUCCESS' })
+    expect(created.store.getState().trust.find(t => t.id === 'sp500_sbi')?.eval).toBe(4_500_000)
+
+    // Legal production rename — same name/account, only the canonical registry id changes.
+    const renameResult = await created.store.getState().updateTrust('sp500_sbi', { id: 'sp500_sbi_renamed' })
+    expect(renameResult.ok).toBe(true)
+    expect(created.store.getState().trust.some(t => t.id === 'sp500_sbi_renamed')).toBe(true)
+    expect(created.store.getState().trust.some(t => t.id === 'sp500_sbi')).toBe(false)
+
+    // Byte-identical CSV content re-imported — only the destination registry changed, not the file.
+    const reImport = await created.store.getState().importSbiPortfolioFullExport(
+      csvFile([...lines]),
+      { confirmUnknownProvenance: true },
+    )
+    expect(reImport).toMatchObject({ ok: true, code: 'SUCCESS' })
+    // The bug this closes: a pure row-content-hash duplicate check would have short-circuited
+    // above as DUPLICATE_FULL_EXPORT, leaving the balance stranded under the old id.
+    const finalTrust = created.store.getState().trust
+    expect(finalTrust.find(t => t.id === 'sp500_sbi_renamed')?.eval).toBe(4_500_000)
+    expect(finalTrust.some(t => t.id === 'sp500_sbi')).toBe(false)
   })
 
   it('same rows while the current authority is only PARTIAL/LEGACY must not be short-circuited as duplicate merely on row content', async () => {
@@ -570,12 +686,34 @@ describe('importSbiPortfolioFullExport: P2-05 trust-short execution history', ()
     const { getTrustShortTodayExecutionCount } = await import('../domain/learning/trustShortTracker')
     expect(getTrustShortTodayExecutionCount(NOW_MS)).toBe(1)
 
+    // OPS-SBI-P2-PREBUILD-PHASE2-R4-B (P2-05 TRUST-SHORT COHERENCE ticket section 21/22): the
+    // PUBLISHED plan from THIS SAME commit must already reflect today's just-detected execution —
+    // blockedByDailyLimit derives purely from todayEntryCount (see buildTrustPortfolioPlan), so
+    // this is unaffected by the DQ-suppression/staleness noise that makes officialDecision.noTrade
+    // an unreliable signal in this synthetic environment. The old sequence (analyze with the
+    // pre-execution tracker, persist, THEN record execution) would leave this still `false`
+    // immediately after a successful commit.
+    const committedShortTermMode = created.store.getState().trustPlan?.shortTermMode
+    expect(committedShortTermMode?.blockedByDailyLimit).toBe(true)
+    expect(committedShortTermMode?.canEnter).toBe(false)
+
+    // Immediate reanalysis (any store action re-running runFullAnalysis) must read the SAME
+    // durable tracker state and agree — no flip merely from recomputing.
+    const reanalyzed = runFullAnalysis(created.store.getState(), { nowMs: NOW_MS })
+    expect(reanalyzed.trustPlan?.shortTermMode.blockedByDailyLimit).toBe(true)
+
     // Exact same content again (no new increase) must not double-record — still exactly 1.
     const duplicate = await created.store.getState().importSbiPortfolioFullExport(
       csvFile(fullExportCsvLines({ trustTaxableRows: [`${NK225_ALIAS},26000,300000,0,0,`] })),
     )
     expect(duplicate).toMatchObject({ ok: true, code: 'DUPLICATE_FULL_EXPORT' })
     expect(getTrustShortTodayExecutionCount(NOW_MS)).toBe(1)
+
+    // Reload from the durable generation (a fresh store restoring canonical bytes + re-reading
+    // the tracker) must show the identical blocked state — never re-open today's entry slot.
+    const reloaded = instance()
+    await reloaded.store.getState().initialize()
+    expect(reloaded.store.getState().trustPlan?.shortTermMode.blockedByDailyLimit).toBe(true)
   })
 })
 
@@ -685,5 +823,154 @@ describe('importSbiPortfolioFullExport: P2-06 persistence-indeterminate safety',
     const reloaded = instance()
     await reloaded.store.getState().initialize()
     expect(reloaded.store.getState().portfolioImportAuthority.authorityStatus).toBe('COMPLETE')
+  })
+
+  // OPS-SBI-P2-PREBUILD-PHASE2-R4-B (P2-06 EXECUTION QUARANTINE ticket section 26): the
+  // scenario the previous test above never exercised — an ALREADY-executable live authority
+  // (allocationPlanStatus=current, ≥1 executable instrument, an executable BUY action) must be
+  // quarantined the instant a LATER durable write becomes indeterminate. The forced
+  // allocationPlan/officialDecision below are real, fully-shaped objects from a genuine COMPLETE
+  // commit — only `allocationPlanStatus`/one instrumentPlan's `executable`/one action's `action`
+  // are overridden, so every other required field stays a real, valid value.
+  it('an existing executable allocation/officialDecision is quarantined immediately on PERSISTENCE_INDETERMINATE', async () => {
+    const created = instance()
+    const first = await created.store.getState().importSbiPortfolioFullExport(csvFile(fullExportCsvLines()))
+    expect(first).toMatchObject({ ok: true, code: 'SUCCESS' })
+    const settled = created.store.getState()
+    if (!settled.allocationPlan || !settled.officialDecision) throw new Error('fixture missing allocationPlan/officialDecision')
+
+    const forcedAllocationPlan = {
+      ...settled.allocationPlan,
+      instrumentPlans: settled.allocationPlan.instrumentPlans.map((plan, i) =>
+        i === 0 ? { ...plan, executable: true } : plan),
+    }
+    const forcedOfficialDecision = {
+      ...settled.officialDecision,
+      actions: settled.officialDecision.actions.map((action, i) =>
+        i === 0 ? { ...action, action: 'BUY' as const, blockedReason: undefined } : action),
+    }
+    created.store.setState({
+      allocationPlanStatus: 'current',
+      allocationPlan: forcedAllocationPlan,
+      officialDecision: forcedOfficialDecision,
+    })
+    const before = created.store.getState()
+    expect(before.allocationPlanStatus).toBe('current')
+    expect(before.allocationPlan?.instrumentPlans.some(p => p.executable)).toBe(true)
+    expect(before.officialDecision?.actions.some(a => a.action === 'BUY')).toBe(true)
+
+    let failCommitCheck = false
+    vi.stubGlobal('localStorage', {
+      getItem: (key: string) => {
+        if (key === CSV_IMPORT_GENERATION_KEY && failCommitCheck) {
+          failCommitCheck = false
+          throw new Error('raw commit-check read failure')
+        }
+        return storage[key] ?? null
+      },
+      setItem: (key: string, value: string) => {
+        storage[key] = value
+        if (key === CSV_IMPORT_GENERATION_KEY) {
+          failCommitCheck = true
+          throw new Error('raw completion notification failure')
+        }
+      },
+      removeItem: (key: string) => { delete storage[key] },
+    })
+
+    const result = await created.store.getState().importSbiPortfolioFullExport(
+      csvFile(fullExportCsvLines({
+        stockRows: [
+          '6501,日立製作所,8500,900000,15.20,1.10,2025-06-01',
+          '7203,トヨタ自動車,3000,300000,5.00,0.50,2025-07-01',
+        ],
+      })),
+      { confirmUnknownProvenance: true },
+    )
+    expect(result).toMatchObject({ ok: false, code: 'PERSISTENCE_INDETERMINATE' })
+
+    const quarantined = created.store.getState()
+    expect(quarantined.system.portfolioDurabilityStatus).toBe('INDETERMINATE')
+    expect(quarantined.allocationPlanStatus).toBe('blocked')
+    expect(quarantined.allocationPlan?.instrumentPlans.every(p => !p.executable)).toBe(true)
+    expect(quarantined.officialDecision?.actions.every(a =>
+      a.action !== 'BUY' && a.action !== 'SELL' && a.action !== 'BUY_NEW' && a.action !== 'ADD_EXISTING')).toBe(true)
+    expect(quarantined.candidateDecisionSynthesis).toBeNull()
+    // holdings/trust/portfolioImportAuthority — the exploratory/authority-proof fields this
+    // quarantine never touches — stay exactly as they were.
+    expect(quarantined.holdings).toBe(before.holdings)
+    expect(quarantined.trust).toBe(before.trust)
+    expect(quarantined.portfolioImportAuthority).toBe(before.portfolioImportAuthority)
+
+    // Any subsequent recompute (any store action) must stay quarantined — never restored merely
+    // because inputs happen to be fresh.
+    const reanalyzed = runFullAnalysis(created.store.getState(), { nowMs: NOW_MS })
+    expect(reanalyzed.allocationPlanStatus).not.toBe('current')
+
+    // A duplicate quarantine call (e.g. a second indeterminate hit) is a true no-op.
+    const beforeSecond = created.store.getState()
+    vi.stubGlobal('localStorage', {
+      getItem: (key: string) => storage[key] ?? null,
+      setItem: () => { throw new Error('still indeterminate') },
+      removeItem: (key: string) => { delete storage[key] },
+    })
+    const second = await created.store.getState().importSbiPortfolioFullExport(csvFile(fullExportCsvLines()))
+    expect(second.ok).toBe(false)
+    expect(created.store.getState()).toBe(beforeSecond)
+
+    // Only a true reload — re-deriving authority from the actually-persisted canonical bytes —
+    // clears the quarantine.
+    vi.stubGlobal('localStorage', localStorageMock)
+    const reloaded = instance()
+    await reloaded.store.getState().initialize()
+    expect(reloaded.store.getState().system.portfolioDurabilityStatus).toBeUndefined()
+    expect(reloaded.store.getState().portfolioImportAuthority.authorityStatus).toBe('COMPLETE')
+  })
+})
+
+// ═══════════════════════════════════════════════════════════════════════════
+// OPS-SBI-P2-PREBUILD-PHASE2-R4-A — ticket section 8 test matrix (RA-P1-06 LEGACY WRITER repair)
+// ═══════════════════════════════════════════════════════════════════════════
+
+describe('importCsv: RA-P1-06 legacy writer blocked once a proven v6 COMPLETE generation exists', () => {
+  it('a changed stock-only CSV via the legacy importCsv action is rejected, never downgrading a proven COMPLETE generation to legacy v5', async () => {
+    const created = instance()
+    const fullExport = await created.store.getState().importSbiPortfolioFullExport(csvFile(fullExportCsvLines()))
+    expect(fullExport).toMatchObject({ ok: true, code: 'SUCCESS', authorityStatus: 'COMPLETE' })
+    const before = created.store.getState()
+    const generationBefore = restoreCsvImportGeneration()
+    expect(generationBefore.status).toBe('committed')
+
+    // Reproduce the audit case exactly: establish v6 COMPLETE, then directly invoke the
+    // production importCsv action with a changed stock-only CSV and confirmUnknownProvenance=true.
+    const legacyResult = await created.store.getState().importCsv(
+      csvFile([STOCK_LABEL, STOCK_HEADER, '9999,テスト銘柄,1000,100000,1.00,0.10,2025-01-01', STOCK_TOTAL]),
+      { confirmUnknownProvenance: true },
+    )
+    expect(legacyResult).toMatchObject({ ok: false, code: 'LEGACY_WRITER_BLOCKED' })
+
+    // Durable schema remains v6, live authority remains COMPLETE, canonical generation and
+    // holdings are byte/reference-unchanged — no downgrade, no mutation.
+    const generationAfter = restoreCsvImportGeneration()
+    expect(generationAfter.status).toBe('committed')
+    if (generationAfter.status === 'committed') {
+      expect(generationAfter.schemaVersion).toBe('csv-import-generation-6')
+      expect(generationAfter.generationId).toBe(generationBefore.status === 'committed' ? generationBefore.generationId : null)
+    }
+    const after = created.store.getState()
+    expect(after.portfolioImportAuthority.authorityStatus).toBe('COMPLETE')
+    expect(after.portfolioImportAuthority).toBe(before.portfolioImportAuthority)
+    expect(after.holdings).toBe(before.holdings)
+    expect(after.holdings.some(h => h.code === '9999')).toBe(false)
+  })
+
+  it('legacy importCsv still functions normally when no COMPLETE v6 generation exists (LEGACY_UNPROVEN destination)', async () => {
+    const created = instance()
+    expect(created.store.getState().portfolioImportAuthority.authorityStatus).toBe('LEGACY_UNPROVEN')
+    const legacyResult = await created.store.getState().importCsv(
+      csvFile([STOCK_LABEL, STOCK_HEADER, '9999,テスト銘柄,1000,100000,1.00,0.10,2025-01-01', STOCK_TOTAL]),
+    )
+    expect(legacyResult).toMatchObject({ ok: true, code: 'SUCCESS' })
+    expect(created.store.getState().holdings.some(h => h.code === '9999')).toBe(true)
   })
 })

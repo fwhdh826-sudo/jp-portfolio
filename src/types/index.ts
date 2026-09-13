@@ -382,6 +382,17 @@ export interface SystemState {
    * undefinedは警告なしを表す。clearできるのはWeb-Lock-verified initialize SUCCESSのみ。
    */
   crossTabInvalidation?: CrossTabInvalidationState
+  /**
+   * OPS-SBI-P2-PREBUILD-PHASE2-R4-B (P2-06 EXECUTION QUARANTINE): undefined/'VERIFIED' means the
+   * live portfolioImportAuthority is known to match what durable storage actually committed.
+   * 'INDETERMINATE' means a canonical write's outcome could not be confirmed (setItem succeeded
+   * or threw, and the completion read-back itself then failed) — durable truth is unknown, so
+   * every executable-decision surface (allocationPlanStatus/instrumentPlans.executable/
+   * officialDecision BUY・SELL・BUY_NEW・ADD_EXISTING/candidateDecisionSynthesis) must be treated
+   * as unsafe until a true reload (buildInitializeRestoredState) re-derives authority from the
+   * actually-persisted canonical bytes. Never cleared by a plain re-analysis or fresh market data.
+   */
+  portfolioDurabilityStatus?: 'VERIFIED' | 'INDETERMINATE'
 }
 
 // RA-008-D1: Zustand投影専用のUI状態。messageId/senderInstanceId/committedAt/operationなど

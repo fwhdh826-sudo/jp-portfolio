@@ -31,6 +31,7 @@ import {
   evaluateFinalFullExportAuthority,
   buildCompleteFullExportAuthority,
   buildFullExportStagedDiff,
+  isSemanticallyCompletePortfolioImportAuthority,
   type FullExportStagedDiff,
 } from '../domain/csv/sbiPortfolioAuthorityV2'
 import {
@@ -278,6 +279,10 @@ export type CsvImportErrorCode =
   // fallbackのいずれにも入らずfail-closedする（snapshot側のSNAPSHOT_CANONICAL_INVALID
   // と同一のstorage evidence policy）。
   | 'CSV_CANONICAL_INVALID'
+  // OPS-SBI-P2-PREBUILD-PHASE2-R4-A (RA-P1-06): the retained legacy importCsv action can never
+  // replace a proven canonical v6 COMPLETE generation with legacy (non-authoritative) v5
+  // persistence — see the guard at this action's own call site for the exact rationale.
+  | 'LEGACY_WRITER_BLOCKED'
   | 'UNKNOWN_ERROR'
 
 export type CsvImportResult =
@@ -1476,6 +1481,11 @@ function buildInitializeRestoredState(baseState: AppState, nowMs: number): Initi
           }),
       csvImportProvenance: savedCsvProvenance,
       localStorageFreshness: computeLocalStorageFreshness(nowMs),
+      // OPS-SBI-P2-PREBUILD-PHASE2-R4-B (P2-06 EXECUTION QUARANTINE section 25): a true durable
+      // reload — canonical bytes read back and re-verified right here — is the only thing that
+      // may clear a prior PERSISTENCE_INDETERMINATE quarantine; explicitly reset it (never
+      // inherited from whatever this session's in-memory baseState happened to carry).
+      portfolioDurabilityStatus: undefined,
     },
   }
   return { kind: 'restored', state, hasCommittedCanonicalGeneration }
@@ -2543,6 +2553,23 @@ function allocationPlanStatus(
   return snapshotExecutability(snapshot) === 'EXECUTABLE' ? 'current' : 'blocked'
 }
 
+// OPS-SBI-P2-PREBUILD-PHASE2-R4-B (P2-05 TRUST-SHORT COHERENCE): the analysis a transaction
+// publishes must already know about ITS OWN staged trust-short execution — never only the
+// pre-execution tracker snapshot captured before that transaction started (todayEntryCount would
+// then read 0 even though this very generation represents today's entry, letting the published
+// plan/officialDecision present as if a same-day entry had not yet happened). todayEntryCount is
+// a same-day 0/1 flag (see getTrustShortTodayExecutionCount) — once already 1 (a same-day
+// duplicate re-import), staging is a no-op; it is never incremented past 1. The tracker's own
+// durable write (recordTrustShortDecision) still happens post-commit exactly as before — this
+// only fixes what THIS transaction's own pre-publish analysis sees.
+function stageNextTrustShortAnalysisInput(
+  base: TrustShortAnalysisInput,
+  executedThisTransaction: boolean,
+): TrustShortAnalysisInput {
+  if (!executedThisTransaction || base.todayEntryCount >= 1) return base
+  return { ...base, todayEntryCount: 1 }
+}
+
 // ── runFullAnalysis（内部ヘルパー）───────────────────────────
 export function runFullAnalysis(
   state: AppState,
@@ -2560,7 +2587,13 @@ export function runFullAnalysis(
   // predicate, read once here and applied at the two narrowest executable-decision boundaries
   // below (officialDecision BUY/SELL actions, allocationPlanStatus). Exploratory
   // analysis/candidates remain unaffected.
-  const portfolioAuthorityBlocked = !selectHasCompletePortfolioAuthority(state)
+  // OPS-SBI-P2-PREBUILD-PHASE2-R4-B (P2-06 EXECUTION QUARANTINE): an indeterminate durable write
+  // means live portfolioImportAuthority might no longer match what storage actually committed —
+  // fold that into this exact same gate so every future recompute (any store action, not just the
+  // one transaction that hit PERSISTENCE_INDETERMINATE) keeps failing closed until a true reload
+  // re-derives authority from canonical bytes. Never restored by fresh market data alone.
+  const portfolioAuthorityBlocked = !selectHasCompletePortfolioAuthority(state) ||
+    state.system.portfolioDurabilityStatus === 'INDETERMINATE'
   const adaptiveWeights =
     state.learning && state.learning.summary.total >= 20
       ? state.learning.suggestedWeights
@@ -3030,6 +3063,79 @@ function reportSubscriberException(error: unknown): void {
   // later subscribers running and prevents a published durable generation from becoming a
   // false red result merely because one consumer threw while observing it.
   try { console.error('[useAppStore] subscriber callback failed', error) } catch { /* diagnostic sink */ }
+}
+
+// OPS-SBI-P2-PREBUILD-PHASE2-R4-B (P2-06 EXECUTION QUARANTINE): actions this quarantine must
+// neutralize wherever they already appear in a committed officialDecision — BUY/SELL
+// (committee-sourced) and BUY_NEW/ADD_EXISTING (candidate-sourced, appended by
+// projectSynthesisToOfficialDecision). HOLD/WAIT/MONITOR/WATCH/BLOCKED/DATA_WAIT are
+// exploratory/already-non-executable and stay untouched.
+const DURABILITY_QUARANTINE_EXECUTABLE_ACTIONS: ReadonlySet<OfficialDecisionAction> =
+  new Set(['BUY', 'SELL', 'BUY_NEW', 'ADD_EXISTING'])
+const PORTFOLIO_DURABILITY_INDETERMINATE_REASON =
+  '保存結果が確認できないため実行権限がありません（再読み込みが必要）'
+
+function quarantineOfficialDecisionActions(decision: OfficialDecision): OfficialDecision {
+  return {
+    ...decision,
+    noTrade: true,
+    actions: decision.actions.map(item =>
+      DURABILITY_QUARANTINE_EXECUTABLE_ACTIONS.has(item.action)
+        ? { ...item, action: 'BLOCKED' as const, blockedReason: PORTFOLIO_DURABILITY_INDETERMINATE_REASON }
+        : item),
+  }
+}
+
+/**
+ * OPS-SBI-P2-PREBUILD-PHASE2-R4-B (P2-06 EXECUTION QUARANTINE): the smallest central fail-closed
+ * quarantine reachable from every PERSISTENCE_INDETERMINATE catch site (importCsv,
+ * importSbiPortfolioFullExport, importPortfolioSnapshot). A durable write whose outcome could not
+ * be confirmed must make every EXISTING live executable-decision surface unsafe IMMEDIATELY —
+ * never left standing merely because this failed transaction's own set() call is skipped.
+ *
+ * A true no-op (zero set() calls, zero subscriber notification) when nothing in the CURRENT live
+ * state is actually executable — this failed transaction's own staged content was never
+ * published, so there is nothing here to protect (matches the exact-reference-equality contract
+ * every other early-return failure path in these three actions already keeps). Once something IS
+ * executable, only the specific fields callers must trust for executability are neutralized —
+ * allocationPlanStatus/instrumentPlans.executable (same neutralization runFullAnalysis's own
+ * Policy-B gate already applies for an unproven authority) and officialDecision BUY·SELL·
+ * BUY_NEW·ADD_EXISTING (downgraded to BLOCKED in place, same shape a real authority-blocked
+ * decision already takes) — never holdings/trust/analysis/metrics/portfolioImportAuthority/every
+ * other exploratory field (ticket section 24: exploratory values remain visible).
+ * candidateDecisionSynthesis/candidatePortfolioRecommendations are nulled outright: their one
+ * production writer (appendCommittedCandidatePortfolioRecommendations) never runs on this path.
+ *
+ * Also marks system.portfolioDurabilityStatus='INDETERMINATE', which runFullAnalysis's own
+ * portfolioAuthorityBlocked gate additionally checks — so any LATER recompute from ANY store
+ * action keeps failing closed too (ticket: "subsequent mutation: still blocked/stale"). Clears
+ * only via buildInitializeRestoredState's successful branch (a true durable reload) — never by a
+ * plain re-analysis or fresh market data.
+ */
+function quarantinePortfolioDurabilityInStore(
+  get: () => AppState,
+  set: (fn: (state: AppState) => Partial<AppState>) => void,
+): void {
+  const current = get()
+  if (current.system.portfolioDurabilityStatus === 'INDETERMINATE') return
+  const allocationExecutable = current.allocationPlanStatus === 'current'
+  const decisionExecutable = current.officialDecision?.actions.some(item =>
+    DURABILITY_QUARANTINE_EXECUTABLE_ACTIONS.has(item.action)) ?? false
+  if (!allocationExecutable && !decisionExecutable) return
+  set(s => ({
+    system: { ...s.system, portfolioDurabilityStatus: 'INDETERMINATE' },
+    allocationPlanStatus: s.allocationPlanStatus === 'current' ? 'blocked' as const : s.allocationPlanStatus,
+    allocationPlan: s.allocationPlan
+      ? {
+          ...s.allocationPlan,
+          instrumentPlans: s.allocationPlan.instrumentPlans.map(plan =>
+            plan.executable ? { ...plan, executable: false } : plan),
+        }
+      : s.allocationPlan,
+    officialDecision: s.officialDecision ? quarantineOfficialDecisionActions(s.officialDecision) : s.officialDecision,
+    candidateDecisionSynthesis: null,
+    candidatePortfolioRecommendations: [],
+  }))
 }
 
 export type AppStoreState = AppState & AppActions
@@ -3868,6 +3974,30 @@ const createAppStoreStateCreator = (
       const oldHoldings = baseState.holdings
       const oldTrust = baseState.trust
 
+      // OPS-SBI-P2-PREBUILD-PHASE2-R4-A (RA-P1-06 LEGACY WRITER): this action still writes the
+      // legacy v5 schema (no importAuthority key at all — see the persistCsvImportTransaction
+      // call below), which can never itself prove/carry a FULL_EXPORT authority. Once a proven
+      // canonical v6 COMPLETE generation exists, this legacy full-portfolio mutation must never
+      // silently downgrade it to v5 while leaving the LIVE in-memory portfolioImportAuthority
+      // untouched (this action's own runFullAnalysis result never overwrites that field) — that
+      // would leave durable schema=v5/LEGACY_UNPROVEN and live authority=COMPLETE permanently
+      // divergent. Checked here, before the parse step (and any other CSV-content-dependent
+      // rejection, e.g. the legacy full-sync destructive-change guard, could otherwise mask this
+      // policy-level block) — before any parsing side effect has staged/persisted anything.
+      const currentGenerationBeforeParse = restoreCsvImportGenerationFromRaw(transaction.canonicalPreviousRaw)
+      if (
+        currentGenerationBeforeParse.status === 'committed' &&
+        currentGenerationBeforeParse.schemaVersion === CSV_IMPORT_GENERATION_SCHEMA_V6 &&
+        currentGenerationBeforeParse.payload.importAuthority !== undefined &&
+        isSemanticallyCompletePortfolioImportAuthority(currentGenerationBeforeParse.payload.importAuthority)
+      ) {
+        return publishFailure(csvImportFailure(
+          'LEGACY_WRITER_BLOCKED',
+          '既に証明済みのFULL_EXPORT COMPLETE世代が存在するため、この非権威（legacy）取込では置き換えられません。' +
+            'FULL_EXPORT取込を使用してください。状態は変更されていません。',
+        ))
+      }
+
       let parsed: Awaited<ReturnType<typeof importPortfolioCsv>>
       try {
         parsed = await importPortfolioCsv(file, oldHoldings, oldTrust)
@@ -3891,6 +4021,7 @@ const createAppStoreStateCreator = (
       const now = new Date(transaction.analysisNow).toISOString()
       const incomingProvenance: CsvImportProvenance = { importedAt: now, ...sourceProvenance }
       const currentGeneration = restoreCsvImportGenerationFromRaw(transaction.canonicalPreviousRaw)
+
       const monotonicity = evaluateCsvImportMonotonicity({
         incoming: incomingProvenance,
         current: currentGeneration.status === 'committed'
@@ -4059,6 +4190,9 @@ const createAppStoreStateCreator = (
       } catch (error) {
         setPortfolioGenerationTransactionPhase(runtime, transaction, 'PREPARED')
         if (error instanceof CsvImportPersistenceIndeterminateError) {
+          // OPS-SBI-P2-PREBUILD-PHASE2-R4-B (P2-06): durable truth is now unknown — quarantine
+          // whatever executable authority is currently live before reporting the failure.
+          quarantinePortfolioDurabilityInStore(get, set)
           return publishFailure(csvImportFailure(
             'PERSISTENCE_INDETERMINATE',
             '保存結果を確認できません。再読み込みして状態を確認してください。',
@@ -4393,11 +4527,36 @@ const createAppStoreStateCreator = (
                 accountHint: row.accountHint as '' | '特定' | 'NISA成長' | 'NISA積立',
               })),
             ].sort(compareCsvSemanticRows)
+            // OPS-SBI-P2-PREBUILD-PHASE2-R4-A (P2-03 FINAL RESOLVED TRUST IDENTITY): the
+            // duplicate/no-op decision below (evaluateCsvImportMonotonicity) must be created AFTER
+            // trust resolution and bind the canonical resolved destination trust ID + account
+            // semantics for every resolved row — raw fund name/alias alone is insufficient. Without
+            // this, re-importing byte-identical CSV rows after a registry rename (same fund
+            // name/account, different canonical trust id via a legal updateTrust) would be
+            // misdetected as a true duplicate purely on row-content hash, silently leaving the
+            // stale registry id's balance unmigrated. Sorted independently of row order (by
+            // name+accountHint) so pure CSV row reordering never changes this identity.
+            const resolvedTrustDestinations = trustResolutions
+              .map(entry => ({
+                name: entry.row.name,
+                accountHint: entry.row.accountHint,
+                status: entry.status,
+                matchedTrustId: entry.matchedTrustId,
+              }))
+              .sort((a, b) => {
+                const ka = `${a.name} ${a.accountHint}`
+                const kb = `${b.name} ${b.accountHint}`
+                return ka < kb ? -1 : ka > kb ? 1 : 0
+              })
             const fullExportSourceProvenance = buildCsvSourceProvenance({
               text,
               fileName: String(file.name || ''),
               fileLastModified: Number(file.lastModified || 0),
-              semanticContent: { profile: SBI_PORTFOLIO_PROFILE_ID, rows: fullExportSemanticRows },
+              semanticContent: {
+                profile: SBI_PORTFOLIO_PROFILE_ID,
+                rows: fullExportSemanticRows,
+                resolvedTrustDestinations,
+              },
             })
             const incomingFullExportProvenance: CsvImportProvenance = { importedAt: now, ...fullExportSourceProvenance }
             const currentFullExportGenerationExists = currentGeneration.status === 'committed'
@@ -4547,16 +4706,44 @@ const createAppStoreStateCreator = (
             )
             const trustExecution = stagedTrustExecution.detection
 
-            // OPS-SBI-P2-PREBUILD-PHASE2-R2-A (P2-02): the incoming COMPLETE authority must be
-            // part of the staged state analysis runs against — never the stale baseState value —
-            // so officialDecision/allocation for THIS generation are computed under the same
-            // authority that gets published, not under whatever authority preceded this import.
+            // OPS-SBI-P2-PREBUILD-PHASE2-R1-AUTHORITY-INTEGRITY-REPAIR: hoisted above the staged
+            // analysis state below (was previously computed only after runFullAnalysis) — a
+            // durable-vs-live mismatch here (canonical carrying a real summary while live state
+            // kept it null) made inspectDurablePortfolioAlignment treat this tab's own
+            // just-committed generation as stale on the very next write (pre-existing latent
+            // bug, surfaced by P2-03's own required "second FULL_EXPORT succeeds" test).
+            const fullExportSyncSummary: CsvSyncSummary = {
+              importedAt: now,
+              stock: { updated: diff.stock.update.length, added: diff.stock.add.length, removed: diff.stock.remove.length },
+              trust: { updated: diff.trust.update.length, reheld: 0, zeroed: diff.trust.zero.length, unknownFunds: [], ambiguousFundIds: [] },
+            }
+
+            // OPS-SBI-P2-PREBUILD-PHASE2-R4-B (P2-02 FULL_EXPORT GENERATION COHERENCE): every
+            // durable field analysis actually reads (ticket section 16) must already be staged
+            // here — never only holdings/trust/authority. Without csvLastImportedAt staged, the
+            // independent audit found the FIRST-EVER COMPLETE import's own pre-commit analysis
+            // silently differs from what reload immediately recomputes from the identical durable
+            // generation (candidate composition below fixes the other half of that same gap).
             const stagedState: AppState = {
               ...baseState,
               holdings: updatedHoldings,
               trust: updatedTrust,
               portfolioImportAuthority: importAuthority,
+              system: {
+                ...baseState.system,
+                csvLastImportedAt: now,
+                csvImportProvenance: incomingFullExportProvenance,
+                csvSyncSummary: fullExportSyncSummary,
+              },
             }
+
+            // OPS-SBI-P2-PREBUILD-PHASE2-R4-B (P2-05 TRUST-SHORT COHERENCE): analyze/publish
+            // using the NEXT trust-short snapshot (this transaction's own staged execution
+            // already folded in), not the pre-execution tracker captured at transaction start —
+            // see stageNextTrustShortAnalysisInput's own comment.
+            const stagedTrustShortAnalysisInput = transaction.trackerSnapshot
+              ? stageNextTrustShortAnalysisInput(transaction.trackerSnapshot, trustExecution.executed)
+              : undefined
 
             let computed: ReturnType<typeof runFullAnalysis>
             try {
@@ -4564,7 +4751,7 @@ const createAppStoreStateCreator = (
               computed = runFullAnalysis(stagedState, {
                 requireOfficialDecision: true,
                 nowMs: transaction.analysisNow,
-                trustShortInput: transaction.trackerSnapshot ?? undefined,
+                trustShortInput: stagedTrustShortAnalysisInput,
               })
             } catch (error) {
               const isOfficialDecisionError = error instanceof OfficialDecisionGenerationError
@@ -4585,17 +4772,6 @@ const createAppStoreStateCreator = (
               csvImportedAt: now,
               csvImportProvenance: incomingFullExportProvenance,
             })
-            // OPS-SBI-P2-PREBUILD-PHASE2-R1-AUTHORITY-INTEGRITY-REPAIR: hoisted so the exact
-            // same object is both durably persisted and published into live state below — a
-            // durable-vs-live mismatch here (canonical carrying a real summary while live state
-            // kept it null) made inspectDurablePortfolioAlignment treat this tab's own
-            // just-committed generation as stale on the very next write (pre-existing latent
-            // bug, surfaced by P2-03's own required "second FULL_EXPORT succeeds" test).
-            const fullExportSyncSummary: CsvSyncSummary = {
-              importedAt: now,
-              stock: { updated: diff.stock.update.length, added: diff.stock.add.length, removed: diff.stock.remove.length },
-              trust: { updated: diff.trust.update.length, reheld: 0, zeroed: diff.trust.zero.length, unknownFunds: [], ambiguousFundIds: [] },
-            }
 
             let persistenceReceipt: CsvImportPersistenceReceipt
             const generationCommittedAt = Date.now()
@@ -4623,6 +4799,8 @@ const createAppStoreStateCreator = (
             } catch (error) {
               setPortfolioGenerationTransactionPhase(runtime, transaction, 'PREPARED')
               if (error instanceof CsvImportPersistenceIndeterminateError) {
+                // OPS-SBI-P2-PREBUILD-PHASE2-R4-B (P2-06): see importCsv's identical guard.
+                quarantinePortfolioDurabilityInStore(get, set)
                 return sbiFullExportImportFailure('PERSISTENCE_INDETERMINATE', '保存結果を確認できません。再読み込みして状態を確認してください。')
               }
               return sbiFullExportImportFailure(
@@ -4644,6 +4822,22 @@ const createAppStoreStateCreator = (
                 '保存したcanonical世代を検証できなかったため、準備した分析結果は公開しませんでした。再読み込み後に再試行してください。',
               )
             }
+            // OPS-SBI-P2-PREBUILD-PHASE2-R4-B (P2-02 FULL_EXPORT GENERATION COHERENCE): this call
+            // was previously missing on this action's own commit path (present on importCsv's —
+            // see that action's identical call), so a first COMPLETE FULL_EXPORT's own
+            // candidateDecisionSynthesis/candidatePortfolioRecommendations stayed at
+            // runFullAnalysis's fail-closed null/[] default while an IMMEDIATE reload of the same
+            // just-committed durable generation recomputed a real (possibly executable BUY_NEW)
+            // synthesis — the exact "initial candidate synthesis = null vs. reconciled/reloaded
+            // generation = executable" divergence the independent audit reproduced. Reusing this
+            // canonical composition pipeline (not a manually copied post-reload result) proves the
+            // pre- and post-reload projections are identical by construction.
+            computed = appendCommittedCandidatePortfolioRecommendations(
+              stagedState,
+              computed,
+              authorityCheck,
+              transaction.analysisNow,
+            )
 
             const localStorageFreshness = computeLocalStorageFreshness(generationCommittedAt)
             if (!ownsCsvImportCanonicalBytes(persistenceReceipt)) {
@@ -5266,16 +5460,35 @@ const createAppStoreStateCreator = (
         ? { ...snapshot.cashAssumptions }
         : state.cashAssumptions
 
+      // OPS-SBI-P2-PREBUILD-PHASE2-R1-AUTHORITY-INTEGRITY-REPAIR (P2-01 ticket section 3): hoisted
+      // above the staged analysis state below (was previously computed only after runFullAnalysis)
+      // — a proven (COMPLETE/PARTIAL) transported authority is preserved into the destination
+      // canonical generation via the v6 envelope; a LEGACY_UNPROVEN transfer keeps writing the
+      // exact original v5 shape unchanged (v5's exact-key schema has no importAuthority key at
+      // all — adding one there would fail validation). No old snapshot may upgrade itself to
+      // COMPLETE: this only ever forwards an authority object parsePortfolioSnapshotImport has
+      // already structurally validated and bound into the recomputed transfer identity.
+      const preservedImportAuthority = snapshot.importAuthority.authorityStatus === 'LEGACY_UNPROVEN'
+        ? null
+        : snapshot.importAuthority
+
       // T9-A004-R3c: 新世代のcandidate contentをメモリ上でstageし、analysis・decision・
       // plans・candidatesをpublish前に完了する。ここで失敗してもstore/subscriber/storageの
       // 副作用は0のまま構造化failureを返す（部分世代のset()は一切行わない）。
       const nowIso = new Date(transaction.analysisNow).toISOString()
+      // OPS-SBI-P2-PREBUILD-PHASE2-R4-B (P2-02 SNAPSHOT GENERATION COHERENCE): this must be the
+      // SAME final authority the payload below persists and the store below publishes — never the
+      // stale DESTINATION authority. The independent audit reproduced this exact gap: analyzing
+      // under the destination's (possibly LEGACY_UNPROVEN) authority, then publishing the
+      // incoming COMPLETE authority, could flip officialDecision.noTrade true→false between the
+      // analysis this transaction computed and what the published state actually represents.
       const stagedState: AppState = {
         ...state,
         holdings: nextHoldings,
         trust: nextTrust,
         portfolioPolicy: nextPortfolioPolicy,
         cashAssumptions: nextCashAssumptions,
+        portfolioImportAuthority: preservedImportAuthority ?? LEGACY_UNPROVEN_PORTFOLIO_IMPORT_AUTHORITY,
         system: {
           ...state.system,
           // Operation metadata and source provenance are replaced from one incoming generation.
@@ -5315,16 +5528,7 @@ const createAppStoreStateCreator = (
         }
       }
 
-      // OPS-SBI-P2-PREBUILD-PHASE2-R1-AUTHORITY-INTEGRITY-REPAIR (P2-01 ticket section 3): a
-      // proven (COMPLETE/PARTIAL) transported authority is preserved into the destination
-      // canonical generation via the v6 envelope; a LEGACY_UNPROVEN transfer keeps writing the
-      // exact original v5 shape unchanged (v5's exact-key schema has no importAuthority key at
-      // all — adding one there would fail validation). No old snapshot may upgrade itself to
-      // COMPLETE: this only ever forwards an authority object parsePortfolioSnapshotImport has
-      // already structurally validated and bound into the recomputed transfer identity.
-      const preservedImportAuthority = snapshot.importAuthority.authorityStatus === 'LEGACY_UNPROVEN'
-        ? null
-        : snapshot.importAuthority
+      // preservedImportAuthority was already computed above (hoisted for stagedState).
       const payload: CsvImportPersistencePayload = {
         holdings: computed.holdings,
         trust: computed.trust,
@@ -5359,6 +5563,8 @@ const createAppStoreStateCreator = (
           }
         }
         if (error instanceof CsvImportPersistenceIndeterminateError) {
+          // OPS-SBI-P2-PREBUILD-PHASE2-R4-B (P2-06): see importCsv's identical guard.
+          quarantinePortfolioDurabilityInStore(get, set)
           return {
             ok: false,
             code: 'SNAPSHOT_PERSISTENCE_INDETERMINATE',

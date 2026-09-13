@@ -502,7 +502,17 @@ afterEach(() => {
 
 describe('P5-B005-C-D postcommit atomic integration', () => {
   it('C-C-T41 CSV composes once after durable commit and before publish', () => {
-    const value = segment('importCsv: async', 'setTab: (tab)')
+    const value = segment('importCsv: async', 'importSbiPortfolioFullExport: async')
+    expectOrder(value, ['persistCsvImportTransaction({', 'ownsCsvImportCanonicalBytes(persistenceReceipt)', 'appendCommittedCandidatePortfolioRecommendations(', 'set({'])
+    expect(value.match(/appendCommittedCandidatePortfolioRecommendations\(/g)).toHaveLength(1)
+  })
+  // OPS-SBI-P2-PREBUILD-PHASE2-R4-B (P2-02 FULL_EXPORT GENERATION COHERENCE): this action's own
+  // commit path previously never called appendCommittedCandidatePortfolioRecommendations at all —
+  // candidateDecisionSynthesis/candidatePortfolioRecommendations stayed at runFullAnalysis's
+  // fail-closed null/[] default for the just-committed generation while an immediate reload of
+  // that same durable generation recomputed a real (possibly executable) synthesis.
+  it('C-C-T41b FULL_EXPORT composes once after durable commit and before publish', () => {
+    const value = segment('importSbiPortfolioFullExport: async', 'setTab: (tab)')
     expectOrder(value, ['persistCsvImportTransaction({', 'ownsCsvImportCanonicalBytes(persistenceReceipt)', 'appendCommittedCandidatePortfolioRecommendations(', 'set({'])
     expect(value.match(/appendCommittedCandidatePortfolioRecommendations\(/g)).toHaveLength(1)
   })
@@ -525,6 +535,23 @@ describe('P5-B005-C-D postcommit atomic integration', () => {
     const value = segment('importPortfolioSnapshot: async')
     expectOrder(value, ['persistCsvImportTransaction(payload', 'ownsCsvImportCanonicalBytes(receipt)', 'appendCommittedCandidatePortfolioRecommendations(', 'set(s => ({'])
     expect(value.match(/appendCommittedCandidatePortfolioRecommendations\(/g)).toHaveLength(1)
+  })
+  // OPS-SBI-P2-PREBUILD-PHASE2-R4-B (P2-02 SNAPSHOT GENERATION COHERENCE): the incoming
+  // (possibly COMPLETE) authority must be staged into the SAME state object runFullAnalysis
+  // analyzes — never left as the stale destination authority while only the later persisted
+  // payload/published set() carry the correct one. A behavioral (officialDecision-observing) test
+  // for this exists in useAppStore.snapshotAuthorityTransfer.test.ts, but this codebase's
+  // synthetic no-live-data test fixtures make officialDecision insensitive to authority on most
+  // shapes (DQ-suppression/staleness gates dominate first) — this deterministic source-ordering
+  // check is the one that actually regresses if the staging line is removed.
+  it('C-C-T45b snapshot stages the incoming authority into analysis state before runFullAnalysis', () => {
+    const value = segment('importPortfolioSnapshot: async')
+    expectOrder(value, [
+      'const preservedImportAuthority = snapshot.importAuthority.authorityStatus',
+      'const stagedState: AppState = {',
+      'portfolioImportAuthority: preservedImportAuthority ?? LEGACY_UNPROVEN_PORTFOLIO_IMPORT_AUTHORITY',
+      'runFullAnalysis(stagedState',
+    ])
   })
   it('C-C-T46 persistence failure cannot append', () => {
     for (const value of [

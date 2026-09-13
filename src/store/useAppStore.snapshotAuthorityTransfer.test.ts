@@ -139,6 +139,79 @@ describe('P2-01: manual snapshot transfer preserves PortfolioImportAuthorityV1 e
     }
   })
 
+  // OPS-SBI-P2-PREBUILD-PHASE2-R4-B (P2-02 SNAPSHOT GENERATION COHERENCE ticket section 20):
+  // a LEGACY destination importing a COMPLETE snapshot must analyze/publish under THAT incoming
+  // COMPLETE authority — never the destination's stale LEGACY_UNPROVEN authority — so this same
+  // transaction's own officialDecision already matches what an immediate reload of the identical
+  // just-committed generation recomputes. (This fixture's committee actions all resolve to
+  // DATA_WAIT/HOLD regardless of authority in this synthetic no-live-data harness, so the
+  // blockedReason/noTrade checks below cannot by themselves discriminate the historical bug on
+  // this fixture — see the dedicated source-ordering regression test in
+  // useAppStore.candidatePortfolioRecommendation.test.ts for the deterministic check. This test
+  // still guards the genuinely observable invariant: authority and its downstream shape stay
+  // identical immediately and after reload.)
+  it('a LEGACY destination importing a COMPLETE snapshot computes officialDecision under the NEW authority immediately, matching a fresh reload', async () => {
+    const PORTFOLIO_AUTHORITY_BLOCKED_REASON =
+      'ポートフォリオの完全性が未証明のため実行権限がありません（COMPLETE FULL_EXPORTが必要）'
+    // sp500_sbi is a real INITIAL_TRUST entry (account '特定'); its registered alias resolves via
+    // the frozen alias-matching rule and reliably produces a BUY/SELL-titled committee action
+    // (unlike the bare single-stock fixture above, which never emits one to gate).
+    const SP500_ALIAS = 'SBI・V・S&P500インデックス・ファンド'
+    const sourceStorage = makeStorage()
+    const source = instance(sourceStorage.mock)
+    const fullExportResult = await source.store.getState().importSbiPortfolioFullExport(csvFile([
+      'データ基準日時,2026-09-11T00:00:00+09:00',
+      STOCK_LABEL, STOCK_HEADER,
+      '6501,日立製作所,8500,900000,15.20,1.10,2025-06-01',
+      STOCK_TOTAL,
+      TRUST_TAXABLE_LABEL, TRUST_HEADER,
+      `${SP500_ALIAS},26000,4500000,95.50,-1.80,`,
+      TRUST_TAXABLE_TOTAL,
+      ...emptyTrustSection(TRUST_GROWTH_LABEL, TRUST_GROWTH_TOTAL),
+      ...emptyTrustSection(TRUST_TSUMITATE_LABEL, TRUST_TSUMITATE_TOTAL),
+    ]))
+    expect(fullExportResult).toMatchObject({ ok: true, code: 'SUCCESS', authorityStatus: 'COMPLETE' })
+
+    vi.stubGlobal('localStorage', sourceStorage.mock)
+    const raw = source.store.getState().exportPortfolioSnapshot()
+
+    const destinationStorage = makeStorage()
+    const destination = instance(destinationStorage.mock)
+    // Fresh, non-suppressed market data — otherwise the DQ-suppression gate (dataSourceStatus
+    // 'static'/stale in this synthetic no-live-data test environment) masks every action as
+    // DATA_WAIT before the portfolio-authority gate this test targets ever gets a chance to show
+    // through (isPortfolioAuthorityBlocked is only ever applied when !isDqBlocked).
+    destination.store.setState(s => ({
+      market: { ...s.market, last_updated: new Date(NOW_MS).toISOString() },
+      system: {
+        ...s.system,
+        dataSourceStatus: { ...s.system.dataSourceStatus, market: 'loaded' },
+        dataTimestamps: { ...s.system.dataTimestamps!, market: new Date(NOW_MS).toISOString() },
+      },
+    }))
+    expect(destination.store.getState().portfolioImportAuthority.authorityStatus).toBe('LEGACY_UNPROVEN')
+    const importResult = await destination.store.getState().importPortfolioSnapshot(raw)
+    expect(importResult).toMatchObject({ ok: true, code: 'SUCCESS' })
+    const committed = destination.store.getState()
+    expect(committed.portfolioImportAuthority.authorityStatus).toBe('COMPLETE')
+    const committedBlocked = committed.officialDecision?.actions.some(
+      a => a.blockedReason === PORTFOLIO_AUTHORITY_BLOCKED_REASON) ?? false
+    // The bug this closes: analyzing under the stale LEGACY_UNPROVEN destination authority would
+    // spuriously mark every stock BUY/SELL authority-blocked even though this same transaction
+    // just proved and published COMPLETE.
+    expect(committedBlocked).toBe(false)
+
+    // Reload uses a fresh store instance whose own market/data bootstrap is independent of the
+    // fresh values forced onto `destination` above (initialize() re-derives system.dataSourceStatus
+    // itself) — so only the authority-derived invariant is comparable across the two instances;
+    // dqSuppressed/noTrade legitimately differ here for reasons unrelated to this fix.
+    vi.stubGlobal('localStorage', destinationStorage.mock)
+    const reloaded = instance(destinationStorage.mock)
+    await reloaded.store.getState().initialize()
+    const afterReload = reloaded.store.getState()
+    expect(afterReload.portfolioImportAuthority).toEqual(committed.portfolioImportAuthority)
+  })
+
   it('v6 LEGACY_UNPROVEN round-trip: a never-proven source transfers as LEGACY_UNPROVEN (unchanged v5 behavior)', async () => {
     const sourceStorage = makeStorage()
     const source = instance(sourceStorage.mock)
@@ -178,7 +251,14 @@ describe('P2-01: manual snapshot transfer preserves PortfolioImportAuthorityV1 e
     const destination = instance(destinationStorage.mock)
     const before = destination.store.getState()
     const importResult = await destination.store.getState().importPortfolioSnapshot(tamperedRaw)
-    expect(importResult).toMatchObject({ ok: false, code: 'INVALID_SNAPSHOT_GENERATION' })
+    // OPS-SBI-P2-PREBUILD-PHASE2-R4-A (RA-P3-01: snapshot re-sign attack): a contradictory
+    // authority object (COMPLETE with importMode still null) is now rejected by the semantic
+    // admission gate BEFORE the generation-identity recomputation ever runs — caught earlier and
+    // more precisely than the old identity-mismatch failure this test originally hit. The
+    // store-level API collapses the parser's internal 'INVALID_SNAPSHOT_AUTHORITY' code into the
+    // generic 'INVALID_SNAPSHOT' (not part of PortfolioSnapshotImportResult's public code union);
+    // either way, ok:false and zero mutation is what matters here.
+    expect(importResult).toMatchObject({ ok: false, code: 'INVALID_SNAPSHOT' })
     expect(destination.store.getState().holdings).toBe(before.holdings)
     expect(destination.store.getState().portfolioImportAuthority).toEqual(before.portfolioImportAuthority)
     vi.stubGlobal('localStorage', destinationStorage.mock)
