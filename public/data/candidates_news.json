@@ -1,34 +1,20 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-09-14T18:09:22.897460+09:00",
-  "sourceUpdatedAt": "2026-09-14T08:54:14+00:00",
+  "updatedAt": "2026-09-15T02:00:28.306203+09:00",
+  "sourceUpdatedAt": "2026-09-14T16:38:34+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": -0.165,
-      "negativeCount": 1,
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
       "positiveCount": 0,
       "neutralCount": 1,
-      "sourceCount": 2,
-      "itemCount": 2,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Fed's Warsh on Trump Collision Course as Rate Hike Looms",
+      "topNegativeTitle": "【ウェビナー】日銀9月会合直前 ― 利上げ「過去最速」のペースとなるか",
       "topPositiveTitle": "【ウェビナー】日銀9月会合直前 ― 利上げ「過去最速」のペースとなるか",
       "items": [
-        {
-          "title": "Fed's Warsh on Trump Collision Course as Rate Hike Looms",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-14T06:19:54+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-14/fed-s-warsh-on-trump-collision-course-as-rate-hike-looms-video",
-          "tags": [
-            "jp_broad",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
         {
           "title": "【ウェビナー】日銀9月会合直前 ― 利上げ「過去最速」のペースとなるか",
           "source": "Bloomberg Economics",
@@ -58,78 +44,79 @@
       "items": []
     },
     "us_broad": {
-      "avgSentiment": -0.146,
+      "avgSentiment": -0.232,
       "negativeCount": 3,
-      "positiveCount": 2,
-      "neutralCount": 3,
-      "sourceCount": 2,
-      "itemCount": 8,
+      "positiveCount": 0,
+      "neutralCount": 2,
+      "sourceCount": 1,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Gold Falls as Traders Eye Impact of Higher Oil on Fed Rate Path",
-      "topPositiveTitle": "Wall Street Strategists See Stock Rally Surviving Fed Rate Hike",
+      "topNegativeTitle": "Emerging-Market Assets Fall as Oil Surge, AI Jitters Dent Mood",
+      "topPositiveTitle": "BofA’s Subramanian Lifts S&P 500 View to 7,400, Stays Cautious",
       "items": [
         {
-          "title": "Gold Falls as Traders Eye Impact of Higher Oil on Fed Rate Path",
+          "title": "Emerging-Market Assets Fall as Oil Surge, AI Jitters Dent Mood",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-09-14T00:33:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-14/gold-edges-lower-as-hot-us-inflation-bolsters-fed-rate-hike-bets",
+          "sentimentScore": -0.5,
+          "publishedAt": "2026-09-14T04:26:21+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-14/emerging-market-stocks-decline-on-mideast-tensions-rate-risks",
           "tags": [
             "commodity",
-            "gold",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Copper Slips as Inflation Data Raises Bets on Fed Hiking Rates",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-09-14T02:19:58+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-14/copper-slips-as-inflation-data-raises-bets-on-fed-hiking-rates",
-          "tags": [
+            "global_broad",
             "market",
             "rates",
             "us_broad"
           ]
         },
         {
-          "title": "Fed's Warsh on Trump Collision Course as Rate Hike Looms",
+          "title": "Stocks Fall on AI Jitters and Rising Oil Prices",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-09-14T06:19:54+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-14/fed-s-warsh-on-trump-collision-course-as-rate-hike-looms-video",
+          "publishedAt": "2026-09-14T16:04:59+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-14/bloomberg-surveillance-9-14-2026-video",
           "tags": [
-            "jp_broad",
+            "commodity",
             "market",
-            "rates",
             "us_broad"
           ]
         },
         {
-          "title": "Everything Is Now Bullish for Treasuries: 3-Minutes MLIV",
+          "title": "US 10-Year Breaches 5% as Inflation, Supply Worries Mount",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-14T14:29:47+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-14/us-10-year-yield-breaches-5-as-inflation-supply-worries-mount",
+          "tags": [
+            "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "BofA’s Subramanian Lifts S&P 500 View to 7,400, Stays Cautious",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-14T07:10:12+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-14/everything-is-now-bullish-for-treasuries-3-minutes-mliv-video",
+          "publishedAt": "2026-09-14T16:13:28+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-14/bofa-s-subramanian-lifts-s-p-500-view-to-7-400-stays-cautious",
           "tags": [
             "market",
             "us_broad"
           ]
         },
         {
-          "title": "Hassett Says White House Will 100% Support Fed’s Next Decision",
-          "source": "Bloomberg Economics",
+          "title": "All Eyes on Warsh as Rate-Hike Fever Spreads Across G7",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-13T14:01:10+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-13/hassett-says-white-house-will-100-support-fed-s-next-decision",
+          "publishedAt": "2026-09-14T15:33:41+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-14/all-eyes-on-warsh-as-rate-hike-fever-spreads-across-g7-video",
           "tags": [
             "market",
+            "rates",
             "us_broad"
           ]
         }
@@ -148,42 +135,41 @@
       "items": []
     },
     "global_broad": {
-      "avgSentiment": 0.5,
-      "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 0,
+      "avgSentiment": -0.25,
+      "negativeCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 1,
       "sourceCount": 1,
       "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Emerging Markets Can Weather Fed Risk After Oil Jump and War",
-      "topPositiveTitle": "Oil Jumps as Saudi Pipeline Attack Deepens Energy Crisis",
+      "topNegativeTitle": "Emerging-Market Assets Fall as Oil Surge, AI Jitters Dent Mood",
+      "topPositiveTitle": "Saudis Seek to Boost Hormuz Oil Exports as Key Pipeline Attacked",
       "items": [
         {
-          "title": "Emerging Markets Can Weather Fed Risk After Oil Jump and War",
+          "title": "Emerging-Market Assets Fall as Oil Surge, AI Jitters Dent Mood",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-13T12:52:31+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-13/after-oil-surge-and-war-emerging-markets-unfazed-by-fed-risk",
+          "sentiment": "negative",
+          "sentimentScore": -0.5,
+          "publishedAt": "2026-09-14T04:26:21+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-14/emerging-market-stocks-decline-on-mideast-tensions-rate-risks",
           "tags": [
             "commodity",
-            "geopolitical",
             "global_broad",
-            "macro_risk",
             "market",
             "rates",
             "us_broad"
           ]
         },
         {
-          "title": "Oil Jumps as Saudi Pipeline Attack Deepens Energy Crisis",
+          "title": "Saudis Seek to Boost Hormuz Oil Exports as Key Pipeline Attacked",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-09-14T06:25:34+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-14/horizons-middle-east-africa-9-14-2026-video",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-14T16:16:01+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-14/saudis-seek-to-boost-hormuz-oil-exports-as-key-pipeline-attacked",
           "tags": [
             "commodity",
+            "geopolitical",
             "global_broad",
             "macro_risk",
             "market"
@@ -192,31 +178,16 @@
       ]
     },
     "gold": {
-      "avgSentiment": -1.0,
-      "negativeCount": 1,
+      "avgSentiment": 0,
+      "negativeCount": 0,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Gold Falls as Traders Eye Impact of Higher Oil on Fed Rate Path",
-      "topPositiveTitle": "Gold Falls as Traders Eye Impact of Higher Oil on Fed Rate Path",
-      "items": [
-        {
-          "title": "Gold Falls as Traders Eye Impact of Higher Oil on Fed Rate Path",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-09-14T00:33:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-14/gold-edges-lower-as-hot-us-inflation-bolsters-fed-rate-hike-bets",
-          "tags": [
-            "commodity",
-            "gold",
-            "market",
-            "us_broad"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "reit": {
       "avgSentiment": -0.33,
@@ -258,16 +229,41 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.111,
-      "negativeCount": 1,
-      "positiveCount": 3,
-      "neutralCount": 5,
+      "avgSentiment": 0.15,
+      "negativeCount": 4,
+      "positiveCount": 4,
+      "neutralCount": 1,
       "sourceCount": 2,
       "itemCount": 9,
       "isStale": false,
-      "topNegativeTitle": "China’s Property Overhaul Puts Strain on Local Government Income",
-      "topPositiveTitle": "Oil Jumps as Saudi Pipeline Attack Deepens Energy Crisis",
+      "topNegativeTitle": "This Is A Different Kind of AI Selloff",
+      "topPositiveTitle": "Oil Surges as Saudi Pipeline Shutdown Brings Fresh Supply Risk",
       "items": [
+        {
+          "title": "This Is A Different Kind of AI Selloff",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-14T16:24:23+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-09-14/this-is-a-different-kind-of-ai-selloff",
+          "tags": [
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "US 10-Year Breaches 5% as Inflation, Supply Worries Mount",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-14T14:29:47+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-14/us-10-year-yield-breaches-5-as-inflation-supply-worries-mount",
+          "tags": [
+            "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        },
         {
           "title": "China’s Property Overhaul Puts Strain on Local Government Income",
           "source": "Bloomberg Economics",
@@ -283,39 +279,12 @@
           ]
         },
         {
-          "title": "UAE’s Boom Faces a Wartime Test",
+          "title": "Stocks Fall as AI Slowdown Worries Hit Chipmakers: Markets Wrap",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-14T08:44:39+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-14/uae-s-boom-faces-a-wartime-test-video",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Alhasan: Houthis Gain in Yemen Significant for Iran",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-14T06:01:09+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-14/alhasan-houthis-gain-in-yemen-significant-for-iran-video",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Shutdown of Saudi Pipeline Deepens Energy Crisis",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-14T05:20:10+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-14/insight-with-haslinda-amin-9-14-2026-video",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-13T22:06:01+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-13/us-stock-futures-fall-on-ai-warning-oil-gains-markets-wrap",
           "tags": [
             "commodity",
             "macro_risk",
@@ -323,14 +292,16 @@
           ]
         },
         {
-          "title": "Bank of England’s Dovish Majority Tested by Iran War Pressures",
-          "source": "Bloomberg Economics",
+          "title": "Saudis Seek to Boost Hormuz Oil Exports as Key Pipeline Attacked",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-14T04:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-14/bank-of-england-s-dovish-majority-tested-by-iran-war-pressures",
+          "publishedAt": "2026-09-14T16:16:01+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-14/saudis-seek-to-boost-hormuz-oil-exports-as-key-pipeline-attacked",
           "tags": [
+            "commodity",
             "geopolitical",
+            "global_broad",
             "macro_risk",
             "market"
           ]
@@ -338,53 +309,67 @@
       ]
     },
     "fx": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "rates": {
-      "avgSentiment": -0.021,
-      "negativeCount": 2,
-      "positiveCount": 2,
-      "neutralCount": 4,
-      "sourceCount": 2,
-      "itemCount": 8,
-      "isStale": false,
-      "topNegativeTitle": "Copper Slips as Inflation Data Raises Bets on Fed Hiking Rates",
-      "topPositiveTitle": "Wall Street Strategists See Stock Rally Surviving Fed Rate Hike",
+      "topNegativeTitle": "Dollarization: What Adopting the US Dollar Would Mean for Venezuela",
+      "topPositiveTitle": "Dollarization: What Adopting the US Dollar Would Mean for Venezuela",
       "items": [
         {
-          "title": "Copper Slips as Inflation Data Raises Bets on Fed Hiking Rates",
+          "title": "Dollarization: What Adopting the US Dollar Would Mean for Venezuela",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-14T09:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-14/dollarization-what-adopting-the-us-dollar-would-mean-for-venezuela",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        }
+      ]
+    },
+    "rates": {
+      "avgSentiment": 0.024,
+      "negativeCount": 2,
+      "positiveCount": 2,
+      "neutralCount": 3,
+      "sourceCount": 2,
+      "itemCount": 7,
+      "isStale": false,
+      "topNegativeTitle": "Emerging-Market Assets Fall as Oil Surge, AI Jitters Dent Mood",
+      "topPositiveTitle": "Pakistan Keeps Rates Steady as Price Pressures Build",
+      "items": [
+        {
+          "title": "Emerging-Market Assets Fall as Oil Surge, AI Jitters Dent Mood",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-09-14T02:19:58+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-14/copper-slips-as-inflation-data-raises-bets-on-fed-hiking-rates",
+          "sentimentScore": -0.5,
+          "publishedAt": "2026-09-14T04:26:21+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-14/emerging-market-stocks-decline-on-mideast-tensions-rate-risks",
           "tags": [
+            "commodity",
+            "global_broad",
             "market",
             "rates",
             "us_broad"
           ]
         },
         {
-          "title": "Fed's Warsh on Trump Collision Course as Rate Hike Looms",
+          "title": "Citadel Securities Sees Europe Bond Yields Capped by Weak Growth",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-09-14T06:19:54+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-14/fed-s-warsh-on-trump-collision-course-as-rate-hike-looms-video",
+          "publishedAt": "2026-09-14T15:33:56+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-14/citadel-securities-sees-europe-bond-yields-capped-by-weak-growth",
           "tags": [
-            "jp_broad",
+            "commodity",
             "market",
-            "rates",
-            "us_broad"
+            "rates"
           ]
         },
         {
@@ -402,6 +387,19 @@
           "titleJa": "【ウェビナー】日銀9月会合直前 ― 利上げ「過去最速」のペースとなるか"
         },
         {
+          "title": "All Eyes on Warsh as Rate-Hike Fever Spreads Across G7",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-14T15:33:41+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-14/all-eyes-on-warsh-as-rate-hike-fever-spreads-across-g7-video",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
           "title": "ECB Won’t Hesitate to Hike Further If Needed, Kazimir Says",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
@@ -412,110 +410,97 @@
             "market",
             "rates"
           ]
-        },
-        {
-          "title": "Trump Pushes Fed to Lower Rates Despite Pressure For a Hike",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-13T13:45:52+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-13/trump-pushes-fed-to-lower-rates-despite-pressure-to-raise-them",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.016,
-      "negativeCount": 2,
+      "avgSentiment": 0.015,
+      "negativeCount": 6,
       "positiveCount": 4,
-      "neutralCount": 4,
-      "sourceCount": 1,
-      "itemCount": 10,
+      "neutralCount": 2,
+      "sourceCount": 3,
+      "itemCount": 12,
       "isStale": false,
-      "topNegativeTitle": "Gold Falls as Traders Eye Impact of Higher Oil on Fed Rate Path",
-      "topPositiveTitle": "Oil Jumps as Saudi Pipeline Attack Deepens Energy Crisis",
+      "topNegativeTitle": "Emerging-Market Assets Fall as Oil Surge, AI Jitters Dent Mood",
+      "topPositiveTitle": "Oil Surges as Saudi Pipeline Shutdown Brings Fresh Supply Risk",
       "items": [
         {
-          "title": "Gold Falls as Traders Eye Impact of Higher Oil on Fed Rate Path",
+          "title": "Emerging-Market Assets Fall as Oil Surge, AI Jitters Dent Mood",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-09-14T00:33:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-14/gold-edges-lower-as-hot-us-inflation-bolsters-fed-rate-hike-bets",
+          "sentimentScore": -0.5,
+          "publishedAt": "2026-09-14T04:26:21+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-14/emerging-market-stocks-decline-on-mideast-tensions-rate-risks",
           "tags": [
             "commodity",
-            "gold",
+            "global_broad",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Stocks Fall on AI Jitters and Rising Oil Prices",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-14T16:04:59+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-14/bloomberg-surveillance-9-14-2026-video",
+          "tags": [
+            "commodity",
             "market",
             "us_broad"
           ]
         },
         {
-          "title": "Stocks Slide as AI and Oil Jitters Hit Sentiment: Markets Wrap",
+          "title": "Citadel Securities Sees Europe Bond Yields Capped by Weak Growth",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.5,
-          "publishedAt": "2026-09-13T22:06:01+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-13/us-stock-futures-fall-on-ai-warning-oil-gains-markets-wrap",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-14T15:33:56+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-14/citadel-securities-sees-europe-bond-yields-capped-by-weak-growth",
+          "tags": [
+            "commodity",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "NextEra, Dominion Offer Virginia More Aid to Ease Deal Fears",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-14T13:36:02+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-14/nextera-dominion-offer-virginia-aid-to-smooth-67-billion-deal",
           "tags": [
             "commodity",
             "market"
           ]
         },
         {
-          "title": "Asian Refiners Seek Saudi Updates After Oil Pipeline Closure",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-14T06:09:41+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-14/asia-refiners-seek-saudi-updates-after-oil-pipeline-closure",
+          "title": "ECB’s Schnabel Says Energy-Price Trends ‘Quite Concerning’",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-14T10:04:24+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-14/ecb-s-schnabel-says-energy-price-trends-quite-concerning",
           "tags": [
             "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "Alhasan: Houthis Gain in Yemen Significant for Iran",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-14T06:01:09+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-14/alhasan-houthis-gain-in-yemen-significant-for-iran-video",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Shutdown of Saudi Pipeline Deepens Energy Crisis",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-14T05:20:10+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-14/insight-with-haslinda-amin-9-14-2026-video",
-          "tags": [
-            "commodity",
-            "macro_risk",
             "market"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.06,
+      "avgSentiment": 0.402,
       "negativeCount": 1,
       "positiveCount": 3,
-      "neutralCount": 7,
-      "sourceCount": 3,
-      "itemCount": 11,
+      "neutralCount": 1,
+      "sourceCount": 2,
+      "itemCount": 5,
       "isStale": false,
       "topNegativeTitle": "China’s Property Overhaul Puts Strain on Local Government Income",
-      "topPositiveTitle": "Exxon Boosts 2030 LNG Sales Forecast on Strong Demand Growth",
+      "topPositiveTitle": "Oil Surges as Saudi Pipeline Shutdown Brings Fresh Supply Risk",
       "items": [
         {
           "title": "China’s Property Overhaul Puts Strain on Local Government Income",
@@ -532,25 +517,41 @@
           ]
         },
         {
-          "title": "UAE’s Boom Faces a Wartime Test",
+          "title": "Saudis Seek to Boost Hormuz Oil Exports as Key Pipeline Attacked",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-14T08:44:39+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-14/uae-s-boom-faces-a-wartime-test-video",
+          "publishedAt": "2026-09-14T16:16:01+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-14/saudis-seek-to-boost-hormuz-oil-exports-as-key-pipeline-attacked",
           "tags": [
+            "commodity",
             "geopolitical",
+            "global_broad",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Alhasan: Houthis Gain in Yemen Significant for Iran",
+          "title": "Pakistan Keeps Rates Steady as Price Pressures Build",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-09-14T11:03:08+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-14/pakistan-keeps-rates-steady-as-price-pressures-build",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Latest Oil Market News and Analysis for Sept. 14",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-14T06:01:09+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-14/alhasan-houthis-gain-in-yemen-significant-for-iran-video",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-09-13T22:01:52+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-13/latest-oil-market-news-and-analysis-for-sept-14",
           "tags": [
             "commodity",
             "geopolitical",
@@ -559,25 +560,12 @@
           ]
         },
         {
-          "title": "Bank of England’s Dovish Majority Tested by Iran War Pressures",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-14T04:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-14/bank-of-england-s-dovish-majority-tested-by-iran-war-pressures",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Latest Oil Market News and Analysis for Sept. 14",
+          "title": "Oil Surges as Saudi Pipeline Shutdown Brings Fresh Supply Risk",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-13T22:01:52+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-13/latest-oil-market-news-and-analysis-for-sept-14",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-09-14T16:38:34+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-14/saudi-pipeline-shutdown-brings-fresh-supply-risk-video",
           "tags": [
             "commodity",
             "geopolitical",
@@ -596,7 +584,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 2,
+    "excludedCount": 3,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
