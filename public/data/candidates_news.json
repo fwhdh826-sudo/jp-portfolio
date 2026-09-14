@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-09-14T08:24:16.130626+09:00",
-  "sourceUpdatedAt": "2026-09-13T23:06:55+00:00",
+  "updatedAt": "2026-09-14T10:19:17.797114+09:00",
+  "sourceUpdatedAt": "2026-09-14T00:48:00+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -17,27 +17,40 @@
       "items": []
     },
     "jp_semiconductor": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Anthropic’s AI Warning Seen as Setback for Chip Stocks",
+      "topPositiveTitle": "Anthropic’s AI Warning Seen as Setback for Chip Stocks",
+      "items": [
+        {
+          "title": "Anthropic’s AI Warning Seen as Setback for Chip Stocks",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-14T00:45:49+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-14/anthropic-s-ai-warning-seen-as-setback-for-chip-stocks-video",
+          "tags": [
+            "jp_semiconductor",
+            "market"
+          ]
+        }
+      ]
     },
     "us_broad": {
-      "avgSentiment": 0.0,
+      "avgSentiment": -0.132,
       "negativeCount": 2,
-      "positiveCount": 2,
+      "positiveCount": 0,
       "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 7,
+      "itemCount": 5,
       "isStale": false,
       "topNegativeTitle": "Fed’s Warsh on Collision Course With Trump as Rate Hike Looms",
-      "topPositiveTitle": "US Stock Futures Fall on AI Warning, Oil Gains: Markets Wrap",
+      "topPositiveTitle": "Gold Edges Lower as Hot US Inflation Bolsters Fed Rate-Hike Bets",
       "items": [
         {
           "title": "Fed’s Warsh on Collision Course With Trump as Rate Hike Looms",
@@ -66,6 +79,20 @@
           ]
         },
         {
+          "title": "Gold Edges Lower as Hot US Inflation Bolsters Fed Rate-Hike Bets",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-14T00:33:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-14/gold-edges-lower-as-hot-us-inflation-bolsters-fed-rate-hike-bets",
+          "tags": [
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
           "title": "Hassett Says White House Will 100% Support Fed’s Next Decision",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
@@ -89,66 +116,36 @@
             "rates",
             "us_broad"
           ]
-        },
-        {
-          "title": "Wall Street Says Stay With Stocks Despite Late ‘90s Dot-Com Vibe",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-13T13:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-13/wall-street-says-stay-with-stocks-despite-late-90s-dot-com-vibe",
-          "tags": [
-            "commodity",
-            "market",
-            "rates",
-            "us_broad"
-          ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "global_broad": {
-      "avgSentiment": 0.33,
+      "avgSentiment": 1.0,
       "negativeCount": 0,
       "positiveCount": 1,
       "neutralCount": 0,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "After Oil Surge and War, Emerging Markets Unfazed by Fed Risk",
-      "topPositiveTitle": "After Oil Surge and War, Emerging Markets Unfazed by Fed Risk",
+      "topNegativeTitle": "Stocks Retreat After AI Warnings, Oil Advances: Markets Wrap",
+      "topPositiveTitle": "Stocks Retreat After AI Warnings, Oil Advances: Markets Wrap",
       "items": [
         {
-          "title": "After Oil Surge and War, Emerging Markets Unfazed by Fed Risk",
+          "title": "Stocks Retreat After AI Warnings, Oil Advances: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-13T12:52:31+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-13/after-oil-surge-and-war-emerging-markets-unfazed-by-fed-risk",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-09-13T22:06:01+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-13/us-stock-futures-fall-on-ai-warning-oil-gains-markets-wrap",
           "tags": [
             "commodity",
-            "geopolitical",
-            "global_broad",
-            "macro_risk",
             "market",
-            "rates",
-            "us_broad"
+            "us_growth"
           ]
         }
       ]
     },
-    "gold": {
+    "global_broad": {
       "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
@@ -159,6 +156,33 @@
       "topNegativeTitle": null,
       "topPositiveTitle": null,
       "items": []
+    },
+    "gold": {
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "Gold Edges Lower as Hot US Inflation Bolsters Fed Rate-Hike Bets",
+      "topPositiveTitle": "Gold Edges Lower as Hot US Inflation Bolsters Fed Rate-Hike Bets",
+      "items": [
+        {
+          "title": "Gold Edges Lower as Hot US Inflation Bolsters Fed Rate-Hike Bets",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-14T00:33:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-14/gold-edges-lower-as-hot-us-inflation-bolsters-fed-rate-hike-bets",
+          "tags": [
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        }
+      ]
     },
     "reit": {
       "avgSentiment": 0.0,
@@ -212,12 +236,12 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.021,
+      "avgSentiment": -0.036,
       "negativeCount": 3,
-      "positiveCount": 2,
+      "positiveCount": 1,
       "neutralCount": 5,
       "sourceCount": 3,
-      "itemCount": 10,
+      "itemCount": 9,
       "isStale": false,
       "topNegativeTitle": "A $7 Billion Gas Bill Sees Developing Asian Nations Sour on LNG",
       "topPositiveTitle": "Latest Oil Market News and Analysis for Sept. 14",
@@ -264,6 +288,19 @@
           ]
         },
         {
+          "title": "Autonomous Muslim Region in Philippines Holds First Election to Cement Peace",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-14T00:48:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-14/autonomous-muslim-region-in-philippines-holds-first-election-to-cement-peace",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
           "title": "Noel Tata Faces Biggest Crisis Yet With Regulator’s IPO Order",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
@@ -271,19 +308,6 @@
           "publishedAt": "2026-09-13T16:02:32+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-13/noel-tata-faces-biggest-crisis-yet-with-regulator-s-ipo-order",
           "tags": [
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "How Will Silicon Valley Rearm America?",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-13T14:04:17+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-13/how-will-silicon-valley-rearm-america-video",
-          "tags": [
-            "geopolitical",
             "macro_risk",
             "market"
           ]
@@ -303,15 +327,15 @@
       "items": []
     },
     "rates": {
-      "avgSentiment": 0.076,
+      "avgSentiment": -0.083,
       "negativeCount": 1,
-      "positiveCount": 2,
-      "neutralCount": 4,
+      "positiveCount": 0,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 7,
+      "itemCount": 4,
       "isStale": false,
       "topNegativeTitle": "Fed’s Warsh on Collision Course With Trump as Rate Hike Looms",
-      "topPositiveTitle": "US Stock Futures Fall on AI Warning, Oil Gains: Markets Wrap",
+      "topPositiveTitle": "Gold Edges Lower as Hot US Inflation Bolsters Fed Rate-Hike Bets",
       "items": [
         {
           "title": "Fed’s Warsh on Collision Course With Trump as Rate Hike Looms",
@@ -321,6 +345,20 @@
           "publishedAt": "2026-09-13T20:00:00+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-13/fed-s-warsh-on-collision-course-with-trump-as-rate-hike-looms",
           "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Gold Edges Lower as Hot US Inflation Bolsters Fed Rate-Hike Bets",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-14T00:33:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-14/gold-edges-lower-as-hot-us-inflation-bolsters-fed-rate-hike-bets",
+          "tags": [
+            "gold",
             "market",
             "rates",
             "us_broad"
@@ -340,20 +378,6 @@
           ]
         },
         {
-          "title": "Wall Street Says Stay With Stocks Despite Late ‘90s Dot-Com Vibe",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-13T13:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-13/wall-street-says-stay-with-stocks-despite-late-90s-dot-com-vibe",
-          "tags": [
-            "commodity",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
           "title": "All Eyes on Warsh as Rate-Hike Fever Spreads Across G7 Central Banks",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
@@ -364,33 +388,19 @@
             "market",
             "rates"
           ]
-        },
-        {
-          "title": "Traders Hedging Stock Rally Split on Plunge or Drift Protection",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.2,
-          "publishedAt": "2026-09-13T14:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-13/traders-hedging-stock-rally-split-on-plunge-or-drift-protection",
-          "tags": [
-            "commodity",
-            "macro_risk",
-            "market",
-            "rates"
-          ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.191,
+      "avgSentiment": 0.334,
       "negativeCount": 1,
-      "positiveCount": 4,
-      "neutralCount": 3,
+      "positiveCount": 3,
+      "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 8,
+      "itemCount": 5,
       "isStale": false,
       "topNegativeTitle": "A $7 Billion Gas Bill Sees Developing Asian Nations Sour on LNG",
-      "topPositiveTitle": "Latest Oil Market News and Analysis for Sept. 14",
+      "topPositiveTitle": "Stocks Retreat After AI Warnings, Oil Advances: Markets Wrap",
       "items": [
         {
           "title": "A $7 Billion Gas Bill Sees Developing Asian Nations Sour on LNG",
@@ -404,20 +414,6 @@
             "geopolitical",
             "macro_risk",
             "market"
-          ]
-        },
-        {
-          "title": "Wall Street Says Stay With Stocks Despite Late ‘90s Dot-Com Vibe",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-13T13:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-13/wall-street-says-stay-with-stocks-despite-late-90s-dot-com-vibe",
-          "tags": [
-            "commodity",
-            "market",
-            "rates",
-            "us_broad"
           ]
         },
         {
@@ -435,42 +431,53 @@
           ]
         },
         {
-          "title": "Traders Hedging Stock Rally Split on Plunge or Drift Protection",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.2,
-          "publishedAt": "2026-09-13T14:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-13/traders-hedging-stock-rally-split-on-plunge-or-drift-protection",
-          "tags": [
-            "commodity",
-            "macro_risk",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "US Stock Futures Fall on AI Warning, Oil Gains: Markets Wrap",
+          "title": "Refining Bottleneck Sends Diesel to Record High",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.33,
+          "publishedAt": "2026-09-13T15:22:21+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-13/refining-bottleneck-sends-diesel-to-record-high-video",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "Latest Oil Market News and Analysis for Sept. 14",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-09-13T22:01:52+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-13/latest-oil-market-news-and-analysis-for-sept-14",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Stocks Retreat After AI Warnings, Oil Advances: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
           "publishedAt": "2026-09-13T22:06:01+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-13/us-stock-futures-fall-on-ai-warning-oil-gains-markets-wrap",
           "tags": [
             "commodity",
             "market",
-            "rates",
-            "us_broad"
+            "us_growth"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.056,
+      "avgSentiment": 0.031,
       "negativeCount": 2,
-      "positiveCount": 3,
+      "positiveCount": 2,
       "neutralCount": 7,
       "sourceCount": 3,
-      "itemCount": 12,
+      "itemCount": 11,
       "isStale": false,
       "topNegativeTitle": "A $7 Billion Gas Bill Sees Developing Asian Nations Sour on LNG",
       "topPositiveTitle": "Latest Oil Market News and Analysis for Sept. 14",
@@ -504,6 +511,19 @@
           ]
         },
         {
+          "title": "Autonomous Muslim Region in Philippines Holds First Election to Cement Peace",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-14T00:48:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-14/autonomous-muslim-region-in-philippines-holds-first-election-to-cement-peace",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
           "title": "Hormuz Meeting With Iran and Gulf Nations Delayed, Oman Says",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
@@ -525,18 +545,6 @@
           "tags": [
             "geopolitical",
             "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Trump Urges Zelenskyy to Stop Hitting Russia’s Diesel Refineries",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-13T13:30:59+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-13/trump-urges-zelenskyy-to-stop-hitting-russia-s-diesel-refineries",
-          "tags": [
-            "geopolitical",
             "market"
           ]
         }
