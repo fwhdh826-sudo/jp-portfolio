@@ -212,13 +212,31 @@ def replay_p14(evidence: dict[str, Any]) -> dict[str, Any]:
         ):
             errors.append("context input hash mismatch")
 
+    # OPS_P14_D2_RELEASE_METRIC_IMPLEMENTATION_R2 / §16 LEGACY_REPLAY_COMPAT:
+    # bundles captured before P14_D2 (policyVersion欠落) は必ず旧binary
+    # policy（jaccard>=threshold のみ）で再現する。policyVersionが
+    # P14_RELEASE_POLICY_VERSIONと一致する新規captureのみ decision-aware
+    # composite policyで再現する。既存の歴史的verdictを新policyへ silent
+    # migrationしない（frozen historical evidence — do not rewrite）。
     params = evidence.get("p14Parameters")
-    expected_params = {
-        "threshold": batch.RANK_STABILITY_JACCARD_MIN,
-        "topK": batch.TOP_N_STABILITY,
-        "perturbationPct": batch.PERTURBATION_PCT,
-        "assignmentContract": batch.P14_ASSIGNMENT_CONTRACT,
-    }
+    is_decision_aware_bundle = (
+        isinstance(params, dict) and params.get("policyVersion") == batch.P14_RELEASE_POLICY_VERSION
+    )
+    if is_decision_aware_bundle:
+        expected_params = {
+            "threshold": batch.RANK_STABILITY_JACCARD_MIN,
+            "topK": batch.TOP_N_STABILITY,
+            "perturbationPct": batch.PERTURBATION_PCT,
+            "assignmentContract": batch.P14_ASSIGNMENT_CONTRACT,
+            "policyVersion": batch.P14_RELEASE_POLICY_VERSION,
+        }
+    else:
+        expected_params = {
+            "threshold": batch.RANK_STABILITY_JACCARD_MIN,
+            "topK": batch.TOP_N_STABILITY,
+            "perturbationPct": batch.PERTURBATION_PCT,
+            "assignmentContract": batch.P14_ASSIGNMENT_CONTRACT,
+        }
     if params != expected_params:
         errors.append("P14 frozen parameters mismatch")
 
@@ -235,11 +253,16 @@ def replay_p14(evidence: dict[str, Any]) -> dict[str, Any]:
         recomputed_jaccard, recomputed_swap_count = _jaccard_from_vectors(
             base_vector, perturbed_vector, batch.TOP_N_STABILITY
         )
-        recomputed_verdict = (
-            "PASS"
-            if recomputed_jaccard >= batch.RANK_STABILITY_JACCARD_MIN
-            else "FAIL"
-        )
+        if is_decision_aware_bundle:
+            recomputed_verdict = batch.compute_p14_release_evidence(
+                base_result, perturbed_result
+            )["final"]["status"]
+        else:
+            recomputed_verdict = (
+                "PASS"
+                if recomputed_jaccard >= batch.RANK_STABILITY_JACCARD_MIN
+                else "FAIL"
+            )
         if replay.get("baseFullOrderedRankVector") != base_vector:
             errors.append("base rank vector mismatch")
         if replay.get("perturbedFullOrderedRankVector") != perturbed_vector:
@@ -275,6 +298,55 @@ def replay_p14(evidence: dict[str, Any]) -> dict[str, Any]:
         "jaccard": recomputed_jaccard,
         "swapCount": recomputed_swap_count,
         "verdict": recomputed_verdict,
+    }
+
+
+class ReclassificationError(RuntimeError):
+    """reclassify_p14 が deterministic replay input を再構成できない場合の
+    fail-closed error（historical bundleの改変・再解釈とは無関係）。"""
+
+
+def reclassify_p14(evidence: dict[str, Any]) -> dict[str, Any]:
+    """§16/§17 new-policy reclassification path（replay_p14とは独立）。
+
+    既存の（PASS/FAIL問わず捕捉済みの）v2 evidence bundleが持つ deterministic
+    replay input（replay.joinedCandidateInput + replay.context）から base/
+    perturbed engine結果を再構成し、P14_RELEASE_POLICY_VERSION
+    ("p14-decision-aware-v1") の下でのcomposite evidenceを計算する。
+
+    honesty:
+      * historical bundleのschema/p14Parameters/verdictは一切書き換えない
+        （この関数はbundleを受け取り、新しいdictを返すだけ — write_bundle等
+        呼び出し元へのpersist責務を持たない）。
+      * replay_p14()のPASS/FAIL判定・legacy replay verdictには一切関与
+        しない（別関数・別呼び出し経路）。
+      * scoring/tier/marketRankの再計算はしない — build_candidate_funnel
+        （B1, frozen）へreplay inputをそのまま渡すのみ。
+    """
+    schema_version = evidence.get("schemaVersion")
+    if schema_version not in (SCHEMA_VERSION, LEGACY_SCHEMA_VERSION):
+        raise ReclassificationError(f"unsupported evidence schema: {schema_version!r}")
+    replay = evidence.get("replay")
+    if not isinstance(replay, dict) or replay.get("schemaVersion") != REPLAY_SCHEMA_VERSION:
+        raise ReclassificationError("missing replay payload; cannot reconstruct engine input")
+    joined = replay.get("joinedCandidateInput")
+    context = replay.get("context")
+    if not isinstance(joined, list) or not isinstance(context, dict):
+        raise ReclassificationError("invalid replay input; cannot reconstruct engine input")
+
+    base_result = build_candidate_funnel(joined, context)
+    if base_result.get("status") != "generated":
+        raise ReclassificationError(f"engine status={base_result.get('status')!r}; P-14 not evaluable")
+    _reported_jaccard, perturbed_result = batch.compute_rank_stability(joined, context, base_result)
+    release_evidence = batch.compute_p14_release_evidence(base_result, perturbed_result)
+
+    historical = evidence.get("p14") if isinstance(evidence.get("p14"), dict) else {}
+    return {
+        "reclassificationPolicyVersion": batch.P14_RELEASE_POLICY_VERSION,
+        "historicalVerdict": historical.get("verdict"),
+        "historicalJaccard": historical.get("jaccard"),
+        "historicalSwapCount": historical.get("swapCount"),
+        "release": release_evidence,
     }
 
 
@@ -318,6 +390,7 @@ def build_evidence(
             "topK": batch.TOP_N_STABILITY,
             "perturbationPct": batch.PERTURBATION_PCT,
             "assignmentContract": batch.P14_ASSIGNMENT_CONTRACT,
+            "policyVersion": batch.P14_RELEASE_POLICY_VERSION,
         },
         "publish": {
             "batchStatus": batch_status or None,
@@ -369,12 +442,19 @@ def build_evidence(
             base_vector, perturbed_vector, batch.TOP_N_STABILITY
         )
         p14_gate = _find_gate(quality_report["gates"], "P-14")
+        p14_release_evidence = quality_report.get("p14ReleaseEvidence")
         evidence["p14"] = {
             "jaccard": jaccard,
             "swapCount": swap_count,
             "verdict": p14_gate["status"] if p14_gate else None,
             "baseTop40": base_vector[: batch.TOP_N_STABILITY],
             "perturbedTop40": perturbed_vector[: batch.TOP_N_STABILITY],
+            # OPS_P14_D2_RELEASE_METRIC_IMPLEMENTATION_R2: decision-aware
+            # composite evidence（top40/deepReview/actionable/
+            # marketReferenceShortlist/final）。p14ProvesOfficialDecisionStability
+            # は常にfalse — holdings非依存のmarket/funnel段階robustness証拠
+            # であり、officialDecisionの安定性を証明しない。
+            "release": p14_release_evidence,
         }
         evidence["replay"] = replay
         joined_bytes = _canonical_bytes(replay["joinedCandidateInput"])

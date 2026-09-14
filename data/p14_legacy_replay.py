@@ -34,7 +34,14 @@ TOOLING_SOURCE_HASHES = {
 WAIVER_AUTHORITY = "P14-E2-A1 §8.1 real_reconstructed grandfather + P14-E4-A1 §9.6"
 PRODUCTION_SOURCE_HASHES = {
     "data/candidate_funnel_engine.py": "25e12a4217ace5d807963b54fe2e9918d8613c834b06b730fff8701a4b45d710",
-    "data/candidate_funnel_batch.py": "e68fff47290b3f882a5be7251cee433a89a8464fc4b6adb7460ec66e0881762c",
+    # OPS_P14_D2_RELEASE_METRIC_IMPLEMENTATION_R2: candidate_funnel_batch.py
+    # へdecision-aware P-14 release evidence（compute_p14_release_evidence
+    # 等）を追加した際に再pinした current tooling checkout hash（frozen
+    # historical E1 replay target自体は不変 — これは「現在このtoolingが
+    # 実際にimport/実行しているcandidate_funnel_batch.pyのhash」であり、
+    # このfileが正当に変更されるたびに再pinが必要な、E1 archiveとは独立の
+    # drift guardである）。
+    "data/candidate_funnel_batch.py": "9e9b136912b555296bc630fcf15183072efebd560be7696ff63dbe1f47b597dd",
     "data/build_candidates_stocks.py": "acc248fba4919f29814fcb17dcfdd6343c1c4c2488da005b4c1c56b518b97b7a",
 }
 # Subset of PRODUCTION_SOURCE_HASHES that legacy-replay tooling actually

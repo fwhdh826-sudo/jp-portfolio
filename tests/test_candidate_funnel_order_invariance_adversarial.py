@@ -125,10 +125,19 @@ def test_fu1_f_p1_04_exact_jaccard_boundary_passes(monkeypatch):
         "compute_degraded_path_actionable",
         lambda candidates, context: (0, {}),
     )
+    # OPS_P14_D2_RELEASE_METRIC_IMPLEMENTATION_R2: severity(status)は
+    # compute_p14_release_evidence()がengine_result/perturbed_resultの
+    # 実際のtier/marketRankから再計算するため、perturbed_resultを空dict
+    # にすると(旧policyでは無害だった)tier churn/reference shortlistへ
+    # 偽の"全滅"信号を与えてしまう。ここでのjaccard boundary検証の意図
+    # （exact 0.95がPASS側であること）を汚染しないよう、perturbed_result
+    # はengine_resultの深いcopy（=churn/shortlist皆無、jaccard=1.0)を
+    # 渡し、gate["value"]（報告されるjaccardの生値）だけを境界値0.95へ
+    # 差し替える。
     monkeypatch.setattr(
         batch,
         "compute_rank_stability",
-        lambda candidates, context, result: (0.95, {}),
+        lambda candidates, context, result: (0.95, copy.deepcopy(result)),
     )
 
     report = batch.compute_quality_report(
@@ -147,7 +156,10 @@ def test_fu1_f_p1_04_exact_jaccard_boundary_passes(monkeypatch):
     gate = next(gate for gate in report["gates"] if gate["id"] == "P-14")
 
     assert gate["value"] == 0.95
-    assert gate["threshold"] == ">= 0.95"
+    assert gate["threshold"] == (
+        f">= {batch.RANK_STABILITY_JACCARD_WARN_MIN} (WARN backstop) / "
+        f">= {batch.RANK_STABILITY_JACCARD_HARD_MIN} (HARD backstop)"
+    )
     assert gate["status"] == "PASS"
     assert "P-14" not in report["hardFailIds"]
     assert report["overallPass"] is True

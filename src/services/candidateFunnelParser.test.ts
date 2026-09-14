@@ -101,10 +101,22 @@ describe('parseCandidateFunnelArtifact — valid fixture baseline', () => {
     expect(parseCandidateFunnelArtifact(artifact).ok).toBe(true)
   })
 
-  it.each(['P-03', 'P-09'])('accepts backend-authorized nonblocking WARN for %s', (id) => {
+  it.each(['P-03', 'P-09', 'P-14'])('accepts backend-authorized nonblocking WARN for %s', (id) => {
     const artifact = buildValidCandidateFunnelArtifact()
     requiredGate(artifact, id).status = 'WARN'
     expect(parseCandidateFunnelArtifact(artifact).ok).toBe(true)
+  })
+
+  it('keeps P-14 WARN nonblocking when overallPass=true and hardFailIds=[] (decision-aware gate)', () => {
+    const artifact = buildValidCandidateFunnelArtifact()
+    requiredGate(artifact, 'P-14').status = 'WARN'
+    artifact._meta.qualityGate.overallPass = true
+    artifact._meta.qualityGate.hardFailIds = []
+    const result = parseCandidateFunnelArtifact(artifact)
+    expect(result.ok).toBe(true)
+    if (!result.ok) throw new Error('expected ok')
+    expect(result.data._meta.qualityGate.overallPass).toBe(true)
+    expect(result.data._meta.qualityGate.hardFailIds).toEqual([])
   })
 
   it('accepts auxiliary gates such as PRESCREEN_DUPLICATE alongside P-01..P-15', () => {
@@ -154,9 +166,11 @@ describe('parseCandidateFunnelArtifact — privacy / provenance rejection', () =
 })
 
 describe('parseCandidateFunnelArtifact — quality gate rejection', () => {
-  it('rejects P-14 WARN', () => {
+  it('rejects P-14 FAIL (decision-aware HARD conditions stay fail-closed)', () => {
     const artifact = buildValidCandidateFunnelArtifact()
-    requiredGate(artifact, 'P-14').status = 'WARN'
+    requiredGate(artifact, 'P-14').status = 'FAIL'
+    artifact._meta.qualityGate.overallPass = false
+    artifact._meta.qualityGate.hardFailIds = ['P-14']
     expect(parseCandidateFunnelArtifact(artifact).ok).toBe(false)
   })
 
