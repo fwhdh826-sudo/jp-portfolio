@@ -52573,10 +52573,29 @@ top-40 retention は RECORD_ONLY（Jaccard と重複する hard gate にしな�
   - 新規 `reclassify_p14()`: replay_p14 とは完全に独立した new-policy
     reclassification path（§17 参照）。
 - `data/p14_legacy_replay.py`
-  - `PRODUCTION_SOURCE_HASHES["data/candidate_funnel_batch.py"]` を
-    本ticketの新content hashへ再pin（E4 legacy replay の "current tooling
-    checkout" drift guard。E1 archive 自体は不変 — historical replay
-    target を書き換えたわけではない）。
+  - **R1 self-correction（post-commit gate再実行で発見・同一実装passで修正）**:
+    当初 `PRODUCTION_SOURCE_HASHES["data/candidate_funnel_batch.py"]` を
+    本ticketの新content hashへ直接上書きしたところ、この辞書が
+    「immutable historical E1 replay target（`CURRENT_GIT_SHA`固定commit）
+    の frozen identity」と「live current tooling checkoutの期待hash」の
+    二重責務を負っていたことが判明し、historical target側の整合性検査
+    （`_assert_historical_target_production_sources` / E4-GENERATORS /
+    `test_historical_build_hash_strict` 等、計17 failed + 23 errors）を
+    壊した。`PRODUCTION_SOURCE_HASHES`はhistorical target専用の値
+    （旧hash、不変）へ復元し、新規`CURRENT_TOOLING_SOURCE_HASHES`辞書
+    （`_assert_current_tooling_production_sources`専用、
+    `data/candidate_funnel_batch.py`のみ新hash・`data/candidate_funnel_
+    engine.py`は共通）を追加して二責務を分離した。`data/p14_evidence_
+    validate.py`のE4-GENERATORS current-tooling比較も同じ分離へ追従
+    （`tooling_frozen = legacy.CURRENT_TOOLING_SOURCE_HASHES.get(relative)`）。
+    連鎖re-pin: `TOOLING_SOURCE_HASHES["data/p14_evidence_validate.py"]`
+    （自身の編集によるhash変化）、
+    `tests/test_p14_legacy_replay.py`の`EXPECTED_REPLAY_MODULE_SHA256`
+    （p14_legacy_replay.py自身のhash変化）、および
+    `test_delivered_commit_uses_base_pinned_replay_repository`の
+    current-tooling assertion対象を`PRODUCTION_SOURCE_HASHES`から
+    `CURRENT_TOOLING_SOURCE_HASHES`へ変更。E1 archive自体・historical
+    replay targetは一切書き換えていない。
 - `src/services/candidateFunnelParser.ts`
   - `CANDIDATE_FUNNEL_QUALITY_GATE_WARN_ALLOWED_IDS` に `P-14` を追加。
     FAIL は引き続き `hardFailIds` 経由で fail-closed（P14_WARN_PARSER_COMPAT
@@ -52656,3 +52675,16 @@ reject。`P-14` の FAIL は `hardFailIds` 経由で引き続き fail-closed。
 - `data/candidate_funnel_engine.py`（B1, frozen scoring/ranking authority）
   の byte hash は本ticket開始時から不変であることを
   `test_p14_engine_ranking_blob_is_unchanged_from_dev_base` で確認。
+- Full gates（R1 self-correction後、commit後の clean working tree で実行）:
+  `python3 -m pytest tests/` — **8 failed, 1868 passed, 8 skipped**。
+  失敗8件は本ticket開始前の`d7760c1`（EXPECTED_BASE_HEAD）でも同一に
+  失敗することを、変更ゼロの独立worktree（同commit checkout）で直接
+  再現・確認済み（本ticketとは無関係）: `.github/workflows/deploy.yml` /
+  `p14_evidence_capture.yml` の frozen byte-hash pin drift 7件（本ticketは
+  この2 workflow fileに一切触れていない）+
+  `test_control_checks_ctl01_to_ctl07`（このCI実行環境がPython 3.14の
+  ため、E4 replayのPython 3.11必須chainが構造的に評価不能 — pure
+  environment gate）。`npx vitest run` — **187 files / 4502 tests
+  passed**。`npx tsc --noEmit` — PASS、0 errors。`npm run build` — PASS
+  （171 modules、既知の>500kB chunk warningのみ）。
+  `git diff --check` / `git diff --cached --check` — PASS。

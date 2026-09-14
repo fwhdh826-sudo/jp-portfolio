@@ -751,10 +751,16 @@ def validate_legacy_bundle(bundle_root: Path, *, repo_root: Path, ci: bool,
         # frozen historical replay target's builder -- it is never imported
         # or executed by current tooling, so a newer, non-executed copy in
         # the current tooling checkout must not be compared to `frozen`.
+        # The live tooling checkout is compared against
+        # CURRENT_TOOLING_SOURCE_HASHES, not `frozen` (the immutable
+        # historical E1 target's own hash) — the two intentionally diverge
+        # once a release-evidence/gate-only ticket (e.g. OPS_P14_D2) changes
+        # candidate_funnel_batch.py without touching the frozen archive.
         if relative in legacy.CURRENT_TOOLING_PRODUCTION_SOURCES:
             tooling_path = tooling_root / relative
+            tooling_frozen = legacy.CURRENT_TOOLING_SOURCE_HASHES.get(relative)
             generator_ok = generator_ok and tooling_path.is_file()
-            generator_ok = generator_ok and sha256_file(tooling_path) == frozen
+            generator_ok = generator_ok and sha256_file(tooling_path) == tooling_frozen
     check("E4-GENERATORS", generator_ok, "historical target + current tooling frozen source hashes")
     environment = _read_json(root / "environment.json")
     runtime_ok = (str(environment.get("pythonVersion", "")).startswith("3.11.")
