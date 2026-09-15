@@ -1,32 +1,20 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-09-15T17:51:30.725000+09:00",
-  "sourceUpdatedAt": "2026-09-15T08:33:46+00:00",
+  "updatedAt": "2026-09-16T00:38:05.364727+09:00",
+  "sourceUpdatedAt": "2026-09-15T15:30:37+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": -0.165,
-      "negativeCount": 1,
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
       "positiveCount": 0,
       "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Japan’s Economic Comeback Faces Hardest BOJ Test in a Generation",
+      "topNegativeTitle": "【ウェビナー】日銀9月会合直前 ― 利上げ「過去最速」のペースとなるか",
       "topPositiveTitle": "【ウェビナー】日銀9月会合直前 ― 利上げ「過去最速」のペースとなるか",
       "items": [
-        {
-          "title": "Japan’s Economic Comeback Faces Hardest BOJ Test in a Generation",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-14T21:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-14/japan-s-economic-comeback-faces-hardest-boj-test-in-a-generation",
-          "tags": [
-            "jp_broad",
-            "market"
-          ]
-        },
         {
           "title": "【ウェビナー】日銀9月会合直前 ― 利上げ「過去最速」のペースとなるか",
           "source": "Bloomberg Economics",
@@ -44,129 +32,126 @@
       ]
     },
     "jp_semiconductor": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "South Korea Finance Chief Nominee Says Economy at Turning Point",
-      "topPositiveTitle": "South Korea Finance Chief Nominee Says Economy at Turning Point",
-      "items": [
-        {
-          "title": "South Korea Finance Chief Nominee Says Economy at Turning Point",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-15T02:53:06+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-15/south-korea-finance-chief-nominee-says-economy-at-turning-point",
-          "tags": [
-            "geopolitical",
-            "jp_semiconductor",
-            "market",
-            "rates"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "us_broad": {
-      "avgSentiment": -0.19,
-      "negativeCount": 4,
+      "avgSentiment": -0.168,
+      "negativeCount": 2,
       "positiveCount": 1,
       "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 7,
+      "sourceCount": 1,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "UK Payrolls Drop More Than Expected in Weak Jobs Market",
-      "topPositiveTitle": "Ten-Year Treasury Yield Rises to Highest Since 2007 as Fed Looms",
+      "topNegativeTitle": "Stocks Fall in Run-Up to Fed as Yields Stay High",
+      "topPositiveTitle": "US 10-Year Yield Rises to Highest Since 2007 as Fed Looms",
       "items": [
         {
-          "title": "UK Payrolls Drop More Than Expected in Weak Jobs Market",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-09-15T06:03:56+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-15/uk-payrolls-drop-more-than-expected-in-weak-jobs-market",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Stocks Fall as Oil Rally Deepens Bond Selloff: Markets Wrap",
+          "title": "Stocks Fall in Run-Up to Fed as Yields Stay High",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.5,
-          "publishedAt": "2026-09-14T22:19:06+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-14/asian-stocks-to-fall-on-ai-key-us-yield-tops-5-markets-wrap",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-09-15T15:26:33+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-15/stocks-fall-in-run-up-to-fed-as-yields-stay-high-video",
           "tags": [
             "commodity",
             "macro_risk",
             "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "UK Payrolls Drop More Than Expected",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-15T08:03:32+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-15/uk-payrolls-drop-more-than-expected-video",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Gold Trades Near $4,300 as Higher Oil Stokes Rate-Hike Bets",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-14T23:49:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-14/gold-holds-losses-as-higher-oil-stokes-september-rate-hike-bets",
-          "tags": [
-            "commodity",
-            "gold",
-            "market",
             "rates",
             "us_broad"
           ]
         },
         {
-          "title": "Bullish Treasuries View Is Contrarian: Markets Analysis",
+          "title": "US Stocks Fall as 10-Year Yield Hits Highest Level Since 2007",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-09-15T12:00:15+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-15/us-stock-futures-drop-as-10-year-treasury-yield-passes-5",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Carlyle’s Thomas: AI Slowdown ‘More Likely Than Not’",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-15T07:20:43+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-15/bullish-treasuries-view-is-contrarian-3-minutes-mliv-video",
+          "publishedAt": "2026-09-15T14:45:37+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-15/carlyle-s-thomas-ai-slowdown-more-likely-than-not-video",
           "tags": [
             "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Wells Fargo’s (WFC) Kwon Cuts US Stocks (SPY) View as AI Worries Mount in Tech",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-15T14:23:03+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-15/wells-fargo-s-wfc-kwon-cuts-us-stocks-spy-view-as-ai-worries-mount-in-tech",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "US 10-Year Yield Rises to Highest Since 2007 as Fed Looms",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.5,
+          "publishedAt": "2026-09-15T15:25:31+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-15/us-10-year-yield-rises-to-highest-since-07-as-fed-looms-video",
+          "tags": [
+            "commodity",
+            "macro_risk",
+            "market",
+            "rates",
             "us_broad"
           ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.33,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 2,
+      "sourceCount": 2,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "AI-Driven Asset Rally Prone to Correction, ECB’s Vujcic Warns",
-      "topPositiveTitle": "AI-Driven Asset Rally Prone to Correction, ECB’s Vujcic Warns",
+      "topNegativeTitle": "AI Will Be Biggest Reallocation of Capital in History, Says Noble",
+      "topPositiveTitle": "AI Will Be Biggest Reallocation of Capital in History, Says Noble",
       "items": [
         {
-          "title": "AI-Driven Asset Rally Prone to Correction, ECB’s Vujcic Warns",
+          "title": "AI Will Be Biggest Reallocation of Capital in History, Says Noble",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-15T15:04:08+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-15/ai-will-be-biggest-reallocation-of-capital-says-noble-video",
+          "tags": [
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "China Stuck in Economic Slow Lane Relies on AI-Fueled Export Boom",
           "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-15T04:18:06+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-15/ai-driven-asset-rally-prone-to-correction-ecb-s-vujcic-warns",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-15T11:00:01+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-09-15/china-stuck-in-economic-slow-lane-relies-on-ai-fueled-export-boom",
           "tags": [
             "market",
             "us_growth"
@@ -175,57 +160,28 @@
       ]
     },
     "global_broad": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Saudi Pipeline Stays Offline; Trump Clashes With AI Bosses",
-      "topPositiveTitle": "Saudi Pipeline Stays Offline; Trump Clashes With AI Bosses",
-      "items": [
-        {
-          "title": "Saudi Pipeline Stays Offline; Trump Clashes With AI Bosses",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-15T06:30:50+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-15/horizons-middle-east-africa-9-15-2026-video",
-          "tags": [
-            "global_broad",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "gold": {
-      "avgSentiment": -0.33,
-      "negativeCount": 1,
+      "avgSentiment": 0,
+      "negativeCount": 0,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Gold Trades Near $4,300 as Higher Oil Stokes Rate-Hike Bets",
-      "topPositiveTitle": "Gold Trades Near $4,300 as Higher Oil Stokes Rate-Hike Bets",
-      "items": [
-        {
-          "title": "Gold Trades Near $4,300 as Higher Oil Stokes Rate-Hike Bets",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-14T23:49:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-14/gold-holds-losses-as-higher-oil-stokes-september-rate-hike-bets",
-          "tags": [
-            "commodity",
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "reit": {
       "avgSentiment": 0,
@@ -252,49 +208,38 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.083,
-      "negativeCount": 1,
-      "positiveCount": 2,
-      "neutralCount": 1,
+      "avgSentiment": -0.105,
+      "negativeCount": 2,
+      "positiveCount": 1,
+      "neutralCount": 5,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 8,
       "isStale": false,
-      "topNegativeTitle": "Stocks Fall as Oil Rally Deepens Bond Selloff: Markets Wrap",
-      "topPositiveTitle": "Ten-Year Treasury Yield Rises to Highest Since 2007 as Fed Looms",
+      "topNegativeTitle": "Stocks Fall in Run-Up to Fed as Yields Stay High",
+      "topPositiveTitle": "US 10-Year Yield Rises to Highest Since 2007 as Fed Looms",
       "items": [
         {
-          "title": "Stocks Fall as Oil Rally Deepens Bond Selloff: Markets Wrap",
+          "title": "Stocks Fall in Run-Up to Fed as Yields Stay High",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.5,
-          "publishedAt": "2026-09-14T22:19:06+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-14/asian-stocks-to-fall-on-ai-key-us-yield-tops-5-markets-wrap",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-09-15T15:26:33+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-15/stocks-fall-in-run-up-to-fed-as-yields-stay-high-video",
           "tags": [
             "commodity",
             "macro_risk",
             "market",
+            "rates",
             "us_broad"
           ]
         },
         {
-          "title": "BOE May End Long-Dated Bond Sales as Officials Draft Plans, Report Says",
+          "title": "Sri Lanka’s Growth Misses Forecast as Middle East Crisis Bites",
           "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-15T06:52:02+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-15/boe-plans-to-stop-long-dated-bond-sales-telegraph-report-says",
-          "tags": [
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "UK Energy Bills Forecast to Jump 25%, Bloomberg Analysis Finds",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-15T07:02:42+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-15/uk-energy-bills-forecast-to-jump-25-and-drive-up-inflation",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-09-15T09:46:08+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-15/sri-lanka-s-growth-misses-forecast-as-middle-east-crisis-bites",
           "tags": [
             "commodity",
             "geopolitical",
@@ -303,95 +248,106 @@
           ]
         },
         {
-          "title": "Ten-Year Treasury Yield Rises to Highest Since 2007 as Fed Looms",
+          "title": "Carlyle’s Thomas Says AI Financing Echoes Pre-Crisis Mortgages",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.5,
-          "publishedAt": "2026-09-15T05:07:45+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-15/us-10-year-treasury-yields-rise-to-highest-level-since-2007",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-15T14:21:42+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-15/carlyle-s-thomas-says-ai-financing-echoes-pre-crisis-mortgages",
           "tags": [
-            "commodity",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Angola Bucks Global Trend And Cuts Key Rate as Iran War Rages",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-15T14:15:15+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-15/angola-extends-easing-cycle-as-inflation-continues-to-slow",
+          "tags": [
+            "geopolitical",
             "macro_risk",
             "market",
-            "us_broad"
+            "rates"
+          ]
+        },
+        {
+          "title": "Unusual Calm in UK Pound Is Red Flag to Traders Before Budget",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-15T10:15:42+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-15/unusual-calm-in-uk-pound-is-red-flag-to-traders-before-budget",
+          "tags": [
+            "macro_risk",
+            "market"
           ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": 0.5,
+      "avgSentiment": 0,
       "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 2,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Zimbabwe Says Single-Currency Switch Hinges on Market Conditions",
-      "topPositiveTitle": "China’s PBOC Strengthens Yuan Fix Ahead of Trump-Xi Summit",
-      "items": [
-        {
-          "title": "Zimbabwe Says Single-Currency Switch Hinges on Market Conditions",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-14T16:34:56+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-14/zimbabwe-says-single-currency-switch-hinges-on-market-conditions",
-          "tags": [
-            "fx",
-            "market"
-          ]
-        },
-        {
-          "title": "China’s PBOC Strengthens Yuan Fix Ahead of Trump-Xi Summit",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-09-15T04:31:17+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-15/china-s-pboc-strengthens-yuan-fix-ahead-of-trump-xi-summit",
-          "tags": [
-            "fx",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "rates": {
-      "avgSentiment": -0.25,
-      "negativeCount": 2,
-      "positiveCount": 0,
+      "avgSentiment": -0.167,
+      "negativeCount": 3,
+      "positiveCount": 2,
       "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "UK Payrolls Drop More Than Expected in Weak Jobs Market",
-      "topPositiveTitle": "【ウェビナー】日銀9月会合直前 ― 利上げ「過去最速」のペースとなるか",
+      "topNegativeTitle": "Emerging-Market Assets Slide for Fourth Day as 5% US Yield Bites",
+      "topPositiveTitle": "US 10-Year Yield Rises to Highest Since 2007 as Fed Looms",
       "items": [
         {
-          "title": "UK Payrolls Drop More Than Expected in Weak Jobs Market",
-          "source": "Bloomberg Economics",
+          "title": "Emerging-Market Assets Slide for Fourth Day as 5% US Yield Bites",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-09-15T10:57:03+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-15/emerging-currencies-extend-losses-as-bond-market-stress-builds",
+          "tags": [
+            "commodity",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Stocks Fall in Run-Up to Fed as Yields Stay High",
+          "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.67,
-          "publishedAt": "2026-09-15T06:03:56+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-15/uk-payrolls-drop-more-than-expected-in-weak-jobs-market",
+          "publishedAt": "2026-09-15T15:26:33+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-15/stocks-fall-in-run-up-to-fed-as-yields-stay-high-video",
           "tags": [
+            "commodity",
+            "macro_risk",
             "market",
             "rates",
             "us_broad"
           ]
         },
         {
-          "title": "Gold Trades Near $4,300 as Higher Oil Stokes Rate-Hike Bets",
-          "source": "Bloomberg Markets",
+          "title": "Nigeria Inflation Unexpectedly Eases, Boosts Case for Rate Cut",
+          "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-09-14T23:49:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-14/gold-holds-losses-as-higher-oil-stokes-september-rate-hike-bets",
+          "publishedAt": "2026-09-15T13:58:43+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-15/nigeria-inflation-unexpectedly-eases-boosts-case-for-rate-cut",
           "tags": [
-            "commodity",
-            "gold",
             "market",
-            "rates",
-            "us_broad"
+            "rates"
           ]
         },
         {
@@ -409,15 +365,15 @@
           "titleJa": "【ウェビナー】日銀9月会合直前 ― 利上げ「過去最速」のペースとなるか"
         },
         {
-          "title": "South Korea Finance Chief Nominee Says Economy at Turning Point",
+          "title": "Angola Bucks Global Trend And Cuts Key Rate as Iran War Rages",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-15T02:53:06+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-15/south-korea-finance-chief-nominee-says-economy-at-turning-point",
+          "publishedAt": "2026-09-15T14:15:15+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-15/angola-extends-easing-cycle-as-inflation-continues-to-slow",
           "tags": [
             "geopolitical",
-            "jp_semiconductor",
+            "macro_risk",
             "market",
             "rates"
           ]
@@ -425,76 +381,77 @@
       ]
     },
     "commodity": {
-      "avgSentiment": -0.001,
-      "negativeCount": 4,
-      "positiveCount": 5,
-      "neutralCount": 1,
+      "avgSentiment": -0.147,
+      "negativeCount": 3,
+      "positiveCount": 3,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 10,
+      "itemCount": 8,
       "isStale": false,
-      "topNegativeTitle": "Thailand Eyes $600 Million Tourism Boost With Travel Subsidies",
-      "topPositiveTitle": "Ten-Year Treasury Yield Rises to Highest Since 2007 as Fed Looms",
+      "topNegativeTitle": "Emerging-Market Assets Slide for Fourth Day as 5% US Yield Bites",
+      "topPositiveTitle": "US 10-Year Yield Rises to Highest Since 2007 as Fed Looms",
       "items": [
         {
-          "title": "Thailand Eyes $600 Million Tourism Boost With Travel Subsidies",
-          "source": "Bloomberg Economics",
+          "title": "Emerging-Market Assets Slide for Fourth Day as 5% US Yield Bites",
+          "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-09-15T00:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-15/thailand-eyes-600-million-tourism-boost-with-travel-subsidies",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-09-15T10:57:03+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-15/emerging-currencies-extend-losses-as-bond-market-stress-builds",
           "tags": [
             "commodity",
-            "market"
+            "market",
+            "rates"
           ]
         },
         {
-          "title": "Stocks Fall as Oil Rally Deepens Bond Selloff: Markets Wrap",
+          "title": "Stocks Fall in Run-Up to Fed as Yields Stay High",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.5,
-          "publishedAt": "2026-09-14T22:19:06+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-14/asian-stocks-to-fall-on-ai-key-us-yield-tops-5-markets-wrap",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-09-15T15:26:33+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-15/stocks-fall-in-run-up-to-fed-as-yields-stay-high-video",
           "tags": [
             "commodity",
             "macro_risk",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Gold Trades Near $4,300 as Higher Oil Stokes Rate-Hike Bets",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-14T23:49:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-14/gold-holds-losses-as-higher-oil-stokes-september-rate-hike-bets",
-          "tags": [
-            "commodity",
-            "gold",
             "market",
             "rates",
             "us_broad"
           ]
         },
         {
-          "title": "UK Can Replace Oil Windfall Tax Early to Add Revenue, Lobby Says",
+          "title": "Sri Lanka’s Growth Misses Forecast as Middle East Crisis Bites",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-14T23:01:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-14/uk-can-replace-oil-windfall-tax-early-to-add-revenue-lobby-says",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-09-15T09:46:08+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-15/sri-lanka-s-growth-misses-forecast-as-middle-east-crisis-bites",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Carney Expands Tax Break to Broad Range of Investments",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-15T13:01:20+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-15/carney-expands-business-tax-break-to-broad-range-of-investments",
           "tags": [
             "commodity",
             "market"
           ]
         },
         {
-          "title": "Why Food Prices Are Rising in India, From Onions to Cooking Oil",
+          "title": "UK to Gain From Replacing Oil Windfall Tax Early, Lobby Says",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-15T04:46:10+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-15/why-food-prices-are-rising-in-india-from-onions-to-cooking-oil",
+          "publishedAt": "2026-09-14T23:01:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-14/uk-can-replace-oil-windfall-tax-early-to-add-revenue-lobby-says",
           "tags": [
             "commodity",
             "market"
@@ -503,53 +460,79 @@
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.11,
-      "negativeCount": 0,
+      "avgSentiment": -0.068,
+      "negativeCount": 1,
       "positiveCount": 1,
-      "neutralCount": 2,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Russia’s Nornickel Seeks New Partner to Process Copper in China",
-      "topPositiveTitle": "UK Energy Bills Forecast to Jump 25%, Bloomberg Analysis Finds",
+      "topNegativeTitle": "Sri Lanka’s Growth Misses Forecast as Middle East Crisis Bites",
+      "topPositiveTitle": "Latest Oil Market News and Analysis for Sept. 15",
       "items": [
         {
-          "title": "Russia’s Nornickel Seeks New Partner to Process Copper in China",
-          "source": "Bloomberg Markets",
+          "title": "Sri Lanka’s Growth Misses Forecast as Middle East Crisis Bites",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-09-15T09:46:08+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-15/sri-lanka-s-growth-misses-forecast-as-middle-east-crisis-bites",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Rep. Waters Presses Bessent on Inflation, Iran and Tariffs",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-15T07:44:11+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-15/russia-s-nornickel-seeks-new-partner-to-process-copper-in-china",
+          "publishedAt": "2026-09-15T15:22:58+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-15/rep-waters-presses-bessent-on-inflation-iran-tariffs-video",
           "tags": [
             "geopolitical",
             "market"
           ]
         },
         {
-          "title": "South Korea Finance Chief Nominee Says Economy at Turning Point",
+          "title": "Angola Bucks Global Trend And Cuts Key Rate as Iran War Rages",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-15T02:53:06+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-15/south-korea-finance-chief-nominee-says-economy-at-turning-point",
+          "publishedAt": "2026-09-15T14:15:15+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-15/angola-extends-easing-cycle-as-inflation-continues-to-slow",
           "tags": [
             "geopolitical",
-            "jp_semiconductor",
+            "macro_risk",
             "market",
             "rates"
           ]
         },
         {
-          "title": "UK Energy Bills Forecast to Jump 25%, Bloomberg Analysis Finds",
+          "title": "Ireland's Martin on EU Economy, Defense, China (Sept. 3)",
           "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-15T09:31:01+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-15/ireland-s-martin-on-eu-economy-defense-china-sept-3-video",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Latest Oil Market News and Analysis for Sept. 15",
+          "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.33,
-          "publishedAt": "2026-09-15T07:02:42+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-15/uk-energy-bills-forecast-to-jump-25-and-drive-up-inflation",
+          "publishedAt": "2026-09-14T22:04:31+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-14/latest-oil-market-news-and-analysis-for-sept-15",
           "tags": [
             "commodity",
             "geopolitical",
-            "macro_risk",
             "market"
           ]
         }
