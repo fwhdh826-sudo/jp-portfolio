@@ -24,8 +24,12 @@ from data.p14_evidence_privacy_filter import PrivacyViolation, scan_bundle
 CURRENT_GIT_SHA = "8cfa55680a643415f18c6df8eb5ff2d767a0b77f"
 CURRENT_GIT_REF = "refs/heads/v13.3-dev"
 TOOLING_SOURCE_HASHES = {
+    # OPS_P14_D2_RELEASE_METRIC_IMPLEMENTATION_R2: re-pinned after the
+    # E4-GENERATORS current-tooling check was split to use
+    # CURRENT_TOOLING_SOURCE_HASHES instead of PRODUCTION_SOURCE_HASHES
+    # for the live tooling checkout comparison (see validate_legacy_bundle).
     "data/p14_evidence_validate.py":
-        "0430f4090a2daf018b23f21dc785fae80f5051588be36a2dad369b103c34f654",
+        "f0c17cd6ccaa11bd1c67dc253c1920e3a2af6c30a14b78c5096af92240eeacaa",
     "data/p14_evidence_capture.py":
         "f8a37b5c9cd3d6c5ae344aa3ecaf6e6113f51baf2a6539456ef9aea704dc4a06",
     "data/p14_evidence_privacy_filter.py":
@@ -33,6 +37,11 @@ TOOLING_SOURCE_HASHES = {
 }
 WAIVER_AUTHORITY = "P14-E2-A1 §8.1 real_reconstructed grandfather + P14-E4-A1 §9.6"
 PRODUCTION_SOURCE_HASHES = {
+    # PRODUCTION_SOURCE_HASHES is the frozen identity of the IMMUTABLE
+    # historical E1 replay target (checked out at CURRENT_GIT_SHA — a
+    # long-fixed historical commit, never advanced). It must never reflect
+    # ongoing development on candidate_funnel_batch.py/engine.py; only
+    # CURRENT_TOOLING_SOURCE_HASHES below tracks the live tooling checkout.
     "data/candidate_funnel_engine.py": "25e12a4217ace5d807963b54fe2e9918d8613c834b06b730fff8701a4b45d710",
     "data/candidate_funnel_batch.py": "e68fff47290b3f882a5be7251cee433a89a8464fc4b6adb7460ec66e0881762c",
     "data/build_candidates_stocks.py": "acc248fba4919f29814fcb17dcfdd6343c1c4c2488da005b4c1c56b518b97b7a",
@@ -50,6 +59,24 @@ CURRENT_TOOLING_PRODUCTION_SOURCES = (
     "data/candidate_funnel_engine.py",
     "data/candidate_funnel_batch.py",
 )
+# Current tooling checkout's expected hashes for CURRENT_TOOLING_PRODUCTION_
+# SOURCES. Starts identical to PRODUCTION_SOURCE_HASHES (both files have
+# historically tracked the frozen E1 target exactly) and is overridden only
+# where the *live* tooling checkout has legitimately diverged from the
+# immutable historical target under an audited ticket — the historical
+# target's own copy of that file remains untouched
+# (_assert_historical_target_production_sources still uses
+# PRODUCTION_SOURCE_HASHES, unmodified, for that check).
+#
+# OPS_P14_D2_RELEASE_METRIC_IMPLEMENTATION_R2 added decision-aware P-14
+# release evidence (compute_p14_release_evidence et al.) to
+# data/candidate_funnel_batch.py; this is a release-evidence/gate-only
+# change (SCORING_CHANGED=NO, ENGINE_RANKING_CHANGED=NO — the frozen E1
+# archive's copy of this file is never touched or re-derived from it).
+CURRENT_TOOLING_SOURCE_HASHES = {
+    "data/candidate_funnel_engine.py": PRODUCTION_SOURCE_HASHES["data/candidate_funnel_engine.py"],
+    "data/candidate_funnel_batch.py": "9e9b136912b555296bc630fcf15183072efebd560be7696ff63dbe1f47b597dd",
+}
 E1_ARCHIVE_SHA256 = "35f55858a9dd243371de9aa4575e3816ebefbdf0526d9500213961ff74be252e"
 E1_ARCHIVE_BYTES = 7_517_928
 E1_ARCHIVE_REGULAR_FILES = 330
@@ -284,10 +311,13 @@ def _assert_current_tooling_production_sources(repo: Path) -> None:
     tooling actually imports/executes (see CURRENT_TOOLING_PRODUCTION_SOURCES).
     Unlike the historical replay target, the current tooling checkout tracks
     live main and must not be compared against PRODUCTION_SOURCE_HASHES
-    entries it never executes (e.g. data/build_candidates_stocks.py).
+    entries it never executes (e.g. data/build_candidates_stocks.py) — nor
+    against PRODUCTION_SOURCE_HASHES entries the live checkout has
+    legitimately diverged from under an audited ticket; it is compared
+    against CURRENT_TOOLING_SOURCE_HASHES instead.
     """
     for relative in CURRENT_TOOLING_PRODUCTION_SOURCES:
-        expected = PRODUCTION_SOURCE_HASHES[relative]
+        expected = CURRENT_TOOLING_SOURCE_HASHES[relative]
         path = repo / relative
         if not path.is_file() or capture.sha256_file(path) != expected:
             raise LegacyReplayError(f"P14_E4_R2_TOOLING_SOURCE_DRIFT: {relative}")

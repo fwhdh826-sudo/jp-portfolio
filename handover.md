@@ -52461,3 +52461,230 @@ HE-1（`src/types/holdingEvidence.ts` / `src/domain/analysis/holdingEvidence.ts`
 - `npx tsc --noEmit`: PASS
 - `npm run build`: PASS（既知の 500kB chunk warning のみ）
 - `git diff --check`: PASS
+
+---
+
+## OPS_P14_D2_RELEASE_METRIC_IMPLEMENTATION_R2 — decision-aware P-14 release gate（実装記録）
+
+### スコープ / 責任境界
+
+P14_RELEASE_POLICY_VERSION = `p14-decision-aware-v1`。P-14（rank stability
+Jaccard、`data/candidate_funnel_batch.py`）の release evidence/severity
+評価を、旧来の binary threshold（jaccard>=0.95 で PASS、それ以外 FAIL）から
+decision-aware な PASS/WARN/FAIL composite gate へ置き換えた。
+
+**P14_BOUNDARY = MARKET_FUNNEL_PERTURBATION_ROBUSTNESS**: これは同一
+market input に対する決定的 ±2% PER/ROE perturbation の下での
+market/funnel 段階 robustness 評価である。
+
+**P14_PROVES_OFFICIAL_DECISION_STABILITY = false（重要・凍結）**:
+本変更は officialDecision・production shortlist・保有銘柄を考慮した
+推奨の安定性を一切証明しない。`src/domain/candidates/
+candidatePortfolioRecommendation.ts` の production recommendation semantics
+（`compareCandidateOrder` / `buildCandidateAllocationInputs` /
+`composeCandidatePortfolioRecommendations`、保有銘柄除外込みの最終
+top-3選抜）は一切変更していない。保有銘柄を考慮した安定性の証明は
+downstream（実 portfolio + P5-B005 E2E 受け入れ）の責務のまま
+（HOLDINGS_AWARE_DECISION_STABILITY_OWNER =
+DOWNSTREAM_REAL_PORTFOLIO_AND_P5_B005_E2E_ACCEPTANCE）。
+
+score 計算式・weight・tier threshold・sector cap・candidate universe・PER/ROE
+authority・prescreen・perturbation vector・marketRank 生成ロジック・candidate
+順序（B1 engine, `data/candidate_funnel_engine.py`）は一切変更していない
+（SCORING_CHANGED=NO, ENGINE_RANKING_CHANGED=NO,
+PERTURBATION_VECTOR_CHANGED=NO）。`.github/workflows/full_batch.yml` も
+不変（WORKFLOW_CHANGED=NO）。
+
+### P14_MARKET_REFERENCE_SHORTLIST（新規）
+
+`data/candidate_funnel_batch.py` に holdings 非依存の market/funnel 段階
+perturbation robustness proxy を追加した。**officialDecision でも production
+shortlist でも保有銘柄を考慮した推奨でもない**。
+
+- 定義: engine 出力の candidate のうち `tier ∈ {deep_review, actionable}`
+  かつ `marketRank` が valid positive rank のものが対象母集団。
+- 順序: `marketRank` 昇順 → null rank 最後 → `artifactIndex`（=
+  engine_result["candidates"] の配列位置。`build_artifact_payload` が
+  engine_result をそのまま publish するため、これは publish 済み
+  artifact.candidates の配列位置、かつ
+  `candidatePortfolioRecommendation.ts` の `artifactIndex`（
+  `input.artifact.candidates` の配列位置）と厳密に parity する）昇順
+  tie-break。この比較 semantics は production の `compareCandidateOrder`
+  と意図的に一致させてある（REFERENCE_ORDER_PARITY=PASS。ordering keys
+  のみの parity であり、保有銘柄除外ロジックは含まない）。
+- N = 3（`P14_MARKET_REFERENCE_SHORTLIST_N`）。holdings/cash/allocation/
+  officialDecision は一切参照しない。
+- 比較判定: base/perturbed 双方の (code,tier) membership set が同一で
+  なければ HARD_FAIL。set が同一で tier が変化すれば HARD_FAIL。set・tier
+  が同一で順序のみ変化すれば WARN。完全一致なら reference-shortlist 由来
+  の warning は発生しない。
+- **重要な限界**: reference shortlist の安定性は、保有銘柄が上位候補を
+  除外し下位候補（この N=3 frontier の外側）を新規推奨として露出させる
+  ケースの安定性を一切証明しない。
+
+### Severity precedence（frozen）
+
+```
+if いずれかの HARD 条件が成立: status = FAIL
+elif いずれかの WARN 条件が成立: status = WARN
+else: status = PASS
+```
+
+HARD 条件:
+- top40 Jaccard < 0.80（`RANK_STABILITY_JACCARD_HARD_MIN`。strict `<`）
+- actionable churn exit >= 3（`ACTIONABLE_PERTURBATION_EXIT_HARD_MIN`）
+- P14_MARKET_REFERENCE_SHORTLIST の (code,tier) membership/tier 変化
+- 既存の structural/generation hard failure（不変）
+
+WARN 条件:
+- top40 Jaccard < 0.95（`RANK_STABILITY_JACCARD_WARN_MIN` = 既存 frozen
+  `RANK_STABILITY_JACCARD_MIN` の alias）かつ HARD 未満
+- deep-review churn exit >= 1（**HARD 閾値は導入しない** —
+  INSUFFICIENT_EVIDENCE_FOR_NUMERIC_FREEZE、A2-S/D2 freeze の通り）
+- actionable churn exit == 2
+- reference shortlist の順序のみ変化
+
+top-40 retention は RECORD_ONLY（Jaccard と重複する hard gate にしない）。
+
+### 実装ファイル
+
+- `data/candidate_funnel_batch.py`
+  - 新規 frozen 定数: `P14_RELEASE_POLICY_VERSION`,
+    `RANK_STABILITY_JACCARD_WARN_MIN`（既存 `RANK_STABILITY_JACCARD_MIN`
+    の alias）, `RANK_STABILITY_JACCARD_HARD_MIN`,
+    `ACTIONABLE_PERTURBATION_EXIT_WARN_MIN`,
+    `ACTIONABLE_PERTURBATION_EXIT_HARD_MIN`,
+    `P14_MARKET_REFERENCE_SHORTLIST_NAME`,
+    `P14_MARKET_REFERENCE_SHORTLIST_N`
+  - 新規 pure 関数: `build_market_reference_shortlist`,
+    `evaluate_market_reference_shortlist`,
+    `compute_p14_release_evidence`（engine 出力を read-only 消費するのみ
+    — scoring/tier/marketRank の再計算は一切行わない）
+  - `compute_quality_report` の P-14 gate は `compute_p14_release_evidence`
+    の `final.status`（PASS/WARN/FAIL）を採用。`gate["value"]` は引き続き
+    jaccard の float（既存 contract 不変）。戻り値へ新規 key
+    `p14ReleaseEvidence`（full composite evidence）を追加。
+- `data/candidate_funnel_run_evidence.py`
+  - `evidence["p14"]["release"]` に composite evidence を追加（jaccard/
+    swapCount/verdict/baseTop40/perturbedTop40 の既存 key は不変）。
+  - `p14Parameters` に `policyVersion` を追加（新規 capture のみ）。
+  - `replay_p14()`: `p14Parameters.policyVersion` の有無で decision-aware
+    /legacy binary のどちらで recompute するか分岐（§16 参照）。
+  - 新規 `reclassify_p14()`: replay_p14 とは完全に独立した new-policy
+    reclassification path（§17 参照）。
+- `data/p14_legacy_replay.py`
+  - **R1 self-correction（post-commit gate再実行で発見・同一実装passで修正）**:
+    当初 `PRODUCTION_SOURCE_HASHES["data/candidate_funnel_batch.py"]` を
+    本ticketの新content hashへ直接上書きしたところ、この辞書が
+    「immutable historical E1 replay target（`CURRENT_GIT_SHA`固定commit）
+    の frozen identity」と「live current tooling checkoutの期待hash」の
+    二重責務を負っていたことが判明し、historical target側の整合性検査
+    （`_assert_historical_target_production_sources` / E4-GENERATORS /
+    `test_historical_build_hash_strict` 等、計17 failed + 23 errors）を
+    壊した。`PRODUCTION_SOURCE_HASHES`はhistorical target専用の値
+    （旧hash、不変）へ復元し、新規`CURRENT_TOOLING_SOURCE_HASHES`辞書
+    （`_assert_current_tooling_production_sources`専用、
+    `data/candidate_funnel_batch.py`のみ新hash・`data/candidate_funnel_
+    engine.py`は共通）を追加して二責務を分離した。`data/p14_evidence_
+    validate.py`のE4-GENERATORS current-tooling比較も同じ分離へ追従
+    （`tooling_frozen = legacy.CURRENT_TOOLING_SOURCE_HASHES.get(relative)`）。
+    連鎖re-pin: `TOOLING_SOURCE_HASHES["data/p14_evidence_validate.py"]`
+    （自身の編集によるhash変化）、
+    `tests/test_p14_legacy_replay.py`の`EXPECTED_REPLAY_MODULE_SHA256`
+    （p14_legacy_replay.py自身のhash変化）、および
+    `test_delivered_commit_uses_base_pinned_replay_repository`の
+    current-tooling assertion対象を`PRODUCTION_SOURCE_HASHES`から
+    `CURRENT_TOOLING_SOURCE_HASHES`へ変更。E1 archive自体・historical
+    replay targetは一切書き換えていない。
+- `src/services/candidateFunnelParser.ts`
+  - `CANDIDATE_FUNNEL_QUALITY_GATE_WARN_ALLOWED_IDS` に `P-14` を追加。
+    FAIL は引き続き `hardFailIds` 経由で fail-closed（P14_WARN_PARSER_COMPAT
+    =PASS）。
+
+### §16 Legacy replay compatibility（frozen historical evidence を書き換えない）
+
+`candidate-funnel-run-evidence-2` schema の既存 bundle（policyVersion
+フィールドを持たない — 本ticket以前に capture 済み）は、`replay_p14()`
+が引き続き旧 binary policy（`jaccard >= threshold` のみ）で recompute し、
+その historical verdict を silent に新 policy へ migrate しない。新規
+capture（`policyVersion="p14-decision-aware-v1"` を持つ）のみ decision-aware
+composite で recompute する。両 path は `evidence.get("p14Parameters",
+{}).get("policyVersion")` の有無で機械的に分岐する。
+
+### §17/§18 corpus reclassification（#90〜#93、実データ再構成）
+
+full_batch.yml の GitHub Actions run #90〜#93（database id
+34290922431/34416748740/34541518840/34789254295）から
+`candidate-funnel-evidence-*` artifact（`replay.joinedCandidateInput` +
+`replay.context` を含む v2 evidence bundle）を取得し、`reclassify_p14()`
+で base/perturbed engine 結果を deterministic に再構成、新 policy の
+composite evidence を独立に再計算した。#93 の既知事実（top40 swap=2,
+jaccard=0.9047619047619048, actionable exits=0）は再構成結果と厳密に一致。
+
+| run | 旧 binary verdict | 新 policy status | 主要因 |
+|---|---|---|---|
+| #90 | FAIL (jaccard=0.860) | WARN | jaccard<0.95(WARN) + deep-review exit 3件(WARN) |
+| #91 | PASS (jaccard=0.951) | **WARN** | deep-review exit 1件(WARN) — jaccard 自体は WARN 閾値外 |
+| #92 | PASS (jaccard=0.951) | WARN | deep-review exit 4件 + actionable exit 1件(WARN) |
+| #93 | FAIL (jaccard=0.905) | WARN | jaccard<0.95(WARN) + deep-review exit 3件(WARN) |
+
+4件とも HARD 条件は不成立（P14_MARKET_REFERENCE_SHORTLIST は 4件全てで
+base/perturbed完全一致 — membership/tier/order とも不変）。
+
+**CORPUS_EXPECTATION_MISMATCH = YES**: セクション17記載の provisional
+expectation（#90→WARN, #91→PASS, #92→WARN, #93→WARN）に対し、#91 のみ
+実際は WARN（旧 binary policy では見えなかった deep-review 1件exit を
+新 policy が正しく検出したため）。閾値のチューニングでこの不一致を
+解消してはいない — frozen policy をそのまま #90〜#93 の実 replay input へ
+適用した結果である。
+
+### §14 parser WARN compatibility
+
+`P-14` を `CANDIDATE_FUNNEL_QUALITY_GATE_WARN_ALLOWED_IDS` へ追加。既存の
+`P-03`/`P-09`/`P-15` の WARN 許可は不変。未許可 gate ID への WARN は引き続き
+reject。`P-14` の FAIL は `hardFailIds` 経由で引き続き fail-closed。
+
+### 検証
+
+- `tests/test_candidate_funnel_batch.py`: 103 passed（新規約 50件の
+  P14_D2 純粋関数テスト — Jaccard境界（0.95/0.80 exact boundary 含む）・
+  reference-order comparator parity（distinct/equal rank・artifactIndex
+  tie-break・null boundary・stable replay）・deep-review/actionable churn・
+  P14_MARKET_REFERENCE_SHORTLIST（membership/tier/order）・severity
+  precedence・evidence shape・determinism・non-regression を含む）
+- `tests/test_candidate_funnel_run_evidence.py`: 29 passed（reclassify_p14
+  独立性テスト含む）
+- `tests/test_candidate_funnel_order_invariance_adversarial.py`: 8 passed
+- `src/services/candidateFunnelParser.test.ts`: 68 passed（P-14 WARN
+  受理・FAIL fail-closed 含む）
+- `src/domain/candidates/candidatePortfolioRecommendation.test.ts`:
+  25 passed（production recommendation ordering は無変更のまま — parity
+  対象として再確認のみ）
+- `npx tsc --noEmit`: PASS
+- 既存の frozen assumption を持つテスト（旧 binary severity を前提にした
+  もの）は decision-aware policy へ整合するよう更新した
+  （`test_o1_p14_threshold_top40_and_hard_severity_are_unchanged` →
+  `test_o1_p14_frozen_metric_constants_are_unchanged` +
+  `test_p14_d2_hard_backstop_still_blocks_publish` +
+  `test_p14_d2_warn_status_does_not_block_publish` へ分割、
+  `test_p14_rank_stability_passes_with_calibration_fixture` →
+  `test_p14_rank_stability_top40_jaccard_is_perfect_with_calibration_fixture`
+  + `test_p14_d2_calibration_fixture_reports_decision_aware_deep_review_warn`
+  へ分割、`_install_deterministic_fail_fixture` を swap=2→5 へ拡張し
+  真の HARD backstop（jaccard<0.80）を再現するよう修正）。
+- `data/candidate_funnel_engine.py`（B1, frozen scoring/ranking authority）
+  の byte hash は本ticket開始時から不変であることを
+  `test_p14_engine_ranking_blob_is_unchanged_from_dev_base` で確認。
+- Full gates（R1 self-correction後、commit後の clean working tree で実行）:
+  `python3 -m pytest tests/` — **8 failed, 1868 passed, 8 skipped**。
+  失敗8件は本ticket開始前の`d7760c1`（EXPECTED_BASE_HEAD）でも同一に
+  失敗することを、変更ゼロの独立worktree（同commit checkout）で直接
+  再現・確認済み（本ticketとは無関係）: `.github/workflows/deploy.yml` /
+  `p14_evidence_capture.yml` の frozen byte-hash pin drift 7件（本ticketは
+  この2 workflow fileに一切触れていない）+
+  `test_control_checks_ctl01_to_ctl07`（このCI実行環境がPython 3.14の
+  ため、E4 replayのPython 3.11必須chainが構造的に評価不能 — pure
+  environment gate）。`npx vitest run` — **187 files / 4502 tests
+  passed**。`npx tsc --noEmit` — PASS、0 errors。`npm run build` — PASS
+  （171 modules、既知の>500kB chunk warningのみ）。
+  `git diff --check` / `git diff --cached --check` — PASS。

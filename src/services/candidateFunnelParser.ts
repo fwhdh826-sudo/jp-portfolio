@@ -61,9 +61,17 @@ const FORBIDDEN_KEYS: ReadonlySet<string> = new Set([
 // production backend authority（data/candidate_funnel_batch.py）がWARNを
 // 非blockingで出力するrequired gateだけを列挙する。WARNをstatus enumへ追加
 // しただけで、他のrequired/auxiliary gateへ許可範囲を広げない。
+//
+// P-14: OPS_P14_D2_RELEASE_METRIC_IMPLEMENTATION_R2（P14_RELEASE_POLICY_VERSION
+// ="p14-decision-aware-v1"）でdecision-aware gateへ移行し、top40 Jaccard<0.95
+// （hard backstop未満は除く）・deep-review exit>=1・actionable exit==2・
+// P14_MARKET_REFERENCE_SHORTLIST order-only変化をWARNとして非blockingに扱う。
+// FAILは引き続きfail-closed（hardFailIds経由でquality_gate_failedへ帰着する
+// ため、この許可setへ追加してもFAILの扱いは一切変わらない）。
 const CANDIDATE_FUNNEL_QUALITY_GATE_WARN_ALLOWED_IDS: ReadonlySet<string> = new Set([
   'P-03',
   'P-09',
+  'P-14',
   'P-15',
 ])
 

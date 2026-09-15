@@ -24,7 +24,11 @@ from data import p14_evidence_validate as validator
 from data import p14_legacy_replay as replay
 
 REPO = Path(__file__).parents[1]
-EXPECTED_REPLAY_MODULE_SHA256 = "86ca1e8ab261b0cddb7f1af1a91a5ca231fa5a95003c0fb1ea61de93366af76b"
+# OPS_P14_D2_RELEASE_METRIC_IMPLEMENTATION_R2: re-pinned to
+# data/p14_legacy_replay.py's current content (PRODUCTION_SOURCE_HASHES /
+# CURRENT_TOOLING_SOURCE_HASHES split; TOOLING_SOURCE_HASHES re-pin for
+# data/p14_evidence_validate.py's own re-pin — see handover.md).
+EXPECTED_REPLAY_MODULE_SHA256 = "499adf5585ae02eeaab8a99306cadfef0866d33e80dabb40c6ae62e49ad51231"
 _E1_ARCHIVE_ENV = "P14_E1_ARCHIVE"
 _E1_ARCHIVE_NAME = "p5-b005-c-p14-e1-evidence.tar.gz"
 _CANONICAL_AUDIT_ROOT_CANDIDATES = (
@@ -899,12 +903,17 @@ def test_delivered_commit_uses_base_pinned_replay_repository(replay_repositories
     # candidate_funnel_batch.py) are pinned against the tooling checkout.
     # data/build_candidates_stocks.py is intentionally excluded -- current
     # main's newer, non-executed builder must not be compared against the
-    # frozen historical target hash (P14-P3B).
+    # frozen historical target hash (P14-P3B). OPS_P14_D2_RELEASE_METRIC_
+    # IMPLEMENTATION_R2 legitimately diverged candidate_funnel_batch.py from
+    # the frozen historical target (release-evidence/gate only — see
+    # CURRENT_TOOLING_SOURCE_HASHES), so this checks the live tooling
+    # checkout against CURRENT_TOOLING_SOURCE_HASHES, not
+    # PRODUCTION_SOURCE_HASHES (the immutable historical target's hashes).
     assert {
         path: capture.sha256_file(REPO / path)
         for path in replay.CURRENT_TOOLING_PRODUCTION_SOURCES
     } == {
-        path: replay.PRODUCTION_SOURCE_HASHES[path]
+        path: replay.CURRENT_TOOLING_SOURCE_HASHES[path]
         for path in replay.CURRENT_TOOLING_PRODUCTION_SOURCES
     }
     assert {

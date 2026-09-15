@@ -703,11 +703,48 @@ def test_p13_detects_violation_via_direct_gate_call():
     assert _gate(report, "P-13")["status"] == "FAIL"
 
 
-def test_p14_rank_stability_passes_with_calibration_fixture(tmp_path):
-    _artifact, report = _run_calibration_batch(tmp_path)
+def test_p14_rank_stability_top40_jaccard_is_perfect_with_calibration_fixture(tmp_path):
+    """calibration fixtureのtop-40 Jaccardは±2% perturbationに対して完全
+    (1.0)で安定している（gate["value"]はP-14 gateの主表示値として引き続き
+    jaccardのfloatを保持する — decision-aware化でこの契約は変更しない）。"""
+    artifact, report = _run_calibration_batch(tmp_path)
     gate = _gate(report["qualityGate"], "P-14")
-    assert gate["status"] == "PASS"
     assert gate["value"] >= 0.95
+    assert artifact is not None
+    assert report["qualityGate"]["overallPass"] is True
+
+
+def test_p14_d2_calibration_fixture_reports_decision_aware_deep_review_warn(tmp_path):
+    """P14_D2: calibration fixtureは±2% perturbationの下でdeep-review tier
+    から1件exitする(A250) — 旧binary policyは jaccard(=1.0)しか見なかった
+    ためこの churn を可視化できなかった。新policyはこれをWARNとして
+    非blockingに表面化する(exit>=1はHARD閾値を持たない — INSUFFICIENT_
+    EVIDENCE_FOR_NUMERIC_FREEZE)。actionableは1件exit(閾値2未満)、
+    P14_MARKET_REFERENCE_SHORTLISTはbase/perturbedで完全に不変
+    (membership/tier/order変化なし) — WARNの原因はdeep-review churnのみ。"""
+    artifact, report = _run_calibration_batch(tmp_path)
+    gate = _gate(report["qualityGate"], "P-14")
+    assert gate["status"] == "WARN"
+    assert "P-14" not in report["qualityGate"]["hardFailIds"]
+    assert report["qualityGate"]["overallPass"] is True
+    assert artifact is not None
+
+    evidence = report["qualityGate"]["p14ReleaseEvidence"]
+    assert evidence["policyVersion"] == "p14-decision-aware-v1"
+    assert evidence["top40"]["jaccard"] == 1.0
+    assert evidence["final"]["status"] == "WARN"
+    assert evidence["final"]["hardReasons"] == []
+    assert evidence["final"]["warnReasons"] == ["DEEP_REVIEW_EXIT_WARN"]
+    assert evidence["deepReview"]["exitCount"] == 1
+    assert evidence["actionable"]["exitCount"] < batch.ACTIONABLE_PERTURBATION_EXIT_WARN_MIN
+    shortlist = evidence["marketReferenceShortlist"]
+    assert shortlist["membershipChanged"] is False
+    assert shortlist["tierChanged"] is False
+    assert shortlist["orderChanged"] is False
+    assert shortlist["base"] == shortlist["perturbed"]
+
+    artifact_gate = _gate(artifact["_meta"]["qualityGate"], "P-14")
+    assert artifact_gate["status"] == "WARN"
 
 
 def test_p15_no_baseline_records_none(tmp_path):
@@ -939,24 +976,66 @@ def test_o1_p14_per_roe_simultaneous_vector_and_two_percent_are_exact():
     assert batch.PERTURBATION_PCT == 0.02
 
 
-def test_o1_p14_threshold_top40_and_hard_severity_are_unchanged(
-    tmp_path, monkeypatch
-):
+def test_o1_p14_frozen_metric_constants_are_unchanged():
+    """OPS_P14_D2_RELEASE_METRIC_IMPLEMENTATION_R2: metric自体（jaccard
+    threshold値・top-K・perturbation率）は一切変更しない。D2が変更するのは
+    severity mapping（PASS/FAIL binary → PASS/WARN/FAIL decision-aware）
+    だけである。"""
     assert batch.RANK_STABILITY_JACCARD_MIN == 0.95
+    assert batch.RANK_STABILITY_JACCARD_WARN_MIN == 0.95
+    assert batch.RANK_STABILITY_JACCARD_HARD_MIN == 0.80
     assert batch.TOP_N_STABILITY == 40
     assert batch.PERTURBATION_PCT == 0.02
+
+
+def test_p14_d2_hard_backstop_still_blocks_publish(tmp_path, monkeypatch):
+    """P14_D2: compute_p14_release_evidence()がFAILを返せば、P-14は引き続き
+    hardFailIdsへ入りoverallPass=False・publishされない
+    （decision-aware gate導入後もfail-closed配線は維持される）。gate配線
+    のみを検証する単体テストであり、compute_p14_release_evidence自体の
+    判定ロジックはtest_p14_d2_*の純粋関数テストで独立に検証する。"""
     monkeypatch.setattr(
         batch,
-        "compute_rank_stability",
-        lambda joined_candidates, context, engine_result: (0.94, {}),
+        "compute_p14_release_evidence",
+        lambda engine_result, perturbed_result: {
+            "policyVersion": batch.P14_RELEASE_POLICY_VERSION,
+            "final": {
+                "status": "FAIL",
+                "hardReasons": ["TOP40_JACCARD_BELOW_HARD_MIN"],
+                "warnReasons": [],
+            },
+        },
     )
     artifact, report = _run_calibration_batch(tmp_path)
     gate = _gate(report["qualityGate"], "P-14")
     assert artifact is None
-    assert gate["threshold"] == ">= 0.95"
     assert gate["status"] == "FAIL"
     assert "P-14" in report["qualityGate"]["hardFailIds"]
     assert report["qualityGate"]["overallPass"] is False
+
+
+def test_p14_d2_warn_status_does_not_block_publish(tmp_path, monkeypatch):
+    """P14_D2 regression fix: 旧policyでは jaccard=0.94 (<0.95) が単独で
+    publishをblockしていた。新policyでは0.94はWARN帯（HARD backstop 0.80
+    未満ではない）なのでoverallPass/publishをblockしてはならない。"""
+    monkeypatch.setattr(
+        batch,
+        "compute_p14_release_evidence",
+        lambda engine_result, perturbed_result: {
+            "policyVersion": batch.P14_RELEASE_POLICY_VERSION,
+            "final": {
+                "status": "WARN",
+                "hardReasons": [],
+                "warnReasons": ["TOP40_JACCARD_BELOW_WARN_MIN"],
+            },
+        },
+    )
+    artifact, report = _run_calibration_batch(tmp_path)
+    gate = _gate(report["qualityGate"], "P-14")
+    assert artifact is not None
+    assert gate["status"] == "WARN"
+    assert "P-14" not in report["qualityGate"]["hardFailIds"]
+    assert report["qualityGate"]["overallPass"] is True
 
 
 def test_o1_p14_metadata_declares_exact_assignment_contract(tmp_path):
@@ -1011,3 +1090,572 @@ def test_o1_synthetic_fixture_is_separate_supporting_evidence_only():
     assert synthetic_fixture["fixtureVersion"] == "candidate-funnel-calibration-v2"
     assert "sourceEvidenceArchiveSha256" not in synthetic_fixture
     assert "snapshots" not in synthetic_fixture
+
+
+# ===========================================================================
+# OPS_P14_D2_RELEASE_METRIC_IMPLEMENTATION_R2: decision-aware P-14 release
+# gate（P14_RELEASE_POLICY_VERSION="p14-decision-aware-v1"）。
+#
+# これらは engine（B1, frozen）を一切呼び出さない純粋関数テストである
+# — compute_p14_release_evidence / build_market_reference_shortlist /
+# evaluate_market_reference_shortlist は engine_result 形状の read-only
+# dictだけを消費するため、最小限の合成candidate listで境界値を厳密に
+# 制御できる。P14_BOUNDARY=MARKET_FUNNEL_PERTURBATION_ROBUSTNESS:
+# holdings/cash/allocation/officialDecisionは一切参照しない。
+# ===========================================================================
+
+
+def _p14d2_population(codes, tier="screened", rank_offset=1):
+    """rank_offset起点の連番marketRankを割り当てたcandidate listを返す
+    （P14_D2純粋テスト専用fixture。compute_p14_release_evidence が読む
+    code/tier/marketRankのみを持つ最小限のengine_result形状）。"""
+    return [
+        {"code": code, "tier": tier, "marketRank": rank_offset + index}
+        for index, code in enumerate(codes)
+    ]
+
+
+def _p14d2_result(candidates):
+    return {"candidates": candidates}
+
+
+def _p14d2_jaccard_case(swap, population=40):
+    """base=population件（B1..Bn, tier=screened, rank 1..n）に対し、
+    末尾swap件をX1..Xswapへ置換したperturbedを返す。
+    intersection=population-swap, union=population+swap
+    （jaccard=(population-swap)/(population+swap)）となる、
+    §6.1のswap/jaccard例と一致する構成。"""
+    base_codes = [f"B{i:02d}" for i in range(1, population + 1)]
+    perturbed_codes = base_codes[: population - swap] + [f"X{i}" for i in range(1, swap + 1)]
+    base = _p14d2_result(_p14d2_population(base_codes))
+    perturbed = _p14d2_result(_p14d2_population(perturbed_codes))
+    return base, perturbed
+
+
+# ---------------------------------------------------------------------------
+# A. Top-40 Jaccard
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize(
+    "swap,expected_jaccard,expected_status",
+    [
+        (0, 1.0, "PASS"),
+        (1, 39 / 41, "PASS"),
+        (2, 38 / 42, "WARN"),
+        (4, 36 / 44, "WARN"),
+        (5, 35 / 45, "FAIL"),
+    ],
+)
+def test_p14_d2_jaccard_swap_matrix(swap, expected_jaccard, expected_status):
+    base, perturbed = _p14d2_jaccard_case(swap)
+    evidence = batch.compute_p14_release_evidence(base, perturbed)
+    assert evidence["top40"]["jaccard"] == pytest.approx(expected_jaccard)
+    assert evidence["top40"]["swapCount"] == swap
+    assert evidence["top40"]["intersection"] == sorted(f"B{i:02d}" for i in range(1, 40 - swap + 1))
+    assert len(evidence["top40"]["intersection"]) == 40 - swap
+    assert len(evidence["top40"]["union"]) == 40 + swap
+    assert evidence["final"]["status"] == expected_status
+
+
+def test_p14_d2_jaccard_exact_warn_boundary_is_pass():
+    """jaccard==0.95ちょうどはWARN側ではなくPASS側（strict '<' — WARNは
+    jaccard < 0.95のときのみ発火する）。"""
+    base = _p14d2_result(_p14d2_population([f"B{i:02d}" for i in range(1, 20)]))  # 19 codes, rank 1..19
+    perturbed = _p14d2_result(
+        _p14d2_population([f"B{i:02d}" for i in range(1, 20)] + ["X1"])
+    )  # same 19 + 1 new -> intersection=19, union=20
+    evidence = batch.compute_p14_release_evidence(base, perturbed)
+    assert evidence["top40"]["jaccard"] == pytest.approx(0.95)
+    assert evidence["final"]["status"] == "PASS"
+    assert evidence["final"]["hardReasons"] == []
+    assert evidence["final"]["warnReasons"] == []
+
+
+def test_p14_d2_jaccard_exact_hard_boundary_is_warn_not_fail():
+    """jaccard==0.80ちょうどはHARD側ではなくWARN側（strict '<' — HARDは
+    jaccard < 0.80のときのみ発火する）。"""
+    base_codes = [f"B{i:02d}" for i in range(1, 17)] + ["A1", "A2"]  # 16 shared + 2 base-only
+    perturbed_codes = [f"B{i:02d}" for i in range(1, 17)] + ["C1", "C2"]  # 16 shared + 2 perturbed-only
+    base = _p14d2_result(_p14d2_population(base_codes))
+    perturbed = _p14d2_result(_p14d2_population(perturbed_codes))
+    evidence = batch.compute_p14_release_evidence(base, perturbed)
+    assert evidence["top40"]["jaccard"] == pytest.approx(0.80)
+    assert evidence["final"]["status"] == "WARN"
+    assert evidence["final"]["hardReasons"] == []
+    assert "TOP40_JACCARD_BELOW_WARN_MIN" in evidence["final"]["warnReasons"]
+
+
+def test_p14_d2_jaccard_below_hard_min_is_fail():
+    base_codes = [f"B{i:02d}" for i in range(1, 11)]  # 10 codes
+    perturbed_codes = ["X1", "X2", "X3", "X4", "X5", "X6"]  # fully disjoint
+    base = _p14d2_result(_p14d2_population(base_codes))
+    perturbed = _p14d2_result(_p14d2_population(perturbed_codes))
+    evidence = batch.compute_p14_release_evidence(base, perturbed)
+    assert evidence["top40"]["jaccard"] == 0.0
+    assert evidence["final"]["status"] == "FAIL"
+    assert "TOP40_JACCARD_BELOW_HARD_MIN" in evidence["final"]["hardReasons"]
+
+
+def test_p14_d2_top40_retention_is_record_only_not_a_duplicate_hard_gate():
+    """§6.2: retentionはRECORD_ONLY。jaccardと重複するhard gateにしない
+    （final.hardReasons/warnReasonsにretention由来のentryが無いこと）。"""
+    base, perturbed = _p14d2_jaccard_case(swap=2)
+    evidence = batch.compute_p14_release_evidence(base, perturbed)
+    assert evidence["top40"]["retention"] == pytest.approx(38 / 40)
+    assert all("RETENTION" not in reason for reason in evidence["final"]["hardReasons"])
+    assert all("RETENTION" not in reason for reason in evidence["final"]["warnReasons"])
+
+
+# ---------------------------------------------------------------------------
+# B. Deep-review churn
+# ---------------------------------------------------------------------------
+
+
+def _p14d2_churn_population(deep_review_codes=(), actionable_codes=(), screened_codes=()):
+    candidates = []
+    rank = 1
+    for code in deep_review_codes:
+        candidates.append({"code": code, "tier": "deep_review", "marketRank": rank})
+        rank += 1
+    for code in actionable_codes:
+        candidates.append({"code": code, "tier": "actionable", "marketRank": rank})
+        rank += 1
+    for code in screened_codes:
+        candidates.append({"code": code, "tier": "screened", "marketRank": rank})
+        rank += 1
+    return _p14d2_result(candidates)
+
+
+_P14D2_NEUTRAL_JACCARD_FILLERS = [
+    {"code": f"NEUTRAL{i:02d}", "tier": "screened", "marketRank": i} for i in range(1, 41)
+]  # 40件、rank 1..40固定・base/perturbed不変 -> top-40 Jaccardを常に1.0で飽和させる
+
+_P14D2_SHORTLIST_STABLE_FILLERS = [
+    {"code": f"FILLER{i}", "tier": "actionable", "marketRank": 1000 + i} for i in range(1, 4)
+]  # 3件、rank 1000-1002固定・base/perturbed不変 -> reference shortlist top-3を常に飽和させる
+
+
+def _p14d2_isolated_churn_population(deep_review_codes=(), actionable_codes=(), screened_codes=()):
+    """§19.B/Cの churn-only テスト専用。以下2種のfillerで
+    top40 Jaccard と P14_MARKET_REFERENCE_SHORTLIST(N=3) の両方を飽和させ、
+    churn対象のcode（rank>=1100、top-40窓の外・shortlist上位3件の外）が
+    それらを意図せず汚染しないよう分離する:
+      * 40件の不変screened filler（rank 1-40）が top-40 windowを常に
+        埋め、churn対象codeの出入りがtop40 Jaccardへ一切影響しない。
+      * 3件の不変actionable filler（rank 1000-1002）が
+        P14_MARKET_REFERENCE_SHORTLIST top-3を常に占有し、churn対象code
+        の出入りがshortlist membership/tier/orderへ一切影響しない。"""
+    candidates = list(_P14D2_NEUTRAL_JACCARD_FILLERS) + list(_P14D2_SHORTLIST_STABLE_FILLERS)
+    rank = 1100
+    for code in deep_review_codes:
+        candidates.append({"code": code, "tier": "deep_review", "marketRank": rank})
+        rank += 1
+    for code in actionable_codes:
+        candidates.append({"code": code, "tier": "actionable", "marketRank": rank})
+        rank += 1
+    for code in screened_codes:
+        candidates.append({"code": code, "tier": "screened", "marketRank": rank})
+        rank += 1
+    return _p14d2_result(candidates)
+
+
+def test_p14_d2_deep_review_zero_exit_no_warn():
+    base = _p14d2_churn_population(deep_review_codes=["D1", "D2"])
+    perturbed = _p14d2_churn_population(deep_review_codes=["D1", "D2"])
+    evidence = batch.compute_p14_release_evidence(base, perturbed)
+    assert evidence["deepReview"]["exitCount"] == 0
+    assert evidence["deepReview"]["exited"] == []
+    assert "DEEP_REVIEW_EXIT_WARN" not in evidence["final"]["warnReasons"]
+    assert evidence["final"]["status"] == "PASS"
+
+
+def test_p14_d2_deep_review_one_exit_is_warn():
+    base = _p14d2_isolated_churn_population(deep_review_codes=["D1", "D2"])
+    perturbed = _p14d2_isolated_churn_population(deep_review_codes=["D1"])  # D2 exited
+    evidence = batch.compute_p14_release_evidence(base, perturbed)
+    assert evidence["deepReview"]["exitCount"] == 1
+    assert evidence["deepReview"]["exited"] == ["D2"]
+    assert evidence["marketReferenceShortlist"]["membershipChanged"] is False
+    assert evidence["final"]["status"] == "WARN"
+    assert "DEEP_REVIEW_EXIT_WARN" in evidence["final"]["warnReasons"]
+    assert evidence["final"]["hardReasons"] == []
+
+
+def test_p14_d2_deep_review_multiple_exits_stay_warn_no_invented_hard_threshold():
+    """A2-S/D2 freeze: INSUFFICIENT_EVIDENCE_FOR_NUMERIC_FREEZE — deep-review
+    churnにHARD閾値は存在しない。exit>=1は件数によらず常にWARNのみ。"""
+    base = _p14d2_isolated_churn_population(deep_review_codes=["D1", "D2", "D3", "D4", "D5"])
+    perturbed = _p14d2_isolated_churn_population(deep_review_codes=[])  # all 5 exited
+    evidence = batch.compute_p14_release_evidence(base, perturbed)
+    assert evidence["deepReview"]["exitCount"] == 5
+    assert evidence["marketReferenceShortlist"]["membershipChanged"] is False
+    assert evidence["final"]["status"] == "WARN"
+    assert evidence["final"]["hardReasons"] == []
+    assert "DEEP_REVIEW_EXIT_WARN" in evidence["final"]["warnReasons"]
+
+
+# ---------------------------------------------------------------------------
+# C. Actionable churn
+# ---------------------------------------------------------------------------
+
+
+def test_p14_d2_actionable_one_exit_no_actionable_specific_warn():
+    base = _p14d2_isolated_churn_population(actionable_codes=["A1", "A2"])
+    perturbed = _p14d2_isolated_churn_population(actionable_codes=["A1"])  # 1 exit
+    evidence = batch.compute_p14_release_evidence(base, perturbed)
+    assert evidence["actionable"]["exitCount"] == 1
+    assert evidence["marketReferenceShortlist"]["membershipChanged"] is False
+    assert evidence["final"]["status"] == "PASS"
+    assert evidence["final"]["hardReasons"] == []
+    assert evidence["final"]["warnReasons"] == []
+
+
+def test_p14_d2_actionable_two_exits_is_warn():
+    base = _p14d2_isolated_churn_population(actionable_codes=["A1", "A2", "A3"])
+    perturbed = _p14d2_isolated_churn_population(actionable_codes=["A1"])  # 2 exits
+    evidence = batch.compute_p14_release_evidence(base, perturbed)
+    assert evidence["actionable"]["exitCount"] == 2
+    assert evidence["marketReferenceShortlist"]["membershipChanged"] is False
+    assert evidence["final"]["status"] == "WARN"
+    assert "ACTIONABLE_EXIT_WARN" in evidence["final"]["warnReasons"]
+    assert evidence["final"]["hardReasons"] == []
+
+
+def test_p14_d2_actionable_three_exits_is_fail():
+    base = _p14d2_churn_population(actionable_codes=["A1", "A2", "A3", "A4"])
+    perturbed = _p14d2_churn_population(actionable_codes=["A1"])  # 3 exits
+    evidence = batch.compute_p14_release_evidence(base, perturbed)
+    assert evidence["actionable"]["exitCount"] == 3
+    assert evidence["final"]["status"] == "FAIL"
+    assert "ACTIONABLE_EXIT_HARD" in evidence["final"]["hardReasons"]
+
+
+def test_p14_d2_actionable_more_than_three_exits_stays_fail():
+    base = _p14d2_churn_population(actionable_codes=["A1", "A2", "A3", "A4", "A5", "A6"])
+    perturbed = _p14d2_churn_population(actionable_codes=[])  # 6 exits
+    evidence = batch.compute_p14_release_evidence(base, perturbed)
+    assert evidence["actionable"]["exitCount"] == 6
+    assert evidence["final"]["status"] == "FAIL"
+    assert "ACTIONABLE_EXIT_HARD" in evidence["final"]["hardReasons"]
+
+
+# ---------------------------------------------------------------------------
+# D. P14_MARKET_REFERENCE_SHORTLIST
+# ---------------------------------------------------------------------------
+
+
+def test_p14_d2_market_reference_shortlist_name_and_n_and_holdings_independence():
+    assert batch.P14_MARKET_REFERENCE_SHORTLIST_NAME == "P14_MARKET_REFERENCE_SHORTLIST"
+    assert batch.P14_MARKET_REFERENCE_SHORTLIST_N == 3
+    result = _p14d2_churn_population(
+        deep_review_codes=["D1"], actionable_codes=["A1", "A2"]
+    )
+    shortlist = batch.build_market_reference_shortlist(result)
+    assert len(shortlist) == 3
+    # holdings/cash/allocation/officialDecisionを一切参照しない — result
+    # dictにそれらのkeyが存在しなくてもエラーなく評価できることそのものが
+    # holdings非依存性のevidenceである。
+    assert "holdings" not in result and "cash" not in result and "officialDecision" not in result
+
+
+def test_p14_d2_market_reference_shortlist_eligibility_requires_tier_and_valid_rank():
+    result = _p14d2_result(
+        [
+            {"code": "D1", "tier": "deep_review", "marketRank": 1},
+            {"code": "A1", "tier": "actionable", "marketRank": 2},
+            {"code": "S1", "tier": "screened", "marketRank": 3},  # wrong tier
+            {"code": "X1", "tier": "actionable", "marketRank": None},  # invalid rank
+            {"code": "X2", "tier": "excluded", "marketRank": 4},  # wrong tier
+        ]
+    )
+    shortlist = batch.build_market_reference_shortlist(result)
+    assert {e["code"] for e in shortlist} == {"D1", "A1"}
+
+
+def test_p14_d2_market_reference_shortlist_unchanged_ordered_list_is_pass():
+    result = _p14d2_churn_population(deep_review_codes=["D1"], actionable_codes=["A1", "A2"])
+    evidence = batch.compute_p14_release_evidence(result, result)
+    shortlist = evidence["marketReferenceShortlist"]
+    assert shortlist["base"] == shortlist["perturbed"]
+    assert shortlist["membershipChanged"] is False
+    assert shortlist["tierChanged"] is False
+    assert shortlist["orderChanged"] is False
+    assert evidence["final"]["status"] == "PASS"
+
+
+def test_p14_d2_market_reference_shortlist_code_replacement_is_fail():
+    base = _p14d2_churn_population(actionable_codes=["A1", "A2", "A3"])
+    perturbed = _p14d2_churn_population(actionable_codes=["A1", "A2", "A4"])  # A3 -> A4
+    evidence = batch.compute_p14_release_evidence(base, perturbed)
+    assert evidence["marketReferenceShortlist"]["membershipChanged"] is True
+    assert evidence["final"]["status"] == "FAIL"
+    assert "MARKET_REFERENCE_SHORTLIST_MEMBERSHIP_CHANGED" in evidence["final"]["hardReasons"]
+
+
+def test_p14_d2_market_reference_shortlist_tier_change_is_fail():
+    base = _p14d2_result([{"code": "A1", "tier": "deep_review", "marketRank": 1}])
+    perturbed = _p14d2_result([{"code": "A1", "tier": "actionable", "marketRank": 1}])
+    evidence = batch.compute_p14_release_evidence(base, perturbed)
+    assert evidence["marketReferenceShortlist"]["membershipChanged"] is False
+    assert evidence["marketReferenceShortlist"]["tierChanged"] is True
+    assert evidence["final"]["status"] == "FAIL"
+    assert "MARKET_REFERENCE_SHORTLIST_MEMBERSHIP_CHANGED" in evidence["final"]["hardReasons"]
+
+
+def test_p14_d2_market_reference_shortlist_order_only_change_is_warn():
+    base = _p14d2_result(
+        [
+            {"code": "A1", "tier": "actionable", "marketRank": 1},
+            {"code": "A2", "tier": "actionable", "marketRank": 2},
+        ]
+    )
+    perturbed = _p14d2_result(
+        [
+            {"code": "A1", "tier": "actionable", "marketRank": 2},
+            {"code": "A2", "tier": "actionable", "marketRank": 1},
+        ]
+    )
+    evidence = batch.compute_p14_release_evidence(base, perturbed)
+    shortlist = evidence["marketReferenceShortlist"]
+    assert shortlist["membershipChanged"] is False
+    assert shortlist["tierChanged"] is False
+    assert shortlist["orderChanged"] is True
+    assert evidence["final"]["status"] == "WARN"
+    assert "MARKET_REFERENCE_SHORTLIST_ORDER_CHANGED" in evidence["final"]["warnReasons"]
+
+
+def test_p14_d2_market_reference_shortlist_n_is_deterministic_3():
+    result = _p14d2_churn_population(
+        deep_review_codes=["D1", "D2"], actionable_codes=["A1", "A2", "A3"]
+    )
+    shortlist = batch.build_market_reference_shortlist(result)
+    assert len(shortlist) == 3
+    # rank 1..5 (D1=1, D2=2, A1=3, A2=4, A3=5) -> top 3 by marketRank ascending
+    assert [e["code"] for e in shortlist] == ["D1", "D2", "A1"]
+
+
+# ---------------------------------------------------------------------------
+# D-parity. §13 REFERENCE_ORDER_PARITY — comparator semantics must mirror
+# src/domain/candidates/candidatePortfolioRecommendation.ts compareCandidateOrder
+# exactly: 1) marketRank ascending 2) null rank last 3) artifactIndex
+# ascending tie-break. These cases specifically distinguish marketRank as
+# the PRIMARY key from artifactIndex as only the tie-break (a mutation that
+# swaps their precedence must fail here even when it happens to agree with
+# the simpler monotonic n_is_deterministic_3 case above).
+# ---------------------------------------------------------------------------
+
+
+def test_p14_d2_reference_order_parity_distinct_market_ranks():
+    """marketRankが唯一の差別化要因のとき、artifactIndexの並び順とは無関係
+    にmarketRank昇順で並ぶ。"""
+    result = _p14d2_result(
+        [
+            {"code": "LOW_IDX_HIGH_RANK", "tier": "actionable", "marketRank": 3},
+            {"code": "HIGH_IDX_LOW_RANK", "tier": "actionable", "marketRank": 1},
+            {"code": "MID", "tier": "actionable", "marketRank": 2},
+        ]
+    )
+    shortlist = batch.build_market_reference_shortlist(result)
+    # artifactIndex order is [0,1,2] but marketRank order must win:
+    # HIGH_IDX_LOW_RANK(rank1, idx1) < MID(rank2, idx2) < LOW_IDX_HIGH_RANK(rank3, idx0)
+    assert [e["code"] for e in shortlist] == ["HIGH_IDX_LOW_RANK", "MID", "LOW_IDX_HIGH_RANK"]
+
+
+def test_p14_d2_reference_order_parity_equal_market_ranks_use_artifact_index_tie_break():
+    """marketRankが同点のとき、artifactIndex昇順（=engine_result['candidates']
+    の配列位置、production artifact.candidatesの配列位置と厳密に一致）が
+    tie-breakとして使われる。"""
+    result = _p14d2_result(
+        [
+            {"code": "FIRST", "tier": "actionable", "marketRank": 1},  # artifactIndex 0
+            {"code": "SECOND", "tier": "actionable", "marketRank": 1},  # artifactIndex 1
+            {"code": "THIRD", "tier": "actionable", "marketRank": 1},  # artifactIndex 2
+        ]
+    )
+    shortlist = batch.build_market_reference_shortlist(result)
+    assert [e["code"] for e in shortlist] == ["FIRST", "SECOND", "THIRD"]
+
+
+def test_p14_d2_reference_order_parity_null_rank_excluded_at_comparator_boundary():
+    """P14_MARKET_REFERENCE_SHORTLISTのeligibilityはvalid positive rankを
+    要求するため、null rankのcandidateは母集団に入らない（comparator自体は
+    section13のparity要件通りnullをlast扱いする一般形だが、eligibility
+    filterにより本番の母集団へnullが到達することはない）。"""
+    result = _p14d2_result(
+        [
+            {"code": "VALID", "tier": "actionable", "marketRank": 1},
+            {"code": "NULL_RANK", "tier": "actionable", "marketRank": None},
+        ]
+    )
+    shortlist = batch.build_market_reference_shortlist(result)
+    assert [e["code"] for e in shortlist] == ["VALID"]
+
+
+def test_p14_d2_reference_order_parity_comparator_function_handles_null_generically():
+    """_reference_shortlist_sort_keyそのもの（eligibility filterを経由しない
+    純粋なcomparator）はnull rankをlast扱いする — TSのcompareCandidateOrder
+    と同じ一般形であることを直接証明する。"""
+    entries = [
+        {"code": "NULL1", "marketRank": None, "artifactIndex": 0},
+        {"code": "RANKED", "marketRank": 5, "artifactIndex": 1},
+        {"code": "NULL2", "marketRank": None, "artifactIndex": 2},
+    ]
+    ordered = sorted(entries, key=batch._reference_shortlist_sort_key)
+    assert [e["code"] for e in ordered] == ["RANKED", "NULL1", "NULL2"]
+
+
+def test_p14_d2_reference_order_parity_stable_deterministic_replay():
+    result = _p14d2_churn_population(
+        deep_review_codes=["D1", "D2"], actionable_codes=["A1", "A2", "A3"]
+    )
+    first = batch.build_market_reference_shortlist(result)
+    second = batch.build_market_reference_shortlist(result)
+    assert first == second
+
+
+# ---------------------------------------------------------------------------
+# E. Severity precedence
+# ---------------------------------------------------------------------------
+
+
+def test_p14_d2_severity_pass_only():
+    base, perturbed = _p14d2_jaccard_case(swap=0)
+    evidence = batch.compute_p14_release_evidence(base, perturbed)
+    assert evidence["final"]["status"] == "PASS"
+
+
+def test_p14_d2_severity_warn_only():
+    base, perturbed = _p14d2_jaccard_case(swap=2)
+    evidence = batch.compute_p14_release_evidence(base, perturbed)
+    assert evidence["final"]["status"] == "WARN"
+
+
+def test_p14_d2_severity_multiple_warn_stays_warn():
+    """top40 jaccard WARN と deep-review exit WARN を同時に成立させる。
+    deep-reviewのfiller(F1-F3)をD1より上位rankへ置き、reference shortlist
+    top-3の外側(rank>=1000、top-40 windowの外)でD1だけが退出するように
+    構成し、reference shortlistとjaccardのHARD条件を意図せず誘発しない
+    ようcode空間を完全に分離する。"""
+    screened_base = [{"code": f"B{i:02d}", "tier": "screened", "marketRank": i} for i in range(1, 41)]
+    screened_perturbed = [
+        {"code": f"B{i:02d}", "tier": "screened", "marketRank": i} for i in range(1, 39)
+    ] + [{"code": "X1", "tier": "screened", "marketRank": 39}, {"code": "X2", "tier": "screened", "marketRank": 40}]
+    fillers = [{"code": f"F{i}", "tier": "deep_review", "marketRank": 999 + i} for i in range(1, 4)]
+    base = _p14d2_result(screened_base + fillers + [{"code": "D1", "tier": "deep_review", "marketRank": 1003}])
+    perturbed = _p14d2_result(screened_perturbed + fillers)  # D1 exited
+    evidence = batch.compute_p14_release_evidence(base, perturbed)
+    assert "TOP40_JACCARD_BELOW_WARN_MIN" in evidence["final"]["warnReasons"]
+    assert "DEEP_REVIEW_EXIT_WARN" in evidence["final"]["warnReasons"]
+    assert evidence["marketReferenceShortlist"]["membershipChanged"] is False
+    assert len(evidence["final"]["warnReasons"]) >= 2
+    assert evidence["final"]["hardReasons"] == []
+    assert evidence["final"]["status"] == "WARN"
+
+
+def test_p14_d2_severity_warn_plus_hard_is_fail():
+    """WARNがFAILを上書きしてはならない（§7 — 複数WARN条件が同時に成立
+    していても、1つでもHARDが成立すればFAILが優先される）。deep-review/
+    actionable churnのcodeをtop-40 window外（rank>=1000）へ配置し、jaccard
+    （top-40窓）への意図しない副作用（rank shiftによるswap数の汚染）を
+    避ける。"""
+    screened_base = [{"code": f"B{i:02d}", "tier": "screened", "marketRank": i} for i in range(1, 41)]
+    screened_perturbed = [
+        {"code": f"B{i:02d}", "tier": "screened", "marketRank": i} for i in range(1, 39)
+    ] + [{"code": "X1", "tier": "screened", "marketRank": 39}, {"code": "X2", "tier": "screened", "marketRank": 40}]
+    base = _p14d2_result(
+        screened_base
+        + [{"code": "D1", "tier": "deep_review", "marketRank": 1000}]
+        + [{"code": f"A{i}", "tier": "actionable", "marketRank": 1000 + i} for i in range(1, 5)]
+    )
+    perturbed = _p14d2_result(screened_perturbed)  # D1 + all 4 actionable exited
+    evidence = batch.compute_p14_release_evidence(base, perturbed)
+    assert "DEEP_REVIEW_EXIT_WARN" in evidence["final"]["warnReasons"]
+    assert "TOP40_JACCARD_BELOW_WARN_MIN" in evidence["final"]["warnReasons"]
+    assert "ACTIONABLE_EXIT_HARD" in evidence["final"]["hardReasons"]
+    assert evidence["final"]["status"] == "FAIL"
+
+
+def test_p14_d2_severity_multiple_hard_stays_fail():
+    """actionable exit>=3(HARD)とreference shortlist membership変化(HARD)
+    が同時に成立するケース — 4件のactionableが全滅すれば、top-3 reference
+    shortlistのmembershipも必然的に変化する（両方が独立にhardReasonsへ
+    記録され、複数HARDでもFAILのまま — WARNへ弱まらないことを保証する）。"""
+    base = _p14d2_churn_population(actionable_codes=["A1", "A2", "A3", "A4"])
+    perturbed = _p14d2_churn_population(actionable_codes=[])
+    evidence = batch.compute_p14_release_evidence(base, perturbed)
+    assert evidence["actionable"]["exitCount"] == 4
+    assert "ACTIONABLE_EXIT_HARD" in evidence["final"]["hardReasons"]
+    assert "MARKET_REFERENCE_SHORTLIST_MEMBERSHIP_CHANGED" in evidence["final"]["hardReasons"]
+    assert len(evidence["final"]["hardReasons"]) >= 2
+    assert evidence["final"]["status"] == "FAIL"
+
+
+# ---------------------------------------------------------------------------
+# G. Evidence shape
+# ---------------------------------------------------------------------------
+
+
+def test_p14_d2_evidence_composite_fields_present():
+    base, perturbed = _p14d2_jaccard_case(swap=1)
+    evidence = batch.compute_p14_release_evidence(base, perturbed)
+    assert evidence["policyVersion"] == "p14-decision-aware-v1"
+    assert evidence["policyVersion"] == batch.P14_RELEASE_POLICY_VERSION
+    assert evidence["p14ProvesOfficialDecisionStability"] is False
+    for key in ("intersection", "union", "retention", "swapCount", "jaccard", "warnThreshold", "hardThreshold"):
+        assert key in evidence["top40"]
+    for key in ("baseCodes", "perturbedCodes", "entered", "exited", "exitCount"):
+        assert key in evidence["deepReview"]
+    for key in ("baseCodes", "perturbedCodes", "entered", "exited", "exitCount", "warnThreshold", "hardThreshold"):
+        assert key in evidence["actionable"]
+    shortlist = evidence["marketReferenceShortlist"]
+    assert shortlist["name"] == "P14_MARKET_REFERENCE_SHORTLIST"
+    assert shortlist["holdingsDependent"] is False
+    assert shortlist["n"] == 3
+    for key in ("status", "hardReasons", "warnReasons"):
+        assert key in evidence["final"]
+
+
+def test_p14_d2_evidence_reasons_are_machine_readable_and_reproducible():
+    base, perturbed = _p14d2_jaccard_case(swap=5)
+    evidence1 = batch.compute_p14_release_evidence(base, perturbed)
+    evidence2 = batch.compute_p14_release_evidence(base, perturbed)
+    assert evidence1 == evidence2
+    assert all(isinstance(r, str) for r in evidence1["final"]["hardReasons"])
+
+
+# ---------------------------------------------------------------------------
+# I. Determinism / J. Non-regression
+# ---------------------------------------------------------------------------
+
+
+def test_p14_d2_determinism_same_input_twice_identical_evidence():
+    base, perturbed = _p14d2_jaccard_case(swap=2)
+    first = batch.compute_p14_release_evidence(base, perturbed)
+    second = batch.compute_p14_release_evidence(base, perturbed)
+    assert first == second
+    assert json.dumps(first, sort_keys=True) == json.dumps(second, sort_keys=True)
+
+
+def test_p14_d2_does_not_mutate_engine_or_perturbed_results():
+    base, perturbed = _p14d2_jaccard_case(swap=2)
+    base_before = copy.deepcopy(base)
+    perturbed_before = copy.deepcopy(perturbed)
+    batch.compute_p14_release_evidence(base, perturbed)
+    assert base == base_before
+    assert perturbed == perturbed_before
+
+
+def test_p14_d2_calibration_fixture_rank_vectors_unchanged_by_evidence_computation(tmp_path):
+    """SCORING_CHANGED=NO / ENGINE_RANKING_CHANGED=NO: compute_p14_release_evidence
+    を呼び出す前後でengine_result['candidates']（rank vector）が完全に
+    element-identicalであること。"""
+    stripped_candidates, prescreen_entries = _calibration_split(canonical_p14_order=True)
+    index, dup = batch.build_prescreen_index(_prescreen_payload(prescreen_entries))
+    joined, join_stats = batch.join_candidates_with_prescreen(stripped_candidates, index)
+    context = batch.build_context(_candidates_stocks_payload(stripped_candidates), "bull_calm", NOW)
+    engine_result = batch.build_candidate_funnel(joined, context)
+    before = copy.deepcopy(engine_result["candidates"])
+    jaccard, perturbed_result = batch.compute_rank_stability(joined, context, engine_result)
+    batch.compute_p14_release_evidence(engine_result, perturbed_result)
+    assert engine_result["candidates"] == before

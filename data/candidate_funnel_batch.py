@@ -87,6 +87,30 @@ P14_ASSIGNMENT_NOTE = (
     "invalid-or-duplicate-identities-do-not-consume-ordinal"
 )
 
+# ---------------------------------------------------------------------------
+# OPS_P14_D2_RELEASE_METRIC_IMPLEMENTATION_R2: decision-aware P-14 release
+# gate（frozen — A2-S 禁止36と同じ規律で緩和しない）。
+#
+# 責務境界（P14_BOUNDARY=MARKET_FUNNEL_PERTURBATION_ROBUSTNESS）: これは
+# 同一market input + 決定的±2% PER/ROE perturbationに対するmarket/funnel
+# 段階のrobustness評価であり、保有銘柄を考慮したofficialDecisionの安定性
+# 証明ではない（P14_PROVES_OFFICIAL_DECISION_STABILITY=false）。保有銘柄を
+# 考慮した安定性はdownstream（実portfolio + P5-B005 E2E受け入れ）の責務。
+#
+# RANK_STABILITY_JACCARD_MIN（既存frozen 0.95）はp14Parameters["threshold"]
+# として複数のevidence/validate契約から参照され続けるため名前を変更しない。
+# 新policyのWARN閾値は同じ値のaliasとして公開する。
+# ---------------------------------------------------------------------------
+
+P14_RELEASE_POLICY_VERSION = "p14-decision-aware-v1"
+RANK_STABILITY_JACCARD_WARN_MIN = RANK_STABILITY_JACCARD_MIN  # == 0.95（既存frozen threshold のalias）
+RANK_STABILITY_JACCARD_HARD_MIN = 0.80
+ACTIONABLE_PERTURBATION_EXIT_WARN_MIN = 2
+ACTIONABLE_PERTURBATION_EXIT_HARD_MIN = 3
+P14_MARKET_REFERENCE_SHORTLIST_NAME = "P14_MARKET_REFERENCE_SHORTLIST"
+P14_MARKET_REFERENCE_SHORTLIST_N = 3
+P14_MARKET_REFERENCE_SHORTLIST_TIERS: tuple[str, ...] = ("deep_review", "actionable")
+
 # A2-S §25.6: v1では構造的に発火しないはずのSOFT reason（新規/一部を除く）。
 # index対応: SOFT_DEEP_DRAWDOWN(2) / SOFT_WEAK_TREND(3) / SOFT_THEME_CROWDING(5) /
 # SOFT_PORTFOLIO_OVERLAP(8) — engineのdocstringで "v1 inactive" と明記されている4件。
@@ -484,6 +508,210 @@ def _jaccard(a: set[str], b: set[str]) -> float:
     return len(a & b) / len(union)
 
 
+def _tier_codes(result: dict[str, Any], tier: str) -> set[str]:
+    """resultのcandidatesからtierが一致するcode集合を返す（engine出力
+    positional array — index/順序はここでは無視する。valid unique code
+    のみを対象とする、invalid/duplicate identityはP-04/O1契約でfail-closed
+    に扱われるためここでは単純にcode文字列で集合化する）。"""
+    return {
+        c.get("code")
+        for c in result.get("candidates", [])
+        if isinstance(c, dict) and c.get("tier") == tier and isinstance(c.get("code"), str) and c.get("code")
+    }
+
+
+def _market_reference_shortlist_entries(result: dict[str, Any]) -> list[dict[str, Any]]:
+    """P14_MARKET_REFERENCE_SHORTLIST母集団: tier∈{deep_review,actionable}
+    かつmarketRankがvalid positive rankのcandidateのみ（保有銘柄/口座/
+    allocation状態は一切参照しない — market/funnel段階のみ）。
+    artifactIndexはengine_result['candidates']の配列位置（=publishされる
+    artifact.candidatesの配列位置と厳密に一致する。build_artifact_payload
+    はengine_result['candidates']をそのまま公開するため、この位置対応が
+    唯一のauthoritative artifactIndexであり、
+    src/domain/candidates/candidatePortfolioRecommendation.ts の
+    buildCandidateAllocationInputs/composeCandidatePortfolioRecommendations
+    が使うartifactIndex（input.artifact.candidatesの配列位置）と厳密にparity
+    する）。"""
+    entries: list[dict[str, Any]] = []
+    for artifact_index, c in enumerate(result.get("candidates", [])):
+        if not isinstance(c, dict):
+            continue
+        tier = c.get("tier")
+        if tier not in P14_MARKET_REFERENCE_SHORTLIST_TIERS:
+            continue
+        code = c.get("code")
+        if not isinstance(code, str) or code == "":
+            continue
+        rank = c.get("marketRank")
+        if not (isinstance(rank, int) and not isinstance(rank, bool) and rank > 0):
+            continue
+        entries.append({"code": code, "tier": tier, "marketRank": rank, "artifactIndex": artifact_index})
+    return entries
+
+
+def _reference_shortlist_sort_key(entry: dict[str, Any]) -> tuple[int, int, int]:
+    """src/domain/candidates/candidatePortfolioRecommendation.ts の
+    compareCandidateOrder と厳密にparityする比較 key。
+    1) marketRank昇順  2) null rank最後（本関数へ渡るentryは既にvalid
+    positive rankのみだが、比較semantics自体はnullを許容する一般形として
+    実装しparity testの対象にする） 3) artifactIndex昇順tie-break。"""
+    rank = entry.get("marketRank")
+    if rank is None:
+        return (1, 0, entry["artifactIndex"])
+    return (0, rank, entry["artifactIndex"])
+
+
+def build_market_reference_shortlist(
+    result: dict[str, Any], n: int = P14_MARKET_REFERENCE_SHORTLIST_N
+) -> list[dict[str, Any]]:
+    """P14_MARKET_REFERENCE_SHORTLIST: holdings非依存・market/funnel段階の
+    perturbation robustness proxy。officialDecision/production shortlist/
+    保有銘柄を考慮した推奨ではない
+    （P14_PROVES_OFFICIAL_DECISION_STABILITY=false）。"""
+    entries = _market_reference_shortlist_entries(result)
+    entries.sort(key=_reference_shortlist_sort_key)
+    return entries[:n]
+
+
+def evaluate_market_reference_shortlist(
+    base_entries: list[dict[str, Any]], perturbed_entries: list[dict[str, Any]]
+) -> dict[str, bool]:
+    """base/perturbed両方のP14_MARKET_REFERENCE_SHORTLISTを比較する。
+    (code,tier) membership setが変化すればHARD、setが同一でtierが変化
+    すればHARD、setもtierも同一でorderのみ変化すればWARN。"""
+    base_codes = [e["code"] for e in base_entries]
+    perturbed_codes = [e["code"] for e in perturbed_entries]
+    base_code_set = set(base_codes)
+    perturbed_code_set = set(perturbed_codes)
+    membership_changed = base_code_set != perturbed_code_set
+
+    base_tier_by_code = {e["code"]: e["tier"] for e in base_entries}
+    perturbed_tier_by_code = {e["code"]: e["tier"] for e in perturbed_entries}
+    common_codes = base_code_set & perturbed_code_set
+    tier_changed = any(base_tier_by_code[code] != perturbed_tier_by_code[code] for code in common_codes)
+
+    order_changed = (
+        not membership_changed and not tier_changed and base_codes != perturbed_codes
+    )
+    return {
+        "membershipChanged": membership_changed,
+        "tierChanged": tier_changed,
+        "orderChanged": order_changed,
+    }
+
+
+def compute_p14_release_evidence(
+    engine_result: dict[str, Any], perturbed_result: dict[str, Any]
+) -> dict[str, Any]:
+    """OPS_P14_D2_RELEASE_METRIC_IMPLEMENTATION_R2: P14_RELEASE_POLICY_VERSION
+    ("p14-decision-aware-v1")の下で、base engine結果と±2% perturbed engine
+    結果からP-14 composite evidence（top40 Jaccard/deep-review churn/
+    actionable churn/P14_MARKET_REFERENCE_SHORTLIST）と最終severity
+    （PASS/WARN/FAIL）を計算する。
+
+    honesty: scoring/tier/marketRank/candidate順序を一切再計算しない —
+    engine_result/perturbed_resultをread-onlyで消費するだけ。P14_D2は
+    release evidence/gate評価のみを担当し、engine（B1, frozen）の権限を
+    一切変更しない。
+    """
+    base_top = set(_top_n_codes_ordered(engine_result))
+    perturbed_top = set(_top_n_codes_ordered(perturbed_result))
+    intersection = base_top & perturbed_top
+    union = base_top | perturbed_top
+    jaccard = _jaccard(base_top, perturbed_top)
+    swap_count = len(base_top - perturbed_top)
+    retention = (len(intersection) / len(base_top)) if base_top else 1.0
+
+    deep_review_base = _tier_codes(engine_result, "deep_review")
+    deep_review_perturbed = _tier_codes(perturbed_result, "deep_review")
+    deep_review_entered = sorted(deep_review_perturbed - deep_review_base)
+    deep_review_exited = sorted(deep_review_base - deep_review_perturbed)
+
+    actionable_base = _tier_codes(engine_result, "actionable")
+    actionable_perturbed = _tier_codes(perturbed_result, "actionable")
+    actionable_entered = sorted(actionable_perturbed - actionable_base)
+    actionable_exited = sorted(actionable_base - actionable_perturbed)
+
+    base_shortlist = build_market_reference_shortlist(engine_result)
+    perturbed_shortlist = build_market_reference_shortlist(perturbed_result)
+    shortlist_eval = evaluate_market_reference_shortlist(base_shortlist, perturbed_shortlist)
+
+    hard_reasons: list[str] = []
+    warn_reasons: list[str] = []
+
+    if jaccard < RANK_STABILITY_JACCARD_HARD_MIN:
+        hard_reasons.append("TOP40_JACCARD_BELOW_HARD_MIN")
+    elif jaccard < RANK_STABILITY_JACCARD_WARN_MIN:
+        warn_reasons.append("TOP40_JACCARD_BELOW_WARN_MIN")
+
+    if len(actionable_exited) >= ACTIONABLE_PERTURBATION_EXIT_HARD_MIN:
+        hard_reasons.append("ACTIONABLE_EXIT_HARD")
+    elif len(actionable_exited) == ACTIONABLE_PERTURBATION_EXIT_WARN_MIN:
+        warn_reasons.append("ACTIONABLE_EXIT_WARN")
+
+    if len(deep_review_exited) >= 1:
+        # A2-S/D2 freeze: INSUFFICIENT_EVIDENCE_FOR_NUMERIC_FREEZE — deep-review
+        # churnにHARD閾値は導入しない。exit>=1は常にWARNのみ。
+        warn_reasons.append("DEEP_REVIEW_EXIT_WARN")
+
+    if shortlist_eval["membershipChanged"] or shortlist_eval["tierChanged"]:
+        hard_reasons.append("MARKET_REFERENCE_SHORTLIST_MEMBERSHIP_CHANGED")
+    elif shortlist_eval["orderChanged"]:
+        warn_reasons.append("MARKET_REFERENCE_SHORTLIST_ORDER_CHANGED")
+
+    if hard_reasons:
+        status = "FAIL"
+    elif warn_reasons:
+        status = "WARN"
+    else:
+        status = "PASS"
+
+    return {
+        "policyVersion": P14_RELEASE_POLICY_VERSION,
+        "top40": {
+            "intersection": sorted(intersection),
+            "union": sorted(union),
+            "retention": retention,
+            "swapCount": swap_count,
+            "jaccard": jaccard,
+            "warnThreshold": RANK_STABILITY_JACCARD_WARN_MIN,
+            "hardThreshold": RANK_STABILITY_JACCARD_HARD_MIN,
+        },
+        "deepReview": {
+            "baseCodes": sorted(deep_review_base),
+            "perturbedCodes": sorted(deep_review_perturbed),
+            "entered": deep_review_entered,
+            "exited": deep_review_exited,
+            "exitCount": len(deep_review_exited),
+        },
+        "actionable": {
+            "baseCodes": sorted(actionable_base),
+            "perturbedCodes": sorted(actionable_perturbed),
+            "entered": actionable_entered,
+            "exited": actionable_exited,
+            "exitCount": len(actionable_exited),
+            "warnThreshold": ACTIONABLE_PERTURBATION_EXIT_WARN_MIN,
+            "hardThreshold": ACTIONABLE_PERTURBATION_EXIT_HARD_MIN,
+        },
+        "marketReferenceShortlist": {
+            "name": P14_MARKET_REFERENCE_SHORTLIST_NAME,
+            "holdingsDependent": False,
+            "n": P14_MARKET_REFERENCE_SHORTLIST_N,
+            "base": base_shortlist,
+            "perturbed": perturbed_shortlist,
+            "membershipChanged": shortlist_eval["membershipChanged"],
+            "tierChanged": shortlist_eval["tierChanged"],
+            "orderChanged": shortlist_eval["orderChanged"],
+        },
+        "final": {
+            "status": status,
+            "hardReasons": hard_reasons,
+            "warnReasons": warn_reasons,
+        },
+        "p14ProvesOfficialDecisionStability": False,
+    }
+
+
 def compute_degraded_path_actionable(joined_candidates: list[Any], context: dict[str, Any]) -> tuple[int, dict[str, Any]]:
     """P-13: 実際のjoined候補集団に対し、context.pipelinePathを'cache_fallback'
     へ強制したmirror runを実行しactionable件数を確認する。P-14の±2%
@@ -572,6 +800,7 @@ def compute_quality_report(
                 f"status={status}（not_generated）のため新規artifactをpublishしない"
                 "（既存artifactがあればそのまま保持、frozenなdegraded path failure policy）",
             ],
+            "p14ReleaseEvidence": None,
         }
 
     # P-02: prescreen join率 >= 0.95
@@ -672,14 +901,21 @@ def compute_quality_report(
         "PASS" if p13_pass else "FAIL", note=f"is_degraded={is_degraded}",
     )
 
-    # P-14: rank stability Jaccard（±2% perturbation）>= 0.95
-    jaccard_14, _perturbed_result = compute_rank_stability(joined_candidates, context, engine_result)
+    # P-14: OPS_P14_D2_RELEASE_METRIC_IMPLEMENTATION_R2 decision-aware market
+    # reference gate（P14_RELEASE_POLICY_VERSION="p14-decision-aware-v1"）。
+    # top40 Jaccard安定性 + deep-review/actionable churn +
+    # P14_MARKET_REFERENCE_SHORTLIST(N=3, holdings非依存)のcomposite評価。
+    # gate["value"]は既存contract通りjaccardのfloatのまま維持し、full
+    # composite evidenceはp14_evidenceとしてcompute_quality_report戻り値へ
+    # 別途格納する（evidence/replay消費者向け。gate構造自体は変更しない）。
+    jaccard_14, perturbed_result = compute_rank_stability(joined_candidates, context, engine_result)
+    p14_evidence = compute_p14_release_evidence(engine_result, perturbed_result)
     _gate(
         "P-14",
-        "rank stability Jaccard(±2%)",
+        "rank stability Jaccard(±2%) + decision-aware market reference gate",
         jaccard_14,
-        f">= {RANK_STABILITY_JACCARD_MIN}",
-        "PASS" if jaccard_14 >= RANK_STABILITY_JACCARD_MIN else "FAIL",
+        f">= {RANK_STABILITY_JACCARD_WARN_MIN} (WARN backstop) / >= {RANK_STABILITY_JACCARD_HARD_MIN} (HARD backstop)",
+        p14_evidence["final"]["status"],
         note=P14_ASSIGNMENT_NOTE,
     )
 
@@ -691,7 +927,13 @@ def compute_quality_report(
         _gate("P-15", "rank drift vs previous", drift_15, f"記録。< {RANK_DRIFT_WARN_MAX} で要調査", "WARN" if drift_15 < RANK_DRIFT_WARN_MAX else "RECORD")
 
     overall_pass = not hard_fail_ids
-    return {"gates": gates, "overallPass": overall_pass, "hardFailIds": hard_fail_ids, "notes": []}
+    return {
+        "gates": gates,
+        "overallPass": overall_pass,
+        "hardFailIds": hard_fail_ids,
+        "notes": [],
+        "p14ReleaseEvidence": p14_evidence,
+    }
 
 
 # ---------------------------------------------------------------------------

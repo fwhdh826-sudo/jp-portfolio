@@ -126,12 +126,21 @@ def _build(tmp_path, *, batch_status="batch_passed", smoke_status="smoke_passed"
 
 
 def test_pass_run_evidence_is_captured_with_full_p14_detail(tmp_path):
+    """OPS_P14_D2_RELEASE_METRIC_IMPLEMENTATION_R2: calibration fixtureは
+    ±2% perturbationの下でdeep-review tierから1件exitする(A250)。旧binary
+    policyはjaccard(=1.0)しか見ないため気づけなかったこのchurnを、新
+    decision-aware policyはWARNとして非blockingに表面化する — overallPass/
+    hardFailIdsは引き続きnon-blocking(publish可能)のまま。"""
     ev = _build(tmp_path)
     assert ev["schemaVersion"] == "candidate-funnel-run-evidence-2"
     assert ev["captureStatus"] == "captured"
     assert ev["publish"]["overallPass"] is True
     assert ev["publish"]["hardFailIds"] == []
-    assert ev["p14"]["verdict"] == "PASS"
+    assert ev["p14"]["verdict"] == "WARN"
+    assert ev["p14"]["release"]["policyVersion"] == "p14-decision-aware-v1"
+    assert ev["p14"]["release"]["final"]["status"] == "WARN"
+    assert ev["p14"]["release"]["final"]["hardReasons"] == []
+    assert "DEEP_REVIEW_EXIT_WARN" in ev["p14"]["release"]["final"]["warnReasons"]
     assert len(ev["p14"]["baseTop40"]) == 40
     assert len(ev["p14"]["perturbedTop40"]) == 40
     assert len(ev["replay"]["baseFullOrderedRankVector"]) > 40
@@ -152,16 +161,29 @@ def test_pass_run_evidence_swap_count_matches_top40_set_difference(tmp_path):
 
 
 def test_fail_run_evidence_still_captures_full_p14_detail(tmp_path, monkeypatch):
+    # OPS_P14_D2_RELEASE_METRIC_IMPLEMENTATION_R2: severity(status)は
+    # compute_p14_release_evidence()がengine_result/perturbed_resultから
+    # 独立に再計算するため、compute_p14_release_evidence自体をFAILへ
+    # 直接monkeypatchしてgate配線（"FAILでもevidenceが空/欠落にならない"
+    # というこのtestの本来の regression target）だけを検証する。
     monkeypatch.setattr(
         batch,
-        "compute_rank_stability",
-        lambda joined_candidates, context, engine_result: (0.90, engine_result),
+        "compute_p14_release_evidence",
+        lambda engine_result, perturbed_result: {
+            "policyVersion": batch.P14_RELEASE_POLICY_VERSION,
+            "final": {
+                "status": "FAIL",
+                "hardReasons": ["TOP40_JACCARD_BELOW_HARD_MIN"],
+                "warnReasons": [],
+            },
+        },
     )
     ev = _build(tmp_path, batch_status="batch_failed", smoke_status="")
     assert ev["captureStatus"] == "captured"
     assert ev["publish"]["overallPass"] is False
     assert "P-14" in ev["publish"]["hardFailIds"]
     assert ev["p14"]["verdict"] == "FAIL"
+    assert ev["p14"]["release"]["final"]["status"] == "FAIL"
     # regression target: evidenceがoverallPass依存で書かれると、ここが
     # 空配列/欠落になりREDになる。
     assert len(ev["p14"]["baseTop40"]) == 40
@@ -202,18 +224,25 @@ def test_p14_constants_are_frozen_production_values(tmp_path):
         "topK": 40,
         "perturbationPct": 0.02,
         "assignmentContract": "p14-prescreen-rank-code-v1",
+        "policyVersion": "p14-decision-aware-v1",
     }
     # module定数からの読み取りであること（literal copyではない）も確認する。
     assert ev["p14Parameters"]["threshold"] == batch.RANK_STABILITY_JACCARD_MIN
     assert ev["p14Parameters"]["topK"] == batch.TOP_N_STABILITY
     assert ev["p14Parameters"]["perturbationPct"] == batch.PERTURBATION_PCT
+    assert ev["p14Parameters"]["policyVersion"] == batch.P14_RELEASE_POLICY_VERSION
 
 
-def test_p14_scoring_and_ranking_blobs_are_unchanged_from_dev_base():
-    """The production modules are byte-identical to the ticket's dev base."""
+def test_p14_engine_ranking_blob_is_unchanged_from_dev_base():
+    """B1 engine（scoring/tier/marketRank authority, frozen）はこのticketで
+    一切変更しない — data/candidate_funnel_engine.pyはbyte-identical。
+    data/candidate_funnel_batch.pyはOPS_P14_D2_RELEASE_METRIC_IMPLEMENTATION_R2
+    でrelease evidence/gate評価（join/gate/publish層、scoring/rankingでは
+    ない）を追加するため意図的に変更されており、この関数のfrozen対象から
+    除外する（旧: test_p14_scoring_and_ranking_blobs_are_unchanged_from_dev_base
+    — batch.pyの変更を許可する決定に伴い改名・範囲縮小）。"""
     repo = Path(__file__).resolve().parents[1]
     expected = {
-        "data/candidate_funnel_batch.py": "e68fff47290b3f882a5be7251cee433a89a8464fc4b6adb7460ec66e0881762c",
         "data/candidate_funnel_engine.py": "25e12a4217ace5d807963b54fe2e9918d8613c834b06b730fff8701a4b45d710",
     }
     assert {
@@ -330,7 +359,18 @@ def test_evidence_is_byte_deterministic_across_two_calls(tmp_path):
 
 
 def _install_deterministic_fail_fixture(monkeypatch):
-    """Produce exactly two Top40 boundary swaps (Jaccard=38/42 < 0.95)."""
+    """Produce exactly five Top40 boundary swaps (Jaccard=35/45 < 0.80).
+
+    OPS_P14_D2_RELEASE_METRIC_IMPLEMENTATION_R2: 旧policyはswap=2
+    (Jaccard=38/42=0.9047... < 0.95)だけでFAILだったが、新decision-aware
+    policyではswap=2はWARN止まり(§6.1の例と一致)。このfixtureは「FAILでも
+    evidence captureが完全なままである」ことを検証する専用fixtureであり、
+    引き続き真のFAIL(HARD backstop, jaccard<0.80)を再現する必要があるため
+    swap数を5へ拡張する(35/45=0.7777... < 0.80 → HARD)。marketRankのみを
+    入れ替え、tier割り当ては一切変更しないため、deep-review/actionable
+    churnとP14_MARKET_REFERENCE_SHORTLIST(rank上位3件)はこのfixtureの下
+    では不変のまま — FAILの原因はtop40 Jaccardのみに厳密に isolate される。
+    """
 
     def fail_rank_stability(joined_candidates, context, engine_result):
         del joined_candidates, context
@@ -343,7 +383,7 @@ def _install_deterministic_fail_fixture(monkeypatch):
             ),
             key=lambda row: row["marketRank"],
         )
-        for inside, outside in ((38, 40), (39, 41)):
+        for inside, outside in ((35, 40), (36, 41), (37, 42), (38, 43), (39, 44)):
             ranked[inside]["marketRank"], ranked[outside]["marketRank"] = (
                 ranked[outside]["marketRank"],
                 ranked[inside]["marketRank"],
@@ -372,8 +412,12 @@ def test_replay_recomputes_original_p14_exactly_from_bundle(tmp_path):
 
 
 def test_pass_fixture_replay_matches_original(tmp_path):
+    """calibration fixtureはdeep-review 1件exit(A250)によりWARNを報告する
+    (§ test_pass_run_evidence_is_captured_with_full_p14_detail)。replay_p14
+    はp14Parameters.policyVersion経由でdecision-aware pathを選び、同じWARN
+    を独立に再現する。"""
     ev = _build(tmp_path)
-    assert ev["p14"]["verdict"] == "PASS"
+    assert ev["p14"]["verdict"] == "WARN"
     assert evidence_mod.replay_p14(ev) == {
         "passed": True,
         "compatible": True,
@@ -382,7 +426,7 @@ def test_pass_fixture_replay_matches_original(tmp_path):
         "errors": [],
         "jaccard": ev["p14"]["jaccard"],
         "swapCount": ev["p14"]["swapCount"],
-        "verdict": "PASS",
+        "verdict": "WARN",
     }
 
 
@@ -390,9 +434,11 @@ def test_fail_fixture_replay_matches_original(tmp_path, monkeypatch):
     _install_deterministic_fail_fixture(monkeypatch)
     ev = _build(tmp_path, batch_status="batch_failed", smoke_status="")
     replay = evidence_mod.replay_p14(ev)
-    assert ev["p14"]["jaccard"] == 38 / 42
-    assert ev["p14"]["swapCount"] == 2
+    assert ev["p14"]["jaccard"] == 35 / 45
+    assert ev["p14"]["swapCount"] == 5
     assert ev["p14"]["verdict"] == "FAIL"
+    assert ev["p14"]["release"]["final"]["status"] == "FAIL"
+    assert "TOP40_JACCARD_BELOW_HARD_MIN" in ev["p14"]["release"]["final"]["hardReasons"]
     assert replay["passed"] is True
     assert replay["jaccard"] == ev["p14"]["jaccard"]
     assert replay["verdict"] == "FAIL"
@@ -526,3 +572,63 @@ def test_capture_failure_returns_nonzero_without_changing_publication_inputs(
     )
     assert status == 1
     assert sentinel.read_bytes() == before
+
+
+# ===========================================================================
+# OPS_P14_D2_RELEASE_METRIC_IMPLEMENTATION_R2 §16/§17: reclassify_p14 —
+# new-policy reclassification path, independent of replay_p14's legacy
+# verdict. Must never mutate the historical bundle or its stored verdict.
+# ===========================================================================
+
+
+def test_reclassify_p14_independent_of_replay_p14_legacy_verdict(tmp_path):
+    """§16 LEGACY_REPLAY_COMPAT: build_evidence()が現行(policyVersion付き)
+    bundleを生成した通常経路では、replay_p14はdecision-aware pathを使い
+    reclassify_p14と同じ最終statusへ収束する(両方とも新policyで評価する
+    ため一致するのが正しい — reclassify_p14の役割は"新policyを持たない
+    (policyVersion欠落の)historical bundleへ後から新policyを当てる"こと
+    であり、既にpolicyVersion付きのbundleではreplay_p14自身が既に新
+    policyを使っている)。"""
+    ev = _build(tmp_path)
+    reclassified = evidence_mod.reclassify_p14(ev)
+    assert reclassified["reclassificationPolicyVersion"] == "p14-decision-aware-v1"
+    assert reclassified["historicalVerdict"] == ev["p14"]["verdict"]
+    assert reclassified["release"]["final"]["status"] == ev["p14"]["verdict"]
+    # reclassify_p14はbundleを一切書き換えない(戻り値のみ)。
+    assert ev["p14"]["verdict"] == "WARN"
+
+
+def test_reclassify_p14_does_not_mutate_input_bundle(tmp_path):
+    ev = _build(tmp_path)
+    before = copy.deepcopy(ev)
+    evidence_mod.reclassify_p14(ev)
+    assert ev == before
+
+
+def test_reclassify_p14_legacy_v1_schema_without_replay_fails_closed():
+    """schemaVersion=candidate-funnel-run-evidence-1(replay payload無し)は
+    reconstruct不能なのでfail-closedで例外を送出する — silentに空/誤った
+    evidenceを返さない。"""
+    with pytest.raises(evidence_mod.ReclassificationError):
+        evidence_mod.reclassify_p14({"schemaVersion": evidence_mod.LEGACY_SCHEMA_VERSION})
+
+
+def test_reclassify_p14_rejects_unsupported_schema():
+    with pytest.raises(evidence_mod.ReclassificationError):
+        evidence_mod.reclassify_p14({"schemaVersion": "unknown-schema"})
+
+
+def test_reclassify_p14_reproduces_legacy_binary_verdict_as_historical_baseline(
+    tmp_path, monkeypatch
+):
+    """§18相当の縮小版: HARD backstop未満(swap=5, jaccard<0.80)の
+    deterministic fixtureをreclassifyすると、旧binary policy下の
+    historicalVerdict(FAIL)と新policyのrelease.final.status(FAIL、jaccard
+    <0.80のHARD経由)が一致することを確認する — 新旧どちらのpolicyでも
+    明確にFAILとなる境界外のケースで両者が整合することの健全性チェック。"""
+    _install_deterministic_fail_fixture(monkeypatch)
+    ev = _build(tmp_path, batch_status="batch_failed", smoke_status="")
+    reclassified = evidence_mod.reclassify_p14(ev)
+    assert reclassified["historicalVerdict"] == "FAIL"
+    assert reclassified["release"]["final"]["status"] == "FAIL"
+    assert reclassified["release"]["top40"]["jaccard"] == pytest.approx(35 / 45)
