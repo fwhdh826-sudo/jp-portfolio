@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-09-15T09:00:23.030588+09:00",
-  "sourceUpdatedAt": "2026-09-14T23:01:00+00:00",
+  "updatedAt": "2026-09-15T10:38:59.788850+09:00",
+  "sourceUpdatedAt": "2026-09-15T01:35:36+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -44,53 +44,38 @@
       ]
     },
     "jp_semiconductor": {
-      "avgSentiment": -1.0,
-      "negativeCount": 1,
+      "avgSentiment": 0,
+      "negativeCount": 0,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Asian Stocks to Fall on AI, Key US Yield Tops 5%: Markets Wrap",
-      "topPositiveTitle": "Asian Stocks to Fall on AI, Key US Yield Tops 5%: Markets Wrap",
-      "items": [
-        {
-          "title": "Asian Stocks to Fall on AI, Key US Yield Tops 5%: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-09-14T22:19:06+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-14/asian-stocks-to-fall-on-ai-key-us-yield-tops-5-markets-wrap",
-          "tags": [
-            "jp_semiconductor",
-            "macro_risk",
-            "market",
-            "us_growth"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "us_broad": {
-      "avgSentiment": -0.417,
+      "avgSentiment": -0.453,
       "negativeCount": 2,
       "positiveCount": 0,
       "neutralCount": 2,
       "sourceCount": 2,
       "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Emerging Markets Slide as Oil, AI Concerns Sap Risk Appetite",
+      "topNegativeTitle": "Gold Holds Losses as Higher Oil Stokes September Rate-Hike Bets",
       "topPositiveTitle": "Fed Extends Pause on Reserve Management Purchases to Mid-October",
       "items": [
         {
-          "title": "Emerging Markets Slide as Oil, AI Concerns Sap Risk Appetite",
+          "title": "Gold Holds Losses as Higher Oil Stokes September Rate-Hike Bets",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -1.0,
-          "publishedAt": "2026-09-14T04:26:21+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-14/emerging-market-stocks-decline-on-mideast-tensions-rate-risks",
+          "publishedAt": "2026-09-14T23:49:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-14/gold-holds-losses-as-higher-oil-stokes-september-rate-hike-bets",
           "tags": [
             "commodity",
-            "global_broad",
+            "gold",
             "market",
             "rates",
             "us_broad"
@@ -109,6 +94,21 @@
           ]
         },
         {
+          "title": "Oil Extends Gain, Bonds Fall on Inflation Concerns: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": -0.14,
+          "publishedAt": "2026-09-14T22:19:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-14/asian-stocks-to-fall-on-ai-key-us-yield-tops-5-markets-wrap",
+          "tags": [
+            "commodity",
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
           "title": "Fed Extends Pause on Reserve Management Purchases to Mid-October",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
@@ -119,78 +119,10 @@
             "market",
             "us_broad"
           ]
-        },
-        {
-          "title": "BofA, Tallbacken Lift S&P 500 Views, Differ on Rate Risks",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-14T16:13:28+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-14/bofa-s-subramanian-lifts-s-p-500-view-to-7-400-stays-cautious",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": -1.0,
-      "negativeCount": 1,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
-      "isStale": false,
-      "topNegativeTitle": "Asian Stocks to Fall on AI, Key US Yield Tops 5%: Markets Wrap",
-      "topPositiveTitle": "Asian Stocks to Fall on AI, Key US Yield Tops 5%: Markets Wrap",
-      "items": [
-        {
-          "title": "Asian Stocks to Fall on AI, Key US Yield Tops 5%: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-09-14T22:19:06+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-14/asian-stocks-to-fall-on-ai-key-us-yield-tops-5-markets-wrap",
-          "tags": [
-            "jp_semiconductor",
-            "macro_risk",
-            "market",
-            "us_growth"
-          ]
-        }
-      ]
-    },
-    "global_broad": {
-      "avgSentiment": -1.0,
-      "negativeCount": 1,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
-      "isStale": false,
-      "topNegativeTitle": "Emerging Markets Slide as Oil, AI Concerns Sap Risk Appetite",
-      "topPositiveTitle": "Emerging Markets Slide as Oil, AI Concerns Sap Risk Appetite",
-      "items": [
-        {
-          "title": "Emerging Markets Slide as Oil, AI Concerns Sap Risk Appetite",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-09-14T04:26:21+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-14/emerging-market-stocks-decline-on-mideast-tensions-rate-risks",
-          "tags": [
-            "commodity",
-            "global_broad",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        }
-      ]
-    },
-    "gold": {
       "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
@@ -201,6 +133,61 @@
       "topNegativeTitle": null,
       "topPositiveTitle": null,
       "items": []
+    },
+    "global_broad": {
+      "avgSentiment": 0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
+      "isStale": false,
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
+    },
+    "gold": {
+      "avgSentiment": -0.57,
+      "negativeCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 2,
+      "isStale": false,
+      "topNegativeTitle": "Gold Holds Losses as Higher Oil Stokes September Rate-Hike Bets",
+      "topPositiveTitle": "Oil Extends Gain, Bonds Fall on Inflation Concerns: Markets Wrap",
+      "items": [
+        {
+          "title": "Gold Holds Losses as Higher Oil Stokes September Rate-Hike Bets",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-09-14T23:49:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-14/gold-holds-losses-as-higher-oil-stokes-september-rate-hike-bets",
+          "tags": [
+            "commodity",
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Oil Extends Gain, Bonds Fall on Inflation Concerns: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": -0.14,
+          "publishedAt": "2026-09-14T22:19:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-14/asian-stocks-to-fall-on-ai-key-us-yield-tops-5-markets-wrap",
+          "tags": [
+            "commodity",
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        }
+      ]
     },
     "reit": {
       "avgSentiment": 0,
@@ -227,30 +214,16 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.22,
-      "negativeCount": 2,
+      "avgSentiment": 0.17,
+      "negativeCount": 1,
       "positiveCount": 1,
       "neutralCount": 0,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Asian Stocks to Fall on AI, Key US Yield Tops 5%: Markets Wrap",
+      "topNegativeTitle": "Apollo’s Michaels Uses $101 Million of Tariff Refund to Cut Debt",
       "topPositiveTitle": "Pakistan Keeps Rates Steady as Price Pressures Build",
       "items": [
-        {
-          "title": "Asian Stocks to Fall on AI, Key US Yield Tops 5%: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-09-14T22:19:06+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-14/asian-stocks-to-fall-on-ai-key-us-yield-tops-5-markets-wrap",
-          "tags": [
-            "jp_semiconductor",
-            "macro_risk",
-            "market",
-            "us_growth"
-          ]
-        },
         {
           "title": "Apollo’s Michaels Uses $101 Million of Tariff Refund to Cut Debt",
           "source": "Bloomberg Markets",
@@ -292,26 +265,41 @@
       "items": []
     },
     "rates": {
-      "avgSentiment": -0.066,
+      "avgSentiment": -0.094,
       "negativeCount": 1,
       "positiveCount": 1,
       "neutralCount": 3,
       "sourceCount": 2,
       "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Emerging Markets Slide as Oil, AI Concerns Sap Risk Appetite",
+      "topNegativeTitle": "Gold Holds Losses as Higher Oil Stokes September Rate-Hike Bets",
       "topPositiveTitle": "Pakistan Keeps Rates Steady as Price Pressures Build",
       "items": [
         {
-          "title": "Emerging Markets Slide as Oil, AI Concerns Sap Risk Appetite",
+          "title": "Gold Holds Losses as Higher Oil Stokes September Rate-Hike Bets",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -1.0,
-          "publishedAt": "2026-09-14T04:26:21+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-14/emerging-market-stocks-decline-on-mideast-tensions-rate-risks",
+          "publishedAt": "2026-09-14T23:49:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-14/gold-holds-losses-as-higher-oil-stokes-september-rate-hike-bets",
           "tags": [
             "commodity",
-            "global_broad",
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Oil Extends Gain, Bonds Fall on Inflation Concerns: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": -0.14,
+          "publishedAt": "2026-09-14T22:19:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-14/asian-stocks-to-fall-on-ai-key-us-yield-tops-5-markets-wrap",
+          "tags": [
+            "commodity",
+            "gold",
             "market",
             "rates",
             "us_broad"
@@ -330,19 +318,6 @@
             "rates"
           ],
           "titleJa": "【ウェビナー】日銀9月会合直前 ― 利上げ「過去最速」のペースとなるか"
-        },
-        {
-          "title": "BofA, Tallbacken Lift S&P 500 Views, Differ on Rate Risks",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-14T16:13:28+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-14/bofa-s-subramanian-lifts-s-p-500-view-to-7-400-stays-cautious",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
         },
         {
           "title": "ECB Won’t Hesitate to Hike Further If Needed, Kazimir Says",
@@ -373,29 +348,41 @@
       ]
     },
     "commodity": {
-      "avgSentiment": -0.125,
-      "negativeCount": 3,
-      "positiveCount": 2,
-      "neutralCount": 3,
-      "sourceCount": 3,
-      "itemCount": 8,
+      "avgSentiment": -0.164,
+      "negativeCount": 4,
+      "positiveCount": 3,
+      "neutralCount": 2,
+      "sourceCount": 2,
+      "itemCount": 9,
       "isStale": false,
-      "topNegativeTitle": "Emerging Markets Slide as Oil, AI Concerns Sap Risk Appetite",
-      "topPositiveTitle": "Traders See More BOE, ECB Rate Hikes as Energy Prices Rise",
+      "topNegativeTitle": "Gold Holds Losses as Higher Oil Stokes September Rate-Hike Bets",
+      "topPositiveTitle": "Latest Oil Market News and Analysis for Sept. 15",
       "items": [
         {
-          "title": "Emerging Markets Slide as Oil, AI Concerns Sap Risk Appetite",
+          "title": "Gold Holds Losses as Higher Oil Stokes September Rate-Hike Bets",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -1.0,
-          "publishedAt": "2026-09-14T04:26:21+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-14/emerging-market-stocks-decline-on-mideast-tensions-rate-risks",
+          "publishedAt": "2026-09-14T23:49:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-14/gold-holds-losses-as-higher-oil-stokes-september-rate-hike-bets",
           "tags": [
             "commodity",
-            "global_broad",
+            "gold",
             "market",
             "rates",
             "us_broad"
+          ]
+        },
+        {
+          "title": "Thailand Eyes $600 Million Tourism Boost With Travel Subsidies",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-09-15T00:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-15/thailand-eyes-600-million-tourism-boost-with-travel-subsidies",
+          "tags": [
+            "commodity",
+            "market"
           ]
         },
         {
@@ -423,27 +410,18 @@
           ]
         },
         {
-          "title": "Yuan Popularity Boost Likely Focus of Hong Kong’s Five-Year Plan",
+          "title": "Oil Extends Gain, Bonds Fall on Inflation Concerns: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-14T23:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-14/yuan-popularity-boost-likely-focus-of-hong-kong-s-five-year-plan",
+          "sentimentScore": -0.14,
+          "publishedAt": "2026-09-14T22:19:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-14/asian-stocks-to-fall-on-ai-key-us-yield-tops-5-markets-wrap",
           "tags": [
             "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "Latest Oil Market News and Analysis for Sept. 15",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-14T22:04:31+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-14/latest-oil-market-news-and-analysis-for-sept-15",
-          "tags": [
-            "commodity",
-            "market"
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
           ]
         }
       ]
@@ -484,7 +462,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 3,
+    "excludedCount": 4,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
