@@ -159,3 +159,95 @@ describe('HR-I3 canonical candidate allocation input adapter', () => {
     expect(result.instruments.map(item => item.instrumentId)).toContain('stock:1002')
   })
 })
+
+// ═══════════════════════════════════════════════════════════
+// OPS_P5_B005_FCA_1_P1_REPAIR_R1: typed entry point defense in depth.
+// These calls bypass the runtime parser on purpose (typed internal input)
+// and must still fail closed on malformed producer evidence.
+// ═══════════════════════════════════════════════════════════
+describe('FCA-1-P1-02 direct adapter path: invalid non-null rank never becomes an available null-ranked candidate', () => {
+  it.each([0, -1, 1.5, Number.NaN, Number.POSITIVE_INFINITY])(
+    'marketRank %s on an actionable candidate => status invalid, no candidates',
+    (rank) => {
+      const value = artifact()
+      value.candidates[2].marketRank = rank
+      const result = buildCandidateAllocationInputs({ artifact: value, holdings: [] })
+      expect(result).toMatchObject({ status: 'invalid', instruments: [], candidates: [] })
+      expect(JSON.stringify(result)).not.toContain('BUY_NEW')
+    },
+  )
+
+  it('marketRank 0 on a non-allocation (screened) candidate still invalidates the artifact', () => {
+    const value = artifact()
+    value.candidates[0].marketRank = 0
+    expect(buildCandidateAllocationInputs({ artifact: value, holdings: [] }).status).toBe('invalid')
+  })
+
+  it('legitimate null rank is preserved and sorted last (frozen ordering policy unchanged)', () => {
+    const value = artifact()
+    value.candidates[1].marketRank = null
+    value.candidates[2].marketRank = 1
+    const result = buildCandidateAllocationInputs({ artifact: value, holdings: [] })
+    expect(result.status).toBe('available')
+    expect(result.candidates.map(item => [item.instrumentId, item.marketRank])).toEqual([
+      ['stock:1003', 1],
+      ['stock:1002', null],
+    ])
+  })
+
+  it('valid rank order is unchanged: marketRank ascending', () => {
+    const value = artifact()
+    value.candidates[1].marketRank = 2
+    value.candidates[2].marketRank = 1
+    const result = buildCandidateAllocationInputs({ artifact: value, holdings: [] })
+    expect(result.candidates.map(item => item.instrumentId)).toEqual(['stock:1003', 'stock:1002'])
+  })
+
+  it('artifactIndex tie-break is unchanged for equal valid ranks', () => {
+    const value = artifact()
+    value.candidates[1].marketRank = 1
+    value.candidates[2].marketRank = 1
+    const result = buildCandidateAllocationInputs({ artifact: value, holdings: [] })
+    expect(result.candidates.map(item => item.artifactIndex)).toEqual([1, 2])
+  })
+})
+
+describe('FCA-1-P1-01 direct adapter path: contradictory quality gate is not available evidence', () => {
+  it('gate FAIL with green aggregates => invalid', () => {
+    const value = artifact()
+    value._meta.qualityGate.gates.find(g => g.id === 'P-02')!.status = 'FAIL'
+    expect(buildCandidateAllocationInputs({ artifact: value, holdings: [] }))
+      .toMatchObject({ status: 'invalid', candidates: [] })
+  })
+
+  it('hardFailIds naming a passing gate => invalid', () => {
+    const value = artifact()
+    value._meta.qualityGate.overallPass = false
+    value._meta.qualityGate.hardFailIds = ['P-02']
+    expect(buildCandidateAllocationInputs({ artifact: value, holdings: [] }).status).toBe('invalid')
+  })
+
+  it('allowed P-14 WARN with coherent green aggregates stays available', () => {
+    const value = artifact()
+    value._meta.qualityGate.gates.find(g => g.id === 'P-14')!.status = 'WARN'
+    expect(buildCandidateAllocationInputs({ artifact: value, holdings: [] }).status).toBe('available')
+  })
+})
+
+describe('FCA-1-P1-03 direct adapter path: generatedAt must be a strict producer timestamp', () => {
+  it.each(['', '2026-09-31T00:00:00+00:00', '2026-07-26T07:11:40', 'not-a-timestamp'])(
+    'generatedAt %j => invalid',
+    (generatedAt) => {
+      const value = artifact()
+      value._meta.generatedAt = generatedAt
+      expect(buildCandidateAllocationInputs({ artifact: value, holdings: [] }))
+        .toMatchObject({ status: 'invalid', candidates: [] })
+    },
+  )
+
+  it('canonical microsecond producer timestamp stays available', () => {
+    const value = artifact()
+    value._meta.generatedAt = '2026-07-26T07:11:40.540540+00:00'
+    expect(buildCandidateAllocationInputs({ artifact: value, holdings: [] }).status).toBe('available')
+  })
+})

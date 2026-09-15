@@ -495,3 +495,235 @@ describe('parseCandidateFunnelArtifact — does not throw on malformed input', (
     expect(JSON.stringify(result)).not.toContain('do-not-leak')
   })
 })
+
+// ═══════════════════════════════════════════════════════════
+// OPS_P5_B005_FCA_1_P1_REPAIR_R1 regression suites
+// ═══════════════════════════════════════════════════════════
+
+function auxiliaryGate(artifact: ReturnType<typeof buildValidCandidateFunnelArtifact>) {
+  return artifact._meta.qualityGate.gates.find((gate: { id: string }) => gate.id === 'PRESCREEN_DUPLICATE')!
+}
+
+describe('FCA-1-P1-01 quality gate aggregate/status parity (producer contract, fail-closed)', () => {
+  it('A. required gate FAIL + overallPass=true + hardFailIds=[] => rejected as quality_gate_failed', () => {
+    const artifact = buildValidCandidateFunnelArtifact()
+    requiredGate(artifact, 'P-02').status = 'FAIL'
+    artifact._meta.qualityGate.overallPass = true
+    artifact._meta.qualityGate.hardFailIds = []
+    const result = parseCandidateFunnelArtifact(artifact)
+    expect(result).toEqual({ ok: false, code: 'quality_gate_failed' })
+  })
+
+  it.each(['P-02', 'P-04', 'P-07', 'P-08', 'P-10', 'P-12', 'P-13', 'P-14'])(
+    'A. every producer hard gate %s FAIL with green aggregates is rejected',
+    (id) => {
+      const artifact = buildValidCandidateFunnelArtifact()
+      requiredGate(artifact, id).status = 'FAIL'
+      expect(parseCandidateFunnelArtifact(artifact)).toEqual({ ok: false, code: 'quality_gate_failed' })
+    },
+  )
+
+  it('A. auxiliary PRESCREEN_DUPLICATE FAIL with green aggregates is rejected', () => {
+    const artifact = buildValidCandidateFunnelArtifact()
+    auxiliaryGate(artifact).status = 'FAIL'
+    expect(parseCandidateFunnelArtifact(artifact)).toEqual({ ok: false, code: 'quality_gate_failed' })
+  })
+
+  it('B. FAIL gate present but hardFailIds names a different gate => rejected', () => {
+    const artifact = buildValidCandidateFunnelArtifact()
+    requiredGate(artifact, 'P-02').status = 'FAIL'
+    artifact._meta.qualityGate.overallPass = false
+    artifact._meta.qualityGate.hardFailIds = ['P-04']
+    expect(parseCandidateFunnelArtifact(artifact)).toEqual({ ok: false, code: 'quality_gate_failed' })
+  })
+
+  it('B. hardFailIds claims a failure no gate reports => rejected', () => {
+    const artifact = buildValidCandidateFunnelArtifact()
+    artifact._meta.qualityGate.overallPass = false
+    artifact._meta.qualityGate.hardFailIds = ['P-02']
+    expect(parseCandidateFunnelArtifact(artifact)).toEqual({ ok: false, code: 'quality_gate_failed' })
+  })
+
+  it('C. overallPass=false with no FAIL gate and empty hardFailIds contradicts the gate set => rejected', () => {
+    const artifact = buildValidCandidateFunnelArtifact()
+    artifact._meta.qualityGate.overallPass = false
+    artifact._meta.qualityGate.hardFailIds = []
+    expect(parseCandidateFunnelArtifact(artifact)).toEqual({ ok: false, code: 'quality_gate_failed' })
+  })
+
+  it('C. overallPass=true with non-empty hardFailIds contradicts the producer derivation => rejected', () => {
+    const artifact = buildValidCandidateFunnelArtifact()
+    requiredGate(artifact, 'P-02').status = 'FAIL'
+    artifact._meta.qualityGate.overallPass = true
+    artifact._meta.qualityGate.hardFailIds = ['P-02']
+    expect(parseCandidateFunnelArtifact(artifact)).toEqual({ ok: false, code: 'quality_gate_failed' })
+  })
+
+  it('C. coherent FAIL (gate FAIL + overallPass=false + matching hardFailIds) is still rejected', () => {
+    const artifact = buildValidCandidateFunnelArtifact()
+    requiredGate(artifact, 'P-02').status = 'FAIL'
+    artifact._meta.qualityGate.overallPass = false
+    artifact._meta.qualityGate.hardFailIds = ['P-02']
+    expect(parseCandidateFunnelArtifact(artifact)).toEqual({ ok: false, code: 'quality_gate_failed' })
+  })
+
+  it('D. valid PASS artifact is still accepted (fixture + both production artifacts)', () => {
+    expect(parseCandidateFunnelArtifact(buildValidCandidateFunnelArtifact()).ok).toBe(true)
+    expect(parseCandidateFunnelArtifact(dataArtifact).ok).toBe(true)
+    expect(parseCandidateFunnelArtifact(publicArtifact).ok).toBe(true)
+  })
+
+  it.each(['P-03', 'P-09', 'P-14', 'P-15'])('E. allowed WARN on %s with green aggregates is still accepted', (id) => {
+    const artifact = buildValidCandidateFunnelArtifact()
+    requiredGate(artifact, id).status = 'WARN'
+    artifact._meta.qualityGate.overallPass = true
+    artifact._meta.qualityGate.hardFailIds = []
+    expect(parseCandidateFunnelArtifact(artifact).ok).toBe(true)
+  })
+
+  it('E. WARN is not a hard failure: a WARN gate listed in hardFailIds is a contradiction', () => {
+    const artifact = buildValidCandidateFunnelArtifact()
+    requiredGate(artifact, 'P-14').status = 'WARN'
+    artifact._meta.qualityGate.overallPass = false
+    artifact._meta.qualityGate.hardFailIds = ['P-14']
+    expect(parseCandidateFunnelArtifact(artifact)).toEqual({ ok: false, code: 'quality_gate_failed' })
+  })
+
+  it('F. P-14 FAIL remains rejected whether aggregates are coherent or falsely green', () => {
+    const coherent = buildValidCandidateFunnelArtifact()
+    requiredGate(coherent, 'P-14').status = 'FAIL'
+    coherent._meta.qualityGate.overallPass = false
+    coherent._meta.qualityGate.hardFailIds = ['P-14']
+    expect(parseCandidateFunnelArtifact(coherent)).toEqual({ ok: false, code: 'quality_gate_failed' })
+
+    const falselyGreen = buildValidCandidateFunnelArtifact()
+    requiredGate(falselyGreen, 'P-14').status = 'FAIL'
+    expect(parseCandidateFunnelArtifact(falselyGreen)).toEqual({ ok: false, code: 'quality_gate_failed' })
+  })
+
+  it('structural malformation stays distinguishable (quality_gate_incomplete, not quality_gate_failed)', () => {
+    const artifact = buildValidCandidateFunnelArtifact()
+    artifact._meta.qualityGate.gates = artifact._meta.qualityGate.gates.filter((g: { id: string }) => g.id !== 'P-02')
+    expect(parseCandidateFunnelArtifact(artifact)).toEqual({ ok: false, code: 'quality_gate_incomplete' })
+    const unknownStatus = buildValidCandidateFunnelArtifact()
+    requiredGate(unknownStatus, 'P-02').status = 'BROKEN'
+    expect(parseCandidateFunnelArtifact(unknownStatus)).toEqual({ ok: false, code: 'quality_gate_incomplete' })
+  })
+
+  it('hardFailIds order must match gate order (producer appends in gate order)', () => {
+    const artifact = buildValidCandidateFunnelArtifact()
+    requiredGate(artifact, 'P-02').status = 'FAIL'
+    requiredGate(artifact, 'P-04').status = 'FAIL'
+    artifact._meta.qualityGate.overallPass = false
+    artifact._meta.qualityGate.hardFailIds = ['P-04', 'P-02']
+    expect(parseCandidateFunnelArtifact(artifact)).toEqual({ ok: false, code: 'quality_gate_failed' })
+  })
+})
+
+describe('FCA-1-P1-02 canonical 1-based rank contract at the parser boundary', () => {
+  it.each([0, -1, -7, 1.5, 0.999, Number.MAX_SAFE_INTEGER + 2])(
+    'rejects non-null marketRank %s as invalid_candidates (never coerced to null)',
+    (rank) => {
+      const artifact = buildValidCandidateFunnelArtifact()
+      artifact.candidates[2].marketRank = rank
+      expect(parseCandidateFunnelArtifact(artifact)).toEqual({ ok: false, code: 'invalid_candidates' })
+    },
+  )
+
+  it.each([0, -1, 1.5])('rejects non-null prescreenRank %s (same producer positive-integer contract)', (rank) => {
+    const artifact = buildValidCandidateFunnelArtifact()
+    artifact.candidates[2].prescreenRank = rank
+    expect(parseCandidateFunnelArtifact(artifact)).toEqual({ ok: false, code: 'invalid_candidates' })
+  })
+
+  it('accepts positive integer ranks and preserves them verbatim', () => {
+    const artifact = buildValidCandidateFunnelArtifact()
+    artifact.candidates[0].marketRank = 3
+    artifact.candidates[1].marketRank = 2
+    artifact.candidates[2].marketRank = 1
+    const result = parseCandidateFunnelArtifact(artifact)
+    expect(result.ok).toBe(true)
+    if (!result.ok) throw new Error('expected ok')
+    expect(result.data.candidates.map(c => c.marketRank)).toEqual([3, 2, 1])
+  })
+
+  it('preserves the legitimate null contract (excluded candidate with marketRank/prescreenRank null)', () => {
+    const artifact = buildValidCandidateFunnelArtifact()
+    artifact.candidates[0].marketRank = null
+    artifact.candidates[0].prescreenRank = null
+    const result = parseCandidateFunnelArtifact(artifact)
+    expect(result.ok).toBe(true)
+    if (!result.ok) throw new Error('expected ok')
+    expect(result.data.candidates[0].marketRank).toBeNull()
+  })
+
+  it('rejects a zero rank even on a screened (non-allocation) candidate', () => {
+    const artifact = buildValidCandidateFunnelArtifact()
+    artifact.candidates[0].marketRank = 0
+    expect(parseCandidateFunnelArtifact(artifact).ok).toBe(false)
+  })
+})
+
+describe('FCA-1-P1-03 strict producer-compatible timestamp contract at the parser boundary', () => {
+  it.each([
+    '2026-07-26T07:11:40.540540+00:00',
+    '2026-07-26T07:11:40+00:00',
+    '2026-07-26T16:11:40.540540+09:00',
+    '2026-07-26T07:11:40.540Z',
+    '2026-07-26T07:11:40Z',
+    '2024-02-29T00:00:00.000001+00:00',
+  ])('accepts canonical producer timestamp %s for generatedAt/asOf/sourceUpdatedAt', (value) => {
+    const artifact = buildValidCandidateFunnelArtifact()
+    artifact._meta.generatedAt = value
+    artifact._meta.asOf = value
+    artifact._meta.sourceUpdatedAt = value
+    expect(parseCandidateFunnelArtifact(artifact).ok).toBe(true)
+  })
+
+  it.each([
+    ['calendar-invalid day 2026-09-31', '2026-09-31T00:00:00+00:00'],
+    ['calendar-invalid Feb 30', '2026-02-30T00:00:00+00:00'],
+    ['non-leap Feb 29', '2025-02-29T00:00:00+00:00'],
+    ['month 13', '2026-13-01T00:00:00+00:00'],
+    ['hour 24', '2026-07-26T24:00:00+00:00'],
+    ['minute 60', '2026-07-26T07:60:00+00:00'],
+  ])('rejects %s (Date.parse would normalize or accept it)', (_label, value) => {
+    const artifact = buildValidCandidateFunnelArtifact()
+    artifact._meta.generatedAt = value
+    expect(parseCandidateFunnelArtifact(artifact)).toEqual({ ok: false, code: 'invalid_meta' })
+  })
+
+  it.each([
+    ['timezone-less', '2026-07-26T07:11:40.540540'],
+    ['space separator', '2026-07-26 07:11:40+00:00'],
+    ['date-only', '2026-07-26'],
+    ['offset without colon', '2026-07-26T07:11:40+0000'],
+    ['offset hour 24', '2026-07-26T07:11:40+24:00'],
+    ['seven fraction digits', '2026-07-26T07:11:40.5405401+00:00'],
+    ['RFC 2822', 'Sun, 26 Jul 2026 07:11:40 GMT'],
+    ['US locale', '07/26/2026 07:11:40'],
+    ['epoch millis', '1785000700000'],
+  ])('rejects producer-incompatible format: %s', (_label, value) => {
+    const artifact = buildValidCandidateFunnelArtifact()
+    artifact._meta.generatedAt = value
+    expect(parseCandidateFunnelArtifact(artifact)).toEqual({ ok: false, code: 'invalid_meta' })
+  })
+
+  it('applies the same strict contract to asOf and non-null sourceUpdatedAt', () => {
+    const asOf = buildValidCandidateFunnelArtifact()
+    asOf._meta.asOf = '2026-09-31T00:00:00+00:00'
+    expect(parseCandidateFunnelArtifact(asOf)).toEqual({ ok: false, code: 'invalid_meta' })
+    const source = buildValidCandidateFunnelArtifact()
+    source._meta.sourceUpdatedAt = '2026-07-26'
+    expect(parseCandidateFunnelArtifact(source)).toEqual({ ok: false, code: 'invalid_meta' })
+    const nullSource = buildValidCandidateFunnelArtifact()
+    nullSource._meta.sourceUpdatedAt = null
+    expect(parseCandidateFunnelArtifact(nullSource).ok).toBe(true)
+  })
+
+  it('parser does not evaluate time relation (a future-dated but well-formed artifact parses; freshness rejects it)', () => {
+    const artifact = buildValidCandidateFunnelArtifact()
+    artifact._meta.generatedAt = '2999-01-01T00:00:00+00:00'
+    expect(parseCandidateFunnelArtifact(artifact).ok).toBe(true)
+  })
+})

@@ -10,6 +10,7 @@
 
 import type { CandidateFunnelLoadResult } from './loadStaticData'
 import type { CandidateFunnelArtifact } from '../types/candidateFunnelArtifact'
+import { parseCandidateFunnelTimestamp } from '../utils/candidateFunnelTimestamp'
 
 export type CandidateFunnelFreshness = 'fresh' | 'stale' | 'degraded' | 'invalid' | 'unavailable'
 
@@ -31,12 +32,24 @@ export function evaluateCandidateFunnelFreshness(
   // 既にrejectしているが、freshness helper自体もdefense-in-depthとして
   // seed_fallback/not_generatedをactionable利用可能と判定しない。
   if (data.status !== 'generated') return 'invalid'
+
+  // ── FCA-1-P1-03: strict producer-compatible timestamp authority のみを使う
+  //    （Date.parse の rollover 正規化に依存しない）。generatedAt が注入された
+  //    nowMs より未来の artifact は負の age を持ち、stale 境界を迂回して
+  //    fresh と判定され得るため invalid とする。provenance（degraded）や
+  //    sourceStale より先に評価する: 時間的に矛盾した evidence は経路に
+  //    かかわらず信用しない。許容 skew は producer / runtime authority に
+  //    定義が無いので導入しない（厳密に generatedMs > nowMs を future とし、
+  //    generatedMs === nowMs は future ではない）。nowMs 自体が非有限なら
+  //    時間関係を判定できない → invalid（fail-closed）。 ─────────────────
+  const generated = parseCandidateFunnelTimestamp(meta.generatedAt)
+  if (generated === null) return 'invalid'
+  if (!Number.isFinite(nowMs)) return 'invalid'
+  if (generated.epochMs > nowMs) return 'invalid'
+
   if (meta.pipelinePath === 'cache_fallback' || meta.pipelinePath === 'seed_fallback') return 'degraded'
   if (data.selectionObservability.sourceStale) return 'stale'
-
-  const generatedMs = Date.parse(meta.generatedAt)
-  if (!Number.isFinite(generatedMs)) return 'invalid'
-  if (nowMs - generatedMs > staleThresholdMs) return 'stale'
+  if (nowMs - generated.epochMs > staleThresholdMs) return 'stale'
 
   return 'fresh'
 }
@@ -138,14 +151,21 @@ export function evaluateCandidateFunnelPresentationState(
   //    fail-closed で invalid にする（boot 順の例外は設けない）。
   if (
     typeof generatedAtTimestamp !== 'string' ||
-    Number.isNaN(Date.parse(generatedAtTimestamp)) ||
+    parseCandidateFunnelTimestamp(generatedAtTimestamp) === null ||
     generatedAtTimestamp !== meta.generatedAt
   ) {
     return PRESENTATION_INVALID
   }
 
-  const generatedMs = Date.parse(meta.generatedAt)
-  if (!Number.isFinite(generatedMs)) return PRESENTATION_INVALID
+  // ── FCA-1-P1-03: strict timestamp authority + future 拒否。clock を伴う
+  //    評価（finite nowMs）で generatedAt が未来なら presentation でも
+  //    fail-closed に invalid とし、fresh として表示しない。nowMs が非有限
+  //    （isCandidateFunnelRawAvailable: clock 非依存の availability 判定）
+  //    のときは時間関係を評価しない既存契約を維持する。 ──────────────
+  const generated = parseCandidateFunnelTimestamp(meta.generatedAt)
+  if (generated === null) return PRESENTATION_INVALID
+  const generatedMs = generated.epochMs
+  if (Number.isFinite(nowMs) && generatedMs > nowMs) return PRESENTATION_INVALID
 
   const provenance: CandidateFunnelProvenanceKind = meta.pipelinePath
   const fallback =

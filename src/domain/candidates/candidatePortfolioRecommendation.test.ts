@@ -162,10 +162,25 @@ describe('P5-B005-C-D pure recommendation policy', () => {
     ]
     expect(compose(candidates).map(row => row.marketRank)).toEqual([1, 2, 3])
   })
-  it('C-C-T23 puts null and invalid rank last', () => {
-    const candidates = [artifactCandidate(0, { marketRank: null }), artifactCandidate(1, { marketRank: -1 }), artifactCandidate(2, { marketRank: 1 })]
+  it('C-C-T23 puts null rank last (legitimate null contract preserved)', () => {
+    const candidates = [artifactCandidate(0, { marketRank: null }), artifactCandidate(1, { marketRank: null }), artifactCandidate(2, { marketRank: 1 })]
     expect(compose(candidates).map(row => row.artifactIndex)).toEqual([2, 0, 1])
     expect(compose(candidates).map(row => row.marketRank)).toEqual([1, null, null])
+  })
+  // FCA-1-P1-02: an invalid non-null rank used to be silently coerced to null
+  // and sorted last. It is malformed producer evidence: the whole dataset is
+  // now fail-closed instead of re-ranked.
+  it.each([0, -1, 1.5, Number.NaN, Number.POSITIVE_INFINITY])(
+    'FCA-1-P1-02 C-C-T23b invalid non-null marketRank %s fails the dataset closed instead of coercing to null',
+    (rank) => {
+      const candidates = [artifactCandidate(0, { marketRank: 1 }), artifactCandidate(1, { marketRank: rank })]
+      expect(compose(candidates)).toEqual([])
+    },
+  )
+  it('FCA-1-P1-02 C-C-T23c BUY_NEW emitted for a valid rank set is unchanged', () => {
+    const candidates = [artifactCandidate(0, { marketRank: 2 }), artifactCandidate(1, { marketRank: 1 })]
+    const result = compose(candidates)
+    expect(result.map(row => [row.artifactIndex, row.marketRank, row.action])).toEqual([[1, 1, 'BUY_NEW'], [0, 2, 'BUY_NEW']])
   })
   it('C-C-T24 uses artifactIndex for equal-rank tie', () => {
     const candidates = [artifactCandidate(0, { marketRank: 1 }), artifactCandidate(1, { marketRank: 1 })]
