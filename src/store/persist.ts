@@ -217,6 +217,49 @@ function isHolding(value: unknown): value is Holding {
     (value.acquiredAt === undefined || isTimestamp(value.acquiredAt))
 }
 
+/**
+ * E2E-A1 legacy→canonical trust compatibility boundary.
+ *
+ * Historical `v81_trust` rows (and the retired published `trust_master.json` producer that was
+ * merged into them) carried two matching-metadata keys that never belonged to the canonical
+ * `Trust` shape: `csv_name` / `csv_account`. The legacy runtime path accepted them, but the
+ * canonical writer validates trust rows with exact keys, so such rows could never be committed
+ * as a canonical generation. This projection removes ONLY these proven legacy-only keys.
+ *
+ * Contract:
+ * - Pure: the input row is never mutated; a copy is returned only when a legacy key is present.
+ * - Reference-preserving: an already-canonical row is returned as the same object (no behavior
+ *   change for clean rows, no invented defaults).
+ * - Idempotent: project(project(x)) is project(x).
+ * - Fail-closed: any other unknown key is left in place and continues to fail `isTrust`.
+ */
+export const LEGACY_TRUST_COMPATIBILITY_KEYS = ['csv_name', 'csv_account'] as const
+
+export function projectLegacyTrustRow<T extends Trust>(row: T): T {
+  if (!isRecord(row)) return row
+  if (!LEGACY_TRUST_COMPATIBILITY_KEYS.some(key => Object.prototype.hasOwnProperty.call(row, key))) {
+    return row
+  }
+  const projected: UnknownRecord = {}
+  for (const key of Object.keys(row)) {
+    if ((LEGACY_TRUST_COMPATIBILITY_KEYS as readonly string[]).includes(key)) continue
+    projected[key] = row[key]
+  }
+  return projected as T
+}
+
+/** Array form of {@link projectLegacyTrustRow}; returns the same array when no row changed. */
+export function projectLegacyTrustRows<T extends Trust>(rows: T[]): T[] {
+  if (!Array.isArray(rows)) return rows
+  let changed = false
+  const projected = rows.map(row => {
+    const next = projectLegacyTrustRow(row)
+    if (next !== row) changed = true
+    return next
+  })
+  return changed ? projected : rows
+}
+
 function isTrust(value: unknown): value is Trust {
   if (!isRecord(value) || !hasExactKeys(value, [
     'id', 'name', 'abbr', 'account', 'policy', 'eval', 'pnlPct', 'dayPct', 'cost',
@@ -781,7 +824,10 @@ export function restoreTrust(): Trust[] | null {
     const raw = localStorage.getItem(TRUST_KEY)
     if (!raw) return null
     const snap = JSON.parse(raw) as Snapshot<Trust[]>
-    return snap.data
+    // E2E-A1: legacy v81_trust rows may carry legacy-only matching metadata. Project them to
+    // the canonical trust shape on read (pure; the stored legacy bytes are not rewritten) so the
+    // runtime store and any later canonical commit share one row shape.
+    return Array.isArray(snap.data) ? projectLegacyTrustRows(snap.data) : snap.data
   } catch { return null }
 }
 
@@ -998,6 +1044,12 @@ export function persistCsvImportTransaction(
     } = payload
     const normalizedBase = {
       ...payloadWithoutTimestampAliases,
+      // E2E-A1: the canonical writer is the authoritative legacy→canonical trust boundary.
+      // Known legacy-only keys are projected away before identity computation and strict
+      // validation; every other key set still has to satisfy `isTrust` exactly.
+      trust: Array.isArray(payloadWithoutTimestampAliases.trust)
+        ? projectLegacyTrustRows(payloadWithoutTimestampAliases.trust)
+        : payloadWithoutTimestampAliases.trust,
       csvImportedAt: hasCsvImportedAt ? requestedCsvImportedAt ?? null : legacyImportedAt ?? null,
       provenance: payload.provenance ?? null,
       portfolioPolicy: Object.prototype.hasOwnProperty.call(payload, 'portfolioPolicy')
