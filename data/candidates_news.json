@@ -1,35 +1,20 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-09-16T10:31:12.489139+09:00",
-  "sourceUpdatedAt": "2026-09-16T00:58:43+00:00",
+  "updatedAt": "2026-09-16T17:45:09.388198+09:00",
+  "sourceUpdatedAt": "2026-09-16T08:12:05+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "【ウェビナー】日銀9月会合直前 ― 利上げ「過去最速」のペースとなるか",
-      "topPositiveTitle": "【ウェビナー】日銀9月会合直前 ― 利上げ「過去最速」のペースとなるか",
-      "items": [
-        {
-          "title": "【ウェビナー】日銀9月会合直前 ― 利上げ「過去最速」のペースとなるか",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-14T07:58:52+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-14/-9-video",
-          "tags": [
-            "jp_broad",
-            "market",
-            "rates"
-          ],
-          "titleJa": "【ウェビナー】日銀9月会合直前 ― 利上げ「過去最速」のペースとなるか"
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "jp_semiconductor": {
       "avgSentiment": 0.33,
@@ -44,7 +29,7 @@
       "items": [
         {
           "title": "Japan’s Export Growth Stays Solid as Shipments of Chips Jump",
-          "source": "Bloomberg Markets",
+          "source": "Bloomberg Economics",
           "sentiment": "positive",
           "sentimentScore": 0.33,
           "publishedAt": "2026-09-15T23:58:06+00:00",
@@ -57,54 +42,39 @@
       ]
     },
     "us_broad": {
-      "avgSentiment": -0.229,
-      "negativeCount": 4,
+      "avgSentiment": -0.157,
+      "negativeCount": 3,
       "positiveCount": 1,
-      "neutralCount": 2,
+      "neutralCount": 3,
       "sourceCount": 2,
       "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "Gold Steadies Below $4,300 as Markets Await Fed Rate Decision",
-      "topPositiveTitle": "US 10-Year Yield Rises to Highest Since 2007 as Fed Looms",
+      "topNegativeTitle": "Stocks and Bonds Halt Slide Before Fed Rate Call: Markets Wrap",
+      "topPositiveTitle": "Gold Rises as Traders Weigh Oil Decline Before Key Fed Decision",
       "items": [
         {
-          "title": "Gold Steadies Below $4,300 as Markets Await Fed Rate Decision",
+          "title": "Stocks and Bonds Halt Slide Before Fed Rate Call: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.67,
-          "publishedAt": "2026-09-16T00:00:15+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-16/gold-steadies-below-4-300-as-markets-await-fed-rate-decision",
-          "tags": [
-            "commodity",
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Bond Market’s ‘Extreme’ Short Counts on Fed to Deliver Rate Hike",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-09-15T20:30:09+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-15/bond-market-s-extreme-short-counts-on-fed-to-deliver-rate-hike",
-          "tags": [
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Asian Stocks Steady in Runup to Fed, Oil Declines: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.43,
           "publishedAt": "2026-09-15T22:11:24+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-15/asian-stocks-to-edge-higher-as-traders-await-fed-markets-wrap",
           "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "European Stocks Advance as Bond Selloff Eases Ahead of Fed",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.5,
+          "publishedAt": "2026-09-16T07:21:15+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-16/european-stocks-advance-as-bond-selloff-eases-ahead-of-fed",
+          "tags": [
             "commodity",
+            "global_broad",
+            "macro_risk",
             "market",
             "us_broad"
           ]
@@ -123,29 +93,42 @@
           ]
         },
         {
-          "title": "Traders Brace for Fed Hike With Equities Under Pressure",
+          "title": "Context Will Be Curve Play If Fed Hikes: Markets Analysis",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-16T00:58:43+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-16/traders-brace-for-fed-hike-with-equities-under-pressure-video",
+          "publishedAt": "2026-09-16T07:45:52+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-16/context-will-be-curve-play-if-fed-hikes-3-minutes-mliv-video",
           "tags": [
             "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "'More Risky' If Fed Doesn't Hike Rates, Invesco Says",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-16T07:20:48+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-16/-more-risky-if-fed-doesn-t-hike-rates-invesco-says-video",
+          "tags": [
+            "market",
+            "rates",
             "us_broad"
           ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.168,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 3,
-      "sourceCount": 2,
-      "itemCount": 4,
+      "positiveCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
       "topNegativeTitle": "AI, Data Center Spending by Multinationals Boosts Irish Economy",
-      "topPositiveTitle": "New Zealand’s World-Beating Sovereign Wealth Fund Returns 14.2%",
+      "topPositiveTitle": "AI, Data Center Spending by Multinationals Boosts Irish Economy",
       "items": [
         {
           "title": "AI, Data Center Spending by Multinationals Boosts Irish Economy",
@@ -158,73 +141,79 @@
             "market",
             "us_growth"
           ]
-        },
-        {
-          "title": "Retirement Math Difficult for Investors, says BlackRock's Magyera",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-15T20:54:53+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-15/anthropic-deepens-finance-industry-ties-with-blackrock-video",
-          "tags": [
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "China Stuck in Economic Slow Lane Relies on AI-Fueled Export Boom",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-15T11:00:01+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-09-15/china-stuck-in-economic-slow-lane-relies-on-ai-fueled-export-boom",
-          "tags": [
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "New Zealand’s World-Beating Sovereign Wealth Fund Returns 14.2%",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-09-16T00:24:51+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-16/new-zealand-s-world-beating-sovereign-wealth-fund-returns-14-2",
-          "tags": [
-            "market",
-            "us_growth"
-          ]
         }
       ]
     },
     "global_broad": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "gold": {
-      "avgSentiment": -0.67,
+      "avgSentiment": -0.5,
       "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 0,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Gold Steadies Below $4,300 as Markets Await Fed Rate Decision",
-      "topPositiveTitle": "Gold Steadies Below $4,300 as Markets Await Fed Rate Decision",
+      "topNegativeTitle": "European Stocks Advance as Bond Selloff Eases Ahead of Fed",
+      "topPositiveTitle": "European Stocks Advance as Bond Selloff Eases Ahead of Fed",
       "items": [
         {
-          "title": "Gold Steadies Below $4,300 as Markets Await Fed Rate Decision",
+          "title": "European Stocks Advance as Bond Selloff Eases Ahead of Fed",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.67,
+          "sentimentScore": -0.5,
+          "publishedAt": "2026-09-16T07:21:15+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-16/european-stocks-advance-as-bond-selloff-eases-ahead-of-fed",
+          "tags": [
+            "commodity",
+            "global_broad",
+            "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        }
+      ]
+    },
+    "gold": {
+      "avgSentiment": 0.133,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 2,
+      "sourceCount": 1,
+      "itemCount": 3,
+      "isStale": false,
+      "topNegativeTitle": "Hong Kong Sets Out Gold Hub as Driver for Commodities and Yuan",
+      "topPositiveTitle": "Gold Rises as Traders Weigh Oil Decline Before Key Fed Decision",
+      "items": [
+        {
+          "title": "Hong Kong Sets Out Gold Hub as Driver for Commodities and Yuan",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-16T07:08:45+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-16/hong-kong-sets-out-gold-hub-as-driver-for-commodities-and-yuan",
+          "tags": [
+            "commodity",
+            "gold",
+            "market"
+          ]
+        },
+        {
+          "title": "Zambia Stock Market to Debut Gold ETF, Sees Five Stock Listings",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-16T07:49:34+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-16/zambian-stock-market-to-debut-gold-etf-sees-five-stock-listings",
+          "tags": [
+            "gold",
+            "market",
+            "trust"
+          ]
+        },
+        {
+          "title": "Gold Rises as Traders Weigh Oil Decline Before Key Fed Decision",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.4,
           "publishedAt": "2026-09-16T00:00:15+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-16/gold-steadies-below-4-300-as-markets-await-fed-rate-decision",
           "tags": [
@@ -262,95 +251,110 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.034,
+      "avgSentiment": 0.043,
       "negativeCount": 1,
       "positiveCount": 1,
-      "neutralCount": 3,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Bond Market’s ‘Extreme’ Short Counts on Fed to Deliver Rate Hike",
-      "topPositiveTitle": "US 10-Year Yield Rises to Highest Since 2007 as Fed Looms",
+      "topNegativeTitle": "European Stocks Advance as Bond Selloff Eases Ahead of Fed",
+      "topPositiveTitle": "Asian Refiners Dust Off Early Iran-War Playbook as Oil Jumps",
       "items": [
         {
-          "title": "Bond Market’s ‘Extreme’ Short Counts on Fed to Deliver Rate Hike",
+          "title": "European Stocks Advance as Bond Selloff Eases Ahead of Fed",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-09-15T20:30:09+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-15/bond-market-s-extreme-short-counts-on-fed-to-deliver-rate-hike",
+          "sentimentScore": -0.5,
+          "publishedAt": "2026-09-16T07:21:15+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-16/european-stocks-advance-as-bond-selloff-eases-ahead-of-fed",
           "tags": [
+            "commodity",
+            "global_broad",
             "macro_risk",
             "market",
-            "rates",
             "us_broad"
           ]
         },
         {
-          "title": "Angola Bucks Global Trend And Cuts Key Rate as Iran War Rages",
+          "title": "Euro-Zone Wage Growth Set to Accelerate in 2027, ECB Says",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-15T14:15:15+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-15/angola-extends-easing-cycle-as-inflation-continues-to-slow",
+          "publishedAt": "2026-09-16T08:12:05+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-16/euro-zone-wage-growth-set-to-accelerate-in-2027-ecb-says",
           "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "European Gas Holds Near Highest Since 2022 on Stockpile Concern",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-16T07:12:17+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-16/european-gas-holds-near-highest-since-2022-on-stockpile-concern",
+          "tags": [
+            "commodity",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Asian Refiners Dust Off Early Iran-War Playbook as Oil Jumps",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-09-16T07:12:40+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-16/asian-refiners-dust-off-early-iran-war-playbook-as-oil-jumps",
+          "tags": [
+            "commodity",
             "geopolitical",
             "macro_risk",
             "market",
             "rates"
           ]
-        },
-        {
-          "title": "Unusual Calm in UK Pound Is Red Flag to Traders Before Budget",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-15T10:15:42+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-15/unusual-calm-in-uk-pound-is-red-flag-to-traders-before-budget",
-          "tags": [
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "BOE May End Long-Dated Bond Sales as Officials Draft Plans, Report Says",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-15T06:52:02+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-15/boe-plans-to-stop-long-dated-bond-sales-telegraph-report-says",
-          "tags": [
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "US 10-Year Yield Rises to Highest Since 2007 as Fed Looms",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.5,
-          "publishedAt": "2026-09-15T05:07:45+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-15/us-10-year-treasury-yields-rise-to-highest-level-since-2007",
-          "tags": [
-            "commodity",
-            "macro_risk",
-            "market",
-            "us_broad"
-          ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": 0.165,
+      "avgSentiment": 0.083,
       "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 2,
+      "neutralCount": 3,
+      "sourceCount": 2,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Bessent Says US Yen Intervention Was ‘Nominal,’ Backs US Exports",
+      "topNegativeTitle": "Uganda Shilling Slumps to Two-Year Low as FX Demand Soars",
       "topPositiveTitle": "Carry Traders Eye Franc and Krona as Yen’s Funding Appeal Ebbs",
       "items": [
+        {
+          "title": "Uganda Shilling Slumps to Two-Year Low as FX Demand Soars",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-16T07:27:07+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-16/uganda-shilling-slumps-to-two-year-low-as-fx-demand-soars",
+          "tags": [
+            "commodity",
+            "fx",
+            "market"
+          ]
+        },
+        {
+          "title": "Hong Kong Plans Faster Tech Hub Development to Boost Home Supply",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-16T04:32:43+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-16/hong-kong-plans-faster-tech-hub-development-to-boost-home-supply",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        },
         {
           "title": "Bessent Says US Yen Intervention Was ‘Nominal,’ Backs US Exports",
           "source": "Bloomberg Economics",
@@ -378,43 +382,26 @@
       ]
     },
     "rates": {
-      "avgSentiment": -0.239,
-      "negativeCount": 3,
-      "positiveCount": 0,
-      "neutralCount": 4,
+      "avgSentiment": 0.068,
+      "negativeCount": 2,
+      "positiveCount": 2,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 7,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Gold Steadies Below $4,300 as Markets Await Fed Rate Decision",
-      "topPositiveTitle": "【ウェビナー】日銀9月会合直前 ― 利上げ「過去最速」のペースとなるか",
+      "topNegativeTitle": "South African Inflation Expectations Dip Before Rate Call",
+      "topPositiveTitle": "Asian Refiners Dust Off Early Iran-War Playbook as Oil Jumps",
       "items": [
         {
-          "title": "Gold Steadies Below $4,300 as Markets Await Fed Rate Decision",
-          "source": "Bloomberg Markets",
+          "title": "South African Inflation Expectations Dip Before Rate Call",
+          "source": "Bloomberg Economics",
           "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-09-16T00:00:15+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-16/gold-steadies-below-4-300-as-markets-await-fed-rate-decision",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-16T07:03:31+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-16/south-african-inflation-expectations-rise-before-rate-decision",
           "tags": [
-            "commodity",
-            "gold",
             "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Bond Market’s ‘Extreme’ Short Counts on Fed to Deliver Rate Hike",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-09-15T20:30:09+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-15/bond-market-s-extreme-short-counts-on-fed-to-deliver-rate-hike",
-          "tags": [
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
+            "rates"
           ]
         },
         {
@@ -431,22 +418,21 @@
           ]
         },
         {
-          "title": "【ウェビナー】日銀9月会合直前 ― 利上げ「過去最速」のペースとなるか",
-          "source": "Bloomberg Economics",
+          "title": "'More Risky' If Fed Doesn't Hike Rates, Invesco Says",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-14T07:58:52+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-14/-9-video",
+          "publishedAt": "2026-09-16T07:20:48+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-16/-more-risky-if-fed-doesn-t-hike-rates-invesco-says-video",
           "tags": [
-            "jp_broad",
             "market",
-            "rates"
-          ],
-          "titleJa": "【ウェビナー】日銀9月会合直前 ― 利上げ「過去最速」のペースとなるか"
+            "rates",
+            "us_broad"
+          ]
         },
         {
           "title": "Fed Seen Hiking Rates in Defiance of Trump: Decision-Day Guide",
-          "source": "Bloomberg Markets",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
           "publishedAt": "2026-09-15T23:00:00+00:00",
@@ -456,25 +442,12 @@
             "rates",
             "us_broad"
           ]
-        }
-      ]
-    },
-    "commodity": {
-      "avgSentiment": -0.054,
-      "negativeCount": 2,
-      "positiveCount": 2,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 5,
-      "isStale": false,
-      "topNegativeTitle": "Gold Steadies Below $4,300 as Markets Await Fed Rate Decision",
-      "topPositiveTitle": "US 10-Year Yield Rises to Highest Since 2007 as Fed Looms",
-      "items": [
+        },
         {
-          "title": "Gold Steadies Below $4,300 as Markets Await Fed Rate Decision",
+          "title": "Gold Rises as Traders Weigh Oil Decline Before Key Fed Decision",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
+          "sentiment": "positive",
+          "sentimentScore": 0.4,
           "publishedAt": "2026-09-16T00:00:15+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-16/gold-steadies-below-4-300-as-markets-await-fed-rate-decision",
           "tags": [
@@ -484,109 +457,126 @@
             "rates",
             "us_broad"
           ]
-        },
+        }
+      ]
+    },
+    "commodity": {
+      "avgSentiment": 0.138,
+      "negativeCount": 1,
+      "positiveCount": 3,
+      "neutralCount": 5,
+      "sourceCount": 2,
+      "itemCount": 9,
+      "isStale": false,
+      "topNegativeTitle": "European Stocks Advance as Bond Selloff Eases Ahead of Fed",
+      "topPositiveTitle": "Asian Refiners Dust Off Early Iran-War Playbook as Oil Jumps",
+      "items": [
         {
-          "title": "Asian Stocks Steady in Runup to Fed, Oil Declines: Markets Wrap",
+          "title": "European Stocks Advance as Bond Selloff Eases Ahead of Fed",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.43,
-          "publishedAt": "2026-09-15T22:11:24+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-15/asian-stocks-to-edge-higher-as-traders-await-fed-markets-wrap",
+          "sentimentScore": -0.5,
+          "publishedAt": "2026-09-16T07:21:15+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-16/european-stocks-advance-as-bond-selloff-eases-ahead-of-fed",
           "tags": [
             "commodity",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "US-China Discuss Cutting Some Tariffs as Leaders Prepare to Meet",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-16T00:53:27+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-16/us-china-discuss-cutting-some-tariffs-as-leaders-prepare-to-meet",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "Thai Finance Chief Sticks to 2.5% Growth Goal",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-15T23:05:45+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-15/thai-finance-chief-sticks-to-2-5-growth-goal-video",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "US 10-Year Yield Rises to Highest Since 2007 as Fed Looms",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.5,
-          "publishedAt": "2026-09-15T05:07:45+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-15/us-10-year-treasury-yields-rise-to-highest-level-since-2007",
-          "tags": [
-            "commodity",
+            "global_broad",
             "macro_risk",
             "market",
             "us_broad"
+          ]
+        },
+        {
+          "title": "Uganda Shilling Slumps to Two-Year Low as FX Demand Soars",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-16T07:27:07+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-16/uganda-shilling-slumps-to-two-year-low-as-fx-demand-soars",
+          "tags": [
+            "commodity",
+            "fx",
+            "market"
+          ]
+        },
+        {
+          "title": "European Gas Holds Near Highest Since 2022 on Stockpile Concern",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-16T07:12:17+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-16/european-gas-holds-near-highest-since-2022-on-stockpile-concern",
+          "tags": [
+            "commodity",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Hong Kong Sets Out Gold Hub as Driver for Commodities and Yuan",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-16T07:08:45+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-16/hong-kong-sets-out-gold-hub-as-driver-for-commodities-and-yuan",
+          "tags": [
+            "commodity",
+            "gold",
+            "market"
+          ]
+        },
+        {
+          "title": "Saudis Pivot to Send More Oil Via Hormuz After Pipeline Shut",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-16T05:29:31+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-16/saudis-pivot-to-send-more-oil-through-hormuz-after-pipeline-shut",
+          "tags": [
+            "commodity",
+            "market"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0.335,
       "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 3,
+      "positiveCount": 1,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Rep. Waters Presses Bessent on Inflation, Iran and Tariffs",
-      "topPositiveTitle": "Rep. Waters Presses Bessent on Inflation, Iran and Tariffs",
+      "topNegativeTitle": "Euro-Zone Wage Growth Set to Accelerate in 2027, ECB Says",
+      "topPositiveTitle": "Asian Refiners Dust Off Early Iran-War Playbook as Oil Jumps",
       "items": [
         {
-          "title": "Rep. Waters Presses Bessent on Inflation, Iran and Tariffs",
+          "title": "Euro-Zone Wage Growth Set to Accelerate in 2027, ECB Says",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-15T15:22:58+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-15/rep-waters-presses-bessent-on-inflation-iran-tariffs-video",
+          "publishedAt": "2026-09-16T08:12:05+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-16/euro-zone-wage-growth-set-to-accelerate-in-2027-ecb-says",
           "tags": [
             "geopolitical",
+            "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Angola Bucks Global Trend And Cuts Key Rate as Iran War Rages",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-15T14:15:15+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-15/angola-extends-easing-cycle-as-inflation-continues-to-slow",
+          "title": "Asian Refiners Dust Off Early Iran-War Playbook as Oil Jumps",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-09-16T07:12:40+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-16/asian-refiners-dust-off-early-iran-war-playbook-as-oil-jumps",
           "tags": [
+            "commodity",
             "geopolitical",
             "macro_risk",
             "market",
             "rates"
           ]
-        },
-        {
-          "title": "ゼレンスキー大統領 森衆議院議長と会談 キーウ訪問に謝意",
-          "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-15T21:07:00+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20260916de50464",
-          "tags": [
-            "geopolitical",
-            "market"
-          ],
-          "titleJa": "ゼレンスキー大統領 森衆議院議長と会談 キーウ訪問に謝意"
         }
       ]
     }
