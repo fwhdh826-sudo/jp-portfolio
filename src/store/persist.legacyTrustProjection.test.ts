@@ -18,6 +18,11 @@
 //   T11 repeated projection             → idempotent
 //   T12 legacy source object            → never mutated in place
 //   + legacy v81_trust read boundary    → projected on read, stored bytes untouched
+//
+// R2 (safe property copy): an own enumerable `__proto__` key (and the adjacent `constructor` /
+// `prototype` names) must survive projection as ordinary own data keys so the exact-key
+// validator can reject them. R1 copied keys with `target[key] = value`, which routed
+// `__proto__` through the inherited Object.prototype setter and silently dropped it (fail-open).
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import type { Holding, Trust } from '../types'
 import { computeCanonicalPortfolioGenerationIdentityV2 } from '../utils/snapshotGenerationIdentity'
@@ -98,6 +103,20 @@ function legacyTrust(id = 'fund-a', evalValue = 300_000, keys: Array<'csv_name' 
   if (keys.includes('csv_account')) row.csv_account = '特定'
   return row as unknown as Trust
 }
+
+/**
+ * Adds an OWN enumerable data property without going through an object literal or dynamic
+ * assignment (both of which give `__proto__` prototype-setting semantics). The result is a
+ * legacy row (csv_name present) so projection is forced to build a copy.
+ */
+function legacyTrustWithOwnKey(key: string, value: unknown, id = 'fund-a'): Trust {
+  const row: Record<string, unknown> = { ...legacyTrust(id, 300_000, ['csv_name']) }
+  Object.defineProperty(row, key, { value, enumerable: true, writable: true, configurable: true })
+  expect(Object.prototype.hasOwnProperty.call(row, key)).toBe(true)
+  return row as unknown as Trust
+}
+
+const hasOwn = (value: unknown, key: string) => Object.prototype.hasOwnProperty.call(value, key)
 
 function payloadWith(trust: Trust[]): CsvImportPersistencePayload {
   const evalById = Object.fromEntries(trust.map(row => [row.id, row.eval]))
@@ -242,6 +261,88 @@ describe('projectLegacyTrustRow / projectLegacyTrustRows (pure conversion contra
   })
 })
 
+describe('R2: safe property copy (own __proto__ / constructor / prototype keys survive projection)', () => {
+  const POLLUTION = { polluted: true }
+
+  it('own enumerable __proto__ is retained as an OWN DATA key (not routed through the setter)', () => {
+    const row = legacyTrustWithOwnKey('__proto__', POLLUTION)
+    const sourceKeys = Object.keys(row)
+    const projected = projectLegacyTrustRow(row) as unknown as Record<string, unknown>
+
+    expect(projected).not.toBe(row)
+    expect(hasOwn(projected, 'csv_name')).toBe(false)
+    expect(hasOwn(projected, '__proto__')).toBe(true)
+    expect(Object.getOwnPropertyDescriptor(projected, '__proto__')).toMatchObject({
+      value: POLLUTION,
+      enumerable: true,
+      writable: true,
+      configurable: true,
+    })
+    // Value is preserved by reference and not coerced.
+    expect(Object.getOwnPropertyDescriptor(projected, '__proto__')!.value).toBe(POLLUTION)
+    // Every other key is retained exactly, in source order.
+    expect(Object.keys(projected)).toEqual(sourceKeys.filter(key => key !== 'csv_name'))
+    // Serialized bytes carry the unknown key so the exact-key validator (and any later reader) sees it.
+    const expected: Record<string, unknown> = { ...cleanTrust() }
+    Object.defineProperty(expected, '__proto__', { value: POLLUTION, enumerable: true, writable: true, configurable: true })
+    expect(JSON.stringify(projected)).toBe(JSON.stringify(expected))
+    expect(JSON.stringify(projected)).toContain('"__proto__":{"polluted":true}')
+  })
+
+  it('does not pollute the projected prototype nor the global Object.prototype', () => {
+    const row = legacyTrustWithOwnKey('__proto__', POLLUTION)
+    const projected = projectLegacyTrustRow(row) as unknown as Record<string, unknown>
+
+    expect(Object.getPrototypeOf(projected)).toBe(Object.prototype)
+    expect(Object.getPrototypeOf(row)).toBe(Object.prototype)
+    // Nothing reachable through inheritance.
+    expect((projected as { polluted?: unknown }).polluted).toBeUndefined()
+    expect('polluted' in ({} as Record<string, unknown>)).toBe(false)
+    expect(hasOwn(Object.prototype, 'polluted')).toBe(false)
+    expect(({} as { polluted?: unknown }).polluted).toBeUndefined()
+    // A normal usable object: canonical values still read as own data.
+    expect(projected.id).toBe('fund-a')
+    expect(projected.eval).toBe(300_000)
+  })
+
+  it.each([
+    ['constructor', 'evil-constructor'],
+    ['prototype', { evil: true }],
+  ])('adjacent magic name %s is retained as an ordinary own data key', (key, value) => {
+    const row = legacyTrustWithOwnKey(key, value)
+    const projected = projectLegacyTrustRow(row) as unknown as Record<string, unknown>
+    expect(hasOwn(projected, 'csv_name')).toBe(false)
+    expect(hasOwn(projected, key)).toBe(true)
+    expect(Object.getOwnPropertyDescriptor(projected, key)!.value).toBe(value)
+    expect(Object.getPrototypeOf(projected)).toBe(Object.prototype)
+    // `constructor` as a data key must shadow, not replace, the inherited one for other objects.
+    expect(({}).constructor).toBe(Object)
+  })
+
+  it('source object is never mutated and projection stays idempotent for magic keys', () => {
+    for (const key of ['__proto__', 'constructor', 'prototype']) {
+      const row = legacyTrustWithOwnKey(key, POLLUTION)
+      const before = Object.getOwnPropertyDescriptors(row)
+      const once = projectLegacyTrustRow(row)
+      const twice = projectLegacyTrustRow(once)
+      expect(Object.getOwnPropertyDescriptors(row)).toEqual(before)
+      expect(hasOwn(row, 'csv_name')).toBe(true)
+      expect(hasOwn(row, key)).toBe(true)
+      // No legacy key remains after the first pass, so the second pass is reference-preserving.
+      expect(twice).toBe(once)
+      expect(Object.getOwnPropertyDescriptors(twice)).toEqual(Object.getOwnPropertyDescriptors(once))
+    }
+  })
+
+  it('a legacy row whose __proto__ value is null still copies it as an own data key', () => {
+    const row = legacyTrustWithOwnKey('__proto__', null)
+    const projected = projectLegacyTrustRow(row) as unknown as Record<string, unknown>
+    expect(hasOwn(projected, '__proto__')).toBe(true)
+    expect(Object.getOwnPropertyDescriptor(projected, '__proto__')!.value).toBeNull()
+    expect(Object.getPrototypeOf(projected)).toBe(Object.prototype)
+  })
+})
+
 describe('canonical writer boundary (persistCsvImportTransaction, schema v5)', () => {
   it('T1: a clean canonical trust payload commits and persists the rows unchanged', () => {
     const trust = [cleanTrust('a'), cleanTrust('b', 100_000)]
@@ -326,6 +427,43 @@ describe('canonical writer boundary (persistCsvImportTransaction, schema v5)', (
   it('malformed trust identity still fails after legacy projection', () => {
     expectSchemaValidationFailure(payloadWith([{ ...legacyTrust(), id: '' } as unknown as Trust]))
   })
+
+  describe('R2 unknown-key contract matrix', () => {
+    it.each([
+      ['A: legacy + unexpected_unknown_field', 'unexpected_unknown_field', 1],
+      ['B: legacy + own enumerable __proto__', '__proto__', { polluted: true }],
+      ['C: legacy + constructor', 'constructor', 'evil'],
+      ['D: legacy + prototype', 'prototype', { evil: true }],
+    ])('%s → retained by projection, rejected by the canonical validator, nothing committed', (_label, key, value) => {
+      const row = legacyTrustWithOwnKey(key, value)
+      const projected = projectLegacyTrustRow(row)
+      expect(hasOwn(projected, key)).toBe(true)
+      expect(hasOwn(projected, 'csv_name')).toBe(false)
+      expectSchemaValidationFailure(payloadWith([row]))
+      expect(restoreCsvImportGeneration().status).not.toBe('committed')
+      // The source row handed to the writer is untouched.
+      expect(hasOwn(row, key)).toBe(true)
+      expect(hasOwn(row, 'csv_name')).toBe(true)
+    })
+
+    it('B (writer): __proto__ rejection leaves Object.prototype untouched', () => {
+      expectSchemaValidationFailure(payloadWith([legacyTrustWithOwnKey('__proto__', { polluted: true })]))
+      expect(hasOwn(Object.prototype, 'polluted')).toBe(false)
+      expect(({} as { polluted?: unknown }).polluted).toBeUndefined()
+    })
+
+    it.each([
+      ['E: legacy + csv_name only', ['csv_name'] as const],
+      ['F: legacy + csv_account only', ['csv_account'] as const],
+      ['G: legacy + csv_name + csv_account', ['csv_name', 'csv_account'] as const],
+    ])('%s → known keys removed, canonical generation commits', (_label, keys) => {
+      persistV5(payloadWith([legacyTrust('fund-a', 300_000, [...keys])]))
+      const restored = restoreCsvImportGeneration()
+      if (restored.status !== 'committed') throw new Error('expected committed generation')
+      expect(restored.payload.trust).toEqual([cleanTrust('fund-a', 300_000)])
+      for (const key of keys) expect(storage[CSV_IMPORT_GENERATION_KEY]).not.toContain(key)
+    })
+  })
 })
 
 describe('legacy v81_trust read boundary (restoreTrust)', () => {
@@ -352,5 +490,23 @@ describe('legacy v81_trust read boundary (restoreTrust)', () => {
     const restored = restoreTrust() as unknown as Array<Record<string, unknown>>
     expect(restored[0]).not.toHaveProperty('csv_name')
     expect(restored[0]).toHaveProperty('mysteryKey', 1)
+  })
+
+  it.each([
+    ['__proto__', { polluted: true }],
+    ['constructor', 'evil'],
+    ['prototype', { evil: true }],
+  ])('R2: the read boundary cannot hide an own %s key either', (key, value) => {
+    persistTrust([legacyTrustWithOwnKey(key, value, 'a')])
+    expect(storage.v81_trust).toContain(`"${key}":`)
+    const restored = restoreTrust() as unknown as Array<Record<string, unknown>>
+    expect(hasOwn(restored[0], 'csv_name')).toBe(false)
+    expect(hasOwn(restored[0], key)).toBe(true)
+    expect(Object.getOwnPropertyDescriptor(restored[0], key)!.value).toEqual(value)
+    expect(Object.getPrototypeOf(restored[0])).toBe(Object.prototype)
+    expect((restored[0] as { polluted?: unknown }).polluted).toBeUndefined()
+    expect(hasOwn(Object.prototype, 'polluted')).toBe(false)
+    // The projected read row still fails the canonical writer exactly like a direct write.
+    expectSchemaValidationFailure(payloadWith(restored as unknown as Trust[]))
   })
 })

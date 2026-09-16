@@ -232,19 +232,26 @@ function isHolding(value: unknown): value is Holding {
  *   change for clean rows, no invented defaults).
  * - Idempotent: project(project(x)) is project(x).
  * - Fail-closed: any other unknown key is left in place and continues to fail `isTrust`.
+ * - Safe copy (R2): retained keys are materialized as ordinary OWN DATA properties via
+ *   `Object.fromEntries` (CreateDataProperty semantics). A plain `target[key] = value` loop
+ *   would route an own enumerable `__proto__` key through the inherited
+ *   `Object.prototype.__proto__` setter, silently dropping it before the exact-key validator
+ *   could reject it (fail-open) and attempting to rewrite the copy's prototype.
  */
 export const LEGACY_TRUST_COMPATIBILITY_KEYS = ['csv_name', 'csv_account'] as const
+
+function isLegacyTrustCompatibilityKey(key: string): boolean {
+  return (LEGACY_TRUST_COMPATIBILITY_KEYS as readonly string[]).includes(key)
+}
 
 export function projectLegacyTrustRow<T extends Trust>(row: T): T {
   if (!isRecord(row)) return row
   if (!LEGACY_TRUST_COMPATIBILITY_KEYS.some(key => Object.prototype.hasOwnProperty.call(row, key))) {
     return row
   }
-  const projected: UnknownRecord = {}
-  for (const key of Object.keys(row)) {
-    if ((LEGACY_TRUST_COMPATIBILITY_KEYS as readonly string[]).includes(key)) continue
-    projected[key] = row[key]
-  }
+  const projected: UnknownRecord = Object.fromEntries(
+    Object.entries(row).filter(([key]) => !isLegacyTrustCompatibilityKey(key)),
+  )
   return projected as T
 }
 
