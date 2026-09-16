@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-09-17T00:28:13.893206+09:00",
-  "sourceUpdatedAt": "2026-09-16T15:20:50+00:00",
+  "updatedAt": "2026-09-17T08:47:16.740887+09:00",
+  "sourceUpdatedAt": "2026-09-16T23:09:50+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -17,89 +17,47 @@
       "items": []
     },
     "jp_semiconductor": {
-      "avgSentiment": 0.165,
+      "avgSentiment": 0,
       "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 1,
-      "sourceCount": 2,
-      "itemCount": 2,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Intel-SK Hynix Potential Tie Up; JB Hunt Lower on Costs | Stock Movers",
-      "topPositiveTitle": "Japan’s Export Growth Stays Solid as Shipments of Chips Jump",
-      "items": [
-        {
-          "title": "Intel-SK Hynix Potential Tie Up; JB Hunt Lower on Costs | Stock Movers",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-16T13:58:30+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-16/intel-sk-hynix-potential-tie-up-jb-hunt-lower-on-costs-video",
-          "tags": [
-            "jp_semiconductor",
-            "market"
-          ]
-        },
-        {
-          "title": "Japan’s Export Growth Stays Solid as Shipments of Chips Jump",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-15T23:58:06+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-15/japan-s-export-growth-stays-robust-as-shipments-to-us-lead-gains",
-          "tags": [
-            "jp_semiconductor",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "us_broad": {
-      "avgSentiment": -0.127,
-      "negativeCount": 3,
-      "positiveCount": 1,
-      "neutralCount": 2,
+      "avgSentiment": -0.053,
+      "negativeCount": 4,
+      "positiveCount": 3,
+      "neutralCount": 12,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 19,
       "isStale": false,
-      "topNegativeTitle": "European Stocks Advance as Bond Yields and Oil Ease Ahead of Fed",
-      "topPositiveTitle": "Gold Rises as Traders Weigh Oil Decline Before Key Fed Decision",
+      "topNegativeTitle": "Foreign Holdings of US Treasuries Fell to Nine-Month Low in July",
+      "topPositiveTitle": "Asian Bonds Decline as Fed Hikes, Dollar Jumps: Markets Wrap",
       "items": [
         {
-          "title": "European Stocks Advance as Bond Yields and Oil Ease Ahead of Fed",
+          "title": "Foreign Holdings of US Treasuries Fell to Nine-Month Low in July",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.5,
-          "publishedAt": "2026-09-16T07:21:15+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-16/european-stocks-advance-as-bond-selloff-eases-ahead-of-fed",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-09-16T20:25:37+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-16/foreign-holdings-of-us-treasuries-fell-to-nine-month-low-in-july",
           "tags": [
-            "commodity",
-            "global_broad",
-            "macro_risk",
             "market",
-            "rates",
             "us_broad"
           ]
         },
         {
-          "title": "Unloved Consumer Names Like Walmart Face Pressure as Rate Hike Draws Near",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-16T13:46:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-16/unloved-consumer-names-like-walmart-face-pressure-as-rate-hike-draws-near",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "After Talking the Talk on Inflation, Fed’s Warsh May Be Made to Walk",
+          "title": "Hong Kong Follows Fed With First Rate Hike in Over Three Years",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-09-16T11:06:48+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-09-16/after-talking-the-talk-on-inflation-fed-s-warsh-may-be-made-to-walk",
+          "publishedAt": "2026-09-16T23:09:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-16/hong-kong-follows-fed-with-first-rate-hike-in-over-three-years",
           "tags": [
             "market",
             "rates",
@@ -107,12 +65,12 @@
           ]
         },
         {
-          "title": "Fed Expected to Hike Rates for First Time Since 2023",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-16T13:36:00+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-16/fed-expected-to-hike-rates-for-first-time-since-2023-video",
+          "title": "Warsh Says Fed Rate Hike Is a Commitment to Price Stability",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-16T19:13:55+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-16/warsh-says-fed-hike-is-a-commitment-to-price-stability-video",
           "tags": [
             "market",
             "rates",
@@ -120,102 +78,67 @@
           ]
         },
         {
-          "title": "Stocks, Bonds Rise in Countdown to Fed Decision: Markets Wrap",
+          "title": "Stocks Fall as Fed Hikes and Signals More to Come: Markets Wrap",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
           "publishedAt": "2026-09-15T22:11:24+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-15/asian-stocks-to-edge-higher-as-traders-await-fed-markets-wrap",
           "tags": [
-            "commodity",
             "market",
             "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "The Fed’s Unanimous 25-basis-point Hike Puts Trump and Warsh on Collision Course",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-16T22:47:53+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-16/the-fed-s-unanimous-25-basis-point-hike-puts-trump-and-warsh-on-collision-course",
+          "tags": [
+            "market",
             "us_broad"
           ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.67,
+      "avgSentiment": 0,
       "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
-      "isStale": false,
-      "topNegativeTitle": "Strong Retail Sales Hide Consumer Divide: Analyst Kodali",
-      "topPositiveTitle": "Strong Retail Sales Hide Consumer Divide: Analyst Kodali",
-      "items": [
-        {
-          "title": "Strong Retail Sales Hide Consumer Divide: Analyst Kodali",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-09-16T15:19:43+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-16/strong-retail-sales-hide-consumer-divide-analyst-kodali-video",
-          "tags": [
-            "market",
-            "us_growth"
-          ]
-        }
-      ]
-    },
-    "global_broad": {
-      "avgSentiment": -0.5,
-      "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "European Stocks Advance as Bond Yields and Oil Ease Ahead of Fed",
-      "topPositiveTitle": "European Stocks Advance as Bond Yields and Oil Ease Ahead of Fed",
-      "items": [
-        {
-          "title": "European Stocks Advance as Bond Yields and Oil Ease Ahead of Fed",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.5,
-          "publishedAt": "2026-09-16T07:21:15+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-16/european-stocks-advance-as-bond-selloff-eases-ahead-of-fed",
-          "tags": [
-            "commodity",
-            "global_broad",
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
+    },
+    "global_broad": {
+      "avgSentiment": 0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
+      "isStale": false,
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "gold": {
-      "avgSentiment": 0.4,
+      "avgSentiment": 0,
       "negativeCount": 0,
-      "positiveCount": 1,
+      "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Gold Rises as Traders Weigh Oil Decline Before Key Fed Decision",
-      "topPositiveTitle": "Gold Rises as Traders Weigh Oil Decline Before Key Fed Decision",
-      "items": [
-        {
-          "title": "Gold Rises as Traders Weigh Oil Decline Before Key Fed Decision",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.4,
-          "publishedAt": "2026-09-16T00:00:15+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-16/gold-steadies-below-4-300-as-markets-await-fed-rate-decision",
-          "tags": [
-            "commodity",
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "reit": {
       "avgSentiment": 0.0,
@@ -225,19 +148,21 @@
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Zillow Loses Antitrust Battle Over Chicago Area Listings Feed",
-      "topPositiveTitle": "Zillow Loses Antitrust Battle Over Chicago Area Listings Feed",
+      "topNegativeTitle": "Brown Harris Stevens CEO: We Need More Housing in Market",
+      "topPositiveTitle": "Brown Harris Stevens CEO: We Need More Housing in Market",
       "items": [
         {
-          "title": "Zillow Loses Antitrust Battle Over Chicago Area Listings Feed",
+          "title": "Brown Harris Stevens CEO: We Need More Housing in Market",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-16T14:33:54+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-16/zillow-loses-antitrust-battle-over-chicago-area-listings-feed",
+          "publishedAt": "2026-09-16T21:41:33+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-16/brown-harris-stevens-ceo-we-need-more-housing-in-market-video",
           "tags": [
             "market",
-            "reit"
+            "rates",
+            "reit",
+            "us_broad"
           ]
         }
       ]
@@ -255,52 +180,36 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.167,
-      "negativeCount": 1,
-      "positiveCount": 0,
-      "neutralCount": 2,
+      "avgSentiment": 0.165,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "European Stocks Advance as Bond Yields and Oil Ease Ahead of Fed",
-      "topPositiveTitle": "US and China trade truce and tariffs",
+      "topNegativeTitle": "Asia Risks Unrest as El Niño, War Threaten Food Supplies, Consultancy Says",
+      "topPositiveTitle": "New Zealand’s Economic Growth Beat Estimates Last Quarter",
       "items": [
         {
-          "title": "European Stocks Advance as Bond Yields and Oil Ease Ahead of Fed",
+          "title": "Asia Risks Unrest as El Niño, War Threaten Food Supplies, Consultancy Says",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.5,
-          "publishedAt": "2026-09-16T07:21:15+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-16/european-stocks-advance-as-bond-selloff-eases-ahead-of-fed",
-          "tags": [
-            "commodity",
-            "global_broad",
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "US and China trade truce and tariffs",
-          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-16T11:00:01+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-09-16/us-and-china-trade-truce-and-tariffs",
+          "publishedAt": "2026-09-16T23:01:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-16/asia-risks-unrest-as-el-nino-war-threaten-food-supplies-consultancy-says",
           "tags": [
-            "commodity",
+            "geopolitical",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Euro-Zone Wage Growth Set to Accelerate in 2027, ECB Says",
+          "title": "New Zealand’s Economic Growth Beat Estimates Last Quarter",
           "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-16T08:12:05+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-16/euro-zone-wage-growth-set-to-accelerate-in-2027-ecb-says",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-16T22:51:11+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-16/new-zealand-economic-growth-exceeded-estimates-in-second-quarter",
           "tags": [
             "geopolitical",
             "macro_risk",
@@ -310,53 +219,56 @@
       ]
     },
     "fx": {
-      "avgSentiment": 0.265,
+      "avgSentiment": 0.165,
       "negativeCount": 0,
       "positiveCount": 1,
       "neutralCount": 1,
-      "sourceCount": 2,
+      "sourceCount": 1,
       "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Uganda Shilling Dips to Lowest Since 2024 as FX Demand Soars",
-      "topPositiveTitle": "Carry Traders Eye Franc, Krona as Yen’s Funding Appeal Ebbs",
+      "topNegativeTitle": "Hawkish Warsh Lifts Dollar as Traders Bet on More Rate Increases",
+      "topPositiveTitle": "Asian Bonds Decline as Fed Hikes, Dollar Jumps: Markets Wrap",
       "items": [
         {
-          "title": "Uganda Shilling Dips to Lowest Since 2024 as FX Demand Soars",
+          "title": "Hawkish Warsh Lifts Dollar as Traders Bet on More Rate Increases",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.2,
-          "publishedAt": "2026-09-16T07:27:07+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-16/uganda-shilling-slumps-to-two-year-low-as-fx-demand-soars",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-16T18:28:26+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-16/dollar-jumps-after-fed-raises-rates-sends-hawkish-signal",
           "tags": [
-            "commodity",
             "fx",
-            "market"
+            "market",
+            "rates",
+            "us_broad"
           ]
         },
         {
-          "title": "Carry Traders Eye Franc, Krona as Yen’s Funding Appeal Ebbs",
-          "source": "Bloomberg Economics",
+          "title": "Asian Bonds Decline as Fed Hikes, Dollar Jumps: Markets Wrap",
+          "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.33,
-          "publishedAt": "2026-09-15T23:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-15/carry-traders-eye-franc-and-krona-as-yen-s-funding-appeal-ebbs",
+          "publishedAt": "2026-09-16T22:06:59+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-16/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "fx",
-            "market"
+            "market",
+            "rates",
+            "us_broad"
           ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": -0.261,
-      "negativeCount": 5,
-      "positiveCount": 1,
-      "neutralCount": 2,
+      "avgSentiment": -0.062,
+      "negativeCount": 4,
+      "positiveCount": 3,
+      "neutralCount": 9,
       "sourceCount": 2,
-      "itemCount": 8,
+      "itemCount": 16,
       "isStale": false,
       "topNegativeTitle": "US Homebuilder Sentiment Drops to Match Lowest Level Since 2022",
-      "topPositiveTitle": "Gold Rises as Traders Weigh Oil Decline Before Key Fed Decision",
+      "topPositiveTitle": "Asian Bonds Decline as Fed Hikes, Dollar Jumps: Markets Wrap",
       "items": [
         {
           "title": "US Homebuilder Sentiment Drops to Match Lowest Level Since 2022",
@@ -371,41 +283,12 @@
           ]
         },
         {
-          "title": "European Stocks Advance as Bond Yields and Oil Ease Ahead of Fed",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.5,
-          "publishedAt": "2026-09-16T07:21:15+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-16/european-stocks-advance-as-bond-selloff-eases-ahead-of-fed",
-          "tags": [
-            "commodity",
-            "global_broad",
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Unloved Consumer Names Like Walmart Face Pressure as Rate Hike Draws Near",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-16T13:46:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-16/unloved-consumer-names-like-walmart-face-pressure-as-rate-hike-draws-near",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "After Talking the Talk on Inflation, Fed’s Warsh May Be Made to Walk",
+          "title": "Hong Kong Follows Fed With First Rate Hike in Over Three Years",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-09-16T11:06:48+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-09-16/after-talking-the-talk-on-inflation-fed-s-warsh-may-be-made-to-walk",
+          "publishedAt": "2026-09-16T23:09:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-16/hong-kong-follows-fed-with-first-rate-hike-in-over-three-years",
           "tags": [
             "market",
             "rates",
@@ -413,12 +296,38 @@
           ]
         },
         {
-          "title": "South African Inflation Expectations Dip Before Rate Call",
+          "title": "Warsh Says Fed Rate Hike Is a Commitment to Price Stability",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-09-16T07:03:31+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-16/south-african-inflation-expectations-rise-before-rate-decision",
+          "publishedAt": "2026-09-16T19:13:55+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-16/warsh-says-fed-hike-is-a-commitment-to-price-stability-video",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Stocks Fall as Fed Hikes and Signals More to Come: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-15T22:11:24+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-15/asian-stocks-to-edge-higher-as-traders-await-fed-markets-wrap",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "IMF Urges RBA to Stay Hawkish, Warns of Inflation Upside Risks",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-16T23:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-16/imf-urges-rba-to-stay-hawkish-warns-of-inflation-upside-risks",
           "tags": [
             "market",
             "rates"
@@ -427,104 +336,90 @@
       ]
     },
     "commodity": {
-      "avgSentiment": -0.023,
-      "negativeCount": 2,
-      "positiveCount": 1,
-      "neutralCount": 7,
-      "sourceCount": 2,
-      "itemCount": 10,
+      "avgSentiment": -0.335,
+      "negativeCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "European Stocks Advance as Bond Yields and Oil Ease Ahead of Fed",
-      "topPositiveTitle": "Gold Rises as Traders Weigh Oil Decline Before Key Fed Decision",
+      "topNegativeTitle": "Oil Extends Drop as Saudi Arabia Moves to Restore Vital Pipeline",
+      "topPositiveTitle": "AI Buildout Hits Inflation as Fed Hikes Rates",
       "items": [
         {
-          "title": "European Stocks Advance as Bond Yields and Oil Ease Ahead of Fed",
+          "title": "Oil Extends Drop as Saudi Arabia Moves to Restore Vital Pipeline",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.5,
-          "publishedAt": "2026-09-16T07:21:15+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-16/european-stocks-advance-as-bond-selloff-eases-ahead-of-fed",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-09-16T22:05:54+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-16/oil-extends-slump-as-saudi-arabia-moves-to-restore-key-pipeline",
           "tags": [
             "commodity",
-            "global_broad",
-            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "AI Buildout Hits Inflation as Fed Hikes Rates",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-16T21:25:15+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-16/ai-buildout-hits-inflation-as-fed-hikes-rates-video",
+          "tags": [
+            "commodity",
             "market",
             "rates",
             "us_broad"
-          ]
-        },
-        {
-          "title": "UAE Wins Dismissal of Oil Trader’s Lawsuit Alleging Smears",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-15T22:22:51+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-15/uae-wins-dismissal-of-suit-by-oil-trader-alleging-smear-campaign",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "Venezuela enviará aluminio a EE.UU. con Mercuria y Heeney",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-16T15:13:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-16/venezuela-enviara-aluminio-a-ee-uu-con-mercuria-y-heeney",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "Venezuela Plans to Ship Aluminum to US in Mercuria-Heeney Deal",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-16T14:09:49+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-16/venezuela-plans-to-ship-aluminum-to-us-in-mercuria-heeney-deal",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "US and China trade truce and tariffs",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-16T11:00:01+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-09-16/us-and-china-trade-truce-and-tariffs",
-          "tags": [
-            "commodity",
-            "macro_risk",
-            "market"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0.22,
       "negativeCount": 0,
-      "positiveCount": 0,
+      "positiveCount": 2,
       "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 2,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Euro-Zone Wage Growth Set to Accelerate in 2027, ECB Says",
-      "topPositiveTitle": "Euro-Zone Wage Growth Set to Accelerate in 2027, ECB Says",
+      "topNegativeTitle": "Asia Risks Unrest as El Niño, War Threaten Food Supplies, Consultancy Says",
+      "topPositiveTitle": "New Zealand’s Economic Growth Beat Estimates Last Quarter",
       "items": [
         {
-          "title": "Euro-Zone Wage Growth Set to Accelerate in 2027, ECB Says",
-          "source": "Bloomberg Economics",
+          "title": "Asia Risks Unrest as El Niño, War Threaten Food Supplies, Consultancy Says",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-16T08:12:05+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-16/euro-zone-wage-growth-set-to-accelerate-in-2027-ecb-says",
+          "publishedAt": "2026-09-16T23:01:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-16/asia-risks-unrest-as-el-nino-war-threaten-food-supplies-consultancy-says",
           "tags": [
             "geopolitical",
             "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "New Zealand’s Economic Growth Beat Estimates Last Quarter",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-16T22:51:11+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-16/new-zealand-economic-growth-exceeded-estimates-in-second-quarter",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "US Indictment Alleges Russian Global Assassination Network",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-16T18:20:01+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-16/us-indictment-exposes-russian-global-assassination-network",
+          "tags": [
+            "geopolitical",
             "market"
           ]
         }
@@ -539,7 +434,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 4,
+    "excludedCount": 3,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
