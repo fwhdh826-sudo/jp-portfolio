@@ -649,18 +649,83 @@ describe('FCA-1-P1-02 canonical 1-based rank contract at the parser boundary', (
 
   it('preserves the legitimate null contract (excluded candidate with marketRank/prescreenRank null)', () => {
     const artifact = buildValidCandidateFunnelArtifact()
-    artifact.candidates[0].marketRank = null
-    artifact.candidates[0].prescreenRank = null
+    // R2: the legitimate null contract belongs to tier=excluded only (producer
+    // parity). The candidate is converted to a well-formed excluded entry.
+    artifact.candidates[0] = {
+      ...artifact.candidates[0],
+      tier: 'excluded',
+      marketRank: null,
+      prescreenRank: null,
+      prescreenPool: null,
+      prescreenScore: null,
+      rawCompositeScore: null,
+      dataConfidence: null,
+      marketScore: null,
+      selectedReasons: [],
+      hardExclusionReasons: ['HARD_NOT_PRIME_DOMESTIC'],
+    }
+    artifact.counts = { ...artifact.counts, excluded: 1, screened: 0 }
+    artifact.excludedSummary = { total: 1, byReason: { HARD_NOT_PRIME_DOMESTIC: 1 } }
+    artifact.sectorDistribution = { ...artifact.sectorDistribution, screened: {} }
     const result = parseCandidateFunnelArtifact(artifact)
     expect(result.ok).toBe(true)
     if (!result.ok) throw new Error('expected ok')
     expect(result.data.candidates[0].marketRank).toBeNull()
+    expect(result.data.candidates[0].tier).toBe('excluded')
   })
 
   it('rejects a zero rank even on a screened (non-allocation) candidate', () => {
     const artifact = buildValidCandidateFunnelArtifact()
     artifact.candidates[0].marketRank = 0
     expect(parseCandidateFunnelArtifact(artifact).ok).toBe(false)
+  })
+})
+
+// FCA-1-P1-02 (R2): tier / marketRank nullability parity.
+// producer authority (data/candidate_funnel_engine.py build_candidate_funnel):
+//   non-excluded → marketRank = rank_pos + 1 (positive integer, never null)
+//   excluded     → marketRank = null (always)
+describe('FCA-1-P1-02 (R2) tier / marketRank nullability parity at the parser boundary', () => {
+  it.each([
+    ['actionable', 2],
+    ['deep_review', 1],
+    ['screened', 0],
+  ] as const)('rejects %s (index %i) with marketRank=null as invalid_candidates (not a legitimate null)', (tier, index) => {
+    const artifact = buildValidCandidateFunnelArtifact()
+    expect(artifact.candidates[index].tier).toBe(tier)
+    artifact.candidates[index].marketRank = null
+    expect(parseCandidateFunnelArtifact(artifact)).toEqual({ ok: false, code: 'invalid_candidates' })
+  })
+
+  it('rejects an excluded candidate carrying a non-null marketRank as invalid_candidates', () => {
+    const artifact = buildValidCandidateFunnelArtifact()
+    artifact.candidates[0] = { ...artifact.candidates[0], tier: 'excluded', marketRank: 1, selectedReasons: [] }
+    artifact.counts = { ...artifact.counts, excluded: 1, screened: 0 }
+    expect(parseCandidateFunnelArtifact(artifact)).toEqual({ ok: false, code: 'invalid_candidates' })
+  })
+
+  it('a non-excluded candidate with null prescreenRank but positive marketRank remains valid (prescreenRank may be null when unmatched)', () => {
+    const artifact = buildValidCandidateFunnelArtifact()
+    artifact.candidates[0].prescreenRank = null
+    artifact.candidates[0].prescreenScore = null
+    artifact.candidates[0].prescreenPool = null
+    const result = parseCandidateFunnelArtifact(artifact)
+    expect(result.ok).toBe(true)
+  })
+
+  it('positive marketRank on every non-excluded tier is unchanged (accepted verbatim)', () => {
+    const artifact = buildValidCandidateFunnelArtifact()
+    artifact.candidates[0].marketRank = 3
+    artifact.candidates[1].marketRank = 2
+    artifact.candidates[2].marketRank = 1
+    const result = parseCandidateFunnelArtifact(artifact)
+    expect(result.ok).toBe(true)
+    if (!result.ok) throw new Error('expected ok')
+    expect(result.data.candidates.map(c => [c.tier, c.marketRank])).toEqual([
+      ['screened', 3],
+      ['deep_review', 2],
+      ['actionable', 1],
+    ])
   })
 })
 

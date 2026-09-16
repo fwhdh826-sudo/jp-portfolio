@@ -18,6 +18,7 @@ import type { CandidateInput, InstrumentInput } from '../../types/allocationPlan
 import type { Holding } from '../../types'
 import { normalizePortfolioFitCode } from './portfolioFit'
 import {
+  candidateTierAgreesWithMarketRank,
   isCanonicalRankOrNull,
   qualityGateAggregatesAgreeWithGates,
 } from '../../services/candidateFunnelInvariants'
@@ -53,7 +54,13 @@ function isValidCandidateArtifact(artifact: CandidateFunnelArtifact): boolean {
     // FCA-1-P1-02: malformed non-null rank を持つ candidate が 1 件でもあれば
     // artifact 全体を invalid とする。null へ正規化して ordering authority を
     // 変えることは許さない（INVALID_NON_NULL_MARKET_RANK ≠ VALID_NULL_MARKET_RANK）。
-    artifact.candidates.every(candidate => isCanonicalRankOrNull(candidate.marketRank))
+    artifact.candidates.every(candidate => isCanonicalRankOrNull(candidate.marketRank)) &&
+    // FCA-1-P1-02 (R2): tier / marketRank nullability parity。非 excluded の
+    // marketRank=null は producer が emit し得ない malformed evidence。
+    // 正当な null-rank candidate として null-last ordering に流さず、
+    // artifact 全体を invalid とする（NON_EXCLUDED_NULL_MARKET_RANK は
+    // AVAILABLE_ALLOCATION_EVIDENCE にも BUY_NEW にもならない）。
+    artifact.candidates.every(candidateTierAgreesWithMarketRank)
   )
 }
 

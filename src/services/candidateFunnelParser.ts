@@ -39,7 +39,11 @@ import {
 } from '../types/candidateFunnelArtifact'
 import type { CandidateFunnelArtifact, JsonValue } from '../types/candidateFunnelArtifact'
 import { isCandidateFunnelTimestamp } from '../utils/candidateFunnelTimestamp'
-import { isCanonicalRankOrNull, qualityGateAggregatesAgreeWithGates } from './candidateFunnelInvariants'
+import {
+  candidateTierAgreesWithMarketRank,
+  isCanonicalRankOrNull,
+  qualityGateAggregatesAgreeWithGates,
+} from './candidateFunnelInvariants'
 
 // ── 禁止key: payload全階層（top-level / candidate内部 / meta内部を含む
 //    すべてのobject）に一切出現してはならない。portfolio/decision関連の
@@ -245,6 +249,10 @@ function validateCandidate(value: unknown): value is CandidateFunnelCandidate {
     isFiniteOrNull(value.marketScore) &&
     isCanonicalRankOrNull(value.marketRank) &&
     isEnumValue(value.tier, CANDIDATE_FUNNEL_PUBLISHED_TIERS) &&
+    // FCA-1-P1-02 (R2): tier / marketRank nullability parity。producer は
+    // excluded ⇔ marketRank=null のみ emit する。非 excluded の null rank は
+    // malformed evidence（正当な null-rank candidate へ変換しない）。
+    candidateTierAgreesWithMarketRank({ tier: value.tier, marketRank: value.marketRank }) &&
     Array.isArray(value.selectedReasons) &&
     value.selectedReasons.every((r) => isEnumValue(r, CANDIDATE_FUNNEL_SELECTED_REASON_CODES)) &&
     Array.isArray(value.riskReasons) &&

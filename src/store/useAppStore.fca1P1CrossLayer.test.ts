@@ -197,14 +197,87 @@ describe('FCA-1-P1-02 cross-layer: marketRank=0 cannot become an available null-
     expect(buyNew.some(c => c.marketRank === null)).toBe(false)
   })
 
-  it('control: legitimate null rank (excluded-style) is still ordered last, not rejected', () => {
+  it('control: positive ranks remain available and ordered marketRank ascending', () => {
     const state = stateWith(candidateArtifact(a => {
-      a.candidates[1].marketRank = null
+      a.candidates[1].marketRank = 2
       a.candidates[2].marketRank = 1
     }))
     const { buyNew, candidateArtifact: artifactState } = buyNewCandidates(state)
     expect(artifactState).toBe('fresh')
-    expect(buyNew.map(c => [c.instrumentId, c.marketRank])).toEqual([['stock:1003', 1], ['stock:1002', null]])
+    expect(buyNew.map(c => [c.instrumentId, c.marketRank])).toEqual([['stock:1003', 1], ['stock:1002', 2]])
+  })
+})
+
+// FCA-1-P1-02 (R2): producer authority (data/candidate_funnel_engine.py
+// build_candidate_funnel) emits marketRank = rank_pos + 1 for every
+// non-excluded candidate and marketRank = null only for tier=excluded. A
+// non-excluded candidate with marketRank=null is therefore malformed evidence
+// and must never become AVAILABLE_ALLOCATION_EVIDENCE or a BUY_NEW candidate.
+describe('FCA-1-P1-02 cross-layer (R2): non-excluded marketRank=null cannot become available BUY_NEW evidence', () => {
+  const nullRankAt = (index: number) => candidateArtifact(a => { a.candidates[index].marketRank = null })
+  const cases = [
+    ['actionable', 2],
+    ['deep_review', 1],
+    ['screened', 0],
+  ] as const
+
+  it.each(cases)('loader boundary: %s (index %i) with marketRank=null is rejected by the parser, no BUY_NEW', async (tier, index) => {
+    const raw = nullRankAt(index)
+    expect(raw.candidates[index].tier).toBe(tier)
+    expect(parseCandidateFunnelArtifact(raw)).toEqual({ ok: false, code: 'invalid_candidates' })
+    const state = await loadThroughParser(raw)
+    expect(state.candidateFunnel).toBeNull()
+    const { buyNew, candidateArtifact: artifactState } = buyNewCandidates(state)
+    expect(buyNew).toEqual([])
+    expect(artifactState).toBe('invalid')
+  })
+
+  it.each(cases)('typed bypass: %s (index %i) with marketRank=null => adapter invalid, no executable BUY_NEW, no null-ranked candidate', (_tier, index) => {
+    const state = stateWith(nullRankAt(index))
+    assertNoExecutableBuyNew(state)
+    const { buyNew } = buyNewCandidates(state)
+    expect(buyNew).toEqual([])
+    expect(buyNew.some(c => c.marketRank === null)).toBe(false)
+  })
+
+  it('control: excluded candidate with marketRank=null is accepted at both boundaries and never becomes BUY_NEW', async () => {
+    const raw = candidateArtifact(a => {
+      a.candidates[0] = {
+        ...a.candidates[0],
+        tier: 'excluded',
+        marketRank: null,
+        prescreenRank: null,
+        prescreenPool: null,
+        prescreenScore: null,
+        rawCompositeScore: null,
+        dataConfidence: null,
+        marketScore: null,
+        selectedReasons: [],
+        hardExclusionReasons: ['HARD_NOT_PRIME_DOMESTIC'],
+      }
+      a.counts = { ...a.counts, excluded: 1, screened: 0 }
+      a.excludedSummary = { total: 1, byReason: { HARD_NOT_PRIME_DOMESTIC: 1 } }
+      a.sectorDistribution = { ...a.sectorDistribution, screened: {} }
+      a.candidates[1].marketRank = 2
+      a.candidates[2].marketRank = 1
+    })
+    expect(parseCandidateFunnelArtifact(raw).ok).toBe(true)
+    const state = await loadThroughParser(raw)
+    expect(state.candidateFunnel).not.toBeNull()
+    const { buyNew, candidateArtifact: artifactState } = buyNewCandidates(state)
+    expect(artifactState).toBe('fresh')
+    expect(buyNew.map(c => [c.instrumentId, c.marketRank])).toEqual([['stock:1003', 1], ['stock:1002', 2]])
+    expect(buyNew.some(c => c.instrumentId === 'stock:1001')).toBe(false)
+  })
+
+  it('excluded candidate with a non-null marketRank is malformed at both boundaries', () => {
+    const raw = candidateArtifact(a => {
+      a.candidates[0] = { ...a.candidates[0], tier: 'excluded', marketRank: 5, selectedReasons: [] }
+      a.counts = { ...a.counts, excluded: 1, screened: 0 }
+    })
+    expect(parseCandidateFunnelArtifact(raw)).toEqual({ ok: false, code: 'invalid_candidates' })
+    const state = stateWith(raw)
+    assertNoExecutableBuyNew(state)
   })
 })
 

@@ -50,3 +50,22 @@ export function isCanonicalRank(value: unknown): value is number {
 export function isCanonicalRankOrNull(value: unknown): value is number | null {
   return value === null || isCanonicalRank(value)
 }
+
+// ── FCA-1-P1-02 (R2): tier / marketRank nullability parity。
+//    producer authority（data/candidate_funnel_engine.py build_candidate_funnel）:
+//      非 excluded（valid index）: market_rank[k] = rank_pos + 1 — 常に正整数
+//      excluded               : "marketRank": None — 常に null
+//    したがって published artifact では
+//      tier === 'excluded'  ⇔ marketRank === null
+//    が成立する。非 excluded で marketRank=null の candidate は producer が
+//    emit し得ない malformed evidence であり、「正当な null-rank candidate」
+//    として null-last ordering に流してはならない（fail-closed）。
+//    prescreenRank は unmatched 時に非 excluded でも null になり得るため
+//    （engine: raw_rank > 0 の int のみ採用）、この invariant の対象外。 ─────
+export function candidateTierAgreesWithMarketRank(candidate: {
+  readonly tier: string
+  readonly marketRank: number | null
+}): boolean {
+  if (candidate.tier === 'excluded') return candidate.marketRank === null
+  return isCanonicalRank(candidate.marketRank)
+}

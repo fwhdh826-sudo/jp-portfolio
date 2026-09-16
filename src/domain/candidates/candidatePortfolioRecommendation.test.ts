@@ -162,10 +162,32 @@ describe('P5-B005-C-D pure recommendation policy', () => {
     ]
     expect(compose(candidates).map(row => row.marketRank)).toEqual([1, 2, 3])
   })
-  it('C-C-T23 puts null rank last (legitimate null contract preserved)', () => {
-    const candidates = [artifactCandidate(0, { marketRank: null }), artifactCandidate(1, { marketRank: null }), artifactCandidate(2, { marketRank: 1 })]
-    expect(compose(candidates).map(row => row.artifactIndex)).toEqual([2, 0, 1])
-    expect(compose(candidates).map(row => row.marketRank)).toEqual([1, null, null])
+  // FCA-1-P1-02 (R2): producer emits marketRank=null only for tier=excluded.
+  // A non-excluded null rank is malformed evidence, not a legitimate null-ranked
+  // candidate; the dataset fails closed instead of sorting it last.
+  it.each(['actionable', 'deep_review', 'screened'] as const)(
+    'FCA-1-P1-02 C-C-T23 non-excluded tier %s with marketRank=null fails the dataset closed (no BUY_NEW)',
+    (tier) => {
+      const candidates = [artifactCandidate(0, { marketRank: 1 }), artifactCandidate(1, { tier, marketRank: null })]
+      expect(compose(candidates)).toEqual([])
+    },
+  )
+  it('FCA-1-P1-02 C-C-T23a excluded candidate with marketRank=null is accepted and stays out of the recommendation set', () => {
+    const excluded = artifactCandidate(1, {
+      tier: 'excluded',
+      marketRank: null,
+      prescreenRank: null,
+      marketScore: null,
+      selectedReasons: [],
+      hardExclusionReasons: ['HARD_NOT_PRIME_DOMESTIC'],
+    })
+    const candidates = [artifactCandidate(0, { marketRank: 1 }), excluded]
+    const result = compose(candidates, { records: [fitRecord(candidates[0], 0)] })
+    expect(result.map(row => [row.artifactIndex, row.marketRank, row.action])).toEqual([[0, 1, 'BUY_NEW']])
+  })
+  it('FCA-1-P1-02 C-C-T23d excluded candidate with a non-null marketRank is malformed and fails closed', () => {
+    const candidates = [artifactCandidate(0, { marketRank: 1 }), artifactCandidate(1, { tier: 'excluded', marketRank: 2, selectedReasons: [] })]
+    expect(compose(candidates)).toEqual([])
   })
   // FCA-1-P1-02: an invalid non-null rank used to be silently coerced to null
   // and sorted last. It is malformed producer evidence: the whole dataset is

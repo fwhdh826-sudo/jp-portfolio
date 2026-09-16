@@ -86,6 +86,54 @@ def _is_valid_iso_timestamp(value: str) -> bool:
     return True
 
 
+def _quality_gate_parity_violations(quality_gate: dict[str, Any], label: str) -> list[str]:
+    """FCA-1-P1-01: qualityGate の aggregate field が gate-level status と
+    一致することを producer parity で検査する。
+
+    producer authority（data/candidate_funnel_batch.py compute_quality_report
+    内 _gate()）:
+        status == "FAIL" のとき hard_fail_ids.append(gate_id)（gate 生成順）
+        overall_pass = not hard_fail_ids
+    したがって publish された artifact では常に
+        hardFailIds == [g.id for g in gates if g.status == "FAIL"]（順序込み）
+        overallPass == (len(FAIL_GATE_IDS) == 0)
+    が成立する。上の overallPass/hardFailIds 単独検査だけでは「gate に FAIL
+    があるのに aggregate が green」という意味的に矛盾した artifact を通して
+    しまうため、ここで gate-level と aggregate の一致を独立に要求する
+    （fail-closed。WARN は非 hard のまま。P-14 WARN は許容、P-14 FAIL は hard）。"""
+    violations: list[str] = []
+    gates = quality_gate.get("gates")
+    if not isinstance(gates, list):
+        violations.append(f"{label}: _meta.qualityGate.gates is not a list (got {type(gates).__name__})")
+        return violations
+
+    fail_gate_ids: list[str] = []
+    for g in gates:
+        if not isinstance(g, dict):
+            violations.append(f"{label}: _meta.qualityGate.gates entry is not a dict")
+            continue
+        if g.get("status") == "FAIL":
+            fail_gate_ids.append(g.get("id"))
+
+    hard_fail_ids = quality_gate.get("hardFailIds")
+    if not isinstance(hard_fail_ids, list):
+        violations.append(f"{label}: _meta.qualityGate.hardFailIds is not a list (got {type(hard_fail_ids).__name__})")
+    elif hard_fail_ids != fail_gate_ids:
+        violations.append(
+            f"{label}: _meta.qualityGate.hardFailIds {hard_fail_ids!r} does not equal "
+            f"FAIL gate ids {fail_gate_ids!r} (producer parity violated)"
+        )
+
+    overall_pass = quality_gate.get("overallPass")
+    expected_overall_pass = len(fail_gate_ids) == 0
+    if not isinstance(overall_pass, bool) or overall_pass is not expected_overall_pass:
+        violations.append(
+            f"{label}: _meta.qualityGate.overallPass {overall_pass!r} contradicts gate-level "
+            f"statuses (FAIL gate ids {fail_gate_ids!r} => expected {expected_overall_pass})"
+        )
+    return violations
+
+
 def _recursive_forbidden_keys(node: Any) -> set[str]:
     """任意の深さのdict keyを走査し、FORBIDDEN_KEYSに含まれるkey名を集める
     （exact match。値の中身は見ない）。"""
@@ -168,6 +216,7 @@ def check_candidate_funnel_payload(payload: Any, label: str) -> list[str]:
             missing_gate_ids = sorted(QUALITY_GATE_REQUIRED_IDS - gate_ids)
             if missing_gate_ids:
                 violations.append(f"{label}: _meta.qualityGate.gates missing required ids {missing_gate_ids}")
+            violations.extend(_quality_gate_parity_violations(quality_gate, label))
 
     candidates = payload.get("candidates")
     if not isinstance(candidates, list):

@@ -183,16 +183,48 @@ describe('FCA-1-P1-02 direct adapter path: invalid non-null rank never becomes a
     expect(buildCandidateAllocationInputs({ artifact: value, holdings: [] }).status).toBe('invalid')
   })
 
-  it('legitimate null rank is preserved and sorted last (frozen ordering policy unchanged)', () => {
+  // FCA-1-P1-02 (R2): producer emits marketRank=null only for tier=excluded.
+  // A non-excluded null rank is malformed evidence; it is no longer a
+  // "legitimate null" that sorts last — the whole artifact fails closed.
+  it.each([
+    ['actionable', 2],
+    ['deep_review', 1],
+    ['screened', 0],
+  ] as const)('%s candidate (index %i) with marketRank=null => status invalid, no candidates, no BUY_NEW', (_tier, index) => {
     const value = artifact()
-    value.candidates[1].marketRank = null
+    expect(value.candidates[index].tier).toBe(_tier)
+    value.candidates[index].marketRank = null
+    const result = buildCandidateAllocationInputs({ artifact: value, holdings: [] })
+    expect(result).toMatchObject({ status: 'invalid', instruments: [], candidates: [] })
+    expect(JSON.stringify(result)).not.toContain('BUY_NEW')
+    expect(result.candidates.some(item => item.marketRank === null)).toBe(false)
+  })
+
+  it('excluded candidate with marketRank=null is accepted and never enters the allocation set', () => {
+    const value = artifact()
+    value.candidates[0] = {
+      ...value.candidates[0],
+      tier: 'excluded',
+      marketRank: null,
+      prescreenRank: null,
+      marketScore: null,
+      selectedReasons: [],
+      hardExclusionReasons: ['HARD_NOT_PRIME_DOMESTIC'],
+    }
+    value.candidates[1].marketRank = 2
     value.candidates[2].marketRank = 1
     const result = buildCandidateAllocationInputs({ artifact: value, holdings: [] })
     expect(result.status).toBe('available')
     expect(result.candidates.map(item => [item.instrumentId, item.marketRank])).toEqual([
       ['stock:1003', 1],
-      ['stock:1002', null],
+      ['stock:1002', 2],
     ])
+  })
+
+  it('excluded candidate with a non-null marketRank is malformed and fails closed', () => {
+    const value = artifact()
+    value.candidates[0] = { ...value.candidates[0], tier: 'excluded', marketRank: 3, selectedReasons: [] }
+    expect(buildCandidateAllocationInputs({ artifact: value, holdings: [] }).status).toBe('invalid')
   })
 
   it('valid rank order is unchanged: marketRank ascending', () => {
