@@ -227,10 +227,10 @@ describe('CAND-SYN-1B buildCandidateDecisionSynthesisFromState', () => {
   it('B9 a different candidates_stocks generation changes synthesisId (§DDR-1 mixed-generation is not corruption)', () => {
     const state = baseState()
     const plan = planFor(state)
-    const priceA = { ...state.candidatesStocks, updatedAt: '2026-08-14T07:10:58.528827+09:00', sourceUpdatedAt: '2026-08-14T07:10:58.528827+09:00', status: 'ok' as const }
-    const priceB = { ...priceA, updatedAt: '2026-08-14T08:00:00.000000+09:00' }
-    const stateA: AppState = { ...state, candidatesStocks: priceA, system: { ...state.system, dataSourceStatus: { ...state.system.dataSourceStatus, candidatesStocks: 'loaded' } } }
-    const stateB: AppState = { ...state, candidatesStocks: priceB, system: { ...state.system, dataSourceStatus: { ...state.system.dataSourceStatus, candidatesStocks: 'loaded' } } }
+    const priceA = { ...state.candidatesStocks, updatedAt: '2026-09-17T08:43:43.456938+09:00', sourceUpdatedAt: '2026-09-17T08:43:43.456938+09:00', status: 'ok' as const }
+    const priceB = { ...priceA, updatedAt: '2026-09-17T08:43:43.456939+09:00' }
+    const stateA: AppState = { ...state, candidatesStocks: priceA, system: { ...state.system, dataTimestamps: { ...state.system.dataTimestamps!, market: '2026-09-17T08:48:51+00:00' }, dataSourceStatus: { ...state.system.dataSourceStatus, candidatesStocks: 'loaded' } } }
+    const stateB: AppState = { ...state, candidatesStocks: priceB, system: { ...state.system, dataTimestamps: { ...state.system.dataTimestamps!, market: '2026-09-17T08:48:51+00:00' }, dataSourceStatus: { ...state.system.dataSourceStatus, candidatesStocks: 'loaded' } } }
     const a = buildCandidateDecisionSynthesisFromState({
       state: stateA, allocationPlan: plan, allocationPlanStatus: 'current',
       allocationPlanCandidateGenerationId: FUNNEL_GENERATION,
@@ -243,6 +243,11 @@ describe('CAND-SYN-1B buildCandidateDecisionSynthesisFromState', () => {
     })
     expect(a?.provenance.candidatesStocksUpdatedAt).toBe(priceA.updatedAt)
     expect(b?.provenance.candidatesStocksUpdatedAt).toBe(priceB.updatedAt)
+    expect(a?.provenance.candidatesStocksSourceUpdatedAt).toBe(priceA.sourceUpdatedAt)
+    expect(a?.provenance.marketDataAsOf).toBe('2026-09-17T08:48:51+00:00')
+    expect(a?.status).toBe('available')
+    expect(a?.datasetReasons).not.toContain('MISSING_REQUIRED_PROVENANCE')
+    expect((a?.decisions.length ?? 0) + (a?.watchList.length ?? 0)).toBeGreaterThan(0)
     expect(a?.synthesisId).not.toBe(b?.synthesisId)
     // eligibility/rank untouched: same decisions in the same order regardless of price generation
     expect(a?.decisions.map(e => e.instrumentId)).toEqual(b?.decisions.map(e => e.instrumentId))

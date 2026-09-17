@@ -35,6 +35,7 @@ const localStorageMock = {
 
 const NOW_MS = Date.parse('2026-08-14T01:00:00.000Z')
 const FUNNEL_GENERATION = '2026-08-13T22:14:38.374259+00:00' // production-shaped microsecond precision
+const CANDIDATES_STOCKS_PRODUCTION_TIMESTAMP = '2026-09-17T08:43:43.456938+09:00'
 
 function jpTrust(): Trust {
   return {
@@ -60,7 +61,37 @@ function funnelArtifact(): CandidateFunnelArtifact {
   value._meta.generatedAt = FUNNEL_GENERATION
   value._meta.asOf = FUNNEL_GENERATION
   value._meta.sourceUpdatedAt = FUNNEL_GENERATION
+  value.candidates[0].tier = 'deep_review'
+  value.candidates[0].selectedReasons = ['SELECTED_DEEP_REVIEW']
+  value.counts = { ...value.counts, screened: 0, deepReview: 2 }
+  value.sectorDistribution = {
+    ...value.sectorDistribution,
+    screened: {},
+    deepReview: { 銀行業: 2 },
+  }
+  value.selectionObservability = {
+    ...value.selectionObservability,
+    deepReviewEligibleCount: 3,
+    deepReviewSelectedCount: 2,
+  }
   return value
+}
+
+function candidatesStocksItem(code: string) {
+  return {
+    code,
+    name: `候補${code}`,
+    sector: '銀行業',
+    price: 1_000,
+    per: 10,
+    pbr: 1,
+    roe: 10,
+    dividendYield: 2,
+    sigma252d: 0.2,
+    mom3m: 1,
+    screenReasons: [],
+    dataStatus: 'ok' as const,
+  }
 }
 
 function adapter(manager: FakeLockManager): PortfolioGenerationLockAdapter {
@@ -81,12 +112,19 @@ function baseline(store: ReturnType<typeof createAppStoreInstanceForTest>['store
       updatedAt: new Date(NOW_MS).toISOString(),
     },
     candidateFunnel: artifact,
+    candidatesStocks: {
+      ...state.candidatesStocks,
+      updatedAt: CANDIDATES_STOCKS_PRODUCTION_TIMESTAMP,
+      sourceUpdatedAt: CANDIDATES_STOCKS_PRODUCTION_TIMESTAMP,
+      status: 'ok',
+      candidates: ['1001', '1002', '1003'].map(candidatesStocksItem),
+    },
     system: {
       ...state.system,
       status: 'idle', error: null, csvLastImportedAt: null,
       csvImportProvenance: null, csvSyncSummary: null,
-      dataSourceStatus: { ...state.system.dataSourceStatus, candidateFunnel: 'loaded', candidatesStocks: 'default' },
-      dataTimestamps: { ...state.system.dataTimestamps!, market: new Date(NOW_MS).toISOString(), candidateFunnel: artifact._meta.generatedAt },
+      dataSourceStatus: { ...state.system.dataSourceStatus, candidateFunnel: 'loaded', candidatesStocks: 'loaded' },
+      dataTimestamps: { ...state.system.dataTimestamps!, market: '2026-09-17T08:48:51+00:00', candidateFunnel: artifact._meta.generatedAt },
     },
   }))
 }
@@ -141,6 +179,17 @@ describe('CAND-SYN-1B end-to-end production writer path (real importCsv commit)'
       expect(synthesis?.provenance.allocationSnapshotId).toBe(state.allocationPlan?.snapshotId)
       expect(synthesis?.provenance.sourceHoldingsSnapshotId).toBe(state.allocationPlan?.sourceHoldingsSnapshotId)
       expect(synthesis?.provenance.sourceSettingsVersion).toBe(state.allocationPlan?.sourceSettingsVersion)
+      expect(synthesis?.provenance.candidatesStocksUpdatedAt).toBe(CANDIDATES_STOCKS_PRODUCTION_TIMESTAMP)
+      expect(synthesis?.provenance.candidatesStocksSourceUpdatedAt).toBe(CANDIDATES_STOCKS_PRODUCTION_TIMESTAMP)
+      expect(synthesis?.datasetReasons).not.toContain('MISSING_REQUIRED_PROVENANCE')
+
+      // Exact former topology: three domain recommendations reach the real
+      // store publication path instead of provenance dropping them to zero.
+      expect(state.candidatePortfolioRecommendations).toHaveLength(3)
+      const publishedStockIds = [...(synthesis?.decisions ?? []), ...(synthesis?.watchList ?? [])]
+        .filter(entry => ['1001', '1002', '1003'].includes(entry.code ?? ''))
+        .map(entry => entry.instrumentId)
+      expect(publishedStockIds).toHaveLength(3)
 
       // §35 production behavior unchanged: officialDecision generation is untouched by this
       // commit path (candidateToOfficialDecisionItem's own writer-count proof lives in

@@ -332,6 +332,108 @@ describe('CAND-SYN-1A schema, privacy, and pure authority (A/M/Q)', () => {
   })
 })
 
+describe('OPS-P5-B005-E2E-A1 candidates_stocks field-specific microsecond provenance', () => {
+  const productionTimestamp = '2026-09-17T08:43:43.456938+09:00'
+  const candidates = [
+    candidate({ code: '5021', instrumentId: 'stock:5021', executable: false, amount: 0, marketRank: 1, artifactIndex: 0, usesPrice: true }),
+    candidate({ code: '9508', instrumentId: 'stock:9508', executable: false, amount: 0, marketRank: 2, artifactIndex: 1, usesPrice: true }),
+    candidate({ code: '8725', instrumentId: 'stock:8725', executable: false, amount: 0, marketRank: 3, artifactIndex: 2, usesPrice: true }),
+  ]
+
+  function buildWithCandidatesStocksTimestamp(
+    field: 'candidatesStocksUpdatedAt' | 'candidatesStocksSourceUpdatedAt',
+    timestamp: string,
+  ) {
+    return buildCandidateDecisionSynthesis(input(candidates, {
+      provenance: provenance({
+        marketDataAsOf: '2026-09-17T08:48:51+00:00',
+        candidatesStocksUpdatedAt: '2026-09-17T08:43:43+09:00',
+        candidatesStocksSourceUpdatedAt: '2026-09-17T08:43:43+09:00',
+        [field]: timestamp,
+      }),
+    }))
+  }
+
+  it.each([
+    '2026-09-17T08:43:43+09:00',
+    '2026-09-17T08:43:43.1+09:00',
+    '2026-09-17T08:43:43.12+09:00',
+    '2026-09-17T08:43:43.123+09:00',
+    '2026-09-17T08:43:43.1234+09:00',
+    '2026-09-17T08:43:43.12345+09:00',
+    productionTimestamp,
+  ])('accepts Python isoformat precision for both candidates_stocks fields: %s', timestamp => {
+    for (const field of ['candidatesStocksUpdatedAt', 'candidatesStocksSourceUpdatedAt'] as const) {
+      const result = buildWithCandidatesStocksTimestamp(field, timestamp)
+      expect(result.status).toBe('available')
+      expect(result.datasetReasons).not.toContain('MISSING_REQUIRED_PROVENANCE')
+      expect(result.provenance[field]).toBe(timestamp)
+      expect(result.decisions).toHaveLength(3)
+      expect(result.watchList).toEqual([])
+    }
+  })
+
+  it.each([
+    '2026-09-17T08:43:43.1234567+09:00',
+    '2026-09-17T08:43:43.456938',
+    '2026-02-30T08:43:43.456938+09:00',
+    '2026-09-17T25:43:43.456938+09:00',
+    '2026-09-17T08:43:43.456938+0900',
+  ])('fails closed malformed candidates_stocks provenance for both fields: %s', timestamp => {
+    for (const field of ['candidatesStocksUpdatedAt', 'candidatesStocksSourceUpdatedAt'] as const) {
+      const result = buildWithCandidatesStocksTimestamp(field, timestamp)
+      expect(result.status).toBe('invalid')
+      expect(result.datasetReasons).toContain('MISSING_REQUIRED_PROVENANCE')
+      expect(result.decisions).toEqual([])
+      expect(result.watchList).toEqual([])
+    }
+  })
+
+  it('accepts the exact production pair, preserves both raw strings in identity, and publishes all three candidates', () => {
+    const result = buildCandidateDecisionSynthesis(input(candidates, {
+      provenance: provenance({
+        marketDataAsOf: '2026-09-17T08:48:51+00:00',
+        candidatesStocksUpdatedAt: productionTimestamp,
+        candidatesStocksSourceUpdatedAt: productionTimestamp,
+      }),
+    }))
+    const millisecondVariant = buildCandidateDecisionSynthesis(input(candidates, {
+      provenance: provenance({
+        marketDataAsOf: '2026-09-17T08:48:51+00:00',
+        candidatesStocksUpdatedAt: '2026-09-17T08:43:43.456+09:00',
+        candidatesStocksSourceUpdatedAt: '2026-09-17T08:43:43.456+09:00',
+      }),
+    }))
+
+    expect(result.status).toBe('available')
+    expect(result.datasetReasons).not.toContain('MISSING_REQUIRED_PROVENANCE')
+    expect(result.provenance.candidatesStocksUpdatedAt).toBe(productionTimestamp)
+    expect(result.provenance.candidatesStocksSourceUpdatedAt).toBe(productionTimestamp)
+    expect(result.decisions.map(entry => entry.instrumentId)).toEqual(['stock:5021', 'stock:9508', 'stock:8725'])
+    expect(result.synthesisId).not.toBe(millisecondVariant.synthesisId)
+  })
+
+  it('does not opt marketDataAsOf into microseconds and preserves the closed market timestamp contract', () => {
+    const accepted = buildCandidateDecisionSynthesis(input(candidates, {
+      provenance: provenance({
+        marketDataAsOf: '2026-09-17T08:48:51+00:00',
+        candidatesStocksUpdatedAt: productionTimestamp,
+        candidatesStocksSourceUpdatedAt: productionTimestamp,
+      }),
+    }))
+    const microsecondMarket = buildCandidateDecisionSynthesis(input(candidates, {
+      provenance: provenance({ marketDataAsOf: productionTimestamp }),
+    }))
+    const minuteOnlyMarket = buildCandidateDecisionSynthesis(input(candidates, {
+      provenance: provenance({ marketDataAsOf: '2026-09-17T01:33+00:00' }),
+    }))
+
+    expect(accepted.status).toBe('available')
+    expect(microsecondMarket.status).toBe('invalid')
+    expect(minuteOnlyMarket.status).toBe('invalid')
+  })
+})
+
 describe('CAND-SYN-1A identity and action semantics (D)', () => {
   it('D1 maps already-held canonical relationship to ADD', () => {
     const result = buildCandidateDecisionSynthesis(input([

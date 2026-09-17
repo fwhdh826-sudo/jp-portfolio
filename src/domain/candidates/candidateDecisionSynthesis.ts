@@ -113,6 +113,16 @@ function isNullableTimestamp(value: unknown): value is string | null {
   return value === null || isStrictTimestamp(value)
 }
 
+/**
+ * candidates_stocks is produced by Python datetime.isoformat(), which may
+ * emit 4-6 fractional digits. Opt in only for its two dataset provenance
+ * fields; every other synthesis timestamp keeps the default strict grammar.
+ * Validation never rewrites the upstream string used by synthesis identity.
+ */
+function isNullableCandidatesStocksTimestamp(value: unknown): value is string | null {
+  return value === null || isStrictTimestamp(value, { allowMicrosecondFraction: true })
+}
+
 function isNullableNonemptyString(value: unknown): value is string | null {
   return value === null || (typeof value === 'string' && value.length > 0)
 }
@@ -197,8 +207,8 @@ function validProvenance(value: unknown): value is CandidateDecisionSynthesisPro
     isNullableTimestamp(value.cashAuthorityUpdatedAt) &&
     isNullableTimestamp(value.marketDataAsOf) &&
     isStrictTimestamp(value.portfolioFitEvaluatedAt) &&
-    isNullableTimestamp(value.candidatesStocksUpdatedAt) &&
-    isNullableTimestamp(value.candidatesStocksSourceUpdatedAt) &&
+    isNullableCandidatesStocksTimestamp(value.candidatesStocksUpdatedAt) &&
+    isNullableCandidatesStocksTimestamp(value.candidatesStocksSourceUpdatedAt) &&
     isNullableNonemptyString(value.candidatesStocksRunToken)
   )
 }

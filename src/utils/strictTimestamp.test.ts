@@ -67,4 +67,14 @@ describe('FCA-1-P1-03 allowMicrosecondFraction (Python isoformat compatibility)'
   ])('still rejects %s under the microsecond option', (input) => {
     expect(parseStrictTimestamp(input, { allowMicrosecondFraction: true })).toBeNull()
   })
+
+  it('keeps the exact production candidates_stocks shape opt-in and truncates its epoch without rounding', () => {
+    const production = '2026-09-17T08:43:43.456938+09:00'
+    expect(parseStrictTimestamp(production)).toBeNull()
+    expect(parseStrictTimestamp(production, { allowMicrosecondFraction: true })).toEqual({
+      epochMs: Date.parse('2026-09-16T23:43:43.456Z'),
+      normalized: '2026-09-16T23:43:43.456Z',
+      kind: 'date-time',
+    })
+  })
 })
