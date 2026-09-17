@@ -1,28 +1,56 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-09-18T00:35:47.088935+09:00",
-  "sourceUpdatedAt": "2026-09-17T15:32:32+00:00",
+  "updatedAt": "2026-09-18T08:41:23.238161+09:00",
+  "sourceUpdatedAt": "2026-09-17T23:02:19+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": -0.67,
-      "negativeCount": 1,
-      "positiveCount": 0,
+      "avgSentiment": 0.003,
+      "negativeCount": 2,
+      "positiveCount": 1,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 2,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "BOJ Faces Higher Bar to Support Yen After Fed’s Hawkish Hike",
-      "topPositiveTitle": "BOJ Faces Higher Bar to Support Yen After Fed’s Hawkish Hike",
+      "topNegativeTitle": "Strategists See Yen Weakening as BOJ Risks Disappointing Markets",
+      "topPositiveTitle": "Asian Stocks to Gain on Lower Oil, US Bonds Rally: Markets Wrap",
       "items": [
         {
-          "title": "BOJ Faces Higher Bar to Support Yen After Fed’s Hawkish Hike",
+          "title": "Strategists See Yen Weakening as BOJ Risks Disappointing Markets",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-09-17T00:01:56+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-17/boj-faces-higher-bar-to-support-yen-after-fed-s-hawkish-hike",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-17T23:02:19+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-17/strategists-see-yen-weakening-as-boj-risks-disappointing-markets",
           "tags": [
+            "fx",
+            "jp_broad",
+            "market"
+          ]
+        },
+        {
+          "title": "BNY Chief Economist on Fed Rate Hike, BOJ Outlook",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-17T21:33:26+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-17/bny-chief-economist-on-fed-rate-hike-boj-outlook-video",
+          "tags": [
+            "jp_broad",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Asian Stocks to Gain on Lower Oil, US Bonds Rally: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-09-17T22:14:33+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-17/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
             "fx",
             "jp_broad",
             "market",
@@ -44,39 +72,53 @@
       "items": []
     },
     "us_broad": {
-      "avgSentiment": -0.02,
-      "negativeCount": 2,
-      "positiveCount": 2,
-      "neutralCount": 6,
+      "avgSentiment": -0.073,
+      "negativeCount": 3,
+      "positiveCount": 1,
+      "neutralCount": 5,
       "sourceCount": 2,
-      "itemCount": 10,
+      "itemCount": 9,
       "isStale": false,
-      "topNegativeTitle": "BOJ Faces Higher Bar to Support Yen After Fed’s Hawkish Hike",
-      "topPositiveTitle": "Why High Yields on Treasury Bonds, Government Debt Look Like the New Normal",
+      "topNegativeTitle": "BNY Chief Economist on Fed Rate Hike, BOJ Outlook",
+      "topPositiveTitle": "Asian Stocks to Gain on Lower Oil, US Bonds Rally: Markets Wrap",
       "items": [
         {
-          "title": "BOJ Faces Higher Bar to Support Yen After Fed’s Hawkish Hike",
-          "source": "Bloomberg Economics",
+          "title": "BNY Chief Economist on Fed Rate Hike, BOJ Outlook",
+          "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-09-17T00:01:56+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-17/boj-faces-higher-bar-to-support-yen-after-fed-s-hawkish-hike",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-17T21:33:26+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-17/bny-chief-economist-on-fed-rate-hike-boj-outlook-video",
           "tags": [
-            "fx",
             "jp_broad",
             "market",
+            "rates",
             "us_broad"
           ]
         },
         {
-          "title": "US Stocks Rebound From Fed Decision Day Slump as Oil Falls",
+          "title": "DoubleLine’s Gundlach Warns of Fiscal Crisis in Next Recession",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-09-17T10:57:20+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-17/us-stocks-primed-to-rebound-from-fed-day-slump-as-futures-rally",
+          "publishedAt": "2026-09-17T21:32:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-17/doubleline-s-gundlach-warns-of-fiscal-crisis-in-next-recession",
           "tags": [
-            "commodity",
+            "gold",
+            "macro_risk",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Fed Hike Defies Trump Ahead of Midterms. What’s Next? Live Q&A",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-17T15:56:18+00:00",
+          "url": "https://www.bloomberg.com/sessions/2026-09-17/live-q-amp-a-fed-hikes-trump-pushes-back-what-comes-next",
+          "tags": [
             "market",
             "rates",
             "us_broad"
@@ -97,62 +139,52 @@
           ]
         },
         {
-          "title": "The Forces Driving Mortgage Rates",
+          "title": "Gold Surges Along With US Treasuries as Oil Price Slide Deepens",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-17T15:15:30+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-17/the-forces-driving-mortgage-rates-video",
+          "sentimentScore": -0.14,
+          "publishedAt": "2026-09-16T23:54:12+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-16/gold-holds-decline-after-fed-tilts-hawkish-and-raises-rates",
           "tags": [
+            "commodity",
+            "gold",
             "market",
             "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "US Stocks (SPY) Poised to Turn a Corner, Citadel Securities’ Rubner Says",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-17T13:19:57+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-17/us-stocks-spy-poised-to-turn-a-corner-citadel-securities-rubner-says",
-          "tags": [
-            "market",
             "us_broad"
           ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.25,
+      "avgSentiment": 0.335,
       "negativeCount": 0,
       "positiveCount": 1,
       "neutralCount": 1,
-      "sourceCount": 2,
+      "sourceCount": 1,
       "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Singapore’s Record AI Boom Unlikely to Move MAS, Analysts Say",
-      "topPositiveTitle": "Generac Up on Amazon Agreement; Coreweave Kicks Off Fundraising | Stock Movers",
+      "topNegativeTitle": "Jeni’s Splendid Ice Creams Founder on New Fiber Company",
+      "topPositiveTitle": "Generac Surges 18% on $8 Billion Amazon Data Center Deal | Closing Bell",
       "items": [
         {
-          "title": "Singapore’s Record AI Boom Unlikely to Move MAS, Analysts Say",
-          "source": "Bloomberg Economics",
+          "title": "Jeni’s Splendid Ice Creams Founder on New Fiber Company",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-17T08:19:10+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-17/singapore-s-record-ai-boom-unlikely-to-move-mas-analysts-say",
+          "publishedAt": "2026-09-17T21:27:52+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-17/jeni-s-splendid-ice-creams-founder-on-new-fiber-company-video",
           "tags": [
             "market",
             "us_growth"
           ]
         },
         {
-          "title": "Generac Up on Amazon Agreement; Coreweave Kicks Off Fundraising | Stock Movers",
+          "title": "Generac Surges 18% on $8 Billion Amazon Data Center Deal | Closing Bell",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.5,
-          "publishedAt": "2026-09-17T13:32:19+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-17/generac-amazon-agreement-coreweave-starts-fundraising-video",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-09-17T20:25:16+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-17/generac-surges-18-on-amazon-deal-closing-bell-video",
           "tags": [
             "market",
             "us_growth"
@@ -168,16 +200,16 @@
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Mozambique, Senegal Eurobonds Top Emerging Market Returns, Lifted by IMF Talks",
-      "topPositiveTitle": "Mozambique, Senegal Eurobonds Top Emerging Market Returns, Lifted by IMF Talks",
+      "topNegativeTitle": "01.AI's Kai-Fu Lee on Pacing Frontier AI Development",
+      "topPositiveTitle": "01.AI's Kai-Fu Lee on Pacing Frontier AI Development",
       "items": [
         {
-          "title": "Mozambique, Senegal Eurobonds Top Emerging Market Returns, Lifted by IMF Talks",
+          "title": "01.AI's Kai-Fu Lee on Pacing Frontier AI Development",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-17T13:54:53+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-17/mozambique-senegal-eurobonds-top-emerging-market-returns-lifted-by-imf-talks",
+          "publishedAt": "2026-09-17T21:49:49+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-17/01-ai-s-kai-fu-lee-on-pacing-frontier-ai-development-video",
           "tags": [
             "global_broad",
             "market"
@@ -186,49 +218,41 @@
       ]
     },
     "gold": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
+      "avgSentiment": -0.235,
+      "negativeCount": 1,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "reit": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "dividend": {
-      "avgSentiment": 0.67,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 0,
+      "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Why High Yields on Treasury Bonds, Government Debt Look Like the New Normal",
-      "topPositiveTitle": "Why High Yields on Treasury Bonds, Government Debt Look Like the New Normal",
+      "topNegativeTitle": "DoubleLine’s Gundlach Warns of Fiscal Crisis in Next Recession",
+      "topPositiveTitle": "Gold Surges Along With US Treasuries as Oil Price Slide Deepens",
       "items": [
         {
-          "title": "Why High Yields on Treasury Bonds, Government Debt Look Like the New Normal",
+          "title": "DoubleLine’s Gundlach Warns of Fiscal Crisis in Next Recession",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-09-17T15:10:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-17/why-high-yields-on-treasury-bonds-government-debt-look-like-the-new-normal",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-17T21:32:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-17/doubleline-s-gundlach-warns-of-fiscal-crisis-in-next-recession",
           "tags": [
-            "dividend",
+            "gold",
+            "macro_risk",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Gold Surges Along With US Treasuries as Oil Price Slide Deepens",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": -0.14,
+          "publishedAt": "2026-09-16T23:54:12+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-16/gold-holds-decline-after-fed-tilts-hawkish-and-raises-rates",
+          "tags": [
+            "commodity",
+            "gold",
             "market",
             "rates",
             "us_broad"
@@ -236,68 +260,81 @@
         }
       ]
     },
-    "macro_risk": {
-      "avgSentiment": 0.085,
-      "negativeCount": 3,
-      "positiveCount": 2,
-      "neutralCount": 3,
-      "sourceCount": 2,
-      "itemCount": 8,
+    "reit": {
+      "avgSentiment": 0.33,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Stanford Professor Fukuyama on Today’s Extremist Ideology",
-      "topPositiveTitle": "South African Consumer Sentiment Rebounds as Oil Risk Looms",
+      "topNegativeTitle": "Macerich CEO: Consumers Are Spending, but Are Selective",
+      "topPositiveTitle": "Macerich CEO: Consumers Are Spending, but Are Selective",
       "items": [
         {
-          "title": "Stanford Professor Fukuyama on Today’s Extremist Ideology",
+          "title": "Macerich CEO: Consumers Are Spending, but Are Selective",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-17T21:48:50+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-17/macerich-ceo-consumers-are-spending-but-are-selective-video",
+          "tags": [
+            "market",
+            "reit"
+          ]
+        }
+      ]
+    },
+    "dividend": {
+      "avgSentiment": 0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
+      "isStale": false,
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
+    },
+    "macro_risk": {
+      "avgSentiment": -0.066,
+      "negativeCount": 2,
+      "positiveCount": 1,
+      "neutralCount": 2,
+      "sourceCount": 2,
+      "itemCount": 5,
+      "isStale": false,
+      "topNegativeTitle": "Latest Oil Market News and Analysis for Sept. 18",
+      "topPositiveTitle": "UK Productivity Closer to Pre-2008 Trend Than Thought, ONS Says",
+      "items": [
+        {
+          "title": "Latest Oil Market News and Analysis for Sept. 18",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-17T14:06:59+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-17/stanford-professor-fukuyama-on-today-s-extremist-ideology",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-09-17T22:05:55+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-17/latest-oil-market-news-and-analysis-for-sept-18",
           "tags": [
+            "commodity",
             "geopolitical",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Lazard's Van Nostrand Says Markets Are Entering a Supply-Side Era",
+          "title": "DoubleLine’s Gundlach Warns of Fiscal Crisis in Next Recession",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-09-17T14:01:20+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-17/lazard-s-van-nostrand-markets-entering-supply-side-era-video",
+          "publishedAt": "2026-09-17T21:32:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-17/doubleline-s-gundlach-warns-of-fiscal-crisis-in-next-recession",
           "tags": [
-            "commodity",
-            "macro_risk",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Bond Rout Spurs Record Outflow From $3.6 Billion Schwab Muni ETF",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-17T15:24:22+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-17/bond-rout-spurs-record-outflow-from-3-6-billion-schwab-muni-etf",
-          "tags": [
+            "gold",
             "macro_risk",
             "market",
             "rates",
-            "trust"
-          ]
-        },
-        {
-          "title": "Private Credit Defaults Are 1%, 6% or 19%, Depending Who You Ask",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-17T15:00:13+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-17/private-credit-defaults-are-1-6-or-19-depending-who-you-ask",
-          "tags": [
-            "macro_risk",
-            "market"
+            "us_broad"
           ]
         },
         {
@@ -313,32 +350,70 @@
             "market",
             "rates"
           ]
+        },
+        {
+          "title": "ECB’s Rehn Sees No Second-Round Price Effects From War Shock",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-17T10:34:39+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-17/ecb-s-rehn-sees-no-second-round-inflation-effects-from-war-shock",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "UK Productivity Closer to Pre-2008 Trend Than Thought, ONS Says",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-09-17T10:24:28+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-17/uk-productivity-closer-to-pre-2008-trend-than-thought-ons-says",
+          "tags": [
+            "macro_risk",
+            "market"
+          ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": -0.17,
+      "avgSentiment": 0.168,
       "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 2,
+      "positiveCount": 2,
+      "neutralCount": 1,
+      "sourceCount": 2,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "BOJ Faces Higher Bar to Support Yen After Fed’s Hawkish Hike",
-      "topPositiveTitle": "ARS/USD: Milei’s Strong Peso Holds Back Argentina’s Economic Growth",
+      "topNegativeTitle": "Strategists See Yen Weakening as BOJ Risks Disappointing Markets",
+      "topPositiveTitle": "Asian Stocks to Gain on Lower Oil, US Bonds Rally: Markets Wrap",
       "items": [
         {
-          "title": "BOJ Faces Higher Bar to Support Yen After Fed’s Hawkish Hike",
+          "title": "Strategists See Yen Weakening as BOJ Risks Disappointing Markets",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-09-17T00:01:56+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-17/boj-faces-higher-bar-to-support-yen-after-fed-s-hawkish-hike",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-17T23:02:19+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-17/strategists-see-yen-weakening-as-boj-risks-disappointing-markets",
           "tags": [
             "fx",
             "jp_broad",
-            "market",
-            "us_broad"
+            "market"
+          ]
+        },
+        {
+          "title": "Carry Trade Explained: Why the Japanese Yen Is Losing Its Appeal (JPY/USD)",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-17T21:21:22+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-17/carry-trade-explained-why-the-japanese-yen-is-losing-its-appeal-jpy-usd",
+          "tags": [
+            "fx",
+            "market"
           ]
         },
         {
@@ -352,72 +427,87 @@
             "fx",
             "market"
           ]
+        },
+        {
+          "title": "Asian Stocks to Gain on Lower Oil, US Bonds Rally: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-09-17T22:14:33+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-17/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "fx",
+            "jp_broad",
+            "market",
+            "us_broad"
+          ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": 0.048,
+      "avgSentiment": -0.055,
       "negativeCount": 4,
-      "positiveCount": 4,
-      "neutralCount": 9,
+      "positiveCount": 1,
+      "neutralCount": 7,
       "sourceCount": 2,
-      "itemCount": 17,
+      "itemCount": 12,
       "isStale": false,
-      "topNegativeTitle": "ECB’s Makhlouf Says Each Meeting Is ‘Live’ Including October",
+      "topNegativeTitle": "BNY Chief Economist on Fed Rate Hike, BOJ Outlook",
       "topPositiveTitle": "UK Bonds Flip to Gains as BOE Scraps Long-Dated QT Sales",
       "items": [
         {
-          "title": "ECB’s Makhlouf Says Each Meeting Is ‘Live’ Including October",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-09-17T08:23:24+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-17/ecb-s-makhlouf-says-every-meeting-is-live-including-october",
-          "tags": [
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Lazard's Van Nostrand Says Markets Are Entering a Supply-Side Era",
+          "title": "BNY Chief Economist on Fed Rate Hike, BOJ Outlook",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-09-17T14:01:20+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-17/lazard-s-van-nostrand-markets-entering-supply-side-era-video",
+          "publishedAt": "2026-09-17T21:33:26+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-17/bny-chief-economist-on-fed-rate-hike-boj-outlook-video",
           "tags": [
-            "commodity",
-            "macro_risk",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "US Stocks Rebound From Fed Decision Day Slump as Oil Falls",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-17T10:57:20+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-17/us-stocks-primed-to-rebound-from-fed-day-slump-as-futures-rally",
-          "tags": [
-            "commodity",
+            "jp_broad",
             "market",
             "rates",
             "us_broad"
           ]
         },
         {
-          "title": "Bond Rout Spurs Record Outflow From $3.6 Billion Schwab Muni ETF",
+          "title": "DoubleLine’s Gundlach Warns of Fiscal Crisis in Next Recession",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-09-17T15:24:22+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-17/bond-rout-spurs-record-outflow-from-3-6-billion-schwab-muni-etf",
+          "publishedAt": "2026-09-17T21:32:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-17/doubleline-s-gundlach-warns-of-fiscal-crisis-in-next-recession",
           "tags": [
+            "gold",
             "macro_risk",
             "market",
             "rates",
-            "trust"
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Fed Hike Defies Trump Ahead of Midterms. What’s Next? Live Q&A",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-17T15:56:18+00:00",
+          "url": "https://www.bloomberg.com/sessions/2026-09-17/live-q-amp-a-fed-hikes-trump-pushes-back-what-comes-next",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Czechs Keep Door Open for Rate Hike as Inflation Risks Persist",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-17T12:30:40+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-17/czechs-hold-rates-with-markets-looking-for-more-hikes-to-come",
+          "tags": [
+            "market",
+            "rates"
           ]
         },
         {
@@ -437,18 +527,18 @@
       ]
     },
     "commodity": {
-      "avgSentiment": -0.108,
+      "avgSentiment": -0.251,
       "negativeCount": 3,
       "positiveCount": 1,
       "neutralCount": 4,
       "sourceCount": 2,
       "itemCount": 8,
       "isStale": false,
-      "topNegativeTitle": "Oil Declines as Saudi Arabia Moves to Restore Vital Pipeline",
-      "topPositiveTitle": "South African Consumer Sentiment Rebounds as Oil Risk Looms",
+      "topNegativeTitle": "Oil Drops as Traders See Supply Outages Proving Short-Lived",
+      "topPositiveTitle": "Asian Stocks to Gain on Lower Oil, US Bonds Rally: Markets Wrap",
       "items": [
         {
-          "title": "Oil Declines as Saudi Arabia Moves to Restore Vital Pipeline",
+          "title": "Oil Drops as Traders See Supply Outages Proving Short-Lived",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -1.0,
@@ -460,31 +550,29 @@
           ]
         },
         {
-          "title": "Lazard's Van Nostrand Says Markets Are Entering a Supply-Side Era",
+          "title": "Latest Oil Market News and Analysis for Sept. 18",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-17T14:01:20+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-17/lazard-s-van-nostrand-markets-entering-supply-side-era-video",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-09-17T22:05:55+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-17/latest-oil-market-news-and-analysis-for-sept-18",
           "tags": [
             "commodity",
+            "geopolitical",
             "macro_risk",
-            "market",
-            "rates"
+            "market"
           ]
         },
         {
-          "title": "US Stocks Rebound From Fed Decision Day Slump as Oil Falls",
+          "title": "Saudi Pivots Oil Routes After Pipeline Attack",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-17T10:57:20+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-17/us-stocks-primed-to-rebound-from-fed-day-slump-as-futures-rally",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-09-17T21:20:21+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-17/saudi-pivots-oil-routes-after-pipeline-attack-video",
           "tags": [
             "commodity",
-            "market",
-            "rates",
-            "us_broad"
+            "market"
           ]
         },
         {
@@ -502,39 +590,42 @@
           ]
         },
         {
-          "title": "BOE's Bailey Says Feed-Through of Energy Shock Has Been 'Subdued'",
+          "title": "Gold Surges Along With US Treasuries as Oil Price Slide Deepens",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-17T13:31:12+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-17/bailey-feed-through-of-energy-shock-has-been-subdued-video",
+          "sentimentScore": -0.14,
+          "publishedAt": "2026-09-16T23:54:12+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-16/gold-holds-decline-after-fed-tilts-hawkish-and-raises-rates",
           "tags": [
             "commodity",
+            "gold",
             "market",
-            "rates"
+            "rates",
+            "us_broad"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.167,
+      "avgSentiment": -0.223,
       "negativeCount": 1,
-      "positiveCount": 1,
+      "positiveCount": 0,
       "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Stanford Professor Fukuyama on Today’s Extremist Ideology",
-      "topPositiveTitle": "South African Consumer Sentiment Rebounds as Oil Risk Looms",
+      "topNegativeTitle": "Latest Oil Market News and Analysis for Sept. 18",
+      "topPositiveTitle": "Bank of England Holds Rates, Warning of Hike If War Goes On",
       "items": [
         {
-          "title": "Stanford Professor Fukuyama on Today’s Extremist Ideology",
+          "title": "Latest Oil Market News and Analysis for Sept. 18",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-17T14:06:59+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-17/stanford-professor-fukuyama-on-today-s-extremist-ideology",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-09-17T22:05:55+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-17/latest-oil-market-news-and-analysis-for-sept-18",
           "tags": [
+            "commodity",
             "geopolitical",
             "macro_risk",
             "market"
@@ -568,21 +659,6 @@
             "market",
             "us_broad"
           ]
-        },
-        {
-          "title": "South African Consumer Sentiment Rebounds as Oil Risk Looms",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-09-17T08:19:22+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-17/south-africa-consumer-sentiment-rises-but-oil-prices-threaten",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market",
-            "rates"
-          ]
         }
       ]
     }
@@ -595,7 +671,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 4,
+    "excludedCount": 5,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
