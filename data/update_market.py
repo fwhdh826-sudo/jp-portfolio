@@ -159,7 +159,7 @@ def main():
             print(f"  ⚠ VIX取得失敗: {e} → {vix_val} を使用")
 
         output = {
-            "last_updated": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M+00:00"),
+            "last_updated": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S+00:00"),
             "nikkei":       price,
             "nikkeiChg":    chg,
             "nikkeiChgPct": chg_pct,

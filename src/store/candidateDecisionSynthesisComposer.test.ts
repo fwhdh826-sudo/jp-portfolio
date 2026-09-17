@@ -485,4 +485,38 @@ describe('CAND-SYN-1B buildCandidateDecisionSynthesisFromState', () => {
   it('N/L candidateDecisionSynthesis composition has no store/officialDecision/UI import', () => {
     expect(source).not.toMatch(/useAppStore|officialDecision|from ['"]\.\.\/components/)
   })
+
+  describe('OPS-P5-B005-E2E-A1-PROVENANCE-R1 production market timestamp contract', () => {
+    function buildWithMarket(marketDataAsOf: string) {
+      const state = baseState()
+      const plan = planFor(state)
+      return buildCandidateDecisionSynthesisFromState({
+        state: {
+          ...state,
+          system: { ...state.system, dataTimestamps: { ...state.system.dataTimestamps!, market: marketDataAsOf } },
+        },
+        allocationPlan: plan, allocationPlanStatus: 'current',
+        allocationPlanCandidateGenerationId: FUNNEL_GENERATION,
+        fitResult: defaultFitResult(), candidateFreshness: 'fresh', evaluatedAt: NOW_ISO, nowMs: NOW,
+      })
+    }
+
+    it('the exact observed production market.json shape (minute precision) drops synthesis to invalid, publishing zero candidates', () => {
+      const result = buildWithMarket('2026-09-17T01:33+00:00')
+      expect(result?.status).toBe('invalid')
+      expect(result?.datasetReasons).toContain('MISSING_REQUIRED_PROVENANCE')
+      expect(result?.decisions).toEqual([])
+      expect(result?.watchList).toEqual([])
+    })
+
+    it('the repaired data/update_market.py shape (same instant, seconds present) restores a valid synthesis with published candidates', () => {
+      const result = buildWithMarket('2026-09-17T01:33:00+00:00')
+      expect(result?.status).toBe('available')
+      expect(result?.provenance.marketDataAsOf).toBe('2026-09-17T01:33:00+00:00')
+      // synthesis.status === 'available' is exactly the condition T1_Decision's
+      // CandidateDecisionSection uses to clear `isUnavailable` and stop
+      // rendering the "候補データの再計算が必要です" fail-closed message.
+      expect((result?.decisions.length ?? 0) + (result?.watchList.length ?? 0)).toBeGreaterThan(0)
+    })
+  })
 })

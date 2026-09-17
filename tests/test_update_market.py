@@ -2,6 +2,7 @@
 
 import json
 import math
+import re
 
 import pandas as pd
 import pytest
@@ -153,6 +154,34 @@ def test_write_failure_preserves_existing_file_bytes(monkeypatch, tmp_path):
 
     assert output_path.read_bytes() == original
     assert list(tmp_path.glob(".market.json.*.tmp")) == []
+
+
+def test_last_updated_includes_seconds_with_explicit_utc_offset(monkeypatch, tmp_path):
+    """OPS-P5-B005-E2E-A1-PROVENANCE-R1: the frontend's shared strict provenance
+    timestamp grammar (isStrictTimestamp) requires seconds for every timestamp
+    that flows into candidateDecisionSynthesis.provenance, including
+    marketDataAsOf (copied verbatim from this field). A minute-only value such
+    as the observed production regression "2026-09-17T01:33+00:00" is rejected
+    as MISSING_REQUIRED_PROVENANCE, silently dropping all domain
+    recommendations. last_updated must therefore always carry HH:MM:SS.
+    """
+    output_path = tmp_path / "market.json"
+    histories = {
+        "^N225": _nikkei_history(),
+        "NIY=F": _history([39_000.0, 39_100.0]),
+        "NKD=F": AssertionError("second future must not be requested"),
+        "N225M.CME": AssertionError("third future must not be requested"),
+        "^VIX": _history([18.0]),
+    }
+    _install_tickers(monkeypatch, histories)
+    monkeypatch.setattr(market, "OUTPUT_PATH", output_path)
+
+    assert market.main() is True
+
+    output = json.loads(output_path.read_text())
+    assert re.fullmatch(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\+00:00", output["last_updated"]), (
+        f"last_updated must be seconds-precision with explicit UTC offset, got {output['last_updated']!r}"
+    )
 
 
 def test_successful_write_uses_sibling_temp_and_atomic_replace(

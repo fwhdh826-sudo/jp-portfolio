@@ -7,6 +7,10 @@ describe('T9-A004-R1 strict timestamp parser', () => {
     ['2026-07-15T09:00:00+09:00', '2026-07-15T00:00:00.000Z'],
     ['2026-07-15T09:00:00.000+09:00', '2026-07-15T00:00:00.000Z'],
     ['2024-02-29T23:59:59.12Z', '2024-02-29T23:59:59.120Z'],
+    // OPS-P5-B005-E2E-A1-PROVENANCE-R1: repaired data/update_market.py producer shape
+    // (seconds now present) must keep parsing as before.
+    ['2026-09-17T01:33:00+00:00', '2026-09-17T01:33:00.000Z'],
+    ['2026-09-17T10:33:00+09:00', '2026-09-17T01:33:00.000Z'],
   ])('accepts strict timezone-qualified ISO %s', (input, expected) => {
     expect(normalizeStrictTimestamp(input)).toBe(expected)
   })
@@ -23,6 +27,11 @@ describe('T9-A004-R1 strict timestamp parser', () => {
     '2026-07-15T23:59:60Z',
     '2026-07-15T09:00:00',
     '2026-07-15 09:00:00Z',
+    // OPS-P5-B005-E2E-A1-PROVENANCE-R1: exact observed production market.json
+    // last_updated value that triggered candidateDecisionSynthesis
+    // MISSING_REQUIRED_PROVENANCE (minute precision, explicit UTC offset, no
+    // seconds). This grammar stays strict; the producer was repaired instead.
+    '2026-09-17T01:33+00:00',
   ])('rejects invalid or timezone-less input %s', input => {
     expect(parseStrictTimestamp(input, { allowDateOnly: true })).toBeNull()
   })

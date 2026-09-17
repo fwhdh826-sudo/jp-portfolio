@@ -765,6 +765,69 @@ describe('CAND-SYN-1A provenance, invariants, failure, and immutability', () => 
   })
 })
 
+describe('OPS-P5-B005-E2E-A1-PROVENANCE-R1 market timestamp provenance contract (marketDataAsOf)', () => {
+  // Exact production market.json `last_updated` value that produced
+  // MISSING_REQUIRED_PROVENANCE and dropped all domain recommendations.
+  const OBSERVED_PRODUCTION_TIMESTAMP = '2026-09-17T01:33+00:00'
+  // Repaired data/update_market.py shape: same instant, seconds now present.
+  const REPAIRED_PRODUCER_TIMESTAMP = '2026-09-17T01:33:00+00:00'
+
+  function withMarketDataAsOf(marketDataAsOf: string | null | undefined) {
+    return input([candidate()], {
+      provenance: provenance({ marketDataAsOf } as Partial<CandidateDecisionSynthesisProvenance>),
+    })
+  }
+
+  it('T1 rejects the exact observed production value (minute precision, no seconds)', () => {
+    const result = buildCandidateDecisionSynthesis(withMarketDataAsOf(OBSERVED_PRODUCTION_TIMESTAMP))
+    expect(result.status).toBe('invalid')
+    expect(result.datasetReasons).toContain('MISSING_REQUIRED_PROVENANCE')
+    expect(result.decisions).toEqual([])
+    expect(result.watchList).toEqual([])
+  })
+
+  it('T2 accepts the repaired producer shape (same instant, seconds present)', () => {
+    const result = buildCandidateDecisionSynthesis(withMarketDataAsOf(REPAIRED_PRODUCER_TIMESTAMP))
+    expect(result.status).toBe('available')
+    expect(result.provenance.marketDataAsOf).toBe(REPAIRED_PRODUCER_TIMESTAMP)
+    expect(result.decisions.length + result.watchList.length).toBeGreaterThan(0)
+  })
+
+  it('T3 accepts an equivalent JST-offset second-precision form of the same instant', () => {
+    const result = buildCandidateDecisionSynthesis(withMarketDataAsOf('2026-09-17T10:33:00+09:00'))
+    expect(result.status).toBe('available')
+  })
+
+  it('T12 fractional-second precision behavior is unchanged by this repair', () => {
+    const result = buildCandidateDecisionSynthesis(withMarketDataAsOf('2026-09-17T01:33:00.120+00:00'))
+    expect(result.status).toBe('available')
+  })
+
+  it('null stays a distinct, intentionally accepted "no market data joined" state, unaffected by this repair', () => {
+    const result = buildCandidateDecisionSynthesis(withMarketDataAsOf(null))
+    expect(result.status).toBe('available')
+    expect(result.provenance.marketDataAsOf).toBeNull()
+  })
+
+  it.each([
+    ['T4 missing (field undefined)', undefined],
+    ['T5 empty string', ''],
+    ['T6 timezone-less', '2026-09-17T01:33:00'],
+    ['T7 malformed', 'not-a-timestamp'],
+    ['T8 invalid calendar date', '2026-02-30T01:33:00+00:00'],
+    ['T9 invalid time (hour 25)', '2026-09-17T25:33:00+00:00'],
+  ])('%s fails closed with MISSING_REQUIRED_PROVENANCE', (_label, value) => {
+    const result = buildCandidateDecisionSynthesis(withMarketDataAsOf(value))
+    expect(result.status).toBe('invalid')
+    expect(result.datasetReasons).toContain('MISSING_REQUIRED_PROVENANCE')
+  })
+
+  // T10 (future) / T11 (stale): marketDataAsOf syntactic validity carries no
+  // clock comparison in this module — freshness/staleness is a separate,
+  // untouched consumer (selectMarketDataQuality in store/selectors.ts) with
+  // its own existing coverage (store/selectors.test.ts). Out of scope here.
+})
+
 describe('CAND-SYN-1A population-A holding adapter', () => {
   it('uses canonical normalized stock identity and BUY_MORE semantics', () => {
     const result = buildHoldingAllocationCandidates({ holdings: [holding(' １００３.t ')] })
