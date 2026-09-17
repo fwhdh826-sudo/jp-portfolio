@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-09-17T10:34:22.939447+09:00",
-  "sourceUpdatedAt": "2026-09-17T01:32:15+00:00",
+  "updatedAt": "2026-09-17T17:48:55.762325+09:00",
+  "sourceUpdatedAt": "2026-09-17T08:37:49+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -58,15 +58,15 @@
       "items": []
     },
     "us_broad": {
-      "avgSentiment": -0.076,
-      "negativeCount": 4,
-      "positiveCount": 1,
-      "neutralCount": 15,
+      "avgSentiment": 0.012,
+      "negativeCount": 3,
+      "positiveCount": 3,
+      "neutralCount": 8,
       "sourceCount": 2,
-      "itemCount": 20,
+      "itemCount": 14,
       "isStale": false,
       "topNegativeTitle": "BOJ Faces Higher Bar to Support Yen After Fed’s Hawkish Hike",
-      "topPositiveTitle": "Why Kevin Warsh Again Skipped the Fed’s Dot Plot",
+      "topPositiveTitle": "Dollar, Treasuries Have More Gains Ahead: Markets Analysis",
       "items": [
         {
           "title": "BOJ Faces Higher Bar to Support Yen After Fed’s Hawkish Hike",
@@ -79,20 +79,6 @@
             "fx",
             "jp_broad",
             "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Gold Holds Decline After Fed Tilts Hawkish and Raises Rates",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-16T23:54:12+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-16/gold-holds-decline-after-fed-tilts-hawkish-and-raises-rates",
-          "tags": [
-            "gold",
-            "market",
-            "rates",
             "us_broad"
           ]
         },
@@ -123,86 +109,34 @@
           ]
         },
         {
-          "title": "Treasuries Pare Losses From Fed Hike, Dollar Gains: Markets Wrap",
+          "title": "How the Fed's Hawkish Hike Is Shaping Global Markets",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.2,
-          "publishedAt": "2026-09-16T22:06:59+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-16/stock-market-today-dow-s-p-live-updates",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-17T07:54:00+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-17/insight-with-haslinda-amin-9-16-2026-video",
           "tags": [
-            "commodity",
-            "fx",
+            "global_broad",
             "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Bonds Yields Will 'Gradually March Higher,' Schroders Says",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-17T06:42:09+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-17/bonds-yields-to-gradually-march-higher-schroders-says-video",
+          "tags": [
+            "market",
+            "rates",
             "us_broad"
           ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "global_broad": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "gold": {
-      "avgSentiment": -0.165,
-      "negativeCount": 1,
-      "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 2,
-      "isStale": false,
-      "topNegativeTitle": "Gold Holds Decline After Fed Tilts Hawkish and Raises Rates",
-      "topPositiveTitle": "Venezuela Aluminum Heads to US; Heeney Eyes Gold Deal",
-      "items": [
-        {
-          "title": "Gold Holds Decline After Fed Tilts Hawkish and Raises Rates",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-16T23:54:12+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-16/gold-holds-decline-after-fed-tilts-hawkish-and-raises-rates",
-          "tags": [
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Venezuela Aluminum Heads to US; Heeney Eyes Gold Deal",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-16T14:09:49+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-16/venezuela-plans-to-ship-aluminum-to-us-in-mercuria-heeney-deal",
-          "tags": [
-            "commodity",
-            "gold",
-            "market"
-          ]
-        }
-      ]
-    },
-    "reit": {
       "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
@@ -210,24 +144,85 @@
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Brown Harris Stevens CEO: We Need More Housing in Market",
-      "topPositiveTitle": "Brown Harris Stevens CEO: We Need More Housing in Market",
+      "topNegativeTitle": "Singapore’s Record AI Boom Unlikely to Move MAS, Analysts Say",
+      "topPositiveTitle": "Singapore’s Record AI Boom Unlikely to Move MAS, Analysts Say",
       "items": [
         {
-          "title": "Brown Harris Stevens CEO: We Need More Housing in Market",
-          "source": "Bloomberg Markets",
+          "title": "Singapore’s Record AI Boom Unlikely to Move MAS, Analysts Say",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-16T21:41:33+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-16/brown-harris-stevens-ceo-we-need-more-housing-in-market-video",
+          "publishedAt": "2026-09-17T08:19:10+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-17/singapore-s-record-ai-boom-unlikely-to-move-mas-analysts-say",
           "tags": [
             "market",
-            "rates",
-            "reit",
-            "us_broad"
+            "us_growth"
           ]
         }
       ]
+    },
+    "global_broad": {
+      "avgSentiment": 0.165,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 2,
+      "isStale": false,
+      "topNegativeTitle": "How the Fed's Hawkish Hike Is Shaping Global Markets",
+      "topPositiveTitle": "Saudi Oil Pipeline Nears Restart as Houthi Tensions Rise",
+      "items": [
+        {
+          "title": "How the Fed's Hawkish Hike Is Shaping Global Markets",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-17T07:54:00+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-17/insight-with-haslinda-amin-9-16-2026-video",
+          "tags": [
+            "global_broad",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Saudi Oil Pipeline Nears Restart as Houthi Tensions Rise",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-17T06:35:45+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-17/horizons-middle-east-africa-9-17-2026-video",
+          "tags": [
+            "commodity",
+            "global_broad",
+            "market"
+          ]
+        }
+      ]
+    },
+    "gold": {
+      "avgSentiment": 0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
+      "isStale": false,
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
+    },
+    "reit": {
+      "avgSentiment": 0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
+      "isStale": false,
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "dividend": {
       "avgSentiment": 0,
@@ -243,15 +238,55 @@
     },
     "macro_risk": {
       "avgSentiment": 0.223,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 2,
+      "negativeCount": 1,
+      "positiveCount": 2,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Trump Denied Rate Cut as Federal Reserve Targets War-Stoked Inflation",
-      "topPositiveTitle": "New Zealand Economy Beats Estimates, Boosting Rate-Hike Bets",
+      "topNegativeTitle": "Oil Holds Drop as Saudi Arabia Seeks to Restore Pipeline",
+      "topPositiveTitle": "South African Consumer Sentiment Rebounds as Oil Risk Looms",
       "items": [
+        {
+          "title": "Oil Holds Drop as Saudi Arabia Seeks to Restore Pipeline",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-17T08:21:32+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-17/oil-holds-drop-as-saudi-arabia-seeks-to-restore-pipeline-video",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Major Bathla Creditor Explores Debt Sale as Crisis Persists",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-17T08:35:18+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-17/major-bathla-creditor-explores-debt-sale-as-crisis-persists",
+          "tags": [
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Thailand Seeks More Crude Oil Supplies Outside Mideast",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-17T06:39:09+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-17/thailand-seeks-more-crude-oil-supplies-outside-mideast-video",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
         {
           "title": "Trump Denied Rate Cut as Federal Reserve Targets War-Stoked Inflation",
           "source": "Bloomberg Economics",
@@ -265,19 +300,6 @@
             "market",
             "rates",
             "us_broad"
-          ]
-        },
-        {
-          "title": "Asia Risks Unrest as El Niño, War Threaten Food Supplies, Consultancy Says",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-16T23:01:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-16/asia-risks-unrest-as-el-nino-war-threaten-food-supplies-consultancy-says",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
           ]
         },
         {
@@ -296,15 +318,15 @@
       ]
     },
     "fx": {
-      "avgSentiment": -0.29,
+      "avgSentiment": 0.0,
       "negativeCount": 1,
-      "positiveCount": 0,
-      "neutralCount": 2,
+      "positiveCount": 1,
+      "neutralCount": 1,
       "sourceCount": 2,
       "itemCount": 3,
       "isStale": false,
       "topNegativeTitle": "BOJ Faces Higher Bar to Support Yen After Fed’s Hawkish Hike",
-      "topPositiveTitle": "Fed’s Hawkish Hike to Pressure Asian Currencies, Strategists Say",
+      "topPositiveTitle": "Dollar, Treasuries Have More Gains Ahead: Markets Analysis",
       "items": [
         {
           "title": "BOJ Faces Higher Bar to Support Yen After Fed’s Hawkish Hike",
@@ -316,20 +338,6 @@
           "tags": [
             "fx",
             "jp_broad",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Treasuries Pare Losses From Fed Hike, Dollar Gains: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.2,
-          "publishedAt": "2026-09-16T22:06:59+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-16/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "fx",
             "market",
             "us_broad"
           ]
@@ -347,44 +355,55 @@
             "market",
             "us_broad"
           ]
+        },
+        {
+          "title": "Dollar, Treasuries Have More Gains Ahead: Markets Analysis",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-09-17T07:30:39+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-17/dollar-treasuries-have-more-gains-ahead-3-minutes-mliv-video",
+          "tags": [
+            "fx",
+            "market",
+            "us_broad"
+          ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": -0.119,
+      "avgSentiment": 0.034,
       "negativeCount": 4,
-      "positiveCount": 1,
-      "neutralCount": 9,
+      "positiveCount": 4,
+      "neutralCount": 7,
       "sourceCount": 2,
-      "itemCount": 14,
+      "itemCount": 15,
       "isStale": false,
-      "topNegativeTitle": "US Homebuilder Sentiment Drops to Match Lowest Level Since 2022",
-      "topPositiveTitle": "Why Kevin Warsh Again Skipped the Fed’s Dot Plot",
+      "topNegativeTitle": "ECB’s Makhlouf Says Each Meeting Is ‘Live’ Including October",
+      "topPositiveTitle": "South African Consumer Sentiment Rebounds as Oil Risk Looms",
       "items": [
         {
-          "title": "US Homebuilder Sentiment Drops to Match Lowest Level Since 2022",
+          "title": "ECB’s Makhlouf Says Each Meeting Is ‘Live’ Including October",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -1.0,
-          "publishedAt": "2026-09-16T14:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-16/us-homebuilder-sentiment-drops-to-match-lowest-level-since-2022",
+          "publishedAt": "2026-09-17T08:23:24+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-17/ecb-s-makhlouf-says-every-meeting-is-live-including-october",
           "tags": [
             "market",
             "rates"
           ]
         },
         {
-          "title": "Gold Holds Decline After Fed Tilts Hawkish and Raises Rates",
+          "title": "Will the BOE Keep the Option Open for a Rate Hike?",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-09-16T23:54:12+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-16/gold-holds-decline-after-fed-tilts-hawkish-and-raises-rates",
+          "publishedAt": "2026-09-17T07:32:11+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-17/will-the-boe-keep-the-option-open-for-a-hike-video",
           "tags": [
-            "gold",
             "market",
-            "rates",
-            "us_broad"
+            "rates"
           ]
         },
         {
@@ -414,15 +433,13 @@
           ]
         },
         {
-          "title": "Trump Denied Rate Cut as Federal Reserve Targets War-Stoked Inflation",
-          "source": "Bloomberg Economics",
+          "title": "Bonds Yields Will 'Gradually March Higher,' Schroders Says",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-17T00:30:02+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-17/trump-denied-rate-cut-as-federal-reserve-targets-war-stoked-inflation",
+          "publishedAt": "2026-09-17T06:42:09+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-17/bonds-yields-to-gradually-march-higher-schroders-says-video",
           "tags": [
-            "geopolitical",
-            "macro_risk",
             "market",
             "rates",
             "us_broad"
@@ -431,94 +448,125 @@
       ]
     },
     "commodity": {
-      "avgSentiment": -0.174,
+      "avgSentiment": 0.31,
       "negativeCount": 1,
-      "positiveCount": 0,
-      "neutralCount": 4,
-      "sourceCount": 1,
-      "itemCount": 5,
+      "positiveCount": 4,
+      "neutralCount": 2,
+      "sourceCount": 2,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "Oil Extends Drop as Saudi Arabia Moves to Restore Vital Pipeline",
-      "topPositiveTitle": "China’s Gas Demand Outlook Clouded by Guangdong’s Power Shift",
+      "topNegativeTitle": "Oil Holds Drop as Saudi Arabia Seeks to Restore Pipeline",
+      "topPositiveTitle": "South African Consumer Sentiment Rebounds as Oil Risk Looms",
       "items": [
         {
-          "title": "Oil Extends Drop as Saudi Arabia Moves to Restore Vital Pipeline",
+          "title": "Oil Holds Drop as Saudi Arabia Seeks to Restore Pipeline",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-09-16T22:05:54+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-16/oil-extends-slump-as-saudi-arabia-moves-to-restore-key-pipeline",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-17T08:21:32+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-17/oil-holds-drop-as-saudi-arabia-seeks-to-restore-pipeline-video",
           "tags": [
             "commodity",
+            "geopolitical",
+            "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Treasuries Pare Losses From Fed Hike, Dollar Gains: Markets Wrap",
+          "title": "Thailand Seeks More Crude Oil Supplies Outside Mideast",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.2,
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-17T06:39:09+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-17/thailand-seeks-more-crude-oil-supplies-outside-mideast-video",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Czechs Set to Hold Rates as Energy Risks Boost Tightening Bets",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-17T04:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-17/czechs-set-to-hold-rates-as-energy-risks-boost-tightening-bets",
+          "tags": [
+            "commodity",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Saudi Oil Pipeline Nears Restart as Houthi Tensions Rise",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-17T06:35:45+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-17/horizons-middle-east-africa-9-17-2026-video",
+          "tags": [
+            "commodity",
+            "global_broad",
+            "market"
+          ]
+        },
+        {
+          "title": "Stocks Rally and Treasuries Rise as Oil Retreats: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.5,
           "publishedAt": "2026-09-16T22:06:59+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-16/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "fx",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "China’s Gas Demand Outlook Clouded by Guangdong’s Power Shift",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-17T00:52:29+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-17/china-s-gas-demand-outlook-clouded-by-guangdong-s-power-shift",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "AI Buildout Hits Inflation as Fed Hikes Rates",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-16T21:25:15+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-16/ai-buildout-hits-inflation-as-fed-hikes-rates-video",
           "tags": [
             "commodity",
             "market",
             "rates",
             "us_broad"
           ]
-        },
-        {
-          "title": "Venezuela Aluminum Heads to US; Heeney Eyes Gold Deal",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-16T14:09:49+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-16/venezuela-plans-to-ship-aluminum-to-us-in-mercuria-heeney-deal",
-          "tags": [
-            "commodity",
-            "gold",
-            "market"
-          ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.25,
-      "negativeCount": 0,
+      "avgSentiment": 0.268,
+      "negativeCount": 1,
       "positiveCount": 2,
       "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Trump Denied Rate Cut as Federal Reserve Targets War-Stoked Inflation",
-      "topPositiveTitle": "New Zealand Economy Beats Estimates, Boosting Rate-Hike Bets",
+      "topNegativeTitle": "Oil Holds Drop as Saudi Arabia Seeks to Restore Pipeline",
+      "topPositiveTitle": "South African Consumer Sentiment Rebounds as Oil Risk Looms",
       "items": [
+        {
+          "title": "Oil Holds Drop as Saudi Arabia Seeks to Restore Pipeline",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-17T08:21:32+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-17/oil-holds-drop-as-saudi-arabia-seeks-to-restore-pipeline-video",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Thailand Seeks More Crude Oil Supplies Outside Mideast",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-17T06:39:09+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-17/thailand-seeks-more-crude-oil-supplies-outside-mideast-video",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
         {
           "title": "Trump Denied Rate Cut as Federal Reserve Targets War-Stoked Inflation",
           "source": "Bloomberg Economics",
@@ -532,31 +580,6 @@
             "market",
             "rates",
             "us_broad"
-          ]
-        },
-        {
-          "title": "Asia Risks Unrest as El Niño, War Threaten Food Supplies, Consultancy Says",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-16T23:01:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-16/asia-risks-unrest-as-el-nino-war-threaten-food-supplies-consultancy-says",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "US Indictment Alleges Russian Global Assassination Network",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-16T18:20:01+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-16/us-indictment-exposes-russian-global-assassination-network",
-          "tags": [
-            "geopolitical",
-            "market"
           ]
         },
         {
@@ -571,6 +594,21 @@
             "macro_risk",
             "market"
           ]
+        },
+        {
+          "title": "South African Consumer Sentiment Rebounds as Oil Risk Looms",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-09-17T08:19:22+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-17/south-africa-consumer-sentiment-rises-but-oil-prices-threaten",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "rates"
+          ]
         }
       ]
     }
@@ -583,7 +621,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 3,
+    "excludedCount": 4,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
