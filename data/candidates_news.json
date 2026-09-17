@@ -1,20 +1,49 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-09-17T08:47:16.740887+09:00",
-  "sourceUpdatedAt": "2026-09-16T23:09:50+00:00",
+  "updatedAt": "2026-09-17T10:34:22.939447+09:00",
+  "sourceUpdatedAt": "2026-09-17T01:32:15+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
+      "avgSentiment": -0.335,
+      "negativeCount": 1,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "BOJ Faces Higher Bar to Support Yen After Fed’s Hawkish Hike",
+      "topPositiveTitle": "Fed’s Hawkish Hike to Pressure Asian Currencies, Strategists Say",
+      "items": [
+        {
+          "title": "BOJ Faces Higher Bar to Support Yen After Fed’s Hawkish Hike",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-09-17T00:01:56+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-17/boj-faces-higher-bar-to-support-yen-after-fed-s-hawkish-hike",
+          "tags": [
+            "fx",
+            "jp_broad",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Fed’s Hawkish Hike to Pressure Asian Currencies, Strategists Say",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-16T23:28:53+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-16/fed-hike-puts-spotlight-on-flurry-of-rate-decisions-street-wrap",
+          "tags": [
+            "fx",
+            "jp_broad",
+            "market",
+            "us_broad"
+          ]
+        }
+      ]
     },
     "jp_semiconductor": {
       "avgSentiment": 0,
@@ -29,25 +58,41 @@
       "items": []
     },
     "us_broad": {
-      "avgSentiment": -0.053,
+      "avgSentiment": -0.076,
       "negativeCount": 4,
-      "positiveCount": 3,
-      "neutralCount": 12,
+      "positiveCount": 1,
+      "neutralCount": 15,
       "sourceCount": 2,
-      "itemCount": 19,
+      "itemCount": 20,
       "isStale": false,
-      "topNegativeTitle": "Foreign Holdings of US Treasuries Fell to Nine-Month Low in July",
-      "topPositiveTitle": "Asian Bonds Decline as Fed Hikes, Dollar Jumps: Markets Wrap",
+      "topNegativeTitle": "BOJ Faces Higher Bar to Support Yen After Fed’s Hawkish Hike",
+      "topPositiveTitle": "Why Kevin Warsh Again Skipped the Fed’s Dot Plot",
       "items": [
         {
-          "title": "Foreign Holdings of US Treasuries Fell to Nine-Month Low in July",
+          "title": "BOJ Faces Higher Bar to Support Yen After Fed’s Hawkish Hike",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-09-17T00:01:56+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-17/boj-faces-higher-bar-to-support-yen-after-fed-s-hawkish-hike",
+          "tags": [
+            "fx",
+            "jp_broad",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Gold Holds Decline After Fed Tilts Hawkish and Raises Rates",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-09-16T20:25:37+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-16/foreign-holdings-of-us-treasuries-fell-to-nine-month-low-in-july",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-16T23:54:12+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-16/gold-holds-decline-after-fed-tilts-hawkish-and-raises-rates",
           "tags": [
+            "gold",
             "market",
+            "rates",
             "us_broad"
           ]
         },
@@ -78,26 +123,15 @@
           ]
         },
         {
-          "title": "Stocks Fall as Fed Hikes and Signals More to Come: Markets Wrap",
+          "title": "Treasuries Pare Losses From Fed Hike, Dollar Gains: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-15T22:11:24+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-15/asian-stocks-to-edge-higher-as-traders-await-fed-markets-wrap",
+          "sentimentScore": -0.2,
+          "publishedAt": "2026-09-16T22:06:59+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-16/stock-market-today-dow-s-p-live-updates",
           "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "The Fed’s Unanimous 25-basis-point Hike Puts Trump and Warsh on Collision Course",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-16T22:47:53+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-16/the-fed-s-unanimous-25-basis-point-hike-puts-trump-and-warsh-on-collision-course",
-          "tags": [
+            "commodity",
+            "fx",
             "market",
             "us_broad"
           ]
@@ -129,16 +163,44 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
+      "avgSentiment": -0.165,
+      "negativeCount": 1,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Gold Holds Decline After Fed Tilts Hawkish and Raises Rates",
+      "topPositiveTitle": "Venezuela Aluminum Heads to US; Heeney Eyes Gold Deal",
+      "items": [
+        {
+          "title": "Gold Holds Decline After Fed Tilts Hawkish and Raises Rates",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-16T23:54:12+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-16/gold-holds-decline-after-fed-tilts-hawkish-and-raises-rates",
+          "tags": [
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Venezuela Aluminum Heads to US; Heeney Eyes Gold Deal",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-16T14:09:49+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-16/venezuela-plans-to-ship-aluminum-to-us-in-mercuria-heeney-deal",
+          "tags": [
+            "commodity",
+            "gold",
+            "market"
+          ]
+        }
+      ]
     },
     "reit": {
       "avgSentiment": 0.0,
@@ -180,16 +242,31 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.165,
+      "avgSentiment": 0.223,
       "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 1,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 2,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Asia Risks Unrest as El Niño, War Threaten Food Supplies, Consultancy Says",
-      "topPositiveTitle": "New Zealand’s Economic Growth Beat Estimates Last Quarter",
+      "topNegativeTitle": "Trump Denied Rate Cut as Federal Reserve Targets War-Stoked Inflation",
+      "topPositiveTitle": "New Zealand Economy Beats Estimates, Boosting Rate-Hike Bets",
       "items": [
+        {
+          "title": "Trump Denied Rate Cut as Federal Reserve Targets War-Stoked Inflation",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-17T00:30:02+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-17/trump-denied-rate-cut-as-federal-reserve-targets-war-stoked-inflation",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
         {
           "title": "Asia Risks Unrest as El Niño, War Threaten Food Supplies, Consultancy Says",
           "source": "Bloomberg Markets",
@@ -204,10 +281,10 @@
           ]
         },
         {
-          "title": "New Zealand’s Economic Growth Beat Estimates Last Quarter",
+          "title": "New Zealand Economy Beats Estimates, Boosting Rate-Hike Bets",
           "source": "Bloomberg Economics",
           "sentiment": "positive",
-          "sentimentScore": 0.33,
+          "sentimentScore": 0.67,
           "publishedAt": "2026-09-16T22:51:11+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-16/new-zealand-economic-growth-exceeded-estimates-in-second-quarter",
           "tags": [
@@ -219,56 +296,70 @@
       ]
     },
     "fx": {
-      "avgSentiment": 0.165,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 2,
+      "avgSentiment": -0.29,
+      "negativeCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 2,
+      "sourceCount": 2,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Hawkish Warsh Lifts Dollar as Traders Bet on More Rate Increases",
-      "topPositiveTitle": "Asian Bonds Decline as Fed Hikes, Dollar Jumps: Markets Wrap",
+      "topNegativeTitle": "BOJ Faces Higher Bar to Support Yen After Fed’s Hawkish Hike",
+      "topPositiveTitle": "Fed’s Hawkish Hike to Pressure Asian Currencies, Strategists Say",
       "items": [
         {
-          "title": "Hawkish Warsh Lifts Dollar as Traders Bet on More Rate Increases",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-16T18:28:26+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-16/dollar-jumps-after-fed-raises-rates-sends-hawkish-signal",
+          "title": "BOJ Faces Higher Bar to Support Yen After Fed’s Hawkish Hike",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-09-17T00:01:56+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-17/boj-faces-higher-bar-to-support-yen-after-fed-s-hawkish-hike",
           "tags": [
             "fx",
+            "jp_broad",
             "market",
-            "rates",
             "us_broad"
           ]
         },
         {
-          "title": "Asian Bonds Decline as Fed Hikes, Dollar Jumps: Markets Wrap",
+          "title": "Treasuries Pare Losses From Fed Hike, Dollar Gains: Markets Wrap",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
+          "sentiment": "negative",
+          "sentimentScore": -0.2,
           "publishedAt": "2026-09-16T22:06:59+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-16/stock-market-today-dow-s-p-live-updates",
           "tags": [
+            "commodity",
             "fx",
             "market",
-            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Fed’s Hawkish Hike to Pressure Asian Currencies, Strategists Say",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-16T23:28:53+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-16/fed-hike-puts-spotlight-on-flurry-of-rate-decisions-street-wrap",
+          "tags": [
+            "fx",
+            "jp_broad",
+            "market",
             "us_broad"
           ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": -0.062,
+      "avgSentiment": -0.119,
       "negativeCount": 4,
-      "positiveCount": 3,
+      "positiveCount": 1,
       "neutralCount": 9,
       "sourceCount": 2,
-      "itemCount": 16,
+      "itemCount": 14,
       "isStale": false,
       "topNegativeTitle": "US Homebuilder Sentiment Drops to Match Lowest Level Since 2022",
-      "topPositiveTitle": "Asian Bonds Decline as Fed Hikes, Dollar Jumps: Markets Wrap",
+      "topPositiveTitle": "Why Kevin Warsh Again Skipped the Fed’s Dot Plot",
       "items": [
         {
           "title": "US Homebuilder Sentiment Drops to Match Lowest Level Since 2022",
@@ -280,6 +371,20 @@
           "tags": [
             "market",
             "rates"
+          ]
+        },
+        {
+          "title": "Gold Holds Decline After Fed Tilts Hawkish and Raises Rates",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-16T23:54:12+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-16/gold-holds-decline-after-fed-tilts-hawkish-and-raises-rates",
+          "tags": [
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
           ]
         },
         {
@@ -309,42 +414,32 @@
           ]
         },
         {
-          "title": "Stocks Fall as Fed Hikes and Signals More to Come: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-15T22:11:24+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-15/asian-stocks-to-edge-higher-as-traders-await-fed-markets-wrap",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "IMF Urges RBA to Stay Hawkish, Warns of Inflation Upside Risks",
+          "title": "Trump Denied Rate Cut as Federal Reserve Targets War-Stoked Inflation",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-16T23:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-16/imf-urges-rba-to-stay-hawkish-warns-of-inflation-upside-risks",
+          "publishedAt": "2026-09-17T00:30:02+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-17/trump-denied-rate-cut-as-federal-reserve-targets-war-stoked-inflation",
           "tags": [
+            "geopolitical",
+            "macro_risk",
             "market",
-            "rates"
+            "rates",
+            "us_broad"
           ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": -0.335,
+      "avgSentiment": -0.174,
       "negativeCount": 1,
       "positiveCount": 0,
-      "neutralCount": 1,
+      "neutralCount": 4,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 5,
       "isStale": false,
       "topNegativeTitle": "Oil Extends Drop as Saudi Arabia Moves to Restore Vital Pipeline",
-      "topPositiveTitle": "AI Buildout Hits Inflation as Fed Hikes Rates",
+      "topPositiveTitle": "China’s Gas Demand Outlook Clouded by Guangdong’s Power Shift",
       "items": [
         {
           "title": "Oil Extends Drop as Saudi Arabia Moves to Restore Vital Pipeline",
@@ -353,6 +448,32 @@
           "sentimentScore": -0.67,
           "publishedAt": "2026-09-16T22:05:54+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-16/oil-extends-slump-as-saudi-arabia-moves-to-restore-key-pipeline",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "Treasuries Pare Losses From Fed Hike, Dollar Gains: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.2,
+          "publishedAt": "2026-09-16T22:06:59+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-16/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "fx",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "China’s Gas Demand Outlook Clouded by Guangdong’s Power Shift",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-17T00:52:29+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-17/china-s-gas-demand-outlook-clouded-by-guangdong-s-power-shift",
           "tags": [
             "commodity",
             "market"
@@ -371,20 +492,48 @@
             "rates",
             "us_broad"
           ]
+        },
+        {
+          "title": "Venezuela Aluminum Heads to US; Heeney Eyes Gold Deal",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-16T14:09:49+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-16/venezuela-plans-to-ship-aluminum-to-us-in-mercuria-heeney-deal",
+          "tags": [
+            "commodity",
+            "gold",
+            "market"
+          ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.22,
+      "avgSentiment": 0.25,
       "negativeCount": 0,
       "positiveCount": 2,
-      "neutralCount": 1,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Asia Risks Unrest as El Niño, War Threaten Food Supplies, Consultancy Says",
-      "topPositiveTitle": "New Zealand’s Economic Growth Beat Estimates Last Quarter",
+      "topNegativeTitle": "Trump Denied Rate Cut as Federal Reserve Targets War-Stoked Inflation",
+      "topPositiveTitle": "New Zealand Economy Beats Estimates, Boosting Rate-Hike Bets",
       "items": [
+        {
+          "title": "Trump Denied Rate Cut as Federal Reserve Targets War-Stoked Inflation",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-17T00:30:02+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-17/trump-denied-rate-cut-as-federal-reserve-targets-war-stoked-inflation",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
         {
           "title": "Asia Risks Unrest as El Niño, War Threaten Food Supplies, Consultancy Says",
           "source": "Bloomberg Markets",
@@ -392,19 +541,6 @@
           "sentimentScore": 0.0,
           "publishedAt": "2026-09-16T23:01:00+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-16/asia-risks-unrest-as-el-nino-war-threaten-food-supplies-consultancy-says",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "New Zealand’s Economic Growth Beat Estimates Last Quarter",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-16T22:51:11+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-16/new-zealand-economic-growth-exceeded-estimates-in-second-quarter",
           "tags": [
             "geopolitical",
             "macro_risk",
@@ -420,6 +556,19 @@
           "url": "https://www.bloomberg.com/news/articles/2026-09-16/us-indictment-exposes-russian-global-assassination-network",
           "tags": [
             "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "New Zealand Economy Beats Estimates, Boosting Rate-Hike Bets",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-09-16T22:51:11+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-16/new-zealand-economic-growth-exceeded-estimates-in-second-quarter",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
             "market"
           ]
         }
