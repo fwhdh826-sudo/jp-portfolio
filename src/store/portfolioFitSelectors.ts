@@ -7,6 +7,7 @@ import type {
 import type { CsvImportGenerationRestoreResult } from './persist'
 import { computePortfolioFit } from '../domain/candidates/portfolioFit'
 import { buildPortfolioFitSnapshotInput } from '../services/portfolioFitSnapshotAuthority'
+import { parseCandidateFunnelTimestamp } from '../utils/candidateFunnelTimestamp'
 import { parseStrictTimestamp } from '../utils/strictTimestamp'
 import { selectCandidateFunnelFreshness } from './selectors'
 
@@ -16,18 +17,12 @@ export interface BuildCandidatePortfolioFitInputParams {
   evaluatedAt: string
 }
 
+// FCA-1-P1-03: the private microsecond-aware parser that used to live here is
+// now the shared candidate_funnel timestamp authority
+// (src/utils/candidateFunnelTimestamp.ts), so parser / freshness /
+// presentation / allocation / portfolio-fit all evaluate the same contract.
 function parseCandidateGeneratedTimestamp(value: string) {
-  const strictTimestamp = parseStrictTimestamp(value, { allowDateOnly: false })
-  if (strictTimestamp !== null) return strictTimestamp
-
-  // The Python producer emits strict ISO date-times with microseconds while the
-  // shared parser represents epoch authority at millisecond precision.
-  const extendedFraction = /^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2})\.(\d{4,6})(Z|[+-]\d{2}:\d{2})$/.exec(value)
-  if (extendedFraction === null) return null
-  return parseStrictTimestamp(
-    `${extendedFraction[1]}.${extendedFraction[2].slice(0, 3)}${extendedFraction[3]}`,
-    { allowDateOnly: false },
-  )
+  return parseCandidateFunnelTimestamp(value)
 }
 
 export function selectCandidatePortfolioFitCandidateSource(

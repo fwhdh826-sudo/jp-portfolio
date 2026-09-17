@@ -77,9 +77,125 @@ describe('evaluateCandidateFunnelFreshness', () => {
   })
 
   it('accepts an injected nowMs rather than reading Date.now() internally', () => {
+    // FCA-1-P1-03: the injected clock is the only clock. A nowMs 1s after
+    // generatedAt is fresh; a nowMs 1s *before* generatedAt makes the artifact
+    // future-dated and is no longer 'fresh' (see the P1-03 suite below).
     const result = loadedResult()
-    const past = NOW_MS - 1000
-    expect(evaluateCandidateFunnelFreshness(result, past)).toBe('fresh')
+    expect(evaluateCandidateFunnelFreshness(result, NOW_MS + 1000)).toBe('fresh')
+    expect(evaluateCandidateFunnelFreshness(result, NOW_MS - 1000)).toBe('invalid')
+  })
+})
+
+// ── OPS_P5_B005_FCA_1_P1_REPAIR_R1 / FCA-1-P1-03: strict timestamp authority
+//    + future rejection（freshness 層の責務: nowMs との時間関係） ──────────
+describe('FCA-1-P1-03 evaluateCandidateFunnelFreshness — strict timestamp / future authority', () => {
+  const PRODUCER_GENERATED_AT = '2026-07-26T07:11:40.540540+00:00'
+  const PRODUCER_MS = Date.UTC(2026, 6, 26, 7, 11, 40, 540)
+
+  function producerResult(generatedAt = PRODUCER_GENERATED_AT, mutate?: (a: ReturnType<typeof buildValidCandidateFunnelArtifact>) => void): CandidateFunnelLoadResult {
+    const artifact = buildValidCandidateFunnelArtifact()
+    artifact._meta.generatedAt = generatedAt
+    mutate?.(artifact)
+    return { status: 'loaded', data: artifact as unknown as CandidateFunnelLoadResult['data'] }
+  }
+
+  it('accepts the canonical producer microsecond ISO form and evaluates it at millisecond authority', () => {
+    expect(evaluateCandidateFunnelFreshness(producerResult(), PRODUCER_MS)).toBe('fresh')
+    expect(evaluateCandidateFunnelFreshness(producerResult(), PRODUCER_MS + 1)).toBe('fresh')
+  })
+
+  it('exact current time (generatedAt === nowMs) is deterministic: fresh, not future', () => {
+    expect(evaluateCandidateFunnelFreshness(loadedResult(), NOW_MS)).toBe('fresh')
+  })
+
+  it('future generatedAt relative to nowMs is invalid, never fresh (1ms / 1s / 1 day)', () => {
+    for (const delta of [1, 1000, 24 * 60 * 60 * 1000]) {
+      expect(evaluateCandidateFunnelFreshness(loadedResult(), NOW_MS - delta)).toBe('invalid')
+    }
+  })
+
+  it('future generatedAt is rejected before provenance/sourceStale mapping (no degraded/stale promotion)', () => {
+    const degraded = producerResult(PRODUCER_GENERATED_AT, a => { a._meta.pipelinePath = 'cache_fallback' })
+    expect(evaluateCandidateFunnelFreshness(degraded, PRODUCER_MS - 1)).toBe('invalid')
+    const sourceStale = producerResult(PRODUCER_GENERATED_AT, a => { a.selectionObservability.sourceStale = true })
+    expect(evaluateCandidateFunnelFreshness(sourceStale, PRODUCER_MS - 1)).toBe('invalid')
+  })
+
+  it('calendar-invalid generatedAt (2026-09-31) is invalid even though Date.parse would roll it over', () => {
+    const rollover = '2026-09-31T00:00:00+00:00'
+    expect(Number.isNaN(Date.parse(rollover))).toBe(false)
+    const nowMs = Date.UTC(2026, 9, 1, 12, 0, 0)
+    expect(evaluateCandidateFunnelFreshness(producerResult(rollover), nowMs)).toBe('invalid')
+  })
+
+  it('timezone-less / locale-style / date-only generatedAt is invalid', () => {
+    for (const bad of ['2026-07-26T07:11:40', '2026-07-26', '07/26/2026 07:11:40', '2026-07-26 07:11:40Z', '']) {
+      expect(evaluateCandidateFunnelFreshness(producerResult(bad), Date.UTC(2026, 6, 27))).toBe('invalid')
+    }
+  })
+
+  it('old valid generatedAt is stale (48h inclusive boundary preserved)', () => {
+    const boundary = NOW_MS + CANDIDATE_FUNNEL_DEFAULT_STALE_THRESHOLD_MS
+    expect(evaluateCandidateFunnelFreshness(loadedResult(), boundary)).toBe('fresh')
+    expect(evaluateCandidateFunnelFreshness(loadedResult(), boundary + 1)).toBe('stale')
+  })
+
+  it('non-finite nowMs cannot evaluate a temporal relation: invalid, not fresh', () => {
+    expect(evaluateCandidateFunnelFreshness(loadedResult(), Number.NaN)).toBe('invalid')
+    expect(evaluateCandidateFunnelFreshness(loadedResult(), Number.POSITIVE_INFINITY)).toBe('invalid')
+  })
+
+  it('+09:00 and Z spellings of the same instant produce identical results regardless of host TZ', () => {
+    const jst = producerResult('2026-07-26T16:11:40.540540+09:00')
+    const utc = producerResult('2026-07-26T07:11:40.540540Z')
+    for (const nowMs of [PRODUCER_MS - 1, PRODUCER_MS, PRODUCER_MS + 1, PRODUCER_MS + CANDIDATE_FUNNEL_DEFAULT_STALE_THRESHOLD_MS + 1]) {
+      expect(evaluateCandidateFunnelFreshness(jst, nowMs)).toBe(evaluateCandidateFunnelFreshness(utc, nowMs))
+    }
+    expect(evaluateCandidateFunnelFreshness(jst, PRODUCER_MS - 1)).toBe('invalid')
+    expect(evaluateCandidateFunnelFreshness(jst, PRODUCER_MS)).toBe('fresh')
+  })
+})
+
+describe('FCA-1-P1-03 evaluateCandidateFunnelPresentationState — future / strict timestamp gating', () => {
+  function input(generatedAt: string) {
+    const artifact = buildValidCandidateFunnelArtifact()
+    artifact._meta.generatedAt = generatedAt
+    return { status: 'loaded' as const, artifact: artifact as unknown as CandidateFunnelArtifact, generatedAtTimestamp: generatedAt }
+  }
+
+  it('future generatedAt with a finite clock is invalid (not displayed as fresh)', () => {
+    const generatedAt = new Date(NOW_MS).toISOString()
+    expect(evaluateCandidateFunnelPresentationState(input(generatedAt), NOW_MS - 1)).toMatchObject({
+      availability: 'invalid',
+      canDisplayCandidates: false,
+      age: 'unknown',
+    })
+    expect(evaluateCandidateFunnelPresentationState(input(generatedAt), NOW_MS)).toMatchObject({
+      availability: 'available',
+      age: 'fresh',
+    })
+  })
+
+  it('calendar-invalid generatedAt is invalid even when coherent with the store timestamp', () => {
+    expect(evaluateCandidateFunnelPresentationState(input('2026-02-30T00:00:00+00:00'), NOW_MS)).toMatchObject({
+      availability: 'invalid',
+      canDisplayCandidates: false,
+    })
+    expect(isCandidateFunnelRawAvailable(input('2026-02-30T00:00:00+00:00'))).toBe(false)
+  })
+
+  it('clock-less availability (NaN nowMs) still does not evaluate a temporal relation', () => {
+    expect(isCandidateFunnelRawAvailable(input('2026-07-26T07:11:40.540540+00:00'))).toBe(true)
+  })
+
+  it('generatedAtTimestamp / artifact._meta.generatedAt coherence remains strict', () => {
+    const artifact = buildValidCandidateFunnelArtifact()
+    artifact._meta.generatedAt = '2026-07-26T07:11:40.540540+00:00'
+    const state = evaluateCandidateFunnelPresentationState(
+      { status: 'loaded', artifact: artifact as unknown as CandidateFunnelArtifact, generatedAtTimestamp: '2026-07-26T07:11:40.540Z' },
+      NOW_MS,
+    )
+    expect(state.availability).toBe('invalid')
   })
 })
 

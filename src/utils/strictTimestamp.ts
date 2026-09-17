@@ -1,6 +1,13 @@
 export interface StrictTimestampOptions {
   /** Date-only values represent a JST portfolio snapshot at 00:00:00. */
   allowDateOnly?: boolean
+  /**
+   * Accept a fractional-second part of up to 6 digits (Python `isoformat()`
+   * microseconds). Epoch authority stays at millisecond precision: digits
+   * beyond the third are truncated, never rounded, so the result can never
+   * move forward in time relative to the producer's value.
+   */
+  allowMicrosecondFraction?: boolean
 }
 
 export interface StrictTimestamp {
@@ -11,6 +18,7 @@ export interface StrictTimestamp {
 
 const DATE_ONLY_RE = /^(\d{4})-(\d{2})-(\d{2})$/
 const DATE_TIME_RE = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(?:\.(\d{1,3}))?(Z|[+-]\d{2}:\d{2})$/
+const DATE_TIME_MICRO_RE = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(?:\.(\d{1,6}))?(Z|[+-]\d{2}:\d{2})$/
 const JST_OFFSET_MINUTES = 9 * 60
 
 function isLeapYear(year: number): boolean {
@@ -61,7 +69,7 @@ export function parseStrictTimestamp(
     return { epochMs, normalized: new Date(epochMs).toISOString(), kind: 'date-only' }
   }
 
-  const dateTime = DATE_TIME_RE.exec(value)
+  const dateTime = (options.allowMicrosecondFraction ? DATE_TIME_MICRO_RE : DATE_TIME_RE).exec(value)
   if (!dateTime) return null
   const year = Number(dateTime[1])
   const month = Number(dateTime[2])
@@ -69,7 +77,7 @@ export function parseStrictTimestamp(
   const hour = Number(dateTime[4])
   const minute = Number(dateTime[5])
   const second = Number(dateTime[6])
-  const millisecond = Number((dateTime[7] ?? '').padEnd(3, '0'))
+  const millisecond = Number((dateTime[7] ?? '').slice(0, 3).padEnd(3, '0'))
   if (!validCalendarDate(year, month, day) || hour > 23 || minute > 59 || second > 59) return null
 
   const zone = dateTime[8]

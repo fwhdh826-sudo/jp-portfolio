@@ -33,3 +33,29 @@ describe('T9-A004-R1 strict timestamp parser', () => {
       .toBe('2024-02-28T15:00:00.000Z')
   })
 })
+
+describe('FCA-1-P1-03 allowMicrosecondFraction (Python isoformat compatibility)', () => {
+  it('is off by default: 4-6 fraction digits remain rejected for existing callers', () => {
+    expect(parseStrictTimestamp('2026-07-26T07:11:40.540540+00:00')).toBeNull()
+    expect(parseStrictTimestamp('2026-07-26T07:11:40.5405+00:00')).toBeNull()
+  })
+
+  it.each([
+    ['2026-07-26T07:11:40.540540+00:00', '2026-07-26T07:11:40.540Z'],
+    ['2026-07-26T07:11:40.540999+00:00', '2026-07-26T07:11:40.540Z'],
+    ['2026-07-26T07:11:40.5+00:00', '2026-07-26T07:11:40.500Z'],
+    ['2026-07-26T07:11:40+00:00', '2026-07-26T07:11:40.000Z'],
+    ['2026-07-26T16:11:40.540540+09:00', '2026-07-26T07:11:40.540Z'],
+  ])('truncates (never rounds) %s to millisecond authority %s', (input, expected) => {
+    expect(normalizeStrictTimestamp(input, { allowMicrosecondFraction: true })).toBe(expected)
+  })
+
+  it.each([
+    '2026-07-26T07:11:40.5405401+00:00',
+    '2026-09-31T00:00:00.000000+00:00',
+    '2026-07-26T07:11:40.540540',
+    '2026-07-26',
+  ])('still rejects %s under the microsecond option', (input) => {
+    expect(parseStrictTimestamp(input, { allowMicrosecondFraction: true })).toBeNull()
+  })
+})

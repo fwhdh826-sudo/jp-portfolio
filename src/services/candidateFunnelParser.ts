@@ -38,6 +38,12 @@ import {
   CANDIDATE_FUNNEL_QUALITY_GATE_STATUSES,
 } from '../types/candidateFunnelArtifact'
 import type { CandidateFunnelArtifact, JsonValue } from '../types/candidateFunnelArtifact'
+import { isCandidateFunnelTimestamp } from '../utils/candidateFunnelTimestamp'
+import {
+  candidateTierAgreesWithMarketRank,
+  isCanonicalRankOrNull,
+  qualityGateAggregatesAgreeWithGates,
+} from './candidateFunnelInvariants'
 
 // ── 禁止key: payload全階層（top-level / candidate内部 / meta内部を含む
 //    すべてのobject）に一切出現してはならない。portfolio/decision関連の
@@ -136,8 +142,12 @@ function isStringArray(value: unknown): value is string[] {
   return Array.isArray(value) && value.every((item) => typeof item === 'string')
 }
 
+// ── FCA-1-P1-03: Date.parse() は暦上あり得ない値（2026-09-31 等）を rollover
+//    で受理してしまうため使わない。producer 互換の strict authority
+//    （src/utils/candidateFunnelTimestamp.ts）で構文と暦の妥当性を検証する。
+//    nowMs との時間関係（future / stale）は freshness 層の責務。 ─────────
 function isValidTimestamp(value: unknown): value is string {
-  return typeof value === 'string' && value.length > 0 && !Number.isNaN(Date.parse(value))
+  return isCandidateFunnelTimestamp(value)
 }
 
 function isEnumValue<T extends readonly string[]>(value: unknown, allowed: T): value is T[number] {
@@ -229,14 +239,20 @@ function validateCandidate(value: unknown): value is CandidateFunnelCandidate {
     isNonEmptyString(value.name) &&
     isNonEmptyString(value.sector) &&
     isFiniteOrNull(value.prescreenScore) &&
-    (value.prescreenRank === null || isNonNegativeInteger(value.prescreenRank)) &&
+    // FCA-1-P1-02: canonical 1-based rank。0 / 負 / 小数は producer が emit
+    // し得ない malformed 値なので reject する（null へ正規化しない）。
+    isCanonicalRankOrNull(value.prescreenRank) &&
     (value.prescreenPool === null || isEnumValue(value.prescreenPool, CANDIDATE_FUNNEL_PRESCREEN_POOLS)) &&
     validateScoreBreakdown(value.scoreBreakdown) &&
     isFiniteOrNull(value.rawCompositeScore) &&
     isFiniteOrNull(value.dataConfidence) &&
     isFiniteOrNull(value.marketScore) &&
-    (value.marketRank === null || isNonNegativeInteger(value.marketRank)) &&
+    isCanonicalRankOrNull(value.marketRank) &&
     isEnumValue(value.tier, CANDIDATE_FUNNEL_PUBLISHED_TIERS) &&
+    // FCA-1-P1-02 (R2): tier / marketRank nullability parity。producer は
+    // excluded ⇔ marketRank=null のみ emit する。非 excluded の null rank は
+    // malformed evidence（正当な null-rank candidate へ変換しない）。
+    candidateTierAgreesWithMarketRank({ tier: value.tier, marketRank: value.marketRank }) &&
     Array.isArray(value.selectedReasons) &&
     value.selectedReasons.every((r) => isEnumValue(r, CANDIDATE_FUNNEL_SELECTED_REASON_CODES)) &&
     Array.isArray(value.riskReasons) &&
@@ -442,6 +458,13 @@ function doParse(input: unknown): CandidateFunnelParseResult {
   if (!validateJoin(meta.join)) return fail('invalid_provenance')
 
   if (!validateQualityGateStructure(meta.qualityGate)) return fail('quality_gate_incomplete')
+  // ── FCA-1-P1-01: aggregate（overallPass / hardFailIds）が gate-level status
+  //    と producer 契約どおり一致していることを先に要求する。gate に FAIL が
+  //    あるのに aggregate が green な artifact、あるいは hardFailIds が実際の
+  //    FAIL gate 集合と食い違う artifact は、構造は完全でも quality gate を
+  //    通過した証拠にならない → quality_gate_failed（fail-closed）。
+  //    WARN の扱い（許可 gate のみ非 blocking）はここで一切変えない。 ────
+  if (!qualityGateAggregatesAgreeWithGates(meta.qualityGate)) return fail('quality_gate_failed')
   if (meta.qualityGate.overallPass !== true) return fail('quality_gate_failed')
   if (meta.qualityGate.hardFailIds.length !== 0) return fail('quality_gate_failed')
 
