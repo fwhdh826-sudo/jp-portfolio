@@ -1,22 +1,35 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-09-18T08:41:23.238161+09:00",
-  "sourceUpdatedAt": "2026-09-17T23:02:19+00:00",
+  "updatedAt": "2026-09-18T10:22:04.813853+09:00",
+  "sourceUpdatedAt": "2026-09-18T00:57:42+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": 0.003,
-      "negativeCount": 2,
-      "positiveCount": 1,
-      "neutralCount": 0,
+      "avgSentiment": -0.247,
+      "negativeCount": 3,
+      "positiveCount": 0,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Strategists See Yen Weakening as BOJ Risks Disappointing Markets",
-      "topPositiveTitle": "Asian Stocks to Gain on Lower Oil, US Bonds Rally: Markets Wrap",
+      "topNegativeTitle": "Japan’s Inflation Slows Before Expected BOJ Interest Rate Hike",
+      "topPositiveTitle": "Asian Stocks, Bonds Gain as Oil Extends Decline: Markets Wrap",
       "items": [
         {
-          "title": "Strategists See Yen Weakening as BOJ Risks Disappointing Markets",
+          "title": "Japan’s Inflation Slows Before Expected BOJ Interest Rate Hike",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-17T23:36:40+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-17/japan-inflation-slows-a-tad-ahead-of-expected-boj-rate-hike",
+          "tags": [
+            "jp_broad",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Wells Fargo, Citi Strategists See Weak Yen on BOJ Letdown",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.33,
@@ -43,45 +56,74 @@
           ]
         },
         {
-          "title": "Asian Stocks to Gain on Lower Oil, US Bonds Rally: Markets Wrap",
+          "title": "Asian Stocks, Bonds Gain as Oil Extends Decline: Markets Wrap",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
           "publishedAt": "2026-09-17T22:14:33+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-17/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
             "fx",
             "jp_broad",
-            "market",
-            "us_broad"
+            "market"
           ]
         }
       ]
     },
     "jp_semiconductor": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Citi’s Korea Trading Head Says Buy Won Near 1,400 Per Dollar",
+      "topPositiveTitle": "Citi’s Korea Trading Head Says Buy Won Near 1,400 Per Dollar",
+      "items": [
+        {
+          "title": "Citi’s Korea Trading Head Says Buy Won Near 1,400 Per Dollar",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-18T00:13:25+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-18/citi-s-korea-trading-head-says-buy-won-near-1-400-per-dollar",
+          "tags": [
+            "fx",
+            "jp_semiconductor",
+            "market"
+          ]
+        }
+      ]
     },
     "us_broad": {
-      "avgSentiment": -0.073,
-      "negativeCount": 3,
-      "positiveCount": 1,
-      "neutralCount": 5,
+      "avgSentiment": -0.189,
+      "negativeCount": 4,
+      "positiveCount": 0,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 9,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "BNY Chief Economist on Fed Rate Hike, BOJ Outlook",
-      "topPositiveTitle": "Asian Stocks to Gain on Lower Oil, US Bonds Rally: Markets Wrap",
+      "topNegativeTitle": "Gold Holds Gain as Lower Oil and Fed Hike Temper Inflation Fears",
+      "topPositiveTitle": "KKR Ups Its US Treasury Yield Call, Sees Fed Keeping Rates High",
       "items": [
+        {
+          "title": "Gold Holds Gain as Lower Oil and Fed Hike Temper Inflation Fears",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-18T00:15:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-18/gold-holds-gain-as-lower-oil-and-fed-hike-temper-inflation-fears",
+          "tags": [
+            "commodity",
+            "gold",
+            "macro_risk",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
         {
           "title": "BNY Chief Economist on Fed Rate Hike, BOJ Outlook",
           "source": "Bloomberg Markets",
@@ -125,29 +167,13 @@
           ]
         },
         {
-          "title": "Stocks, Bonds Rise After Fed-Day Drop as Oil Falls: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.2,
-          "publishedAt": "2026-09-16T22:06:59+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-16/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Gold Surges Along With US Treasuries as Oil Price Slide Deepens",
-          "source": "Bloomberg Markets",
+          "title": "KKR Ups Its US Treasury Yield Call, Sees Fed Keeping Rates High",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
-          "sentimentScore": -0.14,
-          "publishedAt": "2026-09-16T23:54:12+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-16/gold-holds-decline-after-fed-tilts-hawkish-and-raises-rates",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-17T18:34:19+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-17/kkr-ups-its-us-treasury-yield-call-sees-fed-keeping-rates-high",
           "tags": [
-            "commodity",
-            "gold",
             "market",
             "rates",
             "us_broad"
@@ -156,15 +182,15 @@
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.335,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
-      "positiveCount": 1,
+      "positiveCount": 0,
       "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 1,
       "isStale": false,
       "topNegativeTitle": "Jeni’s Splendid Ice Creams Founder on New Fiber Company",
-      "topPositiveTitle": "Generac Surges 18% on $8 Billion Amazon Data Center Deal | Closing Bell",
+      "topPositiveTitle": "Jeni’s Splendid Ice Creams Founder on New Fiber Company",
       "items": [
         {
           "title": "Jeni’s Splendid Ice Creams Founder on New Fiber Company",
@@ -177,31 +203,19 @@
             "market",
             "us_growth"
           ]
-        },
-        {
-          "title": "Generac Surges 18% on $8 Billion Amazon Data Center Deal | Closing Bell",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-09-17T20:25:16+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-17/generac-surges-18-on-amazon-deal-closing-bell-video",
-          "tags": [
-            "market",
-            "us_growth"
-          ]
         }
       ]
     },
     "global_broad": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0.165,
       "negativeCount": 0,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 1,
+      "itemCount": 2,
       "isStale": false,
       "topNegativeTitle": "01.AI's Kai-Fu Lee on Pacing Frontier AI Development",
-      "topPositiveTitle": "01.AI's Kai-Fu Lee on Pacing Frontier AI Development",
+      "topPositiveTitle": "Vietnam Stocks See Early Foreign Inflows as FTSE Upgrade Nears",
       "items": [
         {
           "title": "01.AI's Kai-Fu Lee on Pacing Frontier AI Development",
@@ -214,20 +228,48 @@
             "global_broad",
             "market"
           ]
+        },
+        {
+          "title": "Vietnam Stocks See Early Foreign Inflows as FTSE Upgrade Nears",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-18T00:28:51+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-18/vietnam-stocks-see-early-foreign-inflows-as-ftse-upgrade-nears",
+          "tags": [
+            "global_broad",
+            "market"
+          ]
         }
       ]
     },
     "gold": {
-      "avgSentiment": -0.235,
-      "negativeCount": 1,
+      "avgSentiment": -0.33,
+      "negativeCount": 2,
       "positiveCount": 0,
-      "neutralCount": 1,
+      "neutralCount": 0,
       "sourceCount": 1,
       "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "DoubleLine’s Gundlach Warns of Fiscal Crisis in Next Recession",
-      "topPositiveTitle": "Gold Surges Along With US Treasuries as Oil Price Slide Deepens",
+      "topNegativeTitle": "Gold Holds Gain as Lower Oil and Fed Hike Temper Inflation Fears",
+      "topPositiveTitle": "Gold Holds Gain as Lower Oil and Fed Hike Temper Inflation Fears",
       "items": [
+        {
+          "title": "Gold Holds Gain as Lower Oil and Fed Hike Temper Inflation Fears",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-18T00:15:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-18/gold-holds-gain-as-lower-oil-and-fed-hike-temper-inflation-fears",
+          "tags": [
+            "commodity",
+            "gold",
+            "macro_risk",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
         {
           "title": "DoubleLine’s Gundlach Warns of Fiscal Crisis in Next Recession",
           "source": "Bloomberg Markets",
@@ -238,21 +280,6 @@
           "tags": [
             "gold",
             "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Gold Surges Along With US Treasuries as Oil Price Slide Deepens",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": -0.14,
-          "publishedAt": "2026-09-16T23:54:12+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-16/gold-holds-decline-after-fed-tilts-hawkish-and-raises-rates",
-          "tags": [
-            "commodity",
-            "gold",
             "market",
             "rates",
             "us_broad"
@@ -298,12 +325,12 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.066,
-      "negativeCount": 2,
+      "avgSentiment": -0.11,
+      "negativeCount": 3,
       "positiveCount": 1,
       "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 6,
       "isStale": false,
       "topNegativeTitle": "Latest Oil Market News and Analysis for Sept. 18",
       "topPositiveTitle": "UK Productivity Closer to Pre-2008 Trend Than Thought, ONS Says",
@@ -320,6 +347,22 @@
             "geopolitical",
             "macro_risk",
             "market"
+          ]
+        },
+        {
+          "title": "Gold Holds Gain as Lower Oil and Fed Hike Temper Inflation Fears",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-18T00:15:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-18/gold-holds-gain-as-lower-oil-and-fed-hike-temper-inflation-fears",
+          "tags": [
+            "commodity",
+            "gold",
+            "macro_risk",
+            "market",
+            "rates",
+            "us_broad"
           ]
         },
         {
@@ -365,40 +408,55 @@
             "market",
             "us_broad"
           ]
-        },
-        {
-          "title": "UK Productivity Closer to Pre-2008 Trend Than Thought, ONS Says",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-09-17T10:24:28+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-17/uk-productivity-closer-to-pre-2008-trend-than-thought-ons-says",
-          "tags": [
-            "macro_risk",
-            "market"
-          ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": 0.168,
+      "avgSentiment": 0.0,
       "negativeCount": 1,
-      "positiveCount": 2,
-      "neutralCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Strategists See Yen Weakening as BOJ Risks Disappointing Markets",
-      "topPositiveTitle": "Asian Stocks to Gain on Lower Oil, US Bonds Rally: Markets Wrap",
+      "topNegativeTitle": "Wells Fargo, Citi Strategists See Weak Yen on BOJ Letdown",
+      "topPositiveTitle": "ARS/USD: Milei’s Strong Peso Holds Back Argentina’s Economic Growth",
       "items": [
         {
-          "title": "Strategists See Yen Weakening as BOJ Risks Disappointing Markets",
+          "title": "Wells Fargo, Citi Strategists See Weak Yen on BOJ Letdown",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.33,
           "publishedAt": "2026-09-17T23:02:19+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-17/strategists-see-yen-weakening-as-boj-risks-disappointing-markets",
           "tags": [
+            "fx",
+            "jp_broad",
+            "market"
+          ]
+        },
+        {
+          "title": "Citi’s Korea Trading Head Says Buy Won Near 1,400 Per Dollar",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-18T00:13:25+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-18/citi-s-korea-trading-head-says-buy-won-near-1-400-per-dollar",
+          "tags": [
+            "fx",
+            "jp_semiconductor",
+            "market"
+          ]
+        },
+        {
+          "title": "Asian Stocks, Bonds Gain as Oil Extends Decline: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-17T22:14:33+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-17/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
             "fx",
             "jp_broad",
             "market"
@@ -427,35 +485,49 @@
             "fx",
             "market"
           ]
-        },
-        {
-          "title": "Asian Stocks to Gain on Lower Oil, US Bonds Rally: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-09-17T22:14:33+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-17/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "fx",
-            "jp_broad",
-            "market",
-            "us_broad"
-          ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": -0.055,
-      "negativeCount": 4,
+      "avgSentiment": -0.07,
+      "negativeCount": 6,
       "positiveCount": 1,
       "neutralCount": 7,
       "sourceCount": 2,
-      "itemCount": 12,
+      "itemCount": 14,
       "isStale": false,
-      "topNegativeTitle": "BNY Chief Economist on Fed Rate Hike, BOJ Outlook",
+      "topNegativeTitle": "Gold Holds Gain as Lower Oil and Fed Hike Temper Inflation Fears",
       "topPositiveTitle": "UK Bonds Flip to Gains as BOE Scraps Long-Dated QT Sales",
       "items": [
+        {
+          "title": "Gold Holds Gain as Lower Oil and Fed Hike Temper Inflation Fears",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-18T00:15:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-18/gold-holds-gain-as-lower-oil-and-fed-hike-temper-inflation-fears",
+          "tags": [
+            "commodity",
+            "gold",
+            "macro_risk",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Japan’s Inflation Slows Before Expected BOJ Interest Rate Hike",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-17T23:36:40+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-17/japan-inflation-slows-a-tad-ahead-of-expected-boj-rate-hike",
+          "tags": [
+            "jp_broad",
+            "market",
+            "rates"
+          ]
+        },
         {
           "title": "BNY Chief Economist on Fed Rate Hike, BOJ Outlook",
           "source": "Bloomberg Markets",
@@ -497,58 +569,20 @@
             "rates",
             "us_broad"
           ]
-        },
-        {
-          "title": "Czechs Keep Door Open for Rate Hike as Inflation Risks Persist",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-17T12:30:40+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-17/czechs-hold-rates-with-markets-looking-for-more-hikes-to-come",
-          "tags": [
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Stocks, Bonds Rise After Fed-Day Drop as Oil Falls: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.2,
-          "publishedAt": "2026-09-16T22:06:59+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-16/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "market",
-            "rates",
-            "us_broad"
-          ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": -0.251,
+      "avgSentiment": -0.239,
       "negativeCount": 3,
-      "positiveCount": 1,
+      "positiveCount": 0,
       "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 8,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "Oil Drops as Traders See Supply Outages Proving Short-Lived",
-      "topPositiveTitle": "Asian Stocks to Gain on Lower Oil, US Bonds Rally: Markets Wrap",
+      "topNegativeTitle": "Latest Oil Market News and Analysis for Sept. 18",
+      "topPositiveTitle": "China's Gree Eyes Europe Winters for Growth",
       "items": [
-        {
-          "title": "Oil Drops as Traders See Supply Outages Proving Short-Lived",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-09-16T22:05:54+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-16/oil-extends-slump-as-saudi-arabia-moves-to-restore-key-pipeline",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
         {
           "title": "Latest Oil Market News and Analysis for Sept. 18",
           "source": "Bloomberg Markets",
@@ -576,32 +610,45 @@
           ]
         },
         {
-          "title": "Stocks, Bonds Rise After Fed-Day Drop as Oil Falls: Markets Wrap",
+          "title": "Gold Holds Gain as Lower Oil and Fed Hike Temper Inflation Fears",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.2,
-          "publishedAt": "2026-09-16T22:06:59+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-16/stock-market-today-dow-s-p-live-updates",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-18T00:15:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-18/gold-holds-gain-as-lower-oil-and-fed-hike-temper-inflation-fears",
           "tags": [
             "commodity",
+            "gold",
+            "macro_risk",
             "market",
             "rates",
             "us_broad"
           ]
         },
         {
-          "title": "Gold Surges Along With US Treasuries as Oil Price Slide Deepens",
+          "title": "China's Gree Eyes Europe Winters for Growth",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
-          "sentimentScore": -0.14,
-          "publishedAt": "2026-09-16T23:54:12+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-16/gold-holds-decline-after-fed-tilts-hawkish-and-raises-rates",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-18T00:11:24+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-18/china-s-gree-eyes-europe-winters-for-growth-video",
           "tags": [
             "commodity",
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
+            "market"
+          ]
+        },
+        {
+          "title": "Asian Stocks, Bonds Gain as Oil Extends Decline: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-17T22:14:33+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-17/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "fx",
+            "jp_broad",
+            "market"
           ]
         }
       ]
@@ -671,7 +718,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 5,
+    "excludedCount": 6,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
