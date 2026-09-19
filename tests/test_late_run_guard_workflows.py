@@ -7,7 +7,7 @@ import pytest
 
 
 ROOT = Path(__file__).parents[1]
-BASE = "a3b9e7e7c7945c18e846d3a2d09514431149dd66"
+BASE = "597c17ed448f1228e126c8699bd251eade07136b"
 WORKFLOWS = {
     "full": ROOT / ".github/workflows/full_batch.yml",
     "update": ROOT / ".github/workflows/update-data.yml",

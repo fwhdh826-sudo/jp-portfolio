@@ -29,9 +29,9 @@ EXPECTED_COMMIT_AND_PAGES_BLOCK_SHA256 = {
 EXPECTED_P14_BLOCK_SHA256 = {
     "Snapshot previous candidate_funnel artifact for evidence": "81ea1328407b6bc4e70799cac7fd4645222854d6ba302e129c9f12a289bc6b4d",
     "Build candidate_funnel.json (prescreen join + P-01..P-15 quality gate)": "ca1656a0ebe58b08dda1082ccefd78ee4544194e49b9923abb6842a63e427097",
-    "Privacy/schema smoke test candidate_funnel.json": "c8d15a5d87022fd71bf194d5df4d614fd93ba04d9358a25a20f0f3e54e853f0c",
+    "Privacy/schema smoke test candidate_funnel.json": "5282b593ad20da65628f8bc7ebe2c322359bfea3018d9408c0525db0c5828cff",
     "Capture candidate funnel run evidence": "f59f29f3e1a068d68cf2b61f31d9a405f3de560c660a3d87122368a92dd632cc",
-    "Upload candidate funnel run evidence": "456e0bb0437fdc7343901dc7a8a32a4b04a0595d35f6380676e09f0e7fcdce0d",
+    "Upload candidate funnel run evidence": "493ea65c308a2049676a569696b0c8adaaf6c75d50674496a3ca84e3a2e7957f",
     "Enforce candidate funnel publication status": "5e310c23d955e9583f43a19062c5f144a23975b9cc5cc8ce7ef1c872cdc7336b",
 }
 EXPECTED_MARKET_STRICT_GATE_SHA256 = (
@@ -43,7 +43,7 @@ EXPECTED_MARKET_STRICT_GATE_SHA256 = (
 # (until a ticket explicitly scoped to one of them says otherwise).
 EXPECTED_NON_TARGET_WORKFLOW_SHA256 = {
     ".github/workflows/deploy.yml": "9518fb8ab5f5c3a665f21e162cb260f2f00f4ce138281a210243fa38c165fb51",
-    ".github/workflows/p14_evidence_capture.yml": "3510a58c47b257149c12e239d4cdfa0eada57de50c545cea3d6026eea44e5f56",
+    ".github/workflows/p14_evidence_capture.yml": "0d1df3dada3eeac3b33b8c269af08510487d537650131a7fb0598e21fc2f37a7",
 }
 
 # backend/engine/operation/late_run_guard.py is the CURRENT frozen
@@ -163,7 +163,7 @@ def test_full_checkpoint_positions_and_r11_nine_blocking_steps_are_preserved():
     assert names[p2 - 1] == "Smoke test regime_state schema"
     assert names[p2 + 1] == "Snapshot previous candidate_funnel artifact for evidence"
     between = steps[p2 + 1 : commit]
-    assert len(between) == 9
+    assert len(between) == 11
     assert source("full").index("--checkpoint pre_publish") < source("full").index(
         "# ── OPS-P14-2: same-run evidence input保全"
     )
