@@ -272,6 +272,33 @@ export const font = {
 } as const
 
 // ---------------------------------------------------------------------------
+// UI-9I R4.1「静かな未来を描く、あなたの投資OS」— Design Freeze 済みトークン
+// 淡いブルー/オフホワイト、白い角丸サーフェス、柔らかい影、グリーン/ブルーのアクセント。
+// 既存 colors/v13Colors とは独立（legacy 画面の見た目は変えない）。
+// CSS 変数は --u9-* として generateCssVars() から注入する。
+// ---------------------------------------------------------------------------
+export const ui9iTokens = {
+  ink:        '#17222E',
+  ink2:       '#46566A',
+  ink3:       '#4E5D6C',
+  ink4:       '#5E6C7C',
+  accent:     '#2F6FBF',
+  accentInk:  '#1B5591',
+  green:      '#2F6E4B',
+  greenDot:   '#3E8E63',
+  amber:      '#8A5A14',
+  amberDot:   '#C9862A',
+  danger:     '#9A4940',
+  line:       'rgba(23, 34, 46, .07)',
+  lineSoft:   'rgba(23, 34, 46, .06)',
+  surface:    '#fff',
+  shadow:     '0 1px 2px rgba(23, 40, 64, .05)',
+  shadowHero: '0 1px 2px rgba(23, 40, 64, .05), 0 8px 22px rgba(23, 40, 64, .07)',
+  mono:       "'Space Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace",
+  sans:       "'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Yu Gothic', YuGothic, Meiryo, system-ui, sans-serif",
+} as const
+
+// ---------------------------------------------------------------------------
 // CSS Variable Map — :root へ注入
 // ---------------------------------------------------------------------------
 
@@ -426,6 +453,25 @@ export function generateCssVars(): Record<string, string> {
     '--color-surface':        colors.bgSurface,
     '--color-text':           colors.textPrimary,
     '--color-text-secondary': colors.textSecond,
+    // ── UI-9I R4.1 tokens（--u9-*）───────────────────────────────
+    '--u9-ink':        ui9iTokens.ink,
+    '--u9-ink-2':      ui9iTokens.ink2,
+    '--u9-ink-3':      ui9iTokens.ink3,
+    '--u9-ink-4':      ui9iTokens.ink4,
+    '--u9-accent':     ui9iTokens.accent,
+    '--u9-accent-ink': ui9iTokens.accentInk,
+    '--u9-green':      ui9iTokens.green,
+    '--u9-green-dot':  ui9iTokens.greenDot,
+    '--u9-amber':      ui9iTokens.amber,
+    '--u9-amber-dot':  ui9iTokens.amberDot,
+    '--u9-danger':     ui9iTokens.danger,
+    '--u9-line':       ui9iTokens.line,
+    '--u9-line-soft':  ui9iTokens.lineSoft,
+    '--u9-surface':    ui9iTokens.surface,
+    '--u9-shadow':     ui9iTokens.shadow,
+    '--u9-shadow-hero':ui9iTokens.shadowHero,
+    '--u9-mono':       ui9iTokens.mono,
+    '--u9-sans':       ui9iTokens.sans,
   }
 }
 

@@ -8,8 +8,6 @@ import { useAppStore } from './store/useAppStore'
 import { colors, v13Colors } from './theme/tokens'
 import { startCashAuthorityExpiryGuard } from './store/cashAuthorityLifecycle'
 import { StatusBar } from './components/StatusBar'
-import { TabNav } from './components/TabNav'
-import { BottomDockNav } from './components/BottomDockNav'
 import { TAB_META } from './constants/tabs'
 import { AppErrorBoundary } from './components/shared/AppErrorBoundary'
 import { T0_Home }       from './components/tabs/T0_Home'
@@ -28,7 +26,14 @@ import {
   type PortfolioLoadFeedback,
 } from './components/portfolioLoadUi'
 import type { PortfolioLoadResult } from './store/portfolioOperationResult'
+import { useUiSurface } from './store/uiSurface'
+import type { UiSurface } from './presentation/ui9i/navigation'
+import { TodayHome } from './components/ui9i/TodayHome'
+import { DecisionAudit } from './components/ui9i/DecisionAudit.container'
+import { FundsHub, OtherHub, PortfolioSurface } from './components/ui9i/SurfaceRouter'
+import { UserDockNav, UserSidebarNav } from './components/ui9i/UserNav'
 import './styles/v10.css'
+import './styles/ui9i.css'
 
 // ── UI-9-6: Header右側 — 日付 + システムステータスドット ────────
 function HeaderRight() {
@@ -211,10 +216,31 @@ export function resetScrollOwnerToTop(target: { scrollTo: (options: ScrollToOpti
   target.scrollTo({ top: 0, left: 0, behavior: 'instant' })
 }
 
+// UI-9I Phase 1: R4.1 の UI 面（葉画面ではない面）。activeTab（葉画面の権限）は温存し、
+// その上に重ねる。既存 T0–T9 はすべて到達可能（ハブ / PF 面 / 従来のホーム経由）。
+export function isUi9iSurface(activeTab: string, surface: UiSurface | null): boolean {
+  if (surface !== null) return surface !== 'legacy_home'
+  return activeTab === 'T0'
+}
+
 function ActiveTabPanel() {
   const activeTab = useAppStore(s => s.activeTab)
+  const surface = useUiSurface(s => s.surface)
 
-  if (activeTab === 'T0') return <T0_Home />
+  // UI 面ごとに独立した境界を置く（key=surface で面の切替が復旧導線になる）。
+  if (surface !== null) {
+    return (
+      <AppErrorBoundary key={surface}>
+        {surface === 'audit' ? <DecisionAudit />
+          : surface === 'funds_hub' ? <FundsHub />
+          : surface === 'pf' ? <PortfolioSurface />
+          : surface === 'other_hub' ? <OtherHub />
+          : <T0_Home />}
+      </AppErrorBoundary>
+    )
+  }
+
+  if (activeTab === 'T0') return <TodayHome />
   // T1: 個別株（V10 Phase 6 再構築済み）
   if (activeTab === 'T1') return <T1_Decision />
   // T2: 国内株投信（Phase 2 V10 新実装）
@@ -234,6 +260,8 @@ function ActiveTabPanel() {
 export function App() {
   const initialize = useAppStore(s => s.initialize)
   const activeTab  = useAppStore(s => s.activeTab)
+  const surface    = useUiSurface(s => s.surface)
+  const clearSurface = useUiSurface(s => s.clearSurface)
   const [initializeFeedback, setInitializeFeedback] = useState<PortfolioLoadFeedback | null>(null)
 
   useEffect(() => {
@@ -251,26 +279,44 @@ export function App() {
   // ネットワークは使わず、権限の値や updatedAt も一切書き換えない。
   useEffect(() => startCashAuthorityExpiryGuard(useAppStore), [])
 
+  // 葉画面（activeTab）が外部から切り替わったら UI 面（ハブ / 判断の詳細 等）を解除する。
+  useEffect(() => {
+    clearSurface()
+  }, [activeTab, clearSurface])
+
   // タブ切替時にコンテンツエリアをトップへ
   useEffect(() => {
     resetScrollOwnerToTop(window)
   }, [activeTab])
 
-  return (
-    <div className="app-shell" data-tab={activeTab}>
-      {/* ネイビーヘッダー（常時表示） */}
-      <header className="app-header">
-        <div>
-          <div className="app-header__title">Capital Allocation OS</div>
-          <div className="app-header__subtitle">観察・分析ダッシュボード</div>
-        </div>
-        <div className="app-header__right">
-          <HeaderRight />
-        </div>
-      </header>
+  // UI 面（ハブ / 判断の詳細 / PF 面）の切替時もトップへ
+  useEffect(() => {
+    resetScrollOwnerToTop(window)
+  }, [surface])
 
-      {/* 市場指標ステータスバー */}
-      <StatusBar />
+  // R4.1 の面ではネイビーヘッダー / StatusBar を出さない。従来画面（T1–T9・従来のホーム）では
+  // 更新ボタンや市場ティッカーを含む従来のヘッダー群をそのまま提供する（機能を削除しない）。
+  const ui9i = isUi9iSurface(activeTab, surface)
+
+  return (
+    <div className="app-shell" data-tab={activeTab} data-ui9i={ui9i ? 'true' : 'false'}>
+      {!ui9i && (
+        <>
+          {/* ネイビーヘッダー（従来画面） */}
+          <header className="app-header">
+            <div>
+              <div className="app-header__title">Capital Allocation OS</div>
+              <div className="app-header__subtitle">観察・分析ダッシュボード</div>
+            </div>
+            <div className="app-header__right">
+              <HeaderRight />
+            </div>
+          </header>
+
+          {/* 市場指標ステータスバー */}
+          <StatusBar />
+        </>
+      )}
 
       {/* Phase 8: グローバルエラーバナー */}
       <GlobalErrorBanner />
@@ -282,27 +328,24 @@ export function App() {
         </div>
       )}
 
-      {/* app-shell-body: tablet以下=縦積み / desktop(≥1024px)=横並び(sidebar+content) */}
+      {/* app-shell-body: モバイル=縦積み / desktop(≥1024px)=横並び(sidebar+content) */}
       <div className="app-shell-body">
-        {/* デスクトップ左サイドバー（≥1024px で表示） */}
-        <DesktopSidebarNav />
-
-        {/* タブナビゲーション（tablet以下で表示、≥1024pxで非表示） */}
-        <TabNav />
+        {/* デスクトップ左サイドバー（≥1024px）: 今日 / 個別株 / 投信 / ポートフォリオ / その他 */}
+        <UserSidebarNav />
 
         {/* メインコンテンツ */}
         {/* F-P0-4: tab panel の描画例外で app-shell（header / StatusBar / nav）まで
             unmount されないよう、main-content の内側に境界を1段置く。
-            key={activeTab} によりタブ切替が復旧導線になる。 */}
-        <main className="main-content">
+            key={activeTab} によりタブ切替が復旧導線になる。UI 面は ActiveTabPanel 内で個別に境界を持つ。 */}
+        <main className="main-content u9-main">
           <AppErrorBoundary key={activeTab}>
             <ActiveTabPanel />
           </AppErrorBoundary>
         </main>
       </div>
 
-      {/* モバイル Bottom Dock（<840px で表示、T7 では非表示） */}
-      <BottomDockNav />
+      {/* モバイル Bottom Nav（<1024px）: 今日 / 個別株 / 投信 / PF / その他 */}
+      <UserDockNav />
     </div>
   )
 }

@@ -50,8 +50,9 @@ describe('UI-9B: contrast / color semantics regression', () => {
     expect(empty, `empty CSS variables: ${empty.map(([k]) => k).join(', ')}`).toEqual([])
   })
 
-  it('undefined CSS var 0 を維持する（UI-9Aと同じキー数113を維持）', () => {
-    expect(Object.keys(generateCssVars())).toHaveLength(113)
+  // UI-9I Phase 1: R4.1 の --u9-* 18個を追加（113 → 131）。undefined CSS var 0 は別テストで維持。
+  it('undefined CSS var 0 を維持する（UI-9A 113キー + UI-9I R4.1 18キー = 131キー）', () => {
+    expect(Object.keys(generateCssVars())).toHaveLength(131)
   })
 
   it('textSubtle / textMuted は白背景・bgBase・bgElevatedともAA 4.5:1以上（UI-9B/UI-9B-R1修正）', () => {
