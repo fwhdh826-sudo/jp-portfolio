@@ -1,61 +1,20 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-09-19T10:21:49.457584+09:00",
-  "sourceUpdatedAt": "2026-09-19T00:16:34+00:00",
+  "updatedAt": "2026-09-19T23:35:17.550553+09:00",
+  "sourceUpdatedAt": "2026-09-19T14:24:19+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": -0.333,
-      "negativeCount": 3,
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
       "positiveCount": 0,
       "neutralCount": 1,
-      "sourceCount": 2,
-      "itemCount": 4,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Yen Pares BOJ-Fueled Declines as Nikkei Reports a Rate Check",
+      "topNegativeTitle": "BOJ's Ueda Balances Between Japan's Takaichi and US Treasury's Bessent",
       "topPositiveTitle": "BOJ's Ueda Balances Between Japan's Takaichi and US Treasury's Bessent",
       "items": [
-        {
-          "title": "Yen Pares BOJ-Fueled Declines as Nikkei Reports a Rate Check",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-09-18T16:07:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-18/yen-pares-boj-fueled-declines-as-nikkei-reports-a-rate-check",
-          "tags": [
-            "fx",
-            "jp_broad",
-            "market"
-          ]
-        },
-        {
-          "title": "Bank of Japan’s Ueda Delivers Rate Hike for Scott ‘the House’ Bessent",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-18T11:00:01+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-09-18/bank-of-japan-s-ueda-delivers-rate-hike-for-scott-the-house-bessent",
-          "tags": [
-            "fx",
-            "jp_broad",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "BOJ Rate Hike Fails to Buoy Yen Even as Ueda Signals More Moves",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-18T02:54:25+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-18/boj-hikes-rates-at-fastest-pace-since-1990-as-inflation-persists",
-          "tags": [
-            "fx",
-            "jp_broad",
-            "market",
-            "rates"
-          ]
-        },
         {
           "title": "BOJ's Ueda Balances Between Japan's Takaichi and US Treasury's Bessent",
           "source": "Bloomberg Economics",
@@ -72,42 +31,41 @@
       ]
     },
     "jp_semiconductor": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Can India Turn Its Promise Into Prosperity?",
+      "topPositiveTitle": "Can India Turn Its Promise Into Prosperity?",
+      "items": [
+        {
+          "title": "Can India Turn Its Promise Into Prosperity?",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-19T12:03:55+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-19/can-india-turn-its-promise-into-prosperity",
+          "tags": [
+            "jp_semiconductor",
+            "market"
+          ]
+        }
+      ]
     },
     "us_broad": {
-      "avgSentiment": -0.332,
-      "negativeCount": 4,
-      "positiveCount": 1,
-      "neutralCount": 1,
+      "avgSentiment": -0.277,
+      "negativeCount": 3,
+      "positiveCount": 0,
+      "neutralCount": 3,
       "sourceCount": 2,
       "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Oil Remains Primary Risk Driving Higher Rates Says Haworth",
-      "topPositiveTitle": "S&P 500 Volume Spikes on $7 Trillion Options Day: Markets Wrap",
+      "topNegativeTitle": "Treasuries Fall as Fed Rate-Hike Outlook Dents Sentiment",
+      "topPositiveTitle": "Diesel Prices Keep Pressure on Fed and Markets",
       "items": [
-        {
-          "title": "Oil Remains Primary Risk Driving Higher Rates Says Haworth",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-09-18T18:55:18+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-18/oil-remains-primary-risk-driving-higher-rates-haworth-video",
-          "tags": [
-            "commodity",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
         {
           "title": "Treasuries Fall as Fed Rate-Hike Outlook Dents Sentiment",
           "source": "Bloomberg Economics",
@@ -148,14 +106,29 @@
           ]
         },
         {
-          "title": "Colombia’s New Finance Chief Woos Wall Street After Budget Shock",
+          "title": "Diesel Prices Keep Pressure on Fed and Markets",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-19T13:40:40+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-19/diesel-prices-keep-pressure-on-fed-and-markets-video",
+          "tags": [
+            "geopolitical",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "World Economy Latest: Fed Boosts Interest Rates, Signals Another 2026 Hike",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-18T20:02:11+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-18/colombia-s-new-finance-chief-woos-wall-street-after-budget-shock",
+          "publishedAt": "2026-09-19T09:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-19/world-economy-latest-fed-boosts-interest-rates-signals-another-2026-hike",
           "tags": [
             "market",
+            "rates",
             "us_broad"
           ]
         }
@@ -222,23 +195,76 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.33,
-      "negativeCount": 1,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "avgSentiment": 0.167,
+      "negativeCount": 0,
+      "positiveCount": 2,
+      "neutralCount": 4,
+      "sourceCount": 2,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Fitch Says Junk Rating Looms for Romania if Political Crisis Persists",
-      "topPositiveTitle": "Fitch Says Junk Rating Looms for Romania if Political Crisis Persists",
+      "topNegativeTitle": "UN Talks Offer a New Opening on Iran War",
+      "topPositiveTitle": "Europe’s Winter Power Surge Is Biggest Since Energy Crisis",
       "items": [
         {
-          "title": "Fitch Says Junk Rating Looms for Romania if Political Crisis Persists",
+          "title": "UN Talks Offer a New Opening on Iran War",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-19T13:17:38+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-19/un-talks-offer-a-new-opening-on-iran-war-video",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Trump Moves to Bar Three News Outlets From White House",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-19T13:01:07+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-19/trump-moves-to-bar-three-news-outlets-from-white-house-video",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "JPMorgan Sees No Clear Endgame for Oil Markets",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-19T12:11:23+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-19/jpmorgan-sees-no-clear-endgame-for-oil-markets-video",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Blackstone Sees India Nearing Tipping Point for Foreign Capital",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-19T04:01:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-19/blackstone-sees-india-nearing-tipping-point-for-foreign-capital",
+          "tags": [
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Greece Wins Highest Rating Since Europe’s Sovereign Debt Crisis",
           "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-18T11:47:29+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-18/fitch-says-junk-rating-looms-for-romania-if-political-crisis-persists",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-18T20:21:42+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-18/greece-s-credit-rating-upgraded-to-bbb-from-bbb-at-scope",
           "tags": [
             "macro_risk",
             "market"
@@ -247,108 +273,28 @@
       ]
     },
     "fx": {
-      "avgSentiment": -0.166,
-      "negativeCount": 3,
-      "positiveCount": 1,
-      "neutralCount": 1,
+      "avgSentiment": 0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
+      "isStale": false,
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
+    },
+    "rates": {
+      "avgSentiment": -0.266,
+      "negativeCount": 2,
+      "positiveCount": 0,
+      "neutralCount": 3,
       "sourceCount": 2,
       "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Yen Pares BOJ-Fueled Declines as Nikkei Reports a Rate Check",
-      "topPositiveTitle": "Dollar Surges to Best Week Since June on Higher Rate Outlook",
+      "topNegativeTitle": "Treasuries Fall as Fed Rate-Hike Outlook Dents Sentiment",
+      "topPositiveTitle": "Diesel Prices Keep Pressure on Fed and Markets",
       "items": [
-        {
-          "title": "Yen Pares BOJ-Fueled Declines as Nikkei Reports a Rate Check",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-09-18T16:07:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-18/yen-pares-boj-fueled-declines-as-nikkei-reports-a-rate-check",
-          "tags": [
-            "fx",
-            "jp_broad",
-            "market"
-          ]
-        },
-        {
-          "title": "Bank of Japan’s Ueda Delivers Rate Hike for Scott ‘the House’ Bessent",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-18T11:00:01+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-09-18/bank-of-japan-s-ueda-delivers-rate-hike-for-scott-the-house-bessent",
-          "tags": [
-            "fx",
-            "jp_broad",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "BOJ Rate Hike Fails to Buoy Yen Even as Ueda Signals More Moves",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-18T02:54:25+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-18/boj-hikes-rates-at-fastest-pace-since-1990-as-inflation-persists",
-          "tags": [
-            "fx",
-            "jp_broad",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Hedge Funds Turned Bullish on Yen for First Time Since Mid-2025",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-18T20:35:02+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-18/hedge-funds-turned-bullish-on-yen-for-first-time-since-mid-2025",
-          "tags": [
-            "fx",
-            "market"
-          ]
-        },
-        {
-          "title": "Dollar Surges to Best Week Since June on Higher Rate Outlook",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.5,
-          "publishedAt": "2026-09-18T18:26:40+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-18/dollar-surges-to-best-week-since-june-on-higher-rate-outlook",
-          "tags": [
-            "fx",
-            "market"
-          ]
-        }
-      ]
-    },
-    "rates": {
-      "avgSentiment": -0.206,
-      "negativeCount": 5,
-      "positiveCount": 2,
-      "neutralCount": 1,
-      "sourceCount": 2,
-      "itemCount": 8,
-      "isStale": false,
-      "topNegativeTitle": "Oil Remains Primary Risk Driving Higher Rates Says Haworth",
-      "topPositiveTitle": "ECB Rates Aren’t Directly Tied to Energy Costs, Lagarde Says",
-      "items": [
-        {
-          "title": "Oil Remains Primary Risk Driving Higher Rates Says Haworth",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-09-18T18:55:18+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-18/oil-remains-primary-risk-driving-higher-rates-haworth-video",
-          "tags": [
-            "commodity",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
         {
           "title": "Treasuries Fall as Fed Rate-Hike Outlook Dents Sentiment",
           "source": "Bloomberg Economics",
@@ -377,28 +323,40 @@
           ]
         },
         {
-          "title": "Bank of Japan’s Ueda Delivers Rate Hike for Scott ‘the House’ Bessent",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-18T11:00:01+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-09-18/bank-of-japan-s-ueda-delivers-rate-hike-for-scott-the-house-bessent",
+          "title": "Diesel Prices Keep Pressure on Fed and Markets",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-19T13:40:40+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-19/diesel-prices-keep-pressure-on-fed-and-markets-video",
           "tags": [
-            "fx",
-            "jp_broad",
+            "geopolitical",
             "market",
-            "rates"
+            "rates",
+            "us_broad"
           ]
         },
         {
-          "title": "BOJ Rate Hike Fails to Buoy Yen Even as Ueda Signals More Moves",
+          "title": "World Economy Latest: Fed Boosts Interest Rates, Signals Another 2026 Hike",
           "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-18T02:54:25+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-18/boj-hikes-rates-at-fastest-pace-since-1990-as-inflation-persists",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-19T09:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-19/world-economy-latest-fed-boosts-interest-rates-signals-another-2026-hike",
           "tags": [
-            "fx",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "BOJ's Ueda Balances Between Japan's Takaichi and US Treasury's Bessent",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-18T16:20:49+00:00",
+          "url": "https://www.bloomberg.com/news/features/2026-09-18/boj-s-ueda-balances-between-japan-s-takaichi-and-us-treasury-s-bessent",
+          "tags": [
             "jp_broad",
             "market",
             "rates"
@@ -407,30 +365,16 @@
       ]
     },
     "commodity": {
-      "avgSentiment": -0.165,
-      "negativeCount": 3,
+      "avgSentiment": 0.068,
+      "negativeCount": 1,
       "positiveCount": 1,
-      "neutralCount": 2,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Oil Remains Primary Risk Driving Higher Rates Says Haworth",
-      "topPositiveTitle": "ECB Rates Aren’t Directly Tied to Energy Costs, Lagarde Says",
+      "topNegativeTitle": "Fed’s Schmid Backed Rate Hike, Says Inflation Goes Beyond Energy",
+      "topPositiveTitle": "Europe’s Winter Power Surge Is Biggest Since Energy Crisis",
       "items": [
-        {
-          "title": "Oil Remains Primary Risk Driving Higher Rates Says Haworth",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-09-18T18:55:18+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-18/oil-remains-primary-risk-driving-higher-rates-haworth-video",
-          "tags": [
-            "commodity",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
         {
           "title": "Fed’s Schmid Backed Rate Hike, Says Inflation Goes Beyond Energy",
           "source": "Bloomberg Economics",
@@ -446,61 +390,133 @@
           ]
         },
         {
-          "title": "Latest Oil Market News and Analysis for Sept. 18",
+          "title": "UN Talks Offer a New Opening on Iran War",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-17T22:05:55+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-17/latest-oil-market-news-and-analysis-for-sept-18",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-19T13:17:38+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-19/un-talks-offer-a-new-opening-on-iran-war-video",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "JPMorgan Sees No Clear Endgame for Oil Markets",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-19T12:11:23+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-19/jpmorgan-sees-no-clear-endgame-for-oil-markets-video",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "World Running Short of Supertankers Threatens Long-Haul Oil Flow",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-19T11:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-19/world-running-short-of-supertankers-threatens-long-haul-oil-flow",
           "tags": [
             "commodity",
             "market"
           ]
         },
         {
-          "title": "Eurogroup Chief Mulls Emergency Meeting on Surging Energy Costs",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-18T10:26:30+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-18/eurogroup-chief-mulls-emergency-meeting-on-surging-energy-costs",
+          "title": "Europe’s Winter Power Surge Is Biggest Since Energy Crisis",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-09-19T09:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-19/europe-s-winter-power-surge-is-biggest-since-energy-crisis",
           "tags": [
             "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "Poland MPC Member Warns Rate Increase Possible on Energy Risks",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-18T09:59:56+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-18/poland-mpc-member-warns-rate-increase-possible-on-energy-risks",
-          "tags": [
-            "commodity",
+            "macro_risk",
             "market"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0.134,
       "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 4,
       "sourceCount": 1,
-      "itemCount": 1,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Dutch Aim to Allay Belgian Concern Over Frozen Russian Assets",
-      "topPositiveTitle": "Dutch Aim to Allay Belgian Concern Over Frozen Russian Assets",
+      "topNegativeTitle": "Diesel Prices Keep Pressure on Fed and Markets",
+      "topPositiveTitle": "AI Agents Test the Limits of Human Oversight",
       "items": [
         {
-          "title": "Dutch Aim to Allay Belgian Concern Over Frozen Russian Assets",
-          "source": "Bloomberg Economics",
+          "title": "Diesel Prices Keep Pressure on Fed and Markets",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-18T12:29:07+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-18/dutch-aim-to-convince-belgium-to-deploy-frozen-russian-assets",
+          "publishedAt": "2026-09-19T13:40:40+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-19/diesel-prices-keep-pressure-on-fed-and-markets-video",
+          "tags": [
+            "geopolitical",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "UN Talks Offer a New Opening on Iran War",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-19T13:17:38+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-19/un-talks-offer-a-new-opening-on-iran-war-video",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Trump Moves to Bar Three News Outlets From White House",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-19T13:01:07+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-19/trump-moves-to-bar-three-news-outlets-from-white-house-video",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "JPMorgan Sees No Clear Endgame for Oil Markets",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-19T12:11:23+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-19/jpmorgan-sees-no-clear-endgame-for-oil-markets-video",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "AI Agents Test the Limits of Human Oversight",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-09-19T12:28:50+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-19/ai-agents-test-the-limits-of-human-oversight-video",
           "tags": [
             "geopolitical",
             "market"
@@ -517,7 +533,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 6,
+    "excludedCount": 5,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
