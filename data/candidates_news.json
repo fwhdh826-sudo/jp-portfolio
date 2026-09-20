@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-09-20T23:46:19.997596+09:00",
-  "sourceUpdatedAt": "2026-09-20T14:35:33+00:00",
+  "updatedAt": "2026-09-21T08:28:09.183116+09:00",
+  "sourceUpdatedAt": "2026-09-20T23:11:41+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -12,11 +12,11 @@
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Yen Is Vulnerable With Japan on Holiday After BOJ Disappoints",
-      "topPositiveTitle": "Yen Is Vulnerable With Japan on Holiday After BOJ Disappoints",
+      "topNegativeTitle": "Yen Vulnerable With Japan on Holiday After BOJ Disappoints",
+      "topPositiveTitle": "Yen Vulnerable With Japan on Holiday After BOJ Disappoints",
       "items": [
         {
-          "title": "Yen Is Vulnerable With Japan on Holiday After BOJ Disappoints",
+          "title": "Yen Vulnerable With Japan on Holiday After BOJ Disappoints",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.2,
@@ -31,70 +31,6 @@
       ]
     },
     "jp_semiconductor": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
-      "isStale": false,
-      "topNegativeTitle": "Can India Turn Its Promise Into Prosperity?",
-      "topPositiveTitle": "Can India Turn Its Promise Into Prosperity?",
-      "items": [
-        {
-          "title": "Can India Turn Its Promise Into Prosperity?",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-19T12:03:55+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-19/can-india-turn-its-promise-into-prosperity",
-          "tags": [
-            "jp_semiconductor",
-            "market"
-          ]
-        }
-      ]
-    },
-    "us_broad": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 2,
-      "sourceCount": 1,
-      "itemCount": 2,
-      "isStale": false,
-      "topNegativeTitle": "Oaktree’s Marks Says He Wants a Less Activist Central Bank",
-      "topPositiveTitle": "Oaktree’s Marks Says He Wants a Less Activist Central Bank",
-      "items": [
-        {
-          "title": "Oaktree’s Marks Says He Wants a Less Activist Central Bank",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-20T12:46:17+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-20/oaktree-s-marks-wants-a-less-activist-central-bank-in-warsh-era",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "EM Investors Are Favoring Local Bonds as Dollar Debt Lags",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-20T12:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-20/em-investors-are-favoring-local-bonds-as-dollar-debt-lags",
-          "tags": [
-            "fx",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        }
-      ]
-    },
-    "us_growth": {
       "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
@@ -105,6 +41,97 @@
       "topNegativeTitle": null,
       "topPositiveTitle": null,
       "items": []
+    },
+    "us_broad": {
+      "avgSentiment": 0.085,
+      "negativeCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 2,
+      "sourceCount": 2,
+      "itemCount": 4,
+      "isStale": false,
+      "topNegativeTitle": "Wall Street Week | India’s Growth Test, Bangalore’s Infrastructure Problem, Cricket Attracts Capital",
+      "topPositiveTitle": "Short-Term Treasuries Emerge as Popular Bet on Fed Inflation Win",
+      "items": [
+        {
+          "title": "Wall Street Week | India’s Growth Test, Bangalore’s Infrastructure Problem, Cricket Attracts Capital",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-18T23:27:06+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-18/wall-street-week-india-s-growth-test-video",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "AI Boom Is Making Diversifying Investments Tough for Wall Street",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-20T21:00:01+00:00",
+          "url": "https://www.bloomberg.com/news/features/2026-09-20/ai-boom-is-making-diversifying-investments-tough-for-wall-street",
+          "tags": [
+            "market",
+            "us_broad",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Fed’s Kashkari Says Inflation Reaching All Corners of US Economy",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-20T15:32:17+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-20/fed-s-kashkari-says-inflation-reaching-all-corners-of-us-economy",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Short-Term Treasuries Emerge as Popular Bet on Fed Inflation Win",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-09-20T19:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-20/short-term-treasuries-emerge-as-popular-bet-on-fed-inflation-win",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        }
+      ]
+    },
+    "us_growth": {
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "AI Boom Is Making Diversifying Investments Tough for Wall Street",
+      "topPositiveTitle": "AI Boom Is Making Diversifying Investments Tough for Wall Street",
+      "items": [
+        {
+          "title": "AI Boom Is Making Diversifying Investments Tough for Wall Street",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-20T21:00:01+00:00",
+          "url": "https://www.bloomberg.com/news/features/2026-09-20/ai-boom-is-making-diversifying-investments-tough-for-wall-street",
+          "tags": [
+            "market",
+            "us_broad",
+            "us_growth"
+          ]
+        }
+      ]
     },
     "global_broad": {
       "avgSentiment": 0,
@@ -119,56 +146,28 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Hong Kong’s Chan Says City to Expand Market for Dim Sum Bonds",
-      "topPositiveTitle": "Hong Kong’s Chan Says City to Expand Market for Dim Sum Bonds",
-      "items": [
-        {
-          "title": "Hong Kong’s Chan Says City to Expand Market for Dim Sum Bonds",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-20T07:50:07+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-20/hong-kong-s-chan-says-city-to-expand-market-for-dim-sum-bonds",
-          "tags": [
-            "commodity",
-            "gold",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "reit": {
-      "avgSentiment": -0.33,
-      "negativeCount": 1,
+      "avgSentiment": 0,
+      "negativeCount": 0,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Cracks in Europe’s Junk Property Debt Revive Fears of 2023 Pain",
-      "topPositiveTitle": "Cracks in Europe’s Junk Property Debt Revive Fears of 2023 Pain",
-      "items": [
-        {
-          "title": "Cracks in Europe’s Junk Property Debt Revive Fears of 2023 Pain",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-20T11:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-20/cracks-in-europe-s-junk-property-debt-revive-fears-of-2023-pain",
-          "tags": [
-            "market",
-            "rates",
-            "reit"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "dividend": {
       "avgSentiment": 0,
@@ -183,49 +182,23 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.168,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
-      "positiveCount": 1,
+      "positiveCount": 0,
       "neutralCount": 3,
-      "sourceCount": 1,
-      "itemCount": 4,
+      "sourceCount": 2,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Qatar Works to Bridge Gap in US Iran Talks",
-      "topPositiveTitle": "Mnuchin Sees Long-Term Opportunity in Middle East",
+      "topNegativeTitle": "Black Sea Shipping Turmoil Hits Wheat Market, Amplifies Inflation Risks",
+      "topPositiveTitle": "Black Sea Shipping Turmoil Hits Wheat Market, Amplifies Inflation Risks",
       "items": [
         {
-          "title": "Qatar Works to Bridge Gap in US Iran Talks",
+          "title": "Black Sea Shipping Turmoil Hits Wheat Market, Amplifies Inflation Risks",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-20T13:54:20+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-20/qatar-works-to-bridge-gap-in-us-iran-talks-video",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Qatar Airways Bets on Fleet and Cargo Growth",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-20T12:39:35+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-20/qatar-airways-bets-on-fleet-and-cargo-growth-video",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Global Conflicts Shape High Stakes UN Meetings",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-20T12:30:13+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-20/global-conflicts-shape-high-stakes-un-meetings-video",
+          "publishedAt": "2026-09-20T23:01:01+00:00",
+          "url": "https://www.bloomberg.com/news/features/2026-09-20/black-sea-shipping-turmoil-hits-wheat-market-amplifies-inflation-risks",
           "tags": [
             "commodity",
             "geopolitical",
@@ -234,16 +207,32 @@
           ]
         },
         {
-          "title": "Mnuchin Sees Long-Term Opportunity in Middle East",
+          "title": "Latest Oil Market News and Analysis for Sept. 21",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-09-20T14:07:06+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-20/mnuchin-sees-long-term-opportunity-in-middle-east-video",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-20T22:05:05+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-20/latest-oil-market-news-and-analysis-for-sept-21",
           "tags": [
+            "commodity",
             "geopolitical",
             "macro_risk",
             "market"
+          ]
+        },
+        {
+          "title": "Fed’s Kashkari Says Inflation Reaching All Corners of US Economy",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-20T15:32:17+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-20/fed-s-kashkari-says-inflation-reaching-all-corners-of-us-economy",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "us_broad"
           ]
         }
       ]
@@ -256,11 +245,11 @@
       "sourceCount": 1,
       "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Yen Is Vulnerable With Japan on Holiday After BOJ Disappoints",
-      "topPositiveTitle": "EM Investors Are Favoring Local Bonds as Dollar Debt Lags",
+      "topNegativeTitle": "Yen Vulnerable With Japan on Holiday After BOJ Disappoints",
+      "topPositiveTitle": "US Stock Futures Up Ahead of Talks, Dollar Steady: Markets Wrap",
       "items": [
         {
-          "title": "Yen Is Vulnerable With Japan on Holiday After BOJ Disappoints",
+          "title": "Yen Vulnerable With Japan on Holiday After BOJ Disappoints",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.2,
@@ -273,57 +262,40 @@
           ]
         },
         {
-          "title": "EM Investors Are Favoring Local Bonds as Dollar Debt Lags",
+          "title": "US Stock Futures Up Ahead of Talks, Dollar Steady: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-20T12:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-20/em-investors-are-favoring-local-bonds-as-dollar-debt-lags",
+          "publishedAt": "2026-09-20T22:14:48+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-20/us-stock-futures-up-ahead-of-talks-dollar-steady-markets-wrap",
           "tags": [
             "fx",
-            "market",
-            "rates",
-            "us_broad"
+            "market"
           ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": -0.165,
-      "negativeCount": 1,
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
       "positiveCount": 0,
       "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Cracks in Europe’s Junk Property Debt Revive Fears of 2023 Pain",
-      "topPositiveTitle": "EM Investors Are Favoring Local Bonds as Dollar Debt Lags",
+      "topNegativeTitle": "Pimco Likes Rates Where They Are, CEO Roman Says",
+      "topPositiveTitle": "Pimco Likes Rates Where They Are, CEO Roman Says",
       "items": [
         {
-          "title": "Cracks in Europe’s Junk Property Debt Revive Fears of 2023 Pain",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-20T11:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-20/cracks-in-europe-s-junk-property-debt-revive-fears-of-2023-pain",
-          "tags": [
-            "market",
-            "rates",
-            "reit"
-          ]
-        },
-        {
-          "title": "EM Investors Are Favoring Local Bonds as Dollar Debt Lags",
+          "title": "Pimco Likes Rates Where They Are, CEO Roman Says",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-20T12:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-20/em-investors-are-favoring-local-bonds-as-dollar-debt-lags",
+          "publishedAt": "2026-09-20T18:37:06+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-20/pimco-likes-rates-where-they-are-ceo-roman-says-video",
           "tags": [
-            "fx",
             "market",
-            "rates",
-            "us_broad"
+            "rates"
           ]
         }
       ]
@@ -332,20 +304,20 @@
       "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 2,
-      "sourceCount": 1,
-      "itemCount": 2,
+      "neutralCount": 6,
+      "sourceCount": 3,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Global Conflicts Shape High Stakes UN Meetings",
-      "topPositiveTitle": "Global Conflicts Shape High Stakes UN Meetings",
+      "topNegativeTitle": "Black Sea Shipping Turmoil Hits Wheat Market, Amplifies Inflation Risks",
+      "topPositiveTitle": "Black Sea Shipping Turmoil Hits Wheat Market, Amplifies Inflation Risks",
       "items": [
         {
-          "title": "Global Conflicts Shape High Stakes UN Meetings",
+          "title": "Black Sea Shipping Turmoil Hits Wheat Market, Amplifies Inflation Risks",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-20T12:30:13+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-20/global-conflicts-shape-high-stakes-un-meetings-video",
+          "publishedAt": "2026-09-20T23:01:01+00:00",
+          "url": "https://www.bloomberg.com/news/features/2026-09-20/black-sea-shipping-turmoil-hits-wheat-market-amplifies-inflation-risks",
           "tags": [
             "commodity",
             "geopolitical",
@@ -354,76 +326,78 @@
           ]
         },
         {
-          "title": "Hong Kong’s Chan Says City to Expand Market for Dim Sum Bonds",
+          "title": "Latest Oil Market News and Analysis for Sept. 21",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-20T07:50:07+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-20/hong-kong-s-chan-says-city-to-expand-market-for-dim-sum-bonds",
+          "publishedAt": "2026-09-20T22:05:05+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-20/latest-oil-market-news-and-analysis-for-sept-21",
           "tags": [
             "commodity",
-            "gold",
+            "geopolitical",
+            "macro_risk",
             "market"
+          ]
+        },
+        {
+          "title": "QatarEnergy on Energy Security and Supply",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-20T18:49:59+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-20/qatarenergy-on-energy-security-and-supply-video",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "Hormuz ‘Cannot Be Obsolete,’ Qatar Energy Minister Says",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-20T17:01:51+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-20/hormuz-cannot-be-obsolete-qatar-energy-minister-says-video",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "Fed’s Kashkari Says Inflation Reaching All Corners of US Economy",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-20T15:32:17+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-20/fed-s-kashkari-says-inflation-reaching-all-corners-of-us-economy",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "us_broad"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.134,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 4,
-      "sourceCount": 1,
-      "itemCount": 5,
+      "positiveCount": 0,
+      "neutralCount": 3,
+      "sourceCount": 2,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Qatar Works to Bridge Gap in US Iran Talks",
-      "topPositiveTitle": "Mnuchin Sees Long-Term Opportunity in Middle East",
+      "topNegativeTitle": "Black Sea Shipping Turmoil Hits Wheat Market, Amplifies Inflation Risks",
+      "topPositiveTitle": "Black Sea Shipping Turmoil Hits Wheat Market, Amplifies Inflation Risks",
       "items": [
         {
-          "title": "Qatar Works to Bridge Gap in US Iran Talks",
+          "title": "Black Sea Shipping Turmoil Hits Wheat Market, Amplifies Inflation Risks",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-20T13:54:20+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-20/qatar-works-to-bridge-gap-in-us-iran-talks-video",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Marsh CEO Says Geopolitics Tops CEO Risks",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-20T13:03:25+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-20/marsh-ceo-says-geopolitics-tops-ceo-risks-video",
-          "tags": [
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "Qatar Airways Bets on Fleet and Cargo Growth",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-20T12:39:35+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-20/qatar-airways-bets-on-fleet-and-cargo-growth-video",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Global Conflicts Shape High Stakes UN Meetings",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-20T12:30:13+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-20/global-conflicts-shape-high-stakes-un-meetings-video",
+          "publishedAt": "2026-09-20T23:01:01+00:00",
+          "url": "https://www.bloomberg.com/news/features/2026-09-20/black-sea-shipping-turmoil-hits-wheat-market-amplifies-inflation-risks",
           "tags": [
             "commodity",
             "geopolitical",
@@ -432,16 +406,32 @@
           ]
         },
         {
-          "title": "Mnuchin Sees Long-Term Opportunity in Middle East",
+          "title": "Latest Oil Market News and Analysis for Sept. 21",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-09-20T14:07:06+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-20/mnuchin-sees-long-term-opportunity-in-middle-east-video",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-20T22:05:05+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-20/latest-oil-market-news-and-analysis-for-sept-21",
           "tags": [
+            "commodity",
             "geopolitical",
             "macro_risk",
             "market"
+          ]
+        },
+        {
+          "title": "Fed’s Kashkari Says Inflation Reaching All Corners of US Economy",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-20T15:32:17+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-20/fed-s-kashkari-says-inflation-reaching-all-corners-of-us-economy",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "us_broad"
           ]
         }
       ]
@@ -455,7 +445,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 4,
+    "excludedCount": 5,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
