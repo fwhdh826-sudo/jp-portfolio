@@ -1,20 +1,34 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-09-20T10:21:01.007132+09:00",
-  "sourceUpdatedAt": "2026-09-20T01:06:57+00:00",
+  "updatedAt": "2026-09-20T23:46:19.997596+09:00",
+  "sourceUpdatedAt": "2026-09-20T14:35:33+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": 0,
+      "avgSentiment": -0.2,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Yen Is Vulnerable With Japan on Holiday After BOJ Disappoints",
+      "topPositiveTitle": "Yen Is Vulnerable With Japan on Holiday After BOJ Disappoints",
+      "items": [
+        {
+          "title": "Yen Is Vulnerable With Japan on Holiday After BOJ Disappoints",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.2,
+          "publishedAt": "2026-09-20T08:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-20/yen-is-vulnerable-with-japan-on-holiday-after-boj-disappoints",
+          "tags": [
+            "fx",
+            "jp_broad",
+            "market"
+          ]
+        }
+      ]
     },
     "jp_semiconductor": {
       "avgSentiment": 0.0,
@@ -46,34 +60,33 @@
       "negativeCount": 0,
       "positiveCount": 0,
       "neutralCount": 2,
-      "sourceCount": 2,
+      "sourceCount": 1,
       "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Diesel Prices Keep Pressure on Fed and Markets",
-      "topPositiveTitle": "Diesel Prices Keep Pressure on Fed and Markets",
+      "topNegativeTitle": "Oaktree’s Marks Says He Wants a Less Activist Central Bank",
+      "topPositiveTitle": "Oaktree’s Marks Says He Wants a Less Activist Central Bank",
       "items": [
         {
-          "title": "Diesel Prices Keep Pressure on Fed and Markets",
+          "title": "Oaktree’s Marks Says He Wants a Less Activist Central Bank",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-19T13:40:40+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-19/diesel-prices-keep-pressure-on-fed-and-markets-video",
+          "publishedAt": "2026-09-20T12:46:17+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-20/oaktree-s-marks-wants-a-less-activist-central-bank-in-warsh-era",
           "tags": [
-            "geopolitical",
             "market",
-            "rates",
             "us_broad"
           ]
         },
         {
-          "title": "World Economy Latest: Fed Boosts Interest Rates, Signals Another 2026 Hike",
-          "source": "Bloomberg Economics",
+          "title": "EM Investors Are Favoring Local Bonds as Dollar Debt Lags",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-19T09:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-19/world-economy-latest-fed-boosts-interest-rates-signals-another-2026-hike",
+          "publishedAt": "2026-09-20T12:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-20/em-investors-are-favoring-local-bonds-as-dollar-debt-lags",
           "tags": [
+            "fx",
             "market",
             "rates",
             "us_broad"
@@ -82,29 +95,16 @@
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "SpaceX’s Nasdaq 100 Weight Is Confirmed at 2.82% in Rebalance",
-      "topPositiveTitle": "SpaceX’s Nasdaq 100 Weight Is Confirmed at 2.82% in Rebalance",
-      "items": [
-        {
-          "title": "SpaceX’s Nasdaq 100 Weight Is Confirmed at 2.82% in Rebalance",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-19T14:17:01+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-19/spacex-s-nasdaq-100-weight-is-confirmed-at-2-82-in-rebalance",
-          "tags": [
-            "market",
-            "us_growth"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "global_broad": {
       "avgSentiment": 0,
@@ -119,28 +119,56 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Hong Kong’s Chan Says City to Expand Market for Dim Sum Bonds",
+      "topPositiveTitle": "Hong Kong’s Chan Says City to Expand Market for Dim Sum Bonds",
+      "items": [
+        {
+          "title": "Hong Kong’s Chan Says City to Expand Market for Dim Sum Bonds",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-20T07:50:07+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-20/hong-kong-s-chan-says-city-to-expand-market-for-dim-sum-bonds",
+          "tags": [
+            "commodity",
+            "gold",
+            "market"
+          ]
+        }
+      ]
     },
     "reit": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
+      "avgSentiment": -0.33,
+      "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Cracks in Europe’s Junk Property Debt Revive Fears of 2023 Pain",
+      "topPositiveTitle": "Cracks in Europe’s Junk Property Debt Revive Fears of 2023 Pain",
+      "items": [
+        {
+          "title": "Cracks in Europe’s Junk Property Debt Revive Fears of 2023 Pain",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-20T11:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-20/cracks-in-europe-s-junk-property-debt-revive-fears-of-2023-pain",
+          "tags": [
+            "market",
+            "rates",
+            "reit"
+          ]
+        }
+      ]
     },
     "dividend": {
       "avgSentiment": 0,
@@ -155,23 +183,49 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.167,
+      "avgSentiment": 0.168,
       "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 4,
-      "sourceCount": 2,
-      "itemCount": 6,
+      "positiveCount": 1,
+      "neutralCount": 3,
+      "sourceCount": 1,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "UN Talks Offer a New Opening on Iran War",
-      "topPositiveTitle": "Governor Cox Says Americans Need Healthier Conflict",
+      "topNegativeTitle": "Qatar Works to Bridge Gap in US Iran Talks",
+      "topPositiveTitle": "Mnuchin Sees Long-Term Opportunity in Middle East",
       "items": [
         {
-          "title": "UN Talks Offer a New Opening on Iran War",
+          "title": "Qatar Works to Bridge Gap in US Iran Talks",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-19T13:17:38+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-19/un-talks-offer-a-new-opening-on-iran-war-video",
+          "publishedAt": "2026-09-20T13:54:20+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-20/qatar-works-to-bridge-gap-in-us-iran-talks-video",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Qatar Airways Bets on Fleet and Cargo Growth",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-20T12:39:35+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-20/qatar-airways-bets-on-fleet-and-cargo-growth-video",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Global Conflicts Shape High Stakes UN Meetings",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-20T12:30:13+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-20/global-conflicts-shape-high-stakes-un-meetings-video",
           "tags": [
             "commodity",
             "geopolitical",
@@ -180,53 +234,14 @@
           ]
         },
         {
-          "title": "Trump Moves to Bar Three News Outlets From White House",
+          "title": "Mnuchin Sees Long-Term Opportunity in Middle East",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-19T13:01:07+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-19/trump-moves-to-bar-three-news-outlets-from-white-house-video",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "JPMorgan Sees No Clear Endgame for Oil Markets",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-19T12:11:23+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-19/jpmorgan-sees-no-clear-endgame-for-oil-markets-video",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Saudi Arabia Billionaires’ Family Office Dubai Bet Adds to London Exodus",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-18T10:19:29+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-18/saudi-arabia-billionaires-family-office-dubai-bet-adds-to-london-exodus",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Greece Wins Highest Rating Since Europe’s Sovereign Debt Crisis",
-          "source": "Bloomberg Economics",
           "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-18T20:21:42+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-18/greece-s-credit-rating-upgraded-to-bbb-from-bbb-at-scope",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-09-20T14:07:06+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-20/mnuchin-sees-long-term-opportunity-in-middle-east-video",
           "tags": [
+            "geopolitical",
             "macro_risk",
             "market"
           ]
@@ -234,50 +249,78 @@
       ]
     },
     "fx": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "rates": {
-      "avgSentiment": 0.0,
+      "avgSentiment": -0.1,
       "negativeCount": 0,
       "positiveCount": 0,
       "neutralCount": 2,
-      "sourceCount": 2,
+      "sourceCount": 1,
       "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Diesel Prices Keep Pressure on Fed and Markets",
-      "topPositiveTitle": "Diesel Prices Keep Pressure on Fed and Markets",
+      "topNegativeTitle": "Yen Is Vulnerable With Japan on Holiday After BOJ Disappoints",
+      "topPositiveTitle": "EM Investors Are Favoring Local Bonds as Dollar Debt Lags",
       "items": [
         {
-          "title": "Diesel Prices Keep Pressure on Fed and Markets",
+          "title": "Yen Is Vulnerable With Japan on Holiday After BOJ Disappoints",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.2,
+          "publishedAt": "2026-09-20T08:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-20/yen-is-vulnerable-with-japan-on-holiday-after-boj-disappoints",
+          "tags": [
+            "fx",
+            "jp_broad",
+            "market"
+          ]
+        },
+        {
+          "title": "EM Investors Are Favoring Local Bonds as Dollar Debt Lags",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-19T13:40:40+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-19/diesel-prices-keep-pressure-on-fed-and-markets-video",
+          "publishedAt": "2026-09-20T12:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-20/em-investors-are-favoring-local-bonds-as-dollar-debt-lags",
           "tags": [
-            "geopolitical",
+            "fx",
             "market",
             "rates",
             "us_broad"
           ]
+        }
+      ]
+    },
+    "rates": {
+      "avgSentiment": -0.165,
+      "negativeCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 2,
+      "isStale": false,
+      "topNegativeTitle": "Cracks in Europe’s Junk Property Debt Revive Fears of 2023 Pain",
+      "topPositiveTitle": "EM Investors Are Favoring Local Bonds as Dollar Debt Lags",
+      "items": [
+        {
+          "title": "Cracks in Europe’s Junk Property Debt Revive Fears of 2023 Pain",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-20T11:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-20/cracks-in-europe-s-junk-property-debt-revive-fears-of-2023-pain",
+          "tags": [
+            "market",
+            "rates",
+            "reit"
+          ]
         },
         {
-          "title": "World Economy Latest: Fed Boosts Interest Rates, Signals Another 2026 Hike",
-          "source": "Bloomberg Economics",
+          "title": "EM Investors Are Favoring Local Bonds as Dollar Debt Lags",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-19T09:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-19/world-economy-latest-fed-boosts-interest-rates-signals-another-2026-hike",
+          "publishedAt": "2026-09-20T12:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-20/em-investors-are-favoring-local-bonds-as-dollar-debt-lags",
           "tags": [
+            "fx",
             "market",
             "rates",
             "us_broad"
@@ -289,32 +332,20 @@
       "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 3,
+      "neutralCount": 2,
       "sourceCount": 1,
-      "itemCount": 3,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Hormuz Oil Shipments Hit Six-Month High, US Commander Says",
-      "topPositiveTitle": "Hormuz Oil Shipments Hit Six-Month High, US Commander Says",
+      "topNegativeTitle": "Global Conflicts Shape High Stakes UN Meetings",
+      "topPositiveTitle": "Global Conflicts Shape High Stakes UN Meetings",
       "items": [
         {
-          "title": "Hormuz Oil Shipments Hit Six-Month High, US Commander Says",
+          "title": "Global Conflicts Shape High Stakes UN Meetings",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-19T14:47:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-19/hormuz-oil-shipments-hit-six-month-high-us-commander-says",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "UN Talks Offer a New Opening on Iran War",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-19T13:17:38+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-19/un-talks-offer-a-new-opening-on-iran-war-video",
+          "publishedAt": "2026-09-20T12:30:13+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-20/global-conflicts-shape-high-stakes-un-meetings-video",
           "tags": [
             "commodity",
             "geopolitical",
@@ -323,53 +354,76 @@
           ]
         },
         {
-          "title": "JPMorgan Sees No Clear Endgame for Oil Markets",
+          "title": "Hong Kong’s Chan Says City to Expand Market for Dim Sum Bonds",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-19T12:11:23+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-19/jpmorgan-sees-no-clear-endgame-for-oil-markets-video",
+          "publishedAt": "2026-09-20T07:50:07+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-20/hong-kong-s-chan-says-city-to-expand-market-for-dim-sum-bonds",
           "tags": [
             "commodity",
-            "geopolitical",
-            "macro_risk",
+            "gold",
             "market"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.191,
+      "avgSentiment": 0.134,
       "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 5,
+      "positiveCount": 1,
+      "neutralCount": 4,
       "sourceCount": 1,
-      "itemCount": 7,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Diesel Prices Keep Pressure on Fed and Markets",
-      "topPositiveTitle": "Governor Cox Says Americans Need Healthier Conflict",
+      "topNegativeTitle": "Qatar Works to Bridge Gap in US Iran Talks",
+      "topPositiveTitle": "Mnuchin Sees Long-Term Opportunity in Middle East",
       "items": [
         {
-          "title": "Diesel Prices Keep Pressure on Fed and Markets",
+          "title": "Qatar Works to Bridge Gap in US Iran Talks",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-19T13:40:40+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-19/diesel-prices-keep-pressure-on-fed-and-markets-video",
+          "publishedAt": "2026-09-20T13:54:20+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-20/qatar-works-to-bridge-gap-in-us-iran-talks-video",
           "tags": [
             "geopolitical",
-            "market",
-            "rates",
-            "us_broad"
+            "macro_risk",
+            "market"
           ]
         },
         {
-          "title": "UN Talks Offer a New Opening on Iran War",
+          "title": "Marsh CEO Says Geopolitics Tops CEO Risks",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-19T13:17:38+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-19/un-talks-offer-a-new-opening-on-iran-war-video",
+          "publishedAt": "2026-09-20T13:03:25+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-20/marsh-ceo-says-geopolitics-tops-ceo-risks-video",
+          "tags": [
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Qatar Airways Bets on Fleet and Cargo Growth",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-20T12:39:35+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-20/qatar-airways-bets-on-fleet-and-cargo-growth-video",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Global Conflicts Shape High Stakes UN Meetings",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-20T12:30:13+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-20/global-conflicts-shape-high-stakes-un-meetings-video",
           "tags": [
             "commodity",
             "geopolitical",
@@ -378,39 +432,12 @@
           ]
         },
         {
-          "title": "Trump Moves to Bar Three News Outlets From White House",
+          "title": "Mnuchin Sees Long-Term Opportunity in Middle East",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-19T13:01:07+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-19/trump-moves-to-bar-three-news-outlets-from-white-house-video",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "JPMorgan Sees No Clear Endgame for Oil Markets",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-19T12:11:23+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-19/jpmorgan-sees-no-clear-endgame-for-oil-markets-video",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Saudi Arabia Billionaires’ Family Office Dubai Bet Adds to London Exodus",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-18T10:19:29+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-18/saudi-arabia-billionaires-family-office-dubai-bet-adds-to-london-exodus",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-09-20T14:07:06+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-20/mnuchin-sees-long-term-opportunity-in-middle-east-video",
           "tags": [
             "geopolitical",
             "macro_risk",
@@ -428,7 +455,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 6,
+    "excludedCount": 4,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
