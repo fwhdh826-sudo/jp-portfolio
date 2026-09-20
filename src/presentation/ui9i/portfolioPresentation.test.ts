@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { currentAmountText, gapText, projectPortfolio, resolvePortfolioDirection } from './portfolioPresentation'
+import { compactAmountText, currentAmountText, gapText, projectPortfolio, resolvePortfolioDirection } from './portfolioPresentation'
 import { CANONICAL_CLASS_ORDER, UNAVAILABLE_ALLOCATION, fixtureAllocation, fixtureClasses } from './ui9i.fixtures'
 
 describe('Portfolio adapter: canonical 順を保つ', () => {
@@ -126,5 +126,15 @@ describe('表示専用の現在比率は business state に影響しない', () 
     expect(a.rows.map(r => r.currentRatioPct)).not.toEqual(b.rows.map(r => r.currentRatioPct))
     expect(a.rows.map(r => [r.direction, r.gapAmount, r.currentAmount, r.targetAmount]))
       .toEqual(b.rows.map(r => [r.direction, r.gapAmount, r.currentAmount, r.targetAmount]))
+  })
+})
+
+describe('compactAmountText: 凡例の短い現在額', () => {
+  it('万円は「1,330万」。canonical currentAmount のみから作る', () => {
+    expect(projectPortfolio(fixtureAllocation())!.rows.map(compactAmountText)).toEqual(['1,330万', '760万', '950万', '380万', '266万', '114万'])
+  })
+  it('1 万円未満は単位を落とさない（5,000 が 5,000万 に見えない）/ 非有限は「—」', () => {
+    expect(compactAmountText({ currentAmount: 5_000 })).toBe('5,000円')
+    expect(compactAmountText({ currentAmount: Number.NaN })).toBe('—')
   })
 })

@@ -3,7 +3,7 @@
 // 行順は projectPortfolio が保持する canonical 順のまま。ここでは並べ替えない。
 import type { AssetClass } from '../../types/allocationPlan'
 import type { PortfolioClassRow } from '../../presentation/ui9i/portfolioPresentation'
-import { currentAmountText, gapText } from '../../presentation/ui9i/portfolioPresentation'
+import { compactAmountText, currentAmountText, gapText } from '../../presentation/ui9i/portfolioPresentation'
 import { StatusDot } from './primitives'
 
 export const ASSET_CLASS_COLOR: Record<AssetClass, string> = {
@@ -35,30 +35,44 @@ export function donutGradient(rows: readonly PortfolioClassRow[]): string {
 // gapText は adapter が唯一の生成点（Portfolio 面・投信ハブ・Decision Audit で共有）。
 export { gapText }
 
-export function Donut({ rows, centerLabel, centerValue }: {
+export function Donut({ rows, centerLabel, centerValue, desktopHole }: {
   rows: readonly PortfolioClassRow[]
   centerLabel: string
   centerValue: string
+  /** 指定時のみ、≥1024px で穴の表示をこちらに切り替える（PF 面: モバイル=総資産 / デスクトップ=構成）。 */
+  desktopHole?: { label: string; value: string }
 }) {
   return (
     <div className="u9-donut" style={{ background: donutGradient(rows) }} role="img"
       aria-label={`資産構成 ${rows.map(r => `${r.label} ${currentAmountText(r)}`).join('、')}`}>
-      <span className="u9-donut__hole">
-        <span>{centerLabel}</span>
-        <strong>{centerValue}</strong>
-      </span>
+      {desktopHole === undefined ? (
+        <span className="u9-donut__hole">
+          <span>{centerLabel}</span>
+          <strong>{centerValue}</strong>
+        </span>
+      ) : (
+        <span className="u9-donut__hole">
+          <span className="u9-donut__hole-m"><span>{centerLabel}</span><strong>{centerValue}</strong></span>
+          <span className="u9-donut__hole-d"><span>{desktopHole.label}</span><strong>{desktopHole.value}</strong></span>
+        </span>
+      )}
     </div>
   )
 }
 
-export function Legend({ rows }: { rows: readonly PortfolioClassRow[] }) {
+export function Legend({ rows, value = 'ratio' }: { rows: readonly PortfolioClassRow[]; value?: 'ratio' | 'amount' }) {
   return (
     <ul className="u9-legend" aria-label="資産構成の凡例">
       {rows.map(r => (
         <li key={r.assetClass}>
           <span className="u9-legend__swatch" style={{ background: ASSET_CLASS_COLOR[r.assetClass] }} aria-hidden="true" />
           <span className="u9-legend__label">{r.label}</span>
-          <span className="u9-legend__pct">{r.currentRatioPct === null ? '—' : `${Math.round(r.currentRatioPct)}%`}</span>
+          {/* amount = canonical currentAmount そのまま（PF 面の凍結デザイン）/ ratio = 表示用の現在比率（Home） */}
+          <span className="u9-legend__pct">
+            {value === 'amount'
+              ? compactAmountText(r)
+              : r.currentRatioPct === null ? '—' : `${Math.round(r.currentRatioPct)}%`}
+          </span>
         </li>
       ))}
     </ul>

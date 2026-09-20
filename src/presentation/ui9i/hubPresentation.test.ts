@@ -22,9 +22,9 @@ describe('投信ハブ adapter', () => {
     expect(vm.rows.map(r => r.link)).toEqual([...FUNDS_HUB_LINKS])
   })
 
-  it('国内投信 / 海外投信は canonical currentAmount（JP_TRUST / OVERSEAS_TRUST）を万円表記。投信管理は値なし', () => {
+  it('国内投信 / 海外投信は canonical currentAmount（JP_TRUST / OVERSEAS_TRUST）を短い万表記（凍結デザイン: 760万）。投信管理は値なし', () => {
     const vm = projectFundsHub(pf)
-    expect(vm.rows.map(r => r.valueLabel)).toEqual(['760万円', '950万円', null])
+    expect(vm.rows.map(r => r.valueLabel)).toEqual(['760万', '950万', null])
     expect(vm.rows.every(r => !r.valueUnavailable)).toBe(true)
   })
 
@@ -33,7 +33,7 @@ describe('投信ハブ adapter', () => {
       c.assetClass === 'JP_TRUST' ? { ...c, currentAmount: 1_230_000 }
         : c.assetClass === 'OVERSEAS_TRUST' ? { ...c, currentAmount: 4_560_000 } : c)
     const vm = projectFundsHub(projectPortfolio(fixtureAllocation({ classes }))!)
-    expect(vm.rows.map(r => r.valueLabel)).toEqual(['123万円', '456万円', null])
+    expect(vm.rows.map(r => r.valueLabel)).toEqual(['123万', '456万', null])
     const text = JSON.stringify(vm)
     expect(text).not.toContain('579万') // 123 + 456 の合計は作らない
   })
@@ -60,7 +60,7 @@ describe('投信ハブ adapter', () => {
     expect(vm.rows.slice(0, 2).every(r => r.valueUnavailable)).toBe(true)
     expect(vm.gapRows).toBeNull()
     expect(vm.rows).toHaveLength(3)
-    expect(JSON.stringify(vm)).not.toContain('0万円')
+    expect(JSON.stringify(vm)).not.toMatch(/"valueLabel":"0/)
   })
 
   it('canonical 行が欠けているクラスは 0 ではなく「利用不可」/「判定不能」', () => {

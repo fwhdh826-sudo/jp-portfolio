@@ -26,18 +26,17 @@ export type UiSurface = 'audit' | 'funds_hub' | 'pf' | 'other_hub' | 'legacy_hom
 
 export interface PrimaryNavItem {
   readonly id: PrimaryNavId
-  /** モバイル下部ナビ / デスクトップ左サイドバーの語。 */
+  /** モバイル下部ナビの語。デスクトップ左サイドバーの語は DESKTOP_NAV。 */
   readonly label: string
-  readonly desktopLabel: string
   readonly glyph: string
 }
 
 export const PRIMARY_NAV: readonly PrimaryNavItem[] = [
-  { id: 'today', label: '今日', desktopLabel: '今日', glyph: '◐' },
-  { id: 'stocks', label: '個別株', desktopLabel: '個別株', glyph: '▤' },
-  { id: 'funds', label: '投信', desktopLabel: '投信', glyph: '◫' },
-  { id: 'pf', label: 'PF', desktopLabel: 'ポートフォリオ', glyph: '◔' },
-  { id: 'other', label: 'その他', desktopLabel: 'その他', glyph: '≡' },
+  { id: 'today', label: '今日', glyph: '◐' },
+  { id: 'stocks', label: '個別株', glyph: '▤' },
+  { id: 'funds', label: '投信', glyph: '◫' },
+  { id: 'pf', label: 'PF', glyph: '◔' },
+  { id: 'other', label: 'その他', glyph: '≡' },
 ]
 
 export interface NavTarget {

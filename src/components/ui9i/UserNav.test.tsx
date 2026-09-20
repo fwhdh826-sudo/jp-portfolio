@@ -59,11 +59,28 @@ describe('UserDockNav / UserSidebarNav', () => {
     expect(html).toContain('aria-label="メインナビゲーション"')
   })
 
-  it('デスクトップ: 今日 / 個別株 / 投信 / ポートフォリオ / その他', () => {
+  it('デスクトップ: 今日 / 個別株 / 投信 / ポートフォリオ / ニュース / その他（Phase 2A で ニュース を追加）', () => {
     withTab('T0')
     const html = renderToStaticMarkup(<UserSidebarNav />)
     const labels = [...html.matchAll(/<button[^>]*>([^<]+)<\/button>/g)].map(m => m[1])
-    expect(labels).toEqual(['今日', '個別株', '投信', 'ポートフォリオ', 'その他'])
+    expect(labels).toEqual(['今日', '個別株', '投信', 'ポートフォリオ', 'ニュース', 'その他'])
+    expect(html).not.toMatch(/\bT[0-9]\b/)
+  })
+
+  it('ニュース（T5）: デスクトップでは「ニュース」が活性、モバイルでは従来どおり「その他」が活性', () => {
+    withTab('T5')
+    expect(activeButtonLabels(renderToStaticMarkup(<UserSidebarNav />))).toEqual(['ニュース'])
+    expect(activeButtonLabels(renderToStaticMarkup(<UserDockNav />))).toEqual(['その他'])
+    withTab('T6')
+    expect(activeButtonLabels(renderToStaticMarkup(<UserSidebarNav />))).toEqual(['その他'])
+  })
+
+  it('デスクトップ: 活性項目は常にちょうど 1 件（UI 面を含む）', () => {
+    for (const [tab, surface] of [['T0', null], ['T5', null], ['T1', 'funds_hub'], ['T0', 'pf'], ['T0', 'other_hub'], ['T0', 'audit']] as const) {
+      withTab(tab)
+      setSurface(surface)
+      expect((renderToStaticMarkup(<UserSidebarNav />).match(/aria-current="page"/g) ?? []).length, `${tab}/${surface}`).toBe(1)
+    }
   })
 
   it('活性項目は aria-current="page" がちょうど 1 件', () => {
@@ -170,6 +187,37 @@ describe('App のルーティング: Decision Audit は既存 T1（個別株）�
     expect(html).not.toContain('class="app-header"')
     expect(html).toContain('u9-dock')
     expect(html).toContain('u9-sidebar')
+  })
+})
+
+describe('Phase 2A: 実 store 経由の PF 面 / ハブ（配分・時刻が未算出の fresh store）', () => {
+  it('PF 面: 配分未算出でも面は成立し、劣化は配分領域のみ。全体の判断不能にしない', () => {
+    withTab('T0')
+    setSurface('pf')
+    const html = renderToStaticMarkup(<App />)
+    expect(html).toContain('data-testid="portfolio-surface-unavailable"')
+    expect(html).toContain('配分情報を利用できません')
+    expect(html).not.toContain('判断結果を利用できません')
+    expect(html).not.toContain('data-testid="decision-unavailable"')
+    expect(html).toMatch(/data-testid="deployable-cash" data-unavailable="true">利用不可</)
+    expect(html).not.toContain('¥0')
+  })
+
+  it('投信ハブ: 配分未算出でも 3 行が並び、値は「利用不可」（0 にしない）', () => {
+    withTab('T0')
+    setSurface('funds_hub')
+    const html = renderToStaticMarkup(<App />)
+    expect(html.match(/data-hub-link=/g)?.length).toBe(3)
+    expect((html.match(/u9-hub-item__value" data-unavailable="true">利用不可</g) ?? []).length).toBe(2)
+  })
+
+  it('その他ハブ: システム欄は各データセットを個別に表示（fresh store は判断生成 / 候補データが利用不可、バージョンは 13.3）', () => {
+    withTab('T0')
+    setSurface('other_hub')
+    const html = renderToStaticMarkup(<App />)
+    expect(html).toContain('data-testid="other-hub-system"')
+    expect(html).toMatch(/data-system-row="version">13\.3</)
+    expect(html.match(/data-hub-link=/g)?.length).toBe(5)
   })
 })
 

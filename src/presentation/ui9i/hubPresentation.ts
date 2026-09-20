@@ -15,7 +15,7 @@ import { selectAllocationConsumerSnapshot } from '../../store/allocationConsumer
 import { formatJstMonthDayTime } from './formatters'
 import { APP_VERSION_LABEL, ASSET_CLASS_LABEL, UNAVAILABLE_LABEL, UNDETERMINABLE_LABEL } from './labels'
 import { FUNDS_HUB_LINKS, OTHER_HUB_LINKS, type HubLink } from './navigation'
-import { currentAmountText, gapText, projectPortfolio, type PortfolioProjection } from './portfolioPresentation'
+import { compactAmountText, gapText, projectPortfolio, type PortfolioProjection } from './portfolioPresentation'
 
 export interface HubRowViewModel {
   readonly link: HubLink
@@ -45,7 +45,7 @@ export function projectFundsHub(pf: PortfolioProjection | null): FundsHubViewMod
     const row = pf?.rows.find(r => r.assetClass === link.valueAssetClass)
     return row === undefined
       ? { link, valueLabel: UNAVAILABLE_LABEL, valueUnavailable: true }
-      : { link, valueLabel: currentAmountText(row), valueUnavailable: false }
+      : { link, valueLabel: compactAmountText(row), valueUnavailable: false }
   })
   const gapRows = pf === null
     ? null

@@ -98,3 +98,43 @@ describe('R4.1 トークンは theme に一本化（--u9-*）', () => {
     expect(generateCssVars()['--u9-accent']).toBe('#2F6FBF')
   })
 })
+
+describe('Phase 2A: PF 面 / ハブの CSS 契約', () => {
+  it('ハブ行の値・総資産の単位は日本語を縦に折り返さない', () => {
+    for (const selector of ['.u9-hub-item__value', '.u9-pf-total__unit']) {
+      const body = rule(selector)
+      expect(body, selector).toMatch(/white-space:\s*nowrap/)
+      expect(body, selector).toMatch(/word-break:\s*keep-all/)
+    }
+  })
+
+  it('デスクトップ PF は 220px + 可変の 2 カラム（凍結 D4）で、grid-area による配置（order 不使用）', () => {
+    expect(css).toMatch(/\.u9-pf-layout \{[^}]*grid-template-columns:\s*220px minmax\(0, 1fr\)/)
+    expect(css).toMatch(/grid-template-areas:\s*"total gaps" "comp gaps" "cash gaps"/)
+    expect(css).toMatch(/\.u9-pf-gaps \{ grid-area: gaps/)
+  })
+
+  it('穴の表示はモバイル=総資産 / デスクトップ=構成 で切り替わる', () => {
+    expect(css).toMatch(/\.u9-donut__hole-d \{ display: none; \}/)
+    expect(css).toMatch(/\.u9-donut__hole-m \{ display: none; \}\s*\n\s*\.u9-donut__hole-d \{ display: flex; \}/)
+  })
+
+  it('デスクトップで「‹」を隠す（フォーカス順に残さない）/ モバイルでは 44px 以上', () => {
+    expect(css).toMatch(/\.u9-surface--top \.u9-surface__back \{ display: none; \}/)
+    expect(Number(/min-height:\s*(\d+)px/.exec(rule('.u9-surface__back'))![1])).toBeGreaterThanOrEqual(44)
+  })
+
+  it('視覚的に隠した見出しは sr-only 方式（display:none にしない）', () => {
+    expect(css).toMatch(/\.u9-pf-comp > \.u9-card__head, \.u9-pf-cash > \.u9-card__head \{\s*position: absolute; width: 1px; height: 1px; overflow: hidden; clip:/)
+  })
+
+  it('Home の .u9-pf-top は変更しない（PF 面の上書きは .u9-pf-comp 配下に限定）', () => {
+    const bare = [...css.matchAll(/(^|\n)\s*\.u9-pf-top\s*\{([^}]*)\}/g)]
+    expect(bare).toHaveLength(1)
+    expect(bare[0][2]).toMatch(/gap:\s*16px/)
+  })
+
+  it('ハブのアイコンチップ配色は 4 種（意味を持たない視覚識別）', () => {
+    for (const tone of ['green', 'violet', 'slate']) expect(css).toContain(`.u9-hub-item__glyph[data-tone="${tone}"]`)
+  })
+})

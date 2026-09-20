@@ -14,7 +14,7 @@
 // ═══════════════════════════════════════════════════════════
 import type { AllocationConsumerSnapshot } from '../../types/allocationConsumer'
 import type { AssetClass } from '../../types/allocationPlan'
-import { formatManYen } from './formatters'
+import { formatManYen, formatManYenParts } from './formatters'
 import { ASSET_CLASS_LABEL, UNDETERMINABLE_LABEL } from './labels'
 
 export type PortfolioDirection = 'shortfall' | 'excess' | 'on_target' | 'undeterminable'
@@ -97,4 +97,14 @@ export function gapText(row: PortfolioClassRow): string {
 /** 凡例・ハブ行の「現在額」（canonical currentAmount の万円表記）。不明は「—」。 */
 export function currentAmountText(row: Pick<PortfolioClassRow, 'currentAmount'>): string {
   return formatManYen(row.currentAmount) ?? '—'
+}
+
+/**
+ * 凡例用の短い現在額（「1,330万」）。万円未満は単位を落とさず「5,000円」。
+ * 数値は canonical currentAmount の表記変換のみ。不明は「—」。
+ */
+export function compactAmountText(row: Pick<PortfolioClassRow, 'currentAmount'>): string {
+  const parts = formatManYenParts(row.currentAmount)
+  if (parts === null) return '—'
+  return parts.unit === '万円' ? `${parts.value}万` : `${parts.value}円`
 }
