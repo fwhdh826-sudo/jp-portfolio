@@ -1,34 +1,20 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-09-19T23:35:17.550553+09:00",
-  "sourceUpdatedAt": "2026-09-19T14:24:19+00:00",
+  "updatedAt": "2026-09-20T10:21:01.007132+09:00",
+  "sourceUpdatedAt": "2026-09-20T01:06:57+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "BOJ's Ueda Balances Between Japan's Takaichi and US Treasury's Bessent",
-      "topPositiveTitle": "BOJ's Ueda Balances Between Japan's Takaichi and US Treasury's Bessent",
-      "items": [
-        {
-          "title": "BOJ's Ueda Balances Between Japan's Takaichi and US Treasury's Bessent",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-18T16:20:49+00:00",
-          "url": "https://www.bloomberg.com/news/features/2026-09-18/boj-s-ueda-balances-between-japan-s-takaichi-and-us-treasury-s-bessent",
-          "tags": [
-            "jp_broad",
-            "market",
-            "rates"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "jp_semiconductor": {
       "avgSentiment": 0.0,
@@ -56,55 +42,16 @@
       ]
     },
     "us_broad": {
-      "avgSentiment": -0.277,
-      "negativeCount": 3,
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 3,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Treasuries Fall as Fed Rate-Hike Outlook Dents Sentiment",
+      "topNegativeTitle": "Diesel Prices Keep Pressure on Fed and Markets",
       "topPositiveTitle": "Diesel Prices Keep Pressure on Fed and Markets",
       "items": [
-        {
-          "title": "Treasuries Fall as Fed Rate-Hike Outlook Dents Sentiment",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-09-18T14:55:40+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-18/treasuries-fall-as-fed-rate-hike-outlook-dents-sentiment",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Wall Street Week | India’s Growth Test, Bangalore’s Infrastructure Problem, Cricket Attracts Capital",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-18T23:27:06+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-18/wall-street-week-india-s-growth-test-video",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Fed’s Schmid Backed Rate Hike, Says Inflation Goes Beyond Energy",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-18T15:33:21+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-18/fed-s-schmid-backed-rate-hike-says-inflation-goes-beyond-energy",
-          "tags": [
-            "commodity",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
         {
           "title": "Diesel Prices Keep Pressure on Fed and Markets",
           "source": "Bloomberg Markets",
@@ -135,16 +82,29 @@
       ]
     },
     "us_growth": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "SpaceX’s Nasdaq 100 Weight Is Confirmed at 2.82% in Rebalance",
+      "topPositiveTitle": "SpaceX’s Nasdaq 100 Weight Is Confirmed at 2.82% in Rebalance",
+      "items": [
+        {
+          "title": "SpaceX’s Nasdaq 100 Weight Is Confirmed at 2.82% in Rebalance",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-19T14:17:01+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-19/spacex-s-nasdaq-100-weight-is-confirmed-at-2-82-in-rebalance",
+          "tags": [
+            "market",
+            "us_growth"
+          ]
+        }
+      ]
     },
     "global_broad": {
       "avgSentiment": 0,
@@ -203,7 +163,7 @@
       "itemCount": 6,
       "isStale": false,
       "topNegativeTitle": "UN Talks Offer a New Opening on Iran War",
-      "topPositiveTitle": "Europe’s Winter Power Surge Is Biggest Since Energy Crisis",
+      "topPositiveTitle": "Governor Cox Says Americans Need Healthier Conflict",
       "items": [
         {
           "title": "UN Talks Offer a New Opening on Iran War",
@@ -247,13 +207,14 @@
           ]
         },
         {
-          "title": "Blackstone Sees India Nearing Tipping Point for Foreign Capital",
+          "title": "Saudi Arabia Billionaires’ Family Office Dubai Bet Adds to London Exodus",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-19T04:01:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-19/blackstone-sees-india-nearing-tipping-point-for-foreign-capital",
+          "publishedAt": "2026-09-18T10:19:29+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-18/saudi-arabia-billionaires-family-office-dubai-bet-adds-to-london-exodus",
           "tags": [
+            "geopolitical",
             "macro_risk",
             "market"
           ]
@@ -285,43 +246,16 @@
       "items": []
     },
     "rates": {
-      "avgSentiment": -0.266,
-      "negativeCount": 2,
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 3,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Treasuries Fall as Fed Rate-Hike Outlook Dents Sentiment",
+      "topNegativeTitle": "Diesel Prices Keep Pressure on Fed and Markets",
       "topPositiveTitle": "Diesel Prices Keep Pressure on Fed and Markets",
       "items": [
-        {
-          "title": "Treasuries Fall as Fed Rate-Hike Outlook Dents Sentiment",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-09-18T14:55:40+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-18/treasuries-fall-as-fed-rate-hike-outlook-dents-sentiment",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Fed’s Schmid Backed Rate Hike, Says Inflation Goes Beyond Energy",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-18T15:33:21+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-18/fed-s-schmid-backed-rate-hike-says-inflation-goes-beyond-energy",
-          "tags": [
-            "commodity",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
         {
           "title": "Diesel Prices Keep Pressure on Fed and Markets",
           "source": "Bloomberg Markets",
@@ -348,45 +282,30 @@
             "rates",
             "us_broad"
           ]
-        },
-        {
-          "title": "BOJ's Ueda Balances Between Japan's Takaichi and US Treasury's Bessent",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-18T16:20:49+00:00",
-          "url": "https://www.bloomberg.com/news/features/2026-09-18/boj-s-ueda-balances-between-japan-s-takaichi-and-us-treasury-s-bessent",
-          "tags": [
-            "jp_broad",
-            "market",
-            "rates"
-          ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.068,
-      "negativeCount": 1,
-      "positiveCount": 1,
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
+      "positiveCount": 0,
       "neutralCount": 3,
-      "sourceCount": 2,
-      "itemCount": 5,
+      "sourceCount": 1,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Fed’s Schmid Backed Rate Hike, Says Inflation Goes Beyond Energy",
-      "topPositiveTitle": "Europe’s Winter Power Surge Is Biggest Since Energy Crisis",
+      "topNegativeTitle": "Hormuz Oil Shipments Hit Six-Month High, US Commander Says",
+      "topPositiveTitle": "Hormuz Oil Shipments Hit Six-Month High, US Commander Says",
       "items": [
         {
-          "title": "Fed’s Schmid Backed Rate Hike, Says Inflation Goes Beyond Energy",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-18T15:33:21+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-18/fed-s-schmid-backed-rate-hike-says-inflation-goes-beyond-energy",
+          "title": "Hormuz Oil Shipments Hit Six-Month High, US Commander Says",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-19T14:47:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-19/hormuz-oil-shipments-hit-six-month-high-us-commander-says",
           "tags": [
             "commodity",
-            "market",
-            "rates",
-            "us_broad"
+            "market"
           ]
         },
         {
@@ -416,44 +335,19 @@
             "macro_risk",
             "market"
           ]
-        },
-        {
-          "title": "World Running Short of Supertankers Threatens Long-Haul Oil Flow",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-19T11:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-19/world-running-short-of-supertankers-threatens-long-haul-oil-flow",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "Europe’s Winter Power Surge Is Biggest Since Energy Crisis",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-09-19T09:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-19/europe-s-winter-power-surge-is-biggest-since-energy-crisis",
-          "tags": [
-            "commodity",
-            "macro_risk",
-            "market"
-          ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.134,
+      "avgSentiment": 0.191,
       "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 4,
+      "positiveCount": 2,
+      "neutralCount": 5,
       "sourceCount": 1,
-      "itemCount": 5,
+      "itemCount": 7,
       "isStale": false,
       "topNegativeTitle": "Diesel Prices Keep Pressure on Fed and Markets",
-      "topPositiveTitle": "AI Agents Test the Limits of Human Oversight",
+      "topPositiveTitle": "Governor Cox Says Americans Need Healthier Conflict",
       "items": [
         {
           "title": "Diesel Prices Keep Pressure on Fed and Markets",
@@ -511,14 +405,15 @@
           ]
         },
         {
-          "title": "AI Agents Test the Limits of Human Oversight",
+          "title": "Saudi Arabia Billionaires’ Family Office Dubai Bet Adds to London Exodus",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-09-19T12:28:50+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-19/ai-agents-test-the-limits-of-human-oversight-video",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-18T10:19:29+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-18/saudi-arabia-billionaires-family-office-dubai-bet-adds-to-london-exodus",
           "tags": [
             "geopolitical",
+            "macro_risk",
             "market"
           ]
         }
@@ -533,7 +428,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 5,
+    "excludedCount": 6,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
