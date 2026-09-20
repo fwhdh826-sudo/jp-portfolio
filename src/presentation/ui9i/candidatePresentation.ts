@@ -60,7 +60,11 @@ export function candidatePresentationSequence(
   return [...synthesis.decisions, ...synthesis.watchList]
 }
 
-function projectRow(
+/**
+ * 1 件の候補を Home と同じ規則で提示行へ射影する。Phase 2B-1 の個別株面も同じ関数を使い、
+ * 同一銘柄の状態語・金額が Home と食い違わないようにする（第二の射影を作らない）。
+ */
+export function projectCandidateRow(
   entry: CandidateDecisionSynthesisEntry,
   ctx: CandidateProjectionContext,
 ): CandidatePreviewRow {
@@ -106,7 +110,7 @@ export function projectCandidateSection(
   if (synthesis === null || synthesis.status !== 'available') {
     return { status: 'unavailable', rows: [], totalCount: 0, executableCount: 0, reviewCount: 0 }
   }
-  const all = candidatePresentationSequence(synthesis).map(entry => projectRow(entry, ctx))
+  const all = candidatePresentationSequence(synthesis).map(entry => projectCandidateRow(entry, ctx))
   return {
     status: 'available',
     rows: all.slice(0, HOME_CANDIDATE_PREVIEW_LIMIT),

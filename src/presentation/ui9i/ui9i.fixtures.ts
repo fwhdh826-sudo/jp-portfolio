@@ -3,7 +3,7 @@
 // R4.1 デザインのモックデータ（総資産 3,800万円、国内個別株 35% など）と一致させる。
 // 金額・比率・スコアはすべて「権限提示値の想定」であり、投資助言ではない。
 // ═══════════════════════════════════════════════════════════
-import type { OfficialDecision } from '../../types'
+import type { Holding, HoldingAnalysis, OfficialDecision } from '../../types'
 import type { AllocationClassProjection, AllocationConsumerSnapshot } from '../../types/allocationConsumer'
 import type { AssetClass } from '../../types/allocationPlan'
 import type {
@@ -233,4 +233,62 @@ export function scenarioInputs(scenario: HomeScenario): TodayHomeInputs {
     case 'boot':
       return baseInputs({ systemStatus: 'initializing', officialDecision: null, safeModeEffective: true })
   }
+}
+
+
+// ── Phase 2B-1: 個別株（旧 T1）fixture ────────────────────────
+export function fixtureHolding(code: string, overrides: Partial<Holding> = {}): Holding {
+  return {
+    code, name: `銘柄${code}`, eval: 2_000_000, pnlPct: 4.2, currentPrice: 2_000,
+    mu: 0.1, sigma: 0.2, sigmaSource: 'static', beta: 1, sector: '銀行業',
+    target: 2_400, alert: 1_700, lock: false, mitsu: false,
+    ma: true, rsi: 52, macd: true, vol: false, mom3m: 3.1,
+    roe: 10, per: 12, pbr: 1.1, epsG: 6, cfOk: true, de: 0.6, divG: 3,
+    metadataStatus: { fundamentals: 'known', technicals: 'known' },
+    score: 62, decision: 'HOLD', ev: 0.02,
+    ...overrides,
+  }
+}
+
+export function fixtureAnalysis(code: string, overrides: Partial<HoldingAnalysis> = {}): HoldingAnalysis {
+  return {
+    code,
+    fundamentalScore: 18, marketScore: 10, technicalScore: 12, newsScore: 7, qualityScore: 6, riskPenalty: 4,
+    totalScore: 62, ev: 0.02, decision: 'HOLD', confidence: 0.7, strategyRank: 'B',
+    debate: {
+      agents: [], debateScore: 60, confidence: 0.7, finalView: 'HOLD',
+      bullReasons: ['資本効率が高い'], bearReasons: ['金利上昇が逆風'],
+      buyReasons: [], waitReasons: ['条件未達のため様子見'], sellReasons: [],
+      recommendedAction: '継続保有を基本に、決算を確認します。',
+      takeProfitConditions: ['目標株価に到達'], stopLossConditions: ['アラートラインを割り込む'],
+      premiseBreakConditions: ['決算下方修正'],
+      riskGatePass: true,
+      sevenAxis: { growth: 58, valuation: 55, momentum: 60, macro: 50, quality: 65, risk: 40, news: 55 },
+    },
+    ...overrides,
+  }
+}
+
+/**
+ * 個別株面の代表ケース（design 検証 / テスト共用）。
+ *  9697 BUY（取得 2026-07-22 のため 2026-10-06 時点で売却ロック中）/ 6098 HOLD（候補にも既保有として出る）/
+ *  8035 SELL / 8306 判断材料不足（fundamentals/technicals 未取得 → 局所状態）
+ */
+export function fixtureStockHoldings(): { holdings: Holding[]; analysis: HoldingAnalysis[] } {
+  const holdings = [
+    fixtureHolding('8306', { name: '三菱UFJフィナンシャル・グループ', decision: 'INSUFFICIENT_EVIDENCE', metadataStatus: { fundamentals: 'unknown', technicals: 'unknown' }, pnlPct: 8.4, score: 55 }),
+    fixtureHolding('6098', { name: 'リクルートホールディングス', decision: 'HOLD', sector: 'サービス業', pnlPct: 12.6, eval: 3_100_000 }),
+    fixtureHolding('9697', { name: 'カプコン', decision: 'BUY', sector: '情報・通信業', lock: true, acquiredAt: '2026-07-22', pnlPct: -3.2, score: 78 }),
+    fixtureHolding('8035', { name: '東京エレクトロン', decision: 'SELL', sector: '電気機器', pnlPct: -12.4, score: 31 }),
+  ]
+  const analysis = [
+    fixtureAnalysis('8306', {
+      decision: 'INSUFFICIENT_EVIDENCE', totalScore: 55, strategyRank: 'C', confidence: 0.4,
+      debate: { ...fixtureAnalysis('8306').debate, finalView: 'INSUFFICIENT_EVIDENCE', riskGatePass: false, confidence: 0.4 },
+    }),
+    fixtureAnalysis('6098', { totalScore: 66, strategyRank: 'B' }),
+    fixtureAnalysis('9697', { decision: 'BUY', totalScore: 78, strategyRank: 'A' }),
+    fixtureAnalysis('8035', { decision: 'SELL', totalScore: 31, strategyRank: 'E' }),
+  ]
+  return { holdings, analysis }
 }
