@@ -436,7 +436,8 @@
   .u9-surface.u9-surface--top .u9-surface__body > .u9-card { margin: 14px 0 0; }
   .u9-surface.u9-surface--top .u9-surface__body > .u9-card--first { margin-top: 0; }
   .u9-surface--top .u9-surface__note { margin: 12px 4px 0; }
-  .u9-surface.u9-surface--top[data-testid="portfolio-surface"] .u9-surface__body { max-width: none; }
+  /* 1360px でも「目標との差」のバーが横に伸び過ぎないよう、左寄せの読みやすい幅に留める（凍結 D3/D4 の左寄せ本文）。 */
+  .u9-surface.u9-surface--top[data-testid="portfolio-surface"] .u9-surface__body { max-width: 880px; }
 
   /* D4: 左 220px（総資産 / 構成 / 現金）+ 右（目標との差）。カードの面は外し、地の上に直接置く。 */
   .u9-pf-layout {
