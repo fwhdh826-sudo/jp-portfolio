@@ -475,6 +475,148 @@
   .u9-pf-links { margin-top: 22px; max-width: 480px; }
 }
 
+/* ── 個別株（Phase 2B-1）─────────────────────────────────────
+   一覧 / 詳細とも、主ナビ直下の面（.u9-surface--top）の視覚言語を共有する。
+   状態は文字で示し（色だけに依存しない）、操作対象は 44px 以上。 */
+.u9-stk .u9-surface__head { padding-left: 4px; }
+.u9-stk-back {
+  min-height: 44px; min-width: 44px; display: inline-flex; align-items: center; gap: 2px;
+  padding: 0 12px 0 10px; border: 0; border-radius: 10px; background: none; cursor: pointer;
+  font: 500 13px var(--u9-sans); color: var(--u9-accent);
+  white-space: nowrap; word-break: keep-all;
+}
+.u9-stk-back > span:first-child { font-size: 20px; line-height: 1; }
+.u9-stk .u9-surface__title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+.u9-stk-notice { margin: 14px 16px 0; }
+.u9 summary:focus-visible { outline: 2px solid var(--u9-accent); outline-offset: 2px; border-radius: 8px; }
+
+.u9-card--list > .u9-card__head { padding-top: 12px; }
+.u9-stk-list { margin: 0; padding: 0; list-style: none; }
+.u9-stk-list > li { border-bottom: 1px solid var(--u9-line-soft); }
+.u9-stk-list > li:last-child { border-bottom: 0; }
+.u9-stk-row {
+  width: 100%; min-height: 64px; display: flex; align-items: center; gap: 10px; padding: 12px 0;
+  border: 0; background: none; cursor: pointer; text-align: left; font-family: var(--u9-sans); color: var(--u9-ink);
+}
+.u9-stk-row__main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+.u9-stk-row__id { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.u9-stk-code { font: 700 12.5px var(--u9-mono); letter-spacing: .02em; color: var(--u9-ink); white-space: nowrap; }
+.u9-stk-row__name { font-weight: 600; font-size: 13.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.u9-stk-row__meta { display: flex; gap: 8px; flex-wrap: wrap; font-size: 11px; color: var(--u9-ink-3); }
+.u9-stk-row__score { font: 400 10.5px var(--u9-mono); color: var(--u9-ink-4); white-space: nowrap; }
+.u9-stk-row__side { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; flex: none; }
+.u9-stk-row__pnl { font: 400 12px var(--u9-mono); color: var(--u9-ink); white-space: nowrap; }
+.u9-stk-row__pnl[data-sign="pos"] { color: var(--u9-green); }
+.u9-stk-row__pnl[data-sign="neg"] { color: var(--u9-danger); }
+.u9-stk-row__pnl-label { font: 400 10px var(--u9-sans); color: var(--u9-ink-4); }
+
+/* 状態語（判断）。色は装飾で、意味は必ず文字で示す。 */
+.u9-stk-state {
+  display: inline-block; padding: 3px 10px; border-radius: 999px; background: #EDF1F6; color: var(--u9-ink-2);
+  font-size: 11px; font-weight: 600; white-space: nowrap; word-break: keep-all;
+}
+.u9-stk-state[data-tone="buy"] { background: #E7F1EA; color: var(--u9-green); }
+.u9-stk-state[data-tone="sell"] { background: #F6E9E7; color: var(--u9-danger); }
+.u9-stk-state[data-tone="wait"] { background: #FAF2E3; color: var(--u9-amber); }
+.u9-stk-state[data-tone="insufficient"] { background: #fff; color: var(--u9-ink-2); border: 1px dashed #A7B6C6; }
+.u9-stk-state--lg { font-size: 14px; padding: 6px 16px; }
+.u9-stk-tag {
+  display: inline-block; padding: 1px 8px; border-radius: 999px; background: #EEF1F4; color: var(--u9-ink-2);
+  font-size: 10.5px; font-weight: 600; white-space: nowrap; word-break: keep-all;
+}
+.u9-stk-tag[data-kind="lock"], .u9-stk-tag[data-kind="warn"] { background: #FAF2E3; color: var(--u9-amber); }
+.u9-stk-tag[data-kind="action"] { background: #EDF2F8; color: var(--u9-accent-ink); }
+.u9-stk-tag[data-tone="positive"] { background: #E7F1EA; color: var(--u9-green); }
+.u9-stk-tag[data-tone="negative"] { background: #F6E9E7; color: var(--u9-danger); }
+
+/* 比較表 / 開閉 */
+.u9-disclose { border-top: 1px solid var(--u9-line); }
+.u9-disclose:first-of-type { border-top: 0; }
+.u9-disclose__summary {
+  min-height: 44px; display: flex; align-items: center; justify-content: space-between; gap: 8px; cursor: pointer;
+  list-style: none; font-weight: 600; font-size: 13px; color: var(--u9-ink);
+}
+.u9-disclose__summary::-webkit-details-marker { display: none; }
+.u9-disclose__summary::after { content: "›"; color: var(--u9-ink-4); font-size: 16px; transition: transform .15s; }
+.u9-disclose[open] > .u9-disclose__summary::after { transform: rotate(90deg); }
+.u9-disclose__title { margin: 0; font: inherit; }
+.u9-disclose__body { padding: 4px 0 12px; display: flex; flex-direction: column; gap: 12px; }
+.u9-table-scroll { overflow-x: auto; margin: 0 -4px; padding: 0 4px; }
+.u9-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.u9-table th, .u9-table td { padding: 8px 6px; text-align: right; border-bottom: 1px solid var(--u9-line-soft); white-space: nowrap; font-weight: 400; }
+.u9-table thead th { font-size: 10.5px; color: var(--u9-ink-4); font-weight: 600; }
+.u9-table td { font-family: var(--u9-mono); }
+.u9-table td[data-decision] { font-family: var(--u9-sans); font-weight: 600; }
+.u9-table th:first-child { text-align: left; }
+.u9-table__sub { display: block; font: 400 10.5px var(--u9-sans); color: var(--u9-ink-3); max-width: 9em; overflow: hidden; text-overflow: ellipsis; }
+
+/* 詳細 */
+.u9-stk-hero { gap: 8px; }
+.u9-stk-hero__sector { font-size: 12px; color: var(--u9-ink-3); }
+.u9-stk-hero__state { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.u9-stk-hero__price { font: 700 16px var(--u9-mono); color: var(--u9-ink); white-space: nowrap; }
+.u9-stk-hero__price-label { font: 400 11px var(--u9-sans); color: var(--u9-ink-4); }
+.u9-stk-comment { margin: 0; font-size: 13px; line-height: 1.75; color: var(--u9-ink); overflow-wrap: anywhere; }
+.u9-stk-conclusion { display: flex; flex-direction: column; gap: 4px; padding-top: 12px; border-top: 1px solid var(--u9-line); }
+.u9-stk-conclusion__title { font-weight: 700; font-size: 16px; letter-spacing: -.01em; }
+.u9-stk-reasons { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 7px; font-size: 12.5px; line-height: 1.65; color: var(--u9-ink); }
+.u9-stk-reasons li { position: relative; padding-left: 14px; overflow-wrap: anywhere; }
+.u9-stk-reasons li::before { content: "•"; position: absolute; left: 2px; color: var(--u9-ink-4); }
+.u9-stk-reasons__k { font-weight: 600; color: var(--u9-ink-2); margin-right: 6px; white-space: nowrap; }
+.u9-stk-cols { display: grid; grid-template-columns: 1fr; gap: 16px; }
+.u9-stk-plan { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; }
+.u9-stk-plan__k { font-size: 11px; color: var(--u9-ink-3); }
+.u9-stk-plan__v { font: 700 15px var(--u9-mono); color: var(--u9-ink); margin: 2px 0; }
+.u9-stk-execlists { display: flex; flex-direction: column; gap: 14px; padding-top: 12px; border-top: 1px solid var(--u9-line); }
+.u9-defs__row dd { overflow-wrap: anywhere; }
+.u9-stk .u9-defs__row dt { flex: none; white-space: nowrap; word-break: keep-all; }
+.u9-stk-bar { display: block; height: 6px; border-radius: 4px; background: #EDF1F6; overflow: hidden; }
+.u9-stk-bar > span { display: block; height: 100%; background: var(--u9-accent); border-radius: 4px; }
+.u9-stk-axes { list-style: none; margin: 0; padding: 0; display: grid; gap: 9px; }
+.u9-stk-axis { display: grid; grid-template-columns: 5.5em 2.4em 1fr; align-items: center; gap: 8px; font-size: 12px; }
+.u9-stk-axis__label { color: var(--u9-ink-2); white-space: nowrap; word-break: keep-all; }
+.u9-stk-axis__value { font: 700 12px var(--u9-mono); text-align: right; }
+.u9-stk-arows { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.u9-stk-arow { padding: 10px 0; border-bottom: 1px solid var(--u9-line-soft); display: flex; flex-direction: column; gap: 4px; }
+.u9-stk-arow:last-child { border-bottom: 0; }
+.u9-stk-arow__head { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.u9-stk-arow__label { flex: 1 1 auto; font-size: 12.5px; color: var(--u9-ink-2); }
+.u9-stk-arow__value { font: 700 12.5px var(--u9-mono); color: var(--u9-ink); overflow-wrap: anywhere; }
+.u9-stk-arow__unit { font: 400 10.5px var(--u9-mono); color: var(--u9-ink-4); }
+.u9-stk-arow__reason { font-size: 11.5px; line-height: 1.6; color: var(--u9-ink-3); overflow-wrap: anywhere; }
+.u9-stk-kpis { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin: 0; }
+.u9-stk-kpi { background: #F6F9FC; border-radius: 12px; padding: 10px 12px; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.u9-stk-kpi dt { font-size: 10.5px; color: var(--u9-ink-4); }
+.u9-stk-kpi dd { margin: 0; font: 700 14px var(--u9-mono); color: var(--u9-ink); }
+.u9-stk-kpi dd.u9-stk-kpi__eval { font: 600 11px var(--u9-sans); color: var(--u9-ink-3); }
+.u9-stk-p7head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.u9-radar { padding: 0 8px; }
+.u9-radar__svg { width: 100%; max-width: 280px; display: block; margin: 0 auto; overflow: visible; }
+.u9-radar__legend { display: flex; gap: 14px; justify-content: center; margin-top: 6px; font-size: 10.5px; color: var(--u9-ink-4); flex-wrap: wrap; }
+.u9-radar__key { display: inline-flex; align-items: center; gap: 5px; }
+
+/* 候補（個別株面）: Home と同じ行に、詳細の根拠を足す */
+.u9-stk-cand { align-items: flex-start; flex-wrap: wrap; }
+.u9-stk-cand .u9-cand-row__state { margin-top: 2px; }
+.u9-stk-metrics { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px 10px; margin: 4px 0; font-size: 11px; }
+.u9-stk-metrics > div { display: flex; gap: 5px; align-items: baseline; }
+.u9-stk-metrics dt { color: var(--u9-ink-4); }
+.u9-stk-metrics dd { margin: 0; font: 400 11px var(--u9-mono); color: var(--u9-ink); }
+.u9-stk-reason { font-size: 11.5px; line-height: 1.6; color: var(--u9-ink-3); overflow-wrap: anywhere; }
+.u9-stk-reason[data-kind="block"] { color: var(--u9-danger); }
+.u9-stk-reason[data-kind="warn"] { color: var(--u9-amber); }
+.u9-stk-chips { display: flex; flex-wrap: wrap; gap: 4px; }
+
+@media (min-width: 1024px) {
+  .u9-stk-notice { margin: 0 0 14px; }
+  .u9-surface.u9-surface--top.u9-stk .u9-surface__body { max-width: 880px; }
+  .u9-stk .u9-surface__head { padding-left: 12px; }
+  .u9-stk-cols { grid-template-columns: 1fr 1fr; }
+  .u9-stk-kpis { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .u9-stk-axes { grid-template-columns: 1fr 1fr; column-gap: 24px; }
+  .u9-stk-metrics { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+}
+
 /* ── reduced motion ───────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   .u9, .u9 *, .u9 *::before, .u9 *::after {

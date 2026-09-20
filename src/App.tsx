@@ -223,9 +223,10 @@ export function resetScrollOwnerToTop(target: { scrollTo: (options: ScrollToOpti
 
 // UI-9I Phase 1: R4.1 の UI 面（葉画面ではない面）。activeTab（葉画面の権限）は温存し、
 // その上に重ねる。既存 T0–T9 はすべて到達可能（ハブ / PF 面 / 従来のホーム経由）。
+// Phase 2B-1: T1（個別株）も R4.1 の面（葉画面 activeTab === 'T1' のまま視覚だけ移行）。
 export function isUi9iSurface(activeTab: string, surface: UiSurface | null): boolean {
   if (surface !== null) return surface !== 'legacy_home'
-  return activeTab === 'T0'
+  return activeTab === 'T0' || activeTab === 'T1'
 }
 
 function ActiveTabPanel() {
@@ -246,7 +247,7 @@ function ActiveTabPanel() {
   }
 
   if (activeTab === 'T0') return <TodayHome />
-  // T1: 個別株（V10 Phase 6 再構築済み）
+  // T1: 個別株（V10 Phase 6 再構築済み → UI-9I Phase 2B-1 で R4.1 へ視覚移行）
   if (activeTab === 'T1') return <T1_Decision />
   // T2: 国内株投信（Phase 2 V10 新実装）
   if (activeTab === 'T2') return <T2_JpFund />

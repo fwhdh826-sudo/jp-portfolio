@@ -43,6 +43,8 @@ import panelSource from './CandidateFunnelPanel.tsx?raw'
 import cardSource from './CandidateFunnelCard.tsx?raw'
 // @ts-expect-error -- Viteの?raw importはtest/build時にsource文字列へ解決される
 import t1Source from '../tabs/T1_Decision.tsx?raw'
+// @ts-expect-error -- Vite resolves raw source imports during Vitest.
+import stocksViewsSource from '../ui9i/StocksViews.tsx?raw'
 // @ts-expect-error -- Viteの?raw importはtest/build時にsource文字列へ解決される
 import t0Source from '../tabs/T0_Home.tsx?raw'
 
@@ -951,21 +953,24 @@ describe('P5-B005-B3-C accessibility, keyboard, mobile, and T1 integration', () 
     expect(panelCssSource).toMatch(/candidate-funnel-card__name[\s\S]*?overflow-wrap:\s*anywhere/)
   })
 
-  it('adds the independent panel after the existing CandidateDecisionSection only in T1', () => {
+  it('adds the independent panel after the existing candidate synthesis card only in T1', () => {
     // CAND-SYN-1D: StockCandidateSection (legacy applyStockCandidateGates display)
-    // was cut over to CandidateDecisionSection (candidateDecisionSynthesis authority).
-    expect(t1Source).toContain('<CandidateDecisionSection />')
+    // was cut over to the candidate synthesis card (candidateDecisionSynthesis authority).
+    // Phase 2B-1: card は StocksViews、funnel パネルの差し込みは T1 container。
     expect(t1Source).toContain('<CandidateFunnelPanel />')
-    expect(t1Source.indexOf('<CandidateFunnelPanel />'))
-      .toBeGreaterThan(t1Source.indexOf('<CandidateDecisionSection />'))
+    expect(stocksViewsSource).toContain('<CandidatesCard')
+    expect(stocksViewsSource.indexOf('{funnelSlot}'))
+      .toBeGreaterThan(stocksViewsSource.indexOf('<CandidatesCard'))
     expect(t0Source).not.toContain('CandidateFunnelPanel')
   })
 
   it('preserves the existing T1 holding list, detail path, and candidate synthesis UI', () => {
-    expect(t1Source).toContain('function StockList')
+    expect(t1Source).toContain('function StocksList')
     expect(t1Source).toContain('function StockDetail')
-    expect(t1Source).toContain('<CandidateDecisionSection />')
-    expect(t1Source).toContain('return <StockDetail code={selectedCode}')
+    expect(t1Source).toContain('<StocksListView')
+    expect(t1Source).toContain('<StockDetailView')
+    expect(stocksViewsSource).toContain('<CandidatesCard')
+    expect(t1Source).toContain('<StockDetail code={selectedCode}')
   })
 })
 

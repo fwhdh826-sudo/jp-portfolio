@@ -138,3 +138,42 @@ describe('Phase 2A: PF 面 / ハブの CSS 契約', () => {
     for (const tone of ['green', 'violet', 'slate']) expect(css).toContain(`.u9-hub-item__glyph[data-tone="${tone}"]`)
   })
 })
+
+
+describe('Phase 2B-1: 個別株面の CSS 契約', () => {
+  it('操作対象は 44px 以上（行 / 戻る / 開閉 summary）', () => {
+    for (const selector of ['.u9-stk-row', '.u9-stk-back', '.u9-disclose__summary']) {
+      const body = rule(selector)
+      const h = /min-height:\s*(\d+)px/.exec(body)
+      expect(h, selector).not.toBeNull()
+      expect(Number(h![1]), selector).toBeGreaterThanOrEqual(44)
+    }
+    expect(Number(/min-width:\s*(\d+)px/.exec(rule('.u9-stk-back'))![1])).toBeGreaterThanOrEqual(44)
+  })
+
+  it('summary にも視認可能な :focus-visible を与える（キーボード操作）', () => {
+    expect(css).toMatch(/\.u9 summary:focus-visible\s*\{[^}]*outline:\s*2px solid var\(--u9-accent\)/)
+  })
+
+  it('短い日本語ラベル（状態語 / タグ / 戻る）は縦に折り返さない（nowrap + keep-all）', () => {
+    for (const selector of ['.u9-stk-state', '.u9-stk-tag', '.u9-stk-back']) {
+      const body = rule(selector)
+      expect(body, selector).toMatch(/white-space:\s*nowrap/)
+      expect(body, selector).toMatch(/word-break:\s*keep-all/)
+    }
+  })
+
+  it('比較表は名前付きスクロール領域（overflow-x:auto）で、セルは折り返さない', () => {
+    expect(rule('.u9-table-scroll')).toMatch(/overflow-x:\s*auto/)
+    expect(css).toMatch(/\.u9-table th, \.u9-table td\s*\{[^}]*white-space:\s*nowrap/)
+  })
+
+  it('デスクトップの本文幅は 880px までに抑える（横に伸びすぎない）。モバイルの余白は既存面と同じ 16px', () => {
+    expect(css).toMatch(/\.u9-surface\.u9-surface--top\.u9-stk \.u9-surface__body\s*\{[^}]*max-width:\s*880px/)
+    expect(rule('.u9-stk-notice')).toMatch(/margin:\s*14px 16px 0/)
+  })
+
+  it('reduced-motion は .u9 配下すべての transition / animation を無効化する（開閉 chevron を含む）', () => {
+    expect(css).toMatch(/prefers-reduced-motion: reduce[^}]*\{[^}]*\.u9 \*/)
+  })
+})

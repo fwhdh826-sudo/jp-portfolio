@@ -3,8 +3,15 @@
 // （既存の「実行可能額」「実行判断」等の正典語と整合させる）。
 // リスクゲート判定ロジック・debate.riskGatePass自体には一切触れない。
 import { describe, expect, it } from 'vitest'
+// Phase 2B-1: T1 の文言は presentation（値・文言）と views（見出し）に分かれたため、両方を対象にする。
 // @ts-expect-error -- resolved at build/test time by Vite's `?raw` import convention
-import t1Source from './T1_Decision.tsx?raw'
+import presentationSource from '../../presentation/ui9i/stocksPresentation.ts?raw'
+// @ts-expect-error -- resolved at build/test time by Vite's `?raw` import convention
+import viewsSource from '../ui9i/StocksViews.tsx?raw'
+// @ts-expect-error -- resolved at build/test time by Vite's `?raw` import convention
+import t1Container from './T1_Decision.tsx?raw'
+
+const t1Source: string = `${t1Container}\n${presentationSource}\n${viewsSource}`
 
 describe('UI-9H H-P1-7: T1_Decision の執行/実行表記は「実行」に統一されている', () => {
   it('canonical表記（実行条件を充足・通過—実行可・非通過—実行抑制・実行条件）が存在する', () => {

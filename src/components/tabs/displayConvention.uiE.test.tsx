@@ -195,8 +195,8 @@ describe('TE1: T0/T3/T4は各asset classのauthority diffRatio/diffValueを個�
   })
 })
 
-describe('F2: T1 mobile score matrixの損益cellは2桁精度を維持して縮退する', () => {
-  it('mobile renderで対象cellだけが10px/min-width:0/nowrapとなり値を省略しない', () => {
+describe('F2: T1 の損益表示は 2 桁精度を維持する（Phase 2B-1: 一覧の行 / 比較表とも formatSignedPct）', () => {
+  it('mobile render で一覧の行と比較表の損益が「+22.90%」等の 2 桁で全件残り、1 桁へ丸めない', () => {
     const source = authorityFixtureState().holdings[0]
     const state: AppState = {
       ...authorityFixtureState(),
@@ -208,25 +208,17 @@ describe('F2: T1 mobile score matrixの損益cellは2桁精度を維持して縮
       analysis: [],
     }
     const html = renderWithViewport(state, T1_Decision, true)
-    const matrixStart = html.indexOf('銘柄スコア比較')
-    const matrixEnd = html.indexOf('候補判断', matrixStart)
-    expect(matrixStart).toBeGreaterThanOrEqual(0)
-    const matrixHtml = html.slice(matrixStart, matrixEnd < 0 ? html.length : matrixEnd)
+    const tableStart = html.indexOf('<table class="u9-table">')
+    expect(tableStart).toBeGreaterThanOrEqual(0)
+    const tableHtml = html.slice(tableStart, html.indexOf('</table>', tableStart))
     for (const expected of ['+22.90%', '+12.40%', '-12.40%']) {
-      const escaped = expected.replace(/[+.%]/g, '\\$&')
-      const match = matrixHtml.match(new RegExp(`<div style="([^"]*)">${escaped}</div>`))
-      expect(match, `${expected} cell`).not.toBeNull()
-      const style = match![1]
-      expect(style).toContain('padding:6px 2px')
-      expect(style).toContain('font-size:10px')
-      expect(style).toContain('min-width:0')
-      expect(style).toContain('white-space:nowrap')
+      // 一覧の行（u9-stk-row__pnl）と比較表のセルの両方に、値を省略せず残る。
+      expect(html, `row ${expected}`).toMatch(new RegExp(`u9-stk-row__pnl-label">損益</span> ${expected.replace(/[+.%]/g, '\\$&')}<`))
+      expect(tableHtml, `cell ${expected}`).toContain(`<td>${expected}</td>`)
     }
-    expect(matrixHtml).toContain('grid-template-columns:minmax(64px, 1.2fr) repeat(5, 1fr)')
-    expect(matrixHtml).toContain('overflow-x:auto')
-    expect(matrixHtml).not.toContain('+22.9%')
-    expect(matrixHtml).not.toContain('+12.4%')
-    expect(matrixHtml).not.toContain('-12.4%')
+    expect(html).not.toContain('+22.9%')
+    expect(html).not.toContain('+12.4%')
+    expect(html).not.toContain('-12.4%')
   })
 })
 

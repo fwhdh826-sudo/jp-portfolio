@@ -21,7 +21,13 @@ function stripLineComments(source: string): string {
 }
 
 const t0Source = readFileSync(new URL('./T0_Home.tsx', import.meta.url), 'utf8')
-const t1Source = readFileSync(new URL('./T1_Decision.tsx', import.meta.url), 'utf8')
+// Phase 2B-1: T1 は container（T1_Decision.tsx）/ view（StocksViews.tsx）/ presentation（stocksPresentation.ts）
+// に分かれた。負の guard（読まない・計算しない・再ソートしない）は 3 ファイルすべてに対して掛け、
+// 移設によって guard が空振り（vacuous）にならないようにする。
+const t1ContainerSource = readFileSync(new URL('./T1_Decision.tsx', import.meta.url), 'utf8')
+const t1ViewsSource = readFileSync(new URL('../ui9i/StocksViews.tsx', import.meta.url), 'utf8')
+const t1PresentationSource = readFileSync(new URL('../../presentation/ui9i/stocksPresentation.ts', import.meta.url), 'utf8')
+const t1Source = [t1ContainerSource, t1ViewsSource, t1PresentationSource].join('\n')
 const t0Code = stripLineComments(t0Source)
 const t1Code = stripLineComments(t1Source)
 
@@ -181,8 +187,10 @@ describe('D19: candidate officialDecision compatibility action is not a second T
   })
 
   it('D19 CandidateDecisionSection (T1) never reads officialDecision', () => {
-    const sectionStart = t1Source.indexOf('function CandidateDecisionSection')
-    const section = t1Source.slice(sectionStart, sectionStart + 2000)
+    const sectionStart = t1PresentationSource.indexOf('function projectCandidateEntry')
+    expect(sectionStart).toBeGreaterThanOrEqual(0)
+    const section = t1PresentationSource.slice(sectionStart, t1PresentationSource.indexOf('export function assembleStocksList'))
+    expect(section.length).toBeGreaterThan(500)
     expect(section).not.toContain('officialDecision')
   })
 })
@@ -192,8 +200,8 @@ describe('D20: entryId used as React list key, not array index', () => {
     expect(t0Source).toContain('<CandidateListItem key={entry.entryId} entry={entry} />')
   })
 
-  it('D20 T1 CandidateSynthesisEntryCard is keyed by entry.entryId', () => {
-    expect(t1Source).toContain('key={entry.entryId} entry={entry} rawByCode={rawByCode}')
+  it('D20 T1 candidate row (StocksViews CandidateRow) is keyed by entry.entryId', () => {
+    expect(t1ViewsSource).toContain('key={r.entryId} row={r}')
   })
 })
 

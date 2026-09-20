@@ -114,7 +114,7 @@ describe('UserDockNav / UserSidebarNav', () => {
 })
 
 describe('applyNavTarget: 葉画面と UI 面', () => {
-  const spy = () => ({ setTab: vi.fn(), openSurface: vi.fn(), clearSurface: vi.fn() })
+  const spy = () => ({ setTab: vi.fn(), openSurface: vi.fn(), clearSurface: vi.fn(), clearStockSelection: vi.fn() })
 
   it('UI 面へは openSurface のみ（activeTab は変えない = T1 を置き換えない）', () => {
     const a = spy()
@@ -131,36 +131,52 @@ describe('applyNavTarget: 葉画面と UI 面', () => {
     expect(a.setTab).toHaveBeenCalledWith('T1')
     expect(a.openSurface).not.toHaveBeenCalled()
   })
+
+  it('個別株の選択中銘柄は、どのナビ操作でも解除される（「個別株」再タップで一覧へ戻る）', () => {
+    for (const target of [{ tab: 'T1', surface: null }, { tab: 'T0', surface: null }, { tab: null, surface: 'pf' }] as const) {
+      const a = spy()
+      applyNavTarget(target, a)
+      expect(a.clearStockSelection, JSON.stringify(target)).toHaveBeenCalledTimes(1)
+    }
+  })
+
+  it('clearStockSelection を持たない呼び出し側（Phase 1/2A 互換）でも動く', () => {
+    const a = { setTab: vi.fn(), openSurface: vi.fn(), clearSurface: vi.fn() }
+    expect(() => applyNavTarget({ tab: 'T1', surface: null }, a)).not.toThrow()
+    expect(a.setTab).toHaveBeenCalledWith('T1')
+  })
 })
 
-describe('App のルーティング: Decision Audit は既存 T1（個別株）を置き換えない', () => {
-  it('isUi9iSurface: T0 と R4.1 面のみ。T1–T9 と従来のホームは従来ヘッダーを維持', () => {
+describe('App のルーティング: Decision Audit は個別株（T1）を置き換えない', () => {
+  it('isUi9iSurface: T0 / T1（Phase 2B-1 で個別株が R4.1 化）と R4.1 面のみ。T2–T9 と従来のホームは従来ヘッダーを維持', () => {
     expect(isUi9iSurface('T0', null)).toBe(true)
-    expect(isUi9iSurface('T1', null)).toBe(false)
-    expect(isUi9iSurface('T9', null)).toBe(false)
+    expect(isUi9iSurface('T1', null)).toBe(true)
+    for (const tab of ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9']) expect(isUi9iSurface(tab, null), tab).toBe(false)
     expect(isUi9iSurface('T0', 'audit')).toBe(true)
     expect(isUi9iSurface('T1', 'funds_hub')).toBe(true)
     expect(isUi9iSurface('T0', 'legacy_home')).toBe(false)
   })
 
-  it('activeTab=T1・面なし → 既存 T1 を表示し、Decision Audit は出ない', () => {
+  it('activeTab=T1・面なし → 個別株面（R4.1）を表示し、Decision Audit は出ない。従来の header / StatusBar は出さない', () => {
     withTab('T1')
     const html = renderToStaticMarkup(<App />)
-    expect(html).toContain('個別株ポートフォリオ') // T1 PageHeader
+    expect(html).toContain('data-testid="stocks-surface"')
     expect(html).not.toContain('data-testid="decision-audit"')
-    expect(html).toContain('class="app-header"') // 従来画面は従来ヘッダーを維持
+    expect(html).not.toContain('class="app-header"')
+    expect(html).toContain('u9-dock')
+    expect(html).toContain('u9-sidebar')
   })
 
-  it('audit 面 → Decision Audit を表示。activeTab は T1 のままで T1 は消えず、戻れば T1', () => {
+  it('audit 面 → Decision Audit を表示。activeTab は T1 のままで個別株面は消えず、戻れば個別株面', () => {
     withTab('T1')
     setSurface('audit')
     const html = renderToStaticMarkup(<App />)
     expect(html).toContain('data-testid="decision-audit"')
-    expect(html).not.toContain('個別株ポートフォリオ')
+    expect(html).not.toContain('data-testid="stocks-surface"')
     expect(html).not.toContain('class="app-header"')
     expect(mockedStore.state?.activeTab).toBe('T1')
     setSurface(null)
-    expect(renderToStaticMarkup(<App />)).toContain('個別株ポートフォリオ')
+    expect(renderToStaticMarkup(<App />)).toContain('data-testid="stocks-surface"')
   })
 
   it('各 UI 面がルーティングされる（投信ハブ / その他ハブ / PF / 従来のホーム）', () => {

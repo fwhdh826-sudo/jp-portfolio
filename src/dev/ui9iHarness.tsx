@@ -16,9 +16,22 @@ import { assembleTodayHomeViewModel } from '../presentation/ui9i/todayHome'
 import { scenarioInputs, type HomeScenario } from '../presentation/ui9i/ui9i.fixtures'
 import { projectFundsHub, assembleOtherHub } from '../presentation/ui9i/hubPresentation'
 import { projectPortfolio } from '../presentation/ui9i/portfolioPresentation'
-import { UNAVAILABLE_ALLOCATION, fixtureAllocation } from '../presentation/ui9i/ui9i.fixtures'
+import {
+  FIXTURE_NOW_MS,
+  UNAVAILABLE_ALLOCATION,
+  fixtureAllocation,
+  fixtureDecision,
+  fixtureEntry,
+  fixtureExecutableDecision,
+  fixtureReviewWatchList,
+  fixtureStockHoldings,
+  fixtureSynthesis,
+} from '../presentation/ui9i/ui9i.fixtures'
+import { assembleStockDetail, assembleStocksList, type DecisionContext } from '../presentation/ui9i/stocksPresentation'
+import { useAppStore } from '../store/useAppStore'
 import { useUiSurface } from '../store/uiSurface'
 import { FundsHubView, OtherHubView, PortfolioSurfaceView } from '../components/ui9i/HubSurfaces'
+import { StockDetailView, StocksListView } from '../components/ui9i/StocksViews'
 import { TodayHomeView } from '../components/ui9i/TodayHomeView'
 import { UserDockNav, UserSidebarNav } from '../components/ui9i/UserNav'
 
@@ -35,7 +48,30 @@ const allocUnavailable = params.get('alloc') === 'unavailable'
 const pfProjection = projectPortfolio(allocUnavailable ? UNAVAILABLE_ALLOCATION : fixtureAllocation())
 const noop = () => {}
 
+// Phase 2B-1: `?view=stocks`（一覧）/ `?view=stocks&code=8306`（詳細）。`&mode=safe_mode` で SAFE_MODE 中の同一銘柄を確認できる。
+function stocksSurface() {
+  useAppStore.setState({ activeTab: 'T1' })
+  const safe = params.get('mode') === 'safe_mode'
+  const code = params.get('code')
+  const { holdings, analysis } = fixtureStockHoldings()
+  const decisionContext: DecisionContext = {
+    officialDecision: fixtureDecision(), dqSuppressed: false, capExceeded: false, safeModeActive: safe,
+    now: new Date(FIXTURE_NOW_MS),
+  }
+  const heroState = safe ? 'safe_mode' : 'normal'
+  const synthesis = fixtureSynthesis(
+    safe ? [] : [fixtureExecutableDecision()],
+    [...fixtureReviewWatchList().slice(1), fixtureEntry('8058', { displayName: '三菱商事', action: 'BLOCKED', relationship: 'new_to_portfolio', blockingReasons: ['CLASS_FULL'] })],
+  )
+  const common = { holdings, analysis, decisionContext, analysisLastRunAt: '2026-10-06T08:30:00+09:00', holdingsStale: false, synthesis, rawCandidates: [], heroState } as const
+  if (code !== null) {
+    return <StockDetailView vm={assembleStockDetail({ ...common, code, stockScores6Axis: null })} onBack={noop} />
+  }
+  return <StocksListView vm={assembleStocksList({ ...common, dqReason: null, portfolioStale: false, rawFunnelAvailable: true })} onSelect={noop} />
+}
+
 function surfaceFor(v: string | null) {
+  if (v === 'stocks') return stocksSurface()
   if (v === 'pf') {
     useUiSurface.getState().openSurface('pf')
     return (
