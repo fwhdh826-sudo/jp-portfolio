@@ -3,7 +3,7 @@
 // 行順は projectPortfolio が保持する canonical 順のまま。ここでは並べ替えない。
 import type { AssetClass } from '../../types/allocationPlan'
 import type { PortfolioClassRow } from '../../presentation/ui9i/portfolioPresentation'
-import { formatManYen } from '../../presentation/ui9i/formatters'
+import { currentAmountText, gapText } from '../../presentation/ui9i/portfolioPresentation'
 import { StatusDot } from './primitives'
 
 export const ASSET_CLASS_COLOR: Record<AssetClass, string> = {
@@ -32,15 +32,8 @@ export function donutGradient(rows: readonly PortfolioClassRow[]): string {
   return `conic-gradient(${stops.join(', ')})`
 }
 
-const pctText = (pct: number | null): string => (pct === null ? '—' : String(Math.round(pct)))
-
-/** 「35 / 30 ・超過 19万円」形式。方向語は adapter が決めたものだけ。 */
-export function gapText(row: PortfolioClassRow): string {
-  if (row.direction === 'undeterminable') return `${row.directionLabel}`
-  const amount = row.gapAmount === null ? null : formatManYen(row.gapAmount)
-  const head = `${pctText(row.currentRatioPct)} / ${pctText(row.targetRatioPct)}`
-  return amount === null ? `${head} ・${row.directionLabel}` : `${head} ・${row.directionLabel} ${amount}`
-}
+// gapText は adapter が唯一の生成点（Portfolio 面・投信ハブ・Decision Audit で共有）。
+export { gapText }
 
 export function Donut({ rows, centerLabel, centerValue }: {
   rows: readonly PortfolioClassRow[]
@@ -49,7 +42,7 @@ export function Donut({ rows, centerLabel, centerValue }: {
 }) {
   return (
     <div className="u9-donut" style={{ background: donutGradient(rows) }} role="img"
-      aria-label={`資産構成 ${rows.map(r => `${r.label} ${pctText(r.currentRatioPct)}%`).join('、')}`}>
+      aria-label={`資産構成 ${rows.map(r => `${r.label} ${currentAmountText(r)}`).join('、')}`}>
       <span className="u9-donut__hole">
         <span>{centerLabel}</span>
         <strong>{centerValue}</strong>

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { projectPortfolio, resolvePortfolioDirection } from './portfolioPresentation'
+import { currentAmountText, gapText, projectPortfolio, resolvePortfolioDirection } from './portfolioPresentation'
 import { CANONICAL_CLASS_ORDER, UNAVAILABLE_ALLOCATION, fixtureAllocation, fixtureClasses } from './ui9i.fixtures'
 
 describe('Portfolio adapter: canonical 順を保つ', () => {
@@ -62,5 +62,69 @@ describe('現在比率は表示専用（総資産から算出）', () => {
     const a = projectPortfolio(fixtureAllocation({ totalAssets: 38_000_000 }))!
     const b = projectPortfolio(fixtureAllocation({ totalAssets: 1 }))!
     expect(a.rows.map(r => r.direction)).toEqual(b.rows.map(r => r.direction))
+  })
+})
+
+describe('canonical 順・ランキング禁止（Phase 2A 追加）', () => {
+  it('gap の大小・金額・比率で並べ替えない（入力順 = 出力順、どの並びでも保存）', () => {
+    const base = fixtureClasses()
+    const bySizeDesc = [...base].sort((a, b) => (b.targetGap + b.overweightAmount) - (a.targetGap + a.overweightAmount))
+    const byAmountAsc = [...base].sort((a, b) => a.currentAmount - b.currentAmount)
+    for (const order of [bySizeDesc, byAmountAsc]) {
+      const pf = projectPortfolio(fixtureAllocation({ classes: order }))!
+      expect(pf.rows.map(r => r.assetClass)).toEqual(order.map(c => c.assetClass))
+    }
+    // canonical 入力（product 順）では常に JP_STOCK → … → CASH_RESERVE
+    expect(projectPortfolio(fixtureAllocation())!.rows.map(r => r.assetClass)).toEqual([...CANONICAL_CLASS_ORDER])
+  })
+
+  it('adapter は 重要度 / 警告 / 順位 / スコアに相当するフィールドを row に持たない', () => {
+    const row = projectPortfolio(fixtureAllocation())!.rows[0]
+    expect(Object.keys(row).sort()).toEqual([
+      'assetClass', 'currentAmount', 'currentRatioPct', 'direction', 'directionLabel', 'gapAmount', 'label', 'targetAmount', 'targetRatioPct',
+    ])
+  })
+})
+
+describe('gapText: 唯一の生成点', () => {
+  it('現在% / 目標% ・方向 金額（design のモックと同一文字列）', () => {
+    const rows = projectPortfolio(fixtureAllocation())!.rows.map(gapText)
+    expect(rows).toEqual([
+      '35 / 30 ・超過 190万円',
+      '20 / 20 ・目標水準',
+      '25 / 25 ・目標水準',
+      '10 / 10 ・目標水準',
+      '7 / 10 ・不足 114万円',
+      '3 / 5 ・不足 76万円',
+    ])
+  })
+
+  it('判定不能は方向語のみ（0 や 目標水準 に偽装しない）', () => {
+    const classes = fixtureClasses().map(c => (c.assetClass === 'GOLD' ? { ...c, targetGap: Number.NaN } : c))
+    const gold = projectPortfolio(fixtureAllocation({ classes }))!.rows[3]
+    expect(gapText(gold)).toBe('判定不能')
+  })
+})
+
+describe('currentAmountText: 凡例の現在額は canonical currentAmount のみ', () => {
+  it('万円表記。総資産・比率に依存しない', () => {
+    const a = projectPortfolio(fixtureAllocation({ totalAssets: 38_000_000 }))!.rows.map(currentAmountText)
+    const b = projectPortfolio(fixtureAllocation({ totalAssets: 1 }))!.rows.map(currentAmountText)
+    expect(a).toEqual(['1,330万円', '760万円', '950万円', '380万円', '266万円', '114万円'])
+    expect(b).toEqual(a)
+  })
+
+  it('非有限値は「—」（¥0 / 0万円 にしない）', () => {
+    expect(currentAmountText({ currentAmount: Number.NaN })).toBe('—')
+  })
+})
+
+describe('表示専用の現在比率は business state に影響しない', () => {
+  it('currentRatioPct を変えうる totalAssets の差で direction / gapAmount / 金額は不変', () => {
+    const a = projectPortfolio(fixtureAllocation({ totalAssets: 38_000_000 }))!
+    const b = projectPortfolio(fixtureAllocation({ totalAssets: 9_999_999 }))!
+    expect(a.rows.map(r => r.currentRatioPct)).not.toEqual(b.rows.map(r => r.currentRatioPct))
+    expect(a.rows.map(r => [r.direction, r.gapAmount, r.currentAmount, r.targetAmount]))
+      .toEqual(b.rows.map(r => [r.direction, r.gapAmount, r.currentAmount, r.targetAmount]))
   })
 })

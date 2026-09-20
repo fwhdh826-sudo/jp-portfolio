@@ -3,6 +3,7 @@ import {
   formatJstHeaderDate,
   formatJstMonthDayTime,
   formatManYen,
+  formatManYenParts,
   formatMonthDay,
   formatSignedPct1,
   formatYen,
@@ -43,5 +44,23 @@ describe('金額 / 比率', () => {
     expect(formatSignedPct1(0.6)).toBe('+0.6%')
     expect(formatSignedPct1(-0.1)).toBe('-0.1%')
     expect(formatSignedPct1(null)).toBeNull()
+  })
+})
+
+describe('formatManYenParts: 大きな数字 + 小さな単位（formatManYen と同値）', () => {
+  it('万円 / 円 の分割。値は formatManYen と常に一致する', () => {
+    expect(formatManYenParts(38_000_000)).toEqual({ value: '3,800', unit: '万円' })
+    expect(formatManYenParts(5_000)).toEqual({ value: '5,000', unit: '円' })
+    expect(formatManYenParts(0)).toEqual({ value: '0', unit: '万円' })
+    for (const n of [38_000_000, 5_000, 0, 1_140_000, -1_900_000, 9_999, 10_000]) {
+      const p = formatManYenParts(n)!
+      expect(`${p.value}${p.unit}`).toBe(formatManYen(n))
+    }
+  })
+  it('非有限・null は null（0 に丸めない）', () => {
+    expect(formatManYenParts(Number.NaN)).toBeNull()
+    expect(formatManYenParts(Number.POSITIVE_INFINITY)).toBeNull()
+    expect(formatManYenParts(null)).toBeNull()
+    expect(formatManYenParts(undefined)).toBeNull()
   })
 })

@@ -1,11 +1,14 @@
 import { describe, expect, it } from 'vitest'
 import type { TabId } from '../../types'
 import {
+  DESKTOP_NAV,
+  DESKTOP_NAV_TARGET,
   FUNDS_HUB_LINKS,
   OTHER_HUB_LINKS,
   PF_SURFACE_LINKS,
   PRIMARY_NAV,
   PRIMARY_NAV_TARGET,
+  resolveDesktopNav,
   resolvePrimaryNav,
   type NavTarget,
 } from './navigation'
@@ -85,5 +88,56 @@ describe('現在画面 → 主ナビ項目', () => {
     expect(resolvePrimaryNav('T0', 'pf')).toBe('pf')
     expect(resolvePrimaryNav('T0', 'other_hub')).toBe('other')
     expect(resolvePrimaryNav('T0', 'legacy_home')).toBe('other')
+  })
+})
+
+describe('デスクトップ左サイドバー: 今日 / 個別株 / 投信 / ポートフォリオ / ニュース / その他', () => {
+  it('項目名と順序（ニュースが独立項目）。内部の T 番号を露出しない', () => {
+    expect(DESKTOP_NAV.map(n => n.label)).toEqual(['今日', '個別株', '投信', 'ポートフォリオ', 'ニュース', 'その他'])
+    expect(JSON.stringify(DESKTOP_NAV)).not.toMatch(/\bT[0-9]\b/)
+  })
+
+  it('モバイルの主ナビ（5 項目）は変えない', () => {
+    expect(PRIMARY_NAV.map(n => n.label)).toEqual(['今日', '個別株', '投信', 'PF', 'その他'])
+  })
+
+  it('各項目の到達先: 今日=T0 / 個別株=T1 / 投信=ハブ / ポートフォリオ=PF面 / ニュース=T5 / その他=ハブ', () => {
+    expect(DESKTOP_NAV_TARGET.today).toEqual({ tab: 'T0', surface: null })
+    expect(DESKTOP_NAV_TARGET.stocks).toEqual({ tab: 'T1', surface: null })
+    expect(DESKTOP_NAV_TARGET.funds).toEqual({ tab: null, surface: 'funds_hub' })
+    expect(DESKTOP_NAV_TARGET.pf).toEqual({ tab: null, surface: 'pf' })
+    expect(DESKTOP_NAV_TARGET.news).toEqual({ tab: 'T5', surface: null })
+    expect(DESKTOP_NAV_TARGET.other).toEqual({ tab: null, surface: 'other_hub' })
+    for (const n of DESKTOP_NAV) expect(DESKTOP_NAV_TARGET[n.id], n.id).toBeDefined()
+  })
+
+  it('活性項目: T5 だけがニュース。他は主ナビの所属と同じ。UI 面が優先', () => {
+    expect(resolveDesktopNav('T5', null)).toBe('news')
+    expect(resolveDesktopNav('T6', null)).toBe('other')
+    expect(resolveDesktopNav('T9', null)).toBe('other')
+    expect(resolveDesktopNav('T2', null)).toBe('funds')
+    expect(resolveDesktopNav('T4', null)).toBe('pf')
+    expect(resolveDesktopNav('T5', 'other_hub')).toBe('other')
+    expect(resolveDesktopNav('T5', 'audit')).toBe('today')
+    // モバイルの解決は従来のまま（T5 は「その他」）
+    expect(resolvePrimaryNav('T5', null)).toBe('other')
+  })
+
+  it('デスクトップから T0–T9 にも引き続き到達できる（ニュースは直接、他はハブ / PF 面経由）', () => {
+    const direct = DESKTOP_NAV.map(n => DESKTOP_NAV_TARGET[n.id].tab).filter(Boolean)
+    expect(direct).toContain('T5')
+  })
+})
+
+describe('ハブのアイコンチップは意味を持たない配色のみ', () => {
+  it('全リンクが 4 種の tone のいずれか', () => {
+    for (const l of [...FUNDS_HUB_LINKS, ...OTHER_HUB_LINKS, ...PF_SURFACE_LINKS]) {
+      expect(['blue', 'green', 'violet', 'slate']).toContain(l.tone)
+    }
+  })
+
+  it('現在額を出す行は国内投信=JP_TRUST / 海外投信=OVERSEAS_TRUST のみ', () => {
+    expect(FUNDS_HUB_LINKS.map(l => l.valueAssetClass ?? null)).toEqual(['JP_TRUST', 'OVERSEAS_TRUST', null])
+    expect(OTHER_HUB_LINKS.every(l => l.valueAssetClass === undefined)).toBe(true)
   })
 })

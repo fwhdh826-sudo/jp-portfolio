@@ -46,3 +46,6 @@ export const HOME_TIER_LABEL = {
 export const DATA_WAIT_ROW_LABEL = '更新待ち'
 export const UNAVAILABLE_LABEL = '利用不可'
 export const UNDETERMINABLE_LABEL = '判定不能'
+
+/** ユーザー向けのバージョン表記（サイドバー脚注・その他ハブのシステム欄）。 */
+export const APP_VERSION_LABEL = '13.3'

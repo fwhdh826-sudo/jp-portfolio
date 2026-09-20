@@ -14,6 +14,7 @@
 // ═══════════════════════════════════════════════════════════
 import type { AllocationConsumerSnapshot } from '../../types/allocationConsumer'
 import type { AssetClass } from '../../types/allocationPlan'
+import { formatManYen } from './formatters'
 import { ASSET_CLASS_LABEL, UNDETERMINABLE_LABEL } from './labels'
 
 export type PortfolioDirection = 'shortfall' | 'excess' | 'on_target' | 'undeterminable'
@@ -77,4 +78,23 @@ export function projectPortfolio(snapshot: AllocationConsumerSnapshot): Portfoli
     }
   })
   return { totalAssets, rows }
+}
+
+const pctText = (pct: number | null): string => (pct === null ? '—' : String(Math.round(pct)))
+
+/**
+ * 「35 / 30 ・超過 190万円」形式（現在% / 目標% ・方向 金額）。
+ * 方向語と金額は adapter が決めたもの（targetGap / overweightAmount）だけを使う。
+ * Portfolio 面・投信ハブ・Decision Audit が同じ文字列を使うための唯一の生成点。
+ */
+export function gapText(row: PortfolioClassRow): string {
+  if (row.direction === 'undeterminable') return `${row.directionLabel}`
+  const amount = row.gapAmount === null ? null : formatManYen(row.gapAmount)
+  const head = `${pctText(row.currentRatioPct)} / ${pctText(row.targetRatioPct)}`
+  return amount === null ? `${head} ・${row.directionLabel}` : `${head} ・${row.directionLabel} ${amount}`
+}
+
+/** 凡例・ハブ行の「現在額」（canonical currentAmount の万円表記）。不明は「—」。 */
+export function currentAmountText(row: Pick<PortfolioClassRow, 'currentAmount'>): string {
+  return formatManYen(row.currentAmount) ?? '—'
 }

@@ -57,12 +57,18 @@ export function formatYen(n: number | null | undefined): string | null {
   return `¥${Math.round(n).toLocaleString('ja-JP')}`
 }
 
-/** 万円単位（整数丸め）。1万円未満は円表記。非有限値は null。 */
-export function formatManYen(n: number | null | undefined): string | null {
+/** 数値部分と単位に分けた万円表記（総資産の大きな数字 + 小さな単位のため）。非有限値は null。 */
+export function formatManYenParts(n: number | null | undefined): { value: string; unit: '万円' | '円' } | null {
   if (n == null || !Number.isFinite(n)) return null
   const abs = Math.abs(n)
-  if (abs !== 0 && abs < 10_000) return `${Math.round(n).toLocaleString('ja-JP')}円`
-  return `${Math.round(n / 10_000).toLocaleString('ja-JP')}万円`
+  if (abs !== 0 && abs < 10_000) return { value: Math.round(n).toLocaleString('ja-JP'), unit: '円' }
+  return { value: Math.round(n / 10_000).toLocaleString('ja-JP'), unit: '万円' }
+}
+
+/** 万円単位（整数丸め）。1万円未満は円表記。非有限値は null。 */
+export function formatManYen(n: number | null | undefined): string | null {
+  const parts = formatManYenParts(n)
+  return parts === null ? null : `${parts.value}${parts.unit}`
 }
 
 /** 表示用の比率（%）。小数 0.35 ではなく 35 を受け取る。整数丸め。 */
