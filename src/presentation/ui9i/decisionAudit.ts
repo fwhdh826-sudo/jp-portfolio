@@ -25,6 +25,7 @@ import { MARKET_REGIME_LABEL, OPERATION_MODE_LABEL, UNAVAILABLE_LABEL } from './
 import { projectPortfolio, type PortfolioClassRow } from './portfolioPresentation'
 import { projectCandidateSection } from './candidatePresentation'
 import {
+  candidateProjectionContextFor,
   resolveHeroState,
   heroCopy,
   type DeployableCashViewModel,
@@ -118,10 +119,7 @@ export function selectDecisionAuditViewModel(state: AppState, now: number = Date
   const snapshot = selectAllocationConsumerSnapshot(state)
   const cash = selectExecutableDeployableCash(state)
   const synthesis = selectCandidateDecisionSynthesis(state)
-  const candidates = projectCandidateSection(synthesis, {
-    executionSuppressed: heroState === 'safe_mode',
-    dataWait: heroState === 'data_wait',
-  })
+  const candidates = projectCandidateSection(synthesis, candidateProjectionContextFor(heroState))
   const portfolio = projectPortfolio(snapshot)
 
   const recap: AuditRecap = {
@@ -134,8 +132,10 @@ export function selectDecisionAuditViewModel(state: AppState, now: number = Date
       : null,
   }
 
+  // 注入された監査基準時刻をロック判定にも渡す（Home と同じ now で同じ結論になる）。
+  const nowDate = new Date(now)
   const locks: AuditLockRow[] = state.holdings
-    .filter(h => isSellLocked(h))
+    .filter(h => isSellLocked(h, nowDate))
     .map(h => ({ code: h.code, sellableLabel: formatMonthDay(getSellableDate(h)) }))
 
   const showCanonicalBlocks = snapshot.availability === 'available'

@@ -17,6 +17,10 @@
 //
 // Hero 状態の優先順位（上から最初に該当したもの）:
 //   boot > decision_unavailable > safe_mode > data_wait > normal
+//
+// decision_unavailable は「今日の判断を作れない」だけで、他の権限の無効を意味しない。
+// Hero だけが状態を変え、各節は自分の権限が生きている限りそのまま残る
+// （節ごとの利用不可は、その節の中で局所的に出す）。候補の実行提示だけは抑止する。
 // ═══════════════════════════════════════════════════════════
 import type { AppState, Holding, OfficialDecision, SystemState } from '../../types'
 import type { AllocationConsumerSnapshot } from '../../types/allocationConsumer'
@@ -35,6 +39,8 @@ import {
 } from '../../store/selectors'
 import { getSellableDate, isSellLocked } from '../../domain/constraints/stockLock'
 import {
+  DATA_WAIT_ROW_LABEL,
+  HOME_TIER_LABEL,
   MARKET_REGIME_LABEL,
   OPERATION_MODE_LABEL,
   UNAVAILABLE_LABEL,
@@ -45,7 +51,11 @@ import {
   formatMonthDay,
 } from './formatters'
 import { projectPortfolio, type PortfolioProjection } from './portfolioPresentation'
-import { projectCandidateSection, type CandidateSectionProjection } from './candidatePresentation'
+import {
+  projectCandidateSection,
+  type CandidateProjectionContext,
+  type CandidateSectionProjection,
+} from './candidatePresentation'
 
 export type HeroState = 'boot' | 'decision_unavailable' | 'safe_mode' | 'data_wait' | 'normal'
 export type HeroTone = 'calm' | 'warm' | 'neutral' | 'critical'
@@ -71,6 +81,12 @@ export interface StateChip {
   /** 表示語。canonical が利用できない場合は「判定不能」。 */
   readonly label: string
   readonly available: boolean
+}
+
+/** 凍結デスクトップ状態ブロックの 4 セル目。候補の projection 済みの値のみを再掲する。 */
+export interface CandidateStateChip extends StateChip {
+  /** 2 行目（例: 「3 要レビュー」）。1 行で足りるときは null。 */
+  readonly sub: string | null
 }
 
 export type AttentionGlyph = 'safe' | 'lock' | 'info'
@@ -119,6 +135,8 @@ export interface TodayHomeViewModel {
     readonly regime: StateChip
     readonly mode: StateChip
     readonly attentionCount: number
+    /** 凍結デスクトップ 4 セル目（候補の状態）。新しい業務指標は作らない。 */
+    readonly candidates: CandidateStateChip
   } | null
   readonly attention: readonly AttentionItem[]
   /** DATA_WAIT のときだけ non-empty（データセット別の鮮度）。 */
@@ -287,9 +305,23 @@ function safeModeAttentionDetail(i: TodayHomeInputs): string {
   return '新規買付を停止中'
 }
 
+/**
+ * Home と Decision Audit が同じ候補提示文脈を使うための単一の写像。
+ * 実行抑止の判定をふたつの場所で作らない。
+ */
+export function candidateProjectionContextFor(heroState: HeroState): CandidateProjectionContext {
+  return {
+    // 現在の判断が無い状態（decision_unavailable）では、canonical に EXECUTABLE でも
+    // 実行提案として提示しない。判断が無いだけで候補の参照自体は残す。
+    executionSuppressed: heroState === 'safe_mode' || heroState === 'decision_unavailable',
+    dataWait: heroState === 'data_wait',
+  }
+}
+
 export function projectAttention(i: TodayHomeInputs, heroState: HeroState, candidates: CandidateSectionProjection): AttentionItem[] {
   const items: AttentionItem[] = []
-  if (heroState === 'safe_mode') {
+  // SAFE_MODE は自分の権限で成立する制約。Hero が別状態（判断不能）でも残す。
+  if (i.safeModeEffective) {
     items.push({ id: 'safe-mode', glyph: 'safe', title: 'セーフモードが有効です', detail: safeModeAttentionDetail(i) })
   }
   if (heroState === 'data_wait') {
@@ -334,6 +366,18 @@ function projectDataStatus(i: TodayHomeInputs): DataStatusRow[] {
         : UNAVAILABLE_LABEL,
     },
   ]
+}
+
+/** 凍結 4 セル目の値。候補 projection の既存値だけを文字にする（再集計しない）。 */
+function projectCandidateChip(c: CandidateSectionProjection, heroState: HeroState): CandidateStateChip {
+  if (c.status === 'unavailable') return { label: UNDETERMINABLE_LABEL, sub: null, available: false }
+  if (heroState === 'data_wait') return { label: DATA_WAIT_ROW_LABEL, sub: null, available: false }
+  if (c.totalCount === 0) return { label: '候補なし', sub: null, available: true }
+  return {
+    label: `${c.executableCount} ${HOME_TIER_LABEL.actionable}`,
+    sub: `${c.reviewCount} ${HOME_TIER_LABEL.deep_review}`,
+    available: true,
+  }
 }
 
 function projectMarket(i: TodayHomeInputs): MarketViewModel {
@@ -403,51 +447,55 @@ export function assembleTodayHomeViewModel(i: TodayHomeInputs): TodayHomeViewMod
     }
   }
 
-  const candidates = projectCandidateSection(i.synthesis, {
-    executionSuppressed: heroState === 'safe_mode',
-    dataWait: heroState === 'data_wait',
-  })
-
-  if (heroState === 'decision_unavailable') {
-    const market = projectMarket(i)
-    return {
-      hero, chips: null, attention: [], dataStatus: [], candidates,
-      deployableCash, grossCash: projectGrossCashFromInputs(i), portfolio: projectPortfolio(snapshot),
-      market,
-      unavailableDetail: {
-        unavailable: [
-          { id: 'decision', label: '今日の判断', value: '取得できません' },
-          { id: 'candidate-execution', label: '候補の実行判断', value: UNAVAILABLE_LABEL },
-        ],
-        available: [
-          { id: 'market', label: '市場データ', value: market.asOfLabel },
-          { id: 'allocation', label: '配分と目標の比較', value: snapshot.availability === 'available' ? formatJstMonthDayTime(snapshot.generation.generatedAt) : UNAVAILABLE_LABEL },
-        ],
-      },
-    }
-  }
-
+  const candidates = projectCandidateSection(i.synthesis, candidateProjectionContextFor(heroState))
   const attention = projectAttention(i, heroState, candidates)
-  const chips = {
-    regime: snapshot.availability === 'available'
-      ? { label: MARKET_REGIME_LABEL[snapshot.regime], available: true }
-      : { label: UNDETERMINABLE_LABEL, available: false },
-    mode: snapshot.availability === 'available'
-      ? { label: OPERATION_MODE_LABEL[snapshot.marketMode], available: true }
-      : { label: UNDETERMINABLE_LABEL, available: false },
-    attentionCount: attention.length,
-  }
+  const market = projectMarket(i)
+  const allocationAtLabel = snapshot.availability === 'available'
+    ? formatJstMonthDayTime(snapshot.generation.generatedAt)
+    : UNAVAILABLE_LABEL
+  // 判断不能 = 「今日の判断を作れない」だけ。他の権限が生きている情報は消さない。
+  const decisionUnavailable = heroState === 'decision_unavailable'
+
   return {
     hero,
-    chips,
+    // M2-D: 判断不能ではチップ列を出さない（レジーム / 運用モードは
+    // 「安全に確認できる情報」に残るため、生きている情報は失われない）。
+    chips: decisionUnavailable ? null : {
+      regime: snapshot.availability === 'available'
+        ? { label: MARKET_REGIME_LABEL[snapshot.regime], available: true }
+        : { label: UNDETERMINABLE_LABEL, available: false },
+      mode: snapshot.availability === 'available'
+        ? { label: OPERATION_MODE_LABEL[snapshot.marketMode], available: true }
+        : { label: UNDETERMINABLE_LABEL, available: false },
+      attentionCount: attention.length,
+      candidates: projectCandidateChip(candidates, heroState),
+    },
     attention,
     dataStatus: heroState === 'data_wait' ? projectDataStatus(i) : [],
     candidates,
     deployableCash,
     grossCash: projectGrossCashFromInputs(i),
     portfolio: projectPortfolio(snapshot),
-    market: projectMarket(i),
-    unavailableDetail: null,
+    market,
+    unavailableDetail: decisionUnavailable
+      ? {
+          unavailable: [
+            { id: 'decision', label: '今日の判断', value: '取得できません' },
+            { id: 'candidate-execution', label: '候補の実行判断', value: UNAVAILABLE_LABEL },
+          ],
+          available: [
+            { id: 'market', label: '市場データ', value: market.asOfLabel },
+            { id: 'allocation', label: '配分と目標の比較', value: allocationAtLabel },
+            {
+              id: 'regime',
+              label: '市場レジーム / 運用モード',
+              value: snapshot.availability === 'available'
+                ? `${MARKET_REGIME_LABEL[snapshot.regime]} / ${OPERATION_MODE_LABEL[snapshot.marketMode]}`
+                : UNAVAILABLE_LABEL,
+            },
+          ],
+        }
+      : null,
   }
 }
 

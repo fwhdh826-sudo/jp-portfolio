@@ -159,9 +159,89 @@ describe('判断結果を利用できません', () => {
     expect(html).not.toContain('判断生成 ')
   })
 
-  it('候補セクションやチップは出さない（Hero の権限が無いため）', () => {
+  it('状態チップ列は出さない（M2-D）。ただしレジーム / 運用モードは安全な情報として残る', () => {
     expect(html).not.toContain('data-testid="state-chips"')
-    expect(html).not.toContain('data-testid="candidate-card"')
+    expect(html).toContain('市場レジーム / 運用モード')
+    expect(html).toContain('中立 / 通常')
+  })
+
+  it('F-02: 生きている権限の節（候補・ポートフォリオ・マーケット）を消さない', () => {
+    expect(html).toContain('data-testid="candidate-card"')
+    expect(html).toContain('data-testid="portfolio-card"')
+    expect(html).toContain('data-testid="market-card"')
+    expect(html).toContain('総資産 3,800万円')
+    expect(html).toMatch(/data-testid="market-vix">14\.8</)
+  })
+
+  it('F-02: 候補は参照のみ。実行可能語・実行可能額・実行可能現金を出さない', () => {
+    expect(html).toContain('data-testid="candidate-no-decision-note"')
+    expect(html).toContain('実行の提案は行いません（参照のみ）')
+    expect(html).toContain('0 実行可能 · 3 要レビュー') // 件数の再掲（実行提示ではない）
+    expect(html).not.toContain('data-testid="candidate-amount"')
+    expect(html).not.toContain('data-testid="deployable-cash"')
+    expect(html).not.toMatch(/data-kind="executable"/)
+  })
+
+  it('F-02: 90日ロックなどの保有制約はその節に残る', () => {
+    const locked = render(baseInputs({
+      officialDecision: null,
+      holdings: [{ code: '9697', lock: true, acquiredAt: '2026-07-22' }],
+    }))
+    expect(locked).toContain('9697 は 90日ロック中')
+    expect(locked).toContain('売却可能予定日 10/20')
+  })
+
+  it('F-02: SAFE_MODE が同時に成立していれば、その制約も残る（Hero は判断不能のまま）', () => {
+    const withSafeMode = render(baseInputs({
+      officialDecision: null,
+      safeModeEffective: true,
+      safeModeSource: { loaded: true, newBuysFrozen: true, rebalanceFrozen: true },
+    }))
+    expect(withSafeMode).toMatch(/<h1[^>]*>判断結果を利用できません<\/h1>/)
+    expect(withSafeMode).toContain('セーフモードが有効です')
+  })
+
+  it('F-02: 節ごとの利用不可はその節の中で出す（他の生きている節は消さない）', () => {
+    const noAllocation = render(baseInputs({ officialDecision: null, allocation: UNAVAILABLE_ALLOCATION }))
+    expect(noAllocation).toContain('配分の判定不能')
+    expect(noAllocation).toContain('data-testid="market-card"')
+    expect(noAllocation).toContain('data-testid="candidate-card"')
+  })
+
+  it('F-02: 過去の判断を現在として描画しない', () => {
+    expect(html).not.toContain('慎重運用')
+    expect(html).not.toContain('判断生成 ')
+    expect(html).not.toContain('市場レジームは中立で、運用モードは通常です。')
+  })
+})
+
+describe('F-03: 凍結デスクトップ状態ブロックは 4 セル（空スロットを残さない）', () => {
+  const cells = (html: string) => (html.match(/class="u9-chip(?: |")/g) ?? []).length
+
+  for (const scenario of ['normal', 'actionable', 'safe_mode', 'data_wait', 'candidate_unavailable'] as HomeScenario[]) {
+    it(`${scenario}: 状態セルは 4 つ（2 列 × 2 行が埋まる）`, () => {
+      const html = render(scenario)
+      expect(cells(html)).toBe(4)
+      expect(html).toContain('data-testid="chip-candidates-cell"')
+    })
+  }
+
+  it('4 セル目は候補の projection 済みの値のみ（新しい業務指標を作らない）', () => {
+    expect(render('normal')).toMatch(/data-testid="chip-candidates">0 実行可能</)
+    expect(render('normal')).toMatch(/data-testid="chip-candidates-sub">3 要レビュー</)
+    expect(render('actionable')).toMatch(/data-testid="chip-candidates">1 実行可能</)
+    expect(render('actionable')).toMatch(/data-testid="chip-candidates-sub">2 要レビュー</)
+  })
+
+  it('候補の権限が無いときは「判定不能」、DATA_WAIT では「更新待ち」', () => {
+    expect(render('candidate_unavailable')).toMatch(/data-testid="chip-candidates">判定不能</)
+    expect(render('data_wait')).toMatch(/data-testid="chip-candidates">更新待ち</)
+  })
+
+  it('4 セル目は Attention の重複ではない（別の値を示す）', () => {
+    const html = render('safe_mode')
+    expect(html).toMatch(/data-testid="chip-attention">2件</)
+    expect(html).toMatch(/data-testid="chip-candidates">0 実行可能</)
   })
 })
 

@@ -31,6 +31,7 @@ const ATTN_GLYPH: Record<AttentionItem['glyph'], string> = { safe: '▲', lock: 
 
 function StateChips({ chips }: { chips: NonNullable<TodayHomeViewModel['chips']> }) {
   const attn = chips.attentionCount
+  const cand = chips.candidates
   return (
     <div className="u9-chips u9-area-chips" data-testid="state-chips">
       <div className="u9-chip">
@@ -46,6 +47,14 @@ function StateChips({ chips }: { chips: NonNullable<TodayHomeViewModel['chips']>
       <div className="u9-chip">
         <span className="u9-chip__label"><span className="u9-chip__icon" data-kind={attn > 0 ? 'attn-active' : 'attn-none'} aria-hidden="true">！</span>重要な注意</span>
         <span className="u9-chip__value" data-testid="chip-attention">{attn > 0 ? `${attn}件` : 'なし'}</span>
+      </div>
+      {/* 凍結デスクトップ状態ブロックの 4 セル目（候補の状態）。モバイルは凍結どおり 3 セルのため CSS で非表示。 */}
+      <div className="u9-chip u9-chip--cand" data-testid="chip-candidates-cell">
+        <span className="u9-chip__label">
+          <span className="u9-chip__icon" data-kind={cand.available ? 'mode' : 'attn-neutral'} aria-hidden="true">◌</span>候補
+        </span>
+        <span className="u9-chip__value" data-testid="chip-candidates">{cand.label}</span>
+        {cand.sub !== null && <span className="u9-chip__sub" data-testid="chip-candidates-sub">{cand.sub}</span>}
       </div>
     </div>
   )
@@ -144,6 +153,11 @@ function CandidateCard({ section, hero, cash, onOpenAll, onOpenAudit }: {
           )}
           {hero.state === 'data_wait' && (
             <div className="u9-inline-note"><span aria-hidden="true">◷</span>データ更新待ちのため実行できません（参照のみ）</div>
+          )}
+          {hero.state === 'decision_unavailable' && (
+            <div className="u9-inline-note" data-testid="candidate-no-decision-note">
+              <span aria-hidden="true">◇</span>今日の判断を取得できていないため、実行の提案は行いません（参照のみ）
+            </div>
           )}
           <ul className="u9-cand-list" data-dim={dim} aria-label="候補の先頭3件（提示順）">
             {section.rows.map(row => (
@@ -247,7 +261,7 @@ function MarketCard({ market }: { market: MarketViewModel }) {
 function UnavailableDetail({ detail }: { detail: NonNullable<TodayHomeViewModel['unavailableDetail']> }) {
   return (
     <>
-      <Card title="利用できない情報" first data-testid="unavailable-list">
+      <Card title="利用できない情報" first className="u9-area-unavail" data-testid="unavailable-list">
         <div className="u9-status-list">
           {detail.unavailable.map(r => (
             <div key={r.id} className="u9-status-row">
@@ -258,7 +272,7 @@ function UnavailableDetail({ detail }: { detail: NonNullable<TodayHomeViewModel[
           ))}
         </div>
       </Card>
-      <Card title="安全に確認できる情報" data-testid="safe-available-list">
+      <Card title="安全に確認できる情報" className="u9-area-unavail" data-testid="safe-available-list">
         <div className="u9-status-list">
           {detail.available.map(r => (
             <div key={r.id} className="u9-status-row">
@@ -305,10 +319,10 @@ export function TodayHomeView({ vm, dateLabel, yearLabel, actions, heroImageSrc 
           <div className="u9-generated u9-area-gen" data-testid="generated-at">判断生成 {hero.generatedAtLabel}</div>
         )}
 
-        {vm.unavailableDetail !== null ? (
-          <UnavailableDetail detail={vm.unavailableDetail} />
-        ) : hero.state === 'boot' ? null : (
+        {/* 判断不能でも、自分の権限が生きている節はその位置に残す（Hero だけが状態を変える）。 */}
+        {hero.state === 'boot' ? null : (
           <>
+            {vm.unavailableDetail !== null && <UnavailableDetail detail={vm.unavailableDetail} />}
             <AttentionCard items={vm.attention} />
             <DataStatusCard rows={vm.dataStatus} />
             <CandidateCard section={vm.candidates} hero={hero} cash={vm.deployableCash} onOpenAll={actions.onOpenCandidates} onOpenAudit={actions.onOpenAudit} />

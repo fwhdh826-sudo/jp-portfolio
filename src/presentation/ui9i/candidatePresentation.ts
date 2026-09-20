@@ -6,6 +6,10 @@
 //   T0 プレビュー = 提示順の先頭 3 件。再ランク・並べ替え・フィルタはしない
 //   （marketScore / rank / amount / tier でのソートは禁止）。
 //
+// 実行可能性の権限は entry.money（EXECUTABLE / NOT_EXECUTABLE）だけ。
+//   action（ADD / BUY_NEW）や candidateQuality.tier（actionable）からは推定しない。
+//   money = NOT_EXECUTABLE は tier = actionable でも action = ADD / BUY_NEW でも
+//   「実行可能」にならない（canonical money authority が勝つ）。
 // 金額は entry.money が EXECUTABLE のときだけ露出し、React 側で計算しない。
 // ═══════════════════════════════════════════════════════════
 import type {
@@ -25,7 +29,7 @@ export interface CandidatePreviewRow {
   readonly relationship: CandidateDecisionSynthesisEntry['relationship']
   readonly relationshipLabel: string
   readonly kind: CandidateRowKind
-  /** Home の状態語（実行可能 / 要レビュー / 更新待ち）。tier 不明かつ非 review は null。 */
+  /** Home の状態語（実行可能 / 要レビュー / 更新待ち）。tier 不明かつ非実行は null。 */
   readonly stateLabel: string | null
   readonly marketScore: number | null
   /** money.kind === 'EXECUTABLE' かつ実行抑止中でないときだけ non-null。 */
@@ -37,6 +41,7 @@ export interface CandidateSectionProjection {
   readonly status: 'available' | 'unavailable'
   readonly rows: readonly CandidatePreviewRow[]
   readonly totalCount: number
+  /** money.kind === 'EXECUTABLE' かつ実行抑止中でない行だけを数える（tier / action は数えない）。 */
   readonly executableCount: number
   readonly reviewCount: number
 }
@@ -60,23 +65,27 @@ function projectRow(
   ctx: CandidateProjectionContext,
 ): CandidatePreviewRow {
   const tier = entry.candidateQuality.tier
-  const proposesExecution = entry.action === 'ADD' || entry.action === 'BUY_NEW'
+  // 実行可能性の唯一の権限。action / tier は実行可能性の判定に使わない。
+  const canonicalExecutable = entry.money.kind === 'EXECUTABLE'
   let kind: CandidateRowKind
   let stateLabel: string | null
   if (ctx.dataWait) {
     kind = 'data_wait'
     stateLabel = DATA_WAIT_ROW_LABEL
-  } else if (!ctx.executionSuppressed && proposesExecution && tier === 'actionable') {
+  } else if (canonicalExecutable && !ctx.executionSuppressed) {
     kind = 'executable'
     stateLabel = HOME_TIER_LABEL.actionable
-  } else if (tier === 'deep_review' || !proposesExecution || ctx.executionSuppressed) {
+  } else if (tier !== null || canonicalExecutable) {
+    // 非実行（または抑止中）の行は凍結語彙の「要レビュー」で提示する。
+    // tier = actionable でも money = NOT_EXECUTABLE ならここに落ちる。
     kind = 'review'
     stateLabel = HOME_TIER_LABEL.deep_review
   } else {
+    // tier 不明かつ canonical に実行可能でもない → 状態語を作らない。
     kind = 'none'
     stateLabel = null
   }
-  const showMoney = !ctx.executionSuppressed && !ctx.dataWait && entry.money.kind === 'EXECUTABLE'
+  const showMoney = !ctx.executionSuppressed && !ctx.dataWait && canonicalExecutable
   return {
     entryId: entry.entryId,
     code: entry.code,

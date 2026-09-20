@@ -32,6 +32,11 @@ import { TodayHome } from './components/ui9i/TodayHome'
 import { DecisionAudit } from './components/ui9i/DecisionAudit.container'
 import { FundsHub, OtherHub, PortfolioSurface } from './components/ui9i/SurfaceRouter'
 import { UserDockNav, UserSidebarNav } from './components/ui9i/UserNav'
+// UI-9I R4.1 の数値メトリクスは Space Mono（--u9-mono の先頭フォント）。
+// @fontsource が同梱する woff2 を bundle するため、実行時の外部ネットワーク依存は無い。
+// import するのは実際に使う normal 400 / 700 の latin subset のみ（italic は使わない）。
+import '@fontsource/space-mono/latin-400.css'
+import '@fontsource/space-mono/latin-700.css'
 import './styles/v10.css'
 import './styles/ui9i.css'
 

@@ -107,7 +107,7 @@
   .u9-home > .u9-area-hero { grid-column: 1 / 3; }
   .u9-home > .u9-area-chips { grid-column: 3; }
   .u9-home > .u9-area-gen { grid-column: 1 / -1; padding: 0; }
-  .u9-home > .u9-area-attn, .u9-home > .u9-area-data { grid-column: 1 / -1; }
+  .u9-home > .u9-area-attn, .u9-home > .u9-area-data, .u9-home > .u9-area-unavail { grid-column: 1 / -1; }
   .u9-home > .u9-area-market { grid-column: 1; }
   .u9-home > .u9-area-pf { grid-column: 2; }
   .u9-home > .u9-area-cand { grid-column: 3; }
@@ -210,12 +210,17 @@
 .u9-chip__icon[data-kind="attn-none"] { background: #F1F3F6; color: var(--u9-ink-4); }
 .u9-chip__icon[data-kind="attn-neutral"] { background: #EDF1F6; color: var(--u9-ink-3); }
 .u9-chip__value { font-weight: 600; font-size: 15px; white-space: nowrap; word-break: keep-all; }
+.u9-chip__sub { font: 400 11px var(--u9-mono); color: var(--u9-ink-3); white-space: nowrap; word-break: keep-all; }
+/* 凍結: モバイルの状態ブロックは 3 セル。4 セル目（候補）はデスクトップ 2×2 のみ。 */
+.u9-chip--cand { display: none; }
 @media (min-width: 1024px) {
   .u9-chips { padding: 0; grid-template-columns: 1fr 1fr; gap: 14px; }
   .u9-chip { border-radius: 16px; padding: 16px; gap: 8px; }
+  .u9-chip--cand { display: flex; }
   .u9-chip__label { font-size: 11px; gap: 6px; }
   .u9-chip__icon { width: 16px; height: 16px; font-size: 9px; }
   .u9-chip__value { font-size: 18px; }
+  .u9-chip__sub { font-size: 11.5px; }
 }
 .u9-generated { padding: 8px 20px 0; font: 400 11px var(--u9-mono); color: var(--u9-ink-4); }
 

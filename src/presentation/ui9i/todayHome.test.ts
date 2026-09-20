@@ -7,6 +7,7 @@ import {
   resolveHeroStateFromInputs,
 } from './todayHome'
 import {
+  CANONICAL_CLASS_ORDER,
   UNAVAILABLE_ALLOCATION,
   baseInputs,
   fixtureAllocation,
@@ -231,6 +232,124 @@ describe('注目ポイント / 90日ロック', () => {
     expect(vm.attention.map(a => a.id)).toEqual(['candidate-unavailable'])
     expect(vm.chips?.attentionCount).toBe(1)
     expect(vm.hero.state).toBe('normal')
+  })
+})
+
+// ═══════════════════════════════════════════════════════════
+// F-02 (P1): decision_unavailable は「今日の判断を作れない」だけ。
+// 他の権限が生きている情報は消さない。
+// ═══════════════════════════════════════════════════════════
+describe('F-02 判断不能でも生きている情報を残す', () => {
+  const noDecision = (overrides: Partial<ReturnType<typeof baseInputs>> = {}) =>
+    assembleTodayHomeViewModel(baseInputs({ officialDecision: null, ...overrides }))
+
+  it('有効なポートフォリオは残る（配分の権限は判断とは別）', () => {
+    const vm = noDecision()
+    expect(vm.hero.state).toBe('decision_unavailable')
+    expect(vm.portfolio).not.toBeNull()
+    expect(vm.portfolio?.totalAssets).toBe(38_000_000)
+    expect(vm.portfolio?.rows.map(r => r.assetClass)).toEqual([...CANONICAL_CLASS_ORDER])
+  })
+
+  it('有効なマーケットは残る（VIX / 日経VI も）', () => {
+    const vm = noDecision()
+    const byId = Object.fromEntries(vm.market.indicators.map(i => [i.id, i]))
+    expect(byId.vix.value).toBe(14.8)
+    expect(byId.nikkeiVi.value).toBe(22.4)
+    expect(vm.market.asOfLabel).toBe('10/6 8:30')
+  })
+
+  it('有効な保有制約（90日ロック）は残る', () => {
+    const vm = noDecision({ holdings: [{ code: '9697', lock: true, acquiredAt: '2026-07-22' }] })
+    expect(vm.attention.map(a => a.id)).toContain('lock-9697')
+    expect(vm.attention.find(a => a.id === 'lock-9697')?.detail).toBe('売却可能予定日 10/20')
+  })
+
+  it('同時に成立している SAFE_MODE 制約も残る（Hero は判断不能のまま）', () => {
+    const vm = noDecision({
+      safeModeEffective: true,
+      safeModeSource: { loaded: true, newBuysFrozen: true, rebalanceFrozen: true },
+    })
+    expect(vm.hero.state).toBe('decision_unavailable')
+    expect(vm.attention.map(a => a.id)).toContain('safe-mode')
+  })
+
+  it('総現金・実行可能現金は自分の権限のまま（利用不可を ¥0 にしない）', () => {
+    expect(noDecision().grossCash).toEqual({ kind: 'known', amountJpy: 2_660_000 })
+    expect(noDecision().deployableCash).toEqual({ kind: 'available', amountJpy: 1_200_000 })
+    expect(noDecision({ deployableCash: { available: false, amount: 0, unavailableStatus: 'absent' } }).deployableCash)
+      .toEqual({ kind: 'unavailable' })
+  })
+
+  it('過去の判断を現在として残さない（rationale / headline / 生成時刻）', () => {
+    const vm = noDecision()
+    expect(vm.hero.headline).toBe('判断結果を利用できません')
+    expect(vm.hero.generatedAtLabel).toBeNull()
+    expect(JSON.stringify(vm.hero)).not.toContain('慎重運用')
+  })
+
+  it('候補は参照のみ: canonical に EXECUTABLE でも実行可能語・金額を出さない', () => {
+    const vm = noDecision({ synthesis: fixtureSynthesis([fixtureExecutableDecision()], fixtureReviewWatchList().slice(1)) })
+    expect(vm.candidates.status).toBe('available')
+    expect(vm.candidates.rows.length).toBe(3)
+    expect(vm.candidates.executableCount).toBe(0)
+    expect(vm.candidates.rows.every(r => r.kind === 'review' && r.executableAmountJpy === null)).toBe(true)
+  })
+
+  it('節ごとの利用不可はその節に閉じる（配分不可でも市場・候補は残る）', () => {
+    const vm = noDecision({ allocation: UNAVAILABLE_ALLOCATION })
+    expect(vm.portfolio).toBeNull()
+    expect(vm.market.indicators.some(i => i.value !== null)).toBe(true)
+    expect(vm.candidates.status).toBe('available')
+  })
+
+  it('レジーム / 運用モードは「安全に確認できる情報」に残る（チップ列は M2-D どおり出さない）', () => {
+    const vm = noDecision()
+    expect(vm.chips).toBeNull()
+    expect(vm.unavailableDetail?.available.find(r => r.id === 'regime')?.value).toBe('中立 / 通常')
+    expect(vm.unavailableDetail?.unavailable.map(r => r.id)).toEqual(['decision', 'candidate-execution'])
+  })
+
+  it('候補だけ / 配分だけの利用不可は判断不能にしない（逆方向の独立性）', () => {
+    expect(assembleTodayHomeViewModel(scenarioInputs('candidate_unavailable')).hero.state).toBe('normal')
+    expect(assembleTodayHomeViewModel(baseInputs({ allocation: UNAVAILABLE_ALLOCATION })).hero.state).toBe('normal')
+  })
+})
+
+// ═══════════════════════════════════════════════════════════
+// F-03 (P1): 凍結デスクトップ状態ブロックの 4 セル目（候補）。
+// ═══════════════════════════════════════════════════════════
+describe('F-03 状態チップの 4 セル目は候補の projection 済みの値', () => {
+  it('NORMAL: 0 実行可能 / 3 要レビュー', () => {
+    const vm = assembleTodayHomeViewModel(baseInputs())
+    expect(vm.chips?.candidates).toEqual({ label: '0 実行可能', sub: '3 要レビュー', available: true })
+  })
+
+  it('actionable: canonical な EXECUTABLE 件数を再掲する', () => {
+    const vm = assembleTodayHomeViewModel(scenarioInputs('actionable'))
+    expect(vm.chips?.candidates).toEqual({ label: '1 実行可能', sub: '2 要レビュー', available: true })
+    expect(vm.chips?.candidates.label).toBe(`${vm.candidates.executableCount} 実行可能`)
+  })
+
+  it('候補の権限が無い → 判定不能（0 件にしない）', () => {
+    const vm = assembleTodayHomeViewModel(scenarioInputs('candidate_unavailable'))
+    expect(vm.chips?.candidates).toEqual({ label: '判定不能', sub: null, available: false })
+  })
+
+  it('DATA_WAIT → 更新待ち（実行可能 0 件と偽らない）', () => {
+    const vm = assembleTodayHomeViewModel(scenarioInputs('data_wait'))
+    expect(vm.chips?.candidates).toEqual({ label: '更新待ち', sub: null, available: false })
+  })
+
+  it('候補 0 件（評価は正常）→ 候補なし', () => {
+    const vm = assembleTodayHomeViewModel(baseInputs({ synthesis: fixtureSynthesis([], []) }))
+    expect(vm.chips?.candidates).toEqual({ label: '候補なし', sub: null, available: true })
+  })
+
+  it('注意件数とは別の値（Attention の重複ではない）', () => {
+    const vm = assembleTodayHomeViewModel(scenarioInputs('safe_mode'))
+    expect(vm.chips?.attentionCount).toBe(2)
+    expect(vm.chips?.candidates.label).toBe('0 実行可能')
   })
 })
 

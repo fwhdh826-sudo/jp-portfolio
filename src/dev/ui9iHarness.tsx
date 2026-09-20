@@ -4,6 +4,9 @@
 // 同じ shell（UserSidebarNav / UserDockNav）で描画する。
 // vite build の入力は index.html のみのため、本番バンドルには含まれない。
 import { createRoot } from 'react-dom/client'
+// 本番（App.tsx）と同じ Space Mono 供給元を使う（視覚検証がフォント代替にならないように）。
+import '@fontsource/space-mono/latin-400.css'
+import '@fontsource/space-mono/latin-700.css'
 import '../styles/v10.css'
 import '../styles/ui9i.css'
 import { applyTheme } from '../theme/tokens'
