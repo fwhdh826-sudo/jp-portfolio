@@ -6,6 +6,7 @@
 // 本番と同じ adapter → view で描画する。
 // vite build の入力は index.html のみのため、本番バンドルには含まれない。
 import { useReducer } from 'react'
+import type { OfficialDecisionItem } from '../types'
 import { createRoot } from 'react-dom/client'
 // 本番（App.tsx）と同じ Space Mono 供給元を使う（視覚検証がフォント代替にならないように）。
 import '@fontsource/space-mono/latin-400.css'
@@ -52,7 +53,30 @@ applyTheme()
 const SCENARIOS: HomeScenario[] = ['normal', 'actionable', 'candidate_unavailable', 'safe_mode', 'data_wait', 'decision_unavailable', 'boot']
 const requested = new URLSearchParams(window.location.search).get('state') as HomeScenario | null
 const scenario: HomeScenario = requested !== null && SCENARIOS.includes(requested) ? requested : 'normal'
-const vm = assembleTodayHomeViewModel(scenarioInputs(scenario))
+// Phase 2B-2R: `&todo=sell|blocked|data_wait|multi|zero|normal` で OfficialDecision.actions を差し替えて
+// 「今日のToDo」を確認する（判断が無い state=decision_unavailable / boot では差し替えない）。
+const TODO_FIXTURES: Record<string, OfficialDecisionItem[]> = {
+  sell: [{ id: 'a-sell', assetType: 'stock', code: '7203', name: 'トヨタ自動車', action: 'SELL', reason: '損切ラインに到達しました。', source: 'committee' }],
+  blocked: [{ id: 'a-blk', assetType: 'stock', code: '9432', name: 'NTT', action: 'BLOCKED', reason: 'リスクゲートを通過していません。', blockedReason: 'ノートレード解除後に再判定します。', source: 'risk_gate' }],
+  data_wait: [{ id: 'a-dw', assetType: 'stock', code: '6758', name: 'ソニーグループ', action: 'DATA_WAIT', reason: 'データ品質低下のため新規買いを抑制中です。', blockedReason: '最新データが取得されてから判断します。', source: 'risk_gate' }],
+  multi: [
+    { id: 'm1', assetType: 'stock', code: '7203', name: 'トヨタ自動車', action: 'SELL', reason: '損切ラインに到達しました。', source: 'committee' },
+    { id: 'm2', assetType: 'stock', code: '8306', name: '三菱UFJフィナンシャル・グループ', action: 'BUY', reason: '押し目で追加買いの条件を満たしています。', source: 'committee' },
+    { id: 'm3', assetType: 'stock', code: '9432', name: 'NTT', action: 'BLOCKED', reason: 'リスクゲートを通過していません。', blockedReason: 'ノートレード解除後に再判定します。', source: 'risk_gate' },
+    { id: 'm4', assetType: 'stock', code: '6758', name: 'ソニーグループ', action: 'DATA_WAIT', reason: 'データ品質低下です。', blockedReason: '最新データ取得後に判断します。', source: 'risk_gate' },
+    { id: 'm5', assetType: 'gold', name: '金（現物）', action: 'HOLD', reason: '目標配分の範囲内です。', source: 'committee' },
+    { id: 'm6', assetType: 'stock', code: '8725', name: 'MS&AD', action: 'BUY_NEW', reason: '候補です。', source: 'candidate', isCandidate: true },
+  ],
+  zero: [],
+}
+const todoParam = new URLSearchParams(window.location.search).get('todo')
+const baseScenarioInputs = scenarioInputs(scenario)
+const todoActions = todoParam !== null ? TODO_FIXTURES[todoParam] : undefined
+const vm = assembleTodayHomeViewModel(
+  todoActions !== undefined && baseScenarioInputs.officialDecision !== null
+    ? { ...baseScenarioInputs, officialDecision: { ...baseScenarioInputs.officialDecision, actions: todoActions } }
+    : baseScenarioInputs,
+)
 
 const params = new URLSearchParams(window.location.search)
 const view = params.get('view')

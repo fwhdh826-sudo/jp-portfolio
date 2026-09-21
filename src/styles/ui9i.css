@@ -107,7 +107,7 @@
   .u9-home > .u9-area-hero { grid-column: 1 / 3; }
   .u9-home > .u9-area-chips { grid-column: 3; }
   .u9-home > .u9-area-gen { grid-column: 1 / -1; padding: 0; }
-  .u9-home > .u9-area-attn, .u9-home > .u9-area-data, .u9-home > .u9-area-unavail { grid-column: 1 / -1; }
+  .u9-home > .u9-area-todo, .u9-home > .u9-area-attn, .u9-home > .u9-area-data, .u9-home > .u9-area-unavail { grid-column: 1 / -1; }
   .u9-home > .u9-area-market { grid-column: 1; }
   .u9-home > .u9-area-pf { grid-column: 2; }
   .u9-home > .u9-area-cand { grid-column: 3; }
@@ -262,6 +262,23 @@
   background: linear-gradient(90deg, var(--u9-amber-dot) 50%, #fff 50%);
 }
 .u9-dot[data-mark="fail"] { background: var(--u9-danger); }
+
+/* ── 今日のToDo（OfficialDecision.actions の表示。並べ替えない） ─────────── */
+.u9-todo-list { display: flex; flex-direction: column; margin: 0; padding: 0; list-style: none; }
+.u9-todo-row { display: flex; align-items: flex-start; gap: 11px; padding: 11px 0; border-bottom: 1px solid var(--u9-line-soft); }
+.u9-todo-row:last-child { border-bottom: 0; }
+.u9-todo-row__state { flex: 0 0 64px; width: 64px; box-sizing: border-box; padding-inline: 0; text-align: center; margin-top: 1px; }
+.u9-todo-row__state[data-tone="sell"] { background: #F6E9E7; color: var(--u9-danger); }
+.u9-todo-row__state[data-tone="buy"] { background: #E7F1EA; color: var(--u9-green); }
+.u9-todo-row__state[data-tone="blocked"], .u9-todo-row__state[data-tone="data_wait"] { background: #FAF2E3; color: #6B4E14; }
+.u9-todo-row__main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+.u9-todo-row__title { font-weight: 600; font-size: 13.5px; overflow-wrap: anywhere; }
+.u9-todo-row__text { margin: 0; font-size: 12px; line-height: 1.65; color: var(--u9-ink-2); overflow-wrap: anywhere; }
+.u9-todo-row__label { display: block; font-size: 10.5px; font-weight: 600; color: var(--u9-ink-4); }
+.u9-todo-more { border-top: 1px solid var(--u9-line); }
+.u9-todo-more > .u9-disclose__summary { min-height: 44px; }
+.u9-todo-more[open] > .u9-disclose__summary::after { transform: rotate(90deg); }
+.u9-todo-more > .u9-todo-list { padding-bottom: 4px; }
 
 /* ── 候補 ──────────────────────────────────────────────────── */
 .u9-cand-list { display: flex; flex-direction: column; gap: 2px; margin: 0; padding: 0; list-style: none; }

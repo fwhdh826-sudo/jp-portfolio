@@ -1,7 +1,7 @@
 // UI-9I Phase 1: T0（今日）の純表示 view。
 // 入力は TodayHomeViewModel のみ。canonical から意味を再導出しない。
 // セクションの DOM 順は状態によらず固定（動的に並べ替えない）:
-//   Hero → 状態チップ → 判断生成時刻 → 注目ポイント → データの状態 → 候補 → ポートフォリオ → マーケット
+//   Hero → 状態チップ → 判断生成時刻 → 今日のToDo → 注目ポイント → データの状態 → 候補 → ポートフォリオ → マーケット
 import type {
   AttentionItem,
   DeployableCashViewModel,
@@ -10,6 +10,7 @@ import type {
   TodayHomeViewModel,
 } from '../../presentation/ui9i/todayHome'
 import type { CandidateSectionProjection } from '../../presentation/ui9i/candidatePresentation'
+import type { TodayActionRow, TodayActionsProjection } from '../../presentation/ui9i/todayActions'
 import type { PortfolioProjection } from '../../presentation/ui9i/portfolioPresentation'
 import {
   formatManYen,
@@ -60,12 +61,82 @@ function StateChips({ chips }: { chips: NonNullable<TodayHomeViewModel['chips']>
   )
 }
 
+function TodayActionItem({ row }: { row: TodayActionRow }) {
+  return (
+    <li className="u9-todo-row" data-action={row.action} data-tone={row.tone} data-testid="today-action-row">
+      <span className="u9-pill u9-todo-row__state" data-tone={row.tone}>{row.actionLabel}</span>
+      <div className="u9-todo-row__main">
+        <span className="u9-todo-row__title">{row.title}</span>
+        {row.reason !== null && (
+          <p className="u9-todo-row__text"><span className="u9-todo-row__label">理由</span>{row.reason}</p>
+        )}
+        {row.blockedReason !== null && (
+          <p className="u9-todo-row__text" data-testid="today-action-condition">
+            <span className="u9-todo-row__label">実行条件 / 次の確認</span>{row.blockedReason}
+          </p>
+        )}
+      </div>
+    </li>
+  )
+}
+
+/**
+ * 今日のToDo = OfficialDecision.actions の表示。並べ替え・補完・代替提案をしない。
+ * 判断が利用できないときは「提案を行わない」と明示し、HOLD / 0件 / 待機とは別の状態にする。
+ */
+function TodayActionsCard({ todo }: { todo: TodayActionsProjection }) {
+  const suppressedNote = todo.suppressedBuyCount > 0 && (
+    <p className="u9-note" data-testid="today-actions-suppressed">
+      新規買付を停止しているため、買いの提案 {todo.suppressedBuyCount} 件は表示していません。
+    </p>
+  )
+  return (
+    <Card
+      title="今日のToDo"
+      meta={todo.status === 'available' ? `${todo.totalCount}件` : undefined}
+      first
+      className="u9-area-todo"
+      data-testid="today-actions-card"
+    >
+      {todo.status === 'unavailable' ? (
+        <div className="u9-unavail" data-testid="today-actions-unavailable">
+          <span className="u9-unavail__title">判断結果を利用できないため、実行の提案は行いません。</span>
+          <span className="u9-note">市場・ポートフォリオ・候補の参照は引き続きできます。</span>
+        </div>
+      ) : todo.status === 'empty' ? (
+        <>
+          <div className="u9-empty" data-testid="today-actions-empty">
+            <span className="u9-empty__mark" aria-hidden="true">◔</span>
+            <span className="u9-empty__title">現在、追加のToDoはありません</span>
+          </div>
+          {suppressedNote}
+        </>
+      ) : (
+        <>
+          <ol className="u9-todo-list" aria-label="今日のToDo（判断の提示順）">
+            {todo.preview.map(row => <TodayActionItem key={row.id} row={row} />)}
+          </ol>
+          {todo.more.length > 0 && (
+            <details className="u9-todo-more" data-testid="today-actions-more">
+              <summary className="u9-disclose__summary">他 {todo.more.length} 件を見る</summary>
+              <ol className="u9-todo-list" aria-label="今日のToDo（続き・判断の提示順）">
+                {todo.more.map(row => <TodayActionItem key={row.id} row={row} />)}
+              </ol>
+            </details>
+          )}
+          {suppressedNote}
+        </>
+      )}
+    </Card>
+  )
+}
+
 function AttentionCard({ items: all }: { items: readonly AttentionItem[] }) {
   // data-wait は「データの状態」カードが表示を担う（R4.1 M2-C）。件数チップには数える。
   const items = all.filter(item => item.id !== 'data-wait')
   if (items.length === 0) return null // 通常時は注目ポイントの節を出さない
   return (
-    <Card title="注目ポイント" first className="u9-area-attn" data-testid="attention-card">
+    <Card title="注目ポイント" className="u9-area-attn" data-testid="attention-card">
       {items.map(item => (
         <div key={item.id} className="u9-attn">
           <span className="u9-attn__mark" data-glyph={item.glyph} aria-hidden="true">{ATTN_GLYPH[item.glyph]}</span>
@@ -82,7 +153,7 @@ function AttentionCard({ items: all }: { items: readonly AttentionItem[] }) {
 function DataStatusCard({ rows }: { rows: TodayHomeViewModel['dataStatus'] }) {
   if (rows.length === 0) return null
   return (
-    <Card title="データの状態" first className="u9-area-data" data-testid="data-status-card">
+    <Card title="データの状態" className="u9-area-data" data-testid="data-status-card">
       <div className="u9-status-list">
         {rows.map(r => (
           <div key={r.id} className="u9-status-row">
@@ -261,7 +332,7 @@ function MarketCard({ market }: { market: MarketViewModel }) {
 function UnavailableDetail({ detail }: { detail: NonNullable<TodayHomeViewModel['unavailableDetail']> }) {
   return (
     <>
-      <Card title="利用できない情報" first className="u9-area-unavail" data-testid="unavailable-list">
+      <Card title="利用できない情報" className="u9-area-unavail" data-testid="unavailable-list">
         <div className="u9-status-list">
           {detail.unavailable.map(r => (
             <div key={r.id} className="u9-status-row">
@@ -322,6 +393,7 @@ export function TodayHomeView({ vm, dateLabel, yearLabel, actions, heroImageSrc 
         {/* 判断不能でも、自分の権限が生きている節はその位置に残す（Hero だけが状態を変える）。 */}
         {hero.state === 'boot' ? null : (
           <>
+            <TodayActionsCard todo={vm.todayActions} />
             {vm.unavailableDetail !== null && <UnavailableDetail detail={vm.unavailableDetail} />}
             <AttentionCard items={vm.attention} />
             <DataStatusCard rows={vm.dataStatus} />

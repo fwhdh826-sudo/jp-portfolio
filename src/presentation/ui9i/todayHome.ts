@@ -10,6 +10,8 @@
 //                     projection が無いため headline 単独が既定。
 //  市場レジーム     : AllocationConsumerSnapshot.regime（3値）
 //  運用モード       : AllocationConsumerSnapshot.marketMode（レジームとは結合しない）
+//  今日のToDo       : OfficialDecision.actions（提示順・候補は除外・SAFE_MODE/DQ 時は BUY 非表示のみ。
+//                     todayActions.ts。判断が無いときは代替提案を作らない）
 //  候補             : CandidateDecisionSynthesis（decisions → watchList、先頭3件）
 //  実行可能現金     : selectExecutableDeployableCash（unavailable を ¥0 に変換しない）
 //  ポートフォリオ   : AllocationConsumerSnapshot.classes（canonical 順）
@@ -38,6 +40,7 @@ import {
   type EffectiveCashAssumptions,
 } from '../../store/selectors'
 import { getSellableDate, isSellLocked } from '../../domain/constraints/stockLock'
+import { computeBuyDisplaySuppressed } from '../../domain/analysis/buyDisplaySuppression'
 import {
   DATA_WAIT_ROW_LABEL,
   HOME_TIER_LABEL,
@@ -56,6 +59,11 @@ import {
   type CandidateProjectionContext,
   type CandidateSectionProjection,
 } from './candidatePresentation'
+import {
+  BOOT_TODAY_ACTIONS,
+  projectTodayActions,
+  type TodayActionsProjection,
+} from './todayActions'
 
 export type HeroState = 'boot' | 'decision_unavailable' | 'safe_mode' | 'data_wait' | 'normal'
 export type HeroTone = 'calm' | 'warm' | 'neutral' | 'critical'
@@ -138,6 +146,8 @@ export interface TodayHomeViewModel {
     /** 凍結デスクトップ 4 セル目（候補の状態）。新しい業務指標は作らない。 */
     readonly candidates: CandidateStateChip
   } | null
+  /** 「今日のToDo」= OfficialDecision.actions の表示写像。判断不能では代替提案を作らない。 */
+  readonly todayActions: TodayActionsProjection
   readonly attention: readonly AttentionItem[]
   /** DATA_WAIT のときだけ non-empty（データセット別の鮮度）。 */
   readonly dataStatus: readonly DataStatusRow[]
@@ -441,12 +451,19 @@ export function assembleTodayHomeViewModel(i: TodayHomeInputs): TodayHomeViewMod
 
   if (heroState === 'boot') {
     return {
-      hero, chips: null, attention: [], dataStatus: [], candidates: NO_CANDIDATES,
+      hero, chips: null, todayActions: BOOT_TODAY_ACTIONS, attention: [], dataStatus: [], candidates: NO_CANDIDATES,
       deployableCash, grossCash: { kind: 'unknown' }, portfolio: null,
       market: projectMarket(i), unavailableDetail: null,
     }
   }
 
+  // 判断が利用できるのは Hero と同じ権限（decision_unavailable 以外）。利用不可では null を渡し、
+  // 代替提案（旧 TodoCard の fallback）は作らない。BUY 抑制は旧 TodoCard と同一の式を再利用する。
+  const usableDecision = heroState === 'decision_unavailable' ? null : decision
+  const todayActions = projectTodayActions(usableDecision, {
+    buySuppressed: usableDecision !== null
+      && computeBuyDisplaySuppressed(usableDecision.dataQualitySuppressed, !i.marketDataOk, i.safeModeEffective),
+  })
   const candidates = projectCandidateSection(i.synthesis, candidateProjectionContextFor(heroState))
   const attention = projectAttention(i, heroState, candidates)
   const market = projectMarket(i)
@@ -470,6 +487,7 @@ export function assembleTodayHomeViewModel(i: TodayHomeInputs): TodayHomeViewMod
       attentionCount: attention.length,
       candidates: projectCandidateChip(candidates, heroState),
     },
+    todayActions,
     attention,
     dataStatus: heroState === 'data_wait' ? projectDataStatus(i) : [],
     candidates,

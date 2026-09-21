@@ -6,6 +6,7 @@
 // ═══════════════════════════════════════════════════════════
 import type { AssetClass } from '../../types/allocationPlan'
 import type { CandidateSynthesisRelationship } from '../../types/candidateDecisionSynthesis'
+import type { OfficialDecisionAction } from '../../types'
 
 // AllocationConsumerSnapshot.regime（3値）。5区分の regimeState は T0 の主状態にしない。
 export const MARKET_REGIME_LABEL = {
@@ -42,6 +43,25 @@ export const HOME_TIER_LABEL = {
   actionable: '実行可能',
   deep_review: '要レビュー',
 } as const
+
+/**
+ * 今日のToDo 行の状態語（OfficialDecision.actions の action → 表示語）。enum は変えず語彙だけを写像する。
+ * 個別株 STOCK_DECISION_LABEL / 候補 SYNTHESIS_ACTION_LABEL と同じ語を再利用し、
+ * BLOCKED / DATA_WAIT / WAIT は別の語のまま区別する（BLOCKED を HOLD / WAIT に丸めない）。
+ * 「おすすめ」「強く買い」等の格付け語は作らない。
+ */
+export const TODAY_ACTION_LABEL: Record<OfficialDecisionAction, string> = {
+  BUY: '買い',
+  SELL: '売却',
+  HOLD: '保有継続',
+  WAIT: '待機',
+  DATA_WAIT: '更新待ち',
+  MONITOR: '監視',
+  WATCH: '監視',
+  BLOCKED: '実行不可',
+  BUY_NEW: '新規検討',
+  ADD_EXISTING: '追加検討',
+}
 
 export const DATA_WAIT_ROW_LABEL = '更新待ち'
 export const UNAVAILABLE_LABEL = '利用不可'

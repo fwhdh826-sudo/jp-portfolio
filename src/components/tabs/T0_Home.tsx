@@ -38,6 +38,7 @@ import {
   SYNTHESIS_ACTION_LABEL,
   synthesisNonExecutableReasonText,
 } from '../candidates/candidateDecisionSynthesisPresentation'
+import { computeBuyDisplaySuppressed } from '../../domain/analysis/buyDisplaySuppression'
 import { isCandidateFunnelRawAvailable } from '../../services/candidateFunnelFreshness'
 import type { CandidateDecisionSynthesisEntry, CandidateDecisionSynthesisSnapshot } from '../../types/candidateDecisionSynthesis'
 import type { HoldingAnalysis, Holding } from '../../types'
@@ -45,17 +46,6 @@ import type { HoldingAnalysis, Holding } from '../../types'
 // ─────────────────────────────────────────────────────────────
 // 型ヘルパー
 // ─────────────────────────────────────────────────────────────
-
-// P4-A143: BUY表示抑制ゲートの共通化。officialDecision.dataQualitySuppressed（分析実行時に凍結される値）と
-// dq.isSuppressed（レンダー時点で再評価される実時間値）を両方ORすることで、アプリを開いたまま
-// データ鮮度境界を跨いだ場合のカード間表示矛盾（P4-A142監査で確認）を防ぐ。表示専用、投資判断ロジックには影響しない。
-function computeBuyDisplaySuppressed(
-  dataQualitySuppressed: boolean,
-  dqIsSuppressed: boolean,
-  safeModeActive: boolean,
-): boolean {
-  return safeModeActive || dataQualitySuppressed || dqIsSuppressed
-}
 
 // CAND-SYN-1D / D13: T0's candidate surface reads CandidateDecisionSynthesis
 // exclusively. `decisions` is already the canonical, ordered, <=3 ADD/BUY_NEW
