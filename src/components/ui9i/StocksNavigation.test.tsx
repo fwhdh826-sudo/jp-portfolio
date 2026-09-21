@@ -152,7 +152,7 @@ describe('銘柄選択 → 詳細 → 戻る（選択状態は表示専用スト
 })
 
 describe('T0–T9 の到達性（回帰: 個別株面化で他画面を失わない）', () => {
-  it('主ナビ + ハブ + PF 面 + 従来のホームの実ボタンから、T0〜T9 のすべてに到達できる', () => {
+  it('主ナビ + ハブ + PF 面の実ボタンから、T0〜T9 のすべてに到達できる（従来のホームは不要）', () => {
     const reached = new Set<string>()
     const surfaces = new Set<string>()
     const record = (t: NavTarget) => { if (t.tab !== null) reached.add(t.tab); if (t.surface !== null) surfaces.add(t.surface) }
@@ -175,6 +175,6 @@ describe('T0–T9 の到達性（回帰: 個別株面化で他画面を失わな
     hubTargets.forEach(record)
 
     expect([...reached].sort()).toEqual(['T0', 'T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9'])
-    expect([...surfaces].sort()).toEqual(expect.arrayContaining(['funds_hub', 'legacy_home', 'other_hub', 'pf']))
+    expect([...surfaces].sort()).toEqual(['funds_hub', 'other_hub', 'pf'])
   })
 })

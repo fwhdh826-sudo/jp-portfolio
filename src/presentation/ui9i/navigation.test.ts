@@ -48,7 +48,6 @@ describe('既存 T0–T9 の全機能へ到達できる（機能を削除しな�
       }
     }
     for (const nav of PRIMARY_NAV) walk(PRIMARY_NAV_TARGET[nav.id])
-    // 従来のホーム（legacy_home 面）は T0 の旧内容。面としては到達可能であることを別テストで確認する。
     return reached
   }
 
@@ -61,10 +60,10 @@ describe('既存 T0–T9 の全機能へ到達できる（機能を削除しな�
     expect(FUNDS_HUB_LINKS.map(l => l.target.tab)).toEqual(['T2', 'T3', 'T7'])
   })
 
-  it('その他ハブ = ニュース / AI委員会 / 学習・検証 / 設定 + 従来のホーム', () => {
-    expect(OTHER_HUB_LINKS.map(l => l.title)).toEqual(['ニュース', 'AI委員会', '学習・検証', '設定', '従来のホーム'])
-    expect(OTHER_HUB_LINKS.slice(0, 4).map(l => l.target.tab)).toEqual(['T5', 'T6', 'T8', 'T9'])
-    expect(OTHER_HUB_LINKS[4].target).toEqual({ tab: null, surface: 'legacy_home' })
+  it('その他ハブ = ニュース / AI委員会 / 学習・検証 / 設定（従来のホームは無い）', () => {
+    expect(OTHER_HUB_LINKS.map(l => l.title)).toEqual(['ニュース', 'AI委員会', '学習・検証', '設定'])
+    expect(OTHER_HUB_LINKS.map(l => l.target.tab)).toEqual(['T5', 'T6', 'T8', 'T9'])
+    expect(OTHER_HUB_LINKS.every(l => l.target.surface === null)).toBe(true)
   })
 
   it('個別株は既存 T1 のまま（Decision Audit に置き換えない）', () => {
@@ -87,7 +86,6 @@ describe('現在画面 → 主ナビ項目', () => {
     expect(resolvePrimaryNav('T0', 'funds_hub')).toBe('funds')
     expect(resolvePrimaryNav('T0', 'pf')).toBe('pf')
     expect(resolvePrimaryNav('T0', 'other_hub')).toBe('other')
-    expect(resolvePrimaryNav('T0', 'legacy_home')).toBe('other')
   })
 })
 

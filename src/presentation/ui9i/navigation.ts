@@ -8,8 +8,7 @@
 //   個別株   → T1
 //   投信     → ハブ → T2 国内投信 / T3 海外投信 / T7 投信管理
 //   PF       → ポートフォリオ面 → T4 理想PF
-//   その他   → ハブ → T5 ニュース / T6 AI委員会 / T8 学習・検証 / T9 設定
-//              ／ 従来のホーム（旧 T0 の詳細ダッシュボード）
+//   その他   → ハブ → T5 ニュース / T6 AI委員会 / T8 学習・検証（Phase 8 観察を含む） / T9 設定
 //
 // デスクトップの左サイドバーだけは「ニュース」を独立項目として持つ（T5 へ直接）。
 // モバイルの主ナビは 5 項目のまま、ニュースは「その他」ハブ経由で到達する。
@@ -22,7 +21,7 @@ import type { AssetClass } from '../../types/allocationPlan'
 export type PrimaryNavId = 'today' | 'stocks' | 'funds' | 'pf' | 'other'
 
 /** ホーム・ハブ・詳細など、TabId に 1:1 で対応しない UI 面。null = activeTab の葉画面。 */
-export type UiSurface = 'audit' | 'funds_hub' | 'pf' | 'other_hub' | 'legacy_home'
+export type UiSurface = 'audit' | 'funds_hub' | 'pf' | 'other_hub'
 
 export interface PrimaryNavItem {
   readonly id: PrimaryNavId
@@ -79,7 +78,6 @@ const SURFACE_PRIMARY: Record<UiSurface, PrimaryNavId> = {
   funds_hub: 'funds',
   pf: 'pf',
   other_hub: 'other',
-  legacy_home: 'other',
 }
 
 const TAB_PRIMARY: Record<TabId, PrimaryNavId> = {
@@ -131,7 +129,6 @@ export const OTHER_HUB_LINKS: readonly HubLink[] = [
   { id: 'committee', title: 'AI委員会', description: '代理の議論と論点（判断の背景）', glyph: 'AI', tone: 'violet', target: { tab: 'T6', surface: null } },
   { id: 'learning', title: '学習・検証', description: '予測と実績、戦略の検証', glyph: '学', tone: 'green', target: { tab: 'T8', surface: null } },
   { id: 'settings', title: '設定', description: 'データ更新・CSV取込・保有設定', glyph: '設', tone: 'slate', target: { tab: 'T9', surface: null } },
-  { id: 'legacy-home', title: '従来のホーム', description: '旧ダッシュボードの詳細カード一覧', glyph: '旧', tone: 'slate', target: { tab: null, surface: 'legacy_home' } },
 ]
 
 /** PF 面から到達できる既存画面（旧 T4 理想PF）。 */

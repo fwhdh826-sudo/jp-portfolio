@@ -83,10 +83,11 @@ describe('投信ハブ adapter', () => {
 })
 
 describe('その他ハブ adapter', () => {
-  it('リンクは ニュース / AI委員会 / 学習・検証 / 設定（T5 / T6 / T8 / T9）+ 従来のホーム', () => {
+  it('リンクは ニュース / AI委員会 / 学習・検証 / 設定（T5 / T6 / T8 / T9）のみ', () => {
     const vm = assembleOtherHub({ decisionGeneratedAt: null, marketAt: null, candidatesAt: null })
     expect(vm.links).toEqual([...OTHER_HUB_LINKS])
-    expect(vm.links.slice(0, 4).map(l => [l.title, l.target.tab])).toEqual([
+    expect(vm.links).toHaveLength(4)
+    expect(vm.links.map(l => [l.title, l.target.tab])).toEqual([
       ['ニュース', 'T5'], ['AI委員会', 'T6'], ['学習・検証', 'T8'], ['設定', 'T9'],
     ])
   })
@@ -132,6 +133,6 @@ describe('その他ハブ adapter', () => {
   it('OfficialDecision が無い場合は「判断生成」行だけが利用不可（Decision unavailable を全体に広げない）', () => {
     const vm = assembleOtherHub(selectOtherHubTimestamps({ ...BASE, officialDecision: null }))
     expect(vm.system[0]).toMatchObject({ id: 'decision', value: '利用不可', unavailable: true })
-    expect(vm.links).toHaveLength(5)
+    expect(vm.links).toHaveLength(4)
   })
 })

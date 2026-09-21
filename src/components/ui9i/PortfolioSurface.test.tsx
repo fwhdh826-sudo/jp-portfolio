@@ -263,7 +263,8 @@ describe('その他ハブ', () => {
     expect(byId.committee).toEqual({ tab: 'T6', surface: null })
     expect(byId.learning).toEqual({ tab: 'T8', surface: null })
     expect(byId.settings).toEqual({ tab: 'T9', surface: null })
-    expect(byId['legacy-home']).toEqual({ tab: null, surface: 'legacy_home' })
+    expect(byId['legacy-home']).toBeUndefined()
+    expect(Object.keys(byId).sort()).toEqual(['committee', 'learning', 'news', 'settings'])
   })
 
   it('AI委員会は最終判断ではない（OfficialDecision は今日に残す）。新しい最終推奨を作らない', () => {
@@ -288,7 +289,7 @@ describe('その他ハブ', () => {
     const html = renderToStaticMarkup(<OtherHubView vm={v} onNavigate={noop} />)
     expect(html).toMatch(/data-system-row="decision" data-unavailable="true">利用不可</)
     expect(html).toMatch(/data-system-row="market">10\/6 8:30</)
-    expect(html.match(/data-hub-link=/g)?.length).toBe(5)
+    expect(html.match(/data-hub-link=/g)?.length).toBe(4)
   })
 })
 

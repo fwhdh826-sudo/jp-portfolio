@@ -178,64 +178,6 @@ small { font-size: var(--font-xs, 11px); }
   }
 }
 
-/* ── Tab Navigation ───────────────────────────────────────── */
-.tab-nav {
-  background: var(--color-bg-surface, #fff);
-  border-bottom: 1px solid var(--color-border-subtle, #e8ecf2);
-  display: flex;
-  overflow-x: auto;
-  scrollbar-width: none;
-  -webkit-overflow-scrolling: touch;
-  flex-shrink: 0;
-  position: sticky;
-  top: 56px;
-  z-index: 30;
-  padding: 0 8px;
-}
-.tab-nav::-webkit-scrollbar { display: none; }
-
-.tab-nav__item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-  padding: 8px 10px;
-  cursor: pointer;
-  border: none;
-  background: none;
-  color: var(--color-text-subtle, #6b7e96);
-  font-size: 11px;
-  font-weight: 500;
-  white-space: nowrap;
-  border-bottom: 2px solid transparent;
-  transition: color 0.12s, background 0.12s, border-color 0.12s;
-  min-width: 48px;
-  font-family: inherit;
-  flex-shrink: 0;
-  border-radius: 8px 8px 0 0;
-}
-
-.tab-nav__item:hover {
-  color: var(--color-text-primary);
-  background: var(--color-bg-elevated, #e8edf4);
-}
-
-.tab-nav__item.active {
-  color: var(--color-primary, #1d4ed8);
-  border-bottom-color: var(--color-primary, #1d4ed8);
-  font-weight: 700;
-  background: var(--color-primary-tint);
-}
-
-.tab-nav__icon {
-  font-size: 15px;
-  line-height: 1;
-}
-
-.tab-nav__label {
-  font-size: 10px;
-}
-
 /* ── Main Content ─────────────────────────────────────────── */
 .main-content {
   flex: 1;
@@ -1262,197 +1204,10 @@ button:focus-visible, a:focus-visible {
 
 .earnings-table tbody tr:last-child td { border-bottom: none; }
 
-/* ═══════════════════════════════════════════════════════════
-   UI-7-4: Bottom Dock Nav（モバイル専用ナビゲーション）
-   <840px で表示 / >=840px では非表示
-   T9C: 案D固定 — T7でも常にBottomDockを表示する（単一nav系統を維持）
-   ═══════════════════════════════════════════════════════════ */
-
-/* ── Dock 本体 ────────────────────────────────────────────── */
-.bottom-dock {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 35;
-  display: flex;
-  background: var(--color-bg-surface, #fff);
-  border-top: 1px solid var(--color-border-subtle, #e8ecf2);
-  padding-bottom: env(safe-area-inset-bottom, 0px);
-  box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.06);
-}
-
-@media (min-width: 840px) {
-  .bottom-dock         { display: none !important; }
-  .bottom-dock__overlay { display: none !important; }
-  .bottom-dock__more-sheet { display: none !important; }
-}
-
-.bottom-dock__item {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 2px;
-  padding: 8px 4px;
-  border: none;
-  background: none;
-  color: var(--color-text-subtle, #6b7e96);
-  font-size: 10px;
-  font-weight: 500;
-  cursor: pointer;
-  font-family: inherit;
-  min-height: 56px;
-  transition: color 0.12s, background 0.12s;
-  border-radius: 0;
-}
-
-/* P1: 色だけに依存しない — font-weightで非色の視覚indicatorを追加 */
-.bottom-dock__item.active {
-  color: var(--color-primary, #1d4ed8);
-  background: var(--color-primary-tint);
-  font-weight: 700;
-}
-
-.bottom-dock__item:active {
-  background: var(--color-bg-elevated, #e8edf4);
-}
-
-.bottom-dock__icon {
-  font-size: 18px;
-  line-height: 1;
-}
-
-.bottom-dock__label {
-  font-size: 10px;
-  white-space: nowrap;
-}
-
-/* ── More オーバーレイ ────────────────────────────────────── */
-.bottom-dock__overlay {
-  position: fixed;
-  inset: 0;
-  background: var(--color-overlay-bg);
-  z-index: 45;
-}
-
-/* ── More シート ─────────────────────────────────────────── */
-.bottom-dock__more-sheet {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 46;
-  background: var(--color-bg-surface, #fff);
-  border-radius: 16px 16px 0 0;
-  border-top: 1px solid var(--color-border-subtle, #e8ecf2);
-  box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.12);
-  padding-bottom: env(safe-area-inset-bottom, 0px);
-}
-
-.bottom-dock__more-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 16px 20px 12px;
-  border-bottom: 1px solid var(--color-border-subtle, #e8ecf2);
-}
-
-.bottom-dock__more-title {
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--color-text-primary, #0f2340);
-}
-
-.bottom-dock__more-close {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 44px;
-  min-height: 44px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 16px;
-  color: var(--color-text-subtle, #6b7e96);
-  padding: 4px 8px;
-  font-family: inherit;
-  line-height: 1;
-}
-
-.bottom-dock__more-grid {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 4px;
-  padding: 12px 8px 16px;
-}
-
-.bottom-dock__more-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  padding: 10px 4px;
-  border: none;
-  border-radius: 8px;
-  background: none;
-  color: var(--color-text-subtle, #6b7e96);
-  cursor: pointer;
-  font-family: inherit;
-  transition: background 0.12s, color 0.12s;
-}
-
-.bottom-dock__more-item:active {
-  background: var(--color-bg-elevated, #e8edf4);
-  color: var(--color-text-primary, #0f2340);
-}
-
-.bottom-dock__more-item.active {
-  background: var(--color-primary-tint);
-  color: var(--color-primary, #1d4ed8);
-  font-weight: 700;
-}
-
-.bottom-dock__more-icon {
-  font-size: 20px;
-  line-height: 1;
-}
-
-.bottom-dock__more-label {
-  font-size: 10px;
-  font-weight: 500;
-  white-space: nowrap;
-}
-
 /* ── main-content: モバイルでの Dock 分の下パディング ────── */
 @media (max-width: 839px) {
   .main-content {
     padding-bottom: calc(60px + env(safe-area-inset-bottom, 0px));
-  }
-}
-
-/* ── UI-7-5: モバイルでの上部TabNav非表示（Bottom Dockに一本化） ── */
-@media (max-width: 839px) {
-  .tab-nav {
-    display: none;
-  }
-}
-
-/* ── UI-8-2: BottomDock マウント時フェードイン ── */
-@keyframes bottom-dock-enter {
-  from { opacity: 0; transform: translateY(8px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-.bottom-dock {
-  animation: bottom-dock-enter 0.15s ease;
-}
-
-/* prefers-reduced-motion: アニメーション無効化 */
-@media (prefers-reduced-motion: reduce) {
-  .bottom-dock {
-    animation: none;
   }
 }
 
@@ -1521,9 +1276,6 @@ button:focus-visible, a:focus-visible {
 .home-pf-col__item { font-size: 12px; color: var(--color-text-second); margin-bottom: 3px; }
 
 .home-candidate-card { padding: 8px 10px; border-radius: 8px; margin-bottom: 6px; }
-
-.home-phase8-section { border-top: 1px solid var(--color-border-subtle); padding-top: 16px; }
-.home-phase8-desc { font-size: 11px; color: var(--color-text-muted); margin-bottom: 8px; padding-left: 2px; line-height: 1.5; }
 
 .home-footer-note { font-size: 11px; color: var(--color-text-muted); text-align: center; padding: 8px 0 4px; }
 
@@ -2145,8 +1897,8 @@ button:focus-visible, a:focus-visible {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   UI-9-5-1/2: App Shell Desktop Sidebar (polished)
-   mobile(<840px): Bottom Dock / tablet(840-1023px): TabNav / desktop(≥1024px): sidebar
+   App Shell body layout
+   主ナビは UserDockNav / UserSidebarNav（ui9i.css）の 1 系統。ここは本文の縦積み / 横並びのみ
    ═══════════════════════════════════════════════════════════ */
 
 /* ── app-shell-body: デフォルト（mobile/tablet）= 縦積み ──── */
@@ -2157,222 +1909,19 @@ button:focus-visible, a:focus-visible {
   flex-direction: column;
 }
 
-/* ── app-sidebar: デフォルト非表示（mobile/tablet では不使用） */
-.app-sidebar {
-  display: none;
-}
-
-/* ── Desktop(≥1024px): 横並び + sidebar 表示 ─────────────── */
+/* ── Desktop(≥1024px): 横並び（左ナビは UserSidebarNav = ui9i.css） ─── */
 @media (min-width: 1024px) {
   .app-shell-body {
     flex-direction: row;
   }
 
-  /* 上部TabNavをdesktopで非表示 — sidebarに置き換え */
-  .app-shell-body .tab-nav {
-    display: none;
-  }
-
-  /* main-content をsidebarと横並びに。P0-1: overflow-yは新設しない
-     — windowをactual scroll ownerとして維持（main-content/sidebarの
+  /* main-content を左ナビと横並びに。P0-1: overflow-yは新設しない
+     — windowをactual scroll ownerとして維持（main-content/左ナビの
      nested scrollを作らない）。 */
   .app-shell-body .main-content {
     flex: 1;
     min-width: 0;
     overflow-x: hidden;
-  }
-
-  /* ── sidebar 本体 ─────────────────────────────────────── */
-  /* P0-1: position:sticky + align-self:flex-start でwindow scroll追従。
-     sidebar独自のoverflow-yは新設しない（nested scroll禁止）。
-     top:56pxはapp-headerの固定高さ(56px)に一致させ重なりを回避。 */
-  .app-sidebar {
-    display: flex;
-    flex-direction: column;
-    width: 220px;
-    flex-shrink: 0;
-    position: sticky;
-    top: 56px;
-    align-self: flex-start;
-    background: var(--color-bg-surface, #fff);
-    border-right: 1px solid var(--color-border-subtle, #e8ecf2);
-    padding: 10px 8px 12px;
-    transition: width 0.18s ease;
-  }
-
-  /* ── sidebar nav (groups container) ─────────────────────── */
-  .app-sidebar__nav {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-  }
-
-  /* ── section group ───────────────────────────────────────── */
-  .app-sidebar__group {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .app-sidebar__group + .app-sidebar__group {
-    margin-top: 6px;
-  }
-
-  .app-sidebar__group-label {
-    font-size: 9.5px;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--color-text-muted, #9aafbf);
-    padding: 8px 12px 3px;
-    user-select: none;
-  }
-
-  /* ── nav item ────────────────────────────────────────────── */
-  /* P1: padding13pxでタッチターゲット高44px以上を確保 */
-  .app-sidebar__item {
-    display: flex;
-    align-items: center;
-    gap: 9px;
-    padding: 13px 12px;
-    border: none;
-    background: none;
-    border-radius: 7px;
-    cursor: pointer;
-    color: var(--color-text-secondary, #4b6280);
-    font-size: 13px;
-    font-weight: 500;
-    text-align: left;
-    width: 100%;
-    transition: background 0.12s, color 0.12s, box-shadow 0.12s;
-    font-family: inherit;
-    flex-shrink: 0;
-    /* left accent bar via inset shadow — zero layout impact */
-    box-shadow: inset 3px 0 0 transparent;
-  }
-
-  .app-sidebar__item:hover {
-    background: var(--color-bg-elevated, #e8edf4);
-    color: var(--color-text-primary, #1a2e45);
-  }
-
-  .app-sidebar__item.active {
-    background: var(--color-primary-tint, #dbeafe);
-    color: var(--color-primary, #1d4ed8);
-    font-weight: 700;
-    box-shadow: inset 3px 0 0 var(--color-primary, #1d4ed8);
-  }
-
-  .app-sidebar__icon {
-    font-size: 15px;
-    line-height: 1;
-    flex-shrink: 0;
-    width: 20px;
-    text-align: center;
-    opacity: 0.85;
-  }
-
-  .app-sidebar__item.active .app-sidebar__icon {
-    opacity: 1;
-  }
-
-  .app-sidebar__label {
-    font-size: 13px;
-    white-space: nowrap;
-  }
-
-  /* ── sidebar footer ──────────────────────────────────────── */
-  .app-sidebar__footer {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    padding: 9px 12px 3px;
-    border-top: 1px solid var(--color-border-subtle, #e8ecf2);
-    margin-top: 6px;
-  }
-
-  .app-sidebar__footer-badge {
-    font-size: 9px;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--color-text-muted, #9aafbf);
-  }
-
-  .app-sidebar__footer-name {
-    font-size: 10.5px;
-    font-weight: 500;
-    color: var(--color-text-muted, #9aafbf);
-    white-space: nowrap;
-  }
-
-  /* ── UI-9-5-3: Sidebar toggle button ───────────────────── */
-  .app-sidebar__toggle {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    width: 100%;
-    min-height: 44px;
-    padding: 4px 6px 4px 12px;
-    margin-bottom: 6px;
-    border: none;
-    background: none;
-    cursor: pointer;
-    color: var(--color-text-muted, #9aafbf);
-    font-size: 15px;
-    font-weight: 700;
-    line-height: 1;
-    border-radius: 5px;
-    flex-shrink: 0;
-    transition: background 0.12s, color 0.12s;
-    font-family: inherit;
-  }
-
-  .app-sidebar__toggle:hover {
-    background: var(--color-bg-elevated, #e8edf4);
-    color: var(--color-text-primary, #1a2e45);
-  }
-
-  .app-sidebar__toggle:focus-visible {
-    outline: 2px solid var(--color-primary, #1d4ed8);
-    outline-offset: 1px;
-  }
-
-  /* ── UI-9-5-3: Collapsed state ─────────────────────────── */
-  .app-sidebar--collapsed {
-    width: 56px;
-    padding-left: 4px;
-    padding-right: 4px;
-  }
-
-  .app-sidebar--collapsed .app-sidebar__toggle {
-    justify-content: center;
-    padding: 4px;
-  }
-
-  .app-sidebar--collapsed .app-sidebar__label {
-    display: none;
-  }
-
-  .app-sidebar--collapsed .app-sidebar__group-label {
-    display: none;
-  }
-
-  .app-sidebar--collapsed .app-sidebar__item {
-    justify-content: center;
-    padding: 15px 0;
-  }
-
-  .app-sidebar--collapsed .app-sidebar__footer {
-    align-items: center;
-    padding: 9px 4px 3px;
-  }
-
-  .app-sidebar--collapsed .app-sidebar__footer-badge {
-    display: none;
-  }
-
-  .app-sidebar--collapsed .app-sidebar__footer-name {
-    display: none;
   }
 }
 

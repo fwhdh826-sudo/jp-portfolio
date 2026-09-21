@@ -148,13 +148,13 @@ describe('applyNavTarget: 葉画面と UI 面', () => {
 })
 
 describe('App のルーティング: Decision Audit は個別株（T1）を置き換えない', () => {
-  it('isUi9iSurface: T0 / T1（Phase 2B-1 で個別株が R4.1 化）と R4.1 面のみ。T2–T9 と従来のホームは従来ヘッダーを維持', () => {
+  it('isUi9iSurface: T0 / T1（Phase 2B-1 で個別株が R4.1 化）と R4.1 面のみ。T2–T9 は従来ヘッダーを維持', () => {
     expect(isUi9iSurface('T0', null)).toBe(true)
     expect(isUi9iSurface('T1', null)).toBe(true)
     for (const tab of ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9']) expect(isUi9iSurface(tab, null), tab).toBe(false)
     expect(isUi9iSurface('T0', 'audit')).toBe(true)
     expect(isUi9iSurface('T1', 'funds_hub')).toBe(true)
-    expect(isUi9iSurface('T0', 'legacy_home')).toBe(false)
+    for (const surface of ['audit', 'funds_hub', 'pf', 'other_hub'] as const) expect(isUi9iSurface('T0', surface), surface).toBe(true)
   })
 
   it('activeTab=T1・面なし → 個別株面（R4.1）を表示し、Decision Audit は出ない。従来の header / StatusBar は出さない', () => {
@@ -179,7 +179,7 @@ describe('App のルーティング: Decision Audit は個別株（T1）を置�
     expect(renderToStaticMarkup(<App />)).toContain('data-testid="stocks-surface"')
   })
 
-  it('各 UI 面がルーティングされる（投信ハブ / その他ハブ / PF / 従来のホーム）', () => {
+  it('各 UI 面がルーティングされる（投信ハブ / その他ハブ / PF）。従来のホーム面は存在しない', () => {
     withTab('T0')
     const cases: [string, string][] = [
       ['funds_hub', 'data-testid="funds-hub"'],
@@ -190,10 +190,11 @@ describe('App のルーティング: Decision Audit は個別株（T1）を置�
       setSurface(surface)
       expect(renderToStaticMarkup(<App />), surface).toContain(marker)
     }
+    // 撤去済みの面名が渡っても、旧ホーム（従来ヘッダー）へは落ちない（その他ハブへフォールバック）。
     setSurface('legacy_home')
-    const legacy = renderToStaticMarkup(<App />)
-    expect(legacy).toContain('class="app-header"')
-    expect(legacy).not.toContain('data-testid="today-home"')
+    const removed = renderToStaticMarkup(<App />)
+    expect(removed).not.toContain('class="app-header"')
+    expect(removed).not.toContain('従来のホーム')
   })
 
   it('T0（面なし）は R4.1 Home。従来の header / StatusBar は出さない', () => {
@@ -233,7 +234,7 @@ describe('Phase 2A: 実 store 経由の PF 面 / ハブ（配分・時刻が未�
     const html = renderToStaticMarkup(<App />)
     expect(html).toContain('data-testid="other-hub-system"')
     expect(html).toMatch(/data-system-row="version">13\.3</)
-    expect(html.match(/data-hub-link=/g)?.length).toBe(5)
+    expect(html.match(/data-hub-link=/g)?.length).toBe(4)
   })
 })
 
@@ -246,11 +247,12 @@ describe('ハブの到達性（レンダー結果）', () => {
     expect(html).toContain('ハブ自体は判断を持ちません')
   })
 
-  it('その他ハブ: ニュース / AI委員会 / 学習・検証 / 設定 / 従来のホーム。AI委員会は最終判断ではない', () => {
+  it('その他ハブ: ニュース / AI委員会 / 学習・検証 / 設定。従来のホームは無い。AI委員会は最終判断ではない', () => {
     withTab('T0')
     setSurface('other_hub')
     const html = renderToStaticMarkup(<App />)
-    for (const t of ['ニュース', 'AI委員会', '学習・検証', '設定', '従来のホーム']) expect(html).toContain(t)
+    for (const t of ['ニュース', 'AI委員会', '学習・検証', '設定']) expect(html).toContain(t)
+    for (const t of ['従来のホーム', '旧ホーム', 'legacy dashboard']) expect(html).not.toContain(t)
     expect(html).toContain('AI委員会は最終判断ではありません')
   })
 

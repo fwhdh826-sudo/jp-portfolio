@@ -27,7 +27,6 @@ import { selectExecutableDeployableCash } from '../../store/allocationConsumerSe
 import { formatJPYAuto, formatDateTime, formatRelativeTime, formatLastUpdated, formatPt, formatSignedPct, formatSignedJPY } from '../../utils/format'
 import { resolveNewsDisplayText, NEWS_DISPLAY_LIMITS } from '../../utils/newsDisplay'
 import { selectIsStale, selectMarketDataQuality } from '../../store/selectors'
-import { Phase8SummaryCard } from '../phase8/Phase8SummaryCard'
 import { SafeModeStatusCard } from '../v13/SafeModeStatusCard'
 import { PageHeader } from '../layout/PageHeader'
 import { colors, radius, spacing } from '../../theme/tokens'
@@ -1806,14 +1805,6 @@ export function T0_Home() {
 
       {/* [7a-2] 重要マーケットニュース（P4.5-A004: T0では件数を絞って表示） */}
       <MarketNewsCard />
-
-      {/* [7b] Phase 8 観察ダッシュボード */}
-      <div className="home-phase8-section">
-        <div className="home-phase8-desc">
-          Phase 8 観察ダッシュボード — partial-real / hybrid estimates / 売買指示ではありません
-        </div>
-        <Phase8SummaryCard />
-      </div>
 
       {/* [8] クイックナビゲーション（T0-CC-3: 主導線→補助導線へ格下げ。参考情報の下・フッター直前へ移動） */}
       <div style={{ marginTop: '4px' }}>

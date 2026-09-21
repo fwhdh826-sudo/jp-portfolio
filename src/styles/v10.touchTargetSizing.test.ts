@@ -86,9 +86,6 @@ describe('UI-9G G-6: scoped 44px touch targets', () => {
     expect(t5Refresh).toContain('aria-busy={refreshButton.ariaBusy}')
     expect(t5Refresh).toContain("fontSize: '11px'")
 
-    // .app-sidebar__toggle（desktop実測203x23だった、@media (min-width:1024px)内）
-    expect(declaredMinHeight('.app-sidebar__toggle')).toBe(44)
-
     // T9の34.1px高button 8件（比率ボタン×4は単一style blockの反復適用、export/import×4は個別）
     expect(precedingStyleBlock(t9Settings, '{opt.label}')).toMatch(/minHeight:\s*'44px'/)
     expect(precedingStyleBlock(t9Settings, 'この端末の現金権限をエクスポート')).toContain("minHeight: '44px'")
@@ -173,7 +170,6 @@ describe('UI-9G G-6: scoped 44px touch targets', () => {
       ['.news-cat-tabs__item', 32],
       ['.refresh-btn', 40],
       ['.status-shell__refresh', 21],
-      ['.app-sidebar__toggle', 23],
     ])
     for (const [selector, intrinsicHeight] of auditedIntrinsicHeights) {
       const minimum = declaredMinHeight(selector)
