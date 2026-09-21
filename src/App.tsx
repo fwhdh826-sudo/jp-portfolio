@@ -1,18 +1,14 @@
 /**
  * App.tsx — V10 アプリシェル
- * ネイビーヘッダー + StatusBar + TabNav + コンテンツエリア
- * mobile: Bottom Dock / tablet: TabNav / desktop(≥1024px): 左サイドバー
+ * ネイビーヘッダー + StatusBar + コンテンツエリア
+ * 主ナビは UserDockNav（mobile）/ UserSidebarNav（desktop ≥1024px）の 1 系統のみ
  */
 import { useEffect, useState } from 'react'
 import { useAppStore } from './store/useAppStore'
 import { colors, v13Colors } from './theme/tokens'
 import { startCashAuthorityExpiryGuard } from './store/cashAuthorityLifecycle'
 import { StatusBar } from './components/StatusBar'
-import { TabNav } from './components/TabNav'
-import { BottomDockNav } from './components/BottomDockNav'
-import { TAB_META } from './constants/tabs'
 import { AppErrorBoundary } from './components/shared/AppErrorBoundary'
-import { T0_Home }       from './components/tabs/T0_Home'
 import { T1_Decision }   from './components/tabs/T1_Decision'
 import { T2_JpFund }     from './components/tabs/T2_JpFund'     // Phase 2: 国内株投信
 import { T3_GlobalFund } from './components/tabs/T3_GlobalFund' // Phase 2: 海外投信
@@ -28,7 +24,19 @@ import {
   type PortfolioLoadFeedback,
 } from './components/portfolioLoadUi'
 import type { PortfolioLoadResult } from './store/portfolioOperationResult'
+import { useUiSurface } from './store/uiSurface'
+import type { UiSurface } from './presentation/ui9i/navigation'
+import { TodayHome } from './components/ui9i/TodayHome'
+import { DecisionAudit } from './components/ui9i/DecisionAudit.container'
+import { FundsHub, OtherHub, PortfolioSurface } from './components/ui9i/SurfaceRouter'
+import { UserDockNav, UserSidebarNav } from './components/ui9i/UserNav'
+// UI-9I R4.1 の数値メトリクスは Space Mono（--u9-mono の先頭フォント）。
+// @fontsource が同梱する woff2 を bundle するため、実行時の外部ネットワーク依存は無い。
+// import するのは実際に使う normal 400 / 700 の latin subset のみ（italic は使わない）。
+import '@fontsource/space-mono/latin-400.css'
+import '@fontsource/space-mono/latin-700.css'
 import './styles/v10.css'
+import './styles/ui9i.css'
 
 // ── UI-9-6: Header右側 — 日付 + システムステータスドット ────────
 function HeaderRight() {
@@ -61,62 +69,6 @@ function HeaderRight() {
         <span className="app-header__date-dow">{dow}曜日</span>
       </div>
     </div>
-  )
-}
-
-// ── UI-9-5-1/2: Desktop Sidebar（≥1024px で表示） ─────────────
-const SIDEBAR_SECTIONS: { label: string; ids: string[] }[] = [
-  { label: 'DASHBOARD', ids: ['T0'] },
-  { label: 'PORTFOLIO', ids: ['T1', 'T2', 'T3', 'T4'] },
-  { label: 'MARKET',    ids: ['T5', 'T6'] },
-  { label: 'SYSTEM',    ids: ['T7', 'T8', 'T9'] },
-]
-
-export function DesktopSidebarNav() {
-  const activeTab    = useAppStore(s => s.activeTab)
-  const setTab       = useAppStore(s => s.setTab)
-  const [isCollapsed, setIsCollapsed] = useState(false)
-
-  return (
-    <nav
-      className={`app-sidebar${isCollapsed ? ' app-sidebar--collapsed' : ''}`}
-      aria-label="Desktop navigation"
-    >
-      <button
-        className="app-sidebar__toggle"
-        onClick={() => setIsCollapsed(v => !v)}
-        aria-label={isCollapsed ? 'サイドバーを展開' : 'サイドバーを折りたたむ'}
-        type="button"
-      >
-        {isCollapsed ? '›' : '‹'}
-      </button>
-      <div className="app-sidebar__nav">
-        {SIDEBAR_SECTIONS.map(section => (
-          <div key={section.label} className="app-sidebar__group">
-            <div className="app-sidebar__group-label" aria-hidden="true">{section.label}</div>
-            {TAB_META
-              .filter(tab => section.ids.includes(tab.id))
-              .map(tab => (
-                <button
-                  key={tab.id}
-                  className={`app-sidebar__item${activeTab === tab.id ? ' active' : ''}`}
-                  onClick={() => setTab(tab.id)}
-                  type="button"
-                  aria-current={activeTab === tab.id ? 'page' : undefined}
-                  title={tab.title}
-                >
-                  <span className="app-sidebar__icon" aria-hidden="true">{tab.icon}</span>
-                  <span className="app-sidebar__label">{tab.label}</span>
-                </button>
-              ))}
-          </div>
-        ))}
-      </div>
-      <div className="app-sidebar__footer">
-        <span className="app-sidebar__footer-badge">AI Engine</span>
-        <span className="app-sidebar__footer-name">Capital Allocation OS</span>
-      </div>
-    </nav>
   )
 }
 
@@ -211,11 +163,32 @@ export function resetScrollOwnerToTop(target: { scrollTo: (options: ScrollToOpti
   target.scrollTo({ top: 0, left: 0, behavior: 'instant' })
 }
 
+// UI-9I Phase 1: R4.1 の UI 面（葉画面ではない面）。activeTab（葉画面の権限）は温存し、
+// その上に重ねる。既存 T0–T9 はすべて到達可能（主ナビ / ハブ / PF 面経由）。
+// Phase 2B-1: T1（個別株）も R4.1 の面（葉画面 activeTab === 'T1' のまま視覚だけ移行）。
+export function isUi9iSurface(activeTab: string, surface: UiSurface | null): boolean {
+  if (surface !== null) return true
+  return activeTab === 'T0' || activeTab === 'T1'
+}
+
 function ActiveTabPanel() {
   const activeTab = useAppStore(s => s.activeTab)
+  const surface = useUiSurface(s => s.surface)
 
-  if (activeTab === 'T0') return <T0_Home />
-  // T1: 個別株（V10 Phase 6 再構築済み）
+  // UI 面ごとに独立した境界を置く（key=surface で面の切替が復旧導線になる）。
+  if (surface !== null) {
+    return (
+      <AppErrorBoundary key={surface}>
+        {surface === 'audit' ? <DecisionAudit />
+          : surface === 'funds_hub' ? <FundsHub />
+          : surface === 'pf' ? <PortfolioSurface />
+          : <OtherHub />}
+      </AppErrorBoundary>
+    )
+  }
+
+  if (activeTab === 'T0') return <TodayHome />
+  // T1: 個別株（V10 Phase 6 再構築済み → UI-9I Phase 2B-1 で R4.1 へ視覚移行）
   if (activeTab === 'T1') return <T1_Decision />
   // T2: 国内株投信（Phase 2 V10 新実装）
   if (activeTab === 'T2') return <T2_JpFund />
@@ -228,12 +201,14 @@ function ActiveTabPanel() {
   if (activeTab === 'T7') return <T7_Trust />
   if (activeTab === 'T8') return <T8_Learning />   // Phase 9: 学習/検証（実装済み）
   if (activeTab === 'T9') return <T9_Settings />   // Phase 9: 設定/CSV取込（実装済み）
-  return <T0_Home />
+  return <TodayHome />
 }
 
 export function App() {
   const initialize = useAppStore(s => s.initialize)
   const activeTab  = useAppStore(s => s.activeTab)
+  const surface    = useUiSurface(s => s.surface)
+  const clearSurface = useUiSurface(s => s.clearSurface)
   const [initializeFeedback, setInitializeFeedback] = useState<PortfolioLoadFeedback | null>(null)
 
   useEffect(() => {
@@ -251,26 +226,44 @@ export function App() {
   // ネットワークは使わず、権限の値や updatedAt も一切書き換えない。
   useEffect(() => startCashAuthorityExpiryGuard(useAppStore), [])
 
+  // 葉画面（activeTab）が外部から切り替わったら UI 面（ハブ / 判断の詳細 等）を解除する。
+  useEffect(() => {
+    clearSurface()
+  }, [activeTab, clearSurface])
+
   // タブ切替時にコンテンツエリアをトップへ
   useEffect(() => {
     resetScrollOwnerToTop(window)
   }, [activeTab])
 
-  return (
-    <div className="app-shell" data-tab={activeTab}>
-      {/* ネイビーヘッダー（常時表示） */}
-      <header className="app-header">
-        <div>
-          <div className="app-header__title">Capital Allocation OS</div>
-          <div className="app-header__subtitle">観察・分析ダッシュボード</div>
-        </div>
-        <div className="app-header__right">
-          <HeaderRight />
-        </div>
-      </header>
+  // UI 面（ハブ / 判断の詳細 / PF 面）の切替時もトップへ
+  useEffect(() => {
+    resetScrollOwnerToTop(window)
+  }, [surface])
 
-      {/* 市場指標ステータスバー */}
-      <StatusBar />
+  // R4.1 の面ではネイビーヘッダー / StatusBar を出さない。従来画面（T2–T9）では
+  // 更新ボタンや市場ティッカーを含む従来のヘッダー群をそのまま提供する（機能を削除しない）。
+  const ui9i = isUi9iSurface(activeTab, surface)
+
+  return (
+    <div className="app-shell" data-tab={activeTab} data-ui9i={ui9i ? 'true' : 'false'}>
+      {!ui9i && (
+        <>
+          {/* ネイビーヘッダー（従来画面） */}
+          <header className="app-header">
+            <div>
+              <div className="app-header__title">Capital Allocation OS</div>
+              <div className="app-header__subtitle">観察・分析ダッシュボード</div>
+            </div>
+            <div className="app-header__right">
+              <HeaderRight />
+            </div>
+          </header>
+
+          {/* 市場指標ステータスバー */}
+          <StatusBar />
+        </>
+      )}
 
       {/* Phase 8: グローバルエラーバナー */}
       <GlobalErrorBanner />
@@ -282,27 +275,24 @@ export function App() {
         </div>
       )}
 
-      {/* app-shell-body: tablet以下=縦積み / desktop(≥1024px)=横並び(sidebar+content) */}
+      {/* app-shell-body: モバイル=縦積み / desktop(≥1024px)=横並び(sidebar+content) */}
       <div className="app-shell-body">
-        {/* デスクトップ左サイドバー（≥1024px で表示） */}
-        <DesktopSidebarNav />
-
-        {/* タブナビゲーション（tablet以下で表示、≥1024pxで非表示） */}
-        <TabNav />
+        {/* デスクトップ左サイドバー（≥1024px）: 今日 / 個別株 / 投信 / ポートフォリオ / その他 */}
+        <UserSidebarNav />
 
         {/* メインコンテンツ */}
         {/* F-P0-4: tab panel の描画例外で app-shell（header / StatusBar / nav）まで
             unmount されないよう、main-content の内側に境界を1段置く。
-            key={activeTab} によりタブ切替が復旧導線になる。 */}
-        <main className="main-content">
+            key={activeTab} によりタブ切替が復旧導線になる。UI 面は ActiveTabPanel 内で個別に境界を持つ。 */}
+        <main className="main-content u9-main">
           <AppErrorBoundary key={activeTab}>
             <ActiveTabPanel />
           </AppErrorBoundary>
         </main>
       </div>
 
-      {/* モバイル Bottom Dock（<840px で表示、T7 では非表示） */}
-      <BottomDockNav />
+      {/* モバイル Bottom Nav（<1024px）: 今日 / 個別株 / 投信 / PF / その他 */}
+      <UserDockNav />
     </div>
   )
 }

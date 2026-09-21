@@ -5,7 +5,6 @@ import { createAppStoreInstanceForTest } from '../../store/useAppStore'
 
 const mockedStore = vi.hoisted(() => ({
   state: null as AppState | null,
-  isMobile: false,
 }))
 
 vi.mock('../../store/useAppStore', async importOriginal => {
@@ -19,13 +18,16 @@ vi.mock('../../store/useAppStore', async importOriginal => {
   }
 })
 
-vi.mock('../../hooks/useIsMobile', () => ({
-  useIsMobile: () => mockedStore.isMobile,
-}))
-
 const { T1_Decision, displayDecisionLabel, stockRegimeDisplayLabel } = await import('./T1_Decision')
 // @ts-expect-error -- Vite resolves raw source imports during Vitest.
-import t1Source from './T1_Decision.tsx?raw'
+import presentationSource from '../../presentation/ui9i/stocksPresentation.ts?raw'
+// @ts-expect-error -- Vite resolves raw source imports during Vitest.
+import viewsSource from '../ui9i/StocksViews.tsx?raw'
+// @ts-expect-error -- repository intentionally has no @types/node
+import { readFileSync } from 'node:fs'
+
+// vitest は CSS を transform しないため生ファイルを読む。
+const uiCss: string = readFileSync(new URL('../../styles/ui9i.css', import.meta.url), 'utf8')
 
 const isolatedStore = createAppStoreInstanceForTest()
 const BASE_APP_STATE: AppState = isolatedStore.store.getState()
@@ -47,67 +49,48 @@ const MATRIX_HOLDINGS = [
   holding('6098', '株式会社リクルートホールディングス', -4.56),
 ]
 
-function renderMatrix(isMobile: boolean): string {
-  mockedStore.state = {
-    ...BASE_APP_STATE,
-    holdings: MATRIX_HOLDINGS,
-    analysis: [],
-  }
-  mockedStore.isMobile = isMobile
-  try {
-    const html = renderToStaticMarkup(<T1_Decision />)
-    const start = html.indexOf('銘柄スコア比較')
-    const end = html.indexOf('候補判断', start)
-    expect(start).toBeGreaterThanOrEqual(0)
-    return html.slice(start, end < 0 ? html.length : end)
-  } finally {
-    mockedStore.isMobile = false
-  }
-}
-
-function renderDecisionPage(): string {
-  mockedStore.state = {
-    ...BASE_APP_STATE,
-    holdings: MATRIX_HOLDINGS,
-    analysis: [],
-  }
+function renderPage(holdings = MATRIX_HOLDINGS): string {
+  mockedStore.state = { ...BASE_APP_STATE, holdings, analysis: [] }
   return renderToStaticMarkup(<T1_Decision />)
 }
 
-function gridContracts(matrixHtml: string): string[] {
-  return [...matrixHtml.matchAll(/grid-template-columns:([^;"]+)/g)].map(match => match[1])
+function compareTable(html: string): string {
+  const start = html.indexOf('<table class="u9-table">')
+  const end = html.indexOf('</table>', start)
+  expect(start).toBeGreaterThanOrEqual(0)
+  return html.slice(start, end)
 }
 
-describe('T1 score matrix responsive first-column contract', () => {
-  it('mobile uses a flexible first column and keeps header/data on one six-column contract', () => {
-    const html = renderMatrix(true)
-    const contracts = gridContracts(html)
-
-    expect(contracts).toHaveLength(MATRIX_HOLDINGS.length + 1)
-    expect(new Set(contracts)).toEqual(new Set(['minmax(64px, 1.2fr) repeat(5, 1fr)']))
-    expect(contracts[0]).not.toBe('64px repeat(5, 1fr)')
-  })
-
-  it('desktop gives the identity column available space while preserving all metric columns', () => {
-    const html = renderMatrix(false)
-    const contracts = gridContracts(html)
-
-    expect(contracts).toHaveLength(MATRIX_HOLDINGS.length + 1)
-    expect(new Set(contracts)).toEqual(new Set(['minmax(120px, 2fr) repeat(5, 1fr)']))
-    for (const label of ['判断', 'スコア', '損益', 'RSI', 'ランク']) {
-      expect(html).toContain(`>${label}<`)
+describe('T1 比較表（Phase 2B-1: 旧「銘柄スコア比較」の grid → semantic table）', () => {
+  it('列見出しは th[scope=col]、行見出しは th[scope=row]（銘柄コード + 名称）。全 5 指標列を保持する', () => {
+    const table = compareTable(renderPage())
+    for (const label of ['銘柄', '判断', '総合スコア', '損益', 'RSI', '総合ランク']) {
+      expect(table).toContain(`<th scope="col">${label}</th>`)
+    }
+    for (const row of MATRIX_HOLDINGS) {
+      expect(table).toMatch(new RegExp(`<th scope="row"><span class="u9-stk-code">${row.code}</span><span class="u9-table__sub">${row.name}</span>`))
     }
   })
 
-  it('keeps code/name identity readable and the existing horizontal scroll escape hatch', () => {
-    const html = renderMatrix(true)
+  it('横スクロールの逃げ道は「キーボードで到達できる名前付き領域」として残す（overflow-x は CSS 側）', () => {
+    const html = renderPage()
+    expect(html).toContain('class="u9-table-scroll" role="region" aria-label="銘柄の比較表" tabindex="0"')
+    expect(uiCss).toMatch(/\.u9-table-scroll\s*\{[^}]*overflow-x:\s*auto/)
+    expect(uiCss).toMatch(/\.u9-table th, \.u9-table td\s*\{[^}]*white-space:\s*nowrap/)
+  })
 
+  it('銘柄が 1 件のときは比較表を出さない（旧 T1 の sorted.length >= 2 と同じ）', () => {
+    expect(renderPage([MATRIX_HOLDINGS[0]])).not.toContain('u9-table')
+  })
+
+  it('コード / 名称 / 損益が欠落せず読める（省略は CSS の ellipsis のみ。値は DOM に全て残る）', () => {
+    const html = renderPage()
     for (const row of MATRIX_HOLDINGS) {
       expect(html).toContain(`>${row.code}<`)
       expect(html).toContain(`>${row.name}<`)
     }
-    expect(html).toContain('white-space:nowrap;overflow:hidden;text-overflow:ellipsis')
-    expect(html).toContain('overflow-x:auto')
+    expect(html).toContain('+12.34%')
+    expect(html).toContain('-4.56%')
   })
 })
 
@@ -118,20 +101,21 @@ describe('UI-P2-1 I-1/I-4: T1表示ラベルとdomain tokenの分離', () => {
     expect(decisions).toEqual(['BUY', 'HOLD', 'SELL', 'WAIT', 'DATA_WAIT'])
   })
 
-  it('4つの判定render siteはunderlying enumをdata-decisionに保持する', () => {
-    expect(t1Source.match(/data-decision=/g)).toHaveLength(4)
-    expect(t1Source).toContain('deriveDisplayDecision({')
-    const html = renderMatrix(true)
-    expect(html).toContain('data-decision="HOLD"')
-    expect(html).toContain('>保有継続</div>')
+  it('判定 render site（一覧の行 / 比較表 / 詳細の判定バッジ）は underlying enum を data-decision に保持する', () => {
+    // 一覧の行 + 比較表の行（2 銘柄 × 2 site）。詳細の判定バッジは StocksViews の 1 箇所。
+    expect(viewsSource.match(/data-decision=/g)).toHaveLength(3)
+    const html = renderPage()
+    expect(html.match(/data-decision="HOLD"/g)).toHaveLength(4)
+    expect(html).toContain('>保有継続</span>')
     expect(html).not.toMatch(/>(BUY|HOLD|SELL|WAIT)</)
   })
 
   it('件数・DQ・詳細説明の可視文言に英語verdict tokenを残さない', () => {
-    const html = renderDecisionPage()
+    const html = renderPage()
     expect(html).toContain('2 銘柄 — 買い 0 / ロック 0')
     for (const oldText of ['BUYシグナル', 'SELLシグナル', 'WAIT判定', 'HOLDシグナル', 'BUY抑制']) {
-      expect(t1Source).not.toContain(oldText)
+      expect(viewsSource).not.toContain(oldText)
+      expect(presentationSource).not.toContain(oldText)
     }
   })
 

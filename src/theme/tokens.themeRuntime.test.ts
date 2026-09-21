@@ -88,7 +88,9 @@ describe('UI-9A: runtime design token restoration', () => {
     expect(vars['--color-text-secondary']).toBe(colors.textSecond)
   })
 
-  it('generateCssVars() は UI-9A追加分13個を含む113キーを出力する', () => {
-    expect(Object.keys(generateCssVars())).toHaveLength(113)
+  // UI-9I Phase 1: R4.1 Design Freeze トークン（--u9-* 18個）を追加したため 113 → 131。
+  // 既存 113 キーの値・名前は不変（下記 subset / 既存契約テストが維持を保証する）。
+  it('generateCssVars() は UI-9A追加分13個 + UI-9I R4.1 18個を含む131キーを出力する', () => {
+    expect(Object.keys(generateCssVars())).toHaveLength(131)
   })
 })

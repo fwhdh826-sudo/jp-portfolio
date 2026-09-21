@@ -27,7 +27,6 @@ import { selectExecutableDeployableCash } from '../../store/allocationConsumerSe
 import { formatJPYAuto, formatDateTime, formatRelativeTime, formatLastUpdated, formatPt, formatSignedPct, formatSignedJPY } from '../../utils/format'
 import { resolveNewsDisplayText, NEWS_DISPLAY_LIMITS } from '../../utils/newsDisplay'
 import { selectIsStale, selectMarketDataQuality } from '../../store/selectors'
-import { Phase8SummaryCard } from '../phase8/Phase8SummaryCard'
 import { SafeModeStatusCard } from '../v13/SafeModeStatusCard'
 import { PageHeader } from '../layout/PageHeader'
 import { colors, radius, spacing } from '../../theme/tokens'
@@ -39,6 +38,7 @@ import {
   SYNTHESIS_ACTION_LABEL,
   synthesisNonExecutableReasonText,
 } from '../candidates/candidateDecisionSynthesisPresentation'
+import { computeBuyDisplaySuppressed } from '../../domain/analysis/buyDisplaySuppression'
 import { isCandidateFunnelRawAvailable } from '../../services/candidateFunnelFreshness'
 import type { CandidateDecisionSynthesisEntry, CandidateDecisionSynthesisSnapshot } from '../../types/candidateDecisionSynthesis'
 import type { HoldingAnalysis, Holding } from '../../types'
@@ -46,17 +46,6 @@ import type { HoldingAnalysis, Holding } from '../../types'
 // ─────────────────────────────────────────────────────────────
 // 型ヘルパー
 // ─────────────────────────────────────────────────────────────
-
-// P4-A143: BUY表示抑制ゲートの共通化。officialDecision.dataQualitySuppressed（分析実行時に凍結される値）と
-// dq.isSuppressed（レンダー時点で再評価される実時間値）を両方ORすることで、アプリを開いたまま
-// データ鮮度境界を跨いだ場合のカード間表示矛盾（P4-A142監査で確認）を防ぐ。表示専用、投資判断ロジックには影響しない。
-function computeBuyDisplaySuppressed(
-  dataQualitySuppressed: boolean,
-  dqIsSuppressed: boolean,
-  safeModeActive: boolean,
-): boolean {
-  return safeModeActive || dataQualitySuppressed || dqIsSuppressed
-}
 
 // CAND-SYN-1D / D13: T0's candidate surface reads CandidateDecisionSynthesis
 // exclusively. `decisions` is already the canonical, ordered, <=3 ADD/BUY_NEW
@@ -1806,14 +1795,6 @@ export function T0_Home() {
 
       {/* [7a-2] 重要マーケットニュース（P4.5-A004: T0では件数を絞って表示） */}
       <MarketNewsCard />
-
-      {/* [7b] Phase 8 観察ダッシュボード */}
-      <div className="home-phase8-section">
-        <div className="home-phase8-desc">
-          Phase 8 観察ダッシュボード — partial-real / hybrid estimates / 売買指示ではありません
-        </div>
-        <Phase8SummaryCard />
-      </div>
 
       {/* [8] クイックナビゲーション（T0-CC-3: 主導線→補助導線へ格下げ。参考情報の下・フッター直前へ移動） */}
       <div style={{ marginTop: '4px' }}>

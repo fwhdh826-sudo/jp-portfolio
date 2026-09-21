@@ -9,6 +9,7 @@ import { formatDateTime, formatRelativeTime, findHoldingName, formatPt } from '.
 import type { LearningOutcome } from '../../types'
 import { SparklineChart } from '../charts/SparklineChart'
 import { PageHeader } from '../layout/PageHeader'
+import { Phase8SummaryCard } from '../phase8/Phase8SummaryCard'
 import { colors, radius, spacing } from '../../theme/tokens'
 import { typography } from '../../theme/typography'
 
@@ -540,6 +541,26 @@ export function T8_Learning() {
           </div>
         </>
       )}
+
+      {/* ── Phase 8 観察（UI-9I Phase 2B-2: 旧ホームから移設）。
+          学習データ（learning.outcomes）の有無に依存しないよう、!isEmpty 条件の外に置く。
+          総合精度 / BUY・SELL精度 / 重み提案 / 予測 vs 実績 とは別セクションで、KPI とは混在させない。 ── */}
+      <section
+        aria-labelledby="t8-phase8-heading"
+        data-testid="t8-phase8-section"
+        style={{
+          paddingTop: spacing[4],
+          borderTop: `1px solid var(--color-border-default)`,
+        }}
+      >
+        <h2 id="t8-phase8-heading" className="section-heading" style={{ marginBottom: spacing[1] }}>
+          Phase 8 観察
+        </h2>
+        <div style={{ ...typography.caption, color: colors.textMuted, marginBottom: spacing[2] }}>
+          戦略・探索系の観察値です。取引判断には使用しません。
+        </div>
+        <Phase8SummaryCard />
+      </section>
 
     </div>
   )
