@@ -1,63 +1,34 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-09-21T10:19:40.885789+09:00",
-  "sourceUpdatedAt": "2026-09-21T00:55:05+00:00",
+  "updatedAt": "2026-09-21T18:11:33.355574+09:00",
+  "sourceUpdatedAt": "2026-09-21T09:04:13+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": -0.2,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Yen Vulnerable With Japan on Holiday After BOJ Disappoints",
-      "topPositiveTitle": "Yen Vulnerable With Japan on Holiday After BOJ Disappoints",
-      "items": [
-        {
-          "title": "Yen Vulnerable With Japan on Holiday After BOJ Disappoints",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.2,
-          "publishedAt": "2026-09-20T08:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-20/yen-is-vulnerable-with-japan-on-holiday-after-boj-disappoints",
-          "tags": [
-            "fx",
-            "jp_broad",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "jp_semiconductor": {
-      "avgSentiment": 0.443,
+      "avgSentiment": 0.5,
       "negativeCount": 0,
-      "positiveCount": 3,
+      "positiveCount": 2,
       "neutralCount": 0,
-      "sourceCount": 2,
-      "itemCount": 3,
+      "sourceCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Trump & Xi to Meet Amidst Friction on Wars, Tech, Trade",
+      "topNegativeTitle": "South Korea’s Early Exports Rise to Record as Chip Boom Extends",
       "topPositiveTitle": "JPMorgan Sees Upside to Its Already Hawkish 3.75% BOK Rate Call",
       "items": [
         {
-          "title": "Trump & Xi to Meet Amidst Friction on Wars, Tech, Trade",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-21T00:50:09+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-21/trump-xi-to-meet-amidst-friction-on-wars-tech-trade-video",
-          "tags": [
-            "geopolitical",
-            "jp_semiconductor",
-            "macro_risk",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "S. Korea’s Early Exports Maintain Strong Momentum on Chip Boom",
+          "title": "South Korea’s Early Exports Rise to Record as Chip Boom Extends",
           "source": "Bloomberg Economics",
           "sentiment": "positive",
           "sentimentScore": 0.33,
@@ -84,41 +55,53 @@
       ]
     },
     "us_broad": {
-      "avgSentiment": 0.134,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 4,
+      "avgSentiment": -0.165,
+      "negativeCount": 2,
+      "positiveCount": 0,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Gold Steadies as Traders Weigh Inflation and Fed Hike Outlook",
-      "topPositiveTitle": "Short-Term Treasuries Emerge as Popular Bet on Fed Inflation Win",
+      "topNegativeTitle": "Morgan Stanley’s Wilson Says US Stocks Risk 7% Drop in Near Term",
+      "topPositiveTitle": "Dimon Heads to India as Wall Street Steps Up Fight For Deal Boom",
       "items": [
         {
-          "title": "Gold Steadies as Traders Weigh Inflation and Fed Hike Outlook",
+          "title": "Morgan Stanley’s Wilson Says US Stocks Risk 7% Drop in Near Term",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-21T08:23:53+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-21/morgan-stanley-s-wilson-says-us-stocks-risk-7-drop-in-near-term",
+          "tags": [
+            "commodity",
+            "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Gold Erases Weekly Gain as Traders Weigh Inflation and Fed Path",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
           "publishedAt": "2026-09-20T23:45:47+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-20/gold-steadies-as-traders-weigh-inflation-and-fed-hike-outlook",
           "tags": [
             "gold",
             "market",
-            "rates",
             "us_broad"
           ]
         },
         {
-          "title": "AI Boom Is Making Diversifying Investments Tough for Wall Street",
+          "title": "Dimon Heads to India as Wall Street Steps Up Fight For Deal Boom",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-20T21:00:01+00:00",
-          "url": "https://www.bloomberg.com/news/features/2026-09-20/ai-boom-is-making-diversifying-investments-tough-for-wall-street",
+          "publishedAt": "2026-09-21T08:29:20+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-21/dimon-heads-to-india-as-wall-street-steps-up-fight-for-deal-boom",
           "tags": [
             "market",
-            "us_broad",
-            "us_growth"
+            "us_broad"
           ]
         },
         {
@@ -135,75 +118,10 @@
             "market",
             "us_broad"
           ]
-        },
-        {
-          "title": "Oaktree’s Marks Says He Wants a Less Activist Central Bank",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-20T12:46:17+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-20/oaktree-s-marks-wants-a-less-activist-central-bank-in-warsh-era",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Short-Term Treasuries Emerge as Popular Bet on Fed Inflation Win",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-09-20T19:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-20/short-term-treasuries-emerge-as-popular-bet-on-fed-inflation-win",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.165,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 2,
-      "isStale": false,
-      "topNegativeTitle": "AI Boom Is Making Diversifying Investments Tough for Wall Street",
-      "topPositiveTitle": "Trump & Xi to Meet Amidst Friction on Wars, Tech, Trade",
-      "items": [
-        {
-          "title": "AI Boom Is Making Diversifying Investments Tough for Wall Street",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-20T21:00:01+00:00",
-          "url": "https://www.bloomberg.com/news/features/2026-09-20/ai-boom-is-making-diversifying-investments-tough-for-wall-street",
-          "tags": [
-            "market",
-            "us_broad",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Trump & Xi to Meet Amidst Friction on Wars, Tech, Trade",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-21T00:50:09+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-21/trump-xi-to-meet-amidst-friction-on-wars-tech-trade-video",
-          "tags": [
-            "geopolitical",
-            "jp_semiconductor",
-            "macro_risk",
-            "market",
-            "us_growth"
-          ]
-        }
-      ]
-    },
-    "global_broad": {
       "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
@@ -215,28 +133,66 @@
       "topPositiveTitle": null,
       "items": []
     },
-    "gold": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
+    "global_broad": {
+      "avgSentiment": -0.165,
+      "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Gold Steadies as Traders Weigh Inflation and Fed Hike Outlook",
-      "topPositiveTitle": "Gold Steadies as Traders Weigh Inflation and Fed Hike Outlook",
+      "topNegativeTitle": "Goldman Likes European Stocks on Earnings, Global Reach",
+      "topPositiveTitle": "Hormuz Flows Ease Oil Fears, Saudi Air-Raid Alerts, Qatar Urges Gulf Unity, Trump-Xi Summit Nears",
       "items": [
         {
-          "title": "Gold Steadies as Traders Weigh Inflation and Fed Hike Outlook",
+          "title": "Goldman Likes European Stocks on Earnings, Global Reach",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-21T07:51:37+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-21/goldman-likes-european-stocks-on-earnings-global-reach-video",
+          "tags": [
+            "global_broad",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Hormuz Flows Ease Oil Fears, Saudi Air-Raid Alerts, Qatar Urges Gulf Unity, Trump-Xi Summit Nears",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
+          "publishedAt": "2026-09-21T06:19:28+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-21/horizons-middle-east-africa-9-21-2026-video",
+          "tags": [
+            "commodity",
+            "global_broad",
+            "market"
+          ]
+        }
+      ]
+    },
+    "gold": {
+      "avgSentiment": -0.33,
+      "negativeCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "Gold Erases Weekly Gain as Traders Weigh Inflation and Fed Path",
+      "topPositiveTitle": "Gold Erases Weekly Gain as Traders Weigh Inflation and Fed Path",
+      "items": [
+        {
+          "title": "Gold Erases Weekly Gain as Traders Weigh Inflation and Fed Path",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
           "publishedAt": "2026-09-20T23:45:47+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-20/gold-steadies-as-traders-weigh-inflation-and-fed-hike-outlook",
           "tags": [
             "gold",
             "market",
-            "rates",
             "us_broad"
           ]
         }
@@ -267,23 +223,23 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.132,
-      "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 3,
+      "avgSentiment": -0.22,
+      "negativeCount": 4,
+      "positiveCount": 1,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Black Sea Shipping Turmoil Hits Wheat Market, Amplifies Inflation Risks",
-      "topPositiveTitle": "Trump & Xi to Meet Amidst Friction on Wars, Tech, Trade",
+      "topNegativeTitle": "Latest Oil Market News and Analysis for Sept. 21",
+      "topPositiveTitle": "Key African Central Banks Set to Keep High Rates as Buffer Against Shocks",
       "items": [
         {
-          "title": "Black Sea Shipping Turmoil Hits Wheat Market, Amplifies Inflation Risks",
+          "title": "Latest Oil Market News and Analysis for Sept. 21",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-20T23:01:01+00:00",
-          "url": "https://www.bloomberg.com/news/features/2026-09-20/black-sea-shipping-turmoil-hits-wheat-market-amplifies-inflation-risks",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-09-20T22:05:05+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-20/latest-oil-market-news-and-analysis-for-sept-21",
           "tags": [
             "commodity",
             "geopolitical",
@@ -292,15 +248,40 @@
           ]
         },
         {
-          "title": "Latest Oil Market News and Analysis for Sept. 21",
+          "title": "Morgan Stanley’s Wilson Says US Stocks Risk 7% Drop in Near Term",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-20T22:05:05+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-20/latest-oil-market-news-and-analysis-for-sept-21",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-21T08:23:53+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-21/morgan-stanley-s-wilson-says-us-stocks-risk-7-drop-in-near-term",
           "tags": [
             "commodity",
-            "geopolitical",
+            "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Goldman Likes European Stocks on Earnings, Global Reach",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-21T07:51:37+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-21/goldman-likes-european-stocks-on-earnings-global-reach-video",
+          "tags": [
+            "global_broad",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Turkey Freezes Assets of Fund Executives in Redemption Crisis",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-21T07:13:20+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-21/turkey-freezes-assets-of-fund-executives-in-redemption-crisis",
+          "tags": [
             "macro_risk",
             "market"
           ]
@@ -319,86 +300,58 @@
             "market",
             "us_broad"
           ]
-        },
-        {
-          "title": "Trump & Xi to Meet Amidst Friction on Wars, Tech, Trade",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-21T00:50:09+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-21/trump-xi-to-meet-amidst-friction-on-wars-tech-trade-video",
-          "tags": [
-            "geopolitical",
-            "jp_semiconductor",
-            "macro_risk",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "US Diesel Tops $6.50 a Gallon as Wars Worsen Global Fuels Crunch",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-21T00:33:06+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-21/us-diesel-tops-6-50-a-gallon-as-wars-worsen-global-fuels-crunch",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": -0.2,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Yen Vulnerable With Japan on Holiday After BOJ Disappoints",
-      "topPositiveTitle": "Yen Vulnerable With Japan on Holiday After BOJ Disappoints",
-      "items": [
-        {
-          "title": "Yen Vulnerable With Japan on Holiday After BOJ Disappoints",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.2,
-          "publishedAt": "2026-09-20T08:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-20/yen-is-vulnerable-with-japan-on-holiday-after-boj-disappoints",
-          "tags": [
-            "fx",
-            "jp_broad",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "rates": {
-      "avgSentiment": 0.335,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 1,
-      "sourceCount": 2,
-      "itemCount": 2,
+      "avgSentiment": 0.337,
+      "negativeCount": 1,
+      "positiveCount": 2,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Gold Steadies as Traders Weigh Inflation and Fed Hike Outlook",
-      "topPositiveTitle": "JPMorgan Sees Upside to Its Already Hawkish 3.75% BOK Rate Call",
+      "topNegativeTitle": "Morgan Stanley Sees SARB Rate Hike to Keep Inflation on 3% Path",
+      "topPositiveTitle": "Key African Central Banks Set to Keep High Rates as Buffer Against Shocks",
       "items": [
         {
-          "title": "Gold Steadies as Traders Weigh Inflation and Fed Hike Outlook",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-20T23:45:47+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-20/gold-steadies-as-traders-weigh-inflation-and-fed-hike-outlook",
+          "title": "Morgan Stanley Sees SARB Rate Hike to Keep Inflation on 3% Path",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-21T04:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-21/morgan-stanley-sees-sarb-rate-hike-to-keep-inflation-on-3-path",
           "tags": [
-            "gold",
+            "commodity",
             "market",
-            "rates",
-            "us_broad"
+            "rates"
+          ]
+        },
+        {
+          "title": "Key African Central Banks Set to Keep High Rates as Buffer Against Shocks",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-09-21T06:24:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-21/key-african-central-banks-set-to-keep-high-rates-as-buffer-against-shocks",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "rates"
           ]
         },
         {
@@ -417,47 +370,21 @@
       ]
     },
     "commodity": {
-      "avgSentiment": -0.033,
-      "negativeCount": 0,
-      "positiveCount": 0,
+      "avgSentiment": -0.079,
+      "negativeCount": 3,
+      "positiveCount": 1,
       "neutralCount": 6,
       "sourceCount": 3,
-      "itemCount": 6,
+      "itemCount": 10,
       "isStale": false,
-      "topNegativeTitle": "Asian Stocks Edge Higher, Crude Oil Extends Losses: Markets Wrap",
-      "topPositiveTitle": "Black Sea Shipping Turmoil Hits Wheat Market, Amplifies Inflation Risks",
+      "topNegativeTitle": "Latest Oil Market News and Analysis for Sept. 21",
+      "topPositiveTitle": "Key African Central Banks Set to Keep High Rates as Buffer Against Shocks",
       "items": [
-        {
-          "title": "Asian Stocks Edge Higher, Crude Oil Extends Losses: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.2,
-          "publishedAt": "2026-09-20T22:14:48+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-20/us-stock-futures-up-ahead-of-talks-dollar-steady-markets-wrap",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "Black Sea Shipping Turmoil Hits Wheat Market, Amplifies Inflation Risks",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-20T23:01:01+00:00",
-          "url": "https://www.bloomberg.com/news/features/2026-09-20/black-sea-shipping-turmoil-hits-wheat-market-amplifies-inflation-risks",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
         {
           "title": "Latest Oil Market News and Analysis for Sept. 21",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
           "publishedAt": "2026-09-20T22:05:05+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-20/latest-oil-market-news-and-analysis-for-sept-21",
           "tags": [
@@ -468,64 +395,75 @@
           ]
         },
         {
-          "title": "QatarEnergy on Energy Security and Supply",
+          "title": "Morgan Stanley’s Wilson Says US Stocks Risk 7% Drop in Near Term",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-21T08:23:53+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-21/morgan-stanley-s-wilson-says-us-stocks-risk-7-drop-in-near-term",
+          "tags": [
+            "commodity",
+            "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Morgan Stanley Sees SARB Rate Hike to Keep Inflation on 3% Path",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-21T04:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-21/morgan-stanley-sees-sarb-rate-hike-to-keep-inflation-on-3-path",
+          "tags": [
+            "commodity",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "QIA, Apollo, Goldman Sachs on Deploying Capital",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-20T18:49:59+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-20/qatarenergy-on-energy-security-and-supply-video",
+          "publishedAt": "2026-09-21T08:34:03+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-21/qia-apollo-goldman-sachs-on-deploying-capital-video",
           "tags": [
             "commodity",
             "market"
           ]
         },
         {
-          "title": "Fed’s Kashkari Says Inflation Reaching All Corners of US Economy",
-          "source": "Bloomberg Economics",
+          "title": "Hormuz Flows Ease Oil Fears, Saudi Air-Raid Alerts, Qatar Urges Gulf Unity, Trump-Xi Summit Nears",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-20T15:32:17+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-20/fed-s-kashkari-says-inflation-reaching-all-corners-of-us-economy",
+          "publishedAt": "2026-09-21T06:19:28+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-21/horizons-middle-east-africa-9-21-2026-video",
           "tags": [
             "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market",
-            "us_broad"
+            "global_broad",
+            "market"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.132,
-      "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 3,
-      "sourceCount": 2,
-      "itemCount": 5,
+      "avgSentiment": -0.082,
+      "negativeCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 2,
+      "sourceCount": 3,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Black Sea Shipping Turmoil Hits Wheat Market, Amplifies Inflation Risks",
-      "topPositiveTitle": "Trump & Xi to Meet Amidst Friction on Wars, Tech, Trade",
+      "topNegativeTitle": "Latest Oil Market News and Analysis for Sept. 21",
+      "topPositiveTitle": "Key African Central Banks Set to Keep High Rates as Buffer Against Shocks",
       "items": [
-        {
-          "title": "Black Sea Shipping Turmoil Hits Wheat Market, Amplifies Inflation Risks",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-20T23:01:01+00:00",
-          "url": "https://www.bloomberg.com/news/features/2026-09-20/black-sea-shipping-turmoil-hits-wheat-market-amplifies-inflation-risks",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
         {
           "title": "Latest Oil Market News and Analysis for Sept. 21",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
           "publishedAt": "2026-09-20T22:05:05+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-20/latest-oil-market-news-and-analysis-for-sept-21",
           "tags": [
@@ -551,31 +489,31 @@
           ]
         },
         {
-          "title": "Trump & Xi to Meet Amidst Friction on Wars, Tech, Trade",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-21T00:50:09+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-21/trump-xi-to-meet-amidst-friction-on-wars-tech-trade-video",
+          "title": "国民 玉木代表 ウクライナを訪問 政府高官らとの会談を調整",
+          "source": "NHK 経済",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-21T06:20:00+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20260921de51643",
           "tags": [
             "geopolitical",
-            "jp_semiconductor",
-            "macro_risk",
-            "market",
-            "us_growth"
-          ]
+            "market"
+          ],
+          "titleJa": "国民 玉木代表 ウクライナを訪問 政府高官らとの会談を調整"
         },
         {
-          "title": "US Diesel Tops $6.50 a Gallon as Wars Worsen Global Fuels Crunch",
-          "source": "Bloomberg Markets",
+          "title": "Key African Central Banks Set to Keep High Rates as Buffer Against Shocks",
+          "source": "Bloomberg Economics",
           "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-21T00:33:06+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-21/us-diesel-tops-6-50-a-gallon-as-wars-worsen-global-fuels-crunch",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-09-21T06:24:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-21/key-african-central-banks-set-to-keep-high-rates-as-buffer-against-shocks",
           "tags": [
+            "commodity",
             "geopolitical",
             "macro_risk",
-            "market"
+            "market",
+            "rates"
           ]
         }
       ]
@@ -589,7 +527,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 5,
+    "excludedCount": 4,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
