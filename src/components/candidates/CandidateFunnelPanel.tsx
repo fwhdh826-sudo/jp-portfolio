@@ -10,7 +10,6 @@ import type { CandidateFunnelFreshness } from '../../services/candidateFunnelFre
 import { evaluateCandidateFunnelPresentationState } from '../../services/candidateFunnelFreshness'
 import { useCandidatePortfolioFit } from '../../hooks/useCandidatePortfolioFit'
 import { CandidateFunnelCard, formatCandidateHardExclusionReason } from './CandidateFunnelCard'
-import { SectionHeader } from '../layout/SectionHeader'
 import {
   projectCandidatePortfolioFitPresentation,
   selectCandidatePortfolioFitCardViewModel,
@@ -155,6 +154,16 @@ export function formatCandidateFunnelDegradationReason(reason: string): string {
   return CANDIDATE_FUNNEL_DEGRADATION_REASON_LABELS[code] ?? 'データ品質・鮮度に関する注記があります'
 }
 
+// 既存 freshness authority（CandidateFunnelFreshness）の表示ラベル。View は鮮度を再判定せず、
+// selector / evaluate 済みの enum を文字へ写すだけ（色だけに依存しない状態表示）。
+const FRESHNESS_LABELS: Record<CandidateFunnelFreshness, { text: string; mark: 'ok' | 'wait' | 'fail' }> = {
+  fresh: { text: '鮮度 正常', mark: 'ok' },
+  stale: { text: '更新遅れの可能性', mark: 'wait' },
+  degraded: { text: '代替データ経路', mark: 'wait' },
+  invalid: { text: '検証不可', mark: 'fail' },
+  unavailable: { text: '取得不可', mark: 'wait' },
+}
+
 function filterTierForAria(filter: CandidateFunnelFilter): CandidateFunnelTier {
   return filter
 }
@@ -206,6 +215,12 @@ export function CandidateFunnelPanelView({
   const excludedSummary =
     artifact !== null && canDisplayCandidates ? artifact.excludedSummary : null
 
+  const hasFitDetails =
+    portfolioFit.dataset.evaluatedAtText !== null ||
+    portfolioFit.dataset.portfolioFreshnessText !== null ||
+    portfolioFit.dataset.capacityText !== null ||
+    portfolioFit.dataset.degradationText !== null
+
   const handleFilterKeyDown = (
     event: React.KeyboardEvent<HTMLButtonElement>,
     current: CandidateFunnelFilter,
@@ -228,20 +243,24 @@ export function CandidateFunnelPanelView({
     FILTER_OPTIONS.find(option => option.id === viewState.filter)?.label ?? '候補'
 
   return (
-    <section className="candidate-funnel" aria-label="市場候補ファネル">
-      <SectionHeader
-        title="市場候補ファネル"
-        caption="市場全体から段階的に絞り込んだ観測情報"
-      />
+    <section className="candidate-funnel u9-card" aria-label="市場候補ファネル">
+      <div className="candidate-funnel__head">
+        <h2 className="candidate-funnel__title">市場候補ファネル</h2>
+        <span
+          className="candidate-funnel__freshness"
+          data-freshness={freshness}
+          data-mark={FRESHNESS_LABELS[freshness].mark}
+        >
+          <span className="candidate-funnel__freshness-mark" aria-hidden="true" />
+          {FRESHNESS_LABELS[freshness].text}
+        </span>
+      </div>
+      <p className="candidate-funnel__caption">市場全体から段階的に絞り込んだ観測情報</p>
 
-      <div className="candidate-funnel__disclaimers">
-        <p>市場スコア・市場順位・選別段階は市場評価です。ポートフォリオ適合は保有状況との関係を別枠で表示し、両者を合算しません。</p>
-        <p>ポートフォリオ適合はこの端末内で評価し、結果を保存・送信しません。</p>
-        <p>ポートフォリオ適合スコア・順位は未実装です。独自の総合点や順位は表示しません。</p>
+      {/* 取引不可の警告は常に可視。raw token（not_for_trading）を含む原文は末尾の注意事項に保持する。 */}
+      <div className="candidate-funnel__notice">
+        <p className="candidate-funnel__not-for-trading">取引判断には使用しません</p>
         <p>重点候補は購入を推奨するものではなく、次段階の検討候補です。</p>
-        <p className="candidate-funnel__not-for-trading">
-          {portfolioFit.dataset.notForTradingText}
-        </p>
       </div>
 
       {freshness === 'unavailable' && (
@@ -303,39 +322,46 @@ export function CandidateFunnelPanelView({
         role={portfolioFit.dataset.alertRole === 'none' ? undefined : portfolioFit.dataset.alertRole}
         aria-live={portfolioFit.dataset.alertRole === 'status' ? 'polite' : undefined}
       >
-        <strong>{portfolioFit.dataset.statusText}</strong>
-        {portfolioFit.dataset.hasWarning && (
-          <span>ポートフォリオ適合に確認事項があります。</span>
+        <div className="candidate-funnel__portfolio-fit-lead">
+          <strong>{portfolioFit.dataset.statusText}</strong>
+          {portfolioFit.dataset.hasWarning && (
+            <span>ポートフォリオ適合に確認事項があります。</span>
+          )}
+          {portfolioFit.dataset.canonicalMessage !== null && (
+            <span>{portfolioFit.dataset.canonicalMessage}</span>
+          )}
+        </div>
+        {hasFitDetails && (
+          <details open={portfolioFit.dataset.status === 'invalid'}>
+            <summary>評価の内訳</summary>
+            <dl>
+              {portfolioFit.dataset.evaluatedAtText !== null && (
+                <div>
+                  <dt>評価日時:</dt>
+                  <dd>{portfolioFit.dataset.evaluatedAtText} JST</dd>
+                </div>
+              )}
+              {portfolioFit.dataset.portfolioFreshnessText !== null && (
+                <div>
+                  <dt>保有データ</dt>
+                  <dd>{portfolioFit.dataset.portfolioFreshnessText}</dd>
+                </div>
+              )}
+              {portfolioFit.dataset.capacityText !== null && (
+                <div>
+                  <dt>日本株枠</dt>
+                  <dd>{portfolioFit.dataset.capacityText}</dd>
+                </div>
+              )}
+              {portfolioFit.dataset.degradationText !== null && (
+                <div>
+                  <dt>品質・鮮度の確認事項</dt>
+                  <dd>{portfolioFit.dataset.degradationText}</dd>
+                </div>
+              )}
+            </dl>
+          </details>
         )}
-        {portfolioFit.dataset.canonicalMessage !== null && (
-          <span>{portfolioFit.dataset.canonicalMessage}</span>
-        )}
-        <dl>
-          {portfolioFit.dataset.evaluatedAtText !== null && (
-            <div>
-              <dt>評価日時:</dt>
-              <dd>{portfolioFit.dataset.evaluatedAtText} JST</dd>
-            </div>
-          )}
-          {portfolioFit.dataset.portfolioFreshnessText !== null && (
-            <div>
-              <dt>保有データ</dt>
-              <dd>{portfolioFit.dataset.portfolioFreshnessText}</dd>
-            </div>
-          )}
-          {portfolioFit.dataset.capacityText !== null && (
-            <div>
-              <dt>日本株枠</dt>
-              <dd>{portfolioFit.dataset.capacityText}</dd>
-            </div>
-          )}
-          {portfolioFit.dataset.degradationText !== null && (
-            <div>
-              <dt>品質・鮮度の確認事項</dt>
-              <dd>{portfolioFit.dataset.degradationText}</dd>
-            </div>
-          )}
-        </dl>
       </div>
 
       {canDisplayCandidates && (
@@ -479,6 +505,16 @@ export function CandidateFunnelPanelView({
           )}
         </>
       )}
+
+      <details className="candidate-funnel__notes">
+        <summary>この情報の見方・注意事項</summary>
+        <ul>
+          <li>市場スコア・市場順位・選別段階は市場評価です。ポートフォリオ適合は保有状況との関係を別枠で表示し、両者を合算しません。</li>
+          <li>ポートフォリオ適合はこの端末内で評価し、結果を保存・送信しません。</li>
+          <li>ポートフォリオ適合スコア・順位は未実装です。独自の総合点や順位は表示しません。</li>
+          <li>{portfolioFit.dataset.notForTradingText}</li>
+        </ul>
+      </details>
     </section>
   )
 }

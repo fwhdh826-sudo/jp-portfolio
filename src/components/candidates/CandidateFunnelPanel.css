@@ -1,100 +1,246 @@
+/* ============================================================
+   市場候補ファネル — UI-9I R4.1 視覚言語（Phase 2B-1R）
+   業務セマンティクスは移行前と同一。ここは presentation のみ:
+   白い角丸カード（.u9-card を併用）/ 柔らかい影 / 淡いブルー面 / 控えめなアクセント。
+   amber は実際の注意、danger は検証不可・代替経路にのみ使い、状態は必ず文字でも示す。
+   ============================================================ */
+
 .candidate-funnel {
   min-width: 0;
-  color: var(--color-text-primary);
+  color: var(--u9-ink);
+  font-family: var(--u9-sans);
 }
 
-.candidate-funnel__disclaimers {
-  display: grid;
-  gap: var(--space-1);
-  margin-bottom: var(--space-3);
-  padding: var(--space-3);
-  border: 1px solid var(--color-border-subtle);
-  border-radius: var(--radius-md);
-  background: var(--color-bg-surface);
-  color: var(--color-text-subtle);
-  font-size: var(--font-xs);
-  line-height: 1.55;
+/* ── ヘッダー ─────────────────────────────────────────────── */
+.candidate-funnel__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-width: 0;
 }
 
-.candidate-funnel__disclaimers p {
+.candidate-funnel__title {
   margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--u9-ink);
+  white-space: nowrap;
+  word-break: keep-all;
 }
 
-.candidate-funnel__not-for-trading {
-  color: var(--color-wait-text);
+.candidate-funnel__freshness {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex: none;
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: #EDF1F6;
+  color: var(--u9-ink-2);
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+  word-break: keep-all;
+}
+
+.candidate-funnel__freshness-mark {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--u9-green-dot);
+}
+
+.candidate-funnel__freshness[data-mark="wait"] {
+  background: #FAF2E3;
+  color: var(--u9-amber);
+}
+
+.candidate-funnel__freshness[data-mark="wait"] .candidate-funnel__freshness-mark {
+  border-radius: 2px;
+  background: var(--u9-amber-dot);
+}
+
+.candidate-funnel__freshness[data-mark="fail"] {
+  background: #F6E9E7;
+  color: var(--u9-danger);
+}
+
+.candidate-funnel__freshness[data-mark="fail"] .candidate-funnel__freshness-mark {
+  background: var(--u9-danger);
+}
+
+.candidate-funnel__caption {
+  margin: -6px 0 0;
+  color: var(--u9-ink-4);
+  font-size: 11.5px;
+  line-height: 1.6;
+}
+
+/* ── 取引不可 / 重点候補の注意（常に可視） ─────────────────── */
+.candidate-funnel__notice {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: #F6F9FC;
+  color: var(--u9-ink-3);
+  font-size: 11.5px;
+  line-height: 1.65;
+}
+
+.candidate-funnel__notice p {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.candidate-funnel__notice .candidate-funnel__not-for-trading {
+  color: var(--u9-ink);
+  font-size: 12.5px;
   font-weight: 700;
 }
 
+/* ── 状態行（取得不可 / 検証不可 / 更新遅れ / 代替経路） ────── */
 .candidate-funnel__state {
   display: flex;
   align-items: flex-start;
-  gap: var(--space-2);
-  margin-bottom: var(--space-3);
-  padding: var(--space-3);
-  border: 1px solid var(--color-border-default);
-  border-radius: var(--radius-md);
-  font-size: var(--font-sm);
-  line-height: 1.5;
+  gap: 8px;
+  min-width: 0;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: #EDF1F6;
+  color: var(--u9-ink-2);
+  font-size: 12px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.candidate-funnel__state > span:first-child {
+  flex: none;
+  width: 16px;
+  text-align: center;
 }
 
 .candidate-funnel__state--neutral {
-  background: var(--color-hold-bg);
-  border-color: var(--color-hold-border);
-  color: var(--color-hold-text);
+  background: #EDF1F6;
+  color: var(--u9-ink-2);
 }
 
 .candidate-funnel__state--warning {
-  background: var(--color-wait-bg);
-  border-color: var(--color-wait-border);
-  color: var(--color-wait-text);
+  background: #FAF2E3;
+  color: var(--u9-amber);
 }
 
 .candidate-funnel__state--danger {
-  background: var(--color-sell-bg);
-  border-color: var(--color-sell-border);
-  color: var(--color-sell-text);
+  background: #F6E9E7;
+  color: var(--u9-danger);
 }
 
-.candidate-funnel__portfolio-fit-state {
-  display: grid;
-  gap: var(--space-2);
+/* ── データ品質・鮮度の注記 ───────────────────────────────── */
+.candidate-funnel__degradation-reasons {
   min-width: 0;
-  margin-bottom: var(--space-3);
-  padding: var(--space-3);
-  border: 1px solid var(--color-border-default);
-  border-radius: var(--radius-md);
-  background: var(--color-bg-surface);
-  color: var(--color-text-second);
-  font-size: var(--font-sm);
-  line-height: 1.5;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: #FAF2E3;
+  color: var(--u9-amber);
+  font-size: 12px;
+  line-height: 1.6;
   overflow-wrap: anywhere;
+}
+
+.candidate-funnel__degradation-reasons-label {
+  margin-bottom: 2px;
+  font-weight: 700;
+}
+
+.candidate-funnel__degradation-reasons ul {
+  margin: 0;
+  padding-left: 16px;
+}
+
+/* ── ポートフォリオ適合（データセット状態） ────────────────── */
+.candidate-funnel__portfolio-fit-state {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: #F6F9FC;
+  color: var(--u9-ink-2);
+  font-size: 12px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.candidate-funnel__portfolio-fit-lead {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.candidate-funnel__portfolio-fit-lead strong {
+  color: var(--u9-ink);
+  font-weight: 600;
 }
 
 .candidate-funnel__portfolio-fit-state--partial,
 .candidate-funnel__portfolio-fit-state--unavailable,
 .candidate-funnel__portfolio-fit-state--pending {
-  border-color: var(--color-wait-border);
-  background: var(--color-wait-bg);
-  color: var(--color-wait-text);
+  background: #FAF2E3;
+  color: var(--u9-amber);
+}
+
+.candidate-funnel__portfolio-fit-state--partial .candidate-funnel__portfolio-fit-lead strong,
+.candidate-funnel__portfolio-fit-state--unavailable .candidate-funnel__portfolio-fit-lead strong,
+.candidate-funnel__portfolio-fit-state--pending .candidate-funnel__portfolio-fit-lead strong {
+  color: var(--u9-amber);
 }
 
 .candidate-funnel__portfolio-fit-state--invalid {
-  border-color: var(--color-sell-border);
-  background: var(--color-sell-bg);
-  color: var(--color-sell-text);
+  background: #F6E9E7;
+  color: var(--u9-danger);
 }
 
+.candidate-funnel__portfolio-fit-state--invalid .candidate-funnel__portfolio-fit-lead strong {
+  color: var(--u9-danger);
+}
+
+.candidate-funnel__portfolio-fit-state details {
+  min-width: 0;
+}
+
+.candidate-funnel__portfolio-fit-state summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 44px;
+  cursor: pointer;
+  list-style: none;
+  font-size: 12px;
+  font-weight: 600;
+  color: inherit;
+}
+
+.candidate-funnel__portfolio-fit-state summary::-webkit-details-marker { display: none; }
+
 .candidate-funnel__portfolio-fit-state dl {
-  display: grid;
-  gap: var(--space-1);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
   margin: 0;
+  padding-bottom: 6px;
 }
 
 .candidate-funnel__portfolio-fit-state dl > div {
   display: flex;
   justify-content: space-between;
-  gap: var(--space-3);
+  gap: 12px;
   min-width: 0;
+  font-size: 11.5px;
 }
 
 .candidate-funnel__portfolio-fit-state dt,
@@ -107,303 +253,403 @@
   overflow-wrap: anywhere;
 }
 
+/* ── 更新日時 ─────────────────────────────────────────────── */
 .candidate-funnel__timestamps {
   display: flex;
   flex-direction: column;
-  gap: var(--space-1);
-  margin-bottom: var(--space-3);
-  color: var(--color-text-muted);
-  font-size: var(--font-xs);
+  gap: 2px;
+  min-width: 0;
+  color: var(--u9-ink-4);
+  font: 400 11px var(--u9-mono);
   overflow-wrap: anywhere;
 }
 
+/* ── パイプライン（段階と件数は artifact.counts の権威値） ──── */
 .candidate-funnel__summary {
   display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: var(--space-2);
-  margin: 0 0 var(--space-3);
-  padding: 0;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0;
+  margin: 0;
+  padding: 10px 4px;
   list-style: none;
+  border-radius: 14px;
+  background: #F1F6FB;
 }
 
 .candidate-funnel__summary li {
   position: relative;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  gap: 2px;
   min-width: 0;
-  padding: var(--space-3) var(--space-4);
-  border: 1px solid var(--color-border-subtle);
-  border-radius: var(--radius-md);
-  background: var(--color-bg-surface);
-  color: var(--color-text-subtle);
-  font-size: var(--font-sm);
+  padding: 2px 0;
+  color: var(--u9-ink-3);
+  font-size: 11px;
+  white-space: nowrap;
+  word-break: keep-all;
 }
 
 .candidate-funnel__summary li:not(:last-child)::after {
   position: absolute;
-  bottom: calc(var(--space-2) * -1);
-  left: 50%;
-  color: var(--color-text-muted);
-  content: "↓";
-  line-height: var(--space-2);
-  transform: translateX(-50%);
+  top: 50%;
+  right: -3px;
+  color: #A7B6C6;
+  content: "›";
+  font-size: 14px;
+  line-height: 1;
+  transform: translateY(-50%);
 }
 
 .candidate-funnel__summary strong {
-  color: var(--color-stock-text);
-  font-family: var(--font-mono);
-  font-size: var(--font-lg);
+  color: var(--u9-accent-ink);
+  font-family: var(--u9-mono);
+  font-size: 18px;
+  font-weight: 700;
   font-variant-numeric: tabular-nums;
 }
 
-.candidate-funnel__data-details {
-  margin-bottom: var(--space-4);
-  border: 1px solid var(--color-border-subtle);
-  border-radius: var(--radius-md);
-  background: var(--color-bg-surface);
+/* ── 開閉（データ状態 / 除外診断 / 注意事項） ─────────────── */
+.candidate-funnel__data-details,
+.candidate-funnel__excluded-details,
+.candidate-funnel__notes {
+  min-width: 0;
+  border-top: 1px solid var(--u9-line);
 }
 
-.candidate-funnel__data-details summary {
+.candidate-funnel__data-details summary,
+.candidate-funnel__excluded-details summary,
+.candidate-funnel__notes summary {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  gap: 8px;
   min-height: 44px;
-  padding: 0 var(--space-3);
-  color: var(--color-text-second);
-  font-size: var(--font-sm);
-  font-weight: 600;
   cursor: pointer;
+  list-style: none;
+  color: var(--u9-ink);
+  font-size: 13px;
+  font-weight: 600;
 }
 
-.candidate-funnel__data-details dl {
-  display: grid;
-  gap: var(--space-2);
+.candidate-funnel__data-details summary::-webkit-details-marker,
+.candidate-funnel__excluded-details summary::-webkit-details-marker,
+.candidate-funnel__notes summary::-webkit-details-marker {
+  display: none;
+}
+
+.candidate-funnel__data-details summary::after,
+.candidate-funnel__excluded-details summary::after,
+.candidate-funnel__notes summary::after,
+.candidate-funnel__portfolio-fit-state summary::after,
+.candidate-funnel-card__portfolio-fit summary::after {
+  content: "›";
+  flex: none;
+  color: var(--u9-ink-4);
+  font-size: 16px;
+  transition: transform .15s;
+}
+
+.candidate-funnel__data-details[open] > summary::after,
+.candidate-funnel__excluded-details[open] > summary::after,
+.candidate-funnel__notes[open] > summary::after,
+.candidate-funnel__portfolio-fit-state details[open] > summary::after,
+.candidate-funnel-card__portfolio-fit details[open] > summary::after {
+  transform: rotate(90deg);
+}
+
+.candidate-funnel__data-details dl,
+.candidate-funnel__excluded-details dl {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
   margin: 0;
-  padding: 0 var(--space-3) var(--space-3);
+  padding: 2px 0 12px;
 }
 
-.candidate-funnel__data-details dl > div {
+.candidate-funnel__data-details dl > div,
+.candidate-funnel__excluded-details dl > div {
   display: flex;
   justify-content: space-between;
-  gap: var(--space-3);
+  gap: 12px;
   min-width: 0;
-  color: var(--color-text-subtle);
-  font-size: var(--font-xs);
-}
-
-.candidate-funnel__data-details dt,
-.candidate-funnel__data-details dd {
-  margin: 0;
-}
-
-.candidate-funnel__data-details dd {
-  color: var(--color-text-primary);
-  text-align: right;
+  color: var(--u9-ink-3);
+  font-size: 12px;
   overflow-wrap: anywhere;
 }
 
+.candidate-funnel__data-details dt,
+.candidate-funnel__data-details dd,
+.candidate-funnel__excluded-details dt,
+.candidate-funnel__excluded-details dd {
+  margin: 0;
+}
+
+.candidate-funnel__data-details dd,
+.candidate-funnel__excluded-details dd {
+  color: var(--u9-ink);
+  text-align: right;
+}
+
+.candidate-funnel__excluded-note {
+  margin: 0;
+  padding: 0 0 12px;
+  color: var(--u9-ink-4);
+  font-size: 11.5px;
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+}
+
+.candidate-funnel__excluded-note--lead {
+  padding-top: 2px;
+}
+
+.candidate-funnel__notes ul {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  padding: 0 0 12px;
+  list-style: none;
+  color: var(--u9-ink-3);
+  font-size: 11.5px;
+  line-height: 1.65;
+}
+
+.candidate-funnel__notes li {
+  overflow-wrap: anywhere;
+}
+
+/* ── 段階フィルタ（セグメント）/ 候補リスト ────────────────── */
 .candidate-funnel__filters {
   display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: var(--space-2);
-  margin-bottom: var(--space-3);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 4px;
+  padding: 4px;
+  border-radius: 14px;
+  background: #EAF1F9;
 }
 
 .candidate-funnel__filters button {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: var(--space-2);
+  justify-content: center;
+  gap: 6px;
   min-width: 0;
   min-height: 44px;
-  padding: var(--space-2) var(--space-3);
-  border: 1px solid var(--color-border-default);
-  border-radius: var(--radius-md);
-  background: var(--color-bg-surface);
-  color: var(--color-text-second);
+  padding: 0 6px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--u9-ink-2);
   font: inherit;
-  font-size: var(--font-sm);
+  font-size: 12.5px;
+  white-space: nowrap;
+  word-break: keep-all;
   cursor: pointer;
 }
 
 .candidate-funnel__filters button[aria-selected="true"] {
-  border-color: var(--color-stock);
-  background: var(--color-stock-bg);
-  color: var(--color-stock-text);
+  background: #fff;
+  box-shadow: var(--u9-shadow);
+  color: var(--u9-accent-ink);
   font-weight: 700;
 }
 
 .candidate-funnel__filters button span:last-child {
-  font-family: var(--font-mono);
+  font-family: var(--u9-mono);
+  font-size: 12px;
   font-variant-numeric: tabular-nums;
 }
 
-.candidate-funnel__filters button:focus-visible,
-.candidate-funnel__more:focus-visible,
-.candidate-funnel__data-details summary:focus-visible,
-.candidate-funnel-card__portfolio-fit summary:focus-visible {
-  outline: 3px solid var(--color-primary);
+.candidate-funnel button:focus-visible,
+.candidate-funnel summary:focus-visible {
+  outline: 2px solid var(--u9-accent);
   outline-offset: 2px;
+  border-radius: 8px;
 }
 
 .candidate-funnel__list {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  gap: var(--space-3);
+  gap: 0;
   min-width: 0;
 }
 
 .candidate-funnel__empty {
-  padding: var(--space-8) var(--space-4);
-  border: 1px dashed var(--color-border-default);
-  border-radius: var(--radius-lg);
-  background: var(--color-bg-surface);
-  color: var(--color-text-subtle);
+  padding: 22px 12px;
+  border-radius: 14px;
+  background: #F6F9FC;
+  color: var(--u9-ink-3);
   text-align: center;
-  font-size: var(--font-sm);
+  font-size: 12.5px;
 }
 
 .candidate-funnel__more {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: var(--space-1);
+  gap: 4px;
   width: 100%;
   min-height: 44px;
-  margin-top: var(--space-3);
-  padding: var(--space-2) var(--space-3);
-  border: 1px solid var(--color-stock);
-  border-radius: var(--radius-md);
-  background: var(--color-stock-bg);
-  color: var(--color-stock-text);
+  padding: 0 12px;
+  border: 1px solid rgba(47, 111, 191, .35);
+  border-radius: 12px;
+  background: #fff;
+  color: var(--u9-accent-ink);
   font: inherit;
-  font-size: var(--font-sm);
-  font-weight: 700;
+  font-size: 12.5px;
+  font-weight: 600;
   cursor: pointer;
 }
 
 .candidate-funnel__more span {
   font-weight: 400;
+  color: var(--u9-ink-3);
 }
 
+/* ── 候補行（旧 card の意味・順序はそのまま。フラットな行として表示） ── */
 .candidate-funnel-card {
   min-width: 0;
-  padding: var(--space-4);
-  border: 1px solid var(--color-border-subtle);
-  border-radius: var(--radius-lg);
-  background: var(--color-bg-surface);
-  box-shadow: var(--shadow-sm);
+  padding: 14px 0;
+  border-bottom: 1px solid var(--u9-line-soft);
 }
+
+.candidate-funnel-card:first-child { padding-top: 4px; }
+.candidate-funnel-card:last-child { border-bottom: 0; }
 
 .candidate-funnel-card__header {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: var(--space-3);
+  gap: 10px;
   min-width: 0;
-  margin-bottom: var(--space-3);
+  margin-bottom: 8px;
 }
 
+/* 銘柄一覧（.u9-stk-row）と同じく「コード + 名称」を 1 行、業種を下段に置く。 */
 .candidate-funnel-card__identity {
   min-width: 0;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: baseline;
+  column-gap: 8px;
+  row-gap: 2px;
+}
+
+.candidate-funnel-card__sector {
+  grid-column: 1 / -1;
 }
 
 .candidate-funnel-card__code {
-  color: var(--color-stock-text);
-  font-family: var(--font-mono);
-  font-size: var(--font-sm);
-  font-weight: 700;
+  color: var(--u9-ink);
+  font: 700 12.5px var(--u9-mono);
+  letter-spacing: .02em;
 }
 
 .candidate-funnel-card__name {
-  margin: var(--space-1) 0;
-  color: var(--color-text-primary);
-  font-size: var(--font-md);
-  line-height: 1.4;
+  margin: 0;
+  color: var(--u9-ink);
+  font-size: 13.5px;
+  font-weight: 600;
+  line-height: 1.45;
   overflow-wrap: anywhere;
 }
 
 .candidate-funnel-card__sector {
-  color: var(--color-text-muted);
-  font-size: var(--font-xs);
+  color: var(--u9-ink-3);
+  font-size: 11px;
   overflow-wrap: anywhere;
 }
 
 .candidate-funnel-tier {
-  flex: 0 0 auto;
-  padding: var(--space-1) var(--space-2);
-  border: 1px solid var(--color-hold-border);
-  border-radius: var(--radius-full);
-  background: var(--color-hold-bg);
-  color: var(--color-hold-text);
-  font-size: var(--font-xs);
-  font-weight: 700;
-  line-height: 1.2;
+  flex: none;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: #EEF1F4;
+  color: var(--u9-ink-2);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.3;
   white-space: nowrap;
+  word-break: keep-all;
 }
 
 .candidate-funnel-tier--actionable {
-  border-color: var(--color-stock);
-  background: var(--color-stock-bg);
-  color: var(--color-stock-text);
+  background: #EDF2F8;
+  color: var(--u9-accent-ink);
 }
 
 .candidate-funnel-tier--deep_review {
-  border-color: var(--color-buy-border);
-  background: var(--color-buy-bg);
-  color: var(--color-buy-text);
+  background: #E7F1EA;
+  color: var(--u9-green);
 }
 
 .candidate-funnel-tier--screened {
-  border-color: var(--color-hold-border);
-  background: var(--color-hold-bg);
-  color: var(--color-hold-text);
+  background: #EEF1F4;
+  color: var(--u9-ink-2);
+}
+
+.candidate-funnel-tier--excluded {
+  background: #fff;
+  border: 1px dashed #A7B6C6;
+  color: var(--u9-ink-2);
 }
 
 .candidate-funnel-card__metrics {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--space-2);
-  margin: 0 0 var(--space-3);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px 10px;
+  margin: 0 0 8px;
 }
 
 .candidate-funnel-card__metrics > div,
 .candidate-funnel-card__observations > div {
   min-width: 0;
-  padding: var(--space-2);
-  border-radius: var(--radius-sm);
-  background: var(--color-bg-base);
 }
 
 .candidate-funnel-card dt {
-  color: var(--color-text-muted);
-  font-size: var(--font-xs);
+  color: var(--u9-ink-4);
+  font-size: 10.5px;
 }
 
 .candidate-funnel-card dd {
-  margin: var(--space-1) 0 0;
-  color: var(--color-text-primary);
-  font-size: var(--font-sm);
+  margin: 1px 0 0;
+  color: var(--u9-ink);
+  font-size: 12px;
+  font-weight: 600;
   font-variant-numeric: tabular-nums;
   overflow-wrap: anywhere;
 }
 
-.candidate-funnel-card__observations {
-  display: grid;
-  gap: var(--space-2);
-  margin: 0 0 var(--space-3);
+/* 数値・順位のみ Space Mono（5 番目「選別段階」は日本語の文字列なので sans のまま） */
+.candidate-funnel-card__metrics > div:nth-child(-n+4) dd {
+  font-family: var(--u9-mono);
+  font-weight: 700;
 }
 
+.candidate-funnel-card__observations {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px 10px;
+  margin: 0 0 8px;
+}
+
+.candidate-funnel-card__observations dd {
+  font-weight: 400;
+  color: var(--u9-ink-2);
+}
+
+/* ── 候補ごとのポートフォリオ適合 ─────────────────────────── */
 .candidate-funnel-card__portfolio-fit {
   min-width: 0;
-  margin-bottom: var(--space-3);
-  padding: var(--space-3);
-  border: 1px solid var(--color-border-default);
-  border-radius: var(--radius-md);
-  background: var(--color-bg-base);
-  color: var(--color-text-second);
-  font-size: var(--font-xs);
-  line-height: 1.55;
+  margin-bottom: 8px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: #F6F9FC;
+  color: var(--u9-ink-2);
+  font-size: 12px;
+  line-height: 1.6;
   overflow-wrap: anywhere;
 }
 
@@ -411,13 +657,13 @@
 .candidate-funnel-card__portfolio-fit--missing,
 .candidate-funnel-card__portfolio-fit--unavailable,
 .candidate-funnel-card__portfolio-fit--pending {
-  border-color: var(--color-wait-border);
-  background: var(--color-wait-bg);
+  background: #FAF2E3;
+  color: var(--u9-amber);
 }
 
 .candidate-funnel-card__portfolio-fit--invalid {
-  border-color: var(--color-sell-border);
-  background: var(--color-sell-bg);
+  background: #F6E9E7;
+  color: var(--u9-danger);
 }
 
 .candidate-funnel-card__portfolio-fit h4,
@@ -426,17 +672,17 @@
 }
 
 .candidate-funnel-card__portfolio-fit h4 {
-  margin-bottom: var(--space-2);
-  color: var(--color-text-primary);
-  font-size: var(--font-sm);
+  margin-bottom: 2px;
+  color: inherit;
+  font-size: 12px;
+  font-weight: 700;
 }
 
 .candidate-funnel-card__portfolio-fit-summary {
   display: flex;
   flex-direction: column;
-  gap: var(--space-1);
-  margin-bottom: var(--space-2);
-  font-weight: 700;
+  gap: 2px;
+  font-weight: 600;
 }
 
 .candidate-funnel-card__portfolio-fit details {
@@ -446,39 +692,44 @@
 .candidate-funnel-card__portfolio-fit summary {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   min-height: 44px;
-  color: var(--color-stock-text);
-  font-weight: 700;
+  color: var(--u9-accent-ink);
+  font-weight: 600;
   cursor: pointer;
+  list-style: none;
 }
+
+.candidate-funnel-card__portfolio-fit summary::-webkit-details-marker { display: none; }
 
 .candidate-funnel-card__portfolio-fit-components {
   display: grid;
-  gap: var(--space-2);
-  margin: var(--space-2) 0;
+  gap: 8px;
+  margin: 2px 0 6px;
 }
 
 .candidate-funnel-card__portfolio-fit-components > div {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  gap: var(--space-1);
+  gap: 2px;
   min-width: 0;
 }
 
 .candidate-funnel-card__portfolio-fit-components dt {
-  color: var(--color-text-subtle);
+  color: var(--u9-ink-3);
 }
 
 .candidate-funnel-card__portfolio-fit-components dd {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-2);
+  gap: 8px;
   margin: 0;
-  font-size: var(--font-xs);
+  font-size: 12px;
+  font-weight: 400;
 }
 
 .candidate-funnel-card__portfolio-fit-list {
-  margin-top: var(--space-2);
+  margin-top: 6px;
 }
 
 .candidate-funnel-card__portfolio-fit-list > div {
@@ -486,162 +737,85 @@
 }
 
 .candidate-funnel-card__portfolio-fit-list ul {
-  margin: var(--space-1) 0 0;
-  padding-left: var(--space-4);
+  margin: 2px 0 0;
+  padding-left: 16px;
 }
 
+/* ── 選別理由 / 確認事項 / 除外理由（控えめなテキスト行） ────── */
 .candidate-funnel-card__reason-group {
-  color: var(--color-text-subtle);
-  font-size: var(--font-xs);
-  line-height: 1.55;
+  color: var(--u9-ink-3);
+  font-size: 11.5px;
+  line-height: 1.65;
 }
 
 .candidate-funnel-card__reason-group + .candidate-funnel-card__reason-group {
-  margin-top: var(--space-2);
-}
-
-.candidate-funnel-card__reason-group--risk {
-  padding: var(--space-2);
-  border-left: 3px solid var(--color-wait);
-  background: var(--color-wait-bg);
-  color: var(--color-wait-text);
-}
-
-.candidate-funnel-card__reason-group--exclusion {
-  padding: var(--space-2);
-  border-left: 3px solid var(--color-sell);
-  background: var(--color-sell-bg);
-  color: var(--color-sell-text);
-}
-
-/* P5-B005-B3-C-V2-R1 FIX C: dataset-level degradation reasons の本文表示。
-   candidate ranking より支配的にならないよう compact に保つ。 */
-.candidate-funnel__degradation-reasons {
-  min-width: 0;
-  margin-bottom: var(--space-3);
-  padding: var(--space-3);
-  border: 1px solid var(--color-wait-border);
-  border-radius: var(--radius-md);
-  background: var(--color-wait-bg);
-  color: var(--color-wait-text);
-  font-size: var(--font-xs);
-  line-height: 1.55;
-  overflow-wrap: anywhere;
-}
-
-.candidate-funnel__degradation-reasons-label {
-  margin-bottom: var(--space-1);
-  font-weight: 700;
-}
-
-.candidate-funnel__degradation-reasons ul {
-  margin: 0;
-  padding-left: var(--space-4);
-}
-
-/* P5-B005-B3-C-V2-R1 FIX D: hard exclusion 診断。primary な候補リストを
-   圧迫しないよう折りたたみ surface とする。 */
-.candidate-funnel__excluded-details {
-  min-width: 0;
-  margin-bottom: var(--space-4);
-  border: 1px solid var(--color-border-subtle);
-  border-radius: var(--radius-md);
-  background: var(--color-bg-surface);
-}
-
-.candidate-funnel__excluded-details summary {
-  display: flex;
-  align-items: center;
-  min-height: 44px;
-  padding: 0 var(--space-3);
-  color: var(--color-text-second);
-  font-size: var(--font-sm);
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.candidate-funnel__excluded-details dl {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: var(--space-2);
-  margin: 0;
-  padding: 0 var(--space-3) var(--space-2);
-}
-
-.candidate-funnel__excluded-details dl > div {
-  display: flex;
-  justify-content: space-between;
-  gap: var(--space-3);
-  min-width: 0;
-  color: var(--color-text-subtle);
-  font-size: var(--font-xs);
-  overflow-wrap: anywhere;
-}
-
-.candidate-funnel__excluded-details dt,
-.candidate-funnel__excluded-details dd {
-  margin: 0;
-}
-
-.candidate-funnel__excluded-note {
-  margin: 0;
-  padding: 0 var(--space-3) var(--space-3);
-  color: var(--color-text-muted);
-  font-size: var(--font-xs);
-  line-height: 1.55;
-  overflow-wrap: anywhere;
-}
-
-/* P2-3: 除外銘柄数と理由別件数の重複を説明する先頭注記。summary 直下に
-   置くため上側にも余白を持たせる。 */
-.candidate-funnel__excluded-note--lead {
-  padding-top: var(--space-2);
-}
-
-.candidate-funnel__excluded-details summary:focus-visible {
-  outline: 3px solid var(--color-primary);
-  outline-offset: 2px;
+  margin-top: 6px;
 }
 
 .candidate-funnel-card__reason-label {
-  margin-bottom: var(--space-1);
+  margin-bottom: 1px;
   font-weight: 700;
+  color: var(--u9-ink-2);
+}
+
+.candidate-funnel-card__reason-group--risk .candidate-funnel-card__reason-label {
+  color: var(--u9-amber);
+}
+
+.candidate-funnel-card__reason-group--exclusion .candidate-funnel-card__reason-label {
+  color: var(--u9-danger);
 }
 
 .candidate-funnel-card__reason-group ul {
   margin: 0;
-  padding-left: var(--space-4);
+  padding-left: 16px;
 }
 
+/* ── デスクトップ: 密なタイルに戻さず、グループ化した行として横幅を使う ── */
 @media (min-width: 600px) {
   .candidate-funnel__timestamps {
     flex-direction: row;
-    justify-content: space-between;
+    gap: 18px;
   }
 
   .candidate-funnel__summary {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    padding: 14px 8px;
   }
 
-  .candidate-funnel__summary li:not(:last-child)::after {
-    top: 50%;
-    right: calc(var(--space-2) * -1);
-    bottom: auto;
-    left: auto;
-    content: "→";
-    line-height: 1;
-    transform: translate(50%, -50%);
+  .candidate-funnel__summary strong {
+    font-size: 20px;
   }
 
   .candidate-funnel__filters {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    max-width: 440px;
   }
 
   .candidate-funnel-card__metrics {
     grid-template-columns: repeat(5, minmax(0, 1fr));
   }
+}
 
+@media (min-width: 1024px) {
+  .candidate-funnel-card {
+    display: grid;
+    grid-template-columns: minmax(180px, 1fr) minmax(0, 2.2fr);
+    column-gap: 24px;
+    align-items: start;
+  }
+
+  .candidate-funnel-card__header {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    margin-bottom: 0;
+  }
+
+  .candidate-funnel-card__metrics,
   .candidate-funnel-card__observations {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-column: 2;
+  }
+
+  .candidate-funnel-card__portfolio-fit,
+  .candidate-funnel-card__reason-group {
+    grid-column: 1 / -1;
   }
 }
