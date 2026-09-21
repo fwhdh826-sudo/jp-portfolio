@@ -11,6 +11,7 @@ import type {
 } from '../../presentation/ui9i/todayHome'
 import type { CandidateSectionProjection } from '../../presentation/ui9i/candidatePresentation'
 import type { TodayActionRow, TodayActionsProjection } from '../../presentation/ui9i/todayActions'
+import type { TodayRiskRow, TodayRisksProjection } from '../../presentation/ui9i/todayRisks'
 import type { PortfolioProjection } from '../../presentation/ui9i/portfolioPresentation'
 import {
   formatManYen,
@@ -131,12 +132,46 @@ function TodayActionsCard({ todo }: { todo: TodayActionsProjection }) {
   )
 }
 
-function AttentionCard({ items: all }: { items: readonly AttentionItem[] }) {
+function TodayRiskItem({ row }: { row: TodayRiskRow }) {
+  return (
+    <li className="u9-risk-row" data-testid="today-risk-row">
+      <span className="u9-attn__mark" data-glyph="risk" aria-hidden="true">△</span>
+      <span className="u9-risk-row__text">{row.text}</span>
+    </li>
+  )
+}
+
+/**
+ * 判断に含まれるリスク = OfficialDecision.risks の表示。並べ替え・重大度づけ・補完をしない。
+ * 0 件のときは何も出さない（「リスクなし」とは読ませない）。判断利用不可のときも作らない。
+ */
+function CanonicalRisks({ risks }: { risks: TodayRisksProjection }) {
+  if (risks.status !== 'available') return null
+  return (
+    <div className="u9-risks" data-testid="today-risks">
+      <h3 className="u9-risks__title">判断に含まれるリスク</h3>
+      <ol className="u9-risk-list" aria-label="判断に含まれるリスク（判断の提示順）">
+        {risks.preview.map(row => <TodayRiskItem key={row.id} row={row} />)}
+      </ol>
+      {risks.more.length > 0 && (
+        <details className="u9-todo-more" data-testid="today-risks-more">
+          <summary className="u9-disclose__summary">他 {risks.more.length} 件を見る</summary>
+          <ol className="u9-risk-list" aria-label="判断に含まれるリスク（続き・判断の提示順）">
+            {risks.more.map(row => <TodayRiskItem key={row.id} row={row} />)}
+          </ol>
+        </details>
+      )}
+    </div>
+  )
+}
+
+function AttentionCard({ items: all, risks }: { items: readonly AttentionItem[]; risks: TodayRisksProjection }) {
   // data-wait は「データの状態」カードが表示を担う（R4.1 M2-C）。件数チップには数える。
   const items = all.filter(item => item.id !== 'data-wait')
-  if (items.length === 0) return null // 通常時は注目ポイントの節を出さない
+  if (items.length === 0 && risks.status !== 'available') return null // 通常時は注目ポイントの節を出さない
   return (
     <Card title="注目ポイント" className="u9-area-attn" data-testid="attention-card">
+      <CanonicalRisks risks={risks} />
       {items.map(item => (
         <div key={item.id} className="u9-attn">
           <span className="u9-attn__mark" data-glyph={item.glyph} aria-hidden="true">{ATTN_GLYPH[item.glyph]}</span>
@@ -395,7 +430,7 @@ export function TodayHomeView({ vm, dateLabel, yearLabel, actions, heroImageSrc 
           <>
             <TodayActionsCard todo={vm.todayActions} />
             {vm.unavailableDetail !== null && <UnavailableDetail detail={vm.unavailableDetail} />}
-            <AttentionCard items={vm.attention} />
+            <AttentionCard items={vm.attention} risks={vm.risks} />
             <DataStatusCard rows={vm.dataStatus} />
             <CandidateCard section={vm.candidates} hero={hero} cash={vm.deployableCash} onOpenAll={actions.onOpenCandidates} onOpenAudit={actions.onOpenAudit} />
             <PortfolioCard vm={vm} onOpenPortfolio={actions.onOpenPortfolio} />

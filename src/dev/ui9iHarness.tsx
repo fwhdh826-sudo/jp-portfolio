@@ -72,10 +72,28 @@ const TODO_FIXTURES: Record<string, OfficialDecisionItem[]> = {
 const todoParam = new URLSearchParams(window.location.search).get('todo')
 const baseScenarioInputs = scenarioInputs(scenario)
 const todoActions = todoParam !== null ? TODO_FIXTURES[todoParam] : undefined
+// Phase 2B-2R2: `&risks=one|multi|zero` で OfficialDecision.risks を差し替えて「注目ポイント」内の
+// canonical リスクを確認する（判断が無い state=decision_unavailable / boot では差し替えない）。
+const RISK_FIXTURES: Record<string, string[]> = {
+  one: ['決算発表を控えた銘柄の新規買付は、発表後の確認を待つ運用です。'],
+  multi: [
+    '決算発表を控えた銘柄の新規買付は、発表後の確認を待つ運用です。',
+    '国内株の比率が目標上限に近い状態です。',
+    '為替の変動が外貨建て資産の評価に影響しています。',
+    '一部の投信は基準価額の更新が遅れています。',
+    '金の保有比率は目標配分の範囲内です。',
+  ],
+  zero: [],
+}
+const riskParam = new URLSearchParams(window.location.search).get('risks')
+const riskList = riskParam !== null ? RISK_FIXTURES[riskParam] : undefined
+const scenarioWithActions = todoActions !== undefined && baseScenarioInputs.officialDecision !== null
+  ? { ...baseScenarioInputs, officialDecision: { ...baseScenarioInputs.officialDecision, actions: todoActions } }
+  : baseScenarioInputs
 const vm = assembleTodayHomeViewModel(
-  todoActions !== undefined && baseScenarioInputs.officialDecision !== null
-    ? { ...baseScenarioInputs, officialDecision: { ...baseScenarioInputs.officialDecision, actions: todoActions } }
-    : baseScenarioInputs,
+  riskList !== undefined && scenarioWithActions.officialDecision !== null
+    ? { ...scenarioWithActions, officialDecision: { ...scenarioWithActions.officialDecision, risks: riskList } }
+    : scenarioWithActions,
 )
 
 const params = new URLSearchParams(window.location.search)

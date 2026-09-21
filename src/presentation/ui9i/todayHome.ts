@@ -12,6 +12,8 @@
 //  運用モード       : AllocationConsumerSnapshot.marketMode（レジームとは結合しない）
 //  今日のToDo       : OfficialDecision.actions（提示順・候補は除外・SAFE_MODE/DQ 時は BUY 非表示のみ。
 //                     todayActions.ts。判断が無いときは代替提案を作らない）
+//  注目ポイント     : 独立権限の状態（SAFE_MODE / データ / 候補 / 売却ロック）＋ OfficialDecision.risks
+//                     （todayRisks.ts。提示順・verbatim。リスクの生成・重大度づけ・「リスクなし」推論をしない）
 //  候補             : CandidateDecisionSynthesis（decisions → watchList、先頭3件）
 //  実行可能現金     : selectExecutableDeployableCash（unavailable を ¥0 に変換しない）
 //  ポートフォリオ   : AllocationConsumerSnapshot.classes（canonical 順）
@@ -64,6 +66,11 @@ import {
   projectTodayActions,
   type TodayActionsProjection,
 } from './todayActions'
+import {
+  NO_TODAY_RISKS,
+  projectTodayRisks,
+  type TodayRisksProjection,
+} from './todayRisks'
 
 export type HeroState = 'boot' | 'decision_unavailable' | 'safe_mode' | 'data_wait' | 'normal'
 export type HeroTone = 'calm' | 'warm' | 'neutral' | 'critical'
@@ -148,6 +155,8 @@ export interface TodayHomeViewModel {
   } | null
   /** 「今日のToDo」= OfficialDecision.actions の表示写像。判断不能では代替提案を作らない。 */
   readonly todayActions: TodayActionsProjection
+  /** 「注目ポイント」内の canonical リスク = OfficialDecision.risks の表示写像（提示順・verbatim）。 */
+  readonly risks: TodayRisksProjection
   readonly attention: readonly AttentionItem[]
   /** DATA_WAIT のときだけ non-empty（データセット別の鮮度）。 */
   readonly dataStatus: readonly DataStatusRow[]
@@ -451,7 +460,7 @@ export function assembleTodayHomeViewModel(i: TodayHomeInputs): TodayHomeViewMod
 
   if (heroState === 'boot') {
     return {
-      hero, chips: null, todayActions: BOOT_TODAY_ACTIONS, attention: [], dataStatus: [], candidates: NO_CANDIDATES,
+      hero, chips: null, todayActions: BOOT_TODAY_ACTIONS, risks: NO_TODAY_RISKS, attention: [], dataStatus: [], candidates: NO_CANDIDATES,
       deployableCash, grossCash: { kind: 'unknown' }, portfolio: null,
       market: projectMarket(i), unavailableDetail: null,
     }
@@ -464,6 +473,9 @@ export function assembleTodayHomeViewModel(i: TodayHomeInputs): TodayHomeViewMod
     buySuppressed: usableDecision !== null
       && computeBuyDisplaySuppressed(usableDecision.dataQualitySuppressed, !i.marketDataOk, i.safeModeEffective),
   })
+  // canonical リスクは todayActions と同じ権限（利用できる OfficialDecision）だけから写像する。
+  // 利用不可では risks=[] と区別した unavailable を返し、市場・保有などからは推論しない。
+  const risks = projectTodayRisks(usableDecision)
   const candidates = projectCandidateSection(i.synthesis, candidateProjectionContextFor(heroState))
   const attention = projectAttention(i, heroState, candidates)
   const market = projectMarket(i)
@@ -484,10 +496,11 @@ export function assembleTodayHomeViewModel(i: TodayHomeInputs): TodayHomeViewMod
       mode: snapshot.availability === 'available'
         ? { label: OPERATION_MODE_LABEL[snapshot.marketMode], available: true }
         : { label: UNDETERMINABLE_LABEL, available: false },
-      attentionCount: attention.length,
+      attentionCount: attention.length + risks.totalCount,
       candidates: projectCandidateChip(candidates, heroState),
     },
     todayActions,
+    risks,
     attention,
     dataStatus: heroState === 'data_wait' ? projectDataStatus(i) : [],
     candidates,

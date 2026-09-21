@@ -249,6 +249,14 @@
   font-size: 11px; background: #FBF0DD; color: var(--u9-amber);
 }
 .u9-attn__mark[data-glyph="info"] { background: #EDF1F6; color: var(--u9-ink-3); }
+.u9-attn__mark[data-glyph="risk"] { background: #FBF0DD; color: #6B4E14; }
+/* 判断に含まれるリスク（OfficialDecision.risks）。重大度の表現は持たない。文言は提示順のまま。 */
+.u9-risks { display: flex; flex-direction: column; gap: 4px; }
+.u9-risks__title { margin: 0; font-size: 10.5px; font-weight: 600; color: var(--u9-ink-4); }
+.u9-risk-list { display: flex; flex-direction: column; margin: 0; padding: 0; list-style: none; }
+.u9-risk-row { display: flex; align-items: flex-start; gap: 11px; padding: 9px 0; border-bottom: 1px solid var(--u9-line-soft); }
+.u9-risk-row:last-child { border-bottom: 0; }
+.u9-risk-row__text { flex: 1; min-width: 0; font-size: 12.5px; line-height: 1.65; color: var(--u9-ink); overflow-wrap: anywhere; }
 .u9-attn__title { font-weight: 600; font-size: 13px; }
 .u9-attn__detail { font-size: 11.5px; line-height: 1.6; color: var(--u9-ink-3); }
 .u9-status-list { display: flex; flex-direction: column; gap: 11px; font-size: 12.5px; }
@@ -278,7 +286,7 @@
 .u9-todo-more { border-top: 1px solid var(--u9-line); }
 .u9-todo-more > .u9-disclose__summary { min-height: 44px; }
 .u9-todo-more[open] > .u9-disclose__summary::after { transform: rotate(90deg); }
-.u9-todo-more > .u9-todo-list { padding-bottom: 4px; }
+.u9-todo-more > .u9-todo-list, .u9-todo-more > .u9-risk-list { padding-bottom: 4px; }
 
 /* ── 候補 ──────────────────────────────────────────────────── */
 .u9-cand-list { display: flex; flex-direction: column; gap: 2px; margin: 0; padding: 0; list-style: none; }
