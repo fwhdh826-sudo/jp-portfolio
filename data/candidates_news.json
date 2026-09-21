@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-09-21T18:11:33.355574+09:00",
-  "sourceUpdatedAt": "2026-09-21T09:04:13+00:00",
+  "updatedAt": "2026-09-22T02:08:25.944111+09:00",
+  "sourceUpdatedAt": "2026-09-21T16:46:35+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -17,100 +17,63 @@
       "items": []
     },
     "jp_semiconductor": {
-      "avgSentiment": 0.5,
+      "avgSentiment": 1.0,
       "negativeCount": 0,
-      "positiveCount": 2,
+      "positiveCount": 1,
       "neutralCount": 0,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "South Korea’s Early Exports Rise to Record as Chip Boom Extends",
-      "topPositiveTitle": "JPMorgan Sees Upside to Its Already Hawkish 3.75% BOK Rate Call",
+      "topNegativeTitle": "AMD Set to Top $1 Trillion in Market Value as Chip Stocks Soar",
+      "topPositiveTitle": "AMD Set to Top $1 Trillion in Market Value as Chip Stocks Soar",
       "items": [
         {
-          "title": "South Korea’s Early Exports Rise to Record as Chip Boom Extends",
-          "source": "Bloomberg Economics",
+          "title": "AMD Set to Top $1 Trillion in Market Value as Chip Stocks Soar",
+          "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-21T00:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-21/s-korea-s-early-exports-maintain-strong-momentum-on-chip-boom",
-          "tags": [
-            "jp_semiconductor",
-            "market"
-          ]
-        },
-        {
-          "title": "JPMorgan Sees Upside to Its Already Hawkish 3.75% BOK Rate Call",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-09-21T00:12:35+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-21/jpmorgan-sees-upside-to-its-already-hawkish-3-75-bok-rate-call",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-09-21T15:36:44+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-21/amd-set-to-top-1-trillion-in-market-value-as-chip-stocks-soar",
           "tags": [
             "jp_semiconductor",
             "market",
-            "rates"
+            "us_growth"
           ]
         }
       ]
     },
     "us_broad": {
-      "avgSentiment": -0.165,
+      "avgSentiment": -0.133,
       "negativeCount": 2,
       "positiveCount": 0,
-      "neutralCount": 2,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Morgan Stanley’s Wilson Says US Stocks Risk 7% Drop in Near Term",
-      "topPositiveTitle": "Dimon Heads to India as Wall Street Steps Up Fight For Deal Boom",
+      "topNegativeTitle": "Gold Edges Lower as Traders Weigh Oil Prices and Fed Rate Path",
+      "topPositiveTitle": "US Stocks Advance Ahead of Trump-Xi Meeting as Oil Slips",
       "items": [
         {
-          "title": "Morgan Stanley’s Wilson Says US Stocks Risk 7% Drop in Near Term",
+          "title": "Gold Edges Lower as Traders Weigh Oil Prices and Fed Rate Path",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-21T08:23:53+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-21/morgan-stanley-s-wilson-says-us-stocks-risk-7-drop-in-near-term",
-          "tags": [
-            "commodity",
-            "macro_risk",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Gold Erases Weekly Gain as Traders Weigh Inflation and Fed Path",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
+          "sentimentScore": -0.67,
           "publishedAt": "2026-09-20T23:45:47+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-20/gold-steadies-as-traders-weigh-inflation-and-fed-hike-outlook",
           "tags": [
+            "commodity",
             "gold",
             "market",
             "us_broad"
           ]
         },
         {
-          "title": "Dimon Heads to India as Wall Street Steps Up Fight For Deal Boom",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-21T08:29:20+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-21/dimon-heads-to-india-as-wall-street-steps-up-fight-for-deal-boom",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Fed’s Kashkari Says Inflation Reaching All Corners of US Economy",
+          "title": "Outlier Bank of America Sees Two South Africa Rate Hikes in 2026",
           "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-20T15:32:17+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-20/fed-s-kashkari-says-inflation-reaching-all-corners-of-us-economy",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-21T13:26:37+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-21/outlier-bank-of-america-sees-two-south-africa-rate-hikes-in-2026",
           "tags": [
             "commodity",
             "geopolitical",
@@ -118,10 +81,110 @@
             "market",
             "us_broad"
           ]
+        },
+        {
+          "title": "USTR Jameison Greer lays the groundwork for upcoming Trump-Xi summit",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-21T14:57:03+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-21/bloomberg-surveillance-9-21-2026-video",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Fed’s Goolsbee Says Road to 2% Inflation May Not Be Painless",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-21T10:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-21/fed-s-goolsbee-says-road-to-2-inflation-may-not-be-painless",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "AI Boom Is Making Diversifying Investments Tough for Wall Street",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-20T21:00:01+00:00",
+          "url": "https://www.bloomberg.com/news/features/2026-09-20/ai-boom-is-making-diversifying-investments-tough-for-wall-street",
+          "tags": [
+            "market",
+            "us_broad",
+            "us_growth"
+          ]
         }
       ]
     },
     "us_growth": {
+      "avgSentiment": 0.357,
+      "negativeCount": 0,
+      "positiveCount": 2,
+      "neutralCount": 2,
+      "sourceCount": 2,
+      "itemCount": 4,
+      "isStale": false,
+      "topNegativeTitle": "BOE’s Breeden Says Time Running Out to Stop AI Crashing Markets",
+      "topPositiveTitle": "AMD Set to Top $1 Trillion in Market Value as Chip Stocks Soar",
+      "items": [
+        {
+          "title": "BOE’s Breeden Says Time Running Out to Stop AI Crashing Markets",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-21T15:55:22+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-21/boe-s-breeden-says-time-running-out-to-stop-ai-crashing-markets",
+          "tags": [
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "AI Boom Is Making Diversifying Investments Tough for Wall Street",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-20T21:00:01+00:00",
+          "url": "https://www.bloomberg.com/news/features/2026-09-20/ai-boom-is-making-diversifying-investments-tough-for-wall-street",
+          "tags": [
+            "market",
+            "us_broad",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Accenture Up on Partnership with Anthropic; Novo Nordisk Falls on Turnaround | Stock Movers",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.43,
+          "publishedAt": "2026-09-21T14:49:08+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-21/accenture-anthropic-partnership-novo-nordisk-falls-video",
+          "tags": [
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "AMD Set to Top $1 Trillion in Market Value as Chip Stocks Soar",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-09-21T15:36:44+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-21/amd-set-to-top-1-trillion-in-market-value-as-chip-stocks-soar",
+          "tags": [
+            "jp_semiconductor",
+            "market",
+            "us_growth"
+          ]
+        }
+      ]
+    },
+    "global_broad": {
       "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
@@ -133,64 +196,26 @@
       "topPositiveTitle": null,
       "items": []
     },
-    "global_broad": {
-      "avgSentiment": -0.165,
-      "negativeCount": 1,
-      "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 2,
-      "isStale": false,
-      "topNegativeTitle": "Goldman Likes European Stocks on Earnings, Global Reach",
-      "topPositiveTitle": "Hormuz Flows Ease Oil Fears, Saudi Air-Raid Alerts, Qatar Urges Gulf Unity, Trump-Xi Summit Nears",
-      "items": [
-        {
-          "title": "Goldman Likes European Stocks on Earnings, Global Reach",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-21T07:51:37+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-21/goldman-likes-european-stocks-on-earnings-global-reach-video",
-          "tags": [
-            "global_broad",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Hormuz Flows Ease Oil Fears, Saudi Air-Raid Alerts, Qatar Urges Gulf Unity, Trump-Xi Summit Nears",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-21T06:19:28+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-21/horizons-middle-east-africa-9-21-2026-video",
-          "tags": [
-            "commodity",
-            "global_broad",
-            "market"
-          ]
-        }
-      ]
-    },
     "gold": {
-      "avgSentiment": -0.33,
+      "avgSentiment": -0.67,
       "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 0,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Gold Erases Weekly Gain as Traders Weigh Inflation and Fed Path",
-      "topPositiveTitle": "Gold Erases Weekly Gain as Traders Weigh Inflation and Fed Path",
+      "topNegativeTitle": "Gold Edges Lower as Traders Weigh Oil Prices and Fed Rate Path",
+      "topPositiveTitle": "Gold Edges Lower as Traders Weigh Oil Prices and Fed Rate Path",
       "items": [
         {
-          "title": "Gold Erases Weekly Gain as Traders Weigh Inflation and Fed Path",
+          "title": "Gold Edges Lower as Traders Weigh Oil Prices and Fed Rate Path",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
+          "sentimentScore": -0.67,
           "publishedAt": "2026-09-20T23:45:47+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-20/gold-steadies-as-traders-weigh-inflation-and-fed-hike-outlook",
           "tags": [
+            "commodity",
             "gold",
             "market",
             "us_broad"
@@ -223,12 +248,12 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.22,
-      "negativeCount": 4,
-      "positiveCount": 1,
-      "neutralCount": 1,
+      "avgSentiment": -0.107,
+      "negativeCount": 6,
+      "positiveCount": 2,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 10,
       "isStale": false,
       "topNegativeTitle": "Latest Oil Market News and Analysis for Sept. 21",
       "topPositiveTitle": "Key African Central Banks Set to Keep High Rates as Buffer Against Shocks",
@@ -237,7 +262,7 @@
           "title": "Latest Oil Market News and Analysis for Sept. 21",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
+          "sentimentScore": -0.5,
           "publishedAt": "2026-09-20T22:05:05+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-20/latest-oil-market-news-and-analysis-for-sept-21",
           "tags": [
@@ -248,34 +273,35 @@
           ]
         },
         {
-          "title": "Morgan Stanley’s Wilson Says US Stocks Risk 7% Drop in Near Term",
-          "source": "Bloomberg Markets",
+          "title": "Outlier Bank of America Sees Two South Africa Rate Hikes in 2026",
+          "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-09-21T08:23:53+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-21/morgan-stanley-s-wilson-says-us-stocks-risk-7-drop-in-near-term",
+          "publishedAt": "2026-09-21T13:26:37+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-21/outlier-bank-of-america-sees-two-south-africa-rate-hikes-in-2026",
           "tags": [
             "commodity",
+            "geopolitical",
             "macro_risk",
             "market",
             "us_broad"
           ]
         },
         {
-          "title": "Goldman Likes European Stocks on Earnings, Global Reach",
-          "source": "Bloomberg Markets",
+          "title": "Qatar’s First Public Bond Sale This Year Draws $7.7 Billion",
+          "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-09-21T07:51:37+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-21/goldman-likes-european-stocks-on-earnings-global-reach-video",
+          "publishedAt": "2026-09-21T10:06:42+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-21/qatar-enters-bond-market-as-hormuz-closure-sends-deficit-soaring",
           "tags": [
-            "global_broad",
+            "geopolitical",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Turkey Freezes Assets of Fund Executives in Redemption Crisis",
+          "title": "Turkey Freezes Fund Executives’ Assets in Redemption Crisis",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
@@ -287,18 +313,17 @@
           ]
         },
         {
-          "title": "Fed’s Kashkari Says Inflation Reaching All Corners of US Economy",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-20T15:32:17+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-20/fed-s-kashkari-says-inflation-reaching-all-corners-of-us-economy",
+          "title": "Stocks, Bonds Climb as Oil Falls on US-Iran Hopes: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-20T22:14:48+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-20/us-stock-futures-up-ahead-of-talks-dollar-steady-markets-wrap",
           "tags": [
             "commodity",
             "geopolitical",
             "macro_risk",
-            "market",
-            "us_broad"
+            "market"
           ]
         }
       ]
@@ -316,25 +341,36 @@
       "items": []
     },
     "rates": {
-      "avgSentiment": 0.337,
+      "avgSentiment": 0.113,
       "negativeCount": 1,
-      "positiveCount": 2,
-      "neutralCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 1,
       "sourceCount": 1,
       "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Morgan Stanley Sees SARB Rate Hike to Keep Inflation on 3% Path",
+      "topNegativeTitle": "Macklem Flags Risk of Delaying Rate Hike Too Long",
       "topPositiveTitle": "Key African Central Banks Set to Keep High Rates as Buffer Against Shocks",
       "items": [
         {
-          "title": "Morgan Stanley Sees SARB Rate Hike to Keep Inflation on 3% Path",
+          "title": "Macklem Flags Risk of Delaying Rate Hike Too Long",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-09-21T04:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-21/morgan-stanley-sees-sarb-rate-hike-to-keep-inflation-on-3-path",
+          "publishedAt": "2026-09-21T15:05:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-21/macklem-flags-risk-of-delaying-rate-hike-too-long",
           "tags": [
-            "commodity",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Brazil Economists Lower 2026 Selic Forecast Following Rate Cut",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-21T12:06:31+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-21/brazil-economists-lower-2026-selic-forecast-following-rate-cut",
+          "tags": [
             "market",
             "rates"
           ]
@@ -350,19 +386,6 @@
             "commodity",
             "geopolitical",
             "macro_risk",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "JPMorgan Sees Upside to Its Already Hawkish 3.75% BOK Rate Call",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-09-21T00:12:35+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-21/jpmorgan-sees-upside-to-its-already-hawkish-3-75-bok-rate-call",
-          "tags": [
-            "jp_semiconductor",
             "market",
             "rates"
           ]
@@ -370,21 +393,35 @@
       ]
     },
     "commodity": {
-      "avgSentiment": -0.079,
-      "negativeCount": 3,
-      "positiveCount": 1,
-      "neutralCount": 6,
+      "avgSentiment": -0.08,
+      "negativeCount": 5,
+      "positiveCount": 2,
+      "neutralCount": 4,
       "sourceCount": 3,
-      "itemCount": 10,
+      "itemCount": 11,
       "isStale": false,
-      "topNegativeTitle": "Latest Oil Market News and Analysis for Sept. 21",
+      "topNegativeTitle": "Gold Edges Lower as Traders Weigh Oil Prices and Fed Rate Path",
       "topPositiveTitle": "Key African Central Banks Set to Keep High Rates as Buffer Against Shocks",
       "items": [
+        {
+          "title": "Gold Edges Lower as Traders Weigh Oil Prices and Fed Rate Path",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-09-20T23:45:47+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-20/gold-steadies-as-traders-weigh-inflation-and-fed-hike-outlook",
+          "tags": [
+            "commodity",
+            "gold",
+            "market",
+            "us_broad"
+          ]
+        },
         {
           "title": "Latest Oil Market News and Analysis for Sept. 21",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
+          "sentimentScore": -0.5,
           "publishedAt": "2026-09-20T22:05:05+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-20/latest-oil-market-news-and-analysis-for-sept-21",
           "tags": [
@@ -395,66 +432,57 @@
           ]
         },
         {
-          "title": "Morgan Stanley’s Wilson Says US Stocks Risk 7% Drop in Near Term",
-          "source": "Bloomberg Markets",
+          "title": "Outlier Bank of America Sees Two South Africa Rate Hikes in 2026",
+          "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-09-21T08:23:53+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-21/morgan-stanley-s-wilson-says-us-stocks-risk-7-drop-in-near-term",
+          "publishedAt": "2026-09-21T13:26:37+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-21/outlier-bank-of-america-sees-two-south-africa-rate-hikes-in-2026",
           "tags": [
             "commodity",
+            "geopolitical",
             "macro_risk",
             "market",
             "us_broad"
           ]
         },
         {
-          "title": "Morgan Stanley Sees SARB Rate Hike to Keep Inflation on 3% Path",
-          "source": "Bloomberg Economics",
+          "title": "Stocks, Bonds Climb as Oil Falls on US-Iran Hopes: Markets Wrap",
+          "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-09-21T04:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-21/morgan-stanley-sees-sarb-rate-hike-to-keep-inflation-on-3-path",
+          "publishedAt": "2026-09-20T22:14:48+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-20/us-stock-futures-up-ahead-of-talks-dollar-steady-markets-wrap",
           "tags": [
             "commodity",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "QIA, Apollo, Goldman Sachs on Deploying Capital",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-21T08:34:03+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-21/qia-apollo-goldman-sachs-on-deploying-capital-video",
-          "tags": [
-            "commodity",
+            "geopolitical",
+            "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Hormuz Flows Ease Oil Fears, Saudi Air-Raid Alerts, Qatar Urges Gulf Unity, Trump-Xi Summit Nears",
+          "title": "Oil Drops Below $100 With Focus on Hormuz Flows, Diplomacy",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-21T06:19:28+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-21/horizons-middle-east-africa-9-21-2026-video",
+          "sentiment": "negative",
+          "sentimentScore": -0.25,
+          "publishedAt": "2026-09-21T16:44:00+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-21/oil-drops-below-100-with-focus-on-hormuz-flows-video",
           "tags": [
             "commodity",
-            "global_broad",
+            "geopolitical",
+            "macro_risk",
             "market"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": -0.082,
-      "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 2,
+      "avgSentiment": -0.062,
+      "negativeCount": 5,
+      "positiveCount": 2,
+      "neutralCount": 5,
       "sourceCount": 3,
-      "itemCount": 4,
+      "itemCount": 12,
       "isStale": false,
       "topNegativeTitle": "Latest Oil Market News and Analysis for Sept. 21",
       "topPositiveTitle": "Key African Central Banks Set to Keep High Rates as Buffer Against Shocks",
@@ -463,7 +491,7 @@
           "title": "Latest Oil Market News and Analysis for Sept. 21",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
+          "sentimentScore": -0.5,
           "publishedAt": "2026-09-20T22:05:05+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-20/latest-oil-market-news-and-analysis-for-sept-21",
           "tags": [
@@ -474,12 +502,12 @@
           ]
         },
         {
-          "title": "Fed’s Kashkari Says Inflation Reaching All Corners of US Economy",
+          "title": "Outlier Bank of America Sees Two South Africa Rate Hikes in 2026",
           "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-20T15:32:17+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-20/fed-s-kashkari-says-inflation-reaching-all-corners-of-us-economy",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-21T13:26:37+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-21/outlier-bank-of-america-sees-two-south-africa-rate-hikes-in-2026",
           "tags": [
             "commodity",
             "geopolitical",
@@ -489,31 +517,44 @@
           ]
         },
         {
-          "title": "国民 玉木代表 ウクライナを訪問 政府高官らとの会談を調整",
-          "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-21T06:20:00+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20260921de51643",
+          "title": "Qatar’s First Public Bond Sale This Year Draws $7.7 Billion",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-21T10:06:42+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-21/qatar-enters-bond-market-as-hormuz-closure-sends-deficit-soaring",
           "tags": [
             "geopolitical",
+            "macro_risk",
             "market"
-          ],
-          "titleJa": "国民 玉木代表 ウクライナを訪問 政府高官らとの会談を調整"
+          ]
         },
         {
-          "title": "Key African Central Banks Set to Keep High Rates as Buffer Against Shocks",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-09-21T06:24:16+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-21/key-african-central-banks-set-to-keep-high-rates-as-buffer-against-shocks",
+          "title": "Stocks, Bonds Climb as Oil Falls on US-Iran Hopes: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-20T22:14:48+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-20/us-stock-futures-up-ahead-of-talks-dollar-steady-markets-wrap",
           "tags": [
             "commodity",
             "geopolitical",
             "macro_risk",
-            "market",
-            "rates"
+            "market"
+          ]
+        },
+        {
+          "title": "Oil Drops Below $100 With Focus on Hormuz Flows, Diplomacy",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.25,
+          "publishedAt": "2026-09-21T16:44:00+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-21/oil-drops-below-100-with-focus-on-hormuz-flows-video",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
           ]
         }
       ]
@@ -527,7 +568,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 4,
+    "excludedCount": 3,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
