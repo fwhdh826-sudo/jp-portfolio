@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-09-21T08:28:09.183116+09:00",
-  "sourceUpdatedAt": "2026-09-20T23:11:41+00:00",
+  "updatedAt": "2026-09-21T10:19:40.885789+09:00",
+  "sourceUpdatedAt": "2026-09-21T00:55:05+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -31,37 +31,80 @@
       ]
     },
     "jp_semiconductor": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.443,
       "negativeCount": 0,
-      "positiveCount": 0,
+      "positiveCount": 3,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 2,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Trump & Xi to Meet Amidst Friction on Wars, Tech, Trade",
+      "topPositiveTitle": "JPMorgan Sees Upside to Its Already Hawkish 3.75% BOK Rate Call",
+      "items": [
+        {
+          "title": "Trump & Xi to Meet Amidst Friction on Wars, Tech, Trade",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-21T00:50:09+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-21/trump-xi-to-meet-amidst-friction-on-wars-tech-trade-video",
+          "tags": [
+            "geopolitical",
+            "jp_semiconductor",
+            "macro_risk",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "S. Korea’s Early Exports Maintain Strong Momentum on Chip Boom",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-21T00:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-21/s-korea-s-early-exports-maintain-strong-momentum-on-chip-boom",
+          "tags": [
+            "jp_semiconductor",
+            "market"
+          ]
+        },
+        {
+          "title": "JPMorgan Sees Upside to Its Already Hawkish 3.75% BOK Rate Call",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-09-21T00:12:35+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-21/jpmorgan-sees-upside-to-its-already-hawkish-3-75-bok-rate-call",
+          "tags": [
+            "jp_semiconductor",
+            "market",
+            "rates"
+          ]
+        }
+      ]
     },
     "us_broad": {
-      "avgSentiment": 0.085,
-      "negativeCount": 1,
+      "avgSentiment": 0.134,
+      "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 2,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Wall Street Week | India’s Growth Test, Bangalore’s Infrastructure Problem, Cricket Attracts Capital",
+      "topNegativeTitle": "Gold Steadies as Traders Weigh Inflation and Fed Hike Outlook",
       "topPositiveTitle": "Short-Term Treasuries Emerge as Popular Bet on Fed Inflation Win",
       "items": [
         {
-          "title": "Wall Street Week | India’s Growth Test, Bangalore’s Infrastructure Problem, Cricket Attracts Capital",
+          "title": "Gold Steadies as Traders Weigh Inflation and Fed Hike Outlook",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-18T23:27:06+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-18/wall-street-week-india-s-growth-test-video",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-20T23:45:47+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-20/gold-steadies-as-traders-weigh-inflation-and-fed-hike-outlook",
           "tags": [
+            "gold",
             "market",
+            "rates",
             "us_broad"
           ]
         },
@@ -94,6 +137,18 @@
           ]
         },
         {
+          "title": "Oaktree’s Marks Says He Wants a Less Activist Central Bank",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-20T12:46:17+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-20/oaktree-s-marks-wants-a-less-activist-central-bank-in-warsh-era",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
           "title": "Short-Term Treasuries Emerge as Popular Bet on Fed Inflation Win",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
@@ -108,15 +163,15 @@
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0.165,
       "negativeCount": 0,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 1,
+      "itemCount": 2,
       "isStale": false,
       "topNegativeTitle": "AI Boom Is Making Diversifying Investments Tough for Wall Street",
-      "topPositiveTitle": "AI Boom Is Making Diversifying Investments Tough for Wall Street",
+      "topPositiveTitle": "Trump & Xi to Meet Amidst Friction on Wars, Tech, Trade",
       "items": [
         {
           "title": "AI Boom Is Making Diversifying Investments Tough for Wall Street",
@@ -128,6 +183,21 @@
           "tags": [
             "market",
             "us_broad",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Trump & Xi to Meet Amidst Friction on Wars, Tech, Trade",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-21T00:50:09+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-21/trump-xi-to-meet-amidst-friction-on-wars-tech-trade-video",
+          "tags": [
+            "geopolitical",
+            "jp_semiconductor",
+            "macro_risk",
+            "market",
             "us_growth"
           ]
         }
@@ -146,16 +216,31 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Gold Steadies as Traders Weigh Inflation and Fed Hike Outlook",
+      "topPositiveTitle": "Gold Steadies as Traders Weigh Inflation and Fed Hike Outlook",
+      "items": [
+        {
+          "title": "Gold Steadies as Traders Weigh Inflation and Fed Hike Outlook",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-20T23:45:47+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-20/gold-steadies-as-traders-weigh-inflation-and-fed-hike-outlook",
+          "tags": [
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        }
+      ]
     },
     "reit": {
       "avgSentiment": 0,
@@ -182,15 +267,15 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0.132,
       "negativeCount": 0,
-      "positiveCount": 0,
+      "positiveCount": 2,
       "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 5,
       "isStale": false,
       "topNegativeTitle": "Black Sea Shipping Turmoil Hits Wheat Market, Amplifies Inflation Risks",
-      "topPositiveTitle": "Black Sea Shipping Turmoil Hits Wheat Market, Amplifies Inflation Risks",
+      "topPositiveTitle": "Trump & Xi to Meet Amidst Friction on Wars, Tech, Trade",
       "items": [
         {
           "title": "Black Sea Shipping Turmoil Hits Wheat Market, Amplifies Inflation Risks",
@@ -234,19 +319,47 @@
             "market",
             "us_broad"
           ]
+        },
+        {
+          "title": "Trump & Xi to Meet Amidst Friction on Wars, Tech, Trade",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-21T00:50:09+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-21/trump-xi-to-meet-amidst-friction-on-wars-tech-trade-video",
+          "tags": [
+            "geopolitical",
+            "jp_semiconductor",
+            "macro_risk",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "US Diesel Tops $6.50 a Gallon as Wars Worsen Global Fuels Crunch",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-21T00:33:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-21/us-diesel-tops-6-50-a-gallon-as-wars-worsen-global-fuels-crunch",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": -0.1,
+      "avgSentiment": -0.2,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 2,
+      "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 1,
       "isStale": false,
       "topNegativeTitle": "Yen Vulnerable With Japan on Holiday After BOJ Disappoints",
-      "topPositiveTitle": "US Stock Futures Up Ahead of Talks, Dollar Steady: Markets Wrap",
+      "topPositiveTitle": "Yen Vulnerable With Japan on Holiday After BOJ Disappoints",
       "items": [
         {
           "title": "Yen Vulnerable With Japan on Holiday After BOJ Disappoints",
@@ -260,40 +373,43 @@
             "jp_broad",
             "market"
           ]
-        },
-        {
-          "title": "US Stock Futures Up Ahead of Talks, Dollar Steady: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-20T22:14:48+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-20/us-stock-futures-up-ahead-of-talks-dollar-steady-markets-wrap",
-          "tags": [
-            "fx",
-            "market"
-          ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0.335,
       "negativeCount": 0,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 2,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Pimco Likes Rates Where They Are, CEO Roman Says",
-      "topPositiveTitle": "Pimco Likes Rates Where They Are, CEO Roman Says",
+      "topNegativeTitle": "Gold Steadies as Traders Weigh Inflation and Fed Hike Outlook",
+      "topPositiveTitle": "JPMorgan Sees Upside to Its Already Hawkish 3.75% BOK Rate Call",
       "items": [
         {
-          "title": "Pimco Likes Rates Where They Are, CEO Roman Says",
+          "title": "Gold Steadies as Traders Weigh Inflation and Fed Hike Outlook",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-20T18:37:06+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-20/pimco-likes-rates-where-they-are-ceo-roman-says-video",
+          "publishedAt": "2026-09-20T23:45:47+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-20/gold-steadies-as-traders-weigh-inflation-and-fed-hike-outlook",
           "tags": [
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "JPMorgan Sees Upside to Its Already Hawkish 3.75% BOK Rate Call",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-09-21T00:12:35+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-21/jpmorgan-sees-upside-to-its-already-hawkish-3-75-bok-rate-call",
+          "tags": [
+            "jp_semiconductor",
             "market",
             "rates"
           ]
@@ -301,16 +417,28 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.0,
+      "avgSentiment": -0.033,
       "negativeCount": 0,
       "positiveCount": 0,
       "neutralCount": 6,
       "sourceCount": 3,
       "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Black Sea Shipping Turmoil Hits Wheat Market, Amplifies Inflation Risks",
+      "topNegativeTitle": "Asian Stocks Edge Higher, Crude Oil Extends Losses: Markets Wrap",
       "topPositiveTitle": "Black Sea Shipping Turmoil Hits Wheat Market, Amplifies Inflation Risks",
       "items": [
+        {
+          "title": "Asian Stocks Edge Higher, Crude Oil Extends Losses: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.2,
+          "publishedAt": "2026-09-20T22:14:48+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-20/us-stock-futures-up-ahead-of-talks-dollar-steady-markets-wrap",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
         {
           "title": "Black Sea Shipping Turmoil Hits Wheat Market, Amplifies Inflation Risks",
           "source": "Bloomberg Markets",
@@ -352,18 +480,6 @@
           ]
         },
         {
-          "title": "Hormuz ‘Cannot Be Obsolete,’ Qatar Energy Minister Says",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-20T17:01:51+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-20/hormuz-cannot-be-obsolete-qatar-energy-minister-says-video",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
           "title": "Fed’s Kashkari Says Inflation Reaching All Corners of US Economy",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
@@ -381,15 +497,15 @@
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0.132,
       "negativeCount": 0,
-      "positiveCount": 0,
+      "positiveCount": 2,
       "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 5,
       "isStale": false,
       "topNegativeTitle": "Black Sea Shipping Turmoil Hits Wheat Market, Amplifies Inflation Risks",
-      "topPositiveTitle": "Black Sea Shipping Turmoil Hits Wheat Market, Amplifies Inflation Risks",
+      "topPositiveTitle": "Trump & Xi to Meet Amidst Friction on Wars, Tech, Trade",
       "items": [
         {
           "title": "Black Sea Shipping Turmoil Hits Wheat Market, Amplifies Inflation Risks",
@@ -432,6 +548,34 @@
             "macro_risk",
             "market",
             "us_broad"
+          ]
+        },
+        {
+          "title": "Trump & Xi to Meet Amidst Friction on Wars, Tech, Trade",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-21T00:50:09+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-21/trump-xi-to-meet-amidst-friction-on-wars-tech-trade-video",
+          "tags": [
+            "geopolitical",
+            "jp_semiconductor",
+            "macro_risk",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "US Diesel Tops $6.50 a Gallon as Wars Worsen Global Fuels Crunch",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-21T00:33:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-21/us-diesel-tops-6-50-a-gallon-as-wars-worsen-global-fuels-crunch",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
           ]
         }
       ]
