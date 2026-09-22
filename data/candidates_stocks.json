@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-stocks-1",
-  "updatedAt": "2026-09-21T08:21:26.573090+09:00",
-  "sourceUpdatedAt": "2026-09-21T08:21:26.573090+09:00",
+  "updatedAt": "2026-09-22T09:13:37.807862+09:00",
+  "sourceUpdatedAt": "2026-09-22T09:13:37.807862+09:00",
   "staleThresholdHours": 48,
   "_meta": {
     "kind": "candidates_stocks",
@@ -15,7 +15,7 @@
       "truncatedCount": 0,
       "failedTotalCount": 0
     },
-    "runToken": "f542ff6c-ee82-4b21-a999-57d7ce8475db",
+    "runToken": "2ed88192-13c0-4bd0-a4a7-f7d6f6b890e7",
     "universeProvenance": {
       "pipelinePath": "normal",
       "jpxSource": "jpx_data_j_xls",
@@ -34,20 +34,20 @@
     "pipelinePath": "normal",
     "fundamentals": {
       "source": "yfinance annual income_stmt/balance_sheet + splits",
-      "fetchedAt": "2026-09-21T08:21:26.573090+09:00",
+      "fetchedAt": "2026-09-22T09:13:37.807862+09:00",
       "statementMaxAgeDays": 456,
       "canonicalPeField": "per",
       "perAuthority": "providerTrailingPE",
       "growthScoringStatus": "reserved_zero_weight",
       "coverage": {
-        "present": 150,
+        "present": 151,
         "stale": 0,
         "missing": 0,
         "negativeBase": 2,
         "splitGuardBlocked": 26,
         "irregularPeriod": 0,
         "rowLabelMissing": 0,
-        "invalid": 22
+        "invalid": 21
       },
       "diagnostics": {
         "profitGrowth": {
@@ -61,10 +61,10 @@
           "enrichFailed": 0
         },
         "epsGrowth": {
-          "available": 152,
+          "available": 153,
           "missing": 0,
           "rowLabelMissing": 0,
-          "invalidNumeric": 20,
+          "invalidNumeric": 19,
           "irregularPeriod": 0,
           "negativeBase": 2,
           "stale": 0,
@@ -72,10 +72,10 @@
           "splitGuardBlocked": 26
         },
         "per": {
-          "available": 158,
+          "available": 159,
           "missing": 0,
           "rowLabelMissing": 0,
-          "invalidNumeric": 12,
+          "invalidNumeric": 11,
           "epsNotPositive": 4,
           "stale": 0,
           "irregularPeriod": 0,
@@ -2153,7 +2153,7 @@
       "per": 9.92,
       "pbr": 0.71,
       "roe": 7.86,
-      "dividendYield": 3.84,
+      "dividendYield": 3.83,
       "sigma252d": 0.2395,
       "mom3m": 17.51,
       "screenReasons": [
@@ -2596,9 +2596,9 @@
       ],
       "dataStatus": "ok",
       "profitGrowth": -31.64,
-      "epsGrowth": null,
+      "epsGrowth": -30.19,
       "fiscalPeriodEnd": "2026-03-31",
-      "fundamentalsStatus": "partial"
+      "fundamentalsStatus": "available"
     },
     {
       "code": "7164",
@@ -3018,7 +3018,7 @@
       "sector": "卸売業",
       "price": 3037.0,
       "per": 19.84,
-      "pbr": 3.91,
+      "pbr": 3.75,
       "roe": 16.63,
       "dividendYield": 1.05,
       "sigma252d": 0.3457,
@@ -3121,7 +3121,7 @@
       "per": 15.58,
       "pbr": 1.23,
       "roe": 10.26,
-      "dividendYield": 2.51,
+      "dividendYield": 2.53,
       "sigma252d": 0.315,
       "mom3m": 53.36,
       "screenReasons": [

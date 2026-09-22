@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-09-22T02:08:25.944111+09:00",
-  "sourceUpdatedAt": "2026-09-21T16:46:35+00:00",
+  "updatedAt": "2026-09-22T09:17:51.815993+09:00",
+  "sourceUpdatedAt": "2026-09-21T23:47:37+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -17,56 +17,28 @@
       "items": []
     },
     "jp_semiconductor": {
-      "avgSentiment": 1.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
-      "positiveCount": 1,
+      "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "AMD Set to Top $1 Trillion in Market Value as Chip Stocks Soar",
-      "topPositiveTitle": "AMD Set to Top $1 Trillion in Market Value as Chip Stocks Soar",
-      "items": [
-        {
-          "title": "AMD Set to Top $1 Trillion in Market Value as Chip Stocks Soar",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-09-21T15:36:44+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-21/amd-set-to-top-1-trillion-in-market-value-as-chip-stocks-soar",
-          "tags": [
-            "jp_semiconductor",
-            "market",
-            "us_growth"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "us_broad": {
-      "avgSentiment": -0.133,
-      "negativeCount": 2,
+      "avgSentiment": -0.048,
+      "negativeCount": 1,
       "positiveCount": 0,
-      "neutralCount": 4,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Gold Edges Lower as Traders Weigh Oil Prices and Fed Rate Path",
-      "topPositiveTitle": "US Stocks Advance Ahead of Trump-Xi Meeting as Oil Slips",
+      "topNegativeTitle": "Outlier Bank of America Sees Two South Africa Rate Hikes in 2026",
+      "topPositiveTitle": "Asian Stocks to Gain on Tech Optimism, Oil Falls: Markets Wrap",
       "items": [
-        {
-          "title": "Gold Edges Lower as Traders Weigh Oil Prices and Fed Rate Path",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-09-20T23:45:47+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-20/gold-steadies-as-traders-weigh-inflation-and-fed-hike-outlook",
-          "tags": [
-            "commodity",
-            "gold",
-            "market",
-            "us_broad"
-          ]
-        },
         {
           "title": "Outlier Bank of America Sees Two South Africa Rate Hikes in 2026",
           "source": "Bloomberg Economics",
@@ -83,13 +55,14 @@
           ]
         },
         {
-          "title": "USTR Jameison Greer lays the groundwork for upcoming Trump-Xi summit",
-          "source": "Bloomberg Markets",
+          "title": "Most Firms Keep Cash From Tariff Refunds, Fed Study Finds",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-21T14:57:03+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-21/bloomberg-surveillance-9-21-2026-video",
+          "publishedAt": "2026-09-21T20:10:19+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-21/most-firms-keep-cash-from-tariff-refunds-fed-study-finds",
           "tags": [
+            "macro_risk",
             "market",
             "us_broad"
           ]
@@ -107,30 +80,32 @@
           ]
         },
         {
-          "title": "AI Boom Is Making Diversifying Investments Tough for Wall Street",
+          "title": "Asian Stocks to Gain on Tech Optimism, Oil Falls: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-20T21:00:01+00:00",
-          "url": "https://www.bloomberg.com/news/features/2026-09-20/ai-boom-is-making-diversifying-investments-tough-for-wall-street",
+          "sentimentScore": 0.14,
+          "publishedAt": "2026-09-21T22:18:13+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-21/stock-market-today-dow-s-p-live-updates",
           "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
             "market",
-            "us_broad",
-            "us_growth"
+            "us_broad"
           ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.357,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 4,
+      "positiveCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
       "topNegativeTitle": "BOE’s Breeden Says Time Running Out to Stop AI Crashing Markets",
-      "topPositiveTitle": "AMD Set to Top $1 Trillion in Market Value as Chip Stocks Soar",
+      "topPositiveTitle": "BOE’s Breeden Says Time Running Out to Stop AI Crashing Markets",
       "items": [
         {
           "title": "BOE’s Breeden Says Time Running Out to Stop AI Crashing Markets",
@@ -140,44 +115,6 @@
           "publishedAt": "2026-09-21T15:55:22+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-21/boe-s-breeden-says-time-running-out-to-stop-ai-crashing-markets",
           "tags": [
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "AI Boom Is Making Diversifying Investments Tough for Wall Street",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-20T21:00:01+00:00",
-          "url": "https://www.bloomberg.com/news/features/2026-09-20/ai-boom-is-making-diversifying-investments-tough-for-wall-street",
-          "tags": [
-            "market",
-            "us_broad",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Accenture Up on Partnership with Anthropic; Novo Nordisk Falls on Turnaround | Stock Movers",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.43,
-          "publishedAt": "2026-09-21T14:49:08+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-21/accenture-anthropic-partnership-novo-nordisk-falls-video",
-          "tags": [
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "AMD Set to Top $1 Trillion in Market Value as Chip Stocks Soar",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-09-21T15:36:44+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-21/amd-set-to-top-1-trillion-in-market-value-as-chip-stocks-soar",
-          "tags": [
-            "jp_semiconductor",
             "market",
             "us_growth"
           ]
@@ -197,31 +134,16 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": -0.67,
-      "negativeCount": 1,
+      "avgSentiment": 0,
+      "negativeCount": 0,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Gold Edges Lower as Traders Weigh Oil Prices and Fed Rate Path",
-      "topPositiveTitle": "Gold Edges Lower as Traders Weigh Oil Prices and Fed Rate Path",
-      "items": [
-        {
-          "title": "Gold Edges Lower as Traders Weigh Oil Prices and Fed Rate Path",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-09-20T23:45:47+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-20/gold-steadies-as-traders-weigh-inflation-and-fed-hike-outlook",
-          "tags": [
-            "commodity",
-            "gold",
-            "market",
-            "us_broad"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "reit": {
       "avgSentiment": 0,
@@ -248,30 +170,16 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.107,
-      "negativeCount": 6,
-      "positiveCount": 2,
-      "neutralCount": 2,
+      "avgSentiment": 0.019,
+      "negativeCount": 2,
+      "positiveCount": 1,
+      "neutralCount": 5,
       "sourceCount": 2,
-      "itemCount": 10,
+      "itemCount": 8,
       "isStale": false,
-      "topNegativeTitle": "Latest Oil Market News and Analysis for Sept. 21",
+      "topNegativeTitle": "Outlier Bank of America Sees Two South Africa Rate Hikes in 2026",
       "topPositiveTitle": "Key African Central Banks Set to Keep High Rates as Buffer Against Shocks",
       "items": [
-        {
-          "title": "Latest Oil Market News and Analysis for Sept. 21",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.5,
-          "publishedAt": "2026-09-20T22:05:05+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-20/latest-oil-market-news-and-analysis-for-sept-21",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
         {
           "title": "Outlier Bank of America Sees Two South Africa Rate Hikes in 2026",
           "source": "Bloomberg Economics",
@@ -288,7 +196,7 @@
           ]
         },
         {
-          "title": "Qatar’s First Public Bond Sale This Year Draws $7.7 Billion",
+          "title": "Qatar Raises $3 Billion in First Public Bond Sale This Year",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.33,
@@ -301,24 +209,39 @@
           ]
         },
         {
-          "title": "Turkey Freezes Fund Executives’ Assets in Redemption Crisis",
+          "title": "US Plans $5 Billion Middle East Reconstruction Fund for Iran War",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-21T07:13:20+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-21/turkey-freezes-assets-of-fund-executives-in-redemption-crisis",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-21T22:13:10+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-21/us-plans-5-billion-middle-east-reconstruction-fund-for-iran-war",
           "tags": [
+            "geopolitical",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Stocks, Bonds Climb as Oil Falls on US-Iran Hopes: Markets Wrap",
+          "title": "Latest Oil Market News and Analysis for Sept. 22",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-20T22:14:48+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-20/us-stock-futures-up-ahead-of-talks-dollar-steady-markets-wrap",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-21T22:04:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-21/latest-oil-market-news-and-analysis-for-sept-22",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Oil Settles Near $100 as Hormuz Flows Stunt Rally",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-21T21:42:00+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-21/oil-settles-near-100-as-hormuz-flows-stunt-rally-video",
           "tags": [
             "commodity",
             "geopolitical",
@@ -393,44 +316,16 @@
       ]
     },
     "commodity": {
-      "avgSentiment": -0.08,
-      "negativeCount": 5,
+      "avgSentiment": 0.144,
+      "negativeCount": 1,
       "positiveCount": 2,
-      "neutralCount": 4,
+      "neutralCount": 5,
       "sourceCount": 3,
-      "itemCount": 11,
+      "itemCount": 8,
       "isStale": false,
-      "topNegativeTitle": "Gold Edges Lower as Traders Weigh Oil Prices and Fed Rate Path",
-      "topPositiveTitle": "Key African Central Banks Set to Keep High Rates as Buffer Against Shocks",
+      "topNegativeTitle": "Outlier Bank of America Sees Two South Africa Rate Hikes in 2026",
+      "topPositiveTitle": "Macron and Trump Discuss Kyiv and Moscow Halting Energy Strikes",
       "items": [
-        {
-          "title": "Gold Edges Lower as Traders Weigh Oil Prices and Fed Rate Path",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-09-20T23:45:47+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-20/gold-steadies-as-traders-weigh-inflation-and-fed-hike-outlook",
-          "tags": [
-            "commodity",
-            "gold",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Latest Oil Market News and Analysis for Sept. 21",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.5,
-          "publishedAt": "2026-09-20T22:05:05+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-20/latest-oil-market-news-and-analysis-for-sept-21",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
         {
           "title": "Outlier Bank of America Sees Two South Africa Rate Hikes in 2026",
           "source": "Bloomberg Economics",
@@ -447,12 +342,12 @@
           ]
         },
         {
-          "title": "Stocks, Bonds Climb as Oil Falls on US-Iran Hopes: Markets Wrap",
+          "title": "Latest Oil Market News and Analysis for Sept. 22",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-20T22:14:48+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-20/us-stock-futures-up-ahead-of-talks-dollar-steady-markets-wrap",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-21T22:04:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-21/latest-oil-market-news-and-analysis-for-sept-22",
           "tags": [
             "commodity",
             "geopolitical",
@@ -461,46 +356,58 @@
           ]
         },
         {
-          "title": "Oil Drops Below $100 With Focus on Hormuz Flows, Diplomacy",
+          "title": "Oil Settles Near $100 as Hormuz Flows Stunt Rally",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.25,
-          "publishedAt": "2026-09-21T16:44:00+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-21/oil-drops-below-100-with-focus-on-hormuz-flows-video",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-21T21:42:00+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-21/oil-settles-near-100-as-hormuz-flows-stunt-rally-video",
           "tags": [
             "commodity",
             "geopolitical",
             "macro_risk",
             "market"
           ]
+        },
+        {
+          "title": "高市首相 国連総会出席で米に出発 国連演説で日本の決意表明",
+          "source": "NHK 経済",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-21T15:08:58+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20260922de51763",
+          "tags": [
+            "commodity",
+            "market"
+          ],
+          "titleJa": "高市首相 国連総会出席で米に出発 国連演説で日本の決意表明"
+        },
+        {
+          "title": "高市首相 国連総会の演説で中東エネルギー協力計画策定表明へ",
+          "source": "NHK 経済",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-20T20:10:15+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20260921de51459",
+          "tags": [
+            "commodity",
+            "market"
+          ],
+          "titleJa": "高市首相 国連総会の演説で中東エネルギー協力計画策定表明へ"
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": -0.062,
-      "negativeCount": 5,
+      "avgSentiment": 0.082,
+      "negativeCount": 2,
       "positiveCount": 2,
-      "neutralCount": 5,
+      "neutralCount": 6,
       "sourceCount": 3,
-      "itemCount": 12,
+      "itemCount": 10,
       "isStale": false,
-      "topNegativeTitle": "Latest Oil Market News and Analysis for Sept. 21",
-      "topPositiveTitle": "Key African Central Banks Set to Keep High Rates as Buffer Against Shocks",
+      "topNegativeTitle": "Outlier Bank of America Sees Two South Africa Rate Hikes in 2026",
+      "topPositiveTitle": "Macron and Trump Discuss Kyiv and Moscow Halting Energy Strikes",
       "items": [
-        {
-          "title": "Latest Oil Market News and Analysis for Sept. 21",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.5,
-          "publishedAt": "2026-09-20T22:05:05+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-20/latest-oil-market-news-and-analysis-for-sept-21",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
         {
           "title": "Outlier Bank of America Sees Two South Africa Rate Hikes in 2026",
           "source": "Bloomberg Economics",
@@ -517,7 +424,7 @@
           ]
         },
         {
-          "title": "Qatar’s First Public Bond Sale This Year Draws $7.7 Billion",
+          "title": "Qatar Raises $3 Billion in First Public Bond Sale This Year",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.33,
@@ -530,12 +437,25 @@
           ]
         },
         {
-          "title": "Stocks, Bonds Climb as Oil Falls on US-Iran Hopes: Markets Wrap",
+          "title": "US Plans $5 Billion Middle East Reconstruction Fund for Iran War",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-20T22:14:48+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-20/us-stock-futures-up-ahead-of-talks-dollar-steady-markets-wrap",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-21T22:13:10+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-21/us-plans-5-billion-middle-east-reconstruction-fund-for-iran-war",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Latest Oil Market News and Analysis for Sept. 22",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-21T22:04:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-21/latest-oil-market-news-and-analysis-for-sept-22",
           "tags": [
             "commodity",
             "geopolitical",
@@ -544,12 +464,12 @@
           ]
         },
         {
-          "title": "Oil Drops Below $100 With Focus on Hormuz Flows, Diplomacy",
+          "title": "Oil Settles Near $100 as Hormuz Flows Stunt Rally",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.25,
-          "publishedAt": "2026-09-21T16:44:00+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-21/oil-drops-below-100-with-focus-on-hormuz-flows-video",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-21T21:42:00+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-21/oil-settles-near-100-as-hormuz-flows-stunt-rally-video",
           "tags": [
             "commodity",
             "geopolitical",
