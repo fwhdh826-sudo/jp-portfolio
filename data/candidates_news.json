@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-09-22T17:42:41.526439+09:00",
-  "sourceUpdatedAt": "2026-09-22T08:09:00+00:00",
+  "updatedAt": "2026-09-23T00:34:30.999797+09:00",
+  "sourceUpdatedAt": "2026-09-22T15:18:09+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -31,23 +31,36 @@
       ]
     },
     "jp_semiconductor": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 1,
+      "avgSentiment": -0.085,
+      "negativeCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 0,
       "sourceCount": 1,
-      "itemCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Silicon Data CEO Li on AI Race and Tokenomics",
-      "topPositiveTitle": "Silicon Data CEO Li on AI Race and Tokenomics",
+      "topNegativeTitle": "Nvidia’s Stock Is Flashing a Warning Sign as Valuation Falls",
+      "topPositiveTitle": "Alibaba Higher on Chip News; On Holdings Football Move | Stock Movers",
       "items": [
         {
-          "title": "Silicon Data CEO Li on AI Race and Tokenomics",
+          "title": "Nvidia’s Stock Is Flashing a Warning Sign as Valuation Falls",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-22T04:55:34+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-22/silicon-data-ceo-li-on-ai-race-and-tokenomics-video",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-09-22T09:28:02+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-22/nvidia-s-stock-is-flashing-a-warning-sign-as-valuation-falls",
+          "tags": [
+            "jp_semiconductor",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Alibaba Higher on Chip News; On Holdings Football Move | Stock Movers",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.5,
+          "publishedAt": "2026-09-22T14:51:45+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-22/alibaba-higher-on-chip-news-on-holdings-football-move-video",
           "tags": [
             "jp_semiconductor",
             "market"
@@ -56,36 +69,75 @@
       ]
     },
     "us_broad": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 2,
+      "avgSentiment": -0.041,
+      "negativeCount": 3,
+      "positiveCount": 2,
+      "neutralCount": 3,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 8,
       "isStale": false,
-      "topNegativeTitle": "Most Firms Keep Cash From Tariff Refunds, Fed Study Finds",
-      "topPositiveTitle": "Most Firms Keep Cash From Tariff Refunds, Fed Study Finds",
+      "topNegativeTitle": "Gold Pares Losses as Traders Track Oil Moves for Fed Rate Clues",
+      "topPositiveTitle": "Short-End Treasuries Become Popular Bet on Fed Inflation Win",
       "items": [
         {
-          "title": "Most Firms Keep Cash From Tariff Refunds, Fed Study Finds",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-21T20:10:19+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-21/most-firms-keep-cash-from-tariff-refunds-fed-study-finds",
+          "title": "Gold Pares Losses as Traders Track Oil Moves for Fed Rate Clues",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-09-22T00:26:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-22/gold-edges-higher-as-lower-oil-prices-damp-chance-of-rate-hikes",
           "tags": [
-            "macro_risk",
+            "commodity",
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Netflix (NFLX) Hit With Second Downgrade in a Week Over Content, YouTube Threat",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-22T14:27:47+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-22/netflix-nflx-hit-with-second-downgrade-in-a-week-over-content-youtube-threat",
+          "tags": [
             "market",
             "us_broad"
           ]
         },
         {
-          "title": "Fed’s Goolsbee Says Road to 2% Inflation May Not Be Painless",
-          "source": "Bloomberg Economics",
+          "title": "Fed’s Collins Says Rate Hike Will Help Reach Inflation Goal",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-22T14:10:34+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-22/fed-s-collins-says-rate-hike-will-help-return-inflation-to-goal",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Fed's Williams Says Shift to Central Clearing Ahead of Schedule",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-21T10:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-21/fed-s-goolsbee-says-road-to-2-inflation-may-not-be-painless",
+          "publishedAt": "2026-09-22T15:08:29+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-22/fed-s-williams-treasuries-clearing-ahead-of-schedule-video",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Fed’s Williams Says Treasuries Clearing Moving Ahead of Schedule",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-22T14:05:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-22/fed-s-williams-says-treasuries-clearing-moving-ahead-of-schedule",
           "tags": [
             "market",
             "us_broad"
@@ -94,44 +146,44 @@
       ]
     },
     "us_growth": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
+      "avgSentiment": 0.165,
+      "negativeCount": 1,
+      "positiveCount": 1,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "global_broad": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Saudi Boosts Hormuz Oil Exports; AI Trade Roars Back, $12B Maldives Property Deal",
-      "topPositiveTitle": "Saudi Boosts Hormuz Oil Exports; AI Trade Roars Back, $12B Maldives Property Deal",
+      "topNegativeTitle": "Nvidia’s Stock Is Flashing a Warning Sign as Valuation Falls",
+      "topPositiveTitle": "Nasdaq 100 Eyes First Record Since June as AI Euphoria Resumes",
       "items": [
         {
-          "title": "Saudi Boosts Hormuz Oil Exports; AI Trade Roars Back, $12B Maldives Property Deal",
+          "title": "Nvidia’s Stock Is Flashing a Warning Sign as Valuation Falls",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-22T06:37:29+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-22/horizons-middle-east-africa-9-22-2026-video",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-09-22T09:28:02+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-22/nvidia-s-stock-is-flashing-a-warning-sign-as-valuation-falls",
           "tags": [
-            "commodity",
-            "global_broad",
-            "market"
+            "jp_semiconductor",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Nasdaq 100 Eyes First Record Since June as AI Euphoria Resumes",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-09-22T12:29:15+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-22/us-stock-futures-drift-after-ai-driven-rally-oil-prices-slip",
+          "tags": [
+            "market",
+            "us_growth"
           ]
         }
       ]
     },
-    "gold": {
+    "global_broad": {
       "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
@@ -142,6 +194,34 @@
       "topNegativeTitle": null,
       "topPositiveTitle": null,
       "items": []
+    },
+    "gold": {
+      "avgSentiment": -0.67,
+      "negativeCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "Gold Pares Losses as Traders Track Oil Moves for Fed Rate Clues",
+      "topPositiveTitle": "Gold Pares Losses as Traders Track Oil Moves for Fed Rate Clues",
+      "items": [
+        {
+          "title": "Gold Pares Losses as Traders Track Oil Moves for Fed Rate Clues",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-09-22T00:26:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-22/gold-edges-higher-as-lower-oil-prices-damp-chance-of-rate-hikes",
+          "tags": [
+            "commodity",
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        }
+      ]
     },
     "reit": {
       "avgSentiment": 0,
@@ -168,15 +248,15 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.14,
+      "avgSentiment": -0.066,
       "negativeCount": 1,
-      "positiveCount": 2,
-      "neutralCount": 3,
+      "positiveCount": 0,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 5,
       "isStale": false,
       "topNegativeTitle": "Qatar Sells $3 Billion in Bonds as War Sends Deficit Soaring",
-      "topPositiveTitle": "Tech Rally Fizzles as Rising Oil Flags Macro Risks: Markets Wrap",
+      "topPositiveTitle": "Russian Oil Flows Dip as US Sanctions, Saudi Supplies Loom",
       "items": [
         {
           "title": "Qatar Sells $3 Billion in Bonds as War Sends Deficit Soaring",
@@ -192,52 +272,52 @@
           ]
         },
         {
-          "title": "Turkish Fund Exodus Flowing Into Lira Deposits, Goldman Says",
+          "title": "Russian Oil Flows Dip as US Sanctions, Saudi Supplies Loom",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-22T08:09:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-22/turkish-fund-exodus-flowing-into-lira-deposits-goldman-says",
+          "publishedAt": "2026-09-22T15:03:13+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-22/russian-oil-flows-dip-as-us-sanctions-saudi-supplies-loom",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Big Take: How Much Is the Hormuz Blockade Costing the US?",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-22T13:58:24+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-22/how-much-is-the-hormuz-blockade-costing-the-us-video",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Here’s What’s Happening to the Billions of Dollars of US Tariff Refunds",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-22T11:00:01+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-09-22/here-s-what-s-happening-to-the-billions-of-dollars-of-us-tariff-refunds",
           "tags": [
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Stock at Heart of Turkish Fund Crisis Ejected From Top Indexes",
+          "title": "Stock at Heart of Turkish Fund Crisis Ejected From Indexes",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
           "publishedAt": "2026-09-22T06:01:30+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-22/stock-at-heart-of-turkish-fund-crisis-ejected-from-top-indexes",
           "tags": [
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Most Firms Keep Cash From Tariff Refunds, Fed Study Finds",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-21T20:10:19+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-21/most-firms-keep-cash-from-tariff-refunds-fed-study-finds",
-          "tags": [
-            "macro_risk",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Latest Oil Market News and Analysis for Sept. 22",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.5,
-          "publishedAt": "2026-09-21T22:04:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-21/latest-oil-market-news-and-analysis-for-sept-22",
-          "tags": [
-            "commodity",
-            "geopolitical",
             "macro_risk",
             "market"
           ]
@@ -257,23 +337,64 @@
       "items": []
     },
     "rates": {
-      "avgSentiment": 0.2,
-      "negativeCount": 1,
-      "positiveCount": 2,
-      "neutralCount": 2,
-      "sourceCount": 1,
-      "itemCount": 5,
+      "avgSentiment": 0.084,
+      "negativeCount": 2,
+      "positiveCount": 3,
+      "neutralCount": 3,
+      "sourceCount": 2,
+      "itemCount": 8,
       "isStale": false,
-      "topNegativeTitle": "Macklem Flags Risk of Delaying Rate Hike Too Long",
-      "topPositiveTitle": "RBNZ Warns Near-Term Inflation May Beat Estimates as Oil Surges",
+      "topNegativeTitle": "Gold Pares Losses as Traders Track Oil Moves for Fed Rate Clues",
+      "topPositiveTitle": "Short-End Treasuries Become Popular Bet on Fed Inflation Win",
       "items": [
         {
-          "title": "Macklem Flags Risk of Delaying Rate Hike Too Long",
-          "source": "Bloomberg Economics",
+          "title": "Gold Pares Losses as Traders Track Oil Moves for Fed Rate Clues",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-09-22T00:26:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-22/gold-edges-higher-as-lower-oil-prices-damp-chance-of-rate-hikes",
+          "tags": [
+            "commodity",
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Fed’s Collins Says Rate Hike Will Help Reach Inflation Goal",
+          "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-09-21T15:05:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-21/macklem-flags-risk-of-delaying-rate-hike-too-long",
+          "publishedAt": "2026-09-22T14:10:34+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-22/fed-s-collins-says-rate-hike-will-help-return-inflation-to-goal",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Pimco Trims Underweight on Long US Bonds as Yields Top 5%",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-22T14:04:12+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-22/pimco-trims-underweight-on-long-us-bonds-as-yields-top-5",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Container shipping rates",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-22T11:00:01+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-09-22/container-shipping-rates",
           "tags": [
             "market",
             "rates"
@@ -291,59 +412,49 @@
             "market",
             "rates"
           ]
-        },
-        {
-          "title": "RBA Set to Hike Rates Next Week as Energy Costs Spiral, BE Says",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-22T01:20:35+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-22/rba-set-to-hike-rates-next-week-as-energy-costs-spiral-be-says",
-          "tags": [
-            "commodity",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "BofA at Odds With Barclays on Nigeria Rate Path: Decision Guide",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-22T04:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-22/bofa-at-odds-with-barclays-on-nigeria-rate-path-decision-guide",
-          "tags": [
-            "commodity",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "RBNZ Warns Near-Term Inflation May Beat Estimates as Oil Surges",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-09-22T03:39:02+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-22/rbnz-warns-near-term-inflation-may-beat-estimates-as-oil-surges",
-          "tags": [
-            "commodity",
-            "market",
-            "rates"
-          ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.208,
-      "negativeCount": 0,
-      "positiveCount": 4,
-      "neutralCount": 8,
+      "avgSentiment": -0.001,
+      "negativeCount": 1,
+      "positiveCount": 2,
+      "neutralCount": 5,
       "sourceCount": 3,
-      "itemCount": 12,
+      "itemCount": 8,
       "isStale": false,
-      "topNegativeTitle": "Barclays Sees Senegal Deficit Widening to 9% as Debt Talks Begin",
-      "topPositiveTitle": "RBNZ Warns Near-Term Inflation May Beat Estimates as Oil Surges",
+      "topNegativeTitle": "Gold Pares Losses as Traders Track Oil Moves for Fed Rate Clues",
+      "topPositiveTitle": "BofA at Odds With Barclays on Nigeria Rate Path: Decision Guide",
       "items": [
+        {
+          "title": "Gold Pares Losses as Traders Track Oil Moves for Fed Rate Clues",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-09-22T00:26:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-22/gold-edges-higher-as-lower-oil-prices-damp-chance-of-rate-hikes",
+          "tags": [
+            "commodity",
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Russian Oil Flows Dip as US Sanctions, Saudi Supplies Loom",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-22T15:03:13+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-22/russian-oil-flows-dip-as-us-sanctions-saudi-supplies-loom",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
         {
           "title": "Barclays Sees Senegal Deficit Widening to 9% as Debt Talks Begin",
           "source": "Bloomberg Economics",
@@ -357,49 +468,24 @@
           ]
         },
         {
-          "title": "Oil Dictating All Assets Over Short-Term: Market Analysis",
-          "source": "Bloomberg Markets",
+          "title": "ECB’s Lane Says New Energy Shock to Lead to Longer Inflation",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-22T07:04:09+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-22/oil-dictating-all-assets-over-short-term-3-minutes-mliv-video",
+          "publishedAt": "2026-09-22T04:41:34+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-22/ecb-s-lane-says-new-energy-shock-to-lead-to-longer-inflation",
           "tags": [
             "commodity",
             "market"
           ]
         },
         {
-          "title": "Saudi Boosts Hormuz Oil Exports; AI Trade Roars Back, $12B Maldives Property Deal",
+          "title": "Latest Oil Market News and Analysis for Sept. 22",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-22T06:37:29+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-22/horizons-middle-east-africa-9-22-2026-video",
-          "tags": [
-            "commodity",
-            "global_broad",
-            "market"
-          ]
-        },
-        {
-          "title": "Saudis Tell Asian Refiners They Can Soon Pick Up Oil on Red Sea",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-22T06:05:33+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-22/saudis-tell-asian-refiners-they-can-soon-pick-up-oil-from-yanbu",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "Bonds Sink as Oil Extends Further Above $100",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-22T05:45:25+00:00",
-          "url": "https://www.bloomberg.com/news/live-blog/2026-09-22/ftse-100-stocks-oil-price-gilts-pound-what-s-moving-uk-markets-right-now-markets-today",
+          "publishedAt": "2026-09-21T22:04:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-21/latest-oil-market-news-and-analysis-for-sept-22",
           "tags": [
             "commodity",
             "market"
@@ -408,15 +494,15 @@
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.12,
+      "avgSentiment": -0.055,
       "negativeCount": 1,
-      "positiveCount": 2,
-      "neutralCount": 4,
+      "positiveCount": 0,
+      "neutralCount": 5,
       "sourceCount": 3,
-      "itemCount": 7,
+      "itemCount": 6,
       "isStale": false,
       "topNegativeTitle": "Qatar Sells $3 Billion in Bonds as War Sends Deficit Soaring",
-      "topPositiveTitle": "Tech Rally Fizzles as Rising Oil Flags Macro Risks: Markets Wrap",
+      "topPositiveTitle": "Russian Oil Flows Dip as US Sanctions, Saudi Supplies Loom",
       "items": [
         {
           "title": "Qatar Sells $3 Billion in Bonds as War Sends Deficit Soaring",
@@ -432,14 +518,29 @@
           ]
         },
         {
-          "title": "Pakistan, Iran Discuss Regional Peace as US Talks Remain Stalled",
+          "title": "Russian Oil Flows Dip as US Sanctions, Saudi Supplies Loom",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-22T06:43:03+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-22/pakistan-iran-discuss-regional-peace-as-us-talks-remain-stalled",
+          "publishedAt": "2026-09-22T15:03:13+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-22/russian-oil-flows-dip-as-us-sanctions-saudi-supplies-loom",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Big Take: How Much Is the Hormuz Blockade Costing the US?",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-22T13:58:24+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-22/how-much-is-the-hormuz-blockade-costing-the-us-video",
           "tags": [
             "geopolitical",
+            "macro_risk",
             "market"
           ]
         },
@@ -448,7 +549,7 @@
           "source": "NHK 経済",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-22T07:05:52+00:00",
+          "publishedAt": "2026-09-22T07:05:00+00:00",
           "url": "https://news.web.nhk/newsweb/na/nd-20260922de51851",
           "tags": [
             "geopolitical",
@@ -468,19 +569,6 @@
             "market"
           ],
           "titleJa": "国民 玉木代表 ウクライナを訪問 政府高官らと会談"
-        },
-        {
-          "title": "ウクライナ 森衆院議長に北朝鮮製ミサイル部品を公開",
-          "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-21T13:24:14+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20260921de51739",
-          "tags": [
-            "geopolitical",
-            "market"
-          ],
-          "titleJa": "ウクライナ 森衆院議長に北朝鮮製ミサイル部品を公開"
         }
       ]
     }
