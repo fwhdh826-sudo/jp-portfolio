@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-09-22T09:17:51.815993+09:00",
-  "sourceUpdatedAt": "2026-09-21T23:47:37+00:00",
+  "updatedAt": "2026-09-22T10:42:01.478897+09:00",
+  "sourceUpdatedAt": "2026-09-22T01:32:39+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -29,16 +29,30 @@
       "items": []
     },
     "us_broad": {
-      "avgSentiment": -0.048,
-      "negativeCount": 1,
-      "positiveCount": 0,
-      "neutralCount": 3,
+      "avgSentiment": -0.0,
+      "negativeCount": 2,
+      "positiveCount": 1,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Outlier Bank of America Sees Two South Africa Rate Hikes in 2026",
-      "topPositiveTitle": "Asian Stocks to Gain on Tech Optimism, Oil Falls: Markets Wrap",
+      "topNegativeTitle": "Gold Edges Higher as Lower Oil Prices Damp Chance of Rate Hikes",
+      "topPositiveTitle": "Asian Stocks Rally After Tech Powers Wall Street: Markets Wrap",
       "items": [
+        {
+          "title": "Gold Edges Higher as Lower Oil Prices Damp Chance of Rate Hikes",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-09-22T00:26:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-22/gold-edges-higher-as-lower-oil-prices-damp-chance-of-rate-hikes",
+          "tags": [
+            "commodity",
+            "gold",
+            "market",
+            "us_broad"
+          ]
+        },
         {
           "title": "Outlier Bank of America Sees Two South Africa Rate Hikes in 2026",
           "source": "Bloomberg Economics",
@@ -80,32 +94,30 @@
           ]
         },
         {
-          "title": "Asian Stocks to Gain on Tech Optimism, Oil Falls: Markets Wrap",
+          "title": "Asian Stocks Rally After Tech Powers Wall Street: Markets Wrap",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.14,
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
           "publishedAt": "2026-09-21T22:18:13+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-21/stock-market-today-dow-s-p-live-updates",
           "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
             "market",
-            "us_broad"
+            "us_broad",
+            "us_growth"
           ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0.5,
       "negativeCount": 0,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 2,
+      "itemCount": 2,
       "isStale": false,
       "topNegativeTitle": "BOE’s Breeden Says Time Running Out to Stop AI Crashing Markets",
-      "topPositiveTitle": "BOE’s Breeden Says Time Running Out to Stop AI Crashing Markets",
+      "topPositiveTitle": "Asian Stocks Rally After Tech Powers Wall Street: Markets Wrap",
       "items": [
         {
           "title": "BOE’s Breeden Says Time Running Out to Stop AI Crashing Markets",
@@ -116,6 +128,19 @@
           "url": "https://www.bloomberg.com/news/articles/2026-09-21/boe-s-breeden-says-time-running-out-to-stop-ai-crashing-markets",
           "tags": [
             "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Asian Stocks Rally After Tech Powers Wall Street: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-09-21T22:18:13+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-21/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "market",
+            "us_broad",
             "us_growth"
           ]
         }
@@ -134,16 +159,31 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
+      "avgSentiment": -0.67,
+      "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Gold Edges Higher as Lower Oil Prices Damp Chance of Rate Hikes",
+      "topPositiveTitle": "Gold Edges Higher as Lower Oil Prices Damp Chance of Rate Hikes",
+      "items": [
+        {
+          "title": "Gold Edges Higher as Lower Oil Prices Damp Chance of Rate Hikes",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-09-22T00:26:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-22/gold-edges-higher-as-lower-oil-prices-damp-chance-of-rate-hikes",
+          "tags": [
+            "commodity",
+            "gold",
+            "market",
+            "us_broad"
+          ]
+        }
+      ]
     },
     "reit": {
       "avgSentiment": 0,
@@ -170,12 +210,12 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.019,
+      "avgSentiment": 0.001,
       "negativeCount": 2,
       "positiveCount": 1,
-      "neutralCount": 5,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 8,
+      "itemCount": 7,
       "isStale": false,
       "topNegativeTitle": "Outlier Bank of America Sees Two South Africa Rate Hikes in 2026",
       "topPositiveTitle": "Key African Central Banks Set to Keep High Rates as Buffer Against Shocks",
@@ -264,12 +304,12 @@
       "items": []
     },
     "rates": {
-      "avgSentiment": 0.113,
+      "avgSentiment": 0.085,
       "negativeCount": 1,
       "positiveCount": 1,
-      "neutralCount": 1,
+      "neutralCount": 2,
       "sourceCount": 1,
-      "itemCount": 3,
+      "itemCount": 4,
       "isStale": false,
       "topNegativeTitle": "Macklem Flags Risk of Delaying Rate Hike Too Long",
       "topPositiveTitle": "Key African Central Banks Set to Keep High Rates as Buffer Against Shocks",
@@ -282,6 +322,19 @@
           "publishedAt": "2026-09-21T15:05:00+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-21/macklem-flags-risk-of-delaying-rate-hike-too-long",
           "tags": [
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "RBA Set to Hike Rates Next Week as Energy Costs Spiral, BE Says",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-22T01:20:35+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-22/rba-set-to-hike-rates-next-week-as-energy-costs-spiral-be-says",
+          "tags": [
+            "commodity",
             "market",
             "rates"
           ]
@@ -316,16 +369,30 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.144,
-      "negativeCount": 1,
+      "avgSentiment": 0.038,
+      "negativeCount": 2,
       "positiveCount": 2,
       "neutralCount": 5,
       "sourceCount": 3,
-      "itemCount": 8,
+      "itemCount": 9,
       "isStale": false,
-      "topNegativeTitle": "Outlier Bank of America Sees Two South Africa Rate Hikes in 2026",
+      "topNegativeTitle": "Gold Edges Higher as Lower Oil Prices Damp Chance of Rate Hikes",
       "topPositiveTitle": "Macron and Trump Discuss Kyiv and Moscow Halting Energy Strikes",
       "items": [
+        {
+          "title": "Gold Edges Higher as Lower Oil Prices Damp Chance of Rate Hikes",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-09-22T00:26:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-22/gold-edges-higher-as-lower-oil-prices-damp-chance-of-rate-hikes",
+          "tags": [
+            "commodity",
+            "gold",
+            "market",
+            "us_broad"
+          ]
+        },
         {
           "title": "Outlier Bank of America Sees Two South Africa Rate Hikes in 2026",
           "source": "Bloomberg Economics",
@@ -339,6 +406,19 @@
             "macro_risk",
             "market",
             "us_broad"
+          ]
+        },
+        {
+          "title": "RBA Set to Hike Rates Next Week as Energy Costs Spiral, BE Says",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-22T01:20:35+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-22/rba-set-to-hike-rates-next-week-as-energy-costs-spiral-be-says",
+          "tags": [
+            "commodity",
+            "market",
+            "rates"
           ]
         },
         {
@@ -368,42 +448,16 @@
             "macro_risk",
             "market"
           ]
-        },
-        {
-          "title": "高市首相 国連総会出席で米に出発 国連演説で日本の決意表明",
-          "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-21T15:08:58+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20260922de51763",
-          "tags": [
-            "commodity",
-            "market"
-          ],
-          "titleJa": "高市首相 国連総会出席で米に出発 国連演説で日本の決意表明"
-        },
-        {
-          "title": "高市首相 国連総会の演説で中東エネルギー協力計画策定表明へ",
-          "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-20T20:10:15+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20260921de51459",
-          "tags": [
-            "commodity",
-            "market"
-          ],
-          "titleJa": "高市首相 国連総会の演説で中東エネルギー協力計画策定表明へ"
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.082,
+      "avgSentiment": 0.076,
       "negativeCount": 2,
       "positiveCount": 2,
-      "neutralCount": 6,
+      "neutralCount": 5,
       "sourceCount": 3,
-      "itemCount": 10,
+      "itemCount": 9,
       "isStale": false,
       "topNegativeTitle": "Outlier Bank of America Sees Two South Africa Rate Hikes in 2026",
       "topPositiveTitle": "Macron and Trump Discuss Kyiv and Moscow Halting Energy Strikes",
