@@ -1,73 +1,71 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-09-22T10:42:01.478897+09:00",
-  "sourceUpdatedAt": "2026-09-22T01:32:39+00:00",
+  "updatedAt": "2026-09-22T17:42:41.526439+09:00",
+  "sourceUpdatedAt": "2026-09-22T08:09:00+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "jp_semiconductor": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "us_broad": {
-      "avgSentiment": -0.0,
-      "negativeCount": 2,
-      "positiveCount": 1,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 5,
-      "isStale": false,
-      "topNegativeTitle": "Gold Edges Higher as Lower Oil Prices Damp Chance of Rate Hikes",
-      "topPositiveTitle": "Asian Stocks Rally After Tech Powers Wall Street: Markets Wrap",
+      "topNegativeTitle": "What’s Next for Japan After It Hiked Rates Following Pressure From US?: Live Q&A",
+      "topPositiveTitle": "What’s Next for Japan After It Hiked Rates Following Pressure From US?: Live Q&A",
       "items": [
         {
-          "title": "Gold Edges Higher as Lower Oil Prices Damp Chance of Rate Hikes",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-09-22T00:26:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-22/gold-edges-higher-as-lower-oil-prices-damp-chance-of-rate-hikes",
-          "tags": [
-            "commodity",
-            "gold",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Outlier Bank of America Sees Two South Africa Rate Hikes in 2026",
+          "title": "What’s Next for Japan After It Hiked Rates Following Pressure From US?: Live Q&A",
           "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-21T13:26:37+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-21/outlier-bank-of-america-sees-two-south-africa-rate-hikes-in-2026",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-22T04:43:46+00:00",
+          "url": "https://www.bloomberg.com/sessions/2026-09-23/live-q-amp-a-what-s-next-after-japan-hikes-rates-at-fastest-pace-since-1990",
           "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
+            "jp_broad",
             "market",
-            "us_broad"
+            "rates"
           ]
-        },
+        }
+      ]
+    },
+    "jp_semiconductor": {
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "Silicon Data CEO Li on AI Race and Tokenomics",
+      "topPositiveTitle": "Silicon Data CEO Li on AI Race and Tokenomics",
+      "items": [
+        {
+          "title": "Silicon Data CEO Li on AI Race and Tokenomics",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-22T04:55:34+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-22/silicon-data-ceo-li-on-ai-race-and-tokenomics-video",
+          "tags": [
+            "jp_semiconductor",
+            "market"
+          ]
+        }
+      ]
+    },
+    "us_broad": {
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 2,
+      "sourceCount": 1,
+      "itemCount": 2,
+      "isStale": false,
+      "topNegativeTitle": "Most Firms Keep Cash From Tariff Refunds, Fed Study Finds",
+      "topPositiveTitle": "Most Firms Keep Cash From Tariff Refunds, Fed Study Finds",
+      "items": [
         {
           "title": "Most Firms Keep Cash From Tariff Refunds, Fed Study Finds",
           "source": "Bloomberg Economics",
@@ -92,61 +90,10 @@
             "market",
             "us_broad"
           ]
-        },
-        {
-          "title": "Asian Stocks Rally After Tech Powers Wall Street: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-09-21T22:18:13+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-21/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "market",
-            "us_broad",
-            "us_growth"
-          ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.5,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 1,
-      "sourceCount": 2,
-      "itemCount": 2,
-      "isStale": false,
-      "topNegativeTitle": "BOE’s Breeden Says Time Running Out to Stop AI Crashing Markets",
-      "topPositiveTitle": "Asian Stocks Rally After Tech Powers Wall Street: Markets Wrap",
-      "items": [
-        {
-          "title": "BOE’s Breeden Says Time Running Out to Stop AI Crashing Markets",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-21T15:55:22+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-21/boe-s-breeden-says-time-running-out-to-stop-ai-crashing-markets",
-          "tags": [
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Asian Stocks Rally After Tech Powers Wall Street: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-09-21T22:18:13+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-21/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "market",
-            "us_broad",
-            "us_growth"
-          ]
-        }
-      ]
-    },
-    "global_broad": {
       "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
@@ -158,32 +105,43 @@
       "topPositiveTitle": null,
       "items": []
     },
-    "gold": {
-      "avgSentiment": -0.67,
-      "negativeCount": 1,
+    "global_broad": {
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
+      "neutralCount": 1,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Gold Edges Higher as Lower Oil Prices Damp Chance of Rate Hikes",
-      "topPositiveTitle": "Gold Edges Higher as Lower Oil Prices Damp Chance of Rate Hikes",
+      "topNegativeTitle": "Saudi Boosts Hormuz Oil Exports; AI Trade Roars Back, $12B Maldives Property Deal",
+      "topPositiveTitle": "Saudi Boosts Hormuz Oil Exports; AI Trade Roars Back, $12B Maldives Property Deal",
       "items": [
         {
-          "title": "Gold Edges Higher as Lower Oil Prices Damp Chance of Rate Hikes",
+          "title": "Saudi Boosts Hormuz Oil Exports; AI Trade Roars Back, $12B Maldives Property Deal",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-09-22T00:26:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-22/gold-edges-higher-as-lower-oil-prices-damp-chance-of-rate-hikes",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-22T06:37:29+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-22/horizons-middle-east-africa-9-22-2026-video",
           "tags": [
             "commodity",
-            "gold",
-            "market",
-            "us_broad"
+            "global_broad",
+            "market"
           ]
         }
       ]
+    },
+    "gold": {
+      "avgSentiment": 0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
+      "isStale": false,
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "reit": {
       "avgSentiment": 0,
@@ -210,33 +168,18 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.001,
-      "negativeCount": 2,
-      "positiveCount": 1,
-      "neutralCount": 4,
+      "avgSentiment": 0.14,
+      "negativeCount": 1,
+      "positiveCount": 2,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 7,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Outlier Bank of America Sees Two South Africa Rate Hikes in 2026",
-      "topPositiveTitle": "Key African Central Banks Set to Keep High Rates as Buffer Against Shocks",
+      "topNegativeTitle": "Qatar Sells $3 Billion in Bonds as War Sends Deficit Soaring",
+      "topPositiveTitle": "Tech Rally Fizzles as Rising Oil Flags Macro Risks: Markets Wrap",
       "items": [
         {
-          "title": "Outlier Bank of America Sees Two South Africa Rate Hikes in 2026",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-21T13:26:37+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-21/outlier-bank-of-america-sees-two-south-africa-rate-hikes-in-2026",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Qatar Raises $3 Billion in First Public Bond Sale This Year",
+          "title": "Qatar Sells $3 Billion in Bonds as War Sends Deficit Soaring",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.33,
@@ -249,39 +192,49 @@
           ]
         },
         {
-          "title": "US Plans $5 Billion Middle East Reconstruction Fund for Iran War",
+          "title": "Turkish Fund Exodus Flowing Into Lira Deposits, Goldman Says",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-21T22:13:10+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-21/us-plans-5-billion-middle-east-reconstruction-fund-for-iran-war",
+          "publishedAt": "2026-09-22T08:09:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-22/turkish-fund-exodus-flowing-into-lira-deposits-goldman-says",
           "tags": [
-            "geopolitical",
             "macro_risk",
             "market"
+          ]
+        },
+        {
+          "title": "Stock at Heart of Turkish Fund Crisis Ejected From Top Indexes",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-22T06:01:30+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-22/stock-at-heart-of-turkish-fund-crisis-ejected-from-top-indexes",
+          "tags": [
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Most Firms Keep Cash From Tariff Refunds, Fed Study Finds",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-21T20:10:19+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-21/most-firms-keep-cash-from-tariff-refunds-fed-study-finds",
+          "tags": [
+            "macro_risk",
+            "market",
+            "us_broad"
           ]
         },
         {
           "title": "Latest Oil Market News and Analysis for Sept. 22",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
+          "sentiment": "positive",
+          "sentimentScore": 0.5,
           "publishedAt": "2026-09-21T22:04:50+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-21/latest-oil-market-news-and-analysis-for-sept-22",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Oil Settles Near $100 as Hormuz Flows Stunt Rally",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-21T21:42:00+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-21/oil-settles-near-100-as-hormuz-flows-stunt-rally-video",
           "tags": [
             "commodity",
             "geopolitical",
@@ -304,15 +257,15 @@
       "items": []
     },
     "rates": {
-      "avgSentiment": 0.085,
+      "avgSentiment": 0.2,
       "negativeCount": 1,
-      "positiveCount": 1,
+      "positiveCount": 2,
       "neutralCount": 2,
       "sourceCount": 1,
-      "itemCount": 4,
+      "itemCount": 5,
       "isStale": false,
       "topNegativeTitle": "Macklem Flags Risk of Delaying Rate Hike Too Long",
-      "topPositiveTitle": "Key African Central Banks Set to Keep High Rates as Buffer Against Shocks",
+      "topPositiveTitle": "RBNZ Warns Near-Term Inflation May Beat Estimates as Oil Surges",
       "items": [
         {
           "title": "Macklem Flags Risk of Delaying Rate Hike Too Long",
@@ -327,6 +280,19 @@
           ]
         },
         {
+          "title": "What’s Next for Japan After It Hiked Rates Following Pressure From US?: Live Q&A",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-22T04:43:46+00:00",
+          "url": "https://www.bloomberg.com/sessions/2026-09-23/live-q-amp-a-what-s-next-after-japan-hikes-rates-at-fastest-pace-since-1990",
+          "tags": [
+            "jp_broad",
+            "market",
+            "rates"
+          ]
+        },
+        {
           "title": "RBA Set to Hike Rates Next Week as Energy Costs Spiral, BE Says",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
@@ -340,28 +306,27 @@
           ]
         },
         {
-          "title": "Brazil Economists Lower 2026 Selic Forecast Following Rate Cut",
+          "title": "BofA at Odds With Barclays on Nigeria Rate Path: Decision Guide",
           "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-21T12:06:31+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-21/brazil-economists-lower-2026-selic-forecast-following-rate-cut",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-22T04:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-22/bofa-at-odds-with-barclays-on-nigeria-rate-path-decision-guide",
           "tags": [
+            "commodity",
             "market",
             "rates"
           ]
         },
         {
-          "title": "Key African Central Banks Set to Keep High Rates as Buffer Against Shocks",
+          "title": "RBNZ Warns Near-Term Inflation May Beat Estimates as Oil Surges",
           "source": "Bloomberg Economics",
           "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-09-21T06:24:16+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-21/key-african-central-banks-set-to-keep-high-rates-as-buffer-against-shocks",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-09-22T03:39:02+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-22/rbnz-warns-near-term-inflation-may-beat-estimates-as-oil-surges",
           "tags": [
             "commodity",
-            "geopolitical",
-            "macro_risk",
             "market",
             "rates"
           ]
@@ -369,116 +334,92 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.038,
-      "negativeCount": 2,
-      "positiveCount": 2,
-      "neutralCount": 5,
+      "avgSentiment": 0.208,
+      "negativeCount": 0,
+      "positiveCount": 4,
+      "neutralCount": 8,
       "sourceCount": 3,
-      "itemCount": 9,
+      "itemCount": 12,
       "isStale": false,
-      "topNegativeTitle": "Gold Edges Higher as Lower Oil Prices Damp Chance of Rate Hikes",
-      "topPositiveTitle": "Macron and Trump Discuss Kyiv and Moscow Halting Energy Strikes",
+      "topNegativeTitle": "Barclays Sees Senegal Deficit Widening to 9% as Debt Talks Begin",
+      "topPositiveTitle": "RBNZ Warns Near-Term Inflation May Beat Estimates as Oil Surges",
       "items": [
         {
-          "title": "Gold Edges Higher as Lower Oil Prices Damp Chance of Rate Hikes",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-09-22T00:26:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-22/gold-edges-higher-as-lower-oil-prices-damp-chance-of-rate-hikes",
-          "tags": [
-            "commodity",
-            "gold",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Outlier Bank of America Sees Two South Africa Rate Hikes in 2026",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-21T13:26:37+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-21/outlier-bank-of-america-sees-two-south-africa-rate-hikes-in-2026",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "RBA Set to Hike Rates Next Week as Energy Costs Spiral, BE Says",
+          "title": "Barclays Sees Senegal Deficit Widening to 9% as Debt Talks Begin",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-22T01:20:35+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-22/rba-set-to-hike-rates-next-week-as-energy-costs-spiral-be-says",
+          "publishedAt": "2026-09-22T07:12:42+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-22/barclays-sees-senegal-deficit-widening-to-9-as-debt-talks-begin",
           "tags": [
             "commodity",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Latest Oil Market News and Analysis for Sept. 22",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-21T22:04:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-21/latest-oil-market-news-and-analysis-for-sept-22",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Oil Settles Near $100 as Hormuz Flows Stunt Rally",
+          "title": "Oil Dictating All Assets Over Short-Term: Market Analysis",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-21T21:42:00+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-21/oil-settles-near-100-as-hormuz-flows-stunt-rally-video",
+          "publishedAt": "2026-09-22T07:04:09+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-22/oil-dictating-all-assets-over-short-term-3-minutes-mliv-video",
           "tags": [
             "commodity",
-            "geopolitical",
-            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Saudi Boosts Hormuz Oil Exports; AI Trade Roars Back, $12B Maldives Property Deal",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-22T06:37:29+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-22/horizons-middle-east-africa-9-22-2026-video",
+          "tags": [
+            "commodity",
+            "global_broad",
+            "market"
+          ]
+        },
+        {
+          "title": "Saudis Tell Asian Refiners They Can Soon Pick Up Oil on Red Sea",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-22T06:05:33+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-22/saudis-tell-asian-refiners-they-can-soon-pick-up-oil-from-yanbu",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "Bonds Sink as Oil Extends Further Above $100",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-22T05:45:25+00:00",
+          "url": "https://www.bloomberg.com/news/live-blog/2026-09-22/ftse-100-stocks-oil-price-gilts-pound-what-s-moving-uk-markets-right-now-markets-today",
+          "tags": [
+            "commodity",
             "market"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.076,
-      "negativeCount": 2,
+      "avgSentiment": 0.12,
+      "negativeCount": 1,
       "positiveCount": 2,
-      "neutralCount": 5,
+      "neutralCount": 4,
       "sourceCount": 3,
-      "itemCount": 9,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "Outlier Bank of America Sees Two South Africa Rate Hikes in 2026",
-      "topPositiveTitle": "Macron and Trump Discuss Kyiv and Moscow Halting Energy Strikes",
+      "topNegativeTitle": "Qatar Sells $3 Billion in Bonds as War Sends Deficit Soaring",
+      "topPositiveTitle": "Tech Rally Fizzles as Rising Oil Flags Macro Risks: Markets Wrap",
       "items": [
         {
-          "title": "Outlier Bank of America Sees Two South Africa Rate Hikes in 2026",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-21T13:26:37+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-21/outlier-bank-of-america-sees-two-south-africa-rate-hikes-in-2026",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Qatar Raises $3 Billion in First Public Bond Sale This Year",
+          "title": "Qatar Sells $3 Billion in Bonds as War Sends Deficit Soaring",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.33,
@@ -491,45 +432,55 @@
           ]
         },
         {
-          "title": "US Plans $5 Billion Middle East Reconstruction Fund for Iran War",
+          "title": "Pakistan, Iran Discuss Regional Peace as US Talks Remain Stalled",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-21T22:13:10+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-21/us-plans-5-billion-middle-east-reconstruction-fund-for-iran-war",
+          "publishedAt": "2026-09-22T06:43:03+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-22/pakistan-iran-discuss-regional-peace-as-us-talks-remain-stalled",
           "tags": [
             "geopolitical",
-            "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Latest Oil Market News and Analysis for Sept. 22",
-          "source": "Bloomberg Markets",
+          "title": "G7外相 ウクライナ対応などで緊密連携 フーシ派非難の共同声明",
+          "source": "NHK 経済",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-21T22:04:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-21/latest-oil-market-news-and-analysis-for-sept-22",
+          "publishedAt": "2026-09-22T07:05:52+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20260922de51851",
           "tags": [
-            "commodity",
             "geopolitical",
-            "macro_risk",
             "market"
-          ]
+          ],
+          "titleJa": "G7外相 ウクライナ対応などで緊密連携 フーシ派非難の共同声明"
         },
         {
-          "title": "Oil Settles Near $100 as Hormuz Flows Stunt Rally",
-          "source": "Bloomberg Markets",
+          "title": "国民 玉木代表 ウクライナを訪問 政府高官らと会談",
+          "source": "NHK 経済",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-21T21:42:00+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-21/oil-settles-near-100-as-hormuz-flows-stunt-rally-video",
+          "publishedAt": "2026-09-21T17:23:00+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20260921de51643",
           "tags": [
-            "commodity",
             "geopolitical",
-            "macro_risk",
             "market"
-          ]
+          ],
+          "titleJa": "国民 玉木代表 ウクライナを訪問 政府高官らと会談"
+        },
+        {
+          "title": "ウクライナ 森衆院議長に北朝鮮製ミサイル部品を公開",
+          "source": "NHK 経済",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-21T13:24:14+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20260921de51739",
+          "tags": [
+            "geopolitical",
+            "market"
+          ],
+          "titleJa": "ウクライナ 森衆院議長に北朝鮮製ミサイル部品を公開"
         }
       ]
     }
