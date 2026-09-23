@@ -20,6 +20,7 @@ from data.p14_observation import (
 
 CLASSIFIER_VERSION = "p14-reference-classifier-1"
 CAUSE_UNRESOLVED = "CAUSE_UNRESOLVED"
+PUBLIC_CONFIDENCE_KEY = "dataConfidence"
 INTERNAL_CONFIDENCE_KEY = "internalDataConfidence"
 
 _CLASS_ORDER = (
@@ -292,8 +293,14 @@ def classify_reference_transition(
     for code in sorted(base_codes):
         before = base_by_code[code]
         after = perturbed_by_code[code]
-        confidence_before = before.get(INTERNAL_CONFIDENCE_KEY)
-        confidence_after = after.get(INTERNAL_CONFIDENCE_KEY)
+        internal_confidence_before = before.get(INTERNAL_CONFIDENCE_KEY)
+        internal_confidence_after = after.get(INTERNAL_CONFIDENCE_KEY)
+        if internal_confidence_before is not None and internal_confidence_after is not None:
+            confidence_before = internal_confidence_before
+            confidence_after = internal_confidence_after
+        else:
+            confidence_before = before.get(PUBLIC_CONFIDENCE_KEY)
+            confidence_after = after.get(PUBLIC_CONFIDENCE_KEY)
         if confidence_before is not None and confidence_after is not None:
             if confidence_before != confidence_after:
                 contradiction_codes.add("INVARIANT_CONFIDENCE_CHANGED")
@@ -335,15 +342,17 @@ def classify_reference_transition(
     perturbed_short_set = set(perturbed_shortlist)
     entered_reference = tuple(sorted(perturbed_short_set - base_short_set))
     exited_reference = tuple(sorted(base_short_set - perturbed_short_set))
-    # Candidate universes must match above, so eligible entry/exit is based on tier state.
+    # Set-level eligible entry/exit is scoped to reference-shortlist membership.
     entered_eligible = tuple(
         code for code in sorted(base_codes)
-        if base_by_code[code]["tier"] not in ELIGIBLE_TIERS
+        if code in entered_reference
+        and base_by_code[code]["tier"] not in ELIGIBLE_TIERS
         and perturbed_by_code[code]["tier"] in ELIGIBLE_TIERS
     )
     exited_eligible = tuple(
         code for code in sorted(base_codes)
-        if base_by_code[code]["tier"] in ELIGIBLE_TIERS
+        if code in exited_reference
+        and base_by_code[code]["tier"] in ELIGIBLE_TIERS
         and perturbed_by_code[code]["tier"] not in ELIGIBLE_TIERS
     )
     membership_changed = base_short_set != perturbed_short_set

@@ -43,6 +43,50 @@ def test_stable_reference_ignores_nonmember_score_changes_and_array_permutations
     assert not hasattr(result, "severity")
 
 
+def test_nonreference_deep_review_exit_does_not_emit_reference_member_exit():
+    base = [candidate("A", rank=1), candidate("B", rank=2), candidate("C", rank=3),
+            candidate("D", "deep_review", 4)]
+    perturbed = [candidate("A", rank=1), candidate("B", rank=2), candidate("C", rank=3),
+                 candidate("D", "screened", 4)]
+    result = classify_reference_transition(view(*base), view(*perturbed))
+    assert result.status == "SUPPORTED"
+    assert result.base_shortlist_codes == result.perturbed_shortlist_codes == ("A", "B", "C")
+    assert result.classes == ("STABLE_REFERENCE",)
+    assert result.exited_eligible_codes == ()
+
+
+def test_nonreference_eligible_entry_does_not_emit_reference_member_entry():
+    base = [candidate("A", rank=1), candidate("B", rank=2), candidate("C", rank=3),
+            candidate("D", "screened", 4)]
+    perturbed = [candidate("A", rank=1), candidate("B", rank=2), candidate("C", rank=3),
+                 candidate("D", "deep_review", 4)]
+    result = classify_reference_transition(view(*base), view(*perturbed))
+    assert result.status == "SUPPORTED"
+    assert result.base_shortlist_codes == result.perturbed_shortlist_codes == ("A", "B", "C")
+    assert "REFERENCE_MEMBER_ENTERED_ELIGIBLE_TIERS" not in result.classes
+    assert result.entered_eligible_codes == ()
+
+
+def test_reference_member_exit_from_eligible_tiers_is_classified():
+    base = [candidate("A", rank=1), candidate("B", rank=2), candidate("C", rank=3)]
+    perturbed = [candidate("A", rank=1), candidate("B", rank=2), candidate("C", "screened", 3)]
+    result = classify_reference_transition(view(*base), view(*perturbed))
+    assert "C" in result.base_shortlist_codes
+    assert "C" in result.exited_reference_codes
+    assert "REFERENCE_MEMBER_LEFT_ELIGIBLE_TIERS" in result.classes
+    assert result.exited_eligible_codes == ("C",)
+
+
+def test_reference_member_entry_into_eligible_tiers_is_classified():
+    base = [candidate("A", rank=1), candidate("B", "deep_review", 2), candidate("C", "screened", 3)]
+    perturbed = [candidate("A", rank=1), candidate("B", "deep_review", 2), candidate("C", "deep_review", 3)]
+    result = classify_reference_transition(view(*base), view(*perturbed))
+    assert "C" in result.perturbed_shortlist_codes
+    assert "C" in result.entered_reference_codes
+    assert "REFERENCE_MEMBER_ENTERED_ELIGIBLE_TIERS" in result.classes
+    assert result.entered_eligible_codes == ("C",)
+
+
 def test_order_only_transition_is_explicit():
     base = [candidate("A", rank=1), candidate("B", rank=2), candidate("C", rank=3)]
     perturbed = [candidate("B", rank=1), candidate("A", rank=2), candidate("C", rank=3)]
@@ -234,6 +278,23 @@ def test_unavailable_internal_confidence_is_not_misreported_as_contradictory():
     result = classify_reference_transition(view(base), view(perturbed))
     assert result.status == "SUPPORTED"
     assert result.classes == ("ELIGIBLE_POPULATION_SMALLER_THAN_N",)
+
+
+def test_public_confidence_change_without_internal_authority_is_contradictory():
+    base = candidate("A", rank=1, dataConfidence=0.9)
+    perturbed = candidate("A", rank=1, dataConfidence=0.5)
+    result = classify_reference_transition(view(base), view(perturbed))
+    assert result.status == "CONTRADICTORY"
+    assert result.violations == ("INVARIANT_CONFIDENCE_CHANGED",)
+    assert result.classes == () and result.transitions == ()
+
+
+def test_same_public_effective_confidence_is_not_a_contradiction():
+    base = candidate("A", rank=1, dataConfidence=0.9)
+    perturbed = candidate("A", rank=1, dataConfidence=0.9)
+    result = classify_reference_transition(view(base), view(perturbed))
+    assert result.status == "SUPPORTED"
+    assert "INVARIANT_CONFIDENCE_CHANGED" not in result.violations
 
 
 def test_absent_and_invalid_prescreen_ranks_that_both_collapse_to_missing_are_not_contradictory():
