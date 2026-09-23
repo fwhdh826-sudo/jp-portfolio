@@ -1,10 +1,36 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-09-23T10:37:26.116107+09:00",
-  "sourceUpdatedAt": "2026-09-23T01:11:43+00:00",
+  "updatedAt": "2026-09-23T17:44:46.909986+09:00",
+  "sourceUpdatedAt": "2026-09-23T08:39:12+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
+      "avgSentiment": -0.33,
+      "negativeCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "OECD Warns of Faster Global Inflation, Sees Rate Hikes at Fed, ECB, BOJ",
+      "topPositiveTitle": "OECD Warns of Faster Global Inflation, Sees Rate Hikes at Fed, ECB, BOJ",
+      "items": [
+        {
+          "title": "OECD Warns of Faster Global Inflation, Sees Rate Hikes at Fed, ECB, BOJ",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-23T08:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-23/oecd-warns-of-faster-global-inflation-sees-rate-hikes-at-fed-ecb-boj",
+          "tags": [
+            "jp_broad",
+            "market",
+            "us_broad"
+          ]
+        }
+      ]
+    },
+    "jp_semiconductor": {
       "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
@@ -16,108 +42,78 @@
       "topPositiveTitle": null,
       "items": []
     },
-    "jp_semiconductor": {
-      "avgSentiment": 0.33,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
-      "isStale": false,
-      "topNegativeTitle": "Sysco Draws Blowout Demand for $17 Billion Global Bond Offering",
-      "topPositiveTitle": "Sysco Draws Blowout Demand for $17 Billion Global Bond Offering",
-      "items": [
-        {
-          "title": "Sysco Draws Blowout Demand for $17 Billion Global Bond Offering",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-22T07:43:38+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-22/sysco-kicks-off-cross-border-debt-sale-with-euro-hybrid-bond",
-          "tags": [
-            "fx",
-            "jp_semiconductor",
-            "market"
-          ]
-        }
-      ]
-    },
     "us_broad": {
-      "avgSentiment": 0.11,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 2,
+      "avgSentiment": -0.443,
+      "negativeCount": 2,
+      "positiveCount": 0,
+      "neutralCount": 1,
       "sourceCount": 2,
       "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Gold Steadies as Iran Talks Temper Concerns Over Fed Rate Path",
-      "topPositiveTitle": "Anthony Scaramucci's \"All the Wrong Moves\"",
+      "topNegativeTitle": "Euro Hits Two-Month Low as Options Traders Add Downside Hedges",
+      "topPositiveTitle": "South Africa Seen Hiking Rates to Defend CPI Goal: Day Guide",
       "items": [
         {
-          "title": "Gold Steadies as Iran Talks Temper Concerns Over Fed Rate Path",
+          "title": "Euro Hits Two-Month Low as Options Traders Add Downside Hedges",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-22T23:56:43+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-22/gold-steadies-as-iran-talks-temper-concerns-over-fed-rate-path",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-09-23T07:03:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-23/euro-hits-two-month-low-as-options-traders-add-downside-hedges",
           "tags": [
-            "commodity",
-            "geopolitical",
-            "gold",
+            "fx",
             "market",
-            "rates",
             "us_broad"
           ]
         },
         {
-          "title": "Fed’s Perli: Treasury Bill Purchases Depend on Market Conditions",
+          "title": "OECD Warns of Faster Global Inflation, Sees Rate Hikes at Fed, ECB, BOJ",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-23T08:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-23/oecd-warns-of-faster-global-inflation-sees-rate-hikes-at-fed-ecb-boj",
+          "tags": [
+            "jp_broad",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "South Africa Seen Hiking Rates to Defend CPI Goal: Day Guide",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-22T20:25:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-22/fed-s-perli-treasury-bill-purchases-depend-on-market-conditions",
+          "publishedAt": "2026-09-23T04:15:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-23/south-africa-seen-raising-rates-to-defend-cpi-goal-day-guide",
           "tags": [
+            "commodity",
             "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Anthony Scaramucci's \"All the Wrong Moves\"",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-22T21:52:39+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-22/anthony-scaramucci-s-all-the-wrong-moves-video",
-          "tags": [
-            "macro_risk",
-            "market",
+            "rates",
             "us_broad"
           ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
+      "avgSentiment": -0.67,
+      "negativeCount": 1,
       "positiveCount": 0,
-      "neutralCount": 1,
+      "neutralCount": 0,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Asian Stocks Rise After US Tech Rally, Oil Drops: Markets Wrap",
-      "topPositiveTitle": "Asian Stocks Rise After US Tech Rally, Oil Drops: Markets Wrap",
+      "topNegativeTitle": "Chinese AI Stocks Fall on Report of DeepSeek, Moonshot Probe",
+      "topPositiveTitle": "Chinese AI Stocks Fall on Report of DeepSeek, Moonshot Probe",
       "items": [
         {
-          "title": "Asian Stocks Rise After US Tech Rally, Oil Drops: Markets Wrap",
+          "title": "Chinese AI Stocks Fall on Report of DeepSeek, Moonshot Probe",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-22T22:15:07+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-22/stock-market-today-dow-s-p-live-updates",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-09-23T05:00:44+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-23/chinese-ai-firms-fall-on-report-of-deepseek-moonshot-probe",
           "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
             "market",
             "us_growth"
           ]
@@ -125,6 +121,32 @@
       ]
     },
     "global_broad": {
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "Trump Hails Iran Talks After ‘Annihilation’ Threat, Saudi Pipeline Set to Restart",
+      "topPositiveTitle": "Trump Hails Iran Talks After ‘Annihilation’ Threat, Saudi Pipeline Set to Restart",
+      "items": [
+        {
+          "title": "Trump Hails Iran Talks After ‘Annihilation’ Threat, Saudi Pipeline Set to Restart",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-23T06:38:19+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-23/horizons-middle-east-africa-9-23-2026-video",
+          "tags": [
+            "geopolitical",
+            "global_broad",
+            "market"
+          ]
+        }
+      ]
+    },
+    "gold": {
       "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
@@ -135,35 +157,6 @@
       "topNegativeTitle": null,
       "topPositiveTitle": null,
       "items": []
-    },
-    "gold": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
-      "isStale": false,
-      "topNegativeTitle": "Gold Steadies as Iran Talks Temper Concerns Over Fed Rate Path",
-      "topPositiveTitle": "Gold Steadies as Iran Talks Temper Concerns Over Fed Rate Path",
-      "items": [
-        {
-          "title": "Gold Steadies as Iran Talks Temper Concerns Over Fed Rate Path",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-22T23:56:43+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-22/gold-steadies-as-iran-talks-temper-concerns-over-fed-rate-path",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        }
-      ]
     },
     "reit": {
       "avgSentiment": 0,
@@ -190,139 +183,124 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.0,
-      "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 2,
+      "avgSentiment": 0.5,
+      "negativeCount": 0,
+      "positiveCount": 2,
+      "neutralCount": 0,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Latest Oil Market News and Analysis for Sept. 23",
-      "topPositiveTitle": "Anthony Scaramucci's \"All the Wrong Moves\"",
+      "topNegativeTitle": "韓国イ大統領“米朝対話の早期再開に期待” 国連総会で演説",
+      "topPositiveTitle": "Stocks, Bonds Gain as Oil Extends Losing Streak: Markets Wrap",
       "items": [
         {
-          "title": "Latest Oil Market News and Analysis for Sept. 23",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-22T22:02:20+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-22/latest-oil-market-news-and-analysis-for-sept-23",
+          "title": "韓国イ大統領“米朝対話の早期再開に期待” 国連総会で演説",
+          "source": "NHK 経済",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-23T04:11:15+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20260923de51981",
           "tags": [
-            "commodity",
             "geopolitical",
             "macro_risk",
             "market"
-          ]
+          ],
+          "titleJa": "韓国イ大統領“米朝対話の早期再開に期待” 国連総会で演説"
         },
         {
-          "title": "Asian Stocks Rise After US Tech Rally, Oil Drops: Markets Wrap",
+          "title": "Stocks, Bonds Gain as Oil Extends Losing Streak: Markets Wrap",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
           "publishedAt": "2026-09-22T22:15:07+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-22/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
             "geopolitical",
             "macro_risk",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Here’s What’s Happening to the Billions of Dollars of US Tariff Refunds",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-22T11:00:01+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-09-22/here-s-what-s-happening-to-the-billions-of-dollars-of-us-tariff-refunds",
-          "tags": [
-            "macro_risk",
             "market"
           ]
-        },
+        }
+      ]
+    },
+    "fx": {
+      "avgSentiment": -1.0,
+      "negativeCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "Euro Hits Two-Month Low as Options Traders Add Downside Hedges",
+      "topPositiveTitle": "Euro Hits Two-Month Low as Options Traders Add Downside Hedges",
+      "items": [
         {
-          "title": "Anthony Scaramucci's \"All the Wrong Moves\"",
+          "title": "Euro Hits Two-Month Low as Options Traders Add Downside Hedges",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-22T21:52:39+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-22/anthony-scaramucci-s-all-the-wrong-moves-video",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-09-23T07:03:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-23/euro-hits-two-month-low-as-options-traders-add-downside-hedges",
           "tags": [
-            "macro_risk",
+            "fx",
             "market",
             "us_broad"
           ]
         }
       ]
     },
-    "fx": {
-      "avgSentiment": 0.33,
-      "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 2,
-      "isStale": false,
-      "topNegativeTitle": "Option Traders Bet Won’s Asia-Leading Rally Has Further to Run",
-      "topPositiveTitle": "Option Traders Bet Won’s Asia-Leading Rally Has Further to Run",
-      "items": [
-        {
-          "title": "Option Traders Bet Won’s Asia-Leading Rally Has Further to Run",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-23T01:11:43+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-23/option-traders-bet-won-s-asia-leading-rally-has-further-to-run",
-          "tags": [
-            "fx",
-            "market"
-          ]
-        },
-        {
-          "title": "Sysco Draws Blowout Demand for $17 Billion Global Bond Offering",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-22T07:43:38+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-22/sysco-kicks-off-cross-border-debt-sale-with-euro-hybrid-bond",
-          "tags": [
-            "fx",
-            "jp_semiconductor",
-            "market"
-          ]
-        }
-      ]
-    },
     "rates": {
-      "avgSentiment": 0.39,
+      "avgSentiment": 0.239,
       "negativeCount": 0,
       "positiveCount": 3,
-      "neutralCount": 3,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "Gold Steadies as Iran Talks Temper Concerns Over Fed Rate Path",
-      "topPositiveTitle": "Growth Expectations May Be Too High: JPM's Berro",
+      "topNegativeTitle": "South Africa Seen Hiking Rates to Defend CPI Goal: Day Guide",
+      "topPositiveTitle": "BOE Officials Leave London for Leeds to Set Interest Rates",
       "items": [
         {
-          "title": "Gold Steadies as Iran Talks Temper Concerns Over Fed Rate Path",
-          "source": "Bloomberg Markets",
+          "title": "South Africa Seen Hiking Rates to Defend CPI Goal: Day Guide",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-22T23:56:43+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-22/gold-steadies-as-iran-talks-temper-concerns-over-fed-rate-path",
+          "publishedAt": "2026-09-23T04:15:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-23/south-africa-seen-raising-rates-to-defend-cpi-goal-day-guide",
           "tags": [
             "commodity",
-            "geopolitical",
-            "gold",
             "market",
             "rates",
             "us_broad"
           ]
         },
         {
-          "title": "Nagel Says ‘Vigilant’ ECB May Need Mildy Restrictive Rates",
+          "title": "South African Inflation Picks Up Slightly Ahead of Rate Decision",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-23T08:01:55+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-23/south-african-inflation-picks-up-slightly-ahead-of-rate-decision",
+          "tags": [
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Bank Indonesia Keeps Key Rate Steady Despite Renewed Pressure on Rupiah",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-23T07:22:48+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-23/bank-indonesia-keeps-key-rate-steady-despite-renewed-pressure-on-rupiah",
+          "tags": [
+            "commodity",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Nagel Says ‘Vigilant’ ECB May Need Mildly Restrictive Rates",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
@@ -334,37 +312,12 @@
           ]
         },
         {
-          "title": "Container shipping rates",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-22T11:00:01+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-09-22/container-shipping-rates",
-          "tags": [
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Indonesia Set to Hold Key Rate as Risks Test Rupiah’s Resilience",
-          "source": "Bloomberg Economics",
+          "title": "M&G's Chorlton Says Value Has Returned to Fixed Income",
+          "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-09-23T00:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-23/indonesia-set-to-hold-key-rate-as-risks-test-rupiah-s-resilience",
-          "tags": [
-            "commodity",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Nigeria Surprises Market With Deepest Rate Cut Since 2007",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-09-22T13:06:33+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-22/nigeria-delivers-unexpected-350-basis-point-rate-cut-to-23",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-23T07:54:17+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-23/m-g-s-chorlton-says-value-has-returned-to-fixed-income-video",
           "tags": [
             "market",
             "rates"
@@ -373,80 +326,74 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.001,
-      "negativeCount": 2,
-      "positiveCount": 1,
-      "neutralCount": 5,
+      "avgSentiment": 0.286,
+      "negativeCount": 0,
+      "positiveCount": 4,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 8,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "CFTC Warns Prediction Markets to Reel in Risky ‘Mention’ Bets",
+      "topNegativeTitle": "South Africa Seen Hiking Rates to Defend CPI Goal: Day Guide",
       "topPositiveTitle": "Indonesia Set to Hold Key Rate as Risks Test Rupiah’s Resilience",
       "items": [
         {
-          "title": "CFTC Warns Prediction Markets to Reel in Risky ‘Mention’ Bets",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-22T22:03:35+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-22/cftc-warns-prediction-markets-to-reel-in-risky-mention-bets",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "Latest Oil Market News and Analysis for Sept. 23",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-22T22:02:20+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-22/latest-oil-market-news-and-analysis-for-sept-23",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Gold Steadies as Iran Talks Temper Concerns Over Fed Rate Path",
-          "source": "Bloomberg Markets",
+          "title": "South Africa Seen Hiking Rates to Defend CPI Goal: Day Guide",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-22T23:56:43+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-22/gold-steadies-as-iran-talks-temper-concerns-over-fed-rate-path",
+          "publishedAt": "2026-09-23T04:15:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-23/south-africa-seen-raising-rates-to-defend-cpi-goal-day-guide",
           "tags": [
             "commodity",
-            "geopolitical",
-            "gold",
             "market",
             "rates",
             "us_broad"
           ]
         },
         {
-          "title": "Asian Stocks Rise After US Tech Rally, Oil Drops: Markets Wrap",
-          "source": "Bloomberg Markets",
+          "title": "Bank Indonesia Keeps Key Rate Steady Despite Renewed Pressure on Rupiah",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-22T22:15:07+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-22/stock-market-today-dow-s-p-live-updates",
+          "publishedAt": "2026-09-23T07:22:48+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-23/bank-indonesia-keeps-key-rate-steady-despite-renewed-pressure-on-rupiah",
           "tags": [
             "commodity",
-            "geopolitical",
-            "macro_risk",
             "market",
-            "us_growth"
+            "rates"
           ]
         },
         {
-          "title": "COP31 Business Forum Chair on Climate Goals",
-          "source": "Bloomberg Markets",
+          "title": "Barclays Sees Senegal Deficit at 9% Amid Debt Talks",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-22T21:04:24+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-22/cop31-business-forum-chair-on-climate-goals-video",
+          "publishedAt": "2026-09-22T07:12:42+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-22/barclays-sees-senegal-deficit-widening-to-9-as-debt-talks-begin",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "UK Growth Cools Over Budget Worries and Energy Shock, PMI Shows",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-23T08:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-23/uk-growth-cools-over-budget-worries-and-energy-shock-pmi-shows",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "Hunt for Bigbubble Casts Doubt on Radiant’s $1 Billion in Assets",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-23T06:23:56+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-23/hunt-for-bigbubble-casts-doubt-on-radiant-s-1-billion-in-assets",
           "tags": [
             "commodity",
             "market"
@@ -455,86 +402,68 @@
       ]
     },
     "geopolitical": {
-      "avgSentiment": -0.066,
-      "negativeCount": 1,
-      "positiveCount": 0,
-      "neutralCount": 4,
+      "avgSentiment": 0.25,
+      "negativeCount": 0,
+      "positiveCount": 2,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Latest Oil Market News and Analysis for Sept. 23",
-      "topPositiveTitle": "Gold Steadies as Iran Talks Temper Concerns Over Fed Rate Path",
+      "topNegativeTitle": "Trump Hails Iran Talks After ‘Annihilation’ Threat, Saudi Pipeline Set to Restart",
+      "topPositiveTitle": "Stocks, Bonds Gain as Oil Extends Losing Streak: Markets Wrap",
       "items": [
         {
-          "title": "Latest Oil Market News and Analysis for Sept. 23",
+          "title": "Trump Hails Iran Talks After ‘Annihilation’ Threat, Saudi Pipeline Set to Restart",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-22T22:02:20+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-22/latest-oil-market-news-and-analysis-for-sept-23",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-23T06:38:19+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-23/horizons-middle-east-africa-9-23-2026-video",
           "tags": [
-            "commodity",
             "geopolitical",
-            "macro_risk",
+            "global_broad",
             "market"
           ]
         },
         {
-          "title": "Gold Steadies as Iran Talks Temper Concerns Over Fed Rate Path",
+          "title": "US-Iran Talks Revive Hopes for Diplomatic Breakthrough",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-22T23:56:43+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-22/gold-steadies-as-iran-talks-temper-concerns-over-fed-rate-path",
+          "publishedAt": "2026-09-23T06:17:07+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-23/insight-with-haslinda-amin-9-23-2026-video",
           "tags": [
-            "commodity",
             "geopolitical",
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
+            "market"
           ]
         },
         {
-          "title": "Asian Stocks Rise After US Tech Rally, Oil Drops: Markets Wrap",
+          "title": "韓国イ大統領“米朝対話の早期再開に期待” 国連総会で演説",
+          "source": "NHK 経済",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-23T04:11:15+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20260923de51981",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ],
+          "titleJa": "韓国イ大統領“米朝対話の早期再開に期待” 国連総会で演説"
+        },
+        {
+          "title": "Stocks, Bonds Gain as Oil Extends Losing Streak: Markets Wrap",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
           "publishedAt": "2026-09-22T22:15:07+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-22/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
             "geopolitical",
             "macro_risk",
-            "market",
-            "us_growth"
+            "market"
           ]
-        },
-        {
-          "title": "ウクライナがロシアの製油所に攻撃 ウクライナで死者も",
-          "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-22T22:14:27+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20260923de51936",
-          "tags": [
-            "geopolitical",
-            "market"
-          ],
-          "titleJa": "ウクライナがロシアの製油所に攻撃 ウクライナで死者も"
-        },
-        {
-          "title": "G7外相 ウクライナ対応などで緊密連携 フーシ派非難の共同声明",
-          "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-22T07:05:00+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20260922de51851",
-          "tags": [
-            "geopolitical",
-            "market"
-          ],
-          "titleJa": "G7外相 ウクライナ対応などで緊密連携 フーシ派非難の共同声明"
         }
       ]
     }
@@ -547,7 +476,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 7,
+    "excludedCount": 3,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
