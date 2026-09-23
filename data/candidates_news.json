@@ -1,20 +1,34 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-09-24T00:30:16.298176+09:00",
-  "sourceUpdatedAt": "2026-09-23T15:23:10+00:00",
+  "updatedAt": "2026-09-24T08:55:23.366560+09:00",
+  "sourceUpdatedAt": "2026-09-23T23:35:35+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
       "avgSentiment": -0.33,
-      "negativeCount": 1,
+      "negativeCount": 2,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 2,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "OECD Warns of Faster Global Inflation, Sees Rate Hikes at Fed, ECB, BOJ",
-      "topPositiveTitle": "OECD Warns of Faster Global Inflation, Sees Rate Hikes at Fed, ECB, BOJ",
+      "topNegativeTitle": "AI Rally, Weaker Yen Set the Stage for Japan’s Market Return",
+      "topPositiveTitle": "AI Rally, Weaker Yen Set the Stage for Japan’s Market Return",
       "items": [
+        {
+          "title": "AI Rally, Weaker Yen Set the Stage for Japan’s Market Return",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-23T22:44:38+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-23/ai-rally-weaker-yen-set-the-stage-for-japan-s-market-return-mueoxi0c",
+          "tags": [
+            "fx",
+            "jp_broad",
+            "market",
+            "us_growth"
+          ]
+        },
         {
           "title": "OECD Warns of Faster Global Inflation, Sees Rate Hikes at Fed, ECB, BOJ",
           "source": "Bloomberg Economics",
@@ -31,37 +45,69 @@
       ]
     },
     "jp_semiconductor": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "us_broad": {
-      "avgSentiment": 0.119,
-      "negativeCount": 2,
-      "positiveCount": 4,
       "neutralCount": 1,
-      "sourceCount": 2,
-      "itemCount": 7,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Barr Says Further Fed Rate Hikes Likely Needed to Cool Prices",
-      "topPositiveTitle": "South Africa CPI Rises Less Than Expected Before Rate Call",
+      "topNegativeTitle": "Nvidia Among Top Traded US Credit Swaps as Hedging Demand Soars",
+      "topPositiveTitle": "Nvidia Among Top Traded US Credit Swaps as Hedging Demand Soars",
       "items": [
         {
-          "title": "Barr Says Further Fed Rate Hikes Likely Needed to Cool Prices",
+          "title": "Nvidia Among Top Traded US Credit Swaps as Hedging Demand Soars",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-23T19:46:14+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-23/nvidia-among-top-traded-us-credit-swaps-as-hedging-demand-soars",
+          "tags": [
+            "jp_semiconductor",
+            "macro_risk",
+            "market",
+            "us_growth"
+          ]
+        }
+      ]
+    },
+    "us_broad": {
+      "avgSentiment": -0.104,
+      "negativeCount": 4,
+      "positiveCount": 2,
+      "neutralCount": 3,
+      "sourceCount": 2,
+      "itemCount": 9,
+      "isStale": false,
+      "topNegativeTitle": "US Bond-Market Slide Deepens, Pushing Yields to Two-Decade Highs",
+      "topPositiveTitle": "USD rallies after US data aided case for Federal Reserve increases",
+      "items": [
+        {
+          "title": "US Bond-Market Slide Deepens, Pushing Yields to Two-Decade Highs",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-23T14:58:55+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-23/barr-further-fed-rate-hikes-likely-needed-for-2-target-video",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-09-23T17:08:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-23/us-treasury-five-year-yields-breach-5-for-first-time-since-2007",
           "tags": [
             "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Gold Falls as Inflation Fears Revive Fed Interest-Rate Hike Bets",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-09-22T23:56:43+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-22/gold-steadies-as-iran-talks-temper-concerns-over-fed-rate-path",
+          "tags": [
+            "commodity",
+            "gold",
+            "macro_risk",
+            "market",
+            "rates",
             "us_broad"
           ]
         },
@@ -79,40 +125,29 @@
           ]
         },
         {
-          "title": "South Africa Seen Hiking Rates to Defend CPI Goal: Day Guide",
-          "source": "Bloomberg Economics",
+          "title": "Biggest Long-Bond ETF Hits Record Low as Traders Dump Treasuries",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-23T20:13:09+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-23/biggest-long-bond-etf-hits-record-low-as-traders-dump-treasuries",
+          "tags": [
+            "macro_risk",
+            "market",
+            "trust",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Asian Bonds Drop on Inflation Jitters as Oil Gains: Markets Wrap",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-23T04:15:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-23/south-africa-seen-raising-rates-to-defend-cpi-goal-day-guide",
+          "sentimentScore": -0.11,
+          "publishedAt": "2026-09-23T22:17:23+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-23/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Traders Load Up on Hedges for Shallower Fed Rate-Hike Cycle",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-23T15:11:29+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-23/traders-load-up-on-hedges-for-shallower-rate-hike-cycle-video",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "US to Buy Back Up to $6 Billion in Longer-Dated Treasuries",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-23T15:07:46+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-23/us-aims-to-buy-back-up-to-6-billion-in-longer-dated-treasuries",
-          "tags": [
+            "fx",
             "market",
             "us_broad"
           ]
@@ -120,16 +155,45 @@
       ]
     },
     "us_growth": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
+      "avgSentiment": -0.165,
+      "negativeCount": 1,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "AI Rally, Weaker Yen Set the Stage for Japan’s Market Return",
+      "topPositiveTitle": "Nvidia Among Top Traded US Credit Swaps as Hedging Demand Soars",
+      "items": [
+        {
+          "title": "AI Rally, Weaker Yen Set the Stage for Japan’s Market Return",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-23T22:44:38+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-23/ai-rally-weaker-yen-set-the-stage-for-japan-s-market-return-mueoxi0c",
+          "tags": [
+            "fx",
+            "jp_broad",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Nvidia Among Top Traded US Credit Swaps as Hedging Demand Soars",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-23T19:46:14+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-23/nvidia-among-top-traded-us-credit-swaps-as-hedging-demand-soars",
+          "tags": [
+            "jp_semiconductor",
+            "macro_risk",
+            "market",
+            "us_growth"
+          ]
+        }
+      ]
     },
     "global_broad": {
       "avgSentiment": 0,
@@ -144,16 +208,33 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
+      "avgSentiment": -0.67,
+      "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Gold Falls as Inflation Fears Revive Fed Interest-Rate Hike Bets",
+      "topPositiveTitle": "Gold Falls as Inflation Fears Revive Fed Interest-Rate Hike Bets",
+      "items": [
+        {
+          "title": "Gold Falls as Inflation Fears Revive Fed Interest-Rate Hike Bets",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-09-22T23:56:43+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-22/gold-steadies-as-iran-talks-temper-concerns-over-fed-rate-path",
+          "tags": [
+            "commodity",
+            "gold",
+            "macro_risk",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        }
+      ]
     },
     "reit": {
       "avgSentiment": 0,
@@ -180,80 +261,182 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.33,
-      "negativeCount": 0,
+      "avgSentiment": -0.084,
+      "negativeCount": 2,
       "positiveCount": 1,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 5,
+      "sourceCount": 2,
+      "itemCount": 8,
       "isStale": false,
-      "topNegativeTitle": "韓国イ大統領“米朝対話の早期再開に期待” 国連総会で演説",
-      "topPositiveTitle": "韓国イ大統領“米朝対話の早期再開に期待” 国連総会で演説",
+      "topNegativeTitle": "Gold Falls as Inflation Fears Revive Fed Interest-Rate Hike Bets",
+      "topPositiveTitle": "Latest Oil Market News and Analysis for Sept. 24",
       "items": [
         {
-          "title": "韓国イ大統領“米朝対話の早期再開に期待” 国連総会で演説",
-          "source": "NHK 経済",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-23T04:11:15+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20260923de51981",
+          "title": "Gold Falls as Inflation Fears Revive Fed Interest-Rate Hike Bets",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-09-22T23:56:43+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-22/gold-steadies-as-iran-talks-temper-concerns-over-fed-rate-path",
+          "tags": [
+            "commodity",
+            "gold",
+            "macro_risk",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Biggest Long-Bond ETF Hits Record Low as Traders Dump Treasuries",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-23T20:13:09+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-23/biggest-long-bond-etf-hits-record-low-as-traders-dump-treasuries",
+          "tags": [
+            "macro_risk",
+            "market",
+            "trust",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Bessent Says US, China Extend Their Trade Truce to Jan. 10",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-23T22:12:03+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-23/bessent-says-us-china-agreed-to-extend-trade-truce-to-jan-10",
           "tags": [
             "geopolitical",
             "macro_risk",
             "market"
-          ],
-          "titleJa": "韓国イ大統領“米朝対話の早期再開に期待” 国連総会で演説"
-        }
-      ]
-    },
-    "fx": {
-      "avgSentiment": -0.085,
-      "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 2,
-      "isStale": false,
-      "topNegativeTitle": "India’s RBI Sees Case for Rupee to Appreciate, Official Says",
-      "topPositiveTitle": "McDonald's Billion-Dollar Plan; Cracker Barrel Gains on Forecast | Stock Movers",
-      "items": [
+          ]
+        },
         {
-          "title": "India’s RBI Sees Case for Rupee to Appreciate, Official Says",
+          "title": "David Booth: Control What You Can Control",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-09-23T13:06:11+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-23/india-s-rbi-sees-case-for-rupee-to-appreciate-official-says",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-23T21:19:11+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-23/david-booth-control-what-you-can-control-video",
           "tags": [
-            "fx",
+            "macro_risk",
             "market"
           ]
         },
         {
-          "title": "McDonald's Billion-Dollar Plan; Cracker Barrel Gains on Forecast | Stock Movers",
+          "title": "Nvidia Among Top Traded US Credit Swaps as Hedging Demand Soars",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.5,
-          "publishedAt": "2026-09-23T15:03:14+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-23/mcdonald-s-8-5b-plan-cracker-barrel-gains-on-forecast-video",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-23T19:46:14+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-23/nvidia-among-top-traded-us-credit-swaps-as-hedging-demand-soars",
+          "tags": [
+            "jp_semiconductor",
+            "macro_risk",
+            "market",
+            "us_growth"
+          ]
+        }
+      ]
+    },
+    "fx": {
+      "avgSentiment": 0.187,
+      "negativeCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 3,
+      "isStale": false,
+      "topNegativeTitle": "AI Rally, Weaker Yen Set the Stage for Japan’s Market Return",
+      "topPositiveTitle": "USD rallies after US data aided case for Federal Reserve increases",
+      "items": [
+        {
+          "title": "AI Rally, Weaker Yen Set the Stage for Japan’s Market Return",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-23T22:44:38+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-23/ai-rally-weaker-yen-set-the-stage-for-japan-s-market-return-mueoxi0c",
           "tags": [
             "fx",
-            "market"
+            "jp_broad",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Asian Bonds Drop on Inflation Jitters as Oil Gains: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": -0.11,
+          "publishedAt": "2026-09-23T22:17:23+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-23/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "fx",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "USD rallies after US data aided case for Federal Reserve increases",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-09-23T12:07:39+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-23/dollar-usd-notches-seasonal-end-of-september-gains-on-hawkish-fed",
+          "tags": [
+            "fx",
+            "market",
+            "rates",
+            "us_broad"
           ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": 0.214,
-      "negativeCount": 0,
-      "positiveCount": 3,
+      "avgSentiment": 0.1,
+      "negativeCount": 2,
+      "positiveCount": 4,
       "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 7,
+      "itemCount": 10,
       "isStale": false,
-      "topNegativeTitle": "South Africa Seen Hiking Rates to Defend CPI Goal: Day Guide",
-      "topPositiveTitle": "BOE Interest Rates Will No Longer Always Be Decided in London",
+      "topNegativeTitle": "US Bond-Market Slide Deepens, Pushing Yields to Two-Decade Highs",
+      "topPositiveTitle": "USD rallies after US data aided case for Federal Reserve increases",
       "items": [
+        {
+          "title": "US Bond-Market Slide Deepens, Pushing Yields to Two-Decade Highs",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-09-23T17:08:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-23/us-treasury-five-year-yields-breach-5-for-first-time-since-2007",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Gold Falls as Inflation Fears Revive Fed Interest-Rate Hike Bets",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-09-22T23:56:43+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-22/gold-steadies-as-iran-talks-temper-concerns-over-fed-rate-path",
+          "tags": [
+            "commodity",
+            "gold",
+            "macro_risk",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
         {
           "title": "South Africa Seen Hiking Rates to Defend CPI Goal: Day Guide",
           "source": "Bloomberg Economics",
@@ -291,46 +474,50 @@
             "market",
             "rates"
           ]
-        },
-        {
-          "title": "Bank Indonesia Keeps Key Rate Steady Despite Renewed Pressure on Rupiah",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-23T07:22:48+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-23/bank-indonesia-keeps-key-rate-steady-despite-renewed-pressure-on-rupiah",
-          "tags": [
-            "commodity",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Traders Load Up on Hedges for Shallower Fed Rate-Hike Cycle",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-23T15:11:29+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-23/traders-load-up-on-hedges-for-shallower-rate-hike-cycle-video",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.132,
-      "negativeCount": 0,
-      "positiveCount": 2,
+      "avgSentiment": 0.089,
+      "negativeCount": 1,
+      "positiveCount": 4,
       "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 8,
       "isStale": false,
-      "topNegativeTitle": "South Africa Seen Hiking Rates to Defend CPI Goal: Day Guide",
-      "topPositiveTitle": "UK Growth Cools Over Budget Worries and Energy Shock, PMI Shows",
+      "topNegativeTitle": "Gold Falls as Inflation Fears Revive Fed Interest-Rate Hike Bets",
+      "topPositiveTitle": "Stocks Fall as Inflation Jitters Boost Bond Yields: Markets Wrap",
       "items": [
+        {
+          "title": "Gold Falls as Inflation Fears Revive Fed Interest-Rate Hike Bets",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-09-22T23:56:43+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-22/gold-steadies-as-iran-talks-temper-concerns-over-fed-rate-path",
+          "tags": [
+            "commodity",
+            "gold",
+            "macro_risk",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Asian Bonds Drop on Inflation Jitters as Oil Gains: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": -0.11,
+          "publishedAt": "2026-09-23T22:17:23+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-23/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "fx",
+            "market",
+            "us_broad"
+          ]
+        },
         {
           "title": "South Africa Seen Hiking Rates to Defend CPI Goal: Day Guide",
           "source": "Bloomberg Economics",
@@ -359,80 +546,94 @@
           ]
         },
         {
-          "title": "Barclays Sees Senegal Deficit at 9% Amid Debt Talks",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-22T07:12:42+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-22/barclays-sees-senegal-deficit-widening-to-9-as-debt-talks-begin",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "UK Growth Cools Over Budget Worries and Energy Shock, PMI Shows",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-23T08:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-23/uk-growth-cools-over-budget-worries-and-energy-shock-pmi-shows",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "Stocks, Bonds Slip as Oil Jump Fuels Fed-Hike Bets: Markets Wrap",
+          "title": "Latest Oil Market News and Analysis for Sept. 24",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.33,
-          "publishedAt": "2026-09-22T22:15:07+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-22/stock-market-today-dow-s-p-live-updates",
+          "publishedAt": "2026-09-23T22:09:08+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-23/latest-oil-market-news-and-analysis-for-sept-24",
           "tags": [
             "commodity",
-            "market",
-            "us_broad"
+            "geopolitical",
+            "macro_risk",
+            "market"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.165,
+      "avgSentiment": 0.055,
       "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 1,
+      "neutralCount": 5,
       "sourceCount": 2,
-      "itemCount": 2,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Trump Hails US-Iran Talks, Reviving Hopes of Diplomacy",
-      "topPositiveTitle": "韓国イ大統領“米朝対話の早期再開に期待” 国連総会で演説",
+      "topNegativeTitle": "Bessent Says US, China Extend Their Trade Truce to Jan. 10",
+      "topPositiveTitle": "Latest Oil Market News and Analysis for Sept. 24",
       "items": [
         {
-          "title": "Trump Hails US-Iran Talks, Reviving Hopes of Diplomacy",
+          "title": "Bessent Says US, China Extend Their Trade Truce to Jan. 10",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-23T22:12:03+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-23/bessent-says-us-china-agreed-to-extend-trade-truce-to-jan-10",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "IAEA Director on Nuclear Material Left in Iran",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-23T14:06:41+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-23/trump-hails-us-iran-talks-reviving-hopes-of-diplomacy-video",
+          "publishedAt": "2026-09-23T21:58:39+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-23/iaea-director-on-nuclear-material-left-in-iran-video",
           "tags": [
             "geopolitical",
             "market"
           ]
         },
         {
-          "title": "韓国イ大統領“米朝対話の早期再開に期待” 国連総会で演説",
-          "source": "NHK 経済",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-23T04:11:15+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20260923de51981",
+          "title": "IAEA's Grossi Says Iran Nuclear Inspections Can Resume Fast",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-23T21:22:11+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-23/iaea-s-grossi-iran-nuclear-inspections-can-resume-fast-video",
+          "tags": [
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "No Slowdown Expected Ahead of Midterms: Top Dealmakers",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-23T19:42:09+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-23/no-slowdown-expected-ahead-of-midterms-top-dealmakers-video",
           "tags": [
             "geopolitical",
             "macro_risk",
             "market"
-          ],
-          "titleJa": "韓国イ大統領“米朝対話の早期再開に期待” 国連総会で演説"
+          ]
+        },
+        {
+          "title": "'It's All About Culture' in the 'War for Talent'",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-23T19:38:19+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-23/-it-s-all-about-culture-aiello-video",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
         }
       ]
     }
@@ -445,7 +646,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 2,
+    "excludedCount": 3,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
