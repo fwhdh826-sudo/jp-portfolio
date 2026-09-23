@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-09-23T17:44:46.909986+09:00",
-  "sourceUpdatedAt": "2026-09-23T08:39:12+00:00",
+  "updatedAt": "2026-09-24T00:30:16.298176+09:00",
+  "sourceUpdatedAt": "2026-09-23T15:23:10+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -43,25 +43,24 @@
       "items": []
     },
     "us_broad": {
-      "avgSentiment": -0.443,
+      "avgSentiment": 0.119,
       "negativeCount": 2,
-      "positiveCount": 0,
+      "positiveCount": 4,
       "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "Euro Hits Two-Month Low as Options Traders Add Downside Hedges",
-      "topPositiveTitle": "South Africa Seen Hiking Rates to Defend CPI Goal: Day Guide",
+      "topNegativeTitle": "Barr Says Further Fed Rate Hikes Likely Needed to Cool Prices",
+      "topPositiveTitle": "South Africa CPI Rises Less Than Expected Before Rate Call",
       "items": [
         {
-          "title": "Euro Hits Two-Month Low as Options Traders Add Downside Hedges",
+          "title": "Barr Says Further Fed Rate Hikes Likely Needed to Cool Prices",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-09-23T07:03:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-23/euro-hits-two-month-low-as-options-traders-add-downside-hedges",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-23T14:58:55+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-23/barr-further-fed-rate-hikes-likely-needed-for-2-target-video",
           "tags": [
-            "fx",
             "market",
             "us_broad"
           ]
@@ -92,59 +91,57 @@
             "rates",
             "us_broad"
           ]
+        },
+        {
+          "title": "Traders Load Up on Hedges for Shallower Fed Rate-Hike Cycle",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-23T15:11:29+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-23/traders-load-up-on-hedges-for-shallower-rate-hike-cycle-video",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "US to Buy Back Up to $6 Billion in Longer-Dated Treasuries",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-23T15:07:46+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-23/us-aims-to-buy-back-up-to-6-billion-in-longer-dated-treasuries",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": -0.67,
-      "negativeCount": 1,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
-      "isStale": false,
-      "topNegativeTitle": "Chinese AI Stocks Fall on Report of DeepSeek, Moonshot Probe",
-      "topPositiveTitle": "Chinese AI Stocks Fall on Report of DeepSeek, Moonshot Probe",
-      "items": [
-        {
-          "title": "Chinese AI Stocks Fall on Report of DeepSeek, Moonshot Probe",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-09-23T05:00:44+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-23/chinese-ai-firms-fall-on-report-of-deepseek-moonshot-probe",
-          "tags": [
-            "market",
-            "us_growth"
-          ]
-        }
-      ]
-    },
-    "global_broad": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Trump Hails Iran Talks After ‘Annihilation’ Threat, Saudi Pipeline Set to Restart",
-      "topPositiveTitle": "Trump Hails Iran Talks After ‘Annihilation’ Threat, Saudi Pipeline Set to Restart",
-      "items": [
-        {
-          "title": "Trump Hails Iran Talks After ‘Annihilation’ Threat, Saudi Pipeline Set to Restart",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-23T06:38:19+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-23/horizons-middle-east-africa-9-23-2026-video",
-          "tags": [
-            "geopolitical",
-            "global_broad",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
+    },
+    "global_broad": {
+      "avgSentiment": 0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
+      "isStale": false,
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "gold": {
       "avgSentiment": 0,
@@ -183,15 +180,15 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.5,
+      "avgSentiment": 0.33,
       "negativeCount": 0,
-      "positiveCount": 2,
+      "positiveCount": 1,
       "neutralCount": 0,
-      "sourceCount": 2,
-      "itemCount": 2,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
       "topNegativeTitle": "韓国イ大統領“米朝対話の早期再開に期待” 国連総会で演説",
-      "topPositiveTitle": "Stocks, Bonds Gain as Oil Extends Losing Streak: Markets Wrap",
+      "topPositiveTitle": "韓国イ大統領“米朝対話の早期再開に期待” 国連総会で演説",
       "items": [
         {
           "title": "韓国イ大統領“米朝対話の早期再開に期待” 国連総会で演説",
@@ -206,51 +203,48 @@
             "market"
           ],
           "titleJa": "韓国イ大統領“米朝対話の早期再開に期待” 国連総会で演説"
+        }
+      ]
+    },
+    "fx": {
+      "avgSentiment": -0.085,
+      "negativeCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 2,
+      "isStale": false,
+      "topNegativeTitle": "India’s RBI Sees Case for Rupee to Appreciate, Official Says",
+      "topPositiveTitle": "McDonald's Billion-Dollar Plan; Cracker Barrel Gains on Forecast | Stock Movers",
+      "items": [
+        {
+          "title": "India’s RBI Sees Case for Rupee to Appreciate, Official Says",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-09-23T13:06:11+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-23/india-s-rbi-sees-case-for-rupee-to-appreciate-official-says",
+          "tags": [
+            "fx",
+            "market"
+          ]
         },
         {
-          "title": "Stocks, Bonds Gain as Oil Extends Losing Streak: Markets Wrap",
+          "title": "McDonald's Billion-Dollar Plan; Cracker Barrel Gains on Forecast | Stock Movers",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-09-22T22:15:07+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-22/stock-market-today-dow-s-p-live-updates",
+          "sentimentScore": 0.5,
+          "publishedAt": "2026-09-23T15:03:14+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-23/mcdonald-s-8-5b-plan-cracker-barrel-gains-on-forecast-video",
           "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
+            "fx",
             "market"
           ]
         }
       ]
     },
-    "fx": {
-      "avgSentiment": -1.0,
-      "negativeCount": 1,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
-      "isStale": false,
-      "topNegativeTitle": "Euro Hits Two-Month Low as Options Traders Add Downside Hedges",
-      "topPositiveTitle": "Euro Hits Two-Month Low as Options Traders Add Downside Hedges",
-      "items": [
-        {
-          "title": "Euro Hits Two-Month Low as Options Traders Add Downside Hedges",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-09-23T07:03:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-23/euro-hits-two-month-low-as-options-traders-add-downside-hedges",
-          "tags": [
-            "fx",
-            "market",
-            "us_broad"
-          ]
-        }
-      ]
-    },
     "rates": {
-      "avgSentiment": 0.239,
+      "avgSentiment": 0.214,
       "negativeCount": 0,
       "positiveCount": 3,
       "neutralCount": 4,
@@ -258,7 +252,7 @@
       "itemCount": 7,
       "isStale": false,
       "topNegativeTitle": "South Africa Seen Hiking Rates to Defend CPI Goal: Day Guide",
-      "topPositiveTitle": "BOE Officials Leave London for Leeds to Set Interest Rates",
+      "topPositiveTitle": "BOE Interest Rates Will No Longer Always Be Decided in London",
       "items": [
         {
           "title": "South Africa Seen Hiking Rates to Defend CPI Goal: Day Guide",
@@ -275,12 +269,24 @@
           ]
         },
         {
-          "title": "South African Inflation Picks Up Slightly Ahead of Rate Decision",
+          "title": "South Africa Hikes Rates as Unanimous Vote Sets Hawkish Tone",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-23T08:01:55+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-23/south-african-inflation-picks-up-slightly-ahead-of-rate-decision",
+          "publishedAt": "2026-09-23T13:06:29+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-23/south-africa-central-bank-hikes-rates-as-iran-war-fans-inflation",
+          "tags": [
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Norway Interest Rate Suspense Eclipses Steady Riksbank: Decision Guide",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-23T10:34:13+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-23/norway-rate-suspense-eclipses-steady-riksbank-decision-guide",
           "tags": [
             "market",
             "rates"
@@ -300,41 +306,30 @@
           ]
         },
         {
-          "title": "Nagel Says ‘Vigilant’ ECB May Need Mildly Restrictive Rates",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-22T21:37:26+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-22/nagel-says-vigilant-ecb-may-need-mildy-restrictive-rates",
-          "tags": [
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "M&G's Chorlton Says Value Has Returned to Fixed Income",
+          "title": "Traders Load Up on Hedges for Shallower Fed Rate-Hike Cycle",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.33,
-          "publishedAt": "2026-09-23T07:54:17+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-23/m-g-s-chorlton-says-value-has-returned-to-fixed-income-video",
+          "publishedAt": "2026-09-23T15:11:29+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-23/traders-load-up-on-hedges-for-shallower-rate-hike-cycle-video",
           "tags": [
             "market",
-            "rates"
+            "rates",
+            "us_broad"
           ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.286,
+      "avgSentiment": 0.132,
       "negativeCount": 0,
-      "positiveCount": 4,
+      "positiveCount": 2,
       "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 7,
+      "itemCount": 5,
       "isStale": false,
       "topNegativeTitle": "South Africa Seen Hiking Rates to Defend CPI Goal: Day Guide",
-      "topPositiveTitle": "Indonesia Set to Hold Key Rate as Risks Test Rupiah’s Resilience",
+      "topPositiveTitle": "UK Growth Cools Over Budget Worries and Energy Shock, PMI Shows",
       "items": [
         {
           "title": "South Africa Seen Hiking Rates to Defend CPI Goal: Day Guide",
@@ -388,50 +383,38 @@
           ]
         },
         {
-          "title": "Hunt for Bigbubble Casts Doubt on Radiant’s $1 Billion in Assets",
+          "title": "Stocks, Bonds Slip as Oil Jump Fuels Fed-Hike Bets: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.33,
-          "publishedAt": "2026-09-23T06:23:56+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-23/hunt-for-bigbubble-casts-doubt-on-radiant-s-1-billion-in-assets",
+          "publishedAt": "2026-09-22T22:15:07+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-22/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
-            "market"
+            "market",
+            "us_broad"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.25,
+      "avgSentiment": 0.165,
       "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 2,
+      "positiveCount": 1,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Trump Hails Iran Talks After ‘Annihilation’ Threat, Saudi Pipeline Set to Restart",
-      "topPositiveTitle": "Stocks, Bonds Gain as Oil Extends Losing Streak: Markets Wrap",
+      "topNegativeTitle": "Trump Hails US-Iran Talks, Reviving Hopes of Diplomacy",
+      "topPositiveTitle": "韓国イ大統領“米朝対話の早期再開に期待” 国連総会で演説",
       "items": [
         {
-          "title": "Trump Hails Iran Talks After ‘Annihilation’ Threat, Saudi Pipeline Set to Restart",
+          "title": "Trump Hails US-Iran Talks, Reviving Hopes of Diplomacy",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-23T06:38:19+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-23/horizons-middle-east-africa-9-23-2026-video",
-          "tags": [
-            "geopolitical",
-            "global_broad",
-            "market"
-          ]
-        },
-        {
-          "title": "US-Iran Talks Revive Hopes for Diplomatic Breakthrough",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-23T06:17:07+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-23/insight-with-haslinda-amin-9-23-2026-video",
+          "publishedAt": "2026-09-23T14:06:41+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-23/trump-hails-us-iran-talks-reviving-hopes-of-diplomacy-video",
           "tags": [
             "geopolitical",
             "market"
@@ -450,20 +433,6 @@
             "market"
           ],
           "titleJa": "韓国イ大統領“米朝対話の早期再開に期待” 国連総会で演説"
-        },
-        {
-          "title": "Stocks, Bonds Gain as Oil Extends Losing Streak: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-09-22T22:15:07+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-22/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
         }
       ]
     }
@@ -476,7 +445,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 3,
+    "excludedCount": 2,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
