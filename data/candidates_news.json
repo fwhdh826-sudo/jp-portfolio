@@ -1,48 +1,20 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-09-24T10:34:38.572632+09:00",
-  "sourceUpdatedAt": "2026-09-24T01:29:26+00:00",
+  "updatedAt": "2026-09-24T17:37:56.004190+09:00",
+  "sourceUpdatedAt": "2026-09-24T08:35:43+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": 0.335,
-      "negativeCount": 1,
-      "positiveCount": 1,
+      "avgSentiment": 0,
+      "negativeCount": 0,
+      "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 2,
-      "itemCount": 2,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "OECD Warns of Faster Global Inflation, Sees Rate Hikes at Fed, ECB, BOJ",
-      "topPositiveTitle": "Japan’s Nikkei Rises as AI Catch-Up Rally Offsets Yield Worries",
-      "items": [
-        {
-          "title": "OECD Warns of Faster Global Inflation, Sees Rate Hikes at Fed, ECB, BOJ",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-23T08:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-23/oecd-warns-of-faster-global-inflation-sees-rate-hikes-at-fed-ecb-boj",
-          "tags": [
-            "jp_broad",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Japan’s Nikkei Rises as AI Catch-Up Rally Offsets Yield Worries",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-09-23T22:44:38+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-23/ai-rally-weaker-yen-set-the-stage-for-japan-s-market-return-mueoxi0c",
-          "tags": [
-            "commodity",
-            "jp_broad",
-            "market",
-            "rates"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "jp_semiconductor": {
       "avgSentiment": 0,
@@ -57,80 +29,51 @@
       "items": []
     },
     "us_broad": {
-      "avgSentiment": -0.188,
-      "negativeCount": 3,
+      "avgSentiment": 0.277,
+      "negativeCount": 0,
       "positiveCount": 2,
-      "neutralCount": 3,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 8,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Bond Selloff Extends as Fed Rate-Hike Bets Build: Markets Wrap",
+      "topNegativeTitle": "Hassett Blasts Fed Officials Calling for Hikes in Recent Days",
       "topPositiveTitle": "South Africa CPI Rises Less Than Expected Before Rate Call",
       "items": [
         {
-          "title": "Bond Selloff Extends as Fed Rate-Hike Bets Build: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-09-23T22:17:23+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-23/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "US Bond-Market Slide Deepens, Pushing Yields to Two-Decade Highs",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-09-23T17:08:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-23/us-treasury-five-year-yields-breach-5-for-first-time-since-2007",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "OECD Warns of Faster Global Inflation, Sees Rate Hikes at Fed, ECB, BOJ",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-23T08:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-23/oecd-warns-of-faster-global-inflation-sees-rate-hikes-at-fed-ecb-boj",
-          "tags": [
-            "jp_broad",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "South Africa Seen Hiking Rates to Defend CPI Goal: Day Guide",
+          "title": "Hassett Blasts Fed Officials Calling for Hikes in Recent Days",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-23T04:15:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-23/south-africa-seen-raising-rates-to-defend-cpi-goal-day-guide",
+          "publishedAt": "2026-09-23T20:05:26+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-23/hassett-blasts-fed-officials-calling-for-hikes-in-recent-days",
           "tags": [
-            "commodity",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Treasury Yield Surge Pushes Spreads Versus Asia Near Extremes",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-24T08:16:31+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-24/treasury-yield-surge-pushes-spreads-versus-asia-near-extremes",
+          "tags": [
             "market",
             "rates",
             "us_broad"
           ]
         },
         {
-          "title": "AirAsia’s Hunt for Cheaper Debt Won’t Be Easy With $100 Oil",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-24T00:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-24/airasia-s-hunt-for-cheaper-debt-won-t-be-easy-with-oil-near-100",
+          "title": "South Africa CPI Rises Less Than Expected Before Rate Call",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.5,
+          "publishedAt": "2026-09-23T08:01:55+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-23/south-african-inflation-picks-up-slightly-ahead-of-rate-decision",
           "tags": [
-            "commodity",
             "market",
+            "rates",
             "us_broad"
           ]
         }
@@ -149,6 +92,33 @@
       "items": []
     },
     "global_broad": {
+      "avgSentiment": -1.0,
+      "negativeCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "European Stocks Edge Lower as Rising Global Bond Yields Weigh",
+      "topPositiveTitle": "European Stocks Edge Lower as Rising Global Bond Yields Weigh",
+      "items": [
+        {
+          "title": "European Stocks Edge Lower as Rising Global Bond Yields Weigh",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-09-24T07:30:22+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-24/european-stocks-edge-lower-as-rising-global-bond-yields-weigh",
+          "tags": [
+            "global_broad",
+            "macro_risk",
+            "market",
+            "rates"
+          ]
+        }
+      ]
+    },
+    "gold": {
       "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
@@ -159,34 +129,6 @@
       "topNegativeTitle": null,
       "topPositiveTitle": null,
       "items": []
-    },
-    "gold": {
-      "avgSentiment": 0.33,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
-      "isStale": false,
-      "topNegativeTitle": "Gold Holds Drop as Higher Oil and Hot US Data Fan Rate-Hike Bets",
-      "topPositiveTitle": "Gold Holds Drop as Higher Oil and Hot US Data Fan Rate-Hike Bets",
-      "items": [
-        {
-          "title": "Gold Holds Drop as Higher Oil and Hot US Data Fan Rate-Hike Bets",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-24T00:12:14+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-24/gold-holds-drop-as-higher-oil-and-hot-us-data-fan-rate-hike-bets",
-          "tags": [
-            "commodity",
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        }
-      ]
     },
     "reit": {
       "avgSentiment": 0,
@@ -201,40 +143,77 @@
       "items": []
     },
     "dividend": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "macro_risk": {
-      "avgSentiment": -0.333,
-      "negativeCount": 1,
-      "positiveCount": 0,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 3,
-      "isStale": false,
-      "topNegativeTitle": "Bond Selloff Extends as Fed Rate-Hike Bets Build: Markets Wrap",
-      "topPositiveTitle": "Bessent Says US, China Extend Their Trade Truce to Jan. 10",
+      "topNegativeTitle": "Zegona Plans €400 Million Distribution Via Buyback, Dividend",
+      "topPositiveTitle": "Zegona Plans €400 Million Distribution Via Buyback, Dividend",
       "items": [
         {
-          "title": "Bond Selloff Extends as Fed Rate-Hike Bets Build: Markets Wrap",
+          "title": "Zegona Plans €400 Million Distribution Via Buyback, Dividend",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-24T06:38:10+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-24/zegona-plans-400-million-shareholder-distribution",
+          "tags": [
+            "dividend",
+            "market"
+          ]
+        }
+      ]
+    },
+    "macro_risk": {
+      "avgSentiment": 0.0,
+      "negativeCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 3,
+      "sourceCount": 2,
+      "itemCount": 5,
+      "isStale": false,
+      "topNegativeTitle": "European Stocks Edge Lower as Rising Global Bond Yields Weigh",
+      "topPositiveTitle": "Supertanker Rally Lures Investors as War Squeezes Vessel Supply",
+      "items": [
+        {
+          "title": "European Stocks Edge Lower as Rising Global Bond Yields Weigh",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -1.0,
-          "publishedAt": "2026-09-23T22:17:23+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-23/stock-market-today-dow-s-p-live-updates",
+          "publishedAt": "2026-09-24T07:30:22+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-24/european-stocks-edge-lower-as-rising-global-bond-yields-weigh",
           "tags": [
+            "global_broad",
             "macro_risk",
             "market",
-            "rates",
-            "us_broad"
+            "rates"
+          ]
+        },
+        {
+          "title": "Thailand Says Market Access Sticking Point in US Trade Talks",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-24T02:15:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-24/thailand-says-market-access-sticking-point-in-us-tariff-talks",
+          "tags": [
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Busiest-Ever Week for China Ports Gives Glimpse of Tariff Unease",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-24T01:07:29+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-24/china-s-trade-volumes-hit-record-in-week-before-trump-xi-summit",
+          "tags": [
+            "macro_risk",
+            "market"
           ]
         },
         {
@@ -251,13 +230,14 @@
           ]
         },
         {
-          "title": "David Booth: Control What You Can Control",
+          "title": "Supertanker Rally Lures Investors as War Squeezes Vessel Supply",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-23T21:19:11+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-23/david-booth-control-what-you-can-control-video",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-09-24T07:50:22+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-24/supertanker-rally-lures-investors-as-war-squeezes-vessel-supply",
           "tags": [
+            "geopolitical",
             "macro_risk",
             "market"
           ]
@@ -265,88 +245,112 @@
       ]
     },
     "fx": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 2,
+      "sourceCount": 2,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Trump-Xi Summit Narrows China Credit’s Geopolitical Discount: BI",
+      "topPositiveTitle": "Trump-Xi Summit Narrows China Credit’s Geopolitical Discount: BI",
+      "items": [
+        {
+          "title": "Trump-Xi Summit Narrows China Credit’s Geopolitical Discount: BI",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-24T07:49:46+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-24/trump-xi-summit-narrows-china-credit-s-geopolitical-discount-bi",
+          "tags": [
+            "fx",
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "RBI Said to Have Conducted at Least $10 Billion in FX Swaps",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-24T03:03:17+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-24/rbi-said-to-conduct-at-least-10-billion-fx-swaps-to-drain-cash",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        }
+      ]
     },
     "rates": {
-      "avgSentiment": 0.05,
-      "negativeCount": 2,
-      "positiveCount": 4,
-      "neutralCount": 4,
+      "avgSentiment": -0.049,
+      "negativeCount": 4,
+      "positiveCount": 3,
+      "neutralCount": 3,
       "sourceCount": 2,
       "itemCount": 10,
       "isStale": false,
-      "topNegativeTitle": "Bond Selloff Extends as Fed Rate-Hike Bets Build: Markets Wrap",
-      "topPositiveTitle": "Japan’s Nikkei Rises as AI Catch-Up Rally Offsets Yield Worries",
+      "topNegativeTitle": "European Stocks Edge Lower as Rising Global Bond Yields Weigh",
+      "topPositiveTitle": "Riksbank Holds Rate and Sees Bigger Chance of Hike This Year",
       "items": [
         {
-          "title": "Bond Selloff Extends as Fed Rate-Hike Bets Build: Markets Wrap",
+          "title": "European Stocks Edge Lower as Rising Global Bond Yields Weigh",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -1.0,
-          "publishedAt": "2026-09-23T22:17:23+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-23/stock-market-today-dow-s-p-live-updates",
+          "publishedAt": "2026-09-24T07:30:22+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-24/european-stocks-edge-lower-as-rising-global-bond-yields-weigh",
           "tags": [
+            "global_broad",
             "macro_risk",
             "market",
-            "rates",
-            "us_broad"
+            "rates"
           ]
         },
         {
-          "title": "US Bond-Market Slide Deepens, Pushing Yields to Two-Decade Highs",
+          "title": "SNB Holds Rates, Eases Threat of Franc Intervention",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-09-23T17:08:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-23/us-treasury-five-year-yields-breach-5-for-first-time-since-2007",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "South Africa Seen Hiking Rates to Defend CPI Goal: Day Guide",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-23T04:15:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-23/south-africa-seen-raising-rates-to-defend-cpi-goal-day-guide",
-          "tags": [
-            "commodity",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "South Africa Hikes Rates as Unanimous Vote Sets Hawkish Tone",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-23T13:06:29+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-23/south-africa-central-bank-hikes-rates-as-iran-war-fans-inflation",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-24T08:35:43+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-24/snb-holds-rates-eases-threat-of-franc-intervention-video",
           "tags": [
             "market",
             "rates"
           ]
         },
         {
-          "title": "Norway Interest Rate Suspense Eclipses Steady Riksbank: Decision Guide",
+          "title": "SNB Eases Threat of Franc Intervention as Rate Held at Zero",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-24T07:39:11+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-24/snb-ends-war-footing-over-franc-strength-as-rate-kept-at-zero",
+          "tags": [
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Stocks Fall as High Yields Pressure Valuations: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-23T22:17:23+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-23/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Europe Economy More Robust Than Anticipated, ECB’s Kocher Says",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-23T10:34:13+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-23/norway-rate-suspense-eclipses-steady-riksbank-decision-guide",
+          "publishedAt": "2026-09-24T06:04:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-24/europe-economy-more-robust-than-anticipated-ecb-s-kocher-says",
           "tags": [
             "market",
             "rates"
@@ -355,62 +359,23 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.183,
+      "avgSentiment": 0.057,
       "negativeCount": 1,
-      "positiveCount": 5,
-      "neutralCount": 3,
+      "positiveCount": 1,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 9,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "China’s Ban on Overseas Coal Plants Stumbles in Indonesia: CREA",
-      "topPositiveTitle": "Japan’s Nikkei Rises as AI Catch-Up Rally Offsets Yield Worries",
+      "topNegativeTitle": "Stocks Fall as High Yields Pressure Valuations: Markets Wrap",
+      "topPositiveTitle": "Europe Needs More Long-Term LNG to Avoid Energy Shocks, MET Says",
       "items": [
         {
-          "title": "China’s Ban on Overseas Coal Plants Stumbles in Indonesia: CREA",
+          "title": "Stocks Fall as High Yields Pressure Valuations: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-09-24T00:00:29+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-24/china-s-ban-on-overseas-coal-plants-stumbles-in-indonesia-crea",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "South Africa Seen Hiking Rates to Defend CPI Goal: Day Guide",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-23T04:15:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-23/south-africa-seen-raising-rates-to-defend-cpi-goal-day-guide",
-          "tags": [
-            "commodity",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "AirAsia’s Hunt for Cheaper Debt Won’t Be Easy With $100 Oil",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-24T00:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-24/airasia-s-hunt-for-cheaper-debt-won-t-be-easy-with-oil-near-100",
-          "tags": [
-            "commodity",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Bank Indonesia Keeps Key Rate Steady Despite Renewed Pressure on Rupiah",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-23T07:22:48+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-23/bank-indonesia-keeps-key-rate-steady-despite-renewed-pressure-on-rupiah",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-23T22:17:23+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-23/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
             "market",
@@ -418,33 +383,79 @@
           ]
         },
         {
-          "title": "Gold Holds Drop as Higher Oil and Hot US Data Fan Rate-Hike Bets",
+          "title": "Saudis Ease Asia Oil Crunch With 100-Million-Barrel Sales Flurry",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-24T00:12:14+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-24/gold-holds-drop-as-higher-oil-and-hot-us-data-fan-rate-hike-bets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-24T07:12:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-24/saudis-ease-asia-oil-crunch-with-100-million-barrel-sales-flurry",
           "tags": [
             "commodity",
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
+            "market"
+          ]
+        },
+        {
+          "title": "Indonesia Commodity Export Agency Danantara Hires Palm Unit Head",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-24T07:05:32+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-24/indonesia-commodity-export-agency-danantara-hires-palm-unit-head",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "Qatar Boosts LNG Traffic Through Hormuz as Global Shortage Bites",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-24T07:05:07+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-24/qatar-boosts-lng-traffic-through-hormuz-as-global-shortage-bites",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "India Slashes Edible-Oil Duties to Reduce Festival Food Costs",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-24T06:51:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-24/india-slashes-edible-oil-duties-to-reduce-festival-food-costs",
+          "tags": [
+            "commodity",
+            "market"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0.333,
       "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 3,
+      "positiveCount": 1,
+      "neutralCount": 2,
       "sourceCount": 2,
       "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Bessent Says US, China Extend Their Trade Truce to Jan. 10",
-      "topPositiveTitle": "Bessent Says US, China Extend Their Trade Truce to Jan. 10",
+      "topNegativeTitle": "Trump-Xi Summit Narrows China Credit’s Geopolitical Discount: BI",
+      "topPositiveTitle": "Supertanker Rally Lures Investors as War Squeezes Vessel Supply",
       "items": [
+        {
+          "title": "Trump-Xi Summit Narrows China Credit’s Geopolitical Discount: BI",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-24T07:49:46+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-24/trump-xi-summit-narrows-china-credit-s-geopolitical-discount-bi",
+          "tags": [
+            "fx",
+            "geopolitical",
+            "market"
+          ]
+        },
         {
           "title": "Bessent Says US, China Extend Their Trade Truce to Jan. 10",
           "source": "Bloomberg Economics",
@@ -459,26 +470,15 @@
           ]
         },
         {
-          "title": "IAEA Director on Nuclear Material Left in Iran",
+          "title": "Supertanker Rally Lures Investors as War Squeezes Vessel Supply",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-23T21:58:39+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-23/iaea-director-on-nuclear-material-left-in-iran-video",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-09-24T07:50:22+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-24/supertanker-rally-lures-investors-as-war-squeezes-vessel-supply",
           "tags": [
             "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "IAEA's Grossi Says Iran Nuclear Inspections Can Resume Fast",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-23T21:22:11+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-23/iaea-s-grossi-iran-nuclear-inspections-can-resume-fast-video",
-          "tags": [
-            "geopolitical",
+            "macro_risk",
             "market"
           ]
         }
