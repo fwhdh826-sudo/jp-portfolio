@@ -6,6 +6,7 @@ import copy
 import hashlib
 import inspect
 import json
+import multiprocessing
 import os
 from dataclasses import replace
 from pathlib import Path
@@ -16,6 +17,7 @@ from data import p14_handoff as handoff
 from data.p14_handoff import (
     CAPTURE_INPUT_FILE,
     CAPTURE_INPUT_SCHEMA_VERSION,
+    CLAIM_CONSUMED_FILE,
     FIXED_MODULE_PATHS,
     HANDOFF_FILE,
     HANDOFF_SCHEMA_VERSION,
@@ -49,6 +51,27 @@ REPO = Path(__file__).resolve().parents[1]
 EVENT_SHA = "1" * 40
 EXECUTED_SHA = "2" * 40
 POLICY = "p14-decision-aware-v1"
+
+
+def _claim_contender(root, run_id, run_attempt, barrier, queue):
+    try:
+        barrier.wait(timeout=15)
+        claim = claim_attempt(root, run_id, run_attempt)
+        queue.put(("WIN", claim.owner_nonce, claim.attempt_directory))
+    except HandoffError as exc:
+        queue.put(("LOSE", exc.code, exc.detail))
+    except BaseException as exc:  # surfaced to the parent as a test failure
+        queue.put(("ERROR", type(exc).__name__, str(exc)))
+
+
+def _forged_write_contender(claim_values, parts, queue):
+    forged = AttemptClaim(*claim_values)
+    try:
+        write_handoff_parts(forged, parts)
+    except HandoffError as exc:
+        queue.put((exc.code, exc.detail))
+    else:
+        queue.put(("ACCEPTED", None))
 
 
 def digest(payload: bytes) -> str:
@@ -222,28 +245,74 @@ def release_evidence():
 
 
 def gates():
-    result = []
-    for number in range(1, 16):
-        gate_id = f"P-{number:02d}"
-        value = 1
-        if gate_id == "P-06":
-            value = {"count": 2, "min": 4, "p25": 4, "median": 5, "p75": 6, "max": 6, "atOrBelow4AxesCount": 1}
-        elif gate_id == "P-07":
-            value = {"count": 2, "min": 0.7, "max": 0.8, "range": 0.1, "p25": 0.7, "p75": 0.8, "iqr": 0.1, "median": 0.75}
-        elif gate_id == "P-10":
-            value = {"deepReview": 1, "actionable": 1}
-        elif gate_id == "P-11":
-            value = {
+    """Exact candidate_funnel_batch generated-report gate field shapes."""
+    return [
+        {"id": "P-01", "metric": "candidate総数", "value": 2, "threshold": "記録", "status": "RECORD", "note": ""},
+        {"id": "P-02", "metric": "prescreen join率", "value": 1.0, "threshold": ">= 0.95", "status": "PASS", "note": ""},
+        {"id": "P-03", "metric": "unmatched candidate率", "value": 0.0, "threshold": "記録（> 0.05 で要調査）", "status": "RECORD", "note": ""},
+        {"id": "P-04", "metric": "duplicate code率（candidate側）", "value": 0.0, "threshold": "== 0", "status": "PASS", "note": "[]"},
+        {"id": "PRESCREEN_DUPLICATE", "metric": "duplicate code（prescreen側）", "value": 0, "threshold": "== 0", "status": "PASS", "note": "[]"},
+        {"id": "P-05", "metric": "missing prescreen率（engine出力ベース）", "value": 0.0, "threshold": "記録。P-02と整合", "status": "RECORD", "note": ""},
+        {
+            "id": "P-06", "metric": "dataConfidence分布",
+            "value": {"count": 2, "min": 4, "p25": 4, "median": 5, "p75": 6, "max": 6, "atOrBelow4AxesCount": 1},
+            "threshold": "記録", "status": "RECORD", "note": "",
+        },
+        {
+            "id": "P-07", "metric": "marketScore分布(IQR/range)",
+            "value": {"count": 2, "min": 20.0, "max": 80.0, "range": 60.0, "p25": 30.0, "p75": 50.0, "iqr": 20.0, "median": 40.0},
+            "threshold": "IQR>=10.0 かつ range>=40.0", "status": "PASS", "note": "",
+        },
+        {"id": "P-08", "metric": "deep-review件数", "value": 1, "threshold": "> 0", "status": "PASS", "note": ""},
+        {"id": "P-09", "metric": "actionable件数", "value": 1, "threshold": "記録。0の場合はreason分布で説明可能なこと", "status": "RECORD", "note": ""},
+        {
+            "id": "P-10", "metric": "sector breadth(deepReview/actionable)",
+            "value": {"deepReview": 7, "actionable": 4},
+            "threshold": "deepReview>=7 かつ actionable>=4", "status": "PASS", "note": "",
+        },
+        {
+            "id": "P-11", "metric": "cap overflow",
+            "value": {
                 "deepReviewSectorCapOverflow": {"Technology": 0},
                 "actionableSectorCapOverflow": {"Technology": 0},
                 "deepReviewEligibleMinusSelected": 0,
                 "actionableEligibleMinusSelected": 0,
+            },
+            "threshold": "記録", "status": "RECORD", "note": "",
+        },
+        {
+            "id": "P-12", "metric": "reason code分布(soft/hard)",
+            "value": {"soft": {}, "hard": {}},
+            "threshold": "記録。v1 inactive 4件は0件であること", "status": "PASS", "note": "",
+        },
+        {
+            "id": "P-13", "metric": "degraded path actionable",
+            "value": {"currentRunActionable": 1, "cacheFallbackMirrorActionable": 0},
+            "threshold": "現在runがdegradedならactionable==0、かつcache_fallback mirrorでactionable==0",
+            "status": "PASS", "note": "is_degraded=False",
+        },
+        {
+            "id": "P-14", "metric": "rank stability Jaccard(±2%) + decision-aware market reference gate",
+            "value": 1.0,
+            "threshold": ">= 0.95 (WARN backstop) / >= 0.8 (HARD backstop)",
+            "status": "PASS",
+            "note": "assignment=p14-prescreen-rank-code-v1; identity=exact-string-code; invalid-or-duplicate-identities-do-not-consume-ordinal",
+        },
+        {"id": "P-15", "metric": "rank drift vs previous", "value": None, "threshold": "記録", "status": "RECORD", "note": "baseline無し（初回run or 前回not_generated）"},
+    ]
+
+
+def not_generated_gates():
+    metrics = [gate["metric"] for gate in gates() if gate["id"] != "PRESCREEN_DUPLICATE"]
+    result = [{"id": "P-01", "metric": metrics[0], "value": 2, "threshold": "記録", "status": "RECORD", "note": ""}]
+    for number, metric in enumerate(metrics[1:], start=2):
+        result.append(
+            {
+                "id": f"P-{number:02d}", "metric": metric, "value": None,
+                "threshold": "N/A", "status": "N/A",
+                "note": "status=not_generatedのため評価対象外",
             }
-        elif gate_id == "P-12":
-            value = {"soft": {}, "hard": {}}
-        elif gate_id == "P-13":
-            value = {"currentRunActionable": 1, "cacheFallbackMirrorActionable": 0}
-        result.append({"id": gate_id, "metric": f"metric-{number}", "value": value, "threshold": None, "status": "PASS", "note": None})
+        )
     return result
 
 
@@ -254,6 +323,31 @@ def quality_gate():
         "hardFailIds": [],
         "notes": [],
         "p14ReleaseEvidence": release_evidence(),
+    }
+
+
+def failed_quality_gate():
+    value = quality_gate()
+    p14 = next(gate for gate in value["gates"] if gate["id"] == "P-14")
+    p14["status"] = "FAIL"
+    value["overallPass"] = False
+    value["hardFailIds"] = ["P-14"]
+    value["p14ReleaseEvidence"]["final"] = {
+        "status": "FAIL", "hardReasons": ["P14_TOP40_JACCARD_HARD_FAIL"], "warnReasons": [],
+    }
+    return value
+
+
+def not_generated_quality_gate():
+    return {
+        "gates": not_generated_gates(),
+        "overallPass": False,
+        "hardFailIds": [],
+        "notes": [
+            "status=not_generated（not_generated）のため新規artifactをpublishしない"
+            "（既存artifactがあればそのまま保持、frozenなdegraded path failure policy）",
+        ],
+        "p14ReleaseEvidence": None,
     }
 
 
@@ -440,6 +534,67 @@ def test_wrong_input_and_context_identity(contract):
     assert_error("INPUT_IDENTITY_MISMATCH", lambda: validate_handoff_parts(parts, wrong_context, reference))
 
 
+def test_module_and_raw_file_bindings_fail_with_canonical_codes(contract):
+    expected, parts, reference = contract
+    modules = list(expected.modules)
+    modules[0] = replace(modules[0], sha256="f" * 64)
+    assert_error(
+        "SOURCE_IDENTITY_MISMATCH",
+        lambda: validate_handoff_parts(parts, replace(expected, modules=tuple(modules)), reference),
+    )
+    raw_files = list(expected.raw_files)
+    raw_files[0] = replace(raw_files[0], sha256="e" * 64)
+    assert_error(
+        "INPUT_IDENTITY_MISMATCH",
+        lambda: validate_handoff_parts(parts, replace(expected, raw_files=tuple(raw_files)), reference),
+    )
+
+
+def test_receipt_and_producer_reference_digest_bindings_fail_closed(contract):
+    expected, parts, reference = contract
+    assert_error(
+        "BATCH_RECEIPT_INVALID",
+        lambda: validate_handoff_parts(parts, expected, replace(reference, receipt_digest="d" * 64)),
+        "DIGEST_MISMATCH",
+    )
+    assert_error(
+        "TRANSPORT_DIGEST_MISMATCH",
+        lambda: validate_handoff_parts(parts, expected, replace(reference, transport_digest="c" * 64)),
+    )
+    assert_error(
+        "OBSERVATION_DIGEST_MISMATCH",
+        lambda: validate_handoff_parts(parts, expected, replace(reference, observation_digest="b" * 64)),
+    )
+
+
+def test_receipt_cannot_link_to_another_observation(contract):
+    _, parts, _ = contract
+    receipt = parts.receipt_value()
+    receipt["observationDigest"] = "d" * 64
+    assert_error(
+        "RECEIPT_OBSERVATION_MISMATCH",
+        lambda: build_batch_receipt_bytes(
+            receipt,
+            observation_bytes=parts.observation_bytes,
+            capture_input_bytes=parts.capture_input_bytes,
+        ),
+    )
+
+
+def test_run_attempt_policy_and_schema_reference_bindings_are_explicit(contract):
+    expected, parts, reference = contract
+    cases = [
+        (replace(reference, run_id="999"), "RUN_ID_MISMATCH"),
+        (replace(reference, run_attempt="3"), "RUN_ATTEMPT_MISMATCH"),
+        (replace(reference, policy_version="p14-other"), "POLICY_BINDING_MISMATCH"),
+        (replace(reference, observation_schema_version="p14-canonical-observation-999"), "UNSUPPORTED_OBSERVATION_SCHEMA"),
+        (replace(reference, handoff_schema_version="p14-handoff-999"), "UNSUPPORTED_HANDOFF_SCHEMA"),
+        (replace(reference, executed_git_sha="9" * 40), "SOURCE_IDENTITY_MISMATCH"),
+    ]
+    for changed, code in cases:
+        assert_error(code, lambda changed=changed: validate_handoff_parts(parts, expected, changed))
+
+
 def test_wrong_schema_is_distinct(contract):
     expected, parts, _ = contract
     value = parts.observation_value()
@@ -512,6 +667,83 @@ def test_private_unapproved_keys_are_rejected_at_every_depth(contract, private_k
     assert_error("HANDOFF_PRIVACY_VIOLATION", lambda: validate_handoff_observation(canonical_json_bytes(value), expected))
 
 
+@pytest.mark.parametrize("artifact", ["capture", "receipt", "envelope"])
+@pytest.mark.parametrize("depth", ["root", "nested"])
+@pytest.mark.parametrize("key", ["holdings", "account", "positions", "portfolio", "arbitraryUnknownKey"])
+def test_f03_multilevel_payloads_fail_closed(contract, artifact, depth, key):
+    _, parts, _ = contract
+    if artifact == "capture":
+        value = parts.capture_input_value()
+        target = value if depth == "root" else value["context"]
+        target[key] = {"nested": [{"value": 1}]}
+        action = lambda: build_handoff_envelope_bytes(
+            observation_bytes=parts.observation_bytes,
+            capture_input_bytes=canonical_json_bytes(value),
+            receipt_bytes=parts.receipt_bytes,
+        )
+    elif artifact == "receipt":
+        value = parts.receipt_value()
+        target = value if depth == "root" else value["report"]["qualityGate"]
+        target[key] = {"nested": [{"value": 1}]}
+        action = lambda: build_batch_receipt_bytes(
+            value,
+            observation_bytes=parts.observation_bytes,
+            capture_input_bytes=parts.capture_input_bytes,
+        )
+    else:
+        value = parts.envelope_value()
+        target = value if depth == "root" else value["observation"]
+        target[key] = {"nested": [{"value": 1}]}
+        changed = HandoffParts(
+            parts.capture_input_bytes,
+            parts.observation_bytes,
+            parts.receipt_bytes,
+            canonical_json_bytes(value),
+        )
+        action = lambda: make_producer_reference(changed)
+    with pytest.raises(HandoffError):
+        action()
+
+
+def test_unknown_key_inside_nested_list_element_fails_closed(contract):
+    expected, parts, _ = contract
+    value = parts.observation_value()
+    value["base"]["candidates"][0]["arbitraryUnknownKey"] = {"nested": [1]}
+    assert_error(
+        "HANDOFF_UNKNOWN_KEY",
+        lambda: validate_handoff_observation(canonical_json_bytes(value), expected),
+    )
+
+
+def test_unknown_dict_replacing_scalar_leaf_fails_closed(contract):
+    _, parts, _ = contract
+    receipt = parts.receipt_value()
+    receipt["terminalStatus"] = {"arbitraryUnknownKey": []}
+    assert_error(
+        "HANDOFF_MALFORMED",
+        lambda: build_batch_receipt_bytes(
+            receipt,
+            observation_bytes=parts.observation_bytes,
+            capture_input_bytes=parts.capture_input_bytes,
+        ),
+        "TYPE",
+    )
+
+
+def test_extra_list_entry_with_unknown_structure_fails_closed(contract):
+    _, parts, _ = contract
+    capture = parts.capture_input_value()
+    capture["joinedCandidateInput"].append({"arbitraryUnknownKey": {"nested": [1]}})
+    assert_error(
+        "HANDOFF_UNKNOWN_KEY",
+        lambda: build_handoff_envelope_bytes(
+            observation_bytes=parts.observation_bytes,
+            capture_input_bytes=canonical_json_bytes(capture),
+            receipt_bytes=parts.receipt_bytes,
+        ),
+    )
+
+
 def test_token_and_private_path_values_are_rejected(contract):
     expected, parts, _ = contract
     for private in ("ghp_" + "x" * 36, "/Users/alice/private/file", "/home/alice/private"):
@@ -575,6 +807,221 @@ def test_receipt_gate_parity_is_fail_closed(contract):
     )
 
 
+def test_batch_shaped_complete_receipt_accepts_empty_gate_notes(contract):
+    _, parts, _ = contract
+    receipt = parts.receipt_value()
+    assert any(gate["note"] == "" for gate in receipt["report"]["qualityGate"]["gates"])
+    rebuilt = build_batch_receipt_bytes(
+        receipt,
+        observation_bytes=parts.observation_bytes,
+        capture_input_bytes=parts.capture_input_bytes,
+    )
+    assert json.loads(rebuilt) == receipt
+
+
+def test_batch_shaped_quality_failure_receipt_is_accepted(contract):
+    _, parts, _ = contract
+    receipt = parts.receipt_value()
+    receipt.update({"terminalStatus": "QUALITY_GATE_FAILED", "artifactAvailable": False})
+    receipt["report"]["qualityGate"] = failed_quality_gate()
+    rebuilt = build_batch_receipt_bytes(
+        receipt,
+        observation_bytes=parts.observation_bytes,
+        capture_input_bytes=parts.capture_input_bytes,
+    )
+    assert json.loads(rebuilt)["report"]["qualityGate"]["hardFailIds"] == ["P-14"]
+    assert_error(
+        "BATCH_RECEIPT_INVALID",
+        lambda: build_handoff_envelope_bytes(
+            observation_bytes=parts.observation_bytes,
+            capture_input_bytes=parts.capture_input_bytes,
+            receipt_bytes=rebuilt,
+        ),
+        "TRANSPORT_STATUS",
+    )
+
+
+def test_batch_shaped_not_generated_receipt_is_accepted(contract):
+    _, parts, _ = contract
+    receipt = {
+        "schemaVersion": RECEIPT_SCHEMA_VERSION,
+        "runIdentity": run_identity(),
+        "policyVersion": POLICY,
+        "executedGitSha": EXECUTED_SHA,
+        "observationDigest": None,
+        "captureInputDigest": digest(parts.capture_input_bytes),
+        "terminalStatus": "NOT_GENERATED",
+        "artifactAvailable": False,
+        "transportStatus": "P14_NOT_EVALUATED",
+        "failureCode": "P14_NOT_EVALUATED",
+        "reportState": "COMPLETE",
+        "report": {
+            "context": context(),
+            "joinStats": join_stats(),
+            "prescreenDuplicateCodes": [],
+            "qualityGate": not_generated_quality_gate(),
+            "engineStatus": "not_generated",
+        },
+    }
+    rebuilt = build_batch_receipt_bytes(receipt, capture_input_bytes=parts.capture_input_bytes)
+    value = json.loads(rebuilt)
+    assert value["report"]["qualityGate"]["overallPass"] is False
+    assert value["report"]["qualityGate"]["hardFailIds"] == []
+
+
+def test_batch_shaped_schema_violations_receipt_is_accepted(contract):
+    _, parts, _ = contract
+    receipt = parts.receipt_value()
+    receipt.update({"terminalStatus": "SCHEMA_VIOLATIONS", "artifactAvailable": False})
+    receipt["report"]["schemaViolations"] = ["status not in allowed enum"]
+    rebuilt = build_batch_receipt_bytes(
+        receipt,
+        observation_bytes=parts.observation_bytes,
+        capture_input_bytes=parts.capture_input_bytes,
+    )
+    assert json.loads(rebuilt)["report"]["schemaViolations"] == ["status not in allowed enum"]
+
+
+def test_report_unavailable_input_failure_receipt_is_accepted():
+    receipt = {
+        "schemaVersion": RECEIPT_SCHEMA_VERSION,
+        "runIdentity": run_identity(),
+        "policyVersion": POLICY,
+        "executedGitSha": EXECUTED_SHA,
+        "observationDigest": None,
+        "captureInputDigest": None,
+        "terminalStatus": "BATCH_INPUT_ERROR",
+        "artifactAvailable": False,
+        "transportStatus": "INPUT_IDENTITY_UNAVAILABLE",
+        "failureCode": "INPUT_IDENTITY_UNAVAILABLE",
+        "reportState": "UNAVAILABLE",
+        "report": None,
+    }
+    assert json.loads(build_batch_receipt_bytes(receipt)) == receipt
+
+
+@pytest.mark.parametrize(
+    "mutation",
+    [
+        lambda receipt: (
+            receipt.update({"terminalStatus": "BATCH_READY", "artifactAvailable": True}),
+            receipt["report"].update({"qualityGate": failed_quality_gate()}),
+        ),
+        lambda receipt: receipt.update({"terminalStatus": "SCHEMA_VIOLATIONS", "artifactAvailable": False}),
+        lambda receipt: receipt["report"].update(
+            {"engineStatus": "not_generated", "qualityGate": not_generated_quality_gate()}
+        ),
+        lambda receipt: receipt.update({"reportState": "UNAVAILABLE", "report": None}),
+    ],
+)
+def test_impossible_terminal_report_combinations_are_rejected(contract, mutation):
+    _, parts, _ = contract
+    receipt = parts.receipt_value()
+    mutation(receipt)
+    assert_error(
+        "BATCH_RECEIPT_INVALID",
+        lambda: build_batch_receipt_bytes(
+            receipt,
+            observation_bytes=parts.observation_bytes,
+            capture_input_bytes=parts.capture_input_bytes,
+        ),
+        "REPORT_STATE",
+    )
+
+
+def test_failure_receipt_cannot_invent_unvalidated_digests():
+    receipt = {
+        "schemaVersion": RECEIPT_SCHEMA_VERSION,
+        "runIdentity": run_identity(),
+        "policyVersion": POLICY,
+        "executedGitSha": EXECUTED_SHA,
+        "observationDigest": "a" * 64,
+        "captureInputDigest": None,
+        "terminalStatus": "BATCH_EXCEPTION",
+        "artifactAvailable": False,
+        "transportStatus": "CANONICAL_CONSTRUCTION_FAILED",
+        "failureCode": "CANONICAL_CONSTRUCTION_FAILED",
+        "reportState": "UNAVAILABLE",
+        "report": None,
+    }
+    assert_error(
+        "BATCH_RECEIPT_INVALID",
+        lambda: build_batch_receipt_bytes(receipt),
+        "DIGEST_MISMATCH",
+    )
+
+
+@pytest.mark.parametrize("replacement", [[], {}])
+@pytest.mark.parametrize("field", ["tier", "engineStatus", "confidenceState"])
+def test_malformed_enum_containers_raise_typed_handoff_error(contract, field, replacement):
+    expected, parts, _ = contract
+    value = parts.observation_value()
+    if field == "tier":
+        value["base"]["candidates"][0]["tier"] = replacement
+    elif field == "engineStatus":
+        value["base"]["engineStatus"] = replacement
+    else:
+        value["diagnosticAvailability"]["confidenceInvariant"]["state"] = replacement
+    assert_error(
+        "HANDOFF_MALFORMED",
+        lambda: validate_handoff_observation(canonical_json_bytes(value), expected),
+        "TYPE",
+    )
+
+
+@pytest.mark.parametrize("replacement", [[], {}])
+@pytest.mark.parametrize("field", ["terminalStatus", "gateId", "gateStatus", "gateNote"])
+def test_malformed_receipt_enum_and_nested_containers_are_typed(contract, field, replacement):
+    _, parts, _ = contract
+    receipt = parts.receipt_value()
+    if field == "terminalStatus":
+        receipt["terminalStatus"] = replacement
+    elif field == "gateId":
+        receipt["report"]["qualityGate"]["gates"][0]["id"] = replacement
+    elif field == "gateStatus":
+        receipt["report"]["qualityGate"]["gates"][0]["status"] = replacement
+    else:
+        receipt["report"]["qualityGate"]["gates"][0]["note"] = replacement
+    assert_error(
+        "HANDOFF_MALFORMED",
+        lambda: build_batch_receipt_bytes(
+            receipt,
+            observation_bytes=parts.observation_bytes,
+            capture_input_bytes=parts.capture_input_bytes,
+        ),
+        "TYPE",
+    )
+
+
+@pytest.mark.parametrize(
+    ("value", "accepted"),
+    [(40, True), (40.0, False), (True, False), (41, False)],
+)
+def test_top_k_parameter_uses_exact_integer_type(contract, value, accepted):
+    expected, parts, _ = contract
+    observation = parts.observation_value()
+    observation["parameters"]["topK"] = value
+    payload = canonical_json_bytes(observation)
+    if accepted:
+        validate_handoff_observation(payload, expected)
+    else:
+        assert_error("HANDOFF_UNKNOWN_KEY", lambda: validate_handoff_observation(payload, expected))
+
+
+def test_lone_surrogate_is_invalid_utf8_not_generic_type(contract):
+    expected, parts, _ = contract
+    observation = parts.observation_value()
+    observation["runIdentity"]["event"] = "\ud800"
+    payload = json.dumps(
+        observation, ensure_ascii=True, allow_nan=False, sort_keys=True, separators=(",", ":")
+    ).encode("ascii")
+    assert_error(
+        "HANDOFF_MALFORMED",
+        lambda: validate_handoff_observation(payload, expected),
+        "INVALID_UTF8",
+    )
+
+
 def test_missing_payload_and_reference_priority(contract):
     expected, parts, _ = contract
     assert_error("HANDOFF_MISSING", lambda: validate_handoff_parts(None, expected, None), "PRODUCER_REFERENCE_MISSING")
@@ -586,6 +1033,24 @@ def test_incomplete_reference_is_rejected(contract):
     value = reference.to_value()
     del value["receiptDigest"]
     assert_error("PRODUCER_REFERENCE_MISSING", lambda: validate_handoff_parts(parts, expected, value))
+
+
+def test_read_reference_failures_are_normalized(contract, tmp_path):
+    expected, parts, reference = contract
+    root = tmp_path / "handoff-root"
+    claim = claim_attempt(root, expected.run_id, expected.run_attempt)
+    write_handoff_parts(claim, parts)
+    incomplete = reference.to_value()
+    del incomplete["receiptDigest"]
+    assert_error("PRODUCER_REFERENCE_MISSING", lambda: read_handoff_parts(root, expected, incomplete))
+    wrong_type = reference.to_value()
+    wrong_type["runId"] = []
+    assert_error("PRODUCER_REFERENCE_MISSING", lambda: read_handoff_parts(root, expected, wrong_type))
+
+
+def test_read_without_reference_and_without_files_is_handoff_missing(contract, tmp_path):
+    expected, _, _ = contract
+    assert_error("HANDOFF_MISSING", lambda: read_handoff_parts(tmp_path / "missing", expected, None))
 
 
 def test_self_consistent_replacement_still_fails_independent_reference(contract):
@@ -613,6 +1078,89 @@ def test_first_claim_succeeds_and_second_claim_fails(tmp_path):
     assert_error("DUPLICATE_PRODUCER_OUTPUT", lambda: claim_attempt(root, "12345", "2"))
 
 
+def test_concurrent_os_process_claim_has_one_winner_and_deterministic_losers(tmp_path):
+    process_context = multiprocessing.get_context("fork")
+    contender_count = 8
+    barrier = process_context.Barrier(contender_count)
+    queue = process_context.Queue()
+    root = str(tmp_path / "handoff-root")
+    processes = [
+        process_context.Process(
+            target=_claim_contender,
+            args=(root, "12345", "2", barrier, queue),
+        )
+        for _ in range(contender_count)
+    ]
+    for process in processes:
+        process.start()
+    results = [queue.get(timeout=20) for _ in processes]
+    for process in processes:
+        process.join(timeout=20)
+        assert process.exitcode == 0
+    winners = [result for result in results if result[0] == "WIN"]
+    losers = [result for result in results if result[0] == "LOSE"]
+    assert len(winners) == 1
+    assert len(losers) == contender_count - 1
+    assert {result[1] for result in losers} == {"DUPLICATE_PRODUCER_OUTPUT"}
+    attempt_directory = Path(winners[0][2])
+    marker_before = (attempt_directory / handoff.CLAIM_FILE).read_bytes()
+    assert {path.name for path in attempt_directory.iterdir()} == {handoff.CLAIM_FILE}
+    assert json.loads(marker_before)["ownerNonce"] == winners[0][1]
+    assert (attempt_directory / handoff.CLAIM_FILE).read_bytes() == marker_before
+
+
+def test_claim_owner_nonce_is_fresh_and_not_public(contract, tmp_path):
+    _, parts, reference = contract
+    first = claim_attempt(tmp_path / "root-a", "1", "1")
+    second = claim_attempt(tmp_path / "root-b", "1", "1")
+    assert first.owner_nonce != second.owner_nonce
+    assert len(first.owner_nonce) == len(second.owner_nonce) == 64
+    public_bytes = b"".join(
+        (parts.capture_input_bytes, parts.observation_bytes, parts.receipt_bytes, parts.envelope_bytes)
+    ) + canonical_json_bytes(reference.to_value())
+    assert first.owner_nonce.encode() not in public_bytes
+    assert second.owner_nonce.encode() not in public_bytes
+
+
+def test_forged_claim_with_wrong_nonce_cannot_write(contract, tmp_path):
+    expected, parts, _ = contract
+    claim = claim_attempt(tmp_path / "handoff-root", expected.run_id, expected.run_attempt)
+    forged = replace(claim, owner_nonce="f" * 64)
+    assert_error("HANDOFF_LOCATION_INVALID", lambda: write_handoff_parts(forged, parts))
+    assert not (Path(claim.attempt_directory) / CLAIM_CONSUMED_FILE).exists()
+
+
+def test_claim_from_different_root_cannot_write(contract, tmp_path):
+    expected, parts, _ = contract
+    claim = claim_attempt(tmp_path / "handoff-root", expected.run_id, expected.run_attempt)
+    forged = replace(claim, root=str(tmp_path / "different-root"))
+    assert_error("HANDOFF_LOCATION_INVALID", lambda: write_handoff_parts(forged, parts))
+
+
+def test_second_process_cannot_become_owner_from_visible_metadata(contract, tmp_path):
+    expected, parts, _ = contract
+    claim = claim_attempt(tmp_path / "handoff-root", expected.run_id, expected.run_attempt)
+    process_context = multiprocessing.get_context("fork")
+    queue = process_context.Queue()
+    copied_metadata = (
+        claim.root,
+        claim.attempt_directory,
+        claim.run_id,
+        claim.run_attempt,
+        "f" * 64,
+    )
+    process = process_context.Process(
+        target=_forged_write_contender,
+        args=(copied_metadata, parts, queue),
+    )
+    process.start()
+    result = queue.get(timeout=20)
+    process.join(timeout=20)
+    assert process.exitcode == 0
+    assert result == ("HANDOFF_LOCATION_INVALID", None)
+    assert not (Path(claim.attempt_directory) / CLAIM_CONSUMED_FILE).exists()
+
+
 def test_successful_atomic_install_and_read(contract, tmp_path):
     expected, parts, reference = contract
     root = tmp_path / "handoff-root"
@@ -632,9 +1180,29 @@ def test_duplicate_write_cannot_overwrite_successful_producer(contract, tmp_path
     root = tmp_path / "handoff-root"
     claim = claim_attempt(root, expected.run_id, expected.run_attempt)
     write_handoff_parts(claim, parts)
-    before = (Path(claim.attempt_directory) / HANDOFF_FILE).read_bytes()
+    manifest = Path(claim.attempt_directory) / HANDOFF_FILE
+    before = (manifest.read_bytes(), manifest.stat().st_ino)
     assert_error("DUPLICATE_PRODUCER_OUTPUT", lambda: write_handoff_parts(claim, parts))
-    assert (Path(claim.attempt_directory) / HANDOFF_FILE).read_bytes() == before
+    assert (manifest.read_bytes(), manifest.stat().st_ino) == before
+
+
+def test_claim_is_consumed_after_authoritative_write_failure(contract, tmp_path, monkeypatch):
+    expected, parts, reference = contract
+    root = tmp_path / "handoff-root"
+    claim = claim_attempt(root, expected.run_id, expected.run_attempt)
+    original = handoff._atomic_no_overwrite
+
+    def fail_first_payload(directory, file_name, payload):
+        if file_name == CAPTURE_INPUT_FILE:
+            raise HandoffError("HANDOFF_WRITE_FAILED")
+        return original(directory, file_name, payload)
+
+    monkeypatch.setattr(handoff, "_atomic_no_overwrite", fail_first_payload)
+    assert_error("HANDOFF_WRITE_FAILED", lambda: write_handoff_parts(claim, parts))
+    assert (Path(claim.attempt_directory) / CLAIM_CONSUMED_FILE).is_file()
+    monkeypatch.setattr(handoff, "_atomic_no_overwrite", original)
+    assert_error("DUPLICATE_PRODUCER_OUTPUT", lambda: write_handoff_parts(claim, parts))
+    assert_error("STALE_HANDOFF", lambda: read_handoff_parts(root, expected, reference))
 
 
 def test_manifest_last_failure_leaves_partial_output_nonauthoritative(contract, tmp_path, monkeypatch):
@@ -686,7 +1254,7 @@ def test_storage_is_bounded_to_fixed_files_and_no_cleanup(contract, tmp_path):
     write_handoff_parts(claim, parts)
     names = {path.name for path in Path(claim.attempt_directory).iterdir()}
     assert names == {
-        handoff.CLAIM_FILE, CAPTURE_INPUT_FILE, RECEIPT_FILE, HANDOFF_FILE,
+        handoff.CLAIM_FILE, CLAIM_CONSUMED_FILE, CAPTURE_INPUT_FILE, RECEIPT_FILE, HANDOFF_FILE,
         f"observation-{digest(parts.observation_bytes)}.json",
     }
     assert Path(claim.attempt_directory).exists()
@@ -706,7 +1274,9 @@ def test_claim_object_cannot_be_redirected(contract, tmp_path):
     expected, parts, _ = contract
     root = tmp_path / "handoff-root"
     claim = claim_attempt(root, expected.run_id, expected.run_attempt)
-    forged = AttemptClaim(claim.root, str(tmp_path / "elsewhere"), claim.run_id, claim.run_attempt)
+    forged = AttemptClaim(
+        claim.root, str(tmp_path / "elsewhere"), claim.run_id, claim.run_attempt, claim.owner_nonce
+    )
     assert_error("HANDOFF_LOCATION_INVALID", lambda: write_handoff_parts(forged, parts))
 
 
@@ -806,12 +1376,11 @@ def test_capture_rejects_nested_unapproved_private_data():
     bad = joined_input()
     bad[0]["price"] = {"holdings": [1]}
     assert_error(
-        "HANDOFF_MALFORMED",
+        "HANDOFF_PRIVACY_VIOLATION",
         lambda: build_capture_input_bytes(
             joined_candidate_input=bad, context=context(), join_stats=join_stats(),
             source_updated_at=None, candidates_updated_at=None,
         ),
-        "TYPE",
     )
 
 

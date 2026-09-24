@@ -11,6 +11,7 @@ import json
 import math
 import os
 import re
+import secrets
 import stat
 import tempfile
 from dataclasses import dataclass
@@ -36,6 +37,7 @@ CAPTURE_INPUT_FILE = "capture-input.json"
 RECEIPT_FILE = "batch-receipt.json"
 HANDOFF_FILE = "handoff.json"
 CLAIM_FILE = ".claim"
+CLAIM_CONSUMED_FILE = ".claim-consumed"
 
 FIXED_MODULE_PATHS = (
     "data/candidate_funnel_batch.py",
@@ -371,6 +373,7 @@ class AttemptClaim:
     attempt_directory: str
     run_id: str
     run_attempt: str
+    owner_nonce: str
 
 
 class _DuplicateKey(Exception):
@@ -379,6 +382,15 @@ class _DuplicateKey(Exception):
 
 class _NonfiniteJSON(Exception):
     pass
+
+
+def _caused_by_unicode_encode_error(exc: BaseException) -> bool:
+    current: BaseException | None = exc
+    while current is not None:
+        if isinstance(current, UnicodeEncodeError):
+            return True
+        current = current.__cause__
+    return False
 
 
 def _require_exact_keys(value: Any, expected: frozenset[str], label: str) -> dict[str, Any]:
@@ -416,6 +428,21 @@ def _require_string(value: Any, label: str, *, nullable: bool = False) -> str | 
         raise HandoffError("HANDOFF_MALFORMED", "TYPE")
     _scan_string(value)
     return value
+
+
+def _require_string_allow_empty(value: Any, label: str) -> str:
+    if type(value) is not str:
+        raise HandoffError("HANDOFF_MALFORMED", "TYPE")
+    _scan_string(value)
+    return value
+
+
+def _require_enum(value: Any, allowed: frozenset[str] | set[str], label: str) -> str:
+    result = _require_string(value, label)
+    assert result is not None
+    if result not in allowed:
+        raise HandoffError("HANDOFF_MALFORMED", "TYPE")
+    return result
 
 
 def _require_identity_string(value: Any) -> str:
@@ -508,12 +535,32 @@ def _decode_canonical(payload: bytes) -> Any:
         encoded = canonical_json_bytes(value)
     except _NonfiniteJSON as exc:
         raise HandoffError("HANDOFF_MALFORMED", "NONFINITE_JSON") from exc
-    except Exception as exc:
+    except UnicodeEncodeError as exc:
+        raise HandoffError("HANDOFF_MALFORMED", "INVALID_UTF8") from exc
+    except ObservationContractError as exc:
+        if _caused_by_unicode_encode_error(exc):
+            raise HandoffError("HANDOFF_MALFORMED", "INVALID_UTF8") from exc
         raise HandoffError("HANDOFF_MALFORMED", "TYPE") from exc
     if encoded != payload:
         raise HandoffError("HANDOFF_MALFORMED", "NONCANONICAL_ENCODING")
     _privacy_scan(value)
     return value
+
+
+def _canonicalize_untrusted(value: Any) -> tuple[Any, bytes]:
+    """Detach an untrusted JSON value while preserving typed integrity errors."""
+    try:
+        _walk_finite(value)
+        payload = canonical_json_bytes(value)
+    except _NonfiniteJSON as exc:
+        raise HandoffError("HANDOFF_MALFORMED", "NONFINITE_JSON") from exc
+    except UnicodeEncodeError as exc:
+        raise HandoffError("HANDOFF_MALFORMED", "INVALID_UTF8") from exc
+    except ObservationContractError as exc:
+        if _caused_by_unicode_encode_error(exc):
+            raise HandoffError("HANDOFF_MALFORMED", "INVALID_UTF8") from exc
+        raise HandoffError("HANDOFF_MALFORMED", "TYPE") from exc
+    return _decode_canonical(payload), payload
 
 
 def _digest_bytes(payload: bytes) -> str:
@@ -601,8 +648,7 @@ def _validate_candidate(candidate: Any, index: int) -> None:
     if candidate["artifactIndex"] != index or type(candidate["artifactIndex"]) is not int:
         raise HandoffError("HANDOFF_MALFORMED", "TYPE")
     _require_string(candidate["code"], "candidate code")
-    if candidate["tier"] not in ALL_TIERS:
-        raise HandoffError("HANDOFF_MALFORMED", "TYPE")
+    _require_enum(candidate["tier"], ALL_TIERS, "candidate tier")
     if candidate["marketRank"] is not None:
         _require_positive_int(candidate["marketRank"], "market rank")
     for key in ("prescreenScore", "marketScore", "rawCompositeScore", "dataConfidence"):
@@ -666,8 +712,7 @@ def compute_confidence_invariant(base_candidates: Sequence[Mapping[str, Any]], p
 
 def _validate_confidence_invariant(value: Any) -> None:
     item = _require_exact_keys(value, _CONFIDENCE_KEYS, "confidence invariant")
-    if item["state"] not in {"VERIFIED", "NOT_VERIFIABLE", "NOT_APPLICABLE"}:
-        raise HandoffError("HANDOFF_MALFORMED", "TYPE")
+    _require_enum(item["state"], {"VERIFIED", "NOT_VERIFIABLE", "NOT_APPLICABLE"}, "confidence state")
     if item["basis"] != "PUBLIC_ROUNDED_ONLY":
         raise HandoffError("HANDOFF_MALFORMED", "TYPE")
     _require_nonnegative_int(item["comparedCount"], "compared count")
@@ -685,8 +730,11 @@ def _validate_confidence_invariant(value: Any) -> None:
         "NOT_APPLICABLE": "EMPTY_POPULATION",
     }.get(item["state"])
     if item["state"] == "NOT_VERIFIABLE":
-        if item["reason"] not in {"CONFIDENCE_VALUE_UNAVAILABLE", "IDENTITY_NOT_COMPARABLE"}:
-            raise HandoffError("HANDOFF_MALFORMED", "TYPE")
+        _require_enum(
+            item["reason"],
+            {"CONFIDENCE_VALUE_UNAVAILABLE", "IDENTITY_NOT_COMPARABLE"},
+            "confidence reason",
+        )
     elif item["reason"] != expected_reason:
         raise HandoffError("HANDOFF_MALFORMED", "TYPE")
 
@@ -699,11 +747,18 @@ def _validate_observation_value(value: Any) -> dict[str, Any]:
     _validate_run_identity(observation["runIdentity"])
     _validate_source_identity(observation["sourceIdentity"])
     _validate_input_identity(observation["inputIdentity"])
-    if observation["parameters"] != EXPECTED_PARAMETERS:
+    parameters = observation["parameters"]
+    if (
+        type(parameters) is not dict
+        or set(parameters) != set(EXPECTED_PARAMETERS)
+        or any(type(parameters[key]) is not type(expected) for key, expected in EXPECTED_PARAMETERS.items())
+        or parameters != EXPECTED_PARAMETERS
+    ):
         raise HandoffError("HANDOFF_UNKNOWN_KEY")
     for side_name in ("base", "perturbed"):
         side = _require_exact_keys(observation[side_name], _SIDE_KEYS, side_name)
-        if side["engineStatus"] not in {"generated", "not_generated"} or type(side["candidates"]) is not list:
+        _require_enum(side["engineStatus"], {"generated", "not_generated"}, "engine status")
+        if type(side["candidates"]) is not list:
             raise HandoffError("HANDOFF_MALFORMED", "TYPE")
         for index, candidate in enumerate(side["candidates"]):
             _validate_candidate(candidate, index)
@@ -777,14 +832,17 @@ def build_observation_bytes(
     base: Mapping[str, Any],
     perturbed: Mapping[str, Any],
 ) -> bytes:
-    base_owned = json.loads(canonical_json_bytes(base))
-    perturbed_owned = json.loads(canonical_json_bytes(perturbed))
+    base_owned, _ = _canonicalize_untrusted(base)
+    perturbed_owned, _ = _canonicalize_untrusted(perturbed)
+    run_owned, _ = _canonicalize_untrusted(run_identity)
+    source_owned, _ = _canonicalize_untrusted(source_identity)
+    input_owned, _ = _canonicalize_untrusted(input_identity)
     value = {
         "schemaVersion": OBSERVATION_SCHEMA_VERSION,
         "policyVersion": policy_version,
-        "runIdentity": json.loads(canonical_json_bytes(run_identity)),
-        "sourceIdentity": json.loads(canonical_json_bytes(source_identity)),
-        "inputIdentity": json.loads(canonical_json_bytes(input_identity)),
+        "runIdentity": run_owned,
+        "sourceIdentity": source_owned,
+        "inputIdentity": input_owned,
         "parameters": json.loads(canonical_json_bytes(EXPECTED_PARAMETERS)),
         "base": base_owned,
         "perturbed": perturbed_owned,
@@ -876,9 +934,10 @@ def build_capture_input_bytes(
         "sourceUpdatedAt": source_updated_at,
         "candidatesUpdatedAt": candidates_updated_at,
     }
+    value, payload = _canonicalize_untrusted(value)
     _validate_capture_value(value)
     _privacy_scan(value)
-    return canonical_json_bytes(value)
+    return payload
 
 
 _REPORT_REQUIRED_KEYS = frozenset(
@@ -999,8 +1058,7 @@ def _validate_shortlist_entries(value: Any) -> None:
     for entry in value:
         item = _require_exact_keys(entry, _SHORTLIST_ENTRY_KEYS, "shortlist entry")
         _require_string(item["code"], "shortlist code")
-        if item["tier"] not in ALL_TIERS:
-            raise HandoffError("HANDOFF_MALFORMED", "TYPE")
+        _require_enum(item["tier"], ALL_TIERS, "shortlist tier")
         _require_positive_int(item["marketRank"], "shortlist market rank")
         _require_nonnegative_int(item["artifactIndex"], "shortlist artifact index")
 
@@ -1038,15 +1096,20 @@ def _validate_release(value: Any, policy_version: str) -> None:
         if type(shortlist[key]) is not bool:
             raise HandoffError("HANDOFF_MALFORMED", "TYPE")
     final = _require_exact_keys(release["final"], _FINAL_KEYS, "release final")
-    if final["status"] not in {"PASS", "WARN", "FAIL"}:
-        raise HandoffError("HANDOFF_MALFORMED", "TYPE")
+    _require_enum(final["status"], {"PASS", "WARN", "FAIL"}, "release status")
     _validate_string_list(final["hardReasons"], "hard reasons", unique=True)
     _validate_string_list(final["warnReasons"], "warn reasons", unique=True)
     if release["p14ProvesOfficialDecisionStability"] is not False:
         raise HandoffError("BATCH_RECEIPT_INVALID", "OFFICIAL_DECISION_CLAIM")
 
 
-def _validate_quality_gate(value: Any, policy_version: str, sectors: frozenset[str]) -> None:
+def _validate_quality_gate(
+    value: Any,
+    policy_version: str,
+    sectors: frozenset[str],
+    *,
+    engine_status: str,
+) -> None:
     quality = _require_exact_keys(value, _QUALITY_KEYS, "quality gate")
     if type(quality["gates"]) is not list or type(quality["overallPass"]) is not bool:
         raise HandoffError("HANDOFF_MALFORMED", "TYPE")
@@ -1054,16 +1117,20 @@ def _validate_quality_gate(value: Any, policy_version: str, sectors: frozenset[s
     fail_ids: list[str] = []
     for gate in quality["gates"]:
         item = _require_exact_keys(gate, _GATE_KEYS, "quality gate item")
+        if type(item["id"]) is not str:
+            raise HandoffError("HANDOFF_MALFORMED", "TYPE")
         if item["id"] not in _ALLOWED_GATE_IDS or item["id"] in ids:
             raise HandoffError("BATCH_RECEIPT_INVALID", "GATE_ID")
         ids.append(item["id"])
         _require_string(item["metric"], "gate metric")
+        if type(item["status"]) is not str:
+            raise HandoffError("HANDOFF_MALFORMED", "TYPE")
         if item["status"] not in _GATE_STATUSES:
             raise HandoffError("HANDOFF_MALFORMED", "TYPE")
         if item["status"] == "FAIL":
             fail_ids.append(item["id"])
-        if item["note"] is not None:
-            _require_string(item["note"], "gate note")
+        # candidate_funnel_batch._gate deliberately uses "" as its default.
+        _require_string_allow_empty(item["note"], "gate note")
         threshold = item["threshold"]
         if threshold is not None and type(threshold) not in (bool, int, float, str):
             raise HandoffError("HANDOFF_MALFORMED", "TYPE")
@@ -1074,13 +1141,32 @@ def _validate_quality_gate(value: Any, policy_version: str, sectors: frozenset[s
         raise HandoffError("BATCH_RECEIPT_INVALID", "GATE_ID")
     if type(quality["hardFailIds"]) is not list or quality["hardFailIds"] != fail_ids:
         raise HandoffError("BATCH_RECEIPT_INVALID", "GATE_PARITY")
-    if quality["overallPass"] is not (not fail_ids):
-        raise HandoffError("BATCH_RECEIPT_INVALID", "GATE_PARITY")
     if type(quality["notes"]) is not list:
         raise HandoffError("HANDOFF_MALFORMED", "TYPE")
     for note in quality["notes"]:
         _require_string(note, "quality note")
-    if quality["p14ReleaseEvidence"] is not None:
+    if engine_status == "not_generated":
+        expected_ids = [f"P-{index:02d}" for index in range(1, 16)]
+        if (
+            ids != expected_ids
+            or quality["overallPass"] is not False
+            or fail_ids
+            or quality["hardFailIds"]
+            or quality["p14ReleaseEvidence"] is not None
+            or quality["gates"][0]["status"] != "RECORD"
+            or any(
+                gate["status"] != "N/A" or gate["value"] is not None or gate["threshold"] != "N/A"
+                for gate in quality["gates"][1:]
+            )
+        ):
+            raise HandoffError("BATCH_RECEIPT_INVALID", "GATE_PARITY")
+    else:
+        if quality["overallPass"] is not (not fail_ids):
+            raise HandoffError("BATCH_RECEIPT_INVALID", "GATE_PARITY")
+        if any(gate["status"] == "N/A" for gate in quality["gates"]):
+            raise HandoffError("BATCH_RECEIPT_INVALID", "GATE_PARITY")
+        if quality["p14ReleaseEvidence"] is None:
+            raise HandoffError("BATCH_RECEIPT_INVALID", "GATE_PARITY")
         _validate_release(quality["p14ReleaseEvidence"], policy_version)
 
 
@@ -1105,11 +1191,49 @@ def _validate_report(value: Any, policy_version: str, sectors: frozenset[str]) -
     _validate_context(value["context"])
     _validate_join_stats(value["joinStats"])
     _validate_string_list(value["prescreenDuplicateCodes"], "duplicate codes", unique=True, sorted_values=True)
-    _validate_quality_gate(value["qualityGate"], policy_version, sectors)
-    if value["engineStatus"] not in {"generated", "not_generated"}:
-        raise HandoffError("HANDOFF_MALFORMED", "TYPE")
+    engine_status = _require_enum(value["engineStatus"], {"generated", "not_generated"}, "report engine status")
+    _validate_quality_gate(value["qualityGate"], policy_version, sectors, engine_status=engine_status)
     if "schemaViolations" in value:
         _validate_string_list(value["schemaViolations"], "schema violations")
+
+
+def _validate_terminal_report_consistency(receipt: Mapping[str, Any]) -> None:
+    """Enforce the finite terminal/report model derived from run_batch returns."""
+    terminal = receipt["terminalStatus"]
+    if receipt["transportStatus"] == "READY" and receipt["reportState"] != "COMPLETE":
+        raise HandoffError("BATCH_RECEIPT_INVALID", "REPORT_STATE")
+    if receipt["reportState"] == "UNAVAILABLE":
+        return
+
+    report = receipt["report"]
+    quality = report["qualityGate"]
+    has_schema_violations = "schemaViolations" in report and bool(report["schemaViolations"])
+    if terminal == "BATCH_READY":
+        valid = report["engineStatus"] == "generated" and quality["overallPass"] is True and not has_schema_violations
+    elif terminal == "QUALITY_GATE_FAILED":
+        valid = (
+            report["engineStatus"] == "generated"
+            and quality["overallPass"] is False
+            and bool(quality["hardFailIds"])
+            and not has_schema_violations
+        )
+    elif terminal == "NOT_GENERATED":
+        valid = (
+            report["engineStatus"] == "not_generated"
+            and quality["overallPass"] is False
+            and quality["hardFailIds"] == []
+            and not has_schema_violations
+            and receipt["observationDigest"] is None
+            and receipt["transportStatus"] == "P14_NOT_EVALUATED"
+            and receipt["failureCode"] == "P14_NOT_EVALUATED"
+        )
+    elif terminal == "SCHEMA_VIOLATIONS":
+        valid = report["engineStatus"] == "generated" and quality["overallPass"] is True and has_schema_violations
+    else:
+        # BATCH_INPUT_ERROR and BATCH_EXCEPTION occur before a final report.
+        valid = False
+    if not valid:
+        raise HandoffError("BATCH_RECEIPT_INVALID", "REPORT_STATE")
 
 
 def _validate_receipt_value(
@@ -1127,8 +1251,8 @@ def _validate_receipt_value(
     for key in ("observationDigest", "captureInputDigest"):
         if receipt[key] is not None:
             _require_digest(receipt[key], key)
-    if receipt["terminalStatus"] not in TERMINAL_STATUSES or receipt["transportStatus"] not in TRANSPORT_STATUSES:
-        raise HandoffError("HANDOFF_MALFORMED", "TYPE")
+    _require_enum(receipt["terminalStatus"], TERMINAL_STATUSES, "terminal status")
+    _require_enum(receipt["transportStatus"], TRANSPORT_STATUSES, "transport status")
     if type(receipt["artifactAvailable"]) is not bool:
         raise HandoffError("HANDOFF_MALFORMED", "TYPE")
     if receipt["artifactAvailable"] is not (receipt["terminalStatus"] == "BATCH_READY"):
@@ -1137,6 +1261,8 @@ def _validate_receipt_value(
         if receipt["failureCode"] is not None or receipt["observationDigest"] is None or receipt["captureInputDigest"] is None:
             raise HandoffError("BATCH_RECEIPT_INVALID", "TRANSPORT_STATUS")
     else:
+        if type(receipt["failureCode"]) is not str:
+            raise HandoffError("BATCH_RECEIPT_INVALID", "FAILURE_CODE")
         if receipt["failureCode"] not in (HANDOFF_ERROR_CODES | TRANSPORT_STATUSES):
             raise HandoffError("BATCH_RECEIPT_INVALID", "FAILURE_CODE")
     if receipt["reportState"] == "COMPLETE":
@@ -1153,6 +1279,7 @@ def _validate_receipt_value(
             raise HandoffError("BATCH_RECEIPT_INVALID", "REPORT_STATE")
     else:
         raise HandoffError("HANDOFF_MALFORMED", "TYPE")
+    _validate_terminal_report_consistency(receipt)
     if observation is not None:
         if receipt["observationDigest"] != _digest_bytes(canonical_json_bytes(observation)):
             raise HandoffError("RECEIPT_OBSERVATION_MISMATCH")
@@ -1173,7 +1300,7 @@ def build_batch_receipt_bytes(
     observation_bytes: bytes | None = None,
     capture_input_bytes: bytes | None = None,
 ) -> bytes:
-    value = json.loads(canonical_json_bytes(receipt))
+    value, payload = _canonicalize_untrusted(receipt)
     observation = _decode_canonical(observation_bytes) if observation_bytes is not None else None
     capture = _decode_canonical(capture_input_bytes) if capture_input_bytes is not None else None
     if observation is not None:
@@ -1181,8 +1308,12 @@ def build_batch_receipt_bytes(
     if capture is not None:
         _validate_capture_value(capture)
     _validate_receipt_value(value, observation=observation, capture=capture)
+    if observation is None and value["observationDigest"] is not None:
+        raise HandoffError("BATCH_RECEIPT_INVALID", "DIGEST_MISMATCH")
+    if capture is None and value["captureInputDigest"] is not None:
+        raise HandoffError("BATCH_RECEIPT_INVALID", "DIGEST_MISMATCH")
     _privacy_scan(value)
-    return canonical_json_bytes(value)
+    return payload
 
 
 def _part_record(file_name: str, payload: bytes) -> dict[str, Any]:
@@ -1208,7 +1339,7 @@ def build_handoff_envelope_bytes(
     _validate_observation_value(observation)
     _validate_capture_value(capture)
     _validate_receipt_value(receipt, observation=observation, capture=capture)
-    if receipt["transportStatus"] != "READY":
+    if receipt["transportStatus"] != "READY" or receipt["terminalStatus"] != "BATCH_READY":
         raise HandoffError("BATCH_RECEIPT_INVALID", "TRANSPORT_STATUS")
     observation_digest = _digest_bytes(observation_bytes)
     value = {
@@ -1306,7 +1437,7 @@ def _validate_parts_intrinsic(parts: HandoffParts) -> dict[str, Any]:
     _validate_observation_value(observation)
     _validate_capture_value(capture)
     _validate_receipt_value(receipt, observation=observation, capture=capture)
-    if receipt["transportStatus"] != "READY":
+    if receipt["transportStatus"] != "READY" or receipt["terminalStatus"] != "BATCH_READY":
         raise HandoffError("BATCH_RECEIPT_INVALID", "TRANSPORT_STATUS")
     expected_records = (
         (envelope["observation"], parts.observation_bytes, "OBSERVATION_DIGEST_MISMATCH"),
@@ -1344,7 +1475,7 @@ def validate_handoff_parts(
     if not isinstance(producer_reference, ProducerReference):
         try:
             producer_reference = ProducerReference.from_value(producer_reference)
-        except Exception as exc:
+        except (HandoffError, TypeError, ValueError, KeyError) as exc:
             raise HandoffError("PRODUCER_REFERENCE_MISSING") from exc
     _validate_reference(producer_reference, expected_binding)
     if parts is None:
@@ -1476,8 +1607,12 @@ def claim_attempt(root: str | os.PathLike[str], run_id: str, run_attempt: str) -
     else:
         try:
             root_path.mkdir(mode=0o700, parents=True, exist_ok=False)
+        except FileExistsError:
+            # A concurrent claimant may have created the shared root first.
+            pass
         except OSError as exc:
             raise HandoffError("HANDOFF_WRITE_FAILED") from exc
+        _require_private_directory(root_path)
     run_path = root_path / f"run-{run_id}"
     if run_path.exists():
         _require_private_directory(run_path)
@@ -1485,9 +1620,34 @@ def claim_attempt(root: str | os.PathLike[str], run_id: str, run_attempt: str) -
         _mkdir_private(run_path, exclusive=False)
     attempt_path = run_path / f"attempt-{run_attempt}"
     _mkdir_private(attempt_path, exclusive=True)
-    claim_payload = canonical_json_bytes({"runAttempt": run_attempt, "runId": run_id})
+    owner_nonce = secrets.token_hex(32)
+    claim_payload = canonical_json_bytes(
+        {"ownerNonce": owner_nonce, "runAttempt": run_attempt, "runId": run_id}
+    )
     _atomic_no_overwrite(attempt_path, CLAIM_FILE, claim_payload)
-    return AttemptClaim(str(root_path), str(attempt_path), run_id, run_attempt)
+    return AttemptClaim(str(root_path), str(attempt_path), run_id, run_attempt, owner_nonce)
+
+
+def _claim_marker_value(path: Path) -> dict[str, Any]:
+    try:
+        info = path.lstat()
+    except OSError as exc:
+        raise HandoffError("STALE_HANDOFF") from exc
+    if stat.S_ISLNK(info.st_mode) or not stat.S_ISREG(info.st_mode):
+        raise HandoffError("HANDOFF_LOCATION_INVALID")
+    try:
+        value = _decode_canonical(path.read_bytes())
+    except OSError as exc:
+        raise HandoffError("HANDOFF_LOCATION_INVALID") from exc
+    marker = _require_exact_keys(
+        value,
+        frozenset({"ownerNonce", "runAttempt", "runId"}),
+        "claim marker",
+    )
+    _require_digest(marker["ownerNonce"], "claim owner nonce")
+    _require_positive_decimal(marker["runId"], "claim run id")
+    _require_positive_decimal(marker["runAttempt"], "claim run attempt")
+    return marker
 
 
 def _validated_claim(claim: AttemptClaim) -> Path:
@@ -1499,10 +1659,29 @@ def _validated_claim(claim: AttemptClaim) -> Path:
     if path != expected:
         raise HandoffError("HANDOFF_LOCATION_INVALID")
     _require_private_directory(path)
-    marker = path / CLAIM_FILE
-    if marker.is_symlink() or not marker.is_file():
-        raise HandoffError("STALE_HANDOFF")
+    _require_positive_decimal(claim.run_id, "claim run id")
+    _require_positive_decimal(claim.run_attempt, "claim run attempt")
+    _require_digest(claim.owner_nonce, "claim owner nonce")
+    marker = _claim_marker_value(path / CLAIM_FILE)
+    if marker != {
+        "ownerNonce": claim.owner_nonce,
+        "runAttempt": claim.run_attempt,
+        "runId": claim.run_id,
+    }:
+        raise HandoffError("HANDOFF_LOCATION_INVALID")
     return path
+
+
+def _consume_claim(claim: AttemptClaim) -> Path:
+    directory = _validated_claim(claim)
+    payload = canonical_json_bytes(
+        {"ownerNonce": claim.owner_nonce, "runAttempt": claim.run_attempt, "runId": claim.run_id}
+    )
+    # This no-overwrite install is the serialization point.  It happens before
+    # validating or installing any handoff part, so every authorized write
+    # attempt consumes the capability even when that attempt later fails.
+    _atomic_no_overwrite(directory, CLAIM_CONSUMED_FILE, payload)
+    return directory
 
 
 def _atomic_no_overwrite(directory: Path, file_name: str, payload: bytes) -> None:
@@ -1543,7 +1722,7 @@ def _atomic_no_overwrite(directory: Path, file_name: str, payload: bytes) -> Non
 
 
 def write_handoff_parts(claim: AttemptClaim, parts: HandoffParts) -> None:
-    directory = _validated_claim(claim)
+    directory = _consume_claim(claim)
     envelope = _validate_parts_intrinsic(parts)
     if envelope["runIdentity"]["runId"] != claim.run_id:
         raise HandoffError("RUN_ID_MISMATCH")
@@ -1584,9 +1763,16 @@ def read_handoff_parts(
     producer_reference: ProducerReference | Mapping[str, Any] | None,
 ) -> HandoffParts:
     if producer_reference is None:
+        root_path = _validate_storage_root(Path(root))
+        directory = root_path / f"run-{expected_binding.run_id}" / f"attempt-{expected_binding.run_attempt}"
+        if not directory.exists() or not (directory / HANDOFF_FILE).exists():
+            raise HandoffError("HANDOFF_MISSING")
         raise HandoffError("PRODUCER_REFERENCE_MISSING")
     if not isinstance(producer_reference, ProducerReference):
-        producer_reference = ProducerReference.from_value(producer_reference)
+        try:
+            producer_reference = ProducerReference.from_value(producer_reference)
+        except (HandoffError, TypeError, ValueError, KeyError) as exc:
+            raise HandoffError("PRODUCER_REFERENCE_MISSING") from exc
     _validate_reference(producer_reference, expected_binding)
     root_path = _validate_storage_root(Path(root))
     directory = root_path / f"run-{expected_binding.run_id}" / f"attempt-{expected_binding.run_attempt}"
@@ -1596,7 +1782,7 @@ def read_handoff_parts(
     if not (directory / HANDOFF_FILE).exists():
         raise HandoffError("STALE_HANDOFF")
     expected_names = {
-        CLAIM_FILE, CAPTURE_INPUT_FILE, RECEIPT_FILE, HANDOFF_FILE,
+        CLAIM_FILE, CLAIM_CONSUMED_FILE, CAPTURE_INPUT_FILE, RECEIPT_FILE, HANDOFF_FILE,
         f"observation-{producer_reference.observation_digest}.json",
     }
     try:
@@ -1604,6 +1790,10 @@ def read_handoff_parts(
     except OSError as exc:
         raise HandoffError("HANDOFF_LOCATION_INVALID") from exc
     if actual_names != expected_names:
+        raise HandoffError("HANDOFF_LOCATION_INVALID")
+    claim_marker = _claim_marker_value(directory / CLAIM_FILE)
+    consumed_marker = _claim_marker_value(directory / CLAIM_CONSUMED_FILE)
+    if claim_marker != consumed_marker:
         raise HandoffError("HANDOFF_LOCATION_INVALID")
     parts = HandoffParts(
         capture_input_bytes=_read_regular_file(directory, CAPTURE_INPUT_FILE),
