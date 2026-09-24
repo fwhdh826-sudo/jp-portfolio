@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-09-24T17:37:56.004190+09:00",
-  "sourceUpdatedAt": "2026-09-24T08:35:43+00:00",
+  "updatedAt": "2026-09-25T00:52:39.442892+09:00",
+  "sourceUpdatedAt": "2026-09-24T15:41:53+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -29,106 +29,166 @@
       "items": []
     },
     "us_broad": {
-      "avgSentiment": 0.277,
-      "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 1,
+      "avgSentiment": -0.003,
+      "negativeCount": 2,
+      "positiveCount": 1,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "Hassett Blasts Fed Officials Calling for Hikes in Recent Days",
-      "topPositiveTitle": "South Africa CPI Rises Less Than Expected Before Rate Call",
+      "topNegativeTitle": "Gold Falls as Traders Monitor Oil Rebound and Fed Rate Path",
+      "topPositiveTitle": "As Bessent Tinkers With Treasuries, a Warning Against ‘Financial Engineering’",
       "items": [
         {
-          "title": "Hassett Blasts Fed Officials Calling for Hikes in Recent Days",
+          "title": "Gold Falls as Traders Monitor Oil Rebound and Fed Rate Path",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.5,
+          "publishedAt": "2026-09-24T00:12:14+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-24/gold-holds-drop-as-higher-oil-and-hot-us-data-fan-rate-hike-bets",
+          "tags": [
+            "commodity",
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Stocks Drop as Oil Rally Fuels Treasury Volatility: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-23T22:17:23+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-23/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "macro_risk",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Fed's Paulson Says 'Modest' Further Tightening May Be Needed",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-24T15:08:19+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-24/fed-s-paulson-says-modest-tightening-may-be-needed-video",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Fed’s Hammack Says Shocks Risk an Inflationary Mindset",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-24T14:31:23+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-24/fed-s-hammack-says-shocks-risk-an-inflationary-mindset-video",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Fed’s Williams Says More Work Needed to Lower US Inflation",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-23T20:05:26+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-23/hassett-blasts-fed-officials-calling-for-hikes-in-recent-days",
+          "publishedAt": "2026-09-24T09:38:31+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-24/fed-s-williams-says-more-work-needed-to-bring-down-us-inflation",
           "tags": [
+            "commodity",
             "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Treasury Yield Surge Pushes Spreads Versus Asia Near Extremes",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-24T08:16:31+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-24/treasury-yield-surge-pushes-spreads-versus-asia-near-extremes",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "South Africa CPI Rises Less Than Expected Before Rate Call",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.5,
-          "publishedAt": "2026-09-23T08:01:55+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-23/south-african-inflation-picks-up-slightly-ahead-of-rate-decision",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
+            "us_broad",
+            "us_growth"
           ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Fed’s Williams Says More Work Needed to Lower US Inflation",
+      "topPositiveTitle": "Fed’s Williams Says More Work Needed to Lower US Inflation",
+      "items": [
+        {
+          "title": "Fed’s Williams Says More Work Needed to Lower US Inflation",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-24T09:38:31+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-24/fed-s-williams-says-more-work-needed-to-bring-down-us-inflation",
+          "tags": [
+            "commodity",
+            "market",
+            "us_broad",
+            "us_growth"
+          ]
+        }
+      ]
     },
     "global_broad": {
-      "avgSentiment": -1.0,
+      "avgSentiment": 0.33,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "European Stocks Drop as Bonds Sell Off Globally and Oil Climbs",
+      "topPositiveTitle": "European Stocks Drop as Bonds Sell Off Globally and Oil Climbs",
+      "items": [
+        {
+          "title": "European Stocks Drop as Bonds Sell Off Globally and Oil Climbs",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-24T07:30:22+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-24/european-stocks-edge-lower-as-rising-global-bond-yields-weigh",
+          "tags": [
+            "commodity",
+            "global_broad",
+            "market"
+          ]
+        }
+      ]
+    },
+    "gold": {
+      "avgSentiment": -0.5,
       "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 0,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "European Stocks Edge Lower as Rising Global Bond Yields Weigh",
-      "topPositiveTitle": "European Stocks Edge Lower as Rising Global Bond Yields Weigh",
+      "topNegativeTitle": "Gold Falls as Traders Monitor Oil Rebound and Fed Rate Path",
+      "topPositiveTitle": "Gold Falls as Traders Monitor Oil Rebound and Fed Rate Path",
       "items": [
         {
-          "title": "European Stocks Edge Lower as Rising Global Bond Yields Weigh",
+          "title": "Gold Falls as Traders Monitor Oil Rebound and Fed Rate Path",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-09-24T07:30:22+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-24/european-stocks-edge-lower-as-rising-global-bond-yields-weigh",
+          "sentimentScore": -0.5,
+          "publishedAt": "2026-09-24T00:12:14+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-24/gold-holds-drop-as-higher-oil-and-hot-us-data-fan-rate-hike-bets",
           "tags": [
-            "global_broad",
-            "macro_risk",
+            "commodity",
+            "gold",
             "market",
-            "rates"
+            "rates",
+            "us_broad"
           ]
         }
       ]
-    },
-    "gold": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
     },
     "reit": {
       "avgSentiment": 0,
@@ -143,101 +203,91 @@
       "items": []
     },
     "dividend": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Zegona Plans €400 Million Distribution Via Buyback, Dividend",
-      "topPositiveTitle": "Zegona Plans €400 Million Distribution Via Buyback, Dividend",
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
+    },
+    "macro_risk": {
+      "avgSentiment": 0.144,
+      "negativeCount": 2,
+      "positiveCount": 2,
+      "neutralCount": 3,
+      "sourceCount": 2,
+      "itemCount": 7,
+      "isStale": false,
+      "topNegativeTitle": "Stocks Drop as Oil Rally Fuels Treasury Volatility: Markets Wrap",
+      "topPositiveTitle": "Fighting Spreads in Ethiopia as Risk of Renewed Conflict Rises",
       "items": [
         {
-          "title": "Zegona Plans €400 Million Distribution Via Buyback, Dividend",
+          "title": "Stocks Drop as Oil Rally Fuels Treasury Volatility: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-23T22:17:23+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-23/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "macro_risk",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Russia to Make Miners Pay for High War Spending Via New Tax",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-23T13:04:48+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-23/russia-aims-to-narrow-budget-gap-while-shielding-war-spending",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "David Booth on Investing, Dimensional and Staying Calm | The David Rubenstein Show",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-24T06:38:10+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-24/zegona-plans-400-million-shareholder-distribution",
+          "publishedAt": "2026-09-24T15:33:13+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-24/the-david-rubenstein-show-david-booth-video",
           "tags": [
-            "dividend",
+            "macro_risk",
             "market"
           ]
-        }
-      ]
-    },
-    "macro_risk": {
-      "avgSentiment": 0.0,
-      "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 3,
-      "sourceCount": 2,
-      "itemCount": 5,
-      "isStale": false,
-      "topNegativeTitle": "European Stocks Edge Lower as Rising Global Bond Yields Weigh",
-      "topPositiveTitle": "Supertanker Rally Lures Investors as War Squeezes Vessel Supply",
-      "items": [
+        },
         {
-          "title": "European Stocks Edge Lower as Rising Global Bond Yields Weigh",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-09-24T07:30:22+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-24/european-stocks-edge-lower-as-rising-global-bond-yields-weigh",
+          "title": "Two BOE Deputies Signal They Are Moving Toward Raising Rates",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-24T09:07:49+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-24/boe-s-lombardelli-warns-hikes-more-likely-as-iran-war-continues",
           "tags": [
-            "global_broad",
+            "geopolitical",
             "macro_risk",
             "market",
             "rates"
           ]
         },
         {
-          "title": "Thailand Says Market Access Sticking Point in US Trade Talks",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-24T02:15:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-24/thailand-says-market-access-sticking-point-in-us-tariff-talks",
-          "tags": [
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Busiest-Ever Week for China Ports Gives Glimpse of Tariff Unease",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-24T01:07:29+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-24/china-s-trade-volumes-hit-record-in-week-before-trump-xi-summit",
-          "tags": [
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Bessent Says US, China Extend Their Trade Truce to Jan. 10",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-23T22:12:03+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-23/bessent-says-us-china-agreed-to-extend-trade-truce-to-jan-10",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Supertanker Rally Lures Investors as War Squeezes Vessel Supply",
+          "title": "Turkey Discusses Investor Paybacks in Fund Crisis Talks",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-09-24T07:50:22+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-24/supertanker-rally-lures-investors-as-war-squeezes-vessel-supply",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-24T06:44:36+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-24/turkey-to-discuss-investor-paybacks-in-two-day-fund-crisis-talks",
           "tags": [
-            "geopolitical",
             "macro_risk",
             "market"
           ]
@@ -245,80 +295,16 @@
       ]
     },
     "fx": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
+      "avgSentiment": -0.33,
+      "negativeCount": 1,
       "positiveCount": 0,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 2,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Trump-Xi Summit Narrows China Credit’s Geopolitical Discount: BI",
-      "topPositiveTitle": "Trump-Xi Summit Narrows China Credit’s Geopolitical Discount: BI",
+      "topNegativeTitle": "SNB Eases Threat of Franc Intervention as Rate Held at Zero",
+      "topPositiveTitle": "SNB Eases Threat of Franc Intervention as Rate Held at Zero",
       "items": [
-        {
-          "title": "Trump-Xi Summit Narrows China Credit’s Geopolitical Discount: BI",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-24T07:49:46+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-24/trump-xi-summit-narrows-china-credit-s-geopolitical-discount-bi",
-          "tags": [
-            "fx",
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "RBI Said to Have Conducted at Least $10 Billion in FX Swaps",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-24T03:03:17+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-24/rbi-said-to-conduct-at-least-10-billion-fx-swaps-to-drain-cash",
-          "tags": [
-            "fx",
-            "market"
-          ]
-        }
-      ]
-    },
-    "rates": {
-      "avgSentiment": -0.049,
-      "negativeCount": 4,
-      "positiveCount": 3,
-      "neutralCount": 3,
-      "sourceCount": 2,
-      "itemCount": 10,
-      "isStale": false,
-      "topNegativeTitle": "European Stocks Edge Lower as Rising Global Bond Yields Weigh",
-      "topPositiveTitle": "Riksbank Holds Rate and Sees Bigger Chance of Hike This Year",
-      "items": [
-        {
-          "title": "European Stocks Edge Lower as Rising Global Bond Yields Weigh",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-09-24T07:30:22+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-24/european-stocks-edge-lower-as-rising-global-bond-yields-weigh",
-          "tags": [
-            "global_broad",
-            "macro_risk",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "SNB Holds Rates, Eases Threat of Franc Intervention",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-24T08:35:43+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-24/snb-holds-rates-eases-threat-of-franc-intervention-video",
-          "tags": [
-            "market",
-            "rates"
-          ]
-        },
         {
           "title": "SNB Eases Threat of Franc Intervention as Rate Held at Zero",
           "source": "Bloomberg Economics",
@@ -327,12 +313,52 @@
           "publishedAt": "2026-09-24T07:39:11+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-24/snb-ends-war-footing-over-franc-strength-as-rate-kept-at-zero",
           "tags": [
+            "fx",
+            "market"
+          ]
+        }
+      ]
+    },
+    "rates": {
+      "avgSentiment": -0.146,
+      "negativeCount": 3,
+      "positiveCount": 0,
+      "neutralCount": 4,
+      "sourceCount": 2,
+      "itemCount": 7,
+      "isStale": false,
+      "topNegativeTitle": "Gold Falls as Traders Monitor Oil Rebound and Fed Rate Path",
+      "topPositiveTitle": "US Stocks Extend Drop as Oil Surge Stokes Fed Rate-Hike Bets",
+      "items": [
+        {
+          "title": "Gold Falls as Traders Monitor Oil Rebound and Fed Rate Path",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.5,
+          "publishedAt": "2026-09-24T00:12:14+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-24/gold-holds-drop-as-higher-oil-and-hot-us-data-fan-rate-hike-bets",
+          "tags": [
+            "commodity",
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Zambia Disinflation Sets Stage for Fourth Interest-Rate Cut",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-24T08:38:03+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-24/zambia-inflation-slows-further-sets-stage-for-fourth-rate-cut",
+          "tags": [
             "market",
             "rates"
           ]
         },
         {
-          "title": "Stocks Fall as High Yields Pressure Valuations: Markets Wrap",
+          "title": "Stocks Drop as Oil Rally Fuels Treasury Volatility: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
@@ -340,17 +366,33 @@
           "url": "https://www.bloomberg.com/news/articles/2026-09-23/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
+            "macro_risk",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Ghana Remains Cautious on Rates as Wars Seen Stoking Inflation",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-24T14:33:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-24/ghana-holds-rate-for-third-time-in-row-on-inflation-risks",
+          "tags": [
+            "commodity",
+            "geopolitical",
             "market",
             "rates"
           ]
         },
         {
-          "title": "Europe Economy More Robust Than Anticipated, ECB’s Kocher Says",
+          "title": "Banxico to Hold Rates On Mixed Inflation Signals: Day Guide",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-24T06:04:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-24/europe-economy-more-robust-than-anticipated-ecb-s-kocher-says",
+          "publishedAt": "2026-09-24T10:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-24/banxico-to-hold-rates-amid-mixed-inflation-signals-day-guide",
           "tags": [
             "market",
             "rates"
@@ -359,18 +401,45 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.057,
-      "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 4,
+      "avgSentiment": -0.039,
+      "negativeCount": 4,
+      "positiveCount": 2,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 9,
       "isStale": false,
-      "topNegativeTitle": "Stocks Fall as High Yields Pressure Valuations: Markets Wrap",
-      "topPositiveTitle": "Europe Needs More Long-Term LNG to Avoid Energy Shocks, MET Says",
+      "topNegativeTitle": "Gold Falls as Traders Monitor Oil Rebound and Fed Rate Path",
+      "topPositiveTitle": "Latest Oil Market News and Analysis for Sept. 24",
       "items": [
         {
-          "title": "Stocks Fall as High Yields Pressure Valuations: Markets Wrap",
+          "title": "Gold Falls as Traders Monitor Oil Rebound and Fed Rate Path",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.5,
+          "publishedAt": "2026-09-24T00:12:14+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-24/gold-holds-drop-as-higher-oil-and-hot-us-data-fan-rate-hike-bets",
+          "tags": [
+            "commodity",
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Scott Sheffield Claims Exxon CEO Betrayed Him in $60 Billion Pioneer Deal",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-24T12:43:36+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-24/scott-sheffield-claims-exxon-ceo-betrayed-him-in-60-billion-pioneer-deal",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "Stocks Drop as Oil Rally Fuels Treasury Volatility: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
@@ -378,105 +447,116 @@
           "url": "https://www.bloomberg.com/news/articles/2026-09-23/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
+            "macro_risk",
             "market",
-            "rates"
+            "rates",
+            "us_broad"
           ]
         },
         {
-          "title": "Saudis Ease Asia Oil Crunch With 100-Million-Barrel Sales Flurry",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-24T07:12:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-24/saudis-ease-asia-oil-crunch-with-100-million-barrel-sales-flurry",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "Indonesia Commodity Export Agency Danantara Hires Palm Unit Head",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-24T07:05:32+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-24/indonesia-commodity-export-agency-danantara-hires-palm-unit-head",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "Qatar Boosts LNG Traffic Through Hormuz as Global Shortage Bites",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-24T07:05:07+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-24/qatar-boosts-lng-traffic-through-hormuz-as-global-shortage-bites",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "India Slashes Edible-Oil Duties to Reduce Festival Food Costs",
+          "title": "Russia to Make Miners Pay for High War Spending Via New Tax",
           "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-24T06:51:06+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-24/india-slashes-edible-oil-duties-to-reduce-festival-food-costs",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-23T13:04:48+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-23/russia-aims-to-narrow-budget-gap-while-shielding-war-spending",
           "tags": [
             "commodity",
-            "market"
-          ]
-        }
-      ]
-    },
-    "geopolitical": {
-      "avgSentiment": 0.333,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 3,
-      "isStale": false,
-      "topNegativeTitle": "Trump-Xi Summit Narrows China Credit’s Geopolitical Discount: BI",
-      "topPositiveTitle": "Supertanker Rally Lures Investors as War Squeezes Vessel Supply",
-      "items": [
-        {
-          "title": "Trump-Xi Summit Narrows China Credit’s Geopolitical Discount: BI",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-24T07:49:46+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-24/trump-xi-summit-narrows-china-credit-s-geopolitical-discount-bi",
-          "tags": [
-            "fx",
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "Bessent Says US, China Extend Their Trade Truce to Jan. 10",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-23T22:12:03+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-23/bessent-says-us-china-agreed-to-extend-trade-truce-to-jan-10",
-          "tags": [
             "geopolitical",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Supertanker Rally Lures Investors as War Squeezes Vessel Supply",
+          "title": "Ghana Remains Cautious on Rates as Wars Seen Stoking Inflation",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-24T14:33:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-24/ghana-holds-rate-for-third-time-in-row-on-inflation-risks",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market",
+            "rates"
+          ]
+        }
+      ]
+    },
+    "geopolitical": {
+      "avgSentiment": 0.223,
+      "negativeCount": 1,
+      "positiveCount": 2,
+      "neutralCount": 3,
+      "sourceCount": 2,
+      "itemCount": 6,
+      "isStale": false,
+      "topNegativeTitle": "Russia to Make Miners Pay for High War Spending Via New Tax",
+      "topPositiveTitle": "Fighting Spreads in Ethiopia as Risk of Renewed Conflict Rises",
+      "items": [
+        {
+          "title": "Russia to Make Miners Pay for High War Spending Via New Tax",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-23T13:04:48+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-23/russia-aims-to-narrow-budget-gap-while-shielding-war-spending",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Ghana Remains Cautious on Rates as Wars Seen Stoking Inflation",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-24T14:33:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-24/ghana-holds-rate-for-third-time-in-row-on-inflation-risks",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Taiwan Cuts Short-Term Debt Sales by Record to Boost Liquidity",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-24T09:59:41+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-24/taiwan-cuts-short-term-debt-sales-by-record-to-boost-liquidity",
+          "tags": [
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Two BOE Deputies Signal They Are Moving Toward Raising Rates",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-24T09:07:49+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-24/boe-s-lombardelli-warns-hikes-more-likely-as-iran-war-continues",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Latest Oil Market News and Analysis for Sept. 24",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-09-24T07:50:22+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-24/supertanker-rally-lures-investors-as-war-squeezes-vessel-supply",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-09-23T22:09:08+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-23/latest-oil-market-news-and-analysis-for-sept-24",
           "tags": [
+            "commodity",
             "geopolitical",
             "macro_risk",
             "market"
