@@ -1,20 +1,46 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-09-25T10:42:02.051030+09:00",
-  "sourceUpdatedAt": "2026-09-25T00:38:33+00:00",
+  "updatedAt": "2026-09-25T17:59:48.319943+09:00",
+  "sourceUpdatedAt": "2026-09-25T08:38:59+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 2,
+      "sourceCount": 2,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Yen at Risk as BOJ Lags Behind Its Peers: Market Analysis",
+      "topPositiveTitle": "Yen at Risk as BOJ Lags Behind Its Peers: Market Analysis",
+      "items": [
+        {
+          "title": "Yen at Risk as BOJ Lags Behind Its Peers: Market Analysis",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-25T07:41:29+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-25/yen-at-risk-as-boj-lags-behind-its-peers-3-minutes-mliv-video",
+          "tags": [
+            "fx",
+            "jp_broad",
+            "market"
+          ]
+        },
+        {
+          "title": "BOJ’s Price Trend Indicator Quickens in Support of Another Hike",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-25T05:54:20+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-25/boj-s-price-trend-indicator-quickens-in-support-of-another-hike",
+          "tags": [
+            "jp_broad",
+            "market"
+          ]
+        }
+      ]
     },
     "jp_semiconductor": {
       "avgSentiment": 0,
@@ -29,44 +55,16 @@
       "items": []
     },
     "us_broad": {
-      "avgSentiment": -0.266,
-      "negativeCount": 3,
+      "avgSentiment": 0.0,
+      "negativeCount": 1,
       "positiveCount": 1,
-      "neutralCount": 1,
+      "neutralCount": 0,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Bond Losses Build on Inflation, Rate-Hike Bets: Markets Wrap",
-      "topPositiveTitle": "Surging US Yields Push Spreads With Asia Toward Extremes",
+      "topNegativeTitle": "Fed’s Paulson Says Further Modest Rate Hikes May Be Needed",
+      "topPositiveTitle": "Bond Selloff Fades as Oil Cools, Lifting Stocks: Markets Wrap",
       "items": [
-        {
-          "title": "Bond Losses Build on Inflation, Rate-Hike Bets: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-09-24T22:13:37+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-24/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Bond Yields Soar, Spiking Fed Rate Hike Bets",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-24T21:06:47+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-24/real-yield-9-24-2026-video",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
         {
           "title": "Fed’s Paulson Says Further Modest Rate Hikes May Be Needed",
           "source": "Bloomberg Economics",
@@ -80,29 +78,15 @@
           ]
         },
         {
-          "title": "Gold Tilts Lower as Iran Impasse Continues to Fan Rate-Hike Bets",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-24T23:53:28+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-24/gold-tilts-lower-as-iran-impasse-continues-to-fan-rate-hike-bets",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Surging US Yields Push Spreads With Asia Toward Extremes",
+          "title": "Bond Selloff Fades as Oil Cools, Lifting Stocks: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.33,
-          "publishedAt": "2026-09-24T08:16:31+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-24/treasury-yield-surge-pushes-spreads-versus-asia-near-extremes",
+          "publishedAt": "2026-09-24T22:13:37+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-24/stock-market-today-dow-s-p-live-updates",
           "tags": [
+            "commodity",
+            "macro_risk",
             "market",
             "rates",
             "us_broad"
@@ -111,70 +95,6 @@
       ]
     },
     "us_growth": {
-      "avgSentiment": -0.168,
-      "negativeCount": 1,
-      "positiveCount": 0,
-      "neutralCount": 3,
-      "sourceCount": 1,
-      "itemCount": 4,
-      "isStale": false,
-      "topNegativeTitle": "AI Boom Can Withstand Higher Rates: Goldman's Moe",
-      "topPositiveTitle": "Xi Urges AI Cooperation WIth US",
-      "items": [
-        {
-          "title": "AI Boom Can Withstand Higher Rates: Goldman's Moe",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-09-25T00:38:33+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-25/ai-boom-can-withstand-higher-rates-goldman-s-moe-video",
-          "tags": [
-            "commodity",
-            "macro_risk",
-            "market",
-            "rates",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Xi Urges AI Cooperation WIth US",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-24T23:23:15+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-24/xi-urges-ai-cooperation-with-us-video",
-          "tags": [
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Does Iced Coffee Pass the Vibe Check?",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-24T22:00:20+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-24/opinion-does-iced-coffee-pass-the-vibe-check-video",
-          "tags": [
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Meta’s Best Month Since 2013 Has It on Cusp of $2 Trillion Level",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-24T20:31:34+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-24/meta-s-best-month-since-2013-has-it-on-cusp-of-2-trillion-level",
-          "tags": [
-            "market",
-            "us_growth"
-          ]
-        }
-      ]
-    },
-    "global_broad": {
       "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
@@ -186,34 +106,44 @@
       "topPositiveTitle": null,
       "items": []
     },
-    "gold": {
-      "avgSentiment": 0.0,
+    "global_broad": {
+      "avgSentiment": 1.0,
       "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 0,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Gold Tilts Lower as Iran Impasse Continues to Fan Rate-Hike Bets",
-      "topPositiveTitle": "Gold Tilts Lower as Iran Impasse Continues to Fan Rate-Hike Bets",
+      "topNegativeTitle": "European Stocks Set for First Weekly Gain in Four as Oil Eases",
+      "topPositiveTitle": "European Stocks Set for First Weekly Gain in Four as Oil Eases",
       "items": [
         {
-          "title": "Gold Tilts Lower as Iran Impasse Continues to Fan Rate-Hike Bets",
+          "title": "European Stocks Set for First Weekly Gain in Four as Oil Eases",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-24T23:53:28+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-24/gold-tilts-lower-as-iran-impasse-continues-to-fan-rate-hike-bets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-09-25T07:29:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-25/european-stocks-set-for-first-weekly-gain-in-four-as-oil-eases",
           "tags": [
             "commodity",
-            "geopolitical",
-            "gold",
+            "global_broad",
             "market",
-            "rates",
-            "us_broad"
+            "rates"
           ]
         }
       ]
+    },
+    "gold": {
+      "avgSentiment": 0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
+      "isStale": false,
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "reit": {
       "avgSentiment": 0,
@@ -240,21 +170,47 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.333,
-      "negativeCount": 3,
-      "positiveCount": 0,
-      "neutralCount": 3,
-      "sourceCount": 2,
-      "itemCount": 6,
+      "avgSentiment": -0.113,
+      "negativeCount": 1,
+      "positiveCount": 2,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Bond Losses Build on Inflation, Rate-Hike Bets: Markets Wrap",
-      "topPositiveTitle": "CFOs Face a Tougher Call on When to Borrow",
+      "topNegativeTitle": "PB Fintech, Turtlemint Shares Extend Slump as Outlook Worsens",
+      "topPositiveTitle": "Bond Yields Slip After Surging to Highest in Decades",
       "items": [
         {
-          "title": "Bond Losses Build on Inflation, Rate-Hike Bets: Markets Wrap",
+          "title": "PB Fintech, Turtlemint Shares Extend Slump as Outlook Worsens",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -1.0,
+          "publishedAt": "2026-09-25T07:02:49+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-25/pb-fintech-turtlemint-shares-extend-slump-as-outlook-worsens",
+          "tags": [
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Bond Yields Slip After Surging to Highest in Decades",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-25T08:02:40+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-25/bond-yields-slip-after-surging-to-highest-in-decades-video",
+          "tags": [
+            "commodity",
+            "macro_risk",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Bond Selloff Fades as Oil Cools, Lifting Stocks: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
           "publishedAt": "2026-09-24T22:13:37+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-24/stock-market-today-dow-s-p-live-updates",
           "tags": [
@@ -263,148 +219,83 @@
             "market",
             "rates",
             "us_broad"
-          ]
-        },
-        {
-          "title": "AI Boom Can Withstand Higher Rates: Goldman's Moe",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-09-25T00:38:33+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-25/ai-boom-can-withstand-higher-rates-goldman-s-moe-video",
-          "tags": [
-            "commodity",
-            "macro_risk",
-            "market",
-            "rates",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Russia to Make Miners Pay for High War Spending Via New Tax",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-23T13:04:48+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-23/russia-aims-to-narrow-budget-gap-while-shielding-war-spending",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "CFOs Face a Tougher Call on When to Borrow",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-24T21:44:28+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-24/cfos-face-a-tougher-call-on-when-to-borrow-video",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Two BOE Deputies Signal They Are Moving Toward Raising Rates",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-24T09:07:49+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-24/boe-s-lombardelli-warns-hikes-more-likely-as-iran-war-continues",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market",
-            "rates"
           ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.165,
       "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "rates": {
-      "avgSentiment": -0.167,
-      "negativeCount": 3,
-      "positiveCount": 1,
-      "neutralCount": 6,
+      "positiveCount": 2,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 10,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Bond Losses Build on Inflation, Rate-Hike Bets: Markets Wrap",
-      "topPositiveTitle": "Surging US Yields Push Spreads With Asia Toward Extremes",
+      "topNegativeTitle": "Yen at Risk as BOJ Lags Behind Its Peers: Market Analysis",
+      "topPositiveTitle": "Dollar’s Best Rally Since March Is Set to Last as Fortunes Shift",
       "items": [
         {
-          "title": "Bond Losses Build on Inflation, Rate-Hike Bets: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-09-24T22:13:37+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-24/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "AI Boom Can Withstand Higher Rates: Goldman's Moe",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-09-25T00:38:33+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-25/ai-boom-can-withstand-higher-rates-goldman-s-moe-video",
-          "tags": [
-            "commodity",
-            "macro_risk",
-            "market",
-            "rates",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Bond Yields Soar, Spiking Fed Rate Hike Bets",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-24T21:06:47+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-24/real-yield-9-24-2026-video",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Gold Tilts Lower as Iran Impasse Continues to Fan Rate-Hike Bets",
+          "title": "Yen at Risk as BOJ Lags Behind Its Peers: Market Analysis",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-24T23:53:28+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-24/gold-tilts-lower-as-iran-impasse-continues-to-fan-rate-hike-bets",
+          "publishedAt": "2026-09-25T07:41:29+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-25/yen-at-risk-as-boj-lags-behind-its-peers-3-minutes-mliv-video",
           "tags": [
-            "commodity",
-            "geopolitical",
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
+            "fx",
+            "jp_broad",
+            "market"
           ]
         },
+        {
+          "title": "Trump Shared Concerns Over Weak Yen With Japan’s Takaichi",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-25T02:20:54+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-25/japan-s-katayama-says-trump-shared-yen-concerns-with-takaichi-mugc3g4o",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        },
+        {
+          "title": "Dollar’s Best Rally Since March Is Set to Last as Fortunes Shift",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-25T07:26:10+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-25/dollar-s-best-rally-since-march-is-set-to-last-as-fortunes-shift",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        },
+        {
+          "title": "Yen Heads for Best Day in Two Weeks After Katayama Jawboning",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-25T06:42:23+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-25/yen-heads-for-best-day-in-two-weeks-after-katayama-jawboning",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        }
+      ]
+    },
+    "rates": {
+      "avgSentiment": 0.332,
+      "negativeCount": 0,
+      "positiveCount": 4,
+      "neutralCount": 2,
+      "sourceCount": 2,
+      "itemCount": 6,
+      "isStale": false,
+      "topNegativeTitle": "Banxico Holds Rate Steady at 6.5% as Price Pressures Persist",
+      "topPositiveTitle": "European Stocks Set for First Weekly Gain in Four as Oil Eases",
+      "items": [
         {
           "title": "Banxico Holds Rate Steady at 6.5% as Price Pressures Persist",
           "source": "Bloomberg Economics",
@@ -416,25 +307,53 @@
             "market",
             "rates"
           ]
-        }
-      ]
-    },
-    "commodity": {
-      "avgSentiment": -0.388,
-      "negativeCount": 4,
-      "positiveCount": 0,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 6,
-      "isStale": false,
-      "topNegativeTitle": "Bond Losses Build on Inflation, Rate-Hike Bets: Markets Wrap",
-      "topPositiveTitle": "Gold Tilts Lower as Iran Impasse Continues to Fan Rate-Hike Bets",
-      "items": [
+        },
         {
-          "title": "Bond Losses Build on Inflation, Rate-Hike Bets: Markets Wrap",
+          "title": "Ghana Still Cautious on Rates as Wars Seen Stoking Inflation",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-24T14:33:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-24/ghana-holds-rate-for-third-time-in-row-on-inflation-risks",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Bond Yields Slip After Surging to Highest in Decades",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-25T08:02:40+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-25/bond-yields-slip-after-surging-to-highest-in-decades-video",
+          "tags": [
+            "commodity",
+            "macro_risk",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "El Niño Set to Crimp Palm Oil Output in 2027, Squeezing Supply",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-25T07:02:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-25/el-nino-set-to-crimp-palm-oil-output-in-2027-squeezing-supply",
+          "tags": [
+            "commodity",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Bond Selloff Fades as Oil Cools, Lifting Stocks: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
           "publishedAt": "2026-09-24T22:13:37+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-24/stock-market-today-dow-s-p-live-updates",
           "tags": [
@@ -444,59 +363,83 @@
             "rates",
             "us_broad"
           ]
+        }
+      ]
+    },
+    "commodity": {
+      "avgSentiment": 0.332,
+      "negativeCount": 0,
+      "positiveCount": 4,
+      "neutralCount": 2,
+      "sourceCount": 2,
+      "itemCount": 6,
+      "isStale": false,
+      "topNegativeTitle": "Dutch Seek End to Gas Storage Goals in EU Supply Security Revamp",
+      "topPositiveTitle": "European Stocks Set for First Weekly Gain in Four as Oil Eases",
+      "items": [
+        {
+          "title": "Dutch Seek End to Gas Storage Goals in EU Supply Security Revamp",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-25T06:13:57+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-25/dutch-seek-end-to-gas-storage-targets-after-1-billion-bill",
+          "tags": [
+            "commodity",
+            "market"
+          ]
         },
         {
-          "title": "AI Boom Can Withstand Higher Rates: Goldman's Moe",
+          "title": "Ghana Still Cautious on Rates as Wars Seen Stoking Inflation",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-24T14:33:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-24/ghana-holds-rate-for-third-time-in-row-on-inflation-risks",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Bond Yields Slip After Surging to Highest in Decades",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-09-25T00:38:33+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-25/ai-boom-can-withstand-higher-rates-goldman-s-moe-video",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-25T08:02:40+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-25/bond-yields-slip-after-surging-to-highest-in-decades-video",
           "tags": [
             "commodity",
             "macro_risk",
             "market",
-            "rates",
-            "us_growth"
+            "rates"
           ]
         },
         {
-          "title": "Latest Oil Market News and Analysis for DATE",
+          "title": "El Niño Set to Crimp Palm Oil Output in 2027, Squeezing Supply",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-24T22:05:10+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-24/latest-oil-market-news-and-analysis-for-date",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-25T07:02:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-25/el-nino-set-to-crimp-palm-oil-output-in-2027-squeezing-supply",
           "tags": [
             "commodity",
-            "market"
+            "market",
+            "rates"
           ]
         },
         {
-          "title": "Russia to Make Miners Pay for High War Spending Via New Tax",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-23T13:04:48+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-23/russia-aims-to-narrow-budget-gap-while-shielding-war-spending",
+          "title": "Bond Selloff Fades as Oil Cools, Lifting Stocks: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-24T22:13:37+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-24/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
-            "geopolitical",
             "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Gold Tilts Lower as Iran Impasse Continues to Fan Rate-Hike Bets",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-24T23:53:28+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-24/gold-tilts-lower-as-iran-impasse-continues-to-fan-rate-hike-bets",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "gold",
             "market",
             "rates",
             "us_broad"
@@ -505,71 +448,16 @@
       ]
     },
     "geopolitical": {
-      "avgSentiment": -0.047,
-      "negativeCount": 1,
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 6,
-      "sourceCount": 3,
-      "itemCount": 7,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Russia to Make Miners Pay for High War Spending Via New Tax",
-      "topPositiveTitle": "Gold Tilts Lower as Iran Impasse Continues to Fan Rate-Hike Bets",
+      "topNegativeTitle": "Ghana Still Cautious on Rates as Wars Seen Stoking Inflation",
+      "topPositiveTitle": "Ghana Still Cautious on Rates as Wars Seen Stoking Inflation",
       "items": [
-        {
-          "title": "Russia to Make Miners Pay for High War Spending Via New Tax",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-23T13:04:48+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-23/russia-aims-to-narrow-budget-gap-while-shielding-war-spending",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Gold Tilts Lower as Iran Impasse Continues to Fan Rate-Hike Bets",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-24T23:53:28+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-24/gold-tilts-lower-as-iran-impasse-continues-to-fan-rate-hike-bets",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "CFOs Face a Tougher Call on When to Borrow",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-24T21:44:28+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-24/cfos-face-a-tougher-call-on-when-to-borrow-video",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "NATO's Rutte: Putin 'Not Playing Ball' in Ukraine Peace Talks",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-24T21:15:35+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-24/nato-s-rutte-putin-not-playing-ball-in-ukraine-peace-talks",
-          "tags": [
-            "geopolitical",
-            "market"
-          ]
-        },
         {
           "title": "Ghana Still Cautious on Rates as Wars Seen Stoking Inflation",
           "source": "Bloomberg Economics",
@@ -595,7 +483,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 2,
+    "excludedCount": 1,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
