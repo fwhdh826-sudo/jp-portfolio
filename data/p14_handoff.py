@@ -574,6 +574,13 @@ def _validate_digest_record(value: Any) -> DigestBinding:
 
 def _validate_raw_record(name: str, value: Any) -> RawFileBinding:
     record = _require_exact_keys(value, frozenset({"present", "sha256", "bytes"}), "raw file record")
+    if type(record["present"]) is not bool:
+        raise HandoffError("HANDOFF_MALFORMED", "TYPE")
+    if record["present"]:
+        _require_digest(record["sha256"], "raw file digest")
+        _require_nonnegative_int(record["bytes"], "raw file bytes")
+    elif record["sha256"] is not None or record["bytes"] is not None:
+        raise HandoffError("HANDOFF_MALFORMED", "TYPE")
     return RawFileBinding(name, record["present"], record["sha256"], record["bytes"])
 
 
@@ -719,10 +726,13 @@ def _validate_confidence_invariant(value: Any) -> None:
     if item["totalCount"] is not None:
         _require_nonnegative_int(item["totalCount"], "total count")
     for key in ("mismatchedCodes", "unavailableCodes"):
-        if type(item[key]) is not list or item[key] != sorted(item[key]) or len(set(item[key])) != len(item[key]):
+        codes = item[key]
+        if type(codes) is not list:
             raise HandoffError("HANDOFF_MALFORMED", "TYPE")
-        for code in item[key]:
+        for code in codes:
             _require_string(code, "confidence code")
+        if codes != sorted(codes) or len(set(codes)) != len(codes):
+            raise HandoffError("HANDOFF_MALFORMED", "TYPE")
     if set(item["mismatchedCodes"]) & set(item["unavailableCodes"]):
         raise HandoffError("HANDOFF_MALFORMED", "TYPE")
     expected_reason = {

@@ -639,6 +639,94 @@ def test_bool_does_not_satisfy_integer_field(contract):
     assert_error("HANDOFF_MALFORMED", lambda: validate_handoff_observation(canonical_json_bytes(value), expected), "TYPE")
 
 
+def test_malformed_absent_raw_file_binding_raises_typed_handoff_error(contract):
+    expected, parts, _ = contract
+    value = parts.observation_value()
+    value["inputIdentity"]["rawFiles"]["regimeState"]["sha256"] = "a" * 64
+    assert_error(
+        "HANDOFF_MALFORMED",
+        lambda: validate_handoff_observation(canonical_json_bytes(value), expected),
+        "TYPE",
+    )
+
+
+@pytest.mark.parametrize(
+    "codes",
+    [
+        ["1001", {}],
+        ["1001", []],
+        ["1001", 1],
+        {},
+        "1001",
+        ["1001", ["nested"]],
+    ],
+    ids=["mixed-dict", "mixed-list", "mixed-int", "dict", "scalar", "nested-container"],
+)
+def test_confidence_code_lists_reject_malformed_shapes_with_typed_error(contract, codes):
+    expected, parts, _ = contract
+    value = parts.observation_value()
+    value["diagnosticAvailability"]["confidenceInvariant"]["mismatchedCodes"] = codes
+    assert_error(
+        "HANDOFF_MALFORMED",
+        lambda: validate_handoff_observation(canonical_json_bytes(value), expected),
+        "TYPE",
+    )
+
+
+def test_confidence_code_lists_preserve_valid_list_acceptance(contract):
+    expected, parts, _ = contract
+    invariant = parts.observation_value()["diagnosticAvailability"]["confidenceInvariant"]
+    assert invariant["mismatchedCodes"] == ["1001"]
+    assert invariant["unavailableCodes"] == ["1002"]
+    validate_handoff_observation(parts.observation_bytes, expected)
+
+
+def test_public_observation_entrypoints_do_not_leak_builtin_validation_errors(contract):
+    expected, parts, _ = contract
+
+    def absent_raw_file_with_digest(value):
+        value["inputIdentity"]["rawFiles"]["regimeState"]["sha256"] = "a" * 64
+
+    def non_boolean_raw_file_presence(value):
+        value["inputIdentity"]["rawFiles"]["regimeState"]["present"] = []
+
+    def mixed_confidence_codes(value):
+        value["diagnosticAvailability"]["confidenceInvariant"]["mismatchedCodes"] = ["1001", {}]
+
+    def confidence_codes_not_a_list(value):
+        value["diagnosticAvailability"]["confidenceInvariant"]["unavailableCodes"] = {}
+
+    def malformed_run_identity(value):
+        value["runIdentity"]["runId"] = []
+
+    mutations = (
+        absent_raw_file_with_digest,
+        non_boolean_raw_file_presence,
+        mixed_confidence_codes,
+        confidence_codes_not_a_list,
+        malformed_run_identity,
+    )
+    for mutate in mutations:
+        value = parts.observation_value()
+        mutate(value)
+        payload = canonical_json_bytes(value)
+        with pytest.raises(HandoffError):
+            validate_handoff_observation(payload, expected)
+
+    observation = parts.observation_value()
+    input_identity = copy.deepcopy(observation["inputIdentity"])
+    input_identity["rawFiles"]["regimeState"]["sha256"] = "a" * 64
+    with pytest.raises(HandoffError):
+        build_observation_bytes(
+            policy_version=observation["policyVersion"],
+            run_identity=observation["runIdentity"],
+            source_identity=observation["sourceIdentity"],
+            input_identity=input_identity,
+            base=observation["base"],
+            perturbed=observation["perturbed"],
+        )
+
+
 @pytest.mark.parametrize(
     "mutate",
     [
@@ -1173,6 +1261,35 @@ def test_successful_atomic_install_and_read(contract, tmp_path):
     assert not list(directory.glob(".stage-*"))
     loaded = read_handoff_parts(root, expected, reference)
     assert loaded == parts
+
+
+def test_claim_is_consumed_before_handoff_validation(contract, tmp_path):
+    expected, parts, _ = contract
+    root = tmp_path / "handoff-root"
+    claim = claim_attempt(root, expected.run_id, expected.run_attempt)
+    invalid_parts = HandoffParts(
+        parts.capture_input_bytes,
+        parts.observation_bytes,
+        parts.receipt_bytes,
+        b"{",
+    )
+    assert_error("HANDOFF_MALFORMED", lambda: write_handoff_parts(claim, invalid_parts), "JSON_SYNTAX")
+    assert (Path(claim.attempt_directory) / CLAIM_CONSUMED_FILE).is_file()
+    assert_error("DUPLICATE_PRODUCER_OUTPUT", lambda: write_handoff_parts(claim, parts))
+
+
+def test_reader_rejects_claim_and_consumed_marker_binding_mismatch(contract, tmp_path):
+    expected, parts, reference = contract
+    root = tmp_path / "handoff-root"
+    claim = claim_attempt(root, expected.run_id, expected.run_attempt)
+    write_handoff_parts(claim, parts)
+    directory = Path(claim.attempt_directory)
+    claim_marker = json.loads((directory / handoff.CLAIM_FILE).read_bytes())
+    consumed_marker = dict(claim_marker)
+    consumed_marker["ownerNonce"] = "f" * 64 if claim.owner_nonce != "f" * 64 else "e" * 64
+    (directory / CLAIM_CONSUMED_FILE).write_bytes(canonical_json_bytes(consumed_marker))
+    assert (directory / handoff.CLAIM_FILE).read_bytes() == canonical_json_bytes(claim_marker)
+    assert_error("HANDOFF_LOCATION_INVALID", lambda: read_handoff_parts(root, expected, reference))
 
 
 def test_duplicate_write_cannot_overwrite_successful_producer(contract, tmp_path):
