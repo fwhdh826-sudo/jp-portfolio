@@ -75,7 +75,7 @@ CURRENT_TOOLING_PRODUCTION_SOURCES = (
 # archive's copy of this file is never touched or re-derived from it).
 CURRENT_TOOLING_SOURCE_HASHES = {
     "data/candidate_funnel_engine.py": PRODUCTION_SOURCE_HASHES["data/candidate_funnel_engine.py"],
-    "data/candidate_funnel_batch.py": "9e9b136912b555296bc630fcf15183072efebd560be7696ff63dbe1f47b597dd",
+    "data/candidate_funnel_batch.py": "116112ca65b7bccf583f3d9abf546bc03930f32f2b97bbb47cead60d9d46d5a7",
 }
 E1_ARCHIVE_SHA256 = "35f55858a9dd243371de9aa4575e3816ebefbdf0526d9500213961ff74be252e"
 E1_ARCHIVE_BYTES = 7_517_928

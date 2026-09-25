@@ -30,12 +30,30 @@ candidate_funnel_engine.pyのfrozen定数を唯一のauthorityとして参照す
 from __future__ import annotations
 
 import argparse
+import copy
+import io
 import json
 import math
+import os
+import subprocess
 import sys
+from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable
+
+from data import p14_handoff as handoff
+from data.p14_observation import (
+    REPLAY_CANDIDATE_FIELDS,
+    canonical_json_bytes,
+    content_digest,
+    project_candidate_rows,
+)
+from data.p14_evidence_privacy_filter import (
+    assert_private_paths_normalized,
+    normalize_private_paths,
+    scan_json_payload,
+)
 
 from data.candidate_funnel_engine import (
     CANDIDATE_FUNNEL_DATA_STATUSES,
@@ -127,16 +145,295 @@ class CandidateFunnelBatchError(RuntimeError):
     既存artifact（あれば）を一切変更せずに保持する。"""
 
 
+@dataclass(frozen=True, slots=True)
+class P14CaptureConfig:
+    """Explicit, dormant harness configuration; no runner-temp discovery."""
+
+    root: Path
+    run_identity_bytes: bytes
+    policy_version: str = P14_RELEASE_POLICY_VERSION
+
+
+def _p14_privacy_check(payload: bytes) -> None:
+    value = json.loads(payload)
+    # Effective engine inputs and identities cannot be sanitized into different
+    # replay inputs. Use the existing privacy helpers, rejecting any change.
+    if normalize_private_paths(value) != value or scan_json_payload(value, "p14"):
+        raise handoff.HandoffError("HANDOFF_PRIVACY_VIOLATION")
+    assert_private_paths_normalized(value)
+
+
+def _p14_digest_binding(payload: bytes) -> handoff.DigestBinding:
+    return handoff.DigestBinding(content_digest(payload), len(payload))
+
+
+def _p14_side(result: dict[str, Any]) -> dict[str, Any]:
+    candidates = project_candidate_rows(result["candidates"])
+    for index, row in enumerate(candidates):
+        row["artifactIndex"] = index
+    selection = result["selectionObservability"]
+    return {
+        "engineStatus": result["status"],
+        "candidates": candidates,
+        "selectionObservability": {key: selection[key] for key in (
+            "regimeApplied", "actionableHardMaxApplied", "actionableSectorCapApplied",
+            "deepReviewHardMaxApplied", "deepReviewSectorCapApplied",
+            "deepReviewSectorCapRelaxed", "actionableSectorCapRelaxed",
+            "deepReviewEligibleCount", "deepReviewSelectedCount",
+            "actionableEligibleCount", "actionableSelectedCount",
+            "sourceStale", "fallbackProvenance",
+        )},
+    }
+
+
+def _p14_observation_bytes(
+    binding: handoff.ExpectedBinding, base: dict[str, Any], perturbed: dict[str, Any],
+) -> bytes:
+    run_identity = {
+        "repository": binding.repository, "workflow": binding.workflow,
+        "job": binding.job, "runId": binding.run_id, "runAttempt": binding.run_attempt,
+        "event": binding.event, "gitRef": binding.git_ref,
+        "gitRefType": binding.git_ref_type, "gitSha": binding.event_git_sha,
+    }
+    payload = handoff.build_observation_bytes(
+        policy_version=binding.policy_version,
+        run_identity=run_identity,
+        source_identity={
+            "executedGitSha": binding.executed_git_sha,
+            "modules": [asdict(module) for module in binding.modules],
+            "engineSchemaVersion": binding.engine_schema_version,
+            "engineScoreVersion": binding.engine_score_version,
+            "engineFunnelVersion": binding.engine_funnel_version,
+        },
+        input_identity={
+            "rawFiles": {record.name: {
+                "present": record.present, "sha256": record.sha256, "bytes": record.bytes,
+            } for record in binding.raw_files},
+            "joinedCandidateInput": asdict(binding.joined_candidate_input),
+            "replayContext": asdict(binding.replay_context),
+            "captureInput": asdict(binding.capture_input),
+        },
+        base=_p14_side(base), perturbed=_p14_side(perturbed),
+    )
+    _p14_privacy_check(payload)
+    return handoff.validate_handoff_observation(payload, binding).payload_bytes
+
+
+class P14CaptureSession:
+    """One invocation's transport state: immutable payloads, never engine graphs.
+
+    Sinks are explicit harness/output adapters. Receipt bytes are diagnostic
+    evidence only; only a completely installed handoff can emit READY.
+    """
+
+    def __init__(
+        self, config: P14CaptureConfig, *,
+        reference_sink: Callable[[str], None],
+        receipt_sink: Callable[[bytes], None] | None = None,
+    ) -> None:
+        self.config = config
+        self.reference_sink = reference_sink
+        self.receipt_sink = receipt_sink
+        self.transport_status = "READY"
+        self.failure_code: str | None = None
+        self.observation_bytes: bytes | None = None
+        self.observation_digest: str | None = None
+        self.capture_input_bytes: bytes | None = None
+        self.receipt_bytes: bytes | None = None
+        self.producer_reference: handoff.ProducerReference | None = None
+        self.binding: handoff.ExpectedBinding | None = None
+        self.raw_files: dict[str, handoff.RawFileBinding] = {}
+        self.modules: tuple[handoff.ModuleBinding, ...] = ()
+        self.executed_git_sha: str | None = None
+        self.started = False
+        self.finalized = False
+
+    def fail(self, status: str) -> None:
+        if self.transport_status == "READY":
+            self.transport_status = status
+            self.failure_code = status
+        self.producer_reference = None
+        if status == "CANONICAL_CONSTRUCTION_FAILED":
+            self.observation_bytes = None
+            self.observation_digest = None
+
+    def start(self) -> None:
+        if self.started:
+            self.fail("CAPTURE_CONFIGURATION_INVALID")
+            return
+        self.started = True
+        try:
+            if self.config.policy_version != P14_RELEASE_POLICY_VERSION:
+                raise ValueError("unsupported capture policy")
+            self.executed_git_sha = subprocess.check_output(
+                ["git", "rev-parse", "HEAD"], cwd=REPO_ROOT, text=True,
+            ).strip()
+            self.modules = tuple(handoff.ModuleBinding(
+                path, content_digest((REPO_ROOT / path).read_bytes()),
+            ) for path in handoff.FIXED_MODULE_PATHS)
+            _p14_privacy_check(self.config.run_identity_bytes)
+        except Exception:
+            # Only optional transport configuration/provenance is inside here.
+            self.fail("CAPTURE_CONFIGURATION_INVALID")
+
+    def read_observer(self, name: str) -> Callable:
+        def observe(payload: bytes | None, unavailable: bool) -> None:
+            try:
+                if unavailable:
+                    self.fail("INPUT_IDENTITY_UNAVAILABLE")
+                else:
+                    self.raw_files[name] = handoff.RawFileBinding(
+                        name, payload is not None,
+                        content_digest(payload) if payload is not None else None,
+                        len(payload) if payload is not None else None,
+                    )
+            except Exception:
+                self.fail("INPUT_IDENTITY_UNAVAILABLE")
+        return observe
+
+    def prepare(self, joined: list[Any], context: dict[str, Any], stats: dict[str, Any], payload: dict[str, Any]) -> None:
+        if self.transport_status != "READY":
+            return
+        try:
+            capture = handoff.build_capture_input_bytes(
+                joined_candidate_input=joined, context=context, join_stats=stats,
+                source_updated_at=payload.get("sourceUpdatedAt"),
+                candidates_updated_at=payload.get("updatedAt"),
+            )
+            _p14_privacy_check(capture)
+            value = json.loads(capture)
+            run = json.loads(self.config.run_identity_bytes)
+            self.binding = handoff.ExpectedBinding(
+                repository=run["repository"], workflow=run["workflow"], job=run["job"],
+                run_id=run["runId"], run_attempt=run["runAttempt"], event=run["event"],
+                git_ref=run["gitRef"], git_ref_type=run["gitRefType"], event_git_sha=run["gitSha"],
+                executed_git_sha=self.executed_git_sha, policy_version=P14_RELEASE_POLICY_VERSION,
+                engine_schema_version=CANDIDATE_FUNNEL_SCHEMA_VERSION,
+                engine_score_version=CANDIDATE_FUNNEL_SCORE_VERSION,
+                engine_funnel_version=CANDIDATE_FUNNEL_VERSION, modules=self.modules,
+                raw_files=tuple(self.raw_files[name] for name in handoff.RAW_FILE_NAMES),
+                joined_candidate_input=_p14_digest_binding(canonical_json_bytes(value["joinedCandidateInput"])),
+                replay_context=_p14_digest_binding(canonical_json_bytes(value["context"])),
+                capture_input=_p14_digest_binding(capture),
+            )
+            self.capture_input_bytes = capture
+        except Exception:
+            self.fail("CANONICAL_CONSTRUCTION_FAILED")
+
+    def accept_observation(self, payload: bytes | None) -> None:
+        if payload is None:
+            self.fail("CANONICAL_CONSTRUCTION_FAILED")
+            return
+        validated = handoff.validate_handoff_observation(payload, self.binding)
+        self.observation_bytes = validated.payload_bytes
+        self.observation_digest = validated.sha256
+
+    def _receipt(self, terminal: str, report: dict[str, Any] | None, status: str) -> bytes:
+        payload = handoff.build_batch_receipt_bytes({
+            "schemaVersion": handoff.RECEIPT_SCHEMA_VERSION,
+            "runIdentity": json.loads(self.config.run_identity_bytes),
+            "policyVersion": P14_RELEASE_POLICY_VERSION,
+            "executedGitSha": self.executed_git_sha,
+            "observationDigest": self.observation_digest,
+            "captureInputDigest": content_digest(self.capture_input_bytes) if self.capture_input_bytes is not None else None,
+            "terminalStatus": terminal, "artifactAvailable": terminal == "BATCH_READY",
+            "transportStatus": status, "failureCode": None if status == "READY" else status,
+            "reportState": "COMPLETE" if report is not None else "UNAVAILABLE",
+            "report": report,
+        }, observation_bytes=self.observation_bytes, capture_input_bytes=self.capture_input_bytes)
+        _p14_privacy_check(payload)
+        return payload
+
+    def finish(self, terminal: str, report: dict[str, Any] | None) -> None:
+        if self.finalized:
+            return
+        self.finalized = True
+        if self.observation_bytes is None and self.transport_status == "READY":
+            self.fail("P14_NOT_EVALUATED")
+        try:
+            self.receipt_bytes = self._receipt(terminal, report, self.transport_status)
+        except Exception:
+            # Unsafe report: retain only the independently validated minimal variant.
+            self.fail("RECEIPT_CONSTRUCTION_FAILED")
+            try:
+                self.receipt_bytes = self._receipt(terminal, None, self.transport_status)
+            except Exception:
+                self.receipt_bytes = None
+                return
+        reference = None
+        if terminal == "BATCH_READY" and self.transport_status == "READY":
+            try:
+                parts, reference = handoff.build_handoff_parts(
+                    observation_bytes=self.observation_bytes,
+                    capture_input_bytes=self.capture_input_bytes, receipt_bytes=self.receipt_bytes,
+                )
+                run = json.loads(self.config.run_identity_bytes)
+                claim = handoff.claim_attempt(self.config.root, run["runId"], run["runAttempt"])
+                handoff.write_handoff_parts(claim, parts)
+            except Exception:
+                self.fail("HANDOFF_WRITE_FAILED")
+                reference = None
+                try:
+                    self.receipt_bytes = self._receipt(terminal, report, self.transport_status)
+                except Exception:
+                    self.receipt_bytes = None
+        try:
+            if self.receipt_bytes is not None and self.receipt_sink is not None:
+                self.receipt_sink(self.receipt_bytes)
+            if reference is not None:
+                self._emit_reference(reference)
+                self.producer_reference = reference
+        except Exception:
+            self.fail("HANDOFF_WRITE_FAILED")
+
+    def _emit_reference(self, reference: handoff.ProducerReference) -> None:
+        fields = (
+            ("p14_handoff_digest", reference.transport_digest),
+            ("p14_observation_digest", reference.observation_digest),
+            ("p14_receipt_digest", reference.receipt_digest),
+            ("p14_capture_input_digest", reference.capture_input_digest),
+            ("p14_executed_git_sha", reference.executed_git_sha),
+            ("p14_observation_schema", reference.observation_schema_version),
+            ("p14_handoff_schema", reference.handoff_schema_version),
+            ("p14_policy_version", reference.policy_version),
+            ("p14_run_id", reference.run_id), ("p14_run_attempt", reference.run_attempt),
+        )
+        if any("\n" in value or "\r" in value for _, value in fields):
+            raise handoff.HandoffError("HANDOFF_MALFORMED", "TYPE")
+        self.reference_sink("".join(f"{key}={value}\n" for key, value in fields))
+        self.reference_sink("p14_transport_status=READY\n")
+
+
 # ---------------------------------------------------------------------------
 # Loaders
 # ---------------------------------------------------------------------------
 
 
-def load_candidates_stocks(path: Path = CANDIDATES_STOCKS_PATH) -> dict[str, Any]:
+def _read_input_text(path: Path, read_observer: Callable | None) -> str:
+    if read_observer is None:
+        return path.read_text(encoding="utf-8")
+    try:
+        payload = path.read_bytes()
+    except FileNotFoundError:
+        read_observer(None, False)
+        raise
+    except Exception:
+        # Snapshot acquisition is optional. Fall back to the original loader
+        # read semantics if it failed before delivering bytes, never to another
+        # engine/perturbation computation. Existing unreadable input stays an error.
+        read_observer(None, True)
+        return path.read_text(encoding="utf-8")
+    read_observer(payload, False)
+    # Match read_text's UTF-8 and universal-newline behavior on these exact bytes.
+    with io.TextIOWrapper(io.BytesIO(payload), encoding="utf-8") as stream:
+        return stream.read()
+
+
+def load_candidates_stocks(path: Path = CANDIDATES_STOCKS_PATH, *, read_observer: Callable | None = None) -> dict[str, Any]:
     """candidates_stocks.jsonを読み込む。不在・破損時はfail-closedで例外を送出する
     （funnelはcandidateの唯一のsourceを欠いたまま生成してはならない）。"""
     try:
-        raw = json.loads(path.read_text(encoding="utf-8"))
+        raw = json.loads(_read_input_text(path, read_observer))
     except (OSError, json.JSONDecodeError) as e:
         raise CandidateFunnelBatchError(f"failed to read/parse {path}: {e!r}") from e
     if not isinstance(raw, dict) or not isinstance(raw.get("candidates"), list):
@@ -144,7 +441,7 @@ def load_candidates_stocks(path: Path = CANDIDATES_STOCKS_PATH) -> dict[str, Any
     return raw
 
 
-def load_prescreen_metadata(path: Path = PRESCREEN_METADATA_PATH) -> dict[str, Any] | None:
+def load_prescreen_metadata(path: Path = PRESCREEN_METADATA_PATH, *, read_observer: Callable | None = None) -> dict[str, Any] | None:
     """prescreen_metadata.jsonを読み込む。不在（whole-market provider未経由の
     legacy/seed実行等）はNoneを返す — これは異常ではなく「今回のrunでは
     prescreen joinの母集団が存在しない」ことを意味し、後続のjoinは
@@ -152,9 +449,11 @@ def load_prescreen_metadata(path: Path = PRESCREEN_METADATA_PATH) -> dict[str, A
     破損（存在するが不正）はfail-closedで例外を送出する（silent quiet
     degradationにしない）。"""
     if not path.exists():
+        if read_observer is not None:
+            read_observer(None, False)
         return None
     try:
-        raw = json.loads(path.read_text(encoding="utf-8"))
+        raw = json.loads(_read_input_text(path, read_observer))
     except (OSError, json.JSONDecodeError) as e:
         raise CandidateFunnelBatchError(f"failed to read/parse {path}: {e!r}") from e
     if not isinstance(raw, dict) or not isinstance(raw.get("entries"), list):
@@ -162,12 +461,12 @@ def load_prescreen_metadata(path: Path = PRESCREEN_METADATA_PATH) -> dict[str, A
     return raw
 
 
-def read_current_regime(path: Path = REGIME_STATE_PATH) -> str | None:
+def read_current_regime(path: Path = REGIME_STATE_PATH, *, read_observer: Callable | None = None) -> str | None:
     """regime_state.jsonからcurrent_regimeを読む。不在・破損・未知値は
     すべてNone（engineのneutral fallback、A2-S §25.7）を返す — 例外は
     送出しない（regime_wiring.read_is_crisisと同じ規律）。"""
     try:
-        data = json.loads(path.read_text(encoding="utf-8"))
+        data = json.loads(_read_input_text(path, read_observer))
         regime = data["regime_state"]["current_regime"]
     except (FileNotFoundError, OSError, json.JSONDecodeError, KeyError, TypeError):
         return None
@@ -176,13 +475,15 @@ def read_current_regime(path: Path = REGIME_STATE_PATH) -> str | None:
     return regime
 
 
-def load_previous_artifact(path: Path = DATA_OUTPUT_PATH) -> dict[str, Any] | None:
+def load_previous_artifact(path: Path = DATA_OUTPUT_PATH, *, read_observer: Callable | None = None) -> dict[str, Any] | None:
     """P-15用: 前回artifactを読む。不在・破損はNone（baseline無し扱い、
     P-15は「記録」項目でありbaseline無しはfailureではない）。"""
     if not path.exists():
+        if read_observer is not None:
+            read_observer(None, False)
         return None
     try:
-        raw = json.loads(path.read_text(encoding="utf-8"))
+        raw = json.loads(_read_input_text(path, read_observer))
     except (OSError, json.JSONDecodeError):
         return None
     return raw if isinstance(raw, dict) else None
@@ -756,6 +1057,8 @@ def compute_quality_report(
     engine_result: dict[str, Any],
     context: dict[str, Any],
     previous_artifact: dict[str, Any] | None,
+    p14_capture_context: handoff.ExpectedBinding | None = None,
+    on_p14_observation: Callable[[bytes | None], None] | None = None,
 ) -> dict[str, Any]:
     """A2-S §22.2/§25.20 P-01..P-15を実データに対して評価する。
     thresholdは一切緩和しない（A2-S 禁止36）。synthetic fixtureをここでの
@@ -909,6 +1212,15 @@ def compute_quality_report(
     # composite evidenceはp14_evidenceとしてcompute_quality_report戻り値へ
     # 別途格納する（evidence/replay消費者向け。gate構造自体は変更しない）。
     jaccard_14, perturbed_result = compute_rank_stability(joined_candidates, context, engine_result)
+    if p14_capture_context is not None and on_p14_observation is not None:
+        try:
+            observation_bytes = _p14_observation_bytes(p14_capture_context, engine_result, perturbed_result)
+            on_p14_observation(observation_bytes)
+        except (handoff.HandoffError, TypeError, ValueError, AttributeError):
+            on_p14_observation(None)
+        except Exception:
+            # Isolated optional producer operation only. Never retry P14.
+            on_p14_observation(None)
     p14_evidence = compute_p14_release_evidence(engine_result, perturbed_result)
     _gate(
         "P-14",
@@ -1103,6 +1415,38 @@ def run_batch(
     regime_state_path: Path = REGIME_STATE_PATH,
     previous_artifact_path: Path = DATA_OUTPUT_PATH,
     now: datetime | None = None,
+    p14_capture: P14CaptureSession | None = None,
+) -> tuple[dict[str, Any] | None, dict[str, Any]]:
+    inputs = dict(
+        candidates_stocks_path=candidates_stocks_path,
+        prescreen_metadata_path=prescreen_metadata_path,
+        regime_state_path=regime_state_path, previous_artifact_path=previous_artifact_path,
+        now=now,
+    )
+    if p14_capture is None:
+        return _run_batch(**inputs)
+    if p14_capture.started:
+        p14_capture.fail("CAPTURE_CONFIGURATION_INVALID")
+        return _run_batch(**inputs)
+    p14_capture.start()
+    try:
+        return _run_batch(**inputs, p14_capture=p14_capture)
+    except CandidateFunnelBatchError:
+        p14_capture.finish("BATCH_INPUT_ERROR", None)
+        raise
+    except Exception:
+        p14_capture.finish("BATCH_EXCEPTION", None)
+        raise
+
+
+def _run_batch(
+    *,
+    candidates_stocks_path: Path = CANDIDATES_STOCKS_PATH,
+    prescreen_metadata_path: Path = PRESCREEN_METADATA_PATH,
+    regime_state_path: Path = REGIME_STATE_PATH,
+    previous_artifact_path: Path = DATA_OUTPUT_PATH,
+    now: datetime | None = None,
+    p14_capture: P14CaptureSession | None = None,
 ) -> tuple[dict[str, Any] | None, dict[str, Any]]:
     """join→context構築→build_candidate_funnel()呼出→quality gate計算を行う
     純粋寄りのオーケストレーション関数（file書き込みはしない — publishは
@@ -1114,10 +1458,21 @@ def run_batch(
     if now is None:
         now = datetime.now(timezone.utc)
 
-    candidates_stocks_payload = load_candidates_stocks(candidates_stocks_path)
-    prescreen_payload = load_prescreen_metadata(prescreen_metadata_path)
-    regime = read_current_regime(regime_state_path)
-    previous_artifact = load_previous_artifact(previous_artifact_path)
+    def finish(artifact, report, terminal):
+        if p14_capture is not None:
+            p14_capture.finish(terminal, report)
+        return artifact, report
+
+    if p14_capture is None:
+        candidates_stocks_payload = load_candidates_stocks(candidates_stocks_path)
+        prescreen_payload = load_prescreen_metadata(prescreen_metadata_path)
+        regime = read_current_regime(regime_state_path)
+        previous_artifact = load_previous_artifact(previous_artifact_path)
+    else:
+        candidates_stocks_payload = load_candidates_stocks(candidates_stocks_path, read_observer=p14_capture.read_observer("candidatesStocks"))
+        prescreen_payload = load_prescreen_metadata(prescreen_metadata_path, read_observer=p14_capture.read_observer("prescreenMetadata"))
+        regime = read_current_regime(regime_state_path, read_observer=p14_capture.read_observer("regimeState"))
+        previous_artifact = load_previous_artifact(previous_artifact_path, read_observer=p14_capture.read_observer("previousArtifact"))
 
     prescreen_index, prescreen_duplicate_codes = build_prescreen_index(prescreen_payload)
     candidates = candidates_stocks_payload.get("candidates", [])
@@ -1127,6 +1482,13 @@ def run_batch(
 
     engine_result = build_candidate_funnel(joined_candidates, context)
 
+    capture_options = {}
+    if p14_capture is not None:
+        p14_capture.prepare(joined_candidates, context, join_stats, candidates_stocks_payload)
+        capture_options = {
+            "p14_capture_context": p14_capture.binding,
+            "on_p14_observation": p14_capture.accept_observation,
+        }
     quality_report = compute_quality_report(
         candidates_stocks_payload=candidates_stocks_payload,
         joined_candidates=joined_candidates,
@@ -1135,6 +1497,7 @@ def run_batch(
         engine_result=engine_result,
         context=context,
         previous_artifact=previous_artifact,
+        **capture_options,
     )
 
     report = {
@@ -1146,7 +1509,8 @@ def run_batch(
     }
 
     if not quality_report["overallPass"]:
-        return None, report
+        terminal = "NOT_GENERATED" if engine_result.get("status") == "not_generated" else "QUALITY_GATE_FAILED"
+        return finish(None, report, terminal)
 
     artifact = build_artifact_payload(
         engine_result=engine_result,
@@ -1155,12 +1519,48 @@ def run_batch(
         quality_report=quality_report,
         now=now,
     )
+    if p14_capture is not None:
+        try:
+            artifact = copy.deepcopy(artifact)
+        except Exception:
+            p14_capture.fail("CANONICAL_CONSTRUCTION_FAILED")
     schema_violations = validate_artifact_schema(artifact)
     if schema_violations:
         report["schemaViolations"] = schema_violations
-        return None, report
+        return finish(None, report, "SCHEMA_VIOLATIONS")
 
-    return artifact, report
+    return finish(artifact, report, "BATCH_READY")
+
+
+def _p14_capture_from_environment() -> P14CaptureSession | None:
+    """Reviewed dormant opt-in; Phase II never sets mode or wires a workflow."""
+    mode = os.environ.get("P14_HANDOFF_MODE", "disabled")
+    if mode == "disabled":
+        return None
+    if mode != "enabled":
+        print("P14 transport: CAPTURE_CONFIGURATION_INVALID", file=sys.stderr)
+        return None
+    try:
+        run = {
+            "repository": os.environ["GITHUB_REPOSITORY"], "workflow": "full_batch.yml",
+            "job": os.environ["GITHUB_JOB"], "runId": os.environ["GITHUB_RUN_ID"],
+            "runAttempt": os.environ["GITHUB_RUN_ATTEMPT"], "event": os.environ["GITHUB_EVENT_NAME"],
+            "gitRef": os.environ["GITHUB_REF"], "gitRefType": os.environ["GITHUB_REF_TYPE"],
+            "gitSha": os.environ["GITHUB_SHA"],
+        }
+        output = Path(os.environ["GITHUB_OUTPUT"])
+        config = P14CaptureConfig(Path(os.environ["P14_HANDOFF_DIR"]), canonical_json_bytes(run))
+
+        def append_output(block: str) -> None:
+            with output.open("a", encoding="utf-8") as stream:
+                stream.write(block)
+                stream.flush()
+                os.fsync(stream.fileno())
+
+        return P14CaptureSession(config, reference_sink=append_output)
+    except Exception:
+        print("P14 transport: CAPTURE_CONFIGURATION_INVALID", file=sys.stderr)
+        return None
 
 
 def main(argv: list[str] | tuple[str, ...] = ()) -> int:
@@ -1168,11 +1568,18 @@ def main(argv: list[str] | tuple[str, ...] = ()) -> int:
     parser.add_argument("--dry-run", action="store_true", help="publishせずgate結果のみ表示する")
     args = parser.parse_args(argv)
 
+    capture = _p14_capture_from_environment()
     try:
-        artifact, report = run_batch()
+        if capture is None:
+            artifact, report = run_batch()
+        else:
+            artifact, report = run_batch(p14_capture=capture)
     except CandidateFunnelBatchError as e:
         print(f"FAIL candidate_funnel batch: {e}", file=sys.stderr)
         return 1
+    finally:
+        if capture is not None and capture.transport_status != "READY":
+            print(f"P14 transport: {capture.transport_status}", file=sys.stderr)
 
     for gate in report["qualityGate"]["gates"]:
         print(f"  [{gate['status']}] {gate['id']} {gate['metric']} = {gate['value']} (threshold: {gate['threshold']})")
