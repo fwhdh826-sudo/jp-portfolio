@@ -414,6 +414,49 @@ def test_ii_b_optional_acquisition_failure_preserves_v1(tmp_path, monkeypatch, p
     assert session.producer_reference is None and blocks == []
 
 
+def test_ii_b_canonical_failure_after_observation_clears_session_authority(tmp_path, monkeypatch, pre_ii_b):
+    inputs = _ii_b_inputs(tmp_path)
+    _ii_b_stub(monkeypatch, pre_ii_b)
+    expected = pre_ii_b.run_batch(**inputs)
+    _ii_b_stub(monkeypatch, batch)
+    session, blocks, receipts = _ii_b_session(tmp_path)
+    accepted = []
+    accept = session.accept_observation
+    original_deepcopy = batch.copy.deepcopy
+
+    def record_accepted_observation(payload):
+        assert payload is not None
+        accept(payload)
+        accepted.append((session.observation_bytes, session.observation_digest))
+
+    def failed_artifact_copy(value):
+        if isinstance(value, dict) and value.get("schemaVersion") == "candidate-funnel-1":
+            assert session.observation_bytes is not None
+            assert session.observation_digest is not None
+            raise TypeError("canonical artifact ownership construction unavailable")
+        return original_deepcopy(value)
+
+    monkeypatch.setattr(session, "accept_observation", record_accepted_observation)
+    monkeypatch.setattr(batch.copy, "deepcopy", failed_artifact_copy)
+    actual = batch.run_batch(**inputs, p14_capture=session)
+
+    assert _public_bytes(actual) == _public_bytes(expected)
+    assert len(accepted) == 1
+    accepted_bytes, accepted_digest = accepted[0]
+    assert accepted_bytes is not None and accepted_digest is not None
+    assert hashlib.sha256(accepted_bytes).hexdigest() == accepted_digest
+    assert session.transport_status == "CANONICAL_CONSTRUCTION_FAILED"
+    assert session.observation_bytes is None
+    assert session.observation_digest is None
+    assert session.producer_reference is None and blocks == []
+    assert len(receipts) == 1
+    receipt = json.loads(receipts[0])
+    assert receipt["terminalStatus"] == "BATCH_READY"
+    assert receipt["transportStatus"] == "CANONICAL_CONSTRUCTION_FAILED"
+    assert receipt["observationDigest"] is None
+    assert not session.config.root.exists()
+
+
 def test_p14_phase_ii_batch_import_contract(pre_ii_b):
     expected_scopes = {
         "<module>": {"DATA_OUTPUT_PATH", "TOP_N_STABILITY", "_jaccard", "_perturb_candidates", "_top_n_codes_ordered"},
@@ -526,6 +569,138 @@ def _ii_b_enable_environment(monkeypatch, tmp_path):
     for name, value in values.items():
         monkeypatch.setenv(name, value)
     return values
+
+
+def test_ii_b_disabled_adapter_does_not_read_or_touch_handoff_paths(tmp_path, monkeypatch, pre_ii_b, capsys):
+    inputs = _ii_b_inputs(tmp_path)
+    _ii_b_stub(monkeypatch, pre_ii_b)
+    expected = pre_ii_b.run_batch(**inputs)
+    environment = _ii_b_enable_environment(monkeypatch, tmp_path)
+    monkeypatch.setenv("P14_HANDOFF_MODE", "disabled")
+    output_path = Path(environment["GITHUB_OUTPUT"])
+    handoff_dir = Path(environment["P14_HANDOFF_DIR"])
+    output_path.write_text("existing runner output\n", encoding="utf-8")
+
+    class TrackedEnvironment(dict):
+        def __init__(self, values):
+            super().__init__(values)
+            self.watched_reads = []
+
+        def __getitem__(self, key):
+            if key in {"GITHUB_OUTPUT", "P14_HANDOFF_DIR"}:
+                self.watched_reads.append(key)
+            return super().__getitem__(key)
+
+        def get(self, key, default=None):
+            if key in {"GITHUB_OUTPUT", "P14_HANDOFF_DIR"}:
+                self.watched_reads.append(key)
+            return super().get(key, default)
+
+        def __contains__(self, key):
+            if key in {"GITHUB_OUTPUT", "P14_HANDOFF_DIR"}:
+                self.watched_reads.append(key)
+            return super().__contains__(key)
+
+    environment_reads = TrackedEnvironment(dict(batch.os.environ))
+    filesystem_accesses = []
+    sessions = []
+    calls = []
+    published = []
+    original_session = batch.P14CaptureSession
+
+    def construct_session(*args, **kwargs):
+        sessions.append(True)
+        return original_session(*args, **kwargs)
+
+    def legacy_run(**kwargs):
+        calls.append(kwargs)
+        return expected
+
+    monkeypatch.setattr(batch, "run_batch", legacy_run)
+    monkeypatch.setattr(batch, "publish_artifact", published.append)
+
+    with monkeypatch.context() as guarded:
+        guarded.setattr(batch.os, "environ", environment_reads)
+        guarded.setattr(batch, "P14CaptureSession", construct_session)
+        for method_name in (
+            "open", "read_bytes", "read_text", "write_bytes", "write_text",
+            "stat", "lstat", "resolve", "exists", "is_file", "is_dir",
+            "mkdir", "touch",
+        ):
+            original_method = getattr(Path, method_name)
+
+            def tripwire(path, *args, _method=original_method, _name=method_name, **kwargs):
+                if path in {output_path, handoff_dir}:
+                    filesystem_accesses.append((_name, str(path)))
+                return _method(path, *args, **kwargs)
+
+            guarded.setattr(Path, method_name, tripwire)
+        assert batch.main(()) == 0
+
+    assert set(environment) >= {
+        "P14_HANDOFF_MODE", "P14_HANDOFF_DIR", "GITHUB_OUTPUT", "GITHUB_REPOSITORY",
+        "GITHUB_JOB", "GITHUB_RUN_ID", "GITHUB_RUN_ATTEMPT", "GITHUB_EVENT_NAME",
+        "GITHUB_REF", "GITHUB_REF_TYPE", "GITHUB_SHA",
+    }
+    assert environment_reads["P14_HANDOFF_MODE"] == "disabled"
+    assert environment_reads.watched_reads == []
+    assert filesystem_accesses == []
+    assert sessions == []
+    assert calls == [{}]
+    assert published == [expected[0]]
+    assert output_path.read_text(encoding="utf-8") == "existing runner output\n"
+    assert not handoff_dir.exists()
+    assert capsys.readouterr().err == ""
+
+
+@pytest.mark.parametrize(
+    ("mode", "activates"),
+    [
+        (" enabled", False),
+        ("enabled ", False),
+        ("ENABLED", False),
+        ("Enabled", False),
+        ("true", False),
+        ("1", False),
+        ("enabled", True),
+    ],
+)
+def test_ii_b_mode_matching_is_exact_with_complete_environment(
+    tmp_path, monkeypatch, pre_ii_b, capsys, mode, activates,
+):
+    inputs = _ii_b_inputs(tmp_path)
+    _ii_b_stub(monkeypatch, pre_ii_b)
+    expected = pre_ii_b.run_batch(**inputs)
+    _ii_b_enable_environment(monkeypatch, tmp_path)
+    monkeypatch.setenv("P14_HANDOFF_MODE", mode)
+    sessions = []
+    calls = []
+    published = []
+    original_session = batch.P14CaptureSession
+
+    def construct_session(*args, **kwargs):
+        session = original_session(*args, **kwargs)
+        sessions.append(session)
+        return session
+
+    def run(**kwargs):
+        calls.append(kwargs)
+        return expected
+
+    monkeypatch.setattr(batch, "P14CaptureSession", construct_session)
+    monkeypatch.setattr(batch, "run_batch", run)
+    monkeypatch.setattr(batch, "publish_artifact", published.append)
+    assert batch.main(()) == 0
+
+    assert published == [expected[0]]
+    if activates:
+        assert len(sessions) == 1
+        assert calls == [{"p14_capture": sessions[0]}]
+        assert capsys.readouterr().err == ""
+    else:
+        assert sessions == []
+        assert calls == [{}]
+        assert capsys.readouterr().err == "P14 transport: CAPTURE_CONFIGURATION_INVALID\n"
 
 
 @pytest.mark.parametrize("mode", [None, "disabled", "invalid", " enabled", "enabled"])
